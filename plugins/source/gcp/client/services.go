@@ -169,6 +169,7 @@ var GcpServices = map[string]bool{
 	"lifesciences.googleapis.com":                     true,
 	"localservices.googleapis.com":                    true,
 	"logging.googleapis.com":                          true,
+	"looker.googleapis.com":                           true,
 	"managedidentities.googleapis.com":                true,
 	"manufacturers.googleapis.com":                    true,
 	"memcache.googleapis.com":                         true,

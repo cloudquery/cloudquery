@@ -1,6 +1,6 @@
-# Table: aws_redshift_endpoint_access
+# Table: aws_redshift_endpoint_accesses
 
-This table shows data for Redshift Endpoint Access.
+This table shows data for Redshift Endpoint Accesses.
 
 https://docs.aws.amazon.com/redshift/latest/APIReference/API_EndpointAccess.html
 
