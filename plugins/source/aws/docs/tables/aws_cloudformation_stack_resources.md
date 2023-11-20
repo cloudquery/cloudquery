@@ -4,7 +4,7 @@ This table shows data for AWS CloudFormation Stack Resources.
 
 https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackResourceSummary.html
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**stack_id**, **logical_resource_id**).
 
 ## Relations
 
@@ -14,13 +14,13 @@ This table depends on [aws_cloudformation_stacks](aws_cloudformation_stacks.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|`uuid`|
+|_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|stack_id|`utf8`|
+|stack_id (PK)|`utf8`|
 |last_updated_timestamp|`timestamp[us, tz=UTC]`|
-|logical_resource_id|`utf8`|
+|logical_resource_id (PK)|`utf8`|
 |resource_status|`utf8`|
 |resource_type|`utf8`|
 |drift_information|`json`|

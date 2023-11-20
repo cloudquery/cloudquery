@@ -19,4 +19,3 @@ The composite primary key for this table is (**account_id**, **region**, **hub_a
 |control_finding_generator|`utf8`|
 |hub_arn (PK)|`utf8`|
 |subscribed_at|`timestamp[us, tz=UTC]`|
-|result_metadata|`json`|

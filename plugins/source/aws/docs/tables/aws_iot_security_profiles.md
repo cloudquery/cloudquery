@@ -28,4 +28,3 @@ The primary key for this table is **arn**.
 |security_profile_description|`utf8`|
 |security_profile_name|`utf8`|
 |version|`int64`|
-|result_metadata|`json`|

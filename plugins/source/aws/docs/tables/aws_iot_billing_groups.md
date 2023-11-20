@@ -23,4 +23,3 @@ The primary key for this table is **arn**.
 |billing_group_name|`utf8`|
 |billing_group_properties|`json`|
 |version|`int64`|
-|result_metadata|`json`|

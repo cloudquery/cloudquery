@@ -18,4 +18,3 @@ The primary key for this table is **arn**.
 |arn (PK)|`utf8`|
 |rule|`json`|
 |rule_arn|`utf8`|
-|result_metadata|`json`|

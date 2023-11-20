@@ -20,7 +20,7 @@ func TopicRules() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/iot/latest/apireference/API_GetTopicRule.html`,
 		Resolver:            fetchIotTopicRules,
 		PreResourceResolver: getTopicRule,
-		Transform:           transformers.TransformWithStruct(&iot.GetTopicRuleOutput{}),
+		Transform:           transformers.TransformWithStruct(&iot.GetTopicRuleOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

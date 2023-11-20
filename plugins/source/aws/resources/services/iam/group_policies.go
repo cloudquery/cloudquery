@@ -21,7 +21,7 @@ func groupPolicies() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetGroupPolicy.html`,
 		Resolver:            fetchIamGroupPolicies,
 		PreResourceResolver: getGroupPolicy,
-		Transform:           transformers.TransformWithStruct(&iam.GetGroupPolicyOutput{}, transformers.WithPrimaryKeys("PolicyName")),
+		Transform:           transformers.TransformWithStruct(&iam.GetGroupPolicyOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeys("PolicyName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{

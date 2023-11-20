@@ -19,7 +19,7 @@ func EndpointConfigurations() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeEndpointConfig.html`,
 		Resolver:            fetchSagemakerEndpointConfigurations,
 		PreResourceResolver: getEndpointConfiguration,
-		Transform:           transformers.TransformWithStruct(&sagemaker.DescribeEndpointConfigOutput{}),
+		Transform:           transformers.TransformWithStruct(&sagemaker.DescribeEndpointConfigOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "api.sagemaker"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

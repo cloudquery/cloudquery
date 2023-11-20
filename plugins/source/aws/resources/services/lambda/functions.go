@@ -21,7 +21,7 @@ func Functions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/lambda/latest/dg/API_GetFunction.html`,
 		Resolver:            fetchLambdaFunctions,
 		PreResourceResolver: getFunction,
-		Transform:           transformers.TransformWithStruct(&lambda.GetFunctionOutput{}),
+		Transform:           transformers.TransformWithStruct(&lambda.GetFunctionOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "lambda"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

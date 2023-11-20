@@ -57,4 +57,3 @@ The primary key for this table is **arn**.
 |tuning_job_arn|`utf8`|
 |vpc_config|`json`|
 |warm_pool_status|`json`|
-|result_metadata|`json`|
