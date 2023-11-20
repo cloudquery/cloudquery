@@ -132,7 +132,6 @@
 - [aws_cloudtrail_events](aws_cloudtrail_events.md) (Incremental)
 - [aws_cloudtrail_imports](aws_cloudtrail_imports.md)
 - [aws_cloudtrail_trails](aws_cloudtrail_trails.md)
-  - [aws_cloudtrail_trail_advanced_event_selectors](aws_cloudtrail_trail_advanced_event_selectors.md)
   - [aws_cloudtrail_trail_event_selectors](aws_cloudtrail_trail_event_selectors.md)
 - [aws_cloudwatch_alarms](aws_cloudwatch_alarms.md)
 - [aws_cloudwatchlogs_log_groups](aws_cloudwatchlogs_log_groups.md)

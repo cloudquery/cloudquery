@@ -9,7 +9,6 @@ The composite primary key for this table is (**account_id**, **region**, **arn**
 ## Relations
 
 The following tables depend on aws_cloudtrail_trails:
-  - [aws_cloudtrail_trail_advanced_event_selectors](aws_cloudtrail_trail_advanced_event_selectors.md)
   - [aws_cloudtrail_trail_event_selectors](aws_cloudtrail_trail_event_selectors.md)
 
 ## Columns

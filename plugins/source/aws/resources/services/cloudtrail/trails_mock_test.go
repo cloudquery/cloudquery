@@ -34,17 +34,13 @@ func buildCloudtrailTrailsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 
 	eventSelector := types.EventSelector{}
 	require.NoError(t, faker.FakeObject(&eventSelector))
-	advancedEventSelector := types.AdvancedEventSelector{}
-	require.NoError(t, faker.FakeObject(&advancedEventSelector))
 	m.EXPECT().GetEventSelectors(gomock.Any(), gomock.Any(), gomock.Any()).
 		Return(
 			&cloudtrail.GetEventSelectorsOutput{
-				AdvancedEventSelectors: []types.AdvancedEventSelector{advancedEventSelector},
-				EventSelectors:         []types.EventSelector{eventSelector},
+				EventSelectors: []types.EventSelector{eventSelector},
 			},
 			nil,
-		).
-		Times(2)
+		)
 
 	tags := cloudtrail.ListTagsOutput{}
 	require.NoError(t, faker.FakeObject(&tags))
