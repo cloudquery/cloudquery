@@ -92,6 +92,7 @@ The following tables depend on aws_rds_clusters:
 |scaling_configuration_info|`json`|
 |serverless_v2_scaling_configuration|`json`|
 |status|`utf8`|
+|status_infos|`json`|
 |storage_encrypted|`bool`|
 |storage_type|`utf8`|
 |vpc_security_groups|`json`|

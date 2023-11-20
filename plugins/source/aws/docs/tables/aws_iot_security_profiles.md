@@ -23,6 +23,7 @@ The primary key for this table is **arn**.
 |behaviors|`json`|
 |creation_date|`timestamp[us, tz=UTC]`|
 |last_modified_date|`timestamp[us, tz=UTC]`|
+|metrics_export_config|`json`|
 |security_profile_arn|`utf8`|
 |security_profile_description|`utf8`|
 |security_profile_name|`utf8`|

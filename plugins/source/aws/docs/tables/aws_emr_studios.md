@@ -24,7 +24,10 @@ The following tables depend on aws_emr_studios:
 |creation_time|`timestamp[us, tz=UTC]`|
 |default_s3_location|`utf8`|
 |description|`utf8`|
+|encryption_key_arn|`utf8`|
 |engine_security_group_id|`utf8`|
+|idc_instance_arn|`utf8`|
+|idc_user_assignment|`utf8`|
 |idp_auth_url|`utf8`|
 |idp_relay_state_parameter_name|`utf8`|
 |name|`utf8`|
@@ -33,6 +36,7 @@ The following tables depend on aws_emr_studios:
 |studio_id|`utf8`|
 |subnet_ids|`list<item: utf8, nullable>`|
 |tags|`json`|
+|trusted_identity_propagation_enabled|`bool`|
 |url|`utf8`|
 |user_role|`utf8`|
 |vpc_id|`utf8`|

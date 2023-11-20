@@ -26,5 +26,7 @@ The following tables depend on aws_docdb_engine_versions:
 |engine (PK)|`utf8`|
 |engine_version (PK)|`utf8`|
 |exportable_log_types|`list<item: utf8, nullable>`|
+|supported_ca_certificate_identifiers|`list<item: utf8, nullable>`|
+|supports_certificate_rotation_without_restart|`bool`|
 |supports_log_exports_to_cloudwatch_logs|`bool`|
 |valid_upgrade_target|`json`|

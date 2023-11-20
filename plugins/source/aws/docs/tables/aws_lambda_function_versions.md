@@ -36,6 +36,7 @@ This table depends on [aws_lambda_functions](aws_lambda_functions.md).
 |last_update_status_reason|`utf8`|
 |last_update_status_reason_code|`utf8`|
 |layers|`json`|
+|logging_config|`json`|
 |master_arn|`utf8`|
 |memory_size|`int64`|
 |package_type|`utf8`|

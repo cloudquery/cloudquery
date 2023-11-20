@@ -17,8 +17,11 @@ The primary key for this table is **arn**.
 |arn (PK)|`utf8`|
 |airflow_configuration_options|`json`|
 |airflow_version|`utf8`|
+|celery_executor_queue|`utf8`|
 |created_at|`timestamp[us, tz=UTC]`|
 |dag_s3_path|`utf8`|
+|database_vpc_endpoint_service|`utf8`|
+|endpoint_management|`utf8`|
 |environment_class|`utf8`|
 |execution_role_arn|`utf8`|
 |kms_key|`utf8`|
@@ -41,4 +44,5 @@ The primary key for this table is **arn**.
 |tags|`json`|
 |webserver_access_mode|`utf8`|
 |webserver_url|`utf8`|
+|webserver_vpc_endpoint_service|`utf8`|
 |weekly_maintenance_window_start|`utf8`|

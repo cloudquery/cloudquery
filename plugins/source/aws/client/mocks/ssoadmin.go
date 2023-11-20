@@ -95,6 +95,126 @@ func (mr *MockSsoadminClientMockRecorder) DescribeAccountAssignmentDeletionStatu
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeAccountAssignmentDeletionStatus", reflect.TypeOf((*MockSsoadminClient)(nil).DescribeAccountAssignmentDeletionStatus), varargs...)
 }
 
+// DescribeApplication mocks base method.
+func (m *MockSsoadminClient) DescribeApplication(arg0 context.Context, arg1 *ssoadmin.DescribeApplicationInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.DescribeApplicationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeApplication")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeApplication", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.DescribeApplicationOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeApplication indicates an expected call of DescribeApplication.
+func (mr *MockSsoadminClientMockRecorder) DescribeApplication(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeApplication", reflect.TypeOf((*MockSsoadminClient)(nil).DescribeApplication), varargs...)
+}
+
+// DescribeApplicationAssignment mocks base method.
+func (m *MockSsoadminClient) DescribeApplicationAssignment(arg0 context.Context, arg1 *ssoadmin.DescribeApplicationAssignmentInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.DescribeApplicationAssignmentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeApplicationAssignment")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeApplicationAssignment", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.DescribeApplicationAssignmentOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeApplicationAssignment indicates an expected call of DescribeApplicationAssignment.
+func (mr *MockSsoadminClientMockRecorder) DescribeApplicationAssignment(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeApplicationAssignment", reflect.TypeOf((*MockSsoadminClient)(nil).DescribeApplicationAssignment), varargs...)
+}
+
+// DescribeApplicationProvider mocks base method.
+func (m *MockSsoadminClient) DescribeApplicationProvider(arg0 context.Context, arg1 *ssoadmin.DescribeApplicationProviderInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.DescribeApplicationProviderOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeApplicationProvider")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeApplicationProvider", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.DescribeApplicationProviderOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeApplicationProvider indicates an expected call of DescribeApplicationProvider.
+func (mr *MockSsoadminClientMockRecorder) DescribeApplicationProvider(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeApplicationProvider", reflect.TypeOf((*MockSsoadminClient)(nil).DescribeApplicationProvider), varargs...)
+}
+
+// DescribeInstance mocks base method.
+func (m *MockSsoadminClient) DescribeInstance(arg0 context.Context, arg1 *ssoadmin.DescribeInstanceInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.DescribeInstanceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInstance")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeInstance", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.DescribeInstanceOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeInstance indicates an expected call of DescribeInstance.
+func (mr *MockSsoadminClientMockRecorder) DescribeInstance(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeInstance", reflect.TypeOf((*MockSsoadminClient)(nil).DescribeInstance), varargs...)
+}
+
 // DescribeInstanceAccessControlAttributeConfiguration mocks base method.
 func (m *MockSsoadminClient) DescribeInstanceAccessControlAttributeConfiguration(arg0 context.Context, arg1 *ssoadmin.DescribeInstanceAccessControlAttributeConfigurationInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.DescribeInstanceAccessControlAttributeConfigurationOutput, error) {
 
@@ -183,6 +303,156 @@ func (mr *MockSsoadminClientMockRecorder) DescribePermissionSetProvisioningStatu
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribePermissionSetProvisioningStatus", reflect.TypeOf((*MockSsoadminClient)(nil).DescribePermissionSetProvisioningStatus), varargs...)
+}
+
+// DescribeTrustedTokenIssuer mocks base method.
+func (m *MockSsoadminClient) DescribeTrustedTokenIssuer(arg0 context.Context, arg1 *ssoadmin.DescribeTrustedTokenIssuerInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.DescribeTrustedTokenIssuerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTrustedTokenIssuer")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTrustedTokenIssuer", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.DescribeTrustedTokenIssuerOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTrustedTokenIssuer indicates an expected call of DescribeTrustedTokenIssuer.
+func (mr *MockSsoadminClientMockRecorder) DescribeTrustedTokenIssuer(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTrustedTokenIssuer", reflect.TypeOf((*MockSsoadminClient)(nil).DescribeTrustedTokenIssuer), varargs...)
+}
+
+// GetApplicationAccessScope mocks base method.
+func (m *MockSsoadminClient) GetApplicationAccessScope(arg0 context.Context, arg1 *ssoadmin.GetApplicationAccessScopeInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.GetApplicationAccessScopeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetApplicationAccessScope")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetApplicationAccessScope", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.GetApplicationAccessScopeOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetApplicationAccessScope indicates an expected call of GetApplicationAccessScope.
+func (mr *MockSsoadminClientMockRecorder) GetApplicationAccessScope(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetApplicationAccessScope", reflect.TypeOf((*MockSsoadminClient)(nil).GetApplicationAccessScope), varargs...)
+}
+
+// GetApplicationAssignmentConfiguration mocks base method.
+func (m *MockSsoadminClient) GetApplicationAssignmentConfiguration(arg0 context.Context, arg1 *ssoadmin.GetApplicationAssignmentConfigurationInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.GetApplicationAssignmentConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetApplicationAssignmentConfiguration")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetApplicationAssignmentConfiguration", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.GetApplicationAssignmentConfigurationOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetApplicationAssignmentConfiguration indicates an expected call of GetApplicationAssignmentConfiguration.
+func (mr *MockSsoadminClientMockRecorder) GetApplicationAssignmentConfiguration(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetApplicationAssignmentConfiguration", reflect.TypeOf((*MockSsoadminClient)(nil).GetApplicationAssignmentConfiguration), varargs...)
+}
+
+// GetApplicationAuthenticationMethod mocks base method.
+func (m *MockSsoadminClient) GetApplicationAuthenticationMethod(arg0 context.Context, arg1 *ssoadmin.GetApplicationAuthenticationMethodInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.GetApplicationAuthenticationMethodOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetApplicationAuthenticationMethod")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetApplicationAuthenticationMethod", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.GetApplicationAuthenticationMethodOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetApplicationAuthenticationMethod indicates an expected call of GetApplicationAuthenticationMethod.
+func (mr *MockSsoadminClientMockRecorder) GetApplicationAuthenticationMethod(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetApplicationAuthenticationMethod", reflect.TypeOf((*MockSsoadminClient)(nil).GetApplicationAuthenticationMethod), varargs...)
+}
+
+// GetApplicationGrant mocks base method.
+func (m *MockSsoadminClient) GetApplicationGrant(arg0 context.Context, arg1 *ssoadmin.GetApplicationGrantInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.GetApplicationGrantOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetApplicationGrant")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetApplicationGrant", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.GetApplicationGrantOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetApplicationGrant indicates an expected call of GetApplicationGrant.
+func (mr *MockSsoadminClientMockRecorder) GetApplicationGrant(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetApplicationGrant", reflect.TypeOf((*MockSsoadminClient)(nil).GetApplicationGrant), varargs...)
 }
 
 // GetInlinePolicyForPermissionSet mocks base method.
@@ -335,6 +605,36 @@ func (mr *MockSsoadminClientMockRecorder) ListAccountAssignments(arg0, arg1 inte
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAccountAssignments", reflect.TypeOf((*MockSsoadminClient)(nil).ListAccountAssignments), varargs...)
 }
 
+// ListAccountAssignmentsForPrincipal mocks base method.
+func (m *MockSsoadminClient) ListAccountAssignmentsForPrincipal(arg0 context.Context, arg1 *ssoadmin.ListAccountAssignmentsForPrincipalInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.ListAccountAssignmentsForPrincipalOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAccountAssignmentsForPrincipal")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListAccountAssignmentsForPrincipal", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.ListAccountAssignmentsForPrincipalOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAccountAssignmentsForPrincipal indicates an expected call of ListAccountAssignmentsForPrincipal.
+func (mr *MockSsoadminClientMockRecorder) ListAccountAssignmentsForPrincipal(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAccountAssignmentsForPrincipal", reflect.TypeOf((*MockSsoadminClient)(nil).ListAccountAssignmentsForPrincipal), varargs...)
+}
+
 // ListAccountsForProvisionedPermissionSet mocks base method.
 func (m *MockSsoadminClient) ListAccountsForProvisionedPermissionSet(arg0 context.Context, arg1 *ssoadmin.ListAccountsForProvisionedPermissionSetInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.ListAccountsForProvisionedPermissionSetOutput, error) {
 
@@ -363,6 +663,216 @@ func (mr *MockSsoadminClientMockRecorder) ListAccountsForProvisionedPermissionSe
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAccountsForProvisionedPermissionSet", reflect.TypeOf((*MockSsoadminClient)(nil).ListAccountsForProvisionedPermissionSet), varargs...)
+}
+
+// ListApplicationAccessScopes mocks base method.
+func (m *MockSsoadminClient) ListApplicationAccessScopes(arg0 context.Context, arg1 *ssoadmin.ListApplicationAccessScopesInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.ListApplicationAccessScopesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListApplicationAccessScopes")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListApplicationAccessScopes", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.ListApplicationAccessScopesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListApplicationAccessScopes indicates an expected call of ListApplicationAccessScopes.
+func (mr *MockSsoadminClientMockRecorder) ListApplicationAccessScopes(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListApplicationAccessScopes", reflect.TypeOf((*MockSsoadminClient)(nil).ListApplicationAccessScopes), varargs...)
+}
+
+// ListApplicationAssignments mocks base method.
+func (m *MockSsoadminClient) ListApplicationAssignments(arg0 context.Context, arg1 *ssoadmin.ListApplicationAssignmentsInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.ListApplicationAssignmentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListApplicationAssignments")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListApplicationAssignments", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.ListApplicationAssignmentsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListApplicationAssignments indicates an expected call of ListApplicationAssignments.
+func (mr *MockSsoadminClientMockRecorder) ListApplicationAssignments(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListApplicationAssignments", reflect.TypeOf((*MockSsoadminClient)(nil).ListApplicationAssignments), varargs...)
+}
+
+// ListApplicationAssignmentsForPrincipal mocks base method.
+func (m *MockSsoadminClient) ListApplicationAssignmentsForPrincipal(arg0 context.Context, arg1 *ssoadmin.ListApplicationAssignmentsForPrincipalInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.ListApplicationAssignmentsForPrincipalOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListApplicationAssignmentsForPrincipal")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListApplicationAssignmentsForPrincipal", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.ListApplicationAssignmentsForPrincipalOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListApplicationAssignmentsForPrincipal indicates an expected call of ListApplicationAssignmentsForPrincipal.
+func (mr *MockSsoadminClientMockRecorder) ListApplicationAssignmentsForPrincipal(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListApplicationAssignmentsForPrincipal", reflect.TypeOf((*MockSsoadminClient)(nil).ListApplicationAssignmentsForPrincipal), varargs...)
+}
+
+// ListApplicationAuthenticationMethods mocks base method.
+func (m *MockSsoadminClient) ListApplicationAuthenticationMethods(arg0 context.Context, arg1 *ssoadmin.ListApplicationAuthenticationMethodsInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.ListApplicationAuthenticationMethodsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListApplicationAuthenticationMethods")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListApplicationAuthenticationMethods", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.ListApplicationAuthenticationMethodsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListApplicationAuthenticationMethods indicates an expected call of ListApplicationAuthenticationMethods.
+func (mr *MockSsoadminClientMockRecorder) ListApplicationAuthenticationMethods(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListApplicationAuthenticationMethods", reflect.TypeOf((*MockSsoadminClient)(nil).ListApplicationAuthenticationMethods), varargs...)
+}
+
+// ListApplicationGrants mocks base method.
+func (m *MockSsoadminClient) ListApplicationGrants(arg0 context.Context, arg1 *ssoadmin.ListApplicationGrantsInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.ListApplicationGrantsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListApplicationGrants")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListApplicationGrants", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.ListApplicationGrantsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListApplicationGrants indicates an expected call of ListApplicationGrants.
+func (mr *MockSsoadminClientMockRecorder) ListApplicationGrants(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListApplicationGrants", reflect.TypeOf((*MockSsoadminClient)(nil).ListApplicationGrants), varargs...)
+}
+
+// ListApplicationProviders mocks base method.
+func (m *MockSsoadminClient) ListApplicationProviders(arg0 context.Context, arg1 *ssoadmin.ListApplicationProvidersInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.ListApplicationProvidersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListApplicationProviders")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListApplicationProviders", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.ListApplicationProvidersOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListApplicationProviders indicates an expected call of ListApplicationProviders.
+func (mr *MockSsoadminClientMockRecorder) ListApplicationProviders(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListApplicationProviders", reflect.TypeOf((*MockSsoadminClient)(nil).ListApplicationProviders), varargs...)
+}
+
+// ListApplications mocks base method.
+func (m *MockSsoadminClient) ListApplications(arg0 context.Context, arg1 *ssoadmin.ListApplicationsInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.ListApplicationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListApplications")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListApplications", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.ListApplicationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListApplications indicates an expected call of ListApplications.
+func (mr *MockSsoadminClientMockRecorder) ListApplications(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListApplications", reflect.TypeOf((*MockSsoadminClient)(nil).ListApplications), varargs...)
 }
 
 // ListCustomerManagedPolicyReferencesInPermissionSet mocks base method.
@@ -573,4 +1083,34 @@ func (mr *MockSsoadminClientMockRecorder) ListTagsForResource(arg0, arg1 interfa
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTagsForResource", reflect.TypeOf((*MockSsoadminClient)(nil).ListTagsForResource), varargs...)
+}
+
+// ListTrustedTokenIssuers mocks base method.
+func (m *MockSsoadminClient) ListTrustedTokenIssuers(arg0 context.Context, arg1 *ssoadmin.ListTrustedTokenIssuersInput, arg2 ...func(*ssoadmin.Options)) (*ssoadmin.ListTrustedTokenIssuersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &ssoadmin.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTrustedTokenIssuers")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTrustedTokenIssuers", varargs...)
+	ret0, _ := ret[0].(*ssoadmin.ListTrustedTokenIssuersOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTrustedTokenIssuers indicates an expected call of ListTrustedTokenIssuers.
+func (mr *MockSsoadminClientMockRecorder) ListTrustedTokenIssuers(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTrustedTokenIssuers", reflect.TypeOf((*MockSsoadminClient)(nil).ListTrustedTokenIssuers), varargs...)
 }

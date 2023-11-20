@@ -635,6 +635,36 @@ func (mr *MockBackupClientMockRecorder) GetSupportedResourceTypes(arg0, arg1 int
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSupportedResourceTypes", reflect.TypeOf((*MockBackupClient)(nil).GetSupportedResourceTypes), varargs...)
 }
 
+// ListBackupJobSummaries mocks base method.
+func (m *MockBackupClient) ListBackupJobSummaries(arg0 context.Context, arg1 *backup.ListBackupJobSummariesInput, arg2 ...func(*backup.Options)) (*backup.ListBackupJobSummariesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListBackupJobSummaries")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListBackupJobSummaries", varargs...)
+	ret0, _ := ret[0].(*backup.ListBackupJobSummariesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListBackupJobSummaries indicates an expected call of ListBackupJobSummaries.
+func (mr *MockBackupClientMockRecorder) ListBackupJobSummaries(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListBackupJobSummaries", reflect.TypeOf((*MockBackupClient)(nil).ListBackupJobSummaries), varargs...)
+}
+
 // ListBackupJobs mocks base method.
 func (m *MockBackupClient) ListBackupJobs(arg0 context.Context, arg1 *backup.ListBackupJobsInput, arg2 ...func(*backup.Options)) (*backup.ListBackupJobsOutput, error) {
 
@@ -813,6 +843,36 @@ func (mr *MockBackupClientMockRecorder) ListBackupVaults(arg0, arg1 interface{},
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListBackupVaults", reflect.TypeOf((*MockBackupClient)(nil).ListBackupVaults), varargs...)
+}
+
+// ListCopyJobSummaries mocks base method.
+func (m *MockBackupClient) ListCopyJobSummaries(arg0 context.Context, arg1 *backup.ListCopyJobSummariesInput, arg2 ...func(*backup.Options)) (*backup.ListCopyJobSummariesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListCopyJobSummaries")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListCopyJobSummaries", varargs...)
+	ret0, _ := ret[0].(*backup.ListCopyJobSummariesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListCopyJobSummaries indicates an expected call of ListCopyJobSummaries.
+func (mr *MockBackupClientMockRecorder) ListCopyJobSummaries(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListCopyJobSummaries", reflect.TypeOf((*MockBackupClient)(nil).ListCopyJobSummaries), varargs...)
 }
 
 // ListCopyJobs mocks base method.
@@ -1113,6 +1173,36 @@ func (mr *MockBackupClientMockRecorder) ListReportPlans(arg0, arg1 interface{}, 
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListReportPlans", reflect.TypeOf((*MockBackupClient)(nil).ListReportPlans), varargs...)
+}
+
+// ListRestoreJobSummaries mocks base method.
+func (m *MockBackupClient) ListRestoreJobSummaries(arg0 context.Context, arg1 *backup.ListRestoreJobSummariesInput, arg2 ...func(*backup.Options)) (*backup.ListRestoreJobSummariesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRestoreJobSummaries")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListRestoreJobSummaries", varargs...)
+	ret0, _ := ret[0].(*backup.ListRestoreJobSummariesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListRestoreJobSummaries indicates an expected call of ListRestoreJobSummaries.
+func (mr *MockBackupClientMockRecorder) ListRestoreJobSummaries(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRestoreJobSummaries", reflect.TypeOf((*MockBackupClient)(nil).ListRestoreJobSummaries), varargs...)
 }
 
 // ListRestoreJobs mocks base method.
