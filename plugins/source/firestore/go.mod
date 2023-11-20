@@ -12,7 +12,7 @@ require (
 	google.golang.org/api v0.128.0
 )
 
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231023001216-f46436fa3561
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 b016ecc9597c
 
 require (
 	cloud.google.com/go v0.110.9 // indirect
