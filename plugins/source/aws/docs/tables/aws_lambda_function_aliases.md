@@ -26,4 +26,3 @@ This table depends on [aws_lambda_functions](aws_lambda_functions.md).
 |name|`utf8`|
 |revision_id|`utf8`|
 |routing_config|`json`|
-|url_config|`json`|
