@@ -582,9 +582,10 @@ func getTables() schema.Tables {
 	if err := transformers.TransformTables(t); err != nil {
 		panic(err)
 	}
+	transformTitles := titleTransformer()
 	for _, table := range t {
 		schema.AddCqIDs(table)
-		titleTransformer(table)
+		transformTitles(table)
 		if err := validateTagsIsJSON(table); err != nil {
 			panic(err)
 		}
