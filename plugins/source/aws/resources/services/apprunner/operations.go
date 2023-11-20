@@ -3,6 +3,7 @@ package apprunner
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/apprunner"
 	"github.com/aws/aws-sdk-go-v2/service/apprunner/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -15,10 +16,16 @@ func operations() *schema.Table {
 		Name:        "aws_apprunner_operations",
 		Description: `https://docs.aws.amazon.com/apprunner/latest/api/API_OperationSummary.html`,
 		Resolver:    fetchApprunnerOperations,
-		Transform:   transformers.TransformWithStruct(&types.OperationSummary{}),
+		Transform:   transformers.TransformWithStruct(&types.OperationSummary{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
+			{
+				Name:       "service_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
+			},
 		},
 	}
 }
