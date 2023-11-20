@@ -2,6 +2,7 @@ package ec2
 
 import (
 	"context"
+	"reflect"
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -22,7 +23,18 @@ func Images() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Image.html`,
 		Resolver:    fetchEc2Images,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
-		Transform:   transformers.TransformWithStruct(&types.Image{}),
+		Transform: transformers.TransformWithStruct(&types.Image{},
+			transformers.WithTypeTransformer(
+				func(field reflect.StructField) (arrow.DataType, error) {
+					switch field.Name {
+					case "CreationDate", "DeprecationTime": // based on docs these are timestamps
+						return arrow.FixedWidthTypes.Timestamp_us, nil
+					default:
+						return transformers.DefaultTypeTransformer(field)
+					}
+				},
+			),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
