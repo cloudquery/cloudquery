@@ -232,10 +232,10 @@ func resolveBucketPublicAccessBlock(ctx context.Context, meta schema.ClientMeta,
 		}
 		return err
 	}
-	resource.BlockPublicAcls = &publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicAcls
-	resource.BlockPublicPolicy = &publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicPolicy
-	resource.IgnorePublicAcls = &publicAccessOutput.PublicAccessBlockConfiguration.IgnorePublicAcls
-	resource.RestrictPublicBuckets = &publicAccessOutput.PublicAccessBlockConfiguration.RestrictPublicBuckets
+	resource.BlockPublicAcls = publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicAcls
+	resource.BlockPublicPolicy = publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicPolicy
+	resource.IgnorePublicAcls = publicAccessOutput.PublicAccessBlockConfiguration.IgnorePublicAcls
+	resource.RestrictPublicBuckets = publicAccessOutput.PublicAccessBlockConfiguration.RestrictPublicBuckets
 	return nil
 }
 
