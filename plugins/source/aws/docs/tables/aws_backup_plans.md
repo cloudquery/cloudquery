@@ -4,7 +4,7 @@ This table shows data for Backup Plans.
 
 https://docs.aws.amazon.com/aws-backup/latest/devguide/API_GetBackupPlan.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**arn**, **version_id**).
 
 ## Relations
 
@@ -29,5 +29,5 @@ The following tables depend on aws_backup_plans:
 |creator_request_id|`utf8`|
 |deletion_date|`timestamp[us, tz=UTC]`|
 |last_execution_date|`timestamp[us, tz=UTC]`|
-|version_id|`utf8`|
+|version_id (PK)|`utf8`|
 |result_metadata|`json`|
