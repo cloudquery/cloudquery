@@ -23,6 +23,7 @@ func trailEventSelectors() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
+				// we can't use trail_arn as PK as single trail can have multiple event selectors
 				Name:     "trail_arn",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
