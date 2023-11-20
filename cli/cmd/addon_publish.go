@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"strings"
 	"syscall"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
@@ -35,7 +36,6 @@ func newCmdAddonPublish() *cobra.Command {
 		Short:   addonPublishShort,
 		Long:    addonPublishLong,
 		Example: addonPublishExample,
-		Hidden:  true,
 		Args:    cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Set up a channel to listen for OS signals for graceful shutdown.
@@ -52,7 +52,7 @@ func newCmdAddonPublish() *cobra.Command {
 			return runAddonPublish(ctx, cmd, args)
 		},
 	}
-	cmd.Flags().BoolP("finalize", "f", false, `Finalize the addon version after publishing. If false, the addon version will be marked as draft=true.`)
+	cmd.Flags().BoolP("finalize", "f", false, `Finalize the addon version after publishing. If false, the addon version will be marked as draft.`)
 
 	return cmd
 }
@@ -64,9 +64,9 @@ type ManifestJSONV1 struct {
 	AddonType   string `json:"addon_type"`
 	AddonFormat string `json:"addon_format"` // unused
 
-	PathToMessage string `json:"message"`
-	PathToZip     string `json:"path"`
-	PathToDoc     string `json:"doc"`
+	Message   string `json:"message"`
+	PathToZip string `json:"path"`
+	PathToDoc string `json:"doc"`
 
 	PluginDeps []string `json:"plugin_deps"`
 	AddonDeps  []string `json:"addon_deps"`
@@ -96,7 +96,7 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 		return fmt.Errorf("could not read file %s: %w", zipPath, err)
 	}
 
-	name := fmt.Sprintf("%s/%s@%s", manifest.TeamName, manifest.AddonName, version)
+	name := fmt.Sprintf("%s/%s/%s@%s", manifest.TeamName, manifest.AddonType, manifest.AddonName, version)
 	fmt.Printf("Publishing addon %s to CloudQuery Hub...\n", name)
 
 	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault(envAPIURL, defaultAPIURL),
@@ -157,7 +157,7 @@ func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWit
 	}
 	body := cloudquery_api.CreateAddonVersionJSONRequestBody{
 		AddonDeps:  &manifest.AddonDeps,
-		PluginDeps: manifest.PluginDeps,
+		PluginDeps: &manifest.PluginDeps,
 	}
 
 	if manifest.PathToDoc != "" {
@@ -168,12 +168,17 @@ func createNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWit
 		body.Doc = string(b)
 	}
 
-	if manifest.PathToMessage != "" {
-		b, err := os.ReadFile(filepath.Join(manifestDir, manifest.PathToMessage))
-		if err != nil {
-			return fmt.Errorf("failed to read message file: %w", err)
+	if manifest.Message != "" {
+		if strings.HasPrefix(manifest.Message, "@") {
+			messageFile := filepath.Join(manifestDir, strings.TrimPrefix(manifest.Message, "@"))
+			messageBytes, err := os.ReadFile(messageFile)
+			if err != nil {
+				return fmt.Errorf("failed to read message file: %w", err)
+			}
+			body.Message = string(messageBytes)
+		} else {
+			body.Message = manifest.Message
 		}
-		body.Message = string(b)
 	}
 
 	f, err := os.Open(zipPath)

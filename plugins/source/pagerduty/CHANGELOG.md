@@ -1,5 +1,72 @@
 # Changelog
 
+## [3.0.13](https://github.com/cloudquery/cloudquery/compare/plugins-source-pagerduty-v3.0.12...plugins-source-pagerduty-v3.0.13) (2023-11-16)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.0 ([#15132](https://github.com/cloudquery/cloudquery/issues/15132)) ([81ee138](https://github.com/cloudquery/cloudquery/commit/81ee138ff86c4b92c3ec93208e0a7e05af2b0036))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.1 ([#15263](https://github.com/cloudquery/cloudquery/issues/15263)) ([a9a39ef](https://github.com/cloudquery/cloudquery/commit/a9a39efe8112a564f21c06ba7627fe6c7ced4cdf))
+
+## [3.0.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-pagerduty-v3.0.11...plugins-source-pagerduty-v3.0.12) (2023-11-13)
+
+
+### This Release has the Following Changes to Tables
+- Table `pagerduty_addons` was removed (:warning: breaking)
+- Table `pagerduty_business_services` was removed (:warning: breaking)
+- Table `pagerduty_escalation_policies` was removed (:warning: breaking)
+- Table `pagerduty_extension_schemas` was removed (:warning: breaking)
+- Table `pagerduty_extensions` was removed (:warning: breaking)
+- Table `pagerduty_incident_alerts` was removed (:warning: breaking)
+- Table `pagerduty_incident_log_entries` was removed (:warning: breaking)
+- Table `pagerduty_incident_notes` was removed (:warning: breaking)
+- Table `pagerduty_incidents` was removed (:warning: breaking)
+- Table `pagerduty_maintenance_windows` was removed (:warning: breaking)
+- Table `pagerduty_priorities` was removed (:warning: breaking)
+- Table `pagerduty_ruleset_rules` was removed (:warning: breaking)
+- Table `pagerduty_rulesets` was removed (:warning: breaking)
+- Table `pagerduty_schedules` was removed (:warning: breaking)
+- Table `pagerduty_service_rules` was removed (:warning: breaking)
+- Table `pagerduty_services` was removed (:warning: breaking)
+- Table `pagerduty_tags` was removed (:warning: breaking)
+- Table `pagerduty_teams` was removed (:warning: breaking)
+- Table `pagerduty_user_contact_methods` was removed (:warning: breaking)
+- Table `pagerduty_user_notification_rules` was removed (:warning: breaking)
+- Table `pagerduty_users` was removed (:warning: breaking)
+- Table `pagerduty_vendors` was removed (:warning: breaking)
+
+### This Release has the Following Changes to Tables
+- Table `pagerduty_addons` was removed (:warning: breaking)
+- Table `pagerduty_business_services` was removed (:warning: breaking)
+- Table `pagerduty_escalation_policies` was removed (:warning: breaking)
+- Table `pagerduty_extension_schemas` was removed (:warning: breaking)
+- Table `pagerduty_extensions` was removed (:warning: breaking)
+- Table `pagerduty_incident_alerts` was removed (:warning: breaking)
+- Table `pagerduty_incident_log_entries` was removed (:warning: breaking)
+- Table `pagerduty_incident_notes` was removed (:warning: breaking)
+- Table `pagerduty_incidents` was removed (:warning: breaking)
+- Table `pagerduty_maintenance_windows` was removed (:warning: breaking)
+- Table `pagerduty_priorities` was removed (:warning: breaking)
+- Table `pagerduty_ruleset_rules` was removed (:warning: breaking)
+- Table `pagerduty_rulesets` was removed (:warning: breaking)
+- Table `pagerduty_schedules` was removed (:warning: breaking)
+- Table `pagerduty_service_rules` was removed (:warning: breaking)
+- Table `pagerduty_services` was removed (:warning: breaking)
+- Table `pagerduty_tags` was removed (:warning: breaking)
+- Table `pagerduty_teams` was removed (:warning: breaking)
+- Table `pagerduty_user_contact_methods` was removed (:warning: breaking)
+- Table `pagerduty_user_notification_rules` was removed (:warning: breaking)
+- Table `pagerduty_users` was removed (:warning: breaking)
+- Table `pagerduty_vendors` was removed (:warning: breaking)
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.4.2 ([#15034](https://github.com/cloudquery/cloudquery/issues/15034)) ([45c2caa](https://github.com/cloudquery/cloudquery/commit/45c2caa345aa33199ad1592bf378a5a839612c6f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.17.0 ([#15064](https://github.com/cloudquery/cloudquery/issues/15064)) ([9c2db8c](https://github.com/cloudquery/cloudquery/commit/9c2db8cedaec682a89b444db29e8c0fb45989408))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.17.1 ([#15075](https://github.com/cloudquery/cloudquery/issues/15075)) ([151769e](https://github.com/cloudquery/cloudquery/commit/151769e7c02028a04ef0ed280951c000ebb1f9c2))
+* **deps:** Update module github.com/docker/docker to v24 [SECURITY] ([#15060](https://github.com/cloudquery/cloudquery/issues/15060)) ([41acd0e](https://github.com/cloudquery/cloudquery/commit/41acd0e4ac63221e90cca89a7137a8685692267d))
+* **deps:** Update module google.golang.org/grpc to v1.58.3 [SECURITY] ([#14940](https://github.com/cloudquery/cloudquery/issues/14940)) ([e1addea](https://github.com/cloudquery/cloudquery/commit/e1addeaf58ad965e545a3e068860609dadcffa10))
+
 ## [3.0.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-pagerduty-v3.0.10...plugins-source-pagerduty-v3.0.11) (2023-10-23)
 
 

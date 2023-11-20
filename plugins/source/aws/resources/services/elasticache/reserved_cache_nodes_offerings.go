@@ -3,9 +3,6 @@ package elasticache
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -20,16 +17,10 @@ func ReservedCacheNodesOfferings() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_ReservedCacheNodesOffering.html`,
 		Resolver:    fetchElasticacheReservedCacheNodesOfferings,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticache"),
-		Transform:   transformers.TransformWithStruct(&types.ReservedCacheNodesOffering{}),
+		Transform:   transformers.TransformWithStruct(&types.ReservedCacheNodesOffering{}, transformers.WithPrimaryKeys("ReservedCacheNodesOfferingId")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
-			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveCacheNodesOfferingArn,
-				PrimaryKey: true,
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 		},
 	}
 }
@@ -47,17 +38,4 @@ func fetchElasticacheReservedCacheNodesOfferings(ctx context.Context, meta schem
 		res <- v.ReservedCacheNodesOfferings
 	}
 	return nil
-}
-
-func resolveCacheNodesOfferingArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	item := resource.Item.(types.ReservedCacheNodesOffering)
-	a := arn.ARN{
-		Partition: cl.Partition,
-		Service:   "elasticache",
-		Region:    cl.Region,
-		AccountID: cl.AccountID,
-		Resource:  "elasticache/" + aws.ToString(item.ReservedCacheNodesOfferingId),
-	}
-	return resource.Set(c.Name, a.String())
 }

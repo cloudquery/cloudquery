@@ -55,11 +55,15 @@ func installPlugin(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
-
+	teamName, err := auth.GetTeamForToken(authToken)
+	if err != nil {
+		return fmt.Errorf("failed to get team name: %w", err)
+	}
 	opts := []managedplugin.Option{
 		managedplugin.WithNoExec(),
 		managedplugin.WithLogger(log.Logger),
-		managedplugin.WithAuthToken(authToken),
+		managedplugin.WithAuthToken(authToken.Value),
+		managedplugin.WithTeamName(teamName),
 	}
 	if cqDir != "" {
 		opts = append(opts, managedplugin.WithDirectory(cqDir))

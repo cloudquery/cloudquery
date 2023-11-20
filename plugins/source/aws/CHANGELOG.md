@@ -6,6 +6,54 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [22.19.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.19.1...plugins-source-aws-v22.19.2) (2023-11-17)
+
+
+### Bug Fixes
+
+* Fix `snake_case` parsing for `table_options` ([#15353](https://github.com/cloudquery/cloudquery/issues/15353)) ([5d243dc](https://github.com/cloudquery/cloudquery/commit/5d243dc8723f2191242f8c90a64dfb65fd0bfa09))
+
+## [22.19.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.19.0...plugins-source-aws-v22.19.1) (2023-11-17)
+
+
+### This Release has the Following Changes to Tables
+- Table `aws_batch_compute_environments` was added
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.2 ([#15325](https://github.com/cloudquery/cloudquery/issues/15325)) ([77f2db5](https://github.com/cloudquery/cloudquery/commit/77f2db52634bad6e56d970d55172b08d823b97c9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.3 ([#15355](https://github.com/cloudquery/cloudquery/issues/15355)) ([d8455e5](https://github.com/cloudquery/cloudquery/commit/d8455e5ca1059746c7aced395e9bc150ea495591))
+* Event-based sync doc ([#15359](https://github.com/cloudquery/cloudquery/issues/15359)) ([258b088](https://github.com/cloudquery/cloudquery/commit/258b088a4bc3ee2160d0f54f72731a7b861720e9))
+* Include `aws_batch_compute_environments` in list of tables ([#15293](https://github.com/cloudquery/cloudquery/issues/15293)) ([ef1cac5](https://github.com/cloudquery/cloudquery/commit/ef1cac5c51c022bb4716ea82d7560dea76132794))
+
+## [22.19.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.18.0...plugins-source-aws-v22.19.0) (2023-11-16)
+
+
+### Features
+
+* **services:** Support newly added regions ([#15066](https://github.com/cloudquery/cloudquery/issues/15066)) ([ef26679](https://github.com/cloudquery/cloudquery/commit/ef266795551b6a1b1015ce04615fe867ec2d2ee7))
+* **services:** Support newly added regions ([#15168](https://github.com/cloudquery/cloudquery/issues/15168)) ([0a05f7e](https://github.com/cloudquery/cloudquery/commit/0a05f7e1a187153d8117534e911896b9087d244d))
+* **services:** Support newly added regions ([#15248](https://github.com/cloudquery/cloudquery/issues/15248)) ([670afc9](https://github.com/cloudquery/cloudquery/commit/670afc973f7adca4b1ab59fe0dcca145367f996d))
+* Updated query s3_cross_region_replication.sql ([#15012](https://github.com/cloudquery/cloudquery/issues/15012)) ([ebaffaa](https://github.com/cloudquery/cloudquery/commit/ebaffaa3dfc1d3ef103215e407732374ddab5605))
+
+
+### Bug Fixes
+
+* Check proper table options for `aws_alpha_costexplorer_cost_custom` ([#15270](https://github.com/cloudquery/cloudquery/issues/15270)) ([46f8a9d](https://github.com/cloudquery/cloudquery/commit/46f8a9df3d82d86a9a55eecd9f8de28f849c35e7))
+* **deps:** Update AWS modules ([#15150](https://github.com/cloudquery/cloudquery/issues/15150)) ([5be230c](https://github.com/cloudquery/cloudquery/commit/5be230c5139df3a735be6f7d76cf08e4f50d258b))
+* **deps:** Update AWS modules ([#15151](https://github.com/cloudquery/cloudquery/issues/15151)) ([7f4bbfa](https://github.com/cloudquery/cloudquery/commit/7f4bbfac306b813668b56f82374d9f533fe69074))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.4.2 ([#15034](https://github.com/cloudquery/cloudquery/issues/15034)) ([45c2caa](https://github.com/cloudquery/cloudquery/commit/45c2caa345aa33199ad1592bf378a5a839612c6f))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.12 ([#15084](https://github.com/cloudquery/cloudquery/issues/15084)) ([ff308d5](https://github.com/cloudquery/cloudquery/commit/ff308d5f0696417f037d8f11cd5f398e1d24ac39))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.17.0 ([#15064](https://github.com/cloudquery/cloudquery/issues/15064)) ([9c2db8c](https://github.com/cloudquery/cloudquery/commit/9c2db8cedaec682a89b444db29e8c0fb45989408))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.17.1 ([#15075](https://github.com/cloudquery/cloudquery/issues/15075)) ([151769e](https://github.com/cloudquery/cloudquery/commit/151769e7c02028a04ef0ed280951c000ebb1f9c2))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.0 ([#15132](https://github.com/cloudquery/cloudquery/issues/15132)) ([81ee138](https://github.com/cloudquery/cloudquery/commit/81ee138ff86c4b92c3ec93208e0a7e05af2b0036))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.1 ([#15263](https://github.com/cloudquery/cloudquery/issues/15263)) ([a9a39ef](https://github.com/cloudquery/cloudquery/commit/a9a39efe8112a564f21c06ba7627fe6c7ced4cdf))
+* **deps:** Update module github.com/docker/docker to v24 [SECURITY] ([#15060](https://github.com/cloudquery/cloudquery/issues/15060)) ([41acd0e](https://github.com/cloudquery/cloudquery/commit/41acd0e4ac63221e90cca89a7137a8685692267d))
+* **deps:** Update module google.golang.org/grpc to v1.58.3 [SECURITY] ([#14940](https://github.com/cloudquery/cloudquery/issues/14940)) ([e1addea](https://github.com/cloudquery/cloudquery/commit/e1addeaf58ad965e545a3e068860609dadcffa10))
+* Remove irrelevant docs ([#15187](https://github.com/cloudquery/cloudquery/issues/15187)) ([6a10d8b](https://github.com/cloudquery/cloudquery/commit/6a10d8b18e23d6a31367f109cf29eb499ab3bade))
+* Remove policies docs ([#15222](https://github.com/cloudquery/cloudquery/issues/15222)) ([6fd1d24](https://github.com/cloudquery/cloudquery/commit/6fd1d243c0ec95ad66f7174b87d9a35aa4553717))
+* Validate `tags` in relations ([#15269](https://github.com/cloudquery/cloudquery/issues/15269)) ([699c2c0](https://github.com/cloudquery/cloudquery/commit/699c2c0fa8f896b7583a0bb8399b99fd7fce33a4))
+
 ## [22.18.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.17.0...plugins-source-aws-v22.18.0) (2023-10-24)
 
 

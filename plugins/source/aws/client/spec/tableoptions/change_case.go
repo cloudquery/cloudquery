@@ -2,7 +2,6 @@ package tableoptions
 
 import (
 	"reflect"
-
 	"slices"
 )
 
@@ -12,6 +11,10 @@ type changeCaseFunc func(string) string
 // maps, where case needs to be preserved. Right now skipFields only supports top level fields,
 // but recursive support could be added if needed later.
 func changeCaseForObject(obj any, changeCase changeCaseFunc, skipFields ...string) {
+	effectiveSkip := make([]string, len(skipFields))
+	for i, v := range skipFields {
+		effectiveSkip[i] = changeCase(v)
+	}
 	value := reflect.ValueOf(obj)
 	switch value.Kind() {
 	case reflect.Map:
@@ -21,7 +24,7 @@ func changeCaseForObject(obj any, changeCase changeCaseFunc, skipFields ...strin
 			if k.Kind() == reflect.String {
 				nk := changeCase(k.String())
 				v := iter.Value()
-				if slices.Contains(skipFields, k.String()) {
+				if slices.Contains(effectiveSkip, nk) {
 					continue
 				}
 				changeCaseForObject(v.Interface(), changeCase)

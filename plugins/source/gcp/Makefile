@@ -23,14 +23,10 @@ gen-docs: build
 		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/quickstart"; \
 		exit 1; \
 	}
-	cloudquery tables --format json --output-dir ./docs test/config.yml
-	go run scripts/policy_docs/main.go gcp policies docs/policies.md docs/gcp/__tables.json
-	rm docs/gcp/__tables.json
 
 	rm -rf docs/tables
 	cloudquery tables --format markdown --output-dir docs test/config.yml
 	mv docs/$(shell basename $(CURDIR)) docs/tables
-	go run scripts/example_queries/main.go policies/queries docs/tables
 
 .PHONY: gen-services
 gen-services:

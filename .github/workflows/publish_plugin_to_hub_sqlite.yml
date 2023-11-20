@@ -87,6 +87,13 @@ jobs:
             });
             return shellescape([data.body]);
 
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@a51bbcd94d000df9ca0fcb54ec8be69aad8374b0
+        with:
+          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name }}"
+          replace: ${{ needs.prepare.outputs.plugin_version }}
+          include: ${{ needs.prepare.outputs.plugin_dir }}/docs/*.md
+
       - name: Run package command
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: |
@@ -94,7 +101,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v3.27.3
+          version: v3.29.1
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}

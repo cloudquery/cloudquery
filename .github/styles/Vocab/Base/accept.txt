@@ -1,5 +1,6 @@
 ACL
 ACLs
+addon
 Addon
 Airbyte
 Airtable
@@ -176,6 +177,7 @@ PayPal
 Pendo
 performant
 PKs
+plaintext
 pluggable
 Pluggable
 postgres

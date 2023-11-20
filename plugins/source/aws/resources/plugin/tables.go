@@ -179,8 +179,9 @@ func getTables() schema.Tables {
 		backup.RegionSettings(),
 		backup.ReportPlans(),
 		backup.Vaults(),
-		batch.JobQueues(),
+		batch.ComputeEnvironments(),
 		batch.JobDefinitions(),
+		batch.JobQueues(),
 		cloudformation.Stacks(),
 		cloudformation.StackSets(),
 		cloudfront.CachePolicies(),
@@ -597,5 +598,11 @@ func validateTagsIsJSON(table *schema.Table) error {
 			return fmt.Errorf("column %s in table %s must be of type %s", col.Name, table.Name, types.ExtensionTypes.JSON)
 		}
 	}
+	for _, rel := range table.Relations {
+		if err := validateTagsIsJSON(rel); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }

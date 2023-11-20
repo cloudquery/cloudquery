@@ -19,11 +19,11 @@ By taking the modern data stack approach to implement your infrastructure data l
 
 ## Data sources
 
-For cloud infrastructure, you mostly want to work with cloud APIs such as AWS, Azure, GCP, Cloudflare, and any other relevant APIs that are part of your infrastructure and you want to get visibility into. You can check out all the supported CloudQuery [source](/docs/plugins/sources/overview) plugins, and for each plugin, you can decide on which resource/tables you want to sync to decrease the amount of compute and storage needed.
+For cloud infrastructure, you mostly want to work with cloud APIs such as AWS, Azure, GCP, Cloudflare, and any other relevant APIs that are part of your infrastructure and you want to get visibility into. You can check out all the supported CloudQuery [source](https://hub.cloudquery.io/plugins/source) plugins, and for each plugin, you can decide on which resource/tables you want to sync to decrease the amount of compute and storage needed.
 
 ## Ingestion (Extract-Load)
 
-For ingestion, you need to use an ELT (Extract-Load-Transform) tool that supports the [sources](/docs/plugins/sources/overview) and [destinations](/docs/plugins/destinations/overview) that you need. CloudQuery (as you are on the CloudQuery website :) ) is an open-source, high-performance ELT framework that supports more than 40 sources and 15 destinations with great coverage for cloud infrastructure APIs.
+For ingestion, you need to use an ELT (Extract-Load-Transform) tool that supports the [sources](https://hub.cloudquery.io/plugins/source) and [destinations](https://hub.cloudquery.io/plugins/destination) that you need. CloudQuery (as you are on the CloudQuery website :) ) is an open-source, high-performance ELT framework that supports more than 40 sources and 15 destinations with great coverage for cloud infrastructure APIs.
 
 ## Storage
 
@@ -66,7 +66,7 @@ For example check out:
 
 ## CIEM
 
-Cloud Infrastructure Entitlement Management (CIEM) - Is the process of managing identities and privileges in cloud environments. In layman terms is the process of understanding who has access to what. This can be done by querying tables such as [aws_iam_*](/docs/plugins/sources/aws/tables) and correlating with other resources or even normalizing users across cloud providers such as [gcp_iam_*](/docs/plugins/sources/gcp/tables) . Or even ad-hoc analysis such as “[Finding Cross-Account AWS Event Bridge Usage](/blog/how-to-find-cross-account-aws-eventbridge-usage)”
+Cloud Infrastructure Entitlement Management (CIEM) - Is the process of managing identities and privileges in cloud environments. In layman terms is the process of understanding who has access to what. This can be done by querying tables such as [aws_iam_*](https://hub.cloudquery.io/plugins/source/cloudquery/aws/tables) and correlating with other resources or even normalizing users across cloud providers such as [gcp_iam_*](https://hub.cloudquery.io/plugins/source/cloudquery/gcp/tables) . Or even ad-hoc analysis such as “[Finding Cross-Account AWS Event Bridge Usage](/blog/how-to-find-cross-account-aws-eventbridge-usage)”
 
 ## Get Started with CloudQuery
 
