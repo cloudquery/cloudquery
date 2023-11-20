@@ -24,6 +24,7 @@ This table depends on [aws_docdb_clusters](aws_docdb_clusters.md).
 |availability_zone|`utf8`|
 |backup_retention_period|`int64`|
 |ca_certificate_identifier|`utf8`|
+|certificate_details|`json`|
 |copy_tags_to_snapshot|`bool`|
 |db_cluster_identifier|`utf8`|
 |db_instance_arn|`utf8`|

@@ -36,6 +36,7 @@ type RedshiftClient interface {
 	DescribeNodeConfigurationOptions(context.Context, *redshift.DescribeNodeConfigurationOptionsInput, ...func(*redshift.Options)) (*redshift.DescribeNodeConfigurationOptionsOutput, error)
 	DescribeOrderableClusterOptions(context.Context, *redshift.DescribeOrderableClusterOptionsInput, ...func(*redshift.Options)) (*redshift.DescribeOrderableClusterOptionsOutput, error)
 	DescribePartners(context.Context, *redshift.DescribePartnersInput, ...func(*redshift.Options)) (*redshift.DescribePartnersOutput, error)
+	DescribeRedshiftIdcApplications(context.Context, *redshift.DescribeRedshiftIdcApplicationsInput, ...func(*redshift.Options)) (*redshift.DescribeRedshiftIdcApplicationsOutput, error)
 	DescribeReservedNodeExchangeStatus(context.Context, *redshift.DescribeReservedNodeExchangeStatusInput, ...func(*redshift.Options)) (*redshift.DescribeReservedNodeExchangeStatusOutput, error)
 	DescribeReservedNodeOfferings(context.Context, *redshift.DescribeReservedNodeOfferingsInput, ...func(*redshift.Options)) (*redshift.DescribeReservedNodeOfferingsOutput, error)
 	DescribeReservedNodes(context.Context, *redshift.DescribeReservedNodesInput, ...func(*redshift.Options)) (*redshift.DescribeReservedNodesOutput, error)

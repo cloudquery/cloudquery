@@ -34,6 +34,10 @@ The following tables depend on aws_stepfunctions_executions:
 |name|`utf8`|
 |output|`utf8`|
 |output_details|`json`|
+|redrive_count|`int64`|
+|redrive_date|`timestamp[us, tz=UTC]`|
+|redrive_status|`utf8`|
+|redrive_status_reason|`utf8`|
 |state_machine_alias_arn|`utf8`|
 |state_machine_version_arn|`utf8`|
 |stop_date|`timestamp[us, tz=UTC]`|
