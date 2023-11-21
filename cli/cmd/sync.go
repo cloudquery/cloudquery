@@ -3,9 +3,8 @@ package cmd
 import (
 	"fmt"
 	"math"
-	"strings"
-
 	"slices"
+	"strings"
 
 	"github.com/google/uuid"
 
@@ -138,7 +137,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		}
 		sourcePluginClient, err := managedplugin.NewClient(ctx, managedplugin.PluginSource, cfg, opts...)
 		if err != nil {
-			return err
+			return enrichClientError(managedplugin.Clients{}, []bool{source.RegistryInferred()}, err)
 		}
 		sourcePluginClients = append(sourcePluginClients, sourcePluginClient)
 	}
@@ -168,7 +167,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		}
 		destPluginClient, err := managedplugin.NewClient(ctx, managedplugin.PluginDestination, cfg, opts...)
 		if err != nil {
-			return err
+			return enrichClientError(managedplugin.Clients{}, []bool{destination.RegistryInferred()}, err)
 		}
 		destinationPluginClients = append(destinationPluginClients, destPluginClient)
 	}

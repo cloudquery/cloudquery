@@ -69,6 +69,9 @@ type Source struct {
 	OtelEndpoint string `json:"otel_endpoint,omitempty"`
 	// If specified this will spawn the plugin with --otel-endpoint-insecure
 	OtelEndpointInsecure bool `json:"otel_endpoint_insecure,omitempty"`
+
+	// registryInferred is a flag that indicates whether the registry was inferred from an empty value
+	registryInferred bool
 }
 
 // GetWarnings returns a list of deprecated options that were used in the source config. This should be
@@ -107,8 +110,8 @@ func (s *Source) SetDefaults() {
 	if s.Spec == nil {
 		s.Spec = make(map[string]any)
 	}
-	if s.Registry.String() == "" {
-		s.Registry = RegistryGithub
+	if s.registryInferred && s.Registry == 0 {
+		s.Registry = RegistryCloudQuery
 	}
 	if s.Backend.String() == "" {
 		s.Backend = BackendNone
@@ -198,4 +201,8 @@ func (s Source) VersionString() string {
 		return fmt.Sprintf("%s (%s)", s.Name, s.Version)
 	}
 	return fmt.Sprintf("%s (%s@%s)", s.Name, pathParts[1], s.Version)
+}
+
+func (s Source) RegistryInferred() bool {
+	return s.registryInferred
 }

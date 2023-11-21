@@ -78,19 +78,21 @@ func tables(cmd *cobra.Command, args []string) error {
 	if disableSentry {
 		opts = append(opts, managedplugin.WithNoSentry())
 	}
-	pluginConfigs := make([]managedplugin.Config, 0, len(sources))
-	for _, sourceSpec := range sources {
-		pluginConfigs = append(pluginConfigs, managedplugin.Config{
+	pluginConfigs := make([]managedplugin.Config, len(sources))
+	sourceRegInferred := make([]bool, len(sources))
+	for i, sourceSpec := range sources {
+		pluginConfigs[i] = managedplugin.Config{
 			Name:     sourceSpec.Name,
 			Path:     sourceSpec.Path,
 			Version:  sourceSpec.Version,
 			Registry: SpecRegistryToPlugin(sourceSpec.Registry),
-		})
+		}
+		sourceRegInferred[i] = sourceSpec.RegistryInferred()
 	}
 
 	sourceClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, pluginConfigs, opts...)
 	if err != nil {
-		return err
+		return enrichClientError(sourceClients, sourceRegInferred, err)
 	}
 	defer func() {
 		if err := sourceClients.Terminate(); err != nil {

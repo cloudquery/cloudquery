@@ -83,7 +83,22 @@ func (s *Spec) UnmarshalJSON(data []byte) error {
 	dec = json.NewDecoder(bytes.NewReader(b))
 	dec.UseNumber()
 	dec.DisallowUnknownFields()
-	return dec.Decode(s.Spec)
+	if err = dec.Decode(s.Spec); err != nil {
+		return err
+	}
+
+	var r struct {
+		Registry string `json:"registry"`
+	}
+	if err := json.Unmarshal(b, &r); err == nil && r.Registry == "" {
+		switch s.Kind {
+		case KindSource:
+			s.Spec.(*Source).registryInferred = true
+		case KindDestination:
+			s.Spec.(*Destination).registryInferred = true
+		}
+	}
+	return nil
 }
 
 func UnmarshalJSONStrict(b []byte, out any) error {

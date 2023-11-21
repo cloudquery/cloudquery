@@ -3,7 +3,7 @@ package specs
 import (
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
+	"github.com/stretchr/testify/require"
 )
 
 var sourceUnmarshalSpecTestCases = []struct {
@@ -58,9 +58,7 @@ func TestSourceUnmarshalSpec(t *testing.T) {
 			}
 
 			source := spec.Spec.(*Source)
-			if cmp.Diff(source, tc.source) != "" {
-				t.Fatalf("expected:%v got:%v", tc.source, source)
-			}
+			require.Equal(t, tc.source, source)
 		})
 	}
 }
@@ -146,15 +144,16 @@ spec:
 `,
 		"",
 		&Source{
-			Name:         "test",
-			Registry:     RegistryGithub,
-			Path:         "cloudquery/test",
-			Concurrency:  defaultConcurrency,
-			Version:      "v1.1.0",
-			Destinations: []string{"test"},
-			Scheduler:    SchedulerRoundRobin,
-			Tables:       []string{"test"},
-			Spec:         map[string]any{},
+			Name:             "test",
+			Registry:         RegistryCloudQuery,
+			Path:             "cloudquery/test",
+			Concurrency:      defaultConcurrency,
+			Version:          "v1.1.0",
+			Destinations:     []string{"test"},
+			Scheduler:        SchedulerRoundRobin,
+			Tables:           []string{"test"},
+			Spec:             map[string]any{},
+			registryInferred: true,
 		},
 	},
 	{
@@ -164,6 +163,31 @@ spec:
   name: test
   path: cloudquery/test
   version: v1.1.0
+  destinations: ["test"]
+  tables: ["test"]
+`,
+		"",
+		&Source{
+			Name:             "test",
+			Registry:         RegistryCloudQuery,
+			Path:             "cloudquery/test",
+			Concurrency:      defaultConcurrency,
+			Version:          "v1.1.0",
+			Destinations:     []string{"test"},
+			Scheduler:        SchedulerDFS,
+			Tables:           []string{"test"},
+			Spec:             map[string]any{},
+			registryInferred: true,
+		},
+	},
+	{
+		"success github",
+		`kind: source
+spec:
+  name: test
+  path: cloudquery/test
+  version: v1.1.0
+  registry: github
   destinations: ["test"]
   tables: ["test"]
 `,
@@ -179,8 +203,7 @@ spec:
 			Tables:       []string{"test"},
 			Spec:         map[string]any{},
 		},
-	},
-}
+	}}
 
 func TestSourceUnmarshalSpecValidate(t *testing.T) {
 	for _, tc := range sourceUnmarshalSpecValidateTestCases {
@@ -201,9 +224,7 @@ func TestSourceUnmarshalSpecValidate(t *testing.T) {
 				return
 			}
 
-			if cmp.Diff(source, tc.source) != "" {
-				t.Fatalf("expected:%v got:%v", tc.source, source)
-			}
+			require.Equal(t, tc.source, source)
 		})
 	}
 }

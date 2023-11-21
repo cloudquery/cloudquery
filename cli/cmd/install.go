@@ -72,31 +72,55 @@ func installPlugin(cmd *cobra.Command, args []string) error {
 		opts = append(opts, managedplugin.WithNoSentry())
 	}
 
-	sourcePluginConfigs := make([]managedplugin.Config, 0, len(sources))
-	for _, source := range sources {
-		sourcePluginConfigs = append(sourcePluginConfigs, managedplugin.Config{
+	sourcePluginConfigs := make([]managedplugin.Config, len(sources))
+	sourceRegInferred := make([]bool, len(sources))
+	for i, source := range sources {
+		sourcePluginConfigs[i] = managedplugin.Config{
 			Name:     source.Name,
 			Version:  source.Version,
 			Path:     source.Path,
 			Registry: SpecRegistryToPlugin(source.Registry),
-		})
+		}
+		sourceRegInferred[i] = source.RegistryInferred()
 	}
-	destinationPluginConfigs := make([]managedplugin.Config, 0, len(destinations))
-	for _, destination := range destinations {
-		destinationPluginConfigs = append(destinationPluginConfigs, managedplugin.Config{
+	destinationPluginConfigs := make([]managedplugin.Config, len(destinations))
+	destinationRegInferred := make([]bool, len(destinations))
+	for i, destination := range destinations {
+		destinationPluginConfigs[i] = managedplugin.Config{
 			Name:     destination.Name,
 			Version:  destination.Version,
 			Path:     destination.Path,
 			Registry: SpecRegistryToPlugin(destination.Registry),
-		})
+		}
+		destinationRegInferred[i] = destination.RegistryInferred()
 	}
-
-	if _, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, sourcePluginConfigs, opts...); err != nil {
-		return err
+	if clist, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, sourcePluginConfigs, opts...); err != nil {
+		return enrichClientError(clist, sourceRegInferred, err)
 	}
-	if _, err := managedplugin.NewClients(ctx, managedplugin.PluginDestination, destinationPluginConfigs, opts...); err != nil {
-		return err
+	if clist, err := managedplugin.NewClients(ctx, managedplugin.PluginDestination, destinationPluginConfigs, opts...); err != nil {
+		return enrichClientError(clist, destinationRegInferred, err)
 	}
 
 	return nil
+}
+
+// enrichClientError gets the index of the failed client (which is one more than the last one on the list) and checks if the registry was inferred.
+// If so, adds a hint to the error message.
+func enrichClientError(clist managedplugin.Clients, infs []bool, err error) error {
+	if err == nil {
+		return nil
+	}
+	if !strings.Contains(err.Error(), "not found") {
+		return err
+	}
+	l := len(clist)
+	il := len(infs)
+	if l > il {
+		return err // shouldn't happen
+	}
+	if !infs[l] {
+		return err
+	}
+
+	return fmt.Errorf("%w. Hint: make sure plugin version exists in hub.cloudquery.io or if it's an older version, use `registry: github`", err)
 }
