@@ -66,7 +66,6 @@ func ignoreTableDescription(tableName string) bool {
 
 func ignorePluralName(tableName string) bool {
 	tableNamesToIgnore := map[string]bool{
-		"aws_alpha_costexplorer_cost_custom": true,
 		"aws_costexplorer_cost_30d":          true,
 		"aws_costexplorer_cost_forecast_30d": true,
 	}
