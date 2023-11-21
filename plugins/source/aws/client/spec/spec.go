@@ -55,7 +55,6 @@ type Spec struct {
 	Concurrency int `json:"concurrency" jsonschema:"minimum=1,default=50000"`
 
 	// When set to `true` plugin will sync data from APIs that incur a fee.
-	// Currently only `aws_costexplorer*` and `aws_alpha_cloudwatch_metric*` tables require this flag to be set to `true`.
 	UsePaidAPIs bool `json:"use_paid_apis" jsonschema:"default=false"`
 
 	// This is a preview feature (for more information about `preview` features look at [plugin versioning](/docs/plugins/sources/aws/versioning))
@@ -65,10 +64,10 @@ type Spec struct {
 	// This feature is available only in premium version of the plugin.
 	EventBasedSync *EventBasedSync `json:"event_based_sync,omitempty"`
 
-	// The scheduler to use when determining the priority of resources to sync.
+	// The scheduler to use when determining the priority of resources to sync. By default it is set to `shuffle`.
 	//
 	// For more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning).
-	Scheduler scheduler.Strategy `json:"scheduler,omitempty"`
+	Scheduler *scheduler.Strategy `json:"scheduler,omitempty" jsonschema:"default=shuffle"`
 }
 
 // JSONSchemaExtend is required to verify:
@@ -196,6 +195,11 @@ func (s *Spec) SetDefaults() {
 	if s.MaxBackoff == nil {
 		maxBackoff := 30
 		s.MaxBackoff = &maxBackoff
+	}
+
+	if s.Scheduler == nil {
+		strategy := scheduler.StrategyShuffle
+		s.Scheduler = &strategy
 	}
 }
 

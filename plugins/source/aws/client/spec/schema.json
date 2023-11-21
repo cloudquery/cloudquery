@@ -3716,7 +3716,7 @@
         },
         "use_paid_apis": {
           "type": "boolean",
-          "description": "When set to `true` plugin will sync data from APIs that incur a fee.\nCurrently only `aws_costexplorer*` and `aws_alpha_cloudwatch_metric*` tables require this flag to be set to `true`.",
+          "description": "When set to `true` plugin will sync data from APIs that incur a fee.",
           "default": false
         },
         "table_options": {
@@ -3742,8 +3742,15 @@
           ]
         },
         "scheduler": {
-          "$ref": "#/$defs/Strategy",
-          "description": "The scheduler to use when determining the priority of resources to sync.\n\nFor more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning)."
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Strategy",
+              "description": "The scheduler to use when determining the priority of resources to sync. By default it is set to `shuffle`.\n\nFor more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning)."
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,

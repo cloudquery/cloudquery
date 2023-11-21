@@ -551,7 +551,7 @@ func TestSpecJSONSchema(t *testing.T) {
 		},
 		{
 			Name: "null scheduler type",
-			Err:  true,
+			Err:  false,
 			Spec: `{"scheduler":null}`,
 		},
 		// detailed table_options cases are tested separately
