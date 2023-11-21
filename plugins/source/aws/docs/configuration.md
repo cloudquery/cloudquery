@@ -113,9 +113,7 @@ This is the (nested) spec used by the AWS source plugin.
 
 - `use_paid_apis` (`bool`) (default: `false`)
 
-  When set to `true` plugin will sync data from APIs that incur a fee. 
-  Currently only `aws_costexplorer*` and `aws_alpha_cloudwatch_metric*` tables require this flag to be set to `true`.
-
+  When set to `true` plugin will sync data from APIs that incur a fee.
 
 :::callout{type="warning"}
 The `table_options` parameter is deprecated and will be removed soon. Please reach out to the CloudQuery team if you require this feature
@@ -167,11 +165,6 @@ The `table_options` parameter is deprecated and will be removed soon. Please rea
       list_findings:
         - <AccessAnalyzer.ListFindings> # NextToken & AnalyzerArn are prohibited
 
-    aws_alpha_cloudwatch_metrics:
-      - list_metrics: <CloudWatch.ListMetrics> # NextToken is prohibited
-        get_metric_statistics:
-          - <CloudWatch.GetMetricStatistics>  # Namespace, MetricName and Dimensions are prohibited
-
     aws_cloudtrail_events:
       lookup_events:
         - <CloudTrail.LookupEvents> # NextToken is prohibited
@@ -191,8 +184,6 @@ The `table_options` parameter is deprecated and will be removed soon. Please rea
 
     - [AccessAnalyzer.ListFindings](https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ListFindings.html)
     - [CloudTrail.LookupEvents](https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_LookupEvents.html)
-    - [CloudWatch.ListMetrics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_ListMetrics.html)
-    - [CloudWatch.GetMetricStatistics](https://docs.aws.amazon.com/AmazonCloudWatch/latest/APIReference/API_GetMetricStatistics.html)
     - [ECS.ListTasks](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ListTasks.html)
     - [InspectorV2.ListFindings](https://docs.aws.amazon.com/inspector/v2/APIReference/API_ListFindings.html)
     - [SecurityHub.GetFindings](https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html)
