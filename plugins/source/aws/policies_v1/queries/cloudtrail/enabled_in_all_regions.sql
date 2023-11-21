@@ -10,13 +10,13 @@ select
         when aws_cloudtrail_trails.is_multi_region_trail = FALSE then 'fail'
         when exists(select *
                     from jsonb_array_elements(aws_cloudtrail_trail_event_selectors.event_selectors) as es
-                    where (es ->>'ReadWriteType')::text != 'All' or (es->>'IncludeManagementEvents')::boolean = FALSE)
+                    where es ->>'ReadWriteType' != 'All' or (es->>'IncludeManagementEvents')::boolean = FALSE)
             then 'fail'
         when exists(select *
                     from jsonb_array_elements(aws_cloudtrail_trail_event_selectors.advanced_event_selectors) as aes
                     where exists(select *
-                                 from jsonb_array_elements((aes ->>'FieldSelectors')::jsonb) as aes_fs
-                                 where (aes_fs ->>'Field')::text = 'readOnly'))
+                                 from jsonb_array_elements(aes ->'FieldSelectors') as aes_fs
+                                 where aes_fs ->>'Field' = 'readOnly'))
             then 'fail'
         else 'pass'
     end as status
