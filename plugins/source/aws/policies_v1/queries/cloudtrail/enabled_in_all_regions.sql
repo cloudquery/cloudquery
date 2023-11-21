@@ -15,7 +15,7 @@ select
         when exists(select *
                     from jsonb_array_elements(aws_cloudtrail_trail_event_selectors.advanced_event_selectors) as aes
                     where exists(select *
-                                 from jsonb_array_elements(aes ->>'FieldSelectors') as aes_fs
+                                 from jsonb_array_elements((aes ->>'FieldSelectors')::jsonb) as aes_fs
                                  where (aes_fs ->>'Field')::text = 'readOnly'))
             then 'fail'
         else 'pass'
