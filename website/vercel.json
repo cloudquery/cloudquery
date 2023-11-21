@@ -11,6 +11,10 @@
   },
   "redirects": [
     {
+      "source": "/",
+      "destination": "/docs"
+    },
+    {
       "source": "/discord",
       "destination": "https://discord.gg/QwnWfrcfHg"
     },
