@@ -2,15 +2,15 @@ create or replace view view_aws_log_metric_filter_and_alarm as
 with af as (
   select distinct a.arn, a.actions_enabled, a.alarm_actions, m->'MetricStat'->'Metric'->>'MetricName' as metric_name -- TODO check
   from aws_cloudwatch_alarms a, jsonb_array_elements(a.metrics) as m
-)
-with tes as (
+),
+tes as (
   select trail_arn from aws_cloudtrail_trail_event_selectors
   where exists(
     select * from jsonb_array_elements(event_selectors) as es
     where es ->>'ReadWriteType' = 'All' and (es->>'IncludeManagementEvents')::boolean = TRUE
   ) or exists(
     select * from jsonb_array_elements(advanced_event_selectors) as aes
-    where not exists(select * from jsonb_array_elements(aes ->'FieldSelectors') as aes_fs where aes_fs ->>'Field' = 'readOnly'))
+    where not exists(select * from jsonb_array_elements(aes ->'FieldSelectors') as aes_fs where aes_fs ->>'Field' = 'readOnly')
   )
 )
 select
