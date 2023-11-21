@@ -60,7 +60,7 @@ jobs:
         id: vercel
         run: |
           DEPLOY_URL=${{ steps.preview-deployment.outputs.url }}
-          echo "url=${DEPLOY_URL:-"https://www.cloudquery.io"}" >> $GITHUB_OUTPUT
+          echo "url=${DEPLOY_URL:-"https://docs.cloudquery.io"}" >> $GITHUB_OUTPUT
 
       - name: Check for broken links
         if: steps.broken-links.outputs.check != 'false'
@@ -82,5 +82,5 @@ jobs:
             --exclude cloudquery.io/discord \
             --exclude cloudquery.io/buy \
             --exclude localhost \
-            ${{ steps.vercel.outputs.url }} \
+            ${{ steps.vercel.outputs.url }}/docs \
             | grep -v '───OK───' | grep -v '──SKIP──' | grep -v '0 broken'
