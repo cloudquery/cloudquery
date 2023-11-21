@@ -28,3 +28,4 @@ This table depends on [aws_resiliencehub_app_assessments](aws_resiliencehub_app_
 |items|`json`|
 |name|`utf8`|
 |prerequisite|`utf8`|
+|recommendation_status|`utf8`|

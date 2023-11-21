@@ -21,4 +21,3 @@ This table depends on [aws_iam_groups](aws_iam_groups.md).
 |policy_document|`json`|
 |group_name|`utf8`|
 |policy_name (PK)|`utf8`|
-|result_metadata|`json`|

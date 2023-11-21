@@ -725,6 +725,36 @@ func (mr *MockRdsClientMockRecorder) DescribeDBSnapshotAttributes(arg0, arg1 int
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDBSnapshotAttributes", reflect.TypeOf((*MockRdsClient)(nil).DescribeDBSnapshotAttributes), varargs...)
 }
 
+// DescribeDBSnapshotTenantDatabases mocks base method.
+func (m *MockRdsClient) DescribeDBSnapshotTenantDatabases(arg0 context.Context, arg1 *rds.DescribeDBSnapshotTenantDatabasesInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBSnapshotTenantDatabasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeDBSnapshotTenantDatabases")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeDBSnapshotTenantDatabases", varargs...)
+	ret0, _ := ret[0].(*rds.DescribeDBSnapshotTenantDatabasesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeDBSnapshotTenantDatabases indicates an expected call of DescribeDBSnapshotTenantDatabases.
+func (mr *MockRdsClientMockRecorder) DescribeDBSnapshotTenantDatabases(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeDBSnapshotTenantDatabases", reflect.TypeOf((*MockRdsClient)(nil).DescribeDBSnapshotTenantDatabases), varargs...)
+}
+
 // DescribeDBSnapshots mocks base method.
 func (m *MockRdsClient) DescribeDBSnapshots(arg0 context.Context, arg1 *rds.DescribeDBSnapshotsInput, arg2 ...func(*rds.Options)) (*rds.DescribeDBSnapshotsOutput, error) {
 
@@ -1233,6 +1263,36 @@ func (mr *MockRdsClientMockRecorder) DescribeSourceRegions(arg0, arg1 interface{
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeSourceRegions", reflect.TypeOf((*MockRdsClient)(nil).DescribeSourceRegions), varargs...)
+}
+
+// DescribeTenantDatabases mocks base method.
+func (m *MockRdsClient) DescribeTenantDatabases(arg0 context.Context, arg1 *rds.DescribeTenantDatabasesInput, arg2 ...func(*rds.Options)) (*rds.DescribeTenantDatabasesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &rds.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTenantDatabases")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTenantDatabases", varargs...)
+	ret0, _ := ret[0].(*rds.DescribeTenantDatabasesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTenantDatabases indicates an expected call of DescribeTenantDatabases.
+func (mr *MockRdsClientMockRecorder) DescribeTenantDatabases(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTenantDatabases", reflect.TypeOf((*MockRdsClient)(nil).DescribeTenantDatabases), varargs...)
 }
 
 // DescribeValidDBInstanceModifications mocks base method.

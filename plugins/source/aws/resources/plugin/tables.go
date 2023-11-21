@@ -197,7 +197,6 @@ func getTables() schema.Tables {
 		cloudtrail.Imports(),
 		cloudtrail.Trails(),
 		cloudwatch.Alarms(),
-		cloudwatch.Metrics(),
 		cloudwatchlogs.LogGroups(),
 		cloudwatchlogs.MetricFilters(),
 		cloudwatchlogs.ResourcePolicies(),
@@ -222,7 +221,6 @@ func getTables() schema.Tables {
 		config.ConformancePacks(),
 		config.DeliveryChannels(),
 		config.RetentionConfigurations(),
-		costexplorer.CustomCost(),
 		costexplorer.ThirtyDayCost(),
 		costexplorer.ThirtyDayCostForecast(),
 		dax.Clusters(),
@@ -582,9 +580,10 @@ func getTables() schema.Tables {
 	if err := transformers.TransformTables(t); err != nil {
 		panic(err)
 	}
+	transformTitles := titleTransformer()
 	for _, table := range t {
 		schema.AddCqIDs(table)
-		titleTransformer(table)
+		transformTitles(table)
 		if err := validateTagsIsJSON(table); err != nil {
 			panic(err)
 		}

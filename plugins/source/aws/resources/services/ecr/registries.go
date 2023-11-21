@@ -17,7 +17,7 @@ func Registries() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_DescribeRegistry.html`,
 		Resolver:    fetchEcrRegistries,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "api.ecr"),
-		Transform:   transformers.TransformWithStruct(&ecr.DescribeRegistryOutput{}),
+		Transform:   transformers.TransformWithStruct(&ecr.DescribeRegistryOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

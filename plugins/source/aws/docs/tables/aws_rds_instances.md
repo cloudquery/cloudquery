@@ -73,6 +73,7 @@ The primary key for this table is **arn**.
 |monitoring_interval|`int64`|
 |monitoring_role_arn|`utf8`|
 |multi_az|`bool`|
+|multi_tenant|`bool`|
 |nchar_character_set_name|`utf8`|
 |network_type|`utf8`|
 |option_group_memberships|`json`|

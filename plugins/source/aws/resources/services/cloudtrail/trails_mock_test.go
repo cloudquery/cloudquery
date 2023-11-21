@@ -24,26 +24,24 @@ func buildCloudtrailTrailsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 	trail.TrailARN = aws.String("arn:aws:cloudtrail:eu-central-1:testAccount:trail/test-trail")
 	trail.CloudWatchLogsLogGroupArn = aws.String("arn:aws:logs:eu-central-1:123:log-group:test-group:")
 
+	m.EXPECT().DescribeTrails(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(&cloudtrail.DescribeTrailsOutput{TrailList: []types.Trail{trail}}, nil)
+
 	trailStatus := cloudtrail.GetTrailStatusOutput{}
 	require.NoError(t, faker.FakeObject(&trailStatus))
+	m.EXPECT().GetTrailStatus(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(&trailStatus, nil)
+
 	eventSelector := types.EventSelector{}
 	require.NoError(t, faker.FakeObject(&eventSelector))
-	m.EXPECT().DescribeTrails(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&cloudtrail.DescribeTrailsOutput{
-			TrailList: []types.Trail{trail},
-		},
-		nil,
-	)
-	m.EXPECT().GetTrailStatus(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&trailStatus,
-		nil,
-	)
-	m.EXPECT().GetEventSelectors(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&cloudtrail.GetEventSelectorsOutput{
-			EventSelectors: []types.EventSelector{eventSelector},
-		},
-		nil,
-	)
+	m.EXPECT().GetEventSelectors(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(
+			&cloudtrail.GetEventSelectorsOutput{
+				EventSelectors: []types.EventSelector{eventSelector},
+			},
+			nil,
+		)
+
 	tags := cloudtrail.ListTagsOutput{}
 	require.NoError(t, faker.FakeObject(&tags))
 	tags.ResourceTagList[0].ResourceId = trail.TrailARN

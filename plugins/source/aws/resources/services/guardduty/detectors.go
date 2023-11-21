@@ -22,6 +22,7 @@ func Detectors() *schema.Table {
 			transformers.WithTypeTransformer(client.TimestampTypeTransformer),
 			transformers.WithResolverTransformer(client.TimestampResolverTransformer),
 			transformers.WithUnwrapAllEmbeddedStructs(),
+			transformers.WithSkipFields("ResultMetadata"),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
 		Columns: []schema.Column{

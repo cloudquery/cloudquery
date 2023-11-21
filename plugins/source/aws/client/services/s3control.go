@@ -31,10 +31,13 @@ type S3controlClient interface {
 	GetPublicAccessBlock(context.Context, *s3control.GetPublicAccessBlockInput, ...func(*s3control.Options)) (*s3control.GetPublicAccessBlockOutput, error)
 	GetStorageLensConfiguration(context.Context, *s3control.GetStorageLensConfigurationInput, ...func(*s3control.Options)) (*s3control.GetStorageLensConfigurationOutput, error)
 	GetStorageLensConfigurationTagging(context.Context, *s3control.GetStorageLensConfigurationTaggingInput, ...func(*s3control.Options)) (*s3control.GetStorageLensConfigurationTaggingOutput, error)
+	GetStorageLensGroup(context.Context, *s3control.GetStorageLensGroupInput, ...func(*s3control.Options)) (*s3control.GetStorageLensGroupOutput, error)
 	ListAccessPoints(context.Context, *s3control.ListAccessPointsInput, ...func(*s3control.Options)) (*s3control.ListAccessPointsOutput, error)
 	ListAccessPointsForObjectLambda(context.Context, *s3control.ListAccessPointsForObjectLambdaInput, ...func(*s3control.Options)) (*s3control.ListAccessPointsForObjectLambdaOutput, error)
 	ListJobs(context.Context, *s3control.ListJobsInput, ...func(*s3control.Options)) (*s3control.ListJobsOutput, error)
 	ListMultiRegionAccessPoints(context.Context, *s3control.ListMultiRegionAccessPointsInput, ...func(*s3control.Options)) (*s3control.ListMultiRegionAccessPointsOutput, error)
 	ListRegionalBuckets(context.Context, *s3control.ListRegionalBucketsInput, ...func(*s3control.Options)) (*s3control.ListRegionalBucketsOutput, error)
 	ListStorageLensConfigurations(context.Context, *s3control.ListStorageLensConfigurationsInput, ...func(*s3control.Options)) (*s3control.ListStorageLensConfigurationsOutput, error)
+	ListStorageLensGroups(context.Context, *s3control.ListStorageLensGroupsInput, ...func(*s3control.Options)) (*s3control.ListStorageLensGroupsOutput, error)
+	ListTagsForResource(context.Context, *s3control.ListTagsForResourceInput, ...func(*s3control.Options)) (*s3control.ListTagsForResourceOutput, error)
 }

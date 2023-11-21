@@ -20,7 +20,7 @@ func ThingGroups() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeThingGroup.html`,
 		Resolver:            fetchIotThingGroups,
 		PreResourceResolver: getThingGroup,
-		Transform:           transformers.TransformWithStruct(&iot.DescribeThingGroupOutput{}),
+		Transform:           transformers.TransformWithStruct(&iot.DescribeThingGroupOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -20,7 +20,7 @@ func Functions() *schema.Table {
 		Resolver:            fetchFunctions,
 		PreResourceResolver: getFunction,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "cloudfront"),
-		Transform:           transformers.TransformWithStruct(&cloudfront.DescribeFunctionOutput{}),
+		Transform:           transformers.TransformWithStruct(&cloudfront.DescribeFunctionOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

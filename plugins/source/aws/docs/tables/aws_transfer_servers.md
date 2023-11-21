@@ -28,6 +28,7 @@ The primary key for this table is **arn**.
 |pre_authentication_login_banner|`utf8`|
 |protocol_details|`json`|
 |protocols|`list<item: utf8, nullable>`|
+|s3_storage_options|`json`|
 |security_policy_name|`utf8`|
 |server_id|`utf8`|
 |state|`utf8`|

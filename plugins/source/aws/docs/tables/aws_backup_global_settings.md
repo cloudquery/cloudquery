@@ -16,4 +16,3 @@ The composite primary key for this table is (**account_id**, **region**).
 |region (PK)|`utf8`|
 |global_settings|`json`|
 |last_update_time|`timestamp[us, tz=UTC]`|
-|result_metadata|`json`|

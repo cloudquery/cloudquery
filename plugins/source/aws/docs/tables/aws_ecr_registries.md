@@ -16,4 +16,3 @@ The composite primary key for this table is (**account_id**, **region**, **regis
 |region (PK)|`utf8`|
 |registry_id (PK)|`utf8`|
 |replication_configuration|`json`|
-|result_metadata|`json`|

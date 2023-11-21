@@ -19,7 +19,7 @@ func TrainingJobs() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeTrainingJob.html`,
 		Resolver:            fetchSagemakerTrainingJobs,
 		PreResourceResolver: getTrainingJob,
-		Transform:           transformers.TransformWithStruct(&sagemaker.DescribeTrainingJobOutput{}),
+		Transform:           transformers.TransformWithStruct(&sagemaker.DescribeTrainingJobOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "api.sagemaker"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

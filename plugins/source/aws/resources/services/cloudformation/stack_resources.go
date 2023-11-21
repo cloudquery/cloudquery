@@ -17,14 +17,15 @@ func stackResources() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackResourceSummary.html`,
 		Resolver:    fetchCloudformationStackResources,
-		Transform:   transformers.TransformWithStruct(&types.StackResourceSummary{}),
+		Transform:   transformers.TransformWithStruct(&types.StackResourceSummary{}, transformers.WithPrimaryKeys("LogicalResourceId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "stack_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("id"),
+				Name:       "stack_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("id"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -32,9 +33,7 @@ func stackResources() *schema.Table {
 
 func fetchCloudformationStackResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	stack := parent.Item.(types.Stack)
-	config := cloudformation.ListStackResourcesInput{
-		StackName: stack.StackName,
-	}
+	config := cloudformation.ListStackResourcesInput{StackName: stack.StackId} // the docs suggest that stack ID is better
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceCloudformation).Cloudformation
 	paginator := cloudformation.NewListStackResourcesPaginator(svc, &config)

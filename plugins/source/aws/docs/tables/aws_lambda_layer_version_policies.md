@@ -22,4 +22,3 @@ This table depends on [aws_lambda_layer_versions](aws_lambda_layer_versions.md).
 |layer_version|`int64`|
 |policy|`utf8`|
 |revision_id|`utf8`|
-|result_metadata|`json`|

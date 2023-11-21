@@ -16,4 +16,3 @@ The composite primary key for this table is (**account_id**, **region**).
 |region (PK)|`utf8`|
 |resource_type_management_preference|`json`|
 |resource_type_opt_in_preference|`json`|
-|result_metadata|`json`|
