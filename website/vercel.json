@@ -39,6 +39,18 @@
       "destination": "https://hub.cloudquery.io/plugins/source"
     },
     {
+      "source": "/docs/intro",
+      "destination": "/docs"
+    },
+    {
+      "source": "/docs/developers",
+      "destination": "/docs/developers/architecture"
+    },
+    {
+      "source": "/docs/configuration",
+      "destination": "/docs"
+    },
+    {
       "source": "/docs/developers/developing-source-plugin",
       "destination": "/docs/developers/creating-new-plugin"
     },
