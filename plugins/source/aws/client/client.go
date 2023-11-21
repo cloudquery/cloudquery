@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"reflect"
 	"strings"
 	"sync"
 
@@ -206,18 +205,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, s spec.Spec) (schema.
 		return nil, fmt.Errorf("spec validation failed: %w", err)
 	}
 	s.SetDefaults()
-
-	if s.TableOptions != nil {
-		structVal := reflect.ValueOf(*s.TableOptions)
-		fieldNum := structVal.NumField()
-		for i := 0; i < fieldNum; i++ {
-			field := structVal.Field(i)
-			if field.IsValid() && !field.IsZero() {
-				logger.Warn().Msg("table_options is deprecated and will be removed soon. Please reach out to the CloudQuery team if you require this feature")
-				break
-			}
-		}
-	}
 
 	client := NewAwsClient(logger, &s)
 

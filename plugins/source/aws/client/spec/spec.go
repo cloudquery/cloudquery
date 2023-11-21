@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/invopop/jsonschema"
 	orderedmap "github.com/wk8/go-ordered-map/v2"
@@ -56,10 +55,6 @@ type Spec struct {
 
 	// When set to `true` plugin will sync data from APIs that incur a fee.
 	UsePaidAPIs bool `json:"use_paid_apis" jsonschema:"default=false"`
-
-	// This is a preview feature (for more information about `preview` features look at [plugin versioning](/docs/plugins/sources/aws/versioning))
-	// that enables users to override the default options for specific tables.
-	TableOptions *tableoptions.TableOptions `json:"table_options,omitempty"`
 
 	// The scheduler to use when determining the priority of resources to sync. By default it is set to `shuffle`.
 	//
@@ -150,20 +145,10 @@ func (s *Spec) Validate() error {
 		}
 	}
 
-	if s.TableOptions != nil {
-		if err := s.TableOptions.Validate(); err != nil {
-			return fmt.Errorf("invalid table_options: %w", err)
-		}
-	}
-
 	return nil
 }
 
 func (s *Spec) SetDefaults() {
-	if s.TableOptions == nil {
-		s.TableOptions = &tableoptions.TableOptions{}
-	}
-
 	if s.InitializationConcurrency <= 0 {
 		const defaultInitializationConcurrency = 4
 		s.InitializationConcurrency = defaultInitializationConcurrency
