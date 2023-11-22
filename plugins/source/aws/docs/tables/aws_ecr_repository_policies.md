@@ -1,6 +1,6 @@
-# Table: aws_ecr_repository_repository_policies
+# Table: aws_ecr_repository_policies
 
-This table shows data for Amazon Elastic Container Registry (ECR) Repository Repository Policies.
+This table shows data for Amazon Elastic Container Registry (ECR) Repository Policies.
 
 https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_GetLifecyclePolicy.html
 

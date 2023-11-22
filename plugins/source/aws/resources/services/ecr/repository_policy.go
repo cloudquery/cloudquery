@@ -13,7 +13,7 @@ import (
 
 func repositoryPolicy() *schema.Table {
 	return &schema.Table{
-		Name:        "aws_ecr_repository_repository_policies",
+		Name:        "aws_ecr_repository_policies",
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_GetLifecyclePolicy.html`,
 		Resolver:    fetchRepositoryPolicy,
 		Transform:   transformers.TransformWithStruct(&ecr.GetRepositoryPolicyOutput{}, transformers.WithPrimaryKeys("RepositoryName", "RegistryId"), transformers.WithSkipFields("ResultMetadata")),
