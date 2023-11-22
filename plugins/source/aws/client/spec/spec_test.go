@@ -554,29 +554,5 @@ func TestSpecJSONSchema(t *testing.T) {
 			Err:  false,
 			Spec: `{"scheduler":null}`,
 		},
-		// detailed table_options cases are tested separately
-		{
-			Name: "null table_options",
-			Spec: `{"table_options":null}`,
-		},
-		{
-			Name: "empty table_options",
-			Spec: `{"table_options":null}`,
-		},
-		// detailed event_based_sync cases are tested separately
-		{
-			Name: "empty",
-			Err:  true,
-			Spec: `{"event_based_sync":{}}`,
-		},
-		{
-			Name: "null",
-			Spec: `{"event_based_sync":null}`,
-		},
-		{
-			Name: "bad",
-			Err:  true,
-			Spec: `{"event_based_sync":123}`,
-		},
 	})
 }
