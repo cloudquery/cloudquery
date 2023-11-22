@@ -25,7 +25,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1
 )
 
-replace github.com/cloudquery/plugin-pb-go => github.com/cloudquery/plugin-pb-go v1.14.1-0.20231122100259-aa0f3c5f527e
+replace github.com/cloudquery/plugin-pb-go => github.com/cloudquery/plugin-pb-go v1.14.2-0.20231122103009-1addfbbcc690
 
 require (
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
