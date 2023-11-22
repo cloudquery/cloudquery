@@ -8,10 +8,9 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
-
-	"slices"
 
 	"github.com/ghodss/yaml"
 )
