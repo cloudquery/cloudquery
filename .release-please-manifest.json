@@ -1,5 +1,5 @@
 {
-  "cli": "3.29.1",
+  "cli": "3.29.2",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "22.19.2",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -9,7 +9,7 @@
   "plugins/source/cloudflare+FILLER": "0.0.0",
   "plugins/source/digitalocean": "5.3.9",
   "plugins/source/digitalocean+FILLER": "0.0.0",
-  "plugins/source/gcp": "9.9.2",
+  "plugins/source/gcp": "10.0.0",
   "plugins/source/gcp+FILLER": "0.0.0",
   "plugins/source/github": "7.5.1",
   "plugins/source/github+FILLER": "0.0.0",
