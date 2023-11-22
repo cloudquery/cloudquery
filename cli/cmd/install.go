@@ -122,5 +122,5 @@ func enrichClientError(clist managedplugin.Clients, infs []bool, err error) erro
 		return err
 	}
 
-	return fmt.Errorf("%w. Hint: make sure plugin version exists in hub.cloudquery.io or if it's an older version, use `registry: github`", err)
+	return fmt.Errorf("%w. Hint: make sure to use the latest plugin version from hub.cloudquery.io or to keep using an outdated version add `registry: github` to your configuration", err)
 }
