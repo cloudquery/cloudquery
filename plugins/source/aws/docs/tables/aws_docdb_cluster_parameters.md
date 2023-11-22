@@ -4,7 +4,7 @@ This table shows data for Amazon DocumentDB Cluster Parameters.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Parameter.html
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**account_id**, **region**, **engine**, **engine_version**).
 
 ## Relations
 
@@ -14,10 +14,12 @@ This table depends on [aws_docdb_engine_versions](aws_docdb_engine_versions.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|`uuid`|
+|_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id|`utf8`|
-|region|`utf8`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|engine (PK)|`utf8`|
+|engine_version (PK)|`utf8`|
 |allowed_values|`utf8`|
 |apply_method|`utf8`|
 |apply_type|`utf8`|

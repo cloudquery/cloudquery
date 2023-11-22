@@ -4,16 +4,17 @@ This table shows data for Amazon DocumentDB Event Subscriptions.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_EventSubscription.html
 
-The primary key for this table is **_cq_id**.
+The primary key for this table is **arn**.
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|`uuid`|
+|_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
+|arn (PK)|`utf8`|
 |cust_subscription_id|`utf8`|
 |customer_aws_id|`utf8`|
 |enabled|`bool`|

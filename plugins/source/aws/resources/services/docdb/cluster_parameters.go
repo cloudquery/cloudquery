@@ -2,12 +2,11 @@ package docdb
 
 import (
 	"context"
-	"fmt"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
@@ -20,8 +19,20 @@ func clusterParameters() *schema.Table {
 		Resolver:    fetchDocdbClusterParameters,
 		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
+			{
+				Name:       "engine",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("engine"),
+				PrimaryKey: true,
+			},
+			{
+				Name:       "engine_version",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("engine_version"),
+				PrimaryKey: true,
+			},
 		},
 	}
 }
@@ -29,37 +40,8 @@ func clusterParameters() *schema.Table {
 func fetchDocdbClusterParameters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceDocdb).Docdb
-	switch item := parent.Item.(type) {
-	case types.DBClusterParameterGroup:
-		return fetchParameterGroupParameters(ctx, meta, svc, item, res)
-	case types.DBEngineVersion:
-		return fetchEngineVersionParameters(ctx, meta, svc, item, res)
-	}
-	return fmt.Errorf("wrong parrent type to fetch cluster parameters")
-}
-
-func fetchParameterGroupParameters(ctx context.Context, meta schema.ClientMeta, svc services.DocdbClient, item types.DBClusterParameterGroup, res chan<- any) error {
-	cl := meta.(*client.Client)
-	input := &docdb.DescribeDBClusterParametersInput{
-		DBClusterParameterGroupName: item.DBClusterParameterGroupName,
-	}
-	p := docdb.NewDescribeDBClusterParametersPaginator(svc, input)
-	for p.HasMorePages() {
-		response, err := p.NextPage(ctx, func(options *docdb.Options) {
-			options.Region = cl.Region
-		})
-		if err != nil {
-			return err
-		}
-		res <- response.Parameters
-	}
-	return nil
-}
-
-func fetchEngineVersionParameters(ctx context.Context, meta schema.ClientMeta, svc services.DocdbClient, item types.DBEngineVersion, res chan<- any) error {
-	cl := meta.(*client.Client)
 	input := &docdb.DescribeEngineDefaultClusterParametersInput{
-		DBParameterGroupFamily: item.DBParameterGroupFamily,
+		DBParameterGroupFamily: parent.Item.(types.DBEngineVersion).DBParameterGroupFamily,
 	}
 	output, err := svc.DescribeEngineDefaultClusterParameters(ctx, input, func(options *docdb.Options) {
 		options.Region = cl.Region

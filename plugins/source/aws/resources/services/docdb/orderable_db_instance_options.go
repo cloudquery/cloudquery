@@ -16,8 +16,13 @@ func orderableDbInstanceOptions() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_OrderableDBInstanceOption.html`,
 		Resolver:    fetchDocdbOrderableDbInstanceOptions,
-		Transform:   transformers.TransformWithStruct(&types.OrderableDBInstanceOption{}),
-		Columns:     []schema.Column{},
+		Transform: transformers.TransformWithStruct(&types.OrderableDBInstanceOption{},
+			transformers.WithPrimaryKeys("DBInstanceClass", "Engine", "EngineVersion"),
+		),
+		Columns: schema.ColumnList{
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
+		},
 	}
 }
 
@@ -26,7 +31,10 @@ func fetchDocdbOrderableDbInstanceOptions(ctx context.Context, meta schema.Clien
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceDocdb).Docdb
 
-	input := &docdb.DescribeOrderableDBInstanceOptionsInput{Engine: item.Engine}
+	input := &docdb.DescribeOrderableDBInstanceOptionsInput{
+		Engine:        item.Engine,
+		EngineVersion: item.EngineVersion,
+	}
 
 	p := docdb.NewDescribeOrderableDBInstanceOptionsPaginator(svc, input)
 	for p.HasMorePages() {
