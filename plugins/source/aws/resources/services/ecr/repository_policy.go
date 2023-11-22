@@ -23,7 +23,7 @@ func repositoryPolicy() *schema.Table {
 			{
 				Name:     "policy_json",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: schema.PathResolver("LifecyclePolicyText"),
+				Resolver: schema.PathResolver("PolicyText"),
 			},
 		},
 	}
