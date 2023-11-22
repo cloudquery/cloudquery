@@ -27,7 +27,4 @@ Sometimes features or tables will be released and marked as `alpha`. This indica
 
 The following features are currently in `Preview`
 
-- All tables that are prefixed with `aws_alpha_` including:
-    - [aws_alpha_cloudwatch_metrics](tables/aws_alpha_cloudwatch_metrics)
-        - [aws_alpha_cloudwatch_metric_statistics](tables/aws_alpha_cloudwatch_metric_statistics)
-    - [aws_alpha_costexplorer_cost_custom](tables/aws_alpha_costexplorer_cost_custom)
+- All tables that are prefixed with `aws_alpha_`

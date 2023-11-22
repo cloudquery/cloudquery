@@ -3,6 +3,7 @@ package organizations
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -13,9 +14,10 @@ import (
 func Organizations() *schema.Table {
 	tableName := "aws_organizations"
 	return &schema.Table{
-		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Organization.html`,
-		Resolver:    fetchOrganizationsOrganizations,
+		Name: tableName,
+		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Organization.html
+The 'request_account_id' column is added to show from where the request was made.`,
+		Resolver: fetchOrganizationsOrganizations,
 		Transform: transformers.TransformWithStruct(
 			&types.Organization{},
 			transformers.WithSkipFields(
@@ -24,10 +26,16 @@ func Organizations() *schema.Table {
 			transformers.WithPrimaryKeys("Arn"),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
-		Columns:   []schema.Column{client.DefaultAccountIDColumn(true)},
+		Columns: []schema.Column{
+			{
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
+			},
+		},
 	}
 }
-
 func fetchOrganizationsOrganizations(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceOrganizations).Organizations
