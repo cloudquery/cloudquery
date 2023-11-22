@@ -7,7 +7,7 @@ require (
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/cloudquery-api-go v1.6.0
-	github.com/cloudquery/plugin-pb-go v1.14.1
+	github.com/cloudquery/plugin-pb-go v1.14.2
 	github.com/cloudquery/plugin-sdk/v4 v4.18.3
 	github.com/getsentry/sentry-go v0.24.1
 	github.com/ghodss/yaml v1.0.0
@@ -24,8 +24,6 @@ require (
 	google.golang.org/protobuf v1.31.0
 	gopkg.in/yaml.v3 v3.0.1
 )
-
-replace github.com/cloudquery/plugin-pb-go => github.com/cloudquery/plugin-pb-go v1.14.2-0.20231122154201-82c0091820f5
 
 require (
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
