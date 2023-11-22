@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"math/rand"
 	"os"
 	"path/filepath"
@@ -70,28 +71,47 @@ func (r *SpecReader) loadSpecsFromFile(path string) error {
 	if err != nil {
 		return fmt.Errorf("failed to read file %s: %w", path, err)
 	}
+	if err := r.loadSpecBytes(data); err != nil {
+		return fmt.Errorf("failed to load file %s: %w", path, err)
+	}
+	return nil
+}
 
+func (r *SpecReader) loadSpecsFromStdin() error {
+	data, err := io.ReadAll(os.Stdin)
+	if err != nil {
+		return fmt.Errorf("failed to read stdin: %w", err)
+	}
+	if err := r.loadSpecBytes(data); err != nil {
+		return fmt.Errorf("failed to load from stdin: %w", err)
+	}
+	return nil
+}
+
+func (r *SpecReader) loadSpecBytes(data []byte) error {
 	// support multiple yamls in one file
 	// this should work both on Windows and Unix
 	normalizedConfig := bytes.ReplaceAll(data, []byte("\r\n"), []byte("\n"))
 
 	sections := bytes.Split(normalizedConfig, []byte("\n---\n"))
 	for i, doc := range sections {
+		var err error
+
 		doc, err = stripYamlComments(doc)
 		if err != nil {
-			return fmt.Errorf("failed to strip yaml comments in file %s (section %d): %w", path, i+1, err)
+			return fmt.Errorf("failed to strip yaml comments (section %d): %w", i+1, err)
 		}
 		doc, err = expandFileConfig(doc)
 		if err != nil {
-			return fmt.Errorf("failed to expand file variable in file %s (section %d): %w", path, i+1, err)
+			return fmt.Errorf("failed to expand file variable (section %d): %w", i+1, err)
 		}
 		doc, err = expandEnv(doc)
 		if err != nil {
-			return fmt.Errorf("failed to expand environment variable in file %s (section %d): %w", path, i+1, err)
+			return fmt.Errorf("failed to expand environment variable (section %d): %w", i+1, err)
 		}
 		var s Spec
 		if err := SpecUnmarshalYamlStrict(doc, &s); err != nil {
-			return fmt.Errorf("failed to unmarshal file %s: %w", path, err)
+			return fmt.Errorf("failed unmarshal: %w", err)
 		}
 		switch s.Kind {
 		case KindSource:
@@ -206,6 +226,13 @@ func NewSpecReader(paths []string) (*SpecReader, error) {
 		destinationWarningsMap: make(map[string]Warnings),
 	}
 	for _, path := range paths {
+		if path == "-" {
+			if err := reader.loadSpecsFromStdin(); err != nil {
+				return nil, err
+			}
+			continue
+		}
+
 		file, err := os.Open(path)
 		if err != nil {
 			return nil, err
