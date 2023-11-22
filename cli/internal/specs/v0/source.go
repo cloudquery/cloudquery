@@ -110,8 +110,9 @@ func (s *Source) SetDefaults() {
 	if s.Spec == nil {
 		s.Spec = make(map[string]any)
 	}
-	if s.registryInferred && s.Registry == 0 {
+	if s.Registry == "" {
 		s.Registry = RegistryCloudQuery
+		s.registryInferred = true
 	}
 	if s.Backend.String() == "" {
 		s.Backend = BackendNone

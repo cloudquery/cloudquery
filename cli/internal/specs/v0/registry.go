@@ -1,56 +1,34 @@
 package specs
 
 import (
-	"bytes"
 	"encoding/json"
 	"fmt"
 )
 
-type Registry int
+type Registry string
 
 const (
-	RegistryGithub Registry = iota
-	RegistryLocal
-	RegistryGrpc
-	RegistryDocker
-	RegistryCloudQuery
+	RegistryGithub     = Registry("github")
+	RegistryLocal      = Registry("local")
+	RegistryGrpc       = Registry("grpc")
+	RegistryDocker     = Registry("docker")
+	RegistryCloudQuery = Registry("cloudquery")
 )
-
-func (r Registry) String() string {
-	return [...]string{"github", "local", "grpc", "docker", "cloudquery"}[r]
-}
-
-func (r Registry) MarshalJSON() ([]byte, error) {
-	buffer := bytes.NewBufferString(`"`)
-	buffer.WriteString(r.String())
-	buffer.WriteString(`"`)
-	return buffer.Bytes(), nil
-}
 
 func (r *Registry) UnmarshalJSON(data []byte) (err error) {
 	var registry string
 	if err := json.Unmarshal(data, &registry); err != nil {
 		return err
 	}
-	if *r, err = RegistryFromString(registry); err != nil {
-		return err
-	}
-	return nil
+	*r = Registry(registry)
+	return r.IsValid()
 }
 
-func RegistryFromString(s string) (Registry, error) {
-	switch s {
-	case "github":
-		return RegistryGithub, nil
-	case "local":
-		return RegistryLocal, nil
-	case "grpc":
-		return RegistryGrpc, nil
-	case "docker":
-		return RegistryDocker, nil
-	case "cloudquery":
-		return RegistryCloudQuery, nil
+func (r Registry) IsValid() error {
+	switch r {
+	case RegistryGithub, RegistryLocal, RegistryGrpc, RegistryDocker, RegistryCloudQuery:
+		return nil
 	default:
-		return RegistryGithub, fmt.Errorf("unknown registry %s", s)
+		return fmt.Errorf("unknown registry %q", r)
 	}
 }

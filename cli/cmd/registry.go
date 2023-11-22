@@ -18,6 +18,6 @@ func SpecRegistryToPlugin(registry specs.Registry) managedplugin.Registry {
 	case specs.RegistryCloudQuery:
 		return managedplugin.RegistryCloudQuery
 	default:
-		panic("unknown registry " + registry.String())
+		panic("unknown registry " + registry)
 	}
 }

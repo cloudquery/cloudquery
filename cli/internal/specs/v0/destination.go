@@ -23,7 +23,7 @@ type Destination struct {
 	Spec           map[string]any `json:"spec,omitempty"`
 	PKMode         PKMode         `json:"pk_mode,omitempty"`
 
-	// registryInferred is a flag that indicates whether the registry was inferred from a nil value
+	// registryInferred is a flag that indicates whether the registry was inferred from a zero value
 	registryInferred bool
 }
 
@@ -42,8 +42,9 @@ func (d *Destination) SetDefaults(defaultBatchSize, defaultBatchSizeBytes int) {
 	if d.Spec == nil {
 		d.Spec = make(map[string]any)
 	}
-	if d.registryInferred && d.Registry == 0 {
+	if d.Registry == "" {
 		d.Registry = RegistryCloudQuery
+		d.registryInferred = true
 	}
 	if d.BatchSize == 0 {
 		d.BatchSize = defaultBatchSize

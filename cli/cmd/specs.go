@@ -27,7 +27,7 @@ func CLIRegistryToPbRegistry(registry specs.Registry) pbSpecs.Registry {
 	case specs.RegistryCloudQuery:
 		return pbSpecs.RegistryCloudQuery
 	default:
-		panic("unknown registry " + registry.String())
+		panic("unknown registry " + registry)
 	}
 }
 
