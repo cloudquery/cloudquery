@@ -134,7 +134,7 @@ var specLoaderTestCases = []specLoaderTestCase{
 		name: "environment variables with error",
 		path: []string{getPath("env_variables.yml")},
 		err: func() string {
-			return "failed to expand environment variable in file testdata/env_variables.yml (section 3): env variable CONNECTION_STRING not found"
+			return "failed to load file testdata/env_variables.yml: failed to expand environment variable (section 3): env variable CONNECTION_STRING not found"
 		},
 		sources: []*Source{
 			{Name: "aws", Path: "cloudquery/aws", Version: "v1", Registry: RegistryGithub, Destinations: []string{"postgresql"}, Tables: []string{"test"}},
@@ -168,7 +168,7 @@ var specLoaderTestCases = []specLoaderTestCase{
 		name: "environment variables in string with error",
 		path: []string{getPath("env_variable_in_string.yml")},
 		err: func() string {
-			return "failed to expand environment variable in file testdata/env_variable_in_string.yml (section 2): env variable VERSION not found"
+			return "failed to load file testdata/env_variable_in_string.yml: failed to expand environment variable (section 2): env variable VERSION not found"
 		},
 		sources: []*Source{
 			{Name: "test", Path: "cloudquery/test", Version: "v1", Registry: RegistryCloudQuery, Destinations: []string{"postgresql"}, Tables: []string{"test"}},
@@ -231,14 +231,13 @@ func TestLoadSpecs(t *testing.T) {
 			}
 			specReader, err := NewSpecReader(tc.path)
 			expectedErr := tc.err()
-			if err != nil {
-				if err.Error() != expectedErr {
-					t.Fatalf("expected error: '%s', got: '%s'", expectedErr, err)
-				}
-				return
-			}
 			if expectedErr != "" {
-				t.Fatalf("expected error: %s, got nil", expectedErr)
+				require.ErrorContains(t, err, expectedErr)
+			} else {
+				require.NoError(t, err)
+			}
+			if err != nil {
+				return // specReader is nil
 			}
 
 			for _, s := range tc.sources {
