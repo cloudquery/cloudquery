@@ -39,7 +39,7 @@ func TestSync(t *testing.T) {
 		{
 			name:   "should fail with missing path error when path is missing",
 			config: "sync-missing-path-error.yml",
-			err:    "Error: failed to validate destination test: path is required",
+			err:    "failed to validate destination test: path is required",
 		},
 	}
 	_, filename, _, _ := runtime.Caller(0)
