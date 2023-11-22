@@ -5,6 +5,20 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.9.2...plugins-source-gcp-v10.0.0) (2023-11-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* Change `googleapi.RawMessage` column type from binary to JSON ([#15410](https://github.com/cloudquery/cloudquery/issues/15410))
+
+### Bug Fixes
+
+* Change `googleapi.RawMessage` column type from binary to JSON ([#15410](https://github.com/cloudquery/cloudquery/issues/15410)) ([6bf7173](https://github.com/cloudquery/cloudquery/commit/6bf7173b4505a0efa575b54d09898656789acd39))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.2 ([#15325](https://github.com/cloudquery/cloudquery/issues/15325)) ([77f2db5](https://github.com/cloudquery/cloudquery/commit/77f2db52634bad6e56d970d55172b08d823b97c9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.3 ([#15355](https://github.com/cloudquery/cloudquery/issues/15355)) ([d8455e5](https://github.com/cloudquery/cloudquery/commit/d8455e5ca1059746c7aced395e9bc150ea495591))
+* **services:** Update GCP Services ([#15379](https://github.com/cloudquery/cloudquery/issues/15379)) ([094d8c2](https://github.com/cloudquery/cloudquery/commit/094d8c2a098128b3e17232a24b8087b248f6630b))
+
 ## [9.9.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.9.1...plugins-source-gcp-v9.9.2) (2023-11-16)
 
 
