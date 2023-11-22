@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [10.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gcp-v9.9.2...plugins-source-gcp-v10.0.0) (2023-11-22)
 
 
+### This Release has the Following Changes to Tables
+- Table `gcp_artifactregistry_locations`: column type changed from `binary` to `json` for `metadata` (:warning: breaking)
+- Table `gcp_cloudscheduler_locations`: column type changed from `binary` to `json` for `metadata` (:warning: breaking)
+- Table `gcp_networkconnectivity_locations`: column type changed from `binary` to `json` for `metadata` (:warning: breaking)
+- Table `gcp_run_locations`: column type changed from `binary` to `json` for `metadata` (:warning: breaking)
+
 ### ⚠ BREAKING CHANGES
 
 * Change `googleapi.RawMessage` column type from binary to JSON ([#15410](https://github.com/cloudquery/cloudquery/issues/15410))
