@@ -115,6 +115,8 @@ This is the (nested) spec used by the AWS source plugin.
 
   When set to `true` plugin will sync data from APIs that incur a fee.
 
+- **enterprise version only** `table_options` (`map`) (default: not used)
+
 - **enterprise version only** `event_based_sync` (`array`) (default: empty)
 
 ### account
