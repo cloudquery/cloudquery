@@ -48,7 +48,10 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceEcs).Ecs
-	input := &ecs.ListTasksInput{Cluster: cluster.ClusterArn}
+	input := &ecs.ListTasksInput{
+		Cluster:    cluster.ClusterArn,
+		MaxResults: aws.Int32(100),
+	}
 
 	paginator := ecs.NewListTasksPaginator(svc, input)
 	for paginator.HasMorePages() {
