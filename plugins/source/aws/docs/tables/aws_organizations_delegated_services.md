@@ -8,7 +8,7 @@ The composite primary key for this table is (**account_id**, **service_principal
 
 ## Relations
 
-This table depends on [aws_organizations_accounts](aws_organizations_accounts.md).
+This table depends on [aws_organizations_delegated_administrators](aws_organizations_delegated_administrators.md).
 
 ## Columns
 
