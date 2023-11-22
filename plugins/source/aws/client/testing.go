@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -19,8 +18,7 @@ import (
 )
 
 type TestOptions struct {
-	TableOptions tableoptions.TableOptions
-	Region       string
+	Region string
 }
 
 func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*testing.T, *gomock.Controller) Services, testOpts TestOptions) {
@@ -37,7 +35,6 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 	var awsSpec spec.Spec
 	awsSpec.SetDefaults()
 	awsSpec.UsePaidAPIs = true
-	awsSpec.TableOptions = &testOpts.TableOptions
 	c := NewAwsClient(l, &awsSpec)
 	services := builder(t, ctrl)
 	services.Regions = []string{testOpts.Region}
@@ -74,7 +71,6 @@ func AwsCreateMockClient(t *testing.T, ctrl *gomock.Controller, builder func(*te
 	var awsSpec spec.Spec
 	awsSpec.SetDefaults()
 	awsSpec.UsePaidAPIs = true
-	awsSpec.TableOptions = &testOpts.TableOptions
 	c := NewAwsClient(l, &awsSpec)
 	if builder != nil {
 		services := builder(t, ctrl)
