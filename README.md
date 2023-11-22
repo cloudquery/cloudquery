@@ -29,8 +29,14 @@ See the **[Quickstart guide](https://www.cloudquery.io/docs/quickstart)** for in
 - **Cloud Security Posture Management**: Use as an open source CSPM solution to monitor and enforce security policies across your cloud infrastructure for AWS, GCP, Azure and many more.
 - **Cloud Asset Inventory**: First-class support for major cloud infrastructure providers such as AWS, GCP and Azure allow you to collect and unify configuration data.
 - **Cloud FinOps**: Collect and unify billing data from cloud providers to drive financial accountability.
-- **ETL (Extract Transform Load) Platform**: With hundreds of plugin combinations and extensible architecture, CloudQuery can be used for reliable, efficient export from any API to any database, or from one database to another.
+- **ELT (Extract Load Transform) Platform**: With hundreds of plugin combinations and extensible architecture, CloudQuery can be used for reliable, efficient export from any API to any database, or from one database to another.
 - **Attack Surface Management**: [Open source solution](https://www.cloudquery.io/how-to-guides/attack-surface-management-with-graph) for continuous discovery, analysis and monitoring of potential attack vectors that make up your organization's attack surface.
+
+## ELT vs ETL
+
+With ETL, the raw data is not available in the data warehouse because it is transformed before it is loaded. 
+
+With ELT, the raw data is loaded into the data warehouse (or data lake) and transformations occur on the stored data.
 
 ### Links
 
