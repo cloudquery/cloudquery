@@ -106,19 +106,19 @@ func installPlugin(cmd *cobra.Command, args []string) error {
 
 // enrichClientError gets the index of the failed client (which is one more than the last one on the list) and checks if the registry was inferred.
 // If so, adds a hint to the error message.
-func enrichClientError(clist managedplugin.Clients, infs []bool, err error) error {
+func enrichClientError(clientsList managedplugin.Clients, inferredList []bool, err error) error {
 	if err == nil {
 		return nil
 	}
 	if !strings.Contains(err.Error(), "not found") {
 		return err
 	}
-	l := len(clist)
-	il := len(infs)
+	l := len(clientsList)
+	il := len(inferredList)
 	if l > il {
 		return err // shouldn't happen
 	}
-	if !infs[l] {
+	if !inferredList[l] {
 		return err
 	}
 
