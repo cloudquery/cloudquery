@@ -2,7 +2,7 @@
 
 This table shows data for Amazon Elastic Container Registry (ECR) Repository Policies.
 
-https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_GetLifecyclePolicy.html
+https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_GetRepositoryPolicy.html
 
 The composite primary key for this table is (**account_id**, **region**, **registry_id**, **repository_name**).
 
