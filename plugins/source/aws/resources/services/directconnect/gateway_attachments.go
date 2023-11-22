@@ -18,14 +18,17 @@ func gatewayAttachments() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGatewayAttachment.html`,
 		Resolver:    fetchDirectconnectGatewayAttachments,
-		Transform:   transformers.TransformWithStruct(&types.DirectConnectGatewayAttachment{}),
+		Transform: transformers.TransformWithStruct(&types.DirectConnectGatewayAttachment{},
+			transformers.WithPrimaryKeys("VirtualInterfaceOwnerAccount", "VirtualInterfaceRegion", "VirtualInterfaceId"),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "gateway_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "gateway_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "gateway_id",
