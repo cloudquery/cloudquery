@@ -31,7 +31,7 @@ type Source struct {
 	// For the local registry the path will be the path to the binary: ./path/to/binary
 	// For the gRPC registry the path will be the address of the gRPC server: host:port
 	Path string `json:"path,omitempty"`
-	// Registry can be github,local,grpc.
+	// Registry can be "", "github", "local", "grpc", "docker", "cloudquery"
 	Registry Registry `json:"registry,omitempty"`
 	// Deprecated: Concurrency is the number of concurrent workers to use when syncing data. Should now use plugin-specific field instead.
 	Concurrency uint64 `json:"concurrency,omitempty"`
@@ -110,7 +110,7 @@ func (s *Source) SetDefaults() {
 	if s.Spec == nil {
 		s.Spec = make(map[string]any)
 	}
-	if s.Registry == "" {
+	if s.Registry == RegistryUnset {
 		s.Registry = RegistryCloudQuery
 		s.registryInferred = true
 	}
@@ -173,7 +173,7 @@ func (s *Source) Validate() error {
 		return fmt.Errorf("tables configuration is required. Hint: set the tables you want to sync by adding `tables: [...]` or use `cloudquery tables` to list available tables")
 	}
 
-	if s.Registry == RegistryGithub || s.Registry == RegistryCloudQuery {
+	if s.Registry.NeedVersion() {
 		if s.Version == "" {
 			return fmt.Errorf("version is required")
 		}

@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	pbSpecs "github.com/cloudquery/plugin-pb-go/specs"
 )
@@ -12,7 +14,7 @@ func CLIBackendToPbBackend(backend specs.Backend) pbSpecs.Backend {
 	case specs.BackendNone:
 		return pbSpecs.BackendNone
 	default:
-		panic("unknown backend " + backend.String())
+		panic(fmt.Sprintf("unknown backend %q", backend.String()))
 	}
 }
 
@@ -27,7 +29,7 @@ func CLIRegistryToPbRegistry(registry specs.Registry) pbSpecs.Registry {
 	case specs.RegistryCloudQuery:
 		return pbSpecs.RegistryCloudQuery
 	default:
-		panic("unknown registry " + registry)
+		panic(fmt.Sprintf("unknown registry %q", registry.String()))
 	}
 }
 
@@ -38,7 +40,7 @@ func CLISchedulerToPbScheduler(scheduler specs.Scheduler) pbSpecs.Scheduler {
 	case specs.SchedulerRoundRobin:
 		return pbSpecs.SchedulerRoundRobin
 	default:
-		panic("unknown scheduler " + scheduler.String())
+		panic(fmt.Sprintf("unknown scheduler %q", scheduler.String()))
 	}
 }
 
@@ -76,7 +78,7 @@ func CLIWriteModeToPbWriteMode(writeMode specs.WriteMode) pbSpecs.WriteMode {
 	case specs.WriteModeOverwriteDeleteStale:
 		return pbSpecs.WriteModeOverwriteDeleteStale
 	default:
-		panic("unknown write mode " + writeMode.String())
+		panic(fmt.Sprintf("unknown write mode %q", writeMode.String()))
 	}
 }
 
@@ -87,7 +89,7 @@ func CLIMigrateModeToPbMigrateMode(migrateMode specs.MigrateMode) pbSpecs.Migrat
 	case specs.MigrateModeForced:
 		return pbSpecs.MigrateModeForced
 	default:
-		panic("unknown migrate mode " + migrateMode.String())
+		panic(fmt.Sprintf("unknown migrate mode %q", migrateMode.String()))
 	}
 }
 
@@ -98,7 +100,7 @@ func CLIPkModeToPbPKMode(pkMode specs.PKMode) pbSpecs.PKMode {
 	case specs.PKModeDefaultKeys:
 		return pbSpecs.PKModeDefaultKeys
 	default:
-		panic("unknown pk mode " + pkMode.String())
+		panic(fmt.Sprintf("unknown pk mode %q", pkMode.String()))
 	}
 }
 

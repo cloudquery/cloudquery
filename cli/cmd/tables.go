@@ -87,7 +87,7 @@ func tables(cmd *cobra.Command, args []string) error {
 			Version:  sourceSpec.Version,
 			Registry: SpecRegistryToPlugin(sourceSpec.Registry),
 		}
-		sourceRegInferred[i] = sourceSpec.RegistryInferred()
+		sourceRegInferred[i] = sourceSpec.Registry == specs.RegistryUnset
 	}
 
 	sourceClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, pluginConfigs, opts...)

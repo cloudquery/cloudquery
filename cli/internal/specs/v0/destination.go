@@ -42,7 +42,7 @@ func (d *Destination) SetDefaults(defaultBatchSize, defaultBatchSizeBytes int) {
 	if d.Spec == nil {
 		d.Spec = make(map[string]any)
 	}
-	if d.Registry == "" {
+	if d.Registry == RegistryUnset {
 		d.Registry = RegistryCloudQuery
 		d.registryInferred = true
 	}
@@ -79,7 +79,7 @@ func (d *Destination) Validate() error {
 		return fmt.Errorf(msg)
 	}
 
-	if d.Registry == RegistryGithub || d.Registry == RegistryCloudQuery {
+	if d.Registry.NeedVersion() {
 		if d.Version == "" {
 			return fmt.Errorf("version is required")
 		}
