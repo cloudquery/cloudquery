@@ -27,7 +27,6 @@ Sometimes features or tables will be released and marked as `alpha`. This indica
 
 The following features are currently in `Preview`
 
-- the `table_options` parameter in the [aws plugin spec](/docs/plugins/sources/aws/configuration#aws-spec)
 - All tables that are prefixed with `aws_alpha_` including:
     - [aws_alpha_cloudwatch_metrics](tables/aws_alpha_cloudwatch_metrics)
         - [aws_alpha_cloudwatch_metric_statistics](tables/aws_alpha_cloudwatch_metric_statistics)

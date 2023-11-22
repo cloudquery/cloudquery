@@ -554,14 +554,5 @@ func TestSpecJSONSchema(t *testing.T) {
 			Err:  false,
 			Spec: `{"scheduler":null}`,
 		},
-		// detailed table_options cases are tested separately
-		{
-			Name: "null table_options",
-			Spec: `{"table_options":null}`,
-		},
-		{
-			Name: "empty table_options",
-			Spec: `{"table_options":null}`,
-		},
 	})
 }
