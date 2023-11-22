@@ -61,9 +61,6 @@ type Spec struct {
 	// that enables users to override the default options for specific tables.
 	TableOptions *tableoptions.TableOptions `json:"table_options,omitempty"`
 
-	// This feature is available only in premium version of the plugin.
-	EventBasedSync *EventBasedSync `json:"event_based_sync,omitempty"`
-
 	// The scheduler to use when determining the priority of resources to sync. By default it is set to `shuffle`.
 	//
 	// For more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning).
@@ -159,11 +156,6 @@ func (s *Spec) Validate() error {
 		}
 	}
 
-	if s.EventBasedSync != nil {
-		if err := s.EventBasedSync.Validate(); err != nil {
-			return fmt.Errorf("invalid event_based_sync: %w", err)
-		}
-	}
 	return nil
 }
 
@@ -180,11 +172,6 @@ func (s *Spec) SetDefaults() {
 	if s.Concurrency <= 0 {
 		const defaultMaxConcurrency = 50000
 		s.Concurrency = defaultMaxConcurrency
-	}
-
-	if s.EventBasedSync != nil && s.EventBasedSync.FullSync == nil {
-		fullSync := true
-		s.EventBasedSync.FullSync = &fullSync
 	}
 
 	if s.MaxRetries == nil {
