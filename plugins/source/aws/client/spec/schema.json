@@ -2301,50 +2301,6 @@
       "additionalProperties": false,
       "type": "object"
     },
-    "EventBasedSync": {
-      "properties": {
-        "full_sync": {
-          "oneOf": [
-            {
-              "type": "boolean",
-              "description": "Whether the full sync will be performed for the tables prior to engaging the event-based sync mode.",
-              "default": true
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "account": {
-          "$ref": "#/$defs/Account",
-          "description": "Account spec to configure sync."
-        },
-        "kinesis_stream_arn": {
-          "type": "string",
-          "pattern": "^arn(:[^:\n]*){5}([:/].*)?$",
-          "description": "Amazon Kinesis stream ARN to subscribe to."
-        },
-        "start_time": {
-          "oneOf": [
-            {
-              "type": "string",
-              "format": "date-time",
-              "description": "The timestamp of the data record from which to start reading.",
-              "default": "now"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object",
-      "required": [
-        "kinesis_stream_arn"
-      ],
-      "description": "Event-based sync configuration."
-    },
     "Expression": {
       "properties": {
         "And": {
@@ -3724,17 +3680,6 @@
             {
               "$ref": "#/$defs/TableOptions",
               "description": "This is a preview feature (for more information about `preview` features look at [plugin versioning](/docs/plugins/sources/aws/versioning))\nthat enables users to override the default options for specific tables."
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "event_based_sync": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/EventBasedSync",
-              "description": "This feature is available only in premium version of the plugin."
             },
             {
               "type": "null"

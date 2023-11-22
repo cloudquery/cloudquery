@@ -1,5 +1,5 @@
 :::callout{type="info"}
-This feature is currently in a closed preview. Sign up for access using this [form](https://cloudquery.typeform.com/to/Dvdn6P2u)
+This feature is available only in the premium version of the plugin.
 :::
 
 # Event-Based Sync
