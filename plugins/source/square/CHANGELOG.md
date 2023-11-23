@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.0.7...plugins-source-square-v1.0.8) (2023-11-23)
+
+
+### Bug Fixes
+
+* Add missing tables for Docker plugins, remove on-demand rendering of tables ([#15433](https://github.com/cloudquery/cloudquery/issues/15433)) ([2286412](https://github.com/cloudquery/cloudquery/commit/22864120467b98d9284c533e58a7c9e09f8790ab))
+
 ## [1.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.0.6...plugins-source-square-v1.0.7) (2023-11-16)
 
 
