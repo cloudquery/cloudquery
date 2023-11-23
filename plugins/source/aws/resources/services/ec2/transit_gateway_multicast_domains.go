@@ -10,7 +10,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func transitGatewayMulticastDomains() *schema.Table {
@@ -19,19 +18,21 @@ func transitGatewayMulticastDomains() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayMulticastDomain.html`,
 		Resolver:    fetchEc2TransitGatewayMulticastDomains,
-		Transform:   transformers.TransformWithStruct(&types.TransitGatewayMulticastDomain{}),
+		Transform:   transformers.TransformWithStruct(&types.TransitGatewayMulticastDomain{}, transformers.WithResolverTransformer(client.TagsResolverTransformer)),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "transit_gateway_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "transit_gateway_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "tags",
-				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: client.ResolveTags,
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("TransitGatewayMulticastDomainArn"),
+				PrimaryKey: true,
 			},
 		},
 	}

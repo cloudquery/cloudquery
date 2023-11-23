@@ -2,7 +2,6 @@ package ec2
 
 import (
 	"context"
-	"reflect"
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -19,16 +18,7 @@ func transitGatewayAttachments() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayAttachment.html`,
 		Resolver:    fetchEc2TransitGatewayAttachments,
-		Transform: transformers.TransformWithStruct(&types.TransitGatewayAttachment{},
-			transformers.WithResolverTransformer(
-				func(field reflect.StructField, path string) schema.ColumnResolver {
-					if path == "Tags" {
-						return client.ResolveTags
-					}
-					return transformers.DefaultResolverTransformer(field, path)
-				},
-			),
-		),
+		Transform:   transformers.TransformWithStruct(&types.TransitGatewayAttachment{}, transformers.WithResolverTransformer(client.TagsResolverTransformer)),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -10,7 +10,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func transitGatewayPeeringAttachments() *schema.Table {
@@ -19,19 +18,21 @@ func transitGatewayPeeringAttachments() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayPeeringAttachment.html`,
 		Resolver:    fetchEc2TransitGatewayPeeringAttachments,
-		Transform:   transformers.TransformWithStruct(&types.TransitGatewayPeeringAttachment{}),
+		Transform:   transformers.TransformWithStruct(&types.TransitGatewayPeeringAttachment{}, transformers.WithResolverTransformer(client.TagsResolverTransformer)),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "transit_gateway_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "transit_gateway_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "tags",
-				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: client.ResolveTags,
+				Name:       "id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("TransitGatewayAttachmentId"),
+				PrimaryKey: true,
 			},
 		},
 	}
