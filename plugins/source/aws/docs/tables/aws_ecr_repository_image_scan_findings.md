@@ -4,7 +4,7 @@ This table shows data for Amazon Elastic Container Registry (ECR) Repository Ima
 
 https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageScanFindings.html
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**repository_arn**, **image_digest**).
 
 ## Relations
 
@@ -14,12 +14,12 @@ This table depends on [aws_ecr_repository_images](aws_ecr_repository_images.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|`uuid`|
+|_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|image_tag|`utf8`|
-|image_digest|`utf8`|
+|repository_arn (PK)|`utf8`|
+|image_digest (PK)|`utf8`|
 |image_scan_findings|`json`|
 |image_scan_status|`json`|
 |registry_id|`utf8`|

@@ -5,7 +5,6 @@ import (
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -18,21 +17,19 @@ func repositoryImages() *schema.Table {
 		Name:        "aws_ecr_repository_images",
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageDetail.html`,
 		Resolver:    fetchEcrRepositoryImages,
-		Transform:   transformers.TransformWithStruct(&types.ImageDetail{}),
+		Transform:   transformers.TransformWithStruct(&types.ImageDetail{}, transformers.WithPrimaryKeys("ImageDigest")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
+				Name:       "repository_arn",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveImageArn,
+				Resolver:   schema.ParentColumnResolver("arn"),
 				PrimaryKey: true,
 			},
 		},
 
-		Relations: []*schema.Table{
-			repositoryImageScanFindings(),
-		},
+		Relations: schema.Tables{repositoryImageScanFindings()},
 	}
 }
 func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
@@ -53,17 +50,4 @@ func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, paren
 		res <- output.ImageDetails
 	}
 	return nil
-}
-func resolveImageArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	item := resource.Item.(types.ImageDetail)
-
-	a := arn.ARN{
-		Partition: cl.Partition,
-		Service:   "ecr",
-		Region:    cl.Region,
-		AccountID: cl.AccountID,
-		Resource:  "repository/" + *item.RepositoryName + "/image/" + *item.ImageDigest,
-	}
-	return resource.Set(c.Name, a.String())
 }
