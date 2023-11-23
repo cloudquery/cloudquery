@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.1.1...plugins-source-typeform-v1.1.2) (2023-11-23)
+
+
+### Bug Fixes
+
+* Add missing tables for Docker plugins, remove on-demand rendering of tables ([#15433](https://github.com/cloudquery/cloudquery/issues/15433)) ([2286412](https://github.com/cloudquery/cloudquery/commit/22864120467b98d9284c533e58a7c9e09f8790ab))
+
 ## [1.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.1.0...plugins-source-typeform-v1.1.1) (2023-11-16)
 
 
