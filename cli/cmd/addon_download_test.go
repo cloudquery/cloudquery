@@ -21,7 +21,8 @@ func TestAddonDownload(t *testing.T) {
 	expectedFileAndPath := filepath.Join(tempDir, "cloudquery_visualization_test_v1.2.3.zip")
 
 	wantCalls := map[string]int{
-		"GET /addons/cloudquery/visualization/test/versions/v1.2.3/assets":                                1,
+		"GET /teams": 1,
+		"GET /teams/test_team/addons/cloudquery/visualization/test/versions/v1.2.3/assets":                1,
 		"GET /assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip": 1,
 	}
 
@@ -39,7 +40,7 @@ func TestAddonDownload(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		gotCalls[r.Method+" "+r.URL.Path]++
 		switch r.URL.Path {
-		case "/addons/cloudquery/visualization/test/versions/v1.2.3/assets":
+		case "/teams/test_team/addons/cloudquery/visualization/test/versions/v1.2.3/assets":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusOK)
 			b, _ := json.Marshal(map[string]string{
@@ -51,6 +52,9 @@ func TestAddonDownload(t *testing.T) {
 			w.Header().Set("Content-Type", "application/octet-stream")
 			w.WriteHeader(http.StatusOK)
 			w.Write(payload)
+		case "/teams":
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte(`{"items":[{"name":"test_team","displayName":"Test Team"}]}`))
 		}
 	}))
 	defer ts.Close()
@@ -75,7 +79,8 @@ func TestAddonDownloadStdout(t *testing.T) {
 	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
-		"GET /addons/cloudquery/visualization/test/versions/v1.2.3/assets":                                1,
+		"GET /teams": 1,
+		"GET /teams/test_team/addons/cloudquery/visualization/test/versions/v1.2.3/assets":                1,
 		"GET /assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip": 1,
 	}
 
@@ -93,7 +98,7 @@ func TestAddonDownloadStdout(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		gotCalls[r.Method+" "+r.URL.Path]++
 		switch r.URL.Path {
-		case "/addons/cloudquery/visualization/test/versions/v1.2.3/assets":
+		case "/teams/test_team/addons/cloudquery/visualization/test/versions/v1.2.3/assets":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusOK)
 			b, _ := json.Marshal(map[string]string{
@@ -105,6 +110,9 @@ func TestAddonDownloadStdout(t *testing.T) {
 			w.Header().Set("Content-Type", "application/octet-stream")
 			w.WriteHeader(http.StatusOK)
 			w.Write(payload)
+		case "/teams":
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte(`{"items":[{"name":"test_team","displayName":"Test Team"}]}`))
 		}
 	}))
 	defer ts.Close()
