@@ -1,6 +1,6 @@
 kind: source
 spec:
-  name: bitbucket
+  name: tables
   version: v1.0.0
   destinations: [test]
   path: "bitbucket:latest"
