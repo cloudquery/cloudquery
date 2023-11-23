@@ -112,7 +112,7 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return fmt.Errorf("failed to make download request: %w", err)
 	}
 	if res.StatusCode > 399 {
-		return fmt.Errorf("addon download failed: %s", res.Status)
+		return fmt.Errorf("addon download failed: %d %s", res.StatusCode, location)
 	}
 
 	return downloadAddonFromResponse(res, checksum, targetDir)
