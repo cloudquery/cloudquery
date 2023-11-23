@@ -20,12 +20,14 @@ func transitGatewayAttachments() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGatewayAttachment.html`,
 		Resolver:    fetchEc2TransitGatewayAttachments,
 		Transform: transformers.TransformWithStruct(&types.TransitGatewayAttachment{},
-			transformers.WithResolverTransformer(func(field reflect.StructField, path string) schema.ColumnResolver {
-				if path == "Tags" {
-					return client.ResolveTags
-				}
-				return transformers.DefaultResolverTransformer(field, path)
-			}),
+			transformers.WithResolverTransformer(
+				func(field reflect.StructField, path string) schema.ColumnResolver {
+					if path == "Tags" {
+						return client.ResolveTags
+					}
+					return transformers.DefaultResolverTransformer(field, path)
+				},
+			),
 		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
