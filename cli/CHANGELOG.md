@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.1](https://github.com/cloudquery/cloudquery/compare/cli-v4.0.0...cli-v4.0.1) (2023-11-24)
+
+
+### Bug Fixes
+
+* Change shutdown sequence after cloudquery login ([#15448](https://github.com/cloudquery/cloudquery/issues/15448)) ([b28b632](https://github.com/cloudquery/cloudquery/commit/b28b632e4f9a90c56336e49eadce77198add0b77))
+
 ## [4.0.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.29.2...cli-v4.0.0) (2023-11-23)
 
 
