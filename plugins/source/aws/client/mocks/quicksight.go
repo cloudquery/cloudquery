@@ -875,6 +875,36 @@ func (mr *MockQuicksightClientMockRecorder) DescribeRefreshSchedule(arg0, arg1 i
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeRefreshSchedule", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeRefreshSchedule), varargs...)
 }
 
+// DescribeRoleCustomPermission mocks base method.
+func (m *MockQuicksightClient) DescribeRoleCustomPermission(arg0 context.Context, arg1 *quicksight.DescribeRoleCustomPermissionInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeRoleCustomPermissionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeRoleCustomPermission")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeRoleCustomPermission", varargs...)
+	ret0, _ := ret[0].(*quicksight.DescribeRoleCustomPermissionOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeRoleCustomPermission indicates an expected call of DescribeRoleCustomPermission.
+func (mr *MockQuicksightClientMockRecorder) DescribeRoleCustomPermission(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeRoleCustomPermission", reflect.TypeOf((*MockQuicksightClient)(nil).DescribeRoleCustomPermission), varargs...)
+}
+
 // DescribeTemplate mocks base method.
 func (m *MockQuicksightClient) DescribeTemplate(arg0 context.Context, arg1 *quicksight.DescribeTemplateInput, arg2 ...func(*quicksight.Options)) (*quicksight.DescribeTemplateOutput, error) {
 
@@ -1803,6 +1833,36 @@ func (mr *MockQuicksightClientMockRecorder) ListRefreshSchedules(arg0, arg1 inte
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRefreshSchedules", reflect.TypeOf((*MockQuicksightClient)(nil).ListRefreshSchedules), varargs...)
+}
+
+// ListRoleMemberships mocks base method.
+func (m *MockQuicksightClient) ListRoleMemberships(arg0 context.Context, arg1 *quicksight.ListRoleMembershipsInput, arg2 ...func(*quicksight.Options)) (*quicksight.ListRoleMembershipsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &quicksight.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRoleMemberships")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListRoleMemberships", varargs...)
+	ret0, _ := ret[0].(*quicksight.ListRoleMembershipsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListRoleMemberships indicates an expected call of ListRoleMemberships.
+func (mr *MockQuicksightClientMockRecorder) ListRoleMemberships(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRoleMemberships", reflect.TypeOf((*MockQuicksightClient)(nil).ListRoleMemberships), varargs...)
 }
 
 // ListTagsForResource mocks base method.

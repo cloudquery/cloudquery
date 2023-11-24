@@ -77,7 +77,7 @@ func resolveEfsFilesystemBackupPolicyStatus(ctx context.Context, meta schema.Cli
 	})
 	if err != nil {
 		if cl.IsNotFoundError(err) {
-			return resource.Set(c.Name, types.StatusDisabled)
+			return nil
 		}
 		return err
 	}

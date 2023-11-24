@@ -5,6 +5,32 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.29.2...cli-v4.0.0) (2023-11-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* Make `registry: cloudquery` the default registry instead of `registry: github` ([#15409](https://github.com/cloudquery/cloudquery/issues/15409))
+
+### Features
+
+* Addon downloads should use the team assigned to api key ([#15435](https://github.com/cloudquery/cloudquery/issues/15435)) ([7d7a2ce](https://github.com/cloudquery/cloudquery/commit/7d7a2ce57646e81ba44673b6376396eb1c9ae260))
+* Make `registry: cloudquery` the default registry instead of `registry: github` ([#15409](https://github.com/cloudquery/cloudquery/issues/15409)) ([6d9b2a9](https://github.com/cloudquery/cloudquery/commit/6d9b2a98bd952d43ccf016772386c879b5820e66))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.14.2 ([#15426](https://github.com/cloudquery/cloudquery/issues/15426)) ([9c2873b](https://github.com/cloudquery/cloudquery/commit/9c2873b301e95beda34d4fb144199d02a6827522))
+
+## [3.29.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.29.1...cli-v3.29.2) (2023-11-22)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.3 ([#15355](https://github.com/cloudquery/cloudquery/issues/15355)) ([d8455e5](https://github.com/cloudquery/cloudquery/commit/d8455e5ca1059746c7aced395e9bc150ea495591))
+* **deps:** Update plugin-pb-go to v1.14.1 ([#15417](https://github.com/cloudquery/cloudquery/issues/15417)) ([91c4f1d](https://github.com/cloudquery/cloudquery/commit/91c4f1d271f8f960b67430baa63ad8455c537bb3))
+* Logout should unset team ([#15393](https://github.com/cloudquery/cloudquery/issues/15393)) ([1cee384](https://github.com/cloudquery/cloudquery/commit/1cee3841390f1f1fdb699163bf3222a95ea12da1))
+
 ## [3.29.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.29.0...cli-v3.29.1) (2023-11-17)
 
 

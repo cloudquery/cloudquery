@@ -48,34 +48,36 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceEcs).Ecs
-
-	for _, config := range cl.Spec.TableOptions.ECSTasks.Filters() {
-		config.Cluster = cluster.ClusterArn
-		paginator := ecs.NewListTasksPaginator(svc, &config.ListTasksInput)
-		for paginator.HasMorePages() {
-			page, err := paginator.NextPage(ctx, func(options *ecs.Options) {
-				options.Region = cl.Region
-			})
-			if err != nil {
-				return err
-			}
-			if len(page.TaskArns) == 0 {
-				continue
-			}
-			describeServicesInput := ecs.DescribeTasksInput{
-				Cluster: cluster.ClusterArn,
-				Tasks:   page.TaskArns,
-				Include: []types.TaskField{types.TaskFieldTags},
-			}
-			describeTasks, err := svc.DescribeTasks(ctx, &describeServicesInput, func(options *ecs.Options) {
-				options.Region = cl.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- describeTasks.Tasks
-		}
+	input := &ecs.ListTasksInput{
+		Cluster:    cluster.ClusterArn,
+		MaxResults: aws.Int32(100),
 	}
+
+	paginator := ecs.NewListTasksPaginator(svc, input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx, func(options *ecs.Options) {
+			options.Region = cl.Region
+		})
+		if err != nil {
+			return err
+		}
+		if len(page.TaskArns) == 0 {
+			continue
+		}
+		describeServicesInput := ecs.DescribeTasksInput{
+			Cluster: cluster.ClusterArn,
+			Tasks:   page.TaskArns,
+			Include: []types.TaskField{types.TaskFieldTags},
+		}
+		describeTasks, err := svc.DescribeTasks(ctx, &describeServicesInput, func(options *ecs.Options) {
+			options.Region = cl.Region
+		})
+		if err != nil {
+			return err
+		}
+		res <- describeTasks.Tasks
+	}
+
 	return nil
 }
 
