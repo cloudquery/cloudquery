@@ -21,4 +21,5 @@ This table depends on [aws_docdb_engine_versions](aws_docdb_engine_versions.md).
 |engine|`utf8`|
 |engine_version|`utf8`|
 |license_model|`utf8`|
+|storage_type|`utf8`|
 |vpc|`bool`|
