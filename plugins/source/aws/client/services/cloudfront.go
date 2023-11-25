@@ -9,6 +9,7 @@ import (
 //go:generate mockgen -package=mocks -destination=../mocks/cloudfront.go -source=cloudfront.go CloudfrontClient
 type CloudfrontClient interface {
 	DescribeFunction(context.Context, *cloudfront.DescribeFunctionInput, ...func(*cloudfront.Options)) (*cloudfront.DescribeFunctionOutput, error)
+	DescribeKeyValueStore(context.Context, *cloudfront.DescribeKeyValueStoreInput, ...func(*cloudfront.Options)) (*cloudfront.DescribeKeyValueStoreOutput, error)
 	GetCachePolicy(context.Context, *cloudfront.GetCachePolicyInput, ...func(*cloudfront.Options)) (*cloudfront.GetCachePolicyOutput, error)
 	GetCachePolicyConfig(context.Context, *cloudfront.GetCachePolicyConfigInput, ...func(*cloudfront.Options)) (*cloudfront.GetCachePolicyConfigOutput, error)
 	GetCloudFrontOriginAccessIdentity(context.Context, *cloudfront.GetCloudFrontOriginAccessIdentityInput, ...func(*cloudfront.Options)) (*cloudfront.GetCloudFrontOriginAccessIdentityOutput, error)
@@ -53,6 +54,7 @@ type CloudfrontClient interface {
 	ListFunctions(context.Context, *cloudfront.ListFunctionsInput, ...func(*cloudfront.Options)) (*cloudfront.ListFunctionsOutput, error)
 	ListInvalidations(context.Context, *cloudfront.ListInvalidationsInput, ...func(*cloudfront.Options)) (*cloudfront.ListInvalidationsOutput, error)
 	ListKeyGroups(context.Context, *cloudfront.ListKeyGroupsInput, ...func(*cloudfront.Options)) (*cloudfront.ListKeyGroupsOutput, error)
+	ListKeyValueStores(context.Context, *cloudfront.ListKeyValueStoresInput, ...func(*cloudfront.Options)) (*cloudfront.ListKeyValueStoresOutput, error)
 	ListOriginAccessControls(context.Context, *cloudfront.ListOriginAccessControlsInput, ...func(*cloudfront.Options)) (*cloudfront.ListOriginAccessControlsOutput, error)
 	ListOriginRequestPolicies(context.Context, *cloudfront.ListOriginRequestPoliciesInput, ...func(*cloudfront.Options)) (*cloudfront.ListOriginRequestPoliciesOutput, error)
 	ListPublicKeys(context.Context, *cloudfront.ListPublicKeysInput, ...func(*cloudfront.Options)) (*cloudfront.ListPublicKeysOutput, error)
