@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [10.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v10.2.0...plugins-source-azure-v10.3.0) (2023-11-27)
 
 
+### This Release has the Following Changes to Tables
+- Table `azure_resources_providers` was added
+
 ### Features
 
 * Add `azure_resources_providers` table ([#15466](https://github.com/cloudquery/cloudquery/issues/15466)) ([2c55014](https://github.com/cloudquery/cloudquery/commit/2c550148442e171eb87b7336ecb8985308e43f0b))
