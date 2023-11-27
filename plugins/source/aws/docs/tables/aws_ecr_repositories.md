@@ -11,6 +11,7 @@ The primary key for this table is **arn**.
 The following tables depend on aws_ecr_repositories:
   - [aws_ecr_repository_images](aws_ecr_repository_images.md)
   - [aws_ecr_repository_lifecycle_policies](aws_ecr_repository_lifecycle_policies.md)
+  - [aws_ecr_repository_policies](aws_ecr_repository_policies.md)
 
 ## Columns
 
@@ -22,7 +23,6 @@ The following tables depend on aws_ecr_repositories:
 |region|`utf8`|
 |arn (PK)|`utf8`|
 |tags|`json`|
-|policy_text|`json`|
 |created_at|`timestamp[us, tz=UTC]`|
 |encryption_configuration|`json`|
 |image_scanning_configuration|`json`|
