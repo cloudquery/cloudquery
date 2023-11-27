@@ -20,15 +20,26 @@ func detectorMembers() *schema.Table {
 		Description: `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Member.html`,
 		Resolver:    fetchDetectorMembers,
 		Transform: transformers.TransformWithStruct(&types.Member{},
+			transformers.WithPrimaryKeys("AccountId"),
 			transformers.WithTypeTransformer(client.TimestampTypeTransformer),
 			transformers.WithResolverTransformer(client.TimestampResolverTransformer),
 		),
 		Columns: []schema.Column{
-			client.DefaultRegionColumn(false),
 			{
-				Name:     "detector_arn",
+				Name:     "request_account_id",
 				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Resolver: client.ResolveAWSAccount,
+			},
+			{
+				Name:     "request_region",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: client.ResolveAWSRegion,
+			},
+			{
+				Name:       "detector_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
