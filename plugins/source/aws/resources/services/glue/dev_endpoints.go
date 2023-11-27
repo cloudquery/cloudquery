@@ -2,7 +2,6 @@ package glue
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -67,23 +66,6 @@ func devEndpointARN(cl *client.Client, name string) string {
 		Service:   string(client.GlueService),
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  fmt.Sprintf("devEndpoint/%s", name),
+		Resource:  "devEndpoint/" + name,
 	}.String()
-}
-
-func resolveGlueDevEndpointTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceGlue).Glue
-	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
-		ResourceArn: aws.String(devEndpointARN(cl, aws.ToString(resource.Item.(types.DevEndpoint).EndpointName))),
-	}, func(options *glue.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
-		return err
-	}
-	return resource.Set(c.Name, result.Tags)
 }

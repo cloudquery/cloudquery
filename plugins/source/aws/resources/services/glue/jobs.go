@@ -2,7 +2,6 @@ package glue
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -69,6 +68,6 @@ func jobARN(cl *client.Client, name string) string {
 		Service:   string(client.GlueService),
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  fmt.Sprintf("job/%s", name),
+		Resource:  "job/" + name,
 	}.String()
 }

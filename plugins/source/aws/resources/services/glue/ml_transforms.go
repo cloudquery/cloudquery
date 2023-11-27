@@ -2,7 +2,6 @@ package glue
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -38,7 +37,7 @@ func MlTransforms() *schema.Table {
 				Resolver: resolveMlTransformsSchema,
 			},
 			tagsCol(func(cl *client.Client, resource *schema.Resource) string {
-				return mlTransformARN(cl, resource.Item.(types.MLTransform))
+				return mlTransformARN(cl, aws.ToString(resource.Item.(types.MLTransform).TransformId))
 			}),
 		},
 
@@ -65,16 +64,16 @@ func fetchGlueMlTransforms(ctx context.Context, meta schema.ClientMeta, _ *schem
 }
 func resolveGlueMlTransformArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	return resource.Set(c.Name, mlTransformARN(cl, resource.Item.(types.MLTransform)))
+	return resource.Set(c.Name, mlTransformARN(cl, aws.ToString(resource.Item.(types.MLTransform).TransformId)))
 }
 
-func mlTransformARN(cl *client.Client, tr types.MLTransform) string {
+func mlTransformARN(cl *client.Client, transformID string) string {
 	return arn.ARN{
 		Partition: cl.Partition,
 		Service:   string(client.GlueService),
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  fmt.Sprintf("mlTransform/%s", aws.ToString(tr.TransformId)),
+		Resource:  "mlTransform/" + transformID,
 	}.String()
 }
 

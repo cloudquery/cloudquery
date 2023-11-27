@@ -4,14 +4,17 @@ This table shows data for Identity Store Users.
 
 https://docs.aws.amazon.com/singlesignon/latest/IdentityStoreAPIReference/API_User.html
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**account_id**, **region**, **arn**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|`uuid`|
+|_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
+|arn (PK)|`utf8`|
 |identity_store_id|`utf8`|
 |user_id|`utf8`|
 |addresses|`json`|

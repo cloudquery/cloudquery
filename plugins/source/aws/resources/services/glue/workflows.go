@@ -2,7 +2,6 @@ package glue
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -82,6 +81,6 @@ func workflowARN(cl *client.Client, name string) string {
 		Service:   string(client.GlueService),
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  fmt.Sprintf("workflow/%s", name),
+		Resource:  "workflow/" + name,
 	}.String()
 }
