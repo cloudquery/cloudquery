@@ -18,7 +18,7 @@ func ledgerJournalS3Exports() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalS3ExportDescription.html`,
 		Resolver:    fetchQldbLedgerJournalS3Exports,
-		Transform:   transformers.TransformWithStruct(&types.JournalS3ExportDescription{}),
+		Transform:   transformers.TransformWithStruct(&types.JournalS3ExportDescription{}, transformers.WithPrimaryKeys("ExportId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
