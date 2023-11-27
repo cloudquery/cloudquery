@@ -25,6 +25,10 @@ It supports incremental syncs
 {{- end -}}.
 {{- end -}}
 
+{{- if $.IsPaid -}}
+This is a premium table. To sync this table you must be logged in via `cloudquery login` or you must use a valid API Key which can be generated at `cloud.cloudquery.io`
+{{- end -}}
+
 {{- if or ($.Relations) ($.Parent) }}
 ## Relations
 {{- end }}

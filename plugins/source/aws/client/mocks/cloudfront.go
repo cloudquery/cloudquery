@@ -65,6 +65,36 @@ func (mr *MockCloudfrontClientMockRecorder) DescribeFunction(arg0, arg1 interfac
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeFunction", reflect.TypeOf((*MockCloudfrontClient)(nil).DescribeFunction), varargs...)
 }
 
+// DescribeKeyValueStore mocks base method.
+func (m *MockCloudfrontClient) DescribeKeyValueStore(arg0 context.Context, arg1 *cloudfront.DescribeKeyValueStoreInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.DescribeKeyValueStoreOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeKeyValueStore")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeKeyValueStore", varargs...)
+	ret0, _ := ret[0].(*cloudfront.DescribeKeyValueStoreOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeKeyValueStore indicates an expected call of DescribeKeyValueStore.
+func (mr *MockCloudfrontClientMockRecorder) DescribeKeyValueStore(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeKeyValueStore", reflect.TypeOf((*MockCloudfrontClient)(nil).DescribeKeyValueStore), varargs...)
+}
+
 // GetCachePolicy mocks base method.
 func (m *MockCloudfrontClient) GetCachePolicy(arg0 context.Context, arg1 *cloudfront.GetCachePolicyInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.GetCachePolicyOutput, error) {
 
@@ -1383,6 +1413,36 @@ func (mr *MockCloudfrontClientMockRecorder) ListKeyGroups(arg0, arg1 interface{}
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListKeyGroups", reflect.TypeOf((*MockCloudfrontClient)(nil).ListKeyGroups), varargs...)
+}
+
+// ListKeyValueStores mocks base method.
+func (m *MockCloudfrontClient) ListKeyValueStores(arg0 context.Context, arg1 *cloudfront.ListKeyValueStoresInput, arg2 ...func(*cloudfront.Options)) (*cloudfront.ListKeyValueStoresOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudfront.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListKeyValueStores")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListKeyValueStores", varargs...)
+	ret0, _ := ret[0].(*cloudfront.ListKeyValueStoresOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListKeyValueStores indicates an expected call of ListKeyValueStores.
+func (mr *MockCloudfrontClientMockRecorder) ListKeyValueStores(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListKeyValueStores", reflect.TypeOf((*MockCloudfrontClient)(nil).ListKeyValueStores), varargs...)
 }
 
 // ListOriginAccessControls mocks base method.

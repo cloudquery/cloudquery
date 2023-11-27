@@ -141,17 +141,6 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	case <-gotToken:
 	}
 
-	// Create a context for the shutdown with a 5-second timeout.
-	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
-	defer cancel()
-	if err := server.Shutdown(ctx); err != nil {
-		return fmt.Errorf("failed to shutdown server: %w", err)
-	}
-
-	if serverErr != nil {
-		return serverErr
-	}
-
 	if refreshToken == "" {
 		return fmt.Errorf("failed to get refresh token")
 	}
@@ -205,6 +194,17 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 		} else {
 			cmd.Printf("Your current team is set to %s.\n", currentTeam)
 		}
+	}
+
+	// Create a context for the shutdown with a 15-second timeout.
+	ctx, cancel := context.WithTimeout(ctx, 15*time.Second)
+	defer cancel()
+	if err := server.Shutdown(ctx); err != nil {
+		return fmt.Errorf("failed to shutdown server: %w", err)
+	}
+
+	if serverErr != nil {
+		return serverErr
 	}
 
 	cmd.Println("CLI successfully authenticated.")

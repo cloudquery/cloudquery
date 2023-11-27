@@ -53,4 +53,5 @@ The following tables depend on aws_docdb_clusters:
 |replication_source_identifier|`utf8`|
 |status|`utf8`|
 |storage_encrypted|`bool`|
+|storage_type|`utf8`|
 |vpc_security_groups|`json`|
