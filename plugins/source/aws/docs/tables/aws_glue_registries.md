@@ -19,8 +19,8 @@ The following tables depend on aws_glue_registries:
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|tags|`json`|
 |arn (PK)|`utf8`|
+|tags|`json`|
 |created_time|`utf8`|
 |description|`utf8`|
 |registry_arn|`utf8`|

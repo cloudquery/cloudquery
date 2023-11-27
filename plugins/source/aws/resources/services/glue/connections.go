@@ -35,7 +35,7 @@ func Connections() *schema.Table {
 	}
 }
 
-func fetchGlueConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchGlueConnections(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGlue).Glue
 	paginator := glue.NewGetConnectionsPaginator(svc, &glue.GetConnectionsInput{})
@@ -50,7 +50,7 @@ func fetchGlueConnections(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	return nil
 }
-func resolveGlueConnectionArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveGlueConnectionArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	r := resource.Item.(types.Connection)
 	return resource.Set(c.Name, connectionARN(cl, &r))

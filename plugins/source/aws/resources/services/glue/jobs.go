@@ -2,15 +2,16 @@ package glue
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Jobs() *schema.Table {
@@ -30,11 +31,9 @@ func Jobs() *schema.Table {
 				Resolver:   resolveGlueJobArn,
 				PrimaryKey: true,
 			},
-			{
-				Name:     "tags",
-				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveGlueJobTags,
-			},
+			tagsCol(func(cl *client.Client, resource *schema.Resource) string {
+				return jobARN(cl, aws.ToString(resource.Item.(types.Job).Name))
+			}),
 		},
 
 		Relations: []*schema.Table{
@@ -43,7 +42,7 @@ func Jobs() *schema.Table {
 	}
 }
 
-func fetchGlueJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchGlueJobs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGlue).Glue
 	paginator := glue.NewGetJobsPaginator(svc, &glue.GetJobsInput{})
@@ -59,23 +58,17 @@ func fetchGlueJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	return nil
 }
 
-func resolveGlueJobArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveGlueJobArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	return resource.Set(c.Name, jobARN(cl, aws.ToString(resource.Item.(types.Job).Name)))
 }
-func resolveGlueJobTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceGlue).Glue
-	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
-		ResourceArn: aws.String(jobARN(cl, aws.ToString(resource.Item.(types.Job).Name))),
-	}, func(options *glue.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
-		return err
-	}
-	return resource.Set(c.Name, result.Tags)
+
+func jobARN(cl *client.Client, name string) string {
+	return arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.GlueService),
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  fmt.Sprintf("job/%s", name),
+	}.String()
 }

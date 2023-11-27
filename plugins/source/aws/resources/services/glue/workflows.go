@@ -12,7 +12,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Workflows() *schema.Table {
@@ -33,16 +32,14 @@ func Workflows() *schema.Table {
 				Resolver:   resolveGlueWorkflowArn,
 				PrimaryKey: true,
 			},
-			{
-				Name:     "tags",
-				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveGlueWorkflowTags,
-			},
+			tagsCol(func(cl *client.Client, resource *schema.Resource) string {
+				return workflowARN(cl, aws.ToString(resource.Item.(*types.Workflow).Name))
+			}),
 		},
 	}
 }
 
-func fetchGlueWorkflows(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchGlueWorkflows(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGlue).Glue
 	paginator := glue.NewListWorkflowsPaginator(svc, &glue.ListWorkflowsInput{MaxResults: aws.Int32(25)})
@@ -74,31 +71,10 @@ func getWorkflow(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 	return nil
 }
 
-func resolveGlueWorkflowArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveGlueWorkflowArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	return resource.Set(c.Name, workflowARN(cl, aws.ToString(resource.Item.(*types.Workflow).Name)))
 }
-
-func resolveGlueWorkflowTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceGlue).Glue
-	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
-		ResourceArn: aws.String(workflowARN(cl, aws.ToString(resource.Item.(*types.Workflow).Name))),
-	}, func(options *glue.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
-		return err
-	}
-	return resource.Set(c.Name, result.Tags)
-}
-
-// ====================================================================================================================
-//                                                  User Defined Helpers
-// ====================================================================================================================
 
 func workflowARN(cl *client.Client, name string) string {
 	return arn.ARN{

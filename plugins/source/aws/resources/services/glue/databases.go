@@ -12,7 +12,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Databases() *schema.Table {
@@ -32,11 +31,9 @@ func Databases() *schema.Table {
 				Resolver:   resolveGlueDatabaseArn,
 				PrimaryKey: true,
 			},
-			{
-				Name:     "tags",
-				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveGlueDatabaseTags,
-			},
+			tagsCol(func(cl *client.Client, resource *schema.Resource) string {
+				return databaseARN(cl, aws.ToString(resource.Item.(types.Database).Name))
+			}),
 		},
 
 		Relations: []*schema.Table{
@@ -45,7 +42,7 @@ func Databases() *schema.Table {
 	}
 }
 
-func fetchGlueDatabases(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchGlueDatabases(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGlue).Glue
 	paginator := glue.NewGetDatabasesPaginator(svc, &glue.GetDatabasesInput{})
@@ -60,61 +57,9 @@ func fetchGlueDatabases(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 	return nil
 }
-func resolveGlueDatabaseArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveGlueDatabaseArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
 	return resource.Set(c.Name, databaseARN(cl, aws.ToString(resource.Item.(types.Database).Name)))
-}
-func resolveGlueDatabaseTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceGlue).Glue
-	input := glue.GetTagsInput{
-		ResourceArn: aws.String(databaseARN(cl, aws.ToString(resource.Item.(types.Database).Name))),
-	}
-
-	response, err := svc.GetTags(ctx, &input, func(options *glue.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, response.Tags)
-}
-func fetchGlueDatabaseTables(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	r := parent.Item.(types.Database)
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceGlue).Glue
-	input := glue.GetTablesInput{
-		DatabaseName: r.Name,
-	}
-	paginator := glue.NewGetTablesPaginator(svc, &input)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
-			options.Region = cl.Region
-		})
-		if err != nil {
-			return err
-		}
-		res <- page.TableList
-	}
-	return nil
-}
-func fetchGlueDatabaseTableIndexes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceGlue).Glue
-	d := parent.Parent.Item.(types.Database)
-	t := parent.Item.(types.Table)
-	input := glue.GetPartitionIndexesInput{DatabaseName: d.Name, CatalogId: d.CatalogId, TableName: t.Name}
-	paginator := glue.NewGetPartitionIndexesPaginator(svc, &input)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx, func(options *glue.Options) {
-			options.Region = cl.Region
-		})
-		if err != nil {
-			return err
-		}
-		res <- page.PartitionIndexDescriptorList
-	}
-	return nil
 }
 
 func databaseARN(cl *client.Client, name string) string {
