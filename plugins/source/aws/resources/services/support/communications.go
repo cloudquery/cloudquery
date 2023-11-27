@@ -19,7 +19,7 @@ func communications() *schema.Table {
 		Name:        "aws_support_case_communications",
 		Description: `https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeCommunications.html`,
 		Resolver:    fetchCommunications,
-		Transform:   transformers.TransformWithStruct(&types.Communication{}),
+		Transform:   transformers.TransformWithStruct(&types.Communication{}, transformers.WithPrimaryKeys("CaseId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 		},
