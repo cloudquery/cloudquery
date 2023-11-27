@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func DbParameterGroupDbParameters() *schema.Table {
+func dbParameterGroupDbParameters() *schema.Table {
 	tableName := "aws_rds_db_parameter_group_db_parameters"
 	return &schema.Table{
 		Name:        tableName,
