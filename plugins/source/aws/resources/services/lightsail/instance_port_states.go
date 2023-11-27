@@ -17,14 +17,17 @@ func instancePortStates() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_InstancePortState.html`,
 		Resolver:    fetchLightsailInstancePortStates,
-		Transform:   transformers.TransformWithStruct(&types.InstancePortState{}),
+		Transform: transformers.TransformWithStruct(&types.InstancePortState{},
+			transformers.WithPrimaryKeys("FromPort", "ToPort", "Protocol"),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "instance_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "instance_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
