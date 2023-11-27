@@ -100,7 +100,7 @@ func getMqBrokerConfigurationRevision(ctx context.Context, meta schema.ClientMet
 }
 
 func resolveBrokerConfigurationRevisionsData(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	revision := resource.Item.(*mq.DescribeConfigurationRevisionOutput)
+	revision := resource.Item.(*wrappedBrokerConfigurationRevision)
 	rawDecodedText, err := base64.StdEncoding.DecodeString(*revision.Data)
 	if err != nil {
 		return err
