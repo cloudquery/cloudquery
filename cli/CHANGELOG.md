@@ -5,6 +5,30 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.0.1](https://github.com/cloudquery/cloudquery/compare/cli-v4.0.0...cli-v4.0.1) (2023-11-24)
+
+
+### Bug Fixes
+
+* Change shutdown sequence after cloudquery login ([#15448](https://github.com/cloudquery/cloudquery/issues/15448)) ([b28b632](https://github.com/cloudquery/cloudquery/commit/b28b632e4f9a90c56336e49eadce77198add0b77))
+
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.29.2...cli-v4.0.0) (2023-11-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* Make `registry: cloudquery` the default registry instead of `registry: github` ([#15409](https://github.com/cloudquery/cloudquery/issues/15409))
+
+### Features
+
+* Addon downloads should use the team assigned to api key ([#15435](https://github.com/cloudquery/cloudquery/issues/15435)) ([7d7a2ce](https://github.com/cloudquery/cloudquery/commit/7d7a2ce57646e81ba44673b6376396eb1c9ae260))
+* Make `registry: cloudquery` the default registry instead of `registry: github` ([#15409](https://github.com/cloudquery/cloudquery/issues/15409)) ([6d9b2a9](https://github.com/cloudquery/cloudquery/commit/6d9b2a98bd952d43ccf016772386c879b5820e66))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.14.2 ([#15426](https://github.com/cloudquery/cloudquery/issues/15426)) ([9c2873b](https://github.com/cloudquery/cloudquery/commit/9c2873b301e95beda34d4fb144199d02a6827522))
+
 ## [3.29.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.29.1...cli-v3.29.2) (2023-11-22)
 
 

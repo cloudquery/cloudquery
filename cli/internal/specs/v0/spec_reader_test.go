@@ -104,11 +104,11 @@ var specLoaderTestCases = []specLoaderTestCase{
 			return ""
 		},
 		sources: []*Source{
-			{Name: "aws", Path: "cloudquery/aws", Version: "v4.6.1", Registry: RegistryGithub, Destinations: []string{"postgresql"}, Tables: []string{"test"}},
-			{Name: "azure", Path: "cloudquery/azure", Version: "v1.3.3", Registry: RegistryGithub, Destinations: []string{"postgresql"}, Tables: []string{"test"}},
+			{Name: "aws", Path: "cloudquery/aws", Version: "v4.6.1", Registry: RegistryCloudQuery, Destinations: []string{"postgresql"}, Tables: []string{"test"}, registryInferred: true},
+			{Name: "azure", Path: "cloudquery/azure", Version: "v1.3.3", Registry: RegistryCloudQuery, Destinations: []string{"postgresql"}, Tables: []string{"test"}, registryInferred: true},
 		},
 		destinations: []*Destination{
-			{Name: "postgresql", Path: "cloudquery/postgresql", Version: "v1.6.3", Registry: RegistryGithub, Spec: map[string]any{"connection_string": "postgresql://postgres:pass@localhost:5432/postgres"}},
+			{Name: "postgresql", Path: "cloudquery/postgresql", Version: "v1.6.3", Registry: RegistryCloudQuery, Spec: map[string]any{"connection_string": "postgresql://postgres:pass@localhost:5432/postgres"}, registryInferred: true},
 		},
 	},
 	{
@@ -118,11 +118,11 @@ var specLoaderTestCases = []specLoaderTestCase{
 			return ""
 		},
 		sources: []*Source{
-			{Name: "aws", Path: "cloudquery/aws", Version: "v1", Registry: RegistryGithub, Destinations: []string{"postgresql"}, Tables: []string{"test"}},
-			{Name: "azure", Path: "cloudquery/azure", Version: "v1.3.3", Registry: RegistryGithub, Destinations: []string{"postgresql", "postgresql"}, Tables: []string{"test"}},
+			{Name: "aws", Path: "cloudquery/aws", Version: "v1", Registry: RegistryCloudQuery, Destinations: []string{"postgresql"}, Tables: []string{"test"}, registryInferred: true},
+			{Name: "azure", Path: "cloudquery/azure", Version: "v1.3.3", Registry: RegistryCloudQuery, Destinations: []string{"postgresql", "postgresql"}, Tables: []string{"test"}, registryInferred: true},
 		},
 		destinations: []*Destination{
-			{Name: "postgresql", Path: "cloudquery/postgresql", Version: "v1.6.3", Registry: RegistryGithub, Spec: map[string]any{"connection_string": "postgresql://localhost:5432/cloudquery?sslmode=disable", "version": "#v1"}},
+			{Name: "postgresql", Path: "cloudquery/postgresql", Version: "v1.6.3", Registry: RegistryCloudQuery, Spec: map[string]any{"connection_string": "postgresql://localhost:5432/cloudquery?sslmode=disable", "version": "#v1"}, registryInferred: true},
 		},
 		envVariables: map[string]string{
 			"VERSION":           "v1",
@@ -155,10 +155,10 @@ var specLoaderTestCases = []specLoaderTestCase{
 			return ""
 		},
 		sources: []*Source{
-			{Name: "test", Path: "cloudquery/test", Version: "v1", Registry: RegistryGithub, Destinations: []string{"postgresql"}, Tables: []string{"test"}},
+			{Name: "test", Path: "cloudquery/test", Version: "v1", Registry: RegistryCloudQuery, Destinations: []string{"postgresql"}, Tables: []string{"test"}, registryInferred: true},
 		},
 		destinations: []*Destination{
-			{Name: "postgresql", Path: "cloudquery/postgresql", Version: "v1", Registry: RegistryGithub, Spec: map[string]any{"custom_version": "#v1"}},
+			{Name: "postgresql", Path: "cloudquery/postgresql", Version: "v1", Registry: RegistryCloudQuery, Spec: map[string]any{"custom_version": "#v1"}, registryInferred: true},
 		},
 		envVariables: map[string]string{
 			"VERSION": "v1",
@@ -171,10 +171,10 @@ var specLoaderTestCases = []specLoaderTestCase{
 			return "failed to expand environment variable in file testdata/env_variable_in_string.yml (section 2): env variable VERSION not found"
 		},
 		sources: []*Source{
-			{Name: "test", Path: "cloudquery/test", Version: "v1", Registry: RegistryGithub, Destinations: []string{"postgresql"}, Tables: []string{"test"}},
+			{Name: "test", Path: "cloudquery/test", Version: "v1", Registry: RegistryCloudQuery, Destinations: []string{"postgresql"}, Tables: []string{"test"}},
 		},
 		destinations: []*Destination{
-			{Name: "postgresql", Path: "cloudquery/postgresql", Version: "v1", Registry: RegistryGithub, Spec: map[string]any{}},
+			{Name: "postgresql", Path: "cloudquery/postgresql", Version: "v1", Registry: RegistryCloudQuery, Spec: map[string]any{}},
 		},
 		envVariables: map[string]string{},
 	},
@@ -185,11 +185,11 @@ var specLoaderTestCases = []specLoaderTestCase{
 			return ""
 		},
 		sources: []*Source{
-			{Name: "0123456789", Path: "cloudquery/aws", Version: "v1", Registry: RegistryGithub, Destinations: []string{"0987654321"}, Tables: []string{"test"}},
-			{Name: "012345", Path: "cloudquery/aws", Version: "v1", Registry: RegistryGithub, Destinations: []string{"0987654321"}, Tables: []string{"test"}},
+			{Name: "0123456789", Path: "cloudquery/aws", Version: "v1", Registry: RegistryCloudQuery, Destinations: []string{"0987654321"}, Tables: []string{"test"}, registryInferred: true},
+			{Name: "012345", Path: "cloudquery/aws", Version: "v1", Registry: RegistryCloudQuery, Destinations: []string{"0987654321"}, Tables: []string{"test"}, registryInferred: true},
 		},
 		destinations: []*Destination{
-			{Name: "0987654321", Path: "cloudquery/postgresql", Version: "v1", Registry: RegistryGithub, Spec: map[string]any{"connection_string": "postgresql://localhost:5432/cloudquery?sslmode=disable"}},
+			{Name: "0987654321", Path: "cloudquery/postgresql", Version: "v1", Registry: RegistryCloudQuery, Spec: map[string]any{"connection_string": "postgresql://localhost:5432/cloudquery?sslmode=disable"}, registryInferred: true},
 		},
 		envVariables: map[string]string{
 			"ACCOUNT_ID": "0123456789",
@@ -202,10 +202,10 @@ var specLoaderTestCases = []specLoaderTestCase{
 			return ""
 		},
 		sources: []*Source{
-			{Name: "gcp", Path: "cloudquery/gcp", Version: "v1.0.0", Destinations: []string{"bigquery"}, Tables: []string{"*"}},
+			{Name: "gcp", Path: "cloudquery/gcp", Registry: RegistryCloudQuery, Version: "v1.0.0", Destinations: []string{"bigquery"}, Tables: []string{"*"}, registryInferred: true},
 		},
 		destinations: []*Destination{
-			{Name: "bigquery", Path: "cloudquery/bigquery", Version: "v3.1.0", Spec: map[string]any{"service_account_key_json": getExpectedApplicationDefaultCredentials()}},
+			{Name: "bigquery", Path: "cloudquery/bigquery", Registry: RegistryCloudQuery, Version: "v3.1.0", Spec: map[string]any{"service_account_key_json": getExpectedApplicationDefaultCredentials()}, registryInferred: true},
 		},
 	},
 	{
@@ -215,10 +215,10 @@ var specLoaderTestCases = []specLoaderTestCase{
 			return ""
 		},
 		sources: []*Source{
-			{Name: "gcp", Path: "cloudquery/gcp", Version: "v1.0.0", Destinations: []string{"bigquery"}, Tables: []string{"*"}},
+			{Name: "gcp", Path: "cloudquery/gcp", Registry: RegistryCloudQuery, Version: "v1.0.0", Destinations: []string{"bigquery"}, Tables: []string{"*"}, registryInferred: true},
 		},
 		destinations: []*Destination{
-			{Name: "bigquery", Path: "cloudquery/bigquery", Version: "v3.1.0", Spec: map[string]any{"service_account_key_json": getExpectedApplicationDefaultCredentials()}},
+			{Name: "bigquery", Path: "cloudquery/bigquery", Registry: RegistryCloudQuery, Version: "v3.1.0", Spec: map[string]any{"service_account_key_json": getExpectedApplicationDefaultCredentials()}, registryInferred: true},
 		},
 	},
 }
