@@ -18,7 +18,7 @@ func hostedZoneResourceRecordSets() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_ResourceRecordSet.html`,
 		Resolver:    fetchRoute53HostedZoneResourceRecordSets,
-		Transform:   transformers.TransformWithStruct(&types.ResourceRecordSet{}, transformers.WithPrimaryKeys("Name")),
+		Transform:   transformers.TransformWithStruct(&types.ResourceRecordSet{}, transformers.WithPrimaryKeys("Name", "Type")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
