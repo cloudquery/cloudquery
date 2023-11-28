@@ -31,7 +31,7 @@ func fetchIamAccountAuthorizationDetails(ctx context.Context, meta schema.Client
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceIam).Iam
 	paginator := iam.NewGetAccountAuthorizationDetailsPaginator(svc, &config)
-	var aggregatedOutput *iam.GetAccountAuthorizationDetailsOutput
+	aggregatedOutput := &iam.GetAccountAuthorizationDetailsOutput{}
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *iam.Options) {
 			options.Region = cl.Region
@@ -39,6 +39,7 @@ func fetchIamAccountAuthorizationDetails(ctx context.Context, meta schema.Client
 		if err != nil {
 			return err
 		}
+
 		aggregatedOutput.GroupDetailList = append(aggregatedOutput.GroupDetailList, page.GroupDetailList...)
 		aggregatedOutput.RoleDetailList = append(aggregatedOutput.RoleDetailList, page.RoleDetailList...)
 		aggregatedOutput.UserDetailList = append(aggregatedOutput.UserDetailList, page.UserDetailList...)
