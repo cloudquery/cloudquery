@@ -1,6 +1,6 @@
 \set check_id 'IAM.1'
 \echo "Executing check IAM.1"
-\ir ../queries/iam/no_star.sql
+\ir ../queries/iam/policies_with_admin_rights.sql
 
 \set check_id 'IAM.2'
 \echo "Executing check IAM.2"
