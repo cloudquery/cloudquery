@@ -4,8 +4,8 @@ CloudQuery SQL Policies for AWS
 ## Deprecated:
 
 Going forward all CloudQuery Policies will continue to be available in the [CloudQuery Hub](https://hub.cloudquery.io/addons/transformation). The Policies listed via the Hub have many benefits including:
-- Built on top of DBT for ease of extensibility and integration with other tools
-- Multi database support (PostgreSQL, BigQuery, Snowflake)
+- Built on top of dbt for ease of extensibility and integration with other tools
+- Multi-database support (PostgreSQL, BigQuery, Snowflake)
 
 ## Policies and Compliance Frameworks Available
 
