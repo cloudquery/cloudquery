@@ -22,6 +22,7 @@ type AppAuthSpec struct {
 	Org            string `json:"org"`
 	AppID          string `json:"app_id"`
 	PrivateKeyPath string `json:"private_key_path"`
+	PrivateKey     string `json:"private_key"`
 	InstallationID string `json:"installation_id"`
 }
 
@@ -47,8 +48,11 @@ func (s *Spec) Validate() error {
 		if appAuth.Org == "" {
 			return fmt.Errorf("missing org in app auth configuration")
 		}
-		if appAuth.AppID != "" && appAuth.PrivateKeyPath == "" {
-			return fmt.Errorf("missing private key path in configuration")
+		if appAuth.AppID != "" && (appAuth.PrivateKeyPath == "" && appAuth.PrivateKey == "") {
+			return fmt.Errorf("missing private key specification in configuration. Please specify it using either `private_key` or `private_key_path`")
+		}
+		if appAuth.AppID != "" && (appAuth.PrivateKeyPath != "" && appAuth.PrivateKey != "") {
+			return fmt.Errorf("both private key and private key path specified in configuration. Please remove the configuration for either `private_key_path` or `private_key`")
 		}
 		if appAuth.AppID != "" && appAuth.InstallationID == "" {
 			return fmt.Errorf("missing installation id in configuration")

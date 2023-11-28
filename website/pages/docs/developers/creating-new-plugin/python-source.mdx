@@ -1,6 +1,8 @@
 ---
 title: Creating a New CloudQuery Source Plugin in Python
 description: Learn how to write a new CloudQuery source plugin from scratch in Python.
+image: "https://i3.ytimg.com/vi/TSbGHz5Z09M/maxresdefault.jpg"
+video: "https://youtu.be/TSbGHz5Z09M"
 ---
 
 # Creating a New CloudQuery Source Plugin in Python
@@ -10,6 +12,9 @@ This guide will help you develop a new source or destination plugin for CloudQue
 This guide assumes that you are somewhat familiar with CloudQuery. If you are not, we recommend starting by reading the [Quickstart guide](/docs/quickstart) and playing around with the CloudQuery CLI a bit first.
 
 Though you by no means need to be an expert, you will also need some familiarity with Python. If you are new to Python, we recommend starting with the [official Python tutorial](https://docs.python.org/3/tutorial/).
+
+<br/>
+<iframe width="100%" height="480" src="https://www.youtube.com/embed/TSbGHz5Z09M"></iframe>
 
 ## Core Concepts
 
@@ -95,7 +100,8 @@ kind: destination
 spec:
   name: sqlite
   path: cloudquery/sqlite
-  version: "v1.2.1"
+  registry: cloudquery
+  version: "VERSION_DESTINATION_SQLITE"
   spec:
     connection_string: ./db.sql
 ```
@@ -135,7 +141,8 @@ kind: destination
 spec:
   name: sqlite
   path: cloudquery/sqlite
-  version: "v1.2.1"
+  registry: cloudquery
+  version: "VERSION_DESTINATION_SQLITE"
   spec:
     connection_string: ./db.sql
 ```
@@ -160,11 +167,14 @@ This will download and run the plugin as a Docker container when `cloudquery syn
 
 A good way to learn how to create a new plugins in Python is to look at the following examples:
 
+- The [Python Source Plugin Template](https://github.com/cloudquery/python-plugin-template/) is an easy-to-use template for building your own plugin.
+- The [Python XKCD Example](https://github.com/cloudquery/python-plugin-template/tree/XKCD-Example) is an example of using the Python Source Plugin Template to build a simple plugin.
 - The [Typeform Source Plugin](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/typeform) is an example of a simple plugin that fetches data from a REST API.
 - The [Square Source Plugin](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/square) is an example of a medium-complexity plugin that fetches data from a REST API using an OpenAPI spec.
 
 ## Resources
 
 - [Discord](https://cloudquery.io/discord)
+- [Python Plugin Template](https://github.com/cloudquery/python-plugin-template)
 - [Python SDK Source Code](https://github.com/cloudquery/plugin-sdk-python)
 - [CloudQuery Plugin SDK on PyPI](https://pypi.org/project/cloudquery-plugin-sdk/)

@@ -8,7 +8,6 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
@@ -45,29 +44,21 @@ The 'request_account_id' and 'request_region' columns are added to show from whe
 	}
 }
 
-func fetchInspector2Findings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchInspector2Findings(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceInspector2).Inspector2
 
-	allConfigs := []tableoptions.CustomInspector2ListFindingsInput{{}}
-	if cl.Spec.TableOptions.Inspector2Findings != nil {
-		allConfigs = cl.Spec.TableOptions.Inspector2Findings.ListFindingsOpts
-	}
-	for _, input := range allConfigs {
-		if input.MaxResults == nil {
-			input.MaxResults = aws.Int32(100)
+	input := inspector2.ListFindingsInput{MaxResults: aws.Int32(100)}
+	paginator := inspector2.NewListFindingsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx, func(options *inspector2.Options) {
+			options.Region = cl.Region
+		})
+		if err != nil {
+			return err
 		}
+		res <- page.Findings
+	}
 
-		paginator := inspector2.NewListFindingsPaginator(svc, &input.ListFindingsInput)
-		for paginator.HasMorePages() {
-			page, err := paginator.NextPage(ctx, func(options *inspector2.Options) {
-				options.Region = cl.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- page.Findings
-		}
-	}
 	return nil
 }

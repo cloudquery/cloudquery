@@ -5,12 +5,13 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/state"
-	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
@@ -35,17 +36,20 @@ func NewClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 	if options.NoConnection {
 		return c, nil
 	}
-	spec := &client.Spec{}
-	if err := json.Unmarshal(specBytes, spec); err != nil {
+	s := &spec.Spec{}
+	if err := json.Unmarshal(specBytes, s); err != nil {
 		return nil, err
 	}
-	spec.SetDefaults()
-	syncClient, err := client.New(ctx, logger, spec)
+	s.SetDefaults()
+	if err := s.Validate(); err != nil {
+		return nil, err
+	}
+	syncClient, err := client.New(ctx, logger, s)
 	if err != nil {
 		return nil, err
 	}
 	c.syncClient = syncClient.(*client.Client)
-	c.scheduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(spec.Concurrency), scheduler.WithStrategy(spec.Scheduler))
+	c.scheduler = scheduler.NewScheduler(scheduler.WithLogger(logger), scheduler.WithConcurrency(s.Concurrency), scheduler.WithStrategy(s.Scheduler))
 	return c, nil
 }
 
@@ -65,7 +69,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	if err != nil {
 		return err
 	}
-	syncClient := c.syncClient.WithBackend(&state.NoOpClient{})
+	stateClient := state.Client(&state.NoOpClient{})
 	if options.BackendOptions != nil {
 		conn, err := grpc.DialContext(ctx, options.BackendOptions.Connection,
 			grpc.WithTransportCredentials(insecure.NewCredentials()),
@@ -77,11 +81,14 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		if err != nil {
 			return fmt.Errorf("failed to dial grpc source plugin at %s: %w", options.BackendOptions.Connection, err)
 		}
-		stateClient, err := state.NewClient(ctx, conn, options.BackendOptions.TableName)
+		stateClient, err = state.NewClient(ctx, conn, options.BackendOptions.TableName)
 		if err != nil {
 			return fmt.Errorf("failed to create state client: %w", err)
 		}
-		syncClient = c.syncClient.WithBackend(stateClient)
 	}
-	return c.scheduler.Sync(ctx, syncClient, tables, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
+	err = c.scheduler.Sync(ctx, c.syncClient.WithBackend(stateClient), tables, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
+	if err != nil {
+		return err
+	}
+	return stateClient.Flush(ctx)
 }

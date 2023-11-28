@@ -1,11 +1,11 @@
 package client
 
 import (
+	"slices"
 	"strings"
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/types"
-	"golang.org/x/exp/slices"
 )
 
 func transformSchemaForWriting(sc *arrow.Schema) *arrow.Schema {

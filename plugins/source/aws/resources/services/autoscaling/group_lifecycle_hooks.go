@@ -18,14 +18,15 @@ func groupLifecycleHooks() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LifecycleHook.html`,
 		Resolver:    fetchAutoscalingGroupLifecycleHooks,
-		Transform:   transformers.TransformWithStruct(&types.LifecycleHook{}),
+		Transform:   transformers.TransformWithStruct(&types.LifecycleHook{}, transformers.WithPrimaryKeys("LifecycleHookName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "group_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "group_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}

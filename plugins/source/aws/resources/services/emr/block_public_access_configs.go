@@ -16,7 +16,7 @@ func BlockPublicAccessConfigs() *schema.Table {
 		Description: "https://docs.aws.amazon.com/emr/latest/APIReference/API_GetBlockPublicAccessConfiguration.html",
 		Resolver:    fetchEmrBlockPublicAccessConfigs,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticmapreduce"),
-		Transform:   transformers.TransformWithStruct(&emr.GetBlockPublicAccessConfigurationOutput{}),
+		Transform:   transformers.TransformWithStruct(&emr.GetBlockPublicAccessConfigurationOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

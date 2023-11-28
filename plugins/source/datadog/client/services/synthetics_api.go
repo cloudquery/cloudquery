@@ -6,6 +6,8 @@ import (
 	"net/http"
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV1"
+
+	"github.com/DataDog/datadog-api-client-go/v2/api/datadog"
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/synthetics_api.go -source=synthetics_api.go SyntheticsAPIClient
@@ -13,4 +15,5 @@ type SyntheticsAPIClient interface {
 	ListGlobalVariables(context.Context) (datadogV1.SyntheticsListGlobalVariablesResponse, *http.Response, error)
 	ListLocations(context.Context) (datadogV1.SyntheticsLocations, *http.Response, error)
 	ListTests(context.Context, ...datadogV1.ListTestsOptionalParameters) (datadogV1.SyntheticsListTestsResponse, *http.Response, error)
+	ListTestsWithPagination(context.Context, ...datadogV1.ListTestsOptionalParameters) (<-chan datadog.PaginationResult[datadogV1.SyntheticsTestDetails], func())
 }

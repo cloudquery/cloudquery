@@ -13,7 +13,7 @@ import { BlogHeader } from "../../components/BlogHeader"
 
 Today is an exciting day for us at CloudQuery. For the last three months, we have been working on a completely new version of CloudQuery: with all the learnings and feedback from our amazing users over the past year. And today we are announcing its release! (We are zero-based, so it's v1 even though it's the second version 🙂) In this post, I will walk through the major features, architecture changes and upcoming work.
 
-Quick Recap: If you are unfamiliar with CloudQuery and why we are bringing the best of data engineering to infrastructure and security teams - check out our post from the recent series A [announcement](https://www.cloudquery.io/blog/cloudquery-raises-15m-series-a#story-time).
+Quick Recap: If you are unfamiliar with CloudQuery and why we are bringing the best of data engineering to infrastructure and security teams - check out our post from the recent series A [announcement](/blog/cloudquery-raises-15m-series-a#story-time).
 
 And now to the new features!
 
@@ -52,7 +52,7 @@ A good example is our [GCP](https://github.com/cloudquery/cloudquery/blob/main/p
 
 As data integration platform users build their own views and queries on top, we made the maximum effort not to create backward incompatible changes to schemas when we release new features for our source plugins.
 
-For this New official destination plugins support [auto migrations](/docs/advanced-topics/migrations) and [release stages](/docs/plugins/sources/overview#source-plugin-release-stages)
+For this New official destination plugins support [auto migrations](/docs/advanced-topics/migrations) and [release stages](https://hub.cloudquery.io/plugins/source)
 
 ## Monorepo
 
@@ -65,7 +65,7 @@ We have now two main repositories:
 
 ## Policies
 
-As we are a big believer in data-engineering best practices we provide a set of standard [SQL queries](https://www.cloudquery.io/docs/core-concepts/policies) for popular benchmarks. Most importantly, they are all open source and not abstracted behind any custom policy language so you can re-use them, customize and apply to your needs while enjoying the SQL eco-system.
+As we are a big believer in data-engineering best practices we provide a set of standard [SQL queries](https://hub.cloudquery.io/addons/transformation) for popular benchmarks. Most importantly, they are all open source and not abstracted behind any custom policy language so you can re-use them, customize and apply to your needs while enjoying the SQL eco-system.
 
 ## What's coming up next
 

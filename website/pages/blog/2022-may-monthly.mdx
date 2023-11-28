@@ -26,7 +26,7 @@ DevOps/SRE/Security team.
 
 ## GCP Provider Improvements
 
-**Project Auto Discovery**: The [GCP Provider](/docs/plugins/sources/overview)
+**Project Auto Discovery**: The [GCP Provider](https://hub.cloudquery.io/plugins/source)
 can now auto-discover all projects under your organization and recursively fetch all the configuration from each project
 (and project sprawl in GCP is common!). This should significantly simplify CloudQuery configuration and maintenance as
 well as open-up opportunity to build new workflows and alert on things like project creation.
@@ -35,14 +35,14 @@ well as open-up opportunity to build new workflows and alert on things like proj
 
 Sometimes we also remove features instead of adding to ensure we are able to move fast and with quality. This should
 increase developer velocity, both internally and externally, remove 🐛 as well as open the door to support more
-databases! Checkout our [blog](https://www.cloudquery.io/blog/migration-and-history-deprecation) for full explanation.
+databases! Check out our [blog](/blog/migration-and-history-deprecation) for full explanation.
 
 ## Store Policy Data in The Database
 
-CloudQuery supports six open-source security & compliance [policies](/docs/core-concepts/policies) implemented
+CloudQuery supports six open-source security & compliance [policies](https://hub.cloudquery.io/addons/transformation) implemented
 in SQL so you can codify your security and compliance posture. With this release you can also store the result in
 PostgreSQL and enable more workflows downstream like monitoring security results in your favorite BI tool,
-alerting and much more! To see more checkout the [documentation](/docs/core-concepts/policies).
+alerting and much more! To see more checkout the [documentation](https://hub.cloudquery.io/addons/transformation).
 
 ## Deployments
 
@@ -56,9 +56,9 @@ To easy the deployment we release:
 
 ## 📚 Blogs
 
-- [Recreating a Deleted SSO IDP](https://www.cloudquery.io/blog/aws-sso-if-deleted-sso-identity-provider): A tutorial
+- [Recreating a Deleted SSO IDP](/blog/aws-sso-if-deleted-sso-identity-provider): A tutorial
   on how to recover when you accidentally delete your AWS SSO Identity Provider from an important account
-- [AWS Resource View](https://www.cloudquery.io/blog/aws-resources-view): Utilizing CloudQuery data create a view
+- [AWS Resource View](/blog/aws-resources-view): Utilizing CloudQuery data create a view
   that allows you to see data from all of your AWS Accounts
 
 - Connecting CloudQuery Database to a BI Tool:

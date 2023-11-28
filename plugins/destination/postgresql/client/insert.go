@@ -15,27 +15,21 @@ import (
 
 // InsertBatch inserts records into the destination table. It forms part of the writer.MixedBatchWriter interface.
 func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts) error {
-	tables, err := tablesFromMessages(messages)
-	if err != nil {
-		return err
-	}
-
 	// This happens when the CLI was invoked with `sync --no-migrate`
 	if c.pgTablesToPKConstraints == nil {
-		// Passing nil for include and exclude lists all tables and populates c.pgTablesToPKConstraints
-		_, err := c.listTables(ctx, nil)
+		// listTables populates c.pgTablesToPKConstraints
+		_, err := c.listTables(ctx)
 		if err != nil {
 			return err
 		}
 	}
 
-	tables = c.normalizeTables(tables)
-	if err != nil {
-		return err
-	}
+	batch := new(pgx.Batch)
 
-	var sql string
-	batch := &pgx.Batch{}
+	// Queries cache.
+	// We may consider LRU cache in the future, but even for 10K records it may be OK to just save.
+	queries := make(map[string]string, 100)
+
 	for _, msg := range messages {
 		r := msg.Record
 		md := r.Schema().Metadata()
@@ -43,47 +37,53 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 		if !ok {
 			return fmt.Errorf("table name not found in metadata")
 		}
-		table := tables.Get(tableName)
-		if table == nil {
+		if _, ok = c.pgTablesToPKConstraints[tableName]; !ok {
 			return fmt.Errorf("table %s not found", tableName)
 		}
-		if len(table.PrimaryKeysIndexes()) > 0 {
-			sql = c.upsert(table)
-		} else {
-			sql = c.insert(table)
+
+		sql, ok := queries[tableName]
+		if !ok {
+			// cache the query
+			table := c.normalizeTable(msg.GetTable())
+			if len(table.PrimaryKeysIndexes()) > 0 {
+				sql = c.upsert(table)
+			} else {
+				sql = c.insert(table)
+			}
+			queries[tableName] = sql
 		}
+
 		rows := transformValues(r)
 		for _, rowVals := range rows {
 			batch.Queue(sql, rowVals...)
 		}
-		batchSize := batch.Len()
-		if batchSize >= c.batchSize {
-			br := c.conn.SendBatch(ctx, batch)
-			if err := br.Close(); err != nil {
-				var pgErr *pgconn.PgError
-				if !errors.As(err, &pgErr) {
-					// not recoverable error
-					return fmt.Errorf("failed to execute batch: %w", err)
-				}
-				return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
+		if batch.Len() >= c.batchSize {
+			if err := c.flushBatch(ctx, batch); err != nil {
+				return err
 			}
-			batch = &pgx.Batch{}
+			batch = new(pgx.Batch)
 		}
 	}
 
-	batchSize := batch.Len()
-	if batchSize > 0 {
-		br := c.conn.SendBatch(ctx, batch)
-		if err := br.Close(); err != nil {
-			var pgErr *pgconn.PgError
-			if !errors.As(err, &pgErr) {
-				// not recoverable error
-				return fmt.Errorf("failed to execute batch: %w", err)
-			}
-			return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
-		}
+	return c.flushBatch(ctx, batch)
+}
+
+func (c *Client) flushBatch(ctx context.Context, batch *pgx.Batch) error {
+	if batch.Len() == 0 {
+		return nil
 	}
-	return nil
+	err := c.conn.SendBatch(ctx, batch).Close()
+	if err == nil {
+		return nil
+	}
+
+	var pgErr *pgconn.PgError
+	if errors.As(err, &pgErr) {
+		return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
+	}
+
+	// not recoverable error
+	return fmt.Errorf("failed to execute batch: %w", err)
 }
 
 func (*Client) insert(table *schema.Table) string {

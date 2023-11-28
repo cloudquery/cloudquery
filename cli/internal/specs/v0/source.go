@@ -4,10 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/thoas/go-funk"
-	"golang.org/x/exp/slices"
 )
 
 const (
@@ -31,7 +31,7 @@ type Source struct {
 	// For the local registry the path will be the path to the binary: ./path/to/binary
 	// For the gRPC registry the path will be the address of the gRPC server: host:port
 	Path string `json:"path,omitempty"`
-	// Registry can be github,local,grpc.
+	// Registry can be "", "github", "local", "grpc", "docker", "cloudquery"
 	Registry Registry `json:"registry,omitempty"`
 	// Deprecated: Concurrency is the number of concurrent workers to use when syncing data. Should now use plugin-specific field instead.
 	Concurrency uint64 `json:"concurrency,omitempty"`
@@ -69,6 +69,9 @@ type Source struct {
 	OtelEndpoint string `json:"otel_endpoint,omitempty"`
 	// If specified this will spawn the plugin with --otel-endpoint-insecure
 	OtelEndpointInsecure bool `json:"otel_endpoint_insecure,omitempty"`
+
+	// registryInferred is a flag that indicates whether the registry was inferred from an empty value
+	registryInferred bool
 }
 
 // GetWarnings returns a list of deprecated options that were used in the source config. This should be
@@ -107,8 +110,9 @@ func (s *Source) SetDefaults() {
 	if s.Spec == nil {
 		s.Spec = make(map[string]any)
 	}
-	if s.Registry.String() == "" {
-		s.Registry = RegistryGithub
+	if s.Registry == RegistryUnset {
+		s.Registry = RegistryCloudQuery
+		s.registryInferred = true
 	}
 	if s.Backend.String() == "" {
 		s.Backend = BackendNone
@@ -169,7 +173,7 @@ func (s *Source) Validate() error {
 		return fmt.Errorf("tables configuration is required. Hint: set the tables you want to sync by adding `tables: [...]` or use `cloudquery tables` to list available tables")
 	}
 
-	if s.Registry == RegistryGithub {
+	if s.Registry.NeedVersion() {
 		if s.Version == "" {
 			return fmt.Errorf("version is required")
 		}
@@ -198,4 +202,8 @@ func (s Source) VersionString() string {
 		return fmt.Sprintf("%s (%s)", s.Name, s.Version)
 	}
 	return fmt.Sprintf("%s (%s@%s)", s.Name, pathParts[1], s.Version)
+}
+
+func (s Source) RegistryInferred() bool {
+	return s.registryInferred
 }

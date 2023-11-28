@@ -77,7 +77,11 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		return fmt.Errorf("failed to create scheduler client: %w", err)
 	}
 
-	return c.scheduler.Sync(ctx, schedulerClient, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
+	err = c.scheduler.Sync(ctx, schedulerClient, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
+	if err != nil {
+		return fmt.Errorf("failed to sync: %w", err)
+	}
+	return stateClient.Flush(ctx)
 }
 
 func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.Tables, error) {

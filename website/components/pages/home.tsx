@@ -78,7 +78,7 @@ export default function Home() {
           </div>
           <div className="rounded-md fix-width-auto xl:w-auto">
             <Link
-              href="/register_for_cloud"
+              href="/register-for-cloud"
               className="flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white no-underline bg-black border border-transparent rounded-md dark:bg-green-400 dark:text-black betterhover:dark:hover:bg-green-500 betterhover:hover:bg-gray-700 md:py-3 md:text-lg md:px-10 md:leading-6">
               
                 Register for CloudQuery Cloud →
@@ -144,7 +144,7 @@ export default function Home() {
           Integrations
         </h2>
         <p className="mx-auto mt-4 font-medium text-lg text-gray-400 lg:max-w-3xl lg:nx-text-xl text-center">
-          Export data from an ever-growing list of <a className="dark:text-white" href="/docs/plugins/sources/overview">cloud providers, databases and SaaS apps</a> with more than 1,000 unique tables. Sync to your <a href="/docs/plugins/destinations/overview" className="dark:text-white">favorite database, data warehouse or data lake</a>.
+          Export data from an ever-growing list of <a className="dark:text-white" href="https://hub.cloudquery.io/plugins/source">cloud providers, databases and SaaS apps</a> with more than 1,000 unique tables. Sync to your <a href="https://hub.cloudquery.io/plugins/destination" className="dark:text-white">favorite database, data warehouse or data lake</a>.
         </p>
         <Plugins />
       </div>

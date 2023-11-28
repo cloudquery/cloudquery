@@ -3,8 +3,6 @@ package ecr
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
-
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
@@ -12,6 +10,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Repositories() *schema.Table {
@@ -36,16 +35,12 @@ func Repositories() *schema.Table {
 				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveRepositoryTags,
 			},
-			{
-				Name:     "policy_text",
-				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveRepositoryPolicy,
-			},
 		},
 
 		Relations: []*schema.Table{
 			repositoryImages(),
 			lifeCyclePolicy(),
+			repositoryPolicy(),
 		},
 	}
 }
@@ -80,23 +75,4 @@ func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource
 		return err
 	}
 	return resource.Set(c.Name, client.TagsToMap(output.Tags))
-}
-
-func resolveRepositoryPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceEcr).Ecr
-	repo := resource.Item.(types.Repository)
-	output, err := svc.GetRepositoryPolicy(ctx, &ecr.GetRepositoryPolicyInput{
-		RepositoryName: repo.RepositoryName,
-		RegistryId:     repo.RegistryId,
-	}, func(options *ecr.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		if client.IsAWSError(err, "RepositoryPolicyNotFoundException") {
-			return nil
-		}
-		return err
-	}
-	return resource.Set(c.Name, output.PolicyText)
 }

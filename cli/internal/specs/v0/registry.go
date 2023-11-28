@@ -9,14 +9,16 @@ import (
 type Registry int
 
 const (
-	RegistryGithub Registry = iota
+	RegistryUnset Registry = iota
+	RegistryGithub
 	RegistryLocal
 	RegistryGrpc
 	RegistryDocker
+	RegistryCloudQuery
 )
 
 func (r Registry) String() string {
-	return [...]string{"github", "local", "grpc", "docker"}[r]
+	return [...]string{"", "github", "local", "grpc", "docker", "cloudquery"}[r]
 }
 
 func (r Registry) MarshalJSON() ([]byte, error) {
@@ -37,8 +39,14 @@ func (r *Registry) UnmarshalJSON(data []byte) (err error) {
 	return nil
 }
 
+func (r Registry) NeedVersion() bool {
+	return r == RegistryGithub || r == RegistryCloudQuery
+}
+
 func RegistryFromString(s string) (Registry, error) {
 	switch s {
+	case "":
+		return RegistryUnset, nil
 	case "github":
 		return RegistryGithub, nil
 	case "local":
@@ -47,7 +55,9 @@ func RegistryFromString(s string) (Registry, error) {
 		return RegistryGrpc, nil
 	case "docker":
 		return RegistryDocker, nil
+	case "cloudquery":
+		return RegistryCloudQuery, nil
 	default:
-		return RegistryGithub, fmt.Errorf("unknown registry %s", s)
+		return RegistryGithub, fmt.Errorf("unknown registry %q", s)
 	}
 }

@@ -80,8 +80,9 @@
     "plugins/source/azure": {
       "component": "plugins-source-azure"
     },
-    "plugins/source/azuredevops": {
-      "component": "plugins-source-azuredevops"
+    "plugins/source/bitbucket": {
+      "component": "plugins-source-bitbucket",
+      "release-type": "simple"
     },
     "plugins/source/cloudflare": {
       "component": "plugins-source-cloudflare"
@@ -91,12 +92,6 @@
     },
     "plugins/source/digitalocean": {
       "component": "plugins-source-digitalocean"
-    },
-    "plugins/source/facebookmarketing": {
-      "component": "plugins-source-facebookmarketing"
-    },
-    "plugins/source/fastly": {
-      "component": "plugins-source-fastly"
     },
     "plugins/source/firestore": {
       "component": "plugins-source-firestore"
@@ -110,26 +105,17 @@
     "plugins/source/gitlab": {
       "component": "plugins-source-gitlab"
     },
-    "plugins/source/googleanalytics": {
-      "component": "plugins-source-googleanalytics"
-    },
     "plugins/source/hackernews": {
       "component": "plugins-source-hackernews"
-    },
-    "plugins/source/homebrew": {
-      "component": "plugins-source-homebrew"
     },
     "plugins/source/hubspot": {
       "component": "plugins-source-hubspot"
     },
-    "plugins/source/jira": {
-      "component": "plugins-source-jira"
-    },
     "plugins/source/k8s": {
       "component": "plugins-source-k8s"
     },
-    "plugins/source/mysql": {
-      "component": "plugins-source-mysql"
+    "plugins/source/notion": {
+      "component": "plugins-source-notion"
     },
     "plugins/source/okta": {
       "component": "plugins-source-okta"
@@ -137,36 +123,12 @@
     "plugins/source/oracle": {
       "component": "plugins-source-oracle"
     },
-    "plugins/source/oracledb": {
-      "component": "plugins-source-oracledb"
-    },
     "plugins/source/pagerduty": {
       "component": "plugins-source-pagerduty"
-    },
-    "plugins/source/postgresql": {
-      "component": "plugins-source-postgresql"
-    },
-    "plugins/source/salesforce": {
-      "component": "plugins-source-salesforce"
-    },
-    "plugins/source/shopify": {
-      "component": "plugins-source-shopify"
-    },
-    "plugins/source/snyk": {
-      "component": "plugins-source-snyk"
     },
     "plugins/source/square": {
       "component": "plugins-source-square",
       "release-type": "python"
-    },
-    "plugins/source/stripe": {
-      "component": "plugins-source-stripe"
-    },
-    "plugins/source/terraform": {
-      "component": "plugins-source-terraform"
-    },
-    "plugins/source/test": {
-      "component": "plugins-source-test"
     },
     "plugins/source/typeform": {
       "component": "plugins-source-typeform",
@@ -174,9 +136,6 @@
         "plugin/plugin.py"
       ],
       "release-type": "python"
-    },
-    "plugins/source/vault": {
-      "component": "plugins-source-vault"
     },
     "scaffold": {
       "component": "scaffold"

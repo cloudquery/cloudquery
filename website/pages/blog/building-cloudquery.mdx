@@ -44,7 +44,7 @@ Pluggable sources are key to scale API coverage both from development and usabil
 - **Versioning:** Given plugins are developed as standalone gRPC binaries users can use different versions of different plugins depending on their needs.
 - **Independent development:** Developers can develop their own plugins in their own repositories without being blocked by a vendor (us in this case) to review PRs.
 
-Our [pluggable system](https://www.cloudquery.io/docs/developers/architecture) is based on gRPC to ensure our plugins can be cross-platform, independent and performant.
+Our [pluggable system](/docs/developers/architecture) is based on gRPC to ensure our plugins can be cross-platform, independent and performant.
 
 ### SDK for Source Plugins
 
@@ -83,7 +83,7 @@ The job of a pluggable ELT platform is to do two things:
 
 CloudQuery transforms every single field to its own rich type system, which contains more than [17 types](https://github.com/cloudquery/plugin-sdk/tree/main/schema) (including things like IP Addresses, MAC Addresses). This ensures all the validation is happening in the transformation phase. Destination plugins then only need transform this, depending on what types each destination supports. This is a big shift from how Singer or Airbyte works. These systems use what is available in JSON and [JSON Schema](https://json-schema.org/), as they couple the encoding together with the type system.
 
-Because of these two design decisions, CloudQuery already supports [5 destinations](/docs/plugins/destinations/overview) only two months after our initial [V1 release](https://www.cloudquery.io/blog/cloudquery-v1-release).
+Because of these two design decisions, CloudQuery already supports [5 destinations](https://hub.cloudquery.io/plugins/destination) only two months after our initial [V1 release](/blog/cloudquery-v1-release).
 
 ## Performance
 

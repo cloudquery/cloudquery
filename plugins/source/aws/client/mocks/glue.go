@@ -245,6 +245,36 @@ func (mr *MockGlueClientMockRecorder) BatchGetPartition(arg0, arg1 interface{}, 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetPartition", reflect.TypeOf((*MockGlueClient)(nil).BatchGetPartition), varargs...)
 }
 
+// BatchGetTableOptimizer mocks base method.
+func (m *MockGlueClient) BatchGetTableOptimizer(arg0 context.Context, arg1 *glue.BatchGetTableOptimizerInput, arg2 ...func(*glue.Options)) (*glue.BatchGetTableOptimizerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetTableOptimizer")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetTableOptimizer", varargs...)
+	ret0, _ := ret[0].(*glue.BatchGetTableOptimizerOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetTableOptimizer indicates an expected call of BatchGetTableOptimizer.
+func (mr *MockGlueClientMockRecorder) BatchGetTableOptimizer(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetTableOptimizer", reflect.TypeOf((*MockGlueClient)(nil).BatchGetTableOptimizer), varargs...)
+}
+
 // BatchGetTriggers mocks base method.
 func (m *MockGlueClient) BatchGetTriggers(arg0 context.Context, arg1 *glue.BatchGetTriggersInput, arg2 ...func(*glue.Options)) (*glue.BatchGetTriggersOutput, error) {
 
@@ -543,6 +573,66 @@ func (mr *MockGlueClientMockRecorder) GetColumnStatisticsForTable(arg0, arg1 int
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetColumnStatisticsForTable", reflect.TypeOf((*MockGlueClient)(nil).GetColumnStatisticsForTable), varargs...)
+}
+
+// GetColumnStatisticsTaskRun mocks base method.
+func (m *MockGlueClient) GetColumnStatisticsTaskRun(arg0 context.Context, arg1 *glue.GetColumnStatisticsTaskRunInput, arg2 ...func(*glue.Options)) (*glue.GetColumnStatisticsTaskRunOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetColumnStatisticsTaskRun")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetColumnStatisticsTaskRun", varargs...)
+	ret0, _ := ret[0].(*glue.GetColumnStatisticsTaskRunOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetColumnStatisticsTaskRun indicates an expected call of GetColumnStatisticsTaskRun.
+func (mr *MockGlueClientMockRecorder) GetColumnStatisticsTaskRun(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetColumnStatisticsTaskRun", reflect.TypeOf((*MockGlueClient)(nil).GetColumnStatisticsTaskRun), varargs...)
+}
+
+// GetColumnStatisticsTaskRuns mocks base method.
+func (m *MockGlueClient) GetColumnStatisticsTaskRuns(arg0 context.Context, arg1 *glue.GetColumnStatisticsTaskRunsInput, arg2 ...func(*glue.Options)) (*glue.GetColumnStatisticsTaskRunsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetColumnStatisticsTaskRuns")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetColumnStatisticsTaskRuns", varargs...)
+	ret0, _ := ret[0].(*glue.GetColumnStatisticsTaskRunsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetColumnStatisticsTaskRuns indicates an expected call of GetColumnStatisticsTaskRuns.
+func (mr *MockGlueClientMockRecorder) GetColumnStatisticsTaskRuns(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetColumnStatisticsTaskRuns", reflect.TypeOf((*MockGlueClient)(nil).GetColumnStatisticsTaskRuns), varargs...)
 }
 
 // GetConnection mocks base method.
@@ -1805,6 +1895,36 @@ func (mr *MockGlueClientMockRecorder) GetTable(arg0, arg1 interface{}, arg2 ...i
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTable", reflect.TypeOf((*MockGlueClient)(nil).GetTable), varargs...)
 }
 
+// GetTableOptimizer mocks base method.
+func (m *MockGlueClient) GetTableOptimizer(arg0 context.Context, arg1 *glue.GetTableOptimizerInput, arg2 ...func(*glue.Options)) (*glue.GetTableOptimizerOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTableOptimizer")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetTableOptimizer", varargs...)
+	ret0, _ := ret[0].(*glue.GetTableOptimizerOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTableOptimizer indicates an expected call of GetTableOptimizer.
+func (mr *MockGlueClientMockRecorder) GetTableOptimizer(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTableOptimizer", reflect.TypeOf((*MockGlueClient)(nil).GetTableOptimizer), varargs...)
+}
+
 // GetTableVersion mocks base method.
 func (m *MockGlueClient) GetTableVersion(arg0 context.Context, arg1 *glue.GetTableVersionInput, arg2 ...func(*glue.Options)) (*glue.GetTableVersionOutput, error) {
 
@@ -2285,6 +2405,36 @@ func (mr *MockGlueClientMockRecorder) ListBlueprints(arg0, arg1 interface{}, arg
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListBlueprints", reflect.TypeOf((*MockGlueClient)(nil).ListBlueprints), varargs...)
 }
 
+// ListColumnStatisticsTaskRuns mocks base method.
+func (m *MockGlueClient) ListColumnStatisticsTaskRuns(arg0 context.Context, arg1 *glue.ListColumnStatisticsTaskRunsInput, arg2 ...func(*glue.Options)) (*glue.ListColumnStatisticsTaskRunsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListColumnStatisticsTaskRuns")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListColumnStatisticsTaskRuns", varargs...)
+	ret0, _ := ret[0].(*glue.ListColumnStatisticsTaskRunsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListColumnStatisticsTaskRuns indicates an expected call of ListColumnStatisticsTaskRuns.
+func (mr *MockGlueClientMockRecorder) ListColumnStatisticsTaskRuns(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListColumnStatisticsTaskRuns", reflect.TypeOf((*MockGlueClient)(nil).ListColumnStatisticsTaskRuns), varargs...)
+}
+
 // ListCrawlers mocks base method.
 func (m *MockGlueClient) ListCrawlers(arg0 context.Context, arg1 *glue.ListCrawlersInput, arg2 ...func(*glue.Options)) (*glue.ListCrawlersOutput, error) {
 
@@ -2733,6 +2883,36 @@ func (mr *MockGlueClientMockRecorder) ListStatements(arg0, arg1 interface{}, arg
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListStatements", reflect.TypeOf((*MockGlueClient)(nil).ListStatements), varargs...)
+}
+
+// ListTableOptimizerRuns mocks base method.
+func (m *MockGlueClient) ListTableOptimizerRuns(arg0 context.Context, arg1 *glue.ListTableOptimizerRunsInput, arg2 ...func(*glue.Options)) (*glue.ListTableOptimizerRunsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &glue.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTableOptimizerRuns")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTableOptimizerRuns", varargs...)
+	ret0, _ := ret[0].(*glue.ListTableOptimizerRunsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTableOptimizerRuns indicates an expected call of ListTableOptimizerRuns.
+func (mr *MockGlueClientMockRecorder) ListTableOptimizerRuns(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTableOptimizerRuns", reflect.TypeOf((*MockGlueClient)(nil).ListTableOptimizerRuns), varargs...)
 }
 
 // ListTriggers mocks base method.

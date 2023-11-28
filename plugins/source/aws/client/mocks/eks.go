@@ -155,6 +155,36 @@ func (mr *MockEksClientMockRecorder) DescribeCluster(arg0, arg1 interface{}, arg
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeCluster", reflect.TypeOf((*MockEksClient)(nil).DescribeCluster), varargs...)
 }
 
+// DescribeEksAnywhereSubscription mocks base method.
+func (m *MockEksClient) DescribeEksAnywhereSubscription(arg0 context.Context, arg1 *eks.DescribeEksAnywhereSubscriptionInput, arg2 ...func(*eks.Options)) (*eks.DescribeEksAnywhereSubscriptionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eks.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeEksAnywhereSubscription")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeEksAnywhereSubscription", varargs...)
+	ret0, _ := ret[0].(*eks.DescribeEksAnywhereSubscriptionOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeEksAnywhereSubscription indicates an expected call of DescribeEksAnywhereSubscription.
+func (mr *MockEksClientMockRecorder) DescribeEksAnywhereSubscription(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeEksAnywhereSubscription", reflect.TypeOf((*MockEksClient)(nil).DescribeEksAnywhereSubscription), varargs...)
+}
+
 // DescribeFargateProfile mocks base method.
 func (m *MockEksClient) DescribeFargateProfile(arg0 context.Context, arg1 *eks.DescribeFargateProfileInput, arg2 ...func(*eks.Options)) (*eks.DescribeFargateProfileOutput, error) {
 
@@ -333,6 +363,36 @@ func (mr *MockEksClientMockRecorder) ListClusters(arg0, arg1 interface{}, arg2 .
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListClusters", reflect.TypeOf((*MockEksClient)(nil).ListClusters), varargs...)
+}
+
+// ListEksAnywhereSubscriptions mocks base method.
+func (m *MockEksClient) ListEksAnywhereSubscriptions(arg0 context.Context, arg1 *eks.ListEksAnywhereSubscriptionsInput, arg2 ...func(*eks.Options)) (*eks.ListEksAnywhereSubscriptionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &eks.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListEksAnywhereSubscriptions")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListEksAnywhereSubscriptions", varargs...)
+	ret0, _ := ret[0].(*eks.ListEksAnywhereSubscriptionsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListEksAnywhereSubscriptions indicates an expected call of ListEksAnywhereSubscriptions.
+func (mr *MockEksClientMockRecorder) ListEksAnywhereSubscriptions(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListEksAnywhereSubscriptions", reflect.TypeOf((*MockEksClient)(nil).ListEksAnywhereSubscriptions), varargs...)
 }
 
 // ListFargateProfiles mocks base method.

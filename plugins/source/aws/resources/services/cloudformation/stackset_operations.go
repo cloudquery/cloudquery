@@ -18,7 +18,10 @@ func stackSetOperations() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackSetOperation.html`,
 		Resolver:            fetchCloudformationStackSetOperations,
 		PreResourceResolver: getStackSetOperation,
-		Transform:           transformers.TransformWithStruct(&models.ExpandedStackSetOperation{}, transformers.WithUnwrapStructFields("StackSetOperation"), transformers.WithSkipFields("CallAs"), transformers.WithPrimaryKeys("OperationId", "CreationTimestamp")),
+		Transform: transformers.TransformWithStruct(&models.ExpandedStackSetOperation{},
+			transformers.WithUnwrapStructFields("StackSetOperation"),
+			transformers.WithSkipFields("CallAs"),
+			transformers.WithPrimaryKeys("OperationId", "CreationTimestamp")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

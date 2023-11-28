@@ -21,7 +21,7 @@ import { Callout } from 'nextra-theme-docs';
 
 Today we are excited to announce the release of CloudQuery History in alpha! CloudQuery History adds [TimescaleDB](https://github.com/timescale/timescaledb) support to give users the ability to track their complete cloud asset inventory snapshots over time!
 
-Achieving better visibility into your cloud infrastructure is key in maintaining security, compliance, cost and operational efficiency, and this is why we started CloudQuery in the [first](https://www.cloudquery.io/blog/announcing-cloudquery-seed-funding) place. Maintaining a historical record of your cloud infrastructure configuration is an integral part of your cloud environment lifecycle.
+Achieving better visibility into your cloud infrastructure is key in maintaining security, compliance, cost and operational efficiency, and this is why we started CloudQuery in the [first](/blog/announcing-cloudquery-seed-funding) place. Maintaining a historical record of your cloud infrastructure configuration is an integral part of your cloud environment lifecycle.
 
 ## Why TimescaleDB?
 
@@ -33,9 +33,9 @@ Current native solutions like AWS CloudTrail, GCP Cloud Audit Log , Azure Activi
 
 Audit logs are great, although they only focus on what **changed** and not on what was the **state** of your whole cloud account at a certain point in time. CloudQuery History provides full historical snapshots of your cloud asset inventory, unlocking the following benefits:
 
-- **Visualize Historical State:** Enhance your current visualization workflows such as Grafana and re-use the [dashboards](https://www.cloudquery.io/blog/open-source-cloud-asset-inventory-with-cloudquery-and-grafana) to view current and historical state.
+- **Visualize Historical State:** Enhance your current visualization workflows such as Grafana and re-use the [dashboards](/blog/open-source-cloud-asset-inventory-with-cloudquery-and-grafana) to view current and historical state.
 - **Alert on change using standard SQL:** Use TimescaleDB's [hyperfunctions](https://docs.timescale.com/api/latest/hyperfunctions/) and [continuous aggregates](https://docs.timescale.com/timescaledb/latest/how-to-guides/continuous-aggregates/) to aggregate at predefined intervals and materialize results and find changes that occurred between fetches.
-- **Compliance:** To ensure you were compliant not only in point in time but also over time, you can re-use pre-made and custom [CloudQuery Policies](/docs/core-concepts/policies) to prove compliance over-time.
+- **Compliance:** To ensure you were compliant not only in point in time but also over time, you can re-use pre-made and custom [CloudQuery Policies](https://hub.cloudquery.io/addons/transformation) to prove compliance over-time.
 - **Visibility:** Find resources that might already be deleted. Inspect what was created and understand what happened.
 - **Postmortems and incident response:** Full historical snapshots of your cloud assets allow you to gain better insights into what happened in your environment and determine the blast radius. Re-use any standard analytics or BI tools.
 

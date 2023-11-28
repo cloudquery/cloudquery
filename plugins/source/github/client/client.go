@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"crypto/rsa"
 	"fmt"
 	"net/http"
 	"strings"
@@ -69,7 +70,11 @@ func (c *Client) WithRepository(repository *github.Repository) *Client {
 
 func limitDetectedCallback(logger zerolog.Logger) github_ratelimit.OnLimitDetected {
 	return func(callbackContext *github_ratelimit.CallbackContext) {
-		logger.Warn().Msgf("GitHub secondary rate limit detected. Sleeping until %s", callbackContext.SleepUntil.Format(time.RFC3339))
+		apiCall := ""
+		if callbackContext.Request != nil {
+			apiCall = callbackContext.Request.URL.String()
+		}
+		logger.Warn().Msgf("GitHub secondary rate limit detected for API call: %s. Sleeping until %s", apiCall, callbackContext.SleepUntil.Format(time.RFC3339))
 	}
 }
 
@@ -81,7 +86,15 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 
 	ghServices := map[string]GithubServices{}
 	for _, auth := range spec.AppAuth {
-		k, err := key.FromFile(auth.PrivateKeyPath)
+		var (
+			k   *rsa.PrivateKey
+			err error
+		)
+		if auth.PrivateKeyPath != "" {
+			k, err = key.FromFile(auth.PrivateKeyPath)
+		} else if auth.PrivateKey != "" {
+			k, err = key.Parse([]byte(auth.PrivateKey))
+		}
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse private key: %w", err)
 		}

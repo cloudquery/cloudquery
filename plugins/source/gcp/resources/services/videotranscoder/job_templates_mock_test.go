@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
-	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/grpc"
 
 	pb "cloud.google.com/go/video/transcoder/apiv1/transcoderpb"

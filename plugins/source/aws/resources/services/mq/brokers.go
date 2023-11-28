@@ -18,7 +18,7 @@ func Brokers() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/amazon-mq/latest/api-reference/brokers.html`,
 		Resolver:            fetchMqBrokers,
 		PreResourceResolver: getMqBroker,
-		Transform:           transformers.TransformWithStruct(&mq.DescribeBrokerOutput{}),
+		Transform:           transformers.TransformWithStruct(&mq.DescribeBrokerOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "mq"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -14,6 +14,9 @@ type Client struct {
 	// It will be passed for each resource fetcher.
 	logger zerolog.Logger
 
+	// The site to use for the API calls - see https://docs.datadoghq.com/getting_started/site/
+	Site string
+
 	Accounts []Account
 	// this is set by the table client multiplexer
 	multiplexedAccount Account
@@ -29,22 +32,15 @@ func (c *Client) ID() string {
 }
 
 func (c *Client) BuildContextV1(ctx context.Context) context.Context {
-	return context.WithValue(
-		ctx,
-		datadog.ContextAPIKeys,
-		map[string]datadog.APIKey{
-			"apiKeyAuth": {
-				Key: c.multiplexedAccount.APIKey,
-			},
-			"appKeyAuth": {
-				Key: c.multiplexedAccount.AppKey,
-			},
-		},
-	)
+	return c.buildContext(ctx)
 }
 
 func (c *Client) BuildContextV2(ctx context.Context) context.Context {
-	return context.WithValue(
+	return c.buildContext(ctx)
+}
+
+func (c *Client) buildContext(ctx context.Context) context.Context {
+	ctx = context.WithValue(
 		ctx,
 		datadog.ContextAPIKeys,
 		map[string]datadog.APIKey{
@@ -56,11 +52,21 @@ func (c *Client) BuildContextV2(ctx context.Context) context.Context {
 			},
 		},
 	)
+	if c.Site != "" {
+		ctx = context.WithValue(
+			ctx,
+			datadog.ContextServerVariables,
+			map[string]string{
+				"site": c.Site,
+			})
+	}
+	return ctx
 }
 
 func (c *Client) withAccount(account Account) schema.ClientMeta {
 	return &Client{
 		logger:             c.logger.With().Str("id", account.Name).Logger(),
+		Site:               c.Site,
 		Accounts:           c.Accounts,
 		multiplexedAccount: account,
 		DDServices:         c.DDServices,
@@ -81,6 +87,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.C
 
 	client := Client{
 		logger:     logger,
+		Site:       spec.Site,
 		Accounts:   spec.Accounts,
 		DDServices: NewDatadogServices(apiClient),
 	}

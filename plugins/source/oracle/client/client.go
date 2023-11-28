@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/plugins/source/oracle/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/oracle/oci-go-sdk/v65/common"
 	"github.com/oracle/oci-go-sdk/v65/identity"
@@ -23,19 +24,23 @@ type Client struct {
 
 	ObjectStorageNamespace string // A global value, used for object-storage (i.e. buckets)
 
-	// All availibility domains in the tenancy.
-	RegionAvaililbilityDomainMap map[string][]string
+	// All availability domains in the tenancy.
+	RegionAvailabilityDomainMap map[string][]string
 
 	// These are different per "cq-client", i.e. per multiplexed-cq-client.
-	// By default (if no multiplexer is defined), Region is set to the home region, and CompartmentOcid is set to the tenancy ocid.
+	// By default, (if no multiplexer is defined), Region is set to the home region, and CompartmentOcid is set to the tenancy ocid.
 	Region             string
 	CompartmentOcid    string
-	AvailabilityDomain string // For fetches that are multiplexed by availibility domain (and not region)
+	AvailabilityDomain string // For fetches that are multiplexed by availability domain (and not region)
 
 	logger zerolog.Logger
 }
 
-func New(ctx context.Context, logger zerolog.Logger, _ Spec) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger, _ spec.Spec) (schema.ClientMeta, error) {
+	// common.DefaultRetryPolicy handles (409, IncorrectState), (429, TooManyRequests) + 5XX errors
+	defaultRetryPolicy := common.DefaultRetryPolicy()
+	common.GlobalRetry = &defaultRetryPolicy
+
 	configProvider := common.DefaultConfigProvider()
 
 	tenancyOcid, err := configProvider.TenancyOCID()
@@ -72,7 +77,7 @@ func New(ctx context.Context, logger zerolog.Logger, _ Spec) (schema.ClientMeta,
 		return nil, err
 	}
 
-	regionAvailibilityDomainMap, err := getRegionAvailibilityDomainMap(ctx, oracleClients, tenancyOcid)
+	regionAvailabilityDomainMap, err := getRegionAvailabilityDomainMap(ctx, oracleClients, tenancyOcid)
 	if err != nil {
 		return nil, err
 	}
@@ -80,15 +85,15 @@ func New(ctx context.Context, logger zerolog.Logger, _ Spec) (schema.ClientMeta,
 	logger = logger.With().Str("region", homeRegion).Str("compartment_ocid", tenancyOcid).Logger()
 
 	return &Client{
-		OracleClients:                oracleClients,
-		AllCompartmentOcids:          allCompartmentOcids,
-		HomeRegion:                   homeRegion,
-		TenancyOcid:                  tenancyOcid,
-		RegionAvaililbilityDomainMap: regionAvailibilityDomainMap,
-		ObjectStorageNamespace:       objectStorageNamespace,
-		Region:                       homeRegion,  // Default value if no multiplexer is defined
-		CompartmentOcid:              tenancyOcid, // Default value if no multiplexer is defined
-		logger:                       logger,
+		OracleClients:               oracleClients,
+		AllCompartmentOcids:         allCompartmentOcids,
+		HomeRegion:                  homeRegion,
+		TenancyOcid:                 tenancyOcid,
+		RegionAvailabilityDomainMap: regionAvailabilityDomainMap,
+		ObjectStorageNamespace:      objectStorageNamespace,
+		Region:                      homeRegion,  // Default value if no multiplexer is defined
+		CompartmentOcid:             tenancyOcid, // Default value if no multiplexer is defined
+		logger:                      logger,
 	}, nil
 }
 
@@ -202,8 +207,8 @@ func getObjectStorageNamespace(ctx context.Context, client *objectstorage.Object
 	return *response.Value, nil
 }
 
-func getRegionAvailibilityDomainMap(ctx context.Context, oracleClients map[string]*OracleClients, tenancyOcid string) (map[string][]string, error) {
-	regionAvailibilityDomainMap := make(map[string][]string)
+func getRegionAvailabilityDomainMap(ctx context.Context, oracleClients map[string]*OracleClients, tenancyOcid string) (map[string][]string, error) {
+	regionAvailabilityDomainMap := make(map[string][]string)
 
 	for region, clients := range oracleClients {
 		request := identity.ListAvailabilityDomainsRequest{
@@ -221,8 +226,8 @@ func getRegionAvailibilityDomainMap(ctx context.Context, oracleClients map[strin
 			availabilityDomains = append(availabilityDomains, *domain.Name)
 		}
 
-		regionAvailibilityDomainMap[region] = availabilityDomains
+		regionAvailabilityDomainMap[region] = availabilityDomains
 	}
 
-	return regionAvailibilityDomainMap, nil
+	return regionAvailabilityDomainMap, nil
 }

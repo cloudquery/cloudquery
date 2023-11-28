@@ -3,8 +3,8 @@ package bigquery
 import (
 	"context"
 
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/api/bigquery/v2"
 )
 

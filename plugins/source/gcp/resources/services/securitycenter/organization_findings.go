@@ -5,8 +5,8 @@ import (
 
 	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
 	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
 func OrganizationFindings() *schema.Table {

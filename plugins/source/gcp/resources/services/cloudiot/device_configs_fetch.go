@@ -5,8 +5,8 @@ import (
 
 	pb "cloud.google.com/go/iot/apiv1/iotpb"
 
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/cloudquery/plugins/source/gcp/client"
 
 	iot "cloud.google.com/go/iot/apiv1"
 )

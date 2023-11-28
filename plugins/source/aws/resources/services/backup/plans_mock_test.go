@@ -66,7 +66,7 @@ func buildBackupPlansMock(t *testing.T, ctrl *gomock.Controller) client.Services
 		gomock.Any(),
 	).Return(
 		&backup.ListBackupSelectionsOutput{
-			BackupSelectionsList: []types.BackupSelectionsListMember{{SelectionId: selection.SelectionId}},
+			BackupSelectionsList: []types.BackupSelectionsListMember{{BackupPlanId: plan.BackupPlanId, SelectionId: selection.SelectionId}},
 		},
 		nil,
 	)

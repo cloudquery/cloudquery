@@ -3,8 +3,6 @@ package iot
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
-
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
@@ -12,6 +10,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func TopicRules() *schema.Table {
@@ -21,7 +20,7 @@ func TopicRules() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/iot/latest/apireference/API_GetTopicRule.html`,
 		Resolver:            fetchIotTopicRules,
 		PreResourceResolver: getTopicRule,
-		Transform:           transformers.TransformWithStruct(&iot.GetTopicRuleOutput{}),
+		Transform:           transformers.TransformWithStruct(&iot.GetTopicRuleOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

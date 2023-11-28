@@ -3,9 +3,9 @@ package vision
 import (
 	pb "cloud.google.com/go/vision/v2/apiv1/visionpb"
 	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	"github.com/cloudquery/plugins/source/gcp/client"
 )
 
 func ReferenceImages() *schema.Table {

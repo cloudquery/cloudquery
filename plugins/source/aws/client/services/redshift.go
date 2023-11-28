@@ -31,10 +31,12 @@ type RedshiftClient interface {
 	DescribeEvents(context.Context, *redshift.DescribeEventsInput, ...func(*redshift.Options)) (*redshift.DescribeEventsOutput, error)
 	DescribeHsmClientCertificates(context.Context, *redshift.DescribeHsmClientCertificatesInput, ...func(*redshift.Options)) (*redshift.DescribeHsmClientCertificatesOutput, error)
 	DescribeHsmConfigurations(context.Context, *redshift.DescribeHsmConfigurationsInput, ...func(*redshift.Options)) (*redshift.DescribeHsmConfigurationsOutput, error)
+	DescribeInboundIntegrations(context.Context, *redshift.DescribeInboundIntegrationsInput, ...func(*redshift.Options)) (*redshift.DescribeInboundIntegrationsOutput, error)
 	DescribeLoggingStatus(context.Context, *redshift.DescribeLoggingStatusInput, ...func(*redshift.Options)) (*redshift.DescribeLoggingStatusOutput, error)
 	DescribeNodeConfigurationOptions(context.Context, *redshift.DescribeNodeConfigurationOptionsInput, ...func(*redshift.Options)) (*redshift.DescribeNodeConfigurationOptionsOutput, error)
 	DescribeOrderableClusterOptions(context.Context, *redshift.DescribeOrderableClusterOptionsInput, ...func(*redshift.Options)) (*redshift.DescribeOrderableClusterOptionsOutput, error)
 	DescribePartners(context.Context, *redshift.DescribePartnersInput, ...func(*redshift.Options)) (*redshift.DescribePartnersOutput, error)
+	DescribeRedshiftIdcApplications(context.Context, *redshift.DescribeRedshiftIdcApplicationsInput, ...func(*redshift.Options)) (*redshift.DescribeRedshiftIdcApplicationsOutput, error)
 	DescribeReservedNodeExchangeStatus(context.Context, *redshift.DescribeReservedNodeExchangeStatusInput, ...func(*redshift.Options)) (*redshift.DescribeReservedNodeExchangeStatusOutput, error)
 	DescribeReservedNodeOfferings(context.Context, *redshift.DescribeReservedNodeOfferingsInput, ...func(*redshift.Options)) (*redshift.DescribeReservedNodeOfferingsOutput, error)
 	DescribeReservedNodes(context.Context, *redshift.DescribeReservedNodesInput, ...func(*redshift.Options)) (*redshift.DescribeReservedNodesOutput, error)
@@ -50,4 +52,5 @@ type RedshiftClient interface {
 	GetClusterCredentialsWithIAM(context.Context, *redshift.GetClusterCredentialsWithIAMInput, ...func(*redshift.Options)) (*redshift.GetClusterCredentialsWithIAMOutput, error)
 	GetReservedNodeExchangeConfigurationOptions(context.Context, *redshift.GetReservedNodeExchangeConfigurationOptionsInput, ...func(*redshift.Options)) (*redshift.GetReservedNodeExchangeConfigurationOptionsOutput, error)
 	GetReservedNodeExchangeOfferings(context.Context, *redshift.GetReservedNodeExchangeOfferingsInput, ...func(*redshift.Options)) (*redshift.GetReservedNodeExchangeOfferingsOutput, error)
+	GetResourcePolicy(context.Context, *redshift.GetResourcePolicyInput, ...func(*redshift.Options)) (*redshift.GetResourcePolicyOutput, error)
 }

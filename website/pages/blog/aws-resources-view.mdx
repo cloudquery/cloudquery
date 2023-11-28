@@ -15,7 +15,7 @@ import { Callout } from 'nextra-theme-docs';
 <BlogHeader/>
 
 <Callout type="info">
-**Update (June 2023)**: You can find the latest documentation for the [AWS resources view in the CloudQuery AWS source plugin documentation](/docs/plugins/sources/aws/views). There are also similar views for [GCP](/docs/plugins/sources/gcp/views) and [Azure](/docs/plugins/sources/azure/views).
+**Update (June 2023)**: You can find the latest documentation for the [AWS resources view in the CloudQuery AWS source plugin documentation](https://hub.cloudquery.io/plugins/source/cloudquery/aws). There are also similar views for [GCP](https://hub.cloudquery.io/plugins/source/cloudquery/gcp) and [Azure](https://hub.cloudquery.io/plugins/source/cloudquery/azure).
 </Callout>
 
 As of the writing of this blog, CloudQuery supports over 155 resources across 61 services in AWS (!) and many more in GCP, Azure, etc. Although this gives users the capabilities to answer many of their questions regarding your security, visibility and infrastructure, it would be great to have a single view of all your AWS resources, right?
@@ -148,6 +148,6 @@ select count(distinct arn) as distinct_resources, count(*) as total from aws_res
 
 ## What's next?
 
-There are many views we can create on top of CloudQuery that make it easier to query our data, some examples can be found in our [policies](/docs/core-concepts/policies). We are working on more awesome views that will make your life even easier, such as `aws_policies`
+There are many views we can create on top of CloudQuery that make it easier to query our data, some examples can be found in our [policies](https://hub.cloudquery.io/addons/transformation). We are working on more awesome views that will make your life even easier, such as `aws_policies`
 
 We are always excited to hear use cases or questions around CloudQuery so feel free to hop into our [discord](https://www.cloudquery.io/discord) and message us.

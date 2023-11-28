@@ -7,8 +7,10 @@ import (
 	"runtime"
 	"strconv"
 	"testing"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -50,12 +52,14 @@ func TestPlugin(t *testing.T) {
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.WriterTestSuiteTests{
-			SkipInsert:  true, // we do "no PKs = all columns are PKs" in this destination
-			SkipMigrate: true,
+			SkipInsert:       true, // we do "no PKs = all columns are PKs" in this destination
+			SkipMigrate:      true,
+			SkipDeleteRecord: true,
 			SafeMigrations: plugin.SafeMigrations{
 				AddColumn:    true,
 				RemoveColumn: true,
 			},
 		},
+		plugin.WithTestDataOptions(schema.TestSourceOptions{TimePrecision: time.Millisecond}),
 	)
 }

@@ -8,8 +8,8 @@ import (
 	"google.golang.org/api/iterator"
 
 	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	securitycenter "cloud.google.com/go/securitycenter/apiv1"

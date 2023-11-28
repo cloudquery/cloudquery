@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"path"
+	"path/filepath"
 
 	"github.com/apache/arrow/go/v14/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -14,8 +14,8 @@ import (
 const (
 	createOrReplaceFileFormat = `create or replace file format cq_plugin_json_format type = 'JSON'`
 	createOrReplaceStage      = `create or replace stage cq_plugin_stage file_format = cq_plugin_json_format;`
-	putFileIntoStage          = `put file://%s @cq_plugin_stage auto_compress=true`
-	copyIntoTable             = `copy into %s from @cq_plugin_stage/%s file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
+	putFileIntoStage          = `put 'file://%v' @cq_plugin_stage auto_compress=true`
+	copyIntoTable             = `copy into %s from '@cq_plugin_stage/%v' file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
 )
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
@@ -29,14 +29,23 @@ func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) er
 }
 
 func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
+	if err := c.setupWrite(ctx); err != nil {
+		return err
+	}
+
 	tableName := name
 	f, err := os.CreateTemp(os.TempDir(), tableName+".json.*")
 	if err != nil {
 		return err
 	}
+	if c.spec.LeaveStageFiles {
+		c.logger.Info().Str("filename", f.Name()).Str("table", name).Msg("Created stage file")
+	}
 	defer func() {
 		f.Close()
-		os.Remove(f.Name())
+		if !c.spec.LeaveStageFiles {
+			os.Remove(f.Name())
+		}
 	}()
 
 	enc := json.NewEncoder(f)
@@ -54,13 +63,30 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	if err := f.Close(); err != nil {
 		return fmt.Errorf("failed to close temp file with last resource %s: %w", f.Name(), err)
 	}
-	sql := fmt.Sprintf(putFileIntoStage, f.Name())
+
+	sql := fmt.Sprintf(putFileIntoStage, escapePath(f.Name()))
+
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to put file into stage with last resource %s: %w", sql, err)
 	}
-	sql = fmt.Sprintf(copyIntoTable, tableName, path.Base(f.Name()))
+
+	sql = fmt.Sprintf(copyIntoTable, tableName, escapePath(filepath.Base(f.Name())))
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to copy file into table with last resource %s: %w", sql, err)
 	}
 	return err
+}
+
+func (c *Client) setupWrite(ctx context.Context) error {
+	var setupErr error
+	c.setupWriteOnce.Do(func() {
+		if _, err := c.db.ExecContext(ctx, createOrReplaceFileFormat); err != nil {
+			setupErr = fmt.Errorf("failed to create file format %s: %w", createOrReplaceFileFormat, err)
+			return
+		}
+		if _, err := c.db.ExecContext(ctx, createOrReplaceStage); err != nil {
+			setupErr = fmt.Errorf("failed to create stage %s: %w", createOrReplaceStage, err)
+		}
+	})
+	return setupErr
 }

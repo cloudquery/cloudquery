@@ -118,6 +118,7 @@ kind: destination
 spec:
   name: bigquery
   path: cloudquery/bigquery
+  registry: cloudquery
   version: "VERSION_DESTINATION_BIGQUERY"
   write_mode: "append"
   spec:
@@ -125,7 +126,7 @@ spec:
     dataset_id: ${SA_BIGQUERY_DATASET_ID}
 ```
 
-You can find the latest version in the [BigQuery destination plugin documentation](https://www.cloudquery.io/docs/plugins/destinations/bigquery/overview). There are also a few more configuration options you may want to consider, like partitioning based on sync time.
+You can find the latest version in the [BigQuery destination plugin documentation](https://hub.cloudquery.io/plugins/destination/cloudquery/bigquery). There are also a few more configuration options you may want to consider, like partitioning based on sync time.
 
 ### Step 1.5: Push to the repository
 

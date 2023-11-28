@@ -13,20 +13,13 @@ func identifier(name string) string {
 	return fmt.Sprintf("`%s`", name)
 }
 
-const maxPrefixLength = 191
-
 const columnQuery = `SELECT 
 cols.COLUMN_NAME,
 COLUMN_TYPE,
 IS_NULLABLE,
-constraint_type,
-sub_part
+constraint_type
 FROM
 INFORMATION_SCHEMA.COLUMNS AS cols
-	LEFT JOIN  information_schema.STATISTICS as stats on
-		cols.table_schema = stats.table_schema and
-		cols.TABLE_NAME = stats.table_name and
-		cols.COLUMN_NAME = stats.column_name and index_name = 'PRIMARY'
 	LEFT JOIN
 (SELECT 
 	tc.constraint_schema,
@@ -62,8 +55,7 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 		var typ string
 		var nullable string
 		var constraintType *string
-		var subpart *int
-		if err := rows.Scan(&name, &typ, &nullable, &constraintType, &subpart); err != nil {
+		if err := rows.Scan(&name, &typ, &nullable, &constraintType); err != nil {
 			return nil, err
 		}
 
@@ -71,10 +63,6 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 		var primaryKey bool
 		if constraintType != nil {
 			primaryKey = strings.Contains(*constraintType, "PRIMARY KEY")
-		}
-		// subpart only non nil for pks on blob/text columns
-		if subpart != nil && *subpart != maxPrefixLength {
-			primaryKey = false
 		}
 		columns = append(columns, schema.Column{
 			Name:       name,
@@ -172,6 +160,7 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 	if len(primaryKeysIndices) > 0 {
 		builder.WriteString(",\n  ")
 		builder.WriteString(" PRIMARY KEY (")
+		lengthPerPk := c.maxIndexLength / len(primaryKeysIndices)
 		for i, pk := range primaryKeysIndices {
 			column := table.Columns[pk]
 			builder.WriteString(identifier(column.Name))
@@ -179,8 +168,7 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table) error {
 			if sqlType == "blob" || sqlType == "text" {
 				// `blob/text` SQL types require specifying prefix length to use for the primary key
 				// https://dev.mysql.com/doc/refman/8.0/en/innodb-limits.html
-				// The index key prefix length limit is 767 bytes for InnoDB tables that use the REDUNDANT or COMPACT row format. For example, you might hit this limit with a column prefix index of more than 191 characters on a TEXT or VARCHAR column, assuming a utf8mb4 character set and the maximum of 4 bytes for each character.
-				builder.WriteString("(" + strconv.Itoa(maxPrefixLength) + ")")
+				builder.WriteString("(" + strconv.Itoa(lengthPerPk) + ")")
 			}
 			if i < len(primaryKeysIndices)-1 {
 				builder.WriteString(", ")

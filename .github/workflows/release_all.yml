@@ -7,7 +7,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Add token to config.yaml
         uses: jacobtomlinson/gha-find-replace@208a50093270b081bc1a0a4d3d1dd75d462a0eac

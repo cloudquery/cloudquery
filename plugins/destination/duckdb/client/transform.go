@@ -44,7 +44,8 @@ func transformArray(arr arrow.Array) arrow.Array {
 			transformTypeForWriting(dt), arr.Len(),
 			arr.Data().Buffers(),
 			children,
-			arr.NullN(), arr.Data().Offset(),
+			arr.NullN(),
+			0, // we use 0 as offset for struct arrays, as the child arrays would already be sliced properly
 		))
 
 	case array.ListLike: // this includes maps, too
@@ -52,7 +53,9 @@ func transformArray(arr arrow.Array) arrow.Array {
 			transformTypeForWriting(arr.DataType()), arr.Len(),
 			arr.Data().Buffers(),
 			[]arrow.ArrayData{transformArray(arr.ListValues()).Data()},
-			arr.NullN(), arr.Data().Offset(),
+			arr.NullN(),
+			// we use data offset for list like as the `ListValues` can be a larger array (happens when slicing)
+			arr.Data().Offset(),
 		))
 	case *array.Date32:
 		return transformDate32ToTimestamp(arr)

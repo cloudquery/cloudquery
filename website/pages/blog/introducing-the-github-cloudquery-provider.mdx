@@ -21,7 +21,7 @@ In this tutorial, we will install CloudQuery and use it to fetch GitHub resource
 
 ## Setup
 
-- [Download CloudQuery](https://www.cloudquery.io/docs/quickstart).
+- [Download CloudQuery](/docs/quickstart).
 - Acquire a GitHub (personal access token)[https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token]
   with the scopes:
   ```ini copy
@@ -35,6 +35,7 @@ In this tutorial, we will install CloudQuery and use it to fetch GitHub resource
   spec:
     name: github
     path: cloudquery/github
+    registry: cloudquery
     version: "VERSION_SOURCE_GITHUB"
     tables: ["*"]
     destinations: ["postgresql"]
@@ -47,6 +48,7 @@ In this tutorial, we will install CloudQuery and use it to fetch GitHub resource
   spec:
     name: "postgresql"
     path: cloudquery/postgresql
+    registry: cloudquery
     version: "VERSION_DESTINATION_POSTGRESQL"
     write_mode: "overwrite-delete-stale"
 

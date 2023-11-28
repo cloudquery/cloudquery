@@ -3,6 +3,7 @@ package plugin
 import (
 	"strings"
 
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
@@ -11,6 +12,9 @@ import (
 )
 
 var (
+	Name    = "gcp"
+	Kind    = "source"
+	Team    = "cloudquery"
 	Version = "development"
 )
 
@@ -62,6 +66,7 @@ var gcpExceptions = map[string]string{
 	"memcache":             "Memcache",
 	"ml":                   "ML",
 	"networkmanagement":    "Network Management",
+	"networkconnectivity":  "Network Connectivity",
 	"networkservices":      "Network Services",
 	"nfs":                  "NFS",
 	"osconfig":             "OS Config",
@@ -97,8 +102,11 @@ func titleTransformer(table *schema.Table) error {
 
 func Plugin() *plugin.Plugin {
 	return plugin.NewPlugin(
-		"gcp",
+		Name,
 		Version,
 		NewClient,
+		plugin.WithJSONSchema(spec.JSONSchema),
+		plugin.WithKind(Kind),
+		plugin.WithTeam(Team),
 	)
 }

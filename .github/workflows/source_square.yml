@@ -20,18 +20,20 @@ jobs:
   plugins-source-square:
     timeout-minutes: 30
     name: "plugins/source/square"
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./plugins/source/square
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.11'
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
       - name: Check formatting
         run: make fmt-check
       - name: Run tests
@@ -39,7 +41,7 @@ jobs:
 
   validate-release:
     timeout-minutes: 10
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     env:
       IMAGE_NAME_PREFIX: cloudquery
       REGISTRY: ghcr.io

@@ -6,9 +6,12 @@ import (
 	"net/http"
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadogV1"
+
+	"github.com/DataDog/datadog-api-client-go/v2/api/datadog"
 )
 
 //go:generate mockgen -package=mocks -destination=../mocks/notebooks_api.go -source=notebooks_api.go NotebooksAPIClient
 type NotebooksAPIClient interface {
 	ListNotebooks(context.Context, ...datadogV1.ListNotebooksOptionalParameters) (datadogV1.NotebooksResponse, *http.Response, error)
+	ListNotebooksWithPagination(context.Context, ...datadogV1.ListNotebooksOptionalParameters) (<-chan datadog.PaginationResult[datadogV1.NotebooksResponseData], func())
 }

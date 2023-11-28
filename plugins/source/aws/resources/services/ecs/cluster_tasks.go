@@ -3,16 +3,14 @@ package ecs
 import (
 	"context"
 
-	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
-
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func clusterTasks() *schema.Table {
@@ -50,39 +48,36 @@ func fetchEcsClusterTasks(ctx context.Context, meta schema.ClientMeta, parent *s
 
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceEcs).Ecs
-	var allConfigs []tableoptions.CustomListTasksOpts
-	if cl.Spec.TableOptions.ECSTasks != nil && cl.Spec.TableOptions.ECSTasks.ListTasksOpts != nil {
-		allConfigs = cl.Spec.TableOptions.ECSTasks.ListTasksOpts
-	} else {
-		allConfigs = []tableoptions.CustomListTasksOpts{{ListTasksInput: ecs.ListTasksInput{MaxResults: aws.Int32(100)}}}
+	input := &ecs.ListTasksInput{
+		Cluster:    cluster.ClusterArn,
+		MaxResults: aws.Int32(100),
 	}
-	for _, config := range allConfigs {
-		config.Cluster = cluster.ClusterArn
-		paginator := ecs.NewListTasksPaginator(svc, &config.ListTasksInput)
-		for paginator.HasMorePages() {
-			page, err := paginator.NextPage(ctx, func(options *ecs.Options) {
-				options.Region = cl.Region
-			})
-			if err != nil {
-				return err
-			}
-			if len(page.TaskArns) == 0 {
-				continue
-			}
-			describeServicesInput := ecs.DescribeTasksInput{
-				Cluster: cluster.ClusterArn,
-				Tasks:   page.TaskArns,
-				Include: []types.TaskField{types.TaskFieldTags},
-			}
-			describeTasks, err := svc.DescribeTasks(ctx, &describeServicesInput, func(options *ecs.Options) {
-				options.Region = cl.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- describeTasks.Tasks
+
+	paginator := ecs.NewListTasksPaginator(svc, input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx, func(options *ecs.Options) {
+			options.Region = cl.Region
+		})
+		if err != nil {
+			return err
 		}
+		if len(page.TaskArns) == 0 {
+			continue
+		}
+		describeServicesInput := ecs.DescribeTasksInput{
+			Cluster: cluster.ClusterArn,
+			Tasks:   page.TaskArns,
+			Include: []types.TaskField{types.TaskFieldTags},
+		}
+		describeTasks, err := svc.DescribeTasks(ctx, &describeServicesInput, func(options *ecs.Options) {
+			options.Region = cl.Region
+		})
+		if err != nil {
+			return err
+		}
+		res <- describeTasks.Tasks
 	}
+
 	return nil
 }
 

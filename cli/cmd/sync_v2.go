@@ -8,6 +8,8 @@ import (
 	"io"
 	"time"
 
+	"slices"
+
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/internal/transformer"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -17,7 +19,6 @@ import (
 	"github.com/cloudquery/plugin-pb-go/pb/source/v2"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
-	"golang.org/x/exp/slices"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -89,7 +90,8 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, d
 			}
 		}
 	}()
-	syncTime := time.Now().UTC()
+	// https://github.com/golang/go/issues/41087
+	syncTime := time.Now().UTC().Truncate(time.Microsecond)
 	destinationStrings := make([]string, len(destinationsClients))
 	for i := range destinationsClients {
 		destinationStrings[i] = destinationSpecs[i].VersionString()

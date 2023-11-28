@@ -4,10 +4,10 @@ import (
 	"context"
 
 	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
@@ -43,31 +43,21 @@ This is useful when multi region and account aggregation is enabled.`,
 	}
 }
 
-func fetchFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchFindings(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	var allConfigs []tableoptions.CustomGetFindingsOpts
-
-	if cl.Spec.TableOptions.SecurityHubFindings != nil && cl.Spec.TableOptions.SecurityHubFindings.GetFindingsOpts != nil {
-		allConfigs = cl.Spec.TableOptions.SecurityHubFindings.GetFindingsOpts
-	} else {
-		allConfigs = []tableoptions.CustomGetFindingsOpts{{GetFindingsInput: securityhub.GetFindingsInput{MaxResults: 100}}}
-	}
-
 	svc := cl.Services(client.AWSServiceSecurityhub).Securityhub
 
-	var config securityhub.GetFindingsInput
-	for _, w := range allConfigs {
-		config = w.GetFindingsInput
-		p := securityhub.NewGetFindingsPaginator(svc, &config)
-		for p.HasMorePages() {
-			response, err := p.NextPage(ctx, func(o *securityhub.Options) {
-				o.Region = cl.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- response.Findings
+	config := securityhub.GetFindingsInput{MaxResults: aws.Int32(100)}
+	p := securityhub.NewGetFindingsPaginator(svc, &config)
+	for p.HasMorePages() {
+		response, err := p.NextPage(ctx, func(o *securityhub.Options) {
+			o.Region = cl.Region
+		})
+		if err != nil {
+			return err
 		}
+		res <- response.Findings
 	}
+
 	return nil
 }

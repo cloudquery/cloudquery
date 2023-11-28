@@ -68,6 +68,12 @@ linters-settings:
         disabled: true
       - name: nested-structs
         disabled: true
+      - name: unchecked-type-assertion
+        disabled: true
+      - name: import-alias-naming
+        disabled: true
+      - name: redundant-import-alias
+        disabled: true
 
   gofmt:
     rewrite-rules:

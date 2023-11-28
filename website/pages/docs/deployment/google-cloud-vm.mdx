@@ -42,7 +42,7 @@ src="https://www.youtube.com/embed/rz4aU1IMF30">
 ## Step 2: Install CloudQuery
 
 1. SSH into your instance. You can do this by clicking on the SSH button next to your instance in the Google Cloud Console.
-2. Download CloudQuery by running the following command from the [Quickstart guide for Linux](https://www.cloudquery.io/docs/quickstart/linux):
+2. Download CloudQuery by running the following command from the [Quickstart guide for Linux](/docs/quickstart/linux):
 
 ```bash copy
 curl -L https://github.com/cloudquery/cloudquery/releases/download/cli-vVERSION_CLI/cloudquery_linux_amd64 -o cloudquery
@@ -87,6 +87,7 @@ spec:
   # Source spec section
   name: "gcp"
   path: "cloudquery/gcp"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_GCP"
   tables: ["gcp_storage_buckets"] # Add more tables here if you want to sync more data
   destinations: ["postgresql"]
@@ -97,8 +98,8 @@ spec:
 kind: destination
 spec:
   name: "postgresql"
-  registry: "github"
   path: "cloudquery/postgresql"
+  registry: "cloudquery"
   version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     connection_string: "postgresql://cloudquery:<PASSWORD>@<PRIVATE_IP>:5432/cloudquery"
@@ -106,9 +107,9 @@ spec:
 
 <Callout type="info">
 
-If you are using a database other than PostgreSQL, you will need to modify the `destination` section of the config file accordingly. See the [destinations](/docs/plugins/destinations/overview) section of the docs for more information.
+If you are using a database other than PostgreSQL, you will need to modify the `destination` section of the config file accordingly. See the [destinations](https://hub.cloudquery.io/plugins/destination) section of the docs for more information.
 
-Similarly, if you are using a different source, follow the [documentation for your source plugin](/docs/plugins/sources/overview) to get the correct config.
+Similarly, if you are using a different source, follow the [documentation for your source plugin](https://hub.cloudquery.io/plugins/source) to get the correct config.
 
 </Callout>
 

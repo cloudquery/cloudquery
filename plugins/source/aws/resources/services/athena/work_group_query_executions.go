@@ -19,14 +19,15 @@ func workGroupQueryExecutions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/athena/latest/APIReference/API_QueryExecution.html`,
 		Resolver:            fetchAthenaWorkGroupQueryExecutions,
 		PreResourceResolver: getWorkGroupQueryExecution,
-		Transform:           transformers.TransformWithStruct(&types.QueryExecution{}),
+		Transform:           transformers.TransformWithStruct(&types.QueryExecution{}, transformers.WithPrimaryKeys("QueryExecutionId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "work_group_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "work_group_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}

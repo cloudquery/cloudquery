@@ -2,8 +2,7 @@ package ec2
 
 import (
 	"context"
-
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
+	"reflect"
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -13,6 +12,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -23,7 +23,18 @@ func Images() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Image.html`,
 		Resolver:    fetchEc2Images,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
-		Transform:   transformers.TransformWithStruct(&types.Image{}),
+		Transform: transformers.TransformWithStruct(&types.Image{},
+			transformers.WithTypeTransformer(
+				func(field reflect.StructField) (arrow.DataType, error) {
+					switch field.Name {
+					case "CreationDate", "DeprecationTime": // based on docs these are timestamps
+						return arrow.FixedWidthTypes.Timestamp_us, nil
+					default:
+						return transformers.DefaultTypeTransformer(field)
+					}
+				},
+			),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
@@ -54,7 +65,8 @@ func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	g.Go(func() error {
 		// fetch ec2.Images owned by this account
 		pag := ec2.NewDescribeImagesPaginator(svc, &ec2.DescribeImagesInput{
-			Owners: []string{"self"},
+			Owners:     []string{"self"},
+			MaxResults: aws.Int32(1000),
 		})
 		for pag.HasMorePages() {
 			resp, err := pag.NextPage(ctx, func(options *ec2.Options) {
@@ -72,6 +84,7 @@ func fetchEc2Images(ctx context.Context, meta schema.ClientMeta, parent *schema.
 		// fetch ec2.Images that are shared with this account
 		pag := ec2.NewDescribeImagesPaginator(svc, &ec2.DescribeImagesInput{
 			ExecutableUsers: []string{"self"},
+			MaxResults:      aws.Int32(1000),
 		})
 		for pag.HasMorePages() {
 			resp, err := pag.NextPage(ctx, func(options *ec2.Options) {

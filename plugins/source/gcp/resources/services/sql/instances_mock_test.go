@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
-	"github.com/cloudquery/plugins/source/gcp/client"
 	"github.com/julienschmidt/httprouter"
 	sql "google.golang.org/api/sqladmin/v1beta4"
 )

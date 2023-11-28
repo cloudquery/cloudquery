@@ -8,11 +8,11 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"strconv"
 	"strings"
 
 	"github.com/ghodss/yaml"
-	"golang.org/x/exp/slices"
 )
 
 type SpecReader struct {

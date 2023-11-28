@@ -7,7 +7,7 @@ description: Reference for the source spec CloudQuery configuration object.
 
 Following are available options for the top level source plugin `spec` object.
 
-Note: For configuring individual plugins, please refer to the configuration section from the relevant plugins from [here](/docs/plugins/sources/overview). (e.g. [AWS plugin configuration](/docs/plugins/sources/aws/configuration)).
+Note: For configuring individual plugins, please refer to the configuration section from the relevant plugins from [here](https://hub.cloudquery.io/plugins/source). (e.g. [AWS plugin configuration](https://hub.cloudquery.io/plugins/source/cloudquery/aws)).
 
 ## Example
 
@@ -18,6 +18,7 @@ kind: source
 spec:
   name: "aws"
   path: "cloudquery/aws"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_s3_buckets"]
   destinations: ["postgresql"]
@@ -37,9 +38,10 @@ The name field may be used to uniquely identify a particular source configuratio
 
 ### registry
 
-(`string`, optional, default: `github`, available: `github`, `local`, `grpc`, `docker`)
+(`string`, optional, default: `github`, available: `github`, `cloudquery`, `local`, `grpc`, `docker`)
 
 - `github`: CloudQuery will look for and download the plugin from GitHub, and then execute it.
+- `cloudquery`: CloudQuery will look for and download the plugin from the official CloudQuery registry, and then execute it.
 - `local`: CloudQuery will execute the plugin from a local path.
 - `grpc`: mostly useful in debug mode when plugin is already running in a different terminal, CloudQuery will connect to the gRPC plugin server directly without spawning the process.
 - `docker`: CloudQuery will run the plugin in a Docker container. This is most useful for plugins written in Python, as they do not support the `local` and `github` registries.
@@ -127,7 +129,7 @@ If set to `true`, the exporter will not verify the server will connect via `http
 
 (`object`, optional)
 
-Plugin-specific configurations. Visit [source plugins](/docs/plugins/sources/overview) documentation for more information.
+Plugin-specific configurations. Visit [source plugins](https://hub.cloudquery.io/plugins/source) documentation for more information.
 
 ## Top level deprecated options
 
@@ -141,8 +143,8 @@ This option was deprecated in CLI `v3.6.0` in favor of plugin level scheduler, a
 
 ### backend
 
-This option was deprecated in CLI `v3.6.0` in favor of plugin level `backend_options`, as each plugin as its own backend requirements. See more in each plugin documentation.
+This option was deprecated in CLI `v3.6.0` in favor of `backend_options`. See [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables) for more information.
 
 ### backend_spec
 
-This option was deprecated in CLI `v3.6.0` in favor of plugin level `backend_options`, as each plugin as its own backend requirements. See more in each plugin documentation.
+This option was deprecated in CLI `v3.6.0` in favor of `backend_options`. See [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables) for more information.

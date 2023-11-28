@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/plugins/source/oracle/client"
+	"github.com/cloudquery/cloudquery/plugins/source/oracle/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
@@ -16,7 +17,7 @@ import (
 
 type Client struct {
 	logger    zerolog.Logger
-	config    client.Spec
+	config    spec.Spec
 	tables    schema.Tables
 	scheduler *scheduler.Scheduler
 
@@ -65,14 +66,11 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 		}, nil
 	}
 
-	config := &client.Spec{}
+	config := &spec.Spec{}
 	if err := json.Unmarshal(specBytes, config); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 	config.SetDefaults()
-	if err := config.Validate(); err != nil {
-		return nil, fmt.Errorf("failed to validate spec: %w", err)
-	}
 
 	return &Client{
 		config: *config,

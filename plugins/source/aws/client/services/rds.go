@@ -31,6 +31,7 @@ type RdsClient interface {
 	DescribeDBProxyTargets(context.Context, *rds.DescribeDBProxyTargetsInput, ...func(*rds.Options)) (*rds.DescribeDBProxyTargetsOutput, error)
 	DescribeDBSecurityGroups(context.Context, *rds.DescribeDBSecurityGroupsInput, ...func(*rds.Options)) (*rds.DescribeDBSecurityGroupsOutput, error)
 	DescribeDBSnapshotAttributes(context.Context, *rds.DescribeDBSnapshotAttributesInput, ...func(*rds.Options)) (*rds.DescribeDBSnapshotAttributesOutput, error)
+	DescribeDBSnapshotTenantDatabases(context.Context, *rds.DescribeDBSnapshotTenantDatabasesInput, ...func(*rds.Options)) (*rds.DescribeDBSnapshotTenantDatabasesOutput, error)
 	DescribeDBSnapshots(context.Context, *rds.DescribeDBSnapshotsInput, ...func(*rds.Options)) (*rds.DescribeDBSnapshotsOutput, error)
 	DescribeDBSubnetGroups(context.Context, *rds.DescribeDBSubnetGroupsInput, ...func(*rds.Options)) (*rds.DescribeDBSubnetGroupsOutput, error)
 	DescribeEngineDefaultClusterParameters(context.Context, *rds.DescribeEngineDefaultClusterParametersInput, ...func(*rds.Options)) (*rds.DescribeEngineDefaultClusterParametersOutput, error)
@@ -40,6 +41,7 @@ type RdsClient interface {
 	DescribeEvents(context.Context, *rds.DescribeEventsInput, ...func(*rds.Options)) (*rds.DescribeEventsOutput, error)
 	DescribeExportTasks(context.Context, *rds.DescribeExportTasksInput, ...func(*rds.Options)) (*rds.DescribeExportTasksOutput, error)
 	DescribeGlobalClusters(context.Context, *rds.DescribeGlobalClustersInput, ...func(*rds.Options)) (*rds.DescribeGlobalClustersOutput, error)
+	DescribeIntegrations(context.Context, *rds.DescribeIntegrationsInput, ...func(*rds.Options)) (*rds.DescribeIntegrationsOutput, error)
 	DescribeOptionGroupOptions(context.Context, *rds.DescribeOptionGroupOptionsInput, ...func(*rds.Options)) (*rds.DescribeOptionGroupOptionsOutput, error)
 	DescribeOptionGroups(context.Context, *rds.DescribeOptionGroupsInput, ...func(*rds.Options)) (*rds.DescribeOptionGroupsOutput, error)
 	DescribeOrderableDBInstanceOptions(context.Context, *rds.DescribeOrderableDBInstanceOptionsInput, ...func(*rds.Options)) (*rds.DescribeOrderableDBInstanceOptionsOutput, error)
@@ -47,6 +49,7 @@ type RdsClient interface {
 	DescribeReservedDBInstances(context.Context, *rds.DescribeReservedDBInstancesInput, ...func(*rds.Options)) (*rds.DescribeReservedDBInstancesOutput, error)
 	DescribeReservedDBInstancesOfferings(context.Context, *rds.DescribeReservedDBInstancesOfferingsInput, ...func(*rds.Options)) (*rds.DescribeReservedDBInstancesOfferingsOutput, error)
 	DescribeSourceRegions(context.Context, *rds.DescribeSourceRegionsInput, ...func(*rds.Options)) (*rds.DescribeSourceRegionsOutput, error)
+	DescribeTenantDatabases(context.Context, *rds.DescribeTenantDatabasesInput, ...func(*rds.Options)) (*rds.DescribeTenantDatabasesOutput, error)
 	DescribeValidDBInstanceModifications(context.Context, *rds.DescribeValidDBInstanceModificationsInput, ...func(*rds.Options)) (*rds.DescribeValidDBInstanceModificationsOutput, error)
 	ListTagsForResource(context.Context, *rds.ListTagsForResourceInput, ...func(*rds.Options)) (*rds.ListTagsForResourceOutput, error)
 }

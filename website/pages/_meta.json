@@ -12,27 +12,26 @@
       "toc": true
     }
   },
-  "register_for_cloud": {
+  "register-for-cloud": {
     "title": "Register for CloudQuery Cloud",
-    "type": "page",
-    "theme": {
-      "layout": "full",
-      "sidebar": false
-    },
-    "href": "/register_for_cloud"
-  },
-  "integrations": {
-    "title": "Integrations",
     "type": "page",
     "theme": {
       "layout": "full",
       "sidebar": false
     }
   },
-  "policies": {
-    "title": "Policies",
-    "href": "/docs/core-concepts/policies",
-    "route": "/docs/core-concepts/policies"
+  "hub": {
+    "title": "Hub",
+    "href": "https://hub.cloudquery.io"
+  },
+  "integrations": {
+    "title": "Integrations",
+    "type": "page",
+    "display": "hidden",
+    "theme": {
+      "layout": "full",
+      "sidebar": false
+    }
   },
   "case-studies": {
     "title": "Case Studies",
@@ -51,14 +50,6 @@
     "title": "Solutions",
     "type": "menu",
     "items": {
-      "policies": {
-        "title": "Policies",
-        "href": "/docs/core-concepts/policies"
-      },
-      "dashboards": {
-        "title": "Dashboards",
-        "href": "/docs/core-concepts/dashboards"
-      },
       "blog": {
         "title": "Blog",
         "href": "/blog"
@@ -85,14 +76,6 @@
         "title": "Overview",
         "href": "/docs"
       },
-      "plugins":  {
-        "title": "Plugins",
-        "href": "/docs/plugins/overview"
-      },
-      "tables":  {
-        "title": "Tables",
-        "href": "/tables"
-      },
       "how-to-guides":  {
         "title": "How-to Guides",
         "href": "/how-to-guides"
@@ -110,10 +93,6 @@
         "href": "/docs/reference/destination-spec"
       }
     }
-  },
-  "Careers": {
-    "title": "Careers",
-    "href": "/docs/careers/overview"
   },
   "how-to-guides":  {
     "title": "How-to Guides",

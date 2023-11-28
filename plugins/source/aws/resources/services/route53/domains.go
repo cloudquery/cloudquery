@@ -3,8 +3,6 @@ package route53
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
-
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
@@ -12,6 +10,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Domains() *schema.Table {
@@ -21,7 +20,7 @@ func Domains() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_GetDomainDetail.html`,
 		Resolver:            fetchRoute53Domains,
 		PreResourceResolver: getDomain,
-		Transform:           transformers.TransformWithStruct(&route53domains.GetDomainDetailOutput{}),
+		Transform:           transformers.TransformWithStruct(&route53domains.GetDomainDetailOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "route53domains"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

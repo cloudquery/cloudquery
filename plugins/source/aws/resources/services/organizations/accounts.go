@@ -3,14 +3,13 @@ package organizations
 import (
 	"context"
 
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
-
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Accounts() *schema.Table {
@@ -36,7 +35,6 @@ The 'request_account_id' column is added to show from where the request was made
 			},
 		},
 		Relations: []*schema.Table{
-			delegatedServices(),
 			organizationalAccountParents(),
 		},
 	}

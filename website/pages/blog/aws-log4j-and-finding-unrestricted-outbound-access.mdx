@@ -23,7 +23,7 @@ In this blog we will go through:
 
 ## Log4j Vulnerability and Exploitability
 
-The vulnerability in the popular log4j library is a critical remote code execution described in a simple and understandable way in the [Swiss Government Emergency and Response site](https://www.govcert.ch/blog/zero-day-exploit-targeting-popular-java-library-log4j/). The main takeaway here is that for an application to be exploitable it has to answer 3 requirements:
+The vulnerability in the popular log4j library is a critical remote code execution described in a simple and understandable way in the [Swiss Government Emergency and Response site](https://github.com/govcert-ch/website/blob/8e3128159a0e078a1ad07317e191f236c54b8e11/content/blog/zero-day-exploit-targeting-popular-java-library-log4j/post.md). The main takeaway here is that for an application to be exploitable it has to answer 3 requirements:
 Java application with the vulnerable log4j version (Any version of log4j between versions 2.0 and 2.14.1 are affected).
 Application is logging user controllable strings. This one is really hard to detect or to know what log lines are or are not controllable by a user, So better to assume it is always user controllable.
 The application running the vulnerable version has unrestricted outbound access (Internet) to download the malicious payload from the attacker server or exfiltrate data.
@@ -44,7 +44,7 @@ Following is a query to identify all security groups with unrestricted outbound 
 
 **Prerequisite**:
 
-- Run `cloudquery sync` (See our [quickstart guide](https://www.cloudquery.io/docs/quickstart))
+- Run `cloudquery sync` (See our [quickstart guide](/docs/quickstart))
 - Create this view
 
 ```sql copy
@@ -101,7 +101,7 @@ The second requirement for outbound access is an internet gateway. Here is a que
 
 **Prerequisite**:
 
-- Run `cloudquery sync` (See our [quickstart guide](https://www.cloudquery.io/docs/quickstart))
+- Run `cloudquery sync` (See our [quickstart guide](/docs/quickstart))
 - Create this view
 
 ```sql copy

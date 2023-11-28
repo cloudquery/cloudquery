@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
@@ -62,12 +61,12 @@ ORDER BY
 	table_name ASC, ordinal_position ASC;
 `
 
-func (c *Client) listTables(ctx context.Context, include []string) (schema.Tables, error) {
+func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 	c.pgTablesToPKConstraints = map[string]string{}
 	var tables schema.Tables
-	whereClause := c.whereClause(include)
+	var whereClause string
 	if c.pgType == pgTypeCockroachDB {
-		whereClause += " AND information_schema.columns.is_hidden != 'YES'"
+		whereClause = " AND information_schema.columns.is_hidden != 'YES'"
 	}
 	q := fmt.Sprintf(selectTables, c.currentSchemaName, whereClause)
 	rows, err := c.conn.Query(ctx, q)
@@ -89,7 +88,20 @@ func (c *Client) listTables(ctx context.Context, include []string) (schema.Table
 			})
 		}
 		table := tables[len(tables)-1]
-		if pkName != "" {
+		// Note: constraints always have a name in PostgreSQL.
+		// However, we want not only to store the info about the constraint name,
+		// but also the fact that we saw such table.
+		switch pkName {
+		case "":
+			// We still store the fact that we saw the table
+			if _, ok := c.pgTablesToPKConstraints[tableName]; !ok {
+				// Just store the empty string.
+				// This will indicate 2 things:
+				// 1. We saw the table with this name
+				// 2. If this is still empty on insert, the table in the database doesn't have a PK constraint
+				c.pgTablesToPKConstraints[tableName] = ""
+			}
+		default:
 			c.pgTablesToPKConstraints[tableName], table.PkConstraintName = pkName, pkName
 		}
 		table.Columns = append(table.Columns, schema.Column{
@@ -100,29 +112,4 @@ func (c *Client) listTables(ctx context.Context, include []string) (schema.Table
 		})
 	}
 	return tables, nil
-}
-
-func (c *Client) whereClause(include []string) string {
-	if len(include) == 0 {
-		return ""
-	}
-	var where string
-	if len(include) > 0 {
-		where = fmt.Sprintf("AND pg_class.relname IN (%s)", c.inClause(include))
-	}
-	return where
-}
-
-func (*Client) inClause(values []string) string {
-	var inClause string
-	for i, value := range values {
-		value = strings.ReplaceAll(value, "'", "")  // strip single quotes
-		value = strings.ReplaceAll(value, "*", "%") // replace * with %
-		if i == 0 {
-			inClause = fmt.Sprintf("'%s'", value)
-			continue
-		}
-		inClause += fmt.Sprintf(", '%s'", value)
-	}
-	return inClause
 }

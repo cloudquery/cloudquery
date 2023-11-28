@@ -18,6 +18,7 @@ type Client struct {
 	plugin.UnimplementedSource
 	streamingbatchwriter.IgnoreMigrateTable
 	streamingbatchwriter.UnimplementedDeleteStale
+	streamingbatchwriter.UnimplementedDeleteRecords
 
 	logger zerolog.Logger
 	spec   *Spec

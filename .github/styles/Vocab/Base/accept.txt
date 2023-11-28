@@ -1,5 +1,7 @@
 ACL
 ACLs
+addon
+Addon
 Airbyte
 Airtable
 Ajv
@@ -14,6 +16,7 @@ ARNs
 Atlassian
 autoscaling
 Autoscaling
+AutoScaling
 aws
 AWS
 backend_spec
@@ -25,10 +28,12 @@ bool
 browsable
 bugfix
 Callout
+callout
 CCPA's
 Chargebee
 cis
 CIS
+Claeyssens
 CloudFormation
 Cloudinary
 cloudquery
@@ -52,6 +57,7 @@ CSPMs
 cyber
 cybersecurity
 Cybersecurity
+cychiang
 Datadog
 datasource
 Datasource
@@ -69,6 +75,7 @@ Detrack
 discoverability
 Docusaurus
 Dockerfile
+Dunelm
 ELB
 ELBs
 Embeddable
@@ -92,14 +99,18 @@ Firestore
 Fivetran
 format_spec
 Gandi
+Gagan
+Gaurav
 gcp
 GCP
 gists
+Gitea
 github
 GitHub
 GitLab
 goroutines
 Goroutines
+Gradle
 Grafana
 Grafana
 graphql
@@ -110,6 +121,7 @@ hcl
 HCL
 hostname
 Hostname
+Hotjar
 hyperfunctions
 hyperscale
 implementor
@@ -154,6 +166,7 @@ oad
 OAuth
 okta
 Okta
+onboarding
 Onfleet
 OpenAPI
 OUs
@@ -164,6 +177,7 @@ PayPal
 Pendo
 performant
 PKs
+plaintext
 pluggable
 Pluggable
 postgres

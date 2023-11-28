@@ -27,6 +27,7 @@ func main() {
 	err := interfaces.Generate(
 		clients,
 		path.Join(path.Dir(filename), "../client/services"),
+		interfaces.WithSinglePackage("services"),
 		interfaces.WithIncludeFunc(include),
 		interfaces.WithExtraImports(extraImports),
 	)

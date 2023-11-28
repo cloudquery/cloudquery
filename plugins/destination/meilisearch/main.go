@@ -1,6 +1,9 @@
 package main
 
 import (
+	"context"
+	"log"
+
 	"github.com/cloudquery/cloudquery/plugins/destination/meilisearch/client"
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/meilisearch/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
@@ -12,12 +15,14 @@ const (
 )
 
 func main() {
-	serve.Plugin(
-		plugin.NewPlugin(
-			"meilisearch",
-			internalPlugin.Version,
-			client.New,
-		),
-		serve.WithPluginSentryDSN(sentryDSN),
+	p := plugin.NewPlugin(internalPlugin.Name, internalPlugin.Version, client.New,
+		plugin.WithKind(internalPlugin.Kind),
+		plugin.WithTeam(internalPlugin.Team),
 	)
+	if err := serve.Plugin(p,
+		serve.WithPluginSentryDSN(sentryDSN),
+		serve.WithDestinationV0V1Server(),
+	).Serve(context.Background()); err != nil {
+		log.Fatalf("failed to serve plugin: %v", err)
+	}
 }
