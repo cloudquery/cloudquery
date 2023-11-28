@@ -20,8 +20,8 @@ func transitGatewayMulticastDomains() *schema.Table {
 		Resolver:    fetchEc2TransitGatewayMulticastDomains,
 		Transform:   transformers.TransformWithStruct(&types.TransitGatewayMulticastDomain{}, transformers.WithResolverTransformer(client.TagsResolverTransformer)),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 			{
 				Name:       "transit_gateway_arn",
 				Type:       arrow.BinaryTypes.String,

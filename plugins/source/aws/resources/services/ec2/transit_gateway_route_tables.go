@@ -20,8 +20,8 @@ func transitGatewayRouteTables() *schema.Table {
 		Resolver:    fetchEc2TransitGatewayRouteTables,
 		Transform:   transformers.TransformWithStruct(&types.TransitGatewayRouteTable{}, transformers.WithResolverTransformer(client.TagsResolverTransformer)),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 			{
 				Name:       "transit_gateway_arn",
 				Type:       arrow.BinaryTypes.String,

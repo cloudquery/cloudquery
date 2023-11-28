@@ -20,8 +20,8 @@ func transitGatewayPeeringAttachments() *schema.Table {
 		Resolver:    fetchEc2TransitGatewayPeeringAttachments,
 		Transform:   transformers.TransformWithStruct(&types.TransitGatewayPeeringAttachment{}, transformers.WithResolverTransformer(client.TagsResolverTransformer)),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 			{
 				Name:       "transit_gateway_arn",
 				Type:       arrow.BinaryTypes.String,
