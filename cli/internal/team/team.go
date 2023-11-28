@@ -10,7 +10,6 @@ import (
 )
 
 type Client struct {
-	url string
 	api *cloudquery_api.ClientWithResponses
 }
 
@@ -23,9 +22,14 @@ func NewClient(url string, token string) (*Client, error) {
 		return nil, err
 	}
 	return &Client{
-		url: url,
 		api: cl,
 	}, nil
+}
+
+func NewClientFromAPI(api *cloudquery_api.ClientWithResponses) *Client {
+	return &Client{
+		api: api,
+	}
 }
 
 func (c *Client) ValidateTeam(ctx context.Context, teamName string) error {

@@ -42,18 +42,16 @@ func fetchAccessanalyzerAnalyzerFindings(ctx context.Context, meta schema.Client
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceAccessanalyzer).Accessanalyzer
 
-	for _, cfg := range cl.Spec.TableOptions.AccessAnalyzerFindings.Filters() {
-		cfg.AnalyzerArn = analyzer.Arn
-		paginator := accessanalyzer.NewListFindingsPaginator(svc, &cfg.ListFindingsInput)
-		for paginator.HasMorePages() {
-			page, err := paginator.NextPage(ctx, func(options *accessanalyzer.Options) {
-				options.Region = cl.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- page.Findings
+	input := &accessanalyzer.ListFindingsInput{AnalyzerArn: analyzer.Arn}
+	paginator := accessanalyzer.NewListFindingsPaginator(svc, input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx, func(options *accessanalyzer.Options) {
+			options.Region = cl.Region
+		})
+		if err != nil {
+			return err
 		}
+		res <- page.Findings
 	}
 	return nil
 }

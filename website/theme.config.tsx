@@ -43,6 +43,7 @@ const theme: DocsThemeConfig = {
       </>
     );
   },
+  logoLink: "/docs",
   head: () => {
     const { frontMatter } = useConfig();
     return (

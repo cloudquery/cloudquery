@@ -54,7 +54,7 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, options p
 	c.scheduler = scheduler.NewScheduler(
 		scheduler.WithConcurrency(s.Concurrency),
 		scheduler.WithLogger(logger),
-		scheduler.WithStrategy(s.Scheduler),
+		scheduler.WithStrategy(*s.Scheduler),
 	)
 	return c, nil
 }
