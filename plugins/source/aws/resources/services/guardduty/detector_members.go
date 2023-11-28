@@ -24,16 +24,18 @@ func detectorMembers() *schema.Table {
 			transformers.WithTypeTransformer(client.TimestampTypeTransformer),
 			transformers.WithResolverTransformer(client.TimestampResolverTransformer),
 		),
-		Columns: []schema.Column{
+		Columns: schema.ColumnList{
 			{
-				Name:     "request_account_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAWSAccount,
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
 			},
 			{
-				Name:     "request_region",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAWSRegion,
+				Name:       "request_region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSRegion,
+				PrimaryKey: true,
 			},
 			{
 				Name:       "detector_arn",

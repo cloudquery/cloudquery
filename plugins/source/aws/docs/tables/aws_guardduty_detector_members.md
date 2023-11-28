@@ -4,7 +4,7 @@ This table shows data for Amazon GuardDuty Detector Members.
 
 https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Member.html
 
-The composite primary key for this table is (**detector_arn**, **account_id**).
+The composite primary key for this table is (**request_account_id**, **request_region**, **detector_arn**, **account_id**).
 
 ## Relations
 
@@ -16,8 +16,8 @@ This table depends on [aws_guardduty_detectors](aws_guardduty_detectors.md).
 | ------------- | ------------- |
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|request_account_id|`utf8`|
-|request_region|`utf8`|
+|request_account_id (PK)|`utf8`|
+|request_region (PK)|`utf8`|
 |detector_arn (PK)|`utf8`|
 |account_id (PK)|`utf8`|
 |email|`utf8`|
