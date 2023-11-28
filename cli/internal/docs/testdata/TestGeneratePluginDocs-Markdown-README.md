@@ -3,6 +3,7 @@
 ## Tables
 
 - [incremental_table](incremental_table.md) (Incremental)
+- [paid_table](paid_table.md)
 - [test_table](test_table.md)
   - [relation_table](relation_table.md)
     - [relation_relation_table_a](relation_relation_table_a.md)
