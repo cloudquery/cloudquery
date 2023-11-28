@@ -22,8 +22,8 @@ func Users() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.User{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "identitystore"),
 		Columns: schema.ColumnList{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
+			client.RequestAccountIDColumn(true),
+			client.RequestRegionColumn(true),
 			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,

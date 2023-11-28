@@ -21,8 +21,8 @@ func groupMemberships() *schema.Table {
 		Resolver:    fetchGroupMemberships,
 		Transform:   transformers.TransformWithStruct(&types.GroupMembership{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
+			client.RequestAccountIDColumn(true),
+			client.RequestRegionColumn(true),
 			{
 				Name:       "group_arn",
 				Type:       arrow.BinaryTypes.String,
