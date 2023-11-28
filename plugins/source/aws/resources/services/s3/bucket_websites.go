@@ -24,6 +24,7 @@ func bucketWebsites() *schema.Table {
 				Name:     "bucket_arn",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
