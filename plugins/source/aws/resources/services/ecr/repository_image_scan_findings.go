@@ -18,7 +18,7 @@ func repositoryImageScanFindings() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageScanFindings.html`,
 		Resolver:    fetchEcrRepositoryImageScanFindings,
 		Transform: transformers.TransformWithStruct(&ecr.DescribeImageScanFindingsOutput{},
-			transformers.WithSkipFields("ImageId", "NextToken", "ResultMetadata"),
+			transformers.WithSkipFields("NextToken", "ResultMetadata"),
 		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

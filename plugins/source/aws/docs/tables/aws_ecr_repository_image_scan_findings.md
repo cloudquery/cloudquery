@@ -20,6 +20,7 @@ This table depends on [aws_ecr_repository_images](aws_ecr_repository_images.md).
 |region|`utf8`|
 |repository_arn (PK)|`utf8`|
 |image_digest (PK)|`utf8`|
+|image_id|`json`|
 |image_scan_findings|`json`|
 |image_scan_status|`json`|
 |registry_id|`utf8`|
