@@ -47,6 +47,7 @@ var GcpServices = map[string]bool{
 	"biglake.googleapis.com":                          true,
 	"bigquery.googleapis.com":                         true,
 	"bigqueryconnection.googleapis.com":               true,
+	"bigquerydatapolicy.googleapis.com":               true,
 	"bigquerydatatransfer.googleapis.com":             true,
 	"bigqueryreservation.googleapis.com":              true,
 	"bigtableadmin.googleapis.com":                    true,
