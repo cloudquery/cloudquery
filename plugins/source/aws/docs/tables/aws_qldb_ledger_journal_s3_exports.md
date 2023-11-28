@@ -4,7 +4,7 @@ This table shows data for Quantum Ledger Database (QLDB) Ledger Journal S3 Expor
 
 https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalS3ExportDescription.html
 
-The primary key for this table is **export_id**.
+The composite primary key for this table is (**ledger_arn**, **export_id**).
 
 ## Relations
 
@@ -18,7 +18,7 @@ This table depends on [aws_qldb_ledgers](aws_qldb_ledgers.md).
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|ledger_arn|`utf8`|
+|ledger_arn (PK)|`utf8`|
 |exclusive_end_time|`timestamp[us, tz=UTC]`|
 |export_creation_time|`timestamp[us, tz=UTC]`|
 |export_id (PK)|`utf8`|
