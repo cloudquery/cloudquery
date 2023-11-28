@@ -1,6 +1,4 @@
 \echo  "Executing CIS V1.5.0 Section 1"
-\echo "Creating view_aws_iam_policy_statements"
-\ir ../views/iam_policy_statements.sql
 \set check_id '1.1'
     -- manual
 \set check_id '1.2'
