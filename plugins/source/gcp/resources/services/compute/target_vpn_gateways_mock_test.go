@@ -12,8 +12,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 )
 
-func createVpnTunnels(mux *httprouter.Router) error {
-	var item pb.VpnTunnelAggregatedList
+func createTargetVpnGateways(mux *httprouter.Router) error {
+	var item pb.TargetVpnGatewayAggregatedList
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
@@ -33,6 +33,6 @@ func createVpnTunnels(mux *httprouter.Router) error {
 	return nil
 }
 
-func TestVpnTunnels(t *testing.T) {
-	client.MockTestRestHelper(t, VpnTunnels(), createVpnTunnels, client.TestOptions{})
+func TestTargetVpnGateways(t *testing.T) {
+	client.MockTestRestHelper(t, TargetVpnGateways(), createTargetVpnGateways, client.TestOptions{})
 }

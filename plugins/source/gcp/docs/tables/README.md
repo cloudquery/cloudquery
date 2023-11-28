@@ -115,6 +115,7 @@
 - [gcp_compute_subnetworks](gcp_compute_subnetworks.md)
 - [gcp_compute_target_http_proxies](gcp_compute_target_http_proxies.md)
 - [gcp_compute_target_ssl_proxies](gcp_compute_target_ssl_proxies.md)
+- [gcp_compute_target_vpn_gateways](gcp_compute_target_vpn_gateways.md)
 - [gcp_compute_url_maps](gcp_compute_url_maps.md)
 - [gcp_compute_vpn_gateways](gcp_compute_vpn_gateways.md)
 - [gcp_compute_vpn_tunnels](gcp_compute_vpn_tunnels.md)
