@@ -55,7 +55,7 @@ Each table in the supported list is a top level table. When an event is received
 
 The CloudFormation template will deploy the following architecture:
 
-![Event based syncing cloud infrastructure](/images/docs/aws/event-based-sync-architecture.png)
+![Event based syncing cloud infrastructure](https://docs.cloudquery.io/images/docs/aws/event-based-sync-architecture.png)
 
 
 ```bash
