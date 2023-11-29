@@ -5,6 +5,20 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.1.2](https://github.com/cloudquery/cloudquery/compare/cli-v4.1.1...cli-v4.1.2) (2023-11-28)
+
+
+### Bug Fixes
+
+* Add missing new line for paid tables docs ([#15490](https://github.com/cloudquery/cloudquery/issues/15490)) ([e17023c](https://github.com/cloudquery/cloudquery/commit/e17023c2e53098556ecb1c5f7b197c65e32ce168))
+
+## [4.1.1](https://github.com/cloudquery/cloudquery/compare/cli-v4.1.0...cli-v4.1.1) (2023-11-28)
+
+
+### Bug Fixes
+
+* Move paid table indication to the top ([#15482](https://github.com/cloudquery/cloudquery/issues/15482)) ([3c5e084](https://github.com/cloudquery/cloudquery/commit/3c5e08477c212c6f5032daf1ecfa7e68c8438cd8))
+
 ## [4.1.0](https://github.com/cloudquery/cloudquery/compare/cli-v4.0.1...cli-v4.1.0) (2023-11-28)
 
 
