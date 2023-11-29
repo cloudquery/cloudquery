@@ -35,7 +35,6 @@ The 'request_account_id' column is added to show from where the request was made
 			},
 		},
 		Relations: []*schema.Table{
-			delegatedServices(),
 			organizationalAccountParents(),
 		},
 	}

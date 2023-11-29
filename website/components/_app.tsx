@@ -31,7 +31,7 @@ const getCanonicalUrl = (path: string) => {
     return;
   }
 
-  return (`https://www.cloudquery.io` + (path === "/" ? "" : path)).split(
+  return (`https://docs.cloudquery.io` + (path === "/" ? "" : path)).split(
     "?",
   )[0];
 };
