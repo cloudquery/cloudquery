@@ -9,6 +9,221 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [23.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.19.2...plugins-source-aws-v23.0.0) (2023-11-29)
 
 
+### This Release has the Following Changes to Tables
+- Table `aws_accessanalyzer_analyzer_archive_rules`: primary key constraint added to column `analyzer_arn` (:warning: breaking)
+- Table `aws_accessanalyzer_analyzer_archive_rules`: primary key constraint added to column `rule_name` (:warning: breaking)
+- Table `aws_accessanalyzer_analyzer_archive_rules`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_alpha_cloudwatch_metric_statistics` was removed (:warning: breaking)
+- Table `aws_alpha_cloudwatch_metrics` was removed (:warning: breaking)
+- Table `aws_alpha_costexplorer_cost_custom` was removed (:warning: breaking)
+- Table `aws_apprunner_custom_domains`: column added with name `service_arn (PK)` and type `utf8` (:warning: breaking)
+- Table `aws_apprunner_custom_domains`: primary key constraint added to column `domain_name` (:warning: breaking)
+- Table `aws_apprunner_custom_domains`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_apprunner_operations`: column added with name `service_arn (PK)` and type `utf8` (:warning: breaking)
+- Table `aws_apprunner_operations`: primary key constraint added to column `id` (:warning: breaking)
+- Table `aws_apprunner_operations`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_athena_work_group_named_queries`: primary key constraint added to column `named_query_id` (:warning: breaking)
+- Table `aws_athena_work_group_named_queries`: primary key constraint added to column `work_group_arn` (:warning: breaking)
+- Table `aws_athena_work_group_named_queries`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_athena_work_group_prepared_statements`: primary key constraint added to column `statement_name` (:warning: breaking)
+- Table `aws_athena_work_group_prepared_statements`: primary key constraint added to column `work_group_arn` (:warning: breaking)
+- Table `aws_athena_work_group_prepared_statements`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_athena_work_group_query_executions`: primary key constraint added to column `query_execution_id` (:warning: breaking)
+- Table `aws_athena_work_group_query_executions`: primary key constraint added to column `work_group_arn` (:warning: breaking)
+- Table `aws_athena_work_group_query_executions`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_autoscaling_group_lifecycle_hooks`: primary key constraint added to column `group_arn` (:warning: breaking)
+- Table `aws_autoscaling_group_lifecycle_hooks`: primary key constraint added to column `lifecycle_hook_name` (:warning: breaking)
+- Table `aws_autoscaling_group_lifecycle_hooks`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_autoscaling_groups`: column added with name `instance_maintenance_policy` and type `json`
+- Table `aws_backup_global_settings`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_backup_jobs`: column added with name `message_category` and type `utf8`
+- Table `aws_backup_plan_selections`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_backup_plan_selections`: column added with name `plan_version_id (PK)` and type `utf8` (:warning: breaking)
+- Table `aws_backup_plan_selections`: primary key constraint added to column `plan_arn` (:warning: breaking)
+- Table `aws_backup_plan_selections`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_backup_plans`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_backup_plans`: primary key constraint added to column `version_id` (:warning: breaking)
+- Table `aws_backup_region_settings`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_cloudformation_stack_instance_summaries`: primary key constraint added to column `stack_id` (:warning: breaking)
+- Table `aws_cloudformation_stack_resources`: primary key constraint added to column `logical_resource_id` (:warning: breaking)
+- Table `aws_cloudformation_stack_resources`: primary key constraint added to column `stack_id` (:warning: breaking)
+- Table `aws_cloudformation_stack_resources`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_cloudformation_stack_set_operation_results`: primary key constraint added to column `account` (:warning: breaking)
+- Table `aws_cloudformation_stack_set_operation_results`: primary key constraint added to column `operation_id` (:warning: breaking)
+- Table `aws_cloudformation_stack_set_operation_results`: primary key constraint added to column `region` (:warning: breaking)
+- Table `aws_cloudformation_stack_set_operation_results`: primary key constraint added to column `request_account_id` (:warning: breaking)
+- Table `aws_cloudformation_stack_set_operation_results`: primary key constraint added to column `request_region` (:warning: breaking)
+- Table `aws_cloudformation_stack_set_operation_results`: primary key constraint added to column `stack_set_arn` (:warning: breaking)
+- Table `aws_cloudformation_stack_set_operation_results`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_cloudfront_functions`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_cloudtrail_channels`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_codepipeline_pipelines`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_cognito_identity_pools`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_cognito_user_pool_identity_providers`: primary key constraint added to column `provider_name` (:warning: breaking)
+- Table `aws_cognito_user_pool_identity_providers`: primary key constraint added to column `user_pool_arn` (:warning: breaking)
+- Table `aws_cognito_user_pool_identity_providers`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_config_config_rule_compliance_details`: column added with name `config_rule_arn (PK)` and type `utf8` (:warning: breaking)
+- Table `aws_config_config_rule_compliance_details`: column added with name `resource_evaluation_id (PK)` and type `utf8` (:warning: breaking)
+- Table `aws_config_config_rule_compliance_details`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_config_config_rule_compliances`: column added with name `config_rule_arn (PK)` and type `utf8` (:warning: breaking)
+- Table `aws_config_config_rule_compliances`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_config_remediation_configurations`: column added with name `config_rule_arn` and type `utf8`
+- Table `aws_docdb_cluster_snapshots`: column added with name `storage_type` and type `utf8`
+- Table `aws_docdb_clusters`: column added with name `storage_type` and type `utf8`
+- Table `aws_docdb_engine_versions`: column added with name `supported_ca_certificate_identifiers` and type `list<item: utf8, nullable>`
+- Table `aws_docdb_engine_versions`: column added with name `supports_certificate_rotation_without_restart` and type `bool`
+- Table `aws_docdb_instances`: column added with name `certificate_details` and type `json`
+- Table `aws_docdb_orderable_db_instance_options`: column added with name `storage_type` and type `utf8`
+- Table `aws_ec2_byoip_cidrs`: column added with name `asn_associations` and type `json`
+- Table `aws_ec2_image_launch_permissions`: primary key constraint added to column `image_arn` (:warning: breaking)
+- Table `aws_ec2_image_launch_permissions`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_ec2_images`: column type changed from `utf8` to `timestamp[us, tz=UTC]` for `creation_date` (:warning: breaking)
+- Table `aws_ec2_images`: column type changed from `utf8` to `timestamp[us, tz=UTC]` for `deprecation_time` (:warning: breaking)
+- Table `aws_ec2_instance_statuses`: column `arn` removed from table (:warning: breaking)
+- Table `aws_ec2_instance_statuses`: primary key constraint added to column `account_id` (:warning: breaking)
+- Table `aws_ec2_instance_statuses`: primary key constraint added to column `instance_id` (:warning: breaking)
+- Table `aws_ec2_instance_statuses`: primary key constraint added to column `region` (:warning: breaking)
+- Table `aws_ec2_instance_types`: column `arn` removed from table (:warning: breaking)
+- Table `aws_ec2_instance_types`: primary key constraint added to column `account_id` (:warning: breaking)
+- Table `aws_ec2_instance_types`: primary key constraint added to column `instance_type` (:warning: breaking)
+- Table `aws_ec2_instance_types`: primary key constraint added to column `region` (:warning: breaking)
+- Table `aws_ec2_network_interfaces`: column added with name `connection_tracking_configuration` and type `json`
+- Table `aws_ec2_transit_gateway_attachments`: column added with name `id (PK)` and type `utf8` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_attachments`: primary key constraint added to column `account_id` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_attachments`: primary key constraint added to column `region` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_attachments`: primary key constraint added to column `transit_gateway_arn` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_attachments`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_multicast_domains`: column added with name `arn (PK)` and type `utf8` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_multicast_domains`: primary key constraint added to column `account_id` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_multicast_domains`: primary key constraint added to column `region` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_multicast_domains`: primary key constraint added to column `transit_gateway_arn` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_multicast_domains`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_peering_attachments`: column added with name `id (PK)` and type `utf8` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_peering_attachments`: primary key constraint added to column `account_id` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_peering_attachments`: primary key constraint added to column `region` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_peering_attachments`: primary key constraint added to column `transit_gateway_arn` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_peering_attachments`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_route_tables`: column added with name `id (PK)` and type `utf8` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_route_tables`: primary key constraint added to column `account_id` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_route_tables`: primary key constraint added to column `region` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_route_tables`: primary key constraint added to column `transit_gateway_arn` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_route_tables`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_vpc_attachments`: column added with name `id (PK)` and type `utf8` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_vpc_attachments`: primary key constraint added to column `account_id` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_vpc_attachments`: primary key constraint added to column `region` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_vpc_attachments`: primary key constraint added to column `transit_gateway_arn` (:warning: breaking)
+- Table `aws_ec2_transit_gateway_vpc_attachments`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_ec2_vpc_endpoint_service_configurations`: column `arn` removed from table (:warning: breaking)
+- Table `aws_ec2_vpc_endpoint_service_configurations`: primary key constraint added to column `account_id` (:warning: breaking)
+- Table `aws_ec2_vpc_endpoint_service_configurations`: primary key constraint added to column `region` (:warning: breaking)
+- Table `aws_ec2_vpc_endpoint_service_configurations`: primary key constraint added to column `service_id` (:warning: breaking)
+- Table `aws_ec2_vpc_endpoint_services`: column `arn` removed from table (:warning: breaking)
+- Table `aws_ec2_vpc_endpoint_services`: primary key constraint added to column `account_id` (:warning: breaking)
+- Table `aws_ec2_vpc_endpoint_services`: primary key constraint added to column `region` (:warning: breaking)
+- Table `aws_ec2_vpc_endpoint_services`: primary key constraint added to column `service_id` (:warning: breaking)
+- Table `aws_ecr_pull_through_cache_rules`: column added with name `credential_arn` and type `utf8`
+- Table `aws_ecr_pull_through_cache_rules`: column added with name `updated_at` and type `timestamp[us, tz=UTC]`
+- Table `aws_ecr_pull_through_cache_rules`: column added with name `upstream_registry` and type `utf8`
+- Table `aws_ecr_registries`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_ecr_registry_policies`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_ecr_repositories`: column `policy_text` removed from table (:warning: breaking)
+- Table `aws_ecr_repository_policies` was added
+- Table `aws_elasticache_reserved_cache_nodes_offerings`: column `arn` removed from table (:warning: breaking)
+- Table `aws_elasticache_reserved_cache_nodes_offerings`: primary key constraint added to column `account_id` (:warning: breaking)
+- Table `aws_elasticache_reserved_cache_nodes_offerings`: primary key constraint added to column `region` (:warning: breaking)
+- Table `aws_elasticache_reserved_cache_nodes_offerings`: primary key constraint added to column `reserved_cache_nodes_offering_id` (:warning: breaking)
+- Table `aws_emr_block_public_access_configs`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_emr_studios`: column added with name `encryption_key_arn` and type `utf8`
+- Table `aws_emr_studios`: column added with name `idc_instance_arn` and type `utf8`
+- Table `aws_emr_studios`: column added with name `idc_user_assignment` and type `utf8`
+- Table `aws_emr_studios`: column added with name `trusted_identity_propagation_enabled` and type `bool`
+- Table `aws_glue_registry_schema_versions`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_glue_registry_schemas`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_guardduty_detectors`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_iam_account_authorization_details` was added
+- Table `aws_iam_group_policies`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_iam_openid_connect_identity_providers`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_iam_policies`: column `policy_version_list` removed from table (:warning: breaking)
+- Table `aws_iam_policy_versions` was added
+- Table `aws_iam_role_policies`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_iam_user_policies`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_iot_billing_groups`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_iot_security_profiles`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_iot_security_profiles`: column added with name `metrics_export_config` and type `json`
+- Table `aws_iot_thing_groups`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_iot_topic_rules`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_lambda_function_aliases`: column `url_config` removed from table (:warning: breaking)
+- Table `aws_lambda_function_url_configs`: primary key constraint removed from column `function_url` (:warning: breaking)
+- Table `aws_lambda_function_versions`: column added with name `logging_config` and type `json`
+- Table `aws_lambda_functions`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_lambda_layer_version_policies`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_mq_broker_configuration_revisions`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_mq_broker_users`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_mq_brokers`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_mwaa_environments`: column added with name `celery_executor_queue` and type `utf8`
+- Table `aws_mwaa_environments`: column added with name `database_vpc_endpoint_service` and type `utf8`
+- Table `aws_mwaa_environments`: column added with name `endpoint_management` and type `utf8`
+- Table `aws_mwaa_environments`: column added with name `webserver_vpc_endpoint_service` and type `utf8`
+- Table `aws_organizations`: column `account_id` removed from table (:warning: breaking)
+- Table `aws_organizations`: column added with name `request_account_id (PK)` and type `utf8` (:warning: breaking)
+- Table `aws_qldb_ledgers`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_quicksight_analyses`: column `options` removed from table (:warning: breaking)
+- Table `aws_rds_clusters`: column added with name `status_infos` and type `json`
+- Table `aws_rds_db_snapshots`: column added with name `multi_tenant` and type `bool`
+- Table `aws_rds_instances`: column added with name `multi_tenant` and type `bool`
+- Table `aws_redshift_endpoint_access` was renamed to `aws_redshift_endpoint_accesses` (:warning: breaking)
+- Table `aws_redshift_endpoint_authorization` was renamed to `aws_redshift_endpoint_authorizations` (:warning: breaking)
+- Table `aws_resiliencehub_alarm_recommendations`: column added with name `recommendation_status` and type `utf8`
+- Table `aws_resiliencehub_sop_recommendations`: column added with name `recommendation_status` and type `utf8`
+- Table `aws_resiliencehub_test_recommendations`: column added with name `recommendation_status` and type `utf8`
+- Table `aws_route53_domains`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_s3_bucket_cors_rules`: primary key constraint added to column `bucket_arn` (:warning: breaking)
+- Table `aws_s3_bucket_cors_rules`: primary key constraint added to column `id` (:warning: breaking)
+- Table `aws_s3_bucket_cors_rules`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_s3_bucket_lifecycles`: primary key constraint added to column `bucket_arn` (:warning: breaking)
+- Table `aws_s3_bucket_lifecycles`: primary key constraint added to column `id` (:warning: breaking)
+- Table `aws_s3_bucket_lifecycles`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_s3_bucket_loggings` was added
+- Table `aws_s3_bucket_ownership_controls` was added
+- Table `aws_s3_bucket_policies` was added
+- Table `aws_s3_bucket_public_access_blocks` was added
+- Table `aws_s3_bucket_replications` was added
+- Table `aws_s3_bucket_versionings` was added
+- Table `aws_s3_bucket_websites`: primary key constraint added to column `bucket_arn` (:warning: breaking)
+- Table `aws_s3_bucket_websites`: primary key constraint removed from column `_cq_id` (:warning: breaking)
+- Table `aws_s3_buckets`: column `block_public_acls` removed from table (:warning: breaking)
+- Table `aws_s3_buckets`: column `block_public_policy` removed from table (:warning: breaking)
+- Table `aws_s3_buckets`: column `ignore_public_acls` removed from table (:warning: breaking)
+- Table `aws_s3_buckets`: column `logging_target_bucket` removed from table (:warning: breaking)
+- Table `aws_s3_buckets`: column `logging_target_prefix` removed from table (:warning: breaking)
+- Table `aws_s3_buckets`: column `ownership_controls` removed from table (:warning: breaking)
+- Table `aws_s3_buckets`: column `policy` removed from table (:warning: breaking)
+- Table `aws_s3_buckets`: column `replication_role` removed from table (:warning: breaking)
+- Table `aws_s3_buckets`: column `replication_rules` removed from table (:warning: breaking)
+- Table `aws_s3_buckets`: column `restrict_public_buckets` removed from table (:warning: breaking)
+- Table `aws_s3_buckets`: column `versioning_mfa_delete` removed from table (:warning: breaking)
+- Table `aws_s3_buckets`: column `versioning_status` removed from table (:warning: breaking)
+- Table `aws_sagemaker_endpoint_configurations`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_sagemaker_models`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_sagemaker_notebook_instances`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_sagemaker_training_jobs`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_securityhub_hubs`: column `result_metadata` removed from table (:warning: breaking)
+- Table `aws_ssoadmin_instances`: column added with name `created_date` and type `timestamp[us, tz=UTC]`
+- Table `aws_ssoadmin_instances`: column added with name `name` and type `utf8`
+- Table `aws_ssoadmin_instances`: column added with name `owner_account_id` and type `utf8`
+- Table `aws_ssoadmin_instances`: column added with name `status` and type `utf8`
+- Table `aws_stepfunctions_executions`: column added with name `redrive_count` and type `int64`
+- Table `aws_stepfunctions_executions`: column added with name `redrive_date` and type `timestamp[us, tz=UTC]`
+- Table `aws_stepfunctions_executions`: column added with name `redrive_status_reason` and type `utf8`
+- Table `aws_stepfunctions_executions`: column added with name `redrive_status` and type `utf8`
+- Table `aws_stepfunctions_map_run_executions`: column added with name `redrive_count` and type `int64`
+- Table `aws_stepfunctions_map_run_executions`: column added with name `redrive_date` and type `timestamp[us, tz=UTC]`
+- Table `aws_stepfunctions_map_run_executions`: column added with name `redrive_status_reason` and type `utf8`
+- Table `aws_stepfunctions_map_run_executions`: column added with name `redrive_status` and type `utf8`
+- Table `aws_stepfunctions_map_runs`: column added with name `redrive_count` and type `int64`
+- Table `aws_stepfunctions_map_runs`: column added with name `redrive_date` and type `timestamp[us, tz=UTC]`
+- Table `aws_transfer_servers`: column added with name `s3_storage_options` and type `json`
+
 ### ⚠ BREAKING CHANGES
 
 * Provide primary keys for `aws_ec2_transit_gateway_*` tables (https://github.com/cloudquery/cloudquery/pull/15432). The following tables are affected:
