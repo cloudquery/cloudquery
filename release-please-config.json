@@ -74,9 +74,6 @@
     "plugins/source/awspricing": {
       "component": "plugins-source-awspricing"
     },
-    "plugins/source/azure": {
-      "component": "plugins-source-azure"
-    },
     "plugins/source/bitbucket": {
       "component": "plugins-source-bitbucket",
       "release-type": "simple"
