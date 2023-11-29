@@ -6,6 +6,107 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [23.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.19.2...plugins-source-aws-v23.0.0) (2023-11-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* Provide primary keys for `aws_ec2_transit_gateway_*` tables (https://github.com/cloudquery/cloudquery/pull/15432). The following tables are affected:
+    * `aws_ec2_transit_gateway_attachments`
+    * `aws_ec2_transit_gateway_multicast_domains`
+    * `aws_ec2_transit_gateway_peering_attachments`
+    * `aws_ec2_transit_gateway_route_tables`
+    * `aws_ec2_transit_gateway_vpc_attachments`
+* Decouple AWS Account Authorization from IAM Policies ([#15495](https://github.com/cloudquery/cloudquery/issues/15495))
+* Provide primary keys for tables (S3) (https://github.com/cloudquery/cloudquery/pull/15494). The following tables are affected:
+    * `aws_s3_bucket_cors_rules`
+    * `aws_s3_bucket_lifecycles`
+    * `aws_s3_bucket_loggings`
+    * `aws_s3_bucket_ownership_controls`
+    * `aws_s3_bucket_policies`
+    * `aws_s3_bucket_public_access_blocks`
+    * `aws_s3_bucket_replications`
+    * `aws_s3_bucket_versionings`
+    * `aws_s3_bucket_websites`
+* Provide primary keys for tables (C) (https://github.com/cloudquery/cloudquery/pull/15413). The following tables are affected:
+    * `aws_cognito_user_pool_identity_providers`
+    * `aws_config_config_rule_compliance_details`
+    * `aws_config_config_rule_compliances`
+* Refactor `aws_s3_buckets` to use nested tables rather than that column resolvers ([#15395](https://github.com/cloudquery/cloudquery/issues/15395))
+* Move `aws_organizations_delegated_services` to be a relation of `aws_organizations_delegated_administrators` ([#15424](https://github.com/cloudquery/cloudquery/issues/15424))
+* Deprecate AWS SQL policies ([#15487](https://github.com/cloudquery/cloudquery/issues/15487))
+* Move `aws_ecr_repositories.policy_text` to its own table `aws_ecr_repository_policies` ([#15425](https://github.com/cloudquery/cloudquery/issues/15425))
+* Change primary key for `aws_organizations` such that it can accurately handle all data ([#15422](https://github.com/cloudquery/cloudquery/issues/15422))
+* Remove deprecated `table_options` ([#15405](https://github.com/cloudquery/cloudquery/issues/15405))
+* Set `EfsFilesystemBackupPolicyStatus` value to `nil` when API returns 404 ([#15407](https://github.com/cloudquery/cloudquery/issues/15407))
+* Remove premium-only `event_based_sync` spec ([#15412](https://github.com/cloudquery/cloudquery/issues/15412))
+* **deps:** Remove `options` column from `aws_quicksight_analyses` table (https://github.com/cloudquery/cloudquery/pull/15394)
+* Change default scheduler from `dfs` to `shuffle`  ([#15386](https://github.com/cloudquery/cloudquery/issues/15386))
+* Remove `aws_alpha_*` tables ([#15398](https://github.com/cloudquery/cloudquery/issues/15398))
+* Remove all `result_metadata` columns ([#15371](https://github.com/cloudquery/cloudquery/issues/15371))
+* Provide primary keys for tables (A-C) (https://github.com/cloudquery/cloudquery/pull/15389). The following tables are affected:
+    * `aws_accessanalyzer_analyzer_archive_rules`
+    * `aws_apprunner_custom_domains`
+    * `aws_apprunner_operations`
+    * `aws_athena_work_group_named_queries`
+    * `aws_athena_work_group_prepared_statements`
+    * `aws_athena_work_group_query_executions`
+    * `aws_autoscaling_group_lifecycle_hooks`
+    * `aws_backup_plan_selections`
+    * `aws_backup_plans`
+    * `aws_cloudformation_stack_instance_summaries`
+    * `aws_cloudformation_stack_resources`
+    * `aws_cloudformation_stack_set_operation_results`
+* Add `image_arn` to `aws_ec2_image_launch_permissions` primary keys (https://github.com/cloudquery/cloudquery/pull/15377)
+* Change `aws_ec2_images` table `creation_date` & `deprecation_time` columns type to `timestamp` (https://github.com/cloudquery/cloudquery/pull/15378)
+* Remove invalid ARNs (https://github.com/cloudquery/cloudquery/pull/15375). This change removes arn column that was incorrectly constructed from the following tables:
+    * `aws_ec2_instance_statuses`
+    * `aws_ec2_instance_types`
+    * `aws_ec2_vpc_endpoint_service_configurations`
+    * `aws_ec2_vpc_endpoint_services`
+    * `aws_elasticache_reserved_cache_nodes_offerings`
+* Change table names that are singular to be plural to align with convention (https://github.com/cloudquery/cloudquery/pull/15373). The following tables were renamed:
+    * `aws_redshift_endpoint_access` renamed to `aws_redshift_endpoint_accesses`
+    * `aws_redshift_endpoint_authorization` renamed to `aws_redshift_endpoint_authorizations`
+
+### Features
+
+* Change default scheduler from `dfs` to `shuffle`  ([#15386](https://github.com/cloudquery/cloudquery/issues/15386)) ([c1a849d](https://github.com/cloudquery/cloudquery/commit/c1a849d08799d841c84bb2edc8f5c5d7ea12db62))
+* Decouple AWS Account Authorization from IAM Policies ([#15495](https://github.com/cloudquery/cloudquery/issues/15495)) ([82f1dce](https://github.com/cloudquery/cloudquery/commit/82f1dcec997338c5f62c7088455c49057e11af38))
+* Deprecate AWS SQL policies ([#15487](https://github.com/cloudquery/cloudquery/issues/15487)) ([65a3582](https://github.com/cloudquery/cloudquery/commit/65a35820dd60cf70e9b4916bae1f850b668beb66))
+* Drop `url_config` column from `aws_lambda_function_aliases` table (https://github.com/cloudquery/cloudquery/pull/15380) ([7f3a234](https://github.com/cloudquery/cloudquery/commit/7f3a234784c0904d74e46c95dbab8b753614e45f))
+* Move `aws_ecr_repositories.policy_text` to its own table `aws_ecr_repository_policies` ([#15425](https://github.com/cloudquery/cloudquery/issues/15425)) ([570aa42](https://github.com/cloudquery/cloudquery/commit/570aa42400bd61285b0f8bc923005f81e5463697))
+* Move `aws_organizations_delegated_services` to be a relation of `aws_organizations_delegated_administrators` ([#15424](https://github.com/cloudquery/cloudquery/issues/15424)) ([812dae2](https://github.com/cloudquery/cloudquery/commit/812dae2249cbf248ac28a40a068fffff9ef00660))
+* Remove `aws_alpha_*` tables ([#15398](https://github.com/cloudquery/cloudquery/issues/15398)) ([50c387b](https://github.com/cloudquery/cloudquery/commit/50c387b35f29a147b45162d5668a48af7d1cbe02))
+* Remove `function_url` column from `aws_lambda_function_url_configs` table primary key (https://github.com/cloudquery/cloudquery/pull/15380) ([7f3a234](https://github.com/cloudquery/cloudquery/commit/7f3a234784c0904d74e46c95dbab8b753614e45f))
+* **services:** Support newly added regions ([#15396](https://github.com/cloudquery/cloudquery/issues/15396)) ([9d406fe](https://github.com/cloudquery/cloudquery/commit/9d406feb2f5a429a86c151322d679e4790459b2b))
+* **services:** Support newly added regions ([#15475](https://github.com/cloudquery/cloudquery/issues/15475)) ([9172ba4](https://github.com/cloudquery/cloudquery/commit/9172ba44e36cfee3c7f9353ecb1f015f282bc1b6))
+* Single title transformation pass (https://github.com/cloudquery/cloudquery/pull/15383) ([7f3a234](https://github.com/cloudquery/cloudquery/commit/7f3a234784c0904d74e46c95dbab8b753614e45f))
+
+
+### Bug Fixes
+
+* Add `config_rule_arn` column to `aws_config_remediation_configurations` (https://github.com/cloudquery/cloudquery/pull/15413) ([7f24288](https://github.com/cloudquery/cloudquery/commit/7f24288e2b21a2b943512faf530b21c2e37467e5))
+* Add `image_arn` to `aws_ec2_image_launch_permissions` primary keys (https://github.com/cloudquery/cloudquery/pull/15377) ([7f3a234](https://github.com/cloudquery/cloudquery/commit/7f3a234784c0904d74e46c95dbab8b753614e45f))
+* Change `aws_ec2_images` table `creation_date` & `deprecation_time` columns type to `timestamp` (https://github.com/cloudquery/cloudquery/pull/15378) ([7f3a234](https://github.com/cloudquery/cloudquery/commit/7f3a234784c0904d74e46c95dbab8b753614e45f))
+* Change primary key for `aws_organizations` such that it can accurately handle all data ([#15422](https://github.com/cloudquery/cloudquery/issues/15422)) ([720fc24](https://github.com/cloudquery/cloudquery/commit/720fc24f3017d474caceae599814b9593cd66cbd))
+* Change table names that are singular to be plural to align with convention (https://github.com/cloudquery/cloudquery/pull/15373) ([ae74d18](https://github.com/cloudquery/cloudquery/commit/ae74d1862c378526e0688edc7b00c7a4fdaa3f35))
+* **deps:** Update `aws-sdk-go-v2/service/quicksight` package (https://github.com/cloudquery/cloudquery/pull/15394) ([9d9a5cd](https://github.com/cloudquery/cloudquery/commit/9d9a5cd47808252c8465c3871d8961639c2d7a51))
+* **deps:** Update AWS modules ([#15367](https://github.com/cloudquery/cloudquery/issues/15367)) ([2573b13](https://github.com/cloudquery/cloudquery/commit/2573b13e9ed55a564cfc0ced08a1c25877805f86))
+* **deps:** Update AWS modules ([#15368](https://github.com/cloudquery/cloudquery/issues/15368)) ([1558505](https://github.com/cloudquery/cloudquery/commit/15585054fb93d87a2420aa51dd4f407552684c23))
+* **deps:** Update AWS modules ([#15455](https://github.com/cloudquery/cloudquery/issues/15455)) ([7e5f7bd](https://github.com/cloudquery/cloudquery/commit/7e5f7bd47e7e956ab29832b2862f84e26d0acb6f))
+* **deps:** Update AWS modules ([#15456](https://github.com/cloudquery/cloudquery/issues/15456)) ([ad5b252](https://github.com/cloudquery/cloudquery/commit/ad5b252ba9a62137a2237866e0f3772e750fd80c))
+* Provide primary keys for `aws_ec2_transit_gateway_*` tables (https://github.com/cloudquery/cloudquery/pull/15432) ([805ab97](https://github.com/cloudquery/cloudquery/commit/805ab972bcd4baa737d6404e3102e09a08a55b59))
+* Provide primary keys for tables (A-C) (https://github.com/cloudquery/cloudquery/pull/15389) ([7b6d31c](https://github.com/cloudquery/cloudquery/commit/7b6d31c0f5d92a5a7941c693474a8310555fd776))
+* Provide primary keys for tables (C) (https://github.com/cloudquery/cloudquery/pull/15413) ([7f24288](https://github.com/cloudquery/cloudquery/commit/7f24288e2b21a2b943512faf530b21c2e37467e5))
+* Provide primary keys for tables (S3) (https://github.com/cloudquery/cloudquery/pull/15494) ([8c2fa63](https://github.com/cloudquery/cloudquery/commit/8c2fa63ee51b7288a5ee54777aefd3f546dce2c3))
+* Refactor `aws_s3_buckets` to use nested tables rather than that column resolvers ([#15395](https://github.com/cloudquery/cloudquery/issues/15395)) ([efe71d5](https://github.com/cloudquery/cloudquery/commit/efe71d5542b259c35e44eff46b69d69de10186eb))
+* Remove all `result_metadata` columns ([#15371](https://github.com/cloudquery/cloudquery/issues/15371)) ([110d153](https://github.com/cloudquery/cloudquery/commit/110d15305b7da2a108b8fc204286ddf5ca40a250))
+* Remove deprecated `table_options` ([#15405](https://github.com/cloudquery/cloudquery/issues/15405)) ([b452528](https://github.com/cloudquery/cloudquery/commit/b452528fb9ac253f661939efe5ee877f396e100a))
+* Remove invalid ARNs (https://github.com/cloudquery/cloudquery/pull/15375) ([b9bfa69](https://github.com/cloudquery/cloudquery/commit/b9bfa69970ddc61738553a96ffeecb6fa4f58ee1))
+* Remove premium-only `event_based_sync` spec ([#15412](https://github.com/cloudquery/cloudquery/issues/15412)) ([8f76bcb](https://github.com/cloudquery/cloudquery/commit/8f76bcbd4293649b0f45c73790446d0dd01ac8d2))
+* Set `EfsFilesystemBackupPolicyStatus` value to `nil` when API returns 404 ([#15407](https://github.com/cloudquery/cloudquery/issues/15407)) ([6e52724](https://github.com/cloudquery/cloudquery/commit/6e52724cef14d2b9d7fde5540b68de27d0184034))
+
 ## [22.19.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-aws-v22.19.1...plugins-source-aws-v22.19.2) (2023-11-17)
 
 
