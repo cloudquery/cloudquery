@@ -3,6 +3,7 @@ package config
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -16,13 +17,16 @@ func remediationConfigurations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_RemediationConfiguration.html`,
 		Resolver:    fetchRemediationConfigurations,
-		Transform: transformers.TransformWithStruct(&types.RemediationConfiguration{},
-			transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.RemediationConfiguration{}, transformers.WithPrimaryKeys("Arn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
+			{
+				Name:     "config_rule_arn",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: schema.ParentColumnResolver("arn"),
+			},
 		},
-		Relations: []*schema.Table{},
 	}
 }
 
