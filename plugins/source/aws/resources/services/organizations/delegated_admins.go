@@ -21,6 +21,9 @@ func DelegatedAdministrators() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 		},
+		Relations: schema.Tables{
+			delegatedServices(),
+		},
 	}
 }
 func fetchOrganizationsDelegatedAdmins(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {

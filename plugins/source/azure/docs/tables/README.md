@@ -253,6 +253,7 @@
 - [azure_reservations_reservation](azure_reservations_reservation.md)
 - [azure_reservations_reservation_order](azure_reservations_reservation_order.md)
 - [azure_resources_links](azure_resources_links.md)
+- [azure_resources_providers](azure_resources_providers.md)
 - [azure_resources_resource_groups](azure_resources_resource_groups.md)
 - [azure_resources_resources](azure_resources_resources.md)
 - [azure_role_management_policy_assignments](azure_role_management_policy_assignments.md)
