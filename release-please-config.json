@@ -71,9 +71,6 @@
     "plugins/source/alicloud": {
       "component": "plugins-source-alicloud"
     },
-    "plugins/source/aws": {
-      "component": "plugins-source-aws"
-    },
     "plugins/source/awspricing": {
       "component": "plugins-source-awspricing"
     },
