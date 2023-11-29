@@ -3,6 +3,7 @@ package config
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
@@ -21,6 +22,12 @@ func configRuleCompliances() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
+			{
+				Name:       "config_rule_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
+			},
 		},
 	}
 }
@@ -31,17 +38,16 @@ func fetchConfigConfigRuleCompliances(ctx context.Context, meta schema.ClientMet
 	svc := cl.Services(client.AWSServiceConfigservice).Configservice
 
 	input := &configservice.DescribeComplianceByConfigRuleInput{
-		ConfigRuleNames: []string{aws.ToString(ruleDetail.ConfigRuleName)},
+		ConfigRuleNames: []string{aws.ToString(ruleDetail.ConfigRuleName)}, // so we'll have only a single result
 	}
-	p := configservice.NewDescribeComplianceByConfigRulePaginator(svc, input)
-	for p.HasMorePages() {
-		response, err := p.NextPage(ctx, func(options *configservice.Options) {
-			options.Region = cl.Region
-		})
-		if err != nil {
-			return err
-		}
-		res <- response.ComplianceByConfigRules
+
+	// we request a single config rule info, so no need to iterate
+	response, err := svc.DescribeComplianceByConfigRule(ctx, input, func(options *configservice.Options) {
+		options.Region = cl.Region
+	})
+	if err != nil {
+		return err
 	}
+	res <- response.ComplianceByConfigRules
 	return nil
 }

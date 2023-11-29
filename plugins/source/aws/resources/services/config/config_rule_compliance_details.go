@@ -26,6 +26,18 @@ func configRuleComplianceDetails() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
+				Name:       "config_rule_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
+			},
+			{
+				Name:       "resource_evaluation_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("EvaluationResultIdentifier.ResourceEvaluationId"),
+				PrimaryKey: true,
+			},
+			{
 				Name:     "config_rule_name",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("config_rule_name"),
