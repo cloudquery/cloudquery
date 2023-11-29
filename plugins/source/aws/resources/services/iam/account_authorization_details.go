@@ -14,7 +14,7 @@ func AccountAuthorizationDetails() *schema.Table {
 	tableName := "aws_iam_account_authorization_details"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ManagedPolicyDetail.html`,
+		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetAccountAuthorizationDetails.html`,
 		Resolver:    fetchIamAccountAuthorizationDetails,
 		Transform:   transformers.TransformWithStruct(&iam.GetAccountAuthorizationDetailsOutput{}, transformers.WithSkipFields("Marker", "IsTruncated", "ResultMetadata")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),

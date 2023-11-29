@@ -2,7 +2,7 @@
 
 This table shows data for IAM Account Authorization Details.
 
-https://docs.aws.amazon.com/IAM/latest/APIReference/API_ManagedPolicyDetail.html
+https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetAccountAuthorizationDetails.html
 
 The primary key for this table is **account_id**.
 
