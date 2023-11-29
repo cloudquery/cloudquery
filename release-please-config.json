@@ -90,9 +90,6 @@
     "plugins/source/firestore": {
       "component": "plugins-source-firestore"
     },
-    "plugins/source/gcp": {
-      "component": "plugins-source-gcp"
-    },
     "plugins/source/github": {
       "component": "plugins-source-github"
     },
