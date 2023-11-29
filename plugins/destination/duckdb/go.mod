@@ -7,7 +7,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/plugin-sdk/v4 v4.18.3
 	github.com/google/uuid v1.3.1
-	github.com/marcboeker/go-duckdb v1.5.2
+	github.com/marcboeker/go-duckdb v1.5.4
 	github.com/rs/zerolog v1.29.1
 )
 

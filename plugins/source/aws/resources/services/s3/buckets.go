@@ -2,9 +2,7 @@ package s3
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
-	"fmt"
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -20,6 +18,7 @@ func Buckets() *schema.Table {
 		Name:                "aws_s3_buckets",
 		Resolver:            listS3Buckets,
 		PreResourceResolver: resolveS3BucketsAttributes,
+		Description:         `https://docs.aws.amazon.com/AmazonS3/latest/API/API_ListBuckets.html`,
 		Transform:           transformers.TransformWithStruct(&models.WrappedBucket{}),
 		Multiplex:           client.AccountMultiplex(tableName),
 		Columns: []schema.Column{
@@ -40,6 +39,12 @@ func Buckets() *schema.Table {
 			bucketNotificationConfigurations(),
 			bucketObjectLockConfigurations(),
 			bucketWebsites(),
+			bucketLogging(),
+			bucketOwnershipControls(),
+			bucketReplications(),
+			bucketPublicAccessBlock(),
+			bucketVersionings(),
+			bucketPolicies(),
 		},
 	}
 }
@@ -103,14 +108,8 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 	var errAll []error
 
 	resolvers := []func(context.Context, schema.ClientMeta, *models.WrappedBucket) error{
-		resolveBucketLogging,
-		resolveBucketPolicy,
 		resolveBucketPolicyStatus,
-		resolveBucketVersioning,
-		resolveBucketPublicAccessBlock,
-		resolveBucketReplication,
 		resolveBucketTagging,
-		resolveBucketOwnershipControls,
 	}
 	for _, resolver := range resolvers {
 		if err := resolver(ctx, meta, resource); err != nil {
@@ -126,55 +125,6 @@ func resolveS3BucketsAttributes(ctx context.Context, meta schema.ClientMeta, r *
 	}
 	r.Item = resource
 	return errors.Join(errAll...)
-}
-
-func resolveBucketLogging(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceS3).S3
-	loggingOutput, err := svc.GetBucketLogging(ctx, &s3.GetBucketLoggingInput{Bucket: resource.Name}, func(o *s3.Options) {
-		o.Region = resource.Region
-	})
-	if err != nil {
-		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			return nil
-		}
-		return err
-	}
-	if loggingOutput.LoggingEnabled == nil {
-		return nil
-	}
-	resource.LoggingTargetBucket = loggingOutput.LoggingEnabled.TargetBucket
-	resource.LoggingTargetPrefix = loggingOutput.LoggingEnabled.TargetPrefix
-	return nil
-}
-
-func resolveBucketPolicy(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceS3).S3
-	policyOutput, err := svc.GetBucketPolicy(ctx, &s3.GetBucketPolicyInput{Bucket: resource.Name}, func(o *s3.Options) {
-		o.Region = resource.Region
-	})
-	// check if we got an error but its access denied we can continue
-	if err != nil {
-		// if we got an error, and it's not a NoSuchBucketError, return err
-		if client.IsAWSError(err, "NoSuchBucketPolicy") {
-			return nil
-		}
-		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			return nil
-		}
-		return err
-	}
-	if policyOutput == nil || policyOutput.Policy == nil {
-		return nil
-	}
-	var p map[string]any
-	err = json.Unmarshal([]byte(*policyOutput.Policy), &p)
-	if err != nil {
-		return fmt.Errorf("failed to unmarshal JSON policy: %v", err)
-	}
-	resource.Policy = p
-	return nil
 }
 
 func resolveBucketPolicyStatus(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
@@ -196,71 +146,6 @@ func resolveBucketPolicyStatus(ctx context.Context, meta schema.ClientMeta, reso
 	if policyStatusOutput != nil {
 		resource.PolicyStatus = policyStatusOutput.PolicyStatus
 	}
-	return nil
-}
-
-func resolveBucketVersioning(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceS3).S3
-	versioningOutput, err := svc.GetBucketVersioning(ctx, &s3.GetBucketVersioningInput{Bucket: resource.Name}, func(o *s3.Options) {
-		o.Region = resource.Region
-	})
-	if err != nil {
-		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			return nil
-		}
-		return err
-	}
-	resource.VersioningStatus = &versioningOutput.Status
-	resource.VersioningMfaDelete = &versioningOutput.MFADelete
-	return nil
-}
-
-func resolveBucketPublicAccessBlock(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceS3).S3
-	publicAccessOutput, err := svc.GetPublicAccessBlock(ctx, &s3.GetPublicAccessBlockInput{Bucket: resource.Name}, func(o *s3.Options) {
-		o.Region = resource.Region
-	})
-	if err != nil {
-		// If we received any error other than NoSuchPublicAccessBlockConfiguration, we return and error
-		if isBucketNotFoundError(cl, err) {
-			return nil
-		}
-		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			return nil
-		}
-		return err
-	}
-	resource.BlockPublicAcls = publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicAcls
-	resource.BlockPublicPolicy = publicAccessOutput.PublicAccessBlockConfiguration.BlockPublicPolicy
-	resource.IgnorePublicAcls = publicAccessOutput.PublicAccessBlockConfiguration.IgnorePublicAcls
-	resource.RestrictPublicBuckets = publicAccessOutput.PublicAccessBlockConfiguration.RestrictPublicBuckets
-	return nil
-}
-
-func resolveBucketReplication(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceS3).S3
-	replicationOutput, err := svc.GetBucketReplication(ctx, &s3.GetBucketReplicationInput{Bucket: resource.Name}, func(o *s3.Options) {
-		o.Region = resource.Region
-	})
-
-	if err != nil {
-		// If we received any error other than ReplicationConfigurationNotFoundError, we return and error
-		if client.IsAWSError(err, "ReplicationConfigurationNotFoundError") {
-			return nil
-		}
-		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			return nil
-		}
-		return err
-	}
-	if replicationOutput.ReplicationConfiguration == nil {
-		return nil
-	}
-	resource.ReplicationRole = replicationOutput.ReplicationConfiguration.Role
-	resource.ReplicationRules = replicationOutput.ReplicationConfiguration.Rules
 	return nil
 }
 
@@ -288,47 +173,6 @@ func resolveBucketTagging(ctx context.Context, meta schema.ClientMeta, resource 
 		tags[*t.Key] = t.Value
 	}
 	resource.Tags = tags
-	return nil
-}
-
-func resolveBucketOwnershipControls(ctx context.Context, meta schema.ClientMeta, resource *models.WrappedBucket) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceS3).S3
-
-	getBucketOwnershipControlOutput, err := svc.GetBucketOwnershipControls(ctx, &s3.GetBucketOwnershipControlsInput{Bucket: resource.Name}, func(o *s3.Options) {
-		o.Region = resource.Region
-	})
-
-	if err != nil {
-		// If buckets ownership controls are not set it will return an error instead of empty result
-		if client.IsAWSError(err, "OwnershipControlsNotFoundError") {
-			return nil
-		}
-
-		if client.IgnoreAccessDeniedServiceDisabled(err) {
-			return nil
-		}
-
-		return err
-	}
-
-	if getBucketOwnershipControlOutput == nil {
-		return nil
-	}
-
-	ownershipControlRules := getBucketOwnershipControlOutput.OwnershipControls.Rules
-
-	if len(ownershipControlRules) == 0 {
-		return nil
-	}
-
-	stringArray := make([]string, 0, len(ownershipControlRules))
-
-	for _, ownershipControlRule := range ownershipControlRules {
-		stringArray = append(stringArray, string(ownershipControlRule.ObjectOwnership))
-	}
-
-	resource.OwnershipControls = stringArray
 	return nil
 }
 
