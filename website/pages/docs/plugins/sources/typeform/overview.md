@@ -41,3 +41,8 @@ This is the (nested) spec used by the Typeform source plugin:
 - `queue_size` (integer, optional. Default: 10000):
 
   Maximum number of items to have in the queue before waiting for an unfinished request to complete.
+
+- `skip_answers` (boolean, optional. Default: false):
+  
+  The `answers` column in the `typeform_form_responses` table will be empty. Use this option if you care only about statistics but not the individual answers to protect data privacy.
+  
