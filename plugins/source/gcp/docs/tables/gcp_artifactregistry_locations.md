@@ -21,5 +21,5 @@ The following tables depend on gcp_artifactregistry_locations:
 |display_name|`utf8`|
 |labels|`json`|
 |location_id|`utf8`|
-|metadata|`binary`|
+|metadata|`json`|
 |name (PK)|`utf8`|

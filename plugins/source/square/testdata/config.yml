@@ -1,6 +1,6 @@
 kind: source
 spec:
-  name: square
+  name: tables
   destinations: [test]
   path: "square:latest"
   registry: docker

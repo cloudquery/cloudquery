@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"reflect"
 	"strings"
 	"sync"
 
@@ -15,7 +14,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/state"
 	"github.com/rs/zerolog"
-	"github.com/thoas/go-funk"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -31,7 +29,7 @@ type Client struct {
 	WAFScope             wafv2types.Scope
 	Partition            string
 	LanguageCode         string
-	Backend              state.Client
+	stateClient          state.Client
 	specificRegions      bool
 	Spec                 *spec.Spec
 	accountMutex         map[string]*sync.Mutex
@@ -43,13 +41,6 @@ type AwsLogger struct {
 
 type AssumeRoleAPIClient interface {
 	AssumeRole(ctx context.Context, params *sts.AssumeRoleInput, optFns ...func(*sts.Options)) (*sts.AssumeRoleOutput, error)
-}
-
-type ServicesPartitionAccountMap map[string]map[string]*Services
-
-// ServicesManager will hold the entire map of (account X region) services
-type ServicesManager struct {
-	services ServicesPartitionAccountMap
 }
 
 const (
@@ -67,28 +58,6 @@ var errRetrievingCredentials = errors.New("error retrieving AWS credentials (see
 
 var ErrPaidAPIsNotEnabled = errors.New("not fetching resource because `use_paid_apis` is set to false")
 
-func (s *ServicesManager) ServicesByPartitionAccount(partition, accountId string) *Services {
-	return s.services[partition][accountId]
-}
-
-func (s *ServicesManager) InitServices(details svcsDetail) {
-	s.InitServicesForPartitionAccount(details.partition, details.accountId, details.svcs)
-}
-
-func (s *ServicesManager) InitServicesForPartitionAccount(partition, accountId string, svcs Services) {
-	if s.services == nil {
-		s.services = make(map[string]map[string]*Services)
-	}
-	if s.services[partition] == nil {
-		s.services[partition] = make(map[string]*Services)
-	}
-	if s.services[partition][accountId] == nil {
-		s.services[partition][accountId] = &svcs
-	}
-
-	s.services[partition][accountId].Regions = funk.UniqString(append(s.services[partition][accountId].Regions, svcs.Regions...))
-}
-
 func NewAwsClient(logger zerolog.Logger, s *spec.Spec) Client {
 	return Client{
 		ServicesManager: &ServicesManager{
@@ -97,6 +66,7 @@ func NewAwsClient(logger zerolog.Logger, s *spec.Spec) Client {
 		logger:       logger,
 		Spec:         s,
 		accountMutex: map[string]*sync.Mutex{},
+		stateClient:  new(state.NoOpClient),
 	}
 }
 
@@ -138,6 +108,18 @@ func (c *Client) Services(service_names ...AWSServiceName) *Services {
 	return c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID)
 }
 
+func (c *Client) StateClient() state.Client {
+	return c.stateClient
+}
+
+// SetStateClient will set state.Client value (or state.NopClient if the param is nil) to the current Client state backend.
+func (c *Client) SetStateClient(client state.Client) {
+	if client == nil {
+		client = new(state.NoOpClient)
+	}
+	c.stateClient = client
+}
+
 func (s *Services) Duplicate() Services {
 	duplicateServices := *s
 	return duplicateServices
@@ -157,7 +139,7 @@ func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region st
 		Region:               region,
 		AutoscalingNamespace: c.AutoscalingNamespace,
 		WAFScope:             c.WAFScope,
-		Backend:              c.Backend,
+		stateClient:          c.stateClient,
 		Spec:                 c.Spec,
 		accountMutex:         c.accountMutex,
 	}
@@ -172,7 +154,7 @@ func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, 
 		Region:               region,
 		AutoscalingNamespace: namespace,
 		WAFScope:             c.WAFScope,
-		Backend:              c.Backend,
+		stateClient:          c.stateClient,
 		Spec:                 c.Spec,
 		accountMutex:         c.accountMutex,
 	}
@@ -187,7 +169,7 @@ func (c *Client) withPartitionAccountIDRegionAndScope(partition, accountID, regi
 		Region:               region,
 		AutoscalingNamespace: c.AutoscalingNamespace,
 		WAFScope:             scope,
-		Backend:              c.Backend,
+		stateClient:          c.stateClient,
 		Spec:                 c.Spec,
 		accountMutex:         c.accountMutex,
 	}
@@ -206,18 +188,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, s spec.Spec) (schema.
 		return nil, fmt.Errorf("spec validation failed: %w", err)
 	}
 	s.SetDefaults()
-
-	if s.TableOptions != nil {
-		structVal := reflect.ValueOf(*s.TableOptions)
-		fieldNum := structVal.NumField()
-		for i := 0; i < fieldNum; i++ {
-			field := structVal.Field(i)
-			if field.IsValid() && !field.IsZero() {
-				logger.Warn().Msg("table_options is deprecated and will be removed soon. Please reach out to the CloudQuery team if you require this feature")
-				break
-			}
-		}
-	}
 
 	client := NewAwsClient(logger, &s)
 

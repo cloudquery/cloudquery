@@ -44,25 +44,21 @@ The 'request_account_id' and 'request_region' columns are added to show from whe
 	}
 }
 
-func fetchInspector2Findings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchInspector2Findings(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceInspector2).Inspector2
 
-	for _, input := range cl.Spec.TableOptions.Inspector2Findings.Filters() {
-		if input.MaxResults == nil {
-			input.MaxResults = aws.Int32(100)
+	input := inspector2.ListFindingsInput{MaxResults: aws.Int32(100)}
+	paginator := inspector2.NewListFindingsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx, func(options *inspector2.Options) {
+			options.Region = cl.Region
+		})
+		if err != nil {
+			return err
 		}
-
-		paginator := inspector2.NewListFindingsPaginator(svc, &input.ListFindingsInput)
-		for paginator.HasMorePages() {
-			page, err := paginator.NextPage(ctx, func(options *inspector2.Options) {
-				options.Region = cl.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- page.Findings
-		}
+		res <- page.Findings
 	}
+
 	return nil
 }

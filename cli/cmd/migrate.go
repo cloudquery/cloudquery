@@ -2,9 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"strings"
-
 	"slices"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
@@ -69,28 +68,32 @@ func migrate(cmd *cobra.Command, args []string) error {
 	if disableSentry {
 		opts = append(opts, managedplugin.WithNoSentry())
 	}
-	sourcePluginConfigs := make([]managedplugin.Config, 0, len(sources))
-	for _, source := range sources {
-		sourcePluginConfigs = append(sourcePluginConfigs, managedplugin.Config{
+	sourcePluginConfigs := make([]managedplugin.Config, len(sources))
+	sourceRegInferred := make([]bool, len(sources))
+	for i, source := range sources {
+		sourcePluginConfigs[i] = managedplugin.Config{
 			Name:     source.Name,
 			Version:  source.Version,
 			Path:     source.Path,
 			Registry: SpecRegistryToPlugin(source.Registry),
-		})
+		}
+		sourceRegInferred[i] = source.RegistryInferred()
 	}
-	destinationPluginConfigs := make([]managedplugin.Config, 0, len(destinations))
-	for _, destination := range destinations {
-		destinationPluginConfigs = append(destinationPluginConfigs, managedplugin.Config{
+	destinationPluginConfigs := make([]managedplugin.Config, len(destinations))
+	destinationRegInferred := make([]bool, len(destinations))
+	for i, destination := range destinations {
+		destinationPluginConfigs[i] = managedplugin.Config{
 			Name:     destination.Name,
 			Version:  destination.Version,
 			Path:     destination.Path,
 			Registry: SpecRegistryToPlugin(destination.Registry),
-		})
+		}
+		destinationRegInferred[i] = destination.RegistryInferred()
 	}
 
 	managedSourceClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, sourcePluginConfigs, opts...)
 	if err != nil {
-		return err
+		return enrichClientError(managedSourceClients, sourceRegInferred, err)
 	}
 	defer func() {
 		if err := managedSourceClients.Terminate(); err != nil {
@@ -99,7 +102,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 	}()
 	destinationPluginClients, err := managedplugin.NewClients(ctx, managedplugin.PluginDestination, destinationPluginConfigs, opts...)
 	if err != nil {
-		return err
+		return enrichClientError(destinationPluginClients, destinationRegInferred, err)
 	}
 	defer func() {
 		if err := destinationPluginClients.Terminate(); err != nil {

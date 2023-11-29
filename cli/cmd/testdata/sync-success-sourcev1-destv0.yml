@@ -2,6 +2,7 @@ kind: "source"
 spec:
   name: "test"
   path: "cloudquery/test"
+  registry: "github"
   destinations: [test]
   version: "v2.0.3" # don't update this version to latest as we want to test an older version
   tables: ["*"]
@@ -10,4 +11,5 @@ kind: "destination"
 spec:
   name: "test"
   path: "cloudquery/test"
+  registry: "github"
   version: "v2.1.2" # don't update this version to latest as we want to test an older version
