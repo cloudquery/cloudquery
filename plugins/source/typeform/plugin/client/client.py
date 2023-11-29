@@ -12,7 +12,7 @@ class Spec:
     base_url: str = field(default="https://api.typeform.com")
     concurrency: int = field(default=DEFAULT_CONCURRENCY)
     queue_size: int = field(default=DEFAULT_QUEUE_SIZE)
-
+    skip_answers: bool = field(default=False)
     def validate(self):
         if self.access_token is None:
             raise Exception("access_token must be provided")

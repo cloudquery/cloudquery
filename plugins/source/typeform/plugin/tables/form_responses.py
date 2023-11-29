@@ -47,4 +47,6 @@ class FormResponsesResolver(TableResolver):
             form_id=parent_resource.item["id"]
         ):
             form_response["form_id"] = parent_resource.item["id"]
+            if client._spec.skip_answers:
+                form_response.pop("answers", None)
             yield form_response
