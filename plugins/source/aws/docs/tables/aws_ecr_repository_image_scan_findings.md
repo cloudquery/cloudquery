@@ -4,7 +4,7 @@ This table shows data for Amazon Elastic Container Registry (ECR) Repository Ima
 
 https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageScanFindings.html
 
-The composite primary key for this table is (**repository_arn**, **image_digest**).
+The composite primary key for this table is (**repository_arn**, **image_digest**, **registry_id**).
 
 ## Relations
 
@@ -23,5 +23,5 @@ This table depends on [aws_ecr_repository_images](aws_ecr_repository_images.md).
 |image_id|`json`|
 |image_scan_findings|`json`|
 |image_scan_status|`json`|
-|registry_id|`utf8`|
+|registry_id (PK)|`utf8`|
 |repository_name|`utf8`|

@@ -17,7 +17,9 @@ func repositoryImages() *schema.Table {
 		Name:        "aws_ecr_repository_images",
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageDetail.html`,
 		Resolver:    fetchEcrRepositoryImages,
-		Transform:   transformers.TransformWithStruct(&types.ImageDetail{}, transformers.WithPrimaryKeys("ImageDigest")),
+		Transform: transformers.TransformWithStruct(&types.ImageDetail{},
+			transformers.WithPrimaryKeys("ImageDigest", "RegistryId"),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -35,8 +37,10 @@ func repositoryImages() *schema.Table {
 func fetchEcrRepositoryImages(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceEcr).Ecr
+	repository := parent.Item.(types.Repository)
 	config := ecr.DescribeImagesInput{
-		RepositoryName: parent.Item.(types.Repository).RepositoryName,
+		RepositoryName: repository.RepositoryName,
+		RegistryId:     repository.RegistryId,
 		MaxResults:     aws.Int32(1000),
 	}
 	paginator := ecr.NewDescribeImagesPaginator(svc, &config)

@@ -17,7 +17,10 @@ func lifeCyclePolicy() *schema.Table {
 		Name:        "aws_ecr_repository_lifecycle_policies",
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_GetLifecyclePolicy.html`,
 		Resolver:    fetchRepositoryLifecyclePolicy,
-		Transform:   transformers.TransformWithStruct(&ecr.GetLifecyclePolicyOutput{}, transformers.WithSkipFields("ResultMetadata")),
+		Transform: transformers.TransformWithStruct(&ecr.GetLifecyclePolicyOutput{},
+			transformers.WithPrimaryKeys("RegistryId"),
+			transformers.WithSkipFields("ResultMetadata"),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -38,8 +41,10 @@ func lifeCyclePolicy() *schema.Table {
 func fetchRepositoryLifecyclePolicy(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceEcr).Ecr
+	repository := parent.Item.(types.Repository)
 	config := ecr.GetLifecyclePolicyInput{
-		RepositoryName: parent.Item.(types.Repository).RepositoryName,
+		RepositoryName: repository.RepositoryName,
+		RegistryId:     repository.RegistryId,
 	}
 	resp, err := svc.GetLifecyclePolicy(ctx, &config, func(options *ecr.Options) {
 		options.Region = cl.Region

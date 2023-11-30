@@ -18,6 +18,7 @@ func repositoryImageScanFindings() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageScanFindings.html`,
 		Resolver:    fetchEcrRepositoryImageScanFindings,
 		Transform: transformers.TransformWithStruct(&ecr.DescribeImageScanFindingsOutput{},
+			transformers.WithPrimaryKeys("RegistryId"),
 			transformers.WithSkipFields("NextToken", "ResultMetadata"),
 		),
 		Columns: []schema.Column{
@@ -44,6 +45,7 @@ func fetchEcrRepositoryImageScanFindings(ctx context.Context, meta schema.Client
 	image := parent.Item.(types.ImageDetail)
 	config := ecr.DescribeImageScanFindingsInput{
 		RepositoryName: image.RepositoryName,
+		RegistryId:     image.RegistryId,
 		ImageId:        &types.ImageIdentifier{ImageDigest: image.ImageDigest},
 		MaxResults:     aws.Int32(1000),
 	}

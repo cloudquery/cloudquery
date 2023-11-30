@@ -4,7 +4,7 @@ This table shows data for Amazon Elastic Container Registry (ECR) Repository Lif
 
 https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_GetLifecyclePolicy.html
 
-The primary key for this table is **repository_arn**.
+The composite primary key for this table is (**repository_arn**, **registry_id**).
 
 ## Relations
 
@@ -22,5 +22,5 @@ This table depends on [aws_ecr_repositories](aws_ecr_repositories.md).
 |policy_json|`json`|
 |last_evaluated_at|`timestamp[us, tz=UTC]`|
 |lifecycle_policy_text|`utf8`|
-|registry_id|`utf8`|
+|registry_id (PK)|`utf8`|
 |repository_name|`utf8`|
