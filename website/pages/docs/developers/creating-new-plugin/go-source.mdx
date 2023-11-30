@@ -372,62 +372,9 @@ func fetchSampleTable(ctx context.Context, meta schema.ClientMeta, parent *schem
 
 The [GitHub plugin multiplexers](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/github/client/multiplexer.go) can serve as a good example of how to implement and use multiplexing. In that case, some tables multiplex on organization, while others multiplex on organization and repository combined.
 
-## Releasing and Deploying Your Plugin
+## Publishing Your Plugin
 
-Releasing a plugin for use by the wider CloudQuery community involves two steps:
-
-1. Create a public GitHub repository for your plugin named `cq-source-<plugin-name>` and push your code to it.
-2. Create a release in GitHub. The release name should be the version of your plugin, e.g. `v0.1.0`. More information about managing releases can be found in [GitHub's documentation](https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository).
-
-Users can then import your plugin by specifying the GitHub repository path in their config file, but leaving out the `cq-source-` part, e.g.:
-
-```yaml copy
-kind: source
-spec:
-  name: cloudwidgets
-  path: myorg/<plugin-name>
-```
-
-This will import the plugin from the repository hosted at `github.com/myorg/cq-source-<plugin-name>`.
-
-### Naming Conventions
-
-Community plugins use the following GitHub repository naming conventions:
-
-- `org/cq-source-<name>` for source plugins
-- `org/cq-destination-<name>` for destination plugins
-
-A community plugin using this convention can be imported in a config by using:
-
-```yaml copy
-kind: source
-spec:
-  name: name
-  path: org/name
-```
-
-for source plugins, or
-
-```yaml copy
-kind: destination
-spec:
-  name: name
-  path: org/name
-```
-
-for destination plugins.
-
-Names should not contain dashes or underscores. So for example, if you are developing a source plugin for a new cloud service called Cloud Widgets, you should create the plugin repository under `org/cq-source-cloudwidgets`.
-
-Official plugins, in contrast, are contained in the [CloudQuery repository](https://github.com/cloudquery/cloudquery/tree/main/plugins). By convention, they can be imported using a special path `cloudquery/<name>`, e.g.:
-
-```yaml copy
-kind: source
-spec:
-  name: aws
-  path: cloudquery/aws
-  registry: cloudquery
-```
+Visit the [Publishing a Plugin to the Hub](/docs/developers/publishing-a-plugin-to-the-hub) guide for instructions on how to publish your plugin to the CloudQuery Hub.
 
 ## Real-world Examples
 

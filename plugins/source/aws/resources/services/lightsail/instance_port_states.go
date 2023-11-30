@@ -2,6 +2,7 @@ package lightsail
 
 import (
 	"context"
+	"strings"
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/lightsail"
@@ -17,14 +18,24 @@ func instancePortStates() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_InstancePortState.html`,
 		Resolver:    fetchLightsailInstancePortStates,
-		Transform:   transformers.TransformWithStruct(&types.InstancePortState{}),
+		Transform: transformers.TransformWithStruct(&types.InstancePortState{},
+			transformers.WithPrimaryKeys("FromPort", "ToPort", "Protocol"),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "instance_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "instance_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
+			},
+			{
+				Name:        "allow_list",
+				Description: "This column contains a concatenated list of all allowed addresses",
+				Type:        arrow.BinaryTypes.String,
+				Resolver:    resolveInstancePortAllowList,
+				PrimaryKey:  true,
 			},
 		},
 	}
@@ -44,4 +55,13 @@ func fetchLightsailInstancePortStates(ctx context.Context, meta schema.ClientMet
 
 	res <- output.PortStates
 	return nil
+}
+
+func resolveInstancePortAllowList(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	// Inspired by https://docs.aws.amazon.com/cli/latest/reference/lightsail/put-instance-public-ports.html
+	state := resource.Item.(types.InstancePortState)
+	cidrs := "cidrs=" + strings.Join(state.Cidrs, ",")
+	ipv6Cidrs := "ipv6Cidrs=" + strings.Join(state.Ipv6Cidrs, ",")
+	cidrListAliases := "cidrListAliases=" + strings.Join(state.CidrListAliases, ",")
+	return resource.Set(c.Name, cidrs+","+ipv6Cidrs+","+cidrListAliases)
 }

@@ -22,6 +22,13 @@ func buildDelegatedAdministrators(t *testing.T, ctrl *gomock.Controller) client.
 			DelegatedAdministrators: []types.DelegatedAdministrator{da},
 		}, nil)
 
+	ds := types.DelegatedService{}
+	require.NoError(t, faker.FakeObject(&ds))
+
+	m.EXPECT().ListDelegatedServicesForAccount(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&organizations.ListDelegatedServicesForAccountOutput{
+			DelegatedServices: []types.DelegatedService{ds},
+		}, nil)
 	return client.Services{
 		Organizations: m,
 	}

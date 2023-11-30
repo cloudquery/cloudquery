@@ -46,23 +46,22 @@ func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, _ *schem
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceCloudtrail).Cloudtrail
 
+	stateClient := cl.StateClient()
 	le := cloudtrail.LookupEventsInput{}
 	var backendKey string
-	if cl.Backend != nil {
-		// Retrieve the last event time from the backend for this table option config.
-		// We use a hash of the config as the key, so changing the config will cause a full refresh.
-		value, err := cl.Backend.GetKey(ctx, tableName+cl.ID())
-		if err != nil {
-			return fmt.Errorf("failed to retrieve state from backend: %w", err)
-		}
+	// Retrieve the last event time from the backend for this table option config.
+	// We use a hash of the config as the key, so changing the config will cause a full refresh.
+	value, err := stateClient.GetKey(ctx, tableName+cl.ID())
+	if err != nil {
+		return fmt.Errorf("failed to retrieve state from backend: %w", err)
+	}
 
-		if value != "" {
-			date, err := time.Parse(time.RFC3339Nano, value)
-			if err != nil {
-				return fmt.Errorf("retrieved invalid state value: %q %w", value, err)
-			}
-			le.StartTime = &date
+	if value != "" {
+		date, err := time.Parse(time.RFC3339Nano, value)
+		if err != nil {
+			return fmt.Errorf("retrieved invalid state value: %q %w", value, err)
 		}
+		le.StartTime = &date
 	}
 
 	var lastEventTime *time.Time
@@ -89,8 +88,8 @@ func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, _ *schem
 		}
 	}
 
-	if cl.Backend != nil && lastEventTime != nil {
-		err := cl.Backend.SetKey(ctx, tableName+backendKey, lastEventTime.Format(time.RFC3339Nano))
+	if lastEventTime != nil {
+		err := stateClient.SetKey(ctx, tableName+backendKey, lastEventTime.Format(time.RFC3339Nano))
 		if err != nil {
 			return fmt.Errorf("failed to save state to backend: %w", err)
 		}

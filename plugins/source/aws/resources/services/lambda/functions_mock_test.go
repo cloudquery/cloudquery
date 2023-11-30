@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 )
 
@@ -54,6 +55,7 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 
 	esm := types.EventSourceMappingConfiguration{}
 	require.NoError(t, faker.FakeObject(&esm))
+	esm.UUID = aws.String(uuid.NewString())
 	m.EXPECT().ListEventSourceMappings(gomock.Any(), gomock.Any(), gomock.Any()).
 		Return(&lambda.ListEventSourceMappingsOutput{EventSourceMappings: []types.EventSourceMappingConfiguration{esm}}, nil)
 

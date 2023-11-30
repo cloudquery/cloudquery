@@ -1721,6 +1721,11 @@
             "us-west-2": {}
           }
         },
+        "cost-optimization-hub": {
+          "regions": {
+            "us-east-1": {}
+          }
+        },
         "cur": {
           "regions": {
             "us-east-1": {}
@@ -6425,6 +6430,7 @@
             "eu-central-1": {},
             "eu-west-1": {},
             "eu-west-2": {},
+            "il-central-1": {},
             "sa-east-1": {},
             "us-east-1": {},
             "us-west-2": {}
@@ -8144,6 +8150,12 @@
           }
         },
         "appstream2": {
+          "regions": {
+            "us-gov-east-1": {},
+            "us-gov-west-1": {}
+          }
+        },
+        "arc-zonal-shift": {
           "regions": {
             "us-gov-east-1": {},
             "us-gov-west-1": {}
