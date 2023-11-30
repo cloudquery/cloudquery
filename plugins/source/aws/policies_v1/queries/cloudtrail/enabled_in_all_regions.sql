@@ -7,17 +7,10 @@ select
     aws_cloudtrail_trails.account_id,
     arn as resource_id,
     case
-        when aws_cloudtrail_trails.is_multi_region_trail = FALSE then 'fail'
-        when exists(select *
-                    from jsonb_array_elements(aws_cloudtrail_trail_event_selectors.event_selectors) as es
-                    where es ->>'ReadWriteType' != 'All' or (es->>'IncludeManagementEvents')::boolean = FALSE)
-            then 'fail'
-        when exists(select *
-                    from jsonb_array_elements(aws_cloudtrail_trail_event_selectors.advanced_event_selectors) as aes
-                    where exists(select *
-                                 from jsonb_array_elements(aes ->'FieldSelectors') as aes_fs
-                                 where aes_fs ->>'Field' = 'readOnly'))
-            then 'fail'
+        when is_multi_region_trail = FALSE or (
+                    is_multi_region_trail = TRUE and (
+                        read_write_type != 'All' or include_management_events = FALSE
+                )) then 'fail'
         else 'pass'
     end as status
 from aws_cloudtrail_trails
