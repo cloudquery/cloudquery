@@ -17,7 +17,7 @@ func clusterParameters() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_Parameter.html`,
 		Resolver:    fetchDocdbClusterParameters,
-		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
+		Transform:   transformers.TransformWithStruct(&types.Parameter{}, transformers.WithPrimaryKeys("ParameterName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
