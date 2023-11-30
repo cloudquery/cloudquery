@@ -2,7 +2,9 @@ package docdb
 
 import (
 	"context"
+	"strings"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -23,6 +25,14 @@ func Events() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
+			{
+				Name: "categories_concat",
+				Type: arrow.BinaryTypes.String,
+				Resolver: func(_ context.Context, _ schema.ClientMeta, r *schema.Resource, c schema.Column) error {
+					return r.Set(c.Name, strings.Join(r.Item.(types.Event).EventCategories, ","))
+				},
+				PrimaryKey: true,
+			},
 		},
 	}
 }
