@@ -34,7 +34,7 @@ func NetworkInterfaces() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: client.ResolveTagField("TagSet"),
+				Resolver: client.ResolveTagPath("TagSet"),
 			},
 		},
 	}

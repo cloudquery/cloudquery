@@ -32,7 +32,7 @@ func EngineVersions() *schema.Table {
 			{
 				Name:     "tag_list",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: client.ResolveTagField("TagList"),
+				Resolver: client.ResolveTagPath("TagList"),
 			},
 		},
 
