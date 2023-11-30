@@ -3,7 +3,6 @@ package lambda
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -17,15 +16,12 @@ func functionEventInvokeConfigs() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_FunctionEventInvokeConfig.html`,
 		Resolver:    fetchLambdaFunctionEventInvokeConfigs,
-		Transform:   transformers.TransformWithStruct(&types.FunctionEventInvokeConfig{}),
+		Transform: transformers.TransformWithStruct(&types.FunctionEventInvokeConfig{},
+			transformers.WithPrimaryKeys("FunctionArn"), // FunctionArn here can also be a version
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
-			{
-				Name:     "function_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
-			},
 		},
 	}
 }
@@ -36,9 +32,7 @@ func fetchLambdaFunctionEventInvokeConfigs(ctx context.Context, meta schema.Clie
 	}
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceLambda).Lambda
-	config := lambda.ListFunctionEventInvokeConfigsInput{
-		FunctionName: p.Configuration.FunctionName,
-	}
+	config := lambda.ListFunctionEventInvokeConfigsInput{FunctionName: p.Configuration.FunctionArn}
 	paginator := lambda.NewListFunctionEventInvokeConfigsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *lambda.Options) {

@@ -34,7 +34,7 @@ func Backups() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: client.ResolveTagField("TagList"),
+				Resolver: client.ResolveTagPath("TagList"),
 			},
 		},
 	}
