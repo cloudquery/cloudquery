@@ -3,7 +3,6 @@ package ecr
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -18,16 +17,12 @@ func RegistryPolicies() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_GetRegistryPolicy.html`,
 		Resolver:    fetchEcrRegistryPolicies,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "api.ecr"),
-		Transform:   transformers.TransformWithStruct(&ecr.GetRegistryPolicyOutput{}, transformers.WithSkipFields("ResultMetadata")),
+		Transform: transformers.TransformWithStruct(&ecr.GetRegistryPolicyOutput{},
+			transformers.WithPrimaryKeys("RegistryId"),
+			transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
-			{
-				Name:       "registry_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("RegistryId"),
-				PrimaryKey: true,
-			},
 			{
 				Name:     "policy_text",
 				Type:     sdkTypes.ExtensionTypes.JSON,
