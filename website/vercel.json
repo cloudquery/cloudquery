@@ -255,6 +255,10 @@
       "destination": "https://cloudquery.typeform.com/to/TTBdFOfe"
     },
     {
+      "source": "/register-for-marketplace",
+      "destination": "https://cloudquery.typeform.com/to/R5WykyTk"
+    },
+    {
       "source": "/docs/support",
       "destination": "/pricing"
     },

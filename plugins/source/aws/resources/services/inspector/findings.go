@@ -32,12 +32,12 @@ func Findings() *schema.Table {
 			{
 				Name:     "attributes",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: client.ResolveTagField("Attributes"),
+				Resolver: client.ResolveTagPath("Attributes"),
 			},
 			{
 				Name:     "user_attributes",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: client.ResolveTagField("UserAttributes"),
+				Resolver: client.ResolveTagPath("UserAttributes"),
 			},
 		},
 	}
