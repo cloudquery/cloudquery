@@ -4,7 +4,7 @@ This table shows data for AWS Direct Connect Gateway Associations.
 
 https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGatewayAssociation.html
 
-The composite primary key for this table is (**gateway_arn**, **association_id**).
+The composite primary key for this table is (**request_account_id**, **gateway_arn**, **association_id**).
 
 ## Relations
 
@@ -16,8 +16,8 @@ This table depends on [aws_directconnect_gateways](aws_directconnect_gateways.md
 | ------------- | ------------- |
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id|`utf8`|
-|region|`utf8`|
+|request_account_id (PK)|`utf8`|
+|request_region|`utf8`|
 |gateway_arn (PK)|`utf8`|
 |gateway_id|`utf8`|
 |allowed_prefixes_to_direct_connect_gateway|`json`|
