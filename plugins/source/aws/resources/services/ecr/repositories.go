@@ -20,7 +20,7 @@ func Repositories() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_Repository.html`,
 		Resolver:    fetchEcrRepositories,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "api.ecr"),
-		Transform:   transformers.TransformWithStruct(&types.Repository{}),
+		Transform:   transformers.TransformWithStruct(&types.Repository{}, transformers.WithPrimaryKeys("RegistryId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -44,7 +44,7 @@ func Repositories() *schema.Table {
 		},
 	}
 }
-func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceEcr).Ecr
 	paginator := ecr.NewDescribeRepositoriesPaginator(svc, &ecr.DescribeRepositoriesInput{

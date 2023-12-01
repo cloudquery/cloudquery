@@ -17,14 +17,15 @@ func loadBalancerAttributes() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_LoadBalancerAttribute.html`,
 		Resolver:    fetchLoadBalancerAttributes,
-		Transform:   transformers.TransformWithStruct(&types.LoadBalancerAttribute{}),
+		Transform:   transformers.TransformWithStruct(&types.LoadBalancerAttribute{}, transformers.WithPrimaryKeys("Key")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "load_balancer_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "load_balancer_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}

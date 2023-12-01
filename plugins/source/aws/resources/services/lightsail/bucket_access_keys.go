@@ -17,14 +17,15 @@ func bucketAccessKeys() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_AccessKey.html`,
 		Resolver:    fetchLightsailBucketAccessKeys,
-		Transform:   transformers.TransformWithStruct(&types.AccessKey{}),
+		Transform:   transformers.TransformWithStruct(&types.AccessKey{}, transformers.WithPrimaryKeys("AccessKeyId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "bucket_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "bucket_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
