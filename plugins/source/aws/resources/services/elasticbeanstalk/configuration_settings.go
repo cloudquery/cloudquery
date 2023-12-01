@@ -21,14 +21,18 @@ func configurationSettings() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ConfigurationSettingsDescription.html`,
 		Resolver:    fetchElasticbeanstalkConfigurationSettings,
-		Transform:   transformers.TransformWithStruct(models.ConfigurationSettingsDescriptionWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform: transformers.TransformWithStruct(models.ConfigurationSettingsDescriptionWrapper{},
+			transformers.WithUnwrapAllEmbeddedStructs(),
+			transformers.WithPrimaryKeys("ApplicationArn", "SolutionStackName"),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "environment_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("id"),
+				Name:       "environment_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -43,6 +47,7 @@ func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema
 		ApplicationName: p.ApplicationName,
 		EnvironmentName: p.EnvironmentName,
 	}
+
 	output, err := svc.DescribeConfigurationSettings(ctx, &configOptionsIn, func(options *elasticbeanstalk.Options) {
 		options.Region = cl.Region
 	})
@@ -65,7 +70,8 @@ func fetchElasticbeanstalkConfigurationSettings(ctx context.Context, meta schema
 
 	for _, option := range output.ConfigurationSettings {
 		res <- models.ConfigurationSettingsDescriptionWrapper{
-			ConfigurationSettingsDescription: option, ApplicationArn: arnStr,
+			ApplicationArn:                   arnStr,
+			ConfigurationSettingsDescription: option,
 		}
 	}
 

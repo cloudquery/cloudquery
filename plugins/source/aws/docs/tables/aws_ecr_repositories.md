@@ -4,7 +4,7 @@ This table shows data for Amazon Elastic Container Registry (ECR) Repositories.
 
 https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_Repository.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**arn**, **registry_id**).
 
 ## Relations
 
@@ -27,7 +27,7 @@ The following tables depend on aws_ecr_repositories:
 |encryption_configuration|`json`|
 |image_scanning_configuration|`json`|
 |image_tag_mutability|`utf8`|
-|registry_id|`utf8`|
+|registry_id (PK)|`utf8`|
 |repository_arn|`utf8`|
 |repository_name|`utf8`|
 |repository_uri|`utf8`|

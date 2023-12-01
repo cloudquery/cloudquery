@@ -17,14 +17,15 @@ func containerServiceDeployments() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_ContainerServiceDeployment.html`,
 		Resolver:    fetchLightsailContainerServiceDeployments,
-		Transform:   transformers.TransformWithStruct(&types.ContainerServiceDeployment{}),
+		Transform:   transformers.TransformWithStruct(&types.ContainerServiceDeployment{}, transformers.WithPrimaryKeys("Version")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "container_service_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "container_service_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
