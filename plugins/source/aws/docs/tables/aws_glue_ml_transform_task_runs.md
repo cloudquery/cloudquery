@@ -4,7 +4,7 @@ This table shows data for Glue ML Transform Task Runs.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_TaskRun.html
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**ml_transform_arn**, **task_run_id**).
 
 ## Relations
 
@@ -14,11 +14,11 @@ This table depends on [aws_glue_ml_transforms](aws_glue_ml_transforms.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|`uuid`|
+|_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|ml_transform_arn|`utf8`|
+|ml_transform_arn (PK)|`utf8`|
 |completed_on|`timestamp[us, tz=UTC]`|
 |error_string|`utf8`|
 |execution_time|`int64`|
@@ -27,5 +27,5 @@ This table depends on [aws_glue_ml_transforms](aws_glue_ml_transforms.md).
 |properties|`json`|
 |started_on|`timestamp[us, tz=UTC]`|
 |status|`utf8`|
-|task_run_id|`utf8`|
+|task_run_id (PK)|`utf8`|
 |transform_id|`utf8`|

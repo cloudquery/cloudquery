@@ -5,6 +5,7 @@ import (
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -31,15 +32,13 @@ func MlTransforms() *schema.Table {
 				PrimaryKey: true,
 			},
 			{
-				Name:     "tags",
-				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveGlueMlTransformTags,
-			},
-			{
 				Name:     "schema",
 				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveMlTransformsSchema,
 			},
+			tagsCol(func(cl *client.Client, resource *schema.Resource) string {
+				return mlTransformARN(cl, aws.ToString(resource.Item.(types.MLTransform).TransformId))
+			}),
 		},
 
 		Relations: []*schema.Table{
@@ -48,7 +47,7 @@ func MlTransforms() *schema.Table {
 	}
 }
 
-func fetchGlueMlTransforms(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchGlueMlTransforms(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGlue).Glue
 	paginator := glue.NewGetMLTransformsPaginator(svc, &glue.GetMLTransformsInput{})
@@ -63,33 +62,26 @@ func fetchGlueMlTransforms(ctx context.Context, meta schema.ClientMeta, parent *
 	}
 	return nil
 }
-func resolveGlueMlTransformArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveGlueMlTransformArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	r := resource.Item.(types.MLTransform)
-	return resource.Set(c.Name, mlTransformARN(cl, &r))
+	return resource.Set(c.Name, mlTransformARN(cl, aws.ToString(resource.Item.(types.MLTransform).TransformId)))
 }
-func resolveGlueMlTransformTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceGlue).Glue
-	r := resource.Item.(types.MLTransform)
-	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
-		ResourceArn: aws.String(mlTransformARN(cl, &r)),
-	}, func(options *glue.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
-		return err
-	}
-	return resource.Set(c.Name, result.Tags)
+
+func mlTransformARN(cl *client.Client, transformID string) string {
+	return arn.ARN{
+		Partition: cl.Partition,
+		Service:   string(client.GlueService),
+		Region:    cl.Region,
+		AccountID: cl.AccountID,
+		Resource:  "mlTransform/" + transformID,
+	}.String()
 }
-func resolveMlTransformsSchema(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+
+func resolveMlTransformsSchema(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.MLTransform)
 	j := make(map[string]string)
-	for _, c := range r.Schema {
-		j[*c.Name] = *c.DataType
+	for _, sCol := range r.Schema {
+		j[*sCol.Name] = *sCol.DataType
 	}
 	return resource.Set(c.Name, j)
 }

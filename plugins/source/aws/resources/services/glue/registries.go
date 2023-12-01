@@ -10,7 +10,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Registries() *schema.Table {
@@ -25,16 +24,14 @@ func Registries() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "tags",
-				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveGlueRegistryTags,
-			},
-			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,
 				Resolver:   schema.PathResolver("RegistryArn"),
 				PrimaryKey: true,
 			},
+			tagsCol(func(_ *client.Client, resource *schema.Resource) string {
+				return *resource.Item.(types.RegistryListItem).RegistryArn
+			}),
 		},
 
 		Relations: []*schema.Table{
@@ -43,7 +40,7 @@ func Registries() *schema.Table {
 	}
 }
 
-func fetchGlueRegistries(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchGlueRegistries(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGlue).Glue
 	paginator := glue.NewListRegistriesPaginator(svc, &glue.ListRegistriesInput{
@@ -59,22 +56,4 @@ func fetchGlueRegistries(ctx context.Context, meta schema.ClientMeta, parent *sc
 		res <- page.Registries
 	}
 	return nil
-}
-
-func resolveGlueRegistryTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceGlue).Glue
-	r := resource.Item.(types.RegistryListItem)
-	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
-		ResourceArn: r.RegistryArn,
-	}, func(options *glue.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
-		return err
-	}
-	return resource.Set(c.Name, result.Tags)
 }

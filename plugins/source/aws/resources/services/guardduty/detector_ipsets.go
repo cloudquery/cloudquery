@@ -18,8 +18,23 @@ func detectorIPSets() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetIPSet.html`,
 		Resolver:            fetchDetectorIPSets,
 		PreResourceResolver: getDetectorIPSet,
-		Transform:           transformers.TransformWithStruct(&guardduty.GetIPSetOutput{}, transformers.WithPrimaryKeys("Name"), transformers.WithSkipFields("ResultMetadata")),
-		Columns: []schema.Column{
+		Transform: transformers.TransformWithStruct(&guardduty.GetIPSetOutput{},
+			transformers.WithPrimaryKeys("Name"),
+			transformers.WithSkipFields("ResultMetadata"),
+		),
+		Columns: schema.ColumnList{
+			{
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
+			},
+			{
+				Name:       "request_region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSRegion,
+				PrimaryKey: true,
+			},
 			{
 				Name:       "detector_arn",
 				Type:       arrow.BinaryTypes.String,
