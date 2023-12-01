@@ -6,6 +6,11 @@ https://docs.aws.amazon.com/organizations/latest/APIReference/API_DelegatedAdmin
 
 The composite primary key for this table is (**account_id**, **arn**).
 
+## Relations
+
+The following tables depend on aws_organizations_delegated_administrators:
+  - [aws_organizations_delegated_services](aws_organizations_delegated_services.md)
+
 ## Columns
 
 | Name          | Type          |

@@ -372,6 +372,7 @@ func getTables() schema.Tables {
 		glue.Workflows(),
 		guardduty.Detectors(),
 		iam.Accounts(),
+		iam.AccountAuthorizationDetails(),
 		iam.CredentialReports(),
 		iam.Groups(),
 		iam.InstanceProfiles(),

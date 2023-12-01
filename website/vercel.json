@@ -255,6 +255,10 @@
       "destination": "https://cloudquery.typeform.com/to/TTBdFOfe"
     },
     {
+      "source": "/register-for-marketplace",
+      "destination": "https://cloudquery.typeform.com/to/R5WykyTk"
+    },
+    {
       "source": "/docs/support",
       "destination": "/pricing"
     },
@@ -439,6 +443,10 @@
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/firestore/tables/:path*"
     },
     {
+      "source": "/docs/plugins/sources/gandi/tables/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/gandi/tables/:path*"
+    },
+    {
       "source": "/docs/plugins/sources/gcp/tables/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/gcp/tables/:path*"
     },
@@ -449,6 +457,10 @@
     {
       "source": "/docs/plugins/sources/gitlab/tables/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/gitlab/tables/:path*"
+    },
+    {
+      "source": "/docs/plugins/sources/googleads/tables/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/googleads/tables/:path*"
     },
     {
       "source": "/docs/plugins/sources/googleanalytics/tables/:path*",
@@ -483,6 +495,14 @@
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/launchdarkly/tables/:path*"
     },
     {
+      "source": "/docs/plugins/sources/mixpanel/tables/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/mixpanel/tables/:path*"
+    },
+    {
+      "source": "/docs/plugins/sources/mongodbatlas/tables/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/mongodbatlas/tables/:path*"
+    },
+    {
       "source": "/docs/plugins/sources/mysql/tables/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/mysql/tables/:path*"
     },
@@ -507,8 +527,16 @@
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/pagerduty/tables/:path*"
     },
     {
+      "source": "/docs/plugins/sources/plausible/tables/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/plausible/tables/:path*"
+    },
+    {
       "source": "/docs/plugins/sources/postgresql/tables/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/postgresql/tables/:path*"
+    },
+    {
+      "source": "/docs/plugins/sources/render/tables/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/render/tables/:path*"
     },
     {
       "source": "/docs/plugins/sources/salesforce/tables/:path*",
@@ -541,6 +569,10 @@
     {
       "source": "/docs/plugins/sources/vault/tables/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/vault/tables/:path*"
+    },
+    {
+      "source": "/docs/plugins/sources/vercel/tables/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/vercel/tables/:path*"
     },
     {
       "source": "/docs/plugins/sources/alicloud/:path*",
@@ -591,6 +623,10 @@
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/firestore"
     },
     {
+      "source": "/docs/plugins/sources/gandi/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/gandi"
+    },
+    {
       "source": "/docs/plugins/sources/gcp/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/gcp"
     },
@@ -601,6 +637,10 @@
     {
       "source": "/docs/plugins/sources/gitlab/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/gitlab"
+    },
+    {
+      "source": "/docs/plugins/sources/googleads/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/googleads"
     },
     {
       "source": "/docs/plugins/sources/googleanalytics/:path*",
@@ -635,6 +675,14 @@
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/launchdarkly"
     },
     {
+      "source": "/docs/plugins/sources/mixpanel/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/mixpanel"
+    },
+    {
+      "source": "/docs/plugins/sources/mongodbatlas/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/mongodbatlas"
+    },
+    {
       "source": "/docs/plugins/sources/mysql/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/mysql"
     },
@@ -659,8 +707,16 @@
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/pagerduty"
     },
     {
+      "source": "/docs/plugins/sources/plausible/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/plausible"
+    },
+    {
       "source": "/docs/plugins/sources/postgresql/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/postgresql"
+    },
+    {
+      "source": "/docs/plugins/sources/render/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/render"
     },
     {
       "source": "/docs/plugins/sources/salesforce/:path*",
@@ -693,6 +749,10 @@
     {
       "source": "/docs/plugins/sources/vault/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/vault"
+    },
+    {
+      "source": "/docs/plugins/sources/vercel/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/vercel"
     },
     {
       "source": "/docs/plugins/destinations/azblob/:path*",

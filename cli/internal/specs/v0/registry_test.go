@@ -17,11 +17,11 @@ func TestRegistryJsonMarshalUnmarshal(t *testing.T) {
 		t.Fatal("failed to unmarshal registry:", err)
 	}
 	if registry != RegistryGrpc {
-		t.Fatal("expected registry to be github, but got:", registry)
+		t.Fatal("expected registry to be grpc, but got:", registry)
 	}
 }
 
-func TestRegistryYamlMarshalUnmarsahl(t *testing.T) {
+func TestRegistryYamlMarshalUnmarshal(t *testing.T) {
 	b, err := yaml.Marshal(RegistryGrpc)
 	if err != nil {
 		t.Fatal("failed to marshal registry:", err)

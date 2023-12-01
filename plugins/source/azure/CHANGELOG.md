@@ -5,6 +5,22 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [10.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v10.2.0...plugins-source-azure-v10.3.0) (2023-11-27)
+
+
+### This Release has the Following Changes to Tables
+- Table `azure_resources_providers` was added
+
+### Features
+
+* Add `azure_resources_providers` table ([#15466](https://github.com/cloudquery/cloudquery/issues/15466)) ([2c55014](https://github.com/cloudquery/cloudquery/commit/2c550148442e171eb87b7336ecb8985308e43f0b))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.2 ([#15325](https://github.com/cloudquery/cloudquery/issues/15325)) ([77f2db5](https://github.com/cloudquery/cloudquery/commit/77f2db52634bad6e56d970d55172b08d823b97c9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.3 ([#15355](https://github.com/cloudquery/cloudquery/issues/15355)) ([d8455e5](https://github.com/cloudquery/cloudquery/commit/d8455e5ca1059746c7aced395e9bc150ea495591))
+
 ## [10.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-azure-v10.1.1...plugins-source-azure-v10.2.0) (2023-11-16)
 
 

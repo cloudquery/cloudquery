@@ -37,4 +37,5 @@ This table depends on [aws_docdb_clusters](aws_docdb_clusters.md).
 |source_db_cluster_snapshot_arn|`utf8`|
 |status|`utf8`|
 |storage_encrypted|`bool`|
+|storage_type|`utf8`|
 |vpc_id|`utf8`|

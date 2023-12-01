@@ -106,7 +106,7 @@ func fetchGroupLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, 
 }
 
 func fetchPolicyLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	policy := parent.Item.(types.ManagedPolicyDetail)
+	policy := parent.Item.(types.Policy)
 	return fetchLastAccessedDetails(ctx, meta, policy.Arn, res)
 }
 
