@@ -2,10 +2,8 @@ package glue
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/apache/arrow/go/v14/arrow"
-	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -19,14 +17,15 @@ func jobRuns() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_JobRun.html`,
 		Resolver:    fetchGlueJobRuns,
-		Transform:   transformers.TransformWithStruct(&types.JobRun{}),
+		Transform:   transformers.TransformWithStruct(&types.JobRun{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "job_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "job_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -49,14 +48,4 @@ func fetchGlueJobRuns(ctx context.Context, meta schema.ClientMeta, parent *schem
 		res <- page.JobRuns
 	}
 	return nil
-}
-
-func jobARN(cl *client.Client, name string) string {
-	return arn.ARN{
-		Partition: cl.Partition,
-		Service:   string(client.GlueService),
-		Region:    cl.Region,
-		AccountID: cl.AccountID,
-		Resource:  fmt.Sprintf("job/%s", name),
-	}.String()
 }
