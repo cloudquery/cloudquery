@@ -134,7 +134,7 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.19.0
 	github.com/gertd/go-pluralize v0.2.1
 	github.com/ghodss/yaml v1.0.0
-	github.com/gocarina/gocsv v0.0.0-20230616125104-99d496ca653d
+	github.com/gocarina/gocsv v0.0.0-20231116093920-b87c2d0e983a
 	github.com/golang/mock v1.6.0
 	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.4.0
