@@ -3,6 +3,7 @@ package ecr
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -16,10 +17,19 @@ func lifeCyclePolicy() *schema.Table {
 		Name:        "aws_ecr_repository_lifecycle_policies",
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_GetLifecyclePolicy.html`,
 		Resolver:    fetchRepositoryLifecyclePolicy,
-		Transform:   transformers.TransformWithStruct(&ecr.GetLifecyclePolicyOutput{}, transformers.WithPrimaryKeys("RepositoryName", "RegistryId"), transformers.WithSkipFields("ResultMetadata")),
+		Transform: transformers.TransformWithStruct(&ecr.GetLifecyclePolicyOutput{},
+			transformers.WithPrimaryKeys("RegistryId"),
+			transformers.WithSkipFields("ResultMetadata"),
+		),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
+			client.DefaultAccountIDColumn(false),
+			client.DefaultRegionColumn(false),
+			{
+				Name:       "repository_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
+			},
 			{
 				Name:     "policy_json",
 				Type:     sdkTypes.ExtensionTypes.JSON,
@@ -31,8 +41,10 @@ func lifeCyclePolicy() *schema.Table {
 func fetchRepositoryLifecyclePolicy(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceEcr).Ecr
+	repository := parent.Item.(types.Repository)
 	config := ecr.GetLifecyclePolicyInput{
-		RepositoryName: parent.Item.(types.Repository).RepositoryName,
+		RepositoryName: repository.RepositoryName,
+		RegistryId:     repository.RegistryId,
 	}
 	resp, err := svc.GetLifecyclePolicy(ctx, &config, func(options *ecr.Options) {
 		options.Region = cl.Region
