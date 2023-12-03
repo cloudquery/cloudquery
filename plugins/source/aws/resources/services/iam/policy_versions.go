@@ -55,7 +55,6 @@ func fetchPolicyVersion(ctx context.Context, meta schema.ClientMeta, parent *sch
 	}
 
 	return nil
-
 }
 
 func resolvePolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
