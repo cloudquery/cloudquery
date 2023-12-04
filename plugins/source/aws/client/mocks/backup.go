@@ -605,6 +605,126 @@ func (mr *MockBackupClientMockRecorder) GetRecoveryPointRestoreMetadata(arg0, ar
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRecoveryPointRestoreMetadata", reflect.TypeOf((*MockBackupClient)(nil).GetRecoveryPointRestoreMetadata), varargs...)
 }
 
+// GetRestoreJobMetadata mocks base method.
+func (m *MockBackupClient) GetRestoreJobMetadata(arg0 context.Context, arg1 *backup.GetRestoreJobMetadataInput, arg2 ...func(*backup.Options)) (*backup.GetRestoreJobMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRestoreJobMetadata")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetRestoreJobMetadata", varargs...)
+	ret0, _ := ret[0].(*backup.GetRestoreJobMetadataOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRestoreJobMetadata indicates an expected call of GetRestoreJobMetadata.
+func (mr *MockBackupClientMockRecorder) GetRestoreJobMetadata(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRestoreJobMetadata", reflect.TypeOf((*MockBackupClient)(nil).GetRestoreJobMetadata), varargs...)
+}
+
+// GetRestoreTestingInferredMetadata mocks base method.
+func (m *MockBackupClient) GetRestoreTestingInferredMetadata(arg0 context.Context, arg1 *backup.GetRestoreTestingInferredMetadataInput, arg2 ...func(*backup.Options)) (*backup.GetRestoreTestingInferredMetadataOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRestoreTestingInferredMetadata")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetRestoreTestingInferredMetadata", varargs...)
+	ret0, _ := ret[0].(*backup.GetRestoreTestingInferredMetadataOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRestoreTestingInferredMetadata indicates an expected call of GetRestoreTestingInferredMetadata.
+func (mr *MockBackupClientMockRecorder) GetRestoreTestingInferredMetadata(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRestoreTestingInferredMetadata", reflect.TypeOf((*MockBackupClient)(nil).GetRestoreTestingInferredMetadata), varargs...)
+}
+
+// GetRestoreTestingPlan mocks base method.
+func (m *MockBackupClient) GetRestoreTestingPlan(arg0 context.Context, arg1 *backup.GetRestoreTestingPlanInput, arg2 ...func(*backup.Options)) (*backup.GetRestoreTestingPlanOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRestoreTestingPlan")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetRestoreTestingPlan", varargs...)
+	ret0, _ := ret[0].(*backup.GetRestoreTestingPlanOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRestoreTestingPlan indicates an expected call of GetRestoreTestingPlan.
+func (mr *MockBackupClientMockRecorder) GetRestoreTestingPlan(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRestoreTestingPlan", reflect.TypeOf((*MockBackupClient)(nil).GetRestoreTestingPlan), varargs...)
+}
+
+// GetRestoreTestingSelection mocks base method.
+func (m *MockBackupClient) GetRestoreTestingSelection(arg0 context.Context, arg1 *backup.GetRestoreTestingSelectionInput, arg2 ...func(*backup.Options)) (*backup.GetRestoreTestingSelectionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetRestoreTestingSelection")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetRestoreTestingSelection", varargs...)
+	ret0, _ := ret[0].(*backup.GetRestoreTestingSelectionOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRestoreTestingSelection indicates an expected call of GetRestoreTestingSelection.
+func (mr *MockBackupClientMockRecorder) GetRestoreTestingSelection(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRestoreTestingSelection", reflect.TypeOf((*MockBackupClient)(nil).GetRestoreTestingSelection), varargs...)
+}
+
 // GetSupportedResourceTypes mocks base method.
 func (m *MockBackupClient) GetSupportedResourceTypes(arg0 context.Context, arg1 *backup.GetSupportedResourceTypesInput, arg2 ...func(*backup.Options)) (*backup.GetSupportedResourceTypesOutput, error) {
 
@@ -1233,6 +1353,96 @@ func (mr *MockBackupClientMockRecorder) ListRestoreJobs(arg0, arg1 interface{}, 
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRestoreJobs", reflect.TypeOf((*MockBackupClient)(nil).ListRestoreJobs), varargs...)
+}
+
+// ListRestoreJobsByProtectedResource mocks base method.
+func (m *MockBackupClient) ListRestoreJobsByProtectedResource(arg0 context.Context, arg1 *backup.ListRestoreJobsByProtectedResourceInput, arg2 ...func(*backup.Options)) (*backup.ListRestoreJobsByProtectedResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRestoreJobsByProtectedResource")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListRestoreJobsByProtectedResource", varargs...)
+	ret0, _ := ret[0].(*backup.ListRestoreJobsByProtectedResourceOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListRestoreJobsByProtectedResource indicates an expected call of ListRestoreJobsByProtectedResource.
+func (mr *MockBackupClientMockRecorder) ListRestoreJobsByProtectedResource(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRestoreJobsByProtectedResource", reflect.TypeOf((*MockBackupClient)(nil).ListRestoreJobsByProtectedResource), varargs...)
+}
+
+// ListRestoreTestingPlans mocks base method.
+func (m *MockBackupClient) ListRestoreTestingPlans(arg0 context.Context, arg1 *backup.ListRestoreTestingPlansInput, arg2 ...func(*backup.Options)) (*backup.ListRestoreTestingPlansOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRestoreTestingPlans")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListRestoreTestingPlans", varargs...)
+	ret0, _ := ret[0].(*backup.ListRestoreTestingPlansOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListRestoreTestingPlans indicates an expected call of ListRestoreTestingPlans.
+func (mr *MockBackupClientMockRecorder) ListRestoreTestingPlans(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRestoreTestingPlans", reflect.TypeOf((*MockBackupClient)(nil).ListRestoreTestingPlans), varargs...)
+}
+
+// ListRestoreTestingSelections mocks base method.
+func (m *MockBackupClient) ListRestoreTestingSelections(arg0 context.Context, arg1 *backup.ListRestoreTestingSelectionsInput, arg2 ...func(*backup.Options)) (*backup.ListRestoreTestingSelectionsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &backup.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListRestoreTestingSelections")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListRestoreTestingSelections", varargs...)
+	ret0, _ := ret[0].(*backup.ListRestoreTestingSelectionsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListRestoreTestingSelections indicates an expected call of ListRestoreTestingSelections.
+func (mr *MockBackupClientMockRecorder) ListRestoreTestingSelections(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRestoreTestingSelections", reflect.TypeOf((*MockBackupClient)(nil).ListRestoreTestingSelections), varargs...)
 }
 
 // ListTags mocks base method.

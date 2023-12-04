@@ -13,6 +13,7 @@ type AccessanalyzerClient interface {
 	GetAnalyzer(context.Context, *accessanalyzer.GetAnalyzerInput, ...func(*accessanalyzer.Options)) (*accessanalyzer.GetAnalyzerOutput, error)
 	GetArchiveRule(context.Context, *accessanalyzer.GetArchiveRuleInput, ...func(*accessanalyzer.Options)) (*accessanalyzer.GetArchiveRuleOutput, error)
 	GetFinding(context.Context, *accessanalyzer.GetFindingInput, ...func(*accessanalyzer.Options)) (*accessanalyzer.GetFindingOutput, error)
+	GetFindingV2(context.Context, *accessanalyzer.GetFindingV2Input, ...func(*accessanalyzer.Options)) (*accessanalyzer.GetFindingV2Output, error)
 	GetGeneratedPolicy(context.Context, *accessanalyzer.GetGeneratedPolicyInput, ...func(*accessanalyzer.Options)) (*accessanalyzer.GetGeneratedPolicyOutput, error)
 	ListAccessPreviewFindings(context.Context, *accessanalyzer.ListAccessPreviewFindingsInput, ...func(*accessanalyzer.Options)) (*accessanalyzer.ListAccessPreviewFindingsOutput, error)
 	ListAccessPreviews(context.Context, *accessanalyzer.ListAccessPreviewsInput, ...func(*accessanalyzer.Options)) (*accessanalyzer.ListAccessPreviewsOutput, error)
@@ -20,6 +21,7 @@ type AccessanalyzerClient interface {
 	ListAnalyzers(context.Context, *accessanalyzer.ListAnalyzersInput, ...func(*accessanalyzer.Options)) (*accessanalyzer.ListAnalyzersOutput, error)
 	ListArchiveRules(context.Context, *accessanalyzer.ListArchiveRulesInput, ...func(*accessanalyzer.Options)) (*accessanalyzer.ListArchiveRulesOutput, error)
 	ListFindings(context.Context, *accessanalyzer.ListFindingsInput, ...func(*accessanalyzer.Options)) (*accessanalyzer.ListFindingsOutput, error)
+	ListFindingsV2(context.Context, *accessanalyzer.ListFindingsV2Input, ...func(*accessanalyzer.Options)) (*accessanalyzer.ListFindingsV2Output, error)
 	ListPolicyGenerations(context.Context, *accessanalyzer.ListPolicyGenerationsInput, ...func(*accessanalyzer.Options)) (*accessanalyzer.ListPolicyGenerationsOutput, error)
 	ListTagsForResource(context.Context, *accessanalyzer.ListTagsForResourceInput, ...func(*accessanalyzer.Options)) (*accessanalyzer.ListTagsForResourceOutput, error)
 }

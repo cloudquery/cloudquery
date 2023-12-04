@@ -125,6 +125,36 @@ func (mr *MockDetectiveClientMockRecorder) DescribeOrganizationConfiguration(arg
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeOrganizationConfiguration", reflect.TypeOf((*MockDetectiveClient)(nil).DescribeOrganizationConfiguration), varargs...)
 }
 
+// GetInvestigation mocks base method.
+func (m *MockDetectiveClient) GetInvestigation(arg0 context.Context, arg1 *detective.GetInvestigationInput, arg2 ...func(*detective.Options)) (*detective.GetInvestigationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &detective.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetInvestigation")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetInvestigation", varargs...)
+	ret0, _ := ret[0].(*detective.GetInvestigationOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetInvestigation indicates an expected call of GetInvestigation.
+func (mr *MockDetectiveClientMockRecorder) GetInvestigation(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInvestigation", reflect.TypeOf((*MockDetectiveClient)(nil).GetInvestigation), varargs...)
+}
+
 // GetMembers mocks base method.
 func (m *MockDetectiveClient) GetMembers(arg0 context.Context, arg1 *detective.GetMembersInput, arg2 ...func(*detective.Options)) (*detective.GetMembersOutput, error) {
 
@@ -213,6 +243,66 @@ func (mr *MockDetectiveClientMockRecorder) ListGraphs(arg0, arg1 interface{}, ar
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListGraphs", reflect.TypeOf((*MockDetectiveClient)(nil).ListGraphs), varargs...)
+}
+
+// ListIndicators mocks base method.
+func (m *MockDetectiveClient) ListIndicators(arg0 context.Context, arg1 *detective.ListIndicatorsInput, arg2 ...func(*detective.Options)) (*detective.ListIndicatorsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &detective.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListIndicators")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListIndicators", varargs...)
+	ret0, _ := ret[0].(*detective.ListIndicatorsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListIndicators indicates an expected call of ListIndicators.
+func (mr *MockDetectiveClientMockRecorder) ListIndicators(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListIndicators", reflect.TypeOf((*MockDetectiveClient)(nil).ListIndicators), varargs...)
+}
+
+// ListInvestigations mocks base method.
+func (m *MockDetectiveClient) ListInvestigations(arg0 context.Context, arg1 *detective.ListInvestigationsInput, arg2 ...func(*detective.Options)) (*detective.ListInvestigationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &detective.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListInvestigations")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListInvestigations", varargs...)
+	ret0, _ := ret[0].(*detective.ListInvestigationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListInvestigations indicates an expected call of ListInvestigations.
+func (mr *MockDetectiveClientMockRecorder) ListInvestigations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListInvestigations", reflect.TypeOf((*MockDetectiveClient)(nil).ListInvestigations), varargs...)
 }
 
 // ListInvitations mocks base method.

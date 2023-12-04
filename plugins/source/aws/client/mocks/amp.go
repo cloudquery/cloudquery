@@ -125,6 +125,36 @@ func (mr *MockAmpClientMockRecorder) DescribeRuleGroupsNamespace(arg0, arg1 inte
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeRuleGroupsNamespace", reflect.TypeOf((*MockAmpClient)(nil).DescribeRuleGroupsNamespace), varargs...)
 }
 
+// DescribeScraper mocks base method.
+func (m *MockAmpClient) DescribeScraper(arg0 context.Context, arg1 *amp.DescribeScraperInput, arg2 ...func(*amp.Options)) (*amp.DescribeScraperOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amp.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeScraper")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeScraper", varargs...)
+	ret0, _ := ret[0].(*amp.DescribeScraperOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeScraper indicates an expected call of DescribeScraper.
+func (mr *MockAmpClientMockRecorder) DescribeScraper(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeScraper", reflect.TypeOf((*MockAmpClient)(nil).DescribeScraper), varargs...)
+}
+
 // DescribeWorkspace mocks base method.
 func (m *MockAmpClient) DescribeWorkspace(arg0 context.Context, arg1 *amp.DescribeWorkspaceInput, arg2 ...func(*amp.Options)) (*amp.DescribeWorkspaceOutput, error) {
 
@@ -155,6 +185,36 @@ func (mr *MockAmpClientMockRecorder) DescribeWorkspace(arg0, arg1 interface{}, a
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeWorkspace", reflect.TypeOf((*MockAmpClient)(nil).DescribeWorkspace), varargs...)
 }
 
+// GetDefaultScraperConfiguration mocks base method.
+func (m *MockAmpClient) GetDefaultScraperConfiguration(arg0 context.Context, arg1 *amp.GetDefaultScraperConfigurationInput, arg2 ...func(*amp.Options)) (*amp.GetDefaultScraperConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amp.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDefaultScraperConfiguration")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetDefaultScraperConfiguration", varargs...)
+	ret0, _ := ret[0].(*amp.GetDefaultScraperConfigurationOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDefaultScraperConfiguration indicates an expected call of GetDefaultScraperConfiguration.
+func (mr *MockAmpClientMockRecorder) GetDefaultScraperConfiguration(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDefaultScraperConfiguration", reflect.TypeOf((*MockAmpClient)(nil).GetDefaultScraperConfiguration), varargs...)
+}
+
 // ListRuleGroupsNamespaces mocks base method.
 func (m *MockAmpClient) ListRuleGroupsNamespaces(arg0 context.Context, arg1 *amp.ListRuleGroupsNamespacesInput, arg2 ...func(*amp.Options)) (*amp.ListRuleGroupsNamespacesOutput, error) {
 
@@ -183,6 +243,36 @@ func (mr *MockAmpClientMockRecorder) ListRuleGroupsNamespaces(arg0, arg1 interfa
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRuleGroupsNamespaces", reflect.TypeOf((*MockAmpClient)(nil).ListRuleGroupsNamespaces), varargs...)
+}
+
+// ListScrapers mocks base method.
+func (m *MockAmpClient) ListScrapers(arg0 context.Context, arg1 *amp.ListScrapersInput, arg2 ...func(*amp.Options)) (*amp.ListScrapersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &amp.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListScrapers")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListScrapers", varargs...)
+	ret0, _ := ret[0].(*amp.ListScrapersOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListScrapers indicates an expected call of ListScrapers.
+func (mr *MockAmpClientMockRecorder) ListScrapers(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListScrapers", reflect.TypeOf((*MockAmpClient)(nil).ListScrapers), varargs...)
 }
 
 // ListTagsForResource mocks base method.

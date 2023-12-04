@@ -29,6 +29,7 @@ The following tables depend on aws_elbv2_listeners:
 |default_actions|`json`|
 |listener_arn|`utf8`|
 |load_balancer_arn|`utf8`|
+|mutual_authentication|`json`|
 |port|`int64`|
 |protocol|`utf8`|
 |ssl_policy|`utf8`|

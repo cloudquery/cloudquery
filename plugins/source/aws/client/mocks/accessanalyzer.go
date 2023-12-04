@@ -185,6 +185,36 @@ func (mr *MockAccessanalyzerClientMockRecorder) GetFinding(arg0, arg1 interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFinding", reflect.TypeOf((*MockAccessanalyzerClient)(nil).GetFinding), varargs...)
 }
 
+// GetFindingV2 mocks base method.
+func (m *MockAccessanalyzerClient) GetFindingV2(arg0 context.Context, arg1 *accessanalyzer.GetFindingV2Input, arg2 ...func(*accessanalyzer.Options)) (*accessanalyzer.GetFindingV2Output, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &accessanalyzer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetFindingV2")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetFindingV2", varargs...)
+	ret0, _ := ret[0].(*accessanalyzer.GetFindingV2Output)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetFindingV2 indicates an expected call of GetFindingV2.
+func (mr *MockAccessanalyzerClientMockRecorder) GetFindingV2(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetFindingV2", reflect.TypeOf((*MockAccessanalyzerClient)(nil).GetFindingV2), varargs...)
+}
+
 // GetGeneratedPolicy mocks base method.
 func (m *MockAccessanalyzerClient) GetGeneratedPolicy(arg0 context.Context, arg1 *accessanalyzer.GetGeneratedPolicyInput, arg2 ...func(*accessanalyzer.Options)) (*accessanalyzer.GetGeneratedPolicyOutput, error) {
 
@@ -393,6 +423,36 @@ func (mr *MockAccessanalyzerClientMockRecorder) ListFindings(arg0, arg1 interfac
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListFindings", reflect.TypeOf((*MockAccessanalyzerClient)(nil).ListFindings), varargs...)
+}
+
+// ListFindingsV2 mocks base method.
+func (m *MockAccessanalyzerClient) ListFindingsV2(arg0 context.Context, arg1 *accessanalyzer.ListFindingsV2Input, arg2 ...func(*accessanalyzer.Options)) (*accessanalyzer.ListFindingsV2Output, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &accessanalyzer.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListFindingsV2")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListFindingsV2", varargs...)
+	ret0, _ := ret[0].(*accessanalyzer.ListFindingsV2Output)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListFindingsV2 indicates an expected call of ListFindingsV2.
+func (mr *MockAccessanalyzerClientMockRecorder) ListFindingsV2(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListFindingsV2", reflect.TypeOf((*MockAccessanalyzerClient)(nil).ListFindingsV2), varargs...)
 }
 
 // ListPolicyGenerations mocks base method.
