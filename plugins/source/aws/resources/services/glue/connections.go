@@ -2,7 +2,6 @@ package glue
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -35,7 +34,7 @@ func Connections() *schema.Table {
 	}
 }
 
-func fetchGlueConnections(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchGlueConnections(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGlue).Glue
 	paginator := glue.NewGetConnectionsPaginator(svc, &glue.GetConnectionsInput{})
@@ -50,18 +49,17 @@ func fetchGlueConnections(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	return nil
 }
-func resolveGlueConnectionArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveGlueConnectionArn(_ context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	cl := meta.(*client.Client)
-	r := resource.Item.(types.Connection)
-	return resource.Set(c.Name, connectionARN(cl, &r))
+	return resource.Set(c.Name, connectionARN(cl, aws.ToString(resource.Item.(types.Connection).Name)))
 }
 
-func connectionARN(cl *client.Client, c *types.Connection) string {
+func connectionARN(cl *client.Client, name string) string {
 	return arn.ARN{
 		Partition: cl.Partition,
 		Service:   string(client.GlueService),
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  fmt.Sprintf("connection/%s", aws.ToString(c.Name)),
+		Resource:  "connection/" + name,
 	}.String()
 }

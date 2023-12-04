@@ -27,6 +27,7 @@ The composite primary key for this table is (**request_account_id**, **request_r
 |title (PK)|`utf8`|
 |updated_at (PK)|`timestamp[us, tz=UTC]`|
 |action|`json`|
+|aws_account_name|`utf8`|
 |company_name|`utf8`|
 |compliance|`json`|
 |confidence|`int64`|
@@ -41,6 +42,7 @@ The composite primary key for this table is (**request_account_id**, **request_r
 |note|`json`|
 |patch_summary|`json`|
 |process|`json`|
+|processed_at|`timestamp[us, tz=UTC]`|
 |product_fields|`json`|
 |product_name|`utf8`|
 |record_state|`utf8`|

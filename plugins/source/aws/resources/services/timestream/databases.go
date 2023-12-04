@@ -47,12 +47,6 @@ func fetchTimestreamDatabases(ctx context.Context, meta schema.ClientMeta, _ *sc
 	cl := meta.(*client.Client)
 	services := cl.Services(client.AWSServiceTimestreamwrite)
 	svc := services.Timestreamwrite
-	// This should be removed once https://github.com/aws/aws-sdk-go-v2/issues/2163 is fixed
-	if services.AWSConfig.Region != cl.Region {
-		awsCfg := services.AWSConfig.Copy()
-		awsCfg.Region = cl.Region
-		svc = timestreamwrite.NewFromConfig(awsCfg)
-	}
 	input := &timestreamwrite.ListDatabasesInput{MaxResults: aws.Int32(20)}
 	paginator := timestreamwrite.NewListDatabasesPaginator(svc, input)
 	for paginator.HasMorePages() {
