@@ -16,8 +16,7 @@ func getIamInstances(ctx context.Context, meta schema.ClientMeta) ([]types.Insta
 	paginator := ssoadmin.NewListInstancesPaginator(svc, &config)
 	instances := make([]types.InstanceMetadata, 0)
 	for paginator.HasMorePages() {
-
-		page, err := svc.ListInstances(ctx, &config, func(options *ssoadmin.Options) {
+		page, err := paginator.NextPage(ctx, func(options *ssoadmin.Options) {
 			options.Region = cl.Region
 		})
 		if err != nil {
