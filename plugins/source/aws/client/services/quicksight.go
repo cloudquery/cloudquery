@@ -65,6 +65,7 @@ type QuicksightClient interface {
 	ListGroups(context.Context, *quicksight.ListGroupsInput, ...func(*quicksight.Options)) (*quicksight.ListGroupsOutput, error)
 	ListIAMPolicyAssignments(context.Context, *quicksight.ListIAMPolicyAssignmentsInput, ...func(*quicksight.Options)) (*quicksight.ListIAMPolicyAssignmentsOutput, error)
 	ListIAMPolicyAssignmentsForUser(context.Context, *quicksight.ListIAMPolicyAssignmentsForUserInput, ...func(*quicksight.Options)) (*quicksight.ListIAMPolicyAssignmentsForUserOutput, error)
+	ListIdentityPropagationConfigs(context.Context, *quicksight.ListIdentityPropagationConfigsInput, ...func(*quicksight.Options)) (*quicksight.ListIdentityPropagationConfigsOutput, error)
 	ListIngestions(context.Context, *quicksight.ListIngestionsInput, ...func(*quicksight.Options)) (*quicksight.ListIngestionsOutput, error)
 	ListNamespaces(context.Context, *quicksight.ListNamespacesInput, ...func(*quicksight.Options)) (*quicksight.ListNamespacesOutput, error)
 	ListRefreshSchedules(context.Context, *quicksight.ListRefreshSchedulesInput, ...func(*quicksight.Options)) (*quicksight.ListRefreshSchedulesOutput, error)

@@ -8,10 +8,10 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/cloudquery-api-go v1.6.0
 	github.com/cloudquery/plugin-pb-go v1.14.2
-	github.com/cloudquery/plugin-sdk/v4 v4.18.3
+	github.com/cloudquery/plugin-sdk/v4 v4.19.0
 	github.com/getsentry/sentry-go v0.24.1
 	github.com/ghodss/yaml v1.0.0
-	github.com/google/go-cmp v0.5.9
+	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.3.1
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
 	github.com/rs/zerolog v1.29.1
@@ -61,7 +61,7 @@ require (
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
-	github.com/gomarkdown/markdown v0.0.0-20230922112808-5421fefb8386 // indirect
+	github.com/gomarkdown/markdown v0.0.0-20231115200524-a660076da3fd // indirect
 	github.com/google/flatbuffers v23.5.26+incompatible // indirect
 	github.com/gorilla/css v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
@@ -113,7 +113,7 @@ require (
 	golang.org/x/crypto v0.14.0 // indirect
 	golang.org/x/mod v0.13.0 // indirect
 	golang.org/x/net v0.17.0 // indirect
-	golang.org/x/sys v0.13.0 // indirect
+	golang.org/x/sys v0.14.0 // indirect
 	golang.org/x/term v0.13.0 // indirect
 	golang.org/x/text v0.13.0 // indirect
 	golang.org/x/time v0.3.0 // indirect

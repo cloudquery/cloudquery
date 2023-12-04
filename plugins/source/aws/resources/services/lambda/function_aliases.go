@@ -44,9 +44,7 @@ func fetchLambdaFunctionAliases(ctx context.Context, meta schema.ClientMeta, par
 
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceLambda).Lambda
-	config := lambda.ListAliasesInput{
-		FunctionName: p.Configuration.FunctionName,
-	}
+	config := lambda.ListAliasesInput{FunctionName: p.Configuration.FunctionArn}
 	paginator := lambda.NewListAliasesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *lambda.Options) {

@@ -16,6 +16,7 @@ The primary key for this table is **arn**.
 |arn (PK)|`utf8`|
 |bundle_id|`utf8`|
 |computer_name|`utf8`|
+|data_replication_settings|`json`|
 |directory_id|`utf8`|
 |error_code|`utf8`|
 |error_message|`utf8`|
@@ -23,6 +24,7 @@ The primary key for this table is **arn**.
 |modification_states|`json`|
 |related_workspaces|`json`|
 |root_volume_encryption_enabled|`bool`|
+|standby_workspaces_properties|`json`|
 |state|`utf8`|
 |subnet_id|`utf8`|
 |user_name|`utf8`|

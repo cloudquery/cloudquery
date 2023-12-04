@@ -245,6 +245,66 @@ func (mr *MockSagemakerClientMockRecorder) DescribeAutoMLJobV2(arg0, arg1 interf
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeAutoMLJobV2", reflect.TypeOf((*MockSagemakerClient)(nil).DescribeAutoMLJobV2), varargs...)
 }
 
+// DescribeCluster mocks base method.
+func (m *MockSagemakerClient) DescribeCluster(arg0 context.Context, arg1 *sagemaker.DescribeClusterInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeClusterOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeCluster")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeCluster", varargs...)
+	ret0, _ := ret[0].(*sagemaker.DescribeClusterOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeCluster indicates an expected call of DescribeCluster.
+func (mr *MockSagemakerClientMockRecorder) DescribeCluster(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeCluster", reflect.TypeOf((*MockSagemakerClient)(nil).DescribeCluster), varargs...)
+}
+
+// DescribeClusterNode mocks base method.
+func (m *MockSagemakerClient) DescribeClusterNode(arg0 context.Context, arg1 *sagemaker.DescribeClusterNodeInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeClusterNodeOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeClusterNode")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeClusterNode", varargs...)
+	ret0, _ := ret[0].(*sagemaker.DescribeClusterNodeOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeClusterNode indicates an expected call of DescribeClusterNode.
+func (mr *MockSagemakerClientMockRecorder) DescribeClusterNode(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeClusterNode", reflect.TypeOf((*MockSagemakerClient)(nil).DescribeClusterNode), varargs...)
+}
+
 // DescribeCodeRepository mocks base method.
 func (m *MockSagemakerClient) DescribeCodeRepository(arg0 context.Context, arg1 *sagemaker.DescribeCodeRepositoryInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeCodeRepositoryOutput, error) {
 
@@ -873,6 +933,36 @@ func (mr *MockSagemakerClientMockRecorder) DescribeImageVersion(arg0, arg1 inter
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeImageVersion", reflect.TypeOf((*MockSagemakerClient)(nil).DescribeImageVersion), varargs...)
+}
+
+// DescribeInferenceComponent mocks base method.
+func (m *MockSagemakerClient) DescribeInferenceComponent(arg0 context.Context, arg1 *sagemaker.DescribeInferenceComponentInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.DescribeInferenceComponentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeInferenceComponent")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeInferenceComponent", varargs...)
+	ret0, _ := ret[0].(*sagemaker.DescribeInferenceComponentOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeInferenceComponent indicates an expected call of DescribeInferenceComponent.
+func (mr *MockSagemakerClientMockRecorder) DescribeInferenceComponent(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeInferenceComponent", reflect.TypeOf((*MockSagemakerClient)(nil).DescribeInferenceComponent), varargs...)
 }
 
 // DescribeInferenceExperiment mocks base method.
@@ -2225,6 +2315,66 @@ func (mr *MockSagemakerClientMockRecorder) ListCandidatesForAutoMLJob(arg0, arg1
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListCandidatesForAutoMLJob", reflect.TypeOf((*MockSagemakerClient)(nil).ListCandidatesForAutoMLJob), varargs...)
 }
 
+// ListClusterNodes mocks base method.
+func (m *MockSagemakerClient) ListClusterNodes(arg0 context.Context, arg1 *sagemaker.ListClusterNodesInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListClusterNodesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListClusterNodes")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListClusterNodes", varargs...)
+	ret0, _ := ret[0].(*sagemaker.ListClusterNodesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListClusterNodes indicates an expected call of ListClusterNodes.
+func (mr *MockSagemakerClientMockRecorder) ListClusterNodes(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListClusterNodes", reflect.TypeOf((*MockSagemakerClient)(nil).ListClusterNodes), varargs...)
+}
+
+// ListClusters mocks base method.
+func (m *MockSagemakerClient) ListClusters(arg0 context.Context, arg1 *sagemaker.ListClustersInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListClustersOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListClusters")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListClusters", varargs...)
+	ret0, _ := ret[0].(*sagemaker.ListClustersOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListClusters indicates an expected call of ListClusters.
+func (mr *MockSagemakerClientMockRecorder) ListClusters(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListClusters", reflect.TypeOf((*MockSagemakerClient)(nil).ListClusters), varargs...)
+}
+
 // ListCodeRepositories mocks base method.
 func (m *MockSagemakerClient) ListCodeRepositories(arg0 context.Context, arg1 *sagemaker.ListCodeRepositoriesInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListCodeRepositoriesOutput, error) {
 
@@ -2853,6 +3003,36 @@ func (mr *MockSagemakerClientMockRecorder) ListImages(arg0, arg1 interface{}, ar
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListImages", reflect.TypeOf((*MockSagemakerClient)(nil).ListImages), varargs...)
+}
+
+// ListInferenceComponents mocks base method.
+func (m *MockSagemakerClient) ListInferenceComponents(arg0 context.Context, arg1 *sagemaker.ListInferenceComponentsInput, arg2 ...func(*sagemaker.Options)) (*sagemaker.ListInferenceComponentsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &sagemaker.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListInferenceComponents")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListInferenceComponents", varargs...)
+	ret0, _ := ret[0].(*sagemaker.ListInferenceComponentsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListInferenceComponents indicates an expected call of ListInferenceComponents.
+func (mr *MockSagemakerClientMockRecorder) ListInferenceComponents(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListInferenceComponents", reflect.TypeOf((*MockSagemakerClient)(nil).ListInferenceComponents), varargs...)
 }
 
 // ListInferenceExperiments mocks base method.

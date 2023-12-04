@@ -215,6 +215,36 @@ func (mr *MockFsxClientMockRecorder) DescribeFileSystems(arg0, arg1 interface{},
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeFileSystems", reflect.TypeOf((*MockFsxClient)(nil).DescribeFileSystems), varargs...)
 }
 
+// DescribeSharedVpcConfiguration mocks base method.
+func (m *MockFsxClient) DescribeSharedVpcConfiguration(arg0 context.Context, arg1 *fsx.DescribeSharedVpcConfigurationInput, arg2 ...func(*fsx.Options)) (*fsx.DescribeSharedVpcConfigurationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &fsx.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeSharedVpcConfiguration")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeSharedVpcConfiguration", varargs...)
+	ret0, _ := ret[0].(*fsx.DescribeSharedVpcConfigurationOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeSharedVpcConfiguration indicates an expected call of DescribeSharedVpcConfiguration.
+func (mr *MockFsxClientMockRecorder) DescribeSharedVpcConfiguration(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeSharedVpcConfiguration", reflect.TypeOf((*MockFsxClient)(nil).DescribeSharedVpcConfiguration), varargs...)
+}
+
 // DescribeSnapshots mocks base method.
 func (m *MockFsxClient) DescribeSnapshots(arg0 context.Context, arg1 *fsx.DescribeSnapshotsInput, arg2 ...func(*fsx.Options)) (*fsx.DescribeSnapshotsOutput, error) {
 

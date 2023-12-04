@@ -18,7 +18,7 @@ func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	g := iamTypes.Policy{}
 	require.NoError(t, faker.FakeObject(&g))
-
+	g.Arn = aws.String("arn:aws:iam::testAccount:policy/IAMReadOnlyAccess")
 	m.EXPECT().ListPolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.ListPoliciesOutput{
 			Policies: []iamTypes.Policy{g},
@@ -34,13 +34,13 @@ func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 
 	createDate := time.Now()
-	m.EXPECT().GetPolicyVersion(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&iam.GetPolicyVersionOutput{
-			PolicyVersion: &iamTypes.PolicyVersion{
+	m.EXPECT().ListPolicyVersions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&iam.ListPolicyVersionsOutput{
+			Versions: []iamTypes.PolicyVersion{{
 				CreateDate: &createDate,
 				Document:   aws.String(`{}`),
 				VersionId:  aws.String("v1"),
-			},
+			}},
 		},
 		nil,
 	)

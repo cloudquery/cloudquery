@@ -8,6 +8,7 @@ import (
 
 //go:generate mockgen -package=mocks -destination=../mocks/secretsmanager.go -source=secretsmanager.go SecretsmanagerClient
 type SecretsmanagerClient interface {
+	BatchGetSecretValue(context.Context, *secretsmanager.BatchGetSecretValueInput, ...func(*secretsmanager.Options)) (*secretsmanager.BatchGetSecretValueOutput, error)
 	DescribeSecret(context.Context, *secretsmanager.DescribeSecretInput, ...func(*secretsmanager.Options)) (*secretsmanager.DescribeSecretOutput, error)
 	GetRandomPassword(context.Context, *secretsmanager.GetRandomPasswordInput, ...func(*secretsmanager.Options)) (*secretsmanager.GetRandomPasswordOutput, error)
 	GetResourcePolicy(context.Context, *secretsmanager.GetResourcePolicyInput, ...func(*secretsmanager.Options)) (*secretsmanager.GetResourcePolicyOutput, error)

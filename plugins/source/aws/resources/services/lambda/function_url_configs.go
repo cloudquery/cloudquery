@@ -15,7 +15,9 @@ func functionURLConfigs() *schema.Table {
 		Name:        "aws_lambda_function_url_configs",
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_FunctionUrlConfig.html`,
 		Resolver:    fetchLambdaFunctionURLConfigs,
-		Transform:   transformers.TransformWithStruct(&types.FunctionUrlConfig{}, transformers.WithPrimaryKeys("FunctionArn")),
+		Transform: transformers.TransformWithStruct(&types.FunctionUrlConfig{},
+			transformers.WithPrimaryKeys("FunctionArn"), // FunctionArn here can also be a version
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -31,7 +33,7 @@ func fetchLambdaFunctionURLConfigs(ctx context.Context, meta schema.ClientMeta, 
 
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceLambda).Lambda
-	config := lambda.ListFunctionUrlConfigsInput{FunctionName: p.Configuration.FunctionName}
+	config := lambda.ListFunctionUrlConfigsInput{FunctionName: p.Configuration.FunctionArn}
 	paginator := lambda.NewListFunctionUrlConfigsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *lambda.Options) {

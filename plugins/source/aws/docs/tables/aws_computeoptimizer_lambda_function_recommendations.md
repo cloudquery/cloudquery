@@ -16,6 +16,7 @@ The primary key for this table is **function_arn**.
 |tags|`json`|
 |current_memory_size|`int64`|
 |current_performance_risk|`utf8`|
+|effective_recommendation_preferences|`json`|
 |finding|`utf8`|
 |finding_reason_codes|`list<item: utf8, nullable>`|
 |function_arn (PK)|`utf8`|

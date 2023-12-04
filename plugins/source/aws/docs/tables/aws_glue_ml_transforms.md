@@ -20,8 +20,8 @@ The following tables depend on aws_glue_ml_transforms:
 |account_id|`utf8`|
 |region|`utf8`|
 |arn (PK)|`utf8`|
-|tags|`json`|
 |schema|`json`|
+|tags|`json`|
 |created_on|`timestamp[us, tz=UTC]`|
 |description|`utf8`|
 |evaluation_metrics|`json`|
