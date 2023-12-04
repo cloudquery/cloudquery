@@ -3,47 +3,47 @@ module github.com/cloudquery/cloudquery/plugins/source/gcp
 go 1.21.1
 
 require (
-	cloud.google.com/go/aiplatform v1.51.2
-	cloud.google.com/go/apigateway v1.6.3
+	cloud.google.com/go/aiplatform v1.54.0
+	cloud.google.com/go/apigateway v1.6.4
 	cloud.google.com/go/apikeys v0.6.0
-	cloud.google.com/go/appengine v1.8.3
-	cloud.google.com/go/artifactregistry v1.14.4
-	cloud.google.com/go/baremetalsolution v1.2.2
-	cloud.google.com/go/batch v1.6.1
-	cloud.google.com/go/beyondcorp v1.0.2
+	cloud.google.com/go/appengine v1.8.4
+	cloud.google.com/go/artifactregistry v1.14.6
+	cloud.google.com/go/baremetalsolution v1.2.3
+	cloud.google.com/go/batch v1.6.3
+	cloud.google.com/go/beyondcorp v1.0.3
 	cloud.google.com/go/bigtable v1.18.1
-	cloud.google.com/go/billing v1.17.3
-	cloud.google.com/go/binaryauthorization v1.7.2
-	cloud.google.com/go/certificatemanager v1.7.3
-	cloud.google.com/go/compute v1.23.2
-	cloud.google.com/go/container v1.26.2
-	cloud.google.com/go/containeranalysis v0.11.2
-	cloud.google.com/go/deploy v1.14.1
-	cloud.google.com/go/domains v0.9.3
+	cloud.google.com/go/billing v1.17.4
+	cloud.google.com/go/binaryauthorization v1.7.3
+	cloud.google.com/go/certificatemanager v1.7.4
+	cloud.google.com/go/compute v1.23.3
+	cloud.google.com/go/container v1.28.0
+	cloud.google.com/go/containeranalysis v0.11.3
+	cloud.google.com/go/deploy v1.15.0
+	cloud.google.com/go/domains v0.9.4
 	cloud.google.com/go/errorreporting v0.3.0
-	cloud.google.com/go/functions v1.15.3
-	cloud.google.com/go/iam v1.1.4
-	cloud.google.com/go/iot v1.7.3
-	cloud.google.com/go/kms v1.15.4
+	cloud.google.com/go/functions v1.15.4
+	cloud.google.com/go/iam v1.1.5
+	cloud.google.com/go/iot v1.7.4
+	cloud.google.com/go/kms v1.15.5
 	cloud.google.com/go/logging v1.8.1
-	cloud.google.com/go/longrunning v0.5.3
-	cloud.google.com/go/monitoring v1.16.2
-	cloud.google.com/go/osconfig v1.12.3
-	cloud.google.com/go/redis v1.13.3
-	cloud.google.com/go/resourcemanager v1.9.3
-	cloud.google.com/go/run v1.3.2
-	cloud.google.com/go/scheduler v1.10.3
-	cloud.google.com/go/secretmanager v1.11.3
-	cloud.google.com/go/securitycenter v1.24.1
+	cloud.google.com/go/longrunning v0.5.4
+	cloud.google.com/go/monitoring v1.16.3
+	cloud.google.com/go/osconfig v1.12.4
+	cloud.google.com/go/redis v1.14.1
+	cloud.google.com/go/resourcemanager v1.9.4
+	cloud.google.com/go/run v1.3.3
+	cloud.google.com/go/scheduler v1.10.5
+	cloud.google.com/go/secretmanager v1.11.4
+	cloud.google.com/go/securitycenter v1.24.2
 	cloud.google.com/go/serviceusage v1.6.0
 	cloud.google.com/go/storage v1.30.1
-	cloud.google.com/go/translate v1.9.2
-	cloud.google.com/go/video v1.20.2
-	cloud.google.com/go/vision/v2 v2.7.4
-	cloud.google.com/go/vmmigration v1.7.3
-	cloud.google.com/go/vpcaccess v1.7.3
-	cloud.google.com/go/websecurityscanner v1.6.3
-	cloud.google.com/go/workflows v1.12.2
+	cloud.google.com/go/translate v1.9.3
+	cloud.google.com/go/video v1.20.3
+	cloud.google.com/go/vision/v2 v2.7.5
+	cloud.google.com/go/vmmigration v1.7.4
+	cloud.google.com/go/vpcaccess v1.7.4
+	cloud.google.com/go/websecurityscanner v1.6.4
+	cloud.google.com/go/workflows v1.12.3
 	github.com/apache/arrow/go/v14 v14.0.0-20231031200323-c49e24273160
 	github.com/cloudquery/codegen v0.3.12
 	github.com/cloudquery/plugin-sdk/v4 v4.19.0
@@ -58,16 +58,16 @@ require (
 	github.com/stretchr/testify v1.8.4
 	github.com/thoas/go-funk v0.9.3
 	github.com/wk8/go-ordered-map/v2 v2.1.8
-	golang.org/x/exp v0.0.0-20231006140011-7918f672742d
-	golang.org/x/sync v0.4.0
-	google.golang.org/api v0.148.0
-	google.golang.org/genproto v0.0.0-20231030173426-d783a09b4405
+	golang.org/x/exp v0.0.0-20231127185646-65229373498e
+	golang.org/x/sync v0.5.0
+	google.golang.org/api v0.149.0
+	google.golang.org/genproto v0.0.0-20231127180814-3a041ad873d4
 	google.golang.org/grpc v1.59.0
 	google.golang.org/protobuf v1.31.0
 )
 
 require (
-	cloud.google.com/go v0.110.9 // indirect
+	cloud.google.com/go v0.110.10 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	github.com/BurntSushi/toml v1.3.2 // indirect
 	github.com/CloudyKit/fastprinter v0.0.0-20200109182630-33d98a066a53 // indirect
@@ -115,7 +115,7 @@ require (
 	github.com/google/flatbuffers v23.5.26+incompatible // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
 	github.com/google/uuid v1.4.0 // indirect
-	github.com/googleapis/enterprise-certificate-proxy v0.3.1 // indirect
+	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
 	github.com/gorilla/css v1.0.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
@@ -170,18 +170,18 @@ require (
 	go.opentelemetry.io/otel/trace v1.20.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.0.0 // indirect
 	golang.org/x/arch v0.3.0 // indirect
-	golang.org/x/crypto v0.14.0 // indirect
-	golang.org/x/mod v0.13.0 // indirect
-	golang.org/x/net v0.17.0 // indirect
+	golang.org/x/crypto v0.16.0 // indirect
+	golang.org/x/mod v0.14.0 // indirect
+	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/oauth2 v0.13.0 // indirect
-	golang.org/x/sys v0.14.0 // indirect
-	golang.org/x/text v0.13.0 // indirect
+	golang.org/x/sys v0.15.0 // indirect
+	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
-	golang.org/x/tools v0.14.0 // indirect
+	golang.org/x/tools v0.16.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20231030173426-d783a09b4405 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20231030173426-d783a09b4405 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20231120223509-83a465c0220f // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20231120223509-83a465c0220f // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
