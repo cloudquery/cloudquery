@@ -38,24 +38,26 @@ func Groups() *schema.Table {
 }
 
 func fetchGroups(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	instance, err := getIamInstance(ctx, meta)
+	instances, err := getIamInstances(ctx, meta)
 	if err != nil {
 		return err
 	}
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceIdentitystore).Identitystore
-	config := identitystore.ListGroupsInput{
-		IdentityStoreId: instance.IdentityStoreId,
-	}
-	paginator := identitystore.NewListGroupsPaginator(svc, &config)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx, func(options *identitystore.Options) {
-			options.Region = cl.Region
-		})
-		if err != nil {
-			return err
+	for _, instance := range instances {
+		config := identitystore.ListGroupsInput{
+			IdentityStoreId: instance.IdentityStoreId,
 		}
-		res <- page.Groups
+		paginator := identitystore.NewListGroupsPaginator(svc, &config)
+		for paginator.HasMorePages() {
+			page, err := paginator.NextPage(ctx, func(options *identitystore.Options) {
+				options.Region = cl.Region
+			})
+			if err != nil {
+				return err
+			}
+			res <- page.Groups
+		}
 	}
 	return nil
 }
