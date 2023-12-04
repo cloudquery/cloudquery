@@ -19,6 +19,7 @@ This table depends on [aws_elbv2_target_groups](aws_elbv2_target_groups.md).
 |account_id|`utf8`|
 |region|`utf8`|
 |target_group_arn (PK)|`utf8`|
+|anomaly_detection|`json`|
 |health_check_port|`utf8`|
 |target_id (PK)|`utf8`|
 |target_availability_zone|`utf8`|

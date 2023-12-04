@@ -4,13 +4,13 @@ go 1.21.1
 
 require (
 	github.com/apache/arrow/go/v14 v14.0.0-20231031200323-c49e24273160
-	github.com/beatlabs/github-auth v0.0.0-20230912161003-cdaa33aa0d65
+	github.com/beatlabs/github-auth v0.0.0-20231018214958-b1420bd0d340
 	github.com/cloudquery/plugin-sdk/v4 v4.19.0
 	github.com/gofri/go-github-ratelimit v1.0.3
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v49 v49.0.0
 	github.com/rs/zerolog v1.29.1
-	golang.org/x/oauth2 v0.12.0
+	golang.org/x/oauth2 v0.13.0
 	golang.org/x/sync v0.4.0
 )
 
@@ -52,7 +52,7 @@ require (
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
-	github.com/gomarkdown/markdown v0.0.0-20230922112808-5421fefb8386 // indirect
+	github.com/gomarkdown/markdown v0.0.0-20231115200524-a660076da3fd // indirect
 	github.com/google/flatbuffers v23.5.26+incompatible // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.3.1 // indirect

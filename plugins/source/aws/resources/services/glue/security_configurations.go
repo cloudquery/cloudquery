@@ -3,7 +3,6 @@ package glue
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -17,21 +16,16 @@ func SecurityConfigurations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_SecurityConfiguration.html`,
 		Resolver:    fetchGlueSecurityConfigurations,
-		Transform:   transformers.TransformWithStruct(&types.SecurityConfiguration{}),
+		Transform:   transformers.TransformWithStruct(&types.SecurityConfiguration{}, transformers.WithPrimaryKeys("Name")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
-			{
-				Name:       "name",
-				Type:       arrow.BinaryTypes.String,
-				PrimaryKey: true,
-			},
 		},
 	}
 }
 
-func fetchGlueSecurityConfigurations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchGlueSecurityConfigurations(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGlue).Glue
 	paginator := glue.NewGetSecurityConfigurationsPaginator(svc, &glue.GetSecurityConfigurationsInput{})

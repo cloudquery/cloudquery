@@ -14,6 +14,6 @@ The composite primary key for this table is (**account_id**, **region**, **name*
 |_cq_parent_id|`uuid`|
 |account_id (PK)|`utf8`|
 |region (PK)|`utf8`|
-|name (PK)|`utf8`|
 |created_time_stamp|`timestamp[us, tz=UTC]`|
 |encryption_configuration|`json`|
+|name (PK)|`utf8`|

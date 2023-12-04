@@ -14,5 +14,5 @@ The composite primary key for this table is (**account_id**, **region**, **regis
 |_cq_parent_id|`uuid`|
 |account_id (PK)|`utf8`|
 |region (PK)|`utf8`|
-|registry_id (PK)|`utf8`|
 |policy_text|`json`|
+|registry_id (PK)|`utf8`|

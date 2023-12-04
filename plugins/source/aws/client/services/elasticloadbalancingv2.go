@@ -19,4 +19,9 @@ type Elasticloadbalancingv2Client interface {
 	DescribeTargetGroupAttributes(context.Context, *elasticloadbalancingv2.DescribeTargetGroupAttributesInput, ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.DescribeTargetGroupAttributesOutput, error)
 	DescribeTargetGroups(context.Context, *elasticloadbalancingv2.DescribeTargetGroupsInput, ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.DescribeTargetGroupsOutput, error)
 	DescribeTargetHealth(context.Context, *elasticloadbalancingv2.DescribeTargetHealthInput, ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.DescribeTargetHealthOutput, error)
+	DescribeTrustStoreAssociations(context.Context, *elasticloadbalancingv2.DescribeTrustStoreAssociationsInput, ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.DescribeTrustStoreAssociationsOutput, error)
+	DescribeTrustStoreRevocations(context.Context, *elasticloadbalancingv2.DescribeTrustStoreRevocationsInput, ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.DescribeTrustStoreRevocationsOutput, error)
+	DescribeTrustStores(context.Context, *elasticloadbalancingv2.DescribeTrustStoresInput, ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.DescribeTrustStoresOutput, error)
+	GetTrustStoreCaCertificatesBundle(context.Context, *elasticloadbalancingv2.GetTrustStoreCaCertificatesBundleInput, ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.GetTrustStoreCaCertificatesBundleOutput, error)
+	GetTrustStoreRevocationContent(context.Context, *elasticloadbalancingv2.GetTrustStoreRevocationContentInput, ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.GetTrustStoreRevocationContentOutput, error)
 }

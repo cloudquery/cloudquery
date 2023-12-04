@@ -3,11 +3,11 @@ package ecr
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/ecr/models"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
@@ -17,10 +17,25 @@ func repositoryImageScanFindings() *schema.Table {
 		Name:        "aws_ecr_repository_image_scan_findings",
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageScanFindings.html`,
 		Resolver:    fetchEcrRepositoryImageScanFindings,
-		Transform:   transformers.TransformWithStruct(&models.ImageScanWrapper{}),
+		Transform: transformers.TransformWithStruct(&ecr.DescribeImageScanFindingsOutput{},
+			transformers.WithPrimaryKeys("RegistryId"),
+			transformers.WithSkipFields("NextToken", "ResultMetadata"),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
+			{
+				Name:       "repository_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("repository_arn"),
+				PrimaryKey: true,
+			},
+			{
+				Name:       "image_digest",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("image_digest"),
+				PrimaryKey: true,
+			},
 		},
 	}
 }
@@ -28,38 +43,64 @@ func fetchEcrRepositoryImageScanFindings(ctx context.Context, meta schema.Client
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceEcr).Ecr
 	image := parent.Item.(types.ImageDetail)
-	repo := parent.Parent.Item.(types.Repository)
-	for _, tag := range image.ImageTags {
-		config := ecr.DescribeImageScanFindingsInput{
-			RepositoryName: repo.RepositoryName,
-			ImageId: &types.ImageIdentifier{
-				ImageDigest: image.ImageDigest,
-				ImageTag:    aws.String(tag),
-			},
-			MaxResults: aws.Int32(1000),
-		}
+	config := ecr.DescribeImageScanFindingsInput{
+		RepositoryName: image.RepositoryName,
+		RegistryId:     image.RegistryId,
+		ImageId:        &types.ImageIdentifier{ImageDigest: image.ImageDigest},
+		MaxResults:     aws.Int32(1000),
+	}
 
-		paginator := ecr.NewDescribeImageScanFindingsPaginator(svc, &config)
-		for paginator.HasMorePages() {
-			output, err := paginator.NextPage(ctx, func(options *ecr.Options) {
-				options.Region = cl.Region
-			})
-			if err != nil {
-				if client.IsAWSError(err, "ScanNotFoundException") {
-					return nil
-				}
-				return err
+	var result *ecr.DescribeImageScanFindingsOutput
+	paginator := ecr.NewDescribeImageScanFindingsPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		output, err := paginator.NextPage(ctx, func(options *ecr.Options) {
+			options.Region = cl.Region
+		})
+		if err != nil {
+			if client.IsAWSError(err, "ScanNotFoundException") {
+				return nil
 			}
-			res <- models.ImageScanWrapper{
-				ImageScanFindings: output.ImageScanFindings,
-				ImageTag:          aws.String(tag),
-				ImageDigest:       image.ImageDigest,
-				ImageScanStatus:   output.ImageScanStatus,
-				RegistryId:        repo.RegistryId,
-				RepositoryName:    repo.RepositoryName,
-			}
+			return err
+		}
+		if result == nil {
+			result = output
+			continue
+		}
+		appendDescribeImageScanFindingsOutput(result, output)
+	}
+
+	if result != nil {
+		res <- result
+	}
+	return nil
+}
+
+// appendDescribeImageScanFindingsOutput will panic if dst is nil
+func appendDescribeImageScanFindingsOutput(dst, src *ecr.DescribeImageScanFindingsOutput) {
+	if src == nil {
+		return
+	}
+	dst.ImageScanStatus = src.ImageScanStatus
+	dst.ImageScanFindings = mergeImageScanFindings(dst.ImageScanFindings, src.ImageScanFindings)
+}
+
+func mergeImageScanFindings(dst, src *types.ImageScanFindings) *types.ImageScanFindings {
+	if dst == nil {
+		return src
+	}
+
+	dst.Findings = append(dst.Findings, src.Findings...)
+	dst.EnhancedFindings = append(dst.EnhancedFindings, src.EnhancedFindings...)
+	dst.VulnerabilitySourceUpdatedAt = src.VulnerabilitySourceUpdatedAt
+	dst.ImageScanCompletedAt = src.ImageScanCompletedAt
+
+	if dst.FindingSeverityCounts == nil {
+		dst.FindingSeverityCounts = src.FindingSeverityCounts
+	} else {
+		for k, v := range src.FindingSeverityCounts {
+			dst.FindingSeverityCounts[k] += v
 		}
 	}
 
-	return nil
+	return dst
 }
