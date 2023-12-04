@@ -4,6 +4,8 @@ import (
 	"context"
 
 	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -44,8 +46,9 @@ func Policies() *schema.Table {
 func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceIam).Iam
-	paginator := iam.NewListPoliciesPaginator(svc, nil)
-
+	paginator := iam.NewListPoliciesPaginator(svc, &iam.ListPoliciesInput{
+		MaxItems: aws.Int32(1000),
+	})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *iam.Options) {
 			options.Region = cl.Region
@@ -62,6 +65,15 @@ func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 	r := resource.Item.(types.Policy)
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceIam).Iam
+
+	parsedArn, err := arn.Parse(aws.ToString(r.Arn))
+	if err != nil {
+		return err
+	}
+	// AWS Managed Policies do not include an accountID in the ARN and cannot have any tags so no need to call API
+	if parsedArn.AccountID != cl.AccountID {
+		return nil
+	}
 	response, err := svc.ListPolicyTags(ctx, &iam.ListPolicyTagsInput{PolicyArn: r.Arn}, func(options *iam.Options) {
 		options.Region = cl.Region
 	})
