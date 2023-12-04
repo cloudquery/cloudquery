@@ -32,15 +32,10 @@ func buildCloudtrailTrailsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 	m.EXPECT().GetTrailStatus(gomock.Any(), gomock.Any(), gomock.Any()).
 		Return(&trailStatus, nil)
 
-	eventSelector := types.EventSelector{}
+	eventSelector := cloudtrail.GetEventSelectorsOutput{}
 	require.NoError(t, faker.FakeObject(&eventSelector))
 	m.EXPECT().GetEventSelectors(gomock.Any(), gomock.Any(), gomock.Any()).
-		Return(
-			&cloudtrail.GetEventSelectorsOutput{
-				EventSelectors: []types.EventSelector{eventSelector},
-			},
-			nil,
-		)
+		Return(&eventSelector, nil)
 
 	tags := cloudtrail.ListTagsOutput{}
 	require.NoError(t, faker.FakeObject(&tags))

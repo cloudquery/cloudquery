@@ -3,9 +3,7 @@ package cloudtrail
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
-	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudtrail/models"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -16,19 +14,12 @@ func trailEventSelectors() *schema.Table {
 	tableName := "aws_cloudtrail_trail_event_selectors"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_EventSelector.html`,
+		Description: `https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_GetEventSelectors.html`,
 		Resolver:    fetchCloudtrailTrailEventSelectors,
-		Transform:   transformers.TransformWithStruct(&types.EventSelector{}),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
-			{
-				// we can't use trail_arn as PK as single trail can have multiple event selectors
-				Name:     "trail_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
-			},
-		},
+		Transform: transformers.TransformWithStruct(&cloudtrail.GetEventSelectorsOutput{},
+			transformers.WithPrimaryKeys("TrailARN"),
+			transformers.WithSkipFields("ResultMetadata")),
+		Columns: []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false)},
 	}
 }
 
@@ -42,6 +33,6 @@ func fetchCloudtrailTrailEventSelectors(ctx context.Context, meta schema.ClientM
 	if err != nil {
 		return err
 	}
-	res <- response.EventSelectors
+	res <- response
 	return nil
 }
