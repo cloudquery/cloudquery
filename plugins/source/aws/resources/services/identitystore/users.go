@@ -35,24 +35,26 @@ func Users() *schema.Table {
 }
 
 func fetchUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	instance, err := getIamInstance(ctx, meta)
+	instances, err := getIamInstances(ctx, meta)
 	if err != nil {
 		return err
 	}
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceIdentitystore).Identitystore
-	config := identitystore.ListUsersInput{
-		IdentityStoreId: instance.IdentityStoreId,
-	}
-	paginator := identitystore.NewListUsersPaginator(svc, &config)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx, func(options *identitystore.Options) {
-			options.Region = cl.Region
-		})
-		if err != nil {
-			return err
+	for _, instance := range instances {
+		config := identitystore.ListUsersInput{
+			IdentityStoreId: instance.IdentityStoreId,
 		}
-		res <- page.Users
+		paginator := identitystore.NewListUsersPaginator(svc, &config)
+		for paginator.HasMorePages() {
+			page, err := paginator.NextPage(ctx, func(options *identitystore.Options) {
+				options.Region = cl.Region
+			})
+			if err != nil {
+				return err
+			}
+			res <- page.Users
+		}
 	}
 	return nil
 }
