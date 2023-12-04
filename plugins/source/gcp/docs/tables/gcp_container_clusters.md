@@ -79,3 +79,4 @@ The primary key for this table is **self_link**.
 |fleet|`json`|
 |security_posture_config|`json`|
 |enable_k8s_beta_apis|`json`|
+|enterprise_config|`json`|
