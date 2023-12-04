@@ -17,6 +17,7 @@ The primary key for this table is **arn**.
 |arn (PK)|`utf8`|
 |name|`utf8`|
 |recording_group|`json`|
+|recording_mode|`json`|
 |role_arn|`utf8`|
 |status_last_error_code|`utf8`|
 |status_last_error_message|`utf8`|

@@ -1,9 +1,15 @@
 ---
 title: What is CSPM?
 description: Learn about Cloud Security Posture Management.
+image: https://i3.ytimg.com/vi/7SMLnaZQn9U/maxresdefault.jpg
+video: https://youtu.be/7SMLnaZQn9U
 ---
 
 # What is CSPM?
+
+<iframe width="100%" height="480"
+src="https://www.youtube.com/embed/7SMLnaZQn9U">
+</iframe>
 
 Cloud Security Posture Management (CSPM) refers to the set of processes, tools, and technologies used to manage and monitor the security posture of cloud-based infrastructure and applications.
 

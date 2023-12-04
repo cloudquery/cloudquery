@@ -26,6 +26,7 @@ The composite primary key for this table is (**account_id**, **region**, **backu
 |creation_date|`timestamp[us, tz=UTC]`|
 |expected_completion_date|`timestamp[us, tz=UTC]`|
 |iam_role_arn|`utf8`|
+|initiation_date|`timestamp[us, tz=UTC]`|
 |is_parent|`bool`|
 |message_category|`utf8`|
 |parent_job_id|`utf8`|

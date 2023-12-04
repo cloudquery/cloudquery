@@ -20,7 +20,7 @@ func policyVersions() *schema.Table {
 		Name:        table_name,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_PolicyVersion.html`,
 		Resolver:    fetchPolicyVersion,
-		Transform:   transformers.TransformWithStruct(&types.PolicyVersion{}),
+		Transform:   transformers.TransformWithStruct(&types.PolicyVersion{}, transformers.WithPrimaryKeys("VersionId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
@@ -30,42 +30,38 @@ func policyVersions() *schema.Table {
 				PrimaryKey: true,
 			},
 			{
-				Name:     "document",
+				Name:     "document_json",
 				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolvePolicyDocument,
 			},
 		},
 	}
 }
-
 func fetchPolicyVersion(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceIam).Iam
 	policy := parent.Item.(types.Policy)
-	config := iam.GetPolicyVersionInput{
+	svc := cl.Services(client.AWSServiceIam).Iam
+	paginator := iam.NewListPolicyVersionsPaginator(svc, &iam.ListPolicyVersionsInput{
 		PolicyArn: policy.Arn,
-		VersionId: policy.DefaultVersionId,
+	})
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx, func(options *iam.Options) {
+			options.Region = cl.Region
+		})
+		if err != nil {
+			return err
+		}
+		res <- page.Versions
 	}
-	policyVersionOutput, err := svc.GetPolicyVersion(
-		ctx,
-		&config,
-		func(options *iam.Options) { options.Region = cl.Region },
-	)
-
-	if err != nil {
-		return err
-	}
-
-	res <- policyVersionOutput.PolicyVersion
 
 	return nil
 }
 
 func resolvePolicyDocument(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(*types.PolicyVersion)
+	r := resource.Item.(types.PolicyVersion)
 	doc, err := url.QueryUnescape(aws.ToString(r.Document))
 	if err != nil {
 		return err
 	}
-	return resource.Set("document", doc)
+	return resource.Set(c.Name, doc)
 }
