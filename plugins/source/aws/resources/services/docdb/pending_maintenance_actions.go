@@ -18,10 +18,10 @@ func PendingMaintenanceActions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_PendingMaintenanceAction.html`,
 		Resolver:    fetchDocdbPendingMaintenanceActions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
-		Transform:   transformers.TransformWithStruct(&types.ResourcePendingMaintenanceActions{}),
+		Transform:   transformers.TransformWithStruct(&types.ResourcePendingMaintenanceActions{}, transformers.WithPrimaryKeys("ResourceIdentifier")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 		},
 	}
 }
