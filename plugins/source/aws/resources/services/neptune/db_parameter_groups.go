@@ -38,7 +38,7 @@ func DbParameterGroups() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			DbParameterGroupDbParameters(),
+			dbParameterGroupDbParameters(),
 		},
 	}
 }

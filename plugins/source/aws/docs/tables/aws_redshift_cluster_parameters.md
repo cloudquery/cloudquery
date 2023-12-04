@@ -19,12 +19,12 @@ This table depends on [aws_redshift_cluster_parameter_groups](aws_redshift_clust
 |account_id|`utf8`|
 |region|`utf8`|
 |cluster_arn (PK)|`utf8`|
-|parameter_name (PK)|`utf8`|
 |allowed_values|`utf8`|
 |apply_type|`utf8`|
 |data_type|`utf8`|
 |description|`utf8`|
 |is_modifiable|`bool`|
 |minimum_engine_version|`utf8`|
+|parameter_name (PK)|`utf8`|
 |parameter_value|`utf8`|
 |source|`utf8`|

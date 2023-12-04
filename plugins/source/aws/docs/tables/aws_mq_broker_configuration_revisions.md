@@ -4,7 +4,7 @@ This table shows data for Amazon MQ Broker Configuration Revisions.
 
 https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id-revisions.html
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**broker_configuration_arn**, **revision**, **configuration_id**).
 
 ## Relations
 
@@ -14,12 +14,13 @@ This table depends on [aws_mq_broker_configurations](aws_mq_broker_configuration
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|`uuid`|
+|_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|broker_configuration_arn|`utf8`|
+|broker_configuration_arn (PK)|`utf8`|
+|revision (PK)|`int32`|
 |data|`json`|
-|configuration_id|`utf8`|
+|configuration_id (PK)|`utf8`|
 |created|`timestamp[us, tz=UTC]`|
 |description|`utf8`|
