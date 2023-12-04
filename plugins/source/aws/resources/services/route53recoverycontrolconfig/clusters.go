@@ -20,7 +20,7 @@ func Clusters() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.Cluster{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53-recovery-control-config"),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.RequestAccountIDColumn(true),
 			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,
