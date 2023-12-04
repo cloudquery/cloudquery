@@ -26,6 +26,7 @@ The following tables depend on aws_cloudwatchlogs_log_groups:
 |data_protection_status|`utf8`|
 |inherited_properties|`list<item: utf8, nullable>`|
 |kms_key_id|`utf8`|
+|log_group_class|`utf8`|
 |log_group_name|`utf8`|
 |metric_filter_count|`int64`|
 |retention_in_days|`int64`|

@@ -10,7 +10,7 @@ select
     'fail' as status -- TODO FIXME
 from aws_ec2_instances
 where subnet_id in
-    --  Find all subnets that include a route table that inclues a catchall route
+    --  Find all subnets that include a route table that includes a catchall route
     (select a->>'SubnetId'
         from aws_ec2_route_tables t, jsonb_array_elements(t.associations) a, jsonb_array_elements(t.routes) r
         --  Find all routes in any route table that contains a route to 0.0.0.0/0 or ::/0

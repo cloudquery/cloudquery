@@ -575,6 +575,36 @@ func (mr *MockCloudwatchlogsClientMockRecorder) GetDeliverySource(arg0, arg1 int
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDeliverySource", reflect.TypeOf((*MockCloudwatchlogsClient)(nil).GetDeliverySource), varargs...)
 }
 
+// GetLogAnomalyDetector mocks base method.
+func (m *MockCloudwatchlogsClient) GetLogAnomalyDetector(arg0 context.Context, arg1 *cloudwatchlogs.GetLogAnomalyDetectorInput, arg2 ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetLogAnomalyDetectorOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatchlogs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetLogAnomalyDetector")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetLogAnomalyDetector", varargs...)
+	ret0, _ := ret[0].(*cloudwatchlogs.GetLogAnomalyDetectorOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetLogAnomalyDetector indicates an expected call of GetLogAnomalyDetector.
+func (mr *MockCloudwatchlogsClientMockRecorder) GetLogAnomalyDetector(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetLogAnomalyDetector", reflect.TypeOf((*MockCloudwatchlogsClient)(nil).GetLogAnomalyDetector), varargs...)
+}
+
 // GetLogEvents mocks base method.
 func (m *MockCloudwatchlogsClient) GetLogEvents(arg0 context.Context, arg1 *cloudwatchlogs.GetLogEventsInput, arg2 ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetLogEventsOutput, error) {
 
@@ -693,6 +723,66 @@ func (mr *MockCloudwatchlogsClientMockRecorder) GetQueryResults(arg0, arg1 inter
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetQueryResults", reflect.TypeOf((*MockCloudwatchlogsClient)(nil).GetQueryResults), varargs...)
+}
+
+// ListAnomalies mocks base method.
+func (m *MockCloudwatchlogsClient) ListAnomalies(arg0 context.Context, arg1 *cloudwatchlogs.ListAnomaliesInput, arg2 ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.ListAnomaliesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatchlogs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAnomalies")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListAnomalies", varargs...)
+	ret0, _ := ret[0].(*cloudwatchlogs.ListAnomaliesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAnomalies indicates an expected call of ListAnomalies.
+func (mr *MockCloudwatchlogsClientMockRecorder) ListAnomalies(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAnomalies", reflect.TypeOf((*MockCloudwatchlogsClient)(nil).ListAnomalies), varargs...)
+}
+
+// ListLogAnomalyDetectors mocks base method.
+func (m *MockCloudwatchlogsClient) ListLogAnomalyDetectors(arg0 context.Context, arg1 *cloudwatchlogs.ListLogAnomalyDetectorsInput, arg2 ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.ListLogAnomalyDetectorsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &cloudwatchlogs.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListLogAnomalyDetectors")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListLogAnomalyDetectors", varargs...)
+	ret0, _ := ret[0].(*cloudwatchlogs.ListLogAnomalyDetectorsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListLogAnomalyDetectors indicates an expected call of ListLogAnomalyDetectors.
+func (mr *MockCloudwatchlogsClientMockRecorder) ListLogAnomalyDetectors(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListLogAnomalyDetectors", reflect.TypeOf((*MockCloudwatchlogsClient)(nil).ListLogAnomalyDetectors), varargs...)
 }
 
 // ListTagsForResource mocks base method.

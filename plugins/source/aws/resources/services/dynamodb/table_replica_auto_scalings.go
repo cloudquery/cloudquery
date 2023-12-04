@@ -1,7 +1,11 @@
 package dynamodb
 
 import (
+	"context"
+
 	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -14,15 +18,43 @@ func tableReplicaAutoScalings() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_ReplicaAutoScalingDescription.html`,
 		Resolver:    fetchDynamodbTableReplicaAutoScalings,
-		Transform:   transformers.TransformWithStruct(&types.ReplicaAutoScalingDescription{}),
+		Transform:   transformers.TransformWithStruct(&types.ReplicaAutoScalingDescription{}, transformers.WithPrimaryKeys("RegionName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "table_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "table_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
+}
+
+func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	par := parent.Item.(*types.TableDescription)
+
+	if aws.ToString(par.GlobalTableVersion) == "" {
+		// "This operation only applies to Version 2019.11.21 of global tables"
+		return nil
+	}
+
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceDynamodb).Dynamodb
+
+	output, err := svc.DescribeTableReplicaAutoScaling(ctx, &dynamodb.DescribeTableReplicaAutoScalingInput{
+		TableName: par.TableName,
+	}, func(options *dynamodb.Options) {
+		options.Region = cl.Region
+	})
+	if err != nil {
+		if cl.IsNotFoundError(err) {
+			return nil
+		}
+		return err
+	}
+
+	res <- output.TableAutoScalingDescription.Replicas
+	return nil
 }

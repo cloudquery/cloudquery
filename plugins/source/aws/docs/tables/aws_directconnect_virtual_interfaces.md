@@ -4,7 +4,7 @@ This table shows data for AWS Direct Connect Virtual Interfaces.
 
 https://docs.aws.amazon.com/directconnect/latest/APIReference/API_VirtualInterface.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**request_account_id**, **request_region**, **arn**).
 
 ## Columns
 
@@ -12,8 +12,8 @@ The primary key for this table is **arn**.
 | ------------- | ------------- |
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id|`utf8`|
-|region|`utf8`|
+|request_account_id (PK)|`utf8`|
+|request_region (PK)|`utf8`|
 |arn (PK)|`utf8`|
 |id|`utf8`|
 |tags|`json`|
@@ -33,6 +33,7 @@ The primary key for this table is **arn**.
 |location|`utf8`|
 |mtu|`int64`|
 |owner_account|`utf8`|
+|region|`utf8`|
 |route_filter_prefixes|`json`|
 |site_link_enabled|`bool`|
 |virtual_gateway_id|`utf8`|

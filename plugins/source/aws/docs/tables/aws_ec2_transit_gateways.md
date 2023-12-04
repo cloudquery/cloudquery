@@ -25,11 +25,11 @@ The following tables depend on aws_ec2_transit_gateways:
 |region (PK)|`utf8`|
 |id|`utf8`|
 |arn (PK)|`utf8`|
-|tags|`json`|
 |creation_time|`timestamp[us, tz=UTC]`|
 |description|`utf8`|
 |options|`json`|
 |owner_id|`utf8`|
 |state|`utf8`|
+|tags|`json`|
 |transit_gateway_arn|`utf8`|
 |transit_gateway_id|`utf8`|

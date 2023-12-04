@@ -4,7 +4,7 @@ This table shows data for Amazon Elastic Container Service (ECS) Cluster Contain
 
 https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerInstance.html
 
-The primary key for this table is **_cq_id**.
+The primary key for this table is **arn**.
 
 ## Relations
 
@@ -14,11 +14,12 @@ This table depends on [aws_ecs_clusters](aws_ecs_clusters.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|`uuid`|
+|_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
 |cluster_arn|`utf8`|
+|arn (PK)|`utf8`|
 |tags|`json`|
 |agent_connected|`bool`|
 |agent_update_status|`utf8`|

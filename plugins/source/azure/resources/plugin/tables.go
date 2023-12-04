@@ -307,6 +307,7 @@ func getTables() schema.Tables {
 		resources.Resources(),
 		resources.ResourceGroups(),
 		resources.Links(),
+		resources.Providers(),
 		policy.Assignments(),
 		policy.DataPolicyManifests(),
 		policy.Definitions(),

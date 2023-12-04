@@ -267,6 +267,7 @@ var GcpServices = map[string]bool{
 	"vmmigration.googleapis.com":                      true,
 	"vmwareengine.googleapis.com":                     true,
 	"vpcaccess.googleapis.com":                        true,
+	"walletobjects.googleapis.com":                    true,
 	"webfonts.googleapis.com":                         true,
 	"webrisk.googleapis.com":                          true,
 	"websecurityscanner.googleapis.com":               true,

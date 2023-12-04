@@ -2,7 +2,7 @@ const { getIntegrationsPaths } = require("./utils/integrations");
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: "https://www.cloudquery.io",
+  siteUrl: "https://docs.cloudquery.io",
   generateRobotsTxt: true,
   exclude: [
     "/buy/*",

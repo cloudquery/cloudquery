@@ -4,15 +4,15 @@ This table shows data for Amazon DocumentDB Pending Maintenance Actions.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_PendingMaintenanceAction.html
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**account_id**, **region**, **resource_identifier**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|`uuid`|
+|_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id|`utf8`|
-|region|`utf8`|
+|account_id (PK)|`utf8`|
+|region (PK)|`utf8`|
 |pending_maintenance_action_details|`json`|
-|resource_identifier|`utf8`|
+|resource_identifier (PK)|`utf8`|
