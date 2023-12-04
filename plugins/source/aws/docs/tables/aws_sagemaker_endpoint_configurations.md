@@ -22,6 +22,9 @@ The primary key for this table is **arn**.
 |production_variants|`json`|
 |async_inference_config|`json`|
 |data_capture_config|`json`|
+|enable_network_isolation|`bool`|
+|execution_role_arn|`utf8`|
 |explainer_config|`json`|
 |kms_key_id|`utf8`|
 |shadow_production_variants|`json`|
+|vpc_config|`json`|

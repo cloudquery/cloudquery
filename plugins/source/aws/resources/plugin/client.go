@@ -98,9 +98,9 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		c.logger.Info().Str("table_name", options.BackendOptions.TableName).Msg("Connected to state backend")
 	}
 	awsClient := c.client.(*client.Client)
-	// for each sync we want to create a copy of the client so they won't share state
+	// for each sync we want to create a copy of the client, so they won't share state
 	awsClient = awsClient.Duplicate()
-	awsClient.Backend = stateClient
+	awsClient.SetStateClient(stateClient)
 	err = c.scheduler.Sync(ctx, awsClient, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
 	if err != nil {
 		return err

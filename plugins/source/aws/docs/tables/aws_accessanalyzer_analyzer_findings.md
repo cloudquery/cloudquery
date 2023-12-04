@@ -4,7 +4,7 @@ This table shows data for AWS Identity and Access Management (IAM) Access Analyz
 
 https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_FindingSummary.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**analyzer_arn**, **id**).
 
 ## Relations
 
@@ -18,12 +18,11 @@ This table depends on [aws_accessanalyzer_analyzers](aws_accessanalyzer_analyzer
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
-|analyzer_arn|`utf8`|
+|analyzer_arn (PK)|`utf8`|
 |analyzed_at|`timestamp[us, tz=UTC]`|
 |condition|`json`|
 |created_at|`timestamp[us, tz=UTC]`|
-|id|`utf8`|
+|id (PK)|`utf8`|
 |resource_owner_account|`utf8`|
 |resource_type|`utf8`|
 |status|`utf8`|

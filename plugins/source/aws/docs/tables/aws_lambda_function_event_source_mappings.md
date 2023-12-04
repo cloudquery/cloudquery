@@ -4,7 +4,7 @@ This table shows data for AWS Lambda Function Event Source Mappings.
 
 https://docs.aws.amazon.com/lambda/latest/dg/API_EventSourceMappingConfiguration.html
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**uuid**, **event_source_arn**, **function_arn**).
 
 ## Relations
 
@@ -14,18 +14,19 @@ This table depends on [aws_lambda_functions](aws_lambda_functions.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|`uuid`|
+|_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|function_arn|`utf8`|
+|uuid (PK)|`uuid`|
 |amazon_managed_kafka_event_source_config|`json`|
 |batch_size|`int64`|
 |bisect_batch_on_function_error|`bool`|
 |destination_config|`json`|
 |document_db_event_source_config|`json`|
-|event_source_arn|`utf8`|
+|event_source_arn (PK)|`utf8`|
 |filter_criteria|`json`|
+|function_arn (PK)|`utf8`|
 |function_response_types|`list<item: utf8, nullable>`|
 |last_modified|`timestamp[us, tz=UTC]`|
 |last_processing_result|`utf8`|
@@ -44,4 +45,3 @@ This table depends on [aws_lambda_functions](aws_lambda_functions.md).
 |state_transition_reason|`utf8`|
 |topics|`list<item: utf8, nullable>`|
 |tumbling_window_in_seconds|`int64`|
-|uuid|`utf8`|

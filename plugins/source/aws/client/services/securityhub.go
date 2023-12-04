@@ -9,6 +9,7 @@ import (
 //go:generate mockgen -package=mocks -destination=../mocks/securityhub.go -source=securityhub.go SecurityhubClient
 type SecurityhubClient interface {
 	BatchGetAutomationRules(context.Context, *securityhub.BatchGetAutomationRulesInput, ...func(*securityhub.Options)) (*securityhub.BatchGetAutomationRulesOutput, error)
+	BatchGetConfigurationPolicyAssociations(context.Context, *securityhub.BatchGetConfigurationPolicyAssociationsInput, ...func(*securityhub.Options)) (*securityhub.BatchGetConfigurationPolicyAssociationsOutput, error)
 	BatchGetSecurityControls(context.Context, *securityhub.BatchGetSecurityControlsInput, ...func(*securityhub.Options)) (*securityhub.BatchGetSecurityControlsOutput, error)
 	BatchGetStandardsControlAssociations(context.Context, *securityhub.BatchGetStandardsControlAssociationsInput, ...func(*securityhub.Options)) (*securityhub.BatchGetStandardsControlAssociationsOutput, error)
 	DescribeActionTargets(context.Context, *securityhub.DescribeActionTargetsInput, ...func(*securityhub.Options)) (*securityhub.DescribeActionTargetsOutput, error)
@@ -18,6 +19,8 @@ type SecurityhubClient interface {
 	DescribeStandards(context.Context, *securityhub.DescribeStandardsInput, ...func(*securityhub.Options)) (*securityhub.DescribeStandardsOutput, error)
 	DescribeStandardsControls(context.Context, *securityhub.DescribeStandardsControlsInput, ...func(*securityhub.Options)) (*securityhub.DescribeStandardsControlsOutput, error)
 	GetAdministratorAccount(context.Context, *securityhub.GetAdministratorAccountInput, ...func(*securityhub.Options)) (*securityhub.GetAdministratorAccountOutput, error)
+	GetConfigurationPolicy(context.Context, *securityhub.GetConfigurationPolicyInput, ...func(*securityhub.Options)) (*securityhub.GetConfigurationPolicyOutput, error)
+	GetConfigurationPolicyAssociation(context.Context, *securityhub.GetConfigurationPolicyAssociationInput, ...func(*securityhub.Options)) (*securityhub.GetConfigurationPolicyAssociationOutput, error)
 	GetEnabledStandards(context.Context, *securityhub.GetEnabledStandardsInput, ...func(*securityhub.Options)) (*securityhub.GetEnabledStandardsOutput, error)
 	GetFindingAggregator(context.Context, *securityhub.GetFindingAggregatorInput, ...func(*securityhub.Options)) (*securityhub.GetFindingAggregatorOutput, error)
 	GetFindingHistory(context.Context, *securityhub.GetFindingHistoryInput, ...func(*securityhub.Options)) (*securityhub.GetFindingHistoryOutput, error)
@@ -27,7 +30,10 @@ type SecurityhubClient interface {
 	GetInvitationsCount(context.Context, *securityhub.GetInvitationsCountInput, ...func(*securityhub.Options)) (*securityhub.GetInvitationsCountOutput, error)
 	GetMasterAccount(context.Context, *securityhub.GetMasterAccountInput, ...func(*securityhub.Options)) (*securityhub.GetMasterAccountOutput, error)
 	GetMembers(context.Context, *securityhub.GetMembersInput, ...func(*securityhub.Options)) (*securityhub.GetMembersOutput, error)
+	GetSecurityControlDefinition(context.Context, *securityhub.GetSecurityControlDefinitionInput, ...func(*securityhub.Options)) (*securityhub.GetSecurityControlDefinitionOutput, error)
 	ListAutomationRules(context.Context, *securityhub.ListAutomationRulesInput, ...func(*securityhub.Options)) (*securityhub.ListAutomationRulesOutput, error)
+	ListConfigurationPolicies(context.Context, *securityhub.ListConfigurationPoliciesInput, ...func(*securityhub.Options)) (*securityhub.ListConfigurationPoliciesOutput, error)
+	ListConfigurationPolicyAssociations(context.Context, *securityhub.ListConfigurationPolicyAssociationsInput, ...func(*securityhub.Options)) (*securityhub.ListConfigurationPolicyAssociationsOutput, error)
 	ListEnabledProductsForImport(context.Context, *securityhub.ListEnabledProductsForImportInput, ...func(*securityhub.Options)) (*securityhub.ListEnabledProductsForImportOutput, error)
 	ListFindingAggregators(context.Context, *securityhub.ListFindingAggregatorsInput, ...func(*securityhub.Options)) (*securityhub.ListFindingAggregatorsOutput, error)
 	ListInvitations(context.Context, *securityhub.ListInvitationsInput, ...func(*securityhub.Options)) (*securityhub.ListInvitationsOutput, error)

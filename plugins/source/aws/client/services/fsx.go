@@ -14,6 +14,7 @@ type FsxClient interface {
 	DescribeFileCaches(context.Context, *fsx.DescribeFileCachesInput, ...func(*fsx.Options)) (*fsx.DescribeFileCachesOutput, error)
 	DescribeFileSystemAliases(context.Context, *fsx.DescribeFileSystemAliasesInput, ...func(*fsx.Options)) (*fsx.DescribeFileSystemAliasesOutput, error)
 	DescribeFileSystems(context.Context, *fsx.DescribeFileSystemsInput, ...func(*fsx.Options)) (*fsx.DescribeFileSystemsOutput, error)
+	DescribeSharedVpcConfiguration(context.Context, *fsx.DescribeSharedVpcConfigurationInput, ...func(*fsx.Options)) (*fsx.DescribeSharedVpcConfigurationOutput, error)
 	DescribeSnapshots(context.Context, *fsx.DescribeSnapshotsInput, ...func(*fsx.Options)) (*fsx.DescribeSnapshotsOutput, error)
 	DescribeStorageVirtualMachines(context.Context, *fsx.DescribeStorageVirtualMachinesInput, ...func(*fsx.Options)) (*fsx.DescribeStorageVirtualMachinesOutput, error)
 	DescribeVolumes(context.Context, *fsx.DescribeVolumesInput, ...func(*fsx.Options)) (*fsx.DescribeVolumesOutput, error)

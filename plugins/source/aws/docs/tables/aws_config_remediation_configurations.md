@@ -18,6 +18,7 @@ This table depends on [aws_config_config_rules](aws_config_config_rules.md).
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
+|config_rule_arn|`utf8`|
 |config_rule_name|`utf8`|
 |target_id|`utf8`|
 |target_type|`utf8`|

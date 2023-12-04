@@ -32,7 +32,7 @@ func Classifiers() *schema.Table {
 	}
 }
 
-func fetchGlueClassifiers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchGlueClassifiers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGlue).Glue
 
@@ -48,7 +48,7 @@ func fetchGlueClassifiers(ctx context.Context, meta schema.ClientMeta, parent *s
 	}
 	return nil
 }
-func resolveGlueClassifierName(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+func resolveGlueClassifierName(_ context.Context, _ schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
 	r := resource.Item.(types.Classifier)
 	if r.CsvClassifier != nil {
 		return resource.Set(c.Name, r.CsvClassifier.Name)

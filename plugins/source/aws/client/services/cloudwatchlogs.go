@@ -26,10 +26,13 @@ type CloudwatchlogsClient interface {
 	GetDeliveryDestination(context.Context, *cloudwatchlogs.GetDeliveryDestinationInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetDeliveryDestinationOutput, error)
 	GetDeliveryDestinationPolicy(context.Context, *cloudwatchlogs.GetDeliveryDestinationPolicyInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetDeliveryDestinationPolicyOutput, error)
 	GetDeliverySource(context.Context, *cloudwatchlogs.GetDeliverySourceInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetDeliverySourceOutput, error)
+	GetLogAnomalyDetector(context.Context, *cloudwatchlogs.GetLogAnomalyDetectorInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetLogAnomalyDetectorOutput, error)
 	GetLogEvents(context.Context, *cloudwatchlogs.GetLogEventsInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetLogEventsOutput, error)
 	GetLogGroupFields(context.Context, *cloudwatchlogs.GetLogGroupFieldsInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetLogGroupFieldsOutput, error)
 	GetLogRecord(context.Context, *cloudwatchlogs.GetLogRecordInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetLogRecordOutput, error)
 	GetQueryResults(context.Context, *cloudwatchlogs.GetQueryResultsInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetQueryResultsOutput, error)
+	ListAnomalies(context.Context, *cloudwatchlogs.ListAnomaliesInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.ListAnomaliesOutput, error)
+	ListLogAnomalyDetectors(context.Context, *cloudwatchlogs.ListLogAnomalyDetectorsInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.ListLogAnomalyDetectorsOutput, error)
 	ListTagsForResource(context.Context, *cloudwatchlogs.ListTagsForResourceInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.ListTagsForResourceOutput, error)
 	ListTagsLogGroup(context.Context, *cloudwatchlogs.ListTagsLogGroupInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.ListTagsLogGroupOutput, error)
 }
