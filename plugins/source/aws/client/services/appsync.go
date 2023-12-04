@@ -11,6 +11,7 @@ type AppsyncClient interface {
 	GetApiAssociation(context.Context, *appsync.GetApiAssociationInput, ...func(*appsync.Options)) (*appsync.GetApiAssociationOutput, error)
 	GetApiCache(context.Context, *appsync.GetApiCacheInput, ...func(*appsync.Options)) (*appsync.GetApiCacheOutput, error)
 	GetDataSource(context.Context, *appsync.GetDataSourceInput, ...func(*appsync.Options)) (*appsync.GetDataSourceOutput, error)
+	GetDataSourceIntrospection(context.Context, *appsync.GetDataSourceIntrospectionInput, ...func(*appsync.Options)) (*appsync.GetDataSourceIntrospectionOutput, error)
 	GetDomainName(context.Context, *appsync.GetDomainNameInput, ...func(*appsync.Options)) (*appsync.GetDomainNameOutput, error)
 	GetFunction(context.Context, *appsync.GetFunctionInput, ...func(*appsync.Options)) (*appsync.GetFunctionOutput, error)
 	GetGraphqlApi(context.Context, *appsync.GetGraphqlApiInput, ...func(*appsync.Options)) (*appsync.GetGraphqlApiOutput, error)

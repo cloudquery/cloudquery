@@ -16,6 +16,7 @@ The primary key for this table is **volume_arn**.
 |tags|`json`|
 |current_configuration|`json`|
 |current_performance_risk|`utf8`|
+|effective_recommendation_preferences|`json`|
 |finding|`utf8`|
 |last_refresh_timestamp|`timestamp[us, tz=UTC]`|
 |look_back_period_in_days|`float64`|

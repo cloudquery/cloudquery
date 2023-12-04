@@ -30,6 +30,7 @@ The primary key for this table is **arn**.
 |availability_zone_name|`utf8`|
 |encrypted|`bool`|
 |file_system_arn|`utf8`|
+|file_system_protection|`json`|
 |kms_key_id|`utf8`|
 |name|`utf8`|
 |provisioned_throughput_in_mibps|`float64`|
