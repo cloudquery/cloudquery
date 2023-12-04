@@ -54,4 +54,3 @@ The following tables depend on aws_mq_brokers:
 |subnet_ids|`list<item: utf8, nullable>`|
 |tags|`json`|
 |users|`json`|
-|result_metadata|`json`|

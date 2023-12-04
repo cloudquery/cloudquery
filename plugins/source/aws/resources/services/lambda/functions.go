@@ -21,7 +21,7 @@ func Functions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/lambda/latest/dg/API_GetFunction.html`,
 		Resolver:            fetchLambdaFunctions,
 		PreResourceResolver: getFunction,
-		Transform:           transformers.TransformWithStruct(&lambda.GetFunctionOutput{}),
+		Transform:           transformers.TransformWithStruct(&lambda.GetFunctionOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "lambda"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -83,17 +83,17 @@ func Functions() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			functionEventInvokeConfigs(),
 			functionAliases(),
+			functionConcurrencyConfigs(),
+			functionEventInvokeConfigs(),
+			functionEventSourceMappings(),
 			functionURLConfigs(),
 			functionVersions(),
-			functionConcurrencyConfigs(),
-			functionEventSourceMappings(),
 		},
 	}
 }
 
-func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceLambda).Lambda
 	paginator := lambda.NewListFunctionsPaginator(svc, &lambda.ListFunctionsInput{})

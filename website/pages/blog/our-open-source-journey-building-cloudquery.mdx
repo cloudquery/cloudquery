@@ -71,7 +71,7 @@ Given these insights, we scribbled the following:
 You can observe the following components:
 
 - **ETL Engine:** The first thing we were out to do at CloudQuery is to consolidate and build one open-source engine with multi-database support.
-- **CloudQuery SDK:** To make life easier for us and for the community we created an [SDK](https://www.cloudquery.io/blog/introducing-cloudquery-sdk) that simplifies the development and testing of new integrations. The SDK gives developers the ability to focus only on the E (Extract) while taking care of the TL (Transform and Load) and giving the option for multi-database support.
+- **CloudQuery SDK:** To make life easier for us and for the community we created an [SDK](/blog/introducing-cloudquery-sdk) that simplifies the development and testing of new integrations. The SDK gives developers the ability to focus only on the E (Extract) while taking care of the TL (Transform and Load) and giving the option for multi-database support.
 - **Decoupling ETL & Analysis Engine:** This was solved by having the data/configuration in the database and giving users raw access to the database. The analysis engine is implemented using standard, well known, and documented query languages.
 
 Replacing acronyms with use-cases: Instead of adding more acronyms we just want to focus on the end use-cases:
@@ -79,7 +79,7 @@ Replacing acronyms with use-cases: Instead of adding more acronyms we just want 
 - **Security & Compliance Policies:** We introduced [CloudQuery Policies](https://hub.cloudquery.io/addons/transformation) which is just a thin layer that gives users the ability to run a pack of SQL queries.
 - **Search & Visibility:** Standard SQL gives you visibility across accounts and clouds.
 - **Cost:** This is something we didn’t actively touch yet, but are looking for feedback and suggestions.
-- **History:** Being able to look back in time and investigate is useful for a variety of use-cases such as post-mortems, incident-response, and compliance. This is why we introduced CloudQuery history with [TimescaleDB](https://www.cloudquery.io/blog/announcing-cloudquery-history)
+- **History:** Being able to look back in time and investigate is useful for a variety of use-cases such as post-mortems, incident-response, and compliance. This is why we introduced CloudQuery history with [TimescaleDB](/blog/announcing-cloudquery-history)
 - **Other:** There are probably many more use-cases, and there is no need to invent new acronyms for them - it can just be a matter of adding a novel query or a new integration. We’re looking forward to seeing what you can do with CQ data - feel free to hop on our discord and join our monthly community hours.
 - **Yet another dashboard disease:** Companies have invested a lot of effort in having their own monitoring and visualization solutions. By giving raw access to the database you can take advantage of your current tools - Grafana, Preset, etc…
 

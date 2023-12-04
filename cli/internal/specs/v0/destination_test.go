@@ -3,7 +3,7 @@ package specs
 import (
 	"testing"
 
-	"github.com/google/go-cmp/cmp"
+	"github.com/stretchr/testify/require"
 )
 
 type testDestinationSpec struct {
@@ -77,9 +77,7 @@ func TestDestinationUnmarshalSpec(t *testing.T) {
 			}
 
 			source := spec.Spec.(*Source)
-			if cmp.Diff(source, tc.source) != "" {
-				t.Fatalf("expected:%v got:%v", tc.source, source)
-			}
+			require.Equal(t, tc.source, source)
 		})
 	}
 }
@@ -164,6 +162,27 @@ spec:
 `,
 		"",
 		&Destination{
+			Name:             "test",
+			Registry:         RegistryCloudQuery,
+			Path:             "cloudquery/test",
+			Version:          "v1.1.0",
+			BatchSize:        10000,
+			BatchSizeBytes:   10000000,
+			Spec:             map[string]any{},
+			registryInferred: true,
+		},
+	},
+	{
+		"success github",
+		`kind: destination
+spec:
+  name: test
+  path: cloudquery/test
+  registry: github
+  version: v1.1.0
+`,
+		"",
+		&Destination{
 			Name:           "test",
 			Registry:       RegistryGithub,
 			Path:           "cloudquery/test",
@@ -177,6 +196,7 @@ spec:
 
 func TestDestinationUnmarshalSpecValidate(t *testing.T) {
 	for _, tc := range destinationUnmarshalSpecValidateTestCases {
+		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			var err error
 			var spec Spec
@@ -194,9 +214,7 @@ func TestDestinationUnmarshalSpecValidate(t *testing.T) {
 				return
 			}
 
-			if cmp.Diff(destination, tc.destination) != "" {
-				t.Fatalf("expected:\n%v\ngot:\n%v\n", tc.destination, destination)
-			}
+			require.EqualValues(t, tc.destination, destination)
 		})
 	}
 }

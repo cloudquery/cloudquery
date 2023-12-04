@@ -17,13 +17,12 @@ The primary key for this table is **arn**.
 |arn (PK)|`utf8`|
 |tags|`json`|
 |creation_time|`timestamp[us, tz=UTC]`|
-|execution_role_arn|`utf8`|
 |model_arn|`utf8`|
 |model_name|`utf8`|
 |containers|`json`|
 |deployment_recommendation|`json`|
 |enable_network_isolation|`bool`|
+|execution_role_arn|`utf8`|
 |inference_execution_config|`json`|
 |primary_container|`json`|
 |vpc_config|`json`|
-|result_metadata|`json`|

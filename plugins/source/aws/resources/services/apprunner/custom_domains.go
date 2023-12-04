@@ -16,10 +16,16 @@ func customDomains() *schema.Table {
 		Name:        "aws_apprunner_custom_domains",
 		Description: `https://docs.aws.amazon.com/apprunner/latest/api/API_CustomDomain.html`,
 		Resolver:    fetchApprunnerCustomDomains,
-		Transform:   transformers.TransformWithStruct(&types.CustomDomain{}),
+		Transform:   transformers.TransformWithStruct(&types.CustomDomain{}, transformers.WithPrimaryKeys("DomainName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
+			{
+				Name:       "service_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
+			},
 			{
 				Name:     "enable_www_subdomain",
 				Type:     arrow.FixedWidthTypes.Boolean,

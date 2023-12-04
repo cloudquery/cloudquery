@@ -9,7 +9,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func TransitGateways() *schema.Table {
@@ -19,7 +18,7 @@ func TransitGateways() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGateway.html`,
 		Resolver:    fetchEc2TransitGateways,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
-		Transform:   transformers.TransformWithStruct(&types.TransitGateway{}),
+		Transform:   transformers.TransformWithStruct(&types.TransitGateway{}, transformers.WithResolverTransformer(client.TagsResolverTransformer)),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
@@ -33,11 +32,6 @@ func TransitGateways() *schema.Table {
 				Type:       arrow.BinaryTypes.String,
 				Resolver:   schema.PathResolver("TransitGatewayArn"),
 				PrimaryKey: true,
-			},
-			{
-				Name:     "tags",
-				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: client.ResolveTags,
 			},
 		},
 

@@ -19,14 +19,15 @@ func loadBalancerPolicies() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/2012-06-01/APIReference/API_PolicyDescription.html`,
 		Resolver:    fetchElbv1LoadBalancerPolicies,
-		Transform:   transformers.TransformWithStruct(&types.PolicyDescription{}),
+		Transform:   transformers.TransformWithStruct(&types.PolicyDescription{}, transformers.WithPrimaryKeys("PolicyName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "load_balancer_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "load_balancer_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "load_balancer_name",

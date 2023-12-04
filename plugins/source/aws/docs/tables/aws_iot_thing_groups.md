@@ -28,4 +28,3 @@ The primary key for this table is **arn**.
 |thing_group_name|`utf8`|
 |thing_group_properties|`json`|
 |version|`int64`|
-|result_metadata|`json`|

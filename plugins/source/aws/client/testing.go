@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
-	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec/tableoptions"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -19,8 +18,7 @@ import (
 )
 
 type TestOptions struct {
-	TableOptions tableoptions.TableOptions
-	Region       string
+	Region string
 }
 
 func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*testing.T, *gomock.Controller) Services, testOpts TestOptions) {
@@ -37,7 +35,6 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 	var awsSpec spec.Spec
 	awsSpec.SetDefaults()
 	awsSpec.UsePaidAPIs = true
-	awsSpec.TableOptions = &testOpts.TableOptions
 	c := NewAwsClient(l, &awsSpec)
 	services := builder(t, ctrl)
 	services.Regions = []string{testOpts.Region}
@@ -74,7 +71,6 @@ func AwsCreateMockClient(t *testing.T, ctrl *gomock.Controller, builder func(*te
 	var awsSpec spec.Spec
 	awsSpec.SetDefaults()
 	awsSpec.UsePaidAPIs = true
-	awsSpec.TableOptions = &testOpts.TableOptions
 	c := NewAwsClient(l, &awsSpec)
 	if builder != nil {
 		services := builder(t, ctrl)
@@ -131,43 +127,7 @@ func validateSkippedColumns(t *testing.T, tables schema.Tables) {
 }
 
 func ignoreNonSkippedColumns(tableName, column string) bool {
-	tableColumnNamesToIgnore := map[string]bool{
-		// TODO: remove all of these fields in a future breaking release
-		"aws_backup_global_settings.result_metadata":                true,
-		"aws_backup_plan_selections.result_metadata":                true,
-		"aws_backup_plans.result_metadata":                          true,
-		"aws_backup_region_settings.result_metadata":                true,
-		"aws_cloudfront_functions.result_metadata":                  true,
-		"aws_cloudtrail_channels.result_metadata":                   true,
-		"aws_codepipeline_pipelines.result_metadata":                true,
-		"aws_cognito_identity_pools.result_metadata":                true,
-		"aws_ecr_registries.result_metadata":                        true,
-		"aws_ecr_registry_policies.result_metadata":                 true,
-		"aws_emr_block_public_access_configs.result_metadata":       true,
-		"aws_glue_registry_schema_versions.result_metadata":         true,
-		"aws_glue_registry_schemas.result_metadata":                 true,
-		"aws_guardduty_detectors.result_metadata":                   true,
-		"aws_iam_group_policies.result_metadata":                    true,
-		"aws_iam_openid_connect_identity_providers.result_metadata": true,
-		"aws_iam_role_policies.result_metadata":                     true,
-		"aws_iam_user_policies.result_metadata":                     true,
-		"aws_iot_billing_groups.result_metadata":                    true,
-		"aws_iot_security_profiles.result_metadata":                 true,
-		"aws_iot_thing_groups.result_metadata":                      true,
-		"aws_iot_topic_rules.result_metadata":                       true,
-		"aws_lambda_functions.result_metadata":                      true,
-		"aws_lambda_layer_version_policies.result_metadata":         true,
-		"aws_mq_broker_configuration_revisions.result_metadata":     true,
-		"aws_mq_broker_users.result_metadata":                       true,
-		"aws_mq_brokers.result_metadata":                            true,
-		"aws_qldb_ledgers.result_metadata":                          true,
-		"aws_route53_domains.result_metadata":                       true,
-		"aws_sagemaker_endpoint_configurations.result_metadata":     true,
-		"aws_sagemaker_models.result_metadata":                      true,
-		"aws_sagemaker_notebook_instances.result_metadata":          true,
-		"aws_sagemaker_training_jobs.result_metadata":               true,
-		"aws_securityhub_hubs.result_metadata":                      true,
-	}
+	tableColumnNamesToIgnore := map[string]bool{}
 	_, ok := tableColumnNamesToIgnore[tableName+"."+column]
 	return ok
 }

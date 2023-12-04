@@ -21,7 +21,7 @@ func Pipelines() *schema.Table {
 		Resolver:            fetchCodepipelinePipelines,
 		PreResourceResolver: getPipeline,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "codepipeline"),
-		Transform:           transformers.TransformWithStruct(&codepipeline.GetPipelineOutput{}),
+		Transform:           transformers.TransformWithStruct(&codepipeline.GetPipelineOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

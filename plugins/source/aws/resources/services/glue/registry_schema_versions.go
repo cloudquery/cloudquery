@@ -20,14 +20,18 @@ func registrySchemaVersions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/glue/latest/webapi/API_GetSchemaVersion.html`,
 		Resolver:            fetchGlueRegistrySchemaVersions,
 		PreResourceResolver: getRegistrySchemaVersion,
-		Transform:           transformers.TransformWithStruct(&glue.GetSchemaVersionOutput{}),
+		Transform: transformers.TransformWithStruct(&glue.GetSchemaVersionOutput{},
+			transformers.WithPrimaryKeys("SchemaVersionId"),
+			transformers.WithSkipFields("ResultMetadata"),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "registry_schema_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "registry_schema_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "metadata",
@@ -43,9 +47,7 @@ func fetchGlueRegistrySchemaVersions(ctx context.Context, meta schema.ClientMeta
 	s := parent.Item.(*glue.GetSchemaOutput)
 	svc := cl.Services(client.AWSServiceGlue).Glue
 	input := glue.ListSchemaVersionsInput{
-		SchemaId: &types.SchemaId{
-			SchemaArn: s.SchemaArn,
-		},
+		SchemaId:   &types.SchemaId{SchemaArn: s.SchemaArn},
 		MaxResults: aws.Int32(100),
 	}
 	paginator := glue.NewListSchemaVersionsPaginator(svc, &input)

@@ -39,6 +39,7 @@ The primary key for this table is **arn**.
 |failure_reason|`utf8`|
 |final_metric_data_list|`json`|
 |hyper_parameters|`json`|
+|infra_check_config|`json`|
 |input_data_config|`json`|
 |labeling_job_arn|`utf8`|
 |last_modified_time|`timestamp[us, tz=UTC]`|
@@ -57,4 +58,3 @@ The primary key for this table is **arn**.
 |tuning_job_arn|`utf8`|
 |vpc_config|`json`|
 |warm_pool_status|`json`|
-|result_metadata|`json`|

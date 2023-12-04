@@ -21,4 +21,3 @@ This table depends on [aws_iam_roles](aws_iam_roles.md).
 |policy_document|`json`|
 |policy_name (PK)|`utf8`|
 |role_name|`utf8`|
-|result_metadata|`json`|

@@ -26,7 +26,7 @@ func brokerConfigurationRevisions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id-revisions.html`,
 		Resolver:            fetchMqBrokerConfigurationRevisions,
 		PreResourceResolver: getMqBrokerConfigurationRevision,
-		Transform:           transformers.TransformWithStruct(&mq.DescribeConfigurationRevisionOutput{}),
+		Transform:           transformers.TransformWithStruct(&mq.DescribeConfigurationRevisionOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

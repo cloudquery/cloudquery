@@ -36,4 +36,3 @@ The following tables depend on aws_glue_registry_schemas:
 |schema_name|`utf8`|
 |schema_status|`utf8`|
 |updated_time|`utf8`|
-|result_metadata|`json`|

@@ -10,7 +10,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func registrySchemas() *schema.Table {
@@ -20,7 +19,7 @@ func registrySchemas() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/glue/latest/webapi/API_GetSchema.html`,
 		Resolver:            fetchGlueRegistrySchemas,
 		PreResourceResolver: getRegistrySchema,
-		Transform:           transformers.TransformWithStruct(&glue.GetSchemaOutput{}),
+		Transform:           transformers.TransformWithStruct(&glue.GetSchemaOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -30,11 +29,9 @@ func registrySchemas() *schema.Table {
 				Resolver:   schema.PathResolver("SchemaArn"),
 				PrimaryKey: true,
 			},
-			{
-				Name:     "tags",
-				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveGlueRegistrySchemaTags,
-			},
+			tagsCol(func(_ *client.Client, resource *schema.Resource) string {
+				return *resource.Item.(*glue.GetSchemaOutput).RegistryArn
+			}),
 		},
 
 		Relations: []*schema.Table{
@@ -78,22 +75,4 @@ func getRegistrySchema(ctx context.Context, meta schema.ClientMeta, resource *sc
 
 	resource.Item = s
 	return nil
-}
-
-func resolveGlueRegistrySchemaTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceGlue).Glue
-	s := resource.Item.(*glue.GetSchemaOutput)
-	result, err := svc.GetTags(ctx, &glue.GetTagsInput{
-		ResourceArn: s.SchemaArn,
-	}, func(options *glue.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
-		return err
-	}
-	return resource.Set(c.Name, result.Tags)
 }

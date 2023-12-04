@@ -26,4 +26,3 @@ The composite primary key for this table is (**account_id**, **region**, **id**)
 |identity_pool_tags|`json`|
 |open_id_connect_provider_arns|`list<item: utf8, nullable>`|
 |supported_login_providers|`json`|
-|result_metadata|`json`|

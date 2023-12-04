@@ -23,7 +23,7 @@ func IdentityPools() *schema.Table {
 		Transform: transformers.TransformWithStruct(
 			&cognitoidentity.DescribeIdentityPoolOutput{},
 			transformers.WithNameTransformer(client.CreateReplaceTransformer(map[string]string{"ar_ns": "arns"})),
-		),
+			transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

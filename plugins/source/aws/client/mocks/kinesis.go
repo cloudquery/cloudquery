@@ -185,6 +185,36 @@ func (mr *MockKinesisClientMockRecorder) GetRecords(arg0, arg1 interface{}, arg2
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRecords", reflect.TypeOf((*MockKinesisClient)(nil).GetRecords), varargs...)
 }
 
+// GetResourcePolicy mocks base method.
+func (m *MockKinesisClient) GetResourcePolicy(arg0 context.Context, arg1 *kinesis.GetResourcePolicyInput, arg2 ...func(*kinesis.Options)) (*kinesis.GetResourcePolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &kinesis.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetResourcePolicy")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetResourcePolicy", varargs...)
+	ret0, _ := ret[0].(*kinesis.GetResourcePolicyOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetResourcePolicy indicates an expected call of GetResourcePolicy.
+func (mr *MockKinesisClientMockRecorder) GetResourcePolicy(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetResourcePolicy", reflect.TypeOf((*MockKinesisClient)(nil).GetResourcePolicy), varargs...)
+}
+
 // GetShardIterator mocks base method.
 func (m *MockKinesisClient) GetShardIterator(arg0 context.Context, arg1 *kinesis.GetShardIteratorInput, arg2 ...func(*kinesis.Options)) (*kinesis.GetShardIteratorOutput, error) {
 

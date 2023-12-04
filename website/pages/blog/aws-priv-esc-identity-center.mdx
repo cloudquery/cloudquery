@@ -27,7 +27,7 @@ We will also cover how to find these events with CloudQuery’s new support for 
 
 AWS Identity Center [has requirements for](https://docs.aws.amazon.com/singlesignon/latest/userguide/get-started-prereqs-considerations.html) use including using AWS Organizations for managing AWS Accounts.
 
-Identity Center must be run from either the Organizational management account or a delegated administrator account.  For more information about delegated administrator accounts, see [our blog post and research on delegated administrator](https://www.cloudquery.io/blog/guide-aws-org-delegation).
+Identity Center must be run from either the Organizational management account or a delegated administrator account.  For more information about delegated administrator accounts, see [our blog post and research on delegated administrator](/blog/guide-aws-org-delegation).
 
 Since usage of AWS Identity Center requires usage of AWS Organizations and can only be managed from either the organizational management account or delegated administrator account, privilege escalation with AWS Identity Center requires access to whichever account is used for management of AWS Identity Center: either the organizational management account or the delegated administrator account used for AWS Identity Center.
 
@@ -204,7 +204,7 @@ Examples of permission modification and access disruption include:
 
 AWS CloudTrail offers 90 days of logging to identify API calls made in AWS accounts.  While it’s possible to search directly in CloudTrail for the last 90 days of activity, we’ll show how to identify Identity Center Actions in CloudTrail logs synced with CloudQuery.
 
-We recently added support for [CloudTrail Events](https://hub.cloudquery.io/plugins/source/cloudquery/aws/tables/aws_cloudtrail_events) and [Incremental Tables](https://www.cloudquery.io/docs/advanced-topics/managing-incremental-tables) with CloudQuery as we saw useful use cases for syncing CloudTrail events to the destination of your choice. 
+We recently added support for [CloudTrail Events](https://hub.cloudquery.io/plugins/source/cloudquery/aws/tables/aws_cloudtrail_events) and [Incremental Tables](/docs/advanced-topics/managing-incremental-tables) with CloudQuery as we saw useful use cases for syncing CloudTrail events to the destination of your choice. 
 
 ### CloudQuery Setup and Configuration
 
