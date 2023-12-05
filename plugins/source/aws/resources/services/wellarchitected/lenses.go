@@ -80,6 +80,10 @@ func getLens(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 	if summary.LensType == types.LensTypeAwsOfficial {
 		input.LensVersion = nil // official lenses don't support versions
 	}
+	if l.LensAlias == nil {
+		// LensAlias is required so if it's nil we can't do anything
+		return nil
+	}
 	out, err := service.GetLens(ctx, input, func(o *wellarchitected.Options) { o.Region = cl.Region })
 	if err != nil {
 		cl.Logger().Err(err).Str("table", resource.Table.Name).Msg("Failed to perform get, ignoring...")
