@@ -46,7 +46,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v4.1.2
+          version: v4.2.0
       - name: gen-docs
         if: github.event_name == 'pull_request'
         run: make gen
