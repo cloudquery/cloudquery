@@ -18,6 +18,7 @@ import (
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/cloudquery/cloudquery/cli/internal/team"
+	"github.com/pkg/browser"
 	"github.com/spf13/cobra"
 	"golang.org/x/term"
 )
@@ -128,8 +129,7 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	}
 
 	url := accountsURL + "?returnTo=" + localServerURL + "/callback"
-	//if err := browser.OpenURL(url); err != nil {
-	if true {
+	if err := browser.OpenURL(url); err != nil {
 		fmt.Printf("Failed to open browser. Please open %s manually and paste the token below:\n", accountsURL)
 		oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
 		if err != nil {
