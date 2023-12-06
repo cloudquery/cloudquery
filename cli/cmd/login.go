@@ -20,6 +20,7 @@ import (
 	"github.com/cloudquery/cloudquery/cli/internal/team"
 	"github.com/pkg/browser"
 	"github.com/spf13/cobra"
+	"golang.org/x/term"
 )
 
 const (
@@ -130,11 +131,18 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	url := accountsURL + "?returnTo=" + localServerURL + "/callback"
 	if err := browser.OpenURL(url); err != nil {
 		fmt.Printf("Failed to open browser. Please open %s manually and paste the token below:\n", accountsURL)
-		if _, err := fmt.Scanln(&refreshToken); err != nil {
-			if err.Error() != "unexpected newline" {
-				return fmt.Errorf("failed to read token: %w", err)
-			}
+		oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
+		if err != nil {
+			return fmt.Errorf("failed setting stdin to raw mode: %w", err)
 		}
+		tty := term.NewTerminal(os.Stdin, "")
+		refreshToken, err = tty.ReadLine()
+		term.Restore(int(os.Stdin.Fd()), oldState)
+
+		if err != nil {
+			return fmt.Errorf("failed to read token: %w", err)
+		}
+
 		refreshToken = strings.TrimSpace(refreshToken)
 	} else {
 		fmt.Printf("Opened browser at %s. Waiting for authentication to complete.\n", url)
@@ -150,6 +158,9 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	if refreshToken == "" {
 		return fmt.Errorf("failed to get refresh token")
 	}
+
+	fmt.Println("Authenticating...")
+
 	err = auth.SaveRefreshToken(refreshToken)
 	if err != nil {
 		return fmt.Errorf("failed to save refresh token: %w", err)
