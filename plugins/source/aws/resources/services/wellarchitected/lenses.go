@@ -75,7 +75,7 @@ func getLens(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 	service := cl.Services(client.AWSServiceWellarchitected).Wellarchitected
 	summary := resource.Item.(types.LensSummary)
 	l := &lens{LensSummary: &summary}
-
+	resource.SetItem(l)
 	input := &wellarchitected.GetLensInput{LensAlias: l.LensAlias, LensVersion: summary.LensVersion}
 	if summary.LensType == types.LensTypeAwsOfficial {
 		input.LensVersion = nil // official lenses don't support versions
