@@ -129,16 +129,22 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 
 	url := accountsURL + "?returnTo=" + localServerURL + "/callback"
 	if err := browser.OpenURL(url); err != nil {
-		fmt.Printf("Failed to open browser at %s. Please open the URL manually.\n", accountsURL)
+		fmt.Printf("Failed to open browser. Please open %s manually and paste the token below:\n", accountsURL)
+		if _, err := fmt.Scanln(&refreshToken); err != nil {
+			if err.Error() != "unexpected newline" {
+				return fmt.Errorf("failed to read token: %w", err)
+			}
+		}
+		refreshToken = strings.TrimSpace(refreshToken)
 	} else {
 		fmt.Printf("Opened browser at %s. Waiting for authentication to complete.\n", url)
-	}
 
-	// Wait for an OS signal to begin shutting down.
-	select {
-	case <-ctx.Done():
-		fmt.Println("Context cancelled. Shutting down server.")
-	case <-gotToken:
+		// Wait for an OS signal to begin shutting down.
+		select {
+		case <-ctx.Done():
+			fmt.Println("Context cancelled. Shutting down server.")
+		case <-gotToken:
+		}
 	}
 
 	if refreshToken == "" {
