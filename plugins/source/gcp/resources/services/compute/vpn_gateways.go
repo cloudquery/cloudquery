@@ -36,11 +36,11 @@ func fetchVpnGateways(ctx context.Context, meta schema.ClientMeta, parent *schem
 	req := &pb.AggregatedListVpnGatewaysRequest{
 		Project: c.ProjectId,
 	}
-	gcpClient, err := compute.NewVpnGatewaysRESTClient(ctx, c.ClientOptions...)
+	gcpClien, err := compute.NewVpnGatewaysRESTClient(ctx, c.ClientOptions...)
 	if err != nil {
 		return err
 	}
-	it := gcpClient.AggregatedList(ctx, req, c.CallOptions...)
+	it := gcpClien.AggregatedList(ctx, req, c.CallOptions...)
 	for {
 		resp, err := it.Next()
 		if err == iterator.Done {
