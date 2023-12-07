@@ -14,7 +14,7 @@ import (
 )
 
 func createGovernanceRule(router *mux.Router) error {
-	var item armsecurity.GovernanceRuleClientListResponse
+	var item armsecurity.GovernanceRulesClientListResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
