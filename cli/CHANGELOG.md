@@ -5,6 +5,19 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.3.0](https://github.com/cloudquery/cloudquery/compare/cli-v4.2.0...cli-v4.3.0) (2023-12-07)
+
+
+### Features
+
+* Include `is_paid` field when publishing tables to the Hub ([#15569](https://github.com/cloudquery/cloudquery/issues/15569)) ([970a711](https://github.com/cloudquery/cloudquery/commit/970a71177bed0023a12c1294ef077a3f9fa08388))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.14.3 ([#15570](https://github.com/cloudquery/cloudquery/issues/15570)) ([cdc0462](https://github.com/cloudquery/cloudquery/commit/cdc04626fbfb29a42a1a27247533612f78d87cb2))
+* Login with no browser ([#15561](https://github.com/cloudquery/cloudquery/issues/15561)) ([945a900](https://github.com/cloudquery/cloudquery/commit/945a90025dc11d8269170e02892873fcf90b4b3d))
+
 ## [4.2.0](https://github.com/cloudquery/cloudquery/compare/cli-v4.1.2...cli-v4.2.0) (2023-12-05)
 
 
