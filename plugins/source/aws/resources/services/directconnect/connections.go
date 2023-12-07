@@ -21,8 +21,17 @@ func Connections() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "directconnect"),
 		Transform:   transformers.TransformWithStruct(&types.Connection{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			{
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
+			},
+			{
+				Name:     "request_region",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: client.ResolveAWSRegion,
+			},
 			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,

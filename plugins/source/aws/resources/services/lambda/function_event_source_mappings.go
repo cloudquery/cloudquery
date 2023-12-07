@@ -3,12 +3,12 @@ package lambda
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func functionEventSourceMappings() *schema.Table {
@@ -17,14 +17,17 @@ func functionEventSourceMappings() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_EventSourceMappingConfiguration.html`,
 		Resolver:    fetchLambdaFunctionEventSourceMappings,
-		Transform:   transformers.TransformWithStruct(&types.EventSourceMappingConfiguration{}),
+		Transform: transformers.TransformWithStruct(&types.EventSourceMappingConfiguration{},
+			transformers.WithPrimaryKeys("FunctionArn", "EventSourceArn"), // FunctionArn here can also be a version
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "function_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "uuid",
+				Type:       cqtypes.ExtensionTypes.UUID,
+				Resolver:   schema.PathResolver("UUID"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -38,9 +41,7 @@ func fetchLambdaFunctionEventSourceMappings(ctx context.Context, meta schema.Cli
 
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceLambda).Lambda
-	config := lambda.ListEventSourceMappingsInput{
-		FunctionName: p.Configuration.FunctionName,
-	}
+	config := lambda.ListEventSourceMappingsInput{FunctionName: p.Configuration.FunctionArn}
 	paginator := lambda.NewListEventSourceMappingsPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *lambda.Options) {

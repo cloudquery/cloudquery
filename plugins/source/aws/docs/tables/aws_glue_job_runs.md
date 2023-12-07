@@ -4,7 +4,7 @@ This table shows data for Glue Job Runs.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_JobRun.html
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**job_arn**, **id**).
 
 ## Relations
 
@@ -14,11 +14,11 @@ This table depends on [aws_glue_jobs](aws_glue_jobs.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|`uuid`|
+|_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|job_arn|`utf8`|
+|job_arn (PK)|`utf8`|
 |allocated_capacity|`int64`|
 |arguments|`json`|
 |attempt|`int64`|
@@ -28,7 +28,7 @@ This table depends on [aws_glue_jobs](aws_glue_jobs.md).
 |execution_class|`utf8`|
 |execution_time|`int64`|
 |glue_version|`utf8`|
-|id|`utf8`|
+|id (PK)|`utf8`|
 |job_name|`utf8`|
 |job_run_state|`utf8`|
 |last_modified_on|`timestamp[us, tz=UTC]`|

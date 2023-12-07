@@ -23,6 +23,7 @@ The following tables depend on gcp_artifactregistry_repositories:
 |_cq_parent_id|`uuid`|
 |project_id (PK)|`utf8`|
 |format_config|`json`|
+|mode_config|`json`|
 |name (PK)|`utf8`|
 |format|`utf8`|
 |description|`utf8`|
@@ -30,3 +31,8 @@ The following tables depend on gcp_artifactregistry_repositories:
 |create_time|`timestamp[us, tz=UTC]`|
 |update_time|`timestamp[us, tz=UTC]`|
 |kms_key_name|`utf8`|
+|mode|`utf8`|
+|cleanup_policies|`json`|
+|size_bytes|`int64`|
+|satisfies_pzs|`bool`|
+|cleanup_policy_dry_run|`bool`|

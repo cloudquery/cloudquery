@@ -5,6 +5,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func tables() *schema.Table {
@@ -14,7 +15,14 @@ func tables() *schema.Table {
 		PostResourceResolver: client.LowercaseIDResolver,
 		PreResourceResolver:  getTable,
 		Description:          "https://learn.microsoft.com/en-us/rest/api/storagerp/table/list?tabs=HTTP#table",
-		Transform:            transformers.TransformWithStruct(&armstorage.Table{}, transformers.WithPrimaryKeys("ID")),
-		Columns:              schema.ColumnList{client.SubscriptionID},
+		Transform:            transformers.TransformWithStruct(&armstorage.Table{}, transformers.WithPrimaryKeys("ID"), transformers.WithSkipFields("TableProperties")),
+		Columns: schema.ColumnList{
+			client.SubscriptionID,
+			{
+				Name:     "properties",
+				Type:     types.ExtensionTypes.JSON,
+				Resolver: schema.PathResolver("TableProperties"),
+			},
+		},
 	}
 }

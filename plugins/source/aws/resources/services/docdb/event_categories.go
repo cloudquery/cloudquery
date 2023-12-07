@@ -3,7 +3,6 @@ package docdb
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/docdb"
 	"github.com/aws/aws-sdk-go-v2/service/docdb/types"
@@ -19,19 +18,10 @@ func EventCategories() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_EventCategoriesMap.html`,
 		Resolver:    fetchDocdbEventCategories,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
-		Transform:   transformers.TransformWithStruct(&types.EventCategoriesMap{}),
+		Transform:   transformers.TransformWithStruct(&types.EventCategoriesMap{}, transformers.WithPrimaryKeys("SourceType")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			{
-				Name:     "event_categories",
-				Type:     arrow.ListOf(arrow.BinaryTypes.String),
-				Resolver: schema.PathResolver("EventCategories"),
-			},
-			{
-				Name:     "source_type",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.PathResolver("SourceType"),
-			},
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 		},
 	}
 }

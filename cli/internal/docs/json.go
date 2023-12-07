@@ -15,6 +15,7 @@ type jsonTable struct {
 	Description string       `json:"description"`
 	Columns     []jsonColumn `json:"columns"`
 	Relations   []jsonTable  `json:"relations"`
+	IsPaid      bool         `json:"is_paid,omitempty"`
 }
 
 type jsonColumn struct {
@@ -55,6 +56,7 @@ func (g *Generator) jsonifyTables(tables schema.Tables) []jsonTable {
 			Title:       table.Title,
 			Description: table.Description,
 			Columns:     jsonColumns,
+			IsPaid:      table.IsPaid,
 			Relations:   g.jsonifyTables(table.Relations),
 		}
 	}

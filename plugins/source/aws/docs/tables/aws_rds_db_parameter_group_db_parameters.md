@@ -4,7 +4,7 @@ This table shows data for Amazon Relational Database Service (RDS) DB Parameter 
 
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Parameter.html
 
-The primary key for this table is **_cq_id**.
+The composite primary key for this table is (**db_parameter_group_arn**, **parameter_name**).
 
 ## Relations
 
@@ -14,11 +14,11 @@ This table depends on [aws_rds_db_parameter_groups](aws_rds_db_parameter_groups.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id (PK)|`uuid`|
+|_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|db_parameter_group_arn|`utf8`|
+|db_parameter_group_arn (PK)|`utf8`|
 |allowed_values|`utf8`|
 |apply_method|`utf8`|
 |apply_type|`utf8`|
@@ -26,7 +26,7 @@ This table depends on [aws_rds_db_parameter_groups](aws_rds_db_parameter_groups.
 |description|`utf8`|
 |is_modifiable|`bool`|
 |minimum_engine_version|`utf8`|
-|parameter_name|`utf8`|
+|parameter_name (PK)|`utf8`|
 |parameter_value|`utf8`|
 |source|`utf8`|
 |supported_engine_modes|`list<item: utf8, nullable>`|

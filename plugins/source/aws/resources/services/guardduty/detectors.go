@@ -25,9 +25,19 @@ func Detectors() *schema.Table {
 			transformers.WithSkipFields("ResultMetadata"),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "guardduty"),
-		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(true),
+		Columns: schema.ColumnList{
+			{
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
+			},
+			{
+				Name:       "request_region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSRegion,
+				PrimaryKey: true,
+			},
 			{
 				Name:     "arn",
 				Type:     arrow.BinaryTypes.String,

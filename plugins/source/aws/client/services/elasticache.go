@@ -20,6 +20,8 @@ type ElasticacheClient interface {
 	DescribeReplicationGroups(context.Context, *elasticache.DescribeReplicationGroupsInput, ...func(*elasticache.Options)) (*elasticache.DescribeReplicationGroupsOutput, error)
 	DescribeReservedCacheNodes(context.Context, *elasticache.DescribeReservedCacheNodesInput, ...func(*elasticache.Options)) (*elasticache.DescribeReservedCacheNodesOutput, error)
 	DescribeReservedCacheNodesOfferings(context.Context, *elasticache.DescribeReservedCacheNodesOfferingsInput, ...func(*elasticache.Options)) (*elasticache.DescribeReservedCacheNodesOfferingsOutput, error)
+	DescribeServerlessCacheSnapshots(context.Context, *elasticache.DescribeServerlessCacheSnapshotsInput, ...func(*elasticache.Options)) (*elasticache.DescribeServerlessCacheSnapshotsOutput, error)
+	DescribeServerlessCaches(context.Context, *elasticache.DescribeServerlessCachesInput, ...func(*elasticache.Options)) (*elasticache.DescribeServerlessCachesOutput, error)
 	DescribeServiceUpdates(context.Context, *elasticache.DescribeServiceUpdatesInput, ...func(*elasticache.Options)) (*elasticache.DescribeServiceUpdatesOutput, error)
 	DescribeSnapshots(context.Context, *elasticache.DescribeSnapshotsInput, ...func(*elasticache.Options)) (*elasticache.DescribeSnapshotsOutput, error)
 	DescribeUpdateActions(context.Context, *elasticache.DescribeUpdateActionsInput, ...func(*elasticache.Options)) (*elasticache.DescribeUpdateActionsOutput, error)

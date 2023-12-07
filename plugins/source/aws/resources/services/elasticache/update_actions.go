@@ -3,6 +3,7 @@ package elasticache
 import (
 	"context"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache"
 	"github.com/aws/aws-sdk-go-v2/service/elasticache/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -17,10 +18,12 @@ func UpdateActions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_UpdateAction.html`,
 		Resolver:    fetchElasticacheUpdateAction,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticache"),
-		Transform:   transformers.TransformWithStruct(&types.UpdateAction{}),
+		Transform: transformers.TransformWithStruct(&types.UpdateAction{},
+			transformers.WithPrimaryKeys("CacheClusterId", "ReplicationGroupId", "ServiceUpdateName"),
+		),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
-			client.DefaultRegionColumn(false),
+			client.DefaultAccountIDColumn(true),
+			client.DefaultRegionColumn(true),
 		},
 	}
 }
@@ -36,6 +39,19 @@ func fetchElasticacheUpdateAction(ctx context.Context, meta schema.ClientMeta, p
 		})
 		if err != nil {
 			return err
+		}
+
+		for _, ua := range v.UpdateActions {
+			// We can either have cache cluster ID or replication group ID,
+			// but we don't want to have nil values in PK columns.
+			// See AWS CLI examples:
+			// https://docs.aws.amazon.com/cli/latest/reference/elasticache/describe-update-actions.html#examples
+			if ua.CacheClusterId == nil {
+				ua.CacheClusterId = aws.String("")
+			}
+			if ua.ReplicationGroupId == nil {
+				ua.ReplicationGroupId = aws.String("")
+			}
 		}
 		res <- v.UpdateActions
 	}

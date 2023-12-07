@@ -4,7 +4,7 @@ This table shows data for AWS Elastic Beanstalk Environments.
 
 https://docs.aws.amazon.com/elasticbeanstalk/latest/APIReference/API_EnvironmentDescription.html
 
-The composite primary key for this table is (**account_id**, **id**).
+The primary key for this table is **arn**.
 
 ## Relations
 
@@ -18,11 +18,11 @@ The following tables depend on aws_elasticbeanstalk_environments:
 | ------------- | ------------- |
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|arn|`utf8`|
+|account_id|`utf8`|
 |region|`utf8`|
+|arn (PK)|`utf8`|
 |tags|`json`|
-|id (PK)|`utf8`|
+|id|`utf8`|
 |listeners|`json`|
 |abortable_operation_in_progress|`bool`|
 |application_name|`utf8`|

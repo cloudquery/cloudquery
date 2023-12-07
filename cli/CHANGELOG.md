@@ -5,6 +5,48 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.3.1](https://github.com/cloudquery/cloudquery/compare/cli-v4.3.0...cli-v4.3.1) (2023-12-07)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.20.0 ([#15574](https://github.com/cloudquery/cloudquery/issues/15574)) ([317dca4](https://github.com/cloudquery/cloudquery/commit/317dca4182478d6f3789082ae563d9e8bd417d20))
+
+## [4.3.0](https://github.com/cloudquery/cloudquery/compare/cli-v4.2.0...cli-v4.3.0) (2023-12-07)
+
+
+### Features
+
+* Include `is_paid` field when publishing tables to the Hub ([#15569](https://github.com/cloudquery/cloudquery/issues/15569)) ([970a711](https://github.com/cloudquery/cloudquery/commit/970a71177bed0023a12c1294ef077a3f9fa08388))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.14.3 ([#15570](https://github.com/cloudquery/cloudquery/issues/15570)) ([cdc0462](https://github.com/cloudquery/cloudquery/commit/cdc04626fbfb29a42a1a27247533612f78d87cb2))
+* Login with no browser ([#15561](https://github.com/cloudquery/cloudquery/issues/15561)) ([945a900](https://github.com/cloudquery/cloudquery/commit/945a90025dc11d8269170e02892873fcf90b4b3d))
+
+## [4.2.0](https://github.com/cloudquery/cloudquery/compare/cli-v4.1.2...cli-v4.2.0) (2023-12-05)
+
+
+### Features
+
+* Add `isPaid` indication to JSON docs ([#15548](https://github.com/cloudquery/cloudquery/issues/15548)) ([97d4541](https://github.com/cloudquery/cloudquery/commit/97d4541ef6c7483d81948ac3605a75787f7cabab))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/gomarkdown/markdown digest to a660076 ([#15517](https://github.com/cloudquery/cloudquery/issues/15517)) ([fa1334c](https://github.com/cloudquery/cloudquery/commit/fa1334c5ce0e157834b0cd676b38af26510fbe43))
+* **deps:** Update golang.org/x/exp digest to 6522937 ([#15518](https://github.com/cloudquery/cloudquery/issues/15518)) ([69f9a06](https://github.com/cloudquery/cloudquery/commit/69f9a06754b2feb7c73bd5a80d42fd191c7fdb17))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.19.0 ([#15509](https://github.com/cloudquery/cloudquery/issues/15509)) ([41c689d](https://github.com/cloudquery/cloudquery/commit/41c689d0835487a8d924bb11c989c231f5e3df7c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.19.1 ([#15539](https://github.com/cloudquery/cloudquery/issues/15539)) ([a298555](https://github.com/cloudquery/cloudquery/commit/a298555343fc7ad483361c2f19c3d39693dab882))
+
+## [4.1.2](https://github.com/cloudquery/cloudquery/compare/cli-v4.1.1...cli-v4.1.2) (2023-11-28)
+
+
+### Bug Fixes
+
+* Add missing new line for paid tables docs ([#15490](https://github.com/cloudquery/cloudquery/issues/15490)) ([e17023c](https://github.com/cloudquery/cloudquery/commit/e17023c2e53098556ecb1c5f7b197c65e32ce168))
+
 ## [4.1.1](https://github.com/cloudquery/cloudquery/compare/cli-v4.1.0...cli-v4.1.1) (2023-11-28)
 
 

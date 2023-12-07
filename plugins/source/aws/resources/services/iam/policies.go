@@ -2,10 +2,10 @@ package iam
 
 import (
 	"context"
-	"net/url"
 
 	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -20,7 +20,7 @@ func Policies() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_ManagedPolicyDetail.html`,
 		Resolver:    fetchIamPolicies,
-		Transform:   transformers.TransformWithStruct(&types.ManagedPolicyDetail{}),
+		Transform:   transformers.TransformWithStruct(&types.Policy{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
@@ -35,28 +35,20 @@ func Policies() *schema.Table {
 				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveIamPolicyTags,
 			},
-			{
-				Name:     "policy_version_list",
-				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveIamPolicyVersionList,
-			},
 		},
 		Relations: []*schema.Table{
 			policyLastAccessedDetails(),
+			policyVersions(),
 		},
 	}
 }
 
 func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	config := iam.GetAccountAuthorizationDetailsInput{
-		Filter: []types.EntityType{
-			types.EntityTypeAWSManagedPolicy, types.EntityTypeLocalManagedPolicy,
-		},
-	}
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceIam).Iam
-	paginator := iam.NewGetAccountAuthorizationDetailsPaginator(svc, &config)
-
+	paginator := iam.NewListPoliciesPaginator(svc, &iam.ListPoliciesInput{
+		MaxItems: aws.Int32(1000),
+	})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *iam.Options) {
 			options.Region = cl.Region
@@ -70,9 +62,18 @@ func fetchIamPolicies(ctx context.Context, meta schema.ClientMeta, parent *schem
 }
 
 func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.ManagedPolicyDetail)
+	r := resource.Item.(types.Policy)
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceIam).Iam
+
+	parsedArn, err := arn.Parse(aws.ToString(r.Arn))
+	if err != nil {
+		return err
+	}
+	// AWS Managed Policies do not include an accountID in the ARN and cannot have any tags so no need to call API
+	if parsedArn.AccountID != cl.AccountID {
+		return nil
+	}
 	response, err := svc.ListPolicyTags(ctx, &iam.ListPolicyTagsInput{PolicyArn: r.Arn}, func(options *iam.Options) {
 		options.Region = cl.Region
 	})
@@ -83,14 +84,4 @@ func resolveIamPolicyTags(ctx context.Context, meta schema.ClientMeta, resource 
 		return err
 	}
 	return resource.Set("tags", client.TagsToMap(response.Tags))
-}
-
-func resolveIamPolicyVersionList(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.ManagedPolicyDetail)
-	for i := range r.PolicyVersionList {
-		if v, err := url.QueryUnescape(aws.ToString(r.PolicyVersionList[i].Document)); err == nil {
-			r.PolicyVersionList[i].Document = &v
-		}
-	}
-	return resource.Set(c.Name, r.PolicyVersionList)
 }

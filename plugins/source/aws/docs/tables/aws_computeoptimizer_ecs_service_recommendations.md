@@ -16,6 +16,7 @@ The primary key for this table is **service_arn**.
 |tags|`json`|
 |current_performance_risk|`utf8`|
 |current_service_configuration|`json`|
+|effective_recommendation_preferences|`json`|
 |finding|`utf8`|
 |finding_reason_codes|`list<item: utf8, nullable>`|
 |last_refresh_timestamp|`timestamp[us, tz=UTC]`|

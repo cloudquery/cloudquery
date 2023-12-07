@@ -9,6 +9,7 @@ spec:
   path: "cloudquery/s3"
   registry: "cloudquery"
   version: "VERSION_DESTINATION_S3"
+  write_mode: "append"
   spec:
     bucket: "bucket_name"
     region: "region-name" # Example: us-east-1

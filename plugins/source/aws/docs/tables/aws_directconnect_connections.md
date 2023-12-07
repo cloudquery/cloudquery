@@ -4,7 +4,7 @@ This table shows data for AWS Direct Connect Connections.
 
 https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Connection.html
 
-The composite primary key for this table is (**arn**, **id**).
+The composite primary key for this table is (**request_account_id**, **arn**, **id**).
 
 ## Columns
 
@@ -12,8 +12,8 @@ The composite primary key for this table is (**arn**, **id**).
 | ------------- | ------------- |
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id|`utf8`|
-|region|`utf8`|
+|request_account_id (PK)|`utf8`|
+|request_region|`utf8`|
 |arn (PK)|`utf8`|
 |id (PK)|`utf8`|
 |tags|`json`|
@@ -36,4 +36,5 @@ The composite primary key for this table is (**arn**, **id**).
 |partner_name|`utf8`|
 |port_encryption_status|`utf8`|
 |provider_name|`utf8`|
+|region|`utf8`|
 |vlan|`int64`|

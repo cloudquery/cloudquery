@@ -27,7 +27,8 @@
     "title": "Paid Table",
     "description": "Description for paid table",
     "columns": [],
-    "relations": []
+    "relations": [],
+    "is_paid": true
   },
   {
     "name": "test_table",

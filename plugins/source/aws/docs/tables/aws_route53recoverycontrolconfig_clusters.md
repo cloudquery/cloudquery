@@ -4,7 +4,7 @@ This table shows data for Amazon Route 53 Application Recovery Controller Recove
 
 https://docs.aws.amazon.com/recovery-cluster/latest/api/cluster.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**request_account_id**, **arn**).
 
 ## Columns
 
@@ -12,7 +12,7 @@ The primary key for this table is **arn**.
 | ------------- | ------------- |
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id|`utf8`|
+|request_account_id (PK)|`utf8`|
 |arn (PK)|`utf8`|
 |cluster_arn|`utf8`|
 |cluster_endpoints|`json`|

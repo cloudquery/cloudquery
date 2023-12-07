@@ -71,14 +71,8 @@
     "plugins/source/alicloud": {
       "component": "plugins-source-alicloud"
     },
-    "plugins/source/aws": {
-      "component": "plugins-source-aws"
-    },
     "plugins/source/awspricing": {
       "component": "plugins-source-awspricing"
-    },
-    "plugins/source/azure": {
-      "component": "plugins-source-azure"
     },
     "plugins/source/bitbucket": {
       "component": "plugins-source-bitbucket",
@@ -95,9 +89,6 @@
     },
     "plugins/source/firestore": {
       "component": "plugins-source-firestore"
-    },
-    "plugins/source/gcp": {
-      "component": "plugins-source-gcp"
     },
     "plugins/source/github": {
       "component": "plugins-source-github"

@@ -4,7 +4,7 @@ This table shows data for AWS Direct Connect Lags.
 
 https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Lag.html
 
-The primary key for this table is **arn**.
+The composite primary key for this table is (**request_account_id**, **arn**).
 
 ## Columns
 
@@ -12,8 +12,8 @@ The primary key for this table is **arn**.
 | ------------- | ------------- |
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id|`utf8`|
-|region|`utf8`|
+|request_account_id (PK)|`utf8`|
+|request_region|`utf8`|
 |arn (PK)|`utf8`|
 |id|`utf8`|
 |tags|`json`|
@@ -36,3 +36,4 @@ The primary key for this table is **arn**.
 |number_of_connections|`int64`|
 |owner_account|`utf8`|
 |provider_name|`utf8`|
+|region|`utf8`|

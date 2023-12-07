@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.0.4...plugins-source-bitbucket-v1.0.5) (2023-12-06)
+
+
+### Bug Fixes
+
+* Upgrade SDK ([#15558](https://github.com/cloudquery/cloudquery/issues/15558)) ([9c0e4b6](https://github.com/cloudquery/cloudquery/commit/9c0e4b660e7dd64f844585338b51e93d20064dbc))
+
 ## [1.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.0.3...plugins-source-bitbucket-v1.0.4) (2023-11-23)
 
 
