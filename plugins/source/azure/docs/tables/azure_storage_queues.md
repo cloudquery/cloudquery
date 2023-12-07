@@ -20,7 +20,7 @@ The following tables depend on azure_storage_queues:
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |subscription_id|`utf8`|
-|properties|`json`|
+|queue_properties|`json`|
 |id (PK)|`utf8`|
 |name|`utf8`|
 |type|`utf8`|
