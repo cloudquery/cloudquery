@@ -131,13 +131,19 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	url := accountsURL + "?returnTo=" + localServerURL + "/callback"
 	if err := browser.OpenURL(url); err != nil {
 		fmt.Printf("Failed to open browser. Please open %s manually and paste the token below:\n", accountsURL)
-		oldState, err := term.MakeRaw(int(os.Stdin.Fd()))
+
+		stdinFd := int(os.Stdin.Fd())
+		if !term.IsTerminal(stdinFd) {
+			return fmt.Errorf("reading from non-terminal stdin is not supported. Hint: Consider setting an api key with the `CLOUDQUERY_API_KEY` env variable")
+		}
+
+		oldState, err := term.MakeRaw(stdinFd)
 		if err != nil {
 			return fmt.Errorf("failed setting stdin to raw mode: %w", err)
 		}
 		tty := term.NewTerminal(os.Stdin, "")
 		refreshToken, err = tty.ReadLine()
-		_ = term.Restore(int(os.Stdin.Fd()), oldState)
+		_ = term.Restore(stdinFd, oldState)
 
 		if err != nil {
 			return fmt.Errorf("failed to read token: %w", err)
