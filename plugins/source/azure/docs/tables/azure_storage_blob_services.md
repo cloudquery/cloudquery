@@ -17,7 +17,7 @@ This table depends on [azure_storage_accounts](azure_storage_accounts.md).
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |subscription_id|`utf8`|
-|blob_service_properties|`json`|
+|properties|`json`|
 |id (PK)|`utf8`|
 |name|`utf8`|
 |sku|`json`|
