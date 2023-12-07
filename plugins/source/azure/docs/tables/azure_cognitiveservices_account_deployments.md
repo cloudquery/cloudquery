@@ -18,6 +18,7 @@ This table depends on [azure_cognitiveservices_accounts](azure_cognitiveservices
 |_cq_parent_id|`uuid`|
 |subscription_id|`utf8`|
 |properties|`json`|
+|sku|`json`|
 |etag|`utf8`|
 |id (PK)|`utf8`|
 |name|`utf8`|

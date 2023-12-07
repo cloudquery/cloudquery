@@ -23,9 +23,12 @@ This table depends on [azure_cognitiveservices_accounts](azure_cognitiveservices
 |deprecation|`json`|
 |finetune_capabilities|`json`|
 |format|`utf8`|
+|is_default_version|`bool`|
 |lifecycle_status|`utf8`|
 |max_capacity|`int64`|
 |name|`utf8`|
+|sk_us|`json`|
+|source|`utf8`|
 |version|`utf8`|
 |call_rate_limit|`json`|
 |system_data|`json`|

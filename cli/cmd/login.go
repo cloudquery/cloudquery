@@ -20,6 +20,7 @@ import (
 	"github.com/cloudquery/cloudquery/cli/internal/team"
 	"github.com/pkg/browser"
 	"github.com/spf13/cobra"
+	"golang.org/x/term"
 )
 
 const (
@@ -129,21 +130,43 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 
 	url := accountsURL + "?returnTo=" + localServerURL + "/callback"
 	if err := browser.OpenURL(url); err != nil {
-		fmt.Printf("Failed to open browser at %s. Please open the URL manually.\n", accountsURL)
+		fmt.Printf("Failed to open browser. Please open %s manually and paste the token below:\n", accountsURL)
+
+		stdinFd := int(os.Stdin.Fd())
+		if !term.IsTerminal(stdinFd) {
+			return fmt.Errorf("reading from non-terminal stdin is not supported. Hint: Consider setting an api key with the `CLOUDQUERY_API_KEY` env variable")
+		}
+
+		oldState, err := term.MakeRaw(stdinFd)
+		if err != nil {
+			return fmt.Errorf("failed setting stdin to raw mode: %w", err)
+		}
+		tty := term.NewTerminal(os.Stdin, "")
+		refreshToken, err = tty.ReadLine()
+		_ = term.Restore(stdinFd, oldState)
+
+		if err != nil {
+			return fmt.Errorf("failed to read token: %w", err)
+		}
+
+		refreshToken = strings.TrimSpace(refreshToken)
 	} else {
 		fmt.Printf("Opened browser at %s. Waiting for authentication to complete.\n", url)
-	}
 
-	// Wait for an OS signal to begin shutting down.
-	select {
-	case <-ctx.Done():
-		fmt.Println("Context cancelled. Shutting down server.")
-	case <-gotToken:
+		// Wait for an OS signal to begin shutting down.
+		select {
+		case <-ctx.Done():
+			fmt.Println("Context cancelled. Shutting down server.")
+		case <-gotToken:
+		}
 	}
 
 	if refreshToken == "" {
 		return fmt.Errorf("failed to get refresh token")
 	}
+
+	fmt.Println("Authenticating...")
+
 	err = auth.SaveRefreshToken(refreshToken)
 	if err != nil {
 		return fmt.Errorf("failed to save refresh token: %w", err)
