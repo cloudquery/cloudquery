@@ -7,7 +7,7 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.19.1
 	github.com/goccy/go-json v0.10.2
 	github.com/rs/zerolog v1.29.1
-	github.com/snowflakedb/gosnowflake v1.6.19
+	github.com/snowflakedb/gosnowflake v1.7.1
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/sync v0.5.0
 )
@@ -24,10 +24,11 @@ require (
 	github.com/BurntSushi/toml v1.3.2 // indirect
 	github.com/CloudyKit/fastprinter v0.0.0-20200109182630-33d98a066a53 // indirect
 	github.com/CloudyKit/jet/v6 v6.2.0 // indirect
+	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect
 	github.com/Joker/jade v1.1.3 // indirect
 	github.com/Shopify/goreferrer v0.0.0-20220729165902-8cddb4f5de06 // indirect
 	github.com/andybalholm/brotli v1.0.6 // indirect
-	github.com/apache/arrow/go/v10 v10.0.1 // indirect
+	github.com/apache/arrow/go/v12 v12.0.1 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
 	github.com/apache/thrift v0.17.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
