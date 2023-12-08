@@ -99,6 +99,7 @@
 - [gcp_compute_backend_services](gcp_compute_backend_services.md)
 - [gcp_compute_disk_types](gcp_compute_disk_types.md)
 - [gcp_compute_disks](gcp_compute_disks.md)
+- [gcp_compute_external_vpn_gateways](gcp_compute_external_vpn_gateways.md)
 - [gcp_compute_firewalls](gcp_compute_firewalls.md)
 - [gcp_compute_forwarding_rules](gcp_compute_forwarding_rules.md)
 - [gcp_compute_images](gcp_compute_images.md)
