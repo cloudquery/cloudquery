@@ -52,7 +52,7 @@
     "items": {
       "blog": {
         "title": "Blog",
-        "href": "/blog"
+        "href": "https://www.cloudquery.io/blog"
       },
       "case-studies": {
         "title": "Case Studies",

@@ -38,7 +38,7 @@ function FooterHeader({ children }: { children: ReactNode }) {
 const navigation = {
   general: [
     { name: "Documentation", href: "/docs" },
-    { name: "Blog", href: "/blog" },
+    { name: "Blog", href: "https://www.cloudquery.io/blog" },
     { name: "Case Studies", href: "/case-studies" },
     {
       name: "Integrations",
