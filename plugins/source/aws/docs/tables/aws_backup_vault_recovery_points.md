@@ -43,3 +43,4 @@ This table depends on [aws_backup_vaults](aws_backup_vaults.md).
 |source_backup_vault_arn|`utf8`|
 |status|`utf8`|
 |status_message|`utf8`|
+|vault_type|`utf8`|
