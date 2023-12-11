@@ -3,6 +3,9 @@
 ## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-pagerduty-v3.0.13...plugins-source-pagerduty-v3.1.0) (2023-12-11)
 
 
+### This Release has the Following Changes to Tables
+- Table `pagerduty_oncalls` was added
+
 ### Features
 
 * Add Source Pagerduty Oncalls resource ([#15556](https://github.com/cloudquery/cloudquery/issues/15556)) ([140218c](https://github.com/cloudquery/cloudquery/commit/140218c9e7a5c81603f933668647003ac7b683db))
