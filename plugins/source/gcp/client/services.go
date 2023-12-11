@@ -36,6 +36,7 @@ var GcpServices = map[string]bool{
 	"apigeeregistry.googleapis.com":                   true,
 	"apikeys.googleapis.com":                          true,
 	"appengine.googleapis.com":                        true,
+	"apphub.googleapis.com":                           true,
 	"area120tables.googleapis.com":                    true,
 	"artifactregistry.googleapis.com":                 true,
 	"assuredworkloads.googleapis.com":                 true,
