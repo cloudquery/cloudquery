@@ -12,6 +12,7 @@
   - [pagerduty_incident_log_entries](pagerduty_incident_log_entries.md)
   - [pagerduty_incident_notes](pagerduty_incident_notes.md)
 - [pagerduty_maintenance_windows](pagerduty_maintenance_windows.md)
+- [pagerduty_oncalls](pagerduty_oncalls.md)
 - [pagerduty_priorities](pagerduty_priorities.md)
 - [pagerduty_rulesets](pagerduty_rulesets.md)
   - [pagerduty_ruleset_rules](pagerduty_ruleset_rules.md)

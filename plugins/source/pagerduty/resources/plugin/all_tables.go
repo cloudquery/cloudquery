@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/pagerduty/resources/services/extensions"
 	"github.com/cloudquery/cloudquery/plugins/source/pagerduty/resources/services/incidents"
 	"github.com/cloudquery/cloudquery/plugins/source/pagerduty/resources/services/maintenance_windows"
+	"github.com/cloudquery/cloudquery/plugins/source/pagerduty/resources/services/oncalls"
 	"github.com/cloudquery/cloudquery/plugins/source/pagerduty/resources/services/priorities"
 	"github.com/cloudquery/cloudquery/plugins/source/pagerduty/resources/services/rulesets"
 	"github.com/cloudquery/cloudquery/plugins/source/pagerduty/resources/services/schedules"
@@ -29,6 +30,7 @@ func getTables() []*schema.Table {
 		extension_schemas.ExtensionSchemas(),
 		extensions.Extensions(),
 		maintenance_windows.MaintenanceWindows(),
+		oncalls.Oncalls(),
 		priorities.Priorities(),
 		rulesets.Rulesets(),
 		schedules.Schedules(),
