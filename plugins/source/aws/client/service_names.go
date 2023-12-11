@@ -126,7 +126,7 @@ const (
 type AWSServiceName int
 
 func (s AWSServiceName) String() string {
-	return AllAWSServiceNames[*s]
+	return AllAWSServiceNames[s]
 }
 
 var AllAWSServiceNames = [...]string{
