@@ -131,7 +131,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 		repos:       spec.Repos,
 	}
 	c.logger.Info().Msg("Discovering repositories")
-	orgRepositories, err := c.discoverRepositories(ctx, spec.DiscoveryConcurrency, spec.Orgs, spec.Repos)
+	orgRepositories, err := c.discoverRepositories(ctx, spec.DiscoveryConcurrency, spec.Orgs, spec.Repos, spec.SkipArchivedRepos)
 	if err != nil {
 		return nil, fmt.Errorf("failed to discover repositories: %w", err)
 	}
@@ -151,7 +151,19 @@ func servicesForClient(c *github.Client) GithubServices {
 	}
 }
 
-func (c *Client) discoverRepositories(ctx context.Context, discoveryConcurrency int, orgs []string, repos []string) (map[string][]*github.Repository, error) {
+func (c *Client) filterArchivedRepos(repos []*github.Repository) []*github.Repository {
+	filtered := []*github.Repository{}
+	for _, repo := range repos {
+		if repo.GetArchived() {
+			c.logger.Info().Msgf("Skipping archived repository %q", repo.GetFullName())
+			continue
+		}
+		filtered = append(filtered, repo)
+	}
+	return filtered
+}
+
+func (c *Client) discoverRepositories(ctx context.Context, discoveryConcurrency int, orgs []string, repos []string, skipArchivedRepos bool) (map[string][]*github.Repository, error) {
 	orgRepos := make(map[string][]*github.Repository)
 	orgReposLock := sync.Mutex{}
 	errorGroup, gtx := errgroup.WithContext(ctx)
@@ -167,6 +179,9 @@ func (c *Client) discoverRepositories(ctx context.Context, discoveryConcurrency 
 				repos, resp, err := services.Repositories.ListByOrg(gtx, org, opts)
 				if err != nil {
 					return err
+				}
+				if skipArchivedRepos {
+					repos = c.filterArchivedRepos(repos)
 				}
 				orgRepositories = append(orgRepositories, repos...)
 
