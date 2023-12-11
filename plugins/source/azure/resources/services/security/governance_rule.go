@@ -23,11 +23,11 @@ func GovernanceRule() *schema.Table {
 
 func fetchGovernanceRule(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
-	svc, err := armsecurity.NewGovernanceRuleClient(cl.SubscriptionId, cl.Creds, cl.Options)
+	svc, err := armsecurity.NewGovernanceRulesClient(cl.Creds, cl.Options)
 	if err != nil {
 		return err
 	}
-	pager := svc.NewListPager(nil)
+	pager := svc.NewListPager("subscriptions/"+cl.SubscriptionId, nil)
 	for pager.More() {
 		p, err := pager.NextPage(ctx)
 		if err != nil {

@@ -17,14 +17,15 @@ func clusterParameterGroupParameters() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Parameter.html`,
 		Resolver:    fetchRdsClusterParameterGroupParameters,
-		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
+		Transform:   transformers.TransformWithStruct(&types.Parameter{}, transformers.WithPrimaryKeys("ParameterName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "cluster_parameter_group_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "cluster_parameter_group_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}

@@ -23,19 +23,7 @@ type WrappedBucket struct {
 
 	// Fields obtained from other SDK calls:
 
-	ReplicationRole       *string
-	ReplicationRules      []types.ReplicationRule
-	Region                string
-	LoggingTargetBucket   *string
-	LoggingTargetPrefix   *string
-	Policy                map[string]any
-	PolicyStatus          *types.PolicyStatus
-	VersioningStatus      *types.BucketVersioningStatus
-	VersioningMfaDelete   *types.MFADeleteStatus
-	BlockPublicAcls       *bool
-	BlockPublicPolicy     *bool
-	IgnorePublicAcls      *bool
-	RestrictPublicBuckets *bool
-	Tags                  map[string]*string
-	OwnershipControls     []string
+	Region       string
+	PolicyStatus *types.PolicyStatus
+	Tags         map[string]*string
 }

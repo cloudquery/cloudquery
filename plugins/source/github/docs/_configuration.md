@@ -35,6 +35,7 @@ spec:
     # Optional parameters
     # concurrency: 1000 0# Optional. Number of concurrent requests to GitHub API. Default is 10000.
     # discovery_concurrency: 1 # Optional. Number of concurrent requests to GitHub API during discovery phase. Default 1.
+    # skip_archived_repos: false # Optional. Skip archived repositories. Default false.
 ```
 
 See [tables](/docs/plugins/sources/github/tables) for a full list of available tables.

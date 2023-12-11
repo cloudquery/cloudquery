@@ -3,6 +3,7 @@ package redshift
 import (
 	"context"
 
+	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
@@ -17,11 +18,17 @@ func DataShares() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_DataShare.html`,
 		Resolver:    fetchDataShares,
-		Transform:   transformers.TransformWithStruct(&types.DataShare{}),
+		Transform:   transformers.TransformWithStruct(&types.DataShare{}, transformers.WithPrimaryKeys("ProducerArn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
+			{
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("DataShareArn"),
+				PrimaryKey: true,
+			},
 		},
 	}
 }

@@ -5,6 +5,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func blob_services() *schema.Table {
@@ -13,7 +14,14 @@ func blob_services() *schema.Table {
 		Resolver:             fetchBlobServices,
 		PostResourceResolver: client.LowercaseIDResolver,
 		Description:          "https://learn.microsoft.com/en-us/rest/api/storagerp/blob-services/list?tabs=HTTP#blobserviceproperties",
-		Transform:            transformers.TransformWithStruct(&armstorage.BlobServiceProperties{}, transformers.WithPrimaryKeys("ID")),
-		Columns:              schema.ColumnList{client.SubscriptionID},
+		Transform:            transformers.TransformWithStruct(&armstorage.BlobServiceProperties{}, transformers.WithPrimaryKeys("ID"), transformers.WithSkipFields("BlobServiceProperties")),
+		Columns: schema.ColumnList{
+			client.SubscriptionID,
+			{
+				Name:     "properties",
+				Type:     types.ExtensionTypes.JSON,
+				Resolver: schema.PathResolver("BlobServiceProperties"),
+			},
+		},
 	}
 }

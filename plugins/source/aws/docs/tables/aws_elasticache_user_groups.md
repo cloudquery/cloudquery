@@ -19,6 +19,7 @@ The primary key for this table is **arn**.
 |minimum_engine_version|`utf8`|
 |pending_changes|`json`|
 |replication_groups|`list<item: utf8, nullable>`|
+|serverless_caches|`list<item: utf8, nullable>`|
 |status|`utf8`|
 |user_group_id|`utf8`|
 |user_ids|`list<item: utf8, nullable>`|

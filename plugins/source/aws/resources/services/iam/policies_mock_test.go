@@ -2,6 +2,7 @@ package iam
 
 import (
 	"testing"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
@@ -15,17 +16,12 @@ import (
 
 func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m := mocks.NewMockIamClient(ctrl)
-	g := iamTypes.ManagedPolicyDetail{}
+	g := iamTypes.Policy{}
 	require.NoError(t, faker.FakeObject(&g))
-	document := `{"stuff": 3}`
-	// generate valid json
-	for i := range g.PolicyVersionList {
-		g.PolicyVersionList[i].Document = &document
-	}
-
-	m.EXPECT().GetAccountAuthorizationDetails(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&iam.GetAccountAuthorizationDetailsOutput{
-			Policies: []iamTypes.ManagedPolicyDetail{g},
+	g.Arn = aws.String("arn:aws:iam::testAccount:policy/IAMReadOnlyAccess")
+	m.EXPECT().ListPolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&iam.ListPoliciesOutput{
+			Policies: []iamTypes.Policy{g},
 		}, nil)
 
 	tag := iamTypes.Tag{}
@@ -36,6 +32,18 @@ func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 				tag,
 			},
 		}, nil)
+
+	createDate := time.Now()
+	m.EXPECT().ListPolicyVersions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&iam.ListPolicyVersionsOutput{
+			Versions: []iamTypes.PolicyVersion{{
+				CreateDate: &createDate,
+				Document:   aws.String(`{}`),
+				VersionId:  aws.String("v1"),
+			}},
+		},
+		nil,
+	)
 
 	m.EXPECT().GenerateServiceLastAccessedDetails(gomock.Any(), gomock.Any(), gomock.Any()).Return(&iam.GenerateServiceLastAccessedDetailsOutput{JobId: aws.String("JobId")}, nil)
 

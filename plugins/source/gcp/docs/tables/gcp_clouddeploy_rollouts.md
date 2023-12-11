@@ -40,3 +40,5 @@ The following tables depend on gcp_clouddeploy_rollouts:
 |phases|`json`|
 |metadata|`json`|
 |controller_rollout|`utf8`|
+|rollback_of_rollout|`utf8`|
+|rolled_back_by_rollouts|`list<item: utf8, nullable>`|

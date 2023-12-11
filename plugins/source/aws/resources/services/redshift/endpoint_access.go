@@ -18,7 +18,7 @@ func endpointAccess() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_EndpointAccess.html`,
 		Resolver:    fetchEndpointAccess,
-		Transform:   transformers.TransformWithStruct(&types.EndpointAccess{}),
+		Transform:   transformers.TransformWithStruct(&types.EndpointAccess{}, transformers.WithPrimaryKeys("ClusterIdentifier", "EndpointName", "Address")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -27,6 +27,7 @@ func endpointAccess() *schema.Table {
 				Type:        arrow.BinaryTypes.String,
 				Resolver:    schema.ParentColumnResolver("arn"),
 				Description: `The Amazon Resource Name (ARN) for the resource.`,
+				PrimaryKey:  true,
 			},
 		},
 	}

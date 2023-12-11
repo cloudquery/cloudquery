@@ -94,10 +94,16 @@ jobs:
       - name: Get Release Notes
         id: release-notes
         uses: actions/github-script@v6
+        env:
+          PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
         with:
           result-encoding: string
           script: |
             const shellescape = require('shell-escape');
+            const { PRERELEASE } = process.env;
+            if (PRERELEASE) {
+              return shellescape(["This is a pre-release version of the plugin and should be used for testing purposes only"])
+            }
             const { data } = await github.rest.repos.getReleaseByTag({
               owner: "cloudquery",
               repo: context.repo.repo,
@@ -121,7 +127,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v4.1.1
+          version: v4.3.1
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}

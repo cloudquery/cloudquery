@@ -13,6 +13,7 @@ The primary key for this table is **id**.
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |subscription_id|`utf8`|
+|identity|`json`|
 |location|`utf8`|
 |properties|`json`|
 |sku|`json`|

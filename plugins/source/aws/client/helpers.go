@@ -55,6 +55,7 @@ const (
 	GlueService                 AWSService = "glue"
 	GuardDutyService            AWSService = "guardduty"
 	IamService                  AWSService = "iam"
+	IdentitystoreService        AWSService = "identitystore"
 	RedshiftService             AWSService = "redshift"
 	Route53Service              AWSService = "route53"
 	S3Service                   AWSService = "s3"

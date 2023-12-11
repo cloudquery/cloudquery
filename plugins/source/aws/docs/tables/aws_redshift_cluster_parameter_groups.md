@@ -22,6 +22,6 @@ The following tables depend on aws_redshift_cluster_parameter_groups:
 |account_id|`utf8`|
 |region|`utf8`|
 |cluster_arn (PK)|`utf8`|
-|parameter_group_name (PK)|`utf8`|
 |cluster_parameter_status_list|`json`|
 |parameter_apply_status|`utf8`|
+|parameter_group_name (PK)|`utf8`|
