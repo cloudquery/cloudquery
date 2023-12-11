@@ -125,10 +125,7 @@ const (
 
 type AWSServiceName int
 
-func (s *AWSServiceName) String() string {
-	if s == nil {
-		return ""
-	}
+func (s AWSServiceName) String() string {
 	return AllAWSServiceNames[*s]
 }
 
