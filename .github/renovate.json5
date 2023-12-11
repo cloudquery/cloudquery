@@ -25,7 +25,11 @@
       enabled: false,
     },
   ],
-  ignorePaths: [],
+  ignorePaths: [
+    "plugins/source/aws/**",
+    "plugins/source/azure/**",
+    "plugins/source/gcp/**",
+  ],
   gomod: {
     fileMatch: ["go\\.mod\\.tpl$"],
   },

@@ -27,4 +27,5 @@ The following tables depend on aws_athena_work_groups:
 |configuration|`json`|
 |creation_time|`timestamp[us, tz=UTC]`|
 |description|`utf8`|
+|identity_center_application_arn|`utf8`|
 |state|`utf8`|
