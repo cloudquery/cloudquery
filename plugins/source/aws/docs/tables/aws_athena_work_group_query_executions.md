@@ -24,6 +24,7 @@ This table depends on [aws_athena_work_groups](aws_athena_work_groups.md).
 |query|`utf8`|
 |query_execution_context|`json`|
 |query_execution_id (PK)|`utf8`|
+|query_results_s3_access_grants_configuration|`json`|
 |result_configuration|`json`|
 |result_reuse_configuration|`json`|
 |statement_type|`utf8`|
