@@ -260,7 +260,11 @@
     },
     {
       "source": "/docs/support",
-      "destination": "/pricing"
+      "destination": "https://www.cloudquery.io/pricing"
+    },
+    {
+      "source": "/pricing",
+      "destination": "https://www.cloudquery.io/pricing"
     },
     {
       "source": "/docs/plugins/destinations/csv/overview",
