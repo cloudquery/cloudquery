@@ -21,11 +21,11 @@ spec:
   name: "test-1"
   path: "cloudquery/test"
   registry: "github"
-  version: "v2.2.13" # latest version of destination test plugin
+  version: "v2.2.14" # latest version of destination test plugin
 ---
 kind: "destination"
 spec:
   name: "test-2"
   path: "cloudquery/test"
   registry: "github"
-  version: "v2.2.13" # latest version of destination test plugin
+  version: "v2.2.14" # latest version of destination test plugin
