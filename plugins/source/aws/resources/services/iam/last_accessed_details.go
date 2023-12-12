@@ -3,6 +3,7 @@ package iam
 import (
 	"context"
 	"fmt"
+	"math/rand"
 	"time"
 
 	"github.com/apache/arrow/go/v14/arrow"
@@ -141,7 +142,8 @@ func fetchLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, arn *
 
 		switch details.JobStatus {
 		case types.JobStatusTypeInProgress:
-			time.Sleep(time.Second)
+			// sleep for a random time between 1,000 to 4,000 millisecond
+			time.Sleep(time.Duration(1000+rand.Intn(3000)) * time.Millisecond)
 			continue
 		case types.JobStatusTypeFailed:
 			return fmt.Errorf("failed to get last accessed details with error: %s - %s", *details.Error.Code, *details.Error.Message)
