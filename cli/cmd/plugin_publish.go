@@ -229,7 +229,7 @@ func uploadTableSchemas(ctx context.Context, c *cloudquery_api.ClientWithRespons
 	return nil
 }
 
-func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginKind, pluginName, version, docsDir string) ([]string, error) {
+func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginKind, pluginName, version, docsDir string, replace bool) ([]string, error) {
 	dirEntries, err := os.ReadDir(docsDir)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read docs directory: %w", err)
@@ -256,16 +256,31 @@ func uploadDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, team
 			Name:    strings.TrimSuffix(dirEntry.Name(), fileExt),
 		})
 	}
-	body := cloudquery_api.CreatePluginVersionDocsJSONRequestBody{
-		Pages: pages,
+
+	if replace {
+		body := cloudquery_api.ReplacePluginVersionDocsJSONRequestBody{
+			Pages: pages,
+		}
+		resp, err := c.ReplacePluginVersionDocsWithResponse(ctx, teamName, cloudquery_api.PluginKind(pluginKind), pluginName, version, body)
+		if err != nil {
+			return nil, fmt.Errorf("failed to upload docs: %w", err)
+		}
+		if resp.HTTPResponse.StatusCode > 299 {
+			return nil, errorFromHTTPResponse(resp.HTTPResponse, resp)
+		}
+	} else {
+		body := cloudquery_api.CreatePluginVersionDocsJSONRequestBody{
+			Pages: pages,
+		}
+		resp, err := c.CreatePluginVersionDocsWithResponse(ctx, teamName, cloudquery_api.PluginKind(pluginKind), pluginName, version, body)
+		if err != nil {
+			return nil, fmt.Errorf("failed to upload docs: %w", err)
+		}
+		if resp.HTTPResponse.StatusCode > 299 {
+			return nil, errorFromHTTPResponse(resp.HTTPResponse, resp)
+		}
 	}
-	resp, err := c.CreatePluginVersionDocsWithResponse(ctx, teamName, cloudquery_api.PluginKind(pluginKind), pluginName, version, body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to upload docs: %w", err)
-	}
-	if resp.HTTPResponse.StatusCode > 299 {
-		return nil, errorFromHTTPResponse(resp.HTTPResponse, resp)
-	}
+
 	return processed, nil
 }
 
