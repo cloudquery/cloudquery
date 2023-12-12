@@ -95,16 +95,3 @@ func runPluginDocsUpload(ctx context.Context, cmd *cobra.Command, args []string)
 	fmt.Println("Success!")
 	return nil
 }
-
-func deleteDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginKind, pluginName, version string, docs []string) error {
-	resp, err := c.DeletePluginVersionDocsWithResponse(ctx, teamName, cloudquery_api.PluginKind(pluginKind), pluginName, version, cloudquery_api.DeletePluginVersionDocsJSONRequestBody{
-		Names: docs,
-	})
-	if err != nil {
-		return fmt.Errorf("failed to delete docs: %w", err)
-	}
-	if resp.HTTPResponse.StatusCode > 299 {
-		return errorFromHTTPResponse(resp.HTTPResponse, resp)
-	}
-	return nil
-}
