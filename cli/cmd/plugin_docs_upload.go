@@ -88,8 +88,7 @@ func runPluginDocsUpload(ctx context.Context, cmd *cobra.Command, args []string)
 		return err
 	}
 
-	_, err := uploadDocs(ctx, c, pluginRef.TeamName, pluginRef.Kind, pluginRef.Name, pluginRef.Version, docsDir, doSync)
-	if err != nil {
+	if err := uploadDocs(ctx, c, pluginRef.TeamName, pluginRef.Kind, pluginRef.Name, pluginRef.Version, docsDir, doSync); err != nil {
 		return fmt.Errorf("failed to upload docs: %w", err)
 	}
 
