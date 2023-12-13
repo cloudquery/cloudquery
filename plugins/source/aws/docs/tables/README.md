@@ -217,6 +217,7 @@
   - [aws_ec2_image_last_launched_times](aws_ec2_image_last_launched_times.md)
   - [aws_ec2_image_launch_permissions](aws_ec2_image_launch_permissions.md)
 - [aws_ec2_instance_connect_endpoints](aws_ec2_instance_connect_endpoints.md)
+- [aws_ec2_instance_credit_specifications](aws_ec2_instance_credit_specifications.md)
 - [aws_ec2_instance_statuses](aws_ec2_instance_statuses.md)
 - [aws_ec2_instance_types](aws_ec2_instance_types.md)
 - [aws_ec2_instances](aws_ec2_instances.md)
