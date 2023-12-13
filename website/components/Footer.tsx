@@ -48,10 +48,6 @@ const navigation = {
   ],
   support: [
     {
-      name: "Support Plans",
-      href: "/pricing",
-    },
-    {
       name: "GitHub",
       href: "https://github.com/cloudquery/cloudquery",
     },
