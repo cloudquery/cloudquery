@@ -1,5 +1,5 @@
-The plugin needs to be authenticated with your Azure account in order to fetch information about your cloud setup.
+The Azure plugin uses [`DefaultAzureCredential`](https://github.com/Azure/azure-sdk-for-go/tree/36d9f8d6bd5e79da7d2f77657d475b44612850f2/sdk/azidentity#defaultazurecredential) to authenticate.
 
-You can either authenticate with `az login` (when running locally), or by using a "service principal" and exporting environment variables (appropriate for automated deployments).
+`DefaultAzureCredential` will attempt to authenticate via different mechanisms in order, stopping when one succeeds. The order is described in detail in the [Azure SDK documentation](https://github.com/Azure/azure-sdk-for-go/tree/36d9f8d6bd5e79da7d2f77657d475b44612850f2/sdk/azidentity#defaultazurecredential).
 
-You can find out more about authentication with Azure at Azure's [documentation](https://github.com/Azure/azure-sdk-for-go) for the Go SDK.
+For getting started quickly with the Azure plugin, we recommend using a service principal and exporting environment variables or using `az login`. The latter is highly discouraged for production use as it requires spawning a new Azure CLI process each time an authentication token is needed and causes memory and performance issues.
