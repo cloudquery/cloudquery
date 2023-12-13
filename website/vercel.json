@@ -267,6 +267,10 @@
       "destination": "https://www.cloudquery.io/pricing"
     },
     {
+      "source": "/solutions/open-source-cspm",
+      "destination": "https://www.cloudquery.io/solutions/for-cloud-teams"
+    },
+    {
       "source": "/docs/plugins/destinations/csv/overview",
       "destination": "https://hub.cloudquery.io/plugins/destination/cloudquery/file"
     },
