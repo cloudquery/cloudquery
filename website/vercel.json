@@ -260,7 +260,15 @@
     },
     {
       "source": "/docs/support",
-      "destination": "/pricing"
+      "destination": "https://www.cloudquery.io/pricing"
+    },
+    {
+      "source": "/pricing",
+      "destination": "https://www.cloudquery.io/pricing"
+    },
+    {
+      "source": "/solutions/open-source-cspm",
+      "destination": "https://www.cloudquery.io/solutions/for-cloud-teams"
     },
     {
       "source": "/docs/plugins/destinations/csv/overview",
