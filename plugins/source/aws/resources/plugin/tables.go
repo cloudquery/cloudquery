@@ -262,6 +262,7 @@ func getTables() schema.Tables {
 		ec2.Hosts(),
 		ec2.Images(),
 		ec2.InstanceConnectEndpoints(),
+		ec2.InstanceCreditSpecifications(),
 		ec2.Instances(),
 		ec2.InstanceStatuses(),
 		ec2.InstanceTypes(),
