@@ -13,7 +13,7 @@ func InstanceCreditSpecifications() *schema.Table {
 	tableName := "aws_ec2_instance_credit_specifications"
 	return &schema.Table{
 		Name:        tableName,
-		Description: `https://docs.aws.amazon.com/sdk-for-go/api/service/ec2/#EC2.DescribeInstanceCreditSpecifications`,
+		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InstanceCreditSpecification.html`,
 		Resolver:    fetchEc2InstanceCreditSpecifications,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.InstanceCreditSpecification{}, transformers.WithPrimaryKeys("InstanceId")),

@@ -2,7 +2,7 @@
 
 This table shows data for Amazon Elastic Compute Cloud (EC2) Instance Credit Specifications.
 
-https://docs.aws.amazon.com/sdk-for-go/api/service/ec2/#EC2.DescribeInstanceCreditSpecifications
+https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InstanceCreditSpecification.html
 
 The composite primary key for this table is (**account_id**, **region**, **instance_id**).
 
