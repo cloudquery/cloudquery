@@ -40,59 +40,9 @@
       "typesetting": "article"
     }
   },
-  "pricing": {
-    "title": "Support",
-    "theme": {
-      "layout": "full"
-    }
-  },
-  "solutions": {
-    "title": "Solutions",
-    "type": "menu",
-    "items": {
-      "blog": {
-        "title": "Blog",
-        "href": "https://www.cloudquery.io/blog"
-      },
-      "case-studies": {
-        "title": "Case Studies",
-        "href": "/case-studies"
-      },
-      "glossary": {
-        "title": "Glossary",
-        "href": "/docs/glossary/overview"
-      },
-      "cspm": {
-        "title": "Cloud Security Posture Management",
-        "href": "/solutions/open-source-cspm"
-      }
-    }
-  },
-  "documentation": {
-    "title": "Docs",
-    "type": "menu",
-    "items": {
-      "overview":  {
-        "title": "Overview",
-        "href": "/docs"
-      },
-      "how-to-guides":  {
-        "title": "How-to Guides",
-        "href": "/how-to-guides"
-      },
-      "cli":  {
-        "title": "CLI Reference",
-        "href": "/docs/reference/cli/cloudquery"
-      },
-      "source-spec-reference":  {
-        "title": "Source Config",
-        "href": "/docs/reference/source-spec"
-      },
-      "destination-spec-reference":  {
-        "title": "Destination Config",
-        "href": "/docs/reference/destination-spec"
-      }
-    }
+  "home": {
+    "title": "Home",
+    "href": "https://www.cloudquery.io"
   },
   "how-to-guides":  {
     "title": "How-to Guides",

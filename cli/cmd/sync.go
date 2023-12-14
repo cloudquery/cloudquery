@@ -152,6 +152,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		opts := []managedplugin.Option{
 			managedplugin.WithLogger(log.Logger),
 			managedplugin.WithAuthToken(authToken.Value),
+			managedplugin.WithTeamName(teamName),
 		}
 		if cqDir != "" {
 			opts = append(opts, managedplugin.WithDirectory(cqDir))

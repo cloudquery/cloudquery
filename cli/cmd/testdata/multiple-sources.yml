@@ -21,4 +21,4 @@ spec:
   name: "test"
   path: "cloudquery/test"
   registry: "github"
-  version: "v2.2.13" # latest version of destination test plugin
+  version: "v2.2.14" # latest version of destination test plugin

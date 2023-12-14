@@ -82,18 +82,19 @@ At the time of writing, the scaffold creates a directory structure that looks li
 
 ```text
 .
+├── Makefile
 ├── README.md
 ├── client
 │   ├── client.go
 │   └── spec.go
-├── cq-source-xkcd
 ├── go.mod
-├── go.sum
 ├── main.go
-├── plugin
-│   └── plugin.go
 └── resources
-    └── table.go
+    ├── plugin
+    │   ├── client.go
+    │   └── plugin.go
+    └── services
+        └── table.go
 ```
 
 ### Creating a Table

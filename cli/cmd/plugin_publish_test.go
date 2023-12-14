@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/cli/internal/hub"
 	"github.com/google/go-cmp/cmp"
 )
 
@@ -44,7 +45,7 @@ func TestPluginPublish(t *testing.T) {
 			wantCalls := map[string]int{
 				"PUT /plugins/cloudquery/source/test/versions/v1.2.3":                      1,
 				"PUT /plugins/cloudquery/source/test/versions/v1.2.3/tables":               1,
-				"PUT /plugins/cloudquery/source/test/versions/v1.2.3/docs":                 1,
+				"POST /plugins/cloudquery/source/test/versions/v1.2.3/docs":                1,
 				"POST /plugins/cloudquery/source/test/versions/v1.2.3/assets/linux_amd64":  1,
 				"POST /plugins/cloudquery/source/test/versions/v1.2.3/assets/darwin_amd64": 1,
 				"PUT /upload-linux":  1,
@@ -108,7 +109,7 @@ func TestPluginPublishFinalize(t *testing.T) {
 	wantCalls := map[string]int{
 		"PUT /plugins/cloudquery/source/test/versions/v1.2.3":                      1,
 		"PUT /plugins/cloudquery/source/test/versions/v1.2.3/tables":               1,
-		"PUT /plugins/cloudquery/source/test/versions/v1.2.3/docs":                 1,
+		"POST /plugins/cloudquery/source/test/versions/v1.2.3/docs":                1,
 		"POST /plugins/cloudquery/source/test/versions/v1.2.3/assets/linux_amd64":  1,
 		"POST /plugins/cloudquery/source/test/versions/v1.2.3/assets/darwin_amd64": 1,
 		"PUT /upload-linux":  1,
@@ -372,5 +373,5 @@ func readFile(name string) string {
 	if err != nil {
 		panic(err)
 	}
-	return normalizeContent(string(b))
+	return hub.NormalizeContent(string(b))
 }
