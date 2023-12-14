@@ -1,0 +1,17 @@
+kind: source
+spec:
+  name: "ipinfo"
+  registry: "grpc"
+  path: "localhost:7777"
+  version: "v1.0.0"
+  tables: ["*"]
+  destinations: [test]
+  spec:
+    ip: <IP_ADDRESS>
+    token: <IPINFO_TOKEN>
+---
+kind: destination
+spec:
+  name: test
+  path: cloudquery/test
+  version: "v2.2.3" # latest version of test plugin
