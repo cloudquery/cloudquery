@@ -8,7 +8,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/cloudquery-api-go v1.6.2
 	github.com/cloudquery/plugin-pb-go v1.14.4
-	github.com/cloudquery/plugin-sdk/v4 v4.21.0
+	github.com/cloudquery/plugin-sdk/v4 v4.21.1
 	github.com/getsentry/sentry-go v0.24.1
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.6.0
