@@ -175,7 +175,6 @@ func getAllAccounts(ctx context.Context, accountsApi services.OrganizationsClien
 		for _, account := range skipAccounts {
 			org.SkipMemberAccounts = append(org.SkipMemberAccounts, *account.Id)
 		}
-
 	}
 	for accountsPaginator.HasMorePages() {
 		output, err := accountsPaginator.NextPage(ctx, func(options *organizations.Options) {
