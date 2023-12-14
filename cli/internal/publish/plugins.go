@@ -12,12 +12,14 @@ import (
 	"path"
 	"path/filepath"
 	"strings"
+	"time"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/internal/hub"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/registry"
 	"github.com/docker/docker/client"
+	"github.com/schollz/progressbar/v3"
 )
 
 type PackageJSONV1 struct {
@@ -43,27 +45,84 @@ type LoadResponse struct {
 	Stream string `json:"stream"`
 }
 
-type PushResponseErrorDetail struct {
+type dockerProgressReader struct {
+	decoder         *json.Decoder
+	bar             *progressbar.ProgressBar
+	layerPushedByID map[string]int64
+	totalBytes      int64
+}
+
+type dockerProgressInfo struct {
+	Status       string `json:"status"`
+	Progress     string `json:"progress"`
+	ProgressData struct {
+		Current int64 `json:"current"`
+		Total   int64 `json:"total"`
+	} `json:"progressDetail"`
+	LayerID     string `json:"id"`
 	ErrorDetail struct {
 		Message string `json:"message"`
 	} `json:"errorDetail"`
 }
 
-func handlePushResponse(respString string) error {
-	lines := strings.Split(respString, "\n")
-	for _, line := range lines {
-		if line == "" {
-			continue
+func pushProgressBar(maxBytes int64, description ...string) *progressbar.ProgressBar {
+	desc := ""
+	if len(description) > 0 {
+		desc = description[0]
+	}
+	return progressbar.NewOptions64(
+		maxBytes,
+		progressbar.OptionSetDescription(desc),
+		progressbar.OptionSetWriter(os.Stdout),
+		progressbar.OptionShowBytes(true),
+		progressbar.OptionSetWidth(10),
+		progressbar.OptionThrottle(65*time.Millisecond),
+		progressbar.OptionShowCount(),
+		progressbar.OptionOnCompletion(func() {
+			fmt.Fprint(os.Stdout, "\n")
+		}),
+		progressbar.OptionSpinnerType(14),
+		progressbar.OptionFullWidth(),
+		progressbar.OptionSetRenderBlankState(true),
+	)
+}
+
+func (pr *dockerProgressReader) Read(_ []byte) (n int, err error) {
+	var progress dockerProgressInfo
+	err = pr.decoder.Decode(&progress)
+	if err != nil {
+		if err == io.EOF {
+			return 0, io.EOF
 		}
-		pushResponseErrorDetail := PushResponseErrorDetail{}
-		if err := json.Unmarshal([]byte(line), &pushResponseErrorDetail); err != nil {
-			return fmt.Errorf("failed to parse docker push response: %v", err)
+		return 0, fmt.Errorf("failed to decode JSON: %v", err)
+	}
+	if progress.ErrorDetail.Message != "" {
+		return 0, fmt.Errorf("failed to load image: %s", progress.ErrorDetail.Message)
+	}
+	if progress.Status == "Pushing" {
+		if pr.bar == nil {
+			pr.bar = pushProgressBar(1, "Pushing")
+			_ = pr.bar.RenderBlank()
 		}
-		if pushResponseErrorDetail.ErrorDetail.Message != "" {
-			return fmt.Errorf("failed to push Docker image: %s", pushResponseErrorDetail.ErrorDetail.Message)
+		if _, seen := pr.layerPushedByID[progress.LayerID]; !seen {
+			pr.layerPushedByID[progress.LayerID] = 0
+			pr.totalBytes += progress.ProgressData.Total
+			pr.bar.ChangeMax64(pr.totalBytes)
+		}
+		pr.layerPushedByID[progress.LayerID] = progress.ProgressData.Current
+		total := int64(0)
+		for _, v := range pr.layerPushedByID {
+			total += v
+		}
+		if total < pr.totalBytes {
+			// progressbar stops responding if it reaches 100%, so as a workaround we don't update
+			// the bar if we're at 100%, because there may be more layers of the image
+			// coming that we don't know about.
+			_ = pr.bar.Set64(total)
 		}
 	}
-	return nil
+
+	return 0, nil
 }
 
 func ReadPackageJSON(distDir string) (PackageJSONV1, error) {
@@ -296,9 +355,19 @@ func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON
 		if err != nil {
 			return fmt.Errorf("failed to push Docker image: %v", err)
 		}
-		respString := getResponseAsString(out)
-		if err := handlePushResponse(respString); err != nil {
+		defer out.Close()
+
+		// Create a progress reader to display the download progress
+		pr := &dockerProgressReader{
+			decoder:         json.NewDecoder(out),
+			layerPushedByID: map[string]int64{},
+		}
+		if _, err := io.Copy(io.Discard, pr); err != nil {
 			return err
+		}
+		if pr.bar != nil {
+			_ = pr.bar.Finish()
+			pr.bar.Close()
 		}
 	}
 
