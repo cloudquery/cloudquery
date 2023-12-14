@@ -1,17 +1,23 @@
 package publish
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/internal/hub"
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/api/types/registry"
+	"github.com/docker/docker/client"
 )
 
 type PackageJSONV1 struct {
@@ -26,10 +32,38 @@ type PackageJSONV1 struct {
 }
 
 type TargetBuild struct {
-	OS       string `json:"os"`
-	Arch     string `json:"arch"`
-	Path     string `json:"path"`
-	Checksum string `json:"checksum"`
+	OS             string `json:"os"`
+	Arch           string `json:"arch"`
+	Path           string `json:"path"`
+	Checksum       string `json:"checksum"`
+	DockerImageTag string `json:"docker_image_tag"`
+}
+
+type LoadResponse struct {
+	Stream string `json:"stream"`
+}
+
+type PushResponseErrorDetail struct {
+	ErrorDetail struct {
+		Message string `json:"message"`
+	} `json:"errorDetail"`
+}
+
+func handlePushResponse(respString string) error {
+	lines := strings.Split(respString, "\n")
+	for _, line := range lines {
+		if line == "" {
+			continue
+		}
+		pushResponseErrorDetail := PushResponseErrorDetail{}
+		if err := json.Unmarshal([]byte(line), &pushResponseErrorDetail); err != nil {
+			return fmt.Errorf("failed to parse docker push response: %v", err)
+		}
+		if pushResponseErrorDetail.ErrorDetail.Message != "" {
+			return fmt.Errorf("failed to push Docker image: %s", pushResponseErrorDetail.ErrorDetail.Message)
+		}
+	}
+	return nil
 }
 
 func ReadPackageJSON(distDir string) (PackageJSONV1, error) {
@@ -158,9 +192,9 @@ func UploadTableSchemas(ctx context.Context, c *cloudquery_api.ClientWithRespons
 	return nil
 }
 
-func UploadPluginBinary(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName, goos, goarch, localPath string, pkgJSON PackageJSONV1) error {
+func UploadPluginBinary(ctx context.Context, c *cloudquery_api.ClientWithResponses, goos, goarch, localPath string, pkgJSON PackageJSONV1) error {
 	target := goos + "_" + goarch
-	resp, err := c.UploadPluginAssetWithResponse(ctx, teamName, pkgJSON.Kind, pluginName, pkgJSON.Version, target)
+	resp, err := c.UploadPluginAssetWithResponse(ctx, pkgJSON.Team, pkgJSON.Kind, pkgJSON.Team, pkgJSON.Version, target)
 	if err != nil {
 		return fmt.Errorf("failed to upload binary: %w", err)
 	}
@@ -182,5 +216,91 @@ func UploadPluginBinary(ctx context.Context, c *cloudquery_api.ClientWithRespons
 	if err != nil {
 		return fmt.Errorf("failed to upload file: %w", err)
 	}
+	return nil
+}
+
+func PublishNativeBinaries(ctx context.Context, c *cloudquery_api.ClientWithResponses, distDir string, pkgJSON PackageJSONV1) error {
+	fmt.Println("Uploading binaries CloudQuery Hub...")
+	for _, t := range pkgJSON.SupportedTargets {
+		fmt.Printf("- Uploading %s_%s...\n", t.OS, t.Arch)
+		err := UploadPluginBinary(ctx, c, t.OS, t.Arch, path.Join(distDir, t.Path), pkgJSON)
+		if err != nil {
+			return fmt.Errorf("failed to upload binary: %w", err)
+		}
+	}
+	return nil
+}
+
+func getResponseAsString(body io.ReadCloser) string {
+	defer body.Close()
+	buf := new(bytes.Buffer)
+	buf.ReadFrom(body)
+	return buf.String()
+}
+
+func loadDockerImage(ctx context.Context, cli *client.Client, imagePath string) error {
+	f, err := os.Open(imagePath)
+	if err != nil {
+		return fmt.Errorf("failed to open image file: %v", err)
+	}
+	defer f.Close()
+	resp, err := cli.ImageLoad(ctx, f, true)
+	if err != nil {
+		return fmt.Errorf("failed to load image: %v", err)
+	}
+	if resp.Body == nil {
+		return fmt.Errorf("failed to load image: response body is nil")
+	}
+
+	respString := getResponseAsString(resp.Body)
+	loadResponse := LoadResponse{}
+	if err := json.Unmarshal([]byte(respString), &loadResponse); err != nil {
+		return fmt.Errorf("failed to parse docker load response: %v", err)
+	}
+	if loadResponse.Stream != "" {
+		fmt.Print(loadResponse.Stream)
+	}
+
+	return nil
+}
+
+func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON PackageJSONV1) error {
+	dockerClient, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		return fmt.Errorf("failed to create Docker client: %v", err)
+	}
+	fmt.Println("Pushing images to CloudQuery Docker Registry...")
+	for _, t := range pkgJSON.SupportedTargets {
+		fmt.Printf("Loading %s...\n", t.Path)
+		imagePath := path.Join(distDir, t.Path)
+		err := loadDockerImage(ctx, dockerClient, imagePath)
+		if err != nil {
+			return err
+		}
+	}
+	authConfig := registry.AuthConfig{
+		Username: "cli",
+		Password: token,
+	}
+	encodedAuth, err := registry.EncodeAuthConfig(authConfig)
+	if err != nil {
+		return fmt.Errorf("failed to encode Docker auth config: %v", err)
+	}
+	opts := types.ImagePushOptions{
+		RegistryAuth: encodedAuth,
+	}
+	for _, t := range pkgJSON.SupportedTargets {
+		fmt.Printf("Pushing %s...\n", t.DockerImageTag)
+		opts.Platform = fmt.Sprintf("%s/%s", t.OS, t.Arch)
+		out, err := dockerClient.ImagePush(ctx, t.DockerImageTag, opts)
+		if err != nil {
+			return fmt.Errorf("failed to push Docker image: %v", err)
+		}
+		respString := getResponseAsString(out)
+		if err := handlePushResponse(respString); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }
