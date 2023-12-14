@@ -1,4 +1,4 @@
-package cmd
+package hub
 
 import (
 	"errors"
@@ -9,10 +9,6 @@ import (
 	"reflect"
 	"strings"
 )
-
-type SchemaVersion struct {
-	SchemaVersion int `json:"schema_version"`
-}
 
 type HubPluginRef struct {
 	TeamName string
@@ -25,7 +21,7 @@ func (h HubPluginRef) String() string {
 	return fmt.Sprintf("%s/%s/%s@%s", h.TeamName, h.Kind, h.Name, h.Version)
 }
 
-func parseHubPluginRef(ref string) (*HubPluginRef, error) {
+func ParseHubPluginRef(ref string) (*HubPluginRef, error) {
 	versionParts := strings.Split(ref, "@")
 	if len(versionParts) != 2 {
 		return nil, errors.New("invalid plugin version: Must be in format <team_name>/<kind>/<plugin_name>@<version>")
@@ -51,7 +47,7 @@ func parseHubPluginRef(ref string) (*HubPluginRef, error) {
 	}, nil
 }
 
-func errorFromHTTPResponse(httpResp *http.Response, resp any) error {
+func ErrorFromHTTPResponse(httpResp *http.Response, resp any) error {
 	fields := make(map[string]any)
 	el := reflect.ValueOf(resp).Elem()
 	for i := 0; i < el.NumField(); i++ {
@@ -70,7 +66,7 @@ func errorFromHTTPResponse(httpResp *http.Response, resp any) error {
 	return fmt.Errorf("error code: %v", httpResp.StatusCode)
 }
 
-func uploadFile(uploadURL, localPath string) error {
+func UploadFile(uploadURL, localPath string) error {
 	file, err := os.Open(localPath)
 	if err != nil {
 		return fmt.Errorf("failed to open file: %w", err)
@@ -98,7 +94,7 @@ func uploadFile(uploadURL, localPath string) error {
 	return nil
 }
 
-func normalizeContent(s string) string {
+func NormalizeContent(s string) string {
 	s = strings.TrimSpace(s)
 	s = strings.ReplaceAll(s, "\r\n", "\n")
 	s = strings.ReplaceAll(s, "\r", "\n")

@@ -12,6 +12,7 @@ import (
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery/cli/internal/hub"
 	"github.com/spf13/cobra"
 )
 
@@ -60,7 +61,7 @@ func runPluginDocsDownload(ctx context.Context, cmd *cobra.Command, args []strin
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
 
-	pluginRef, err := parseHubPluginRef(args[0])
+	pluginRef, err := hub.ParseHubPluginRef(args[0])
 	if err != nil {
 		return err
 	}
@@ -98,7 +99,7 @@ func runPluginDocsDownload(ctx context.Context, cmd *cobra.Command, args []strin
 		return fmt.Errorf("failed to read docs: %w", err)
 	}
 	if resp.StatusCode() != http.StatusOK {
-		return errorFromHTTPResponse(resp.HTTPResponse, resp)
+		return hub.ErrorFromHTTPResponse(resp.HTTPResponse, resp)
 	}
 	if resp.JSON200 == nil {
 		return fmt.Errorf("failed to read docs: nil response")
