@@ -7,6 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func queueServices() *schema.Table {
@@ -15,8 +16,15 @@ func queueServices() *schema.Table {
 		Resolver:             fetchQueueServices,
 		PostResourceResolver: client.LowercaseIDResolver,
 		Description:          "https://learn.microsoft.com/en-us/rest/api/storagerp/queue-services/list?tabs=HTTP#queueserviceproperties",
-		Transform:            transformers.TransformWithStruct(&armstorage.QueueServiceProperties{}, transformers.WithPrimaryKeys("ID")),
-		Columns:              schema.ColumnList{client.SubscriptionID},
+		Transform:            transformers.TransformWithStruct(&armstorage.QueueServiceProperties{}, transformers.WithPrimaryKeys("ID"), transformers.WithSkipFields("QueueServiceProperties")),
+		Columns: schema.ColumnList{
+			client.SubscriptionID,
+			{
+				Name:     "properties",
+				Type:     types.ExtensionTypes.JSON,
+				Resolver: schema.PathResolver("QueueServiceProperties"),
+			},
+		},
 	}
 }
 

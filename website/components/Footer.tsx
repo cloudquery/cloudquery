@@ -38,7 +38,7 @@ function FooterHeader({ children }: { children: ReactNode }) {
 const navigation = {
   general: [
     { name: "Documentation", href: "/docs" },
-    { name: "Blog", href: "/blog" },
+    { name: "Blog", href: "https://www.cloudquery.io/blog" },
     { name: "Case Studies", href: "/case-studies" },
     {
       name: "Integrations",
@@ -47,10 +47,6 @@ const navigation = {
     { name: "FAQ", href: "/docs/faq" },
   ],
   support: [
-    {
-      name: "Support Plans",
-      href: "/pricing",
-    },
     {
       name: "GitHub",
       href: "https://github.com/cloudquery/cloudquery",
@@ -177,20 +173,6 @@ export function Footer() {
                 &copy; {new Date().getFullYear()} CloudQuery, Inc. All rights
                 reserved.
               </p>
-            </div>
-          </div>
-          <div>
-            <div className="md:text-right mt-8">
-              <span>Latest from our blog</span>
-              <h2 className="block font-semibold nx-text-2xl dark:nx-text-white">
-                {
-                  getPagesUnderRoute("/blog")
-                    .sort(sortByDate)
-                    ?.map((page: Page) => {
-                      return <a href={page.route}>{page.frontMatter?.title}</a>;
-                    })[0]
-                }
-              </h2>
             </div>
           </div>
         </div>

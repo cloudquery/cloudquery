@@ -19,7 +19,13 @@ func createExternalSecuritySolutions(router *mux.Router) error {
 		return err
 	}
 
+	var aadSolution armsecurity.AADExternalSecuritySolution
+	if err := faker.FakeObject(&aadSolution); err != nil {
+		return err
+	}
+
 	emptyStr := ""
+	item.Value = []armsecurity.ExternalSecuritySolutionClassification{&aadSolution}
 	item.NextLink = &emptyStr
 
 	router.HandleFunc("/subscriptions/{subscriptionId}/providers/Microsoft.Security/externalSecuritySolutions", func(w http.ResponseWriter, r *http.Request) {

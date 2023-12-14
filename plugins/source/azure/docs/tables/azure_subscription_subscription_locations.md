@@ -19,6 +19,7 @@ This table depends on [azure_subscription_subscriptions](azure_subscription_subs
 |subscription_id|`utf8`|
 |latitude|`utf8`|
 |longitude|`utf8`|
+|availability_zone_mappings|`json`|
 |metadata|`json`|
 |display_name|`utf8`|
 |id (PK)|`utf8`|

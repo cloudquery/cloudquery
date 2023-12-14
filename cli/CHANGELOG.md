@@ -5,6 +5,49 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.3.4](https://github.com/cloudquery/cloudquery/compare/cli-v4.3.3...cli-v4.3.4) (2023-12-13)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.21.0 ([#15651](https://github.com/cloudquery/cloudquery/issues/15651)) ([6e96125](https://github.com/cloudquery/cloudquery/commit/6e96125a9d9c75616483952edb7a9e402818b264))
+* Set team name in destination download ([#15689](https://github.com/cloudquery/cloudquery/issues/15689)) ([3e2b5a4](https://github.com/cloudquery/cloudquery/commit/3e2b5a4db5157dc58ed3507c4b44f95c7fde5be4))
+
+## [4.3.3](https://github.com/cloudquery/cloudquery/compare/cli-v4.3.2...cli-v4.3.3) (2023-12-13)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.6.2 ([#15640](https://github.com/cloudquery/cloudquery/issues/15640)) ([ad2d4b4](https://github.com/cloudquery/cloudquery/commit/ad2d4b47bbd3551b546ae21a32685eba0762b1e6))
+* Remove existing plugin docs on re-publish ([#15639](https://github.com/cloudquery/cloudquery/issues/15639)) ([7197ba9](https://github.com/cloudquery/cloudquery/commit/7197ba9ea894f08845d16930b5bbfb4e42ceb5da))
+
+## [4.3.2](https://github.com/cloudquery/cloudquery/compare/cli-v4.3.1...cli-v4.3.2) (2023-12-12)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.14.4 ([#15576](https://github.com/cloudquery/cloudquery/issues/15576)) ([b6ad0b7](https://github.com/cloudquery/cloudquery/commit/b6ad0b72497f0d7389132d933ffe667a488017cb))
+
+## [4.3.1](https://github.com/cloudquery/cloudquery/compare/cli-v4.3.0...cli-v4.3.1) (2023-12-07)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.20.0 ([#15574](https://github.com/cloudquery/cloudquery/issues/15574)) ([317dca4](https://github.com/cloudquery/cloudquery/commit/317dca4182478d6f3789082ae563d9e8bd417d20))
+
+## [4.3.0](https://github.com/cloudquery/cloudquery/compare/cli-v4.2.0...cli-v4.3.0) (2023-12-07)
+
+
+### Features
+
+* Include `is_paid` field when publishing tables to the Hub ([#15569](https://github.com/cloudquery/cloudquery/issues/15569)) ([970a711](https://github.com/cloudquery/cloudquery/commit/970a71177bed0023a12c1294ef077a3f9fa08388))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.14.3 ([#15570](https://github.com/cloudquery/cloudquery/issues/15570)) ([cdc0462](https://github.com/cloudquery/cloudquery/commit/cdc04626fbfb29a42a1a27247533612f78d87cb2))
+* Login with no browser ([#15561](https://github.com/cloudquery/cloudquery/issues/15561)) ([945a900](https://github.com/cloudquery/cloudquery/commit/945a90025dc11d8269170e02892873fcf90b4b3d))
+
 ## [4.2.0](https://github.com/cloudquery/cloudquery/compare/cli-v4.1.2...cli-v4.2.0) (2023-12-05)
 
 

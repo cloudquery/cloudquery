@@ -5385,6 +5385,7 @@
             "ap-southeast-3": {},
             "ap-southeast-4": {},
             "ca-central-1": {},
+            "ca-central-1-fips": {},
             "eu-central-1": {},
             "eu-central-2": {},
             "eu-north-1": {},
@@ -5398,9 +5399,13 @@
             "me-south-1": {},
             "sa-east-1": {},
             "us-east-1": {},
+            "us-east-1-fips": {},
             "us-east-2": {},
+            "us-east-2-fips": {},
             "us-west-1": {},
-            "us-west-2": {}
+            "us-west-1-fips": {},
+            "us-west-2": {},
+            "us-west-2-fips": {}
           }
         },
         "securityhub": {
@@ -8958,7 +8963,9 @@
         "secretsmanager": {
           "regions": {
             "us-gov-east-1": {},
-            "us-gov-west-1": {}
+            "us-gov-east-1-fips": {},
+            "us-gov-west-1": {},
+            "us-gov-west-1-fips": {}
           }
         },
         "securityhub": {

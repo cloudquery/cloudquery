@@ -14,9 +14,6 @@ The CloudQuery Azure source plugin extracts information from many of the support
 
 :authentication
 
-For best performance we recommend creating a service principal and using environment variables to authenticate.
-For testing purposes only you can use [`az login`](#authentication-with-az-login) to authenticate.
-
 ### Authentication with Environment Variables
 
 You will need to create a service principal for the plugin to use:

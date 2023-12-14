@@ -1,4 +1,4 @@
-Authentication is done via access keys. See [Obtain an AccessKey pair](https://www.alibabacloud.com/help/en/basics-for-beginners/latest/obtain-an-accesskey-pair) for more information.
+Authentication is done via access keys. See [Obtain an AccessKey pair](https://www.alibabacloud.com/help/en/beginner-guide/latest/obtain-an-accesskey-pair) for more information.
 
 It is highly recommended that you use environment variable expansion to store your access key pair. For example, you can set the following environment variables:
 

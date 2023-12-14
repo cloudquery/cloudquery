@@ -33,7 +33,11 @@ func fetchExternalSecuritySolutions(ctx context.Context, meta schema.ClientMeta,
 		if err != nil {
 			return err
 		}
-		res <- p.Value
+		results := make([]armsecurity.ExternalSecuritySolution, len(p.Value))
+		for i, r := range p.Value {
+			results[i] = *r.GetExternalSecuritySolution()
+		}
+		res <- results
 	}
 	return nil
 }
