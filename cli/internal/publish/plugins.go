@@ -94,10 +94,10 @@ func (pr *dockerProgressReader) Read(_ []byte) (n int, err error) {
 		if err == io.EOF {
 			return 0, io.EOF
 		}
-		return 0, fmt.Errorf("failed to decode JSON: %v", err)
+		return 0, fmt.Errorf("failed to parse docker push response: %v", err)
 	}
 	if progress.ErrorDetail.Message != "" {
-		return 0, fmt.Errorf("failed to load image: %s", progress.ErrorDetail.Message)
+		return 0, fmt.Errorf("failed to push image: %s", progress.ErrorDetail.Message)
 	}
 	if progress.Status == "Pushing" {
 		if pr.bar == nil {
