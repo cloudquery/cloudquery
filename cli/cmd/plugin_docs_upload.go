@@ -10,6 +10,8 @@ import (
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery/cli/internal/hub"
+	"github.com/cloudquery/cloudquery/cli/internal/publish"
 	"github.com/spf13/cobra"
 )
 
@@ -59,7 +61,7 @@ func runPluginDocsUpload(ctx context.Context, cmd *cobra.Command, args []string)
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
 
-	pluginRef, err := parseHubPluginRef(args[0])
+	pluginRef, err := hub.ParseHubPluginRef(args[0])
 	if err != nil {
 		return err
 	}
@@ -88,7 +90,7 @@ func runPluginDocsUpload(ctx context.Context, cmd *cobra.Command, args []string)
 		return err
 	}
 
-	if err := uploadDocs(ctx, c, pluginRef.TeamName, pluginRef.Kind, pluginRef.Name, pluginRef.Version, docsDir, doSync); err != nil {
+	if err := publish.UploadPluginDocs(ctx, c, pluginRef.TeamName, pluginRef.Kind, pluginRef.Name, pluginRef.Version, docsDir, doSync); err != nil {
 		return fmt.Errorf("failed to upload docs: %w", err)
 	}
 

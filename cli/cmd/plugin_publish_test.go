@@ -10,6 +10,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/cli/internal/hub"
 	"github.com/google/go-cmp/cmp"
 )
 
@@ -372,5 +373,5 @@ func readFile(name string) string {
 	if err != nil {
 		panic(err)
 	}
-	return normalizeContent(string(b))
+	return hub.NormalizeContent(string(b))
 }
