@@ -9,6 +9,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"os/exec"
 	"path"
 	"path/filepath"
 	"strings"
@@ -348,10 +349,21 @@ func pushImage(ctx context.Context, dockerClient *client.Client, t TargetBuild, 
 	return nil
 }
 
+func dockerLogout(ctx context.Context, repository string) {
+	dockerLogoutArgs := []string{"logout", repository}
+	cmd := exec.CommandContext(ctx, "docker", dockerLogoutArgs...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	_ = cmd.Run()
+}
+
 func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON PackageJSONV1) error {
 	dockerClient, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
 		return fmt.Errorf("failed to create Docker client: %v", err)
+	}
+	if len(pkgJSON.SupportedTargets) == 0 {
+		return fmt.Errorf("no supported targets found")
 	}
 	fmt.Println("Pushing images to CloudQuery Docker Registry...")
 	for _, t := range pkgJSON.SupportedTargets {
@@ -362,9 +374,10 @@ func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON
 			return err
 		}
 	}
+	username, password := "cli", token
 	authConfig := registry.AuthConfig{
-		Username: "cli",
-		Password: token,
+		Username: username,
+		Password: password,
 	}
 	encodedAuth, err := registry.EncodeAuthConfig(authConfig)
 	if err != nil {
@@ -377,6 +390,50 @@ func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON
 		if err := pushImage(ctx, dockerClient, t, opts); err != nil {
 			return err
 		}
+	}
+
+	// Merge all platforms into a single manifest
+	repository := strings.Split(pkgJSON.SupportedTargets[0].DockerImageTag, ":")[0]
+	version := pkgJSON.Version
+	manifestTarget := repository + ":" + version
+	platformImages := make([]string, len(pkgJSON.SupportedTargets))
+	for i, t := range pkgJSON.SupportedTargets {
+		platformImages[i] = t.DockerImageTag
+	}
+
+	// We need to invoke the CLI directly because the Docker SDK doesn't support manifest create/push
+	dockerLoginArgs := []string{"login", repository, "--username", username, "--password-stdin"}
+	cmd := exec.CommandContext(ctx, "docker", dockerLoginArgs...)
+	stdin, err := cmd.StdinPipe()
+	if err != nil {
+		return fmt.Errorf("failed to login to Docker registry: %v", err)
+	}
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Start(); err != nil {
+		return fmt.Errorf("failed to login to Docker registry: %v", err)
+	}
+	io.WriteString(stdin, password)
+	stdin.Close()
+	if err := cmd.Wait(); err != nil {
+		return fmt.Errorf("failed to login to Docker registry: %v", err)
+	}
+	defer dockerLogout(ctx, repository)
+
+	manifestCreateArgs := append([]string{"manifest", "create", "--amend", manifestTarget}, platformImages...)
+	cmd = exec.CommandContext(ctx, "docker", manifestCreateArgs...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("failed to create Docker manifest: %v", err)
+	}
+
+	manifestPushArgs := []string{"manifest", "push", manifestTarget}
+	cmd = exec.CommandContext(ctx, "docker", manifestPushArgs...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("failed to push Docker manifest: %v", err)
 	}
 
 	return nil
