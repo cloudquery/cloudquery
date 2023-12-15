@@ -3,12 +3,13 @@ package client
 import (
 	"context"
 	"os"
+	"slices"
 	"sync"
 	"testing"
 	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
-	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
@@ -58,15 +59,7 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 		t.Fatal(err)
 	}
 
-	for _, table := range tables.FlattenTables() {
-		cols, _ := testOpts.SkipEmptyCheckColumns[table.Name]
-		if len(cols) > 0 {
-			continue // TODO ignore these columns but check the rest
-		}
-		plugin.ValidateNoEmptyColumns(t, schema.Tables{table}, messages)
-	}
-
-	// plugin.ValidateNoEmptyColumns(t, tables, messages)
+	validateNoEmptyColumnsExcept(t, tables, messages, testOpts.SkipEmptyCheckColumns)
 }
 
 func AwsCreateMockClient(t *testing.T, ctrl *gomock.Controller, builder func(*testing.T, *gomock.Controller) Services, testOpts TestOptions) Client {
@@ -140,4 +133,21 @@ func ignoreNonSkippedColumns(tableName, column string) bool {
 	tableColumnNamesToIgnore := map[string]bool{}
 	_, ok := tableColumnNamesToIgnore[tableName+"."+column]
 	return ok
+}
+
+func validateNoEmptyColumnsExcept(t *testing.T, tables schema.Tables, messages message.SyncMessages, except map[string][]string) {
+	// same as SDK's plugin.ValidateNoEmptyColumns, with exceptions for some columns
+	for _, table := range tables.FlattenTables() {
+		records := messages.GetInserts().GetRecordsForTable(table)
+		emptyColumns := schema.FindEmptyColumns(table, records)
+
+		exceptions, _ := except[table.Name]
+		emptyColumns = slices.DeleteFunc(emptyColumns, func(a string) bool {
+			return slices.Contains(exceptions, a)
+		})
+
+		if len(emptyColumns) > 0 {
+			t.Fatalf("found empty column(s): %v in %s", emptyColumns, table.Name)
+		}
+	}
 }
