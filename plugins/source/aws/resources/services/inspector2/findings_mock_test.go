@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildInspectorV2Findings(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildFindings(t *testing.T, ctrl *gomock.Controller) client.Services {
 	inspectorClient := mocks.NewMockInspector2Client(ctrl)
 
 	finding := types.Finding{}
@@ -29,5 +29,5 @@ func buildInspectorV2Findings(t *testing.T, ctrl *gomock.Controller) client.Serv
 }
 
 func TestInspectorV2Findings(t *testing.T) {
-	client.AwsMockTestHelper(t, Findings(), buildInspectorV2Findings, client.TestOptions{})
+	client.AwsMockTestHelper(t, Findings(), buildFindings, client.TestOptions{})
 }
