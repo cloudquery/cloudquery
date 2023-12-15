@@ -82,6 +82,7 @@ func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) er
 			return errors.New("invalid plugin name. Must be in format <team_name>/<plugin_name>")
 		}
 		teamName, pluginName = parts[0], parts[1]
+		pkgJSON.Team, pkgJSON.Name = teamName, pluginName
 	}
 
 	name := fmt.Sprintf("%s/%s@%s", teamName, pluginName, pkgJSON.Version)

@@ -253,7 +253,7 @@ func UploadTableSchemas(ctx context.Context, c *cloudquery_api.ClientWithRespons
 
 func UploadPluginBinary(ctx context.Context, c *cloudquery_api.ClientWithResponses, goos, goarch, localPath string, pkgJSON PackageJSONV1) error {
 	target := goos + "_" + goarch
-	resp, err := c.UploadPluginAssetWithResponse(ctx, pkgJSON.Team, pkgJSON.Kind, pkgJSON.Team, pkgJSON.Version, target)
+	resp, err := c.UploadPluginAssetWithResponse(ctx, pkgJSON.Team, pkgJSON.Kind, pkgJSON.Name, pkgJSON.Version, target)
 	if err != nil {
 		return fmt.Errorf("failed to upload binary: %w", err)
 	}
