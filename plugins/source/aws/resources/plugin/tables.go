@@ -387,7 +387,7 @@ func getTables() schema.Tables {
 		identitystore.Groups(),
 		identitystore.Users(),
 		inspector.Findings(),
-		inspector2.Coverages(),
+		inspector2.CoveredResources(),
 		inspector2.Findings(),
 		iot.BillingGroups(),
 		iot.CaCertificates(),
