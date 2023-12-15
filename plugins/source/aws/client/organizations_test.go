@@ -209,6 +209,16 @@ func Test_loadAccounts(t *testing.T) {
 			},
 			want: []string{"id-top-level-account", "id-parent1-account", "id-child1-account", "id-parent2-account", "id-child2-account"},
 		},
+		{
+			name: "skip_ou_parent1",
+			spec: &spec.Spec{
+				Organization: &spec.Organization{
+					SkipOrganizationalUnits: []string{"ou-parent1"},
+					AdminAccount:            &spec.Account{},
+				},
+			},
+			want: []string{"id-top-level-account", "id-parent2-account", "id-child2-account"},
+		},
 	}
 	api := setupTestAccounts(t)
 	for _, tc := range tests {
