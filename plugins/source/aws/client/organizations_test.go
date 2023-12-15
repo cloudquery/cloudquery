@@ -210,7 +210,7 @@ func Test_loadAccounts(t *testing.T) {
 			want: []string{"id-top-level-account", "id-parent1-account", "id-child1-account", "id-parent2-account", "id-child2-account"},
 		},
 		{
-			name: "ou_root_and_parent1",
+			name: "skip_ou_parent1",
 			spec: &spec.Spec{
 				Organization: &spec.Organization{
 					SkipOrganizationalUnits: []string{"ou-parent1"},
