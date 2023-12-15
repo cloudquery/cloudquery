@@ -163,6 +163,19 @@ func getOUAccounts(ctx context.Context, accountsApi services.OrganizationsClient
 func getAllAccounts(ctx context.Context, accountsApi services.OrganizationsClient, org *spec.Organization, region string) ([]orgTypes.Account, error) {
 	var rawAccounts []orgTypes.Account
 	accountsPaginator := organizations.NewListAccountsPaginator(accountsApi, &organizations.ListAccountsInput{})
+	if len(org.SkipOrganizationalUnits) > 0 {
+		newOrg := &spec.Organization{
+			OrganizationUnits:  org.SkipOrganizationalUnits,
+			SkipMemberAccounts: org.SkipMemberAccounts,
+		}
+		skipAccounts, err := getOUAccounts(ctx, accountsApi, newOrg, region)
+		if err != nil {
+			return nil, err
+		}
+		for _, account := range skipAccounts {
+			org.SkipMemberAccounts = append(org.SkipMemberAccounts, *account.Id)
+		}
+	}
 	for accountsPaginator.HasMorePages() {
 		output, err := accountsPaginator.NextPage(ctx, func(options *organizations.Options) {
 			options.Region = region
