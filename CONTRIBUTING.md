@@ -15,6 +15,10 @@ This project and everyone participating in it is governed by the [CloudQuery Cod
 
 ## What To Know Before Getting Started
 
+### Open-core vs Open-source
+
+The CloudQuery framework, SDK and CLI are open source while plugins available under `plugins` are **open core**, hence not all contributions to plugins directory will be accepted if they are part of the commercial plugin offering - please file an issue before opening a PR. 
+
 ### CloudQuery Architecture
 
 CloudQuery has a pluggable architecture and is using [gRPC](https://grpc.io/) to communicate between source plugins, CLI and destination plugins. To develop a new plugin for CloudQuery, you don’t need to understand the inner workings of gRPC as those are abstracted away via the [plugin-sdk](#cloudquery-plugin-sdk-repository).
