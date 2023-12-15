@@ -141,9 +141,8 @@ func validateNoEmptyColumnsExcept(t *testing.T, tables schema.Tables, messages m
 		records := messages.GetInserts().GetRecordsForTable(table)
 		emptyColumns := schema.FindEmptyColumns(table, records)
 
-		exceptions, _ := except[table.Name]
 		emptyColumns = slices.DeleteFunc(emptyColumns, func(a string) bool {
-			return slices.Contains(exceptions, a)
+			return slices.Contains(except[table.Name], a)
 		})
 
 		if len(emptyColumns) > 0 {
