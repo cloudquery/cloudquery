@@ -413,6 +413,7 @@
 - [aws_identitystore_groups](aws_identitystore_groups.md)
   - [aws_identitystore_group_memberships](aws_identitystore_group_memberships.md)
 - [aws_identitystore_users](aws_identitystore_users.md)
+- [aws_inspector2_coverages](aws_inspector2_coverages.md)
 - [aws_inspector2_findings](aws_inspector2_findings.md)
 - [aws_inspector_findings](aws_inspector_findings.md)
 - [aws_iot_billing_groups](aws_iot_billing_groups.md)
