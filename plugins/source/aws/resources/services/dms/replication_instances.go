@@ -47,7 +47,7 @@ func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _
 		}
 
 		if len(page.ReplicationInstances) == 0 {
-			return nil
+			continue
 		}
 
 		tags, err := getTags(ctx, svc, page.ReplicationInstances, "ReplicationInstanceArn", func(options *databasemigrationservice.Options) {
