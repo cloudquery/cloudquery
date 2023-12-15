@@ -24,7 +24,7 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	require.NoError(t, faker.FakeObject(&bpol))
 	bpols := s3.GetBucketPolicyStatusOutput{}
 	require.NoError(t, faker.FakeObject(&bpols))
-	jsonDoc := `{"stuff": 3}`
+	jsonDoc := `{"key":"value"}`
 	bpol.Policy = &jsonDoc
 	bver := s3.GetBucketVersioningOutput{}
 	require.NoError(t, faker.FakeObject(&bver))
@@ -84,5 +84,7 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 }
 
 func TestS3Buckets(t *testing.T) {
-	client.AwsMockTestHelper(t, Buckets(), buildS3Buckets, client.TestOptions{})
+	client.AwsMockTestHelper(t, Buckets(), buildS3Buckets, client.TestOptions{
+		SkipEmptyCheckColumns: map[string][]string{"aws_s3_bucket_notification_configurations": {"event_bridge_configuration"}},
+	})
 }

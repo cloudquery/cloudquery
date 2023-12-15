@@ -40,14 +40,19 @@ func buildRateBasedRulesMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 		nil,
 	)
 
+	arn := aws.String(fmt.Sprintf("arn:aws:waf-regional:us-east-1:testAccount:ratebasedrule/%v", *rule.RuleId))
+
+	tif := types.TagInfoForResource{}
+	require.NoError(t, faker.FakeObject(&tif))
+	tif.ResourceARN = arn
 	m.EXPECT().ListTagsForResource(
 		gomock.Any(),
 		&wafregional.ListTagsForResourceInput{
-			ResourceARN: aws.String(fmt.Sprintf("arn:aws:waf-regional:us-east-1:testAccount:ratebasedrule/%v", *rule.RuleId)),
+			ResourceARN: arn,
 		},
 		gomock.Any(),
 	).Return(
-		&wafregional.ListTagsForResourceOutput{},
+		&wafregional.ListTagsForResourceOutput{TagInfoForResource: &tif},
 		nil,
 	)
 

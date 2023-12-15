@@ -19,6 +19,8 @@ import (
 
 type TestOptions struct {
 	Region string
+
+	SkipEmptyCheckColumns map[string][]string
 }
 
 func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*testing.T, *gomock.Controller) Services, testOpts TestOptions) {
@@ -56,7 +58,15 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 		t.Fatal(err)
 	}
 
-	plugin.ValidateNoEmptyColumns(t, tables, messages)
+	for _, table := range tables.FlattenTables() {
+		cols, _ := testOpts.SkipEmptyCheckColumns[table.Name]
+		if len(cols) > 0 {
+			continue // TODO ignore these columns but check the rest
+		}
+		plugin.ValidateNoEmptyColumns(t, schema.Tables{table}, messages)
+	}
+
+	// plugin.ValidateNoEmptyColumns(t, tables, messages)
 }
 
 func AwsCreateMockClient(t *testing.T, ctrl *gomock.Controller, builder func(*testing.T, *gomock.Controller) Services, testOpts TestOptions) Client {

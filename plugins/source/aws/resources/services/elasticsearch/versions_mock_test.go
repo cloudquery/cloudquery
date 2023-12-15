@@ -26,7 +26,7 @@ func buildElasticSearchVersions(t *testing.T, ctrl *gomock.Controller) client.Se
 	)
 
 	var instanceTypes []types.ESPartitionInstanceType
-	require.NoError(t, faker.FakeObject(&versions))
+	require.NoError(t, faker.FakeObject(&instanceTypes))
 
 	m.EXPECT().ListElasticsearchInstanceTypes(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&elasticsearchservice.ListElasticsearchInstanceTypesOutput{

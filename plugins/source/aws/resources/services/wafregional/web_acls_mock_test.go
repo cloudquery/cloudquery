@@ -38,6 +38,10 @@ func buildWebACLsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
+	tif := types.TagInfoForResource{}
+	require.NoError(t, faker.FakeObject(&tif))
+	tif.ResourceARN = acl.WebACLArn
+
 	m.EXPECT().ListTagsForResource(
 		gomock.Any(),
 		&wafregional.ListTagsForResourceInput{
@@ -45,7 +49,7 @@ func buildWebACLsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		},
 		gomock.Any(),
 	).Return(
-		&wafregional.ListTagsForResourceOutput{},
+		&wafregional.ListTagsForResourceOutput{TagInfoForResource: &tif},
 		nil,
 	)
 
