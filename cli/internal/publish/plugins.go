@@ -323,6 +323,31 @@ func loadDockerImage(ctx context.Context, cli *client.Client, imagePath string) 
 	return nil
 }
 
+func pushImage(ctx context.Context, dockerClient *client.Client, t TargetBuild, opts types.ImagePushOptions) error {
+	fmt.Printf("Pushing %s\n", t.DockerImageTag)
+	opts.Platform = fmt.Sprintf("%s/%s", t.OS, t.Arch)
+	out, err := dockerClient.ImagePush(ctx, t.DockerImageTag, opts)
+	if err != nil {
+		return fmt.Errorf("failed to push Docker image: %v", err)
+	}
+	defer out.Close()
+
+	// Create a progress reader to display the download progress
+	pr := &dockerProgressReader{
+		decoder:         json.NewDecoder(out),
+		layerPushedByID: map[string]int64{},
+	}
+	if _, err := io.Copy(io.Discard, pr); err != nil {
+		return err
+	}
+	if pr.bar != nil {
+		_ = pr.bar.Finish()
+		pr.bar.Close()
+	}
+
+	return nil
+}
+
 func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON PackageJSONV1) error {
 	dockerClient, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
@@ -349,25 +374,8 @@ func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON
 		RegistryAuth: encodedAuth,
 	}
 	for _, t := range pkgJSON.SupportedTargets {
-		fmt.Printf("Pushing %s...\n", t.DockerImageTag)
-		opts.Platform = fmt.Sprintf("%s/%s", t.OS, t.Arch)
-		out, err := dockerClient.ImagePush(ctx, t.DockerImageTag, opts)
-		if err != nil {
-			return fmt.Errorf("failed to push Docker image: %v", err)
-		}
-		defer out.Close()
-
-		// Create a progress reader to display the download progress
-		pr := &dockerProgressReader{
-			decoder:         json.NewDecoder(out),
-			layerPushedByID: map[string]int64{},
-		}
-		if _, err := io.Copy(io.Discard, pr); err != nil {
+		if err := pushImage(ctx, dockerClient, t, opts); err != nil {
 			return err
-		}
-		if pr.bar != nil {
-			_ = pr.bar.Finish()
-			pr.bar.Close()
 		}
 	}
 
