@@ -86,8 +86,8 @@ require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.6.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.14.3 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.6.2 // indirect
+	github.com/cloudquery/plugin-pb-go v1.14.4 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/cncf/udpa/go v0.0.0-20220112060539-c52dc94e7fbe // indirect
 	github.com/cncf/xds/go v0.0.0-20231128003011-0fa0005c9caa // indirect
@@ -192,3 +192,7 @@ replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14
 
 // github.com/cloudquery/jsonschema @ cqmain
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20231018073309-6c617a23d42f
+
+// replace github.com/cloudquery/plugin-sdk/v4 => ../../../../plugin-sdk
+
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/disq/plugin-sdk/v4 v4.0.0-20231215135032-60a877eb18a6
