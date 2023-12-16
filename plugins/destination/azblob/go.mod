@@ -4,7 +4,7 @@ go 1.21.1
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.4.0
-	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.2.0
+	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.2.1
 	github.com/apache/arrow/go/v14 v14.0.0-20231031200323-c49e24273160
 	github.com/cloudquery/filetypes/v4 v4.2.1
 	github.com/cloudquery/plugin-sdk/v4 v4.21.1
@@ -15,7 +15,7 @@ require (
 )
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.9.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.9.1 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.5.1 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.1.1 // indirect
 	github.com/BurntSushi/toml v1.3.2 // indirect
