@@ -4,7 +4,7 @@ This table shows data for Inspector2 Findings.
 
 https://docs.aws.amazon.com/inspector/v2/APIReference/API_Finding.html
 
-The 'request_account_id' and 'request_region' columns are added to show from where the request was made.
+The `request_account_id` and `request_region` columns are added to show from where the request was made.
 
 The composite primary key for this table is (**request_account_id**, **request_region**, **arn**).
 
