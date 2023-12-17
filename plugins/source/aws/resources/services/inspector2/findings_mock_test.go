@@ -18,16 +18,12 @@ func buildFindings(t *testing.T, ctrl *gomock.Controller) client.Services {
 	finding := types.Finding{}
 	require.NoError(t, faker.FakeObject(&finding))
 
-	inspectorClient.EXPECT().ListFindings(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&inspector2.ListFindingsOutput{Findings: []types.Finding{finding}},
-		nil,
-	)
+	inspectorClient.EXPECT().ListFindings(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(&inspector2.ListFindingsOutput{Findings: []types.Finding{finding}}, nil)
 
-	return client.Services{
-		Inspector2: inspectorClient,
-	}
+	return client.Services{Inspector2: inspectorClient}
 }
 
-func TestInspectorV2Findings(t *testing.T) {
+func TestFindings(t *testing.T) {
 	client.AwsMockTestHelper(t, Findings(), buildFindings, client.TestOptions{})
 }
