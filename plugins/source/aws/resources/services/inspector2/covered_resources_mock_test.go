@@ -12,18 +12,18 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildFindings(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCoveredResources(t *testing.T, ctrl *gomock.Controller) client.Services {
 	inspectorClient := mocks.NewMockInspector2Client(ctrl)
 
-	finding := types.Finding{}
-	require.NoError(t, faker.FakeObject(&finding))
+	coveredResource := types.CoveredResource{}
+	require.NoError(t, faker.FakeObject(&coveredResource))
 
-	inspectorClient.EXPECT().ListFindings(gomock.Any(), gomock.Any(), gomock.Any()).
-		Return(&inspector2.ListFindingsOutput{Findings: []types.Finding{finding}}, nil)
+	inspectorClient.EXPECT().ListCoverage(gomock.Any(), gomock.Any(), gomock.Any()).
+		Return(&inspector2.ListCoverageOutput{CoveredResources: []types.CoveredResource{coveredResource}}, nil)
 
 	return client.Services{Inspector2: inspectorClient}
 }
 
-func TestFindings(t *testing.T) {
-	client.AwsMockTestHelper(t, Findings(), buildFindings, client.TestOptions{})
+func TestCoveredResources(t *testing.T) {
+	client.AwsMockTestHelper(t, CoveredResources(), buildCoveredResources, client.TestOptions{})
 }

@@ -132,3 +132,5 @@ dist
 # Editor settings
 .idea
 .vscode
+
+dist-dir
