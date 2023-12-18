@@ -14,7 +14,11 @@ PLUGIN_VERSION = "0.0.1"
 
 class SquarePlugin(plugin.Plugin):
     def __init__(self) -> None:
-        super().__init__(PLUGIN_NAME, PLUGIN_VERSION, opts=plugin.plugin.Options(team="cloudquery", kind="source"))
+        super().__init__(
+            PLUGIN_NAME,
+            PLUGIN_VERSION,
+            opts=plugin.plugin.Options(team="cloudquery", kind="source"),
+        )
         self._logger = structlog.get_logger()
 
     def set_logger(self, logger) -> None:

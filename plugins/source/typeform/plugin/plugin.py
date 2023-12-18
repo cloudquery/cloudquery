@@ -16,7 +16,11 @@ PLUGIN_VERSION = "1.1.2"  # {x-release-please-version}
 
 class TypeformPlugin(plugin.Plugin):
     def __init__(self) -> None:
-        super().__init__(PLUGIN_NAME, PLUGIN_VERSION, opts=plugin.plugin.Options(team="cloudquery", kind="source"))
+        super().__init__(
+            PLUGIN_NAME,
+            PLUGIN_VERSION,
+            opts=plugin.plugin.Options(team="cloudquery", kind="source"),
+        )
         self._spec_json = None
         self._spec = None
         self._scheduler = None
