@@ -21,6 +21,7 @@ func buildIncidentsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogSer
 	if err != nil {
 		t.Fatal(err)
 	}
+	i.AdditionalProperties = map[string]any{"key": "value"}
 	m.EXPECT().ListIncidentsWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(i))
 
 	var ar datadogV2.IncidentAttachmentsResponse
@@ -28,6 +29,7 @@ func buildIncidentsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogSer
 	if err != nil {
 		t.Fatal(err)
 	}
+	ar.Data[0].AdditionalProperties = map[string]any{"key": "value"}
 	m.EXPECT().ListIncidentAttachments(gomock.Any(), gomock.Any()).Return(ar, nil, nil)
 
 	return services

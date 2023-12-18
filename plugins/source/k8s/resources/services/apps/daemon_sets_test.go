@@ -5,6 +5,7 @@ import (
 
 	client "github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	mocks "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks"
+	"k8s.io/apimachinery/pkg/util/intstr"
 
 	resourcemock "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks/apps/v1"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
@@ -23,7 +24,9 @@ func createDaemonSets(t *testing.T, ctrl *gomock.Controller) kubernetes.Interfac
 	}
 
 	r.Spec.Template = corev1.PodTemplateSpec{}
-	r.Spec.UpdateStrategy = resource.DaemonSetUpdateStrategy{}
+	i := intstr.FromInt(5000)
+	r.Spec.UpdateStrategy.RollingUpdate.MaxSurge = &i
+	r.Spec.UpdateStrategy.RollingUpdate.MaxUnavailable = &i
 
 	resourceClient := resourcemock.NewMockDaemonSetInterface(ctrl)
 	resourceClient.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(

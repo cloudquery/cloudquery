@@ -5,15 +5,14 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/mocks"
-
 	resourcemock "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks/apps/v1"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	resource "k8s.io/api/apps/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
-
 	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/intstr"
+	"k8s.io/client-go/kubernetes"
 )
 
 func createStatefulSets(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
@@ -23,8 +22,9 @@ func createStatefulSets(t *testing.T, ctrl *gomock.Controller) kubernetes.Interf
 	}
 
 	r.Spec.Template = corev1.PodTemplateSpec{}
-	r.Spec.UpdateStrategy = resource.StatefulSetUpdateStrategy{}
-	r.Spec.VolumeClaimTemplates = []corev1.PersistentVolumeClaim{}
+	i := intstr.FromInt(5000)
+	r.Spec.UpdateStrategy.RollingUpdate.MaxUnavailable = &i
+	r.Spec.VolumeClaimTemplates[0].ObjectMeta.ManagedFields = nil
 
 	resourceClient := resourcemock.NewMockStatefulSetInterface(ctrl)
 	resourceClient.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(
