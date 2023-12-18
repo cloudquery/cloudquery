@@ -1,6 +1,7 @@
 package teams
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/PagerDuty/go-pagerduty"
@@ -23,6 +24,15 @@ func buildMockHttpClient() *client.MockHttpClient {
 	response.More = false
 
 	mockHttpClient.AddMockResponse("/teams", response)
+
+	membersResponse := pagerduty.ListTeamMembersResponse{}
+	if err := faker.FakeObject(&membersResponse); err != nil {
+		panic(err)
+	}
+	membersResponse.More = false
+	mockHttpClient.AddMockResponse(
+		fmt.Sprintf("/teams/%s/members", response.Teams[0].ID),
+		membersResponse)
 
 	return &mockHttpClient
 }

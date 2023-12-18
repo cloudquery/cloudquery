@@ -43,6 +43,14 @@ func buildMockHttpClient() *client.MockHttpClient {
 			response.Services[0].ID),
 		serviceruleResponse)
 
+	servicedependenciesResponse := pagerduty.ListServiceDependencies{}
+	if err := faker.FakeObject(&servicedependenciesResponse); err != nil {
+		panic(err)
+	}
+	mockHttpClient.AddMockResponse(
+		"/service_dependencies/technical_services/"+response.Services[0].ID,
+		servicedependenciesResponse)
+
 	return &mockHttpClient
 }
 
