@@ -33,6 +33,8 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 	require.NoError(t, faker.FakeObject(&f))
 	f.Configuration.LastModified = &lastModified
 	err := smithy.GenericAPIError{Code: "AccessDenied", Message: "This is an error message"}
+
+	// There are 2 calls to GetFunction, one succeeds and the other fails
 	gomock.InOrder(
 		m.EXPECT().GetFunction(gomock.Any(), gomock.Any(), gomock.Any()).
 			Return(&f, nil),
