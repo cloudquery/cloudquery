@@ -22,6 +22,7 @@ func buildSyntheticsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogSe
 	if err != nil {
 		t.Fatal(err)
 	}
+	s.AdditionalProperties = map[string]any{"key": "value"}
 	m.EXPECT().ListTestsWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(s))
 
 	return services

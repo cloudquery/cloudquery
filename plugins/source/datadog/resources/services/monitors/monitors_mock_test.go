@@ -28,6 +28,9 @@ func buildMonitorsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogServ
 	monitor.Deleted.Set(&now)
 	priority := int64(123)
 	monitor.Priority.Set(&priority)
+	monitor.AdditionalProperties = map[string]any{"key": "value"}
+	arr := []string{"test"}
+	monitor.RestrictedRoles.Set(&arr)
 
 	m.EXPECT().ListMonitorsWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(monitor))
 
@@ -39,14 +42,19 @@ func buildMonitorsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogServ
 	i64val := int64(123)
 	i32val := int32(123)
 	textVal := "test string"
-	dt[0].ActiveChild.Set(datadogV1.NewDowntimeChild())
+	c := datadogV1.NewDowntimeChild()
+	c.AdditionalProperties = map[string]any{"key": "value"}
+	dt[0].ActiveChild.Set(c)
 	dt[0].Canceled.Set(&i64val)
 	dt[0].End.Set(&i64val)
 	dt[0].MonitorId.Set(&i64val)
 	dt[0].ParentId.Set(&i64val)
-	dt[0].Recurrence.Set(datadogV1.NewDowntimeRecurrence())
+	r := datadogV1.NewDowntimeRecurrence()
+	r.AdditionalProperties = map[string]any{"key": "value"}
+	dt[0].Recurrence.Set(r)
 	dt[0].UpdaterId.Set(&i32val)
 	dt[0].Message.Set(&textVal)
+	dt[0].AdditionalProperties = map[string]any{"key": "value"}
 
 	d.EXPECT().ListMonitorDowntimes(gomock.Any(), gomock.Any()).Return(dt, nil, nil)
 
