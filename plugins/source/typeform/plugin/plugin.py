@@ -16,7 +16,7 @@ PLUGIN_VERSION = "1.1.2"  # {x-release-please-version}
 
 class TypeformPlugin(plugin.Plugin):
     def __init__(self) -> None:
-        super().__init__(PLUGIN_NAME, PLUGIN_VERSION)
+        super().__init__(PLUGIN_NAME, PLUGIN_VERSION, opts=plugin.plugin.Options(team="cloudquery", kind="source"))
         self._spec_json = None
         self._spec = None
         self._scheduler = None
@@ -26,10 +26,10 @@ class TypeformPlugin(plugin.Plugin):
     def set_logger(self, logger) -> None:
         self._logger = logger
 
-    def init(self, spec_bytes, no_connection: bool = False):
+    def init(self, spec, no_connection: bool = False):
         if no_connection:
             return
-        self._spec_json = json.loads(spec_bytes)
+        self._spec_json = json.loads(spec)
         self._spec = Spec(**self._spec_json)
         self._spec.validate()
         self._scheduler = Scheduler(
