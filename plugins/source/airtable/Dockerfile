@@ -1,4 +1,4 @@
-FROM node:18-slim
+FROM node:20-slim as builder
 
 WORKDIR /app
 
@@ -9,6 +9,16 @@ RUN npm ci
 COPY . .
 
 RUN npm run build
+
+FROM node:20-slim AS final
+
+WORKDIR /app
+
+COPY --from=builder ./app/dist ./dist
+
+COPY package*.json ./
+
+RUN npm ci --omit=dev
 
 EXPOSE 7777
 
