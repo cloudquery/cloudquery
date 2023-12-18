@@ -5,6 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/mocks"
+	"k8s.io/apimachinery/pkg/util/intstr"
 
 	resourcemock "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks/networking/v1"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
@@ -20,8 +21,9 @@ func createNetworkPolicies(t *testing.T, ctrl *gomock.Controller) kubernetes.Int
 		t.Fatal(err)
 	}
 
-	r.Spec.Ingress = []resource.NetworkPolicyIngressRule{}
-	r.Spec.Egress = []resource.NetworkPolicyEgressRule{}
+	p := intstr.FromInt(80)
+	r.Spec.Ingress[0].Ports[0].Port = &p
+	r.Spec.Egress[0].Ports[0].Port = &p
 
 	resourceClient := resourcemock.NewMockNetworkPolicyInterface(ctrl)
 	resourceClient.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(
