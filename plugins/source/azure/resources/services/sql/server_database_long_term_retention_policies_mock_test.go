@@ -10,7 +10,7 @@ import (
 )
 
 func createLongTermRetentionPolicies(router *mux.Router) error {
-	var item armsql.LongTermRetentionBackupsClientListByDatabaseResponse
+	var item armsql.LongTermRetentionPoliciesClientListByDatabaseResponse
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}

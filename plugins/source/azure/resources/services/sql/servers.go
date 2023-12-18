@@ -20,7 +20,7 @@ func Servers() *schema.Table {
 		Columns:              schema.ColumnList{client.SubscriptionID},
 		Relations: []*schema.Table{
 			serverVulnerabilityAssessments(),
-			server_blob_auditing_policies(),
+			serverBlobAuditingPolicies(),
 			serverAdmins(),
 			serverEncryptionProtectors(),
 			serverDatabases(),
