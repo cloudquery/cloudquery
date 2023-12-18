@@ -147,6 +147,8 @@ github.com/cloudquery/plugin-pb-go v1.14.4 h1:0dnSVOD8AsFU+EOzVXeGWH1hv37q7bG5an
 github.com/cloudquery/plugin-pb-go v1.14.4/go.mod h1:ymf1KHWY6EPy1v6zeuWdg5ohBdG6H8yVZzGr20Y2pjk=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0/go.mod h1:pAX6ojIW99b/Vg4CkhnsGkRIzNaVEceYMR+Bdit73ug=
+github.com/cloudquery/plugin-sdk/v4 v4.21.2 h1:eN+AEc/uyZLAN0AUWd/QyLhrSLIOYPKuSdcRoN7cows=
+github.com/cloudquery/plugin-sdk/v4 v4.21.2/go.mod h1:BAT3ryf3i+GgaEB4kh+5g3lALfVwPm1mYnRcgGZJDu4=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/cncf/udpa/go v0.0.0-20220112060539-c52dc94e7fbe h1:QQ3GSy+MqSHxm/d8nCtnAiZdYFd45cYZPs8vOOIYKfk=
 github.com/cncf/udpa/go v0.0.0-20220112060539-c52dc94e7fbe/go.mod h1:6pvJx4me5XPnfI9Z40ddWsdw2W/uZgQLFXToKeRcDiI=
@@ -160,8 +162,6 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/deepmap/oapi-codegen v1.15.0 h1:SQqViaeb4k2vMul8gx12oDOIadEtoRqTdLkxjzqtQ90=
 github.com/deepmap/oapi-codegen v1.15.0/go.mod h1:a6KoHV7lMRwsPoEg2C6NDHiXYV3EQfiFocOlJ8dgJQE=
-github.com/disq/plugin-sdk/v4 v4.0.0-20231215135032-60a877eb18a6 h1:i8g0mgGDFlUW5Ib3MKDJlWBYG3G/kg3P2op/N7vvXCM=
-github.com/disq/plugin-sdk/v4 v4.0.0-20231215135032-60a877eb18a6/go.mod h1:BAT3ryf3i+GgaEB4kh+5g3lALfVwPm1mYnRcgGZJDu4=
 github.com/envoyproxy/go-control-plane v0.9.0/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/go-control-plane v0.9.4/go.mod h1:6rpuAdCZL397s3pYoYcLgu1mIlRU8Am5FuJP05cCM98=

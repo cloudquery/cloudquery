@@ -46,7 +46,7 @@ require (
 	cloud.google.com/go/workflows v1.12.3
 	github.com/apache/arrow/go/v14 v14.0.0-20231031200323-c49e24273160
 	github.com/cloudquery/codegen v0.3.12
-	github.com/cloudquery/plugin-sdk/v4 v4.20.0
+	github.com/cloudquery/plugin-sdk/v4 v4.21.2
 	github.com/golang/mock v1.6.0
 	github.com/googleapis/gax-go/v2 v2.12.0
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.1
@@ -192,7 +192,3 @@ replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14
 
 // github.com/cloudquery/jsonschema @ cqmain
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20231018073309-6c617a23d42f
-
-// replace github.com/cloudquery/plugin-sdk/v4 => ../../../../plugin-sdk
-
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/disq/plugin-sdk/v4 v4.0.0-20231215135032-60a877eb18a6
