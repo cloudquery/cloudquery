@@ -18,7 +18,7 @@ func Findings() *schema.Table {
 		Name: tableName,
 		Description: `https://docs.aws.amazon.com/inspector/v2/APIReference/API_Finding.html
 
-The 'request_account_id' and 'request_region' columns are added to show from where the request was made.`,
+The ` + "`request_account_id` and `request_region` columns are added to show from where the request was made.",
 		Resolver:  fetchFindings,
 		Transform: transformers.TransformWithStruct(&types.Finding{}),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, client.AWSServiceInspector2.String()),
