@@ -8,7 +8,7 @@ require (
 	github.com/rs/zerolog v1.29.1
 )
 
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231023001216-f46436fa3561
+replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 933f0bfaeb5d
 
 require (
 	github.com/BurntSushi/toml v1.3.2 // indirect
