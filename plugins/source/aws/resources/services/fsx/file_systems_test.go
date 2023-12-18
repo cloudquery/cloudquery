@@ -17,7 +17,7 @@ func buildFilesystemsMock(t *testing.T, ctrl *gomock.Controller) client.Services
 	m := mocks.NewMockFsxClient(ctrl)
 
 	var f types.FileSystem
-	require.NoError(t, faker.FakeObject(&f, faker.WithMaxDepth(5)))
+	require.NoError(t, faker.FakeObject(&f))
 
 	f.FileSystemType = types.FileSystemTypeLustre
 	f.Lifecycle = types.FileSystemLifecycleAvailable

@@ -1,6 +1,8 @@
 package emr
 
 import (
+	"testing"
+
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -8,7 +10,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func buildReleaseLabels(t *testing.T, ctrl *gomock.Controller) client.Services {
@@ -21,9 +22,15 @@ func buildReleaseLabels(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
+	out := emr.DescribeReleaseLabelOutput{}
+	require.NoError(t, faker.FakeObject(&out))
+	out.NextToken = nil
+
 	for i := range releaseLabels {
+		copyOut := out
+		copyOut.ReleaseLabel = &releaseLabels[i]
 		mock.EXPECT().DescribeReleaseLabel(gomock.Any(), &emr.DescribeReleaseLabelInput{ReleaseLabel: &releaseLabels[i]}, gomock.Any()).Return(
-			&emr.DescribeReleaseLabelOutput{ReleaseLabel: &releaseLabels[i]},
+			&copyOut,
 			nil,
 		)
 

@@ -45,7 +45,7 @@ func buildEcrRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 	repoResponse := ecr.GetRepositoryPolicyOutput{}
 	require.NoError(t, faker.FakeObject(&repoResponse))
 
-	policyText := "{}"
+	policyText := `{"key":"value"}`
 	repoResponse.PolicyText = &policyText
 	m.EXPECT().GetRepositoryPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&repoResponse, nil)
 
