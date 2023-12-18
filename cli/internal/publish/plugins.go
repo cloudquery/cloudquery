@@ -17,6 +17,7 @@ import (
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/internal/hub"
+	"github.com/distribution/reference"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/registry"
 	"github.com/docker/docker/client"
@@ -393,9 +394,14 @@ func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON
 	}
 
 	// Merge all platforms into a single manifest
-	repository := strings.Split(pkgJSON.SupportedTargets[0].DockerImageTag, ":")[0]
+	ref, err := reference.ParseNamed(pkgJSON.SupportedTargets[0].DockerImageTag)
+	if err != nil {
+		return fmt.Errorf("failed to parse Docker image tag: %v", err)
+	}
 	version := pkgJSON.Version
-	manifestTarget := repository + ":" + version
+	repository := reference.Domain(ref)
+	refPath := reference.Path(ref)
+	manifestTarget := repository + "/" + refPath + ":" + version
 	platformImages := make([]string, len(pkgJSON.SupportedTargets))
 	for i, t := range pkgJSON.SupportedTargets {
 		platformImages[i] = t.DockerImageTag
