@@ -22,6 +22,8 @@ func buildGlobalVariablesMock(t *testing.T, ctrl *gomock.Controller) client.Data
 	if err != nil {
 		t.Fatal(err)
 	}
+	gv.AdditionalProperties = map[string]any{"key": "value"}
+	gv.Variables[0].AdditionalProperties = map[string]any{"key": "value"}
 	m.EXPECT().ListGlobalVariables(gomock.Any()).Return(gv, nil, nil)
 
 	return services

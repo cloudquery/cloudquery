@@ -33,6 +33,7 @@ func buildMockHttpClient() *client.MockHttpClient {
 	if err := client.FakeStringTimestamps(&incidentalertResponse.Alerts[0]); err != nil {
 		panic(err)
 	}
+	incidentalertResponse.Alerts[0].Body = map[string]any{"key": "value"}
 	mockHttpClient.AddMockResponse(
 		fmt.Sprintf("/incidents/%s/alerts",
 			response.Incidents[0].ID),

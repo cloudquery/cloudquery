@@ -8,7 +8,7 @@ import { newPlugin, newUnimplementedDestination } from '@cloudquery/plugin-sdk-j
 import { sync } from '@cloudquery/plugin-sdk-javascript/scheduler';
 import type { Table } from '@cloudquery/plugin-sdk-javascript/schema/table';
 import { filterTables } from '@cloudquery/plugin-sdk-javascript/schema/table';
-import { readPackageUp } from 'read-pkg-up';
+import { readPackageUp } from 'read-package-up';
 
 import { parseSpec } from './spec.js';
 import type { Spec } from './spec.js';
@@ -62,12 +62,12 @@ export const newAirtablePlugin = () => {
   };
 
   const newClient: NewClientFunction = async (logger, spec, { noConnection }) => {
-    pluginClient.spec = parseSpec(spec);
     pluginClient.client = { id: () => 'airtable' };
     if (noConnection) {
       pluginClient.allTables = [];
       return pluginClient;
     }
+    pluginClient.spec = parseSpec(spec);
     pluginClient.allTables = await getTables(
       logger,
       pluginClient.spec.apiKey,
@@ -78,6 +78,6 @@ export const newAirtablePlugin = () => {
     return pluginClient;
   };
 
-  pluginClient.plugin = newPlugin('airtable', version, newClient);
+  pluginClient.plugin = newPlugin('airtable', version, newClient, { kind: 'source', team: 'cloudquery' });
   return pluginClient.plugin;
 };

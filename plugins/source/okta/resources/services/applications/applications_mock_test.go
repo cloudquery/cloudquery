@@ -16,6 +16,9 @@ func handleApplications(router *mux.Router) error {
 	if err := faker.FakeObject(&a); err != nil {
 		return err
 	}
+	a.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
+	a.Profile = map[string]map[string]any{"top-key": {"key": "value"}}
+
 	as := okta.ApplicationSignOnMode("AUTO_LOGIN")
 	a.SignOnMode = &as
 
@@ -45,6 +48,10 @@ func handleApplications(router *mux.Router) error {
 	if err := faker.FakeObject(&ag); err != nil {
 		return err
 	}
+	ag.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
+	ag.Profile = map[string]map[string]any{"top-key": {"key": "value"}}
+	ag.AdditionalProperties = map[string]any{"key": "value"}
+	ag.Links = map[string]map[string]any{"top-key": {"key": "value"}}
 
 	router.HandleFunc("/api/v1/apps/"+*a.Id+"/groups", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -63,6 +70,10 @@ func handleApplications(router *mux.Router) error {
 	if err := faker.FakeObject(&au); err != nil {
 		return err
 	}
+	au.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
+	au.Profile = map[string]map[string]any{"top-key": {"key": "value"}}
+	au.AdditionalProperties = map[string]any{"key": "value"}
+	au.Links = map[string]map[string]any{"top-key": {"key": "value"}}
 
 	router.HandleFunc("/api/v1/apps/"+*a.Id+"/users", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")

@@ -24,6 +24,7 @@ func buildObjectivesMock(t *testing.T, ctrl *gomock.Controller) client.DatadogSe
 	}
 	str := "test"
 	d.Description.Set(&str)
+	d.AdditionalProperties = map[string]any{"key": "value"}
 
 	m.EXPECT().ListSLOsWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(d))
 

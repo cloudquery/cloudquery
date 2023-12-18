@@ -21,6 +21,7 @@ func buildNotebooksMock(t *testing.T, ctrl *gomock.Controller) client.DatadogSer
 	if err != nil {
 		t.Fatal(err)
 	}
+	n.AdditionalProperties = map[string]any{"key": "value"}
 	m.EXPECT().ListNotebooksWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(n))
 
 	return services

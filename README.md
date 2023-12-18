@@ -54,4 +54,4 @@ Feel free to open a pull request for small fixes and changes. For bigger changes
 
 ## Open source and open core
 
-The CloudQuery framework, SDK and CLI are open source while plugins available under `plugins` are **open core**, hence not all contributions to plugins directory will be accepted if they are part of the commercial plugin offering - please file an issue before opening a PR. 
+The CloudQuery framework, SDK and CLI are open source while plugins available under `plugins` are **open core**, hence not all contributions to plugins directory will be accepted if they are part of the commercial plugin offering - please [file an issue](https://github.com/cloudquery/cloudquery/issues/new/choose) before opening a PR.

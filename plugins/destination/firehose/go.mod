@@ -6,8 +6,8 @@ require (
 	github.com/apache/arrow/go/v14 v14.0.0-20231031200323-c49e24273160
 	github.com/aws/aws-sdk-go-v2 v1.24.0
 	github.com/aws/aws-sdk-go-v2/config v1.26.1
-	github.com/aws/aws-sdk-go-v2/service/firehose v1.22.5
-	github.com/cloudquery/plugin-sdk/v4 v4.21.1
+	github.com/aws/aws-sdk-go-v2/service/firehose v1.23.0
+	github.com/cloudquery/plugin-sdk/v4 v4.21.2
 	github.com/goccy/go-json v0.10.2
 	github.com/rs/zerolog v1.29.1
 	github.com/stretchr/testify v1.8.4
