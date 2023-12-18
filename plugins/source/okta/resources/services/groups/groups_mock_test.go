@@ -13,6 +13,8 @@ import (
 
 func handleGroups(router *mux.Router) error {
 	g := fakes.Group()
+	g.AdditionalProperties = map[string]any{"key": "value"}
+	g.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
 
 	router.HandleFunc("/api/v1/groups", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
