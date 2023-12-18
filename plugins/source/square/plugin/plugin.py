@@ -14,17 +14,21 @@ PLUGIN_VERSION = "0.0.1"
 
 class SquarePlugin(plugin.Plugin):
     def __init__(self) -> None:
-        super().__init__(PLUGIN_NAME, PLUGIN_VERSION)
+        super().__init__(
+            PLUGIN_NAME,
+            PLUGIN_VERSION,
+            opts=plugin.plugin.Options(team="cloudquery", kind="source"),
+        )
         self._logger = structlog.get_logger()
 
     def set_logger(self, logger) -> None:
         self._logger = logger
 
-    def init(self, spec_bytes, no_connection: bool = True):
+    def init(self, spec, no_connection: bool = True):
         if no_connection:
             return
-        if spec_bytes:
-            self._spec_json = json.loads(spec_bytes)
+        if spec:
+            self._spec_json = json.loads(spec)
         else:
             # without this, an empty spec returns an obscure error
             self._spec_json = {}
