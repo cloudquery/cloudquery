@@ -8,7 +8,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/cloudquery-api-go v1.6.2
 	github.com/cloudquery/plugin-pb-go v1.14.4
-	github.com/cloudquery/plugin-sdk/v4 v4.21.1
+	github.com/cloudquery/plugin-sdk/v4 v4.21.2
 	github.com/getsentry/sentry-go v0.24.1
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.6.0
@@ -110,7 +110,7 @@ require (
 	github.com/yosssi/ace v0.0.5 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	golang.org/x/arch v0.5.0 // indirect
-	golang.org/x/crypto v0.16.0 // indirect
+	golang.org/x/crypto v0.17.0 // indirect
 	golang.org/x/exp v0.0.0-20231127185646-65229373498e // indirect
 	golang.org/x/mod v0.14.0 // indirect
 	golang.org/x/net v0.19.0 // indirect

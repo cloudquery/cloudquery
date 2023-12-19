@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
-func server_blob_auditing_policies() *schema.Table {
+func serverBlobAuditingPolicies() *schema.Table {
 	return &schema.Table{
 		Name:                 "azure_sql_server_blob_auditing_policies",
 		Resolver:             fetchServerBlobAuditingPolicies,

@@ -38,7 +38,7 @@ func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&iam.ListPolicyVersionsOutput{
 			Versions: []iamTypes.PolicyVersion{{
 				CreateDate: &createDate,
-				Document:   aws.String(`{}`),
+				Document:   aws.String(`{"key":"value"}`),
 				VersionId:  aws.String("v1"),
 			}},
 		},

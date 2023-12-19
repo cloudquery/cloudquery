@@ -21,6 +21,7 @@ func buildEventsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogServic
 	if err != nil {
 		t.Fatal(err)
 	}
+	i.AdditionalProperties = map[string]any{"key": "value"}
 	m.EXPECT().ListRUMEventsWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(i))
 
 	return services

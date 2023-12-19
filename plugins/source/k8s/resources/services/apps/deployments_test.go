@@ -5,6 +5,7 @@ import (
 
 	client "github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	mocks "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks"
+	"k8s.io/apimachinery/pkg/util/intstr"
 
 	resourcemock "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks/apps/v1"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
@@ -23,7 +24,9 @@ func createDeployments(t *testing.T, ctrl *gomock.Controller) kubernetes.Interfa
 	}
 
 	r.Spec.Template = corev1.PodTemplateSpec{}
-	r.Spec.Strategy = resource.DeploymentStrategy{}
+	i := intstr.FromInt(5000)
+	r.Spec.Strategy.RollingUpdate.MaxSurge = &i
+	r.Spec.Strategy.RollingUpdate.MaxUnavailable = &i
 
 	resourceClient := resourcemock.NewMockDeploymentInterface(ctrl)
 	resourceClient.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(

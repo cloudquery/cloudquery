@@ -22,6 +22,7 @@ func buildDashboardListsMock(t *testing.T, ctrl *gomock.Controller) client.Datad
 	if err != nil {
 		t.Fatal(err)
 	}
+	d.DashboardLists[0].AdditionalProperties = map[string]any{"key": "value"}
 
 	m.EXPECT().ListDashboardLists(gomock.Any()).Return(d, nil, nil)
 

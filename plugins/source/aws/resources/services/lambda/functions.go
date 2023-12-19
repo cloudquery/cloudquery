@@ -306,7 +306,7 @@ func resolveTags(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 
 	// setting tags value from GetFunction call
 	if r.Code != nil {
-		return resource.Set(col.Name, r.Concurrency)
+		return resource.Set(col.Name, r.Tags)
 	}
 
 	cl := meta.(*client.Client)

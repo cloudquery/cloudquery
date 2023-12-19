@@ -23,6 +23,8 @@ func buildDashboardsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogSe
 	}
 	desc := "test string"
 	d.Description.Set(&desc)
+	d.AdditionalProperties = map[string]any{"key": "value"}
+
 	m.EXPECT().ListDashboardsWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(d))
 
 	return services

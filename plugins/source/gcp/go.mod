@@ -46,7 +46,7 @@ require (
 	cloud.google.com/go/workflows v1.12.3
 	github.com/apache/arrow/go/v14 v14.0.0-20231031200323-c49e24273160
 	github.com/cloudquery/codegen v0.3.12
-	github.com/cloudquery/plugin-sdk/v4 v4.20.0
+	github.com/cloudquery/plugin-sdk/v4 v4.21.2
 	github.com/golang/mock v1.6.0
 	github.com/googleapis/gax-go/v2 v2.12.0
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.1
@@ -86,8 +86,8 @@ require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.6.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.14.3 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.6.2 // indirect
+	github.com/cloudquery/plugin-pb-go v1.14.4 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/cncf/udpa/go v0.0.0-20220112060539-c52dc94e7fbe // indirect
 	github.com/cncf/xds/go v0.0.0-20231128003011-0fa0005c9caa // indirect

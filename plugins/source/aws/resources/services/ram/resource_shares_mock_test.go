@@ -33,7 +33,7 @@ func buildRamResourceSharesMock(t *testing.T, ctrl *gomock.Controller) client.Se
 	m.EXPECT().ListResourceSharePermissions(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ram.ListResourceSharePermissionsOutput{Permissions: []types.ResourceSharePermissionSummary{summary}}, nil).MinTimes(1)
 
-	detail := "{}"
+	detail := `{"key":"value"}`
 
 	m.EXPECT().GetPermission(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ram.GetPermissionOutput{Permission: &types.ResourceSharePermissionDetail{Permission: &detail}}, nil).MinTimes(1)

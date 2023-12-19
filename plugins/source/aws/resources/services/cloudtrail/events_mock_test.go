@@ -21,7 +21,7 @@ func buildCloudtrailEventsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 	event := types.Event{}
 	require.NoError(t, faker.FakeObject(&event))
 
-	event.CloudTrailEvent = aws.String("{}")
+	event.CloudTrailEvent = aws.String(`{"key":"value"}`)
 	m.EXPECT().LookupEvents(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&cloudtrail.LookupEventsOutput{
 			Events: []types.Event{event},
