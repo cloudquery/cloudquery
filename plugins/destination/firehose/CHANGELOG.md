@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.2.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.2.13...plugins-destination-firehose-v2.2.14) (2023-12-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/firehose to v1.23.0 ([#15716](https://github.com/cloudquery/cloudquery/issues/15716)) ([0cf6471](https://github.com/cloudquery/cloudquery/commit/0cf6471e25ac72943ec015c0234c7d384b219b22))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.21.0 ([#15651](https://github.com/cloudquery/cloudquery/issues/15651)) ([6e96125](https://github.com/cloudquery/cloudquery/commit/6e96125a9d9c75616483952edb7a9e402818b264))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.21.1 ([#15699](https://github.com/cloudquery/cloudquery/issues/15699)) ([67c10c3](https://github.com/cloudquery/cloudquery/commit/67c10c38a04dcdd1512bf6dc739f89bc11baa888))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.21.2 ([#15724](https://github.com/cloudquery/cloudquery/issues/15724)) ([ad750b1](https://github.com/cloudquery/cloudquery/commit/ad750b1530af06353f2225c7d3397af580093687))
+* **deps:** Update module golang.org/x/crypto to v0.17.0 [SECURITY] ([#15730](https://github.com/cloudquery/cloudquery/issues/15730)) ([718be50](https://github.com/cloudquery/cloudquery/commit/718be502014ff36aa50cde3a83453b3d6ce15a83))
+
 ## [2.2.13](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.2.12...plugins-destination-firehose-v2.2.13) (2023-12-12)
 
 
