@@ -7,8 +7,8 @@ require (
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/cloudquery-api-go v1.6.2
-	github.com/cloudquery/plugin-pb-go v1.14.4
-	github.com/cloudquery/plugin-sdk/v4 v4.21.2
+	github.com/cloudquery/plugin-pb-go v1.14.5
+	github.com/cloudquery/plugin-sdk/v4 v4.21.3
 	github.com/getsentry/sentry-go v0.24.1
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.6.0
@@ -35,6 +35,7 @@ require (
 	github.com/Shopify/goreferrer v0.0.0-20220729165902-8cddb4f5de06 // indirect
 	github.com/adrg/xdg v0.4.0 // indirect
 	github.com/andybalholm/brotli v1.0.6 // indirect
+	github.com/apache/arrow/go/v15 v15.0.0-20231218151729-81e47b20b241 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/avast/retry-go/v4 v4.5.1 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
