@@ -16,7 +16,7 @@ func buildResourcePolicies(t *testing.T, ctrl *gomock.Controller) client.Service
 	m := mocks.NewMockCloudwatchlogsClient(ctrl)
 	rp := types.ResourcePolicy{}
 	require.NoError(t, faker.FakeObject(&rp))
-	policyDocument := "{}"
+	policyDocument := `{"key":"value"}`
 	rp.PolicyDocument = &policyDocument
 	m.EXPECT().DescribeResourcePolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&cloudwatchlogs.DescribeResourcePoliciesOutput{

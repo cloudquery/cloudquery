@@ -16,12 +16,14 @@ func buildPermissionsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogS
 		RolesAPI: m,
 	}
 
-	var roles datadogV2.PermissionsResponse
-	err := faker.FakeObject(&roles)
+	var perms datadogV2.PermissionsResponse
+	err := faker.FakeObject(&perms)
 	if err != nil {
 		t.Fatal(err)
 	}
-	m.EXPECT().ListPermissions(gomock.Any()).Return(roles, nil, nil)
+	perms.Data[0].AdditionalProperties = map[string]any{"key": "value"}
+	perms.AdditionalProperties = map[string]any{"key": "value"}
+	m.EXPECT().ListPermissions(gomock.Any()).Return(perms, nil, nil)
 
 	return services
 }

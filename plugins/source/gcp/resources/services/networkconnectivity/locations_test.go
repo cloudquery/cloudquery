@@ -21,6 +21,7 @@ func createLocation(mux *httprouter.Router) error {
 	item.Locations = []*networkconnectivity.Location{
 		{
 			LocationId: "global",
+			Labels:     map[string]string{"cloud.googleapis.com/region": "us-east1"},
 			Name:       "projects/testProject/locations/global",
 			Metadata:   []byte(`{"@type":"type.googleapis.com/google.cloud.networkconnectivity.v1.LocationMetadata","locationFeatures":["SITE_TO_CLOUD_SPOKES"]}`),
 		},

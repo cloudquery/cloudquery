@@ -18,8 +18,8 @@ func buildHooks(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
 	if err := faker.FakeObject(&cs); err != nil {
 		t.Fatal(err)
 	}
-	cs.Config = make(map[string]any)
-	cs.LastResponse = make(map[string]any)
+	cs.Config = map[string]any{"key": "value"}
+	cs.LastResponse = map[string]any{"key": "value"}
 	mock.EXPECT().ListHooks(gomock.Any(), "testorg", gomock.Any()).Return([]*github.Hook{&cs}, &github.Response{}, nil)
 
 	var hd *github.HookDelivery

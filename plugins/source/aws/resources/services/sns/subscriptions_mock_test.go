@@ -45,9 +45,9 @@ func buildSnsSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Service
 	).Return(
 		&sns.GetSubscriptionAttributesOutput{Attributes: map[string]string{
 			"ConfirmationWasAuthenticated": "true",
-			"DeliveryPolicy":               "{}",
-			"EffectiveDeliveryPolicy":      "{}",
-			"FilterPolicy":                 "{}",
+			"DeliveryPolicy":               `{"key":"value"}`,
+			"EffectiveDeliveryPolicy":      `{"key":"value"}`,
+			"FilterPolicy":                 `{"key":"value"}`,
 			"PendingConfirmation":          "true",
 			"RawMessageDelivery":           "true",
 			"RedrivePolicy":                `{"deadLetterTargetArn": "test"}`,
