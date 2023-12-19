@@ -5,8 +5,8 @@ go 1.21.1
 require (
 	github.com/Shopify/sarama v1.37.2
 	github.com/apache/arrow/go/v14 v14.0.0-20231031200323-c49e24273160
-	github.com/cloudquery/filetypes/v4 v4.2.1
-	github.com/cloudquery/plugin-sdk/v4 v4.21.2
+	github.com/cloudquery/filetypes/v4 v4.2.2
+	github.com/cloudquery/plugin-sdk/v4 v4.21.3
 	github.com/rs/zerolog v1.31.0
 )
 
@@ -19,6 +19,7 @@ require (
 	github.com/Shopify/goreferrer v0.0.0-20220729165902-8cddb4f5de06 // indirect
 	github.com/andybalholm/brotli v1.0.6 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
+	github.com/apache/arrow/go/v15 v15.0.0-20231219110838-0479f8532d5a // indirect
 	github.com/apache/thrift v0.19.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
@@ -29,7 +30,7 @@ require (
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.6.2 // indirect
-	github.com/cloudquery/plugin-pb-go v1.14.4 // indirect
+	github.com/cloudquery/plugin-pb-go v1.14.5 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.15.0 // indirect
