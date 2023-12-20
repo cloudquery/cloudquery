@@ -112,8 +112,6 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-replace github.com/apache/arrow/go/v14 => github.com/cloudquery/arrow/go/v14 v14.0.0-20231023001216-f46436fa3561
-
 require (
 	cloud.google.com/go v0.110.10
 	cloud.google.com/go/compute v1.23.3 // indirect
