@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 )
 
 // https://clickhouse.com/docs/en/sql-reference/data-types/datetime64

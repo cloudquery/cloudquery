@@ -5,7 +5,7 @@ import (
 
 	compute "cloud.google.com/go/compute/apiv1"
 	pb "cloud.google.com/go/compute/apiv1/computepb"
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"google.golang.org/api/iterator"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
