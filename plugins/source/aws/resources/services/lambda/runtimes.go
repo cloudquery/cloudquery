@@ -3,7 +3,7 @@ package lambda
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
