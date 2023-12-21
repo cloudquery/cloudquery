@@ -3,7 +3,6 @@ package accessanalyzer
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -18,16 +17,10 @@ func Analyzers() *schema.Table {
 		Description: `https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_AnalyzerSummary.html`,
 		Resolver:    fetchAccessanalyzerAnalyzers,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "access-analyzer"),
-		Transform:   transformers.TransformWithStruct(&types.AnalyzerSummary{}),
+		Transform:   transformers.TransformWithStruct(&types.AnalyzerSummary{}, transformers.WithPrimaryKeys("Arn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
-			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("Arn"),
-				PrimaryKey: true,
-			},
 		},
 		Relations: []*schema.Table{
 			analyzerFindings(),
