@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.3.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.3.4...plugins-destination-snowflake-v3.3.5) (2023-12-21)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/apache/arrow/go` to `v15` ([#15754](https://github.com/cloudquery/cloudquery/issues/15754)) ([bd962eb](https://github.com/cloudquery/cloudquery/commit/bd962eb1093cf09e928e2a0e7782288ec4020ec4))
+* **deps:** Update Azure modules ([#15713](https://github.com/cloudquery/cloudquery/issues/15713)) ([a9b8b25](https://github.com/cloudquery/cloudquery/commit/a9b8b25b501d9025ff5c57a82fcc38c8dfc8616e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.21.0 ([#15651](https://github.com/cloudquery/cloudquery/issues/15651)) ([6e96125](https://github.com/cloudquery/cloudquery/commit/6e96125a9d9c75616483952edb7a9e402818b264))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.21.1 ([#15699](https://github.com/cloudquery/cloudquery/issues/15699)) ([67c10c3](https://github.com/cloudquery/cloudquery/commit/67c10c38a04dcdd1512bf6dc739f89bc11baa888))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.21.2 ([#15724](https://github.com/cloudquery/cloudquery/issues/15724)) ([ad750b1](https://github.com/cloudquery/cloudquery/commit/ad750b1530af06353f2225c7d3397af580093687))
+* **deps:** Update module golang.org/x/crypto to v0.17.0 [SECURITY] ([#15730](https://github.com/cloudquery/cloudquery/issues/15730)) ([718be50](https://github.com/cloudquery/cloudquery/commit/718be502014ff36aa50cde3a83453b3d6ce15a83))
+* Use column name from database schema when migrating ([#15773](https://github.com/cloudquery/cloudquery/issues/15773)) ([cd91882](https://github.com/cloudquery/cloudquery/commit/cd918827dc0545693b46b5da365b5cbd3a09d9fd))
+
 ## [3.3.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.3.3...plugins-destination-snowflake-v3.3.4) (2023-12-12)
 
 
