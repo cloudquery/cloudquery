@@ -14,19 +14,35 @@ Publishing to the CloudQuery Hub is only supported for Go plugins at the moment.
 ## Prerequisites
 
 - You have created a [CloudQuery Cloud](https://cloud.cloudquery.io/) account and completed the onboarding process to create a team
-- You have created the plugin you'd like to publish on https://cloud.cloudquery.io/ under the relevant team
 - You have the [CloudQuery CLI](/docs/quickstart) installed (version >= `v3.27.1`)
 - The plugin you'd like to publish is written in Go, and uses an SDK version >= `v4.17.1`
 - The plugin you'd like to publish is initialized using the plugin's name, team and kind. See example [here](https://github.com/cloudquery/cloudquery/blob/b7ef6f6ed8948272a429f35614fa28559397227a/plugins/source/test/resources/plugin/plugin.go#L15)
 - You are authenticated to [CloudQuery Cloud](https://cloud.cloudquery.io/) using the `cloudquery login` command
 
+## Create a Plugin Definition on Hub
+
+Before publishing a plugin, you need to create a plugin definition on the CloudQuery Cloud site.
+
+Log in to [CloudQuery Cloud](https://cloud.cloudquery.io/). If you have not created a team yet, you will be asked to create a new one.
+
+<img src="/images/docs/publishing-plugins/create-team.png" width="50%" style={{margin:"1em"}} />
+
+The display name will be visible on Hub next to your plugin. The team name is going to be used in configurations to reference your plugin using `<team-name>/<plugin-name>`.
+
+To create a new plugin definition, create a new plugin from the Plugins tab. Fill in the necessary details and upload the plugin image.
+
+### Staging Releases
+
+Release your plugins for internal testing first before making it public. Set the **Visibility** to `Private` and **Release Stage** to `Preview`. This enables testing of premium plugins without being charged and with your team only (you can invite other users to your team to test the plugin).
+When you want to release the plugin in public, set the Visibility to `Public` and eventually, change the **Release Stage** to `GA` (Generally Available) to begin charging for the usage.
+
 ## Publishing a Plugin
 
-1. (Optional, recommended) In the root directory of your plugin repository run `git tag v1.0.0` to tag the version you're about to publish (replace `v1.0.0` with the version you'd like to publish)
-2. (Optional, recommended) Run `git push origin v1.0.0` to push the tag
+1. (Optional, recommended) In the root directory of your plugin repository run `git tag v1.0.0` to tag the version you're about to publish (replace `v1.0.0` with the version you'd like to publish).
+2. (Optional, recommended) Run `git push origin v1.0.0` to push the tag.
 3. Run `go run main.go package --docs-dir docs -m 'feat: Initial release' v1.0.0 .` to package the plugin. `v1.0.0` should match the tag you created in step 1. The `-m` specifies the changelog message that will be used in the release notes and it supports markdown. See example [here](https://hub.cloudquery.io/plugins/source/cloudquery/alicloud/v4.0.14/versions). `docs` should be a directory containing markdown files that serve as documentation for the plugin. Read more about the documentation format [here](#documentation-format).
-4. Run `cloudquery plugin publish` to publish a draft version of the plugin. The version will show up under the versions tab of your plugin in <https://cloud.cloudquery.io>. As long as the version is in draft it's mutable and you can re-package the plugin and publish it again
-5. Once you're ready run `cloudquery plugin publish -f` to publish a non draft version of the plugin. This version will be immutable and will show up in <https://hub.cloudquery.io/>. Allow up to 1 hour for the Hub to reflect the changes
+4. Run `cloudquery plugin publish` to publish a draft version of the plugin. The version will show up under the versions tab of your plugin in [CloudQuery Cloud](https://cloud.cloudquery.io). As long as the version is in draft it's mutable and you can re-package the plugin and publish it again.
+5. Once you're ready run `cloudquery plugin publish -f` to publish a non draft version of the plugin. This version will be immutable and will show up in [Hub](https://hub.cloudquery.io/). Allow up to 1 hour for the Hub to reflect the changes.
 
 ## Documentation Format
 
