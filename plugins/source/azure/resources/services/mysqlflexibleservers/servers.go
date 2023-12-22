@@ -18,6 +18,10 @@ func Servers() *schema.Table {
 		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_mysqlflexibleservers_servers", client.Namespacemicrosoft_dbformysql),
 		Transform:            transformers.TransformWithStruct(&armmysqlflexibleservers.Server{}, transformers.WithPrimaryKeys("ID")),
 		Columns:              schema.ColumnList{client.SubscriptionID},
+		Relations: []*schema.Table{
+			serverConfigurations(),
+			firewallRules(),
+		},
 	}
 }
 

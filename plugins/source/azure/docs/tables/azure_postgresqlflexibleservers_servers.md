@@ -6,6 +6,12 @@ https://learn.microsoft.com/en-us/rest/api/postgresql/flexibleserver/servers/lis
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on azure_postgresqlflexibleservers_servers:
+  - [azure_postgresqlflexibleservers_server_configurations](azure_postgresqlflexibleservers_server_configurations.md)
+  - [azure_postgresqlflexibleservers_server_firewall_rules](azure_postgresqlflexibleservers_server_firewall_rules.md)
+
 ## Columns
 
 | Name          | Type          |
