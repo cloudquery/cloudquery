@@ -33,5 +33,5 @@ func (*fakeFolderSecretsServer) ListFindings(context.Context, *pb.ListFindingsRe
 }
 
 func TestFolderFindings(t *testing.T) {
-	client.MockTestGrpcHelper(t, FolderFindings(), createFolderFindings, client.TestOptions{})
+	client.MockTestHelper(t, FolderFindings(), client.WithCreateGrpcService(createFolderFindings))
 }

@@ -34,5 +34,5 @@ func createExternalVpnGateways(mux *httprouter.Router) error {
 }
 
 func TestExternalVpnGateways(t *testing.T) {
-	client.MockTestRestHelper(t, ExternalVpnGateways(), createExternalVpnGateways, client.TestOptions{})
+	client.MockTestHelper(t, ExternalVpnGateways(), client.WithCreateHTTPServer(createExternalVpnGateways))
 }

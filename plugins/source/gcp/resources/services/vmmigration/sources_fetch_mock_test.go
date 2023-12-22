@@ -27,6 +27,7 @@ func (*fakeSourcesServer) ListSources(context.Context, *pb.ListSourcesRequest) (
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.Sources[0].SourceDetails = &pb.Source_Aws{Aws: &pb.AwsSourceDetails{AwsRegion: "us-east-1"}}
 	resp.NextPageToken = ""
 	return &resp, nil
 }
@@ -36,6 +37,8 @@ func (*fakeSourcesServer) ListMigratingVms(context.Context, *pb.ListMigratingVms
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.MigratingVms[0].TargetVmDefaults = &pb.MigratingVm_ComputeEngineTargetDefaults{ComputeEngineTargetDefaults: &pb.ComputeEngineTargetDefaults{VmName: "test-vm"}}
+	resp.MigratingVms[0].SourceVmDetails = &pb.MigratingVm_AwsSourceVmDetails{AwsSourceVmDetails: &pb.AwsSourceVmDetails{CommittedStorageBytes: 1}}
 	resp.NextPageToken = ""
 	return &resp, nil
 }
@@ -54,6 +57,7 @@ func (*fakeSourcesServer) ListCloneJobs(context.Context, *pb.ListCloneJobsReques
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.CloneJobs[0].TargetVmDetails = &pb.CloneJob_ComputeEngineTargetDetails{ComputeEngineTargetDetails: &pb.ComputeEngineTargetDetails{VmName: "test-vm"}}
 	resp.NextPageToken = ""
 	return &resp, nil
 }
@@ -63,6 +67,7 @@ func (*fakeSourcesServer) ListCutoverJobs(context.Context, *pb.ListCutoverJobsRe
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.CutoverJobs[0].TargetVmDetails = &pb.CutoverJob_ComputeEngineTargetDetails{ComputeEngineTargetDetails: &pb.ComputeEngineTargetDetails{VmName: "test-vm"}}
 	resp.NextPageToken = ""
 	return &resp, nil
 }
@@ -77,5 +82,5 @@ func (*fakeSourcesServer) ListUtilizationReports(context.Context, *pb.ListUtiliz
 }
 
 func TestInstances(t *testing.T) {
-	client.MockTestGrpcHelper(t, Sources(), createSourcesServer, client.TestOptions{})
+	client.MockTestHelper(t, Sources(), client.WithCreateGrpcService(createSourcesServer))
 }

@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/types/known/durationpb"
 
 	pb "cloud.google.com/go/appengine/apiv1/appenginepb"
 )
@@ -41,6 +42,7 @@ func (*fakeVersionsServer) ListVersions(context.Context, *pb.ListVersionsRequest
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.Versions[0].Scaling = &pb.Version_BasicScaling{BasicScaling: &pb.BasicScaling{IdleTimeout: &durationpb.Duration{Seconds: 1}}}
 	resp.NextPageToken = ""
 	return &resp, nil
 }
@@ -59,5 +61,5 @@ func (*fakeInstancesServer) ListInstances(context.Context, *pb.ListInstancesRequ
 }
 
 func TestServices(t *testing.T) {
-	client.MockTestGrpcHelper(t, Services(), createServices, client.TestOptions{})
+	client.MockTestHelper(t, Services(), client.WithCreateGrpcService(createServices))
 }

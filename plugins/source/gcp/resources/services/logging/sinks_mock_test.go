@@ -26,10 +26,11 @@ func (*fakeSinksServer) ListSinks(context.Context, *pb.ListSinksRequest) (*pb.Li
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.Sinks[0].Options = &pb.LogSink_BigqueryOptions{BigqueryOptions: &pb.BigQueryOptions{UsePartitionedTables: true}}
 	resp.NextPageToken = ""
 	return &resp, nil
 }
 
 func TestSinks(t *testing.T) {
-	client.MockTestGrpcHelper(t, Sinks(), createSinks, client.TestOptions{})
+	client.MockTestHelper(t, Sinks(), client.WithCreateGrpcService(createSinks))
 }

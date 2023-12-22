@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	pb "google.golang.org/genproto/googleapis/cloud/location"
 	"google.golang.org/grpc"
+	structpb "google.golang.org/protobuf/types/known/structpb"
 )
 
 func createDatasetLocations(gsrv *grpc.Server) error {
@@ -35,7 +36,7 @@ func (*fakeDatasetLocationsServer) ListLocations(context.Context, *pb.ListLocati
 }
 
 func TestDatasetLocations(t *testing.T) {
-	client.MockTestGrpcHelper(t, DatasetLocations(), createDatasetLocations, client.TestOptions{})
+	client.MockTestHelper(t, DatasetLocations(), client.WithCreateGrpcService(createDatasetLocations))
 }
 
 type fakeDatasetLocationsRelationsServer struct {
@@ -66,7 +67,9 @@ func (*fakeDatasetLocationsRelationsServer) ListDatasets(context.Context, *aipla
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
 	resp.NextPageToken = ""
-	resp.Datasets[0].SavedQueries[0].Metadata = nil
+	resp.Datasets[0].SavedQueries[0].Metadata = structpb.NewStringValue("test string")
+	resp.Datasets[0].Metadata = structpb.NewStringValue("test string")
+
 	return &resp, nil
 }
 

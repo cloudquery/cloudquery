@@ -31,5 +31,5 @@ func (*fakeAuthorizedCertificatesServer) ListAuthorizedCertificates(context.Cont
 }
 
 func TestAuthorizedCertificates(t *testing.T) {
-	client.MockTestGrpcHelper(t, AuthorizedCertificates(), createAuthorizedCertificates, client.TestOptions{})
+	client.MockTestHelper(t, AuthorizedCertificates(), client.WithCreateGrpcService(createAuthorizedCertificates))
 }

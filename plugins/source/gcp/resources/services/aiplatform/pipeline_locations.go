@@ -11,8 +11,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	pb "google.golang.org/genproto/googleapis/cloud/location"
 
-	"google.golang.org/api/option"
-
 	aiplatform "cloud.google.com/go/aiplatform/apiv1"
 )
 
@@ -45,7 +43,7 @@ func fetchPipelineLocations(ctx context.Context, meta schema.ClientMeta, parent 
 	}
 
 	clientOptions := c.ClientOptions
-	clientOptions = append([]option.ClientOption{option.WithEndpoint("us-central1-aiplatform.googleapis.com:443")}, clientOptions...)
+	// clientOptions = append([]option.ClientOption{option.WithEndpoint("us-central1-aiplatform.googleapis.com:443")}, clientOptions...)
 	gcpClient, err := aiplatform.NewPipelineClient(ctx, clientOptions...)
 
 	if err != nil {

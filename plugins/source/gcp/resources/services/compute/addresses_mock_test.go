@@ -33,5 +33,5 @@ func createAddresses(mux *httprouter.Router) error {
 }
 
 func TestAddresses(t *testing.T) {
-	client.MockTestRestHelper(t, Addresses(), createAddresses, client.TestOptions{})
+	client.MockTestHelper(t, Addresses(), client.WithCreateHTTPServer(createAddresses))
 }

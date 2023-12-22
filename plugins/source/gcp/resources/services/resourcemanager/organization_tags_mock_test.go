@@ -1,13 +1,14 @@
 package resourcemanager
 
 import (
-	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"context"
 	"fmt"
+	"testing"
+
+	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"google.golang.org/grpc"
-	"testing"
 )
 
 func createOrganizationTagKeys(gsrv *grpc.Server) error {
@@ -36,7 +37,7 @@ func (*fakeOrganizationTagKeysServer) ListTagKeys(_ context.Context, req *pb.Lis
 }
 
 func TestOrganizationTagKeys(t *testing.T) {
-	client.MockTestGrpcHelper(t, OrganizationTagKeys(), createOrganizationTagKeys, client.TestOptions{})
+	client.MockTestHelper(t, OrganizationTagKeys(), client.WithCreateGrpcService(createOrganizationTagKeys))
 }
 
 func createOrganizationTagValues(gsrv *grpc.Server) error {
@@ -65,5 +66,5 @@ func (*fakeOrganizationTagValuesServer) ListTagValues(_ context.Context, req *pb
 }
 
 func TestOrganizationTagValues(t *testing.T) {
-	client.MockTestGrpcHelper(t, organizationTagValues(), createOrganizationTagValues, client.TestOptions{})
+	client.MockTestHelper(t, organizationTagValues(), client.WithCreateGrpcService(createOrganizationTagValues))
 }
