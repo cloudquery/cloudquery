@@ -6,6 +6,12 @@ https://learn.microsoft.com/en-us/rest/api/mysql/flexibleserver/servers/list?tab
 
 The primary key for this table is **id**.
 
+## Relations
+
+The following tables depend on azure_mysqlflexibleservers_servers:
+  - [azure_mysqlflexibleservers_server_configurations](azure_mysqlflexibleservers_server_configurations.md)
+  - [azure_mysqlflexibleservers_server_firewall_rules](azure_mysqlflexibleservers_server_firewall_rules.md)
+
 ## Columns
 
 | Name          | Type          |
