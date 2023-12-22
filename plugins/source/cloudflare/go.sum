@@ -45,6 +45,8 @@ github.com/chenzhuoyu/iasm v0.9.1 h1:tUHQJXo3NhBqw6s33wkGn9SP3bvrWLdlVIJ3hQBL7P0
 github.com/chenzhuoyu/iasm v0.9.1/go.mod h1:Xjy2NpN3h7aUqeqM+woSuuvxmIe6+DDsiNLIrkAmYog=
 github.com/cloudflare/cloudflare-go v0.57.1 h1:c9OhL/WusagBirP+CIJeCqS7OjT9kiWjtJv4lwxp3ZM=
 github.com/cloudflare/cloudflare-go v0.57.1/go.mod h1:cD8AqNMMaL1A0Sj9XKo3Xu9ZVHwHqgXJofb1ya210GQ=
+github.com/cloudflare/cloudflare-go v0.84.0 h1:1jQPJfq3nPdjKF+oqjTOSRAWcTCA6u5fcCVx7xGhLpg=
+github.com/cloudflare/cloudflare-go v0.84.0/go.mod h1:5pkAzpoWJYI5NekLZoRryQAcghYDhdbUxdcal1f7lu4=
 github.com/cloudquery/cloudquery-api-go v1.6.3 h1:PnT0S57dN24nE86XGVM+5+ePTtMeXsEQqOR3kT2+YhY=
 github.com/cloudquery/cloudquery-api-go v1.6.3/go.mod h1:03fojQg0UpdgqXZ9tzZ5gF5CPad/F0sok66bsX6u4RA=
 github.com/cloudquery/plugin-pb-go v1.14.6 h1:qFJ+611laD1PooMsaSuWfJZdVXG+Ul3/U7MlAjZXrXw=
@@ -133,6 +135,8 @@ github.com/hashicorp/go-hclog v1.2.0 h1:La19f8d7WIlm4ogzNHB0JGqs5AUDAZ2UfCY4sJXc
 github.com/hashicorp/go-hclog v1.2.0/go.mod h1:whpDNt7SSdeAju8AWKIWsul05p54N/39EeqMAyrmvFQ=
 github.com/hashicorp/go-retryablehttp v0.7.2 h1:AcYqCvkpalPnPF2pn0KamgwamS42TqUDDYFRKq/RAd0=
 github.com/hashicorp/go-retryablehttp v0.7.2/go.mod h1:Jy/gPYAdjqffZ/yFGCFV2doI5wjtH1ewM9u8iYVjtX8=
+github.com/hashicorp/go-retryablehttp v0.7.5 h1:bJj+Pj19UZMIweq/iie+1u5YCdGrnxCT9yvm0e+Nd5M=
+github.com/hashicorp/go-retryablehttp v0.7.5/go.mod h1:Jy/gPYAdjqffZ/yFGCFV2doI5wjtH1ewM9u8iYVjtX8=
 github.com/imkira/go-interpol v1.1.0 h1:KIiKr0VSG2CUW1hl1jpiyuzuJeKUUpC8iM1AIE7N1Vk=
 github.com/imkira/go-interpol v1.1.0/go.mod h1:z0h2/2T3XF8kyEPpRgJ3kmNv+C43p+I/CoI+jC3w2iA=
 github.com/inconshreveable/mousetrap v1.0.1/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
