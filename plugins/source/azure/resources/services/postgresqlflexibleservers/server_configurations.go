@@ -14,8 +14,8 @@ func serverConfigurations() *schema.Table {
 		Name:                 "azure_postgresqlflexibleservers_server_configurations",
 		Resolver:             fetchServerConfigurations,
 		PostResourceResolver: client.LowercaseIDResolver,
-		Description: "https://learn.microsoft.com/en-us/rest/api/postgresql/flexibleserver/configurations/list-by-server?view=rest-postgresql-flexibleserver-2022-12-01&tabs=HTTP",
-		Transform: 		  transformers.TransformWithStruct(&armpostgresqlflexibleservers.Configuration{}, transformers.WithPrimaryKeys("ID")),
+		Description:          "https://learn.microsoft.com/en-us/rest/api/postgresql/flexibleserver/configurations/list-by-server?view=rest-postgresql-flexibleserver-2022-12-01&tabs=HTTP",
+		Transform:            transformers.TransformWithStruct(&armpostgresqlflexibleservers.Configuration{}, transformers.WithPrimaryKeys("ID")),
 		Columns:              schema.ColumnList{},
 	}
 }

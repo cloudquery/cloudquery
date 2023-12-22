@@ -9,7 +9,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-
 func createFirewallRules(router *mux.Router) error {
 	var item armmysqlflexibleservers.FirewallRuleListResult
 	if err := faker.FakeObject(&item); err != nil {

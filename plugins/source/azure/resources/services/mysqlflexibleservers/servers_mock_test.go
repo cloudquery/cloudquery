@@ -38,11 +38,7 @@ func createServers(router *mux.Router) error {
 		return err
 	}
 
-	if err := createFirewallRules(router); err != nil {
-		return err
-	}
-
-	return nil
+	return createFirewallRules(router)
 }
 
 func TestServers(t *testing.T) {

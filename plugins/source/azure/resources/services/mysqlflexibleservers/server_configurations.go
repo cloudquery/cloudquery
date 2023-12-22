@@ -14,8 +14,8 @@ func serverConfigurations() *schema.Table {
 		Name:                 "azure_mysqlflexibleservers_server_configurations",
 		Resolver:             fetchServerConfigurations,
 		PostResourceResolver: client.LowercaseIDResolver,
-		Description: "https://learn.microsoft.com/en-us/rest/api/mysql/flexibleserver/configurations/list-by-server",
-		Transform: 		  transformers.TransformWithStruct(&armmysqlflexibleservers.Configuration{}, transformers.WithPrimaryKeys("ID")),
+		Description:          "https://learn.microsoft.com/en-us/rest/api/mysql/flexibleserver/configurations/list-by-server",
+		Transform:            transformers.TransformWithStruct(&armmysqlflexibleservers.Configuration{}, transformers.WithPrimaryKeys("ID")),
 		Columns:              schema.ColumnList{},
 	}
 }
