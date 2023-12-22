@@ -18,6 +18,10 @@ func Servers() *schema.Table {
 		Multiplex:            client.SubscriptionMultiplexRegisteredNamespace("azure_postgresqlflexibleservers_servers", client.Namespacemicrosoft_dbforpostgresql),
 		Transform:            transformers.TransformWithStruct(&armpostgresqlflexibleservers.Server{}, transformers.WithPrimaryKeys("ID")),
 		Columns:              schema.ColumnList{client.SubscriptionID},
+		Relations: []*schema.Table{
+			serverConfigurations(),
+			firewallRules(),
+		},
 	}
 }
 
