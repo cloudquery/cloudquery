@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"testing"
 
-	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	pb "cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
@@ -28,7 +27,7 @@ func (*fakeOperationsServer) ListOperations(context.Context, *pb.ListOperationsR
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
-	fakeAny, _ := anypb.New(&longrunningpb.Operation{
+	fakeAny, _ := anypb.New(&pb.Operation{
 		Name: "fake_operation",
 	})
 
