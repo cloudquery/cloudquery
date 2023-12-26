@@ -27,10 +27,11 @@ func (*fakeJobsServer) ListJobs(context.Context, *pb.ListJobsRequest) (*pb.ListJ
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.Jobs[0].JobConfig = &pb.Job_Config{Config: &pb.JobConfig{}}
 	resp.NextPageToken = ""
 	return &resp, nil
 }
 
 func TestInstances(t *testing.T) {
-	client.MockTestGrpcHelper(t, Jobs(), createJobsServer, client.TestOptions{})
+	client.MockTestHelper(t, Jobs(), client.WithCreateGrpcService(createJobsServer))
 }

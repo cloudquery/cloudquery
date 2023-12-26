@@ -35,7 +35,7 @@ func (*fakeSpecialistpoolLocationsServer) ListLocations(context.Context, *pb.Lis
 }
 
 func TestSpecialistpoolLocations(t *testing.T) {
-	client.MockTestGrpcHelper(t, SpecialistpoolLocations(), createSpecialistpoolLocations, client.TestOptions{})
+	client.MockTestHelper(t, SpecialistpoolLocations(), client.WithCreateGrpcService(createSpecialistpoolLocations))
 }
 
 type fakeSpecialistpoolLocationsRelationsServer struct {

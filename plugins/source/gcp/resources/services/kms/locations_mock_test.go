@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	locationpb "google.golang.org/genproto/googleapis/cloud/location"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -66,6 +67,8 @@ func (*fakeServer) ListCryptoKeys(context.Context, *kmspb.ListCryptoKeysRequest)
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.CryptoKeys[0].RotationSchedule = &kmspb.CryptoKey_RotationPeriod{RotationPeriod: &durationpb.Duration{Seconds: 1}}
+
 	resp.NextPageToken = ""
 	return &resp, nil
 }
@@ -102,10 +105,11 @@ func (*fakeServer) ListEkmConnections(context.Context, *kmspb.ListEkmConnections
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+
 	resp.NextPageToken = ""
 	return &resp, nil
 }
 
 func TestLocations(t *testing.T) {
-	client.MockTestGrpcHelper(t, Locations(), createLocations, client.TestOptions{})
+	client.MockTestHelper(t, Locations(), client.WithCreateGrpcService(createLocations))
 }

@@ -41,5 +41,5 @@ func (*fakeErrorGroupStatsServer) ListEvents(context.Context, *pb.ListEventsRequ
 }
 
 func TestErrorGroupStats(t *testing.T) {
-	client.MockTestGrpcHelper(t, ErrorGroupStats(), createErrorGroupStats, client.TestOptions{})
+	client.MockTestHelper(t, ErrorGroupStats(), client.WithCreateGrpcService(createErrorGroupStats))
 }

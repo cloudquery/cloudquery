@@ -35,7 +35,7 @@ func (*fakeIndexendpointLocationsServer) ListLocations(context.Context, *pb.List
 }
 
 func TestIndexendpointLocations(t *testing.T) {
-	client.MockTestGrpcHelper(t, IndexendpointLocations(), createIndexendpointLocations, client.TestOptions{})
+	client.MockTestHelper(t, IndexendpointLocations(), client.WithCreateGrpcService(createIndexendpointLocations))
 }
 
 type fakeIndexendpointLocationsRelationsServer struct {

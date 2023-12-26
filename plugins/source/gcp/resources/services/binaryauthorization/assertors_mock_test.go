@@ -26,10 +26,11 @@ func (*fakeAssertorsServer) ListAttestors(context.Context, *pb.ListAttestorsRequ
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.Attestors[0].AttestorType = &pb.Attestor_UserOwnedGrafeasNote{UserOwnedGrafeasNote: &pb.UserOwnedGrafeasNote{DelegationServiceAccountEmail: "test"}}
 	resp.NextPageToken = ""
 	return &resp, nil
 }
 
 func TestAssertors(t *testing.T) {
-	client.MockTestGrpcHelper(t, Assertors(), createAssertors, client.TestOptions{})
+	client.MockTestHelper(t, Assertors(), client.WithCreateGrpcService(createAssertors))
 }

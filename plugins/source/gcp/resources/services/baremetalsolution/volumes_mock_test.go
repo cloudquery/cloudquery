@@ -40,5 +40,5 @@ func (*fakeVolumesServer) ListLuns(context.Context, *pb.ListLunsRequest) (*pb.Li
 }
 
 func TestVolumes(t *testing.T) {
-	client.MockTestGrpcHelper(t, Volumes(), createVolumes, client.TestOptions{})
+	client.MockTestHelper(t, Volumes(), client.WithCreateGrpcService(createVolumes))
 }

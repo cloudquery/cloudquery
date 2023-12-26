@@ -26,10 +26,12 @@ func (*fakeFunctionsServer) ListFunctions(context.Context, *pb.ListFunctionsRequ
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.Functions[0].SourceCode = &pb.CloudFunction_SourceUploadUrl{SourceUploadUrl: "https://storage.googleapis.com/test"}
+	resp.Functions[0].Trigger = &pb.CloudFunction_EventTrigger{EventTrigger: &pb.EventTrigger{EventType: "google.pubsub.topic.publish"}}
 	resp.NextPageToken = ""
 	return &resp, nil
 }
 
 func TestFunctions(t *testing.T) {
-	client.MockTestGrpcHelper(t, Functions(), createFunctions, client.TestOptions{})
+	client.MockTestHelper(t, Functions(), client.WithCreateGrpcService(createFunctions))
 }

@@ -33,5 +33,5 @@ func createFirewalls(mux *httprouter.Router) error {
 }
 
 func TestFirewalls(t *testing.T) {
-	client.MockTestRestHelper(t, Firewalls(), createFirewalls, client.TestOptions{})
+	client.MockTestHelper(t, Firewalls(), client.WithCreateHTTPServer(createFirewalls))
 }

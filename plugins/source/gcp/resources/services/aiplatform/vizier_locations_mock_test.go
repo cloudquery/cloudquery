@@ -35,7 +35,7 @@ func (*fakeVizierLocationsServer) ListLocations(context.Context, *pb.ListLocatio
 }
 
 func TestVizierLocations(t *testing.T) {
-	client.MockTestGrpcHelper(t, VizierLocations(), createVizierLocations, client.TestOptions{})
+	client.MockTestHelper(t, VizierLocations(), client.WithCreateGrpcService(createVizierLocations))
 }
 
 type fakeVizierLocationsRelationsServer struct {

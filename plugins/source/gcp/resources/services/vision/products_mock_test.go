@@ -41,5 +41,5 @@ func (*fakeServer) ListReferenceImages(context.Context, *pb.ListReferenceImagesR
 }
 
 func TestInstances(t *testing.T) {
-	client.MockTestGrpcHelper(t, Products(), createServer, client.TestOptions{})
+	client.MockTestHelper(t, Products(), client.WithCreateGrpcService(createServer))
 }

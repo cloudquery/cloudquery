@@ -35,7 +35,7 @@ func (*fakeModelLocationsServer) ListLocations(context.Context, *pb.ListLocation
 }
 
 func TestModelLocations(t *testing.T) {
-	client.MockTestGrpcHelper(t, ModelLocations(), createModelLocations, client.TestOptions{})
+	client.MockTestHelper(t, ModelLocations(), client.WithCreateGrpcService(createModelLocations))
 }
 
 type fakeModelLocationsRelationsServer struct {

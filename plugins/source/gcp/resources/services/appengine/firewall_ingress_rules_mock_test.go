@@ -31,5 +31,5 @@ func (*fakeFirewallIngressRulesServer) ListIngressRules(context.Context, *pb.Lis
 }
 
 func TestFirewallIngressRules(t *testing.T) {
-	client.MockTestGrpcHelper(t, FirewallIngressRules(), createFirewallIngressRules, client.TestOptions{})
+	client.MockTestHelper(t, FirewallIngressRules(), client.WithCreateGrpcService(createFirewallIngressRules))
 }

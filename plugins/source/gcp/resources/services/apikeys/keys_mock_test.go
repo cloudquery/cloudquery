@@ -31,5 +31,5 @@ func (*fakeKeysServer) ListKeys(context.Context, *pb.ListKeysRequest) (*pb.ListK
 }
 
 func TestKeys(t *testing.T) {
-	client.MockTestGrpcHelper(t, Keys(), createKeys, client.TestOptions{})
+	client.MockTestHelper(t, Keys(), client.WithCreateGrpcService(createKeys))
 }

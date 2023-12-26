@@ -33,5 +33,5 @@ func createDiskTypes(mux *httprouter.Router) error {
 }
 
 func TestDiskTypes(t *testing.T) {
-	client.MockTestRestHelper(t, DiskTypes(), createDiskTypes, client.TestOptions{})
+	client.MockTestHelper(t, DiskTypes(), client.WithCreateHTTPServer(createDiskTypes))
 }

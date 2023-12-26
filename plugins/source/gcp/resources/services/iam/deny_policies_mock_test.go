@@ -32,5 +32,5 @@ func (*fakeDenyPoliciesServer) ListPolicies(context.Context, *pb.ListPoliciesReq
 }
 
 func TestDenyPolicies(t *testing.T) {
-	client.MockTestGrpcHelper(t, DenyPolicies(), createDenyPolicies, client.TestOptions{})
+	client.MockTestHelper(t, DenyPolicies(), client.WithCreateGrpcService(createDenyPolicies))
 }
