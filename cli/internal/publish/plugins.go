@@ -3,13 +3,14 @@ package publish
 import (
 	"bytes"
 	"context"
+	"crypto/tls"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
-	"os/exec"
 	"path"
 	"path/filepath"
 	"strings"
@@ -18,9 +19,15 @@ import (
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/internal/hub"
 	"github.com/distribution/reference"
+	"github.com/docker/distribution"
+	"github.com/docker/distribution/manifest/manifestlist"
+	"github.com/docker/distribution/manifest/schema2"
+	distributionclient "github.com/docker/distribution/registry/client"
+	"github.com/docker/distribution/registry/client/auth/challenge"
 	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/api/types/registry"
 	"github.com/docker/docker/client"
+	"github.com/opencontainers/go-digest"
 	"github.com/schollz/progressbar/v3"
 )
 
@@ -65,6 +72,26 @@ type dockerProgressInfo struct {
 	ErrorDetail struct {
 		Message string `json:"message"`
 	} `json:"errorDetail"`
+}
+
+type transportWithRegistryAuth struct {
+	http.RoundTripper
+	baseTransport *http.Transport
+	registryAuth  string
+}
+
+func newTransportWithRegistryAuth(insecureSkipVerify bool, registryAuth string) *transportWithRegistryAuth {
+	baseTransport := http.DefaultTransport.(*http.Transport).Clone()
+	baseTransport.TLSClientConfig.InsecureSkipVerify = insecureSkipVerify
+	return &transportWithRegistryAuth{
+		baseTransport: baseTransport,
+		registryAuth:  registryAuth,
+	}
+}
+
+func (t *transportWithRegistryAuth) RoundTrip(req *http.Request) (resp *http.Response, err error) {
+	req.Header.Set("Authorization", "Bearer "+t.registryAuth)
+	return t.baseTransport.RoundTrip(req)
 }
 
 func pushProgressBar(maxBytes int64, description ...string) *progressbar.ProgressBar {
@@ -350,15 +377,183 @@ func pushImage(ctx context.Context, dockerClient *client.Client, t TargetBuild, 
 	return nil
 }
 
-func dockerLogout(ctx context.Context, repository string) {
-	dockerLogoutArgs := []string{"logout", repository}
-	cmd := exec.CommandContext(ctx, "docker", dockerLogoutArgs...)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	_ = cmd.Run()
+func getDockerToken(ctx context.Context, ref reference.Named, version, username, password string, insecureSkipVerify bool) (string, error) {
+	// https://distribution.github.io/distribution/spec/auth/token/#how-to-authenticate
+	domain := reference.Domain(ref)
+	name := reference.Path(ref)
+
+	customTransport := http.DefaultTransport.(*http.Transport).Clone()
+	customTransport.TLSClientConfig = &tls.Config{InsecureSkipVerify: insecureSkipVerify}
+	httpClient := &http.Client{Transport: customTransport}
+
+	challengeUrl := fmt.Sprintf("https://%[1]s/v2/%[2]s/manifests/%[3]s", domain, name, version)
+	challengeReq, err := http.NewRequestWithContext(ctx, http.MethodPut, challengeUrl, nil)
+	if err != nil {
+		return "", fmt.Errorf("client: could not create request: %s", err)
+	}
+	challengeRes, err := httpClient.Do(challengeReq)
+	if err != nil {
+		return "", fmt.Errorf("client: could not send request: %s", err)
+	}
+	defer challengeRes.Body.Close()
+	if challengeRes.StatusCode != http.StatusUnauthorized {
+		return "", fmt.Errorf("client: unexpected status code: %d", challengeRes.StatusCode)
+	}
+	challengeHeader := challengeRes.Header.Get("WWW-Authenticate")
+	if challengeHeader == "" {
+		return "", fmt.Errorf("client: missing WWW-Authenticate header")
+	}
+	challenges := challenge.ResponseChallenges(challengeRes)
+	if len(challenges) != 1 {
+		return "", fmt.Errorf("client: expected 1 challenge header, got %d. Header value %q", len(challenges), challengeHeader)
+	}
+	realm := challenges[0].Parameters["realm"]
+	service := challenges[0].Parameters["service"]
+	scope := challenges[0].Parameters["scope"]
+	if realm == "" || service == "" || scope == "" {
+		return "", fmt.Errorf("client: could not parse challenge header %q", challengeHeader)
+	}
+
+	url := fmt.Sprintf("%[1]s?service=%[2]s&scope=%[3]s", realm, service, scope)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	basicAuth := base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
+	req.Header.Add("Authorization", "Basic "+basicAuth)
+	if err != nil {
+		return "", fmt.Errorf("client: could not create request: %s", err)
+	}
+
+	res, err := httpClient.Do(req)
+	if err != nil {
+		return "", fmt.Errorf("client: could not send request: %s", err)
+	}
+	defer res.Body.Close()
+
+	tokenResponse := map[string]string{}
+	if err := json.NewDecoder(res.Body).Decode(&tokenResponse); err != nil {
+		return "", fmt.Errorf("client: could not decode response: %s", err)
+	}
+	return tokenResponse["token"], nil
+}
+
+func getManifestParams(target string) (imageName reference.Named, repository string, err error) {
+	ref, err := reference.ParseNamed(target)
+	if err != nil {
+		return nil, "", fmt.Errorf("failed to parse Docker image tag: %v", err)
+	}
+	repository = reference.Domain(ref)
+	refPath := reference.Path(ref)
+	imageName, err = reference.WithName(refPath)
+	if err != nil {
+		return nil, "", fmt.Errorf("failed to create Docker repository: %v", err)
+	}
+	return imageName, repository, nil
+}
+
+func getManifestService(ctx context.Context, imageName reference.Named, repository string, registryAuth string, insecureSkipVerify bool) (distribution.ManifestService, error) {
+	schema2Func := func(b []byte) (distribution.Manifest, distribution.Descriptor, error) {
+		m := new(schema2.DeserializedManifest)
+		err := m.UnmarshalJSON(b)
+		if err != nil {
+			return nil, distribution.Descriptor{}, err
+		}
+
+		dgst := digest.FromBytes(b)
+		return m, distribution.Descriptor{Digest: dgst, Size: int64(len(b)), MediaType: schema2.MediaTypeManifest}, err
+	}
+	err := distribution.RegisterManifestSchema(schema2.MediaTypeManifest, schema2Func)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create Docker manifest: %v", err)
+	}
+
+	repo, err := distributionclient.NewRepository(imageName, "https://"+repository, newTransportWithRegistryAuth(insecureSkipVerify, registryAuth))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create Docker repository: %v", err)
+	}
+	manifestService, err := repo.Manifests(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create Docker manifest: %v", err)
+	}
+	return manifestService, nil
+}
+
+func getTagsFromTargets(targets []TargetBuild) ([]reference.NamedTagged, error) {
+	namedTags := make([]reference.NamedTagged, len(targets))
+	for i, t := range targets {
+		namedRef, err := reference.ParseNormalizedNamed(t.DockerImageTag)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse Docker image tag: %v", err)
+		}
+		nameWithTag, ok := namedRef.(reference.NamedTagged)
+		if !ok {
+			return nil, fmt.Errorf("failed to parse Docker image tag: %v", err)
+		}
+		namedTags[i] = nameWithTag
+	}
+	return namedTags, nil
+}
+
+func getManifestList(ctx context.Context, manifestService distribution.ManifestService, pkgJSON PackageJSONV1) (*manifestlist.DeserializedManifestList, error) {
+	namedTags, err := getTagsFromTargets(pkgJSON.SupportedTargets)
+	if err != nil {
+		return nil, err
+	}
+
+	descriptors := make([]manifestlist.ManifestDescriptor, 0)
+	for i, namedTag := range namedTags {
+		buildTarget := pkgJSON.SupportedTargets[i]
+		manifest, err := manifestService.Get(ctx, "", distribution.WithTag(namedTag.Tag()))
+		if err != nil {
+			return nil, fmt.Errorf("failed to create Docker manifest: %v", err)
+		}
+		mediaType, canonical, err := manifest.Payload()
+		if err != nil {
+			return nil, fmt.Errorf("failed to create Docker manifest: %v", err)
+		}
+		manifestDesc := manifestlist.ManifestDescriptor{
+			Descriptor: distribution.Descriptor{
+				Digest:    digest.FromBytes(canonical),
+				Size:      int64(len(canonical)),
+				MediaType: mediaType},
+			Platform: manifestlist.PlatformSpec{OS: buildTarget.OS, Architecture: buildTarget.Arch},
+		}
+		descriptors = append(descriptors, manifestDesc)
+	}
+	list, err := manifestlist.FromDescriptors(descriptors)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create Docker manifest: %v", err)
+	}
+	return list, nil
+}
+
+func pushManifest(ctx context.Context, pkgJSON PackageJSONV1, dockerToken string, insecureSkipVerify bool) error {
+	imageName, repository, err := getManifestParams(pkgJSON.SupportedTargets[0].DockerImageTag)
+	if err != nil {
+		return err
+	}
+
+	manifestService, err := getManifestService(ctx, imageName, repository, dockerToken, insecureSkipVerify)
+	if err != nil {
+		return err
+	}
+
+	manifestList, err := getManifestList(ctx, manifestService, pkgJSON)
+	if err != nil {
+		return err
+	}
+
+	digest, err := manifestService.Put(ctx, manifestList, distribution.WithTag(pkgJSON.Version))
+	if err != nil {
+		return fmt.Errorf("failed to create Docker manifest: %v", err)
+	}
+	fmt.Println("Created manifest:", digest.String())
+	return nil
 }
 
 func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON PackageJSONV1) error {
+	// We use a mix of the Docker Go SDK that implements the Docker Engine API https://docs.docker.com/engine/api/latest/
+	// and talking to the registry directly since the Docker Engine API doesn't support the manifest API yet
+
+	// Loading and pushing the images is done via the Docker Go SDK
 	dockerClient, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
 		return fmt.Errorf("failed to create Docker client: %v", err)
@@ -393,53 +588,24 @@ func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON
 		}
 	}
 
-	// Merge all platforms into a single manifest
+	// Pushing the manifest is done by talking to the registry directly, so we need to get a bearer token
 	ref, err := reference.ParseNamed(pkgJSON.SupportedTargets[0].DockerImageTag)
 	if err != nil {
 		return fmt.Errorf("failed to parse Docker image tag: %v", err)
 	}
-	version := pkgJSON.Version
-	repository := reference.Domain(ref)
-	refPath := reference.Path(ref)
-	manifestTarget := repository + "/" + refPath + ":" + version
-	platformImages := make([]string, len(pkgJSON.SupportedTargets))
-	for i, t := range pkgJSON.SupportedTargets {
-		platformImages[i] = t.DockerImageTag
+
+	insecureSkipVerify := false
+	if strings.HasPrefix(reference.Domain(ref), "localhost") {
+		insecureSkipVerify = true
 	}
 
-	// We need to invoke the CLI directly because the Docker SDK doesn't support manifest create/push
-	dockerLoginArgs := []string{"login", repository, "--username", username, "--password-stdin"}
-	cmd := exec.CommandContext(ctx, "docker", dockerLoginArgs...)
-	stdin, err := cmd.StdinPipe()
+	dockerToken, err := getDockerToken(ctx, ref, pkgJSON.Version, username, password, insecureSkipVerify)
 	if err != nil {
-		return fmt.Errorf("failed to login to Docker registry: %v", err)
-	}
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	if err := cmd.Start(); err != nil {
-		return fmt.Errorf("failed to login to Docker registry: %v", err)
-	}
-	io.WriteString(stdin, password)
-	stdin.Close()
-	if err := cmd.Wait(); err != nil {
-		return fmt.Errorf("failed to login to Docker registry: %v", err)
-	}
-	defer dockerLogout(ctx, repository)
-
-	manifestCreateArgs := append([]string{"manifest", "create", "--amend", manifestTarget}, platformImages...)
-	cmd = exec.CommandContext(ctx, "docker", manifestCreateArgs...)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("failed to create Docker manifest: %v", err)
+		return fmt.Errorf("failed to get bearer token: %v", err)
 	}
 
-	manifestPushArgs := []string{"manifest", "push", manifestTarget}
-	cmd = exec.CommandContext(ctx, "docker", manifestPushArgs...)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("failed to push Docker manifest: %v", err)
+	if err := pushManifest(ctx, pkgJSON, dockerToken, insecureSkipVerify); err != nil {
+		return fmt.Errorf("failed to tag image: %v", err)
 	}
 
 	return nil
