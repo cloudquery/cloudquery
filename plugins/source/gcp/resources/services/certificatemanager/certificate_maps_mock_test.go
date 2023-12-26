@@ -36,10 +36,11 @@ func (*fakeCertificateMapsServer) ListCertificateMapEntries(context.Context, *pb
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.CertificateMapEntries[0].Match = &pb.CertificateMapEntry_Hostname{Hostname: "test"}
 	resp.NextPageToken = ""
 	return &resp, nil
 }
 
 func TestCertificateMaps(t *testing.T) {
-	client.MockTestGrpcHelper(t, CertificateMaps(), createCertificateMaps, client.TestOptions{})
+	client.MockTestHelper(t, CertificateMaps(), client.WithCreateGrpcService(createCertificateMaps))
 }

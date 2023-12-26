@@ -31,5 +31,5 @@ func (*fakeInstancesServer) ListInstances(context.Context, *pb.ListInstancesRequ
 }
 
 func TestInstances(t *testing.T) {
-	client.MockTestGrpcHelper(t, Instances(), createInstances, client.TestOptions{})
+	client.MockTestHelper(t, Instances(), client.WithCreateGrpcService(createInstances))
 }

@@ -32,5 +32,5 @@ func createCases(mux *httprouter.Router) error {
 }
 
 func TestCases(t *testing.T) {
-	client.MockTestRestHelper(t, Cases(), createCases, client.TestOptions{})
+	client.MockTestHelper(t, Cases(), client.WithCreateHTTPServer(createCases))
 }

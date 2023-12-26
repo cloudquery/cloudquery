@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/types/known/durationpb"
 )
 
 func createSecrets(gsrv *grpc.Server) error {
@@ -26,10 +27,11 @@ func (*fakeSecretsServer) ListSecrets(context.Context, *pb.ListSecretsRequest) (
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.Secrets[0].Expiration = &pb.Secret_Ttl{Ttl: &durationpb.Duration{Seconds: 1}}
 	resp.NextPageToken = ""
 	return &resp, nil
 }
 
 func TestSecrets(t *testing.T) {
-	client.MockTestGrpcHelper(t, Secrets(), createSecrets, client.TestOptions{})
+	client.MockTestHelper(t, Secrets(), client.WithCreateGrpcService(createSecrets))
 }

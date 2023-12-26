@@ -35,7 +35,7 @@ func (*fakeEndpointLocationsServer) ListLocations(context.Context, *pb.ListLocat
 }
 
 func TestEndpointLocations(t *testing.T) {
-	client.MockTestGrpcHelper(t, EndpointLocations(), createEndpointLocations, client.TestOptions{})
+	client.MockTestHelper(t, EndpointLocations(), client.WithCreateGrpcService(createEndpointLocations))
 }
 
 type fakeEndpointLocationsRelationsServer struct {

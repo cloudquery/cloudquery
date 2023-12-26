@@ -33,5 +33,5 @@ func createBackendServices(mux *httprouter.Router) error {
 }
 
 func TestBackendServices(t *testing.T) {
-	client.MockTestRestHelper(t, BackendServices(), createBackendServices, client.TestOptions{})
+	client.MockTestHelper(t, BackendServices(), client.WithCreateHTTPServer(createBackendServices))
 }

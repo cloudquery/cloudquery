@@ -33,5 +33,5 @@ func createImages(mux *httprouter.Router) error {
 }
 
 func TestImages(t *testing.T) {
-	client.MockTestRestHelper(t, Images(), createImages, client.TestOptions{})
+	client.MockTestHelper(t, Images(), client.WithCreateHTTPServer(createImages))
 }

@@ -24,91 +24,90 @@ import (
 )
 
 type TestOptions struct {
-	SkipEmptyJsonB bool
+	SkipEmptyJsonB    bool
+	CreateGrpcService func(*grpc.Server) error
+	CreateHTTPServer  func(*httprouter.Router) error
 }
 
-func MockTestGrpcHelper(t *testing.T, table *schema.Table, createService func(*grpc.Server) error, options TestOptions) {
+type Option func(*TestOptions)
+
+func WithCreateGrpcService(createGrpcService func(*grpc.Server) error) Option {
+	return func(to *TestOptions) {
+		to.CreateGrpcService = createGrpcService
+	}
+}
+
+func WithCreateHTTPServer(createHTTPServer func(*httprouter.Router) error) Option {
+	return func(to *TestOptions) {
+		to.CreateHTTPServer = createHTTPServer
+	}
+}
+
+func MockTestHelper(t *testing.T, table *schema.Table, opts ...Option) {
 	t.Helper()
 
+	options := TestOptions{}
+	for _, opt := range opts {
+		opt(&options)
+	}
+
 	table.IgnoreInTests = false
-	gsrv := grpc.NewServer()
-	listener, err := net.Listen("tcp", "localhost:0")
-	if err != nil {
-		t.Fatalf("failed to listen: %v", err)
-	}
-	defer gsrv.Stop()
-	eg := &errgroup.Group{}
-	if err := createService(gsrv); err != nil {
-		t.Fatal(err)
-	}
-	eg.Go(func() error {
-		return gsrv.Serve(listener)
-	})
 	clientOptions := []option.ClientOption{
-		option.WithEndpoint(listener.Addr().String()),
 		option.WithoutAuthentication(),
 		option.WithGRPCDialOption(grpc.WithTransportCredentials(insecure.NewCredentials())),
 	}
+	var gsrv *grpc.Server
+	var eg *errgroup.Group
+	if options.CreateGrpcService != nil {
+		gsrv = grpc.NewServer()
+		listener, err := net.Listen("tcp", "localhost:0")
+		if err != nil {
+			t.Fatalf("failed to listen: %v", err)
+		}
+		defer gsrv.Stop()
+		eg = &errgroup.Group{}
+		if err := options.CreateGrpcService(gsrv); err != nil {
+			t.Fatal(err)
+		}
+		eg.Go(func() error {
+			return gsrv.Serve(listener)
+		})
+
+		clientOptions = append(clientOptions, option.WithEndpoint(listener.Addr().String()))
+	}
+
+	var mux *httprouter.Router
+	var ts *httptest.Server
+	var wg *sync.WaitGroup
+	if options.CreateHTTPServer != nil {
+		mux = httprouter.New()
+		ts = httptest.NewUnstartedServer(mux)
+		tsURL := "http://" + ts.Listener.Addr().String()
+		defer ts.Close()
+		if err := options.CreateHTTPServer(mux); err != nil {
+			t.Fatal(err)
+		}
+		wg = &sync.WaitGroup{}
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			ts.Start()
+		}()
+		clientOptions = append(clientOptions,
+			option.WithEndpoint(tsURL),
+			option.WithGRPCDialOption(grpc.WithBlock()),
+		)
+	}
 	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	c := &Client{
-		logger:        l,
+		Backend:       &state.NoOpClient{},
 		ClientOptions: clientOptions,
-		projects:      []string{"testProject"},
-		orgs:          []*crmv1.Organization{{Name: "organizations/testOrg"}},
 		folderIds:     []string{"testFolder"},
-		Backend:       &state.NoOpClient{},
-	}
-
-	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
-	messages, err := sched.SyncAll(context.Background(), c, schema.Tables{table})
-	if err != nil {
-		t.Fatalf("failed to sync: %v", err)
-	}
-
-	records := messages.GetInserts().GetRecordsForTable(table)
-	emptyColumns := schema.FindEmptyColumns(table, records)
-	if len(emptyColumns) > 0 {
-		t.Fatalf("empty columns: %v", emptyColumns)
-	}
-	gsrv.Stop()
-	if err := eg.Wait(); err != nil {
-		t.Fatalf("failed to serve: %v", err)
-	}
-}
-
-func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*httprouter.Router) error, options TestOptions) {
-	t.Helper()
-
-	table.IgnoreInTests = false
-	mux := httprouter.New()
-	ts := httptest.NewUnstartedServer(mux)
-	tsURL := "http://" + ts.Listener.Addr().String()
-	defer ts.Close()
-	if err := createService(mux); err != nil {
-		t.Fatal(err)
-	}
-	wg := &sync.WaitGroup{}
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		ts.Start()
-	}()
-	clientOptions := []option.ClientOption{
-		option.WithEndpoint(tsURL),
-		option.WithoutAuthentication(),
-		option.WithGRPCDialOption(grpc.WithBlock()),
-	}
-	l := zerolog.New(zerolog.NewTestWriter(t)).Output(
-		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
-	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
-	c := &Client{
 		logger:        l,
-		ClientOptions: clientOptions,
-		projects:      []string{"testProject"},
 		orgs:          []*crmv1.Organization{{Name: "organizations/testOrg"}},
-		Backend:       &state.NoOpClient{},
+		projects:      []string{"testProject"},
 	}
 
 	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
@@ -121,7 +120,14 @@ func MockTestRestHelper(t *testing.T, table *schema.Table, createService func(*h
 		t.Fatalf("failed to sync: %v", err)
 	}
 	plugin.ValidateNoEmptyColumns(t, tables, messages)
-
-	ts.Close()
-	wg.Wait()
+	if gsrv != nil {
+		gsrv.Stop()
+		if err := eg.Wait(); err != nil {
+			t.Fatalf("failed to serve: %v", err)
+		}
+	}
+	if mux != nil {
+		ts.Close()
+		wg.Wait()
+	}
 }

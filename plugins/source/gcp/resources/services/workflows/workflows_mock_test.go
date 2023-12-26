@@ -28,9 +28,10 @@ func (*fakeServer) ListWorkflows(context.Context, *pb.ListWorkflowsRequest) (*pb
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
 	resp.NextPageToken = ""
+	resp.Workflows[0].SourceCode = &pb.Workflow_SourceContents{SourceContents: "fake_source_code"}
 	return &resp, nil
 }
 
 func TestInstances(t *testing.T) {
-	client.MockTestGrpcHelper(t, Workflows(), createServer, client.TestOptions{})
+	client.MockTestHelper(t, Workflows(), client.WithCreateGrpcService(createServer))
 }

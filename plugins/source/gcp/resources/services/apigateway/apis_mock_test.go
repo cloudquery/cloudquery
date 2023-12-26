@@ -31,5 +31,5 @@ func (*fakeApisServer) ListApis(context.Context, *pb.ListApisRequest) (*pb.ListA
 }
 
 func TestApis(t *testing.T) {
-	client.MockTestGrpcHelper(t, Apis(), createApis, client.TestOptions{})
+	client.MockTestHelper(t, Apis(), client.WithCreateGrpcService(createApis))
 }

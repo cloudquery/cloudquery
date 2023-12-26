@@ -35,7 +35,7 @@ func (*fakeMetadataLocationsServer) ListLocations(context.Context, *pb.ListLocat
 }
 
 func TestMetadataLocations(t *testing.T) {
-	client.MockTestGrpcHelper(t, MetadataLocations(), createMetadataLocations, client.TestOptions{})
+	client.MockTestHelper(t, MetadataLocations(), client.WithCreateGrpcService(createMetadataLocations))
 }
 
 type fakeMetadataLocationsRelationsServer struct {

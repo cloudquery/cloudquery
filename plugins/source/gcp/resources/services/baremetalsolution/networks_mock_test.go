@@ -31,5 +31,5 @@ func (*fakeNetworksServer) ListNetworks(context.Context, *pb.ListNetworksRequest
 }
 
 func TestNetworks(t *testing.T) {
-	client.MockTestGrpcHelper(t, Networks(), createNetworks, client.TestOptions{})
+	client.MockTestHelper(t, Networks(), client.WithCreateGrpcService(createNetworks))
 }

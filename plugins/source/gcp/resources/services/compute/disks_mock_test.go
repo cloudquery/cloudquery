@@ -33,5 +33,5 @@ func createDisks(mux *httprouter.Router) error {
 }
 
 func TestDisks(t *testing.T) {
-	client.MockTestRestHelper(t, Disks(), createDisks, client.TestOptions{})
+	client.MockTestHelper(t, Disks(), client.WithCreateHTTPServer(createDisks))
 }

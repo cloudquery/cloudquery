@@ -33,5 +33,5 @@ func createAutoscalers(mux *httprouter.Router) error {
 }
 
 func TestAutoscalers(t *testing.T) {
-	client.MockTestRestHelper(t, Autoscalers(), createAutoscalers, client.TestOptions{})
+	client.MockTestHelper(t, Autoscalers(), client.WithCreateHTTPServer(createAutoscalers))
 }

@@ -65,5 +65,5 @@ func createManagedZones(mux *httprouter.Router) error {
 }
 
 func TestManagedZones(t *testing.T) {
-	client.MockTestRestHelper(t, ManagedZones(), createManagedZones, client.TestOptions{})
+	client.MockTestHelper(t, ManagedZones(), client.WithCreateHTTPServer(createManagedZones))
 }

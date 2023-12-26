@@ -32,5 +32,5 @@ func (*fakeGroupsServer) ListGroups(context.Context, *pb.ListGroupsRequest) (*pb
 }
 
 func TestGroups(t *testing.T) {
-	client.MockTestGrpcHelper(t, Groups(), createGroupsServer, client.TestOptions{})
+	client.MockTestHelper(t, Groups(), client.WithCreateGrpcService(createGroupsServer))
 }

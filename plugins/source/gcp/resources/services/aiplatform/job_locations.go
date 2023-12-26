@@ -32,7 +32,7 @@ func JobLocations() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			BatchPredictionJobs(),
+			batchPredictionJobs(),
 			CustomJobs(),
 			DataLabelingJobs(),
 			HyperparameterTuningJobs(),

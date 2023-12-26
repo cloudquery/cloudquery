@@ -26,10 +26,11 @@ func (*fakeCertificatesServer) ListCertificates(context.Context, *pb.ListCertifi
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.Certificates[0].Type = &pb.Certificate_Managed{Managed: &pb.Certificate_ManagedCertificate{Domains: []string{"test"}}}
 	resp.NextPageToken = ""
 	return &resp, nil
 }
 
 func TestCertificates(t *testing.T) {
-	client.MockTestGrpcHelper(t, Certificates(), createCertificates, client.TestOptions{})
+	client.MockTestHelper(t, Certificates(), client.WithCreateGrpcService(createCertificates))
 }

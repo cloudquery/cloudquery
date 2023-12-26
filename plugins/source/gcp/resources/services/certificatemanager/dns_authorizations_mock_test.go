@@ -31,5 +31,5 @@ func (*fakeDnsAuthorizationsServer) ListDnsAuthorizations(context.Context, *pb.L
 }
 
 func TestDnsAuthorizations(t *testing.T) {
-	client.MockTestGrpcHelper(t, DnsAuthorizations(), createDnsAuthorizations, client.TestOptions{})
+	client.MockTestHelper(t, DnsAuthorizations(), client.WithCreateGrpcService(createDnsAuthorizations))
 }

@@ -27,6 +27,7 @@ func (*fakeDeliveryPipelinesServer) ListDeliveryPipelines(context.Context, *pb.L
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.DeliveryPipelines[0].Pipeline = &pb.DeliveryPipeline_SerialPipeline{SerialPipeline: &pb.SerialPipeline{Stages: []*pb.Stage{{TargetId: "test"}}}}
 	resp.NextPageToken = ""
 	return &resp, nil
 }
@@ -54,10 +55,11 @@ func (*fakeDeliveryPipelinesServer) ListJobRuns(context.Context, *pb.ListJobRuns
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.JobRuns[0].JobRun = &pb.JobRun_DeployJobRun{DeployJobRun: &pb.DeployJobRun{Build: "test"}}
 	resp.NextPageToken = ""
 	return &resp, nil
 }
 
 func TestDeliveryPipelines(t *testing.T) {
-	client.MockTestGrpcHelper(t, DeliveryPipelines(), createDeliveryPipelines, client.TestOptions{})
+	client.MockTestHelper(t, DeliveryPipelines(), client.WithCreateGrpcService(createDeliveryPipelines))
 }
