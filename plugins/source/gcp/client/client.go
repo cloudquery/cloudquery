@@ -54,8 +54,8 @@ type Client struct {
 	// Logger
 	logger              zerolog.Logger
 	Backend             state.Client
-	TestingGRPCEndpoint string
-	TestingHTTPEndpoint string
+	TestingGRPCEndpoint *string
+	TestingHTTPEndpoint *string
 }
 
 func (c *Client) WithBackend(backend state.Client) *Client {
