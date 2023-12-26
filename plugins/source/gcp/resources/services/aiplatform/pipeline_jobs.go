@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"google.golang.org/api/iterator"
+	"google.golang.org/api/option"
 
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	"github.com/apache/arrow/go/v15/arrow"
@@ -44,7 +45,7 @@ func fetchPipelineJobs(ctx context.Context, meta schema.ClientMeta, parent *sche
 	}
 
 	clientOptions := c.ClientOptions
-	// clientOptions = append([]option.ClientOption{option.WithEndpoint(parent.Item.(*location.Location).LocationId + "-aiplatform.googleapis.com:443")}, clientOptions...)
+	clientOptions = append([]option.ClientOption{option.WithEndpoint(parent.Item.(*location.Location).LocationId + "-aiplatform.googleapis.com:443")}, clientOptions...)
 	gcpClient, err := aiplatform.NewPipelineClient(ctx, clientOptions...)
 
 	if err != nil {

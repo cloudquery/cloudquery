@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"google.golang.org/api/iterator"
+	"google.golang.org/api/option"
 
 	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
@@ -43,7 +44,7 @@ func fetchPipelineLocations(ctx context.Context, meta schema.ClientMeta, parent 
 	}
 
 	clientOptions := c.ClientOptions
-	// clientOptions = append([]option.ClientOption{option.WithEndpoint("us-central1-aiplatform.googleapis.com:443")}, clientOptions...)
+	clientOptions = append([]option.ClientOption{option.WithEndpoint("us-central1-aiplatform.googleapis.com:443")}, clientOptions...)
 	gcpClient, err := aiplatform.NewPipelineClient(ctx, clientOptions...)
 
 	if err != nil {
