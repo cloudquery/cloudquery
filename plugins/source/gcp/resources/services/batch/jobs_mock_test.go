@@ -31,5 +31,5 @@ func (*fakeJobsServer) ListJobs(context.Context, *pb.ListJobsRequest) (*pb.ListJ
 }
 
 func TestJobs(t *testing.T) {
-	client.MockTestGrpcHelper(t, Jobs(), createJobs, client.TestOptions{})
+	client.MockTestHelper(t, Jobs(), client.WithCreateGrpcService(createJobs))
 }

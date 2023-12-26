@@ -33,5 +33,5 @@ func createInterconnectRemoteLocations(mux *httprouter.Router) error {
 }
 
 func TestInterconnectRemoteLocations(t *testing.T) {
-	client.MockTestRestHelper(t, InterconnectRemoteLocations(), createInterconnectRemoteLocations, client.TestOptions{})
+	client.MockTestHelper(t, InterconnectRemoteLocations(), client.WithCreateHTTPServer(createInterconnectRemoteLocations))
 }

@@ -31,5 +31,5 @@ func (*fakeMetricsServer) ListLogMetrics(context.Context, *pb.ListLogMetricsRequ
 }
 
 func TestMetrics(t *testing.T) {
-	client.MockTestGrpcHelper(t, Metrics(), createMetrics, client.TestOptions{})
+	client.MockTestHelper(t, Metrics(), client.WithCreateGrpcService(createMetrics))
 }

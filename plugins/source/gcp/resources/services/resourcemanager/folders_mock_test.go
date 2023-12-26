@@ -48,5 +48,5 @@ func (*fakeFoldersServer) ListFolders(_ context.Context, req *pb.ListFoldersRequ
 }
 
 func TestFolders(t *testing.T) {
-	client.MockTestGrpcHelper(t, Folders(), createFolders, client.TestOptions{})
+	client.MockTestHelper(t, Folders(), client.WithCreateGrpcService(createFolders))
 }

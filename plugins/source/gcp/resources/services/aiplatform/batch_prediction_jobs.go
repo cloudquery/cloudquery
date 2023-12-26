@@ -18,7 +18,7 @@ import (
 	aiplatform "cloud.google.com/go/aiplatform/apiv1"
 )
 
-func BatchPredictionJobs() *schema.Table {
+func batchPredictionJobs() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_aiplatform_batch_prediction_jobs",
 		Description: `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.batchPredictionJobs#BatchPredictionJob`,

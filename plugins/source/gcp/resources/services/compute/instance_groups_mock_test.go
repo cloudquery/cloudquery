@@ -33,5 +33,5 @@ func createInstanceGroups(mux *httprouter.Router) error {
 }
 
 func TestInstanceGroups(t *testing.T) {
-	client.MockTestRestHelper(t, InstanceGroups(), createInstanceGroups, client.TestOptions{})
+	client.MockTestHelper(t, InstanceGroups(), client.WithCreateHTTPServer(createInstanceGroups))
 }

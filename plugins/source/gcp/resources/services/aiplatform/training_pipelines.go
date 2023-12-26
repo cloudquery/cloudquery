@@ -4,14 +4,13 @@ import (
 	"context"
 
 	"google.golang.org/api/iterator"
+	"google.golang.org/api/option"
 
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-
-	"google.golang.org/api/option"
 
 	"google.golang.org/genproto/googleapis/cloud/location"
 

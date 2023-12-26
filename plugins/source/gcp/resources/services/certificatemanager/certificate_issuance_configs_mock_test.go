@@ -31,5 +31,5 @@ func (*fakeCertificateIssuanceConfigsServer) ListCertificateIssuanceConfigs(cont
 }
 
 func TestCertificateIssuanceConfigs(t *testing.T) {
-	client.MockTestGrpcHelper(t, CertificateIssuanceConfigs(), createCertificateIssuanceConfigs, client.TestOptions{})
+	client.MockTestHelper(t, CertificateIssuanceConfigs(), client.WithCreateGrpcService(createCertificateIssuanceConfigs))
 }

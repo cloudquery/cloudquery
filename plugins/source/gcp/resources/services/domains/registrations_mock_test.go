@@ -31,5 +31,5 @@ func (*fakeRegistrationsServer) ListRegistrations(context.Context, *pb.ListRegis
 }
 
 func TestRegistrations(t *testing.T) {
-	client.MockTestGrpcHelper(t, Registrations(), createRegistrations, client.TestOptions{})
+	client.MockTestHelper(t, Registrations(), client.WithCreateGrpcService(createRegistrations))
 }

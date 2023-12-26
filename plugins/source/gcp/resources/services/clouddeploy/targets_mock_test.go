@@ -26,10 +26,11 @@ func (*fakeTargetsServer) ListTargets(context.Context, *pb.ListTargetsRequest) (
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.Targets[0].DeploymentTarget = &pb.Target_Gke{Gke: &pb.GkeCluster{Cluster: "test"}}
 	resp.NextPageToken = ""
 	return &resp, nil
 }
 
 func TestTargets(t *testing.T) {
-	client.MockTestGrpcHelper(t, Targets(), createTargets, client.TestOptions{})
+	client.MockTestHelper(t, Targets(), client.WithCreateGrpcService(createTargets))
 }

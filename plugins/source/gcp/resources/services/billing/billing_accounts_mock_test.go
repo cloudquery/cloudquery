@@ -46,5 +46,5 @@ func (*fakeBudgetsServer) ListBudgets(context.Context, *budgetspb.ListBudgetsReq
 }
 
 func TestBillingAccounts(t *testing.T) {
-	client.MockTestGrpcHelper(t, BillingAccounts(), createBillingAccounts, client.TestOptions{})
+	client.MockTestHelper(t, BillingAccounts(), client.WithCreateGrpcService(createBillingAccounts))
 }

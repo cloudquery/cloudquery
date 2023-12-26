@@ -31,5 +31,5 @@ func (*fakeAppConnectorsServer) ListAppConnectors(context.Context, *pb.ListAppCo
 }
 
 func TestAppConnectors(t *testing.T) {
-	client.MockTestGrpcHelper(t, AppConnectors(), createAppConnectors, client.TestOptions{})
+	client.MockTestHelper(t, AppConnectors(), client.WithCreateGrpcService(createAppConnectors))
 }

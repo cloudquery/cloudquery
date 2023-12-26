@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	pb "google.golang.org/genproto/googleapis/cloud/location"
 	"google.golang.org/grpc"
+	structpb "google.golang.org/protobuf/types/known/structpb"
 )
 
 func createJobLocations(gsrv *grpc.Server) error {
@@ -35,7 +36,7 @@ func (*fakeJobLocationsServer) ListLocations(context.Context, *pb.ListLocationsR
 }
 
 func TestJobLocations(t *testing.T) {
-	client.MockTestGrpcHelper(t, JobLocations(), createJobLocations, client.TestOptions{})
+	client.MockTestHelper(t, JobLocations(), client.WithCreateGrpcService(createJobLocations))
 }
 
 type fakeJobLocationsRelationsServer struct {
@@ -47,6 +48,7 @@ func (*fakeJobLocationsRelationsServer) ListBatchPredictionJobs(context.Context,
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.BatchPredictionJobs[0].ModelParameters = structpb.NewStringValue("test string")
 	resp.NextPageToken = ""
 	return &resp, nil
 }
@@ -65,6 +67,7 @@ func (*fakeJobLocationsRelationsServer) ListDataLabelingJobs(context.Context, *a
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.DataLabelingJobs[0].Inputs = structpb.NewStringValue("test string")
 	resp.NextPageToken = ""
 	return &resp, nil
 }
@@ -84,5 +87,6 @@ func (*fakeJobLocationsRelationsServer) ListModelDeploymentMonitoringJobs(contex
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
 	resp.NextPageToken = ""
+	resp.ModelDeploymentMonitoringJobs[0].SamplePredictInstance = structpb.NewStringValue("test string")
 	return &resp, nil
 }

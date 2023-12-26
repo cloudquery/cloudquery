@@ -40,5 +40,5 @@ func (*fakeServiceAccountsServer) ListServiceAccountKeys(context.Context, *pb.Li
 }
 
 func TestServiceAccounts(t *testing.T) {
-	client.MockTestGrpcHelper(t, ServiceAccounts(), createServiceAccounts, client.TestOptions{})
+	client.MockTestHelper(t, ServiceAccounts(), client.WithCreateGrpcService(createServiceAccounts))
 }

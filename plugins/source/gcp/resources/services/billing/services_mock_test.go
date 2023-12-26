@@ -31,5 +31,5 @@ func (*fakeServicesServer) ListServices(context.Context, *pb.ListServicesRequest
 }
 
 func TestServices(t *testing.T) {
-	client.MockTestGrpcHelper(t, Services(), createServices, client.TestOptions{})
+	client.MockTestHelper(t, Services(), client.WithCreateGrpcService(createServices))
 }
