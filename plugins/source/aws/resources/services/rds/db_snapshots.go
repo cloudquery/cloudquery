@@ -61,6 +61,10 @@ func fetchRdsDbSnapshots(ctx context.Context, meta schema.ClientMeta, parent *sc
 			if err != nil {
 				// Log error and continue resolving
 				cl.Logger().Warn().Err(err).Msg("failed to fetch snapshot attributes")
+				res <- models.ExtendedSnapshots{
+					DBSnapshot: DBSnapshot,
+				}
+				continue
 			}
 			newAttributes := make([]models.ExtendedAttributes, len(attributes))
 			for _, attribute := range attributes {
