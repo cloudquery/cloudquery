@@ -30,11 +30,6 @@ func Operations() *schema.Table {
 				Resolver:   client.ResolveProject,
 				PrimaryKey: true,
 			},
-			// {
-			// 	Name:     "result",
-			// 	Type:     arrow.BinaryTypes.String,
-			// 	Resolver: resolveResult,
-			// },
 		},
 	}
 }
@@ -66,9 +61,3 @@ func fetchOperations(ctx context.Context, meta schema.ClientMeta, parent *schema
 	}
 	return nil
 }
-
-// func resolveResult(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-// 	operation := resource.Item.(*pb.Operation)
-// 	if operation.
-
-// }
