@@ -110,8 +110,8 @@ func MockTestHelper(t *testing.T, table *schema.Table, opts ...Option) {
 		logger:              l,
 		orgs:                []*crmv1.Organization{{Name: "organizations/testOrg"}},
 		projects:            []string{"testProject"},
-		TestingGRPCEndpoint: grpcEndpoint,
-		TestingHTTPEndpoint: httpTestEndpoint,
+		TestingGRPCEndpoint: &grpcEndpoint,
+		TestingHTTPEndpoint: &httpTestEndpoint,
 	}
 
 	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
