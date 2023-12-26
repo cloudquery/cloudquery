@@ -52,9 +52,10 @@ type Client struct {
 	// this is set by table client Location multiplexer
 	Location string
 	// Logger
-	logger zerolog.Logger
-
-	Backend state.Client
+	logger              zerolog.Logger
+	Backend             state.Client
+	TestingGRPCEndpoint string
+	TestingHTTPEndpoint string
 }
 
 func (c *Client) WithBackend(backend state.Client) *Client {
