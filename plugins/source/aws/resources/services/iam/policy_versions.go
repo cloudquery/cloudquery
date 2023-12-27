@@ -77,7 +77,7 @@ func getPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 		return err
 	}
 
-	resource.SetItem(out.PolicyVersion)
+	resource.SetItem(*out.PolicyVersion)
 
 	return nil
 }
