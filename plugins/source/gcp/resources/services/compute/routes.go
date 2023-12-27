@@ -8,7 +8,6 @@ import (
 	"cloud.google.com/go/compute/apiv1/computepb"
 	"google.golang.org/api/iterator"
 
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
@@ -22,11 +21,7 @@ func Routes() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
 		Transform:   client.TransformWithStruct(&computepb.Route{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
-			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
-			},
+			client.ProjectIDColumn(false),
 		},
 	}
 }
