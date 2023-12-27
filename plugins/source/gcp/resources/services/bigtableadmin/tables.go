@@ -16,12 +16,7 @@ func Tables() *schema.Table {
 		Multiplex:           client.ProjectMultiplexEnabledServices("bigtableadmin.googleapis.com"),
 		Transform:           client.TransformWithStruct(&tableInfoWithName{}, transformers.WithUnwrapStructFields("TableInfo"), transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
-			{
-				Name:       "project_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveProject,
-				PrimaryKey: true,
-			},
+			client.ProjectIDColumn(true),
 			{
 				Name:       "instance_name",
 				Type:       arrow.BinaryTypes.String,

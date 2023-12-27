@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
@@ -16,12 +15,7 @@ func Projects() *schema.Table {
 		Resolver:  noopTableResolver,
 		Multiplex: client.ProjectMultiplex,
 		Columns: []schema.Column{
-			{
-				Name:       "project_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveProject,
-				PrimaryKey: true,
-			},
+			client.ProjectIDColumn(true),
 		},
 	}
 }
