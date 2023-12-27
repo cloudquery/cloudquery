@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/awspricing
 go 1.21.1
 
 require (
-	github.com/cloudquery/plugin-sdk/v4 v4.21.3
+	github.com/cloudquery/plugin-sdk/v4 v4.23.0
 	github.com/rs/zerolog v1.31.0
 )
 
@@ -15,7 +15,7 @@ require (
 	github.com/Shopify/goreferrer v0.0.0-20220729165902-8cddb4f5de06 // indirect
 	github.com/andybalholm/brotli v1.0.6 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
-	github.com/apache/arrow/go/v15 v15.0.0-20231219235838-1c48d69844cb // indirect
+	github.com/apache/arrow/go/v15 v15.0.0-20231227193016-bcaeaa8c2d97 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect

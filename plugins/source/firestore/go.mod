@@ -4,8 +4,8 @@ go 1.21.1
 
 require (
 	cloud.google.com/go/firestore v1.14.0
-	github.com/apache/arrow/go/v15 v15.0.0-20231219235838-1c48d69844cb
-	github.com/cloudquery/plugin-sdk/v4 v4.21.3
+	github.com/apache/arrow/go/v15 v15.0.0-20231227193016-bcaeaa8c2d97
+	github.com/cloudquery/plugin-sdk/v4 v4.23.0
 	github.com/rs/zerolog v1.31.0
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/sync v0.5.0
