@@ -5,7 +5,7 @@ go 1.21.1
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20231227193016-bcaeaa8c2d97
 	github.com/cloudquery/codegen v0.3.12
-	github.com/cloudquery/plugin-sdk/v4 v4.21.3
+	github.com/cloudquery/plugin-sdk/v4 v4.23.0
 	github.com/oracle/oci-go-sdk/v65 v65.28.3
 	github.com/rs/zerolog v1.31.0
 	golang.org/x/exp v0.0.0-20231219180239-dc181d75b848
