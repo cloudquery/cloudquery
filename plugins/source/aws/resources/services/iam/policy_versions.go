@@ -73,7 +73,6 @@ func getPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Res
 	)
 	if err != nil {
 		cl.Logger().Warn().Err(err).Msg("Failed to get policy version")
-		resource.SetItem(pv)
 		return err
 	}
 
