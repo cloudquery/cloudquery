@@ -58,6 +58,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, opts ...Option) {
 	}
 	var gsrv *grpc.Server
 	var eg *errgroup.Group
+	var grpcEndpoint string
 	if options.CreateGrpcService != nil {
 		gsrv = grpc.NewServer()
 		listener, err := net.Listen("tcp", "localhost:0")
@@ -72,17 +73,18 @@ func MockTestHelper(t *testing.T, table *schema.Table, opts ...Option) {
 		eg.Go(func() error {
 			return gsrv.Serve(listener)
 		})
-
-		clientOptions = append(clientOptions, option.WithEndpoint(listener.Addr().String()))
+		grpcEndpoint = listener.Addr().String()
+		clientOptions = append(clientOptions, option.WithEndpoint(grpcEndpoint))
 	}
 
 	var mux *httprouter.Router
 	var ts *httptest.Server
 	var wg *sync.WaitGroup
+	var httpTestEndpoint string
 	if options.CreateHTTPServer != nil {
 		mux = httprouter.New()
 		ts = httptest.NewUnstartedServer(mux)
-		tsURL := "http://" + ts.Listener.Addr().String()
+		httpTestEndpoint = "http://" + ts.Listener.Addr().String()
 		defer ts.Close()
 		if err := options.CreateHTTPServer(mux); err != nil {
 			t.Fatal(err)
@@ -94,7 +96,7 @@ func MockTestHelper(t *testing.T, table *schema.Table, opts ...Option) {
 			ts.Start()
 		}()
 		clientOptions = append(clientOptions,
-			option.WithEndpoint(tsURL),
+			option.WithEndpoint(httpTestEndpoint),
 			option.WithGRPCDialOption(grpc.WithBlock()),
 		)
 	}
@@ -102,12 +104,14 @@ func MockTestHelper(t *testing.T, table *schema.Table, opts ...Option) {
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.StampMicro},
 	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 	c := &Client{
-		Backend:       &state.NoOpClient{},
-		ClientOptions: clientOptions,
-		folderIds:     []string{"testFolder"},
-		logger:        l,
-		orgs:          []*crmv1.Organization{{Name: "organizations/testOrg"}},
-		projects:      []string{"testProject"},
+		Backend:             &state.NoOpClient{},
+		ClientOptions:       clientOptions,
+		folderIds:           []string{"testFolder"},
+		logger:              l,
+		orgs:                []*crmv1.Organization{{Name: "organizations/testOrg"}},
+		projects:            []string{"testProject"},
+		TestingGRPCEndpoint: &grpcEndpoint,
+		TestingHTTPEndpoint: &httpTestEndpoint,
 	}
 
 	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
