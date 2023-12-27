@@ -7,7 +7,7 @@ description: Reference for the source spec CloudQuery configuration object.
 
 Following are available options for the top level source plugin `spec` object.
 
-Note: For configuring individual plugins, please refer to the configuration section from the relevant plugins from [here](/docs/plugins/sources/overview). (e.g. [AWS plugin configuration](/docs/plugins/sources/aws/configuration)).
+Note: For configuring individual plugins, please refer to the configuration section from the relevant plugins from [here](https://hub.cloudquery.io/plugins/source). (e.g. [AWS plugin configuration](https://hub.cloudquery.io/plugins/source/cloudquery/aws)).
 
 ## Example
 
@@ -18,6 +18,7 @@ kind: source
 spec:
   name: "aws"
   path: "cloudquery/aws"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_s3_buckets"]
   destinations: ["postgresql"]
@@ -37,9 +38,10 @@ The name field may be used to uniquely identify a particular source configuratio
 
 ### registry
 
-(`string`, optional, default: `github`, available: `github`, `local`, `grpc`, `docker`)
+(`string`, optional, default: `github`, available: `github`, `cloudquery`, `local`, `grpc`, `docker`)
 
 - `github`: CloudQuery will look for and download the plugin from GitHub, and then execute it.
+- `cloudquery`: CloudQuery will look for and download the plugin from the official CloudQuery registry, and then execute it.
 - `local`: CloudQuery will execute the plugin from a local path.
 - `grpc`: mostly useful in debug mode when plugin is already running in a different terminal, CloudQuery will connect to the gRPC plugin server directly without spawning the process.
 - `docker`: CloudQuery will run the plugin in a Docker container. This is most useful for plugins written in Python, as they do not support the `local` and `github` registries.
@@ -99,7 +101,7 @@ Specify the names of the destinations to sync the data of the source plugin to.
 
 (`bool`, optional, default: `false`, introduced in CLI `v2.4.1`)
 
-A flag that indicates whether the value of `_cq_id` should be a UUID that is a hash of the primary keys or a random UUID. If a resource has no primary keys defined the value will always be a random UUID
+A flag that indicates whether the value of `_cq_id` should be a UUID that is a hash of the primary keys or a random UUID. If a resource has no primary keys defined the value will always be a random UUID. This option cannot be used when you are using a destination that enforces primary keys in `append` write mode as the `_cq_id` needs to be unique for each row.
 
 Supported by source plugins released on 2023-03-08 and later
 
@@ -127,7 +129,7 @@ If set to `true`, the exporter will not verify the server will connect via `http
 
 (`object`, optional)
 
-Plugin-specific configurations. Visit [source plugins](/docs/plugins/sources/overview) documentation for more information.
+Plugin-specific configurations. Visit [source plugins](https://hub.cloudquery.io/plugins/source) documentation for more information.
 
 ## Top level deprecated options
 

@@ -20,7 +20,7 @@ jobs:
   plugins-source-typeform:
     timeout-minutes: 30
     name: "plugins/source/typeform"
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./plugins/source/typeform
@@ -29,37 +29,32 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.x'
+          python-version: '3.11'
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
       - name: Check formatting
         run: make fmt-check
-      - name: Setup CloudQuery
-        if: github.event_name == 'pull_request'
-        uses: cloudquery/setup-cloudquery@v3
-        with:
-          version: v3.23.1
-      - name: gen
-        if: github.event_name == 'pull_request'
-        run: make gen
-      - name: Fail if generation updated files
-        if: github.event_name == 'pull_request'
-        run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
+      -
+        # Required for the package command tests to work
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Run tests
         run: make test
-
   validate-release:
     timeout-minutes: 10
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     env:
       IMAGE_NAME_PREFIX: cloudquery
       REGISTRY: ghcr.io
     steps:
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@4c0219f9ac95b02789c1075625400b2acbff50b1
+        uses: docker/setup-buildx-action@v3
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        uses: docker/build-push-action@v5
         with:
           context: "{{defaultContext}}:plugins/source/typeform"
           load: true

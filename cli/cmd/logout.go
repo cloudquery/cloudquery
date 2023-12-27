@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	"github.com/cloudquery/cloudquery/cli/internal/auth"
+
 	"github.com/spf13/cobra"
 )
 
@@ -18,10 +19,9 @@ const (
 
 func newCmdLogout() *cobra.Command {
 	loginCmd := &cobra.Command{
-		Use:    "logout",
-		Short:  logoutShort,
-		Hidden: true,
-		Args:   cobra.MatchAll(cobra.ExactArgs(0), cobra.OnlyValidArgs),
+		Use:   "logout",
+		Short: logoutShort,
+		Args:  cobra.MatchAll(cobra.ExactArgs(0), cobra.OnlyValidArgs),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			// Set up a channel to listen for OS signals for graceful shutdown.
 			ctx, cancel := context.WithCancel(cmd.Context())

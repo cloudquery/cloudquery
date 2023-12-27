@@ -4,12 +4,11 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
-	"github.com/cloudquery/plugin-sdk/v4/scalar"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
@@ -22,7 +21,7 @@ func Functions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/lambda/latest/dg/API_GetFunction.html`,
 		Resolver:            fetchLambdaFunctions,
 		PreResourceResolver: getFunction,
-		Transform:           transformers.TransformWithStruct(&lambda.GetFunctionOutput{}),
+		Transform:           transformers.TransformWithStruct(&lambda.GetFunctionOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "lambda"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -84,16 +83,17 @@ func Functions() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			functionEventInvokeConfigs(),
 			functionAliases(),
-			functionVersions(),
 			functionConcurrencyConfigs(),
+			functionEventInvokeConfigs(),
 			functionEventSourceMappings(),
+			functionURLConfigs(),
+			functionVersions(),
 		},
 	}
 }
 
-func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchLambdaFunctions(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceLambda).Lambda
 	paginator := lambda.NewListFunctionsPaginator(svc, &lambda.ListFunctionsInput{})
@@ -153,9 +153,7 @@ func resolveCodeSigningConfig(ctx context.Context, meta schema.ClientMeta, resou
 	svc := cl.Services(client.AWSServiceLambda).Lambda
 
 	// skip getting CodeSigningConfig since containerized lambda functions does not support this feature
-	// value can be nil if the caller doesn't have GetFunctionConfiguration permission and only has List*
-	lambdaType := resource.Get("code_repository_type").(*scalar.String)
-	if lambdaType != nil && lambdaType.Value == "ECR" {
+	if r.Configuration.PackageType == types.PackageTypeImage {
 		return nil
 	}
 
@@ -232,6 +230,11 @@ func resolveRuntimeManagementConfig(ctx context.Context, meta schema.ClientMeta,
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceLambda).Lambda
 
+	// skip getting GetRuntimeManagementConfig since containerized lambda functions does not support this feature
+	if r.Configuration.PackageType == types.PackageTypeImage {
+		return nil
+	}
+
 	runtimeManagementConfig, err := svc.GetRuntimeManagementConfig(ctx, &lambda.GetRuntimeManagementConfigInput{
 		FunctionName: r.Configuration.FunctionName,
 	}, func(options *lambda.Options) {
@@ -303,7 +306,7 @@ func resolveTags(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 
 	// setting tags value from GetFunction call
 	if r.Code != nil {
-		return resource.Set(col.Name, r.Concurrency)
+		return resource.Set(col.Name, r.Tags)
 	}
 
 	cl := meta.(*client.Client)

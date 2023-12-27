@@ -3,7 +3,7 @@ package config
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/configservice"
 	"github.com/aws/aws-sdk-go-v2/service/configservice/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -25,6 +25,18 @@ func configRuleComplianceDetails() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
+			{
+				Name:       "config_rule_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
+			},
+			{
+				Name:       "resource_evaluation_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("EvaluationResultIdentifier.ResourceEvaluationId"),
+				PrimaryKey: true,
+			},
 			{
 				Name:     "config_rule_name",
 				Type:     arrow.BinaryTypes.String,

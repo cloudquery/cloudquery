@@ -3,7 +3,8 @@ package wellarchitected
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -52,7 +53,7 @@ func fetchLenses(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 			&wellarchitected.ListLensesInput{
 				LensStatus: types.LensStatusTypeAll,
 				LensType:   lensType,
-				MaxResults: 50,
+				MaxResults: aws.Int32(50),
 			},
 		)
 		for p.HasMorePages() {
@@ -74,10 +75,14 @@ func getLens(ctx context.Context, meta schema.ClientMeta, resource *schema.Resou
 	service := cl.Services(client.AWSServiceWellarchitected).Wellarchitected
 	summary := resource.Item.(types.LensSummary)
 	l := &lens{LensSummary: &summary}
-
+	resource.SetItem(l)
 	input := &wellarchitected.GetLensInput{LensAlias: l.LensAlias, LensVersion: summary.LensVersion}
 	if summary.LensType == types.LensTypeAwsOfficial {
 		input.LensVersion = nil // official lenses don't support versions
+	}
+	if l.LensAlias == nil {
+		// LensAlias is required so if it's nil we can't do anything
+		return nil
 	}
 	out, err := service.GetLens(ctx, input, func(o *wellarchitected.Options) { o.Region = cl.Region })
 	if err != nil {

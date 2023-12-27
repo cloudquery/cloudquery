@@ -3,9 +3,10 @@ package iam
 import (
 	"context"
 	"fmt"
+	"math/rand"
 	"time"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"github.com/aws/aws-sdk-go-v2/service/iam/types"
@@ -106,7 +107,7 @@ func fetchGroupLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, 
 }
 
 func fetchPolicyLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	policy := parent.Item.(types.ManagedPolicyDetail)
+	policy := parent.Item.(types.Policy)
 	return fetchLastAccessedDetails(ctx, meta, policy.Arn, res)
 }
 
@@ -141,7 +142,8 @@ func fetchLastAccessedDetails(ctx context.Context, meta schema.ClientMeta, arn *
 
 		switch details.JobStatus {
 		case types.JobStatusTypeInProgress:
-			time.Sleep(time.Second)
+			// sleep for a random time between 1,000 to 4,000 millisecond
+			time.Sleep(time.Duration(1000+rand.Intn(3000)) * time.Millisecond)
 			continue
 		case types.JobStatusTypeFailed:
 			return fmt.Errorf("failed to get last accessed details with error: %s - %s", *details.Error.Code, *details.Error.Message)

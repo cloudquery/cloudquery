@@ -3,7 +3,7 @@ package cloudformation
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -70,6 +70,9 @@ func fetchCloudformationStackSets(ctx context.Context, meta schema.ClientMeta, _
 				break
 			}
 			for _, summary := range page.Summaries {
+				if summary.Status == types.StackSetStatusDeleted {
+					continue
+				}
 				res <- models.ExpandedSummary{
 					StackSetSummary: summary,
 					CallAs:          callAs,

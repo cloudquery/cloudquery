@@ -38,6 +38,11 @@ func (*fakeInstanceAdminServer) ListAppProfiles(context.Context, *pb.ListAppProf
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.AppProfiles[0].RoutingPolicy = &pb.AppProfile_SingleClusterRouting_{SingleClusterRouting: &pb.AppProfile_SingleClusterRouting{
+		ClusterId:                "test-cluster",
+		AllowTransactionalWrites: true,
+	}}
+	resp.AppProfiles[0].Isolation = &pb.AppProfile_StandardIsolation_{StandardIsolation: &pb.AppProfile_StandardIsolation{Priority: 1}}
 	resp.NextPageToken = ""
 	return &resp, nil
 }
@@ -88,5 +93,5 @@ func (*fakeTableServer) ListBackups(context.Context, *pb.ListBackupsRequest) (*p
 }
 
 func TestInstances(t *testing.T) {
-	client.MockTestGrpcHelper(t, Instances(), createInstances, client.TestOptions{})
+	client.MockTestHelper(t, Instances(), client.WithCreateGrpcService(createInstances))
 }

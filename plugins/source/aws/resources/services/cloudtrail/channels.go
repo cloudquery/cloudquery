@@ -3,7 +3,7 @@ package cloudtrail
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
@@ -20,7 +20,7 @@ func Channels() *schema.Table {
 		Resolver:            fetchCloudtrailChannels,
 		PreResourceResolver: getChannel,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "cloudtrail"),
-		Transform:           transformers.TransformWithStruct(&cloudtrail.GetChannelOutput{}, transformers.WithSkipFields("ResponseMetadata")),
+		Transform:           transformers.TransformWithStruct(&cloudtrail.GetChannelOutput{}, transformers.WithSkipFields("ResponseMetadata", "ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

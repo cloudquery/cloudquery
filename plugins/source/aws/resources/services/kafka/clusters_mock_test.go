@@ -38,5 +38,7 @@ func buildKafkaClustersMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 	}
 }
 func TestKafkaClusters(t *testing.T) {
-	client.AwsMockTestHelper(t, Clusters(), buildKafkaClustersMock, client.TestOptions{})
+	client.AwsMockTestHelper(t, Clusters(), buildKafkaClustersMock, client.TestOptions{
+		SkipEmptyCheckColumns: map[string][]string{"aws_kafka_cluster_operations": {"tags"}},
+	})
 }

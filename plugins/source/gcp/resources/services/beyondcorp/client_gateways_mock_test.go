@@ -31,5 +31,5 @@ func (*fakeClientGatewaysServer) ListClientGateways(context.Context, *pb.ListCli
 }
 
 func TestClientGateways(t *testing.T) {
-	client.MockTestGrpcHelper(t, ClientGateways(), createClientGateways, client.TestOptions{})
+	client.MockTestHelper(t, ClientGateways(), client.WithCreateGrpcService(createClientGateways))
 }

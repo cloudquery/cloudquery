@@ -1,9 +1,8 @@
-const { getTablesData } = require("./utils/tables-data");
 const { getIntegrationsPaths } = require("./utils/integrations");
 
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: "https://www.cloudquery.io",
+  siteUrl: "https://docs.cloudquery.io",
   generateRobotsTxt: true,
   exclude: [
     "/buy/*",
@@ -31,14 +30,10 @@ module.exports = {
     ],
   },
   additionalPaths: async () => {
-    const tablesData = getTablesData();
-    const tablesPaths = tablesData.map(({ plugin, table }) => {
-      return { loc: `/docs/plugins/sources/${plugin}/tables/${table}`};
-    });
     const integrationsData = await getIntegrationsPaths();
     const integrationsPaths = integrationsData.map(({ params: { slug } }) => {
       return { loc: `/integrations/${slug.join("/")}`};
     })
-    return [...tablesPaths, ...integrationsPaths];
+    return integrationsPaths;
   },
 };

@@ -5,14 +5,13 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail"
 	"github.com/aws/aws-sdk-go-v2/service/cloudtrail/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
-	"github.com/mitchellh/hashstructure/v2"
 )
 
 const tableName = "aws_cloudtrail_events"
@@ -43,65 +42,56 @@ func Events() *schema.Table {
 	}
 }
 
-func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchCloudtrailEvents(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceCloudtrail).Cloudtrail
 
-	for _, w := range cl.Spec.TableOptions.CloudTrailEvents.Filters() {
-		le := w.LookupEventsInput
+	stateClient := cl.StateClient()
+	le := cloudtrail.LookupEventsInput{}
+	var backendKey string
+	// Retrieve the last event time from the backend for this table option config.
+	// We use a hash of the config as the key, so changing the config will cause a full refresh.
+	value, err := stateClient.GetKey(ctx, tableName+cl.ID())
+	if err != nil {
+		return fmt.Errorf("failed to retrieve state from backend: %w", err)
+	}
 
-		var backendKey string
-		if cl.Backend != nil {
-			// Retrieve the last event time from the backend for this table option config.
-			// We use a hash of the config as the key, so changing the config will cause a full refresh.
-			hash, err := hashstructure.Hash(le, hashstructure.FormatV2, nil)
-			if err != nil {
-				return err
-			}
-			backendKey = fmt.Sprintf("%s-%d", cl.ID(), hash)
-			value, err := cl.Backend.GetKey(ctx, tableName+backendKey)
-			if err != nil {
-				return fmt.Errorf("failed to retrieve state from backend: %w", err)
-			}
+	if value != "" {
+		date, err := time.Parse(time.RFC3339Nano, value)
+		if err != nil {
+			return fmt.Errorf("retrieved invalid state value: %q %w", value, err)
+		}
+		le.StartTime = &date
+	}
 
-			if value != "" {
-				date, err := time.Parse(time.RFC3339Nano, value)
-				if err != nil {
-					return fmt.Errorf("retrieved invalid state value: %q %w", value, err)
-				}
-				le.StartTime = &date
+	var lastEventTime *time.Time
+	// var err error
+	paginator := cloudtrail.NewLookupEventsPaginator(svc, &le)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx, func(options *cloudtrail.Options) {
+			options.Region = cl.Region
+		})
+		if err != nil {
+			return err
+		}
+		res <- page.Events
+
+		// Retrieve the timestamp from the latest event
+		for _, event := range page.Events {
+			if lastEventTime == nil {
+				lastEventTime = event.EventTime
+				continue
+			}
+			if event.EventTime.After(*lastEventTime) {
+				lastEventTime = event.EventTime
 			}
 		}
+	}
 
-		var lastEventTime *time.Time
-		// var err error
-		paginator := cloudtrail.NewLookupEventsPaginator(svc, &le)
-		for paginator.HasMorePages() {
-			page, err := paginator.NextPage(ctx, func(options *cloudtrail.Options) {
-				options.Region = cl.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- page.Events
-
-			// Retrieve the timestamp from the latest event
-			for _, event := range page.Events {
-				if lastEventTime == nil {
-					lastEventTime = event.EventTime
-					continue
-				}
-				if event.EventTime.After(*lastEventTime) {
-					lastEventTime = event.EventTime
-				}
-			}
-		}
-
-		if cl.Backend != nil && lastEventTime != nil {
-			err := cl.Backend.SetKey(ctx, tableName+backendKey, lastEventTime.Format(time.RFC3339Nano))
-			if err != nil {
-				return fmt.Errorf("failed to save state to backend: %w", err)
-			}
+	if lastEventTime != nil {
+		err := stateClient.SetKey(ctx, tableName+backendKey, lastEventTime.Format(time.RFC3339Nano))
+		if err != nil {
+			return fmt.Errorf("failed to save state to backend: %w", err)
 		}
 	}
 

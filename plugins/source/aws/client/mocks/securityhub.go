@@ -65,6 +65,36 @@ func (mr *MockSecurityhubClientMockRecorder) BatchGetAutomationRules(arg0, arg1 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetAutomationRules", reflect.TypeOf((*MockSecurityhubClient)(nil).BatchGetAutomationRules), varargs...)
 }
 
+// BatchGetConfigurationPolicyAssociations mocks base method.
+func (m *MockSecurityhubClient) BatchGetConfigurationPolicyAssociations(arg0 context.Context, arg1 *securityhub.BatchGetConfigurationPolicyAssociationsInput, arg2 ...func(*securityhub.Options)) (*securityhub.BatchGetConfigurationPolicyAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to BatchGetConfigurationPolicyAssociations")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "BatchGetConfigurationPolicyAssociations", varargs...)
+	ret0, _ := ret[0].(*securityhub.BatchGetConfigurationPolicyAssociationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// BatchGetConfigurationPolicyAssociations indicates an expected call of BatchGetConfigurationPolicyAssociations.
+func (mr *MockSecurityhubClientMockRecorder) BatchGetConfigurationPolicyAssociations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "BatchGetConfigurationPolicyAssociations", reflect.TypeOf((*MockSecurityhubClient)(nil).BatchGetConfigurationPolicyAssociations), varargs...)
+}
+
 // BatchGetSecurityControls mocks base method.
 func (m *MockSecurityhubClient) BatchGetSecurityControls(arg0 context.Context, arg1 *securityhub.BatchGetSecurityControlsInput, arg2 ...func(*securityhub.Options)) (*securityhub.BatchGetSecurityControlsOutput, error) {
 
@@ -333,6 +363,66 @@ func (mr *MockSecurityhubClientMockRecorder) GetAdministratorAccount(arg0, arg1 
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAdministratorAccount", reflect.TypeOf((*MockSecurityhubClient)(nil).GetAdministratorAccount), varargs...)
+}
+
+// GetConfigurationPolicy mocks base method.
+func (m *MockSecurityhubClient) GetConfigurationPolicy(arg0 context.Context, arg1 *securityhub.GetConfigurationPolicyInput, arg2 ...func(*securityhub.Options)) (*securityhub.GetConfigurationPolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetConfigurationPolicy")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetConfigurationPolicy", varargs...)
+	ret0, _ := ret[0].(*securityhub.GetConfigurationPolicyOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetConfigurationPolicy indicates an expected call of GetConfigurationPolicy.
+func (mr *MockSecurityhubClientMockRecorder) GetConfigurationPolicy(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetConfigurationPolicy", reflect.TypeOf((*MockSecurityhubClient)(nil).GetConfigurationPolicy), varargs...)
+}
+
+// GetConfigurationPolicyAssociation mocks base method.
+func (m *MockSecurityhubClient) GetConfigurationPolicyAssociation(arg0 context.Context, arg1 *securityhub.GetConfigurationPolicyAssociationInput, arg2 ...func(*securityhub.Options)) (*securityhub.GetConfigurationPolicyAssociationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetConfigurationPolicyAssociation")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetConfigurationPolicyAssociation", varargs...)
+	ret0, _ := ret[0].(*securityhub.GetConfigurationPolicyAssociationOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetConfigurationPolicyAssociation indicates an expected call of GetConfigurationPolicyAssociation.
+func (mr *MockSecurityhubClientMockRecorder) GetConfigurationPolicyAssociation(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetConfigurationPolicyAssociation", reflect.TypeOf((*MockSecurityhubClient)(nil).GetConfigurationPolicyAssociation), varargs...)
 }
 
 // GetEnabledStandards mocks base method.
@@ -605,6 +695,36 @@ func (mr *MockSecurityhubClientMockRecorder) GetMembers(arg0, arg1 interface{}, 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetMembers", reflect.TypeOf((*MockSecurityhubClient)(nil).GetMembers), varargs...)
 }
 
+// GetSecurityControlDefinition mocks base method.
+func (m *MockSecurityhubClient) GetSecurityControlDefinition(arg0 context.Context, arg1 *securityhub.GetSecurityControlDefinitionInput, arg2 ...func(*securityhub.Options)) (*securityhub.GetSecurityControlDefinitionOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetSecurityControlDefinition")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetSecurityControlDefinition", varargs...)
+	ret0, _ := ret[0].(*securityhub.GetSecurityControlDefinitionOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetSecurityControlDefinition indicates an expected call of GetSecurityControlDefinition.
+func (mr *MockSecurityhubClientMockRecorder) GetSecurityControlDefinition(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSecurityControlDefinition", reflect.TypeOf((*MockSecurityhubClient)(nil).GetSecurityControlDefinition), varargs...)
+}
+
 // ListAutomationRules mocks base method.
 func (m *MockSecurityhubClient) ListAutomationRules(arg0 context.Context, arg1 *securityhub.ListAutomationRulesInput, arg2 ...func(*securityhub.Options)) (*securityhub.ListAutomationRulesOutput, error) {
 
@@ -633,6 +753,66 @@ func (mr *MockSecurityhubClientMockRecorder) ListAutomationRules(arg0, arg1 inte
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAutomationRules", reflect.TypeOf((*MockSecurityhubClient)(nil).ListAutomationRules), varargs...)
+}
+
+// ListConfigurationPolicies mocks base method.
+func (m *MockSecurityhubClient) ListConfigurationPolicies(arg0 context.Context, arg1 *securityhub.ListConfigurationPoliciesInput, arg2 ...func(*securityhub.Options)) (*securityhub.ListConfigurationPoliciesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListConfigurationPolicies")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListConfigurationPolicies", varargs...)
+	ret0, _ := ret[0].(*securityhub.ListConfigurationPoliciesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListConfigurationPolicies indicates an expected call of ListConfigurationPolicies.
+func (mr *MockSecurityhubClientMockRecorder) ListConfigurationPolicies(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListConfigurationPolicies", reflect.TypeOf((*MockSecurityhubClient)(nil).ListConfigurationPolicies), varargs...)
+}
+
+// ListConfigurationPolicyAssociations mocks base method.
+func (m *MockSecurityhubClient) ListConfigurationPolicyAssociations(arg0 context.Context, arg1 *securityhub.ListConfigurationPolicyAssociationsInput, arg2 ...func(*securityhub.Options)) (*securityhub.ListConfigurationPolicyAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &securityhub.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListConfigurationPolicyAssociations")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListConfigurationPolicyAssociations", varargs...)
+	ret0, _ := ret[0].(*securityhub.ListConfigurationPolicyAssociationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListConfigurationPolicyAssociations indicates an expected call of ListConfigurationPolicyAssociations.
+func (mr *MockSecurityhubClientMockRecorder) ListConfigurationPolicyAssociations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListConfigurationPolicyAssociations", reflect.TypeOf((*MockSecurityhubClient)(nil).ListConfigurationPolicyAssociations), varargs...)
 }
 
 // ListEnabledProductsForImport mocks base method.

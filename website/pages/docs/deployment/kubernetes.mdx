@@ -135,7 +135,8 @@ data:
       # Source spec section
       name: digitalocean
       path: cloudquery/digitalocean
-      version: "v5.0.2"
+      registry: cloudquery
+      version: "VERSION_SOURCE_DIGITALOCEAN"
       tables:
         - "digitalocean_droplets"
         - "digitalocean_databases"
@@ -150,14 +151,14 @@ data:
     kind: destination
     spec:
       name: "postgresql"
-      registry: "github"
       path: "cloudquery/postgresql"
-      version: "v4.2.2"
+      registry: "cloudquery"
+      version: "VERSION_DESTINATION_POSTGRESQL"
       spec:
         connection_string: ${PG_CONNECTION_STR}
 ```
 
-In this example we're using the DigitalOcean source plugin and the Postgres destination plugin. But you can find out more about building config files and integrations [here](https://www.cloudquery.io/integrations).
+In this example we're using the DigitalOcean source plugin and the Postgres destination plugin. But you can find out more about building config files and integrations [here](/integrations).
 
 ## Step 4: Apply the manifest
 

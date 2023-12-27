@@ -33,5 +33,5 @@ func createTargetSslProxies(mux *httprouter.Router) error {
 }
 
 func TestTargetSslProxies(t *testing.T) {
-	client.MockTestRestHelper(t, TargetSslProxies(), createTargetSslProxies, client.TestOptions{})
+	client.MockTestHelper(t, TargetSslProxies(), client.WithCreateHTTPServer(createTargetSslProxies))
 }

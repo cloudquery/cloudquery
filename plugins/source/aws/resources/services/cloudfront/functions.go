@@ -3,7 +3,7 @@ package cloudfront
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront"
 	"github.com/aws/aws-sdk-go-v2/service/cloudfront/types"
@@ -20,7 +20,7 @@ func Functions() *schema.Table {
 		Resolver:            fetchFunctions,
 		PreResourceResolver: getFunction,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "cloudfront"),
-		Transform:           transformers.TransformWithStruct(&cloudfront.DescribeFunctionOutput{}),
+		Transform:           transformers.TransformWithStruct(&cloudfront.DescribeFunctionOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

@@ -5,6 +5,7 @@ import (
 	"path"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
@@ -57,23 +58,41 @@ func tables(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
+	sources := specReader.Sources
+	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, nil)
+	if err != nil {
+		return fmt.Errorf("failed to get auth token: %w", err)
+	}
+	teamName, err := auth.GetTeamForToken(authToken)
+	if err != nil {
+		return fmt.Errorf("failed to get team name: %w", err)
+	}
 	opts := []managedplugin.Option{
 		managedplugin.WithLogger(log.Logger),
-		managedplugin.WithDirectory(cqDir),
+		managedplugin.WithAuthToken(authToken.Value),
+		managedplugin.WithTeamName(teamName),
 	}
-	pluginConfigs := make([]managedplugin.Config, 0, len(specReader.Sources))
-	for _, sourceSpec := range specReader.Sources {
-		pluginConfigs = append(pluginConfigs, managedplugin.Config{
+	if cqDir != "" {
+		opts = append(opts, managedplugin.WithDirectory(cqDir))
+	}
+	if disableSentry {
+		opts = append(opts, managedplugin.WithNoSentry())
+	}
+	pluginConfigs := make([]managedplugin.Config, len(sources))
+	sourceRegInferred := make([]bool, len(sources))
+	for i, sourceSpec := range sources {
+		pluginConfigs[i] = managedplugin.Config{
 			Name:     sourceSpec.Name,
 			Path:     sourceSpec.Path,
 			Version:  sourceSpec.Version,
 			Registry: SpecRegistryToPlugin(sourceSpec.Registry),
-		})
+		}
+		sourceRegInferred[i] = sourceSpec.Registry == specs.RegistryUnset
 	}
 
 	sourceClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, pluginConfigs, opts...)
 	if err != nil {
-		return err
+		return enrichClientError(sourceClients, sourceRegInferred, err)
 	}
 	defer func() {
 		if err := sourceClients.Terminate(); err != nil {

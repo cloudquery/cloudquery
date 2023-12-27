@@ -3,7 +3,7 @@ package iot
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iot"
 	"github.com/aws/aws-sdk-go-v2/service/iot/types"
@@ -20,7 +20,7 @@ func TopicRules() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/iot/latest/apireference/API_GetTopicRule.html`,
 		Resolver:            fetchIotTopicRules,
 		PreResourceResolver: getTopicRule,
-		Transform:           transformers.TransformWithStruct(&iot.GetTopicRuleOutput{}),
+		Transform:           transformers.TransformWithStruct(&iot.GetTopicRuleOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iot"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

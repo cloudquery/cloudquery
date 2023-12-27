@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/directconnect"
@@ -23,8 +23,17 @@ func Gateways() *schema.Table {
 		Multiplex:   client.AccountMultiplex(tableName),
 		Transform:   transformers.TransformWithStruct(&types.DirectConnectGateway{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
-			client.DefaultRegionColumn(false),
+			{
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
+			},
+			{
+				Name:     "request_region",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: client.ResolveAWSRegion,
+			},
 			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,

@@ -7,7 +7,7 @@ description: Learn how to build a container with plugins pre-installed
 
 You can run CloudQuery in a container with plugins pre-installed. This is useful for isolated deployments where you don't want to download plugins from the internet.
 
-To download the plugins based on your configuration file, use the `cloudquery install` command. Below is an example `Dockerfile` based on the [CloudQuery container](/docs/deployment/docker). It uses a `build.spec.yaml` with the minimum configuration required to download the plugins.
+To download the plugins based on your configuration file, use the `cloudquery plugin install` command. Below is an example `Dockerfile` based on the [CloudQuery container](/docs/deployment/docker). It uses a `build.spec.yaml` with the minimum configuration required to download the plugins.
 
 ```yaml
 # build.spec.yaml
@@ -15,7 +15,8 @@ kind: source
 spec:
   name: aws
   path: cloudquery/aws
-  version: "v22.14.0"
+  registry: cloudquery
+  version: "VERSION_SOURCE_AWS"
   tables: ["aws_ec2_instances"]
   destinations: ["postgresql"]
 ---
@@ -23,7 +24,8 @@ kind: destination
 spec:
   name: "postgresql"
   path: "cloudquery/postgresql"
-  version: "v6.0.8"
+  registry: "cloudquery"
+  version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
 ```
 
@@ -33,7 +35,7 @@ FROM ghcr.io/cloudquery/cloudquery:latest
 WORKDIR /app
 COPY ./build.spec.yaml /app/build.spec.yaml
 
-RUN /app/cloudquery install cloudquery.yaml
+RUN /app/cloudquery plugin install cloudquery.yaml
 ```
 
 Build this container as you would normally do:
@@ -54,3 +56,7 @@ docker run \
   my-cq-container:latest \
   sync /config.yml
 ```
+
+### Related docs
+
+Read more about the `plugin install` command in the [CLI Documentation](/docs/reference/cli/cloudquery_plugin_install).

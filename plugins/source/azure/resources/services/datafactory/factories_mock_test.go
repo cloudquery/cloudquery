@@ -3,7 +3,6 @@ package datafactory
 import (
 	"encoding/json"
 	"net/http"
-
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/source/azure/client"
@@ -18,6 +17,7 @@ func createFactories(router *mux.Router) error {
 	if err := faker.FakeObject(&item); err != nil {
 		return err
 	}
+	item.Value[0].AdditionalProperties = map[string]any{"test-key": "test-value"}
 
 	emptyStr := ""
 	item.NextLink = &emptyStr

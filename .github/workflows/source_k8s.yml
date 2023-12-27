@@ -20,7 +20,7 @@ jobs:
   plugins-source-k8s:
     timeout-minutes: 30
     name: "plugins/source/k8s"
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./plugins/source/k8s
@@ -38,7 +38,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.54.2
+          version: v1.55.2
           working-directory: plugins/source/k8s
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
@@ -47,7 +47,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v3.23.1
+          version: v4.3.5
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -60,7 +60,7 @@ jobs:
         run: make test
   validate-release:
     timeout-minutes: 30
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     env:
       CGO_ENABLED: 0
     steps:
@@ -96,7 +96,7 @@ jobs:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
   test-policies:
     timeout-minutes: 30
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./plugins/source/k8s
@@ -130,7 +130,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v3.23.1
+          version: v4.3.5
       - name: Migrate DB
         run: cloudquery migrate test/policy_cq_config.yml
         env:

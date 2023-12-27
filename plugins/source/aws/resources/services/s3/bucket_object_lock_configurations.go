@@ -3,7 +3,7 @@ package s3
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -43,7 +43,7 @@ func fetchS3BucketObjectLockConfigurations(ctx context.Context, meta schema.Clie
 		o.Region = region.Value
 	})
 	if err != nil {
-		if client.IsAWSError(err, "NoSuchBucket") {
+		if client.IsAWSError(err, "NoSuchBucket", "ObjectLockConfigurationNotFound") {
 			return nil
 		}
 		return err

@@ -20,7 +20,7 @@ jobs:
   plugins-source-bitbucket:
     timeout-minutes: 30
     name: "plugins/source/bitbucket"
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./plugins/source/bitbucket
@@ -31,7 +31,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: "temurin"
-          java-version: "18"
+          java-version: "20"
           cache: "gradle"
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@56b90f209b02bf6d1deae490e9ef18b21a389cd4
@@ -48,7 +48,7 @@ jobs:
           fail_on_failure: true
   validate-release:
     timeout-minutes: 10
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     env:
       IMAGE_NAME_PREFIX: cloudquery
       REGISTRY: ghcr.io

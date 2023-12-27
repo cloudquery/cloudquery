@@ -35,7 +35,7 @@ func (*fakeTensorboardLocationsServer) ListLocations(context.Context, *pb.ListLo
 }
 
 func TestTensorboardLocations(t *testing.T) {
-	client.MockTestGrpcHelper(t, TensorboardLocations(), createTensorboardLocations, client.TestOptions{})
+	client.MockTestHelper(t, TensorboardLocations(), client.WithCreateGrpcService(createTensorboardLocations))
 }
 
 type fakeTensorboardLocationsRelationsServer struct {

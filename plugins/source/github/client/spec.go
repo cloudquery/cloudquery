@@ -9,8 +9,9 @@ type Spec struct {
 	AppAuth            []AppAuthSpec       `json:"app_auth"`
 	EnterpriseSettings *EnterpriseSettings `json:"enterprise"`
 
-	Concurrency          int `json:"concurrency,omitempty"`
-	DiscoveryConcurrency int `json:"discovery_concurrency,omitempty"`
+	Concurrency          int  `json:"concurrency,omitempty"`
+	DiscoveryConcurrency int  `json:"discovery_concurrency,omitempty"`
+	SkipArchivedRepos    bool `json:"skip_archived_repos,omitempty"`
 }
 
 type EnterpriseSettings struct {

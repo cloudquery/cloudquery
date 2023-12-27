@@ -3,7 +3,8 @@ package cognito
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity"
 	"github.com/aws/aws-sdk-go-v2/service/cognitoidentity/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -22,7 +23,7 @@ func IdentityPools() *schema.Table {
 		Transform: transformers.TransformWithStruct(
 			&cognitoidentity.DescribeIdentityPoolOutput{},
 			transformers.WithNameTransformer(client.CreateReplaceTransformer(map[string]string{"ar_ns": "arns"})),
-		),
+			transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
@@ -51,7 +52,7 @@ func fetchCognitoIdentityPools(ctx context.Context, meta schema.ClientMeta, pare
 	svc := cl.Services(client.AWSServiceCognitoidentity).Cognitoidentity
 	params := cognitoidentity.ListIdentityPoolsInput{
 		// we want max results to reduce List calls as much as possible, services limited to less than or equal to 60"
-		MaxResults: 60,
+		MaxResults: aws.Int32(60),
 	}
 	paginator := cognitoidentity.NewListIdentityPoolsPaginator(svc, &params)
 	for paginator.HasMorePages() {

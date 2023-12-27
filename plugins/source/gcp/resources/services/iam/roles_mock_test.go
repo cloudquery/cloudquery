@@ -32,5 +32,5 @@ func (*fakeRolesServer) ListRoles(context.Context, *pb.ListRolesRequest) (*pb.Li
 }
 
 func TestRoles(t *testing.T) {
-	client.MockTestGrpcHelper(t, Roles(), createRoles, client.TestOptions{})
+	client.MockTestHelper(t, Roles(), client.WithCreateGrpcService(createRoles))
 }

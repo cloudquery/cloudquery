@@ -2,11 +2,8 @@ package glue
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/apache/arrow/go/v14/arrow"
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/aws/arn"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/glue"
 	"github.com/aws/aws-sdk-go-v2/service/glue/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -20,14 +17,15 @@ func mlTransformTaskRuns() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_TaskRun.html`,
 		Resolver:    fetchGlueMlTransformTaskRuns,
-		Transform:   transformers.TransformWithStruct(&types.TaskRun{}),
+		Transform:   transformers.TransformWithStruct(&types.TaskRun{}, transformers.WithPrimaryKeys("TaskRunId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "ml_transform_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "ml_transform_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -49,14 +47,4 @@ func fetchGlueMlTransformTaskRuns(ctx context.Context, meta schema.ClientMeta, p
 		res <- page.TaskRuns
 	}
 	return nil
-}
-
-func mlTransformARN(cl *client.Client, tr *types.MLTransform) string {
-	return arn.ARN{
-		Partition: cl.Partition,
-		Service:   string(client.GlueService),
-		Region:    cl.Region,
-		AccountID: cl.AccountID,
-		Resource:  fmt.Sprintf("mlTransform/%s", aws.ToString(tr.TransformId)),
-	}.String()
 }

@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	pb "google.golang.org/genproto/googleapis/cloud/location"
 	"google.golang.org/grpc"
+	structpb "google.golang.org/protobuf/types/known/structpb"
 )
 
 func createPipelineLocations(gsrv *grpc.Server) error {
@@ -35,7 +36,7 @@ func (*fakePipelineLocationsServer) ListLocations(context.Context, *pb.ListLocat
 }
 
 func TestPipelineLocations(t *testing.T) {
-	client.MockTestGrpcHelper(t, PipelineLocations(), createPipelineLocations, client.TestOptions{})
+	client.MockTestHelper(t, PipelineLocations(), client.WithCreateGrpcService(createPipelineLocations))
 }
 
 type fakePipelineLocationsRelationsServer struct {
@@ -47,6 +48,8 @@ func (*fakePipelineLocationsRelationsServer) ListPipelineJobs(context.Context, *
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.PipelineJobs[0].PipelineSpec.Fields["test string"] = structpb.NewStringValue("test string")
+	resp.PipelineJobs[0].RuntimeConfig.ParameterValues["test string"] = structpb.NewStringValue("test string")
 	resp.NextPageToken = ""
 	return &resp, nil
 }
@@ -56,6 +59,9 @@ func (*fakePipelineLocationsRelationsServer) ListTrainingPipelines(context.Conte
 	if err := faker.FakeObject(&resp); err != nil {
 		return nil, fmt.Errorf("failed to fake data: %w", err)
 	}
+	resp.TrainingPipelines[0].TrainingTaskInputs = structpb.NewStringValue("test string")
+	resp.TrainingPipelines[0].TrainingTaskMetadata = structpb.NewStringValue("test string")
+	resp.TrainingPipelines[0].ModelToUpload.Metadata = structpb.NewStringValue("test string")
 	resp.NextPageToken = ""
 	return &resp, nil
 }

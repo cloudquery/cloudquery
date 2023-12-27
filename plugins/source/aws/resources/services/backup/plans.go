@@ -3,7 +3,7 @@ package backup
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
 	"github.com/aws/aws-sdk-go-v2/service/backup/types"
@@ -21,7 +21,7 @@ func Plans() *schema.Table {
 		Resolver:            fetchBackupPlans,
 		PreResourceResolver: getPlan,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "backup"),
-		Transform:           transformers.TransformWithStruct(&backup.GetBackupPlanOutput{}),
+		Transform:           transformers.TransformWithStruct(&backup.GetBackupPlanOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeys("VersionId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

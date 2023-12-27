@@ -3,7 +3,7 @@ package ecr
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ecr"
 	"github.com/aws/aws-sdk-go-v2/service/ecr/types"
@@ -20,7 +20,7 @@ func Repositories() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_Repository.html`,
 		Resolver:    fetchEcrRepositories,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "api.ecr"),
-		Transform:   transformers.TransformWithStruct(&types.Repository{}),
+		Transform:   transformers.TransformWithStruct(&types.Repository{}, transformers.WithPrimaryKeys("RegistryId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -35,20 +35,16 @@ func Repositories() *schema.Table {
 				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveRepositoryTags,
 			},
-			{
-				Name:     "policy_text",
-				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveRepositoryPolicy,
-			},
 		},
 
 		Relations: []*schema.Table{
 			repositoryImages(),
 			lifeCyclePolicy(),
+			repositoryPolicy(),
 		},
 	}
 }
-func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchEcrRepositories(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceEcr).Ecr
 	paginator := ecr.NewDescribeRepositoriesPaginator(svc, &ecr.DescribeRepositoriesInput{
@@ -79,23 +75,4 @@ func resolveRepositoryTags(ctx context.Context, meta schema.ClientMeta, resource
 		return err
 	}
 	return resource.Set(c.Name, client.TagsToMap(output.Tags))
-}
-
-func resolveRepositoryPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceEcr).Ecr
-	repo := resource.Item.(types.Repository)
-	output, err := svc.GetRepositoryPolicy(ctx, &ecr.GetRepositoryPolicyInput{
-		RepositoryName: repo.RepositoryName,
-		RegistryId:     repo.RegistryId,
-	}, func(options *ecr.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		if client.IsAWSError(err, "RepositoryPolicyNotFoundException") {
-			return nil
-		}
-		return err
-	}
-	return resource.Set(c.Name, output.PolicyText)
 }

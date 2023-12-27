@@ -29,8 +29,12 @@ Find more information at:
 
 ### SEE ALSO
 
-* [cloudquery install](/docs/reference/cli/cloudquery_install)	 - Install required plugin images from your configuration
+* [cloudquery addon](/docs/reference/cli/cloudquery_addon)	 - Addon commands
+* [cloudquery login](/docs/reference/cli/cloudquery_login)	 - Login to CloudQuery Hub.
+* [cloudquery logout](/docs/reference/cli/cloudquery_logout)	 - Log out of CloudQuery Hub.
 * [cloudquery migrate](/docs/reference/cli/cloudquery_migrate)	 - Update schema of your destinations based on the latest changes in sources from your configuration
+* [cloudquery plugin](/docs/reference/cli/cloudquery_plugin)	 - Plugin commands
+* [cloudquery switch](/docs/reference/cli/cloudquery_switch)	 - Switches between teams.
 * [cloudquery sync](/docs/reference/cli/cloudquery_sync)	 - Sync resources from configured source plugins to destinations
 * [cloudquery tables](/docs/reference/cli/cloudquery_tables)	 - Generate documentation for all supported tables of source plugins specified in the spec(s)
 

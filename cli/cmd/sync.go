@@ -3,12 +3,12 @@ package cmd
 import (
 	"fmt"
 	"math"
-	"strings"
-
 	"slices"
+	"strings"
 
 	"github.com/google/uuid"
 
+	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
@@ -105,18 +105,26 @@ func sync(cmd *cobra.Command, args []string) error {
 			fmt.Println(err)
 		}
 	}()
+	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations)
+	if err != nil {
+		return fmt.Errorf("failed to get auth token: %w", err)
+	}
+	teamName, err := auth.GetTeamForToken(authToken)
+	if err != nil {
+		return fmt.Errorf("failed to get team name from token: %w", err)
+	}
 	for _, source := range sources {
 		opts := []managedplugin.Option{
 			managedplugin.WithLogger(log.Logger),
+			managedplugin.WithOtelEndpoint(source.OtelEndpoint),
+			managedplugin.WithAuthToken(authToken.Value),
+			managedplugin.WithTeamName(teamName),
 		}
 		if cqDir != "" {
 			opts = append(opts, managedplugin.WithDirectory(cqDir))
 		}
 		if disableSentry {
 			opts = append(opts, managedplugin.WithNoSentry())
-		}
-		if source.OtelEndpoint != "" {
-			opts = append(opts, managedplugin.WithOtelEndpoint(source.OtelEndpoint))
 		}
 		if source.OtelEndpointInsecure {
 			opts = append(opts, managedplugin.WithOtelEndpointInsecure())
@@ -129,7 +137,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		}
 		sourcePluginClient, err := managedplugin.NewClient(ctx, managedplugin.PluginSource, cfg, opts...)
 		if err != nil {
-			return err
+			return enrichClientError(managedplugin.Clients{}, []bool{source.RegistryInferred()}, err)
 		}
 		sourcePluginClients = append(sourcePluginClients, sourcePluginClient)
 	}
@@ -143,6 +151,8 @@ func sync(cmd *cobra.Command, args []string) error {
 	for _, destination := range destinations {
 		opts := []managedplugin.Option{
 			managedplugin.WithLogger(log.Logger),
+			managedplugin.WithAuthToken(authToken.Value),
+			managedplugin.WithTeamName(teamName),
 		}
 		if cqDir != "" {
 			opts = append(opts, managedplugin.WithDirectory(cqDir))
@@ -158,7 +168,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		}
 		destPluginClient, err := managedplugin.NewClient(ctx, managedplugin.PluginDestination, cfg, opts...)
 		if err != nil {
-			return err
+			return enrichClientError(managedplugin.Clients{}, []bool{destination.RegistryInferred()}, err)
 		}
 		destinationPluginClients = append(destinationPluginClients, destPluginClient)
 	}

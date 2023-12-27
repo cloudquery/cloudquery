@@ -3,7 +3,7 @@ package guardduty
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty/types"
@@ -20,7 +20,19 @@ func detectorPublishingDestinations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_DescribePublishingDestination.html`,
 		Resolver:    fetchGuarddutyDetectorPublishingDestinations,
 		Transform:   transformers.TransformWithStruct(&types.Destination{}, transformers.WithPrimaryKeys("DestinationId")),
-		Columns: []schema.Column{
+		Columns: schema.ColumnList{
+			{
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
+			},
+			{
+				Name:       "request_region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSRegion,
+				PrimaryKey: true,
+			},
 			{
 				Name:       "detector_arn",
 				Type:       arrow.BinaryTypes.String,

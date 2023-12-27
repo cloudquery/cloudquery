@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"strings"
 
-	"github.com/apache/arrow/go/v14/arrow"
-	"github.com/apache/arrow/go/v14/arrow/array"
+	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/apache/arrow/go/v15/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -129,6 +129,26 @@ func transformArr(arr arrow.Array) []any {
 		case *array.Timestamp:
 			pgArr[i] = pgtype.Timestamptz{
 				Time:  a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit).UTC(),
+				Valid: a.IsValid(i),
+			}
+		case *array.Time32:
+			pgArr[i] = pgtype.Time{
+				Microseconds: a.Value(i).ToTime(a.DataType().(*arrow.Time32Type).Unit).UTC().UnixMicro(),
+				Valid:        a.IsValid(i),
+			}
+		case *array.Time64:
+			pgArr[i] = pgtype.Time{
+				Microseconds: a.Value(i).ToTime(a.DataType().(*arrow.Time64Type).Unit).UTC().UnixMicro(),
+				Valid:        a.IsValid(i),
+			}
+		case *array.Date32:
+			pgArr[i] = pgtype.Date{
+				Time:  a.Value(i).ToTime().UTC(),
+				Valid: a.IsValid(i),
+			}
+		case *array.Date64:
+			pgArr[i] = pgtype.Date{
+				Time:  a.Value(i).ToTime().UTC(),
 				Valid: a.IsValid(i),
 			}
 		case *types.UUIDArray:

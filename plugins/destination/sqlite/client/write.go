@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
@@ -25,6 +25,8 @@ func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) err
 			if err := c.insertMessage(ctx, m); err != nil {
 				return fmt.Errorf("failed to process Insert message: %w", err)
 			}
+		case *message.WriteDeleteRecord:
+			c.logger.Warn().Str("table", m.TableName).Msg("DeleteRecord not implemented")
 		default:
 			return fmt.Errorf("unsupported message type: %T", m)
 		}

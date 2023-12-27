@@ -125,5 +125,5 @@ func createBigqueryDatasets(mux *httprouter.Router) error {
 }
 
 func TestBigqueryDatasets(t *testing.T) {
-	client.MockTestRestHelper(t, Datasets(), createBigqueryDatasets, client.TestOptions{})
+	client.MockTestHelper(t, Datasets(), client.WithCreateHTTPServer(createBigqueryDatasets))
 }

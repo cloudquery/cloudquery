@@ -3,7 +3,7 @@ package autoscaling
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling"
 	"github.com/aws/aws-sdk-go-v2/service/autoscaling/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -18,14 +18,15 @@ func groupLifecycleHooks() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_LifecycleHook.html`,
 		Resolver:    fetchAutoscalingGroupLifecycleHooks,
-		Transform:   transformers.TransformWithStruct(&types.LifecycleHook{}),
+		Transform:   transformers.TransformWithStruct(&types.LifecycleHook{}, transformers.WithPrimaryKeys("LifecycleHookName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "group_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "group_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}

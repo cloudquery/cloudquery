@@ -57,5 +57,5 @@ func createBuckets(mux *httprouter.Router) error {
 }
 
 func TestBuckets(t *testing.T) {
-	client.MockTestRestHelper(t, Buckets(), createBuckets, client.TestOptions{})
+	client.MockTestHelper(t, Buckets(), client.WithCreateHTTPServer(createBuckets))
 }

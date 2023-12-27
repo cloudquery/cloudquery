@@ -23,6 +23,7 @@ func buildHostsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogService
 	}
 	i64val := int64(123)
 	h.HostList[0].MuteTimeout.Set(&i64val)
+	h.HostList[0].AdditionalProperties = map[string]any{"key": "value"}
 
 	m.EXPECT().ListHosts(gomock.Any()).Return(h, nil, nil)
 

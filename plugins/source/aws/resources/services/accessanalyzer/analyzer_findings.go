@@ -3,9 +3,7 @@ package accessanalyzer
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/aws/arn"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -18,20 +16,15 @@ func analyzerFindings() *schema.Table {
 		Name:        "aws_accessanalyzer_analyzer_findings",
 		Description: `https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_FindingSummary.html`,
 		Resolver:    fetchAccessanalyzerAnalyzerFindings,
-		Transform:   transformers.TransformWithStruct(&types.FindingSummary{}),
+		Transform:   transformers.TransformWithStruct(&types.FindingSummary{}, transformers.WithPrimaryKeys("Id")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
+				Name:       "analyzer_arn",
 				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveFindingArn,
+				Resolver:   schema.ParentColumnResolver("arn"),
 				PrimaryKey: true,
-			},
-			{
-				Name:     "analyzer_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
 			},
 		},
 	}
@@ -42,30 +35,16 @@ func fetchAccessanalyzerAnalyzerFindings(ctx context.Context, meta schema.Client
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceAccessanalyzer).Accessanalyzer
 
-	for _, cfg := range cl.Spec.TableOptions.AccessAnalyzerFindings.Filters() {
-		cfg.AnalyzerArn = analyzer.Arn
-		paginator := accessanalyzer.NewListFindingsPaginator(svc, &cfg.ListFindingsInput)
-		for paginator.HasMorePages() {
-			page, err := paginator.NextPage(ctx, func(options *accessanalyzer.Options) {
-				options.Region = cl.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- page.Findings
+	input := &accessanalyzer.ListFindingsInput{AnalyzerArn: analyzer.Arn}
+	paginator := accessanalyzer.NewListFindingsPaginator(svc, input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx, func(options *accessanalyzer.Options) {
+			options.Region = cl.Region
+		})
+		if err != nil {
+			return err
 		}
+		res <- page.Findings
 	}
 	return nil
-}
-
-func resolveFindingArn(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	a := arn.ARN{
-		Partition: cl.Partition,
-		Service:   "accessanalyzer",
-		Region:    cl.Region,
-		AccountID: cl.AccountID,
-		Resource:  "finding_summary/" + aws.ToString(resource.Item.(types.FindingSummary).Id),
-	}
-	return resource.Set(c.Name, a.String())
 }

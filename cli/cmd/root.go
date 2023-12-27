@@ -123,16 +123,47 @@ func NewCmdRoot() *cobra.Command {
 	f.DefValue = "all"
 
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
+
+	pluginCmd := &cobra.Command{
+		Use:   "plugin",
+		Short: "Plugin commands",
+	}
+	pluginDocCmd := &cobra.Command{
+		Use:    "docs",
+		Short:  "Plugin docs commands",
+		Hidden: true,
+	}
+	pluginDocCmd.AddCommand(
+		newCmdPluginDocsDownload(),
+		newCmdPluginDocsUpload(),
+	)
+
+	pluginCmd.AddCommand(
+		newCmdPluginInstall(false),
+		newCmdPluginPublish(),
+		pluginDocCmd,
+	)
+
+	addonCmd := &cobra.Command{
+		Use:   "addon",
+		Short: "Addon commands",
+	}
+	addonCmd.AddCommand(
+		newCmdAddonDownload(),
+		newCmdAddonPublish(),
+	)
+
 	cmd.AddCommand(
 		NewCmdSync(),
 		NewCmdMigrate(),
 		newCmdDoc(),
-		newCmdInstall(),
 		NewCmdTables(),
-		newCmdPublish(),
 		newCmdLogin(),
 		newCmdLogout(),
 		newCmdSwitch(),
+		newCmdPluginInstall(true), // legacy
+		pluginCmd,
+		addonCmd,
 	)
 	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true

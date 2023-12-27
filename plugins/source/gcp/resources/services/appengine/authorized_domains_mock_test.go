@@ -31,5 +31,5 @@ func (*fakeAuthorizedDomainsServer) ListAuthorizedDomains(context.Context, *pb.L
 }
 
 func TestAuthorizedDomains(t *testing.T) {
-	client.MockTestGrpcHelper(t, AuthorizedDomains(), createAuthorizedDomains, client.TestOptions{})
+	client.MockTestHelper(t, AuthorizedDomains(), client.WithCreateGrpcService(createAuthorizedDomains))
 }

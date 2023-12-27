@@ -5,6 +5,272 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.3.5](https://github.com/cloudquery/cloudquery/compare/cli-v4.3.4...cli-v4.3.5) (2023-12-26)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/apache/arrow/go` to `v15` ([#15754](https://github.com/cloudquery/cloudquery/issues/15754)) ([bd962eb](https://github.com/cloudquery/cloudquery/commit/bd962eb1093cf09e928e2a0e7782288ec4020ec4))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.6.3 ([#15737](https://github.com/cloudquery/cloudquery/issues/15737)) ([d3cacd3](https://github.com/cloudquery/cloudquery/commit/d3cacd32acf793e22f40bb996d08387fd31c4e61))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.21.1 ([#15699](https://github.com/cloudquery/cloudquery/issues/15699)) ([67c10c3](https://github.com/cloudquery/cloudquery/commit/67c10c38a04dcdd1512bf6dc739f89bc11baa888))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.21.2 ([#15724](https://github.com/cloudquery/cloudquery/issues/15724)) ([ad750b1](https://github.com/cloudquery/cloudquery/commit/ad750b1530af06353f2225c7d3397af580093687))
+* **deps:** Update module golang.org/x/crypto to v0.17.0 [SECURITY] ([#15730](https://github.com/cloudquery/cloudquery/issues/15730)) ([718be50](https://github.com/cloudquery/cloudquery/commit/718be502014ff36aa50cde3a83453b3d6ce15a83))
+
+## [4.3.4](https://github.com/cloudquery/cloudquery/compare/cli-v4.3.3...cli-v4.3.4) (2023-12-13)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.21.0 ([#15651](https://github.com/cloudquery/cloudquery/issues/15651)) ([6e96125](https://github.com/cloudquery/cloudquery/commit/6e96125a9d9c75616483952edb7a9e402818b264))
+* Set team name in destination download ([#15689](https://github.com/cloudquery/cloudquery/issues/15689)) ([3e2b5a4](https://github.com/cloudquery/cloudquery/commit/3e2b5a4db5157dc58ed3507c4b44f95c7fde5be4))
+
+## [4.3.3](https://github.com/cloudquery/cloudquery/compare/cli-v4.3.2...cli-v4.3.3) (2023-12-13)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.6.2 ([#15640](https://github.com/cloudquery/cloudquery/issues/15640)) ([ad2d4b4](https://github.com/cloudquery/cloudquery/commit/ad2d4b47bbd3551b546ae21a32685eba0762b1e6))
+* Remove existing plugin docs on re-publish ([#15639](https://github.com/cloudquery/cloudquery/issues/15639)) ([7197ba9](https://github.com/cloudquery/cloudquery/commit/7197ba9ea894f08845d16930b5bbfb4e42ceb5da))
+
+## [4.3.2](https://github.com/cloudquery/cloudquery/compare/cli-v4.3.1...cli-v4.3.2) (2023-12-12)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.14.4 ([#15576](https://github.com/cloudquery/cloudquery/issues/15576)) ([b6ad0b7](https://github.com/cloudquery/cloudquery/commit/b6ad0b72497f0d7389132d933ffe667a488017cb))
+
+## [4.3.1](https://github.com/cloudquery/cloudquery/compare/cli-v4.3.0...cli-v4.3.1) (2023-12-07)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.20.0 ([#15574](https://github.com/cloudquery/cloudquery/issues/15574)) ([317dca4](https://github.com/cloudquery/cloudquery/commit/317dca4182478d6f3789082ae563d9e8bd417d20))
+
+## [4.3.0](https://github.com/cloudquery/cloudquery/compare/cli-v4.2.0...cli-v4.3.0) (2023-12-07)
+
+
+### Features
+
+* Include `is_paid` field when publishing tables to the Hub ([#15569](https://github.com/cloudquery/cloudquery/issues/15569)) ([970a711](https://github.com/cloudquery/cloudquery/commit/970a71177bed0023a12c1294ef077a3f9fa08388))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.14.3 ([#15570](https://github.com/cloudquery/cloudquery/issues/15570)) ([cdc0462](https://github.com/cloudquery/cloudquery/commit/cdc04626fbfb29a42a1a27247533612f78d87cb2))
+* Login with no browser ([#15561](https://github.com/cloudquery/cloudquery/issues/15561)) ([945a900](https://github.com/cloudquery/cloudquery/commit/945a90025dc11d8269170e02892873fcf90b4b3d))
+
+## [4.2.0](https://github.com/cloudquery/cloudquery/compare/cli-v4.1.2...cli-v4.2.0) (2023-12-05)
+
+
+### Features
+
+* Add `isPaid` indication to JSON docs ([#15548](https://github.com/cloudquery/cloudquery/issues/15548)) ([97d4541](https://github.com/cloudquery/cloudquery/commit/97d4541ef6c7483d81948ac3605a75787f7cabab))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/gomarkdown/markdown digest to a660076 ([#15517](https://github.com/cloudquery/cloudquery/issues/15517)) ([fa1334c](https://github.com/cloudquery/cloudquery/commit/fa1334c5ce0e157834b0cd676b38af26510fbe43))
+* **deps:** Update golang.org/x/exp digest to 6522937 ([#15518](https://github.com/cloudquery/cloudquery/issues/15518)) ([69f9a06](https://github.com/cloudquery/cloudquery/commit/69f9a06754b2feb7c73bd5a80d42fd191c7fdb17))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.19.0 ([#15509](https://github.com/cloudquery/cloudquery/issues/15509)) ([41c689d](https://github.com/cloudquery/cloudquery/commit/41c689d0835487a8d924bb11c989c231f5e3df7c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.19.1 ([#15539](https://github.com/cloudquery/cloudquery/issues/15539)) ([a298555](https://github.com/cloudquery/cloudquery/commit/a298555343fc7ad483361c2f19c3d39693dab882))
+
+## [4.1.2](https://github.com/cloudquery/cloudquery/compare/cli-v4.1.1...cli-v4.1.2) (2023-11-28)
+
+
+### Bug Fixes
+
+* Add missing new line for paid tables docs ([#15490](https://github.com/cloudquery/cloudquery/issues/15490)) ([e17023c](https://github.com/cloudquery/cloudquery/commit/e17023c2e53098556ecb1c5f7b197c65e32ce168))
+
+## [4.1.1](https://github.com/cloudquery/cloudquery/compare/cli-v4.1.0...cli-v4.1.1) (2023-11-28)
+
+
+### Bug Fixes
+
+* Move paid table indication to the top ([#15482](https://github.com/cloudquery/cloudquery/issues/15482)) ([3c5e084](https://github.com/cloudquery/cloudquery/commit/3c5e08477c212c6f5032daf1ecfa7e68c8438cd8))
+
+## [4.1.0](https://github.com/cloudquery/cloudquery/compare/cli-v4.0.1...cli-v4.1.0) (2023-11-28)
+
+
+### Features
+
+* Add indication of Paid Tables in documents generated by tables command ([#15472](https://github.com/cloudquery/cloudquery/issues/15472)) ([f6eaf88](https://github.com/cloudquery/cloudquery/commit/f6eaf884d0f6bbf8d64f50845d34fe033dec3914))
+
+## [4.0.1](https://github.com/cloudquery/cloudquery/compare/cli-v4.0.0...cli-v4.0.1) (2023-11-24)
+
+
+### Bug Fixes
+
+* Change shutdown sequence after cloudquery login ([#15448](https://github.com/cloudquery/cloudquery/issues/15448)) ([b28b632](https://github.com/cloudquery/cloudquery/commit/b28b632e4f9a90c56336e49eadce77198add0b77))
+
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.29.2...cli-v4.0.0) (2023-11-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* Make `registry: cloudquery` the default registry instead of `registry: github` ([#15409](https://github.com/cloudquery/cloudquery/issues/15409))
+
+### Features
+
+* Addon downloads should use the team assigned to api key ([#15435](https://github.com/cloudquery/cloudquery/issues/15435)) ([7d7a2ce](https://github.com/cloudquery/cloudquery/commit/7d7a2ce57646e81ba44673b6376396eb1c9ae260))
+* Make `registry: cloudquery` the default registry instead of `registry: github` ([#15409](https://github.com/cloudquery/cloudquery/issues/15409)) ([6d9b2a9](https://github.com/cloudquery/cloudquery/commit/6d9b2a98bd952d43ccf016772386c879b5820e66))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.14.2 ([#15426](https://github.com/cloudquery/cloudquery/issues/15426)) ([9c2873b](https://github.com/cloudquery/cloudquery/commit/9c2873b301e95beda34d4fb144199d02a6827522))
+
+## [3.29.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.29.1...cli-v3.29.2) (2023-11-22)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.3 ([#15355](https://github.com/cloudquery/cloudquery/issues/15355)) ([d8455e5](https://github.com/cloudquery/cloudquery/commit/d8455e5ca1059746c7aced395e9bc150ea495591))
+* **deps:** Update plugin-pb-go to v1.14.1 ([#15417](https://github.com/cloudquery/cloudquery/issues/15417)) ([91c4f1d](https://github.com/cloudquery/cloudquery/commit/91c4f1d271f8f960b67430baa63ad8455c537bb3))
+* Logout should unset team ([#15393](https://github.com/cloudquery/cloudquery/issues/15393)) ([1cee384](https://github.com/cloudquery/cloudquery/commit/1cee3841390f1f1fdb699163bf3222a95ea12da1))
+
+## [3.29.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.29.0...cli-v3.29.1) (2023-11-17)
+
+
+### Bug Fixes
+
+* Addon publish command should take `message` as-is unless prefixed with `@` ([#15351](https://github.com/cloudquery/cloudquery/issues/15351)) ([b523440](https://github.com/cloudquery/cloudquery/commit/b523440fdadf590beecfa33c08c9832d98fed5c4))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.6.0 ([#15235](https://github.com/cloudquery/cloudquery/issues/15235)) ([e7ac6b2](https://github.com/cloudquery/cloudquery/commit/e7ac6b28fc83c0bda2b34862c73d27bd6e6bee5c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.2 ([#15325](https://github.com/cloudquery/cloudquery/issues/15325)) ([77f2db5](https://github.com/cloudquery/cloudquery/commit/77f2db52634bad6e56d970d55172b08d823b97c9))
+* Simplify `addon download` team reading ([#15285](https://github.com/cloudquery/cloudquery/issues/15285)) ([640f69a](https://github.com/cloudquery/cloudquery/commit/640f69a379add557bebbd15f401c7f2f291945da))
+
+## [3.29.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.28.1...cli-v3.29.0) (2023-11-15)
+
+
+### Features
+
+* Add `plugin docs` commands for doc updates ([#15264](https://github.com/cloudquery/cloudquery/issues/15264)) ([307d7bd](https://github.com/cloudquery/cloudquery/commit/307d7bd89f48a4acac277d3e0f1d8b4907c1ddf2))
+* Add teamName to managed plugin configuration ([#15278](https://github.com/cloudquery/cloudquery/issues/15278)) ([b3cf9b8](https://github.com/cloudquery/cloudquery/commit/b3cf9b8a9a7fe15a936704e1662162318b71f2be))
+
+
+### Bug Fixes
+
+* Better addon downloads ([#15173](https://github.com/cloudquery/cloudquery/issues/15173)) ([958483f](https://github.com/cloudquery/cloudquery/commit/958483fd0fc6be0a2f1f3fc7530813bc6a474fcb))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.0 ([#15132](https://github.com/cloudquery/cloudquery/issues/15132)) ([81ee138](https://github.com/cloudquery/cloudquery/commit/81ee138ff86c4b92c3ec93208e0a7e05af2b0036))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.1 ([#15263](https://github.com/cloudquery/cloudquery/issues/15263)) ([a9a39ef](https://github.com/cloudquery/cloudquery/commit/a9a39efe8112a564f21c06ba7627fe6c7ced4cdf))
+
+## [3.28.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.28.0...cli-v3.28.1) (2023-11-10)
+
+
+### Bug Fixes
+
+* Better publish command messages ([#15179](https://github.com/cloudquery/cloudquery/issues/15179)) ([efcbe0a](https://github.com/cloudquery/cloudquery/commit/efcbe0ad28e513c8206fbfea128a4216b9ae878c))
+* Improve error messages when downloads fail (upgrades plugin-pb-go to v1.13.5) ([#15215](https://github.com/cloudquery/cloudquery/issues/15215)) ([3619fc7](https://github.com/cloudquery/cloudquery/commit/3619fc758ef628cbe29bb3fa795d45212ee8cb5d))
+
+## [3.28.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.27.3...cli-v3.28.0) (2023-11-07)
+
+
+### Features
+
+* Add `addon download` command ([#15166](https://github.com/cloudquery/cloudquery/issues/15166)) ([4d88478](https://github.com/cloudquery/cloudquery/commit/4d88478415d2da20a9b33d1238a7d06957d3f735))
+
+
+### Bug Fixes
+
+* Improve error message if version is specified incorrectly ([#15129](https://github.com/cloudquery/cloudquery/issues/15129)) ([222c4d8](https://github.com/cloudquery/cloudquery/commit/222c4d8aad0d24cc6dc4a47b29d334ec097ef657))
+* Make `cloudquery addon` command visible ([#15163](https://github.com/cloudquery/cloudquery/issues/15163)) ([79b8d61](https://github.com/cloudquery/cloudquery/commit/79b8d61e146c63dd351fe188665693a7b0d1514a))
+
+## [3.27.3](https://github.com/cloudquery/cloudquery/compare/cli-v3.27.2...cli-v3.27.3) (2023-11-01)
+
+
+### Bug Fixes
+
+* Set team context when logging in, and don't clear it when logging out ([#15119](https://github.com/cloudquery/cloudquery/issues/15119)) ([ca3aaf5](https://github.com/cloudquery/cloudquery/commit/ca3aaf560923f81677c5c1396edbbe798b853587))
+
+## [3.27.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.27.1...cli-v3.27.2) (2023-11-01)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.13.4 ([#15107](https://github.com/cloudquery/cloudquery/issues/15107)) ([223f9ff](https://github.com/cloudquery/cloudquery/commit/223f9ff1121183c0019b65ba7649d3d4f19a9017))
+* **deps:** Update module github.com/docker/docker to v24 [SECURITY] ([#15060](https://github.com/cloudquery/cloudquery/issues/15060)) ([41acd0e](https://github.com/cloudquery/cloudquery/commit/41acd0e4ac63221e90cca89a7137a8685692267d))
+
+## [3.27.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.27.0...cli-v3.27.1) (2023-11-01)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.13.3 ([#15085](https://github.com/cloudquery/cloudquery/issues/15085)) ([df4b8c2](https://github.com/cloudquery/cloudquery/commit/df4b8c21f3ebf06507c2f1cfde1410402c0e86d7))
+
+## [3.27.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.26.1...cli-v3.27.0) (2023-11-01)
+
+
+### Features
+
+* Don't require team and name during publish ([#15079](https://github.com/cloudquery/cloudquery/issues/15079)) ([24acb80](https://github.com/cloudquery/cloudquery/commit/24acb80d1edc521a152ad3c6c8ab7ef8730261d9))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.13.1 ([#15035](https://github.com/cloudquery/cloudquery/issues/15035)) ([a872064](https://github.com/cloudquery/cloudquery/commit/a87206492e6355503ba69f4fec001ab9695ef093))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.17.0 ([#15064](https://github.com/cloudquery/cloudquery/issues/15064)) ([9c2db8c](https://github.com/cloudquery/cloudquery/commit/9c2db8cedaec682a89b444db29e8c0fb45989408))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.17.1 ([#15075](https://github.com/cloudquery/cloudquery/issues/15075)) ([151769e](https://github.com/cloudquery/cloudquery/commit/151769e7c02028a04ef0ed280951c000ebb1f9c2))
+* Update addon_type as part of PK ([#15020](https://github.com/cloudquery/cloudquery/issues/15020)) ([95dfa28](https://github.com/cloudquery/cloudquery/commit/95dfa2839cd5d7dc7277c6e6dc36ec8b4f36d376))
+
+## [3.26.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.26.0...cli-v3.26.1) (2023-10-26)
+
+
+### Bug Fixes
+
+* Make login and plugin commands visible in CLI help text ([#15013](https://github.com/cloudquery/cloudquery/issues/15013)) ([6cd8398](https://github.com/cloudquery/cloudquery/commit/6cd83980d1fa728fafdf143d2abe5260397fa798))
+
+## [3.26.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.25.2...cli-v3.26.0) (2023-10-26)
+
+
+### Features
+
+* Pass auth token to download client if needed ([#15000](https://github.com/cloudquery/cloudquery/issues/15000)) ([a9c8a59](https://github.com/cloudquery/cloudquery/commit/a9c8a59808569eb6d39b14b47ffb5b3d2e0112ad))
+
+## [3.25.2](https://github.com/cloudquery/cloudquery/compare/cli-v3.25.1...cli-v3.25.2) (2023-10-26)
+
+
+### Bug Fixes
+
+* Add missing options to install command ([#15001](https://github.com/cloudquery/cloudquery/issues/15001)) ([a61f51e](https://github.com/cloudquery/cloudquery/commit/a61f51ef2364868e9ec3d3c9c250aa475c737535))
+* Add missing options to migrate command ([#15002](https://github.com/cloudquery/cloudquery/issues/15002)) ([b3056ef](https://github.com/cloudquery/cloudquery/commit/b3056efa036d48ec2debeae5483cd736d07118d6))
+* Add missing options to tables command ([#15003](https://github.com/cloudquery/cloudquery/issues/15003)) ([af7c8ca](https://github.com/cloudquery/cloudquery/commit/af7c8caefeb9b3f344e913f2a14be45c2bc7a886))
+* **deps:** Update module google.golang.org/grpc to v1.58.3 [SECURITY] ([#14940](https://github.com/cloudquery/cloudquery/issues/14940)) ([e1addea](https://github.com/cloudquery/cloudquery/commit/e1addeaf58ad965e545a3e068860609dadcffa10))
+
+## [3.25.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.25.0...cli-v3.25.1) (2023-10-23)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/arrow/go/v14 digest to f46436f ([#14803](https://github.com/cloudquery/cloudquery/issues/14803)) ([f5248d7](https://github.com/cloudquery/cloudquery/commit/f5248d749398ded6a50903e09ecabbb996e94a34))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.15.3 ([#14679](https://github.com/cloudquery/cloudquery/issues/14679)) ([0513c19](https://github.com/cloudquery/cloudquery/commit/0513c193919f4555d41f22ba2ff66efaaf5fca67))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.16.1 ([#14721](https://github.com/cloudquery/cloudquery/issues/14721)) ([1c7ee1d](https://github.com/cloudquery/cloudquery/commit/1c7ee1dc99d7a9cb3358a83e8d827d59be78cefa))
+
+## [3.25.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.24.0...cli-v3.25.0) (2023-10-18)
+
+
+### Features
+
+* Addon CLI ([#14564](https://github.com/cloudquery/cloudquery/issues/14564)) ([33e7833](https://github.com/cloudquery/cloudquery/commit/33e7833875de8f1ec6c49e2366bf918a5bc59b91))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.15.2 ([#14662](https://github.com/cloudquery/cloudquery/issues/14662)) ([e274fe4](https://github.com/cloudquery/cloudquery/commit/e274fe419f6cacdf62547cd7134f40916e5ddd96))
+
+## [3.24.0](https://github.com/cloudquery/cloudquery/compare/cli-v3.23.1...cli-v3.24.0) (2023-10-18)
+
+
+### Features
+
+* Support DeleteRecord Message ([#14495](https://github.com/cloudquery/cloudquery/issues/14495)) ([03c6ace](https://github.com/cloudquery/cloudquery/commit/03c6ace7b097f00a98dbf175172a4a0be9152531))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.2.9 ([#14627](https://github.com/cloudquery/cloudquery/issues/14627)) ([c1d244c](https://github.com/cloudquery/cloudquery/commit/c1d244c95199141ac39a713a3f0577b2fb3bf736))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.3.0 ([#14635](https://github.com/cloudquery/cloudquery/issues/14635)) ([00b380c](https://github.com/cloudquery/cloudquery/commit/00b380c10be1642f737f871ba5588888ed5dd180))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.4.0 ([#14639](https://github.com/cloudquery/cloudquery/issues/14639)) ([f139c0e](https://github.com/cloudquery/cloudquery/commit/f139c0e9369ef92a3cd874003db40b48e229ab58))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.15.0 ([#14622](https://github.com/cloudquery/cloudquery/issues/14622)) ([b497a6b](https://github.com/cloudquery/cloudquery/commit/b497a6bc5645854bd25d4083fd91ec549a7f274f))
+
 ## [3.23.1](https://github.com/cloudquery/cloudquery/compare/cli-v3.23.0...cli-v3.23.1) (2023-10-16)
 
 

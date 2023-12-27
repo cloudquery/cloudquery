@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/backup"
@@ -75,8 +75,16 @@ func resolveRecoveryPointTags(ctx context.Context, meta schema.ClientMeta, resou
 
 	// decide if the backed up resource supports tags
 	switch client.AWSService(resourceARN.Service) {
-	case client.S3Service, client.EFSService, client.DynamoDBService:
+	case client.S3Service, client.EFSService:
+
 		// these services are ok
+	case client.DynamoDBService:
+		// DynamoDB backups in accounts without "Advanced DynamoDB Backups" do not have Full Backup Management and do not support tagging.
+		// DynamoDB backups in such accounts are in the "dynamodb" service namespace, instead of "awsbackup".
+		// https://docs.aws.amazon.com/aws-backup/latest/devguide/advanced-ddb-backup.html#advanced-ddb-backup-other-benefits
+		if resourceARN.Service == "dynamodb" {
+			return nil
+		}
 	case client.EC2Service:
 		if !strings.HasPrefix(resourceARN.Resource, "instance/") {
 			return nil
@@ -98,10 +106,6 @@ func resolveRecoveryPointTags(ctx context.Context, meta schema.ClientMeta, resou
 		if err != nil {
 			if client.IsAWSError(err, "ERROR_2603") {
 				// ignoring "ERROR_2603: Cannot find recovery point."
-				return nil
-			}
-			if resourceARN.Service == string(client.DynamoDBService) && client.IsAWSError(err, "ERROR_3930") {
-				// advanced backup features are not enabled for dynamodb
 				return nil
 			}
 			return err

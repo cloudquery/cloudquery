@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/thoas/go-funk"
@@ -57,4 +57,12 @@ func TimestampResolverTransformer(field reflect.StructField, path string) schema
 		}
 		return r.Set(c.Name, t)
 	}
+}
+
+// TagsResolverTransformer adds possibility to override the column resolver for "Tags" field
+func TagsResolverTransformer(field reflect.StructField, path string) schema.ColumnResolver {
+	if path == "Tags" {
+		return ResolveTags
+	}
+	return transformers.DefaultResolverTransformer(field, path)
 }

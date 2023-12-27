@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
@@ -21,14 +21,18 @@ func configurationOptions() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticbeanstalk/latest/api/API_ConfigurationOptionDescription.html`,
 		Resolver:    fetchElasticbeanstalkConfigurationOptions,
-		Transform:   transformers.TransformWithStruct(&models.ConfigurationOptionDescriptionWrapper{}, transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform: transformers.TransformWithStruct(&models.ConfigurationOptionDescriptionWrapper{},
+			transformers.WithUnwrapAllEmbeddedStructs(),
+			transformers.WithPrimaryKeys("ApplicationArn", "SolutionStackName", "Name"),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "environment_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("id"),
+				Name:       "environment_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -61,10 +65,13 @@ func fetchElasticbeanstalkConfigurationOptions(ctx context.Context, meta schema.
 		AccountID: cl.AccountID,
 		Resource:  fmt.Sprintf("application/%s", aws.ToString(p.ApplicationName)),
 	}.String()
+	solutionStackName := aws.ToString(output.SolutionStackName)
 
 	for _, option := range output.Options {
 		res <- models.ConfigurationOptionDescriptionWrapper{
-			ConfigurationOptionDescription: option, ApplicationArn: arnStr,
+			ApplicationArn:                 arnStr,
+			SolutionStackName:              solutionStackName,
+			ConfigurationOptionDescription: option,
 		}
 	}
 

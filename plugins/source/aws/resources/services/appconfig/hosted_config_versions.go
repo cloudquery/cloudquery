@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/appconfig"
@@ -72,7 +72,7 @@ func getHostedConfiguration(ctx context.Context, meta schema.ClientMeta, resourc
 	input := appconfig.GetHostedConfigurationVersionInput{
 		ApplicationId:          hostedConfigurationVersionSummary.ApplicationId,
 		ConfigurationProfileId: hostedConfigurationVersionSummary.ConfigurationProfileId,
-		VersionNumber:          hostedConfigurationVersionSummary.VersionNumber,
+		VersionNumber:          aws.Int32(hostedConfigurationVersionSummary.VersionNumber),
 	}
 	output, err := svc.GetHostedConfigurationVersion(ctx, &input, func(o *appconfig.Options) { o.Region = cl.Region })
 	if err != nil {

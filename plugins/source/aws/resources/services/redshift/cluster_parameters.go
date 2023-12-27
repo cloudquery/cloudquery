@@ -3,7 +3,7 @@ package redshift
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -17,7 +17,7 @@ func clusterParameters() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_Parameter.html`,
 		Resolver:    fetchClusterParameters,
-		Transform:   transformers.TransformWithStruct(&types.Parameter{}),
+		Transform:   transformers.TransformWithStruct(&types.Parameter{}, transformers.WithPrimaryKeys("ParameterName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -27,12 +27,6 @@ func clusterParameters() *schema.Table {
 				Resolver:    schema.ParentColumnResolver("cluster_arn"),
 				Description: `The Amazon Resource Name (ARN) for the resource.`,
 				PrimaryKey:  true,
-			},
-			{
-				Name:       "parameter_name",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ParameterName"),
-				PrimaryKey: true,
 			},
 		},
 	}

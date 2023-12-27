@@ -9,6 +9,9 @@ import (
 //go:generate mockgen -package=mocks -destination=../mocks/cloudwatchlogs.go -source=cloudwatchlogs.go CloudwatchlogsClient
 type CloudwatchlogsClient interface {
 	DescribeAccountPolicies(context.Context, *cloudwatchlogs.DescribeAccountPoliciesInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeAccountPoliciesOutput, error)
+	DescribeDeliveries(context.Context, *cloudwatchlogs.DescribeDeliveriesInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeDeliveriesOutput, error)
+	DescribeDeliveryDestinations(context.Context, *cloudwatchlogs.DescribeDeliveryDestinationsInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeDeliveryDestinationsOutput, error)
+	DescribeDeliverySources(context.Context, *cloudwatchlogs.DescribeDeliverySourcesInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeDeliverySourcesOutput, error)
 	DescribeDestinations(context.Context, *cloudwatchlogs.DescribeDestinationsInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeDestinationsOutput, error)
 	DescribeExportTasks(context.Context, *cloudwatchlogs.DescribeExportTasksInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeExportTasksOutput, error)
 	DescribeLogGroups(context.Context, *cloudwatchlogs.DescribeLogGroupsInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeLogGroupsOutput, error)
@@ -19,10 +22,17 @@ type CloudwatchlogsClient interface {
 	DescribeResourcePolicies(context.Context, *cloudwatchlogs.DescribeResourcePoliciesInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeResourcePoliciesOutput, error)
 	DescribeSubscriptionFilters(context.Context, *cloudwatchlogs.DescribeSubscriptionFiltersInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.DescribeSubscriptionFiltersOutput, error)
 	GetDataProtectionPolicy(context.Context, *cloudwatchlogs.GetDataProtectionPolicyInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetDataProtectionPolicyOutput, error)
+	GetDelivery(context.Context, *cloudwatchlogs.GetDeliveryInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetDeliveryOutput, error)
+	GetDeliveryDestination(context.Context, *cloudwatchlogs.GetDeliveryDestinationInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetDeliveryDestinationOutput, error)
+	GetDeliveryDestinationPolicy(context.Context, *cloudwatchlogs.GetDeliveryDestinationPolicyInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetDeliveryDestinationPolicyOutput, error)
+	GetDeliverySource(context.Context, *cloudwatchlogs.GetDeliverySourceInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetDeliverySourceOutput, error)
+	GetLogAnomalyDetector(context.Context, *cloudwatchlogs.GetLogAnomalyDetectorInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetLogAnomalyDetectorOutput, error)
 	GetLogEvents(context.Context, *cloudwatchlogs.GetLogEventsInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetLogEventsOutput, error)
 	GetLogGroupFields(context.Context, *cloudwatchlogs.GetLogGroupFieldsInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetLogGroupFieldsOutput, error)
 	GetLogRecord(context.Context, *cloudwatchlogs.GetLogRecordInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetLogRecordOutput, error)
 	GetQueryResults(context.Context, *cloudwatchlogs.GetQueryResultsInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.GetQueryResultsOutput, error)
+	ListAnomalies(context.Context, *cloudwatchlogs.ListAnomaliesInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.ListAnomaliesOutput, error)
+	ListLogAnomalyDetectors(context.Context, *cloudwatchlogs.ListLogAnomalyDetectorsInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.ListLogAnomalyDetectorsOutput, error)
 	ListTagsForResource(context.Context, *cloudwatchlogs.ListTagsForResourceInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.ListTagsForResourceOutput, error)
 	ListTagsLogGroup(context.Context, *cloudwatchlogs.ListTagsLogGroupInput, ...func(*cloudwatchlogs.Options)) (*cloudwatchlogs.ListTagsLogGroupOutput, error)
 }

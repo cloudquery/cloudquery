@@ -3,7 +3,7 @@ package route53
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains"
 	"github.com/aws/aws-sdk-go-v2/service/route53domains/types"
@@ -20,7 +20,7 @@ func Domains() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_GetDomainDetail.html`,
 		Resolver:            fetchRoute53Domains,
 		PreResourceResolver: getDomain,
-		Transform:           transformers.TransformWithStruct(&route53domains.GetDomainDetailOutput{}),
+		Transform:           transformers.TransformWithStruct(&route53domains.GetDomainDetailOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "route53domains"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

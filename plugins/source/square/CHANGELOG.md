@@ -1,5 +1,35 @@
 # Changelog
 
+## [1.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.0.7...plugins-source-square-v1.0.8) (2023-11-23)
+
+
+### Bug Fixes
+
+* Add missing tables for Docker plugins, remove on-demand rendering of tables ([#15433](https://github.com/cloudquery/cloudquery/issues/15433)) ([2286412](https://github.com/cloudquery/cloudquery/commit/22864120467b98d9284c533e58a7c9e09f8790ab))
+
+## [1.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.0.6...plugins-source-square-v1.0.7) (2023-11-16)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.8 ([#15213](https://github.com/cloudquery/cloudquery/issues/15213)) ([02c07e0](https://github.com/cloudquery/cloudquery/commit/02c07e0f67f41cb62f1da2e84305f1e28b823cb4))
+* **deps:** Update dependency pyarrow to v14 [SECURITY] ([#15213](https://github.com/cloudquery/cloudquery/issues/15213)) ([02c07e0](https://github.com/cloudquery/cloudquery/commit/02c07e0f67f41cb62f1da2e84305f1e28b823cb4))
+* **deps:** Update module github.com/docker/docker to v24 [SECURITY] ([#15060](https://github.com/cloudquery/cloudquery/issues/15060)) ([41acd0e](https://github.com/cloudquery/cloudquery/commit/41acd0e4ac63221e90cca89a7137a8685692267d))
+
+## [1.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.0.5...plugins-source-square-v1.0.6) (2023-10-24)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.7 ([#14869](https://github.com/cloudquery/cloudquery/issues/14869)) ([1c83cbe](https://github.com/cloudquery/cloudquery/commit/1c83cbea76fc37b00457f7dc4b13b80b066b10cf))
+
+## [1.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.0.4...plugins-source-square-v1.0.5) (2023-10-23)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.6 ([#14509](https://github.com/cloudquery/cloudquery/issues/14509)) ([c8cb05e](https://github.com/cloudquery/cloudquery/commit/c8cb05eaee332a84743799debc6b3954a8aa718e))
+
 ## [1.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.0.3...plugins-source-square-v1.0.4) (2023-10-10)
 
 

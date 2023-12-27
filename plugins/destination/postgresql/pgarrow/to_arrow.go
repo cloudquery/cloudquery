@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
@@ -49,14 +49,16 @@ func Pg10ToArrow(t string) arrow.DataType {
 		// special case.
 		// TODO: add Decimal128/256 support
 		return arrow.PrimitiveTypes.Uint64
-	case "double precision", "float8":
-		return arrow.PrimitiveTypes.Float64
 	case "real", "float4":
 		return arrow.PrimitiveTypes.Float32
+	case "double precision", "float8":
+		return arrow.PrimitiveTypes.Float64
 	case "uuid":
 		return cqtypes.ExtensionTypes.UUID
 	case "bytea":
 		return arrow.BinaryTypes.Binary
+	case "date":
+		return arrow.FixedWidthTypes.Date32
 	case "json", "jsonb":
 		return cqtypes.ExtensionTypes.JSON
 	case "cidr":
@@ -65,8 +67,6 @@ func Pg10ToArrow(t string) arrow.DataType {
 		return cqtypes.ExtensionTypes.MAC
 	case "inet":
 		return cqtypes.ExtensionTypes.Inet
-	case "date":
-		return arrow.FixedWidthTypes.Date32
 	default:
 		return arrow.BinaryTypes.String
 	}
@@ -109,14 +109,16 @@ func CockroachToArrow(t string) arrow.DataType {
 		// special case.
 		// TODO: add Decimal128/256 support
 		return arrow.PrimitiveTypes.Uint64
-	case "double precision", "float8":
-		return arrow.PrimitiveTypes.Float64
 	case "real", "float4":
 		return arrow.PrimitiveTypes.Float32
+	case "double precision", "float8":
+		return arrow.PrimitiveTypes.Float64
 	case "uuid":
 		return cqtypes.ExtensionTypes.UUID
 	case "bytea":
 		return arrow.BinaryTypes.Binary
+	case "date":
+		return arrow.FixedWidthTypes.Date32
 	case "json", "jsonb":
 		return cqtypes.ExtensionTypes.JSON
 	case "cidr":
@@ -126,8 +128,6 @@ func CockroachToArrow(t string) arrow.DataType {
 		return arrow.BinaryTypes.String
 	case "inet":
 		return cqtypes.ExtensionTypes.Inet
-	case "date":
-		return arrow.FixedWidthTypes.Date32
 	default:
 		return arrow.BinaryTypes.String
 	}

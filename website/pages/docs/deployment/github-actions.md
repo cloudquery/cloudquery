@@ -26,6 +26,7 @@ kind: source
 spec:
   name: 'aws'
   path: cloudquery/aws
+  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   tables: ['*']
   destinations: ['postgresql']
@@ -34,6 +35,7 @@ kind: destination
 spec:
   name: 'postgresql'
   path: cloudquery/postgresql
+  registry: cloudquery
   version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     connection_string: ${CQ_DSN} # The CQ_DSN environment variable will be set by GitHub Action workflow
@@ -96,6 +98,7 @@ kind: source
 spec:
   name: 'aws-REGION_PLACEHOLDER' # when splitting configurations, we need to keep the names unique
   path: cloudquery/aws
+  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   destinations: ['postgresql-REGION_PLACEHOLDER']
   tables: ['*']
@@ -107,6 +110,7 @@ kind: destination
 spec:
   name: 'postgresql-REGION_PLACEHOLDER' # when splitting configurations, we need to keep the names unique
   path: cloudquery/postgresql
+  registry: cloudquery
   version: "VERSION_DESTINATION_POSTGRESQL"
   spec:
     connection_string: ${CQ_DSN} # The CQ_DSN environment variable will be set by GitHub Action workflow

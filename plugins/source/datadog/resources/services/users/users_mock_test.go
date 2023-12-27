@@ -20,6 +20,7 @@ func buildUsersMock(t *testing.T, ctrl *gomock.Controller) client.DatadogService
 	if err != nil {
 		t.Fatal(err)
 	}
+	i.AdditionalProperties = map[string]any{"key": "value"}
 	m.EXPECT().ListUsersWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(i))
 
 	var permissions datadogV2.PermissionsResponse
@@ -27,6 +28,7 @@ func buildUsersMock(t *testing.T, ctrl *gomock.Controller) client.DatadogService
 	if err != nil {
 		t.Fatal(err)
 	}
+	permissions.Data[0].AdditionalProperties = map[string]any{"key": "value"}
 	m.EXPECT().ListUserPermissions(gomock.Any(), gomock.Any()).Return(permissions, nil, nil)
 
 	return services

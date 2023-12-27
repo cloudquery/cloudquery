@@ -23,6 +23,7 @@ type Spec struct {
 	BatchSize          int    `json:"batch_size,omitempty"`
 	BatchSizeBytes     int    `json:"batch_size_bytes,omitempty"`
 	MigrateConcurrency int    `json:"migrate_concurrency,omitempty"`
+	LeaveStageFiles    bool   `json:"leave_stage_files,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {

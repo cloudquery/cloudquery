@@ -3,7 +3,7 @@ package ecs
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/ecs/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -26,6 +26,12 @@ func clusterContainerInstances() *schema.Table {
 				Name:     "cluster_arn",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: schema.ParentColumnResolver("arn"),
+			},
+			{
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ContainerInstanceArn"),
+				PrimaryKey: true,
 			},
 			{
 				Name:     "tags",

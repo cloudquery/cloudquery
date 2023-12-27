@@ -30,5 +30,5 @@ func (*fakeClustersServer) ListClusters(context.Context, *pb.ListClustersRequest
 }
 
 func TestClusters(t *testing.T) {
-	client.MockTestGrpcHelper(t, Clusters(), createClusters, client.TestOptions{})
+	client.MockTestHelper(t, Clusters(), client.WithCreateGrpcService(createClusters))
 }

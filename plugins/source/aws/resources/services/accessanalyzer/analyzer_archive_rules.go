@@ -3,7 +3,7 @@ package accessanalyzer
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -16,14 +16,15 @@ func analyzerArchiveRules() *schema.Table {
 		Name:        "aws_accessanalyzer_analyzer_archive_rules",
 		Description: `https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ArchiveRuleSummary.html`,
 		Resolver:    fetchAccessanalyzerAnalyzerArchiveRules,
-		Transform:   transformers.TransformWithStruct(&types.ArchiveRuleSummary{}),
+		Transform:   transformers.TransformWithStruct(&types.ArchiveRuleSummary{}, transformers.WithPrimaryKeys("RuleName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "analyzer_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "analyzer_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -33,9 +34,7 @@ func fetchAccessanalyzerAnalyzerArchiveRules(ctx context.Context, meta schema.Cl
 	analyzer := parent.Item.(types.AnalyzerSummary)
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceAccessanalyzer).Accessanalyzer
-	config := accessanalyzer.ListArchiveRulesInput{
-		AnalyzerName: analyzer.Name,
-	}
+	config := accessanalyzer.ListArchiveRulesInput{AnalyzerName: analyzer.Name}
 	paginator := accessanalyzer.NewListArchiveRulesPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *accessanalyzer.Options) {

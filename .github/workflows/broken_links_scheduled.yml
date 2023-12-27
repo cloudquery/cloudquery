@@ -17,10 +17,9 @@ jobs:
       - name: Set Vercel URL output
         id: vercel
         run: |
-          echo "url=https://www.cloudquery.io" >> $GITHUB_OUTPUT
+          echo "url=https://docs.cloudquery.io" >> $GITHUB_OUTPUT
 
       - name: Check for broken links
-        if: steps.broken-links.outputs.check != 'false'
         # We need to exclude some hosts that protect against bots
         run: |
           set -o pipefail
@@ -35,6 +34,9 @@ jobs:
             --exclude "${{ steps.vercel.outputs.url }}/register_for_cloud" \
             --exclude "${{ steps.vercel.outputs.url }}/apply_for_job" \
             --exclude "${{ steps.vercel.outputs.url }}/careers" \
+            --exclude "${{ steps.vercel.outputs.url }}/register-for-marketplace" \
+            --exclude "${{ steps.vercel.outputs.url }}/blog" \
+            --exclude "${{ steps.vercel.outputs.url }}/blog/*" \
             --exclude linkedin \
             --exclude cloudquery.io/discord \
             --exclude cloudquery.io/buy \
@@ -53,7 +55,10 @@ jobs:
             --exclude mongodb.com \
             --exclude regex101.com \
             --exclude help.shopify.com/en/manual/apps/app-types/custom-apps \
-            ${{ steps.vercel.outputs.url }} \
+            --exclude hub.cloudquery.io \
+            --exclude www.g2.com \
+            --exclude cql.ink \
+            ${{ steps.vercel.outputs.url }}/docs \
             | grep -v '───OK───' | grep -v '──SKIP──' | grep -v '0 broken'
       - name: Slack Notify
         uses: ravsamhq/notify-slack-action@v2 # https://github.com/marketplace/actions/notify-slack-action

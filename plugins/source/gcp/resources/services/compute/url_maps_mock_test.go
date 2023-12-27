@@ -33,5 +33,5 @@ func createUrlMaps(mux *httprouter.Router) error {
 }
 
 func TestUrlMaps(t *testing.T) {
-	client.MockTestRestHelper(t, UrlMaps(), createUrlMaps, client.TestOptions{})
+	client.MockTestHelper(t, UrlMaps(), client.WithCreateHTTPServer(createUrlMaps))
 }

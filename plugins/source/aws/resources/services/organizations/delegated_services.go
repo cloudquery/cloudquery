@@ -26,7 +26,7 @@ func fetchOrganizationsDelegatedServices(ctx context.Context, meta schema.Client
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceOrganizations).Organizations
 	paginator := organizations.NewListDelegatedServicesForAccountPaginator(svc, &organizations.ListDelegatedServicesForAccountInput{
-		AccountId: parent.Item.(types.Account).Id,
+		AccountId: parent.Item.(types.DelegatedAdministrator).Id,
 	})
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *organizations.Options) {

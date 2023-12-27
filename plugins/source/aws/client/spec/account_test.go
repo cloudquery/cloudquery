@@ -3,105 +3,183 @@ package spec
 import (
 	"testing"
 
-	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/cloudquery/codegen/jsonschema"
-	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/stretchr/testify/require"
 )
 
 func TestAccountJSONSchema(t *testing.T) {
-	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
+	data, err := jsonschema.Generate(Account{})
+	require.NoError(t, err)
+	jsonschema.TestJSONSchema(t, string(data), []jsonschema.TestCase{
 		{
-			Name: "empty accounts",
-			Spec: `{"accounts":[]}`,
+			Name: "empty",
+			Err:  true, // missing id
+			Spec: `{}`,
 		},
 		{
-			Name: "null accounts",
-			Spec: `{"accounts":null}`,
-		},
-		{
-			Name: "bad accounts",
+			Name: "empty id",
 			Err:  true,
-			Spec: `{"accounts":[123]}`,
+			Spec: `{"id":""}`,
 		},
 		{
-			Name: "empty account",
+			Name: "null id",
 			Err:  true,
-			Spec: `{"accounts":[{}]}`,
+			Spec: `{"id":null}`,
 		},
 		{
-			Name: "null account",
+			Name: "bad id",
 			Err:  true,
-			Spec: `{"accounts":[null]}`,
+			Spec: `{"id":123}`,
 		},
 		{
-			Name: "bad account",
+			Name: "proper id",
+			Spec: `{"id":"abc"}`,
+		},
+		{
+			Name: "empty account_name",
+			Spec: `{"id":"abc","account_name":""}`,
+		},
+		{
+			Name: "null account_name",
 			Err:  true,
-			Spec: `{"accounts":[123]}`,
+			Spec: `{"id":"abc","account_name":null}`,
 		},
 		{
-			Name: "proper account",
-			Spec: func() string {
-				var input Account
-				require.NoError(t, faker.FakeObject(&input))
-
-				var randomARN arn.ARN
-				require.NoError(t, faker.FakeObject(&randomARN))
-				input.RoleARN = randomARN.String()
-
-				return `{"accounts":[` + jsonschema.WithRemovedKeys(t, &input) + `]}`
-			}(),
-		},
-		{
-			Name: "bad account.role_arn",
+			Name: "bad account_name",
 			Err:  true,
-			Spec: func() string {
-				var input Account
-				require.NoError(t, faker.FakeObject(&input))
-				return `{"accounts":[` + jsonschema.WithRemovedKeys(t, &input) + `]}`
-			}(),
+			Spec: `{"id":"abc","account_name":123}`,
 		},
 		{
-			Name: "missing account.id",
+			Name: "proper account_name",
+			Spec: `{"id":"abc","account_name":"abc"}`,
+		},
+		{
+			Name: "empty local_profile",
+			Spec: `{"id":"abc","local_profile":""}`,
+		},
+		{
+			Name: "null local_profile",
 			Err:  true,
-			Spec: func() string {
-				var input Account
-				require.NoError(t, faker.FakeObject(&input))
-
-				var randomARN arn.ARN
-				require.NoError(t, faker.FakeObject(&randomARN))
-				input.RoleARN = randomARN.String()
-
-				return `{"accounts":[` + jsonschema.WithRemovedKeys(t, &input, "id") + `]}`
-			}(),
+			Spec: `{"id":"abc","local_profile":null}`,
 		},
 		{
-			Name: "empty account.region",
+			Name: "bad local_profile",
 			Err:  true,
-			Spec: func() string {
-				var input Account
-				require.NoError(t, faker.FakeObject(&input))
-
-				var randomARN arn.ARN
-				require.NoError(t, faker.FakeObject(&randomARN))
-				input.RoleARN = randomARN.String()
-
-				input.Regions = []string{""}
-				return `{"accounts":[` + jsonschema.WithRemovedKeys(t, &input) + `]}`
-			}(),
+			Spec: `{"id":"abc","local_profile":123}`,
 		},
 		{
-			Name: "filled in accounts with null org",
-			Spec: func() string {
-				var account Account
-				require.NoError(t, faker.FakeObject(&account))
-
-				var randomARN arn.ARN
-				require.NoError(t, faker.FakeObject(&randomARN))
-				account.RoleARN = randomARN.String()
-
-				return `{"org":null,"accounts":[` + jsonschema.WithRemovedKeys(t, &account) + `]}`
-			}(),
+			Name: "proper local_profile",
+			Spec: `{"id":"abc","local_profile":"abc"}`,
+		},
+		{
+			Name: "empty role_arn",
+			Spec: `{"id":"abc","role_arn":""}`,
+		},
+		{
+			Name: "null role_arn",
+			Err:  true,
+			Spec: `{"id":"abc","role_arn":null}`,
+		},
+		{
+			Name: "bad role_arn type",
+			Err:  true,
+			Spec: `{"id":"abc","role_arn":123}`,
+		},
+		{
+			Name: "bad role_arn",
+			Err:  true,
+			Spec: `{"id":"abc","role_arn":"abc"}`,
+		},
+		{
+			Name: "proper role_arn",
+			Spec: `{"id":"abc","role_arn":"arn:1:2:3:4:5"}`,
+		},
+		{
+			Name: "empty role_session_name",
+			Spec: `{"id":"abc","role_session_name":""}`,
+		},
+		{
+			Name: "null role_session_name",
+			Err:  true,
+			Spec: `{"id":"abc","role_session_name":null}`,
+		},
+		{
+			Name: "bad role_session_name",
+			Err:  true,
+			Spec: `{"id":"abc","role_session_name":123}`,
+		},
+		{
+			Name: "proper role_session_name",
+			Spec: `{"id":"abc","role_session_name":"abc"}`,
+		},
+		{
+			Name: "empty external_id",
+			Spec: `{"id":"abc","external_id":""}`,
+		},
+		{
+			Name: "null external_id",
+			Err:  true,
+			Spec: `{"id":"abc","external_id":null}`,
+		},
+		{
+			Name: "bad external_id",
+			Err:  true,
+			Spec: `{"id":"abc","external_id":123}`,
+		},
+		{
+			Name: "proper external_id",
+			Spec: `{"id":"abc","external_id":"abc"}`,
+		},
+		{
+			Name: "empty default_region",
+			Err:  true,
+			Spec: `{"id":"abc","default_region":""}`,
+		},
+		{
+			Name: "null default_region",
+			Err:  true,
+			Spec: `{"id":"abc","default_region":null}`,
+		},
+		{
+			Name: "bad default_region",
+			Err:  true,
+			Spec: `{"id":"abc","default_region":123}`,
+		},
+		{
+			Name: "proper default_region",
+			Spec: `{"id":"abc","default_region":"abc"}`,
+		},
+		{
+			Name: "empty regions",
+			Spec: `{"id":"abc","regions":[]}`,
+		},
+		{
+			Name: "null regions",
+			Spec: `{"id":"abc","regions":null}`,
+		},
+		{
+			Name: "bad regions",
+			Err:  true,
+			Spec: `{"id":"abc","regions":123}`,
+		},
+		{
+			Name: "empty regions entry",
+			Err:  true,
+			Spec: `{"id":"abc","regions":[""]}`,
+		},
+		{
+			Name: "null regions entry",
+			Err:  true,
+			Spec: `{"id":"abc","regions":[null]}`,
+		},
+		{
+			Name: "bad regions entry",
+			Err:  true,
+			Spec: `{"id":"abc","regions":[123]}`,
+		},
+		{
+			Name: "proper regions entry",
+			Spec: `{"id":"abc","regions":["abc"]}`,
 		},
 	})
 }

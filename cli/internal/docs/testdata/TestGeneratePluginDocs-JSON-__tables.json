@@ -23,6 +23,14 @@
     "relations": []
   },
   {
+    "name": "paid_table",
+    "title": "Paid Table",
+    "description": "Description for paid table",
+    "columns": [],
+    "relations": [],
+    "is_paid": true
+  },
+  {
     "name": "test_table",
     "title": "Test Table",
     "description": "Description for test table",

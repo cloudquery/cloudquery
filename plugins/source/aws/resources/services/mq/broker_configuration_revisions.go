@@ -7,7 +7,7 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	xj "github.com/basgys/goxml2json"
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 
@@ -19,6 +19,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 )
 
+type wrappedBrokerConfigurationRevision struct {
+	mq.DescribeConfigurationRevisionOutput
+	Revision int32
+}
+
 func brokerConfigurationRevisions() *schema.Table {
 	tableName := "aws_mq_broker_configuration_revisions"
 	return &schema.Table{
@@ -26,14 +31,20 @@ func brokerConfigurationRevisions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id-revisions.html`,
 		Resolver:            fetchMqBrokerConfigurationRevisions,
 		PreResourceResolver: getMqBrokerConfigurationRevision,
-		Transform:           transformers.TransformWithStruct(&mq.DescribeConfigurationRevisionOutput{}),
+		Transform:           transformers.TransformWithStruct(&wrappedBrokerConfigurationRevision{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeys("ConfigurationId"), transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "broker_configuration_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "broker_configuration_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
+			},
+			{
+				Name:       "revision",
+				Type:       arrow.PrimitiveTypes.Int32,
+				PrimaryKey: true,
 			},
 			{
 				Name:     "data",
@@ -74,19 +85,22 @@ func getMqBrokerConfigurationRevision(ctx context.Context, meta schema.ClientMet
 	rev := resource.Item.(types.ConfigurationRevision)
 	cfg := resource.Parent.Item.(mq.DescribeConfigurationOutput)
 
-	revId := strconv.Itoa(int(rev.Revision))
+	revId := strconv.Itoa(int(aws.ToInt32(rev.Revision)))
 	output, err := svc.DescribeConfigurationRevision(ctx, &mq.DescribeConfigurationRevisionInput{ConfigurationId: cfg.Id, ConfigurationRevision: &revId}, func(options *mq.Options) {
 		options.Region = cl.Region
 	})
 	if err != nil {
 		return err
 	}
-	resource.Item = output
+	resource.Item = &wrappedBrokerConfigurationRevision{
+		DescribeConfigurationRevisionOutput: *output,
+		Revision:                            aws.ToInt32(rev.Revision),
+	}
 	return nil
 }
 
 func resolveBrokerConfigurationRevisionsData(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	revision := resource.Item.(*mq.DescribeConfigurationRevisionOutput)
+	revision := resource.Item.(*wrappedBrokerConfigurationRevision)
 	rawDecodedText, err := base64.StdEncoding.DecodeString(*revision.Data)
 	if err != nil {
 		return err

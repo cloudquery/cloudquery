@@ -16,9 +16,10 @@ const pluginNamePatterns = {
 };
 
 const getKindAndName = (file) => {
-  const match = file.history[0].match(/pages\/docs\/plugins\/(.+)\/(.+)\//);
-  const [kind, name] = [match[1], match[2]];
+  const match = file.history[0].match(/\/plugins\/(.+)\/(.+)\//);
+  if(!match) return null;
 
+  const [kind, name] = [match[1], match[2]];
   return {
     kind,
     name,
@@ -56,7 +57,7 @@ function getVersionsForPrefix(prefix, files) {
   );
 }
 
-function getVersions() {
+function getStaticVersions() {
   const files = fs
     .readdirSync("./versions", { withFileTypes: true })
     .filter((dirent) => dirent.isFile())
@@ -73,7 +74,42 @@ function getVersions() {
   };
 }
 
-const versions = getVersions();
+async function getHubVersions() {
+  const response = await fetch("https://api.cloudquery.io/plugins");
+  const { items: allPlugins } = await response.json();
+  const paidPlugins = allPlugins.filter((plugin) => plugin.tier === "paid" && plugin.team_name === "cloudquery" && plugin.latest_version);
+  const sources = paidPlugins.filter((plugin) => plugin.kind === "source");
+  const destinations = paidPlugins.filter((plugin) => plugin.kind === "destination");
+
+  return {
+    sources: Object.fromEntries(
+      sources.map((source) => [source.name, source.latest_version]),
+    ),
+    destinations: Object.fromEntries(
+      destinations.map((destination) => [destination.name, destination.latest_version]),
+    ),
+  };
+};
+
+async function getVersions() {
+  const staticVersions = getStaticVersions();
+  const hubVersions = await getHubVersions();
+
+
+  return {
+    ...staticVersions,
+    sources: {
+      ...hubVersions.sources,
+      ...staticVersions.sources,
+    },
+    destinations: {
+      ...hubVersions.destinations,
+      ...staticVersions.destinations,
+    },
+  };
+}
+
+const versions = await getVersions();
 
 const getLatestVersion = (key, name) => {
   const version = versions[key][name] || "Unpublished";
@@ -92,25 +128,24 @@ const customPlugin = () => {
         const hast = h(node.name, node.attributes || {});
         data.hName = hast.tagName;
         data.hProperties = hast.properties;
-        if (!['badge', 'configuration', 'authentication', 'callout'].includes(data.hName)) {
+        if (!['badge', 'configuration', 'authentication', 'callout', 'slack-app-link'].includes(data.hName)) {
           return;
         }
-
-        const { kind, name } = getKindAndName(file);
+        const pluginData = getKindAndName(file);
+        if (!pluginData) return;
+        const { kind, name } = pluginData;
         if (data.hName === "badge") {
           data.hProperties = {
-            ...data.hProperties,
             text: "Latest: " + getLatestVersion(kind, name),
+            ...data.hProperties,
           };
           return;
         }
-        if (data.hName === "configuration" || data.hName === "authentication" || data.hName === "callout") {
-          data.hProperties = {
-            ...data.hProperties,
-            kind,
-            name,
-          };
-        }
+        data.hProperties = {
+          ...data.hProperties,
+          kind,
+          name,
+        };
       }
     });
   };

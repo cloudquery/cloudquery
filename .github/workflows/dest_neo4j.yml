@@ -20,7 +20,7 @@ jobs:
   plugins-destination-neo4j:
     timeout-minutes: 30
     name: "plugins/destination/neo4j"
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./plugins/destination/neo4j
@@ -57,7 +57,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.54.2
+          version: v1.55.2
           working-directory: plugins/destination/neo4j
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
@@ -68,7 +68,7 @@ jobs:
         run: make test
   validate-release:
     timeout-minutes: 30
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     env:
       CGO_ENABLED: 0
     steps:

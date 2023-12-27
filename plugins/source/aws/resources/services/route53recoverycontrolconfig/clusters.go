@@ -3,7 +3,7 @@ package route53recoverycontrolconfig
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/route53recoverycontrolconfig"
 	"github.com/aws/aws-sdk-go-v2/service/route53recoverycontrolconfig/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -20,7 +20,7 @@ func Clusters() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.Cluster{}),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53-recovery-control-config"),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.RequestAccountIDColumn(true),
 			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,

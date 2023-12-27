@@ -31,5 +31,5 @@ func (*fakeAlertPoliciesServer) ListAlertPolicies(context.Context, *pb.ListAlert
 }
 
 func TestAlertPolicies(t *testing.T) {
-	client.MockTestGrpcHelper(t, AlertPolicies(), createAlertPolicies, client.TestOptions{})
+	client.MockTestHelper(t, AlertPolicies(), client.WithCreateGrpcService(createAlertPolicies))
 }

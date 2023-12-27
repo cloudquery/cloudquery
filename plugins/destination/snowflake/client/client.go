@@ -16,6 +16,7 @@ import (
 
 type Client struct {
 	plugin.UnimplementedSource
+	batchwriter.UnimplementedDeleteRecord
 	db     *sql.DB
 	logger zerolog.Logger
 	spec   Spec

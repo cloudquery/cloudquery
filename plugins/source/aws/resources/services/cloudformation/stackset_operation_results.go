@@ -3,7 +3,7 @@ package cloudformation
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -16,30 +16,35 @@ func stackSetOperationResults() *schema.Table {
 	table_name := "aws_cloudformation_stack_set_operation_results"
 	return &schema.Table{
 		Name: table_name,
-		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackSetOperationResultSummary.html.
+		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackSetOperationResultSummary.html
+
 The 'request_account_id' and 'request_region' columns are added to show the account and region of where the request was made from.`,
 		Resolver:  fetchCloudformationStackSetOperationResults,
-		Transform: transformers.TransformWithStruct(&types.StackSetOperationResultSummary{}),
+		Transform: transformers.TransformWithStruct(&types.StackSetOperationResultSummary{}, transformers.WithPrimaryKeys("Account", "Region")),
 		Columns: []schema.Column{
 			{
-				Name:     "request_account_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAWSAccount,
+				Name:       "request_account_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSAccount,
+				PrimaryKey: true,
 			},
 			{
-				Name:     "request_region",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAWSRegion,
+				Name:       "request_region",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   client.ResolveAWSRegion,
+				PrimaryKey: true,
 			},
 			{
-				Name:     "operation_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("operation_id"),
+				Name:       "stack_set_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("stack_set_arn"),
+				PrimaryKey: true,
 			},
 			{
-				Name:     "stack_set_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("stack_set_arn"),
+				Name:       "operation_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("operation_id"),
+				PrimaryKey: true,
 			},
 		},
 	}
@@ -49,7 +54,7 @@ func fetchCloudformationStackSetOperationResults(ctx context.Context, meta schem
 	operation := parent.Item.(models.ExpandedStackSetOperation)
 	input := cloudformation.ListStackSetOperationResultsInput{
 		OperationId:  operation.OperationId,
-		StackSetName: stackSet.StackSetName,
+		StackSetName: stackSet.StackSetId,
 		CallAs:       stackSet.CallAs,
 	}
 

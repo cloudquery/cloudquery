@@ -31,5 +31,5 @@ func (*fakeAppsServer) GetApplication(context.Context, *pb.GetApplicationRequest
 }
 
 func TestApps(t *testing.T) {
-	client.MockTestGrpcHelper(t, Apps(), createApps, client.TestOptions{})
+	client.MockTestHelper(t, Apps(), client.WithCreateGrpcService(createApps))
 }

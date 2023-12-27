@@ -1,5 +1,7 @@
 ACL
 ACLs
+addon
+Addon
 Airbyte
 Airtable
 Ajv
@@ -55,6 +57,7 @@ CSPMs
 cyber
 cybersecurity
 Cybersecurity
+cychiang
 Datadog
 datasource
 Datasource
@@ -100,7 +103,9 @@ Gagan
 Gaurav
 gcp
 GCP
+getters
 gists
+Gitea
 github
 GitHub
 GitLab
@@ -117,12 +122,14 @@ hcl
 HCL
 hostname
 Hostname
+Hotjar
 hyperfunctions
 hyperscale
 implementor
 Inet
 Infoblox
 Inforce
+interop
 IPs
 Jira
 jira
@@ -161,6 +168,7 @@ oad
 OAuth
 okta
 Okta
+onboarding
 Onfleet
 OpenAPI
 OUs
@@ -171,6 +179,7 @@ PayPal
 Pendo
 performant
 PKs
+plaintext
 pluggable
 Pluggable
 postgres

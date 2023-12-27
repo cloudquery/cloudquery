@@ -3,7 +3,7 @@ package dms
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/databasemigrationservice"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/dms/models"
@@ -36,42 +36,39 @@ func fetchDmsReplicationInstances(ctx context.Context, meta schema.ClientMeta, _
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceDatabasemigrationservice).Databasemigrationservice
 
-	var describeReplicationInstancesInput *databasemigrationservice.DescribeReplicationInstancesInput
-	describeReplicationInstancesOutput, err := svc.DescribeReplicationInstances(ctx, describeReplicationInstancesInput, func(options *databasemigrationservice.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		return err
-	}
-	if len(describeReplicationInstancesOutput.ReplicationInstances) == 0 {
-		return nil
-	}
-
-	listTagsForResourceInput := databasemigrationservice.ListTagsForResourceInput{}
-	for _, replicationInstance := range describeReplicationInstancesOutput.ReplicationInstances {
-		listTagsForResourceInput.ResourceArnList = append(listTagsForResourceInput.ResourceArnList, *replicationInstance.ReplicationInstanceArn)
-	}
-	var listTagsForResourceOutput *databasemigrationservice.ListTagsForResourceOutput
-	listTagsForResourceOutput, err = svc.ListTagsForResource(ctx, &listTagsForResourceInput, func(options *databasemigrationservice.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		return err
-	}
-	replicationInstanceTags := make(map[string]map[string]any)
-	for _, tag := range listTagsForResourceOutput.TagList {
-		if replicationInstanceTags[*tag.ResourceArn] == nil {
-			replicationInstanceTags[*tag.ResourceArn] = make(map[string]any)
+	config := databasemigrationservice.DescribeReplicationInstancesInput{}
+	paginator := databasemigrationservice.NewDescribeReplicationInstancesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx, func(options *databasemigrationservice.Options) {
+			options.Region = cl.Region
+		})
+		if err != nil {
+			return err
 		}
-		replicationInstanceTags[*tag.ResourceArn][*tag.Key] = *tag.Value
-	}
 
-	for _, replicationInstance := range describeReplicationInstancesOutput.ReplicationInstances {
-		wrapper := models.ReplicationInstanceWrapper{
-			ReplicationInstance: replicationInstance,
-			Tags:                replicationInstanceTags[*replicationInstance.ReplicationInstanceArn],
+		if len(page.ReplicationInstances) == 0 {
+			continue
 		}
-		res <- wrapper
+
+		tags, err := getTags(ctx, svc, page.ReplicationInstances, "ReplicationInstanceArn", func(options *databasemigrationservice.Options) {
+			options.Region = cl.Region
+		})
+		if err != nil {
+			return err
+		}
+
+		wrappers := make([]*models.ReplicationInstanceWrapper, len(page.ReplicationInstances))
+		for i := range page.ReplicationInstances {
+			wrappers[i] = &models.ReplicationInstanceWrapper{
+				ReplicationInstance: page.ReplicationInstances[i],
+			}
+		}
+
+		if err := putTags(wrappers, tags, "ReplicationInstanceArn"); err != nil {
+			return err
+		}
+
+		res <- wrappers
 	}
 	return nil
 }

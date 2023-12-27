@@ -35,7 +35,7 @@ func (*fakeFeaturestoreLocationsServer) ListLocations(context.Context, *pb.ListL
 }
 
 func TestFeaturestoreLocations(t *testing.T) {
-	client.MockTestGrpcHelper(t, FeaturestoreLocations(), createFeaturestoreLocations, client.TestOptions{})
+	client.MockTestHelper(t, FeaturestoreLocations(), client.WithCreateGrpcService(createFeaturestoreLocations))
 }
 
 type fakeFeaturestoreLocationsRelationsServer struct {

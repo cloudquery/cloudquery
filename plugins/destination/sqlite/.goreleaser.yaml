@@ -36,6 +36,11 @@ builds:
 # linux arm64 has some issues with cross-compile
       - goos: linux
         goarch: arm64
+    overrides:
+      - goos: linux
+        goarch: amd64
+        ldflags:
+          - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}} -linkmode external -extldflags=-static
 
 after:
   hooks:

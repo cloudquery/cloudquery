@@ -3,7 +3,7 @@ package lambda
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -39,9 +39,7 @@ func fetchLambdaFunctionVersions(ctx context.Context, meta schema.ClientMeta, pa
 
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceLambda).Lambda
-	config := lambda.ListVersionsByFunctionInput{
-		FunctionName: p.Configuration.FunctionName,
-	}
+	config := lambda.ListVersionsByFunctionInput{FunctionName: p.Configuration.FunctionArn}
 	paginator := lambda.NewListVersionsByFunctionPaginator(svc, &config)
 	for paginator.HasMorePages() {
 		page, err := paginator.NextPage(ctx, func(options *lambda.Options) {

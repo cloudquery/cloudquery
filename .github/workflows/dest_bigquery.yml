@@ -20,7 +20,7 @@ jobs:
   plugins-destination-bigquery:
     timeout-minutes: 10
     name: "plugins/destination/bigquery"
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./plugins/destination/bigquery
@@ -48,7 +48,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.54.2
+          version: v1.55.2
           working-directory: plugins/destination/bigquery
           args: "--config ../../.golangci.yml"
           skip-pkg-cache: true
@@ -63,7 +63,7 @@ jobs:
           BIGQUERY_DATASET_LOCATION: us-west1
   validate-release:
     timeout-minutes: 30
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'

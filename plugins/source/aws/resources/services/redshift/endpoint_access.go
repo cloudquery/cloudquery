@@ -3,7 +3,7 @@ package redshift
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
@@ -13,12 +13,12 @@ import (
 )
 
 func endpointAccess() *schema.Table {
-	tableName := "aws_redshift_endpoint_access"
+	tableName := "aws_redshift_endpoint_accesses"
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_EndpointAccess.html`,
 		Resolver:    fetchEndpointAccess,
-		Transform:   transformers.TransformWithStruct(&types.EndpointAccess{}),
+		Transform:   transformers.TransformWithStruct(&types.EndpointAccess{}, transformers.WithPrimaryKeys("ClusterIdentifier", "EndpointName", "Address")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -27,6 +27,7 @@ func endpointAccess() *schema.Table {
 				Type:        arrow.BinaryTypes.String,
 				Resolver:    schema.ParentColumnResolver("arn"),
 				Description: `The Amazon Resource Name (ARN) for the resource.`,
+				PrimaryKey:  true,
 			},
 		},
 	}

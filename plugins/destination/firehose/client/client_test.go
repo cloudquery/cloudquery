@@ -22,9 +22,10 @@ func TestPluginJSON(t *testing.T) {
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.WriterTestSuiteTests{
-			SkipUpsert:      true,
-			SkipMigrate:     true,
-			SkipDeleteStale: true,
+			SkipUpsert:       true,
+			SkipMigrate:      true,
+			SkipDeleteStale:  true,
+			SkipDeleteRecord: true,
 		},
 	)
 }

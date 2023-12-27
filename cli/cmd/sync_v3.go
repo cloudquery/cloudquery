@@ -9,7 +9,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/internal/transformer"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -237,6 +237,21 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 				}
 				if err := writeClients[i].Send(wr); err != nil {
 					return handleSendError(err, writeClients[i], "insert")
+				}
+			}
+		case *plugin.Sync_Response_DeleteRecord:
+			for i := range destinationsPbClients {
+				wr := &plugin.Write_Request{}
+				// Transformations aren't required here because DeleteRecord is only in V3
+				wr.Message = &plugin.Write_Request_DeleteRecord{
+					DeleteRecord: &plugin.Write_MessageDeleteRecord{
+						TableName:      m.DeleteRecord.TableName,
+						TableRelations: m.DeleteRecord.TableRelations,
+						WhereClause:    m.DeleteRecord.WhereClause,
+					},
+				}
+				if err := writeClients[i].Send(wr); err != nil {
+					return handleSendError(err, writeClients[i], "delete")
 				}
 			}
 		case *plugin.Sync_Response_MigrateTable:

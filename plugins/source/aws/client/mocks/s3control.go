@@ -95,6 +95,156 @@ func (mr *MockS3controlClientMockRecorder) DescribeMultiRegionAccessPointOperati
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeMultiRegionAccessPointOperation", reflect.TypeOf((*MockS3controlClient)(nil).DescribeMultiRegionAccessPointOperation), varargs...)
 }
 
+// GetAccessGrant mocks base method.
+func (m *MockS3controlClient) GetAccessGrant(arg0 context.Context, arg1 *s3control.GetAccessGrantInput, arg2 ...func(*s3control.Options)) (*s3control.GetAccessGrantOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccessGrant")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetAccessGrant", varargs...)
+	ret0, _ := ret[0].(*s3control.GetAccessGrantOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAccessGrant indicates an expected call of GetAccessGrant.
+func (mr *MockS3controlClientMockRecorder) GetAccessGrant(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccessGrant", reflect.TypeOf((*MockS3controlClient)(nil).GetAccessGrant), varargs...)
+}
+
+// GetAccessGrantsInstance mocks base method.
+func (m *MockS3controlClient) GetAccessGrantsInstance(arg0 context.Context, arg1 *s3control.GetAccessGrantsInstanceInput, arg2 ...func(*s3control.Options)) (*s3control.GetAccessGrantsInstanceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccessGrantsInstance")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetAccessGrantsInstance", varargs...)
+	ret0, _ := ret[0].(*s3control.GetAccessGrantsInstanceOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAccessGrantsInstance indicates an expected call of GetAccessGrantsInstance.
+func (mr *MockS3controlClientMockRecorder) GetAccessGrantsInstance(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccessGrantsInstance", reflect.TypeOf((*MockS3controlClient)(nil).GetAccessGrantsInstance), varargs...)
+}
+
+// GetAccessGrantsInstanceForPrefix mocks base method.
+func (m *MockS3controlClient) GetAccessGrantsInstanceForPrefix(arg0 context.Context, arg1 *s3control.GetAccessGrantsInstanceForPrefixInput, arg2 ...func(*s3control.Options)) (*s3control.GetAccessGrantsInstanceForPrefixOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccessGrantsInstanceForPrefix")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetAccessGrantsInstanceForPrefix", varargs...)
+	ret0, _ := ret[0].(*s3control.GetAccessGrantsInstanceForPrefixOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAccessGrantsInstanceForPrefix indicates an expected call of GetAccessGrantsInstanceForPrefix.
+func (mr *MockS3controlClientMockRecorder) GetAccessGrantsInstanceForPrefix(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccessGrantsInstanceForPrefix", reflect.TypeOf((*MockS3controlClient)(nil).GetAccessGrantsInstanceForPrefix), varargs...)
+}
+
+// GetAccessGrantsInstanceResourcePolicy mocks base method.
+func (m *MockS3controlClient) GetAccessGrantsInstanceResourcePolicy(arg0 context.Context, arg1 *s3control.GetAccessGrantsInstanceResourcePolicyInput, arg2 ...func(*s3control.Options)) (*s3control.GetAccessGrantsInstanceResourcePolicyOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccessGrantsInstanceResourcePolicy")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetAccessGrantsInstanceResourcePolicy", varargs...)
+	ret0, _ := ret[0].(*s3control.GetAccessGrantsInstanceResourcePolicyOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAccessGrantsInstanceResourcePolicy indicates an expected call of GetAccessGrantsInstanceResourcePolicy.
+func (mr *MockS3controlClientMockRecorder) GetAccessGrantsInstanceResourcePolicy(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccessGrantsInstanceResourcePolicy", reflect.TypeOf((*MockS3controlClient)(nil).GetAccessGrantsInstanceResourcePolicy), varargs...)
+}
+
+// GetAccessGrantsLocation mocks base method.
+func (m *MockS3controlClient) GetAccessGrantsLocation(arg0 context.Context, arg1 *s3control.GetAccessGrantsLocationInput, arg2 ...func(*s3control.Options)) (*s3control.GetAccessGrantsLocationOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetAccessGrantsLocation")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetAccessGrantsLocation", varargs...)
+	ret0, _ := ret[0].(*s3control.GetAccessGrantsLocationOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAccessGrantsLocation indicates an expected call of GetAccessGrantsLocation.
+func (mr *MockS3controlClientMockRecorder) GetAccessGrantsLocation(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccessGrantsLocation", reflect.TypeOf((*MockS3controlClient)(nil).GetAccessGrantsLocation), varargs...)
+}
+
 // GetAccessPoint mocks base method.
 func (m *MockS3controlClient) GetAccessPoint(arg0 context.Context, arg1 *s3control.GetAccessPointInput, arg2 ...func(*s3control.Options)) (*s3control.GetAccessPointOutput, error) {
 
@@ -485,6 +635,36 @@ func (mr *MockS3controlClientMockRecorder) GetBucketVersioning(arg0, arg1 interf
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBucketVersioning", reflect.TypeOf((*MockS3controlClient)(nil).GetBucketVersioning), varargs...)
 }
 
+// GetDataAccess mocks base method.
+func (m *MockS3controlClient) GetDataAccess(arg0 context.Context, arg1 *s3control.GetDataAccessInput, arg2 ...func(*s3control.Options)) (*s3control.GetDataAccessOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetDataAccess")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetDataAccess", varargs...)
+	ret0, _ := ret[0].(*s3control.GetDataAccessOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetDataAccess indicates an expected call of GetDataAccess.
+func (mr *MockS3controlClientMockRecorder) GetDataAccess(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDataAccess", reflect.TypeOf((*MockS3controlClient)(nil).GetDataAccess), varargs...)
+}
+
 // GetJobTagging mocks base method.
 func (m *MockS3controlClient) GetJobTagging(arg0 context.Context, arg1 *s3control.GetJobTaggingInput, arg2 ...func(*s3control.Options)) (*s3control.GetJobTaggingOutput, error) {
 
@@ -725,6 +905,126 @@ func (mr *MockS3controlClientMockRecorder) GetStorageLensConfigurationTagging(ar
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStorageLensConfigurationTagging", reflect.TypeOf((*MockS3controlClient)(nil).GetStorageLensConfigurationTagging), varargs...)
 }
 
+// GetStorageLensGroup mocks base method.
+func (m *MockS3controlClient) GetStorageLensGroup(arg0 context.Context, arg1 *s3control.GetStorageLensGroupInput, arg2 ...func(*s3control.Options)) (*s3control.GetStorageLensGroupOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetStorageLensGroup")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetStorageLensGroup", varargs...)
+	ret0, _ := ret[0].(*s3control.GetStorageLensGroupOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetStorageLensGroup indicates an expected call of GetStorageLensGroup.
+func (mr *MockS3controlClientMockRecorder) GetStorageLensGroup(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStorageLensGroup", reflect.TypeOf((*MockS3controlClient)(nil).GetStorageLensGroup), varargs...)
+}
+
+// ListAccessGrants mocks base method.
+func (m *MockS3controlClient) ListAccessGrants(arg0 context.Context, arg1 *s3control.ListAccessGrantsInput, arg2 ...func(*s3control.Options)) (*s3control.ListAccessGrantsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAccessGrants")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListAccessGrants", varargs...)
+	ret0, _ := ret[0].(*s3control.ListAccessGrantsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAccessGrants indicates an expected call of ListAccessGrants.
+func (mr *MockS3controlClientMockRecorder) ListAccessGrants(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAccessGrants", reflect.TypeOf((*MockS3controlClient)(nil).ListAccessGrants), varargs...)
+}
+
+// ListAccessGrantsInstances mocks base method.
+func (m *MockS3controlClient) ListAccessGrantsInstances(arg0 context.Context, arg1 *s3control.ListAccessGrantsInstancesInput, arg2 ...func(*s3control.Options)) (*s3control.ListAccessGrantsInstancesOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAccessGrantsInstances")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListAccessGrantsInstances", varargs...)
+	ret0, _ := ret[0].(*s3control.ListAccessGrantsInstancesOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAccessGrantsInstances indicates an expected call of ListAccessGrantsInstances.
+func (mr *MockS3controlClientMockRecorder) ListAccessGrantsInstances(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAccessGrantsInstances", reflect.TypeOf((*MockS3controlClient)(nil).ListAccessGrantsInstances), varargs...)
+}
+
+// ListAccessGrantsLocations mocks base method.
+func (m *MockS3controlClient) ListAccessGrantsLocations(arg0 context.Context, arg1 *s3control.ListAccessGrantsLocationsInput, arg2 ...func(*s3control.Options)) (*s3control.ListAccessGrantsLocationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListAccessGrantsLocations")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListAccessGrantsLocations", varargs...)
+	ret0, _ := ret[0].(*s3control.ListAccessGrantsLocationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListAccessGrantsLocations indicates an expected call of ListAccessGrantsLocations.
+func (mr *MockS3controlClientMockRecorder) ListAccessGrantsLocations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAccessGrantsLocations", reflect.TypeOf((*MockS3controlClient)(nil).ListAccessGrantsLocations), varargs...)
+}
+
 // ListAccessPoints mocks base method.
 func (m *MockS3controlClient) ListAccessPoints(arg0 context.Context, arg1 *s3control.ListAccessPointsInput, arg2 ...func(*s3control.Options)) (*s3control.ListAccessPointsOutput, error) {
 
@@ -903,4 +1203,64 @@ func (mr *MockS3controlClientMockRecorder) ListStorageLensConfigurations(arg0, a
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListStorageLensConfigurations", reflect.TypeOf((*MockS3controlClient)(nil).ListStorageLensConfigurations), varargs...)
+}
+
+// ListStorageLensGroups mocks base method.
+func (m *MockS3controlClient) ListStorageLensGroups(arg0 context.Context, arg1 *s3control.ListStorageLensGroupsInput, arg2 ...func(*s3control.Options)) (*s3control.ListStorageLensGroupsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListStorageLensGroups")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListStorageLensGroups", varargs...)
+	ret0, _ := ret[0].(*s3control.ListStorageLensGroupsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListStorageLensGroups indicates an expected call of ListStorageLensGroups.
+func (mr *MockS3controlClientMockRecorder) ListStorageLensGroups(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListStorageLensGroups", reflect.TypeOf((*MockS3controlClient)(nil).ListStorageLensGroups), varargs...)
+}
+
+// ListTagsForResource mocks base method.
+func (m *MockS3controlClient) ListTagsForResource(arg0 context.Context, arg1 *s3control.ListTagsForResourceInput, arg2 ...func(*s3control.Options)) (*s3control.ListTagsForResourceOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &s3control.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to ListTagsForResource")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "ListTagsForResource", varargs...)
+	ret0, _ := ret[0].(*s3control.ListTagsForResourceOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListTagsForResource indicates an expected call of ListTagsForResource.
+func (mr *MockS3controlClientMockRecorder) ListTagsForResource(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListTagsForResource", reflect.TypeOf((*MockS3controlClient)(nil).ListTagsForResource), varargs...)
 }

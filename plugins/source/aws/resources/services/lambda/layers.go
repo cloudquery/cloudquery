@@ -3,7 +3,8 @@ package lambda
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/lambda"
 	"github.com/aws/aws-sdk-go-v2/service/lambda/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -81,7 +82,7 @@ func fetchLambdaLayerVersionPolicies(ctx context.Context, meta schema.ClientMeta
 
 	config := lambda.GetLayerVersionPolicyInput{
 		LayerName:     pp.LayerName,
-		VersionNumber: p.Version,
+		VersionNumber: aws.Int64(p.Version),
 	}
 
 	output, err := svc.GetLayerVersionPolicy(ctx, &config, func(options *lambda.Options) {

@@ -5,7 +5,7 @@ import (
 
 	"google.golang.org/api/iterator"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
@@ -32,7 +32,7 @@ func JobLocations() *schema.Table {
 			},
 		},
 		Relations: []*schema.Table{
-			BatchPredictionJobs(),
+			batchPredictionJobs(),
 			CustomJobs(),
 			DataLabelingJobs(),
 			HyperparameterTuningJobs(),

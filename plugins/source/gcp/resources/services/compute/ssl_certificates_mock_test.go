@@ -33,5 +33,5 @@ func createSslCertificates(mux *httprouter.Router) error {
 }
 
 func TestSslCertificates(t *testing.T) {
-	client.MockTestRestHelper(t, SslCertificates(), createSslCertificates, client.TestOptions{})
+	client.MockTestHelper(t, SslCertificates(), client.WithCreateHTTPServer(createSslCertificates))
 }

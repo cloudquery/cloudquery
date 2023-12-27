@@ -3,7 +3,7 @@ package codepipeline
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline"
 	"github.com/aws/aws-sdk-go-v2/service/codepipeline/types"
@@ -21,7 +21,7 @@ func Pipelines() *schema.Table {
 		Resolver:            fetchCodepipelinePipelines,
 		PreResourceResolver: getPipeline,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "codepipeline"),
-		Transform:           transformers.TransformWithStruct(&codepipeline.GetPipelineOutput{}),
+		Transform:           transformers.TransformWithStruct(&codepipeline.GetPipelineOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

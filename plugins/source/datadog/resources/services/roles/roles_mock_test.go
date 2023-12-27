@@ -21,6 +21,7 @@ func buildRolesMock(t *testing.T, ctrl *gomock.Controller) client.DatadogService
 	if err != nil {
 		t.Fatal(err)
 	}
+	roles.Data[0].AdditionalProperties = map[string]any{"key": "value"}
 	m.EXPECT().ListRoles(gomock.Any()).Return(roles, nil, nil)
 
 	var permissions datadogV2.PermissionsResponse
@@ -28,6 +29,7 @@ func buildRolesMock(t *testing.T, ctrl *gomock.Controller) client.DatadogService
 	if err != nil {
 		t.Fatal(err)
 	}
+	permissions.Data[0].AdditionalProperties = map[string]any{"key": "value"}
 	m.EXPECT().ListRolePermissions(gomock.Any(), gomock.Any()).Return(permissions, nil, nil)
 
 	var users datadogV2.UsersResponse
@@ -35,6 +37,7 @@ func buildRolesMock(t *testing.T, ctrl *gomock.Controller) client.DatadogService
 	if err != nil {
 		t.Fatal(err)
 	}
+	users.Data[0].AdditionalProperties = map[string]any{"key": "value"}
 	m.EXPECT().ListRoleUsers(gomock.Any(), gomock.Any()).Return(users, nil, nil)
 
 	return services

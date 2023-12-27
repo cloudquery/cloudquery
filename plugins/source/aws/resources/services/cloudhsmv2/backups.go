@@ -3,7 +3,7 @@ package cloudhsmv2
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/service/cloudhsmv2"
@@ -34,7 +34,7 @@ func Backups() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: client.ResolveTagField("TagList"),
+				Resolver: client.ResolveTagPath("TagList"),
 			},
 		},
 	}

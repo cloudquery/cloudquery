@@ -30,5 +30,5 @@ func (*fakeProjectsServer) GetProject(context.Context, *resourcemanagerpb.GetPro
 }
 
 func TestProjects(t *testing.T) {
-	client.MockTestGrpcHelper(t, Projects(), createProjects, client.TestOptions{})
+	client.MockTestHelper(t, Projects(), client.WithCreateGrpcService(createProjects))
 }

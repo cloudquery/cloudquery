@@ -3,7 +3,7 @@ package inspector2
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2"
 	"github.com/aws/aws-sdk-go-v2/service/inspector2/types"
@@ -17,23 +17,14 @@ func Findings() *schema.Table {
 	return &schema.Table{
 		Name: tableName,
 		Description: `https://docs.aws.amazon.com/inspector/v2/APIReference/API_Finding.html
-The 'request_account_id' and 'request_region' columns are added to show from where the request was made.`,
-		Resolver:  fetchInspector2Findings,
+
+The ` + "`request_account_id` and `request_region` columns are added to show from where the request was made.",
+		Resolver:  fetchFindings,
 		Transform: transformers.TransformWithStruct(&types.Finding{}),
-		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "inspector2"),
-		Columns: []schema.Column{
-			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "request_region",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSRegion,
-				PrimaryKey: true,
-			},
+		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, client.AWSServiceInspector2.String()),
+		Columns: schema.ColumnList{
+			client.RequestAccountIDColumn(true),
+			client.RequestRegionColumn(true),
 			{
 				Name:       "arn",
 				Type:       arrow.BinaryTypes.String,
@@ -44,25 +35,21 @@ The 'request_account_id' and 'request_region' columns are added to show from whe
 	}
 }
 
-func fetchInspector2Findings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchFindings(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceInspector2).Inspector2
 
-	for _, input := range cl.Spec.TableOptions.Inspector2Findings.Filters() {
-		if input.MaxResults == nil {
-			input.MaxResults = aws.Int32(100)
+	input := inspector2.ListFindingsInput{MaxResults: aws.Int32(100)}
+	paginator := inspector2.NewListFindingsPaginator(svc, &input)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx, func(options *inspector2.Options) {
+			options.Region = cl.Region
+		})
+		if err != nil {
+			return err
 		}
-
-		paginator := inspector2.NewListFindingsPaginator(svc, &input.ListFindingsInput)
-		for paginator.HasMorePages() {
-			page, err := paginator.NextPage(ctx, func(options *inspector2.Options) {
-				options.Region = cl.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- page.Findings
-		}
+		res <- page.Findings
 	}
+
 	return nil
 }

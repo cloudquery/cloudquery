@@ -33,5 +33,5 @@ func createSslPolicies(mux *httprouter.Router) error {
 }
 
 func TestSslPolicies(t *testing.T) {
-	client.MockTestRestHelper(t, SslPolicies(), createSslPolicies, client.TestOptions{})
+	client.MockTestHelper(t, SslPolicies(), client.WithCreateHTTPServer(createSslPolicies))
 }

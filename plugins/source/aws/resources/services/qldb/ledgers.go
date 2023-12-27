@@ -3,7 +3,7 @@ package qldb
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/qldb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -19,7 +19,7 @@ func Ledgers() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/qldb/latest/developerguide/API_DescribeLedger.html`,
 		Resolver:            fetchQldbLedgers,
 		PreResourceResolver: getLedger,
-		Transform:           transformers.TransformWithStruct(&qldb.DescribeLedgerOutput{}),
+		Transform:           transformers.TransformWithStruct(&qldb.DescribeLedgerOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "qldb"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

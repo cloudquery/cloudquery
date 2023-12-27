@@ -3,7 +3,7 @@ package redshift
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/redshift"
 	"github.com/aws/aws-sdk-go-v2/service/redshift/types"
@@ -13,12 +13,12 @@ import (
 )
 
 func endpointAuthorization() *schema.Table {
-	tableName := "aws_redshift_endpoint_authorization"
+	tableName := "aws_redshift_endpoint_authorizations"
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_EndpointAuthorization.html`,
 		Resolver:    fetchEndpointAuthorization,
-		Transform:   transformers.TransformWithStruct(&types.EndpointAuthorization{}),
+		Transform:   transformers.TransformWithStruct(&types.EndpointAuthorization{}, transformers.WithPrimaryKeys("ClusterIdentifier", "Grantor", "Grantee")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -27,6 +27,7 @@ func endpointAuthorization() *schema.Table {
 				Type:        arrow.BinaryTypes.String,
 				Resolver:    schema.ParentColumnResolver("arn"),
 				Description: `The Amazon Resource Name (ARN) for the resource.`,
+				PrimaryKey:  true,
 			},
 		},
 	}

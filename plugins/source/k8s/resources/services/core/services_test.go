@@ -5,6 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/mocks"
+	"k8s.io/apimachinery/pkg/util/intstr"
 
 	resourcemock "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks/core/v1"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
@@ -24,7 +25,7 @@ func createServices(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface 
 	r.Spec.ClusterIPs = []string{"1.1.1.1"}
 	r.Spec.ExternalIPs = []string{"1.1.1.1"}
 	r.Spec.LoadBalancerIP = "1.1.1.1"
-	r.Spec.Ports = []resource.ServicePort{}
+	r.Spec.Ports[0].TargetPort = intstr.FromInt(80)
 
 	resourceClient := resourcemock.NewMockServiceInterface(ctrl)
 	resourceClient.EXPECT().List(gomock.Any(), metav1.ListOptions{}).Return(

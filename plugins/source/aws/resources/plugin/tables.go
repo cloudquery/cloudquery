@@ -179,8 +179,9 @@ func getTables() schema.Tables {
 		backup.RegionSettings(),
 		backup.ReportPlans(),
 		backup.Vaults(),
-		batch.JobQueues(),
+		batch.ComputeEnvironments(),
 		batch.JobDefinitions(),
+		batch.JobQueues(),
 		cloudformation.Stacks(),
 		cloudformation.StackSets(),
 		cloudfront.CachePolicies(),
@@ -196,7 +197,6 @@ func getTables() schema.Tables {
 		cloudtrail.Imports(),
 		cloudtrail.Trails(),
 		cloudwatch.Alarms(),
-		cloudwatch.Metrics(),
 		cloudwatchlogs.LogGroups(),
 		cloudwatchlogs.MetricFilters(),
 		cloudwatchlogs.ResourcePolicies(),
@@ -221,7 +221,6 @@ func getTables() schema.Tables {
 		config.ConformancePacks(),
 		config.DeliveryChannels(),
 		config.RetentionConfigurations(),
-		costexplorer.CustomCost(),
 		costexplorer.ThirtyDayCost(),
 		costexplorer.ThirtyDayCostForecast(),
 		dax.Clusters(),
@@ -373,6 +372,7 @@ func getTables() schema.Tables {
 		glue.Workflows(),
 		guardduty.Detectors(),
 		iam.Accounts(),
+		iam.AccountAuthorizationDetails(),
 		iam.CredentialReports(),
 		iam.Groups(),
 		iam.InstanceProfiles(),
@@ -387,6 +387,7 @@ func getTables() schema.Tables {
 		identitystore.Groups(),
 		identitystore.Users(),
 		inspector.Findings(),
+		inspector2.CoveredResources(),
 		inspector2.Findings(),
 		iot.BillingGroups(),
 		iot.CaCertificates(),
@@ -581,9 +582,10 @@ func getTables() schema.Tables {
 	if err := transformers.TransformTables(t); err != nil {
 		panic(err)
 	}
+	transformTitles := titleTransformer()
 	for _, table := range t {
 		schema.AddCqIDs(table)
-		titleTransformer(table)
+		transformTitles(table)
 		if err := validateTagsIsJSON(table); err != nil {
 			panic(err)
 		}
@@ -597,5 +599,11 @@ func validateTagsIsJSON(table *schema.Table) error {
 			return fmt.Errorf("column %s in table %s must be of type %s", col.Name, table.Name, types.ExtensionTypes.JSON)
 		}
 	}
+	for _, rel := range table.Relations {
+		if err := validateTagsIsJSON(rel); err != nil {
+			return err
+		}
+	}
+
 	return nil
 }

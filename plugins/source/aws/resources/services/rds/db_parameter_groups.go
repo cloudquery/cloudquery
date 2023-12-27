@@ -3,7 +3,7 @@ package rds
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -37,7 +37,7 @@ func DbParameterGroups() *schema.Table {
 		},
 
 		Relations: []*schema.Table{
-			DbParameterGroupDbParameters(),
+			dbParameterGroupDbParameters(),
 		},
 	}
 }

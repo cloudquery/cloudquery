@@ -57,5 +57,5 @@ func (*fakeDeviceRegistriesServer) ListDeviceStates(context.Context, *pb.ListDev
 }
 
 func TestDeviceRegistries(t *testing.T) {
-	client.MockTestGrpcHelper(t, DeviceRegistries(), createDeviceRegistries, client.TestOptions{})
+	client.MockTestHelper(t, DeviceRegistries(), client.WithCreateGrpcService(createDeviceRegistries))
 }

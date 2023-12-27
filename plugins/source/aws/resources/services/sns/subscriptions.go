@@ -3,7 +3,7 @@ package sns
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"github.com/aws/aws-sdk-go-v2/service/sns/types"
@@ -98,6 +98,11 @@ func getSnsSubscription(ctx context.Context, meta schema.ClientMeta, resource *s
 		},
 	)
 	if err != nil {
+		// If a subscriptions topic is deleted GetSubscriptionAttributes will error.
+		if client.IsAWSError(err, "NotFound") {
+			resource.Item = s
+			return nil
+		}
 		return err
 	}
 	dec, err := mapstructure.NewDecoder(&mapstructure.DecoderConfig{WeaklyTypedInput: true, Result: &s})

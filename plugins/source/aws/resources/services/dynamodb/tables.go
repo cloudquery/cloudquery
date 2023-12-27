@@ -3,7 +3,7 @@ package dynamodb
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
@@ -117,54 +117,4 @@ func resolveDynamodbTableTags(ctx context.Context, meta schema.ClientMeta, resou
 		input.NextToken = res.NextToken
 	}
 	return resource.Set(c.Name, client.TagsToMap(tags))
-}
-
-func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	par := parent.Item.(*types.TableDescription)
-
-	if aws.ToString(par.GlobalTableVersion) == "" {
-		// "This operation only applies to Version 2019.11.21 of global tables"
-		return nil
-	}
-
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceDynamodb).Dynamodb
-
-	output, err := svc.DescribeTableReplicaAutoScaling(ctx, &dynamodb.DescribeTableReplicaAutoScalingInput{
-		TableName: par.TableName,
-	}, func(options *dynamodb.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
-		return err
-	}
-
-	for i := range output.TableAutoScalingDescription.Replicas {
-		res <- output.TableAutoScalingDescription.Replicas[i]
-	}
-	return nil
-}
-func fetchDynamodbTableContinuousBackups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	par := parent.Item.(*types.TableDescription)
-
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceDynamodb).Dynamodb
-
-	output, err := svc.DescribeContinuousBackups(ctx, &dynamodb.DescribeContinuousBackupsInput{
-		TableName: par.TableName,
-	}, func(options *dynamodb.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		if cl.IsNotFoundError(err) {
-			return nil
-		}
-		return err
-	}
-
-	res <- output.ContinuousBackupsDescription
-	return nil
 }

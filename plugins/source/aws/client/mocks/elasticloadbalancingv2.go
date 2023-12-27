@@ -364,3 +364,153 @@ func (mr *MockElasticloadbalancingv2ClientMockRecorder) DescribeTargetHealth(arg
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTargetHealth", reflect.TypeOf((*MockElasticloadbalancingv2Client)(nil).DescribeTargetHealth), varargs...)
 }
+
+// DescribeTrustStoreAssociations mocks base method.
+func (m *MockElasticloadbalancingv2Client) DescribeTrustStoreAssociations(arg0 context.Context, arg1 *elasticloadbalancingv2.DescribeTrustStoreAssociationsInput, arg2 ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.DescribeTrustStoreAssociationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticloadbalancingv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTrustStoreAssociations")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTrustStoreAssociations", varargs...)
+	ret0, _ := ret[0].(*elasticloadbalancingv2.DescribeTrustStoreAssociationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTrustStoreAssociations indicates an expected call of DescribeTrustStoreAssociations.
+func (mr *MockElasticloadbalancingv2ClientMockRecorder) DescribeTrustStoreAssociations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTrustStoreAssociations", reflect.TypeOf((*MockElasticloadbalancingv2Client)(nil).DescribeTrustStoreAssociations), varargs...)
+}
+
+// DescribeTrustStoreRevocations mocks base method.
+func (m *MockElasticloadbalancingv2Client) DescribeTrustStoreRevocations(arg0 context.Context, arg1 *elasticloadbalancingv2.DescribeTrustStoreRevocationsInput, arg2 ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.DescribeTrustStoreRevocationsOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticloadbalancingv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTrustStoreRevocations")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTrustStoreRevocations", varargs...)
+	ret0, _ := ret[0].(*elasticloadbalancingv2.DescribeTrustStoreRevocationsOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTrustStoreRevocations indicates an expected call of DescribeTrustStoreRevocations.
+func (mr *MockElasticloadbalancingv2ClientMockRecorder) DescribeTrustStoreRevocations(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTrustStoreRevocations", reflect.TypeOf((*MockElasticloadbalancingv2Client)(nil).DescribeTrustStoreRevocations), varargs...)
+}
+
+// DescribeTrustStores mocks base method.
+func (m *MockElasticloadbalancingv2Client) DescribeTrustStores(arg0 context.Context, arg1 *elasticloadbalancingv2.DescribeTrustStoresInput, arg2 ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.DescribeTrustStoresOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticloadbalancingv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to DescribeTrustStores")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "DescribeTrustStores", varargs...)
+	ret0, _ := ret[0].(*elasticloadbalancingv2.DescribeTrustStoresOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DescribeTrustStores indicates an expected call of DescribeTrustStores.
+func (mr *MockElasticloadbalancingv2ClientMockRecorder) DescribeTrustStores(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DescribeTrustStores", reflect.TypeOf((*MockElasticloadbalancingv2Client)(nil).DescribeTrustStores), varargs...)
+}
+
+// GetTrustStoreCaCertificatesBundle mocks base method.
+func (m *MockElasticloadbalancingv2Client) GetTrustStoreCaCertificatesBundle(arg0 context.Context, arg1 *elasticloadbalancingv2.GetTrustStoreCaCertificatesBundleInput, arg2 ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.GetTrustStoreCaCertificatesBundleOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticloadbalancingv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTrustStoreCaCertificatesBundle")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetTrustStoreCaCertificatesBundle", varargs...)
+	ret0, _ := ret[0].(*elasticloadbalancingv2.GetTrustStoreCaCertificatesBundleOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTrustStoreCaCertificatesBundle indicates an expected call of GetTrustStoreCaCertificatesBundle.
+func (mr *MockElasticloadbalancingv2ClientMockRecorder) GetTrustStoreCaCertificatesBundle(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTrustStoreCaCertificatesBundle", reflect.TypeOf((*MockElasticloadbalancingv2Client)(nil).GetTrustStoreCaCertificatesBundle), varargs...)
+}
+
+// GetTrustStoreRevocationContent mocks base method.
+func (m *MockElasticloadbalancingv2Client) GetTrustStoreRevocationContent(arg0 context.Context, arg1 *elasticloadbalancingv2.GetTrustStoreRevocationContentInput, arg2 ...func(*elasticloadbalancingv2.Options)) (*elasticloadbalancingv2.GetTrustStoreRevocationContentOutput, error) {
+
+	// Assertion inserted by client/mockgen/main.go
+	o := &elasticloadbalancingv2.Options{}
+	for _, f := range arg2 {
+		f(o)
+	}
+	if o.Region == "" {
+		m.ctrl.T.Errorf("Region not set in call to GetTrustStoreRevocationContent")
+	}
+
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetTrustStoreRevocationContent", varargs...)
+	ret0, _ := ret[0].(*elasticloadbalancingv2.GetTrustStoreRevocationContentOutput)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTrustStoreRevocationContent indicates an expected call of GetTrustStoreRevocationContent.
+func (mr *MockElasticloadbalancingv2ClientMockRecorder) GetTrustStoreRevocationContent(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTrustStoreRevocationContent", reflect.TypeOf((*MockElasticloadbalancingv2Client)(nil).GetTrustStoreRevocationContent), varargs...)
+}

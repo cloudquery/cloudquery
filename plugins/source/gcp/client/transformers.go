@@ -4,10 +4,11 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
+	googleapi "google.golang.org/api/googleapi"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -46,6 +47,8 @@ func typeTransformer(field reflect.StructField) (arrow.DataType, error) {
 	case *durationpb.Duration,
 		durationpb.Duration:
 		return arrow.PrimitiveTypes.Int64, nil
+	case googleapi.RawMessage:
+		return cqtypes.NewJSONType(), nil
 	case protoreflect.Enum:
 		return arrow.BinaryTypes.String, nil
 	case nil:

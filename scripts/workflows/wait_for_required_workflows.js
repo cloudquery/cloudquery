@@ -41,11 +41,11 @@ module.exports = async ({github, context}) => {
     // We test the CLI on multiple OSes, so we need to wait for all of them
     if (actions.includes("cli")) {
         actions = actions.filter(action => action !== "cli")
-        actions = ["cli (large-ubuntu-monorepo)", "cli (large-windows-monorepo)", "cli (macos-latest-xl)", ...actions]
+        actions = ["cli (ubuntu-latest)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
     }
 
     // Enforce policy tests for AWS, Azure, GCP and K8s plugins
-    const pluginsWithPolicyTests = ['plugins/source/aws', 'plugins/source/azure', 'plugins/source/gcp', 'plugins/source/k8s']
+    const pluginsWithPolicyTests = ['plugins/source/gcp', 'plugins/source/k8s']
     for (const plugin of pluginsWithPolicyTests) {
         if (actions.includes(plugin)) {
             actions = [...actions, 'test-policies']

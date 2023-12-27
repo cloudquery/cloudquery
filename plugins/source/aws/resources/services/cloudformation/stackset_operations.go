@@ -3,7 +3,7 @@ package cloudformation
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation/models"
@@ -18,7 +18,10 @@ func stackSetOperations() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackSetOperation.html`,
 		Resolver:            fetchCloudformationStackSetOperations,
 		PreResourceResolver: getStackSetOperation,
-		Transform:           transformers.TransformWithStruct(&models.ExpandedStackSetOperation{}, transformers.WithUnwrapStructFields("StackSetOperation"), transformers.WithSkipFields("CallAs"), transformers.WithPrimaryKeys("OperationId", "CreationTimestamp")),
+		Transform: transformers.TransformWithStruct(&models.ExpandedStackSetOperation{},
+			transformers.WithUnwrapStructFields("StackSetOperation"),
+			transformers.WithSkipFields("CallAs"),
+			transformers.WithPrimaryKeys("OperationId", "CreationTimestamp")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

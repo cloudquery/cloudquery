@@ -77,7 +77,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/azuredevops.svg",
     id: "azuredevops",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
   },
   {
@@ -137,7 +137,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/meta.svg",
     id: "facebookmarketing",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "marketing-analytics",
   },
   {
@@ -145,7 +145,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/fastly.svg",
     id: "fastly",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
   },
   {
@@ -207,7 +207,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/ga.svg",
     id: "googleanalytics",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "marketing-analytics",
   },
   {
@@ -244,7 +244,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/homebrew.svg",
     id: "homebrew",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "marketing-analytics",
   },
   {
@@ -295,7 +295,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/mysql-dark.svg",
     id: "mysql",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "databases",
   },
   {
@@ -337,7 +337,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/oracle.svg",
     id: "oracledb",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "databases",
   },
   {
@@ -365,7 +365,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/postgresql.svg",
     id: "postgresql",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "databases",
   },
   {
@@ -373,7 +373,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/salesforce.svg",
     id: "salesforce",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "marketing-analytics",
   },
   {
@@ -408,7 +408,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/shopify.svg",
     id: "shopify",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "marketing-analytics",
   },
   {
@@ -437,7 +437,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/snyk.svg",
     id: "snyk",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "security",
   },
   {
@@ -445,7 +445,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/stripe.svg",
     id: "stripe",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-finops",
   },
   {
@@ -454,7 +454,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/tailscale-dark.svg",
     id: "tailscale",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
     buyLinks: {
       standard: "https://buy.stripe.com/14k8wAdap49hbGE6rR",
@@ -466,7 +466,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/terraform.svg",
     id: "terraform",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
   },
   {
@@ -475,7 +475,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/vercel-dark.svg",
     id: "vercel",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
     buyLinks: {
       standard: "https://buy.stripe.com/bIY7swc6lcFN9yw5nP",
@@ -824,7 +824,7 @@ export const ALL_PLUGINS: Plugin[] = [
     name: "HashiCorp Vault",
     id: "vault",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
     logo: "/images/logos/plugins/hashicorp-vault.svg",
     logoDark: "/images/logos/plugins/hashicorp-vault-dark.svg",
@@ -922,7 +922,7 @@ export const ALL_PLUGINS: Plugin[] = [
   },
   {
     name: "MongoDB Atlas",
-    id: "mongodb-atlas",
+    id: "mongodbatlas",
     website: "https://www.mongodb.com/atlas/database",
     kind: "source",
     availability: "premium",
@@ -1004,6 +1004,7 @@ export const ALL_PLUGINS: Plugin[] = [
     kind: "source",
     availability: "premium",
     category: "cloud-infrastructure",
+    logo: "/images/logos/plugins/render.webp",
     buyLinks: {
       standard: "https://buy.stripe.com/8wMdQUeet5dlcKI16x",
       extended: "https://buy.stripe.com/eVa004dapdJR7qo5mO",
@@ -1267,3 +1268,4 @@ export function getPlugin(kind: string, id: string): Plugin {
   }
   return ALL_SOURCE_PLUGINS.find((p) => p.id === id);
 }
+

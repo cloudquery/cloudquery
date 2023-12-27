@@ -6,8 +6,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/cli/internal/auth"
-	"github.com/cloudquery/cloudquery/cli/internal/config"
+	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery-api-go/config"
+	"github.com/cloudquery/cloudquery/cli/internal/team"
 	"github.com/spf13/cobra"
 )
 
@@ -27,21 +28,21 @@ func newCmdSwitch() *cobra.Command {
 		Long:    switchLong,
 		Example: switchExample,
 		Args:    cobra.MaximumNArgs(1),
-		Hidden:  true,
 		RunE:    runSwitch,
 	}
 	return switchCmd
 }
 
 func runSwitch(cmd *cobra.Command, args []string) error {
-	apiURL := getEnvOrDefault("CLOUDQUERY_API_URL", defaultAPIURL)
+	apiURL := getEnvOrDefault(envAPIURL, defaultAPIURL)
 
-	token, err := auth.GetToken()
+	tc := auth.NewTokenClient()
+	token, err := tc.GetToken()
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
 
-	cl, err := auth.NewClient(apiURL, token)
+	cl, err := team.NewClient(apiURL, token.Value)
 	if err != nil {
 		return fmt.Errorf("failed to create API client: %w", err)
 	}
@@ -59,10 +60,7 @@ func runSwitch(cmd *cobra.Command, args []string) error {
 		}
 
 		if currentTeam == "" {
-			cmd.Println("Your team is not set.")
-			if len(allTeams) == 1 {
-				cmd.Println("As you are currently a member of only one team, this will be used as your default team.")
-			}
+			cmd.Printf("Your current team is not set.\n\n")
 		} else {
 			cmd.Printf("Your current team is set to %v.\n\n", currentTeam)
 		}
@@ -70,15 +68,15 @@ func runSwitch(cmd *cobra.Command, args []string) error {
 		cmd.Println("To switch teams, run `cloudquery switch <team>`")
 		return nil
 	}
-	team := args[0]
-	err = cl.ValidateTeam(cmd.Context(), team)
+	selectedTeam := args[0]
+	err = cl.ValidateTeam(cmd.Context(), selectedTeam)
 	if err != nil {
 		return fmt.Errorf("failed to switch teams: %w", err)
 	}
-	err = config.SetValue("team", team)
+	err = config.SetValue("team", selectedTeam)
 	if err != nil {
 		return fmt.Errorf("failed to set team value: %w", err)
 	}
-	cmd.Printf("Successfully switched teams to %v.\n", team)
+	cmd.Printf("Successfully switched teams to %v.\n", selectedTeam)
 	return nil
 }

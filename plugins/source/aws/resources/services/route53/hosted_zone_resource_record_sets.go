@@ -3,7 +3,7 @@ package route53
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/route53"
 	"github.com/aws/aws-sdk-go-v2/service/route53/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -18,13 +18,14 @@ func hostedZoneResourceRecordSets() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_ResourceRecordSet.html`,
 		Resolver:    fetchRoute53HostedZoneResourceRecordSets,
-		Transform:   transformers.TransformWithStruct(&types.ResourceRecordSet{}),
+		Transform:   transformers.TransformWithStruct(&types.ResourceRecordSet{}, transformers.WithPrimaryKeys("Name", "Type")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:     "hosted_zone_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "hosted_zone_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}

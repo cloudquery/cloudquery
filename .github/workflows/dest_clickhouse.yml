@@ -19,7 +19,7 @@ on:
 jobs:
   plugins-destination-clickhouse:
     name: "plugins/destination/clickhouse"
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
       DB_USER:     cq
@@ -59,12 +59,17 @@ jobs:
     - name: golangci-lint
       uses: cloudquery/golangci-lint-action@master
       with:
-        version: v1.54.2
+        version: v1.55.2
         working-directory: plugins/destination/clickhouse
         args:              "--config ../../.golangci.yml"
         skip-pkg-cache:    true
         skip-build-cache:  true
-    - run: go mod tidy
+    - name: gen
+      if: github.event_name == 'pull_request'
+      run: make gen
+    - name: Fail if generation updated files
+      if: github.event_name == 'pull_request'
+      run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
     - name: Build
       run:  go build .
     - name: Test ClickHouse
@@ -73,7 +78,7 @@ jobs:
       run:  make test
   validate-release:
     timeout-minutes: 30
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     env:
       CGO_ENABLED: 0
     steps:

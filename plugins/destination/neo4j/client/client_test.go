@@ -45,7 +45,9 @@ func TestPlugin(t *testing.T) {
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.WriterTestSuiteTests{
-			SkipMigrate: true,
+			// Although we do support migrations, the old data can persist for the tables where PK is changed.
+			SkipMigrate:      true,
+			SkipDeleteRecord: true,
 			SafeMigrations: plugin.SafeMigrations{
 				AddColumn:    true,
 				RemoveColumn: true,

@@ -85,6 +85,7 @@ kind: source
 spec:
   name: "postgresql"
   path: "cloudquery/postgresql"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_POSTGRESQL"
   destinations: ["motherduck"]
   tables: ["customers"]
@@ -95,6 +96,7 @@ kind: destination
 spec:
   name: "motherduck"
   version: "VERSION_DESTINATION_DUCKDB"
+  registry: "cloudquery"
   path: "cloudquery/duckdb"
   write_mode: "overwrite-delete-stale"
   migrate_mode: "safe"
@@ -169,6 +171,7 @@ kind: source
 spec:
   name: "postgresql"
   path: "cloudquery/postgresql"
+  registry: "cloudquery"
   version: "VERSION_SOURCE_POSTGRESQL"
   destinations: ["motherduck"]
   tables: ["customers"]
@@ -179,8 +182,9 @@ spec:
 kind: destination
 spec:
   name: "motherduck"
-  version: "VERSION_DESTINATION_DUCKDB"
   path: "cloudquery/duckdb"
+  registry: "cloudquery"
+  version: "VERSION_DESTINATION_DUCKDB"
   write_mode: "overwrite-delete-stale"
   migrate_mode: "safe"
   spec:

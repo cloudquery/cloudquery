@@ -22,6 +22,7 @@ func buildCorrectionsMock(t *testing.T, ctrl *gomock.Controller) client.DatadogS
 	if err != nil {
 		t.Fatal(err)
 	}
+	d.AdditionalProperties = map[string]any{"key": "value"}
 
 	m.EXPECT().ListSLOCorrectionWithPagination(gomock.Any()).Return(client.MockPaginatedResponse(d))
 

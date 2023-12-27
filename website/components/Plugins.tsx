@@ -1,7 +1,7 @@
 import {ALL_PLUGINS, DESTINATION_CATEGORIES, SOURCE_CATEGORIES} from "./pluginData";
 
 import {LogoContainer} from "./LogoContainer";
-import {CATEGORIES, CategoryTitle} from "./Category";
+import {CategoryTitle} from "./Category";
 import {useState} from "react";
 import {KINDS, KindTitle} from "./Kind";
 
@@ -159,7 +159,11 @@ export function Plugins() {
                       selectedPlugins.map((plugin) => {
                         return <LogoContainer
                             title={plugin.name}
-                            href={(plugin.kind === 'source') ? `/integrations/${plugin.id}` : `/docs/plugins/destinations/${plugin.id}/overview`}
+                            href={(plugin.kind === 'source') ? (
+                                plugin.availability === 'premium'
+                                    ? `https://hub.cloudquery.io/plugins/source/cloudquery/${plugin.id}`
+                                    : `/integrations/${plugin.id}`
+                            ) : `/docs/plugins/destinations/${plugin.id}/overview`}
                             key={plugin.id}
                             external={false}
                             logo={plugin.logo}

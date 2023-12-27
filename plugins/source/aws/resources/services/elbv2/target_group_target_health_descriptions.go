@@ -3,7 +3,7 @@ package elbv2
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	elbv2 "github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2"
 	"github.com/aws/aws-sdk-go-v2/service/elasticloadbalancingv2/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -17,14 +17,18 @@ func targetGroupTargetHealthDescriptions() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_TargetHealthDescription.html`,
 		Resolver:    fetchTargetGroupTargetHealthDescriptions,
-		Transform:   transformers.TransformWithStruct(&types.TargetHealthDescription{}),
+		Transform: transformers.TransformWithStruct(&types.TargetHealthDescription{},
+			transformers.WithPrimaryKeys("Target.Id", "Target.Port"),
+			transformers.WithUnwrapStructFields("Target"),
+		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "target_group_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "target_group_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}

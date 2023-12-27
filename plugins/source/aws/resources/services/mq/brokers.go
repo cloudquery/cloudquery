@@ -3,7 +3,7 @@ package mq
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/mq"
 	"github.com/aws/aws-sdk-go-v2/service/mq/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -18,7 +18,7 @@ func Brokers() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/amazon-mq/latest/api-reference/brokers.html`,
 		Resolver:            fetchMqBrokers,
 		PreResourceResolver: getMqBroker,
-		Transform:           transformers.TransformWithStruct(&mq.DescribeBrokerOutput{}),
+		Transform:           transformers.TransformWithStruct(&mq.DescribeBrokerOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "mq"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

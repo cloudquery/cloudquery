@@ -10,7 +10,7 @@ import (
 	"path"
 	"testing"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/bradleyjkemp/cupaloy/v2"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
@@ -126,6 +126,13 @@ var testTables = []*schema.Table{
 			},
 		},
 	},
+	{
+		Name:        "paid_table",
+		Title:       "Paid Table",
+		Description: "Description for paid table",
+		IsPaid:      true,
+		Columns:     []schema.Column{},
+	},
 }
 
 func TestGeneratePluginDocs(t *testing.T) {
@@ -140,7 +147,7 @@ func TestGeneratePluginDocs(t *testing.T) {
 			t.Fatalf("unexpected error calling GeneratePluginDocs: %v", err)
 		}
 
-		expectFiles := []string{"test_table.md", "relation_table.md", "relation_relation_table_a.md", "relation_relation_table_b.md", "incremental_table.md", "README.md"}
+		expectFiles := []string{"test_table.md", "relation_table.md", "relation_relation_table_a.md", "relation_relation_table_b.md", "incremental_table.md", "paid_table.md", "README.md"}
 		for _, exp := range expectFiles {
 			t.Run(exp, func(t *testing.T) {
 				output := path.Join(tmpdir, exp)

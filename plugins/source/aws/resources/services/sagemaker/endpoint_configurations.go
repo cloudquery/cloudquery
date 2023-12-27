@@ -3,7 +3,7 @@ package sagemaker
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker"
 	"github.com/aws/aws-sdk-go-v2/service/sagemaker/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -19,7 +19,7 @@ func EndpointConfigurations() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_DescribeEndpointConfig.html`,
 		Resolver:            fetchSagemakerEndpointConfigurations,
 		PreResourceResolver: getEndpointConfiguration,
-		Transform:           transformers.TransformWithStruct(&sagemaker.DescribeEndpointConfigOutput{}),
+		Transform:           transformers.TransformWithStruct(&sagemaker.DescribeEndpointConfigOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "api.sagemaker"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -34,6 +34,7 @@ type CodecommitClient interface {
 	ListApprovalRuleTemplates(context.Context, *codecommit.ListApprovalRuleTemplatesInput, ...func(*codecommit.Options)) (*codecommit.ListApprovalRuleTemplatesOutput, error)
 	ListAssociatedApprovalRuleTemplatesForRepository(context.Context, *codecommit.ListAssociatedApprovalRuleTemplatesForRepositoryInput, ...func(*codecommit.Options)) (*codecommit.ListAssociatedApprovalRuleTemplatesForRepositoryOutput, error)
 	ListBranches(context.Context, *codecommit.ListBranchesInput, ...func(*codecommit.Options)) (*codecommit.ListBranchesOutput, error)
+	ListFileCommitHistory(context.Context, *codecommit.ListFileCommitHistoryInput, ...func(*codecommit.Options)) (*codecommit.ListFileCommitHistoryOutput, error)
 	ListPullRequests(context.Context, *codecommit.ListPullRequestsInput, ...func(*codecommit.Options)) (*codecommit.ListPullRequestsOutput, error)
 	ListRepositories(context.Context, *codecommit.ListRepositoriesInput, ...func(*codecommit.Options)) (*codecommit.ListRepositoriesOutput, error)
 	ListRepositoriesForApprovalRuleTemplate(context.Context, *codecommit.ListRepositoriesForApprovalRuleTemplateInput, ...func(*codecommit.Options)) (*codecommit.ListRepositoriesForApprovalRuleTemplateOutput, error)

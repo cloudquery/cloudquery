@@ -3,7 +3,7 @@ package athena
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/athena"
 	"github.com/aws/aws-sdk-go-v2/service/athena/types"
@@ -19,14 +19,15 @@ func workGroupNamedQueries() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/athena/latest/APIReference/API_NamedQuery.html`,
 		Resolver:            fetchAthenaWorkGroupNamedQueries,
 		PreResourceResolver: getWorkGroupNamedQuery,
-		Transform:           transformers.TransformWithStruct(&types.NamedQuery{}),
+		Transform:           transformers.TransformWithStruct(&types.NamedQuery{}, transformers.WithPrimaryKeys("NamedQueryId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "work_group_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "work_group_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}

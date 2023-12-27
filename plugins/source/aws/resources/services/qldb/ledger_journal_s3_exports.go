@@ -3,7 +3,7 @@ package qldb
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/qldb"
 	"github.com/aws/aws-sdk-go-v2/service/qldb/types"
@@ -18,14 +18,15 @@ func ledgerJournalS3Exports() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalS3ExportDescription.html`,
 		Resolver:    fetchQldbLedgerJournalS3Exports,
-		Transform:   transformers.TransformWithStruct(&types.JournalS3ExportDescription{}),
+		Transform:   transformers.TransformWithStruct(&types.JournalS3ExportDescription{}, transformers.WithPrimaryKeys("ExportId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:     "ledger_arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.ParentColumnResolver("arn"),
+				Name:       "ledger_arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.ParentColumnResolver("arn"),
+				PrimaryKey: true,
 			},
 		},
 	}

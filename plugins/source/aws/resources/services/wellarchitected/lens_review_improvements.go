@@ -3,7 +3,8 @@ package wellarchitected
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected"
 	"github.com/aws/aws-sdk-go-v2/service/wellarchitected/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -67,8 +68,8 @@ func fetchLensReviewImprovements(ctx context.Context, meta schema.ClientMeta, pa
 			&wellarchitected.ListLensReviewImprovementsInput{
 				LensAlias:       review.LensAlias,
 				WorkloadId:      &workloadID,
-				MilestoneNumber: milestoneNumber,
-				MaxResults:      50,
+				MilestoneNumber: aws.Int32(milestoneNumber),
+				MaxResults:      aws.Int32(50),
 				PillarId:        pillar.PillarId,
 			},
 		)

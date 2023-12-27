@@ -3,7 +3,7 @@ package elasticbeanstalk
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v14/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk"
 	"github.com/aws/aws-sdk-go-v2/service/elasticbeanstalk/types"
@@ -22,23 +22,23 @@ func Environments() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticbeanstalk"),
 		Transform:   transformers.TransformWithStruct(&types.EnvironmentDescription{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(true),
-			{
-				Name:     "arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.PathResolver("EnvironmentArn"),
-			},
+			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
+			{
+				Name:       "arn",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("EnvironmentArn"),
+				PrimaryKey: true,
+			},
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
 				Resolver: resolveElasticbeanstalkEnvironmentTags,
 			},
 			{
-				Name:       "id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("EnvironmentId"),
-				PrimaryKey: true,
+				Name:     "id",
+				Type:     arrow.BinaryTypes.String,
+				Resolver: schema.PathResolver("EnvironmentId"),
 			},
 			{
 				Name:     "listeners",
