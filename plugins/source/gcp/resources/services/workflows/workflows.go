@@ -2,7 +2,6 @@ package workflows
 
 import (
 	pb "cloud.google.com/go/workflows/apiv1/workflowspb"
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
@@ -16,12 +15,7 @@ func Workflows() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("workflows.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.Workflow{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
-			{
-				Name:       "project_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveProject,
-				PrimaryKey: true,
-			},
+			client.ProjectIDColumn(true),
 		},
 	}
 }

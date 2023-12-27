@@ -2,7 +2,6 @@ package serviceusage
 
 import (
 	pb "cloud.google.com/go/serviceusage/apiv1/serviceusagepb"
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
@@ -16,11 +15,7 @@ func Services() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("serviceusage.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.Service{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
-			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
-			},
+			client.ProjectIDColumn(false),
 		},
 	}
 }

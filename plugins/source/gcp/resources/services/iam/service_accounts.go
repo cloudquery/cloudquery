@@ -23,11 +23,7 @@ func ServiceAccounts() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("iam.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.ServiceAccount{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
-			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
-			},
+			client.ProjectIDColumn(false),
 			{
 				Name:       "unique_id",
 				Type:       arrow.BinaryTypes.String,

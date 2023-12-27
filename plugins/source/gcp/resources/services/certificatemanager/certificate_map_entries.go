@@ -6,7 +6,6 @@ import (
 	"google.golang.org/api/iterator"
 
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
@@ -22,12 +21,7 @@ func CertificateMapEntries() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("certificatemanager.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.CertificateMapEntry{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
-			{
-				Name:       "project_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveProject,
-				PrimaryKey: true,
-			},
+			client.ProjectIDColumn(true),
 		},
 	}
 }

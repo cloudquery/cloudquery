@@ -6,7 +6,6 @@ import (
 	"google.golang.org/api/iterator"
 
 	pb "cloud.google.com/go/billing/apiv1/billingpb"
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
@@ -22,11 +21,7 @@ func BillingAccounts() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("cloudbilling.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.BillingAccount{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
-			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
-			},
+			client.ProjectIDColumn(false),
 		},
 		Relations: []*schema.Table{
 			Budgets(),
