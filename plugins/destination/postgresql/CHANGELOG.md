@@ -1,5 +1,13 @@
 # Changelog
 
+## [7.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.1.2...plugins-destination-postgresql-v7.1.3) (2023-12-28)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v15 digest to bcaeaa8 ([#15791](https://github.com/cloudquery/cloudquery/issues/15791)) ([89dc812](https://github.com/cloudquery/cloudquery/commit/89dc81201529de2a1fc1ecce5efa74d6f363e57b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.23.0 ([#15803](https://github.com/cloudquery/cloudquery/issues/15803)) ([b6f9373](https://github.com/cloudquery/cloudquery/commit/b6f937385020c63ce59b2bc60402752b6c239c6c))
+
 ## [7.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.1.1...plugins-destination-postgresql-v7.1.2) (2023-12-20)
 
 
