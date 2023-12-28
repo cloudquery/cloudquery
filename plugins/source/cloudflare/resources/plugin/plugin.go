@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/client"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/access_applications"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/access_groups"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/accounts"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/certificate_packs"
@@ -95,6 +96,7 @@ func Plugin() *plugin.Plugin {
 func getTables() schema.Tables {
 	tables := []*schema.Table{
 		access_groups.AccessGroups(),
+		access_applications.AccessApplications(),
 		accounts.Accounts(),
 		certificate_packs.CertificatePacks(),
 		dns_records.DNSRecords(),
