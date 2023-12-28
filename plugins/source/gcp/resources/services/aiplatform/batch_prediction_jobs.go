@@ -6,7 +6,6 @@ import (
 	"google.golang.org/api/iterator"
 
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
@@ -18,7 +17,7 @@ import (
 	aiplatform "cloud.google.com/go/aiplatform/apiv1"
 )
 
-func BatchPredictionJobs() *schema.Table {
+func batchPredictionJobs() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_aiplatform_batch_prediction_jobs",
 		Description: `https://cloud.google.com/vertex-ai/docs/reference/rest/v1/projects.locations.batchPredictionJobs#BatchPredictionJob`,
@@ -26,12 +25,7 @@ func BatchPredictionJobs() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("aiplatform.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.BatchPredictionJob{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
-			{
-				Name:       "project_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveProject,
-				PrimaryKey: true,
-			},
+			client.ProjectIDColumn(true),
 		},
 	}
 }

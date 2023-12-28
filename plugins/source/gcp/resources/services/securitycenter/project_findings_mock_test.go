@@ -33,5 +33,5 @@ func (*fakeProjectsSecretsServer) ListFindings(context.Context, *pb.ListFindings
 }
 
 func TestProjectFindings(t *testing.T) {
-	client.MockTestGrpcHelper(t, OrganizationFindings(), createProjectFindings, client.TestOptions{})
+	client.MockTestHelper(t, OrganizationFindings(), client.WithCreateGrpcService(createProjectFindings))
 }

@@ -4,14 +4,12 @@ import (
 	"context"
 
 	"google.golang.org/api/iterator"
+	"google.golang.org/api/option"
 
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	pb "google.golang.org/genproto/googleapis/cloud/location"
-
-	"google.golang.org/api/option"
 
 	aiplatform "cloud.google.com/go/aiplatform/apiv1"
 )
@@ -24,12 +22,7 @@ func PipelineLocations() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("aiplatform.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.Location{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
-			{
-				Name:       "project_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveProject,
-				PrimaryKey: true,
-			},
+			client.ProjectIDColumn(true),
 		},
 		Relations: []*schema.Table{
 			PipelineJobs(),

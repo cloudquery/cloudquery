@@ -40,5 +40,5 @@ func createZones(mux *httprouter.Router) error {
 }
 
 func TestZones(t *testing.T) {
-	client.MockTestRestHelper(t, Zones(), createZones, client.TestOptions{})
+	client.MockTestHelper(t, Zones(), client.WithCreateHTTPServer(createZones))
 }

@@ -16,12 +16,7 @@ func ServiceAccountKeys() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("iam.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.ServiceAccountKey{}, transformers.WithSkipFields("PrivateKeyData", "PrivateKeyType"), transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
-			{
-				Name:       "project_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveProject,
-				PrimaryKey: true,
-			},
+			client.ProjectIDColumn(true),
 			{
 				Name:     "service_account_unique_id",
 				Type:     arrow.BinaryTypes.String,

@@ -40,5 +40,5 @@ func createPolicies(mux *httprouter.Router) error {
 }
 
 func TestPolicies(t *testing.T) {
-	client.MockTestRestHelper(t, Policies(), createPolicies, client.TestOptions{})
+	client.MockTestHelper(t, Policies(), client.WithCreateHTTPServer(createPolicies))
 }

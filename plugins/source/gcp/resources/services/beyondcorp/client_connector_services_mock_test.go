@@ -31,5 +31,5 @@ func (*fakeClientConnectorServicesServer) ListClientConnectorServices(context.Co
 }
 
 func TestClientConnectorServices(t *testing.T) {
-	client.MockTestGrpcHelper(t, ClientConnectorServices(), createClientConnectorServices, client.TestOptions{})
+	client.MockTestHelper(t, ClientConnectorServices(), client.WithCreateGrpcService(createClientConnectorServices))
 }

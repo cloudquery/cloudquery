@@ -5,7 +5,6 @@ import (
 
 	compute "cloud.google.com/go/compute/apiv1"
 	pb "cloud.google.com/go/compute/apiv1/computepb"
-	"github.com/apache/arrow/go/v15/arrow"
 	"google.golang.org/api/iterator"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
@@ -21,11 +20,7 @@ func VpnTunnels() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.VpnTunnel{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
-			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
-			},
+			client.ProjectIDColumn(false),
 		},
 	}
 }

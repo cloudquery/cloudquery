@@ -41,5 +41,5 @@ func (*fakeTaskGroupsServer) ListTasks(context.Context, *pb.ListTasksRequest) (*
 }
 
 func TestTaskGroups(t *testing.T) {
-	client.MockTestGrpcHelper(t, TaskGroups(), createTaskGroups, client.TestOptions{})
+	client.MockTestHelper(t, TaskGroups(), client.WithCreateGrpcService(createTaskGroups))
 }

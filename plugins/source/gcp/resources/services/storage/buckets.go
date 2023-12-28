@@ -2,7 +2,6 @@ package storage
 
 import (
 	pb "cloud.google.com/go/storage"
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
@@ -16,11 +15,7 @@ func Buckets() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("storage.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.BucketAttrs{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
-			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
-			},
+			client.ProjectIDColumn(false),
 		},
 		Relations: []*schema.Table{
 			BucketPolicies(),

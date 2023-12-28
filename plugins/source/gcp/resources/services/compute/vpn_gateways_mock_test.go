@@ -33,5 +33,5 @@ func createVpnGateways(mux *httprouter.Router) error {
 }
 
 func TestVpnGateways(t *testing.T) {
-	client.MockTestRestHelper(t, VpnGateways(), createVpnGateways, client.TestOptions{})
+	client.MockTestHelper(t, VpnGateways(), client.WithCreateHTTPServer(createVpnGateways))
 }

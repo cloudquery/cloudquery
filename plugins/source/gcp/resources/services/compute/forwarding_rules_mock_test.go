@@ -33,5 +33,5 @@ func createForwardingRules(mux *httprouter.Router) error {
 }
 
 func TestForwardingRules(t *testing.T) {
-	client.MockTestRestHelper(t, ForwardingRules(), createForwardingRules, client.TestOptions{})
+	client.MockTestHelper(t, ForwardingRules(), client.WithCreateHTTPServer(createForwardingRules))
 }

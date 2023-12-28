@@ -31,5 +31,5 @@ func (*fakeDomainMappingsServer) ListDomainMappings(context.Context, *pb.ListDom
 }
 
 func TestDomainMappings(t *testing.T) {
-	client.MockTestGrpcHelper(t, DomainMappings(), createDomainMappings, client.TestOptions{})
+	client.MockTestHelper(t, DomainMappings(), client.WithCreateGrpcService(createDomainMappings))
 }

@@ -1,14 +1,16 @@
 package resourcemanager
 
 import (
-	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"fmt"
+
+	pb "cloud.google.com/go/resourcemanager/apiv3/resourcemanagerpb"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"google.golang.org/grpc"
 
 	"context"
-	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"testing"
+
+	"github.com/cloudquery/plugin-sdk/v4/faker"
 )
 
 func createProjectTagKeys(gsrv *grpc.Server) error {
@@ -37,7 +39,7 @@ func (*fakeProjectTagKeysServer) ListTagKeys(_ context.Context, req *pb.ListTagK
 }
 
 func TestProjectTagKeys(t *testing.T) {
-	client.MockTestGrpcHelper(t, ProjectTagKeys(), createProjectTagKeys, client.TestOptions{})
+	client.MockTestHelper(t, ProjectTagKeys(), client.WithCreateGrpcService(createProjectTagKeys))
 }
 
 func createProjectTagValues(gsrv *grpc.Server) error {
@@ -66,5 +68,5 @@ func (*fakeProjectTagValuesServer) ListTagValues(_ context.Context, req *pb.List
 }
 
 func TestProjectTagValues(t *testing.T) {
-	client.MockTestGrpcHelper(t, projectTagValues(), createProjectTagValues, client.TestOptions{})
+	client.MockTestHelper(t, projectTagValues(), client.WithCreateGrpcService(createProjectTagValues))
 }

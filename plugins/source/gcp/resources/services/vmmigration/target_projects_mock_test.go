@@ -32,5 +32,5 @@ func (*fakeTargetProjectsServer) ListTargetProjects(context.Context, *pb.ListTar
 }
 
 func TestTargetProjects(t *testing.T) {
-	client.MockTestGrpcHelper(t, TargetProjects(), createTargetProjectsServer, client.TestOptions{})
+	client.MockTestHelper(t, TargetProjects(), client.WithCreateGrpcService(createTargetProjectsServer))
 }

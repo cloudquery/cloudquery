@@ -67,5 +67,5 @@ func (*fakeServer) ListFindingTypeStats(context.Context, *pb.ListFindingTypeStat
 }
 
 func TestInstances(t *testing.T) {
-	client.MockTestGrpcHelper(t, ScanConfigs(), createServer, client.TestOptions{})
+	client.MockTestHelper(t, ScanConfigs(), client.WithCreateGrpcService(createServer))
 }

@@ -31,5 +31,5 @@ func (*fakeNfsSharesServer) ListNfsShares(context.Context, *pb.ListNfsSharesRequ
 }
 
 func TestNfsShares(t *testing.T) {
-	client.MockTestGrpcHelper(t, NfsShares(), createNfsShares, client.TestOptions{})
+	client.MockTestHelper(t, NfsShares(), client.WithCreateGrpcService(createNfsShares))
 }

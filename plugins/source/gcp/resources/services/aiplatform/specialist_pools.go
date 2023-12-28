@@ -6,7 +6,6 @@ import (
 	"google.golang.org/api/iterator"
 
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
@@ -26,12 +25,7 @@ func SpecialistPools() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("aiplatform.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.SpecialistPool{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
-			{
-				Name:       "project_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveProject,
-				PrimaryKey: true,
-			},
+			client.ProjectIDColumn(true),
 		},
 	}
 }
