@@ -5,6 +5,32 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v5.0.15...plugins-source-cloudflare-v6.0.0) (2023-12-28)
+
+
+### This Release has the Following Changes to Tables
+- Table `cloudflare_access_applications` was added
+- Table `cloudflare_access_applications_self_hosted_domains` was added
+- Table `cloudflare_certificate_packs`: column added with name `status` and type `utf8`
+- Table `cloudflare_dns_records`: column added with name `comment` and type `utf8`
+- Table `cloudflare_dns_records`: column added with name `tags` and type `list<item: utf8, nullable>`
+- Table `cloudflare_images`: column `metadata` removed from table (:warning: breaking)
+- Table `cloudflare_images`: column added with name `meta` and type `json`
+- Table `cloudflare_worker_meta_data`: column added with name `deployment_id` and type `utf8`
+- Table `cloudflare_worker_meta_data`: column added with name `last_deployed_from` and type `utf8`
+- Table `cloudflare_worker_meta_data`: column added with name `logpush` and type `bool`
+- Table `cloudflare_worker_meta_data`: column added with name `pipeline_hash` and type `utf8`
+- Table `cloudflare_worker_meta_data`: column added with name `placement_mode` and type `utf8`
+- Table `cloudflare_worker_meta_data`: column added with name `tail_consumers` and type `json`
+
+### ⚠ BREAKING CHANGES
+
+* Upgrade `cloudflare-go` and add `access_applications` ([#15777](https://github.com/cloudquery/cloudquery/issues/15777))
+
+### Features
+
+* Upgrade `cloudflare-go` and add `access_applications` ([#15777](https://github.com/cloudquery/cloudquery/issues/15777)) ([7431f92](https://github.com/cloudquery/cloudquery/commit/7431f9205fc1b183f3b5b0e44828223a42db792d))
+
 ## [5.0.15](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v5.0.14...plugins-source-cloudflare-v5.0.15) (2023-12-28)
 
 

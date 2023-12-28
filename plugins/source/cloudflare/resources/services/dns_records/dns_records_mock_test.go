@@ -26,12 +26,16 @@ func buildDNSRecords(t *testing.T, ctrl *gomock.Controller) client.Clients {
 		"foo": "bar",
 	}
 
-	mock.EXPECT().DNSRecords(
+	mock.EXPECT().ListDNSRecords(
 		gomock.Any(),
-		client.TestZoneID,
+		cloudflare.ZoneIdentifier(client.TestZoneID),
 		gomock.Any(),
 	).Return(
 		[]cloudflare.DNSRecord{record},
+		&cloudflare.ResultInfo{
+			Page:       1,
+			TotalPages: 1,
+		},
 		nil,
 	)
 
