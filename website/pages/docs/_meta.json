@@ -19,5 +19,10 @@
     "title": "Changelog ↗",
     "href": "https://github.com/cloudquery/cloudquery/blob/main/cli/CHANGELOG.md",
     "newWindow": true
+  },
+  "api-docs": {
+    "title": "OpenAPI Spec ↗",
+    "href": "https://api-docs.cloudquery.io/",
+    "newWindow": true
   }
 }
