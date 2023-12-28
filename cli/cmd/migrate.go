@@ -30,6 +30,7 @@ func NewCmdMigrate() *cobra.Command {
 		Args:    cobra.MinimumNArgs(1),
 		RunE:    migrate,
 	}
+	cmd.Flags().String("license", "", "set offline license file")
 	return cmd
 }
 

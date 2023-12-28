@@ -34,6 +34,8 @@ func NewCmdSync() *cobra.Command {
 		RunE:    sync,
 	}
 	cmd.Flags().Bool("no-migrate", false, "Disable auto-migration before sync. By default, sync runs a migration before syncing resources.")
+	cmd.Flags().String("license", "", "set offline license file")
+
 	return cmd
 }
 

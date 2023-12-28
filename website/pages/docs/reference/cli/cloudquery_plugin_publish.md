@@ -36,7 +36,6 @@ cloudquery plugin publish
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
-      --license string           set offline license file
       --log-console              enable console logging
       --log-file-name string     Log filename (default "cloudquery.log")
       --log-format string        Logging format (json, text) (default "text")

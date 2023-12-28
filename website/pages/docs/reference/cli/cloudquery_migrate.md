@@ -26,14 +26,14 @@ cloudquery migrate ./directory ./aws.yml ./pg.yml
 ### Options
 
 ```
-  -h, --help   help for migrate
+  -h, --help             help for migrate
+      --license string   set offline license file
 ```
 
 ### Options inherited from parent commands
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
-      --license string           set offline license file
       --log-console              enable console logging
       --log-file-name string     Log filename (default "cloudquery.log")
       --log-format string        Logging format (json, text) (default "text")
