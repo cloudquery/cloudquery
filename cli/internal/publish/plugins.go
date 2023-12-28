@@ -414,9 +414,10 @@ func getDockerToken(ctx context.Context, ref reference.Named, version, username,
 		return "", fmt.Errorf("client: could not parse challenge header %q", challengeHeader)
 	}
 
-	url := fmt.Sprintf("%[1]s?service=%[2]s&scope=%[3]s", realm, service, scope)
+	url := fmt.Sprintf("%[1]s?account=cli&service=%[2]s&scope=%[3]s", realm, service, scope)
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	basicAuth := base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
+	req.Header.Add("X-Meta-Plugin-Version", version)
 	req.Header.Add("Authorization", "Basic "+basicAuth)
 	if err != nil {
 		return "", fmt.Errorf("client: could not create request: %s", err)
@@ -554,7 +555,8 @@ func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON
 	// and talking to the registry directly since the Docker Engine API doesn't support the manifest API yet
 
 	// Loading and pushing the images is done via the Docker Go SDK
-	dockerClient, err := client.NewClientWithOpts(client.FromEnv)
+	additionalHeaders := map[string]string{"X-Meta-Plugin-Version": pkgJSON.Version}
+	dockerClient, err := client.NewClientWithOpts(client.FromEnv, client.WithHTTPHeaders(additionalHeaders))
 	if err != nil {
 		return fmt.Errorf("failed to create Docker client: %v", err)
 	}
