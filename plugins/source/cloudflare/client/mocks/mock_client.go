@@ -67,19 +67,36 @@ func (mr *MockApiMockRecorder) Accounts(arg0, arg1 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Accounts", reflect.TypeOf((*MockApi)(nil).Accounts), arg0, arg1)
 }
 
-// DNSRecords mocks base method.
-func (m *MockApi) DNSRecords(arg0 context.Context, arg1 string, arg2 cloudflare.DNSRecord) ([]cloudflare.DNSRecord, error) {
+// ListAccessApplications mocks base method.
+func (m *MockApi) ListAccessApplications(arg0 context.Context, arg1 *cloudflare.ResourceContainer, arg2 cloudflare.ListAccessApplicationsParams) ([]cloudflare.AccessApplication, *cloudflare.ResultInfo, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DNSRecords", arg0, arg1, arg2)
-	ret0, _ := ret[0].([]cloudflare.DNSRecord)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret := m.ctrl.Call(m, "ListAccessApplications", arg0, arg1, arg2)
+	ret0, _ := ret[0].([]cloudflare.AccessApplication)
+	ret1, _ := ret[1].(*cloudflare.ResultInfo)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
-// DNSRecords indicates an expected call of DNSRecords.
-func (mr *MockApiMockRecorder) DNSRecords(arg0, arg1, arg2 interface{}) *gomock.Call {
+// ListAccessApplications indicates an expected call of ListAccessApplications.
+func (mr *MockApiMockRecorder) ListAccessApplications(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DNSRecords", reflect.TypeOf((*MockApi)(nil).DNSRecords), arg0, arg1, arg2)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAccessApplications", reflect.TypeOf((*MockApi)(nil).ListAccessApplications), arg0, arg1, arg2)
+}
+
+// ListAccessGroups mocks base method.
+func (m *MockApi) ListAccessGroups(arg0 context.Context, arg1 *cloudflare.ResourceContainer, arg2 cloudflare.ListAccessGroupsParams) ([]cloudflare.AccessGroup, *cloudflare.ResultInfo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListAccessGroups", arg0, arg1, arg2)
+	ret0, _ := ret[0].([]cloudflare.AccessGroup)
+	ret1, _ := ret[1].(*cloudflare.ResultInfo)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListAccessGroups indicates an expected call of ListAccessGroups.
+func (mr *MockApiMockRecorder) ListAccessGroups(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListAccessGroups", reflect.TypeOf((*MockApi)(nil).ListAccessGroups), arg0, arg1, arg2)
 }
 
 // ListCertificatePacks mocks base method.
@@ -97,8 +114,24 @@ func (mr *MockApiMockRecorder) ListCertificatePacks(arg0, arg1 interface{}) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListCertificatePacks", reflect.TypeOf((*MockApi)(nil).ListCertificatePacks), arg0, arg1)
 }
 
+// ListDNSRecords mocks base method.
+func (m *MockApi) ListDNSRecords(arg0 context.Context, arg1 *cloudflare.ResourceContainer, arg2 cloudflare.ListDNSRecordsParams) ([]cloudflare.DNSRecord, *cloudflare.ResultInfo, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListDNSRecords", arg0, arg1, arg2)
+	ret0, _ := ret[0].([]cloudflare.DNSRecord)
+	ret1, _ := ret[1].(*cloudflare.ResultInfo)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListDNSRecords indicates an expected call of ListDNSRecords.
+func (mr *MockApiMockRecorder) ListDNSRecords(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListDNSRecords", reflect.TypeOf((*MockApi)(nil).ListDNSRecords), arg0, arg1, arg2)
+}
+
 // ListImages mocks base method.
-func (m *MockApi) ListImages(arg0 context.Context, arg1 string, arg2 cloudflare.PaginationOptions) ([]cloudflare.Image, error) {
+func (m *MockApi) ListImages(arg0 context.Context, arg1 *cloudflare.ResourceContainer, arg2 cloudflare.ListImagesParams) ([]cloudflare.Image, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListImages", arg0, arg1, arg2)
 	ret0, _ := ret[0].([]cloudflare.Image)
@@ -251,20 +284,4 @@ func (mr *MockApiMockRecorder) ListZonesContext(arg0 interface{}, arg1 ...interf
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0}, arg1...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListZonesContext", reflect.TypeOf((*MockApi)(nil).ListZonesContext), varargs...)
-}
-
-// ZoneLevelAccessGroups mocks base method.
-func (m *MockApi) ZoneLevelAccessGroups(arg0 context.Context, arg1 string, arg2 cloudflare.PaginationOptions) ([]cloudflare.AccessGroup, cloudflare.ResultInfo, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ZoneLevelAccessGroups", arg0, arg1, arg2)
-	ret0, _ := ret[0].([]cloudflare.AccessGroup)
-	ret1, _ := ret[1].(cloudflare.ResultInfo)
-	ret2, _ := ret[2].(error)
-	return ret0, ret1, ret2
-}
-
-// ZoneLevelAccessGroups indicates an expected call of ZoneLevelAccessGroups.
-func (mr *MockApiMockRecorder) ZoneLevelAccessGroups(arg0, arg1, arg2 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ZoneLevelAccessGroups", reflect.TypeOf((*MockApi)(nil).ZoneLevelAccessGroups), arg0, arg1, arg2)
 }

@@ -1,5 +1,16 @@
 # Changelog
 
+## [5.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.0.7...plugins-destination-duckdb-v5.0.8) (2023-12-28)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/apache/arrow/go` to `v15` ([#15754](https://github.com/cloudquery/cloudquery/issues/15754)) ([bd962eb](https://github.com/cloudquery/cloudquery/commit/bd962eb1093cf09e928e2a0e7782288ec4020ec4))
+* **deps:** Update github.com/apache/arrow/go/v15 digest to bcaeaa8 ([#15791](https://github.com/cloudquery/cloudquery/issues/15791)) ([89dc812](https://github.com/cloudquery/cloudquery/commit/89dc81201529de2a1fc1ecce5efa74d6f363e57b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.23.0 ([#15803](https://github.com/cloudquery/cloudquery/issues/15803)) ([b6f9373](https://github.com/cloudquery/cloudquery/commit/b6f937385020c63ce59b2bc60402752b6c239c6c))
+* **deps:** Update module github.com/marcboeker/go-duckdb to v1.5.5 ([#15775](https://github.com/cloudquery/cloudquery/issues/15775)) ([0fdd168](https://github.com/cloudquery/cloudquery/commit/0fdd168a2437bc4a3e0e85905c20421b39cd5818))
+* **deps:** Update module github.com/marcboeker/go-duckdb to v1.5.6 ([#15790](https://github.com/cloudquery/cloudquery/issues/15790)) ([e19781f](https://github.com/cloudquery/cloudquery/commit/e19781ffab1908d48096d07beceb8c322ad61d36))
+
 ## [5.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.0.6...plugins-destination-duckdb-v5.0.7) (2023-12-19)
 
 
