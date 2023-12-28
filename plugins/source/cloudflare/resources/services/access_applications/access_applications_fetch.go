@@ -1,4 +1,4 @@
-package dns_records
+package access_applications
 
 import (
 	"context"
@@ -8,11 +8,11 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func fetchDNSRecords(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchAccessApplications(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
 	rc := cloudflare.ZoneIdentifier(svc.ZoneId)
 
-	params := cloudflare.ListDNSRecordsParams{
+	params := cloudflare.ListAccessApplicationsParams{
 		ResultInfo: cloudflare.ResultInfo{
 			Page:    1,
 			PerPage: client.MaxItemsPerPage,
@@ -20,7 +20,7 @@ func fetchDNSRecords(ctx context.Context, meta schema.ClientMeta, parent *schema
 	}
 
 	for {
-		resp, info, err := svc.ClientApi.ListDNSRecords(ctx, rc, params)
+		resp, info, err := svc.ClientApi.ListAccessApplications(ctx, rc, params)
 		if err != nil {
 			return err
 		}
