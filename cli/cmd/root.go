@@ -111,6 +111,8 @@ func NewCmdRoot() *cobra.Command {
 		panic(err)
 	}
 
+	cmd.PersistentFlags().String("license", "", "set offline license file")
+
 	// Logging Flags
 	cmd.PersistentFlags().BoolVar(&logConsole, "log-console", false, "enable console logging")
 	cmd.PersistentFlags().Var(logFormat, "log-format", "Logging format (json, text)")
