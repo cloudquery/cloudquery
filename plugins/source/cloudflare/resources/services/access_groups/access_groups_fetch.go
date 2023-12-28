@@ -10,15 +10,17 @@ import (
 
 func fetchAccessGroups(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
-	zoneID := svc.ZoneId
+	rc := cloudflare.ZoneIdentifier(svc.ZoneId)
 
-	pagination := cloudflare.PaginationOptions{
-		Page:    1,
-		PerPage: client.MaxItemsPerPage,
+	params := cloudflare.ListAccessGroupsParams{
+		ResultInfo: cloudflare.ResultInfo{
+			Page:    1,
+			PerPage: client.MaxItemsPerPage,
+		},
 	}
 
 	for {
-		resp, info, err := svc.ClientApi.ZoneLevelAccessGroups(ctx, zoneID, pagination)
+		resp, info, err := svc.ClientApi.ListAccessGroups(ctx, rc, params)
 		if err != nil {
 			return err
 		}
@@ -27,7 +29,7 @@ func fetchAccessGroups(ctx context.Context, meta schema.ClientMeta, parent *sche
 		if !info.HasMorePages() {
 			break
 		}
-		pagination.Page++
+		params.ResultInfo.Page++
 	}
 	return nil
 }
