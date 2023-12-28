@@ -124,7 +124,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.C
 		if err != nil {
 			return nil, err
 		}
-		c.AccountID = account.AccountId
 		clients[account.AccountId] = c
 	}
 
