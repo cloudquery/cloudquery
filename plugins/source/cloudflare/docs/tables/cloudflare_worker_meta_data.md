@@ -22,3 +22,9 @@ The following tables depend on cloudflare_worker_meta_data:
 |size|`int64`|
 |created_on|`timestamp[us, tz=UTC]`|
 |modified_on|`timestamp[us, tz=UTC]`|
+|logpush|`bool`|
+|tail_consumers|`json`|
+|last_deployed_from|`utf8`|
+|deployment_id|`utf8`|
+|placement_mode|`utf8`|
+|pipeline_hash|`utf8`|

@@ -17,6 +17,7 @@ The primary key for this table is **id**.
 |hosts|`list<item: utf8, nullable>`|
 |certificates|`json`|
 |primary_certificate|`utf8`|
+|status|`utf8`|
 |validation_records|`json`|
 |validation_errors|`json`|
 |validation_method|`utf8`|
