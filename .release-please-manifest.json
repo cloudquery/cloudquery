@@ -41,7 +41,7 @@
   "plugins/source/gitlab+FILLER": "0.0.0",
   "plugins/destination/gcs": "3.4.14",
   "plugins/destination/gcs+FILLER": "0.0.0",
-  "plugins/destination/s3": "4.8.4",
+  "plugins/destination/s3": "4.8.5",
   "plugins/destination/s3+FILLER": "0.0.0",
   "plugins/destination/file": "3.4.13",
   "plugins/destination/file+FILLER": "0.0.0",
