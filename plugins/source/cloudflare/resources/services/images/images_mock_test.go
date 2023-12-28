@@ -17,12 +17,12 @@ func buildImages(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	if err := faker.FakeObject(&image); err != nil {
 		t.Fatal(err)
 	}
-	image.Metadata = map[string]any{"a": "b"}
+	image.Meta = map[string]any{"a": "b"}
 
 	mock.EXPECT().ListImages(
 		gomock.Any(),
-		client.TestAccountID,
-		cloudflare.PaginationOptions{},
+		cloudflare.AccountIdentifier(client.TestAccountID),
+		cloudflare.ListImagesParams{},
 	).Return(
 		[]cloudflare.Image{image},
 		nil,

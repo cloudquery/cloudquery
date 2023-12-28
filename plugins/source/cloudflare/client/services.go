@@ -13,7 +13,7 @@ type Api interface {
 
 	ListZonesContext(ctx context.Context, opts ...cloudflare.ReqOption) (r cloudflare.ZonesResponse, err error)
 
-	DNSRecords(ctx context.Context, zoneID string, rr cloudflare.DNSRecord) ([]cloudflare.DNSRecord, error)
+	ListDNSRecords(ctx context.Context, rc *cloudflare.ResourceContainer, rr cloudflare.ListDNSRecordsParams) ([]cloudflare.DNSRecord, *cloudflare.ResultInfo, error)
 
 	ListWAFPackages(ctx context.Context, zoneID string) ([]cloudflare.WAFPackage, error)
 	ListWAFGroups(ctx context.Context, zoneID, packageID string) ([]cloudflare.WAFGroup, error)
@@ -26,8 +26,9 @@ type Api interface {
 
 	ListCertificatePacks(ctx context.Context, zoneID string) ([]cloudflare.CertificatePack, error)
 
-	ZoneLevelAccessGroups(ctx context.Context, zoneID string, pageOpts cloudflare.PaginationOptions) ([]cloudflare.AccessGroup, cloudflare.ResultInfo, error)
+	ListAccessGroups(ctx context.Context, rc *cloudflare.ResourceContainer, pageOpts cloudflare.ListAccessGroupsParams) ([]cloudflare.AccessGroup, *cloudflare.ResultInfo, error)
+	ListAccessApplications(ctx context.Context, rc *cloudflare.ResourceContainer, params cloudflare.ListAccessApplicationsParams) ([]cloudflare.AccessApplication, *cloudflare.ResultInfo, error)
 
 	ListWAFOverrides(ctx context.Context, zoneID string) ([]cloudflare.WAFOverride, error)
-	ListImages(ctx context.Context, accountID string, pageOpts cloudflare.PaginationOptions) ([]cloudflare.Image, error)
+	ListImages(ctx context.Context, rc *cloudflare.ResourceContainer, pageOpts cloudflare.ListImagesParams) ([]cloudflare.Image, error)
 }
