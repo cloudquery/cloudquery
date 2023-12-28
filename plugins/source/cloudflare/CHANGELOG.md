@@ -5,6 +5,45 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v5.0.15...plugins-source-cloudflare-v6.0.0) (2023-12-28)
+
+
+### This Release has the Following Changes to Tables
+- Table `cloudflare_access_applications` was added
+- Table `cloudflare_access_applications_self_hosted_domains` was added
+- Table `cloudflare_certificate_packs`: column added with name `status` and type `utf8`
+- Table `cloudflare_dns_records`: column added with name `comment` and type `utf8`
+- Table `cloudflare_dns_records`: column added with name `tags` and type `list<item: utf8, nullable>`
+- Table `cloudflare_images`: column `metadata` removed from table (:warning: breaking)
+- Table `cloudflare_images`: column added with name `meta` and type `json`
+- Table `cloudflare_worker_meta_data`: column added with name `deployment_id` and type `utf8`
+- Table `cloudflare_worker_meta_data`: column added with name `last_deployed_from` and type `utf8`
+- Table `cloudflare_worker_meta_data`: column added with name `logpush` and type `bool`
+- Table `cloudflare_worker_meta_data`: column added with name `pipeline_hash` and type `utf8`
+- Table `cloudflare_worker_meta_data`: column added with name `placement_mode` and type `utf8`
+- Table `cloudflare_worker_meta_data`: column added with name `tail_consumers` and type `json`
+
+### ⚠ BREAKING CHANGES
+
+* Upgrade `cloudflare-go` and add `access_applications` ([#15777](https://github.com/cloudquery/cloudquery/issues/15777))
+
+### Features
+
+* Upgrade `cloudflare-go` and add `access_applications` ([#15777](https://github.com/cloudquery/cloudquery/issues/15777)) ([7431f92](https://github.com/cloudquery/cloudquery/commit/7431f9205fc1b183f3b5b0e44828223a42db792d))
+
+## [5.0.15](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v5.0.14...plugins-source-cloudflare-v5.0.15) (2023-12-28)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/apache/arrow/go` to `v15` ([#15754](https://github.com/cloudquery/cloudquery/issues/15754)) ([bd962eb](https://github.com/cloudquery/cloudquery/commit/bd962eb1093cf09e928e2a0e7782288ec4020ec4))
+* **deps:** Update github.com/apache/arrow/go/v15 digest to bcaeaa8 ([#15791](https://github.com/cloudquery/cloudquery/issues/15791)) ([89dc812](https://github.com/cloudquery/cloudquery/commit/89dc81201529de2a1fc1ecce5efa74d6f363e57b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.21.0 ([#15651](https://github.com/cloudquery/cloudquery/issues/15651)) ([6e96125](https://github.com/cloudquery/cloudquery/commit/6e96125a9d9c75616483952edb7a9e402818b264))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.21.1 ([#15699](https://github.com/cloudquery/cloudquery/issues/15699)) ([67c10c3](https://github.com/cloudquery/cloudquery/commit/67c10c38a04dcdd1512bf6dc739f89bc11baa888))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.21.2 ([#15724](https://github.com/cloudquery/cloudquery/issues/15724)) ([ad750b1](https://github.com/cloudquery/cloudquery/commit/ad750b1530af06353f2225c7d3397af580093687))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.23.0 ([#15803](https://github.com/cloudquery/cloudquery/issues/15803)) ([b6f9373](https://github.com/cloudquery/cloudquery/commit/b6f937385020c63ce59b2bc60402752b6c239c6c))
+* **deps:** Update module golang.org/x/crypto to v0.17.0 [SECURITY] ([#15730](https://github.com/cloudquery/cloudquery/issues/15730)) ([718be50](https://github.com/cloudquery/cloudquery/commit/718be502014ff36aa50cde3a83453b3d6ce15a83))
+
 ## [5.0.14](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v5.0.13...plugins-source-cloudflare-v5.0.14) (2023-12-12)
 
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.3.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.3.5...plugins-destination-snowflake-v3.3.6) (2023-12-28)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#15787](https://github.com/cloudquery/cloudquery/issues/15787)) ([5b7fc99](https://github.com/cloudquery/cloudquery/commit/5b7fc9925a41b2e08eef18ba29035e95c2356e4e))
+* **deps:** Update github.com/apache/arrow/go/v15 digest to bcaeaa8 ([#15791](https://github.com/cloudquery/cloudquery/issues/15791)) ([89dc812](https://github.com/cloudquery/cloudquery/commit/89dc81201529de2a1fc1ecce5efa74d6f363e57b))
+* **deps:** Update module github.com/apache/arrow/go/v12 to v14 ([#15793](https://github.com/cloudquery/cloudquery/issues/15793)) ([30ce176](https://github.com/cloudquery/cloudquery/commit/30ce17692bd3f1c1c5e5ecc549ffce1881d909a3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.23.0 ([#15803](https://github.com/cloudquery/cloudquery/issues/15803)) ([b6f9373](https://github.com/cloudquery/cloudquery/commit/b6f937385020c63ce59b2bc60402752b6c239c6c))
+
 ## [3.3.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.3.4...plugins-destination-snowflake-v3.3.5) (2023-12-21)
 
 
