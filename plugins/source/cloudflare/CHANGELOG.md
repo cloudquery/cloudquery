@@ -5,6 +5,17 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v5.0.15...plugins-source-cloudflare-v6.0.0) (2023-12-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* Upgrade `cloudflare-go` and add `access_applications` ([#15777](https://github.com/cloudquery/cloudquery/issues/15777))
+
+### Features
+
+* Upgrade `cloudflare-go` and add `access_applications` ([#15777](https://github.com/cloudquery/cloudquery/issues/15777)) ([7431f92](https://github.com/cloudquery/cloudquery/commit/7431f9205fc1b183f3b5b0e44828223a42db792d))
+
 ## [5.0.15](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v5.0.14...plugins-source-cloudflare-v5.0.15) (2023-12-28)
 
 
