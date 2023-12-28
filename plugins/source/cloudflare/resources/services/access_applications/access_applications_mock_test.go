@@ -1,4 +1,4 @@
-package access_groups
+package access_applications
 
 import (
 	"testing"
@@ -10,27 +10,24 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildAccessGroups(t *testing.T, ctrl *gomock.Controller) client.Clients {
+func buildAccessApplications(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	mock := mocks.NewMockApi(ctrl)
 
-	var accessGroup cloudflare.AccessGroup
-	if err := faker.FakeObject(&accessGroup); err != nil {
+	var accessApplication cloudflare.AccessApplication
+	if err := faker.FakeObject(&accessApplication); err != nil {
 		t.Fatal(err)
 	}
-	accessGroup.Include = []any{"a"}
-	accessGroup.Exclude = []any{"b"}
-	accessGroup.Require = []any{"c"}
-	mock.EXPECT().ListAccessGroups(
+	mock.EXPECT().ListAccessApplications(
 		gomock.Any(),
 		cloudflare.ZoneIdentifier(client.TestZoneID),
-		cloudflare.ListAccessGroupsParams{
+		cloudflare.ListAccessApplicationsParams{
 			ResultInfo: cloudflare.ResultInfo{
 				Page:    1,
 				PerPage: 200,
 			},
 		},
 	).Return(
-		[]cloudflare.AccessGroup{accessGroup},
+		[]cloudflare.AccessApplication{accessApplication},
 		&cloudflare.ResultInfo{
 			Page:    1,
 			PerPage: 1,
@@ -45,6 +42,6 @@ func buildAccessGroups(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	}
 }
 
-func TestAccessGroups(t *testing.T) {
-	client.MockTestHelper(t, AccessGroups(), buildAccessGroups)
+func TestAccessApplications(t *testing.T) {
+	client.MockTestHelper(t, AccessApplications(), buildAccessApplications)
 }
