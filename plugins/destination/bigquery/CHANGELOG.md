@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.3.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v3.3.10...plugins-destination-bigquery-v3.3.11) (2023-12-28)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/apache/arrow/go` to `v15` ([#15754](https://github.com/cloudquery/cloudquery/issues/15754)) ([bd962eb](https://github.com/cloudquery/cloudquery/commit/bd962eb1093cf09e928e2a0e7782288ec4020ec4))
+* **deps:** Update github.com/apache/arrow/go/v15 digest to bcaeaa8 ([#15791](https://github.com/cloudquery/cloudquery/issues/15791)) ([89dc812](https://github.com/cloudquery/cloudquery/commit/89dc81201529de2a1fc1ecce5efa74d6f363e57b))
+* **deps:** Update module github.com/apache/arrow/go/v12 to v12.0.1 ([#15792](https://github.com/cloudquery/cloudquery/issues/15792)) ([e491b60](https://github.com/cloudquery/cloudquery/commit/e491b607bbe4d6b4092d061145863ff82f88979f))
+* **deps:** Update module github.com/apache/arrow/go/v12 to v14 ([#15793](https://github.com/cloudquery/cloudquery/issues/15793)) ([30ce176](https://github.com/cloudquery/cloudquery/commit/30ce17692bd3f1c1c5e5ecc549ffce1881d909a3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.23.0 ([#15803](https://github.com/cloudquery/cloudquery/issues/15803)) ([b6f9373](https://github.com/cloudquery/cloudquery/commit/b6f937385020c63ce59b2bc60402752b6c239c6c))
+
 ## [3.3.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v3.3.9...plugins-destination-bigquery-v3.3.10) (2023-12-19)
 
 
