@@ -7,7 +7,7 @@ require (
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/cloudquery-api-go v1.6.3
-	github.com/cloudquery/plugin-pb-go v1.14.6
+	github.com/cloudquery/plugin-pb-go v1.15.0
 	github.com/cloudquery/plugin-sdk/v4 v4.23.0
 	github.com/getsentry/sentry-go v0.24.1
 	github.com/ghodss/yaml v1.0.0
@@ -123,5 +123,3 @@ require (
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
-
-replace github.com/cloudquery/plugin-pb-go => github.com/cloudquery/plugin-pb-go v1.14.7-0.20231228152004-41f624f1aab1
