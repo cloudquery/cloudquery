@@ -15,11 +15,7 @@ func BucketPolicies() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("storage.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.Policy3{}),
 		Columns: []schema.Column{
-			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
-			},
+			client.ProjectIDColumn(false),
 			{
 				Name:     "bucket_name",
 				Type:     arrow.BinaryTypes.String,

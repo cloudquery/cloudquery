@@ -15,12 +15,7 @@ func CrawledUrls() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("websecurityscanner.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.CrawledUrl{}),
 		Columns: []schema.Column{
-			{
-				Name:       "project_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveProject,
-				PrimaryKey: true,
-			},
+			client.ProjectIDColumn(true),
 			{
 				Name:       "scan_run_name",
 				Type:       arrow.BinaryTypes.String,

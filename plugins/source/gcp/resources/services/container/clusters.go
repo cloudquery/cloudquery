@@ -2,7 +2,6 @@ package container
 
 import (
 	pb "cloud.google.com/go/container/apiv1/containerpb"
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
@@ -16,11 +15,7 @@ func Clusters() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("container.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.Cluster{}, transformers.WithPrimaryKeys("SelfLink")),
 		Columns: []schema.Column{
-			{
-				Name:     "project_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveProject,
-			},
+			client.ProjectIDColumn(false),
 		},
 	}
 }

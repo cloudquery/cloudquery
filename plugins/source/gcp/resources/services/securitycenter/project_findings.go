@@ -18,12 +18,7 @@ func ProjectFindings() *schema.Table {
 		Multiplex:     client.ProjectMultiplexEnabledServices("securitycenter.googleapis.com"),
 		Transform:     client.TransformWithStruct(&pb.ListFindingsResponse_ListFindingsResult{}),
 		Columns: []schema.Column{
-			{
-				Name:       "project_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveProject,
-				PrimaryKey: true,
-			},
+			client.ProjectIDColumn(true),
 			{
 				Name:       "name",
 				Type:       arrow.BinaryTypes.String,
