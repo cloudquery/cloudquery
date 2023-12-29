@@ -30,11 +30,17 @@ func NewCmdMigrate() *cobra.Command {
 		Args:    cobra.MinimumNArgs(1),
 		RunE:    migrate,
 	}
+	cmd.Flags().String("license", "", "set offline license file")
 	return cmd
 }
 
 func migrate(cmd *cobra.Command, args []string) error {
 	cqDir, err := cmd.Flags().GetString("cq-dir")
+	if err != nil {
+		return err
+	}
+
+	licenseFile, err := cmd.Flags().GetString("license")
 	if err != nil {
 		return err
 	}
@@ -61,6 +67,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 		managedplugin.WithLogger(log.Logger),
 		managedplugin.WithAuthToken(authToken.Value),
 		managedplugin.WithTeamName(teamName),
+		managedplugin.WithLicenseFile(licenseFile),
 	}
 	if cqDir != "" {
 		opts = append(opts, managedplugin.WithDirectory(cqDir))
