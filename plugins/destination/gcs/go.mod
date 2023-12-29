@@ -5,7 +5,7 @@ go 1.21.1
 require (
 	cloud.google.com/go/storage v1.30.1
 	github.com/apache/arrow/go/v15 v15.0.0-20231227193016-bcaeaa8c2d97
-	github.com/cloudquery/filetypes/v4 v4.2.2
+	github.com/cloudquery/filetypes/v4 v4.2.3
 	github.com/cloudquery/plugin-sdk/v4 v4.24.0
 	github.com/google/uuid v1.5.0
 	github.com/rs/zerolog v1.31.0
