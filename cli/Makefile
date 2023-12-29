@@ -15,3 +15,6 @@ gen-docs:
 .PHONY: gen-spec-schema
 gen-spec-schema:
 	go run internal/specs/v0/gen/main.go
+
+.PHONY: gen
+gen: gen-docs gen-spec-schema
