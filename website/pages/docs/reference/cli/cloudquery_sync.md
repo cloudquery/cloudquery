@@ -26,8 +26,9 @@ cloudquery sync ./directory ./aws.yml ./pg.yml
 ### Options
 
 ```
-  -h, --help         help for sync
-      --no-migrate   Disable auto-migration before sync. By default, sync runs a migration before syncing resources.
+  -h, --help             help for sync
+      --license string   set offline license file
+      --no-migrate       Disable auto-migration before sync. By default, sync runs a migration before syncing resources.
 ```
 
 ### Options inherited from parent commands

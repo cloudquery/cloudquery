@@ -34,6 +34,8 @@ func NewCmdSync() *cobra.Command {
 		RunE:    sync,
 	}
 	cmd.Flags().Bool("no-migrate", false, "Disable auto-migration before sync. By default, sync runs a migration before syncing resources.")
+	cmd.Flags().String("license", "", "set offline license file")
+
 	return cmd
 }
 
@@ -85,6 +87,11 @@ func sync(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
+	licenseFile, err := cmd.Flags().GetString("license")
+	if err != nil {
+		return err
+	}
+
 	ctx := cmd.Context()
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
 	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
@@ -119,6 +126,7 @@ func sync(cmd *cobra.Command, args []string) error {
 			managedplugin.WithOtelEndpoint(source.OtelEndpoint),
 			managedplugin.WithAuthToken(authToken.Value),
 			managedplugin.WithTeamName(teamName),
+			managedplugin.WithLicenseFile(licenseFile),
 		}
 		if cqDir != "" {
 			opts = append(opts, managedplugin.WithDirectory(cqDir))
@@ -153,6 +161,7 @@ func sync(cmd *cobra.Command, args []string) error {
 			managedplugin.WithLogger(log.Logger),
 			managedplugin.WithAuthToken(authToken.Value),
 			managedplugin.WithTeamName(teamName),
+			managedplugin.WithLicenseFile(licenseFile),
 		}
 		if cqDir != "" {
 			opts = append(opts, managedplugin.WithDirectory(cqDir))
