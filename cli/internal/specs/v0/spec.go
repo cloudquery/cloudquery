@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"github.com/ghodss/yaml"
+	"github.com/invopop/jsonschema"
 )
 
 // Warnings is a map of field name to string, used mainly for deprecation notices.
@@ -14,7 +15,7 @@ type Warnings map[string]string
 type Kind int
 
 type Spec struct {
-	Kind Kind `json:"kind" jsonschema:"type=string,enum=source,enum=destination"`
+	Kind Kind `json:"kind"`
 	Spec any  `json:"spec"`
 }
 
@@ -23,8 +24,12 @@ const (
 	KindDestination
 )
 
+var (
+	AllKinds = [...]string{"source", "destination"}
+)
+
 func (k Kind) String() string {
-	return [...]string{"source", "destination"}[k]
+	return AllKinds[k]
 }
 
 func (k Kind) MarshalJSON() ([]byte, error) {
@@ -45,15 +50,21 @@ func (k *Kind) UnmarshalJSON(data []byte) (err error) {
 	return nil
 }
 
-func KindFromString(s string) (Kind, error) {
-	switch s {
-	case "source":
-		return KindSource, nil
-	case "destination":
-		return KindDestination, nil
-	default:
-		return KindSource, fmt.Errorf("unknown kind %s", s)
+func (k Kind) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Type = "string"
+	sc.Enum = make([]any, len(AllKinds))
+	for i, k := range AllKinds {
+		sc.Enum[i] = k
 	}
+}
+
+func KindFromString(s string) (Kind, error) {
+	for k, str := range AllKinds {
+		if str == s {
+			return Kind(k), nil
+		}
+	}
+	return KindSource, fmt.Errorf("unknown kind %s", s)
 }
 
 func (s *Spec) UnmarshalJSON(data []byte) error {
