@@ -7,6 +7,7 @@ import (
 
 	"github.com/ghodss/yaml"
 	"github.com/invopop/jsonschema"
+	orderedmap "github.com/wk8/go-ordered-map/v2"
 )
 
 // Warnings is a map of field name to string, used mainly for deprecation notices.
@@ -104,7 +105,54 @@ func (s Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 
 	// update `spec` property
 	spec := sc.Properties.Value("spec")
-	spec.OneOf = []*jsonschema.Schema{source, destination}
+	spec.AnyOf = []*jsonschema.Schema{source, destination}
+	spec.OneOf = nil
+
+	// not add if/then parts to sc
+	sc.AllOf = []*jsonschema.Schema{
+		{
+			If: &jsonschema.Schema{
+				// We also need to make sure that `custom_endpoint_url` isn't ""
+				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+					properties := jsonschema.NewProperties()
+					kind := *sc.Properties.Value("kind")
+					kind.Const = "source"
+					kind.Enum = nil
+					properties.Set("kind", &kind)
+					return properties
+				}(),
+			},
+			Then: &jsonschema.Schema{
+				// We also need to make sure that `custom_endpoint_url` isn't ""
+				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+					properties := jsonschema.NewProperties()
+					properties.Set("spec", source)
+					return properties
+				}(),
+			},
+		},
+		{
+			If: &jsonschema.Schema{
+				// We also need to make sure that `custom_endpoint_url` isn't ""
+				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+					properties := jsonschema.NewProperties()
+					kind := *sc.Properties.Value("kind")
+					kind.Const = "destination"
+					kind.Enum = nil
+					properties.Set("kind", &kind)
+					return properties
+				}(),
+			},
+			Then: &jsonschema.Schema{
+				// We also need to make sure that `custom_endpoint_url` isn't ""
+				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+					properties := jsonschema.NewProperties()
+					properties.Set("spec", destination)
+					return properties
+				}(),
+			},
+		},
+	}
 }
 
 func SpecUnmarshalYamlStrict(b []byte, spec *Spec) error {

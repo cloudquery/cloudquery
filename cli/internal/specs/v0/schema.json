@@ -198,6 +198,42 @@
       "description": "Source is the spec for a source plugin"
     },
     "Spec": {
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "source"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "spec": {
+                "$ref": "#/$defs/Source"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "destination"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "spec": {
+                "$ref": "#/$defs/Destination"
+              }
+            }
+          }
+        }
+      ],
       "properties": {
         "kind": {
           "type": "string",
@@ -207,7 +243,7 @@
           ]
         },
         "spec": {
-          "oneOf": [
+          "anyOf": [
             {
               "$ref": "#/$defs/Source"
             },
