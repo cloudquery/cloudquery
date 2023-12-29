@@ -7,7 +7,7 @@ require (
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/cloudquery-api-go v1.6.3
-	github.com/cloudquery/plugin-pb-go v1.15.0
+	github.com/cloudquery/plugin-pb-go v1.16.0
 	github.com/cloudquery/plugin-sdk/v4 v4.23.0
 	github.com/distribution/reference v0.5.0
 	github.com/docker/distribution v2.8.3+incompatible
