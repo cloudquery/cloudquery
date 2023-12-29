@@ -3,7 +3,6 @@ package guardduty
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -26,12 +25,7 @@ func detectorFindings() *schema.Table {
 		Columns: schema.ColumnList{
 			client.RequestAccountIDColumn(true),
 			client.RequestRegionColumn(true),
-			{
-				Name:                "detector_arn",
-				Type:                arrow.BinaryTypes.String,
-				Resolver:            schema.ParentColumnResolver("arn"),
-				PrimaryKeyComponent: true,
-			},
+			detectorARNColumn,
 		},
 	}
 }

@@ -89,3 +89,10 @@ func resolveGuarddutyARN() schema.ColumnResolver {
 		return []string{"detector", resource.Item.(*models.DetectorWrapper).Id}, nil
 	})
 }
+
+var detectorARNColumn = schema.Column{
+	Name:       "detector_arn",
+	Type:       arrow.BinaryTypes.String,
+	Resolver:   schema.ParentColumnResolver("arn"),
+	PrimaryKey: true,
+}

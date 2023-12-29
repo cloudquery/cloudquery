@@ -3,7 +3,6 @@ package guardduty
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty/models"
@@ -25,12 +24,7 @@ func detectorIPSets() *schema.Table {
 		Columns: schema.ColumnList{
 			client.RequestAccountIDColumn(true),
 			client.RequestRegionColumn(true),
-			{
-				Name:                "detector_arn",
-				Type:                arrow.BinaryTypes.String,
-				Resolver:            schema.ParentColumnResolver("arn"),
-				PrimaryKeyComponent: true,
-			},
+			detectorARNColumn,
 		},
 	}
 }
