@@ -6,7 +6,11 @@
     "Spec": {
       "properties": {
         "kind": {
-          "type": "integer"
+          "type": "string",
+          "enum": [
+            "source",
+            "destination"
+          ]
         },
         "spec": {
           "oneOf": [

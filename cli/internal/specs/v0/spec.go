@@ -14,7 +14,7 @@ type Warnings map[string]string
 type Kind int
 
 type Spec struct {
-	Kind Kind `json:"kind"`
+	Kind Kind `json:"kind" jsonschema:"type=string,enum=source,enum=destination"`
 	Spec any  `json:"spec"`
 }
 
