@@ -15,8 +15,8 @@ type Warnings map[string]string
 type Kind int
 
 type Spec struct {
-	Kind Kind `json:"kind"`
-	Spec any  `json:"spec"`
+	Kind Kind `json:"kind" jsonschema:"required"`
+	Spec any  `json:"spec" jsonschema:"required"`
 }
 
 const (
@@ -97,11 +97,14 @@ func (s *Spec) UnmarshalJSON(data []byte) error {
 	return dec.Decode(s.Spec)
 }
 
-func UnmarshalJSONStrict(b []byte, out any) error {
-	dec := json.NewDecoder(bytes.NewReader(b))
-	dec.DisallowUnknownFields()
-	dec.UseNumber()
-	return dec.Decode(out)
+func (s Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
+	// delete & obtain the values
+	source, _ := sc.Properties.Delete("Source")
+	destination, _ := sc.Properties.Delete("Destination")
+
+	// update `spec` property
+	spec := sc.Properties.Value("spec")
+	spec.OneOf = []*jsonschema.Schema{source, destination}
 }
 
 func SpecUnmarshalYamlStrict(b []byte, spec *Spec) error {

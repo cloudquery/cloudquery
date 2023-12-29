@@ -3,6 +3,200 @@
   "$id": "https://github.com/cloudquery/cloudquery/cli/internal/specs/v0/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
+    "BackendOptions": {
+      "properties": {
+        "table_name": {
+          "type": "string"
+        },
+        "connection": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Destination": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "registry": {
+          "type": "integer"
+        },
+        "write_mode": {
+          "type": "integer"
+        },
+        "migrate_mode": {
+          "type": "integer"
+        },
+        "batch_size": {
+          "type": "integer",
+          "description": "Deprecated: use plugin-spec batch_size_bytes instead"
+        },
+        "batch_size_bytes": {
+          "type": "integer",
+          "description": "Deprecated: use plugin-spec batch_size_bytes instead"
+        },
+        "spec": {
+          "oneOf": [
+            {
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pk_mode": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Source": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the source plugin to use"
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of the source plugin to use"
+        },
+        "path": {
+          "type": "string",
+          "description": "Path is the canonical path to the source plugin in a given registry\nFor example:\nin github the path will be: org/repo\nFor the local registry the path will be the path to the binary: ./path/to/binary\nFor the gRPC registry the path will be the address of the gRPC server: host:port"
+        },
+        "registry": {
+          "type": "integer",
+          "description": "Registry can be \"\", \"github\", \"local\", \"grpc\", \"docker\", \"cloudquery\""
+        },
+        "concurrency": {
+          "type": "integer",
+          "description": "Deprecated: Concurrency is the number of concurrent workers to use when syncing data. Should now use plugin-specific field instead."
+        },
+        "table_concurrency": {
+          "type": "integer",
+          "description": "Deprecated: use plugin-level Concurrency instead"
+        },
+        "resource_concurrency": {
+          "type": "integer",
+          "description": "Deprecated: use plugin-level Concurrency instead"
+        },
+        "tables": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "description": "Tables to sync from the source plugin"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skip_tables": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "description": "SkipTables defines tables to skip when syncing data. Useful if a glob pattern is used in Tables"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skip_dependent_tables": {
+          "type": "boolean",
+          "description": "SkipDependentTables changes the matching behavior with regard to dependent tables. If set to true, dependent tables will not be synced unless they are explicitly matched by Tables."
+        },
+        "destinations": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "description": "Destinations are the names of destination plugins to send sync data to"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "backend_options": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/BackendOptions",
+              "description": "Optional Backend options for sync operation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "backend": {
+          "type": "integer",
+          "enum": [
+            "none",
+            "local"
+          ],
+          "description": "Deprecated: Backend is the name of the state backend to use. Should now use `backend_options` instead."
+        },
+        "backend_spec": {
+          "oneOf": [
+            {
+              "description": "Deprecated: BackendSpec contains any backend-specific configuration. Should now use `backend_options` instead."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scheduler": {
+          "type": "integer",
+          "description": "Deprecated: Scheduler defines the scheduling algorithm that should be used to sync data. Should now use plugin-specific field instead."
+        },
+        "spec": {
+          "oneOf": [
+            {
+              "type": "object",
+              "description": "Spec defines plugin specific configuration\nThis is different in every source plugin."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "deterministic_cq_id": {
+          "type": "boolean",
+          "description": "DeterministicCQID is a flag that indicates whether the source plugin should generate a random UUID as the value of _cq_id\nor whether it should calculate a UUID that is a hash of the primary keys (if they exist) or the entire resource."
+        },
+        "otel_endpoint": {
+          "type": "string",
+          "description": "If specified this will spawn the plugin with --otel-endpoint"
+        },
+        "otel_endpoint_insecure": {
+          "type": "boolean",
+          "description": "If specified this will spawn the plugin with --otel-endpoint-insecure"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "description": "Source is the spec for a source plugin"
+    },
     "Spec": {
       "properties": {
         "kind": {
@@ -14,15 +208,21 @@
         },
         "spec": {
           "oneOf": [
-            true,
             {
-              "type": "null"
+              "$ref": "#/$defs/Source"
+            },
+            {
+              "$ref": "#/$defs/Destination"
             }
           ]
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "required": [
+        "kind",
+        "spec"
+      ]
     }
   }
 }
