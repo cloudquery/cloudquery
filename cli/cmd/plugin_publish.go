@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"path"
 	"path/filepath"
 	"strings"
 	"syscall"
@@ -83,6 +82,7 @@ func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) er
 			return errors.New("invalid plugin name. Must be in format <team_name>/<plugin_name>")
 		}
 		teamName, pluginName = parts[0], parts[1]
+		pkgJSON.Team, pkgJSON.Name = teamName, pluginName
 	}
 
 	name := fmt.Sprintf("%s/%s@%s", teamName, pluginName, pkgJSON.Version)
@@ -121,13 +121,8 @@ func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) er
 	}
 
 	// upload binaries
-	fmt.Println("Uploading binaries...")
-	for _, t := range pkgJSON.SupportedTargets {
-		fmt.Printf("- Uploading %s_%s...\n", t.OS, t.Arch)
-		err = publish.UploadPluginBinary(ctx, c, teamName, pluginName, t.OS, t.Arch, path.Join(distDir, t.Path), pkgJSON)
-		if err != nil {
-			return fmt.Errorf("failed to upload binary: %w", err)
-		}
+	if err := publishPluginAssets(ctx, c, token.String(), distDir, pkgJSON); err != nil {
+		return fmt.Errorf("failed to upload binaries: %w", err)
 	}
 
 	// optional: mark plugin as draft=false
@@ -157,4 +152,12 @@ func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) er
 	fmt.Println("\nNote: this plugin version is marked as draft=true. You can preview and finalize it on the CloudQuery Hub, or run `cloudquery plugin publish` with the --finalize flag.")
 
 	return nil
+}
+
+func publishPluginAssets(ctx context.Context, c *cloudquery_api.ClientWithResponses, token, distDir string, pkgJSON publish.PackageJSONV1) error {
+	if pkgJSON.PackageType == string(cloudquery_api.PluginVersionPackageTypeDocker) {
+		return publish.PublishToDockerRegistry(ctx, token, distDir, pkgJSON)
+	}
+
+	return publish.PublishNativeBinaries(ctx, c, distDir, pkgJSON)
 }
