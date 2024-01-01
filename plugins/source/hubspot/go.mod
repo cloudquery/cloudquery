@@ -7,7 +7,7 @@ require (
 	github.com/clarkmcc/go-hubspot v0.0.0-20230906123538-bec7cb6c0126
 	github.com/cloudquery/plugin-sdk/v4 v4.24.0
 	github.com/rs/zerolog v1.31.0
-	golang.org/x/exp v0.0.0-20231219180239-dc181d75b848
+	golang.org/x/exp v0.0.0-20231226003508-02704c960a9b
 	golang.org/x/time v0.5.0
 )
 

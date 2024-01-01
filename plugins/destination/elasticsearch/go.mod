@@ -10,7 +10,7 @@ require (
 	github.com/goccy/go-json v0.10.2
 	github.com/rs/zerolog v1.31.0
 	github.com/segmentio/fasthash v1.0.3
-	golang.org/x/exp v0.0.0-20231219180239-dc181d75b848
+	golang.org/x/exp v0.0.0-20231226003508-02704c960a9b
 	golang.org/x/sync v0.5.0
 )
 
