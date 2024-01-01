@@ -4,7 +4,7 @@ go 1.21.1
 
 require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.10.1
-	github.com/apache/arrow/go/v15 v15.0.0-20231227193016-bcaeaa8c2d97
+	github.com/apache/arrow/go/v15 v15.0.0-20231229025812-7c3480e2f028
 	github.com/cloudquery/codegen v0.3.12
 	github.com/cloudquery/plugin-sdk/v4 v4.24.0
 	github.com/goccy/go-json v0.10.2
