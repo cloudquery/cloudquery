@@ -4,13 +4,13 @@ go 1.21.1
 
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20231229025812-7c3480e2f028
-	github.com/beatlabs/github-auth v0.0.0-20231018214958-b1420bd0d340
+	github.com/beatlabs/github-auth v0.0.0-20231208231443-3b7665fb4bb8
 	github.com/cloudquery/plugin-sdk/v4 v4.24.0
 	github.com/gofri/go-github-ratelimit v1.0.3
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v49 v49.0.0
 	github.com/rs/zerolog v1.31.0
-	golang.org/x/oauth2 v0.13.0
+	golang.org/x/oauth2 v0.15.0
 	golang.org/x/sync v0.5.0
 )
 
