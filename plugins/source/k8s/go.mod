@@ -10,7 +10,7 @@ require (
 	github.com/google/gnostic v0.6.9
 	github.com/rs/zerolog v1.31.0
 	github.com/thoas/go-funk v0.9.3
-	golang.org/x/exp v0.0.0-20231219180239-dc181d75b848
+	golang.org/x/exp v0.0.0-20231226003508-02704c960a9b
 	k8s.io/api v0.26.3
 	k8s.io/apiextensions-apiserver v0.26.3
 	k8s.io/apimachinery v0.26.3
