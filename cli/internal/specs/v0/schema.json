@@ -194,7 +194,7 @@
       },
       "additionalProperties": false,
       "type": "object",
-      "description": "Source is the spec for a source plugin"
+      "description": "Source plugin spec"
     },
     "Spec": {
       "allOf": [
@@ -203,7 +203,8 @@
             "properties": {
               "kind": {
                 "type": "string",
-                "const": "source"
+                "const": "source",
+                "description": "CloudQuery plugin kind"
               }
             }
           },
@@ -220,7 +221,8 @@
             "properties": {
               "kind": {
                 "type": "string",
-                "const": "destination"
+                "const": "destination",
+                "description": "CloudQuery plugin kind"
               }
             }
           },
@@ -239,7 +241,8 @@
           "enum": [
             "source",
             "destination"
-          ]
+          ],
+          "description": "CloudQuery plugin kind"
         },
         "spec": {
           "anyOf": [

@@ -13,7 +13,7 @@ type BackendOptions struct {
 	Connection string `json:"connection,omitempty"`
 }
 
-// Source is the spec for a source plugin
+// Source plugin spec
 type Source struct {
 	Metadata
 
