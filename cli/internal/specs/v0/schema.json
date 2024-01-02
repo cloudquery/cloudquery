@@ -157,7 +157,7 @@
           ]
         },
         "backend": {
-          "type": "integer",
+          "type": "string",
           "enum": [
             "none",
             "local"

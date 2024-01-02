@@ -15,7 +15,6 @@ const (
 	BackendLocal
 )
 
-var AllBackends = Backends{BackendNone, BackendLocal}
 var AllBackendNames = [...]string{
 	BackendNone:  "none",
 	BackendLocal: "local",
@@ -52,7 +51,8 @@ func (s *Backend) UnmarshalJSON(data []byte) (err error) {
 	return nil
 }
 
-func (s Backend) JSONSchemaExtend(sc *jsonschema.Schema) {
+func (Backend) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Type = "string"
 	sc.Enum = make([]any, len(AllBackendNames))
 	for i, name := range AllBackendNames {
 		sc.Enum[i] = name
@@ -60,8 +60,8 @@ func (s Backend) JSONSchemaExtend(sc *jsonschema.Schema) {
 }
 
 func BackendFromString(s string) (Backend, error) {
-	for i, backend := range AllBackendNames {
-		if s == backend {
+	for i, str := range AllBackendNames {
+		if s == str {
 			return Backend(i), nil
 		}
 	}
