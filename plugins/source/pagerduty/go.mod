@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/pagerduty
 
-go 1.21.1
+go 1.21.4
 
 require (
 	github.com/PagerDuty/go-pagerduty v1.6.0
