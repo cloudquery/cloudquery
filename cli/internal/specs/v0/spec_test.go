@@ -69,6 +69,23 @@ func TestSpec_JSONSchemaExtend(t *testing.T) {
 			Err:  true,
 			Spec: `{"kind":"source", "spec":123}`,
 		},
-		//TODO: add kind source & dst spec + vice versa
+		{
+			Name: "kind:destination,spec:destination",
+			Spec: `{"kind":"destination", "spec":{"write_mode":"append"}}`,
+		},
+		{
+			Name: "kind:source,spec:destination",
+			Err:  true,
+			Spec: `{"kind":"source", "spec":{"write_mode":"append"}}`,
+		},
+		{
+			Name: "kind:destination,spec:source",
+			Err:  true,
+			Spec: `{"kind":"destination", "spec":{"destinations":["a","b","c"]}}`,
+		},
+		{
+			Name: "kind:source,spec:source",
+			Spec: `{"kind":"source", "spec":{"destinations":["a","b","c"]}}`,
+		},
 	})
 }

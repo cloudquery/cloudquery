@@ -21,7 +21,7 @@ func TestWriteModeFromString(t *testing.T) {
 }
 
 func TestWriteMode(t *testing.T) {
-	for _, writeModeStr := range writeModeStrings {
+	for _, writeModeStr := range AllWriteModes {
 		writeMode, err := WriteModeFromString(writeModeStr)
 		if err != nil {
 			t.Fatal(err)

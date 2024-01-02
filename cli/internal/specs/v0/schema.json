@@ -30,7 +30,12 @@
           "type": "integer"
         },
         "write_mode": {
-          "type": "integer"
+          "type": "string",
+          "enum": [
+            "overwrite-delete-stale",
+            "overwrite",
+            "append"
+          ]
         },
         "migrate_mode": {
           "type": "integer"

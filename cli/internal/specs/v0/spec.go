@@ -51,7 +51,7 @@ func (k *Kind) UnmarshalJSON(data []byte) (err error) {
 	return nil
 }
 
-func (k Kind) JSONSchemaExtend(sc *jsonschema.Schema) {
+func (Kind) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Type = "string"
 	sc.Enum = make([]any, len(AllKinds))
 	for i, k := range AllKinds {
@@ -98,7 +98,7 @@ func (s *Spec) UnmarshalJSON(data []byte) error {
 	return dec.Decode(s.Spec)
 }
 
-func (s Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
+func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 	// delete & obtain the values
 	source, _ := sc.Properties.Delete("Source")
 	destination, _ := sc.Properties.Delete("Destination")
