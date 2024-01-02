@@ -1,0 +1,141 @@
+[
+  {
+    "createdByUser": {
+      "id": "5692633674809344",
+      "username": "z.avala@pendo.io",
+      "first": "Zack",
+      "last": "Avala",
+      "visitorIds": [
+        "exampleVisitor",
+        "2abde58cf04d71c1109d9de43c295b1c"
+      ]
+    },
+    "createdAt": 1689612205594,
+    "lastUpdatedByUser": {
+      "id": "5692633674809344",
+      "username": "z.avala@pendo.io",
+      "first": "Zack",
+      "last": "Avala",
+      "visitorIds": [
+        "exampleVisitor",
+        "2abde58cf04d71c1109d9de43c295b1c"
+      ]
+    },
+    "lastUpdatedAt": 1689613005348,
+    "kind": "Guide",
+    "rootVersionId": "4TRcqnCBl5zedQVM-nFaNahrHoc",
+    "stableVersionId": "4TRcqnCBl5zedQVM-nFaNahrHoc-20230717165645.368417222",
+    "appId": -323232,
+    "appIds": [
+      -323232
+    ],
+    "id": "4TRcqnCBl5zedQVM-nFaNahrHoc",
+    "name": "Example Single Step Guide",
+    "description": "",
+    "state": "draft",
+    "emailState": "",
+    "launchMethod": "auto",
+    "isMultiStep": false,
+    "isTraining": false,
+    "steps": [
+      {
+        "id": "A2Rss5EvCRaIhIjtTrNVfH_9rb4",
+        "guideId": "4TRcqnCBl5zedQVM-nFaNahrHoc",
+        "templateId": "building-block-guide",
+        "type": "building-block",
+        "elementPathRule": "",
+        "triggerElementPathRule": "",
+        "confirmationElementPathRule": "",
+        "contentType": "text/html; charset=utf-8",
+        "buildingBlocksUrl": "https://pendo-static-yourSubscriptionId.storage.googleapis.com/guide-content/4TRcqnCBl5zedQVM-nFaNahrHoc/A2Rss5EvCRaIhIjtTrNVfH_9rb4/NMCI-JfqnkWsvB98DUmrCHIjNNw.buildingBlocks.json",
+        "domUrl": "https://pendo-static-yourSubscriptionId.storage.googleapis.com/guide-content/4TRcqnCBl5zedQVM-nFaNahrHoc/A2Rss5EvCRaIhIjtTrNVfH_9rb4/wLzWCzhfavwTZtbtujA6ClG_WnY.dom.json?sha256=r0v0qdp5oyitSw_QWooLTF6hkLu6TAb_RJvqQKULRl8",
+        "domJsonpUrl": "https://pendo-static-yourSubscriptionId.storage.googleapis.com/guide-content/4TRcqnCBl5zedQVM-nFaNahrHoc/A2Rss5EvCRaIhIjtTrNVfH_9rb4/-FjNd0fLKXjWbTJmE3_XI48mb-c.dom.jsonp?sha256=IAs60crg0eCf1Z7kL54fEsGnb6vRT99XERN0o9jyiGM",
+        "rank": 10000000,
+        "advanceMethod": "button",
+        "attributes": {
+          "css": "",
+          "themeId": "gOxIgj9dTBOcsLW4PSnqhFaxmCQ",
+          "isAutoFocus": true,
+          "blockOutUI": {
+            "additionalElements": "",
+            "enabled": false,
+            "padding": {
+              "bottom": 0,
+              "left": 0,
+              "right": 0,
+              "top": 0
+            }
+          }
+        },
+        "lastUpdatedAt": 1689612409477,
+        "resetAt": 0,
+        "launchUrl": "http://localhost:8080/training.html"
+      }
+    ],
+    "attributes": {
+      "dates": {
+        "en-GB": "Jul 17, 2023",
+        "en-US": "Jul 17, 2023",
+        "es": "jul. 17, 2023",
+        "nl": "jul. 17, 2023"
+      },
+      "device": {
+        "type": "desktop"
+      },
+      "priority": 138,
+      "sharedServiceVersion": "4.6.7",
+      "type": "building-block"
+    },
+    "audience": [
+      {
+        "source": {
+          "visitors": null
+        }
+      },
+      {
+        "eval": {
+          "accountId": "metadata.auto.accountids"
+        }
+      },
+      {
+        "unwind": {
+          "field": "accountId",
+          "keepEmpty": true
+        }
+      },
+      {
+        "segment": {
+          "id": "_PENDO_DEFAULT_BrChrome"
+        }
+      },
+      {
+        "select": {
+          "visitorId": "visitorId"
+        }
+      },
+      {
+        "identified": "visitorId"
+      }
+    ],
+    "audienceUiHint": {
+      "filters": [
+        {
+          "kind": "visitor",
+          "segmentId": "_PENDO_DEFAULT_BrChrome"
+        }
+      ]
+    },
+    "authoredLanguage": "en-US",
+    "recurrence": 0,
+    "recurrenceEligibilityWindow": 0,
+    "resetAt": 0,
+    "publishedAt": 0,
+    "publishedEver": false,
+    "currentFirstEligibleToBeSeenAt": 0,
+    "expiresAfter": 1693454400000,
+    "isTopLevel": false,
+    "isModule": false,
+    "editorType": "visualDesignStudio",
+    "dependentMetadata": []
+  }
+]

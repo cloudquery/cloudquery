@@ -1,0 +1,127 @@
+[
+  {
+    "createdByUser": {
+      "id": "-42",
+      "username": "--system-user--",
+      "first": "System",
+      "last": "User",
+      "role": 7,
+      "userType": "normal",
+      "deletedAt": 1620995537675,
+      "hasLoggedIn": false
+    },
+    "createdAt": 1664375283690,
+    "lastUpdatedByUser": {
+      "id": "-42",
+      "username": "--system-user--",
+      "first": "System",
+      "last": "User",
+      "role": 7,
+      "userType": "normal",
+      "deletedAt": 1620995537675,
+      "hasLoggedIn": false
+    },
+    "lastUpdatedAt": 1664375284848,
+    "kind": "TrackType",
+    "rootVersionId": "3XqbVRVf1udeQrrOiQNGntKOFQ0",
+    "stableVersionId": "3XqbVRVf1udeQrrOiQNGntKOFQ0-20220928142804.906224849",
+    "id": "3XqbVRVf1udeQrrOiQNGntKOFQ0",
+    "appId": -323232,
+    "name": "Allowed Property Formats",
+    "color": "",
+    "group": {
+      "id": "",
+      "name": "",
+      "description": "",
+      "color": "",
+      "length": 0,
+      "items": null,
+      "type": ""
+    },
+    "isCoreEvent": false,
+    "validThrough": 1683136800000,
+    "dirty": false,
+    "dailyMergeFirst": 0,
+    "dailyRollupFirst": 0,
+    "trackTypeName": "Allowed Property Formats",
+    "trackTypeRules": [
+      "Allowed Property Formats"
+    ],
+    "eventPropertyNameList": [
+      "_startandendwithsingle_",
+      "endswithsingleunderscore_",
+      "lowercase",
+      "endswithdoubleunderscore__",
+      "Startswithcapital",
+      "contains1number",
+      "endswithcapitaL",
+      "endswithnumber1",
+      "camelCase",
+      "contains__doubleunderscore",
+      "__startswithdoubleunderscore",
+      "UPPERCASE",
+      "_startswithsingleunderscore"
+    ]
+  },
+  {
+    "createdByUser": {
+      "id": "-42",
+      "username": "--system-user--",
+      "first": "System",
+      "last": "User",
+      "role": 7,
+      "userType": "normal",
+      "deletedAt": 1620995537675,
+      "hasLoggedIn": false
+    },
+    "createdAt": 1613061600568,
+    "lastUpdatedByUser": {
+      "id": "-42",
+      "username": "--system-user--",
+      "first": "System",
+      "last": "User",
+      "role": 7,
+      "userType": "normal",
+      "deletedAt": 1620995537675,
+      "hasLoggedIn": false
+    },
+    "lastUpdatedAt": 1613061602043,
+    "kind": "TrackType",
+    "rootVersionId": "mlNiNmRTFep1eEo88fsnaET8q4c",
+    "stableVersionId": "mlNiNmRTFep1eEo88fsnaET8q4c-20210211164002.215414173",
+    "id": "mlNiNmRTFep1eEo88fsnaET8q4c",
+    "appId": -323232,
+    "name": "Sample Track Event",
+    "color": "",
+    "group": {
+      "id": "",
+      "name": "",
+      "description": "",
+      "color": "",
+      "length": 0,
+      "items": null,
+      "type": ""
+    },
+    "isCoreEvent": false,
+    "validThrough": 1683136800000,
+    "dirty": false,
+    "dailyMergeFirst": 0,
+    "dailyRollupFirst": 0,
+    "trackTypeName": "Sample Track Event",
+    "trackTypeRules": [
+      "Sample Track Event"
+    ],
+    "eventPropertyNameList": [
+      "TrackEventProperty7",
+      "TrackEventProperty1",
+      "TrackEventProperty10",
+      "TrackEventProperty9",
+      "TrackEventProperty3",
+      "TrackEventProperty8",
+      "TrackEventProperty6",
+      "TrackEventProperty4",
+      "TrackEventProperty5",
+      "TrackEventProperty2"
+    ]
+  }
+]

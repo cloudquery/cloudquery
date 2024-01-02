@@ -1,0 +1,160 @@
+[
+  {
+    "createdByUser": {
+      "id": "5692633674809344",
+      "username": "z.avala@pendo.io",
+      "first": "Zack",
+      "last": "Avala",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1680528459457,
+      "visitorIds": [
+        "exampleVisitor",
+        "2abde58cf04d71c1109d9de43c295b1c"
+      ]
+    },
+    "createdAt": 1605282252250,
+    "lastUpdatedByUser": {
+      "id": "5692633674809344",
+      "username": "z.avala@pendo.io",
+      "first": "Zack",
+      "last": "Avala",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1680528459457,
+      "visitorIds": [
+        "exampleVisitor",
+        "2abde58cf04d71c1109d9de43c295b1c"
+      ]
+    },
+    "lastUpdatedAt": 1606333999333,
+    "kind": "Page",
+    "rootVersionId": "HkME1Igl7lcpyDgLb57MxXny8yE",
+    "stableVersionId": "HkME1Igl7lcpyDgLb57MxXny8yE-20201125195319.350835974",
+    "id": "HkME1Igl7lcpyDgLb57MxXny8yE",
+    "appId": -323232,
+    "name": "Home",
+    "color": "",
+    "group": {
+      "id": "_PENDO_DEFAULTGROUP_01_",
+      "name": "Green",
+      "description": "",
+      "color": ".groupColor05",
+      "length": 2,
+      "items": [],
+      "type": "group",
+      "createdByUser": {
+        "id": "-42",
+        "username": "--system-user--",
+        "first": "System",
+        "last": "User",
+        "role": 7,
+        "userType": "normal",
+        "deletedAt": 1620995537675,
+        "hasLoggedIn": false
+      },
+      "createdAt": 1605021502038,
+      "lastUpdatedByUser": {
+        "id": "5692633674809344",
+        "username": "z.avala@pendo.io",
+        "first": "Zack",
+        "last": "Avala",
+        "role": 8,
+        "userType": "normal",
+        "hasLoggedIn": true,
+        "lastLogin": 1680528459457,
+        "visitorIds": [
+          "exampleVisitor",
+          "2abde58cf04d71c1109d9de43c295b1c"
+        ]
+      },
+      "lastUpdatedAt": 1674484955993
+    },
+    "isCoreEvent": true,
+    "validThrough": 1680789600000,
+    "dirty": false,
+    "dailyMergeFirst": 0,
+    "dailyRollupFirst": 0,
+    "rules": [
+      {
+        "rule": "//*/home.html",
+        "designerHint": "http://localhost:8080/home.html",
+        "parsedRule": "^https?://[^/]*/home\\.html/?(?:;[^#]*)?(?:\\?[^#]*)?(?:#.*)?$"
+      },
+      {
+        "rule": "//*/Home.html",
+        "parsedRule": "^https?://[^/]*/Home\\.html/?(?:;[^#]*)?(?:\\?[^#]*)?(?:#.*)?$"
+      },
+      {
+        "rule": "//*/index.html",
+        "parsedRule": "^https?://[^/]*/index\\.html/?(?:;[^#]*)?(?:\\?[^#]*)?(?:#.*)?$"
+      }
+    ],
+    "rulesjson": "",
+    "isAutoTagged": false,
+    "suggestedName": "Home"
+  },
+  {
+    "createdByUser": {
+      "id": "5692633674809344",
+      "username": "z.avala@pendo.io",
+      "first": "Zack",
+      "last": "Avala",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1680528459457,
+      "visitorIds": [
+        "exampleVisitor",
+        "2abde58cf04d71c1109d9de43c295b1c"
+      ]
+    },
+    "createdAt": 1670346921152,
+    "lastUpdatedByUser": {
+      "id": "5692633674809344",
+      "username": "i.kora@pendo.io",
+      "first": "Imelda",
+      "last": "Kora",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1680528459457,
+      "visitorIds": [
+        "exampleVisitor2",
+        "8f7fd4456b256576eb05f3ddba26b651"
+      ]
+    },
+    "lastUpdatedAt": 1670347013487,
+    "kind": "Page",
+    "rootVersionId": "HfX7LQShylAeZM2AEfMsHFjYIMQ",
+    "stableVersionId": "HfX7LQShylAeZM2AEfMsHFjYIMQ-20221206171653.509391098",
+    "id": "HfX7LQShylAeZM2AEfMsHFjYIMQ",
+    "appId": -323232,
+    "name": "Frames - ALL containing frame",
+    "color": "",
+    "group": {
+      "id": "",
+      "name": "",
+      "description": "",
+      "color": "",
+      "length": 0,
+      "items": null,
+      "type": ""
+    },
+    "isCoreEvent": false,
+    "validThrough": 1680789600000,
+    "dirty": false,
+    "dailyMergeFirst": 0,
+    "dailyRollupFirst": 0,
+    "rules": [
+      {
+        "rule": "//*/~contains:Frame",
+        "parsedRule": "^https?://[^/]*/[^/#?;]*Frame[^/#?;]*/?(?:;[^#]*)?(?:\\?[^#]*)?(?:#.*)?$"
+      }
+    ],
+    "rulesjson": "",
+    "isAutoTagged": false
+  }
+]

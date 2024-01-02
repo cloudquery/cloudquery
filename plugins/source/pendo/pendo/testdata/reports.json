@@ -1,0 +1,1072 @@
+[
+  {
+    "createdByUser": {
+      "id": "5692633674809344",
+      "username": "z.avala@pendo.io",
+      "first": "Zack",
+      "last": "Avala",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1683311874084,
+      "visitorIds": [
+        "exampleVisitor",
+        "2abde58cf04d71c1109d9de43c295b1c"
+      ]
+    },
+    "createdAt": 1610381747972,
+    "lastUpdatedByUser": {
+      "id": "5692633674809344",
+      "username": "i.kora@pendo.io",
+      "first": "Imelda",
+      "last": "Kora",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1683311874084,
+      "visitorIds": [
+        "exampleVisitor2",
+        "8f7fd4456b256576eb05f3ddba26b651"
+      ]
+    },
+    "lastUpdatedAt": 1683740770857,
+    "kind": "Report",
+    "rootVersionId": "LhB7krq4HSABuqeDdNdJqFHcpb4",
+    "stableVersionId": "LhB7krq4HSABuqeDdNdJqFHcpb4-20230510174610.907011241",
+    "ownedByUser": {
+      "id": "",
+      "username": "",
+      "first": "",
+      "last": "",
+      "role": 0,
+      "userType": "",
+      "hasLoggedIn": false
+    },
+    "share": "",
+    "target": "",
+    "scope": "",
+    "level": "",
+    "id": "LhB7krq4HSABuqeDdNdJqFHcpb4",
+    "type": "",
+    "name": "Test Funnel Report",
+    "shared": true,
+    "definition": {
+      "config": {
+        "maxDuration": 3600,
+        "maxInterval": 3600,
+        "items": [
+          {
+            "pageId": "HkME1Igl7lcpyDgLb57MxXny8yE"
+          },
+          {
+            "pageId": "h5VZUuXZ1JVEB0VfpPaIAzcZL1E"
+          }
+        ],
+        "appId": [
+          -323232
+        ],
+        "segmentId": "everyone"
+      },
+      "timeSeries": {
+        "type": "Last 30 Days",
+        "start": "2023-04-10",
+        "end": "2023-05-10"
+      },
+      "type": "Funnel",
+      "history": [
+        1610381748684
+      ],
+      "version": 1
+    },
+    "aggregation": {
+      "pipeline": [
+        {
+          "source": {
+            "singleEvents": {
+              "appId": [
+                -323232
+              ],
+              "blacklist": "apply"
+            },
+            "timeSeries": {
+              "period": "dayRange",
+              "first": 1681099200000,
+              "count": 30
+            }
+          }
+        },
+        {
+          "group": {
+            "group": [
+              "visitorId"
+            ],
+            "fields": [
+              {
+                "funnel": {
+                  "funnel": {
+                    "blacklist": "apply",
+                    "includeAnonymous": null,
+                    "maxDuration": 3600,
+                    "maxInterval": 3600,
+                    "items": [
+                      {
+                        "pageId": "HkME1Igl7lcpyDgLb57MxXny8yE"
+                      },
+                      {
+                        "pageId": "h5VZUuXZ1JVEB0VfpPaIAzcZL1E"
+                      }
+                    ],
+                    "appId": [
+                      -323232
+                    ],
+                    "segmentId": null
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "unwind": {
+            "field": "funnel"
+          }
+        },
+        {
+          "select": {
+            "times": "funnel.times",
+            "start": "funnel.start",
+            "steps": "funnel.steps",
+            "visitorId": "visitorId"
+          }
+        },
+        {
+          "fork": [
+            [
+              {
+                "group": {
+                  "group": [
+                    "steps"
+                  ],
+                  "fields": [
+                    {
+                      "count": {
+                        "count": null
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "sort": [
+                  "-steps"
+                ]
+              },
+              {
+                "accumulate": {
+                  "count": "count"
+                }
+              },
+              {
+                "sort": [
+                  "steps"
+                ]
+              }
+            ],
+            [
+              {
+                "compute": {
+                  "durations": {
+                    "diff": "times"
+                  }
+                }
+              },
+              {
+                "reduce": {
+                  "averageTimes": {
+                    "listAverage": "durations"
+                  }
+                }
+              }
+            ],
+            [
+              {
+                "group": {
+                  "group": [
+                    "steps"
+                  ],
+                  "fields": [
+                    {
+                      "count": {
+                        "count": null
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "sort": [
+                  "-steps"
+                ]
+              },
+              {
+                "accumulate": {
+                  "count": "count"
+                }
+              },
+              {
+                "reduce": {
+                  "counts": {
+                    "list": "count"
+                  },
+                  "furthestStep": {
+                    "max": "steps"
+                  }
+                }
+              },
+              {
+                "eval": {
+                  "percentCompleted": "if(furthestStep != 2, 0, (counts[0]/counts[len(counts) - 1]) * 100)"
+                }
+              }
+            ],
+            [
+              {
+                "compute": {
+                  "durations": {
+                    "diff": "times"
+                  }
+                }
+              },
+              {
+                "filter": "len(durations) == 1"
+              },
+              {
+                "reduce": {
+                  "averageTimes": {
+                    "listAverage": "durations"
+                  }
+                }
+              },
+              {
+                "unwind": {
+                  "field": "averageTimes"
+                }
+              },
+              {
+                "reduce": {
+                  "averageTimeToCompletion": {
+                    "sum": "averageTimes"
+                  }
+                }
+              }
+            ],
+            [
+              {
+                "filter": "steps == 1"
+              },
+              {
+                "limit": 10000
+              }
+            ],
+            [
+              {
+                "filter": "steps == 2"
+              },
+              {
+                "limit": 10000
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "lastRunAt": 1683740772330,
+    "lastSuccessRunAt": 1683740772330,
+    "lastSuccessRunObj": "aggregation-LhB7krq4HSABuqeDdNdJqFHcpb4-1683740772330"
+  },
+  {
+    "createdByUser": {
+      "id": "5692633674809344",
+      "username": "z.avala@pendo.io",
+      "first": "Zack",
+      "last": "Avala",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1683311874084,
+      "visitorIds": [
+        "exampleVisitor",
+        "2abde58cf04d71c1109d9de43c295b1c"
+      ]
+    },
+    "createdAt": 1683740414412,
+    "lastUpdatedByUser": {
+      "id": "5692633674809344",
+      "username": "i.kora@pendo.io",
+      "first": "Imelda",
+      "last": "Kora",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1683311874084,
+      "visitorIds": [
+        "exampleVisitor2",
+        "8f7fd4456b256576eb05f3ddba26b651"
+      ]
+    },
+    "lastUpdatedAt": 1683740414412,
+    "kind": "Report",
+    "rootVersionId": "_I00Vv-0a_8D6Q6RaYKTxvgn2Z8",
+    "stableVersionId": "_I00Vv-0a_8D6Q6RaYKTxvgn2Z8-20230510174014.419063472",
+    "ownedByUser": {
+      "id": "",
+      "username": "",
+      "first": "",
+      "last": "",
+      "role": 0,
+      "userType": "",
+      "hasLoggedIn": false
+    },
+    "share": "",
+    "target": "",
+    "scope": "",
+    "level": "",
+    "id": "_I00Vv-0a_8D6Q6RaYKTxvgn2Z8",
+    "type": "Visitor",
+    "name": "Test Visitor Report",
+    "shared": true,
+    "definition": {
+      "config": {
+        "appId": "expandAppIds(\"web\")",
+        "selectedAccount": {
+          "id": "",
+          "text": "All Accounts",
+          "className": "account-chooser-all-accounts"
+        },
+        "columns": [
+          {
+            "columnLabel": "name",
+            "columnName": "visitor_agent_name",
+            "fieldName": "visitor.agent.name",
+            "functionName": "metadataField",
+            "immutable": false,
+            "kind": "visitor",
+            "primaryKeys": [
+              "visitorId"
+            ],
+            "schema": "string",
+            "disabled": false
+          }
+        ],
+        "segmentId": "everyone",
+        "filters": [],
+        "segments": []
+      },
+      "generator": "visitorList",
+      "history": [],
+      "kind": "visitor",
+      "timeSeries": {
+        "type": "Last 7 Days",
+        "start": "2023-05-03",
+        "end": "2023-05-10"
+      },
+      "type": "List"
+    },
+    "aggregation": {
+      "fields": [
+        {
+          "type": "string",
+          "title": "Visitor ID",
+          "field": "visitorId"
+        },
+        {
+          "type": "string",
+          "title": "name",
+          "field": "visitor_agent_name"
+        }
+      ],
+      "pipeline": [
+        {
+          "source": {
+            "events": {
+              "appId": "expandAppIds(\"web\")",
+              "blacklist": "apply"
+            },
+            "timeSeries": {
+              "period": "dayRange",
+              "first": "dateAdd(startOfPeriod(\"daily\",now()),-7,\"days\")",
+              "last": "dateAdd(startOfPeriod(\"daily\",now()),-1,\"days\")"
+            }
+          }
+        },
+        {
+          "group": {
+            "group": [
+              "visitorId"
+            ]
+          }
+        },
+        {
+          "bulkExpand": {
+            "visitor": {
+              "visitor": "visitorId"
+            }
+          }
+        },
+        {
+          "eval": {
+            "visitor_agent_name": "visitor.agent.name"
+          }
+        },
+        {
+          "select": {
+            "visitorId": "visitorId",
+            "visitor_agent_name": "visitor_agent_name"
+          }
+        }
+      ]
+    },
+    "lastRunAt": 1683740416008
+  },
+  {
+    "createdByUser": {
+      "id": "5692633674809344",
+      "username": "z.avala@pendo.io",
+      "first": "Zack",
+      "last": "Avala",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1683311874084,
+      "visitorIds": [
+        "exampleVisitor",
+        "2abde58cf04d71c1109d9de43c295b1c"
+      ]
+    },
+    "createdAt": 1610653606629,
+    "lastUpdatedByUser": {
+      "id": "5692633674809344",
+      "username": "i.kora@pendo.io",
+      "first": "Imelda",
+      "last": "Kora",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1683311874084,
+      "visitorIds": [
+        "exampleVisitor2",
+        "8f7fd4456b256576eb05f3ddba26b651"
+      ]
+    },
+    "lastUpdatedAt": 1683741312426,
+    "kind": "Report",
+    "rootVersionId": "ckWDyqEwai1bi0UYP0wwobZEJpw",
+    "stableVersionId": "ckWDyqEwai1bi0UYP0wwobZEJpw-20230510175512.457721825",
+    "ownedByUser": {
+      "id": "",
+      "username": "",
+      "first": "",
+      "last": "",
+      "role": 0,
+      "userType": "",
+      "hasLoggedIn": false
+    },
+    "share": "",
+    "target": "",
+    "scope": "",
+    "level": "",
+    "id": "ckWDyqEwai1bi0UYP0wwobZEJpw",
+    "type": "Saved Reports",
+    "name": "Data Explorer - Visitors by Month",
+    "shared": true,
+    "definition": {
+      "version": 2,
+      "targetGroups": [
+        {
+          "id": {
+            "value": "972bde2c-ec93-4838-98f4-f9f41eacc0ff",
+            "valid": true
+          },
+          "measure": {
+            "value": {
+              "name": "numVisitors",
+              "label": "Number of Visitors",
+              "disabledTargetTypes": [],
+              "disabled": false
+            },
+            "valid": true
+          },
+          "targets": [
+            {
+              "id": -323232,
+              "type": "anyActivity",
+              "filters": []
+            }
+          ]
+        }
+      ],
+      "globals": {
+        "dateConfigs": [
+          {
+            "value": {
+              "dateRange": {
+                "type": "Last 180 Days"
+              },
+              "period": "monthly",
+              "interval": "month"
+            },
+            "isPrimary": true,
+            "valid": true
+          }
+        ],
+        "segments": [
+          {
+            "value": {
+              "order": 1,
+              "default": true,
+              "name": "Everyone",
+              "id": "everyone",
+              "shared": true,
+              "definition": "everyone",
+              "disabled": null
+            },
+            "valid": true
+          }
+        ],
+        "groupings": [
+          {
+            "configuration": {
+              "Type": "string",
+              "DisplayName": "Visitor ID",
+              "ElementType": "",
+              "ElementFormat": "",
+              "Dirty": false,
+              "cardinality": 19,
+              "isHidden": false,
+              "isDeleted": false,
+              "isCalculated": false,
+              "isPerApp": false,
+              "neverIndex": false,
+              "group": "auto",
+              "field": "id",
+              "kind": "visitor",
+              "groupDisplayName": "auto",
+              "isPromoted": false
+            },
+            "type": "visitor",
+            "valid": true
+          }
+        ],
+        "filters": [
+          {
+            "field": "name",
+            "kind": "automatic",
+            "filterType": "device",
+            "operator": "=",
+            "comparisonValues": [
+              "Chrome"
+            ],
+            "id": "9c23871b-bcb5-49f6-b34b-9bf70cadd16f"
+          }
+        ],
+        "formulas": []
+      },
+      "chartSelections": {
+        "972bde2c-ec93-4838-98f4-f9f41eacc0ff": {
+          "type": "line"
+        },
+        "globals": {
+          "matchScales": false
+        }
+      },
+      "rowSelections": {
+        "972bde2c-ec93-4838-98f4-f9f41eacc0ff--323232-testVisitor1": true,
+        "972bde2c-ec93-4838-98f4-f9f41eacc0ff--323232-OhHai_ImAVisitor": false,
+        "972bde2c-ec93-4838-98f4-f9f41eacc0ff--323232-_PENDO_T_aaVUTi1CQOd": false,
+        "972bde2c-ec93-4838-98f4-f9f41eacc0ff--323232-newSessionVisitor": false,
+        "972bde2c-ec93-4838-98f4-f9f41eacc0ff--323232-testVisitor2": false
+      }
+    },
+    "aggregation": {},
+    "aggregationList": [
+      {
+        "pipeline": [
+          {
+            "source": {
+              "events": {
+                "appId": [
+                  -323232
+                ],
+                "blacklist": "apply"
+              },
+              "timeSeries": {
+                "period": "monthRange",
+                "first": "dateAdd(startOfPeriod(\"daily\",now()),-180,\"days\")",
+                "count": 6
+              }
+            }
+          },
+          {
+            "bulkExpand": {
+              "visitor": {
+                "visitor": "visitorId"
+              }
+            }
+          },
+          {
+            "useragent": {
+              "u": "userAgent"
+            }
+          },
+          {
+            "eval": {
+              "groupValue0": "visitor.auto.id"
+            }
+          },
+          {
+            "eval": {
+              "groupValue0": "if(isNull(groupValue0), \"(none)\", groupValue0)"
+            }
+          },
+          {
+            "eval": {
+              "name_device_automatic": "u.name"
+            }
+          },
+          {
+            "filter": "(contains([\"Chrome\"], name_device_automatic))"
+          },
+          {
+            "eval": {
+              "month": "startOfPeriod(\"monthRange\", day)"
+            }
+          },
+          {
+            "group": {
+              "group": [
+                "appId",
+                "groupValue0"
+              ],
+              "fields": [
+                {
+                  "visitorCount": {
+                    "count": "visitorId"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "limit": 10001
+          },
+          {
+            "select": {
+              "month": "month",
+              "appId": "appId",
+              "yAxis": "visitorCount",
+              "groupValue0": "groupValue0"
+            }
+          }
+        ]
+      },
+      {
+        "pipeline": [
+          {
+            "source": {
+              "events": {
+                "appId": [
+                  -323232
+                ],
+                "blacklist": "apply"
+              },
+              "timeSeries": {
+                "period": "monthly",
+                "first": "dateAdd(startOfPeriod(\"daily\",now()),-180,\"days\")",
+                "count": 6
+              }
+            }
+          },
+          {
+            "bulkExpand": {
+              "visitor": {
+                "visitor": "visitorId"
+              }
+            }
+          },
+          {
+            "useragent": {
+              "u": "userAgent"
+            }
+          },
+          {
+            "eval": {
+              "groupValue0": "visitor.auto.id"
+            }
+          },
+          {
+            "eval": {
+              "groupValue0": "if(isNull(groupValue0), \"(none)\", groupValue0)"
+            }
+          },
+          {
+            "eval": {
+              "name_device_automatic": "u.name"
+            }
+          },
+          {
+            "filter": "(contains([\"Chrome\"], name_device_automatic))"
+          },
+          {
+            "group": {
+              "group": [
+                "appId",
+                "groupValue0",
+                "month"
+              ],
+              "fields": [
+                {
+                  "visitorCount": {
+                    "count": "visitorId"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "limit": 10001
+          },
+          {
+            "select": {
+              "month": "month",
+              "appId": "appId",
+              "yAxis": "visitorCount",
+              "groupValue0": "groupValue0"
+            }
+          }
+        ]
+      }
+    ],
+    "lastRunAt": 0
+  },
+  {
+    "createdByUser": {
+      "id": "5692633674809344",
+      "username": "z.avala@pendo.io",
+      "first": "Zack",
+      "last": "Avala",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1683311874084,
+      "visitorIds": [
+        "exampleVisitor",
+        "2abde58cf04d71c1109d9de43c295b1c"
+      ]
+    },
+    "createdAt": 1683740471752,
+    "lastUpdatedByUser": {
+      "id": "5692633674809344",
+      "username": "i.kora@pendo.io",
+      "first": "Imelda",
+      "last": "Kora",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1683311874084,
+      "visitorIds": [
+        "exampleVisitor2",
+        "8f7fd4456b256576eb05f3ddba26b651"
+      ]
+    },
+    "lastUpdatedAt": 1683740471752,
+    "kind": "Report",
+    "rootVersionId": "m3PebKveoNc5bmDGCKM3_pPlUNA",
+    "stableVersionId": "m3PebKveoNc5bmDGCKM3_pPlUNA-20230510174111.759933187",
+    "ownedByUser": {
+      "id": "",
+      "username": "",
+      "first": "",
+      "last": "",
+      "role": 0,
+      "userType": "",
+      "hasLoggedIn": false
+    },
+    "share": "",
+    "target": "",
+    "scope": "",
+    "level": "",
+    "id": "m3PebKveoNc5bmDGCKM3_pPlUNA",
+    "type": "Account",
+    "name": "Test Account Report",
+    "shared": true,
+    "definition": {
+      "config": {
+        "appId": [
+          "expandAppIds(\"ios\")",
+          "expandAppIds(\"android\")"
+        ],
+        "selectedAccount": {
+          "id": "",
+          "text": "All Accounts",
+          "className": "account-chooser-all-accounts"
+        },
+        "columns": [
+          {
+            "columnLabel": "Last Visit",
+            "columnName": "account_auto_lastvisit",
+            "fieldName": "account.auto.lastvisit",
+            "functionName": "metadataField",
+            "immutable": false,
+            "kind": "account",
+            "primaryKeys": [
+              "accountId"
+            ],
+            "schema": "time",
+            "disabled": false
+          }
+        ],
+        "segmentId": "_PENDO_DEFAULT_BrChrome",
+        "filters": [],
+        "segments": []
+      },
+      "generator": "visitorList",
+      "history": [],
+      "kind": "account",
+      "timeSeries": {
+        "type": "Last 30 Days",
+        "start": "2023-04-10",
+        "end": "2023-05-10"
+      },
+      "type": "List"
+    },
+    "aggregation": {
+      "fields": [
+        {
+          "type": "string",
+          "title": "Account ID",
+          "field": "accountId"
+        },
+        {
+          "type": "time",
+          "title": "Last Visit",
+          "field": "account_auto_lastvisit"
+        }
+      ],
+      "pipeline": [
+        {
+          "source": {
+            "events": {
+              "appId": [
+                "expandAppIds(\"ios\")",
+                "expandAppIds(\"android\")"
+              ],
+              "blacklist": "apply"
+            },
+            "timeSeries": {
+              "period": "dayRange",
+              "first": "dateAdd(startOfPeriod(\"daily\",now()),-30,\"days\")",
+              "last": "dateAdd(startOfPeriod(\"daily\",now()),-1,\"days\")"
+            }
+          }
+        },
+        {
+          "segment": {
+            "id": "_PENDO_DEFAULT_BrChrome"
+          }
+        },
+        {
+          "group": {
+            "group": [
+              "accountId"
+            ]
+          }
+        },
+        {
+          "bulkExpand": {
+            "account": {
+              "account": "accountId"
+            }
+          }
+        },
+        {
+          "eval": {
+            "account_auto_lastvisit": "account.auto.lastvisit"
+          }
+        },
+        {
+          "select": {
+            "accountId": "accountId",
+            "account_auto_lastvisit": "account_auto_lastvisit"
+          }
+        }
+      ]
+    },
+    "lastRunAt": 1683740472826
+  },
+  {
+    "createdByUser": {
+      "id": "5692633674809344",
+      "username": "z.avala@pendo.io",
+      "first": "Zack",
+      "last": "Avala",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1683311874084,
+      "visitorIds": [
+        "exampleVisitor",
+        "2abde58cf04d71c1109d9de43c295b1c"
+      ]
+    },
+    "createdAt": 1605824042457,
+    "lastUpdatedByUser": {
+      "id": "5692633674809344",
+      "username": "i.kora@pendo.io",
+      "first": "Imelda",
+      "last": "Kora",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1683311874084,
+      "visitorIds": [
+        "exampleVisitor2",
+        "8f7fd4456b256576eb05f3ddba26b651"
+      ]
+    },
+    "lastUpdatedAt": 1683740818100,
+    "kind": "Report",
+    "rootVersionId": "zYQ6_97sRmRK8l0yABxJGP4nAYg",
+    "stableVersionId": "zYQ6_97sRmRK8l0yABxJGP4nAYg-20230510174658.133152416",
+    "ownedByUser": {
+      "id": "",
+      "username": "",
+      "first": "",
+      "last": "",
+      "role": 0,
+      "userType": "",
+      "hasLoggedIn": false
+    },
+    "share": "",
+    "target": "",
+    "scope": "",
+    "level": "",
+    "id": "zYQ6_97sRmRK8l0yABxJGP4nAYg",
+    "type": "",
+    "name": "Home Page Path Report",
+    "shared": true,
+    "definition": {
+      "config": {
+        "maxInterval": 3600,
+        "predecessors": false,
+        "omitPages": false,
+        "features": true,
+        "trackEvents": false,
+        "collapseDups": true,
+        "maxLength": 10,
+        "appId": -323232,
+        "pageId": "HkME1Igl7lcpyDgLb57MxXny8yE",
+        "segmentId": "everyone",
+        "uniqueVisitors": true
+      },
+      "minimum": 0,
+      "timeSeries": {
+        "type": "Custom",
+        "start": 1603166400000,
+        "end": 1605762000000
+      },
+      "type": "Path",
+      "history": [
+        1605824043044
+      ]
+    },
+    "aggregation": {
+      "pipeline": [
+        {
+          "source": {
+            "singleEvents": {
+              "appId": -323232,
+              "blacklist": "apply",
+              "reverseTime": false,
+              "eventClass": [
+                "ui"
+              ]
+            },
+            "timeSeries": {
+              "period": "dayRange",
+              "first": 1603166400000,
+              "count": 30
+            }
+          }
+        },
+        {
+          "group": {
+            "group": [
+              "visitorId"
+            ],
+            "fields": [
+              {
+                "path": {
+                  "path": {
+                    "pageId": "HkME1Igl7lcpyDgLb57MxXny8yE",
+                    "collapseDups": true,
+                    "maxInterval": 3600,
+                    "maxLength": 10,
+                    "predecessors": false,
+                    "followAcrossSessions": false,
+                    "omitPages": false,
+                    "features": true,
+                    "trackEvents": false
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "unwind": {
+            "field": "path"
+          }
+        },
+        {
+          "fork": [
+            [
+              {
+                "limit": 10000
+              }
+            ],
+            [
+              {
+                "eval": {
+                  "items": "map(x, path, x.items)"
+                }
+              },
+              {
+                "group": {
+                  "group": [
+                    "items"
+                  ],
+                  "fields": [
+                    {
+                      "count": {
+                        "count": "visitorId"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "treeify": {
+                  "threshold": 0.0001,
+                  "keySort": true
+                }
+              }
+            ]
+          ]
+        }
+      ]
+    },
+    "lastRunAt": 1683740855260,
+    "lastSuccessRunAt": 1683740855260,
+    "lastSuccessRunObj": "aggregation-zYQ6_97sRmRK8l0yABxJGP4nAYg-1683740855260"
+  }
+]

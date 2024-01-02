@@ -1,0 +1,132 @@
+[
+  {
+    "createdByUser": {
+      "id": "5692633674809344",
+      "username": "d.vader@pendo.io",
+      "first": "Darren",
+      "last": "Vader",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1683311874084,
+      "visitorIds": [
+        "exampleVisitor2",
+        "ZC52YWRlckBwZW5kby5pbw=="
+      ]
+    },
+    "createdAt": 1605305522388,
+    "lastUpdatedByUser": {
+      "id": "5692633674809344",
+      "username": "i.kora@pendo.io",
+      "first": "Imelda",
+      "last": "Kora",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1680528459457,
+      "visitorIds": [
+        "exampleVisitor2",
+        "8f7fd4456b256576eb05f3ddba26b651"
+      ]
+    },
+    "lastUpdatedAt": 1605305522388,
+    "kind": "Feature",
+    "rootVersionId": "51DPaPuMuonk56Oyl3NM1dRQh1Q",
+    "stableVersionId": "51DPaPuMuonk56Oyl3NM1dRQh1Q-20201113221202.393663303",
+    "id": "51DPaPuMuonk56Oyl3NM1dRQh1Q",
+    "appId": -323232,
+    "name": "Big Blue Button",
+    "color": "",
+    "group": {
+      "id": "",
+      "name": "",
+      "description": "",
+      "color": "",
+      "length": 0,
+      "items": null,
+      "type": ""
+    },
+    "isCoreEvent": true,
+    "validThrough": 1683313200000,
+    "dirty": false,
+    "dailyMergeFirst": 0,
+    "dailyRollupFirst": 0,
+    "pageId": "HkME1Igl7lcpyDgLb57MxXny8yE",
+    "eventPropertyConfigurations": [
+      {
+        "name": "dropdown_value",
+        "rule": "{\"name\":\"dropdown_value\",\"source\":\"#dropdown1\",\"path\":\"innerText\"}",
+        "isActive": true,
+        "path": "innerText",
+        "selector": "#dropdown1",
+        "type": "",
+        "pattern": ""
+      }
+    ],
+    "elementPathRules": [
+      ".btn.blue:contains('click me!')"
+    ],
+    "elementSelectionType": "custom",
+    "suggestedMatch": "[custom=\"blue button\"]",
+    "appWide": false
+  },
+  {
+    "createdByUser": {
+      "id": "5692633674809344",
+      "username": "z.avala@pendo.io",
+      "first": "Zack",
+      "last": "Avala",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1680528459457,
+      "visitorIds": [
+        "exampleVisitor",
+        "2abde58cf04d71c1109d9de43c295b1c"
+      ]
+    },
+    "createdAt": 1605282252250,
+    "lastUpdatedByUser": {
+      "id": "5692633674809344",
+      "username": "z.avala@pendo.io",
+      "first": "Zack",
+      "last": "Avala",
+      "role": 8,
+      "userType": "normal",
+      "hasLoggedIn": true,
+      "lastLogin": 1680528459457,
+      "visitorIds": [
+        "exampleVisitor",
+        "2abde58cf04d71c1109d9de43c295b1c"
+      ]
+    },
+    "lastUpdatedAt": 1605305829504,
+    "kind": "Feature",
+    "rootVersionId": "dbWCJhtxR4ssRSZDreG5y-JuUAI",
+    "stableVersionId": "dbWCJhtxR4ssRSZDreG5y-JuUAI-20201113221709.511297045",
+    "id": "dbWCJhtxR4ssRSZDreG5y-JuUAI",
+    "appId": -323232,
+    "name": "Home Link",
+    "color": "",
+    "group": {
+      "id": "",
+      "name": "",
+      "description": "",
+      "color": "",
+      "length": 0,
+      "items": null,
+      "type": ""
+    },
+    "isCoreEvent": false,
+    "validThrough": 1683313200000,
+    "dirty": false,
+    "dailyMergeFirst": 0,
+    "dailyRollupFirst": 0,
+    "eventPropertyConfigurations": [],
+    "elementPathRules": [
+      "[href=\"home.html\"]",
+      "[href=\"index.html\"]"
+    ],
+    "appWide": true
+  }
+]
