@@ -5,6 +5,25 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [4.4.0](https://github.com/cloudquery/cloudquery/compare/cli-v4.3.6...cli-v4.4.0) (2024-01-02)
+
+
+### Features
+
+* Offline licensing support ([#15831](https://github.com/cloudquery/cloudquery/issues/15831)) ([7eab631](https://github.com/cloudquery/cloudquery/commit/7eab6315362cc49adca0d06a5cf8b391237025fb))
+* Support publishing to a private docker registry ([#15698](https://github.com/cloudquery/cloudquery/issues/15698)) ([36e0351](https://github.com/cloudquery/cloudquery/commit/36e035107e801e9f0a3751eaecdc39959dd60da5))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v15 digest to 7c3480e ([#15904](https://github.com/cloudquery/cloudquery/issues/15904)) ([a3ec012](https://github.com/cloudquery/cloudquery/commit/a3ec01203183e5c94630beae86434519e87e225d))
+* **deps:** Update github.com/gomarkdown/markdown digest to 1d6d208 ([#15907](https://github.com/cloudquery/cloudquery/issues/15907)) ([86d29a9](https://github.com/cloudquery/cloudquery/commit/86d29a900e6c9dbcad09f5b0c4b0615aee59a2ae))
+* **deps:** Update golang.org/x/exp digest to 02704c9 ([#15909](https://github.com/cloudquery/cloudquery/issues/15909)) ([dfe32d2](https://github.com/cloudquery/cloudquery/commit/dfe32d2557dcac0fb6dc741c9df4edccdcb07076))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.15.0 ([#15851](https://github.com/cloudquery/cloudquery/issues/15851)) ([f51f12d](https://github.com/cloudquery/cloudquery/commit/f51f12d7217843dab594859e0a431b4faf545259))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.16.0 ([#15856](https://github.com/cloudquery/cloudquery/issues/15856)) ([0d63c66](https://github.com/cloudquery/cloudquery/commit/0d63c66360c726eb618804dbe3b8a75f9de6c636))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.24.0 ([#15863](https://github.com/cloudquery/cloudquery/issues/15863)) ([47d7899](https://github.com/cloudquery/cloudquery/commit/47d78994370f083912b6d4329f12d5cef9c255d5))
+* **deps:** Update module github.com/prometheus/client_golang to v1.11.1 [SECURITY] ([#15855](https://github.com/cloudquery/cloudquery/issues/15855)) ([676805b](https://github.com/cloudquery/cloudquery/commit/676805b0563cc0e3ed99b1de7e4549257b0ee2c5))
+
 ## [4.3.6](https://github.com/cloudquery/cloudquery/compare/cli-v4.3.5...cli-v4.3.6) (2023-12-28)
 
 

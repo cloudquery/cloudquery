@@ -49,7 +49,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v4.3.6
+          version: v4.4.0
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -85,9 +85,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.21.1-release-cache-${{ hashFiles('plugins/source/aws/go.sum') }}
+          key: ${{ runner.os }}-go-1.21.4-release-cache-${{ hashFiles('plugins/source/aws/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.21.1-release-cache-plugins-source-aws
+            ${{ runner.os }}-go-1.21.4-release-cache-plugins-source-aws
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v4
