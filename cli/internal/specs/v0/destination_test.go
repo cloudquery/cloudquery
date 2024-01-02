@@ -45,8 +45,8 @@ spec:
 `,
 		"failed to decode spec: json: cannot unmarshal number into Go struct field Source.name of type string",
 		&Source{
-			Metadata: Metadata{Name: "test"},
-			Tables:   []string{"*"},
+			Name:   "test",
+			Tables: []string{"*"},
 		},
 	},
 	{
@@ -57,8 +57,8 @@ spec:
 `,
 		`failed to decode spec: json: unknown field "namea"`,
 		&Source{
-			Metadata: Metadata{Name: "test"},
-			Tables:   []string{"*"},
+			Name:   "test",
+			Tables: []string{"*"},
 		},
 	},
 }
@@ -126,12 +126,10 @@ spec:
 `,
 		"",
 		&Destination{
-			Metadata: Metadata{
-				Name:     "test",
-				Registry: RegistryGRPC,
-				Path:     "localhost:9999",
-			},
-			Spec: map[string]any{},
+			Name:     "test",
+			Registry: RegistryGRPC,
+			Path:     "localhost:9999",
+			Spec:     map[string]any{},
 		},
 	},
 	{
@@ -144,12 +142,10 @@ spec:
 `,
 		"",
 		&Destination{
-			Metadata: Metadata{
-				Name:     "test",
-				Registry: RegistryLocal,
-				Path:     "/home/user/some_executable",
-			},
-			Spec: map[string]any{},
+			Name:     "test",
+			Registry: RegistryLocal,
+			Path:     "/home/user/some_executable",
+			Spec:     map[string]any{},
 		},
 	},
 	{
@@ -162,14 +158,12 @@ spec:
 `,
 		"",
 		&Destination{
-			Metadata: Metadata{
-				Name:             "test",
-				Registry:         RegistryCloudQuery,
-				Path:             "cloudquery/test",
-				Version:          "v1.1.0",
-				registryInferred: true,
-			},
-			Spec: map[string]any{},
+			Name:             "test",
+			Registry:         RegistryCloudQuery,
+			Path:             "cloudquery/test",
+			Version:          "v1.1.0",
+			Spec:             map[string]any{},
+			registryInferred: true,
 		},
 	},
 	{
@@ -183,13 +177,11 @@ spec:
 `,
 		"",
 		&Destination{
-			Metadata: Metadata{
-				Name:     "test",
-				Registry: RegistryGitHub,
-				Path:     "cloudquery/test",
-				Version:  "v1.1.0",
-			},
-			Spec: map[string]any{},
+			Name:     "test",
+			Registry: RegistryGitHub,
+			Path:     "cloudquery/test",
+			Version:  "v1.1.0",
+			Spec:     map[string]any{},
 		},
 	},
 }
@@ -220,14 +212,20 @@ func TestDestinationUnmarshalSpecValidate(t *testing.T) {
 }
 
 func TestDestination_VersionString(t *testing.T) {
+	type fields struct {
+		Name     string
+		Version  string
+		Path     string
+		Registry Registry
+	}
 	tests := []struct {
-		name string
-		meta Metadata
-		want string
+		name   string
+		fields fields
+		want   string
 	}{
 		{
 			name: "should use short version without name part in path when those are the same",
-			meta: Metadata{
+			fields: fields{
 				Name:     "aws",
 				Version:  "v10.0.0",
 				Path:     "cloudquery/aws",
@@ -237,7 +235,7 @@ func TestDestination_VersionString(t *testing.T) {
 		},
 		{
 			name: "should use long version with path when name doesn't match path",
-			meta: Metadata{
+			fields: fields{
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "cloudquery/aws",
@@ -247,7 +245,7 @@ func TestDestination_VersionString(t *testing.T) {
 		},
 		{
 			name: "should handle non GitHub registry",
-			meta: Metadata{
+			fields: fields{
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "localhost:7777",
@@ -257,7 +255,7 @@ func TestDestination_VersionString(t *testing.T) {
 		},
 		{
 			name: "should handle malformed path",
-			meta: Metadata{
+			fields: fields{
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "aws",
@@ -268,7 +266,12 @@ func TestDestination_VersionString(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			d := Destination{Metadata: tt.meta}
+			d := Destination{
+				Name:     tt.fields.Name,
+				Version:  tt.fields.Version,
+				Path:     tt.fields.Path,
+				Registry: tt.fields.Registry,
+			}
 			if got := d.VersionString(); got != tt.want {
 				t.Errorf("Destination.String() = %v, want %v", got, tt.want)
 			}

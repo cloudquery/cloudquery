@@ -52,14 +52,6 @@
             "forced"
           ]
         },
-        "batch_size": {
-          "type": "integer",
-          "description": "Deprecated: use plugin-spec batch_size_bytes instead"
-        },
-        "batch_size_bytes": {
-          "type": "integer",
-          "description": "Deprecated: use plugin-spec batch_size_bytes instead"
-        },
         "spec": {
           "oneOf": [
             {
