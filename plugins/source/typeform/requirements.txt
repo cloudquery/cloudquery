@@ -1,5 +1,5 @@
-cloudquery-plugin-sdk==0.1.10
-pyarrow==14.0.1
+cloudquery-plugin-sdk==0.1.11
+pyarrow==14.0.2
 requests==2.31.0
-pytest==7.4.3
+pytest==7.4.4
 pandas==2.1.4
