@@ -85,7 +85,7 @@ This page is aimed at plugin developers. CloudQuery plugins can be published as 
    return c.scheduler.Sync(newCtx, schedulerClient, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
    ```
 
-   **NOTE** if there is a `stateClient` the above block should read:
+   If there is a `stateClient` the above block should read:
 
    ```go
    newCtx, err := premium.WithCancelOnQuotaExceeded(ctx, c.usage)
