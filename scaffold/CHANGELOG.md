@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.21](https://github.com/cloudquery/cloudquery/compare/scaffold-v2.1.20...scaffold-v2.1.21) (2024-01-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.24.0 ([#15863](https://github.com/cloudquery/cloudquery/issues/15863)) ([47d7899](https://github.com/cloudquery/cloudquery/commit/47d78994370f083912b6d4329f12d5cef9c255d5))
+
 ## [2.1.20](https://github.com/cloudquery/cloudquery/compare/scaffold-v2.1.19...scaffold-v2.1.20) (2023-12-29)
 
 
