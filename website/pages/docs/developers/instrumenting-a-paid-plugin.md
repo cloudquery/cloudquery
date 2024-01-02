@@ -5,7 +5,7 @@ description: Learn how to modify your plugin code to publish a paid (premium or 
 
 # Instrumenting a Paid Plugin
 
-In order for rows to be counted as paid in an open-core or premium plugin, you will need to add some additional instrumentation code. Instrumenting a paid plugin to check quotas and count the number of rows synced is relatively simple and can be done using the [`github.com/cloudquery/plugin-sdk/v4/premium`](http://github.com/cloudquery/plugin-sdk/v4/premium) package.
+This page is aimed at plugin developers. CloudQuery plugins can be published as free, open-core or premium. In order for rows to be counted as paid in an open-core or premium plugin, you will need to add some additional instrumentation code. Instrumenting a paid plugin to check quotas and count the number of rows synced is relatively simple and can be done using the [`github.com/cloudquery/plugin-sdk/v4/premium`](http://github.com/cloudquery/plugin-sdk/v4/premium) package.
 
 ## Steps
 
