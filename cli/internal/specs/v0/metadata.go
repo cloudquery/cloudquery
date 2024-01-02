@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"slices"
 	"strings"
+
+	"github.com/invopop/jsonschema"
+	orderedmap "github.com/wk8/go-ordered-map/v2"
 )
 
 // Spec part to define exact plugin: name, version & location.
@@ -67,6 +70,33 @@ func (m *Metadata) Validate() error {
 	}
 
 	return nil
+}
+
+// JSONSchemaExtend has to be in sync with Registry.NeedVersion
+func (Metadata) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.If = &jsonschema.Schema{
+		Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+			properties := orderedmap.New[string, *jsonschema.Schema]()
+			registry := *sc.Properties.Value("registry")
+			registry.Enum = []any{RegistryUnset.String(), RegistryGitHub.String(), RegistryCloudQuery.String()}
+			registry.Description = ""
+			registry.Default = nil
+			properties.Set("registry", &registry)
+			return properties
+		}(),
+	}
+	sc.Then = &jsonschema.Schema{
+		Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+			properties := orderedmap.New[string, *jsonschema.Schema]()
+			version := *sc.Properties.Value("version")
+			version.Pattern = `^v.*$` // v1.2.3, v1, v0
+			version.Description = ""
+			version.Default = nil
+			properties.Set("version", &version)
+			return properties
+		}(),
+		Required: []string{"version"},
+	}
 }
 
 func (m *Metadata) SetDefaults() {

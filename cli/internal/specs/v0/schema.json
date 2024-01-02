@@ -16,9 +16,33 @@
       "type": "object"
     },
     "Destination": {
+      "if": {
+        "properties": {
+          "registry": {
+            "type": "string",
+            "enum": [
+              "",
+              "github",
+              "cloudquery"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "version": {
+            "type": "string",
+            "pattern": "^v.*$"
+          }
+        },
+        "required": [
+          "version"
+        ]
+      },
       "properties": {
         "name": {
           "type": "string",
+          "minLength": 1,
           "description": "Name of the plugin to use"
         },
         "version": {
@@ -27,6 +51,7 @@
         },
         "path": {
           "type": "string",
+          "minLength": 1,
           "description": "Path is the canonical path to the source plugin in a given registry\nFor example:\n* for `registry: github` the `path` will be: `org/repo`\n* for `registry: local` the `path` will be the path to the binary: `./path/to/binary`\n* for `registry: grpc` the `path` will be the address of the gRPC server: `host:port`"
         },
         "registry": {
@@ -39,7 +64,8 @@
             "docker",
             "cloudquery"
           ],
-          "description": "Registry can be \"\", \"github\", \"local\", \"grpc\", \"docker\", \"cloudquery\""
+          "description": "Registry can be \"\", \"github\", \"local\", \"grpc\", \"docker\", \"cloudquery\"",
+          "default": "cloudquery"
         },
         "write_mode": {
           "type": "string",
@@ -83,12 +109,40 @@
       },
       "additionalProperties": false,
       "type": "object",
+      "required": [
+        "name",
+        "path"
+      ],
       "description": "Destination plugin spec"
     },
     "Source": {
+      "if": {
+        "properties": {
+          "registry": {
+            "type": "string",
+            "enum": [
+              "",
+              "github",
+              "cloudquery"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "version": {
+            "type": "string",
+            "pattern": "^v.*$"
+          }
+        },
+        "required": [
+          "version"
+        ]
+      },
       "properties": {
         "name": {
           "type": "string",
+          "minLength": 1,
           "description": "Name of the plugin to use"
         },
         "version": {
@@ -97,6 +151,7 @@
         },
         "path": {
           "type": "string",
+          "minLength": 1,
           "description": "Path is the canonical path to the source plugin in a given registry\nFor example:\n* for `registry: github` the `path` will be: `org/repo`\n* for `registry: local` the `path` will be the path to the binary: `./path/to/binary`\n* for `registry: grpc` the `path` will be the address of the gRPC server: `host:port`"
         },
         "registry": {
@@ -109,7 +164,8 @@
             "docker",
             "cloudquery"
           ],
-          "description": "Registry can be \"\", \"github\", \"local\", \"grpc\", \"docker\", \"cloudquery\""
+          "description": "Registry can be \"\", \"github\", \"local\", \"grpc\", \"docker\", \"cloudquery\"",
+          "default": "cloudquery"
         },
         "tables": {
           "oneOf": [
@@ -144,15 +200,18 @@
         },
         "skip_dependent_tables": {
           "type": "boolean",
-          "description": "SkipDependentTables changes the matching behavior with regard to dependent tables. If set to true, dependent tables will not be synced unless they are explicitly matched by Tables."
+          "description": "SkipDependentTables changes the matching behavior with regard to dependent tables. If set to true, dependent tables will not be synced unless they are explicitly matched by Tables.",
+          "default": false
         },
         "destinations": {
           "oneOf": [
             {
               "items": {
-                "type": "string"
+                "type": "string",
+                "minLength": 1
               },
               "type": "array",
+              "minItems": 1,
               "description": "Destinations are the names of destination plugins to send sync data to"
             },
             {
@@ -175,7 +234,7 @@
           "oneOf": [
             {
               "type": "object",
-              "description": "Spec defines plugin specific configuration\nThis is different in every source plugin."
+              "description": "Source plugin own (nested) spec"
             },
             {
               "type": "null"
@@ -184,19 +243,28 @@
         },
         "deterministic_cq_id": {
           "type": "boolean",
-          "description": "DeterministicCQID is a flag that indicates whether the source plugin should generate a random UUID as the value of _cq_id\nor whether it should calculate a UUID that is a hash of the primary keys (if they exist) or the entire resource."
+          "description": "DeterministicCQID is a flag that indicates whether the source plugin should generate a random UUID as the value of `_cq_id`\nor whether it should calculate a UUID that is a hash of the primary keys (if they exist) or the entire resource.",
+          "default": false
         },
         "otel_endpoint": {
           "type": "string",
-          "description": "If specified this will spawn the plugin with --otel-endpoint"
+          "description": "If specified this will spawn the plugin with `--otel-endpoint`",
+          "default": ""
         },
         "otel_endpoint_insecure": {
           "type": "boolean",
-          "description": "If specified this will spawn the plugin with --otel-endpoint-insecure"
+          "description": "If specified this will spawn the plugin with `--otel-endpoint-insecure`",
+          "default": false
         }
       },
       "additionalProperties": false,
       "type": "object",
+      "required": [
+        "name",
+        "path",
+        "tables",
+        "destinations"
+      ],
       "description": "Source plugin spec"
     },
     "Spec": {

@@ -60,6 +60,7 @@ func (Registry) JSONSchemaExtend(sc *jsonschema.Schema) {
 	}
 }
 
+// NeedVersion has to be in sync with Metadata.JSONSchemaExtend
 func (r Registry) NeedVersion() bool {
 	return r == RegistryGitHub || r == RegistryCloudQuery
 }
