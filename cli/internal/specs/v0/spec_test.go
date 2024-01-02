@@ -20,35 +20,35 @@ func TestSpec_JSONSchemaExtend(t *testing.T) {
 		{
 			Name: "missing kind",
 			Err:  true,
-			Spec: `{"kind":"", "spec":{}}`,
+			Spec: `{"spec":{"name":"a","path":"b","registry":"local"}}`,
 		},
 		{
 			Name: "empty kind",
 			Err:  true,
-			Spec: `{"kind":"", "spec":{}}`,
+			Spec: `{"kind":"","spec":{"name":"a","path":"b","registry":"local"}}`,
 		},
 		{
 			Name: "null kind",
 			Err:  true,
-			Spec: `{"kind":null, "spec":{}}`,
+			Spec: `{"kind":null,"spec":{"name":"a","path":"b","registry":"local"}}`,
 		},
 		{
 			Name: "bad kind",
 			Err:  true,
-			Spec: `{"kind":123, "spec":{}}`,
+			Spec: `{"kind":123,"spec":{"name":"a","path":"b","registry":"local"}}`,
 		},
 		{
 			Name: "bad kind value",
 			Err:  true,
-			Spec: `{"kind":"123", "spec":{}}`,
+			Spec: `{"kind":"123","spec":{"name":"a","path":"b","registry":"local"}}`,
 		},
 		{
 			Name: "kind:source",
-			Spec: `{"kind":"source", "spec":{}}`,
+			Spec: `{"kind":"source","spec":{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a","b","c"]}}`,
 		},
 		{
 			Name: "kind:destination",
-			Spec: `{"kind":"source", "spec":{}}`,
+			Spec: `{"kind":"destination","spec":{"name":"a","path":"b","registry":"local"}}`,
 		},
 		{
 			Name: "missing spec",
@@ -57,35 +57,36 @@ func TestSpec_JSONSchemaExtend(t *testing.T) {
 		},
 		{
 			Name: "empty spec",
-			Spec: `{"kind":"source", "spec":{}}`,
+			Err:  true,
+			Spec: `{"kind":"source","spec":{}}`,
 		},
 		{
 			Name: "null spec",
 			Err:  true,
-			Spec: `{"kind":"source", "spec":null}`,
+			Spec: `{"kind":"source","spec":null}`,
 		},
 		{
 			Name: "bad spec",
 			Err:  true,
-			Spec: `{"kind":"source", "spec":123}`,
+			Spec: `{"kind":"source","spec":123}`,
 		},
 		{
 			Name: "kind:destination,spec:destination",
-			Spec: `{"kind":"destination", "spec":{"write_mode":"append"}}`,
+			Spec: `{"kind":"destination","spec":{"name":"a","path":"b","registry":"local","write_mode":"append"}}`,
 		},
 		{
 			Name: "kind:source,spec:destination",
 			Err:  true,
-			Spec: `{"kind":"source", "spec":{"write_mode":"append"}}`,
+			Spec: `{"kind":"source","spec":{"name":"a","path":"b","registry":"local","write_mode":"append"}}`,
 		},
 		{
 			Name: "kind:destination,spec:source",
 			Err:  true,
-			Spec: `{"kind":"destination", "spec":{"destinations":["a","b","c"]}}`,
+			Spec: `{"kind":"destination","spec":{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a","b","c"]}}`,
 		},
 		{
 			Name: "kind:source,spec:source",
-			Spec: `{"kind":"source", "spec":{"destinations":["a","b","c"]}}`,
+			Spec: `{"kind":"source","spec":{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a","b","c"]}}`,
 		},
 	})
 }

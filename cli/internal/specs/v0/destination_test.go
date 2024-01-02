@@ -283,6 +283,7 @@ func TestDestination_JSONSchema(t *testing.T) {
 	jsonschema.TestJSONSchema(t, string(data), []jsonschema.TestCase{
 		{
 			Name: "empty",
+			Err:  true,
 			Spec: `{}`,
 		},
 		{
@@ -296,17 +297,21 @@ func TestDestination_JSONSchema(t *testing.T) {
 			Spec: `[]`,
 		},
 		{
+			Name: "missing spec",
+			Spec: `{"name":"a","path":"b","registry":"local"}`,
+		},
+		{
 			Name: "empty spec",
-			Spec: `{"spec":{}}`,
+			Spec: `{"name":"a","path":"b","registry":"local","spec":{}}`,
 		},
 		{
 			Name: "null spec",
-			Spec: `{"spec":null}`,
+			Spec: `{"name":"a","path":"b","registry":"local","spec":null}`,
 		},
 		{
 			Name: "bad spec type",
 			Err:  true,
-			Spec: `{"spec":[]}`,
+			Spec: `{"name":"a","path":"b","registry":"local","spec":[]}`,
 		},
 		// write_mode, migrate_mode & pk_mode are tested separately
 	})
