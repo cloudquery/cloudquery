@@ -47,6 +47,7 @@ type Source struct {
 // called before SetDefaults.
 func (s *Source) GetWarnings() Warnings {
 	warnings := make(map[string]string)
+
 	if s.SkipDependentTables && slices.Contains(s.Tables, "*") {
 		warnings["skip_dependent_tables"] = "the `skip_dependent_tables` option is ineffective when used with '*' `tables`"
 	}

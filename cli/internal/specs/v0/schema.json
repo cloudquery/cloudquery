@@ -99,18 +99,6 @@
           ],
           "description": "Registry can be \"\", \"github\", \"local\", \"grpc\", \"docker\", \"cloudquery\""
         },
-        "concurrency": {
-          "type": "integer",
-          "description": "Deprecated: Concurrency is the number of concurrent workers to use when syncing data. Should now use plugin-specific field instead."
-        },
-        "table_concurrency": {
-          "type": "integer",
-          "description": "Deprecated: use plugin-level Concurrency instead"
-        },
-        "resource_concurrency": {
-          "type": "integer",
-          "description": "Deprecated: use plugin-level Concurrency instead"
-        },
         "tables": {
           "oneOf": [
             {
@@ -167,28 +155,6 @@
               "type": "null"
             }
           ]
-        },
-        "backend": {
-          "type": "string",
-          "enum": [
-            "none",
-            "local"
-          ],
-          "description": "Deprecated: Backend is the name of the state backend to use. Should now use `backend_options` instead."
-        },
-        "backend_spec": {
-          "oneOf": [
-            {
-              "description": "Deprecated: BackendSpec contains any backend-specific configuration. Should now use `backend_options` instead."
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "scheduler": {
-          "type": "integer",
-          "description": "Deprecated: Scheduler defines the scheduling algorithm that should be used to sync data. Should now use plugin-specific field instead."
         },
         "spec": {
           "oneOf": [

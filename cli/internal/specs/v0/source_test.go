@@ -130,30 +130,6 @@ spec:
 		nil,
 	},
 	{
-		"valid_scheduler",
-		`kind: source
-spec:
-  name: test
-  path: cloudquery/test
-  version: v1.1.0
-  destinations: ["test"]
-  tables: ["test"]
-`,
-		"",
-		&Source{
-			Metadata: Metadata{
-				Name:             "test",
-				Registry:         RegistryCloudQuery,
-				Path:             "cloudquery/test",
-				Version:          "v1.1.0",
-				registryInferred: true,
-			},
-			Destinations: []string{"test"},
-			Tables:       []string{"test"},
-			Spec:         map[string]any{},
-		},
-	},
-	{
 		"success",
 		`kind: source
 spec:
