@@ -38,7 +38,11 @@
           ]
         },
         "migrate_mode": {
-          "type": "integer"
+          "type": "string",
+          "enum": [
+            "safe",
+            "forced"
+          ]
         },
         "batch_size": {
           "type": "integer",
