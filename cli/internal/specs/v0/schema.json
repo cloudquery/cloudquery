@@ -18,13 +18,16 @@
     "Destination": {
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "Name of the plugin to use"
         },
         "version": {
-          "type": "string"
+          "type": "string",
+          "description": "Version of the plugin to be used"
         },
         "path": {
-          "type": "string"
+          "type": "string",
+          "description": "Path is the canonical path to the source plugin in a given registry\nFor example:\n* for `registry: github` the `path` will be: `org/repo`\n* for `registry: local` the `path` will be the path to the binary: `./path/to/binary`\n* for `registry: grpc` the `path` will be the address of the gRPC server: `host:port`"
         },
         "registry": {
           "type": "string",
@@ -35,7 +38,8 @@
             "grpc",
             "docker",
             "cloudquery"
-          ]
+          ],
+          "description": "Registry can be \"\", \"github\", \"local\", \"grpc\", \"docker\", \"cloudquery\""
         },
         "write_mode": {
           "type": "string",
@@ -52,6 +56,13 @@
             "forced"
           ]
         },
+        "pk_mode": {
+          "type": "string",
+          "enum": [
+            "default",
+            "cq-id-only"
+          ]
+        },
         "spec": {
           "oneOf": [
             {
@@ -60,13 +71,6 @@
             {
               "type": "null"
             }
-          ]
-        },
-        "pk_mode": {
-          "type": "string",
-          "enum": [
-            "default",
-            "cq-id-only"
           ]
         }
       },
@@ -77,15 +81,15 @@
       "properties": {
         "name": {
           "type": "string",
-          "description": "Name of the source plugin to use"
+          "description": "Name of the plugin to use"
         },
         "version": {
           "type": "string",
-          "description": "Version of the source plugin to use"
+          "description": "Version of the plugin to be used"
         },
         "path": {
           "type": "string",
-          "description": "Path is the canonical path to the source plugin in a given registry\nFor example:\nin github the path will be: org/repo\nFor the local registry the path will be the path to the binary: ./path/to/binary\nFor the gRPC registry the path will be the address of the gRPC server: host:port"
+          "description": "Path is the canonical path to the source plugin in a given registry\nFor example:\n* for `registry: github` the `path` will be: `org/repo`\n* for `registry: local` the `path` will be the path to the binary: `./path/to/binary`\n* for `registry: grpc` the `path` will be the address of the gRPC server: `host:port`"
         },
         "registry": {
           "type": "string",

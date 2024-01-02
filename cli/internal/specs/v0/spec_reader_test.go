@@ -317,7 +317,8 @@ var specLoaderTestCases = []specLoaderTestCase{
 					Registry:         RegistryCloudQuery,
 					registryInferred: true,
 				},
-				Destinations: []string{"postgresql"}, Tables: []string{"test"},
+				Destinations: []string{"postgresql"},
+				Tables:       []string{"test"},
 			},
 		},
 		destinations: []*Destination{
@@ -382,7 +383,8 @@ var specLoaderTestCases = []specLoaderTestCase{
 					Registry:         RegistryCloudQuery,
 					registryInferred: true,
 				},
-				Destinations: []string{"0987654321"}, Tables: []string{"test"},
+				Destinations: []string{"0987654321"},
+				Tables:       []string{"test"},
 			},
 			{
 				Metadata: Metadata{
@@ -392,7 +394,8 @@ var specLoaderTestCases = []specLoaderTestCase{
 					Registry:         RegistryCloudQuery,
 					registryInferred: true,
 				},
-				Destinations: []string{"0987654321"}, Tables: []string{"test"},
+				Destinations: []string{"0987654321"},
+				Tables:       []string{"test"},
 			},
 		},
 		destinations: []*Destination{
@@ -426,7 +429,8 @@ var specLoaderTestCases = []specLoaderTestCase{
 					Version:          "v1.0.0",
 					registryInferred: true,
 				},
-				Destinations: []string{"bigquery"}, Tables: []string{"*"},
+				Destinations: []string{"bigquery"},
+				Tables:       []string{"*"},
 			},
 		},
 		destinations: []*Destination{
@@ -457,7 +461,8 @@ var specLoaderTestCases = []specLoaderTestCase{
 					Version:          "v1.0.0",
 					registryInferred: true,
 				},
-				Destinations: []string{"bigquery"}, Tables: []string{"*"},
+				Destinations: []string{"bigquery"},
+				Tables:       []string{"*"},
 			},
 		},
 		destinations: []*Destination{
@@ -469,7 +474,8 @@ var specLoaderTestCases = []specLoaderTestCase{
 					Version:          "v3.1.0",
 					registryInferred: true,
 				},
-				Spec: map[string]any{"service_account_key_json": getExpectedApplicationDefaultCredentials()}},
+				Spec: map[string]any{"service_account_key_json": getExpectedApplicationDefaultCredentials()},
+			},
 		},
 	},
 }
