@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.2.17](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.2.16...plugins-destination-test-v2.2.17) (2024-01-02)
+
+
+### Bug Fixes
+
+* Add doc to test destination plugin ([#15902](https://github.com/cloudquery/cloudquery/issues/15902)) ([3ee9a23](https://github.com/cloudquery/cloudquery/commit/3ee9a23dd26cf0ddfa30bb5583b1ab303773cb31))
+* **deps:** Update github.com/apache/arrow/go/v15 digest to 7c3480e ([#15904](https://github.com/cloudquery/cloudquery/issues/15904)) ([a3ec012](https://github.com/cloudquery/cloudquery/commit/a3ec01203183e5c94630beae86434519e87e225d))
+* **deps:** Update github.com/gomarkdown/markdown digest to 1d6d208 ([#15907](https://github.com/cloudquery/cloudquery/issues/15907)) ([86d29a9](https://github.com/cloudquery/cloudquery/commit/86d29a900e6c9dbcad09f5b0c4b0615aee59a2ae))
+* **deps:** Update golang.org/x/exp digest to 02704c9 ([#15909](https://github.com/cloudquery/cloudquery/issues/15909)) ([dfe32d2](https://github.com/cloudquery/cloudquery/commit/dfe32d2557dcac0fb6dc741c9df4edccdcb07076))
+* **deps:** Update google.golang.org/genproto/googleapis/api digest to 995d672 ([#15911](https://github.com/cloudquery/cloudquery/issues/15911)) ([18ac2b8](https://github.com/cloudquery/cloudquery/commit/18ac2b806d798e0a9052cc10e8442557ab1c4253))
+
 ## [2.2.16](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.2.15...plugins-destination-test-v2.2.16) (2023-12-29)
 
 
