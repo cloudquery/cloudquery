@@ -47,26 +47,33 @@
             "overwrite-delete-stale",
             "overwrite",
             "append"
-          ]
+          ],
+          "description": "Destination plugin write mode",
+          "default": "overwrite-delete-stale"
         },
         "migrate_mode": {
           "type": "string",
           "enum": [
             "safe",
             "forced"
-          ]
+          ],
+          "description": "Destination plugin migrate mode",
+          "default": "safe"
         },
         "pk_mode": {
           "type": "string",
           "enum": [
             "default",
             "cq-id-only"
-          ]
+          ],
+          "description": "Destination plugin PK mode",
+          "default": "default"
         },
         "spec": {
           "oneOf": [
             {
-              "type": "object"
+              "type": "object",
+              "description": "Destination plugin own (nested) spec"
             },
             {
               "type": "null"

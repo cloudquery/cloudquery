@@ -10,11 +10,11 @@ import (
 type Destination struct {
 	Metadata
 
-	WriteMode   WriteMode   `json:"write_mode,omitempty"`
-	MigrateMode MigrateMode `json:"migrate_mode,omitempty"`
-	PKMode      PKMode      `json:"pk_mode,omitempty"`
+	WriteMode   WriteMode   `json:"write_mode,omitempty" jsonschema:"default=overwrite-delete-stale,description=Destination plugin write mode"`
+	MigrateMode MigrateMode `json:"migrate_mode,omitempty" jsonschema:"default=safe,description=Destination plugin migrate mode"`
+	PKMode      PKMode      `json:"pk_mode,omitempty" jsonschema:"default=default,description=Destination plugin PK mode"`
 
-	Spec map[string]any `json:"spec,omitempty"`
+	Spec map[string]any `json:"spec,omitempty" jsonschema:"description=Destination plugin own (nested) spec"`
 }
 
 func (*Destination) GetWarnings() Warnings {
