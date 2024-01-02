@@ -128,7 +128,7 @@ spec:
 		&Destination{
 			Metadata: Metadata{
 				Name:     "test",
-				Registry: RegistryGrpc,
+				Registry: RegistryGRPC,
 				Path:     "localhost:9999",
 			},
 			Spec: map[string]any{},
@@ -185,7 +185,7 @@ spec:
 		&Destination{
 			Metadata: Metadata{
 				Name:     "test",
-				Registry: RegistryGithub,
+				Registry: RegistryGitHub,
 				Path:     "cloudquery/test",
 				Version:  "v1.1.0",
 			},
@@ -231,7 +231,7 @@ func TestDestination_VersionString(t *testing.T) {
 				Name:     "aws",
 				Version:  "v10.0.0",
 				Path:     "cloudquery/aws",
-				Registry: RegistryGithub,
+				Registry: RegistryGitHub,
 			},
 			want: "aws (v10.0.0)",
 		},
@@ -241,7 +241,7 @@ func TestDestination_VersionString(t *testing.T) {
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "cloudquery/aws",
-				Registry: RegistryGithub,
+				Registry: RegistryGitHub,
 			},
 			want: "my-aws-spec (aws@v10.0.0)",
 		},
@@ -251,7 +251,7 @@ func TestDestination_VersionString(t *testing.T) {
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "localhost:7777",
-				Registry: RegistryGrpc,
+				Registry: RegistryGRPC,
 			},
 			want: "my-aws-spec (grpc@localhost:7777)",
 		},
@@ -261,7 +261,7 @@ func TestDestination_VersionString(t *testing.T) {
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "aws",
-				Registry: RegistryGithub,
+				Registry: RegistryGitHub,
 			},
 			want: "my-aws-spec (aws@v10.0.0)",
 		},

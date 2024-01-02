@@ -9,11 +9,11 @@ import (
 
 func CLIRegistryToPbRegistry(registry specs.Registry) pbSpecs.Registry {
 	switch registry {
-	case specs.RegistryGithub:
+	case specs.RegistryGitHub:
 		return pbSpecs.RegistryGithub
 	case specs.RegistryLocal:
 		return pbSpecs.RegistryLocal
-	case specs.RegistryGrpc:
+	case specs.RegistryGRPC:
 		return pbSpecs.RegistryGrpc
 	case specs.RegistryCloudQuery:
 		return pbSpecs.RegistryCloudQuery

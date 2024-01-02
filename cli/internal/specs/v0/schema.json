@@ -27,7 +27,15 @@
           "type": "string"
         },
         "registry": {
-          "type": "integer"
+          "type": "string",
+          "enum": [
+            "",
+            "github",
+            "local",
+            "grpc",
+            "docker",
+            "cloudquery"
+          ]
         },
         "write_mode": {
           "type": "string",
@@ -88,7 +96,15 @@
           "description": "Path is the canonical path to the source plugin in a given registry\nFor example:\nin github the path will be: org/repo\nFor the local registry the path will be the path to the binary: ./path/to/binary\nFor the gRPC registry the path will be the address of the gRPC server: host:port"
         },
         "registry": {
-          "type": "integer",
+          "type": "string",
+          "enum": [
+            "",
+            "github",
+            "local",
+            "grpc",
+            "docker",
+            "cloudquery"
+          ],
           "description": "Registry can be \"\", \"github\", \"local\", \"grpc\", \"docker\", \"cloudquery\""
         },
         "concurrency": {
