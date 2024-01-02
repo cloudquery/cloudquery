@@ -19,6 +19,10 @@ func TestKindFromString(t *testing.T) {
 	k, err = KindFromString("Destination")
 	require.Error(t, err)
 	require.Equal(t, KindSource, k)
+
+	k, err = KindFromString("")
+	require.Error(t, err)
+	require.Equal(t, KindSource, k)
 }
 
 func TestKind_JSONSchemaExtend(t *testing.T) {
@@ -34,6 +38,11 @@ func TestKind_JSONSchemaExtend(t *testing.T) {
 			Name: "null",
 			Err:  true,
 			Spec: `null`,
+		},
+		{
+			Name: "bad type",
+			Err:  true,
+			Spec: `123`,
 		},
 		{
 			Name: "bad value",

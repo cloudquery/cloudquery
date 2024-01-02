@@ -23,6 +23,10 @@ func TestWriteModeFromString(t *testing.T) {
 	m, err = WriteModeFromString("Append")
 	require.Error(t, err)
 	require.Equal(t, WriteModeOverwriteDeleteStale, m)
+
+	m, err = WriteModeFromString("")
+	require.Error(t, err)
+	require.Equal(t, WriteModeOverwriteDeleteStale, m)
 }
 
 func TestWriteMode_JSONSchemaExtend(t *testing.T) {
@@ -38,6 +42,11 @@ func TestWriteMode_JSONSchemaExtend(t *testing.T) {
 			Name: "null",
 			Err:  true,
 			Spec: `null`,
+		},
+		{
+			Name: "bad type",
+			Err:  true,
+			Spec: `123`,
 		},
 		{
 			Name: "bad value",

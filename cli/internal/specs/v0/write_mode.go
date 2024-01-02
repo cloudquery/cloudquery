@@ -60,5 +60,5 @@ func WriteModeFromString(s string) (WriteMode, error) {
 			return WriteMode(m), nil
 		}
 	}
-	return 0, fmt.Errorf("invalid write mode: %s", s)
+	return WriteModeOverwriteDeleteStale, fmt.Errorf("invalid write mode: %s", s)
 }

@@ -59,7 +59,11 @@
           ]
         },
         "pk_mode": {
-          "type": "integer"
+          "type": "string",
+          "enum": [
+            "default",
+            "cq-id-only"
+          ]
         }
       },
       "additionalProperties": false,
