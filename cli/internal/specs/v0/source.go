@@ -18,9 +18,9 @@ type Source struct {
 	Metadata
 
 	// Tables to sync from the source plugin
-	Tables []string `json:"tables,omitempty"`
+	Tables []string `json:"tables,omitempty" jsonschema:"minItems=1,minLength=1"`
 	// SkipTables defines tables to skip when syncing data. Useful if a glob pattern is used in Tables
-	SkipTables []string `json:"skip_tables,omitempty"`
+	SkipTables []string `json:"skip_tables,omitempty" jsonschema:"minLength=1"`
 	// SkipDependentTables changes the matching behavior with regard to dependent tables. If set to true, dependent tables will not be synced unless they are explicitly matched by Tables.
 	SkipDependentTables bool `json:"skip_dependent_tables,omitempty"`
 	// Destinations are the names of destination plugins to send sync data to
