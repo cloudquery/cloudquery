@@ -18,29 +18,29 @@ type Source struct {
 	Metadata
 
 	// Tables to sync from the source plugin
-	Tables []string `json:"tables,omitempty" jsonschema:"minItems=1,minLength=1"`
+	Tables []string `json:"tables,omitempty" jsonschema:"required,minItems=1,minLength=1"`
 	// SkipTables defines tables to skip when syncing data. Useful if a glob pattern is used in Tables
 	SkipTables []string `json:"skip_tables,omitempty" jsonschema:"minLength=1"`
 	// SkipDependentTables changes the matching behavior with regard to dependent tables. If set to true, dependent tables will not be synced unless they are explicitly matched by Tables.
-	SkipDependentTables bool `json:"skip_dependent_tables,omitempty"`
+	SkipDependentTables bool `json:"skip_dependent_tables,omitempty" jsonschema:"default=false"`
 	// Destinations are the names of destination plugins to send sync data to
-	Destinations []string `json:"destinations,omitempty"`
+	Destinations []string `json:"destinations,omitempty" jsonschema:"required,minItems=1,minLength=1"`
 
 	// Optional Backend options for sync operation
 	BackendOptions *BackendOptions `json:"backend_options,omitempty"`
 
 	// Spec defines plugin specific configuration
 	// This is different in every source plugin.
-	Spec map[string]any `json:"spec,omitempty"`
+	Spec map[string]any `json:"spec,omitempty" jsonschema:"description=Source plugin own (nested) spec"`
 
-	// DeterministicCQID is a flag that indicates whether the source plugin should generate a random UUID as the value of _cq_id
+	// DeterministicCQID is a flag that indicates whether the source plugin should generate a random UUID as the value of `_cq_id`
 	// or whether it should calculate a UUID that is a hash of the primary keys (if they exist) or the entire resource.
-	DeterministicCQID bool `json:"deterministic_cq_id,omitempty"`
+	DeterministicCQID bool `json:"deterministic_cq_id,omitempty" jsonschema:"default=false"`
 
-	// If specified this will spawn the plugin with --otel-endpoint
-	OtelEndpoint string `json:"otel_endpoint,omitempty"`
-	// If specified this will spawn the plugin with --otel-endpoint-insecure
-	OtelEndpointInsecure bool `json:"otel_endpoint_insecure,omitempty"`
+	// If specified this will spawn the plugin with `--otel-endpoint`
+	OtelEndpoint string `json:"otel_endpoint,omitempty" jsonschema:"default="`
+	// If specified this will spawn the plugin with `--otel-endpoint-insecure`
+	OtelEndpointInsecure bool `json:"otel_endpoint_insecure,omitempty" jsonschema:"default=false"`
 }
 
 // GetWarnings returns a list of deprecated options that were used in the source config. This should be
