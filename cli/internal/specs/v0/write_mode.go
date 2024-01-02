@@ -17,7 +17,11 @@ const (
 )
 
 var (
-	AllWriteModes = [...]string{"overwrite-delete-stale", "overwrite", "append"}
+	AllWriteModes = [...]string{
+		WriteModeOverwriteDeleteStale: "overwrite-delete-stale",
+		WriteModeOverwrite:            "overwrite",
+		WriteModeAppend:               "append",
+	}
 )
 
 func (m WriteMode) String() string {
