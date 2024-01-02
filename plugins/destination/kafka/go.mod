@@ -5,7 +5,7 @@ go 1.21.4
 require (
 	github.com/Shopify/sarama v1.37.2
 	github.com/apache/arrow/go/v15 v15.0.0-20231229025812-7c3480e2f028
-	github.com/cloudquery/filetypes/v4 v4.2.3
+	github.com/cloudquery/filetypes/v4 v4.2.4
 	github.com/cloudquery/plugin-sdk/v4 v4.24.0
 	github.com/rs/zerolog v1.31.0
 )
@@ -80,8 +80,8 @@ require (
 	github.com/klauspost/asmfmt v1.3.2 // indirect
 	github.com/klauspost/compress v1.17.4 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.6 // indirect
-	github.com/labstack/echo/v4 v4.11.3 // indirect
-	github.com/labstack/gommon v0.4.1 // indirect
+	github.com/labstack/echo/v4 v4.11.4 // indirect
+	github.com/labstack/gommon v0.4.2 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
 	github.com/mailgun/raymond/v2 v2.0.48 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
