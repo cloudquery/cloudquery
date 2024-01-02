@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/gcs
 
-go 1.21.1
+go 1.21.4
 
 require (
 	cloud.google.com/go/storage v1.30.1
