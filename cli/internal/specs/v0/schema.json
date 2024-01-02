@@ -82,7 +82,8 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "Destination plugin spec"
     },
     "Source": {
       "properties": {

@@ -3,6 +3,7 @@ package specs
 import (
 	"testing"
 
+	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -274,4 +275,39 @@ func TestDestination_VersionString(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestDestination_JSONSchema(t *testing.T) {
+	data, err := jsonschema.Generate(new(Destination))
+	require.NoError(t, err)
+	jsonschema.TestJSONSchema(t, string(data), []jsonschema.TestCase{
+		{
+			Name: "empty",
+			Spec: `{}`,
+		},
+		{
+			Name: "null",
+			Err:  true,
+			Spec: `null`,
+		},
+		{
+			Name: "bad type",
+			Err:  true,
+			Spec: `[]`,
+		},
+		{
+			Name: "empty spec",
+			Spec: `{"spec":{}}`,
+		},
+		{
+			Name: "null spec",
+			Spec: `{"spec":null}`,
+		},
+		{
+			Name: "bad spec type",
+			Err:  true,
+			Spec: `{"spec":[]}`,
+		},
+		// write_mode, migrate_mode & pk_mode are tested separately
+	})
 }

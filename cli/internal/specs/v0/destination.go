@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// Destination plugin spec
 type Destination struct {
 	Metadata
 
