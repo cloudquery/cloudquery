@@ -6,14 +6,23 @@
     "BackendOptions": {
       "properties": {
         "table_name": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "description": "The name of the table to store the key-value pairs for incremental progress."
         },
         "connection": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "description": "Connection string for the destination plugin.\nCan be either `@@plugin.name.connection` or a fully-qualified gRPC connection string."
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "required": [
+        "table_name",
+        "connection"
+      ],
+      "description": "Backend options to be used in conjunction with incremental tables (stores the incremental progres)"
     },
     "Destination": {
       "if": {
@@ -168,20 +177,13 @@
           "default": "cloudquery"
         },
         "tables": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string",
-                "minLength": 1
-              },
-              "type": "array",
-              "minItems": 1,
-              "description": "Tables to sync from the source plugin"
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": "array",
+          "minItems": 1,
+          "description": "Tables to sync from the source plugin"
         },
         "skip_tables": {
           "oneOf": [
@@ -204,20 +206,13 @@
           "default": false
         },
         "destinations": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string",
-                "minLength": 1
-              },
-              "type": "array",
-              "minItems": 1,
-              "description": "Destinations are the names of destination plugins to send sync data to"
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": "array",
+          "minItems": 1,
+          "description": "Destinations are the names of destination plugins to send sync data to"
         },
         "backend_options": {
           "oneOf": [

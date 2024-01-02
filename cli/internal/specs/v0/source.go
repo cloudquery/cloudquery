@@ -6,11 +6,18 @@ import (
 	"fmt"
 	"slices"
 	"strings"
+
+	"github.com/invopop/jsonschema"
 )
 
+// Backend options to be used in conjunction with incremental tables (stores the incremental progres)
 type BackendOptions struct {
-	TableName  string `json:"table_name,omitempty"`
-	Connection string `json:"connection,omitempty"`
+	// The name of the table to store the key-value pairs for incremental progress.
+	TableName string `json:"table_name,omitempty" jsonschema:"required,minLength=1"`
+
+	// Connection string for the destination plugin.
+	// Can be either `@@plugin.name.connection` or a fully-qualified gRPC connection string.
+	Connection string `json:"connection,omitempty" jsonschema:"required,minLength=1"`
 }
 
 // Source plugin spec
@@ -75,6 +82,16 @@ func (s *Source) UnmarshalSpec(out any) error {
 	dec.UseNumber()
 	dec.DisallowUnknownFields()
 	return dec.Decode(out)
+}
+
+func (Source) JSONSchemaExtend(sc *jsonschema.Schema) {
+	tables := sc.Properties.Value("tables")
+	*tables = *tables.OneOf[0] // only value
+
+	destinations := sc.Properties.Value("destinations")
+	*destinations = *destinations.OneOf[0] // only value
+
+	Metadata{}.JSONSchemaExtend(sc) // have to call manually
 }
 
 func (s *Source) Validate() error {
