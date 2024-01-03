@@ -41,12 +41,7 @@ func New(ctx context.Context, logger zerolog.Logger, _ spec.Spec) (schema.Client
 	defaultRetryPolicy := common.DefaultRetryPolicy()
 	common.GlobalRetry = &defaultRetryPolicy
 
-	configProvider, err := common.ComposingConfigurationProvider(
-		[]common.ConfigurationProvider{
-			common.ConfigurationProviderEnvironmentVariables("OCI_CLI", ""),
-			common.DefaultConfigProvider(),
-		},
-	)
+	configProvider, err := getConfigProvider()
 	if err != nil {
 		return nil, err
 	}

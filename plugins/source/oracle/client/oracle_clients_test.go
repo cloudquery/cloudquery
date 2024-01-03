@@ -4,17 +4,11 @@ import (
 	"os"
 	"testing"
 
-	"github.com/oracle/oci-go-sdk/v65/common"
 	"github.com/stretchr/testify/require"
 )
 
 func TestOCIConfigurationProvider(t *testing.T) {
-	configProvider, err := common.ComposingConfigurationProvider(
-		[]common.ConfigurationProvider{
-			common.ConfigurationProviderEnvironmentVariables("OCI_CLI", ""),
-			common.DefaultConfigProvider(),
-		},
-	)
+	configProvider, err := getConfigProvider()
 	require.NoError(t, err)
 
 	prefixes := []string{"TF_VAR", "OCI_CLI"}
