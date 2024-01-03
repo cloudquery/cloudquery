@@ -14,7 +14,7 @@ type Metadata struct {
 	// Version of the plugin to be used
 	Version string `json:"version"`
 
-	// Path is the canonical path to the source plugin in a given registry
+	// Path is the canonical path to the plugin in a given registry
 	// For example:
 	// * for `registry: github` the `path` will be: `org/repo`
 	// * for `registry: local` the `path` will be the path to the binary: `./path/to/binary`
