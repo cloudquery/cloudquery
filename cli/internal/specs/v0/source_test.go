@@ -139,7 +139,6 @@ spec:
   path: cloudquery/test
   version: v1.1.0
   destinations: ["test"]
-  scheduler: round-robin
   tables: ["test"]
 `,
 		"",
