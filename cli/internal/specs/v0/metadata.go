@@ -36,7 +36,21 @@ func (m *Metadata) Validate() error {
 	if m.Path == "" {
 		msg := "path is required"
 		// give a small hint to help users transition from the old config format that didn't require path
-		officialPlugins := []string{"aws", "azure", "gcp", "k8s", "postgresql", "clickhouse"}
+		officialPlugins := []string{
+			"aws",
+			"azure",
+			"gcp",
+			"digitalocean",
+			"github",
+			"heroku",
+			"k8s",
+			"okta",
+			"terraform",
+			"cloudflare",
+			"postgresql",
+			"csv",
+			"clickhouse",
+		}
 		if slices.Contains(officialPlugins, m.Name) {
 			msg += fmt.Sprintf(". Hint: try setting path to cloudquery/%s in your config", m.Name)
 		}
