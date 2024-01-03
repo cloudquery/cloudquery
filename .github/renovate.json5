@@ -14,7 +14,7 @@
     },
   ],
   packageRules: [
-    { "matchFileNames": ["website/**"], groupName: "Website" },
+    { matchFileNames: ["website/**"], groupName: "Website" },
     {
       matchPackageNames: ["github.com/jackc/pgx/v4"],
       allowedVersions: "<5",
