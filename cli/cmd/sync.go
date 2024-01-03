@@ -214,13 +214,7 @@ func sync(cmd *cobra.Command, args []string) error {
 			for field, msg := range warnings {
 				log.Warn().Str("source", source.Name).Str("field", field).Msg(msg)
 			}
-			if _, found := warnings["scheduler"]; found {
-				source.Spec["scheduler"] = source.Scheduler.String() // nolint:staticcheck // use of deprecated field
-			}
-			if _, found := warnings["concurrency"]; found {
-				source.Spec["concurrency"] = source.Concurrency // nolint:staticcheck // use of deprecated field
-			}
-			for i, destination := range destinationClientsForSource {
+			for _, destination := range destinationClientsForSource {
 				versions, err := destination.Versions(ctx)
 				if err != nil {
 					return fmt.Errorf("failed to get destination versions: %w", err)
@@ -231,12 +225,6 @@ func sync(cmd *cobra.Command, args []string) error {
 				destWarnings := specReader.GetDestinationWarningsByName(source.Name)
 				for field, msg := range destWarnings {
 					log.Warn().Str("destination", destination.Name()).Str("field", field).Msg(msg)
-				}
-				if _, found := destWarnings["batch_size"]; found {
-					destinationForSourceSpec[i].Spec["batch_size"] = destinationForSourceSpec[i].BatchSize // nolint:staticcheck // use of deprecated field
-				}
-				if _, found := destWarnings["batch_size_bytes"]; found {
-					destinationForSourceSpec[i].Spec["batch_size_bytes"] = destinationForSourceSpec[i].BatchSizeBytes // nolint:staticcheck // use of deprecated field
 				}
 			}
 

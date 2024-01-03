@@ -43,8 +43,8 @@ var specLoaderTestCases = []specLoaderTestCase{
 			return ""
 		},
 		sources: []*Source{
-			{Name: "gcp", Path: "cloudquery/gcp", Version: "v1.0.0", Registry: RegistryLocal, Destinations: []string{"postgresqlv2"}, TableConcurrency: 10, Tables: []string{"test"}},
-			{Name: "aws", Path: "cloudquery/aws", Version: "v1.0.0", Registry: RegistryLocal, Destinations: []string{"postgresql"}, TableConcurrency: 10, Tables: []string{"test"}},
+			{Name: "gcp", Path: "cloudquery/gcp", Version: "v1.0.0", Registry: RegistryLocal, Destinations: []string{"postgresqlv2"}, Tables: []string{"test"}},
+			{Name: "aws", Path: "cloudquery/aws", Version: "v1.0.0", Registry: RegistryLocal, Destinations: []string{"postgresql"}, Tables: []string{"test"}},
 		},
 		destinations: []*Destination{
 			{Name: "postgresqlv2", Path: "cloudquery/postgresql", Version: "v1.0.0", Registry: RegistryGrpc, WriteMode: WriteModeOverwrite, Spec: map[string]any{"credentials": "mytestcreds"}},
@@ -58,8 +58,8 @@ var specLoaderTestCases = []specLoaderTestCase{
 			return ""
 		},
 		sources: []*Source{
-			{Name: "gcp", Path: "cloudquery/gcp", Version: "v1.0.0", Registry: RegistryLocal, Destinations: []string{"postgresqlv2"}, TableConcurrency: 10, Tables: []string{"test"}},
-			{Name: "aws", Path: "cloudquery/aws", Version: "v1.0.0", Registry: RegistryLocal, Destinations: []string{"postgresql"}, TableConcurrency: 10, Tables: []string{"test"}},
+			{Name: "gcp", Path: "cloudquery/gcp", Version: "v1.0.0", Registry: RegistryLocal, Destinations: []string{"postgresqlv2"}, Tables: []string{"test"}},
+			{Name: "aws", Path: "cloudquery/aws", Version: "v1.0.0", Registry: RegistryLocal, Destinations: []string{"postgresql"}, Tables: []string{"test"}},
 		},
 		destinations: []*Destination{
 			{Name: "postgresqlv2", Path: "cloudquery/postgresql", Version: "v1.0.0", Registry: RegistryGrpc, WriteMode: WriteModeOverwrite, Spec: map[string]any{"credentials": "mytestcreds"}},
@@ -246,7 +246,7 @@ func TestLoadSpecs(t *testing.T) {
 			}
 
 			for _, d := range tc.destinations {
-				d.SetDefaults(0, 0)
+				d.SetDefaults()
 			}
 
 			require.Equal(t, tc.sources, specReader.Sources)
