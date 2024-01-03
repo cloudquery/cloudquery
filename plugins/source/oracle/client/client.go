@@ -41,7 +41,10 @@ func New(ctx context.Context, logger zerolog.Logger, _ spec.Spec) (schema.Client
 	defaultRetryPolicy := common.DefaultRetryPolicy()
 	common.GlobalRetry = &defaultRetryPolicy
 
-	configProvider := common.DefaultConfigProvider()
+	configProvider, err := getConfigProvider()
+	if err != nil {
+		return nil, err
+	}
 
 	tenancyOcid, err := configProvider.TenancyOCID()
 	if err != nil {
