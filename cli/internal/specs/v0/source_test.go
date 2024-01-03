@@ -139,7 +139,6 @@ spec:
   path: cloudquery/test
   version: v1.1.0
   destinations: ["test"]
-  scheduler: round-robin
   tables: ["test"]
 `,
 		"",
@@ -147,10 +146,8 @@ spec:
 			Name:             "test",
 			Registry:         RegistryCloudQuery,
 			Path:             "cloudquery/test",
-			Concurrency:      defaultConcurrency,
 			Version:          "v1.1.0",
 			Destinations:     []string{"test"},
-			Scheduler:        SchedulerRoundRobin,
 			Tables:           []string{"test"},
 			Spec:             map[string]any{},
 			registryInferred: true,
@@ -171,10 +168,8 @@ spec:
 			Name:             "test",
 			Registry:         RegistryCloudQuery,
 			Path:             "cloudquery/test",
-			Concurrency:      defaultConcurrency,
 			Version:          "v1.1.0",
 			Destinations:     []string{"test"},
-			Scheduler:        SchedulerDFS,
 			Tables:           []string{"test"},
 			Spec:             map[string]any{},
 			registryInferred: true,
@@ -196,10 +191,8 @@ spec:
 			Name:         "test",
 			Registry:     RegistryGithub,
 			Path:         "cloudquery/test",
-			Concurrency:  defaultConcurrency,
 			Version:      "v1.1.0",
 			Destinations: []string{"test"},
-			Scheduler:    SchedulerDFS,
 			Tables:       []string{"test"},
 			Spec:         map[string]any{},
 		},

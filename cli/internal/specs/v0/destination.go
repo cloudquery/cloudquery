@@ -16,41 +16,26 @@ type Destination struct {
 	Registry    Registry    `json:"registry,omitempty"`
 	WriteMode   WriteMode   `json:"write_mode,omitempty"`
 	MigrateMode MigrateMode `json:"migrate_mode,omitempty"`
-	// Deprecated: use plugin-spec batch_size_bytes instead
-	BatchSize int `json:"batch_size,omitempty"`
-	// Deprecated: use plugin-spec batch_size_bytes instead
-	BatchSizeBytes int            `json:"batch_size_bytes,omitempty"`
-	Spec           map[string]any `json:"spec,omitempty"`
-	PKMode         PKMode         `json:"pk_mode,omitempty"`
+	PKMode      PKMode      `json:"pk_mode,omitempty"`
+
+	Spec map[string]any `json:"spec,omitempty"`
 
 	// registryInferred is a flag that indicates whether the registry was inferred from a zero value
 	registryInferred bool
 }
 
-func (d *Destination) GetWarnings() Warnings {
+func (*Destination) GetWarnings() Warnings {
 	warnings := make(map[string]string)
-	if d.BatchSize != 0 {
-		warnings["batch_size"] = "batch_size in the top-level spec is deprecated and will be removed in a future release. Please use the plugin-spec `batch_size` option instead."
-	}
-	if d.BatchSizeBytes != 0 {
-		warnings["batch_size_bytes"] = "batch_size_bytes in the top-level spec is deprecated and will be removed in a future release. Please use the plugin-spec `batch_size_bytes` option instead."
-	}
 	return warnings
 }
 
-func (d *Destination) SetDefaults(defaultBatchSize, defaultBatchSizeBytes int) {
+func (d *Destination) SetDefaults() {
 	if d.Spec == nil {
 		d.Spec = make(map[string]any)
 	}
 	if d.Registry == RegistryUnset {
 		d.Registry = RegistryCloudQuery
 		d.registryInferred = true
-	}
-	if d.BatchSize == 0 {
-		d.BatchSize = defaultBatchSize
-	}
-	if d.BatchSizeBytes == 0 {
-		d.BatchSizeBytes = defaultBatchSizeBytes
 	}
 }
 
@@ -87,9 +72,7 @@ func (d *Destination) Validate() error {
 			return fmt.Errorf("version must start with v")
 		}
 	}
-	if d.BatchSize < 0 {
-		return fmt.Errorf("batch_size must be greater than 0")
-	}
+
 	return nil
 }
 

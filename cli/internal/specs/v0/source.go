@@ -10,10 +10,6 @@ import (
 	"github.com/thoas/go-funk"
 )
 
-const (
-	defaultConcurrency = 500000
-)
-
 type BackendOptions struct {
 	TableName  string `json:"table_name,omitempty"`
 	Connection string `json:"connection,omitempty"`
@@ -33,12 +29,6 @@ type Source struct {
 	Path string `json:"path,omitempty"`
 	// Registry can be "", "github", "local", "grpc", "docker", "cloudquery"
 	Registry Registry `json:"registry,omitempty"`
-	// Deprecated: Concurrency is the number of concurrent workers to use when syncing data. Should now use plugin-specific field instead.
-	Concurrency uint64 `json:"concurrency,omitempty"`
-	// Deprecated: use plugin-level Concurrency instead
-	TableConcurrency uint64 `json:"table_concurrency,omitempty"`
-	// Deprecated: use plugin-level Concurrency instead
-	ResourceConcurrency uint64 `json:"resource_concurrency,omitempty"`
 	// Tables to sync from the source plugin
 	Tables []string `json:"tables,omitempty"`
 	// SkipTables defines tables to skip when syncing data. Useful if a glob pattern is used in Tables
@@ -51,12 +41,6 @@ type Source struct {
 	// Optional Backend options for sync operation
 	BackendOptions *BackendOptions `json:"backend_options,omitempty"`
 
-	// Deprecated: Backend is the name of the state backend to use. Should now use `backend_options` instead.
-	Backend Backend `json:"backend,omitempty"`
-	// Deprecated: BackendSpec contains any backend-specific configuration. Should now use `backend_options` instead.
-	BackendSpec any `json:"backend_spec,omitempty"`
-	// Deprecated: Scheduler defines the scheduling algorithm that should be used to sync data. Should now use plugin-specific field instead.
-	Scheduler Scheduler `json:"scheduler,omitempty"`
 	// Spec defines plugin specific configuration
 	// This is different in every source plugin.
 	Spec map[string]any `json:"spec,omitempty"`
@@ -78,24 +62,6 @@ type Source struct {
 // called before SetDefaults.
 func (s *Source) GetWarnings() Warnings {
 	warnings := make(map[string]string)
-	if s.Backend.String() != BackendNone.String() {
-		warnings["backend"] = "the top-level `backend` option is deprecated. Please use the plugin-level `backend_options` option instead"
-	}
-	if s.BackendSpec != nil {
-		warnings["backend_spec"] = "the top-level `backend_spec` option is deprecated. Please use the plugin-level `backend_options` option instead"
-	}
-	if s.Scheduler.String() != SchedulerDFS.String() {
-		warnings["scheduler"] = "the top-level `scheduler` option is deprecated. Please use the plugin-level `scheduler` option instead"
-	}
-	if s.Concurrency != 0 {
-		warnings["concurrency"] = "the top-level `concurrency` option is deprecated. Please use the plugin-level `concurrency` option instead"
-	}
-	if s.TableConcurrency != 0 {
-		warnings["table_concurrency"] = "the `table_concurrency` option is deprecated. Please use the plugin-level `concurrency` option instead"
-	}
-	if s.ResourceConcurrency != 0 {
-		warnings["resource_concurrency"] = "the `resource_concurrency` option is deprecated. Please use the plugin-level `concurrency` option instead"
-	}
 	if s.SkipDependentTables && slices.Contains(s.Tables, "*") {
 		warnings["skip_dependent_tables"] = "the `skip_dependent_tables` option is ineffective when used with '*' `tables`"
 	}
@@ -114,38 +80,11 @@ func (s *Source) SetDefaults() {
 		s.Registry = RegistryCloudQuery
 		s.registryInferred = true
 	}
-	if s.Backend.String() == "" {
-		s.Backend = BackendNone
-	}
-	if s.Scheduler.String() == "" {
-		s.Scheduler = SchedulerDFS
-	}
-
-	if s.TableConcurrency != 0 || s.ResourceConcurrency != 0 {
-		// attempt to make a sensible backwards-compatible choice, but the CLI
-		// should raise a warning about this until the `table_concurrency` and `resource_concurrency` options are fully removed.
-		s.Concurrency = s.TableConcurrency + s.ResourceConcurrency
-	}
-	if s.Concurrency == 0 {
-		s.Concurrency = defaultConcurrency
-	}
 }
 
 // UnmarshalSpec unmarshals the internal spec into the given interface
 func (s *Source) UnmarshalSpec(out any) error {
 	b, err := json.Marshal(s.Spec)
-	if err != nil {
-		return err
-	}
-	dec := json.NewDecoder(bytes.NewReader(b))
-	dec.UseNumber()
-	dec.DisallowUnknownFields()
-	return dec.Decode(out)
-}
-
-// UnmarshalBackendSpec unmarshals the backend spec into the given interface
-func (s *Source) UnmarshalBackendSpec(out any) error {
-	b, err := json.Marshal(s.BackendSpec)
 	if err != nil {
 		return err
 	}
@@ -184,9 +123,7 @@ func (s *Source) Validate() error {
 	if len(s.Destinations) == 0 {
 		return fmt.Errorf("at least one destination is required")
 	}
-	if !funk.Contains(AllStrategies, s.Scheduler) {
-		return fmt.Errorf("unknown scheduler %v. Must be one of: %v", s.Scheduler, AllStrategies.String())
-	}
+
 	return nil
 }
 

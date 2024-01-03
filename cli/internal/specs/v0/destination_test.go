@@ -126,12 +126,10 @@ spec:
 `,
 		"",
 		&Destination{
-			Name:           "test",
-			Registry:       RegistryGrpc,
-			Path:           "localhost:9999",
-			BatchSize:      10000,
-			BatchSizeBytes: 10000000,
-			Spec:           map[string]any{},
+			Name:     "test",
+			Registry: RegistryGrpc,
+			Path:     "localhost:9999",
+			Spec:     map[string]any{},
 		},
 	},
 	{
@@ -144,12 +142,10 @@ spec:
 `,
 		"",
 		&Destination{
-			Name:           "test",
-			Registry:       RegistryLocal,
-			Path:           "/home/user/some_executable",
-			BatchSize:      10000,
-			BatchSizeBytes: 10000000,
-			Spec:           map[string]any{},
+			Name:     "test",
+			Registry: RegistryLocal,
+			Path:     "/home/user/some_executable",
+			Spec:     map[string]any{},
 		},
 	},
 	{
@@ -166,8 +162,6 @@ spec:
 			Registry:         RegistryCloudQuery,
 			Path:             "cloudquery/test",
 			Version:          "v1.1.0",
-			BatchSize:        10000,
-			BatchSizeBytes:   10000000,
 			Spec:             map[string]any{},
 			registryInferred: true,
 		},
@@ -183,13 +177,11 @@ spec:
 `,
 		"",
 		&Destination{
-			Name:           "test",
-			Registry:       RegistryGithub,
-			Path:           "cloudquery/test",
-			Version:        "v1.1.0",
-			BatchSize:      10000,
-			BatchSizeBytes: 10000000,
-			Spec:           map[string]any{},
+			Name:     "test",
+			Registry: RegistryGithub,
+			Path:     "cloudquery/test",
+			Version:  "v1.1.0",
+			Spec:     map[string]any{},
 		},
 	},
 }
@@ -205,7 +197,7 @@ func TestDestinationUnmarshalSpecValidate(t *testing.T) {
 				t.Fatal(err)
 			}
 			destination := spec.Spec.(*Destination)
-			destination.SetDefaults(10000, 10000000)
+			destination.SetDefaults()
 			err = destination.Validate()
 			if err != nil {
 				if err.Error() != tc.err {
