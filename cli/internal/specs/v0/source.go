@@ -36,9 +36,8 @@ type Source struct {
 	// Optional Backend options for sync operation
 	BackendOptions *BackendOptions `json:"backend_options,omitempty"`
 
-	// Spec defines plugin specific configuration
-	// This is different in every source plugin.
-	Spec map[string]any `json:"spec,omitempty" jsonschema:"description=Source plugin own (nested) spec"`
+	// Source plugin own (nested) spec
+	Spec map[string]any `json:"spec,omitempty"`
 
 	// DeterministicCQID is a flag that indicates whether the source plugin should generate a random UUID as the value of `_cq_id`
 	// or whether it should calculate a UUID that is a hash of the primary keys (if they exist) or the entire resource.

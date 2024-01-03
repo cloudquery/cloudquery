@@ -14,8 +14,11 @@ import (
 type Warnings map[string]string
 
 type Spec struct {
-	Kind Kind `json:"kind" jsonschema:"required,description=CloudQuery plugin kind"`
-	Spec any  `json:"spec" jsonschema:"required,description=CloudQuery plugin (top-level) spec"`
+	// CloudQuery plugin kind
+	Kind Kind `json:"kind" jsonschema:"required"`
+
+	// CloudQuery plugin (top-level) spec
+	Spec any `json:"spec" jsonschema:"required"`
 }
 
 func (s *Spec) UnmarshalJSON(data []byte) error {
