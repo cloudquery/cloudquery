@@ -6,8 +6,6 @@ import (
 	"fmt"
 	"slices"
 	"strings"
-
-	"github.com/thoas/go-funk"
 )
 
 type BackendOptions struct {
@@ -17,18 +15,8 @@ type BackendOptions struct {
 
 // Source is the spec for a source plugin
 type Source struct {
-	// Name of the source plugin to use
-	Name string `json:"name,omitempty"`
-	// Version of the source plugin to use
-	Version string `json:"version,omitempty"`
-	// Path is the canonical path to the source plugin in a given registry
-	// For example:
-	// in github the path will be: org/repo
-	// For the local registry the path will be the path to the binary: ./path/to/binary
-	// For the gRPC registry the path will be the address of the gRPC server: host:port
-	Path string `json:"path,omitempty"`
-	// Registry can be "", "github", "local", "grpc", "docker", "cloudquery"
-	Registry Registry `json:"registry,omitempty"`
+	Metadata
+
 	// Tables to sync from the source plugin
 	Tables []string `json:"tables,omitempty"`
 	// SkipTables defines tables to skip when syncing data. Useful if a glob pattern is used in Tables
@@ -53,9 +41,6 @@ type Source struct {
 	OtelEndpoint string `json:"otel_endpoint,omitempty"`
 	// If specified this will spawn the plugin with --otel-endpoint-insecure
 	OtelEndpointInsecure bool `json:"otel_endpoint_insecure,omitempty"`
-
-	// registryInferred is a flag that indicates whether the registry was inferred from an empty value
-	registryInferred bool
 }
 
 // GetWarnings returns a list of deprecated options that were used in the source config. This should be
@@ -73,12 +58,9 @@ func (s *Source) GetWarnings() Warnings {
 }
 
 func (s *Source) SetDefaults() {
+	s.Metadata.SetDefaults()
 	if s.Spec == nil {
 		s.Spec = make(map[string]any)
-	}
-	if s.Registry == RegistryUnset {
-		s.Registry = RegistryCloudQuery
-		s.registryInferred = true
 	}
 }
 
@@ -95,36 +77,15 @@ func (s *Source) UnmarshalSpec(out any) error {
 }
 
 func (s *Source) Validate() error {
-	if s.Name == "" {
-		return fmt.Errorf("name is required")
-	}
-	if s.Path == "" {
-		msg := "path is required"
-		// give a small hint to help users transition from the old config format that didn't require path
-		officialPlugins := []string{"aws", "azure", "gcp", "digitalocean", "github", "heroku", "k8s", "okta", "terraform", "cloudflare"}
-		if funk.ContainsString(officialPlugins, s.Name) {
-			msg += fmt.Sprintf(". Hint: try setting path to cloudquery/%s in your config", s.Name)
-		}
-		return fmt.Errorf(msg)
-	}
-
 	if len(s.Tables) == 0 {
 		return fmt.Errorf("tables configuration is required. Hint: set the tables you want to sync by adding `tables: [...]` or use `cloudquery tables` to list available tables")
 	}
 
-	if s.Registry.NeedVersion() {
-		if s.Version == "" {
-			return fmt.Errorf("version is required")
-		}
-		if !strings.HasPrefix(s.Version, "v") {
-			return fmt.Errorf("version must start with v")
-		}
-	}
 	if len(s.Destinations) == 0 {
 		return fmt.Errorf("at least one destination is required")
 	}
 
-	return nil
+	return s.Metadata.Validate()
 }
 
 func (s Source) VersionString() string {
@@ -139,8 +100,4 @@ func (s Source) VersionString() string {
 		return fmt.Sprintf("%s (%s)", s.Name, s.Version)
 	}
 	return fmt.Sprintf("%s (%s@%s)", s.Name, pathParts[1], s.Version)
-}
-
-func (s Source) RegistryInferred() bool {
-	return s.registryInferred
 }
