@@ -77,6 +77,10 @@ func (s *Source) UnmarshalSpec(out any) error {
 }
 
 func (s *Source) Validate() error {
+	if err := s.Metadata.Validate(); err != nil {
+		return err
+	}
+
 	if len(s.Tables) == 0 {
 		return fmt.Errorf("tables configuration is required. Hint: set the tables you want to sync by adding `tables: [...]` or use `cloudquery tables` to list available tables")
 	}
@@ -85,7 +89,7 @@ func (s *Source) Validate() error {
 		return fmt.Errorf("at least one destination is required")
 	}
 
-	return s.Metadata.Validate()
+	return nil
 }
 
 func (s Source) VersionString() string {
