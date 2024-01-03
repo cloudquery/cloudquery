@@ -1568,3 +1568,12 @@ func initOracleClientsInAllRegions(
 
 	return oracleClients, nil
 }
+
+func getConfigProvider() (common.ConfigurationProvider, error) {
+	return common.ComposingConfigurationProvider(
+		[]common.ConfigurationProvider{
+			common.ConfigurationProviderEnvironmentVariables("OCI_CLI", ""),
+			common.DefaultConfigProvider(),
+		},
+	)
+}
