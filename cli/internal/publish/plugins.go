@@ -555,7 +555,7 @@ func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON
 	// and talking to the registry directly since the Docker Engine API doesn't support the manifest API yet
 
 	// Loading and pushing the images is done via the Docker Go SDK
-	additionalHeaders := map[string]string{"X-Meta-Plugin-Version": pkgJSON.Version}
+	additionalHeaders := map[string]string{"X-Meta-Plugin-Version": pkgJSON.Version, "X-Meta-User-Team-Name": pkgJSON.Team}
 	dockerClient, err := client.NewClientWithOpts(client.FromEnv, client.WithHTTPHeaders(additionalHeaders))
 	if err != nil {
 		return fmt.Errorf("failed to create Docker client: %v", err)
