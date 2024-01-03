@@ -3,6 +3,7 @@ package specs
 import (
 	"testing"
 
+	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -128,7 +129,7 @@ spec:
 		&Destination{
 			Metadata: Metadata{
 				Name:     "test",
-				Registry: RegistryGrpc,
+				Registry: RegistryGRPC,
 				Path:     "localhost:9999",
 			},
 			Spec: map[string]any{},
@@ -185,7 +186,7 @@ spec:
 		&Destination{
 			Metadata: Metadata{
 				Name:     "test",
-				Registry: RegistryGithub,
+				Registry: RegistryGitHub,
 				Path:     "cloudquery/test",
 				Version:  "v1.1.0",
 			},
@@ -231,7 +232,7 @@ func TestDestination_VersionString(t *testing.T) {
 				Name:     "aws",
 				Version:  "v10.0.0",
 				Path:     "cloudquery/aws",
-				Registry: RegistryGithub,
+				Registry: RegistryGitHub,
 			},
 			want: "aws (v10.0.0)",
 		},
@@ -241,7 +242,7 @@ func TestDestination_VersionString(t *testing.T) {
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "cloudquery/aws",
-				Registry: RegistryGithub,
+				Registry: RegistryGitHub,
 			},
 			want: "my-aws-spec (aws@v10.0.0)",
 		},
@@ -251,7 +252,7 @@ func TestDestination_VersionString(t *testing.T) {
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "localhost:7777",
-				Registry: RegistryGrpc,
+				Registry: RegistryGRPC,
 			},
 			want: "my-aws-spec (grpc@localhost:7777)",
 		},
@@ -261,7 +262,7 @@ func TestDestination_VersionString(t *testing.T) {
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "aws",
-				Registry: RegistryGithub,
+				Registry: RegistryGitHub,
 			},
 			want: "my-aws-spec (aws@v10.0.0)",
 		},
@@ -274,4 +275,44 @@ func TestDestination_VersionString(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestDestination_JSONSchema(t *testing.T) {
+	data, err := jsonschema.Generate(new(Destination))
+	require.NoError(t, err)
+	jsonschema.TestJSONSchema(t, string(data), []jsonschema.TestCase{
+		{
+			Name: "empty",
+			Err:  true,
+			Spec: `{}`,
+		},
+		{
+			Name: "null",
+			Err:  true,
+			Spec: `null`,
+		},
+		{
+			Name: "bad type",
+			Err:  true,
+			Spec: `[]`,
+		},
+		{
+			Name: "missing spec",
+			Spec: `{"name":"a","path":"b","registry":"local"}`,
+		},
+		{
+			Name: "empty spec",
+			Spec: `{"name":"a","path":"b","registry":"local","spec":{}}`,
+		},
+		{
+			Name: "null spec",
+			Spec: `{"name":"a","path":"b","registry":"local","spec":null}`,
+		},
+		{
+			Name: "bad spec type",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","spec":[]}`,
+		},
+		// write_mode, migrate_mode & pk_mode are tested separately
+	})
 }

@@ -6,54 +6,19 @@ import (
 	"fmt"
 
 	"github.com/ghodss/yaml"
+	"github.com/invopop/jsonschema"
+	orderedmap "github.com/wk8/go-ordered-map/v2"
 )
 
 // Warnings is a map of field name to string, used mainly for deprecation notices.
 type Warnings map[string]string
 
-type Kind int
-
 type Spec struct {
-	Kind Kind `json:"kind"`
-	Spec any  `json:"spec"`
-}
+	// CloudQuery plugin kind
+	Kind Kind `json:"kind" jsonschema:"required"`
 
-const (
-	KindSource Kind = iota
-	KindDestination
-)
-
-func (k Kind) String() string {
-	return [...]string{"source", "destination"}[k]
-}
-
-func (k Kind) MarshalJSON() ([]byte, error) {
-	buffer := bytes.NewBufferString(`"`)
-	buffer.WriteString(k.String())
-	buffer.WriteString(`"`)
-	return buffer.Bytes(), nil
-}
-
-func (k *Kind) UnmarshalJSON(data []byte) (err error) {
-	var kind string
-	if err := json.Unmarshal(data, &kind); err != nil {
-		return err
-	}
-	if *k, err = KindFromString(kind); err != nil {
-		return err
-	}
-	return nil
-}
-
-func KindFromString(s string) (Kind, error) {
-	switch s {
-	case "source":
-		return KindSource, nil
-	case "destination":
-		return KindDestination, nil
-	default:
-		return KindSource, fmt.Errorf("unknown kind %s", s)
-	}
+	// CloudQuery plugin (top-level) spec
+	Spec any `json:"spec" jsonschema:"required"`
 }
 
 func (s *Spec) UnmarshalJSON(data []byte) error {
@@ -86,11 +51,58 @@ func (s *Spec) UnmarshalJSON(data []byte) error {
 	return dec.Decode(s.Spec)
 }
 
-func UnmarshalJSONStrict(b []byte, out any) error {
-	dec := json.NewDecoder(bytes.NewReader(b))
-	dec.DisallowUnknownFields()
-	dec.UseNumber()
-	return dec.Decode(out)
+func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
+	// delete & obtain the values
+	source, _ := sc.Properties.Delete("Source")
+	destination, _ := sc.Properties.Delete("Destination")
+
+	// update `spec` property
+	spec := sc.Properties.Value("spec")
+	// we can use `one_of because source & destination specs are mutually exclusive based on the kind
+	spec.OneOf = []*jsonschema.Schema{source, destination}
+
+	sc.AllOf = []*jsonschema.Schema{
+		{
+			// `kind: source` implies source spec
+			If: &jsonschema.Schema{
+				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+					properties := jsonschema.NewProperties()
+					kind := *sc.Properties.Value("kind")
+					kind.Const = "source"
+					kind.Enum = nil
+					properties.Set("kind", &kind)
+					return properties
+				}(),
+			},
+			Then: &jsonschema.Schema{
+				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+					properties := jsonschema.NewProperties()
+					properties.Set("spec", source)
+					return properties
+				}(),
+			},
+		},
+		{
+			// `kind: destination` implies destination spec
+			If: &jsonschema.Schema{
+				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+					properties := jsonschema.NewProperties()
+					kind := *sc.Properties.Value("kind")
+					kind.Const = "destination"
+					kind.Enum = nil
+					properties.Set("kind", &kind)
+					return properties
+				}(),
+			},
+			Then: &jsonschema.Schema{
+				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+					properties := jsonschema.NewProperties()
+					properties.Set("spec", destination)
+					return properties
+				}(),
+			},
+		},
+	}
 }
 
 func SpecUnmarshalYamlStrict(b []byte, spec *Spec) error {

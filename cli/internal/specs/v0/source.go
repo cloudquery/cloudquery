@@ -6,47 +6,54 @@ import (
 	"fmt"
 	"slices"
 	"strings"
+
+	"github.com/invopop/jsonschema"
 )
 
+// Backend options to be used in conjunction with incremental tables (stores the incremental progres)
 type BackendOptions struct {
-	TableName  string `json:"table_name,omitempty"`
-	Connection string `json:"connection,omitempty"`
+	// The name of the table to store the key-value pairs for incremental progress.
+	TableName string `json:"table_name,omitempty" jsonschema:"required,minLength=1"`
+
+	// Connection string for the destination plugin.
+	// Can be either `@@plugin.name.connection` or a fully-qualified gRPC connection string.
+	Connection string `json:"connection,omitempty" jsonschema:"required,minLength=1"`
 }
 
-// Source is the spec for a source plugin
+// Source plugin spec
 type Source struct {
 	Metadata
 
 	// Tables to sync from the source plugin
-	Tables []string `json:"tables,omitempty"`
+	Tables []string `json:"tables,omitempty" jsonschema:"required,minItems=1,minLength=1"`
 	// SkipTables defines tables to skip when syncing data. Useful if a glob pattern is used in Tables
-	SkipTables []string `json:"skip_tables,omitempty"`
+	SkipTables []string `json:"skip_tables,omitempty" jsonschema:"minLength=1"`
 	// SkipDependentTables changes the matching behavior with regard to dependent tables. If set to true, dependent tables will not be synced unless they are explicitly matched by Tables.
-	SkipDependentTables bool `json:"skip_dependent_tables,omitempty"`
+	SkipDependentTables bool `json:"skip_dependent_tables,omitempty" jsonschema:"default=false"`
 	// Destinations are the names of destination plugins to send sync data to
-	Destinations []string `json:"destinations,omitempty"`
+	Destinations []string `json:"destinations,omitempty" jsonschema:"required,minItems=1,minLength=1"`
 
 	// Optional Backend options for sync operation
 	BackendOptions *BackendOptions `json:"backend_options,omitempty"`
 
-	// Spec defines plugin specific configuration
-	// This is different in every source plugin.
+	// Source plugin own (nested) spec
 	Spec map[string]any `json:"spec,omitempty"`
 
-	// DeterministicCQID is a flag that indicates whether the source plugin should generate a random UUID as the value of _cq_id
+	// DeterministicCQID is a flag that indicates whether the source plugin should generate a random UUID as the value of `_cq_id`
 	// or whether it should calculate a UUID that is a hash of the primary keys (if they exist) or the entire resource.
-	DeterministicCQID bool `json:"deterministic_cq_id,omitempty"`
+	DeterministicCQID bool `json:"deterministic_cq_id,omitempty" jsonschema:"default=false"`
 
-	// If specified this will spawn the plugin with --otel-endpoint
-	OtelEndpoint string `json:"otel_endpoint,omitempty"`
-	// If specified this will spawn the plugin with --otel-endpoint-insecure
-	OtelEndpointInsecure bool `json:"otel_endpoint_insecure,omitempty"`
+	// If specified this will spawn the plugin with `--otel-endpoint`
+	OtelEndpoint string `json:"otel_endpoint,omitempty" jsonschema:"default="`
+	// If specified this will spawn the plugin with `--otel-endpoint-insecure`
+	OtelEndpointInsecure bool `json:"otel_endpoint_insecure,omitempty" jsonschema:"default=false"`
 }
 
 // GetWarnings returns a list of deprecated options that were used in the source config. This should be
 // called before SetDefaults.
 func (s *Source) GetWarnings() Warnings {
 	warnings := make(map[string]string)
+
 	if s.SkipDependentTables && slices.Contains(s.Tables, "*") {
 		warnings["skip_dependent_tables"] = "the `skip_dependent_tables` option is ineffective when used with '*' `tables`"
 	}
@@ -76,6 +83,16 @@ func (s *Source) UnmarshalSpec(out any) error {
 	return dec.Decode(out)
 }
 
+func (Source) JSONSchemaExtend(sc *jsonschema.Schema) {
+	tables := sc.Properties.Value("tables")
+	*tables = *tables.OneOf[0] // only value
+
+	destinations := sc.Properties.Value("destinations")
+	*destinations = *destinations.OneOf[0] // only value
+
+	Metadata{}.JSONSchemaExtend(sc) // have to call manually
+}
+
 func (s *Source) Validate() error {
 	if err := s.Metadata.Validate(); err != nil {
 		return err
@@ -93,7 +110,7 @@ func (s *Source) Validate() error {
 }
 
 func (s Source) VersionString() string {
-	if s.Registry != RegistryGithub {
+	if s.Registry != RegistryGitHub {
 		return fmt.Sprintf("%s (%s@%s)", s.Name, s.Registry, s.Path)
 	}
 	pathParts := strings.Split(s.Path, "/")

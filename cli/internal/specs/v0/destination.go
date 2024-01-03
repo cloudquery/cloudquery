@@ -7,13 +7,21 @@ import (
 	"strings"
 )
 
+// Destination plugin spec
 type Destination struct {
 	Metadata
 
-	WriteMode   WriteMode      `json:"write_mode,omitempty"`
-	MigrateMode MigrateMode    `json:"migrate_mode,omitempty"`
-	PKMode      PKMode         `json:"pk_mode,omitempty"`
-	Spec        map[string]any `json:"spec,omitempty"`
+	// Destination plugin write mode
+	WriteMode WriteMode `json:"write_mode,omitempty" jsonschema:"default=overwrite-delete-stale"`
+
+	// Destination plugin migrate mode
+	MigrateMode MigrateMode `json:"migrate_mode,omitempty" jsonschema:"default=safe"`
+
+	// Destination plugin PK mode
+	PKMode PKMode `json:"pk_mode,omitempty" jsonschema:"default=default"`
+
+	// Destination plugin own (nested) spec
+	Spec map[string]any `json:"spec,omitempty"`
 }
 
 func (*Destination) GetWarnings() Warnings {
@@ -44,7 +52,7 @@ func (d *Destination) Validate() error {
 }
 
 func (d Destination) VersionString() string {
-	if d.Registry != RegistryGithub {
+	if d.Registry != RegistryGitHub {
 		return fmt.Sprintf("%s (%s@%s)", d.Name, d.Registry, d.Path)
 	}
 	pathParts := strings.Split(d.Path, "/")

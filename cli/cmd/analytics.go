@@ -65,7 +65,7 @@ func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.
 	}
 	if c.client != nil {
 		sourcePath := sourceSpec.Path
-		if sourceSpec.Registry == specs.RegistryLocal || sourceSpec.Registry == specs.RegistryGrpc {
+		if sourceSpec.Registry == specs.RegistryLocal || sourceSpec.Registry == specs.RegistryGRPC {
 			_, sourcePath = path.Split(sourceSpec.Path)
 		}
 		syncSummary := &analytics.SyncSummary{
@@ -81,7 +81,7 @@ func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.
 		}
 		for _, destinationSpec := range destinationsSpecs {
 			destPath := destinationSpec.Path
-			if destinationSpec.Registry == specs.RegistryLocal || destinationSpec.Registry == specs.RegistryGrpc {
+			if destinationSpec.Registry == specs.RegistryLocal || destinationSpec.Registry == specs.RegistryGRPC {
 				_, destPath = path.Split(destinationSpec.Path)
 			}
 			syncSummary.Destinations = append(syncSummary.Destinations, &analytics.Destination{

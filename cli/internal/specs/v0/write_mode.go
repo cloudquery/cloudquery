@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+
+	"github.com/invopop/jsonschema"
 )
 
 type WriteMode int
@@ -15,11 +17,15 @@ const (
 )
 
 var (
-	writeModeStrings = []string{"overwrite-delete-stale", "overwrite", "append"}
+	AllWriteModes = [...]string{
+		WriteModeOverwriteDeleteStale: "overwrite-delete-stale",
+		WriteModeOverwrite:            "overwrite",
+		WriteModeAppend:               "append",
+	}
 )
 
 func (m WriteMode) String() string {
-	return writeModeStrings[m]
+	return AllWriteModes[m]
 }
 
 func (m WriteMode) MarshalJSON() ([]byte, error) {
@@ -40,14 +46,19 @@ func (m *WriteMode) UnmarshalJSON(data []byte) (err error) {
 	return nil
 }
 
-func WriteModeFromString(s string) (WriteMode, error) {
-	switch s {
-	case "append":
-		return WriteModeAppend, nil
-	case "overwrite":
-		return WriteModeOverwrite, nil
-	case "overwrite-delete-stale":
-		return WriteModeOverwriteDeleteStale, nil
+func (WriteMode) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Type = "string"
+	sc.Enum = make([]any, len(AllWriteModes))
+	for i, k := range AllWriteModes {
+		sc.Enum[i] = k
 	}
-	return 0, fmt.Errorf("invalid write mode: %s", s)
+}
+
+func WriteModeFromString(s string) (WriteMode, error) {
+	for m, str := range AllWriteModes {
+		if s == str {
+			return WriteMode(m), nil
+		}
+	}
+	return WriteModeOverwriteDeleteStale, fmt.Errorf("invalid write mode: %s", s)
 }
