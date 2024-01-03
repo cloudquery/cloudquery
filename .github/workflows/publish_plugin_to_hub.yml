@@ -49,14 +49,173 @@ jobs:
             const fs = require('fs').promises;
             const path = require('path');
             const pluginFiles = await fs.readdir(process.env.PLUGIN_DIR);
-            if (pluginFiles.includes('Dockerfile')) {
-              return 'docker';
+            if (pluginFiles.includes('package.json')) {
+              return 'node';
             }
             if (pluginFiles.includes('.goreleaser.yaml')) {
               return 'go';
             }
+            if (pluginFiles.includes('main.py')) {
+              return 'python';
+            }
+            return 'unsupported';
           result-encoding: string
-  publish-plugin-to-hub:
+  publish-plugin-to-hub-python:
+    timeout-minutes: 60
+    runs-on: large-ubuntu-monorepo
+    needs: prepare
+    if: needs.prepare.outputs.plugin_releaser == 'python'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        working-directory: ${{ needs.prepare.outputs.plugin_dir }}
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Needed for shell escape
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+      
+      - name: Install shell escape
+        run: |
+          npm install shell-escape@0.2.0
+
+      - name: Get Release Notes
+        id: release-notes
+        uses: actions/github-script@v6
+        env:
+          PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
+        with:
+          result-encoding: string
+          script: |
+            const shellescape = require('shell-escape');
+            const { PRERELEASE } = process.env;
+            if (PRERELEASE) {
+              return shellescape(["This is a pre-release version of the plugin and should be used for testing purposes only"])
+            }
+            const { data } = await github.rest.repos.getReleaseByTag({
+              owner: "cloudquery",
+              repo: context.repo.repo,
+              tag: context.ref.replace('refs/tags/', ''),
+            });
+            return shellescape([data.body]);
+
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@a51bbcd94d000df9ca0fcb54ec8be69aad8374b0
+        with:
+          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name }}"
+          replace: ${{ needs.prepare.outputs.plugin_version }}
+          include: ${{ needs.prepare.outputs.plugin_dir }}/docs/*.md
+
+      - # Required for the package command to work
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Run package command
+        working-directory: ${{ needs.prepare.outputs.plugin_dir }}
+        run: |
+          rm -rf docs/tables.md
+          python main.py package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
+
+      - name: Setup CloudQuery
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: v4.3.6
+
+      - name: Publish plugin to hub
+        working-directory: ${{ needs.prepare.outputs.plugin_dir }}
+        run: |
+          mkdir -p ~/.local/share/cloudquery
+          echo ${{ secrets.CQ_CI_CLOUDQUERY_HUB_TOKEN }} > ~/.local/share/cloudquery/token
+          cloudquery plugin publish --finalize
+  publish-plugin-to-hub-node:
+    timeout-minutes: 60
+    runs-on: large-ubuntu-monorepo
+    needs: prepare
+    if: needs.prepare.outputs.plugin_releaser == 'node'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+          cache-dependency-path: '${{needs.prepare.outputs.plugin_dir}}/package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ${{needs.prepare.outputs.plugin_dir}}
+      
+      - name: Install shell escape
+        run: |
+          npm install shell-escape@0.2.0
+
+      - name: Get Release Notes
+        id: release-notes
+        uses: actions/github-script@v6
+        env:
+          PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
+        with:
+          result-encoding: string
+          script: |
+            const shellescape = require('shell-escape');
+            const { PRERELEASE } = process.env;
+            if (PRERELEASE) {
+              return shellescape(["This is a pre-release version of the plugin and should be used for testing purposes only"])
+            }
+            const { data } = await github.rest.repos.getReleaseByTag({
+              owner: "cloudquery",
+              repo: context.repo.repo,
+              tag: context.ref.replace('refs/tags/', ''),
+            });
+            return shellescape([data.body]);
+
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@a51bbcd94d000df9ca0fcb54ec8be69aad8374b0
+        with:
+          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name }}"
+          replace: ${{ needs.prepare.outputs.plugin_version }}
+          include: ${{ needs.prepare.outputs.plugin_dir }}/docs/*.md
+
+      - # Required for the package command to work
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Run package command
+        working-directory: ${{ needs.prepare.outputs.plugin_dir }}
+        run: |
+          rm -rf docs/tables.md
+          npm run dev -- package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
+
+      - name: Setup CloudQuery
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: v4.3.6
+
+      - name: Publish plugin to hub
+        working-directory: ${{ needs.prepare.outputs.plugin_dir }}
+        run: |
+          mkdir -p ~/.local/share/cloudquery
+          echo ${{ secrets.CQ_CI_CLOUDQUERY_HUB_TOKEN }} > ~/.local/share/cloudquery/token
+          cloudquery plugin publish --finalize
+
+  publish-plugin-to-hub-go:
     timeout-minutes: 60
     runs-on: large-ubuntu-monorepo
     needs: prepare
@@ -82,8 +241,9 @@ jobs:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
           cache: false
 
+      # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
 
