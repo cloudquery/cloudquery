@@ -61,7 +61,7 @@
         "path": {
           "type": "string",
           "minLength": 1,
-          "description": "Path is the canonical path to the source plugin in a given registry\nFor example:\n* for `registry: github` the `path` will be: `org/repo`\n* for `registry: local` the `path` will be the path to the binary: `./path/to/binary`\n* for `registry: grpc` the `path` will be the address of the gRPC server: `host:port`"
+          "description": "Path is the canonical path to the plugin in a given registry\nFor example:\n* for `registry: github` the `path` will be: `org/repo`\n* for `registry: local` the `path` will be the path to the binary: `./path/to/binary`\n* for `registry: grpc` the `path` will be the address of the gRPC server: `host:port`"
         },
         "registry": {
           "type": "string",
@@ -161,7 +161,7 @@
         "path": {
           "type": "string",
           "minLength": 1,
-          "description": "Path is the canonical path to the source plugin in a given registry\nFor example:\n* for `registry: github` the `path` will be: `org/repo`\n* for `registry: local` the `path` will be the path to the binary: `./path/to/binary`\n* for `registry: grpc` the `path` will be the address of the gRPC server: `host:port`"
+          "description": "Path is the canonical path to the plugin in a given registry\nFor example:\n* for `registry: github` the `path` will be: `org/repo`\n* for `registry: local` the `path` will be the path to the binary: `./path/to/binary`\n* for `registry: grpc` the `path` will be the address of the gRPC server: `host:port`"
         },
         "registry": {
           "type": "string",
