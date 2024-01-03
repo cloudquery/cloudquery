@@ -26,8 +26,8 @@ spec:
 `,
 		"failed to decode spec: json: cannot unmarshal number into Go struct field Source.name of type string",
 		&Source{
-			Name:   "test",
-			Tables: []string{"*"},
+			Metadata: Metadata{Name: "test"},
+			Tables:   []string{"*"},
 		},
 	},
 	{
@@ -38,8 +38,8 @@ spec:
 `,
 		`failed to decode spec: json: unknown field "namea"`,
 		&Source{
-			Name:   "test",
-			Tables: []string{"*"},
+			Metadata: Metadata{Name: "test"},
+			Tables:   []string{"*"},
 		},
 	},
 }
@@ -91,7 +91,6 @@ spec:
 spec:
   name: test
   path: cloudquery/test
-  tables: ["test"]
 `,
 		"version is required",
 		nil,
@@ -103,7 +102,6 @@ spec:
   name: test
   path: cloudquery/test
   version: 1.1.0
-  tables: ["test"]
 `,
 		"version must start with v",
 		nil,
@@ -143,14 +141,16 @@ spec:
 `,
 		"",
 		&Source{
-			Name:             "test",
-			Registry:         RegistryCloudQuery,
-			Path:             "cloudquery/test",
-			Version:          "v1.1.0",
-			Destinations:     []string{"test"},
-			Tables:           []string{"test"},
-			Spec:             map[string]any{},
-			registryInferred: true,
+			Metadata: Metadata{
+				Name:             "test",
+				Registry:         RegistryCloudQuery,
+				Path:             "cloudquery/test",
+				Version:          "v1.1.0",
+				registryInferred: true,
+			},
+			Destinations: []string{"test"},
+			Tables:       []string{"test"},
+			Spec:         map[string]any{},
 		},
 	},
 	{
@@ -165,14 +165,16 @@ spec:
 `,
 		"",
 		&Source{
-			Name:             "test",
-			Registry:         RegistryCloudQuery,
-			Path:             "cloudquery/test",
-			Version:          "v1.1.0",
-			Destinations:     []string{"test"},
-			Tables:           []string{"test"},
-			Spec:             map[string]any{},
-			registryInferred: true,
+			Metadata: Metadata{
+				Name:             "test",
+				Registry:         RegistryCloudQuery,
+				Path:             "cloudquery/test",
+				Version:          "v1.1.0",
+				registryInferred: true,
+			},
+			Destinations: []string{"test"},
+			Tables:       []string{"test"},
+			Spec:         map[string]any{},
 		},
 	},
 	{
@@ -188,10 +190,12 @@ spec:
 `,
 		"",
 		&Source{
-			Name:         "test",
-			Registry:     RegistryGithub,
-			Path:         "cloudquery/test",
-			Version:      "v1.1.0",
+			Metadata: Metadata{
+				Name:     "test",
+				Registry: RegistryGithub,
+				Path:     "cloudquery/test",
+				Version:  "v1.1.0",
+			},
 			Destinations: []string{"test"},
 			Tables:       []string{"test"},
 			Spec:         map[string]any{},
@@ -223,20 +227,14 @@ func TestSourceUnmarshalSpecValidate(t *testing.T) {
 }
 
 func TestSpec_VersionString(t *testing.T) {
-	type fields struct {
-		Name     string
-		Version  string
-		Path     string
-		Registry Registry
-	}
 	tests := []struct {
-		name   string
-		fields fields
-		want   string
+		name string
+		meta Metadata
+		want string
 	}{
 		{
 			name: "should use short version without name part in path when those are the same",
-			fields: fields{
+			meta: Metadata{
 				Name:     "aws",
 				Version:  "v10.0.0",
 				Path:     "cloudquery/aws",
@@ -246,7 +244,7 @@ func TestSpec_VersionString(t *testing.T) {
 		},
 		{
 			name: "should use long version with path when name doesn't match path",
-			fields: fields{
+			meta: Metadata{
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "cloudquery/aws",
@@ -256,7 +254,7 @@ func TestSpec_VersionString(t *testing.T) {
 		},
 		{
 			name: "should handle non GitHub registry",
-			fields: fields{
+			meta: Metadata{
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "localhost:7777",
@@ -266,7 +264,7 @@ func TestSpec_VersionString(t *testing.T) {
 		},
 		{
 			name: "should handle malformed path",
-			fields: fields{
+			meta: Metadata{
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "aws",
@@ -277,12 +275,7 @@ func TestSpec_VersionString(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := Source{
-				Name:     tt.fields.Name,
-				Version:  tt.fields.Version,
-				Path:     tt.fields.Path,
-				Registry: tt.fields.Registry,
-			}
+			s := Source{Metadata: tt.meta}
 			if got := s.VersionString(); got != tt.want {
 				t.Errorf("Source.String() = %v, want %v", got, tt.want)
 			}
