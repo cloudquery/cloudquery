@@ -311,7 +311,7 @@
           "description": "CloudQuery plugin kind"
         },
         "spec": {
-          "anyOf": [
+          "oneOf": [
             {
               "$ref": "#/$defs/Source"
             },

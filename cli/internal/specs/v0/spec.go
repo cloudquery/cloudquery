@@ -58,8 +58,8 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 
 	// update `spec` property
 	spec := sc.Properties.Value("spec")
-	spec.AnyOf = []*jsonschema.Schema{source, destination}
-	spec.OneOf = nil
+	// we can use `one_of because source & destination specs are mutually exclusive based on the kind
+	spec.OneOf = []*jsonschema.Schema{source, destination}
 
 	sc.AllOf = []*jsonschema.Schema{
 		{
