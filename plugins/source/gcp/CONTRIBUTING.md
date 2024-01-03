@@ -1,7 +1,7 @@
 # GCP Source Plugin Contribution Guide
 
 
-***Please note, GCP is `open core` , before you begin adding any resources to this plugin,please file an issue before opening a PR. Not all contributions will be accepted especially if they are part of the commercial plugin offering***
+***Please note: GCP is `open core`, before you begin adding any resources to this plugin or opening a PR, please file an issue first. Not all contributions will be accepted especially if they are part of the commercial plugin offering***
 
 This document serves as a guide for adding new services and resources to the GCP source plugin.
 
