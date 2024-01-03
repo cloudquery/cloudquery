@@ -61,11 +61,10 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 	spec.AnyOf = []*jsonschema.Schema{source, destination}
 	spec.OneOf = nil
 
-	// not add if/then parts to sc
 	sc.AllOf = []*jsonschema.Schema{
 		{
+			// `kind: source` implies source spec
 			If: &jsonschema.Schema{
-				// We also need to make sure that `custom_endpoint_url` isn't ""
 				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
 					properties := jsonschema.NewProperties()
 					kind := *sc.Properties.Value("kind")
@@ -76,7 +75,6 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 				}(),
 			},
 			Then: &jsonschema.Schema{
-				// We also need to make sure that `custom_endpoint_url` isn't ""
 				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
 					properties := jsonschema.NewProperties()
 					properties.Set("spec", source)
@@ -85,8 +83,8 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 			},
 		},
 		{
+			// `kind: destination` implies destination spec
 			If: &jsonschema.Schema{
-				// We also need to make sure that `custom_endpoint_url` isn't ""
 				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
 					properties := jsonschema.NewProperties()
 					kind := *sc.Properties.Value("kind")
@@ -97,7 +95,6 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 				}(),
 			},
 			Then: &jsonschema.Schema{
-				// We also need to make sure that `custom_endpoint_url` isn't ""
 				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
 					properties := jsonschema.NewProperties()
 					properties.Set("spec", destination)
