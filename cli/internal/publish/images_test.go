@@ -3,6 +3,7 @@ package publish
 import (
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -77,8 +78,14 @@ More test
 			contents: `# Title
 ![Alt text](assets/images/image.png)
 
-`,
+		   `,
 			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{mdFull: "![Alt text](assets/images/image.png)", mdPartial: "assets/images/image.png", url: ""}}},
+		},
+		{
+			name: "basic file://",
+			contents: `# Title
+![](file://${ABS_IMAGE})`,
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:my special@image.png": {{mdFull: "![](file://${ABS_IMAGE})", mdPartial: "file://${ABS_IMAGE}", url: ""}}},
 		},
 	}
 
@@ -88,9 +95,18 @@ More test
 	require.NoError(t, os.MkdirAll(filepath.Join(tempdir, "assets", "images"), 0755))
 	require.NoError(t, os.WriteFile(filepath.Join(tempdir, "assets", "images", "image.png"), data, 0644))
 
+	special := filepath.Join(tempdir, "my special@image.png")
+	require.NoError(t, os.WriteFile(special, data, 0644))
+	specialAbs, err := filepath.Abs(special)
+	require.NoError(t, err)
+	specialAbsEscaped := strings.NewReplacer(" ", "%20", "@", "%40").Replace(specialAbs)
+
 	for _, tc := range cases {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
+
+			tc.contents = strings.ReplaceAll(tc.contents, "${ABS_IMAGE}", specialAbsEscaped)
+
 			out, err := findMarkdownImages(tc.contents, tempdir)
 			if tc.expectError != "" {
 				require.ErrorContains(t, err, tc.expectError)
@@ -98,9 +114,11 @@ More test
 			}
 			require.NoError(t, err)
 
-			// reset absFile to empty string for comparison
+			// reset absFile to empty string for comparison, also put back ${ABS_IMAGE} placeholder
 			for k, v := range out {
 				for i := range v {
+					v[i].mdFull = strings.ReplaceAll(v[i].mdFull, specialAbsEscaped, "${ABS_IMAGE}")
+					v[i].mdPartial = strings.ReplaceAll(v[i].mdPartial, specialAbsEscaped, "${ABS_IMAGE}")
 					v[i].absFile = ""
 				}
 				out[k] = v
@@ -109,5 +127,4 @@ More test
 			require.EqualValues(t, tc.expect, out)
 		})
 	}
-
 }

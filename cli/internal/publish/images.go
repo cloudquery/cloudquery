@@ -18,10 +18,10 @@ import (
 )
 
 type imageReference struct {
-	mdFull    string
-	mdPartial string
-	absFile   string
-	url       string
+	mdFull    string // full image tag inside md
+	mdPartial string // image filename (to replace with URL) inside mdFull
+	absFile   string // absolute path to image file, to upload
+	url       string // result of upload
 }
 
 func processDocumentImages(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, docDir, contents string) (string, error) {
@@ -98,25 +98,24 @@ func findMarkdownImages(contents, docDir string) (map[string][]imageReference, e
 
 	matchMap := make(map[string][]imageReference, len(matches))
 	for _, match := range matches {
-		fn, err := ensureValidFilename(strings.SplitN(match[2], " ", 2)[0])
+		mdPartial := strings.SplitN(match[2], " ", 2)[0]
+		absFile, err := ensureValidFilename(mdPartial, docDir)
 		if err != nil {
 			return nil, err
 		}
-		if fn == "" {
+		if absFile == "" {
 			continue // skip
 		}
 
-		absFile := filepath.Join(docDir, fn)
-
 		s, err := sha1sum(absFile)
 		if err != nil {
-			return nil, fmt.Errorf("error processing image %q: %w", fn, err)
+			return nil, fmt.Errorf("error processing image %q: %w", mdPartial, err)
 		}
 
-		fileRef := filepath.Base(fn)
+		fileRef := filepath.Base(absFile)
 		matchMap[s+":"+fileRef] = append(matchMap[s+":"+fileRef], imageReference{
 			mdFull:    match[0],
-			mdPartial: fn,
+			mdPartial: mdPartial,
 			absFile:   absFile,
 		})
 	}
@@ -165,7 +164,7 @@ func uploadImage(ctx context.Context, uploadURL, file string) error {
 	return nil
 }
 
-func ensureValidFilename(filename string) (string, error) {
+func ensureValidFilename(filename, absDir string) (string, error) {
 	if strings.HasPrefix(filename, "https://") || strings.HasPrefix(filename, "http://") {
 		return "", nil // skip
 	}
@@ -183,9 +182,10 @@ func ensureValidFilename(filename string) (string, error) {
 			p = strings.TrimPrefix(p, "/")
 		}
 		filename = strings.ReplaceAll(p, "/", string(os.PathSeparator))
+		return filename, nil
 	}
 
-	return filename, nil
+	return filepath.Join(absDir, filename), nil
 }
 
 func sha1sum(filename string) (string, error) {
