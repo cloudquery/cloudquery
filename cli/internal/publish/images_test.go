@@ -98,14 +98,12 @@ More test
 	require.NoError(t, os.WriteFile(special, data, 0644))
 	specialAbs, err := filepath.Abs(special)
 	require.NoError(t, err)
-	specialAbsEscaped := strings.NewReplacer(" ", "%20", "@", "%40").Replace(specialAbs)
+	specialAbsEscaped := strings.NewReplacer(" ", "%20", "@", "%40", string(filepath.Separator), "/").Replace(specialAbs)
 
 	for _, tc := range cases {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-
 			tc.contents = strings.ReplaceAll(tc.contents, "${ABS_IMAGE}", specialAbsEscaped)
-
 			out, err := findMarkdownImages(tc.contents, tempdir)
 			if tc.expectError != "" {
 				require.ErrorContains(t, err, tc.expectError)
