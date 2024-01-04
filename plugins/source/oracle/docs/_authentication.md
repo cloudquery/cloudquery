@@ -21,15 +21,16 @@ Note that CloudQuery will `sync` information from all regions - not only the reg
 
 ### Option 2: Environment variables
 
-Environment variables are configured the same way as for the terraform provider, and should therefore be prefixed with `TF_VAR_` (e.g. `TF_VAR_tenancy_ocid`). See the [documentation](https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/terraformproviderconfiguration.htm) for a full list of available variables.
+Environment variables can be either prefixed with `OCI_CLI` or `TF_VAR` (e.g. `OCI_CLI_tenancy_ocid` or `TF_VAR_tenancy_ocid`).
+See the [documentation](https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/terraformproviderconfiguration.htm) for a full list of available variables.
 
 Example environment variables:
 
 ```bash copy
-export TF_VAR_security_token_file=/path/to/token/file
-export TF_VAR_fingerprint="<your_fingerprint>"
-export TF_VAR_tenancy_ocid="ocid1.tenancy.oc1..<unique_ID>"
-export TF_VAR_user_ocid="ocid1.user.oc1..<unique_ID>"
-export TF_VAR_region="us-ashburn-1"
-export TF_VAR_private_key_path="~/.oci/oci_api_key.pem"
+export OCI_CLI_security_token_file=/path/to/token/file
+export OCI_CLI_fingerprint="<your_fingerprint>"
+export OCI_CLI_tenancy_ocid="ocid1.tenancy.oc1..<unique_ID>"
+export OCI_CLI_user_ocid="ocid1.user.oc1..<unique_ID>"
+export OCI_CLI_region="us-ashburn-1"
+export OCI_CLI_private_key_path="~/.oci/oci_api_key.pem"
 ```

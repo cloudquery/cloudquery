@@ -9,11 +9,11 @@ import (
 
 func SpecRegistryToPlugin(registry specs.Registry) managedplugin.Registry {
 	switch registry {
-	case specs.RegistryGithub:
+	case specs.RegistryGitHub:
 		return managedplugin.RegistryGithub
 	case specs.RegistryLocal:
 		return managedplugin.RegistryLocal
-	case specs.RegistryGrpc:
+	case specs.RegistryGRPC:
 		return managedplugin.RegistryGrpc
 	case specs.RegistryDocker:
 		return managedplugin.RegistryDocker

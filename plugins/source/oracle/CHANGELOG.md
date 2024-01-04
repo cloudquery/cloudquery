@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.6...plugins-source-oracle-v4.2.7) (2024-01-03)
+
+
+### Bug Fixes
+
+* Allow using `OCI_CLI_` prefixed environment variables ([#16003](https://github.com/cloudquery/cloudquery/issues/16003)) ([79f91e2](https://github.com/cloudquery/cloudquery/commit/79f91e200b72b2a315f84f0a9e4290b06fd64707))
+
 ## [4.2.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.5...plugins-source-oracle-v4.2.6) (2024-01-02)
 
 

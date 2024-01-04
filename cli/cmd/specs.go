@@ -7,40 +7,18 @@ import (
 	pbSpecs "github.com/cloudquery/plugin-pb-go/specs"
 )
 
-func CLIBackendToPbBackend(backend specs.Backend) pbSpecs.Backend {
-	switch backend {
-	case specs.BackendLocal:
-		return pbSpecs.BackendLocal
-	case specs.BackendNone:
-		return pbSpecs.BackendNone
-	default:
-		panic(fmt.Sprintf("unknown backend %q", backend.String()))
-	}
-}
-
 func CLIRegistryToPbRegistry(registry specs.Registry) pbSpecs.Registry {
 	switch registry {
-	case specs.RegistryGithub:
+	case specs.RegistryGitHub:
 		return pbSpecs.RegistryGithub
 	case specs.RegistryLocal:
 		return pbSpecs.RegistryLocal
-	case specs.RegistryGrpc:
+	case specs.RegistryGRPC:
 		return pbSpecs.RegistryGrpc
 	case specs.RegistryCloudQuery:
 		return pbSpecs.RegistryCloudQuery
 	default:
 		panic(fmt.Sprintf("unknown registry %q", registry.String()))
-	}
-}
-
-func CLISchedulerToPbScheduler(scheduler specs.Scheduler) pbSpecs.Scheduler {
-	switch scheduler {
-	case specs.SchedulerDFS:
-		return pbSpecs.SchedulerDFS
-	case specs.SchedulerRoundRobin:
-		return pbSpecs.SchedulerRoundRobin
-	default:
-		panic(fmt.Sprintf("unknown scheduler %q", scheduler.String()))
 	}
 }
 
@@ -58,14 +36,6 @@ func CLISourceSpecToPbSpec(spec specs.Source) pbSpecs.Source {
 		Destinations:        spec.Destinations,
 		Spec:                spec.Spec,
 		DeterministicCQID:   spec.DeterministicCQID,
-
-		// allow use of deprecated options here for backwards-compatibility
-		Concurrency:         spec.Concurrency,                          // nolint:staticcheck
-		TableConcurrency:    spec.TableConcurrency,                     // nolint:staticcheck
-		ResourceConcurrency: spec.ResourceConcurrency,                  // nolint:staticcheck
-		Backend:             CLIBackendToPbBackend(spec.Backend),       // nolint:staticcheck
-		BackendSpec:         spec.BackendSpec,                          // nolint:staticcheck
-		Scheduler:           CLISchedulerToPbScheduler(spec.Scheduler), // nolint:staticcheck
 	}
 }
 
@@ -112,10 +82,7 @@ func CLIDestinationSpecToPbSpec(spec specs.Destination) pbSpecs.Destination {
 		Registry:    CLIRegistryToPbRegistry(spec.Registry),
 		WriteMode:   CLIWriteModeToPbWriteMode(spec.WriteMode),
 		MigrateMode: CLIMigrateModeToPbMigrateMode(spec.MigrateMode),
-
-		BatchSize:      spec.BatchSize,      // nolint:staticcheck // allow use of deprecated options here for backwards-compatibility
-		BatchSizeBytes: spec.BatchSizeBytes, // nolint:staticcheck // allow use of deprecated options here for backwards-compatibility
-		Spec:           spec.Spec,
-		PKMode:         CLIPkModeToPbPKMode(spec.PKMode),
+		PKMode:      CLIPkModeToPbPKMode(spec.PKMode),
+		Spec:        spec.Spec,
 	}
 }

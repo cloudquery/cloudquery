@@ -28,7 +28,6 @@ spec:
   name: gcp
   path: cloudquery/gcp
   version: v10.0.0
-  table_concurrency: 10
   destinations: [dummydest]
   tables: [test]
 ---
@@ -50,7 +49,6 @@ spec:
   name: gcp
   path: cloudquery/gcp
   version: v99.999.0
-  table_concurrency: 10
   destinations: [dummydest]
   tables: [test]
 ---
@@ -72,7 +70,6 @@ spec:
   path: cloudquery/gcp
   registry: cloudquery
   version: v99.999.0
-  table_concurrency: 10
   destinations: [dummydest]
   tables: [test]
 ---
@@ -94,7 +91,6 @@ spec:
   path: cloudquery/gcp
   registry: github
   version: v99.999.0
-  table_concurrency: 10
   destinations: [dummydest]
   tables: [test]
 ---

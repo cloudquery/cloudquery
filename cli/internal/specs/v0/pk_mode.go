@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+
+	"github.com/invopop/jsonschema"
 )
 
 type PKMode int
@@ -14,11 +16,14 @@ const (
 )
 
 var (
-	pkModeStrings = []string{"default", "cq-id-only"}
+	AllPKModes = [...]string{
+		PKModeDefaultKeys: "default",
+		PKModeCQID:        "cq-id-only",
+	}
 )
 
 func (m PKMode) String() string {
-	return pkModeStrings[m]
+	return AllPKModes[m]
 }
 
 func (m PKMode) MarshalJSON() ([]byte, error) {
@@ -39,12 +44,19 @@ func (m *PKMode) UnmarshalJSON(data []byte) (err error) {
 	return nil
 }
 
-func PKModeFromString(s string) (PKMode, error) {
-	switch s {
-	case "default":
-		return PKModeDefaultKeys, nil
-	case "cq-id-only":
-		return PKModeCQID, nil
+func (PKMode) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Type = "string"
+	sc.Enum = make([]any, len(AllPKModes))
+	for i, k := range AllPKModes {
+		sc.Enum[i] = k
 	}
-	return 0, fmt.Errorf("invalid pk mode: %s", s)
+}
+
+func PKModeFromString(s string) (PKMode, error) {
+	for m, str := range AllPKModes {
+		if s == str {
+			return PKMode(m), nil
+		}
+	}
+	return PKModeDefaultKeys, fmt.Errorf("invalid pk mode: %s", s)
 }
