@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.1.4...plugins-destination-postgresql-v7.1.5) (2024-01-04)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.25.0 ([#15932](https://github.com/cloudquery/cloudquery/issues/15932)) ([2292b5a](https://github.com/cloudquery/cloudquery/commit/2292b5a2aa5936f2529238a05708de0b3bde9a35))
+
 ## [7.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.1.3...plugins-destination-postgresql-v7.1.4) (2024-01-02)
 
 
