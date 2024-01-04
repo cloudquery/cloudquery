@@ -35,7 +35,7 @@ func processDocumentImages(ctx context.Context, c *cloudquery_api.ClientWithResp
 
 	fmt.Println("Preparing to upload images...")
 
-	reqs := make([]cloudquery_api.TeamImageCreate, len(ims))
+	reqs := make([]cloudquery_api.TeamImageCreate, 0, len(ims))
 	for k := range ims {
 		refParts := strings.SplitN(k, ":", 2)
 		checksum, name := refParts[0], refParts[1]
@@ -51,7 +51,7 @@ func processDocumentImages(ctx context.Context, c *cloudquery_api.ClientWithResp
 		return "", fmt.Errorf("failed to upload doc images: %w", err)
 	}
 	if resp.HTTPResponse.StatusCode > 299 {
-		return "", hub.ErrorFromHTTPResponse(resp.HTTPResponse, resp)
+		return "", fmt.Errorf("failed preparing: %w", hub.ErrorFromHTTPResponse(resp.HTTPResponse, resp))
 	}
 
 	eg, egCtx := errgroup.WithContext(ctx)
