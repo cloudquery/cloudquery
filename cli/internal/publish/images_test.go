@@ -99,6 +99,9 @@ More test
 	specialAbs, err := filepath.Abs(special)
 	require.NoError(t, err)
 	specialAbsEscaped := strings.NewReplacer(" ", "%20", "@", "%40", string(filepath.Separator), "/").Replace(specialAbs)
+	if filepath.Separator == '\\' {
+		specialAbsEscaped = strings.Replace(specialAbsEscaped, "file://", "file:///", 1)
+	}
 
 	for _, tc := range cases {
 		tc := tc
