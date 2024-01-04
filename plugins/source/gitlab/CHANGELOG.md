@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.17](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v4.1.16...plugins-source-gitlab-v4.1.17) (2024-01-03)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.25.0 ([#15932](https://github.com/cloudquery/cloudquery/issues/15932)) ([2292b5a](https://github.com/cloudquery/cloudquery/commit/2292b5a2aa5936f2529238a05708de0b3bde9a35))
+
 ## [4.1.16](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v4.1.15...plugins-source-gitlab-v4.1.16) (2024-01-02)
 
 
