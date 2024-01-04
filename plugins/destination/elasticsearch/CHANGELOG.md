@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.1.11...plugins-destination-elasticsearch-v3.1.12) (2024-01-04)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.25.0 ([#15932](https://github.com/cloudquery/cloudquery/issues/15932)) ([2292b5a](https://github.com/cloudquery/cloudquery/commit/2292b5a2aa5936f2529238a05708de0b3bde9a35))
+
 ## [3.1.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.1.10...plugins-destination-elasticsearch-v3.1.11) (2024-01-02)
 
 
