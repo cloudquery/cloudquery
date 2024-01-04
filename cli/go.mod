@@ -26,6 +26,7 @@ require (
 	github.com/stretchr/testify v1.8.4
 	github.com/thoas/go-funk v0.9.3
 	github.com/wk8/go-ordered-map/v2 v2.1.8
+	golang.org/x/sync v0.5.0
 	golang.org/x/term v0.15.0
 	google.golang.org/grpc v1.60.1
 	google.golang.org/protobuf v1.31.0
@@ -142,3 +143,5 @@ require (
 
 // github.com/cloudquery/jsonschema @ cqmain
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20231018073309-6c617a23d42f
+
+replace github.com/cloudquery/cloudquery-api-go => github.com/cloudquery/cloudquery-api-go v1.6.4-0.20240104155404-515b000bd747
