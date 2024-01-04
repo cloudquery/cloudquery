@@ -77,8 +77,7 @@ More test
 			name: "subdir",
 			contents: `# Title
 ![Alt text](assets/images/image.png)
-
-		   `,
+`,
 			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{mdFull: "![Alt text](assets/images/image.png)", mdPartial: "assets/images/image.png", url: ""}}},
 		},
 		{
