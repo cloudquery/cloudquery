@@ -69,11 +69,12 @@ func CreateNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWit
 	}
 
 	if manifest.PathToDoc != "" {
-		b, err := os.ReadFile(filepath.Join(manifestDir, manifest.PathToDoc))
+		absDocFile := filepath.Join(manifestDir, manifest.PathToDoc)
+		b, err := os.ReadFile(absDocFile)
 		if err != nil {
 			return fmt.Errorf("failed to read doc file: %w", err)
 		}
-		body.Doc, err = processDocumentImages(ctx, c, manifest.TeamName, filepath.Base(manifest.PathToDoc), string(b))
+		body.Doc, err = processDocumentImages(ctx, c, manifest.TeamName, filepath.Dir(absDocFile), string(b))
 		if err != nil {
 			return fmt.Errorf("failed to process doc images: %w", err)
 		}

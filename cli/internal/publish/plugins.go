@@ -196,7 +196,7 @@ func UploadPluginDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses
 		}
 		contentStr := hub.NormalizeContent(string(content))
 
-		contentStr, err = processDocumentImages(ctx, c, teamName, filepath.Base(docsDir), contentStr)
+		contentStr, err = processDocumentImages(ctx, c, teamName, docsDir, contentStr)
 		if err != nil {
 			return fmt.Errorf("failed to process doc images for %s: %w", dirEntry.Name(), err)
 		}
