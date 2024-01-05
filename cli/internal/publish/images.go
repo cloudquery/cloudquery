@@ -121,13 +121,13 @@ func replaceMarkdownImages(contents string, ims map[string][]imageReference) (st
 	for _, imList := range ims {
 		for _, ir := range imList {
 			if ir.startPos == 0 && ir.endPos == 0 {
-				//return "", fmt.Errorf("unknown range for image %q", ir.ref)
+				// return "", fmt.Errorf("unknown range for image %q", ir.ref)
 				continue // skip
 			}
-			if bytes.IndexAny(test[ir.startPos:ir.endPos], "!") != -1 {
+			if bytes.ContainsAny(test[ir.startPos:ir.endPos], "!") {
 				return "", fmt.Errorf("found overlapping range: %d-%d", ir.startPos, ir.endPos)
 			}
-			//test = append(append(test[:ir.startPos], bytes.Repeat([]byte("!"), ir.endPos-ir.startPos)...), test[ir.endPos:]...)
+			// test = append(append(test[:ir.startPos], bytes.Repeat([]byte("!"), ir.endPos-ir.startPos)...), test[ir.endPos:]...)
 			for i := ir.startPos; i < ir.endPos; i++ {
 				test[i] = '!'
 			}
@@ -291,7 +291,8 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 					endPos = a.Stop
 				}
 			} else {
-				for i := 0; i < el.Lines().Len(); i++ {
+				sz := el.Lines().Len()
+				for i := 0; i < sz; i++ {
 					a := el.Lines().At(i)
 					literalHTML = append(literalHTML, ' ')
 					literalHTML = append(literalHTML, src[a.Start:a.Stop]...)

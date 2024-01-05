@@ -185,7 +185,6 @@ text
 			// clean up for successful comparison, also set mock URL
 			for k, v := range out {
 				for i := range v {
-					//v[i].ref = strings.ReplaceAll(v[i].ref, specialAbsEscaped, "${ABS_IMAGE}")
 					v[i].absFile = ""
 					v[i].url = mockURL
 				}
