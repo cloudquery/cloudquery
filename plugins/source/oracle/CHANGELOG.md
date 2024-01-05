@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.7...plugins-source-oracle-v4.2.8) (2024-01-05)
+
+
+### Bug Fixes
+
+* Change chaining order for OCI config providers ([#16060](https://github.com/cloudquery/cloudquery/issues/16060)) ([b808926](https://github.com/cloudquery/cloudquery/commit/b8089264256108e4587ae616e12b4021486a7616))
+
 ## [4.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.6...plugins-source-oracle-v4.2.7) (2024-01-03)
 
 
