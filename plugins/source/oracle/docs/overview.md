@@ -41,7 +41,6 @@ This is the (nested) spec used by Oracle Source Plugin
 1. Specify the region to be used for the discovery as the dedicated region.
    The following options are available:
    * Set `OCI_CLI_region` environment variable
-   * Set `TF_VAR_region` environment variable
    * Set `region` value in the configuration file
  
 2. Specify the dedicated region information:
