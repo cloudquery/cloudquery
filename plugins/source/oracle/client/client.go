@@ -57,13 +57,6 @@ func New(ctx context.Context, logger zerolog.Logger, s spec.Spec) (schema.Client
 		return nil, err
 	}
 
-	if region, _ := configProvider.Region(); len(region) > 0 {
-		// custom region specified either via env vars or file
-		// use it for discovery
-		logger.Warn().Str("region", region).Msg("custom region specified, use it for discovery")
-		homeIdentityClient.SetRegion(region)
-	}
-
 	allCompartmentOcids, err := getAllCompartmentIdsInTenancy(ctx, homeIdentityClient, tenancyOcid)
 	if err != nil {
 		return nil, err
@@ -74,10 +67,7 @@ func New(ctx context.Context, logger zerolog.Logger, s spec.Spec) (schema.Client
 	if err != nil {
 		return nil, err
 	}
-	logger.Info().
-		Str("regions", "["+strings.Join(allRegions, ",")+"]").
-		Int("num_regions", len(allRegions)).
-		Msg("syncing from all subscribed regions")
+	logger.Info().Int("num_regions", len(allRegions)).Msg("syncing from all subscribed regions")
 
 	oracleClients, err := initOracleClientsInAllRegions(configProvider, allRegions)
 	if err != nil {
