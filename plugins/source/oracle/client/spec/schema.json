@@ -3,35 +3,6 @@
   "$id": "https://github.com/cloudquery/cloudquery/plugins/source/oracle/client/spec/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
-    "RegionMetadata": {
-      "properties": {
-        "realmKey": {
-          "type": "string",
-          "minLength": 1
-        },
-        "realmDomainComponent": {
-          "type": "string",
-          "minLength": 1
-        },
-        "regionKey": {
-          "type": "string",
-          "minLength": 1
-        },
-        "regionIdentifier": {
-          "type": "string",
-          "minLength": 1
-        }
-      },
-      "additionalProperties": false,
-      "type": "object",
-      "required": [
-        "realmKey",
-        "realmDomainComponent",
-        "regionKey",
-        "regionIdentifier"
-      ],
-      "description": "Region metadata."
-    },
     "Spec": {
       "properties": {
         "concurrency": {
@@ -39,17 +10,6 @@
           "minimum": 1,
           "description": "The best effort maximum number of Go routines to use.\nLower this number to reduce memory usage.",
           "default": 10000
-        },
-        "region_metadata": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/RegionMetadata",
-              "description": "Custom region metadata.\nUse this when you need to access a dedicated OCI region."
-            },
-            {
-              "type": "null"
-            }
-          ]
         }
       },
       "additionalProperties": false,

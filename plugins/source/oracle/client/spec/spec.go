@@ -7,10 +7,6 @@ type Spec struct {
 	// The best effort maximum number of Go routines to use.
 	// Lower this number to reduce memory usage.
 	Concurrency int `json:"concurrency,omitempty" jsonschema:"minimum=1,default=10000"`
-
-	// Custom region metadata.
-	// Use this when you need to access a dedicated OCI region.
-	RegionMetadata *RegionMetadata `json:"region_metadata"`
 }
 
 func (s *Spec) SetDefaults() {
