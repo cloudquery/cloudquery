@@ -404,10 +404,11 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 
 		for _, refKey := range refKeys {
 			if _, isImage := imageDestinations[refKey]; !isImage {
-				continue
+				continue // only use this reference if it's a previously found image (ast.Image and dest/title match)
 			}
 
 			for _, pcRef := range refList[refKey] {
+				// here we rebuild a `[image-id]: image.png "Optional Title Here"` line and replace it inside src. We're happy as long as there's a preceding space
 				refLine := append([]byte{'['}, pcRef.Label()...)
 				refLine = append(refLine, []byte("]: ")...)
 				refLine = append(refLine, pcRef.Destination()...)
