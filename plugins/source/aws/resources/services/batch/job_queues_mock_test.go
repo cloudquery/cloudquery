@@ -17,7 +17,7 @@ func buildBatchJobQueuesMock(t *testing.T, ctrl *gomock.Controller) *client.Serv
 
 	buildBatchJobsMock(t, m)
 
-	services := client.Services{
+	services := &client.Services{
 		Batch: m,
 	}
 	a := types.JobQueueDetail{}

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildProfiles(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildProfiles(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockSignerClient(ctrl)
 	profileList := types.SigningProfile{}
 	require.NoError(t, faker.FakeObject(&profileList))
@@ -26,7 +26,7 @@ func buildProfiles(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetSigningProfile(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&profile, nil)
 
-	return client.Services{
+	return &client.Services{
 		Signer: m,
 	}
 }

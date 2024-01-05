@@ -14,7 +14,7 @@ import (
 
 func buildAutoscalingSheduledActionMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockAutoscalingClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Autoscaling: m,
 	}
 	l := types.ScheduledUpdateGroupAction{}

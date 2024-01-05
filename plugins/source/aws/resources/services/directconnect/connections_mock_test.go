@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDirectconnectConnection(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDirectconnectConnection(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockDirectconnectClient(ctrl)
 	conn := types.Connection{}
 	require.NoError(t, faker.FakeObject(&conn))
@@ -20,7 +20,7 @@ func buildDirectconnectConnection(t *testing.T, ctrl *gomock.Controller) client.
 		&directconnect.DescribeConnectionsOutput{
 			Connections: []types.Connection{conn},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Directconnect: m,
 	}
 }

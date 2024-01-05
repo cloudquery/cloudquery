@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDynamodbExportsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDynamodbExportsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockDynamodbClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Dynamodb: m,
 	}
 	var es types.ExportSummary

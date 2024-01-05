@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildExternalModels(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildExternalModels(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	fdClient := mocks.NewMockFrauddetectorClient(ctrl)
 
 	data := types.ExternalModel{}
@@ -22,7 +22,7 @@ func buildExternalModels(t *testing.T, ctrl *gomock.Controller) client.Services 
 		&frauddetector.GetExternalModelsOutput{ExternalModels: []types.ExternalModel{data}}, nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Frauddetector: fdClient,
 	}
 }

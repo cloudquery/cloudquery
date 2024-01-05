@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2NetworkAcls(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2NetworkAcls(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 
 	l := types.NetworkAcl{}
@@ -24,7 +24,7 @@ func buildEc2NetworkAcls(t *testing.T, ctrl *gomock.Controller) client.Services 
 		&ec2.DescribeNetworkAclsOutput{
 			NetworkAcls: []types.NetworkAcl{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

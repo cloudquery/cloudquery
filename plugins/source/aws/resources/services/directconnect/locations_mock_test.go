@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDirectconnectLocations(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDirectconnectLocations(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockDirectconnectClient(ctrl)
 	loc := types.Location{}
 	require.NoError(t, faker.FakeObject(&loc))
@@ -20,7 +20,7 @@ func buildDirectconnectLocations(t *testing.T, ctrl *gomock.Controller) client.S
 		&directconnect.DescribeLocationsOutput{
 			Locations: []types.Location{loc},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Directconnect: m,
 	}
 }

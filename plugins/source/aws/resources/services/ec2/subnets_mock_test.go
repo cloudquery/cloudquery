@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2Subnets(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2Subnets(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	l := types.Subnet{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -21,7 +21,7 @@ func buildEc2Subnets(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&ec2.DescribeSubnetsOutput{
 			Subnets: []types.Subnet{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

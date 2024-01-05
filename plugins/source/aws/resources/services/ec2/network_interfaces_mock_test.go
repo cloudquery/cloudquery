@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2NetworkInterfaces(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2NetworkInterfaces(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 
 	niOutput := ec2.DescribeNetworkInterfacesOutput{}
@@ -19,7 +19,7 @@ func buildEc2NetworkInterfaces(t *testing.T, ctrl *gomock.Controller) client.Ser
 
 	niOutput.NextToken = nil
 	m.EXPECT().DescribeNetworkInterfaces(gomock.Any(), gomock.Any(), gomock.Any()).Return(&niOutput, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

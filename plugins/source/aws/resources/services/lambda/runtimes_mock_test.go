@@ -7,8 +7,8 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildLambdaRuntimesMock(*testing.T, *gomock.Controller) client.Services {
-	return client.Services{}
+func buildLambdaRuntimesMock(*testing.T, *gomock.Controller) *client.Services {
+	return &client.Services{}
 }
 
 func TestLambdaRuntimes(t *testing.T) {

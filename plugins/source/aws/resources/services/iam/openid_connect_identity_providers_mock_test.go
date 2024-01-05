@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildIamOpenIDConnectProviders(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildIamOpenIDConnectProviders(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	l := iamTypes.OpenIDConnectProviderListEntry{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -25,7 +25,7 @@ func buildIamOpenIDConnectProviders(t *testing.T, ctrl *gomock.Controller) clien
 	require.NoError(t, faker.FakeObject(&p))
 	m.EXPECT().GetOpenIDConnectProvider(gomock.Any(), gomock.Any(), gomock.Any()).Return(&p, nil)
 
-	return client.Services{
+	return &client.Services{
 		Iam: m,
 	}
 }

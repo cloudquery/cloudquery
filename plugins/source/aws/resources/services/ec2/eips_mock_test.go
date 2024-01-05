@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2Eips(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2Eips(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	a := types.Address{}
 	require.NoError(t, faker.FakeObject(&a))
@@ -30,7 +30,7 @@ func buildEc2Eips(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&ec2.DescribeAddressesOutput{
 			Addresses: []types.Address{a},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

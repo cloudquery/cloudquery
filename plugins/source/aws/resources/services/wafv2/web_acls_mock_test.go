@@ -15,7 +15,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockWafv2Client(ctrl)
 	cfm := mocks.NewMockCloudfrontClient(ctrl)
 
@@ -69,7 +69,7 @@ func buildWAFV2WebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services
 		DistributionList: &distributionList,
 	}, nil)
 
-	return client.Services{Wafv2: m, Cloudfront: cfm}
+	return &client.Services{Wafv2: m, Cloudfront: cfm}
 }
 
 func TestWafV2WebACL(t *testing.T) {

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildSnsTopics(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSnsTopics(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockSnsClient(ctrl)
 	topic := types.Topic{}
 	require.NoError(t, faker.FakeObject(&topic))
@@ -45,7 +45,7 @@ func buildSnsTopics(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&sns.ListTagsForResourceOutput{
 			Tags: []types.Tag{tag},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Sns: m,
 	}
 }

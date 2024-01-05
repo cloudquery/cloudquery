@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildSSMDocuments(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSSMDocuments(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockSsmClient(ctrl)
 
 	docName := "testDocName"
@@ -69,7 +69,7 @@ func buildSSMDocuments(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Ssm: mock}
+	return &client.Services{Ssm: mock}
 }
 
 func TestSSMDocuments(t *testing.T) {

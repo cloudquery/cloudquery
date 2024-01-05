@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildElasticbeanstalkApplicationVersions(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildElasticbeanstalkApplicationVersions(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockElasticbeanstalkClient(ctrl)
 
 	la := elasticbeanstalkTypes.ApplicationVersionDescription{}
@@ -23,7 +23,7 @@ func buildElasticbeanstalkApplicationVersions(t *testing.T, ctrl *gomock.Control
 			ApplicationVersions: []elasticbeanstalkTypes.ApplicationVersionDescription{la},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Elasticbeanstalk: m,
 	}
 }

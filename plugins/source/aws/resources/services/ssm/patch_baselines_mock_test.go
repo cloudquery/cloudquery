@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildPatchBaselines(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildPatchBaselines(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockSsmClient(ctrl)
 
 	var i types.PatchBaselineIdentity
@@ -27,7 +27,7 @@ func buildPatchBaselines(t *testing.T, ctrl *gomock.Controller) client.Services 
 		nil,
 	)
 
-	return client.Services{Ssm: mock}
+	return &client.Services{Ssm: mock}
 }
 
 func TestPatchBaselines(t *testing.T) {

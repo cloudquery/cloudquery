@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDynamodbBackupMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDynamodbBackupMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockDynamodbClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Dynamodb: m,
 	}
 	var bs types.BackupSummary

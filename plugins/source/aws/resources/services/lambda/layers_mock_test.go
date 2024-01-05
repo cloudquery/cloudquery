@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildLambdaLayersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildLambdaLayersMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockLambdaClient(ctrl)
 
 	creationDate := "1994-11-05T08:15:30.000+0500"
@@ -40,7 +40,7 @@ func buildLambdaLayersMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	m.EXPECT().GetLayerVersionPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&lvp, nil)
 
-	return client.Services{
+	return &client.Services{
 		Lambda: m,
 	}
 }

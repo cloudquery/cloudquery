@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildModels(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildModels(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	fdClient := mocks.NewMockFrauddetectorClient(ctrl)
 
 	data := types.Model{}
@@ -24,7 +24,7 @@ func buildModels(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	buildModelVersions(t, fdClient)
 
-	return client.Services{
+	return &client.Services{
 		Frauddetector: fdClient,
 	}
 }

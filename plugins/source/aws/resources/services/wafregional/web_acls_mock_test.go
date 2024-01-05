@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildWebACLsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildWebACLsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockWafregionalClient(ctrl)
 
 	var acl types.WebACL
@@ -66,7 +66,7 @@ func buildWebACLsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Wafregional: m}
+	return &client.Services{Wafregional: m}
 }
 
 func TestWebACLs(t *testing.T) {

@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mIdentity := mocks.NewMockIdentitystoreClient(ctrl)
 	mSSOAdmin := mocks.NewMockSsoadminClient(ctrl)
 	im := types.InstanceMetadata{}
@@ -40,7 +40,7 @@ func buildGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 			GroupMemberships: []iTypes.GroupMembership{groupMembership},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Ssoadmin:      mSSOAdmin,
 		Identitystore: mIdentity,
 	}

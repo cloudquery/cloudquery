@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEventBridgeEventBusesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEventBridgeEventBusesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEventbridgeClient(ctrl)
 
 	var bus types.EventBus
@@ -42,7 +42,7 @@ func buildEventBridgeEventBusesMock(t *testing.T, ctrl *gomock.Controller) clien
 			Targets: []types.Target{target},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Eventbridge: m,
 	}
 }

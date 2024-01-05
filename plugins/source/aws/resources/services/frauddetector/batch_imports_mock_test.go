@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildBatchImports(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildBatchImports(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	fdClient := mocks.NewMockFrauddetectorClient(ctrl)
 
 	data := types.BatchImport{}
@@ -22,7 +22,7 @@ func buildBatchImports(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&frauddetector.GetBatchImportJobsOutput{BatchImports: []types.BatchImport{data}}, nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Frauddetector: fdClient,
 	}
 }

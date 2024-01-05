@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEcrRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEcrRepositoriesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEcrClient(ctrl)
 	l := types.Repository{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -54,7 +54,7 @@ func buildEcrRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 	lifecyclePolicyText := `{"rules":[{"rulePriority":1,"description":"Expire images older than 14 days","selection":{"tagStatus":"untagged","countType":"sinceImagePushed","countUnit":"days","countNumber":14},"action":{"type":"expire"}}]}`
 	lifeCyclePolicy.LifecyclePolicyText = &lifecyclePolicyText
 	m.EXPECT().GetLifecyclePolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&lifeCyclePolicy, nil)
-	return client.Services{
+	return &client.Services{
 		Ecr: m,
 	}
 }

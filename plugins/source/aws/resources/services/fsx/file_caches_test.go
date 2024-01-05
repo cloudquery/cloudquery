@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildFileCachesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildFileCachesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockFsxClient(ctrl)
 
 	var fc types.FileCache
@@ -38,7 +38,7 @@ func buildFileCachesMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Fsx: m,
 	}
 }

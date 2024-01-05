@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildSpotInstanceRequests(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSpotInstanceRequests(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	item := types.SpotInstanceRequest{}
 	require.NoError(t, faker.FakeObject(&item))
@@ -22,7 +22,7 @@ func buildSpotInstanceRequests(t *testing.T, ctrl *gomock.Controller) client.Ser
 			SpotInstanceRequests: []types.SpotInstanceRequest{item},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

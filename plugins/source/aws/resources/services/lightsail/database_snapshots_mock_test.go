@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDatabaseSnapshotsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDatabaseSnapshotsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockLightsailClient(ctrl)
 
 	s := lightsail.GetRelationalDatabaseSnapshotsOutput{}
@@ -20,7 +20,7 @@ func buildDatabaseSnapshotsMock(t *testing.T, ctrl *gomock.Controller) client.Se
 	m.EXPECT().GetRelationalDatabaseSnapshots(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&s, nil)
 
-	return client.Services{
+	return &client.Services{
 		Lightsail: m,
 	}
 }

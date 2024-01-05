@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildConnections(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildConnections(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockGlueClient(ctrl)
 
 	var connecions glue.GetConnectionsOutput
@@ -20,7 +20,7 @@ func buildConnections(t *testing.T, ctrl *gomock.Controller) client.Services {
 	connecions.NextToken = nil
 	m.EXPECT().GetConnections(gomock.Any(), gomock.Any(), gomock.Any()).Return(&connecions, nil)
 
-	return client.Services{
+	return &client.Services{
 		Glue: m,
 	}
 }

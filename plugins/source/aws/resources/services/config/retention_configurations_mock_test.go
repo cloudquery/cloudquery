@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRetentionConfigurations(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRetentionConfigurations(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockConfigserviceClient(ctrl)
 	l := types.RetentionConfiguration{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -21,7 +21,7 @@ func buildRetentionConfigurations(t *testing.T, ctrl *gomock.Controller) client.
 		&configservice.DescribeRetentionConfigurationsOutput{
 			RetentionConfigurations: []types.RetentionConfiguration{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Configservice: m,
 	}
 }

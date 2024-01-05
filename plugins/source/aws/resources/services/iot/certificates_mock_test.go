@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildIotCertificatesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildIotCertificatesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockIotClient(ctrl)
 
 	certs := iot.ListCertificatesOutput{}
@@ -31,7 +31,7 @@ func buildIotCertificatesMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 	m.EXPECT().ListAttachedPolicies(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&p, nil)
 
-	return client.Services{
+	return &client.Services{
 		Iot: m,
 	}
 }

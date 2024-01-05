@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildSourceCredentials(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSourceCredentials(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockCodebuildClient(ctrl)
 
 	sourceCredentials := codebuild.ListSourceCredentialsOutput{}
@@ -25,7 +25,7 @@ func buildSourceCredentials(t *testing.T, ctrl *gomock.Controller) client.Servic
 		&sourceCredentials,
 		nil,
 	)
-	return client.Services{Codebuild: m}
+	return &client.Services{Codebuild: m}
 }
 
 func TestSourceCredentials(t *testing.T) {

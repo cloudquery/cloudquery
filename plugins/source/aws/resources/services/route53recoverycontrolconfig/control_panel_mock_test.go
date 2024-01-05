@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildControlPanels(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildControlPanels(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRoute53recoverycontrolconfigClient(ctrl)
 
 	var c types.ControlPanel
@@ -63,7 +63,7 @@ func buildControlPanels(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Route53recoverycontrolconfig: m,
 	}
 }

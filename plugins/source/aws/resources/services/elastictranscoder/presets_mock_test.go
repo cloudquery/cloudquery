@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildElastictranscoderPresetsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildElastictranscoderPresetsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockElastictranscoderClient(ctrl)
 	object := types.Preset{}
 	require.NoError(t, faker.FakeObject(&object))
@@ -22,7 +22,7 @@ func buildElastictranscoderPresetsMock(t *testing.T, ctrl *gomock.Controller) cl
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Elastictranscoder: m,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildEMRClient(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEMRClient(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	emrmock := mocks.NewMockEmrClient(ctrl)
 
 	out := &emr.GetBlockPublicAccessConfigurationOutput{
@@ -39,7 +39,7 @@ func buildEMRClient(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&emr.GetBlockPublicAccessConfigurationInput{},
 		gomock.Any(),
 	).Return(out, nil)
-	return client.Services{Emr: emrmock}
+	return &client.Services{Emr: emrmock}
 }
 
 func TestEMRBlockPublicAccessConfigs(t *testing.T) {

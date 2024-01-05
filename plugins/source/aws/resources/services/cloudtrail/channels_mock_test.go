@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildCloudtrailChannelsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCloudtrailChannelsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockCloudtrailClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Cloudtrail: m,
 	}
 	channel := types.Channel{}

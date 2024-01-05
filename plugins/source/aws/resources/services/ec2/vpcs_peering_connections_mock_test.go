@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2VpcsPeeringConnections(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2VpcsPeeringConnections(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	l := types.VpcPeeringConnection{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -21,7 +21,7 @@ func buildEc2VpcsPeeringConnections(t *testing.T, ctrl *gomock.Controller) clien
 		&ec2.DescribeVpcPeeringConnectionsOutput{
 			VpcPeeringConnections: []types.VpcPeeringConnection{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

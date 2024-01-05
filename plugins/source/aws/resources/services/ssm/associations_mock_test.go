@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildAssociations(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildAssociations(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockSsmClient(ctrl)
 
 	var i types.Association
@@ -27,7 +27,7 @@ func buildAssociations(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Ssm: mock}
+	return &client.Services{Ssm: mock}
 }
 
 func TestAssociations(t *testing.T) {

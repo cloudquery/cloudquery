@@ -14,7 +14,7 @@ import (
 
 func buildPlans(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockAutoscalingplansClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Autoscalingplans: m,
 	}
 	p := types.ScalingPlan{}

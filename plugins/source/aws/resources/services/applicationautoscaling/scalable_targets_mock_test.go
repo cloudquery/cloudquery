@@ -14,7 +14,7 @@ import (
 
 func buildScalableTargets(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockApplicationautoscalingClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Applicationautoscaling: m,
 	}
 	c := types.ScalableTarget{}

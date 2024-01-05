@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildAccountAttributesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildAccountAttributesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	ac := types.AccountAttribute{}
 	require.NoError(t, faker.FakeObject(&ac))
@@ -22,7 +22,7 @@ func buildAccountAttributesMock(t *testing.T, ctrl *gomock.Controller) client.Se
 			AccountAttributes: []types.AccountAttribute{ac},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

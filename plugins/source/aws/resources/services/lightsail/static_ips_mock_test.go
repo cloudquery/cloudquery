@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildStaticIps(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildStaticIps(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockLightsailClient(ctrl)
 
 	var ips lightsail.GetStaticIpsOutput
@@ -21,7 +21,7 @@ func buildStaticIps(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	mock.EXPECT().GetStaticIps(gomock.Any(), &lightsail.GetStaticIpsInput{}, gomock.Any()).Return(&ips, nil)
 
-	return client.Services{Lightsail: mock}
+	return &client.Services{Lightsail: mock}
 }
 
 func TestStaticIps(t *testing.T) {

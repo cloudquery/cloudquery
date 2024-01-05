@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildOptionGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildOptionGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockRdsClient(ctrl)
 	var s types.OptionGroup
 	require.NoError(t, faker.FakeObject(&s))
@@ -21,7 +21,7 @@ func buildOptionGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&rds.DescribeOptionGroupsOutput{OptionGroupsList: []types.OptionGroup{s}},
 		nil,
 	)
-	return client.Services{Rds: mock}
+	return &client.Services{Rds: mock}
 }
 
 func TestRDSOptionGroups(t *testing.T) {

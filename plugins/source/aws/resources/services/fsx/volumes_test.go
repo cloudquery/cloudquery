@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildVolumesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildVolumesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockFsxClient(ctrl)
 
 	var v types.Volume
@@ -30,7 +30,7 @@ func buildVolumesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Fsx: m,
 	}
 }

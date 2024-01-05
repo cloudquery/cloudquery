@@ -11,14 +11,14 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDRPMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDRPMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockGlacierClient(ctrl)
 
 	p := glacier.GetDataRetrievalPolicyOutput{}
 	require.NoError(t, faker.FakeObject(&p))
 	m.EXPECT().GetDataRetrievalPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&p, nil)
 
-	return client.Services{
+	return &client.Services{
 		Glacier: m,
 	}
 }

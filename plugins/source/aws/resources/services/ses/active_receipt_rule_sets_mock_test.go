@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildActiveReceiptRuleSets(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildActiveReceiptRuleSets(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	sesClient := mocks.NewMockSesClient(ctrl)
 
 	data := new(ses.DescribeActiveReceiptRuleSetOutput)
@@ -19,7 +19,7 @@ func buildActiveReceiptRuleSets(t *testing.T, ctrl *gomock.Controller) client.Se
 
 	sesClient.EXPECT().DescribeActiveReceiptRuleSet(gomock.Any(), gomock.Any(), gomock.Any()).Return(data, nil)
 
-	return client.Services{
+	return &client.Services{
 		Ses: sesClient,
 	}
 }

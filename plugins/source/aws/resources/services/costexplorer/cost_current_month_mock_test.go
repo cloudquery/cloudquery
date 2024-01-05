@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func build30DayCost(t *testing.T, ctrl *gomock.Controller) client.Services {
+func build30DayCost(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockCostexplorerClient(ctrl)
 
 	gcuo := costexplorer.GetCostAndUsageOutput{}
@@ -20,7 +20,7 @@ func build30DayCost(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetCostAndUsage(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(
 		&gcuo, nil)
 
-	return client.Services{
+	return &client.Services{
 		Costexplorer: m,
 	}
 }

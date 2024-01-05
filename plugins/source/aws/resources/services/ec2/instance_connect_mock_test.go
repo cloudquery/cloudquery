@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildInstanceConnectEndpoint(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildInstanceConnectEndpoint(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	endpoint := types.Ec2InstanceConnectEndpoint{}
 	require.NoError(t, faker.FakeObject(&endpoint))
@@ -24,7 +24,7 @@ func buildInstanceConnectEndpoint(t *testing.T, ctrl *gomock.Controller) client.
 			NextToken:                nil,
 			ResultMetadata:           middleware.Metadata{},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

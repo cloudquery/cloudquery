@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildIotThingTypesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildIotThingTypesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockIotClient(ctrl)
 
 	groupsOutput := iot.ListThingTypesOutput{}
@@ -26,7 +26,7 @@ func buildIotThingTypesMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&tags, nil)
 
-	return client.Services{
+	return &client.Services{
 		Iot: m,
 	}
 }

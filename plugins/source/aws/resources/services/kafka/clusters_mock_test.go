@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildKafkaClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildKafkaClustersMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockKafkaClient(ctrl)
 	object := types.Cluster{}
 	require.NoError(t, faker.FakeObject(&object))
@@ -33,7 +33,7 @@ func buildKafkaClustersMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 	require.NoError(t, faker.FakeObject(&tagsOutput))
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
 
-	return client.Services{
+	return &client.Services{
 		Kafka: m,
 	}
 }

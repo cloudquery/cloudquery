@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildCloudfrontCachePoliciesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCloudfrontCachePoliciesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockCloudfrontClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Cloudfront: m,
 	}
 	cp := cloudfrontTypes.CachePolicySummary{}

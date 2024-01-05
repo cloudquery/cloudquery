@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildElasticacheReplicationGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildElasticacheReplicationGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mockElasticache := mocks.NewMockElasticacheClient(ctrl)
 	output := elasticache.DescribeReplicationGroupsOutput{}
 	require.NoError(t, faker.FakeObject(&output))
@@ -25,7 +25,7 @@ func buildElasticacheReplicationGroups(t *testing.T, ctrl *gomock.Controller) cl
 
 	mockElasticache.EXPECT().ListTagsForResource(gomock.Any(), &elasticache.ListTagsForResourceInput{ResourceName: output.ReplicationGroups[0].ARN}, gomock.Any()).Return(&elasticache.ListTagsForResourceOutput{TagList: []types.Tag{ta}}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Elasticache: mockElasticache,
 	}
 }

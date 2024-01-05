@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2ManagedPrefixList(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2ManagedPrefixList(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	l := types.ManagedPrefixList{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -21,7 +21,7 @@ func buildEc2ManagedPrefixList(t *testing.T, ctrl *gomock.Controller) client.Ser
 		&ec2.DescribeManagedPrefixListsOutput{
 			PrefixLists: []types.ManagedPrefixList{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

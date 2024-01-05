@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildSecurityConfigurations(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSecurityConfigurations(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockEmrClient(ctrl)
 	var summary types.SecurityConfigurationSummary
 	require.NoError(t, faker.FakeObject(&summary))
@@ -27,7 +27,7 @@ func buildSecurityConfigurations(t *testing.T, ctrl *gomock.Controller) client.S
 		&emr.DescribeSecurityConfigurationOutput{CreationDateTime: summary.CreationDateTime, Name: summary.Name, SecurityConfiguration: &configString},
 		nil,
 	)
-	return client.Services{Emr: mock}
+	return &client.Services{Emr: mock}
 }
 
 func TestSecurityConfigurations(t *testing.T) {

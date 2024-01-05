@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildNeptuneDBParameterGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildNeptuneDBParameterGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockNeptuneClient(ctrl)
 	var g types.DBParameterGroup
 	require.NoError(t, faker.FakeObject(&g))
@@ -51,7 +51,7 @@ func buildNeptuneDBParameterGroups(t *testing.T, ctrl *gomock.Controller) client
 		&neptune.DescribeDBParametersOutput{Parameters: []types.Parameter{p}},
 		nil,
 	)
-	return client.Services{Neptune: mock}
+	return &client.Services{Neptune: mock}
 }
 
 func TestNeptuneDBParameterGroups(t *testing.T) {

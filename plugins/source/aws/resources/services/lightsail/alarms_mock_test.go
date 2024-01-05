@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildAlarmsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildAlarmsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockLightsailClient(ctrl)
 
 	b := lightsail.GetAlarmsOutput{}
@@ -20,7 +20,7 @@ func buildAlarmsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetAlarms(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&b, nil)
 
-	return client.Services{
+	return &client.Services{
 		Lightsail: m,
 	}
 }

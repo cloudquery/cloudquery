@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildElasticacheParameterGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildElasticacheParameterGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mockElasticache := mocks.NewMockElasticacheClient(ctrl)
 	parameterGroupsOutput := elasticache.DescribeCacheParameterGroupsOutput{}
 	require.NoError(t, faker.FakeObject(&parameterGroupsOutput))
@@ -23,7 +23,7 @@ func buildElasticacheParameterGroups(t *testing.T, ctrl *gomock.Controller) clie
 
 	mockElasticache.EXPECT().DescribeCacheParameterGroups(gomock.Any(), gomock.Any(), gomock.Any()).Return(&parameterGroupsOutput, nil)
 
-	return client.Services{
+	return &client.Services{
 		Elasticache: mockElasticache,
 	}
 }

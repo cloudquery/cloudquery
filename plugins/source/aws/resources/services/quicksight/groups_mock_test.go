@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildGroupsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockQuicksightClient(ctrl)
 
 	var lo quicksight.ListGroupsOutput
@@ -31,7 +31,7 @@ func buildGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	gm.NextToken = nil
 	m.EXPECT().ListGroupMemberships(gomock.Any(), gomock.Any(), gomock.Any()).Return(&gm, nil)
 
-	return client.Services{
+	return &client.Services{
 		Quicksight: m,
 	}
 }

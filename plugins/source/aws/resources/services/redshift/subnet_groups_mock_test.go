@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildSubnetGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSubnetGroupsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRedshiftClient(ctrl)
 
 	g := types.ClusterSubnetGroup{}
@@ -22,7 +22,7 @@ func buildSubnetGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Service
 		&redshift.DescribeClusterSubnetGroupsOutput{
 			ClusterSubnetGroups: []types.ClusterSubnetGroup{g},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Redshift: m,
 	}
 }

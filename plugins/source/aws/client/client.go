@@ -80,10 +80,6 @@ func (c *Client) ID() string {
 	return strings.TrimRight(strings.Join(idStrings, ":"), ":")
 }
 
-func (c *Client) updateService(service AWSServiceName) {
-	c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).InitService(service)
-}
-
 func (c *Client) Services(serviceNames ...AWSServiceName) *Services {
 	svc := c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID)
 	for _, service := range serviceNames {

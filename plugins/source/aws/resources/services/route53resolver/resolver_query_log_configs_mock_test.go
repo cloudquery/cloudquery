@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildResolverQueryLogConfigsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildResolverQueryLogConfigsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRoute53resolverClient(ctrl)
 	rqlc := types.ResolverQueryLogConfig{}
 	require.NoError(t, faker.FakeObject(&rqlc))
@@ -22,7 +22,7 @@ func buildResolverQueryLogConfigsMock(t *testing.T, ctrl *gomock.Controller) cli
 			ResolverQueryLogConfigs: []types.ResolverQueryLogConfig{rqlc},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Route53resolver: m,
 	}
 }

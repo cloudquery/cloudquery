@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildWAFV2RuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildWAFV2RuleGroupsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockWafv2Client(ctrl)
 	visibilityConfig := types.VisibilityConfig{}
 	require.NoError(t, faker.FakeObject(&visibilityConfig))
@@ -65,7 +65,7 @@ func buildWAFV2RuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 		}, nil)
 	}
 
-	return client.Services{Wafv2: m}
+	return &client.Services{Wafv2: m}
 }
 
 func TestWafV2RuleGroups(t *testing.T) {

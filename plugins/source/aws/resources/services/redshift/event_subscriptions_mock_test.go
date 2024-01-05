@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEventSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEventSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRedshiftClient(ctrl)
 
 	var s types.EventSubscription
@@ -30,7 +30,7 @@ func buildEventSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) client.S
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Redshift: m,
 	}
 }

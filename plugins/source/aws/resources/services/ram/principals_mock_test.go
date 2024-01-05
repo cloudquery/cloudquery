@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRamPrincipalsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRamPrincipalsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRamClient(ctrl)
 	object := types.Principal{}
 	require.NoError(t, faker.FakeObject(&object))
@@ -22,7 +22,7 @@ func buildRamPrincipalsMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 			Principals: []types.Principal{object},
 		}, nil).MinTimes(1)
 
-	return client.Services{
+	return &client.Services{
 		Ram: m,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildIamVirtualMfaDevices(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildIamVirtualMfaDevices(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	g := iamTypes.VirtualMFADevice{}
 	require.NoError(t, faker.FakeObject(&g))
@@ -21,7 +21,7 @@ func buildIamVirtualMfaDevices(t *testing.T, ctrl *gomock.Controller) client.Ser
 		&iam.ListVirtualMFADevicesOutput{
 			VirtualMFADevices: []iamTypes.VirtualMFADevice{g},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Iam: m,
 	}
 }

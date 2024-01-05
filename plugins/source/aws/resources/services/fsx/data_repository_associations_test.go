@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDataRepoAssociationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDataRepoAssociationsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockFsxClient(ctrl)
 
 	var a types.DataRepositoryAssociation
@@ -27,7 +27,7 @@ func buildDataRepoAssociationsMock(t *testing.T, ctrl *gomock.Controller) client
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Fsx: m,
 	}
 }

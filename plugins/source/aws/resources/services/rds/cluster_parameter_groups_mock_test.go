@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRdsClusterParameterGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRdsClusterParameterGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockRdsClient(ctrl)
 	var g types.DBClusterParameterGroup
 	require.NoError(t, faker.FakeObject(&g))
@@ -49,7 +49,7 @@ func buildRdsClusterParameterGroups(t *testing.T, ctrl *gomock.Controller) clien
 		&rds.DescribeDBClusterParametersOutput{Parameters: []types.Parameter{p}},
 		nil,
 	)
-	return client.Services{Rds: mock}
+	return &client.Services{Rds: mock}
 }
 
 func TestRdsClusterParameterGroups(t *testing.T) {

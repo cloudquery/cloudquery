@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockElasticloadbalancingv2Client(ctrl)
 	w := mocks.NewMockWafv2Client(ctrl)
 	l := elbv2Types.LoadBalancer{}
@@ -72,7 +72,7 @@ func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		Rules: []elbv2Types.Rule{r},
 	}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Elasticloadbalancingv2: m,
 		Wafv2:                  w,
 	}

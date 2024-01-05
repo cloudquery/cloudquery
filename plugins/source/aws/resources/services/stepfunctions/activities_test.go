@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildActivities(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildActivities(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockSfnClient(ctrl)
 	ali := types.ActivityListItem{}
 	require.NoError(t, faker.FakeObject(&ali))
@@ -22,7 +22,7 @@ func buildActivities(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Activities: []types.ActivityListItem{ali},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Sfn: m,
 	}
 }

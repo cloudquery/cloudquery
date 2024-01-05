@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildWorkspaces(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildWorkspaces(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockWorkspacesClient(ctrl)
 
 	var workspace types.Workspace
@@ -27,7 +27,7 @@ func buildWorkspaces(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Workspaces: mock}
+	return &client.Services{Workspaces: mock}
 }
 
 func TestWorkspacesWorkspaces(t *testing.T) {

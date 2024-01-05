@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildCertificatesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCertificatesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockLightsailClient(ctrl)
 
 	b := lightsail.GetCertificatesOutput{}
@@ -19,7 +19,7 @@ func buildCertificatesMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	m.EXPECT().GetCertificates(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&b, nil)
 
-	return client.Services{
+	return &client.Services{
 		Lightsail: m,
 	}
 }

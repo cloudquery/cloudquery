@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildClustersMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRedshiftClient(ctrl)
 	g := types.Cluster{}
 	require.NoError(t, faker.FakeObject(&g))
@@ -86,7 +86,7 @@ func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Redshift: m,
 	}
 }

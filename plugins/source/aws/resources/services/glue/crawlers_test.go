@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildCrawlers(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCrawlers(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockGlueClient(ctrl)
 
 	var crawler glue.GetCrawlersOutput
@@ -25,7 +25,7 @@ func buildCrawlers(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	m.EXPECT().GetTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)
 
-	return client.Services{
+	return &client.Services{
 		Glue: m,
 	}
 }

@@ -11,9 +11,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildPendingMaintenanceActionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildPendingMaintenanceActionsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockDocdbClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Docdb: m,
 	}
 	var ev docdb.DescribePendingMaintenanceActionsOutput

@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildCodebuildProjects(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCodebuildProjects(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockCodebuildClient(ctrl)
 
 	projectsList := codebuild.ListProjectsOutput{}
@@ -65,7 +65,7 @@ func buildCodebuildProjects(t *testing.T, ctrl *gomock.Controller) client.Servic
 		nil,
 	).MinTimes(1)
 
-	return client.Services{Codebuild: m}
+	return &client.Services{Codebuild: m}
 }
 
 func TestCodebuildProjects(t *testing.T) {

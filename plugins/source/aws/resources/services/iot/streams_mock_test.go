@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildIotStreamsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildIotStreamsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockIotClient(ctrl)
 
 	streams := iot.ListStreamsOutput{}
@@ -25,7 +25,7 @@ func buildIotStreamsMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 	m.EXPECT().DescribeStream(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&streamOutput, nil)
 
-	return client.Services{
+	return &client.Services{
 		Iot: m,
 	}
 }

@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildCloudfrontDistributionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCloudfrontDistributionsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockCloudfrontClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Cloudfront: m,
 	}
 	ds := cloudfrontTypes.DistributionSummary{}

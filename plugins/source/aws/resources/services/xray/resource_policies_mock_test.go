@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildResourcePolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildResourcePolicies(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockXrayClient(ctrl)
 
 	var pols types.ResourcePolicy
@@ -31,7 +31,7 @@ func buildResourcePolicies(t *testing.T, ctrl *gomock.Controller) client.Service
 		nil,
 	)
 
-	return client.Services{Xray: mock}
+	return &client.Services{Xray: mock}
 }
 
 func TestResourcePolicies(t *testing.T) {

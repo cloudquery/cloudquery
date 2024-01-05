@@ -12,7 +12,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildSeverityLevels(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSeverityLevels(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockSupportClient(ctrl)
 	levels := []types.SeverityLevel{}
 	err := faker.FakeObject(&levels)
@@ -24,7 +24,7 @@ func buildSeverityLevels(t *testing.T, ctrl *gomock.Controller) client.Services 
 		m.EXPECT().DescribeSeverityLevels(gomock.Any(), &support.DescribeSeverityLevelsInput{Language: aws.String(languageCode)}, gomock.Any()).Return(&support.DescribeSeverityLevelsOutput{SeverityLevels: levels}, nil)
 	}
 
-	return client.Services{
+	return &client.Services{
 		Support: m,
 	}
 }

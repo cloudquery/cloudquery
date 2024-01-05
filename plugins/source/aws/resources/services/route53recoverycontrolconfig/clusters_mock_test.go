@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildClusters(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRoute53recoverycontrolconfigClient(ctrl)
 
 	var c types.Cluster
@@ -29,7 +29,7 @@ func buildClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Route53recoverycontrolconfig: m,
 	}
 }

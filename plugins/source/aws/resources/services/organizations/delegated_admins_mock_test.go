@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDelegatedAdministrators(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDelegatedAdministrators(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockOrganizationsClient(ctrl)
 	da := types.DelegatedAdministrator{}
 	require.NoError(t, faker.FakeObject(&da))
@@ -29,7 +29,7 @@ func buildDelegatedAdministrators(t *testing.T, ctrl *gomock.Controller) client.
 		&organizations.ListDelegatedServicesForAccountOutput{
 			DelegatedServices: []types.DelegatedService{ds},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Organizations: m,
 	}
 }

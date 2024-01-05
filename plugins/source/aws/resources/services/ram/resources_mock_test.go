@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRamResourcesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRamResourcesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRamClient(ctrl)
 	object := types.Resource{}
 	require.NoError(t, faker.FakeObject(&object))
@@ -22,7 +22,7 @@ func buildRamResourcesMock(t *testing.T, ctrl *gomock.Controller) client.Service
 			Resources: []types.Resource{object},
 		}, nil).MinTimes(1)
 
-	return client.Services{
+	return &client.Services{
 		Ram: m,
 	}
 }

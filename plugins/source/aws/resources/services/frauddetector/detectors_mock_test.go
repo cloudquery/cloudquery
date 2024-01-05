@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDetectors(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDetectors(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	fdClient := mocks.NewMockFrauddetectorClient(ctrl)
 
 	data := types.Detector{}
@@ -25,7 +25,7 @@ func buildDetectors(t *testing.T, ctrl *gomock.Controller) client.Services {
 	buildRules(t, fdClient)
 	addTagsCall(t, fdClient)
 
-	return client.Services{
+	return &client.Services{
 		Frauddetector: fdClient,
 	}
 }

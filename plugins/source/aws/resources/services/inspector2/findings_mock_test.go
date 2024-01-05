@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildFindings(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildFindings(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	inspectorClient := mocks.NewMockInspector2Client(ctrl)
 
 	finding := types.Finding{}
@@ -21,7 +21,7 @@ func buildFindings(t *testing.T, ctrl *gomock.Controller) client.Services {
 	inspectorClient.EXPECT().ListFindings(gomock.Any(), gomock.Any(), gomock.Any()).
 		Return(&inspector2.ListFindingsOutput{Findings: []types.Finding{finding}}, nil)
 
-	return client.Services{Inspector2: inspectorClient}
+	return &client.Services{Inspector2: inspectorClient}
 }
 
 func TestFindings(t *testing.T) {

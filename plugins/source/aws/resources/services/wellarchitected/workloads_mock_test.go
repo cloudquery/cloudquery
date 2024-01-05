@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildWorkloadsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildWorkloadsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockWellarchitectedClient(ctrl)
 
 	var summary types.WorkloadSummary
@@ -33,7 +33,7 @@ func buildWorkloadsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	buildWorkloadMilestones(t, m, &workload)
 	buildWorkloadShares(t, m, &workload)
 
-	return client.Services{Wellarchitected: m}
+	return &client.Services{Wellarchitected: m}
 }
 
 func TestWorkloads(t *testing.T) {

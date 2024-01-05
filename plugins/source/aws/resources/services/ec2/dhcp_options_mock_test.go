@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDHCPOptions(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDHCPOptions(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	item := types.DhcpOptions{}
 	require.NoError(t, faker.FakeObject(&item))
@@ -21,7 +21,7 @@ func buildDHCPOptions(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&ec2.DescribeDhcpOptionsOutput{
 			DhcpOptions: []types.DhcpOptions{item},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

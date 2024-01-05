@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEncryptionConfig(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEncryptionConfig(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockXrayClient(ctrl)
 
 	var config types.EncryptionConfig
@@ -29,7 +29,7 @@ func buildEncryptionConfig(t *testing.T, ctrl *gomock.Controller) client.Service
 		nil,
 	)
 
-	return client.Services{Xray: mock}
+	return &client.Services{Xray: mock}
 }
 
 func TestXrayEncryptionConfig(t *testing.T) {

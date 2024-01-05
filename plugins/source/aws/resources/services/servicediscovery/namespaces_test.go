@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildNamespaces(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildNamespaces(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockServicediscoveryClient(ctrl)
 
 	var ns types.NamespaceSummary
@@ -50,7 +50,7 @@ func buildNamespaces(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Servicediscovery: m,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildJobsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildJobsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockGlueClient(ctrl)
 
 	node := types.CodeGenConfigurationNode{}
@@ -35,7 +35,7 @@ func buildJobsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Glue: m,
 	}
 }

@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRoute53HostedZonesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRoute53HostedZonesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRoute53Client(ctrl)
 	h := types.HostedZone{}
 	require.NoError(t, faker.FakeObject(&h))
@@ -70,7 +70,7 @@ func buildRoute53HostedZonesMock(t *testing.T, ctrl *gomock.Controller) client.S
 			DelegationSet: &ds,
 			VPCs:          []types.VPC{vpc},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Route53: m,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildContactLists(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildContactLists(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	sesClient := mocks.NewMockSesv2Client(ctrl)
 
 	cs := sesv2.GetContactListOutput{}
@@ -27,7 +27,7 @@ func buildContactLists(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Sesv2: sesClient,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildSecretsmanagerModels(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSecretsmanagerModels(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockSecretsmanagerClient(ctrl)
 
 	secret := types.SecretListEntry{}
@@ -50,7 +50,7 @@ func buildSecretsmanagerModels(t *testing.T, ctrl *gomock.Controller) client.Ser
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Secretsmanager: m,
 	}
 }

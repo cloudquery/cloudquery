@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRepositories(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRepositories(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockCodecommitClient(ctrl)
 
 	repoMetadata := types.RepositoryMetadata{}
@@ -43,7 +43,7 @@ func buildRepositories(t *testing.T, ctrl *gomock.Controller) client.Services {
 		Times(200).
 		Return(&codecommit.ListTagsForResourceOutput{Tags: tags}, nil)
 
-	return client.Services{Codecommit: m}
+	return &client.Services{Codecommit: m}
 }
 
 func TestRepositories(t *testing.T) {

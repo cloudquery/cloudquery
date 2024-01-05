@@ -1,6 +1,8 @@
 package emr
 
 import (
+	"testing"
+
 	"github.com/aws/aws-sdk-go-v2/service/emr"
 	"github.com/aws/aws-sdk-go-v2/service/emr/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -8,10 +10,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
-func buildStudios(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildStudios(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockEmrClient(ctrl)
 	var summary types.StudioSummary
 	require.NoError(t, faker.FakeObject(&summary))
@@ -48,7 +49,7 @@ func buildStudios(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Emr: mock}
+	return &client.Services{Emr: mock}
 }
 
 func TestStudios(t *testing.T) {

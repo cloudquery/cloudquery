@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildInventories(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildInventories(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockSsmClient(ctrl)
 
 	var i types.InventoryResultEntity
@@ -27,7 +27,7 @@ func buildInventories(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Ssm: mock}
+	return &client.Services{Ssm: mock}
 }
 
 func TestInventories(t *testing.T) {

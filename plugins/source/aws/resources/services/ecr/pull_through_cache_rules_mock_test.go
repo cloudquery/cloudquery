@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildPullThroughCacheRules(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildPullThroughCacheRules(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEcrClient(ctrl)
 
 	ptcr := types.PullThroughCacheRule{}
@@ -23,7 +23,7 @@ func buildPullThroughCacheRules(t *testing.T, ctrl *gomock.Controller) client.Se
 			PullThroughCacheRules: []types.PullThroughCacheRule{ptcr},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Ecr: m,
 	}
 }

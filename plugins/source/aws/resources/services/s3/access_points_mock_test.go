@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildS3AccessPoints(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildS3AccessPoints(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockS3controlClient(ctrl)
 	ap := types.AccessPoint{}
 	require.NoError(t, faker.FakeObject(&ap))
@@ -22,7 +22,7 @@ func buildS3AccessPoints(t *testing.T, ctrl *gomock.Controller) client.Services 
 			AccessPointList: []types.AccessPoint{ap},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		S3control: m,
 	}
 }

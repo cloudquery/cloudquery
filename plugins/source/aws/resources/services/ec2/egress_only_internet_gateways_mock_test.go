@@ -11,14 +11,14 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEgressOnlyInternetGateways(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEgressOnlyInternetGateways(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	egressOutput := ec2.DescribeEgressOnlyInternetGatewaysOutput{}
 	require.NoError(t, faker.FakeObject(&egressOutput))
 
 	egressOutput.NextToken = nil
 	m.EXPECT().DescribeEgressOnlyInternetGateways(gomock.Any(), gomock.Any(), gomock.Any()).Return(&egressOutput, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

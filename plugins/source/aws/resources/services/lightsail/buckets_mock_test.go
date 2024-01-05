@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildBucketsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildBucketsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockLightsailClient(ctrl)
 
 	b := lightsail.GetBucketsOutput{}
@@ -26,7 +26,7 @@ func buildBucketsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetBucketAccessKeys(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ac, nil)
 
-	return client.Services{
+	return &client.Services{
 		Lightsail: m,
 	}
 }

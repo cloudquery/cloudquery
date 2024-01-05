@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildMwaaEnvironments(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildMwaaEnvironments(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockMwaaClient(ctrl)
 	g := types.Environment{}
 	require.NoError(t, faker.FakeObject(&g))
@@ -25,7 +25,7 @@ func buildMwaaEnvironments(t *testing.T, ctrl *gomock.Controller) client.Service
 		&mwaa.GetEnvironmentOutput{
 			Environment: &g,
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Mwaa: m,
 	}
 }

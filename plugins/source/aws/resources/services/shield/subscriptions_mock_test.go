@@ -11,13 +11,13 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSubscriptions(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockShieldClient(ctrl)
 	subscription := shield.DescribeSubscriptionOutput{}
 	require.NoError(t, faker.FakeObject(&subscription))
 	m.EXPECT().DescribeSubscription(gomock.Any(), gomock.Any(), gomock.Any()).Return(&subscription, nil)
 
-	return client.Services{
+	return &client.Services{
 		Shield: m,
 	}
 }

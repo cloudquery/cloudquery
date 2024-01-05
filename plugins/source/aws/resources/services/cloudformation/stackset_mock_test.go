@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildStackSet(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildStackSet(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockCloudformationClient(ctrl)
 
 	var stack types.StackSet
@@ -103,7 +103,7 @@ func buildStackSet(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Cloudformation: mock}
+	return &client.Services{Cloudformation: mock}
 }
 
 func TestCloudformationStackSet(t *testing.T) {

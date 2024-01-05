@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2EbsSnapshots(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2EbsSnapshots(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 
 	sa := ec2.DescribeSnapshotAttributeOutput{}
@@ -30,7 +30,7 @@ func buildEc2EbsSnapshots(t *testing.T, ctrl *gomock.Controller) client.Services
 
 	m.EXPECT().DescribeSnapshotAttribute(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(
 		&sa, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

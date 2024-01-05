@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildHubs(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildHubs(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	shMock := mocks.NewMockSecurityhubClient(ctrl)
 	hub := securityhub.DescribeHubOutput{}
 	require.NoError(t, faker.FakeObject(&hub))
@@ -33,7 +33,7 @@ func buildHubs(t *testing.T, ctrl *gomock.Controller) client.Services {
 		gomock.Any(),
 	).Return(&securityhub.ListTagsForResourceOutput{Tags: tags}, nil)
 
-	return client.Services{Securityhub: shMock}
+	return &client.Services{Securityhub: shMock}
 }
 
 func TestHubs(t *testing.T) {

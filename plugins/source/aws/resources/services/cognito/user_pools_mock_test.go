@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildCognitoUserPools(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCognitoUserPools(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockCognitoidentityproviderClient(ctrl)
 
 	var desc types.UserPoolDescriptionType
@@ -70,7 +70,7 @@ func buildCognitoUserPools(t *testing.T, ctrl *gomock.Controller) client.Service
 		nil,
 	)
 
-	return client.Services{Cognitoidentityprovider: m}
+	return &client.Services{Cognitoidentityprovider: m}
 }
 
 func TestCognitoUserPools(t *testing.T) {

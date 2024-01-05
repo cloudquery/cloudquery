@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEventbridgeApiDestinationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEventbridgeApiDestinationsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEventbridgeClient(ctrl)
 	object := types.ApiDestination{}
 	require.NoError(t, faker.FakeObject(&object))
@@ -25,7 +25,7 @@ func buildEventbridgeApiDestinationsMock(t *testing.T, ctrl *gomock.Controller) 
 	tagsOutput := eventbridge.ListTagsForResourceOutput{}
 	require.NoError(t, faker.FakeObject(&tagsOutput))
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
-	return client.Services{
+	return &client.Services{
 		Eventbridge: m,
 	}
 }

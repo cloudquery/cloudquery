@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildElasticSearchVersions(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildElasticSearchVersions(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockElasticsearchserviceClient(ctrl)
 
 	var versions []string
@@ -35,7 +35,7 @@ func buildElasticSearchVersions(t *testing.T, ctrl *gomock.Controller) client.Se
 		nil,
 	)
 
-	return client.Services{Elasticsearchservice: m}
+	return &client.Services{Elasticsearchservice: m}
 }
 
 func TestElasticSearchVersions(t *testing.T) {

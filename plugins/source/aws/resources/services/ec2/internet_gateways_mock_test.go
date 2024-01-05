@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2InternetGateways(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2InternetGateways(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	l := types.InternetGateway{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -21,7 +21,7 @@ func buildEc2InternetGateways(t *testing.T, ctrl *gomock.Controller) client.Serv
 		&ec2.DescribeInternetGatewaysOutput{
 			InternetGateways: []types.InternetGateway{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

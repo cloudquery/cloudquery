@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildKmsKeys(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildKmsKeys(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockKmsClient(ctrl)
 
 	keyListEntry := types.KeyListEntry{}
@@ -49,7 +49,7 @@ func buildKmsKeys(t *testing.T, ctrl *gomock.Controller) client.Services {
 		PolicyName: aws.String("default"),
 	}, gomock.Any()).Return(&kms.GetKeyPolicyOutput{Policy: &pj}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Kms: m,
 	}
 }

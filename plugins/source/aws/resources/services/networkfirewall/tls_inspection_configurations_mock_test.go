@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildTLSInspectionConfigurationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildTLSInspectionConfigurationsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockNetworkfirewallClient(ctrl)
 	ticm := types.TLSInspectionConfigurationMetadata{}
 	require.NoError(t, faker.FakeObject(&ticm))
@@ -27,7 +27,7 @@ func buildTLSInspectionConfigurationsMock(t *testing.T, ctrl *gomock.Controller)
 
 	m.EXPECT().DescribeTLSInspectionConfiguration(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tico, nil)
 
-	return client.Services{
+	return &client.Services{
 		Networkfirewall: m,
 	}
 }

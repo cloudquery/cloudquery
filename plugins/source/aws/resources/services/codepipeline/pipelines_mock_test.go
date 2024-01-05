@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildPipelines(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildPipelines(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockCodepipelineClient(ctrl)
 
 	var pipeSummary types.PipelineSummary
@@ -48,7 +48,7 @@ func buildPipelines(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Codepipeline: mock}
+	return &client.Services{Codepipeline: mock}
 }
 
 func TestCodePipelinePipelines(t *testing.T) {

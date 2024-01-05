@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildServices(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildServices(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockSupportClient(ctrl)
 	services := []types.Service{}
 	require.NoError(t, faker.FakeObject(&services))
@@ -22,7 +22,7 @@ func buildServices(t *testing.T, ctrl *gomock.Controller) client.Services {
 		m.EXPECT().DescribeServices(gomock.Any(), &support.DescribeServicesInput{Language: aws.String(languageCode)}, gomock.Any()).Return(&support.DescribeServicesOutput{Services: services}, nil)
 	}
 
-	return client.Services{
+	return &client.Services{
 		Support: m,
 	}
 }

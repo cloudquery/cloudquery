@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDirectconnectVirtualInterfacesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDirectconnectVirtualInterfacesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockDirectconnectClient(ctrl)
 	l := types.VirtualInterface{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -20,7 +20,7 @@ func buildDirectconnectVirtualInterfacesMock(t *testing.T, ctrl *gomock.Controll
 		&directconnect.DescribeVirtualInterfacesOutput{
 			VirtualInterfaces: []types.VirtualInterface{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Directconnect: m,
 	}
 }

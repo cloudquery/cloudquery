@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildAzsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildAzsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	r := types.AvailabilityZone{}
 	require.NoError(t, faker.FakeObject(&r))
@@ -25,7 +25,7 @@ func buildAzsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 			AvailabilityZones: []types.AvailabilityZone{r},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

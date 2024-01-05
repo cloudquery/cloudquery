@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDatacatalogEncryptionSettingsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDatacatalogEncryptionSettingsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockGlueClient(ctrl)
 
 	var s glue.GetDataCatalogEncryptionSettingsOutput
@@ -22,7 +22,7 @@ func buildDatacatalogEncryptionSettingsMock(t *testing.T, ctrl *gomock.Controlle
 		gomock.Any(),
 	).Return(&s, nil)
 
-	return client.Services{
+	return &client.Services{
 		Glue: m,
 	}
 }

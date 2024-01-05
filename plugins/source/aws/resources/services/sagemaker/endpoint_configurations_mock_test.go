@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildSageMakerEndpointConfigs(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSageMakerEndpointConfigs(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockSagemakerClient(ctrl)
 
 	summ := types.EndpointConfigSummary{}
@@ -39,7 +39,7 @@ func buildSageMakerEndpointConfigs(t *testing.T, ctrl *gomock.Controller) client
 		&tagsOut, nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Sagemaker: m,
 	}
 }

@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildClassifiers(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildClassifiers(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockGlueClient(ctrl)
 
 	var c glue.GetClassifiersOutput
@@ -20,7 +20,7 @@ func buildClassifiers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	c.NextToken = nil
 	m.EXPECT().GetClassifiers(gomock.Any(), gomock.Any(), gomock.Any()).Return(&c, nil)
 
-	return client.Services{
+	return &client.Services{
 		Glue: m,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildOrganizationsAccounts(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildOrganizationsAccounts(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockOrganizationsClient(ctrl)
 	g := organizationsTypes.Account{}
 	require.NoError(t, faker.FakeObject(&g))
@@ -37,7 +37,7 @@ func buildOrganizationsAccounts(t *testing.T, ctrl *gomock.Controller) client.Se
 		&organizations.ListParentsOutput{
 			Parents: []organizationsTypes.Parent{p},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Organizations: m,
 	}
 }

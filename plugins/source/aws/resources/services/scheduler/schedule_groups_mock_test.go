@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildSchedulerScheduleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSchedulerScheduleGroupsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockSchedulerClient(ctrl)
 	object := types.ScheduleGroupSummary{}
 	require.NoError(t, faker.FakeObject(&object))
@@ -25,7 +25,7 @@ func buildSchedulerScheduleGroupsMock(t *testing.T, ctrl *gomock.Controller) cli
 	tagsOutput := scheduler.ListTagsForResourceOutput{}
 	require.NoError(t, faker.FakeObject(&tagsOutput))
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
-	return client.Services{
+	return &client.Services{
 		Scheduler: m,
 	}
 }

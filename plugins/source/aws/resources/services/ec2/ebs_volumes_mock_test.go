@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2EbsVolumes(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2EbsVolumes(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	volumesOutput := ec2.DescribeVolumesOutput{}
 	require.NoError(t, faker.FakeObject(&volumesOutput))
@@ -19,7 +19,7 @@ func buildEc2EbsVolumes(t *testing.T, ctrl *gomock.Controller) client.Services {
 	volumesOutput.NextToken = nil
 	m.EXPECT().DescribeVolumes(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&volumesOutput, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

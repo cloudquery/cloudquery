@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildSecurityConfigurationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSecurityConfigurationsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockGlueClient(ctrl)
 
 	var s glue.GetSecurityConfigurationsOutput
@@ -23,7 +23,7 @@ func buildSecurityConfigurationsMock(t *testing.T, ctrl *gomock.Controller) clie
 		gomock.Any(),
 	).Return(&s, nil)
 
-	return client.Services{
+	return &client.Services{
 		Glue: m,
 	}
 }

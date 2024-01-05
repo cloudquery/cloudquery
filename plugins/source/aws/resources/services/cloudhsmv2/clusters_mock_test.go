@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildHSMClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildHSMClusters(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockCloudhsmv2Client(ctrl)
 
 	var clusters []types.Cluster
@@ -27,7 +27,7 @@ func buildHSMClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Cloudhsmv2: mock}
+	return &client.Services{Cloudhsmv2: mock}
 }
 
 func TestClusters(t *testing.T) {

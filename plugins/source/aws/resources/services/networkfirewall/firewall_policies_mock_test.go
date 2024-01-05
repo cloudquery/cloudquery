@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildFirewallPoliciesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildFirewallPoliciesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockNetworkfirewallClient(ctrl)
 	fpm := types.FirewallPolicyMetadata{}
 	require.NoError(t, faker.FakeObject(&fpm))
@@ -27,7 +27,7 @@ func buildFirewallPoliciesMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 
 	m.EXPECT().DescribeFirewallPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&fp, nil)
 
-	return client.Services{
+	return &client.Services{
 		Networkfirewall: m,
 	}
 }

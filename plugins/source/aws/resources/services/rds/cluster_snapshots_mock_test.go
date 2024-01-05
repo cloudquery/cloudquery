@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRDSClientForClusterSnapshots(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRDSClientForClusterSnapshots(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockRdsClient(ctrl)
 
 	var s types.DBClusterSnapshot
@@ -40,7 +40,7 @@ func buildRDSClientForClusterSnapshots(t *testing.T, ctrl *gomock.Controller) cl
 		},
 		nil,
 	)
-	return client.Services{Rds: mock}
+	return &client.Services{Rds: mock}
 }
 
 func TestRDSDBClusterSnapshots(t *testing.T) {

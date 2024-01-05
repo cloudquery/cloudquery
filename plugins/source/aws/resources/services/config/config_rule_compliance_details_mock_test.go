@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildComplianceDetails(t *testing.T, m *mocks.MockConfigserviceClient) client.Services {
+func buildComplianceDetails(t *testing.T, m *mocks.MockConfigserviceClient) *client.Services {
 	l := types.EvaluationResult{}
 	require.NoError(t, faker.FakeObject(&l))
 
@@ -20,7 +20,7 @@ func buildComplianceDetails(t *testing.T, m *mocks.MockConfigserviceClient) clie
 		&configservice.GetComplianceDetailsByConfigRuleOutput{
 			EvaluationResults: []types.EvaluationResult{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Configservice: m,
 	}
 }

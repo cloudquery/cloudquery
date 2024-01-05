@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildGraphs(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildGraphs(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockDetectiveClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Detective: m,
 	}
 	c := types.Graph{}

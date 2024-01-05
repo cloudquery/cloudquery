@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDetectors(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDetectors(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockGuarddutyClient(ctrl)
 
 	var d guardduty.GetDetectorOutput
@@ -86,7 +86,7 @@ func buildDetectors(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().ListMembers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&guardduty.ListMembersOutput{Members: []gdTypes.Member{member}}, nil,
 	)
-	return client.Services{
+	return &client.Services{
 		Guardduty: m,
 	}
 }

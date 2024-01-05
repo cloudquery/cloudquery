@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2RouteTables(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2RouteTables(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	l := types.RouteTable{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -21,7 +21,7 @@ func buildEc2RouteTables(t *testing.T, ctrl *gomock.Controller) client.Services 
 		&ec2.DescribeRouteTablesOutput{
 			RouteTables: []types.RouteTable{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

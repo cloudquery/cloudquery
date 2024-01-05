@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEcrRegistryPoliciesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEcrRegistryPoliciesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEcrClient(ctrl)
 	var registryId string
 	require.NoError(t, faker.FakeObject(&registryId))
@@ -46,7 +46,7 @@ func buildEcrRegistryPoliciesMock(t *testing.T, ctrl *gomock.Controller) client.
 			RegistryId: aws.String(registryId),
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Ecr: m,
 	}
 }

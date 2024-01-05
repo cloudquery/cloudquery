@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDatabasesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDatabasesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockLightsailClient(ctrl)
 
 	b := lightsail.GetRelationalDatabasesOutput{}
@@ -44,7 +44,7 @@ func buildDatabasesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetRelationalDatabaseLogEvents(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&le, nil)
 
-	return client.Services{
+	return &client.Services{
 		Lightsail: m,
 	}
 }

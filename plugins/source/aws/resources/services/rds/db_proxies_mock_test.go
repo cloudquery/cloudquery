@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRdsDbProxiesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRdsDbProxiesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRdsClient(ctrl)
 	proxy := types.DBProxy{}
 	require.NoError(t, faker.FakeObject(&proxy))
@@ -27,7 +27,7 @@ func buildRdsDbProxiesMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&tags, nil)
 
-	return client.Services{
+	return &client.Services{
 		Rds: m,
 	}
 }

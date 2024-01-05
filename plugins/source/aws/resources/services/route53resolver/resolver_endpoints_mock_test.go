@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEndpointsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEndpointsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRoute53resolverClient(ctrl)
 	re := types.ResolverEndpoint{}
 	require.NoError(t, faker.FakeObject(&re))
@@ -22,7 +22,7 @@ func buildEndpointsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 			ResolverEndpoints: []types.ResolverEndpoint{re},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Route53resolver: m,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildCoveredResources(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCoveredResources(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	inspectorClient := mocks.NewMockInspector2Client(ctrl)
 
 	coveredResource := types.CoveredResource{}
@@ -21,7 +21,7 @@ func buildCoveredResources(t *testing.T, ctrl *gomock.Controller) client.Service
 	inspectorClient.EXPECT().ListCoverage(gomock.Any(), gomock.Any(), gomock.Any()).
 		Return(&inspector2.ListCoverageOutput{CoveredResources: []types.CoveredResource{coveredResource}}, nil)
 
-	return client.Services{Inspector2: inspectorClient}
+	return &client.Services{Inspector2: inspectorClient}
 }
 
 func TestCoveredResources(t *testing.T) {

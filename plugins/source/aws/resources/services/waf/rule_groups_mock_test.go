@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildWAFRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildWAFRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockWafClient(ctrl)
 	tempRuleGroupSum := types.RuleGroupSummary{}
 	require.NoError(t, faker.FakeObject(&tempRuleGroupSum))
@@ -39,7 +39,7 @@ func buildWAFRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 		TagInfoForResource: &types.TagInfoForResource{TagList: tempTags},
 	}, nil)
 
-	return client.Services{Waf: m}
+	return &client.Services{Waf: m}
 }
 
 func TestWafRuleGroups(t *testing.T) {

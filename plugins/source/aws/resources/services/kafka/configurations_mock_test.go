@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildKafkaConfigurationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildKafkaConfigurationsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockKafkaClient(ctrl)
 	object := types.Configuration{}
 	require.NoError(t, faker.FakeObject(&object))
@@ -25,7 +25,7 @@ func buildKafkaConfigurationsMock(t *testing.T, ctrl *gomock.Controller) client.
 	tagsOutput := kafka.ListTagsForResourceOutput{}
 	require.NoError(t, faker.FakeObject(&tagsOutput))
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
-	return client.Services{
+	return &client.Services{
 		Kafka: m,
 	}
 }

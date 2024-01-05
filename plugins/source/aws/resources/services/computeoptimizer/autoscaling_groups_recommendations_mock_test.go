@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildAutoscalingGroupsRecommendations(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildAutoscalingGroupsRecommendations(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockComputeoptimizerClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Computeoptimizer: m,
 	}
 	item := types.AutoScalingGroupRecommendation{}

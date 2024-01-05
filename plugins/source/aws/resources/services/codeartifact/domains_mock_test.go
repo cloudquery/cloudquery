@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDomains(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDomains(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockCodeartifactClient(ctrl)
 
 	domainSummary := types.DomainSummary{}
@@ -56,7 +56,7 @@ func buildDomains(t *testing.T, ctrl *gomock.Controller) client.Services {
 		},
 		nil,
 	)
-	return client.Services{Codeartifact: m}
+	return &client.Services{Codeartifact: m}
 }
 
 func TestDomains(t *testing.T) {

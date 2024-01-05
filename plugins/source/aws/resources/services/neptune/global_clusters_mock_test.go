@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildNeptuneGlobalClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildNeptuneGlobalClusters(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockNeptuneClient(ctrl)
 	var gc types.GlobalCluster
 	require.NoError(t, faker.FakeObject(&gc))
@@ -21,7 +21,7 @@ func buildNeptuneGlobalClusters(t *testing.T, ctrl *gomock.Controller) client.Se
 		&neptune.DescribeGlobalClustersOutput{GlobalClusters: []types.GlobalCluster{gc}},
 		nil,
 	)
-	return client.Services{Neptune: mock}
+	return &client.Services{Neptune: mock}
 }
 
 func TestNeptuneGlobalCluster(t *testing.T) {

@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildIamGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildIamGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	g := iamTypes.Group{}
 	require.NoError(t, faker.FakeObject(&g))
@@ -53,7 +53,7 @@ func buildIamGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Iam: m,
 	}
 }

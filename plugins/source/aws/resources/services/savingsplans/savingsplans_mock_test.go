@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildSavingPlansPlans(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSavingPlansPlans(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockSavingsplansClient(ctrl)
 
 	var s types.SavingsPlan
@@ -30,7 +30,7 @@ func buildSavingPlansPlans(t *testing.T, ctrl *gomock.Controller) client.Service
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Savingsplans: m,
 	}
 }

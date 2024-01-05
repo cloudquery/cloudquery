@@ -13,7 +13,7 @@ import (
 )
 
 func buildBatchJobsMock(t *testing.T, m *mocks.MockBatchClient) *client.Services {
-	services := client.Services{
+	services := &client.Services{
 		Batch: m,
 	}
 	a := types.JobSummary{}
