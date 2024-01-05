@@ -218,3 +218,42 @@ text
 		})
 	}
 }
+
+func TestConvertMarkdownReferencesOverlaps(t *testing.T) {
+	cases := []struct {
+		name        string
+		refs        map[string][]imageReference
+		expectError bool
+	}{
+		{
+			name: "no overlaps",
+			refs: map[string][]imageReference{"a": {{ref: "a", startPos: 0, endPos: 1}, {ref: "a", startPos: 1, endPos: 3}}},
+		},
+		{
+			name:        "overlaps by 1 byte",
+			refs:        map[string][]imageReference{"a": {{ref: "a", startPos: 0, endPos: 2}, {ref: "a", startPos: 1, endPos: 3}}},
+			expectError: true,
+		},
+		{
+			name:        "invalid range",
+			refs:        map[string][]imageReference{"a": {{ref: "a", startPos: 0, endPos: 2}, {ref: "a", startPos: 3, endPos: 1}}},
+			expectError: true,
+		},
+		{
+			name:        "overlapping last elem with first",
+			refs:        map[string][]imageReference{"a": {{ref: "a", startPos: 0, endPos: 2}, {ref: "a", startPos: 2, endPos: 3}, {ref: "a", startPos: 0, endPos: 1}}},
+			expectError: true,
+		},
+	}
+	for _, tc := range cases {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			_, err := convertMarkdownReferences(tc.refs)
+			if tc.expectError {
+				require.Error(t, err)
+				return
+			}
+			require.NoError(t, err)
+		})
+	}
+}

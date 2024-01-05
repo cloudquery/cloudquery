@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow/go/v15 v15.0.0-20231229025812-7c3480e2f028
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.2.1
-	github.com/cloudquery/cloudquery-api-go v1.6.3
+	github.com/cloudquery/cloudquery-api-go v1.6.4
 	github.com/cloudquery/codegen v0.3.12
 	github.com/cloudquery/plugin-pb-go v1.16.3
 	github.com/cloudquery/plugin-sdk/v4 v4.25.0
@@ -26,6 +26,7 @@ require (
 	github.com/stretchr/testify v1.8.4
 	github.com/thoas/go-funk v0.9.3
 	github.com/wk8/go-ordered-map/v2 v2.1.8
+	github.com/yuin/goldmark v1.6.0
 	golang.org/x/sync v0.5.0
 	golang.org/x/term v0.15.0
 	google.golang.org/grpc v1.60.1
@@ -125,7 +126,6 @@ require (
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/yosssi/ace v0.0.5 // indirect
-	github.com/yuin/goldmark v1.6.0 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	golang.org/x/arch v0.6.0 // indirect
 	golang.org/x/crypto v0.17.0 // indirect
@@ -144,5 +144,3 @@ require (
 
 // github.com/cloudquery/jsonschema @ cqmain
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20231018073309-6c617a23d42f
-
-replace github.com/cloudquery/cloudquery-api-go => github.com/cloudquery/cloudquery-api-go v1.6.4-0.20240104155404-515b000bd747

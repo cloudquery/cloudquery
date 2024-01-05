@@ -123,26 +123,60 @@ func findMarkdownImages(contents, docDir string) (map[string][]imageReference, e
 	return imf.images, nil
 }
 
-func replaceMarkdownImages(contents string, ims map[string][]imageReference) (string, error) {
+func convertMarkdownReferences(ims map[string][]imageReference) ([]imageReference, error) {
+	type pos struct {
+		at  int
+		end bool
+	}
 	reps := make([]imageReference, 0, len(ims))
-	test := bytes.Repeat([]byte("."), len(contents))
+	posList := make([]pos, 0, 2*len(ims))
 	for _, imList := range ims {
 		for _, ir := range imList {
-			if ir.startPos == 0 && ir.endPos == 0 {
+			if ir.endPos == 0 {
 				// return "", fmt.Errorf("unknown range for image %q", ir.ref)
 				continue // skip
 			}
-			if bytes.ContainsAny(test[ir.startPos:ir.endPos], "!") {
-				return "", fmt.Errorf("found overlapping range: %d-%d", ir.startPos, ir.endPos)
-			}
-			// test = append(append(test[:ir.startPos], bytes.Repeat([]byte("!"), ir.endPos-ir.startPos)...), test[ir.endPos:]...)
-			for i := ir.startPos; i < ir.endPos; i++ {
-				test[i] = '!'
+			if ir.startPos >= ir.endPos {
+				return nil, fmt.Errorf("invalid range for image %q", ir.ref)
 			}
 
+			posList = append(posList, pos{at: ir.startPos}, pos{at: ir.endPos - 1, end: true})
 			ir := ir
 			reps = append(reps, ir)
 		}
+	}
+
+	sort.Slice(posList, func(i, j int) bool {
+		if posList[i].at == posList[j].at {
+			return !posList[i].end
+		}
+		return posList[i].at < posList[j].at
+	})
+
+	// check for overlaps
+	var (
+		lastPos int
+		open    int
+	)
+	for _, p := range posList {
+		if p.end {
+			open--
+		} else {
+			open++
+		}
+		if open > 1 {
+			return nil, fmt.Errorf("found overlapping range: %d-%d", lastPos, p.at)
+		}
+		lastPos = p.at
+	}
+
+	return reps, nil
+}
+
+func replaceMarkdownImages(contents string, ims map[string][]imageReference) (string, error) {
+	reps, err := convertMarkdownReferences(ims)
+	if err != nil {
+		return "", err
 	}
 
 	// sort by start position, descending
