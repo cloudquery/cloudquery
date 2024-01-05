@@ -5,7 +5,7 @@ go 1.21.4
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20231229025812-7c3480e2f028
 	github.com/cloudflare/cloudflare-go v0.84.0
-	github.com/cloudquery/plugin-sdk/v4 v4.25.0
+	github.com/cloudquery/plugin-sdk/v4 v4.25.1
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.31.0
 	github.com/thoas/go-funk v0.9.3
@@ -28,8 +28,8 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.6.3 // indirect
-	github.com/cloudquery/plugin-pb-go v1.16.1 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.6.4 // indirect
+	github.com/cloudquery/plugin-pb-go v1.16.3 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect
