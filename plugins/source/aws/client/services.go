@@ -127,17 +127,11 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
 )
 
-func initServices(config aws.Config, regions []string) *Services {
-	return &Services{
-		AWSConfig: config,
-		Regions:   regions,
-	}
-}
-
 type Services struct {
-	sync.Mutex                   // implies usage by reference only
-	AWSConfig                    aws.Config
-	Regions                      []string
+	sync.Mutex // implies usage by reference only
+	AWSConfig  aws.Config
+	Regions    []string
+
 	Accessanalyzer               services.AccessanalyzerClient
 	Account                      services.AccountClient
 	Acm                          services.AcmClient
