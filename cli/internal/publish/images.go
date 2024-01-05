@@ -84,12 +84,13 @@ func processDocumentImages(ctx context.Context, c *cloudquery_api.ClientWithResp
 	eg, egCtx := errgroup.WithContext(ctx)
 	eg.SetLimit(4)
 
-	// Interate again to upload
+	// Iterate again to upload
 	for _, item := range resp.JSON201.Items {
 		if item.UploadURL == nil {
 			// Already exists in bucket
 			continue
 		}
+		item := item
 		fileref := ims[item.Checksum+":"+item.Name][0].absFile
 		eg.Go(func() error {
 			return uploadImage(egCtx, *item.UploadURL, fileref)
