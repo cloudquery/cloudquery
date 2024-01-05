@@ -15,6 +15,7 @@ func TestFindMarkdownImages(t *testing.T) {
 		contents    string
 		expect      map[string][]imageReference
 		expectError string
+		skipCheck   bool
 	}{
 		{
 			name: "no images",
@@ -26,27 +27,78 @@ func TestFindMarkdownImages(t *testing.T) {
 			name: "basic",
 			contents: `# Title
 ![](image.png)`,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{mdFull: "![](image.png)", mdPartial: "image.png", url: ""}}},
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 22}}},
 		},
 		{
 			name: "basic with alt",
 			contents: `# Title
 ![Alt text](image.png)`,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{mdFull: "![Alt text](image.png)", mdPartial: "image.png", url: ""}}},
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 30}}},
+		},
+		{
+			name: "html with alt and width",
+			contents: `# Title
+<img src="image.png" alt="Alt text" width="100%">`,
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 57}}},
+		},
+		{
+			name: "double html with alt and width",
+			contents: `# Title
+<img src="image.png" alt="Alt text" width="100%"> <img src="image.png" alt="Alt text2" width="50%">`,
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 57}, {ref: "image.png", startPos: 58, endPos: 107}}},
+		},
+		{
+			name: "tricky html",
+			contents: `# Title
+<img src="image.png"
+alt="Alt text" width="100%">`,
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 57}}},
+		},
+		{
+			name: "quoted html",
+			contents: `# Title
+` + "```" + `
+<img src="image.png" alt="Alt text" width="100%">
+` + "```" + `
+`,
+			expect: nil,
+		},
+		{
+			name: "quoted image",
+			contents: `# Title
+` + "```" + `
+![Alt text](image.png "Title Here")
+` + "```" + `
+`,
+			expect: nil,
+		},
+		{
+			name: "single quoted html",
+			contents: `# Title
+` + "`" + `<img src="image.png" alt="Alt text" width="100%">` + "`" + `
+`,
+			expect: nil,
+		},
+		{
+			name: "single quoted image",
+			contents: `# Title
+` + "`" + `![Alt text](image.png "Title Here")` + "`" + `
+`,
+			expect: nil,
 		},
 		{
 			name: "basic with alt and title",
 			contents: `# Title
 ![Alt text](image.png "Title Here")
 `,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{mdFull: "![Alt text](image.png \"Title Here\")", mdPartial: "image.png", url: ""}}},
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 43}}},
 		},
 		{
 			name: "basic with title",
 			contents: `# Title
 ![](image.png "Title Here")
 `,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{mdFull: "![](image.png \"Title Here\")", mdPartial: "image.png", url: ""}}},
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 35}}},
 		},
 		{
 			name: "basic with title or alt, multiple",
@@ -55,7 +107,7 @@ func TestFindMarkdownImages(t *testing.T) {
 More test
 ![alt](image.png)
 `,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{mdFull: "![](image.png \"Title Here\")", mdPartial: "image.png", url: ""}, {mdFull: "![alt](image.png)", mdPartial: "image.png", url: ""}}},
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 36}, {ref: "image.png", startPos: 46, endPos: 63}}},
 		},
 		{
 			name: "ref",
@@ -64,27 +116,42 @@ More test
 
 [image-id]: image.png "Optional Title Here"
 `,
-			expect: nil, // unsupported
+			expect:    map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png"}}}, // issue: startpos/endpos don't point to file
+			skipCheck: true,
+		},
+		{
+			name: "ref multiple",
+			contents: `# Title
+![Alt text][image-id]
+
+text
+
+![Same text][image-id]
+
+[image-id]: image.png "Optional Title Here"
+`,
+			expect:    map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png"}, {ref: "image.png"}}}, // two references to same image. startpos/endpos issue as above
+			skipCheck: true,
 		},
 		{
 			name: "href",
 			contents: `# Title
 [![Alt text](image.png)](http://example.com/)
 `,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{mdFull: "![Alt text](image.png)", mdPartial: "image.png", url: ""}}},
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 53}}}, // includes full href
 		},
 		{
 			name: "subdir",
 			contents: `# Title
 ![Alt text](assets/images/image.png)
 `,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{mdFull: "![Alt text](assets/images/image.png)", mdPartial: "assets/images/image.png", url: ""}}},
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "assets/images/image.png", startPos: 8, endPos: 44}}},
 		},
 		{
 			name: "basic file://",
 			contents: `# Title
 ![](file://${ABS_IMAGE})`,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:my special@image.png": {{mdFull: "![](file://${ABS_IMAGE})", mdPartial: "file://${ABS_IMAGE}", url: ""}}},
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:my special@image.png": {{ref: "file://${ABS_IMAGE}", startPos: 8, endPos: -12}}}, // 12 is the number of extra characters except the placeholder/filename
 		},
 	}
 
@@ -103,6 +170,7 @@ More test
 		specialAbsEscaped = "/" + specialAbsEscaped // absolute paths in file:// mode start with "/", not C:\ (`file:///C:/`, not `file://C:/`)
 	}
 
+	const mockURL = "https://example.com/file.ext"
 	for _, tc := range cases {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
@@ -114,17 +182,40 @@ More test
 			}
 			require.NoError(t, err)
 
-			// reset absFile to empty string for comparison, also put back ${ABS_IMAGE} placeholder
+			// clean up for successful comparison, also set mock URL
 			for k, v := range out {
 				for i := range v {
-					v[i].mdFull = strings.ReplaceAll(v[i].mdFull, specialAbsEscaped, "${ABS_IMAGE}")
-					v[i].mdPartial = strings.ReplaceAll(v[i].mdPartial, specialAbsEscaped, "${ABS_IMAGE}")
+					//v[i].ref = strings.ReplaceAll(v[i].ref, specialAbsEscaped, "${ABS_IMAGE}")
 					v[i].absFile = ""
+					v[i].url = mockURL
 				}
 				out[k] = v
 			}
+			if len(out) == 0 {
+				out = nil
+			}
+			// adjust end position for special case
+			for k, v := range tc.expect {
+				for i := range v {
+					if strings.Contains(v[i].ref, "${ABS_IMAGE}") {
+						v[i].ref = strings.ReplaceAll(v[i].ref, "${ABS_IMAGE}", specialAbsEscaped)
+						if v[i].endPos < 0 {
+							v[i].endPos = v[i].startPos + len(specialAbsEscaped) - v[i].endPos
+						}
+					}
+					v[i].url = mockURL
+				}
+				tc.expect[k] = v
+			}
 
 			require.EqualValues(t, tc.expect, out)
+
+			replaced, err := replaceMarkdownImages(tc.contents, out)
+			require.NoError(t, err)
+
+			if len(tc.expect) > 0 && !tc.skipCheck {
+				require.Contains(t, replaced, mockURL)
+			}
 		})
 	}
 }

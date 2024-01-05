@@ -1,6 +1,7 @@
 package publish
 
 import (
+	"bytes"
 	"context"
 	"crypto/sha1"
 	"fmt"
@@ -10,19 +11,28 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"sort"
 	"strings"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/internal/hub"
+	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/ast"
+	"github.com/yuin/goldmark/parser"
+	"github.com/yuin/goldmark/text"
+	"github.com/yuin/goldmark/util"
 	"golang.org/x/sync/errgroup"
 )
 
 type imageReference struct {
-	mdFull    string // full image tag inside md
-	mdPartial string // image filename (to replace with URL) inside mdFull
-	absFile   string // absolute path to image file, to upload
-	url       string // result of upload
+	ref     string // image filename (to replace with URL)
+	absFile string // absolute path to image file, to upload
+	url     string // result of upload
+
+	startPos, endPos int
 }
+
+var htmlImageRe = regexp.MustCompile(`<img\s+(?:[^>]*?\s+)?src="([^"]*)"`)
 
 func processDocumentImages(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, docDir, contents string) (string, error) {
 	ims, err := findMarkdownImages(contents, docDir)
@@ -83,61 +93,63 @@ func processDocumentImages(ctx context.Context, c *cloudquery_api.ClientWithResp
 		return "", fmt.Errorf("failed to upload doc images: %w", err)
 	}
 
-	return replaceMarkdownImages(contents, ims), nil
+	return replaceMarkdownImages(contents, ims)
 }
 
 func findMarkdownImages(contents, docDir string) (map[string][]imageReference, error) {
-	re := regexp.MustCompile(`!\[([^\]]*)\]\(([^)]+)\)`)
-	matches := re.FindAllStringSubmatch(contents, -1)
-
-	if l := len(matches); l == 0 {
-		return nil, nil
-	} else if l > 100 {
-		return nil, fmt.Errorf("too many images found in document. Maximum allowed is 100")
+	imf := &imageFinder{
+		docDir: docDir,
+	}
+	p := goldmark.New(
+		goldmark.WithParserOptions(
+			parser.WithASTTransformers(util.Prioritized(imf, 999999)),
+		),
+	)
+	if err := p.Convert([]byte(contents), io.Discard); err != nil {
+		return nil, fmt.Errorf("failed to parse markdown: %w", err)
+	}
+	if imf.err != nil {
+		return nil, imf.err
 	}
 
-	matchMap := make(map[string][]imageReference, len(matches))
-	for _, match := range matches {
-		mdPartial := strings.SplitN(match[2], " ", 2)[0]
-		absFile, err := ensureValidFilename(mdPartial, docDir)
-		if err != nil {
-			return nil, err
-		}
-		if absFile == "" {
-			continue // skip
-		}
-
-		s, err := sha1sum(absFile)
-		if err != nil {
-			return nil, fmt.Errorf("error processing image %q: %w", mdPartial, err)
-		}
-
-		fileRef := filepath.Base(absFile)
-		matchMap[s+":"+fileRef] = append(matchMap[s+":"+fileRef], imageReference{
-			mdFull:    match[0],
-			mdPartial: mdPartial,
-			absFile:   absFile,
-		})
-	}
-
-	return matchMap, nil
+	return imf.images, nil
 }
 
-func replaceMarkdownImages(contents string, ims map[string][]imageReference) string {
-	for _, refs := range ims {
-		for _, ref := range refs {
-			startPos := strings.Index(contents, ref.mdFull)
-			for startPos > -1 {
-				endPos := startPos + len(ref.mdFull)
-				target := contents[startPos:endPos]                         // match full image tag
-				target = strings.Replace(target, ref.mdPartial, ref.url, 1) // replace ref to image within full tag
-				contents = contents[:startPos] + target + contents[endPos:] // put full tag back into document
-				startPos = strings.Index(contents, ref.mdFull)              // try again
+func replaceMarkdownImages(contents string, ims map[string][]imageReference) (string, error) {
+	reps := make([]imageReference, 0, len(ims))
+	test := bytes.Repeat([]byte("."), len(contents))
+	for _, imList := range ims {
+		for _, ir := range imList {
+			if ir.startPos == 0 && ir.endPos == 0 {
+				//return "", fmt.Errorf("unknown range for image %q", ir.ref)
+				continue // skip
 			}
+			if bytes.IndexAny(test[ir.startPos:ir.endPos], "!") != -1 {
+				return "", fmt.Errorf("found overlapping range: %d-%d", ir.startPos, ir.endPos)
+			}
+			//test = append(append(test[:ir.startPos], bytes.Repeat([]byte("!"), ir.endPos-ir.startPos)...), test[ir.endPos:]...)
+			for i := ir.startPos; i < ir.endPos; i++ {
+				test[i] = '!'
+			}
+
+			ir := ir
+			reps = append(reps, ir)
 		}
 	}
 
-	return contents
+	// sort by start position, descending
+	sort.Slice(reps, func(i, j int) bool {
+		return reps[i].startPos > reps[j].startPos
+	})
+
+	// replace in reverse order
+	for _, ir := range reps {
+		literalTag := contents[ir.startPos:ir.endPos]
+		replacedTag := strings.Replace(literalTag, ir.ref, ir.url, 1)
+		contents = contents[:ir.startPos] + replacedTag + contents[ir.endPos:]
+	}
+
+	return contents, nil
 }
 
 func uploadImage(ctx context.Context, uploadURL, file string) error {
@@ -203,3 +215,130 @@ func sha1sum(filename string) (string, error) {
 	result := s.Sum(nil)
 	return fmt.Sprintf("%x", result), nil
 }
+
+type imageFinder struct {
+	images map[string][]imageReference
+	docDir string
+	err    error
+}
+
+func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parser.Context) {
+	if f.images == nil {
+		f.images = make(map[string][]imageReference)
+	}
+	if f.err != nil {
+		return
+	}
+	src := reader.Source()
+	f.err = ast.Walk(node, func(n ast.Node, entering bool) (ast.WalkStatus, error) {
+		if !entering {
+			return ast.WalkContinue, nil
+		}
+
+		var (
+			imgRef           string
+			literalHTML      []byte
+			startPos, endPos int
+		)
+		switch el := n.(type) {
+		case *ast.Image:
+			imgRef = string(el.Destination)
+			p := el.BaseNode.Parent()
+			for p != nil {
+				if p.Kind() == ast.KindParagraph {
+					for i := 0; i < p.Lines().Len(); i++ {
+						// we can have multiple lines in a paragraph, so we need to check each one to match destination/title, hoping there are no dupes
+						lineLiteral := src[p.Lines().At(i).Start:p.Lines().At(i).Stop]
+						if !bytes.Contains(lineLiteral, el.Destination) {
+							continue
+						}
+						if len(el.Title) > 0 && !bytes.Contains(lineLiteral, el.Title) {
+							continue
+						}
+						if len(el.Title) == 0 { // if no title, make sure the element ends with the link
+							parts := bytes.SplitN(lineLiteral, el.Destination, 2)
+							if len(parts) != 2 || !bytes.HasPrefix(bytes.TrimSpace(parts[1]), []byte(")")) { // HasPrefix because we can be inside a link
+								continue
+							}
+						}
+						startPos, endPos = p.Lines().At(i).Start, p.Lines().At(i).Stop
+						break
+					}
+					break
+				}
+				p = p.Parent()
+			}
+		case *ast.CodeBlock:
+			return ast.WalkSkipChildren, nil
+		case *ast.FencedCodeBlock:
+			return ast.WalkSkipChildren, nil
+		case *ast.HTMLBlock:
+			if el.Lines().Len() != 1 {
+				return ast.WalkContinue, nil
+			}
+			a := el.Lines().At(0)
+			literalHTML = src[a.Start:a.Stop]
+			startPos, endPos = a.Start, a.Stop
+		case *ast.RawHTML:
+			if el.Segments != nil {
+				for i := 0; i < el.Segments.Len(); i++ { // should have 1 segment per tag?
+					a := el.Segments.At(i)
+					literalHTML = append(literalHTML, ' ')
+					literalHTML = append(literalHTML, src[a.Start:a.Stop]...)
+					if i == 0 {
+						startPos = a.Start
+					}
+					endPos = a.Stop
+				}
+			} else {
+				for i := 0; i < el.Lines().Len(); i++ {
+					a := el.Lines().At(i)
+					literalHTML = append(literalHTML, ' ')
+					literalHTML = append(literalHTML, src[a.Start:a.Stop]...)
+					if i == 0 {
+						startPos = a.Start
+					}
+					endPos = a.Stop
+				}
+			}
+		default:
+			return ast.WalkContinue, nil
+		}
+
+		if imgRef == "" && literalHTML != nil {
+			matches := htmlImageRe.FindAllStringSubmatch(string(literalHTML), -1)
+			if l := len(matches); l > 1 {
+				return ast.WalkStop, fmt.Errorf("markdown: found more than one image in HTML")
+			} else if l == 0 {
+				return ast.WalkContinue, nil // not an image
+			}
+			imgRef = matches[0][1]
+		}
+		if imgRef == "" {
+			return ast.WalkContinue, nil
+		}
+
+		absFile, err := ensureValidFilename(imgRef, f.docDir)
+		if err != nil {
+			return ast.WalkStop, err
+		}
+		if absFile == "" {
+			return ast.WalkContinue, nil // skip
+		}
+		s, err := sha1sum(absFile)
+		if err != nil {
+			return ast.WalkStop, fmt.Errorf("error processing image %q: %w", imgRef, err)
+		}
+		fileRef := filepath.Base(absFile)
+		f.images[s+":"+fileRef] = append(f.images[s+":"+fileRef], imageReference{
+			ref:      imgRef,
+			absFile:  absFile,
+			startPos: startPos,
+			endPos:   endPos,
+		})
+
+		return ast.WalkContinue, nil
+	})
+}
+
+var _ parser.ASTTransformer = &imageFinder{}
