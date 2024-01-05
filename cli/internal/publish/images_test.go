@@ -208,7 +208,7 @@ text
 			name: "basic file://",
 			contents: `# Title
 ![](file://${ABS_IMAGE})`,
-			expect:         map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:my special@image.png": {{ref: "file://${ABS_IMAGE}", startPos: 8, endPos: 0 /*special zero*/}}},
+			expect:         map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:my special@image.png": {{ref: "file://${ABS_IMAGE}", startPos: 8, endPos: 0 /* special zero */}}},
 			endPosAdjustBy: 12, // number of extra characters except the placeholder/filename
 		},
 	}
