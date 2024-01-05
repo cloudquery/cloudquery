@@ -25,11 +25,12 @@ import (
 )
 
 type imageReference struct {
-	ref     string // image filename (to replace with URL)
+	ref     string // image filename inc. all paths (to replace with URL)
 	absFile string // absolute path to image file, to upload
 	url     string // result of upload
+	html    []byte // html section, superset of ref (only for html)
 
-	startPos, endPos int
+	startPos, endPos int // start,end of complete markdown tag. if html: start,end of actual ref
 }
 
 var htmlImageRe = regexp.MustCompile(`<img\s+(?:[^>]*?\s+)?src="([^"]*)"`)
@@ -292,13 +293,16 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 		}
 
 		var (
-			imgRef           string
-			literalHTML      []byte
-			startPos, endPos int
+			imgs []imageReference
+
+			html         []byte
+			htmlStartPos int
 		)
 		switch el := n.(type) {
 		case *ast.Image:
-			imgRef = string(el.Destination)
+			imgRef := imageReference{
+				ref: string(el.Destination),
+			}
 			p := el.BaseNode.Parent()
 			for p != nil {
 				if p.Kind() == ast.KindParagraph {
@@ -317,82 +321,88 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 								continue
 							}
 						}
-						startPos, endPos = p.Lines().At(i).Start, p.Lines().At(i).Stop
+						imgRef.startPos, imgRef.endPos = p.Lines().At(i).Start, p.Lines().At(i).Stop
 						break
 					}
 					break
 				}
 				p = p.Parent()
 			}
+			imgs = append(imgs, imgRef)
 		case *ast.CodeBlock:
 			return ast.WalkSkipChildren, nil
 		case *ast.FencedCodeBlock:
 			return ast.WalkSkipChildren, nil
 		case *ast.HTMLBlock:
-			if el.Lines().Len() != 1 {
-				return ast.WalkContinue, nil
+			sz := el.Lines().Len()
+			for i := 0; i < sz; i++ {
+				a := el.Lines().At(i)
+				html = append(html, src[a.Start:a.Stop]...)
+				if i == 0 {
+					htmlStartPos = a.Start
+				}
 			}
-			a := el.Lines().At(0)
-			literalHTML = src[a.Start:a.Stop]
-			startPos, endPos = a.Start, a.Stop
 		case *ast.RawHTML:
 			if el.Segments != nil {
 				for i := 0; i < el.Segments.Len(); i++ { // should have 1 segment per tag?
 					a := el.Segments.At(i)
-					literalHTML = append(literalHTML, ' ')
-					literalHTML = append(literalHTML, src[a.Start:a.Stop]...)
+					html = append(html, src[a.Start:a.Stop]...)
 					if i == 0 {
-						startPos = a.Start
+						htmlStartPos = a.Start
 					}
-					endPos = a.Stop
 				}
 			} else {
 				sz := el.Lines().Len()
 				for i := 0; i < sz; i++ {
 					a := el.Lines().At(i)
-					literalHTML = append(literalHTML, ' ')
-					literalHTML = append(literalHTML, src[a.Start:a.Stop]...)
+					html = append(html, src[a.Start:a.Stop]...)
 					if i == 0 {
-						startPos = a.Start
+						htmlStartPos = a.Start
 					}
-					endPos = a.Stop
 				}
 			}
 		default:
 			return ast.WalkContinue, nil
 		}
 
-		if imgRef == "" && literalHTML != nil {
-			matches := htmlImageRe.FindAllStringSubmatch(string(literalHTML), -1)
-			if l := len(matches); l > 1 {
-				return ast.WalkStop, fmt.Errorf("markdown: found more than one image in HTML")
-			} else if l == 0 {
+		if len(html) > 0 {
+			matchPositions := htmlImageRe.FindAllStringSubmatchIndex(string(html), -1)
+			if len(matchPositions) == 0 {
 				return ast.WalkContinue, nil // not an image
 			}
-			imgRef = matches[0][1]
+			for _, m := range matchPositions {
+				imgs = append(imgs, imageReference{
+					ref:      string(html[m[2]:m[3]]),
+					startPos: htmlStartPos + m[2],
+					endPos:   htmlStartPos + m[3],
+				})
+			}
 		}
-		if imgRef == "" {
+
+		if len(imgs) == 0 {
 			return ast.WalkContinue, nil
 		}
 
-		absFile, err := ensureValidFilename(imgRef, f.docDir)
-		if err != nil {
-			return ast.WalkStop, err
+		for _, img := range imgs {
+			absFile, err := ensureValidFilename(img.ref, f.docDir)
+			if err != nil {
+				return ast.WalkStop, err
+			}
+			if absFile == "" {
+				return ast.WalkContinue, nil // skip
+			}
+			s, err := sha1sum(absFile)
+			if err != nil {
+				return ast.WalkStop, fmt.Errorf("error processing image %q: %w", img.ref, err)
+			}
+			fileRef := filepath.Base(absFile)
+			f.images[s+":"+fileRef] = append(f.images[s+":"+fileRef], imageReference{
+				ref:      img.ref,
+				absFile:  absFile,
+				startPos: img.startPos,
+				endPos:   img.endPos,
+			})
 		}
-		if absFile == "" {
-			return ast.WalkContinue, nil // skip
-		}
-		s, err := sha1sum(absFile)
-		if err != nil {
-			return ast.WalkStop, fmt.Errorf("error processing image %q: %w", imgRef, err)
-		}
-		fileRef := filepath.Base(absFile)
-		f.images[s+":"+fileRef] = append(f.images[s+":"+fileRef], imageReference{
-			ref:      imgRef,
-			absFile:  absFile,
-			startPos: startPos,
-			endPos:   endPos,
-		})
 
 		return ast.WalkContinue, nil
 	})

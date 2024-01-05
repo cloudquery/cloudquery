@@ -39,20 +39,36 @@ func TestFindMarkdownImages(t *testing.T) {
 			name: "html with alt and width",
 			contents: `# Title
 <img src="image.png" alt="Alt text" width="100%">`,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 57}}},
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 18, endPos: 27}}},
 		},
 		{
 			name: "double html with alt and width",
 			contents: `# Title
 <img src="image.png" alt="Alt text" width="100%"> <img src="image.png" alt="Alt text2" width="50%">`,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 57}, {ref: "image.png", startPos: 58, endPos: 107}}},
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 18, endPos: 27}, {ref: "image.png", startPos: 68, endPos: 77}}},
+		},
+		{
+			name: "double html in div",
+			contents: `# Title
+<div><img src="image.png" width="100%"><img src="assets/images/image.png" width="50%"></div>`,
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 23, endPos: 32}, {ref: "assets/images/image.png", startPos: 57, endPos: 80}}},
+		},
+		{
+			name: "double html in div with newlines",
+			contents: `# Title
+
+<div>
+	<img src="image.png" width="100%">
+	<img src="assets/images/image.png" width="50%">
+</div>`,
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 26, endPos: 35}, {ref: "assets/images/image.png", startPos: 62, endPos: 85}}},
 		},
 		{
 			name: "tricky html",
 			contents: `# Title
 <img src="image.png"
 alt="Alt text" width="100%">`,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 57}}},
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 18, endPos: 27}}},
 		},
 		{
 			name: "quoted html",
