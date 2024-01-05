@@ -161,16 +161,16 @@ func replaceMarkdownImages(contents string, ims map[string][]imageReference) (st
 }
 
 func uploadImage(ctx context.Context, uploadURL, file string) error {
-	f, err := os.Open(file)
+	data, err := os.ReadFile(file)
 	if err != nil {
 		return err
 	}
-	defer f.Close()
-
-	req, err := http.NewRequest(http.MethodPut, uploadURL, f)
+	ct := http.DetectContentType(data)
+	req, err := http.NewRequest(http.MethodPut, uploadURL, bytes.NewReader(data))
 	if err != nil {
 		return err
 	}
+	req.Header.Set("Content-Type", ct)
 
 	resp, err := http.DefaultClient.Do(req.WithContext(ctx))
 	if err != nil {
