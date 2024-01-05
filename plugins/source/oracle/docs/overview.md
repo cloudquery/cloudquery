@@ -36,8 +36,7 @@ This is the (nested) spec used by Oracle Source Plugin
 
 ## Dedicated regions
 
-[OCI Dedicated regions](https://docs.oracle.com/en-us/iaas/Content/General/Concepts/dedicatedregions.htm)
-can be accessed via the following procedure:
+[OCI Dedicated regions](https://docs.oracle.com/en-us/iaas/Content/General/Concepts/dedicatedregions.htm) can be accessed via the following procedure:
 
 1. Specify the region to be used for the discovery as the dedicated region.
    The following options are available:
@@ -47,7 +46,5 @@ can be accessed via the following procedure:
  
 2. Specify the dedicated region information:
    The following options are available:
-   * Set `OCI_REGION_METADATA`
-     [environment variable](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdk_adding_new_region_endpoints.htm#SDK_Adding_Regions_Environment_Variable)
-   * Add information to the
-     [regions config file](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdk_adding_new_region_endpoints.htm#SDK_Adding_Regions_Config_File)
+   * Set `OCI_REGION_METADATA` [environment variable](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdk_adding_new_region_endpoints.htm#SDK_Adding_Regions_Environment_Variable)
+   * Add information to the [regions config file](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdk_adding_new_region_endpoints.htm#SDK_Adding_Regions_Config_File)
