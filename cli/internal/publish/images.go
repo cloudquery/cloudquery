@@ -33,7 +33,7 @@ type imageReference struct {
 	startPos, endPos int // start,end of complete markdown tag. if html: start,end of actual ref
 }
 
-var htmlImageRe = regexp.MustCompile(`<img\s+(?:[^>]*?\s+)?src="([^"]*)"`)
+var htmlImageRe = regexp.MustCompile(`<img\s+(?:[^>"']|"[^"]*"|'[^']*')*\s*src="([^"]*)"`)
 
 func processDocumentImages(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, docDir, contents string) (string, error) {
 	ims, err := findMarkdownImages(contents, docDir)

@@ -71,6 +71,20 @@ alt="Alt text" width="100%">`,
 			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 18, endPos: 27}}},
 		},
 		{
+			name: "tricky html alt",
+			contents: `# Title
+<img alt="<oops>" src="image.png" width="100%">`,
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 31, endPos: 40}}},
+		},
+		{
+			name: "tricky html alt multiline",
+			contents: `# Title
+<img alt="<oops>"
+src="image.png"
+width="100%">`,
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 31, endPos: 40}}},
+		},
+		{
 			name: "quoted html",
 			contents: `# Title
 ` + "```" + `
