@@ -36,5 +36,10 @@ func TestSpec(t *testing.T) {
 			Name: "proper concurrency",
 			Spec: `{"concurrency": 123}`,
 		},
+		{
+			Name: "null region_metadata",
+			Spec: `{"region_metadata": null}`,
+		},
+		// other cases for region_metadata are tested separately
 	})
 }
