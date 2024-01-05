@@ -58,16 +58,11 @@ func processDocumentImages(ctx context.Context, c *cloudquery_api.ClientWithResp
 
 	resp, err := c.CreateTeamImagesWithResponse(ctx, teamName, cloudquery_api.CreateTeamImagesJSONRequestBody{Images: reqs})
 	if err != nil {
-		return "", fmt.Errorf("failed to upload doc images: %w", err)
+		return "", fmt.Errorf("failed to prepare doc images: %w", err)
 	}
 	if resp.HTTPResponse.StatusCode > 299 {
 		return "", fmt.Errorf("failed preparing: %w", hub.ErrorFromHTTPResponse(resp.HTTPResponse, resp))
 	}
-
-	eg, egCtx := errgroup.WithContext(ctx)
-	eg.SetLimit(4)
-
-	fmt.Println("Uploading images...")
 
 	for _, item := range resp.JSON201.Items {
 		item := item
@@ -78,7 +73,19 @@ func processDocumentImages(ctx context.Context, c *cloudquery_api.ClientWithResp
 			imItem.url = item.URL
 			ims[key][i] = imItem
 		}
+	}
 
+	contents, err = replaceMarkdownImages(contents, ims)
+	if err != nil {
+		return "", fmt.Errorf("failed replacing markdown: %w", err)
+	}
+
+	fmt.Println("Uploading images...")
+	eg, egCtx := errgroup.WithContext(ctx)
+	eg.SetLimit(4)
+
+	// Interate again to upload
+	for _, item := range resp.JSON201.Items {
 		if item.UploadURL == nil {
 			// Already exists in bucket
 			continue
@@ -93,7 +100,7 @@ func processDocumentImages(ctx context.Context, c *cloudquery_api.ClientWithResp
 		return "", fmt.Errorf("failed to upload doc images: %w", err)
 	}
 
-	return replaceMarkdownImages(contents, ims)
+	return contents, nil
 }
 
 func findMarkdownImages(contents, docDir string) (map[string][]imageReference, error) {
@@ -194,6 +201,10 @@ func ensureValidFilename(filename, absDir string) (string, error) {
 			p = strings.TrimPrefix(p, "/")
 		}
 		filename = strings.ReplaceAll(p, "/", string(os.PathSeparator))
+		return filename, nil
+	}
+
+	if filepath.IsAbs(filename) {
 		return filename, nil
 	}
 
