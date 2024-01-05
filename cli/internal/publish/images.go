@@ -28,7 +28,6 @@ type imageReference struct {
 	ref     string // image filename inc. all paths (to replace with URL)
 	absFile string // absolute path to image file, to upload
 	url     string // result of upload
-	html    []byte // html section, superset of ref (only for html)
 
 	startPos, endPos int // start,end of complete markdown tag. if html: start,end of actual ref
 }
