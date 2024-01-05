@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildBackupVaultsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildBackupVaultsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockBackupClient(ctrl)
 
 	var vault types.BackupVaultListMember
@@ -89,7 +89,7 @@ func buildBackupVaultsMock(t *testing.T, ctrl *gomock.Controller) client.Service
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Backup: m,
 	}
 }

@@ -1,6 +1,8 @@
 package client
 
 import (
+	"sync"
+
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/accessanalyzer"
 	"github.com/aws/aws-sdk-go-v2/service/account"
@@ -125,14 +127,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
 )
 
-func initServices(config aws.Config, regions []string) Services {
-	return Services{
+func initServices(config aws.Config, regions []string) *Services {
+	return &Services{
 		AWSConfig: config,
 		Regions:   regions,
 	}
 }
 
 type Services struct {
+	sync.Mutex                   // implies usage by reference only
 	AWSConfig                    aws.Config
 	Regions                      []string
 	Accessanalyzer               services.AccessanalyzerClient
@@ -258,6 +261,16 @@ type Services struct {
 }
 
 func (s *Services) InitService(service AWSServiceName) {
+	s.Lock()
+	defer s.Unlock()
+
+	if s.getService(service) == nil {
+		s.initService(service)
+	}
+}
+
+// initService must be called in locked state
+func (s *Services) initService(service AWSServiceName) {
 	c := s.AWSConfig.Copy()
 	switch service {
 	case AWSServiceAccessanalyzer:
@@ -505,7 +518,7 @@ func (s *Services) InitService(service AWSServiceName) {
 	}
 }
 
-func (s *Services) GetService(service AWSServiceName) any {
+func (s *Services) getService(service AWSServiceName) any {
 	switch service {
 	case AWSServiceAccessanalyzer:
 		return s.Accessanalyzer

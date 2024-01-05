@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildBatchComputeEnvironmentsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildBatchComputeEnvironmentsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockBatchClient(ctrl)
 	services := client.Services{
 		Batch: m,

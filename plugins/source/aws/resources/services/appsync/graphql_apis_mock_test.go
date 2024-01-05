@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildAppsyncGraphqlApisMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildAppsyncGraphqlApisMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockAppsyncClient(ctrl)
 	l := types.GraphqlApi{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -22,7 +22,7 @@ func buildAppsyncGraphqlApisMock(t *testing.T, ctrl *gomock.Controller) client.S
 			GraphqlApis: []types.GraphqlApi{l},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Appsync: m,
 	}
 }

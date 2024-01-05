@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildAppstreamDirectoryConfigsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildAppstreamDirectoryConfigsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockAppstreamClient(ctrl)
 	object := types.DirectoryConfig{}
 	require.NoError(t, faker.FakeObject(&object))
@@ -26,7 +26,7 @@ func buildAppstreamDirectoryConfigsMock(t *testing.T, ctrl *gomock.Controller) c
 	require.NoError(t, faker.FakeObject(&tagsOutput))
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
 
-	return client.Services{
+	return &client.Services{
 		Appstream: m,
 	}
 }

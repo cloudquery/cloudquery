@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildApigatewayVpcLinks(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildApigatewayVpcLinks(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockApigatewayClient(ctrl)
 
 	l := types.VpcLink{}
@@ -23,7 +23,7 @@ func buildApigatewayVpcLinks(t *testing.T, ctrl *gomock.Controller) client.Servi
 			Items: []types.VpcLink{l},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Apigateway: m,
 	}
 }

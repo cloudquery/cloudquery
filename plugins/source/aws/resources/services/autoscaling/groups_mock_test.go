@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildAutoscalingGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildAutoscalingGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockAutoscalingClient(ctrl)
 
 	groups := autoscaling.DescribeAutoScalingGroupsOutput{}
@@ -44,7 +44,7 @@ func buildAutoscalingGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 	require.NoError(t, faker.FakeObject(&lifecycleHooks))
 	m.EXPECT().DescribeLifecycleHooks(gomock.Any(), gomock.Any(), gomock.Any()).Return(&lifecycleHooks, nil)
 
-	return client.Services{
+	return &client.Services{
 		Autoscaling: m,
 	}
 }

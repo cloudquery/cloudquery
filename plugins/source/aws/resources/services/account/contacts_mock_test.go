@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildContacts(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildContacts(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockAccountClient(ctrl)
 
 	var ci types.ContactInformation
@@ -27,7 +27,7 @@ func buildContacts(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Account: mock}
+	return &client.Services{Account: mock}
 }
 
 func TestContacts(t *testing.T) {

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildApigatewayv2Apis(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildApigatewayv2Apis(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockApigatewayv2Client(ctrl)
 
 	a := types.Api{}
@@ -83,7 +83,7 @@ func buildApigatewayv2Apis(t *testing.T, ctrl *gomock.Controller) client.Service
 			Items: []types.RouteResponse{rr},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Apigatewayv2: m,
 	}
 }

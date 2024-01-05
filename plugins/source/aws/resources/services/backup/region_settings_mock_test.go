@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildBackupRegionSettingsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildBackupRegionSettingsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockBackupClient(ctrl)
 
 	var settings backup.DescribeRegionSettingsOutput
@@ -26,7 +26,7 @@ func buildBackupRegionSettingsMock(t *testing.T, ctrl *gomock.Controller) client
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Backup: m,
 	}
 }

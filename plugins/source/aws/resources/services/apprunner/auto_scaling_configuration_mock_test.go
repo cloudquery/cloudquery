@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildApprunnerAutoScalingConfigurationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildApprunnerAutoScalingConfigurationsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockApprunnerClient(ctrl)
 	as := types.AutoScalingConfiguration{}
 	require.NoError(t, faker.FakeObject(&as))
@@ -33,7 +33,7 @@ func buildApprunnerAutoScalingConfigurationsMock(t *testing.T, ctrl *gomock.Cont
 
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&apprunner.ListTagsForResourceOutput{Tags: []types.Tag{tags}}, nil)
-	return client.Services{
+	return &client.Services{
 		Apprunner: m,
 	}
 }

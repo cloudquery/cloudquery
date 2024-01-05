@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildMeshes(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildMeshes(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockAppmeshClient(ctrl)
 
 	var mr types.MeshRef
@@ -187,7 +187,7 @@ func buildMeshes(t *testing.T, ctrl *gomock.Controller) client.Services {
 		},
 		nil,
 	)
-	return client.Services{Appmesh: mock}
+	return &client.Services{Appmesh: mock}
 }
 
 func TestMeshes(t *testing.T) {

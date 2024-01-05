@@ -19,7 +19,7 @@ import (
 type svcsDetail struct {
 	partition string
 	accountId string
-	svcs      Services
+	svcs      *Services
 }
 
 func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, awsPluginSpec *spec.Spec, adminAccountSts AssumeRoleAPIClient, account spec.Account) (*svcsDetail, error) {

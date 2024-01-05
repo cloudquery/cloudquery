@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildApigatewayv2DomainNames(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildApigatewayv2DomainNames(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockApigatewayv2Client(ctrl)
 
 	dn := types.DomainName{}
@@ -29,7 +29,7 @@ func buildApigatewayv2DomainNames(t *testing.T, ctrl *gomock.Controller) client.
 			Items: []types.ApiMapping{am},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Apigatewayv2: m,
 	}
 }

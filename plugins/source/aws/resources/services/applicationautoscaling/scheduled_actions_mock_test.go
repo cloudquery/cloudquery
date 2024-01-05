@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildScheduledActions(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildScheduledActions(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockApplicationautoscalingClient(ctrl)
 	services := client.Services{
 		Applicationautoscaling: m,

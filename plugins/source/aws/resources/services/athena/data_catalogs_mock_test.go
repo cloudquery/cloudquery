@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDataCatalogs(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDataCatalogs(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockAthenaClient(ctrl)
 
 	catalogs := athena.ListDataCatalogsOutput{}
@@ -44,7 +44,7 @@ func buildDataCatalogs(t *testing.T, ctrl *gomock.Controller) client.Services {
 	tables.NextToken = nil
 	m.EXPECT().ListTableMetadata(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tables, nil)
 
-	return client.Services{
+	return &client.Services{
 		Athena: m,
 	}
 }

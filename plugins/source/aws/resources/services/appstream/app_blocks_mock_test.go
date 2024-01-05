@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildAppstreamAppBlocksMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildAppstreamAppBlocksMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockAppstreamClient(ctrl)
 	object := types.AppBlock{}
 	require.NoError(t, faker.FakeObject(&object))
@@ -26,7 +26,7 @@ func buildAppstreamAppBlocksMock(t *testing.T, ctrl *gomock.Controller) client.S
 	require.NoError(t, faker.FakeObject(&tagsOutput))
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
 
-	return client.Services{
+	return &client.Services{
 		Appstream: m,
 	}
 }

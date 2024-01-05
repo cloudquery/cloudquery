@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildApigatewayUsagePlans(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildApigatewayUsagePlans(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockApigatewayClient(ctrl)
 
 	u := types.UsagePlan{}
@@ -31,7 +31,7 @@ func buildApigatewayUsagePlans(t *testing.T, ctrl *gomock.Controller) client.Ser
 			Items: []types.UsagePlanKey{uk},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Apigateway: m,
 	}
 }

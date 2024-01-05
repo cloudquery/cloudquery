@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"strings"
-	"sync"
 
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	wafv2types "github.com/aws/aws-sdk-go-v2/service/wafv2/types"
@@ -20,7 +19,7 @@ import (
 type Client struct {
 	// Those are already normalized values after configure and this is why we don't want to hold
 	// config directly.
-	ServicesManager *ServicesManager
+	ServicesManager ServicesManager
 	logger          zerolog.Logger
 	// this is set by table clientList
 	AccountID            string
@@ -32,7 +31,6 @@ type Client struct {
 	stateClient          state.Client
 	specificRegions      bool
 	Spec                 *spec.Spec
-	accountMutex         map[string]*sync.Mutex
 }
 
 type AwsLogger struct {
@@ -60,13 +58,10 @@ var ErrPaidAPIsNotEnabled = errors.New("not fetching resource because `use_paid_
 
 func NewAwsClient(logger zerolog.Logger, s *spec.Spec) Client {
 	return Client{
-		ServicesManager: &ServicesManager{
-			services: ServicesPartitionAccountMap{},
-		},
-		logger:       logger,
-		Spec:         s,
-		accountMutex: map[string]*sync.Mutex{},
-		stateClient:  new(state.NoOpClient),
+		ServicesManager: make(ServicesManager),
+		logger:          logger,
+		Spec:            s,
+		stateClient:     new(state.NoOpClient),
 	}
 }
 
@@ -86,26 +81,15 @@ func (c *Client) ID() string {
 }
 
 func (c *Client) updateService(service AWSServiceName) {
-	// Check to see if the service is already initialized
-	svc := c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).GetService(service)
-	if svc != nil {
-		return
-	}
-	// If service is not  initialized, lock the account mutex and check again
-	c.accountMutex[c.AccountID].Lock()
-	defer c.accountMutex[c.AccountID].Unlock()
-	svc = c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).GetService(service)
-	// if service is still not initialized, initialize it
-	if svc == nil {
-		c.logger.Debug().Msgf("updating service %s for: %s", service.String(), c.AccountID)
-		c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).InitService(service)
-	}
+	c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID).InitService(service)
 }
-func (c *Client) Services(service_names ...AWSServiceName) *Services {
-	for _, service := range service_names {
-		c.updateService(service)
+
+func (c *Client) Services(serviceNames ...AWSServiceName) *Services {
+	svc := c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID)
+	for _, service := range serviceNames {
+		svc.InitService(service)
 	}
-	return c.ServicesManager.ServicesByPartitionAccount(c.Partition, c.AccountID)
+	return svc
 }
 
 func (c *Client) StateClient() state.Client {
@@ -118,11 +102,6 @@ func (c *Client) SetStateClient(client state.Client) {
 		client = new(state.NoOpClient)
 	}
 	c.stateClient = client
-}
-
-func (s *Services) Duplicate() Services {
-	duplicateServices := *s
-	return duplicateServices
 }
 
 func (c *Client) Duplicate() *Client {
@@ -141,7 +120,6 @@ func (c *Client) withPartitionAccountIDAndRegion(partition, accountID, region st
 		WAFScope:             c.WAFScope,
 		stateClient:          c.stateClient,
 		Spec:                 c.Spec,
-		accountMutex:         c.accountMutex,
 	}
 }
 
@@ -156,7 +134,6 @@ func (c *Client) withPartitionAccountIDRegionAndNamespace(partition, accountID, 
 		WAFScope:             c.WAFScope,
 		stateClient:          c.stateClient,
 		Spec:                 c.Spec,
-		accountMutex:         c.accountMutex,
 	}
 }
 
@@ -171,7 +148,6 @@ func (c *Client) withPartitionAccountIDRegionAndScope(partition, accountID, regi
 		WAFScope:             scope,
 		stateClient:          c.stateClient,
 		Spec:                 c.Spec,
-		accountMutex:         c.accountMutex,
 	}
 }
 
@@ -205,7 +181,6 @@ func Configure(ctx context.Context, logger zerolog.Logger, s spec.Spec) (schema.
 		client.Spec.Accounts = []spec.Account{{ID: defaultVar}}
 	}
 
-	initLock := sync.Mutex{}
 	errorGroup, gtx := errgroup.WithContext(ctx)
 	errorGroup.SetLimit(client.Spec.InitializationConcurrency)
 	for _, account := range client.Spec.Accounts {
@@ -218,12 +193,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s spec.Spec) (schema.
 			if svcsDetail == nil {
 				return nil
 			}
-			initLock.Lock()
-			defer initLock.Unlock()
 			client.ServicesManager.InitServices(*svcsDetail)
-			if client.accountMutex[svcsDetail.accountId] == nil {
-				client.accountMutex[svcsDetail.accountId] = &sync.Mutex{}
-			}
 
 			return nil
 		})
@@ -232,7 +202,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s spec.Spec) (schema.
 		return nil, err
 	}
 
-	if len(client.ServicesManager.services) == 0 {
+	if len(client.ServicesManager) == 0 {
 		// This is a special error case where we found active accounts, but just weren't able to assume a role in any of them
 		if client.Spec.Organization != nil && len(client.Spec.Accounts) > 0 && client.Spec.Organization.MemberCredentials == nil {
 			return nil, fmt.Errorf("discovered %d accounts in the AWS Organization, but the credentials specified in 'admin_account' were unable to assume a role in the member accounts. Verify that the role you are trying to assume (arn:aws:iam::<account_id>:role/%s) exists. If you need to use a different set of credentials to do the role assumption use 'member_trusted_principal'", len(client.Spec.Accounts), client.Spec.Organization.ChildAccountRoleName)

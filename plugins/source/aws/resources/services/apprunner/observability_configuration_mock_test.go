@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildObservabilityConfiguration(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildObservabilityConfiguration(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockApprunnerClient(ctrl)
 	s := types.ObservabilityConfiguration{}
 	require.NoError(t, faker.FakeObject(&s))
@@ -33,7 +33,7 @@ func buildObservabilityConfiguration(t *testing.T, ctrl *gomock.Controller) clie
 
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&apprunner.ListTagsForResourceOutput{Tags: []types.Tag{tags}}, nil)
-	return client.Services{
+	return &client.Services{
 		Apprunner: m,
 	}
 }

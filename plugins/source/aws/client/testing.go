@@ -4,7 +4,6 @@ import (
 	"context"
 	"os"
 	"slices"
-	"sync"
 	"testing"
 	"time"
 
@@ -24,7 +23,7 @@ type TestOptions struct {
 	SkipEmptyCheckColumns map[string][]string
 }
 
-func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*testing.T, *gomock.Controller) Services, testOpts TestOptions) {
+func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*testing.T, *gomock.Controller) *Services, testOpts TestOptions) {
 	parentTable.IgnoreInTests = false
 	if testOpts.Region == "" {
 		testOpts.Region = "us-east-1"
@@ -42,7 +41,6 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 	services := builder(t, ctrl)
 	services.Regions = []string{testOpts.Region}
 	services.AWSConfig.Region = testOpts.Region
-	c.accountMutex["testAccount"] = &sync.Mutex{}
 	c.ServicesManager.InitServicesForPartitionAccount("aws", "testAccount", services)
 	c.Partition = "aws"
 	tables := schema.Tables{parentTable}
@@ -62,7 +60,7 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 	validateNoEmptyColumnsExcept(t, tables, messages, testOpts.SkipEmptyCheckColumns)
 }
 
-func AwsCreateMockClient(t *testing.T, ctrl *gomock.Controller, builder func(*testing.T, *gomock.Controller) Services, testOpts TestOptions) Client {
+func AwsCreateMockClient(t *testing.T, ctrl *gomock.Controller, builder func(*testing.T, *gomock.Controller) *Services, testOpts TestOptions) Client {
 	if testOpts.Region == "" {
 		testOpts.Region = "us-east-1"
 	}
@@ -80,8 +78,6 @@ func AwsCreateMockClient(t *testing.T, ctrl *gomock.Controller, builder func(*te
 		services.Regions = []string{testOpts.Region}
 		c.ServicesManager.InitServicesForPartitionAccount("aws", "testAccount", services)
 	}
-
-	c.accountMutex["testAccount"] = &sync.Mutex{}
 
 	c.Partition = "aws"
 	return c

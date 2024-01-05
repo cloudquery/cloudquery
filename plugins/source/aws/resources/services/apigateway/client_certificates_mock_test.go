@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildApigatewayClientCertificates(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildApigatewayClientCertificates(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockApigatewayClient(ctrl)
 
 	c := types.ClientCertificate{}
@@ -23,7 +23,7 @@ func buildApigatewayClientCertificates(t *testing.T, ctrl *gomock.Controller) cl
 			Items: []types.ClientCertificate{c},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Apigateway: m,
 	}
 }

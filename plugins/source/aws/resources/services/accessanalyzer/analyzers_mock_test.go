@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildAccessAnalyzer(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildAccessAnalyzer(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockAccessanalyzerClient(ctrl)
 	u := types.AnalyzerSummary{}
 	require.NoError(t, faker.FakeObject(&u))
@@ -38,7 +38,7 @@ func buildAccessAnalyzer(t *testing.T, ctrl *gomock.Controller) client.Services 
 			ArchiveRules: []types.ArchiveRuleSummary{arch},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Accessanalyzer: m,
 	}
 }

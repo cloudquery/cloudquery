@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildBatchJobsMock(t *testing.T, m *mocks.MockBatchClient) client.Services {
+func buildBatchJobsMock(t *testing.T, m *mocks.MockBatchClient) *client.Services {
 	services := client.Services{
 		Batch: m,
 	}

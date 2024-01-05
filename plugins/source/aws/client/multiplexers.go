@@ -32,9 +32,9 @@ func AccountMultiplex(table string) func(meta schema.ClientMeta) []schema.Client
 	return func(meta schema.ClientMeta) []schema.ClientMeta {
 		l := make([]schema.ClientMeta, 0)
 		client := meta.(*Client)
-		for partition := range client.ServicesManager.services {
-			for accountID := range client.ServicesManager.services[partition] {
-				region := getRegion(client.ServicesManager.services[partition][accountID].Regions)
+		for partition, pMap := range client.ServicesManager {
+			for accountID, svc := range pMap {
+				region := getRegion(svc.Regions)
 				// Ensure that the region is always set by a region that has been initialized
 				if region == "" {
 					// This can only happen if a user specifies a region from a different partition
@@ -56,9 +56,9 @@ func ServiceAccountRegionMultiplexer(table, service string) func(meta schema.Cli
 		var l = make([]schema.ClientMeta, 0)
 		notSupportedRegions := make([]string, 0)
 		client := meta.(*Client)
-		for partition := range client.ServicesManager.services {
-			for accountID := range client.ServicesManager.services[partition] {
-				for _, region := range client.ServicesManager.services[partition][accountID].Regions {
+		for partition, pMap := range client.ServicesManager {
+			for accountID, svc := range pMap {
+				for _, region := range svc.Regions {
 					if !isSupportedServiceForRegion(service, region) {
 						if client.specificRegions {
 							notSupportedRegions = append(notSupportedRegions, region)
@@ -94,9 +94,9 @@ func ServiceAccountRegionNamespaceMultiplexer(table, service string) func(meta s
 		notSupportedRegions := make([]string, 0)
 		var l = make([]schema.ClientMeta, 0)
 		client := meta.(*Client)
-		for partition := range client.ServicesManager.services {
-			for accountID := range client.ServicesManager.services[partition] {
-				for _, region := range client.ServicesManager.services[partition][accountID].Regions {
+		for partition, pMap := range client.ServicesManager {
+			for accountID, svc := range pMap {
+				for _, region := range svc.Regions {
 					if !isSupportedServiceForRegion(service, region) {
 						if client.specificRegions {
 							notSupportedRegions = append(notSupportedRegions, region)
@@ -120,8 +120,8 @@ func ServiceAccountRegionScopeMultiplexer(table, service string) func(meta schem
 		notSupportedRegions := make([]string, 0)
 		var l = make([]schema.ClientMeta, 0)
 		client := meta.(*Client)
-		for partition := range client.ServicesManager.services {
-			for accountID := range client.ServicesManager.services[partition] {
+		for partition, pMap := range client.ServicesManager {
+			for accountID, svc := range pMap {
 				// always fetch cloudfront related resources
 				switch partition {
 				case "aws":
@@ -130,7 +130,7 @@ func ServiceAccountRegionScopeMultiplexer(table, service string) func(meta schem
 					l = append(l, client.withPartitionAccountIDRegionAndScope(partition, accountID, awsCnCloudfrontScopeRegion, wafv2types.ScopeCloudfront))
 				}
 
-				for _, region := range client.ServicesManager.services[partition][accountID].Regions {
+				for _, region := range svc.Regions {
 					if !isSupportedServiceForRegion(service, region) {
 						if client.specificRegions {
 							notSupportedRegions = append(notSupportedRegions, region)
