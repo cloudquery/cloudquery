@@ -15,6 +15,8 @@ func TestFindMarkdownImages(t *testing.T) {
 		contents    string
 		expect      map[string][]imageReference
 		expectError string
+
+		endPosAdjustBy int // used for file:/// links where the file reference is absolute, applies to all imageReference.endPos in expect
 	}{
 		{
 			name: "no images",
@@ -206,7 +208,8 @@ text
 			name: "basic file://",
 			contents: `# Title
 ![](file://${ABS_IMAGE})`,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:my special@image.png": {{ref: "file://${ABS_IMAGE}", startPos: 8, endPos: -12}}}, // 12 is the number of extra characters except the placeholder/filename
+			expect:         map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:my special@image.png": {{ref: "file://${ABS_IMAGE}", startPos: 8, endPos: 0 /*special zero*/}}},
+			endPosAdjustBy: 12, // number of extra characters except the placeholder/filename
 		},
 	}
 
@@ -253,9 +256,7 @@ text
 				for i := range v {
 					if strings.Contains(v[i].ref, "${ABS_IMAGE}") {
 						v[i].ref = strings.ReplaceAll(v[i].ref, "${ABS_IMAGE}", specialAbsEscaped)
-						if v[i].endPos < 0 {
-							v[i].endPos = v[i].startPos + len(specialAbsEscaped) - v[i].endPos
-						}
+						v[i].endPos = v[i].startPos + len(specialAbsEscaped) + tc.endPosAdjustBy
 					}
 					v[i].url = mockURL
 				}
