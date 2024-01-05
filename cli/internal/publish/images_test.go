@@ -15,7 +15,6 @@ func TestFindMarkdownImages(t *testing.T) {
 		contents    string
 		expect      map[string][]imageReference
 		expectError string
-		skipCheck   bool
 	}{
 		{
 			name: "no images",
@@ -146,8 +145,7 @@ More test
 
 [image-id]: image.png "Optional Title Here"
 `,
-			expect:    map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png"}}}, // issue: startpos/endpos don't point to file
-			skipCheck: true,
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 31, endPos: 74}}},
 		},
 		{
 			name: "ref multiple",
@@ -160,8 +158,35 @@ text
 
 [image-id]: image.png "Optional Title Here"
 `,
-			expect:    map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png"}, {ref: "image.png"}}}, // two references to same image. startpos/endpos issue as above
-			skipCheck: true,
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 61, endPos: 104}}},
+		},
+		{
+			name: "ref multiple with same image",
+			contents: `# Title
+![Alt text][image-id]
+
+text
+
+![Same text][image-ip]
+
+[image-id]: image.png "Optional Title Here"
+[image-ip]: image.png "Some Title Here"
+`,
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 61, endPos: 104}, {ref: "image.png", startPos: 105, endPos: 144}}},
+		},
+		{
+			name: "ref multiple with same image and title",
+			contents: `# Title
+![Alt text][image-id]
+
+text
+
+![Same text][image-ip]
+
+[image-id]: image.png "Optional Title Here"
+[image-ip]: image.png "Optional Title Here"
+`,
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 61, endPos: 104}, {ref: "image.png", startPos: 105, endPos: 148}}},
 		},
 		{
 			name: "href",
@@ -242,7 +267,7 @@ text
 			replaced, err := replaceMarkdownImages(tc.contents, out)
 			require.NoError(t, err)
 
-			if len(tc.expect) > 0 && !tc.skipCheck {
+			if len(tc.expect) > 0 {
 				require.Contains(t, replaced, mockURL)
 			}
 		})

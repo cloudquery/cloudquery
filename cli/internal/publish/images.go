@@ -21,6 +21,7 @@ import (
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/text"
 	"github.com/yuin/goldmark/util"
+	"golang.org/x/exp/maps"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -282,10 +283,18 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 	if f.images == nil {
 		f.images = make(map[string][]imageReference)
 	}
-	if f.err != nil {
-		return
+
+	refs := pc.References()
+	refList := make(map[string][]parser.Reference, len(refs))
+	for _, ref := range refs {
+		key := string(ref.Destination()) + ":" + string(ref.Title())
+		refList[key] = append(refList[key], ref)
 	}
+
 	src := reader.Source()
+
+	var allImgs []imageReference
+	imageDestinations := make(map[string]struct{}) // referenced dests are put in here so that we can check them later
 	f.err = ast.Walk(node, func(n ast.Node, entering bool) (ast.WalkStatus, error) {
 		if !entering {
 			return ast.WalkContinue, nil
@@ -302,16 +311,20 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 			imgRef := imageReference{
 				ref: string(el.Destination),
 			}
+			imageDestinations[imgRef.ref+":"+string(el.Title)] = struct{}{}
 			p := el.BaseNode.Parent()
 			for p != nil {
 				if p.Kind() == ast.KindParagraph {
 					for i := 0; i < p.Lines().Len(); i++ {
 						// we can have multiple lines in a paragraph, so we need to check each one to match destination/title, hoping there are no dupes
 						lineLiteral := src[p.Lines().At(i).Start:p.Lines().At(i).Stop]
-						if !bytes.Contains(lineLiteral, el.Destination) {
-							continue
-						}
-						if len(el.Title) > 0 && !bytes.Contains(lineLiteral, el.Title) {
+
+						// these checks are false negative if this image is a reference
+						if !bytes.Contains(lineLiteral, el.Destination) || (len(el.Title) > 0 && !bytes.Contains(lineLiteral, el.Title)) {
+							if len(refList[imgRef.ref+":"+string(el.Title)]) > 0 {
+								// it's a reference, no need to check further as we won't find anything. Leave it to the reference handler
+								return ast.WalkContinue, nil
+							}
 							continue
 						}
 						if len(el.Title) == 0 { // if no title, make sure the element ends with the link
@@ -378,21 +391,56 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 			}
 		}
 
-		if len(imgs) == 0 {
-			return ast.WalkContinue, nil
+		allImgs = append(allImgs, imgs...)
+		return ast.WalkContinue, nil
+	})
+	if f.err != nil {
+		return
+	}
+
+	f.err = func() error {
+		refKeys := maps.Keys(refList)
+		sort.Strings(refKeys)
+
+		for _, refKey := range refKeys {
+			if _, isImage := imageDestinations[refKey]; !isImage {
+				continue
+			}
+
+			for _, pcRef := range refList[refKey] {
+				refLine := append([]byte{'['}, pcRef.Label()...)
+				refLine = append(refLine, []byte("]: ")...)
+				refLine = append(refLine, pcRef.Destination()...)
+				if len(pcRef.Title()) > 0 {
+					refLine = append(refLine, []byte(` "`)...)
+					refLine = append(refLine, pcRef.Title()...)
+					refLine = append(refLine, []byte{'"'}...)
+				}
+
+				if idx := bytes.Index(src, refLine); idx > 0 {
+					check := bytes.TrimSpace(src[idx-1 : idx+len(refLine)]) // make sure it has some kind of space before
+					if bytes.Equal(check, refLine) {
+						allImgs = append(allImgs, imageReference{
+							ref:      string(pcRef.Destination()),
+							startPos: idx,
+							endPos:   idx + len(refLine),
+						})
+					}
+				}
+			}
 		}
 
-		for _, img := range imgs {
+		for _, img := range allImgs {
 			absFile, err := ensureValidFilename(img.ref, f.docDir)
 			if err != nil {
-				return ast.WalkStop, err
+				return err
 			}
 			if absFile == "" {
-				return ast.WalkContinue, nil // skip
+				return nil // skip
 			}
 			s, err := sha1sum(absFile)
 			if err != nil {
-				return ast.WalkStop, fmt.Errorf("error processing image %q: %w", img.ref, err)
+				return fmt.Errorf("error processing image %q: %w", img.ref, err)
 			}
 			fileRef := filepath.Base(absFile)
 			f.images[s+":"+fileRef] = append(f.images[s+":"+fileRef], imageReference{
@@ -402,9 +450,8 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 				endPos:   img.endPos,
 			})
 		}
-
-		return ast.WalkContinue, nil
-	})
+		return nil
+	}()
 }
 
 var _ parser.ASTTransformer = &imageFinder{}
