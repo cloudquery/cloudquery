@@ -177,6 +177,20 @@ text
 			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 61, endPos: 104}, {ref: "image.png", startPos: 105, endPos: 144}}},
 		},
 		{
+			name: "ref multiple with same image title and id",
+			contents: `# Title
+![Alt text][image-id]
+
+text
+
+![Same text][image-id]
+
+[image-id]: image.png "Title Here"
+[image-id]: image.png "Title Here"
+`,
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 61, endPos: 95}}}, // expect a single match
+		},
+		{
 			name: "ref multiple with same image and title",
 			contents: `# Title
 ![Alt text][image-id]
@@ -251,8 +265,11 @@ text
 			if len(out) == 0 {
 				out = nil
 			}
+
+			expect := convertStringToRefKey(tc.expect)
+
 			// adjust end position for special case
-			for k, v := range tc.expect {
+			for k, v := range expect {
 				for i := range v {
 					if strings.Contains(v[i].ref, "${ABS_IMAGE}") {
 						v[i].ref = strings.ReplaceAll(v[i].ref, "${ABS_IMAGE}", specialAbsEscaped)
@@ -260,10 +277,10 @@ text
 					}
 					v[i].url = mockURL
 				}
-				tc.expect[k] = v
+				expect[k] = v
 			}
 
-			require.EqualValues(t, tc.expect, out)
+			require.EqualValues(t, expect, out)
 
 			replaced, err := replaceMarkdownImages(tc.contents, out)
 			require.NoError(t, err)
@@ -283,28 +300,28 @@ func TestConvertMarkdownReferencesOverlaps(t *testing.T) {
 	}{
 		{
 			name: "no overlaps",
-			refs: map[string][]imageReference{"a": {{ref: "a", startPos: 0, endPos: 1}, {ref: "a", startPos: 1, endPos: 3}}},
+			refs: map[string][]imageReference{"a:b": {{ref: "a", startPos: 0, endPos: 1}, {ref: "a", startPos: 1, endPos: 3}}},
 		},
 		{
 			name:        "overlaps by 1 byte",
-			refs:        map[string][]imageReference{"a": {{ref: "a", startPos: 0, endPos: 2}, {ref: "a", startPos: 1, endPos: 3}}},
+			refs:        map[string][]imageReference{"a:b": {{ref: "a", startPos: 0, endPos: 2}, {ref: "a", startPos: 1, endPos: 3}}},
 			expectError: true,
 		},
 		{
 			name:        "invalid range",
-			refs:        map[string][]imageReference{"a": {{ref: "a", startPos: 0, endPos: 2}, {ref: "a", startPos: 3, endPos: 1}}},
+			refs:        map[string][]imageReference{"a:b": {{ref: "a", startPos: 0, endPos: 2}, {ref: "a", startPos: 3, endPos: 1}}},
 			expectError: true,
 		},
 		{
 			name:        "overlapping last elem with first",
-			refs:        map[string][]imageReference{"a": {{ref: "a", startPos: 0, endPos: 2}, {ref: "a", startPos: 2, endPos: 3}, {ref: "a", startPos: 0, endPos: 1}}},
+			refs:        map[string][]imageReference{"a:b": {{ref: "a", startPos: 0, endPos: 2}, {ref: "a", startPos: 2, endPos: 3}, {ref: "a", startPos: 0, endPos: 1}}},
 			expectError: true,
 		},
 	}
 	for _, tc := range cases {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			_, err := convertMarkdownReferences(tc.refs)
+			_, err := convertMarkdownReferences(convertStringToRefKey(tc.refs))
 			if tc.expectError {
 				require.Error(t, err)
 				return
@@ -312,4 +329,17 @@ func TestConvertMarkdownReferencesOverlaps(t *testing.T) {
 			require.NoError(t, err)
 		})
 	}
+}
+
+func convertStringToRefKey(input map[string][]imageReference) map[imageRefListKey][]imageReference {
+	if input == nil {
+		return nil
+	}
+	ret := make(map[imageRefListKey][]imageReference, len(input))
+	for k := range input {
+		parts := strings.SplitN(k, ":", 2)
+		key := imageRefListKey{name: parts[1], sum: parts[0]}
+		ret[key] = input[k]
+	}
+	return ret
 }
