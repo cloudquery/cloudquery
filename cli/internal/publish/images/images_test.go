@@ -1,4 +1,4 @@
-package publish
+package images
 
 import (
 	"os"
@@ -13,7 +13,7 @@ func TestFindMarkdownImages(t *testing.T) {
 	cases := []struct {
 		name        string
 		contents    string
-		expect      map[string][]imageReference
+		expect      map[string][]reference
 		expectError string
 
 		endPosAdjustBy int // used for file:/// links where the file reference is absolute, applies to all imageReference.endPos in expect
@@ -28,37 +28,37 @@ func TestFindMarkdownImages(t *testing.T) {
 			name: "basic",
 			contents: `# Title
 ![](image.png)`,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 22}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 22}}},
 		},
 		{
 			name: "basic with alt",
 			contents: `# Title
 ![Alt text](image.png)`,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 30}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 30}}},
 		},
 		{
 			name: "html with alt and width",
 			contents: `# Title
 <img src="image.png" alt="Alt text" width="100%">`,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 18, endPos: 27}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 18, endPos: 27}}},
 		},
 		{
 			name: "html with single quotes",
 			contents: `# Title
 <img src='image.png'>`,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 18, endPos: 27}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 18, endPos: 27}}},
 		},
 		{
 			name: "double html with alt and width",
 			contents: `# Title
 <img src="image.png" alt="Alt text" width="100%"> <img src="image.png" alt="Alt text2" width="50%">`,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 18, endPos: 27}, {ref: "image.png", startPos: 68, endPos: 77}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 18, endPos: 27}, {ref: "image.png", startPos: 68, endPos: 77}}},
 		},
 		{
 			name: "double html in div",
 			contents: `# Title
 <div><img src="image.png" width="100%"><img src="assets/images/image.png" width="50%"></div>`,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 23, endPos: 32}, {ref: "assets/images/image.png", startPos: 57, endPos: 80}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 23, endPos: 32}, {ref: "assets/images/image.png", startPos: 57, endPos: 80}}},
 		},
 		{
 			name: "double html in div with newlines",
@@ -68,20 +68,20 @@ func TestFindMarkdownImages(t *testing.T) {
 	<img src="image.png" width="100%">
 	<img src="assets/images/image.png" width="50%">
 </div>`,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 26, endPos: 35}, {ref: "assets/images/image.png", startPos: 62, endPos: 85}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 26, endPos: 35}, {ref: "assets/images/image.png", startPos: 62, endPos: 85}}},
 		},
 		{
 			name: "tricky html",
 			contents: `# Title
 <img src="image.png"
 alt="Alt text" width="100%">`,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 18, endPos: 27}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 18, endPos: 27}}},
 		},
 		{
 			name: "tricky html alt",
 			contents: `# Title
 <img alt="<oops>" src="image.png" width="100%">`,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 31, endPos: 40}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 31, endPos: 40}}},
 		},
 		{
 			name: "tricky html alt multiline",
@@ -89,7 +89,7 @@ alt="Alt text" width="100%">`,
 <img alt="<oops>"
 src="image.png"
 width="100%">`,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 31, endPos: 40}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 31, endPos: 40}}},
 		},
 		{
 			name: "quoted html",
@@ -128,14 +128,14 @@ width="100%">`,
 			contents: `# Title
 ![Alt text](image.png "Title Here")
 `,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 43}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 43}}},
 		},
 		{
 			name: "basic with title",
 			contents: `# Title
 ![](image.png "Title Here")
 `,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 35}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 35}}},
 		},
 		{
 			name: "basic with title or alt, multiple",
@@ -144,7 +144,7 @@ width="100%">`,
 More test
 ![alt](image.png)
 `,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 36}, {ref: "image.png", startPos: 46, endPos: 63}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 36}, {ref: "image.png", startPos: 46, endPos: 63}}},
 		},
 		{
 			name: "ref",
@@ -153,7 +153,7 @@ More test
 
 [image-id]: image.png "Optional Title Here"
 `,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 31, endPos: 74}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 31, endPos: 74}}},
 		},
 		{
 			name: "ref multiple",
@@ -166,7 +166,7 @@ text
 
 [image-id]: image.png "Optional Title Here"
 `,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 61, endPos: 104}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 61, endPos: 104}}},
 		},
 		{
 			name: "ref multiple with same image",
@@ -180,7 +180,7 @@ text
 [image-id]: image.png "Optional Title Here"
 [image-ip]: image.png "Some Title Here"
 `,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 61, endPos: 104}, {ref: "image.png", startPos: 105, endPos: 144}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 61, endPos: 104}, {ref: "image.png", startPos: 105, endPos: 144}}},
 		},
 		{
 			name: "ref multiple with same image title and id",
@@ -194,7 +194,7 @@ text
 [image-id]: image.png "Title Here"
 [image-id]: image.png "Title Here"
 `,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 61, endPos: 95}}}, // expect a single match
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 61, endPos: 95}}}, // expect a single match
 		},
 		{
 			name: "ref multiple with same image and title",
@@ -208,27 +208,27 @@ text
 [image-id]: image.png "Optional Title Here"
 [image-ip]: image.png "Optional Title Here"
 `,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 61, endPos: 104}, {ref: "image.png", startPos: 105, endPos: 148}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 61, endPos: 104}, {ref: "image.png", startPos: 105, endPos: 148}}},
 		},
 		{
 			name: "href",
 			contents: `# Title
 [![Alt text](image.png)](http://example.com/)
 `,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 53}}}, // includes full href
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 8, endPos: 53}}}, // includes full href
 		},
 		{
 			name: "subdir",
 			contents: `# Title
 ![Alt text](assets/images/image.png)
 `,
-			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "assets/images/image.png", startPos: 8, endPos: 44}}},
+			expect: map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "assets/images/image.png", startPos: 8, endPos: 44}}},
 		},
 		{
 			name: "basic file://",
 			contents: `# Title
 ![](file://${ABS_IMAGE})`,
-			expect:         map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:my special@image.png": {{ref: "file://${ABS_IMAGE}", startPos: 8, endPos: 0 /* special zero */}}},
+			expect:         map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:my special@image.png": {{ref: "file://${ABS_IMAGE}", startPos: 8, endPos: 0 /* special zero */}}},
 			endPosAdjustBy: 12, // number of extra characters except the placeholder/filename
 		},
 	}
@@ -301,26 +301,26 @@ text
 func TestConvertMarkdownReferencesOverlaps(t *testing.T) {
 	cases := []struct {
 		name        string
-		refs        map[string][]imageReference
+		refs        map[string][]reference
 		expectError bool
 	}{
 		{
 			name: "no overlaps",
-			refs: map[string][]imageReference{"a:b": {{ref: "a", startPos: 0, endPos: 1}, {ref: "a", startPos: 1, endPos: 3}}},
+			refs: map[string][]reference{"a:b": {{ref: "a", startPos: 0, endPos: 1}, {ref: "a", startPos: 1, endPos: 3}}},
 		},
 		{
 			name:        "overlaps by 1 byte",
-			refs:        map[string][]imageReference{"a:b": {{ref: "a", startPos: 0, endPos: 2}, {ref: "a", startPos: 1, endPos: 3}}},
+			refs:        map[string][]reference{"a:b": {{ref: "a", startPos: 0, endPos: 2}, {ref: "a", startPos: 1, endPos: 3}}},
 			expectError: true,
 		},
 		{
 			name:        "invalid range",
-			refs:        map[string][]imageReference{"a:b": {{ref: "a", startPos: 0, endPos: 2}, {ref: "a", startPos: 3, endPos: 1}}},
+			refs:        map[string][]reference{"a:b": {{ref: "a", startPos: 0, endPos: 2}, {ref: "a", startPos: 3, endPos: 1}}},
 			expectError: true,
 		},
 		{
 			name:        "overlapping last elem with first",
-			refs:        map[string][]imageReference{"a:b": {{ref: "a", startPos: 0, endPos: 2}, {ref: "a", startPos: 2, endPos: 3}, {ref: "a", startPos: 0, endPos: 1}}},
+			refs:        map[string][]reference{"a:b": {{ref: "a", startPos: 0, endPos: 2}, {ref: "a", startPos: 2, endPos: 3}, {ref: "a", startPos: 0, endPos: 1}}},
 			expectError: true,
 		},
 	}
@@ -337,14 +337,14 @@ func TestConvertMarkdownReferencesOverlaps(t *testing.T) {
 	}
 }
 
-func convertStringToRefKey(input map[string][]imageReference) map[imageRefListKey][]imageReference {
+func convertStringToRefKey(input map[string][]reference) map[listKey][]reference {
 	if input == nil {
 		return nil
 	}
-	ret := make(map[imageRefListKey][]imageReference, len(input))
+	ret := make(map[listKey][]reference, len(input))
 	for k := range input {
 		parts := strings.SplitN(k, ":", 2)
-		key := imageRefListKey{name: parts[1], sum: parts[0]}
+		key := listKey{name: parts[1], sum: parts[0]}
 		ret[key] = input[k]
 	}
 	return ret

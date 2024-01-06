@@ -1,4 +1,4 @@
-package publish
+package images
 
 import (
 	"bytes"
@@ -26,7 +26,7 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-type imageReference struct {
+type reference struct {
 	ref     string // image filename inc. all paths (to replace with URL)
 	absFile string // absolute path to image file, to upload
 	url     string // result of upload
@@ -35,11 +35,11 @@ type imageReference struct {
 	endPos   int // exclusive
 }
 
-type imageRefListKey struct {
+type listKey struct {
 	name, sum string
 }
 
-func processDocumentImages(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, docDir, contents string) (string, error) {
+func ProcessDocument(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, docDir, contents string) (string, error) {
 	ims, err := findMarkdownImages(contents, docDir)
 	if err != nil {
 		return "", err
@@ -69,7 +69,7 @@ func processDocumentImages(ctx context.Context, c *cloudquery_api.ClientWithResp
 	for _, item := range resp.JSON201.Items {
 		item := item
 
-		key := imageRefListKey{name: item.Name, sum: item.Checksum}
+		key := listKey{name: item.Name, sum: item.Checksum}
 		for i := range ims[key] {
 			ims[key][i].url = item.URL
 		}
@@ -91,9 +91,9 @@ func processDocumentImages(ctx context.Context, c *cloudquery_api.ClientWithResp
 			continue
 		}
 		item := item
-		absFile := ims[imageRefListKey{name: item.Name, sum: item.Checksum}][0].absFile
+		absFile := ims[listKey{name: item.Name, sum: item.Checksum}][0].absFile
 		eg.Go(func() error {
-			return uploadImage(egCtx, *item.UploadURL, absFile)
+			return uploadFile(egCtx, *item.UploadURL, absFile)
 		})
 	}
 
@@ -104,7 +104,7 @@ func processDocumentImages(ctx context.Context, c *cloudquery_api.ClientWithResp
 	return contents, nil
 }
 
-func findMarkdownImages(contents, docDir string) (map[imageRefListKey][]imageReference, error) {
+func findMarkdownImages(contents, docDir string) (map[listKey][]reference, error) {
 	imf := &imageFinder{
 		docDir: docDir,
 	}
@@ -123,12 +123,12 @@ func findMarkdownImages(contents, docDir string) (map[imageRefListKey][]imageRef
 	return imf.images, nil
 }
 
-func convertMarkdownReferences(ims map[imageRefListKey][]imageReference) ([]imageReference, error) {
+func convertMarkdownReferences(ims map[listKey][]reference) ([]reference, error) {
 	type pos struct {
 		at  int
 		end bool
 	}
-	reps := make([]imageReference, 0, len(ims))
+	reps := make([]reference, 0, len(ims))
 	posList := make([]pos, 0, 2*len(ims))
 	for _, imList := range ims {
 		for _, ir := range imList {
@@ -173,7 +173,7 @@ func convertMarkdownReferences(ims map[imageRefListKey][]imageReference) ([]imag
 	return reps, nil
 }
 
-func replaceMarkdownImages(contents string, ims map[imageRefListKey][]imageReference) (string, error) {
+func replaceMarkdownImages(contents string, ims map[listKey][]reference) (string, error) {
 	reps, err := convertMarkdownReferences(ims)
 	if err != nil {
 		return "", err
@@ -194,7 +194,7 @@ func replaceMarkdownImages(contents string, ims map[imageRefListKey][]imageRefer
 	return contents, nil
 }
 
-func uploadImage(ctx context.Context, uploadURL, file string) error {
+func uploadFile(ctx context.Context, uploadURL, file string) error {
 	f, err := os.Open(file)
 	if err != nil {
 		return err
@@ -273,14 +273,14 @@ func sha1sum(filename string) (string, error) {
 }
 
 type imageFinder struct {
-	images map[imageRefListKey][]imageReference
+	images map[listKey][]reference
 	docDir string
 	err    error
 }
 
 func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parser.Context) {
 	if f.images == nil {
-		f.images = make(map[imageRefListKey][]imageReference)
+		f.images = make(map[listKey][]reference)
 	}
 
 	type refKeyType struct {
@@ -296,7 +296,7 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 
 	src := reader.Source()
 
-	var allImgs []imageReference
+	var allImgs []reference
 	imageDestinations := make(map[refKeyType]struct{}) // referenced dests are put in here so that we can check them later
 	f.err = ast.Walk(node, func(n ast.Node, entering bool) (ast.WalkStatus, error) {
 		if !entering {
@@ -304,14 +304,14 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 		}
 
 		var (
-			imgs []imageReference
+			imgs []reference
 
 			htmlBytes    []byte
 			htmlStartPos int
 		)
 		switch el := n.(type) {
 		case *ast.Image:
-			imgRef := imageReference{
+			imgRef := reference{
 				ref: string(el.Destination),
 			}
 			refKey := refKeyType{dest: imgRef.ref, title: string(el.Title)}
@@ -428,7 +428,7 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 				if idx := bytes.Index(src, refLine); idx > 0 {
 					check := bytes.TrimSpace(src[idx-1 : idx+len(refLine)]) // make sure it has some kind of space before
 					if bytes.Equal(check, refLine) {
-						allImgs = append(allImgs, imageReference{
+						allImgs = append(allImgs, reference{
 							ref:      string(pcRef.Destination()),
 							startPos: idx,
 							endPos:   idx + len(refLine),
@@ -452,8 +452,8 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 				return fmt.Errorf("error processing image %q: %w", img.ref, err)
 			}
 			fileRef := filepath.Base(absFile)
-			key := imageRefListKey{name: fileRef, sum: s}
-			f.images[key] = append(f.images[key], imageReference{
+			key := listKey{name: fileRef, sum: s}
+			f.images[key] = append(f.images[key], reference{
 				ref:      img.ref,
 				absFile:  absFile,
 				startPos: img.startPos,
@@ -464,19 +464,18 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 	}()
 }
 
-func parseHTMLImages(htmlBytes []byte, htmlOffset int) ([]imageReference, error) {
+func parseHTMLImages(htmlBytes []byte, htmlOffset int) ([]reference, error) {
 	htmldoc, err := html.Parse(bytes.NewReader(htmlBytes))
 	if err != nil {
 		return nil, err
 	}
 
-	var imgs []imageReference
+	var imgs []reference
 	var f func(*html.Node) int
 	offset := 0
 
 	f = func(n *html.Node) int {
 		if n.Type == html.ElementNode && n.Data == "img" {
-			fmt.Println(n.Attr)
 			for _, a := range n.Attr {
 				if a.Key != "src" {
 					continue
@@ -484,7 +483,7 @@ func parseHTMLImages(htmlBytes []byte, htmlOffset int) ([]imageReference, error)
 				searchBytes := htmlBytes[offset:]
 				startPos := bytes.Index(searchBytes, []byte(a.Val)) + offset
 				endPos := startPos + len(a.Val)
-				imgs = append(imgs, imageReference{
+				imgs = append(imgs, reference{
 					ref:      a.Val,
 					startPos: htmlOffset + startPos,
 					endPos:   htmlOffset + endPos,

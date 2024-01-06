@@ -18,6 +18,7 @@ import (
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/internal/hub"
+	"github.com/cloudquery/cloudquery/cli/internal/publish/images"
 	"github.com/distribution/reference"
 	"github.com/docker/distribution"
 	"github.com/docker/distribution/manifest/manifestlist"
@@ -196,7 +197,7 @@ func UploadPluginDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses
 		}
 		contentStr := hub.NormalizeContent(string(content))
 
-		contentStr, err = processDocumentImages(ctx, c, teamName, docsDir, contentStr)
+		contentStr, err = images.ProcessDocument(ctx, c, teamName, docsDir, contentStr)
 		if err != nil {
 			return fmt.Errorf("failed to process doc images for %s: %w", dirEntry.Name(), err)
 		}
