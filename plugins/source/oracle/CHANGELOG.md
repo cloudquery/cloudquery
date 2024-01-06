@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.2.9](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.8...plugins-source-oracle-v4.2.9) (2024-01-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.25.1 ([#16069](https://github.com/cloudquery/cloudquery/issues/16069)) ([edda65c](https://github.com/cloudquery/cloudquery/commit/edda65c238b2cb78a7a2078b62557a7d8d822e49))
+* Document dedicated region access (https://github.com/cloudquery/cloudquery/pull/16063) ([7b3f0c6](https://github.com/cloudquery/cloudquery/commit/7b3f0c67962f388b3ed1c6c3c9c17d4d3aa35c06))
+
 ## [4.2.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.7...plugins-source-oracle-v4.2.8) (2024-01-05)
 
 
