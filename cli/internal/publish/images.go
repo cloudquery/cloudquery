@@ -10,7 +10,6 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"regexp"
 	"sort"
 	"strings"
 
@@ -18,6 +17,8 @@ import (
 	"github.com/cloudquery/cloudquery/cli/internal/hub"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/ast"
+	"golang.org/x/net/html"
+
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/text"
 	"github.com/yuin/goldmark/util"
@@ -37,8 +38,6 @@ type imageReference struct {
 type imageRefListKey struct {
 	name, sum string
 }
-
-var htmlImageRe = regexp.MustCompile(`<img\s+(?:[^>"']|"[^"]*"|'[^']*')*\s*src=["']([^"']*)["']`)
 
 func processDocumentImages(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, docDir, contents string) (string, error) {
 	ims, err := findMarkdownImages(contents, docDir)
@@ -307,7 +306,7 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 		var (
 			imgs []imageReference
 
-			html         []byte
+			htmlBytes    []byte
 			htmlStartPos int
 		)
 		switch el := n.(type) {
@@ -355,7 +354,7 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 			sz := el.Lines().Len()
 			for i := 0; i < sz; i++ {
 				a := el.Lines().At(i)
-				html = append(html, src[a.Start:a.Stop]...)
+				htmlBytes = append(htmlBytes, src[a.Start:a.Stop]...)
 				if i == 0 {
 					htmlStartPos = a.Start
 				}
@@ -364,7 +363,7 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 			if el.Segments != nil {
 				for i := 0; i < el.Segments.Len(); i++ { // should have 1 segment per tag?
 					a := el.Segments.At(i)
-					html = append(html, src[a.Start:a.Stop]...)
+					htmlBytes = append(htmlBytes, src[a.Start:a.Stop]...)
 					if i == 0 {
 						htmlStartPos = a.Start
 					}
@@ -373,7 +372,7 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 				sz := el.Lines().Len()
 				for i := 0; i < sz; i++ {
 					a := el.Lines().At(i)
-					html = append(html, src[a.Start:a.Stop]...)
+					htmlBytes = append(htmlBytes, src[a.Start:a.Stop]...)
 					if i == 0 {
 						htmlStartPos = a.Start
 					}
@@ -383,19 +382,12 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 			return ast.WalkContinue, nil
 		}
 
-		if len(html) > 0 {
-			matchPositions := htmlImageRe.FindAllStringSubmatchIndex(string(html), -1)
-			if len(matchPositions) == 0 {
-				return ast.WalkContinue, nil // not an image
+		if len(htmlBytes) > 0 {
+			htmlImages, err := parseHTMLImages(htmlBytes, htmlStartPos)
+			if err != nil {
+				return ast.WalkStop, err
 			}
-			for _, m := range matchPositions {
-				imgs = append(imgs, imageReference{
-					// 2,3 is the position of the image ref
-					ref:      string(html[m[2]:m[3]]),
-					startPos: htmlStartPos + m[2],
-					endPos:   htmlStartPos + m[3],
-				})
-			}
+			imgs = append(imgs, htmlImages...)
 		}
 
 		allImgs = append(allImgs, imgs...)
@@ -470,6 +462,45 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 		}
 		return nil
 	}()
+}
+
+func parseHTMLImages(htmlBytes []byte, htmlOffset int) ([]imageReference, error) {
+	htmldoc, err := html.Parse(bytes.NewReader(htmlBytes))
+	if err != nil {
+		return nil, err
+	}
+
+	var imgs []imageReference
+	var f func(*html.Node) int
+	offset := 0
+
+	f = func(n *html.Node) int {
+		if n.Type == html.ElementNode && n.Data == "img" {
+			fmt.Println(n.Attr)
+			for _, a := range n.Attr {
+				if a.Key != "src" {
+					continue
+				}
+				searchBytes := htmlBytes[offset:]
+				startPos := bytes.Index(searchBytes, []byte(a.Val)) + offset
+				endPos := startPos + len(a.Val)
+				imgs = append(imgs, imageReference{
+					ref:      a.Val,
+					startPos: htmlOffset + startPos,
+					endPos:   htmlOffset + endPos,
+				})
+				offset = endPos
+				return offset
+			}
+		}
+		for c := n.FirstChild; c != nil; c = c.NextSibling {
+			offset = f(c)
+		}
+		return offset
+	}
+
+	_ = f(htmldoc)
+	return imgs, nil
 }
 
 var _ parser.ASTTransformer = &imageFinder{}
