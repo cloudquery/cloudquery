@@ -43,6 +43,12 @@ func TestFindMarkdownImages(t *testing.T) {
 			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 18, endPos: 27}}},
 		},
 		{
+			name: "html with single quotes",
+			contents: `# Title
+<img src='image.png'>`,
+			expect: map[string][]imageReference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:image.png": {{ref: "image.png", startPos: 18, endPos: 27}}},
+		},
+		{
 			name: "double html with alt and width",
 			contents: `# Title
 <img src="image.png" alt="Alt text" width="100%"> <img src="image.png" alt="Alt text2" width="50%">`,

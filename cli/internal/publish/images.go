@@ -38,7 +38,7 @@ type imageRefListKey struct {
 	name, sum string
 }
 
-var htmlImageRe = regexp.MustCompile(`<img\s+(?:[^>"']|"[^"]*"|'[^']*')*\s*src="([^"]*)"`)
+var htmlImageRe = regexp.MustCompile(`<img\s+(?:[^>"']|"[^"]*"|'[^']*')*\s*src=["']([^"']*)["']`)
 
 func processDocumentImages(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, docDir, contents string) (string, error) {
 	ims, err := findMarkdownImages(contents, docDir)
@@ -390,6 +390,7 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 			}
 			for _, m := range matchPositions {
 				imgs = append(imgs, imageReference{
+					// 2,3 is the position of the image ref
 					ref:      string(html[m[2]:m[3]]),
 					startPos: htmlStartPos + m[2],
 					endPos:   htmlStartPos + m[3],
