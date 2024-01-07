@@ -54,9 +54,9 @@ After that you can open [http://localhost:16686](http://localhost:16686) and see
 
 In production, it is usually common to use an Open-Telemtery [collector](https://opentelemetry.io/docs/concepts/components/#collector) that runs locally or as a gateway that then batches the traces and forwards it to the final backend. This helps with performance, fault-tolerance and decoupling of the backend in case the tracing backend changes.
 
-### OpenTelemetry and DataDog
+### OpenTelemetry and Datadog
 
-In this quick example we will show how to connect an open telemetry collector to DataDog via open-telemetry exporter.
+In this quick example we will show how to connect an open telemetry collector to Datadog via open-telemetry exporter.
 
 Firstly, you will need to have an [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) running either locally or as a gateway. Here is an example of running it locally with docker:
 
@@ -64,7 +64,7 @@ Firstly, you will need to have an [OpenTelemetry Collector](https://opentelemetr
 docker run  -p 4319:4319 -v $(pwd)/config.yml:/etc/otelcol-contrib/config.yaml otel/opentelemetry-collector-contrib:0.91.0
 ```
 
-following is an example for OTEL collector `config.yml` to receive traces locally on 4318 and export them to DataDog:
+following is an example for OTEL collector `config.yml` to receive traces locally on 4318 and export them to Datadog:
 
 ```yaml
 receivers:
@@ -79,9 +79,9 @@ exporters:
       key: "<DATADOG_API_KEY>"
 ```
 
-Once ingestion starts you should be able to start seeing the traces in DataDog under ServiceCatalog and Traces with ability to view average p95 latency, error rate, total duration and other useful information you can query to either split the worload better or improve the plugin scheduling if you are the plugin author:
+Once ingestion starts you should be able to start seeing the traces in Datadog under ServiceCatalog and Traces with ability to view average p95 latency, error rate, total duration and other useful information you can query to either split the worload better or improve the plugin scheduling if you are the plugin author:
 
-![datadog](/images/docs/monitoring/cq_otel_datadog.png)
+![Datadog](/images/docs/monitoring/cq_otel_datadog.png)
 
-![datadog](/images/docs/monitoring/cq_otel_datadog_traces.png)
+![Datadog](/images/docs/monitoring/cq_otel_datadog_traces.png)
 
