@@ -25,10 +25,25 @@ The following example sets up the Oracle plugin, and connects it to a postgresql
 
 See [tables](/docs/plugins/sources/oracle/tables) for a full list of available tables.
 
-## Oracle Spec
+### Oracle Spec
 
 This is the (nested) spec used by Oracle Source Plugin
 
-- `concurrency` (int, optional, default: 10000):
+- `concurrency` (`integer`) (optional) (default: `10000`)
+
   The best effort maximum number of Go routines to use.
   Lower this number to reduce memory usage.
+
+## Dedicated regions
+
+[OCI Dedicated regions](https://docs.oracle.com/en-us/iaas/Content/General/Concepts/dedicatedregions.htm) can be accessed via the following procedure:
+
+1. Specify the region to be used for the discovery as the dedicated region.
+   The following options are available:
+   * Set `OCI_CLI_region` environment variable
+   * Set `region` value in the configuration file
+ 
+2. Specify the dedicated region information:
+   The following options are available:
+   * Set `OCI_REGION_METADATA` [environment variable](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdk_adding_new_region_endpoints.htm#SDK_Adding_Regions_Environment_Variable)
+   * Add information to the [regions config file](https://docs.oracle.com/en-us/iaas/Content/API/Concepts/sdk_adding_new_region_endpoints.htm#SDK_Adding_Regions_Config_File)
