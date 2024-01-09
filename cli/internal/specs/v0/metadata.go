@@ -1,6 +1,7 @@
 package specs
 
 import (
+	"errors"
 	"fmt"
 	"slices"
 	"strings"
@@ -33,7 +34,7 @@ type Metadata struct {
 
 func (m *Metadata) Validate() error {
 	if m.Name == "" {
-		return fmt.Errorf("name is required")
+		return errors.New("name is required")
 	}
 
 	if m.Path == "" {
@@ -57,15 +58,15 @@ func (m *Metadata) Validate() error {
 		if slices.Contains(officialPlugins, m.Name) {
 			msg += fmt.Sprintf(". Hint: try setting path to cloudquery/%s in your config", m.Name)
 		}
-		return fmt.Errorf(msg)
+		return errors.New(msg)
 	}
 
 	if m.Registry.NeedVersion() {
 		if m.Version == "" {
-			return fmt.Errorf("version is required")
+			return errors.New("version is required")
 		}
 		if !strings.HasPrefix(m.Version, "v") {
-			return fmt.Errorf("version must start with v")
+			return errors.New("version must start with v")
 		}
 	}
 

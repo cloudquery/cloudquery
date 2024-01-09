@@ -3,7 +3,8 @@ package cmd
 import (
 	"crypto/sha256"
 	"encoding/json"
-	"fmt"
+
+	"encoding/hex"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -30,7 +31,7 @@ func TestAddonDownload(t *testing.T) {
 
 	s := sha256.New()
 	s.Write(payload)
-	payloadChecksum := fmt.Sprintf("%x", s.Sum(nil))
+	payloadChecksum := hex.EncodeToString(s.Sum(nil))
 
 	gotCalls := map[string]int{}
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -88,7 +89,7 @@ func TestAddonDownloadStdout(t *testing.T) {
 
 	s := sha256.New()
 	s.Write(payload)
-	payloadChecksum := fmt.Sprintf("%x", s.Sum(nil))
+	payloadChecksum := hex.EncodeToString(s.Sum(nil))
 
 	gotCalls := map[string]int{}
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

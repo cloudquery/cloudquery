@@ -62,7 +62,7 @@ func (g *Generator) renderTable(dir string, table *schema.Table) error {
 		return fmt.Errorf("failed to parse template: %v", err)
 	}
 
-	outputPath := filepath.Join(dir, fmt.Sprintf("%s.md", table.Name))
+	outputPath := filepath.Join(dir, table.Name+".md")
 
 	var b bytes.Buffer
 	if err := t.Execute(&b, table); err != nil {
