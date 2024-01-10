@@ -3,6 +3,7 @@ package images
 import (
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"testing"
 
@@ -231,6 +232,16 @@ text
 			expect:         map[string][]reference{"a94a8fe5ccb19ba61c4c0873d391e987982fbbd3:my special@image.png": {{ref: "file://${ABS_IMAGE}", startPos: 8, endPos: 0 /* special zero */}}},
 			endPosAdjustBy: 12, // number of extra characters except the placeholder/filename
 		},
+		{
+			name: "external image urls",
+			contents: `# Title
+![](http://path.to/img/image.png) or ![Alt text](https://path.to/img/image.png)
+
+<img src="path.to/img2/image.png">
+`,
+			expect:      nil,
+			expectError: `error processing image "path.to/img2/image.png": open`,
+		},
 	}
 
 	tempdir := t.TempDir()
@@ -284,6 +295,12 @@ text
 					v[i].url = mockURL
 				}
 				expect[k] = v
+			}
+
+			for k := range out {
+				sort.Slice(out[k], func(i, j int) bool {
+					return out[k][i].startPos < out[k][j].startPos
+				})
 			}
 
 			require.EqualValues(t, expect, out)

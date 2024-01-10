@@ -229,31 +229,31 @@ func uploadFile(ctx context.Context, uploadURL, file string) error {
 }
 
 func ensureValidFilename(filename, absDir string) (string, error) {
-	if strings.HasPrefix(filename, "https://") || strings.HasPrefix(filename, "http://") {
+	u, err := url.Parse(filename)
+	if err != nil {
 		return "", nil // skip
 	}
 
-	if strings.HasPrefix(filename, "file://") {
-		u, err := url.Parse(filename)
-		if err != nil {
-			return "", err
+	if u.Scheme == "" {
+		// it's a local file
+		if filepath.IsAbs(filename) {
+			return filename, nil
 		}
-		if u.Host != "" && u.Host != "localhost" {
-			return "", fmt.Errorf("invalid file URL %s", filename)
-		}
-		p := u.Path
-		if strings.HasPrefix(p, "/") && os.PathSeparator == '\\' {
-			p = strings.TrimPrefix(p, "/")
-		}
-		filename = filepath.FromSlash(p)
-		return filename, nil
+
+		return filepath.Join(absDir, filename), nil
+	} else if u.Scheme != "file" {
+		return "", nil // skip
 	}
 
-	if filepath.IsAbs(filename) {
-		return filename, nil
+	if u.Host != "" && u.Host != "localhost" {
+		return "", fmt.Errorf("invalid file URL %s", filename)
 	}
-
-	return filepath.Join(absDir, filename), nil
+	p := u.Path
+	if strings.HasPrefix(p, "/") && os.PathSeparator == '\\' {
+		p = strings.TrimPrefix(p, "/")
+	}
+	filename = filepath.FromSlash(p)
+	return filename, nil
 }
 
 func sha1sum(filename string) (string, error) {
@@ -359,6 +359,7 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 					htmlStartPos = a.Start
 				}
 			}
+			// handle htmlBytes below
 		case *ast.RawHTML:
 			if el.Segments != nil {
 				for i := 0; i < el.Segments.Len(); i++ { // should have 1 segment per tag?
@@ -378,6 +379,7 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 					}
 				}
 			}
+			// handle htmlBytes below
 		default:
 			return ast.WalkContinue, nil
 		}
@@ -445,7 +447,7 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 				return err
 			}
 			if absFile == "" {
-				return nil // skip
+				continue // skip
 			}
 			s, err := sha1sum(absFile)
 			if err != nil {
