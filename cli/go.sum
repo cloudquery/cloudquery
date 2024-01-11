@@ -27,8 +27,8 @@ github.com/alecthomas/units v0.0.0-20190717042225-c3de453c63f4/go.mod h1:ybxpYRF
 github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d/go.mod h1:rBZYJk541a8SKzHPHnH3zbiI+7dagKZ0cgpgrD7Fyho=
 github.com/andybalholm/brotli v1.0.6 h1:Yf9fFpf49Zrxb9NlQaluyE92/+X7UVHlhMNJN2sxfOI=
 github.com/andybalholm/brotli v1.0.6/go.mod h1:fO7iG3H7G2nSZ7m0zPUDn85XEX2GTukHGRSepvi9Eig=
-github.com/apache/arrow/go/v15 v15.0.0-20231229025812-7c3480e2f028 h1:GxWJMPJYX4aFBu1fDA1SBPPIju/0SAbZpFia4UJ8WQo=
-github.com/apache/arrow/go/v15 v15.0.0-20231229025812-7c3480e2f028/go.mod h1:DGXsR3ajT524njufqf95822i+KTh+yea1jass9YXgjA=
+github.com/apache/arrow/go/v15 v15.0.0-20240108124322-6d449060debb h1:i0UedGdC5+a5tXCphU0rqb6/RIgRSHMA3RfrYltXb/A=
+github.com/apache/arrow/go/v15 v15.0.0-20240108124322-6d449060debb/go.mod h1:DGXsR3ajT524njufqf95822i+KTh+yea1jass9YXgjA=
 github.com/apapsch/go-jsonmerge/v2 v2.0.0 h1:axGnT1gRIfimI7gJifB699GoE/oq+F2MU7Dml6nw9rQ=
 github.com/apapsch/go-jsonmerge/v2 v2.0.0/go.mod h1:lvDnEdqiQrp0O42VQGgmlKpxL1AP2+08jFMw88y4klk=
 github.com/avast/retry-go/v4 v4.5.1 h1:AxIx0HGi4VZ3I02jr78j5lZ3M6x1E0Ivxa6b0pUUh7o=
@@ -70,8 +70,8 @@ github.com/cloudquery/jsonschema v0.0.0-20231018073309-6c617a23d42f h1:vmYGxIGDV
 github.com/cloudquery/jsonschema v0.0.0-20231018073309-6c617a23d42f/go.mod h1:0SoZ/U7yJlNOR+fWsBSeTvTbGXB6DK01tzJ7m2Xfg34=
 github.com/cloudquery/plugin-pb-go v1.16.3 h1:iez4DzIXXKEIRZKy69bCKqENtGqgFg1xuSbio+Z9Bzg=
 github.com/cloudquery/plugin-pb-go v1.16.3/go.mod h1:winMV3mFQT1KaLPSLYsvJABi4gNWUmSY+cxRvWUp5so=
-github.com/cloudquery/plugin-sdk/v4 v4.25.0 h1:Vh6f7L7+PHrPWtTxO0ZdDbnnHd6mUizLoGIisZpq5kY=
-github.com/cloudquery/plugin-sdk/v4 v4.25.0/go.mod h1:Flj/GfXYMowiuPnVKwSA1IiAyduDTvFEh7QkgPhf1ho=
+github.com/cloudquery/plugin-sdk/v4 v4.25.1 h1:Mdhv88t4W82koA75x9uSOJaQQih8n1JDQMDSFmeFdYQ=
+github.com/cloudquery/plugin-sdk/v4 v4.25.1/go.mod h1:OHGaeCkIHyPDtnVzQjyUwSIEs8eYHLz4rj3qt9sGb4w=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.2 h1:p1EgwI/C7NhT0JmVkwCD2ZBK8j4aeHQX2pMHHBfMQ6w=
 github.com/cpuguy83/go-md2man/v2 v2.0.2/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
