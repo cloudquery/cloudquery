@@ -12,7 +12,7 @@ require (
 	google.golang.org/api v0.149.0
 )
 
-require github.com/apache/arrow/go/v12 v12.0.1 // indirect
+require github.com/apache/arrow/go/v12 v12.0.0 // indirect
 
 require (
 	github.com/BurntSushi/toml v1.3.2 // indirect

@@ -12,7 +12,7 @@ require (
 	golang.org/x/sync v0.5.0
 )
 
-require github.com/apache/arrow/go/v12 v12.0.1 // indirect
+require github.com/apache/arrow/go/v14 v14.0.2 // indirect
 
 require (
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
