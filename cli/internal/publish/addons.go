@@ -18,6 +18,7 @@ import (
 	cqapiauth "github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/cloudquery/cloudquery/cli/internal/hub"
+	"github.com/cloudquery/cloudquery/cli/internal/publish/images"
 	"github.com/cloudquery/cloudquery/cli/internal/team"
 )
 
@@ -70,11 +71,15 @@ func CreateNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWit
 	}
 
 	if manifest.PathToDoc != "" {
-		b, err := os.ReadFile(filepath.Join(manifestDir, manifest.PathToDoc))
+		absDocFile := filepath.Join(manifestDir, manifest.PathToDoc)
+		b, err := os.ReadFile(absDocFile)
 		if err != nil {
 			return fmt.Errorf("failed to read doc file: %w", err)
 		}
-		body.Doc = string(b)
+		body.Doc, err = images.ProcessDocument(ctx, c, manifest.TeamName, filepath.Dir(absDocFile), string(b))
+		if err != nil {
+			return fmt.Errorf("failed to process doc images: %w", err)
+		}
 	}
 
 	if manifest.Message != "" {

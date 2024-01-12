@@ -26,6 +26,8 @@ require (
 	github.com/stretchr/testify v1.8.4
 	github.com/thoas/go-funk v0.9.3
 	github.com/wk8/go-ordered-map/v2 v2.1.8
+	github.com/yuin/goldmark v1.6.0
+	golang.org/x/sync v0.5.0
 	golang.org/x/term v0.15.0
 	google.golang.org/grpc v1.60.1
 	google.golang.org/protobuf v1.31.0
