@@ -9,7 +9,7 @@ require (
 	github.com/cloudquery/cloudquery-api-go v1.6.4
 	github.com/cloudquery/codegen v0.3.12
 	github.com/cloudquery/plugin-pb-go v1.16.4
-	github.com/cloudquery/plugin-sdk/v4 v4.25.1
+	github.com/cloudquery/plugin-sdk/v4 v4.25.2
 	github.com/distribution/reference v0.5.0
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/docker/docker v24.0.7+incompatible
