@@ -3,6 +3,7 @@ package specs
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"slices"
 	"strings"
@@ -99,11 +100,11 @@ func (s *Source) Validate() error {
 	}
 
 	if len(s.Tables) == 0 {
-		return fmt.Errorf("tables configuration is required. Hint: set the tables you want to sync by adding `tables: [...]` or use `cloudquery tables` to list available tables")
+		return errors.New("tables configuration is required. Hint: set the tables you want to sync by adding `tables: [...]` or use `cloudquery tables` to list available tables")
 	}
 
 	if len(s.Destinations) == 0 {
-		return fmt.Errorf("at least one destination is required")
+		return errors.New("at least one destination is required")
 	}
 
 	return nil

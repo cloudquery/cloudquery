@@ -3,6 +3,7 @@ package publish
 import (
 	"context"
 	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -103,7 +104,7 @@ func CreateNewAddonDraftVersion(ctx context.Context, c *cloudquery_api.ClientWit
 	if _, err := io.Copy(s, f); err != nil {
 		return fmt.Errorf("failed to calculate checksum: %w", err)
 	}
-	body.Checksum = fmt.Sprintf("%x", s.Sum(nil))
+	body.Checksum = hex.EncodeToString(s.Sum(nil))
 
 	resp, err := c.CreateAddonVersionWithResponse(ctx, manifest.TeamName, cloudquery_api.AddonType(manifest.AddonType), manifest.AddonName, version, body)
 	if err != nil {
@@ -125,17 +126,17 @@ func UploadAddon(ctx context.Context, c *cloudquery_api.ClientWithResponses, man
 		return fmt.Errorf("failed to upload addon: %w", err)
 	}
 	if resp.HTTPResponse.StatusCode > 299 {
-		msg := fmt.Sprintf("failed to upload addon: %s", resp.HTTPResponse.Status)
+		msg := "failed to upload addon: " + resp.HTTPResponse.Status
 		switch {
 		case resp.JSON403 != nil:
 			msg = fmt.Sprintf("%s: %s", msg, resp.JSON403.Message)
 		case resp.JSON401 != nil:
 			msg = fmt.Sprintf("%s: %s", msg, resp.JSON401.Message)
 		}
-		return fmt.Errorf(msg)
+		return errors.New(msg)
 	}
 	if resp.JSON201 == nil {
-		return fmt.Errorf("upload response is nil, failed to upload addon")
+		return errors.New("upload response is nil, failed to upload addon")
 	}
 	uploadURL := resp.JSON201.Url
 
@@ -153,7 +154,7 @@ func GetTeamForAnyToken(ctx context.Context, c *cloudquery_api.ClientWithRespons
 			return "", fmt.Errorf("failed to get team from config: %w", err)
 		}
 		if currentTeam == "" {
-			return "", fmt.Errorf("team is required. Hint: use `cloudquery switch` to set a team")
+			return "", errors.New("team is required. Hint: use `cloudquery switch` to set a team")
 		}
 		return currentTeam, nil
 	case cqapiauth.APIKey:
@@ -233,7 +234,7 @@ func DownloadAddonFromResponse(res *http.Response, expectedChecksum, targetDir s
 		return fmt.Errorf("failed to close response body: %w", err)
 	}
 
-	writtenChecksum := fmt.Sprintf("%x", shaWriter.Sum(nil))
+	writtenChecksum := hex.EncodeToString(shaWriter.Sum(nil))
 	if writtenChecksum != expectedChecksum {
 		return fmt.Errorf("checksum mismatch: expected %s, got %s", expectedChecksum, writtenChecksum)
 	}

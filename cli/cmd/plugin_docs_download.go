@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -102,7 +103,7 @@ func runPluginDocsDownload(ctx context.Context, cmd *cobra.Command, args []strin
 		return hub.ErrorFromHTTPResponse(resp.HTTPResponse, resp)
 	}
 	if resp.JSON200 == nil {
-		return fmt.Errorf("failed to read docs: nil response")
+		return errors.New("failed to read docs: nil response")
 	}
 	for _, item := range resp.JSON200.Items {
 		safeName := strings.ReplaceAll(item.Name, string(filepath.Separator), "_") + ".md"
