@@ -294,17 +294,17 @@ func UploadPluginBinary(ctx context.Context, c *cloudquery_api.ClientWithRespons
 		return fmt.Errorf("failed to upload binary: %w", err)
 	}
 	if resp.HTTPResponse.StatusCode > 299 {
-		msg := fmt.Sprintf("failed to upload binary: %s", resp.HTTPResponse.Status)
+		msg := "failed to upload binary: " + resp.HTTPResponse.Status
 		switch {
 		case resp.JSON403 != nil:
 			msg = fmt.Sprintf("%s: %s", msg, resp.JSON403.Message)
 		case resp.JSON401 != nil:
 			msg = fmt.Sprintf("%s: %s", msg, resp.JSON401.Message)
 		}
-		return fmt.Errorf(msg)
+		return errors.New(msg)
 	}
 	if resp.JSON201 == nil {
-		return fmt.Errorf("upload response is nil, failed to upload binary")
+		return errors.New("upload response is nil, failed to upload binary")
 	}
 	uploadURL := resp.JSON201.Url
 	err = hub.UploadFile(uploadURL, localPath)
@@ -344,7 +344,7 @@ func loadDockerImage(ctx context.Context, cli *client.Client, imagePath string) 
 		return fmt.Errorf("failed to load image: %v", err)
 	}
 	if resp.Body == nil {
-		return fmt.Errorf("failed to load image: response body is nil")
+		return errors.New("failed to load image: response body is nil")
 	}
 
 	respString := getResponseAsString(resp.Body)
@@ -408,7 +408,7 @@ func getDockerToken(ctx context.Context, ref reference.Named, version, team, use
 	}
 	challengeHeader := challengeRes.Header.Get("WWW-Authenticate")
 	if challengeHeader == "" {
-		return "", fmt.Errorf("client: missing WWW-Authenticate header")
+		return "", errors.New("client: missing WWW-Authenticate header")
 	}
 	challenges := challenge.ResponseChallenges(challengeRes)
 	if len(challenges) != 1 {
@@ -558,7 +558,7 @@ func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON
 		return fmt.Errorf("failed to create Docker client: %v", err)
 	}
 	if len(pkgJSON.SupportedTargets) == 0 {
-		return fmt.Errorf("no supported targets found")
+		return errors.New("no supported targets found")
 	}
 	fmt.Println("Pushing images to CloudQuery Docker Registry...")
 	for _, t := range pkgJSON.SupportedTargets {

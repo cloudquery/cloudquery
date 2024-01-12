@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"crypto/sha1"
+	"encoding/hex"
 	"fmt"
 	"io"
 	"net/http"
@@ -269,7 +270,7 @@ func sha1sum(filename string) (string, error) {
 		return "", err
 	}
 	result := s.Sum(nil)
-	return fmt.Sprintf("%x", result), nil
+	return hex.EncodeToString(result), nil
 }
 
 type imageFinder struct {

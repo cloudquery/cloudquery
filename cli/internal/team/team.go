@@ -15,7 +15,7 @@ type Client struct {
 
 func NewClient(url string, token string) (*Client, error) {
 	cl, err := cloudquery_api.NewClientWithResponses(url, cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
-		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+		req.Header.Set("Authorization", "Bearer "+token)
 		return nil
 	}))
 	if err != nil {
