@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/digitalocean
 go 1.21.4
 
 require (
-	github.com/apache/arrow/go/v15 v15.0.0-20240108124322-6d449060debb
+	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/avast/retry-go/v4 v4.5.1
 	github.com/aws/aws-sdk-go-v2 v1.24.1
 	github.com/aws/aws-sdk-go-v2/config v1.26.3

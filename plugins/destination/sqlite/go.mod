@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/sqlite
 go 1.21.4
 
 require (
-	github.com/apache/arrow/go/v15 v15.0.0-20240108124322-6d449060debb
+	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/cloudquery/plugin-sdk/v4 v4.25.2
 	github.com/mattn/go-sqlite3 v1.14.16
 	github.com/rs/zerolog v1.31.0
