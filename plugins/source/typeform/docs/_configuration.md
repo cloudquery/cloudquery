@@ -4,7 +4,7 @@ kind: source
 spec:
   name: typeform
   registry: docker
-  path: ghcr.io/cloudquery/cq-source-typeform:VERSION_SOURCE_TYPEFORM
+  path: docker.cloudquery.io/cloudquery/source-typeform:VERSION_SOURCE_TYPEFORM
   tables: ["typeform_forms"]
   destinations: ["DESTINATION_NAME"]
   # Typeform-specific configuration
