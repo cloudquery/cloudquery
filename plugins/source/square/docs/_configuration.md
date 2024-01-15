@@ -4,7 +4,7 @@ kind: source
 spec:
   name: square
   registry: docker
-  path: ghcr.io/cloudquery/square:VERSION_SOURCE_SQUARE
+  path: docker.cloudquery.io/cloudquery/source-square:VERSION_SOURCE_SQUARE
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   # Square-specific configuration
