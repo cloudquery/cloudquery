@@ -9,7 +9,7 @@ import (
 )
 
 func tokenNeeded(registry specs.Registry, path string) bool {
-	return registry == specs.RegistryCloudQuery || registry == specs.RegistryDocker && strings.HasPrefix(path, "docker.cloudquery.io")
+	return registry == specs.RegistryCloudQuery || (registry == specs.RegistryDocker && strings.HasPrefix(path, "docker.cloudquery.io"))
 }
 
 func sourcesNeedToken(sources []*specs.Source) bool {
