@@ -5,6 +5,15 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.0.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.0.0...cli-v5.0.1) (2024-01-16)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v15 digest to 7e703aa ([#16134](https://github.com/cloudquery/cloudquery/issues/16134)) ([72d5eb3](https://github.com/cloudquery/cloudquery/commit/72d5eb35644ce78d775790b0298a0c7690788d28))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.25.2 ([#16130](https://github.com/cloudquery/cloudquery/issues/16130)) ([7ae6f41](https://github.com/cloudquery/cloudquery/commit/7ae6f41957edb3446ff3175857aaf3dcea2cf5bc))
+* Handle `docker.cloudquery.io` docker registry when checking if auth is needed ([#16159](https://github.com/cloudquery/cloudquery/issues/16159)) ([8d06516](https://github.com/cloudquery/cloudquery/commit/8d06516f314c3e991f2f6fc9c5e1ed9fb352ff59))
+
 ## [5.0.0](https://github.com/cloudquery/cloudquery/compare/cli-v4.4.0...cli-v5.0.0) (2024-01-12)
 
 
