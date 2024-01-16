@@ -7145,6 +7145,11 @@
             "cn-north-1": {}
           }
         },
+        "iottwinmaker": {
+          "regions": {
+            "cn-north-1": {}
+          }
+        },
         "kafka": {
           "regions": {
             "cn-north-1": {},
@@ -7748,6 +7753,11 @@
           }
         },
         "glue": {
+          "regions": {
+            "us-iso-east-1": {}
+          }
+        },
+        "guardduty": {
           "regions": {
             "us-iso-east-1": {}
           }
