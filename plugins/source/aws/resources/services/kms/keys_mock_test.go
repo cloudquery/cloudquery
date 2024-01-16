@@ -33,7 +33,7 @@ func buildKmsKeys(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	err := smithy.GenericAPIError{Code: "AccessDenied", Message: "This is an error message"}
 
-	// There are 2 calls to GetFunction, one succeeds and the other fails
+	// There are 2 calls to DescribeKey, one succeeds and the other fails
 	gomock.InOrder(
 		m.EXPECT().DescribeKey(gomock.Any(), &kms.DescribeKeyInput{KeyId: keyListEntry.KeyId}, gomock.Any()).Return(&key, nil),
 
