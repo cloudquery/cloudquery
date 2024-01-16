@@ -134,7 +134,7 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 
 		stdinFd := int(os.Stdin.Fd())
 		if !term.IsTerminal(stdinFd) {
-			return fmt.Errorf("reading from non-terminal stdin is not supported. Hint: Consider setting an api key with the `CLOUDQUERY_API_KEY` env variable")
+			return errors.New("reading from non-terminal stdin is not supported. Hint: Consider setting an api key with the `CLOUDQUERY_API_KEY` env variable")
 		}
 
 		oldState, err := term.MakeRaw(stdinFd)
@@ -162,7 +162,7 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	}
 
 	if refreshToken == "" {
-		return fmt.Errorf("failed to get refresh token")
+		return errors.New("failed to get refresh token")
 	}
 
 	fmt.Println("Authenticating...")
