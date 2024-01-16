@@ -81,6 +81,15 @@ func getKey(ctx context.Context, meta schema.ClientMeta, resource *schema.Resour
 		options.Region = cl.Region
 	})
 	if err != nil {
+		if client.IsAWSError(err, "AccessDenied") || client.IsAWSError(err, "AccessDeniedException") {
+			resource.Item = &types.KeyMetadata{
+				Arn:   item.KeyArn,
+				KeyId: item.KeyId,
+			}
+			cl.Logger().Warn().Err(err).Msg("metadata retrieved from ListKeys will still be persisted")
+			return nil
+		}
+
 		return err
 	}
 	resource.Item = d.KeyMetadata
