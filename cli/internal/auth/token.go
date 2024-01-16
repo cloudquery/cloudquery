@@ -8,9 +8,13 @@ import (
 	"github.com/rs/zerolog"
 )
 
+func tokenNeeded(registry specs.Registry, path string) bool {
+	return registry == specs.RegistryCloudQuery || (registry == specs.RegistryDocker && strings.HasPrefix(path, "docker.cloudquery.io"))
+}
+
 func sourcesNeedToken(sources []*specs.Source) bool {
 	for _, source := range sources {
-		if source.Registry == specs.RegistryCloudQuery {
+		if tokenNeeded(source.Registry, source.Path) {
 			return true
 		}
 	}
@@ -19,7 +23,7 @@ func sourcesNeedToken(sources []*specs.Source) bool {
 
 func destinationsNeedToken(destinations []*specs.Destination) bool {
 	for _, destination := range destinations {
-		if destination.Registry == specs.RegistryCloudQuery {
+		if tokenNeeded(destination.Registry, destination.Path) {
 			return true
 		}
 	}
