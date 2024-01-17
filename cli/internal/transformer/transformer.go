@@ -6,6 +6,7 @@ import (
 	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/apache/arrow/go/v15/arrow/array"
 	"github.com/apache/arrow/go/v15/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 const (
@@ -15,13 +16,14 @@ const (
 )
 
 type RecordTransformer struct {
-	sourceName      string
-	withSourceName  bool
-	syncTime        time.Time
-	withSyncTime    bool
-	internalColumns int
-	removePks       bool
-	cqIDPrimaryKey  bool
+	sourceName              string
+	withSourceName          bool
+	syncTime                time.Time
+	withSyncTime            bool
+	internalColumns         int
+	removePks               bool
+	removeUniqueConstraints bool
+	cqIDPrimaryKey          bool
 }
 
 type RecordTransformerOption func(*RecordTransformer)
@@ -45,6 +47,12 @@ func WithSyncTimeColumn(t time.Time) RecordTransformerOption {
 func WithRemovePKs() RecordTransformerOption {
 	return func(transformer *RecordTransformer) {
 		transformer.removePks = true
+	}
+}
+
+func WithRemoveUniqueConstraints() RecordTransformerOption {
+	return func(transformer *RecordTransformer) {
+		transformer.removeUniqueConstraints = true
 	}
 }
 
@@ -72,12 +80,18 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 	}
 	for _, field := range sc.Fields() {
 		mdMap := field.Metadata.ToMap()
-		if _, ok := mdMap["cq:extension:primary_key"]; ok && t.removePks {
-			delete(mdMap, "cq:extension:primary_key")
+
+		if _, ok := mdMap[schema.MetadataUnique]; ok && t.removeUniqueConstraints {
+			delete(mdMap, schema.MetadataUnique)
+		}
+
+		if _, ok := mdMap[schema.MetadataPrimaryKey]; ok && t.removePks {
+			delete(mdMap, schema.MetadataPrimaryKey)
 		}
 		if field.Name == cqIDColumnName && t.cqIDPrimaryKey {
-			mdMap["cq:extension:primary_key"] = "true"
+			mdMap[schema.MetadataPrimaryKey] = "true"
 		}
+
 		newMd := arrow.MetadataFrom(mdMap)
 
 		fields = append(fields, arrow.Field{

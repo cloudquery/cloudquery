@@ -8,6 +8,7 @@ import (
 	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/apache/arrow/go/v15/arrow/array"
 	"github.com/apache/arrow/go/v15/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 var transformTestCases = []struct {
@@ -92,13 +93,45 @@ var transformTestCases = []struct {
 			return NewRecordTransformer(WithRemovePKs(), WithCQIDPrimaryKey())
 		},
 		originalSchema: arrow.NewSchema([]arrow.Field{
-			{Name: "id", Type: arrow.PrimitiveTypes.Int64, Metadata: arrow.MetadataFrom(map[string]string{"cq:extension:primary_key": "true"})},
+			{Name: "id", Type: arrow.PrimitiveTypes.Int64, Metadata: arrow.MetadataFrom(map[string]string{schema.MetadataPrimaryKey: "true"})},
 			{Name: "_cq_id", Type: arrow.PrimitiveTypes.Int64},
 		}, nil),
 		originalJSONRecord: []byte(`{"id": 1, "_cq_id": 2}`),
 		expectedSchema: arrow.NewSchema([]arrow.Field{
 			{Name: "id", Type: arrow.PrimitiveTypes.Int64, Metadata: arrow.MetadataFrom(map[string]string{})},
-			{Name: "_cq_id", Type: arrow.PrimitiveTypes.Int64, Metadata: arrow.MetadataFrom(map[string]string{"cq:extension:primary_key": "true"})},
+			{Name: "_cq_id", Type: arrow.PrimitiveTypes.Int64, Metadata: arrow.MetadataFrom(map[string]string{schema.MetadataPrimaryKey: "true"})},
+		}, nil),
+		expectedJSONRecord: []byte(`{"id": 1, "_cq_id": 2}`),
+	},
+	{
+		name: "use_cq_id_primary_key_with_remove_unique",
+		transformer: func() *RecordTransformer {
+			return NewRecordTransformer(WithRemovePKs(), WithCQIDPrimaryKey(), WithRemoveUniqueConstraints())
+		},
+		originalSchema: arrow.NewSchema([]arrow.Field{
+			{Name: "id", Type: arrow.PrimitiveTypes.Int64, Metadata: arrow.MetadataFrom(map[string]string{schema.MetadataPrimaryKey: "true", schema.MetadataUnique: "true"})},
+			{Name: "_cq_id", Type: arrow.PrimitiveTypes.Int64},
+		}, nil),
+		originalJSONRecord: []byte(`{"id": 1, "_cq_id": 2}`),
+		expectedSchema: arrow.NewSchema([]arrow.Field{
+			{Name: "id", Type: arrow.PrimitiveTypes.Int64, Metadata: arrow.MetadataFrom(map[string]string{})},
+			{Name: "_cq_id", Type: arrow.PrimitiveTypes.Int64, Metadata: arrow.MetadataFrom(map[string]string{schema.MetadataPrimaryKey: "true"})},
+		}, nil),
+		expectedJSONRecord: []byte(`{"id": 1, "_cq_id": 2}`),
+	},
+	{
+		name: "use_with_remove_unique",
+		transformer: func() *RecordTransformer {
+			return NewRecordTransformer(WithRemovePKs(), WithRemoveUniqueConstraints())
+		},
+		originalSchema: arrow.NewSchema([]arrow.Field{
+			{Name: "id", Type: arrow.PrimitiveTypes.Int64, Metadata: arrow.MetadataFrom(map[string]string{schema.MetadataPrimaryKey: "true", schema.MetadataUnique: "true"})},
+			{Name: "_cq_id", Type: arrow.PrimitiveTypes.Int64},
+		}, nil),
+		originalJSONRecord: []byte(`{"id": 1, "_cq_id": 2}`),
+		expectedSchema: arrow.NewSchema([]arrow.Field{
+			{Name: "id", Type: arrow.PrimitiveTypes.Int64, Metadata: arrow.MetadataFrom(map[string]string{})},
+			{Name: "_cq_id", Type: arrow.PrimitiveTypes.Int64},
 		}, nil),
 		expectedJSONRecord: []byte(`{"id": 1, "_cq_id": 2}`),
 	},
