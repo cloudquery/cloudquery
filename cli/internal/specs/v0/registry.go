@@ -4,21 +4,34 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+
+	"github.com/invopop/jsonschema"
 )
 
 type Registry int
 
 const (
 	RegistryUnset Registry = iota
-	RegistryGithub
+	RegistryGitHub
 	RegistryLocal
-	RegistryGrpc
+	RegistryGRPC
 	RegistryDocker
 	RegistryCloudQuery
 )
 
+var (
+	AllRegistries = [...]string{
+		RegistryUnset:      "",
+		RegistryGitHub:     "github",
+		RegistryLocal:      "local",
+		RegistryGRPC:       "grpc",
+		RegistryDocker:     "docker",
+		RegistryCloudQuery: "cloudquery",
+	}
+)
+
 func (r Registry) String() string {
-	return [...]string{"", "github", "local", "grpc", "docker", "cloudquery"}[r]
+	return AllRegistries[r]
 }
 
 func (r Registry) MarshalJSON() ([]byte, error) {
@@ -39,25 +52,24 @@ func (r *Registry) UnmarshalJSON(data []byte) (err error) {
 	return nil
 }
 
+func (Registry) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Type = "string"
+	sc.Enum = make([]any, len(AllRegistries))
+	for i, k := range AllRegistries {
+		sc.Enum[i] = k
+	}
+}
+
+// NeedVersion has to be in sync with Metadata.JSONSchemaExtend
 func (r Registry) NeedVersion() bool {
-	return r == RegistryGithub || r == RegistryCloudQuery
+	return r == RegistryGitHub || r == RegistryCloudQuery
 }
 
 func RegistryFromString(s string) (Registry, error) {
-	switch s {
-	case "":
-		return RegistryUnset, nil
-	case "github":
-		return RegistryGithub, nil
-	case "local":
-		return RegistryLocal, nil
-	case "grpc":
-		return RegistryGrpc, nil
-	case "docker":
-		return RegistryDocker, nil
-	case "cloudquery":
-		return RegistryCloudQuery, nil
-	default:
-		return RegistryGithub, fmt.Errorf("unknown registry %q", s)
+	for r, str := range AllRegistries {
+		if s == str {
+			return Registry(r), nil
+		}
 	}
+	return RegistryUnset, fmt.Errorf("unknown registry %q", s)
 }

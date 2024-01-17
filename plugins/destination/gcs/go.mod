@@ -4,9 +4,9 @@ go 1.21.4
 
 require (
 	cloud.google.com/go/storage v1.30.1
-	github.com/apache/arrow/go/v15 v15.0.0-20231229025812-7c3480e2f028
-	github.com/cloudquery/filetypes/v4 v4.2.4
-	github.com/cloudquery/plugin-sdk/v4 v4.25.0
+	github.com/apache/arrow/go/v15 v15.0.0-20240115115805-d7bc55542e61
+	github.com/cloudquery/filetypes/v4 v4.2.5
+	github.com/cloudquery/plugin-sdk/v4 v4.25.2
 	github.com/google/uuid v1.5.0
 	github.com/rs/zerolog v1.31.0
 	github.com/stretchr/testify v1.8.4
@@ -35,8 +35,8 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.6.3 // indirect
-	github.com/cloudquery/plugin-pb-go v1.16.1 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.6.4 // indirect
+	github.com/cloudquery/plugin-pb-go v1.16.4 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect

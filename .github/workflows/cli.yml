@@ -50,10 +50,10 @@ jobs:
         run: go build .
       - name: Test
         run: make test
-      - name: gen-docs
+      - name: gen
         if: matrix.os == 'ubuntu-latest'
-        run: make gen-docs
-      - name: Fail if docs are changed
+        run: make gen
+      - name: Fail if files are changed
         if: matrix.os == 'ubuntu-latest'
         run: test "$(git status -s ../website/pages/docs/reference/cli/*.md | wc -l)" -eq 0
   validate-release:

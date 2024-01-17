@@ -3,6 +3,7 @@ package specs
 import (
 	"testing"
 
+	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -45,8 +46,8 @@ spec:
 `,
 		"failed to decode spec: json: cannot unmarshal number into Go struct field Source.name of type string",
 		&Source{
-			Name:   "test",
-			Tables: []string{"*"},
+			Metadata: Metadata{Name: "test"},
+			Tables:   []string{"*"},
 		},
 	},
 	{
@@ -57,8 +58,8 @@ spec:
 `,
 		`failed to decode spec: json: unknown field "namea"`,
 		&Source{
-			Name:   "test",
-			Tables: []string{"*"},
+			Metadata: Metadata{Name: "test"},
+			Tables:   []string{"*"},
 		},
 	},
 }
@@ -126,12 +127,12 @@ spec:
 `,
 		"",
 		&Destination{
-			Name:           "test",
-			Registry:       RegistryGrpc,
-			Path:           "localhost:9999",
-			BatchSize:      10000,
-			BatchSizeBytes: 10000000,
-			Spec:           map[string]any{},
+			Metadata: Metadata{
+				Name:     "test",
+				Registry: RegistryGRPC,
+				Path:     "localhost:9999",
+			},
+			Spec: map[string]any{},
 		},
 	},
 	{
@@ -144,12 +145,12 @@ spec:
 `,
 		"",
 		&Destination{
-			Name:           "test",
-			Registry:       RegistryLocal,
-			Path:           "/home/user/some_executable",
-			BatchSize:      10000,
-			BatchSizeBytes: 10000000,
-			Spec:           map[string]any{},
+			Metadata: Metadata{
+				Name:     "test",
+				Registry: RegistryLocal,
+				Path:     "/home/user/some_executable",
+			},
+			Spec: map[string]any{},
 		},
 	},
 	{
@@ -162,14 +163,14 @@ spec:
 `,
 		"",
 		&Destination{
-			Name:             "test",
-			Registry:         RegistryCloudQuery,
-			Path:             "cloudquery/test",
-			Version:          "v1.1.0",
-			BatchSize:        10000,
-			BatchSizeBytes:   10000000,
-			Spec:             map[string]any{},
-			registryInferred: true,
+			Metadata: Metadata{
+				Name:             "test",
+				Registry:         RegistryCloudQuery,
+				Path:             "cloudquery/test",
+				Version:          "v1.1.0",
+				registryInferred: true,
+			},
+			Spec: map[string]any{},
 		},
 	},
 	{
@@ -183,13 +184,13 @@ spec:
 `,
 		"",
 		&Destination{
-			Name:           "test",
-			Registry:       RegistryGithub,
-			Path:           "cloudquery/test",
-			Version:        "v1.1.0",
-			BatchSize:      10000,
-			BatchSizeBytes: 10000000,
-			Spec:           map[string]any{},
+			Metadata: Metadata{
+				Name:     "test",
+				Registry: RegistryGitHub,
+				Path:     "cloudquery/test",
+				Version:  "v1.1.0",
+			},
+			Spec: map[string]any{},
 		},
 	},
 }
@@ -205,7 +206,7 @@ func TestDestinationUnmarshalSpecValidate(t *testing.T) {
 				t.Fatal(err)
 			}
 			destination := spec.Spec.(*Destination)
-			destination.SetDefaults(10000, 10000000)
+			destination.SetDefaults()
 			err = destination.Validate()
 			if err != nil {
 				if err.Error() != tc.err {
@@ -220,69 +221,98 @@ func TestDestinationUnmarshalSpecValidate(t *testing.T) {
 }
 
 func TestDestination_VersionString(t *testing.T) {
-	type fields struct {
-		Name     string
-		Version  string
-		Path     string
-		Registry Registry
-	}
 	tests := []struct {
-		name   string
-		fields fields
-		want   string
+		name string
+		meta Metadata
+		want string
 	}{
 		{
 			name: "should use short version without name part in path when those are the same",
-			fields: fields{
+			meta: Metadata{
 				Name:     "aws",
 				Version:  "v10.0.0",
 				Path:     "cloudquery/aws",
-				Registry: RegistryGithub,
+				Registry: RegistryGitHub,
 			},
 			want: "aws (v10.0.0)",
 		},
 		{
 			name: "should use long version with path when name doesn't match path",
-			fields: fields{
+			meta: Metadata{
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "cloudquery/aws",
-				Registry: RegistryGithub,
+				Registry: RegistryGitHub,
 			},
 			want: "my-aws-spec (aws@v10.0.0)",
 		},
 		{
 			name: "should handle non GitHub registry",
-			fields: fields{
+			meta: Metadata{
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "localhost:7777",
-				Registry: RegistryGrpc,
+				Registry: RegistryGRPC,
 			},
 			want: "my-aws-spec (grpc@localhost:7777)",
 		},
 		{
 			name: "should handle malformed path",
-			fields: fields{
+			meta: Metadata{
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "aws",
-				Registry: RegistryGithub,
+				Registry: RegistryGitHub,
 			},
 			want: "my-aws-spec (aws@v10.0.0)",
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			d := Destination{
-				Name:     tt.fields.Name,
-				Version:  tt.fields.Version,
-				Path:     tt.fields.Path,
-				Registry: tt.fields.Registry,
-			}
+			d := Destination{Metadata: tt.meta}
 			if got := d.VersionString(); got != tt.want {
 				t.Errorf("Destination.String() = %v, want %v", got, tt.want)
 			}
 		})
 	}
+}
+
+func TestDestination_JSONSchema(t *testing.T) {
+	data, err := jsonschema.Generate(new(Destination))
+	require.NoError(t, err)
+	jsonschema.TestJSONSchema(t, string(data), []jsonschema.TestCase{
+		{
+			Name: "empty",
+			Err:  true,
+			Spec: `{}`,
+		},
+		{
+			Name: "null",
+			Err:  true,
+			Spec: `null`,
+		},
+		{
+			Name: "bad type",
+			Err:  true,
+			Spec: `[]`,
+		},
+		{
+			Name: "missing spec",
+			Spec: `{"name":"a","path":"b","registry":"local"}`,
+		},
+		{
+			Name: "empty spec",
+			Spec: `{"name":"a","path":"b","registry":"local","spec":{}}`,
+		},
+		{
+			Name: "null spec",
+			Spec: `{"name":"a","path":"b","registry":"local","spec":null}`,
+		},
+		{
+			Name: "bad spec type",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","spec":[]}`,
+		},
+		// write_mode, migrate_mode & pk_mode are tested separately
+	})
 }

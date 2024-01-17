@@ -3,6 +3,7 @@ package specs
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math/rand"
 	"os"
@@ -112,8 +113,7 @@ func (r *SpecReader) loadSpecsFromFile(path string) error {
 				return fmt.Errorf("duplicate destination name %s", destination.Name)
 			}
 			r.destinationWarningsMap[destination.Name] = destination.GetWarnings()
-			// We set the default value to 0, so it can be overridden later by plugins' defaults
-			destination.SetDefaults(0, 0)
+			destination.SetDefaults()
 			if err := destination.Validate(); err != nil {
 				return fmt.Errorf("failed to validate destination %s: %w", destination.Name, err)
 			}
@@ -144,10 +144,10 @@ func (r *SpecReader) loadSpecsFromDir(path string) error {
 
 func (r *SpecReader) validate() error {
 	if len(r.Sources) == 0 {
-		return fmt.Errorf("expecting at least one source")
+		return errors.New("expecting at least one source")
 	}
 	if len(r.Destinations) == 0 {
-		return fmt.Errorf("expecting at least one destination")
+		return errors.New("expecting at least one destination")
 	}
 
 	// here we check if source with different versions use the same destination and error out if yes
@@ -246,9 +246,9 @@ func stripYamlComments(b []byte) ([]byte, error) {
 	placeholders := map[string]string{}
 	b = envRegex.ReplaceAllFunc(b, func(match []byte) []byte {
 		content := envRegex.FindSubmatch(match)[1]
-		k := fmt.Sprintf("%d", r.Int())
+		k := strconv.Itoa(r.Int())
 		for bytes.Contains(content, []byte(k)) {
-			k = fmt.Sprintf("%d", r.Int())
+			k = strconv.Itoa(r.Int())
 		}
 		placeholders[k] = string(content)
 		return []byte(k)

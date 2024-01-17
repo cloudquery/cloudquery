@@ -11,3 +11,10 @@ test:
 gen-docs:
 	rm -rf ../website/pages/docs/reference/cli/*.md
 	go run main.go doc ../website/pages/docs/reference/cli/
+
+.PHONY: gen-spec-schema
+gen-spec-schema:
+	go run internal/specs/v0/gen/main.go
+
+.PHONY: gen
+gen: gen-docs gen-spec-schema

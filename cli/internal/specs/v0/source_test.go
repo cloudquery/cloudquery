@@ -3,6 +3,7 @@ package specs
 import (
 	"testing"
 
+	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -26,8 +27,8 @@ spec:
 `,
 		"failed to decode spec: json: cannot unmarshal number into Go struct field Source.name of type string",
 		&Source{
-			Name:   "test",
-			Tables: []string{"*"},
+			Metadata: Metadata{Name: "test"},
+			Tables:   []string{"*"},
 		},
 	},
 	{
@@ -38,8 +39,8 @@ spec:
 `,
 		`failed to decode spec: json: unknown field "namea"`,
 		&Source{
-			Name:   "test",
-			Tables: []string{"*"},
+			Metadata: Metadata{Name: "test"},
+			Tables:   []string{"*"},
 		},
 	},
 }
@@ -91,7 +92,6 @@ spec:
 spec:
   name: test
   path: cloudquery/test
-  tables: ["test"]
 `,
 		"version is required",
 		nil,
@@ -103,7 +103,6 @@ spec:
   name: test
   path: cloudquery/test
   version: 1.1.0
-  tables: ["test"]
 `,
 		"version must start with v",
 		nil,
@@ -132,31 +131,6 @@ spec:
 		nil,
 	},
 	{
-		"valid_scheduler",
-		`kind: source
-spec:
-  name: test
-  path: cloudquery/test
-  version: v1.1.0
-  destinations: ["test"]
-  scheduler: round-robin
-  tables: ["test"]
-`,
-		"",
-		&Source{
-			Name:             "test",
-			Registry:         RegistryCloudQuery,
-			Path:             "cloudquery/test",
-			Concurrency:      defaultConcurrency,
-			Version:          "v1.1.0",
-			Destinations:     []string{"test"},
-			Scheduler:        SchedulerRoundRobin,
-			Tables:           []string{"test"},
-			Spec:             map[string]any{},
-			registryInferred: true,
-		},
-	},
-	{
 		"success",
 		`kind: source
 spec:
@@ -168,16 +142,16 @@ spec:
 `,
 		"",
 		&Source{
-			Name:             "test",
-			Registry:         RegistryCloudQuery,
-			Path:             "cloudquery/test",
-			Concurrency:      defaultConcurrency,
-			Version:          "v1.1.0",
-			Destinations:     []string{"test"},
-			Scheduler:        SchedulerDFS,
-			Tables:           []string{"test"},
-			Spec:             map[string]any{},
-			registryInferred: true,
+			Metadata: Metadata{
+				Name:             "test",
+				Registry:         RegistryCloudQuery,
+				Path:             "cloudquery/test",
+				Version:          "v1.1.0",
+				registryInferred: true,
+			},
+			Destinations: []string{"test"},
+			Tables:       []string{"test"},
+			Spec:         map[string]any{},
 		},
 	},
 	{
@@ -193,13 +167,13 @@ spec:
 `,
 		"",
 		&Source{
-			Name:         "test",
-			Registry:     RegistryGithub,
-			Path:         "cloudquery/test",
-			Concurrency:  defaultConcurrency,
-			Version:      "v1.1.0",
+			Metadata: Metadata{
+				Name:     "test",
+				Registry: RegistryGitHub,
+				Path:     "cloudquery/test",
+				Version:  "v1.1.0",
+			},
 			Destinations: []string{"test"},
-			Scheduler:    SchedulerDFS,
 			Tables:       []string{"test"},
 			Spec:         map[string]any{},
 		},
@@ -230,69 +204,442 @@ func TestSourceUnmarshalSpecValidate(t *testing.T) {
 }
 
 func TestSpec_VersionString(t *testing.T) {
-	type fields struct {
-		Name     string
-		Version  string
-		Path     string
-		Registry Registry
-	}
 	tests := []struct {
-		name   string
-		fields fields
-		want   string
+		name string
+		meta Metadata
+		want string
 	}{
 		{
 			name: "should use short version without name part in path when those are the same",
-			fields: fields{
+			meta: Metadata{
 				Name:     "aws",
 				Version:  "v10.0.0",
 				Path:     "cloudquery/aws",
-				Registry: RegistryGithub,
+				Registry: RegistryGitHub,
 			},
 			want: "aws (v10.0.0)",
 		},
 		{
 			name: "should use long version with path when name doesn't match path",
-			fields: fields{
+			meta: Metadata{
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "cloudquery/aws",
-				Registry: RegistryGithub,
+				Registry: RegistryGitHub,
 			},
 			want: "my-aws-spec (aws@v10.0.0)",
 		},
 		{
 			name: "should handle non GitHub registry",
-			fields: fields{
+			meta: Metadata{
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "localhost:7777",
-				Registry: RegistryGrpc,
+				Registry: RegistryGRPC,
 			},
 			want: "my-aws-spec (grpc@localhost:7777)",
 		},
 		{
 			name: "should handle malformed path",
-			fields: fields{
+			meta: Metadata{
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "aws",
-				Registry: RegistryGithub,
+				Registry: RegistryGitHub,
 			},
 			want: "my-aws-spec (aws@v10.0.0)",
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := Source{
-				Name:     tt.fields.Name,
-				Version:  tt.fields.Version,
-				Path:     tt.fields.Path,
-				Registry: tt.fields.Registry,
-			}
+			s := Source{Metadata: tt.meta}
 			if got := s.VersionString(); got != tt.want {
 				t.Errorf("Source.String() = %v, want %v", got, tt.want)
 			}
 		})
 	}
+}
+
+func TestBackendOptions_JSONSchema(t *testing.T) {
+	data, err := jsonschema.Generate(new(BackendOptions))
+	require.NoError(t, err)
+	jsonschema.TestJSONSchema(t, string(data), []jsonschema.TestCase{
+		{
+			Name: "empty",
+			Err:  true,
+			Spec: `{}`,
+		},
+		{
+			Name: "missing table_name",
+			Err:  true,
+			Spec: `{"connection":"a"}`,
+		},
+		{
+			Name: "empty table_name",
+			Err:  true,
+			Spec: `{"table_name":"","connection":"a"}`,
+		},
+		{
+			Name: "null table_name",
+			Err:  true,
+			Spec: `{"table_name":null,"connection":"a"}`,
+		},
+		{
+			Name: "bad table_name type",
+			Err:  true,
+			Spec: `{"table_name":123,"connection":"a"}`,
+		},
+		{
+			Name: "missing connection",
+			Err:  true,
+			Spec: `{"table_name":"a"}`,
+		},
+		{
+			Name: "empty connection",
+			Err:  true,
+			Spec: `{"table_name":"a","connection":""}`,
+		},
+		{
+			Name: "null connection",
+			Err:  true,
+			Spec: `{"table_name":"a","connection":null}`,
+		},
+		{
+			Name: "bad connection type",
+			Err:  true,
+			Spec: `{"table_name":"a","connection":123}`,
+		},
+		{
+			Name: "proper",
+			Spec: `{"table_name":"a","connection":"b"}`,
+		},
+	})
+}
+
+func TestSource_JSONSchemaExtend(t *testing.T) {
+	data, err := jsonschema.Generate(new(Source))
+	require.NoError(t, err)
+	jsonschema.TestJSONSchema(t, string(data), []jsonschema.TestCase{
+		{
+			Name: "empty",
+			Err:  true,
+			Spec: `{}`,
+		},
+		{
+			Name: "null",
+			Err:  true,
+			Spec: `null`,
+		},
+		{
+			Name: "bad type",
+			Err:  true,
+			Spec: `[]`,
+		},
+		{
+			Name: "missing spec",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"]}`,
+		},
+		{
+			Name: "empty spec",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],"spec":{}}`,
+		},
+		{
+			Name: "null spec",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],"spec":null}`,
+		},
+		{
+			Name: "bad spec type",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],"spec":[]}`,
+		},
+		{
+			Name: "missing tables",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","destinations":["a"]}`,
+		},
+		{
+			Name: "empty tables",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","destinations":["a"],
+"tables":[]
+}`,
+		},
+		{
+			Name: "null tables",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","destinations":["a"],
+"tables":null
+}`,
+		},
+		{
+			Name: "bad tables type",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","destinations":["a"],
+"tables":123
+}`,
+		},
+		{
+			Name: "empty tables entry",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","destinations":["a"],
+"tables":[""]
+}`,
+		},
+		{
+			Name: "null tables entry",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","destinations":["a"],
+"tables":[null]
+}`,
+		},
+		{
+			Name: "bad tables entry type",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","destinations":["a"],
+"tables":[123]
+}`,
+		},
+		{
+			Name: "proper tables",
+			Spec: `{"name":"a","path":"b","registry":"local","destinations":["a"],
+"tables":["*"]
+}`,
+		},
+		{
+			Name: "missing destinations",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"]}`,
+		},
+		{
+			Name: "empty destinations",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],
+"destinations":[]
+}`,
+		},
+		{
+			Name: "null destinations",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],
+"destinations":null
+}`,
+		},
+		{
+			Name: "bad destinations type",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],
+"destinations":123
+}`,
+		},
+		{
+			Name: "empty destinations entry",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],
+"destinations":[""]
+}`,
+		},
+		{
+			Name: "null destinations entry",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],
+"destinations":[null]
+}`,
+		},
+		{
+			Name: "bad destinations entry type",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],
+"destinations":[123]
+}`,
+		},
+		{
+			Name: "proper destinations",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],
+"destinations":["a"]
+}`,
+		},
+		{
+			Name: "empty skip_tables",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"skip_tables":[]
+}`,
+		},
+		{
+			Name: "null skip_tables",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"skip_tables":null
+}`,
+		},
+		{
+			Name: "bad skip_tables type",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"skip_tables":123
+}`,
+		},
+		{
+			Name: "empty skip_tables entry",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"skip_tables":[""]
+}`,
+		},
+		{
+			Name: "null skip_tables entry",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"skip_tables":[null]
+}`,
+		},
+		{
+			Name: "bad skip_tables entry type",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"skip_tables":[123]
+}`,
+		},
+		{
+			Name: "proper skip_tables",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"skip_tables":["a"]
+}`,
+		},
+		{
+			Name: "null skip_dependent_tables",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"skip_dependent_tables":null
+}`,
+		},
+		{
+			Name: "bad skip_dependent_tables type",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"skip_dependent_tables":123
+}`,
+		},
+		{
+			Name: "skip_dependent_tables:true",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"skip_dependent_tables":true
+}`,
+		},
+		{
+			Name: "skip_dependent_tables:false",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"skip_dependent_tables":false
+}`,
+		},
+		// backend_options is tested in depth separately
+		{
+			Name: "null backend_options",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"backend_options":null
+}`,
+		},
+		{
+			Name: "bad backend_options type",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"backend_options":123
+}`,
+		},
+		{
+			Name: "empty spec",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"spec":{}
+}`,
+		},
+		{
+			Name: "null spec",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"spec":null
+}`,
+		},
+		{
+			Name: "bad spec type",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"spec":123
+}`,
+		},
+		{
+			Name: "null deterministic_cq_id",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"deterministic_cq_id":null
+}`,
+		},
+		{
+			Name: "bad deterministic_cq_id type",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"deterministic_cq_id":123
+}`,
+		},
+		{
+			Name: "deterministic_cq_id:true",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"deterministic_cq_id":true
+}`,
+		},
+		{
+			Name: "deterministic_cq_id:false",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"deterministic_cq_id":false
+}`,
+		},
+		{
+			Name: "empty otel_endpoint",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"otel_endpoint":""
+}`,
+		},
+		{
+			Name: "null otel_endpoint",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"otel_endpoint":null
+}`,
+		},
+		{
+			Name: "bad otel_endpoint type",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"otel_endpoint":123
+}`,
+		},
+		{
+			Name: "proper otel_endpoint",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"otel_endpoint":"a"
+}`,
+		},
+		{
+			Name: "null otel_endpoint_insecure",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"otel_endpoint_insecure":null
+}`,
+		},
+		{
+			Name: "bad otel_endpoint_insecure type",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"otel_endpoint_insecure":123
+}`,
+		},
+		{
+			Name: "otel_endpoint_insecure:true",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"otel_endpoint_insecure":true
+}`,
+		},
+		{
+			Name: "otel_endpoint_insecure:false",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"otel_endpoint_insecure":false
+}`,
+		},
+	})
 }

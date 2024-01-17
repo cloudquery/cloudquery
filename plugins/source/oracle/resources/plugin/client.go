@@ -38,7 +38,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		c.logger.Warn().Msg("State backend not supported in plugin, skipping")
 	}
 
-	schedulerClient, err := client.New(ctx, c.logger, c.config)
+	schedulerClient, err := client.New(ctx, c.logger)
 	if err != nil {
 		return err
 	}

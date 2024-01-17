@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/plugins/source/oracle/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/oracle/oci-go-sdk/v65/common"
 	"github.com/oracle/oci-go-sdk/v65/identity"
@@ -36,12 +35,15 @@ type Client struct {
 	logger zerolog.Logger
 }
 
-func New(ctx context.Context, logger zerolog.Logger, _ spec.Spec) (schema.ClientMeta, error) {
+func New(ctx context.Context, logger zerolog.Logger) (schema.ClientMeta, error) {
 	// common.DefaultRetryPolicy handles (409, IncorrectState), (429, TooManyRequests) + 5XX errors
 	defaultRetryPolicy := common.DefaultRetryPolicy()
 	common.GlobalRetry = &defaultRetryPolicy
 
-	configProvider := common.DefaultConfigProvider()
+	configProvider, err := getConfigProvider()
+	if err != nil {
+		return nil, err
+	}
 
 	tenancyOcid, err := configProvider.TenancyOCID()
 	if err != nil {

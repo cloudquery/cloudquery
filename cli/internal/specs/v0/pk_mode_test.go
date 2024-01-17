@@ -2,26 +2,66 @@ package specs
 
 import (
 	"testing"
+
+	"github.com/cloudquery/codegen/jsonschema"
+	"github.com/stretchr/testify/require"
 )
 
 func TestPKModeFromString(t *testing.T) {
-	var pkMode PKMode
-	if err := pkMode.UnmarshalJSON([]byte(`"cq-id-only"`)); err != nil {
-		t.Fatal(err)
-	}
-	if pkMode != PKModeCQID {
-		t.Fatalf("expected PKModeCQID, got %v", pkMode)
-	}
-	if err := pkMode.UnmarshalJSON([]byte(`"default"`)); err != nil {
-		t.Fatal(err)
-	}
-	if pkMode != PKModeDefaultKeys {
-		t.Fatalf("expected PKModeCompositeKeys, got %v", pkMode)
-	}
+	m, err := PKModeFromString("default")
+	require.NoError(t, err)
+	require.Equal(t, PKModeDefaultKeys, m)
+
+	m, err = PKModeFromString("cq-id-only")
+	require.NoError(t, err)
+	require.Equal(t, PKModeCQID, m)
+
+	m, err = PKModeFromString("Default")
+	require.Error(t, err)
+	require.Equal(t, PKModeDefaultKeys, m)
+
+	m, err = PKModeFromString("")
+	require.Error(t, err)
+	require.Equal(t, PKModeDefaultKeys, m)
 }
 
-func TestPKMode(t *testing.T) {
-	for _, pkModeStr := range pkModeStrings {
+func TestPKMode_JSONSchemaExtend(t *testing.T) {
+	data, err := jsonschema.Generate(new(PKMode))
+	require.NoError(t, err)
+	jsonschema.TestJSONSchema(t, string(data), []jsonschema.TestCase{
+		{
+			Name: "empty",
+			Err:  true,
+			Spec: `""`,
+		},
+		{
+			Name: "null",
+			Err:  true,
+			Spec: `null`,
+		},
+		{
+			Name: "bad type",
+			Err:  true,
+			Spec: `123`,
+		},
+		{
+			Name: "bad value",
+			Err:  true,
+			Spec: `"extra"`,
+		},
+		{
+			Name: "default",
+			Spec: `"default"`,
+		},
+		{
+			Name: "cq-id-only",
+			Spec: `"cq-id-only"`,
+		},
+	})
+}
+
+func TestPKModeRoundTrip(t *testing.T) {
+	for _, pkModeStr := range AllPKModes {
 		pkMode, err := PKModeFromString(pkModeStr)
 		if err != nil {
 			t.Fatal(err)

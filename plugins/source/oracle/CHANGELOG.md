@@ -1,5 +1,36 @@
 # Changelog
 
+## [4.2.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.9...plugins-source-oracle-v4.2.10) (2024-01-16)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v15 digest to 6d44906 ([#16115](https://github.com/cloudquery/cloudquery/issues/16115)) ([8b0ae62](https://github.com/cloudquery/cloudquery/commit/8b0ae6266d19a10fe84102837802358f0b9bb1bc))
+* **deps:** Update github.com/apache/arrow/go/v15 digest to 7e703aa ([#16134](https://github.com/cloudquery/cloudquery/issues/16134)) ([72d5eb3](https://github.com/cloudquery/cloudquery/commit/72d5eb35644ce78d775790b0298a0c7690788d28))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.25.2 ([#16130](https://github.com/cloudquery/cloudquery/issues/16130)) ([7ae6f41](https://github.com/cloudquery/cloudquery/commit/7ae6f41957edb3446ff3175857aaf3dcea2cf5bc))
+
+## [4.2.9](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.8...plugins-source-oracle-v4.2.9) (2024-01-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.25.1 ([#16069](https://github.com/cloudquery/cloudquery/issues/16069)) ([edda65c](https://github.com/cloudquery/cloudquery/commit/edda65c238b2cb78a7a2078b62557a7d8d822e49))
+* Document dedicated region access (https://github.com/cloudquery/cloudquery/pull/16063) ([7b3f0c6](https://github.com/cloudquery/cloudquery/commit/7b3f0c67962f388b3ed1c6c3c9c17d4d3aa35c06))
+
+## [4.2.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.7...plugins-source-oracle-v4.2.8) (2024-01-05)
+
+
+### Bug Fixes
+
+* Change chaining order for OCI config providers ([#16060](https://github.com/cloudquery/cloudquery/issues/16060)) ([b808926](https://github.com/cloudquery/cloudquery/commit/b8089264256108e4587ae616e12b4021486a7616))
+
+## [4.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.6...plugins-source-oracle-v4.2.7) (2024-01-03)
+
+
+### Bug Fixes
+
+* Allow using `OCI_CLI_` prefixed environment variables ([#16003](https://github.com/cloudquery/cloudquery/issues/16003)) ([79f91e2](https://github.com/cloudquery/cloudquery/commit/79f91e200b72b2a315f84f0a9e4290b06fd64707))
+
 ## [4.2.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.5...plugins-source-oracle-v4.2.6) (2024-01-02)
 
 

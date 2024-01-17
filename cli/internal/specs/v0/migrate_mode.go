@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+
+	"github.com/invopop/jsonschema"
 )
 
 type MigrateMode int
@@ -14,11 +16,14 @@ const (
 )
 
 var (
-	migrateModeStrings = []string{"safe", "forced"}
+	AllMigrateModes = [...]string{
+		MigrateModeSafe:   "safe",
+		MigrateModeForced: "forced",
+	}
 )
 
 func (m MigrateMode) String() string {
-	return migrateModeStrings[m]
+	return AllMigrateModes[m]
 }
 
 func (m MigrateMode) MarshalJSON() ([]byte, error) {
@@ -39,12 +44,19 @@ func (m *MigrateMode) UnmarshalJSON(data []byte) (err error) {
 	return nil
 }
 
-func MigrateModeFromString(s string) (MigrateMode, error) {
-	switch s {
-	case "safe":
-		return MigrateModeSafe, nil
-	case "forced":
-		return MigrateModeForced, nil
+func (MigrateMode) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Type = "string"
+	sc.Enum = make([]any, len(AllMigrateModes))
+	for i, k := range AllMigrateModes {
+		sc.Enum[i] = k
 	}
-	return 0, fmt.Errorf("invalid migrate mode: %s", s)
+}
+
+func MigrateModeFromString(s string) (MigrateMode, error) {
+	for m, str := range AllMigrateModes {
+		if s == str {
+			return MigrateMode(m), nil
+		}
+	}
+	return MigrateModeSafe, fmt.Errorf("invalid migrate mode: %s", s)
 }
