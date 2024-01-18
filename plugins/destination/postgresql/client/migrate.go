@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"strings"
 
@@ -102,7 +101,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 				return err
 			}
 		default:
-			return errors.New("unsupported column change type: %s for column: %v from %v", change.Type.String(), change.Current, change.Previous)
+			return fmt.Errorf("unsupported column change type: %s for column: %v from %v", change.Type.String(), change.Current, change.Previous)
 		}
 	}
 	return nil
