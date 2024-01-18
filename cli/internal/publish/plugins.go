@@ -245,7 +245,7 @@ func CreateNewPluginDraftVersion(ctx context.Context, c *cloudquery_api.ClientWi
 
 	body := cloudquery_api.CreatePluginVersionJSONRequestBody{
 		Message:          pkgJSON.Message,
-		PackageType:      cloudquery_api.CreatePluginVersionJSONBodyPackageType(pkgJSON.PackageType),
+		PackageType:      cloudquery_api.PluginPackageType(pkgJSON.PackageType),
 		Protocols:        pkgJSON.Protocols,
 		SupportedTargets: targets,
 		Checksums:        checksums,
