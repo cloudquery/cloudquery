@@ -23,7 +23,7 @@ func migrateConnectionV2(ctx context.Context, sourceClient *managedplugin.Client
 	defer log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationStrings).Time("migrate_time", migrateStart).Msg("End migration")
 
 	sourcePbClient := pbSource.NewSourceClient(sourceClient.Conn)
-	destinationsTransformers := getSourceV2DestV3DestinationsTransformers(destinationSpecs, destinationsVersions)
+	destinationsTransformers := getSourceV2DestV3DestinationsTransformers(destinationSpecs, destinationsVersions, sourceSpec)
 	destinationsPbClients := make([]pbdestination.DestinationClient, len(managedDestinationsClients))
 	for i := range managedDestinationsClients {
 		destinationsPbClients[i] = pbdestination.NewDestinationClient(managedDestinationsClients[i].Conn)
