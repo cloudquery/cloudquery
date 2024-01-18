@@ -103,7 +103,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 		case schema.TableColumnChangeTypeRemove:
 			continue
 		default:
-			panic("unknown change type")
+			return fmt.Errorf("unsupported column change type: %s for column: %v from %v", change.Type.String(), change.Current, change.Previous)
 		}
 	}
 	return nil
@@ -125,10 +125,8 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 				}
 				return false
 			}
-		case schema.TableColumnChangeTypeUpdate:
-			return false
 		default:
-			panic("unknown change type")
+			return false
 		}
 	}
 	return true
