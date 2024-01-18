@@ -155,7 +155,7 @@ func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) er
 }
 
 func publishPluginAssets(ctx context.Context, c *cloudquery_api.ClientWithResponses, token, distDir string, pkgJSON publish.PackageJSONV1) error {
-	if pkgJSON.PackageType == string(cloudquery_api.PluginVersionPackageTypeDocker) {
+	if pkgJSON.PackageType == string(cloudquery_api.Docker) {
 		return publish.PublishToDockerRegistry(ctx, token, distDir, pkgJSON)
 	}
 
