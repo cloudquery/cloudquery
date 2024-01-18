@@ -100,6 +100,8 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 			if err := c.addColumn(ctx, tableName, change.Current); err != nil {
 				return err
 			}
+		case schema.TableColumnChangeTypeRemove:
+			continue
 		default:
 			return fmt.Errorf("unsupported column change type: %s for column: %v from %v", change.Type.String(), change.Current, change.Previous)
 		}
