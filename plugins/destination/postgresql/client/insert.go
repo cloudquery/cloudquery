@@ -27,8 +27,8 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 	batch := new(pgx.Batch)
 
 	// Queries cache.
-	// We may consider LRU cache in the future, but even for 10K records it may be OK to just save.
-	queries := make(map[string]string, 100)
+	// Each table has a single query that is repeated for each record
+	queries := make(map[string]string, len(c.pgTablesToPKConstraints))
 
 	for _, msg := range messages {
 		r := msg.Record
