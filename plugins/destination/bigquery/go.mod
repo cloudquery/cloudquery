@@ -4,7 +4,7 @@ go 1.21.4
 
 require (
 	cloud.google.com/go/bigquery v1.57.1
-	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
+	github.com/apache/arrow/go/v15 v15.0.0
 	github.com/cloudquery/plugin-sdk/v4 v4.25.2
 	github.com/goccy/go-json v0.10.2
 	github.com/rs/zerolog v1.31.0
@@ -12,7 +12,7 @@ require (
 	google.golang.org/api v0.149.0
 )
 
-require github.com/apache/arrow/go/v12 v12.0.1 // indirect
+require github.com/apache/arrow/go/v12 v12.0.0 // indirect
 
 require (
 	github.com/BurntSushi/toml v1.3.2 // indirect
