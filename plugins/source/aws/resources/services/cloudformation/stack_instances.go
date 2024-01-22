@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation/models"
@@ -62,9 +63,13 @@ func fetchStackInstanceSummary(ctx context.Context, meta schema.ClientMeta, pare
 		if err != nil {
 			return err
 		}
-		for i := range page.Summaries {
+		for _, summary := range page.Summaries {
+			if summary.StackId == nil {
+				// can happen if the instance is in a bad state
+				summary.StackId = aws.String("N/A")
+			}
 			res <- models.ExpandedStackInstanceSummary{
-				StackInstanceSummary: page.Summaries[i],
+				StackInstanceSummary: summary,
 				CallAs:               input.CallAs,
 			}
 		}
