@@ -26,12 +26,12 @@ func Nodes() *schema.Table {
 			{
 				Name:     "spec_pod_cidr",
 				Type:     types.ExtensionTypes.Inet,
-				Resolver: client.StringToCidrPathResolver("Spec.PodCIDR"),
+				Resolver: client.StringToNullablePathResolver("Spec.PodCIDR"),
 			},
 			{
 				Name:     "spec_pod_cidrs",
 				Type:     arrow.ListOf(types.ExtensionTypes.Inet),
-				Resolver: client.StringToCidrArrayPathResolver("Spec.PodCIDRs"),
+				Resolver: client.StringToNullableArrayPathResolver("Spec.PodCIDRs"),
 			},
 		},
 	}

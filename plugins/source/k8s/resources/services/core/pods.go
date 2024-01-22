@@ -26,12 +26,12 @@ func Pods() *schema.Table {
 			{
 				Name:     "status_host_ip",
 				Type:     types.ExtensionTypes.Inet,
-				Resolver: client.StringToInetPathResolver("Status.HostIP"),
+				Resolver: client.StringToNullablePathResolver("Status.HostIP"),
 			},
 			{
 				Name:     "status_pod_ip",
 				Type:     types.ExtensionTypes.Inet,
-				Resolver: client.StringToInetPathResolver("Status.PodIP"),
+				Resolver: client.StringToNullablePathResolver("Status.PodIP"),
 			},
 			{
 				Name:     "status_pod_ips",
@@ -42,7 +42,7 @@ func Pods() *schema.Table {
 	}
 }
 
-func fetchPods(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+func fetchPods(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client).Client().CoreV1().Pods("")
 
 	opts := metav1.ListOptions{}
@@ -63,8 +63,8 @@ func resolveCorePodPodIPs(_ context.Context, _ schema.ClientMeta, resource *sche
 	pod := resource.Item.(v1.Pod)
 	ips := make([]string, 0)
 
-	for _, ip_struct := range pod.Status.PodIPs {
-		ips = append(ips, ip_struct.IP)
+	for _, ipStruct := range pod.Status.PodIPs {
+		ips = append(ips, ipStruct.IP)
 	}
 
 	return resource.Set(c.Name, ips)

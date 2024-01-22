@@ -23,22 +23,22 @@ func Services() *schema.Table {
 			{
 				Name:     "spec_cluster_ip",
 				Type:     types.ExtensionTypes.Inet,
-				Resolver: client.StringToInetPathResolver("Spec.ClusterIP"),
+				Resolver: client.StringToNullablePathResolver("Spec.ClusterIP"),
 			},
 			{
 				Name:     "spec_cluster_ips",
 				Type:     arrow.ListOf(types.ExtensionTypes.Inet),
-				Resolver: client.StringToInetArrayPathResolver("Spec.ClusterIPs"),
+				Resolver: client.StringToNullableArrayPathResolver("Spec.ClusterIPs"),
 			},
 			{
 				Name:     "spec_external_ips",
 				Type:     arrow.ListOf(types.ExtensionTypes.Inet),
-				Resolver: client.StringToInetArrayPathResolver("Spec.ExternalIPs"),
+				Resolver: client.StringToNullablePathResolver("Spec.ExternalIPs"),
 			},
 			{
 				Name:     "spec_load_balancer_ip",
 				Type:     types.ExtensionTypes.Inet,
-				Resolver: client.StringToInetPathResolver("Spec.LoadBalancerIP"),
+				Resolver: client.StringToNullablePathResolver("Spec.LoadBalancerIP"),
 			},
 		},
 	}

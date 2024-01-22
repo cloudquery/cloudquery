@@ -63,24 +63,28 @@ func ResolveContext(_ context.Context, meta schema.ClientMeta, r *schema.Resourc
 	return r.Set(c.Name, client.Context)
 }
 
-// In k8s, IP Addresses may sometimes be empty-strings or `None` - but postgresql doesn't like that.
-// So, the resolver for ip-addresses should recognize that case and set null instead.
-func StringToInetPathResolver(path string) schema.ColumnResolver {
+// StringToNullablePathResolver is used to set values of "" & "None" to `nil`.
+func StringToNullablePathResolver(path string) schema.ColumnResolver {
 	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 		value := funk.Get(r.Item, path, funk.WithAllowZero())
 
-		stringValue, ok := value.(string)
-		if ok && stringValue != "" && stringValue != "None" {
-			return r.Set(c.Name, value)
+		value, ok := value.(string)
+		if !ok {
+			return r.Set(c.Name, nil)
 		}
 
-		return r.Set(c.Name, nil)
+		switch value {
+		case "", "None":
+			return r.Set(c.Name, nil)
+		default:
+			return r.Set(c.Name, value)
+		}
 	}
 }
 
-// In k8s, IP Addresses may sometimes be empty-strings or `None` - but postgresql doesn't like that.
-// So, the resolver for ip-addresses should recognize that case and set null instead.
-func StringToInetArrayPathResolver(path string) schema.ColumnResolver {
+// StringToNullableArrayPathResolver is the same as StringToNullablePathResolver but for slices.
+// The result will be `[]*string`
+func StringToNullableArrayPathResolver(path string) schema.ColumnResolver {
 	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 		value := funk.Get(r.Item, path, funk.WithAllowZero())
 
@@ -89,52 +93,14 @@ func StringToInetArrayPathResolver(path string) schema.ColumnResolver {
 			return r.Set(c.Name, nil)
 		}
 
-		sanitized := []*string{}
+		sanitized := make([]*string, len(stringArrayValue))
 
 		for i := range stringArrayValue {
-			if stringArrayValue[i] != "" && stringArrayValue[i] != "None" {
-				sanitized = append(sanitized, &stringArrayValue[i])
-			} else {
-				sanitized = append(sanitized, nil)
-			}
-		}
-
-		return r.Set(c.Name, sanitized)
-	}
-}
-
-// In k8s, IP Addresses may sometimes be empty-strings or `None` - but postgresql doesn't like that.
-// So, the resolver for ip-addresses should recognize that case and set null instead.
-func StringToCidrPathResolver(path string) schema.ColumnResolver {
-	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-		value := funk.Get(r.Item, path, funk.WithAllowZero())
-
-		stringValue, ok := value.(string)
-		if ok && stringValue != "" && stringValue != "None" {
-			return r.Set(c.Name, value)
-		}
-		return r.Set(c.Name, nil)
-	}
-}
-
-// In k8s, IP Addresses may sometimes be empty-strings or `None` - but postgresql doesn't like that.
-// So, the resolver for ip-addresses should recognize that case and set null instead.
-func StringToCidrArrayPathResolver(path string) schema.ColumnResolver {
-	return func(_ context.Context, meta schema.ClientMeta, r *schema.Resource, c schema.Column) error {
-		value := funk.Get(r.Item, path, funk.WithAllowZero())
-
-		stringArrayValue, ok := value.([]string)
-		if !ok {
-			return r.Set(c.Name, nil)
-		}
-
-		sanitized := []*string{}
-
-		for i := range stringArrayValue {
-			if stringArrayValue[i] != "" && stringArrayValue[i] != "None" {
-				sanitized = append(sanitized, &stringArrayValue[i])
-			} else {
-				sanitized = append(sanitized, nil)
+			switch stringArrayValue[i] {
+			case "", "None":
+			// nop, as already nil
+			default:
+				sanitized[i] = &stringArrayValue[i]
 			}
 		}
 
