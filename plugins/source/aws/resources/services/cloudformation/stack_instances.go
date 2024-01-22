@@ -15,9 +15,11 @@ import (
 func stackInstanceSummaries() *schema.Table {
 	table_name := "aws_cloudformation_stack_instance_summaries"
 	return &schema.Table{
-		Name:        table_name,
-		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackInstanceSummary.html`,
-		Resolver:    fetchStackInstanceSummary,
+		Name: table_name,
+		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackInstanceSummary.html
+
+**Note**: Sometimes the stack instance ID may be unavailable in the API (i.e., the instance is in a bad state), so it will have value of ` + "`N/A`.",
+		Resolver: fetchStackInstanceSummary,
 		Transform: transformers.TransformWithStruct(&models.ExpandedStackInstanceSummary{},
 			transformers.WithUnwrapStructFields("StackInstanceSummary"),
 			transformers.WithSkipFields("CallAs"),
