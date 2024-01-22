@@ -30,14 +30,18 @@ SELECT
 		ELSE pg_catalog.format_type(pg_attribute.atttypid, pg_attribute.atttypmod)
 	END AS data_type,
 	CASE 
-		WHEN conkey IS NOT NULL AND array_position(conkey, pg_attribute.attnum) > 0 THEN true
+		WHEN primary_keys.conkey IS NOT NULL AND array_position(primary_keys.conkey, pg_attribute.attnum) > 0 THEN true
 		ELSE false
 	END AS is_primary_key,
+	CASE 
+		WHEN unique_constraints.conkey IS NOT NULL AND array_position(unique_constraints.conkey, pg_attribute.attnum) > 0 THEN true
+		ELSE false
+	END AS is_unique,	
 	CASE 
 		WHEN pg_attribute.attnotnull THEN true
 		ELSE false
 	END AS not_null,
-	COALESCE(pg_constraint.conname, '') AS primary_key_constraint_name
+	COALESCE(primary_keys.conname, '') AS primary_key_constraint_name
 FROM
 	pg_catalog.pg_attribute
 	INNER JOIN
@@ -47,9 +51,13 @@ FROM
 	INNER JOIN
 	pg_catalog.pg_namespace ON pg_namespace.oid = pg_class.relnamespace
 	LEFT JOIN
-	pg_catalog.pg_constraint ON pg_constraint.conrelid = pg_attribute.attrelid
+	pg_catalog.pg_constraint primary_keys ON primary_keys.conrelid = pg_attribute.attrelid
 	AND conkey IS NOT NULL AND array_position(conkey, pg_attribute.attnum) > 0
 	AND contype = 'p'
+	LEFT JOIN
+	pg_catalog.pg_constraint unique_constraints ON unique_constraints.conrelid = pg_attribute.attrelid
+	AND unique_constraints.conkey IS NOT NULL AND array_position(unique_constraints.conkey, pg_attribute.attnum) > 0
+	AND unique_constraints.contype = 'u'
 	INNER JOIN
 	information_schema.columns ON columns.table_name = pg_class.relname AND columns.column_name = pg_attribute.attname AND columns.table_schema = pg_catalog.pg_namespace.nspname
 WHERE
@@ -77,8 +85,8 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 	for rows.Next() {
 		var ordinalPosition int
 		var tableName, columnName, columnType, pkName string
-		var isPrimaryKey, notNull bool
-		if err := rows.Scan(&ordinalPosition, &tableName, &columnName, &columnType, &isPrimaryKey, &notNull, &pkName); err != nil {
+		var isPrimaryKey, isUnique, notNull bool
+		if err := rows.Scan(&ordinalPosition, &tableName, &columnName, &columnType, &isPrimaryKey, &isUnique, &notNull, &pkName); err != nil {
 			return nil, err
 		}
 		if ordinalPosition == 1 {
@@ -108,6 +116,7 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 			Name:       columnName,
 			PrimaryKey: isPrimaryKey,
 			NotNull:    notNull,
+			Unique:     isUnique,
 			Type:       c.PgToSchemaType(columnType),
 		})
 	}

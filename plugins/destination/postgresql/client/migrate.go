@@ -97,11 +97,12 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 	for _, change := range changes {
 		switch change.Type {
 		case schema.TableColumnChangeTypeAdd:
-			if err := c.addColumn(ctx, tableName, change.Current); err != nil {
-				return err
-			}
+			return c.addColumn(ctx, tableName, change.Current)
+
 		case schema.TableColumnChangeTypeRemove:
 			continue
+		case schema.TableColumnChangeTypeMoveToCQOnly:
+			return c.migrateToCQID(ctx, tableName, change.Current)
 		default:
 			return fmt.Errorf("unsupported column change type: %s for column: %v from %v", change.Type.String(), change.Current, change.Previous)
 		}
@@ -125,6 +126,8 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 				}
 				return false
 			}
+		case schema.TableColumnChangeTypeMoveToCQOnly:
+			return true
 		default:
 			return false
 		}
@@ -163,6 +166,50 @@ func (c *Client) dropTable(ctx context.Context, tableName string) error {
 	sql := "drop table " + tableName
 	if _, err := c.conn.Exec(ctx, sql); err != nil {
 		return fmt.Errorf("failed to drop table %s: %w", tableName, err)
+	}
+	return nil
+}
+
+func (c *Client) migrateToCQID(ctx context.Context, tableName string, _ schema.Column) error {
+	// Steps:
+	// acquire connection
+	conn, err := c.conn.Acquire(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to acquire connection: %w", err)
+	}
+	defer conn.Release()
+	// start transaction
+	tx, err := conn.BeginTx(ctx, pgx.TxOptions{})
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction: %w", err)
+	}
+
+	sanitizedTableName := pgx.Identifier{tableName}.Sanitize()
+	sanitizedPKName := pgx.Identifier{getPKName(&schema.Table{Name: tableName})}.Sanitize()
+
+	// Drop existing primary key
+	_, err = tx.Exec(ctx, "alter table "+sanitizedTableName+" drop constraint "+sanitizedPKName)
+	if err != nil {
+		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to drop primary key")
+		if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
+			return fmt.Errorf("failed to rollback transaction: %w", rollbackErr)
+		}
+		return err
+	}
+
+	// Create new Primary Key with CQID
+	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ADD CONSTRAINT "+sanitizedPKName+" UNIQUE ("+pgx.Identifier{schema.CqIDColumn.Name}.Sanitize()+")")
+	if err != nil {
+		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to create new primary key on _cq_id")
+		if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
+			return fmt.Errorf("failed to rollback transaction: %w", rollbackErr)
+		}
+		return err
+	}
+	// Commit transaction if no error
+	err = tx.Commit(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to commit transaction: %w", err)
 	}
 	return nil
 }
@@ -207,7 +254,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		}
 	}
 
-	pkConstraintName := tableName + "_cqpk"
+	pkConstraintName := getPKName(table)
 	c.pgTablesToPKConstraints[tableName] = pkConstraintName
 
 	if len(primaryKeys) > 0 {
@@ -225,4 +272,8 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		return fmt.Errorf("failed to create table %s: %w"+sb.String(), tableName, err)
 	}
 	return nil
+}
+
+func getPKName(table *schema.Table) string {
+	return table.Name + "_cqpk"
 }
