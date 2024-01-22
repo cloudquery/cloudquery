@@ -6,10 +6,14 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net/http"
+	"os"
 	"sync/atomic"
 	"time"
 
 	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery/cli/internal/api"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/internal/transformer"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -17,7 +21,11 @@ import (
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
+	"github.com/vnteamopen/godebouncer"
 	"google.golang.org/protobuf/types/known/timestamppb"
+
+	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
+	"github.com/google/uuid"
 )
 
 type v3source struct {
@@ -28,6 +36,19 @@ type v3source struct {
 type v3destination struct {
 	client *managedplugin.Client
 	spec   specs.Destination
+}
+
+func getAPIClient() (*cloudquery_api.ClientWithResponses, error) {
+	authClient := auth.NewTokenClient()
+	if authClient.GetTokenType() != auth.SyncRunAPIKey {
+		return nil, nil
+	}
+
+	token, err := authClient.GetToken()
+	if err != nil {
+		return nil, err
+	}
+	return api.NewClient(getEnvOrDefault(envAPIURL, defaultAPIURL), token.Value)
 }
 
 // nolint:dupl
@@ -43,6 +64,11 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	for i := range destinations {
 		destinationSpecs[i] = destinations[i].spec
 		destinationsClients[i] = destinations[i].client
+	}
+
+	apiClient, err := getAPIClient()
+	if err != nil {
+		return fmt.Errorf("failed to get API client: %w", err)
 	}
 
 	defer func() {
@@ -207,7 +233,29 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	isStateBackendEnabled := sourceSpec.BackendOptions != nil && sourceSpec.BackendOptions.TableName != ""
 
 	// Read from the sync stream and write to all destinations.
-	totalResources := 0
+	totalResources := int64(0)
+
+	var remoteProgressReporter *godebouncer.Debouncer
+	if apiClient != nil {
+		teamName, syncName, syncRunId := os.Getenv("_CQ_TEAM_NAME"), os.Getenv("_CQ_SYNC_NAME"), os.Getenv("_CQ_SYNC_RUN_ID")
+		if teamName == "" || syncName == "" || syncRunId == "" {
+			return fmt.Errorf("failed to get team, sync or sync run from environment variables. got team: %s, sync name: %s, sync run ID: %s", teamName, syncName, syncRunId)
+		}
+		syncRunUUID, err := uuid.Parse(syncRunId)
+		if err != nil {
+			return fmt.Errorf("failed to parse sync run ID: %w", err)
+		}
+		remoteProgressReporter = godebouncer.NewWithOptions(godebouncer.WithTimeDuration(10*time.Second), godebouncer.WithTriggered(func() {
+			res, err := apiClient.CreateSyncRunProgressWithResponse(ctx, teamName, syncName, syncRunUUID, cloudquery_api.CreateSyncRunProgressJSONRequestBody{Rows: float32(totalResources)})
+			if err != nil {
+				log.Warn().Err(err).Msg("Failed to send sync progress to API")
+			}
+			if res.StatusCode() != http.StatusNoContent {
+				log.Warn().Str("status", res.Status()).Int("code", res.StatusCode()).Msg("Failed to send sync progress to API")
+			}
+		}), godebouncer.WithOptions(godebouncer.Options{Trailing: true, Leading: true}))
+	}
+
 	for {
 		r, err := syncClient.Recv()
 		if err != nil {
@@ -225,7 +273,10 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			}
 
 			atomic.AddInt64(&newResources, record.NumRows())
-			totalResources += int(record.NumRows())
+			atomic.AddInt64(&totalResources, record.NumRows())
+			if remoteProgressReporter != nil {
+				remoteProgressReporter.SendSignal()
+			}
 			for i := range destinationsPbClients {
 				transformedRecord := destinationTransformers[i].Transform(record)
 				transformedRecordBytes, err := plugin.RecordToBytes(transformedRecord)
@@ -329,6 +380,11 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		msg = "Sync completed with errors, see logs for details"
 	}
 	fmt.Printf("%s. Resources: %d, Errors: %d, Warnings: %d, Time: %s\n", msg, totalResources, totals.Errors, totals.Warnings, syncTimeTook.Truncate(time.Second).String())
+
+	if remoteProgressReporter != nil {
+		remoteProgressReporter.SendSignal()
+		<-remoteProgressReporter.Done()
+	}
 	return nil
 }
 

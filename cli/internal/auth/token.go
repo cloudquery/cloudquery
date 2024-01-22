@@ -51,3 +51,8 @@ func GetAuthTokenIfNeeded(logger zerolog.Logger, sources []*specs.Source, destin
 
 	return token, nil
 }
+
+func GetTokenType() cqapiauth.TokenType {
+	tc := cqapiauth.NewTokenClient()
+	return tc.GetTokenType()
+}
