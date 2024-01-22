@@ -49,6 +49,20 @@ func (mr *MockAuthenticationV1InterfaceMockRecorder) RESTClient() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RESTClient", reflect.TypeOf((*MockAuthenticationV1Interface)(nil).RESTClient))
 }
 
+// SelfSubjectReviews mocks base method.
+func (m *MockAuthenticationV1Interface) SelfSubjectReviews() v1.SelfSubjectReviewInterface {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SelfSubjectReviews")
+	ret0, _ := ret[0].(v1.SelfSubjectReviewInterface)
+	return ret0
+}
+
+// SelfSubjectReviews indicates an expected call of SelfSubjectReviews.
+func (mr *MockAuthenticationV1InterfaceMockRecorder) SelfSubjectReviews() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SelfSubjectReviews", reflect.TypeOf((*MockAuthenticationV1Interface)(nil).SelfSubjectReviews))
+}
+
 // TokenReviews mocks base method.
 func (m *MockAuthenticationV1Interface) TokenReviews() v1.TokenReviewInterface {
 	m.ctrl.T.Helper()

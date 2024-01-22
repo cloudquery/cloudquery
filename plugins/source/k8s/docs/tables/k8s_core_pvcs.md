@@ -31,9 +31,12 @@ The primary key for this table is **uid**.
 |spec_volume_mode|`utf8`|
 |spec_data_source|`json`|
 |spec_data_source_ref|`json`|
+|spec_volume_attributes_class_name|`utf8`|
 |status_phase|`utf8`|
 |status_access_modes|`list<item: utf8, nullable>`|
 |status_capacity|`json`|
 |status_conditions|`json`|
 |status_allocated_resources|`json`|
-|status_resize_status|`utf8`|
+|status_allocated_resource_statuses|`json`|
+|status_current_volume_attributes_class_name|`utf8`|
+|status_modify_volume_status|`json`|

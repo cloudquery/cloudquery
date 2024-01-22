@@ -32,6 +32,8 @@ The primary key for this table is **uid**.
 |spec_mount_options|`list<item: utf8, nullable>`|
 |spec_volume_mode|`utf8`|
 |spec_node_affinity|`json`|
+|spec_volume_attributes_class_name|`utf8`|
 |status_phase|`utf8`|
 |status_message|`utf8`|
 |status_reason|`utf8`|
+|status_last_phase_transition_time|`timestamp[us, tz=UTC]`|
