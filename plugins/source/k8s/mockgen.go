@@ -78,9 +78,7 @@ package main
 
 //go:generate mockgen --destination=mocks/extensions/v1beta1/client.go --package=v1 "k8s.io/client-go/kubernetes/typed/extensions/v1beta1" ExtensionsV1beta1Interface
 
-//go:generate mockgen --destination=mocks/flowcontrol/v1alpha1/client.go --package=v1 "k8s.io/client-go/kubernetes/typed/flowcontrol/v1alpha1" FlowcontrolV1alpha1Interface
-//go:generate mockgen --destination=mocks/flowcontrol/v1beta1/client.go --package=v1 "k8s.io/client-go/kubernetes/typed/flowcontrol/v1beta1" FlowcontrolV1beta1Interface
-//go:generate mockgen --destination=mocks/flowcontrol/v1beta2/client.go --package=v1 "k8s.io/client-go/kubernetes/typed/flowcontrol/v1beta2" FlowcontrolV1beta2Interface
+//go:generate mockgen --destination=mocks/flowcontrol/v1/client.go --package=v1 "k8s.io/client-go/kubernetes/typed/flowcontrol/v1" FlowcontrolV1Interface
 
 //go:generate mockgen --destination=mocks/interface.go --package=mocks "k8s.io/client-go/kubernetes" Interface
 

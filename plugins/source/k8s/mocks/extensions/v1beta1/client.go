@@ -91,20 +91,6 @@ func (mr *MockExtensionsV1beta1InterfaceMockRecorder) NetworkPolicies(arg0 inter
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NetworkPolicies", reflect.TypeOf((*MockExtensionsV1beta1Interface)(nil).NetworkPolicies), arg0)
 }
 
-// PodSecurityPolicies mocks base method.
-func (m *MockExtensionsV1beta1Interface) PodSecurityPolicies() v1beta1.PodSecurityPolicyInterface {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "PodSecurityPolicies")
-	ret0, _ := ret[0].(v1beta1.PodSecurityPolicyInterface)
-	return ret0
-}
-
-// PodSecurityPolicies indicates an expected call of PodSecurityPolicies.
-func (mr *MockExtensionsV1beta1InterfaceMockRecorder) PodSecurityPolicies() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PodSecurityPolicies", reflect.TypeOf((*MockExtensionsV1beta1Interface)(nil).PodSecurityPolicies))
-}
-
 // RESTClient mocks base method.
 func (m *MockExtensionsV1beta1Interface) RESTClient() rest.Interface {
 	m.ctrl.T.Helper()
