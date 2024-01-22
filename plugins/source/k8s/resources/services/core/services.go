@@ -33,7 +33,7 @@ func Services() *schema.Table {
 			{
 				Name:     "spec_external_ips",
 				Type:     arrow.ListOf(types.ExtensionTypes.Inet),
-				Resolver: client.StringToNullablePathResolver("Spec.ExternalIPs"),
+				Resolver: client.StringToNullableArrayPathResolver("Spec.ExternalIPs"),
 			},
 			{
 				Name:     "spec_load_balancer_ip",
