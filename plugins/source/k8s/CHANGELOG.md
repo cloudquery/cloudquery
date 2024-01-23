@@ -1,5 +1,34 @@
 # Changelog
 
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v5.2.7...plugins-source-k8s-v6.0.0) (2024-01-23)
+
+
+### This Release has the Following Changes to Tables
+- Table `k8s_batch_jobs`: column added with name `spec_backoff_limit_per_index` and type `int64`
+- Table `k8s_batch_jobs`: column added with name `spec_max_failed_indexes` and type `int64`
+- Table `k8s_batch_jobs`: column added with name `spec_pod_replacement_policy` and type `utf8`
+- Table `k8s_batch_jobs`: column added with name `status_failed_indexes` and type `utf8`
+- Table `k8s_batch_jobs`: column added with name `status_terminating` and type `int64`
+- Table `k8s_core_pods`: column added with name `status_host_ips` and type `json`
+- Table `k8s_core_pods`: column added with name `status_resize` and type `utf8`
+- Table `k8s_core_pods`: column added with name `status_resource_claim_statuses` and type `json`
+- Table `k8s_core_pvcs`: column `status_resize_status` removed from table (:warning: breaking)
+- Table `k8s_core_pvcs`: column added with name `spec_volume_attributes_class_name` and type `utf8`
+- Table `k8s_core_pvcs`: column added with name `status_allocated_resource_statuses` and type `json`
+- Table `k8s_core_pvcs`: column added with name `status_current_volume_attributes_class_name` and type `utf8`
+- Table `k8s_core_pvcs`: column added with name `status_modify_volume_status` and type `json`
+- Table `k8s_core_pvs`: column added with name `spec_volume_attributes_class_name` and type `utf8`
+- Table `k8s_core_pvs`: column added with name `status_last_phase_transition_time` and type `timestamp[us, tz=UTC]`
+- Table `k8s_networking_network_policies`: column `status_conditions` removed from table (:warning: breaking)
+
+### ⚠ BREAKING CHANGES
+
+* Update API for k8s ([#16227](https://github.com/cloudquery/cloudquery/issues/16227))
+
+### Features
+
+* Update API for k8s ([#16227](https://github.com/cloudquery/cloudquery/issues/16227)) ([085548a](https://github.com/cloudquery/cloudquery/commit/085548ac922f4c0adee8a024e0f09ea4d9e99ab1))
+
 ## [5.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v5.2.6...plugins-source-k8s-v5.2.7) (2024-01-16)
 
 

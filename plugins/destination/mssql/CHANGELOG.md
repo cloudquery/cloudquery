@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.22](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.3.21...plugins-destination-mssql-v4.3.22) (2024-01-23)
+
+
+### Bug Fixes
+
+* Use team name instead of kind for team ([#16241](https://github.com/cloudquery/cloudquery/issues/16241)) ([cc11b95](https://github.com/cloudquery/cloudquery/commit/cc11b9576980efcd54abadcf21026fa64cccf1b6))
+
 ## [4.3.21](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.3.20...plugins-destination-mssql-v4.3.21) (2024-01-16)
 
 
