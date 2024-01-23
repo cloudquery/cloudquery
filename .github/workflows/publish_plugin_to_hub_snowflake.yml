@@ -35,7 +35,7 @@ jobs:
           input_string: ${{steps.split.outputs.plugin_version}}
   publish-plugin-to-hub:
     timeout-minutes: 60
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     container:
       image: ghcr.io/cloudquery/golang-cross:v10.0.0
       env:
@@ -108,7 +108,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v5.0.1
+          version: v5.0.2
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
