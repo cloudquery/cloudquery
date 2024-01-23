@@ -41,6 +41,22 @@ dockers:
       - "--platform=linux/arm64"
       - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
 
+docker_manifests:
+- name_template: "cloudquery/cloudquery:{{.Version}}"
+  image_templates:
+  - "cloudquery/cloudquery:{{.Version}}-linux-amd64"
+  - "cloudquery/cloudquery:{{.Version}}-linux-arm64"
+
+- name_template: "cloudquery/cloudquery:latest"
+  image_templates:
+  - "cloudquery/cloudquery:latest-linux-amd64"
+  - "cloudquery/cloudquery:latest-linux-arm64"
+
+- name_template: "cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}"
+  image_templates:
+  - "cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}-linux-amd64"
+  - "cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}-linux-arm64"
+
 brews:
   -
     ids:
