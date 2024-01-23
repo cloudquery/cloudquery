@@ -48,7 +48,7 @@ func getAPIClient() (*cloudquery_api.ClientWithResponses, error) {
 	if err != nil {
 		return nil, err
 	}
-	return api.NewClient(getEnvOrDefault(envAPIURL, defaultAPIURL), token.Value)
+	return api.NewClient(token.Value)
 }
 
 // nolint:dupl
@@ -246,7 +246,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			return fmt.Errorf("failed to parse sync run ID: %w", err)
 		}
 		remoteProgressReporter = godebouncer.NewWithOptions(godebouncer.WithTimeDuration(10*time.Second), godebouncer.WithTriggered(func() {
-			res, err := apiClient.CreateSyncRunProgressWithResponse(ctx, teamName, syncName, syncRunUUID, cloudquery_api.CreateSyncRunProgressJSONRequestBody{Rows: float32(totalResources)})
+			res, err := apiClient.CreateSyncRunProgressWithResponse(ctx, teamName, syncName, syncRunUUID, cloudquery_api.CreateSyncRunProgressJSONRequestBody{Rows: totalResources})
 			if err != nil {
 				log.Warn().Err(err).Msg("Failed to send sync progress to API")
 			}
