@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.4.21...plugins-destination-sqlite-v2.5.0) (2024-01-23)
+
+
+### Features
+
+* Handle All types of Schema Changes ([#16192](https://github.com/cloudquery/cloudquery/issues/16192)) ([3839534](https://github.com/cloudquery/cloudquery/commit/3839534f1bf04686e72a284409bb17e6a20a944f))
+
 ## [2.4.21](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.4.20...plugins-destination-sqlite-v2.4.21) (2024-01-16)
 
 
