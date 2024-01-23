@@ -1,5 +1,16 @@
 # Changelog
 
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v5.2.7...plugins-source-k8s-v6.0.0) (2024-01-23)
+
+
+### ⚠ BREAKING CHANGES
+
+* Update API for k8s ([#16227](https://github.com/cloudquery/cloudquery/issues/16227))
+
+### Features
+
+* Update API for k8s ([#16227](https://github.com/cloudquery/cloudquery/issues/16227)) ([085548a](https://github.com/cloudquery/cloudquery/commit/085548ac922f4c0adee8a024e0f09ea4d9e99ab1))
+
 ## [5.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v5.2.6...plugins-source-k8s-v5.2.7) (2024-01-16)
 
 
