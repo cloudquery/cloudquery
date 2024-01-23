@@ -3,13 +3,12 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 
-	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery/cli/internal/api"
 	"github.com/cloudquery/cloudquery/cli/internal/hub"
 	"github.com/cloudquery/cloudquery/cli/internal/publish"
 	"github.com/spf13/cobra"
@@ -76,13 +75,9 @@ func runPluginDocsUpload(ctx context.Context, cmd *cobra.Command, args []string)
 
 	fmt.Printf("Uploading documentation for plugin %v...\n", pluginRef)
 
-	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault(envAPIURL, defaultAPIURL),
-		cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
-			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
-			return nil
-		}))
+	c, err := api.NewClient(token.Value)
 	if err != nil {
-		return fmt.Errorf("failed to create hub client: %w", err)
+		return err
 	}
 
 	doSync, err := cmd.Flags().GetBool("sync")
