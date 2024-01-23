@@ -5,7 +5,7 @@ go 1.21.4
 require (
 	github.com/apache/arrow/go/v15 v15.0.0
 	github.com/cloudquery/codegen v0.3.12
-	github.com/cloudquery/plugin-sdk/v4 v4.25.2
+	github.com/cloudquery/plugin-sdk/v4 v4.27.0
 	github.com/golang/mock v1.6.0
 	github.com/google/gnostic-models v0.6.9-0.20230804172637-c7be7c783f49
 	github.com/rs/zerolog v1.31.0
@@ -34,7 +34,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.6.5 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.7.0 // indirect
 	github.com/cloudquery/plugin-pb-go v1.16.5 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
