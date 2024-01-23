@@ -34,15 +34,13 @@ func newCmdSwitch() *cobra.Command {
 }
 
 func runSwitch(cmd *cobra.Command, args []string) error {
-	apiURL := getEnvOrDefault(envAPIURL, defaultAPIURL)
-
 	tc := auth.NewTokenClient()
 	token, err := tc.GetToken()
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
 
-	cl, err := team.NewClient(apiURL, token.Value)
+	cl, err := team.NewClient(token.Value)
 	if err != nil {
 		return fmt.Errorf("failed to create API client: %w", err)
 	}

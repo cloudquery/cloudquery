@@ -82,7 +82,7 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 	name := fmt.Sprintf("%s/%s/%s@%s", manifest.TeamName, manifest.AddonType, manifest.AddonName, version)
 	fmt.Printf("Publishing addon %s to CloudQuery Hub...\n", name)
 
-	c, err := api.NewClient(getEnvOrDefault(envAPIURL, defaultAPIURL), token.Value)
+	c, err := api.NewClient(token.Value)
 	if err != nil {
 		return err
 	}

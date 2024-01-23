@@ -14,8 +14,8 @@ type Client struct {
 	api *cloudquery_api.ClientWithResponses
 }
 
-func NewClient(url string, token string) (*Client, error) {
-	cl, err := api.NewClient(url, token)
+func NewClient(token string) (*Client, error) {
+	cl, err := api.NewClient(token)
 	if err != nil {
 		return nil, err
 	}
