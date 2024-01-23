@@ -7,8 +7,10 @@ date: 2024/01/22
 
 # Orchestrating CloudQuery Syncs with Kestra
 
-This tutorial shows how to run CloudQuery as a [Kestra](https://kestra.io/) flow, using the the HackerNews API as a source and CSV file as a destination. Kestra is an open-source event-driven orchestrator. You can use Kestra to: 
-- schedule CloudQuery syncs in a simple, declarative way using a built-in code editor
+This tutorial shows how to run CloudQuery as a [Kestra](https://kestra.io/) flow, using the the HackerNews API as a source and CSV file as a destination. Kestra is an open-source event-driven orchestrator, which has a [dedicated CloudQuery plugin](https://kestra.io/plugins/plugin-cloudquery).
+
+You can use Kestra to: 
+- schedule [CloudQuery syncs](https://kestra.io/plugins/tasks/io.kestra.plugin.cloudquery.Sync) in a simple, declarative way using a built-in code editor
 - run your syncs based on events from other systems e.g. a new file in a folder, new message in a queue, or a new webhook request
 - monitor your syncs from a friendly UI and get notified when they fail.
 
