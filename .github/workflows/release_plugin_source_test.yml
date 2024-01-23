@@ -9,7 +9,7 @@ env:
 jobs:
   release-plugin-binary-source-test:
     timeout-minutes: 60
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     steps:
       # Tag format is plugins-<type>-<name>-<version>
       - name: Split tag
