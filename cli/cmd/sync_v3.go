@@ -38,7 +38,7 @@ type v3destination struct {
 	spec   specs.Destination
 }
 
-func getAPIClient() (*cloudquery_api.ClientWithResponses, error) {
+func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
 	authClient := auth.NewTokenClient()
 	if authClient.GetTokenType() != auth.SyncRunAPIKey {
 		return nil, nil
@@ -66,7 +66,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		destinationsClients[i] = destinations[i].client
 	}
 
-	apiClient, err := getAPIClient()
+	progressAPIClient, err := getProgressAPIClient()
 	if err != nil {
 		return fmt.Errorf("failed to get API client: %w", err)
 	}
@@ -236,7 +236,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	totalResources := int64(0)
 
 	var remoteProgressReporter *godebouncer.Debouncer
-	if apiClient != nil {
+	if progressAPIClient != nil {
 		teamName, syncName, syncRunId := os.Getenv("_CQ_TEAM_NAME"), os.Getenv("_CQ_SYNC_NAME"), os.Getenv("_CQ_SYNC_RUN_ID")
 		if teamName == "" || syncName == "" || syncRunId == "" {
 			return fmt.Errorf("failed to get team, sync or sync run from environment variables. got team: %s, sync name: %s, sync run ID: %s", teamName, syncName, syncRunId)
@@ -246,7 +246,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			return fmt.Errorf("failed to parse sync run ID: %w", err)
 		}
 		remoteProgressReporter = godebouncer.NewWithOptions(godebouncer.WithTimeDuration(10*time.Second), godebouncer.WithTriggered(func() {
-			res, err := apiClient.CreateSyncRunProgressWithResponse(ctx, teamName, syncName, syncRunUUID, cloudquery_api.CreateSyncRunProgressJSONRequestBody{Rows: totalResources})
+			res, err := progressAPIClient.CreateSyncRunProgressWithResponse(ctx, teamName, syncName, syncRunUUID, cloudquery_api.CreateSyncRunProgressJSONRequestBody{Rows: totalResources})
 			if err != nil {
 				log.Warn().Err(err).Msg("Failed to send sync progress to API")
 			}
