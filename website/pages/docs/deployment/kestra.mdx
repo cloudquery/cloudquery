@@ -64,6 +64,8 @@ tasks:
 
 The flow will extract all tables from the HackerNews API and load them to a CSV file. You can download that CSV file from the Outputs tab in the Kestra UI after each flow execution. You may notice that the `configs` property is virtually identical to your CloudQuery configuration file. All we had to add was to move the CloudQuery sources and destinations into a list of `configs` in the `cloudquery.Sync` task.
 
+import { Callout } from 'nextra-theme-docs';
+
 <Callout type="info">
 Kestra flows are built using a declarative YAML syntax, in the same way as you know it from CloudQuery.
 </Callout>
