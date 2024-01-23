@@ -35,7 +35,7 @@ jobs:
           input_string: ${{steps.split.outputs.plugin_version}}
   publish-plugin-to-hub:
     timeout-minutes: 60
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     container:
       image: ghcr.io/cloudquery/golang-cross:v10.0.0
       env:
