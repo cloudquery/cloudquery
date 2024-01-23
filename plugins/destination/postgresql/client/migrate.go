@@ -198,7 +198,7 @@ func (c *Client) migrateToCQID(ctx context.Context, tableName string, _ schema.C
 	}
 
 	// Create new Primary Key with CQID
-	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ADD CONSTRAINT "+sanitizedPKName+" UNIQUE ("+pgx.Identifier{schema.CqIDColumn.Name}.Sanitize()+")")
+	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ADD CONSTRAINT "+sanitizedPKName+" Primary Key ("+pgx.Identifier{schema.CqIDColumn.Name}.Sanitize()+")")
 	if err != nil {
 		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to create new primary key on _cq_id")
 		if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
