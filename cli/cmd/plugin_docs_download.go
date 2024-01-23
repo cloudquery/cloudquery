@@ -13,6 +13,7 @@ import (
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery/cli/internal/api"
 	"github.com/cloudquery/cloudquery/cli/internal/hub"
 	"github.com/spf13/cobra"
 )
@@ -82,13 +83,9 @@ func runPluginDocsDownload(ctx context.Context, cmd *cobra.Command, args []strin
 
 	fmt.Printf("Downloading documentation for plugin %v...\n", pluginRef)
 
-	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault(envAPIURL, defaultAPIURL),
-		cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
-			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
-			return nil
-		}))
+	c, err := api.NewClient(token.Value)
 	if err != nil {
-		return fmt.Errorf("failed to create hub client: %w", err)
+		return err
 	}
 
 	pg, ppg := cloudquery_api.Page(1), cloudquery_api.PerPage(1000)

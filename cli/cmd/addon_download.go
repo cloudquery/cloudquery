@@ -9,10 +9,9 @@ import (
 	"strings"
 	"syscall"
 
-	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	cqapiauth "github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery/cli/internal/api"
 	"github.com/cloudquery/cloudquery/cli/internal/publish"
-	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/spf13/cobra"
 )
 
@@ -73,13 +72,9 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return fmt.Errorf("invalid addon ref %q: version must start with 'v'", args[0])
 	}
 
-	c, err := cloudquery_api.NewClientWithResponses(managedplugin.APIBaseURL(),
-		cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
-			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
-			return nil
-		}))
+	c, err := api.NewClient(token.Value)
 	if err != nil {
-		return fmt.Errorf("failed to create hub client: %w", err)
+		return err
 	}
 
 	targetDir, err := cmd.Flags().GetString("target")
