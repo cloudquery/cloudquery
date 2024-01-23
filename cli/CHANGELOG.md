@@ -5,6 +5,16 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.0.2](https://github.com/cloudquery/cloudquery/compare/cli-v5.0.1...cli-v5.0.2) (2024-01-23)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.6.5 ([#16190](https://github.com/cloudquery/cloudquery/issues/16190)) ([c2cd8db](https://github.com/cloudquery/cloudquery/commit/c2cd8db33fc327f6610912056b100fd96d78967f))
+* Handle Docker no-login or no-team errors ([#16202](https://github.com/cloudquery/cloudquery/issues/16202)) ([1247123](https://github.com/cloudquery/cloudquery/commit/12471230a511bc425795d870e38682e7ff011c87))
+* Make `WithRemoveUniqueConstraints` non-breaking ([#16188](https://github.com/cloudquery/cloudquery/issues/16188)) ([5654ad1](https://github.com/cloudquery/cloudquery/commit/5654ad1d8dfbb0ce99f3bf238a5e18654a742caa))
+* Remove Unique Constraints in Append Mode ([#16186](https://github.com/cloudquery/cloudquery/issues/16186)) ([6889eed](https://github.com/cloudquery/cloudquery/commit/6889eed19136fe8e63ed712212bb271964aaee24))
+
 ## [5.0.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.0.0...cli-v5.0.1) (2024-01-16)
 
 
