@@ -7,7 +7,7 @@ date: 2024/01/22
 
 # Orchestrating CloudQuery Syncs with Kestra
 
-This tutorial shows how to run CloudQuery as a [Kestra](https://kestra.io/) flow, using the HackerNews API as a source and CSV file as a destination. Kestra is an open-source event-driven orchestrator, which has a [dedicated CloudQuery plugin](https://kestra.io/plugins/plugin-cloudquery).
+This tutorial shows how to run CloudQuery as a [Kestra](https://github.com/kestra-io/kestra) flow, using the HackerNews API as a source and CSV file as a destination. Kestra is an open-source event-driven orchestrator, which has a [dedicated CloudQuery plugin](https://kestra.io/plugins/plugin-cloudquery).
 
 You can use Kestra to: 
 - schedule [CloudQuery syncs](https://kestra.io/plugins/tasks/io.kestra.plugin.cloudquery.Sync) in a simple, declarative way using a built-in code editor
@@ -79,7 +79,7 @@ Once you configured the flow in the editor, click on `Save`.
 
 To manually start a Kestra flow, click on the `Execute` button in the top right corner. Then, confirm by clicking on `Execute`.
 
-You should now see the sync running in the `Executions` tab. You can navigate to the Logs tab to check the logs and validate everything runs as expected.
+You should now see the sync running in the `Executions` tab. You can navigate to the Logs tab to check the logs and validate everything runs as expected. Also, you can download the extracted CSV files from the `Outputs` tab:
 
 ![Kestra Flow Execution Screenshot](/images/docs/deployment/kestra-execution.png)
 
@@ -111,4 +111,6 @@ With this in place, remember to click `Save` again. Your CloudQuery sync will no
 
 ## Next steps
 
-This tutorial was just a quick introduction to help you get started with a CloudQuery deployment on Kestra. You can now create additional Kestra tasks to perform transformations, send notifications and more. For more information, check out the [CloudQuery docs](/docs) and the [Kestra docs](https://kestra.io/docs/). To productionize your Kestra deployment, you will likely need to deploy it to a cloud environment, such as Kubernetes. For more information, see the [Kestra Deployment with Kubernetes guide](https://kestra.io/docs/administrator-guide/deployment/kubernetes) and if you have any questions, you can reach the Kestra team [via Community Slack](https://kestra.io/slack).
+This tutorial was just a quick introduction to help you get started with a CloudQuery deployment on [Kestra](https://kestra.io/). You can now create additional Kestra tasks to perform transformations, send notifications and more. For more information, check out the [CloudQuery docs](/docs) and the [Kestra docs](https://kestra.io/docs/). 
+
+To productionize your Kestra deployment, you will likely need to deploy it to a cloud environment, such as Kubernetes. For more information, see the [Kestra Deployment with Kubernetes guide](https://kestra.io/docs/administrator-guide/deployment/kubernetes) and if you have any questions, you can reach the Kestra team [via Community Slack](https://kestra.io/slack).
