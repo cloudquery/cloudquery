@@ -26,7 +26,8 @@ cloudquery migrate ./directory ./aws.yml ./pg.yml
 ### Options
 
 ```
-  -h, --help   help for migrate
+  -h, --help             help for migrate
+      --license string   set offline license file
 ```
 
 ### Options inherited from parent commands

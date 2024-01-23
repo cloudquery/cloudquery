@@ -16,12 +16,7 @@ func DeviceConfigs() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("cloudiot.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.DeviceConfig{}, transformers.WithPrimaryKeys("Version")),
 		Columns: []schema.Column{
-			{
-				Name:       "project_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveProject,
-				PrimaryKey: true,
-			},
+			client.ProjectIDColumn(true),
 			{
 				Name:       "device_name",
 				Type:       arrow.BinaryTypes.String,

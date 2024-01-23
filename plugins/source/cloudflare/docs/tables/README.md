@@ -2,6 +2,8 @@
 
 ## Tables
 
+- [cloudflare_access_applications](cloudflare_access_applications.md)
+  - [cloudflare_access_applications_self_hosted_domains](cloudflare_access_applications_self_hosted_domains.md)
 - [cloudflare_access_groups](cloudflare_access_groups.md)
 - [cloudflare_accounts](cloudflare_accounts.md)
   - [cloudflare_account_members](cloudflare_account_members.md)

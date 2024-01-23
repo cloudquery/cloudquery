@@ -25,7 +25,7 @@ kind: source
 spec:
   name: airtable
   registry: docker
-  path: ghcr.io/cloudquery/cq-source-airtable:VERSION_SOURCE_AIRTABLE
+  path: docker.cloudquery.io/cloudquery/source-airtable:VERSION_SOURCE_AIRTABLE
   tables:
     # Sync all tables under bases matching the name `base_name_to_sync`
     - "*__<base_name_to_sync>__*"

@@ -8,6 +8,7 @@ import (
 	"path"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/cli/internal/env"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/analytics/v0"
@@ -33,7 +34,7 @@ type AnalyticsClient struct {
 }
 
 func initAnalytics() (*AnalyticsClient, error) {
-	host := getEnvOrDefault("CQ_ANALYTICS_HOST", defaultAnalyticsHost)
+	host := env.GetEnvOrDefault("CQ_ANALYTICS_HOST", defaultAnalyticsHost)
 	var opts []grpc.DialOption
 	if strings.HasSuffix(host, ":443") {
 		systemRoots, err := x509.SystemCertPool()
@@ -65,7 +66,7 @@ func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.
 	}
 	if c.client != nil {
 		sourcePath := sourceSpec.Path
-		if sourceSpec.Registry == specs.RegistryLocal || sourceSpec.Registry == specs.RegistryGrpc {
+		if sourceSpec.Registry == specs.RegistryLocal || sourceSpec.Registry == specs.RegistryGRPC {
 			_, sourcePath = path.Split(sourceSpec.Path)
 		}
 		syncSummary := &analytics.SyncSummary{
@@ -81,7 +82,7 @@ func (c *AnalyticsClient) SendSyncMetrics(ctx context.Context, sourceSpec specs.
 		}
 		for _, destinationSpec := range destinationsSpecs {
 			destPath := destinationSpec.Path
-			if destinationSpec.Registry == specs.RegistryLocal || destinationSpec.Registry == specs.RegistryGrpc {
+			if destinationSpec.Registry == specs.RegistryLocal || destinationSpec.Registry == specs.RegistryGRPC {
 				_, destPath = path.Split(destinationSpec.Path)
 			}
 			syncSummary.Destinations = append(syncSummary.Destinations, &analytics.Destination{

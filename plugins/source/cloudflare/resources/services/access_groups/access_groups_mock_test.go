@@ -20,16 +20,18 @@ func buildAccessGroups(t *testing.T, ctrl *gomock.Controller) client.Clients {
 	accessGroup.Include = []any{"a"}
 	accessGroup.Exclude = []any{"b"}
 	accessGroup.Require = []any{"c"}
-	mock.EXPECT().ZoneLevelAccessGroups(
+	mock.EXPECT().ListAccessGroups(
 		gomock.Any(),
-		client.TestZoneID,
-		cloudflare.PaginationOptions{
-			Page:    1,
-			PerPage: 200,
+		cloudflare.ZoneIdentifier(client.TestZoneID),
+		cloudflare.ListAccessGroupsParams{
+			ResultInfo: cloudflare.ResultInfo{
+				Page:    1,
+				PerPage: 200,
+			},
 		},
 	).Return(
 		[]cloudflare.AccessGroup{accessGroup},
-		cloudflare.ResultInfo{
+		&cloudflare.ResultInfo{
 			Page:    1,
 			PerPage: 1,
 			Count:   1,

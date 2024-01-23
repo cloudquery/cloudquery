@@ -63,6 +63,34 @@ func (mr *MockAdmissionregistrationV1beta1InterfaceMockRecorder) RESTClient() *g
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RESTClient", reflect.TypeOf((*MockAdmissionregistrationV1beta1Interface)(nil).RESTClient))
 }
 
+// ValidatingAdmissionPolicies mocks base method.
+func (m *MockAdmissionregistrationV1beta1Interface) ValidatingAdmissionPolicies() v1beta1.ValidatingAdmissionPolicyInterface {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ValidatingAdmissionPolicies")
+	ret0, _ := ret[0].(v1beta1.ValidatingAdmissionPolicyInterface)
+	return ret0
+}
+
+// ValidatingAdmissionPolicies indicates an expected call of ValidatingAdmissionPolicies.
+func (mr *MockAdmissionregistrationV1beta1InterfaceMockRecorder) ValidatingAdmissionPolicies() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ValidatingAdmissionPolicies", reflect.TypeOf((*MockAdmissionregistrationV1beta1Interface)(nil).ValidatingAdmissionPolicies))
+}
+
+// ValidatingAdmissionPolicyBindings mocks base method.
+func (m *MockAdmissionregistrationV1beta1Interface) ValidatingAdmissionPolicyBindings() v1beta1.ValidatingAdmissionPolicyBindingInterface {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ValidatingAdmissionPolicyBindings")
+	ret0, _ := ret[0].(v1beta1.ValidatingAdmissionPolicyBindingInterface)
+	return ret0
+}
+
+// ValidatingAdmissionPolicyBindings indicates an expected call of ValidatingAdmissionPolicyBindings.
+func (mr *MockAdmissionregistrationV1beta1InterfaceMockRecorder) ValidatingAdmissionPolicyBindings() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ValidatingAdmissionPolicyBindings", reflect.TypeOf((*MockAdmissionregistrationV1beta1Interface)(nil).ValidatingAdmissionPolicyBindings))
+}
+
 // ValidatingWebhookConfigurations mocks base method.
 func (m *MockAdmissionregistrationV1beta1Interface) ValidatingWebhookConfigurations() v1beta1.ValidatingWebhookConfigurationInterface {
 	m.ctrl.T.Helper()

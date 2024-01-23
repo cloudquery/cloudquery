@@ -17,10 +17,11 @@ import (
 func policyVersions() *schema.Table {
 	table_name := "aws_iam_policy_versions"
 	return &schema.Table{
-		Name:        table_name,
-		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_PolicyVersion.html`,
-		Resolver:    fetchPolicyVersion,
-		Transform:   transformers.TransformWithStruct(&types.PolicyVersion{}, transformers.WithPrimaryKeys("VersionId")),
+		Name:                table_name,
+		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_PolicyVersion.html`,
+		Resolver:            fetchPolicyVersion,
+		PreResourceResolver: getPolicy,
+		Transform:           transformers.TransformWithStruct(&types.PolicyVersion{}, transformers.WithPrimaryKeys("VersionId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
@@ -53,6 +54,29 @@ func fetchPolicyVersion(ctx context.Context, meta schema.ClientMeta, parent *sch
 		}
 		res <- page.Versions
 	}
+
+	return nil
+}
+
+func getPolicy(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceIam).Iam
+	policy := resource.Parent.Item.(types.Policy)
+	pv := resource.Item.(types.PolicyVersion)
+	out, err := svc.GetPolicyVersion(ctx,
+		&iam.GetPolicyVersionInput{
+			PolicyArn: policy.Arn,
+			VersionId: pv.VersionId},
+		func(options *iam.Options) {
+			options.Region = cl.Region
+		},
+	)
+	if err != nil {
+		cl.Logger().Warn().Err(err).Msg("Failed to get policy version")
+		return err
+	}
+
+	resource.SetItem(*out.PolicyVersion)
 
 	return nil
 }

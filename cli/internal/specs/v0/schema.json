@@ -1,0 +1,332 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/cli/internal/specs/v0/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "BackendOptions": {
+      "properties": {
+        "table_name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The name of the table to store the key-value pairs for incremental progress."
+        },
+        "connection": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Connection string for the destination plugin.\nCan be either `@@plugin.name.connection` or a fully-qualified gRPC connection string."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "table_name",
+        "connection"
+      ],
+      "description": "Backend options to be used in conjunction with incremental tables (stores the incremental progres)"
+    },
+    "Destination": {
+      "if": {
+        "properties": {
+          "registry": {
+            "type": "string",
+            "enum": [
+              "",
+              "github",
+              "cloudquery"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "version": {
+            "type": "string",
+            "pattern": "^v.*$"
+          }
+        },
+        "required": [
+          "version"
+        ]
+      },
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Name of the plugin to use"
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of the plugin to be used"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Path is the canonical path to the plugin in a given registry\nFor example:\n* for `registry: github` the `path` will be: `org/repo`\n* for `registry: local` the `path` will be the path to the binary: `./path/to/binary`\n* for `registry: grpc` the `path` will be the address of the gRPC server: `host:port`"
+        },
+        "registry": {
+          "type": "string",
+          "enum": [
+            "",
+            "github",
+            "local",
+            "grpc",
+            "docker",
+            "cloudquery"
+          ],
+          "description": "Registry can be \"\", \"github\", \"local\", \"grpc\", \"docker\", \"cloudquery\"",
+          "default": "cloudquery"
+        },
+        "write_mode": {
+          "type": "string",
+          "enum": [
+            "overwrite-delete-stale",
+            "overwrite",
+            "append"
+          ],
+          "description": "Destination plugin write mode",
+          "default": "overwrite-delete-stale"
+        },
+        "migrate_mode": {
+          "type": "string",
+          "enum": [
+            "safe",
+            "forced"
+          ],
+          "description": "Destination plugin migrate mode",
+          "default": "safe"
+        },
+        "pk_mode": {
+          "type": "string",
+          "enum": [
+            "default",
+            "cq-id-only"
+          ],
+          "description": "Destination plugin PK mode",
+          "default": "default"
+        },
+        "spec": {
+          "oneOf": [
+            {
+              "type": "object",
+              "description": "Destination plugin own (nested) spec"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "name",
+        "path"
+      ],
+      "description": "Destination plugin spec"
+    },
+    "Source": {
+      "if": {
+        "properties": {
+          "registry": {
+            "type": "string",
+            "enum": [
+              "",
+              "github",
+              "cloudquery"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "version": {
+            "type": "string",
+            "pattern": "^v.*$"
+          }
+        },
+        "required": [
+          "version"
+        ]
+      },
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Name of the plugin to use"
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of the plugin to be used"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Path is the canonical path to the plugin in a given registry\nFor example:\n* for `registry: github` the `path` will be: `org/repo`\n* for `registry: local` the `path` will be the path to the binary: `./path/to/binary`\n* for `registry: grpc` the `path` will be the address of the gRPC server: `host:port`"
+        },
+        "registry": {
+          "type": "string",
+          "enum": [
+            "",
+            "github",
+            "local",
+            "grpc",
+            "docker",
+            "cloudquery"
+          ],
+          "description": "Registry can be \"\", \"github\", \"local\", \"grpc\", \"docker\", \"cloudquery\"",
+          "default": "cloudquery"
+        },
+        "tables": {
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": "array",
+          "minItems": 1,
+          "description": "Tables to sync from the source plugin"
+        },
+        "skip_tables": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": "array",
+              "description": "SkipTables defines tables to skip when syncing data. Useful if a glob pattern is used in Tables"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skip_dependent_tables": {
+          "type": "boolean",
+          "description": "SkipDependentTables changes the matching behavior with regard to dependent tables. If set to true, dependent tables will not be synced unless they are explicitly matched by Tables.",
+          "default": false
+        },
+        "destinations": {
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": "array",
+          "minItems": 1,
+          "description": "Destinations are the names of destination plugins to send sync data to"
+        },
+        "backend_options": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/BackendOptions",
+              "description": "Optional Backend options for sync operation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "spec": {
+          "oneOf": [
+            {
+              "type": "object",
+              "description": "Source plugin own (nested) spec"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "deterministic_cq_id": {
+          "type": "boolean",
+          "description": "DeterministicCQID is a flag that indicates whether the source plugin should generate a random UUID as the value of `_cq_id`\nor whether it should calculate a UUID that is a hash of the primary keys (if they exist) or the entire resource.",
+          "default": false
+        },
+        "otel_endpoint": {
+          "type": "string",
+          "description": "If specified this will spawn the plugin with `--otel-endpoint`",
+          "default": ""
+        },
+        "otel_endpoint_insecure": {
+          "type": "boolean",
+          "description": "If specified this will spawn the plugin with `--otel-endpoint-insecure`",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "name",
+        "path",
+        "tables",
+        "destinations"
+      ],
+      "description": "Source plugin spec"
+    },
+    "Spec": {
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "source",
+                "description": "CloudQuery plugin kind"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "spec": {
+                "$ref": "#/$defs/Source"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "destination",
+                "description": "CloudQuery plugin kind"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "spec": {
+                "$ref": "#/$defs/Destination"
+              }
+            }
+          }
+        }
+      ],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "source",
+            "destination"
+          ],
+          "description": "CloudQuery plugin kind"
+        },
+        "spec": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Source"
+            },
+            {
+              "$ref": "#/$defs/Destination"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "kind",
+        "spec"
+      ]
+    }
+  }
+}

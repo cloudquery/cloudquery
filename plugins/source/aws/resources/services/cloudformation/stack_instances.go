@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/cloudformation"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/cloudformation/models"
@@ -14,9 +15,11 @@ import (
 func stackInstanceSummaries() *schema.Table {
 	table_name := "aws_cloudformation_stack_instance_summaries"
 	return &schema.Table{
-		Name:        table_name,
-		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackInstanceSummary.html`,
-		Resolver:    fetchStackInstanceSummary,
+		Name: table_name,
+		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackInstanceSummary.html
+
+**Note**: Sometimes the stack instance ID may be unavailable in the API (i.e., the instance is in a bad state), so it will have value of ` + "`N/A`.",
+		Resolver: fetchStackInstanceSummary,
 		Transform: transformers.TransformWithStruct(&models.ExpandedStackInstanceSummary{},
 			transformers.WithUnwrapStructFields("StackInstanceSummary"),
 			transformers.WithSkipFields("CallAs"),
@@ -62,9 +65,13 @@ func fetchStackInstanceSummary(ctx context.Context, meta schema.ClientMeta, pare
 		if err != nil {
 			return err
 		}
-		for i := range page.Summaries {
+		for _, summary := range page.Summaries {
+			if summary.StackId == nil {
+				// can happen if the instance is in a bad state
+				summary.StackId = aws.String("N/A")
+			}
 			res <- models.ExpandedStackInstanceSummary{
-				StackInstanceSummary: page.Summaries[i],
+				StackInstanceSummary: summary,
 				CallAs:               input.CallAs,
 			}
 		}

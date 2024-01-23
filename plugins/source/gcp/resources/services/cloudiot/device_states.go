@@ -16,12 +16,7 @@ func DeviceStates() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("cloudiot.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.DeviceState{}, transformers.WithPrimaryKeys("UpdateTime")),
 		Columns: []schema.Column{
-			{
-				Name:       "project_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveProject,
-				PrimaryKey: true,
-			},
+			client.ProjectIDColumn(true),
 			{
 				Name:       "device_name",
 				Type:       arrow.BinaryTypes.String,

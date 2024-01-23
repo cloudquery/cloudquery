@@ -10,12 +10,26 @@ import (
 
 func fetchDNSRecords(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	svc := meta.(*client.Client)
-	zoneId := svc.ZoneId
+	rc := cloudflare.ZoneIdentifier(svc.ZoneId)
 
-	records, err := svc.ClientApi.DNSRecords(ctx, zoneId, cloudflare.DNSRecord{})
-	if err != nil {
-		return err
+	params := cloudflare.ListDNSRecordsParams{
+		ResultInfo: cloudflare.ResultInfo{
+			Page:    1,
+			PerPage: client.MaxItemsPerPage,
+		},
 	}
-	res <- records
+
+	for {
+		resp, info, err := svc.ClientApi.ListDNSRecords(ctx, rc, params)
+		if err != nil {
+			return err
+		}
+		res <- resp
+
+		if !info.HasMorePages() {
+			break
+		}
+		params.ResultInfo.Page++
+	}
 	return nil
 }

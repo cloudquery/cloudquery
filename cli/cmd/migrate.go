@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"slices"
 	"strings"
@@ -30,11 +31,17 @@ func NewCmdMigrate() *cobra.Command {
 		Args:    cobra.MinimumNArgs(1),
 		RunE:    migrate,
 	}
+	cmd.Flags().String("license", "", "set offline license file")
 	return cmd
 }
 
 func migrate(cmd *cobra.Command, args []string) error {
 	cqDir, err := cmd.Flags().GetString("cq-dir")
+	if err != nil {
+		return err
+	}
+
+	licenseFile, err := cmd.Flags().GetString("license")
 	if err != nil {
 		return err
 	}
@@ -61,6 +68,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 		managedplugin.WithLogger(log.Logger),
 		managedplugin.WithAuthToken(authToken.Value),
 		managedplugin.WithTeamName(teamName),
+		managedplugin.WithLicenseFile(licenseFile),
 	}
 	if cqDir != "" {
 		opts = append(opts, managedplugin.WithDirectory(cqDir))
@@ -159,7 +167,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 				return fmt.Errorf("failed to migrate source %v@%v: %w", source.Name, source.Version, err)
 			}
 		case 0:
-			return fmt.Errorf("please upgrade your source or use a CLI version between v3.0.1 and v3.5.3")
+			return errors.New("please upgrade your source or use a CLI version between v3.0.1 and v3.5.3")
 		case -1:
 			return fmt.Errorf("please upgrade CLI to sync source %v@%v", source.Name, source.Version)
 		case -2:

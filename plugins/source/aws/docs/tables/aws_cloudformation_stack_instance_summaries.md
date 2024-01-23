@@ -4,6 +4,8 @@ This table shows data for AWS CloudFormation Stack Instance Summaries.
 
 https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackInstanceSummary.html
 
+**Note**: Sometimes the stack instance ID may be unavailable in the API (i.e., the instance is in a bad state), so it will have value of `N/A`.
+
 The composite primary key for this table is (**stack_set_arn**, **stack_id**, **stack_set_id**).
 
 ## Relations

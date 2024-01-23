@@ -69,8 +69,11 @@ The primary key for this table is **uid**.
 |status_message|`utf8`|
 |status_reason|`utf8`|
 |status_nominated_node_name|`utf8`|
+|status_host_ips|`json`|
 |status_start_time|`timestamp[us, tz=UTC]`|
 |status_init_container_statuses|`json`|
 |status_container_statuses|`json`|
 |status_qos_class|`utf8`|
 |status_ephemeral_container_statuses|`json`|
+|status_resize|`utf8`|
+|status_resource_claim_statuses|`json`|

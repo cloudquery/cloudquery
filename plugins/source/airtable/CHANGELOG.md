@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.0.0...plugins-source-airtable-v2.0.1) (2024-01-15)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-sdk-javascript to v0.1.4 ([#16011](https://github.com/cloudquery/cloudquery/issues/16011)) ([8a2c285](https://github.com/cloudquery/cloudquery/commit/8a2c285c4dac39dc1a42d67575be90428c515aff))
+
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v1.1.3...plugins-source-airtable-v2.0.0) (2023-12-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* Require Node.js 20
+
+### Features
+
+* Add package command ([a857746](https://github.com/cloudquery/cloudquery/commit/a857746fa17e24ee8cbab03e4cee1e26dbbd614b))
+
 ## [1.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v1.1.2...plugins-source-airtable-v1.1.3) (2023-11-16)
 
 

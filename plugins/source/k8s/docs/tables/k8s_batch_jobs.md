@@ -28,18 +28,23 @@ The primary key for this table is **uid**.
 |spec_active_deadline_seconds|`int64`|
 |spec_pod_failure_policy|`json`|
 |spec_backoff_limit|`int64`|
+|spec_backoff_limit_per_index|`int64`|
+|spec_max_failed_indexes|`int64`|
 |spec_selector|`json`|
 |spec_manual_selector|`bool`|
 |spec_template|`json`|
 |spec_ttl_seconds_after_finished|`int64`|
 |spec_completion_mode|`utf8`|
 |spec_suspend|`bool`|
+|spec_pod_replacement_policy|`utf8`|
 |status_conditions|`json`|
 |status_start_time|`timestamp[us, tz=UTC]`|
 |status_completion_time|`timestamp[us, tz=UTC]`|
 |status_active|`int64`|
 |status_succeeded|`int64`|
 |status_failed|`int64`|
+|status_terminating|`int64`|
 |status_completed_indexes|`utf8`|
+|status_failed_indexes|`utf8`|
 |status_uncounted_terminated_pods|`json`|
 |status_ready|`int64`|

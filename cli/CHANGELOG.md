@@ -5,6 +5,89 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.0.2](https://github.com/cloudquery/cloudquery/compare/cli-v5.0.1...cli-v5.0.2) (2024-01-23)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.6.5 ([#16190](https://github.com/cloudquery/cloudquery/issues/16190)) ([c2cd8db](https://github.com/cloudquery/cloudquery/commit/c2cd8db33fc327f6610912056b100fd96d78967f))
+* Handle Docker no-login or no-team errors ([#16202](https://github.com/cloudquery/cloudquery/issues/16202)) ([1247123](https://github.com/cloudquery/cloudquery/commit/12471230a511bc425795d870e38682e7ff011c87))
+* Make `WithRemoveUniqueConstraints` non-breaking ([#16188](https://github.com/cloudquery/cloudquery/issues/16188)) ([5654ad1](https://github.com/cloudquery/cloudquery/commit/5654ad1d8dfbb0ce99f3bf238a5e18654a742caa))
+* Remove Unique Constraints in Append Mode ([#16186](https://github.com/cloudquery/cloudquery/issues/16186)) ([6889eed](https://github.com/cloudquery/cloudquery/commit/6889eed19136fe8e63ed712212bb271964aaee24))
+
+## [5.0.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.0.0...cli-v5.0.1) (2024-01-16)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v15 digest to 7e703aa ([#16134](https://github.com/cloudquery/cloudquery/issues/16134)) ([72d5eb3](https://github.com/cloudquery/cloudquery/commit/72d5eb35644ce78d775790b0298a0c7690788d28))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.25.2 ([#16130](https://github.com/cloudquery/cloudquery/issues/16130)) ([7ae6f41](https://github.com/cloudquery/cloudquery/commit/7ae6f41957edb3446ff3175857aaf3dcea2cf5bc))
+* Handle `docker.cloudquery.io` docker registry when checking if auth is needed ([#16159](https://github.com/cloudquery/cloudquery/issues/16159)) ([8d06516](https://github.com/cloudquery/cloudquery/commit/8d06516f314c3e991f2f6fc9c5e1ed9fb352ff59))
+
+## [5.0.0](https://github.com/cloudquery/cloudquery/compare/cli-v4.4.0...cli-v5.0.0) (2024-01-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* Remove deprecated top level spec options (https://github.com/cloudquery/cloudquery/pull/15999). The following deprecated spec options were removed:
+    * source plugin top level spec:
+      * `concurrency`
+      * `table_concurrency`
+      * `resource_concurrency`
+      * `backend`
+      * `backend_spec`
+    * destination plugin top level spec:
+      * `batch_size`
+      * `batch_size_bytes`
+      
+    **For most users this shouldn't be a breaking change**. We've deprecated these options a while ago and some were moved to the plugin level spec. If you were using the deprecated options on a CLI version lower than `v5.0.0` you should have gotten a warning about it.
+
+### Features
+
+* Add JSON schema for CLI specs ([#15998](https://github.com/cloudquery/cloudquery/issues/15998)) ([da02049](https://github.com/cloudquery/cloudquery/commit/da020491c5901a1f775515bd86eaaed2950c3b93))
+* Remove deprecated spec options (https://github.com/cloudquery/cloudquery/pull/15999) ([9e25f4a](https://github.com/cloudquery/cloudquery/commit/9e25f4a6171c46ed0e09f13a8d4216120e57007f))
+* Upload images from markdown files to CDN when publishing ([#16033](https://github.com/cloudquery/cloudquery/issues/16033)) ([cf7cdb1](https://github.com/cloudquery/cloudquery/commit/cf7cdb15219651de2a8195f02799b4e4f1114fe1))
+
+
+### Bug Fixes
+
+* Add `X-Meta-User-Team-Name` during docker push ([#16013](https://github.com/cloudquery/cloudquery/issues/16013)) ([129b7c2](https://github.com/cloudquery/cloudquery/commit/129b7c2d92db70bb782177cdaa26abc0c8e83d3e))
+* Add missing `X-Meta-User-Team-Name` header and manifest types option ([#16113](https://github.com/cloudquery/cloudquery/issues/16113)) ([9d8899e](https://github.com/cloudquery/cloudquery/commit/9d8899ee6e0a06a7b4ad3b64a5169da6e4cdf379))
+* **deps:** Update github.com/apache/arrow/go/v15 digest to 6d44906 ([#16115](https://github.com/cloudquery/cloudquery/issues/16115)) ([8b0ae62](https://github.com/cloudquery/cloudquery/commit/8b0ae6266d19a10fe84102837802358f0b9bb1bc))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.6.4 ([#16067](https://github.com/cloudquery/cloudquery/issues/16067)) ([2e7b7d6](https://github.com/cloudquery/cloudquery/commit/2e7b7d67ee28cb3b393455accd10e664c7fff62e))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.16.2 ([#15948](https://github.com/cloudquery/cloudquery/issues/15948)) ([2def2ef](https://github.com/cloudquery/cloudquery/commit/2def2ef6268352fb7b229d55d27fd84f7e8bba1c))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.16.3 ([#16002](https://github.com/cloudquery/cloudquery/issues/16002)) ([e2d5605](https://github.com/cloudquery/cloudquery/commit/e2d5605c7cb5239303f0844b1fd9e5aab6cdf2cd))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.16.4 ([#16126](https://github.com/cloudquery/cloudquery/issues/16126)) ([6a776ae](https://github.com/cloudquery/cloudquery/commit/6a776ae5e26acf417f5d7f1aa9db72da4a3a8af1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.25.0 ([#15932](https://github.com/cloudquery/cloudquery/issues/15932)) ([2292b5a](https://github.com/cloudquery/cloudquery/commit/2292b5a2aa5936f2529238a05708de0b3bde9a35))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.25.1 ([#16069](https://github.com/cloudquery/cloudquery/issues/16069)) ([edda65c](https://github.com/cloudquery/cloudquery/commit/edda65c238b2cb78a7a2078b62557a7d8d822e49))
+
+## [4.4.0](https://github.com/cloudquery/cloudquery/compare/cli-v4.3.6...cli-v4.4.0) (2024-01-02)
+
+
+### Features
+
+* Offline licensing support ([#15831](https://github.com/cloudquery/cloudquery/issues/15831)) ([7eab631](https://github.com/cloudquery/cloudquery/commit/7eab6315362cc49adca0d06a5cf8b391237025fb))
+* Support publishing to a private docker registry ([#15698](https://github.com/cloudquery/cloudquery/issues/15698)) ([36e0351](https://github.com/cloudquery/cloudquery/commit/36e035107e801e9f0a3751eaecdc39959dd60da5))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v15 digest to 7c3480e ([#15904](https://github.com/cloudquery/cloudquery/issues/15904)) ([a3ec012](https://github.com/cloudquery/cloudquery/commit/a3ec01203183e5c94630beae86434519e87e225d))
+* **deps:** Update github.com/gomarkdown/markdown digest to 1d6d208 ([#15907](https://github.com/cloudquery/cloudquery/issues/15907)) ([86d29a9](https://github.com/cloudquery/cloudquery/commit/86d29a900e6c9dbcad09f5b0c4b0615aee59a2ae))
+* **deps:** Update golang.org/x/exp digest to 02704c9 ([#15909](https://github.com/cloudquery/cloudquery/issues/15909)) ([dfe32d2](https://github.com/cloudquery/cloudquery/commit/dfe32d2557dcac0fb6dc741c9df4edccdcb07076))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.15.0 ([#15851](https://github.com/cloudquery/cloudquery/issues/15851)) ([f51f12d](https://github.com/cloudquery/cloudquery/commit/f51f12d7217843dab594859e0a431b4faf545259))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.16.0 ([#15856](https://github.com/cloudquery/cloudquery/issues/15856)) ([0d63c66](https://github.com/cloudquery/cloudquery/commit/0d63c66360c726eb618804dbe3b8a75f9de6c636))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.24.0 ([#15863](https://github.com/cloudquery/cloudquery/issues/15863)) ([47d7899](https://github.com/cloudquery/cloudquery/commit/47d78994370f083912b6d4329f12d5cef9c255d5))
+* **deps:** Update module github.com/prometheus/client_golang to v1.11.1 [SECURITY] ([#15855](https://github.com/cloudquery/cloudquery/issues/15855)) ([676805b](https://github.com/cloudquery/cloudquery/commit/676805b0563cc0e3ed99b1de7e4549257b0ee2c5))
+
+## [4.3.6](https://github.com/cloudquery/cloudquery/compare/cli-v4.3.5...cli-v4.3.6) (2023-12-28)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v15 digest to bcaeaa8 ([#15791](https://github.com/cloudquery/cloudquery/issues/15791)) ([89dc812](https://github.com/cloudquery/cloudquery/commit/89dc81201529de2a1fc1ecce5efa74d6f363e57b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.23.0 ([#15803](https://github.com/cloudquery/cloudquery/issues/15803)) ([b6f9373](https://github.com/cloudquery/cloudquery/commit/b6f937385020c63ce59b2bc60402752b6c239c6c))
+
 ## [4.3.5](https://github.com/cloudquery/cloudquery/compare/cli-v4.3.4...cli-v4.3.5) (2023-12-26)
 
 

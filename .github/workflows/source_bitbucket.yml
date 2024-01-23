@@ -34,7 +34,7 @@ jobs:
           java-version: "20"
           cache: "gradle"
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@56b90f209b02bf6d1deae490e9ef18b21a389cd4
+        uses: gradle/wrapper-validation-action@342dbebe7272035434f9baccc29a816ec6dd2c7b
       - name: Build package
         run: ./gradlew build
         env:
@@ -54,10 +54,10 @@ jobs:
       REGISTRY: ghcr.io
     steps:
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@4c0219f9ac95b02789c1075625400b2acbff50b1
+        uses: docker/setup-buildx-action@edfb0fe6204400c56fbfd3feba3fe9ad1adfa345
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        uses: docker/build-push-action@9f6f8c940b91232557f8699b21341a08624a8dce
         with:
           context: "{{defaultContext}}:plugins/source/bitbucket"
           load: true

@@ -16,12 +16,7 @@ func CryptoKeys() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("cloudkms.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.CryptoKey{}, transformers.WithPrimaryKeys("Name")),
 		Columns: []schema.Column{
-			{
-				Name:       "project_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveProject,
-				PrimaryKey: true,
-			},
+			client.ProjectIDColumn(true),
 			{
 				Name:     "rotation_period",
 				Type:     arrow.PrimitiveTypes.Int64,

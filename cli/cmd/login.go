@@ -17,6 +17,7 @@ import (
 	"github.com/cenkalti/backoff/v4"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery-api-go/config"
+	"github.com/cloudquery/cloudquery/cli/internal/env"
 	"github.com/cloudquery/cloudquery/cli/internal/team"
 	"github.com/pkg/browser"
 	"github.com/spf13/cobra"
@@ -91,8 +92,7 @@ func waitForServer(ctx context.Context, url string) error {
 }
 
 func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
-	accountsURL := getEnvOrDefault("CLOUDQUERY_ACCOUNTS_URL", defaultAccountsURL)
-	apiURL := getEnvOrDefault(envAPIURL, defaultAPIURL)
+	accountsURL := env.GetEnvOrDefault("CLOUDQUERY_ACCOUNTS_URL", defaultAccountsURL)
 
 	mux := http.NewServeMux()
 	refreshToken := ""
@@ -134,7 +134,7 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 
 		stdinFd := int(os.Stdin.Fd())
 		if !term.IsTerminal(stdinFd) {
-			return fmt.Errorf("reading from non-terminal stdin is not supported. Hint: Consider setting an api key with the `CLOUDQUERY_API_KEY` env variable")
+			return errors.New("reading from non-terminal stdin is not supported. Hint: Consider setting an api key with the `CLOUDQUERY_API_KEY` env variable")
 		}
 
 		oldState, err := term.MakeRaw(stdinFd)
@@ -162,7 +162,7 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	}
 
 	if refreshToken == "" {
-		return fmt.Errorf("failed to get refresh token")
+		return errors.New("failed to get refresh token")
 	}
 
 	fmt.Println("Authenticating...")
@@ -177,7 +177,7 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
-	cl, err := team.NewClient(apiURL, token.Value)
+	cl, err := team.NewClient(token.Value)
 	if err != nil {
 		return fmt.Errorf("failed to create API client: %w", err)
 	}

@@ -16,12 +16,7 @@ func resourceRecordSets() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("dns.googleapis.com"),
 		Transform:   client.TransformWithStruct(&dns.ResourceRecordSet{}, transformers.WithPrimaryKeys("Name", "Type")),
 		Columns: []schema.Column{
-			{
-				Name:       "project_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveProject,
-				PrimaryKey: true,
-			}, {
+			client.ProjectIDColumn(true), {
 				Name:       "managed_zone_name",
 				Type:       arrow.BinaryTypes.String,
 				Resolver:   schema.ParentColumnResolver("name"),

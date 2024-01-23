@@ -21,7 +21,7 @@ body:
     attributes:
       label: Pull request (optional)
       description:
-        Pull requests welcome! If you would like to help us implement this feature, please check our [contributions guidelines](../blob/main/CONTRIBUTING.md)
+        Pull requests are welcome for CLI and SDK features as they are both open source, but `plugins` are **open core**, and as such not all contributions to the plugins directory will be accepted if they are part of the commercial plugin offering
       options:
         - label: I can submit a pull request
           required: false

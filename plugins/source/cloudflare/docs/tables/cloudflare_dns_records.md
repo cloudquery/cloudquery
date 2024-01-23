@@ -26,3 +26,5 @@ The primary key for this table is **id**.
 |proxied|`bool`|
 |proxiable|`bool`|
 |locked|`bool`|
+|comment|`utf8`|
+|tags|`list<item: utf8, nullable>`|

@@ -61,7 +61,7 @@ jobs:
       contents: read
       packages: write
     timeout-minutes: 60
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     needs: prepare
     if: needs.prepare.outputs.plugin_releaser == 'docker'
     env:
@@ -69,23 +69,23 @@ jobs:
       REGISTRY: ghcr.io
     steps:
       - name: Log in to the Container registry
-        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        uses: docker/login-action@3d58c274f17dffee475a5520cbe67f0a882c4dbb
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@4c0219f9ac95b02789c1075625400b2acbff50b1
+        uses: docker/setup-buildx-action@edfb0fe6204400c56fbfd3feba3fe9ad1adfa345
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        uses: docker/metadata-action@9dc751fe249ad99385a2583ee0d084c400eee04e
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_PREFIX }}/cq-${{ needs.prepare.outputs.plugin_type }}-${{ needs.prepare.outputs.plugin_name }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+        uses: docker/build-push-action@9f6f8c940b91232557f8699b21341a08624a8dce
         env:
           BUILDX_NO_DEFAULT_ATTESTATIONS: 1
         with:
@@ -125,7 +125,7 @@ jobs:
 
   release-plugin-go:
     timeout-minutes: 60
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     needs: prepare
     if: needs.prepare.outputs.plugin_releaser == 'go'
     env:
@@ -140,9 +140,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.21.1-release-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
+          key: ${{ runner.os }}-go-1.21.4-release-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
           restore-keys: |
-            ${{ runner.os }}-go-1.21.1-release-cache-plugins-${{ needs.prepare.outputs.plugin_type }}-${{ needs.prepare.outputs.plugin_name }}
+            ${{ runner.os }}-go-1.21.4-release-cache-plugins-${{ needs.prepare.outputs.plugin_type }}-${{ needs.prepare.outputs.plugin_name }}
       - name: Set up Go 1.x
         uses: actions/setup-go@v4
         with:

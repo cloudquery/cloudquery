@@ -2,26 +2,66 @@ package specs
 
 import (
 	"testing"
+
+	"github.com/cloudquery/codegen/jsonschema"
+	"github.com/stretchr/testify/require"
 )
 
 func TestMigrateModeFromString(t *testing.T) {
-	var migrateMode MigrateMode
-	if err := migrateMode.UnmarshalJSON([]byte(`"forced"`)); err != nil {
-		t.Fatal(err)
-	}
-	if migrateMode != MigrateModeForced {
-		t.Fatalf("expected MigrateModeForced, got %v", migrateMode)
-	}
-	if err := migrateMode.UnmarshalJSON([]byte(`"safe"`)); err != nil {
-		t.Fatal(err)
-	}
-	if migrateMode != MigrateModeSafe {
-		t.Fatalf("expected MigrateModeSafe, got %v", migrateMode)
-	}
+	m, err := MigrateModeFromString("safe")
+	require.NoError(t, err)
+	require.Equal(t, MigrateModeSafe, m)
+
+	m, err = MigrateModeFromString("forced")
+	require.NoError(t, err)
+	require.Equal(t, MigrateModeForced, m)
+
+	m, err = MigrateModeFromString("Forced")
+	require.Error(t, err)
+	require.Equal(t, MigrateModeSafe, m)
+
+	m, err = MigrateModeFromString("")
+	require.Error(t, err)
+	require.Equal(t, MigrateModeSafe, m)
 }
 
-func TestMigrateMode(t *testing.T) {
-	for _, migrateModeStr := range migrateModeStrings {
+func TestMigrateMode_JSONSchemaExtend(t *testing.T) {
+	data, err := jsonschema.Generate(new(MigrateMode))
+	require.NoError(t, err)
+	jsonschema.TestJSONSchema(t, string(data), []jsonschema.TestCase{
+		{
+			Name: "empty",
+			Err:  true,
+			Spec: `""`,
+		},
+		{
+			Name: "null",
+			Err:  true,
+			Spec: `null`,
+		},
+		{
+			Name: "bad type",
+			Err:  true,
+			Spec: `123`,
+		},
+		{
+			Name: "bad value",
+			Err:  true,
+			Spec: `"extra"`,
+		},
+		{
+			Name: "safe",
+			Spec: `"safe"`,
+		},
+		{
+			Name: "forced",
+			Spec: `"forced"`,
+		},
+	})
+}
+
+func TestMigrateModeRoundTrip(t *testing.T) {
+	for _, migrateModeStr := range AllMigrateModes {
 		migrateMode, err := MigrateModeFromString(migrateModeStr)
 		if err != nil {
 			t.Fatal(err)
