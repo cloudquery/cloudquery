@@ -61,7 +61,7 @@ jobs:
       contents: read
       packages: write
     timeout-minutes: 60
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     needs: prepare
     if: needs.prepare.outputs.plugin_releaser == 'docker'
     env:
@@ -125,7 +125,7 @@ jobs:
 
   release-plugin-go:
     timeout-minutes: 60
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     needs: prepare
     if: needs.prepare.outputs.plugin_releaser == 'go'
     env:
