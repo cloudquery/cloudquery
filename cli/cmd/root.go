@@ -8,6 +8,7 @@ import (
 	"github.com/rs/zerolog"
 
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
+	"github.com/cloudquery/cloudquery/cli/internal/env"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/thoas/go-funk"
@@ -46,7 +47,7 @@ func NewCmdRoot() *cobra.Command {
 	if legacyTelemetry != "" {
 		defaultTelemetryValue = "none"
 	}
-	err := telemetryLevel.Set(getEnvOrDefault("CQ_TELEMETRY_LEVEL", defaultTelemetryValue))
+	err := telemetryLevel.Set(env.GetEnvOrDefault("CQ_TELEMETRY_LEVEL", defaultTelemetryValue))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to set telemetry level: "+err.Error())
 		os.Exit(1)

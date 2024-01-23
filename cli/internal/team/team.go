@@ -7,17 +7,15 @@ import (
 	"strings"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
+	"github.com/cloudquery/cloudquery/cli/internal/api"
 )
 
 type Client struct {
 	api *cloudquery_api.ClientWithResponses
 }
 
-func NewClient(url string, token string) (*Client, error) {
-	cl, err := cloudquery_api.NewClientWithResponses(url, cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
-		req.Header.Set("Authorization", "Bearer "+token)
-		return nil
-	}))
+func NewClient(token string) (*Client, error) {
+	cl, err := api.NewClient(token)
 	if err != nil {
 		return nil, err
 	}
@@ -26,9 +24,9 @@ func NewClient(url string, token string) (*Client, error) {
 	}, nil
 }
 
-func NewClientFromAPI(api *cloudquery_api.ClientWithResponses) *Client {
+func NewClientFromAPI(apiClient *cloudquery_api.ClientWithResponses) *Client {
 	return &Client{
-		api: api,
+		api: apiClient,
 	}
 }
 
