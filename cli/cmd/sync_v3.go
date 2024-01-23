@@ -249,6 +249,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			res, err := progressAPIClient.CreateSyncRunProgressWithResponse(ctx, teamName, syncName, syncRunUUID, cloudquery_api.CreateSyncRunProgressJSONRequestBody{Rows: totalResources})
 			if err != nil {
 				log.Warn().Err(err).Msg("Failed to send sync progress to API")
+				return
 			}
 			if res.StatusCode() != http.StatusNoContent {
 				log.Warn().Str("status", res.Status()).Int("code", res.StatusCode()).Msg("Failed to send sync progress to API")
