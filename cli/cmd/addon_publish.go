@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
 	"os"
 	"os/signal"
 	"path/filepath"
@@ -12,6 +11,7 @@ import (
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery/cli/internal/api"
 	"github.com/cloudquery/cloudquery/cli/internal/hub"
 	"github.com/cloudquery/cloudquery/cli/internal/publish"
 	"github.com/spf13/cobra"
@@ -82,13 +82,9 @@ func runAddonPublish(ctx context.Context, cmd *cobra.Command, args []string) err
 	name := fmt.Sprintf("%s/%s/%s@%s", manifest.TeamName, manifest.AddonType, manifest.AddonName, version)
 	fmt.Printf("Publishing addon %s to CloudQuery Hub...\n", name)
 
-	c, err := cloudquery_api.NewClientWithResponses(getEnvOrDefault(envAPIURL, defaultAPIURL),
-		cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
-			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
-			return nil
-		}))
+	c, err := api.NewClient(getEnvOrDefault(envAPIURL, defaultAPIURL), token.Value)
 	if err != nil {
-		return fmt.Errorf("failed to create hub client: %w", err)
+		return err
 	}
 
 	// create new draft version
