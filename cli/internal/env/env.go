@@ -1,8 +1,8 @@
-package cmd
+package env
 
 import "os"
 
-func getEnvOrDefault(env, def string) string {
+func GetEnvOrDefault(env, def string) string {
 	if v := os.Getenv(env); v != "" {
 		return v
 	}
