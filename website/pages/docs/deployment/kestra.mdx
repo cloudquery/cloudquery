@@ -11,7 +11,7 @@ This tutorial shows how to run CloudQuery as a [Kestra](https://kestra.io/) flow
 
 You can use Kestra to: 
 - schedule [CloudQuery syncs](https://kestra.io/plugins/tasks/io.kestra.plugin.cloudquery.Sync) in a simple, declarative way using a built-in code editor
-- run your syncs based on events from other systems e.g. a new file in a folder, new message in a queue, or a new webhook request
+- run your syncs based on events from other systems e.g. a new file in your S3 bucket, new message in a queue, or a new webhook request
 - monitor your syncs from a friendly UI and get notified when they fail.
 
 ## Step 1: Install Kestra
@@ -27,7 +27,7 @@ Once the container is running, open http://localhost:8080 in your browser.
 
 ## Step 2: Create a Kestra flow
 
-Inside the Kestra UI, go to the `Flows` tab and click on `Create`. You can now paste the following content:
+Inside the Kestra UI, go to the `Flows` page and click on `Create`. You can now paste the following content:
 
 ```yaml copy
 id: cloudquery_sync
