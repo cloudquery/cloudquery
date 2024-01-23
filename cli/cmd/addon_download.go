@@ -72,7 +72,7 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return fmt.Errorf("invalid addon ref %q: version must start with 'v'", args[0])
 	}
 
-	c, err := api.NewClient(getEnvOrDefault(envAPIURL, defaultAPIURL), token.Value)
+	c, err := api.NewClient(token.Value)
 	if err != nil {
 		return err
 	}
