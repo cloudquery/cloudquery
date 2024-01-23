@@ -31,7 +31,7 @@
   "plugins/destination/snowflake+FILLER": "0.0.0",
   "plugins/source/datadog": "4.2.8",
   "plugins/source/datadog+FILLER": "0.0.0",
-  "plugins/destination/bigquery": "3.3.14",
+  "plugins/destination/bigquery": "3.3.15",
   "plugins/destination/bigquery+FILLER": "0.0.0",
   "plugins/source/pagerduty": "3.1.4",
   "plugins/source/pagerduty+FILLER": "0.0.0",
