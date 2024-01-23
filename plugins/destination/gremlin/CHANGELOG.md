@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.21](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.2.20...plugins-destination-gremlin-v2.2.21) (2024-01-23)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#16207](https://github.com/cloudquery/cloudquery/issues/16207)) ([9a9194a](https://github.com/cloudquery/cloudquery/commit/9a9194ad474f27bff2008710fcf0b9524dc2a1ce))
+
 ## [2.2.20](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.2.19...plugins-destination-gremlin-v2.2.20) (2024-01-16)
 
 
