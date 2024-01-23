@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.1.6...plugins-destination-postgresql-v7.2.0) (2024-01-23)
+
+
+### Features
+
+* Handle All types of Schema Changes ([#16194](https://github.com/cloudquery/cloudquery/issues/16194)) ([883f7e1](https://github.com/cloudquery/cloudquery/commit/883f7e108f508a9cadcc73f7a80ed1e526779180))
+
 ## [7.1.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.1.5...plugins-destination-postgresql-v7.1.6) (2024-01-16)
 
 

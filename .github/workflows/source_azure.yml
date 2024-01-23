@@ -20,7 +20,7 @@ jobs:
   plugins-source-azure:
     timeout-minutes: 30
     name: "plugins/source/azure"
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./plugins/source/azure
@@ -47,7 +47,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v5.0.1
+          version: v5.0.2
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -60,7 +60,7 @@ jobs:
         run: make test
   validate-release:
     timeout-minutes: 30
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     env:
       CGO_ENABLED: 0
     steps:
