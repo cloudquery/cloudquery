@@ -5,7 +5,7 @@ go 1.21.4
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/beatlabs/github-auth v0.0.0-20231208231443-3b7665fb4bb8
-	github.com/cloudquery/plugin-sdk/v4 v4.27.0
+	github.com/cloudquery/plugin-sdk/v4 v4.27.1
 	github.com/gofri/go-github-ratelimit v1.0.3
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v49 v49.0.0
@@ -32,7 +32,7 @@ require (
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.7.0 // indirect
-	github.com/cloudquery/plugin-pb-go v1.16.5 // indirect
+	github.com/cloudquery/plugin-pb-go v1.16.6 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect
