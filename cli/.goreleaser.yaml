@@ -16,6 +16,7 @@ dockers:
     goarch: amd64
     dockerfile: Dockerfile.goreleaser
     image_templates:
+      - "ghcr.io/cloudquery/cloudquery:latest"
       - "ghcr.io/cloudquery/cloudquery:latest-linux-amd64"
       - "ghcr.io/cloudquery/cloudquery:{{.Version}}-linux-amd64"
       - "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}-linux-amd64"
@@ -43,11 +44,6 @@ docker_manifests:
   image_templates:
   - "ghcr.io/cloudquery/cloudquery:{{.Version}}-linux-amd64"
   - "ghcr.io/cloudquery/cloudquery:{{.Version}}-linux-arm64"
-
-- name_template: "ghcr.io/cloudquery/cloudquery:latest"
-  image_templates:
-  - "ghcr.io/cloudquery/cloudquery:latest-linux-amd64"
-  - "ghcr.io/cloudquery/cloudquery:latest-linux-arm64"
 
 - name_template: "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}"
   image_templates:
