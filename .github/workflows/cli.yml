@@ -80,6 +80,8 @@ jobs:
         with:
           go-version-file: cli/go.mod
           cache: false
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: goreleaser/goreleaser-action@v5
