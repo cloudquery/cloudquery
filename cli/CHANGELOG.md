@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.1.0...cli-v5.1.1) (2024-01-24)
+
+
+### Bug Fixes
+
+* Build arm64 docker images with arm64 platform ([#16231](https://github.com/cloudquery/cloudquery/issues/16231)) ([23dbf9c](https://github.com/cloudquery/cloudquery/commit/23dbf9cf882bd6c9b0895aa1dd99bcb4412a7803))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.1 ([#16296](https://github.com/cloudquery/cloudquery/issues/16296)) ([ab4a0da](https://github.com/cloudquery/cloudquery/commit/ab4a0dace0a870755fd22d92c6e9c999351f594e))
+
 ## [5.1.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.0.2...cli-v5.1.0) (2024-01-23)
 
 
