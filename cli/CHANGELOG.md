@@ -5,6 +5,28 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.1.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.1.0...cli-v5.1.1) (2024-01-24)
+
+
+### Bug Fixes
+
+* Build arm64 docker images with arm64 platform ([#16231](https://github.com/cloudquery/cloudquery/issues/16231)) ([23dbf9c](https://github.com/cloudquery/cloudquery/commit/23dbf9cf882bd6c9b0895aa1dd99bcb4412a7803))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.1 ([#16296](https://github.com/cloudquery/cloudquery/issues/16296)) ([ab4a0da](https://github.com/cloudquery/cloudquery/commit/ab4a0dace0a870755fd22d92c6e9c999351f594e))
+
+## [5.1.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.0.2...cli-v5.1.0) (2024-01-23)
+
+
+### Features
+
+* Report progress for sync runs ([#16229](https://github.com/cloudquery/cloudquery/issues/16229)) ([7ec3b59](https://github.com/cloudquery/cloudquery/commit/7ec3b59a3fe09d3ff4b5139c4093e5eb47aecf91))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.7.0 ([#16250](https://github.com/cloudquery/cloudquery/issues/16250)) ([301e99d](https://github.com/cloudquery/cloudquery/commit/301e99d11024a9e5e74ca394266f6e8d5aa29dc5))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.16.6 ([#16255](https://github.com/cloudquery/cloudquery/issues/16255)) ([4b66624](https://github.com/cloudquery/cloudquery/commit/4b66624a63042bef191e89ef3f79788fbc95d7bb))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.0 ([#16237](https://github.com/cloudquery/cloudquery/issues/16237)) ([3fcdab0](https://github.com/cloudquery/cloudquery/commit/3fcdab08816ad9de7bb4eecab59c7be1bda3d00c))
+
 ## [5.0.2](https://github.com/cloudquery/cloudquery/compare/cli-v5.0.1...cli-v5.0.2) (2024-01-23)
 
 
