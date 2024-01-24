@@ -1,1 +1,0 @@
-In order to fetch information from Typeform, `cloudquery` needs to authenticate using a [personal access token for Typeform's APIs](https://www.typeform.com/developers/get-started/personal-access-token/). Follow the instructions on the Typeform website and create a read-only token.
