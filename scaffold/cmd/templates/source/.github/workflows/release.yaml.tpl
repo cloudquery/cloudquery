@@ -46,7 +46,7 @@ jobs:
         id: release-notes
         uses: actions/github-script@v6
         env:
-          PRERELEASE: ${{ steps.semver_parser.outputs.prerelease }}
+          PRERELEASE: ${{"{{"}} steps.semver_parser.outputs.prerelease {{"}}"}}
         with:
           result-encoding: string
           script: |
@@ -66,7 +66,7 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@3a8ed858a4e3fb487c6f53658ec40b2b1d45d9d8
         with:
           find: "(?i)version_source_{{.Name}}"
-          replace: ${{ steps.semver_parser.outputs.fullversion }}
+          replace: ${{"{{"}} steps.semver_parser.outputs.fullversion {{"}}"}}
           include: ./docs/*.md
 
       - name: Run package command
