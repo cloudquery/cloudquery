@@ -7,8 +7,8 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 // MigrateTableBatch migrates a table. It forms part of the writer.MixedBatchWriter interface.
@@ -205,14 +205,14 @@ func (c *Client) migrateToCQID(ctx context.Context, tableName string, _ schema.C
 	sanitizedPKName := pgx.Identifier{getPKName(&schema.Table{Name: tableName})}.Sanitize()
 
 	// Drop existing primary key
-	_, err = tx.Exec(ctx, "alter table "+sanitizedTableName+" drop constraint "+sanitizedPKName)
+	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" DROP CONSTRAINT "+sanitizedPKName)
 	if err != nil {
 		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to drop primary key")
 		return err
 	}
 
 	// Create new Primary Key with CQID
-	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ADD CONSTRAINT "+sanitizedPKName+" Primary Key ("+pgx.Identifier{schema.CqIDColumn.Name}.Sanitize()+")")
+	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ADD CONSTRAINT "+sanitizedPKName+" PRIMARY KEY ("+pgx.Identifier{schema.CqIDColumn.Name}.Sanitize()+")")
 	if err != nil {
 		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to create new primary key on _cq_id")
 		return err
