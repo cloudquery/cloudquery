@@ -7,6 +7,7 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/jackc/pgx/v5"
 )
 
@@ -169,10 +170,11 @@ func (c *Client) dropTable(ctx context.Context, tableName string) error {
 	return nil
 }
 
-func (c *Client) migrateToCQID(ctx context.Context, tableName string, _ schema.Column) error {
+func (c *Client) migrateToCQID(ctx context.Context, tableName string, _ schema.Column) (err error) {
 	// Steps:
 	// acquire connection
-	conn, err := c.conn.Acquire(ctx)
+	var conn *pgxpool.Conn
+	conn, err = c.conn.Acquire(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to acquire connection: %w", err)
 	}
