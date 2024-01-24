@@ -179,10 +179,26 @@ func (c *Client) migrateToCQID(ctx context.Context, tableName string, _ schema.C
 	}
 	defer conn.Release()
 	// start transaction
-	tx, err := conn.BeginTx(ctx, pgx.TxOptions{})
+	tx, err := conn.BeginTx(ctx, pgx.TxOptions{
+		IsoLevel: pgx.Serializable,
+	})
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction: %w", err)
 	}
+
+	defer func() {
+		if err == nil {
+			err = tx.Commit(ctx)
+			if err != nil {
+				c.logger.Error().Err(err).Msg("failed to commit transaction")
+			}
+		}
+		if err != nil {
+			if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
+				c.logger.Error().Err(rollbackErr).Str("table", tableName).Msg("Failed to rollback transaction")
+			}
+		}
+	}()
 
 	sanitizedTableName := pgx.Identifier{tableName}.Sanitize()
 	sanitizedPKName := pgx.Identifier{getPKName(&schema.Table{Name: tableName})}.Sanitize()
@@ -191,9 +207,6 @@ func (c *Client) migrateToCQID(ctx context.Context, tableName string, _ schema.C
 	_, err = tx.Exec(ctx, "alter table "+sanitizedTableName+" drop constraint "+sanitizedPKName)
 	if err != nil {
 		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to drop primary key")
-		if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
-			return fmt.Errorf("failed to rollback transaction: %w", rollbackErr)
-		}
 		return err
 	}
 
@@ -201,15 +214,7 @@ func (c *Client) migrateToCQID(ctx context.Context, tableName string, _ schema.C
 	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ADD CONSTRAINT "+sanitizedPKName+" Primary Key ("+pgx.Identifier{schema.CqIDColumn.Name}.Sanitize()+")")
 	if err != nil {
 		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to create new primary key on _cq_id")
-		if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
-			return fmt.Errorf("failed to rollback transaction: %w", rollbackErr)
-		}
 		return err
-	}
-	// Commit transaction if no error
-	err = tx.Commit(ctx)
-	if err != nil {
-		return fmt.Errorf("failed to commit transaction: %w", err)
 	}
 	return nil
 }
