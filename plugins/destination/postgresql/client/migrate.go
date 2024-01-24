@@ -98,7 +98,6 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 		switch change.Type {
 		case schema.TableColumnChangeTypeAdd:
 			return c.addColumn(ctx, tableName, change.Current)
-
 		case schema.TableColumnChangeTypeRemove:
 			continue
 		case schema.TableColumnChangeTypeMoveToCQOnly:
