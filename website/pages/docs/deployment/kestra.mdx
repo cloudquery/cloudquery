@@ -1,101 +1,87 @@
 ---
 title: Orchestrating CloudQuery Syncs with Kestra
-description: Learn how to run CloudQuery as a Kestra flow, using the AWS source- and Postgresql destination plugins as an example.
+description: Learn how to run CloudQuery as a Kestra flow, using the HackerNews API as a source and CSV file as a destination.
 tag: tutorial
-date: 2023/04/21
+date: 2024/01/22
 ---
 
 # Orchestrating CloudQuery Syncs with Kestra
 
-In this tutorial, we will show you how to run CloudQuery as a [Kestra](https://kestra.io/) flow, using the AWS source- and Postgresql destination plugins as an example. Kestra is an open source orchestration tool that allows you to schedule and monitor CloudQuery syncs. 
+This tutorial shows how to run CloudQuery as a [Kestra](https://kestra.io/) flow, using the HackerNews API as a source and CSV file as a destination. Kestra is an open-source event-driven orchestrator, which has a [dedicated CloudQuery plugin](https://kestra.io/plugins/plugin-cloudquery).
+
+You can use Kestra to: 
+- schedule [CloudQuery syncs](https://kestra.io/plugins/tasks/io.kestra.plugin.cloudquery.Sync) in a simple, declarative way using a built-in code editor
+- run your syncs based on events from other systems e.g. a new file in your S3 bucket, new message in a queue, or a new webhook request
+- monitor your syncs from a friendly UI and get notified when they fail.
 
 ## Step 1: Install Kestra
 
-Follow the [Kestra Deployment with Docker guide](https://kestra.io/docs/administrator-guide/deployment/docker) to run Kestra locally inside Docker containers. 
+Follow the [Getting started guide](https://kestra.io/docs/getting-started) to launch Kestra locally in Docker. It's as easy as running a single Docker command:
 
-When it's running, open http://localhost:8080 in your browser.  
+```bash
+docker run --pull=always --rm -it -p 8080:8080 --user=root -v /var/run/docker.sock:/var/run/docker.sock -v /tmp:/tmp kestra/kestra:latest-full server local
+```
 
-## Step 2: Set up a PostgreSQL database
+Once the container is running, open http://localhost:8080 in your browser.  
 
-We will use a PostgreSQL database as a destination for our CloudQuery syncs. You can use any PostgreSQL database, but for this tutorial we will use a Docker container.
-
-```bash copy
-docker run --name cloudquery-postgres -e POSTGRES_PASSWORD=pass -p 5432:5432 -d postgres
-``` 
 
 ## Step 2: Create a Kestra flow
 
-Inside the Kestra UI, go to the `Flows` tab and click on `Create`. You can now create a new flow with the following content:
+Inside the Kestra UI, go to the `Flows` page and click on `Create`. You can now paste the following content:
 
 ```yaml copy
-id: "cloudquery"
-namespace: "io.kestra"
+id: cloudquery_sync
+namespace: dev
+
 tasks:
-- id: "bash"
-  type: "io.kestra.core.tasks.scripts.Bash"
-  runner: DOCKER
-  inputFiles:
-    config.yml: |
-      kind: source
-      spec:
-        name: aws
-        path: cloudquery/aws
-        registry: cloudquery
-        version: "VERSION_SOURCE_AWS"
-        tables: ["aws_ec2*"]
-        destinations: ["postgresql"]
+  - id: hn_to_csv
+    type: io.kestra.plugin.cloudquery.Sync
+    incremental: false
+    outputFiles:
+      - "cloudquery/**"
+    configs:
+      - kind: source
         spec:
-      ---
-      kind: destination
-      spec:
-        name: "postgresql"
-        path: "cloudquery/postgresql"
-        registry: cloudquery
-        version: "VERSION_DESTINATION_POSTGRESQL"
-        write_mode: "overwrite-delete-stale"
+          name: hackernews
+          path: cloudquery/hackernews
+          registry: cloudquery
+          version: v3.0.21
+          tables: ["*"]
+          destinations:
+            - file
+          spec:
+            item_concurrency: 100
+            start_time: "2024-01-22T00:00:00Z"
+      - kind: destination
         spec:
-          connection_string: ${PG_CONNECTION_STRING}
-  dockerOptions:
-    image: ghcr.io/cloudquery/cloudquery:latest
-    entryPoint: [""]
-  warningOnStdErr: false
-  env:
-    PG_CONNECTION_STRING: "postgresql://postgres:pass@host.docker.internal:5432/cloudquery?sslmode=disable"
-  commands:
-  - '/app/cloudquery sync {{ workingDir }}/config.yml --log-console'
+          name: file
+          path: cloudquery/file
+          version: v3.4.17
+          spec:
+            path: "cloudquery/{{TABLE}}/{{UUID}}.{{FORMAT}}"
+            format: csv
 ```
 
-We are using the Docker runner with a `Bash` task to run the `cloudquery sync` command. The `inputFiles` section allows us to pass a configuration file to the task. It is also possible to read this configuration file from disk or a remote location, but we will keep it simple for now.
+The flow will extract all tables from the HackerNews API and load them to a CSV file. You can download that CSV file from the Outputs tab in the Kestra UI after each flow execution. You may notice that the `configs` property is virtually identical to your CloudQuery configuration file. All we had to add was to move the CloudQuery sources and destinations into a list of `configs` in the `cloudquery.Sync` task.
 
 import { Callout } from 'nextra-theme-docs';
 
 <Callout type="info">
-The example places the Postgres connection string in an environment variable. In production, you should use a secret manager like [Vault](https://www.vaultproject.io/) to load the connection string into environment variables.
+Kestra flows are built using a declarative YAML syntax, in the same way as you know it from CloudQuery.
 </Callout>
 
-The AWS config is just an example. It is configured to sync all EC2 tables and their relations. 
+Once you configured the flow in the editor, click on `Save`.
 
 ![Kestra Flow Editor Screenshot](/images/docs/deployment/kestra-flow.png)
 
-<Callout type="info">
-In our example config we are using the Postgres host `host.docker.internal` to connect to the database. This is a special hostname that Docker resolves to the host machine. Make sure to replace this with the hostname of your database if you are not running Postgres via Docker.
-</Callout>
 
 ## Step 3: Run the flow
 
-With the config entered, click `Save`, then click `New Execution`. Click `OK` on the confirmation.
+To manually start a Kestra flow, click on the `Execute` button in the top right corner. Then, confirm by clicking on `Execute`.
 
-If everything was set up correctly, you should now see the sync running in the `Executions` tab. You can click on the execution to see the logs for any errors.
+You should now see the sync running in the `Executions` tab. You can navigate to the Logs tab to check the logs and validate everything runs as expected. Also, you can download the extracted CSV files from the `Outputs` tab:
 
 ![Kestra Flow Execution Screenshot](/images/docs/deployment/kestra-execution.png)
-
-<Callout type="info">
-If you get an error related to config.yml not being found, try making the following change to the Kestra Docker-compose file to give the volume write access:
-
-```yaml
-- /tmp/kestra-wd:/tmp/kestra-wd:rw
-```
-</Callout>
 
 ## Step 4: Schedule the flow
 
@@ -105,10 +91,11 @@ To run the flow periodically, we can add a trigger to run it on a schedule. Back
 triggers:
   - id: schedule
     type: io.kestra.core.models.triggers.types.Schedule
-    cron: "0 6 * * *"
+    cron: "0 9 * * *" # every day at 9am
+    timezone: US/Eastern
 ```
 
-This cron expression will run the flow every day at 06:00. You can use [crontab.guru](https://crontab.guru/) to generate cron expressions for the destination you need and replace the one in the example above. Kestra also supports these special values for `cron`:
+This cron expression will run the flow every day at 09:00. You can use [crontab.guru](https://crontab.guru/) to generate cron expressions and replace the one in the example above. Kestra also supports these special values for `cron`:
 
 ```text
 @yearly
@@ -120,8 +107,10 @@ This cron expression will run the flow every day at 06:00. You can use [crontab.
 @hourly
 ```
 
-With this in place, remember to click `Save` again. Your CloudQuery sync will now be run on a regular schedule.
+With this in place, remember to click `Save` again. Your CloudQuery sync will now run on a regular schedule.
 
 ## Next steps
 
-This tutorial was just a quick introduction to help you get started with a CloudQuery deployment on Kestra. You can now create additional Kestra tasks to perform transformations, send notifications and more. For more information, check out the [CloudQuery docs](/docs) and the [Kestra docs](https://kestra.io/docs/). To productionize your Kestra deployment, you will likely need to deploy it to a cloud container environment, such as Kubernetes. For more information, see the [Kestra Deployment with Kubernetes guide](https://kestra.io/docs/administrator-guide/deployment/kubernetes). 
+This tutorial was just a quick introduction to help you get started with a CloudQuery deployment on [Kestra](https://kestra.io/). You can now create additional Kestra tasks to perform transformations, send notifications and more. For more information, check out the [CloudQuery docs](/docs) and the [Kestra docs](https://kestra.io/docs/). 
+
+To productionize your Kestra deployment, you will likely need to deploy it to a cloud environment, such as Kubernetes. For more information, see the [Kestra Deployment with Kubernetes guide](https://kestra.io/docs/administrator-guide/deployment/kubernetes) and if you have any questions, you can reach the Kestra team [via Community Slack](https://kestra.io/slack).
