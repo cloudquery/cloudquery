@@ -75,7 +75,7 @@ func runPluginDocsUpload(ctx context.Context, cmd *cobra.Command, args []string)
 
 	fmt.Printf("Uploading documentation for plugin %v...\n", pluginRef)
 
-	c, err := api.NewClient(getEnvOrDefault(envAPIURL, defaultAPIURL), token.Value)
+	c, err := api.NewClient(token.Value)
 	if err != nil {
 		return err
 	}

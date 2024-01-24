@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v4.0.13...plugins-destination-mysql-v4.1.0) (2024-01-23)
+
+
+### Features
+
+* Handle All types of Schema Changes ([#16193](https://github.com/cloudquery/cloudquery/issues/16193)) ([b70cb83](https://github.com/cloudquery/cloudquery/commit/b70cb835bab44a849818d3b78268400ceb5957eb))
+
 ## [4.0.13](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v4.0.12...plugins-destination-mysql-v4.0.13) (2024-01-16)
 
 

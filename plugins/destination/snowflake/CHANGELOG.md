@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.3.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.3.9...plugins-destination-snowflake-v3.3.10) (2024-01-23)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#16211](https://github.com/cloudquery/cloudquery/issues/16211)) ([1a12eb5](https://github.com/cloudquery/cloudquery/commit/1a12eb53e4cd8feb61a9559fa57806fdda15ce7b))
+* **deps:** Update module github.com/snowflakedb/gosnowflake to v1.7.2 ([#16222](https://github.com/cloudquery/cloudquery/issues/16222)) ([333e565](https://github.com/cloudquery/cloudquery/commit/333e565dfff53cc2729b09636879e7d29973ff43))
+
 ## [3.3.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.3.8...plugins-destination-snowflake-v3.3.9) (2024-01-16)
 
 

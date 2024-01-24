@@ -88,7 +88,7 @@ func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) er
 	name := fmt.Sprintf("%s/%s@%s", teamName, pluginName, pkgJSON.Version)
 	fmt.Printf("Publishing plugin %s to CloudQuery Hub...\n", name)
 
-	c, err := api.NewClient(getEnvOrDefault(envAPIURL, defaultAPIURL), token.Value)
+	c, err := api.NewClient(token.Value)
 	if err != nil {
 		return err
 	}
