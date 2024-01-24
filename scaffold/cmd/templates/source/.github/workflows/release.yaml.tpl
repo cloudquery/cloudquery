@@ -16,23 +16,72 @@ jobs:
         uses: booxmedialtd/ws-action-parse-semver@7784200024d6b3fc01253e617ec0168daf603de3
         with:
           input_string: ${{"{{"}}github.ref_name{{"}}"}}
+          # `version_extractor_regex` is required to parse 'v1.0.0'.
+          # If you're tagging releases without `v` prefix, remove `version_extractor_regex` param.
+          # See doc for more details:
+          # https://github.com/marketplace/actions/parse-semver#version_extractor_regex
+          version_extractor_regex: '^v(.*)$'
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
           go-version-file: go.mod
-      - name: Run GoReleaser Dry-Run
-        uses: goreleaser/goreleaser-action@v5
+
+      # Needed for shell escape
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v4
         with:
-          version: latest
-          args: release --clean --skip-validate --skip-publish --skip-sign
-      - name: Run GoReleaser
-        uses: goreleaser/goreleaser-action@v5
-        with:
-          version: latest
-          args: release --clean --skip-sign
+          node-version: 'lts/*'
+
+      - name: Install shell escape
+        run: |
+              npm install shell-escape@0.2.0
+
+      - name: Get Release Notes
+        id: release-notes
+        uses: actions/github-script@v6
         env:
-          GITHUB_TOKEN: ${{"{{"}} secrets.GITHUB_TOKEN {{"}}"}}
+          PRERELEASE: ${{ steps.semver_parser.outputs.prerelease }}
+        with:
+          result-encoding: string
+          script: |
+            const shellescape = require('shell-escape');
+            const { PRERELEASE } = process.env;
+            if (PRERELEASE) {
+             return shellescape(["This is a pre-release version of the plugin and should be used for testing purposes only"])
+            }
+            const { data } = await github.rest.repos.getReleaseByTag({
+              owner: "{{.Org}}",
+              repo: context.repo.repo,
+              tag: context.ref.replace('refs/tags/', ''),
+            });
+            return shellescape([data.body]);
+
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@3a8ed858a4e3fb487c6f53658ec40b2b1d45d9d8
+        with:
+          find: "(?i)version_source_{{.Name}}"
+          replace: ${{ steps.semver_parser.outputs.fullversion }}
+          include: ./docs/*.md
+
+      - name: Run package command
+        run: |
+          rm -rf docs/tables.md
+          go run main.go package -m ${{"{{"}} steps.release-notes.outputs.result {{"}}"}} ${{"{{"}} steps.semver_parser.outputs.fullversion {{"}}"}} .
+
+      - name: Setup CloudQuery
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: v5.0.1
+
+      - name: Publish plugin to hub
+        # See https://docs.cloudquery.io/docs/deployment/generate-api-key for instructions how to generate this key.
+        env:
+          CLOUDQUERY_API_KEY: ${{"{{"}} secrets.CLOUDQUERY_API_KEY {{"}}"}}
+        run: |
+          cloudquery plugin publish --finalize
