@@ -16,7 +16,6 @@ jobs:
         uses: booxmedialtd/ws-action-parse-semver@7784200024d6b3fc01253e617ec0168daf603de3
         with:
           input_string: ${{"{{"}}github.ref_name{{"}}"}}
-          # `version_extractor_regex` is required to parse 'v1.0.0'.
           # If you're tagging releases without `v` prefix, remove `version_extractor_regex` param.
           # See doc for more details:
           # https://github.com/marketplace/actions/parse-semver#version_extractor_regex
