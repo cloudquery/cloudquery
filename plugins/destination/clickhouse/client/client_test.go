@@ -47,6 +47,8 @@ func TestPlugin(t *testing.T) {
 			SafeMigrations: plugin.SafeMigrations{
 				AddColumn:    true,
 				RemoveColumn: true,
+				// MovePKToCQOnly- is only a change to the underlying PKs, and because clickhouse only supports append only mode this is not a factor
+				MovePKToCQOnly: true,
 			},
 		},
 		plugin.WithTestSourceAllowNull(types.CanBeNullable),
