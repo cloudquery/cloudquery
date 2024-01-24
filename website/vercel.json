@@ -403,6 +403,10 @@
       "destination": "/integrations/mongodbatlas"
     },
     {
+      "source": "/docs/plugins/sources/airtable/tables/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/airtable/tables/:path*"
+    },
+    {
       "source": "/docs/plugins/sources/alicloud/tables/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/alicloud/tables/:path*"
     },
@@ -563,6 +567,10 @@
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/snyk/tables/:path*"
     },
     {
+      "source": "/docs/plugins/sources/square/tables/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/square/tables/:path*"
+    },
+    {
       "source": "/docs/plugins/sources/stripe/tables/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/stripe/tables/:path*"
     },
@@ -575,12 +583,20 @@
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/terraform/tables/:path*"
     },
     {
+      "source": "/docs/plugins/sources/typeform/tables/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/typeform/tables/:path*"
+    },
+    {
       "source": "/docs/plugins/sources/vault/tables/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/vault/tables/:path*"
     },
     {
       "source": "/docs/plugins/sources/vercel/tables/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/vercel/tables/:path*"
+    },
+    {
+      "source": "/docs/plugins/sources/airtable/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/airtable"
     },
     {
       "source": "/docs/plugins/sources/alicloud/:path*",
@@ -743,6 +759,10 @@
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/snyk"
     },
     {
+      "source": "/docs/plugins/sources/square/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/square"
+    },
+    {
       "source": "/docs/plugins/sources/stripe/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/stripe"
     },
@@ -753,6 +773,10 @@
     {
       "source": "/docs/plugins/sources/terraform/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/terraform"
+    },
+    {
+      "source": "/docs/plugins/sources/typeform/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/typeform"
     },
     {
       "source": "/docs/plugins/sources/vault/:path*",
