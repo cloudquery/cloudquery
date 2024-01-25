@@ -1,0 +1,16 @@
+kind: "source"
+spec:
+  name: "test"
+  path: "cloudquery/test"
+  registry: "github"
+  destinations: [test]
+  version: "v3.1.15" # latest version of source test plugin
+  tables: ["*"]
+  deterministic_cq_id: true
+---
+kind: "destination"
+spec:
+  name: "test"
+  path: "cloudquery/test"
+  registry: "github"
+  version: "v2.2.14" # latest version of destination test plugin

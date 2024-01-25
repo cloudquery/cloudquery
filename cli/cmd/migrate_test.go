@@ -37,6 +37,14 @@ func TestMigrate(t *testing.T) {
 			config: "sync-missing-path-error.yml",
 			err:    "Error: failed to validate destination test: path is required",
 		},
+		{
+			config: "removed-options.yml",
+			err:    "failed to migrate v3 source test: `deterministic_cqid` is no longer a valid option in your source spec. It is enabled by default and cannot be overridden",
+		},
+		{
+			config: "removed-options-dest.yml",
+			err:    "`pk_mode` is no longer a valid option in your destination spec",
+		},
 	}
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
