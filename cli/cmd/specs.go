@@ -35,7 +35,7 @@ func CLISourceSpecToPbSpec(spec specs.Source) pbSpecs.Source {
 		SkipDependentTables: spec.SkipDependentTables,
 		Destinations:        spec.Destinations,
 		Spec:                spec.Spec,
-		DeterministicCQID:   spec.DeterministicCQID,
+		DeterministicCQID:   spec.DeterministicCQID != nil && *spec.DeterministicCQID,
 	}
 }
 
@@ -63,8 +63,11 @@ func CLIMigrateModeToPbMigrateMode(migrateMode specs.MigrateMode) pbSpecs.Migrat
 	}
 }
 
-func CLIPkModeToPbPKMode(pkMode specs.PKMode) pbSpecs.PKMode {
-	switch pkMode {
+func CLIPkModeToPbPKMode(pkMode *specs.PKMode) pbSpecs.PKMode {
+	if pkMode == nil {
+		return pbSpecs.PKModeDefaultKeys
+	}
+	switch *pkMode {
 	case specs.PKModeCQID:
 		return pbSpecs.PKModeCQID
 	case specs.PKModeDefaultKeys:

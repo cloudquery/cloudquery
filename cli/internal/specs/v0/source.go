@@ -42,7 +42,7 @@ type Source struct {
 
 	// DeterministicCQID is a flag that indicates whether the source plugin should generate a random UUID as the value of `_cq_id`
 	// or whether it should calculate a UUID that is a hash of the primary keys (if they exist) or the entire resource.
-	DeterministicCQID bool `json:"deterministic_cq_id,omitempty" jsonschema:"default=false"`
+	DeterministicCQID *bool `json:"deterministic_cq_id" jsonschema:"default=false"`
 
 	// If specified this will spawn the plugin with `--otel-endpoint`
 	OtelEndpoint string `json:"otel_endpoint,omitempty" jsonschema:"default="`

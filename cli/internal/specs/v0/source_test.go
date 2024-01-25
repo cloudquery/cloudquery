@@ -565,7 +565,6 @@ func TestSource_JSONSchemaExtend(t *testing.T) {
 		},
 		{
 			Name: "null deterministic_cq_id",
-			Err:  true,
 			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
 "deterministic_cq_id":null
 }`,
