@@ -17,9 +17,6 @@ type Destination struct {
 	// Destination plugin migrate mode
 	MigrateMode MigrateMode `json:"migrate_mode,omitempty" jsonschema:"default=safe"`
 
-	// Destination plugin PK mode
-	PKMode PKMode `json:"pk_mode,omitempty" jsonschema:"default=default"`
-
 	// Destination plugin own (nested) spec
 	Spec map[string]any `json:"spec,omitempty"`
 }
