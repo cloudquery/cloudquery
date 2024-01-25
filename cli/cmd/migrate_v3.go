@@ -26,7 +26,6 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 		if destinationSpecs[i].PKMode != nil {
 			return errors.New("`pk_mode` is no longer a valid option in your destination spec")
 		}
-
 	}
 	migrateStart := time.Now().UTC()
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationStrings).Time("migrate_time", migrateStart).Msg("Start migration")
@@ -36,7 +35,6 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 	destinationsPbClients := make([]plugin.PluginClient, len(destinationsClients))
 	destinationTransformers := make([]*transformer.RecordTransformer, len(destinationsClients))
 	for i := range destinationsClients {
-
 		destinationsPbClients[i] = plugin.NewPluginClient(destinationsClients[i].Conn)
 		opts := []transformer.RecordTransformerOption{
 			transformer.WithSourceNameColumn(sourceSpec.Name),
