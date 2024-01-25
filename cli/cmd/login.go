@@ -211,7 +211,7 @@ func setTeamOnLogin(ctx context.Context, cmd *cobra.Command, token string) error
 	}
 
 	if cmd.Flags().Changed("team") {
-		// don't care about the current value
+		// don't care about the current cached config value as the user explicitly passes the `team` flag
 		currentTeam := cmd.Flag("team").Value.String()
 		err = cl.ValidateTeamAgainstTeams(currentTeam, teams)
 		if err != nil {
