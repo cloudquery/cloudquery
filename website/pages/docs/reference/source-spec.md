@@ -95,18 +95,6 @@ Specify the names of the destinations to sync the data of the source plugin to.
 
 <!-- vale off -->
 
-### deterministic_cq_id
-
-<!-- vale on -->
-
-(`bool`, optional, default: `false`, introduced in CLI `v2.4.1`)
-
-A flag that indicates whether the value of `_cq_id` should be a UUID that is a hash of the primary keys or a random UUID. If a resource has no primary keys defined the value will always be a random UUID. This option cannot be used when you are using a destination that enforces primary keys in `append` write mode as the `_cq_id` needs to be unique for each row.
-
-Supported by source plugins released on 2023-03-08 and later
-
-<!-- vale off -->
-
 ### otel_endpoint (preview)
 
 <!-- vale on -->
@@ -131,20 +119,3 @@ If set to `true`, the exporter will not verify the server will connect via `http
 
 Plugin-specific configurations. Visit [source plugins](https://hub.cloudquery.io/plugins/source) documentation for more information.
 
-## Top level deprecated options
-
-### concurrency
-
-This option was deprecated in CLI `v3.6.0` in favor of plugin level concurrency, as each plugin as its own concurrency requirements. See more in each plugin documentation.
-
-### scheduler
-
-This option was deprecated in CLI `v3.6.0` in favor of plugin level scheduler, as each plugin as its own scheduler requirements. See more in each plugin documentation.
-
-### backend
-
-This option was deprecated in CLI `v3.6.0` in favor of `backend_options`. See [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables) for more information.
-
-### backend_spec
-
-This option was deprecated in CLI `v3.6.0` in favor of `backend_options`. See [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables) for more information.
