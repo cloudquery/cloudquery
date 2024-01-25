@@ -236,20 +236,35 @@ func setTeamOnLogin(ctx context.Context, cmd *cobra.Command, token string) error
 	}
 
 	// either the team is not set, or the currently selected team is unavailable
-	if len(teams) == 1 {
+	switch len(teams) {
+	case 0:
+		// no available teams, urge the user to create one
+		cmd.Printf("Your current team is not set.\n\n")
+		cmd.Printf("There are no teams available to you.\n\n")
+		cmd.Printf("Please create a team or accept an invite.")
+		cmd.Printf("You should run `cloudquery switch <team>` to set your team afterwards.\n\n")
+		if len(currentTeam) > 0 {
+			// remove current team setting
+			err = config.UnsetValue("team")
+			if err != nil && !errors.Is(err, os.ErrNotExist) {
+				return fmt.Errorf("failed to reset current team: %w", err)
+			}
+		}
+
+	case 1:
 		currentTeam = teams[0]
 		err = config.SetValue("team", currentTeam)
 		if err != nil {
 			return fmt.Errorf("failed to set team: %w", err)
 		}
 		cmd.Printf("Your current team is set to %s.\n", currentTeam)
-		return nil
+
+	default:
+		cmd.Printf("Your current team is not set.\n\n")
+		cmd.Printf("Teams available to you: " + strings.Join(teams, ", ") + "\n\n")
+		cmd.Printf("To set your current team, run `cloudquery switch <team>`\n\n")
+		// we don't fail here immediately, as there are some additional commands the user can run in this state
 	}
 
-	// 0 or > 1 teams available
-	cmd.Printf("Your current team is not set.\n\n")
-	cmd.Printf("Teams available to you: " + strings.Join(teams, ", ") + "\n\n")
-	cmd.Printf("To set your current team, run `cloudquery switch <team>`\n\n")
-	// we don't fail here immediately, as there are some additional commands the user can run in this state
 	return nil
 }
