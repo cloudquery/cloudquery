@@ -3,6 +3,7 @@ package cmd
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 
@@ -16,8 +17,16 @@ import (
 // nolint:dupl
 func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination) error {
 	destinationStrings := make([]string, len(destinationSpecs))
+
+	if sourceSpec.DeterministicCQID != nil {
+		return errors.New("`deterministic_cqid` is no longer a valid option in your source spec. It is enabled by default and cannot be overridden")
+	}
 	for i := range destinationSpecs {
 		destinationStrings[i] = destinationSpecs[i].VersionString()
+		if destinationSpecs[i].PKMode != nil {
+			return errors.New("`pk_mode` is no longer a valid option in your destination spec")
+		}
+
 	}
 	migrateStart := time.Now().UTC()
 	log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationStrings).Time("migrate_time", migrateStart).Msg("Start migration")
@@ -27,19 +36,14 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 	destinationsPbClients := make([]plugin.PluginClient, len(destinationsClients))
 	destinationTransformers := make([]*transformer.RecordTransformer, len(destinationsClients))
 	for i := range destinationsClients {
+
 		destinationsPbClients[i] = plugin.NewPluginClient(destinationsClients[i].Conn)
 		opts := []transformer.RecordTransformerOption{
 			transformer.WithSourceNameColumn(sourceSpec.Name),
 			transformer.WithSyncTimeColumn(migrateStart),
 		}
 		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
-			opts = append(opts, transformer.WithRemovePKs(), transformer.WithRemovePKs())
-			if sourceSpec.DeterministicCQID {
-				opts = append(opts, transformer.WithRemoveUniqueConstraints())
-			}
-		} else if destinationSpecs[i].PKMode == specs.PKModeCQID {
-			opts = append(opts, transformer.WithRemovePKs())
-			opts = append(opts, transformer.WithCQIDPrimaryKey())
+			opts = append(opts, transformer.WithRemovePKs(), transformer.WithRemovePKs(), transformer.WithRemoveUniqueConstraints())
 		}
 		destinationTransformers[i] = transformer.NewRecordTransformer(opts...)
 	}

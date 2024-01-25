@@ -57,11 +57,18 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	var exitReason = ExitReasonStopped
 	tablesForDeleteStale := make(map[string]bool, 0)
 
+	if source.spec.DeterministicCQID != nil {
+		return errors.New("`deterministic_cqid` is no longer a valid option in your source spec. It is enabled by default and cannot be overridden")
+	}
+
 	sourceSpec := source.spec
 	sourceClient := source.client
 	destinationSpecs := make([]specs.Destination, len(destinations))
 	destinationsClients := make([]*managedplugin.Client, len(destinations))
 	for i := range destinations {
+		if destinations[i].spec.PKMode != nil {
+			return errors.New("`pk_mode` is no longer a valid option in your destination spec")
+		}
 		destinationSpecs[i] = destinations[i].spec
 		destinationsClients[i] = destinations[i].client
 	}
@@ -103,13 +110,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			transformer.WithSyncTimeColumn(syncTime),
 		}
 		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
-			opts = append(opts, transformer.WithRemovePKs())
-			if sourceSpec.DeterministicCQID {
-				opts = append(opts, transformer.WithRemoveUniqueConstraints())
-			}
-		} else if destinationSpecs[i].PKMode == specs.PKModeCQID {
-			opts = append(opts, transformer.WithRemovePKs())
-			opts = append(opts, transformer.WithCQIDPrimaryKey())
+			opts = append(opts, transformer.WithRemovePKs(), transformer.WithRemoveUniqueConstraints())
 		}
 		destinationTransformers[i] = transformer.NewRecordTransformer(opts...)
 		connection := destinationsClients[i].ConnectionString()
@@ -190,7 +191,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		Tables:              sourceSpec.Tables,
 		SkipTables:          sourceSpec.SkipTables,
 		SkipDependentTables: sourceSpec.SkipDependentTables,
-		DeterministicCqId:   sourceSpec.DeterministicCQID,
+		DeterministicCqId:   true,
 	}
 	if sourceSpec.BackendOptions != nil {
 		syncReq.Backend = &plugin.Sync_BackendOptions{
