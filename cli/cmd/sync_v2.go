@@ -33,10 +33,10 @@ func getSourceV2DestV3DestinationsTransformers(destinationSpecs []specs.Destinat
 		opts := []transformer.RecordTransformerOption{}
 		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
 			opts = append(opts, transformer.WithRemovePKs(), transformer.WithRemovePKs())
-			if sourceSpec.DeterministicCQID {
+			if sourceSpec.DeterministicCQID != nil && *sourceSpec.DeterministicCQID {
 				opts = append(opts, transformer.WithRemoveUniqueConstraints())
 			}
-		} else if destinationSpecs[i].PKMode == specs.PKModeCQID {
+		} else if destinationSpecs[i].PKMode != nil && *destinationSpecs[i].PKMode == specs.PKModeCQID {
 			opts = append(opts, transformer.WithRemovePKs())
 			opts = append(opts, transformer.WithCQIDPrimaryKey())
 		}
