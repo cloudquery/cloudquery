@@ -177,46 +177,9 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
-	cl, err := team.NewClient(token.Value)
-	if err != nil {
-		return fmt.Errorf("failed to create API client: %w", err)
-	}
 
-	currentTeam, err := config.GetValue("team")
-	if err != nil && !errors.Is(err, os.ErrNotExist) {
-		return fmt.Errorf("failed to get current team: %w", err)
-	}
-	if cmd.Flags().Changed("team") {
-		selectedTeam := cmd.Flag("team").Value.String()
-		err = cl.ValidateTeam(ctx, selectedTeam)
-		if err != nil {
-			return fmt.Errorf("failed to set team: %w", err)
-		}
-		err = config.SetValue("team", selectedTeam)
-		if err != nil {
-			return fmt.Errorf("failed to set team: %w", err)
-		}
-	} else {
-		if currentTeam == "" {
-			// if current team is not set, try to set it from the API
-			teams, err := cl.ListAllTeams(ctx)
-			if err != nil {
-				return fmt.Errorf("failed to list teams: %w", err)
-			}
-			if len(teams) == 1 {
-				err = config.SetValue("team", teams[0])
-				if err != nil {
-					return fmt.Errorf("failed to set team: %w", err)
-				}
-				cmd.Printf("Your current team is set to %s.\n", teams[0])
-			} else {
-				cmd.Printf("Your current team is not set.\n\n")
-				cmd.Printf("Teams available to you: " + strings.Join(teams, ", ") + "\n\n")
-				cmd.Printf("To set your current team, run `cloudquery switch <team>`\n\n")
-			}
-		} else {
-			cmd.Printf("Your current team is set to %s.\n", currentTeam)
-		}
+	if err = setTeamOnLogin(ctx, cmd, token.Value); err != nil {
+		return fmt.Errorf("failed to set current team on login: %w", err)
 	}
 
 	// Create a context for the shutdown with a 15-second timeout.
@@ -231,6 +194,77 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	}
 
 	cmd.Println("CLI successfully authenticated.")
+
+	return nil
+}
+
+func setTeamOnLogin(ctx context.Context, cmd *cobra.Command, token string) error {
+	cl, err := team.NewClient(token)
+	if err != nil {
+		return fmt.Errorf("failed to create API client: %w", err)
+	}
+
+	// list all available teams
+	teams, err := cl.ListAllTeams(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to list teams: %w", err)
+	}
+
+	if cmd.Flags().Changed("team") {
+		// don't care about the current cached config value as the user explicitly passes the `team` flag
+		currentTeam := cmd.Flag("team").Value.String()
+		err = cl.ValidateTeamAgainstTeams(currentTeam, teams)
+		if err != nil {
+			return fmt.Errorf("failed to validate team: %w", err)
+		}
+		err = config.SetValue("team", currentTeam)
+		if err != nil {
+			return fmt.Errorf("failed to set team: %w", err)
+		}
+		return nil
+	}
+
+	currentTeam, err := config.GetValue("team")
+	if err != nil && !errors.Is(err, os.ErrNotExist) {
+		return fmt.Errorf("failed to get current team: %w", err)
+	}
+
+	if len(currentTeam) > 0 && cl.ValidateTeamAgainstTeams(currentTeam, teams) == nil {
+		// The selected team is available to the user, so we're just using it
+		cmd.Printf("Your current team is set to %s.\n", currentTeam)
+		return nil
+	}
+
+	// either the team is not set, or the currently selected team is unavailable
+	switch len(teams) {
+	case 0:
+		// no available teams, urge the user to create one
+		cmd.Printf("Your current team is not set.\n\n")
+		cmd.Printf("There are no teams available to you.\n\n")
+		cmd.Printf("Please create a team or accept an invite.")
+		cmd.Printf("You should run `cloudquery switch <team>` to set your team afterwards.\n\n")
+		if len(currentTeam) > 0 {
+			// remove current team setting
+			err = config.UnsetValue("team")
+			if err != nil && !errors.Is(err, os.ErrNotExist) {
+				return fmt.Errorf("failed to reset current team: %w", err)
+			}
+		}
+
+	case 1:
+		currentTeam = teams[0]
+		err = config.SetValue("team", currentTeam)
+		if err != nil {
+			return fmt.Errorf("failed to set team: %w", err)
+		}
+		cmd.Printf("Your current team is set to %s.\n", currentTeam)
+
+	default:
+		cmd.Printf("Your current team is not set.\n\n")
+		cmd.Printf("Teams available to you: " + strings.Join(teams, ", ") + "\n\n")
+		cmd.Printf("To set your current team, run `cloudquery switch <team>`\n\n")
+		// we don't fail here immediately, as there are some additional commands the user can run in this state
+	}
 
 	return nil
 }
