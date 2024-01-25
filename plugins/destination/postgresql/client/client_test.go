@@ -24,7 +24,7 @@ var safeMigrations = plugin.SafeMigrations{
 	AddColumnNotNull:    false,
 	RemoveColumn:        true,
 	RemoveColumnNotNull: false,
-	ChangeColumn:        false,
+	MovePKToCQOnly:      true,
 }
 
 func TestPgPlugin(t *testing.T) {
