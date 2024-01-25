@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"slices"
 	"strings"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
@@ -30,17 +31,19 @@ func NewClientFromAPI(apiClient *cloudquery_api.ClientWithResponses) *Client {
 	}
 }
 
-func (c *Client) ValidateTeam(ctx context.Context, teamName string) error {
+func (c *Client) ValidateTeam(ctx context.Context, name string) error {
 	teams, err := c.ListAllTeams(ctx)
 	if err != nil {
 		return err
 	}
-	for _, team := range teams {
-		if team == teamName {
-			return nil
-		}
+	return c.ValidateTeamAgainstTeams(name, teams)
+}
+
+func (*Client) ValidateTeamAgainstTeams(name string, teams []string) error {
+	if slices.Contains(teams, name) {
+		return nil
 	}
-	return fmt.Errorf("team %q not found. Teams available to you: %v", teamName, strings.Join(teams, ", "))
+	return fmt.Errorf("team %q not found. Teams available to you: %v", name, strings.Join(teams, ", "))
 }
 
 func (c *Client) ListAllTeams(ctx context.Context) ([]string, error) {
