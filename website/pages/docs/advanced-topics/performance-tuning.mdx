@@ -105,18 +105,23 @@ spec:
     project_ids: ...
 ```
 
-Finally, the `shuffle` strategy aims to provide a balance between `dfs` and `round-robin` by randomizing the order in which table-client pairs are chosen. The following example enables `shuffle` for the AWS plugin, which can help reduce the likelihood of hitting rate limits by randomly mixing the underlying services to which API calls that are made concurrently, rather than hitting a single API with all calls at once:
+Finally, the `shuffle` strategy aims to provide a balance between `dfs` and `round-robin` by randomizing the order in which table-client pairs are chosen. The following example enables `shuffle` for the GCP plugin, which can help reduce the likelihood of hitting rate limits by randomly mixing the underlying services to which API calls that are made concurrently, rather than hitting a single API with all calls at once:
 
 ```yaml
 kind: source
 spec:
-  name: "aws"
-  path: "cloudquery/aws"
+  name: "gcp"
+  path: "cloudquery/gcp"
   registry: "cloudquery"
-  version: "VERSION_SOURCE_AWS"
-  tables: ["aws_account_*", "aws_s3_*", "aws_ec2_*"]
+  version: "VERSION_SOURCE_GCP"
+  tables: ["gcp_storage_*", "gcp_compute_*"]
   destinations: ["postgresql"]
   spec:
+    project_ids: ...
     scheduler: "shuffle"
     # ...
 ```
+
+:::callout{type="info"}
+The `shuffle` scheduler is the **default** for the AWS source plugin.
+:::

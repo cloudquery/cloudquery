@@ -121,6 +121,9 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 			},
 		},
 	}
+
+	// additionally, as we want to outline non-sdk-default for scheduler strategy
+	sc.Properties.Value("scheduler").Default = (&[]scheduler.Strategy{scheduler.StrategyShuffle}[0]).String()
 }
 
 func (s *Spec) Validate() error {

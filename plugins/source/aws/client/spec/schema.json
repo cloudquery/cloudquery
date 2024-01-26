@@ -344,7 +344,8 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "default": "shuffle"
         }
       },
       "additionalProperties": false,
