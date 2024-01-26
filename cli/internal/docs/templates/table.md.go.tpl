@@ -19,6 +19,20 @@ The composite primary key for this table is ({{ range $index, $pk := $.PrimaryKe
 		**{{$pk}}**
 	{{- end -}}).
 {{ end }}
+
+
+{{ $length := len $.VirtualPrimaryKeys -}}
+{{ if eq $length 1 }}
+The following field is used to calculate the value of `_cq_id`: **{{ index $.VirtualPrimaryKeys 0 }}**.
+{{ else }}
+The following fields are used to calculate the value of `_cq_id`: ({{ range $index, $pk := $.VirtualPrimaryKeys -}}
+	{{if $index }}, {{end -}}
+		**{{$pk}}**
+	{{- end -}}).
+{{ end }}
+
+
+
 {{- if $.IsIncremental -}}
 It supports incremental syncs
 {{- $ikLength := len $.IncrementalKeys -}}

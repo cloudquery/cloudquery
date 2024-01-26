@@ -23,6 +23,7 @@ type jsonColumn struct {
 	Type             string `json:"type"`
 	IsPrimaryKey     bool   `json:"is_primary_key,omitempty"`
 	IsIncrementalKey bool   `json:"is_incremental_key,omitempty"`
+	IsVirtualPK      bool   `json:"is_virtual_pk,omitempty"`
 }
 
 func (g *Generator) renderTablesAsJSON(dir string) error {
@@ -48,6 +49,7 @@ func (g *Generator) jsonifyTables(tables schema.Tables) []jsonTable {
 				Name:             col.Name,
 				Type:             col.Type.String(),
 				IsPrimaryKey:     col.PrimaryKey,
+				IsVirtualPK:      col.VirtualPrimaryKey,
 				IsIncrementalKey: col.IncrementalKey,
 			}
 		}

@@ -2,6 +2,7 @@ module github.com/cloudquery/cloudquery/cli
 
 go 1.21.4
 
+replace github.com/cloudquery/plugin-sdk/v4 => /Users/benbernays/Documents/GitHub/plugin-sdk
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
