@@ -66,5 +66,9 @@ after:
 #      dir: dist
     - cmd: unzip -o {{ .Var.binary }}_linux_amd64.zip
       dir: dist
-#    - cmd: plugins/{{ .Var.component }} --version
-#      dir: dist
+    - cmd: file plugins/{{ .Var.component }}
+      dir: dist
+    - cmd: lld plugins/{{ .Var.component }}
+      dir: dist
+    - cmd: plugins/{{ .Var.component }} --version
+      dir: dist
