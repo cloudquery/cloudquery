@@ -55,7 +55,7 @@ builds:
         ldflags:
           - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
           - -linkmode external
-          - -extldflags '-fno-PIC' '-static'
+          - '-extldflags "-fno-PIC -static"' # ugly duckling
 after:
   hooks:
     - cmd: unzip -o {{ .Var.binary }}_darwin_arm64.zip
