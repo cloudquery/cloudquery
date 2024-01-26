@@ -26,6 +26,7 @@ func main() {
 			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchAmd64},
 			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchArm64},
 		}),
+		plugin.WithStaticLinking(),
 		plugin.WithKind(internalPlugin.Kind),
 		plugin.WithTeam(internalPlugin.Team),
 	)
