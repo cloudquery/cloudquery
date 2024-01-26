@@ -50,8 +50,8 @@ builds:
         goamd64: v1 # test a theory
         tags:
         - osusergo
-        - netgo
-        - static_build
+#        - netgo
+#        - static_build
         ldflags:
           - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
           - -linkmode external
