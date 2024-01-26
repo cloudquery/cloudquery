@@ -46,9 +46,10 @@ func (g *Generator) jsonifyTables(tables schema.Tables) []jsonTable {
 		jsonColumns := make([]jsonColumn, len(table.Columns))
 		for c, col := range table.Columns {
 			jsonColumns[c] = jsonColumn{
-				Name:             col.Name,
-				Type:             col.Type.String(),
-				IsPrimaryKey:     col.PrimaryKey,
+				Name: col.Name,
+				Type: col.Type.String(),
+				// Technically this would enable the UI to continue to show the underlying PK columns
+				IsPrimaryKey:     (col.PrimaryKey && col.Name != schema.CqIDColumn.Name && len(table.VirtualPrimaryKeys()) > 0) || col.VirtualPrimaryKey,
 				IsVirtualPK:      col.VirtualPrimaryKey,
 				IsIncrementalKey: col.IncrementalKey,
 			}
