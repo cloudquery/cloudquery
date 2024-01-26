@@ -24,9 +24,9 @@ builds:
     ldflags:
       - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
     goos:
-      - windows
+#      - windows
       - linux
-      - darwin
+#      - darwin
     goarch:
       - amd64
       - arm64
@@ -66,5 +66,5 @@ after:
       dir: dist
     - cmd: unzip -o {{ .Var.binary }}_linux_amd64.zip
       dir: dist
-    - cmd: plugins/{{ .Var.component }} --version
-      dir: dist
+#    - cmd: plugins/{{ .Var.component }} --version
+#      dir: dist
