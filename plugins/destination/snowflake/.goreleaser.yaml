@@ -15,7 +15,7 @@ includes:
 
 builds:
   - flags:
-      - -buildmode=exe
+      - -buildmode=pie
     env:
       - CGO_ENABLED=0
       - GO111MODULE=on
@@ -50,8 +50,12 @@ builds:
         goamd64: v1 # test a theory
         tags:
         - osusergo
+        - netgo
+        - static_build
         ldflags:
-          - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}} -linkmode external -extldflags=-static
+          - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
+          - -linkmode external
+          - -extldflags="-fno-PIC -static"
 after:
   hooks:
     - cmd: unzip -o {{ .Var.binary }}_darwin_arm64.zip
