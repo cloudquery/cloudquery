@@ -48,6 +48,8 @@ builds:
       - goos: linux
         goarch: amd64
         goamd64: v1 # test a theory
+        tags:
+        - osusergo
         ldflags:
           - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}} -linkmode external -extldflags=-static
 after:
