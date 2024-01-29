@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/alicloud/client/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "AccountSpec": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "regions": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "access_key": {
+          "type": "string"
+        },
+        "secret_key": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Spec": {
+      "properties": {
+        "accounts": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/AccountSpec"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "bill_history_months": {
+          "type": "integer"
+        },
+        "concurrency": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
