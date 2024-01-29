@@ -42,9 +42,6 @@ builds:
         goamd64: v1
         env:
           - CGO_ENABLED=1
-          - GO111MODULE=on
-          - CC=/usr/bin/gencc.sh
-          - CXX=/usr/bin/gencpp.sh
 
 after:
   hooks:

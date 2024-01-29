@@ -9,8 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/cloudquery/golang-cross:v10.0.0
-      env:
-        CGO_ENABLED: 1
     steps:
       # Tag format is plugins-<type>-<name>-<version>
       - name: Split tag
