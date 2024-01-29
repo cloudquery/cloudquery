@@ -6,45 +6,41 @@
     "AccountSpec": {
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "regions": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "minItems": 1
         },
         "access_key": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "secret_key": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "required": [
+        "access_key",
+        "secret_key",
+        "regions"
+      ]
     },
     "Spec": {
       "properties": {
         "accounts": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/AccountSpec"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "items": {
+            "$ref": "#/$defs/AccountSpec"
+          },
+          "type": "array",
+          "minItems": 1
         },
         "bill_history_months": {
           "type": "integer"
@@ -54,7 +50,10 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "required": [
+        "accounts"
+      ]
     }
   }
 }

@@ -1,6 +1,11 @@
 package client
 
-import "fmt"
+import (
+	_ "embed"
+	"fmt"
+
+	"github.com/invopop/jsonschema"
+)
 
 type Spec struct {
 	Accounts          []AccountSpec `json:"accounts,omitempty"`
@@ -49,3 +54,38 @@ func (s *Spec) Validate() error {
 	}
 	return nil
 }
+
+func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
+	one := uint64(1)
+
+	accounts := *sc.Properties.Value("accounts").OneOf[0]
+	accounts.MinItems = &one
+	sc.Properties.Set("accounts", &accounts)
+
+	sc.Required = append(sc.Required, "accounts")
+}
+
+func (AccountSpec) JSONSchemaExtend(sc *jsonschema.Schema) {
+	one := uint64(1)
+
+	name := *sc.Properties.Value("name")
+	name.MinLength = &one
+	sc.Properties.Set("name", &name)
+
+	accessKey := *sc.Properties.Value("access_key")
+	accessKey.MinLength = &one
+	sc.Properties.Set("access_key", &accessKey)
+
+	secretKey := *sc.Properties.Value("secret_key")
+	secretKey.MinLength = &one
+	sc.Properties.Set("secret_key", &secretKey)
+
+	regions := *sc.Properties.Value("regions").OneOf[0]
+	regions.MinItems = &one
+	sc.Properties.Set("regions", &regions)
+
+	sc.Required = append(sc.Required, "access_key", "secret_key", "regions")
+}
+
+//go:embed schema.json
+var JSONSchema string
