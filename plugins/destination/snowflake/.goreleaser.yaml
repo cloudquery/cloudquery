@@ -24,9 +24,9 @@ builds:
     ldflags:
       - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
     goos:
-#      - windows
+      - windows
       - linux
-#      - darwin
+      - darwin
     goarch:
       - amd64
       - arm64
@@ -50,25 +50,21 @@ builds:
         goamd64: v1 # test a theory
         tags:
         - osusergo
-#        - netgo
-#        - static_build
+        - netgo
+        - static_build
         ldflags:
           - -s -w -X github.com/cloudquery/cloudquery/plugins/{{ .Var.component }}/resources/plugin.Version={{.Version}}
           - -linkmode external
-          - '-extldflags "-fno-PIC -static"' # ugly duckling
+          - -extldflags '-static'
 after:
   hooks:
-#    - cmd: unzip -o {{ .Var.binary }}_darwin_arm64.zip
-#      dir: dist
-#    - cmd: unzip -o {{ .Var.binary }}_windows_amd64.zip
-#      dir: dist
-#    - cmd: unzip -o {{ .Var.binary }}_darwin_amd64.zip
-#      dir: dist
+    - cmd: unzip -o {{ .Var.binary }}_darwin_arm64.zip
+      dir: dist
+    - cmd: unzip -o {{ .Var.binary }}_windows_amd64.zip
+      dir: dist
+    - cmd: unzip -o {{ .Var.binary }}_darwin_amd64.zip
+      dir: dist
     - cmd: unzip -o {{ .Var.binary }}_linux_amd64.zip
-      dir: dist
-    - cmd: file plugins/{{ .Var.component }}
-      dir: dist
-    - cmd: lld plugins/{{ .Var.component }}
       dir: dist
     - cmd: plugins/{{ .Var.component }} --version
       dir: dist
