@@ -4,7 +4,7 @@ go 1.21.4
 
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
-	github.com/cloudquery/plugin-sdk/v4 v4.27.1
+	github.com/cloudquery/plugin-sdk/v4 v4.27.2
 	github.com/mattn/go-sqlite3 v1.14.16
 	github.com/rs/zerolog v1.31.0
 )
@@ -119,6 +119,3 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
-
-// https://github.com/cloudquery/plugin-sdk/pull/1492
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.27.2-0.20240129130159-a6d6867d8e18
