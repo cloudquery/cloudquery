@@ -78,9 +78,12 @@ This is the (nested) spec used by the AWS source plugin.
   During initialization the AWS source plugin fetches information about each account and region. This setting controls how many accounts can be initialized concurrently.
   Only configurations with many accounts (either hardcoded or discovered via Organizations) should require modifying this setting, to either lower it to avoid rate limit errors, or to increase it to speed up the initialization process.
 
-- `scheduler` (string) (default: `dfs`):
+- `scheduler` (`string`) (default: `shuffle`):
 
-  The scheduler to use when determining the priority of resources to sync. Currently, the only supported values are `dfs` (depth-first search), `round-robin` and `shuffle`. For more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning).
+  The scheduler to use when determining the priority of resources to sync.
+
+  Currently, the only supported values are `dfs` (depth-first search), `round-robin` and `shuffle`.
+  For more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning).
 
 - `aws_debug` (`bool`) (default: `false`)
 
