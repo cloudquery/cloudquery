@@ -63,7 +63,6 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte, opts plugin
 }
 
 func (c *Client) bqClient(ctx context.Context) (*bigquery.Client, error) {
-	// strip v prefix from version for user agent string
 	opts := []option.ClientOption{
 		option.WithRequestReason("CloudQuery BigQuery destination"),
 		option.WithUserAgent(fmt.Sprintf("CloudQuery_BigQuery_Destination/%s (GPN:%s)", internalPlugin.Version, cloudQueryGPN)),
