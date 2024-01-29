@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.3.11...plugins-destination-snowflake-v3.3.12) (2024-01-29)
+
+
+### Bug Fixes
+
+* Don't use `CGO` unless specifically selected to ([#16329](https://github.com/cloudquery/cloudquery/issues/16329)) ([597267a](https://github.com/cloudquery/cloudquery/commit/597267a221f57c7d381ece16faff59949fc0e717))
+
 ## [3.3.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.3.10...plugins-destination-snowflake-v3.3.11) (2024-01-25)
 
 
