@@ -150,4 +150,4 @@ require (
 )
 
 // https://github.com/cloudquery/plugin-sdk/pull/1492
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.27.2-0.20240129125754-b65c907e9d68
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.27.2-0.20240129130159-a6d6867d8e18
