@@ -84,7 +84,7 @@ func (AccountSpec) JSONSchemaExtend(sc *jsonschema.Schema) {
 	regions.MinItems = &one
 	sc.Properties.Set("regions", &regions)
 
-	sc.Required = append(sc.Required, "access_key", "secret_key", "regions")
+	sc.Required = append(sc.Required, "name", "access_key", "secret_key", "regions")
 }
 
 //go:embed schema.json
