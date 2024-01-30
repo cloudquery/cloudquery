@@ -6,17 +6,21 @@
     "Account": {
       "properties": {
         "name": {
-          "type": "string"
+          "type": "string",
+          "description": "Account name."
         },
         "api_key": {
-          "type": "string"
+          "type": "string",
+          "description": "Datadog API key."
         },
         "app_key": {
-          "type": "string"
+          "type": "string",
+          "description": "Datadog App key."
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "Account used to specify one or more accounts to extract information from."
     },
     "Spec": {
       "properties": {
@@ -24,17 +28,21 @@
           "items": {
             "$ref": "#/$defs/Account"
           },
-          "type": "array"
+          "type": "array",
+          "description": "Specify which accounts to sync data from."
         },
         "concurrency": {
-          "type": "integer"
+          "type": "integer",
+          "description": "A best effort maximum number of Go routines to use. Lower this number to reduce memory usage."
         },
         "site": {
-          "type": "string"
+          "type": "string",
+          "description": "The Datadog site to connect to. This is usually one of datadoghq.com or datadoghq.eu - see site documentation for more information."
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "description": "Spec the (nested) spec used by the Datadog source plugin."
     }
   }
 }
