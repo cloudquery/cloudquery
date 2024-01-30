@@ -56,11 +56,13 @@ func (s *Spec) Validate() error {
 }
 
 func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
+	// since we don't want to allow null values for accounts, we need to remove the null option from the schema (1st element)
 	accounts := *sc.Properties.Value("accounts").OneOf[0]
 	sc.Properties.Set("accounts", &accounts)
 }
 
 func (AccountSpec) JSONSchemaExtend(sc *jsonschema.Schema) {
+	// since we don't want to allow null values for regions, we need to remove the null option from the schema (1st element)
 	regions := *sc.Properties.Value("regions").OneOf[0]
 	sc.Properties.Set("regions", &regions)
 }
