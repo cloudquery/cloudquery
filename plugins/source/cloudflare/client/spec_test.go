@@ -17,8 +17,18 @@ func TestJSONSchema(t *testing.T) {
 			Spec: `{"api_token": "secret"}`,
 		},
 		{
+			Name: "spec with integer token",
+			Spec: `{"api_token": 123}`,
+			Err:  true,
+		},
+		{
 			Name: "spec with api key",
 			Spec: `{"api_key": "key"}`,
+		},
+		{
+			Name: "spec with integer api key",
+			Spec: `{"api_key": 1234}`,
+			Err:  true,
 		},
 		{
 			Name: "spec with api email",
@@ -35,6 +45,11 @@ func TestJSONSchema(t *testing.T) {
 		{
 			Name: "spec with null accounts",
 			Spec: `{"accounts": null}`,
+		},
+		{
+			Name: "spec with integer accounts",
+			Spec: `{"accounts": [123, 456]}`,
+			Err:  true,
 		},
 		{
 			Name: "spec with zones",
