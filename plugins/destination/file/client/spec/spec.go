@@ -25,7 +25,7 @@ const (
 type Spec struct {
 	filetypes.FileSpec
 
-	Path     string `json:"path,omitempty"`
+	Path     string `json:"path,omitempty" jsonschema:"required"`
 	NoRotate bool   `json:"no_rotate,omitempty"`
 
 	BatchSize      *int64               `json:"batch_size"`

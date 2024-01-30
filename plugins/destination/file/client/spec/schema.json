@@ -40,60 +40,80 @@
           "description": "CloudQuery Parquet file output spec."
         }
       },
-      "oneOf": [
+      "allOf": [
         {
-          "properties": {
-            "format": {
-              "type": "string",
-              "const": "csv"
+          "oneOf": [
+            {
+              "required": [
+                "directory"
+              ],
+              "title": "directory"
             },
-            "format_spec": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/CSVSpec"
-                },
-                {
-                  "type": "null"
-                }
-              ]
+            {
+              "required": [
+                "path"
+              ],
+              "title": "path"
             }
-          }
+          ]
         },
         {
-          "properties": {
-            "format": {
-              "type": "string",
-              "const": "json"
-            },
-            "format_spec": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/JSONSpec"
+          "oneOf": [
+            {
+              "properties": {
+                "format": {
+                  "type": "string",
+                  "const": "csv"
                 },
-                {
-                  "type": "null"
+                "format_spec": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/CSVSpec"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 }
-              ]
-            }
-          }
-        },
-        {
-          "properties": {
-            "format": {
-              "type": "string",
-              "const": "parquet"
+              }
             },
-            "format_spec": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/ParquetSpec"
+            {
+              "properties": {
+                "format": {
+                  "type": "string",
+                  "const": "json"
                 },
-                {
-                  "type": "null"
+                "format_spec": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/JSONSpec"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 }
-              ]
+              }
+            },
+            {
+              "properties": {
+                "format": {
+                  "type": "string",
+                  "const": "parquet"
+                },
+                "format_spec": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/ParquetSpec"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
             }
-          }
+          ]
         }
       ],
       "properties": {
@@ -135,11 +155,11 @@
         "directory": {
           "type": "string"
         },
-        "no_rotate": {
-          "type": "boolean"
-        },
         "path": {
           "type": "string"
+        },
+        "no_rotate": {
+          "type": "boolean"
         },
         "batch_size": {
           "oneOf": [
