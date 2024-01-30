@@ -6,35 +6,13 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/stretchr/testify/require"
 )
-
-func TestSpecUnmarshalJSON(t *testing.T) {
-	data := `{
-	"format": "csv",
-	"format_spec": {
-		"skip_header": true,
-		"delimiter": "#"
-	},
-	"path": "abc"
-}`
-	var s Spec
-	require.NoError(t, json.Unmarshal([]byte(data), &s))
-	require.Exactly(t, Spec{
-		FileSpec: filetypes.FileSpec{
-			Format: filetypes.FormatTypeCSV,
-			FormatSpec: map[string]any{
-				"skip_header": true,
-				"delimiter":   "#",
-			},
-		},
-		Path: "abc",
-	}, s)
-}
 
 func TestSpec_SetDefaults(t *testing.T) {
 	dur30 := configtype.NewDuration(30 * time.Second)
@@ -85,4 +63,45 @@ func TestSpec_Validate(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestSpecUnmarshalJSON(t *testing.T) {
+	data := `{
+	"format": "csv",
+	"format_spec": {
+		"skip_header": true,
+		"delimiter": "#"
+	},
+	"path": "abc"
+}`
+	var s Spec
+	require.NoError(t, json.Unmarshal([]byte(data), &s))
+	require.Exactly(t, Spec{
+		FileSpec: filetypes.FileSpec{
+			Format: filetypes.FormatTypeCSV,
+			FormatSpec: map[string]any{
+				"skip_header": true,
+				"delimiter":   "#",
+			},
+		},
+		Path: "abc",
+	}, s)
+}
+
+func TestSpecJSONSchema(t *testing.T) {
+	// cases about embedded filetypes.FileSpec are tested in the corresponding package
+	// However, we add some tests to verify that it actually is properly working
+	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
+		{
+			Name: "csv file spec",
+			Spec: `{
+	"format": "csv",
+	"format_spec": {
+		"skip_header": true,
+		"delimiter": "#"
+	},
+	"path": "abc"
+}`,
+		},
+	})
 }

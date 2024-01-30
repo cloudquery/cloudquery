@@ -136,3 +136,6 @@ require (
 
 // github.com/cloudquery/jsonschema @ cqmain
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20231018073309-6c617a23d42f
+
+// https://github.com/cloudquery/filetypes/pull/418
+replace github.com/cloudquery/filetypes/v4 => github.com/cloudquery/filetypes/v4 v4.2.8-0.20240130185144-7ad94fbbe16a

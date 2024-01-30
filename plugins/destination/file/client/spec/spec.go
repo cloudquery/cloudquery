@@ -1,6 +1,7 @@
 package spec
 
 import (
+	_ "embed"
 	"fmt"
 	"path"
 	"path/filepath"
@@ -115,6 +116,9 @@ func (s *Spec) batchingEnabled() bool {
 		(s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) ||
 		(s.BatchTimeout != nil && s.BatchTimeout.Duration() > 0)
 }
+
+//go:embed schema.json
+var JSONSchema string
 
 func ptr[A any](a A) *A {
 	return &a
