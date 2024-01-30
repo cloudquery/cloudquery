@@ -34,5 +34,5 @@ gen-spec-schema:
 	go run client/spec/gen/main.go
 
 # All gen targets
-.PHONY: gen gen-spec-schema
-gen: gen-mocks gen-docs
+.PHONY: gen
+gen: gen-mocks gen-spec-schema gen-docs
