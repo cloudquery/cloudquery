@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/datadog/client/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Account": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "api_key": {
+          "type": "string"
+        },
+        "app_key": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Spec": {
+      "properties": {
+        "accounts": {
+          "items": {
+            "$ref": "#/$defs/Account"
+          },
+          "type": "array"
+        },
+        "concurrency": {
+          "type": "integer"
+        },
+        "site": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
