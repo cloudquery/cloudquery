@@ -7,13 +7,17 @@ import (
 	"runtime"
 
 	"github.com/cloudquery/cloudquery/plugins/source/alicloud/client"
-	"github.com/cloudquery/codegen/jsonschema"
+	cqjsonschema "github.com/cloudquery/codegen/jsonschema"
+	"github.com/invopop/jsonschema"
 )
 
 func main() {
 	fmt.Println("Generating JSON schema for plugin spec")
-	jsonschema.GenerateIntoFile(new(client.Spec), path.Join(currDir(), "../..", "schema.json"),
-		jsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/source/alicloud/client", path.Join(currDir(), "../..")),
+	cqjsonschema.GenerateIntoFile(new(client.Spec), path.Join(currDir(), "../..", "schema.json"),
+		cqjsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/source/alicloud/client", path.Join(currDir(), "../..")),
+		func(reflector *jsonschema.Reflector) {
+			reflector.NullableFromType = false
+		},
 	)
 }
 
