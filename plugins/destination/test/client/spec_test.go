@@ -21,6 +21,16 @@ func TestJSONSchema(t *testing.T) {
 			Spec: `{"error_on_write": false}`,
 		},
 		{
+			Name: "spec with bad err_on_write",
+			Spec: `{"error_on_write": 123}`,
+			Err:  true,
+		},
+		{
+			Name: "spec with null err_on_write",
+			Spec: `{"error_on_write": null}`,
+			Err:  true,
+		},
+		{
 			Name: "spec with unknown field",
 			Spec: `{"unknown": "test"}`,
 			Err:  true,
