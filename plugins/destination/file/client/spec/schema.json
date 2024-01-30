@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/file/client/spec/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Duration": {
+      "type": "string",
+      "pattern": "^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$",
+      "title": "CloudQuery configtype.Duration"
+    },
+    "Spec": {
+      "$id": "/schemas/FileSpec",
+      "$defs": {
+        "CSVSpec": {
+          "properties": {
+            "skip_header": {
+              "type": "boolean",
+              "description": "Specifies if the first line of a file should be the header.",
+              "default": false
+            },
+            "delimiter": {
+              "type": "string",
+              "pattern": "^.$",
+              "description": "Character that will be used as the delimiter.",
+              "default": ","
+            }
+          },
+          "additionalProperties": false,
+          "type": "object",
+          "description": "CloudQuery CSV file output spec."
+        },
+        "JSONSpec": {
+          "additionalProperties": false,
+          "type": "object",
+          "description": "CloudQuery JSON file output spec."
+        },
+        "ParquetSpec": {
+          "additionalProperties": false,
+          "type": "object",
+          "description": "CloudQuery Parquet file output spec."
+        }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "format": {
+              "type": "string",
+              "const": "csv"
+            },
+            "format_spec": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/CSVSpec"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "format": {
+              "type": "string",
+              "const": "json"
+            },
+            "format_spec": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/JSONSpec"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "format": {
+              "type": "string",
+              "const": "parquet"
+            },
+            "format_spec": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/ParquetSpec"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "properties": {
+        "format": {
+          "type": "string",
+          "enum": [
+            "csv",
+            "json",
+            "parquet"
+          ]
+        },
+        "format_spec": {
+          "oneOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/CSVSpec"
+                },
+                {
+                  "$ref": "#/$defs/JSONSpec"
+                },
+                {
+                  "$ref": "#/$defs/ParquetSpec"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "compression": {
+          "type": "string",
+          "enum": [
+            "",
+            "gzip"
+          ]
+        },
+        "directory": {
+          "type": "string"
+        },
+        "no_rotate": {
+          "type": "boolean"
+        },
+        "path": {
+          "type": "string"
+        },
+        "batch_size": {
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "batch_size_bytes": {
+          "oneOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "batch_timeout": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Duration"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "format"
+      ]
+    }
+  }
+}

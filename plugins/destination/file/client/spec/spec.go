@@ -1,8 +1,9 @@
-package client
+package spec
 
 import (
 	"fmt"
 	"path"
+	"path/filepath"
 	"strings"
 	"time"
 
@@ -11,14 +12,14 @@ import (
 )
 
 const (
-	PathVarFormat = "{{FORMAT}}"
-	PathVarTable  = "{{TABLE}}"
-	PathVarUUID   = "{{UUID}}"
-	YearVar       = "{{YEAR}}"
-	MonthVar      = "{{MONTH}}"
-	DayVar        = "{{DAY}}"
-	HourVar       = "{{HOUR}}"
-	MinuteVar     = "{{MINUTE}}"
+	varFormat = "{{FORMAT}}"
+	varTable  = "{{TABLE}}"
+	varUUID   = "{{UUID}}"
+	varYear   = "{{YEAR}}"
+	varMonth  = "{{MONTH}}"
+	varDay    = "{{DAY}}"
+	varHour   = "{{HOUR}}"
+	varMinute = "{{MINUTE}}"
 )
 
 type Spec struct {
@@ -38,16 +39,16 @@ func (s *Spec) SetDefaults() {
 	}
 	if s.BatchSize == nil {
 		if s.NoRotate {
-			s.BatchSize = int64ptr(0)
+			s.BatchSize = ptr(int64(0))
 		} else {
-			s.BatchSize = int64ptr(10000)
+			s.BatchSize = ptr(int64(10000))
 		}
 	}
 	if s.BatchSizeBytes == nil {
 		if s.NoRotate {
-			s.BatchSizeBytes = int64ptr(0)
+			s.BatchSizeBytes = ptr(int64(0))
 		} else {
-			s.BatchSizeBytes = int64ptr(50 * 1024 * 1024) // 50 MiB
+			s.BatchSizeBytes = ptr(int64(50 * 1024 * 1024)) // 50 MiB
 		}
 	}
 	if s.BatchTimeout == nil {
@@ -65,12 +66,11 @@ func (s *Spec) Validate() error {
 	if len(s.Path) == 0 {
 		return fmt.Errorf("`path` must be set")
 	}
-
-	if s.NoRotate && strings.Contains(s.Path, PathVarUUID) {
-		return fmt.Errorf("`path` should not contain %s when `no_rotate` = true", PathVarUUID)
+	if s.NoRotate && strings.Contains(s.Path, varUUID) {
+		return fmt.Errorf("`path` should not contain %s when `no_rotate` = true", varUUID)
 	}
-	if !strings.Contains(s.Path, PathVarUUID) && s.batchingEnabled() {
-		return fmt.Errorf("`path` should contain %s when using a non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`", PathVarUUID)
+	if !strings.Contains(s.Path, varUUID) && s.batchingEnabled() {
+		return fmt.Errorf("`path` should contain %s when using a non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`", varUUID)
 	}
 
 	if s.NoRotate && ((s.BatchSize != nil && *s.BatchSize > 0) || (s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) || (s.BatchTimeout != nil && s.BatchTimeout.Duration() > 0)) {
@@ -87,6 +87,25 @@ func (s *Spec) Validate() error {
 	return s.FileSpec.Validate()
 }
 
+func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time) string {
+	name := strings.ReplaceAll(s.Path, varTable, table)
+	if strings.Contains(name, varFormat) {
+		e := string(s.Format) + s.Compression.Extension()
+		name = strings.ReplaceAll(name, varFormat, e)
+	}
+	name = strings.ReplaceAll(name, varUUID, fileIdentifier)
+	name = strings.ReplaceAll(name, varYear, t.Format("2006"))
+	name = strings.ReplaceAll(name, varMonth, t.Format("01"))
+	name = strings.ReplaceAll(name, varDay, t.Format("02"))
+	name = strings.ReplaceAll(name, varHour, t.Format("15"))
+	name = strings.ReplaceAll(name, varMinute, t.Format("04"))
+	return filepath.Clean(name)
+}
+
+func (s *Spec) PathContainsUUID() bool {
+	return strings.Contains(s.Path, varUUID)
+}
+
 func (s *Spec) batchingEnabled() bool {
 	if !s.NoRotate && (s.BatchSize == nil || s.BatchSizeBytes == nil || s.BatchTimeout == nil) {
 		return true
@@ -97,6 +116,6 @@ func (s *Spec) batchingEnabled() bool {
 		(s.BatchTimeout != nil && s.BatchTimeout.Duration() > 0)
 }
 
-func int64ptr(i int64) *int64 {
-	return &i
+func ptr[A any](a A) *A {
+	return &a
 }

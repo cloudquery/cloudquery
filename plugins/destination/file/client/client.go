@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/cloudquery/cloudquery/plugins/destination/file/client/spec"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/streamingbatchwriter"
@@ -18,13 +19,13 @@ type Client struct {
 	streamingbatchwriter.UnimplementedDeleteRecords
 
 	logger zerolog.Logger
-	spec   *Spec
+	spec   *spec.Spec
 
 	*filetypes.Client
 	writer *streamingbatchwriter.StreamingBatchWriter
 }
 
-func New(_ context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
+func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "file").Logger(),
 	}
@@ -32,7 +33,7 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewC
 		return c, nil
 	}
 
-	if err := json.Unmarshal(spec, &c.spec); err != nil {
+	if err := json.Unmarshal(s, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal file spec: %w", err)
 	}
 	if err := c.spec.Validate(); err != nil {

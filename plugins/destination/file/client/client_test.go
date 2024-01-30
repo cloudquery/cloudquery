@@ -12,6 +12,7 @@ import (
 	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/apache/arrow/go/v15/arrow/array"
 	"github.com/apache/arrow/go/v15/arrow/memory"
+	"github.com/cloudquery/cloudquery/plugins/destination/file/client/spec"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/filetypes/v4/csv"
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -40,7 +41,7 @@ func testFormats() []filetypes.FileSpec {
 }
 
 type testSpec struct {
-	Spec
+	spec.Spec
 	testName string
 	baseDir  string
 }
@@ -53,7 +54,7 @@ func testSpecsWithoutFormat() []testSpec {
 
 	ret = append(ret, testSpec{
 		testName: "Directory",
-		Spec: Spec{
+		Spec: spec.Spec{
 			BatchSize:      &zero,
 			BatchSizeBytes: &zero,
 		},
@@ -61,7 +62,7 @@ func testSpecsWithoutFormat() []testSpec {
 
 	ret = append(ret, testSpec{
 		testName: "Path",
-		Spec: Spec{
+		Spec: spec.Spec{
 			Path:           filepath.Join("{{TABLE}}.{{FORMAT}}"),
 			BatchSize:      &zero,
 			BatchSizeBytes: &zero,
@@ -70,7 +71,7 @@ func testSpecsWithoutFormat() []testSpec {
 
 	ret = append(ret, testSpec{
 		testName: "PathWithTable",
-		Spec: Spec{
+		Spec: spec.Spec{
 			Path:           filepath.Join("{{TABLE}}", "data.{{FORMAT}}"),
 			BatchSize:      &zero,
 			BatchSizeBytes: &zero,
@@ -146,10 +147,10 @@ func TestPlugin(t *testing.T) {
 	}
 }
 
-func testPlugin(t *testing.T, spec *Spec) {
+func testPlugin(t *testing.T, s *spec.Spec) {
 	ctx := context.Background()
 	p := plugin.NewPlugin("file", "development", New)
-	b, err := json.Marshal(spec)
+	b, err := json.Marshal(s)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -167,7 +168,7 @@ func testPlugin(t *testing.T, spec *Spec) {
 	)
 }
 
-func testPluginCustom(t *testing.T, spec *Spec) {
+func testPluginCustom(t *testing.T, s *spec.Spec) {
 	ctx := context.Background()
 
 	var client plugin.Client
@@ -177,7 +178,7 @@ func testPluginCustom(t *testing.T, spec *Spec) {
 		client, err = New(ctx, logger, spec, opts)
 		return client, err
 	})
-	b, err := json.Marshal(spec)
+	b, err := json.Marshal(s)
 	if err != nil {
 		t.Fatal(err)
 	}
