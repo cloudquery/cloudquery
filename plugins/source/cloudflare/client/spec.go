@@ -1,5 +1,7 @@
 package client
 
+import _ "embed"
+
 const (
 	defaultConcurrency = 10000
 )
@@ -18,3 +20,6 @@ func (s *Spec) SetDefaults() {
 		s.Concurrency = defaultConcurrency
 	}
 }
+
+//go:embed schema.json
+var JSONSchema string
