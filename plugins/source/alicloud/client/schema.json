@@ -29,9 +29,9 @@
       "type": "object",
       "required": [
         "name",
+        "regions",
         "access_key",
-        "secret_key",
-        "regions"
+        "secret_key"
       ]
     },
     "Spec": {

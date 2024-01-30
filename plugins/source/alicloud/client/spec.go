@@ -8,16 +8,16 @@ import (
 )
 
 type Spec struct {
-	Accounts          []AccountSpec `json:"accounts,omitempty"`
+	Accounts          []AccountSpec `json:"accounts,omitempty" jsonschema:"required,minItems=1"`
 	BillHistoryMonths int           `json:"bill_history_months,omitempty"`
 	Concurrency       int           `json:"concurrency,omitempty"`
 }
 
 type AccountSpec struct {
-	Name      string   `json:"name,omitempty"`
-	Regions   []string `json:"regions,omitempty"`
-	AccessKey string   `json:"access_key,omitempty"`
-	SecretKey string   `json:"secret_key,omitempty"`
+	Name      string   `json:"name,omitempty" jsonschema:"required,minLength=1"`
+	Regions   []string `json:"regions,omitempty" jsonschema:"required,minItems=1"`
+	AccessKey string   `json:"access_key,omitempty" jsonschema:"required,minLength=1"`
+	SecretKey string   `json:"secret_key,omitempty" jsonschema:"required,minLength=1"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -56,35 +56,13 @@ func (s *Spec) Validate() error {
 }
 
 func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
-	one := uint64(1)
-
 	accounts := *sc.Properties.Value("accounts").OneOf[0]
-	accounts.MinItems = &one
 	sc.Properties.Set("accounts", &accounts)
-
-	sc.Required = append(sc.Required, "accounts")
 }
 
 func (AccountSpec) JSONSchemaExtend(sc *jsonschema.Schema) {
-	one := uint64(1)
-
-	name := *sc.Properties.Value("name")
-	name.MinLength = &one
-	sc.Properties.Set("name", &name)
-
-	accessKey := *sc.Properties.Value("access_key")
-	accessKey.MinLength = &one
-	sc.Properties.Set("access_key", &accessKey)
-
-	secretKey := *sc.Properties.Value("secret_key")
-	secretKey.MinLength = &one
-	sc.Properties.Set("secret_key", &secretKey)
-
 	regions := *sc.Properties.Value("regions").OneOf[0]
-	regions.MinItems = &one
 	sc.Properties.Set("regions", &regions)
-
-	sc.Required = append(sc.Required, "name", "access_key", "secret_key", "regions")
 }
 
 //go:embed schema.json
