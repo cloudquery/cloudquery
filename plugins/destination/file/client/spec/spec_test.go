@@ -1,6 +1,7 @@
-package client
+package spec
 
 import (
+	"encoding/json"
 	"fmt"
 	"testing"
 	"time"
@@ -21,8 +22,9 @@ func TestSpec_SetDefaults(t *testing.T) {
 	}{
 
 		{
-			Give: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}},
-			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}, BatchSize: int64Ptr(10000), BatchSizeBytes: int64Ptr(50 * 1024 * 1024), BatchTimeout: &dur30},
+			Give: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ", "}}},
+			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ", "}},
+				BatchSize: ptr(int64(10000)), BatchSizeBytes: ptr(int64(50 * 1024 * 1024)), BatchTimeout: &dur30},
 		},
 	}
 	for _, tc := range cases {
@@ -62,6 +64,25 @@ func TestSpec_Validate(t *testing.T) {
 	}
 }
 
-func int64Ptr(i int64) *int64 {
-	return &i
+func TestSpecUnmarshalJSON(t *testing.T) {
+	data := `{
+	"format": "csv",
+	"format_spec": {
+		"skip_header": true,
+		"delimiter": "#"
+	},
+	"path": "abc"
+}`
+	var s Spec
+	require.NoError(t, json.Unmarshal([]byte(data), &s))
+	require.Exactly(t, Spec{
+		FileSpec: filetypes.FileSpec{
+			Format: filetypes.FormatTypeCSV,
+			FormatSpec: map[string]any{
+				"skip_header": true,
+				"delimiter":   "#",
+			},
+		},
+		Path: "abc",
+	}, s)
 }
