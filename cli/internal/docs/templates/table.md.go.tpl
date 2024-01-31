@@ -19,6 +19,15 @@ The composite primary key for this table is ({{ range $index, $pk := $.PrimaryKe
 		**{{$pk}}**
 	{{- end -}}).
 {{ end }}
+{{- $pkcLength := len $.PrimaryKeyComponents -}}
+{{- if eq $pkcLength 1 -}}
+The following field is used to calculate the value of `_cq_id`: **{{ index $.PrimaryKeyComponents 0 }}**.
+{{- else if gt $pkcLength 1 -}}
+The following fields are used to calculate the value of `_cq_id`: ({{ range $index, $pk := $.PrimaryKeyComponents -}}
+	{{if $index }}, {{end -}}
+		**{{$pk}}**
+	{{- end -}}).
+{{- end -}}
 {{- if $.IsIncremental -}}
 It supports incremental syncs
 {{- $ikLength := len $.IncrementalKeys -}}
