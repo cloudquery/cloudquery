@@ -3,10 +3,13 @@ package client
 import (
 	"context"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
+
+var delayAfterDeleteStale bool // used in tests
 
 func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales) error {
 	for _, msg := range msgs {
@@ -24,6 +27,9 @@ func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales
 		if err := c.exec(ctx, sb.String(), source, syncTime.Unix()); err != nil {
 			return err
 		}
+	}
+	if delayAfterDeleteStale {
+		time.Sleep(time.Second)
 	}
 
 	return nil

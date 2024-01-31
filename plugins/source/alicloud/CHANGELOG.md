@@ -1,5 +1,20 @@
 # Changelog
 
+## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v4.0.20...plugins-source-alicloud-v4.1.0) (2024-01-31)
+
+
+### Features
+
+* Adding JSON schema for alibaba source plugin ([#16355](https://github.com/cloudquery/cloudquery/issues/16355)) ([35028b9](https://github.com/cloudquery/cloudquery/commit/35028b948c40e8e1632d23e9912f24af796ddc94))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.0 ([#16237](https://github.com/cloudquery/cloudquery/issues/16237)) ([3fcdab0](https://github.com/cloudquery/cloudquery/commit/3fcdab08816ad9de7bb4eecab59c7be1bda3d00c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.1 ([#16296](https://github.com/cloudquery/cloudquery/issues/16296)) ([ab4a0da](https://github.com/cloudquery/cloudquery/commit/ab4a0dace0a870755fd22d92c6e9c999351f594e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.2 ([#16342](https://github.com/cloudquery/cloudquery/issues/16342)) ([f3eb857](https://github.com/cloudquery/cloudquery/commit/f3eb85729e5db16c2530b31d6d276934866d5ef0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.28.0 ([#16362](https://github.com/cloudquery/cloudquery/issues/16362)) ([9166b6b](https://github.com/cloudquery/cloudquery/commit/9166b6b603d0d56a30c2e5072c4f2da5c0c837b5))
+
 ## [4.0.20](https://github.com/cloudquery/cloudquery/compare/plugins-source-alicloud-v4.0.19...plugins-source-alicloud-v4.0.20) (2024-01-16)
 
 
