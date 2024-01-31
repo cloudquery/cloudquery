@@ -124,18 +124,27 @@
           "description": "Compression type.\nEmpty or missing stands for no compression."
         },
         "directory": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "description": "Directory where all files will be written. One file will be created per table.\n\nThis is now **deprecated** in favor of `path` which allows more flexibility, and the `directory` option will be removed in a future version.",
+          "deprecated": true
         },
         "path": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "description": "Path template string that determines where files will be written.\n\nThe path supports the following placeholder variables:\n- `{{TABLE}}` will be replaced with the table name\n- `{{FORMAT}}` will be replaced with the file format, such as `csv`, `json` or `parquet`. If compression is enabled, the format will be `csv.gz`, `json.gz` etc.\n- `{{UUID}}` will be replaced with a random UUID to uniquely identify each file\n- `{{YEAR}}` will be replaced with the current year in `YYYY` format\n- `{{MONTH}}` will be replaced with the current month in `MM` format\n- `{{DAY}}` will be replaced with the current day in `DD` format\n- `{{HOUR}}` will be replaced with the current hour in `HH` format\n- `{{MINUTE}}` will be replaced with the current minute in `mm` format\n\n **Note** that timestamps are in `UTC` and will be the current time at the time the file is written, not when the sync started."
         },
         "no_rotate": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "If set to `true`, the plugin will write to one file per table.\nOtherwise, for every batch a new file will be created with a different `.\u003cUUID\u003e` suffix.",
+          "default": false
         },
         "batch_size": {
           "oneOf": [
             {
-              "type": "integer"
+              "type": "integer",
+              "description": "This parameter controls the maximum amount of items may be grouped together to be written in a single write.",
+              "default": 10000
             },
             {
               "type": "null"
@@ -145,7 +154,9 @@
         "batch_size_bytes": {
           "oneOf": [
             {
-              "type": "integer"
+              "type": "integer",
+              "description": "This parameter controls the maximum size of items that may be grouped together to be written in a single write.",
+              "default": 52428800
             },
             {
               "type": "null"
@@ -155,7 +166,8 @@
         "batch_timeout": {
           "oneOf": [
             {
-              "$ref": "#/$defs/Duration"
+              "$ref": "#/$defs/Duration",
+              "description": "This parameter controls the maximum interval between batch writes."
             },
             {
               "type": "null"

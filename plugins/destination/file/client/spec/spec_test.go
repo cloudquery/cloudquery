@@ -103,5 +103,9 @@ func TestSpecJSONSchema(t *testing.T) {
 	"path": "abc"
 }`,
 		},
+		{
+			Name: "minimal working",
+			Spec: `{"format": "csv", "path": "abc"}`,
+		},
 	})
 }
