@@ -10,6 +10,7 @@ import (
 
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
+	"github.com/invopop/jsonschema"
 )
 
 const (
@@ -48,12 +49,12 @@ type Spec struct {
 	// This parameter controls the maximum amount of items may be grouped together to be written in a single write.
 	//
 	// Defaults to `10000` unless `no_rotate` is `true` (will be `0` then).
-	BatchSize *int64 `json:"batch_size" jsonschema:"default=10000"`
+	BatchSize *int64 `json:"batch_size" jsonschema:"minimum=1,default=10000"`
 
 	// This parameter controls the maximum size of items that may be grouped together to be written in a single write.
 	//
 	// Defaults to `52428800` (50 MiB) unless `no_rotate` is `true` (will be `0` then).
-	BatchSizeBytes *int64 `json:"batch_size_bytes" jsonschema:"default=52428800"`
+	BatchSizeBytes *int64 `json:"batch_size_bytes" jsonschema:"minimum=1,default=52428800"`
 
 	// This parameter controls the maximum interval between batch writes.
 	//
@@ -144,6 +145,13 @@ func (s *Spec) batchingEnabled() bool {
 	return (s.BatchSize != nil && *s.BatchSize > 0) ||
 		(s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) ||
 		(s.BatchTimeout != nil && s.BatchTimeout.Duration() > 0)
+}
+
+func (s Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
+	s.FileSpec.JSONSchemaExtend(sc) // need to call manually
+
+	batchTimeout := sc.Properties.Value("batch_timeout").OneOf[0] // 0 - val, 1 - null
+	batchTimeout.Default = "30s"
 }
 
 //go:embed schema.json
