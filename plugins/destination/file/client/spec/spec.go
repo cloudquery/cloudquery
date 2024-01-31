@@ -1,7 +1,6 @@
 package spec
 
 import (
-	_ "embed"
 	"fmt"
 	"path"
 	"path/filepath"
@@ -10,8 +9,6 @@ import (
 
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
-	"github.com/invopop/jsonschema"
-	orderedmap "github.com/wk8/go-ordered-map/v2"
 )
 
 const (
@@ -101,12 +98,12 @@ func (s *Spec) Validate() error {
 		return fmt.Errorf("`path` should not contain %s when `no_rotate` = true", varUUID)
 	}
 
-	if !strings.Contains(s.Path, varUUID) && s.batchingEnabled() {
-		return fmt.Errorf("`path` should contain %s when using a non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`", varUUID)
-	}
-
 	if s.NoRotate && ((s.BatchSize != nil && *s.BatchSize > 0) || (s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) || (s.BatchTimeout != nil && s.BatchTimeout.Duration() > 0)) {
 		return fmt.Errorf("`no_rotate` cannot be used with non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`")
+	}
+
+	if !strings.Contains(s.Path, varUUID) && s.batchingEnabled() {
+		return fmt.Errorf("`path` should contain %s when using a non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`", varUUID)
 	}
 
 	// required for s.FileSpec.Validate call
@@ -139,81 +136,15 @@ func (s *Spec) PathContainsUUID() bool {
 }
 
 func (s *Spec) batchingEnabled() bool {
-	if !s.NoRotate && (s.BatchSize == nil || s.BatchSizeBytes == nil || s.BatchTimeout == nil) {
-		return true
+	if s.NoRotate {
+		// if that's set we don't allow batching
+		return false
 	}
 
-	return (s.BatchSize != nil && *s.BatchSize > 0) ||
-		(s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) ||
-		(s.BatchTimeout != nil && s.BatchTimeout.Duration() > 0)
+	return (s.BatchSize == nil || *s.BatchSize > 0) ||
+		(s.BatchSizeBytes == nil || *s.BatchSizeBytes > 0) ||
+		(s.BatchTimeout == nil || s.BatchTimeout.Duration() > 0)
 }
-
-func (s Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
-	s.FileSpec.JSONSchemaExtend(sc) // need to call manually
-
-	batchTimeout := sc.Properties.Value("batch_timeout").OneOf[0] // 0 - val, 1 - null
-	batchTimeout.Default = "30s"
-
-	// no_rotate:true -> no {{UUID}} should be present in path
-	noRotateNoUUID := &jsonschema.Schema{
-		If: &jsonschema.Schema{
-			Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
-				noRotate := *sc.Properties.Value("no_rotate")
-				noRotate.Default = nil
-				noRotate.Const = true
-				noRotate.Description = ""
-				properties := orderedmap.New[string, *jsonschema.Schema]()
-				properties.Set("no_rotate", &noRotate)
-				return properties
-			}(),
-			Required: []string{"no_rotate"},
-		},
-		Then: &jsonschema.Schema{
-			Not: &jsonschema.Schema{
-				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
-					// we make the non-zero requirement, so we want to allow only null here
-					properties := orderedmap.New[string, *jsonschema.Schema]()
-					properties.Set("path", &jsonschema.Schema{
-						Type:    "string",
-						Pattern: `^.*\{\{UUID\}\}.*$`,
-					})
-					return properties
-				}(),
-			},
-		},
-	}
-	// no_rotate:true -> only nulls for batch options
-	noRotateNoBatch := &jsonschema.Schema{
-		If: &jsonschema.Schema{
-			Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
-				noRotate := *sc.Properties.Value("no_rotate")
-				noRotate.Default = nil
-				noRotate.Const = true
-				noRotate.Description = ""
-				properties := orderedmap.New[string, *jsonschema.Schema]()
-				properties.Set("no_rotate", &noRotate)
-				return properties
-			}(),
-			Required: []string{"no_rotate"},
-		},
-		Then: &jsonschema.Schema{
-			Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
-				// we make the non-zero requirement, so we want to allow only null here
-				null := &jsonschema.Schema{Type: "null"}
-				properties := orderedmap.New[string, *jsonschema.Schema]()
-				properties.Set("batch_size", null)
-				properties.Set("batch_size_bytes", null)
-				properties.Set("batch_timeout", null)
-				return properties
-			}(),
-		},
-	}
-
-	sc.AllOf = append(sc.AllOf, noRotateNoUUID, noRotateNoBatch)
-}
-
-//go:embed schema.json
-var JSONSchema string
 
 func ptr[A any](a A) *A {
 	return &a

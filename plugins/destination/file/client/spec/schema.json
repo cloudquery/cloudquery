@@ -29,9 +29,11 @@
                   "type": "string",
                   "pattern": "^.*\\{\\{UUID\\}\\}.*$"
                 }
-              }
+              },
+              "title": "Require {{UUID}} to be present in path"
             }
-          }
+          },
+          "title": "Disallow {{UUID}} in path when using no_rotate"
         },
         {
           "if": {
@@ -57,7 +59,29 @@
                 "type": "null"
               }
             }
-          }
+          },
+          "title": "Disallow batching when using no_rotate"
+        },
+        {
+          "if": {
+            "properties": {
+              "no_rotate": {
+                "type": "boolean",
+                "const": false
+              }
+            },
+            "title": "Disallow setting no_rotate to true"
+          },
+          "then": {
+            "properties": {
+              "path": {
+                "type": "string",
+                "pattern": "^.*\\{\\{UUID\\}\\}.*$"
+              }
+            },
+            "title": "Require {{UUID}} to be present in path"
+          },
+          "title": "Require {{UUID}} in path when batching"
         }
       ],
       "oneOf": [
