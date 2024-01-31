@@ -19,11 +19,11 @@ type jsonTable struct {
 }
 
 type jsonColumn struct {
-	Name             string `json:"name"`
-	Type             string `json:"type"`
-	IsPrimaryKey     bool   `json:"is_primary_key,omitempty"`
-	IsIncrementalKey bool   `json:"is_incremental_key,omitempty"`
-	IsVirtualPK      bool   `json:"is_virtual_pk,omitempty"`
+	Name                  string `json:"name"`
+	Type                  string `json:"type"`
+	IsPrimaryKey          bool   `json:"is_primary_key,omitempty"`
+	IsIncrementalKey      bool   `json:"is_incremental_key,omitempty"`
+	IsPrimaryKeyComponent bool   `json:"is_primary_key_component,omitempty"`
 }
 
 func (g *Generator) renderTablesAsJSON(dir string) error {
@@ -50,9 +50,9 @@ func (g *Generator) jsonifyTables(tables schema.Tables) []jsonTable {
 				Type: col.Type.String(),
 				// Technically this would enable the UI to continue to show the underlying PK columns
 				// This is a short term hack
-				IsPrimaryKey:     (col.PrimaryKey && col.Name != schema.CqIDColumn.Name && len(table.VirtualPrimaryKeys()) > 0) || col.VirtualPrimaryKey,
-				IsVirtualPK:      col.VirtualPrimaryKey,
-				IsIncrementalKey: col.IncrementalKey,
+				IsPrimaryKey:          (col.PrimaryKey && col.Name != schema.CqIDColumn.Name && len(table.PrimaryKeyComponents()) > 0) || col.PrimaryKeyComponent,
+				IsPrimaryKeyComponent: col.PrimaryKeyComponent,
+				IsIncrementalKey:      col.IncrementalKey,
 			}
 		}
 		jsonTables[i] = jsonTable{
