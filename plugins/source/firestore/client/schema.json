@@ -7,27 +7,27 @@
       "properties": {
         "project_id": {
           "type": "string",
-          "description": "the ID of the project to use for this client. If not specified, the project id will be auto-detected from the credentials",
+          "description": "The ID of the project to use for this client. If not specified, the project id will be auto-detected from the credentials.",
           "default": "*detect-project-id*"
         },
         "use_base64": {
           "type": "boolean",
-          "description": "if true the service account JSON content will be treated as base64 encoded",
+          "description": "If `true` the `service_account_json` content will be treated as base64-encoded.",
           "default": false
         },
         "service_account_json": {
           "type": "string",
-          "description": "service account JSON content"
+          "description": "Service account JSON content."
         },
         "max_batch_size": {
           "type": "integer",
           "minimum": 1,
-          "description": "maximum batch size for each request when reading Firestore data",
+          "description": "Maximum batch size for each request when reading Firestore data.",
           "default": 50000
         },
         "order_by": {
           "type": "string",
-          "description": "field(s) to order the results by"
+          "description": "List of fields to order the results by."
         },
         "order_direction": {
           "type": "string",
@@ -35,7 +35,7 @@
             "asc",
             "desc"
           ],
-          "description": "the direction to order the results by when order_by is specified - accepts either asc or desc",
+          "description": "The order direction used when `order_by` is `true`.",
           "default": "asc"
         }
       },
