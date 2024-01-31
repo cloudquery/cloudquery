@@ -26,10 +26,10 @@ func NetworkAcls() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveNetworkAclArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveNetworkAclArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

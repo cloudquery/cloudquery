@@ -23,10 +23,10 @@ func HealthChecks() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveHealthCheckArn(),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveHealthCheckArn(),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:        "tags",

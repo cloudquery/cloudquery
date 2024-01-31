@@ -18,16 +18,16 @@ func notebookExecutions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/emr/latest/APIReference/API_NotebookExecution.html`,
 		Resolver:            fetchNotebookExecutions,
 		PreResourceResolver: getNotebookExecution,
-		Transform:           transformers.TransformWithStruct(&types.NotebookExecution{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:           transformers.TransformWithStruct(&types.NotebookExecution{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:        "cluster_arn",
-				Description: "The Amazon Resource Name (ARN) of the EMR Cluster.",
-				Type:        arrow.BinaryTypes.String,
-				Resolver:    schema.ParentColumnResolver("arn"),
-				PrimaryKey:  false,
+				Name:                "cluster_arn",
+				Description:         "The Amazon Resource Name (ARN) of the EMR Cluster.",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: false,
 			},
 		},
 	}

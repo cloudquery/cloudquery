@@ -24,9 +24,9 @@ func ByoipCidrs() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "cidr",
-				Type:       arrow.BinaryTypes.String,
-				PrimaryKey: true,
+				Name:                "cidr",
+				Type:                arrow.BinaryTypes.String,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

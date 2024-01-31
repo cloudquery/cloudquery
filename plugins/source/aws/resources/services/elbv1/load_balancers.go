@@ -24,10 +24,10 @@ func LoadBalancers() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveLoadBalancerARN(),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveLoadBalancerARN(),
+				PrimaryKeyComponent: true,
 			},
 		},
 		Relations: []*schema.Table{

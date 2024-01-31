@@ -26,10 +26,10 @@ func DomainNames() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApigatewayDomainNameArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApigatewayDomainNameArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 		Relations: []*schema.Table{

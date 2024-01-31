@@ -18,7 +18,7 @@ func RegistryPolicies() *schema.Table {
 		Resolver:    fetchEcrRegistryPolicies,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "api.ecr"),
 		Transform: transformers.TransformWithStruct(&ecr.GetRegistryPolicyOutput{},
-			transformers.WithPrimaryKeys("RegistryId"),
+			transformers.WithPrimaryKeyComponents("RegistryId"),
 			transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

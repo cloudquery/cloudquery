@@ -26,10 +26,10 @@ func VpnGateways() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveVpnGatewayArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveVpnGatewayArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

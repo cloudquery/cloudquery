@@ -18,7 +18,7 @@ func VpnConnections() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeVpnConnections.html`,
 		Resolver:    fetchVpnConnections,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
-		Transform:   transformers.TransformWithStruct(&types.VpnConnection{}, transformers.WithPrimaryKeys("VpnConnectionId")),
+		Transform:   transformers.TransformWithStruct(&types.VpnConnection{}, transformers.WithPrimaryKeyComponents("VpnConnectionId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

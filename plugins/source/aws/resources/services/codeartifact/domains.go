@@ -21,19 +21,19 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 		Resolver:            fetchDomains,
 		PreResourceResolver: getDomain,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "codeartifact"),
-		Transform:           transformers.TransformWithStruct(&types.DomainDescription{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:           transformers.TransformWithStruct(&types.DomainDescription{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Columns: []schema.Column{
 			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
+				Name:                "request_account_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            client.ResolveAWSAccount,
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:       "request_region",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSRegion,
-				PrimaryKey: true,
+				Name:                "request_region",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            client.ResolveAWSRegion,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

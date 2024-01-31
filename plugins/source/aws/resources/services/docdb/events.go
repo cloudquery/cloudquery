@@ -20,7 +20,7 @@ func Events() *schema.Table {
 		Resolver:    fetchDocdbEvents,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
 		Transform: transformers.TransformWithStruct(&types.Event{},
-			transformers.WithPrimaryKeys("SourceArn", "SourceIdentifier", "Date"),
+			transformers.WithPrimaryKeyComponents("SourceArn", "SourceIdentifier", "Date"),
 		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
@@ -31,7 +31,7 @@ func Events() *schema.Table {
 				Resolver: func(_ context.Context, _ schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 					return r.Set(c.Name, strings.Join(r.Item.(types.Event).EventCategories, ","))
 				},
-				PrimaryKey: true,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

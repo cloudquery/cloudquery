@@ -19,7 +19,7 @@ func VpcEndpointServices() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ServiceDetail.html`,
 		Resolver:    fetchEc2VpcEndpointServices,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
-		Transform:   transformers.TransformWithStruct(&types.ServiceDetail{}, transformers.WithPrimaryKeys("ServiceId")),
+		Transform:   transformers.TransformWithStruct(&types.ServiceDetail{}, transformers.WithPrimaryKeyComponents("ServiceId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

@@ -19,7 +19,7 @@ func Services() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/cloud-map/latest/api/API_Service.html`,
 		Resolver:            fetchServices,
 		PreResourceResolver: getService,
-		Transform:           transformers.TransformWithStruct(&types.Service{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:           transformers.TransformWithStruct(&types.Service{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "servicediscovery"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -20,7 +20,7 @@ func stackInstanceResourceDrifts() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackInstanceResourceDriftsSummary.html.
 The 'request_account_id' and 'request_region' columns are added to show the account and region of where the request was made from.`,
 		Resolver:  fetchStackInstanceResourceDrifts,
-		Transform: transformers.TransformWithStruct(&types.StackInstanceResourceDriftsSummary{}, transformers.WithPrimaryKeys("StackId", "LogicalResourceId", "PhysicalResourceId")),
+		Transform: transformers.TransformWithStruct(&types.StackInstanceResourceDriftsSummary{}, transformers.WithPrimaryKeyComponents("StackId", "LogicalResourceId", "PhysicalResourceId")),
 		Columns: []schema.Column{
 			{
 				Name:     "request_account_id",
@@ -33,16 +33,16 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:       "stack_set_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("stack_set_arn"),
-				PrimaryKey: true,
+				Name:                "stack_set_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("stack_set_arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:       "operation_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("last_operation_id"),
-				PrimaryKey: true,
+				Name:                "operation_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("last_operation_id"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

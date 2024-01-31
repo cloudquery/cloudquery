@@ -23,16 +23,16 @@ func inlinePolicies() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&ssoadmin.GetInlinePolicyForPermissionSetOutput{}, transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			{
-				Name:       "permission_set_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("permission_set_arn"),
-				PrimaryKey: true,
+				Name:                "permission_set_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("permission_set_arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:       "instance_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("instance_arn"),
-				PrimaryKey: true,
+				Name:                "instance_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("instance_arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "inline_policy_json",

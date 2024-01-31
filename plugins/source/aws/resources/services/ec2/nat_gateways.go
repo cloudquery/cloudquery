@@ -26,10 +26,10 @@ func NatGateways() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveNatGatewayArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveNatGatewayArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

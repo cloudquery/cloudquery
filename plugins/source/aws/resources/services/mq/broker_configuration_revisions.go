@@ -31,20 +31,20 @@ func brokerConfigurationRevisions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/amazon-mq/latest/api-reference/configurations-configuration-id-revisions.html`,
 		Resolver:            fetchMqBrokerConfigurationRevisions,
 		PreResourceResolver: getMqBrokerConfigurationRevision,
-		Transform:           transformers.TransformWithStruct(&wrappedBrokerConfigurationRevision{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeys("ConfigurationId"), transformers.WithUnwrapAllEmbeddedStructs()),
+		Transform:           transformers.TransformWithStruct(&wrappedBrokerConfigurationRevision{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeyComponents("ConfigurationId"), transformers.WithUnwrapAllEmbeddedStructs()),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "broker_configuration_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "broker_configuration_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:       "revision",
-				Type:       arrow.PrimitiveTypes.Int32,
-				PrimaryKey: true,
+				Name:                "revision",
+				Type:                arrow.PrimitiveTypes.Int32,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "data",

@@ -25,11 +25,11 @@ func MultiRegionAccessPoints() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:        "arn",
-				Type:        arrow.BinaryTypes.String,
-				Description: `The Amazon Resource Name (ARN) of the multi-Region access point.`,
-				Resolver:    resolveARN,
-				PrimaryKey:  true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Description:         `The Amazon Resource Name (ARN) of the multi-Region access point.`,
+				Resolver:            resolveARN,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

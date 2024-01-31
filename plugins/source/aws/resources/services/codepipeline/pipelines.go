@@ -26,10 +26,10 @@ func Pipelines() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolvePipelineArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolvePipelineArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

@@ -22,18 +22,18 @@ func SubscribedRuleGroups() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "waf"),
 		Columns: []schema.Column{
 			{
-				Name:        "account_id",
-				Type:        arrow.BinaryTypes.String,
-				Resolver:    client.ResolveAWSAccount,
-				Description: `The AWS Account ID of the resource.`,
-				PrimaryKey:  true,
+				Name:                "account_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            client.ResolveAWSAccount,
+				Description:         `The AWS Account ID of the resource.`,
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:        "rule_group_id",
-				Type:        arrow.BinaryTypes.String,
-				Resolver:    schema.PathResolver("RuleGroupId"),
-				Description: `A unique identifier for a RuleGroup.`,
-				PrimaryKey:  true,
+				Name:                "rule_group_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("RuleGroupId"),
+				Description:         `A unique identifier for a RuleGroup.`,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

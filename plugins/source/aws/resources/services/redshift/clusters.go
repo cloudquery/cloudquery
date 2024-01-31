@@ -25,11 +25,11 @@ func Clusters() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:        "arn",
-				Type:        arrow.BinaryTypes.String,
-				Resolver:    resolveClusterArn(),
-				Description: `The Amazon Resource Name (ARN) for the resource.`,
-				PrimaryKey:  true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveClusterArn(),
+				Description:         `The Amazon Resource Name (ARN) for the resource.`,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:        "logging_status",

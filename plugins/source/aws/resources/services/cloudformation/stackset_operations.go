@@ -21,7 +21,7 @@ func stackSetOperations() *schema.Table {
 		Transform: transformers.TransformWithStruct(&models.ExpandedStackSetOperation{},
 			transformers.WithUnwrapStructFields("StackSetOperation"),
 			transformers.WithSkipFields("CallAs"),
-			transformers.WithPrimaryKeys("OperationId", "CreationTimestamp")),
+			transformers.WithPrimaryKeyComponents("OperationId", "CreationTimestamp")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
@@ -31,10 +31,10 @@ func stackSetOperations() *schema.Table {
 				Resolver: schema.PathResolver("OperationId"),
 			},
 			{
-				Name:       "stack_set_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("stack_set_arn"),
-				PrimaryKey: true,
+				Name:                "stack_set_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("stack_set_arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 

@@ -23,10 +23,10 @@ func clusterTaskSets() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("TaskSetArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("TaskSetArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

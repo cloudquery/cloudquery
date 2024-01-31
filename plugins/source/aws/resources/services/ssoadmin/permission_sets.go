@@ -20,7 +20,7 @@ func permissionSets() *schema.Table {
 The 'request_account_id' and 'request_region' columns are added to show the account_id and region of where the request was made from.`,
 		Resolver:            fetchSsoadminPermissionSets,
 		PreResourceResolver: getSsoadminPermissionSet,
-		Transform:           transformers.TransformWithStruct(&types.PermissionSet{}, transformers.WithPrimaryKeys("PermissionSetArn")),
+		Transform:           transformers.TransformWithStruct(&types.PermissionSet{}, transformers.WithPrimaryKeyComponents("PermissionSetArn")),
 		Columns: []schema.Column{
 			{
 				Name:     "request_account_id",
@@ -33,10 +33,10 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:       "instance_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("instance_arn"),
-				PrimaryKey: true,
+				Name:                "instance_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("instance_arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 

@@ -30,10 +30,10 @@ func restApiDocumentationVersions() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApigatewayRestAPIDocumentationVersionArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApigatewayRestAPIDocumentationVersionArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

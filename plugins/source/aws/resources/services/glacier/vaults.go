@@ -29,10 +29,10 @@ func Vaults() *schema.Table {
 				Resolver: resolveGlacierVaultTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("VaultARN"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("VaultARN"),
+				PrimaryKeyComponent: true,
 			},
 		},
 

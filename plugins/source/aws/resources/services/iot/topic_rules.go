@@ -31,10 +31,10 @@ func TopicRules() *schema.Table {
 				Resolver: resolveIotTopicRuleTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("RuleArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("RuleArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

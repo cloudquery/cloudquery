@@ -29,10 +29,10 @@ func Alarms() *schema.Table {
 				Resolver: resolveCloudwatchAlarmTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("AlarmArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("AlarmArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "dimensions",

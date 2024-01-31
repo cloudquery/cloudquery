@@ -26,10 +26,10 @@ func Crawlers() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveGlueCrawlerArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveGlueCrawlerArn,
+				PrimaryKeyComponent: true,
 			},
 			tagsCol(func(cl *client.Client, resource *schema.Resource) string {
 				return crawlerARN(cl, aws.ToString(resource.Item.(types.Crawler).Name))

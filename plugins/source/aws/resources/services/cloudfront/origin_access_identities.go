@@ -17,7 +17,7 @@ func OriginAccessIdentities() *schema.Table {
 		Description: `https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_ListCloudFrontOriginAccessIdentities.html`,
 		Resolver:    fetchCloudfrontOriginAccessIdentities,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "cloudfront"),
-		Transform:   transformers.TransformWithStruct(&types.CloudFrontOriginAccessIdentitySummary{}, transformers.WithPrimaryKeys("Id")),
+		Transform:   transformers.TransformWithStruct(&types.CloudFrontOriginAccessIdentitySummary{}, transformers.WithPrimaryKeyComponents("Id")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 		},
