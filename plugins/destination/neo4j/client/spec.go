@@ -1,24 +1,41 @@
 package client
 
 import (
+	_ "embed"
 	"fmt"
 )
 
-type Spec struct {
-	ConnectionString string `json:"connection_string"`
-	Username         string `json:"username"`
-	Password         string `json:"password"`
+const (
+	defaultBatchSize      = 1000
+	defaultBatchSizeBytes = 1024 * 1024 * 4 // 4MB
+)
 
-	BatchSize      int `json:"batch_size"`
-	BatchSizeBytes int `json:"batch_size_bytes"`
+type Spec struct {
+	// Connection string to connect to the database. This can be a URL or a DSN, as per official [neo4j docs](https://neo4j.com/docs/browser-manual/current/operations/dbms-connection/#uri-scheme).
+	ConnectionString string `json:"connection_string" jsonschema:"required,minLength=1"`
+
+	// Username to connect to the database.
+	Username string `json:"username"`
+
+	// Password to connect to the database.
+	Password string `json:"password"`
+
+	// Number of records to batch together before sending to the database.
+	BatchSize int `json:"batch_size" jsonschema:"minimum=1,default=1000"`
+
+	// Number of bytes (as Arrow buffer size) to batch together before sending to the database.
+	BatchSizeBytes int `json:"batch_size_bytes" jsonschema:"minimum=1,default=4194304"`
 }
+
+//go:embed schema.json
+var JSONSchema string
 
 func (s *Spec) SetDefaults() {
 	if s.BatchSize == 0 {
-		s.BatchSize = 1000
+		s.BatchSize = defaultBatchSize
 	}
 	if s.BatchSizeBytes == 0 {
-		s.BatchSizeBytes = 1024 * 1024 * 4
+		s.BatchSizeBytes = defaultBatchSizeBytes
 	}
 }
 

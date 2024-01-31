@@ -93,8 +93,13 @@ func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) er
 		return err
 	}
 
+	specJsonSchema, err := publish.GetSpecJsonScheme(distDir)
+	if err != nil {
+		return err
+	}
+
 	// create new draft version
-	err = publish.CreateNewPluginDraftVersion(ctx, c, teamName, pluginName, pkgJSON)
+	err = publish.CreateNewPluginDraftVersion(ctx, c, teamName, pluginName, pkgJSON, specJsonSchema)
 	if err != nil {
 		return fmt.Errorf("failed to create new draft version: %w", err)
 	}

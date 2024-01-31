@@ -235,7 +235,7 @@ func UploadPluginDocs(ctx context.Context, c *cloudquery_api.ClientWithResponses
 	return nil
 }
 
-func CreateNewPluginDraftVersion(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName string, pkgJSON PackageJSONV1) error {
+func CreateNewPluginDraftVersion(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName string, pkgJSON PackageJSONV1, specJsonSchema *string) error {
 	targets := make([]string, len(pkgJSON.SupportedTargets))
 	checksums := make([]string, len(pkgJSON.SupportedTargets))
 	for i, t := range pkgJSON.SupportedTargets {
@@ -249,6 +249,7 @@ func CreateNewPluginDraftVersion(ctx context.Context, c *cloudquery_api.ClientWi
 		Protocols:        pkgJSON.Protocols,
 		SupportedTargets: targets,
 		Checksums:        checksums,
+		SpecJsonSchema:   specJsonSchema,
 	}
 	resp, err := c.CreatePluginVersionWithResponse(ctx, teamName, pkgJSON.Kind, pluginName, pkgJSON.Version, body)
 	if err != nil {
@@ -262,6 +263,22 @@ func CreateNewPluginDraftVersion(ctx context.Context, c *cloudquery_api.ClientWi
 		return err
 	}
 	return nil
+}
+
+func GetSpecJsonScheme(distDir string) (*string, error) {
+	specJsonSchemaPath := filepath.Join(distDir, "spec_json_schema.json")
+	content, err := os.ReadFile(specJsonSchemaPath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil, nil
+		}
+		return nil, fmt.Errorf("failed to read spec_json_schema.json: %w", err)
+	}
+	if _, err := os.ReadFile(specJsonSchemaPath); os.IsNotExist(err) {
+		return nil, nil
+	}
+	contentStr := string(content)
+	return &contentStr, nil
 }
 
 func UploadTableSchemas(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginName, tablesJSONPath string, pkgJSON PackageJSONV1) error {
