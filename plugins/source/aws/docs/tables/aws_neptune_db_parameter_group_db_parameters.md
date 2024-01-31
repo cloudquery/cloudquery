@@ -4,8 +4,8 @@ This table shows data for Neptune DB Parameter Group DB Parameters.
 
 https://docs.aws.amazon.com/neptune/latest/userguide/api-parameters.html#DescribeDBClusterParameters
 
-The composite primary key for this table is (**db_parameter_group_arn**, **parameter_name**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**db_parameter_group_arn**, **parameter_name**).
 ## Relations
 
 This table depends on [aws_neptune_db_parameter_groups](aws_neptune_db_parameter_groups.md).
@@ -14,11 +14,11 @@ This table depends on [aws_neptune_db_parameter_groups](aws_neptune_db_parameter
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|db_parameter_group_arn (PK)|`utf8`|
+|db_parameter_group_arn|`utf8`|
 |allowed_values|`utf8`|
 |apply_method|`utf8`|
 |apply_type|`utf8`|
@@ -26,6 +26,6 @@ This table depends on [aws_neptune_db_parameter_groups](aws_neptune_db_parameter
 |description|`utf8`|
 |is_modifiable|`bool`|
 |minimum_engine_version|`utf8`|
-|parameter_name (PK)|`utf8`|
+|parameter_name|`utf8`|
 |parameter_value|`utf8`|
 |source|`utf8`|

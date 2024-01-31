@@ -4,17 +4,18 @@ This table shows data for Elasticache Subnet Groups.
 
 https://docs.aws.amazon.com/AmazonElastiCache/latest/APIReference/API_CacheSubnetGroup.html
 
-The primary key for this table is **arn**.
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |cache_subnet_group_description|`utf8`|
 |cache_subnet_group_name|`utf8`|
 |subnets|`json`|

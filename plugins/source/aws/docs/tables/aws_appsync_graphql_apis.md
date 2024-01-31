@@ -4,17 +4,18 @@ This table shows data for Appsync Graphql APIs.
 
 https://docs.aws.amazon.com/appsync/latest/APIReference/API_GraphqlApi.html
 
-The primary key for this table is **arn**.
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |additional_authentication_providers|`json`|
 |api_id|`utf8`|
 |api_type|`utf8`|

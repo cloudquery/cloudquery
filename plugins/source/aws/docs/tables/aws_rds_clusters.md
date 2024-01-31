@@ -4,8 +4,8 @@ This table shows data for Amazon Relational Database Service (RDS) Clusters.
 
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBCluster.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_rds_clusters:
@@ -15,11 +15,11 @@ The following tables depend on aws_rds_clusters:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |tags|`json`|
 |activity_stream_kinesis_stream_name|`utf8`|
 |activity_stream_kms_key_id|`utf8`|

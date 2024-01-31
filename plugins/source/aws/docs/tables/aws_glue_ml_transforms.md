@@ -4,8 +4,8 @@ This table shows data for Glue ML Transforms.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_MLTransform.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_glue_ml_transforms:
@@ -15,11 +15,11 @@ The following tables depend on aws_glue_ml_transforms:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |schema|`json`|
 |tags|`json`|
 |created_on|`timestamp[us, tz=UTC]`|

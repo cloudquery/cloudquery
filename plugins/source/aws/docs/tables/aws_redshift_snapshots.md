@@ -4,8 +4,8 @@ This table shows data for Redshift Snapshots.
 
 https://docs.aws.amazon.com/redshift/latest/APIReference/API_Snapshot.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 This table depends on [aws_redshift_clusters](aws_redshift_clusters.md).
@@ -14,11 +14,11 @@ This table depends on [aws_redshift_clusters](aws_redshift_clusters.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |tags|`json`|
 |accounts_with_restore_access|`json`|
 |actual_incremental_backup_size_in_mega_bytes|`float64`|

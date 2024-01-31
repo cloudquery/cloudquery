@@ -4,8 +4,8 @@ This table shows data for Amazon Elastic Compute Cloud (EC2) Launch Template Ver
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_LaunchTemplateVersion.html
 
-The composite primary key for this table is (**arn**, **version_number**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**arn**, **version_number**).
 ## Relations
 
 This table depends on [aws_ec2_launch_templates](aws_ec2_launch_templates.md).
@@ -14,12 +14,12 @@ This table depends on [aws_ec2_launch_templates](aws_ec2_launch_templates.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
-|version_number (PK)|`int64`|
+|arn|`utf8`|
+|version_number|`int64`|
 |create_time|`timestamp[us, tz=UTC]`|
 |created_by|`utf8`|
 |default_version|`bool`|

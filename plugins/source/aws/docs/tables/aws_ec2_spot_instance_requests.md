@@ -4,16 +4,17 @@ This table shows data for Amazon Elastic Compute Cloud (EC2) Spot Instance Reque
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SpotInstanceRequest.html
 
-The composite primary key for this table is (**account_id**, **region**, **spot_instance_request_id**).
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**, **spot_instance_request_id**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
 |tags|`json`|
 |actual_block_hourly_price|`utf8`|
 |availability_zone_group|`utf8`|
@@ -26,7 +27,7 @@ The composite primary key for this table is (**account_id**, **region**, **spot_
 |launch_specification|`json`|
 |launched_availability_zone|`utf8`|
 |product_description|`utf8`|
-|spot_instance_request_id (PK)|`utf8`|
+|spot_instance_request_id|`utf8`|
 |spot_price|`utf8`|
 |state|`utf8`|
 |status|`json`|

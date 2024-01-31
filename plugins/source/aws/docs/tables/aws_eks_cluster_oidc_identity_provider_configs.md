@@ -4,8 +4,8 @@ This table shows data for Amazon Elastic Kubernetes Service (EKS) Cluster Oidc I
 
 https://docs.aws.amazon.com/eks/latest/APIReference/API_OidcIdentityProviderConfig.html
 
-The composite primary key for this table is (**arn**, **cluster_arn**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**arn**, **cluster_arn**).
 ## Relations
 
 This table depends on [aws_eks_clusters](aws_eks_clusters.md).
@@ -14,12 +14,12 @@ This table depends on [aws_eks_clusters](aws_eks_clusters.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
-|cluster_arn (PK)|`utf8`|
+|arn|`utf8`|
+|cluster_arn|`utf8`|
 |client_id|`utf8`|
 |cluster_name|`utf8`|
 |groups_claim|`utf8`|

@@ -4,15 +4,16 @@ This table shows data for Cloudfront Response Headers Policies.
 
 https://docs.aws.amazon.com/cloudfront/latest/APIReference/API_ListResponseHeadersPolicies.html
 
-The composite primary key for this table is (**account_id**, **id**).
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **id**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|id (PK)|`utf8`|
+|account_id|`utf8`|
+|id|`utf8`|
 |response_headers_policy|`json`|
 |type|`utf8`|

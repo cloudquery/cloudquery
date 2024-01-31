@@ -4,15 +4,16 @@ This table shows data for Backup Global Settings.
 
 https://docs.aws.amazon.com/aws-backup/latest/devguide/API_DescribeGlobalSettings.html
 
-The composite primary key for this table is (**account_id**, **region**).
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
 |global_settings|`json`|
 |last_update_time|`timestamp[us, tz=UTC]`|

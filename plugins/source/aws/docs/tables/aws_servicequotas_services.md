@@ -4,8 +4,8 @@ This table shows data for Servicequotas Services.
 
 https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceInfo.html
 
-The composite primary key for this table is (**account_id**, **region**, **service_code**, **service_name**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**, **service_code**, **service_name**).
 ## Relations
 
 The following tables depend on aws_servicequotas_services:
@@ -15,9 +15,9 @@ The following tables depend on aws_servicequotas_services:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
-|service_code (PK)|`utf8`|
-|service_name (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
+|service_code|`utf8`|
+|service_name|`utf8`|

@@ -4,17 +4,18 @@ This table shows data for AWS Well-Architected Lenses.
 
 https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_Lens.html
 
-The composite primary key for this table is (**account_id**, **region**, **arn**).
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**, **arn**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
-|arn (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn|`utf8`|
 |created_at|`timestamp[us, tz=UTC]`|
 |description|`utf8`|
 |lens_alias|`utf8`|

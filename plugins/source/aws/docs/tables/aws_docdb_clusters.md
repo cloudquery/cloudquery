@@ -4,8 +4,8 @@ This table shows data for Amazon DocumentDB Clusters.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBCluster.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_docdb_clusters:
@@ -16,12 +16,12 @@ The following tables depend on aws_docdb_clusters:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
 |tags|`json`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |associated_roles|`json`|
 |availability_zones|`list<item: utf8, nullable>`|
 |backup_retention_period|`int64`|

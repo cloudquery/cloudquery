@@ -4,8 +4,8 @@ This table shows data for Glue Jobs.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_Job.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_glue_jobs:
@@ -15,11 +15,11 @@ The following tables depend on aws_glue_jobs:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |tags|`json`|
 |allocated_capacity|`int64`|
 |code_gen_configuration_nodes|`json`|
