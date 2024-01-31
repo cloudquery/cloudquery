@@ -24,12 +24,12 @@ This is the top level spec used by the DuckDB destination Plugin.
 
 - `batch_size` (`integer`) (optional) (default: `1000`)
 
-  This parameter controls the maximum amount of items may be grouped together to be written as a single write.
+  Maximum amount of items that may be grouped together to be written in a single write.
 
 - `batch_size_bytes` (`integer`) (optional) (default: `4194304` (4 MiB))
 
-  This parameter controls the maximum size of items that may be grouped together to be written as a single write.
+  Maximum size of items that may be grouped together to be written in a single write.
 
 - `debug` (`boolean`) (optional) (default: `false`)
 
-  Allows to enable debug logging.
+  Enables debug logging.
