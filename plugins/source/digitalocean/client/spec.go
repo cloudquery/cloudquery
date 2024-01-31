@@ -18,7 +18,7 @@ type Spec struct {
 	// SpacesDebugLogging allows enabling AWS S3 request logging on spaces requests
 	SpacesDebugLogging bool `json:"spaces_debug_logging,omitempty"`
 
-	Concurrency int `json:"concurrency,omitempty" jsonschema:"min:1,default:10000"`
+	Concurrency int `json:"concurrency,omitempty" jsonschema:"min=1,default=10000"`
 }
 
 func (s *Spec) SetDefaults() {

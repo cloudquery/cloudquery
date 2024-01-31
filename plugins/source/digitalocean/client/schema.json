@@ -36,7 +36,8 @@
           "description": "SpacesDebugLogging allows enabling AWS S3 request logging on spaces requests"
         },
         "concurrency": {
-          "type": "integer"
+          "type": "integer",
+          "default": 10000
         }
       },
       "additionalProperties": false,
