@@ -16,7 +16,7 @@ type Spec struct {
 	ProjectID string `json:"project_id"`
 	// If `true` the `service_account_json` content will be treated as base64-encoded.
 	UseBase64 bool `json:"use_base64" jsonschema:"default=false"`
-	//  service account JSON content
+	//  Service account JSON content.
 	ServiceAccountJSON string `json:"service_account_json"`
 	// Maximum batch size for each request when reading Firestore data.
 	MaxBatchSize int `json:"max_batch_size" jsonschema:"minimum=1"`
