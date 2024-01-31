@@ -38,12 +38,9 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewC
 	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}
-	if c.spec.Directory != "" {
-		c.logger.Warn().Msg("deprecated: the `directory` configuration option will be removed in a future version, please use `path` instead")
-	}
 	c.spec.SetDefaults()
 
-	filetypesClient, err := filetypes.NewClient(c.spec.FileSpec)
+	filetypesClient, err := filetypes.NewClient(&c.spec.FileSpec)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
 	}

@@ -127,6 +127,32 @@ var testTables = []*schema.Table{
 		},
 	},
 	{
+		Name:        "test_table_with_primary_key_component",
+		Title:       "Test Table With Primary Key Component",
+		Description: "table using a primary key component",
+		Columns: []schema.Column{
+			{
+				Name:       schema.CqIDColumn.Name,
+				Type:       schema.CqIDColumn.Type,
+				PrimaryKey: true,
+			},
+			{
+				Name: "int_col",
+				Type: arrow.PrimitiveTypes.Int64,
+			},
+			{
+				Name:                "id_col",
+				Type:                arrow.PrimitiveTypes.Int64,
+				PrimaryKeyComponent: true,
+			},
+			{
+				Name:                "id_col2",
+				Type:                arrow.PrimitiveTypes.Int64,
+				PrimaryKeyComponent: true,
+			},
+		},
+	},
+	{
 		Name:        "paid_table",
 		Title:       "Paid Table",
 		Description: "Description for paid table",
@@ -147,7 +173,7 @@ func TestGeneratePluginDocs(t *testing.T) {
 			t.Fatalf("unexpected error calling GeneratePluginDocs: %v", err)
 		}
 
-		expectFiles := []string{"test_table.md", "relation_table.md", "relation_relation_table_a.md", "relation_relation_table_b.md", "incremental_table.md", "paid_table.md", "README.md"}
+		expectFiles := []string{"test_table.md", "relation_table.md", "relation_relation_table_a.md", "relation_relation_table_b.md", "incremental_table.md", "paid_table.md", "README.md", "test_table_with_primary_key_component.md"}
 		for _, exp := range expectFiles {
 			t.Run(exp, func(t *testing.T) {
 				output := path.Join(tmpdir, exp)
