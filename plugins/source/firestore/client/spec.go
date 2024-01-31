@@ -18,7 +18,7 @@ type Spec struct {
 	UseBase64 bool `json:"use_base64" jsonschema:"default=false"`
 	//  service account JSON content
 	ServiceAccountJSON string `json:"service_account_json"`
-	// maximum batch size for each request when reading Firestore data
+	// Maximum batch size for each request when reading Firestore data.
 	MaxBatchSize int `json:"max_batch_size" jsonschema:"minimum=1"`
 	// field(s) to order the results by
 	OrderBy string `json:"order_by"`
