@@ -1,68 +1,88 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/file/client/spec/spec",
-  "$ref": "#/$defs/SpecSchema",
+  "$ref": "#/$defs/Spec",
   "$defs": {
     "Duration": {
       "type": "string",
       "pattern": "^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$",
       "title": "CloudQuery configtype.Duration"
     },
-    "FileSpecSchema": {
-      "oneOf": [
+    "Spec": {
+      "allOf": [
         {
-          "properties": {
-            "format": {
-              "type": "string",
-              "const": "csv"
+          "oneOf": [
+            {
+              "required": [
+                "directory"
+              ],
+              "title": "directory"
             },
-            "format_spec": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/Spec"
-                },
-                {
-                  "type": "null"
-                }
-              ]
+            {
+              "required": [
+                "path"
+              ],
+              "title": "path"
             }
-          }
+          ]
         },
         {
-          "properties": {
-            "format": {
-              "type": "string",
-              "const": "json"
-            },
-            "format_spec": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/Spec-1"
+          "oneOf": [
+            {
+              "properties": {
+                "format": {
+                  "type": "string",
+                  "const": "csv"
                 },
-                {
-                  "type": "null"
+                "format_spec": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/Spec-1"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 }
-              ]
-            }
-          }
-        },
-        {
-          "properties": {
-            "format": {
-              "type": "string",
-              "const": "parquet"
+              }
             },
-            "format_spec": {
-              "oneOf": [
-                {
-                  "$ref": "#/$defs/Spec-2"
+            {
+              "properties": {
+                "format": {
+                  "type": "string",
+                  "const": "json"
                 },
-                {
-                  "type": "null"
+                "format_spec": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/Spec-2"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
                 }
-              ]
+              }
+            },
+            {
+              "properties": {
+                "format": {
+                  "type": "string",
+                  "const": "parquet"
+                },
+                "format_spec": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/Spec-3"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
             }
-          }
+          ]
         }
       ],
       "properties": {
@@ -72,20 +92,21 @@
             "csv",
             "json",
             "parquet"
-          ]
+          ],
+          "description": "Output format."
         },
         "format_spec": {
           "oneOf": [
             {
               "anyOf": [
                 {
-                  "$ref": "#/$defs/Spec"
-                },
-                {
                   "$ref": "#/$defs/Spec-1"
                 },
                 {
                   "$ref": "#/$defs/Spec-2"
+                },
+                {
+                  "$ref": "#/$defs/Spec-3"
                 }
               ]
             },
@@ -99,60 +120,9 @@
           "enum": [
             "",
             "gzip"
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "type": "object",
-      "required": [
-        "format"
-      ]
-    },
-    "Spec": {
-      "properties": {
-        "skip_header": {
-          "type": "boolean",
-          "description": "Specifies if the first line of a file should be the header.",
-          "default": false
-        },
-        "delimiter": {
-          "type": "string",
-          "pattern": "^.$",
-          "description": "Character that will be used as the delimiter.",
-          "default": ","
-        }
-      },
-      "additionalProperties": false,
-      "type": "object",
-      "description": "CloudQuery CSV file output spec."
-    },
-    "Spec-1": {
-      "additionalProperties": false,
-      "type": "object",
-      "description": "CloudQuery JSON file output spec."
-    },
-    "Spec-2": {
-      "additionalProperties": false,
-      "type": "object",
-      "description": "CloudQuery Parquet file output spec."
-    },
-    "SpecSchema": {
-      "$ref": "#/$defs/FileSpecSchema",
-      "oneOf": [
-        {
-          "required": [
-            "directory"
           ],
-          "title": "directory"
+          "description": "Compression type.\nEmpty or missing stands for no compression."
         },
-        {
-          "required": [
-            "path"
-          ],
-          "title": "path"
-        }
-      ],
-      "properties": {
         "directory": {
           "type": "string"
         },
@@ -194,7 +164,38 @@
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "required": [
+        "format"
+      ]
+    },
+    "Spec-1": {
+      "properties": {
+        "skip_header": {
+          "type": "boolean",
+          "description": "Specifies if the first line of a file should be the header.",
+          "default": false
+        },
+        "delimiter": {
+          "type": "string",
+          "pattern": "^.$",
+          "description": "Character that will be used as the delimiter.",
+          "default": ","
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "description": "CloudQuery CSV file output spec."
+    },
+    "Spec-2": {
+      "additionalProperties": false,
+      "type": "object",
+      "description": "CloudQuery JSON file output spec."
+    },
+    "Spec-3": {
+      "additionalProperties": false,
+      "type": "object",
+      "description": "CloudQuery Parquet file output spec."
     }
   }
 }
