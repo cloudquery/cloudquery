@@ -46,12 +46,18 @@ type Spec struct {
 	NoRotate bool `json:"no_rotate,omitempty" jsonschema:"default=false"`
 
 	// This parameter controls the maximum amount of items may be grouped together to be written in a single write.
+	//
+	// Defaults to `10000` unless `no_rotate` is `true` (will be `0` then).
 	BatchSize *int64 `json:"batch_size" jsonschema:"default=10000"`
 
 	// This parameter controls the maximum size of items that may be grouped together to be written in a single write.
+	//
+	// Defaults to `52428800` (50 MiB) unless `no_rotate` is `true` (will be `0` then).
 	BatchSizeBytes *int64 `json:"batch_size_bytes" jsonschema:"default=52428800"`
 
 	// This parameter controls the maximum interval between batch writes.
+	//
+	// Defaults to `30s` unless `no_rotate` is `true` (will be `0s` then).
 	BatchTimeout *configtype.Duration `json:"batch_timeout" jsonschema:"default=30s"`
 }
 
@@ -88,9 +94,11 @@ func (s *Spec) Validate() error {
 	if len(s.Path) == 0 {
 		return fmt.Errorf("`path` must be set")
 	}
+
 	if s.NoRotate && strings.Contains(s.Path, varUUID) {
 		return fmt.Errorf("`path` should not contain %s when `no_rotate` = true", varUUID)
 	}
+
 	if !strings.Contains(s.Path, varUUID) && s.batchingEnabled() {
 		return fmt.Errorf("`path` should contain %s when using a non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`", varUUID)
 	}

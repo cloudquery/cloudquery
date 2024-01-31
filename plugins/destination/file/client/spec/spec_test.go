@@ -104,8 +104,57 @@ func TestSpecJSONSchema(t *testing.T) {
 }`,
 		},
 		{
-			Name: "minimal working",
+			Name: "bad format value", // also a part of embedded FileSpec testing
+			Spec: `{"format": "cs22v", "path": "abc"}`,
+			Err:  true,
+		},
+		{
+			Name: "missing path & directory",
+			Spec: `{"format": "csv"}`,
+			Err:  true,
+		},
+		{
+			Name: "empty path",
+			Spec: `{"format": "csv", "path": ""}`,
+			Err:  true,
+		},
+		{
+			Name: "null path",
+			Spec: `{"format": "csv", "path": null}`,
+			Err:  true,
+		},
+		{
+			Name: "integer path",
+			Spec: `{"format": "csv", "path": 123}`,
+			Err:  true,
+		},
+		{
+			Name: "minimal working with path",
 			Spec: `{"format": "csv", "path": "abc"}`,
+		},
+		{
+			Name: "empty directory",
+			Spec: `{"format": "csv", "directory": ""}`,
+			Err:  true,
+		},
+		{
+			Name: "null directory",
+			Spec: `{"format": "csv", "directory": null}`,
+			Err:  true,
+		},
+		{
+			Name: "integer directory",
+			Spec: `{"format": "csv", "directory": 123}`,
+			Err:  true,
+		},
+		{
+			Name: "minimal working with directory",
+			Spec: `{"format": "csv", "directory": "abc"}`,
+		},
+		{
+			Name: "both path & directory present",
+			Spec: `{"format": "csv", "path":"abc", "directory": "abc"}`,
+			Err:  true,
 		},
 	})
 }
