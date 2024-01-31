@@ -227,7 +227,7 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 
 	if len(addedPK) == 1 && addedPK[0] == "_cq_id" && len(deletedPK) > 0 {
 		changes = append(changes, change{
-			Text:     fmt.Sprintf("Table %s: all existing primary key constraints have been removed and a primary key new constraint has been added to `_cq_id`", backtickStrings(table)),
+			Text:     fmt.Sprintf("Table %s: all existing primary key constraints have been removed and a primary key new constraint has been added to `_cq_id`", backtickStrings(table)...),
 			Breaking: true,
 		})
 	}
