@@ -23,8 +23,8 @@ func TestSpec_SetDefaults(t *testing.T) {
 	}{
 
 		{
-			Give: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}},
-			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}},
+			Give: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ", "}}},
+			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ", "}},
 				BatchSize: ptr(int64(10000)), BatchSizeBytes: ptr(int64(50 * 1024 * 1024)), BatchTimeout: &dur30},
 		},
 	}
@@ -149,6 +149,129 @@ func TestSpecJSONSchema(t *testing.T) {
 		{
 			Name: "no_rotate:false",
 			Spec: `{"format": "csv", "path": "abc", "no_rotate": false}`,
+		},
+		{
+			Name: "zero batch_size",
+			Err:  true,
+			Spec: `{"format": "csv", "path": "abc", "batch_size":0}`,
+		},
+		{
+			Name: "float batch_size",
+			Err:  true,
+			Spec: `{"format": "csv", "path": "abc", "batch_size":5.3}`,
+		},
+		{
+			Name: "bad batch_size",
+			Err:  true,
+			Spec: `{"format": "csv", "path": "abc", "batch_size":false}`,
+		},
+		{
+			Name: "null batch_size",
+			Spec: `{"format": "csv", "path": "abc", "batch_size":null}`,
+		},
+		{
+			Name: "proper batch_size",
+			Spec: `{"format": "csv", "path": "abc", "batch_size":123}`,
+		},
+		{
+			Name: "zero batch_size_bytes",
+			Err:  true,
+			Spec: `{"format": "csv", "path": "abc", "batch_size_bytes":0}`,
+		},
+		{
+			Name: "float batch_size_bytes",
+			Err:  true,
+			Spec: `{"format": "csv", "path": "abc", "batch_size_bytes":5.3}`,
+		},
+		{
+			Name: "bad batch_size_bytes",
+			Err:  true,
+			Spec: `{"format": "csv", "path": "abc", "batch_size_bytes":false}`,
+		},
+		{
+			Name: "null batch_size_bytes",
+			Spec: `{"format": "csv", "path": "abc", "batch_size_bytes":null}`,
+		},
+		{
+			Name: "proper batch_size_bytes",
+			Spec: `{"format": "csv", "path": "abc", "batch_size_bytes":123}`,
+		},
+		// configtype.Duration is tested in plugin-sdk
+		// test only null here
+		{
+			Name: "null batch_timeout",
+			Spec: `{"format": "csv", "path": "abc", "batch_timeout":null}`,
+		},
+
+		// no_rotate + path
+		{
+			Name: "no_rotate:false & path:{{UUID}}",
+			Spec: `{"format": "csv", "path": "{{UUID}}", "no_rotate":false}`,
+		},
+		{
+			Name: "no_rotate:true & path:{{UUID}}",
+			Spec: `{"format": "csv", "path": "{{UUID}}", "no_rotate":false}`,
+			Err:  true,
+		},
+		{
+			Name: "no_rotate:false & path:abc",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate":false}`,
+		},
+		{
+			Name: "no_rotate:true & path:{{UUID}}",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate":false}`,
+		},
+		// no_rotate + batching
+		{
+			Name: "no_rotate:false & batch_size:100",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate":false, "batch_size":100}`,
+		},
+		{
+			Name: "no_rotate:true & batch_size:100",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate":true, "batch_size":100}`,
+			Err:  true,
+		},
+		{
+			Name: "no_rotate:false & batch_size:null",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate":false, "batch_size":null}`,
+		},
+		{
+			Name: "no_rotate:true & batch_size:null",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate":true, "batch_size":null}`,
+		},
+		{
+			Name: "no_rotate:false & batch_size_bytes:100",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate":false, "batch_size_bytes":100}`,
+		},
+		{
+			Name: "no_rotate:true & batch_size_bytes:100",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate":true, "batch_size_bytes":100}`,
+			Err:  true,
+		},
+		{
+			Name: "no_rotate:false & batch_size_bytes:null",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate":false, "batch_size_bytes":null}`,
+		},
+		{
+			Name: "no_rotate:true & batch_size_bytes:null",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate":true, "batch_size_bytes":null}`,
+		},
+		{
+			Name: "no_rotate:false & batch_timeout:100s",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate":false, "batch_timeout":"100s"}`,
+		},
+		{
+			Name: "no_rotate:true & batch_timeout:100s",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate":true, "batch_timeout":"100s"}`,
+			Err:  true,
+		},
+		{
+			Name: "no_rotate:false & batch_timeout:null",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate":false, "batch_timeout":null}`,
+		},
+		{
+			Name: "no_rotate:true & batch_timeout:null",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate":true, "batch_timeout":null}`,
 		},
 	})
 }

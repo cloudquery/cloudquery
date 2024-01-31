@@ -9,6 +9,57 @@
       "title": "CloudQuery configtype.Duration"
     },
     "Spec": {
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "no_rotate": {
+                "type": "boolean",
+                "const": true
+              }
+            },
+            "required": [
+              "no_rotate"
+            ]
+          },
+          "then": {
+            "not": {
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "pattern": "^.*\\{\\{UUID\\}\\}.*$"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "no_rotate": {
+                "type": "boolean",
+                "const": true
+              }
+            },
+            "required": [
+              "no_rotate"
+            ]
+          },
+          "then": {
+            "properties": {
+              "batch_size": {
+                "type": "null"
+              },
+              "batch_size_bytes": {
+                "type": "null"
+              },
+              "batch_timeout": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ],
       "oneOf": [
         {
           "properties": {
