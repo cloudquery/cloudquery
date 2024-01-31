@@ -4,7 +4,7 @@ go 1.21.4
 
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
-	github.com/cloudquery/plugin-sdk/v4 v4.27.1
+	github.com/cloudquery/plugin-sdk/v4 v4.28.0
 	github.com/gorilla/mux v1.8.0
 	github.com/okta/okta-sdk-golang/v3 v3.0.2
 	github.com/rs/zerolog v1.31.0

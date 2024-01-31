@@ -5,7 +5,7 @@ go 1.21.4
 require (
 	cloud.google.com/go/bigquery v1.58.0
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
-	github.com/cloudquery/plugin-sdk/v4 v4.27.1
+	github.com/cloudquery/plugin-sdk/v4 v4.28.0
 	github.com/goccy/go-json v0.10.2
 	github.com/rs/zerolog v1.31.0
 	golang.org/x/sync v0.6.0

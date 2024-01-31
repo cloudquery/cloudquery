@@ -275,6 +275,7 @@ var GcpServices = map[string]bool{
 	"workflowexecutions.googleapis.com":               true,
 	"workflows.googleapis.com":                        true,
 	"workloadmanager.googleapis.com":                  true,
+	"workspaceevents.googleapis.com":                  true,
 	"workstations.googleapis.com":                     true,
 	"youtube.googleapis.com":                          true,
 	"youtubeAnalytics.googleapis.com":                 true,

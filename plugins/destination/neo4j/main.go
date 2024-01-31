@@ -18,6 +18,7 @@ func main() {
 	p := plugin.NewPlugin(internalPlugin.Name, internalPlugin.Version, client.New,
 		plugin.WithKind(internalPlugin.Kind),
 		plugin.WithTeam(internalPlugin.Team),
+		plugin.WithJSONSchema(client.JSONSchema),
 	)
 	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
 		log.Fatalf("failed to serve plugin: %v", err)

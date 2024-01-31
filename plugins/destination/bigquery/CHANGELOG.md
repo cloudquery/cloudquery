@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.3.16](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v3.3.15...plugins-destination-bigquery-v3.3.16) (2024-01-31)
+
+
+### Bug Fixes
+
+* Add user-agent to BigQuery calls ([#16345](https://github.com/cloudquery/cloudquery/issues/16345)) ([b91d1f7](https://github.com/cloudquery/cloudquery/commit/b91d1f72e7fa7d59e81a40d23745c43b704b0007))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.0 ([#16237](https://github.com/cloudquery/cloudquery/issues/16237)) ([3fcdab0](https://github.com/cloudquery/cloudquery/commit/3fcdab08816ad9de7bb4eecab59c7be1bda3d00c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.1 ([#16296](https://github.com/cloudquery/cloudquery/issues/16296)) ([ab4a0da](https://github.com/cloudquery/cloudquery/commit/ab4a0dace0a870755fd22d92c6e9c999351f594e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.2 ([#16342](https://github.com/cloudquery/cloudquery/issues/16342)) ([f3eb857](https://github.com/cloudquery/cloudquery/commit/f3eb85729e5db16c2530b31d6d276934866d5ef0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.28.0 ([#16362](https://github.com/cloudquery/cloudquery/issues/16362)) ([9166b6b](https://github.com/cloudquery/cloudquery/commit/9166b6b603d0d56a30c2e5072c4f2da5c0c837b5))
+
 ## [3.3.15](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v3.3.14...plugins-destination-bigquery-v3.3.15) (2024-01-23)
 
 
