@@ -94,12 +94,14 @@ func (s *Spec) Validate() error {
 		return fmt.Errorf("`path` must be set")
 	}
 
-	if s.NoRotate && strings.Contains(s.Path, varUUID) {
-		return fmt.Errorf("`path` should not contain %s when `no_rotate` = true", varUUID)
-	}
+	if s.NoRotate {
+		if strings.Contains(s.Path, varUUID) {
+			return fmt.Errorf("`path` should not contain %s when `no_rotate` = true", varUUID)
+		}
 
-	if s.NoRotate && ((s.BatchSize != nil && *s.BatchSize > 0) || (s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) || (s.BatchTimeout != nil && s.BatchTimeout.Duration() > 0)) {
-		return fmt.Errorf("`no_rotate` cannot be used with non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`")
+		if (s.BatchSize != nil && *s.BatchSize > 0) || (s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) || (s.BatchTimeout != nil && s.BatchTimeout.Duration() > 0) {
+			return fmt.Errorf("`no_rotate` cannot be used with non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`")
+		}
 	}
 
 	if !strings.Contains(s.Path, varUUID) && s.batchingEnabled() {
