@@ -14,7 +14,7 @@ import (
 type Spec struct {
 	// The ID of the project to use for this client. If not specified, the project id will be auto-detected from the credentials.
 	ProjectID string `json:"project_id"`
-	// if true the service account JSON content will be treated as base64 encoded
+	// If `true` the `service_account_json` content will be treated as base64-encoded.
 	UseBase64 bool `json:"use_base64" jsonschema:"default=false"`
 	//  service account JSON content
 	ServiceAccountJSON string `json:"service_account_json"`
