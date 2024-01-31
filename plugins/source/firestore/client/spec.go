@@ -20,7 +20,7 @@ type Spec struct {
 	ServiceAccountJSON string `json:"service_account_json"`
 	// Maximum batch size for each request when reading Firestore data.
 	MaxBatchSize int `json:"max_batch_size" jsonschema:"minimum=1"`
-	// field(s) to order the results by
+	// List of fields to order the results by.
 	OrderBy string `json:"order_by"`
 	// the direction to order the results by when order_by is specified - accepts either asc or desc
 	OrderDirection string `json:"order_direction" jsonschema:"enum=asc,enum=desc,default=asc"`
