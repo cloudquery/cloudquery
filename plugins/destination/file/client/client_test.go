@@ -12,6 +12,7 @@ import (
 	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/apache/arrow/go/v15/arrow/array"
 	"github.com/apache/arrow/go/v15/arrow/memory"
+	"github.com/cloudquery/cloudquery/plugins/destination/file/client/spec"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/filetypes/v4/csv"
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -40,7 +41,7 @@ func testFormats() []filetypes.FileSpec {
 }
 
 type testSpec struct {
-	Spec
+	spec.Spec
 	testName string
 	baseDir  string
 }
@@ -52,25 +53,8 @@ func testSpecsWithoutFormat() []testSpec {
 	)
 
 	ret = append(ret, testSpec{
-		testName: "Directory",
-		Spec: Spec{
-			BatchSize:      &zero,
-			BatchSizeBytes: &zero,
-		},
-	})
-
-	ret = append(ret, testSpec{
-		testName: "DirectoryWithTable",
-		Spec: Spec{
-			Directory:      filepath.Join("{{TABLE}}", "data.{{FORMAT}}"),
-			BatchSize:      &zero,
-			BatchSizeBytes: &zero,
-		},
-	})
-
-	ret = append(ret, testSpec{
 		testName: "Path",
-		Spec: Spec{
+		Spec: spec.Spec{
 			Path:           filepath.Join("{{TABLE}}.{{FORMAT}}"),
 			BatchSize:      &zero,
 			BatchSizeBytes: &zero,
@@ -79,7 +63,7 @@ func testSpecsWithoutFormat() []testSpec {
 
 	ret = append(ret, testSpec{
 		testName: "PathWithTable",
-		Spec: Spec{
+		Spec: spec.Spec{
 			Path:           filepath.Join("{{TABLE}}", "data.{{FORMAT}}"),
 			BatchSize:      &zero,
 			BatchSizeBytes: &zero,
@@ -98,14 +82,14 @@ func testSpecs(t *testing.T) []testSpec {
 		for i := range formats {
 			s2 := s
 			s2.testName += ":" + string(formats[i].Format)
-			s2.FileSpec = &formats[i]
+			s2.FileSpec = formats[i]
 			ret = append(ret, s2)
 
 			if formats[i].Format != filetypes.FormatTypeParquet {
 				s2.testName += ":gzip"
-				fs := *s2.FileSpec
+				fs := s2.FileSpec
 				fs.Compression = filetypes.CompressionTypeGZip
-				s2.FileSpec = &fs
+				s2.FileSpec = fs
 				ret = append(ret, s2)
 			}
 		}
@@ -114,11 +98,7 @@ func testSpecs(t *testing.T) []testSpec {
 	for i := range ret {
 		bd := t.TempDir()
 		ret[i].baseDir = bd
-		if ret[i].Spec.Path == "" {
-			ret[i].Spec.Directory = filepath.Join(bd, ret[i].Spec.Directory)
-		} else {
-			ret[i].Spec.Path = filepath.Join(bd, ret[i].Spec.Path)
-		}
+		ret[i].Spec.Path = filepath.Join(bd, ret[i].Spec.Path)
 	}
 
 	return ret
@@ -159,10 +139,10 @@ func TestPlugin(t *testing.T) {
 	}
 }
 
-func testPlugin(t *testing.T, spec *Spec) {
+func testPlugin(t *testing.T, s *spec.Spec) {
 	ctx := context.Background()
 	p := plugin.NewPlugin("file", "development", New)
-	b, err := json.Marshal(spec)
+	b, err := json.Marshal(s)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -180,7 +160,7 @@ func testPlugin(t *testing.T, spec *Spec) {
 	)
 }
 
-func testPluginCustom(t *testing.T, spec *Spec) {
+func testPluginCustom(t *testing.T, s *spec.Spec) {
 	ctx := context.Background()
 
 	var client plugin.Client
@@ -190,7 +170,7 @@ func testPluginCustom(t *testing.T, spec *Spec) {
 		client, err = New(ctx, logger, spec, opts)
 		return client, err
 	})
-	b, err := json.Marshal(spec)
+	b, err := json.Marshal(s)
 	if err != nil {
 		t.Fatal(err)
 	}

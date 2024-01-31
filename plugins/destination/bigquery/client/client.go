@@ -6,11 +6,14 @@ import (
 	"fmt"
 
 	"cloud.google.com/go/bigquery"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/bigquery/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/rs/zerolog"
 	"google.golang.org/api/option"
 )
+
+const cloudQueryGPN = "CloudQuery"
 
 type Client struct {
 	plugin.UnimplementedSource
@@ -60,7 +63,10 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte, opts plugin
 }
 
 func (c *Client) bqClient(ctx context.Context) (*bigquery.Client, error) {
-	opts := []option.ClientOption{option.WithRequestReason("CloudQuery BigQuery destination")}
+	opts := []option.ClientOption{
+		option.WithRequestReason("CloudQuery BigQuery destination"),
+		option.WithUserAgent(fmt.Sprintf("CloudQuery_BigQuery_Destination/%s (GPN:%s)", internalPlugin.Version, cloudQueryGPN)),
+	}
 	if len(c.spec.ServiceAccountKeyJSON) != 0 {
 		opts = append(opts, option.WithCredentialsJSON([]byte(c.spec.ServiceAccountKeyJSON)))
 	}

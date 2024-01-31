@@ -9,8 +9,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.26.6
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/codegen v0.3.12
-	github.com/cloudquery/plugin-sdk/v4 v4.28.0
 	github.com/invopop/jsonschema v0.11.0
+	github.com/cloudquery/plugin-sdk/v4 v4.29.0
 	github.com/rs/zerolog v1.31.0
 	github.com/stretchr/testify v1.8.4
 	github.com/wk8/go-ordered-map/v2 v2.1.8
@@ -43,8 +43,8 @@ require (
 	github.com/bytedance/sonic v1.10.2 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.7.0 // indirect
-	github.com/cloudquery/plugin-pb-go v1.16.6 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.7.1 // indirect
+	github.com/cloudquery/plugin-pb-go v1.16.7 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect

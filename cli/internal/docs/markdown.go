@@ -55,7 +55,7 @@ func (g *Generator) renderAllTables(dir string, t *schema.Table) error {
 	return nil
 }
 
-func (g *Generator) renderTable(dir string, table *schema.Table) error {
+func (*Generator) renderTable(dir string, table *schema.Table) error {
 	t := template.New("")
 	t, err := t.New("table.md.go.tpl").ParseFS(templatesFS, "templates/table.md.go.tpl")
 	if err != nil {

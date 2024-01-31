@@ -20,7 +20,7 @@ This plugin is useful in local environments, but also in production environments
 
 This is the (nested) spec used by the file destination Plugin.
 
-- `path` (string) (required)
+- `path` (`string`) (**required**)
 
   Path template string that determines where files will be written. The path supports the following placeholder variables:
 
@@ -33,13 +33,9 @@ This is the (nested) spec used by the file destination Plugin.
   - `{{HOUR}}` will be replaced with the current hour in `HH` format
   - `{{MINUTE}}` will be replaced with the current minute in `mm` format
 
-  Note that timestamps are in UTC and will be the current time at the time the file is written, not when the sync started.
+  **Note** that timestamps are in `UTC` and will be the current time at the time the file is written, not when the sync started.
 
-- `directory` (`string`) (required if `path` is not set) (**deprecated**)
-
-  Directory where all files will be written. One file will be created per table. This is now deprecated in favor of `path` which allows more flexibility, and the `directory` option will be removed in a future version.
-
-- `format` (`string`) (required)
+- `format` (`string`) (**required**)
 
   Format of the output file.  Supported values are `csv`, `json` and `parquet`.
 
@@ -52,9 +48,9 @@ This is the (nested) spec used by the file destination Plugin.
   If set to `true`, the plugin will write to one file per table.
   Otherwise, for every batch a new file will be created with a different `.<UUID>` suffix.
 
-- `compression` (`string`) (optional) (default: empty)
+- `compression` (`string`) (optional) (default: `""`)
 
-  Compression algorithm to use. Supported values are empty or `gzip`. Not supported for `parquet` format.
+  Compression algorithm to use. Supported values are `""` and `gzip`. Not supported for `parquet` format.
 
 - `batch_size` (`integer`) (optional) (default: `10000`)
 
