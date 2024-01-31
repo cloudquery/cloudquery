@@ -33,7 +33,7 @@ This is the (nested) spec used by the file destination Plugin.
   - `{{HOUR}}` will be replaced with the current hour in `HH` format
   - `{{MINUTE}}` will be replaced with the current minute in `mm` format
 
-  Note that timestamps are in UTC and will be the current time at the time the file is written, not when the sync started.
+  **Note** that timestamps are in `UTC` and will be the current time at the time the file is written, not when the sync started.
 
 - `format` (`string`) (**required**)
 
