@@ -121,7 +121,7 @@
   {
     "name": "test_table_with_primary_key_component",
     "title": "Test Table With Primary Key Component",
-    "description": "Using a primary key component",
+    "description": "table using a primary key component",
     "columns": [
       {
         "name": "_cq_id",
