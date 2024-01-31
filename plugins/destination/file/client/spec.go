@@ -22,10 +22,10 @@ const (
 )
 
 type Spec struct {
-	*filetypes.FileSpec
-	Directory string `json:"directory,omitempty"`
-	NoRotate  bool   `json:"no_rotate,omitempty"`
-	Path      string `json:"path,omitempty"`
+	filetypes.FileSpec
+
+	Path     string `json:"path,omitempty"`
+	NoRotate bool   `json:"no_rotate,omitempty"`
 
 	BatchSize      *int64               `json:"batch_size"`
 	BatchSizeBytes *int64               `json:"batch_size_bytes"`
@@ -33,12 +33,6 @@ type Spec struct {
 }
 
 func (s *Spec) SetDefaults() {
-	if s.Directory != "" {
-		s.Path = path.Join(s.Directory, fmt.Sprintf("%s.%s", PathVarTable, s.Format))
-		if !s.NoRotate {
-			s.Path += "." + PathVarUUID
-		}
-	}
 	if !strings.Contains(s.Path, PathVarTable) {
 		s.Path = path.Join(s.Path, fmt.Sprintf("%s.%s", PathVarTable, s.Format))
 	}
@@ -68,40 +62,39 @@ func (s *Spec) SetDefaults() {
 }
 
 func (s *Spec) Validate() error {
-	if s.Directory == "" && s.Path == "" {
-		return fmt.Errorf("either `directory` or `path` must be set")
+	if len(s.Path) == 0 {
+		return fmt.Errorf("`path` must be set")
 	}
-	if s.Directory != "" && s.Path != "" {
-		return fmt.Errorf("only one of `directory` or `path` is allowed")
-	}
+
 	if s.NoRotate && strings.Contains(s.Path, PathVarUUID) {
 		return fmt.Errorf("`path` should not contain %s when `no_rotate` = true", PathVarUUID)
 	}
 	if !strings.Contains(s.Path, PathVarUUID) && s.batchingEnabled() {
 		return fmt.Errorf("`path` should contain %s when using a non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`", PathVarUUID)
 	}
-	if s.Format == "" {
-		return fmt.Errorf("`format` is required")
-	}
+
 	if s.NoRotate && ((s.BatchSize != nil && *s.BatchSize > 0) || (s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) || (s.BatchTimeout != nil && s.BatchTimeout.Duration() > 0)) {
 		return fmt.Errorf("`no_rotate` cannot be used with non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`")
 	}
 
-	return nil
+	// required for s.FileSpec.Validate call
+	err := s.FileSpec.UnmarshalSpec()
+	if err != nil {
+		return err
+	}
+	s.FileSpec.SetDefaults()
+
+	return s.FileSpec.Validate()
 }
 
 func (s *Spec) batchingEnabled() bool {
-	switch {
-	case (s.BatchSize != nil && *s.BatchSize > 0) ||
-		(s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) ||
-		(s.BatchTimeout != nil && s.BatchTimeout.Duration() > 0) ||
-		(!s.NoRotate && s.BatchSize == nil) ||
-		(!s.NoRotate && s.BatchSizeBytes == nil) ||
-		(!s.NoRotate && s.BatchTimeout == nil):
+	if !s.NoRotate && (s.BatchSize == nil || s.BatchSizeBytes == nil || s.BatchTimeout == nil) {
 		return true
-	default:
-		return false
 	}
+
+	return (s.BatchSize != nil && *s.BatchSize > 0) ||
+		(s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) ||
+		(s.BatchTimeout != nil && s.BatchTimeout.Duration() > 0)
 }
 
 func int64ptr(i int64) *int64 {
