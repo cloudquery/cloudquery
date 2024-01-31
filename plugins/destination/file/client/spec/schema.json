@@ -9,80 +9,60 @@
       "title": "CloudQuery configtype.Duration"
     },
     "Spec": {
-      "allOf": [
+      "oneOf": [
         {
-          "oneOf": [
-            {
-              "required": [
-                "directory"
-              ],
-              "title": "directory"
+          "properties": {
+            "format": {
+              "type": "string",
+              "const": "csv"
             },
-            {
-              "required": [
-                "path"
-              ],
-              "title": "path"
+            "format_spec": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/Spec-1"
+                },
+                {
+                  "type": "null"
+                }
+              ]
             }
-          ]
+          }
         },
         {
-          "oneOf": [
-            {
-              "properties": {
-                "format": {
-                  "type": "string",
-                  "const": "csv"
-                },
-                "format_spec": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/$defs/Spec-1"
-                    },
-                    {
-                      "type": "null"
-                    }
-                  ]
-                }
-              }
+          "properties": {
+            "format": {
+              "type": "string",
+              "const": "json"
             },
-            {
-              "properties": {
-                "format": {
-                  "type": "string",
-                  "const": "json"
+            "format_spec": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/Spec-2"
                 },
-                "format_spec": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/$defs/Spec-2"
-                    },
-                    {
-                      "type": "null"
-                    }
-                  ]
+                {
+                  "type": "null"
                 }
-              }
-            },
-            {
-              "properties": {
-                "format": {
-                  "type": "string",
-                  "const": "parquet"
-                },
-                "format_spec": {
-                  "oneOf": [
-                    {
-                      "$ref": "#/$defs/Spec-3"
-                    },
-                    {
-                      "type": "null"
-                    }
-                  ]
-                }
-              }
+              ]
             }
-          ]
+          }
+        },
+        {
+          "properties": {
+            "format": {
+              "type": "string",
+              "const": "parquet"
+            },
+            "format_spec": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/Spec-3"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
         }
       ],
       "properties": {
@@ -123,12 +103,6 @@
           ],
           "description": "Compression type.\nEmpty or missing stands for no compression."
         },
-        "directory": {
-          "type": "string",
-          "minLength": 1,
-          "description": "Directory where all files will be written. One file will be created per table.\n\nThis is now **deprecated** in favor of `path` which allows more flexibility, and the `directory` option will be removed in a future version.",
-          "deprecated": true
-        },
         "path": {
           "type": "string",
           "minLength": 1,
@@ -143,7 +117,7 @@
           "oneOf": [
             {
               "type": "integer",
-              "description": "This parameter controls the maximum amount of items may be grouped together to be written in a single write.",
+              "description": "This parameter controls the maximum amount of items may be grouped together to be written in a single write.\n\nDefaults to `10000` unless `no_rotate` is `true` (will be `0` then).",
               "default": 10000
             },
             {
@@ -155,7 +129,7 @@
           "oneOf": [
             {
               "type": "integer",
-              "description": "This parameter controls the maximum size of items that may be grouped together to be written in a single write.",
+              "description": "This parameter controls the maximum size of items that may be grouped together to be written in a single write.\n\nDefaults to `52428800` (50 MiB) unless `no_rotate` is `true` (will be `0` then).",
               "default": 52428800
             },
             {
@@ -167,7 +141,7 @@
           "oneOf": [
             {
               "$ref": "#/$defs/Duration",
-              "description": "This parameter controls the maximum interval between batch writes."
+              "description": "This parameter controls the maximum interval between batch writes.\n\nDefaults to `30s` unless `no_rotate` is `true` (will be `0s` then)."
             },
             {
               "type": "null"
@@ -178,7 +152,8 @@
       "additionalProperties": false,
       "type": "object",
       "required": [
-        "format"
+        "format",
+        "path"
       ]
     },
     "Spec-1": {

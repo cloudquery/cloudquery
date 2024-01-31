@@ -109,7 +109,7 @@ func TestSpecJSONSchema(t *testing.T) {
 			Err:  true,
 		},
 		{
-			Name: "missing path & directory",
+			Name: "missing path",
 			Spec: `{"format": "csv"}`,
 			Err:  true,
 		},
@@ -129,32 +129,26 @@ func TestSpecJSONSchema(t *testing.T) {
 			Err:  true,
 		},
 		{
-			Name: "minimal working with path",
+			Name: "proper path",
 			Spec: `{"format": "csv", "path": "abc"}`,
 		},
 		{
-			Name: "empty directory",
-			Spec: `{"format": "csv", "directory": ""}`,
+			Name: "null no_rotate",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate": null}`,
 			Err:  true,
 		},
 		{
-			Name: "null directory",
-			Spec: `{"format": "csv", "directory": null}`,
+			Name: "bad no_rotate",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate": 123}`,
 			Err:  true,
 		},
 		{
-			Name: "integer directory",
-			Spec: `{"format": "csv", "directory": 123}`,
-			Err:  true,
+			Name: "no_rotate:true",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate": true}`,
 		},
 		{
-			Name: "minimal working with directory",
-			Spec: `{"format": "csv", "directory": "abc"}`,
-		},
-		{
-			Name: "both path & directory present",
-			Spec: `{"format": "csv", "path":"abc", "directory": "abc"}`,
-			Err:  true,
+			Name: "no_rotate:false",
+			Spec: `{"format": "csv", "path": "abc", "no_rotate": false}`,
 		},
 	})
 }

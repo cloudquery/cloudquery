@@ -53,14 +53,6 @@ func testSpecsWithoutFormat() []testSpec {
 	)
 
 	ret = append(ret, testSpec{
-		testName: "Directory",
-		Spec: spec.Spec{
-			BatchSize:      &zero,
-			BatchSizeBytes: &zero,
-		},
-	})
-
-	ret = append(ret, testSpec{
 		testName: "Path",
 		Spec: spec.Spec{
 			Path:           filepath.Join("{{TABLE}}.{{FORMAT}}"),
