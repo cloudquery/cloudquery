@@ -17,6 +17,7 @@ func Plugin() *plugin.Plugin {
 		Name,
 		Version,
 		client.Configure,
+		plugin.WithJSONSchema(client.JSONSchema),
 		plugin.WithKind(Kind),
 		plugin.WithTeam(Team),
 	)

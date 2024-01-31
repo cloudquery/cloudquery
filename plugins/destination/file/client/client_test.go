@@ -60,15 +60,6 @@ func testSpecsWithoutFormat() []testSpec {
 	})
 
 	ret = append(ret, testSpec{
-		testName: "DirectoryWithTable",
-		Spec: Spec{
-			Directory:      filepath.Join("{{TABLE}}", "data.{{FORMAT}}"),
-			BatchSize:      &zero,
-			BatchSizeBytes: &zero,
-		},
-	})
-
-	ret = append(ret, testSpec{
 		testName: "Path",
 		Spec: Spec{
 			Path:           filepath.Join("{{TABLE}}.{{FORMAT}}"),
@@ -98,14 +89,14 @@ func testSpecs(t *testing.T) []testSpec {
 		for i := range formats {
 			s2 := s
 			s2.testName += ":" + string(formats[i].Format)
-			s2.FileSpec = &formats[i]
+			s2.FileSpec = formats[i]
 			ret = append(ret, s2)
 
 			if formats[i].Format != filetypes.FormatTypeParquet {
 				s2.testName += ":gzip"
-				fs := *s2.FileSpec
+				fs := s2.FileSpec
 				fs.Compression = filetypes.CompressionTypeGZip
-				s2.FileSpec = &fs
+				s2.FileSpec = fs
 				ret = append(ret, s2)
 			}
 		}
@@ -114,11 +105,7 @@ func testSpecs(t *testing.T) []testSpec {
 	for i := range ret {
 		bd := t.TempDir()
 		ret[i].baseDir = bd
-		if ret[i].Spec.Path == "" {
-			ret[i].Spec.Directory = filepath.Join(bd, ret[i].Spec.Directory)
-		} else {
-			ret[i].Spec.Path = filepath.Join(bd, ret[i].Spec.Path)
-		}
+		ret[i].Spec.Path = filepath.Join(bd, ret[i].Spec.Path)
 	}
 
 	return ret
