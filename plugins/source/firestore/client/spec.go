@@ -12,7 +12,7 @@ import (
 
 // Spec is the (nested) spec used by Firestore Source Plugin
 type Spec struct {
-	// the ID of the project to use for this client. If not specified, the project id will be auto-detected from the credentials
+	// The ID of the project to use for this client. If not specified, the project id will be auto-detected from the credentials.
 	ProjectID string `json:"project_id"`
 	// if true the service account JSON content will be treated as base64 encoded
 	UseBase64 bool `json:"use_base64" jsonschema:"default=false"`
