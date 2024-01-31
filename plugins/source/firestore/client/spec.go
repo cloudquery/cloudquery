@@ -22,7 +22,7 @@ type Spec struct {
 	MaxBatchSize int `json:"max_batch_size" jsonschema:"minimum=1"`
 	// List of fields to order the results by.
 	OrderBy string `json:"order_by"`
-	// the direction to order the results by when order_by is specified - accepts either asc or desc
+	// The order direction used when `order_by` is `true`.
 	OrderDirection string `json:"order_direction" jsonschema:"enum=asc,enum=desc,default=asc"`
 }
 
