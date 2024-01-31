@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/datadog/client/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Account": {
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Account name."
+        },
+        "api_key": {
+          "type": "string",
+          "description": "Datadog API key."
+        },
+        "app_key": {
+          "type": "string",
+          "description": "Datadog App key."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "description": "Account used to specify one or more accounts to extract information from."
+    },
+    "Spec": {
+      "properties": {
+        "accounts": {
+          "items": {
+            "$ref": "#/$defs/Account"
+          },
+          "type": "array",
+          "description": "Specify which accounts to sync data from."
+        },
+        "concurrency": {
+          "type": "integer",
+          "description": "A best effort maximum number of Go routines to use. Lower this number to reduce memory usage."
+        },
+        "site": {
+          "type": "string",
+          "description": "The Datadog site to connect to. This is usually one of datadoghq.com or datadoghq.eu - see site documentation for more information."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "description": "Spec the (nested) spec used by the Datadog source plugin."
+    }
+  }
+}

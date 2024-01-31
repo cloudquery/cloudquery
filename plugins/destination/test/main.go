@@ -17,6 +17,7 @@ func main() {
 		client.New,
 		plugin.WithKind(internalPlugin.Kind),
 		plugin.WithTeam(internalPlugin.Team),
+		plugin.WithJSONSchema(client.JSONSchema),
 	)
 	if err := serve.Plugin(p,
 		serve.WithDestinationV0V1Server(),
