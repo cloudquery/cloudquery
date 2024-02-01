@@ -19,9 +19,20 @@ lint:
 
 .PHONY: gen-docs
 gen-docs: build
-	rm -rf ./docs/tables/*
-	cloudquery tables --output-dir docs/tables testdata
+	@command -v cloudquery >/dev/null 2>&1 || { \
+		echo "Error: 'cloudquery' command not found. Please install it before running gen-docs."; \
+		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/quickstart"; \
+		exit 1; \
+	}
+
+	rm -rf docs/tables
+	cloudquery tables --format markdown --output-dir docs testdata/config.yml
+	mv docs/$(shell basename $(CURDIR)) docs/tables
+
+.PHONY: gen-spec-schema
+gen-spec-schema:
+	go run client/spec/gen/main.go
 
 # All gen targets
 .PHONY: gen
-gen: gen-docs
+gen: gen-spec-schema gen-docs
