@@ -111,50 +111,67 @@ func (s *Spec) Validate() error {
 }
 
 func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
-	sc.OneOf = []*jsonschema.Schema{
+	forceAuthMode := func(sc *jsonschema.Schema, value authMode) *jsonschema.Schema {
+		authMode := *sc.Properties.Value("auth_mode")
+		authMode.Const = value
+		return &authMode
+	}
+	forceMinLength := func(sc *jsonschema.Schema, field string) *jsonschema.Schema {
+		one := uint64(1)
+		val := *sc.Properties.Value(field)
+		val.MinLength = &one
+		return &val
+	}
+
+	sc.AllOf = append(sc.AllOf, []*jsonschema.Schema{
 		{
 			// if auth_mode is aws, require aws_region to be set
-			Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
-				one := uint64(1)
-				properties := jsonschema.NewProperties()
-
-				authMode := *sc.Properties.Value("auth_mode")
-				authMode.Const = authModeAWS
-				properties.Set("auth_mode", &authMode)
-
-				awsRegion := *sc.Properties.Value("aws_region")
-				awsRegion.MinLength = &one
-				properties.Set("aws_region", &awsRegion)
-
-				return properties
-			}(),
-			Required: []string{"auth_mode", "aws_region"},
-		},
-		{
-			// If auth_mode is not aws, don't care about aws_region
-			Not: &jsonschema.Schema{
+			If: &jsonschema.Schema{
 				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
 					properties := jsonschema.NewProperties()
-					authMode := *sc.Properties.Value("auth_mode")
-					authMode.Const = authModeAWS
-					properties.Set("auth_mode", &authMode)
+					properties.Set("auth_mode", forceAuthMode(sc, authModeAWS))
 					return properties
 				}(),
 				Required: []string{"auth_mode"},
 			},
+			Then: &jsonschema.Schema{
+				// require properties not to be empty or null
+				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+					properties := jsonschema.NewProperties()
+					properties.Set("aws_region", forceMinLength(sc, "aws_region"))
+					return properties
+				}(),
+				Required: []string{"aws_region"},
+			},
 		},
-	}
 
-	sc.AllOf = []*jsonschema.Schema{
+		{
+			// if auth_mode is basic, require username and password to be set
+			If: &jsonschema.Schema{
+				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+					properties := jsonschema.NewProperties()
+					properties.Set("auth_mode", forceAuthMode(sc, authModeBasic))
+					return properties
+				}(),
+				Required: []string{"auth_mode"},
+			},
+			Then: &jsonschema.Schema{
+				// require properties not to be empty or null
+				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+					properties := jsonschema.NewProperties()
+					properties.Set("username", forceMinLength(sc, "username"))
+					properties.Set("password", forceMinLength(sc, "password"))
+					return properties
+				}(),
+				Required: []string{"username", "password"},
+			},
+		},
 		{
 			// if username is set, require password to be set and auth_mode to be basic
 			If: &jsonschema.Schema{
 				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
-					one := uint64(1)
 					properties := jsonschema.NewProperties()
-					val := *sc.Properties.Value("username")
-					val.MinLength = &one
-					properties.Set("username", &val)
+					properties.Set("username", forceMinLength(sc, "username"))
 					return properties
 				}(),
 				Required: []string{"username"},
@@ -163,31 +180,19 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 				// require properties not to be empty or null
 				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
 					properties := jsonschema.NewProperties()
-					one := uint64(1)
-
-					password := *sc.Properties.Value("password")
-					password.MinLength = &one
-					properties.Set("password", &password)
-
-					authMode := *sc.Properties.Value("auth_mode")
-					authMode.Enum = []any{authModeBasic}
-					authMode.Pattern = string(authModeBasic)
-					properties.Set("auth_mode", &authMode)
-
+					properties.Set("password", forceMinLength(sc, "password"))
+					properties.Set("auth_mode", forceAuthMode(sc, authModeBasic))
 					return properties
 				}(),
 				Required: []string{"password", "auth_mode"},
 			},
 		},
 		{
-			// if password is set, require username to be set
+			// if password is set, require username to be set and auth_mode to be basic
 			If: &jsonschema.Schema{
 				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
-					one := uint64(1)
 					properties := jsonschema.NewProperties()
-					val := *sc.Properties.Value("password")
-					val.MinLength = &one
-					properties.Set("password", &val)
+					properties.Set("password", forceMinLength(sc, "password"))
 					return properties
 				}(),
 				Required: []string{"password"},
@@ -196,18 +201,14 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 				// require properties not to be empty or null
 				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
 					properties := jsonschema.NewProperties()
-					one := uint64(1)
-
-					val := *sc.Properties.Value("username")
-					val.MinLength = &one
-					properties.Set("username", &val)
-
+					properties.Set("username", forceMinLength(sc, "username"))
+					properties.Set("auth_mode", forceAuthMode(sc, authModeBasic))
 					return properties
 				}(),
-				Required: []string{"username"},
+				Required: []string{"username", "auth_mode"},
 			},
 		},
-	}
+	}...)
 }
 
 func (authMode) JSONSchemaExtend(sc *jsonschema.Schema) {
