@@ -76,6 +76,10 @@ func TestJSONSchema(t *testing.T) {
 			Err:  true,
 		},
 		{
+			Name: "spec with proper batch_size",
+			Spec: `{"connection_string": "abc",  "batch_size":7}`,
+		},
+		{
 			Name: "spec with bool batch_timeout",
 			Spec: `{"connection_string": "abc", "batch_timeout":true}`,
 			Err:  true,
