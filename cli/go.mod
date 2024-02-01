@@ -19,7 +19,7 @@ require (
 	github.com/google/uuid v1.5.0
 	github.com/invopop/jsonschema v0.11.0
 	github.com/opencontainers/go-digest v1.0.0
-	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8
+	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/rs/zerolog v1.31.0
 	github.com/schollz/progressbar/v3 v3.13.1
 	github.com/spf13/cobra v1.6.1
