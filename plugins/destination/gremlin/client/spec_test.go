@@ -18,6 +18,10 @@ func TestJSONSchema(t *testing.T) {
 			Spec: `{"endpoint": "ws://localhost:8182"}`,
 		},
 		{
+			Name: "spec with wss endpoint, without port",
+			Spec: `{"endpoint": "wss://localhost"}`,
+		},
+		{
 			Name: "spec with endpoint, auth_mode basic, username/password",
 			Spec: `{"endpoint": "ws://localhost:8182", "auth_mode": "basic", "username": "abc", "password": "def"}`,
 		},
@@ -72,27 +76,27 @@ func TestJSONSchema(t *testing.T) {
 		},
 		{
 			Name: "spec with bool batch_size",
-			Spec: `{"endpoint": "abc", "batch_size":false}`,
+			Spec: `{"endpoint": "ws://localhost:8182", "batch_size":false}`,
 			Err:  true,
 		},
 		{
 			Name: "spec with null batch_size",
-			Spec: `{"endpoint": "abc", "batch_size":null}`,
+			Spec: `{"endpoint": "ws://localhost:8182", "batch_size":null}`,
 			Err:  true,
 		},
 		{
 			Name: "spec with string batch_size",
-			Spec: `{"endpoint": "abc", "batch_size":"str"}`,
+			Spec: `{"endpoint": "ws://localhost:8182", "batch_size":"str"}`,
 			Err:  true,
 		},
 		{
 			Name: "spec with array batch_size",
-			Spec: `{"endpoint": "abc", "batch_size":["abc"]}`,
+			Spec: `{"endpoint": "ws://localhost:8182", "batch_size":["abc"]}`,
 			Err:  true,
 		},
 		{
 			Name: "spec with unknown field",
-			Spec: `{"endpoint": "abc", "unknown": "test"}`,
+			Spec: `{"endpoint": "ws://localhost:8182", "unknown": "test"}`,
 			Err:  true,
 		},
 	})

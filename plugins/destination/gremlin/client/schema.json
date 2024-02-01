@@ -113,7 +113,7 @@
       "properties": {
         "endpoint": {
           "type": "string",
-          "minLength": 1,
+          "pattern": "^ws(s?)://[^\n]+$",
           "description": "Endpoint for the database. Supported schemes are `wss://` and `ws://`, the default port is `8182`."
         },
         "insecure": {
