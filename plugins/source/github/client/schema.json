@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/github/client/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "AppAuthSpec": {
+      "properties": {
+        "org": {
+          "type": "string"
+        },
+        "app_id": {
+          "type": "string"
+        },
+        "private_key_path": {
+          "type": "string"
+        },
+        "private_key": {
+          "type": "string"
+        },
+        "installation_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "EnterpriseSettings": {
+      "properties": {
+        "base_url": {
+          "type": "string"
+        },
+        "upload_url": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Spec": {
+      "properties": {
+        "access_token": {
+          "type": "string",
+          "description": "Personal Access Token, required if not using App Authentication."
+        },
+        "orgs": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "description": "List of organizations to sync from. You must specify either orgs or repos in the configuration."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "repos": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "description": "List of repositories to sync from. The format is owner/repo (e.g. cloudquery/cloudquery).\nYou must specify either orgs or repos in the configuration."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "app_auth": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/AppAuthSpec"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "enterprise": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/EnterpriseSettings"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "concurrency": {
+          "type": "integer",
+          "description": "The best effort maximum number of Go routines to use.\nLower this number to reduce memory usage.",
+          "default": 10000
+        },
+        "discovery_concurrency": {
+          "type": "integer",
+          "description": "Controls the number of parallel requests to GitHub when discovering repositories, a negative value means unlimited.",
+          "default": 1
+        },
+        "skip_archived_repos": {
+          "type": "boolean",
+          "description": "Skip archived repositories when discovering repositories."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "description": "Spec is the (nested) spec used by GitHub Source Plugin"
+    }
+  }
+}

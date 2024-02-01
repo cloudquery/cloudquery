@@ -2,16 +2,25 @@ package client
 
 import "fmt"
 
+// Spec is the (nested) spec used by GitHub Source Plugin
 type Spec struct {
-	AccessToken        string              `json:"access_token"`
-	Orgs               []string            `json:"orgs"`
+	// Personal Access Token, required if not using App Authentication.
+	AccessToken string `json:"access_token"`
+	// List of organizations to sync from. You must specify either orgs or repos in the configuration.
+	Orgs []string `json:"orgs"`
+	// List of repositories to sync from. The format is owner/repo (e.g. cloudquery/cloudquery).
+	// You must specify either orgs or repos in the configuration.
 	Repos              []string            `json:"repos"`
 	AppAuth            []AppAuthSpec       `json:"app_auth"`
 	EnterpriseSettings *EnterpriseSettings `json:"enterprise"`
 
-	Concurrency          int  `json:"concurrency,omitempty"`
-	DiscoveryConcurrency int  `json:"discovery_concurrency,omitempty"`
-	SkipArchivedRepos    bool `json:"skip_archived_repos,omitempty"`
+	// The best effort maximum number of Go routines to use.
+	// Lower this number to reduce memory usage.
+	Concurrency int `json:"concurrency,omitempty" jsonschema:"default=10000"`
+	// Controls the number of parallel requests to GitHub when discovering repositories, a negative value means unlimited.
+	DiscoveryConcurrency int `json:"discovery_concurrency,omitempty" jsonschema:"default=1"`
+	// Skip archived repositories when discovering repositories.
+	SkipArchivedRepos bool `json:"skip_archived_repos,omitempty"`
 }
 
 type EnterpriseSettings struct {
