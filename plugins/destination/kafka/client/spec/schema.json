@@ -183,20 +183,13 @@
           "description": "Compression type.\nEmpty or missing stands for no compression."
         },
         "brokers": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string",
-                "minLength": 1
-              },
-              "type": "array",
-              "minItems": 1,
-              "description": "List of brokers to connect to."
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": "array",
+          "minItems": 1,
+          "description": "List of brokers to connect to."
         },
         "verbose": {
           "type": "boolean",
@@ -217,7 +210,9 @@
         },
         "batch_size": {
           "type": "integer",
-          "description": "Number of records to write before starting a new object."
+          "minimum": 1,
+          "description": "Number of records to write before starting a new object.",
+          "default": 1000
         }
       },
       "additionalProperties": false,

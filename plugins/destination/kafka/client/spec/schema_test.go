@@ -18,182 +18,166 @@ func TestSpecJSONSchema(t *testing.T) {
 		"skip_header": true,
 		"delimiter": "#"
 	},
-	"path": "abc",
-    "bucket": "abc"
+	"brokers": ["abc"]
 }`,
 		},
 		{
 			Name: "bad format value", // also a part of embedded FileSpec testing
-			Spec: `{"format": "cs22v", "path": "abc"}`,
+			Spec: `{"format": "cs22v", "brokers": ["abc"]}`,
 			Err:  true,
 		},
 		{
-			Name: "minimal",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc"}`,
-		},
-		{
-			Name: "missing path",
-			Spec: `{"format": "csv", "bucket": "abc"}`,
+			Name: "missing brokers",
+			Spec: `{"format": "csv"}`,
 			Err:  true,
 		},
 		{
-			Name: "empty path",
-			Spec: `{"format": "csv", "path": "", "bucket": "abc"}`,
+			Name: "empty brokers",
+			Spec: `{"format": "csv", "brokers": []}`,
 			Err:  true,
 		},
 		{
-			Name: "null path",
-			Spec: `{"format": "csv", "path": null, "bucket": "abc"}`,
+			Name: "null brokers",
+			Spec: `{"format": "csv", "brokers": null}`,
 			Err:  true,
 		},
 		{
-			Name: "integer path",
-			Spec: `{"format": "csv", "path": 123, "bucket": "abc"}`,
+			Name: "integer brokers",
+			Spec: `{"format": "csv", "brokers": 123}`,
 			Err:  true,
 		},
 		{
-			Name: "missing bucket",
-			Spec: `{"format": "csv", "path": "abc"}`,
+			Name: "empty brokers value",
+			Spec: `{"format": "csv", "brokers": [""]}`,
 			Err:  true,
 		},
 		{
-			Name: "empty bucket",
-			Spec: `{"format": "csv", "path": "abc", "bucket": ""}`,
+			Name: "null brokers value",
+			Spec: `{"format": "csv", "brokers": [null]}`,
 			Err:  true,
 		},
 		{
-			Name: "null bucket",
-			Spec: `{"format": "csv", "path": "abc", "bucket": null}`,
+			Name: "integer brokers value",
+			Spec: `{"format": "csv", "brokers": [123]}`,
 			Err:  true,
 		},
 		{
-			Name: "integer bucket",
-			Spec: `{"format": "csv", "path": "abc", "bucket": 123}`,
-			Err:  true,
-		},
-
-		{
-			Name: "null no_rotate",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate": null}`,
-			Err:  true,
+			Name: "proper brokers",
+			Spec: `{"format": "csv", "brokers": ["abc"]}`,
 		},
 		{
-			Name: "bad no_rotate",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate": 123}`,
+			Name: "null verbose",
+			Spec: `{"format": "csv", "brokers": ["abc"], "verbose": null}`,
 			Err:  true,
 		},
 		{
-			Name: "no_rotate:true",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate": true}`,
+			Name: "integer verbose",
+			Spec: `{"format": "csv", "brokers": ["abc"], "verbose": 123}`,
+			Err:  true,
 		},
 		{
-			Name: "no_rotate:false",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate": false}`,
+			Name: "verbose:true",
+			Spec: `{"format": "csv", "brokers": ["abc"], "verbose": true}`,
+		},
+		{
+			Name: "verbose:false",
+			Spec: `{"format": "csv", "brokers": ["abc"], "verbose": false}`,
+		},
+		// sasl_username & sasl_password have to go together
+		{
+			Name: "empty sasl_username with empty sasl_password",
+			Spec: `{"format": "csv", "brokers": ["abc"], "sasl_username": "", "sasl_password": ""}`,
+		},
+		{
+			Name: "non-empty sasl_username with non-empty sasl_password",
+			Spec: `{"format": "csv", "brokers": ["abc"], "sasl_username": "user", "sasl_password": "password"}`,
+		},
+		{
+			Name: "non-empty sasl_username without sasl_password",
+			Spec: `{"format": "csv", "brokers": ["abc"], "sasl_username": "user"}`,
+			Err:  true,
+		},
+		{
+			Name: "non-empty sasl_username with empty sasl_password",
+			Spec: `{"format": "csv", "brokers": ["abc"], "sasl_username": "user", "sasl_password": ""}`,
+			Err:  true,
+		},
+		{
+			Name: "non-empty sasl_username with integer sasl_password",
+			Spec: `{"format": "csv", "brokers": ["abc"], "sasl_username": "user", "sasl_password": 123}`,
+			Err:  true,
+		},
+		{
+			Name: "non-empty sasl_username with null sasl_password",
+			Spec: `{"format": "csv", "brokers": ["abc"], "sasl_username": "user", "sasl_password": null}`,
+			Err:  true,
+		},
+		{
+			Name: "non-empty sasl_password without sasl_username",
+			Spec: `{"format": "csv", "brokers": ["abc"], "sasl_password": "password"}`,
+			Err:  true,
+		},
+		{
+			Name: "non-empty sasl_password with empty sasl_username",
+			Spec: `{"format": "csv", "brokers": ["abc"], "sasl_username": "", "sasl_password": "password"}`,
+			Err:  true,
+		},
+		{
+			Name: "non-empty sasl_password with integer sasl_username",
+			Spec: `{"format": "csv", "brokers": ["abc"], "sasl_username": 123, "sasl_password": "password"}`,
+			Err:  true,
+		},
+		{
+			Name: "non-empty sasl_password with null sasl_username",
+			Spec: `{"format": "csv", "brokers": ["abc"], "sasl_username": null, "sasl_password": "password"}`,
+			Err:  true,
+		},
+		{
+			Name: "empty client_id",
+			Spec: `{"format": "csv", "brokers": ["abc"], "client_id": ""}`,
+		},
+		{
+			Name: "null client_id",
+			Spec: `{"format": "csv", "brokers": ["abc"], "client_id": null}`,
+			Err:  true,
+		},
+		{
+			Name: "integer client_id",
+			Spec: `{"format": "csv", "brokers": ["abc"], "client_id": 123}`,
+			Err:  true,
+		},
+		{
+			Name: "proper client_id",
+			Spec: `{"format": "csv", "brokers": ["abc"], "client_id": "abc"}`,
 		},
 		{
 			Name: "zero batch_size",
+			Spec: `{"format": "csv", "brokers": ["abc"], "batch_size": 0}`,
 			Err:  true,
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "batch_size":0}`,
 		},
 		{
 			Name: "float batch_size",
+			Spec: `{"format": "csv", "brokers": ["abc"], "batch_size": 1.5}`,
 			Err:  true,
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "batch_size":5.3}`,
 		},
 		{
-			Name: "bad batch_size",
+			Name: "negative batch_size",
+			Spec: `{"format": "csv", "brokers": ["abc"], "batch_size": -1}`,
 			Err:  true,
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "batch_size":false}`,
 		},
 		{
 			Name: "null batch_size",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "batch_size":null}`,
+			Spec: `{"format": "csv", "brokers": ["abc"], "batch_size": null}`,
+			Err:  true,
+		},
+		{
+			Name: "string batch_size",
+			Spec: `{"format": "csv", "brokers": ["abc"], "batch_size": "abc"}`,
+			Err:  true,
 		},
 		{
 			Name: "proper batch_size",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "batch_size":123}`,
-		},
-		{
-			Name: "zero batch_size_bytes",
-			Err:  true,
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "batch_size_bytes":0}`,
-		},
-		{
-			Name: "float batch_size_bytes",
-			Err:  true,
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "batch_size_bytes":5.3}`,
-		},
-		{
-			Name: "bad batch_size_bytes",
-			Err:  true,
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "batch_size_bytes":false}`,
-		},
-		{
-			Name: "null batch_size_bytes",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "batch_size_bytes":null}`,
-		},
-		{
-			Name: "proper batch_size_bytes",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "batch_size_bytes":123}`,
-		},
-		// configtype.Duration is tested in plugin-sdk
-		// test only null here
-		{
-			Name: "null batch_timeout",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "batch_timeout":null}`,
-		},
-
-		// no_rotate + batching
-		{
-			Name: "no_rotate:false & batch_size:100",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate":false, "batch_size":100}`,
-		},
-		{
-			Name: "no_rotate:true & batch_size:100",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate":true, "batch_size":100}`,
-			Err:  true,
-		},
-		{
-			Name: "no_rotate:false & batch_size:null",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate":false, "batch_size":null}`,
-		},
-		{
-			Name: "no_rotate:true & batch_size:null",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate":true, "batch_size":null}`,
-		},
-		{
-			Name: "no_rotate:false & batch_size_bytes:100",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate":false, "batch_size_bytes":100}`,
-		},
-		{
-			Name: "no_rotate:true & batch_size_bytes:100",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate":true, "batch_size_bytes":100}`,
-			Err:  true,
-		},
-		{
-			Name: "no_rotate:false & batch_size_bytes:null",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate":false, "batch_size_bytes":null}`,
-		},
-		{
-			Name: "no_rotate:true & batch_size_bytes:null",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate":true, "batch_size_bytes":null}`,
-		},
-		{
-			Name: "no_rotate:false & batch_timeout:100s",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate":false, "batch_timeout":"100s"}`,
-		},
-		{
-			Name: "no_rotate:true & batch_timeout:100s",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate":true, "batch_timeout":"100s"}`,
-			Err:  true,
-		},
-		{
-			Name: "no_rotate:false & batch_timeout:null",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate":false, "batch_timeout":null}`,
-		},
-		{
-			Name: "no_rotate:true & batch_timeout:null",
-			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate":true, "batch_timeout":null}`,
+			Spec: `{"format": "csv", "brokers": ["abc"], "batch_size": 100}`,
 		},
 	})
 }

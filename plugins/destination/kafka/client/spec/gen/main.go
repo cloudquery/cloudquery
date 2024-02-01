@@ -7,16 +7,21 @@ import (
 	"runtime"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/kafka/client/spec"
-	"github.com/cloudquery/codegen/jsonschema"
+	cqjsonschema "github.com/cloudquery/codegen/jsonschema"
 	"github.com/cloudquery/filetypes/v4"
+	"github.com/invopop/jsonschema"
 )
 
 func main() {
 	fmt.Println("Generating JSON schema for plugin spec")
-	jsonschema.GenerateIntoFile(new(spec.Spec), path.Join(currDir(), "..", "schema.json"),
+	cqjsonschema.GenerateIntoFile(new(spec.Spec), path.Join(currDir(), "..", "schema.json"),
 		append(filetypes.FileSpec{}.JSONSchemaOptions(),
-			jsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/destination/kafka/client/spec", path.Join(currDir(), "..")),
-			jsonschema.WithAddGoComments("github.com/cloudquery/filetypes/v4", path.Join(currDir(), "..", "..", "..", "vendor", "github.com/cloudquery/filetypes/v4")),
+			cqjsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/destination/kafka/client/spec", path.Join(currDir(), "..")),
+			cqjsonschema.WithAddGoComments("github.com/cloudquery/filetypes/v4", path.Join(currDir(), "..", "..", "..", "vendor", "github.com/cloudquery/filetypes/v4")),
+			func(r *jsonschema.Reflector) {
+				// not required for this plugin
+				r.NullableFromType = false
+			},
 		)...,
 	)
 }

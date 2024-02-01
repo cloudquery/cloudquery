@@ -25,7 +25,7 @@ type Spec struct {
 	ClientID string `json:"client_id,omitempty" jsonschema:"default=cq-destination-kafka"`
 
 	// Number of records to write before starting a new object.
-	BatchSize int `json:"batch_size"`
+	BatchSize int `json:"batch_size" jsonschema:"minimum=1,default=1000"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -35,7 +35,7 @@ func (s *Spec) SetDefaults() {
 		s.ClientID = "cq-destination-kafka"
 	}
 
-	if s.BatchSize == 0 {
+	if s.BatchSize < 1 {
 		s.BatchSize = 1000
 	}
 }
