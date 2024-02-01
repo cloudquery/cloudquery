@@ -10,6 +10,7 @@ import (
 	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/apache/arrow/go/v15/arrow/array"
 	"github.com/apache/arrow/go/v15/arrow/memory"
+	spec "github.com/cloudquery/cloudquery/plugins/destination/gcs/client/spec"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
@@ -26,29 +27,27 @@ func TestPlugin(t *testing.T) {
 		filetypes.FormatTypeJSON,
 		filetypes.FormatTypeParquet,
 	} {
-		spec := Spec{
+		s := spec.Spec{
 			Bucket:   bucket,
 			Path:     t.TempDir(),
 			NoRotate: true,
-			FileSpec: &filetypes.FileSpec{
-				Format: ft,
-			},
+			FileSpec: filetypes.FileSpec{Format: ft},
 		}
 
 		t.Run("generic/"+string(ft), func(t *testing.T) {
-			testPlugin(t, &spec)
+			testPlugin(t, &s)
 		})
 
 		t.Run("write/"+string(ft), func(t *testing.T) {
-			testPluginCustom(t, &spec)
+			testPluginCustom(t, &s)
 		})
 	}
 }
 
-func testPlugin(t *testing.T, spec *Spec) {
+func testPlugin(t *testing.T, s *spec.Spec) {
 	ctx := context.Background()
 	p := plugin.NewPlugin("gcs", "development", New)
-	b, err := json.Marshal(spec)
+	b, err := json.Marshal(s)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -67,7 +66,7 @@ func testPlugin(t *testing.T, spec *Spec) {
 	)
 }
 
-func testPluginCustom(t *testing.T, spec *Spec) {
+func testPluginCustom(t *testing.T, s *spec.Spec) {
 	ctx := context.Background()
 
 	var client plugin.Client
@@ -77,7 +76,7 @@ func testPluginCustom(t *testing.T, spec *Spec) {
 		client, err = New(ctx, logger, spec, opts)
 		return client, err
 	})
-	b, err := json.Marshal(spec)
+	b, err := json.Marshal(s)
 	if err != nil {
 		t.Fatal(err)
 	}
