@@ -8,6 +8,7 @@ import (
 
 // Spec defines DigitalOcean source plugin Spec
 type Spec struct {
+	// Token is the DO API access token. If left empty it must be provided via one of two env vars: DIGITALOCEAN_TOKEN or DIGITALOCEAN_ACCESS_TOKEN
 	Token string `json:"token,omitempty"`
 	// SpacesRegions is a list of DO regions to fetch spaces from, if not given we execute on all regions
 	SpacesRegions []string `json:"spaces_regions,omitempty" jsonschema:"minLength=1"`
@@ -18,7 +19,7 @@ type Spec struct {
 	// SpacesDebugLogging allows enabling AWS S3 request logging on spaces requests
 	SpacesDebugLogging bool `json:"spaces_debug_logging,omitempty"`
 
-	Concurrency int `json:"concurrency,omitempty" jsonschema:"min=1,default=10000"`
+	Concurrency int `json:"concurrency,omitempty" jsonschema:"minimum=1,default=10000"`
 }
 
 func (s *Spec) SetDefaults() {

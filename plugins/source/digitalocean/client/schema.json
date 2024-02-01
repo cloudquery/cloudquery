@@ -6,7 +6,8 @@
     "Spec": {
       "properties": {
         "token": {
-          "type": "string"
+          "type": "string",
+          "description": "Token is the DO API access token. If left empty it must be provided via one of two env vars: DIGITALOCEAN_TOKEN or DIGITALOCEAN_ACCESS_TOKEN"
         },
         "spaces_regions": {
           "oneOf": [
@@ -37,6 +38,7 @@
         },
         "concurrency": {
           "type": "integer",
+          "minimum": 1,
           "default": 10000
         }
       },
