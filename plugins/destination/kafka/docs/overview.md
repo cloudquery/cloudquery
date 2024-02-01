@@ -20,6 +20,7 @@ This is the (nested) plugin spec
 - `brokers` (`[]string`) (required)
 
   List of brokers to connect to.
+
 - `format` (`string`) (required)
 
   Format of the output file. Supported values are `csv`, `json` and `parquet`.
