@@ -31,11 +31,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
-      - name: Authenticate to Google Cloud
-        uses: 'google-github-actions/auth@v1'
-        with:
-          workload_identity_provider: 'projects/151868820337/locations/global/workloadIdentityPools/integration-test-pool/providers/integration-test-provider'
-          service_account: 'integration-service-account@cq-integration-tests.iam.gserviceaccount.com'
       - name: Set up Go 1.x
         uses: actions/setup-go@v4
         with:
@@ -56,6 +51,11 @@ jobs:
       - name: Fail if generation updated files
         if: github.event_name == 'pull_request'
         run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
+      - name: Authenticate to Google Cloud
+        uses: 'google-github-actions/auth@v1'
+        with:
+          workload_identity_provider: 'projects/151868820337/locations/global/workloadIdentityPools/integration-test-pool/providers/integration-test-provider'
+          service_account: 'integration-service-account@cq-integration-tests.iam.gserviceaccount.com'
       - name: Build
         run: go build .
       - name: Test file plugin
