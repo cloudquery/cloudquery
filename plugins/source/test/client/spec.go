@@ -1,10 +1,20 @@
 package client
 
+import _ "embed"
+
 type Spec struct {
-	NumClients int  `json:"num_clients"`  // Number of clients to create. Default: 1
-	NumRows    *int `json:"num_rows"`     // Number of rows to generate in test_some_table. Defaul: 1
-	NumSubRows *int `json:"num_sub_rows"` // Number of rows to generate (per row of parent) in test_sub_table. Default: 10
+	// Number of clients to create
+	NumClients int `json:"num_clients" jsonschema:"minimum=1,default=1"`
+
+	// Number of rows to generate in test_some_table.
+	NumRows *int `json:"num_rows" jsonschema:"minimum=0,default=1"`
+
+	// Number of rows to generate (per row of parent) in test_sub_table.
+	NumSubRows *int `json:"num_sub_rows" jsonschema:"minimum=0,default=10"`
 }
+
+//go:embed schema.json
+var JSONSchema string
 
 func (s *Spec) SetDefaults() {
 	if s.NumClients <= 0 {
