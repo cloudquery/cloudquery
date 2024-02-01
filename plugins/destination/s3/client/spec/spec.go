@@ -43,7 +43,7 @@ type Spec struct {
 	// - `{{MINUTE}}` will be replaced with the current minute in `mm` format
 	//
 	// **Note** that timestamps are in `UTC` and will be the current time at the time the file is written, not when the sync started.
-	Path string `json:"path,omitempty" jsonschema:"required,minLength=1"`
+	Path string `json:"path,omitempty" jsonschema:"required,pattern=^[^/].*$"` // other cases (//, ./, ../) are covered in extended part
 
 	// If set to `true`, the plugin will write to one file per table.
 	// Otherwise, for every batch a new file will be created with a different `.<UUID>` suffix.
