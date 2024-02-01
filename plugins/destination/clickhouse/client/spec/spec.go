@@ -32,13 +32,13 @@ type Spec struct {
 	// for how to read this value from a file.
 	CACert string `json:"ca_cert,omitempty"`
 
-	// This parameter controls the maximum amount of items may be grouped together to be written as a single write.
+	// Maximum number of items that may be grouped together to be written in a single write.
 	BatchSize int `json:"batch_size,omitempty" jsonschema:"minimum=1,default=10000"`
 
-	// This parameter controls the maximum size of items that may be grouped together to be written as a single write.
+	// Maximum size of items that may be grouped together to be written in a single write.
 	BatchSizeBytes int `json:"batch_size_bytes,omitempty" jsonschema:"minimum=1,default=5242880"`
 
-	// This parameter controls the maximum interval between batch writes.
+	// Maximum interval between batch writes.
 	BatchTimeout *configtype.Duration `json:"batch_timeout,omitempty"`
 }
 
