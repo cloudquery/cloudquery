@@ -4,8 +4,8 @@ This table shows data for Amazon Relational Database Service (RDS) Engine Versio
 
 https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBEngineVersion.html
 
-The composite primary key for this table is (**account_id**, **region**, **_engine_version_hash**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**, **_engine_version_hash**).
 ## Relations
 
 The following tables depend on aws_rds_engine_versions:
@@ -15,11 +15,11 @@ The following tables depend on aws_rds_engine_versions:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
-|_engine_version_hash (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
+|_engine_version_hash|`utf8`|
 |tag_list|`json`|
 |create_time|`timestamp[us, tz=UTC]`|
 |custom_db_engine_version_manifest|`utf8`|

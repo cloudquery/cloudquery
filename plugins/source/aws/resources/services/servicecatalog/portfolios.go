@@ -25,10 +25,10 @@ func Portfolios() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("PortfolioDetail.ARN"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("PortfolioDetail.ARN"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

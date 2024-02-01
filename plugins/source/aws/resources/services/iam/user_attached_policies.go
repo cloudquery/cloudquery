@@ -21,16 +21,16 @@ func userAttachedPolicies() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:       "user_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "user_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:       "policy_name",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("PolicyName"),
-				PrimaryKey: true,
+				Name:                "policy_name",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("PolicyName"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "user_id",

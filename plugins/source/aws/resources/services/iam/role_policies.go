@@ -21,14 +21,14 @@ func rolePolicies() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetRolePolicy.html`,
 		Resolver:            fetchIamRolePolicies,
 		PreResourceResolver: getRolePolicy,
-		Transform:           transformers.TransformWithStruct(&iam.GetRolePolicyOutput{}, transformers.WithPrimaryKeys("PolicyName"), transformers.WithSkipFields("ResultMetadata")),
+		Transform:           transformers.TransformWithStruct(&iam.GetRolePolicyOutput{}, transformers.WithPrimaryKeyComponents("PolicyName"), transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:       "role_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "role_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "policy_document",

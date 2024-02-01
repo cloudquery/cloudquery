@@ -16,7 +16,7 @@ func alarmRecommendations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_AlarmRecommendation.html`,
 		Resolver:    fetchAlarmRecommendations,
-		Transform:   transformers.TransformWithStruct(&types.AlarmRecommendation{}, transformers.WithPrimaryKeys("RecommendationId")),
+		Transform:   transformers.TransformWithStruct(&types.AlarmRecommendation{}, transformers.WithPrimaryKeyComponents("RecommendationId")),
 		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, assessmentARN},
 	}
 }

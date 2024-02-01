@@ -21,14 +21,14 @@ func policyVersions() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_PolicyVersion.html`,
 		Resolver:            fetchPolicyVersion,
 		PreResourceResolver: getPolicy,
-		Transform:           transformers.TransformWithStruct(&types.PolicyVersion{}, transformers.WithPrimaryKeys("VersionId")),
+		Transform:           transformers.TransformWithStruct(&types.PolicyVersion{}, transformers.WithPrimaryKeyComponents("VersionId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:       "policy_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "policy_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "document_json",

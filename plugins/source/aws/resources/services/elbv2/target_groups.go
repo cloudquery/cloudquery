@@ -29,10 +29,10 @@ func TargetGroups() *schema.Table {
 				Resolver: resolveTargetGroupTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("TargetGroupArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("TargetGroupArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 

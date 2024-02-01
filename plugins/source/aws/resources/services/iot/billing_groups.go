@@ -36,10 +36,10 @@ func BillingGroups() *schema.Table {
 				Resolver: resolveIotBillingGroupTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("BillingGroupArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("BillingGroupArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

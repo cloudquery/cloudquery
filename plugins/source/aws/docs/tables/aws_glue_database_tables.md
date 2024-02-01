@@ -4,8 +4,8 @@ This table shows data for Glue Database Tables.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_Table.html
 
-The composite primary key for this table is (**database_arn**, **name**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**database_arn**, **name**).
 ## Relations
 
 This table depends on [aws_glue_databases](aws_glue_databases.md).
@@ -17,12 +17,12 @@ The following tables depend on aws_glue_database_tables:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|database_arn (PK)|`utf8`|
-|name (PK)|`utf8`|
+|database_arn|`utf8`|
+|name|`utf8`|
 |catalog_id|`utf8`|
 |create_time|`timestamp[us, tz=UTC]`|
 |created_by|`utf8`|

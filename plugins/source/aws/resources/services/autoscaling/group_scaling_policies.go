@@ -28,10 +28,10 @@ func groupScalingPolicies() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("PolicyARN"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("PolicyARN"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

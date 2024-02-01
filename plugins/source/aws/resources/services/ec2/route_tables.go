@@ -26,10 +26,10 @@ func RouteTables() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveRouteTableArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveRouteTableArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

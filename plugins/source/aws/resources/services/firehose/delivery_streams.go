@@ -31,10 +31,10 @@ func DeliveryStreams() *schema.Table {
 				Resolver: resolveFirehoseDeliveryStreamTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("DeliveryStreamARN"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("DeliveryStreamARN"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

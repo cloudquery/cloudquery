@@ -19,14 +19,14 @@ func Accounts() *schema.Table {
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_Account.html
 The 'request_account_id' column is added to show from where the request was made.`,
 		Resolver:  fetchOrganizationsAccounts,
-		Transform: transformers.TransformWithStruct(&types.Account{}, transformers.WithPrimaryKeys("Arn")),
+		Transform: transformers.TransformWithStruct(&types.Account{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
 		Columns: []schema.Column{
 			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
+				Name:                "request_account_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            client.ResolveAWSAccount,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

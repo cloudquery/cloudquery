@@ -17,14 +17,14 @@ func routingControls() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/routing-control/latest/APIReference/API_ListRoutingControls.html`,
 		Resolver:    fetchRoutingControls,
-		Transform:   transformers.TransformWithStruct(&types.RoutingControl{}, transformers.WithPrimaryKeys("ControlPanelArn")),
+		Transform:   transformers.TransformWithStruct(&types.RoutingControl{}, transformers.WithPrimaryKeyComponents("ControlPanelArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("RoutingControlArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("RoutingControlArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

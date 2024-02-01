@@ -4,8 +4,8 @@ This table shows data for AWS Systems Manager (SSM) Instances.
 
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_InstanceInformation.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_ssm_instances:
@@ -16,11 +16,11 @@ The following tables depend on aws_ssm_instances:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |activation_id|`utf8`|
 |agent_version|`utf8`|
 |association_overview|`json`|

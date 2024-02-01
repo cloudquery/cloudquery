@@ -36,9 +36,9 @@ func Keys() *schema.Table {
 				Resolver: resolveKeysTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "replica_keys",

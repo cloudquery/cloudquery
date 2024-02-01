@@ -36,10 +36,10 @@ func Workspaces() *schema.Table {
 				Resolver: describeLoggingConfiguration,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("Arn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("Arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 		Relations: []*schema.Table{

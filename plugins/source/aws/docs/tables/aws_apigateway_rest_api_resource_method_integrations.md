@@ -4,8 +4,8 @@ This table shows data for Amazon API Gateway Rest API Resource Method Integratio
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_Integration.html
 
-The composite primary key for this table is (**account_id**, **arn**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **arn**).
 ## Relations
 
 This table depends on [aws_apigateway_rest_api_resource_methods](aws_apigateway_rest_api_resource_methods.md).
@@ -14,14 +14,14 @@ This table depends on [aws_apigateway_rest_api_resource_methods](aws_apigateway_
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
+|account_id|`utf8`|
 |region|`utf8`|
 |rest_api_arn|`utf8`|
 |resource_arn|`utf8`|
 |method_arn|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |cache_key_parameters|`list<item: utf8, nullable>`|
 |cache_namespace|`utf8`|
 |connection_id|`utf8`|

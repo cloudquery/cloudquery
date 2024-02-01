@@ -18,19 +18,19 @@ func Locations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_Location.html`,
 		Resolver:    fetchDirectConnectLocations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "directconnect"),
-		Transform:   transformers.TransformWithStruct(&types.Location{}, transformers.WithPrimaryKeys("LocationCode")),
+		Transform:   transformers.TransformWithStruct(&types.Location{}, transformers.WithPrimaryKeyComponents("LocationCode")),
 		Columns: []schema.Column{
 			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
+				Name:                "request_account_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            client.ResolveAWSAccount,
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:       "request_region",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSRegion,
-				PrimaryKey: true,
+				Name:                "request_region",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            client.ResolveAWSRegion,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

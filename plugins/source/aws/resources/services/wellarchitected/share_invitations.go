@@ -17,7 +17,7 @@ func ShareInvitations() *schema.Table {
 		Name:        name,
 		Description: `https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_ShareInvitation.html`,
 		Transform: transformers.TransformWithStruct(new(types.ShareInvitationSummary),
-			transformers.WithPrimaryKeys("ShareInvitationId"),
+			transformers.WithPrimaryKeyComponents("ShareInvitationId"),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(name, "wellarchitected"),
 		Resolver:  fetchShareInvitations,

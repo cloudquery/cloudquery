@@ -4,8 +4,8 @@ This table shows data for Cognito User Pools.
 
 https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_UserPoolType.html
 
-The composite primary key for this table is (**account_id**, **region**, **id**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**, **id**).
 ## Relations
 
 The following tables depend on aws_cognito_user_pools:
@@ -15,11 +15,11 @@ The following tables depend on aws_cognito_user_pools:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
-|id (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
+|id|`utf8`|
 |account_recovery_setting|`json`|
 |admin_create_user_config|`json`|
 |alias_attributes|`list<item: utf8, nullable>`|

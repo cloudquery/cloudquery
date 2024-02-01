@@ -4,20 +4,21 @@ This table shows data for AWS IoT Thing Groups.
 
 https://docs.aws.amazon.com/iot/latest/apireference/API_DescribeThingGroup.html
 
-The primary key for this table is **arn**.
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
 |things_in_group|`list<item: utf8, nullable>`|
 |policies|`list<item: utf8, nullable>`|
 |tags|`json`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |index_name|`utf8`|
 |query_string|`utf8`|
 |query_version|`utf8`|

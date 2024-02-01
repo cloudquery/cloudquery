@@ -25,10 +25,10 @@ func hostedZoneQueryLoggingConfigs() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveRoute53HostedZoneQueryLoggingConfigsArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveRoute53HostedZoneQueryLoggingConfigsArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "hosted_zone_arn",

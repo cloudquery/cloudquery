@@ -20,7 +20,7 @@ func DataSources() *schema.Table {
 		Description: "https://docs.aws.amazon.com/quicksight/latest/APIReference/API_DataSource.html",
 		Resolver:    fetchQuicksightDataSources,
 		Transform: transformers.TransformWithStruct(&types.DataSource{},
-			transformers.WithPrimaryKeys("Arn"),
+			transformers.WithPrimaryKeyComponents("Arn"),
 			transformers.WithSkipFields("AlternateDataSourceParameters"),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "quicksight"),

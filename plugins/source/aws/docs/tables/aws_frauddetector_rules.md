@@ -4,8 +4,8 @@ This table shows data for Amazon Fraud Detector Rules.
 
 https://docs.aws.amazon.com/frauddetector/latest/api/API_RuleDetail.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 This table depends on [aws_frauddetector_detectors](aws_frauddetector_detectors.md).
@@ -14,11 +14,11 @@ This table depends on [aws_frauddetector_detectors](aws_frauddetector_detectors.
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |created_time|`utf8`|
 |description|`utf8`|
 |detector_id|`utf8`|

@@ -23,15 +23,15 @@ The 'request_account_id' column is added to show from where the request was made
 			transformers.WithSkipFields(
 				"AvailablePolicyTypes", // deprecated and misleading field according to docs
 			),
-			transformers.WithPrimaryKeys("Arn"),
+			transformers.WithPrimaryKeyComponents("Arn"),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
 		Columns: []schema.Column{
 			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
+				Name:                "request_account_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            client.ResolveAWSAccount,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

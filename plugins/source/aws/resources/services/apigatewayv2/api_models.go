@@ -35,10 +35,10 @@ func apiModels() *schema.Table {
 				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApiModelArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApiModelArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "model_template",

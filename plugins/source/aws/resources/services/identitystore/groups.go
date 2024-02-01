@@ -25,10 +25,10 @@ func Groups() *schema.Table {
 			client.RequestAccountIDColumn(true),
 			client.RequestRegionColumn(true),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveGroupARN,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveGroupARN,
+				PrimaryKeyComponent: true,
 			},
 		},
 		Relations: []*schema.Table{

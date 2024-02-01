@@ -17,19 +17,19 @@ func customerManagedPolicies() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_ListManagedPoliciesInPermissionSet.html`,
 		Resolver:    fetchCustomerManagedPolicies,
-		Transform:   transformers.TransformWithStruct(&types.CustomerManagedPolicyReference{}, transformers.WithPrimaryKeys("Name", "Path")),
+		Transform:   transformers.TransformWithStruct(&types.CustomerManagedPolicyReference{}, transformers.WithPrimaryKeyComponents("Name", "Path")),
 		Columns: []schema.Column{
 			{
-				Name:       "permission_set_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("permission_set_arn"),
-				PrimaryKey: true,
+				Name:                "permission_set_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("permission_set_arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:       "instance_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("instance_arn"),
-				PrimaryKey: true,
+				Name:                "instance_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("instance_arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

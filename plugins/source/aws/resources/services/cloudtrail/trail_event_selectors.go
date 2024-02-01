@@ -17,7 +17,7 @@ func trailEventSelectors() *schema.Table {
 		Description: `https://docs.aws.amazon.com/awscloudtrail/latest/APIReference/API_GetEventSelectors.html`,
 		Resolver:    fetchCloudtrailTrailEventSelectors,
 		Transform: transformers.TransformWithStruct(&cloudtrail.GetEventSelectorsOutput{},
-			transformers.WithPrimaryKeys("TrailARN"),
+			transformers.WithPrimaryKeyComponents("TrailARN"),
 			transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false)},
 	}

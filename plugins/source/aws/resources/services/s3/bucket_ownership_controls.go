@@ -17,14 +17,14 @@ func bucketOwnershipControls() *schema.Table {
 		Name:        "aws_s3_bucket_ownership_controls",
 		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_OwnershipControlsRule.html`,
 		Resolver:    fetchBucketOwnershipControls,
-		Transform:   transformers.TransformWithStruct(&types.OwnershipControlsRule{}, transformers.WithPrimaryKeys("ObjectOwnership"), transformers.WithSkipFields("ResultMetadata")),
+		Transform:   transformers.TransformWithStruct(&types.OwnershipControlsRule{}, transformers.WithPrimaryKeyComponents("ObjectOwnership"), transformers.WithSkipFields("ResultMetadata")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:       "bucket_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "bucket_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

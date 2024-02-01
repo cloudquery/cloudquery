@@ -18,16 +18,16 @@ func steps() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/emr/latest/APIReference/API_Step.html`,
 		Resolver:            fetchEmrSteps,
 		PreResourceResolver: getStep,
-		Transform:           transformers.TransformWithStruct(&types.Step{}, transformers.WithPrimaryKeys("Id")),
+		Transform:           transformers.TransformWithStruct(&types.Step{}, transformers.WithPrimaryKeyComponents("Id")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:        "cluster_arn",
-				Description: "The Amazon Resource Name (ARN) of the EMR Cluster.",
-				Type:        arrow.BinaryTypes.String,
-				Resolver:    schema.ParentColumnResolver("arn"),
-				PrimaryKey:  true,
+				Name:                "cluster_arn",
+				Description:         "The Amazon Resource Name (ARN) of the EMR Cluster.",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

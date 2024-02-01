@@ -4,16 +4,17 @@ This table shows data for Amazon Route 53 Domains.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_GetDomainDetail.html
 
-The composite primary key for this table is (**account_id**, **domain_name**).
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **domain_name**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|domain_name (PK)|`utf8`|
+|account_id|`utf8`|
+|domain_name|`utf8`|
 |tags|`json`|
 |transfer_lock|`bool`|
 |abuse_contact_email|`utf8`|

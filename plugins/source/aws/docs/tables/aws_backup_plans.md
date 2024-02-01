@@ -4,8 +4,8 @@ This table shows data for Backup Plans.
 
 https://docs.aws.amazon.com/aws-backup/latest/devguide/API_GetBackupPlan.html
 
-The composite primary key for this table is (**arn**, **version_id**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**arn**, **version_id**).
 ## Relations
 
 The following tables depend on aws_backup_plans:
@@ -15,11 +15,11 @@ The following tables depend on aws_backup_plans:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |tags|`json`|
 |advanced_backup_settings|`json`|
 |backup_plan|`json`|
@@ -29,4 +29,4 @@ The following tables depend on aws_backup_plans:
 |creator_request_id|`utf8`|
 |deletion_date|`timestamp[us, tz=UTC]`|
 |last_execution_date|`timestamp[us, tz=UTC]`|
-|version_id (PK)|`utf8`|
+|version_id|`utf8`|

@@ -22,17 +22,17 @@ func databaseLogEvents() *schema.Table {
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_GetRelationalDatabaseLogEvents.html`,
 		Resolver:    fetchLightsailDatabaseLogEvents,
 		Transform: transformers.TransformWithStruct(&models.LogEventWrapper{},
-			transformers.WithPrimaryKeys("CreatedAt"),
+			transformers.WithPrimaryKeyComponents("CreatedAt"),
 			transformers.WithUnwrapAllEmbeddedStructs(),
 		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "database_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "database_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

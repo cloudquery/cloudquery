@@ -4,8 +4,8 @@ This table shows data for AWS CloudFormation Stack Sets.
 
 https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackSet.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_cloudformation_stack_sets:
@@ -16,12 +16,12 @@ The following tables depend on aws_cloudformation_stack_sets:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
 |id|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |tags|`json`|
 |administration_role_arn|`utf8`|
 |auto_deployment|`json`|

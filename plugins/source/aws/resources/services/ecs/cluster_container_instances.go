@@ -28,10 +28,10 @@ func clusterContainerInstances() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ContainerInstanceArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ContainerInstanceArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

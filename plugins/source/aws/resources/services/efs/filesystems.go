@@ -24,10 +24,10 @@ func Filesystems() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("FileSystemArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("FileSystemArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "backup_policy_status",

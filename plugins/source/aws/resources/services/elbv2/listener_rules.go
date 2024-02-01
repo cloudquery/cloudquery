@@ -28,10 +28,10 @@ func listenerRules() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("RuleArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("RuleArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

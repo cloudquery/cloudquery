@@ -19,10 +19,10 @@ The date and time, in ISO 8601 date-time format, when the AMI was last used to l
 		Resolver: fetchEc2ImageAttributeLastLaunchTime,
 		Columns: []schema.Column{
 			{
-				Name:       "image_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "image_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "last_launched_time",

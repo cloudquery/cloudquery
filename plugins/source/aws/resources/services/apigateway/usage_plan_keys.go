@@ -24,10 +24,10 @@ func usagePlanKeys() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApigatewayUsagePlanKeyArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApigatewayUsagePlanKeyArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

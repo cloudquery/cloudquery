@@ -23,10 +23,10 @@ func PatchBaselines() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "baseline_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("BaselineId"),
-				PrimaryKey: true,
+				Name:                "baseline_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("BaselineId"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

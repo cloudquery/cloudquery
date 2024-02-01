@@ -23,10 +23,10 @@ func Associations() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "association_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("AssociationId"),
-				PrimaryKey: true,
+				Name:                "association_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("AssociationId"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

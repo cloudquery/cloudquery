@@ -17,15 +17,15 @@ func containerServiceImages() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_ContainerImage.html`,
 		Resolver:    fetchLightsailContainerServiceImages,
-		Transform:   transformers.TransformWithStruct(&types.ContainerImage{}, transformers.WithPrimaryKeys("Image")),
+		Transform:   transformers.TransformWithStruct(&types.ContainerImage{}, transformers.WithPrimaryKeyComponents("Image")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "container_service_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "container_service_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

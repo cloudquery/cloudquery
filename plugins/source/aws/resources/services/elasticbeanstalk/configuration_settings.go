@@ -23,16 +23,16 @@ func configurationSettings() *schema.Table {
 		Resolver:    fetchElasticbeanstalkConfigurationSettings,
 		Transform: transformers.TransformWithStruct(models.ConfigurationSettingsDescriptionWrapper{},
 			transformers.WithUnwrapAllEmbeddedStructs(),
-			transformers.WithPrimaryKeys("ApplicationArn", "SolutionStackName"),
+			transformers.WithPrimaryKeyComponents("ApplicationArn", "SolutionStackName"),
 		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "environment_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "environment_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

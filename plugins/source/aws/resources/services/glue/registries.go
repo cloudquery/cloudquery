@@ -24,10 +24,10 @@ func Registries() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("RegistryArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("RegistryArn"),
+				PrimaryKeyComponent: true,
 			},
 			tagsCol(func(_ *client.Client, resource *schema.Resource) string {
 				return *resource.Item.(types.RegistryListItem).RegistryArn

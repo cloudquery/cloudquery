@@ -18,16 +18,16 @@ func DataShares() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_DataShare.html`,
 		Resolver:    fetchDataShares,
-		Transform:   transformers.TransformWithStruct(&types.DataShare{}, transformers.WithPrimaryKeys("ProducerArn")),
+		Transform:   transformers.TransformWithStruct(&types.DataShare{}, transformers.WithPrimaryKeyComponents("ProducerArn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("DataShareArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("DataShareArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

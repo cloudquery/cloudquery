@@ -26,10 +26,10 @@ func Workflows() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveGlueWorkflowArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveGlueWorkflowArn,
+				PrimaryKeyComponent: true,
 			},
 			tagsCol(func(cl *client.Client, resource *schema.Resource) string {
 				return workflowARN(cl, aws.ToString(resource.Item.(*types.Workflow).Name))

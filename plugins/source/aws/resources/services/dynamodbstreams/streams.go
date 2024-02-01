@@ -25,10 +25,10 @@ func Streams() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Resolver:   schema.PathResolver("StreamArn"),
-				Type:       arrow.BinaryTypes.String,
-				PrimaryKey: true,
+				Name:                "arn",
+				Resolver:            schema.PathResolver("StreamArn"),
+				Type:                arrow.BinaryTypes.String,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

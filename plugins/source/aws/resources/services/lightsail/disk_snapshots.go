@@ -19,7 +19,7 @@ func diskSnapshots() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_DiskSnapshot.html`,
 		Resolver:    fetchLightsailDiskSnapshots,
-		Transform:   transformers.TransformWithStruct(&types.DiskSnapshot{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.DiskSnapshot{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

@@ -22,10 +22,10 @@ func RecoveryGroups() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("RecoveryGroupArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("RecoveryGroupArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

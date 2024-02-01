@@ -27,10 +27,10 @@ func DbSecurityGroups() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("DBSecurityGroupArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("DBSecurityGroupArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

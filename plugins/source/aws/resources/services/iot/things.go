@@ -29,10 +29,10 @@ func Things() *schema.Table {
 				Resolver: ResolveIotThingPrincipals,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ThingArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ThingArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

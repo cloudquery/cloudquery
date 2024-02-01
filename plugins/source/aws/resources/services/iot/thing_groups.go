@@ -41,10 +41,10 @@ func ThingGroups() *schema.Table {
 				Resolver: ResolveIotThingGroupTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ThingGroupArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ThingGroupArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

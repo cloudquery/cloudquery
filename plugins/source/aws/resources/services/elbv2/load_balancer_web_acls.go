@@ -20,15 +20,15 @@ func webACLs() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_GetWebACLForResource.html`,
 		Resolver:    resolveLoadBalancerWebACL,
-		Transform:   transformers.TransformWithStruct(&wafv2types.WebACL{}, transformers.WithPrimaryKeys("ARN")),
+		Transform:   transformers.TransformWithStruct(&wafv2types.WebACL{}, transformers.WithPrimaryKeyComponents("ARN")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "load_balancer_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "load_balancer_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

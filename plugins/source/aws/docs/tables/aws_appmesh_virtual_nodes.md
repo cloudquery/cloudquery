@@ -4,8 +4,8 @@ This table shows data for AWS App Mesh Virtual Nodes.
 
 https://docs.aws.amazon.com/app-mesh/latest/APIReference/API_VirtualNodeData.html
 
-The composite primary key for this table is (**request_account_id**, **request_region**, **arn**, **mesh_arn**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**request_account_id**, **request_region**, **arn**, **mesh_arn**).
 ## Relations
 
 This table depends on [aws_appmesh_meshes](aws_appmesh_meshes.md).
@@ -14,12 +14,12 @@ This table depends on [aws_appmesh_meshes](aws_appmesh_meshes.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|request_account_id (PK)|`utf8`|
-|request_region (PK)|`utf8`|
-|arn (PK)|`utf8`|
-|mesh_arn (PK)|`utf8`|
+|request_account_id|`utf8`|
+|request_region|`utf8`|
+|arn|`utf8`|
+|mesh_arn|`utf8`|
 |mesh_name|`utf8`|
 |metadata|`json`|
 |spec|`json`|

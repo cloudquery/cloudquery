@@ -15,17 +15,17 @@ func layerVersionPolicies() *schema.Table {
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_GetLayerVersionPolicy.html`,
 		Resolver:    fetchLambdaLayerVersionPolicies,
 		Transform: transformers.TransformWithStruct(&lambda.GetLayerVersionPolicyOutput{},
-			transformers.WithPrimaryKeys("RevisionId"),
+			transformers.WithPrimaryKeyComponents("RevisionId"),
 			transformers.WithSkipFields("ResultMetadata"),
 		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "layer_version_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "layer_version_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "layer_version",
