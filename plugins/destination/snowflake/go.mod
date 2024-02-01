@@ -4,7 +4,8 @@ go 1.21.6
 
 require (
 	github.com/apache/arrow/go/v15 v15.0.0
-	github.com/cloudquery/plugin-sdk/v4 v4.29.0
+	github.com/cloudquery/codegen v0.3.12
+	github.com/cloudquery/plugin-sdk/v4 v4.29.1
 	github.com/goccy/go-json v0.10.2
 	github.com/rs/zerolog v1.31.0
 	github.com/snowflakedb/gosnowflake v1.7.2
@@ -43,11 +44,13 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.48.1 // indirect
 	github.com/aws/smithy-go v1.19.0 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
+	github.com/bahlo/generic-list-go v0.2.0 // indirect
+	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/bytedance/sonic v1.10.2 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.7.1 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.7.2 // indirect
 	github.com/cloudquery/plugin-pb-go v1.16.7 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/danieljoos/wincred v1.2.1 // indirect
@@ -78,6 +81,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.0 // indirect
 	github.com/gsterjov/go-libsecret v0.0.0-20161001094733-a6f4afe4910c // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
+	github.com/invopop/jsonschema v0.11.0 // indirect
 	github.com/iris-contrib/schema v0.0.6 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
@@ -88,7 +92,7 @@ require (
 	github.com/kataras/pio v0.0.13 // indirect
 	github.com/kataras/sitemap v0.0.6 // indirect
 	github.com/kataras/tunnel v0.0.4 // indirect
-	github.com/klauspost/compress v1.17.4 // indirect
+	github.com/klauspost/compress v1.17.5 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.6 // indirect
 	github.com/labstack/echo/v4 v4.11.4 // indirect
 	github.com/labstack/gommon v0.4.2 // indirect
@@ -111,8 +115,8 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/cobra v1.8.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/tdewolff/minify/v2 v2.20.14 // indirect
-	github.com/tdewolff/parse/v2 v2.7.9 // indirect
+	github.com/tdewolff/minify/v2 v2.20.16 // indirect
+	github.com/tdewolff/parse/v2 v2.7.11 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
@@ -120,6 +124,7 @@ require (
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
+	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
 	github.com/yosssi/ace v0.0.5 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.opentelemetry.io/otel v1.22.0 // indirect
@@ -140,11 +145,14 @@ require (
 	golang.org/x/time v0.5.0 // indirect
 	golang.org/x/tools v0.17.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20240123012728-ef4313101c80 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240123012728-ef4313101c80 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20240125205218-1f4bbc51befe // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240125205218-1f4bbc51befe // indirect
 	google.golang.org/grpc v1.61.0 // indirect
 	google.golang.org/protobuf v1.32.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+// github.com/cloudquery/jsonschema @ cqmain
+replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20231018073309-6c617a23d42f

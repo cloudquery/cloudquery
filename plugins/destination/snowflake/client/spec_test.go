@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/snowflake/client"
+	"github.com/cloudquery/codegen/jsonschema"
 )
 
 func TestSpec_DSN(t *testing.T) {
@@ -70,4 +71,62 @@ func TestSpec_DSN(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestJSONSchema(t *testing.T) {
+	jsonschema.TestJSONSchema(t, client.JSONSchema, []jsonschema.TestCase{
+		{
+			Name: "empty spec",
+			Spec: `{}`,
+			Err:  true,
+		},
+		{
+			Name: "spec with connection_string",
+			Spec: `{"connection_string": "conn"}`,
+		},
+		{
+			Name: "spec with connection_string and pk",
+			Spec: `{"connection_string": "conn", "private_key":"foo"}`,
+		},
+		{
+			Name: "spec with bool connection_string",
+			Spec: `{"connection_string": true, "private_key":"foo"}`,
+			Err:  true,
+		},
+		{
+			Name: "spec with null connection_string",
+			Spec: `{"connection_string": null, "private_key":"foo"}`,
+			Err:  true,
+		},
+		{
+			Name: "spec with int connection_string",
+			Spec: `{"connection_string": 123, "private_key":"foo"}`,
+			Err:  true,
+		},
+		{
+			Name: "spec with bool batch_size",
+			Spec: `{"connection_string": "abc", "batch_size":false}`,
+			Err:  true,
+		},
+		{
+			Name: "spec with null batch_size",
+			Spec: `{"connection_string": "abc", "batch_size":null}`,
+			Err:  true,
+		},
+		{
+			Name: "spec with string batch_size",
+			Spec: `{"connection_string": "abc",  "batch_size":"str"}`,
+			Err:  true,
+		},
+		{
+			Name: "spec with array batch_size",
+			Spec: `{"connection_string": "abc", "batch_size":["abc"]}`,
+			Err:  true,
+		},
+		{
+			Name: "spec with unknown field",
+			Spec: `{"connection_string": "abc", "unknown": "test"}`,
+			Err:  true,
+		},
+	})
 }
