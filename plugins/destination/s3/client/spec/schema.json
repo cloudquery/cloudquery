@@ -206,25 +206,37 @@
           ],
           "description": "Compression type.\nEmpty or missing stands for no compression."
         },
-        "no_rotate": {
-          "type": "boolean"
-        },
         "bucket": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "description": "Bucket where to sync the files."
         },
         "region": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "description": "Region where bucket is located."
         },
         "path": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "description": "Path to where the files will be uploaded in the above bucket. The path supports the following placeholder variables:\n\n- `{{TABLE}}` will be replaced with the table name\n- `{{FORMAT}}` will be replaced with the file format, such as `csv`, `json` or `parquet`. If compression is enabled, the format will be `csv.gz`, `json.gz` etc.\n- `{{UUID}}` will be replaced with a random UUID to uniquely identify each file\n- `{{YEAR}}` will be replaced with the current year in `YYYY` format\n- `{{MONTH}}` will be replaced with the current month in `MM` format\n- `{{DAY}}` will be replaced with the current day in `DD` format\n- `{{HOUR}}` will be replaced with the current hour in `HH` format\n- `{{MINUTE}}` will be replaced with the current minute in `mm` format\n\n**Note** that timestamps are in `UTC` and will be the current time at the time the file is written, not when the sync started."
+        },
+        "no_rotate": {
+          "type": "boolean",
+          "description": "If set to `true`, the plugin will write to one file per table.\nOtherwise, for every batch a new file will be created with a different `.\u003cUUID\u003e` suffix.",
+          "default": false
         },
         "athena": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "When `athena` is set to `true`, the S3 plugin will sanitize keys in JSON columns to be compatible with the Hive Metastore / Athena.\nThis allows tables to be created with a Glue Crawler and then queried via Athena, without changes to the table schema.",
+          "default": false
         },
         "test_write": {
           "oneOf": [
             {
-              "type": "boolean"
+              "type": "boolean",
+              "description": "Ensure write access to the given bucket and path by writing a test object on each sync.\nIf you are sure that the bucket and path are writable, you can set this to `false` to skip the test.",
+              "default": true
             },
             {
               "type": "null"
@@ -232,18 +244,27 @@
           ]
         },
         "endpoint": {
-          "type": "string"
+          "type": "string",
+          "description": "Endpoint to use for S3 API calls. This is useful for S3-compatible storage services such as MinIO.\n**Note**: if you want to use path-style addressing, i.e., `https://s3.amazonaws.com/BUCKET/KEY`, `use_path_style` should be enabled, too.",
+          "default": ""
         },
         "use_path_style": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Allows to use path-style addressing in the `endpoint` option, i.e., `https://s3.amazonaws.com/BUCKET/KEY`.\nBy default, the S3 client will use virtual hosted bucket addressing when possible (`https://BUCKET.s3.amazonaws.com/KEY`).",
+          "default": false
         },
         "endpoint_skip_tls_verify": {
-          "type": "boolean"
+          "type": "boolean",
+          "description": "Disable TLS verification for requests to your S3 endpoint.\n\nThis option is intended to be used when using a custom endpoint using the `endpoint` option.",
+          "default": false
         },
         "batch_size": {
           "oneOf": [
             {
-              "type": "integer"
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum number of items that may be grouped together to be written in a single write.\n\nDefaults to `10000` unless `no_rotate` is `true` (will be `0` then).",
+              "default": 10000
             },
             {
               "type": "null"
@@ -253,7 +274,10 @@
         "batch_size_bytes": {
           "oneOf": [
             {
-              "type": "integer"
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum size of items that may be grouped together to be written in a single write.\n\nDefaults to `52428800` (50 MiB) unless `no_rotate` is `true` (will be `0` then).",
+              "default": 52428800
             },
             {
               "type": "null"
@@ -264,6 +288,7 @@
           "oneOf": [
             {
               "$ref": "#/$defs/Duration",
+              "description": "Maximum interval between batch writes.\n\nDefaults to `30s` unless `no_rotate` is `true` (will be `0s` then).",
               "default": "30s"
             },
             {
@@ -275,7 +300,10 @@
       "additionalProperties": false,
       "type": "object",
       "required": [
-        "format"
+        "format",
+        "bucket",
+        "region",
+        "path"
       ]
     }
   }
