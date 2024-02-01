@@ -45,7 +45,7 @@ This is the (nested) spec used by the Microsoft SQL Server destination plugin.
 
 - `batch_timeout` (`duration`) (optional) (default: `20s` (= 20 seconds))
 
-  Timeout for writing a single batch.
+  Inactivity time before starting a new batch.
 
 ### Verbose logging for debug
 

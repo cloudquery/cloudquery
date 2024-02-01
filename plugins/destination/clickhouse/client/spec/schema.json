@@ -62,20 +62,20 @@
         "batch_size": {
           "type": "integer",
           "minimum": 1,
-          "description": "This parameter controls the maximum amount of items may be grouped together to be written as a single write.",
+          "description": "Maximum number of items that may be grouped together to be written in a single write.",
           "default": 10000
         },
         "batch_size_bytes": {
           "type": "integer",
           "minimum": 1,
-          "description": "This parameter controls the maximum size of items that may be grouped together to be written as a single write.",
+          "description": "Maximum size of items that may be grouped together to be written in a single write.",
           "default": 5242880
         },
         "batch_timeout": {
           "oneOf": [
             {
               "$ref": "#/$defs/Duration",
-              "description": "This parameter controls the maximum interval between batch writes.",
+              "description": "Inactivity time before starting a new batch.",
               "default": "20s"
             },
             {

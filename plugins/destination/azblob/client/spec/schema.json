@@ -185,7 +185,7 @@
             {
               "type": "integer",
               "minimum": 1,
-              "description": "This parameter controls the maximum amount of items may be grouped together to be written in a single object.\n\nDefaults to `10000` unless `no_rotate` is `true` (will be `0` then).",
+              "description": "Maximum number of items that may be grouped together to be written in a single object.\n\nDefaults to `10000` unless `no_rotate` is `true` (will be `0` then).",
               "default": 10000
             },
             {
@@ -198,7 +198,7 @@
             {
               "type": "integer",
               "minimum": 1,
-              "description": "This parameter controls the maximum size of items that may be grouped together to be written in a single object.\n\nDefaults to `52428800` (50 MiB) unless `no_rotate` is `true` (will be `0` then).",
+              "description": "Maximum size of items that may be grouped together to be written in a single object.\n\nDefaults to `52428800` (50 MiB) unless `no_rotate` is `true` (will be `0` then).",
               "default": 52428800
             },
             {
@@ -210,7 +210,7 @@
           "oneOf": [
             {
               "$ref": "#/$defs/Duration",
-              "description": "This parameter controls the maximum interval between batch writes.\n\nDefaults to `30s` unless `no_rotate` is `true` (will be `0s` then).",
+              "description": "Inactivity time before starting a new batch.\n\nDefaults to `30s` unless `no_rotate` is `true` (will be `0s` then).",
               "default": "30s"
             },
             {
