@@ -12,7 +12,7 @@ import (
 
 type Spec struct {
 	// Endpoint for the database. Supported schemes are `wss://` and `ws://`, the default port is `8182`.
-	Endpoint string `json:"endpoint" jsonschema:"required,pattern=^ws(s?)://[^\n]+$"`
+	Endpoint string `json:"endpoint" jsonschema:"required,pattern=^ws(s?)://[^\n\\:]+(\\:[0-9]{1\\,5})?$"`
 
 	// Whether to skip TLS verification. Defaults to `false`. This should be set on a macOS environment when connecting to an AWS Neptune endpoint.
 	Insecure bool `json:"insecure" jsonschema:"default=false"`
