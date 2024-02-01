@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/test/client/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Spec": {
+      "properties": {
+        "num_clients": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of clients to create",
+          "default": 1
+        },
+        "num_rows": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of rows to generate in test_some_table.",
+              "default": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "num_sub_rows": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of rows to generate (per row of parent) in test_sub_table.",
+              "default": 10
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
