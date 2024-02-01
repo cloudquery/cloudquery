@@ -18,9 +18,9 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 		if s == nil {
 			table := msg.GetTable()
 
-			name := fmt.Sprintf("%s/%s.%s%s.%s", c.spec.Path, table.Name, c.spec.Format, c.spec.FileSpec.Compression.Extension(), uuid.NewString())
-			if c.spec.NoRotate {
-				name = fmt.Sprintf("%s/%s.%s%s", c.spec.Path, table.Name, c.spec.Format, c.spec.FileSpec.Compression.Extension())
+			name := fmt.Sprintf("%s/%s.%s%s", c.spec.Path, table.Name, c.spec.Format, c.spec.FileSpec.Compression.Extension())
+			if !c.spec.NoRotate {
+				name += "." + uuid.NewString()
 			}
 
 			var err error

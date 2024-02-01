@@ -19,13 +19,12 @@ This is the (nested) spec used by the Microsoft SQL Server destination plugin.
 - `connection_string` (`string`) (required)
 
   Connection string to connect to the database.
-  See [SDK documentation](https://github.com/microsoft/go-mssqldb#connection-parameters-and-dsn) for more details.
+  See [SDK documentation](https://github.com/microsoft/go-mssqldb#connection-parameters-and-dsn) for details.
 
 - `auth_mode` (`string`) (optional) (default: `ms`)
 
   If you need to authenticate via Azure Active Directory ensure you specify `azure` value.
-  See [SDK documentation](https://github.com/microsoft/go-mssqldb#azure-active-directory-authentication) for more
-  information.
+  See [SDK documentation](https://github.com/microsoft/go-mssqldb#azure-active-directory-authentication) for more information.
   Supported values:
 
     - `ms` _connect to Microsoft SQL Server instance_
@@ -34,21 +33,19 @@ This is the (nested) spec used by the Microsoft SQL Server destination plugin.
 - `schema` (`string`) (optional) (default: `dbo`)
 
   Schema name to be used. 
-  By default, Microsoft SQL Server destination plugin will use the
-  [default](https://learn.microsoft.com/en-us/sql/relational-databases/security/authentication-access/ownership-and-user-schema-separation?view=sql-server-ver16#the-dbo-schema)
-  schema named `dbo`.
+  By default, Microsoft SQL Server destination plugin will use the [default](https://learn.microsoft.com/en-us/sql/relational-databases/security/authentication-access/ownership-and-user-schema-separation?view=sql-server-ver16#the-dbo-schema) schema named `dbo`.
 
 - `batch_size` (`integer`) (optional) (default: `1000`)
 
-  This parameter controls the maximum amount of items may be grouped together to be written as a single write.
+  Maximum amount of items that may be grouped together to be written in a single write.
 
 - `batch_size_bytes` (`integer`) (optional) (default: `5242880` (= 5 MiB))
 
-  This parameter controls the maximum size of items that may be grouped together to be written as a single write.
+  Maximum size of items that may be grouped together to be written in a single write.
 
 - `batch_timeout` (`duration`) (optional) (default: `20s` (= 20 seconds))
 
-  This parameter controls the timeout for writing a single batch.
+  Timeout for writing a single batch.
 
 ### Verbose logging for debug
 
