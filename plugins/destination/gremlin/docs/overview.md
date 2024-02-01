@@ -50,7 +50,7 @@ This is the (nested) spec used by the Gremlin destination Plugin.
 
 - `insecure` (`boolean`) (optional)
 
-  Whether to skip TLS verification. Defaults to `false`. This should be set on a MacOS environment when connecting to an AWS Neptune endpoint.
+  Whether to skip TLS verification. Defaults to `false`. This should be set on a macOS environment when connecting to an AWS Neptune endpoint.
 
 - `auth_mode` (`string`) (optional) (default: `none`)
 
@@ -87,6 +87,6 @@ This is the (nested) spec used by the Gremlin destination Plugin.
 
   Number of records to batch together before sending to the database.
 
-- `batch_size_bytes` (`intege`r) (optional) (default: `4194304` (4 MiB))
+- `batch_size_bytes` (`integer`) (optional) (default: `4194304` (4 MiB))
 
   Number of bytes (as Arrow buffer size) to batch together before sending to the database.
