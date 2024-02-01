@@ -4,8 +4,8 @@ This table shows data for RAM Resource Shares.
 
 https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceShare.html
 
-The composite primary key for this table is (**account_id**, **region**, **arn**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**, **arn**).
 ## Relations
 
 The following tables depend on aws_ram_resource_shares:
@@ -15,11 +15,11 @@ The following tables depend on aws_ram_resource_shares:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
-|arn (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
+|arn|`utf8`|
 |tags|`json`|
 |allow_external_principals|`bool`|
 |creation_time|`timestamp[us, tz=UTC]`|

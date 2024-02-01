@@ -4,8 +4,8 @@ This table shows data for Lightsail Database Events.
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDatabaseEvent.html
 
-The composite primary key for this table is (**database_arn**, **created_at**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**database_arn**, **created_at**).
 ## Relations
 
 This table depends on [aws_lightsail_databases](aws_lightsail_databases.md).
@@ -14,12 +14,12 @@ This table depends on [aws_lightsail_databases](aws_lightsail_databases.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|database_arn (PK)|`utf8`|
-|created_at (PK)|`timestamp[us, tz=UTC]`|
+|database_arn|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
 |event_categories|`list<item: utf8, nullable>`|
 |message|`utf8`|
 |resource|`utf8`|

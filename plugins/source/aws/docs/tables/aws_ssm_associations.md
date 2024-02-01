@@ -4,17 +4,18 @@ This table shows data for AWS Systems Manager (SSM) Associations.
 
 https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_Association.html
 
-The composite primary key for this table is (**account_id**, **region**, **association_id**).
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**, **association_id**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
-|association_id (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
+|association_id|`utf8`|
 |association_name|`utf8`|
 |association_version|`utf8`|
 |document_version|`utf8`|

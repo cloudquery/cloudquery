@@ -31,10 +31,10 @@ func templateSummaries() *schema.Table {
 				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
-				Name:       "stack_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "stack_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "metadata",

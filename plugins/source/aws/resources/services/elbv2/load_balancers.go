@@ -29,10 +29,10 @@ func LoadBalancers() *schema.Table {
 				Resolver: resolveLoadBalancerTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("LoadBalancerArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("LoadBalancerArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 

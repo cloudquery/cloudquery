@@ -1,11 +1,13 @@
 package client
 
 import (
+	_ "embed"
 	"errors"
 	"strings"
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
+	"github.com/invopop/jsonschema"
 	mssql "github.com/microsoft/go-mssqldb"
 	"github.com/microsoft/go-mssqldb/azuread"
 )
@@ -13,19 +15,38 @@ import (
 type AuthMode string
 
 const (
-	AuthModeAzure = "azure"
-	AuthModeMS    = "ms"
+	AuthModeAzure = AuthMode("azure")
+	AuthModeMS    = AuthMode("ms")
 )
 
 type Spec struct {
-	ConnectionString string   `json:"connection_string,omitempty"`
-	AuthMode         AuthMode `json:"auth_mode,omitempty"`
-	Schema           string   `json:"schema,omitempty"`
+	// Connection string to connect to the database.
+	// See [SDK documentation](https://github.com/microsoft/go-mssqldb#connection-parameters-and-dsn) for details.
+	ConnectionString string `json:"connection_string" jsonschema:"required,minLength=1"`
 
-	BatchSize      int                  `json:"batch_size,omitempty"`
-	BatchSizeBytes int                  `json:"batch_size_bytes,omitempty"`
-	BatchTimeout   *configtype.Duration `json:"batch_timeout,omitempty"`
+	//  If you need to authenticate via Azure Active Directory ensure you specify `azure` value.
+	//  See [SDK documentation](https://github.com/microsoft/go-mssqldb#azure-active-directory-authentication) for more information.
+	//  Supported values:
+	//
+	//    - `ms` _connect to Microsoft SQL Server instance_
+	//    - `azure` _connect to Azure SQL Server instance_
+	AuthMode AuthMode `json:"auth_mode,omitempty" jsonschema:"default=ms"`
+
+	// By default, Microsoft SQL Server destination plugin will use the [default](https://learn.microsoft.com/en-us/sql/relational-databases/security/authentication-access/ownership-and-user-schema-separation?view=sql-server-ver16#the-dbo-schema) schema named `dbo`.
+	Schema string `json:"schema,omitempty" jsonschema:"default=dbo"`
+
+	// Maximum number of items that may be grouped together to be written in a single write.
+	BatchSize int `json:"batch_size,omitempty" jsonschema:"minimum=1,default=1000"`
+
+	// Maximum size of items that may be grouped together to be written in a single write.
+	BatchSizeBytes int `json:"batch_size_bytes,omitempty" jsonschema:"minimum=1,default=5242880"`
+
+	// Timeout for writing a single batch.
+	BatchTimeout *configtype.Duration `json:"batch_timeout,omitempty"`
 }
+
+//go:embed schema.json
+var JSONSchema string
 
 func (s *Spec) Validate() error {
 	if len(s.ConnectionString) == 0 {
@@ -59,8 +80,18 @@ func (s *Spec) SetDefaults() {
 }
 
 func (s *Spec) Connector() (*mssql.Connector, error) {
-	if strings.EqualFold(string(s.AuthMode), AuthModeAzure) {
+	if strings.EqualFold(string(s.AuthMode), string(AuthModeAzure)) {
 		return azuread.NewConnector(s.ConnectionString)
 	}
 	return mssql.NewConnector(s.ConnectionString)
+}
+
+func (AuthMode) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Type = "string"
+	sc.Enum = []any{AuthModeAzure, AuthModeMS}
+}
+
+func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
+	batchTimeout := sc.Properties.Value("batch_timeout").OneOf[0] // 0 - val, 1 - null
+	batchTimeout.Default = "20s"
 }

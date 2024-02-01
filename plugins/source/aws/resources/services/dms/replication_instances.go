@@ -23,10 +23,10 @@ func ReplicationInstances() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ReplicationInstanceArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ReplicationInstanceArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

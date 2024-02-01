@@ -13,7 +13,7 @@
         "batch_size": {
           "type": "integer",
           "minimum": 1,
-          "description": "Maximum amount of items that may be grouped together to be written in a single write",
+          "description": "Maximum number of items that may be grouped together to be written in a single write.",
           "default": 1000
         },
         "batch_size_bytes": {

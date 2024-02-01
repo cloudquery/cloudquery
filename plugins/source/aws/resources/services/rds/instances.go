@@ -24,10 +24,10 @@ func Instances() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("DBInstanceArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("DBInstanceArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "processor_features",

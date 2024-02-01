@@ -17,16 +17,16 @@ func supportedInstanceTypes() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/emr/latest/APIReference/API_SupportedInstanceType.html`,
 		Resolver:    fetchEmrSupportedInstanceTypes,
-		Transform:   transformers.TransformWithStruct(&types.SupportedInstanceType{}, transformers.WithPrimaryKeys("Type")),
+		Transform:   transformers.TransformWithStruct(&types.SupportedInstanceType{}, transformers.WithPrimaryKeyComponents("Type")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:        "release_label",
-				Description: "The release label of the EMR cluster.",
-				Type:        arrow.BinaryTypes.String,
-				Resolver:    schema.ParentColumnResolver("release_label"),
-				PrimaryKey:  true,
+				Name:                "release_label",
+				Description:         "The release label of the EMR cluster.",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("release_label"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

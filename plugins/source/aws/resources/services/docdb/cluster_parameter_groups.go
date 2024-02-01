@@ -29,10 +29,10 @@ func ClusterParameterGroups() *schema.Table {
 				Resolver: resolveDBClusterParameterGroupTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("DBClusterParameterGroupArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("DBClusterParameterGroupArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "parameters",

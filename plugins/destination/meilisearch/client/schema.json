@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/meilisearch/client/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Duration": {
+      "type": "string",
+      "pattern": "^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$",
+      "title": "CloudQuery configtype.Duration"
+    },
+    "Spec": {
+      "properties": {
+        "host": {
+          "type": "string",
+          "minLength": 1,
+          "description": "A Meilisearch instance host \u0026 port to use.\nIf your Meilisearch instance uses private SSL certificate, make sure to specify `ca_cert` option, too."
+        },
+        "api_key": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Meilisearch API key, granted the following actions:\n\n - `documents.add`\n - `indexes.create`\n - `indexes.get`\n - `indexes.update`\n - `tasks.get`\n - `settings.get`\n - `settings.update`\n - `version`"
+        },
+        "timeout": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Duration",
+              "description": "Meilisearch API client timeout.",
+              "default": "5m"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ca_cert": {
+          "type": "string",
+          "description": "PEM-encoded certificate authorities.\n When set, a certificate pool will be created by appending the certificates to the system pool.\n See [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example) for how to read this value from a file."
+        },
+        "batch_size": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum amount of items that may be grouped together to be written in a single write.",
+          "default": 1000
+        },
+        "batch_size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum size of items that may be grouped together to be written in a single write.",
+          "default": 4194304
+        },
+        "batch_timeout": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Duration",
+              "description": "Timeout for writing a single batch.",
+              "default": "20s"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "host",
+        "api_key"
+      ]
+    }
+  }
+}

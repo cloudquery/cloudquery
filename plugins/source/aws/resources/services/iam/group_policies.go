@@ -21,14 +21,14 @@ func groupPolicies() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_GetGroupPolicy.html`,
 		Resolver:            fetchIamGroupPolicies,
 		PreResourceResolver: getGroupPolicy,
-		Transform:           transformers.TransformWithStruct(&iam.GetGroupPolicyOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeys("PolicyName")),
+		Transform:           transformers.TransformWithStruct(&iam.GetGroupPolicyOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeyComponents("PolicyName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:       "group_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "group_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "policy_document",

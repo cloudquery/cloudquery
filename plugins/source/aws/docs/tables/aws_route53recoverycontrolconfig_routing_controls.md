@@ -4,8 +4,8 @@ This table shows data for Amazon Route 53 Application Recovery Controller Recove
 
 https://docs.aws.amazon.com/routing-control/latest/APIReference/API_ListRoutingControls.html
 
-The composite primary key for this table is (**arn**, **control_panel_arn**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**arn**, **control_panel_arn**).
 ## Relations
 
 This table depends on [aws_route53recoverycontrolconfig_control_panels](aws_route53recoverycontrolconfig_control_panels.md).
@@ -14,11 +14,11 @@ This table depends on [aws_route53recoverycontrolconfig_control_panels](aws_rout
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
-|arn (PK)|`utf8`|
-|control_panel_arn (PK)|`utf8`|
+|arn|`utf8`|
+|control_panel_arn|`utf8`|
 |name|`utf8`|
 |owner|`utf8`|
 |routing_control_arn|`utf8`|

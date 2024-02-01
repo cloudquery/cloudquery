@@ -18,7 +18,7 @@ func workloadMilestones() *schema.Table {
 		Name:        name,
 		Description: `https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_MilestoneSummary.html`,
 		Transform: transformers.TransformWithStruct(new(types.MilestoneSummary),
-			transformers.WithPrimaryKeys("MilestoneName"),
+			transformers.WithPrimaryKeyComponents("MilestoneName"),
 			transformers.WithUnwrapAllEmbeddedStructs(),
 			transformers.WithSkipFields("WorkloadSummary"),
 		),
@@ -27,10 +27,10 @@ func workloadMilestones() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "workload_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "workload_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "workload_id",

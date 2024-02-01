@@ -24,15 +24,15 @@ func Applications() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ApplicationArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ApplicationArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:       "date_created",
-				Type:       arrow.FixedWidthTypes.Timestamp_us,
-				PrimaryKey: true,
+				Name:                "date_created",
+				Type:                arrow.FixedWidthTypes.Timestamp_us,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

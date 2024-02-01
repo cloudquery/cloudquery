@@ -33,10 +33,10 @@ func Schedules() *schema.Table {
 				Resolver: resolveSchedulerScheduleTags(),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("Arn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("Arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

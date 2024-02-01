@@ -25,10 +25,10 @@ func ResourcePolicies() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "policy_name",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("PolicyName"),
-				PrimaryKey: true,
+				Name:                "policy_name",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("PolicyName"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "policy_document",

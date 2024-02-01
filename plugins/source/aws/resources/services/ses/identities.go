@@ -26,10 +26,10 @@ func Identities() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveIdentityArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveIdentityArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

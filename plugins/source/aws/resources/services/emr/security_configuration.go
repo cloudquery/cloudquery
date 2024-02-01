@@ -19,19 +19,19 @@ func SecurityConfigurations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/emr/latest/APIReference/API_DescribeSecurityConfiguration.html`,
 		Resolver:    fetchSecurityConfigurations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticmapreduce"),
-		Transform:   transformers.TransformWithStruct(&types.SecurityConfigurationSummary{}, transformers.WithPrimaryKeys("Name")),
+		Transform:   transformers.TransformWithStruct(&types.SecurityConfigurationSummary{}, transformers.WithPrimaryKeyComponents("Name")),
 		Columns: []schema.Column{
 			{
-				Name:       "account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
+				Name:                "account_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            client.ResolveAWSAccount,
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:       "region",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSRegion,
-				PrimaryKey: true,
+				Name:                "region",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            client.ResolveAWSRegion,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "security_configuration",

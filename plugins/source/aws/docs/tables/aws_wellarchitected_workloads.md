@@ -4,8 +4,8 @@ This table shows data for AWS Well-Architected Workloads.
 
 https://docs.aws.amazon.com/wellarchitected/latest/APIReference/API_Workload.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_wellarchitected_workloads:
@@ -16,11 +16,11 @@ The following tables depend on aws_wellarchitected_workloads:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |account_ids|`list<item: utf8, nullable>`|
 |applications|`list<item: utf8, nullable>`|
 |architectural_design|`utf8`|

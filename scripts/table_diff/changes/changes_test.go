@@ -262,6 +262,16 @@ func Test_getChanges(t *testing.T) {
 			},
 		},
 		{
+			name:         "Special Case - don't report removal of pks, only end state",
+			diffDataFile: "testdata/pr_100644_diff.txt",
+			wantChanges: []change{
+				{
+					Text:     "Table `aws_accessanalyzer_analyzers`: all existing primary key constraints have been removed and a primary key new constraint has been added to `_cq_id`",
+					Breaking: true,
+				},
+			},
+		},
+		{
 			name:         "Should handle no backticks -> backticks",
 			diffDataFile: "testdata/pr_11034_diff.txt",
 			wantChanges:  []change{},

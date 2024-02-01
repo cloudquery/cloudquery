@@ -16,15 +16,15 @@ func operations() *schema.Table {
 		Name:        "aws_apprunner_operations",
 		Description: `https://docs.aws.amazon.com/apprunner/latest/api/API_OperationSummary.html`,
 		Resolver:    fetchApprunnerOperations,
-		Transform:   transformers.TransformWithStruct(&types.OperationSummary{}, transformers.WithPrimaryKeys("Id")),
+		Transform:   transformers.TransformWithStruct(&types.OperationSummary{}, transformers.WithPrimaryKeyComponents("Id")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "service_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "service_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

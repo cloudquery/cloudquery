@@ -18,15 +18,15 @@ func workGroupPreparedStatements() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/athena/latest/APIReference/API_PreparedStatement.html`,
 		Resolver:            fetchAthenaWorkGroupPreparedStatements,
 		PreResourceResolver: getWorkGroupPreparedStatement,
-		Transform:           transformers.TransformWithStruct(&types.PreparedStatement{}, transformers.WithPrimaryKeys("StatementName")),
+		Transform:           transformers.TransformWithStruct(&types.PreparedStatement{}, transformers.WithPrimaryKeyComponents("StatementName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "work_group_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "work_group_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

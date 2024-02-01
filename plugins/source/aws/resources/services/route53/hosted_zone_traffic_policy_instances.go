@@ -25,11 +25,11 @@ func hostedZoneTrafficPolicyInstances() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:        "arn",
-				Type:        arrow.BinaryTypes.String,
-				Resolver:    resolveRoute53HostedZoneTrafficPolicyInstancesArn,
-				Description: `Amazon Resource Name (ARN) of the route53 hosted zone traffic policy instance.`,
-				PrimaryKey:  true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveRoute53HostedZoneTrafficPolicyInstancesArn,
+				Description:         `Amazon Resource Name (ARN) of the route53 hosted zone traffic policy instance.`,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "hosted_zone_arn",

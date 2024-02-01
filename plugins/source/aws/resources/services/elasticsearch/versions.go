@@ -23,10 +23,10 @@ func Versions() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "version",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveVersion,
-				PrimaryKey: true,
+				Name:                "version",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveVersion,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "instance_types",

@@ -4,17 +4,18 @@ This table shows data for Amazon FSx Snapshots.
 
 https://docs.aws.amazon.com/fsx/latest/APIReference/API_Snapshot.html
 
-The primary key for this table is **arn**.
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |administrative_actions|`json`|
 |tags|`json`|
 |creation_time|`timestamp[us, tz=UTC]`|

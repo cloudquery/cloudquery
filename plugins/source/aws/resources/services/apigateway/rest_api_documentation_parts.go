@@ -30,10 +30,10 @@ func restApiDocumentationParts() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApigatewayRestAPIDocumentationPartArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApigatewayRestAPIDocumentationPartArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

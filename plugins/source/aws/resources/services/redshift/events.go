@@ -19,7 +19,7 @@ func Events() *schema.Table {
 
 Only events occurred in the last 14 days are returned.`,
 		Resolver:  fetchEvents,
-		Transform: transformers.TransformWithStruct(&types.Event{}, transformers.WithPrimaryKeys("EventId")),
+		Transform: transformers.TransformWithStruct(&types.Event{}, transformers.WithPrimaryKeyComponents("EventId")),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "redshift"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

@@ -16,15 +16,15 @@ func analyzerArchiveRules() *schema.Table {
 		Name:        "aws_accessanalyzer_analyzer_archive_rules",
 		Description: `https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_ArchiveRuleSummary.html`,
 		Resolver:    fetchAccessanalyzerAnalyzerArchiveRules,
-		Transform:   transformers.TransformWithStruct(&types.ArchiveRuleSummary{}, transformers.WithPrimaryKeys("RuleName")),
+		Transform:   transformers.TransformWithStruct(&types.ArchiveRuleSummary{}, transformers.WithPrimaryKeyComponents("RuleName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "analyzer_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "analyzer_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

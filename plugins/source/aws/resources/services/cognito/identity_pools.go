@@ -33,10 +33,10 @@ func IdentityPools() *schema.Table {
 				Resolver: resolveIdentityPoolARN(),
 			},
 			{
-				Name:       "id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("IdentityPoolId"),
-				PrimaryKey: true,
+				Name:                "id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("IdentityPoolId"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "saml_provider_arns",

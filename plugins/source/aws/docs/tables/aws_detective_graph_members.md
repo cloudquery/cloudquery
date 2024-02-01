@@ -5,8 +5,8 @@ This table shows data for Amazon Detective Graph Members.
 https://docs.aws.amazon.com/detective/latest/APIReference/API_GetMembers.html
 The 'request_account_id' and 'request_region' columns are added to show the account and region of where the request was made from.
 
-The composite primary key for this table is (**request_region**, **account_id**, **graph_arn**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**request_region**, **account_id**, **graph_arn**).
 ## Relations
 
 This table depends on [aws_detective_graphs](aws_detective_graphs.md).
@@ -15,16 +15,16 @@ This table depends on [aws_detective_graphs](aws_detective_graphs.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |request_account_id|`utf8`|
-|request_region (PK)|`utf8`|
-|account_id (PK)|`utf8`|
+|request_region|`utf8`|
+|account_id|`utf8`|
 |administrator_id|`utf8`|
 |datasource_package_ingest_states|`json`|
 |disabled_reason|`utf8`|
 |email_address|`utf8`|
-|graph_arn (PK)|`utf8`|
+|graph_arn|`utf8`|
 |invitation_type|`utf8`|
 |invited_time|`timestamp[us, tz=UTC]`|
 |master_id|`utf8`|

@@ -27,10 +27,10 @@ func Imports() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ImportId"),
-				PrimaryKey: true,
+				Name:                "id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ImportId"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

@@ -40,6 +40,11 @@ This is the (nested) spec used by the Azure blob destination Plugin.
 
   Path to where the files will be uploaded in the above bucket.
 
+- `no_rotate` (`boolean`) (optional) (default: `false`)
+
+  If set to `true`, the plugin will write to one file per table.
+  Otherwise, for every batch a new file will be created with a different `.<UUID>` suffix.
+
 - `format` (`string`) (required)
 
   Format of the output file. Supported values are `csv`, `json` and `parquet`.
@@ -62,7 +67,7 @@ This is the (nested) spec used by the Azure blob destination Plugin.
 
 - `batch_timeout` (`duration`) (optional) (default: `30s` (30 seconds))
 
-  Inactivity time before starting a new object.
+  Maximum interval between batch writes.
 
 ### format_spec
 

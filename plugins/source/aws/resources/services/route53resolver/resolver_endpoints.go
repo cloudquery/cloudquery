@@ -16,7 +16,7 @@ func ResolverEndpoints() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_ResolverEndpoint.html`,
 		Resolver:    fetchResolverEndpoints,
-		Transform:   transformers.TransformWithStruct(&types.ResolverEndpoint{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.ResolverEndpoint{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53resolver"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

@@ -28,10 +28,10 @@ Notes:
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("VpcIngressConnectionArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("VpcIngressConnectionArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "source_account_id",

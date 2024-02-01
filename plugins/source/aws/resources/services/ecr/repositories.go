@@ -20,15 +20,15 @@ func Repositories() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_Repository.html`,
 		Resolver:    fetchEcrRepositories,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "api.ecr"),
-		Transform:   transformers.TransformWithStruct(&types.Repository{}, transformers.WithPrimaryKeys("RegistryId")),
+		Transform:   transformers.TransformWithStruct(&types.Repository{}, transformers.WithPrimaryKeyComponents("RegistryId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("RepositoryArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("RepositoryArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

@@ -4,8 +4,8 @@ This table shows data for Amazon EMR Cluster Instance Fleets.
 
 https://docs.aws.amazon.com/emr/latest/APIReference/API_InstanceFleet.html
 
-The composite primary key for this table is (**cluster_arn**, **id**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**cluster_arn**, **id**).
 ## Relations
 
 This table depends on [aws_emr_clusters](aws_emr_clusters.md).
@@ -14,12 +14,12 @@ This table depends on [aws_emr_clusters](aws_emr_clusters.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|cluster_arn (PK)|`utf8`|
-|id (PK)|`utf8`|
+|cluster_arn|`utf8`|
+|id|`utf8`|
 |instance_fleet_type|`utf8`|
 |instance_type_specifications|`json`|
 |launch_specifications|`json`|

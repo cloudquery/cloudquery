@@ -23,11 +23,11 @@ func Plans() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:        "arn",
-				Type:        arrow.BinaryTypes.String,
-				Resolver:    schema.PathResolver("SavingsPlanArn"),
-				Description: `The Amazon Resource Name (ARN) of the Savings Plan.`,
-				PrimaryKey:  true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("SavingsPlanArn"),
+				Description:         `The Amazon Resource Name (ARN) of the Savings Plan.`,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

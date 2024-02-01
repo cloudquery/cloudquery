@@ -30,10 +30,10 @@ func restApiRequestValidators() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApigatewayRestAPIRequestValidatorArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApigatewayRestAPIRequestValidatorArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

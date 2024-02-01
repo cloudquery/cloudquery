@@ -23,10 +23,10 @@ func TrafficPolicies() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveTrafficPolicyArn(),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveTrafficPolicyArn(),
+				PrimaryKeyComponent: true,
 			},
 		},
 

@@ -4,8 +4,8 @@ This table shows data for Amazon Route 53 Hosted Zone Resource Record Sets.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_ResourceRecordSet.html
 
-The composite primary key for this table is (**hosted_zone_arn**, **name**, **type**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**hosted_zone_arn**, **name**, **type**).
 ## Relations
 
 This table depends on [aws_route53_hosted_zones](aws_route53_hosted_zones.md).
@@ -14,12 +14,12 @@ This table depends on [aws_route53_hosted_zones](aws_route53_hosted_zones.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
-|hosted_zone_arn (PK)|`utf8`|
-|name (PK)|`utf8`|
-|type (PK)|`utf8`|
+|hosted_zone_arn|`utf8`|
+|name|`utf8`|
+|type|`utf8`|
 |alias_target|`json`|
 |cidr_routing_config|`json`|
 |failover|`utf8`|

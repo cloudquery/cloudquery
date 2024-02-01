@@ -30,10 +30,10 @@ func JobDefinitions() *schema.Table {
 				Resolver: resolveBatchJobDefinitionTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("JobDefinitionArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("JobDefinitionArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

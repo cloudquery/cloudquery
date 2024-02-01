@@ -33,10 +33,10 @@ func restApiAuthorizers() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApigatewayRestAPIAuthorizerArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApigatewayRestAPIAuthorizerArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

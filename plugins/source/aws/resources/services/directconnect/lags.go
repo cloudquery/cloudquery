@@ -22,10 +22,10 @@ func Lags() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.Lag{}),
 		Columns: []schema.Column{
 			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
+				Name:                "request_account_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            client.ResolveAWSAccount,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "request_region",
@@ -33,10 +33,10 @@ func Lags() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveLagARN(),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveLagARN(),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "id",

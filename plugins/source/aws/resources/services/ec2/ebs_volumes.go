@@ -26,10 +26,10 @@ func EbsVolumes() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveEbsVolumeArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveEbsVolumeArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

@@ -79,7 +79,7 @@ This is the top-level spec used by the BigQuery destination plugin.
 
 - `batch_timeout` (`duration`) (optional) (default: `10s` (10 seconds))
 
-  Inactivity time before starting a new object.
+  Maximum interval between batch writes.
 
 ## Underlying library
 

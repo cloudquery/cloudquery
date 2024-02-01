@@ -23,10 +23,10 @@ func Certificates() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("CertificateArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("CertificateArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

@@ -23,10 +23,10 @@ func Packages() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("PackageID"),
-				PrimaryKey: true,
+				Name:                "id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("PackageID"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

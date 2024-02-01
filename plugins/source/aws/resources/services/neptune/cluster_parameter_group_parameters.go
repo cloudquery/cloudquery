@@ -17,15 +17,15 @@ func clusterParameterGroupParameters() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/neptune/latest/userguide/api-parameters.html#DescribeDBParameterGroups`,
 		Resolver:    fetchNeptuneClusterParameterGroupParameters,
-		Transform:   transformers.TransformWithStruct(&types.Parameter{}, transformers.WithPrimaryKeys("ParameterName")),
+		Transform:   transformers.TransformWithStruct(&types.Parameter{}, transformers.WithPrimaryKeyComponents("ParameterName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "cluster_parameter_group_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "cluster_parameter_group_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

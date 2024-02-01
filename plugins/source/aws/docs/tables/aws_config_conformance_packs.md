@@ -4,8 +4,8 @@ This table shows data for Config Conformance Packs.
 
 https://docs.aws.amazon.com/config/latest/APIReference/API_ConformancePackDetail.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_config_conformance_packs:
@@ -15,11 +15,11 @@ The following tables depend on aws_config_conformance_packs:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |conformance_pack_arn|`utf8`|
 |conformance_pack_id|`utf8`|
 |conformance_pack_name|`utf8`|
