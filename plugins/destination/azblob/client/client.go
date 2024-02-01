@@ -8,6 +8,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
+	"github.com/cloudquery/cloudquery/plugins/destination/azblob/client/spec"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/streamingbatchwriter"
@@ -21,14 +22,14 @@ type Client struct {
 	streamingbatchwriter.UnimplementedDeleteRecords
 
 	logger zerolog.Logger
-	spec   *Spec
+	spec   *spec.Spec
 	*filetypes.Client
 	writer *streamingbatchwriter.StreamingBatchWriter
 
 	storageClient *azblob.Client
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "azb").Logger(),
 	}
@@ -36,7 +37,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.Ne
 		return c, nil
 	}
 
-	if err := json.Unmarshal(spec, &c.spec); err != nil {
+	if err := json.Unmarshal(s, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal azblob spec: %w", err)
 	}
 	if err := c.spec.Validate(); err != nil {
@@ -44,7 +45,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.Ne
 	}
 	c.spec.SetDefaults()
 
-	filetypesClient, err := filetypes.NewClient(c.spec.FileSpec)
+	filetypesClient, err := filetypes.NewClient(&c.spec.FileSpec)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
 	}
