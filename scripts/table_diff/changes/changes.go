@@ -15,6 +15,9 @@ import (
 var (
 	columnRegex = regexp.MustCompile(`^\|(?P<name>.*)\|(?P<dataType>.*)\|`)
 	pkRegex     = regexp.MustCompile(`^The composite primary key for this table is \(([^)]+)\)\.`)
+
+	// There is a different message for single PKs
+	singlePKRegex = regexp.MustCompile(`^The primary key for this table is ([^)]+)\.`)
 )
 
 type change struct {
@@ -75,12 +78,17 @@ func parseColumnChange(line string) (name string, col column) {
 }
 
 func parsePKChange(line string) (names []string) {
-	match := pkRegex.FindStringSubmatch(line)
-	if len(match) != 2 {
-		return nil
+	matchMulti := pkRegex.FindStringSubmatch(line)
+	matchSingle := singlePKRegex.FindStringSubmatch(line)
+	if len(matchMulti) == 2 {
+		for _, part := range strings.Split(matchMulti[1], ", ") {
+			names = append(names, strings.Trim(part, "*"))
+		}
 	}
-	for _, part := range strings.Split(match[1], ", ") {
-		names = append(names, strings.Trim(part, "*"))
+	if len(matchSingle) == 2 {
+		for _, part := range strings.Split(matchSingle[1], ", ") {
+			names = append(names, strings.Trim(part, "*"))
+		}
 	}
 	return
 }
@@ -141,14 +149,14 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 			continue
 		}
 
-		if added.pk() && !deleted.pk() {
+		if added.pk() && !deleted.pk() && !(len(addedPK) == 1 && addedPK[0] == "_cq_id" && len(deletedPK) > 0) {
 			changes = append(changes, change{
 				Text:     fmt.Sprintf("Table %s: primary key constraint added to column %s", backtickStrings(table, name)...),
 				Breaking: true,
 			})
 		}
 
-		if !added.pk() && deleted.pk() {
+		if !added.pk() && deleted.pk() && !(len(addedPK) == 1 && addedPK[0] == "_cq_id" && len(deletedPK) > 0) {
 			changes = append(changes, change{
 				Text:     fmt.Sprintf("Table %s: primary key constraint removed from column %s", backtickStrings(table, name)...),
 				Breaking: true,
@@ -216,6 +224,14 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 			return chI.Text < chJ.Text
 		}
 	})
+
+	if len(addedPK) == 1 && addedPK[0] == "_cq_id" && len(deletedPK) > 0 {
+		changes = append(changes, change{
+			Text:     fmt.Sprintf("Table %s: all existing primary key constraints have been removed and a primary key new constraint has been added to `_cq_id`", backtickStrings(table)...),
+			Breaking: true,
+		})
+	}
+
 	return changes
 }
 
