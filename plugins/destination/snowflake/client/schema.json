@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/snowflake/client/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Spec": {
+      "properties": {
+        "connection_string": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Snowflake `connection_string`."
+        },
+        "private_key": {
+          "type": "string",
+          "description": "A PEM-encoded private key for connecting to snowflake. Equivalent to adding\n `authenticator=snowflake_jwt\u0026privateKey=...` to the `connection_string` but\n parses, validates, and correctly encodes the key for use with snowflake."
+        },
+        "batch_size": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of records to batch together before sending to the database.",
+          "default": 1000
+        },
+        "batch_size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of bytes (as Arrow buffer size) to batch together before sending to the database.",
+          "default": 4194304
+        },
+        "migrate_concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "By default, tables are migrated one at a time.\nThis option allows you to migrate multiple tables concurrently.\nThis can be useful if you have a lot of tables to migrate and want to speed up the process.",
+          "default": 1
+        },
+        "leave_stage_files": {
+          "type": "boolean",
+          "description": "If set to true, intermediary files used to load data to the Snowflake stage are left in the temp directory. This can be useful for debugging purposes.",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "connection_string"
+      ]
+    }
+  }
+}
