@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/Shopify/sarama"
+	"github.com/cloudquery/cloudquery/plugins/destination/kafka/client/spec"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/rs/zerolog"
@@ -20,12 +21,12 @@ type Client struct {
 	producer sarama.SyncProducer
 
 	logger zerolog.Logger
-	spec   *Spec
+	spec   *spec.Spec
 
 	*filetypes.Client
 }
 
-func New(_ context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
+func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "dest-kafka").Logger(),
 	}
@@ -33,7 +34,7 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewC
 		return c, nil
 	}
 
-	if err := json.Unmarshal(spec, &c.spec); err != nil {
+	if err := json.Unmarshal(s, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 	if err := c.spec.Validate(); err != nil {
@@ -55,10 +56,10 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewC
 	c.conf.Metadata.Full = true
 	c.conf.ClientID = c.spec.ClientID
 
-	if c.spec.SaslUsername != "" {
+	if c.spec.SASLUsername != "" {
 		c.conf.Net.SASL.Enable = true
-		c.conf.Net.SASL.User = c.spec.SaslUsername
-		c.conf.Net.SASL.Password = c.spec.SaslPassword
+		c.conf.Net.SASL.User = c.spec.SASLUsername
+		c.conf.Net.SASL.Password = c.spec.SASLPassword
 		c.conf.Net.TLS.Enable = true
 		c.conf.Net.TLS.Config = &tls.Config{InsecureSkipVerify: true}
 		c.conf.Net.SASL.Handshake = true
@@ -70,7 +71,7 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewC
 		return nil, err
 	}
 
-	filetypesClient, err := filetypes.NewClient(c.spec.FileSpec)
+	filetypesClient, err := filetypes.NewClient(&c.spec.FileSpec)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
 	}
