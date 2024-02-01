@@ -4,10 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"io"
-	"path"
 	"reflect"
 	"regexp"
-	"strings"
 	"time"
 
 	"github.com/apache/arrow/go/v15/arrow"
@@ -21,17 +19,6 @@ import (
 	"github.com/google/uuid"
 )
 
-const (
-	PathVarFormat = "{{FORMAT}}"
-	PathVarTable  = "{{TABLE}}"
-	PathVarUUID   = "{{UUID}}"
-	YearVar       = "{{YEAR}}"
-	MonthVar      = "{{MONTH}}"
-	DayVar        = "{{DAY}}"
-	HourVar       = "{{HOUR}}"
-	MinuteVar     = "{{MINUTE}}"
-)
-
 var reInvalidJSONKey = regexp.MustCompile(`\W`)
 
 func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInsert) error {
@@ -41,7 +28,7 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 		if s == nil {
 			table := msg.GetTable()
 
-			objKey := c.replacePathVariables(table.Name, uuid.NewString(), time.Now().UTC())
+			objKey := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC())
 
 			var err error
 			s, err = c.Client.StartStream(table, func(r io.Reader) error {
@@ -143,19 +130,4 @@ func sanitizeJSONKeysForObject(obj any) {
 			sanitizeJSONKeysForObject(key)
 		}
 	}
-}
-
-func (c *Client) replacePathVariables(table, fileIdentifier string, t time.Time) string {
-	name := strings.ReplaceAll(c.spec.Path, PathVarTable, table)
-	if strings.Contains(name, PathVarFormat) {
-		e := string(c.spec.Format) + c.spec.Compression.Extension()
-		name = strings.ReplaceAll(name, PathVarFormat, e)
-	}
-	name = strings.ReplaceAll(name, PathVarUUID, fileIdentifier)
-	name = strings.ReplaceAll(name, YearVar, t.Format("2006"))
-	name = strings.ReplaceAll(name, MonthVar, t.Format("01"))
-	name = strings.ReplaceAll(name, DayVar, t.Format("02"))
-	name = strings.ReplaceAll(name, HourVar, t.Format("15"))
-	name = strings.ReplaceAll(name, MinuteVar, t.Format("04"))
-	return path.Clean(name)
 }

@@ -43,9 +43,9 @@ This is the (nested) spec used by the CSV destination Plugin.
   - `{{HOUR}}` will be replaced with the current hour in `HH` format
   - `{{MINUTE}}` will be replaced with the current minute in `mm` format
 
-  Note that timestamps are in UTC and will be the current time at the time the file is written, not when the sync started.
+  **Note** that timestamps are in `UTC` and will be the current time at the time the file is written, not when the sync started.
 
-- `format` (string) (required)
+- `format` (`string`) (required)
 
   Format of the output file. Supported values are `csv`, `json` and `parquet`.
 
@@ -53,9 +53,9 @@ This is the (nested) spec used by the CSV destination Plugin.
 
   Optional parameters to change the format of the file.
 
-- `compression` (`string`) (optional) (default: empty)
+- `compression` (`string`) (optional) (default: `""`)
 
-  Compression algorithm to use. Supported values are empty or `gzip`. Not supported for `parquet` format.
+  Compression algorithm to use. Supported values are `""` or `gzip`. Not supported for `parquet` format.
 
 - `no_rotate` (`boolean`) (optional) (default: `false`)
 
@@ -72,14 +72,16 @@ This is the (nested) spec used by the CSV destination Plugin.
   Ensure write access to the given bucket and path by writing a test object on each sync.
   If you are sure that the bucket and path are writable, you can set this to `false` to skip the test.
 
-- `endpoint` (`string`) (optional) (default: empty)
+- `endpoint` (`string`) (optional) (default: `""`)
 
   Endpoint to use for S3 API calls. This is useful for S3-compatible storage services such as MinIO.
-  Note: if you want to use path-style addressing, i.e., `https://s3.amazonaws.com/BUCKET/KEY`, `use_path_style` should be enabled, too.
+  **Note**: if you want to use path-style addressing, i.e., `https://s3.amazonaws.com/BUCKET/KEY`, `use_path_style` should be enabled, too.
 
 - `endpoint_skip_tls_verify` (`boolean`) (optional) (default: `false`)
   
-  Disable TLS verification for requests to your S3 endpoint. This option is intended to be used when using a custom endpoint using the `endpoint` option.
+  Disable TLS verification for requests to your S3 endpoint.
+
+  This option is intended to be used when using a custom endpoint using the `endpoint` option.
 
 - `use_path_style` (`boolean`) (optional) (default: `false`)
 
