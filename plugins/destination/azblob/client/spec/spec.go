@@ -11,14 +11,33 @@ import (
 type Spec struct {
 	filetypes.FileSpec
 
-	StorageAccount string `json:"storage_account,omitempty"`
-	Container      string `json:"container,omitempty"`
-	Path           string `json:"path,omitempty"`
-	NoRotate       bool   `json:"no_rotate,omitempty"`
+	// Storage account where to sync the files.
+	StorageAccount string `json:"storage_account,omitempty" jsonschema:"required,minLength=1"`
 
-	BatchSize      *int64               `json:"batch_size"`
-	BatchSizeBytes *int64               `json:"batch_size_bytes"`
-	BatchTimeout   *configtype.Duration `json:"batch_timeout"`
+	// Storage container inside the storage account where to sync the files.
+	Container string `json:"container,omitempty" jsonschema:"required,minLength=1"`
+
+	// Path to where the files will be uploaded in the storage container.
+	Path string `json:"path,omitempty" jsonschema:"required,minLength=1"`
+
+	// If set to `true`, the plugin will write to one file per table.
+	// Otherwise, for every batch a new file will be created with a different `.<UUID>` suffix.
+	NoRotate bool `json:"no_rotate,omitempty" jsonschema:"default=false"`
+
+	// This parameter controls the maximum amount of items may be grouped together to be written in a single object.
+	//
+	// Defaults to `10000` unless `no_rotate` is `true` (will be `0` then).
+	BatchSize *int64 `json:"batch_size" jsonschema:"minimum=1,default=10000"`
+
+	// This parameter controls the maximum size of items that may be grouped together to be written in a single object.
+	//
+	// Defaults to `52428800` (50 MiB) unless `no_rotate` is `true` (will be `0` then).
+	BatchSizeBytes *int64 `json:"batch_size_bytes" jsonschema:"minimum=1,default=52428800"`
+
+	// This parameter controls the maximum interval between batch writes.
+	//
+	// Defaults to `30s` unless `no_rotate` is `true` (will be `0s` then).
+	BatchTimeout *configtype.Duration `json:"batch_timeout" jsonschema:"default=30s"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -48,23 +67,28 @@ func (s *Spec) SetDefaults() {
 }
 
 func (s *Spec) Validate() error {
-	if s.StorageAccount == "" {
+	if len(s.StorageAccount) == 0 {
 		return fmt.Errorf("`storage_account` is required")
 	}
-	if s.Container == "" {
+	if len(s.Container) == 0 {
 		return fmt.Errorf("`container` is required")
 	}
-	if s.Path == "" {
+	if len(s.Path) == 0 {
 		return fmt.Errorf("`path` is required")
 	}
-	if s.Format == "" {
-		return fmt.Errorf("`format` is required")
-	}
+
 	if s.NoRotate && ((s.BatchSize != nil && *s.BatchSize > 0) || (s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) || (s.BatchTimeout != nil && s.BatchTimeout.Duration() > 0)) {
 		return fmt.Errorf("`no_rotate` cannot be used with non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`")
 	}
 
-	return nil
+	// required for s.FileSpec.Validate call
+	err := s.FileSpec.UnmarshalSpec()
+	if err != nil {
+		return err
+	}
+	s.FileSpec.SetDefaults()
+
+	return s.FileSpec.Validate()
 }
 
 func int64ptr(i int64) *int64 {

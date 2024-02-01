@@ -37,6 +37,35 @@
       "description": "CloudQuery Parquet file output spec."
     },
     "Spec": {
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "no_rotate": {
+                "type": "boolean",
+                "const": true
+              }
+            },
+            "required": [
+              "no_rotate"
+            ]
+          },
+          "then": {
+            "properties": {
+              "batch_size": {
+                "type": "null"
+              },
+              "batch_size_bytes": {
+                "type": "null"
+              },
+              "batch_timeout": {
+                "type": "null"
+              }
+            }
+          },
+          "title": "Disallow batching when using no_rotate"
+        }
+      ],
       "oneOf": [
         {
           "properties": {
@@ -132,21 +161,27 @@
           "description": "Compression type.\nEmpty or missing stands for no compression."
         },
         "storage_account": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "container": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "path": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1
         },
         "no_rotate": {
-          "type": "boolean"
+          "type": "boolean",
+          "default": false
         },
         "batch_size": {
           "oneOf": [
             {
-              "type": "integer"
+              "type": "integer",
+              "minimum": 1,
+              "default": 10000
             },
             {
               "type": "null"
@@ -156,7 +191,9 @@
         "batch_size_bytes": {
           "oneOf": [
             {
-              "type": "integer"
+              "type": "integer",
+              "minimum": 1,
+              "default": 52428800
             },
             {
               "type": "null"
@@ -166,7 +203,8 @@
         "batch_timeout": {
           "oneOf": [
             {
-              "$ref": "#/$defs/Duration"
+              "$ref": "#/$defs/Duration",
+              "default": "30s"
             },
             {
               "type": "null"
@@ -177,7 +215,10 @@
       "additionalProperties": false,
       "type": "object",
       "required": [
-        "format"
+        "format",
+        "storage_account",
+        "container",
+        "path"
       ]
     }
   }
