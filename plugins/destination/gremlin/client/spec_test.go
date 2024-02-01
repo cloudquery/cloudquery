@@ -37,11 +37,6 @@ func TestJSONSchema(t *testing.T) {
 			Err:  true,
 		},
 		{
-			Name: "spec with bad endpoint 4",
-			Spec: `{"endpoint": "ws://localhost:8182:8182"}`,
-			Err:  true,
-		},
-		{
 			Name: "spec with endpoint, auth_mode basic, username/password",
 			Spec: `{"endpoint": "ws://localhost:8182", "auth_mode": "basic", "username": "abc", "password": "def"}`,
 		},

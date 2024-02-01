@@ -12,7 +12,7 @@ import (
 
 type Spec struct {
 	// Endpoint for the database. Supported schemes are `wss://` and `ws://`, the default port is `8182`.
-	Endpoint string `json:"endpoint" jsonschema:"required,pattern=^ws(s?)://[^\n\\:]+(\\:[0-9]{1\\,5})?$"`
+	Endpoint string `json:"endpoint" jsonschema:"required,pattern=^wss?://[^\n]+$"`
 
 	// Whether to skip TLS verification. Defaults to `false`. This should be set on a macOS environment when connecting to an AWS Neptune endpoint.
 	Insecure bool `json:"insecure" jsonschema:"default=false"`
@@ -113,6 +113,7 @@ func (s *Spec) Validate() error {
 func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 	forceAuthMode := func(sc *jsonschema.Schema, value authMode) *jsonschema.Schema {
 		authMode := *sc.Properties.Value("auth_mode")
+		authMode.Enum = nil
 		authMode.Const = value
 		return &authMode
 	}

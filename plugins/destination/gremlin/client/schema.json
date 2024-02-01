@@ -10,11 +10,6 @@
             "properties": {
               "auth_mode": {
                 "type": "string",
-                "enum": [
-                  "none",
-                  "basic",
-                  "aws"
-                ],
                 "const": "aws",
                 "description": "Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.",
                 "default": "none"
@@ -42,11 +37,6 @@
             "properties": {
               "auth_mode": {
                 "type": "string",
-                "enum": [
-                  "none",
-                  "basic",
-                  "aws"
-                ],
                 "const": "basic",
                 "description": "Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.",
                 "default": "none"
@@ -97,11 +87,6 @@
               },
               "auth_mode": {
                 "type": "string",
-                "enum": [
-                  "none",
-                  "basic",
-                  "aws"
-                ],
                 "const": "basic",
                 "description": "Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.",
                 "default": "none"
@@ -135,11 +120,6 @@
               },
               "auth_mode": {
                 "type": "string",
-                "enum": [
-                  "none",
-                  "basic",
-                  "aws"
-                ],
                 "const": "basic",
                 "description": "Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.",
                 "default": "none"
@@ -155,7 +135,7 @@
       "properties": {
         "endpoint": {
           "type": "string",
-          "pattern": "^ws(s?)://[^\n\\:]+(\\:[0-9]{1,5})?$",
+          "pattern": "^wss?://[^\n]+$",
           "description": "Endpoint for the database. Supported schemes are `wss://` and `ws://`, the default port is `8182`."
         },
         "insecure": {
