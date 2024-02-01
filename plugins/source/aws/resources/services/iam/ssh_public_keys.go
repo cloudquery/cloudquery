@@ -21,10 +21,10 @@ func sshPublicKeys() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:       "user_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "user_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "user_id",
@@ -32,10 +32,10 @@ func sshPublicKeys() *schema.Table {
 				Resolver: schema.ParentColumnResolver("user_id"),
 			},
 			{
-				Name:       "ssh_public_key_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("SSHPublicKeyId"),
-				PrimaryKey: true,
+				Name:                "ssh_public_key_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("SSHPublicKeyId"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

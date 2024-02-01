@@ -23,7 +23,7 @@ func stackInstanceSummaries() *schema.Table {
 		Transform: transformers.TransformWithStruct(&models.ExpandedStackInstanceSummary{},
 			transformers.WithUnwrapStructFields("StackInstanceSummary"),
 			transformers.WithSkipFields("CallAs"),
-			transformers.WithPrimaryKeys("StackSetId", "StackId"),
+			transformers.WithPrimaryKeyComponents("StackSetId", "StackId"),
 		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
@@ -34,10 +34,10 @@ func stackInstanceSummaries() *schema.Table {
 				Resolver: schema.PathResolver("StackId"),
 			},
 			{
-				Name:       "stack_set_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("stack_set_arn"),
-				PrimaryKey: true,
+				Name:                "stack_set_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("stack_set_arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 

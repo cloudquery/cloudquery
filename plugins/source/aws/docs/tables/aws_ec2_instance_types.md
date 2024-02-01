@@ -4,16 +4,17 @@ This table shows data for Amazon Elastic Compute Cloud (EC2) Instance Types.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_InstanceTypeInfo.html
 
-The composite primary key for this table is (**account_id**, **region**, **instance_type**).
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**, **instance_type**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
 |auto_recovery_supported|`bool`|
 |bare_metal|`bool`|
 |burstable_performance_supported|`bool`|
@@ -28,7 +29,7 @@ The composite primary key for this table is (**account_id**, **region**, **insta
 |inference_accelerator_info|`json`|
 |instance_storage_info|`json`|
 |instance_storage_supported|`bool`|
-|instance_type (PK)|`utf8`|
+|instance_type|`utf8`|
 |memory_info|`json`|
 |network_info|`json`|
 |nitro_enclaves_support|`utf8`|

@@ -4,8 +4,8 @@ This table shows data for Organizations Delegated Services.
 
 https://docs.aws.amazon.com/organizations/latest/APIReference/API_DelegatedService.html
 
-The composite primary key for this table is (**account_id**, **service_principal**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **service_principal**).
 ## Relations
 
 This table depends on [aws_organizations_delegated_administrators](aws_organizations_delegated_administrators.md).
@@ -14,8 +14,8 @@ This table depends on [aws_organizations_delegated_administrators](aws_organizat
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
+|account_id|`utf8`|
 |delegation_enabled_date|`timestamp[us, tz=UTC]`|
-|service_principal (PK)|`utf8`|
+|service_principal|`utf8`|

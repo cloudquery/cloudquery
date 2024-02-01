@@ -4,8 +4,8 @@ This table shows data for Amazon Elastic Load Balancer (ELB) v2 Target Groups.
 
 https://docs.aws.amazon.com/elasticloadbalancing/latest/APIReference/API_TargetGroup.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_elbv2_target_groups:
@@ -15,12 +15,12 @@ The following tables depend on aws_elbv2_target_groups:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
 |tags|`json`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |health_check_enabled|`bool`|
 |health_check_interval_seconds|`int64`|
 |health_check_path|`utf8`|

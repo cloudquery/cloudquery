@@ -4,8 +4,8 @@ This table shows data for Amazon AppStream Application Fleet Associations.
 
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_ApplicationFleetAssociation.html
 
-The composite primary key for this table is (**application_arn**, **fleet_name**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**application_arn**, **fleet_name**).
 ## Relations
 
 This table depends on [aws_appstream_applications](aws_appstream_applications.md).
@@ -14,9 +14,9 @@ This table depends on [aws_appstream_applications](aws_appstream_applications.md
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|application_arn (PK)|`utf8`|
-|fleet_name (PK)|`utf8`|
+|application_arn|`utf8`|
+|fleet_name|`utf8`|

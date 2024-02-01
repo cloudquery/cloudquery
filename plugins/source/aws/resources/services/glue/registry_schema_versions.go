@@ -21,17 +21,17 @@ func registrySchemaVersions() *schema.Table {
 		Resolver:            fetchGlueRegistrySchemaVersions,
 		PreResourceResolver: getRegistrySchemaVersion,
 		Transform: transformers.TransformWithStruct(&glue.GetSchemaVersionOutput{},
-			transformers.WithPrimaryKeys("SchemaVersionId"),
+			transformers.WithPrimaryKeyComponents("SchemaVersionId"),
 			transformers.WithSkipFields("ResultMetadata"),
 		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "registry_schema_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "registry_schema_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "metadata",

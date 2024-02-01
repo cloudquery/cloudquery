@@ -30,10 +30,10 @@ func ThingTypes() *schema.Table {
 				Resolver: ResolveIotThingTypeTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ThingTypeArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ThingTypeArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

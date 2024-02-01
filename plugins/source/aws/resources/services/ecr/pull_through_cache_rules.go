@@ -17,7 +17,7 @@ func PullThroughCacheRules() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_DescribePullThroughCacheRules.html`,
 		Resolver:    fetchPullThroughCacheRules,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "api.ecr"),
-		Transform:   transformers.TransformWithStruct(&types.PullThroughCacheRule{}, transformers.WithPrimaryKeys("RegistryId", "UpstreamRegistryUrl", "EcrRepositoryPrefix")),
+		Transform:   transformers.TransformWithStruct(&types.PullThroughCacheRule{}, transformers.WithPrimaryKeyComponents("RegistryId", "UpstreamRegistryUrl", "EcrRepositoryPrefix")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

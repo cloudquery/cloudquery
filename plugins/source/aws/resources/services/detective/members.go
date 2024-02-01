@@ -20,7 +20,7 @@ func members() *schema.Table {
 		Description: `https://docs.aws.amazon.com/detective/latest/APIReference/API_GetMembers.html
 The 'request_account_id' and 'request_region' columns are added to show the account and region of where the request was made from.`,
 		Resolver:  fetchMembers,
-		Transform: transformers.TransformWithStruct(&types.MemberDetail{}, transformers.WithPrimaryKeys("AccountId", "GraphArn")),
+		Transform: transformers.TransformWithStruct(&types.MemberDetail{}, transformers.WithPrimaryKeyComponents("AccountId", "GraphArn")),
 		Columns: []schema.Column{
 			{
 				Name:     "request_account_id",
@@ -28,10 +28,10 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 				Resolver: client.ResolveAWSAccount,
 			},
 			{
-				Name:       "request_region",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSRegion,
-				PrimaryKey: true,
+				Name:                "request_region",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            client.ResolveAWSRegion,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

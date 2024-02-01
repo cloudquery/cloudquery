@@ -4,8 +4,8 @@ This table shows data for Amazon MQ Brokers.
 
 https://docs.aws.amazon.com/amazon-mq/latest/api-reference/brokers.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_mq_brokers:
@@ -16,11 +16,11 @@ The following tables depend on aws_mq_brokers:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |actions_required|`json`|
 |authentication_strategy|`utf8`|
 |auto_minor_version_upgrade|`bool`|

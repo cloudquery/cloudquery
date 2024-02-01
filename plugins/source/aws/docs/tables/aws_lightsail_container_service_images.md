@@ -4,8 +4,8 @@ This table shows data for Lightsail Container Service Images.
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_ContainerImage.html
 
-The composite primary key for this table is (**container_service_arn**, **image**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**container_service_arn**, **image**).
 ## Relations
 
 This table depends on [aws_lightsail_container_services](aws_lightsail_container_services.md).
@@ -14,11 +14,11 @@ This table depends on [aws_lightsail_container_services](aws_lightsail_container
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|container_service_arn (PK)|`utf8`|
+|container_service_arn|`utf8`|
 |created_at|`timestamp[us, tz=UTC]`|
 |digest|`utf8`|
-|image (PK)|`utf8`|
+|image|`utf8`|

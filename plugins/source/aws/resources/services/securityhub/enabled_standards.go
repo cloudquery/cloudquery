@@ -20,7 +20,7 @@ func EnabledStandards() *schema.Table {
 		Transform: transformers.TransformWithStruct(&types.StandardsSubscription{},
 			transformers.WithTypeTransformer(client.TimestampTypeTransformer),
 			transformers.WithResolverTransformer(client.TimestampResolverTransformer),
-			transformers.WithPrimaryKeys("StandardsArn", "StandardsSubscriptionArn"),
+			transformers.WithPrimaryKeyComponents("StandardsArn", "StandardsSubscriptionArn"),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "securityhub"),
 		Columns:   schema.ColumnList{client.DefaultAccountIDColumn(true), client.DefaultRegionColumn(true)},

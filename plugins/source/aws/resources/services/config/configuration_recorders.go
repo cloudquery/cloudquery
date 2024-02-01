@@ -27,10 +27,10 @@ func ConfigurationRecorders() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   generateConfigRecorderArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            generateConfigRecorderArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

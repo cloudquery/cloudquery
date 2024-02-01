@@ -4,8 +4,8 @@ This table shows data for Config Config Rules.
 
 https://docs.aws.amazon.com/config/latest/APIReference/API_ConfigRule.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_config_config_rules:
@@ -17,11 +17,11 @@ The following tables depend on aws_config_config_rules:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |source|`json`|
 |config_rule_arn|`utf8`|
 |config_rule_id|`utf8`|

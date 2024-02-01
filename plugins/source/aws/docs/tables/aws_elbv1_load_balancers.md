@@ -4,8 +4,8 @@ This table shows data for Amazon Elastic Load Balancer (ELB) v1 Load Balancers.
 
 https://docs.aws.amazon.com/elasticloadbalancing/2012-06-01/APIReference/API_LoadBalancerDescription.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_elbv1_load_balancers:
@@ -15,11 +15,11 @@ The following tables depend on aws_elbv1_load_balancers:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |availability_zones|`list<item: utf8, nullable>`|
 |backend_server_descriptions|`json`|
 |canonical_hosted_zone_name|`utf8`|

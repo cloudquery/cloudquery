@@ -36,10 +36,10 @@ func SecurityProfiles() *schema.Table {
 				Resolver: ResolveIotSecurityProfileTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("SecurityProfileArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("SecurityProfileArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

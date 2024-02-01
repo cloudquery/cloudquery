@@ -31,10 +31,10 @@ func StackSets() *schema.Table {
 				Resolver: schema.PathResolver("StackSetId"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("StackSetARN"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("StackSetARN"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

@@ -17,7 +17,7 @@ func FirewallDomainLists() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_FirewallDomainList.html`,
 		Resolver:            fetchFirewallDomainList,
 		PreResourceResolver: getFirewallDomainList,
-		Transform:           transformers.TransformWithStruct(&types.FirewallDomainList{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:           transformers.TransformWithStruct(&types.FirewallDomainList{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "route53resolver"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

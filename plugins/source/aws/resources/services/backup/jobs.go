@@ -18,7 +18,7 @@ func Jobs() *schema.Table {
 		Description: `https://docs.aws.amazon.com/aws-backup/latest/devguide/API_BackupJob.html`,
 		Resolver:    fetchBackupJobs,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "backup"),
-		Transform:   transformers.TransformWithStruct(&types.BackupJob{}, transformers.WithPrimaryKeys("BackupJobId")),
+		Transform:   transformers.TransformWithStruct(&types.BackupJob{}, transformers.WithPrimaryKeyComponents("BackupJobId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

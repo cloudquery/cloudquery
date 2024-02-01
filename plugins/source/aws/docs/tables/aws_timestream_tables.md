@@ -4,8 +4,8 @@ This table shows data for Timestream Tables.
 
 https://docs.aws.amazon.com/timestream/latest/developerguide/API_Table.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 This table depends on [aws_timestream_databases](aws_timestream_databases.md).
@@ -14,11 +14,11 @@ This table depends on [aws_timestream_databases](aws_timestream_databases.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |creation_time|`timestamp[us, tz=UTC]`|
 |database_name|`utf8`|
 |last_updated_time|`timestamp[us, tz=UTC]`|

@@ -19,7 +19,7 @@ func Ec2InstanceRecommendations() *schema.Table {
 		Description: `https://docs.aws.amazon.com/compute-optimizer/latest/APIReference/API_InstanceRecommendation.html`,
 		Resolver:    fetchEc2InstanceRecommendations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "compute-optimizer"),
-		Transform:   transformers.TransformWithStruct(&types.InstanceRecommendation{}, transformers.WithPrimaryKeys("InstanceArn")),
+		Transform:   transformers.TransformWithStruct(&types.InstanceRecommendation{}, transformers.WithPrimaryKeyComponents("InstanceArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{

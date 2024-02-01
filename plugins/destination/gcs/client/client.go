@@ -6,6 +6,7 @@ import (
 	"fmt"
 
 	"cloud.google.com/go/storage"
+	"github.com/cloudquery/cloudquery/plugins/destination/gcs/client/spec"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/writers/streamingbatchwriter"
 
@@ -21,7 +22,7 @@ type Client struct {
 	streamingbatchwriter.UnimplementedDeleteRecords
 
 	logger zerolog.Logger
-	spec   *Spec
+	spec   *spec.Spec
 
 	gcsClient *storage.Client
 	bucket    *storage.BucketHandle
@@ -30,12 +31,12 @@ type Client struct {
 	writer *streamingbatchwriter.StreamingBatchWriter
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, s []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "gcs").Logger(),
 	}
 
-	if err := json.Unmarshal(spec, &c.spec); err != nil {
+	if err := json.Unmarshal(s, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal gcs spec: %w", err)
 	}
 	if err := c.spec.Validate(); err != nil {
@@ -43,7 +44,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	}
 	c.spec.SetDefaults()
 
-	filetypesClient, err := filetypes.NewClient(c.spec.FileSpec)
+	filetypesClient, err := filetypes.NewClient(&c.spec.FileSpec)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
 	}

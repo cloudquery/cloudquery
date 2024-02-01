@@ -15,7 +15,7 @@ func builds() *schema.Table {
 		Name:        "aws_codebuild_builds",
 		Description: `https://docs.aws.amazon.com/codebuild/latest/APIReference/API_Build.html`,
 		Resolver:    fetchBuildsForProject,
-		Transform:   transformers.TransformWithStruct(&types.Build{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.Build{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

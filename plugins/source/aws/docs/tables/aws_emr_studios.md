@@ -4,8 +4,8 @@ This table shows data for Amazon EMR Studios.
 
 https://docs.aws.amazon.com/emr/latest/APIReference/API_Studio.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_emr_studios:
@@ -15,11 +15,11 @@ The following tables depend on aws_emr_studios:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |auth_mode|`utf8`|
 |creation_time|`timestamp[us, tz=UTC]`|
 |default_s3_location|`utf8`|

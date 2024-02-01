@@ -4,8 +4,8 @@ This table shows data for Amazon Elastic Load Balancer (ELB) v2 Load Balancer We
 
 https://docs.aws.amazon.com/waf/latest/APIReference/API_GetWebACLForResource.html
 
-The composite primary key for this table is (**load_balancer_arn**, **arn**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**load_balancer_arn**, **arn**).
 ## Relations
 
 This table depends on [aws_elbv2_load_balancers](aws_elbv2_load_balancers.md).
@@ -14,12 +14,12 @@ This table depends on [aws_elbv2_load_balancers](aws_elbv2_load_balancers.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|load_balancer_arn (PK)|`utf8`|
-|arn (PK)|`utf8`|
+|load_balancer_arn|`utf8`|
+|arn|`utf8`|
 |default_action|`json`|
 |id|`utf8`|
 |name|`utf8`|

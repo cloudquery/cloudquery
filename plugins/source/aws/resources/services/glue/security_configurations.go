@@ -16,7 +16,7 @@ func SecurityConfigurations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_SecurityConfiguration.html`,
 		Resolver:    fetchGlueSecurityConfigurations,
-		Transform:   transformers.TransformWithStruct(&types.SecurityConfiguration{}, transformers.WithPrimaryKeys("Name")),
+		Transform:   transformers.TransformWithStruct(&types.SecurityConfiguration{}, transformers.WithPrimaryKeyComponents("Name")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "glue"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

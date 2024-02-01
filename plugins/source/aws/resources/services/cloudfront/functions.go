@@ -24,16 +24,16 @@ func Functions() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:       "stage",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("FunctionSummary.FunctionMetadata.Stage"),
-				PrimaryKey: true,
+				Name:                "stage",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("FunctionSummary.FunctionMetadata.Stage"),
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("FunctionSummary.FunctionMetadata.FunctionARN"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("FunctionSummary.FunctionMetadata.FunctionARN"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

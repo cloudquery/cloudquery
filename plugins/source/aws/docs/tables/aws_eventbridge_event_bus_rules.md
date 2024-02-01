@@ -4,8 +4,8 @@ This table shows data for Amazon EventBridge Event Bus Rules.
 
 https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Rule.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 This table depends on [aws_eventbridge_event_buses](aws_eventbridge_event_buses.md).
@@ -17,13 +17,13 @@ The following tables depend on aws_eventbridge_event_bus_rules:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
 |event_bus_arn|`utf8`|
 |tags|`json`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |description|`utf8`|
 |event_bus_name|`utf8`|
 |event_pattern|`utf8`|

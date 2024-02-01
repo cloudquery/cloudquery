@@ -31,10 +31,10 @@ func Jobs() *schema.Table {
 				Resolver: ResolveIotJobTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("JobArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("JobArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

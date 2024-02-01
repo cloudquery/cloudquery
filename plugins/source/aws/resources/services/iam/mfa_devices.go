@@ -21,9 +21,9 @@ func mfaDevices() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:       "serial_number",
-				Type:       arrow.BinaryTypes.String,
-				PrimaryKey: true,
+				Name:                "serial_number",
+				Type:                arrow.BinaryTypes.String,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

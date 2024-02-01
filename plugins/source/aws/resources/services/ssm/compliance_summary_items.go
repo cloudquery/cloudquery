@@ -24,9 +24,9 @@ func ComplianceSummaryItems() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "compliance_type",
-				Type:       arrow.BinaryTypes.String,
-				PrimaryKey: true,
+				Name:                "compliance_type",
+				Type:                arrow.BinaryTypes.String,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

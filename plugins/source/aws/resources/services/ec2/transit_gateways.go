@@ -28,10 +28,10 @@ func TransitGateways() *schema.Table {
 				Resolver: schema.PathResolver("TransitGatewayId"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("TransitGatewayArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("TransitGatewayArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 

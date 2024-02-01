@@ -4,8 +4,8 @@ This table shows data for Amazon Elastic Container Service (ECS) Cluster Task Se
 
 https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_TaskSet.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 This table depends on [aws_ecs_cluster_services](aws_ecs_cluster_services.md).
@@ -14,11 +14,11 @@ This table depends on [aws_ecs_cluster_services](aws_ecs_cluster_services.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |tags|`json`|
 |capacity_provider_strategy|`json`|
 |cluster_arn|`utf8`|

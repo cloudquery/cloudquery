@@ -25,10 +25,10 @@ func ServiceUpdates() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveServiceUpdateArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveServiceUpdateArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

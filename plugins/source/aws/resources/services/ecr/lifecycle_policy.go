@@ -18,17 +18,17 @@ func lifeCyclePolicy() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_GetLifecyclePolicy.html`,
 		Resolver:    fetchRepositoryLifecyclePolicy,
 		Transform: transformers.TransformWithStruct(&ecr.GetLifecyclePolicyOutput{},
-			transformers.WithPrimaryKeys("RegistryId"),
+			transformers.WithPrimaryKeyComponents("RegistryId"),
 			transformers.WithSkipFields("ResultMetadata"),
 		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "repository_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "repository_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "policy_json",

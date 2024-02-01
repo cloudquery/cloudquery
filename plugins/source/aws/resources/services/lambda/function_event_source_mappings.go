@@ -18,16 +18,16 @@ func functionEventSourceMappings() *schema.Table {
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_EventSourceMappingConfiguration.html`,
 		Resolver:    fetchLambdaFunctionEventSourceMappings,
 		Transform: transformers.TransformWithStruct(&types.EventSourceMappingConfiguration{},
-			transformers.WithPrimaryKeys("FunctionArn", "EventSourceArn"), // FunctionArn here can also be a version
+			transformers.WithPrimaryKeyComponents("FunctionArn", "EventSourceArn"), // FunctionArn here can also be a version
 		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "uuid",
-				Type:       cqtypes.ExtensionTypes.UUID,
-				Resolver:   schema.PathResolver("UUID"),
-				PrimaryKey: true,
+				Name:                "uuid",
+				Type:                cqtypes.ExtensionTypes.UUID,
+				Resolver:            schema.PathResolver("UUID"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

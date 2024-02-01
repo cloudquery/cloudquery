@@ -17,7 +17,7 @@ func deliveryChannelStatuses() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DescribeDeliveryChannelStatus.html`,
 		Resolver:    fetchDeliveryChannelStatuses,
-		Transform:   transformers.TransformWithStruct(&types.DeliveryChannelStatus{}, transformers.WithPrimaryKeys("Name")),
+		Transform:   transformers.TransformWithStruct(&types.DeliveryChannelStatus{}, transformers.WithPrimaryKeyComponents("Name")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

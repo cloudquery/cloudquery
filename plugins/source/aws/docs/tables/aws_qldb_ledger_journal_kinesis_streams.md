@@ -4,8 +4,8 @@ This table shows data for Quantum Ledger Database (QLDB) Ledger Journal Kinesis 
 
 https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalKinesisStreamDescription.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 This table depends on [aws_qldb_ledgers](aws_qldb_ledgers.md).
@@ -14,7 +14,7 @@ This table depends on [aws_qldb_ledgers](aws_qldb_ledgers.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
@@ -25,7 +25,7 @@ This table depends on [aws_qldb_ledgers](aws_qldb_ledgers.md).
 |status|`utf8`|
 |stream_id|`utf8`|
 |stream_name|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |creation_time|`timestamp[us, tz=UTC]`|
 |error_cause|`utf8`|
 |exclusive_end_time|`timestamp[us, tz=UTC]`|

@@ -16,15 +16,15 @@ func analyzerFindings() *schema.Table {
 		Name:        "aws_accessanalyzer_analyzer_findings",
 		Description: `https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_FindingSummary.html`,
 		Resolver:    fetchAccessanalyzerAnalyzerFindings,
-		Transform:   transformers.TransformWithStruct(&types.FindingSummary{}, transformers.WithPrimaryKeys("Id")),
+		Transform:   transformers.TransformWithStruct(&types.FindingSummary{}, transformers.WithPrimaryKeyComponents("Id")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "analyzer_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "analyzer_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

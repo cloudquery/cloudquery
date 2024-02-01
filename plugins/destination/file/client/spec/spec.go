@@ -44,17 +44,17 @@ type Spec struct {
 	// Otherwise, for every batch a new file will be created with a different `.<UUID>` suffix.
 	NoRotate bool `json:"no_rotate,omitempty" jsonschema:"default=false"`
 
-	// This parameter controls the maximum amount of items may be grouped together to be written in a single write.
+	// Maximum number of items that may be grouped together to be written in a single write.
 	//
 	// Defaults to `10000` unless `no_rotate` is `true` (will be `0` then).
 	BatchSize *int64 `json:"batch_size" jsonschema:"minimum=1,default=10000"`
 
-	// This parameter controls the maximum size of items that may be grouped together to be written in a single write.
+	// Maximum size of items that may be grouped together to be written in a single write.
 	//
 	// Defaults to `52428800` (50 MiB) unless `no_rotate` is `true` (will be `0` then).
 	BatchSizeBytes *int64 `json:"batch_size_bytes" jsonschema:"minimum=1,default=52428800"`
 
-	// This parameter controls the maximum interval between batch writes.
+	// Maximum interval between batch writes.
 	//
 	// Defaults to `30s` unless `no_rotate` is `true` (will be `0s` then).
 	BatchTimeout *configtype.Duration `json:"batch_timeout" jsonschema:"default=30s"`

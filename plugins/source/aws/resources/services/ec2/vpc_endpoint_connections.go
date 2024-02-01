@@ -18,7 +18,7 @@ func VpcEndpointConnections() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_VpcEndpointConnection.html`,
 		Resolver:    fetchEc2VpcEndpointConnections,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
-		Transform:   transformers.TransformWithStruct(&types.VpcEndpointConnection{}, transformers.WithPrimaryKeys("VpcEndpointConnectionId", "VpcEndpointOwner")),
+		Transform:   transformers.TransformWithStruct(&types.VpcEndpointConnection{}, transformers.WithPrimaryKeyComponents("VpcEndpointConnectionId", "VpcEndpointOwner")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

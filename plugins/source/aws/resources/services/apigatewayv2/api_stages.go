@@ -35,10 +35,10 @@ func apiStages() *schema.Table {
 				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApiStageArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApiStageArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

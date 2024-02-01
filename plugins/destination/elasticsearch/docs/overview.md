@@ -59,11 +59,11 @@ This is the spec used by the Elasticsearch destination plugin.
 
 - `batch_size` (`integer`) (optional) (default: `1000`)
 
-  This parameter controls the maximum amount of items may be grouped together to be written as a single write.
+  Maximum number of items that may be grouped together to be written in a single write.
 
 - `batch_size_bytes` (`integer`) (optional) (default: `5242880` (5 MiB))
 
-  This parameter controls the maximum size of items that may be grouped together to be written as a single write.
+  Maximum size of items that may be grouped together to be written in a single write.
 
 ## Index Template Creation
 

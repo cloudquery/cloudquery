@@ -19,7 +19,7 @@ func EngineVersions() *schema.Table {
 		Resolver:    fetchDocdbEngineVersions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
 		Transform: transformers.TransformWithStruct(&types.DBEngineVersion{},
-			transformers.WithPrimaryKeys("Engine", "EngineVersion")),
+			transformers.WithPrimaryKeyComponents("Engine", "EngineVersion")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

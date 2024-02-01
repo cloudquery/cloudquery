@@ -4,8 +4,8 @@ This table shows data for Amazon Fraud Detector Model Versions.
 
 https://docs.aws.amazon.com/frauddetector/latest/api/API_ModelVersionDetail.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 This table depends on [aws_frauddetector_models](aws_frauddetector_models.md).
@@ -14,11 +14,11 @@ This table depends on [aws_frauddetector_models](aws_frauddetector_models.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |created_time|`utf8`|
 |external_events_detail|`json`|
 |ingested_events_detail|`json`|

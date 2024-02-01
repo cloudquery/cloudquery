@@ -26,10 +26,10 @@ func MlTransforms() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveGlueMlTransformArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveGlueMlTransformArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "schema",

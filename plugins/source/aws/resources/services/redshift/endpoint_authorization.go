@@ -18,16 +18,16 @@ func endpointAuthorization() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_EndpointAuthorization.html`,
 		Resolver:    fetchEndpointAuthorization,
-		Transform:   transformers.TransformWithStruct(&types.EndpointAuthorization{}, transformers.WithPrimaryKeys("ClusterIdentifier", "Grantor", "Grantee")),
+		Transform:   transformers.TransformWithStruct(&types.EndpointAuthorization{}, transformers.WithPrimaryKeyComponents("ClusterIdentifier", "Grantor", "Grantee")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:        "cluster_arn",
-				Type:        arrow.BinaryTypes.String,
-				Resolver:    schema.ParentColumnResolver("arn"),
-				Description: `The Amazon Resource Name (ARN) for the resource.`,
-				PrimaryKey:  true,
+				Name:                "cluster_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				Description:         `The Amazon Resource Name (ARN) for the resource.`,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

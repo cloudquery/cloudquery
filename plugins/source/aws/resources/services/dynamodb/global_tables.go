@@ -28,10 +28,10 @@ This table only contains version 2017.11.29 (Legacy) Global Tables. See aws_dyna
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("GlobalTableArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("GlobalTableArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

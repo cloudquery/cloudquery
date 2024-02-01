@@ -54,15 +54,15 @@ This is the (nested) spec used by the ClickHouse destination plugin.
 
 - `batch_size` (`integer`) (optional) (default: `10000`)
 
-  This parameter controls the maximum amount of items may be grouped together to be written as a single write.
+  Maximum number of items that may be grouped together to be written in a single write.
 
 - `batch_size_bytes` (`integer`) (optional) (default: `5242880` (= 5 MiB))
 
-  This parameter controls the maximum size of items that may be grouped together to be written as a single write.
+  Maximum size of items that may be grouped together to be written in a single write.
 
 - `batch_timeout` (`duration`) (optional) (default: `20s`)
 
-  This parameter controls the maximum interval between batch writes.
+  Maximum interval between batch writes.
 
 #### ClickHouse table engine
 

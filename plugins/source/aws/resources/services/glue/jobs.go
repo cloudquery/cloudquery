@@ -25,10 +25,10 @@ func Jobs() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveGlueJobArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveGlueJobArn,
+				PrimaryKeyComponent: true,
 			},
 			tagsCol(func(cl *client.Client, resource *schema.Resource) string {
 				return jobARN(cl, aws.ToString(resource.Item.(types.Job).Name))

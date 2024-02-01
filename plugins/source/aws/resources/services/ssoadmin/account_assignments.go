@@ -19,7 +19,7 @@ func accountAssignments() *schema.Table {
 		Description: `https://docs.aws.amazon.com/singlesignon/latest/APIReference/API_AccountAssignment.html
 The 'request_account_id' and 'request_region' columns are added to show the account_id and region of where the request was made from.`,
 		Resolver:  fetchSsoadminAccountAssignments,
-		Transform: transformers.TransformWithStruct(&types.AccountAssignment{}, transformers.WithPrimaryKeys("PermissionSetArn", "PrincipalId", "PrincipalType", "AccountId")),
+		Transform: transformers.TransformWithStruct(&types.AccountAssignment{}, transformers.WithPrimaryKeyComponents("PermissionSetArn", "PrincipalId", "PrincipalType", "AccountId")),
 		Columns: schema.ColumnList{
 			{
 				Name:     "request_account_id",
@@ -32,10 +32,10 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:       "instance_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("instance_arn"),
-				PrimaryKey: true,
+				Name:                "instance_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("instance_arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

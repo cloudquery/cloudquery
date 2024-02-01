@@ -26,10 +26,10 @@ func Triggers() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveGlueTriggerArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveGlueTriggerArn,
+				PrimaryKeyComponent: true,
 			},
 			tagsCol(func(cl *client.Client, resource *schema.Resource) string {
 				return triggerARN(cl, aws.ToString(resource.Item.(types.Trigger).Name))

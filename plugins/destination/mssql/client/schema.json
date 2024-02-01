@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/mssql/client/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Duration": {
+      "type": "string",
+      "pattern": "^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$",
+      "title": "CloudQuery configtype.Duration"
+    },
+    "Spec": {
+      "properties": {
+        "connection_string": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Connection string to connect to the database.\nSee [SDK documentation](https://github.com/microsoft/go-mssqldb#connection-parameters-and-dsn) for details."
+        },
+        "auth_mode": {
+          "type": "string",
+          "enum": [
+            "azure",
+            "ms"
+          ],
+          "description": "If you need to authenticate via Azure Active Directory ensure you specify `azure` value.\n See [SDK documentation](https://github.com/microsoft/go-mssqldb#azure-active-directory-authentication) for more information.\n Supported values:\n\n   - `ms` _connect to Microsoft SQL Server instance_\n   - `azure` _connect to Azure SQL Server instance_",
+          "default": "ms"
+        },
+        "schema": {
+          "type": "string",
+          "description": "By default, Microsoft SQL Server destination plugin will use the [default](https://learn.microsoft.com/en-us/sql/relational-databases/security/authentication-access/ownership-and-user-schema-separation?view=sql-server-ver16#the-dbo-schema) schema named `dbo`.",
+          "default": "dbo"
+        },
+        "batch_size": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum number of items that may be grouped together to be written in a single write.",
+          "default": 1000
+        },
+        "batch_size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum size of items that may be grouped together to be written in a single write.",
+          "default": 5242880
+        },
+        "batch_timeout": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Duration",
+              "description": "Timeout for writing a single batch.",
+              "default": "20s"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "connection_string"
+      ]
+    }
+  }
+}

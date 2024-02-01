@@ -4,8 +4,8 @@ This table shows data for Amazon Elastic Compute Cloud (EC2) Transit Gateways.
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_TransitGateway.html
 
-The composite primary key for this table is (**account_id**, **region**, **arn**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**, **arn**).
 ## Relations
 
 The following tables depend on aws_ec2_transit_gateways:
@@ -19,12 +19,12 @@ The following tables depend on aws_ec2_transit_gateways:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
 |id|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |creation_time|`timestamp[us, tz=UTC]`|
 |description|`utf8`|
 |options|`json`|

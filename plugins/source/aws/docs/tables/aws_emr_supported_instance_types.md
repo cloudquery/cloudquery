@@ -4,8 +4,8 @@ This table shows data for Amazon EMR Supported Instance Types.
 
 https://docs.aws.amazon.com/emr/latest/APIReference/API_SupportedInstanceType.html
 
-The composite primary key for this table is (**account_id**, **region**, **release_label**, **type**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**, **release_label**, **type**).
 ## Relations
 
 This table depends on [aws_emr_release_labels](aws_emr_release_labels.md).
@@ -14,11 +14,11 @@ This table depends on [aws_emr_release_labels](aws_emr_release_labels.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
-|release_label (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
+|release_label|`utf8`|
 |architecture|`utf8`|
 |ebs_optimized_available|`bool`|
 |ebs_optimized_by_default|`bool`|
@@ -28,5 +28,5 @@ This table depends on [aws_emr_release_labels](aws_emr_release_labels.md).
 |memory_gb|`float64`|
 |number_of_disks|`int64`|
 |storage_gb|`int64`|
-|type (PK)|`utf8`|
+|type|`utf8`|
 |vcpu|`int64`|
