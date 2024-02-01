@@ -74,9 +74,11 @@
             "auth_mode": {
               "type": "string",
               "enum": [
+                "none",
+                "basic",
                 "aws"
               ],
-              "pattern": "aws",
+              "const": "aws",
               "description": "Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.",
               "default": "none"
             },
@@ -97,9 +99,11 @@
               "auth_mode": {
                 "type": "string",
                 "enum": [
+                  "none",
+                  "basic",
                   "aws"
                 ],
-                "pattern": "aws",
+                "const": "aws",
                 "description": "Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.",
                 "default": "none"
               }

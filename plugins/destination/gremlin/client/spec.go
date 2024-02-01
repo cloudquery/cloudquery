@@ -122,8 +122,7 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 				properties := jsonschema.NewProperties()
 
 				authMode := *sc.Properties.Value("auth_mode")
-				authMode.Enum = []any{authModeAWS}
-				authMode.Pattern = string(authModeAWS)
+				authMode.Const = authModeAWS
 				properties.Set("auth_mode", &authMode)
 
 				awsRegion := *sc.Properties.Value("aws_region")
@@ -140,8 +139,7 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
 					properties := jsonschema.NewProperties()
 					authMode := *sc.Properties.Value("auth_mode")
-					authMode.Enum = []any{authModeAWS}
-					authMode.Pattern = string(authModeAWS)
+					authMode.Const = authModeAWS
 					properties.Set("auth_mode", &authMode)
 					return properties
 				}(),
