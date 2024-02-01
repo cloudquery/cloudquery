@@ -4,7 +4,7 @@ go 1.21.6
 
 require (
 	github.com/apache/arrow/go/v15 v15.0.0
-	github.com/cloudquery/cloudquery/plugins/destination/snowflake v0.0.0-20240201145053-cc90a9a8a4ff
+	github.com/cloudquery/cloudquery/plugins/destination/snowflake v0.32.3
 	github.com/cloudquery/codegen v0.3.12
 	github.com/cloudquery/plugin-sdk/v4 v4.29.1
 	github.com/goccy/go-json v0.10.2
