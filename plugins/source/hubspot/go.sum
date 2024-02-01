@@ -45,8 +45,8 @@ github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d/go.mod h1:8EPpV
 github.com/chenzhuoyu/iasm v0.9.0/go.mod h1:Xjy2NpN3h7aUqeqM+woSuuvxmIe6+DDsiNLIrkAmYog=
 github.com/chenzhuoyu/iasm v0.9.1 h1:tUHQJXo3NhBqw6s33wkGn9SP3bvrWLdlVIJ3hQBL7P0=
 github.com/chenzhuoyu/iasm v0.9.1/go.mod h1:Xjy2NpN3h7aUqeqM+woSuuvxmIe6+DDsiNLIrkAmYog=
-github.com/clarkmcc/go-hubspot v0.0.0-20230906123538-bec7cb6c0126 h1:pjhz1KktkBAqkDsEucv4vbJicT6V5yGbFsStfR3seio=
-github.com/clarkmcc/go-hubspot v0.0.0-20230906123538-bec7cb6c0126/go.mod h1:hedWyunNqr3OeTCQPjIMBjrJq/RImLOkIj37puh6oIE=
+github.com/clarkmcc/go-hubspot v0.0.0-20240126004334-396353fd9cb8 h1:6grGNbTRJmvAGafsWnWEusxf0tUgJ32ux4jNr9d3mzA=
+github.com/clarkmcc/go-hubspot v0.0.0-20240126004334-396353fd9cb8/go.mod h1:hedWyunNqr3OeTCQPjIMBjrJq/RImLOkIj37puh6oIE=
 github.com/cloudquery/cloudquery-api-go v1.7.2 h1:jpQfeZUxekbV7ASN5ONpGIkrtKIZvC/Y8fOj+tQxLm4=
 github.com/cloudquery/cloudquery-api-go v1.7.2/go.mod h1:03fojQg0UpdgqXZ9tzZ5gF5CPad/F0sok66bsX6u4RA=
 github.com/cloudquery/plugin-pb-go v1.16.7 h1:wLx5TFvS6gAvD1dcBZdv5YSskcNCnNpF1JNituka5jM=
