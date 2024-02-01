@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/gremlin/client/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Spec": {
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "auth_mode": {
+                "type": "string",
+                "const": "aws",
+                "description": "Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.",
+                "default": "none"
+              }
+            },
+            "required": [
+              "auth_mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "aws_region": {
+                "type": "string",
+                "minLength": 1,
+                "description": "AWS region to use for AWS IAM authentication. Required when `auth_mode` is `aws`."
+              }
+            },
+            "required": [
+              "aws_region"
+            ]
+          },
+          "title": "auth_mode:aws requires aws_region to be set"
+        },
+        {
+          "if": {
+            "properties": {
+              "auth_mode": {
+                "type": "string",
+                "const": "basic",
+                "description": "Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.",
+                "default": "none"
+              }
+            },
+            "required": [
+              "auth_mode"
+            ]
+          },
+          "then": {
+            "properties": {
+              "username": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Username to connect to the database. Required when `auth_mode` is `basic`."
+              },
+              "password": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Password to connect to the database. Required when `auth_mode` is `basic`."
+              }
+            },
+            "required": [
+              "username",
+              "password"
+            ]
+          },
+          "title": "auth_mode:basic requires username and password to be set"
+        },
+        {
+          "if": {
+            "properties": {
+              "username": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Username to connect to the database. Required when `auth_mode` is `basic`."
+              }
+            },
+            "required": [
+              "username"
+            ]
+          },
+          "then": {
+            "properties": {
+              "password": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Password to connect to the database. Required when `auth_mode` is `basic`."
+              },
+              "auth_mode": {
+                "type": "string",
+                "const": "basic",
+                "description": "Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.",
+                "default": "none"
+              }
+            },
+            "required": [
+              "password",
+              "auth_mode"
+            ]
+          },
+          "title": "username requires password to be set and auth_mode:basic"
+        },
+        {
+          "if": {
+            "properties": {
+              "password": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Password to connect to the database. Required when `auth_mode` is `basic`."
+              }
+            },
+            "required": [
+              "password"
+            ]
+          },
+          "then": {
+            "properties": {
+              "username": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Username to connect to the database. Required when `auth_mode` is `basic`."
+              },
+              "auth_mode": {
+                "type": "string",
+                "const": "basic",
+                "description": "Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.",
+                "default": "none"
+              }
+            },
+            "required": [
+              "username",
+              "auth_mode"
+            ]
+          },
+          "title": "password requires username to be set and auth_mode:basic"
+        }
+      ],
+      "properties": {
+        "endpoint": {
+          "type": "string",
+          "pattern": "^wss?://[^\n]+$",
+          "description": "Endpoint for the database. Supported schemes are `wss://` and `ws://`, the default port is `8182`."
+        },
+        "insecure": {
+          "type": "boolean",
+          "description": "Whether to skip TLS verification. Defaults to `false`. This should be set on a macOS environment when connecting to an AWS Neptune endpoint.",
+          "default": false
+        },
+        "auth_mode": {
+          "type": "string",
+          "enum": [
+            "none",
+            "basic",
+            "aws"
+          ],
+          "description": "Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.",
+          "default": "none"
+        },
+        "username": {
+          "type": "string",
+          "description": "Username to connect to the database. Required when `auth_mode` is `basic`."
+        },
+        "password": {
+          "type": "string",
+          "description": "Password to connect to the database. Required when `auth_mode` is `basic`."
+        },
+        "max_retries": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of retries on `ConcurrentModificationException` before giving up for each batch.\nRetries are exponentially backed off.",
+          "default": 5
+        },
+        "aws_region": {
+          "type": "string",
+          "description": "AWS region to use for AWS IAM authentication. Required when `auth_mode` is `aws`."
+        },
+        "max_concurrent_connections": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum number of concurrent connections to the database. Defaults to the number of CPUs."
+        },
+        "complete_types": {
+          "type": "boolean",
+          "description": "Whether to use all Gremlin types or just a basic subset.\nShould remain `false` for Amazon Neptune compatibility.",
+          "default": false
+        },
+        "batch_size": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of records to batch together before sending to the database.",
+          "default": 200
+        },
+        "batch_size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of bytes (as Arrow buffer size) to batch together before sending to the database.",
+          "default": 4194304
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "endpoint"
+      ]
+    }
+  }
+}
