@@ -210,7 +210,7 @@
           "oneOf": [
             {
               "$ref": "#/$defs/Duration",
-              "description": "Inactivity time before starting a new object.\n\nDefaults to `30s` unless `no_rotate` is `true` (will be `0s` then).",
+              "description": "Maximum interval between batch writes.\n\nDefaults to `30s` unless `no_rotate` is `true` (will be `0s` then).",
               "default": "30s"
             },
             {
