@@ -5,6 +5,23 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.3.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.2.0...cli-v5.3.0) (2024-02-01)
+
+
+### Features
+
+* Support `PrimaryKeyComponents` in documentation ([#16337](https://github.com/cloudquery/cloudquery/issues/16337)) ([fbde53c](https://github.com/cloudquery/cloudquery/commit/fbde53c0102ef61b683686a0f5f7f42bc6ffeb23))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/pkg/browser digest to 5ac0b6a ([#16418](https://github.com/cloudquery/cloudquery/issues/16418)) ([daefd21](https://github.com/cloudquery/cloudquery/commit/daefd21a266ed68163cf2d072836f465a75629e8))
+* **deps:** Update golang.org/x/exp digest to 1b97071 ([#16419](https://github.com/cloudquery/cloudquery/issues/16419)) ([6d77cd1](https://github.com/cloudquery/cloudquery/commit/6d77cd19b6fc648a4ddb12025c22127e960036a4))
+* **deps:** Update google.golang.org/genproto/googleapis/rpc digest to 1f4bbc5 ([#16422](https://github.com/cloudquery/cloudquery/issues/16422)) ([74e98fc](https://github.com/cloudquery/cloudquery/commit/74e98fcbde6c6e11baf98284aef0341c597d4817))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.7.2 ([#16387](https://github.com/cloudquery/cloudquery/issues/16387)) ([a9d1cf0](https://github.com/cloudquery/cloudquery/commit/a9d1cf0d3463e80231a53644fba319f12cd537b4))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.16.7 ([#16384](https://github.com/cloudquery/cloudquery/issues/16384)) ([2782bdb](https://github.com/cloudquery/cloudquery/commit/2782bdb1d5ba0d01718a9c69fbec4c8b780184fc))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.29.0 ([#16395](https://github.com/cloudquery/cloudquery/issues/16395)) ([fb1102e](https://github.com/cloudquery/cloudquery/commit/fb1102eac8af4b3722b82b882187fdf322546513))
+
 ## [5.2.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.1.2...cli-v5.2.0) (2024-01-31)
 
 

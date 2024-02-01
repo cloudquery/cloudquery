@@ -26,7 +26,7 @@ func testFormats() []filetypes.FileSpec {
 	return []filetypes.FileSpec{
 		{
 			Format: filetypes.FormatTypeCSV,
-			FormatSpec: csv.Spec{
+			FormatSpec: csv.CSVSpec{
 				SkipHeader: true,
 				Delimiter:  ",",
 			},
