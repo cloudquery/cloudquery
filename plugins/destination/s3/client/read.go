@@ -4,13 +4,14 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"strings"
+	"time"
 
 	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/google/uuid"
 )
 
 const maxFileSize = 1024 * 1024 * 20
@@ -19,10 +20,11 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 	if !c.spec.NoRotate {
 		return fmt.Errorf("reading is not supported when no_rotate is false. Table: %q", table.Name)
 	}
-	if strings.Contains(c.spec.Path, PathVarUUID) {
+	if c.spec.PathContainsUUID() {
 		return fmt.Errorf("reading is not supported when path contains uuid variable. Table: %q", table.Name)
 	}
-	name := strings.ReplaceAll(c.spec.Path, PathVarTable, table.Name)
+
+	name := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Time{})
 	writerAtBuffer := manager.NewWriteAtBuffer(make([]byte, 0, maxFileSize))
 	_, err := c.downloader.Download(ctx,
 		writerAtBuffer,
