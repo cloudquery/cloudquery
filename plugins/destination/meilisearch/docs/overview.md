@@ -61,8 +61,7 @@ This is the spec used by the Meilisearch destination plugin.
 
   PEM-encoded certificate authorities.
   When set, a certificate pool will be created by appending the certificates to the system pool.
-  See [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example)
-  for how to read this value from a file.
+  See [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example) for how to read this value from a file.
 
 - `batch_size` (`integer`) (optional) (default: `1000`)
 
