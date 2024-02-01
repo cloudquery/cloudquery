@@ -38,7 +38,7 @@ type Spec struct {
 	// Maximum size of items that may be grouped together to be written in a single write.
 	BatchSizeBytes int `json:"batch_size_bytes,omitempty" jsonschema:"minimum=1,default=5242880"`
 
-	// Inactivity time before starting a new batch.
+	// Maximum interval between batch writes.
 	BatchTimeout *configtype.Duration `json:"batch_timeout,omitempty"`
 }
 

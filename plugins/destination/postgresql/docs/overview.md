@@ -60,7 +60,7 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 
 - `batch_timeout` (`duration`) (optional) (default: `60s` (= 60 seconds))
 
-  Inactivity time before starting a new batch.
+  Maximum interval between batch writes.
 
 ### Verbose logging for debug
 

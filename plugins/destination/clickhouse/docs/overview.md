@@ -62,7 +62,7 @@ This is the (nested) spec used by the ClickHouse destination plugin.
 
 - `batch_timeout` (`duration`) (optional) (default: `20s`)
 
-  Inactivity time before starting a new batch.
+  Maximum interval between batch writes.
 
 #### ClickHouse table engine
 

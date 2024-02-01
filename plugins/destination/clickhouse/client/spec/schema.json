@@ -75,7 +75,7 @@
           "oneOf": [
             {
               "$ref": "#/$defs/Duration",
-              "description": "Inactivity time before starting a new batch.",
+              "description": "Maximum interval between batch writes.",
               "default": "20s"
             },
             {

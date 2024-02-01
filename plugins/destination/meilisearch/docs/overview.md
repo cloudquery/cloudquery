@@ -73,7 +73,7 @@ This is the spec used by the Meilisearch destination plugin.
 
 - `batch_timeout` (`duration`) (optional) (default: `20s`)
 
-  Inactivity time before starting a new batch.
+  Maximum interval between batch writes.
 
 ## Underlying library
 
