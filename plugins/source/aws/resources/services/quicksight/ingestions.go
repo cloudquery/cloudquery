@@ -18,16 +18,16 @@ func ingestions() *schema.Table {
 		Name:        tableName,
 		Description: "https://docs.aws.amazon.com/quicksight/latest/APIReference/API_Ingestion.html",
 		Resolver:    fetchQuicksightIngestions,
-		Transform:   transformers.TransformWithStruct(&types.Ingestion{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.Ingestion{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			tagsCol,
 			{
-				Name:       "data_set_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "data_set_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

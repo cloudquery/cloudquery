@@ -4,8 +4,8 @@ This table shows data for AWS Resilience Hub App Versions.
 
 https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_AppVersionSummary.html
 
-The composite primary key for this table is (**app_arn**, **app_version**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**app_arn**, **app_version**).
 ## Relations
 
 This table depends on [aws_resiliencehub_apps](aws_resiliencehub_apps.md).
@@ -18,12 +18,12 @@ The following tables depend on aws_resiliencehub_app_versions:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|app_arn (PK)|`utf8`|
-|app_version (PK)|`utf8`|
+|app_arn|`utf8`|
+|app_version|`utf8`|
 |creation_time|`timestamp[us, tz=UTC]`|
 |identifier|`int64`|
 |version_name|`utf8`|

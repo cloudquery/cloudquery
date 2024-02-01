@@ -23,10 +23,10 @@ func Protections() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ProtectionArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ProtectionArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

@@ -17,7 +17,7 @@ func Profiles() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/signer/latest/api/API_GetSigningProfile.html`,
 		Resolver:            fetchProfiles,
 		PreResourceResolver: getProfile,
-		Transform:           transformers.TransformWithStruct(&signer.GetSigningProfileOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeys("ProfileVersionArn")),
+		Transform:           transformers.TransformWithStruct(&signer.GetSigningProfileOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeyComponents("ProfileVersionArn")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "signer"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

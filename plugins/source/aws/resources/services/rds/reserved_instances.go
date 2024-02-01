@@ -24,10 +24,10 @@ func ReservedInstances() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ReservedDBInstanceArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ReservedDBInstanceArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

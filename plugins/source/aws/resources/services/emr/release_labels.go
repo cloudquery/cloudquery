@@ -20,7 +20,7 @@ func ReleaseLabels() *schema.Table {
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "elasticmapreduce"),
 		Transform: transformers.TransformWithStruct(
 			&emr.DescribeReleaseLabelOutput{},
-			transformers.WithPrimaryKeys("ReleaseLabel"),
+			transformers.WithPrimaryKeyComponents("ReleaseLabel"),
 			transformers.WithSkipFields("ResultMetadata", "NextToken"),
 		),
 		Columns: []schema.Column{

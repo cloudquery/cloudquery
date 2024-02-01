@@ -36,16 +36,16 @@ func CredentialReports() *schema.Table {
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("Arn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("Arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:       "user_creation_time",
-				Type:       arrow.FixedWidthTypes.Timestamp_us,
-				Resolver:   timestampPathResolver("UserCreationTime"),
-				PrimaryKey: true,
+				Name:                "user_creation_time",
+				Type:                arrow.FixedWidthTypes.Timestamp_us,
+				Resolver:            timestampPathResolver("UserCreationTime"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "password_last_changed",

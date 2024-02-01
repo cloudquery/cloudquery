@@ -18,16 +18,16 @@ func repositoryImages() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonECR/latest/APIReference/API_ImageDetail.html`,
 		Resolver:    fetchEcrRepositoryImages,
 		Transform: transformers.TransformWithStruct(&types.ImageDetail{},
-			transformers.WithPrimaryKeys("ImageDigest", "RegistryId"),
+			transformers.WithPrimaryKeyComponents("ImageDigest", "RegistryId"),
 		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "repository_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "repository_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 

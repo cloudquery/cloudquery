@@ -4,8 +4,8 @@ This table shows data for Amazon API Gateway Rest APIs.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_RestApi.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_apigateway_rest_apis:
@@ -23,11 +23,11 @@ The following tables depend on aws_apigateway_rest_apis:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |api_key_source|`utf8`|
 |binary_media_types|`list<item: utf8, nullable>`|
 |created_date|`timestamp[us, tz=UTC]`|

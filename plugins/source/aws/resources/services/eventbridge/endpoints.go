@@ -23,10 +23,10 @@ func Endpoints() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("Arn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("Arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

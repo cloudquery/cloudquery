@@ -17,7 +17,7 @@ func functionConcurrencyConfigs() *schema.Table {
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_ProvisionedConcurrencyConfigListItem.html`,
 		Resolver:    fetchLambdaFunctionConcurrencyConfigs,
 		Transform: transformers.TransformWithStruct(&types.ProvisionedConcurrencyConfigListItem{},
-			transformers.WithPrimaryKeys("FunctionArn"), // FunctionArn here can also be a version
+			transformers.WithPrimaryKeyComponents("FunctionArn"), // FunctionArn here can also be a version
 		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

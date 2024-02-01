@@ -24,9 +24,9 @@ func ContainerServices() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

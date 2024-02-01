@@ -25,9 +25,9 @@ func Domains() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:       "domain_name",
-				Type:       arrow.BinaryTypes.String,
-				PrimaryKey: true,
+				Name:                "domain_name",
+				Type:                arrow.BinaryTypes.String,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:        "tags",

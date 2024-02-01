@@ -23,10 +23,10 @@ func GlobalClusters() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("GlobalClusterArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("GlobalClusterArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

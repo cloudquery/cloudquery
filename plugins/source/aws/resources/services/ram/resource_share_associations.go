@@ -17,7 +17,7 @@ func ResourceShareAssociations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/ram/latest/APIReference/API_ResourceShareAssociation.html`,
 		Resolver:    fetchRamResourceShareAssociations,
-		Transform:   transformers.TransformWithStruct(&types.ResourceShareAssociation{}, transformers.WithPrimaryKeys("AssociatedEntity", "ResourceShareArn")),
+		Transform:   transformers.TransformWithStruct(&types.ResourceShareAssociation{}, transformers.WithPrimaryKeyComponents("AssociatedEntity", "ResourceShareArn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ram"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

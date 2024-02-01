@@ -20,10 +20,10 @@ func imageAttributesLaunchPermissions() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.LaunchPermission{}),
 		Columns: []schema.Column{
 			{
-				Name:       "image_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "image_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

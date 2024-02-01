@@ -32,10 +32,10 @@ func Stacks() *schema.Table {
 				Resolver: schema.PathResolver("StackId"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("StackId"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("StackId"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

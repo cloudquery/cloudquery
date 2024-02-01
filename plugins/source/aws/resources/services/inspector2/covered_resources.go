@@ -19,7 +19,7 @@ func CoveredResources() *schema.Table {
 
 The ` + "`request_account_id` and `request_region` columns are added to show from where the request was made.",
 		Resolver:  fetchCoveredResources,
-		Transform: transformers.TransformWithStruct(&types.CoveredResource{}, transformers.WithPrimaryKeys("AccountId", "ResourceId")),
+		Transform: transformers.TransformWithStruct(&types.CoveredResource{}, transformers.WithPrimaryKeyComponents("AccountId", "ResourceId")),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, client.AWSServiceInspector2.String()),
 		Columns: schema.ColumnList{
 			client.RequestAccountIDColumn(true),

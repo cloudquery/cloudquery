@@ -23,10 +23,10 @@ func Activities() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ActivityArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ActivityArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

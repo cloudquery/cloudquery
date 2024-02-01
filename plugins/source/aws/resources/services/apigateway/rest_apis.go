@@ -26,10 +26,10 @@ func RestApis() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApigatewayRestAPIArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApigatewayRestAPIArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 		Relations: []*schema.Table{

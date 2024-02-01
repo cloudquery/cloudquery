@@ -4,8 +4,8 @@ This table shows data for Athena Work Group Prepared Statements.
 
 https://docs.aws.amazon.com/athena/latest/APIReference/API_PreparedStatement.html
 
-The composite primary key for this table is (**work_group_arn**, **statement_name**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**work_group_arn**, **statement_name**).
 ## Relations
 
 This table depends on [aws_athena_work_groups](aws_athena_work_groups.md).
@@ -14,13 +14,13 @@ This table depends on [aws_athena_work_groups](aws_athena_work_groups.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|work_group_arn (PK)|`utf8`|
+|work_group_arn|`utf8`|
 |description|`utf8`|
 |last_modified_time|`timestamp[us, tz=UTC]`|
 |query_statement|`utf8`|
-|statement_name (PK)|`utf8`|
+|statement_name|`utf8`|
 |work_group_name|`utf8`|

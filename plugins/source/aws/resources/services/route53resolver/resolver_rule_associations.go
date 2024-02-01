@@ -16,7 +16,7 @@ func ResolverRuleAssociations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_ResolverRuleAssociation.html`,
 		Resolver:    fetchResolverRuleAssociations,
-		Transform:   transformers.TransformWithStruct(&types.ResolverRuleAssociation{}, transformers.WithPrimaryKeys("Id")),
+		Transform:   transformers.TransformWithStruct(&types.ResolverRuleAssociation{}, transformers.WithPrimaryKeyComponents("Id")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53resolver"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

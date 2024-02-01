@@ -19,16 +19,16 @@ func ManagedRuleGroups() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/waf/latest/APIReference/API_ManagedRuleGroupSummary.html`,
 		Resolver:    fetchWafv2ManagedRuleGroups,
-		Transform:   transformers.TransformWithStruct(&types.ManagedRuleGroupSummary{}, transformers.WithPrimaryKeys("Name", "VendorName")),
+		Transform:   transformers.TransformWithStruct(&types.ManagedRuleGroupSummary{}, transformers.WithPrimaryKeyComponents("Name", "VendorName")),
 		Multiplex:   client.ServiceAccountRegionScopeMultiplexer(tableName, "waf-regional"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "scope",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveWAFScope,
-				PrimaryKey: true,
+				Name:                "scope",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            client.ResolveWAFScope,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "properties",

@@ -4,8 +4,8 @@ This table shows data for AWS Key Management Service (AWS KMS) Keys.
 
 https://docs.aws.amazon.com/kms/latest/APIReference/API_KeyMetadata.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_kms_keys:
@@ -16,13 +16,13 @@ The following tables depend on aws_kms_keys:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
 |rotation_enabled|`bool`|
 |tags|`json`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |replica_keys|`json`|
 |key_id|`utf8`|
 |aws_account_id|`utf8`|

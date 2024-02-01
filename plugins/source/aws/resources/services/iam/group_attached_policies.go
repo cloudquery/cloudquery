@@ -17,14 +17,14 @@ func groupAttachedPolicies() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/IAM/latest/APIReference/API_AttachedPolicy.html`,
 		Resolver:    fetchIamGroupAttachedPolicies,
-		Transform:   transformers.TransformWithStruct(&types.AttachedPolicy{}, transformers.WithPrimaryKeys("PolicyArn")),
+		Transform:   transformers.TransformWithStruct(&types.AttachedPolicy{}, transformers.WithPrimaryKeyComponents("PolicyArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:       "group_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "group_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

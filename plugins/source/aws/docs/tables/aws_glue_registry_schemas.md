@@ -4,8 +4,8 @@ This table shows data for Glue Registry Schemas.
 
 https://docs.aws.amazon.com/glue/latest/webapi/API_GetSchema.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 This table depends on [aws_glue_registries](aws_glue_registries.md).
@@ -17,11 +17,11 @@ The following tables depend on aws_glue_registry_schemas:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |tags|`json`|
 |compatibility|`utf8`|
 |created_time|`utf8`|

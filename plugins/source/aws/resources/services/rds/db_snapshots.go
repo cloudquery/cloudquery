@@ -25,10 +25,10 @@ func DbSnapshots() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("DBSnapshotArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("DBSnapshotArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

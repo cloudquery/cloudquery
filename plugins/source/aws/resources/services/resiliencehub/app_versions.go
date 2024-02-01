@@ -16,7 +16,7 @@ func appVersions() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_AppVersionSummary.html`,
 		Resolver:    fetchAppVersions,
-		Transform:   transformers.TransformWithStruct(&types.AppVersionSummary{}, transformers.WithPrimaryKeys("AppVersion")),
+		Transform:   transformers.TransformWithStruct(&types.AppVersionSummary{}, transformers.WithPrimaryKeyComponents("AppVersion")),
 		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARNTop},
 		Relations:   []*schema.Table{appVersionResources(), appVersionResourceMappings()},
 	}

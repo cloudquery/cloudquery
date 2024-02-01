@@ -27,10 +27,10 @@ func Functions() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("Configuration.FunctionArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("Configuration.FunctionArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name: "policy_revision_id",

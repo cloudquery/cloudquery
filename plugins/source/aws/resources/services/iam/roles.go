@@ -20,7 +20,7 @@ func Roles() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/IAM/latest/APIReference/API_Role.html`,
 		Resolver:            fetchIamRoles,
 		PreResourceResolver: getRole,
-		Transform:           transformers.TransformWithStruct(&types.Role{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:           transformers.TransformWithStruct(&types.Role{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "iam"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

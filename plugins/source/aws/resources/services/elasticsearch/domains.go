@@ -36,10 +36,10 @@ func Domains() *schema.Table {
 				Resolver: resolveDomainTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ARN"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ARN"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

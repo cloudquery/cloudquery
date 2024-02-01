@@ -16,7 +16,7 @@ func FirewallConfigs() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_FirewallConfig.html`,
 		Resolver:    fetchFirewallConfigs,
-		Transform:   transformers.TransformWithStruct(&types.FirewallConfig{}, transformers.WithPrimaryKeys("Id")),
+		Transform:   transformers.TransformWithStruct(&types.FirewallConfig{}, transformers.WithPrimaryKeyComponents("Id")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53resolver"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

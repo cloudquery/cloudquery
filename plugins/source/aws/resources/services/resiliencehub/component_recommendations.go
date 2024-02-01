@@ -16,7 +16,7 @@ func appComponentRecommendations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/resilience-hub/latest/APIReference/API_ComponentRecommendation.html`,
 		Resolver:    fetchComponentRecommendations,
-		Transform:   transformers.TransformWithStruct(&types.ComponentRecommendation{}, transformers.WithPrimaryKeys("AppComponentName")),
+		Transform:   transformers.TransformWithStruct(&types.ComponentRecommendation{}, transformers.WithPrimaryKeyComponents("AppComponentName")),
 		Columns:     []schema.Column{client.DefaultAccountIDColumn(false), client.DefaultRegionColumn(false), appARN, assessmentARN},
 	}
 }

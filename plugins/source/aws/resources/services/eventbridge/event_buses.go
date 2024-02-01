@@ -30,9 +30,9 @@ func EventBuses() *schema.Table {
 				Resolver: resolveEventBusTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				PrimaryKeyComponent: true,
 			},
 		},
 

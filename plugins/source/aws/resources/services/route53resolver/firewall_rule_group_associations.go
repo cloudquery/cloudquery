@@ -16,7 +16,7 @@ func FirewallRuleGroupAssociations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_FirewallRuleGroupAssociation.html`,
 		Resolver:    fetchFirewallRuleGroupAssociations,
-		Transform:   transformers.TransformWithStruct(&types.FirewallRuleGroupAssociation{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.FirewallRuleGroupAssociation{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53resolver"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

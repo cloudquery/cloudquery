@@ -18,7 +18,7 @@ func RetentionConfigurations() *schema.Table {
 		Resolver:    fetchRetentionConfigurations,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
 		Transform: transformers.TransformWithStruct(&types.RetentionConfiguration{},
-			transformers.WithPrimaryKeys("Name")),
+			transformers.WithPrimaryKeyComponents("Name")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

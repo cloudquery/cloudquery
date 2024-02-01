@@ -24,10 +24,10 @@ func EngineVersions() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "_engine_version_hash",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveObjectHash,
-				PrimaryKey: true,
+				Name:                "_engine_version_hash",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            client.ResolveObjectHash,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tag_list",

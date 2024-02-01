@@ -35,10 +35,10 @@ func apiDeployments() *schema.Table {
 				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApiDeploymentArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApiDeploymentArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

@@ -25,10 +25,10 @@ func Databases() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveGlueDatabaseArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveGlueDatabaseArn,
+				PrimaryKeyComponent: true,
 			},
 			tagsCol(func(cl *client.Client, resource *schema.Resource) string {
 				return databaseARN(cl, aws.ToString(resource.Item.(types.Database).Name))

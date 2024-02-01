@@ -23,10 +23,10 @@ func ProtectionGroups() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ProtectionGroupArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ProtectionGroupArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

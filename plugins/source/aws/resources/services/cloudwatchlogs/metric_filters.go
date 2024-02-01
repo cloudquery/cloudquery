@@ -20,15 +20,15 @@ func MetricFilters() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_MetricFilter.html`,
 		Resolver:    fetchCloudwatchlogsMetricFilters,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "logs"),
-		Transform:   transformers.TransformWithStruct(&types.MetricFilter{}, transformers.WithPrimaryKeys("FilterName")),
+		Transform:   transformers.TransformWithStruct(&types.MetricFilter{}, transformers.WithPrimaryKeyComponents("FilterName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "log_group_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveMetricFilterLogGroupArn,
-				PrimaryKey: true,
+				Name:                "log_group_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveMetricFilterLogGroupArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

@@ -28,10 +28,10 @@ func Instances() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveInstanceArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveInstanceArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "state_transition_reason_time",

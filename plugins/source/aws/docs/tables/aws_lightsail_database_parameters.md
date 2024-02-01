@@ -4,8 +4,8 @@ This table shows data for Lightsail Database Parameters.
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDatabaseParameter.html
 
-The composite primary key for this table is (**database_arn**, **parameter_name**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**database_arn**, **parameter_name**).
 ## Relations
 
 This table depends on [aws_lightsail_databases](aws_lightsail_databases.md).
@@ -14,16 +14,16 @@ This table depends on [aws_lightsail_databases](aws_lightsail_databases.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|database_arn (PK)|`utf8`|
+|database_arn|`utf8`|
 |allowed_values|`utf8`|
 |apply_method|`utf8`|
 |apply_type|`utf8`|
 |data_type|`utf8`|
 |description|`utf8`|
 |is_modifiable|`bool`|
-|parameter_name (PK)|`utf8`|
+|parameter_name|`utf8`|
 |parameter_value|`utf8`|

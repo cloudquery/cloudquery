@@ -4,8 +4,8 @@ This table shows data for Support Cases.
 
 https://docs.aws.amazon.com/awssupport/latest/APIReference/API_DescribeCases.html
 
-The composite primary key for this table is (**account_id**, **region**, **case_id**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**, **case_id**).
 ## Relations
 
 The following tables depend on aws_support_cases:
@@ -15,11 +15,11 @@ The following tables depend on aws_support_cases:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
-|case_id (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
+|case_id|`utf8`|
 |category_code|`utf8`|
 |cc_email_addresses|`list<item: utf8, nullable>`|
 |display_id|`utf8`|

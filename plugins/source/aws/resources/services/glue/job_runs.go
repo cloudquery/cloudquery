@@ -17,15 +17,15 @@ func jobRuns() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_JobRun.html`,
 		Resolver:    fetchGlueJobRuns,
-		Transform:   transformers.TransformWithStruct(&types.JobRun{}, transformers.WithPrimaryKeys("Id")),
+		Transform:   transformers.TransformWithStruct(&types.JobRun{}, transformers.WithPrimaryKeyComponents("Id")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "job_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "job_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

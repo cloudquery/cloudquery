@@ -18,7 +18,7 @@ func Graphs() *schema.Table {
 		Description: `https://docs.aws.amazon.com/detective/latest/APIReference/API_ListGraphs.html`,
 		Resolver:    fetchGraphs,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "api.detective"),
-		Transform:   transformers.TransformWithStruct(&types.Graph{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.Graph{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

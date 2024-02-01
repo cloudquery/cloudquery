@@ -18,15 +18,15 @@ func documentVersions() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/systems-manager/latest/APIReference/API_DocumentVersionInfo.html`,
 		Resolver:    fetchSsmDocumentVersions,
-		Transform:   transformers.TransformWithStruct(&types.DocumentVersionInfo{}, transformers.WithPrimaryKeys("DocumentVersion")),
+		Transform:   transformers.TransformWithStruct(&types.DocumentVersionInfo{}, transformers.WithPrimaryKeyComponents("DocumentVersion")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "document_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "document_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

@@ -25,10 +25,10 @@ func DbParameterGroups() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("DBParameterGroupArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("DBParameterGroupArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

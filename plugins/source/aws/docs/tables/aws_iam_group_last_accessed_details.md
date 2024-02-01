@@ -4,8 +4,8 @@ This table shows data for IAM Group Last Accessed Details.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_ServiceLastAccessed.html
 
-The composite primary key for this table is (**account_id**, **group_arn**, **service_namespace**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **group_arn**, **service_namespace**).
 ## Relations
 
 This table depends on [aws_iam_groups](aws_iam_groups.md).
@@ -14,13 +14,13 @@ This table depends on [aws_iam_groups](aws_iam_groups.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|group_arn (PK)|`utf8`|
+|account_id|`utf8`|
+|group_arn|`utf8`|
 |job_id|`utf8`|
 |service_name|`utf8`|
-|service_namespace (PK)|`utf8`|
+|service_namespace|`utf8`|
 |last_authenticated|`timestamp[us, tz=UTC]`|
 |last_authenticated_entity|`utf8`|
 |last_authenticated_region|`utf8`|

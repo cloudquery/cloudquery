@@ -23,10 +23,10 @@ func Events() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "_event_hash",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveObjectHash,
-				PrimaryKey: true,
+				Name:                "_event_hash",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            client.ResolveObjectHash,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

@@ -24,10 +24,10 @@ func EbsVolumesStatuses() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "volume_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveEbsVolumeStatusArn,
-				PrimaryKey: true,
+				Name:                "volume_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveEbsVolumeStatusArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

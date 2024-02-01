@@ -26,10 +26,10 @@ func RuleGroups() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveWafRuleGroupArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveWafRuleGroupArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

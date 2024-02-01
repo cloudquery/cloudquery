@@ -22,10 +22,10 @@ func Clusters() *schema.Table {
 		Columns: []schema.Column{
 			client.RequestAccountIDColumn(true),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ClusterArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ClusterArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}
