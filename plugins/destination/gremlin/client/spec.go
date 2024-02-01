@@ -111,9 +111,6 @@ func (s *Spec) Validate() error {
 }
 
 func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
-	authMode := sc.Properties.Value("auth_mode")
-	authMode.Enum = []any{authModeNone, authModeBasic, authModeAWS}
-
 	sc.OneOf = []*jsonschema.Schema{
 		{
 			// if auth_mode is aws, require aws_region to be set
@@ -211,4 +208,9 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 			},
 		},
 	}
+}
+
+func (authMode) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Type = "string"
+	sc.Enum = []any{authModeNone, authModeBasic, authModeAWS}
 }

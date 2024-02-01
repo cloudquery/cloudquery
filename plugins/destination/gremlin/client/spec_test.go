@@ -31,6 +31,15 @@ func TestJSONSchema(t *testing.T) {
 			Err:  true,
 		},
 		{
+			Name: "spec with endpoint, none auth_mode",
+			Spec: `{"endpoint": "ws://localhost:8182", "auth_mode": "none"}`,
+		},
+		{
+			Name: "spec with endpoint, invalid auth_mode",
+			Spec: `{"endpoint": "ws://localhost:8182", "auth_mode": "invalid"}`,
+			Err:  true,
+		},
+		{
 			Name: "spec with endpoint, auth_mode aws, username",
 			Spec: `{"endpoint": "ws://localhost:8182", "auth_mode": "aws", "aws_region":"reg", "username": "abc"}`,
 			Err:  true,
