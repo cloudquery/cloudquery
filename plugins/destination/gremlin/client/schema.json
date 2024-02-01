@@ -30,7 +30,8 @@
             "required": [
               "aws_region"
             ]
-          }
+          },
+          "title": "auth_mode:aws requires aws_region to be set"
         },
         {
           "if": {
@@ -63,7 +64,8 @@
               "username",
               "password"
             ]
-          }
+          },
+          "title": "auth_mode:basic requires username and password to be set"
         },
         {
           "if": {
@@ -96,7 +98,8 @@
               "password",
               "auth_mode"
             ]
-          }
+          },
+          "title": "username requires password to be set and auth_mode:basic"
         },
         {
           "if": {
@@ -129,7 +132,8 @@
               "username",
               "auth_mode"
             ]
-          }
+          },
+          "title": "password requires username to be set and auth_mode:basic"
         }
       ],
       "properties": {

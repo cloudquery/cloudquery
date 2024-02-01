@@ -126,7 +126,7 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 
 	sc.AllOf = append(sc.AllOf, []*jsonschema.Schema{
 		{
-			// if auth_mode is aws, require aws_region to be set
+			Title: "auth_mode:aws requires aws_region to be set",
 			If: &jsonschema.Schema{
 				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
 					properties := jsonschema.NewProperties()
@@ -147,7 +147,7 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 		},
 
 		{
-			// if auth_mode is basic, require username and password to be set
+			Title: "auth_mode:basic requires username and password to be set",
 			If: &jsonschema.Schema{
 				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
 					properties := jsonschema.NewProperties()
@@ -168,7 +168,7 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 			},
 		},
 		{
-			// if username is set, require password to be set and auth_mode to be basic
+			Title: "username requires password to be set and auth_mode:basic",
 			If: &jsonschema.Schema{
 				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
 					properties := jsonschema.NewProperties()
@@ -189,7 +189,7 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 			},
 		},
 		{
-			// if password is set, require username to be set and auth_mode to be basic
+			Title: "password requires username to be set and auth_mode:basic",
 			If: &jsonschema.Schema{
 				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
 					properties := jsonschema.NewProperties()
