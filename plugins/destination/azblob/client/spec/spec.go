@@ -34,7 +34,7 @@ type Spec struct {
 	// Defaults to `52428800` (50 MiB) unless `no_rotate` is `true` (will be `0` then).
 	BatchSizeBytes *int64 `json:"batch_size_bytes" jsonschema:"minimum=1,default=52428800"`
 
-	// Inactivity time before starting a new batch.
+	// Inactivity time before starting a new object.
 	//
 	// Defaults to `30s` unless `no_rotate` is `true` (will be `0s` then).
 	BatchTimeout *configtype.Duration `json:"batch_timeout" jsonschema:"default=30s"`
