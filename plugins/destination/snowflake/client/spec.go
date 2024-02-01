@@ -3,6 +3,7 @@ package client
 import (
 	"crypto/rsa"
 	"crypto/x509"
+	_ "embed"
 	"encoding/base64"
 	"encoding/pem"
 	"errors"
@@ -18,13 +19,31 @@ const (
 )
 
 type Spec struct {
-	ConnectionString   string `json:"connection_string,omitempty"`
-	PrivateKey         string `json:"private_key,omitempty"`
-	BatchSize          int    `json:"batch_size,omitempty"`
-	BatchSizeBytes     int    `json:"batch_size_bytes,omitempty"`
-	MigrateConcurrency int    `json:"migrate_concurrency,omitempty"`
-	LeaveStageFiles    bool   `json:"leave_stage_files,omitempty"`
+	// Snowflake `connection_string`.
+	ConnectionString string `json:"connection_string" jsonschema:"required,minLength=1"`
+
+	// A PEM-encoded private key for connecting to snowflake. Equivalent to adding
+	//  `authenticator=snowflake_jwt&privateKey=...` to the `connection_string` but
+	//  parses, validates, and correctly encodes the key for use with snowflake.
+	PrivateKey string `json:"private_key,omitempty"`
+
+	// Number of records to batch together before sending to the database.
+	BatchSize int `json:"batch_size,omitempty" jsonschema:"minimum=1,default=1000"`
+
+	// Number of bytes (as Arrow buffer size) to batch together before sending to the database.
+	BatchSizeBytes int `json:"batch_size_bytes,omitempty" jsonschema:"minimum=1,default=4194304"`
+
+	// By default, tables are migrated one at a time.
+	// This option allows you to migrate multiple tables concurrently.
+	// This can be useful if you have a lot of tables to migrate and want to speed up the process.
+	MigrateConcurrency int `json:"migrate_concurrency,omitempty" jsonschema:"minimum=1,default=1"`
+
+	// If set to true, intermediary files used to load data to the Snowflake stage are left in the temp directory. This can be useful for debugging purposes.
+	LeaveStageFiles bool `json:"leave_stage_files,omitempty" jsonschema:"default=false"`
 }
+
+//go:embed schema.json
+var JSONSchema string
 
 func (s *Spec) SetDefaults() {
 	// stub for any future defaults
