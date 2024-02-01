@@ -35,10 +35,10 @@ func apiIntegrationResponses() *schema.Table {
 				Resolver: schema.ParentColumnResolver("integration_id"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApiIntegrationResponseArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApiIntegrationResponseArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

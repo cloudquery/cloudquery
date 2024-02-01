@@ -19,7 +19,7 @@ func Hubs() *schema.Table {
 		Transform: transformers.TransformWithStruct(&securityhub.DescribeHubOutput{},
 			transformers.WithTypeTransformer(client.TimestampTypeTransformer),
 			transformers.WithResolverTransformer(client.TimestampResolverTransformer),
-			transformers.WithPrimaryKeys("HubArn"),
+			transformers.WithPrimaryKeyComponents("HubArn"),
 			transformers.WithSkipFields("ResultMetadata"),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "securityhub"),

@@ -24,10 +24,10 @@ func Gateways() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.DirectConnectGateway{}),
 		Columns: []schema.Column{
 			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
+				Name:                "request_account_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            client.ResolveAWSAccount,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "request_region",
@@ -35,10 +35,10 @@ func Gateways() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveGatewayARN,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveGatewayARN,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "id",

@@ -4,17 +4,18 @@ This table shows data for Backup Jobs.
 
 https://docs.aws.amazon.com/aws-backup/latest/devguide/API_BackupJob.html
 
-The composite primary key for this table is (**account_id**, **region**, **backup_job_id**).
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**, **backup_job_id**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
-|backup_job_id (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
+|backup_job_id|`utf8`|
 |backup_options|`json`|
 |backup_size_in_bytes|`int64`|
 |backup_type|`utf8`|

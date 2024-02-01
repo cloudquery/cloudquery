@@ -17,7 +17,7 @@ func instances() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/cloud-map/latest/api/API_Instance.html`,
 		Resolver:            fetchInstances,
 		PreResourceResolver: getInstance,
-		Transform:           transformers.TransformWithStruct(&types.Instance{}, transformers.WithPrimaryKeys("Id")),
+		Transform:           transformers.TransformWithStruct(&types.Instance{}, transformers.WithPrimaryKeyComponents("Id")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

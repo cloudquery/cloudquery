@@ -17,7 +17,7 @@ func Analyzers() *schema.Table {
 		Description: `https://docs.aws.amazon.com/access-analyzer/latest/APIReference/API_AnalyzerSummary.html`,
 		Resolver:    fetchAccessanalyzerAnalyzers,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "access-analyzer"),
-		Transform:   transformers.TransformWithStruct(&types.AnalyzerSummary{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.AnalyzerSummary{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

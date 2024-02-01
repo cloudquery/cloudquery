@@ -28,10 +28,10 @@ func clusterSnapshots() *schema.Table {
 				Resolver: resolveDBClusterSnapshotTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("DBClusterSnapshotArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("DBClusterSnapshotArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "attributes",

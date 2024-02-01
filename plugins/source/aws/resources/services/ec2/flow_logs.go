@@ -26,10 +26,10 @@ func FlowLogs() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveFlowLogArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveFlowLogArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

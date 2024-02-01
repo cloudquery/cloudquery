@@ -4,8 +4,8 @@ This table shows data for Amazon EventBridge Event Bus Targets.
 
 https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_Target.html
 
-The composite primary key for this table is (**rule_arn**, **event_bus_arn**, **id**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**rule_arn**, **event_bus_arn**, **id**).
 ## Relations
 
 This table depends on [aws_eventbridge_event_bus_rules](aws_eventbridge_event_bus_rules.md).
@@ -14,14 +14,14 @@ This table depends on [aws_eventbridge_event_bus_rules](aws_eventbridge_event_bu
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|rule_arn (PK)|`utf8`|
-|event_bus_arn (PK)|`utf8`|
+|rule_arn|`utf8`|
+|event_bus_arn|`utf8`|
 |arn|`utf8`|
-|id (PK)|`utf8`|
+|id|`utf8`|
 |batch_parameters|`json`|
 |dead_letter_config|`json`|
 |ecs_parameters|`json`|

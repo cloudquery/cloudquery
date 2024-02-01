@@ -4,8 +4,8 @@ This table shows data for Auto Scaling Groups.
 
 https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_AutoScalingGroup.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_autoscaling_groups:
@@ -16,13 +16,13 @@ The following tables depend on aws_autoscaling_groups:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
 |load_balancers|`json`|
 |load_balancer_target_groups|`json`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |tags|`json`|
 |tags_raw|`json`|
 |auto_scaling_group_name|`utf8`|

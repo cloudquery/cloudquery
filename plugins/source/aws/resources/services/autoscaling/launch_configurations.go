@@ -23,10 +23,10 @@ func LaunchConfigurations() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("LaunchConfigurationARN"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("LaunchConfigurationARN"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

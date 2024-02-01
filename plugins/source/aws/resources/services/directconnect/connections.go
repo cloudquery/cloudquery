@@ -22,10 +22,10 @@ func Connections() *schema.Table {
 		Transform:   transformers.TransformWithStruct(&types.Connection{}),
 		Columns: []schema.Column{
 			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
+				Name:                "request_account_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            client.ResolveAWSAccount,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "request_region",
@@ -33,16 +33,16 @@ func Connections() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveConnectionARN(),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveConnectionARN(),
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:       "id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ConnectionId"),
-				PrimaryKey: true,
+				Name:                "id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ConnectionId"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

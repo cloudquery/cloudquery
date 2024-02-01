@@ -18,7 +18,7 @@ func Assessments() *schema.Table {
 		Resolver:            fetchAssessments,
 		PreResourceResolver: getAssessment,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "auditmanager"),
-		Transform:           transformers.TransformWithStruct(&types.Assessment{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:           transformers.TransformWithStruct(&types.Assessment{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

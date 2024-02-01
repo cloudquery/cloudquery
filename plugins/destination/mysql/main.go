@@ -22,6 +22,7 @@ func main() {
 			client.New,
 			plugin.WithKind(internalPlugin.Kind),
 			plugin.WithTeam(internalPlugin.Team),
+			plugin.WithJSONSchema(client.JSONSchema),
 		),
 		serve.WithDestinationV0V1Server(),
 		serve.WithPluginSentryDSN(sentryDSN),

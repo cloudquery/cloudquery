@@ -17,7 +17,7 @@ func functionEventInvokeConfigs() *schema.Table {
 		Description: `https://docs.aws.amazon.com/lambda/latest/dg/API_FunctionEventInvokeConfig.html`,
 		Resolver:    fetchLambdaFunctionEventInvokeConfigs,
 		Transform: transformers.TransformWithStruct(&types.FunctionEventInvokeConfig{},
-			transformers.WithPrimaryKeys("FunctionArn"), // FunctionArn here can also be a version
+			transformers.WithPrimaryKeyComponents("FunctionArn"), // FunctionArn here can also be a version
 		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

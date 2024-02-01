@@ -18,7 +18,7 @@ func EventCategories() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_EventCategoriesMap.html`,
 		Resolver:    fetchDocdbEventCategories,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "docdb"),
-		Transform:   transformers.TransformWithStruct(&types.EventCategoriesMap{}, transformers.WithPrimaryKeys("SourceType")),
+		Transform:   transformers.TransformWithStruct(&types.EventCategoriesMap{}, transformers.WithPrimaryKeyComponents("SourceType")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

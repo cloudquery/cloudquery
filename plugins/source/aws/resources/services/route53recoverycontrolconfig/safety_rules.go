@@ -21,10 +21,10 @@ func safetyRules() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveRuleARN,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveRuleARN,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

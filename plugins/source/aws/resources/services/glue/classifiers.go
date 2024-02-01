@@ -23,10 +23,10 @@ func Classifiers() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "name",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveGlueClassifierName,
-				PrimaryKey: true,
+				Name:                "name",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveGlueClassifierName,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

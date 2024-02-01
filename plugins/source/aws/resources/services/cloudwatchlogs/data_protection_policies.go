@@ -22,11 +22,11 @@ func dataProtectionPolicy() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:        "log_group_arn",
-				Description: "The Amazon Resource Name (ARN) of the log group.",
-				Type:        arrow.BinaryTypes.String,
-				Resolver:    schema.ParentColumnResolver("arn"),
-				PrimaryKey:  true,
+				Name:                "log_group_arn",
+				Description:         "The Amazon Resource Name (ARN) of the log group.",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

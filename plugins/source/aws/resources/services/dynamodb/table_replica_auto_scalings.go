@@ -18,15 +18,15 @@ func tableReplicaAutoScalings() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_ReplicaAutoScalingDescription.html`,
 		Resolver:    fetchDynamodbTableReplicaAutoScalings,
-		Transform:   transformers.TransformWithStruct(&types.ReplicaAutoScalingDescription{}, transformers.WithPrimaryKeys("RegionName")),
+		Transform:   transformers.TransformWithStruct(&types.ReplicaAutoScalingDescription{}, transformers.WithPrimaryKeyComponents("RegionName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "table_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "table_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

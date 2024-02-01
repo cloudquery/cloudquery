@@ -23,10 +23,10 @@ func ResponseHeaderPolicies() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:       "id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ResponseHeadersPolicy.Id"),
-				PrimaryKey: true,
+				Name:                "id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ResponseHeadersPolicy.Id"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

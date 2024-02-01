@@ -25,10 +25,10 @@ func EndpointConfigurations() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("EndpointConfigArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("EndpointConfigArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:        "tags",

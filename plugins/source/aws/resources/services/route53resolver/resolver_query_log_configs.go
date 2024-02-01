@@ -16,7 +16,7 @@ func ResolverQueryLogConfigs() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_ResolverQueryLogConfig.html`,
 		Resolver:    fetchQueryLogConfigs,
-		Transform:   transformers.TransformWithStruct(&types.ResolverQueryLogConfig{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.ResolverQueryLogConfig{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53resolver"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

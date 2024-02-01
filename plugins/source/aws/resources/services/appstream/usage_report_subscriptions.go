@@ -24,10 +24,10 @@ func UsageReportSubscriptions() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "s3_bucket_name",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("S3BucketName"),
-				PrimaryKey: true,
+				Name:                "s3_bucket_name",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("S3BucketName"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

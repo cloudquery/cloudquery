@@ -19,7 +19,7 @@ func Repositories() *schema.Table {
 		Description: `https://docs.aws.amazon.com/codecommit/latest/APIReference/API_RepositoryMetadata.html`,
 		Resolver:    fetchRepositories,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "codecommit"),
-		Transform:   transformers.TransformWithStruct(&types.RepositoryMetadata{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.RepositoryMetadata{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

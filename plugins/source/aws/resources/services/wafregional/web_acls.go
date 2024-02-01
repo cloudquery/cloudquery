@@ -25,10 +25,10 @@ func WebAcls() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("WebACLArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("WebACLArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:        "tags",

@@ -29,10 +29,10 @@ func instances() *schema.Table {
 				Resolver: resolveDBInstanceTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("DBInstanceArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("DBInstanceArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

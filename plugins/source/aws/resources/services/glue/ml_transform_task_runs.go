@@ -17,15 +17,15 @@ func mlTransformTaskRuns() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/glue/latest/webapi/API_TaskRun.html`,
 		Resolver:    fetchGlueMlTransformTaskRuns,
-		Transform:   transformers.TransformWithStruct(&types.TaskRun{}, transformers.WithPrimaryKeys("TaskRunId")),
+		Transform:   transformers.TransformWithStruct(&types.TaskRun{}, transformers.WithPrimaryKeyComponents("TaskRunId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "ml_transform_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "ml_transform_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

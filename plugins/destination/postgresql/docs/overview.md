@@ -52,15 +52,15 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 
 - `batch_size` (`integer`) (optional) (default: `10000`)
 
-  This parameter controls the maximum amount of items may be grouped together to be written as a single write.
+  Maximum number of items that may be grouped together to be written in a single write.
 
 - `batch_size_bytes` (`integer`) (optional) (default: `100000000` (= 100 MB))
 
-  This parameter controls the maximum size of items that may be grouped together to be written as a single write.
+  Maximum size of items that may be grouped together to be written in a single write.
 
 - `batch_timeout` (`duration`) (optional) (default: `60s` (= 60 seconds))
 
-  This parameter controls the timeout for writing a single batch.
+  Maximum interval between batch writes.
 
 ### Verbose logging for debug
 

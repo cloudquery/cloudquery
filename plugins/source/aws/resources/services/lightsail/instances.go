@@ -30,9 +30,9 @@ func Instances() *schema.Table {
 				Resolver: resolveLightsailInstanceAccessDetails,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

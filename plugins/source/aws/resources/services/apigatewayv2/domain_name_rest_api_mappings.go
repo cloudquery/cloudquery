@@ -30,10 +30,10 @@ func domainNameRestApiMappings() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveDomainNameRestApiMappingArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveDomainNameRestApiMappingArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

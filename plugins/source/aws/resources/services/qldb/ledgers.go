@@ -31,9 +31,9 @@ func Ledgers() *schema.Table {
 				Description: `The tags associated with the pipeline.`,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				PrimaryKeyComponent: true,
 			},
 		},
 

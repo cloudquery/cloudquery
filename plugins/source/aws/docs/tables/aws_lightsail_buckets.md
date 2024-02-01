@@ -4,8 +4,8 @@ This table shows data for Lightsail Buckets.
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Bucket.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_lightsail_buckets:
@@ -15,7 +15,7 @@ The following tables depend on aws_lightsail_buckets:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
@@ -23,7 +23,7 @@ The following tables depend on aws_lightsail_buckets:
 |tags|`json`|
 |access_log_config|`json`|
 |access_rules|`json`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |bundle_id|`utf8`|
 |created_at|`timestamp[us, tz=UTC]`|
 |location|`json`|

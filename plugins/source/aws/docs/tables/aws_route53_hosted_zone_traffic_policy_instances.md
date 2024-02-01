@@ -4,8 +4,8 @@ This table shows data for Amazon Route 53 Hosted Zone Traffic Policy Instances.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_TrafficPolicyInstance.html
 
-The composite primary key for this table is (**account_id**, **arn**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **arn**).
 ## Relations
 
 This table depends on [aws_route53_hosted_zones](aws_route53_hosted_zones.md).
@@ -14,10 +14,10 @@ This table depends on [aws_route53_hosted_zones](aws_route53_hosted_zones.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|arn (PK)|`utf8`|
+|account_id|`utf8`|
+|arn|`utf8`|
 |hosted_zone_arn|`utf8`|
 |hosted_zone_id|`utf8`|
 |id|`utf8`|

@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/destination/kafka/client/spec"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
@@ -26,12 +27,12 @@ func getenv(key, fallback string) string {
 func TestPlugin(t *testing.T) {
 	ctx := context.Background()
 	p := plugin.NewPlugin("kafka", "development", New)
-	b, err := json.Marshal(&Spec{
+	b, err := json.Marshal(&spec.Spec{
 		Brokers:      strings.Split(getenv("CQ_DEST_KAFKA_CONNECTION_STRING", defaultConnectionString), ","),
-		SaslUsername: getenv("CQ_DEST_KAFKA_SASL_USERNAME", ""),
-		SaslPassword: getenv("CQ_DEST_KAFKA_SASL_PASSWORD", ""),
+		SASLUsername: getenv("CQ_DEST_KAFKA_SASL_USERNAME", ""),
+		SASLPassword: getenv("CQ_DEST_KAFKA_SASL_PASSWORD", ""),
 		Verbose:      true,
-		FileSpec:     &filetypes.FileSpec{Format: filetypes.FormatTypeJSON},
+		FileSpec:     filetypes.FileSpec{Format: filetypes.FormatTypeJSON},
 	})
 	if err != nil {
 		t.Fatal(err)

@@ -4,8 +4,8 @@ This table shows data for Amazon Elastic Compute Cloud (EC2) Amazon Elastic Bloc
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_Snapshot.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_ec2_ebs_snapshots:
@@ -15,11 +15,11 @@ The following tables depend on aws_ec2_ebs_snapshots:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |tags|`json`|
 |data_encryption_key_id|`utf8`|
 |description|`utf8`|

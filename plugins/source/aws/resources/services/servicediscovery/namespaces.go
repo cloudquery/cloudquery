@@ -19,7 +19,7 @@ func Namespaces() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/cloud-map/latest/api/API_Namespace.html`,
 		Resolver:            fetchNamespaces,
 		PreResourceResolver: getNamespace,
-		Transform:           transformers.TransformWithStruct(&types.Namespace{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:           transformers.TransformWithStruct(&types.Namespace{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "servicediscovery"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),

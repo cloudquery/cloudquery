@@ -27,10 +27,10 @@ func Vaults() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("BackupVaultArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("BackupVaultArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "access_policy",

@@ -30,10 +30,10 @@ func CaCertificates() *schema.Table {
 				Resolver: ResolveIotCaCertificateCertificates,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("CertificateArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("CertificateArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

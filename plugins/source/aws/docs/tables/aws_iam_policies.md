@@ -4,8 +4,8 @@ This table shows data for IAM Policies.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_ManagedPolicyDetail.html
 
-The composite primary key for this table is (**account_id**, **id**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **id**).
 ## Relations
 
 The following tables depend on aws_iam_policies:
@@ -16,10 +16,10 @@ The following tables depend on aws_iam_policies:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|id (PK)|`utf8`|
+|account_id|`utf8`|
+|id|`utf8`|
 |tags|`json`|
 |arn|`utf8`|
 |attachment_count|`int64`|

@@ -35,10 +35,10 @@ func apiAuthorizers() *schema.Table {
 				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApiAuthorizerArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApiAuthorizerArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

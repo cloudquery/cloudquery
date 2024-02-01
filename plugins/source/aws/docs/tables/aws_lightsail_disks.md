@@ -4,8 +4,8 @@ This table shows data for Lightsail Disks.
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_Disk.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_lightsail_disks:
@@ -15,11 +15,11 @@ The following tables depend on aws_lightsail_disks:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |tags|`json`|
 |add_ons|`json`|
 |attached_to|`utf8`|

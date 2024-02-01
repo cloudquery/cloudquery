@@ -20,7 +20,7 @@ func Runtimes() *schema.Table {
 				Resolver: func(_ context.Context, _ schema.ClientMeta, r *schema.Resource, c schema.Column) error {
 					return r.Set(c.Name, string(r.Item.(types.Runtime)))
 				},
-				PrimaryKey: true,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}
