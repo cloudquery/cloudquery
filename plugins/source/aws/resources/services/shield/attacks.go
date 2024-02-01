@@ -24,11 +24,11 @@ func Attacks() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:        "id",
-				Type:        arrow.BinaryTypes.String,
-				Resolver:    schema.PathResolver("AttackId"),
-				Description: `The unique identifier (ID) of the attack`,
-				PrimaryKey:  true,
+				Name:                "id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("AttackId"),
+				Description:         `The unique identifier (ID) of the attack`,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

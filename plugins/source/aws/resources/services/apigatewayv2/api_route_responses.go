@@ -35,10 +35,10 @@ func apiRouteResponses() *schema.Table {
 				Resolver: schema.ParentColumnResolver("route_id"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApiRouteResponseArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApiRouteResponseArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

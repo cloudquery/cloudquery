@@ -35,7 +35,7 @@ type Spec struct {
 	// By default, Microsoft SQL Server destination plugin will use the [default](https://learn.microsoft.com/en-us/sql/relational-databases/security/authentication-access/ownership-and-user-schema-separation?view=sql-server-ver16#the-dbo-schema) schema named `dbo`.
 	Schema string `json:"schema,omitempty" jsonschema:"default=dbo"`
 
-	// Maximum amount of items that may be grouped together to be written in a single write.
+	// Maximum number of items that may be grouped together to be written in a single write.
 	BatchSize int `json:"batch_size,omitempty" jsonschema:"minimum=1,default=1000"`
 
 	// Maximum size of items that may be grouped together to be written in a single write.

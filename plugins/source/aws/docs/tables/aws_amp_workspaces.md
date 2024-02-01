@@ -4,8 +4,8 @@ This table shows data for Amazon Managed Service for Prometheus (AMP) Workspaces
 
 https://docs.aws.amazon.com/prometheus/latest/userguide/AMP-APIReference.html#AMP-APIReference-WorkspaceDescription
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_amp_workspaces:
@@ -15,13 +15,13 @@ The following tables depend on aws_amp_workspaces:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
 |alert_manager_definition|`json`|
 |logging_configuration|`json`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |created_at|`timestamp[us, tz=UTC]`|
 |status|`json`|
 |workspace_id|`utf8`|

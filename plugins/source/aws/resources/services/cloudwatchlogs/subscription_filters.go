@@ -17,16 +17,16 @@ func subscriptionFilters() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_SubscriptionFilter.html`,
 		Resolver:    fetchCloudwatchlogsSubscriptionFilters,
-		Transform:   transformers.TransformWithStruct(&types.SubscriptionFilter{}, transformers.WithPrimaryKeys("FilterName", "CreationTime")),
+		Transform:   transformers.TransformWithStruct(&types.SubscriptionFilter{}, transformers.WithPrimaryKeyComponents("FilterName", "CreationTime")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:        "log_group_arn",
-				Description: "The Amazon Resource Name (ARN) of the log group.",
-				Type:        arrow.BinaryTypes.String,
-				Resolver:    schema.ParentColumnResolver("arn"),
-				PrimaryKey:  true,
+				Name:                "log_group_arn",
+				Description:         "The Amazon Resource Name (ARN) of the log group.",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

@@ -33,10 +33,10 @@ func Regions() *schema.Table {
 				Resolver: client.ResolveAWSPartition,
 			},
 			{
-				Name:       "region",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("RegionName"),
-				PrimaryKey: true,
+				Name:                "region",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("RegionName"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

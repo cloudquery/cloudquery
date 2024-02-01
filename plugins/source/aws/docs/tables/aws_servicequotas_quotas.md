@@ -4,8 +4,8 @@ This table shows data for Servicequotas Quotas.
 
 https://docs.aws.amazon.com/servicequotas/2019-06-24/apireference/API_ServiceQuota.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 This table depends on [aws_servicequotas_services](aws_servicequotas_services.md).
@@ -14,11 +14,11 @@ This table depends on [aws_servicequotas_services](aws_servicequotas_services.md
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |adjustable|`bool`|
 |error_reason|`json`|
 |global_quota|`bool`|

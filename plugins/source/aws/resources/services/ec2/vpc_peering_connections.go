@@ -26,10 +26,10 @@ func VpcPeeringConnections() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveVpcPeeringConnectionArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveVpcPeeringConnectionArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

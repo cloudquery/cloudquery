@@ -23,10 +23,10 @@ func Parameters() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:        "name",
-				Type:        arrow.BinaryTypes.String,
-				Description: `The parameter name`,
-				PrimaryKey:  true,
+				Name:                "name",
+				Type:                arrow.BinaryTypes.String,
+				Description:         `The parameter name`,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

@@ -1,0 +1,226 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/kafka/client/spec/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "CSVSpec": {
+      "properties": {
+        "skip_header": {
+          "type": "boolean",
+          "description": "Specifies if the first line of a file should be the header.",
+          "default": false
+        },
+        "delimiter": {
+          "type": "string",
+          "pattern": "^.$",
+          "description": "Character that will be used as the delimiter.",
+          "default": ","
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "description": "CloudQuery CSV file output spec."
+    },
+    "JSONSpec": {
+      "additionalProperties": false,
+      "type": "object",
+      "description": "CloudQuery JSON file output spec."
+    },
+    "ParquetSpec": {
+      "additionalProperties": false,
+      "type": "object",
+      "description": "CloudQuery Parquet file output spec."
+    },
+    "Spec": {
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "sasl_username": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "sasl_username"
+            ],
+            "title": "`sasl_username` value is set"
+          },
+          "then": {
+            "properties": {
+              "sasl_password": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "sasl_password"
+            ],
+            "title": "`sasl_password` value is set"
+          },
+          "title": "Require `sasl_password` when `sasl_username` is set"
+        },
+        {
+          "if": {
+            "properties": {
+              "sasl_password": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "sasl_password"
+            ],
+            "title": "`sasl_password` value is set"
+          },
+          "then": {
+            "properties": {
+              "sasl_username": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "sasl_username"
+            ],
+            "title": "`sasl_username` value is set"
+          },
+          "title": "Require `sasl_username` when `sasl_password` is set"
+        }
+      ],
+      "oneOf": [
+        {
+          "properties": {
+            "format": {
+              "type": "string",
+              "const": "csv"
+            },
+            "format_spec": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/CSVSpec"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "format": {
+              "type": "string",
+              "const": "json"
+            },
+            "format_spec": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/JSONSpec"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "format": {
+              "type": "string",
+              "const": "parquet"
+            },
+            "format_spec": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/ParquetSpec"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "properties": {
+        "format": {
+          "type": "string",
+          "enum": [
+            "csv",
+            "json",
+            "parquet"
+          ],
+          "description": "Output format."
+        },
+        "format_spec": {
+          "oneOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/CSVSpec"
+                },
+                {
+                  "$ref": "#/$defs/JSONSpec"
+                },
+                {
+                  "$ref": "#/$defs/ParquetSpec"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "compression": {
+          "type": "string",
+          "enum": [
+            "",
+            "gzip"
+          ],
+          "description": "Compression type.\nEmpty or missing stands for no compression."
+        },
+        "brokers": {
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": "array",
+          "minItems": 1,
+          "description": "List of brokers to connect to."
+        },
+        "verbose": {
+          "type": "boolean",
+          "description": "If `true`, the plugin will log all underlying Kafka client messages to the log."
+        },
+        "sasl_username": {
+          "type": "string",
+          "description": "If connecting via SASL/PLAIN, the username to use."
+        },
+        "sasl_password": {
+          "type": "string",
+          "description": "If connecting via SASL/PLAIN, the password to use."
+        },
+        "client_id": {
+          "type": "string",
+          "description": "Client ID to be set for Kafka API calls.",
+          "default": "cq-destination-kafka"
+        },
+        "batch_size": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of records to write before starting a new object.",
+          "default": 1000
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "format",
+        "brokers"
+      ]
+    }
+  }
+}

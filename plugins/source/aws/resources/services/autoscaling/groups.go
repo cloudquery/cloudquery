@@ -39,10 +39,10 @@ func Groups() *schema.Table {
 				Resolver: resolveAutoscalingGroupLoadBalancerTargetGroups,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("AutoScalingGroupARN"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("AutoScalingGroupARN"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

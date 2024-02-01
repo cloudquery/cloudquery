@@ -28,10 +28,10 @@ func CachePolicies() *schema.Table {
 				Resolver: schema.PathResolver("CachePolicy.Id"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveCachePolicyARN(),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveCachePolicyARN(),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

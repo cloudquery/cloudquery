@@ -24,10 +24,10 @@ func spotFleetInstances() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveActiveInstanceArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveActiveInstanceArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "spot_fleet_request_id",

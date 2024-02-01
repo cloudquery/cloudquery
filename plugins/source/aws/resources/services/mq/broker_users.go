@@ -16,15 +16,15 @@ func brokerUsers() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/amazon-mq/latest/api-reference/brokers-broker-id-users-username.html`,
 		Resolver:    fetchMqBrokerUsers,
-		Transform:   transformers.TransformWithStruct(&mq.DescribeUserOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeys("Username")),
+		Transform:   transformers.TransformWithStruct(&mq.DescribeUserOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeyComponents("Username")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "broker_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "broker_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

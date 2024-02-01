@@ -65,7 +65,7 @@ This is the spec used by the Meilisearch destination plugin.
 
 - `batch_size` (`integer`) (optional) (default: `1000`)
 
-  Maximum amount of items that may be grouped together to be written in a single write.
+  Maximum number of items that may be grouped together to be written in a single write.
 
 - `batch_size_bytes` (`integer`) (optional) (default: `4194304` (= 4 MiB))
 
@@ -73,7 +73,7 @@ This is the spec used by the Meilisearch destination plugin.
 
 - `batch_timeout` (`duration`) (optional) (default: `20s`)
 
-  Timeout for writing a single batch.
+  Maximum interval between batch writes.
 
 ## Underlying library
 

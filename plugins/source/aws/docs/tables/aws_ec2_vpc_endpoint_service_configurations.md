@@ -4,16 +4,17 @@ This table shows data for Amazon Elastic Compute Cloud (EC2) VPC Endpoint Servic
 
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ServiceConfiguration.html
 
-The composite primary key for this table is (**account_id**, **region**, **service_id**).
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**, **service_id**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
 |tags|`json`|
 |acceptance_required|`bool`|
 |availability_zones|`list<item: utf8, nullable>`|
@@ -24,7 +25,7 @@ The composite primary key for this table is (**account_id**, **region**, **servi
 |payer_responsibility|`utf8`|
 |private_dns_name|`utf8`|
 |private_dns_name_configuration|`json`|
-|service_id (PK)|`utf8`|
+|service_id|`utf8`|
 |service_name|`utf8`|
 |service_state|`utf8`|
 |service_type|`json`|

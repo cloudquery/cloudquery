@@ -4,8 +4,8 @@ This table shows data for Amazon DocumentDB Cluster Snapshots.
 
 https://docs.aws.amazon.com/documentdb/latest/developerguide/API_DBClusterSnapshot.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 This table depends on [aws_docdb_clusters](aws_docdb_clusters.md).
@@ -14,12 +14,12 @@ This table depends on [aws_docdb_clusters](aws_docdb_clusters.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
 |tags|`json`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |attributes|`json`|
 |db_cluster_identifier|`utf8`|
 |db_cluster_snapshot_identifier|`utf8`|

@@ -39,10 +39,10 @@ func jobs() *schema.Table {
 				Resolver: resolveBatchJobTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("JobArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("JobArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

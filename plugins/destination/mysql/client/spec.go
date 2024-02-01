@@ -14,7 +14,7 @@ type Spec struct {
 	// Connection string to connect to the database. See the [Go driver documentation](https://github.com/go-sql-driver/mysql#dsn-data-source-name) for details.
 	ConnectionString string `json:"connection_string" jsonschema:"required,minLength=1"`
 
-	// Maximum amount of items that may be grouped together to be written in a single write.
+	// Maximum number of items that may be grouped together to be written in a single write.
 	BatchSize int `json:"batch_size,omitempty" jsonschema:"minimum=1,default=1000"`
 
 	// Maximum size of items that may be grouped together to be written in a single write.

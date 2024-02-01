@@ -18,15 +18,15 @@ func databaseEvents() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDatabaseEvent.html`,
 		Resolver:    fetchLightsailDatabaseEvents,
-		Transform:   transformers.TransformWithStruct(&types.RelationalDatabaseEvent{}, transformers.WithPrimaryKeys("CreatedAt")),
+		Transform:   transformers.TransformWithStruct(&types.RelationalDatabaseEvent{}, transformers.WithPrimaryKeyComponents("CreatedAt")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "database_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "database_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

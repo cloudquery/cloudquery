@@ -25,10 +25,10 @@ func ResourceShares() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ResourceShareArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ResourceShareArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

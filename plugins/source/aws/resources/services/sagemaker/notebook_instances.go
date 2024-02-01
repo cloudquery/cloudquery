@@ -25,10 +25,10 @@ func NotebookInstances() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("NotebookInstanceArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("NotebookInstanceArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:        "tags",

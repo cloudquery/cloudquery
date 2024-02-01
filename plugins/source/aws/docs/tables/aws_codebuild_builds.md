@@ -4,8 +4,8 @@ This table shows data for AWS CodeBuild Builds.
 
 https://docs.aws.amazon.com/codebuild/latest/APIReference/API_Build.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 This table depends on [aws_codebuild_projects](aws_codebuild_projects.md).
@@ -14,11 +14,11 @@ This table depends on [aws_codebuild_projects](aws_codebuild_projects.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |artifacts|`json`|
 |build_batch_arn|`utf8`|
 |build_complete|`bool`|

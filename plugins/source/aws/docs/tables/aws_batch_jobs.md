@@ -4,8 +4,8 @@ This table shows data for Batch Jobs.
 
 https://docs.aws.amazon.com/batch/latest/APIReference/API_DescribeJobs.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 This table depends on [aws_batch_job_queues](aws_batch_job_queues.md).
@@ -14,12 +14,12 @@ This table depends on [aws_batch_job_queues](aws_batch_job_queues.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
 |tags|`json`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |job_definition|`utf8`|
 |job_id|`utf8`|
 |job_name|`utf8`|

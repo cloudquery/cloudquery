@@ -4,8 +4,8 @@ This table shows data for IAM User Groups.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_Group.html
 
-The composite primary key for this table is (**account_id**, **user_arn**, **arn**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **user_arn**, **arn**).
 ## Relations
 
 This table depends on [aws_iam_users](aws_iam_users.md).
@@ -14,12 +14,12 @@ This table depends on [aws_iam_users](aws_iam_users.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|user_arn (PK)|`utf8`|
+|account_id|`utf8`|
+|user_arn|`utf8`|
 |user_id|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |create_date|`timestamp[us, tz=UTC]`|
 |group_id|`utf8`|
 |group_name|`utf8`|

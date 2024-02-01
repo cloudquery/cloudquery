@@ -18,16 +18,16 @@ func studioSessionMapping() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/emr/latest/APIReference/API_GetStudioSessionMapping.html`,
 		Resolver:            fetchEmrStudioSessionMapping,
 		PreResourceResolver: getSessionMapping,
-		Transform:           transformers.TransformWithStruct(&types.SessionMappingDetail{}, transformers.WithPrimaryKeys("IdentityType", "IdentityId")),
+		Transform:           transformers.TransformWithStruct(&types.SessionMappingDetail{}, transformers.WithPrimaryKeyComponents("IdentityType", "IdentityId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:        "studio_arn",
-				Description: "The Amazon Resource Name (ARN) of the EMR Studio.",
-				Type:        arrow.BinaryTypes.String,
-				Resolver:    schema.ParentColumnResolver("arn"),
-				PrimaryKey:  true,
+				Name:                "studio_arn",
+				Description:         "The Amazon Resource Name (ARN) of the EMR Studio.",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

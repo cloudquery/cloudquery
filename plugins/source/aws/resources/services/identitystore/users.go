@@ -25,10 +25,10 @@ func Users() *schema.Table {
 			client.RequestAccountIDColumn(true),
 			client.RequestRegionColumn(true),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveUserARN,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveUserARN,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

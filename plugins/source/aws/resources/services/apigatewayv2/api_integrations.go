@@ -35,10 +35,10 @@ func apiIntegrations() *schema.Table {
 				Resolver: schema.ParentColumnResolver("id"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApiIntegrationArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApiIntegrationArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 		Relations: []*schema.Table{

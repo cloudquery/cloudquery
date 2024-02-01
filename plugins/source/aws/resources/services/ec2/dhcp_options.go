@@ -18,7 +18,7 @@ func DHCPOptions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DhcpOptions.html`,
 		Resolver:    fetchEC2DHCPOptions,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
-		Transform:   transformers.TransformWithStruct(&types.DhcpOptions{}, transformers.WithPrimaryKeys("DhcpOptionsId")),
+		Transform:   transformers.TransformWithStruct(&types.DhcpOptions{}, transformers.WithPrimaryKeyComponents("DhcpOptionsId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

@@ -28,10 +28,10 @@ func Subscriptions() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("SubscriptionArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("SubscriptionArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "delivery_policy",

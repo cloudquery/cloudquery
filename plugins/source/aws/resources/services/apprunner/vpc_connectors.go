@@ -24,10 +24,10 @@ func VpcConnectors() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("VpcConnectorArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("VpcConnectorArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

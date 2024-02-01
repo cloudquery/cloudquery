@@ -26,10 +26,10 @@ func UsagePlans() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApigatewayUsagePlanArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApigatewayUsagePlanArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 

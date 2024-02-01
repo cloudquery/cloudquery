@@ -26,10 +26,10 @@ The ` + "`request_account_id` and `request_region` columns are added to show fro
 			client.RequestAccountIDColumn(true),
 			client.RequestRegionColumn(true),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("FindingArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("FindingArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

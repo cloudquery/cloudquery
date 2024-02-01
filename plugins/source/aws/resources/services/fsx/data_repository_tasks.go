@@ -25,10 +25,10 @@ func DataRepositoryTasks() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ResourceARN"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ResourceARN"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

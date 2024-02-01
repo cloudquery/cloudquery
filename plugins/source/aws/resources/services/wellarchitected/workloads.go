@@ -25,10 +25,10 @@ func Workloads() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("WorkloadArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("WorkloadArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 		Relations: schema.Tables{

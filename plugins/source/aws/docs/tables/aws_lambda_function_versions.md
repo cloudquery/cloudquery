@@ -4,8 +4,8 @@ This table shows data for AWS Lambda Function Versions.
 
 https://docs.aws.amazon.com/lambda/latest/dg/API_FunctionConfiguration.html
 
-The composite primary key for this table is (**function_arn**, **version**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**function_arn**, **version**).
 ## Relations
 
 This table depends on [aws_lambda_functions](aws_lambda_functions.md).
@@ -14,11 +14,11 @@ This table depends on [aws_lambda_functions](aws_lambda_functions.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|function_arn (PK)|`utf8`|
+|function_arn|`utf8`|
 |architectures|`list<item: utf8, nullable>`|
 |code_sha256|`utf8`|
 |code_size|`int64`|
@@ -52,5 +52,5 @@ This table depends on [aws_lambda_functions](aws_lambda_functions.md).
 |state_reason_code|`utf8`|
 |timeout|`int64`|
 |tracing_config|`json`|
-|version (PK)|`utf8`|
+|version|`utf8`|
 |vpc_config|`json`|

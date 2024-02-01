@@ -29,10 +29,10 @@ func FirewallPolicies() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("FirewallPolicyArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("FirewallPolicyArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

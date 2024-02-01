@@ -4,13 +4,14 @@ This table shows data for Compute Optimizer AWS Lambda Function Recommendations.
 
 https://docs.aws.amazon.com/compute-optimizer/latest/APIReference/API_LambdaFunctionRecommendation.html
 
-The primary key for this table is **function_arn**.
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **function_arn**.
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |tags|`json`|
@@ -19,7 +20,7 @@ The primary key for this table is **function_arn**.
 |effective_recommendation_preferences|`json`|
 |finding|`utf8`|
 |finding_reason_codes|`list<item: utf8, nullable>`|
-|function_arn (PK)|`utf8`|
+|function_arn|`utf8`|
 |function_version|`utf8`|
 |last_refresh_timestamp|`timestamp[us, tz=UTC]`|
 |lookback_period_in_days|`float64`|

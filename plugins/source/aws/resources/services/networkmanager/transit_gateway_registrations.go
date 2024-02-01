@@ -18,14 +18,14 @@ func transitGatewayRegistration() *schema.Table {
 		Description: `https://docs.aws.amazon.com/networkmanager/latest/APIReference/API_TransitGatewayRegistration.html
 The  'request_region' column is added to show region of where the request was made from.`,
 		Resolver:  fetchTransitGatewayRegistration,
-		Transform: transformers.TransformWithStruct(&types.TransitGatewayRegistration{}, transformers.WithPrimaryKeys("GlobalNetworkId", "TransitGatewayArn")),
+		Transform: transformers.TransformWithStruct(&types.TransitGatewayRegistration{}, transformers.WithPrimaryKeyComponents("GlobalNetworkId", "TransitGatewayArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:       "request_region",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSRegion,
-				PrimaryKey: true,
+				Name:                "request_region",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            client.ResolveAWSRegion,
+				PrimaryKeyComponent: true,
 			}},
 		Relations: schema.Tables{},
 	}

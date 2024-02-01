@@ -4,16 +4,17 @@ This table shows data for Amazon Route 53 Application Recovery Controller Recove
 
 https://docs.aws.amazon.com/recovery-cluster/latest/api/cluster.html
 
-The composite primary key for this table is (**request_account_id**, **arn**).
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**request_account_id**, **arn**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|request_account_id (PK)|`utf8`|
-|arn (PK)|`utf8`|
+|request_account_id|`utf8`|
+|arn|`utf8`|
 |cluster_arn|`utf8`|
 |cluster_endpoints|`json`|
 |name|`utf8`|

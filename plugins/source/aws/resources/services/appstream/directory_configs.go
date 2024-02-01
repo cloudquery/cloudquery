@@ -24,10 +24,10 @@ func DirectoryConfigs() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "directory_name",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("DirectoryName"),
-				PrimaryKey: true,
+				Name:                "directory_name",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("DirectoryName"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

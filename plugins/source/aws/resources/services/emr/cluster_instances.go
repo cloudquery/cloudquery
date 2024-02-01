@@ -32,10 +32,10 @@ func clusterInstances() *schema.Table {
 				Resolver: client.ResolveAWSRegion,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveClusterInstanceArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveClusterInstanceArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

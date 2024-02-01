@@ -19,7 +19,7 @@ func Principals() *schema.Table {
 		Resolver:    fetchRamPrincipals,
 		Transform: transformers.TransformWithStruct(
 			&types.Principal{},
-			transformers.WithPrimaryKeys("Id", "ResourceShareArn"),
+			transformers.WithPrimaryKeyComponents("Id", "ResourceShareArn"),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "ram"),
 		Columns: []schema.Column{

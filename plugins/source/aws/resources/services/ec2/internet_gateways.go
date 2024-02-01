@@ -26,10 +26,10 @@ func InternetGateways() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveInternetGatewayArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveInternetGatewayArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

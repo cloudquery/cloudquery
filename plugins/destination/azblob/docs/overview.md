@@ -67,7 +67,7 @@ This is the (nested) spec used by the Azure blob destination Plugin.
 
 - `batch_timeout` (`duration`) (optional) (default: `30s` (30 seconds))
 
-  Inactivity time before starting a new object.
+  Maximum interval between batch writes.
 
 ### format_spec
 

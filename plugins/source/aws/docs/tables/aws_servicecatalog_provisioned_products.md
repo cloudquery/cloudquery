@@ -4,8 +4,8 @@ This table shows data for AWS Service Catalog Provisioned Products.
 
 https://docs.aws.amazon.com/servicecatalog/latest/dg/API_ProvisionedProductAttribute.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_servicecatalog_provisioned_products:
@@ -16,11 +16,11 @@ The following tables depend on aws_servicecatalog_provisioned_products:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |tags|`json`|
 |created_time|`timestamp[us, tz=UTC]`|
 |id|`utf8`|

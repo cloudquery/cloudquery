@@ -4,8 +4,8 @@ This table shows data for Amazon AppStream Applications.
 
 https://docs.aws.amazon.com/appstream2/latest/APIReference/API_Application.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_appstream_applications:
@@ -15,11 +15,11 @@ The following tables depend on aws_appstream_applications:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |app_block_arn|`utf8`|
 |created_time|`timestamp[us, tz=UTC]`|
 |description|`utf8`|

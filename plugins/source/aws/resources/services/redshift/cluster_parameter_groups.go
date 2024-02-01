@@ -16,16 +16,16 @@ func clusterParameterGroups() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/redshift/latest/APIReference/API_ClusterParameterGroupStatus.html`,
 		Resolver:    fetchClusterParameterGroups,
-		Transform:   transformers.TransformWithStruct(&types.ClusterParameterGroupStatus{}, transformers.WithPrimaryKeys("ParameterGroupName")),
+		Transform:   transformers.TransformWithStruct(&types.ClusterParameterGroupStatus{}, transformers.WithPrimaryKeyComponents("ParameterGroupName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:        "cluster_arn",
-				Type:        arrow.BinaryTypes.String,
-				Resolver:    schema.ParentColumnResolver("arn"),
-				Description: `The Amazon Resource Name (ARN) for the resource.`,
-				PrimaryKey:  true,
+				Name:                "cluster_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				Description:         `The Amazon Resource Name (ARN) for the resource.`,
+				PrimaryKeyComponent: true,
 			},
 		},
 

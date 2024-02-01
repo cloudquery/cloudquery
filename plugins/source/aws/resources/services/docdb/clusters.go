@@ -30,10 +30,10 @@ func Clusters() *schema.Table {
 				Resolver: resolveDBClusterTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("DBClusterArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("DBClusterArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 

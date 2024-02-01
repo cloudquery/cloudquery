@@ -17,7 +17,7 @@ func DeliveryChannels() *schema.Table {
 		Description: `https://docs.aws.amazon.com/config/latest/APIReference/API_DeliveryChannel.html`,
 		Resolver:    fetchDeliveryChannels,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "config"),
-		Transform:   transformers.TransformWithStruct(&types.DeliveryChannel{}, transformers.WithPrimaryKeys("Name")),
+		Transform:   transformers.TransformWithStruct(&types.DeliveryChannel{}, transformers.WithPrimaryKeyComponents("Name")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),

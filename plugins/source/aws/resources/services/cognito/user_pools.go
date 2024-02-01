@@ -25,10 +25,10 @@ func UserPools() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("Id"),
-				PrimaryKey: true,
+				Name:                "id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("Id"),
+				PrimaryKeyComponent: true,
 			},
 		},
 

@@ -4,13 +4,14 @@ This table shows data for Compute Optimizer Amazon Elastic Compute Cloud (EC2) I
 
 https://docs.aws.amazon.com/compute-optimizer/latest/APIReference/API_InstanceRecommendation.html
 
-The primary key for this table is **instance_arn**.
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **instance_arn**.
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |tags|`json`|
@@ -23,7 +24,7 @@ The primary key for this table is **instance_arn**.
 |finding_reason_codes|`list<item: utf8, nullable>`|
 |idle|`utf8`|
 |inferred_workload_types|`list<item: utf8, nullable>`|
-|instance_arn (PK)|`utf8`|
+|instance_arn|`utf8`|
 |instance_name|`utf8`|
 |instance_state|`utf8`|
 |last_refresh_timestamp|`timestamp[us, tz=UTC]`|

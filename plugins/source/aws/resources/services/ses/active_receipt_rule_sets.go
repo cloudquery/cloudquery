@@ -22,10 +22,10 @@ func ActiveReceiptRuleSets() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "name",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("Metadata.Name"),
-				PrimaryKey: true,
+				Name:                "name",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("Metadata.Name"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "created_timestamp",
