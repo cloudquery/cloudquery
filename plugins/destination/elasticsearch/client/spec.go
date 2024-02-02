@@ -12,7 +12,7 @@ const (
 
 type Spec struct {
 	// A list of Elasticsearch nodes to use. (Default: ["http://localhost:9200"])
-	Addresses []string `json:"addresses"`
+	Addresses []string `json:"addresses" jsonschema:"default=http://localhost:9200"`
 
 	// Username for HTTP Basic Authentication.
 	Username string `json:"username"`
