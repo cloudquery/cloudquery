@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/gitlab/client/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Spec": {
+      "properties": {
+        "access_token": {
+          "type": "string",
+          "minLength": 1,
+          "description": "An access token for your GitLab server. Instructions on how to generate an access token here."
+        },
+        "base_url": {
+          "type": "string",
+          "description": "URL for your self hosted GitLab server. Leave empty for GitLab SaaS. Not all tables are supported for GitLab SaaS."
+        },
+        "concurrency": {
+          "type": "integer",
+          "description": "A best effort maximum number of Go routines to use. Lower this number to reduce memory usage."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "access_token"
+      ],
+      "description": "Spec is the (nested) spec used by the GitLab source plugin:"
+    }
+  }
+}
