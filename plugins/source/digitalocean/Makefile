@@ -28,6 +28,10 @@ gen-docs: build
 	cloudquery tables --format markdown --output-dir docs test/config.yml
 	mv docs/$(shell basename $(CURDIR)) docs/tables
 
+.PHONY: gen-spec-schema
+gen-spec-schema:
+	go run client/spec/gen/main.go
+
 # All gen targets
 .PHONY: gen
-gen: generate-mocks gen-docs
+gen: generate-mocks gen-docs gen-spec-schema
