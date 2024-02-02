@@ -28,6 +28,28 @@ func TestJSONSchema(t *testing.T) {
 			Err:  true,
 		},
 		{
+			Name: "spec with token and domain and empty rate limit",
+			Spec: `{"token": "tok", "domain": "https://domain.okta.com", "rate_limit": {}}`,
+		},
+		{
+			Name: "spec with token and domain and null rate limit",
+			Spec: `{"token": "tok", "domain": "https://domain.okta.com", "rate_limit": null}`,
+		},
+		{
+			Name: "spec with token and domain and rate limit",
+			Spec: `{"token": "tok", "domain": "https://domain.okta.com", "rate_limit": {"max_backoff": 60}}`,
+		},
+		{
+			Name: "spec with token and domain and invalid rate limit",
+			Spec: `{"token": "tok", "domain": "https://domain.okta.com", "rate_limit": {"max_backoff": true}}`,
+			Err:  true,
+		},
+		{
+			Name: "spec with token and domain and zero rate limit",
+			Spec: `{"token": "tok", "domain": "https://domain.okta.com", "rate_limit": {"max_backoff": 0}}`,
+			Err:  true,
+		},
+		{
 			Name: "spec with bool concurrency",
 			Spec: `{"token": "tok", "domain": "https://domain.okta.com", "concurrency":false}`,
 			Err:  true,

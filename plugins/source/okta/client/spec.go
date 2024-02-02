@@ -17,8 +17,8 @@ type (
 
 		// Specify the Okta domain you are fetching from.
 		// [Visit this link](https://developer.okta.com/docs/guides/find-your-domain/findorg/) to find your Okta domain.
-		Domain    string    `json:"domain" jsonschema:"required,pattern=^https?://[^\n<>]+\\.okta\\.com$"`
-		RateLimit RateLimit `json:"rate_limit"`
+		Domain    string     `json:"domain" jsonschema:"required,pattern=^https?://[^\n<>]+\\.okta\\.com$"`
+		RateLimit *RateLimit `json:"rate_limit"`
 
 		// Enables debug logs within the Okta SDK.
 		Debug bool `json:"debug,omitempty" jsonschema:"default=false"`
@@ -47,6 +47,10 @@ func (s *Spec) SetDefaults(logger *zerolog.Logger) {
 		minRetries = int32(2)
 		minBackOff = 30 * time.Second
 	)
+
+	if s.RateLimit == nil {
+		s.RateLimit = new(RateLimit)
+	}
 
 	if s.RateLimit.MaxRetries < minRetries {
 		s.RateLimit.MaxRetries = minRetries
