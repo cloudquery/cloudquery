@@ -17,7 +17,7 @@ type Spec struct {
 	//	URL for your self hosted GitLab server. Leave empty for GitLab SaaS. Not all tables are supported for GitLab SaaS.
 	BaseURL string `json:"base_url,omitempty"`
 	// A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
-	Concurrency int `json:"concurrency,omitempty" jsonschema:"default:10000"`
+	Concurrency int `json:"concurrency,omitempty" jsonschema:"minimum=1,default=10000"`
 }
 
 func (s *Spec) Validate() error {
