@@ -7,8 +7,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/jackc/pgx/v5/tracelog"
 )
 
 func getTestConnection() string {
@@ -30,9 +32,9 @@ var safeMigrations = plugin.SafeMigrations{
 func TestPgPlugin(t *testing.T) {
 	ctx := context.Background()
 	p := plugin.NewPlugin("postgresql", "development", New)
-	s := &Spec{
+	s := &spec.Spec{
 		ConnectionString: getTestConnection(),
-		PgxLogLevel:      LogLevelTrace,
+		PgxLogLevel:      spec.LogLevel(tracelog.LogLevelTrace),
 	}
 	b, err := json.Marshal(s)
 	if err != nil {
