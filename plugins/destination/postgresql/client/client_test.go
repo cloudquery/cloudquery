@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/jackc/pgx/v5/tracelog"
 )
 
 func getTestConnection() string {
@@ -33,7 +34,7 @@ func TestPgPlugin(t *testing.T) {
 	p := plugin.NewPlugin("postgresql", "development", New)
 	s := &spec.Spec{
 		ConnectionString: getTestConnection(),
-		PgxLogLevel:      spec.LogLevelTrace,
+		PgxLogLevel:      spec.LogLevel(tracelog.LogLevelTrace),
 	}
 	b, err := json.Marshal(s)
 	if err != nil {
