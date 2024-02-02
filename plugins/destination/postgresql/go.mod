@@ -10,6 +10,7 @@ require (
 	github.com/cloudquery/filetypes/v4 v4.2.10
 	github.com/cloudquery/plugin-sdk/v4 v4.29.1
 	github.com/google/go-cmp v0.6.0
+	github.com/invopop/jsonschema v0.12.0
 	github.com/jackc/pgx-zerolog v0.0.0-20230315001418-f978528409eb
 	github.com/jackc/pgx/v5 v5.3.1
 	github.com/rs/zerolog v1.31.0
@@ -62,7 +63,6 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.1 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/invopop/jsonschema v0.12.0 // indirect
 	github.com/iris-contrib/schema v0.0.6 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20231201235250-de7065d80cb9 // indirect
@@ -139,4 +139,4 @@ require (
 )
 
 // github.com/cloudquery/jsonschema @ cqmain
-replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20231018073309-6c617a23d42f
+replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240202134451-d771afde32fb
