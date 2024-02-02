@@ -124,6 +124,7 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 
 func (TimePartitioningOption) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Type = "string"
+	sc.Default = TimePartitioningOptionNone
 	sc.Enum = make([]any, len(TimePartitioningOptions))
 	for i := range TimePartitioningOptions {
 		sc.Enum[i] = TimePartitioningOptions[i]
