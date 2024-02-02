@@ -35,7 +35,7 @@ func TestJSONSchema(t *testing.T) {
 		},
 		{
 			Name: "invalid field",
-			Spec: `{"unknown_field":"value"}`,
+			Spec: `{"access_token":"token", "unknown_field":"value"}`,
 			Err:  true,
 		},
 	})
