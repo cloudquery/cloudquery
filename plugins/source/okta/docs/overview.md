@@ -60,7 +60,7 @@ Make sure you use [environment variable expansion](/docs/advanced-topics/environ
   Max backoff interval to be used.
   If the value specified is less than the default one, the default one is used.
 
-- `max_retries` (`int32`, optional. Default: `2`)
+- `max_retries` (`integer`, optional. Default: `2`)
 
   Max retries to be performed.
   If the value specified is less than the default one, the default one is used.

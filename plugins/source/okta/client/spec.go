@@ -6,6 +6,8 @@ import (
 	"os"
 	"time"
 
+	"github.com/cloudquery/plugin-sdk/v4/configtype"
+	"github.com/invopop/jsonschema"
 	"github.com/rs/zerolog"
 )
 
@@ -13,7 +15,7 @@ type (
 	Spec struct {
 		// Token for Okta API access.
 		// You can set this with an `OKTA_API_TOKEN` environment variable.
-		Token string `json:"token" jsonschema:"required,minLength=1"`
+		Token string `json:"token"`
 
 		// Specify the Okta domain you are fetching from.
 		// [Visit this link](https://developer.okta.com/docs/guides/find-your-domain/findorg/) to find your Okta domain.
@@ -27,8 +29,9 @@ type (
 		Concurrency int `json:"concurrency" jsonschema:"minimum=1,default=10000"`
 	}
 	RateLimit struct {
-		// Max backoff interval to be used.
-		MaxBackoff time.Duration `json:"max_backoff,omitempty" jsonschema:"minimum=30,default=30"`
+		//  Max backoff interval to be used.
+		// If the value specified is less than the default one, the default one is used.
+		MaxBackoff configtype.Duration `json:"max_backoff,omitempty"`
 
 		// Max retries to be performed.
 		MaxRetries int32 `json:"max_retries,omitempty" jsonschema:"minimum=2,default=2"`
@@ -56,8 +59,8 @@ func (s *Spec) SetDefaults(logger *zerolog.Logger) {
 		s.RateLimit.MaxRetries = minRetries
 	}
 
-	if s.RateLimit.MaxBackoff < minBackOff {
-		s.RateLimit.MaxBackoff = minBackOff
+	if s.RateLimit.MaxBackoff.Duration() < minBackOff {
+		s.RateLimit.MaxBackoff = configtype.NewDuration(minBackOff)
 	}
 
 	if len(s.Token) == 0 {
@@ -82,4 +85,8 @@ func (s Spec) Validate() error {
 	}
 
 	return nil
+}
+
+func (RateLimit) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Properties.Value("max_backoff").Default = "30s"
 }

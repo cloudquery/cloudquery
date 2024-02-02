@@ -3,13 +3,17 @@
   "$id": "https://github.com/cloudquery/cloudquery/plugins/source/okta/client/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
+    "Duration": {
+      "type": "string",
+      "pattern": "^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$",
+      "title": "CloudQuery configtype.Duration"
+    },
     "RateLimit": {
       "properties": {
         "max_backoff": {
-          "type": "integer",
-          "minimum": 30,
-          "description": "Max backoff interval to be used.",
-          "default": 30
+          "$ref": "#/$defs/Duration",
+          "description": "Max backoff interval to be used.\nIf the value specified is less than the default one, the default one is used.",
+          "default": "30s"
         },
         "max_retries": {
           "type": "integer",
@@ -25,7 +29,6 @@
       "properties": {
         "token": {
           "type": "string",
-          "minLength": 1,
           "description": "Token for Okta API access.\nYou can set this with an `OKTA_API_TOKEN` environment variable."
         },
         "domain": {
@@ -58,7 +61,6 @@
       "additionalProperties": false,
       "type": "object",
       "required": [
-        "token",
         "domain"
       ]
     }
