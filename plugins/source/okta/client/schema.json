@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/okta/client/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "RateLimit": {
+      "properties": {
+        "max_backoff": {
+          "type": "integer",
+          "minimum": 30,
+          "description": "Max backoff interval to be used.",
+          "default": 30
+        },
+        "max_retries": {
+          "type": "integer",
+          "minimum": 2,
+          "description": "Max retries to be performed.",
+          "default": 2
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Spec": {
+      "properties": {
+        "token": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Token for Okta API access.\nYou can set this with an `OKTA_API_TOKEN` environment variable."
+        },
+        "domain": {
+          "type": "string",
+          "pattern": "^https?://[^\n\u003c\u003e]+\\.okta\\.com$",
+          "description": "Specify the Okta domain you are fetching from.\n[Visit this link](https://developer.okta.com/docs/guides/find-your-domain/findorg/) to find your Okta domain."
+        },
+        "rate_limit": {
+          "$ref": "#/$defs/RateLimit"
+        },
+        "debug": {
+          "type": "boolean",
+          "description": "Enables debug logs within the Okta SDK.",
+          "default": false
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of concurrent requests to be made to Okta API.",
+          "default": 10000
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "token",
+        "domain"
+      ]
+    }
+  }
+}
