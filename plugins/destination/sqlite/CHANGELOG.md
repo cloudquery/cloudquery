@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.6.0...plugins-destination-sqlite-v2.6.1) (2024-02-02)
+
+
+### Bug Fixes
+
+* Update migration to skip unique constraint changes ([#16481](https://github.com/cloudquery/cloudquery/issues/16481)) ([dd8a3b6](https://github.com/cloudquery/cloudquery/commit/dd8a3b6d844e3e182799c58a971e7168363f3311))
+
 ## [2.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.5.1...plugins-destination-sqlite-v2.6.0) (2024-02-01)
 
 
