@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/postgresql/client/spec/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Duration": {
+      "type": "string",
+      "pattern": "^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$",
+      "title": "CloudQuery configtype.Duration"
+    },
+    "Spec": {
+      "properties": {
+        "connection_string": {
+          "type": "string"
+        },
+        "pgx_log_level": {
+          "type": "integer"
+        },
+        "batch_size": {
+          "type": "integer"
+        },
+        "batch_size_bytes": {
+          "type": "integer"
+        },
+        "batch_timeout": {
+          "$ref": "#/$defs/Duration"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}

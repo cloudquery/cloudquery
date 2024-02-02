@@ -1,6 +1,7 @@
-package client
+package spec
 
 import (
+	"errors"
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
@@ -30,4 +31,11 @@ func (s *Spec) SetDefaults() {
 	if s.BatchTimeout.Duration() <= 0 {
 		s.BatchTimeout = configtype.NewDuration(defaultBatchTimeout)
 	}
+}
+
+func (s *Spec) Validate() error {
+	if len(s.ConnectionString) == 0 {
+		return errors.New("`connection_string` is required")
+	}
+	return nil
 }

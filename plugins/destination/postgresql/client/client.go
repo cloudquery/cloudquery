@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/mixedbatchwriter"
@@ -49,19 +50,22 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 		return c, nil
 	}
 
-	var spec Spec
-	err := json.Unmarshal(specBytes, &spec)
-	if err != nil {
+	var s spec.Spec
+	if err := json.Unmarshal(specBytes, &s); err != nil {
 		return nil, err
 	}
-	spec.SetDefaults()
-	c.batchSize = spec.BatchSize
-	logLevel, err := tracelog.LogLevelFromString(spec.PgxLogLevel.String())
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", spec.PgxLogLevel.String(), err)
+	s.SetDefaults()
+	if err := s.Validate(); err != nil {
+		return nil, err
 	}
-	c.logger.Info().Str("pgx_log_level", spec.PgxLogLevel.String()).Msg("Initializing postgresql destination")
-	pgxConfig, err := pgxpool.ParseConfig(spec.ConnectionString)
+
+	c.batchSize = s.BatchSize
+	logLevel, err := tracelog.LogLevelFromString(s.PgxLogLevel.String())
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", s.PgxLogLevel.String(), err)
+	}
+	c.logger.Info().Str("pgx_log_level", s.PgxLogLevel.String()).Msg("Initializing postgresql destination")
+	pgxConfig, err := pgxpool.ParseConfig(s.ConnectionString)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse connection string %w", err)
 	}
@@ -94,9 +98,9 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 	}
 	c.writer, err = mixedbatchwriter.New(c,
 		mixedbatchwriter.WithLogger(c.logger),
-		mixedbatchwriter.WithBatchSize(spec.BatchSize),
-		mixedbatchwriter.WithBatchSizeBytes(spec.BatchSizeBytes),
-		mixedbatchwriter.WithBatchTimeout(spec.BatchTimeout.Duration()),
+		mixedbatchwriter.WithBatchSize(s.BatchSize),
+		mixedbatchwriter.WithBatchSizeBytes(s.BatchSizeBytes),
+		mixedbatchwriter.WithBatchTimeout(s.BatchTimeout.Duration()),
 	)
 	if err != nil {
 		return nil, err
