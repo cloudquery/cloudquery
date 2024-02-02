@@ -60,10 +60,6 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 	}
 
 	c.batchSize = s.BatchSize
-	logLevel, err := tracelog.LogLevelFromString(s.PgxLogLevel.String())
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", s.PgxLogLevel.String(), err)
-	}
 	c.logger.Info().Str("pgx_log_level", s.PgxLogLevel.String()).Msg("Initializing postgresql destination")
 	pgxConfig, err := pgxpool.ParseConfig(s.ConnectionString)
 	if err != nil {
@@ -75,7 +71,7 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 
 	pgxConfig.ConnConfig.Tracer = &tracelog.TraceLog{
 		Logger:   pgx_zero_log.NewLogger(c.logger),
-		LogLevel: logLevel,
+		LogLevel: s.PgxLogLevel.LogLevel(),
 	}
 	// maybe expose this to the user?
 	pgxConfig.ConnConfig.RuntimeParams["timezone"] = "UTC"
