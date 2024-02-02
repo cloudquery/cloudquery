@@ -120,6 +120,8 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 			if change.Previous.PrimaryKey || change.Previous.NotNull {
 				return false
 			}
+		case schema.TableColumnChangeTypeRemoveUniqueConstraint:
+			continue
 		default:
 			return false
 		}
