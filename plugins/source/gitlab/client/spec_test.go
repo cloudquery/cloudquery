@@ -9,6 +9,11 @@ import (
 func TestJSONSchema(t *testing.T) {
 	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
 		{
+			Name: "valid",
+			Spec: `{"access_token":"token"}`,
+			Err:  false,
+		},
+		{
 			Name: "empty spec",
 			Spec: `{}`,
 			Err:  true,
@@ -19,9 +24,19 @@ func TestJSONSchema(t *testing.T) {
 			Err:  true,
 		},
 		{
-			Name: "valid",
-			Spec: `{"access_token":"token"}`,
+			Name: "base url",
+			Spec: `{"access_token":"token","base_url":"https://gitlab.com"}`,
 			Err:  false,
+		},
+		{
+			Name: "concurrency",
+			Spec: `{"access_token":"token","concurrency":100}`,
+			Err:  false,
+		},
+		{
+			Name: "invalid field",
+			Spec: `{"unknown_field":"value"}`,
+			Err:  true,
 		},
 	})
 }
