@@ -37,7 +37,7 @@ type Spec struct {
 	BatchSizeBytes int `json:"batch_size_bytes,omitempty" jsonschema:"minimum=1,default=100000000"`
 
 	// Maximum interval between batch writes.
-	BatchTimeout configtype.Duration `json:"batch_timeout,omitempty" jsonschema:"default=60s"`
+	BatchTimeout configtype.Duration `json:"batch_timeout,omitempty"`
 }
 
 func (s *Spec) SetDefaults() {
