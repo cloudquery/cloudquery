@@ -4,94 +4,137 @@
   "$ref": "#/$defs/Spec",
   "$defs": {
     "AppAuthSpec": {
+      "oneOf": [
+        {
+          "required": [
+            "private_key_path"
+          ]
+        },
+        {
+          "required": [
+            "private_key"
+          ]
+        }
+      ],
       "properties": {
         "org": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "description": "The GitHub organization to sync from."
         },
         "app_id": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "description": "The GitHub App ID."
         },
         "private_key_path": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "description": "The path to the private key file used to authenticate the GitHub App."
         },
         "private_key": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "description": "The private key used to authenticate the GitHub App."
         },
         "installation_id": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "description": "The GitHub App installation ID."
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "required": [
+        "org",
+        "app_id",
+        "installation_id"
+      ]
     },
     "EnterpriseSettings": {
       "properties": {
         "base_url": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "description": "The base URL of the GitHub Enterprise instance."
         },
         "upload_url": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "description": "The upload URL of the GitHub Enterprise instance."
         }
       },
       "additionalProperties": false,
-      "type": "object"
+      "type": "object",
+      "required": [
+        "base_url",
+        "upload_url"
+      ]
     },
     "Spec": {
+      "allOf": [
+        {
+          "oneOf": [
+            {
+              "required": [
+                "access_token"
+              ]
+            },
+            {
+              "required": [
+                "app_auth"
+              ]
+            }
+          ]
+        },
+        {
+          "oneOf": [
+            {
+              "required": [
+                "orgs"
+              ]
+            },
+            {
+              "required": [
+                "repos"
+              ]
+            }
+          ]
+        }
+      ],
       "properties": {
         "access_token": {
           "type": "string",
+          "minLength": 1,
           "description": "Personal Access Token, required if not using App Authentication."
         },
         "orgs": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array",
-              "description": "List of organizations to sync from. You must specify either orgs or repos in the configuration."
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "minItems": 1,
+          "description": "List of organizations to sync from. You must specify either orgs or repos in the configuration."
         },
         "repos": {
-          "oneOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array",
-              "description": "List of repositories to sync from. The format is owner/repo (e.g. cloudquery/cloudquery).\nYou must specify either orgs or repos in the configuration."
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9-_]+/[a-zA-Z0-9-_]+$"
+          },
+          "type": "array",
+          "minItems": 1,
+          "description": "List of repositories to sync from. The format is owner/repo (e.g. cloudquery/cloudquery).\nYou must specify either orgs or repos in the configuration."
         },
         "app_auth": {
-          "oneOf": [
-            {
-              "items": {
-                "$ref": "#/$defs/AppAuthSpec"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "items": {
+            "$ref": "#/$defs/AppAuthSpec"
+          },
+          "type": "array",
+          "minItems": 1
         },
         "enterprise": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/EnterpriseSettings"
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "$ref": "#/$defs/EnterpriseSettings"
         },
         "concurrency": {
           "type": "integer",

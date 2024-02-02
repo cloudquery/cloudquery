@@ -1,17 +1,22 @@
 package client
 
-import "fmt"
+import (
+	_ "embed"
+	"fmt"
+
+	"github.com/invopop/jsonschema"
+)
 
 // Spec is the (nested) spec used by GitHub Source Plugin
 type Spec struct {
 	// Personal Access Token, required if not using App Authentication.
-	AccessToken string `json:"access_token"`
+	AccessToken string `json:"access_token" jsonschema:"minLength=1"`
 	// List of organizations to sync from. You must specify either orgs or repos in the configuration.
-	Orgs []string `json:"orgs"`
+	Orgs []string `json:"orgs" jsonschema:"minItems=1"`
 	// List of repositories to sync from. The format is owner/repo (e.g. cloudquery/cloudquery).
 	// You must specify either orgs or repos in the configuration.
-	Repos              []string            `json:"repos"`
-	AppAuth            []AppAuthSpec       `json:"app_auth"`
+	Repos              []string            `json:"repos" jsonschema:"minItems=1,minLength=1,pattern=^[a-zA-Z0-9-_]+/[a-zA-Z0-9-_]+$"`
+	AppAuth            []AppAuthSpec       `json:"app_auth" jsonschema:"minItems=1"`
 	EnterpriseSettings *EnterpriseSettings `json:"enterprise"`
 
 	// The best effort maximum number of Go routines to use.
@@ -24,16 +29,23 @@ type Spec struct {
 }
 
 type EnterpriseSettings struct {
-	BaseURL   string `json:"base_url"`
-	UploadURL string `json:"upload_url"`
+	// The base URL of the GitHub Enterprise instance.
+	BaseURL string `json:"base_url" jsonschema:"required,minLength=1"`
+	// The upload URL of the GitHub Enterprise instance.
+	UploadURL string `json:"upload_url" jsonschema:"required,minLength=1"`
 }
 
 type AppAuthSpec struct {
-	Org            string `json:"org"`
-	AppID          string `json:"app_id"`
-	PrivateKeyPath string `json:"private_key_path"`
-	PrivateKey     string `json:"private_key"`
-	InstallationID string `json:"installation_id"`
+	// The GitHub organization to sync from.
+	Org string `json:"org" jsonschema:"required,minLength=1"`
+	// The GitHub App ID.
+	AppID string `json:"app_id" jsonschema:"required,minLength=1"`
+	// The path to the private key file used to authenticate the GitHub App.
+	PrivateKeyPath string `json:"private_key_path" jsonschema:"minLength=1"`
+	// The private key used to authenticate the GitHub App.
+	PrivateKey string `json:"private_key" jsonschema:"minLength=1"`
+	// The GitHub App installation ID.
+	InstallationID string `json:"installation_id" jsonschema:"required,minLength=1"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -100,3 +112,30 @@ func validateRepo(repo string) error {
 	}
 	return nil
 }
+
+func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.AllOf = []*jsonschema.Schema{
+		{
+			OneOf: []*jsonschema.Schema{
+				{Required: []string{"access_token"}},
+				{Required: []string{"app_auth"}},
+			},
+		},
+		{
+			OneOf: []*jsonschema.Schema{
+				{Required: []string{"orgs"}},
+				{Required: []string{"repos"}},
+			},
+		},
+	}
+}
+
+func (AppAuthSpec) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.OneOf = []*jsonschema.Schema{
+		{Required: []string{"private_key_path"}},
+		{Required: []string{"private_key"}},
+	}
+}
+
+//go:embed schema.json
+var JSONSchema string
