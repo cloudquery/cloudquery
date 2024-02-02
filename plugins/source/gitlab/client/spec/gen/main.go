@@ -8,16 +8,12 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/gitlab/client"
 	cqjsonschema "github.com/cloudquery/codegen/jsonschema"
-	"github.com/invopop/jsonschema"
 )
 
 func main() {
 	fmt.Println("Generating JSON schema for plugin spec")
 	cqjsonschema.GenerateIntoFile(new(client.Spec), path.Join(currDir(), "../..", "schema.json"),
 		cqjsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/source/gitlab/client", path.Join(currDir(), "../..")),
-		func(r *jsonschema.Reflector) {
-			r.NullableFromType = false
-		},
 	)
 }
 

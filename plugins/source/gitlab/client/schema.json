@@ -16,7 +16,9 @@
         },
         "concurrency": {
           "type": "integer",
-          "description": "A best effort maximum number of Go routines to use. Lower this number to reduce memory usage."
+          "minimum": 1,
+          "description": "A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.",
+          "default": 10000
         }
       },
       "additionalProperties": false,
