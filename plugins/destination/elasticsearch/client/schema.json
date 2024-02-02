@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/client/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Spec": {
+      "properties": {
+        "addresses": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "description": "A list of Elasticsearch nodes to use. (Default: [\"http://localhost:9200\"])"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "username": {
+          "type": "string",
+          "description": "Username for HTTP Basic Authentication."
+        },
+        "password": {
+          "type": "string",
+          "description": "Password for HTTP Basic Authentication."
+        },
+        "cloud_id": {
+          "type": "string",
+          "description": "Endpoint for the Elastic Service (https://elastic.co/cloud)."
+        },
+        "api_key": {
+          "type": "string",
+          "description": "Base64-encoded token for authorization; if set, overrides username/password and service token."
+        },
+        "service_token": {
+          "type": "string",
+          "description": "Service token for authorization; if set, overrides username/password."
+        },
+        "certificate_fingerprint": {
+          "type": "string",
+          "description": "SHA256 hex fingerprint given by Elasticsearch on first launch."
+        },
+        "ca_cert": {
+          "type": "string",
+          "description": "PEM-encoded certificate authorities.\nWhen set, an empty certificate pool will be created, and the certificates will be appended to it."
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of concurrent worker goroutines to use for indexing. (Default: number of CPUs)"
+        },
+        "batch_size": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of documents to batch together per request.",
+          "default": 1000
+        },
+        "batch_size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of bytes to batch together per request.",
+          "default": 5242880
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}

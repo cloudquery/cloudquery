@@ -1,6 +1,9 @@
 package client
 
-import "runtime"
+import (
+	_ "embed"
+	"runtime"
+)
 
 const (
 	defaultBatchSize      = 1000
@@ -8,23 +11,43 @@ const (
 )
 
 type Spec struct {
-	Addresses []string `json:"addresses"` // A list of Elasticsearch nodes to use.
-	Username  string   `json:"username"`  // Username for HTTP Basic Authentication.
-	Password  string   `json:"password"`  // Password for HTTP Basic Authentication.
+	// A list of Elasticsearch nodes to use. (Default: ["http://localhost:9200"])
+	Addresses []string `json:"addresses"`
 
-	CloudID                string `json:"cloud_id"`                // Endpoint for the Elastic Service (https://elastic.co/cloud).
-	APIKey                 string `json:"api_key"`                 // Base64-encoded token for authorization; if set, overrides username/password and service token.
-	ServiceToken           string `json:"service_token"`           // Service token for authorization; if set, overrides username/password.
-	CertificateFingerprint string `json:"certificate_fingerprint"` // SHA256 hex fingerprint given by Elasticsearch on first launch.
+	// Username for HTTP Basic Authentication.
+	Username string `json:"username"`
+
+	// Password for HTTP Basic Authentication.
+	Password string `json:"password"`
+
+	// Endpoint for the Elastic Service (https://elastic.co/cloud).
+	CloudID string `json:"cloud_id"`
+
+	// Base64-encoded token for authorization; if set, overrides username/password and service token.
+	APIKey string `json:"api_key"`
+
+	// Service token for authorization; if set, overrides username/password.
+	ServiceToken string `json:"service_token"`
+
+	// SHA256 hex fingerprint given by Elasticsearch on first launch.
+	CertificateFingerprint string `json:"certificate_fingerprint"`
 
 	// PEM-encoded certificate authorities.
 	// When set, an empty certificate pool will be created, and the certificates will be appended to it.
 	CACert string `json:"ca_cert"`
 
-	Concurrency    int `json:"concurrency"`      // Number of concurrent worker goroutines to use for indexing. (Default: number of CPUs)
-	BatchSize      int `json:"batch_size"`       // Number of documents to batch together per request. (Default: 1000)
-	BatchSizeBytes int `json:"batch_size_bytes"` // Number of bytes to batch together per request. (Default: 5 MiB)
+	// Number of concurrent worker goroutines to use for indexing. (Default: number of CPUs)
+	Concurrency int `json:"concurrency" jsonschema:"minimum=1"`
+
+	// Number of documents to batch together per request.
+	BatchSize int `json:"batch_size" jsonschema:"minimum=1,default=1000"`
+
+	// Number of bytes to batch together per request.
+	BatchSizeBytes int `json:"batch_size_bytes" jsonschema:"minimum=1,default=5242880"`
 }
+
+//go:embed schema.json
+var JSONSchema string
 
 func (s *Spec) SetDefaults() {
 	if len(s.Addresses) == 0 {
