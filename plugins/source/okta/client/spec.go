@@ -1,8 +1,7 @@
 package client
 
 import (
-	"fmt"
-	"os"
+	"errors"
 	"time"
 
 	"github.com/rs/zerolog"
@@ -20,10 +19,6 @@ type (
 		MaxBackoff time.Duration `json:"max_backoff,omitempty"`
 		MaxRetries int32         `json:"max_retries,omitempty"`
 	}
-)
-
-const (
-	OktaAPIToken = "OKTA_API_TOKEN"
 )
 
 func (s *Spec) SetDefaults(logger *zerolog.Logger) {
@@ -44,11 +39,6 @@ func (s *Spec) SetDefaults(logger *zerolog.Logger) {
 		s.RateLimit.MaxBackoff = minBackOff
 	}
 
-	if len(s.Token) == 0 {
-		logger.Warn().Msgf("usage of %q environment variable value is deprecated and will be dropped in a future release", OktaAPIToken)
-		s.Token = os.Getenv(OktaAPIToken)
-	}
-
 	if s.Concurrency < 1 {
 		s.Concurrency = 10000
 	}
@@ -56,13 +46,13 @@ func (s *Spec) SetDefaults(logger *zerolog.Logger) {
 
 func (s Spec) Validate() error {
 	if len(s.Token) == 0 {
-		return fmt.Errorf("missing API token (should be set in the configuration or as %q environment variable)", OktaAPIToken)
+		return errors.New("missing \"token\" in plugin configuration")
 	}
 
 	const exampleDomain = "https://<CHANGE_THIS_TO_YOUR_OKTA_DOMAIN>.okta.com"
 	switch s.Domain {
 	case "", exampleDomain:
-		return fmt.Errorf("missing \"domain\" in plugin configuration")
+		return errors.New("missing \"domain\" in plugin configuration")
 	}
 
 	return nil
