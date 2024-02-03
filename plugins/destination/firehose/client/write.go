@@ -105,7 +105,7 @@ func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage
 }
 
 func (c *Client) sendBatch(ctx context.Context, recordsBatchInput *firehose.PutRecordBatchInput, count int) error {
-	if count == *c.spec.MaxRetries {
+	if count >= c.spec.MaxRetries {
 		return fmt.Errorf("max retries reached")
 	}
 	if recordsBatchInput == nil || len(recordsBatchInput.Records) == 0 {
