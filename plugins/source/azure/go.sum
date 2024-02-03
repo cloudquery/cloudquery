@@ -176,6 +176,8 @@ github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity v0.12
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity v0.12.0/go.mod h1:KXuU1ooQ7I0shuCKHFfiNEB8WRpAu8UxT8aYzKGxRh0=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus v1.2.0 h1:jngSeKBnzC7qIk3rvbWHsLI7eeasEucORHWr2CHX0Yg=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus v1.2.0/go.mod h1:1YXAxWw6baox+KafeQU2scy21/4IHvqXoIJuCpcvpMQ=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric v1.2.0 h1:3N7h+QCg+UPHkm5UjMPyD8yiDofLk4X+8idyyV27R4U=
+github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicefabric/armservicefabric v1.2.0/go.mod h1:Msj1PiUuCxDqPEW23SJUtju8dLNTzuD3nJZA7VmJoKM=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql v1.2.0 h1:S087deZ0kP1RUg4pU7w9U9xpUedTCbOtz+mnd0+hrkQ=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sql/armsql v1.2.0/go.mod h1:B4cEyXrWBmbfMDAPnpJ1di7MAt5DKP57jPEObAvZChg=
 github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/sqlvirtualmachine/armsqlvirtualmachine v0.10.0 h1:QRyESPtOYh61sS4Cj9djF1j9hZ73AQNHWKBe2dG7v/4=

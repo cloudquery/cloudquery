@@ -63,6 +63,7 @@ const (
 	Namespacemicrosoft_saas                    = "microsoft.saas"
 	Namespacemicrosoft_security                = "microsoft.security"
 	Namespacemicrosoft_servicebus              = "microsoft.servicebus"
+	Namespacemicrosoft_servicefabric           = "microsoft.servicefabric"
 	Namespacemicrosoft_sql                     = "microsoft.sql"
 	Namespacemicrosoft_sqlvirtualmachine       = "microsoft.sqlvirtualmachine"
 	Namespacemicrosoft_storagecache            = "microsoft.storagecache"

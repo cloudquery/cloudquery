@@ -82,6 +82,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/search"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/security"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/servicebus"
+	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/servicefabric"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/sql"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/sqlvirtualmachine"
 	"github.com/cloudquery/cloudquery/plugins/source/azure/resources/services/storage"
@@ -343,6 +344,7 @@ func getTables() schema.Tables {
 		security.Topology(),
 		security.WorkspaceSettings(),
 		servicebus.Namespaces(),
+		servicefabric.Clusters(),
 		sql.Servers(),
 		sql.InstancePools(),
 		sql.ManagedInstances(),
