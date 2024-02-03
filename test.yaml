@@ -1,0 +1,22 @@
+kind: source
+spec:
+  name: "azure"
+  destinations: ["csv"]
+  spec:
+  path: "localhost:7777"
+  registry: "grpc"
+  tables:
+  - azure_servicefabric_clusters
+---
+kind: destination
+spec:
+  name: "csv"
+  path: "cloudquery/file"
+  version: "v3.4.0"
+  write_mode: "append" # CSV only supports 'append' mode
+  spec:
+    path: "./cq_out/{{TABLE}}.{{FORMAT}}"
+    no_rotate: true
+    format: "csv"
+    format_spec:
+      delimiter: ","

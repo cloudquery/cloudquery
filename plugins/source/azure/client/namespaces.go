@@ -149,6 +149,7 @@ var namespaces = []string{
 	Namespacemicrosoft_saas,
 	Namespacemicrosoft_security,
 	Namespacemicrosoft_servicebus,
+	Namespacemicrosoft_servicefabric,
 	Namespacemicrosoft_sql,
 	Namespacemicrosoft_sqlvirtualmachine,
 	Namespacemicrosoft_storagecache,

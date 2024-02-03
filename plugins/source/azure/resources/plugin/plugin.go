@@ -62,6 +62,7 @@ var azureExceptions = map[string]string{
 	"saas":                      "Software as a Service (SaaS)",
 	"sap":                       "SAP",
 	"servicebus":                "Service Bus",
+	"servicefabric":             "Service Fabric",
 	"sqlvirtualmachine":         "SQL Virtual Machine",
 	"streamanalytics":           "Stream Analytics",
 	"vpn":                       "Virtual Private Network (VPN)",
