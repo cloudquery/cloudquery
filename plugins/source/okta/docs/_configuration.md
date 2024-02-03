@@ -9,13 +9,10 @@ spec:
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   spec:
-    # Required. Your Okta domain name
+    # Okta domain name
     domain: "https://<YOUR_OKTA_DOMAIN>.okta.com/"
-
-    # Optional. Okta Token to access API
-    # ⚠️ Warning - Your token should be kept secret and not committed to source control.
-    # ⚠️ Warning - In the future versions token parameter will become required.
-    # token: "<YOUR_OKTA_TOKEN>"
+    # Okta Token to access API
+    token: "<YOUR_OKTA_TOKEN>"
 
     # Optional. Rate limiter settings
     # rate_limit:
