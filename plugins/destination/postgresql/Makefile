@@ -10,8 +10,6 @@ lint:
 
 .PHONY: gen-spec-schema
 gen-spec-schema:
-	# required for loading comments from filetypes
-	go mod vendor
 	go run client/spec/gen/main.go
 
 # All gen targets
