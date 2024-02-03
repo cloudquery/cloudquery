@@ -12,7 +12,7 @@
                 "type": "string"
               },
               "type": "array",
-              "description": "A list of Elasticsearch nodes to use. (Default: [\"http://localhost:9200\"])",
+              "description": "A list of Elasticsearch nodes to use.",
               "default": [
                 "http://localhost:9200"
               ]
