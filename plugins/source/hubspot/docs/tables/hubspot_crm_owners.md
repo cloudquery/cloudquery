@@ -13,11 +13,11 @@ The primary key for this table is **id**.
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
 |id (PK)|`utf8`|
-|email|`utf8`|
 |first_name|`utf8`|
 |last_name|`utf8`|
-|user_id|`int64`|
 |created_at|`timestamp[us, tz=UTC]`|
-|updated_at|`timestamp[us, tz=UTC]`|
 |archived|`bool`|
 |teams|`json`|
+|user_id|`int64`|
+|email|`utf8`|
+|updated_at|`timestamp[us, tz=UTC]`|
