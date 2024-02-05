@@ -103,6 +103,7 @@ var GcpServices = map[string]bool{
 	"datamigration.googleapis.com":                    true,
 	"datapipelines.googleapis.com":                    true,
 	"dataplex.googleapis.com":                         true,
+	"dataportability.googleapis.com":                  true,
 	"dataproc.googleapis.com":                         true,
 	"datastore.googleapis.com":                        true,
 	"datastream.googleapis.com":                       true,
