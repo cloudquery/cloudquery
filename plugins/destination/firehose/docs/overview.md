@@ -30,7 +30,9 @@ It is important to note that Amazon Kinesis Firehose has the following limitatio
 
 - `stream_arn` (`string`) (required)
 
-  Kinesis Firehose delivery stream where data will be sent.
+  Kinesis Firehose delivery stream ARN where data will be sent to.
+
+  Format: `arn:${Partition}:firehose:${Region}:${Account}:deliverystream/${DeliveryStreamName}`.
 
 - `max_retries` (`integer`) (optional) (default: `5`)
 

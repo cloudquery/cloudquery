@@ -20,7 +20,7 @@ func fetchLineItems(ctx context.Context, meta schema.ClientMeta, parent *schema.
 		}
 
 		req := hubspotClient.BasicApi.
-			GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
+			GetCrmV3ObjectsLineItemsGetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
 			Properties(cqClient.Spec.TableOptions.ForTable("hubspot_crm_line_items").GetProperties()).
 			Associations(cqClient.Spec.TableOptions.ForTable("hubspot_crm_line_items").GetAssociations()).
 			Limit(client.DefaultPageSize)

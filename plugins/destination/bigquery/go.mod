@@ -5,6 +5,7 @@ go 1.21.4
 require (
 	cloud.google.com/go/bigquery v1.58.0
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
+	github.com/cloudquery/codegen v0.3.12
 	github.com/cloudquery/plugin-sdk/v4 v4.29.1
 	github.com/goccy/go-json v0.10.2
 	github.com/rs/zerolog v1.31.0
@@ -149,3 +150,6 @@ require (
 	google.golang.org/protobuf v1.32.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
+
+// github.com/cloudquery/jsonschema @ cqmain
+replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240202134451-d771afde32fb

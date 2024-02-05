@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
+	"github.com/cloudquery/cloudquery/plugins/destination/firehose/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/goccy/go-json"
@@ -17,7 +18,7 @@ import (
 
 type Client struct {
 	firehoseClient *firehose.Client
-	spec           Spec
+	spec           spec.Spec
 
 	logger zerolog.Logger
 	plugin.UnimplementedSource
@@ -26,16 +27,16 @@ type Client struct {
 var _ plugin.Client = (*Client)(nil)
 
 func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
-	var spec Spec
-	if err := json.Unmarshal(specBytes, &spec); err != nil {
+	var s spec.Spec
+	if err := json.Unmarshal(specBytes, &s); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
-	spec.SetDefaults()
-	if err := spec.Validate(); err != nil {
+	s.SetDefaults()
+	if err := s.Validate(); err != nil {
 		return nil, err
 	}
 
-	parsedARN, err := arn.Parse(spec.StreamARN)
+	parsedARN, err := arn.Parse(s.StreamARN)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse firehose stream ARN: %w", err)
 	}
@@ -46,7 +47,7 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.
 
 	return &Client{
 		logger:         logger.With().Str("module", "firehose").Logger(),
-		spec:           spec,
+		spec:           s,
 		firehoseClient: firehose.NewFromConfig(cfg),
 	}, nil
 }

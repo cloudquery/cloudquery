@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/bigquery/client/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Duration": {
+      "type": "string",
+      "pattern": "^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$",
+      "title": "CloudQuery configtype.Duration"
+    },
+    "Spec": {
+      "properties": {
+        "project_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The id of the project where the destination BigQuery database resides."
+        },
+        "dataset_id": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The name of the BigQuery dataset within the project, e.g. `my_dataset`.\n This dataset needs to be created before running a sync or migration."
+        },
+        "dataset_location": {
+          "type": "string",
+          "description": "The data location of the BigQuery dataset. If set, will be used as the default location for job operations.\nPro-tip: this can solve \"dataset not found\" issues for newly created datasets."
+        },
+        "time_partitioning": {
+          "type": "string",
+          "enum": [
+            "none",
+            "hour",
+            "day"
+          ],
+          "description": "The time partitioning to use when creating tables. The partition time column used will always be `_cq_sync_time` so that all rows for a sync run will be partitioned on the hour/day the sync started.",
+          "default": "none"
+        },
+        "service_account_key_json": {
+          "type": "string",
+          "description": "GCP service account key content.\nThis allows for using different service accounts for the GCP source and BigQuery destination.\nIf using service account keys, it is best to use [environment or file variable substitution](/docs/advanced-topics/environment-variable-substitution)."
+        },
+        "endpoint": {
+          "type": "string",
+          "description": "The BigQuery API endpoint to use. This is useful for testing against a local emulator."
+        },
+        "batch_size": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of records to write before starting a new object.",
+          "default": 10000
+        },
+        "batch_size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of bytes (as Arrow buffer size) to write before starting a new object.",
+          "default": 5242880
+        },
+        "batch_timeout": {
+          "$ref": "#/$defs/Duration",
+          "description": "Maximum interval between batch writes.",
+          "default": "10s"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "project_id",
+        "dataset_id"
+      ]
+    }
+  }
+}
