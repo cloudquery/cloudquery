@@ -18,6 +18,7 @@ The following fields are used to calculate the value of `_cq_id`: (**account_id*
 |arn|`utf8`|
 |id|`utf8`|
 |saml_provider_arns|`list<item: utf8, nullable>`|
+|tags|`json`|
 |allow_unauthenticated_identities|`bool`|
 |identity_pool_id|`utf8`|
 |identity_pool_name|`utf8`|
