@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/destination/firehose/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/goccy/go-json"
 	"github.com/stretchr/testify/require"
@@ -14,7 +15,7 @@ func TestPluginJSON(t *testing.T) {
 	ctx := context.Background()
 	p := plugin.NewPlugin("firehose", "development", New)
 	const streamARN = "cq-playground-test"
-	s := &Spec{NoRotate: true, StreamARN: streamARN}
+	s := &spec.Spec{StreamARN: streamARN}
 	b, err := json.Marshal(s)
 	require.NoError(t, err)
 	require.NoError(t, p.Init(ctx, b, plugin.NewClientOptions{}))

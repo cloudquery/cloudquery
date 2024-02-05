@@ -8,7 +8,7 @@ The CloudQuery Okta plugin extracts Okta resources configurations and loads them
 
 ## Authentication
 
-To [authenticate](https://developer.okta.com/docs/guides/create-an-api-token/overview/) CloudQuery with your Okta account you need to set an `OKTA_API_TOKEN` environment variable or add it the configuration.
+To [authenticate](https://developer.okta.com/docs/guides/create-an-api-token/overview/) CloudQuery with your Okta account you need to add Okta API token to the configuration.
 
 ## Configuration
 
@@ -29,10 +29,9 @@ spec:
     # Required. Your Okta domain name
     domain: "https://<YOUR_OKTA_DOMAIN>.okta.com/"
 
-    # Optional. Okta Token to access API, you can set this with OKTA_API_TOKEN environment variable
-    # ⚠️ Warning - Your token should be kept secret and not committed to source control
-    # token: "<YOUR_OKTA_TOKEN>"
+    # Optional. Okta Token to access API
+    token: "<YOUR_OKTA_TOKEN>"
 ```
 
 - `domain` (Required) - Specify the Okta domain you are fetching from. [Visit this link](https://developer.okta.com/docs/guides/find-your-domain/findorg/) to find your Okta domain
-- `token` (Optional) - Okta Token to access the API. You can set this with an `OKTA_API_TOKEN` environment variable
+- `token` (Required) - Okta Token to access the API.
