@@ -43,7 +43,7 @@ func (r LogLevel) LogLevel() tracelog.LogLevel {
 	return tracelog.LogLevel(r)
 }
 
-func (r *LogLevel) MarshalJSON() ([]byte, error) {
+func (r LogLevel) MarshalJSON() ([]byte, error) {
 	buffer := bytes.NewBufferString(`"`)
 	buffer.WriteString(r.String())
 	buffer.WriteString(`"`)
