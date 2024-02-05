@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/codegen/jsonschema"
+	"github.com/stretchr/testify/require"
 )
 
 func TestJSONSchema(t *testing.T) {
@@ -41,18 +42,8 @@ func TestJSONSchema(t *testing.T) {
 			Spec: `{"token": "tok", "domain": "https://domain.okta.com", "rate_limit": null}`,
 		},
 		{
-			Name: "spec with token and domain and rate limit",
+			Name: "spec with token and domain and valid rate limit",
 			Spec: `{"token": "tok", "domain": "https://domain.okta.com", "rate_limit": {"max_backoff": "60s"}}`,
-		},
-		{
-			Name: "spec with token and domain and invalid rate limit",
-			Spec: `{"token": "tok", "domain": "https://domain.okta.com", "rate_limit": {"max_backoff": true}}`,
-			Err:  true,
-		},
-		{
-			Name: "spec with token and domain and zero rate limit",
-			Spec: `{"token": "tok", "domain": "https://domain.okta.com", "rate_limit": {"max_backoff": 0}}`,
-			Err:  true,
 		},
 		{
 			Name: "spec with bool concurrency",
@@ -81,6 +72,37 @@ func TestJSONSchema(t *testing.T) {
 		{
 			Name: "spec with unknown field",
 			Spec: `{"token": "tok", "domain": "https://domain.okta.com", "unknown": "test"}`,
+			Err:  true,
+		},
+	})
+}
+
+func TestRateLimitJSONSchema(t *testing.T) {
+	data, err := jsonschema.Generate(RateLimit{})
+	require.NoError(t, err)
+
+	jsonschema.TestJSONSchema(t, string(data), []jsonschema.TestCase{
+		{
+			Name: "empty",
+			Spec: `{}`,
+		},
+		{
+			Name: "valid max_backoff",
+			Spec: `{"max_backoff": "60s"}`,
+		},
+		{
+			Name: "invalid max_backoff",
+			Spec: `{"max_backoff": true}`,
+			Err:  true,
+		},
+		{
+			Name: "zero max_backoff",
+			Spec: `{"max_backoff": 0}`,
+			Err:  true,
+		},
+		{
+			Name: "unknown field",
+			Spec: `{"unknown": "test"}`,
 			Err:  true,
 		},
 	})
