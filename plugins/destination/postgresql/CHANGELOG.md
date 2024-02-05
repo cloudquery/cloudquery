@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.3.0...plugins-destination-postgresql-v7.3.1) (2024-02-05)
+
+
+### Bug Fixes
+
+* Remove `NOT NULL` when moving to `_cq_id` ([#16518](https://github.com/cloudquery/cloudquery/issues/16518)) ([dbace97](https://github.com/cloudquery/cloudquery/commit/dbace976b05ceaaca416ce7b48f38a95a26d0b9b))
+
 ## [7.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.2.0...plugins-destination-postgresql-v7.3.0) (2024-02-05)
 
 

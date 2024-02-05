@@ -21,16 +21,8 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 		Resolver:  fetchSsoadminAccountAssignments,
 		Transform: transformers.TransformWithStruct(&types.AccountAssignment{}, transformers.WithPrimaryKeyComponents("PermissionSetArn", "PrincipalId", "PrincipalType", "AccountId")),
 		Columns: schema.ColumnList{
-			{
-				Name:     "request_account_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "request_region",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.RequestAccountIDColumn(false),
+			client.RequestRegionColumn(false),
 			{
 				Name:                "instance_arn",
 				Type:                arrow.BinaryTypes.String,

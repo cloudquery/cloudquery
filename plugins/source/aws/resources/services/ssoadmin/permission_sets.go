@@ -22,16 +22,8 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 		PreResourceResolver: getSsoadminPermissionSet,
 		Transform:           transformers.TransformWithStruct(&types.PermissionSet{}, transformers.WithPrimaryKeyComponents("PermissionSetArn")),
 		Columns: []schema.Column{
-			{
-				Name:     "request_account_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "request_region",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.RequestAccountIDColumn(false),
+			client.RequestRegionColumn(false),
 			{
 				Name:                "instance_arn",
 				Type:                arrow.BinaryTypes.String,

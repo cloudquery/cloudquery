@@ -21,6 +21,8 @@ func ResolverRules() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
+			client.RequestAccountIDColumn(true),
+			client.RequestRegionColumn(true),
 		},
 	}
 }

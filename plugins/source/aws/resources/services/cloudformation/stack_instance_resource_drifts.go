@@ -22,16 +22,8 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 		Resolver:  fetchStackInstanceResourceDrifts,
 		Transform: transformers.TransformWithStruct(&types.StackInstanceResourceDriftsSummary{}, transformers.WithPrimaryKeyComponents("StackId", "LogicalResourceId", "PhysicalResourceId")),
 		Columns: []schema.Column{
-			{
-				Name:     "request_account_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:     "request_region",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.RequestAccountIDColumn(false),
+			client.RequestRegionColumn(false),
 			{
 				Name:                "stack_set_arn",
 				Type:                arrow.BinaryTypes.String,

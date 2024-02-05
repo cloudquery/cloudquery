@@ -52,7 +52,7 @@ jobs:
             if (pluginFiles.includes('package.json')) {
               return 'node';
             }
-            if (pluginFiles.includes('.goreleaser.yaml')) {
+            if (pluginFiles.includes('main.go')) {
               return 'go';
             }
             if (pluginFiles.includes('main.py')) {
