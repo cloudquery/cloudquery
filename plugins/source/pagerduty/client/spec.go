@@ -1,5 +1,7 @@
 package client
 
+import _ "embed"
+
 const defaultConcurrency = 1000
 
 type Spec struct {
@@ -7,9 +9,14 @@ type Spec struct {
 	// Used in the tables: ["escalation_policies", "incidents", "maintenance_windows", "services", "users"]
 	TeamIds []string `json:"team_ids"`
 
-	MaxRequestsPerSecond *int `json:"max_requests_per_second"`
+	// PagerDuty API is heavily rate-limited (900 requests/min = 15 requests/sec, across the entire organization).
+	// This option allows you to control the rate at which the plugin will make requests to the API.
+	// You can reduce this parameter in case you are still seeing rate limit errors (status code 429), or increase
+	// it if your PagerDuty API quota is higher. See https://developer.pagerduty.com/docs/ZG9jOjExMDI5NTUz-rate-limiting#what-are-our-limits for more info.
+	MaxRequestsPerSecond *int `json:"max_requests_per_second" jsonschema:"minimum=1,default=10"`
 
-	Concurrency int `json:"concurrency"`
+	// A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+	Concurrency int `json:"concurrency" jsonschema:"minimum=1,default=1000"`
 }
 
 func (spec *Spec) SetDefaults() {
@@ -31,3 +38,6 @@ func (spec *Spec) SetDefaults() {
 func (*Spec) Validate() error {
 	return nil
 }
+
+//go:embed schema.json
+var JSONSchema string

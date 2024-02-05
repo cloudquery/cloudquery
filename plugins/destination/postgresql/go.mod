@@ -1,11 +1,15 @@
 module github.com/cloudquery/cloudquery/plugins/destination/postgresql
 
-go 1.21.4
+go 1.21.5
+
+toolchain go1.21.6
 
 require (
-	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
+	github.com/apache/arrow/go/v15 v15.0.0-20240115115805-d7bc55542e61
+	github.com/cloudquery/codegen v0.3.12
 	github.com/cloudquery/plugin-sdk/v4 v4.29.1
 	github.com/google/go-cmp v0.6.0
+	github.com/invopop/jsonschema v0.12.0
 	github.com/jackc/pgx-zerolog v0.0.0-20230315001418-f978528409eb
 	github.com/jackc/pgx/v5 v5.3.1
 	github.com/rs/zerolog v1.31.0
@@ -56,7 +60,6 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.1 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/invopop/jsonschema v0.12.0 // indirect
 	github.com/iris-contrib/schema v0.0.6 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20231201235250-de7065d80cb9 // indirect
@@ -128,3 +131,6 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
+
+// github.com/cloudquery/jsonschema @ cqmain
+replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240202134451-d771afde32fb

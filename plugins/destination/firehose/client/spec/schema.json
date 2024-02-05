@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/firehose/client/spec/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Spec": {
+      "properties": {
+        "stream_arn": {
+          "type": "string",
+          "pattern": "^arn:[^:]+:firehose:[^:]+:[^:]+:deliverystream/[^:]+$",
+          "description": "Kinesis Firehose delivery stream ARN where data will be sent to.\nFormat: `arn:${Partition}:firehose:${Region}:${Account}:deliverystream/${DeliveryStreamName}`."
+        },
+        "max_retries": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Amount of retries to perform when writing a batch.",
+          "default": 5
+        },
+        "max_record_size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of bytes (as Arrow buffer size) to write before starting a new record.",
+          "default": 1024000
+        },
+        "max_batch_records": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of records allowed in a single batch.",
+          "default": 500
+        },
+        "max_batch_size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of bytes allowed in a single batch.",
+          "default": 4194000
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "stream_arn"
+      ],
+      "description": "Amazon Kinesis Firehose destination plugin spec."
+    }
+  }
+}

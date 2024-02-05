@@ -9,6 +9,7 @@ spec:
   path: "cloudquery/kafka"
   registry: "cloudquery"
   version: "VERSION_DESTINATION_KAFKA"
+  write_mode: "append"
   spec:
     brokers: ["<broker-host>:<broker-port>"]
     format: "csv" # options: parquet, json, csv
@@ -26,4 +27,4 @@ spec:
     # batch_size: 1000
 ```
 
-Note that the Kafka plugin only supports `append` write-mode. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
+Note that the Kafka plugin only supports `append` `write_mode`. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).

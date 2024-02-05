@@ -7,6 +7,7 @@ spec:
   path: "cloudquery/gcs"
   registry: "cloudquery"
   version: "VERSION_DESTINATION_GCS"
+  write_mode: "append"
   spec:
     bucket: "bucket_name"
     path: "path/to/files"
@@ -24,4 +25,4 @@ spec:
     # batch_timeout: 30s
 ```
 
-Note that the GCS plugin only supports `append` write-mode. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
+Note that the GCS plugin only supports `append` `write_mode`. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
