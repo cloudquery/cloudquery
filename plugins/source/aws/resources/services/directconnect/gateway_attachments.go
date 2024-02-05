@@ -22,17 +22,8 @@ func gatewayAttachments() *schema.Table {
 			transformers.WithPrimaryKeyComponents("VirtualInterfaceOwnerAccount", "VirtualInterfaceRegion", "VirtualInterfaceId"),
 		),
 		Columns: []schema.Column{
-			{
-				Name:                "request_account_id",
-				Type:                arrow.BinaryTypes.String,
-				Resolver:            client.ResolveAWSAccount,
-				PrimaryKeyComponent: true,
-			},
-			{
-				Name:     "request_region",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAWSRegion,
-			},
+			client.RequestAccountIDColumn(true),
+			client.RequestRegionColumn(false),
 			{
 				Name:                "gateway_arn",
 				Type:                arrow.BinaryTypes.String,

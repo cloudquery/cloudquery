@@ -3,7 +3,6 @@ package networkmanager
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/networkmanager"
 	"github.com/aws/aws-sdk-go-v2/service/networkmanager/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -21,12 +20,8 @@ The  'request_region' column is added to show region of where the request was ma
 		Transform: transformers.TransformWithStruct(&types.TransitGatewayRegistration{}, transformers.WithPrimaryKeyComponents("GlobalNetworkId", "TransitGatewayArn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
-			{
-				Name:                "request_region",
-				Type:                arrow.BinaryTypes.String,
-				Resolver:            client.ResolveAWSRegion,
-				PrimaryKeyComponent: true,
-			}},
+			client.RequestRegionColumn(true),
+		},
 		Relations: schema.Tables{},
 	}
 }

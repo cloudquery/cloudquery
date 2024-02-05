@@ -3,7 +3,6 @@ package organizations
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	"github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -22,12 +21,7 @@ The 'request_account_id' column is added to show from where the request was made
 		Transform: transformers.TransformWithStruct(&types.Account{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "organizations"),
 		Columns: []schema.Column{
-			{
-				Name:                "request_account_id",
-				Type:                arrow.BinaryTypes.String,
-				Resolver:            client.ResolveAWSAccount,
-				PrimaryKeyComponent: true,
-			},
+			client.RequestAccountIDColumn(true),
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
