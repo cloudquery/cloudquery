@@ -102,7 +102,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 		case schema.TableColumnChangeTypeRemove:
 			continue
 		case schema.TableColumnChangeTypeMoveToCQOnly:
-			return c.migrateToCQID(ctx, tableName, change.Current)
+			return c.migrateToCQID(ctx, table, change.Current)
 		default:
 			return fmt.Errorf("unsupported column change type: %s for column: %v from %v", change.Type.String(), change.Current, change.Previous)
 		}
@@ -170,7 +170,7 @@ func (c *Client) dropTable(ctx context.Context, tableName string) error {
 	return nil
 }
 
-func (c *Client) migrateToCQID(ctx context.Context, tableName string, _ schema.Column) (err error) {
+func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schema.Column) (err error) {
 	// Steps:
 	// acquire connection
 	var conn *pgxpool.Conn
@@ -179,6 +179,10 @@ func (c *Client) migrateToCQID(ctx context.Context, tableName string, _ schema.C
 		return fmt.Errorf("failed to acquire connection: %w", err)
 	}
 	defer conn.Release()
+	tableName := table.Name
+	sanitizedTableName := pgx.Identifier{tableName}.Sanitize()
+	sanitizedPKName := pgx.Identifier{getPKName(&schema.Table{Name: tableName})}.Sanitize()
+
 	// start transaction
 	tx, err := conn.BeginTx(ctx, pgx.TxOptions{
 		IsoLevel: pgx.Serializable,
@@ -201,14 +205,19 @@ func (c *Client) migrateToCQID(ctx context.Context, tableName string, _ schema.C
 		}
 	}()
 
-	sanitizedTableName := pgx.Identifier{tableName}.Sanitize()
-	sanitizedPKName := pgx.Identifier{getPKName(&schema.Table{Name: tableName})}.Sanitize()
-
 	// Drop existing primary key
 	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" DROP CONSTRAINT "+sanitizedPKName)
 	if err != nil {
 		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to drop primary key")
 		return err
+	}
+
+	for _, colName := range table.PrimaryKeyComponents() {
+		_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ALTER COLUMN "+pgx.Identifier{colName}.Sanitize()+" DROP NOT NULL")
+		if err != nil {
+			c.logger.Error().Err(err).Str("table", tableName).Str("column", colName).Msg("Failed to drop NOT NULL constraint")
+			return err
+		}
 	}
 
 	// Create new Primary Key with CQID
