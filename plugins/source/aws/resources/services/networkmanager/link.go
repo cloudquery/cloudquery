@@ -22,12 +22,7 @@ The  'request_region' column is added to show region of where the request was ma
 		Transform: transformers.TransformWithStruct(&types.Link{}, transformers.WithPrimaryKeyComponents("GlobalNetworkId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
-			{
-				Name:                "request_region",
-				Type:                arrow.BinaryTypes.String,
-				Resolver:            client.ResolveAWSRegion,
-				PrimaryKeyComponent: true,
-			}, {
+			client.RequestRegionColumn(true), {
 				Name:                "arn",
 				Type:                arrow.BinaryTypes.String,
 				Resolver:            schema.PathResolver("LinkArn"),

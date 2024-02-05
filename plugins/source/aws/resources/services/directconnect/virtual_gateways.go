@@ -20,18 +20,8 @@ func VirtualGateways() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "directconnect"),
 		Transform:   transformers.TransformWithStruct(&types.VirtualGateway{}),
 		Columns: []schema.Column{
-			{
-				Name:                "request_account_id",
-				Type:                arrow.BinaryTypes.String,
-				Resolver:            client.ResolveAWSAccount,
-				PrimaryKeyComponent: true,
-			},
-			{
-				Name:                "request_region",
-				Type:                arrow.BinaryTypes.String,
-				Resolver:            client.ResolveAWSRegion,
-				PrimaryKeyComponent: true,
-			},
+			client.RequestAccountIDColumn(true),
+			client.RequestRegionColumn(true),
 			{
 				Name:                "id",
 				Type:                arrow.BinaryTypes.String,
