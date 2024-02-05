@@ -3,7 +3,6 @@ package codeartifact
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/codeartifact"
 	"github.com/aws/aws-sdk-go-v2/service/codeartifact/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -23,18 +22,8 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "codeartifact"),
 		Transform:           transformers.TransformWithStruct(&types.RepositoryDescription{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Columns: []schema.Column{
-			{
-				Name:                "request_account_id",
-				Type:                arrow.BinaryTypes.String,
-				Resolver:            client.ResolveAWSAccount,
-				PrimaryKeyComponent: true,
-			},
-			{
-				Name:                "request_region",
-				Type:                arrow.BinaryTypes.String,
-				Resolver:            client.ResolveAWSRegion,
-				PrimaryKeyComponent: true,
-			},
+			client.RequestAccountIDColumn(true),
+			client.RequestRegionColumn(true),
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
