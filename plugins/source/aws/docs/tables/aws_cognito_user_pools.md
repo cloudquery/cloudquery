@@ -20,6 +20,7 @@ The following tables depend on aws_cognito_user_pools:
 |account_id|`utf8`|
 |region|`utf8`|
 |id|`utf8`|
+|tags|`json`|
 |account_recovery_setting|`json`|
 |admin_create_user_config|`json`|
 |alias_attributes|`list<item: utf8, nullable>`|

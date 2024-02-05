@@ -10,6 +10,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func IdentityPools() *schema.Table {
@@ -42,6 +43,11 @@ func IdentityPools() *schema.Table {
 				Name:     "saml_provider_arns",
 				Type:     arrow.ListOf(arrow.BinaryTypes.String),
 				Resolver: schema.PathResolver("SamlProviderARNs"),
+			},
+			{
+				Name:     "tags",
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: schema.PathResolver("IdentityPoolTags"),
 			},
 		},
 	}
