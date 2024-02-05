@@ -29,7 +29,8 @@
       "properties": {
         "token": {
           "type": "string",
-          "description": "Token for Okta API access.\nYou can set this with an `OKTA_API_TOKEN` environment variable."
+          "minLength": 1,
+          "description": "Token for Okta API access."
         },
         "domain": {
           "type": "string",
@@ -61,6 +62,7 @@
       "additionalProperties": false,
       "type": "object",
       "required": [
+        "token",
         "domain"
       ]
     }

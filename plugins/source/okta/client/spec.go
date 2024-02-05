@@ -2,8 +2,6 @@ package client
 
 import (
 	_ "embed"
-	"fmt"
-	"os"
 	"errors"
 	"time"
 
@@ -15,8 +13,7 @@ import (
 type (
 	Spec struct {
 		// Token for Okta API access.
-		// You can set this with an `OKTA_API_TOKEN` environment variable.
-		Token string `json:"token"`
+		Token string `json:"token" jsonschema:"required,minLength=1"`
 
 		// Specify the Okta domain you are fetching from.
 		// [Visit this link](https://developer.okta.com/docs/guides/find-your-domain/findorg/) to find your Okta domain.

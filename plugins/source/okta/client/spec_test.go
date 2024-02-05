@@ -21,6 +21,7 @@ func TestJSONSchema(t *testing.T) {
 		{
 			Name: "spec with domain",
 			Spec: `{"domain": "https://domain.okta.com"}`,
+			Err:  true,
 		},
 		{
 			Name: "spec with token and domain",
