@@ -81,7 +81,7 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 		okta.WithOrgUrl(config.Domain),
 		okta.WithToken(config.Token),
 		okta.WithCache(true),
-		okta.WithRateLimitMaxBackOff(int64(config.RateLimit.MaxBackoff/time.Second)), // this param takes int64 of seconds
+		okta.WithRateLimitMaxBackOff(int64(config.RateLimit.MaxBackoff.Duration()/time.Second)), // this param takes int64 of seconds
 		okta.WithRateLimitMaxRetries(config.RateLimit.MaxRetries),
 	)
 	cf.Debug = config.Debug

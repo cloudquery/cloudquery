@@ -50,12 +50,12 @@ Make sure you use [environment variable expansion](/docs/advanced-topics/environ
 
 ### Rate limit spec
 
-- `max_backoff` (`duration`) (optional) (default: `5s`)
+- `max_backoff` (`duration`) (optional) (default: `30s`)
 
   Max backoff interval to be used.
   If the value specified is less than the default one, the default one is used.
 
-- `max_retries` (`integer`) (optional) (default: `3`)
+- `max_retries` (`integer`) (optional) (default: `2`)
 
   Max retries to be performed.
   If the value specified is less than the default one, the default one is used.
