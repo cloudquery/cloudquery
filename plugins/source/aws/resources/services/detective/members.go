@@ -3,8 +3,6 @@ package detective
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v15/arrow"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/detective"
 	"github.com/aws/aws-sdk-go-v2/service/detective/types"
@@ -22,17 +20,8 @@ The 'request_account_id' and 'request_region' columns are added to show the acco
 		Resolver:  fetchMembers,
 		Transform: transformers.TransformWithStruct(&types.MemberDetail{}, transformers.WithPrimaryKeyComponents("AccountId", "GraphArn")),
 		Columns: []schema.Column{
-			{
-				Name:     "request_account_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAWSAccount,
-			},
-			{
-				Name:                "request_region",
-				Type:                arrow.BinaryTypes.String,
-				Resolver:            client.ResolveAWSRegion,
-				PrimaryKeyComponent: true,
-			},
+			client.RequestAccountIDColumn(false),
+			client.RequestRegionColumn(true),
 		},
 	}
 }

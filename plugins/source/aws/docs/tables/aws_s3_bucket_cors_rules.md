@@ -5,7 +5,7 @@ This table shows data for S3 Bucket Cors Rules.
 https://docs.aws.amazon.com/AmazonS3/latest/API/API_CORSRule.html
 
 The primary key for this table is **_cq_id**.
-The following fields are used to calculate the value of `_cq_id`: (**bucket_arn**, **id**).
+The following fields are used to calculate the value of `_cq_id`: (**bucket_arn**, **allowed_methods**, **allowed_origins**, **allowed_headers**, **expose_headers**, **id**, **max_age_seconds**).
 ## Relations
 
 This table depends on [aws_s3_buckets](aws_s3_buckets.md).
