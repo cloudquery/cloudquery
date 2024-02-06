@@ -1,5 +1,5 @@
 {
-  "cli": "5.3.0",
+  "cli": "5.3.1",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "22.19.2",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -33,7 +33,7 @@
   "plugins/source/datadog+FILLER": "0.0.0",
   "plugins/destination/bigquery": "3.3.16",
   "plugins/destination/bigquery+FILLER": "0.0.0",
-  "plugins/source/pagerduty": "3.1.4",
+  "plugins/source/pagerduty": "3.2.0",
   "plugins/source/pagerduty+FILLER": "0.0.0",
   "plugins/destination/mongodb": "2.2.22",
   "plugins/destination/mongodb+FILLER": "0.0.0",
