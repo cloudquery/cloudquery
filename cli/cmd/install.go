@@ -118,7 +118,7 @@ func enrichClientError(clientsList managedplugin.Clients, inferredList []bool, e
 		return fmt.Errorf("%w. Hint: use `cloudquery switch` to set a team", err)
 	}
 
-	if !strings.Contains(err.Error(), "not found") {
+	if !strings.Contains(strings.ToLower(err.Error()), "not found") {
 		return err
 	}
 	l := len(clientsList)
