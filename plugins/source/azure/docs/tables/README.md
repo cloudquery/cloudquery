@@ -298,6 +298,7 @@
 - [azure_sql_managed_instances](azure_sql_managed_instances.md)
   - [azure_sql_managed_instance_encryption_protectors](azure_sql_managed_instance_encryption_protectors.md)
   - [azure_sql_managed_instance_vulnerability_assessments](azure_sql_managed_instance_vulnerability_assessments.md)
+  - [azure_sql_managed_server_security_alert_policies](azure_sql_managed_server_security_alert_policies.md)
 - [azure_sql_servers](azure_sql_servers.md)
   - [azure_sql_server_admins](azure_sql_server_admins.md)
   - [azure_sql_server_advanced_threat_protection_settings](azure_sql_server_advanced_threat_protection_settings.md)

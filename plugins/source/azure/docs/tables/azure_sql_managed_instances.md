@@ -11,6 +11,7 @@ The primary key for this table is **id**.
 The following tables depend on azure_sql_managed_instances:
   - [azure_sql_managed_instance_encryption_protectors](azure_sql_managed_instance_encryption_protectors.md)
   - [azure_sql_managed_instance_vulnerability_assessments](azure_sql_managed_instance_vulnerability_assessments.md)
+  - [azure_sql_managed_server_security_alert_policies](azure_sql_managed_server_security_alert_policies.md)
 
 ## Columns
 
