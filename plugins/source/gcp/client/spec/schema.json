@@ -194,7 +194,8 @@
         },
         "skip_organization_resources": {
           "type": "boolean",
-          "description": "If enabled CloudQuery will skip syncing organization level resources"
+          "description": "If enabled CloudQuery will skip syncing organization level resources",
+          "default": false
         }
       },
       "additionalProperties": false,
