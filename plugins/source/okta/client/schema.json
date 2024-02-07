@@ -30,7 +30,8 @@
         "token": {
           "type": "string",
           "minLength": 1,
-          "description": "Token for Okta API access."
+          "description": "Token for Okta API access.",
+          "x-cq-auth": true
         },
         "domain": {
           "type": "string",

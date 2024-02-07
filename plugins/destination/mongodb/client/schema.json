@@ -8,7 +8,8 @@
         "connection_string": {
           "type": "string",
           "minLength": 1,
-          "description": "MongoDB URI as described in the official MongoDB [documentation](https://www.mongodb.com/docs/manual/reference/connection-string/)."
+          "description": "MongoDB URI as described in the official MongoDB [documentation](https://www.mongodb.com/docs/manual/reference/connection-string/).",
+          "x-cq-auth": true
         },
         "database": {
           "type": "string",

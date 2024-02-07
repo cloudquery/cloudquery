@@ -6,13 +6,16 @@
     "Spec": {
       "properties": {
         "api_token": {
-          "type": "string"
+          "type": "string",
+          "x-cq-auth": true
         },
         "api_key": {
-          "type": "string"
+          "type": "string",
+          "x-cq-auth": true
         },
         "api_email": {
-          "type": "string"
+          "type": "string",
+          "x-cq-auth": true
         },
         "accounts": {
           "oneOf": [

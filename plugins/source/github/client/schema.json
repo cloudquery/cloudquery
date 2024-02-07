@@ -25,17 +25,20 @@
         "app_id": {
           "type": "string",
           "minLength": 1,
-          "description": "The GitHub App ID."
+          "description": "The GitHub App ID.",
+          "x-cq-auth": true
         },
         "private_key_path": {
           "type": "string",
           "minLength": 1,
-          "description": "The path to the private key file used to authenticate the GitHub App."
+          "description": "The path to the private key file used to authenticate the GitHub App.",
+          "x-cq-skip": true
         },
         "private_key": {
           "type": "string",
           "minLength": 1,
-          "description": "The private key used to authenticate the GitHub App."
+          "description": "The private key used to authenticate the GitHub App.",
+          "x-cq-auth": true
         },
         "installation_id": {
           "type": "string",
@@ -106,7 +109,8 @@
         "access_token": {
           "type": "string",
           "minLength": 1,
-          "description": "Personal Access Token, required if not using App Authentication."
+          "description": "Personal Access Token, required if not using App Authentication.",
+          "x-cq-auth": true
         },
         "orgs": {
           "items": {

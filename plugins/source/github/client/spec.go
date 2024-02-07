@@ -10,7 +10,7 @@ import (
 // Spec is the (nested) spec used by GitHub Source Plugin
 type Spec struct {
 	// Personal Access Token, required if not using App Authentication.
-	AccessToken string `json:"access_token" jsonschema:"minLength=1"`
+	AccessToken string `json:"access_token" jsonschema:"minLength=1" jsonschema_extras:"x-cq-auth=true"`
 	// List of organizations to sync from. You must specify either orgs or repos in the configuration.
 	Orgs []string `json:"orgs" jsonschema:"minItems=1"`
 	// List of repositories to sync from. The format is owner/repo (e.g. cloudquery/cloudquery).
@@ -39,11 +39,11 @@ type AppAuthSpec struct {
 	// The GitHub organization to sync from.
 	Org string `json:"org" jsonschema:"required,minLength=1"`
 	// The GitHub App ID.
-	AppID string `json:"app_id" jsonschema:"required,minLength=1"`
+	AppID string `json:"app_id" jsonschema:"required,minLength=1" jsonschema_extras:"x-cq-auth=true"`
 	// The path to the private key file used to authenticate the GitHub App.
-	PrivateKeyPath string `json:"private_key_path" jsonschema:"minLength=1"`
+	PrivateKeyPath string `json:"private_key_path" jsonschema:"minLength=1" jsonschema_extras:"x-cq-skip=true"`
 	// The private key used to authenticate the GitHub App.
-	PrivateKey string `json:"private_key" jsonschema:"minLength=1"`
+	PrivateKey string `json:"private_key" jsonschema:"minLength=1" jsonschema_extras:"x-cq-auth=true"`
 	// The GitHub App installation ID.
 	InstallationID string `json:"installation_id" jsonschema:"required,minLength=1"`
 }

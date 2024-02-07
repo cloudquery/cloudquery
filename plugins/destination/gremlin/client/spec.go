@@ -18,13 +18,13 @@ type Spec struct {
 	Insecure bool `json:"insecure" jsonschema:"default=false"`
 
 	// Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.
-	AuthMode authMode `json:"auth_mode" jsonschema:"default=none"`
+	AuthMode authMode `json:"auth_mode" jsonschema:"default=none" jsonschema_extras:"x-cq-auth=true"`
 
 	// Username to connect to the database. Required when `auth_mode` is `basic`.
-	Username string `json:"username"`
+	Username string `json:"username" jsonschema_extras:"x-cq-auth=true"`
 
 	// Password to connect to the database. Required when `auth_mode` is `basic`.
-	Password string `json:"password"`
+	Password string `json:"password" jsonschema_extras:"x-cq-auth=true"`
 
 	// Number of retries on `ConcurrentModificationException` before giving up for each batch.
 	// Retries are exponentially backed off.

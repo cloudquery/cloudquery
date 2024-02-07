@@ -38,7 +38,8 @@
             "properties": {
               "sasl_username": {
                 "type": "string",
-                "minLength": 1
+                "minLength": 1,
+                "x-cq-auth": true
               }
             },
             "required": [
@@ -50,7 +51,8 @@
             "properties": {
               "sasl_password": {
                 "type": "string",
-                "minLength": 1
+                "minLength": 1,
+                "x-cq-auth": true
               }
             },
             "required": [
@@ -65,7 +67,8 @@
             "properties": {
               "sasl_password": {
                 "type": "string",
-                "minLength": 1
+                "minLength": 1,
+                "x-cq-auth": true
               }
             },
             "required": [
@@ -77,7 +80,8 @@
             "properties": {
               "sasl_username": {
                 "type": "string",
-                "minLength": 1
+                "minLength": 1,
+                "x-cq-auth": true
               }
             },
             "required": [
@@ -197,11 +201,13 @@
         },
         "sasl_username": {
           "type": "string",
-          "description": "If connecting via SASL/PLAIN, the username to use."
+          "description": "If connecting via SASL/PLAIN, the username to use.",
+          "x-cq-auth": true
         },
         "sasl_password": {
           "type": "string",
-          "description": "If connecting via SASL/PLAIN, the password to use."
+          "description": "If connecting via SASL/PLAIN, the password to use.",
+          "x-cq-auth": true
         },
         "client_id": {
           "type": "string",

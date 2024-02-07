@@ -8,7 +8,8 @@
         "access_token": {
           "type": "string",
           "minLength": 1,
-          "description": "An access token for your GitLab server. Instructions on how to generate an access token here."
+          "description": "An access token for your GitLab server. Instructions on how to generate an access token here.",
+          "x-cq-auth": true
         },
         "base_url": {
           "type": "string",

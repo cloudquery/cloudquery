@@ -22,7 +22,7 @@ const (
 type Spec struct {
 	// Connection string to connect to the database.
 	// See [SDK documentation](https://github.com/microsoft/go-mssqldb#connection-parameters-and-dsn) for details.
-	ConnectionString string `json:"connection_string" jsonschema:"required,minLength=1"`
+	ConnectionString string `json:"connection_string" jsonschema:"required,minLength=1" jsonschema_extras:"x-cq-auth=true"`
 
 	//  If you need to authenticate via Azure Active Directory ensure you specify `azure` value.
 	//  See [SDK documentation](https://github.com/microsoft/go-mssqldb#azure-active-directory-authentication) for more information.
@@ -30,7 +30,7 @@ type Spec struct {
 	//
 	//    - `ms` _connect to Microsoft SQL Server instance_
 	//    - `azure` _connect to Azure SQL Server instance_
-	AuthMode AuthMode `json:"auth_mode,omitempty" jsonschema:"default=ms"`
+	AuthMode AuthMode `json:"auth_mode,omitempty" jsonschema:"default=ms" jsonschema_extras:"x-cq-auth=true"`
 
 	// By default, Microsoft SQL Server destination plugin will use the [default](https://learn.microsoft.com/en-us/sql/relational-databases/security/authentication-access/ownership-and-user-schema-separation?view=sql-server-ver16#the-dbo-schema) schema named `dbo`.
 	Schema string `json:"schema,omitempty" jsonschema:"default=dbo"`

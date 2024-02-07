@@ -2,7 +2,6 @@ package client
 
 import (
 	_ "embed"
-
 	"errors"
 )
 
@@ -13,7 +12,7 @@ const (
 // Spec is the (nested) spec used by the GitLab source plugin:
 type Spec struct {
 	// An access token for your GitLab server. Instructions on how to generate an access token here.
-	Token string `json:"access_token,omitempty" jsonschema:"required,minLength=1"`
+	Token string `json:"access_token,omitempty" jsonschema:"required,minLength=1" jsonschema_extras:"x-cq-auth=true"`
 	//	URL for your self hosted GitLab server. Leave empty for GitLab SaaS. Not all tables are supported for GitLab SaaS.
 	BaseURL string `json:"base_url,omitempty"`
 	// A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.

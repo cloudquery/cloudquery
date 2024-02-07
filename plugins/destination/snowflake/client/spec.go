@@ -20,12 +20,12 @@ const (
 
 type Spec struct {
 	// Snowflake `connection_string`.
-	ConnectionString string `json:"connection_string" jsonschema:"required,minLength=1"`
+	ConnectionString string `json:"connection_string" jsonschema:"required,minLength=1" jsonschema_extras:"x-cq-auth=true"`
 
 	// A PEM-encoded private key for connecting to snowflake. Equivalent to adding
 	//  `authenticator=snowflake_jwt&privateKey=...` to the `connection_string` but
 	//  parses, validates, and correctly encodes the key for use with snowflake.
-	PrivateKey string `json:"private_key,omitempty"`
+	PrivateKey string `json:"private_key,omitempty" jsonschema_extras:"x-cq-auth=true"`
 
 	// Number of records to batch together before sending to the database.
 	BatchSize int `json:"batch_size,omitempty" jsonschema:"minimum=1,default=1000"`

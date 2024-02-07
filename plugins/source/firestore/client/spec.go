@@ -4,10 +4,10 @@ import (
 	_ "embed"
 	"encoding/base64"
 	"fmt"
-	"github.com/invopop/jsonschema"
 	"strings"
 
 	"cloud.google.com/go/firestore"
+	"github.com/invopop/jsonschema"
 )
 
 // Spec is the (nested) spec used by Firestore Source Plugin
@@ -17,7 +17,7 @@ type Spec struct {
 	// If `true` the `service_account_json` content will be treated as base64-encoded.
 	UseBase64 bool `json:"use_base64" jsonschema:"default=false"`
 	//  Service account JSON content.
-	ServiceAccountJSON string `json:"service_account_json"`
+	ServiceAccountJSON string `json:"service_account_json" jsonschema_extras:"x-cq-auth=true"`
 	// Maximum batch size for each request when reading Firestore data.
 	MaxBatchSize int `json:"max_batch_size" jsonschema:"minimum=1"`
 	// List of fields to order the results by.

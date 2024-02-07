@@ -7,7 +7,8 @@
       "properties": {
         "token": {
           "type": "string",
-          "description": "Token is the DigitalOcean API access token.\n\nIf left empty it must be provided via either `DIGITALOCEAN_TOKEN` or `DIGITALOCEAN_ACCESS_TOKEN` environment variable."
+          "description": "Token is the DigitalOcean API access token.\n\nIf left empty it must be provided via either `DIGITALOCEAN_TOKEN` or `DIGITALOCEAN_ACCESS_TOKEN` environment variable.",
+          "x-cq-auth": true
         },
         "spaces_regions": {
           "oneOf": [
@@ -26,11 +27,13 @@
         },
         "spaces_access_key": {
           "type": "string",
-          "description": "SpacesAccessKey is the secret access token generated in DO control panel"
+          "description": "SpacesAccessKey is the secret access token generated in DO control panel",
+          "x-cq-auth": true
         },
         "spaces_access_key_id": {
           "type": "string",
-          "description": "SpacesAccessKeyId is the unique identifier of the access key generated in the DO control panel"
+          "description": "SpacesAccessKeyId is the unique identifier of the access key generated in the DO control panel",
+          "x-cq-auth": true
         },
         "spaces_debug_logging": {
           "type": "boolean",

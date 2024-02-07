@@ -163,7 +163,8 @@
         "storage_account": {
           "type": "string",
           "minLength": 1,
-          "description": "Storage account where to sync the files."
+          "description": "Storage account where to sync the files.",
+          "x-cq-auth": true
         },
         "container": {
           "type": "string",

@@ -12,7 +12,8 @@
                 "type": "string",
                 "const": "aws",
                 "description": "Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.",
-                "default": "none"
+                "default": "none",
+                "x-cq-auth": true
               }
             },
             "required": [
@@ -40,7 +41,8 @@
                 "type": "string",
                 "const": "basic",
                 "description": "Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.",
-                "default": "none"
+                "default": "none",
+                "x-cq-auth": true
               }
             },
             "required": [
@@ -52,12 +54,14 @@
               "username": {
                 "type": "string",
                 "minLength": 1,
-                "description": "Username to connect to the database. Required when `auth_mode` is `basic`."
+                "description": "Username to connect to the database. Required when `auth_mode` is `basic`.",
+                "x-cq-auth": true
               },
               "password": {
                 "type": "string",
                 "minLength": 1,
-                "description": "Password to connect to the database. Required when `auth_mode` is `basic`."
+                "description": "Password to connect to the database. Required when `auth_mode` is `basic`.",
+                "x-cq-auth": true
               }
             },
             "required": [
@@ -73,7 +77,8 @@
               "username": {
                 "type": "string",
                 "minLength": 1,
-                "description": "Username to connect to the database. Required when `auth_mode` is `basic`."
+                "description": "Username to connect to the database. Required when `auth_mode` is `basic`.",
+                "x-cq-auth": true
               }
             },
             "required": [
@@ -85,13 +90,15 @@
               "password": {
                 "type": "string",
                 "minLength": 1,
-                "description": "Password to connect to the database. Required when `auth_mode` is `basic`."
+                "description": "Password to connect to the database. Required when `auth_mode` is `basic`.",
+                "x-cq-auth": true
               },
               "auth_mode": {
                 "type": "string",
                 "const": "basic",
                 "description": "Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.",
-                "default": "none"
+                "default": "none",
+                "x-cq-auth": true
               }
             },
             "required": [
@@ -107,7 +114,8 @@
               "password": {
                 "type": "string",
                 "minLength": 1,
-                "description": "Password to connect to the database. Required when `auth_mode` is `basic`."
+                "description": "Password to connect to the database. Required when `auth_mode` is `basic`.",
+                "x-cq-auth": true
               }
             },
             "required": [
@@ -119,13 +127,15 @@
               "username": {
                 "type": "string",
                 "minLength": 1,
-                "description": "Username to connect to the database. Required when `auth_mode` is `basic`."
+                "description": "Username to connect to the database. Required when `auth_mode` is `basic`.",
+                "x-cq-auth": true
               },
               "auth_mode": {
                 "type": "string",
                 "const": "basic",
                 "description": "Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.",
-                "default": "none"
+                "default": "none",
+                "x-cq-auth": true
               }
             },
             "required": [
@@ -155,15 +165,18 @@
             "aws"
           ],
           "description": "Authentication mode to use. `basic` uses static credentials, `aws` uses AWS IAM authentication.",
-          "default": "none"
+          "default": "none",
+          "x-cq-auth": true
         },
         "username": {
           "type": "string",
-          "description": "Username to connect to the database. Required when `auth_mode` is `basic`."
+          "description": "Username to connect to the database. Required when `auth_mode` is `basic`.",
+          "x-cq-auth": true
         },
         "password": {
           "type": "string",
-          "description": "Password to connect to the database. Required when `auth_mode` is `basic`."
+          "description": "Password to connect to the database. Required when `auth_mode` is `basic`.",
+          "x-cq-auth": true
         },
         "max_retries": {
           "type": "integer",

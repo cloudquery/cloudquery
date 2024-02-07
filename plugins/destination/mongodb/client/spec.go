@@ -12,7 +12,7 @@ const (
 
 type Spec struct {
 	// MongoDB URI as described in the official MongoDB [documentation](https://www.mongodb.com/docs/manual/reference/connection-string/).
-	ConnectionString string `json:"connection_string" jsonschema:"required,minLength=1"`
+	ConnectionString string `json:"connection_string" jsonschema:"required,minLength=1" jsonschema_extras:"x-cq-auth=true"`
 
 	// Database to sync the data to.
 	Database string `json:"database" jsonschema:"required,minLength=1"`
