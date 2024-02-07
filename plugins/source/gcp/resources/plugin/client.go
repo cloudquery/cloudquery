@@ -77,7 +77,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		if c.syncClient.Spec.SkipOrganizationResources && table.Multiplex != nil {
 			// get the name of the multiplexer via reflection
 			multiplexerName := runtime.FuncForPC(reflect.ValueOf(table.Multiplex).Pointer()).Name()
-			if strings.HasPrefix(multiplexerName, "github.com/cloudquery/cloudquery/plugins/source/gcp/client.OrgMultiplex") {
+			if strings.Contains(multiplexerName, "plugins/source/gcp/client.OrgMultiplex") {
 				skippedOrgTables = append(skippedOrgTables, table.Name)
 			}
 		}
