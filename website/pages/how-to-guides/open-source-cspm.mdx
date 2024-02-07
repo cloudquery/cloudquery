@@ -42,11 +42,11 @@ Grafana is a well-known open source observability and visualization tool. It is 
 - **SaaS/managed:** [Grafana.com](https://grafana.com/)
 - **AWS Managed Grafana**: [https://aws.amazon.com/grafana/](https://aws.amazon.com/grafana/)
 
-### Step 3: Install Dbt
+### Step 3: Install dbt
 
 CloudQuery policies and rules are implemented using [dbt](https://docs.getdbt.com/docs/installation), a popular open source tool for data transformation.
 
-After the installation, you will need to provide dbt with a profile. Dbt uses profiles to define how to connect to the relevant databases for the project. By default, it searches for a `profiles.yml` file in the local directory and falls back to `~/.dbt/`. Read more about profiles in the [dbt documentation](https://docs.getdbt.com/docs/core/connect-data-platform/connection-profiles).
+After the installation, you will need to provide dbt with a profile which defines how to connect to relevant databases. By default, it searches for a `profiles.yml` file in the local directory and falls back to `~/.dbt/`. Read more about profiles in the [dbt documentation](https://docs.getdbt.com/docs/core/connect-data-platform/connection-profiles).
 
 Your profiles.yml file should look like this:
 
