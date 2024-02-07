@@ -4,6 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"reflect"
+	"runtime"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client"
 	"github.com/cloudquery/cloudquery/plugins/source/gcp/client/spec"
@@ -68,6 +71,19 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	tables, err := c.allTables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
 	if err != nil {
 		return err
+	}
+	var skippedOrgTables []string
+	for _, table := range tables {
+		if c.syncClient.Spec.SkipOrganizationResources && table.Multiplex != nil {
+			// get the name of the multiplexer via reflection
+			multiplexerName := runtime.FuncForPC(reflect.ValueOf(table.Multiplex).Pointer()).Name()
+			if strings.HasPrefix(multiplexerName, "github.com/cloudquery/cloudquery/plugins/source/gcp/client.OrgMultiplex") {
+				skippedOrgTables = append(skippedOrgTables, table.Name)
+			}
+		}
+	}
+	if len(skippedOrgTables) > 0 {
+		return fmt.Errorf("invalid spec: organizational level tables (%s) included while `SkipOrganizationResources` is enabled", strings.Join(skippedOrgTables, ", "))
 	}
 	stateClient := state.Client(&state.NoOpClient{})
 	if options.BackendOptions != nil {
