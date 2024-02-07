@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func Parameters() *schema.Table {
@@ -28,6 +29,11 @@ func Parameters() *schema.Table {
 				Description:         `The parameter name`,
 				PrimaryKeyComponent: true,
 			},
+			{
+				Name:     "tags",
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: resolveParameterTags,
+			},
 		},
 	}
 }
@@ -46,4 +52,21 @@ func fetchSsmParameters(ctx context.Context, meta schema.ClientMeta, parent *sch
 		res <- page.Parameters
 	}
 	return nil
+}
+func resolveParameterTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	cl := meta.(*client.Client)
+	svc := cl.Services(client.AWSServiceSsm).Ssm
+	pm := resource.Item.(types.ParameterMetadata)
+	resp, err := svc.ListTagsForResource(ctx, &ssm.ListTagsForResourceInput{
+		ResourceId:   pm.Name,
+		ResourceType: types.ResourceTypeForTaggingParameter,
+	}, func(options *ssm.Options) {
+		options.Region = cl.Region
+	})
+	if err != nil {
+		return err
+	}
+	tags := make(map[string]string)
+	client.TagsIntoMap(resp.TagList, tags)
+	return resource.Set(c.Name, tags)
 }
