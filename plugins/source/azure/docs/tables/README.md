@@ -294,6 +294,7 @@
   - [azure_servicebus_namespace_topics](azure_servicebus_namespace_topics.md)
     - [azure_servicebus_namespace_topic_authorization_rules](azure_servicebus_namespace_topic_authorization_rules.md)
       - [azure_servicebus_namespace_topic_rule_access_keys](azure_servicebus_namespace_topic_rule_access_keys.md)
+- [azure_servicefabric_clusters](azure_servicefabric_clusters.md)
 - [azure_sql_instance_pools](azure_sql_instance_pools.md)
 - [azure_sql_managed_instances](azure_sql_managed_instances.md)
   - [azure_sql_managed_instance_encryption_protectors](azure_sql_managed_instance_encryption_protectors.md)
