@@ -1,6 +1,8 @@
 module github.com/cloudquery/cloudquery/cli
 
-go 1.21.4
+go 1.21.5
+
+toolchain go1.22.0
 
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
@@ -8,7 +10,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/cloudquery-api-go v1.7.3
 	github.com/cloudquery/codegen v0.3.12
-	github.com/cloudquery/plugin-pb-go v1.17.0
+	github.com/cloudquery/plugin-pb-go v1.17.1
 	github.com/cloudquery/plugin-sdk/v4 v4.29.1
 	github.com/distribution/reference v0.5.0
 	github.com/docker/distribution v2.8.3+incompatible
