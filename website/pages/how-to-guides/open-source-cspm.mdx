@@ -17,7 +17,7 @@ CSPMs are probably the biggest offenders of yet-another-dashboard syndrome, and 
 
 - **ETL (Extract-Transform-Load) ingestion layer:** [CloudQuery](https://github.com/cloudquery/cloudquery)
 - **Datastore:** PostgreSQL
-- **Transformations (policies):** Dbt [Transformations](https://hub.cloudquery.io/addons/transformation) to be executed via `dbt`
+- **Transformations (policies):** dbt [Transformations](https://hub.cloudquery.io/addons/transformation) to be executed via `dbt`
 - **Data Visualization and Exploration Platform:** Grafana
 
 ## What you will get
@@ -46,7 +46,7 @@ Grafana is a well-known open source observability and visualization tool. It is 
 
 CloudQuery policies and rules are implemented using [dbt](https://docs.getdbt.com/docs/installation), a popular open source tool for data transformation.
 
-After the installation, you will need to provide DBT with a profile. DBT uses profiles to define how to connect to the relevant databases for the project. By default, it searches for a `profiles.yml` file in the local directory and falls back to `~/.dbt/`. Read more about profiles in the [DBT documentation](https://docs.getdbt.com/docs/core/connect-data-platform/connection-profiles).
+After the installation, you will need to provide dbt with a profile. Dbt uses profiles to define how to connect to the relevant databases for the project. By default, it searches for a `profiles.yml` file in the local directory and falls back to `~/.dbt/`. Read more about profiles in the [dbt documentation](https://docs.getdbt.com/docs/core/connect-data-platform/connection-profiles).
 
 Your profiles.yml file should look like this:
 
@@ -131,7 +131,7 @@ This command will run all the dbt models and create views in your destination da
 
 Now you can query the views directly and export in various formats such as CSV or HTML, all with standard `psql`, and of course visualize them in your favorite BI tool. 
 
-You can repeat this for other other cloud providers by adding additional plugins to your syncs and running the relevant transformations.
+You can repeat this for other cloud providers by adding additional plugins to your syncs and running the relevant transformations.
 
 ### Step 6: Visualize in Grafana
 
