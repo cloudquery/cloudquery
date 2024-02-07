@@ -9,7 +9,7 @@
           "type": "string",
           "minLength": 1,
           "description": "Absolute or relative path to a file, such as `./example.duckdb`",
-          "x-cq-fs": true
+          "x-cq-skip": true
         },
         "batch_size": {
           "type": "integer",

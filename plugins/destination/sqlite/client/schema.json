@@ -9,7 +9,7 @@
           "type": "string",
           "minLength": 1,
           "description": "Path to a file, such as `./mydb.sql`",
-          "x-cq-fs": true
+          "x-cq-skip": true
         }
       },
       "additionalProperties": false,
