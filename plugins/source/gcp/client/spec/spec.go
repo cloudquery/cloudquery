@@ -105,6 +105,9 @@ type Spec struct {
 
 	// Service Account impersonation configuration.
 	ServiceAccountImpersonation *CredentialsConfig `json:"service_account_impersonation"`
+
+	// If enabled CloudQuery will skip syncing organization level resources
+	SkipOrganizationResources bool `json:"skip_organization_resources"`
 }
 
 func (s *Spec) Validate() error {
