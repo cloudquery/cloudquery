@@ -38,7 +38,7 @@ func detectorIPSets() *schema.Table {
 						resource.Item.(models.IPSetWrapper).Id,
 					}, nil
 				}),
-				PrimaryKey: true,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

@@ -84,8 +84,8 @@ func getDetector(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 }
 
 var detectorARNColumn = schema.Column{
-	Name:       "detector_arn",
-	Type:       arrow.BinaryTypes.String,
-	Resolver:   schema.ParentColumnResolver("arn"),
-	PrimaryKey: true,
+	Name:                "detector_arn",
+	Type:                arrow.BinaryTypes.String,
+	Resolver:            schema.ParentColumnResolver("arn"),
+	PrimaryKeyComponent: true,
 }

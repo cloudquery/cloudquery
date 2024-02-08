@@ -20,7 +20,6 @@ func detectorThreatIntelSets() *schema.Table {
 		Resolver:            fetchDetectorThreatIntelSets,
 		PreResourceResolver: getDetectorThreatIntelSet,
 		Transform: transformers.TransformWithStruct(&models.ThreatIntelSetWrapper{},
-			transformers.WithPrimaryKeyComponents("Name"),
 			transformers.WithUnwrapAllEmbeddedStructs(),
 			transformers.WithSkipFields("ResultMetadata"),
 		),
@@ -39,7 +38,7 @@ func detectorThreatIntelSets() *schema.Table {
 						resource.Item.(models.ThreatIntelSetWrapper).Id,
 					}, nil
 				}),
-				PrimaryKey: true,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

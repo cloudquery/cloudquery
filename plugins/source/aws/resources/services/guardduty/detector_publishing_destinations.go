@@ -35,7 +35,7 @@ func detectorPublishingDestinations() *schema.Table {
 						aws.ToString(resource.Item.(types.Destination).DestinationId),
 					}, nil
 				}),
-				PrimaryKey: true,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

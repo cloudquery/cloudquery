@@ -38,7 +38,7 @@ func detectorFilters() *schema.Table {
 						aws.ToString(resource.Item.(*guardduty.GetFilterOutput).Name),
 					}, nil
 				}),
-				PrimaryKey: true,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}
