@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"time"
 
@@ -45,28 +44,15 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 	}
 
 	// initialize destinations first, so that their connections may be used as backends by the source
-	for i := range destinationsClients {
-		destSpec := destinationSpecs[i]
-		destSpecBytes, err := json.Marshal(destSpec.Spec)
-		if err != nil {
-			return err
-		}
-		if _, err := destinationsPbClients[i].Init(ctx, &plugin.Init_Request{
-			Spec: destSpecBytes,
-		}); err != nil {
-			return err
+	for i, destinationSpec := range destinationSpecs {
+		if err := initPlugin(ctx, destinationsPbClients[i], destinationSpec.Spec, false); err != nil {
+			return fmt.Errorf("failed to init destination %v: %w", destinationSpec.Name, err)
 		}
 	}
 
-	specBytes, err := json.Marshal(sourceSpec.Spec)
+	err := initPlugin(ctx, sourcePbClient, sourceSpec.Spec, true)
 	if err != nil {
-		return err
-	}
-	if _, err := sourcePbClient.Init(ctx, &plugin.Init_Request{
-		Spec:         specBytes,
-		NoConnection: true,
-	}); err != nil {
-		return err
+		return fmt.Errorf("failed to init source %v: %w", sourceSpec.Name, err)
 	}
 
 	writeClients := make([]plugin.Plugin_WriteClient, len(destinationsPbClients))

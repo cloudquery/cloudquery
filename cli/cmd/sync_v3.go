@@ -126,28 +126,14 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	}
 
 	// initialize destinations first, so that their connections may be used as backends by the source
-	for i := range destinationsClients {
-		destSpec := destinationSpecs[i]
-		destSpecBytes, err := json.Marshal(destSpec.Spec)
-		if err != nil {
-			return err
-		}
-		if _, err := destinationsPbClients[i].Init(ctx, &plugin.Init_Request{
-			Spec: destSpecBytes,
-		}); err != nil {
-			return fmt.Errorf("failed to init destination %v: %w", destSpec.Name, err)
+	for i, destinationSpec := range destinationSpecs {
+		if err := initPlugin(ctx, destinationsPbClients[i], destinationSpec.Spec, false); err != nil {
+			return fmt.Errorf("failed to init destination %v: %w", destinationSpec.Name, err)
 		}
 	}
 	if backend != nil {
-		backendSpec := backend.spec
-		backendSpecBytes, err := json.Marshal(backendSpec.Spec)
-		if err != nil {
-			return err
-		}
-		if _, err := backendPbClient.Init(ctx, &plugin.Init_Request{
-			Spec: backendSpecBytes,
-		}); err != nil {
-			return fmt.Errorf("failed to init backend %v: %w", backendSpec.Name, err)
+		if err := initPlugin(ctx, backendPbClient, backend.spec.Spec, false); err != nil {
+			return fmt.Errorf("failed to init backend %v: %w", backend.spec.Name, err)
 		}
 	}
 
@@ -165,14 +151,8 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		return fmt.Errorf("failed to unmarshal source spec JSON after variable replacement: %w", err)
 	}
 
-	sourceSpecBytes, err := json.Marshal(sourceSpec.Spec)
-	if err != nil {
-		return err
-	}
-	if _, err := sourcePbClient.Init(ctx, &plugin.Init_Request{
-		Spec: sourceSpecBytes,
-	}); err != nil {
-		return err
+	if err = initPlugin(ctx, sourcePbClient, sourceSpec.Spec, false); err != nil {
+		return fmt.Errorf("failed to init source %v: %w", sourceSpec.Name, err)
 	}
 
 	writeClients := make([]plugin.Plugin_WriteClient, len(destinationsPbClients))

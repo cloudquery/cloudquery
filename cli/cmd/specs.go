@@ -1,10 +1,18 @@
 package cmd
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
+	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	pbSpecs "github.com/cloudquery/plugin-pb-go/specs"
+	"github.com/rs/zerolog/log"
+	"github.com/santhosh-tekuri/jsonschema/v5"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 func CLIRegistryToPbRegistry(registry specs.Registry) pbSpecs.Registry {
@@ -85,4 +93,73 @@ func CLIDestinationSpecToPbSpec(spec specs.Destination) pbSpecs.Destination {
 		PKMode:      CLIPkModeToPbPKMode(spec.PKMode),
 		Spec:        spec.Spec,
 	}
+}
+
+// initPlugin is a simple wrapper that will try to validate the spec before actually passing it to Init.
+func initPlugin(ctx context.Context, client plugin.PluginClient, spec any, noConnection bool) error {
+	if !noConnection {
+		// perform spec validation
+		if err := validatePluginSpec(ctx, client, spec); err != nil {
+			return err
+		}
+	}
+
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		return err
+	}
+
+	_, err = client.Init(ctx, &plugin.Init_Request{Spec: specBytes, NoConnection: noConnection})
+	return err
+}
+
+// validatePluginSpec encompasses spec validation only:
+//  1. Get spec schema from the plugin.
+//     If the call isn't implemented, just skip the validation.
+//  2. Validate that the provided JSON schema is valid & can be used for spec validation.
+//     If the spec is empty (i.e., the plugin didn't supply the schema) just skip.
+//  3. If the schema isn't empty but not valid, print the error message & skip the validation.
+//  4. Finally, return the validation result.
+func validatePluginSpec(ctx context.Context, client plugin.PluginClient, spec any) error {
+	schema, err := client.GetSpecSchema(ctx, &plugin.GetSpecSchema_Request{})
+	if err != nil {
+		st, ok := status.FromError(err)
+		if !ok {
+			// not a gRPC-compatible error
+			log.Err(err).Msg("failed to get spec schema")
+			return err
+		}
+		if st.Code() != codes.Unimplemented {
+			// unimplemented is OK, treat as empty schema
+			log.Err(err).Msg("failed to get spec schema")
+			return err
+		}
+	}
+
+	jsonSchema := schema.GetJsonSchema()
+	if len(jsonSchema) == 0 {
+		// This will also be true for Unimplemented response (schema = nil => schema.GetJsonSchema() = "")
+		log.Info().Msg("empty JSON schema for plugin spec, skipping validation")
+		return nil
+	}
+
+	sc, err := parseJSONSchema(jsonSchema)
+	if err != nil {
+		log.Err(err).Msg("failed to parse spec schema, skipping validation")
+		return nil
+	}
+
+	return sc.Validate(spec)
+}
+
+func parseJSONSchema(jsonSchema string) (*jsonschema.Schema, error) {
+	c := jsonschema.NewCompiler()
+	c.Draft = jsonschema.Draft2020
+	c.AssertFormat = true
+
+	if err := c.AddResource("schema.json", strings.NewReader(jsonSchema)); err != nil {
+		return nil, err
+	}
+
+	return c.Compile("schema.json")
 }
