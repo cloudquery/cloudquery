@@ -2,8 +2,6 @@ module github.com/cloudquery/cloudquery/cli
 
 go 1.21.5
 
-toolchain go1.22.0
-
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
@@ -23,6 +21,7 @@ require (
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/rs/zerolog v1.31.0
+	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
 	github.com/schollz/progressbar/v3 v3.13.1
 	github.com/spf13/cobra v1.6.1
 	github.com/stretchr/testify v1.8.4
@@ -118,7 +117,6 @@ require (
 	github.com/prometheus/procfs v0.6.0 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1 // indirect
 	github.com/schollz/closestmatch v2.1.0+incompatible // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
