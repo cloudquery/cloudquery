@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/clarkmcc/go-hubspot"
+	"github.com/cloudquery/cloudquery/plugins/source/hubspot/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 	"golang.org/x/time/rate"
@@ -17,7 +18,7 @@ const DefaultPageSize = 100
 type Client struct {
 	Authorizer *hubspot.TokenAuthorizer
 
-	Spec Spec
+	Spec spec.Spec
 
 	RateLimiter *rate.Limiter
 
@@ -42,7 +43,7 @@ func (c *Client) withObjectType(objectType string) *Client {
 	return &newClient
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s Spec) (schema.ClientMeta, error) {
+func New(_ context.Context, logger zerolog.Logger, s spec.Spec) (schema.ClientMeta, error) {
 	authToken := os.Getenv("HUBSPOT_APP_TOKEN")
 	if authToken == "" {
 		return nil, fmt.Errorf("failed to get hubspot auth token. Please provide an auth-token (see https://www.cloudquery.io/docs/plugins/sources/hubspot/overview#authentication)")
