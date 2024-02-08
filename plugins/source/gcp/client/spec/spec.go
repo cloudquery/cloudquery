@@ -71,7 +71,7 @@ type Spec struct {
 	//
 	// Using service accounts is not recommended, but if it is used it is better to use
 	// [environment or file variable substitution](/docs/advanced-topics/environment-variable-substitution).
-	ServiceAccountKeyJSON string `json:"service_account_key_json" jsonschema_extras:"x-cq-auth=true"`
+	ServiceAccountKeyJSON string `json:"service_account_key_json" jsonschema_extras:"x-cq-secret=true"`
 
 	// If specified APIs will be retried with exponential backoff if they are rate limited.
 	// This is the max delay (in seconds) between retries.

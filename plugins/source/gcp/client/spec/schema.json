@@ -148,7 +148,7 @@
         "service_account_key_json": {
           "type": "string",
           "description": "GCP service account key content.\n\nUsing service accounts is not recommended, but if it is used it is better to use\n[environment or file variable substitution](/docs/advanced-topics/environment-variable-substitution).",
-          "x-cq-auth": true
+          "x-cq-secret": true
         },
         "backoff_delay": {
           "type": "integer",
