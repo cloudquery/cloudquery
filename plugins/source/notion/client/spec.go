@@ -1,7 +1,7 @@
 package client
 
 type Spec struct {
-	BearerToken   string `json:"bearer_token,omitempty" jsonschema_extras:"x-cq-auth=true"`
+	BearerToken   string `json:"bearer_token,omitempty"`
 	NotionVersion string `json:"notion_version,omitempty"`
 }
 
