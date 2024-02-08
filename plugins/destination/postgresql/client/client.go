@@ -17,6 +17,11 @@ import (
 	"github.com/rs/zerolog"
 )
 
+type constraintDef struct {
+	name    string
+	columns []string
+}
+
 type Client struct {
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
@@ -26,7 +31,7 @@ type Client struct {
 	batchSize           int
 	writer              *mixedbatchwriter.MixedBatchWriter
 
-	pgTablesToPKConstraints map[string]string
+	pgTablesToPKConstraints map[string]constraintDef
 
 	plugin.UnimplementedSource
 }
