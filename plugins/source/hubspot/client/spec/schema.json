@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/hubspot/client/spec/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Spec": {
+      "properties": {
+        "max_requests_per_second": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Max number of requests per second to perform against the Hubspot API.",
+              "default": 5
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "table_options": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/TableOptions",
+              "description": "Key-value map of options for each table. The key is the name of the table. The value is an options object."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Concurrency setting for the CloudQuery scheduler.",
+          "default": 1000
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "TableOptions": {
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/TableOptionsSpec"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "type": "object"
+    },
+    "TableOptionsSpec": {
+      "properties": {
+        "properties": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": "array",
+              "description": "List of properties to sync. If empty, everything is synced."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "associations": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": "array",
+              "description": "List of associations to sync. If empty, everything is synced."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "description": "Table options spec."
+    }
+  }
+}
