@@ -211,7 +211,34 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to drop primary key")
 		return err
 	}
+	// Create new Primary Key with CQID
+	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ADD CONSTRAINT "+sanitizedPKName+" PRIMARY KEY ("+pgx.Identifier{schema.CqIDColumn.Name}.Sanitize()+")")
+	if err != nil {
+		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to create new primary key on _cq_id")
+		return err
+	}
 
+	// CockroachDB doesn't support dropping NOT NULL constraints in the same transaction as the the primary key is changed
+	// So we have to alter the PK in one transaction and then drop the old NOT NULL constraints in another transaction
+	if c.pgType == pgTypeCockroachDB {
+		if err == nil {
+			err = tx.Commit(ctx)
+			if err != nil {
+				c.logger.Error().Err(err).Msg("failed to commit transaction")
+			}
+		}
+		if err != nil {
+			if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
+				c.logger.Error().Err(rollbackErr).Str("table", tableName).Msg("Failed to rollback transaction")
+			}
+		}
+		tx, err = conn.BeginTx(ctx, pgx.TxOptions{
+			IsoLevel: pgx.Serializable,
+		})
+		if err != nil {
+			return fmt.Errorf("failed to begin transaction: %w", err)
+		}
+	}
 	for _, colName := range c.pgTablesToPKConstraints[tableName].columns {
 		_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ALTER COLUMN "+pgx.Identifier{colName}.Sanitize()+" DROP NOT NULL")
 		if err != nil {
@@ -220,12 +247,6 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 		}
 	}
 
-	// Create new Primary Key with CQID
-	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ADD CONSTRAINT "+sanitizedPKName+" PRIMARY KEY ("+pgx.Identifier{schema.CqIDColumn.Name}.Sanitize()+")")
-	if err != nil {
-		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to create new primary key on _cq_id")
-		return err
-	}
 	return nil
 }
 
@@ -272,7 +293,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	pkConstraintName := getPKName(table)
 	c.pgTablesToPKConstraints[tableName] = pkConstraintDetails{
 		name:    pkConstraintName,
-		columns: primaryKeys,
+		columns: table.PrimaryKeys(),
 	}
 
 	if len(primaryKeys) > 0 {
