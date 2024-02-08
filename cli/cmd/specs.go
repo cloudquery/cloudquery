@@ -169,7 +169,7 @@ func parseJSONSchema(jsonSchema string) (*jsonschema.Schema, error) {
 			// We add resource as `file`, but there's none, actually.
 			// So, we need to prettify message a bit.
 			return nil, fmt.Errorf("jsonschema compilation failed: %w",
-				errors.New(strings.Replace(se.Err.Error(), "jsonschema: '' ", "jsonschema: ", 1)))
+				errors.New(strings.Replace(se.Err.Error(), "jsonschema: '' ", "", 1)))
 		}
 		return nil, err
 	}
