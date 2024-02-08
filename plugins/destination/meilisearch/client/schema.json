@@ -18,8 +18,7 @@
         "api_key": {
           "type": "string",
           "minLength": 1,
-          "description": "Meilisearch API key, granted the following actions:\n\n - `documents.add`\n - `indexes.create`\n - `indexes.get`\n - `indexes.update`\n - `tasks.get`\n - `settings.get`\n - `settings.update`\n - `version`",
-          "x-cq-auth": true
+          "description": "Meilisearch API key, granted the following actions:\n\n - `documents.add`\n - `indexes.create`\n - `indexes.get`\n - `indexes.update`\n - `tasks.get`\n - `settings.get`\n - `settings.update`\n - `version`"
         },
         "timeout": {
           "oneOf": [
@@ -35,8 +34,7 @@
         },
         "ca_cert": {
           "type": "string",
-          "description": "PEM-encoded certificate authorities.\n When set, a certificate pool will be created by appending the certificates to the system pool.\n See [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example) for how to read this value from a file.",
-          "x-cq-auth": true
+          "description": "PEM-encoded certificate authorities.\n When set, a certificate pool will be created by appending the certificates to the system pool.\n See [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example) for how to read this value from a file."
         },
         "batch_size": {
           "type": "integer",

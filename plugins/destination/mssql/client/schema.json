@@ -13,8 +13,7 @@
         "connection_string": {
           "type": "string",
           "minLength": 1,
-          "description": "Connection string to connect to the database.\nSee [SDK documentation](https://github.com/microsoft/go-mssqldb#connection-parameters-and-dsn) for details.",
-          "x-cq-auth": true
+          "description": "Connection string to connect to the database.\nSee [SDK documentation](https://github.com/microsoft/go-mssqldb#connection-parameters-and-dsn) for details."
         },
         "auth_mode": {
           "type": "string",
@@ -23,8 +22,7 @@
             "ms"
           ],
           "description": "If you need to authenticate via Azure Active Directory ensure you specify `azure` value.\n See [SDK documentation](https://github.com/microsoft/go-mssqldb#azure-active-directory-authentication) for more information.\n Supported values:\n\n   - `ms` _connect to Microsoft SQL Server instance_\n   - `azure` _connect to Azure SQL Server instance_",
-          "default": "ms",
-          "x-cq-auth": true
+          "default": "ms"
         },
         "schema": {
           "type": "string",

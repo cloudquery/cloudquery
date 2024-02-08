@@ -15,7 +15,7 @@ import (
 type Spec struct {
 	// Connection string to connect to the database.
 	// See [SDK documentation](https://github.com/ClickHouse/clickhouse-go#dsn) for more details.
-	ConnectionString string `json:"connection_string,omitempty" jsonschema:"required,minLength=1" jsonschema_extras:"x-cq-auth=true"`
+	ConnectionString string `json:"connection_string,omitempty" jsonschema:"required,minLength=1"`
 
 	// Cluster name to be used for [distributed DDL](https://clickhouse.com/docs/en/sql-reference/distributed-ddl).
 	// If the value is empty, DDL operations will affect only the server the plugin is connected to.
@@ -30,7 +30,7 @@ type Spec struct {
 	//
 	// See [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example)
 	// for how to read this value from a file.
-	CACert string `json:"ca_cert,omitempty" jsonschema_extras:"x-cq-auth=true"`
+	CACert string `json:"ca_cert,omitempty"`
 
 	// Maximum number of items that may be grouped together to be written in a single write.
 	BatchSize int `json:"batch_size,omitempty" jsonschema:"minimum=1,default=10000"`

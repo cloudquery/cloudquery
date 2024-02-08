@@ -12,7 +12,7 @@ type Spec struct {
 	filetypes.FileSpec
 
 	// Storage account where to sync the files.
-	StorageAccount string `json:"storage_account,omitempty" jsonschema:"required,minLength=1" jsonschema_extras:"x-cq-auth=true"`
+	StorageAccount string `json:"storage_account,omitempty" jsonschema:"required,minLength=1"`
 
 	// Storage container inside the storage account where to sync the files.
 	Container string `json:"container,omitempty" jsonschema:"required,minLength=1"`

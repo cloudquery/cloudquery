@@ -16,10 +16,10 @@ type Spec struct {
 	Verbose bool `json:"verbose,omitempty"`
 
 	// If connecting via SASL/PLAIN, the username to use.
-	SASLUsername string `json:"sasl_username,omitempty" jsonschema_extras:"x-cq-auth=true"`
+	SASLUsername string `json:"sasl_username,omitempty"`
 
 	// If connecting via SASL/PLAIN, the password to use.
-	SASLPassword string `json:"sasl_password,omitempty" jsonschema_extras:"x-cq-auth=true"`
+	SASLPassword string `json:"sasl_password,omitempty"`
 
 	// Client ID to be set for Kafka API calls.
 	ClientID string `json:"client_id,omitempty" jsonschema:"default=cq-destination-kafka"`

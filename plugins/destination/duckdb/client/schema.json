@@ -8,8 +8,7 @@
         "connection_string": {
           "type": "string",
           "minLength": 1,
-          "description": "Absolute or relative path to a file, such as `./example.duckdb`",
-          "x-cq-skip": true
+          "description": "Absolute or relative path to a file, such as `./example.duckdb`"
         },
         "batch_size": {
           "type": "integer",

@@ -28,7 +28,7 @@ type Spec struct {
 	//  - `settings.get`
 	//  - `settings.update`
 	//  - `version`
-	APIKey string `json:"api_key" jsonschema:"required,minLength=1" jsonschema_extras:"x-cq-auth=true"`
+	APIKey string `json:"api_key" jsonschema:"required,minLength=1"`
 
 	// Meilisearch API client timeout.
 	Timeout *configtype.Duration `json:"timeout,omitempty"`
@@ -36,7 +36,7 @@ type Spec struct {
 	//  PEM-encoded certificate authorities.
 	//  When set, a certificate pool will be created by appending the certificates to the system pool.
 	//  See [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example) for how to read this value from a file.
-	CACert string `json:"ca_cert,omitempty" jsonschema_extras:"x-cq-auth=true"`
+	CACert string `json:"ca_cert,omitempty"`
 
 	// Maximum amount of items that may be grouped together to be written in a single write.
 	BatchSize int `json:"batch_size,omitempty" jsonschema:"minimum=1,default=1000"`

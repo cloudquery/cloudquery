@@ -24,13 +24,11 @@
         },
         "username": {
           "type": "string",
-          "description": "Username for HTTP Basic Authentication.",
-          "x-cq-auth": true
+          "description": "Username for HTTP Basic Authentication."
         },
         "password": {
           "type": "string",
-          "description": "Password for HTTP Basic Authentication.",
-          "x-cq-auth": true
+          "description": "Password for HTTP Basic Authentication."
         },
         "cloud_id": {
           "type": "string",
@@ -38,23 +36,19 @@
         },
         "api_key": {
           "type": "string",
-          "description": "Base64-encoded token for authorization; if set, overrides username/password and service token.",
-          "x-cq-auth": true
+          "description": "Base64-encoded token for authorization; if set, overrides username/password and service token."
         },
         "service_token": {
           "type": "string",
-          "description": "Service token for authorization; if set, overrides username/password.",
-          "x-cq-auth": true
+          "description": "Service token for authorization; if set, overrides username/password."
         },
         "certificate_fingerprint": {
           "type": "string",
-          "description": "SHA256 hex fingerprint given by Elasticsearch on first launch.",
-          "x-cq-auth": true
+          "description": "SHA256 hex fingerprint given by Elasticsearch on first launch."
         },
         "ca_cert": {
           "type": "string",
-          "description": "PEM-encoded certificate authorities.\nWhen set, an empty certificate pool will be created, and the certificates will be appended to it.",
-          "x-cq-auth": true
+          "description": "PEM-encoded certificate authorities.\nWhen set, an empty certificate pool will be created, and the certificates will be appended to it."
         },
         "concurrency": {
           "type": "integer",

@@ -36,8 +36,7 @@
         },
         "service_account_key_json": {
           "type": "string",
-          "description": "GCP service account key content.\nThis allows for using different service accounts for the GCP source and BigQuery destination.\nIf using service account keys, it is best to use [environment or file variable substitution](/docs/advanced-topics/environment-variable-substitution).",
-          "x-cq-auth": true
+          "description": "GCP service account key content.\nThis allows for using different service accounts for the GCP source and BigQuery destination.\nIf using service account keys, it is best to use [environment or file variable substitution](/docs/advanced-topics/environment-variable-substitution)."
         },
         "endpoint": {
           "type": "string",

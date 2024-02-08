@@ -12,7 +12,7 @@ const (
 
 type Spec struct {
 	// Connection string to connect to the database. This can be a URL or a DSN, as per official [neo4j docs](https://neo4j.com/docs/browser-manual/current/operations/dbms-connection/#uri-scheme).
-	ConnectionString string `json:"connection_string" jsonschema:"required,minLength=1" jsonschema_extras:"x-cq-auth=true"`
+	ConnectionString string `json:"connection_string" jsonschema:"required,minLength=1"`
 
 	// Username to connect to the database.
 	Username string `json:"username"`

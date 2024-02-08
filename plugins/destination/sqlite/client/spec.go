@@ -1,12 +1,10 @@
 package client
 
-import (
-	_ "embed"
-)
+import _ "embed"
 
 type Spec struct {
 	// Path to a file, such as `./mydb.sql`
-	ConnectionString string `json:"connection_string,omitempty" jsonschema:"required,minLength=1" jsonschema_extras:"x-cq-skip=true"`
+	ConnectionString string `json:"connection_string,omitempty" jsonschema:"required,minLength=1"`
 }
 
 //go:embed schema.json

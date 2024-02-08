@@ -17,8 +17,7 @@
         },
         "service_account_json": {
           "type": "string",
-          "description": "Service account JSON content.",
-          "x-cq-auth": true
+          "description": "Service account JSON content."
         },
         "max_batch_size": {
           "type": "integer",

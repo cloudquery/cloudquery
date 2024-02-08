@@ -8,13 +8,11 @@
         "connection_string": {
           "type": "string",
           "minLength": 1,
-          "description": "Snowflake `connection_string`.",
-          "x-cq-auth": true
+          "description": "Snowflake `connection_string`."
         },
         "private_key": {
           "type": "string",
-          "description": "A PEM-encoded private key for connecting to snowflake. Equivalent to adding\n `authenticator=snowflake_jwt\u0026privateKey=...` to the `connection_string` but\n parses, validates, and correctly encodes the key for use with snowflake.",
-          "x-cq-auth": true
+          "description": "A PEM-encoded private key for connecting to snowflake. Equivalent to adding\n `authenticator=snowflake_jwt\u0026privateKey=...` to the `connection_string` but\n parses, validates, and correctly encodes the key for use with snowflake."
         },
         "batch_size": {
           "type": "integer",

@@ -8,8 +8,7 @@
         "connection_string": {
           "type": "string",
           "minLength": 1,
-          "description": "Connection string to connect to the database. This can be a URL or a DSN, as per official [neo4j docs](https://neo4j.com/docs/browser-manual/current/operations/dbms-connection/#uri-scheme).",
-          "x-cq-auth": true
+          "description": "Connection string to connect to the database. This can be a URL or a DSN, as per official [neo4j docs](https://neo4j.com/docs/browser-manual/current/operations/dbms-connection/#uri-scheme)."
         },
         "username": {
           "type": "string",

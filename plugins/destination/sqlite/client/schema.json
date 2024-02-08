@@ -8,8 +8,7 @@
         "connection_string": {
           "type": "string",
           "minLength": 1,
-          "description": "Path to a file, such as `./mydb.sql`",
-          "x-cq-skip": true
+          "description": "Path to a file, such as `./mydb.sql`"
         }
       },
       "additionalProperties": false,

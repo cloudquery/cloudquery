@@ -13,7 +13,7 @@ import (
 type (
 	Spec struct {
 		// Token for Okta API access.
-		Token string `json:"token" jsonschema:"required,minLength=1" jsonschema_extras:"x-cq-auth=true"`
+		Token string `json:"token" jsonschema:"required,minLength=1"`
 
 		// Specify the Okta domain you are fetching from.
 		// [Visit this link](https://developer.okta.com/docs/guides/find-your-domain/findorg/) to find your Okta domain.

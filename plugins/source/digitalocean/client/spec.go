@@ -2,9 +2,8 @@ package client
 
 import (
 	_ "embed"
-	"os"
-
 	"github.com/pkg/errors"
+	"os"
 )
 
 // Spec defines DigitalOcean source plugin Spec
@@ -12,13 +11,13 @@ type Spec struct {
 	// Token is the DigitalOcean API access token.
 	//
 	// If left empty it must be provided via either `DIGITALOCEAN_TOKEN` or `DIGITALOCEAN_ACCESS_TOKEN` environment variable.
-	Token string `json:"token,omitempty" jsonschema_extras:"x-cq-auth=true"`
+	Token string `json:"token,omitempty"`
 	// SpacesRegions is a list of DO regions to fetch spaces from, if not given we execute on all regions
 	SpacesRegions []string `json:"spaces_regions,omitempty" jsonschema:"minLength=1"`
 	// SpacesAccessKey is the secret access token generated in DO control panel
-	SpacesAccessKey string `json:"spaces_access_key,omitempty" jsonschema_extras:"x-cq-auth=true"`
+	SpacesAccessKey string `json:"spaces_access_key,omitempty"`
 	// SpacesAccessKeyId is the unique identifier of the access key generated in the DO control panel
-	SpacesAccessKeyId string `json:"spaces_access_key_id,omitempty" jsonschema_extras:"x-cq-auth=true"`
+	SpacesAccessKeyId string `json:"spaces_access_key_id,omitempty"`
 	// SpacesDebugLogging allows enabling AWS S3 request logging on spaces requests
 	SpacesDebugLogging bool `json:"spaces_debug_logging,omitempty"`
 

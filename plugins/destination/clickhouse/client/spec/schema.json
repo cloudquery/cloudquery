@@ -38,8 +38,7 @@
         "connection_string": {
           "type": "string",
           "minLength": 1,
-          "description": "Connection string to connect to the database.\nSee [SDK documentation](https://github.com/ClickHouse/clickhouse-go#dsn) for more details.",
-          "x-cq-auth": true
+          "description": "Connection string to connect to the database.\nSee [SDK documentation](https://github.com/ClickHouse/clickhouse-go#dsn) for more details."
         },
         "cluster": {
           "type": "string",
@@ -58,8 +57,7 @@
         },
         "ca_cert": {
           "type": "string",
-          "description": "PEM-encoded certificate authorities.\nWhen set, a certificate pool will be created by appending the certificates to the system pool.\n\nSee [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example)\nfor how to read this value from a file.",
-          "x-cq-auth": true
+          "description": "PEM-encoded certificate authorities.\nWhen set, a certificate pool will be created by appending the certificates to the system pool.\n\nSee [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example)\nfor how to read this value from a file."
         },
         "batch_size": {
           "type": "integer",
