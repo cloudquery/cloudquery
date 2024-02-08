@@ -62,7 +62,7 @@ ORDER BY
 `
 
 func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
-	c.pgTablesToPKConstraints = map[string]constraintDef{}
+	c.pgTablesToPKConstraints = map[string]pkConstraintDetails{}
 	var tables schema.Tables
 	var whereClause string
 	if c.pgType == pgTypeCockroachDB {
@@ -89,21 +89,14 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 		}
 		table := tables[len(tables)-1]
 
-		// Note: constraints always have a name in PostgreSQL.
-		// However, we want not only to store the info about the constraint name,
-		// but also the fact that we saw such table.
-		// We still store the fact that we saw the table
-
-		// Just store the empty string.
-		// This will indicate 2 things:
-		// 1. We saw the table with this name
-		// 2. If this is still empty on insert, the table in the database doesn't have a PK constraint
+		// We always want to record that we saw the table, even if it doesn't have a PK constraint.
 		if _, ok := c.pgTablesToPKConstraints[tableName]; !ok {
-			c.pgTablesToPKConstraints[tableName] = constraintDef{}
+			c.pgTablesToPKConstraints[tableName] = pkConstraintDetails{}
 		}
 		if pkName != "" {
 			if constraint, ok := c.pgTablesToPKConstraints[tableName]; ok {
 				constraint.name = pkName
+				// we want to store any current column that is part of the PK
 				constraint.columns = append(constraint.columns, columnName)
 				c.pgTablesToPKConstraints[tableName] = constraint
 			}

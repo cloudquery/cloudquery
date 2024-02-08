@@ -17,7 +17,8 @@ import (
 	"github.com/rs/zerolog"
 )
 
-type constraintDef struct {
+// This holds the details of the PK Constraint
+type pkConstraintDetails struct {
 	name    string
 	columns []string
 }
@@ -31,7 +32,7 @@ type Client struct {
 	batchSize           int
 	writer              *mixedbatchwriter.MixedBatchWriter
 
-	pgTablesToPKConstraints map[string]constraintDef
+	pgTablesToPKConstraints map[string]pkConstraintDetails
 
 	plugin.UnimplementedSource
 }
