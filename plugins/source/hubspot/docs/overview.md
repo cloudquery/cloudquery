@@ -34,24 +34,24 @@ This is the specs that can be used by the HubSpot source Plugin.
 - `app_token` (`string`)  (optional) (default: `HUBSPOT_APP_TOKEN` environment variable value)
   The HubSpot App Token to use for authentication. This can also be set with the `HUBSPOT_APP_TOKEN` environment variable. 
 
-- `concurrency` (int, optional, default: `1000`):
+- `concurrency` (`integer`) (optional) (default: `1000`)
 
   A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
 
-- `max_requests_per_second` (`int`, optional. Default: `5`)
+- `max_requests_per_second` (`integer`) (optional) (default: `5`)
 
   Rate limit per second for requests done HubSpot API, this will depend on your HubSpot plan (https://developers.hubspot.com/docs/api/usage-details#rate-limits)
 
-- `table_options` (map[string][TableOptions](#table-options) spec, optional. Default: `empty`)
+- `table_options` (map[string][TableOptions](#table-options) spec) (optional) (default: `empty`)
 
   Table Options for HubSpot entities that will be synced.
 
 ### Table Options
 
-- `associations` (`[]string`, optional. Default: empty)
+- `associations` (`[]string`) (optional) (default: empty)
 
   Additional associations to be retrieved from HubSpot when syncing the table entity
 
-- `properties` (`[]string`, optional. Default: empty)
+- `properties` (`[]string`) (optional) (default: empty)
 
   Additional properties to be retrieved from HubSpot when syncing the table entity
