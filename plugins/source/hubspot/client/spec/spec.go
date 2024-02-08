@@ -23,7 +23,7 @@ type Spec struct {
 }
 
 func (s *Spec) SetDefaults() {
-	if s.AppToken == "" {
+	if len(s.AppToken) == 0 {
 		s.AppToken = os.Getenv("HUBSPOT_APP_TOKEN")
 	}
 
