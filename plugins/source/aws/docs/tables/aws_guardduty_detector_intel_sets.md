@@ -5,7 +5,7 @@ This table shows data for Amazon GuardDuty Detector Intel Sets.
 https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetThreatIntelSet.html
 
 The primary key for this table is **_cq_id**.
-The following fields are used to calculate the value of `_cq_id`: (**request_account_id**, **request_region**, **detector_arn**, **name**).
+The following fields are used to calculate the value of `_cq_id`: (**request_account_id**, **request_region**, **detector_arn**, **arn**).
 ## Relations
 
 This table depends on [aws_guardduty_detectors](aws_guardduty_detectors.md).
@@ -19,8 +19,10 @@ This table depends on [aws_guardduty_detectors](aws_guardduty_detectors.md).
 |request_account_id|`utf8`|
 |request_region|`utf8`|
 |detector_arn|`utf8`|
+|arn|`utf8`|
 |format|`utf8`|
 |location|`utf8`|
 |name|`utf8`|
 |status|`utf8`|
 |tags|`json`|
+|id|`utf8`|
