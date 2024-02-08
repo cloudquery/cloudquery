@@ -3,7 +3,7 @@ package client
 import _ "embed"
 
 type Spec struct {
-	BearerToken   string `json:"bearer_token,omitempty" jsonschema:"required,minLength=1"`
+	BearerToken   string `json:"bearer_token" jsonschema:"required,minLength=1"`
 	NotionVersion string `json:"notion_version,omitempty" jsonschema:"minLength=1,default=2022-02-22"`
 }
 
