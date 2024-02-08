@@ -39,7 +39,7 @@ func (s *Spec) SetDefaults() {
 		s.MaxRequestsPerSecond = defaultRateLimitPerSecond
 	}
 
-	if s.Concurrency == 0 {
+	if s.Concurrency <= 0 {
 		s.Concurrency = defaultConcurrency
 	}
 }
