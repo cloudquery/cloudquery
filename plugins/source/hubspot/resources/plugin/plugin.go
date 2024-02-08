@@ -65,6 +65,9 @@ func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 		return nil, err
 	}
 	s.SetDefaults()
+	if err := s.Validate(); err != nil {
+		return nil, err
+	}
 	syncClient, err := client.New(ctx, logger, *s)
 	if err != nil {
 		return nil, err

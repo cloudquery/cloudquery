@@ -5,18 +5,16 @@
   "$defs": {
     "Spec": {
       "properties": {
+        "app_token": {
+          "type": "string",
+          "minLength": 1,
+          "description": "In order for CloudQuery to sync resources from your HubSpot setup, you will need to authenticate with your HubSpot account. You will need to create a [HubSpot Private App](https://developers.hubspot.com/docs/api/private-apps), and copy the App Token here.\nIf not specified `HUBSPOT_APP_TOKEN` environment variable will be used instead."
+        },
         "max_requests_per_second": {
-          "oneOf": [
-            {
-              "type": "integer",
-              "minimum": 1,
-              "description": "Max number of requests per second to perform against the Hubspot API.",
-              "default": 5
-            },
-            {
-              "type": "null"
-            }
-          ]
+          "type": "integer",
+          "minimum": 1,
+          "description": "Max number of requests per second to perform against the Hubspot API.",
+          "default": 5
         },
         "table_options": {
           "oneOf": [

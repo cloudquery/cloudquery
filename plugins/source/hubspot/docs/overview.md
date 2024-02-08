@@ -31,7 +31,11 @@ The following example sets up the HubSpot plugin, and connects it to a postgresq
 
 This is the specs that can be used by the HubSpot source Plugin.
 
+- `app_token` (`string`, optional, default: `HUBSPOT_APP_TOKEN` environment variable)
+  The HubSpot App Token to use for authentication. This can also be set with the `HUBSPOT_APP_TOKEN` environment variable. 
+
 - `concurrency` (int, optional, default: `1000`):
+
   A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
 
 - `max_requests_per_second` (`int`, optional. Default: `5`)

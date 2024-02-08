@@ -1,21 +1,32 @@
 package spec
 
-import _ "embed"
+import (
+	_ "embed"
+	"fmt"
+	"os"
+)
 
 const (
 	defaultConcurrency = 1000
 )
 
 type Spec struct {
+	// In order for CloudQuery to sync resources from your HubSpot setup, you will need to authenticate with your HubSpot account. You will need to create a [HubSpot Private App](https://developers.hubspot.com/docs/api/private-apps), and copy the App Token here.
+	// If not specified `HUBSPOT_APP_TOKEN` environment variable will be used instead.
+	AppToken string `json:"app_token,omitempty" jsonschema:"minLength=1"`
 	// Max number of requests per second to perform against the Hubspot API.
-	MaxRequestsPerSecond *int `yaml:"max_requests_per_second,omitempty" json:"max_requests_per_second,omitempty" jsonschema:"minimum=1,default=5"`
+	MaxRequestsPerSecond int `json:"max_requests_per_second,omitempty" jsonschema:"minimum=1,default=5"`
 	// Key-value map of options for each table. The key is the name of the table. The value is an options object.
-	TableOptions TableOptions `yaml:"table_options,omitempty" json:"table_options,omitempty"`
+	TableOptions TableOptions `json:"table_options,omitempty"`
 	// Concurrency setting for the CloudQuery scheduler.
-	Concurrency int `yaml:"concurrency,omitempty" json:"concurrency,omitempty" jsonschema:"minimum=1,default=1000"`
+	Concurrency int `json:"concurrency,omitempty" jsonschema:"minimum=1,default=1000"`
 }
 
-func (spec *Spec) SetDefaults() {
+func (s *Spec) SetDefaults() {
+	if s.AppToken == "" {
+		s.AppToken = os.Getenv("HUBSPOT_APP_TOKEN")
+	}
+
 	// https://developers.hubspot.com/docs/api/usage-details#rate-limits
 	// Hubspot, for Pro and Enterprise, accounts, has rate limits of:
 	// - 15 requests / second / private-app
@@ -24,13 +35,20 @@ func (spec *Spec) SetDefaults() {
 	// subscriptions in case cloudquery is run 24/7).
 	var defaultRateLimitPerSecond = 5
 
-	if spec.MaxRequestsPerSecond == nil || *spec.MaxRequestsPerSecond <= 0 {
-		spec.MaxRequestsPerSecond = &defaultRateLimitPerSecond
+	if s.MaxRequestsPerSecond <= 0 {
+		s.MaxRequestsPerSecond = defaultRateLimitPerSecond
 	}
 
-	if spec.Concurrency == 0 {
-		spec.Concurrency = defaultConcurrency
+	if s.Concurrency == 0 {
+		s.Concurrency = defaultConcurrency
 	}
+}
+
+func (s Spec) Validate() error {
+	if s.AppToken == "" {
+		return fmt.Errorf("app_token is required")
+	}
+	return nil
 }
 
 //go:embed schema.json
