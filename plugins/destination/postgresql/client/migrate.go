@@ -87,7 +87,7 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 		col.Type = c.PgToSchemaType(c.SchemaTypeToPg(col.Type))
 		normalizedTable.Columns = append(normalizedTable.Columns, col)
 		// pgTablesToPKConstraints is populated when handling migrate messages
-		normalizedTable.PkConstraintName = c.pgTablesToPKConstraints[table.Name]
+		normalizedTable.PkConstraintName = c.pgTablesToPKConstraints[table.Name].name
 	}
 
 	return &normalizedTable
@@ -212,7 +212,7 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 		return err
 	}
 
-	for _, colName := range table.PrimaryKeyComponents() {
+	for _, colName := range c.pgTablesToPKConstraints[tableName].columns {
 		_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ALTER COLUMN "+pgx.Identifier{colName}.Sanitize()+" DROP NOT NULL")
 		if err != nil {
 			c.logger.Error().Err(err).Str("table", tableName).Str("column", colName).Msg("Failed to drop NOT NULL constraint")
@@ -270,7 +270,10 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	}
 
 	pkConstraintName := getPKName(table)
-	c.pgTablesToPKConstraints[tableName] = pkConstraintName
+	c.pgTablesToPKConstraints[tableName] = constraintDef{
+		name:    pkConstraintName,
+		columns: primaryKeys,
+	}
 
 	if len(primaryKeys) > 0 {
 		// add composite PK constraint on primary key columns
