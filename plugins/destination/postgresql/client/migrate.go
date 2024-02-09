@@ -87,8 +87,8 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 		col.Type = c.PgToSchemaType(c.SchemaTypeToPg(col.Type))
 		normalizedTable.Columns = append(normalizedTable.Columns, col)
 		// pgTablesToPKConstraints is populated when handling migrate messages
-		if c.pgTablesToPKConstraints[table.Name] != nil {
-			normalizedTable.PkConstraintName = c.pgTablesToPKConstraints[table.Name].name
+		if entry, _ := c.pgTablesToPKConstraints[table.Name]; entry != nil {
+			normalizedTable.PkConstraintName = entry.name
 		}
 	}
 
@@ -241,7 +241,11 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 			return fmt.Errorf("failed to begin transaction: %w", err)
 		}
 	}
-	for _, colName := range c.pgTablesToPKConstraints[tableName].columns {
+	entry, _ := c.pgTablesToPKConstraints[tableName]
+	if entry == nil {
+		entry = new(pkConstraintDetails)
+	}
+	for _, colName := range entry.columns {
 		_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ALTER COLUMN "+pgx.Identifier{colName}.Sanitize()+" DROP NOT NULL")
 		if err != nil {
 			c.logger.Error().Err(err).Str("table", tableName).Str("column", colName).Msg("Failed to drop NOT NULL constraint")

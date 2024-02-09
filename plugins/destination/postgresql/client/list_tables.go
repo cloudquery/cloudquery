@@ -90,13 +90,15 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 		table := tables[len(tables)-1]
 
 		// We always want to record that we saw the table, even if it doesn't have a PK constraint.
-		if _, ok := c.pgTablesToPKConstraints[tableName]; !ok {
-			c.pgTablesToPKConstraints[tableName] = &pkConstraintDetails{}
+		entry, ok := c.pgTablesToPKConstraints[tableName]
+		if !ok {
+			entry = new(pkConstraintDetails)
+			c.pgTablesToPKConstraints[tableName] = entry
 		}
 		if pkName != "" {
-			c.pgTablesToPKConstraints[tableName].name = pkName
+			entry.name = pkName
 			// we want to store any current column that is part of the PK
-			c.pgTablesToPKConstraints[tableName].columns = append(c.pgTablesToPKConstraints[tableName].columns, columnName)
+			entry.columns = append(entry.columns, columnName)
 			table.PkConstraintName = pkName
 		}
 
