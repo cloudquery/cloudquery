@@ -87,7 +87,9 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 		col.Type = c.PgToSchemaType(c.SchemaTypeToPg(col.Type))
 		normalizedTable.Columns = append(normalizedTable.Columns, col)
 		// pgTablesToPKConstraints is populated when handling migrate messages
-		normalizedTable.PkConstraintName = c.pgTablesToPKConstraints[table.Name].name
+		if c.pgTablesToPKConstraints[table.Name] != nil {
+			normalizedTable.PkConstraintName = c.pgTablesToPKConstraints[table.Name].name
+		}
 	}
 
 	return &normalizedTable
