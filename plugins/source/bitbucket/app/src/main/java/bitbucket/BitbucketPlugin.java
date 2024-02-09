@@ -26,6 +26,7 @@ public class BitbucketPlugin extends Plugin {
 
   public BitbucketPlugin() {
     super("bitbucket", PLUGIN_VERSION);
+    this.setJsonSchema(Spec.jsonSchema);
   }
 
   @Override

@@ -24,4 +24,35 @@ public class Spec {
       throw new ConfigurationException("Username and password are required");
     }
   }
+
+  public static final String jsonSchema =
+      """
+          {
+            "$schema": "https://json-schema.org/draft/2020-12/schema",
+            "$id": "https://github.com/cloudquery/cloudquery/plugins/source/bitbicket/spec",
+            "$ref": "#/$defs/Spec",
+            "$defs": {
+              "Spec": {
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "BitBucket user."
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "BitBucket password."
+                  },
+                },
+                "additionalProperties": false,
+                "type": "object",
+                "required": [
+                  "username",
+                  "password"
+                ]
+              },
+            }
+          }
+          """;
 }
