@@ -6,3 +6,13 @@ type DetectorWrapper struct {
 	*guardduty.GetDetectorOutput
 	Id string
 }
+
+type IPSetWrapper struct {
+	*guardduty.GetIPSetOutput
+	Id string
+}
+
+type ThreatIntelSetWrapper struct {
+	*guardduty.GetThreatIntelSetOutput
+	Id string
+}
