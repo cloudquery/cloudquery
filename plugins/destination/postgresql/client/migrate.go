@@ -291,7 +291,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	}
 
 	pkConstraintName := getPKName(table)
-	c.pgTablesToPKConstraints[tableName] = pkConstraintDetails{
+	c.pgTablesToPKConstraints[tableName] = &pkConstraintDetails{
 		name:    pkConstraintName,
 		columns: table.PrimaryKeys(),
 	}

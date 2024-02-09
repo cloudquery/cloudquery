@@ -62,7 +62,7 @@ ORDER BY
 `
 
 func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
-	c.pgTablesToPKConstraints = map[string]pkConstraintDetails{}
+	c.pgTablesToPKConstraints = map[string]*pkConstraintDetails{}
 	var tables schema.Tables
 	var whereClause string
 	if c.pgType == pgTypeCockroachDB {
@@ -91,15 +91,12 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 
 		// We always want to record that we saw the table, even if it doesn't have a PK constraint.
 		if _, ok := c.pgTablesToPKConstraints[tableName]; !ok {
-			c.pgTablesToPKConstraints[tableName] = pkConstraintDetails{}
+			c.pgTablesToPKConstraints[tableName] = &pkConstraintDetails{}
 		}
 		if pkName != "" {
-			if constraint, ok := c.pgTablesToPKConstraints[tableName]; ok {
-				constraint.name = pkName
-				// we want to store any current column that is part of the PK
-				constraint.columns = append(constraint.columns, columnName)
-				c.pgTablesToPKConstraints[tableName] = constraint
-			}
+			c.pgTablesToPKConstraints[tableName].name = pkName
+			// we want to store any current column that is part of the PK
+			c.pgTablesToPKConstraints[tableName].columns = append(c.pgTablesToPKConstraints[tableName].columns, columnName)
 			table.PkConstraintName = pkName
 		}
 

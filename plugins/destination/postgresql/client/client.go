@@ -32,7 +32,7 @@ type Client struct {
 	batchSize           int
 	writer              *mixedbatchwriter.MixedBatchWriter
 
-	pgTablesToPKConstraints map[string]pkConstraintDetails
+	pgTablesToPKConstraints map[string]*pkConstraintDetails
 
 	plugin.UnimplementedSource
 }
