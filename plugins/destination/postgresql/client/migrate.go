@@ -87,7 +87,9 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 		col.Type = c.PgToSchemaType(c.SchemaTypeToPg(col.Type))
 		normalizedTable.Columns = append(normalizedTable.Columns, col)
 		// pgTablesToPKConstraints is populated when handling migrate messages
-		normalizedTable.PkConstraintName = c.pgTablesToPKConstraints[table.Name]
+		if entry := c.pgTablesToPKConstraints[table.Name]; entry != nil {
+			normalizedTable.PkConstraintName = entry.name
+		}
 	}
 
 	return &normalizedTable
@@ -211,8 +213,39 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to drop primary key")
 		return err
 	}
+	// Create new Primary Key with CQID
+	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ADD CONSTRAINT "+sanitizedPKName+" PRIMARY KEY ("+pgx.Identifier{schema.CqIDColumn.Name}.Sanitize()+")")
+	if err != nil {
+		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to create new primary key on _cq_id")
+		return err
+	}
 
-	for _, colName := range table.PrimaryKeyComponents() {
+	// CockroachDB doesn't support dropping NOT NULL constraints in the same transaction as the the primary key is changed
+	// So we have to alter the PK in one transaction and then drop the old NOT NULL constraints in another transaction
+	if c.pgType == pgTypeCockroachDB {
+		if err == nil {
+			err = tx.Commit(ctx)
+			if err != nil {
+				c.logger.Error().Err(err).Msg("failed to commit transaction")
+			}
+		}
+		if err != nil {
+			if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
+				c.logger.Error().Err(rollbackErr).Str("table", tableName).Msg("Failed to rollback transaction")
+			}
+		}
+		tx, err = conn.BeginTx(ctx, pgx.TxOptions{
+			IsoLevel: pgx.Serializable,
+		})
+		if err != nil {
+			return fmt.Errorf("failed to begin transaction: %w", err)
+		}
+	}
+	entry := c.pgTablesToPKConstraints[tableName]
+	if entry == nil {
+		entry = new(pkConstraintDetails)
+	}
+	for _, colName := range entry.columns {
 		_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ALTER COLUMN "+pgx.Identifier{colName}.Sanitize()+" DROP NOT NULL")
 		if err != nil {
 			c.logger.Error().Err(err).Str("table", tableName).Str("column", colName).Msg("Failed to drop NOT NULL constraint")
@@ -220,12 +253,6 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 		}
 	}
 
-	// Create new Primary Key with CQID
-	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ADD CONSTRAINT "+sanitizedPKName+" PRIMARY KEY ("+pgx.Identifier{schema.CqIDColumn.Name}.Sanitize()+")")
-	if err != nil {
-		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to create new primary key on _cq_id")
-		return err
-	}
 	return nil
 }
 
@@ -270,7 +297,10 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	}
 
 	pkConstraintName := getPKName(table)
-	c.pgTablesToPKConstraints[tableName] = pkConstraintName
+	c.pgTablesToPKConstraints[tableName] = &pkConstraintDetails{
+		name:    pkConstraintName,
+		columns: table.PrimaryKeys(),
+	}
 
 	if len(primaryKeys) > 0 {
 		// add composite PK constraint on primary key columns
