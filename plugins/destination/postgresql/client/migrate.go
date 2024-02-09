@@ -87,7 +87,7 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 		col.Type = c.PgToSchemaType(c.SchemaTypeToPg(col.Type))
 		normalizedTable.Columns = append(normalizedTable.Columns, col)
 		// pgTablesToPKConstraints is populated when handling migrate messages
-		if entry, _ := c.pgTablesToPKConstraints[table.Name]; entry != nil {
+		if entry := c.pgTablesToPKConstraints[table.Name]; entry != nil {
 			normalizedTable.PkConstraintName = entry.name
 		}
 	}
@@ -241,7 +241,7 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 			return fmt.Errorf("failed to begin transaction: %w", err)
 		}
 	}
-	entry, _ := c.pgTablesToPKConstraints[tableName]
+	entry := c.pgTablesToPKConstraints[tableName]
 	if entry == nil {
 		entry = new(pkConstraintDetails)
 	}
