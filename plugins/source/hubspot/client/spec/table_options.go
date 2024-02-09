@@ -5,9 +5,9 @@ type TableOptions map[string]*TableOptionsSpec
 // Table options spec.
 type TableOptionsSpec struct {
 	// List of properties to sync. If empty, everything is synced.
-	Properties []string `yaml:"properties,omitempty" json:"properties,omitempty" jsonschema:"minLength=1"`
+	Properties []string `json:"properties,omitempty" jsonschema:"minLength=1"`
 	// List of associations to sync. If empty, everything is synced.
-	Associations []string `yaml:"associations,omitempty" json:"associations,omitempty" jsonschema:"minLength=1"`
+	Associations []string `json:"associations,omitempty" jsonschema:"minLength=1"`
 }
 
 func (ts TableOptions) ForTable(name string) *TableOptionsSpec {
