@@ -19,6 +19,7 @@ func Detectors() *schema.Table {
 		Resolver:            fetchGuarddutyDetectors,
 		PreResourceResolver: getDetector,
 		Transform: transformers.TransformWithStruct(&models.DetectorWrapper{},
+			transformers.WithPrimaryKeyComponents("Id"),
 			transformers.WithTypeTransformer(client.TimestampTypeTransformer),
 			transformers.WithResolverTransformer(client.TimestampResolverTransformer),
 			transformers.WithUnwrapAllEmbeddedStructs(),
@@ -29,13 +30,11 @@ func Detectors() *schema.Table {
 			client.RequestAccountIDColumn(true),
 			client.RequestRegionColumn(true),
 			{
-				Name:     "arn",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: resolveGuarddutyARN(),
-			},
-			{
-				Name:                "id",
-				Type:                arrow.BinaryTypes.String,
+				Name: "arn",
+				Type: arrow.BinaryTypes.String,
+				Resolver: client.ResolveARN(client.GuardDutyService, func(resource *schema.Resource) ([]string, error) {
+					return []string{"detector", resource.Item.(models.DetectorWrapper).Id}, nil
+				}),
 				PrimaryKeyComponent: true,
 			},
 		},
@@ -80,12 +79,13 @@ func getDetector(ctx context.Context, meta schema.ClientMeta, resource *schema.R
 		return err
 	}
 
-	resource.Item = &models.DetectorWrapper{GetDetectorOutput: d, Id: dId}
+	resource.Item = models.DetectorWrapper{GetDetectorOutput: d, Id: dId}
 	return nil
 }
 
-func resolveGuarddutyARN() schema.ColumnResolver {
-	return client.ResolveARN(client.GuardDutyService, func(resource *schema.Resource) ([]string, error) {
-		return []string{"detector", resource.Item.(*models.DetectorWrapper).Id}, nil
-	})
+var detectorARNColumn = schema.Column{
+	Name:                "detector_arn",
+	Type:                arrow.BinaryTypes.String,
+	Resolver:            schema.ParentColumnResolver("arn"),
+	PrimaryKeyComponent: true,
 }

@@ -3,7 +3,6 @@ package guardduty
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty/types"
@@ -27,18 +26,13 @@ func detectorMembers() *schema.Table {
 		Columns: schema.ColumnList{
 			client.RequestAccountIDColumn(true),
 			client.RequestRegionColumn(true),
-			{
-				Name:                "detector_arn",
-				Type:                arrow.BinaryTypes.String,
-				Resolver:            schema.ParentColumnResolver("arn"),
-				PrimaryKeyComponent: true,
-			},
+			detectorARNColumn,
 		},
 	}
 }
 
 func fetchDetectorMembers(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	detector := parent.Item.(*models.DetectorWrapper)
+	detector := parent.Item.(models.DetectorWrapper)
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	config := &guardduty.ListMembersInput{DetectorId: aws.String(detector.Id)}

@@ -36,16 +36,18 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.1'
     implementation 'com.google.guava:guava:31.1-jre'
     implementation 'com.konghq:unirest-java:3.14.2'
-    implementation 'io.grpc:grpc-protobuf:1.57.1'
-    implementation 'io.grpc:grpc-stub:1.57.1'
-    implementation 'io.grpc:grpc-services:1.57.1'
-    implementation 'io.grpc:grpc-testing:1.57.1'
+
+    // gRPC
+    implementation 'io.grpc:grpc-protobuf:1.61.1'
+    implementation 'io.grpc:grpc-stub:1.61.1'
+    implementation 'io.grpc:grpc-services:1.61.1'
+    testImplementation 'io.grpc:grpc-testing:1.61.1'
 
     implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
     implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
 
-    implementation 'io.cloudquery:plugin-pb-java:0.0.13'
-    implementation 'io.cloudquery:plugin-sdk-java:0.0.20'
+    implementation 'io.cloudquery:plugin-pb-java:0.0.14'
+    implementation 'io.cloudquery:plugin-sdk-java:0.0.21'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

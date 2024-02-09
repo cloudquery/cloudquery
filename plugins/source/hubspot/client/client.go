@@ -54,7 +54,7 @@ func New(_ context.Context, logger zerolog.Logger, s spec.Spec) (schema.ClientMe
 		Authorizer: hubspot.NewTokenAuthorizer(authToken),
 		Spec:       s,
 		RateLimiter: rate.NewLimiter(
-			/* r= */ rate.Limit(*s.MaxRequestsPerSecond),
+			/* r= */ rate.Limit(s.MaxRequestsPerSecond),
 			/* b= */ 1,
 		),
 	}, nil

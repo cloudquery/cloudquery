@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/resources/services/guardduty/models"
@@ -25,10 +26,18 @@ func detectorFilters() *schema.Table {
 		Columns: schema.ColumnList{
 			client.RequestAccountIDColumn(true),
 			client.RequestRegionColumn(true),
+			detectorARNColumn,
 			{
-				Name:                "detector_arn",
-				Type:                arrow.BinaryTypes.String,
-				Resolver:            schema.ParentColumnResolver("arn"),
+				Name: "arn",
+				Type: arrow.BinaryTypes.String,
+				Resolver: client.ResolveARN(client.GuardDutyService, func(resource *schema.Resource) ([]string, error) {
+					return []string{
+						"detector",
+						resource.Parent.Item.(models.DetectorWrapper).Id,
+						"filter",
+						aws.ToString(resource.Item.(*guardduty.GetFilterOutput).Name),
+					}, nil
+				}),
 				PrimaryKeyComponent: true,
 			},
 		},
@@ -36,7 +45,7 @@ func detectorFilters() *schema.Table {
 }
 
 func fetchDetectorFilters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	detector := parent.Item.(*models.DetectorWrapper)
+	detector := parent.Item.(models.DetectorWrapper)
 
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
@@ -60,7 +69,7 @@ func getDetectorFilter(ctx context.Context, meta schema.ClientMeta, resource *sc
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	filterName := resource.Item.(string)
-	detector := resource.Parent.Item.(*models.DetectorWrapper)
+	detector := resource.Parent.Item.(models.DetectorWrapper)
 
 	out, err := svc.GetFilter(ctx, &guardduty.GetFilterInput{
 		DetectorId: &detector.Id,
