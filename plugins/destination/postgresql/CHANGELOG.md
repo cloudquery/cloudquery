@@ -1,5 +1,13 @@
 # Changelog
 
+## [7.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.3.1...plugins-destination-postgresql-v7.3.2) (2024-02-09)
+
+
+### Bug Fixes
+
+* Add JSON schema metadata ([#16538](https://github.com/cloudquery/cloudquery/issues/16538)) ([46521b7](https://github.com/cloudquery/cloudquery/commit/46521b7b4975d59bb6926bb6b9df091b0f8328b1))
+* Handle addition of Primary Key Components ([#16555](https://github.com/cloudquery/cloudquery/issues/16555)) ([f1093d8](https://github.com/cloudquery/cloudquery/commit/f1093d890ad65a5646da2d9fc5889610e8aedb98))
+
 ## [7.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.3.0...plugins-destination-postgresql-v7.3.1) (2024-02-05)
 
 
