@@ -56,6 +56,7 @@ type Client struct {
 	Backend             state.Client
 	TestingGRPCEndpoint *string
 	TestingHTTPEndpoint *string
+	Spec                *spec.Spec
 }
 
 func (c *Client) WithBackend(backend state.Client) *Client {
@@ -130,6 +131,7 @@ func New(ctx context.Context, logger zerolog.Logger, s *spec.Spec) (schema.Clien
 	c := Client{
 		logger:          logger,
 		EnabledServices: map[string]map[string]any{},
+		Spec:            s,
 	}
 
 	projects := s.ProjectIDs
@@ -232,7 +234,10 @@ func New(ctx context.Context, logger zerolog.Logger, s *spec.Spec) (schema.Clien
 		projects = setUnion(projects, projectsWithFilter)
 	}
 
-	if len(s.OrganizationIDs) == 0 && len(s.OrganizationFilter) == 0 {
+	switch {
+	case s.SkipOrganizationResources:
+		c.logger.Info().Msg("Skipping organization resources")
+	case len(s.OrganizationIDs) == 0 && len(s.OrganizationFilter) == 0:
 		c.logger.Info().Msg("No organization_ids or organization_filter specified - assuming all organizations")
 		c.logger.Info().Msg("Listing organizations...")
 
@@ -240,7 +245,7 @@ func New(ctx context.Context, logger zerolog.Logger, s *spec.Spec) (schema.Clien
 		if err != nil {
 			c.logger.Err(err).Msg("failed to get organizations")
 		}
-	} else {
+	default:
 		if len(s.OrganizationIDs) > 0 {
 			for _, orgID := range s.OrganizationIDs {
 				c.logger.Info().Msgf("Getting spec organization %q...", orgID)

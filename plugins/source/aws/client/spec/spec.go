@@ -21,7 +21,7 @@ type Spec struct {
 	// In AWS organization mode, CloudQuery will source all accounts underneath automatically.
 	Organization *Organization `json:"org"`
 
-	// If `true`, will log AWS debug logs, including retries and other request/response metadata.
+	// If `true`, will log AWS debug logs, including retries and other request/response metadata. Requires passing `--log-level debug` to the CloudQuery CLI.
 	AWSDebug bool `json:"aws_debug,omitempty"`
 
 	// Defines the maximum number of times an API request will be retried.

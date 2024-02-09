@@ -16,6 +16,7 @@ The following fields are used to calculate the value of `_cq_id`: (**account_id*
 |account_id|`utf8`|
 |region|`utf8`|
 |name|`utf8`|
+|tags|`json`|
 |allowed_pattern|`utf8`|
 |data_type|`utf8`|
 |description|`utf8`|
