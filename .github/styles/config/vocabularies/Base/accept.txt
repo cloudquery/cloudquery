@@ -184,6 +184,7 @@ pluggable
 Pluggable
 postgres
 Postgres
+Posthog
 powershell
 Powershell
 PowerShell
