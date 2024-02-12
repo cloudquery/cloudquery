@@ -162,8 +162,7 @@ func transformArr(arr arrow.Array) []any {
 			copy(pgUUID.Bytes[:], bUUID)
 			pgArr[i] = pgUUID
 		case *array.Map:
-			val = arr.ValueStr(i)
-			pgArr[i] = stripNulls(val)
+			pgArr[i] = stripNulls(arr.ValueStr(i))
 		case array.ListLike:
 			start, end := a.ValueOffsets(i)
 			nested := array.NewSlice(a.ListValues(), start, end)
