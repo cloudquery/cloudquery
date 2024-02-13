@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.6.1...plugins-destination-sqlite-v2.6.2) (2024-02-13)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to d771afd ([#16483](https://github.com/cloudquery/cloudquery/issues/16483)) ([dcaa994](https://github.com/cloudquery/cloudquery/commit/dcaa9949df43919c0745e05308ce97bf409c4d77))
+
 ## [2.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.6.0...plugins-destination-sqlite-v2.6.1) (2024-02-02)
 
 
