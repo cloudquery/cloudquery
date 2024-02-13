@@ -3,6 +3,12 @@
 ## [4.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.0.7...plugins-source-test-v4.0.8) (2024-02-13)
 
 
+### This Release has the Following Changes to Tables
+- Table `test_paid_table` was added
+- Table `test_some_table` was added
+- Table `test_sub_table` was added
+- Table `test_testdata_table` was added
+
 ### Bug Fixes
 
 * **deps:** Update github.com/apache/arrow/go/v15 digest to 6d44906 ([#16115](https://github.com/cloudquery/cloudquery/issues/16115)) ([8b0ae62](https://github.com/cloudquery/cloudquery/commit/8b0ae6266d19a10fe84102837802358f0b9bb1bc))
