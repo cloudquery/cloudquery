@@ -3,6 +3,7 @@ package dynamodb
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb"
 	"github.com/aws/aws-sdk-go-v2/service/dynamodb/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -30,7 +31,8 @@ func buildDynamodbTablesMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 
 	descOutput := &dynamodb.DescribeTableOutput{
 		Table: &types.TableDescription{
-			TableName: &tableName,
+			TableName:          &tableName,
+			GlobalTableVersion: aws.String("2019.11.21"),
 		},
 	}
 	require.NoError(t, faker.FakeObject(descOutput.Table))
