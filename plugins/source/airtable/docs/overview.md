@@ -40,14 +40,14 @@ spec:
 
 This is the (nested) spec used by the Airtable source plugin:
 
-- `access_token` (string, required):
+- `access_token` (`string`) (required)
 
   Your Airtable API [personal access token](https://airtable.com/developers/web/guides/personal-access-tokens).
 
-- `endpoint_url` (string, optional. Default: `https://api.airtable.com`):
+- `endpoint_url` (`string`) (optional) (default: `https://api.airtable.com`)
 
   The endpoint URL to fetch data from.
 
-- `concurrency` (integer, optional. Default: 10000):
+- `concurrency` (`integer`) (optional) (default: `10000`)
 
   Best effort maximum number of tables to sync concurrently.
