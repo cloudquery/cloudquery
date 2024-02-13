@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.0.2...plugins-source-airtable-v2.1.0) (2024-02-13)
+
+
+### Features
+
+* Add JSON schema to `airtable` source plugin spec ([#16594](https://github.com/cloudquery/cloudquery/issues/16594)) ([d81e834](https://github.com/cloudquery/cloudquery/commit/d81e834dc1c52bb5c3806f95c6cc2fe2c7800332))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-sdk-javascript to v0.1.6 ([#16583](https://github.com/cloudquery/cloudquery/issues/16583)) ([b4592fe](https://github.com/cloudquery/cloudquery/commit/b4592fe4a09c4d2f0428ba948d4eeadd0a1f0cd3))
+
 ## [2.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.0.1...plugins-source-airtable-v2.0.2) (2024-02-01)
 
 
