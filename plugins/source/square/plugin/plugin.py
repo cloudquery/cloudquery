@@ -17,7 +17,9 @@ class SquarePlugin(plugin.Plugin):
         super().__init__(
             PLUGIN_NAME,
             PLUGIN_VERSION,
-            opts=plugin.plugin.Options(team="cloudquery", kind="source"),
+            opts=plugin.plugin.Options(
+                team="cloudquery", kind="source", json_schema=Spec.json_schema()
+            ),
         )
         self._logger = structlog.get_logger()
 
