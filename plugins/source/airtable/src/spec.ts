@@ -4,14 +4,47 @@ import camelcaseKeys from 'camelcase-keys';
 const spec = {
   type: 'object',
   properties: {
-    concurrency: { type: 'integer' },
+    concurrency: { type: 'integer', minimum: 1 },
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    access_token: { type: 'string' },
+    access_token: { type: 'string', minLength: 1 },
     // eslint-disable-next-line @typescript-eslint/naming-convention
     endpoint_url: { type: 'string' },
   },
   required: ['access_token'],
 };
+
+export const JSON_SCHEMA = `{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/airtable/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Spec": {
+      "properties": {
+        "access_token": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Your Airtable API [personal access token](https://airtable.com/developers/web/guides/personal-access-tokens)."
+        },
+        "endpoint_url": {
+          "type": "string",
+          "default": "https://api.airtable.com",
+          "description": "The endpoint URL to fetch data from."
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 10000,
+          "description": "Best effort maximum number of tables to sync concurrently."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "access_token"
+      ]
+    }
+  }
+}`;
 
 type JSONSpec = {
   concurrency: number;
