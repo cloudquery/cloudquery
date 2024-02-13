@@ -81,6 +81,13 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 		Name: table.Name,
 	}
 	for _, col := range table.Columns {
+		// Postgres doesn't support column names longer than 63 characters
+		// and it will automatically truncate them, so we do the same here
+		// to make migrations predictable
+		if len(col.Name) > 63 {
+			col.Name = col.Name[:63]
+		}
+
 		if col.PrimaryKey {
 			col.NotNull = true
 		}
