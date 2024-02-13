@@ -35,7 +35,7 @@ func tableReplicaAutoScalings() *schema.Table {
 func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	par := parent.Item.(*types.TableDescription)
 
-	if aws.ToString(par.GlobalTableVersion) == "" {
+	if aws.ToString(par.GlobalTableVersion) != "2019.11.21" {
 		// "This operation only applies to Version 2019.11.21 of global tables"
 		return nil
 	}
