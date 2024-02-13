@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.4.0...plugins-destination-snowflake-v3.4.1) (2024-02-13)
+
+
+### Bug Fixes
+
+* **deps:** Update Azure modules ([#16564](https://github.com/cloudquery/cloudquery/issues/16564)) ([d75ce48](https://github.com/cloudquery/cloudquery/commit/d75ce4891d9790d9fe3e76bba586f7160532ed92))
+* **deps:** Update github.com/cloudquery/jsonschema digest to d771afd ([#16483](https://github.com/cloudquery/cloudquery/issues/16483)) ([dcaa994](https://github.com/cloudquery/cloudquery/commit/dcaa9949df43919c0745e05308ce97bf409c4d77))
+
 ## [3.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.3.12...plugins-destination-snowflake-v3.4.0) (2024-02-01)
 
 
