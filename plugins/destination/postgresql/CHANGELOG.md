@@ -1,5 +1,13 @@
 # Changelog
 
+## [7.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.3.2...plugins-destination-postgresql-v7.3.3) (2024-02-13)
+
+
+### Bug Fixes
+
+* Handle long column name ([#16586](https://github.com/cloudquery/cloudquery/issues/16586)) ([c299ea1](https://github.com/cloudquery/cloudquery/commit/c299ea173979ad8e19f2188976784d075af060c7))
+* Handle map writes ([#16585](https://github.com/cloudquery/cloudquery/issues/16585)) ([e9957ab](https://github.com/cloudquery/cloudquery/commit/e9957ab0aa9bc03e97f9310fab9af4cf81c40d29))
+
 ## [7.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.3.1...plugins-destination-postgresql-v7.3.2) (2024-02-09)
 
 
