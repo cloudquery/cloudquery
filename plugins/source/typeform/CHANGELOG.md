@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.2.3...plugins-source-typeform-v1.3.0) (2024-02-13)
+
+
+### Features
+
+* Add JSON Schema to `typeform` source plugin ([#16590](https://github.com/cloudquery/cloudquery/issues/16590)) ([1af2d81](https://github.com/cloudquery/cloudquery/commit/1af2d81be54894ea76e62c7db991b6ac13e68949))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.14 ([#16578](https://github.com/cloudquery/cloudquery/issues/16578)) ([7fe2c3b](https://github.com/cloudquery/cloudquery/commit/7fe2c3b5b04f314dec35bb980c19feb53925265f))
+
 ## [1.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.2.2...plugins-source-typeform-v1.2.3) (2024-02-01)
 
 

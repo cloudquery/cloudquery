@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.1.3...plugins-source-square-v1.2.0) (2024-02-13)
+
+
+### Features
+
+* Add JSON schema to `square` source plugin spec ([#16591](https://github.com/cloudquery/cloudquery/issues/16591)) ([32f3bdc](https://github.com/cloudquery/cloudquery/commit/32f3bdce9e17839e95f58feeaa7b06d14d04bcc0))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.14 ([#16578](https://github.com/cloudquery/cloudquery/issues/16578)) ([7fe2c3b](https://github.com/cloudquery/cloudquery/commit/7fe2c3b5b04f314dec35bb980c19feb53925265f))
+
 ## [1.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.1.2...plugins-source-square-v1.1.3) (2024-02-01)
 
 
