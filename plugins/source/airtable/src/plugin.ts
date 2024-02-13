@@ -10,7 +10,7 @@ import type { Table } from '@cloudquery/plugin-sdk-javascript/schema/table';
 import { filterTables } from '@cloudquery/plugin-sdk-javascript/schema/table';
 import { readPackageUp } from 'read-package-up';
 
-import { parseSpec } from './spec.js';
+import { parseSpec, JSON_SCHEMA } from './spec.js';
 import type { Spec } from './spec.js';
 import { getTables } from './tables.js';
 
@@ -78,6 +78,10 @@ export const newAirtablePlugin = () => {
     return pluginClient;
   };
 
-  pluginClient.plugin = newPlugin('airtable', version, newClient, { kind: 'source', team: 'cloudquery' });
+  pluginClient.plugin = newPlugin('airtable', version, newClient, {
+    kind: 'source',
+    team: 'cloudquery',
+    jsonSchema: JSON_SCHEMA,
+  });
   return pluginClient.plugin;
 };
