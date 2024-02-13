@@ -1,5 +1,35 @@
 # Changelog
 
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v3.4.17...plugins-destination-file-v4.0.0) (2024-02-13)
+
+
+### ⚠ BREAKING CHANGES
+
+* Remove deprecated `directory` option ([#16382](https://github.com/cloudquery/cloudquery/issues/16382))
+
+### Features
+
+* Add JSON schema to `file` destination plugin ([#16404](https://github.com/cloudquery/cloudquery/issues/16404)) ([932cb36](https://github.com/cloudquery/cloudquery/commit/932cb361f97a3839487b199582f017efa71262c4))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to d771afd ([#16483](https://github.com/cloudquery/cloudquery/issues/16483)) ([dcaa994](https://github.com/cloudquery/cloudquery/commit/dcaa9949df43919c0745e05308ce97bf409c4d77))
+* **deps:** Update google.golang.org/genproto/googleapis/api digest to 1f4bbc5 ([#16421](https://github.com/cloudquery/cloudquery/issues/16421)) ([9489931](https://github.com/cloudquery/cloudquery/commit/9489931c1b64bf1f7d5da51997944ee54370215b))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.10 ([#16445](https://github.com/cloudquery/cloudquery/issues/16445)) ([9933075](https://github.com/cloudquery/cloudquery/commit/9933075da8c26966c4cd119c30e7a4b5063be9ae))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.6 ([#16356](https://github.com/cloudquery/cloudquery/issues/16356)) ([72298db](https://github.com/cloudquery/cloudquery/commit/72298db12595f15bd432f3b836dc48beff4aacd5))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.7 ([#16366](https://github.com/cloudquery/cloudquery/issues/16366)) ([8459232](https://github.com/cloudquery/cloudquery/commit/8459232dc357ebbe372230c13cef3c678763bef3))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.8 ([#16373](https://github.com/cloudquery/cloudquery/issues/16373)) ([3d0d7f6](https://github.com/cloudquery/cloudquery/commit/3d0d7f69ffd57959d359768ffa4013a97f8499e4))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.9 ([#16424](https://github.com/cloudquery/cloudquery/issues/16424)) ([1b73a7e](https://github.com/cloudquery/cloudquery/commit/1b73a7e8065ad0d540550177ed0d4becd4a536d7))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.0 ([#16237](https://github.com/cloudquery/cloudquery/issues/16237)) ([3fcdab0](https://github.com/cloudquery/cloudquery/commit/3fcdab08816ad9de7bb4eecab59c7be1bda3d00c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.1 ([#16296](https://github.com/cloudquery/cloudquery/issues/16296)) ([ab4a0da](https://github.com/cloudquery/cloudquery/commit/ab4a0dace0a870755fd22d92c6e9c999351f594e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.2 ([#16342](https://github.com/cloudquery/cloudquery/issues/16342)) ([f3eb857](https://github.com/cloudquery/cloudquery/commit/f3eb85729e5db16c2530b31d6d276934866d5ef0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.28.0 ([#16362](https://github.com/cloudquery/cloudquery/issues/16362)) ([9166b6b](https://github.com/cloudquery/cloudquery/commit/9166b6b603d0d56a30c2e5072c4f2da5c0c837b5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.29.0 ([#16395](https://github.com/cloudquery/cloudquery/issues/16395)) ([fb1102e](https://github.com/cloudquery/cloudquery/commit/fb1102eac8af4b3722b82b882187fdf322546513))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.29.1 ([#16430](https://github.com/cloudquery/cloudquery/issues/16430)) ([738e89f](https://github.com/cloudquery/cloudquery/commit/738e89f2c969a8a3f1698a8686aeaddb358e7a23))
+* Remove deprecated `directory` option ([#16382](https://github.com/cloudquery/cloudquery/issues/16382)) ([0c61031](https://github.com/cloudquery/cloudquery/commit/0c61031b7914e668c47b72616e3b91146ad98a81))
+* Use `write_mode` instead of `write-mode` in docs ([#16480](https://github.com/cloudquery/cloudquery/issues/16480)) ([ab2efee](https://github.com/cloudquery/cloudquery/commit/ab2efeeccb7417b75fb1eeb2da266e26adcf7e92))
+
 ## [3.4.17](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v3.4.16...plugins-destination-file-v3.4.17) (2024-01-16)
 
 
