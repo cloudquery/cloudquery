@@ -16,18 +16,18 @@ This example syncs from Square to a Postgres destination. The (top level) source
 
 This is the (nested) spec used by the Square source plugin:
 
-- `access_token` (string, required):
+- `access_token` (`string`) (required):
 
   Your access token from Square.
 
-- `environment` (string, required):
+- `environment` (`string`) (required):
 
   The environment to use. Can be `production` or `sandbox`.
 
-- `concurrency` (integer, optional. Default: 100):
+- `concurrency` (`integer`) (optional) (default: `100`):
 
   Maximum number of requests to perform concurrently.
 
-- `queue_size` (integer, optional. Default: 10000):
+- `queue_size` (`integer`) (optional) (default: `10000`):
 
   Maximum number of items to have in the queue before waiting for an unfinished request to complete.
