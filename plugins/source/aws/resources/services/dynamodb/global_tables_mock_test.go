@@ -37,14 +37,6 @@ func buildDynamodbGlobalTablesMock(t *testing.T, ctrl *gomock.Controller) client
 		nil,
 	)
 
-	tags := &dynamodb.ListTagsOfResourceOutput{}
-	require.NoError(t, faker.FakeObject(&tags))
-
-	tags.NextToken = nil
-	m.EXPECT().ListTagsOfResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		tags,
-		nil,
-	)
 	return services
 }
 
