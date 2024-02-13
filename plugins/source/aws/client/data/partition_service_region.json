@@ -8723,6 +8723,12 @@
             "us-gov-west-1": {}
           }
         },
+        "emr-serverless": {
+          "regions": {
+            "us-gov-east-1": {},
+            "us-gov-west-1": {}
+          }
+        },
         "es": {
           "regions": {
             "us-gov-east-1": {},
