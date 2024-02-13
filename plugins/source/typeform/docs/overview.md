@@ -16,18 +16,18 @@ This example syncs from Typeform to a Postgres destination. The (top level) sour
 
 This is the (nested) spec used by the Typeform source plugin:
 
-- `access_token` (string, required):
+- `access_token` (`string`) (required)
 
   Your [personal access token](https://www.typeform.com/developers/get-started/personal-access-token/) from the Typeform Dashboard.
 
-- `base_url` (string, optional. Default: `https://api.typeform.com`):
+- `base_url` (`string`) (optional) (default: `https://api.typeform.com`)
 
-  The base URL to fetch data from. Use https://api.eu.typeform.com if your account is stored in the EU.
+  The base URL to fetch data from. Use `https://api.eu.typeform.com` if your account is stored in the EU.
 
-- `concurrency` (integer, optional. Default: 100):
+- `concurrency` (`integer`) (optional) (default: `100`)
 
   Maximum number of requests to perform concurrently.
 
-- `queue_size` (integer, optional. Default: 10000):
+- `queue_size` (`integer`) (optional) (default: `10000`)
 
   Maximum number of items to have in the queue before waiting for an unfinished request to complete.
