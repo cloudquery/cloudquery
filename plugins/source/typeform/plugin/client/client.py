@@ -19,7 +19,7 @@ class Spec:
 
     @staticmethod
     def json_schema():
-        return '''{
+        return """{
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/cloudquery/cloudquery/plugins/source/typeform/spec",
   "$ref": "#/$defs/Spec",
@@ -57,7 +57,8 @@ class Spec:
     }
   }
 }
-'''
+"""
+
 
 class Client:
     def __init__(self, spec: Spec) -> None:
