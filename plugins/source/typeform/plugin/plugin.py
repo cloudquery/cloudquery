@@ -19,7 +19,9 @@ class TypeformPlugin(plugin.Plugin):
         super().__init__(
             PLUGIN_NAME,
             PLUGIN_VERSION,
-            opts=plugin.plugin.Options(team="cloudquery", kind="source"),
+            opts=plugin.plugin.Options(
+                team="cloudquery", kind="source", json_schema=Spec.json_schema()
+            ),
         )
         self._spec_json = None
         self._spec = None
