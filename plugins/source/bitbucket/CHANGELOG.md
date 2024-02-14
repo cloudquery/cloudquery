@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.0.5...plugins-source-bitbucket-v1.1.0) (2024-02-13)
+
+
+### Features
+
+* Add JSON schema to `bitbucket` source plugin ([#16558](https://github.com/cloudquery/cloudquery/issues/16558)) ([fe08e47](https://github.com/cloudquery/cloudquery/commit/fe08e47b58319ce07b69071afce5e9c6b057f264))
+
+
+### Bug Fixes
+
+* Use `io.cloudquery:plugin-sdk-java` ([#16530](https://github.com/cloudquery/cloudquery/issues/16530)) ([6e03293](https://github.com/cloudquery/cloudquery/commit/6e03293f234a0a64bde53f3972eed1705b557153))
+
 ## [1.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.0.4...plugins-source-bitbucket-v1.0.5) (2023-12-06)
 
 
