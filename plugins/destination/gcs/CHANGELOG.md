@@ -1,5 +1,33 @@
 # Changelog
 
+## [3.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v3.4.17...plugins-destination-gcs-v3.5.0) (2024-02-14)
+
+
+### Features
+
+* Add JSON schema to `gcs` destination plugin ([#16439](https://github.com/cloudquery/cloudquery/issues/16439)) ([0afd883](https://github.com/cloudquery/cloudquery/commit/0afd88349f1cb65cfd47ad83e91bfe5c24ba121a))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to d771afd ([#16483](https://github.com/cloudquery/cloudquery/issues/16483)) ([dcaa994](https://github.com/cloudquery/cloudquery/commit/dcaa9949df43919c0745e05308ce97bf409c4d77))
+* **deps:** Update golang.org/x/exp digest to 1b97071 ([#16419](https://github.com/cloudquery/cloudquery/issues/16419)) ([6d77cd1](https://github.com/cloudquery/cloudquery/commit/6d77cd19b6fc648a4ddb12025c22127e960036a4))
+* **deps:** Update google.golang.org/genproto digest to 1f4bbc5 ([#16420](https://github.com/cloudquery/cloudquery/issues/16420)) ([0d2a01d](https://github.com/cloudquery/cloudquery/commit/0d2a01d2a7c3099b6cc31e8937706747f92f5269))
+* **deps:** Update google.golang.org/genproto/googleapis/api digest to 1f4bbc5 ([#16421](https://github.com/cloudquery/cloudquery/issues/16421)) ([9489931](https://github.com/cloudquery/cloudquery/commit/9489931c1b64bf1f7d5da51997944ee54370215b))
+* **deps:** Update google.golang.org/genproto/googleapis/rpc digest to 1f4bbc5 ([#16422](https://github.com/cloudquery/cloudquery/issues/16422)) ([74e98fc](https://github.com/cloudquery/cloudquery/commit/74e98fcbde6c6e11baf98284aef0341c597d4817))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.10 ([#16445](https://github.com/cloudquery/cloudquery/issues/16445)) ([9933075](https://github.com/cloudquery/cloudquery/commit/9933075da8c26966c4cd119c30e7a4b5063be9ae))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.6 ([#16356](https://github.com/cloudquery/cloudquery/issues/16356)) ([72298db](https://github.com/cloudquery/cloudquery/commit/72298db12595f15bd432f3b836dc48beff4aacd5))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.7 ([#16366](https://github.com/cloudquery/cloudquery/issues/16366)) ([8459232](https://github.com/cloudquery/cloudquery/commit/8459232dc357ebbe372230c13cef3c678763bef3))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.8 ([#16373](https://github.com/cloudquery/cloudquery/issues/16373)) ([3d0d7f6](https://github.com/cloudquery/cloudquery/commit/3d0d7f69ffd57959d359768ffa4013a97f8499e4))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.9 ([#16424](https://github.com/cloudquery/cloudquery/issues/16424)) ([1b73a7e](https://github.com/cloudquery/cloudquery/commit/1b73a7e8065ad0d540550177ed0d4becd4a536d7))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.0 ([#16237](https://github.com/cloudquery/cloudquery/issues/16237)) ([3fcdab0](https://github.com/cloudquery/cloudquery/commit/3fcdab08816ad9de7bb4eecab59c7be1bda3d00c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.1 ([#16296](https://github.com/cloudquery/cloudquery/issues/16296)) ([ab4a0da](https://github.com/cloudquery/cloudquery/commit/ab4a0dace0a870755fd22d92c6e9c999351f594e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.2 ([#16342](https://github.com/cloudquery/cloudquery/issues/16342)) ([f3eb857](https://github.com/cloudquery/cloudquery/commit/f3eb85729e5db16c2530b31d6d276934866d5ef0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.28.0 ([#16362](https://github.com/cloudquery/cloudquery/issues/16362)) ([9166b6b](https://github.com/cloudquery/cloudquery/commit/9166b6b603d0d56a30c2e5072c4f2da5c0c837b5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.29.0 ([#16395](https://github.com/cloudquery/cloudquery/issues/16395)) ([fb1102e](https://github.com/cloudquery/cloudquery/commit/fb1102eac8af4b3722b82b882187fdf322546513))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.29.1 ([#16430](https://github.com/cloudquery/cloudquery/issues/16430)) ([738e89f](https://github.com/cloudquery/cloudquery/commit/738e89f2c969a8a3f1698a8686aeaddb358e7a23))
+* Use `write_mode` instead of `write-mode` in docs ([#16480](https://github.com/cloudquery/cloudquery/issues/16480)) ([ab2efee](https://github.com/cloudquery/cloudquery/commit/ab2efeeccb7417b75fb1eeb2da266e26adcf7e92))
+
 ## [3.4.17](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v3.4.16...plugins-destination-gcs-v3.4.17) (2024-01-16)
 
 
