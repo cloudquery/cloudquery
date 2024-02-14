@@ -19,6 +19,7 @@ func GlobalTables() *schema.Table {
 		Name: tableName,
 		Description: `https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_GlobalTableDescription.html
 This table only contains version 2017.11.29 (Legacy) Global Tables. See aws_dynamodb_tables for version 2019.11.21 (Current) Global Tables.
+The column "tags" is always empty because global tables do not support tags. The column will be removed in a future version.
 `,
 		Resolver:            fetchGlobalTables,
 		PreResourceResolver: getGlobalTable,
