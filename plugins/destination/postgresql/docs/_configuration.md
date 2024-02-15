@@ -1,4 +1,4 @@
-This example configures a Postgresql destination, located at `localhost:5432`:
+This example configures a Postgresql destination using an environment variable called `POSTGRESQL_CONNECTION_STRING`:
 
 ```yaml copy
 kind: destination
@@ -9,8 +9,8 @@ spec:
   version: "VERSION_DESTINATION_POSTGRESQL"
 
   spec:
-    connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
-    # can be also specified in DSN format which can hold special characters in password
+    connection_string: "${POSTGRESQL_CONNECTION_STRING}" # set the environment variable in a format like postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable
+    # you can also specify it in DSN format, which can hold special characters in the password field:
     # connection_string: "user=postgres password=pass+0-[word host=localhost port=5432 dbname=postgres"
     # Optional parameters:
     # pgx_log_level: error
