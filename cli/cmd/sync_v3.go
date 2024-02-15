@@ -214,6 +214,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 
 	// Read from the sync stream and write to all destinations.
 	totalResources := int64(0)
+	isComplete := int64(0)
 
 	var remoteProgressReporter *godebouncer.Debouncer
 	if progressAPIClient != nil {
@@ -226,7 +227,14 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			return fmt.Errorf("failed to parse sync run ID: %w", err)
 		}
 		remoteProgressReporter = godebouncer.NewWithOptions(godebouncer.WithTimeDuration(10*time.Second), godebouncer.WithTriggered(func() {
-			res, err := progressAPIClient.CreateSyncRunProgressWithResponse(ctx, teamName, syncName, syncRunUUID, cloudquery_api.CreateSyncRunProgressJSONRequestBody{Rows: atomic.LoadInt64(&totalResources)})
+			obj := cloudquery_api.CreateSyncRunProgressJSONRequestBody{
+				Rows: atomic.LoadInt64(&totalResources),
+			}
+			if atomic.LoadInt64(&isComplete) == 1 {
+				status := cloudquery_api.SyncRunStatusCompleted
+				obj.Status = &status
+			}
+			res, err := progressAPIClient.CreateSyncRunProgressWithResponse(ctx, teamName, syncName, syncRunUUID, obj)
 			if err != nil {
 				log.Warn().Err(err).Msg("Failed to send sync progress to API")
 				return
@@ -353,6 +361,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	if err != nil {
 		log.Warn().Err(err).Msg("Failed to finish progress bar")
 	}
+	atomic.StoreInt64(&isComplete, 1)
 	syncTimeTook := time.Since(syncTime)
 	exitReason = ExitReasonCompleted
 
