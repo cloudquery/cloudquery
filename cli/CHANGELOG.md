@@ -5,6 +5,18 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.5.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.4.0...cli-v5.5.0) (2024-02-15)
+
+
+### Features
+
+* Set sync status to complete when sync is done ([#16640](https://github.com/cloudquery/cloudquery/issues/16640)) ([b61784a](https://github.com/cloudquery/cloudquery/commit/b61784a7c2adfffe454113a035c4f36bbe86ecd3))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.7.4 ([#16638](https://github.com/cloudquery/cloudquery/issues/16638)) ([4616e6d](https://github.com/cloudquery/cloudquery/commit/4616e6dfe0f5d95e283bb8439bee9097dd8ab0d5))
+
 ## [5.4.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.3.1...cli-v5.4.0) (2024-02-08)
 
 
