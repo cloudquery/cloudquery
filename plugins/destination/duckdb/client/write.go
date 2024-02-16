@@ -189,7 +189,7 @@ func writeTMPFile(table *schema.Table, msgs []*message.WriteInsert) (fileName st
 		parquet.NewWriterProperties(
 			parquet.WithVersion(parquet.V2_LATEST),       // use latest
 			parquet.WithMaxRowGroupLength(128*1024*1024), // 128M
-			//parquet.WithCompression(compress.Codecs.Snappy),
+			// parquet.WithCompression(compress.Codecs.Snappy),
 		),
 		pqarrow.NewArrowWriterProperties(pqarrow.WithStoreSchema()),
 	)
