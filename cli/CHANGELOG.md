@@ -5,6 +5,16 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.5.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.5.0...cli-v5.5.1) (2024-02-16)
+
+
+### Bug Fixes
+
+* Add warnings and errors to cloud sync progress reports ([#16654](https://github.com/cloudquery/cloudquery/issues/16654)) ([672135a](https://github.com/cloudquery/cloudquery/commit/672135a871c560232449552da3b7df8289decaed))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.7.5 ([#16652](https://github.com/cloudquery/cloudquery/issues/16652)) ([d42a8df](https://github.com/cloudquery/cloudquery/commit/d42a8dfce6c78ef16d57cf26b4109de39b2003da))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.17.2 ([#16662](https://github.com/cloudquery/cloudquery/issues/16662)) ([147c230](https://github.com/cloudquery/cloudquery/commit/147c2302e6ab3da4d2bcae3965b539665525d81f))
+* Send started status for Cloud Syncs ([#16664](https://github.com/cloudquery/cloudquery/issues/16664)) ([1e67d54](https://github.com/cloudquery/cloudquery/commit/1e67d5444208f0359fea9d17cdbdbfa3778a31b5))
+
 ## [5.5.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.4.0...cli-v5.5.0) (2024-02-15)
 
 
