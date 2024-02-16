@@ -9,7 +9,7 @@ env:
 jobs:
   release-cli:
     timeout-minutes: 30
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     steps:
       # Tag format is cli-<version>
       - name: Split tag
@@ -40,6 +40,13 @@ jobs:
         with:
           go-version-file: cli/go.mod
           cache: false
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Install GoReleaser
         uses: goreleaser/goreleaser-action@v5
         with:

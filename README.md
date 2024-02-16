@@ -34,11 +34,11 @@ See the **[Quickstart guide](https://www.cloudquery.io/docs/quickstart)** for in
 
 ### Links
 
-- Homepage: https://www.cloudquery.io
-- Documentation: https://www.cloudquery.io/docs
-- Integrations: https://www.hub.cloudquery.io
-- Releases: https://github.com/cloudquery/cloudquery/releases
-- Plugin SDK: https://github.com/cloudquery/plugin-sdk
+- Homepage: [https://www.cloudquery.io](https://www.cloudquery.io)
+- Documentation: [https://www.cloudquery.io/docs](https://www.cloudquery.io/docs)
+- Integrations: [https://hub.cloudquery.io](https://hub.cloudquery.io)
+- Releases: [https://github.com/cloudquery/cloudquery/releases](https://github.com/cloudquery/cloudquery/releases)
+- Plugin SDK: [https://github.com/cloudquery/plugin-sdk](https://github.com/cloudquery/plugin-sdk)
 
 ## License
 

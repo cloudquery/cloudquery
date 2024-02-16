@@ -22,23 +22,13 @@ The 'request_account_id' and 'request_region' columns are added to show from whe
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform: transformers.TransformWithStruct(&types.Subnet{}),
 		Columns: []schema.Column{
+			client.RequestAccountIDColumn(true),
+			client.RequestRegionColumn(true),
 			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "request_region",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSRegion,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("SubnetArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("SubnetArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

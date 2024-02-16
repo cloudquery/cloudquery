@@ -30,10 +30,10 @@ func domainNameBasePathMappings() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApigatewayDomainNameBasePathMappingArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApigatewayDomainNameBasePathMappingArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

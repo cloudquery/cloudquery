@@ -23,10 +23,10 @@ func Directories() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveDirectoryArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveDirectoryArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}
@@ -58,7 +58,7 @@ func resolveDirectoryArn(ctx context.Context, meta schema.ClientMeta, resource *
 		Service:   "workspaces",
 		Region:    cl.Region,
 		AccountID: cl.AccountID,
-		Resource:  "diretory/" + *item.DirectoryId,
+		Resource:  "directory/" + *item.DirectoryId,
 	}
 	return resource.Set(c.Name, a.String())
 }

@@ -13,6 +13,7 @@ import (
 	apiextensionsclientset "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
+
 	// import all k8s auth options
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 	"k8s.io/client-go/rest"
@@ -186,7 +187,7 @@ func buildRESTConfig(logger zerolog.Logger, kubeConfig api.Config, ctx string) (
 
 	restConfig, err := clientConfig.ClientConfig()
 	if err != nil {
-		logger.Warn().Msg("Failed to create k8s client, fallback to use the in-cluster config")
+		logger.Warn().Err(err).Msg("Failed to create k8s client, fallback to use the in-cluster config")
 		restConfig, err = rest.InClusterConfig()
 		if err != nil {
 			return nil, err

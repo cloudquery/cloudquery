@@ -17,7 +17,7 @@ func SourceCredentials() *schema.Table {
 		Description: `https://docs.aws.amazon.com/codebuild/latest/APIReference/API_SourceCredentialsInfo.html`,
 		Resolver:    fetchSourceCredentials,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "codebuild"),
-		Transform:   transformers.TransformWithStruct(&types.SourceCredentialsInfo{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.SourceCredentialsInfo{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

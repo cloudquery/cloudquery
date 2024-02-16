@@ -18,24 +18,15 @@ func gatewayAssociations() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/directconnect/latest/APIReference/API_DirectConnectGatewayAssociation.html`,
 		Resolver:    fetchDirectconnectGatewayAssociations,
-		Transform:   transformers.TransformWithStruct(&types.DirectConnectGatewayAssociation{}, transformers.WithPrimaryKeys("AssociationId")),
+		Transform:   transformers.TransformWithStruct(&types.DirectConnectGatewayAssociation{}, transformers.WithPrimaryKeyComponents("AssociationId")),
 		Columns: []schema.Column{
+			client.RequestAccountIDColumn(true),
+			client.RequestRegionColumn(false),
 			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
-			},
-			{
-				Name:     "request_region",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAWSRegion,
-			},
-			{
-				Name:       "gateway_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "gateway_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "gateway_id",

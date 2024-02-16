@@ -90,6 +90,7 @@ func Plugin() *plugin.Plugin {
 		newClient,
 		plugin.WithKind(Kind),
 		plugin.WithTeam(Team),
+		plugin.WithJSONSchema(client.JSONSchema),
 	)
 }
 

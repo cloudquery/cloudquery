@@ -26,10 +26,10 @@ func Applications() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApplicationArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApplicationArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 		Relations: schema.Tables{

@@ -1,18 +1,21 @@
 package client
 
-import "fmt"
+import (
+	_ "embed"
+	"fmt"
+)
 
 type Spec struct {
-	Accounts          []AccountSpec `json:"accounts,omitempty"`
+	Accounts          []AccountSpec `json:"accounts,omitempty" jsonschema:"required,minItems=1"`
 	BillHistoryMonths int           `json:"bill_history_months,omitempty"`
 	Concurrency       int           `json:"concurrency,omitempty"`
 }
 
 type AccountSpec struct {
-	Name      string   `json:"name,omitempty"`
-	Regions   []string `json:"regions,omitempty"`
-	AccessKey string   `json:"access_key,omitempty"`
-	SecretKey string   `json:"secret_key,omitempty"`
+	Name      string   `json:"name,omitempty" jsonschema:"required,minLength=1"`
+	Regions   []string `json:"regions,omitempty" jsonschema:"required,minItems=1"`
+	AccessKey string   `json:"access_key,omitempty" jsonschema:"required,minLength=1"`
+	SecretKey string   `json:"secret_key,omitempty" jsonschema:"required,minLength=1"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -49,3 +52,6 @@ func (s *Spec) Validate() error {
 	}
 	return nil
 }
+
+//go:embed schema.json
+var JSONSchema string

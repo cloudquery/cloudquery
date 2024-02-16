@@ -4,17 +4,18 @@ This table shows data for Amazon Elastic File System (EFS) Filesystems.
 
 https://docs.aws.amazon.com/efs/latest/ug/API_FileSystemDescription.html
 
-The primary key for this table is **arn**.
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |backup_policy_status|`utf8`|
 |file_system_policy|`utf8`|
 |tags|`json`|

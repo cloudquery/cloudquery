@@ -19,15 +19,15 @@ func clusterParameters() *schema.Table {
 		Name:        tableName,
 		Description: "https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_Parameter.html",
 		Resolver:    fetchRdsClusterParameters,
-		Transform:   transformers.TransformWithStruct(&types.Parameter{}, transformers.WithPrimaryKeys("ParameterName")),
+		Transform:   transformers.TransformWithStruct(&types.Parameter{}, transformers.WithPrimaryKeyComponents("ParameterName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "_engine_version_hash",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("_engine_version_hash"),
-				PrimaryKey: true,
+				Name:                "_engine_version_hash",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("_engine_version_hash"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

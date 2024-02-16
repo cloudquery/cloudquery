@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/postgresql/client/spec/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Duration": {
+      "type": "string",
+      "pattern": "^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$",
+      "title": "CloudQuery configtype.Duration"
+    },
+    "LogLevel": {
+      "type": "string",
+      "enum": [
+        "",
+        "none",
+        "error",
+        "warn",
+        "info",
+        "debug",
+        "trace"
+      ],
+      "title": "PostgreSQL driver log level",
+      "description": "Defines what [`pgx`](https://github.com/jackc/pgx) call events should be logged.",
+      "default": "error"
+    },
+    "Spec": {
+      "properties": {
+        "connection_string": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Connection string to connect to the database. This can be a URL or a DSN, as per [`pgxpool`](https://pkg.go.dev/github.com/jackc/pgx/v4/pgxpool#ParseConfig)\n\n- `\"postgres://jack:secret@localhost:5432/mydb?sslmode=prefer\"` _connect with tcp and prefer TLS_\n- `\"postgres://jack:secret@localhost:5432/mydb?sslmode=disable\u0026application_name=pgxtest\u0026search_path=myschema\u0026connect_timeout=5\"` _be explicit with all options_\n- `\"postgres://localhost:5432/mydb?sslmode=disable\"` _connect with os username cloudquery is being run as_\n- `\"postgres:///mydb?host=/tmp\"` _connect over unix socket_\n- `\"dbname=mydb\"` _unix domain socket, just specifying the db name - useful if you want to use peer authentication_\n- `\"user=jack password=jack\\\\'ssooper\\\\\\\\secret host=localhost port=5432 dbname=mydb sslmode=disable\"` _DSN with escaped backslash and single quote_",
+          "x-cq-secret": true
+        },
+        "pgx_log_level": {
+          "$ref": "#/$defs/LogLevel",
+          "description": "Available: `error`, `warn`, `info`, `debug`, `trace`.\nDefines what [`pgx`](https://github.com/jackc/pgx) call events should be logged."
+        },
+        "batch_size": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum number of items that may be grouped together to be written in a single write.",
+          "default": 10000
+        },
+        "batch_size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum size of items that may be grouped together to be written in a single write.",
+          "default": 100000000
+        },
+        "batch_timeout": {
+          "$ref": "#/$defs/Duration",
+          "description": "Maximum interval between batch writes.",
+          "default": "60s"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "connection_string"
+      ]
+    }
+  }
+}

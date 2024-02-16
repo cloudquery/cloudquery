@@ -4,8 +4,8 @@ This table shows data for Stepfunctions State Machines.
 
 https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeStateMachine.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_stepfunctions_state_machines:
@@ -15,11 +15,11 @@ The following tables depend on aws_stepfunctions_state_machines:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |tags|`json`|
 |creation_date|`timestamp[us, tz=UTC]`|
 |definition|`utf8`|

@@ -4,8 +4,8 @@ This table shows data for QuickSight Data Sets.
 
 https://docs.aws.amazon.com/quicksight/latest/APIReference/API_DataSetSummary.html
 
-The composite primary key for this table is (**account_id**, **region**, **arn**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**, **arn**).
 ## Relations
 
 The following tables depend on aws_quicksight_data_sets:
@@ -15,12 +15,12 @@ The following tables depend on aws_quicksight_data_sets:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
 |tags|`json`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |column_level_permission_rules_applied|`bool`|
 |created_time|`timestamp[us, tz=UTC]`|
 |data_set_id|`utf8`|

@@ -24,10 +24,10 @@ func AccessPoints() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("AccessPointArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("AccessPointArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

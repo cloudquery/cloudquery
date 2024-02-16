@@ -18,33 +18,31 @@ func detectorPublishingDestinations() *schema.Table {
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_DescribePublishingDestination.html`,
-		Resolver:    fetchGuarddutyDetectorPublishingDestinations,
-		Transform:   transformers.TransformWithStruct(&types.Destination{}, transformers.WithPrimaryKeys("DestinationId")),
+		Resolver:    fetchDetectorPublishingDestinations,
+		Transform:   transformers.TransformWithStruct(&types.Destination{}, transformers.WithPrimaryKeyComponents("DestinationId")),
 		Columns: schema.ColumnList{
+			client.RequestAccountIDColumn(true),
+			client.RequestRegionColumn(true),
+			detectorARNColumn,
 			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "request_region",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSRegion,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "detector_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name: "arn",
+				Type: arrow.BinaryTypes.String,
+				Resolver: client.ResolveARN(client.GuardDutyService, func(resource *schema.Resource) ([]string, error) {
+					return []string{
+						"detector",
+						resource.Parent.Item.(models.DetectorWrapper).Id,
+						"publishingDestination",
+						aws.ToString(resource.Item.(types.Destination).DestinationId),
+					}, nil
+				}),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}
 }
 
-func fetchGuarddutyDetectorPublishingDestinations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	detector := parent.Item.(*models.DetectorWrapper)
+func fetchDetectorPublishingDestinations(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	detector := parent.Item.(models.DetectorWrapper)
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	config := &guardduty.ListPublishingDestinationsInput{DetectorId: aws.String(detector.Id)}

@@ -30,10 +30,10 @@ func restApiGatewayResponses() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApigatewayRestAPIGatewayResponseArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApigatewayRestAPIGatewayResponseArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

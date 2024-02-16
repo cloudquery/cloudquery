@@ -27,11 +27,11 @@ func EventSubscriptions() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:        "arn",
-				Type:        arrow.BinaryTypes.String,
-				Resolver:    resolveEventSubscriptionARN,
-				Description: `ARN of the event subscription.`,
-				PrimaryKey:  true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveEventSubscriptionARN,
+				Description:         `ARN of the event subscription.`,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

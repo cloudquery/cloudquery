@@ -17,15 +17,15 @@ func stackResources() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AWSCloudFormation/latest/APIReference/API_StackResourceSummary.html`,
 		Resolver:    fetchCloudformationStackResources,
-		Transform:   transformers.TransformWithStruct(&types.StackResourceSummary{}, transformers.WithPrimaryKeys("LogicalResourceId")),
+		Transform:   transformers.TransformWithStruct(&types.StackResourceSummary{}, transformers.WithPrimaryKeyComponents("LogicalResourceId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "stack_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("id"),
-				PrimaryKey: true,
+				Name:                "stack_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("id"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

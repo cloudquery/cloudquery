@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/mixedbatchwriter"
@@ -16,6 +17,12 @@ import (
 	"github.com/rs/zerolog"
 )
 
+// This holds the details of the PK Constraint
+type pkConstraintDetails struct {
+	name    string
+	columns []string
+}
+
 type Client struct {
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
@@ -25,7 +32,7 @@ type Client struct {
 	batchSize           int
 	writer              *mixedbatchwriter.MixedBatchWriter
 
-	pgTablesToPKConstraints map[string]string
+	pgTablesToPKConstraints map[string]*pkConstraintDetails
 
 	plugin.UnimplementedSource
 }
@@ -49,19 +56,18 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 		return c, nil
 	}
 
-	var spec Spec
-	err := json.Unmarshal(specBytes, &spec)
-	if err != nil {
+	var s spec.Spec
+	if err := json.Unmarshal(specBytes, &s); err != nil {
 		return nil, err
 	}
-	spec.SetDefaults()
-	c.batchSize = spec.BatchSize
-	logLevel, err := tracelog.LogLevelFromString(spec.PgxLogLevel.String())
-	if err != nil {
-		return nil, fmt.Errorf("failed to parse pgx log level %s: %w", spec.PgxLogLevel.String(), err)
+	s.SetDefaults()
+	if err := s.Validate(); err != nil {
+		return nil, err
 	}
-	c.logger.Info().Str("pgx_log_level", spec.PgxLogLevel.String()).Msg("Initializing postgresql destination")
-	pgxConfig, err := pgxpool.ParseConfig(spec.ConnectionString)
+
+	c.batchSize = s.BatchSize
+	c.logger.Info().Str("pgx_log_level", s.PgxLogLevel.String()).Msg("Initializing postgresql destination")
+	pgxConfig, err := pgxpool.ParseConfig(s.ConnectionString)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse connection string %w", err)
 	}
@@ -71,7 +77,7 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 
 	pgxConfig.ConnConfig.Tracer = &tracelog.TraceLog{
 		Logger:   pgx_zero_log.NewLogger(c.logger),
-		LogLevel: logLevel,
+		LogLevel: s.PgxLogLevel.LogLevel(),
 	}
 	// maybe expose this to the user?
 	pgxConfig.ConnConfig.RuntimeParams["timezone"] = "UTC"
@@ -94,9 +100,9 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 	}
 	c.writer, err = mixedbatchwriter.New(c,
 		mixedbatchwriter.WithLogger(c.logger),
-		mixedbatchwriter.WithBatchSize(spec.BatchSize),
-		mixedbatchwriter.WithBatchSizeBytes(spec.BatchSizeBytes),
-		mixedbatchwriter.WithBatchTimeout(spec.BatchTimeout.Duration()),
+		mixedbatchwriter.WithBatchSize(s.BatchSize),
+		mixedbatchwriter.WithBatchSizeBytes(s.BatchSizeBytes),
+		mixedbatchwriter.WithBatchTimeout(s.BatchTimeout.Duration()),
 	)
 	if err != nil {
 		return nil, err

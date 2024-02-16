@@ -3,7 +3,6 @@ package guardduty
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty"
 	"github.com/aws/aws-sdk-go-v2/service/guardduty/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -19,35 +18,20 @@ func detectorFindings() *schema.Table {
 		Description: `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_Finding.html`,
 		Resolver:    fetchDetectorFindings,
 		Transform: transformers.TransformWithStruct(&types.Finding{},
-			transformers.WithPrimaryKeys("Arn"),
+			transformers.WithPrimaryKeyComponents("Arn"),
 			transformers.WithTypeTransformer(client.TimestampTypeTransformer),
 			transformers.WithResolverTransformer(client.TimestampResolverTransformer),
 		),
 		Columns: schema.ColumnList{
-			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "request_region",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSRegion,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "detector_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
-			},
+			client.RequestAccountIDColumn(true),
+			client.RequestRegionColumn(true),
+			detectorARNColumn,
 		},
 	}
 }
 
 func fetchDetectorFindings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	detector := parent.Item.(*models.DetectorWrapper)
+	detector := parent.Item.(models.DetectorWrapper)
 
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGuardduty).Guardduty

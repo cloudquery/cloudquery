@@ -18,15 +18,15 @@ func ledgerJournalS3Exports() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/qldb/latest/developerguide/API_JournalS3ExportDescription.html`,
 		Resolver:    fetchQldbLedgerJournalS3Exports,
-		Transform:   transformers.TransformWithStruct(&types.JournalS3ExportDescription{}, transformers.WithPrimaryKeys("ExportId")),
+		Transform:   transformers.TransformWithStruct(&types.JournalS3ExportDescription{}, transformers.WithPrimaryKeyComponents("ExportId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "ledger_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "ledger_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

@@ -21,3 +21,11 @@ release-dry-run:
 		-w /go/src/$(PACKAGE_NAME) \
 		ghcr.io/cloudquery/golang-cross:v10.0.0 \
 		--clean --skip-validate --snapshot --skip-publish
+
+.PHONY: gen-spec-schema
+gen-spec-schema:
+	go run client/spec/gen/main.go
+
+# All gen targets
+.PHONY: gen
+gen: gen-spec-schema

@@ -16,11 +16,13 @@ func ResolverRules() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_ResolverRule.html`,
 		Resolver:    fetchResolverRules,
-		Transform:   transformers.TransformWithStruct(&types.ResolverRule{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.ResolverRule{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "route53resolver"),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
+			client.RequestAccountIDColumn(true),
+			client.RequestRegionColumn(true),
 		},
 	}
 }

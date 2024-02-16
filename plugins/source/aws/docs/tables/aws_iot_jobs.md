@@ -4,18 +4,19 @@ This table shows data for AWS IoT Jobs.
 
 https://docs.aws.amazon.com/iot/latest/apireference/API_Job.html
 
-The primary key for this table is **arn**.
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
 |tags|`json`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |abort_config|`json`|
 |comment|`utf8`|
 |completed_at|`timestamp[us, tz=UTC]`|

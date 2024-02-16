@@ -21,28 +21,19 @@ func Connections() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "directconnect"),
 		Transform:   transformers.TransformWithStruct(&types.Connection{}),
 		Columns: []schema.Column{
+			client.RequestAccountIDColumn(true),
+			client.RequestRegionColumn(false),
 			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveConnectionARN(),
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:     "request_region",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: client.ResolveAWSRegion,
-			},
-			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveConnectionARN(),
-				PrimaryKey: true,
-			},
-			{
-				Name:       "id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ConnectionId"),
-				PrimaryKey: true,
+				Name:                "id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ConnectionId"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

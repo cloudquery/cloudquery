@@ -4,20 +4,19 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"slices"
 	"strings"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
+	"github.com/cloudquery/cloudquery/cli/internal/api"
 )
 
 type Client struct {
 	api *cloudquery_api.ClientWithResponses
 }
 
-func NewClient(url string, token string) (*Client, error) {
-	cl, err := cloudquery_api.NewClientWithResponses(url, cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
-		req.Header.Set("Authorization", "Bearer "+token)
-		return nil
-	}))
+func NewClient(token string) (*Client, error) {
+	cl, err := api.NewClient(token)
 	if err != nil {
 		return nil, err
 	}
@@ -26,23 +25,25 @@ func NewClient(url string, token string) (*Client, error) {
 	}, nil
 }
 
-func NewClientFromAPI(api *cloudquery_api.ClientWithResponses) *Client {
+func NewClientFromAPI(apiClient *cloudquery_api.ClientWithResponses) *Client {
 	return &Client{
-		api: api,
+		api: apiClient,
 	}
 }
 
-func (c *Client) ValidateTeam(ctx context.Context, teamName string) error {
+func (c *Client) ValidateTeam(ctx context.Context, name string) error {
 	teams, err := c.ListAllTeams(ctx)
 	if err != nil {
 		return err
 	}
-	for _, team := range teams {
-		if team == teamName {
-			return nil
-		}
+	return c.ValidateTeamAgainstTeams(name, teams)
+}
+
+func (*Client) ValidateTeamAgainstTeams(name string, teams []string) error {
+	if slices.Contains(teams, name) {
+		return nil
 	}
-	return fmt.Errorf("team %q not found. Teams available to you: %v", teamName, strings.Join(teams, ", "))
+	return fmt.Errorf("team %q not found. Teams available to you: %v", name, strings.Join(teams, ", "))
 }
 
 func (c *Client) ListAllTeams(ctx context.Context) ([]string, error) {

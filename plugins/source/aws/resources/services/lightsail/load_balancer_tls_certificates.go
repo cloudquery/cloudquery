@@ -18,7 +18,7 @@ func loadBalancerTlsCertificates() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_LoadBalancerTlsCertificate.html`,
 		Resolver:    fetchLightsailLoadBalancerTlsCertificates,
-		Transform:   transformers.TransformWithStruct(&types.LoadBalancerTlsCertificate{}, transformers.WithPrimaryKeys("Arn")),
+		Transform:   transformers.TransformWithStruct(&types.LoadBalancerTlsCertificate{}, transformers.WithPrimaryKeyComponents("Arn")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),

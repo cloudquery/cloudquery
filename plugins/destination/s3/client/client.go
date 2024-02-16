@@ -14,6 +14,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/cloudquery/cloudquery/plugins/destination/s3/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/streamingbatchwriter"
 
@@ -28,7 +29,7 @@ type Client struct {
 	streamingbatchwriter.UnimplementedDeleteRecords
 
 	logger zerolog.Logger
-	spec   *Spec
+	spec   *spec.Spec
 	*filetypes.Client
 	writer *streamingbatchwriter.StreamingBatchWriter
 
@@ -37,7 +38,7 @@ type Client struct {
 	downloader *manager.Downloader
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "s3").Logger(),
 	}
@@ -45,7 +46,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.Ne
 		return c, nil
 	}
 
-	if err := json.Unmarshal(spec, &c.spec); err != nil {
+	if err := json.Unmarshal(s, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal s3 spec: %w", err)
 	}
 	if err := c.spec.Validate(); err != nil {
@@ -53,7 +54,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.Ne
 	}
 	c.spec.SetDefaults()
 
-	filetypesClient, err := filetypes.NewClient(c.spec.FileSpec)
+	filetypesClient, err := filetypes.NewClient(&c.spec.FileSpec)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
 	}
@@ -87,7 +88,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, opts plugin.Ne
 		timeNow := time.Now().UTC()
 		if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
 			Bucket: aws.String(c.spec.Bucket),
-			Key:    aws.String(c.replacePathVariables("TEST_TABLE", "TEST_UUID", timeNow)),
+			Key:    aws.String(c.spec.ReplacePathVariables("TEST_TABLE", "TEST_UUID", timeNow)),
 			Body:   bytes.NewReader([]byte("")),
 		}); err != nil {
 			return nil, fmt.Errorf("failed to write test file to S3: %w", err)

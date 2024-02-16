@@ -19,32 +19,33 @@ func detectorThreatIntelSets() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetThreatIntelSet.html`,
 		Resolver:            fetchDetectorThreatIntelSets,
 		PreResourceResolver: getDetectorThreatIntelSet,
-		Transform:           transformers.TransformWithStruct(&guardduty.GetThreatIntelSetOutput{}, transformers.WithPrimaryKeys("Name"), transformers.WithSkipFields("ResultMetadata")),
+		Transform: transformers.TransformWithStruct(&models.ThreatIntelSetWrapper{},
+			transformers.WithUnwrapAllEmbeddedStructs(),
+			transformers.WithSkipFields("ResultMetadata"),
+		),
 		Columns: schema.ColumnList{
+			client.RequestAccountIDColumn(true),
+			client.RequestRegionColumn(true),
+			detectorARNColumn,
 			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "request_region",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSRegion,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "detector_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name: "arn",
+				Type: arrow.BinaryTypes.String,
+				Resolver: client.ResolveARN(client.GuardDutyService, func(resource *schema.Resource) ([]string, error) {
+					return []string{
+						"detector",
+						resource.Parent.Item.(models.DetectorWrapper).Id,
+						"threatintelset",
+						resource.Item.(models.ThreatIntelSetWrapper).Id,
+					}, nil
+				}),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}
 }
 
 func fetchDetectorThreatIntelSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	detector := parent.Item.(*models.DetectorWrapper)
+	detector := parent.Item.(models.DetectorWrapper)
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	config := &guardduty.ListThreatIntelSetsInput{DetectorId: aws.String(detector.Id)}
@@ -65,7 +66,7 @@ func getDetectorThreatIntelSet(ctx context.Context, meta schema.ClientMeta, reso
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	id := resource.Item.(string)
-	detector := resource.Parent.Item.(*models.DetectorWrapper)
+	detector := resource.Parent.Item.(models.DetectorWrapper)
 
 	out, err := svc.GetThreatIntelSet(ctx, &guardduty.GetThreatIntelSetInput{
 		DetectorId:       &detector.Id,
@@ -77,6 +78,6 @@ func getDetectorThreatIntelSet(ctx context.Context, meta schema.ClientMeta, reso
 		return err
 	}
 
-	resource.Item = out
+	resource.Item = models.ThreatIntelSetWrapper{GetThreatIntelSetOutput: out, Id: id}
 	return nil
 }

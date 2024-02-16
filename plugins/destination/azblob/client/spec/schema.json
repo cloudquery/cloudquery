@@ -1,0 +1,232 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/azblob/client/spec/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "CSVSpec": {
+      "properties": {
+        "skip_header": {
+          "type": "boolean",
+          "description": "Specifies if the first line of a file should be the header.",
+          "default": false
+        },
+        "delimiter": {
+          "type": "string",
+          "pattern": "^.$",
+          "description": "Character that will be used as the delimiter.",
+          "default": ","
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "description": "CloudQuery CSV file output spec."
+    },
+    "Duration": {
+      "type": "string",
+      "pattern": "^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$",
+      "title": "CloudQuery configtype.Duration"
+    },
+    "JSONSpec": {
+      "additionalProperties": false,
+      "type": "object",
+      "description": "CloudQuery JSON file output spec."
+    },
+    "ParquetSpec": {
+      "additionalProperties": false,
+      "type": "object",
+      "description": "CloudQuery Parquet file output spec."
+    },
+    "Spec": {
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "no_rotate": {
+                "type": "boolean",
+                "const": true
+              }
+            },
+            "required": [
+              "no_rotate"
+            ]
+          },
+          "then": {
+            "properties": {
+              "batch_size": {
+                "type": "null"
+              },
+              "batch_size_bytes": {
+                "type": "null"
+              },
+              "batch_timeout": {
+                "type": "null"
+              }
+            }
+          },
+          "title": "Disallow batching when using no_rotate"
+        }
+      ],
+      "oneOf": [
+        {
+          "properties": {
+            "format": {
+              "type": "string",
+              "const": "csv"
+            },
+            "format_spec": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/CSVSpec"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "format": {
+              "type": "string",
+              "const": "json"
+            },
+            "format_spec": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/JSONSpec"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "properties": {
+            "format": {
+              "type": "string",
+              "const": "parquet"
+            },
+            "format_spec": {
+              "oneOf": [
+                {
+                  "$ref": "#/$defs/ParquetSpec"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "properties": {
+        "format": {
+          "type": "string",
+          "enum": [
+            "csv",
+            "json",
+            "parquet"
+          ],
+          "description": "Output format."
+        },
+        "format_spec": {
+          "oneOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/CSVSpec"
+                },
+                {
+                  "$ref": "#/$defs/JSONSpec"
+                },
+                {
+                  "$ref": "#/$defs/ParquetSpec"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "compression": {
+          "type": "string",
+          "enum": [
+            "",
+            "gzip"
+          ],
+          "description": "Compression type.\nEmpty or missing stands for no compression."
+        },
+        "storage_account": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Storage account where to sync the files."
+        },
+        "container": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Storage container inside the storage account where to sync the files."
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Path to where the files will be uploaded in the storage container."
+        },
+        "no_rotate": {
+          "type": "boolean",
+          "description": "If set to `true`, the plugin will write to one file per table.\nOtherwise, for every batch a new file will be created with a different `.\u003cUUID\u003e` suffix.",
+          "default": false
+        },
+        "batch_size": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum number of items that may be grouped together to be written in a single object.\n\nDefaults to `10000` unless `no_rotate` is `true` (will be `0` then).",
+              "default": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "batch_size_bytes": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "description": "Maximum size of items that may be grouped together to be written in a single object.\n\nDefaults to `52428800` (50 MiB) unless `no_rotate` is `true` (will be `0` then).",
+              "default": 52428800
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "batch_timeout": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Duration",
+              "description": "Maximum interval between batch writes.\n\nDefaults to `30s` unless `no_rotate` is `true` (will be `0s` then).",
+              "default": "30s"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "format",
+        "storage_account",
+        "container",
+        "path"
+      ]
+    }
+  }
+}

@@ -25,6 +25,8 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	require.NoError(t, faker.FakeObject(&aup))
 	akl := iam.GetAccessKeyLastUsedOutput{}
 	require.NoError(t, faker.FakeObject(&akl))
+	mfaDevice := types.MFADevice{}
+	require.NoError(t, faker.FakeObject(&mfaDevice))
 
 	sshPublicKey := types.SSHPublicKeyMetadata{}
 	require.NoError(t, faker.FakeObject(&sshPublicKey))
@@ -54,6 +56,10 @@ func buildIamUsers(t *testing.T, ctrl *gomock.Controller) *client.Services {
 		}, nil)
 	m.EXPECT().GetAccessKeyLastUsed(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&akl, nil)
+	m.EXPECT().ListMFADevices(gomock.Any(), gomock.Any(), gomock.Any()).Return(
+		&iam.ListMFADevicesOutput{
+			MFADevices: []types.MFADevice{mfaDevice},
+		}, nil)
 
 	var l []string
 	require.NoError(t, faker.FakeObject(&l))

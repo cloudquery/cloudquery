@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/alicloud/client"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
@@ -16,6 +17,7 @@ func Plugin() *plugin.Plugin {
 		Name,
 		Version,
 		Configure,
+		plugin.WithJSONSchema(client.JSONSchema),
 		plugin.WithKind(Kind),
 		plugin.WithTeam(Team),
 	)

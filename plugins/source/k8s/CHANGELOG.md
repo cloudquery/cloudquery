@@ -1,5 +1,63 @@
 # Changelog
 
+## [6.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v6.0.2...plugins-source-k8s-v6.0.3) (2024-02-15)
+
+
+### Bug Fixes
+
+* Log error during initialization ([#16645](https://github.com/cloudquery/cloudquery/issues/16645)) ([d50fc1e](https://github.com/cloudquery/cloudquery/commit/d50fc1eae679dd7fe67e38217d17da73e9754e6b))
+
+## [6.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v6.0.1...plugins-source-k8s-v6.0.2) (2024-02-13)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to d771afd ([#16483](https://github.com/cloudquery/cloudquery/issues/16483)) ([dcaa994](https://github.com/cloudquery/cloudquery/commit/dcaa9949df43919c0745e05308ce97bf409c4d77))
+* **deps:** Update google.golang.org/genproto/googleapis/api digest to 1f4bbc5 ([#16421](https://github.com/cloudquery/cloudquery/issues/16421)) ([9489931](https://github.com/cloudquery/cloudquery/commit/9489931c1b64bf1f7d5da51997944ee54370215b))
+* **deps:** Update google.golang.org/genproto/googleapis/rpc digest to 1f4bbc5 ([#16422](https://github.com/cloudquery/cloudquery/issues/16422)) ([74e98fc](https://github.com/cloudquery/cloudquery/commit/74e98fcbde6c6e11baf98284aef0341c597d4817))
+* **deps:** Update k8s.io/kube-openapi digest to 2919ad4 ([#16423](https://github.com/cloudquery/cloudquery/issues/16423)) ([7e13d24](https://github.com/cloudquery/cloudquery/commit/7e13d248d172109214a3d1ab15aba407624794de))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.29.0 ([#16395](https://github.com/cloudquery/cloudquery/issues/16395)) ([fb1102e](https://github.com/cloudquery/cloudquery/commit/fb1102eac8af4b3722b82b882187fdf322546513))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.29.1 ([#16430](https://github.com/cloudquery/cloudquery/issues/16430)) ([738e89f](https://github.com/cloudquery/cloudquery/commit/738e89f2c969a8a3f1698a8686aeaddb358e7a23))
+
+## [6.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v6.0.0...plugins-source-k8s-v6.0.1) (2024-01-31)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.0 ([#16237](https://github.com/cloudquery/cloudquery/issues/16237)) ([3fcdab0](https://github.com/cloudquery/cloudquery/commit/3fcdab08816ad9de7bb4eecab59c7be1bda3d00c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.1 ([#16296](https://github.com/cloudquery/cloudquery/issues/16296)) ([ab4a0da](https://github.com/cloudquery/cloudquery/commit/ab4a0dace0a870755fd22d92c6e9c999351f594e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.2 ([#16342](https://github.com/cloudquery/cloudquery/issues/16342)) ([f3eb857](https://github.com/cloudquery/cloudquery/commit/f3eb85729e5db16c2530b31d6d276934866d5ef0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.28.0 ([#16362](https://github.com/cloudquery/cloudquery/issues/16362)) ([9166b6b](https://github.com/cloudquery/cloudquery/commit/9166b6b603d0d56a30c2e5072c4f2da5c0c837b5))
+
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v5.2.7...plugins-source-k8s-v6.0.0) (2024-01-23)
+
+
+### This Release has the Following Changes to Tables
+- Table `k8s_batch_jobs`: column added with name `spec_backoff_limit_per_index` and type `int64`
+- Table `k8s_batch_jobs`: column added with name `spec_max_failed_indexes` and type `int64`
+- Table `k8s_batch_jobs`: column added with name `spec_pod_replacement_policy` and type `utf8`
+- Table `k8s_batch_jobs`: column added with name `status_failed_indexes` and type `utf8`
+- Table `k8s_batch_jobs`: column added with name `status_terminating` and type `int64`
+- Table `k8s_core_pods`: column added with name `status_host_ips` and type `json`
+- Table `k8s_core_pods`: column added with name `status_resize` and type `utf8`
+- Table `k8s_core_pods`: column added with name `status_resource_claim_statuses` and type `json`
+- Table `k8s_core_pvcs`: column `status_resize_status` removed from table (:warning: breaking)
+- Table `k8s_core_pvcs`: column added with name `spec_volume_attributes_class_name` and type `utf8`
+- Table `k8s_core_pvcs`: column added with name `status_allocated_resource_statuses` and type `json`
+- Table `k8s_core_pvcs`: column added with name `status_current_volume_attributes_class_name` and type `utf8`
+- Table `k8s_core_pvcs`: column added with name `status_modify_volume_status` and type `json`
+- Table `k8s_core_pvs`: column added with name `spec_volume_attributes_class_name` and type `utf8`
+- Table `k8s_core_pvs`: column added with name `status_last_phase_transition_time` and type `timestamp[us, tz=UTC]`
+- Table `k8s_networking_network_policies`: column `status_conditions` removed from table (:warning: breaking)
+
+### ⚠ BREAKING CHANGES
+
+* Update API for k8s ([#16227](https://github.com/cloudquery/cloudquery/issues/16227))
+
+### Features
+
+* Update API for k8s ([#16227](https://github.com/cloudquery/cloudquery/issues/16227)) ([085548a](https://github.com/cloudquery/cloudquery/commit/085548ac922f4c0adee8a024e0f09ea4d9e99ab1))
+
 ## [5.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v5.2.6...plugins-source-k8s-v5.2.7) (2024-01-16)
 
 

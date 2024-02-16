@@ -23,16 +23,16 @@ func userAccessKeys() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:       "user_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "user_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:       "access_key_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("AccessKeyId"),
-				PrimaryKey: true,
+				Name:                "access_key_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("AccessKeyId"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "user_id",

@@ -19,16 +19,16 @@ func clusterBacktracks() *schema.Table {
 		Resolver:    fetchRdsClusterBacktracks,
 		Transform: transformers.TransformWithStruct(
 			&types.DBClusterBacktrack{},
-			transformers.WithPrimaryKeys("BacktrackIdentifier"),
+			transformers.WithPrimaryKeyComponents("BacktrackIdentifier"),
 		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "db_cluster_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "db_cluster_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

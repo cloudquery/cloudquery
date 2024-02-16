@@ -25,10 +25,10 @@ func ContactLists() *schema.Table {
 			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "name",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ContactListName"),
-				PrimaryKey: true,
+				Name:                "name",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ContactListName"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

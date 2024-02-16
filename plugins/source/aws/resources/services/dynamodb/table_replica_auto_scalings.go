@@ -18,15 +18,15 @@ func tableReplicaAutoScalings() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_ReplicaAutoScalingDescription.html`,
 		Resolver:    fetchDynamodbTableReplicaAutoScalings,
-		Transform:   transformers.TransformWithStruct(&types.ReplicaAutoScalingDescription{}, transformers.WithPrimaryKeys("RegionName")),
+		Transform:   transformers.TransformWithStruct(&types.ReplicaAutoScalingDescription{}, transformers.WithPrimaryKeyComponents("RegionName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "table_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "table_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}
@@ -35,7 +35,7 @@ func tableReplicaAutoScalings() *schema.Table {
 func fetchDynamodbTableReplicaAutoScalings(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	par := parent.Item.(*types.TableDescription)
 
-	if aws.ToString(par.GlobalTableVersion) == "" {
+	if aws.ToString(par.GlobalTableVersion) != "2019.11.21" {
 		// "This operation only applies to Version 2019.11.21 of global tables"
 		return nil
 	}

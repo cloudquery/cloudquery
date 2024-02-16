@@ -24,10 +24,10 @@ func VpcEndpoints() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("VpcEndpointId"),
-				PrimaryKey: true,
+				Name:                "id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("VpcEndpointId"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

@@ -29,10 +29,10 @@ func SubnetGroups() *schema.Table {
 				Resolver: resolveDBSubnetGroupTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("DBSubnetGroupArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("DBSubnetGroupArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

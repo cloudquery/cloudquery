@@ -1,6 +1,7 @@
 package client
 
 import (
+	_ "embed"
 	"fmt"
 )
 
@@ -10,11 +11,21 @@ const (
 )
 
 type Spec struct {
-	ConnectionString string `json:"connection_string"`
-	Database         string `json:"database"`
-	BatchSize        int    `json:"batch_size"`
-	BatchSizeBytes   int    `json:"batch_size_bytes"`
+	// MongoDB URI as described in the official MongoDB [documentation](https://www.mongodb.com/docs/manual/reference/connection-string/).
+	ConnectionString string `json:"connection_string" jsonschema:"required,minLength=1"`
+
+	// Database to sync the data to.
+	Database string `json:"database" jsonschema:"required,minLength=1"`
+
+	// Maximum number of items that may be grouped together to be written in a single write.
+	BatchSize int `json:"batch_size,omitempty" jsonschema:"minimum=1,default=1000"`
+
+	// Maximum size of items that may be grouped together to be written in a single write.
+	BatchSizeBytes int `json:"batch_size_bytes,omitempty" jsonschema:"minimum=1,default=4194304"`
 }
+
+//go:embed schema.json
+var JSONSchema string
 
 func (s *Spec) SetDefaults() {
 	if s.BatchSize == 0 {

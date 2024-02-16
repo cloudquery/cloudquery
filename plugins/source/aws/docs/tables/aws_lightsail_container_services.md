@@ -4,8 +4,8 @@ This table shows data for Lightsail Container Services.
 
 https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_ContainerService.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_lightsail_container_services:
@@ -16,11 +16,11 @@ The following tables depend on aws_lightsail_container_services:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |tags|`json`|
 |container_service_name|`utf8`|
 |created_at|`timestamp[us, tz=UTC]`|

@@ -269,7 +269,7 @@
         },
         "aws_debug": {
           "type": "boolean",
-          "description": "If `true`, will log AWS debug logs, including retries and other request/response metadata."
+          "description": "If `true`, will log AWS debug logs, including retries and other request/response metadata. Requires passing `--log-level debug` to the CloudQuery CLI."
         },
         "max_retries": {
           "oneOf": [
@@ -344,7 +344,8 @@
             {
               "type": "null"
             }
-          ]
+          ],
+          "default": "shuffle"
         }
       },
       "additionalProperties": false,

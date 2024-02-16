@@ -27,4 +27,3 @@ The primary key for this table is **uid**.
 |spec_ingress|`json`|
 |spec_egress|`json`|
 |spec_policy_types|`list<item: utf8, nullable>`|
-|status_conditions|`json`|

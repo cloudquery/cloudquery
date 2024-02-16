@@ -26,10 +26,10 @@ func EbsSnapshots() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveEbsSnapshotArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveEbsSnapshotArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

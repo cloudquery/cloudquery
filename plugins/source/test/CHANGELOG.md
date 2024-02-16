@@ -1,5 +1,124 @@
 # Changelog
 
+## [4.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.0.7...plugins-source-test-v4.0.8) (2024-02-13)
+
+
+### This Release has the Following Changes to Tables
+- Table `test_paid_table` was added
+- Table `test_some_table` was added
+- Table `test_sub_table` was added
+- Table `test_testdata_table` was added
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v15 digest to 6d44906 ([#16115](https://github.com/cloudquery/cloudquery/issues/16115)) ([8b0ae62](https://github.com/cloudquery/cloudquery/commit/8b0ae6266d19a10fe84102837802358f0b9bb1bc))
+* **deps:** Update github.com/apache/arrow/go/v15 digest to 7e703aa ([#16134](https://github.com/cloudquery/cloudquery/issues/16134)) ([72d5eb3](https://github.com/cloudquery/cloudquery/commit/72d5eb35644ce78d775790b0298a0c7690788d28))
+* **deps:** Update github.com/cloudquery/jsonschema digest to d771afd ([#16483](https://github.com/cloudquery/cloudquery/issues/16483)) ([dcaa994](https://github.com/cloudquery/cloudquery/commit/dcaa9949df43919c0745e05308ce97bf409c4d77))
+* **deps:** Update golang.org/x/exp digest to 1b97071 ([#16419](https://github.com/cloudquery/cloudquery/issues/16419)) ([6d77cd1](https://github.com/cloudquery/cloudquery/commit/6d77cd19b6fc648a4ddb12025c22127e960036a4))
+* **deps:** Update google.golang.org/genproto/googleapis/api digest to 1f4bbc5 ([#16421](https://github.com/cloudquery/cloudquery/issues/16421)) ([9489931](https://github.com/cloudquery/cloudquery/commit/9489931c1b64bf1f7d5da51997944ee54370215b))
+* **deps:** Update google.golang.org/genproto/googleapis/rpc digest to 1f4bbc5 ([#16422](https://github.com/cloudquery/cloudquery/issues/16422)) ([74e98fc](https://github.com/cloudquery/cloudquery/commit/74e98fcbde6c6e11baf98284aef0341c597d4817))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.25.0 ([#15932](https://github.com/cloudquery/cloudquery/issues/15932)) ([2292b5a](https://github.com/cloudquery/cloudquery/commit/2292b5a2aa5936f2529238a05708de0b3bde9a35))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.25.1 ([#16069](https://github.com/cloudquery/cloudquery/issues/16069)) ([edda65c](https://github.com/cloudquery/cloudquery/commit/edda65c238b2cb78a7a2078b62557a7d8d822e49))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.25.2 ([#16130](https://github.com/cloudquery/cloudquery/issues/16130)) ([7ae6f41](https://github.com/cloudquery/cloudquery/commit/7ae6f41957edb3446ff3175857aaf3dcea2cf5bc))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.0 ([#16237](https://github.com/cloudquery/cloudquery/issues/16237)) ([3fcdab0](https://github.com/cloudquery/cloudquery/commit/3fcdab08816ad9de7bb4eecab59c7be1bda3d00c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.1 ([#16296](https://github.com/cloudquery/cloudquery/issues/16296)) ([ab4a0da](https://github.com/cloudquery/cloudquery/commit/ab4a0dace0a870755fd22d92c6e9c999351f594e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.2 ([#16342](https://github.com/cloudquery/cloudquery/issues/16342)) ([f3eb857](https://github.com/cloudquery/cloudquery/commit/f3eb85729e5db16c2530b31d6d276934866d5ef0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.28.0 ([#16362](https://github.com/cloudquery/cloudquery/issues/16362)) ([9166b6b](https://github.com/cloudquery/cloudquery/commit/9166b6b603d0d56a30c2e5072c4f2da5c0c837b5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.29.0 ([#16395](https://github.com/cloudquery/cloudquery/issues/16395)) ([fb1102e](https://github.com/cloudquery/cloudquery/commit/fb1102eac8af4b3722b82b882187fdf322546513))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.29.1 ([#16430](https://github.com/cloudquery/cloudquery/issues/16430)) ([738e89f](https://github.com/cloudquery/cloudquery/commit/738e89f2c969a8a3f1698a8686aeaddb358e7a23))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.29.1 ([#16475](https://github.com/cloudquery/cloudquery/issues/16475)) ([b1a8598](https://github.com/cloudquery/cloudquery/commit/b1a859827f766195e3dcbf7554477103a9d13427))
+
+## [4.0.7](https://github.com/cloudquery/cloudquery-private/compare/plugins-source-test-v4.0.6...plugins-source-test-v4.0.7) (2024-01-16)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v15 digest to 6d44906 ([#16115](https://github.com/cloudquery/cloudquery-private/issues/16115)) ([8b0ae62](https://github.com/cloudquery/cloudquery-private/commit/8b0ae6266d19a10fe84102837802358f0b9bb1bc))
+* **deps:** Update github.com/apache/arrow/go/v15 digest to 7e703aa ([#16134](https://github.com/cloudquery/cloudquery-private/issues/16134)) ([72d5eb3](https://github.com/cloudquery/cloudquery-private/commit/72d5eb35644ce78d775790b0298a0c7690788d28))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.25.1 ([#16069](https://github.com/cloudquery/cloudquery-private/issues/16069)) ([edda65c](https://github.com/cloudquery/cloudquery-private/commit/edda65c238b2cb78a7a2078b62557a7d8d822e49))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.25.2 ([#16130](https://github.com/cloudquery/cloudquery-private/issues/16130)) ([7ae6f41](https://github.com/cloudquery/cloudquery-private/commit/7ae6f41957edb3446ff3175857aaf3dcea2cf5bc))
+
+## [4.0.6](https://github.com/cloudquery/cloudquery-private/compare/plugins-source-test-v4.0.5...plugins-source-test-v4.0.6) (2024-01-04)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v15 digest to 7c3480e ([#15904](https://github.com/cloudquery/cloudquery-private/issues/15904)) ([a3ec012](https://github.com/cloudquery/cloudquery-private/commit/a3ec01203183e5c94630beae86434519e87e225d))
+* **deps:** Update github.com/gomarkdown/markdown digest to 1d6d208 ([#15907](https://github.com/cloudquery/cloudquery-private/issues/15907)) ([86d29a9](https://github.com/cloudquery/cloudquery-private/commit/86d29a900e6c9dbcad09f5b0c4b0615aee59a2ae))
+* **deps:** Update golang.org/x/exp digest to 02704c9 ([#15909](https://github.com/cloudquery/cloudquery-private/issues/15909)) ([dfe32d2](https://github.com/cloudquery/cloudquery-private/commit/dfe32d2557dcac0fb6dc741c9df4edccdcb07076))
+* **deps:** Update google.golang.org/genproto/googleapis/api digest to 995d672 ([#15911](https://github.com/cloudquery/cloudquery-private/issues/15911)) ([18ac2b8](https://github.com/cloudquery/cloudquery-private/commit/18ac2b806d798e0a9052cc10e8442557ab1c4253))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.25.0 ([#15932](https://github.com/cloudquery/cloudquery-private/issues/15932)) ([2292b5a](https://github.com/cloudquery/cloudquery-private/commit/2292b5a2aa5936f2529238a05708de0b3bde9a35))
+
+## [4.0.5](https://github.com/cloudquery/cloudquery-private/compare/plugins-source-test-v4.0.4...plugins-source-test-v4.0.5) (2023-12-29)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.24.0 ([#835](https://github.com/cloudquery/cloudquery-private/issues/835)) ([9a1b202](https://github.com/cloudquery/cloudquery-private/commit/9a1b2029d76b9fc05154f14650a2a00d866641de))
+
+## [4.0.4](https://github.com/cloudquery/cloudquery-private/compare/plugins-source-test-v4.0.3...plugins-source-test-v4.0.4) (2023-12-28)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/apache/arrow/go/v15 digest to bcaeaa8 ([#15791](https://github.com/cloudquery/cloudquery-private/issues/15791)) ([89dc812](https://github.com/cloudquery/cloudquery-private/commit/89dc81201529de2a1fc1ecce5efa74d6f363e57b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.23.0 ([#15803](https://github.com/cloudquery/cloudquery-private/issues/15803)) ([b6f9373](https://github.com/cloudquery/cloudquery-private/commit/b6f937385020c63ce59b2bc60402752b6c239c6c))
+
+## [4.0.3](https://github.com/cloudquery/cloudquery-private/compare/plugins-source-test-v4.0.2...plugins-source-test-v4.0.3) (2023-12-26)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/apache/arrow/go` to `v15` ([#15754](https://github.com/cloudquery/cloudquery-private/issues/15754)) ([bd962eb](https://github.com/cloudquery/cloudquery-private/commit/bd962eb1093cf09e928e2a0e7782288ec4020ec4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.21.0 ([#15651](https://github.com/cloudquery/cloudquery-private/issues/15651)) ([6e96125](https://github.com/cloudquery/cloudquery-private/commit/6e96125a9d9c75616483952edb7a9e402818b264))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.21.1 ([#15699](https://github.com/cloudquery/cloudquery-private/issues/15699)) ([67c10c3](https://github.com/cloudquery/cloudquery-private/commit/67c10c38a04dcdd1512bf6dc739f89bc11baa888))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.21.2 ([#15724](https://github.com/cloudquery/cloudquery-private/issues/15724)) ([ad750b1](https://github.com/cloudquery/cloudquery-private/commit/ad750b1530af06353f2225c7d3397af580093687))
+* **deps:** Update module golang.org/x/crypto to v0.17.0 [SECURITY] ([#15730](https://github.com/cloudquery/cloudquery-private/issues/15730)) ([718be50](https://github.com/cloudquery/cloudquery-private/commit/718be502014ff36aa50cde3a83453b3d6ce15a83))
+
+## [4.0.2](https://github.com/cloudquery/cloudquery-private/compare/plugins-source-test-v4.0.1...plugins-source-test-v4.0.2) (2023-12-12)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 6522937 ([#15518](https://github.com/cloudquery/cloudquery-private/issues/15518)) ([69f9a06](https://github.com/cloudquery/cloudquery-private/commit/69f9a06754b2feb7c73bd5a80d42fd191c7fdb17))
+* **deps:** Update google.golang.org/genproto/googleapis/api digest to 3a041ad ([#15520](https://github.com/cloudquery/cloudquery-private/issues/15520)) ([b2a322a](https://github.com/cloudquery/cloudquery-private/commit/b2a322a5ec5c1945af5a655c759493a879a9be09))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.19.1 ([#15539](https://github.com/cloudquery/cloudquery-private/issues/15539)) ([a298555](https://github.com/cloudquery/cloudquery-private/commit/a298555343fc7ad483361c2f19c3d39693dab882))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.20.0 ([#15574](https://github.com/cloudquery/cloudquery-private/issues/15574)) ([317dca4](https://github.com/cloudquery/cloudquery-private/commit/317dca4182478d6f3789082ae563d9e8bd417d20))
+
+## [4.0.1](https://github.com/cloudquery/cloudquery-private/compare/plugins-source-test-v4.0.0...plugins-source-test-v4.0.1) (2023-12-01)
+
+
+### Bug Fixes
+
+* When the user is not logged in only fail the sync if paid features are used ([#627](https://github.com/cloudquery/cloudquery-private/issues/627)) ([3944448](https://github.com/cloudquery/cloudquery-private/commit/3944448e15f05eda8ef4ecd4db5c7dc59cdede6d))
+
+## [4.0.0](https://github.com/cloudquery/cloudquery-private/compare/plugins-source-test-v3.1.15...plugins-source-test-v4.0.0) (2023-11-28)
+
+
+### This Release has the Following Changes to Tables
+- Table `test_paid_table` was added
+- Table `test_some_table` was added
+- Table `test_sub_table` was added
+- Table `test_testdata_table` was added
+
+### ⚠ BREAKING CHANGES
+
+* Instrument with usage, add paid table ([#600](https://github.com/cloudquery/cloudquery-private/issues/600))
+
+### Features
+
+* Instrument with usage, add paid table ([#600](https://github.com/cloudquery/cloudquery-private/issues/600)) ([3d0dd23](https://github.com/cloudquery/cloudquery-private/commit/3d0dd2335a6f759fcb8073d96acb72678e4dcc58))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.4.3 - abandoned ([#409](https://github.com/cloudquery/cloudquery-private/issues/409)) ([6d39ce2](https://github.com/cloudquery/cloudquery-private/commit/6d39ce255f68f4ee875d75e96e6fb1725438223e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.0 ([#15132](https://github.com/cloudquery/cloudquery-private/issues/15132)) ([81ee138](https://github.com/cloudquery/cloudquery-private/commit/81ee138ff86c4b92c3ec93208e0a7e05af2b0036))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.1 ([#15263](https://github.com/cloudquery/cloudquery-private/issues/15263)) ([a9a39ef](https://github.com/cloudquery/cloudquery-private/commit/a9a39efe8112a564f21c06ba7627fe6c7ced4cdf))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.2 ([#15325](https://github.com/cloudquery/cloudquery-private/issues/15325)) ([77f2db5](https://github.com/cloudquery/cloudquery-private/commit/77f2db52634bad6e56d970d55172b08d823b97c9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.18.3 ([#15355](https://github.com/cloudquery/cloudquery-private/issues/15355)) ([d8455e5](https://github.com/cloudquery/cloudquery-private/commit/d8455e5ca1059746c7aced395e9bc150ea495591))
+* Trigger release ([ddb0f41](https://github.com/cloudquery/cloudquery-private/commit/ddb0f4135b0b1de7a9d94e0a934109da47648fbd))
+
 ## [3.1.15](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v3.1.14...plugins-source-test-v3.1.15) (2023-11-16)
 
 

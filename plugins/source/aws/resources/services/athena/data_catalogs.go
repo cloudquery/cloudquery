@@ -27,10 +27,10 @@ func DataCatalogs() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveAthenaDataCatalogArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveAthenaDataCatalogArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

@@ -4,8 +4,8 @@ This table shows data for QuickSight Ingestions.
 
 https://docs.aws.amazon.com/quicksight/latest/APIReference/API_Ingestion.html
 
-The composite primary key for this table is (**account_id**, **region**, **data_set_arn**, **arn**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**, **data_set_arn**, **arn**).
 ## Relations
 
 This table depends on [aws_quicksight_data_sets](aws_quicksight_data_sets.md).
@@ -14,13 +14,13 @@ This table depends on [aws_quicksight_data_sets](aws_quicksight_data_sets.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|region (PK)|`utf8`|
+|account_id|`utf8`|
+|region|`utf8`|
 |tags|`json`|
-|data_set_arn (PK)|`utf8`|
-|arn (PK)|`utf8`|
+|data_set_arn|`utf8`|
+|arn|`utf8`|
 |created_time|`timestamp[us, tz=UTC]`|
 |ingestion_status|`utf8`|
 |error_info|`json`|

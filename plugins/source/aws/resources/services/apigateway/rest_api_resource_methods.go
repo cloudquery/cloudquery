@@ -35,10 +35,10 @@ func restApiResourceMethods() *schema.Table {
 				Resolver: schema.ParentColumnResolver("arn"),
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveApigatewayRestAPIResourceMethodArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveApigatewayRestAPIResourceMethodArn,
+				PrimaryKeyComponent: true,
 			},
 		},
 		Relations: []*schema.Table{

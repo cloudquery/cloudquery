@@ -26,18 +26,18 @@ To sync this table you must set the 'use_paid_apis' option to 'true' in the AWS 
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:        "start_date",
-				Description: `The start date covered by the forecast.`,
-				Type:        arrow.BinaryTypes.String,
-				Resolver:    schema.PathResolver("TimePeriod.Start"),
-				PrimaryKey:  true,
+				Name:                "start_date",
+				Description:         `The start date covered by the forecast.`,
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("TimePeriod.Start"),
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:        "end_date",
-				Description: `The end date covered by the forecast.`,
-				Type:        arrow.BinaryTypes.String,
-				Resolver:    schema.PathResolver("TimePeriod.End"),
-				PrimaryKey:  true,
+				Name:                "end_date",
+				Description:         `The end date covered by the forecast.`,
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("TimePeriod.End"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

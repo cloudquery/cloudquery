@@ -23,10 +23,10 @@ func InstanceProfiles() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:       "id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("InstanceProfileId"),
-				PrimaryKey: true,
+				Name:                "id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("InstanceProfileId"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

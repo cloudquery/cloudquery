@@ -23,7 +23,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./plugins/source/aws
@@ -49,7 +49,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v5.0.1
+          version: v5.5.0
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -72,7 +72,7 @@ jobs:
         run: cloudquery sync test/sanity.yml --log-console
   validate-release:
     timeout-minutes: 60
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     env:
       CGO_ENABLED: 0
     steps:

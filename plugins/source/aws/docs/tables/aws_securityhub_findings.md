@@ -6,26 +6,27 @@ https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_GetFindings.html
 The `request_account_id` and `request_region` columns are added to show the account and region of where the request was made from.
 This is useful when multi region and account aggregation is enabled.
 
-The composite primary key for this table is (**request_account_id**, **request_region**, **aws_account_id**, **created_at**, **description**, **generator_id**, **id**, **product_arn**, **schema_version**, **title**, **updated_at**, **region**).
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**request_account_id**, **request_region**, **aws_account_id**, **created_at**, **description**, **generator_id**, **id**, **product_arn**, **schema_version**, **title**, **updated_at**, **region**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|request_account_id (PK)|`utf8`|
-|request_region (PK)|`utf8`|
-|aws_account_id (PK)|`utf8`|
-|created_at (PK)|`timestamp[us, tz=UTC]`|
-|description (PK)|`utf8`|
-|generator_id (PK)|`utf8`|
-|id (PK)|`utf8`|
-|product_arn (PK)|`utf8`|
+|request_account_id|`utf8`|
+|request_region|`utf8`|
+|aws_account_id|`utf8`|
+|created_at|`timestamp[us, tz=UTC]`|
+|description|`utf8`|
+|generator_id|`utf8`|
+|id|`utf8`|
+|product_arn|`utf8`|
 |resources|`json`|
-|schema_version (PK)|`utf8`|
-|title (PK)|`utf8`|
-|updated_at (PK)|`timestamp[us, tz=UTC]`|
+|schema_version|`utf8`|
+|title|`utf8`|
+|updated_at|`timestamp[us, tz=UTC]`|
 |action|`json`|
 |aws_account_name|`utf8`|
 |company_name|`utf8`|
@@ -46,7 +47,7 @@ The composite primary key for this table is (**request_account_id**, **request_r
 |product_fields|`json`|
 |product_name|`utf8`|
 |record_state|`utf8`|
-|region (PK)|`utf8`|
+|region|`utf8`|
 |related_findings|`json`|
 |remediation|`json`|
 |sample|`bool`|

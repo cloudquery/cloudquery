@@ -30,10 +30,10 @@ func ComputeEnvironments() *schema.Table {
 				Resolver: resolveBatchComputeEnvironmentTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ComputeEnvironmentArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ComputeEnvironmentArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

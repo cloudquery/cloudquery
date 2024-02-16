@@ -3,7 +3,6 @@ package securityhub
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub"
 	"github.com/aws/aws-sdk-go-v2/service/securityhub/types"
@@ -23,22 +22,12 @@ This is useful when multi region and account aggregation is enabled.`,
 		Transform: transformers.TransformWithStruct(&types.AwsSecurityFinding{},
 			transformers.WithTypeTransformer(client.TimestampTypeTransformer),
 			transformers.WithResolverTransformer(client.TimestampResolverTransformer),
-			transformers.WithPrimaryKeys("AwsAccountId", "Region", "CreatedAt", "UpdatedAt", "Description", "GeneratorId", "Id", "ProductArn", "SchemaVersion", "Title"),
+			transformers.WithPrimaryKeyComponents("AwsAccountId", "Region", "CreatedAt", "UpdatedAt", "Description", "GeneratorId", "Id", "ProductArn", "SchemaVersion", "Title"),
 		),
 		Multiplex: client.ServiceAccountRegionMultiplexer(tableName, "securityhub"),
 		Columns: []schema.Column{
-			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "request_region",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSRegion,
-				PrimaryKey: true,
-			},
+			client.RequestAccountIDColumn(true),
+			client.RequestRegionColumn(true),
 		},
 	}
 }

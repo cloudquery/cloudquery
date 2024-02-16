@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 // MigrateTableBatch migrates a table. It forms part of the writer.MixedBatchWriter interface.
@@ -80,13 +81,22 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 		Name: table.Name,
 	}
 	for _, col := range table.Columns {
+		// Postgres doesn't support column names longer than 63 characters
+		// and it will automatically truncate them, so we do the same here
+		// to make migrations predictable
+		if len(col.Name) > 63 {
+			col.Name = col.Name[:63]
+		}
+
 		if col.PrimaryKey {
 			col.NotNull = true
 		}
 		col.Type = c.PgToSchemaType(c.SchemaTypeToPg(col.Type))
 		normalizedTable.Columns = append(normalizedTable.Columns, col)
 		// pgTablesToPKConstraints is populated when handling migrate messages
-		normalizedTable.PkConstraintName = c.pgTablesToPKConstraints[table.Name]
+		if entry := c.pgTablesToPKConstraints[table.Name]; entry != nil {
+			normalizedTable.PkConstraintName = entry.name
+		}
 	}
 
 	return &normalizedTable
@@ -97,11 +107,11 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 	for _, change := range changes {
 		switch change.Type {
 		case schema.TableColumnChangeTypeAdd:
-			if err := c.addColumn(ctx, tableName, change.Current); err != nil {
-				return err
-			}
+			return c.addColumn(ctx, tableName, change.Current)
 		case schema.TableColumnChangeTypeRemove:
 			continue
+		case schema.TableColumnChangeTypeMoveToCQOnly:
+			return c.migrateToCQID(ctx, table, change.Current)
 		default:
 			return fmt.Errorf("unsupported column change type: %s for column: %v from %v", change.Type.String(), change.Current, change.Previous)
 		}
@@ -125,6 +135,8 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 				}
 				return false
 			}
+		case schema.TableColumnChangeTypeMoveToCQOnly:
+			return true
 		default:
 			return false
 		}
@@ -164,6 +176,90 @@ func (c *Client) dropTable(ctx context.Context, tableName string) error {
 	if _, err := c.conn.Exec(ctx, sql); err != nil {
 		return fmt.Errorf("failed to drop table %s: %w", tableName, err)
 	}
+	return nil
+}
+
+func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schema.Column) (err error) {
+	// Steps:
+	// acquire connection
+	var conn *pgxpool.Conn
+	conn, err = c.conn.Acquire(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to acquire connection: %w", err)
+	}
+	defer conn.Release()
+	tableName := table.Name
+	sanitizedTableName := pgx.Identifier{tableName}.Sanitize()
+	sanitizedPKName := pgx.Identifier{getPKName(&schema.Table{Name: tableName})}.Sanitize()
+
+	// start transaction
+	tx, err := conn.BeginTx(ctx, pgx.TxOptions{
+		IsoLevel: pgx.Serializable,
+	})
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction: %w", err)
+	}
+
+	defer func() {
+		if err == nil {
+			err = tx.Commit(ctx)
+			if err != nil {
+				c.logger.Error().Err(err).Msg("failed to commit transaction")
+			}
+		}
+		if err != nil {
+			if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
+				c.logger.Error().Err(rollbackErr).Str("table", tableName).Msg("Failed to rollback transaction")
+			}
+		}
+	}()
+
+	// Drop existing primary key
+	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" DROP CONSTRAINT "+sanitizedPKName)
+	if err != nil {
+		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to drop primary key")
+		return err
+	}
+	// Create new Primary Key with CQID
+	_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ADD CONSTRAINT "+sanitizedPKName+" PRIMARY KEY ("+pgx.Identifier{schema.CqIDColumn.Name}.Sanitize()+")")
+	if err != nil {
+		c.logger.Error().Err(err).Str("table", tableName).Msg("Failed to create new primary key on _cq_id")
+		return err
+	}
+
+	// CockroachDB doesn't support dropping NOT NULL constraints in the same transaction as the the primary key is changed
+	// So we have to alter the PK in one transaction and then drop the old NOT NULL constraints in another transaction
+	if c.pgType == pgTypeCockroachDB {
+		if err == nil {
+			err = tx.Commit(ctx)
+			if err != nil {
+				c.logger.Error().Err(err).Msg("failed to commit transaction")
+			}
+		}
+		if err != nil {
+			if rollbackErr := tx.Rollback(ctx); rollbackErr != nil {
+				c.logger.Error().Err(rollbackErr).Str("table", tableName).Msg("Failed to rollback transaction")
+			}
+		}
+		tx, err = conn.BeginTx(ctx, pgx.TxOptions{
+			IsoLevel: pgx.Serializable,
+		})
+		if err != nil {
+			return fmt.Errorf("failed to begin transaction: %w", err)
+		}
+	}
+	entry := c.pgTablesToPKConstraints[tableName]
+	if entry == nil {
+		entry = new(pkConstraintDetails)
+	}
+	for _, colName := range entry.columns {
+		_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ALTER COLUMN "+pgx.Identifier{colName}.Sanitize()+" DROP NOT NULL")
+		if err != nil {
+			c.logger.Error().Err(err).Str("table", tableName).Str("column", colName).Msg("Failed to drop NOT NULL constraint")
+			return err
+		}
+	}
+
 	return nil
 }
 
@@ -207,8 +303,11 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		}
 	}
 
-	pkConstraintName := tableName + "_cqpk"
-	c.pgTablesToPKConstraints[tableName] = pkConstraintName
+	pkConstraintName := getPKName(table)
+	c.pgTablesToPKConstraints[tableName] = &pkConstraintDetails{
+		name:    pkConstraintName,
+		columns: table.PrimaryKeys(),
+	}
 
 	if len(primaryKeys) > 0 {
 		// add composite PK constraint on primary key columns
@@ -225,4 +324,8 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		return fmt.Errorf("failed to create table %s: %w"+sb.String(), tableName, err)
 	}
 	return nil
+}
+
+func getPKName(table *schema.Table) string {
+	return table.Name + "_cqpk"
 }

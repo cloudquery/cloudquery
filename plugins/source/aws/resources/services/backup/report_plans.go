@@ -24,10 +24,10 @@ func ReportPlans() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("ReportPlanArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("ReportPlanArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

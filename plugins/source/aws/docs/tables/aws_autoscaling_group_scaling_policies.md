@@ -4,8 +4,8 @@ This table shows data for Auto Scaling Group Scaling Policies.
 
 https://docs.aws.amazon.com/autoscaling/ec2/APIReference/API_ScalingPolicy.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 This table depends on [aws_autoscaling_groups](aws_autoscaling_groups.md).
@@ -14,12 +14,12 @@ This table depends on [aws_autoscaling_groups](aws_autoscaling_groups.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
 |group_arn|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |adjustment_type|`utf8`|
 |alarms|`json`|
 |auto_scaling_group_name|`utf8`|

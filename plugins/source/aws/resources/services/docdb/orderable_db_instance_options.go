@@ -17,7 +17,7 @@ func orderableDbInstanceOptions() *schema.Table {
 		Description: `https://docs.aws.amazon.com/documentdb/latest/developerguide/API_OrderableDBInstanceOption.html`,
 		Resolver:    fetchDocdbOrderableDbInstanceOptions,
 		Transform: transformers.TransformWithStruct(&types.OrderableDBInstanceOption{},
-			transformers.WithPrimaryKeys("DBInstanceClass", "Engine", "EngineVersion"),
+			transformers.WithPrimaryKeyComponents("DBInstanceClass", "Engine", "EngineVersion"),
 		),
 		Columns: schema.ColumnList{
 			client.DefaultAccountIDColumn(true),

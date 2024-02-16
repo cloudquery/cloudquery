@@ -20,31 +20,21 @@ func stackSetOperationResults() *schema.Table {
 
 The 'request_account_id' and 'request_region' columns are added to show the account and region of where the request was made from.`,
 		Resolver:  fetchCloudformationStackSetOperationResults,
-		Transform: transformers.TransformWithStruct(&types.StackSetOperationResultSummary{}, transformers.WithPrimaryKeys("Account", "Region")),
+		Transform: transformers.TransformWithStruct(&types.StackSetOperationResultSummary{}, transformers.WithPrimaryKeyComponents("Account", "Region")),
 		Columns: []schema.Column{
+			client.RequestAccountIDColumn(true),
+			client.RequestRegionColumn(true),
 			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
+				Name:                "stack_set_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("stack_set_arn"),
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:       "request_region",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSRegion,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "stack_set_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("stack_set_arn"),
-				PrimaryKey: true,
-			},
-			{
-				Name:       "operation_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("operation_id"),
-				PrimaryKey: true,
+				Name:                "operation_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("operation_id"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

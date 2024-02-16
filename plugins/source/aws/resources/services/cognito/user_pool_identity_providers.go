@@ -18,15 +18,15 @@ func userPoolIdentityProviders() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_IdentityProviderType.html`,
 		Resolver:            fetchCognitoUserPoolIdentityProviders,
 		PreResourceResolver: getUserPoolIdentityProvider,
-		Transform:           transformers.TransformWithStruct(&types.IdentityProviderType{}, transformers.WithPrimaryKeys("ProviderName")),
+		Transform:           transformers.TransformWithStruct(&types.IdentityProviderType{}, transformers.WithPrimaryKeyComponents("ProviderName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "user_pool_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "user_pool_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

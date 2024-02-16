@@ -4,8 +4,8 @@ This table shows data for Cloudwatchlogs Log Groups.
 
 https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_LogGroup.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 The following tables depend on aws_cloudwatchlogs_log_groups:
@@ -16,11 +16,11 @@ The following tables depend on aws_cloudwatchlogs_log_groups:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |tags|`json`|
 |creation_time|`int64`|
 |data_protection_status|`utf8`|

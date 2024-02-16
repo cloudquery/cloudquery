@@ -31,10 +31,10 @@ func Policies() *schema.Table {
 				Resolver: ResolveIotPolicyTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("PolicyArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("PolicyArn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

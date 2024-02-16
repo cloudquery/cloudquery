@@ -4,16 +4,17 @@ This table shows data for Compute Optimizer Auto Scaling Group Recommendations.
 
 https://docs.aws.amazon.com/compute-optimizer/latest/APIReference/API_AutoScalingGroupRecommendation.html
 
-The primary key for this table is **auto_scaling_group_arn**.
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **auto_scaling_group_arn**.
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
-|auto_scaling_group_arn (PK)|`utf8`|
+|auto_scaling_group_arn|`utf8`|
 |auto_scaling_group_name|`utf8`|
 |current_configuration|`json`|
 |current_instance_gpu_info|`json`|

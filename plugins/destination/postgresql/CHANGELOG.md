@@ -1,5 +1,64 @@
 # Changelog
 
+## [7.3.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.3.3...plugins-destination-postgresql-v7.3.4) (2024-02-16)
+
+
+### Bug Fixes
+
+* Update example config to use environment variable ([#16641](https://github.com/cloudquery/cloudquery/issues/16641)) ([95295b1](https://github.com/cloudquery/cloudquery/commit/95295b1c6f1cf645945531c8199866d6864a9619))
+
+## [7.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.3.2...plugins-destination-postgresql-v7.3.3) (2024-02-13)
+
+
+### Bug Fixes
+
+* Handle long column name ([#16586](https://github.com/cloudquery/cloudquery/issues/16586)) ([c299ea1](https://github.com/cloudquery/cloudquery/commit/c299ea173979ad8e19f2188976784d075af060c7))
+* Handle map writes ([#16585](https://github.com/cloudquery/cloudquery/issues/16585)) ([e9957ab](https://github.com/cloudquery/cloudquery/commit/e9957ab0aa9bc03e97f9310fab9af4cf81c40d29))
+
+## [7.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.3.1...plugins-destination-postgresql-v7.3.2) (2024-02-09)
+
+
+### Bug Fixes
+
+* Add JSON schema metadata ([#16538](https://github.com/cloudquery/cloudquery/issues/16538)) ([46521b7](https://github.com/cloudquery/cloudquery/commit/46521b7b4975d59bb6926bb6b9df091b0f8328b1))
+* Handle addition of Primary Key Components ([#16555](https://github.com/cloudquery/cloudquery/issues/16555)) ([f1093d8](https://github.com/cloudquery/cloudquery/commit/f1093d890ad65a5646da2d9fc5889610e8aedb98))
+
+## [7.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.3.0...plugins-destination-postgresql-v7.3.1) (2024-02-05)
+
+
+### Bug Fixes
+
+* Remove `NOT NULL` when moving to `_cq_id` ([#16518](https://github.com/cloudquery/cloudquery/issues/16518)) ([dbace97](https://github.com/cloudquery/cloudquery/commit/dbace976b05ceaaca416ce7b48f38a95a26d0b9b))
+
+## [7.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.2.0...plugins-destination-postgresql-v7.3.0) (2024-02-05)
+
+
+### Features
+
+* Add Auto Migrate Functionality for migrating to using a `_cq_id` as the only Primary Key ([#16226](https://github.com/cloudquery/cloudquery/issues/16226)) ([78045f5](https://github.com/cloudquery/cloudquery/commit/78045f586b9d0c3d36c17b0a7478e69ccaca09b2))
+* Add JSON schema to `postgresql` destination plugin ([#16479](https://github.com/cloudquery/cloudquery/issues/16479)) ([7b6582d](https://github.com/cloudquery/cloudquery/commit/7b6582d6bab7394286f7852b693cefcbc7a7469b))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 1b97071 ([#16419](https://github.com/cloudquery/cloudquery/issues/16419)) ([6d77cd1](https://github.com/cloudquery/cloudquery/commit/6d77cd19b6fc648a4ddb12025c22127e960036a4))
+* **deps:** Update google.golang.org/genproto/googleapis/api digest to 1f4bbc5 ([#16421](https://github.com/cloudquery/cloudquery/issues/16421)) ([9489931](https://github.com/cloudquery/cloudquery/commit/9489931c1b64bf1f7d5da51997944ee54370215b))
+* **deps:** Update google.golang.org/genproto/googleapis/rpc digest to 1f4bbc5 ([#16422](https://github.com/cloudquery/cloudquery/issues/16422)) ([74e98fc](https://github.com/cloudquery/cloudquery/commit/74e98fcbde6c6e11baf98284aef0341c597d4817))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.0 ([#16237](https://github.com/cloudquery/cloudquery/issues/16237)) ([3fcdab0](https://github.com/cloudquery/cloudquery/commit/3fcdab08816ad9de7bb4eecab59c7be1bda3d00c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.1 ([#16296](https://github.com/cloudquery/cloudquery/issues/16296)) ([ab4a0da](https://github.com/cloudquery/cloudquery/commit/ab4a0dace0a870755fd22d92c6e9c999351f594e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.2 ([#16342](https://github.com/cloudquery/cloudquery/issues/16342)) ([f3eb857](https://github.com/cloudquery/cloudquery/commit/f3eb85729e5db16c2530b31d6d276934866d5ef0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.28.0 ([#16362](https://github.com/cloudquery/cloudquery/issues/16362)) ([9166b6b](https://github.com/cloudquery/cloudquery/commit/9166b6b603d0d56a30c2e5072c4f2da5c0c837b5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.29.0 ([#16395](https://github.com/cloudquery/cloudquery/issues/16395)) ([fb1102e](https://github.com/cloudquery/cloudquery/commit/fb1102eac8af4b3722b82b882187fdf322546513))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.29.1 ([#16430](https://github.com/cloudquery/cloudquery/issues/16430)) ([738e89f](https://github.com/cloudquery/cloudquery/commit/738e89f2c969a8a3f1698a8686aeaddb358e7a23))
+* Proper JSON marshaling for `LogLevel` ([#16512](https://github.com/cloudquery/cloudquery/issues/16512)) ([c03ad77](https://github.com/cloudquery/cloudquery/commit/c03ad7722c5db1812b9fbbf812b5b7fb075645db))
+
+## [7.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.1.6...plugins-destination-postgresql-v7.2.0) (2024-01-23)
+
+
+### Features
+
+* Handle All types of Schema Changes ([#16194](https://github.com/cloudquery/cloudquery/issues/16194)) ([883f7e1](https://github.com/cloudquery/cloudquery/commit/883f7e108f508a9cadcc73f7a80ed1e526779180))
+
 ## [7.1.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.1.5...plugins-destination-postgresql-v7.1.6) (2024-01-16)
 
 

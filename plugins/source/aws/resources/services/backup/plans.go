@@ -21,15 +21,15 @@ func Plans() *schema.Table {
 		Resolver:            fetchBackupPlans,
 		PreResourceResolver: getPlan,
 		Multiplex:           client.ServiceAccountRegionMultiplexer(tableName, "backup"),
-		Transform:           transformers.TransformWithStruct(&backup.GetBackupPlanOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeys("VersionId")),
+		Transform:           transformers.TransformWithStruct(&backup.GetBackupPlanOutput{}, transformers.WithSkipFields("ResultMetadata"), transformers.WithPrimaryKeyComponents("VersionId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("BackupPlanArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("BackupPlanArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

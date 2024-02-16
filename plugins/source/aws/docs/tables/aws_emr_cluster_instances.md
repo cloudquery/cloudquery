@@ -4,8 +4,8 @@ This table shows data for Amazon EMR Cluster Instances.
 
 https://docs.aws.amazon.com/emr/latest/APIReference/API_Instance.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 This table depends on [aws_emr_clusters](aws_emr_clusters.md).
@@ -14,11 +14,11 @@ This table depends on [aws_emr_clusters](aws_emr_clusters.md).
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |ebs_volumes|`json`|
 |ec2_instance_id|`utf8`|
 |id|`utf8`|

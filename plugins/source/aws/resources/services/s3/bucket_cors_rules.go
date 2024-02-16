@@ -18,14 +18,14 @@ func bucketCorsRules() *schema.Table {
 		Name:        "aws_s3_bucket_cors_rules",
 		Description: `https://docs.aws.amazon.com/AmazonS3/latest/API/API_CORSRule.html`,
 		Resolver:    fetchS3BucketCorsRules,
-		Transform:   transformers.TransformWithStruct(&types.CORSRule{}, transformers.WithPrimaryKeys("ID")),
+		Transform:   transformers.TransformWithStruct(&types.CORSRule{}, transformers.WithPrimaryKeyComponents("AllowedMethods", "AllowedOrigins", "AllowedHeaders", "ExposeHeaders", "ID", "MaxAgeSeconds")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			{
-				Name:       "bucket_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "bucket_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

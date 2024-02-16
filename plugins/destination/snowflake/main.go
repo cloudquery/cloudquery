@@ -22,13 +22,13 @@ func main() {
 		client.New,
 		plugin.WithBuildTargets([]plugin.BuildTarget{
 			{OS: plugin.GoOSLinux, Arch: plugin.GoArchAmd64},
-			{OS: plugin.GoOSWindows, Arch: plugin.GoArchAmd64},
+			{OS: plugin.GoOSWindows, Arch: plugin.GoArchAmd64, CGO: true},
 			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchAmd64},
 			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchArm64},
 		}),
-		plugin.WithStaticLinking(),
 		plugin.WithKind(internalPlugin.Kind),
 		plugin.WithTeam(internalPlugin.Team),
+		plugin.WithJSONSchema(client.JSONSchema),
 	)
 	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN), serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
 		fmt.Println(err)

@@ -31,10 +31,10 @@ func Tables() *schema.Table {
 				Resolver: resolveDynamodbTableTags,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("TableArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("TableArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "archival_summary",

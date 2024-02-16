@@ -19,20 +19,15 @@ func sites() *schema.Table {
 		Description: `https://docs.aws.amazon.com/networkmanager/latest/APIReference/API_Site.html
 The  'request_region' column is added to show region of where the request was made from.`,
 		Resolver:  fetchSites,
-		Transform: transformers.TransformWithStruct(&types.Site{}, transformers.WithPrimaryKeys("GlobalNetworkId")),
+		Transform: transformers.TransformWithStruct(&types.Site{}, transformers.WithPrimaryKeyComponents("GlobalNetworkId")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
+			client.RequestRegionColumn(true),
 			{
-				Name:       "request_region",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSRegion,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("SiteArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("SiteArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

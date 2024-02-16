@@ -18,7 +18,7 @@ func AccountAttributes() *schema.Table {
 		Description: `https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_AccountAttribute.html`,
 		Resolver:    fetchAccountAttributes,
 		Multiplex:   client.AccountMultiplex(tableName),
-		Transform:   transformers.TransformWithStruct(&types.AccountAttribute{}, transformers.WithPrimaryKeys("AttributeName")),
+		Transform:   transformers.TransformWithStruct(&types.AccountAttribute{}, transformers.WithPrimaryKeyComponents("AttributeName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{

@@ -35,18 +35,18 @@ func (m *MockNetworkingV1alpha1Interface) EXPECT() *MockNetworkingV1alpha1Interf
 	return m.recorder
 }
 
-// ClusterCIDRs mocks base method.
-func (m *MockNetworkingV1alpha1Interface) ClusterCIDRs() v1alpha1.ClusterCIDRInterface {
+// IPAddresses mocks base method.
+func (m *MockNetworkingV1alpha1Interface) IPAddresses() v1alpha1.IPAddressInterface {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ClusterCIDRs")
-	ret0, _ := ret[0].(v1alpha1.ClusterCIDRInterface)
+	ret := m.ctrl.Call(m, "IPAddresses")
+	ret0, _ := ret[0].(v1alpha1.IPAddressInterface)
 	return ret0
 }
 
-// ClusterCIDRs indicates an expected call of ClusterCIDRs.
-func (mr *MockNetworkingV1alpha1InterfaceMockRecorder) ClusterCIDRs() *gomock.Call {
+// IPAddresses indicates an expected call of IPAddresses.
+func (mr *MockNetworkingV1alpha1InterfaceMockRecorder) IPAddresses() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ClusterCIDRs", reflect.TypeOf((*MockNetworkingV1alpha1Interface)(nil).ClusterCIDRs))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IPAddresses", reflect.TypeOf((*MockNetworkingV1alpha1Interface)(nil).IPAddresses))
 }
 
 // RESTClient mocks base method.
@@ -61,4 +61,18 @@ func (m *MockNetworkingV1alpha1Interface) RESTClient() rest.Interface {
 func (mr *MockNetworkingV1alpha1InterfaceMockRecorder) RESTClient() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RESTClient", reflect.TypeOf((*MockNetworkingV1alpha1Interface)(nil).RESTClient))
+}
+
+// ServiceCIDRs mocks base method.
+func (m *MockNetworkingV1alpha1Interface) ServiceCIDRs() v1alpha1.ServiceCIDRInterface {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ServiceCIDRs")
+	ret0, _ := ret[0].(v1alpha1.ServiceCIDRInterface)
+	return ret0
+}
+
+// ServiceCIDRs indicates an expected call of ServiceCIDRs.
+func (mr *MockNetworkingV1alpha1InterfaceMockRecorder) ServiceCIDRs() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ServiceCIDRs", reflect.TypeOf((*MockNetworkingV1alpha1Interface)(nil).ServiceCIDRs))
 }

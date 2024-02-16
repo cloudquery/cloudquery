@@ -19,7 +19,7 @@ func UpdateActions() *schema.Table {
 		Resolver:    fetchElasticacheUpdateAction,
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "elasticache"),
 		Transform: transformers.TransformWithStruct(&types.UpdateAction{},
-			transformers.WithPrimaryKeys("CacheClusterId", "ReplicationGroupId", "ServiceUpdateName"),
+			transformers.WithPrimaryKeyComponents("CacheClusterId", "ReplicationGroupId", "ServiceUpdateName"),
 		),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),

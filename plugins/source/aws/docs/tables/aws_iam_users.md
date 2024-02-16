@@ -4,11 +4,12 @@ This table shows data for IAM Users.
 
 https://docs.aws.amazon.com/IAM/latest/APIReference/API_User.html
 
-The composite primary key for this table is (**account_id**, **arn**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **arn**).
 ## Relations
 
 The following tables depend on aws_iam_users:
+  - [aws_iam_mfa_devices](aws_iam_mfa_devices.md)
   - [aws_iam_signing_certificates](aws_iam_signing_certificates.md)
   - [aws_iam_ssh_public_keys](aws_iam_ssh_public_keys.md)
   - [aws_iam_user_access_keys](aws_iam_user_access_keys.md)
@@ -21,10 +22,10 @@ The following tables depend on aws_iam_users:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
-|arn (PK)|`utf8`|
+|account_id|`utf8`|
+|arn|`utf8`|
 |tags|`json`|
 |create_date|`timestamp[us, tz=UTC]`|
 |path|`utf8`|

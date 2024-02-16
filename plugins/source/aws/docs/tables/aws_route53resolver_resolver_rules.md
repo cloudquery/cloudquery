@@ -4,17 +4,20 @@ This table shows data for Amazon Route 53 Resolver Resolver Rules.
 
 https://docs.aws.amazon.com/Route53/latest/APIReference/API_route53resolver_ResolverRule.html
 
-The primary key for this table is **arn**.
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**request_account_id**, **request_region**, **arn**).
 
 ## Columns
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|request_account_id|`utf8`|
+|request_region|`utf8`|
+|arn|`utf8`|
 |creation_time|`utf8`|
 |creator_request_id|`utf8`|
 |domain_name|`utf8`|

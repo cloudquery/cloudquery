@@ -18,15 +18,15 @@ func databaseParameters() *schema.Table {
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/lightsail/2016-11-28/api-reference/API_RelationalDatabaseParameter.html`,
 		Resolver:    fetchLightsailDatabaseParameters,
-		Transform:   transformers.TransformWithStruct(&types.RelationalDatabaseParameter{}, transformers.WithPrimaryKeys("ParameterName")),
+		Transform:   transformers.TransformWithStruct(&types.RelationalDatabaseParameter{}, transformers.WithPrimaryKeyComponents("ParameterName")),
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "database_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name:                "database_arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("arn"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

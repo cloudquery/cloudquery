@@ -4,8 +4,8 @@ This table shows data for Stepfunctions Map Run Executions.
 
 https://docs.aws.amazon.com/step-functions/latest/apireference/API_DescribeExecution.html
 
-The primary key for this table is **arn**.
-
+The primary key for this table is **_cq_id**.
+The following field is used to calculate the value of `_cq_id`: **arn**.
 ## Relations
 
 This table depends on [aws_stepfunctions_map_runs](aws_stepfunctions_map_runs.md).
@@ -14,11 +14,11 @@ This table depends on [aws_stepfunctions_map_runs](aws_stepfunctions_map_runs.md
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
 |account_id|`utf8`|
 |region|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |map_run_arn|`utf8`|
 |state_machine_arn|`utf8`|
 |execution_arn|`utf8`|

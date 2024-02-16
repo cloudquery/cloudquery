@@ -17,12 +17,26 @@ func buildParameters(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	var pm types.ParameterMetadata
 	require.NoError(t, faker.FakeObject(&pm))
 
+	var tags []types.Tag
+	require.NoError(t, faker.FakeObject(&tags))
 	mock.EXPECT().DescribeParameters(
 		gomock.Any(),
 		&ssm.DescribeParametersInput{},
 		gomock.Any(),
 	).Return(
 		&ssm.DescribeParametersOutput{Parameters: []types.ParameterMetadata{pm}},
+		nil,
+	)
+
+	mock.EXPECT().ListTagsForResource(
+		gomock.Any(),
+		&ssm.ListTagsForResourceInput{
+			ResourceId:   pm.Name,
+			ResourceType: types.ResourceTypeForTaggingParameter,
+		},
+		gomock.Any(),
+	).Return(
+		&ssm.ListTagsForResourceOutput{TagList: tags},
 		nil,
 	)
 	return &client.Services{Ssm: mock}

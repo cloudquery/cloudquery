@@ -18,35 +18,34 @@ func detectorIPSets() *schema.Table {
 		Description:         `https://docs.aws.amazon.com/guardduty/latest/APIReference/API_GetIPSet.html`,
 		Resolver:            fetchDetectorIPSets,
 		PreResourceResolver: getDetectorIPSet,
-		Transform: transformers.TransformWithStruct(&guardduty.GetIPSetOutput{},
-			transformers.WithPrimaryKeys("Name"),
+		Transform: transformers.TransformWithStruct(&models.IPSetWrapper{},
+			transformers.WithPrimaryKeyComponents("Name"),
+			transformers.WithUnwrapAllEmbeddedStructs(),
 			transformers.WithSkipFields("ResultMetadata"),
 		),
 		Columns: schema.ColumnList{
+			client.RequestAccountIDColumn(true),
+			client.RequestRegionColumn(true),
+			detectorARNColumn,
 			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "request_region",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSRegion,
-				PrimaryKey: true,
-			},
-			{
-				Name:       "detector_arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("arn"),
-				PrimaryKey: true,
+				Name: "arn",
+				Type: arrow.BinaryTypes.String,
+				Resolver: client.ResolveARN(client.GuardDutyService, func(resource *schema.Resource) ([]string, error) {
+					return []string{
+						"detector",
+						resource.Parent.Item.(models.DetectorWrapper).Id,
+						"ipset",
+						resource.Item.(models.IPSetWrapper).Id,
+					}, nil
+				}),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}
 }
 
 func fetchDetectorIPSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	detector := parent.Item.(*models.DetectorWrapper)
+	detector := parent.Item.(models.DetectorWrapper)
 
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
@@ -70,7 +69,7 @@ func getDetectorIPSet(ctx context.Context, meta schema.ClientMeta, resource *sch
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceGuardduty).Guardduty
 	id := resource.Item.(string)
-	detector := resource.Parent.Item.(*models.DetectorWrapper)
+	detector := resource.Parent.Item.(models.DetectorWrapper)
 
 	out, err := svc.GetIPSet(ctx, &guardduty.GetIPSetInput{
 		DetectorId: &detector.Id,
@@ -82,6 +81,6 @@ func getDetectorIPSet(ctx context.Context, meta schema.ClientMeta, resource *sch
 		return err
 	}
 
-	resource.Item = out
+	resource.Item = models.IPSetWrapper{GetIPSetOutput: out, Id: id}
 	return nil
 }

@@ -92,21 +92,6 @@ func (mr *MockNetworkPolicyInterfaceMockRecorder) Apply(arg0, arg1, arg2 interfa
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Apply", reflect.TypeOf((*MockNetworkPolicyInterface)(nil).Apply), arg0, arg1, arg2)
 }
 
-// ApplyStatus mocks base method.
-func (m *MockNetworkPolicyInterface) ApplyStatus(arg0 context.Context, arg1 *v11.NetworkPolicyApplyConfiguration, arg2 v10.ApplyOptions) (*v1.NetworkPolicy, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "ApplyStatus", arg0, arg1, arg2)
-	ret0, _ := ret[0].(*v1.NetworkPolicy)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// ApplyStatus indicates an expected call of ApplyStatus.
-func (mr *MockNetworkPolicyInterfaceMockRecorder) ApplyStatus(arg0, arg1, arg2 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ApplyStatus", reflect.TypeOf((*MockNetworkPolicyInterface)(nil).ApplyStatus), arg0, arg1, arg2)
-}
-
 // Create mocks base method.
 func (m *MockNetworkPolicyInterface) Create(arg0 context.Context, arg1 *v1.NetworkPolicy, arg2 v10.CreateOptions) (*v1.NetworkPolicy, error) {
 	m.ctrl.T.Helper()
@@ -213,21 +198,6 @@ func (m *MockNetworkPolicyInterface) Update(arg0 context.Context, arg1 *v1.Netwo
 func (mr *MockNetworkPolicyInterfaceMockRecorder) Update(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockNetworkPolicyInterface)(nil).Update), arg0, arg1, arg2)
-}
-
-// UpdateStatus mocks base method.
-func (m *MockNetworkPolicyInterface) UpdateStatus(arg0 context.Context, arg1 *v1.NetworkPolicy, arg2 v10.UpdateOptions) (*v1.NetworkPolicy, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateStatus", arg0, arg1, arg2)
-	ret0, _ := ret[0].(*v1.NetworkPolicy)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// UpdateStatus indicates an expected call of UpdateStatus.
-func (mr *MockNetworkPolicyInterfaceMockRecorder) UpdateStatus(arg0, arg1, arg2 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatus", reflect.TypeOf((*MockNetworkPolicyInterface)(nil).UpdateStatus), arg0, arg1, arg2)
 }
 
 // Watch mocks base method.

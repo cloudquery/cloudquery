@@ -4,8 +4,8 @@ This table shows data for Amazon API Gateway Rest API Resource Methods.
 
 https://docs.aws.amazon.com/apigateway/latest/api/API_Method.html
 
-The composite primary key for this table is (**account_id**, **arn**).
-
+The primary key for this table is **_cq_id**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **arn**).
 ## Relations
 
 This table depends on [aws_apigateway_rest_api_resources](aws_apigateway_rest_api_resources.md).
@@ -17,13 +17,13 @@ The following tables depend on aws_apigateway_rest_api_resource_methods:
 
 | Name          | Type          |
 | ------------- | ------------- |
-|_cq_id|`uuid`|
+|_cq_id (PK)|`uuid`|
 |_cq_parent_id|`uuid`|
-|account_id (PK)|`utf8`|
+|account_id|`utf8`|
 |region|`utf8`|
 |rest_api_arn|`utf8`|
 |resource_arn|`utf8`|
-|arn (PK)|`utf8`|
+|arn|`utf8`|
 |api_key_required|`bool`|
 |authorization_scopes|`list<item: utf8, nullable>`|
 |authorization_type|`utf8`|

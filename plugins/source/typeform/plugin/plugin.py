@@ -11,7 +11,7 @@ from plugin import tables
 from plugin.client import Client, Spec
 
 PLUGIN_NAME = "typeform"
-PLUGIN_VERSION = "1.2.2"  # {x-release-please-version}
+PLUGIN_VERSION = "1.3.0"  # {x-release-please-version}
 
 
 class TypeformPlugin(plugin.Plugin):
@@ -19,7 +19,9 @@ class TypeformPlugin(plugin.Plugin):
         super().__init__(
             PLUGIN_NAME,
             PLUGIN_VERSION,
-            opts=plugin.plugin.Options(team="cloudquery", kind="source"),
+            opts=plugin.plugin.Options(
+                team="cloudquery", kind="source", json_schema=Spec.json_schema()
+            ),
         )
         self._spec_json = None
         self._spec = None

@@ -1,5 +1,40 @@
 # Changelog
 
+## [3.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v3.3.16...plugins-destination-bigquery-v3.4.0) (2024-02-13)
+
+
+### Features
+
+* Add JSON schema to bigquery destination ([#16490](https://github.com/cloudquery/cloudquery/issues/16490)) ([1c28a05](https://github.com/cloudquery/cloudquery/commit/1c28a053be83745728397c8981d96665b13c915c))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 1b97071 ([#16419](https://github.com/cloudquery/cloudquery/issues/16419)) ([6d77cd1](https://github.com/cloudquery/cloudquery/commit/6d77cd19b6fc648a4ddb12025c22127e960036a4))
+* **deps:** Update google.golang.org/genproto digest to 1f4bbc5 ([#16420](https://github.com/cloudquery/cloudquery/issues/16420)) ([0d2a01d](https://github.com/cloudquery/cloudquery/commit/0d2a01d2a7c3099b6cc31e8937706747f92f5269))
+* **deps:** Update google.golang.org/genproto/googleapis/api digest to 1f4bbc5 ([#16421](https://github.com/cloudquery/cloudquery/issues/16421)) ([9489931](https://github.com/cloudquery/cloudquery/commit/9489931c1b64bf1f7d5da51997944ee54370215b))
+* **deps:** Update google.golang.org/genproto/googleapis/rpc digest to 1f4bbc5 ([#16422](https://github.com/cloudquery/cloudquery/issues/16422)) ([74e98fc](https://github.com/cloudquery/cloudquery/commit/74e98fcbde6c6e11baf98284aef0341c597d4817))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.29.0 ([#16395](https://github.com/cloudquery/cloudquery/issues/16395)) ([fb1102e](https://github.com/cloudquery/cloudquery/commit/fb1102eac8af4b3722b82b882187fdf322546513))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.29.1 ([#16430](https://github.com/cloudquery/cloudquery/issues/16430)) ([738e89f](https://github.com/cloudquery/cloudquery/commit/738e89f2c969a8a3f1698a8686aeaddb358e7a23))
+
+## [3.3.16](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v3.3.15...plugins-destination-bigquery-v3.3.16) (2024-01-31)
+
+
+### Bug Fixes
+
+* Add user-agent to BigQuery calls ([#16345](https://github.com/cloudquery/cloudquery/issues/16345)) ([b91d1f7](https://github.com/cloudquery/cloudquery/commit/b91d1f72e7fa7d59e81a40d23745c43b704b0007))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.0 ([#16237](https://github.com/cloudquery/cloudquery/issues/16237)) ([3fcdab0](https://github.com/cloudquery/cloudquery/commit/3fcdab08816ad9de7bb4eecab59c7be1bda3d00c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.1 ([#16296](https://github.com/cloudquery/cloudquery/issues/16296)) ([ab4a0da](https://github.com/cloudquery/cloudquery/commit/ab4a0dace0a870755fd22d92c6e9c999351f594e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.2 ([#16342](https://github.com/cloudquery/cloudquery/issues/16342)) ([f3eb857](https://github.com/cloudquery/cloudquery/commit/f3eb85729e5db16c2530b31d6d276934866d5ef0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.28.0 ([#16362](https://github.com/cloudquery/cloudquery/issues/16362)) ([9166b6b](https://github.com/cloudquery/cloudquery/commit/9166b6b603d0d56a30c2e5072c4f2da5c0c837b5))
+
+## [3.3.15](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v3.3.14...plugins-destination-bigquery-v3.3.15) (2024-01-23)
+
+
+### Bug Fixes
+
+* **deps:** Update module cloud.google.com/go/bigquery to v1.58.0 ([#16223](https://github.com/cloudquery/cloudquery/issues/16223)) ([ceda946](https://github.com/cloudquery/cloudquery/commit/ceda946737d6be735e857d24e51ffcd5bd904bc7))
+
 ## [3.3.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v3.3.13...plugins-destination-bigquery-v3.3.14) (2024-01-16)
 
 

@@ -33,6 +33,10 @@ gen-docs: build
 lint:
 	golangci-lint run --config ../../.golangci.yml 
 
+.PHONY: gen-spec-schema
+gen-spec-schema:
+	go run client/spec/gen/main.go
+
 # All gen targets
 .PHONY: gen
-gen: gen-mocks gen-docs
+gen: gen-mocks gen-spec-schema gen-docs

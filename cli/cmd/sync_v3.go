@@ -6,10 +6,14 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net/http"
+	"os"
 	"sync/atomic"
 	"time"
 
 	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery/cli/internal/api"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/internal/transformer"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -17,7 +21,11 @@ import (
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
+	"github.com/vnteamopen/godebouncer"
 	"google.golang.org/protobuf/types/known/timestamppb"
+
+	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
+	"github.com/google/uuid"
 )
 
 type v3source struct {
@@ -28,6 +36,19 @@ type v3source struct {
 type v3destination struct {
 	client *managedplugin.Client
 	spec   specs.Destination
+}
+
+func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
+	authClient := auth.NewTokenClient()
+	if authClient.GetTokenType() != auth.SyncRunAPIKey {
+		return nil, nil
+	}
+
+	token, err := authClient.GetToken()
+	if err != nil {
+		return nil, err
+	}
+	return api.NewClient(token.Value)
 }
 
 // nolint:dupl
@@ -43,6 +64,11 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	for i := range destinations {
 		destinationSpecs[i] = destinations[i].spec
 		destinationsClients[i] = destinations[i].client
+	}
+
+	progressAPIClient, err := getProgressAPIClient()
+	if err != nil {
+		return fmt.Errorf("failed to get API client: %w", err)
 	}
 
 	defer func() {
@@ -100,28 +126,14 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	}
 
 	// initialize destinations first, so that their connections may be used as backends by the source
-	for i := range destinationsClients {
-		destSpec := destinationSpecs[i]
-		destSpecBytes, err := json.Marshal(destSpec.Spec)
-		if err != nil {
-			return err
-		}
-		if _, err := destinationsPbClients[i].Init(ctx, &plugin.Init_Request{
-			Spec: destSpecBytes,
-		}); err != nil {
-			return fmt.Errorf("failed to init destination %v: %w", destSpec.Name, err)
+	for i, destinationSpec := range destinationSpecs {
+		if err := initPlugin(ctx, destinationsPbClients[i], destinationSpec.Spec, false); err != nil {
+			return fmt.Errorf("failed to init destination %v: %w", destinationSpec.Name, err)
 		}
 	}
 	if backend != nil {
-		backendSpec := backend.spec
-		backendSpecBytes, err := json.Marshal(backendSpec.Spec)
-		if err != nil {
-			return err
-		}
-		if _, err := backendPbClient.Init(ctx, &plugin.Init_Request{
-			Spec: backendSpecBytes,
-		}); err != nil {
-			return fmt.Errorf("failed to init backend %v: %w", backendSpec.Name, err)
+		if err := initPlugin(ctx, backendPbClient, backend.spec.Spec, false); err != nil {
+			return fmt.Errorf("failed to init backend %v: %w", backend.spec.Name, err)
 		}
 	}
 
@@ -139,14 +151,8 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		return fmt.Errorf("failed to unmarshal source spec JSON after variable replacement: %w", err)
 	}
 
-	sourceSpecBytes, err := json.Marshal(sourceSpec.Spec)
-	if err != nil {
-		return err
-	}
-	if _, err := sourcePbClient.Init(ctx, &plugin.Init_Request{
-		Spec: sourceSpecBytes,
-	}); err != nil {
-		return err
+	if err = initPlugin(ctx, sourcePbClient, sourceSpec.Spec, false); err != nil {
+		return fmt.Errorf("failed to init source %v: %w", sourceSpec.Name, err)
 	}
 
 	writeClients := make([]plugin.Plugin_WriteClient, len(destinationsPbClients))
@@ -207,7 +213,38 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	isStateBackendEnabled := sourceSpec.BackendOptions != nil && sourceSpec.BackendOptions.TableName != ""
 
 	// Read from the sync stream and write to all destinations.
-	totalResources := 0
+	totalResources := int64(0)
+	isComplete := int64(0)
+
+	var remoteProgressReporter *godebouncer.Debouncer
+	if progressAPIClient != nil {
+		teamName, syncName, syncRunId := os.Getenv("_CQ_TEAM_NAME"), os.Getenv("_CQ_SYNC_NAME"), os.Getenv("_CQ_SYNC_RUN_ID")
+		if teamName == "" || syncName == "" || syncRunId == "" {
+			return fmt.Errorf("failed to get team, sync or sync run from environment variables. got team: %s, sync name: %s, sync run ID: %s", teamName, syncName, syncRunId)
+		}
+		syncRunUUID, err := uuid.Parse(syncRunId)
+		if err != nil {
+			return fmt.Errorf("failed to parse sync run ID: %w", err)
+		}
+		remoteProgressReporter = godebouncer.NewWithOptions(godebouncer.WithTimeDuration(10*time.Second), godebouncer.WithTriggered(func() {
+			obj := cloudquery_api.CreateSyncRunProgressJSONRequestBody{
+				Rows: atomic.LoadInt64(&totalResources),
+			}
+			if atomic.LoadInt64(&isComplete) == 1 {
+				status := cloudquery_api.SyncRunStatusCompleted
+				obj.Status = &status
+			}
+			res, err := progressAPIClient.CreateSyncRunProgressWithResponse(ctx, teamName, syncName, syncRunUUID, obj)
+			if err != nil {
+				log.Warn().Err(err).Msg("Failed to send sync progress to API")
+				return
+			}
+			if res.StatusCode() != http.StatusNoContent {
+				log.Warn().Str("status", res.Status()).Int("code", res.StatusCode()).Msg("Failed to send sync progress to API")
+			}
+		}), godebouncer.WithOptions(godebouncer.Options{Trailing: true, Leading: true}))
+	}
+
 	for {
 		r, err := syncClient.Recv()
 		if err != nil {
@@ -225,7 +262,10 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			}
 
 			atomic.AddInt64(&newResources, record.NumRows())
-			totalResources += int(record.NumRows())
+			atomic.AddInt64(&totalResources, record.NumRows())
+			if remoteProgressReporter != nil {
+				remoteProgressReporter.SendSignal()
+			}
 			for i := range destinationsPbClients {
 				transformedRecord := destinationTransformers[i].Transform(record)
 				transformedRecordBytes, err := plugin.RecordToBytes(transformedRecord)
@@ -321,6 +361,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	if err != nil {
 		log.Warn().Err(err).Msg("Failed to finish progress bar")
 	}
+	atomic.StoreInt64(&isComplete, 1)
 	syncTimeTook := time.Since(syncTime)
 	exitReason = ExitReasonCompleted
 
@@ -329,6 +370,11 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		msg = "Sync completed with errors, see logs for details"
 	}
 	fmt.Printf("%s. Resources: %d, Errors: %d, Warnings: %d, Time: %s\n", msg, totalResources, totals.Errors, totals.Warnings, syncTimeTook.Truncate(time.Second).String())
+
+	if remoteProgressReporter != nil {
+		remoteProgressReporter.SendSignal()
+		<-remoteProgressReporter.Done()
+	}
 	return nil
 }
 

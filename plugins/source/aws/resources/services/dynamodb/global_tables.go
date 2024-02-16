@@ -19,6 +19,7 @@ func GlobalTables() *schema.Table {
 		Name: tableName,
 		Description: `https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_GlobalTableDescription.html
 This table only contains version 2017.11.29 (Legacy) Global Tables. See aws_dynamodb_tables for version 2019.11.21 (Current) Global Tables.
+The column "tags" is always empty because global tables do not support tags. The column will be removed in a future version.
 `,
 		Resolver:            fetchGlobalTables,
 		PreResourceResolver: getGlobalTable,
@@ -28,15 +29,15 @@ This table only contains version 2017.11.29 (Legacy) Global Tables. See aws_dyna
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(true),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("GlobalTableArn"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("GlobalTableArn"),
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:     "tags",
-				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveDynamodbGlobalTableTags,
+				Name:          "tags",
+				Type:          sdkTypes.ExtensionTypes.JSON,
+				IgnoreInTests: true,
 			},
 		},
 	}
@@ -83,33 +84,4 @@ func getGlobalTable(ctx context.Context, meta schema.ClientMeta, resource *schem
 
 	resource.Item = response.GlobalTableDescription
 	return nil
-}
-
-func resolveDynamodbGlobalTableTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	table := resource.Item.(*types.GlobalTableDescription)
-
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceDynamodb).Dynamodb
-	var tags []types.Tag
-	input := &dynamodb.ListTagsOfResourceInput{
-		ResourceArn: table.GlobalTableArn,
-	}
-	// // No paginator available
-	for {
-		response, err := svc.ListTagsOfResource(ctx, input, func(options *dynamodb.Options) {
-			options.Region = cl.Region
-		})
-		if err != nil {
-			if cl.IsNotFoundError(err) {
-				return nil
-			}
-			return err
-		}
-		tags = append(tags, response.Tags...)
-		if aws.ToString(response.NextToken) == "" {
-			break
-		}
-		input.NextToken = response.NextToken
-	}
-	return resource.Set(c.Name, client.TagsToMap(tags))
 }

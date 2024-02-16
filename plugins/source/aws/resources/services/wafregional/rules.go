@@ -27,10 +27,10 @@ func Rules() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveWafregionalRuleArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveWafregionalRuleArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:        "tags",

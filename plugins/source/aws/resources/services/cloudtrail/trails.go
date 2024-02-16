@@ -34,10 +34,10 @@ func Trails() *schema.Table {
 				Resolver: resolveCloudtrailTrailCloudwatchLogsLogGroupName,
 			},
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("TrailARN"),
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("TrailARN"),
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "status",

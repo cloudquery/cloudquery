@@ -22,10 +22,10 @@ func AlternateContacts() *schema.Table {
 		Columns: []schema.Column{
 			client.DefaultAccountIDColumn(true),
 			{
-				Name:       "alternate_contact_type",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("AlternateContactType"),
-				PrimaryKey: true,
+				Name:                "alternate_contact_type",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("AlternateContactType"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

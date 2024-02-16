@@ -26,10 +26,10 @@ func Hosts() *schema.Table {
 			client.DefaultAccountIDColumn(false),
 			client.DefaultRegionColumn(false),
 			{
-				Name:       "arn",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   resolveHostArn,
-				PrimaryKey: true,
+				Name:                "arn",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            resolveHostArn,
+				PrimaryKeyComponent: true,
 			},
 			{
 				Name:     "tags",

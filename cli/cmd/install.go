@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 
@@ -104,13 +105,20 @@ func installPlugin(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-// enrichClientError gets the index of the failed client (which is one more than the last one on the list) and checks if the registry was inferred.
-// If so, adds a hint to the error message.
+// enrichClientError tries to add Hint messages to errors from managed client.
+// It will also do an inferred-registry check on the failed client (which is one more than the last one on the list) and add the registry hint if needed.
 func enrichClientError(clientsList managedplugin.Clients, inferredList []bool, err error) error {
 	if err == nil {
 		return nil
 	}
-	if !strings.Contains(err.Error(), "not found") {
+	if errors.Is(err, managedplugin.ErrLoginRequired) {
+		return fmt.Errorf("%w. Hint: You must be logged in via `cloudquery login` or you must use a valid API Key which can be generated at `cloud.cloudquery.io`", err)
+	}
+	if errors.Is(err, managedplugin.ErrTeamRequired) {
+		return fmt.Errorf("%w. Hint: use `cloudquery switch` to set a team", err)
+	}
+
+	if !strings.Contains(strings.ToLower(err.Error()), "not found") {
 		return err
 	}
 	l := len(clientsList)

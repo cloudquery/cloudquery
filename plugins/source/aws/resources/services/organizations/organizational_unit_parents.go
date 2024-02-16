@@ -18,25 +18,20 @@ func organizationalUnitParents() *schema.Table {
 		Description: `https://docs.aws.amazon.com/organizations/latest/APIReference/API_ListParents.html
 The 'request_account_id' column is added to show from where the request was made.`,
 		Resolver:  fetchOUParents,
-		Transform: transformers.TransformWithStruct(&types.Parent{}, transformers.WithPrimaryKeys("Type")),
+		Transform: transformers.TransformWithStruct(&types.Parent{}, transformers.WithPrimaryKeyComponents("Type")),
 		Columns: []schema.Column{
+			client.RequestAccountIDColumn(true),
 			{
-				Name:       "request_account_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   client.ResolveAWSAccount,
-				PrimaryKey: true,
+				Name:                "id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.ParentColumnResolver("id"),
+				PrimaryKeyComponent: true,
 			},
 			{
-				Name:       "id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.ParentColumnResolver("id"),
-				PrimaryKey: true,
-			},
-			{
-				Name:       "parent_id",
-				Type:       arrow.BinaryTypes.String,
-				Resolver:   schema.PathResolver("Id"),
-				PrimaryKey: true,
+				Name:                "parent_id",
+				Type:                arrow.BinaryTypes.String,
+				Resolver:            schema.PathResolver("Id"),
+				PrimaryKeyComponent: true,
 			},
 		},
 	}

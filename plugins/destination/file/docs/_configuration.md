@@ -7,11 +7,11 @@ spec:
   path: "cloudquery/file"
   registry: "cloudquery"
   version: "VERSION_DESTINATION_FILE"
+  write_mode: "append"
   spec:
     path: "path/to/files/{{TABLE}}/{{UUID}}.{{FORMAT}}"
     format: "csv" # options: parquet, json, csv
     # Optional parameters
-    # directory: "" # required if path is not present
     # format_spec:
       # CSV-specific parameters:
       # delimiter: ","
@@ -23,4 +23,4 @@ spec:
     # batch_timeout: 30s
 ```
 
-Note that the file plugin only supports `append` write-mode. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
+Note that the file plugin only supports `append` `write_mode`. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
