@@ -7,6 +7,7 @@ import (
 	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/rs/zerolog"
 
 	// Import sqlite3 driver
@@ -15,6 +16,9 @@ import (
 
 type Client struct {
 	plugin.UnimplementedSource
+	batchwriter.UnimplementedDeleteRecord
+
+	writer *batchwriter.BatchWriter
 	db     *sql.DB
 	logger zerolog.Logger
 	spec   Spec
@@ -29,6 +33,11 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 	c.spec.SetDefaults()
+	var err error
+	c.writer, err = batchwriter.New(c, batchwriter.WithLogger(logger), batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create batch writer: %w", err)
+	}
 
 	db, err := sql.Open("sqlite3", c.spec.ConnectionString)
 	if err != nil {

@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
@@ -130,49 +131,52 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 }
 
 // This is the responsibility of the CLI of the client to lock before running migration
-func (c *Client) migrate(ctx context.Context, force bool, tables schema.Tables) error {
-	normalizedTables := c.normalizeTables(tables)
-	sqliteTables, err := c.sqliteTables(normalizedTables)
-	if err != nil {
-		return err
-	}
-
-	if !force {
-		nonAutoMigratableTables, changes := c.nonAutoMigratableTables(normalizedTables, sqliteTables)
-		if len(nonAutoMigratableTables) > 0 {
-			return fmt.Errorf("tables %s with changes %v require migration. Migrate manually or consider using 'migrate_mode: forced'", strings.Join(nonAutoMigratableTables, ","), changes)
-		}
-	}
-
-	for _, table := range normalizedTables {
-		c.logger.Info().Str("table", table.Name).Msg("Migrating table")
-		if len(table.Columns) == 0 {
-			c.logger.Info().Str("table", table.Name).Msg("Table with no columns, skipping")
-			continue
+func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
+	for _, msg := range msgs {
+		force := msg.MigrateForce
+		tables := schema.Tables{msg.Table}
+		normalizedTables := c.normalizeTables(tables)
+		sqliteTables, err := c.sqliteTables(normalizedTables)
+		if err != nil {
+			return err
 		}
 
-		sqlite := sqliteTables.Get(table.Name)
-		if sqlite == nil {
-			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
-			if err := c.createTableIfNotExist(table); err != nil {
-				return err
+		if !force {
+			nonAutoMigratableTables, changes := c.nonAutoMigratableTables(normalizedTables, sqliteTables)
+			if len(nonAutoMigratableTables) > 0 {
+				return fmt.Errorf("tables %s with changes %v require migration. Migrate manually or consider using 'migrate_mode: forced'", strings.Join(nonAutoMigratableTables, ","), changes)
 			}
-		} else {
-			changes := table.GetChanges(sqlite)
-			if c.canAutoMigrate(changes) {
-				c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
-				if err := c.autoMigrateTable(ctx, table, changes); err != nil {
+		}
+
+		for _, table := range normalizedTables {
+			c.logger.Info().Str("table", table.Name).Msg("Migrating table")
+			if len(table.Columns) == 0 {
+				c.logger.Info().Str("table", table.Name).Msg("Table with no columns, skipping")
+				continue
+			}
+
+			sqlite := sqliteTables.Get(table.Name)
+			if sqlite == nil {
+				c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
+				if err := c.createTableIfNotExist(table); err != nil {
 					return err
 				}
 			} else {
-				c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
-				if err := c.recreateTable(ctx, table); err != nil {
-					return err
+				changes := table.GetChanges(sqlite)
+				if c.canAutoMigrate(changes) {
+					c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
+					if err := c.autoMigrateTable(ctx, table, changes); err != nil {
+						return err
+					}
+				} else {
+					c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
+					if err := c.recreateTable(ctx, table); err != nil {
+						return err
+					}
 				}
 			}
 		}
 	}
-
 	return nil
 }
 
