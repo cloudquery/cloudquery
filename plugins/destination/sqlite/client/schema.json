@@ -9,6 +9,18 @@
           "type": "string",
           "minLength": 1,
           "description": "Path to a file, such as `./mydb.sql`"
+        },
+        "batch_size": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum number of items that may be grouped together to be written in a single write.",
+          "default": 1000
+        },
+        "batch_size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum size of items that may be grouped together to be written in a single write.",
+          "default": 4194304
         }
       },
       "additionalProperties": false,
