@@ -6,7 +6,10 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 	"fmt"
+	"runtime"
+	"strings"
 
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/duckdb/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/rs/zerolog"
@@ -41,6 +44,18 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	if err != nil {
 		return nil, fmt.Errorf("failed to create batch writer: %w", err)
 	}
+
+	if strings.HasPrefix(c.spec.ConnectionString, "md:") {
+		// Motherduck, add 'custom_user_agent' to the connection string
+		if strings.Contains(c.spec.ConnectionString, "?") {
+			c.spec.ConnectionString += "&"
+		} else {
+			c.spec.ConnectionString += "?"
+		}
+		c.spec.ConnectionString += fmt.Sprintf("custom_user_agent=%s_%s_%s/%s(%s_%s)",
+			internalPlugin.Team, internalPlugin.Kind, internalPlugin.Name, strings.TrimPrefix(internalPlugin.Version, "v"), runtime.GOOS, runtime.GOARCH)
+	}
+
 	c.connector, err = duckdb.NewConnector(c.spec.ConnectionString, nil)
 	if err != nil {
 		return nil, err
