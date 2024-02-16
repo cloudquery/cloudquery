@@ -135,8 +135,6 @@ func (c *Client) appendRows(table *schema.Table, msgs message.WriteInserts) erro
 		return fmt.Errorf("failed to create appender for %s: %w", table.Name, err)
 	}
 
-	//sc := table.ToArrowSchema()
-
 	for _, msg := range msgs {
 		arr := transformRecordToGoType(msg.Record)
 		for i := range arr {
@@ -181,12 +179,14 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	if len(table.PrimaryKeys()) == 0 {
 		err := c.appendRows(table, msgs)
 		if err != nil {
+			// errors are not handled in batchwriter, so we need to log it here
 			fmt.Println("appendRows error: ", err)
 		}
 		return err
 	}
 	panic("not implemented")
 	return nil
+	// we're not testing below this
 
 	tmpFile, err := writeTMPFile(table, msgs)
 	if err != nil {
