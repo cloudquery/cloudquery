@@ -2,6 +2,8 @@ package client
 
 import (
 	"context"
+	"database/sql/driver"
+	"encoding/json"
 	"fmt"
 	"os"
 	"slices"
@@ -15,6 +17,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/google/uuid"
+	"github.com/marcboeker/go-duckdb"
 )
 
 func nonPkIndices(sc *schema.Table) []int {
@@ -125,13 +128,66 @@ func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) er
 	return nil
 }
 
+func (c *Client) appendRows(table *schema.Table, msgs message.WriteInserts) error {
+	fmt.Println("appendRows", table.Name)
+	appender, err := duckdb.NewAppenderFromConn(c.conn, "", table.Name)
+	if err != nil {
+		return fmt.Errorf("failed to create appender for %s: %w", table.Name, err)
+	}
+
+	//sc := table.ToArrowSchema()
+
+	for _, msg := range msgs {
+		arr := transformRecordToGoType(msg.Record)
+		for i := range arr {
+			// convert from []any to []driver.Value
+			vv := make([]driver.Value, len(arr[i]))
+			for j := range arr[i] {
+				vv[j] = arr[i][j]
+			}
+			b, _ := json.Marshal(vv)
+			fmt.Println("appendRows", string(b))
+			if err := appender.AppendRow(vv...); err != nil {
+				_ = appender.Close()
+				return fmt.Errorf("failed to append row to %s: %w", table.Name, err)
+			}
+		}
+	}
+
+	return appender.Close()
+}
+
 func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
 	if len(msgs) == 0 {
 		return nil
 	}
+
+	if c.conn == nil {
+		// connecting before MigrateTable results in appender creation failure
+		connector, err := duckdb.NewConnector(c.spec.ConnectionString, nil)
+		if err != nil {
+			return err
+		}
+
+		c.conn, err = connector.Connect(ctx)
+		if err != nil {
+			return err
+		}
+	}
+
 	table := msgs[0].GetTable()
 
 	writeStart := time.Now()
+	if len(table.PrimaryKeys()) == 0 {
+		err := c.appendRows(table, msgs)
+		if err != nil {
+			fmt.Println("appendRows error: ", err)
+		}
+		return err
+	}
+	panic("not implemented")
+	return nil
+
 	tmpFile, err := writeTMPFile(table, msgs)
 	if err != nil {
 		return err
@@ -158,6 +214,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 			err = e
 		}
 	}()
+
 	if err := c.copyFromFile(ctx, tmpTableName, tmpFile, table); err != nil {
 		return fmt.Errorf("failed to copy from file %s: %w", tmpFile, err)
 	}

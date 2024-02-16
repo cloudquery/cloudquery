@@ -22,11 +22,12 @@ type Client struct {
 	plugin.UnimplementedSource
 	batchwriter.UnimplementedDeleteRecord
 
-	db        *sql.DB
-	connector driver.Connector
-	logger    zerolog.Logger
-	spec      Spec
-	writer    *batchwriter.BatchWriter
+	db   *sql.DB
+	conn driver.Conn
+
+	logger zerolog.Logger
+	spec   Spec
+	writer *batchwriter.BatchWriter
 }
 
 var _ plugin.Client = (*Client)(nil)
@@ -56,12 +57,11 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 			internalPlugin.Team, internalPlugin.Kind, internalPlugin.Name, strings.TrimPrefix(internalPlugin.Version, "v"), runtime.GOOS, runtime.GOARCH)
 	}
 
-	c.connector, err = duckdb.NewConnector(c.spec.ConnectionString, nil)
+	dbconnector, err := duckdb.NewConnector(c.spec.ConnectionString, nil)
 	if err != nil {
 		return nil, err
 	}
-
-	c.db = sql.OpenDB(c.connector)
+	c.db = sql.OpenDB(dbconnector)
 
 	err = c.exec(ctx, "INSTALL 'json'; LOAD 'json';")
 	if err != nil {
@@ -76,8 +76,6 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 }
 
 func (c *Client) Close(ctx context.Context) error {
-	var err error
-
 	if c.db == nil {
 		return fmt.Errorf("client already closed or not initialized")
 	}
@@ -88,8 +86,20 @@ func (c *Client) Close(ctx context.Context) error {
 		return fmt.Errorf("failed to close writer: %w", err)
 	}
 
-	err = c.db.Close()
+	err := c.db.Close()
 	c.db = nil
+
+	if c.conn != nil {
+		err2 := c.conn.Close()
+		if err2 != nil {
+			fmt.Println("conn close failed: ", err2)
+		}
+		c.conn = nil
+		if err == nil {
+			err = err2
+		}
+	}
+
 	return err
 }
 
