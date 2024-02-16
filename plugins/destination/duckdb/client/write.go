@@ -130,13 +130,20 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 		return nil
 	}
 	table := msgs[0].GetTable()
+
+	writeStart := time.Now()
 	tmpFile, err := writeTMPFile(table, msgs)
 	if err != nil {
 		return err
 	}
+	c.logger.Debug().Str("table", table.Name).Str("duration", time.Since(writeStart).String()).Msg("write tmp file")
 	defer os.Remove(tmpFile)
 
 	if len(table.PrimaryKeys()) == 0 {
+		copyStart := time.Now()
+		defer func() {
+			c.logger.Debug().Str("table", table.Name).Str("duration", time.Since(copyStart).String()).Msg("copy file to table")
+		}()
 		return c.copyFromFile(ctx, name, tmpFile, table)
 	}
 
@@ -182,6 +189,7 @@ func writeTMPFile(table *schema.Table, msgs []*message.WriteInsert) (fileName st
 		parquet.NewWriterProperties(
 			parquet.WithVersion(parquet.V2_LATEST),       // use latest
 			parquet.WithMaxRowGroupLength(128*1024*1024), // 128M
+			// parquet.WithCompression(compress.Codecs.Snappy),
 		),
 		pqarrow.NewArrowWriterProperties(pqarrow.WithStoreSchema()),
 	)
