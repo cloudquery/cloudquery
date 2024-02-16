@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"strings"
 
@@ -11,42 +12,62 @@ import (
 )
 
 func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) error {
-	for r := range res {
-		switch m := r.(type) {
-		case *message.WriteMigrateTable:
-			if err := c.migrate(ctx, m.MigrateForce, schema.Tables{m.Table}); err != nil {
-				return fmt.Errorf("failed to process MigrateTable message: %w", err)
-			}
-		case *message.WriteDeleteStale:
-			if err := c.deleteStale(ctx, m.TableName, m.SourceName, m.SyncTime); err != nil {
-				return fmt.Errorf("failed to process DeleteStale message: %w", err)
-			}
-		case *message.WriteInsert:
-			if err := c.insertMessage(ctx, m); err != nil {
-				return fmt.Errorf("failed to process Insert message: %w", err)
-			}
-		case *message.WriteDeleteRecord:
-			c.logger.Warn().Str("table", m.TableName).Msg("DeleteRecord not implemented")
-		default:
-			return fmt.Errorf("unsupported message type: %T", m)
-		}
+	if err := c.writer.Write(ctx, res); err != nil {
+		return fmt.Errorf("failed to write: %w", err)
+	}
+	if err := c.writer.Flush(ctx); err != nil {
+		return fmt.Errorf("failed to flush: %w", err)
 	}
 	return nil
 }
 
-func (c *Client) insertMessage(ctx context.Context, m *message.WriteInsert) error {
+func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) (err error) {
+	if len(msgs) == 0 {
+		return nil
+	}
+
+	tx, err := c.db.BeginTx(ctx, nil)
+	if err != nil {
+		return err
+	}
+
+	defer func() {
+		if err == nil {
+			err = tx.Commit()
+			if err != nil {
+				c.logger.Error().Err(err).Msg("failed to commit transaction")
+			}
+		}
+		if err != nil {
+			if rollbackErr := tx.Rollback(); rollbackErr != nil {
+				c.logger.Error().Err(rollbackErr).Str("table", msgs[0].GetTable().Name).Msg("Failed to rollback transaction")
+			}
+		}
+	}()
+
+	for _, msg := range msgs {
+		err = c.insertMessage(ctx, tx, msg)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (c *Client) insertMessage(ctx context.Context, tx *sql.Tx, m *message.WriteInsert) error {
 	table := m.GetTable()
 	sc := m.Record.Schema()
-	var sql string
+	var sqlString string
 	if len(table.PrimaryKeys()) == 0 {
-		sql = c.insert(sc)
+		sqlString = c.insert(sc)
 	} else {
-		sql = c.upsert(sc)
+		sqlString = c.upsert(sc)
 	}
 	vals := transformRecord(m.Record)
 	for _, v := range vals {
-		if _, err := c.db.ExecContext(ctx, sql, v...); err != nil {
-			return fmt.Errorf("failed to execute '%s': %w", sql, err)
+		if _, err := tx.ExecContext(ctx, sqlString, v...); err != nil {
+			return fmt.Errorf("failed to execute '%s': %w", sqlString, err)
 		}
 	}
 	return nil
