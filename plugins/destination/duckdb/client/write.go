@@ -175,7 +175,6 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 
 	table := msgs[0].GetTable()
 
-	writeStart := time.Now()
 	if len(table.PrimaryKeys()) == 0 {
 		err := c.appendRows(table, msgs)
 		if err != nil {
@@ -188,6 +187,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	return nil
 	// we're not testing below this
 
+	writeStart := time.Now()
 	tmpFile, err := writeTMPFile(table, msgs)
 	if err != nil {
 		return err
