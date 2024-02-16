@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.3.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.3.3...plugins-destination-postgresql-v7.3.4) (2024-02-16)
+
+
+### Bug Fixes
+
+* Update example config to use environment variable ([#16641](https://github.com/cloudquery/cloudquery/issues/16641)) ([95295b1](https://github.com/cloudquery/cloudquery/commit/95295b1c6f1cf645945531c8199866d6864a9619))
+
 ## [7.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.3.2...plugins-destination-postgresql-v7.3.3) (2024-02-13)
 
 
