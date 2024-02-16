@@ -1,6 +1,7 @@
 package client
 
 import (
+	"database/sql/driver"
 	"time"
 
 	"github.com/apache/arrow/go/v15/arrow"
@@ -95,13 +96,13 @@ func getValue(arr arrow.Array, i int) any {
 	}
 }
 
-func transformRecordToGoType(record arrow.Record) [][]any {
-	var res [][]any
+func transformRecordToGoType(record arrow.Record) [][]driver.Value {
+	var res [][]driver.Value
 	for i := int64(0); i < record.NumRows(); i++ {
-		var row []any
-		for j := 0; int64(j) < record.NumCols(); j++ {
-			v := getValue(record.Column(j), int(i))
-			row = append(row, v)
+		nc := record.NumCols()
+		row := make([]driver.Value, nc)
+		for j := 0; int64(j) < nc; j++ {
+			row[j] = getValue(record.Column(j), int(i))
 		}
 		res = append(res, row)
 	}

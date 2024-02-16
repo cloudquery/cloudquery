@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"database/sql/driver"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -138,14 +137,9 @@ func (c *Client) appendRows(table *schema.Table, msgs message.WriteInserts) erro
 	for _, msg := range msgs {
 		arr := transformRecordToGoType(msg.Record)
 		for i := range arr {
-			// convert from []any to []driver.Value
-			vv := make([]driver.Value, len(arr[i]))
-			for j := range arr[i] {
-				vv[j] = arr[i][j]
-			}
-			b, _ := json.Marshal(vv)
+			b, _ := json.Marshal(arr[i])
 			fmt.Println("appendRows", string(b))
-			if err := appender.AppendRow(vv...); err != nil {
+			if err := appender.AppendRow(arr[i]...); err != nil {
 				_ = appender.Close()
 				return fmt.Errorf("failed to append row to %s: %w", table.Name, err)
 			}
