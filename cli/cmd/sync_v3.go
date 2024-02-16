@@ -233,13 +233,15 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 				totals.Warnings += m.Warnings
 				totals.Errors += m.Errors
 			}
+			status := cloudquery_api.SyncRunStatusStarted
 			obj := cloudquery_api.CreateSyncRunProgressJSONRequestBody{
 				Rows:     atomic.LoadInt64(&totalResources),
 				Errors:   int64(totals.Errors),
 				Warnings: int64(totals.Warnings),
+				Status:   &status,
 			}
 			if atomic.LoadInt64(&isComplete) == 1 {
-				status := cloudquery_api.SyncRunStatusCompleted
+				status = cloudquery_api.SyncRunStatusCompleted
 				obj.Status = &status
 			}
 			log.Debug().Interface("body", obj).Msg("Sending sync progress to API")
