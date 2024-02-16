@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.1.1...plugins-destination-duckdb-v5.2.0) (2024-02-16)
+
+
+### Features
+
+* Add user agent if MotherDuck connection ([#16651](https://github.com/cloudquery/cloudquery/issues/16651)) ([fdd0f21](https://github.com/cloudquery/cloudquery/commit/fdd0f21d67b38a8a799d09a29da57e66bc47ba19))
+
 ## [5.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.1.0...plugins-destination-duckdb-v5.1.1) (2024-02-13)
 
 
