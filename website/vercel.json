@@ -989,6 +989,38 @@
     {
       "source": "/blog/:path*",
       "destination": "https://www.cloudquery.io/blog/:path*"
+    },
+    {
+      "source": "/integrations/coinpaprika/:destination",
+      "destination": "https://hub.cloudquery.io/export-data/coinpaprika_coinpaprika/:destination"
+    },
+    {
+      "source": "/integrations/crowdstrike/:destination",
+      "destination": "https://hub.cloudquery.io/export-data/justmiles_crowdstrike/:destination"
+    },
+    {
+      "source": "/integrations/onfleet/:destination",
+      "destination": "https://hub.cloudquery.io/export-data/onfleet_onfleet/:destination"
+    },
+    {
+      "source": "/integrations/scaleway/:destination",
+      "destination": "https://hub.cloudquery.io/export-data/scaleway_scaleway/:destination"
+    },
+    {
+      "source": "/integrations/sharepoint/:destination",
+      "destination": "https://hub.cloudquery.io/export-data/koltyakov_sharepoint/:destination"
+    },
+    {
+      "source": "/integrations/simple-analytics/:destination",
+      "destination": "https://hub.cloudquery.io/export-data/simple-analytics_simple-analytics/:destination"
+    },
+    {
+      "source": "/integrations/swetrix/:destination",
+      "destination": "https://hub.cloudquery.io/export-data/swetrix_swetrix/:destination"
+    },
+    {
+      "source": "/integrations/:source/:destination",
+      "destination": "https://hub.cloudquery.io/export-data/:source/:destination"
     }
   ]
 }
