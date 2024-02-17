@@ -1051,6 +1051,10 @@
       "destination": "https://hub.cloudquery.io/export-data/swetrix_swetrix/:destination"
     },
     {
+      "source": "/integrations/:source",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/:source/latest/destinations"
+    },
+    {
       "source": "/integrations/:source/:destination",
       "destination": "https://hub.cloudquery.io/export-data/:source/:destination"
     }
