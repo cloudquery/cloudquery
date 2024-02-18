@@ -1,15 +1,18 @@
 module github.com/cloudquery/cloudquery/plugins/source/okta
 
-go 1.21.4
+go 1.21.5
+
+toolchain go1.22.0
 
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/cloudquery/codegen v0.3.12
-	github.com/cloudquery/plugin-sdk/v4 v4.29.1
+	github.com/cloudquery/plugin-sdk/v4 v4.30.0
 	github.com/gorilla/mux v1.8.0
 	github.com/invopop/jsonschema v0.12.0
 	github.com/okta/okta-sdk-golang/v3 v3.0.2
 	github.com/rs/zerolog v1.31.0
+	github.com/stretchr/testify v1.8.4
 	github.com/thoas/go-funk v0.9.3
 )
 
@@ -30,8 +33,8 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.7.2 // indirect
-	github.com/cloudquery/plugin-pb-go v1.16.7 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.7.5 // indirect
+	github.com/cloudquery/plugin-pb-go v1.17.2 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect
@@ -89,7 +92,6 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/tdewolff/minify/v2 v2.20.16 // indirect
 	github.com/tdewolff/parse/v2 v2.7.11 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
