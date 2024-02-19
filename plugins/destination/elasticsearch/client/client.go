@@ -40,7 +40,7 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.
 	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}
-	c.writer, err = batchwriter.New(c, batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	c.writer, err = batchwriter.New(c, batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes), batchwriter.WithLogger(c.logger))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create batch writer: %w", err)
 	}
