@@ -143,10 +143,17 @@ func (c *Client) appendRows(table *schema.Table, msgs message.WriteInserts) erro
 				_ = appender.Close()
 				return fmt.Errorf("failed to append row to %s: %w", table.Name, err)
 			}
+			if err := appender.Error(); err != nil && err.Error() != "" {
+				_ = appender.Close()
+				return fmt.Errorf("appender returned error appending to %s: %w", table.Name, err)
+			}
 		}
 	}
 
-	return appender.Close()
+	if err := appender.Close(); err != nil {
+		return fmt.Errorf("failed to close appender for %s: %w", table.Name, err)
+	}
+	return nil
 }
 
 func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
@@ -161,7 +168,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 			return err
 		}
 
-		c.conn, err = connector.Connect(ctx)
+		c.conn, err = connector.Connect(context.Background())
 		if err != nil {
 			return err
 		}
