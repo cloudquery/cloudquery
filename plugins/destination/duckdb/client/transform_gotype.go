@@ -62,62 +62,58 @@ func getTypedNilValue(arr arrow.Array) any {
 	}
 }
 
-func getValue(arr arrow.Array, i int, firstRow bool) any {
+func getValue(arr arrow.Array, i int) any {
 	if !arr.IsValid(i) {
-		if !firstRow {
-			return nil // Regular nil will do
-		}
-		return getTypedNilValue(arr)
+		return nil
 	}
 
-	switch arr.DataType().(type) {
-	case *types.UUIDType:
-		v, _ := arr.(*types.UUIDArray).Value(i).MarshalBinary()
+	switch arr := arr.(type) {
+	case *types.UUIDArray:
+		v, _ := arr.Value(i).MarshalBinary()
 		return duckdb.UUID(v)
-	case *arrow.TimestampType:
-		ts := arr.(*array.Timestamp)
-		timeUnit := ts.DataType().(*arrow.TimestampType).Unit
-		return ts.Value(i).ToTime(timeUnit)
-	case *arrow.Date32Type:
-		ts := arr.(*array.Date32)
-		return ts.Value(i).ToTime()
-	case *arrow.Date64Type:
-		ts := arr.(*array.Date64)
-		return ts.Value(i).ToTime()
-	case *arrow.BooleanType:
-		return arr.(*array.Boolean).Value(i)
-	case *arrow.Int8Type:
-		return arr.(*array.Int8).Value(i)
-	case *arrow.Int16Type:
-		return arr.(*array.Int16).Value(i)
-	case *arrow.Int32Type:
-		return arr.(*array.Int32).Value(i)
-	case *arrow.Int64Type:
-		return arr.(*array.Int64).Value(i)
-	case *arrow.Uint8Type:
-		return uint32(arr.(*array.Uint8).Value(i)) // use uint32
-	case *arrow.Uint16Type:
-		return uint32(arr.(*array.Uint16).Value(i)) // use uint32
-	case *arrow.Uint32Type:
-		return arr.(*array.Uint32).Value(i)
-	case *arrow.Uint64Type:
-		return arr.(*array.Uint64).Value(i)
-	case *arrow.Float32Type:
-		return arr.(*array.Float32).Value(i)
-	case *arrow.Float64Type:
-		return arr.(*array.Float64).Value(i)
-	case *arrow.StringType:
-		return arr.(*array.String).Value(i)
-	case *arrow.BinaryType:
-		return arr.(*array.Binary).Value(i)
-	case *arrow.LargeBinaryType:
-		return arr.(*array.LargeBinary).Value(i)
-	case *arrow.FixedSizeBinaryType:
-		return arr.(*array.FixedSizeBinary).Value(i)
-	case *arrow.ListType: //, *arrow.LargeListType:
-		arr := arr.(*array.List)
-		offsets := arr.Offsets()
-		slice := array.NewSlice(arr.ListValues(), int64(offsets[i]), int64(offsets[i+1]))
+	case *array.Timestamp:
+		timeUnit := arr.DataType().(*arrow.TimestampType).Unit
+		return arr.Value(i).ToTime(timeUnit)
+	case *array.Date32:
+		return arr.Value(i).ToTime()
+	case *array.Date64:
+		return arr.Value(i).ToTime()
+	case *array.Boolean:
+		return arr.Value(i)
+	case *array.Int8:
+		return arr.Value(i)
+	case *array.Int16:
+		return arr.Value(i)
+	case *array.Int32:
+		return arr.Value(i)
+	case *array.Int64:
+		return arr.Value(i)
+	case *array.Uint8:
+		return uint32(arr.Value(i)) // use uint32
+	case *array.Uint16:
+		return uint32(arr.Value(i)) // use uint32
+	case *array.Uint32:
+		return arr.Value(i)
+	case *array.Uint64:
+		return arr.Value(i)
+	case *array.Float32:
+		return arr.Value(i)
+	case *array.Float64:
+		return arr.Value(i)
+	case *array.String:
+		return arr.Value(i)
+	case *array.Binary:
+		return arr.Value(i)
+	case *array.LargeBinary:
+		return arr.Value(i)
+	case *array.FixedSizeBinary:
+		return arr.Value(i)
+	case *array.Map:
+		// unsupported in appender: use string
+		return arr.ValueStr(i)
+	case array.ListLike: // should be after *array.Map
+		from, to := arr.ValueOffsets(i)
+		slice := array.NewSlice(arr.ListValues(), from, to)
 		defer slice.Release()
 
 		lv := getTypedNilValue(arr.ListValues())
@@ -128,24 +124,21 @@ func getValue(arr arrow.Array, i int, firstRow bool) any {
 				continue
 			}
 			// slice of pointers, make everything a pointer
-			sv := reflect.ValueOf(getValue(slice, i, false))
+			sv := reflect.ValueOf(getValue(slice, i))
 			psv := reflect.New(sv.Type())
 			psv.Elem().Set(sv)
 			val.Index(i).Set(psv)
 		}
 		return val.Interface()
-	case *arrow.StructType:
+	case *array.Struct:
 		// Can't create a Go struct dynamically and maps are unsupported: use string
-		return arr.ValueStr(i)
-	case *arrow.MapType:
-		// unsupported in appender: use string
 		return arr.ValueStr(i)
 	default:
 		return arr.ValueStr(i)
 	}
 }
 
-func transformRecordToGoType(record arrow.Record, firstRow bool) [][]driver.Value {
+func transformRecordToGoType(record arrow.Record) [][]driver.Value {
 	res := make([][]driver.Value, record.NumRows())
 	nc := record.NumCols()
 	for i := range res {
@@ -155,7 +148,7 @@ func transformRecordToGoType(record arrow.Record, firstRow bool) [][]driver.Valu
 	for j := 0; j < int(nc); j++ {
 		col := record.Column(j)
 		for i := range res {
-			res[i][j] = getValue(col, i, firstRow && i == 0)
+			res[i][j] = getValue(col, i)
 		}
 	}
 	return res

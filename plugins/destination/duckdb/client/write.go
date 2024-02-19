@@ -141,8 +141,8 @@ func (c *Client) appendRows(table *schema.Table, msgs message.WriteInserts) erro
 		return fmt.Errorf("failed to create appender for %s: %w", table.Name, err)
 	}
 
-	for i, msg := range msgs {
-		arr := transformRecordToGoType(msg.Record, i == 0)
+	for _, msg := range msgs {
+		arr := transformRecordToGoType(msg.Record)
 		for i := range arr {
 			if err := appender.AppendRow(arr[i]...); err != nil {
 				_ = appender.Close()

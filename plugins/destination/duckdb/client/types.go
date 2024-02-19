@@ -81,8 +81,7 @@ func arrowToDuckDB(dt arrow.DataType) string {
 	case *types.UUIDType:
 		return "uuid"
 	case *types.JSONType:
-		//return "json" // appender issue with extensions, temporary workaround
-		return "varchar"
+		return "json"
 	case *arrow.Date32Type, *arrow.Date64Type, *arrow.TimestampType:
 		return "timestamp"
 	case *arrow.DayTimeIntervalType:
