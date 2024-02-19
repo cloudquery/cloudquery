@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"database/sql/driver"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"runtime"
 	"strings"
@@ -23,7 +24,7 @@ type Client struct {
 	batchwriter.UnimplementedDeleteRecord
 
 	db   *sql.DB
-	conn driver.Conn
+	conn driver.Conn // used in Appender
 
 	logger zerolog.Logger
 	spec   Spec
@@ -80,26 +81,13 @@ func (c *Client) Close(ctx context.Context) error {
 		return fmt.Errorf("client already closed or not initialized")
 	}
 
-	if err := c.writer.Close(ctx); err != nil {
-		_ = c.db.Close()
-		c.db = nil
-		return fmt.Errorf("failed to close writer: %w", err)
+	err1 := c.writer.Close(ctx)
+	if err1 != nil {
+		err1 = fmt.Errorf("failed to close writer: %w", err1)
 	}
 
-	err := c.db.Close()
-	c.db = nil
-
-	if c.conn != nil {
-		err2 := c.conn.Close()
-		if err2 != nil {
-			fmt.Println("conn close failed: ", err2)
-		}
-		c.conn = nil
-		if err == nil {
-			err = err2
-		}
-	}
-
+	err := errors.Join(err1, c.db.Close(), c.conn.Close())
+	c.db, c.conn = nil, nil
 	return err
 }
 

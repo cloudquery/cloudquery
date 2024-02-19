@@ -10,86 +10,85 @@ import (
 	"github.com/marcboeker/go-duckdb"
 )
 
+func getTypedNilValue(arr arrow.Array) any {
+	switch arr.DataType().(type) {
+	case *types.UUIDType:
+		return duckdb.UUID{}
+	case *arrow.TimestampType:
+		return nilPtrOf[time.Time]()
+	case *arrow.BooleanType:
+		return nilPtrOf[bool]()
+	case *arrow.Int8Type:
+		return nilPtrOf[int8]()
+	case *arrow.Int16Type:
+		return nilPtrOf[int16]()
+	case *arrow.Int32Type:
+		return nilPtrOf[int32]()
+	case *arrow.Int64Type:
+		return nilPtrOf[int64]()
+	case *arrow.Uint8Type:
+		return nilPtrOf[uint8]()
+	case *arrow.Uint16Type:
+		return nilPtrOf[uint16]()
+	case *arrow.Uint32Type:
+		return nilPtrOf[uint32]()
+	case *arrow.Uint64Type:
+		return nilPtrOf[uint64]()
+	case *arrow.Float32Type:
+		return nilPtrOf[float32]()
+	case *arrow.Float64Type:
+		return nilPtrOf[float64]()
+	case *arrow.StringType:
+		return nilPtrOf[string]()
+	case *arrow.BinaryType, *arrow.LargeBinaryType, *arrow.FixedSizeBinaryType:
+		return nilPtrOf[[]byte]()
+	default:
+		return nilPtrOf[string]()
+	}
+}
+
 func getValue(arr arrow.Array, i int) any {
 	if !arr.IsValid(i) {
-		if arrow.TypeEqual(arr.DataType(), types.NewUUIDType()) {
-			return duckdb.UUID{}
-		}
-
-		// return typed nil
-		switch arr.DataType().ID() {
-		case arrow.TIMESTAMP:
-			return ptrOf[time.Time]()
-		case arrow.BOOL:
-			return ptrOf[bool]()
-		case arrow.INT8:
-			return ptrOf[int8]()
-		case arrow.INT16:
-			return ptrOf[int16]()
-		case arrow.INT32:
-			return ptrOf[int32]()
-		case arrow.INT64:
-			return ptrOf[int64]()
-		case arrow.UINT8:
-			return ptrOf[uint8]()
-		case arrow.UINT16:
-			return ptrOf[uint16]()
-		case arrow.UINT32:
-			return ptrOf[uint32]()
-		case arrow.UINT64:
-			return ptrOf[uint64]()
-		case arrow.FLOAT32:
-			return ptrOf[float32]()
-		case arrow.FLOAT64:
-			return ptrOf[float64]()
-		case arrow.STRING:
-			return ptrOf[string]()
-		case arrow.BINARY, arrow.LARGE_BINARY, arrow.FIXED_SIZE_BINARY:
-			return ptrOf[[]byte]()
-		default:
-			return ptrOf[string]()
-		}
+		return getTypedNilValue(arr)
 	}
 
-	if arrow.TypeEqual(arr.DataType(), types.NewUUIDType()) {
+	switch arr.DataType().(type) {
+	case *types.UUIDType:
 		v, _ := arr.(*types.UUIDArray).Value(i).MarshalBinary()
 		return duckdb.UUID(v)
-	}
-
-	switch arr.DataType().ID() {
-	case arrow.TIMESTAMP:
+	case *arrow.TimestampType:
 		ts := arr.(*array.Timestamp)
 		timeUnit := ts.DataType().(*arrow.TimestampType).Unit
 		return ts.Value(i).ToTime(timeUnit)
-	case arrow.BOOL:
+	case *arrow.BooleanType:
 		return arr.(*array.Boolean).Value(i)
-	case arrow.INT8:
+	case *arrow.Int8Type:
 		return arr.(*array.Int8).Value(i)
-	case arrow.INT16:
+	case *arrow.Int16Type:
 		return arr.(*array.Int16).Value(i)
-	case arrow.INT32:
+	case *arrow.Int32Type:
 		return arr.(*array.Int32).Value(i)
-	case arrow.INT64:
+	case *arrow.Int64Type:
 		return arr.(*array.Int64).Value(i)
-	case arrow.UINT8:
+	case *arrow.Uint8Type:
 		return arr.(*array.Uint8).Value(i)
-	case arrow.UINT16:
+	case *arrow.Uint16Type:
 		return arr.(*array.Uint16).Value(i)
-	case arrow.UINT32:
+	case *arrow.Uint32Type:
 		return arr.(*array.Uint32).Value(i)
-	case arrow.UINT64:
+	case *arrow.Uint64Type:
 		return arr.(*array.Uint64).Value(i)
-	case arrow.FLOAT32:
+	case *arrow.Float32Type:
 		return arr.(*array.Float32).Value(i)
-	case arrow.FLOAT64:
+	case *arrow.Float64Type:
 		return arr.(*array.Float64).Value(i)
-	case arrow.STRING:
+	case *arrow.StringType:
 		return arr.(*array.String).Value(i)
-	case arrow.BINARY:
+	case *arrow.BinaryType:
 		return arr.(*array.Binary).Value(i)
-	case arrow.LARGE_BINARY:
+	case *arrow.LargeBinaryType:
 		return arr.(*array.LargeBinary).Value(i)
-	case arrow.FIXED_SIZE_BINARY:
+	case *arrow.FixedSizeBinaryType:
 		return arr.(*array.FixedSizeBinary).Value(i)
 	default:
 		return arr.ValueStr(i)
@@ -103,16 +102,15 @@ func transformRecordToGoType(record arrow.Record) [][]driver.Value {
 		res[i] = make([]driver.Value, nc)
 	}
 
-	for j := int64(0); j < nc; j++ {
+	for j := 0; j < int(nc); j++ {
 		col := record.Column(j)
 		for i := range res {
-			 res[i][j] = getValue(col, i)
+			res[i][j] = getValue(col, i)
 		}
 	}
 	return res
 }
 
-func ptrOf[T any]() *T {
-	var val *T
-	return val
+func nilPtrOf[T any]() *T {
+	return nil // typed nil
 }
