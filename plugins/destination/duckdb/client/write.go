@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"os"
 	"slices"
@@ -128,24 +127,26 @@ func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) er
 }
 
 func (c *Client) appendRows(table *schema.Table, msgs message.WriteInserts) error {
-	fmt.Println("appendRows", table.Name)
+	if c.conn == nil {
+		// connecting before MigrateTable results in appender creation failure
+		var err error
+		c.conn, err = c.connector.Connect(context.Background())
+		if err != nil {
+			return fmt.Errorf("failed to connect: %w", err)
+		}
+	}
+
 	appender, err := duckdb.NewAppenderFromConn(c.conn, "", table.Name)
 	if err != nil {
 		return fmt.Errorf("failed to create appender for %s: %w", table.Name, err)
 	}
 
-	for _, msg := range msgs {
-		arr := transformRecordToGoType(msg.Record)
+	for i, msg := range msgs {
+		arr := transformRecordToGoType(msg.Record, i == 0)
 		for i := range arr {
-			b, _ := json.Marshal(arr[i])
-			fmt.Println("appendRows", string(b))
 			if err := appender.AppendRow(arr[i]...); err != nil {
 				_ = appender.Close()
 				return fmt.Errorf("failed to append row to %s: %w", table.Name, err)
-			}
-			if err := appender.Error(); err != nil && err.Error() != "" {
-				_ = appender.Close()
-				return fmt.Errorf("appender returned error appending to %s: %w", table.Name, err)
 			}
 		}
 	}
@@ -161,32 +162,11 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 		return nil
 	}
 
-	if c.conn == nil {
-		// connecting before MigrateTable results in appender creation failure
-		connector, err := duckdb.NewConnector(c.spec.ConnectionString, nil)
-		if err != nil {
-			return err
-		}
-
-		c.conn, err = connector.Connect(context.Background())
-		if err != nil {
-			return err
-		}
-	}
-
 	table := msgs[0].GetTable()
 
 	if len(table.PrimaryKeys()) == 0 {
-		err := c.appendRows(table, msgs)
-		if err != nil {
-			// errors are not handled in batchwriter, so we need to log it here
-			fmt.Println("appendRows error: ", err)
-		}
-		return err
+		return c.appendRows(table, msgs)
 	}
-	panic("not implemented")
-	return nil
-	// we're not testing below this
 
 	writeStart := time.Now()
 	tmpFile, err := writeTMPFile(table, msgs)

@@ -13,7 +13,7 @@ import (
 func getTypedNilValue(arr arrow.Array) any {
 	switch arr.DataType().(type) {
 	case *types.UUIDType:
-		return duckdb.UUID{}
+		return nilPtrOf[duckdb.UUID]()
 	case *arrow.TimestampType:
 		return nilPtrOf[time.Time]()
 	case *arrow.BooleanType:
@@ -47,8 +47,11 @@ func getTypedNilValue(arr arrow.Array) any {
 	}
 }
 
-func getValue(arr arrow.Array, i int) any {
+func getValue(arr arrow.Array, i int, firstRow bool) any {
 	if !arr.IsValid(i) {
+		if !firstRow {
+			return nil // Regular nil will do
+		}
 		return getTypedNilValue(arr)
 	}
 
@@ -95,7 +98,7 @@ func getValue(arr arrow.Array, i int) any {
 	}
 }
 
-func transformRecordToGoType(record arrow.Record) [][]driver.Value {
+func transformRecordToGoType(record arrow.Record, firstRow bool) [][]driver.Value {
 	res := make([][]driver.Value, record.NumRows())
 	nc := record.NumCols()
 	for i := range res {
@@ -105,7 +108,7 @@ func transformRecordToGoType(record arrow.Record) [][]driver.Value {
 	for j := 0; j < int(nc); j++ {
 		col := record.Column(j)
 		for i := range res {
-			res[i][j] = getValue(col, i)
+			res[i][j] = getValue(col, i, firstRow && i == 0)
 		}
 	}
 	return res

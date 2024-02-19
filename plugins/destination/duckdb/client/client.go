@@ -13,18 +13,17 @@ import (
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/duckdb/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
-	"github.com/rs/zerolog"
-
-	// import duckdb driver
 	"github.com/marcboeker/go-duckdb"
+	"github.com/rs/zerolog"
 )
 
 type Client struct {
 	plugin.UnimplementedSource
 	batchwriter.UnimplementedDeleteRecord
 
-	db   *sql.DB
-	conn driver.Conn // used in Appender
+	connector *duckdb.Connector
+	db        *sql.DB
+	conn      driver.Conn // used in Appender
 
 	logger zerolog.Logger
 	spec   Spec
@@ -58,11 +57,11 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 			internalPlugin.Team, internalPlugin.Kind, internalPlugin.Name, strings.TrimPrefix(internalPlugin.Version, "v"), runtime.GOOS, runtime.GOARCH)
 	}
 
-	dbconnector, err := duckdb.NewConnector(c.spec.ConnectionString, nil)
+	c.connector, err = duckdb.NewConnector(c.spec.ConnectionString, nil)
 	if err != nil {
 		return nil, err
 	}
-	c.db = sql.OpenDB(dbconnector)
+	c.db = sql.OpenDB(c.connector)
 
 	err = c.exec(ctx, "INSTALL 'json'; LOAD 'json';")
 	if err != nil {
@@ -86,7 +85,12 @@ func (c *Client) Close(ctx context.Context) error {
 		err1 = fmt.Errorf("failed to close writer: %w", err1)
 	}
 
-	err := errors.Join(err1, c.db.Close(), c.conn.Close())
+	err := errors.Join(err1, c.db.Close(), func() error {
+		if c.conn == nil {
+			return nil
+		}
+		return c.conn.Close()
+	}())
 	c.db, c.conn = nil, nil
 	return err
 }

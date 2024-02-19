@@ -134,3 +134,7 @@ require (
 
 // github.com/cloudquery/jsonschema @ cqmain
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240202134451-d771afde32fb
+
+// replace github.com/marcboeker/go-duckdb => ../../../../../disq/go-duckdb
+
+replace github.com/marcboeker/go-duckdb => github.com/disq/go-duckdb v0.0.0-20240219115017-67bd21537394
