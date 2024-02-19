@@ -25,6 +25,12 @@ func TestPlugin(t *testing.T) {
 	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
+	t.Cleanup(func() {
+		if err := p.Close(ctx); err != nil {
+			t.Logf("failed to close plugin: %v", err)
+		}
+	})
+
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.WriterTestSuiteTests{
@@ -40,6 +46,14 @@ func TestPlugin(t *testing.T) {
 			SkipIntervals: true,
 			// not supported in duckDB for now
 			SkipLargeTypes: true,
+			// not supported in Appender
+			SkipMaps:    true,
+			SkipStructs: true,
+			// test:
+			//SkipDates: true,
+			SkipLists: true,
+			//SkipDecimals: true,
+			//SkipTimes:    true,
 		}),
 	)
 }

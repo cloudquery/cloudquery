@@ -177,6 +177,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	defer os.Remove(tmpFile)
 
 	if len(table.PrimaryKeys()) == 0 {
+		// TODO remove after finalizing appender
 		copyStart := time.Now()
 		defer func() {
 			c.logger.Debug().Str("table", table.Name).Str("duration", time.Since(copyStart).String()).Msg("copy file to table")
