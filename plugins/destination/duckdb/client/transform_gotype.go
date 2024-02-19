@@ -97,14 +97,17 @@ func getValue(arr arrow.Array, i int) any {
 }
 
 func transformRecordToGoType(record arrow.Record) [][]driver.Value {
-	var res [][]driver.Value
-	for i := int64(0); i < record.NumRows(); i++ {
-		nc := record.NumCols()
-		row := make([]driver.Value, nc)
-		for j := 0; int64(j) < nc; j++ {
-			row[j] = getValue(record.Column(j), int(i))
+	res := make([][]driver.Value, record.NumRows())
+	nc := record.NumCols()
+	for i := range res {
+		res[i] = make([]driver.Value, nc)
+	}
+
+	for j := int64(0); j < nc; j++ {
+		col := record.Column(j)
+		for i := range res {
+			 res[i][j] = getValue(col, i)
 		}
-		res = append(res, row)
 	}
 	return res
 }
