@@ -41,7 +41,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 	c.spec.SetDefaults()
-	c.writer, err = batchwriter.New(c, batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	c.writer, err = batchwriter.New(c, batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes), batchwriter.WithLogger(c.logger))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create batch writer: %w", err)
 	}
