@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/source/test/client"
 	"github.com/cloudquery/cloudquery/plugins/source/test/resources/services"
@@ -95,6 +97,16 @@ func Configure(_ context.Context, logger zerolog.Logger, spec []byte, opts plugi
 	config.SetDefaults()
 	if err := config.Validate(); err != nil {
 		return nil, fmt.Errorf("failed to validate spec: %w", err)
+	}
+	for _, env := range config.RequiredEnv {
+		parts := strings.Split(env, "=")
+		if len(parts) != 2 {
+			return nil, fmt.Errorf("invalid environment variable: %s", env)
+		}
+		key, value := parts[0], parts[1]
+		if os.Getenv(key) != value {
+			return nil, fmt.Errorf("environment variable did not match expectation: %s (want %q, but got %q)", key, value, os.Getenv(key))
+		}
 	}
 
 	return &Client{
