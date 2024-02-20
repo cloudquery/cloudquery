@@ -10,7 +10,7 @@ import (
 func Projects() *schema.Table {
 	return &schema.Table{
 		Name:        "gcp_compute_projects",
-		Description: ``,
+		Description: `https://cloud.google.com/compute/docs/reference/rest/v1/projects#resource:-project`,
 		Resolver:    fetchProjects,
 		Multiplex:   client.ProjectMultiplexEnabledServices("compute.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.Project{}, transformers.WithPrimaryKeys("SelfLink")),
