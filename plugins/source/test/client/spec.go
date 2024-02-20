@@ -19,7 +19,7 @@ type Spec struct {
 	// Required environment variables. The plugin will fail if these are not set
 	// to the correct values. Specified in `key=value` format. Use `key=` to specify
 	// that the environment variable should be not set or empty.
-	RequiredEnv []string `json:"required_env" jsonschema:"pattern=^[\w]+\=[\w]*$"`
+	RequiredEnv []string `json:"required_env" jsonschema:"pattern=^[\\w]+\\=[\\w]*$"`
 }
 
 //go:embed schema.json
@@ -43,8 +43,8 @@ func (s *Spec) SetDefaults() {
 }
 
 func (s *Spec) Validate() error {
-	for _, env := range s.RequiredEnv {
-		if strings.Count(env, "=") != 1 {
+	for _, v := range s.RequiredEnv {
+		if strings.Count(v, "=") != 1 {
 			return fmt.Errorf("required_env must be in the format `key=value`")
 		}
 	}

@@ -41,7 +41,8 @@
           "oneOf": [
             {
               "items": {
-                "type": "string"
+                "type": "string",
+                "pattern": "^[\\w]+\\=[\\w]*$"
               },
               "type": "array",
               "description": "Required environment variables. The plugin will fail if these are not set\nto the correct values. Specified in `key=value` format. Use `key=` to specify\nthat the environment variable should be not set or empty."
