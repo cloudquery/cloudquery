@@ -2,8 +2,6 @@ module github.com/cloudquery/cloudquery/plugins/destination/elasticsearch
 
 go 1.21.5
 
-toolchain go1.22.0
-
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/cenkalti/backoff/v4 v4.2.1
