@@ -68,6 +68,7 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, _ plugin.NewClien
 		streamingbatchwriter.WithBatchSizeRows(*c.spec.BatchSize),
 		streamingbatchwriter.WithBatchSizeBytes(*c.spec.BatchSizeBytes),
 		streamingbatchwriter.WithBatchTimeout(c.spec.BatchTimeout.Duration()),
+		streamingbatchwriter.WithLogger(c.logger),
 	)
 	if err != nil {
 		return nil, err
