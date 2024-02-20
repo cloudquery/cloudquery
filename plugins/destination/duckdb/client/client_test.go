@@ -50,10 +50,7 @@ func TestPlugin(t *testing.T) {
 			SkipMaps:    true,
 			SkipStructs: true,
 			// test:
-			//SkipDates: true,
 			SkipLists: true,
-			//SkipDecimals: true,
-			//SkipTimes:    true,
 		}),
 	)
 }
