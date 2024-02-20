@@ -28,6 +28,8 @@ type tableInfo struct {
 	columns []columnInfo
 }
 
+var runAfterMigrate = func() {} // used in tests
+
 func (c *Client) duckDBTables(ctx context.Context, tables schema.Tables) (schema.Tables, error) {
 	var schemaTables schema.Tables
 	for _, table := range tables {
@@ -126,6 +128,15 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 
 // Migrate migrates to the latest schema
 func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
+	defer runAfterMigrate()
+	defer func() {
+		//if c.conn != nil {
+		//	err := c.conn.Close()
+		//	c.logger.Warn().Err(err).Msg("Closing existing conn")
+		//	c.conn = nil
+		//}
+	}()
+
 	tables := make(schema.Tables, len(msgs))
 	for i, msg := range msgs {
 		tables[i] = msg.Table

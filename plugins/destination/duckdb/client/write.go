@@ -18,6 +18,12 @@ import (
 	"github.com/marcboeker/go-duckdb"
 )
 
+// used in tests
+var (
+	noAppender              bool
+	runAfterWriteTableBatch = func() {}
+)
+
 func nonPkIndices(sc *schema.Table) []int {
 	var indices []int
 	for i, c := range sc.Columns {
@@ -126,10 +132,11 @@ func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) er
 	return nil
 }
 
-func (c *Client) appendRows(table *schema.Table, msgs message.WriteInserts) error {
+func (c *Client) appendRows(table *schema.Table, msgs message.WriteInserts) (retErr error) {
 	if c.conn == nil {
 		// connecting before MigrateTable results in appender creation failure
 		var err error
+		c.logger.Debug().Msg("appendRows: opening new conn")
 		c.conn, err = c.connector.Connect(context.Background())
 		if err != nil {
 			return fmt.Errorf("failed to connect: %w", err)
@@ -140,31 +147,35 @@ func (c *Client) appendRows(table *schema.Table, msgs message.WriteInserts) erro
 	if err != nil {
 		return fmt.Errorf("failed to create appender for %s: %w", table.Name, err)
 	}
+	defer func() {
+		err := appender.Close()
+		if retErr == nil {
+			retErr = fmt.Errorf("failed to close appender for %s: %w", table.Name, err)
+		}
+	}()
 
 	for _, msg := range msgs {
 		arr := transformRecordToGoType(msg.Record)
 		for i := range arr {
 			if err := appender.AppendRow(arr[i]...); err != nil {
-				_ = appender.Close()
 				return fmt.Errorf("failed to append row to %s: %w", table.Name, err)
 			}
 		}
 	}
 
-	if err := appender.Close(); err != nil {
-		return fmt.Errorf("failed to close appender for %s: %w", table.Name, err)
-	}
 	return nil
 }
 
 func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
+	defer runAfterWriteTableBatch()
+
 	if len(msgs) == 0 {
 		return nil
 	}
 
 	table := msgs[0].GetTable()
 
-	if len(table.PrimaryKeys()) == 0 {
+	if len(table.PrimaryKeys()) == 0 && !noAppender {
 		return c.appendRows(table, msgs)
 	}
 

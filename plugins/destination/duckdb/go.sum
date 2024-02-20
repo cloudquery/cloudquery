@@ -252,8 +252,8 @@ github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o
 github.com/stretchr/testify v1.8.2/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
 github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcUk=
 github.com/stretchr/testify v1.8.4/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
-github.com/taniabogatsch/go-duckdb v0.0.0-20240219165409-99936245873d h1:RrpRuywby2OXGImpgV4UiMHicn2RZ+/fuamvYvOSXiI=
-github.com/taniabogatsch/go-duckdb v0.0.0-20240219165409-99936245873d/go.mod h1:FXt5ZuZuX7rf1Uj8sj5MgUROTguyw4XUirfv5tsrK1E=
+github.com/taniabogatsch/go-duckdb v0.0.0-20240220143428-bc9d8238dc19 h1:dFuebYowv5kfSoX4eL5hVmlkuGoaNmRKkEX74EJHw2k=
+github.com/taniabogatsch/go-duckdb v0.0.0-20240220143428-bc9d8238dc19/go.mod h1:FXt5ZuZuX7rf1Uj8sj5MgUROTguyw4XUirfv5tsrK1E=
 github.com/tdewolff/minify/v2 v2.20.16 h1:/C8dtRkxLTIyUlKlBz46gDiktCrE8a6+c1gTrnPFz+U=
 github.com/tdewolff/minify/v2 v2.20.16/go.mod h1:/FvxV9KaTrFu35J9I2FhRvWSBxcHj8sDSdwBFh5voxM=
 github.com/tdewolff/parse/v2 v2.7.11 h1:v+W45LnzmjndVlfqPCT5gGjAAZKd1GJGOPJveTIkBY8=

@@ -137,8 +137,8 @@ replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0
 
 // replace github.com/marcboeker/go-duckdb => ../../../../../disq/go-duckdb
 
-// replace github.com/marcboeker/go-duckdb => github.com/disq/go-duckdb v0.0.0-20240219115017-67bd21537394
+//replace github.com/marcboeker/go-duckdb => github.com/disq/go-duckdb v0.0.0-20240220132027-dea371ef85e3
 
 //replace github.com/cloudquery/plugin-sdk/v4 => ../../../../plugin-sdk
 
-replace github.com/marcboeker/go-duckdb => github.com/taniabogatsch/go-duckdb v0.0.0-20240219165409-99936245873d
+replace github.com/marcboeker/go-duckdb => github.com/taniabogatsch/go-duckdb v0.0.0-20240220143428-bc9d8238dc19

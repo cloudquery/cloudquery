@@ -25,6 +25,12 @@ func TestPlugin(t *testing.T) {
 	p.SetLogger(zerolog.New(zerolog.NewTestWriter(t)).Level(zerolog.DebugLevel))
 
 	delayAfterDeleteStale = true
+	runAfterMigrate = func() {
+		//noAppender = true
+	}
+	runAfterWriteTableBatch = func() {
+		//noAppender = false
+	}
 	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
@@ -52,7 +58,6 @@ func TestPlugin(t *testing.T) {
 			// not supported in Appender:
 			SkipMaps:    true,
 			SkipStructs: true,
-			SkipLists:   true, // disabled for now until Appender supports nulls in lists
 		}),
 	)
 }
