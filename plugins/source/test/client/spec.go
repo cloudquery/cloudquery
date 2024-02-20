@@ -1,6 +1,10 @@
 package client
 
-import _ "embed"
+import (
+	_ "embed"
+	"fmt"
+	"strings"
+)
 
 type Spec struct {
 	// Number of clients to create
@@ -11,6 +15,11 @@ type Spec struct {
 
 	// Number of rows to generate (per row of parent) in test_sub_table.
 	NumSubRows *int `json:"num_sub_rows" jsonschema:"minimum=0,default=10"`
+
+	// Required environment variables. The plugin will fail if these are not set
+	// to the correct values. Specified in `key=value` format. Use `key=` to specify
+	// that the environment variable should be not set or empty.
+	RequiredEnv []string `json:"required_env" jsonschema:""`
 }
 
 //go:embed schema.json
@@ -28,8 +37,16 @@ func (s *Spec) SetDefaults() {
 		i := 10
 		s.NumSubRows = &i
 	}
+	if s.RequiredEnv == nil {
+		s.RequiredEnv = []string{}
+	}
 }
 
-func (*Spec) Validate() error {
+func (s *Spec) Validate() error {
+	for _, env := range s.RequiredEnv {
+		if strings.Count(env, "=") != 1 {
+			return fmt.Errorf("required_env must be in the format `key=value`")
+		}
+	}
 	return nil
 }
