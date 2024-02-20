@@ -1,5 +1,5 @@
 {
-  "cli": "5.5.1",
+  "cli": "5.5.3",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "22.19.2",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -103,5 +103,5 @@
   "plugins/source/airtable+FILLER": "0.0.0",
   "plugins/source/bitbucket": "1.1.0",
   "plugins/source/bitbucket+FILLER": "0.0.0",
-  "plugins/source/notion": "1.1.0"
+  "plugins/source/notion": "1.1.1"
 }
