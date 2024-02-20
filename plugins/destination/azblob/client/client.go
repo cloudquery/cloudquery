@@ -65,6 +65,7 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 	}
 
 	c.writer, err = streamingbatchwriter.New(c,
+		streamingbatchwriter.WithLogger(c.logger),
 		streamingbatchwriter.WithBatchSizeRows(*c.spec.BatchSize),
 		streamingbatchwriter.WithBatchSizeBytes(*c.spec.BatchSizeBytes),
 		streamingbatchwriter.WithBatchTimeout(c.spec.BatchTimeout.Duration()),
