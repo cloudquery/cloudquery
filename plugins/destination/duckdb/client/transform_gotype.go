@@ -12,51 +12,45 @@ import (
 )
 
 func getTypedNilValue(arr arrow.Array) any {
-	switch arr.DataType().(type) {
-	case *types.UUIDType:
+	switch arr.(type) {
+	case *types.UUIDArray:
 		return nilPtrOf[duckdb.UUID]()
-	case *arrow.TimestampType, *arrow.Date64Type, *arrow.Date32Type:
+	case *array.Timestamp, *array.Date32, *array.Date64:
 		return nilPtrOf[time.Time]()
-	case *arrow.BooleanType:
+	case *array.Boolean:
 		return nilPtrOf[bool]()
-	case *arrow.Int8Type:
+	case *array.Int8:
 		return nilPtrOf[int8]()
-	case *arrow.Int16Type:
+	case *array.Int16:
 		return nilPtrOf[int16]()
-	case *arrow.Int32Type:
+	case *array.Int32:
 		return nilPtrOf[int32]()
-	case *arrow.Int64Type:
+	case *array.Int64:
 		return nilPtrOf[int64]()
-	case *arrow.Uint8Type:
+	case *array.Uint8, *array.Uint16:
 		return nilPtrOf[uint32]() // use uint32
-	case *arrow.Uint16Type:
-		return nilPtrOf[uint32]() // use uint32
-	case *arrow.Uint32Type:
+	case *array.Uint32:
 		return nilPtrOf[uint32]()
-	case *arrow.Uint64Type:
-		return nilPtrOf[uint64]()
-	case *arrow.Float32Type:
+	case *array.Uint64:
+		return nilPtrOf[int64]()
+	case *array.Float32:
 		return nilPtrOf[float32]()
-	case *arrow.Float64Type:
+	case *array.Float64:
 		return nilPtrOf[float64]()
-	case *arrow.StringType:
+	case *array.String:
 		return nilPtrOf[string]()
-	case *arrow.BinaryType, *arrow.LargeBinaryType, *arrow.FixedSizeBinaryType:
+	case *array.Binary, *array.LargeBinary, *array.FixedSizeBinary:
 		return nilPtrOf[[]byte]()
-	case *arrow.ListType:
-		arr := arr.(*array.List)
-		v := getTypedNilValue(arr.ListValues())
-		return reflect.New(reflect.SliceOf(reflect.TypeOf(v))).Interface()
-	case *arrow.LargeListType:
-		arr := arr.(*array.LargeList)
-		v := getTypedNilValue(arr.ListValues())
-		return reflect.New(reflect.SliceOf(reflect.TypeOf(v))).Interface()
-	case *arrow.StructType:
-		// Can't create a Go struct dynamically and maps are unsupported: use string
-		return nilPtrOf[string]()
-	case *arrow.MapType:
+	case *array.Map:
 		// unsupported in appender: use string
 		return nilPtrOf[string]()
+	case *array.Struct:
+		// Can't create a Go struct dynamically and maps are unsupported: use string
+		return nilPtrOf[string]()
+	case array.ListLike: // should be after *array.Map
+		arr := arr.(array.ListLike)
+		v := getTypedNilValue(arr.ListValues())
+		return reflect.New(reflect.SliceOf(reflect.TypeOf(v))).Interface()
 	default:
 		return nilPtrOf[string]()
 	}
