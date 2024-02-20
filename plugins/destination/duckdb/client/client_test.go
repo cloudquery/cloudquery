@@ -7,6 +7,7 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/rs/zerolog"
 )
 
 func TestPlugin(t *testing.T) {
@@ -21,10 +22,18 @@ func TestPlugin(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	p.SetLogger(zerolog.New(zerolog.NewTestWriter(t)).Level(zerolog.DebugLevel))
+
 	delayAfterDeleteStale = true
 	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
+	t.Cleanup(func() {
+		if err := p.Close(ctx); err != nil {
+			t.Logf("failed to close plugin: %v", err)
+		}
+	})
+
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.WriterTestSuiteTests{
