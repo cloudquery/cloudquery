@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.0.8...plugins-source-test-v4.1.0) (2024-02-20)
+
+
+### Features
+
+* Allow testing of set environment variables ([#16717](https://github.com/cloudquery/cloudquery/issues/16717)) ([e6c1866](https://github.com/cloudquery/cloudquery/commit/e6c18663161285bcb1d5c875662fc37a196bab35))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.30.0 ([#16669](https://github.com/cloudquery/cloudquery/issues/16669)) ([44b9729](https://github.com/cloudquery/cloudquery/commit/44b9729fa5d7590f65b9073ce4a1fc18a529117e))
+
 ## [4.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.0.7...plugins-source-test-v4.0.8) (2024-02-13)
 
 
