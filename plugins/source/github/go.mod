@@ -2,8 +2,6 @@ module github.com/cloudquery/cloudquery/plugins/source/github
 
 go 1.21.5
 
-toolchain go1.22.0
-
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/beatlabs/github-auth v0.0.0-20240122214848-98862c3ce8f9
