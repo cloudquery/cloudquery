@@ -38,8 +38,6 @@ func TestPlugin(t *testing.T) {
 			// not supported in Parquet Writer
 			SkipDurations: true,
 			SkipIntervals: true,
-			// not supported in duckDB for now
-			SkipLargeTypes: true,
 		}),
 	)
 }
