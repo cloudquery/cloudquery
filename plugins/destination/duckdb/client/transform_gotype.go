@@ -12,8 +12,7 @@ import (
 )
 
 func getTypedNilValue(arr arrow.Array) any {
-	// nolint:gosimple,gocritic
-	switch arr.(type) {
+	switch arr := arr.(type) {
 	case *types.UUIDArray:
 		return nilPtrOf[duckdb.UUID]()
 	case *array.Timestamp, *array.Date32, *array.Date64:
@@ -49,7 +48,6 @@ func getTypedNilValue(arr arrow.Array) any {
 		// Can't create a Go struct dynamically and maps are unsupported: use string
 		return nilPtrOf[string]()
 	case array.ListLike: // should be after *array.Map
-		arr := arr.(array.ListLike)
 		v := getTypedNilValue(arr.ListValues())
 		return reflect.New(reflect.SliceOf(reflect.TypeOf(v))).Interface()
 	default:
