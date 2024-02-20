@@ -153,7 +153,7 @@ func sync(cmd *cobra.Command, args []string) error {
 			Path:     source.Path,
 		}
 		if isolatePluginEnvironment {
-			cfg.Environment = pluginEnv(osEnviron, source.Name, "source")
+			cfg.Environment = filterPluginEnv(osEnviron, source.Name, "source")
 		}
 		sourcePluginClient, err := managedplugin.NewClient(ctx, managedplugin.PluginSource, cfg, opts...)
 		if err != nil {
@@ -189,7 +189,7 @@ func sync(cmd *cobra.Command, args []string) error {
 			Path:     destination.Path,
 		}
 		if isolatePluginEnvironment {
-			cfg.Environment = pluginEnv(osEnviron, destination.Name, "destination")
+			cfg.Environment = filterPluginEnv(osEnviron, destination.Name, "destination")
 		}
 		destPluginClient, err := managedplugin.NewClient(ctx, managedplugin.PluginDestination, cfg, opts...)
 		if err != nil {
@@ -298,7 +298,7 @@ func sync(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func pluginEnv(environ []string, pluginName, kind string) []string {
+func filterPluginEnv(environ []string, pluginName, kind string) []string {
 	env := make([]string, 0)
 	prefix := "__" + kind + "_" + pluginName + "__"
 	for _, v := range environ {
