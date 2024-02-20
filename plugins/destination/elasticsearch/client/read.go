@@ -40,6 +40,9 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 
 	defer resp.Body.Close()
 	if resp.StatusCode > 299 {
+		if resp.StatusCode == 404 {
+			return nil
+		}
 		data, _ := io.ReadAll(resp.Body)
 		return fmt.Errorf("failed to read: %s: %s", resp.Status, string(data))
 	}
