@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"database/sql/driver"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"runtime"
 	"strings"
@@ -12,10 +13,8 @@ import (
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/duckdb/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
-	"github.com/rs/zerolog"
-
-	// import duckdb driver
 	"github.com/marcboeker/go-duckdb"
+	"github.com/rs/zerolog"
 )
 
 type Client struct {
@@ -60,7 +59,6 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	if err != nil {
 		return nil, err
 	}
-
 	c.db = sql.OpenDB(c.connector)
 
 	err = c.exec(ctx, "INSTALL 'json'; LOAD 'json';")
@@ -95,16 +93,10 @@ func (c *Client) Close(ctx context.Context) error {
 
 func (c *Client) exec(ctx context.Context, query string, args ...any) error {
 	r, err := c.db.ExecContext(ctx, query, args...)
-	if err != nil {
-		return err
-	}
 	if c.spec.Debug {
 		rowsAffected, rowsErr := r.RowsAffected()
-		if rowsErr == nil {
-			c.logger.Debug().Str("query", query).Any("values", args).Int64("rowsAffected", rowsAffected).Msg("exec query")
-		} else {
-			c.logger.Debug().Str("query", query).Any("values", args).Err(rowsErr).Msg("exec query")
-		}
+		errs := errors.Join(err, rowsErr)
+		c.logger.Debug().Str("query", query).Any("values", args).Int64("rowsAffected", rowsAffected).Err(errs).Msg("exec query")
 	}
-	return nil
+	return err
 }
