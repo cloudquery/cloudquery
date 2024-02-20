@@ -67,6 +67,7 @@ func buildBackupVaultsMock(t *testing.T, ctrl *gomock.Controller) client.Service
 	require.NoError(t, faker.FakeObject(&rp))
 
 	rp.ResourceArn = aws.String("arn:aws:s3:eu-central-1:testAccount:resource/id")
+	rp.RecoveryPointArn = aws.String("arn:aws:backup:eu-central-1:testAccount:resource/id")
 
 	m.EXPECT().ListRecoveryPointsByBackupVault(
 		gomock.Any(),
