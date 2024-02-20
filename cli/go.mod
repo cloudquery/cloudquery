@@ -8,7 +8,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/cloudquery-api-go v1.7.5
 	github.com/cloudquery/codegen v0.3.12
-	github.com/cloudquery/plugin-pb-go v1.17.2
+	github.com/cloudquery/plugin-pb-go v1.18.0
 	github.com/cloudquery/plugin-sdk/v4 v4.30.0
 	github.com/distribution/reference v0.5.0
 	github.com/docker/distribution v2.8.3+incompatible
@@ -145,3 +145,6 @@ require (
 
 // github.com/cloudquery/jsonschema @ cqmain
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240202134451-d771afde32fb
+
+// github.com/cloudquery/godebouncer @ fix-race
+replace github.com/vnteamopen/godebouncer => github.com/cloudquery/godebouncer v0.0.0-20240220152946-054f7dbbcf18
