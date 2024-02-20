@@ -19,7 +19,7 @@ type Spec struct {
 	// Required environment variables. The plugin will fail if these are not set
 	// to the correct values. Specified in `key=value` format. Use `key=` to specify
 	// that the environment variable should be not set or empty.
-	RequiredEnv []string `json:"required_env" jsonschema:""`
+	RequiredEnv []string `json:"required_env" jsonschema:"pattern=^[\w]+\=[\w]*$"`
 }
 
 //go:embed schema.json
