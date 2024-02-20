@@ -1,5 +1,5 @@
 {
-  "cli": "5.5.1",
+  "cli": "5.5.3",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "22.19.2",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -75,15 +75,15 @@
   "plugins/source/homebrew+FILLER": "0.0.0",
   "plugins/destination/mysql": "4.2.0",
   "plugins/destination/mysql+FILLER": "0.0.0",
-  "plugins/destination/firehose": "2.3.0",
+  "plugins/destination/firehose": "2.3.1",
   "plugins/destination/firehose+FILLER": "0.0.0",
   "plugins/source/awspricing": "3.0.20",
   "plugins/source/awspricing+FILLER": "0.0.0",
-  "plugins/destination/duckdb": "5.2.0",
+  "plugins/destination/duckdb": "5.2.1",
   "plugins/destination/duckdb+FILLER": "0.0.0",
   "plugins/source/mysql": "2.0.12",
   "plugins/source/mysql+FILLER": "0.0.0",
-  "plugins/destination/gremlin": "2.3.0",
+  "plugins/destination/gremlin": "2.3.1",
   "plugins/destination/gremlin+FILLER": "0.0.0",
   "plugins/destination/meilisearch": "2.3.1",
   "plugins/destination/meilisearch+FILLER": "1.0.0",
@@ -103,5 +103,5 @@
   "plugins/source/airtable+FILLER": "0.0.0",
   "plugins/source/bitbucket": "1.1.0",
   "plugins/source/bitbucket+FILLER": "0.0.0",
-  "plugins/source/notion": "1.1.0"
+  "plugins/source/notion": "1.1.1"
 }
