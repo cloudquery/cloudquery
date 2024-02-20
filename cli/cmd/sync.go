@@ -303,7 +303,7 @@ func pluginEnv(environ []string, pluginName, kind string) []string {
 	prefix := "__" + kind + "_" + pluginName + "__"
 	for _, v := range environ {
 		if strings.HasPrefix(v, prefix) {
-			env = append(env, strings.TrimPrefix(v, prefix+"="))
+			env = append(env, strings.TrimPrefix(v, prefix))
 		}
 	}
 	return env
