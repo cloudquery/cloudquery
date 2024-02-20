@@ -142,7 +142,7 @@ func transformRecordToGoType(record arrow.Record, arrowFields []arrow.Field, col
 	for i, f := range arrowFields { // i: arrow column index
 		j := colList.Index(f.Name) // look up the column index in the destination table
 		if j == -1 {
-			continue
+			panic("column not found: " + f.String()) // should never happen
 		}
 		arr := record.Column(i)
 		for k := range res {
