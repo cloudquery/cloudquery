@@ -34,7 +34,7 @@ func TestDataTable() *schema.Table {
 		Resolver:    client.ResolveClientID,
 	})
 
-	tg := schema.NewTestDataGenerator()
+	tg := schema.NewTestDataGenerator(0)
 	data := tg.Generate(table, schema.GenTestDataOptions{
 		MaxRows: 1,
 	})
