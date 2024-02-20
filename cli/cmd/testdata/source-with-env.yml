@@ -1,0 +1,19 @@
+kind: "source"
+spec:
+  name: "test"
+  path: "cloudquery/test"
+  registry: "github"
+  destinations: [test]
+  version: "v4.1.0" # latest version of source test plugin
+  tables: ["test_some_table"]
+  spec:
+    required_env:
+      - "TEST_KEY=test_value"
+      - "NOT_TEST_ENV="
+---
+kind: "destination"
+spec:
+  name: "test"
+  path: "cloudquery/test"
+  registry: "github"
+  version: "v2.2.14" # latest version of destination test plugin
