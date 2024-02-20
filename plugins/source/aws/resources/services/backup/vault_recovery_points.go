@@ -72,17 +72,21 @@ func resolveRecoveryPointTags(ctx context.Context, meta schema.ClientMeta, resou
 	if err != nil {
 		return err
 	}
+	recoveryPointArn, err := arn.Parse(*rp.RecoveryPointArn)
+	if err != nil {
+		return err
+	}
 
 	// decide if the backed up resource supports tags
 	switch client.AWSService(resourceARN.Service) {
-	case client.S3Service, client.EFSService:
+	case client.S3Service, client.EFSService, client.RDSService:
 
 		// these services are ok
 	case client.DynamoDBService:
 		// DynamoDB backups in accounts without "Advanced DynamoDB Backups" do not have Full Backup Management and do not support tagging.
 		// DynamoDB backups in such accounts are in the "dynamodb" service namespace, instead of "awsbackup".
 		// https://docs.aws.amazon.com/aws-backup/latest/devguide/advanced-ddb-backup.html#advanced-ddb-backup-other-benefits
-		if resourceARN.Service == "dynamodb" {
+		if recoveryPointArn.Service == "dynamodb" {
 			return nil
 		}
 	case client.EC2Service:
