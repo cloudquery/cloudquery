@@ -131,17 +131,21 @@ func getValue(arr arrow.Array, i int) any {
 	}
 }
 
-func transformRecordToGoType(record arrow.Record) [][]driver.Value {
+func transformRecordToGoType(record arrow.Record, arrowCols []string, columnMap map[string]int) [][]driver.Value {
 	res := make([][]driver.Value, record.NumRows())
-	nc := record.NumCols()
+	tc := len(columnMap)
 	for i := range res {
-		res[i] = make([]driver.Value, nc)
+		res[i] = make([]driver.Value, tc)
 	}
 
-	for j := 0; j < int(nc); j++ {
-		col := record.Column(j)
-		for i := range res {
-			res[i][j] = getValue(col, i)
+	for i, col := range arrowCols { // i: arrow column index, col: arrow column name
+		j, ok := columnMap[col] // look up the column index in the destination table
+		if !ok {
+			continue
+		}
+		arr := record.Column(i)
+		for k := range res {
+			res[k][j] = getValue(arr, k)
 		}
 	}
 	return res

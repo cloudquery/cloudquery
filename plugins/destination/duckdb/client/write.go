@@ -18,12 +18,6 @@ import (
 	"github.com/marcboeker/go-duckdb"
 )
 
-// used in tests
-var (
-	noAppender              bool
-	runAfterWriteTableBatch = func() {}
-)
-
 func nonPkIndices(sc *schema.Table) []int {
 	var indices []int
 	for i, c := range sc.Columns {
@@ -149,13 +143,28 @@ func (c *Client) appendRows(table *schema.Table, msgs message.WriteInserts) (ret
 	}
 	defer func() {
 		err := appender.Close()
-		if retErr == nil {
+		if err != nil && retErr == nil {
 			retErr = fmt.Errorf("failed to close appender for %s: %w", table.Name, err)
 		}
 	}()
 
+	tableState := c.dbTables.Get(table.Name)
+	if tableState == nil {
+		return fmt.Errorf("table %s not found in duckdb", table.Name) // should never happen as appender would've failed
+	}
+	columnMap := make(map[string]int, len(tableState.Columns))
+	for i, col := range tableState.Columns {
+		columnMap[col.Name] = i
+	}
+	nc := msgs[0].Record.NumCols()
+	arrowCols := make([]string, nc)
+	sc := msgs[0].Record.Schema()
+	for i := 0; i < int(nc); i++ {
+		arrowCols[i] = sc.Field(i).Name
+	}
+
 	for _, msg := range msgs {
-		arr := transformRecordToGoType(msg.Record)
+		arr := transformRecordToGoType(msg.Record, arrowCols, columnMap)
 		for i := range arr {
 			if err := appender.AppendRow(arr[i]...); err != nil {
 				return fmt.Errorf("failed to append row to %s: %w", table.Name, err)
@@ -167,15 +176,13 @@ func (c *Client) appendRows(table *schema.Table, msgs message.WriteInserts) (ret
 }
 
 func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
-	defer runAfterWriteTableBatch()
-
 	if len(msgs) == 0 {
 		return nil
 	}
 
 	table := msgs[0].GetTable()
 
-	if len(table.PrimaryKeys()) == 0 && !noAppender {
+	if len(table.PrimaryKeys()) == 0 {
 		return c.appendRows(table, msgs)
 	}
 
@@ -187,15 +194,16 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	c.logger.Debug().Str("table", table.Name).Str("duration", time.Since(writeStart).String()).Msg("write tmp file")
 	defer os.Remove(tmpFile)
 
-	if len(table.PrimaryKeys()) == 0 {
-		// TODO remove after finalizing appender
-		copyStart := time.Now()
-		defer func() {
-			c.logger.Debug().Str("table", table.Name).Str("duration", time.Since(copyStart).String()).Msg("copy file to table")
-		}()
-		return c.copyFromFile(ctx, name, tmpFile, table)
-	}
-
+	/*
+		if len(table.PrimaryKeys()) == 0 {
+			// TODO remove after finalizing appender
+			copyStart := time.Now()
+			defer func() {
+				c.logger.Debug().Str("table", table.Name).Str("duration", time.Since(copyStart).String()).Msg("copy file to table")
+			}()
+			return c.copyFromFile(ctx, name, tmpFile, table)
+		}
+	*/
 	tmpTableName := name + strings.ReplaceAll(uuid.New().String(), "-", "_")
 	if err := c.createTableIfNotExist(ctx, tmpTableName, table); err != nil {
 		return fmt.Errorf("failed to create table %s: %w", tmpTableName, err)

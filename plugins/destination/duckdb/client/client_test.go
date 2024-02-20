@@ -25,12 +25,6 @@ func TestPlugin(t *testing.T) {
 	p.SetLogger(zerolog.New(zerolog.NewTestWriter(t)).Level(zerolog.DebugLevel))
 
 	delayAfterDeleteStale = true
-	runAfterMigrate = func() {
-		//noAppender = true
-	}
-	runAfterWriteTableBatch = func() {
-		//noAppender = false
-	}
 	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
