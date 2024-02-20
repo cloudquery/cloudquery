@@ -6,6 +6,7 @@ import (
 	"runtime"
 	"testing"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -125,6 +126,42 @@ func TestFindMaxCommonVersion(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			got := findMaxCommonVersion(tc.givePlugin, tc.giveCLI)
 			assert.Equal(t, tc.want, got)
+		})
+	}
+}
+
+func TestSync_IsolatedPluginEnvironmentsInCloud(t *testing.T) {
+	configs := []struct {
+		name   string
+		config string
+		err    string
+	}{
+		{
+			name:   "source-with-env",
+			config: "source-with-env.yml",
+		},
+	}
+	_, filename, _, _ := runtime.Caller(0)
+	currentDir := path.Dir(filename)
+	cqDir := t.TempDir()
+	t.Setenv("CLOUDQUERY_API_KEY", "cqsr_123")
+	t.Setenv("_CQ_TEAM_NAME", "test_team")
+	t.Setenv("_CQ_SYNC_NAME", "test_sync")
+	t.Setenv("_CQ_SYNC_RUN_ID", uuid.Must(uuid.NewUUID()).String())
+	t.Setenv("__source_test__TEST_KEY", "test_value")
+	t.Setenv("NOT_TEST_ENV", "should_not_be_visible_to_plugin")
+
+	for _, tc := range configs {
+		t.Run(tc.name, func(t *testing.T) {
+			testConfig := path.Join(currentDir, "testdata", tc.config)
+			cmd := NewCmdRoot()
+			cmd.SetArgs([]string{"sync", testConfig, "--cq-dir", cqDir})
+			err := cmd.Execute()
+			if tc.err != "" {
+				assert.Contains(t, err.Error(), tc.err)
+			} else {
+				assert.NoError(t, err)
+			}
 		})
 	}
 }
