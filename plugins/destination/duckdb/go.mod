@@ -1,12 +1,14 @@
 module github.com/cloudquery/cloudquery/plugins/destination/duckdb
 
-go 1.21.4
+go 1.21.5
+
+toolchain go1.22.0
 
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/codegen v0.3.12
-	github.com/cloudquery/plugin-sdk/v4 v4.29.1
+	github.com/cloudquery/plugin-sdk/v4 v4.30.0
 	github.com/google/uuid v1.5.0
 	github.com/marcboeker/go-duckdb v1.6.1
 	github.com/rs/zerolog v1.31.0
