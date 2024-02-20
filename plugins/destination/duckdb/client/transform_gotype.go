@@ -32,7 +32,7 @@ func getTypedNilValue(arr arrow.Array) any {
 	case *array.Uint32:
 		return nilPtrOf[uint32]()
 	case *array.Uint64:
-		return nilPtrOf[int64]()
+		return nilPtrOf[uint64]()
 	case *array.Float32:
 		return nilPtrOf[float32]()
 	case *array.Float64:

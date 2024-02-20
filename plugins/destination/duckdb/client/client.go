@@ -97,16 +97,10 @@ func (c *Client) Close(ctx context.Context) error {
 
 func (c *Client) exec(ctx context.Context, query string, args ...any) error {
 	r, err := c.db.ExecContext(ctx, query, args...)
-	if err != nil {
-		return err
-	}
 	if c.spec.Debug {
 		rowsAffected, rowsErr := r.RowsAffected()
-		if rowsErr == nil {
-			c.logger.Debug().Str("query", query).Any("values", args).Int64("rowsAffected", rowsAffected).Msg("exec query")
-		} else {
-			c.logger.Debug().Str("query", query).Any("values", args).Err(rowsErr).Msg("exec query")
-		}
+		errs := errors.Join(err, rowsErr)
+		c.logger.Debug().Str("query", query).Any("values", args).Int64("rowsAffected", rowsAffected).Err(errs).Msg("exec query")
 	}
-	return nil
+	return err
 }

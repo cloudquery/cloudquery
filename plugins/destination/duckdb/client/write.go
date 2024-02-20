@@ -77,9 +77,9 @@ func (c *Client) upsert(ctx context.Context, tmpTableName string, table *schema.
 		if written > 0 {
 			sb.WriteString(", ")
 		}
-		sb.WriteString(col.Name)
+		sb.WriteString(sanitizeID(col.Name))
 		sb.WriteString(" = excluded.")
-		sb.WriteString(col.Name)
+		sb.WriteString(sanitizeID(col.Name))
 		written++
 	}
 	query := sb.String()
@@ -102,9 +102,9 @@ func (c *Client) deleteByPK(ctx context.Context, tmpTableName string, table *sch
 		if i > 0 {
 			sb.WriteString(" and ")
 		}
-		sb.WriteString(table.Name + "." + col)
+		sb.WriteString(table.Name + "." + sanitizeID(col))
 		sb.WriteString(" = ")
-		sb.WriteString(tmpTableName + "." + col)
+		sb.WriteString(tmpTableName + "." + sanitizeID(col))
 	}
 
 	return c.exec(ctx, sb.String())

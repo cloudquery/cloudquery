@@ -7,6 +7,7 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/rs/zerolog"
 )
 
 func TestPlugin(t *testing.T) {
@@ -20,6 +21,8 @@ func TestPlugin(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	p.SetLogger(zerolog.New(zerolog.NewTestWriter(t)).Level(zerolog.DebugLevel))
 
 	delayAfterDeleteStale = true
 	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
@@ -46,11 +49,10 @@ func TestPlugin(t *testing.T) {
 			SkipIntervals: true,
 			// not supported in duckDB for now
 			SkipLargeTypes: true,
-			// not supported in Appender
+			// not supported in Appender:
 			SkipMaps:    true,
 			SkipStructs: true,
-			// test:
-			SkipLists: true,
+			SkipLists:   true, // disabled for now until Appender supports nulls in lists
 		}),
 	)
 }

@@ -38,16 +38,20 @@ func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
 func arrowToDuckDB(dt arrow.DataType) string {
 	switch dt := dt.(type) {
 	case *arrow.StructType:
-		builder := new(strings.Builder)
-		builder.WriteString("struct(")
-		for i, field := range dt.Fields() {
-			if i > 0 {
-				builder.WriteString(", ")
+		return "json"
+	/*
+		case *arrow.StructType:
+			builder := new(strings.Builder)
+			builder.WriteString("struct(")
+			for i, field := range dt.Fields() {
+				if i > 0 {
+					builder.WriteString(", ")
+				}
+				builder.WriteString(sanitizeID(field.Name) + " " + arrowToDuckDB(field.Type))
 			}
-			builder.WriteString(sanitizeID(field.Name) + " " + arrowToDuckDB(field.Type))
-		}
-		builder.WriteString(")")
-		return builder.String()
+			builder.WriteString(")")
+			return builder.String()
+	*/
 	case *arrow.MapType:
 		return "map(" + arrowToDuckDB(dt.KeyType()) + ", " + arrowToDuckDB(dt.ItemType()) + ")"
 	case arrow.ListLikeType:
@@ -84,8 +88,8 @@ func arrowToDuckDB(dt arrow.DataType) string {
 		return "json"
 	case *arrow.Date32Type, *arrow.Date64Type, *arrow.TimestampType:
 		return "timestamp"
-	case *arrow.DayTimeIntervalType:
-		return "interval"
+	//case *arrow.DayTimeIntervalType:
+	//	return "interval"
 	default:
 		return "varchar"
 	}
