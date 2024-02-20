@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v5.1.0...plugins-destination-neo4j-v5.1.1) (2024-02-20)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.30.0 ([#16669](https://github.com/cloudquery/cloudquery/issues/16669)) ([44b9729](https://github.com/cloudquery/cloudquery/commit/44b9729fa5d7590f65b9073ce4a1fc18a529117e))
+* Ensure all writers have a logger ([#16683](https://github.com/cloudquery/cloudquery/issues/16683)) ([c063679](https://github.com/cloudquery/cloudquery/commit/c06367923e2edae62c855733ba4fdd2b3f84e496))
+
 ## [5.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v5.0.6...plugins-destination-neo4j-v5.1.0) (2024-02-14)
 
 
