@@ -152,19 +152,11 @@ func (c *Client) appendRows(table *schema.Table, msgs message.WriteInserts) (ret
 	if tableState == nil {
 		return fmt.Errorf("table %s not found in duckdb", table.Name) // should never happen as appender would've failed
 	}
-	columnMap := make(map[string]int, len(tableState.Columns))
-	for i, col := range tableState.Columns {
-		columnMap[col.Name] = i
-	}
-	nc := msgs[0].Record.NumCols()
-	arrowCols := make([]string, nc)
-	sc := msgs[0].Record.Schema()
-	for i := 0; i < int(nc); i++ {
-		arrowCols[i] = sc.Field(i).Name
-	}
+
+	fields := msgs[0].Record.Schema().Fields()
 
 	for _, msg := range msgs {
-		arr := transformRecordToGoType(msg.Record, arrowCols, columnMap)
+		arr := transformRecordToGoType(msg.Record, fields, tableState.Columns)
 		for i := range arr {
 			if err := appender.AppendRow(arr[i]...); err != nil {
 				return fmt.Errorf("failed to append row to %s: %w", table.Name, err)

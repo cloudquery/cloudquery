@@ -7,6 +7,7 @@ import (
 
 	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/apache/arrow/go/v15/arrow/array"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/marcboeker/go-duckdb"
 )
@@ -131,16 +132,16 @@ func getValue(arr arrow.Array, i int) any {
 	}
 }
 
-func transformRecordToGoType(record arrow.Record, arrowCols []string, columnMap map[string]int) [][]driver.Value {
+func transformRecordToGoType(record arrow.Record, arrowFields []arrow.Field, colList schema.ColumnList) [][]driver.Value {
 	res := make([][]driver.Value, record.NumRows())
-	tc := len(columnMap)
+	tc := len(colList)
 	for i := range res {
 		res[i] = make([]driver.Value, tc)
 	}
 
-	for i, col := range arrowCols { // i: arrow column index, col: arrow column name
-		j, ok := columnMap[col] // look up the column index in the destination table
-		if !ok {
+	for i, f := range arrowFields { // i: arrow column index
+		j := colList.Index(f.Name) // look up the column index in the destination table
+		if j == -1 {
 			continue
 		}
 		arr := record.Column(i)
