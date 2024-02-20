@@ -2,8 +2,6 @@ module github.com/cloudquery/cloudquery/plugins/source/test
 
 go 1.21.5
 
-toolchain go1.22.0
-
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/cloudquery/codegen v0.3.12
@@ -127,4 +125,4 @@ require (
 )
 
 // github.com/cloudquery/jsonschema @ cqmain
-replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240202134451-d771afde32fb
+replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240220112440-ae1722096d67
