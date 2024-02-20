@@ -38,6 +38,7 @@ func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
 func arrowToDuckDB(dt arrow.DataType) string {
 	switch dt := dt.(type) {
 	case *arrow.StructType:
+		// use json for struct types for appender compatibility
 		return "json"
 	/*
 		case *arrow.StructType:
@@ -88,7 +89,8 @@ func arrowToDuckDB(dt arrow.DataType) string {
 		return "json"
 	case *arrow.Date32Type, *arrow.Date64Type, *arrow.TimestampType:
 		return "timestamp"
-	//case *arrow.DayTimeIntervalType:
+	// ignore interval types for appender compatibility
+	// case *arrow.DayTimeIntervalType:
 	//	return "interval"
 	default:
 		return "varchar"

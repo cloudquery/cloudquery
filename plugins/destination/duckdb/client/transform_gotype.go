@@ -12,6 +12,7 @@ import (
 )
 
 func getTypedNilValue(arr arrow.Array) any {
+	// nolint:gosimple,gocritic
 	switch arr.(type) {
 	case *types.UUIDArray:
 		return nilPtrOf[duckdb.UUID]()
