@@ -1,15 +1,16 @@
-This is a basic configuration that will save all your sync resources to `/path/to/example.db`.
+This is a basic configuration that will save all your sync resources to `my_db` in MotherDuck.
 
 ```yaml copy
 kind: destination
 spec:
-  name: duckdb
-  path: cloudquery/duckdb
+  name: motherduck
+  path: cloudquery/motherduck
   registry: cloudquery
-  version: "VERSION_DESTINATION_DUCKDB"
+  version: "VERSION_DESTINATION_MOTHERDUCK"
   write_mode: "overwrite-delete-stale"
   spec:
-    connection_string: /path/to/example.db
+    connection_string: my_db
+    token: "your-motherduck-api-token"
     # Optional parameters
     # batch_size: 1000
     # batch_size_bytes: 4194304 # 4 MiB
@@ -17,7 +18,7 @@ spec:
 
 ```
 
-After running `cloudquery sync`, you can explore the data locally with the DuckDB CLI: `duckdb /path/to/example.db`.
+After running `cloudquery sync`, you can explore the data in MotherDuck.
 
 The default `write_mode` is `overwrite-delete-stale`, but the plugin also supports `overwrite` or `append`. Note that `overwrite` and `overwrite-delete-stale` modes do not support atomic updates: to update a resource, it is first deleted and then re-inserted. This is due to a current lack of support in DuckDB for upserting list-type columns. If this is an issue for you, consider using the `append` mode instead. You may then perform a manual cleanup of stale resources after the sync completes.
 

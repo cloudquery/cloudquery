@@ -8,19 +8,23 @@ description: CloudQuery MotherDuck destination plugin documentation
 
 :badge
 
-This destination plugin lets you sync data from a CloudQuery source to a [DuckDB](https://duckdb.org/) database.
+This destination plugin lets you sync data from a CloudQuery source to [MotherDuck](https://motherduck.com/).
 
 ## Example Config
 
 :configuration
 
-## DuckDB Spec
+## MotherDuck Spec
 
-This is the top level spec used by the DuckDB destination Plugin.
+This is the top level spec used by the MotherDuck destination Plugin.
 
 - `connection_string` (`string`) (required)
 
-  Absolute or relative path to a file, such as `./example.duckdb`.
+  Name of the database and extra connection options, such as `my_db`.
+
+- `token` (`string`) (optional)
+
+  MotherDuck API token. If empty, the plugin will open a web browser to authenticate.
 
 - `batch_size` (`integer`) (optional) (default: `1000`)
 

@@ -22,7 +22,7 @@ type Client struct {
 	plugin.UnimplementedSource
 	batchwriter.UnimplementedDeleteRecord
 
-	connector *duckdb.Connector
+	connector driver.Connector
 	db        *sql.DB
 	conn      driver.Conn // used in Appender
 
@@ -34,6 +34,8 @@ type Client struct {
 
 var _ plugin.Client = (*Client)(nil)
 
+var localDuckDB bool // used in testing
+
 func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
@@ -43,23 +45,34 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
 	c.spec.SetDefaults()
+	if err := c.spec.Validate(); err != nil {
+		return nil, fmt.Errorf("failed to validate spec: %w", err)
+	}
+
 	c.writer, err = batchwriter.New(c, batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes), batchwriter.WithLogger(c.logger))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create batch writer: %w", err)
 	}
 
-	if strings.HasPrefix(c.spec.ConnectionString, "md:") {
-		// Motherduck, add 'custom_user_agent' to the connection string
-		if strings.Contains(c.spec.ConnectionString, "?") {
-			c.spec.ConnectionString += "&"
-		} else {
-			c.spec.ConnectionString += "?"
-		}
-		c.spec.ConnectionString += fmt.Sprintf("custom_user_agent=%s_%s_%s/%s(%s_%s)",
-			internalPlugin.Team, internalPlugin.Kind, internalPlugin.Name, strings.TrimPrefix(internalPlugin.Version, "v"), runtime.GOOS, runtime.GOARCH)
+	// Add 'custom_user_agent' to the connection string
+	if strings.Contains(c.spec.ConnectionString, "?") {
+		c.spec.ConnectionString += "&"
+	} else {
+		c.spec.ConnectionString += "?"
+	}
+	c.spec.ConnectionString += fmt.Sprintf("custom_user_agent=%s_%s_%s/%s(%s_%s)",
+		internalPlugin.Team, internalPlugin.Kind, internalPlugin.Name, strings.TrimPrefix(internalPlugin.Version, "v"), runtime.GOOS, runtime.GOARCH)
+
+	if len(c.spec.Token) > 0 {
+		c.spec.ConnectionString += "&motherduck_token=" + c.spec.Token
 	}
 
-	c.connector, err = duckdb.NewConnector(c.spec.ConnectionString, nil)
+	dbUri := c.spec.ConnectionString
+	if !localDuckDB {
+		dbUri = "md:" + dbUri
+	}
+
+	c.connector, err = duckdb.NewConnector(dbUri, nil)
 	if err != nil {
 		return nil, err
 	}

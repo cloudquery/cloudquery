@@ -4,11 +4,25 @@
   "$ref": "#/$defs/Spec",
   "$defs": {
     "Spec": {
+      "not": {
+        "properties": {
+          "connection_string": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^md:.+",
+            "description": "Name of the database and extra connection options, such as `my_db`."
+          }
+        }
+      },
       "properties": {
         "connection_string": {
           "type": "string",
           "minLength": 1,
-          "description": "Absolute or relative path to a file, such as `./example.duckdb`"
+          "description": "Name of the database and extra connection options, such as `my_db`."
+        },
+        "token": {
+          "type": "string",
+          "description": "MotherDuck API token. If empty, the plugin will open a web browser to authenticate."
         },
         "batch_size": {
           "type": "integer",

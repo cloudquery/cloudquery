@@ -15,7 +15,12 @@ func TestJSONSchema(t *testing.T) {
 		},
 		{
 			Name: "spec with connection_string",
-			Spec: `{"connection_string": "file"}`,
+			Spec: `{"connection_string": "my_db"}`,
+		},
+		{
+			Name: "spec with invalid connection_string",
+			Spec: `{"connection_string": "md:my_db"}`,
+			Err:  true,
 		},
 		{
 			Name: "spec with bool connection_string",
