@@ -12,7 +12,6 @@ import (
 
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/motherduck/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/marcboeker/go-duckdb"
 	"github.com/rs/zerolog"
@@ -26,10 +25,9 @@ type Client struct {
 	db        *sql.DB
 	conn      driver.Conn // used in Appender
 
-	logger   zerolog.Logger
-	spec     Spec
-	writer   *batchwriter.BatchWriter
-	dbTables schema.Tables // current state of tables, used in Appender
+	logger zerolog.Logger
+	spec   Spec
+	writer *batchwriter.BatchWriter
 }
 
 var _ plugin.Client = (*Client)(nil)

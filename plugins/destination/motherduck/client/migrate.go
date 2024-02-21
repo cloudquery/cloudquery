@@ -28,35 +28,6 @@ type tableInfo struct {
 	columns []columnInfo
 }
 
-func (c *Client) duckDBTables(ctx context.Context, tables schema.Tables) (schema.Tables, error) {
-	var schemaTables schema.Tables
-	for _, table := range tables {
-		info, err := c.getTableInfo(ctx, table.Name)
-		if err != nil {
-			return nil, err
-		}
-		if info == nil {
-			continue
-		}
-		columns := make(schema.ColumnList, len(info.columns))
-		for i, col := range info.columns {
-			columns[i] = schema.Column{
-				Name:       col.name,
-				Type:       duckDBToArrow(col.typ),
-				NotNull:    col.notNull,
-				PrimaryKey: col.pk,
-				Unique:     col.unique,
-			}
-		}
-		schemaTables = append(schemaTables, &schema.Table{
-			Name:    table.Name,
-			Columns: columns,
-		})
-	}
-
-	return schemaTables, nil
-}
-
 func (*Client) normalizeColumns(tables schema.Tables) schema.Tables {
 	var normalized schema.Tables
 	for _, table := range tables {
@@ -131,14 +102,16 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 		tables[i] = msg.Table
 	}
 
-	duckdbTables, err := c.duckDBTables(ctx, tables)
-	if err != nil {
-		return err
+	duckdbTables := make(schema.Tables, 0, len(tables))
+	for _, table := range tables {
+		t, err := c.getTableInfo(ctx, table.Name)
+		if err != nil {
+			return err
+		}
+		if t != nil {
+			duckdbTables = append(duckdbTables, t)
+		}
 	}
-	c.dbTables = duckdbTables
-	defer func() {
-		c.dbTables = c.dbTables.FlattenTables()
-	}()
 
 	normalizedTables := c.normalizeColumns(tables)
 	normalizedTablesSafeMode := make(schema.Tables, 0, len(normalizedTables))
@@ -169,14 +142,10 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 			if err := c.createTableIfNotExist(ctx, table.Name, table); err != nil {
 				return err
 			}
-			c.dbTables = nil // force refresh
 			continue
 		}
 
 		changes := table.GetChanges(duckdb)
-		if len(changes) > 0 {
-			c.dbTables = nil // force refresh
-		}
 		if c.canAutoMigrate(changes) {
 			c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
 			if err := c.autoMigrateTable(ctx, table, changes); err != nil {
@@ -187,13 +156,6 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 			if err := c.recreateTable(ctx, table); err != nil {
 				return err
 			}
-		}
-	}
-
-	if c.dbTables == nil {
-		c.dbTables, err = c.duckDBTables(ctx, tables)
-		if err != nil {
-			return fmt.Errorf("failed to get duckdb tables after migrations: %w", err)
 		}
 	}
 
@@ -274,7 +236,7 @@ func (c *Client) isColumnUnique(ctx context.Context, tableName string, columName
 	return false, nil
 }
 
-func (c *Client) getTableInfo(ctx context.Context, tableName string) (*tableInfo, error) {
+func (c *Client) getTableInfo(ctx context.Context, tableName string) (*schema.Table, error) {
 	info := tableInfo{}
 	rows, err := c.db.QueryContext(ctx, fmt.Sprintf(sqlTableInfo, tableName))
 	if err != nil {
@@ -311,5 +273,20 @@ func (c *Client) getTableInfo(ctx context.Context, tableName string) (*tableInfo
 		// Table doesn't exist
 		return nil, nil
 	}
-	return &info, nil
+
+	columns := make(schema.ColumnList, len(info.columns))
+	for i, col := range info.columns {
+		columns[i] = schema.Column{
+			Name:       col.name,
+			Type:       duckDBToArrow(col.typ),
+			NotNull:    col.notNull,
+			PrimaryKey: col.pk,
+			Unique:     col.unique,
+		}
+	}
+
+	return &schema.Table{
+		Name:    tableName,
+		Columns: columns,
+	}, nil
 }
