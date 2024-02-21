@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.10.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v4.9.1...plugins-destination-s3-v4.10.0) (2024-02-21)
+
+
+### Features
+
+* Add kms keys to s3 destination ([#16785](https://github.com/cloudquery/cloudquery/issues/16785)) ([ca23861](https://github.com/cloudquery/cloudquery/commit/ca2386182763839bfdec179c8f04f66953b9a7f7))
+
 ## [4.9.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v4.9.0...plugins-destination-s3-v4.9.1) (2024-02-20)
 
 
