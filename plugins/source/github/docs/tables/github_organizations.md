@@ -66,6 +66,7 @@ The following tables depend on github_organizations:
 |dependency_graph_enabled_for_new_repositories|`bool`|
 |secret_scanning_enabled_for_new_repositories|`bool`|
 |secret_scanning_push_protection_enabled_for_new_repositories|`bool`|
+|secret_scanning_validity_checks_enabled|`bool`|
 |url|`utf8`|
 |events_url|`utf8`|
 |hooks_url|`utf8`|

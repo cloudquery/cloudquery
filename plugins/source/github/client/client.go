@@ -13,7 +13,7 @@ import (
 	"github.com/beatlabs/github-auth/key"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/gofri/go-github-ratelimit/github_ratelimit"
-	"github.com/google/go-github/v49/github"
+	"github.com/google/go-github/v59/github"
 	"github.com/rs/zerolog"
 	"golang.org/x/oauth2"
 	"golang.org/x/sync/errgroup"

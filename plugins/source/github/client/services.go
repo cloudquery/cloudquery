@@ -3,7 +3,7 @@ package client
 import (
 	"context"
 
-	"github.com/google/go-github/v49/github"
+	"github.com/google/go-github/v59/github"
 )
 
 type GithubServices struct {

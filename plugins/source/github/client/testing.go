@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/golang/mock/gomock"
-	"github.com/google/go-github/v49/github"
+	"github.com/google/go-github/v59/github"
 	"github.com/rs/zerolog"
 )
 
