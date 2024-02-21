@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/motherduck/client/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Spec": {
+      "properties": {
+        "connection_string": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Absolute or relative path to a file, such as `./example.duckdb`"
+        },
+        "batch_size": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum number of items that may be grouped together to be written in a single write.",
+          "default": 1000
+        },
+        "batch_size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum size of items that may be grouped together to be written in a single write.",
+          "default": 4194304
+        },
+        "debug": {
+          "type": "boolean",
+          "description": "Enables debug logging",
+          "default": false
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "connection_string"
+      ]
+    }
+  }
+}
