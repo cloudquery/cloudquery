@@ -28,35 +28,6 @@ type tableInfo struct {
 	columns []columnInfo
 }
 
-func (c *Client) duckDBTables(ctx context.Context, tables schema.Tables) (schema.Tables, error) {
-	var schemaTables schema.Tables
-	for _, table := range tables {
-		info, err := c.getTableInfo(ctx, table.Name)
-		if err != nil {
-			return nil, err
-		}
-		if info == nil {
-			continue
-		}
-		columns := make(schema.ColumnList, len(info.columns))
-		for i, col := range info.columns {
-			columns[i] = schema.Column{
-				Name:       col.name,
-				Type:       duckDBToArrow(col.typ),
-				NotNull:    col.notNull,
-				PrimaryKey: col.pk,
-				Unique:     col.unique,
-			}
-		}
-		schemaTables = append(schemaTables, &schema.Table{
-			Name:    table.Name,
-			Columns: columns,
-		})
-	}
-
-	return schemaTables, nil
-}
-
 func (*Client) normalizeColumns(tables schema.Tables) schema.Tables {
 	var normalized schema.Tables
 	for _, table := range tables {
@@ -131,9 +102,15 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 		tables[i] = msg.Table
 	}
 
-	duckdbTables, err := c.duckDBTables(ctx, tables)
-	if err != nil {
-		return err
+	duckdbTables := make(schema.Tables, 0, len(tables))
+	for _, table := range tables {
+		t, err := c.getTableInfo(ctx, table.Name)
+		if err != nil {
+			return err
+		}
+		if t != nil {
+			duckdbTables = append(duckdbTables, t)
+		}
 	}
 
 	normalizedTables := c.normalizeColumns(tables)
@@ -262,7 +239,7 @@ func (c *Client) isColumnUnique(ctx context.Context, tableName string, columName
 	return false, nil
 }
 
-func (c *Client) getTableInfo(ctx context.Context, tableName string) (*tableInfo, error) {
+func (c *Client) getTableInfo(ctx context.Context, tableName string) (*schema.Table, error) {
 	info := tableInfo{}
 	rows, err := c.db.QueryContext(ctx, fmt.Sprintf(sqlTableInfo, tableName))
 	if err != nil {
@@ -299,7 +276,22 @@ func (c *Client) getTableInfo(ctx context.Context, tableName string) (*tableInfo
 		// Table doesn't exist
 		return nil, nil
 	}
-	return &info, nil
+
+	columns := make(schema.ColumnList, len(info.columns))
+	for i, col := range info.columns {
+		columns[i] = schema.Column{
+			Name:       col.name,
+			Type:       duckDBToArrow(col.typ),
+			NotNull:    col.notNull,
+			PrimaryKey: col.pk,
+			Unique:     col.unique,
+		}
+	}
+
+	return &schema.Table{
+		Name:    tableName,
+		Columns: columns,
+	}, nil
 }
 
 func (c *Client) removeTableInfoCache(tableName string) {
@@ -316,16 +308,16 @@ func (c *Client) getCacheTableInfo(ctx context.Context, tableName string) (*sche
 		return duckdbTableInfo, nil
 	}
 
-	tbls, err := c.duckDBTables(ctx, schema.Tables{&schema.Table{Name: tableName}})
+	t, err := c.getTableInfo(ctx, tableName)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get table metadata: %w", err)
 	}
-	if len(tbls) != 1 {
-		return nil, fmt.Errorf("expected 1 table, got %d", len(tbls))
+	if t == nil {
+		return nil, fmt.Errorf("table not found")
 	}
 
 	c.dbTablesMu.Lock()
-	c.dbTables[tableName] = tbls[0]
+	c.dbTables[tableName] = t
 	c.dbTablesMu.Unlock()
-	return tbls[0], nil
+	return t, nil
 }
