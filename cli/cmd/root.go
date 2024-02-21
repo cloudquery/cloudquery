@@ -115,7 +115,7 @@ func NewCmdRoot() *cobra.Command {
 	// Logging Flags
 	cmd.PersistentFlags().BoolVar(&logConsole, "log-console", false, "enable console logging")
 	cmd.PersistentFlags().Var(logFormat, "log-format", "Logging format (json, text)")
-	cmd.PersistentFlags().Var(logLevel, "log-level", "Logging level")
+	cmd.PersistentFlags().Var(logLevel, "log-level", "Logging level (trace, debug, info, warn, error)")
 	cmd.PersistentFlags().BoolVar(&noLogFile, "no-log-file", false, "Disable logging to file")
 	cmd.PersistentFlags().StringVar(&logFileName, "log-file-name", "cloudquery.log", "Log filename")
 
