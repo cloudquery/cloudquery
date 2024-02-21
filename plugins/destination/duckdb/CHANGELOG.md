@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.2.1...plugins-destination-duckdb-v5.3.0) (2024-02-21)
+
+
+### Features
+
+* Add binary and large type handling ([#16772](https://github.com/cloudquery/cloudquery/issues/16772)) ([7a2a4d6](https://github.com/cloudquery/cloudquery/commit/7a2a4d6e201c6890e057a8ecebe009aa94e6c671))
+
+
+### Bug Fixes
+
+* Sanitize ID in queries, better debug logging ([#16727](https://github.com/cloudquery/cloudquery/issues/16727)) ([05f0dcd](https://github.com/cloudquery/cloudquery/commit/05f0dcdb9b3a799729a0d9d4e950b100fb104838))
+
 ## [5.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.2.0...plugins-destination-duckdb-v5.2.1) (2024-02-20)
 
 
