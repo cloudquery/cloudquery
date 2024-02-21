@@ -61,6 +61,30 @@ func transformArray(arr arrow.Array) arrow.Array {
 		return transformDate32ToTimestamp(arr)
 	case *array.Date64:
 		return transformDate64ToTimestamp(arr)
+	case *array.LargeBinary:
+		bldr := array.NewBinaryBuilder(memory.DefaultAllocator, arrow.BinaryTypes.Binary)
+		defer bldr.Release()
+		for i := 0; i < arr.Len(); i++ {
+			if arr.IsNull(i) {
+				bldr.AppendNull()
+				continue
+			}
+			val := arr.Value(i)
+			bldr.Append(val)
+		}
+		return bldr.NewBinaryArray()
+	case *array.LargeString:
+		bldr := array.NewStringBuilder(memory.DefaultAllocator)
+		defer bldr.Release()
+		for i := 0; i < arr.Len(); i++ {
+			if arr.IsNull(i) {
+				bldr.AppendNull()
+				continue
+			}
+			val := arr.Value(i)
+			bldr.Append(val)
+		}
+		return bldr.NewStringArray()
 	default:
 		return transformToStringArray(arr)
 	}
