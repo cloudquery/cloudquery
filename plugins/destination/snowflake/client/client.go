@@ -35,7 +35,7 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClie
 		return nil, fmt.Errorf("failed to unmarshal snowflake spec: %w", err)
 	}
 	c.spec.SetDefaults()
-	c.writer, err = batchwriter.New(c, batchwriter.WithLogger(logger), batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
+	c.writer, err = batchwriter.New(c, batchwriter.WithLogger(c.logger), batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
 	if err != nil {
 		return nil, err
 	}

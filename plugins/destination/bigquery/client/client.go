@@ -42,7 +42,7 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte, opts plugin
 		return nil, err
 	}
 	c.writer, err = batchwriter.New(c,
-		batchwriter.WithLogger(logger),
+		batchwriter.WithLogger(c.logger),
 		batchwriter.WithBatchSize(c.spec.BatchSize),
 		batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes),
 		batchwriter.WithBatchTimeout(c.spec.BatchTimeout.Duration()),
