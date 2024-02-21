@@ -129,28 +129,6 @@ func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) er
 	return nil
 }
 
-func (c *Client) tableInfo(ctx context.Context, tableName string) (*schema.Table, error) {
-	c.dbTablesMu.RLock()
-	duckdbTableInfo := c.dbTables[tableName]
-	c.dbTablesMu.RUnlock()
-	if duckdbTableInfo != nil {
-		return duckdbTableInfo, nil
-	}
-
-	tbls, err := c.duckDBTables(ctx, schema.Tables{&schema.Table{Name: tableName}})
-	if err != nil {
-		return nil, fmt.Errorf("failed to get table metadata: %w", err)
-	}
-	if len(tbls) != 1 {
-		return nil, fmt.Errorf("expected 1 table, got %d", len(tbls))
-	}
-
-	c.dbTablesMu.Lock()
-	c.dbTables[tableName] = tbls[0]
-	c.dbTablesMu.Unlock()
-	return tbls[0], nil
-}
-
 func (c *Client) appendRows(ctx context.Context, table *schema.Table, msgs message.WriteInserts) (retErr error) {
 	if c.conn == nil {
 		// connecting before MigrateTable results in appender creation failure
@@ -172,7 +150,7 @@ func (c *Client) appendRows(ctx context.Context, table *schema.Table, msgs messa
 		}
 	}()
 
-	tableState, err := c.tableInfo(ctx, table.Name)
+	tableState, err := c.getCacheTableInfo(ctx, table.Name)
 	if err != nil {
 		return fmt.Errorf("table %s not found in duckdb: %w", table.Name, err) // should never happen as appender would've failed
 	}

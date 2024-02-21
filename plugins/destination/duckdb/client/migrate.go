@@ -169,6 +169,9 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 		}
 
 		changes := table.GetChanges(duckdb)
+		if len(changes) > 0 {
+			c.removeTableInfoCache(table.Name)
+		}
 		if c.canAutoMigrate(changes) {
 			c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
 			if err := c.autoMigrateTable(ctx, table, changes); err != nil {
@@ -297,4 +300,32 @@ func (c *Client) getTableInfo(ctx context.Context, tableName string) (*tableInfo
 		return nil, nil
 	}
 	return &info, nil
+}
+
+func (c *Client) removeTableInfoCache(tableName string) {
+	c.dbTablesMu.Lock()
+	delete(c.dbTables, tableName)
+	c.dbTablesMu.Unlock()
+}
+
+func (c *Client) getCacheTableInfo(ctx context.Context, tableName string) (*schema.Table, error) {
+	c.dbTablesMu.RLock()
+	duckdbTableInfo := c.dbTables[tableName]
+	c.dbTablesMu.RUnlock()
+	if duckdbTableInfo != nil {
+		return duckdbTableInfo, nil
+	}
+
+	tbls, err := c.duckDBTables(ctx, schema.Tables{&schema.Table{Name: tableName}})
+	if err != nil {
+		return nil, fmt.Errorf("failed to get table metadata: %w", err)
+	}
+	if len(tbls) != 1 {
+		return nil, fmt.Errorf("expected 1 table, got %d", len(tbls))
+	}
+
+	c.dbTablesMu.Lock()
+	c.dbTables[tableName] = tbls[0]
+	c.dbTablesMu.Unlock()
+	return tbls[0], nil
 }
