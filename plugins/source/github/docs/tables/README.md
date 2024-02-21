@@ -21,6 +21,7 @@
   - [github_repository_dependabot_alerts](github_repository_dependabot_alerts.md)
   - [github_repository_dependabot_secrets](github_repository_dependabot_secrets.md)
   - [github_repository_keys](github_repository_keys.md)
+  - [github_repository_sboms](github_repository_sboms.md)
 - [github_teams](github_teams.md)
   - [github_team_members](github_team_members.md)
   - [github_team_repositories](github_team_repositories.md)

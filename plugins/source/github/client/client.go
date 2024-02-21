@@ -141,13 +141,14 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 
 func servicesForClient(c *github.Client) GithubServices {
 	return GithubServices{
-		Actions:       c.Actions,
-		Billing:       c.Billing,
-		Dependabot:    c.Dependabot,
-		Issues:        c.Issues,
-		Organizations: c.Organizations,
-		Repositories:  c.Repositories,
-		Teams:         c.Teams,
+		Actions:         c.Actions,
+		Billing:         c.Billing,
+		Dependabot:      c.Dependabot,
+		Issues:          c.Issues,
+		Organizations:   c.Organizations,
+		Repositories:    c.Repositories,
+		Teams:           c.Teams,
+		DependencyGraph: c.DependencyGraph,
 	}
 }
 

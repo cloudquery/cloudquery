@@ -12,6 +12,7 @@ The following tables depend on github_repositories:
   - [github_repository_dependabot_alerts](github_repository_dependabot_alerts.md)
   - [github_repository_dependabot_secrets](github_repository_dependabot_secrets.md)
   - [github_repository_keys](github_repository_keys.md)
+  - [github_repository_sboms](github_repository_sboms.md)
 
 ## Columns
 

@@ -12,6 +12,14 @@ import (
 
 func buildRepositories(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
 	mock := mocks.NewMockRepositoriesService(ctrl)
+	dependencyGraph := mocks.NewMockDependencyGraphService(ctrl)
+
+	var sbom github.SBOM
+	if err := faker.FakeObject(&sbom); err != nil {
+		t.Fatal(err)
+	}
+	dependencyGraph.EXPECT().GetSBOM(gomock.Any(), "testorg", gomock.Any()).Return(
+		&sbom, &github.Response{}, nil)
 
 	var release github.RepositoryRelease
 	if err := faker.FakeObject(&release); err != nil {
@@ -56,8 +64,9 @@ func buildRepositories(t *testing.T, ctrl *gomock.Controller) client.GithubServi
 		[]*github.Key{&key}, &github.Response{}, nil)
 
 	return client.GithubServices{
-		Dependabot:   dependabot,
-		Repositories: mock,
+		Dependabot:      dependabot,
+		Repositories:    mock,
+		DependencyGraph: dependencyGraph,
 	}
 }
 

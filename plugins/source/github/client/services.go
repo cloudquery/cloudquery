@@ -7,13 +7,14 @@ import (
 )
 
 type GithubServices struct {
-	Actions       ActionsService
-	Billing       BillingService
-	Dependabot    DependabotService
-	Issues        IssuesService
-	Organizations OrganizationsService
-	Repositories  RepositoriesService
-	Teams         TeamsService
+	Actions         ActionsService
+	Billing         BillingService
+	Dependabot      DependabotService
+	Issues          IssuesService
+	Organizations   OrganizationsService
+	Repositories    RepositoriesService
+	Teams           TeamsService
+	DependencyGraph DependencyGraphService
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_teams.go . TeamsService
@@ -80,4 +81,9 @@ type DependabotService interface {
 
 	ListRepoSecrets(ctx context.Context, owner, repo string, opts *github.ListOptions) (*github.Secrets, *github.Response, error)
 	ListOrgSecrets(ctx context.Context, org string, opts *github.ListOptions) (*github.Secrets, *github.Response, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_dependency_graph.go . DependencyGraphService
+type DependencyGraphService interface {
+	GetSBOM(ctx context.Context, owner, repo string) (*github.SBOM, *github.Response, error)
 }
