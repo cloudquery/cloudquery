@@ -53,6 +53,10 @@ This is the (nested) spec used by the CSV destination Plugin.
 
   Optional parameters to change the format of the file.
 
+- `server_side_encryption_configuration` ([server_side_encryption_configuration](#server_side_encryption_configuration)) (optional)
+
+  Optional parameters to enable server-side encryption.
+
 - `compression` (`string`) (optional) (default: `""`)
 
   Compression algorithm to use. Supported values are `""` or `gzip`. Not supported for `parquet` format.
@@ -109,6 +113,16 @@ This is the (nested) spec used by the CSV destination Plugin.
 - `skip_header` (`boolean`) (optional) (default: `false`)
 
   Specifies if the first line of a file should be the headers (when format is `csv`).
+
+### server_side_encryption_configuration
+
+- `sse_kms_key_id` (`string`) (required)
+
+  KMS Key ID appended to S3 API calls header. Used in conjunction with `server_side_encryption`.
+
+- `server_side_encryption` (`string`) (required)
+
+  The server-side encryption algorithm used when storing the object in S3. Supported values are `AES256`, `aws:kms` and `aws:kms:dsse`.
 
 ## Authentication
 
