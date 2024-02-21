@@ -32,6 +32,8 @@ func transformArray(arr arrow.Array) arrow.Array {
 		return transformTimestamp(duckDBToArrow(arrowToDuckDB(arr.DataType())).(*arrow.TimestampType), arr)
 	case *array.Struct:
 		return transformStruct(arr)
+	case *array.Map:
+		return transformMap(arr)
 	case array.ListLike: // this includes maps, too
 		return array.MakeFromData(array.NewData(
 			transformTypeForWriting(arr.DataType()), arr.Len(),
@@ -99,6 +101,20 @@ func transformUint8ToUint32Array(arr *array.Uint8) arrow.Array {
 }
 
 func transformStruct(arr *array.Struct) arrow.Array {
+	bldr := array.NewStringBuilder(memory.DefaultAllocator)
+	defer bldr.Release()
+
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsNull(i) {
+			bldr.AppendNull()
+			continue
+		}
+		bldr.Append(arr.ValueStr(i))
+	}
+	return bldr.NewStringArray()
+}
+
+func transformMap(arr *array.Map) arrow.Array {
 	bldr := array.NewStringBuilder(memory.DefaultAllocator)
 	defer bldr.Release()
 

@@ -137,6 +137,12 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 			0, // we use 0 as offset for struct arrays, as the child arrays would already be sliced properly
 		))
 	case arrow.ListLikeType: // also handles maps
+		if mapdt, ok := dt.(*arrow.MapType); ok {
+			if sarr, ok := arr.(*array.String); ok {
+				return reverseTransformMap(mapdt, sarr)
+			}
+		}
+
 		return array.MakeFromData(array.NewData(
 			dt, arr.Len(),
 			arr.Data().Buffers(),
@@ -198,6 +204,20 @@ func reverseTransformStruct(dt *arrow.StructType, arr *array.String) arrow.Array
 	return bldr.NewStructArray()
 }
 
+func reverseTransformMap(dt *arrow.MapType, arr *array.String) arrow.Array {
+	bldr := array.NewMapBuilder(memory.DefaultAllocator, dt.KeyType(), dt.ItemType(), dt.KeysSorted)
+	defer bldr.Release()
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsNull(i) {
+			bldr.AppendNull()
+			continue
+		}
+		if err := bldr.AppendValueFromString(arr.Value(i)); err != nil {
+			panic(err)
+		}
+	}
+	return bldr.NewMapArray()
+}
 func reverseTransformUint8(arr *array.Uint32) arrow.Array {
 	builder := array.NewUint8Builder(memory.DefaultAllocator)
 	for i := 0; i < arr.Len(); i++ {

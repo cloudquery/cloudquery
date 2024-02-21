@@ -22,10 +22,8 @@ func transformFieldsForWriting(fields []arrow.Field) []arrow.Field {
 
 func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
 	switch dt := dt.(type) {
-	case *arrow.StructType:
+	case *arrow.StructType, *arrow.MapType:
 		return arrow.BinaryTypes.String
-	case *arrow.MapType:
-		return arrow.MapOf(transformTypeForWriting(dt.KeyType()), transformTypeForWriting(dt.ItemType()))
 	case arrow.ListLikeType:
 		return arrow.ListOf(transformTypeForWriting(dt.Elem()))
 	case *types.UUIDType, *types.JSONType:
@@ -37,10 +35,8 @@ func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
 
 func arrowToDuckDB(dt arrow.DataType) string {
 	switch dt := dt.(type) {
-	case *arrow.StructType:
+	case *arrow.StructType, *arrow.MapType:
 		return "json"
-	case *arrow.MapType:
-		return "map(" + arrowToDuckDB(dt.KeyType()) + ", " + arrowToDuckDB(dt.ItemType()) + ")"
 	case arrow.ListLikeType:
 		return arrowToDuckDB(dt.Elem()) + "[]"
 	case *arrow.BooleanType:
