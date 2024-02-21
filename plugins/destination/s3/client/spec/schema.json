@@ -276,7 +276,7 @@
         },
         "sse_kms_key_id": {
           "type": "string",
-          "description": "SSE KMS Key ID appened to S3 API calls header. Used in conjuction with server_side_encryption.",
+          "description": "SSE KMS Key ID appended to S3 API calls header. Used in conjunction with server_side_encryption.",
           "default": ""
         },
         "server_side_encryption": {

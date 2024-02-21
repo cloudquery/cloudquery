@@ -63,7 +63,7 @@ type Spec struct {
 	// **Note**: if you want to use path-style addressing, i.e., `https://s3.amazonaws.com/BUCKET/KEY`, `use_path_style` should be enabled, too.
 	Endpoint string `json:"endpoint,omitempty"  jsonschema:"default="`
 
-	// SSE KMS Key ID appened to S3 API calls header. Used in conjuction with server_side_encryption.
+	// SSE KMS Key ID appended to S3 API calls header. Used in conjunction with server_side_encryption.
 	SSEKMSKeyId string `json:"sse_kms_key_id,omitempty" jsonschema:"default="`
 
 	// Server Side Encryption header which declares encryption type in S3 API calls header: x-amz-server-side-encryption.
