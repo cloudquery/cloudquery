@@ -75,11 +75,11 @@ function getStaticVersions() {
 }
 
 async function getHubVersions() {
-  const response = await fetch("https://api.cloudquery.io/plugins");
+  const response = await fetch("https://api.cloudquery.io/plugins?per_page=1000");
   const { items: allPlugins } = await response.json();
-  const paidPlugins = allPlugins.filter((plugin) => plugin.tier === "paid" && plugin.team_name === "cloudquery" && plugin.latest_version);
-  const sources = paidPlugins.filter((plugin) => plugin.kind === "source");
-  const destinations = paidPlugins.filter((plugin) => plugin.kind === "destination");
+  const cloudqueryPlugins = allPlugins.filter((plugin) => plugin.team_name === "cloudquery" && plugin.latest_version);
+  const sources = cloudqueryPlugins.filter((plugin) => plugin.kind === "source");
+  const destinations = cloudqueryPlugins.filter((plugin) => plugin.kind === "destination");
 
   return {
     sources: Object.fromEntries(
@@ -99,12 +99,12 @@ async function getVersions() {
   return {
     ...staticVersions,
     sources: {
-      ...hubVersions.sources,
       ...staticVersions.sources,
+      ...hubVersions.sources,
     },
     destinations: {
-      ...hubVersions.destinations,
       ...staticVersions.destinations,
+      ...hubVersions.destinations,
     },
   };
 }
