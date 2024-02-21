@@ -47,9 +47,8 @@ func TestPlugin(t *testing.T) {
 			// not supported in Parquet Writer
 			SkipDurations: true,
 			SkipIntervals: true,
-			// not supported in Appender:
-			SkipMaps:    true,
-			SkipStructs: true,
+			// not supported in Appender
+			SkipMaps: true,
 		}),
 	)
 }

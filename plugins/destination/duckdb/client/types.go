@@ -23,7 +23,7 @@ func transformFieldsForWriting(fields []arrow.Field) []arrow.Field {
 func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
 	switch dt := dt.(type) {
 	case *arrow.StructType:
-		return arrow.StructOf(transformFieldsForWriting(dt.Fields())...)
+		return arrow.BinaryTypes.String
 	case *arrow.MapType:
 		return arrow.MapOf(transformTypeForWriting(dt.KeyType()), transformTypeForWriting(dt.ItemType()))
 	case arrow.ListLikeType:
@@ -38,21 +38,7 @@ func transformTypeForWriting(dt arrow.DataType) arrow.DataType {
 func arrowToDuckDB(dt arrow.DataType) string {
 	switch dt := dt.(type) {
 	case *arrow.StructType:
-		// use json for struct types for appender compatibility
 		return "json"
-	/*
-		case *arrow.StructType:
-			builder := new(strings.Builder)
-			builder.WriteString("struct(")
-			for i, field := range dt.Fields() {
-				if i > 0 {
-					builder.WriteString(", ")
-				}
-				builder.WriteString(sanitizeID(field.Name) + " " + arrowToDuckDB(field.Type))
-			}
-			builder.WriteString(")")
-			return builder.String()
-	*/
 	case *arrow.MapType:
 		return "map(" + arrowToDuckDB(dt.KeyType()) + ", " + arrowToDuckDB(dt.ItemType()) + ")"
 	case arrow.ListLikeType:
