@@ -1,5 +1,17 @@
 # Changelog
 
+## [8.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v7.7.1...plugins-source-github-v8.0.0) (2024-02-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* Bump `go-github` to v59 in Github plugin ([#16797](https://github.com/cloudquery/cloudquery/issues/16797))
+
+### Features
+
+* Add `github_repository_sboms` table to sync Github SBOM data ([#16796](https://github.com/cloudquery/cloudquery/issues/16796)) ([992434f](https://github.com/cloudquery/cloudquery/commit/992434f7e3f2c90d4f84d53495907f298f3cee31))
+* Bump `go-github` to v59 in Github plugin ([#16797](https://github.com/cloudquery/cloudquery/issues/16797)) ([5b89ef6](https://github.com/cloudquery/cloudquery/commit/5b89ef641d415c6f88dce1a461ab05f7c1625ff3))
+
 ## [7.7.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v7.7.0...plugins-source-github-v7.7.1) (2024-02-20)
 
 
