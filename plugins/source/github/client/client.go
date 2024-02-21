@@ -233,7 +233,7 @@ func githubClientForHTTPClient(httpClient *http.Client, logger zerolog.Logger, e
 	}
 
 	if enterpriseSettings != nil {
-		return github.NewEnterpriseClient(enterpriseSettings.BaseURL, enterpriseSettings.UploadURL, rateLimiter)
+		return github.NewClient(rateLimiter).WithEnterpriseURLs(enterpriseSettings.BaseURL, enterpriseSettings.UploadURL)
 	}
 
 	return github.NewClient(rateLimiter), nil
