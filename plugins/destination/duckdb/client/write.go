@@ -76,9 +76,9 @@ func (c *Client) upsert(ctx context.Context, tmpTableName string, table *schema.
 		if written > 0 {
 			sb.WriteString(", ")
 		}
-		sb.WriteString(col.Name)
+		sb.WriteString(sanitizeID(col.Name))
 		sb.WriteString(" = excluded.")
-		sb.WriteString(col.Name)
+		sb.WriteString(sanitizeID(col.Name))
 		written++
 	}
 	query := sb.String()
@@ -101,9 +101,9 @@ func (c *Client) deleteByPK(ctx context.Context, tmpTableName string, table *sch
 		if i > 0 {
 			sb.WriteString(" and ")
 		}
-		sb.WriteString(table.Name + "." + col)
+		sb.WriteString(table.Name + "." + sanitizeID(col))
 		sb.WriteString(" = ")
-		sb.WriteString(tmpTableName + "." + col)
+		sb.WriteString(tmpTableName + "." + sanitizeID(col))
 	}
 
 	return c.exec(ctx, sb.String())
@@ -130,13 +130,20 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 		return nil
 	}
 	table := msgs[0].GetTable()
+
+	writeStart := time.Now()
 	tmpFile, err := writeTMPFile(table, msgs)
 	if err != nil {
 		return err
 	}
+	c.logger.Debug().Str("table", table.Name).Str("duration", time.Since(writeStart).String()).Msg("write tmp file")
 	defer os.Remove(tmpFile)
 
 	if len(table.PrimaryKeys()) == 0 {
+		copyStart := time.Now()
+		defer func() {
+			c.logger.Debug().Str("table", table.Name).Str("duration", time.Since(copyStart).String()).Msg("copy file to table")
+		}()
 		return c.copyFromFile(ctx, name, tmpFile, table)
 	}
 
@@ -151,6 +158,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 			err = e
 		}
 	}()
+
 	if err := c.copyFromFile(ctx, tmpTableName, tmpFile, table); err != nil {
 		return fmt.Errorf("failed to copy from file %s: %w", tmpFile, err)
 	}
@@ -182,6 +190,7 @@ func writeTMPFile(table *schema.Table, msgs []*message.WriteInsert) (fileName st
 		parquet.NewWriterProperties(
 			parquet.WithVersion(parquet.V2_LATEST),       // use latest
 			parquet.WithMaxRowGroupLength(128*1024*1024), // 128M
+			// parquet.WithCompression(compress.Codecs.Snappy),
 		),
 		pqarrow.NewArrowWriterProperties(pqarrow.WithStoreSchema()),
 	)

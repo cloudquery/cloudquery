@@ -2,6 +2,8 @@
 
 This table shows data for GCP Compute Projects.
 
+https://cloud.google.com/compute/docs/reference/rest/v1/projects#resource:-project
+
 The primary key for this table is **self_link**.
 
 ## Columns

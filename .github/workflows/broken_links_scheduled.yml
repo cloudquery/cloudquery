@@ -37,6 +37,8 @@ jobs:
             --exclude "${{ steps.vercel.outputs.url }}/register-for-marketplace" \
             --exclude "${{ steps.vercel.outputs.url }}/blog" \
             --exclude "${{ steps.vercel.outputs.url }}/blog/*" \
+            --exclude "${{ steps.vercel.outputs.url }}/integrations" \
+            --exclude "${{ steps.vercel.outputs.url }}/integrations/*" \
             --exclude linkedin \
             --exclude cloudquery.io/discord \
             --exclude cloudquery.io/buy \

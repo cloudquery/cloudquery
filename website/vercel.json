@@ -989,6 +989,74 @@
     {
       "source": "/blog/:path*",
       "destination": "https://www.cloudquery.io/blog/:path*"
+    },
+    {
+      "source": "/integrations",
+      "destination": "https://hub.cloudquery.io/plugins/source"
+    },
+    {
+      "source": "/integrations/coinpaprika",
+      "destination": "https://hub.cloudquery.io/plugins/source/coinpaprika/coinpaprika/latest/destinations"
+    },
+    {
+      "source": "/integrations/crowdstrike",
+      "destination": "https://hub.cloudquery.io/plugins/source/justmiles/crowdstrike/latest/destinations"
+    },
+    {
+      "source": "/integrations/onfleet",
+      "destination": "https://hub.cloudquery.io/plugins/source/onfleet/onfleet/latest/destinations"
+    },
+    {
+      "source": "/integrations/scaleway",
+      "destination": "https://hub.cloudquery.io/plugins/source/scaleway/scaleway/latest/destinations"
+    },
+    {
+      "source": "/integrations/sharepoint",
+      "destination": "https://hub.cloudquery.io/plugins/source/koltyakov/sharepoint/latest/destinations"
+    },
+    {
+      "source": "/integrations/simple-analytics",
+      "destination": "https://hub.cloudquery.io/plugins/source/simple-analytics/simple-analytics/latest/destinations"
+    },
+    {
+      "source": "/integrations/swetrix",
+      "destination": "https://hub.cloudquery.io/plugins/source/swetrix/swetrix/latest/destinations"
+    },
+    {
+      "source": "/integrations/coinpaprika/:destination",
+      "destination": "https://hub.cloudquery.io/export-data/coinpaprika_coinpaprika/:destination"
+    },
+    {
+      "source": "/integrations/crowdstrike/:destination",
+      "destination": "https://hub.cloudquery.io/export-data/justmiles_crowdstrike/:destination"
+    },
+    {
+      "source": "/integrations/onfleet/:destination",
+      "destination": "https://hub.cloudquery.io/export-data/onfleet_onfleet/:destination"
+    },
+    {
+      "source": "/integrations/scaleway/:destination",
+      "destination": "https://hub.cloudquery.io/export-data/scaleway_scaleway/:destination"
+    },
+    {
+      "source": "/integrations/sharepoint/:destination",
+      "destination": "https://hub.cloudquery.io/export-data/koltyakov_sharepoint/:destination"
+    },
+    {
+      "source": "/integrations/simple-analytics/:destination",
+      "destination": "https://hub.cloudquery.io/export-data/simple-analytics_simple-analytics/:destination"
+    },
+    {
+      "source": "/integrations/swetrix/:destination",
+      "destination": "https://hub.cloudquery.io/export-data/swetrix_swetrix/:destination"
+    },
+    {
+      "source": "/integrations/:source",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/:source/latest/destinations"
+    },
+    {
+      "source": "/integrations/:source/:destination",
+      "destination": "https://hub.cloudquery.io/export-data/:source/:destination"
     }
   ]
 }
