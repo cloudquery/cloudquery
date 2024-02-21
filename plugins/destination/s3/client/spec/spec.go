@@ -9,6 +9,8 @@ import (
 
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
+
+	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 )
 
 const (
@@ -60,6 +62,12 @@ type Spec struct {
 	// Endpoint to use for S3 API calls. This is useful for S3-compatible storage services such as MinIO.
 	// **Note**: if you want to use path-style addressing, i.e., `https://s3.amazonaws.com/BUCKET/KEY`, `use_path_style` should be enabled, too.
 	Endpoint string `json:"endpoint,omitempty"  jsonschema:"default="`
+
+	// SSE KMS Key ID appened to S3 API calls header. Used in conjuction with server_side_encryption.
+	SSEKMSKeyId string `json:"sse_kms_key_id,omitempty" jsonschema:"default="`
+
+	//Server Side Encryption header which declares encryption type in S3 API calls header: x-amz-server-side-encryption.
+	ServerSideEncryption types.ServerSideEncryption `json:"server_side_encryption,omitempty" jsonschema:"default="`
 
 	// Allows to use path-style addressing in the `endpoint` option, i.e., `https://s3.amazonaws.com/BUCKET/KEY`.
 	// By default, the S3 client will use virtual hosted bucket addressing when possible (`https://BUCKET.s3.amazonaws.com/KEY`).
