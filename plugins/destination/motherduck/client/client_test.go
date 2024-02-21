@@ -14,7 +14,7 @@ func TestPlugin(t *testing.T) {
 	ctx := context.Background()
 	p := plugin.NewPlugin("motherduck", "development", New)
 	spec := Spec{
-		ConnectionString: "?threads=1", // use local DuckDB to test
+		ConnectionString: "?threads=1",
 		Debug:            true,
 	}
 	specBytes, err := json.Marshal(spec)
@@ -25,7 +25,7 @@ func TestPlugin(t *testing.T) {
 	p.SetLogger(zerolog.New(zerolog.NewTestWriter(t)).Level(zerolog.DebugLevel))
 
 	delayAfterDeleteStale = true
-	localDuckDB = true
+	localDuckDB = true // use local DuckDB to test
 	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
 		t.Fatal(err)
 	}
