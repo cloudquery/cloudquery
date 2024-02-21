@@ -26,6 +26,8 @@ area/plugin/destination/meilisearch:
   - plugins/destination/meilisearch/**/*
 area/plugin/destination/mongodb:
   - plugins/destination/mongodb/**/*
+area/plugin/destination/motherduck:
+  - plugins/destination/motherduck/**/*
 area/plugin/destination/mssql:
   - plugins/destination/mssql/**/*
 area/plugin/destination/mysql:
