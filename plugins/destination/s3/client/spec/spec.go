@@ -66,8 +66,8 @@ type Spec struct {
 	// SSE KMS Key ID appened to S3 API calls header. Used in conjuction with server_side_encryption.
 	SSEKMSKeyId string `json:"sse_kms_key_id,omitempty" jsonschema:"default="`
 
-	//Server Side Encryption header which declares encryption type in S3 API calls header: x-amz-server-side-encryption.
-	ServerSideEncryption types.ServerSideEncryption `json:"server_side_encryption,omitempty" jsonschema:"default="`
+	// Server Side Encryption header which declares encryption type in S3 API calls header: x-amz-server-side-encryption.
+	ServerSideEncryption types.ServerSideEncryption `json:"server_side_encryption,omitempty" jsonschema:"enum=AES256,enum=aws:kms,enum=aws:kms:dsse"`
 
 	// Allows to use path-style addressing in the `endpoint` option, i.e., `https://s3.amazonaws.com/BUCKET/KEY`.
 	// By default, the S3 client will use virtual hosted bucket addressing when possible (`https://BUCKET.s3.amazonaws.com/KEY`).
