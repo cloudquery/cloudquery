@@ -85,7 +85,7 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.Ne
 		logger:   l,
 	}
 	c.writer, err = batchwriter.New(c,
-		batchwriter.WithLogger(l),
+		batchwriter.WithLogger(c.logger),
 		batchwriter.WithBatchSize(s.BatchSize),
 		batchwriter.WithBatchSizeBytes(s.BatchSizeBytes),
 		batchwriter.WithBatchTimeout(s.BatchTimeout.Duration()),
