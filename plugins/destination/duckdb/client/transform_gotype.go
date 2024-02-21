@@ -106,30 +106,35 @@ func getValue(arr arrow.Array, i int) any {
 		// unsupported in appender: use string
 		return arr.ValueStr(i)
 	case array.ListLike: // should be after *array.Map
-		from, to := arr.ValueOffsets(i)
-		slice := array.NewSlice(arr.ListValues(), from, to)
-		defer slice.Release()
-
-		lv := getTypedNilValue(arr.ListValues())
-		val := reflect.MakeSlice(reflect.SliceOf(reflect.TypeOf(lv)), slice.Len(), slice.Len())
-		for i := 0; i < slice.Len(); i++ {
-			if slice.IsNull(i) {
-				val.Index(i).SetZero() // not sure if this is necessary
-				continue
-			}
-			// slice of pointers, make everything a pointer
-			sv := reflect.ValueOf(getValue(slice, i))
-			psv := reflect.New(sv.Type())
-			psv.Elem().Set(sv)
-			val.Index(i).Set(psv)
-		}
-		return val.Interface()
+		return arrowListToGoSlice(arr, i)
 	case *array.Struct:
 		// Can't create a Go struct dynamically and maps are unsupported: use string
 		return arr.ValueStr(i)
 	default:
 		return arr.ValueStr(i)
 	}
+}
+
+// Convert an Arrow list to a Go slice where each element is a pointer, to be able to represent nulls
+func arrowListToGoSlice(arr array.ListLike, i int) any {
+	from, to := arr.ValueOffsets(i)
+	slice := array.NewSlice(arr.ListValues(), from, to)
+	defer slice.Release()
+
+	lv := getTypedNilValue(arr.ListValues())
+	val := reflect.MakeSlice(reflect.SliceOf(reflect.TypeOf(lv)), slice.Len(), slice.Len())
+	for i := 0; i < slice.Len(); i++ {
+		if slice.IsNull(i) {
+			// val.Index(i).SetZero() // not sure if this is necessary
+			continue
+		}
+		// slice of pointers, make everything a pointer
+		sv := reflect.ValueOf(getValue(slice, i))
+		psv := reflect.New(sv.Type())
+		psv.Elem().Set(sv)
+		val.Index(i).Set(psv)
+	}
+	return val.Interface()
 }
 
 func transformRecordToGoType(record arrow.Record, arrowFields []arrow.Field, colList schema.ColumnList) [][]driver.Value {
