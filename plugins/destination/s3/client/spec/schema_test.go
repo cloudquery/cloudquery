@@ -284,5 +284,24 @@ func TestSpecJSONSchema(t *testing.T) {
 			Name: "no batching (no_rotate:true) & path:abc",
 			Spec: `{"format": "csv", "path": "abc", "bucket": "b", "region": "r", "no_rotate":true}`,
 		},
+		{
+			Name: "server side encryption (empty)",
+			Spec: `{"format": "csv", "path": "{{UUID}}", "bucket": "b", "region": "r", "server_side_encryption_configuration": {}}`,
+			Err:  true,
+		},
+		{
+			Name: "server side encryption (missing type)",
+			Spec: `{"format": "csv", "path": "{{UUID}}", "bucket": "b", "region": "r", "server_side_encryption_configuration": {"sse_kms_key_id":"1234-5678"}}`,
+			Err:  true,
+		},
+		{
+			Name: "server side encryption (missing key)",
+			Spec: `{"format": "csv", "path": "{{UUID}}", "bucket": "b", "region": "r", "server_side_encryption_configuration": {"server_side_encryption":"AES256"}}`,
+			Err:  true,
+		},
+		{
+			Name: "server side encryption (success)",
+			Spec: `{"format": "csv", "path": "{{UUID}}", "bucket": "b", "region": "r", "server_side_encryption_configuration": {"server_side_encryption":"AES256", "sse_kms_key_id":"1234-5678"}}`,
+		},
 	})
 }

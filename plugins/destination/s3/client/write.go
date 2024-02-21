@@ -38,12 +38,10 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 					Body:   r,
 				}
 
-				if c.spec.SSEKMSKeyId != "" {
-					params.SSEKMSKeyId = &c.spec.SSEKMSKeyId
-				}
-
-				if c.spec.ServerSideEncryption != "" {
-					params.ServerSideEncryption = c.spec.ServerSideEncryption
+				sseConfiguration := c.spec.ServerSideEncryptionConfiguration
+				if sseConfiguration != nil {
+					params.SSEKMSKeyId = &sseConfiguration.SSEKMSKeyId
+					params.ServerSideEncryption = sseConfiguration.ServerSideEncryption
 				}
 
 				_, err := c.uploader.Upload(ctx, params)

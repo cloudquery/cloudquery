@@ -93,12 +93,10 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 			Body:   bytes.NewReader([]byte("")),
 		}
 
-		if c.spec.SSEKMSKeyId != "" {
-			params.SSEKMSKeyId = &c.spec.SSEKMSKeyId
-		}
-
-		if c.spec.ServerSideEncryption != "" {
-			params.ServerSideEncryption = c.spec.ServerSideEncryption
+		sseConfiguration := c.spec.ServerSideEncryptionConfiguration
+		if sseConfiguration != nil {
+			params.SSEKMSKeyId = &sseConfiguration.SSEKMSKeyId
+			params.ServerSideEncryption = sseConfiguration.ServerSideEncryption
 		}
 
 		if _, err := c.uploader.Upload(ctx, params); err != nil {
