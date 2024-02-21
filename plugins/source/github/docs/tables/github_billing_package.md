@@ -13,4 +13,4 @@ The primary key for this table is **org**.
 |org (PK)|`utf8`|
 |total_gigabytes_bandwidth_used|`int64`|
 |total_paid_gigabytes_bandwidth_used|`int64`|
-|included_gigabytes_bandwidth|`int64`|
+|included_gigabytes_bandwidth|`float64`|

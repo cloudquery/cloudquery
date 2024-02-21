@@ -58,6 +58,7 @@ This table depends on [github_teams](github_teams.md).
 |allow_merge_commit|`bool`|
 |allow_auto_merge|`bool`|
 |allow_forking|`bool`|
+|web_commit_signoff_required|`bool`|
 |delete_branch_on_merge|`bool`|
 |use_squash_pr_title_as_default|`bool`|
 |squash_merge_commit_title|`utf8`|
@@ -65,6 +66,7 @@ This table depends on [github_teams](github_teams.md).
 |merge_commit_title|`utf8`|
 |merge_commit_message|`utf8`|
 |topics|`list<item: utf8, nullable>`|
+|custom_properties|`json`|
 |archived|`bool`|
 |disabled|`bool`|
 |license|`json`|
