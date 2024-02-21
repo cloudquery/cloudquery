@@ -26,6 +26,7 @@ The following tables depend on github_workflow_runs:
 |run_number|`int64`|
 |run_attempt|`int64`|
 |event|`utf8`|
+|display_title|`utf8`|
 |status|`utf8`|
 |conclusion|`utf8`|
 |workflow_id|`int64`|
@@ -49,3 +50,5 @@ The following tables depend on github_workflow_runs:
 |repository|`json`|
 |head_repository|`json`|
 |actor|`json`|
+|triggering_actor|`json`|
+|referenced_workflows|`json`|

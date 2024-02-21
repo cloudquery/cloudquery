@@ -40,5 +40,6 @@ The composite primary key for this table is (**org**, **repository_id**, **id**)
 |reactions|`json`|
 |assignees|`json`|
 |node_id|`utf8`|
+|draft|`bool`|
 |text_matches|`json`|
 |active_lock_reason|`utf8`|

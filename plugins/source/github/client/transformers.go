@@ -6,7 +6,7 @@ import (
 	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	"github.com/google/go-github/v49/github"
+	"github.com/google/go-github/v59/github"
 )
 
 var options = []transformers.StructTransformerOption{

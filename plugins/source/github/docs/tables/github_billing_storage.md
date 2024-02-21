@@ -13,4 +13,4 @@ The primary key for this table is **org**.
 |org (PK)|`utf8`|
 |days_left_in_billing_cycle|`int64`|
 |estimated_paid_storage_for_month|`float64`|
-|estimated_storage_for_month|`int64`|
+|estimated_storage_for_month|`float64`|

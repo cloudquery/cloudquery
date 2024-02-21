@@ -30,3 +30,5 @@ This table depends on [github_repositories](github_repositories.md).
 |dismissed_reason|`utf8`|
 |dismissed_comment|`utf8`|
 |fixed_at|`timestamp[us, tz=UTC]`|
+|auto_dismissed_at|`timestamp[us, tz=UTC]`|
+|repository|`json`|

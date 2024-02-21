@@ -9,7 +9,7 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	github "github.com/google/go-github/v49/github"
+	github "github.com/google/go-github/v59/github"
 )
 
 // MockBillingService is a mock of BillingService interface.
