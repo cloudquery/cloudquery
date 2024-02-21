@@ -44,7 +44,7 @@ cloudquery login --team my-team
       --log-console              enable console logging
       --log-file-name string     Log filename (default "cloudquery.log")
       --log-format string        Logging format (json, text) (default "text")
-      --log-level string         Logging level (default "info")
+      --log-level string         Logging level (trace, debug, info, warn, error) (default "info")
       --no-log-file              Disable logging to file
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
