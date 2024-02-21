@@ -110,6 +110,7 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 		}
 		if t != nil {
 			duckdbTables = append(duckdbTables, t)
+			c.setTableInfoCache(t)
 		}
 	}
 
@@ -297,6 +298,12 @@ func (c *Client) getTableInfo(ctx context.Context, tableName string) (*schema.Ta
 func (c *Client) removeTableInfoCache(tableName string) {
 	c.dbTablesMu.Lock()
 	delete(c.dbTables, tableName)
+	c.dbTablesMu.Unlock()
+}
+
+func (c *Client) setTableInfoCache(table *schema.Table) {
+	c.dbTablesMu.Lock()
+	c.dbTables[table.Name] = table
 	c.dbTablesMu.Unlock()
 }
 
