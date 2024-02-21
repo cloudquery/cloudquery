@@ -72,7 +72,7 @@ func transformArray(arr arrow.Array) arrow.Array {
 			val := arr.Value(i)
 			bldr.Append(val)
 		}
-		return bldr.NewArray().(*array.Binary)
+		return bldr.NewBinaryArray()
 	case *array.LargeString:
 		bldr := array.NewStringBuilder(memory.DefaultAllocator)
 		defer bldr.Release()
@@ -84,7 +84,7 @@ func transformArray(arr arrow.Array) arrow.Array {
 			val := arr.Value(i)
 			bldr.Append(val)
 		}
-		return bldr.NewArray().(*array.String)
+		return bldr.NewStringArray()
 	default:
 		return transformToStringArray(arr)
 	}
