@@ -23,3 +23,5 @@ This table depends on [github_repositories](github_repositories.md).
 |read_only|`bool`|
 |verified|`bool`|
 |created_at|`timestamp[us, tz=UTC]`|
+|added_by|`utf8`|
+|last_used|`timestamp[us, tz=UTC]`|

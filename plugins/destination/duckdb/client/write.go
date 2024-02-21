@@ -129,7 +129,7 @@ func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) er
 	return nil
 }
 
-func (c *Client) appendRows(table *schema.Table, msgs message.WriteInserts) (retErr error) {
+func (c *Client) appendRows(ctx context.Context, table *schema.Table, msgs message.WriteInserts) (retErr error) {
 	if c.conn == nil {
 		// connecting before MigrateTable results in appender creation failure
 		var err error
@@ -150,9 +150,9 @@ func (c *Client) appendRows(table *schema.Table, msgs message.WriteInserts) (ret
 		}
 	}()
 
-	tableState := c.dbTables.Get(table.Name)
-	if tableState == nil {
-		return fmt.Errorf("table %s not found in duckdb", table.Name) // should never happen as appender would've failed
+	tableState, err := c.getCacheTableInfo(ctx, table.Name)
+	if err != nil {
+		return fmt.Errorf("table %s not found in duckdb: %w", table.Name, err) // should never happen as appender would've failed
 	}
 
 	fields := msgs[0].Record.Schema().Fields()
@@ -180,7 +180,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	table := msgs[0].GetTable()
 
 	if useAppender && len(table.PrimaryKeys()) == 0 {
-		return c.appendRows(table, msgs)
+		return c.appendRows(ctx, table, msgs)
 	}
 
 	writeStart := time.Now()

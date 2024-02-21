@@ -9,7 +9,7 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.30.0
 	github.com/gofri/go-github-ratelimit v1.0.3
 	github.com/golang/mock v1.6.0
-	github.com/google/go-github/v49 v49.0.0
+	github.com/google/go-github/v59 v59.0.0
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.31.0
 	golang.org/x/oauth2 v0.16.0
