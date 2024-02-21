@@ -9,6 +9,8 @@ import (
 
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
+
+	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 )
 
 const (
@@ -61,6 +63,9 @@ type Spec struct {
 	// **Note**: if you want to use path-style addressing, i.e., `https://s3.amazonaws.com/BUCKET/KEY`, `use_path_style` should be enabled, too.
 	Endpoint string `json:"endpoint,omitempty"  jsonschema:"default="`
 
+	// Server-side encryption settings.
+	ServerSideEncryptionConfiguration *ServerSideEncryptionConfiguration `json:"server_side_encryption_configuration,omitempty"`
+
 	// Allows to use path-style addressing in the `endpoint` option, i.e., `https://s3.amazonaws.com/BUCKET/KEY`.
 	// By default, the S3 client will use virtual hosted bucket addressing when possible (`https://BUCKET.s3.amazonaws.com/KEY`).
 	UsePathStyle bool `json:"use_path_style,omitempty" jsonschema:"default=false"`
@@ -84,6 +89,14 @@ type Spec struct {
 	//
 	// Defaults to `30s` unless `no_rotate` is `true` (will be `0s` then).
 	BatchTimeout *configtype.Duration `json:"batch_timeout" jsonschema:"default=30s"`
+}
+
+type ServerSideEncryptionConfiguration struct {
+	// ServerSideEncryptionConfiguration KMS Key ID appended to S3 API calls header. Used in conjunction with server_side_encryption.
+	SSEKMSKeyId string `json:"sse_kms_key_id,omitempty" jsonschema:"required, minLength=1"`
+
+	// Server Side Encryption header which declares encryption type in S3 API calls header: x-amz-server-side-encryption.
+	ServerSideEncryption types.ServerSideEncryption `json:"server_side_encryption,omitempty" jsonschema:"required,enum=AES256,enum=aws:kms,enum=aws:kms:dsse"`
 }
 
 func (s *Spec) SetDefaults() {

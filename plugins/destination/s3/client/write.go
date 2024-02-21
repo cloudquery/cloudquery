@@ -32,11 +32,19 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 
 			var err error
 			s, err = c.Client.StartStream(table, func(r io.Reader) error {
-				_, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
+				params := &s3.PutObjectInput{
 					Bucket: aws.String(c.spec.Bucket),
 					Key:    aws.String(objKey),
 					Body:   r,
-				})
+				}
+
+				sseConfiguration := c.spec.ServerSideEncryptionConfiguration
+				if sseConfiguration != nil {
+					params.SSEKMSKeyId = &sseConfiguration.SSEKMSKeyId
+					params.ServerSideEncryption = sseConfiguration.ServerSideEncryption
+				}
+
+				_, err := c.uploader.Upload(ctx, params)
 				return err
 			})
 			if err != nil {
