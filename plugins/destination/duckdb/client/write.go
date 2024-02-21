@@ -130,7 +130,6 @@ func (c *Client) appendRows(table *schema.Table, msgs message.WriteInserts) (ret
 	if c.conn == nil {
 		// connecting before MigrateTable results in appender creation failure
 		var err error
-		c.logger.Debug().Msg("appendRows: opening new conn")
 		c.conn, err = c.connector.Connect(context.Background())
 		if err != nil {
 			return fmt.Errorf("failed to connect: %w", err)
