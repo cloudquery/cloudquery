@@ -3,11 +3,13 @@ package cmd
 import (
 	"fmt"
 	"math"
+	"os"
 	"slices"
 	"strings"
 
 	"github.com/google/uuid"
 
+	apiAuth "github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -92,6 +94,9 @@ func sync(cmd *cobra.Command, args []string) error {
 		return err
 	}
 
+	// in the cloud sync environment, we pass only the relevant environment variables to the plugin
+	isolatePluginEnvironment := apiAuth.NewTokenClient().GetTokenType() == apiAuth.SyncRunAPIKey
+
 	ctx := cmd.Context()
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
 	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
@@ -120,6 +125,10 @@ func sync(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to get team name from token: %w", err)
 	}
+
+	// in a cloud sync environment, we pass only the relevant environment variables to the plugin
+	osEnviron := os.Environ()
+
 	for _, source := range sources {
 		opts := []managedplugin.Option{
 			managedplugin.WithLogger(log.Logger),
@@ -142,6 +151,9 @@ func sync(cmd *cobra.Command, args []string) error {
 			Registry: SpecRegistryToPlugin(source.Registry),
 			Version:  source.Version,
 			Path:     source.Path,
+		}
+		if isolatePluginEnvironment {
+			cfg.Environment = filterPluginEnv(osEnviron, source.Name, "source")
 		}
 		sourcePluginClient, err := managedplugin.NewClient(ctx, managedplugin.PluginSource, cfg, opts...)
 		if err != nil {
@@ -169,11 +181,15 @@ func sync(cmd *cobra.Command, args []string) error {
 		if disableSentry {
 			opts = append(opts, managedplugin.WithNoSentry())
 		}
+
 		cfg := managedplugin.Config{
 			Name:     destination.Name,
 			Registry: SpecRegistryToPlugin(destination.Registry),
 			Version:  destination.Version,
 			Path:     destination.Path,
+		}
+		if isolatePluginEnvironment {
+			cfg.Environment = filterPluginEnv(osEnviron, destination.Name, "destination")
 		}
 		destPluginClient, err := managedplugin.NewClient(ctx, managedplugin.PluginDestination, cfg, opts...)
 		if err != nil {
@@ -280,4 +296,17 @@ func sync(cmd *cobra.Command, args []string) error {
 	}
 
 	return nil
+}
+
+func filterPluginEnv(environ []string, pluginName, kind string) []string {
+	env := make([]string, 0)
+	prefix := "__" + kind + "_" + pluginName + "__"
+	for _, v := range environ {
+		if strings.HasPrefix(v, "CLOUDQUERY_API_KEY=") {
+			env = append(env, v)
+		} else if strings.HasPrefix(v, prefix) {
+			env = append(env, strings.TrimPrefix(v, prefix))
+		}
+	}
+	return env
 }

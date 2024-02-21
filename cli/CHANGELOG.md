@@ -5,6 +5,27 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.5.4](https://github.com/cloudquery/cloudquery/compare/cli-v5.5.3...cli-v5.5.4) (2024-02-20)
+
+
+### Bug Fixes
+
+* Always pass CLOUDQUERY_API_KEY to plugins ([#16761](https://github.com/cloudquery/cloudquery/issues/16761)) ([05f036d](https://github.com/cloudquery/cloudquery/commit/05f036d701a61da6858d669c63ca6e0220530871))
+
+## [5.5.3](https://github.com/cloudquery/cloudquery/compare/cli-v5.5.2...cli-v5.5.3) (2024-02-20)
+
+
+### Bug Fixes
+
+* Isolate plugin environments in the cloud ([#16682](https://github.com/cloudquery/cloudquery/issues/16682)) ([f87942a](https://github.com/cloudquery/cloudquery/commit/f87942a3493806b1e51a5c7dd3fe97e1dfa8fe6b))
+
+## [5.5.2](https://github.com/cloudquery/cloudquery/compare/cli-v5.5.1...cli-v5.5.2) (2024-02-20)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.30.0 ([#16669](https://github.com/cloudquery/cloudquery/issues/16669)) ([44b9729](https://github.com/cloudquery/cloudquery/commit/44b9729fa5d7590f65b9073ce4a1fc18a529117e))
+
 ## [5.5.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.5.0...cli-v5.5.1) (2024-02-16)
 
 

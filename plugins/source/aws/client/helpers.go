@@ -63,6 +63,7 @@ const (
 	WAFRegional                 AWSService = "waf-regional"
 	WorkspacesService           AWSService = "workspaces"
 	XRayService                 AWSService = "xray"
+	RDSService                  AWSService = "rds"
 )
 
 const (

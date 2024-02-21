@@ -143,6 +143,8 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 			arr.Data().Offset(),
 		))
 
+	case *arrow.BinaryType, *arrow.LargeBinaryType:
+		return reverseTransformFromBinary(dt, arr.(*array.Binary))
 	default:
 		return reverseTransformFromString(dt, arr.(*array.String))
 	}
@@ -157,6 +159,21 @@ func reverseTransformFromString(dt arrow.DataType, arr *array.String) arrow.Arra
 		}
 		if err := builder.AppendValueFromString(arr.Value(i)); err != nil {
 			panic(fmt.Errorf("failed to append from string value %q: %w", arr.Value(i), err))
+		}
+	}
+
+	return builder.NewArray()
+}
+
+func reverseTransformFromBinary(dt arrow.DataType, arr array.BinaryLike) arrow.Array {
+	builder := array.NewBuilder(memory.DefaultAllocator, dt)
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsNull(i) {
+			builder.AppendNull()
+			continue
+		}
+		if err := builder.AppendValueFromString(arr.ValueStr(i)); err != nil {
+			panic(fmt.Errorf("failed to append from value %q: %w", arr.ValueStr(i), err))
 		}
 	}
 
