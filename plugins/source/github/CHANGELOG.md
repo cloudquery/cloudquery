@@ -3,6 +3,31 @@
 ## [8.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v7.7.1...plugins-source-github-v8.0.0) (2024-02-21)
 
 
+### This Release has the Following Changes to Tables
+- Table `github_billing_action`: column type changed from `int64` to `float64` for `included_minutes` (:warning: breaking)
+- Table `github_billing_action`: column type changed from `int64` to `float64` for `total_minutes_used` (:warning: breaking)
+- Table `github_billing_package`: column type changed from `int64` to `float64` for `included_gigabytes_bandwidth` (:warning: breaking)
+- Table `github_billing_storage`: column type changed from `int64` to `float64` for `estimated_storage_for_month` (:warning: breaking)
+- Table `github_issues`: column added with name `draft` and type `bool`
+- Table `github_organization_dependabot_alerts`: column added with name `auto_dismissed_at` and type `timestamp[us, tz=UTC]`
+- Table `github_organization_dependabot_alerts`: column added with name `repository` and type `json`
+- Table `github_organizations`: column added with name `secret_scanning_validity_checks_enabled` and type `bool`
+- Table `github_repositories`: column added with name `custom_properties` and type `json`
+- Table `github_repositories`: column added with name `web_commit_signoff_required` and type `bool`
+- Table `github_repository_dependabot_alerts`: column added with name `auto_dismissed_at` and type `timestamp[us, tz=UTC]`
+- Table `github_repository_dependabot_alerts`: column added with name `repository` and type `json`
+- Table `github_repository_keys`: column added with name `added_by` and type `utf8`
+- Table `github_repository_keys`: column added with name `last_used` and type `timestamp[us, tz=UTC]`
+- Table `github_repository_sboms` was added
+- Table `github_team_repositories`: column added with name `custom_properties` and type `json`
+- Table `github_team_repositories`: column added with name `web_commit_signoff_required` and type `bool`
+- Table `github_workflow_jobs`: column added with name `created_at` and type `timestamp[us, tz=UTC]`
+- Table `github_workflow_jobs`: column added with name `head_branch` and type `utf8`
+- Table `github_workflow_jobs`: column added with name `workflow_name` and type `utf8`
+- Table `github_workflow_runs`: column added with name `display_title` and type `utf8`
+- Table `github_workflow_runs`: column added with name `referenced_workflows` and type `json`
+- Table `github_workflow_runs`: column added with name `triggering_actor` and type `json`
+
 ### ⚠ BREAKING CHANGES
 
 * Bump `go-github` to v59 in Github plugin ([#16797](https://github.com/cloudquery/cloudquery/issues/16797))
