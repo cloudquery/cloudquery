@@ -2,6 +2,7 @@ package client
 
 import (
 	"database/sql/driver"
+	"fmt"
 	"reflect"
 	"time"
 
@@ -56,11 +57,8 @@ func getTypedNilValue(arr arrow.Array) any {
 	}
 }
 
+// getValue assumes the value at i is valid
 func getValue(arr arrow.Array, i int) any {
-	if !arr.IsValid(i) {
-		return nil
-	}
-
 	switch arr := arr.(type) {
 	case *types.UUIDArray:
 		v, _ := arr.Value(i).MarshalBinary()
@@ -125,7 +123,6 @@ func arrowListToGoSlice(arr array.ListLike, i int) any {
 	val := reflect.MakeSlice(reflect.SliceOf(reflect.TypeOf(lv)), slice.Len(), slice.Len())
 	for i := 0; i < slice.Len(); i++ {
 		if slice.IsNull(i) {
-			// val.Index(i).SetZero() // not sure if this is necessary
 			continue
 		}
 		// slice of pointers, make everything a pointer
@@ -137,7 +134,7 @@ func arrowListToGoSlice(arr array.ListLike, i int) any {
 	return val.Interface()
 }
 
-func transformRecordToGoType(record arrow.Record, arrowFields []arrow.Field, colList schema.ColumnList) [][]driver.Value {
+func transformRecordToGoType(record arrow.Record, arrowFields []arrow.Field, colList schema.ColumnList) ([][]driver.Value, error) {
 	res := make([][]driver.Value, record.NumRows())
 	tc := len(colList)
 	for i := range res {
@@ -147,14 +144,16 @@ func transformRecordToGoType(record arrow.Record, arrowFields []arrow.Field, col
 	for i, f := range arrowFields { // i: arrow column index
 		j := colList.Index(f.Name) // look up the column index in the destination table
 		if j == -1 {
-			panic("column not found: " + f.String()) // should never happen
+			return nil, fmt.Errorf("column not found: %s", f.String()) // should never happen
 		}
 		arr := record.Column(i)
 		for k := range res {
-			res[k][j] = getValue(arr, k)
+			if arr.IsValid(k) {
+				res[k][j] = getValue(arr, k)
+			}
 		}
 	}
-	return res
+	return res, nil
 }
 
 func nilPtrOf[T any]() *T {

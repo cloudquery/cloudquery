@@ -18,6 +18,9 @@ import (
 	"github.com/marcboeker/go-duckdb"
 )
 
+// Disable to use the old way of writing to duckdb for appends
+const useAppender = true
+
 func nonPkIndices(sc *schema.Table) []int {
 	var indices []int
 	for i, c := range sc.Columns {
@@ -155,7 +158,10 @@ func (c *Client) appendRows(table *schema.Table, msgs message.WriteInserts) (ret
 	fields := msgs[0].Record.Schema().Fields()
 
 	for _, msg := range msgs {
-		arr := transformRecordToGoType(msg.Record, fields, tableState.Columns)
+		arr, err := transformRecordToGoType(msg.Record, fields, tableState.Columns)
+		if err != nil {
+			return fmt.Errorf("failed to transform record to go type for %s: %w", table.Name, err)
+		}
 		for i := range arr {
 			if err := appender.AppendRow(arr[i]...); err != nil {
 				return fmt.Errorf("failed to append row to %s: %w", table.Name, err)
@@ -173,7 +179,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 
 	table := msgs[0].GetTable()
 
-	if len(table.PrimaryKeys()) == 0 {
+	if useAppender && len(table.PrimaryKeys()) == 0 {
 		return c.appendRows(table, msgs)
 	}
 
@@ -185,16 +191,15 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	c.logger.Debug().Str("table", table.Name).Str("duration", time.Since(writeStart).String()).Msg("write tmp file")
 	defer os.Remove(tmpFile)
 
-	/*
-		if len(table.PrimaryKeys()) == 0 {
-			// TODO remove after finalizing appender
-			copyStart := time.Now()
-			defer func() {
-				c.logger.Debug().Str("table", table.Name).Str("duration", time.Since(copyStart).String()).Msg("copy file to table")
-			}()
-			return c.copyFromFile(ctx, name, tmpFile, table)
-		}
-	*/
+	if len(table.PrimaryKeys()) == 0 {
+		// This is only used if useAppender is disabled, for testing or debugging reasons
+		copyStart := time.Now()
+		defer func() {
+			c.logger.Debug().Str("table", table.Name).Str("duration", time.Since(copyStart).String()).Msg("copy file to table")
+		}()
+		return c.copyFromFile(ctx, name, tmpFile, table)
+	}
+
 	tmpTableName := name + strings.ReplaceAll(uuid.New().String(), "-", "_")
 	if err := c.createTableIfNotExist(ctx, tmpTableName, table); err != nil {
 		return fmt.Errorf("failed to create table %s: %w", tmpTableName, err)
