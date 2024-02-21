@@ -12,6 +12,7 @@ import (
 
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/duckdb/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/marcboeker/go-duckdb"
 	"github.com/rs/zerolog"
@@ -21,11 +22,14 @@ type Client struct {
 	plugin.UnimplementedSource
 	batchwriter.UnimplementedDeleteRecord
 
+	connector *duckdb.Connector
 	db        *sql.DB
-	connector driver.Connector
-	logger    zerolog.Logger
-	spec      Spec
-	writer    *batchwriter.BatchWriter
+	conn      driver.Conn // used in Appender
+
+	logger   zerolog.Logger
+	spec     Spec
+	writer   *batchwriter.BatchWriter
+	dbTables schema.Tables // current state of tables, used in Appender
 }
 
 var _ plugin.Client = (*Client)(nil)
@@ -74,20 +78,22 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 }
 
 func (c *Client) Close(ctx context.Context) error {
-	var err error
-
 	if c.db == nil {
 		return fmt.Errorf("client already closed or not initialized")
 	}
 
-	if err := c.writer.Close(ctx); err != nil {
-		_ = c.db.Close()
-		c.db = nil
-		return fmt.Errorf("failed to close writer: %w", err)
+	err1 := c.writer.Close(ctx)
+	if err1 != nil {
+		err1 = fmt.Errorf("failed to close writer: %w", err1)
 	}
 
-	err = c.db.Close()
-	c.db = nil
+	err := errors.Join(err1, c.db.Close(), func() error {
+		if c.conn == nil {
+			return nil
+		}
+		return c.conn.Close()
+	}())
+	c.db, c.conn = nil, nil
 	return err
 }
 

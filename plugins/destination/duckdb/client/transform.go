@@ -30,24 +30,10 @@ func transformArray(arr arrow.Array) arrow.Array {
 	case *array.Timestamp:
 		// mismatching unit or tz
 		return transformTimestamp(duckDBToArrow(arrowToDuckDB(arr.DataType())).(*arrow.TimestampType), arr)
-
 	case *array.Struct:
-		dt := arr.DataType().(*arrow.StructType)
-		children := make([]arrow.ArrayData, arr.NumField())
-		names := make([]string, arr.NumField())
-		for i := range children {
-			children[i] = transformArray(arr.Field(i)).Data()
-			names[i] = dt.Field(i).Name
-		}
-
-		return array.NewStructData(array.NewData(
-			transformTypeForWriting(dt), arr.Len(),
-			arr.Data().Buffers(),
-			children,
-			arr.NullN(),
-			0, // we use 0 as offset for struct arrays, as the child arrays would already be sliced properly
-		))
-
+		return transformStruct(arr)
+	case *array.Map:
+		return transformMap(arr)
 	case array.ListLike: // this includes maps, too
 		return array.MakeFromData(array.NewData(
 			transformTypeForWriting(arr.DataType()), arr.Len(),
@@ -112,6 +98,34 @@ func transformUint8ToUint32Array(arr *array.Uint8) arrow.Array {
 		bldr.Append(uint32(arr.Value(i)))
 	}
 	return bldr.NewArray()
+}
+
+func transformStruct(arr *array.Struct) arrow.Array {
+	bldr := array.NewStringBuilder(memory.DefaultAllocator)
+	defer bldr.Release()
+
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsNull(i) {
+			bldr.AppendNull()
+			continue
+		}
+		bldr.Append(arr.ValueStr(i))
+	}
+	return bldr.NewStringArray()
+}
+
+func transformMap(arr *array.Map) arrow.Array {
+	bldr := array.NewStringBuilder(memory.DefaultAllocator)
+	defer bldr.Release()
+
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsNull(i) {
+			bldr.AppendNull()
+			continue
+		}
+		bldr.Append(arr.ValueStr(i))
+	}
+	return bldr.NewStringArray()
 }
 
 func transformToStringArray(arr arrow.Array) arrow.Array {

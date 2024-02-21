@@ -135,6 +135,10 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 	if err != nil {
 		return err
 	}
+	c.dbTables = duckdbTables
+	defer func() {
+		c.dbTables = c.dbTables.FlattenTables()
+	}()
 
 	normalizedTables := c.normalizeColumns(tables)
 	normalizedTablesSafeMode := make(schema.Tables, 0, len(normalizedTables))
@@ -165,10 +169,14 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 			if err := c.createTableIfNotExist(ctx, table.Name, table); err != nil {
 				return err
 			}
+			c.dbTables = nil // force refresh
 			continue
 		}
 
 		changes := table.GetChanges(duckdb)
+		if len(changes) > 0 {
+			c.dbTables = nil // force refresh
+		}
 		if c.canAutoMigrate(changes) {
 			c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
 			if err := c.autoMigrateTable(ctx, table, changes); err != nil {
@@ -179,6 +187,13 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 			if err := c.recreateTable(ctx, table); err != nil {
 				return err
 			}
+		}
+	}
+
+	if c.dbTables == nil {
+		c.dbTables, err = c.duckDBTables(ctx, tables)
+		if err != nil {
+			return fmt.Errorf("failed to get duckdb tables after migrations: %w", err)
 		}
 	}
 

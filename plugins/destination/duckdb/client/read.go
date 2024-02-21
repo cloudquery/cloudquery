@@ -117,6 +117,10 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 		// We save date types as Timestamp
 		return reverseTransformDate64(arr.(*array.Timestamp))
 	case *arrow.StructType:
+		if sarr, ok := arr.(*array.String); ok {
+			return reverseTransformStruct(dt, sarr)
+		}
+
 		arr := arr.(*array.Struct)
 		children := make([]arrow.ArrayData, arr.NumField())
 		for i := range children {
@@ -132,8 +136,13 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 			arr.NullN(),
 			0, // we use 0 as offset for struct arrays, as the child arrays would already be sliced properly
 		))
-
 	case arrow.ListLikeType: // also handles maps
+		if mapdt, ok := dt.(*arrow.MapType); ok {
+			if sarr, ok := arr.(*array.String); ok {
+				return reverseTransformMap(mapdt, sarr)
+			}
+		}
+
 		return array.MakeFromData(array.NewData(
 			dt, arr.Len(),
 			arr.Data().Buffers(),
@@ -180,6 +189,35 @@ func reverseTransformFromBinary(dt arrow.DataType, arr array.BinaryLike) arrow.A
 	return builder.NewArray()
 }
 
+func reverseTransformStruct(dt *arrow.StructType, arr *array.String) arrow.Array {
+	bldr := array.NewStructBuilder(memory.DefaultAllocator, dt)
+	defer bldr.Release()
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsNull(i) {
+			bldr.AppendNull()
+			continue
+		}
+		if err := bldr.AppendValueFromString(arr.Value(i)); err != nil {
+			panic(err)
+		}
+	}
+	return bldr.NewStructArray()
+}
+
+func reverseTransformMap(dt *arrow.MapType, arr *array.String) arrow.Array {
+	bldr := array.NewMapBuilder(memory.DefaultAllocator, dt.KeyType(), dt.ItemType(), dt.KeysSorted)
+	defer bldr.Release()
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsNull(i) {
+			bldr.AppendNull()
+			continue
+		}
+		if err := bldr.AppendValueFromString(arr.Value(i)); err != nil {
+			panic(err)
+		}
+	}
+	return bldr.NewMapArray()
+}
 func reverseTransformUint8(arr *array.Uint32) arrow.Array {
 	builder := array.NewUint8Builder(memory.DefaultAllocator)
 	for i := 0; i < arr.Len(); i++ {
