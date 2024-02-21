@@ -36,6 +36,29 @@
       "type": "object",
       "description": "CloudQuery Parquet file output spec."
     },
+    "ServerSideEncryptionConfiguration": {
+      "properties": {
+        "sse_kms_key_id": {
+          "type": "string",
+          "description": "ServerSideEncryptionConfiguration KMS Key ID appended to S3 API calls header. Used in conjunction with server_side_encryption."
+        },
+        "server_side_encryption": {
+          "type": "string",
+          "enum": [
+            "AES256",
+            "aws:kms",
+            "aws:kms:dsse"
+          ],
+          "description": "Server Side Encryption header which declares encryption type in S3 API calls header: x-amz-server-side-encryption."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "sse_kms_key_id",
+        "server_side_encryption"
+      ]
+    },
     "Spec": {
       "allOf": [
         {
@@ -273,6 +296,17 @@
           "type": "string",
           "description": "Endpoint to use for S3 API calls. This is useful for S3-compatible storage services such as MinIO.\n**Note**: if you want to use path-style addressing, i.e., `https://s3.amazonaws.com/BUCKET/KEY`, `use_path_style` should be enabled, too.",
           "default": ""
+        },
+        "server_side_encryption_configuration": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ServerSideEncryptionConfiguration",
+              "description": "Server-side encryption settings."
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "use_path_style": {
           "type": "boolean",

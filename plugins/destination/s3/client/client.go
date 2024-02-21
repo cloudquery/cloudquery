@@ -86,11 +86,20 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 	if *c.spec.TestWrite {
 		// we want to run this test because we want it to fail early if the bucket is not accessible
 		timeNow := time.Now().UTC()
-		if _, err := c.uploader.Upload(ctx, &s3.PutObjectInput{
+
+		params := &s3.PutObjectInput{
 			Bucket: aws.String(c.spec.Bucket),
 			Key:    aws.String(c.spec.ReplacePathVariables("TEST_TABLE", "TEST_UUID", timeNow)),
 			Body:   bytes.NewReader([]byte("")),
-		}); err != nil {
+		}
+
+		sseConfiguration := c.spec.ServerSideEncryptionConfiguration
+		if sseConfiguration != nil {
+			params.SSEKMSKeyId = &sseConfiguration.SSEKMSKeyId
+			params.ServerSideEncryption = sseConfiguration.ServerSideEncryption
+		}
+
+		if _, err := c.uploader.Upload(ctx, params); err != nil {
 			return nil, fmt.Errorf("failed to write test file to S3: %w", err)
 		}
 	}
