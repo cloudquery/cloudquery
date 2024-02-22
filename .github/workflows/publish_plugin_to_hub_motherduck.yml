@@ -1,4 +1,4 @@
-name: Publish plugin to MotherDuck to hub
+name: Publish plugin MotherDuck to hub
 on:
   push:
     tags:

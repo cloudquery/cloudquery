@@ -1,4 +1,4 @@
-name: Publish plugin to SQLite to hub
+name: Publish plugin SQLite to hub
 on:
   push:
     tags:
