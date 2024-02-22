@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.3.0...plugins-destination-duckdb-v5.4.0) (2024-02-22)
+
+
+### Features
+
+* Use Appender interface ([#16668](https://github.com/cloudquery/cloudquery/issues/16668)) ([8192d6d](https://github.com/cloudquery/cloudquery/commit/8192d6d99898692e9232d29d9ac71f5d2c6d8d4a))
+
 ## [5.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.2.1...plugins-destination-duckdb-v5.3.0) (2024-02-21)
 
 
