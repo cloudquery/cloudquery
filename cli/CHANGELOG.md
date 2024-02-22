@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.5.7](https://github.com/cloudquery/cloudquery/compare/cli-v5.5.6...cli-v5.5.7) (2024-02-22)
+
+
+### Bug Fixes
+
+* Log warning instead of error during JSON schema failure ([#16822](https://github.com/cloudquery/cloudquery/issues/16822)) ([32af4e1](https://github.com/cloudquery/cloudquery/commit/32af4e1108f6032312cb956885d900954b242443))
+
 ## [5.5.6](https://github.com/cloudquery/cloudquery/compare/cli-v5.5.5...cli-v5.5.6) (2024-02-21)
 
 
