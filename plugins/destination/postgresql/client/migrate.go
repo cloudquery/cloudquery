@@ -105,36 +105,6 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 
 func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, changes []schema.TableColumnChange) error {
 	tableName := table.Name
-
-	// The SDK can detect more granular changes than we can handle
-	// We know that when the `TableColumnChangeTypeMoveToCQOnly` is present there will be other changes that were found as well
-	// As long as the only change is to remove PK from columns and add it to _cq_id, we can skip handling the changes
-	// But we need to make sure there is no other changes
-	columnsAddingPK := []string{}
-	columnsRemovingPK := []string{}
-	cqMigration := false
-	for _, change := range changes {
-		switch change.Type {
-		case schema.TableColumnChangeTypeUpdate:
-			if change.Current.Type != change.Previous.Type {
-				continue
-			}
-			if (!change.Current.PrimaryKey && change.Previous.PrimaryKey) &&
-				(!change.Current.Unique && change.Previous.Unique) &&
-				(!change.Current.NotNull && change.Previous.NotNull) {
-				columnsAddingPK = append(columnsAddingPK, change.ColumnName)
-			}
-			if (change.Current.PrimaryKey && !change.Previous.PrimaryKey) &&
-				(change.Current.Unique && !change.Previous.Unique) &&
-				(change.Current.NotNull && !change.Previous.NotNull) {
-				columnsRemovingPK = append(columnsRemovingPK, change.ColumnName)
-			}
-
-		case schema.TableColumnChangeTypeMoveToCQOnly:
-			cqMigration = true
-		}
-	}
-
 	for _, change := range changes {
 		switch change.Type {
 		case schema.TableColumnChangeTypeAdd:
@@ -151,25 +121,46 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 				return err
 			}
 			continue
-		case schema.TableColumnChangeTypeUpdate:
-			if cqMigration && ((len(columnsAddingPK) == 1 && columnsAddingPK[0] == schema.CqIDColumn.Name) || funk.Contains(columnsRemovingPK, change.ColumnName)) {
-				// we don't need to do anything for _cq_id column
-				continue
-			}
 		default:
-			return fmt.Errorf("unsupported column change type: %s for column: %v from %v", change.Type.String(), change.Current, change.Previous)
+			continue
 		}
 	}
 	return nil
 }
 
 func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
+	// The SDK can detect more granular changes than we can handle
+	// We know that when the `TableColumnChangeTypeMoveToCQOnly` is present there will be other changes that were found as well
+	// As long as the only change is to remove PK from columns and add it to _cq_id, we can skip handling the changes
+	// But we need to make sure there is no other changes
+	columnsAddingPK := []string{}
+	columnsRemovingPK := []string{}
+	cqMigration := false
+	for _, change := range changes {
+		switch change.Type {
+		case schema.TableColumnChangeTypeUpdate:
+			if change.Current.Type != change.Previous.Type {
+				continue
+			}
+			if change.Current.PrimaryKey && !change.Previous.PrimaryKey {
+				columnsAddingPK = append(columnsAddingPK, change.ColumnName)
+			}
+			if !change.Current.PrimaryKey && change.Previous.PrimaryKey {
+				columnsRemovingPK = append(columnsRemovingPK, change.ColumnName)
+			}
+
+		case schema.TableColumnChangeTypeMoveToCQOnly:
+			cqMigration = true
+		}
+	}
+
 	for _, change := range changes {
 		switch change.Type {
 		case schema.TableColumnChangeTypeAdd:
 			if change.Current.PrimaryKey || change.Current.NotNull {
 				return false
 			}
+			continue
 		case schema.TableColumnChangeTypeRemove:
 			if change.Previous.PrimaryKey || change.Previous.NotNull {
 				// nolint:gosimple
@@ -179,8 +170,15 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 				}
 				return false
 			}
+			continue
 		case schema.TableColumnChangeTypeMoveToCQOnly:
-			return true
+			continue
+		case schema.TableColumnChangeTypeUpdate:
+			if cqMigration && ((len(columnsAddingPK) == 1 && columnsAddingPK[0] == schema.CqIDColumn.Name) || funk.Contains(columnsRemovingPK, change.ColumnName)) {
+				// We don't need to handle these changes as they are a part of the CQID migration
+				continue
+			}
+			return false
 		default:
 			return false
 		}
