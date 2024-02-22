@@ -101,7 +101,7 @@ func initPlugin(ctx context.Context, client plugin.PluginClient, spec any, noCon
 	if !noConnection {
 		// perform spec validation
 		if err := validatePluginSpec(ctx, client, spec); err != nil {
-			return err
+			log.Warn().Err(err).Msg("plugin spec validation failed, but continuing with Init")
 		}
 	}
 
