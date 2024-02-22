@@ -7,10 +7,7 @@
       "not": {
         "properties": {
           "connection_string": {
-            "type": "string",
-            "minLength": 1,
-            "pattern": "^md:.+",
-            "description": "Name of the database and extra connection options, such as `my_db`."
+            "pattern": "^md:.+"
           }
         }
       },
@@ -18,7 +15,10 @@
         "connection_string": {
           "type": "string",
           "minLength": 1,
-          "description": "Name of the database and extra connection options, such as `my_db`."
+          "description": "Name of the database and extra connection options, such as `my_db`.",
+          "examples": [
+            "my_db"
+          ]
         },
         "token": {
           "type": "string",
