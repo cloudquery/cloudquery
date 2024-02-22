@@ -107,11 +107,19 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 	for _, change := range changes {
 		switch change.Type {
 		case schema.TableColumnChangeTypeAdd:
-			return c.addColumn(ctx, tableName, change.Current)
+			err := c.addColumn(ctx, tableName, change.Current)
+			if err != nil {
+				return err
+			}
+			continue
 		case schema.TableColumnChangeTypeRemove:
 			continue
 		case schema.TableColumnChangeTypeMoveToCQOnly:
-			return c.migrateToCQID(ctx, table, change.Current)
+			err := c.migrateToCQID(ctx, table, change.Current)
+			if err != nil {
+				return err
+			}
+			continue
 		default:
 			return fmt.Errorf("unsupported column change type: %s for column: %v from %v", change.Type.String(), change.Current, change.Previous)
 		}
