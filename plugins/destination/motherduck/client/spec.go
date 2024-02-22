@@ -16,7 +16,7 @@ const (
 
 type Spec struct {
 	// Name of the database and extra connection options, such as `my_db`.
-	ConnectionString string `json:"connection_string,omitempty" jsonschema:"required,minLength=1"`
+	ConnectionString string `json:"connection_string,omitempty" jsonschema:"required,minLength=1,example=my_db"`
 
 	// MotherDuck API token. If empty, the plugin will open a web browser to authenticate.
 	Token string `json:"token,omitempty"`
@@ -58,9 +58,9 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.Not = &jsonschema.Schema{
 		Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
 			properties := jsonschema.NewProperties()
-			connStr := *sc.Properties.Value("connection_string")
-			connStr.Pattern = "^md:.+"
-			properties.Set("connection_string", &connStr)
+			properties.Set("connection_string", &jsonschema.Schema{
+				Pattern: "^md:.+",
+			})
 			return properties
 		}(),
 	}
