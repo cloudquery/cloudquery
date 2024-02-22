@@ -1,8 +1,8 @@
-name: Publish plugin SQLite to hub
+name: Publish plugin MotherDuck to hub
 on:
   push:
     tags:
-      - "plugins-destination-sqlite-v*.*.*"
+      - "plugins-destination-motherduck-v*.*.*"
 jobs:
   prepare:
     runs-on: ubuntu-latest
