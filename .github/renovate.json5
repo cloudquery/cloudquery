@@ -24,6 +24,11 @@
       matchFileNames: ["plugins/**"],
       enabled: false,
     },
+    {
+      matchPackageNames: ["github.com/marcboeker/go-duckdb"],
+      matchFileNames: ["plugins/destination/motherduck/**"],
+      enabled: false,
+    },
   ],
   ignorePaths: [
     "plugins/source/aws/**",

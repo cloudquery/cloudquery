@@ -10,7 +10,7 @@ spec:
   write_mode: "overwrite-delete-stale"
   spec:
     connection_string: my_db
-    token: "your-motherduck-api-token"
+    token: "${MOTHERDUCK_API_TOKEN}" # set the environment variable to your Motherduck API token
     # Optional parameters
     # batch_size: 1000
     # batch_size_bytes: 4194304 # 4 MiB
