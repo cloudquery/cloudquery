@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/thoas/go-funk"
 )
 
 // MigrateTableBatch migrates a table. It forms part of the writer.MixedBatchWriter interface.
@@ -104,6 +105,36 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 
 func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, changes []schema.TableColumnChange) error {
 	tableName := table.Name
+
+	// The SDK can detect more granular changes than we can handle
+	// We know that when the `TableColumnChangeTypeMoveToCQOnly` is present there will be other changes that were found as well
+	// As long as the only change is to remove PK from columns and add it to _cq_id, we can skip handling the changes
+	// But we need to make sure there is no other changes
+	columnsAddingPK := []string{}
+	columnsRemovingPK := []string{}
+	cqMigration := false
+	for _, change := range changes {
+		switch change.Type {
+		case schema.TableColumnChangeTypeUpdate:
+			if change.Current.Type != change.Previous.Type {
+				continue
+			}
+			if (!change.Current.PrimaryKey && change.Previous.PrimaryKey) &&
+				(!change.Current.Unique && change.Previous.Unique) &&
+				(!change.Current.NotNull && change.Previous.NotNull) {
+				columnsAddingPK = append(columnsAddingPK, change.ColumnName)
+			}
+			if (change.Current.PrimaryKey && !change.Previous.PrimaryKey) &&
+				(change.Current.Unique && !change.Previous.Unique) &&
+				(change.Current.NotNull && !change.Previous.NotNull) {
+				columnsRemovingPK = append(columnsRemovingPK, change.ColumnName)
+			}
+
+		case schema.TableColumnChangeTypeMoveToCQOnly:
+			cqMigration = true
+		}
+	}
+
 	for _, change := range changes {
 		switch change.Type {
 		case schema.TableColumnChangeTypeAdd:
@@ -120,6 +151,11 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 				return err
 			}
 			continue
+		case schema.TableColumnChangeTypeUpdate:
+			if cqMigration && ((len(columnsAddingPK) == 1 && columnsAddingPK[0] == schema.CqIDColumn.Name) || funk.Contains(columnsRemovingPK, change.ColumnName)) {
+				// we don't need to do anything for _cq_id column
+				continue
+			}
 		default:
 			return fmt.Errorf("unsupported column change type: %s for column: %v from %v", change.Type.String(), change.Current, change.Previous)
 		}
