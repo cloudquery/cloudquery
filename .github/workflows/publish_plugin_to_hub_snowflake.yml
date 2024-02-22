@@ -1,4 +1,4 @@
-name: Publish plugin to Snowflake to hub
+name: Publish plugin Snowflake to hub
 on:
   push:
     tags:

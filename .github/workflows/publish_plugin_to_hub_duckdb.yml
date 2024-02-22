@@ -1,4 +1,4 @@
-name: Publish plugin to DuckDB to hub
+name: Publish plugin DuckDB to hub
 on:
   push:
     tags:
