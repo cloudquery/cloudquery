@@ -12,6 +12,7 @@ The following tables depend on github_repositories:
   - [github_repository_dependabot_alerts](github_repository_dependabot_alerts.md)
   - [github_repository_dependabot_secrets](github_repository_dependabot_secrets.md)
   - [github_repository_keys](github_repository_keys.md)
+  - [github_repository_sboms](github_repository_sboms.md)
 
 ## Columns
 
@@ -62,6 +63,7 @@ The following tables depend on github_repositories:
 |allow_merge_commit|`bool`|
 |allow_auto_merge|`bool`|
 |allow_forking|`bool`|
+|web_commit_signoff_required|`bool`|
 |delete_branch_on_merge|`bool`|
 |use_squash_pr_title_as_default|`bool`|
 |squash_merge_commit_title|`utf8`|
@@ -69,6 +71,7 @@ The following tables depend on github_repositories:
 |merge_commit_title|`utf8`|
 |merge_commit_message|`utf8`|
 |topics|`list<item: utf8, nullable>`|
+|custom_properties|`json`|
 |archived|`bool`|
 |disabled|`bool`|
 |license|`json`|

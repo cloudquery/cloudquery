@@ -13,7 +13,7 @@ import (
 	"github.com/beatlabs/github-auth/key"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/gofri/go-github-ratelimit/github_ratelimit"
-	"github.com/google/go-github/v49/github"
+	"github.com/google/go-github/v59/github"
 	"github.com/rs/zerolog"
 	"golang.org/x/oauth2"
 	"golang.org/x/sync/errgroup"
@@ -141,13 +141,14 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 
 func servicesForClient(c *github.Client) GithubServices {
 	return GithubServices{
-		Actions:       c.Actions,
-		Billing:       c.Billing,
-		Dependabot:    c.Dependabot,
-		Issues:        c.Issues,
-		Organizations: c.Organizations,
-		Repositories:  c.Repositories,
-		Teams:         c.Teams,
+		Actions:         c.Actions,
+		Billing:         c.Billing,
+		Dependabot:      c.Dependabot,
+		Issues:          c.Issues,
+		Organizations:   c.Organizations,
+		Repositories:    c.Repositories,
+		Teams:           c.Teams,
+		DependencyGraph: c.DependencyGraph,
 	}
 }
 
@@ -233,7 +234,7 @@ func githubClientForHTTPClient(httpClient *http.Client, logger zerolog.Logger, e
 	}
 
 	if enterpriseSettings != nil {
-		return github.NewEnterpriseClient(enterpriseSettings.BaseURL, enterpriseSettings.UploadURL, rateLimiter)
+		return github.NewClient(rateLimiter).WithEnterpriseURLs(enterpriseSettings.BaseURL, enterpriseSettings.UploadURL)
 	}
 
 	return github.NewClient(rateLimiter), nil

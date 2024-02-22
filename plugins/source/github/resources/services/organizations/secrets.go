@@ -6,7 +6,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	"github.com/google/go-github/v49/github"
+	"github.com/google/go-github/v59/github"
 )
 
 func secrets() *schema.Table {
