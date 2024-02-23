@@ -15,8 +15,7 @@ func User() okta.User {
 	tf := &okta.TestFactory{}
 	up := tf.NewValidTestUserProfile()
 	u.Profile = &up
-	u.Credentials.Password.Hash.Algorithm = &okta.AllowedPasswordCredentialHashAlgorithmEnumValues[0]
-	u.Credentials.Provider.Type = &okta.AllowedAuthenticationProviderTypeEnumValues[0]
+	u.Credentials = tf.NewValidTestUserCredentialsWithPassword()
 	u.Status = &okta.AllowedUserStatusEnumValues[0]
 	u.TransitioningToStatus = &okta.AllowedUserStatusEnumValues[0]
 	t := time.Now()
@@ -25,6 +24,13 @@ func User() okta.User {
 	u.PasswordChanged.Set(&t)
 	u.StatusChanged.Set(&t)
 	u.LastUpdated = &t
+
+	u.AdditionalProperties = map[string]any{"key": "value"}
+	u.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
+	u.Links = &okta.UserLinks{
+		Self: &okta.HrefObject{Href: "#"},
+	}
+	u.Type.Links = &okta.UserTypeLinks{Self: &okta.HrefObjectSelfLink{Href: "#"}}
 
 	return u
 }

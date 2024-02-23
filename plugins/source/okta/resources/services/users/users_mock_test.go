@@ -13,9 +13,6 @@ import (
 
 func handleUsers(router *mux.Router) error {
 	u := fakes.User()
-	u.AdditionalProperties = map[string]any{"key": "value"}
-	u.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
-	u.Links = map[string]map[string]any{"top-key": {"key": "value"}}
 
 	router.HandleFunc("/api/v1/users", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")

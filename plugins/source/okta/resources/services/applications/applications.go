@@ -25,8 +25,8 @@ func fetchApplications(ctx context.Context, meta schema.ClientMeta, _ *schema.Re
 
 	cl := meta.(*client.Client)
 
-	req := cl.ApplicationApi.ListApplications(ctx).Limit(200)
-	items, resp, err := cl.ApplicationApi.ListApplicationsExecute(req)
+	req := cl.ApplicationAPI.ListApplications(ctx).Limit(200)
+	items, resp, err := cl.ApplicationAPI.ListApplicationsExecute(req)
 	if err != nil {
 		return err
 	}

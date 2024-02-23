@@ -75,12 +75,15 @@ func MockTestHelper(t *testing.T, table *schema.Table, createServices func(*mux.
 		t.Fatalf("failed to create services: %v", err)
 	}
 
-	cf := okta.NewConfiguration(
+	cf, err := okta.NewConfiguration(
 		okta.WithOrgUrl(h.URL),
 		okta.WithToken(spec.Token),
 		okta.WithCache(true),
 		okta.WithTestingDisableHttpsCheck(true),
 	)
+	if err != nil {
+		t.Fatalf("failed to create okta configuration: %v", err)
+	}
 	cf.HTTPClient = h.Client()
 	cf.HTTPClient.Transport = &rt{
 		RewriteBaseURL: h.URL,

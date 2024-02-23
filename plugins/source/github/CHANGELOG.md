@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v8.0.1...plugins-source-github-v8.0.2) (2024-02-23)
+
+
+### Bug Fixes
+
+* Don't include `/api/v3/` in base URL passed to `inst.NewEnterpriseConfig` ([#16834](https://github.com/cloudquery/cloudquery/issues/16834)) ([63f50cd](https://github.com/cloudquery/cloudquery/commit/63f50cdd6437df82ef75f674222679df25b9b85f))
+
 ## [8.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v8.0.0...plugins-source-github-v8.0.1) (2024-02-23)
 
 
