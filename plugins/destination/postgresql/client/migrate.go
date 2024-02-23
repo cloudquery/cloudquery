@@ -112,17 +112,11 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 			if err != nil {
 				return err
 			}
-			continue
-		case schema.TableColumnChangeTypeRemove:
-			continue
 		case schema.TableColumnChangeTypeMoveToCQOnly:
 			err := c.migrateToCQID(ctx, table, change.Current)
 			if err != nil {
 				return err
 			}
-			continue
-		default:
-			continue
 		}
 	}
 	return nil
@@ -132,7 +126,7 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 	// The SDK can detect more granular changes than we can handle
 	// We know that when the `TableColumnChangeTypeMoveToCQOnly` is present there will be other changes that were found as well
 	// As long as the only change is to remove PK from columns and add it to _cq_id, we can skip handling the changes
-	// But we need to make sure there is no other changes
+	// But we need to make sure there are no other changes
 	columnsAddingPK := []string{}
 	columnsRemovingPK := []string{}
 	cqMigration := false
@@ -160,7 +154,6 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 			if change.Current.PrimaryKey || change.Current.NotNull {
 				return false
 			}
-			continue
 		case schema.TableColumnChangeTypeRemove:
 			if change.Previous.PrimaryKey || change.Previous.NotNull {
 				// nolint:gosimple
@@ -170,9 +163,6 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 				}
 				return false
 			}
-			continue
-		case schema.TableColumnChangeTypeMoveToCQOnly:
-			continue
 		case schema.TableColumnChangeTypeUpdate:
 			if cqMigration && ((len(columnsAddingPK) == 1 && columnsAddingPK[0] == schema.CqIDColumn.Name) || funk.Contains(columnsRemovingPK, change.ColumnName)) {
 				// We don't need to handle these changes as they are a part of the CQID migration
