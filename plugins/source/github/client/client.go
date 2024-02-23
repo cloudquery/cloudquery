@@ -87,6 +87,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 	ghServices := map[string]GithubServices{}
 	for _, auth := range spec.AppAuth {
 		var (
+			i   *inst.Config
 			k   *rsa.PrivateKey
 			err error
 		)
@@ -98,7 +99,11 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse private key: %w", err)
 		}
-		i, err := inst.NewConfig(auth.AppID, auth.InstallationID, k)
+		if spec.EnterpriseSettings == nil {
+			i, err = inst.NewConfig(auth.AppID, auth.InstallationID, k)
+		} else {
+			i, err = inst.NewEnterpriseConfig(spec.EnterpriseSettings.BaseURL, auth.AppID, auth.InstallationID, k)
+		}
 		if err != nil {
 			return nil, fmt.Errorf("failed to create app config: %w", err)
 		}
