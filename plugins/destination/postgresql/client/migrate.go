@@ -163,6 +163,8 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 				}
 				return false
 			}
+		case schema.TableColumnChangeTypeMoveToCQOnly:
+			continue
 		case schema.TableColumnChangeTypeUpdate:
 			if cqMigration && ((len(columnsAddingPK) == 1 && columnsAddingPK[0] == schema.CqIDColumn.Name) || funk.Contains(columnsRemovingPK, change.ColumnName)) {
 				// We don't need to handle these changes as they are a part of the CQID migration
