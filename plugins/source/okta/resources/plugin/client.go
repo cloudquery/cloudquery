@@ -77,13 +77,16 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 		return nil, fmt.Errorf("failed to validate spec: %w", err)
 	}
 
-	cf := okta.NewConfiguration(
+	cf, err := okta.NewConfiguration(
 		okta.WithOrgUrl(config.Domain),
 		okta.WithToken(config.Token),
 		okta.WithCache(true),
 		okta.WithRateLimitMaxBackOff(int64(config.RateLimit.MaxBackoff.Duration()/time.Second)), // this param takes int64 of seconds
 		okta.WithRateLimitMaxRetries(config.RateLimit.MaxRetries),
 	)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create okta configuration: %w", err)
+	}
 	cf.Debug = config.Debug
 	services := okta.NewAPIClient(cf)
 

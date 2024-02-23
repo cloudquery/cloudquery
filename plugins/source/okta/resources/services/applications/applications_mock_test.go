@@ -17,7 +17,7 @@ func handleApplications(router *mux.Router) error {
 		return err
 	}
 	a.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
-	a.Profile = map[string]map[string]any{"top-key": {"key": "value"}}
+	a.Profile = map[string]any{"top-key": "value"}
 
 	as := okta.ApplicationSignOnMode("AUTO_LOGIN")
 	a.SignOnMode = &as
@@ -28,7 +28,7 @@ func handleApplications(router *mux.Router) error {
 	lcs := okta.APPLICATIONLIFECYCLESTATUS_ACTIVE
 	a.Status = &lcs
 	a.Links = &okta.ApplicationLinks{
-		Self: &okta.HrefObject{Href: "#"},
+		Self: &okta.HrefObjectSelfLink{Href: "#"},
 	}
 
 	router.HandleFunc("/api/v1/apps", func(w http.ResponseWriter, r *http.Request) {
@@ -51,7 +51,9 @@ func handleApplications(router *mux.Router) error {
 	ag.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
 	ag.Profile = map[string]map[string]any{"top-key": {"key": "value"}}
 	ag.AdditionalProperties = map[string]any{"key": "value"}
-	ag.Links = map[string]map[string]any{"top-key": {"key": "value"}}
+	ag.Links = &okta.LinksSelf{
+		Self: &okta.HrefObjectSelfLink{Href: "#"},
+	}
 
 	router.HandleFunc("/api/v1/apps/"+*a.Id+"/groups", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -73,7 +75,9 @@ func handleApplications(router *mux.Router) error {
 	au.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
 	au.Profile = map[string]map[string]any{"top-key": {"key": "value"}}
 	au.AdditionalProperties = map[string]any{"key": "value"}
-	au.Links = map[string]map[string]any{"top-key": {"key": "value"}}
+	au.Links = okta.LinksAppAndUser{
+		App: &okta.HrefObjectAppLink{Href: "#"},
+	}
 
 	router.HandleFunc("/api/v1/apps/"+*a.Id+"/users", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")

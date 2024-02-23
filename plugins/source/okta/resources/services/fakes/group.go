@@ -12,7 +12,7 @@ func Group() okta.Group {
 	}
 	g.Type = &okta.AllowedGroupTypeEnumValues[0]
 	g.Links = &okta.GroupLinks{
-		Self: &okta.HrefObject{Href: "#"},
+		Self: &okta.HrefObjectSelfLink{Href: "#"},
 	}
 
 	return g
