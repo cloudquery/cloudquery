@@ -13,6 +13,8 @@ require (
 	golang.org/x/sync v0.6.0
 )
 
+require github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
+
 require (
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.2 // indirect
@@ -52,7 +54,6 @@ require (
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.7.5 // indirect
 	github.com/cloudquery/plugin-pb-go v1.17.2 // indirect
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/danieljoos/wincred v1.2.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect

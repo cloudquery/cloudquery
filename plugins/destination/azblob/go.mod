@@ -19,6 +19,8 @@ require (
 	github.com/wk8/go-ordered-map/v2 v2.1.8
 )
 
+require github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
+
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.9.2 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.5.2 // indirect
@@ -43,7 +45,6 @@ require (
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.7.5 // indirect
 	github.com/cloudquery/plugin-pb-go v1.17.2 // indirect
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect
 	github.com/fatih/structs v1.1.0 // indirect

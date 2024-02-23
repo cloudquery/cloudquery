@@ -14,7 +14,10 @@ require (
 	github.com/jackc/pgx/v5 v5.3.1
 	github.com/rs/zerolog v1.31.0
 	github.com/stretchr/testify v1.8.4
+	github.com/thoas/go-funk v0.9.3
 )
+
+require github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 
 require (
 	github.com/BurntSushi/toml v1.3.2 // indirect
@@ -35,7 +38,6 @@ require (
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.7.5 // indirect
 	github.com/cloudquery/plugin-pb-go v1.17.2 // indirect
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
@@ -95,7 +97,6 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/tdewolff/minify/v2 v2.20.16 // indirect
 	github.com/tdewolff/parse/v2 v2.7.11 // indirect
-	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect

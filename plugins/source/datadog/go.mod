@@ -16,6 +16,8 @@ require (
 	golang.org/x/exp v0.0.0-20240119083558-1b970713d09a
 )
 
+require github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
+
 require (
 	github.com/BurntSushi/toml v1.3.2 // indirect
 	github.com/CloudyKit/fastprinter v0.0.0-20200109182630-33d98a066a53 // indirect
@@ -36,7 +38,6 @@ require (
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.7.5 // indirect
 	github.com/cloudquery/plugin-pb-go v1.17.2 // indirect
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
