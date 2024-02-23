@@ -35,7 +35,7 @@ spec:
     #     base_url: "http(s)://[your-ghe-hostname]/api/v3/"
     #     upload_url: "http(s)://[your-ghe-hostname]/api/uploads/"
     # # Optional parameters
-    # concurrency: 1000 0# Optional. Number of concurrent requests to GitHub API. Default is 10000.
+    # concurrency: 10000 # Optional. Number of concurrent requests to GitHub API. Default is 10000.
     # discovery_concurrency: 1 # Optional. Number of concurrent requests to GitHub API during discovery phase. Default 1.
     # skip_archived_repos: false # Optional. Skip archived repositories. Default false.
 ```
