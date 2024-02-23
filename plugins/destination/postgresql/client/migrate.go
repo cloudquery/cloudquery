@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/thoas/go-funk"
 )
 
 // MigrateTableBatch migrates a table. It forms part of the writer.MixedBatchWriter interface.
@@ -107,19 +108,46 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 	for _, change := range changes {
 		switch change.Type {
 		case schema.TableColumnChangeTypeAdd:
-			return c.addColumn(ctx, tableName, change.Current)
-		case schema.TableColumnChangeTypeRemove:
-			continue
+			err := c.addColumn(ctx, tableName, change.Current)
+			if err != nil {
+				return err
+			}
 		case schema.TableColumnChangeTypeMoveToCQOnly:
-			return c.migrateToCQID(ctx, table, change.Current)
-		default:
-			return fmt.Errorf("unsupported column change type: %s for column: %v from %v", change.Type.String(), change.Current, change.Previous)
+			err := c.migrateToCQID(ctx, table, change.Current)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil
 }
 
 func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
+	// The SDK can detect more granular changes than we can handle
+	// We know that when the `TableColumnChangeTypeMoveToCQOnly` is present there will be other changes that were found as well
+	// As long as the only change is to remove PK from columns and add it to _cq_id, we can skip handling the changes
+	// But we need to make sure there are no other changes
+	columnsAddingPK := []string{}
+	columnsRemovingPK := []string{}
+	cqMigration := false
+	for _, change := range changes {
+		switch change.Type {
+		case schema.TableColumnChangeTypeUpdate:
+			if change.Current.Type != change.Previous.Type {
+				continue
+			}
+			if change.Current.PrimaryKey && !change.Previous.PrimaryKey {
+				columnsAddingPK = append(columnsAddingPK, change.ColumnName)
+			}
+			if !change.Current.PrimaryKey && change.Previous.PrimaryKey {
+				columnsRemovingPK = append(columnsRemovingPK, change.ColumnName)
+			}
+
+		case schema.TableColumnChangeTypeMoveToCQOnly:
+			cqMigration = true
+		}
+	}
+
 	for _, change := range changes {
 		switch change.Type {
 		case schema.TableColumnChangeTypeAdd:
@@ -136,7 +164,13 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 				return false
 			}
 		case schema.TableColumnChangeTypeMoveToCQOnly:
-			return true
+			continue
+		case schema.TableColumnChangeTypeUpdate:
+			if cqMigration && ((len(columnsAddingPK) == 1 && columnsAddingPK[0] == schema.CqIDColumn.Name) || funk.Contains(columnsRemovingPK, change.ColumnName)) {
+				// We don't need to handle these changes as they are a part of the CQID migration
+				continue
+			}
+			return false
 		default:
 			return false
 		}
