@@ -23,8 +23,8 @@ func fetchUsers(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource,
 
 	cl := meta.(*client.Client)
 
-	req := cl.UserApi.ListUsers(ctx).Limit(200)
-	users, resp, err := cl.UserApi.ListUsersExecute(req)
+	req := cl.UserAPI.ListUsers(ctx).Limit(200)
+	users, resp, err := cl.UserAPI.ListUsersExecute(req)
 	if err != nil {
 		return err
 	}

@@ -24,8 +24,8 @@ func fetchGroups(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 
 	cl := meta.(*client.Client)
 
-	req := cl.GroupApi.ListGroups(ctx).Limit(200)
-	items, resp, err := cl.GroupApi.ListGroupsExecute(req)
+	req := cl.GroupAPI.ListGroups(ctx).Limit(200)
+	items, resp, err := cl.GroupAPI.ListGroupsExecute(req)
 	if err != nil {
 		return err
 	}
