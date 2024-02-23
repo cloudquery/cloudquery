@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"testing"
+	"time"
 
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
@@ -25,6 +26,7 @@ func handleApplications(router *mux.Router) error {
 	a.Credentials.Password.Hash.Algorithm = &okta.AllowedPasswordCredentialHashAlgorithmEnumValues[0]
 	a.Credentials.Scheme = &okta.AllowedApplicationCredentialsSchemeEnumValues[0]
 	a.Credentials.Signing.Use = &okta.AllowedApplicationCredentialsSigningUseEnumValues[0]
+	a.Credentials.Password.Hash.DigestAlgorithm = &okta.AllowedDigestAlgorithmEnumValues[0]
 	lcs := okta.APPLICATIONLIFECYCLESTATUS_ACTIVE
 	a.Status = &lcs
 	a.Links = &okta.ApplicationLinks{
@@ -75,6 +77,10 @@ func handleApplications(router *mux.Router) error {
 	au.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
 	au.Profile = map[string]map[string]any{"top-key": {"key": "value"}}
 	au.AdditionalProperties = map[string]any{"key": "value"}
+	au.Status = okta.APPUSERSTATUS_ACTIVE
+	au.SyncState = &okta.AllowedAppUserSyncStateEnumValues[0]
+	t := time.Now()
+	au.PasswordChanged = *okta.NewNullableTime(&t)
 	au.Links = okta.LinksAppAndUser{
 		App: &okta.HrefObjectAppLink{Href: "#"},
 	}
