@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v8.0.0...plugins-source-github-v8.0.1) (2024-02-23)
+
+
+### Bug Fixes
+
+* Pass enterprise base URL to app auth if needed ([#16827](https://github.com/cloudquery/cloudquery/issues/16827)) ([bb953c9](https://github.com/cloudquery/cloudquery/commit/bb953c9146351147648bfa19106bfa1772a24c1c))
+
 ## [8.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v7.7.1...plugins-source-github-v8.0.0) (2024-02-21)
 
 

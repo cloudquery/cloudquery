@@ -1,5 +1,5 @@
 {
-  "cli": "5.5.6",
+  "cli": "5.5.7",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "22.19.2",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -11,7 +11,7 @@
   "plugins/source/digitalocean+FILLER": "0.0.0",
   "plugins/source/gcp": "10.0.0",
   "plugins/source/gcp+FILLER": "0.0.0",
-  "plugins/source/github": "8.0.0",
+  "plugins/source/github": "8.0.1",
   "plugins/source/github+FILLER": "0.0.0",
   "plugins/source/k8s": "6.0.4",
   "plugins/source/k8s+FILLER": "0.0.0",
