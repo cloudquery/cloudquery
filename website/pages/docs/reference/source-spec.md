@@ -46,6 +46,36 @@ The name field may be used to uniquely identify a particular source configuratio
 - `grpc`: mostly useful in debug mode when plugin is already running in a different terminal, CloudQuery will connect to the gRPC plugin server directly without spawning the process.
 - `docker`: CloudQuery will run the plugin in a Docker container. This is most useful for plugins written in Python, as they do not support the `local` and `github` registries.
 
+### docker_registry_auth_token
+
+(`string`, optional, default: `""`, introduced in CLI `v5.6.0`)
+
+Authentication token for private Docker container registries. This is required if the plugin is hosted in a private Docker container registry. The token should be a valid Docker registry token that can be used to pull the plugin image. This option is only relevant when `registry` is set to `docker`. The token is a base64 encoded string. Here is an example of how to generate the token:
+
+```shell
+echo -n "{\"username\":\"<REPLACE_WITH_PASSWORD>\",\"password\":\"<REPLACE_WITH_PASSWORD>\"}" | base64`
+```
+Details about specific private container registries:
+
+AWS ECR:
+The username is `AWS` and you can get the password by running `aws ecr get-login-password --region <region>`. Replace `<region>` with the region where the ECR is located.
+
+Generating the token for AWS ECR would look like this:
+
+```shell
+echo -n "{\"username\":\"AWS\",\"password\":\"$(aws ecr get-login-password --region <REGION>)\"}" | base64
+```
+
+GitHub Container Registry:
+The username is `USERNAME` and you use a personal access token as the password. More information can be found [here](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#authenticating-with-a-personal-access-token-classic)
+
+Generating the token for GitHub Container Registry would look like this:
+
+```shell
+export CR_PAT=YOUR_TOKEN
+echo -n "{\"username\":\"USERNAME\",\"password\":\"$$CR_PAT\"}" | base64
+```
+
 ### path
 
 (`string`, required)
