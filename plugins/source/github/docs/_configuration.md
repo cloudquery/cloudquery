@@ -13,27 +13,29 @@ spec:
   tables: ["github_issues"]
   destinations: ["DESTINATION_NAME"]
   spec:
-    access_token: <YOUR_ACCESS_TOKEN_HERE> # Personal Access Token, required if not using App Authentication.
-    ## App Authentication (one per org):
+    access_token: "${GITHUB_PERSONAL_ACCESS_TOKEN}" # Personal Access Token, required if not using App Authentication.
+    # # App Authentication (one per org):
     # app_auth:
     # - org: cloudquery
     #   private_key: <PRIVATE_KEY> # Private key as a string
     #   private_key_path: <PATH_TO_PRIVATE_KEY> # Path to private key file
     #   app_id: <YOUR_APP_ID> # App ID, required for App Authentication.
     #   installation_id: <ORG_INSTALLATION_ID> # Installation ID for this org
-    orgs: [] # Optional. List of organizations to sync from
-    repos: ["cloudquery/cloudquery"] # Optional. List of repositories to sync from
-    ## GitHub Enterprise
-    # In order to enable GHE you have to provide two urls, the base url of the server and the upload url.
-    # Quote from GitHub's client:
-    #   If the base URL does not have the suffix "/api/v3/", it will be added automatically. If the upload URL does not have the suffix "/api/uploads", it will be added automatically.
-    #   Another important thing is that by default, the GitHub Enterprise URL format should be http(s)://[hostname]/api/v3/ or you will always receive the 406 status code. The upload URL format should be http(s)://[hostname]/api/uploads/"
-    # If you are not configuring against an enterprise server please omit the enterprise stanza bellow
-    enterprise:
-        base_url: "http(s)://[your-ghe-hostname]/api/v3/"
-        upload_url: "http(s)://[your-ghe-hostname]/api/uploads/"
-    # Optional parameters
-    # concurrency: 1000 0# Optional. Number of concurrent requests to GitHub API. Default is 10000.
+    # # List of organizations to sync from. You must specify either orgs or repos in the configuration.
+    # orgs: []
+    # # List of repositories to sync from. The format is `owner/repo` (e.g. `cloudquery/cloudquery`). You must specify either `orgs` or `repos` in the configuration.
+    # repos: ["cloudquery/cloudquery"]
+    # # GitHub Enterprise
+    # # In order to enable GHE you have to provide two urls, the base url of the server and the upload url.
+    # # Quote from GitHub's client:
+    # #   If the base URL does not have the suffix "/api/v3/", it will be added automatically. If the upload URL does not have the suffix "/api/uploads", it will be added automatically.
+    # #   Another important thing is that by default, the GitHub Enterprise URL format should be http(s)://[hostname]/api/v3/ or you will always receive the 406 status code. The upload URL format should be http(s)://[hostname]/api/uploads/"
+    # # If you are not configuring against an enterprise server please omit the enterprise configuration bellow
+    # enterprise:
+    #     base_url: "http(s)://[your-ghe-hostname]/api/v3/"
+    #     upload_url: "http(s)://[your-ghe-hostname]/api/uploads/"
+    # # Optional parameters
+    # concurrency: 10000 # Optional. Number of concurrent requests to GitHub API. Default is 10000.
     # discovery_concurrency: 1 # Optional. Number of concurrent requests to GitHub API during discovery phase. Default 1.
     # skip_archived_repos: false # Optional. Skip archived repositories. Default false.
 ```
