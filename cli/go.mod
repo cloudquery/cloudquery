@@ -2,15 +2,13 @@ module github.com/cloudquery/cloudquery/cli
 
 go 1.21.5
 
-replace github.com/cloudquery/plugin-pb-go => /Users/benbernays/Documents/GitHub/plugin-pb-go
-
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/cloudquery-api-go v1.7.5
 	github.com/cloudquery/codegen v0.3.12
-	github.com/cloudquery/plugin-pb-go v1.18.0
+	github.com/cloudquery/plugin-pb-go v1.19.0
 	github.com/cloudquery/plugin-sdk/v4 v4.30.0
 	github.com/distribution/reference v0.5.0
 	github.com/docker/distribution v2.8.3+incompatible
@@ -60,6 +58,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
+	github.com/containerd/log v0.1.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect
