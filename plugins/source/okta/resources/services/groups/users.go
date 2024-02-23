@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
 	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/services/groups/models"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/okta/okta-sdk-golang/v3/okta"
+	"github.com/okta/okta-sdk-golang/v4/okta"
 )
 
 func users() *schema.Table {

@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/gorilla/mux"
-	"github.com/okta/okta-sdk-golang/v3/okta"
+	"github.com/okta/okta-sdk-golang/v4/okta"
 )
 
 func handleApplications(router *mux.Router) error {

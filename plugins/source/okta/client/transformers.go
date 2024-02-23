@@ -8,7 +8,7 @@ import (
 	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	"github.com/okta/okta-sdk-golang/v3/okta"
+	"github.com/okta/okta-sdk-golang/v4/okta"
 	"github.com/thoas/go-funk"
 )
 

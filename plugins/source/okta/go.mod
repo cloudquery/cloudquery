@@ -8,7 +8,7 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.30.0
 	github.com/gorilla/mux v1.8.0
 	github.com/invopop/jsonschema v0.12.0
-	github.com/okta/okta-sdk-golang/v3 v3.0.19
+	github.com/okta/okta-sdk-golang/v4 v4.0.0
 	github.com/rs/zerolog v1.31.0
 	github.com/stretchr/testify v1.8.4
 	github.com/thoas/go-funk v0.9.3
@@ -43,7 +43,7 @@ require (
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.9.1 // indirect
-	github.com/go-jose/go-jose/v3 v3.0.0 // indirect
+	github.com/go-jose/go-jose/v3 v3.0.1 // indirect
 	github.com/go-logr/logr v1.3.0 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
