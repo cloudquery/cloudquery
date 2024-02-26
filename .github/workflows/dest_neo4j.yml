@@ -49,7 +49,7 @@ jobs:
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: plugins/destination/neo4j/go.mod
           cache: true
@@ -92,7 +92,7 @@ jobs:
             ${{ runner.os }}-go-1.21.4-release-cache-plugins-destination-neo4j
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: plugins/destination/neo4j/go.mod
           cache: false

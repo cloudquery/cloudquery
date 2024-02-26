@@ -35,7 +35,7 @@ jobs:
           version: v5.6.0
 
       - name: Set up Go 1.x
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: plugins/source/${{ github.event.client_payload.slash_command.args.named.plugin }}/go.mod
           cache: true
