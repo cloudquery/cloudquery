@@ -20,7 +20,7 @@ The primary key for this table is **id**.
 |profile|`json`|
 |status|`utf8`|
 |status_changed|`timestamp[us, tz=UTC]`|
-|transitioning_to_status|`utf8`|
+|transitioning_to_status|`json`|
 |type|`json`|
 |_embedded|`json`|
 |_links|`json`|

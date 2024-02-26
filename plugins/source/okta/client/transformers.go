@@ -33,6 +33,8 @@ func typeTransformer(field reflect.StructField) (arrow.DataType, error) {
 func resolverTransformer(field reflect.StructField, path string) schema.ColumnResolver {
 	if field.Type == reflect.TypeOf(okta.NullableTime{}) {
 		return resolveNullableTime(path)
+	} else if field.Type == reflect.TypeOf(okta.NullableString{}) {
+		return resolveNullableString(path)
 	}
 
 	return transformers.DefaultResolverTransformer(field, path)
@@ -52,5 +54,22 @@ func resolveNullableTime(path string) schema.ColumnResolver {
 			return resource.Set(c.Name, nil)
 		}
 		return resource.Set(c.Name, ts.Get())
+	}
+}
+
+func resolveNullableString(path string) schema.ColumnResolver {
+	return func(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+		data := funk.Get(resource.Item, path)
+		if data == nil {
+			return nil
+		}
+		str, ok := data.(okta.NullableString)
+		if !ok {
+			return fmt.Errorf("unexpected type, want \"okta.NullableString\", have \"%T\"", data)
+		}
+		if !str.IsSet() {
+			return resource.Set(c.Name, nil)
+		}
+		return resource.Set(c.Name, str.Get())
 	}
 }
