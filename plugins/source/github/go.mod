@@ -4,7 +4,7 @@ go 1.21.5
 
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
-	github.com/beatlabs/github-auth v0.0.0-20240122214848-98862c3ce8f9
+	github.com/bradleyfalzon/ghinstallation/v2 v2.9.0
 	github.com/cloudquery/codegen v0.3.12
 	github.com/cloudquery/plugin-sdk/v4 v4.30.0
 	github.com/gofri/go-github-ratelimit v1.0.3
@@ -12,7 +12,6 @@ require (
 	github.com/google/go-github/v59 v59.0.0
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.31.0
-	golang.org/x/oauth2 v0.16.0
 	golang.org/x/sync v0.6.0
 )
 
@@ -51,10 +50,12 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.16.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
+	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/gomarkdown/markdown v0.0.0-20231222211730-1d6d20845b47 // indirect
 	github.com/google/flatbuffers v23.5.26+incompatible // indirect
+	github.com/google/go-github/v57 v57.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.5.0 // indirect
 	github.com/gorilla/css v1.0.1 // indirect
@@ -121,7 +122,6 @@ require (
 	golang.org/x/time v0.5.0 // indirect
 	golang.org/x/tools v0.17.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
-	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240125205218-1f4bbc51befe // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240125205218-1f4bbc51befe // indirect
 	google.golang.org/grpc v1.60.1 // indirect
