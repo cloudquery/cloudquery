@@ -15,11 +15,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/google/uuid"
-	"github.com/marcboeker/go-duckdb"
 )
-
-// Disable to use the old way of writing to duckdb for appends
-const useAppender = true
 
 func nonPkIndices(sc *schema.Table) []int {
 	var indices []int
@@ -129,59 +125,12 @@ func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) er
 	return nil
 }
 
-func (c *Client) appendRows(ctx context.Context, table *schema.Table, msgs message.WriteInserts) (retErr error) {
-	if c.conn == nil {
-		// connecting before MigrateTable results in appender creation failure
-		var err error
-		c.conn, err = c.connector.Connect(context.Background())
-		if err != nil {
-			return fmt.Errorf("failed to connect: %w", err)
-		}
-	}
-
-	appender, err := duckdb.NewAppenderFromConn(c.conn, "", table.Name)
-	if err != nil {
-		return fmt.Errorf("failed to create appender for %s: %w", table.Name, err)
-	}
-	defer func() {
-		err := appender.Close()
-		if err != nil && retErr == nil {
-			retErr = fmt.Errorf("failed to close appender for %s: %w", table.Name, err)
-		}
-	}()
-
-	tableState, err := c.getCacheTableInfo(ctx, table.Name)
-	if err != nil {
-		return fmt.Errorf("table %s not found in duckdb: %w", table.Name, err) // should never happen as appender would've failed
-	}
-
-	fields := msgs[0].Record.Schema().Fields()
-
-	for _, msg := range msgs {
-		arr, err := transformRecordToGoType(msg.Record, fields, tableState.Columns)
-		if err != nil {
-			return fmt.Errorf("failed to transform record to go type for %s: %w", table.Name, err)
-		}
-		for i := range arr {
-			if err := appender.AppendRow(arr[i]...); err != nil {
-				return fmt.Errorf("failed to append row to %s: %w", table.Name, err)
-			}
-		}
-	}
-
-	return nil
-}
-
 func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
 	if len(msgs) == 0 {
 		return nil
 	}
 
 	table := msgs[0].GetTable()
-
-	if useAppender && len(table.PrimaryKeys()) == 0 {
-		return c.appendRows(ctx, table, msgs)
-	}
 
 	writeStart := time.Now()
 	tmpFile, err := writeTMPFile(table, msgs)
@@ -192,7 +141,6 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	defer os.Remove(tmpFile)
 
 	if len(table.PrimaryKeys()) == 0 {
-		// This is only used if useAppender is disabled, for testing or debugging reasons
 		copyStart := time.Now()
 		defer func() {
 			c.logger.Debug().Str("table", table.Name).Str("duration", time.Since(copyStart).String()).Msg("copy file to table")
