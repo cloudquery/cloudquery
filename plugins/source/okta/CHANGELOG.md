@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v4.0.2...plugins-source-okta-v4.1.0) (2024-02-26)
+
+
+### Features
+
+* Upgrade Okta SDK to v4 ([#16864](https://github.com/cloudquery/cloudquery/issues/16864)) ([bfd1896](https://github.com/cloudquery/cloudquery/commit/bfd18962cff593b15b881eb192560eb4a8922b61))
+
 ## [4.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v4.0.1...plugins-source-okta-v4.0.2) (2024-02-26)
 
 
