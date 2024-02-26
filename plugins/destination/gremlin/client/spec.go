@@ -33,6 +33,9 @@ type Spec struct {
 	// AWS region to use for AWS IAM authentication. Required when `auth_mode` is `aws`.
 	AWSRegion string `json:"aws_region"`
 
+	// AWS Neptune host header to use with AWS IAM authentication. Required when `auth_mode` is `aws`.
+	AWSNeptuneHost string `json:"aws_neptune_host" jsonschema:"pattern=^[\\w\\.-]+$"`
+
 	// Maximum number of concurrent connections to the database. Defaults to the number of CPUs.
 	MaxConcurrentConnections int `json:"max_concurrent_connections" jsonschema:"minimum=1"`
 

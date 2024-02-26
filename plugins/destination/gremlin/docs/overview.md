@@ -69,6 +69,10 @@ This is the (nested) spec used by the Gremlin destination Plugin.
 
   AWS region to use for AWS IAM authentication.
 
+- `aws_neptune_host` (`string`) (optional, used when `auth_mode` is `aws`)
+
+  AWS Neptune host header to use with AWS IAM authentication. Use if you're not accessing Neptune directly, when `auth_mode` is `aws`.
+
 - `max_retries` (`integer`) (optional) (default: `5`)
 
   Number of retries on `ConcurrentModificationException` before giving up for each batch.
