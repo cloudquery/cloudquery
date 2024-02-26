@@ -1,6 +1,7 @@
 package spec
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -35,6 +36,11 @@ type Spec struct {
 	//
 	// Defaults to `30s` unless `no_rotate` is `true` (will be `0s` then).
 	BatchTimeout *configtype.Duration `json:"batch_timeout" jsonschema:"default=30s"`
+
+	// GCP service account key content.
+	// This allows for using different service accounts for the GCP source and GCS destination.
+	// If using service account keys, it is best to use [environment or file variable substitution](/docs/advanced-topics/environment-variable-substitution).
+	ServiceAccountKeyJSON string `json:"service_account_key_json"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -75,6 +81,12 @@ func (s *Spec) Validate() error {
 		return fmt.Errorf("`no_rotate` cannot be used with non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`")
 	}
 
+	if len(s.ServiceAccountKeyJSON) > 0 {
+		if err := isValidJson(s.ServiceAccountKeyJSON); err != nil {
+			return fmt.Errorf("invalid json for service_account_key_json: %w", err)
+		}
+	}
+
 	// required for s.FileSpec.Validate call
 	err := s.FileSpec.UnmarshalSpec()
 	if err != nil {
@@ -83,6 +95,15 @@ func (s *Spec) Validate() error {
 	s.FileSpec.SetDefaults()
 
 	return s.FileSpec.Validate()
+}
+
+func isValidJson(content string) error {
+	var v map[string]any
+	err := json.Unmarshal([]byte(content), &v)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func int64ptr(i int64) *int64 {
