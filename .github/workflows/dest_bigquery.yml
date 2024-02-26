@@ -35,7 +35,7 @@ jobs:
       - name: Set up Cloud SDK
         uses: 'google-github-actions/setup-gcloud@v0.7.0'
       - name: Set up Go 1.x
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: plugins/destination/bigquery/go.mod
           cache: true
@@ -85,7 +85,7 @@ jobs:
             ${{ runner.os }}-go-1.21.4-release-cache-plugins-destination-bigquery
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: plugins/destination/bigquery/go.mod
           cache: false

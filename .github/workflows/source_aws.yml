@@ -90,7 +90,7 @@ jobs:
             ${{ runner.os }}-go-1.21.4-release-cache-plugins-source-aws
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: plugins/source/aws/go.mod
           cache: false
