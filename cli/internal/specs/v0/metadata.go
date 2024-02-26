@@ -29,6 +29,9 @@ type Metadata struct {
 	// Registry can be "", "github", "local", "grpc", "docker", "cloudquery"
 	Registry Registry `json:"registry,omitempty" jsonschema:"default=cloudquery"`
 
+	// DockerRegistryAuthToken is the token to use to authenticate with the docker registry
+	DockerRegistryAuthToken string `json:"docker_registry_auth_token,omitempty"`
+
 	// registryInferred is a flag that indicates whether the registry was inferred from an empty value
 	registryInferred bool
 }
