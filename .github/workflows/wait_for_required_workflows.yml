@@ -21,7 +21,7 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v41
-      - uses: actions/github-script@v6
+      - uses: actions/github-script@v7
         env:
           FILES: ${{ steps.changed-files.outputs.all_modified_files }}
         with:

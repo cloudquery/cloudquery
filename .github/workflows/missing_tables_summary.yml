@@ -56,7 +56,7 @@ jobs:
           edit-mode: replace
       - name: Delete comment
         if: steps.find-comment.outputs.comment-id != '' && steps.missing-tables.outputs.result == ''
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             github.rest.issues.deleteComment({
