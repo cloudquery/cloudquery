@@ -23,21 +23,25 @@ func TransformWithStruct(t any, opts ...transformers.StructTransformerOption) sc
 }
 
 func typeTransformer(field reflect.StructField) (arrow.DataType, error) {
-	if field.Type == reflect.TypeOf(okta.NullableTime{}) {
+	switch field.Type {
+	case reflect.TypeOf(okta.NullableTime{}):
 		return arrow.FixedWidthTypes.Timestamp_us, nil
+	case reflect.TypeOf(okta.NullableString{}):
+		return arrow.BinaryTypes.String, nil
+	default:
+		return nil, nil
 	}
-
-	return nil, nil
 }
 
 func resolverTransformer(field reflect.StructField, path string) schema.ColumnResolver {
-	if field.Type == reflect.TypeOf(okta.NullableTime{}) {
+	switch field.Type {
+	case reflect.TypeOf(okta.NullableTime{}):
 		return resolveNullableTime(path)
-	} else if field.Type == reflect.TypeOf(okta.NullableString{}) {
+	case reflect.TypeOf(okta.NullableString{}):
 		return resolveNullableString(path)
+	default:
+		return transformers.DefaultResolverTransformer(field, path)
 	}
-
-	return transformers.DefaultResolverTransformer(field, path)
 }
 
 func resolveNullableTime(path string) schema.ColumnResolver {
