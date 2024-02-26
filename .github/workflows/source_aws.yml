@@ -63,7 +63,7 @@ jobs:
       # Sanity integration test, only for release PRs
       - name: Configure AWS credentials
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::615713231484:role/cq-playground-aws-github-action
           aws-region: us-east-1
