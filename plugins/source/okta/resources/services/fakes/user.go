@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/faker"
-	"github.com/okta/okta-sdk-golang/v3/okta"
+	"github.com/okta/okta-sdk-golang/v4/okta"
 )
 
 func User() okta.User {
@@ -16,8 +16,8 @@ func User() okta.User {
 	up := tf.NewValidTestUserProfile()
 	u.Profile = &up
 	u.Credentials = tf.NewValidTestUserCredentialsWithPassword()
-	u.Status = &okta.AllowedUserStatusEnumValues[0]
-	u.TransitioningToStatus = &okta.AllowedUserStatusEnumValues[0]
+	str := "string"
+	u.TransitioningToStatus = *okta.NewNullableString(&str)
 	t := time.Now()
 	u.Activated.Set(&t)
 	u.LastLogin.Set(&t)
@@ -30,7 +30,6 @@ func User() okta.User {
 	u.Links = &okta.UserLinks{
 		Self: &okta.HrefObject{Href: "#"},
 	}
-	u.Type.Links = &okta.UserTypeLinks{Self: &okta.HrefObjectSelfLink{Href: "#"}}
 
 	return u
 }

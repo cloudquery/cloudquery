@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
 	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/services/fakes"
 	"github.com/gorilla/mux"
-	"github.com/okta/okta-sdk-golang/v3/okta"
+	"github.com/okta/okta-sdk-golang/v4/okta"
 )
 
 func handleGroups(router *mux.Router) error {
