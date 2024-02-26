@@ -11,8 +11,8 @@ import (
 type Registry int
 
 const (
-	RegistryUnset Registry = iota
-	RegistryGitHub
+	RegistryUnset  Registry = iota
+	RegistryGitHub          // deprecated
 	RegistryLocal
 	RegistryGRPC
 	RegistryDocker

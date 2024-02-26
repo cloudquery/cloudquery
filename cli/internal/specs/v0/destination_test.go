@@ -179,14 +179,14 @@ spec:
 spec:
   name: test
   path: cloudquery/test
-  registry: github
+  registry: cloudquery
   version: v1.1.0
 `,
 		"",
 		&Destination{
 			Metadata: Metadata{
 				Name:     "test",
-				Registry: RegistryGitHub,
+				Registry: RegistryCloudQuery,
 				Path:     "cloudquery/test",
 				Version:  "v1.1.0",
 			},
@@ -232,9 +232,9 @@ func TestDestination_VersionString(t *testing.T) {
 				Name:     "aws",
 				Version:  "v10.0.0",
 				Path:     "cloudquery/aws",
-				Registry: RegistryGitHub,
+				Registry: RegistryCloudQuery,
 			},
-			want: "aws (v10.0.0)",
+			want: "aws (cloudquery/aws@v10.0.0)",
 		},
 		{
 			name: "should use long version with path when name doesn't match path",
@@ -242,12 +242,12 @@ func TestDestination_VersionString(t *testing.T) {
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "cloudquery/aws",
-				Registry: RegistryGitHub,
+				Registry: RegistryCloudQuery,
 			},
-			want: "my-aws-spec (aws@v10.0.0)",
+			want: "my-aws-spec (cloudquery/aws@v10.0.0)",
 		},
 		{
-			name: "should handle non GitHub registry",
+			name: "should handle non CloudQuery Hub registry",
 			meta: Metadata{
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
@@ -262,7 +262,7 @@ func TestDestination_VersionString(t *testing.T) {
 				Name:     "my-aws-spec",
 				Version:  "v10.0.0",
 				Path:     "aws",
-				Registry: RegistryGitHub,
+				Registry: RegistryCloudQuery,
 			},
 			want: "my-aws-spec (aws@v10.0.0)",
 		},
