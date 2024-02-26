@@ -2,20 +2,18 @@ package client
 
 import (
 	"context"
-	"crypto/rsa"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
 
-	"github.com/beatlabs/github-auth/app/inst"
-	"github.com/beatlabs/github-auth/key"
+	"github.com/bradleyfalzon/ghinstallation/v2"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/gofri/go-github-ratelimit/github_ratelimit"
 	"github.com/google/go-github/v59/github"
 	"github.com/rs/zerolog"
-	"golang.org/x/oauth2"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -87,28 +85,29 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 	ghServices := map[string]GithubServices{}
 	for _, auth := range spec.AppAuth {
 		var (
-			i   *inst.Config
-			k   *rsa.PrivateKey
+			itr *ghinstallation.Transport
 			err error
 		)
+		appId, err := strconv.ParseInt(auth.AppID, 10, 64)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse AppID %v: %w", auth.AppID, err)
+		}
+		installationId, err := strconv.ParseInt(auth.InstallationID, 10, 64)
+		if err != nil {
+			return nil, fmt.Errorf("failed to parse InstallationID %v: %w", auth.InstallationID, err)
+		}
 		if auth.PrivateKeyPath != "" {
-			k, err = key.FromFile(auth.PrivateKeyPath)
-		} else if auth.PrivateKey != "" {
-			k, err = key.Parse([]byte(auth.PrivateKey))
-		}
-		if err != nil {
-			return nil, fmt.Errorf("failed to parse private key: %w", err)
-		}
-		if spec.EnterpriseSettings == nil {
-			i, err = inst.NewConfig(auth.AppID, auth.InstallationID, k)
+			itr, err = ghinstallation.NewKeyFromFile(http.DefaultTransport, appId, installationId, auth.PrivateKeyPath)
 		} else {
-			i, err = inst.NewEnterpriseConfig(spec.EnterpriseSettings.BaseURL, auth.AppID, auth.InstallationID, k)
+			itr, err = ghinstallation.New(http.DefaultTransport, appId, installationId, []byte(auth.PrivateKey))
 		}
 		if err != nil {
-			return nil, fmt.Errorf("failed to create app config: %w", err)
+			return nil, fmt.Errorf("failed to create GitHub client for org %v: %w", auth.Org, err)
 		}
-		httpClient := i.Client(ctx)
-		ghc, err := githubClientForHTTPClient(httpClient, logger, spec.EnterpriseSettings)
+		if spec.EnterpriseSettings != nil {
+			itr.BaseURL = spec.EnterpriseSettings.BaseURL
+		}
+		ghc, err := githubClientForHTTPClient(itr, logger, spec.EnterpriseSettings)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create GitHub client for org %v: %w", auth.Org, err)
 		}
@@ -117,9 +116,8 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 
 	var defaultServices GithubServices
 	if spec.AccessToken != "" {
-		ts := oauth2.StaticTokenSource(&oauth2.Token{AccessToken: spec.AccessToken})
-		httpClient := oauth2.NewClient(ctx, ts)
-		ghc, err := githubClientForHTTPClient(httpClient, logger, spec.EnterpriseSettings)
+		httpClient := github.NewClient(nil).WithAuthToken(spec.AccessToken)
+		ghc, err := githubClientForHTTPClient(httpClient.Client().Transport, logger, spec.EnterpriseSettings)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create GitHub client for access token: %w", err)
 		}
@@ -232,8 +230,8 @@ func (c *Client) discoverRepositories(ctx context.Context, discoveryConcurrency 
 	return orgRepos, nil
 }
 
-func githubClientForHTTPClient(httpClient *http.Client, logger zerolog.Logger, enterpriseSettings *EnterpriseSettings) (*github.Client, error) {
-	rateLimiter, err := github_ratelimit.NewRateLimitWaiterClient(httpClient.Transport, github_ratelimit.WithLimitDetectedCallback(limitDetectedCallback(logger)))
+func githubClientForHTTPClient(httpTransport http.RoundTripper, logger zerolog.Logger, enterpriseSettings *EnterpriseSettings) (*github.Client, error) {
+	rateLimiter, err := github_ratelimit.NewRateLimitWaiterClient(httpTransport, github_ratelimit.WithLimitDetectedCallback(limitDetectedCallback(logger)))
 	if err != nil {
 		return nil, fmt.Errorf("failed to create rate limiter: %w", err)
 	}
