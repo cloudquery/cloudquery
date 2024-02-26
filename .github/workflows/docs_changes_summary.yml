@@ -26,7 +26,7 @@ jobs:
         run: |
           curl -L ${{ github.event.pull_request.diff_url }} > pr.diff
       - name: Set up Go 1.x
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: scripts/table_diff/go.mod
           cache: true
@@ -55,7 +55,7 @@ jobs:
             }).join('\n')
             return changesList
       - name: Find Comment
-        uses: peter-evans/find-comment@4541d1b6b0e618acc24284e118743fc5ad0bc5de
+        uses: peter-evans/find-comment@b5a462800fb9b7a44da38965cd7281bf47a81fc6
         id: find-comment
         with:
           token: ${{ secrets.GH_CQ_BOT }}
@@ -63,7 +63,7 @@ jobs:
           comment-author: "cq-bot"
           body-includes: "### This PR has the following changes to source plugin(s) tables:"
       - name: Create or update comment
-        uses: peter-evans/create-or-update-comment@0f44b017d10caeea6a4c1b410ba0521ad8a02815
+        uses: peter-evans/create-or-update-comment@c79b3ca3749d2a36af08fc41876cad6cadbab0d9
         if: steps.get-changes.outputs.result != ''
         with:
           token: ${{ secrets.GH_CQ_BOT }}

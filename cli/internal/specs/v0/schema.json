@@ -77,6 +77,10 @@
           "description": "Registry can be \"\", \"github\", \"local\", \"grpc\", \"docker\", \"cloudquery\"",
           "default": "cloudquery"
         },
+        "docker_registry_auth_token": {
+          "type": "string",
+          "description": "DockerRegistryAuthToken is the token to use to authenticate with the docker registry"
+        },
         "write_mode": {
           "type": "string",
           "enum": [
@@ -177,6 +181,10 @@
           ],
           "description": "Registry can be \"\", \"github\", \"local\", \"grpc\", \"docker\", \"cloudquery\"",
           "default": "cloudquery"
+        },
+        "docker_registry_auth_token": {
+          "type": "string",
+          "description": "DockerRegistryAuthToken is the token to use to authenticate with the docker registry"
         },
         "tables": {
           "items": {

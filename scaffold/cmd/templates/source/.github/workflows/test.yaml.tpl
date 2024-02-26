@@ -16,7 +16,7 @@ jobs:
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
       - name: golangci-lint

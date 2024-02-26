@@ -31,13 +31,13 @@ jobs:
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: plugins/destination/file/go.mod
           cache: true
           cache-dependency-path: plugins/destination/file/go.sum
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3.7.0
+        uses: golangci/golangci-lint-action@v3.7.1
         with:
           version: v1.55.2
           working-directory: plugins/destination/file
@@ -63,7 +63,7 @@ jobs:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/checkout@v4
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         with:
           path: |
@@ -74,7 +74,7 @@ jobs:
             ${{ runner.os }}-go-1.21.4-release-cache-plugins-destination-file
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: plugins/destination/file/go.mod
           cache: false
