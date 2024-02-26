@@ -1,5 +1,20 @@
 # Changelog
 
+## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v4.0.2...plugins-source-okta-v4.1.0) (2024-02-26)
+
+
+### Features
+
+* Upgrade Okta SDK to v4 ([#16864](https://github.com/cloudquery/cloudquery/issues/16864)) ([bfd1896](https://github.com/cloudquery/cloudquery/commit/bfd18962cff593b15b881eb192560eb4a8922b61))
+
+## [4.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v4.0.1...plugins-source-okta-v4.0.2) (2024-02-26)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/go-jose/go-jose/v3 to v3.0.1 [SECURITY] ([#16840](https://github.com/cloudquery/cloudquery/issues/16840)) ([c5f5809](https://github.com/cloudquery/cloudquery/commit/c5f5809663dbb8a6d9037ebadec9eab710184f02))
+* **deps:** Update module github.com/okta/okta-sdk-golang/v3 to v3.0.19 ([#16830](https://github.com/cloudquery/cloudquery/issues/16830)) ([ed65aca](https://github.com/cloudquery/cloudquery/commit/ed65acaf7fdc0dc127a6d62d653aa9269b9c4323))
+
 ## [4.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v4.0.0...plugins-source-okta-v4.0.1) (2024-02-20)
 
 
