@@ -10,7 +10,6 @@ func Group() okta.Group {
 	if err := faker.FakeObject(&g); err != nil {
 		panic(err)
 	}
-	//g.Type = &okta.AllowedGroupTypeEnumValues[0]
 	g.Links = &okta.GroupLinks{
 		Self: &okta.HrefObjectSelfLink{Href: "#"},
 	}
