@@ -49,7 +49,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             ~/.cache/go-build
@@ -59,7 +59,7 @@ jobs:
             ${{ runner.os }}-go-1.21.6-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}
 
       - name: Set up Go 1.x
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
           cache: false
