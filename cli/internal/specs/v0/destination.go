@@ -3,8 +3,6 @@ package specs
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
-	"strings"
 )
 
 // Destination plugin spec
@@ -49,18 +47,4 @@ func (d *Destination) UnmarshalSpec(out any) error {
 
 func (d *Destination) Validate() error {
 	return d.Metadata.Validate()
-}
-
-func (d Destination) VersionString() string {
-	if d.Registry != RegistryGitHub {
-		return fmt.Sprintf("%s (%s@%s)", d.Name, d.Registry, d.Path)
-	}
-	pathParts := strings.Split(d.Path, "/")
-	if len(pathParts) != 2 {
-		return fmt.Sprintf("%s (%s@%s)", d.Name, d.Path, d.Version)
-	}
-	if d.Name == pathParts[1] {
-		return fmt.Sprintf("%s (%s)", d.Name, d.Version)
-	}
-	return fmt.Sprintf("%s (%s@%s)", d.Name, pathParts[1], d.Version)
 }

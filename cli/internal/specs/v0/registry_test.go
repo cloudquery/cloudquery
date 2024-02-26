@@ -2,6 +2,7 @@ package specs
 
 import (
 	"encoding/json"
+	"strings"
 	"testing"
 
 	"github.com/cloudquery/codegen/jsonschema"
@@ -38,33 +39,22 @@ func TestRegistryYamlMarshalUnmarshal(t *testing.T) {
 }
 
 func TestRegistryFromString(t *testing.T) {
-	r, err := RegistryFromString("")
-	require.NoError(t, err)
-	require.Equal(t, RegistryUnset, r)
+	for idx, name := range AllRegistries {
+		t.Run(name, func(t *testing.T) {
+			r, err := RegistryFromString(name)
+			require.NoError(t, err)
+			require.Equal(t, Registry(idx), r)
 
-	r, err = RegistryFromString("github")
-	require.NoError(t, err)
-	require.Equal(t, RegistryGitHub, r)
-
-	r, err = RegistryFromString("local")
-	require.NoError(t, err)
-	require.Equal(t, RegistryLocal, r)
-
-	r, err = RegistryFromString("grpc")
-	require.NoError(t, err)
-	require.Equal(t, RegistryGRPC, r)
-
-	r, err = RegistryFromString("docker")
-	require.NoError(t, err)
-	require.Equal(t, RegistryDocker, r)
-
-	r, err = RegistryFromString("cloudquery")
-	require.NoError(t, err)
-	require.Equal(t, RegistryCloudQuery, r)
-
-	r, err = RegistryFromString("CloudQuery")
-	require.Error(t, err)
-	require.Equal(t, RegistryUnset, r)
+			if len(name) > 0 {
+				name = strings.ToUpper(name)
+				t.Run(name, func(t *testing.T) {
+					r, err := RegistryFromString(strings.ToUpper(name))
+					require.Error(t, err)
+					require.Equal(t, RegistryUnset, r)
+				})
+			}
+		})
+	}
 }
 
 func TestRegistry_JSONSchemaExtend(t *testing.T) {
