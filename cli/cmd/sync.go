@@ -147,10 +147,11 @@ func sync(cmd *cobra.Command, args []string) error {
 			opts = append(opts, managedplugin.WithOtelEndpointInsecure())
 		}
 		cfg := managedplugin.Config{
-			Name:     source.Name,
-			Registry: SpecRegistryToPlugin(source.Registry),
-			Version:  source.Version,
-			Path:     source.Path,
+			Name:       source.Name,
+			Registry:   SpecRegistryToPlugin(source.Registry),
+			Version:    source.Version,
+			Path:       source.Path,
+			DockerAuth: source.DockerRegistryAuthToken,
 		}
 		if isolatePluginEnvironment {
 			cfg.Environment = filterPluginEnv(osEnviron, source.Name, "source")
@@ -183,10 +184,11 @@ func sync(cmd *cobra.Command, args []string) error {
 		}
 
 		cfg := managedplugin.Config{
-			Name:     destination.Name,
-			Registry: SpecRegistryToPlugin(destination.Registry),
-			Version:  destination.Version,
-			Path:     destination.Path,
+			Name:       destination.Name,
+			Registry:   SpecRegistryToPlugin(destination.Registry),
+			Version:    destination.Version,
+			Path:       destination.Path,
+			DockerAuth: destination.DockerRegistryAuthToken,
 		}
 		if isolatePluginEnvironment {
 			cfg.Environment = filterPluginEnv(osEnviron, destination.Name, "destination")

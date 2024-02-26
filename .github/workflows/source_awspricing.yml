@@ -29,7 +29,7 @@ jobs:
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: plugins/source/awspricing/go.mod
           cache: true
@@ -66,7 +66,7 @@ jobs:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/checkout@v4
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         with:
           path: |
@@ -77,7 +77,7 @@ jobs:
             ${{ runner.os }}-go-1.21.4-release-cache-plugins-source-awspricing
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: plugins/source/awspricing/go.mod
           cache: false
