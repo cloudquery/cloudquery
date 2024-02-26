@@ -18,7 +18,7 @@ jobs:
         uses: Ana06/get-changed-files@v2.2.0
         with:
           filter: 'go.mod'
-      - uses: actions/github-script@v6
+      - uses: actions/github-script@v7
         if: startsWith(steps.changed-files.outputs.all, 'plugins/source')
         env:
           SHA: ${{ github.event.pull_request.head.sha }}

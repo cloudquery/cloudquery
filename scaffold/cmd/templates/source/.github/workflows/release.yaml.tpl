@@ -43,7 +43,7 @@ jobs:
 
       - name: Get Release Notes
         id: release-notes
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         env:
           PRERELEASE: ${{"{{"}} steps.semver_parser.outputs.prerelease {{"}}"}}
         with:
