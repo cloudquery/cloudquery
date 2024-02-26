@@ -77,7 +77,7 @@ Generating the token for GitHub Container Registry would look like this:
 
 ```shell
 export CR_PAT=YOUR_TOKEN
-echo -n "{\"username\":\"USERNAME\",\"password\":\"$$CR_PAT\"}" | base64
+echo -n "{\"username\":\"USERNAME\",\"password\":\"$CR_PAT\"}" | base64
 ```
 
 ### path
