@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v3.5.1...plugins-destination-gcs-v3.6.0) (2024-02-26)
+
+
+### Features
+
+* Support authenticating via `service_account_key_json` ([#16885](https://github.com/cloudquery/cloudquery/issues/16885)) ([33d1677](https://github.com/cloudquery/cloudquery/commit/33d167763f890b9c75a5571b3c55acab2b9d00a4))
+
 ## [3.5.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v3.5.0...plugins-destination-gcs-v3.5.1) (2024-02-20)
 
 
