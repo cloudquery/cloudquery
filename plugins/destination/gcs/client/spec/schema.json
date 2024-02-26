@@ -212,6 +212,10 @@
               "type": "null"
             }
           ]
+        },
+        "service_account_key_json": {
+          "type": "string",
+          "description": "GCP service account key content.\nThis allows for using different service accounts for the GCP source and GCS destination.\nIf using service account keys, it is best to use [environment or file variable substitution](/docs/advanced-topics/environment-variable-substitution)."
         }
       },
       "additionalProperties": false,

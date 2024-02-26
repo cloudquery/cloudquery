@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/destination/gcs/client/spec"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/writers/streamingbatchwriter"
+	"google.golang.org/api/option"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/google/uuid"
@@ -50,7 +51,11 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, _ plugin.NewClien
 	}
 	c.Client = filetypesClient
 
-	c.gcsClient, err = storage.NewClient(ctx)
+	opts := []option.ClientOption{}
+	if len(c.spec.ServiceAccountKeyJSON) != 0 {
+		opts = append(opts, option.WithCredentialsJSON([]byte(c.spec.ServiceAccountKeyJSON)))
+	}
+	c.gcsClient, err = storage.NewClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create GCP storage client: %w", err)
 	}
