@@ -9,10 +9,14 @@ spec:
   destinations: ["DESTINATION_NAME"]
   # Square-specific configuration
   spec:
+    # required
+    access_token: "${SQUARE_ACCESS_TOKEN}"
+    # required
     environment: "sandbox" # sandbox or production
-    access_token: "<YOUR_SECRET_ACCESS_TOKEN_HERE>"
-    concurrency: 100
-    queue_size: 10000
+    # optional, default: 100
+    # concurrency: 100
+    # optional, default: 10000
+    # queue_size: 10000
 ```
 
 :::callout{type="info"}
