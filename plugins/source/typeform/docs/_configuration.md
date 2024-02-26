@@ -9,10 +9,13 @@ spec:
   destinations: ["DESTINATION_NAME"]
   # Typeform-specific configuration
   spec:
-    access_token: "<YOUR_SECRET_ACCESS_TOKEN_HERE>"
-    base_url: "https://api.typeform.com" # use https://api.eu.typeform.com for EU accounts
-    # Optional configuration
+    # required
+    access_token: "${TYPEFORM_ACCESS_TOKEN}"
+    # optional, default: https://api.typeform.com, use https://api.eu.typeform.com for EU accounts
+    # base_url: "https://api.typeform.com"
+    # Optional, default: 100
     # concurrency: 100
+    # Optional, default: 10000
     # queue_size: 10000
 ```
 

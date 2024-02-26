@@ -26,7 +26,7 @@ jobs:
         working-directory: ./plugins/destination/elasticsearch
     services:
       elasticsearch:
-        image: docker.elastic.co/elasticsearch/elasticsearch:8.11.3
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
         ports:
           - 9200:9200
         options: >-
@@ -73,7 +73,7 @@ jobs:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/checkout@v4
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         with:
           path: |

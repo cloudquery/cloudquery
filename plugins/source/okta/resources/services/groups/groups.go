@@ -5,7 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/okta/okta-sdk-golang/v3/okta"
+	"github.com/okta/okta-sdk-golang/v4/okta"
 )
 
 func Groups() *schema.Table {
@@ -24,8 +24,8 @@ func fetchGroups(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource
 
 	cl := meta.(*client.Client)
 
-	req := cl.GroupApi.ListGroups(ctx).Limit(200)
-	items, resp, err := cl.GroupApi.ListGroupsExecute(req)
+	req := cl.GroupAPI.ListGroups(ctx).Limit(200)
+	items, resp, err := cl.GroupAPI.ListGroupsExecute(req)
 	if err != nil {
 		return err
 	}

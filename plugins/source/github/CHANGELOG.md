@@ -1,5 +1,20 @@
 # Changelog
 
+## [8.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v8.0.1...plugins-source-github-v8.0.2) (2024-02-26)
+
+
+### Bug Fixes
+
+* GitHub app authentication with GitHub enterprise ([#16872](https://github.com/cloudquery/cloudquery/issues/16872)) ([0f3becf](https://github.com/cloudquery/cloudquery/commit/0f3becf4d122559f73db73d363becc661a35604b))
+* Update GitHub example config ([#16841](https://github.com/cloudquery/cloudquery/issues/16841)) ([fb65286](https://github.com/cloudquery/cloudquery/commit/fb65286719f2924f3be7fcc8d45b01a95fa09c97))
+
+## [8.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v8.0.0...plugins-source-github-v8.0.1) (2024-02-23)
+
+
+### Bug Fixes
+
+* Pass enterprise base URL to app auth if needed ([#16827](https://github.com/cloudquery/cloudquery/issues/16827)) ([bb953c9](https://github.com/cloudquery/cloudquery/commit/bb953c9146351147648bfa19106bfa1772a24c1c))
+
 ## [8.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v7.7.1...plugins-source-github-v8.0.0) (2024-02-21)
 
 

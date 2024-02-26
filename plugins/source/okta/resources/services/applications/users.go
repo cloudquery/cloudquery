@@ -5,7 +5,7 @@ import (
 
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/okta/okta-sdk-golang/v3/okta"
+	"github.com/okta/okta-sdk-golang/v4/okta"
 )
 
 func users() *schema.Table {
@@ -25,8 +25,8 @@ func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	cl := meta.(*client.Client)
 	app := parent.Item.(*okta.Application)
 
-	req := cl.ApplicationApi.ListApplicationUsers(ctx, *app.Id).Limit(200)
-	items, resp, err := cl.ApplicationApi.ListApplicationUsersExecute(req)
+	req := cl.ApplicationUsersAPI.ListApplicationUsers(ctx, *app.Id).Limit(200)
+	items, resp, err := cl.ApplicationUsersAPI.ListApplicationUsersExecute(req)
 	if err != nil {
 		return err
 	}

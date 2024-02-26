@@ -8,13 +8,11 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
 	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/services/fakes"
 	"github.com/gorilla/mux"
-	"github.com/okta/okta-sdk-golang/v3/okta"
+	"github.com/okta/okta-sdk-golang/v4/okta"
 )
 
 func handleGroups(router *mux.Router) error {
 	g := fakes.Group()
-	g.AdditionalProperties = map[string]any{"key": "value"}
-	g.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
 
 	router.HandleFunc("/api/v1/groups", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
