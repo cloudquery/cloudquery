@@ -24,7 +24,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Set up Go 1.x
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: scripts/missing_tables/go.mod
           cache: true
@@ -56,7 +56,7 @@ jobs:
           edit-mode: replace
       - name: Delete comment
         if: steps.find-comment.outputs.comment-id != '' && steps.missing-tables.outputs.result == ''
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         with:
           script: |
             github.rest.issues.deleteComment({
