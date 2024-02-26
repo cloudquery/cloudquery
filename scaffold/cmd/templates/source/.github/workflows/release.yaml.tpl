@@ -27,7 +27,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
 
@@ -43,7 +43,7 @@ jobs:
 
       - name: Get Release Notes
         id: release-notes
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         env:
           PRERELEASE: ${{"{{"}} steps.semver_parser.outputs.prerelease {{"}}"}}
         with:

@@ -39,7 +39,7 @@ jobs:
           role-to-assume: arn:aws:iam::615713231484:role/destination-s3
           aws-region: us-east-1
       - name: Set up Go 1.x
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: plugins/destination/s3/go.mod
           cache: true
@@ -71,7 +71,7 @@ jobs:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/checkout@v4
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         with:
           path: |
@@ -82,7 +82,7 @@ jobs:
             ${{ runner.os }}-go-1.21.4-release-cache-plugins-destination-s3
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: plugins/destination/s3/go.mod
           cache: false

@@ -80,10 +80,11 @@ func migrate(cmd *cobra.Command, args []string) error {
 	sourceRegInferred := make([]bool, len(sources))
 	for i, source := range sources {
 		sourcePluginConfigs[i] = managedplugin.Config{
-			Name:     source.Name,
-			Version:  source.Version,
-			Path:     source.Path,
-			Registry: SpecRegistryToPlugin(source.Registry),
+			Name:       source.Name,
+			Version:    source.Version,
+			Path:       source.Path,
+			Registry:   SpecRegistryToPlugin(source.Registry),
+			DockerAuth: source.DockerRegistryAuthToken,
 		}
 		sourceRegInferred[i] = source.RegistryInferred()
 	}
@@ -91,10 +92,11 @@ func migrate(cmd *cobra.Command, args []string) error {
 	destinationRegInferred := make([]bool, len(destinations))
 	for i, destination := range destinations {
 		destinationPluginConfigs[i] = managedplugin.Config{
-			Name:     destination.Name,
-			Version:  destination.Version,
-			Path:     destination.Path,
-			Registry: SpecRegistryToPlugin(destination.Registry),
+			Name:       destination.Name,
+			Version:    destination.Version,
+			Path:       destination.Path,
+			Registry:   SpecRegistryToPlugin(destination.Registry),
+			DockerAuth: destination.DockerRegistryAuthToken,
 		}
 		destinationRegInferred[i] = destination.RegistryInferred()
 	}
