@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.4.0...plugins-destination-duckdb-v5.4.1) (2024-02-26)
+
+
+### Bug Fixes
+
+* Downgrade DuckDB library version ([#16870](https://github.com/cloudquery/cloudquery/issues/16870)) ([09305ef](https://github.com/cloudquery/cloudquery/commit/09305ef59adc2683ec2471e328e5e45f58d9e5eb))
+
 ## [5.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.3.0...plugins-destination-duckdb-v5.4.0) (2024-02-22)
 
 
