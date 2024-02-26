@@ -8,7 +8,7 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.30.0
 	github.com/gorilla/mux v1.8.0
 	github.com/invopop/jsonschema v0.12.0
-	github.com/okta/okta-sdk-golang/v3 v3.0.19
+	github.com/okta/okta-sdk-golang/v4 v4.0.0
 	github.com/rs/zerolog v1.31.0
 	github.com/stretchr/testify v1.8.4
 	github.com/thoas/go-funk v0.9.3
