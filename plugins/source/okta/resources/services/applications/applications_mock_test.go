@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/gorilla/mux"
-	"github.com/okta/okta-sdk-golang/v3/okta"
+	"github.com/okta/okta-sdk-golang/v4/okta"
 )
 
 func handleApplications(router *mux.Router) error {
@@ -17,25 +17,29 @@ func handleApplications(router *mux.Router) error {
 	if err := faker.FakeObject(&a); err != nil {
 		return err
 	}
-	a.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
+	al := "AUTO_LOGIN"
+	a.SignOnMode = &al
 	a.Profile = map[string]any{"top-key": "value"}
-
-	as := okta.ApplicationSignOnMode("AUTO_LOGIN")
-	a.SignOnMode = &as
-
-	a.Credentials.Password.Hash.Algorithm = &okta.AllowedPasswordCredentialHashAlgorithmEnumValues[0]
-	a.Credentials.Scheme = &okta.AllowedApplicationCredentialsSchemeEnumValues[0]
-	a.Credentials.Signing.Use = &okta.AllowedApplicationCredentialsSigningUseEnumValues[0]
-	a.Credentials.Password.Hash.DigestAlgorithm = &okta.AllowedDigestAlgorithmEnumValues[0]
-	lcs := okta.APPLICATIONLIFECYCLESTATUS_ACTIVE
-	a.Status = &lcs
+	a.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
 	a.Links = &okta.ApplicationLinks{
 		Self: &okta.HrefObjectSelfLink{Href: "#"},
 	}
 
+	var o okta.OpenIdConnectApplication
+	if err := faker.FakeObject(&o); err != nil {
+		return err
+	}
+	oi := "OPENID_CONNECT"
+	o.SignOnMode = &oi
+	o.Profile = map[string]any{"top-key": "value"}
+	o.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
+
 	router.HandleFunc("/api/v1/apps", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		b, err := json.Marshal([]okta.AutoLoginApplication{a})
+		b, err := json.Marshal([]okta.ListApplications200ResponseInner{
+			okta.AutoLoginApplicationAsListApplications200ResponseInner(&a),
+			okta.OpenIdConnectApplicationAsListApplications200ResponseInner(&o),
+		})
 		if err != nil {
 			http.Error(w, "unable to marshal request: "+err.Error(), http.StatusBadRequest)
 			return
@@ -77,8 +81,6 @@ func handleApplications(router *mux.Router) error {
 	au.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
 	au.Profile = map[string]map[string]any{"top-key": {"key": "value"}}
 	au.AdditionalProperties = map[string]any{"key": "value"}
-	au.Status = okta.APPUSERSTATUS_ACTIVE
-	au.SyncState = &okta.AllowedAppUserSyncStateEnumValues[0]
 	t := time.Now()
 	au.PasswordChanged = *okta.NewNullableTime(&t)
 	au.Links = okta.LinksAppAndUser{

@@ -2,7 +2,7 @@ package fakes
 
 import (
 	"github.com/cloudquery/plugin-sdk/v4/faker"
-	"github.com/okta/okta-sdk-golang/v3/okta"
+	"github.com/okta/okta-sdk-golang/v4/okta"
 )
 
 func Group() okta.Group {
@@ -10,7 +10,6 @@ func Group() okta.Group {
 	if err := faker.FakeObject(&g); err != nil {
 		panic(err)
 	}
-	g.Type = &okta.AllowedGroupTypeEnumValues[0]
 	g.Links = &okta.GroupLinks{
 		Self: &okta.HrefObjectSelfLink{Href: "#"},
 	}

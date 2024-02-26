@@ -1,7 +1,7 @@
 package client
 
 import (
-	"github.com/okta/okta-sdk-golang/v3/okta"
+	"github.com/okta/okta-sdk-golang/v4/okta"
 	"github.com/rs/zerolog"
 )
 
