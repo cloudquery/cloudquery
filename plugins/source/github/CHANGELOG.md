@@ -1,5 +1,37 @@
 # Changelog
 
+## [9.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v8.0.2...plugins-source-github-v9.0.0) (2024-02-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* Bump `go-github` to v59 in Github plugin ([#16797](https://github.com/cloudquery/cloudquery/issues/16797))
+
+### Features
+
+* Add `github_repository_sboms` table to sync Github SBOM data ([#16796](https://github.com/cloudquery/cloudquery/issues/16796)) ([992434f](https://github.com/cloudquery/cloudquery/commit/992434f7e3f2c90d4f84d53495907f298f3cee31))
+* Adding JSONSchema support to GitHub plugin ([#16491](https://github.com/cloudquery/cloudquery/issues/16491)) ([d81cb01](https://github.com/cloudquery/cloudquery/commit/d81cb01a8ebed190bde1ec641841b3e57d71d574))
+* Bump `go-github` to v59 in Github plugin ([#16797](https://github.com/cloudquery/cloudquery/issues/16797)) ([5b89ef6](https://github.com/cloudquery/cloudquery/commit/5b89ef641d415c6f88dce1a461ab05f7c1625ff3))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/beatlabs/github-auth digest to 98862c3 ([#16416](https://github.com/cloudquery/cloudquery/issues/16416)) ([1d3b946](https://github.com/cloudquery/cloudquery/commit/1d3b9467291a4cbac996c9ae565cb26ce4d435a6))
+* **deps:** Update github.com/cloudquery/jsonschema digest to d771afd ([#16527](https://github.com/cloudquery/cloudquery/issues/16527)) ([7c26840](https://github.com/cloudquery/cloudquery/commit/7c2684039a6d774af466c581d93aae4cda00f412))
+* **deps:** Update golang.org/x/exp digest to 1b97071 ([#16419](https://github.com/cloudquery/cloudquery/issues/16419)) ([6d77cd1](https://github.com/cloudquery/cloudquery/commit/6d77cd19b6fc648a4ddb12025c22127e960036a4))
+* **deps:** Update google.golang.org/genproto/googleapis/api digest to 1f4bbc5 ([#16421](https://github.com/cloudquery/cloudquery/issues/16421)) ([9489931](https://github.com/cloudquery/cloudquery/commit/9489931c1b64bf1f7d5da51997944ee54370215b))
+* **deps:** Update google.golang.org/genproto/googleapis/rpc digest to 1f4bbc5 ([#16422](https://github.com/cloudquery/cloudquery/issues/16422)) ([74e98fc](https://github.com/cloudquery/cloudquery/commit/74e98fcbde6c6e11baf98284aef0341c597d4817))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.0 ([#16237](https://github.com/cloudquery/cloudquery/issues/16237)) ([3fcdab0](https://github.com/cloudquery/cloudquery/commit/3fcdab08816ad9de7bb4eecab59c7be1bda3d00c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.1 ([#16296](https://github.com/cloudquery/cloudquery/issues/16296)) ([ab4a0da](https://github.com/cloudquery/cloudquery/commit/ab4a0dace0a870755fd22d92c6e9c999351f594e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.27.2 ([#16342](https://github.com/cloudquery/cloudquery/issues/16342)) ([f3eb857](https://github.com/cloudquery/cloudquery/commit/f3eb85729e5db16c2530b31d6d276934866d5ef0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.28.0 ([#16362](https://github.com/cloudquery/cloudquery/issues/16362)) ([9166b6b](https://github.com/cloudquery/cloudquery/commit/9166b6b603d0d56a30c2e5072c4f2da5c0c837b5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.29.0 ([#16395](https://github.com/cloudquery/cloudquery/issues/16395)) ([fb1102e](https://github.com/cloudquery/cloudquery/commit/fb1102eac8af4b3722b82b882187fdf322546513))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.29.1 ([#16430](https://github.com/cloudquery/cloudquery/issues/16430)) ([738e89f](https://github.com/cloudquery/cloudquery/commit/738e89f2c969a8a3f1698a8686aeaddb358e7a23))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.30.0 ([#16669](https://github.com/cloudquery/cloudquery/issues/16669)) ([44b9729](https://github.com/cloudquery/cloudquery/commit/44b9729fa5d7590f65b9073ce4a1fc18a529117e))
+* Don't include `/api/v3/` in base URL passed to `inst.NewEnterpriseConfig` ([#16834](https://github.com/cloudquery/cloudquery/issues/16834)) ([63f50cd](https://github.com/cloudquery/cloudquery/commit/63f50cdd6437df82ef75f674222679df25b9b85f))
+* Pass enterprise base URL to app auth if needed ([#16827](https://github.com/cloudquery/cloudquery/issues/16827)) ([bb953c9](https://github.com/cloudquery/cloudquery/commit/bb953c9146351147648bfa19106bfa1772a24c1c))
+* Update GitHub example config ([#16841](https://github.com/cloudquery/cloudquery/issues/16841)) ([fb65286](https://github.com/cloudquery/cloudquery/commit/fb65286719f2924f3be7fcc8d45b01a95fa09c97))
+
 ## [8.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v8.0.1...plugins-source-github-v8.0.2) (2024-02-23)
 
 
