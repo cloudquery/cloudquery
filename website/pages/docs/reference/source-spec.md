@@ -46,7 +46,11 @@ The name field may be used to uniquely identify a particular source configuratio
 - `grpc`: mostly useful in debug mode when plugin is already running in a different terminal, CloudQuery will connect to the gRPC plugin server directly without spawning the process.
 - `docker`: CloudQuery will run the plugin in a Docker container. This is most useful for plugins written in Python, as they do not support the `local` and `github` registries.
 
+<!-- vale off -->
+
 ### docker_registry_auth_token
+
+<!-- vale on -->
 
 (`string`, optional, default: `""`, introduced in CLI `v5.6.0`)
 
