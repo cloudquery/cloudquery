@@ -52,7 +52,7 @@ The name field may be used to uniquely identify a particular source configuratio
 
 <!-- vale on -->
 
-(`string`, optional, default: `""`, introduced in CLI `v5.6.0`)
+(`string`, optional, default: `""`, introduced in CLI `v5.7.0`)
 
 Authentication token for private Docker container registries. This is required if the plugin is hosted in a private Docker container registry. The token should be a valid Docker registry token that can be used to pull the plugin image. This option is only relevant when `registry` is set to `docker`. The token is a base64 encoded string. Here is an example of how to generate the token:
 
