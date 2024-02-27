@@ -44,17 +44,17 @@ func TestSanitizeJSONKeys(t *testing.T) {
 		},
 		"foo:bar":     "baz",
 		"foo-bar-baz": []any{"baz", map[string]any{"foo:bar": "baz"}},
-		"string": map[string]string{
+		"string": map[string]any{
 			"foo-bar": "baz",
 		},
-		"int": map[string]int{
+		"int": map[string]any{
 			"foo-bar": 123,
 		},
-		"pointer": map[string]*string{
-			"foo-bar": &[]string{"baz"}[0],
+		"pointer": map[string]any{
+			"foo-bar": "baz",
 		},
 	}
-	sanitizeJSONKeysForObject(m)
+	sanitized := sanitizeJSONKeysForObject(m)
 	want := map[string]any{
 		"foo": "bar",
 		"bar": map[string]any{
@@ -62,17 +62,17 @@ func TestSanitizeJSONKeys(t *testing.T) {
 		},
 		"foo_bar":     "baz",
 		"foo_bar_baz": []any{"baz", map[string]any{"foo_bar": "baz"}},
-		"string": map[string]string{
+		"string": map[string]any{
 			"foo_bar": "baz",
 		},
-		"int": map[string]int{
+		"int": map[string]any{
 			"foo_bar": 123,
 		},
-		"pointer": map[string]*string{
-			"foo_bar": &[]string{"baz"}[0],
+		"pointer": map[string]any{
+			"foo_bar": "baz",
 		},
 	}
-	if diff := cmp.Diff(want, m); diff != "" {
+	if diff := cmp.Diff(want, sanitized); diff != "" {
 		t.Errorf("sanitizeJSONKeys() mismatch (-want +got):\n%s", diff)
 	}
 }
