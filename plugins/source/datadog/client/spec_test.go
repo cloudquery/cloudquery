@@ -44,11 +44,11 @@ func TestJSONSchema(t *testing.T) {
 		},
 		{
 			Name: "spec with concurrency",
-			Spec: `{"concurrency": 10000}`,
+			Spec: `{"accounts": [{"name": "test", "api_key": "test", "app_key": "test"}], "concurrency": 10000}`,
 		},
 		{
 			Name: "spec with site",
-			Spec: `{"site": "datadoghq.com"}`,
+			Spec: `{"accounts": [{"name": "test", "api_key": "test", "app_key": "test"}], "site": "datadoghq.com"}`,
 		},
 		{
 			Name: "spec with unknown field",
