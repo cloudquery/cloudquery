@@ -11,6 +11,12 @@ func TestJSONSchema(t *testing.T) {
 		{
 			Name: "empty spec",
 			Spec: `{}`,
+			Err:  true,
+		},
+		{
+			Name: "empty accounts",
+			Spec: `{"accounts": []}`,
+			Err:  true,
 		},
 		{
 			Name: "spec with accounts",
@@ -24,10 +30,12 @@ func TestJSONSchema(t *testing.T) {
 		{
 			Name: "spec with accounts with missing field",
 			Spec: `{"accounts": [{"name": "test", "api_key": "test"}]}`,
+			Err:  true,
 		},
 		{
 			Name: "spec with accounts with empty field",
 			Spec: `{"accounts": [{"name": "", "api_key": "", "app_key": ""}]}`,
+			Err:  true,
 		},
 		{
 			Name: "spec with accounts with invalid field",
