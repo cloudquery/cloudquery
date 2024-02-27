@@ -10,8 +10,8 @@ spec:
   write_mode: "overwrite"
   spec:
     # meilisearch plugin spec
+    host: "${MEILISEARCH_HOST}"
     api_key: "${MEILISEARCH_API_KEY}"
-    host: "http://localhost:7700"
     # Optional parameters:
     # timeout: 5m
     # ca_cert: "<YOUR_MEILISEARCH_CA_CERT>"
