@@ -11,8 +11,8 @@ spec:
 
   # Gitlab specific configuration
   spec:
-    access_token: "<YOUR_ACCESS_TOKEN_HERE>"
-    base_url: "<INSTANCE_URL>" # optional, leave empty for GitLab SaaS
-    # Optional parameters
-    # concurrency: 10000
+    # required
+    access_token: "${GITLAB_ACCESS_TOKEN}"
+    # optional, leave empty for GitLab SaaS
+    # base_url: "<INSTANCE_URL>"
 ```
