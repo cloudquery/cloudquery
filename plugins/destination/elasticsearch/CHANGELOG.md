@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.2.1...plugins-destination-elasticsearch-v3.2.2) (2024-02-27)
+
+
+### Bug Fixes
+
+* Only set a default address if `cloud_id` is not configured ([#16892](https://github.com/cloudquery/cloudquery/issues/16892)) ([b5b0ce7](https://github.com/cloudquery/cloudquery/commit/b5b0ce74a895721ccb75a02cb7900ca6f4dcf2e0))
+
 ## [3.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.2.0...plugins-destination-elasticsearch-v3.2.1) (2024-02-20)
 
 
