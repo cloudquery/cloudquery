@@ -7,7 +7,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	alloydb "google.golang.org/api/alloydb/v1"
-	pb "google.golang.org/api/alloydb/v1"
 )
 
 func Backups() *schema.Table {
@@ -16,7 +15,7 @@ func Backups() *schema.Table {
 		Description: `https://cloud.google.com/alloydb/docs/reference/rest/v1/projects.locations.backups`,
 		Resolver:    fetchBackups,
 		Multiplex:   client.ProjectMultiplexEnabledServices("alloydb.googleapis.com"),
-		Transform:   client.TransformWithStruct(&pb.Backup{}, transformers.WithPrimaryKeys("name")),
+		Transform:   client.TransformWithStruct(&alloydb.Backup{}, transformers.WithPrimaryKeys("name")),
 		Columns: []schema.Column{
 			client.ProjectIDColumn(false),
 		},
