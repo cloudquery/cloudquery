@@ -8,30 +8,31 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/destination/s3/client/spec"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/google/go-cmp/cmp"
+	"github.com/stretchr/testify/require"
 )
 
-func TestSanitizeRawJsonMessage(t *testing.T) {
+func TestSanitizeJSONRawMessage(t *testing.T) {
 	testTable := []struct {
 		initialArray []byte
-		expected     []uint8
+		expected     any
 	}{
 		{
 			initialArray: []byte(`{"target": "localhost"}`),
-			expected:     []uint8(`{"target":"localhost"}`),
+			expected:     map[string]any{"target": "localhost"},
 		},
 		{
 			initialArray: []byte(`{"ta.rget*": "localhost**"}`),
-			expected:     []uint8(`{"ta_rget_":"localhost**"}`),
+			expected:     map[string]any{"ta_rget_": "localhost**"},
 		},
 	}
 	for _, test := range testTable {
 		data := (json.RawMessage)(test.initialArray)
-		bArray, err := sanitizeRawJsonMessage(data)
+		bArray, err := sanitizeJSONRawMessage(data)
 		if err != nil {
 			t.Errorf("unexpected error: %s", err)
 		}
 		if diff := cmp.Diff(bArray, test.expected); diff != "" {
-			t.Errorf("sanitizeRawJsonMessage() mismatch (-want +got):\n%s", diff)
+			t.Errorf("sanitizeJSONRawMessage() mismatch (-want +got):\n%s", diff)
 		}
 	}
 }
@@ -54,7 +55,13 @@ func TestSanitizeJSONKeys(t *testing.T) {
 			"foo-bar": &[]string{"baz"}[0],
 		},
 	}
-	sanitizeJSONKeysForObject(m)
+
+	bytes, err := json.Marshal(m)
+	require.NoError(t, err)
+	var data any
+	require.NoError(t, json.Unmarshal(bytes, &data))
+
+	sanitized := sanitizeJSONKeysForObject(data)
 	want := map[string]any{
 		"foo": "bar",
 		"bar": map[string]any{
@@ -62,17 +69,17 @@ func TestSanitizeJSONKeys(t *testing.T) {
 		},
 		"foo_bar":     "baz",
 		"foo_bar_baz": []any{"baz", map[string]any{"foo_bar": "baz"}},
-		"string": map[string]string{
+		"string": map[string]any{
 			"foo_bar": "baz",
 		},
-		"int": map[string]int{
-			"foo_bar": 123,
+		"int": map[string]any{
+			"foo_bar": 123.0,
 		},
-		"pointer": map[string]*string{
-			"foo_bar": &[]string{"baz"}[0],
+		"pointer": map[string]any{
+			"foo_bar": "baz",
 		},
 	}
-	if diff := cmp.Diff(want, m); diff != "" {
+	if diff := cmp.Diff(want, sanitized); diff != "" {
 		t.Errorf("sanitizeJSONKeys() mismatch (-want +got):\n%s", diff)
 	}
 }
