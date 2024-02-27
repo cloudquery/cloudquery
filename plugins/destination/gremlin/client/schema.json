@@ -24,7 +24,10 @@
               "aws_region": {
                 "type": "string",
                 "minLength": 1,
-                "description": "AWS region to use for AWS IAM authentication. Required when `auth_mode` is `aws`."
+                "description": "AWS region to use for AWS IAM authentication. Required when `auth_mode` is `aws`.",
+                "examples": [
+                  "us-east-1"
+                ]
               }
             },
             "required": [
@@ -173,12 +176,18 @@
         },
         "aws_region": {
           "type": "string",
-          "description": "AWS region to use for AWS IAM authentication. Required when `auth_mode` is `aws`."
+          "description": "AWS region to use for AWS IAM authentication. Required when `auth_mode` is `aws`.",
+          "examples": [
+            "us-east-1"
+          ]
         },
         "aws_neptune_host": {
           "type": "string",
           "pattern": "^[\\w\\.-]+$",
-          "description": "AWS Neptune host header to use with AWS IAM authentication. Required when `auth_mode` is `aws`."
+          "description": "AWS Neptune host header to use with AWS IAM authentication. Required when `auth_mode` is `aws`.",
+          "examples": [
+            "my-neptune.cluster.us-east-1.neptune.amazonaws.com"
+          ]
         },
         "max_concurrent_connections": {
           "type": "integer",

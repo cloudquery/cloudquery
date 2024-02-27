@@ -111,7 +111,7 @@ func (c *Client) getAuthInfo(ctx context.Context, baseURL string) (gremlingo.Aut
 			return nil, err
 		}
 
-		if c.spec.AWSNeptuneHost != "" {
+		if len(c.spec.AWSNeptuneHost) != 0 {
 			req.Header.Set("Host", c.spec.AWSNeptuneHost)
 		}
 
