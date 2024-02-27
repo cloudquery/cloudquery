@@ -10,28 +10,28 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-func TestSanitizeRawJsonMessage(t *testing.T) {
+func TestSanitizeJSONRawMessage(t *testing.T) {
 	testTable := []struct {
 		initialArray []byte
-		expected     []uint8
+		expected     any
 	}{
 		{
 			initialArray: []byte(`{"target": "localhost"}`),
-			expected:     []uint8(`{"target":"localhost"}`),
+			expected:     map[string]any{"target": "localhost"},
 		},
 		{
 			initialArray: []byte(`{"ta.rget*": "localhost**"}`),
-			expected:     []uint8(`{"ta_rget_":"localhost**"}`),
+			expected:     map[string]any{"ta_rget_": "localhost**"},
 		},
 	}
 	for _, test := range testTable {
 		data := (json.RawMessage)(test.initialArray)
-		bArray, err := sanitizeRawJsonMessage(data)
+		bArray, err := sanitizeJSONRawMessage(data)
 		if err != nil {
 			t.Errorf("unexpected error: %s", err)
 		}
 		if diff := cmp.Diff(bArray, test.expected); diff != "" {
-			t.Errorf("sanitizeRawJsonMessage() mismatch (-want +got):\n%s", diff)
+			t.Errorf("sanitizeJSONRawMessage() mismatch (-want +got):\n%s", diff)
 		}
 	}
 }
