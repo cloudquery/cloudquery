@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.7.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.6.0...cli-v5.7.0) (2024-02-27)
+
+
+### Features
+
+* Add support for Private docker registries ([#16837](https://github.com/cloudquery/cloudquery/issues/16837)) ([25d2689](https://github.com/cloudquery/cloudquery/commit/25d26893f75c2a29850183b5129a5d75e4db3654))
+
 ## [5.6.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.5.7...cli-v5.6.0) (2024-02-26)
 
 
