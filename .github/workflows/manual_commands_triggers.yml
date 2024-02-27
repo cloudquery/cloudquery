@@ -37,13 +37,13 @@ jobs:
       - name: Set up Go 1.x
         uses: actions/setup-go@v5
         with:
-          go-version-file: plugins/source/${{ github.event.client_payload.slash_command.args.named.plugin }}/go.mod
+          go-version-file: ${{ github.event.client_payload.slash_command.args.named.dir }}/go.mod
           cache: true
-          cache-dependency-path: plugins/source/${{ github.event.client_payload.slash_command.args.named.plugin }}/go.sum
+          cache-dependency-path: ${{ github.event.client_payload.slash_command.args.named.dir }}/go.sum
 
       - name: Generate code
         run: make gen
-        working-directory: plugins/source/${{ github.event.client_payload.slash_command.args.named.plugin }}
+        working-directory: ${{ github.event.client_payload.slash_command.args.named.dir }}
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
