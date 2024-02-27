@@ -9,12 +9,13 @@ require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240115115805-d7bc55542e61
 	github.com/cloudquery/codegen v0.3.12
 	github.com/cloudquery/filetypes/v4 v4.2.10
-	github.com/cloudquery/plugin-sdk/v4 v4.30.0
+	github.com/cloudquery/plugin-sdk/v4 v4.31.0
 	github.com/google/uuid v1.5.0
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.31.0
 	github.com/stretchr/testify v1.8.4
 	github.com/wk8/go-ordered-map/v2 v2.1.8
+	google.golang.org/api v0.155.0
 )
 
 require (
@@ -41,7 +42,7 @@ require (
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.7.5 // indirect
-	github.com/cloudquery/plugin-pb-go v1.17.2 // indirect
+	github.com/cloudquery/plugin-pb-go v1.19.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect
@@ -137,7 +138,6 @@ require (
 	golang.org/x/time v0.5.0 // indirect
 	golang.org/x/tools v0.17.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
-	google.golang.org/api v0.155.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/genproto v0.0.0-20240125205218-1f4bbc51befe // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240125205218-1f4bbc51befe // indirect
