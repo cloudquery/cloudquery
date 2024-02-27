@@ -9,9 +9,9 @@ spec:
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   spec:
-    # Okta domain name, for example: https://example.okta.com, https://example.okta-emea.com,  https://example.oktapreview.com
+    # required, Okta domain name, for example: https://example.okta.com, https://example.okta-emea.com,  https://example.oktapreview.com
     domain: "${OKTA_DOMAIN}"
-    # Okta Token to access API
+    # required, Okta Token to access API
     token: "${OKTA_ACCESS_TOKEN}"
 
     # Optional. Rate limiter settings
