@@ -9,15 +9,19 @@ spec:
   version: "VERSION_DESTINATION_ELASTICSEARCH"
   write_mode: "overwrite-delete-stale"
   spec:
-    # Optional parameters
+    # Elastic Cloud configuration parameters
+    cloud_id: "${ELASTICSEARCH_CLOUD_ID}"
+    api_key: "${ELASTICSEARCH_API_KEY}"
+
+    # Self-hosted Elasticsearch configuration parameters
     # addresses: ["http://localhost:9200"]
     # username: ""
     # password: ""
-    # cloud_id: ""
-    # api_key: ""
     # service_token: ""
     # certificate_fingerprint: ""
     # ca_cert: ""
+
+    # Optional parameters
     # concurrency: 5 # default: number of CPUs
     # batch_size: 1000
     # batch_size_bytes: 5242880 # 5 MiB

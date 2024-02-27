@@ -46,5 +46,14 @@ func TestJSONSchema(t *testing.T) {
 			Spec: `{"unknown": "test"}`,
 			Err:  true,
 		},
+		{
+			Name: "spec with both addresses and cloud_id",
+			Spec: `{"addresses": ["address"], "cloud_id": "cloud_id"}`,
+			Err:  true,
+		},
+		{
+			Name: "spec with valid cloud_id",
+			Spec: `{"cloud_id": "cloud_id"}`,
+		},
 	})
 }
