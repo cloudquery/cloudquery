@@ -12,16 +12,13 @@ import (
 
 func Users() *schema.Table {
 	return &schema.Table{
-		Name:        "gcp_alloydb_Users",
-		Description: `https://cloud.google.com/alloydb/docs/reference/rest/v1/projects.locations.Users#Cluster`,
+		Name:        "gcp_alloydb_users",
+		Description: `https://cloud.google.com/alloydb/docs/reference/rest/v1/projects.locations.clusters.users`,
 		Resolver:    fetchUsers,
 		Multiplex:   client.ProjectMultiplexEnabledServices("alloydb.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.Backup{}, transformers.WithPrimaryKeys("name")),
 		Columns: []schema.Column{
 			client.ProjectIDColumn(false),
-		},
-		Relations: []*schema.Table{
-			Users(),
 		},
 	}
 }
