@@ -29,9 +29,24 @@ func TestJSONSchema(t *testing.T) {
 			Spec: `{"token": "tok", "domain": "https://domain.okta.com"}`,
 		},
 		{
-			Name: "spec with token and invalid domain",
+			Name: "spec with token and default domain",
+			Spec: `{"token": "tok", "domain": "https://domain.okta.com/"}`,
+		},
+		{
+			Name: "spec with token and preview domain",
+			Spec: `{"token": "tok", "domain": "https://domain.oktapreview.com"}`,
+		},
+		{
+			Name: "spec with token and emea domain",
+			Spec: `{"token": "tok", "domain": "https://domain.okta-emea.com"}`,
+		},
+		{
+			Name: "spec with token and env domain",
+			Spec: `{"token": "tok", "domain": "https://${OKTA_DOMAIN}.okta.com"}`,
+		},
+		{
+			Name: "spec with token and example domain",
 			Spec: `{"token": "tok", "domain": "https://<CHANGE_THIS_TO_YOUR_OKTA_DOMAIN>.okta.com"}`,
-			Err:  true,
 		},
 		{
 			Name: "spec with token and domain and empty rate limit",
