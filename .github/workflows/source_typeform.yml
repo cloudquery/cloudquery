@@ -43,18 +43,4 @@ jobs:
 
       - name: Run tests
         run: make test
-  validate-release:
-    timeout-minutes: 10
-    runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME_PREFIX: cloudquery
-      REGISTRY: ghcr.io
-    steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: "{{defaultContext}}:plugins/source/typeform"
-          load: true
+ 

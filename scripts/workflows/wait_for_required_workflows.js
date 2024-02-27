@@ -33,8 +33,8 @@ module.exports = async ({github, context}) => {
         return
     }
 
-    // Most modules should have a 'validate-release' job
-    for (const action of actions) {
+    // Validate Go Releaser only if we are testing the CLI or scaffold
+    if (actions.includes("cli") || actions.includes("scaffold")) {
         actions = [...actions, 'validate-release']
     }
 
@@ -42,14 +42,6 @@ module.exports = async ({github, context}) => {
     if (actions.includes("cli")) {
         actions = actions.filter(action => action !== "cli")
         actions = ["cli (ubuntu-latest)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
-    }
-
-    // Enforce policy tests for AWS, Azure, GCP and K8s plugins
-    const pluginsWithPolicyTests = ['plugins/source/gcp', 'plugins/source/k8s']
-    for (const plugin of pluginsWithPolicyTests) {
-        if (actions.includes(plugin)) {
-            actions = [...actions, 'test-policies']
-        }
     }
 
     pendingActions = [...actions]
