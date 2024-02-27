@@ -19,7 +19,7 @@ jobs:
         with:
           filter: 'go.mod'
       - uses: actions/github-script@v7
-        if: startsWith(steps.changed-files.outputs.all, 'plugins/source')
+        if: startsWith(steps.changed-files.outputs.all, 'plugins/source') || startsWith(steps.changed-files.outputs.all, 'plugins/destination') || startsWith(steps.changed-files.outputs.all, 'cli')
         env:
           SHA: ${{ github.event.pull_request.head.sha }}
           GO_MOD_FILE: ${{ steps.changed-files.outputs.all }}
@@ -29,11 +29,11 @@ jobs:
             const { issue: { number: issue_number }, repo: { owner, repo } } = context;
             const { SHA: sha, GO_MOD_FILE: goModFile } = process.env;
             // e.g. plugins/source/aws/go.mod
-            const plugin = goModFile.split('/')[2]
+            const dir = goModFile.endsWith(suffix) ? s.slice(0, -'/go.mod'.length)
             console.log({ issue_number, owner, repo, sha, plugin });
             await github.rest.issues.createComment({
               issue_number,
               owner,
               repo,
-              body: `/gen sha=${sha} plugin=${plugin}`
+              body: `/gen sha=${sha} dir=${dir}`
             })
