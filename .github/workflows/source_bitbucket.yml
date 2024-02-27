@@ -46,21 +46,4 @@ jobs:
           report_paths: "**/build/test-results/test/TEST-*.xml"
           require_passed_tests: true
           fail_on_failure: true
-  validate-release:
-    timeout-minutes: 10
-    runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME_PREFIX: cloudquery
-      REGISTRY: ghcr.io
-    steps:
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@0d103c3126aa41d772a8362f6aa67afac040f80c
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@b3eddbb94c4146a0988a620b01720afe50639271
-        with:
-          context: "{{defaultContext}}:plugins/source/bitbucket"
-          load: true
-          build-args: |
-            GITHUB_ACTOR=${{ github.actor }}
-            GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}
+  
