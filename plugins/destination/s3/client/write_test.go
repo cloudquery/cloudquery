@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/destination/s3/client/spec"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/google/go-cmp/cmp"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSanitizeJSONRawMessage(t *testing.T) {
@@ -44,17 +45,23 @@ func TestSanitizeJSONKeys(t *testing.T) {
 		},
 		"foo:bar":     "baz",
 		"foo-bar-baz": []any{"baz", map[string]any{"foo:bar": "baz"}},
-		"string": map[string]any{
+		"string": map[string]string{
 			"foo-bar": "baz",
 		},
-		"int": map[string]any{
+		"int": map[string]int{
 			"foo-bar": 123,
 		},
-		"pointer": map[string]any{
-			"foo-bar": "baz",
+		"pointer": map[string]*string{
+			"foo-bar": &[]string{"baz"}[0],
 		},
 	}
-	sanitized := sanitizeJSONKeysForObject(m)
+
+	bytes, err := json.Marshal(m)
+	require.NoError(t, err)
+	var data any
+	require.NoError(t, json.Unmarshal(bytes, &data))
+
+	sanitized := sanitizeJSONKeysForObject(data)
 	want := map[string]any{
 		"foo": "bar",
 		"bar": map[string]any{
@@ -66,7 +73,7 @@ func TestSanitizeJSONKeys(t *testing.T) {
 			"foo_bar": "baz",
 		},
 		"int": map[string]any{
-			"foo_bar": 123,
+			"foo_bar": 123.0,
 		},
 		"pointer": map[string]any{
 			"foo_bar": "baz",
