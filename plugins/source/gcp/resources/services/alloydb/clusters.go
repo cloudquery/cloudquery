@@ -18,7 +18,7 @@ func Clusters() *schema.Table {
 		Multiplex:   client.ProjectMultiplexEnabledServices("alloydb.googleapis.com"),
 		Transform:   client.TransformWithStruct(&pb.Backup{}, transformers.WithPrimaryKeys("name")),
 		Columns: []schema.Column{
-			client.ProjectIDColumn(false),
+			client.ProjectIDColumn(true),
 		},
 	}
 }
