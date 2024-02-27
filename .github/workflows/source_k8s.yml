@@ -134,6 +134,7 @@ jobs:
       - name: Migrate DB
         run: cloudquery migrate test/policy_cq_config.yml
         env:
+          CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
           CQ_DSN: postgresql://postgres:pass@localhost:5432/postgres
       - name: Run all policies
         run: cd policies && psql -h localhost -p 5432 -U postgres -d postgres -w -f ./policy.sql
