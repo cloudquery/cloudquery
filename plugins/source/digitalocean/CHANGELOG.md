@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v5.4.1...plugins-source-digitalocean-v5.4.2) (2024-02-27)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#16858](https://github.com/cloudquery/cloudquery/issues/16858)) ([b5a9be4](https://github.com/cloudquery/cloudquery/commit/b5a9be461fb8c9d5945b2127f6c0f4893b0e4516))
+
 ## [5.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-digitalocean-v5.4.0...plugins-source-digitalocean-v5.4.1) (2024-02-20)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v4.2.1...plugins-destination-mysql-v4.2.2) (2024-02-27)
+
+
+### Bug Fixes
+
+* Use Logger for Client rather than the one that is passed in ([#16788](https://github.com/cloudquery/cloudquery/issues/16788)) ([72c19b5](https://github.com/cloudquery/cloudquery/commit/72c19b51840f1ea47067042593e1f651f1801ca4))
+
 ## [4.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v4.2.0...plugins-destination-mysql-v4.2.1) (2024-02-20)
 
 
