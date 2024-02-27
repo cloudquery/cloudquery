@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.4.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.4.2...plugins-destination-snowflake-v3.4.3) (2024-02-27)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#16856](https://github.com/cloudquery/cloudquery/issues/16856)) ([b1dc86d](https://github.com/cloudquery/cloudquery/commit/b1dc86d0d82050b4193b323b4b3214aa8d19266f))
+* **deps:** Update module github.com/aws/smithy-go to v1.20.1 ([#16859](https://github.com/cloudquery/cloudquery/issues/16859)) ([34e6f24](https://github.com/cloudquery/cloudquery/commit/34e6f2464b26d7c9e8079365fecb8e47cd38535c))
+* Use Logger for Client rather than the one that is passed in ([#16788](https://github.com/cloudquery/cloudquery/issues/16788)) ([72c19b5](https://github.com/cloudquery/cloudquery/commit/72c19b51840f1ea47067042593e1f651f1801ca4))
+
 ## [3.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.4.1...plugins-destination-snowflake-v3.4.2) (2024-02-20)
 
 

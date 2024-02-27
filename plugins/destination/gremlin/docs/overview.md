@@ -67,11 +67,11 @@ This is the (nested) spec used by the Gremlin destination Plugin.
 
 - `aws_region` (`string`) (required when `auth_mode` is `aws`)
 
-  AWS region to use for AWS IAM authentication.
+  AWS region to use for AWS IAM authentication. Example: `us-east-1`.
 
 - `aws_neptune_host` (`string`) (optional, used when `auth_mode` is `aws`)
 
-  AWS Neptune host header to use with AWS IAM authentication. Use if you're not accessing Neptune directly, when `auth_mode` is `aws`.
+  AWS Neptune host header to use with AWS IAM authentication. Use if you're not accessing Neptune directly, when `auth_mode` is `aws`. Example: `my-neptune.cluster.us-east-1.neptune.amazonaws.com`
 
 - `max_retries` (`integer`) (optional) (default: `5`)
 
