@@ -8,9 +8,9 @@ spec:
   registry: "cloudquery"
   version: "VERSION_DESTINATION_NEO4J"
   spec:
-    connection_string: "bolt://localhost:7687"
-    username: "${USERNAME}"
-    password: "${PASSWORD}"
+    connection_string: "${NEO4J_CONNECTION_STRING}"
+    username: "${NEO4J_USERNAME}"
+    password: "${NEO4J_PASSWORD}"
     # Optional parameters:
     # batch_size: 1000 # 1K entries
     # batch_size_bytes: 4194304 # 4 MiB
