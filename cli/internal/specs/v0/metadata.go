@@ -23,13 +23,28 @@ type Metadata struct {
 	// * for `registry: github` the `path` will be: `org/repo`
 	// * for `registry: local` the `path` will be the path to the binary: `./path/to/binary`
 	// * for `registry: grpc` the `path` will be the address of the gRPC server: `host:port`
+	// * for `registry: cloudquery` the `path` will be: `team/name`
 	Path string `json:"path" jsonschema:"required,minLength=1"`
 
 	// Registry can be "", "github", "local", "grpc", "docker", "cloudquery"
 	Registry Registry `json:"registry,omitempty" jsonschema:"default=cloudquery"`
 
+	// DockerRegistryAuthToken is the token to use to authenticate with the docker registry
+	DockerRegistryAuthToken string `json:"docker_registry_auth_token,omitempty"`
+
 	// registryInferred is a flag that indicates whether the registry was inferred from an empty value
 	registryInferred bool
+}
+
+func (m Metadata) VersionString() string {
+	switch m.Registry {
+	case RegistryCloudQuery:
+		return fmt.Sprintf("%s (%s@%s)", m.Name, m.Path, m.Version)
+	case RegistryLocal, RegistryGRPC:
+		return fmt.Sprintf("%s (%s@%s)", m.Name, m.Registry, m.Path)
+	default:
+		return fmt.Sprintf("%s@%s (%s@%s)", m.Name, m.Registry, m.Path, m.Version)
+	}
 }
 
 func (m *Metadata) Validate() error {
@@ -76,17 +91,15 @@ func (m *Metadata) Validate() error {
 // JSONSchemaExtend has to be in sync with Registry.NeedVersion
 func (Metadata) JSONSchemaExtend(sc *jsonschema.Schema) {
 	sc.If = &jsonschema.Schema{
+		Title: "if registry is unset or is either `github` or `cloudquery`",
 		Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
 			properties := orderedmap.New[string, *jsonschema.Schema]()
-			registry := *sc.Properties.Value("registry")
-			registry.Enum = []any{RegistryUnset.String(), RegistryGitHub.String(), RegistryCloudQuery.String()}
-			registry.Description = ""
-			registry.Default = nil
-			properties.Set("registry", &registry)
+			properties.Set("registry", &jsonschema.Schema{Enum: []any{RegistryUnset.String(), RegistryGitHub.String(), RegistryCloudQuery.String()}})
 			return properties
 		}(),
 	}
 	sc.Then = &jsonschema.Schema{
+		Title: "require version to be present",
 		Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
 			properties := orderedmap.New[string, *jsonschema.Schema]()
 			version := *sc.Properties.Value("version")

@@ -32,10 +32,10 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v5.5.7
+          version: v5.7.0
 
       - name: Set up Go 1.x
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: plugins/source/${{ github.event.client_payload.slash_command.args.named.plugin }}/go.mod
           cache: true

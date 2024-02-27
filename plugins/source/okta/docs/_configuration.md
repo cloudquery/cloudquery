@@ -12,7 +12,7 @@ spec:
     # Okta domain name
     domain: "https://<YOUR_OKTA_DOMAIN>.okta.com/"
     # Okta Token to access API
-    token: "<YOUR_OKTA_TOKEN>"
+    token: "${OKTA_ACCESS_TOKEN}"
 
     # Optional. Rate limiter settings
     # rate_limit:
@@ -20,4 +20,3 @@ spec:
     #   max_retries: 3
 
 ```
-

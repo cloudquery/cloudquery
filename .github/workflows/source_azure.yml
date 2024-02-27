@@ -47,7 +47,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v5.5.7
+          version: v5.7.0
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -67,7 +67,7 @@ jobs:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/checkout@v4
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         with:
           path: |
@@ -78,7 +78,7 @@ jobs:
             ${{ runner.os }}-go-1.21.4-release-cache-plugins-source-azure
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: plugins/source/azure/go.mod
           cache: false

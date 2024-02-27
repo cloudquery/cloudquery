@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.3.1...plugins-destination-gremlin-v2.4.0) (2024-02-27)
+
+
+### Features
+
+* Provide `aws_neptune_host` option for Neptune IAM authentication over proxy ([#16889](https://github.com/cloudquery/cloudquery/issues/16889)) ([318f6b5](https://github.com/cloudquery/cloudquery/commit/318f6b520687954b914a1477e8362d1a7c84354e))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#16852](https://github.com/cloudquery/cloudquery/issues/16852)) ([617606b](https://github.com/cloudquery/cloudquery/commit/617606b62a880310143e520cf4b3f3076698ac21))
+
 ## [2.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.3.0...plugins-destination-gremlin-v2.3.1) (2024-02-20)
 
 

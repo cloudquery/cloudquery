@@ -80,8 +80,12 @@ func TestJSONSchema(t *testing.T) {
 			Err:  true,
 		},
 		{
-			Name: "spec with endpoint, auth_mode aws, region",
-			Spec: `{"endpoint": "ws://localhost:8182", "auth_mode": "aws", "aws_region":"reg"}`,
+			Name: "spec with endpoint, auth_mode aws, region, without host",
+			Spec: `{"endpoint": "ws://localhost:8182", "auth_mode": "aws", "aws_region":"us-east-1"}`,
+		},
+		{
+			Name: "spec with endpoint, auth_mode aws, region, host",
+			Spec: `{"endpoint": "ws://localhost:8182", "auth_mode": "aws", "aws_region":"us-east-1", "aws_neptune_host":"my-neptune.cluster-testtesttest.us-east-1.neptune.amazonaws.com"}`,
 		},
 		{
 			Name: "spec with bool endpoint",

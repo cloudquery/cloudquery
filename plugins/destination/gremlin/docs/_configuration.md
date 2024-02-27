@@ -14,6 +14,7 @@ spec:
     # username: ""
     # password: ""
     # aws_region: ""
+    # aws_neptune_host: ""
     # max_retries: 5
     # max_concurrent_connections: 5 # default: number of CPUs
     # batch_size: 200

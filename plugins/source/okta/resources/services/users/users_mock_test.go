@@ -8,14 +8,11 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
 	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/services/fakes"
 	"github.com/gorilla/mux"
-	"github.com/okta/okta-sdk-golang/v3/okta"
+	"github.com/okta/okta-sdk-golang/v4/okta"
 )
 
 func handleUsers(router *mux.Router) error {
 	u := fakes.User()
-	u.AdditionalProperties = map[string]any{"key": "value"}
-	u.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
-	u.Links = map[string]map[string]any{"top-key": {"key": "value"}}
 
 	router.HandleFunc("/api/v1/users", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")

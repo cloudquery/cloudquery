@@ -7,7 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/okta/client"
 	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/services/groups/models"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/okta/okta-sdk-golang/v3/okta"
+	"github.com/okta/okta-sdk-golang/v4/okta"
 )
 
 func users() *schema.Table {
@@ -34,9 +34,9 @@ func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	cl := meta.(*client.Client)
 	grp := parent.Item.(okta.Group)
 
-	req := cl.GroupApi.ListGroupUsers(ctx, *grp.Id).Limit(200)
+	req := cl.GroupAPI.ListGroupUsers(ctx, *grp.Id).Limit(200)
 
-	items, resp, err := cl.GroupApi.ListGroupUsersExecute(req)
+	items, resp, err := cl.GroupAPI.ListGroupUsersExecute(req)
 	if err != nil {
 		return err
 	}
