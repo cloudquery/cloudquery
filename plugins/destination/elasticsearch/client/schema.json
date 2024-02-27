@@ -4,6 +4,38 @@
   "$ref": "#/$defs/Spec",
   "$defs": {
     "Spec": {
+      "not": {
+        "properties": {
+          "addresses": {
+            "oneOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array",
+                "description": "A list of Elasticsearch nodes to use.",
+                "default": [
+                  "http://localhost:9200"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "minLength": 1
+          },
+          "cloud_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Endpoint for the Elastic Service (https://elastic.co/cloud)."
+          }
+        },
+        "required": [
+          "addresses",
+          "cloud_id"
+        ],
+        "description": "Either addresses or cloud_id must be set, but not both."
+      },
       "properties": {
         "addresses": {
           "oneOf": [

@@ -3,6 +3,9 @@ package client
 import (
 	_ "embed"
 	"runtime"
+
+	"github.com/invopop/jsonschema"
+	orderedmap "github.com/wk8/go-ordered-map/v2"
 )
 
 const (
@@ -50,7 +53,7 @@ type Spec struct {
 var JSONSchema string
 
 func (s *Spec) SetDefaults() {
-	if len(s.Addresses) == 0 {
+	if len(s.Addresses) == 0 && s.CloudID == "" {
 		s.Addresses = []string{"http://localhost:9200"}
 	}
 	if s.Concurrency == 0 {
@@ -66,4 +69,26 @@ func (s *Spec) SetDefaults() {
 
 func (*Spec) Validate() error {
 	return nil
+}
+
+func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
+	sc.Not = &jsonschema.Schema{
+		Description: "Either addresses or cloud_id must be set, but not both.",
+		Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+			one := uint64(1)
+			properties := jsonschema.NewProperties()
+
+			addresses := *sc.Properties.Value("addresses")
+			addresses.MinLength = &one
+			properties.Set("addresses", &addresses)
+
+			cloudID := *sc.Properties.Value("cloud_id")
+			cloudID.MinLength = &one
+
+			properties.Set("cloud_id", &cloudID)
+
+			return properties
+		}(),
+		Required: []string{"addresses", "cloud_id"},
+	}
 }
