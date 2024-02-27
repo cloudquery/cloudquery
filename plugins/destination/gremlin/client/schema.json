@@ -175,6 +175,11 @@
           "type": "string",
           "description": "AWS region to use for AWS IAM authentication. Required when `auth_mode` is `aws`."
         },
+        "aws_neptune_host": {
+          "type": "string",
+          "pattern": "^[\\w\\.-]+$",
+          "description": "AWS Neptune host header to use with AWS IAM authentication. Required when `auth_mode` is `aws`."
+        },
         "max_concurrent_connections": {
           "type": "integer",
           "minimum": 1,
