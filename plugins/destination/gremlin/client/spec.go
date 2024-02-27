@@ -31,7 +31,10 @@ type Spec struct {
 	MaxRetries int `json:"max_retries" jsonschema:"minimum=1,default=5"`
 
 	// AWS region to use for AWS IAM authentication. Required when `auth_mode` is `aws`.
-	AWSRegion string `json:"aws_region"`
+	AWSRegion string `json:"aws_region" jsonschema:"example=us-east-1"`
+
+	// AWS Neptune host header to use with AWS IAM authentication. Required when `auth_mode` is `aws`.
+	AWSNeptuneHost string `json:"aws_neptune_host" jsonschema:"pattern=^[\\w\\.-]+$,example=my-neptune.cluster.us-east-1.neptune.amazonaws.com"`
 
 	// Maximum number of concurrent connections to the database. Defaults to the number of CPUs.
 	MaxConcurrentConnections int `json:"max_concurrent_connections" jsonschema:"minimum=1"`

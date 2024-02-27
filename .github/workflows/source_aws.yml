@@ -63,7 +63,7 @@ jobs:
       # Sanity integration test, only for release PRs
       - name: Configure AWS credentials
         if: startsWith(github.head_ref, 'release-please--branches--main--components')
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::615713231484:role/cq-playground-aws-github-action
           aws-region: us-east-1
@@ -90,7 +90,7 @@ jobs:
             ${{ runner.os }}-go-1.21.4-release-cache-plugins-source-aws
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: plugins/source/aws/go.mod
           cache: false

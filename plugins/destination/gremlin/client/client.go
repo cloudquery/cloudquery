@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 	"sync"
 	"time"
@@ -95,9 +96,23 @@ func (c *Client) getAuthInfo(ctx context.Context, baseURL string) (gremlingo.Aut
 		// emptyStringSHA256 is a SHA256 of an empty string
 		const emptyStringSHA256 = `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
 
-		req, err := http.NewRequest(http.MethodGet, baseURL, strings.NewReader(""))
+		urlToSign := baseURL
+		if c.spec.AWSNeptuneHost != "" {
+			u, err := url.Parse(baseURL)
+			if err != nil {
+				return nil, err
+			}
+			u.Host = c.spec.AWSNeptuneHost // signer.SignHTTP will use this as the Host header
+			urlToSign = u.String()
+		}
+
+		req, err := http.NewRequest(http.MethodGet, urlToSign, strings.NewReader(""))
 		if err != nil {
 			return nil, err
+		}
+
+		if len(c.spec.AWSNeptuneHost) != 0 {
+			req.Header.Set("Host", c.spec.AWSNeptuneHost)
 		}
 
 		cfg, err := config.LoadDefaultConfig(ctx)

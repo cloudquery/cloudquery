@@ -40,7 +40,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - uses: actions/github-script@v6
+      - uses: actions/github-script@v7
         id: set-result
         env:
           PLUGIN_DIR: ${{steps.split.outputs.plugin_dir}}
@@ -145,7 +145,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-1.21.4-release-cache-plugins-${{ needs.prepare.outputs.plugin_type }}-${{ needs.prepare.outputs.plugin_name }}
       - name: Set up Go 1.x
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version-file: ${{needs.prepare.outputs.plugin_dir}}/go.mod
           cache: false
