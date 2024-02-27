@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.3.0...plugins-source-typeform-v1.3.1) (2024-02-27)
+
+
+### Bug Fixes
+
+* Use env var replacement in example configuration ([#16848](https://github.com/cloudquery/cloudquery/issues/16848)) ([fc790d0](https://github.com/cloudquery/cloudquery/commit/fc790d0c8fab70e06a1082263329d0adb96dd1e3))
+
 ## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.2.3...plugins-source-typeform-v1.3.0) (2024-02-13)
 
 

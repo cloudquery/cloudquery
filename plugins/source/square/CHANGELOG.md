@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.2.0...plugins-source-square-v1.2.1) (2024-02-27)
+
+
+### Bug Fixes
+
+* Use env var replacement in example configuration ([#16849](https://github.com/cloudquery/cloudquery/issues/16849)) ([34b6339](https://github.com/cloudquery/cloudquery/commit/34b6339a9292da565cab36a340310476ba2d07df))
+
 ## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.1.3...plugins-source-square-v1.2.0) (2024-02-13)
 
 
