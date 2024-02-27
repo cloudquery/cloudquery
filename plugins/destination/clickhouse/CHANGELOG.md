@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v3.4.11...plugins-destination-clickhouse-v3.4.12) (2024-02-27)
+
+
+### Bug Fixes
+
+* Use Logger for Client rather than the one that is passed in ([#16788](https://github.com/cloudquery/cloudquery/issues/16788)) ([72c19b5](https://github.com/cloudquery/cloudquery/commit/72c19b51840f1ea47067042593e1f651f1801ca4))
+
 ## [3.4.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v3.4.10...plugins-destination-clickhouse-v3.4.11) (2024-02-20)
 
 

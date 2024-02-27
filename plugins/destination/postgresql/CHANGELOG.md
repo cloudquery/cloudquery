@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.3.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.3.5...plugins-destination-postgresql-v7.3.6) (2024-02-27)
+
+
+### Bug Fixes
+
+* Handle multiple changes to a single table ([#16820](https://github.com/cloudquery/cloudquery/issues/16820)) ([e8428cd](https://github.com/cloudquery/cloudquery/commit/e8428cd383f1b84fa05357269593ec738efbb1e7))
+
 ## [7.3.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.3.4...plugins-destination-postgresql-v7.3.5) (2024-02-20)
 
 
