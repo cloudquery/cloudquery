@@ -1057,6 +1057,10 @@
     {
       "source": "/integrations/:source/:destination",
       "destination": "https://hub.cloudquery.io/export-data/:source/:destination"
+    },
+    {
+      "source": "/docs/quickstart/macos",
+      "destination": "/docs/quickstart/macOS"
     }
   ]
 }
