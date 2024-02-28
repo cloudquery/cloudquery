@@ -5,7 +5,6 @@ import (
 
 	"github.com/DataDog/datadog-api-client-go/v2/api/datadog"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 )
 
@@ -79,9 +78,6 @@ func (c *Client) Duplicate() schema.ClientMeta {
 }
 
 func Configure(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.ClientMeta, error) {
-	if len(spec.Accounts) == 0 {
-		return nil, errors.New("no datadog accounts configured")
-	}
 	configuration := datadog.NewConfiguration()
 	apiClient := datadog.NewAPIClient(configuration)
 

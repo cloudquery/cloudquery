@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v4.10.1...plugins-destination-s3-v5.0.0) (2024-02-27)
+
+
+### ⚠ BREAKING CHANGES
+
+* Properly replace JSON values when using `athena: true` (https://github.com/cloudquery/cloudquery/pull/16942). Previously, `json` columns would have been sanitized & then marshaled twice, resulting in `base64` encoded bytes value. Now, the `json` columns have a proper object value.
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.31.0 ([#16899](https://github.com/cloudquery/cloudquery/issues/16899)) ([2fac27a](https://github.com/cloudquery/cloudquery/commit/2fac27a2e3e789f6152b643c0af1c97ee95c4745))
+* Properly replace JSON values when using `athena: true` (https://github.com/cloudquery/cloudquery/pull/16942) ([336eac1](https://github.com/cloudquery/cloudquery/commit/336eac1050aefff0697ee15e1d8b8cce7f8b73a9))
+
 ## [4.10.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v4.10.0...plugins-destination-s3-v4.10.1) (2024-02-27)
 
 

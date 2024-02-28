@@ -10,11 +10,14 @@ spec:
   destinations: ["DESTINATION_NAME"]
 
   spec:
+    # required
     accounts:
-      - name: example_account # Required. Name to distinguish accounts
-        api_key: <DD_CLIENT_API_KEY> # Required. API key
-        app_key: <DD_CLIENT_APP_KEY> # Required. App key
+      - # required
+        name: example_account
+        # required
+        api_key: ${DATADOG_EXAMPLE_ACCOUNT_API_KEY}
+        # required
+        app_key: ${DATADOG_EXAMPLE_ACCOUNT_APP_KEY}
     # Optional parameters
     # site: datadoghq.eu
-    # concurrency: 10000
 ```
