@@ -2,8 +2,6 @@ package client
 
 import (
 	"context"
-	"fmt"
-	"os"
 
 	"github.com/clarkmcc/go-hubspot"
 	"github.com/cloudquery/cloudquery/plugins/source/hubspot/client/spec"
@@ -44,14 +42,9 @@ func (c *Client) withObjectType(objectType string) *Client {
 }
 
 func New(_ context.Context, logger zerolog.Logger, s spec.Spec) (schema.ClientMeta, error) {
-	authToken := os.Getenv("HUBSPOT_APP_TOKEN")
-	if authToken == "" {
-		return nil, fmt.Errorf("failed to get hubspot auth token. Please provide an auth-token (see https://www.cloudquery.io/docs/plugins/sources/hubspot/overview#authentication)")
-	}
-
 	return &Client{
 		Logger:     logger,
-		Authorizer: hubspot.NewTokenAuthorizer(authToken),
+		Authorizer: hubspot.NewTokenAuthorizer(s.AppToken),
 		Spec:       s,
 		RateLimiter: rate.NewLimiter(
 			/* r= */ rate.Limit(s.MaxRequestsPerSecond),
