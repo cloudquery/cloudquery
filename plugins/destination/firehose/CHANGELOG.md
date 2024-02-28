@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.3.2...plugins-destination-firehose-v2.3.3) (2024-02-28)
+
+
+### Bug Fixes
+
+* Adding firehose stream environment variable ([#16950](https://github.com/cloudquery/cloudquery/issues/16950)) ([d711cb4](https://github.com/cloudquery/cloudquery/commit/d711cb4f26e8fa33fbeea17e2971cfbba481cec7))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.31.0 ([#16899](https://github.com/cloudquery/cloudquery/issues/16899)) ([2fac27a](https://github.com/cloudquery/cloudquery/commit/2fac27a2e3e789f6152b643c0af1c97ee95c4745))
+* Remove stream_arn regex validation ([#16955](https://github.com/cloudquery/cloudquery/issues/16955)) ([667f592](https://github.com/cloudquery/cloudquery/commit/667f5928a611ca77640a0502151cdf6d19c1dea9))
+
 ## [2.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.3.1...plugins-destination-firehose-v2.3.2) (2024-02-27)
 
 
