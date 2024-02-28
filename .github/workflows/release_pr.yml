@@ -16,6 +16,4 @@ jobs:
       - uses: google-github-actions/release-please-action@v4
         id: release
         with:
-          command: manifest
           token: ${{ secrets.GH_CQ_BOT }}
-          default-branch: main
