@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"io"
-	"reflect"
 	"regexp"
 	"time"
 
@@ -86,11 +85,11 @@ func sanitizeRecordJSONKeys(record arrow.Record) (arrow.Record, error) {
 					b.AppendNull()
 					continue
 				}
-				bArray, err := sanitizeRawJsonMessage(col.GetOneForMarshal(r).(json.RawMessage))
+				data, err := sanitizeJSONRawMessage(col.GetOneForMarshal(r).(json.RawMessage))
 				if err != nil {
 					return nil, err
 				}
-				b.Append(bArray)
+				b.Append(data)
 			}
 			cols[i] = b.NewArray()
 			continue
@@ -100,42 +99,31 @@ func sanitizeRecordJSONKeys(record arrow.Record) (arrow.Record, error) {
 	return array.NewRecord(record.Schema(), cols, record.NumRows()), nil
 }
 
-func sanitizeRawJsonMessage(rawMessage json.RawMessage) ([]byte, error) {
-	var objInterface any
-	err := json.Unmarshal(rawMessage, &objInterface)
-	if err != nil {
-		return nil, err
-	}
-	sanitizeJSONKeysForObject(objInterface)
-	cleanedObject, err := json.Marshal(&objInterface)
+func sanitizeJSONRawMessage(rawMessage json.RawMessage) (any, error) {
+	var data any
+	err := json.Unmarshal(rawMessage, &data)
 	if err != nil {
 		return nil, err
 	}
 
-	return cleanedObject, nil
+	return sanitizeJSONKeysForObject(data), nil
 }
 
-func sanitizeJSONKeysForObject(obj any) {
-	value := reflect.ValueOf(obj)
-	k := value.Kind()
-	switch k {
-	case reflect.Map:
-		iter := value.MapRange()
-		for iter.Next() {
-			k := iter.Key()
-			if k.Kind() == reflect.String {
-				str := k.String()
-				nk := reInvalidJSONKey.ReplaceAllString(str, "_")
-				v := iter.Value()
-				sanitizeJSONKeysForObject(v.Interface())
-				value.SetMapIndex(k, reflect.Value{})
-				value.SetMapIndex(reflect.ValueOf(nk), v)
-			}
+func sanitizeJSONKeysForObject(data any) any {
+	// we only care about objects that have keys: present either while nesting or in arrays
+	switch data := data.(type) {
+	case map[string]any:
+		res := make(map[string]any, len(data))
+		for k, v := range data {
+			res[reInvalidJSONKey.ReplaceAllString(k, "_")] = sanitizeJSONKeysForObject(v)
 		}
-	case reflect.Slice:
-		for i := 0; i < value.Len(); i++ {
-			key := value.Index(i).Interface()
-			sanitizeJSONKeysForObject(key)
+		return res
+	case []any:
+		for i, el := range data {
+			data[i] = sanitizeJSONKeysForObject(el)
 		}
+		return data
+	default:
+		return data
 	}
 }

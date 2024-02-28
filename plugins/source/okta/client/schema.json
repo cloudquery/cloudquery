@@ -34,7 +34,6 @@
         },
         "domain": {
           "type": "string",
-          "pattern": "^https?://[^\n\u003c\u003e]+\\.okta\\.com$",
           "description": "Specify the Okta domain you are fetching from.\n[Visit this link](https://developer.okta.com/docs/guides/find-your-domain/findorg/) to find your Okta domain."
         },
         "rate_limit": {
