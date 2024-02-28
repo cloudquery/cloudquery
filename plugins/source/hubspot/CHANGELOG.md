@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-hubspot-v3.1.1...plugins-source-hubspot-v3.1.2) (2024-02-28)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.31.0 ([#16899](https://github.com/cloudquery/cloudquery/issues/16899)) ([2fac27a](https://github.com/cloudquery/cloudquery/commit/2fac27a2e3e789f6152b643c0af1c97ee95c4745))
+* Use env var replacement in example configuration, read token from spec ([#16944](https://github.com/cloudquery/cloudquery/issues/16944)) ([06f5dda](https://github.com/cloudquery/cloudquery/commit/06f5dda1028a462677dfda81ace010f31cc4e3ff))
+
 ## [3.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-hubspot-v3.1.0...plugins-source-hubspot-v3.1.1) (2024-02-20)
 
 
