@@ -7,7 +7,7 @@
       "properties": {
         "stream_arn": {
           "type": "string",
-          "pattern": "^arn:[^:]+:firehose:[^:]+:[^:]+:deliverystream/[^:]+$",
+          "pattern": "^arn:[^:]+:firehose:[^:]+:[^:]+:deliverystream\\/[^:]+$",
           "description": "Kinesis Firehose delivery stream ARN where data will be sent to.\nFormat: `arn:${Partition}:firehose:${Region}:${Account}:deliverystream/${DeliveryStreamName}`."
         },
         "max_retries": {
