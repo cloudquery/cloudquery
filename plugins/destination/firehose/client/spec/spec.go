@@ -11,7 +11,7 @@ import (
 type Spec struct {
 	// Kinesis Firehose delivery stream ARN where data will be sent to.
 	// Format: `arn:${Partition}:firehose:${Region}:${Account}:deliverystream/${DeliveryStreamName}`.
-	StreamARN string `json:"stream_arn" jsonschema:"required,pattern=^arn:[^:]+:firehose:[^:]+:[^:]+:deliverystream/[^:]+$"`
+	StreamARN string `json:"stream_arn" jsonschema:"required,minLength=1"`
 
 	// Amount of retries to perform when writing a batch.
 	MaxRetries int `json:"max_retries,omitempty" jsonschema:"minimum=1,default=5"`
@@ -27,7 +27,7 @@ type Spec struct {
 }
 
 func (s *Spec) SetDefaults() {
-	if s.MaxRetries < 0 {
+	if s.MaxRetries < 1 {
 		s.MaxRetries = 5
 	}
 	if s.MaxRecordSizeBytes < 1 {
