@@ -9,8 +9,9 @@ spec:
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   spec:
+    # required, unless env variable DIGITALOCEAN_TOKEN or DIGITALOCEAN_ACCESS_TOKEN is set
+    token: "${DIGITALOCEAN_ACCESS_TOKEN}"
     # Optional parameters
-    # token: "" # will be propagated from env
     # spaces_regions: ["nyc3", "sfo3", "ams3", "sgp1", "fra1", "syd1"]
     # spaces_access_key: ""
     # spaces_access_key_id: ""
