@@ -11,11 +11,13 @@ spec:
 
   # Cloudflare specific configuration
   spec:
-    # Optional parameters
-    # api_token: ""
+    # required, if api_email and api_key are not set
+    api_token: "${CLOUDFLARE_API_TOKEN}"
+    # required, if api_token is not set
     # api_email: ""
+    # required, if api_token is not set
     # api_key: ""
+    # Optional parameters
     # accounts: []
     # zones: []
-    # concurrency: 10000
 ```
