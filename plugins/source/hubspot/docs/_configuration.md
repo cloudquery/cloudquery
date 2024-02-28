@@ -8,29 +8,9 @@ spec:
   destinations: ["DESTINATION_NAME"]
   tables: ["*"]
   spec:
+    # required, unless the HUBSPOT_APP_TOKEN environment variable is set
+    app_token: "${HUBSPOT_APP_TOKEN}"
     # optional, default is 5.
     # See https://developers.hubspot.com/docs/api/usage-details#rate-limits
-    max_requests_per_second: 5
-    table_options:
-      hubspot_crm_companies:
-        associations: []
-        properties: []
-      hubspot_crm_contacts:
-        associations: []
-        properties: []
-      hubspot_crm_deals:
-        associations: []
-        properties: []
-      hubspot_crm_line_items:
-        associations: []
-        properties: []
-      hubspot_crm_products:
-        associations: []
-        properties: []
-      hubspot_crm_quotes:
-        associations: []
-        properties: []
-      hubspot_crm_tickets:
-        associations: []
-        properties: []
+    # max_requests_per_second: 5
 ```
