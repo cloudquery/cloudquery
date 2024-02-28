@@ -7,7 +7,8 @@ spec:
   version: "VERSION_DESTINATION_FIREHOSE"
   write_mode: "append" # this plugin only supports 'append' mode
   spec:
-    stream_arn: "arn:aws:firehose:us-east-1:111122223333:deliverystream/TestRedshiftStream"
+    # Required parameters e.g. arn:aws:firehose:us-east-1:111122223333:deliverystream/TestRedshiftStream
+    stream_arn: "${FIREHOSE_STREAM_ARN}"
     # Optional parameters
     # max_retries: 5
     # max_record_size_bytes: 1024000 # optional
