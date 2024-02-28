@@ -27,7 +27,7 @@ type Spec struct {
 }
 
 func (s *Spec) SetDefaults() {
-	if s.MaxRetries < 0 {
+	if s.MaxRetries < 1 {
 		s.MaxRetries = 5
 	}
 	if s.MaxRecordSizeBytes < 1 {
