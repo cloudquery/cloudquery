@@ -2,8 +2,12 @@ package actions
 
 import (
 	"context"
+	"errors"
 	"net/url"
 	"strings"
+
+	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
+	"github.com/ghodss/yaml"
 
 	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
@@ -25,6 +29,13 @@ func Workflows() *schema.Table {
 				Name:     "contents",
 				Type:     arrow.BinaryTypes.String,
 				Resolver: resolveContents,
+			},
+			// This column depends on the `contents` column.
+			// As a result, the value of this column is set within the `resolveContents` resolver.
+			{
+				Name:     "contents_as_json",
+				Type:     cqtypes.ExtensionTypes.JSON,
+				Resolver: resolveNoop,
 			},
 		},
 	}
@@ -78,11 +89,21 @@ func resolveContents(ctx context.Context, meta schema.ClientMeta, resource *sche
 	fileContent, _, _, err := cl.Github.Repositories.GetContents(ctx, owner, repo, path, &opts)
 	if err != nil {
 		// This is not actually an error, it means that a workflow file has been deleted
-		return resource.Set(c.Name, nil)
+		return errors.Join(resource.Set("contents_as_json", nil), resource.Set(c.Name, nil))
 	}
 	content, err := fileContent.GetContent()
 	if err != nil {
 		return err
 	}
-	return resource.Set(c.Name, content)
+
+	contentAsJson, err := yaml.YAMLToJSON([]byte(content))
+	if err != nil {
+		cl.Logger().Warn().Err(err).Msg("failed to parse workflow contents as yaml")
+	}
+
+	return errors.Join(resource.Set("contents_as_json", contentAsJson), resource.Set(c.Name, content))
+}
+
+func resolveNoop(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
+	return nil
 }

@@ -13,6 +13,7 @@ The composite primary key for this table is (**org**, **repository_id**, **id**)
 |org (PK)|`utf8`|
 |repository_id (PK)|`int64`|
 |contents|`utf8`|
+|contents_as_json|`json`|
 |id (PK)|`int64`|
 |node_id|`utf8`|
 |name|`utf8`|

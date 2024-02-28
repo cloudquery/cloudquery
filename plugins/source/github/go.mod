@@ -7,6 +7,7 @@ require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.9.0
 	github.com/cloudquery/codegen v0.3.12
 	github.com/cloudquery/plugin-sdk/v4 v4.31.0
+	github.com/ghodss/yaml v1.0.0
 	github.com/gofri/go-github-ratelimit v1.0.3
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v59 v59.0.0
@@ -41,7 +42,6 @@ require (
 	github.com/flosch/pongo2/v4 v4.0.2 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/getsentry/sentry-go v0.24.1 // indirect
-	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.9.1 // indirect
 	github.com/go-logr/logr v1.3.0 // indirect
