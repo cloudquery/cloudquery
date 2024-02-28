@@ -4,10 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
-	"github.com/ghodss/yaml"
 	"net/url"
 	"strings"
+
+	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
+	"github.com/ghodss/yaml"
 
 	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
@@ -30,7 +31,6 @@ func Workflows() *schema.Table {
 				Type:     arrow.BinaryTypes.String,
 				Resolver: resolveContents,
 			},
-
 			// This column depends on the `contents` column.
 			// As a result, the value of this column is set within the `resolveContents` resolver.
 			{
