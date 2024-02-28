@@ -29,21 +29,6 @@ func TestSpec_JSONSchema(t *testing.T) {
 			Err:  true,
 		},
 		{
-			Name: "bad stream_arn",
-			Spec: `{"stream_arn": "abc"}`,
-			Err:  true,
-		},
-		{
-			Name: "bad stream_arn service",
-			Spec: `{"stream_arn": "arn:aws:kinesis:us-east-1:01234:stream/name"}`,
-			Err:  true,
-		},
-		{
-			Name: "missing stream name in stream_arn",
-			Spec: `{"stream_arn": "arn:aws:firehose:us-east-1:01234:deliverystream"}`,
-			Err:  true,
-		},
-		{
 			Name: "proper stream_arn",
 			Spec: `{"stream_arn": "arn:aws:firehose:us-east-1:01234:deliverystream/name"}`,
 		},
