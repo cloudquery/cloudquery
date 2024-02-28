@@ -10,7 +10,7 @@ This example connects a single Datadog account to a Postgres destination. The (t
 
 This is the (nested) spec used by the Datadog source plugin.
 
-- `accounts` ([][account](#account))
+- `accounts` ([][account](#account), required)
 
   Specify which accounts to sync data from.
 
@@ -27,14 +27,14 @@ This is the (nested) spec used by the Datadog source plugin.
   This is used to specify one or more accounts to extract information from.
   Note that it should be an array of objects, each with the following fields:
 
-- `name` (`string`)
+- `name` (`string`, required)
 
   Account name.
 
-- `api_key` (`string`)
+- `api_key` (`string`, required)
 
   Datadog API key.
 
-- `app_key` (`string`)
+- `app_key` (`string`, required)
 
   Datadog App key.

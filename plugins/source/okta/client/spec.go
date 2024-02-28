@@ -17,7 +17,7 @@ type (
 
 		// Specify the Okta domain you are fetching from.
 		// [Visit this link](https://developer.okta.com/docs/guides/find-your-domain/findorg/) to find your Okta domain.
-		Domain    string     `json:"domain" jsonschema:"required,pattern=^https?://[^\n<>]+\\.okta\\.com$"`
+		Domain    string     `json:"domain" jsonschema:"required"`
 		RateLimit *RateLimit `json:"rate_limit"`
 
 		// Enables debug logs within the Okta SDK.
