@@ -3,7 +3,6 @@ package actions
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/url"
 	"strings"
 
@@ -99,7 +98,7 @@ func resolveContents(ctx context.Context, meta schema.ClientMeta, resource *sche
 
 	contentAsJson, err := yaml.YAMLToJSON([]byte(content))
 	if err != nil {
-		return fmt.Errorf("failed to parse workflow contents as yaml: %w", err)
+		cl.Logger().Warn().Err(err).Msg("failed to parse workflow contents as yaml")
 	}
 
 	return errors.Join(resource.Set("contents_as_json", contentAsJson), resource.Set(c.Name, content))
