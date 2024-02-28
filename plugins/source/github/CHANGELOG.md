@@ -1,5 +1,17 @@
 # Changelog
 
+## [8.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v8.0.2...plugins-source-github-v8.1.0) (2024-02-28)
+
+
+### Features
+
+* Add `contents_as_json` column to `github_workflows` table ([#16846](https://github.com/cloudquery/cloudquery/issues/16846)) ([16d9db0](https://github.com/cloudquery/cloudquery/commit/16d9db0cd73fbd8994b59d86cdd0919e120db2e4))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.31.0 ([#16899](https://github.com/cloudquery/cloudquery/issues/16899)) ([2fac27a](https://github.com/cloudquery/cloudquery/commit/2fac27a2e3e789f6152b643c0af1c97ee95c4745))
+
 ## [8.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v8.0.1...plugins-source-github-v8.0.2) (2024-02-26)
 
 
