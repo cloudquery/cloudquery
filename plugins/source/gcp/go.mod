@@ -25,7 +25,6 @@ require (
 	cloud.google.com/go/iot v1.7.4
 	cloud.google.com/go/kms v1.15.5
 	cloud.google.com/go/logging v1.8.1
-	cloud.google.com/go/longrunning v0.5.4
 	cloud.google.com/go/monitoring v1.16.3
 	cloud.google.com/go/osconfig v1.12.4
 	cloud.google.com/go/redis v1.14.1
@@ -68,6 +67,7 @@ require (
 require (
 	cloud.google.com/go v0.110.10 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
+	cloud.google.com/go/longrunning v0.5.4 // indirect
 	github.com/BurntSushi/toml v1.3.2 // indirect
 	github.com/CloudyKit/fastprinter v0.0.0-20200109182630-33d98a066a53 // indirect
 	github.com/CloudyKit/jet/v6 v6.2.0 // indirect
