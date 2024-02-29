@@ -5,7 +5,7 @@ This table shows data for Application Auto Scaling Scaling Activities.
 https://docs.aws.amazon.com/autoscaling/application/APIReference/API_ScalingActivity.html
 
 The primary key for this table is **_cq_id**.
-The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**, **resource_id**).
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **region**, **activity_id**).
 
 ## Columns
 
