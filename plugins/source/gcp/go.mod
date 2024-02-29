@@ -5,7 +5,6 @@ go 1.21.1
 require (
 	cloud.google.com/go/aiplatform v1.54.0
 	cloud.google.com/go/apigateway v1.6.4
-	cloud.google.com/go/apikeys v0.6.0
 	cloud.google.com/go/appengine v1.8.4
 	cloud.google.com/go/artifactregistry v1.14.6
 	cloud.google.com/go/baremetalsolution v1.2.3

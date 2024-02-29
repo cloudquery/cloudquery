@@ -34,7 +34,6 @@
   - [gcp_aiplatform_studies](gcp_aiplatform_studies.md)
 - [gcp_apigateway_apis](gcp_apigateway_apis.md)
 - [gcp_apigateway_gateways](gcp_apigateway_gateways.md)
-- [gcp_apikeys_keys](gcp_apikeys_keys.md)
 - [gcp_appengine_apps](gcp_appengine_apps.md)
 - [gcp_appengine_authorized_certificates](gcp_appengine_authorized_certificates.md)
 - [gcp_appengine_authorized_domains](gcp_appengine_authorized_domains.md)
