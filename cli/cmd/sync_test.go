@@ -148,7 +148,7 @@ func TestSync_IsolatedPluginEnvironmentsInCloud(t *testing.T) {
 	t.Setenv("_CQ_TEAM_NAME", "test_team")
 	t.Setenv("_CQ_SYNC_NAME", "test_sync")
 	t.Setenv("_CQ_SYNC_RUN_ID", uuid.Must(uuid.NewUUID()).String())
-	t.Setenv("__source_test__TEST_KEY", "test_value")
+	t.Setenv("__SOURCE_TEST__TEST_KEY", "test_value")
 	t.Setenv("NOT_TEST_ENV", "should_not_be_visible_to_plugin")
 
 	for _, tc := range configs {
