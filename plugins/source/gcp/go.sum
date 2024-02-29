@@ -5,8 +5,6 @@ cloud.google.com/go/aiplatform v1.54.0 h1:wH7OYl9Vq/5tupok0BPTFY9xaTLb0GxkReHtB5
 cloud.google.com/go/aiplatform v1.54.0/go.mod h1:pwZMGvqe0JRkI1GWSZCtnAfrR4K1bv65IHILGA//VEU=
 cloud.google.com/go/apigateway v1.6.4 h1:VVIxCtVerchHienSlaGzV6XJGtEM9828Erzyr3miUGs=
 cloud.google.com/go/apigateway v1.6.4/go.mod h1:0EpJlVGH5HwAN4VF4Iec8TAzGN1aQgbxAWGJsnPCGGY=
-cloud.google.com/go/apikeys v0.6.0 h1:B9CdHFZTFjVti89tmyXXrO+7vSNo2jvZuHG8zD5trdQ=
-cloud.google.com/go/apikeys v0.6.0/go.mod h1:kbpXu5upyiAlGkKrJgQl8A0rKNNJ7dQ377pdroRSSi8=
 cloud.google.com/go/appengine v1.8.4 h1:Qub3fqR7iA1daJWdzjp/Q0Jz0fUG0JbMc7Ui4E9IX/E=
 cloud.google.com/go/appengine v1.8.4/go.mod h1:TZ24v+wXBujtkK77CXCpjZbnuTvsFNT41MUaZ28D6vg=
 cloud.google.com/go/artifactregistry v1.14.6 h1:/hQaadYytMdA5zBh+RciIrXZQBWK4vN7EUsrQHG+/t8=
