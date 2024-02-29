@@ -105,6 +105,15 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 	return arrow.NewSchema(fields, &scMd)
 }
 
+func fieldExists(name string, sc *arrow.Schema) bool {
+	for _, field := range sc.Fields() {
+		if field.Name == name {
+			return true
+		}
+	}
+	return false
+}
+
 func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 	sc := record.Schema()
 	newSchema := t.TransformSchema(sc)
