@@ -302,7 +302,8 @@ func sync(cmd *cobra.Command, args []string) error {
 
 func filterPluginEnv(environ []string, pluginName, kind string) []string {
 	env := make([]string, 0)
-	prefix := "__" + kind + "_" + pluginName + "__"
+	cleanName := strings.ReplaceAll(pluginName, "-", "_")
+	prefix := strings.ToUpper("__" + kind + "_" + cleanName + "__")
 	for _, v := range environ {
 		if strings.HasPrefix(v, "CLOUDQUERY_API_KEY=") || strings.HasPrefix(v, "_CQ_TEAM_NAME=") {
 			env = append(env, v)
