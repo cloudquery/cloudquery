@@ -72,10 +72,10 @@ func NewRecordTransformer(opts ...RecordTransformerOption) *RecordTransformer {
 
 func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 	fields := make([]arrow.Field, 0, len(sc.Fields())+t.internalColumns)
-	if t.withSyncTime {
+	if t.withSyncTime && !sc.HasField(cqSyncTime) {
 		fields = append(fields, arrow.Field{Name: cqSyncTime, Type: arrow.FixedWidthTypes.Timestamp_us, Nullable: true})
 	}
-	if t.withSourceName {
+	if t.withSourceName && !sc.HasField(cqSourceName) {
 		fields = append(fields, arrow.Field{Name: cqSourceName, Type: arrow.BinaryTypes.String, Nullable: true})
 	}
 	for _, field := range sc.Fields() {
@@ -109,15 +109,16 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 	sc := record.Schema()
 	newSchema := t.TransformSchema(sc)
 	nRows := int(record.NumRows())
+
 	cols := make([]arrow.Array, 0, len(sc.Fields())+t.internalColumns)
-	if t.withSyncTime {
+	if t.withSyncTime && !sc.HasField(cqSyncTime) {
 		syncTimeBldr := array.NewTimestampBuilder(memory.DefaultAllocator, &arrow.TimestampType{Unit: arrow.Microsecond, TimeZone: "UTC"})
 		for i := 0; i < nRows; i++ {
 			syncTimeBldr.AppendTime(t.syncTime)
 		}
 		cols = append(cols, syncTimeBldr.NewArray())
 	}
-	if t.withSourceName {
+	if t.withSourceName && !sc.HasField(cqSourceName) {
 		sourceBldr := array.NewStringBuilder(memory.DefaultAllocator)
 		for i := 0; i < nRows; i++ {
 			sourceBldr.Append(t.sourceName)
