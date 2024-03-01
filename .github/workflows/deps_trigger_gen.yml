@@ -26,11 +26,12 @@ jobs:
         with:
           github-token: ${{ secrets.GH_CQ_BOT }}
           script: |
+            const path = require('path');
             const { issue: { number: issue_number }, repo: { owner, repo } } = context;
             const { SHA: sha, GO_MOD_FILE: goModFile } = process.env;
             // e.g. plugins/source/aws/go.mod
-            const dir = goModFile.endsWith(suffix) ? s.slice(0, -'/go.mod'.length)
-            console.log({ issue_number, owner, repo, sha, plugin });
+            const dir = path.dirname(goModFile);
+            console.log({ issue_number, owner, repo, sha, dir });
             await github.rest.issues.createComment({
               issue_number,
               owner,
