@@ -12,7 +12,7 @@ spec:
   write_mode: "append"
   spec:
     # required - list of brokers to connect to
-    brokers: ["${KAFKA_BROKER}"]
+    brokers: ["<broker-host>:<broker-port>"]
     # optional - if connecting via SASL/PLAIN, the username and password to use. If not set, no authentication will be used.
     sasl_username: "${KAFKA_SASL_USERNAME}"
     sasl_password: "${KAFKA_SASL_PASSWORD}"
