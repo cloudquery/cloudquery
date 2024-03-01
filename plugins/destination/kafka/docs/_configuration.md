@@ -1,4 +1,4 @@
-This example configures connects to a Kafka destination with no authentication and pushes messages in JSON format.
+This example configures connects to a Kafka destination using SASL plain authentication and pushes messages in JSON format.
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
 
@@ -11,8 +11,12 @@ spec:
   version: "VERSION_DESTINATION_KAFKA"
   write_mode: "append"
   spec:
-    brokers: ["<broker-host>:<broker-port>"]
-    format: "csv" # options: parquet, json, csv
+    # required - list of brokers to connect to
+    brokers: ["${KAFKA_BROKER}"]
+    # optional - if connecting via SASL/PLAIN, the username and password to use. If not set, no authentication will be used.
+    sasl_username: "${KAFKA_SASL_USERNAME}"
+    sasl_password: "${KAFKA_SASL_PASSWORD}"
+    format: "json" # options: parquet, json, csv
     format_spec:
       # CSV-specific parameters:
       # delimiter: ","
@@ -20,8 +24,6 @@ spec:
 
     # Optional parameters
     # compression: "" # options: gzip
-    # sasl_username: ""
-    # sasl_password: ""
     # client_id: cq-destination-kafka
     # verbose: false
     # batch_size: 1000
