@@ -31,7 +31,7 @@ jobs:
             const { SHA: sha, GO_MOD_FILE: goModFile } = process.env;
             // e.g. plugins/source/aws/go.mod
             const dir = path.dirname(goModFile);
-            console.log({ issue_number, owner, repo, sha, plugin });
+            console.log({ issue_number, owner, repo, sha, dir });
             await github.rest.issues.createComment({
               issue_number,
               owner,
