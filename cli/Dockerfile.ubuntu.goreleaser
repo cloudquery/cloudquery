@@ -1,0 +1,7 @@
+FROM ubuntu:22.04
+RUN apt-get update
+RUN apt-get install ca-certificates -y
+RUN update-ca-certificates
+ENTRYPOINT ["/app/cloudquery"]
+WORKDIR /app
+COPY cloudquery ./cloudquery
