@@ -44,7 +44,7 @@ jobs:
           comment-author: 'github-actions[bot]'
           body-includes: '### This PR has missing tables'
       - name: Create or update comment
-        uses: peter-evans/create-or-update-comment@c79b3ca3749d2a36af08fc41876cad6cadbab0d9
+        uses: peter-evans/create-or-update-comment@4e4c9d2bf6469297d6559f2d6dd2491723ec8326
         if: steps.missing-tables.outputs.result != ''
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
