@@ -5,6 +5,30 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.8.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.7.1...cli-v5.8.0) (2024-03-01)
+
+
+### Features
+
+* Publish ubuntu-based CLI image ([#16989](https://github.com/cloudquery/cloudquery/issues/16989)) ([dc1126f](https://github.com/cloudquery/cloudquery/commit/dc1126fa767fda09f06f033e206b113c90c4f0cf))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 814bf88 ([#16977](https://github.com/cloudquery/cloudquery/issues/16977)) ([d4d0e81](https://github.com/cloudquery/cloudquery/commit/d4d0e8138ec10e2c27eb0bf83e88905e838570d0))
+* **deps:** Update google.golang.org/genproto/googleapis/rpc digest to df926f6 ([#16981](https://github.com/cloudquery/cloudquery/issues/16981)) ([4d6cef9](https://github.com/cloudquery/cloudquery/commit/4d6cef9134401b9a6fcd60e70683f1992e526c4d))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.19.1 ([#16988](https://github.com/cloudquery/cloudquery/issues/16988)) ([d243152](https://github.com/cloudquery/cloudquery/commit/d243152b783d0438ae35493157fc75750b888171))
+
+## [5.7.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.7.0...cli-v5.7.1) (2024-02-29)
+
+
+### Bug Fixes
+
+* Clean env prefixes for cloud syncs ([#16967](https://github.com/cloudquery/cloudquery/issues/16967)) ([df2b58f](https://github.com/cloudquery/cloudquery/commit/df2b58f564a53cb042e0382a8e845c1326127b28))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.31.0 ([#16899](https://github.com/cloudquery/cloudquery/issues/16899)) ([2fac27a](https://github.com/cloudquery/cloudquery/commit/2fac27a2e3e789f6152b643c0af1c97ee95c4745))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.32.0 ([#16957](https://github.com/cloudquery/cloudquery/issues/16957)) ([8ffe2fe](https://github.com/cloudquery/cloudquery/commit/8ffe2fe13a11144cc4f463b01ede1d59c49fcc96))
+* Ensure not adding duplicate CQ columns ([#16968](https://github.com/cloudquery/cloudquery/issues/16968)) ([d2a08c3](https://github.com/cloudquery/cloudquery/commit/d2a08c38cdbbc96cd17c9902aafa701b023fcd57))
+
 ## [5.7.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.6.0...cli-v5.7.0) (2024-02-27)
 
 

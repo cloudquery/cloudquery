@@ -86,7 +86,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_PREFIX }}/cq-${{ needs.prepare.outputs.plugin_type }}-${{ needs.prepare.outputs.plugin_name }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@b3eddbb94c4146a0988a620b01720afe50639271
+        uses: docker/build-push-action@831ca179d3cf91cf0c90ca465a408fa61e2129a2
         env:
           BUILDX_NO_DEFAULT_ATTESTATIONS: 1
         with:

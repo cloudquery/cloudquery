@@ -37,6 +37,32 @@ dockers:
       - "--pull"
       - "--platform=linux/arm64"
       - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
+  -
+    goos: linux
+    goarch: amd64
+    dockerfile: Dockerfile.ubuntu.goreleaser
+    image_templates:
+      - "ghcr.io/cloudquery/cloudquery:latest-ubuntu-amd64"
+      - "ghcr.io/cloudquery/cloudquery:{{.Version}}-ubuntu-amd64"
+      - "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}-ubuntu-amd64"
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--platform=linux/amd64"
+      - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
+  -
+    goos: linux
+    goarch: arm64
+    dockerfile: Dockerfile.ubuntu.goreleaser
+    image_templates:
+      - "ghcr.io/cloudquery/cloudquery:latest-ubuntu-arm64"
+      - "ghcr.io/cloudquery/cloudquery:{{.Version}}-ubuntu-arm64"
+      - "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}-ubuntu-arm64"
+    use: buildx
+    build_flag_templates:
+      - "--pull"
+      - "--platform=linux/arm64"
+      - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
 
 docker_manifests:
 - name_template: "ghcr.io/cloudquery/cloudquery:{{.Version}}"
@@ -53,6 +79,7 @@ docker_manifests:
   image_templates:
   - "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}-linux-amd64"
   - "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}-linux-arm64"
+
 
 brews:
   -
