@@ -3,18 +3,30 @@ package services
 import (
 	"context"
 	"fmt"
+	"math/rand"
+	"strconv"
 
 	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/test/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"golang.org/x/exp/maps"
 )
 
-func testSubTable() *schema.Table {
+func testSubTable(config client.Spec) *schema.Table {
+	extraCols := make([]schema.Column, *config.NumSubCols)
+	for i := 0; i < *config.NumSubCols; i++ {
+		extraCols[i] = schema.Column{
+			Name:        fmt.Sprintf("extra_column_%d", i),
+			Description: fmt.Sprintf("Extra column %d", i),
+			Type:        arrow.PrimitiveTypes.Int64,
+		}
+	}
+
 	return &schema.Table{
 		Name:        "test_sub_table",
 		Description: "Sub table of test_some_table",
 		Resolver:    fetchSubTableData,
-		Columns: []schema.Column{
+		Columns: append([]schema.Column{
 			{
 				Name:        "parent_resource_id",
 				Description: "Parent resource ID",
@@ -35,17 +47,25 @@ func testSubTable() *schema.Table {
 				Type:        arrow.BinaryTypes.String,
 				Resolver:    schema.PathResolver("data_column"),
 			},
-		},
+		}, extraCols...),
 	}
 }
 
 func fetchSubTableData(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
+
+	colMap := make(map[string]any, *cl.Spec.NumSubCols)
+	for i := 0; i < *cl.Spec.NumSubCols; i++ {
+		colMap["extra_column_"+strconv.FormatInt(int64(i), 10)] = rand.Int63()
+	}
+
 	for i := 0; i < *cl.Spec.NumSubRows; i++ {
-		res <- map[string]any{
+		data := map[string]any{
 			"sub_resource_id": i,
 			"data_column":     fmt.Sprintf("sub_data_%d", i%3),
 		}
+		maps.Copy(data, colMap)
+		res <- data
 	}
 	return nil
 }

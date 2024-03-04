@@ -16,6 +16,9 @@ type Spec struct {
 	// Number of rows to generate (per row of parent) in test_sub_table.
 	NumSubRows *int `json:"num_sub_rows" jsonschema:"minimum=0,default=10"`
 
+	// Number of `extra_column_*` columns to generate per row in test_sub_table. The type of the columns is int64.
+	NumSubCols *int `json:"num_sub_cols" jsonschema:"minimum=0,default=1"`
+
 	// Required environment variables. The plugin will fail if these are not set
 	// to the correct values. Specified in `key=value` format. Use `key=` to specify
 	// that the environment variable should be not set or empty.
@@ -36,6 +39,10 @@ func (s *Spec) SetDefaults() {
 	if s.NumSubRows == nil || *s.NumSubRows < 0 {
 		i := 10
 		s.NumSubRows = &i
+	}
+	if s.NumSubCols == nil || *s.NumSubCols < 0 {
+		i := 1
+		s.NumSubCols = &i
 	}
 	if s.RequiredEnv == nil {
 		s.RequiredEnv = []string{}

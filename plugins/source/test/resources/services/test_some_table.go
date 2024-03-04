@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func TestSomeTable() *schema.Table {
+func TestSomeTable(config client.Spec) *schema.Table {
 	return &schema.Table{
 		Name:        "test_some_table",
 		Description: "Test table",
@@ -38,7 +38,7 @@ func TestSomeTable() *schema.Table {
 			},
 		},
 		Relations: schema.Tables{
-			testSubTable(),
+			testSubTable(config),
 		},
 	}
 }
