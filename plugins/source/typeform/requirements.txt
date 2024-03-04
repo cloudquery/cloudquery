@@ -1,5 +1,5 @@
-cloudquery-plugin-sdk==0.1.14
+cloudquery-plugin-sdk==0.1.15
 pyarrow==15.0.0
 requests==2.31.0
-pytest==7.4.4
-pandas==2.2.0
+pytest==8.0.2
+pandas==2.2.1

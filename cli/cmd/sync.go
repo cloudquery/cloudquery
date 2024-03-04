@@ -305,9 +305,12 @@ func filterPluginEnv(environ []string, pluginName, kind string) []string {
 	cleanName := strings.ReplaceAll(pluginName, "-", "_")
 	prefix := strings.ToUpper("__" + kind + "_" + cleanName + "__")
 	for _, v := range environ {
-		if strings.HasPrefix(v, "CLOUDQUERY_API_KEY=") || strings.HasPrefix(v, "_CQ_TEAM_NAME=") {
+		switch {
+		case strings.HasPrefix(v, "CLOUDQUERY_API_KEY="),
+			strings.HasPrefix(v, "_CQ_TEAM_NAME="),
+			strings.HasPrefix(v, "HOME="):
 			env = append(env, v)
-		} else if strings.HasPrefix(v, prefix) {
+		case strings.HasPrefix(v, prefix):
 			env = append(env, strings.TrimPrefix(v, prefix))
 		}
 	}
