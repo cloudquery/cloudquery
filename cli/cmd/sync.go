@@ -309,7 +309,7 @@ func filterPluginEnv(environ []string, pluginName, kind string) []string {
 			strings.HasPrefix(v, "_CQ_TEAM_NAME="),
 			strings.HasPrefix(v, "HOME="):
 			env = append(env, v)
-		default:
+		case strings.HasPrefix(v, prefix):
 			env = append(env, strings.TrimPrefix(v, prefix))
 		}
 	}
