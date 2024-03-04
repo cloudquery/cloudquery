@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildIamAccountAuthDetails(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildIamAccountAuthDetails(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 
 	details := &iam.GetAccountAuthorizationDetailsOutput{}
@@ -19,7 +19,7 @@ func buildIamAccountAuthDetails(t *testing.T, ctrl *gomock.Controller) client.Se
 	details.Marker = nil
 	details.IsTruncated = false
 	m.EXPECT().GetAccountAuthorizationDetails(gomock.Any(), gomock.Any(), gomock.Any()).Return(details, nil)
-	return client.Services{
+	return &client.Services{
 		Iam: m,
 	}
 }

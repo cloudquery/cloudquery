@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildCustomVerificationEmailTemplates(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCustomVerificationEmailTemplates(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	sesClient := mocks.NewMockSesv2Client(ctrl)
 
 	metadata := types.CustomVerificationEmailTemplateMetadata{}
@@ -34,7 +34,7 @@ func buildCustomVerificationEmailTemplates(t *testing.T, ctrl *gomock.Controller
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Sesv2: sesClient,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEntityTypes(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEntityTypes(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	fdClient := mocks.NewMockFrauddetectorClient(ctrl)
 
 	data := types.EntityType{}
@@ -24,7 +24,7 @@ func buildEntityTypes(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	addTagsCall(t, fdClient)
 
-	return client.Services{
+	return &client.Services{
 		Frauddetector: fdClient,
 	}
 }

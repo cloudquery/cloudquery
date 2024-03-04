@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockLightsailClient(ctrl)
 
 	var lb lightsail.GetLoadBalancersOutput
@@ -34,7 +34,7 @@ func buildLoadBalancers(t *testing.T, ctrl *gomock.Controller) client.Services {
 		gomock.Any(),
 	).Return(&lbc, nil)
 
-	return client.Services{Lightsail: mock}
+	return &client.Services{Lightsail: mock}
 }
 
 func TestLoadBalancers(t *testing.T) {

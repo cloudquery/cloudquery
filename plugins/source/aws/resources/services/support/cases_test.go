@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildCases(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCases(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockSupportClient(ctrl)
 	details := []types.CaseDetails{}
 	require.NoError(t, faker.FakeObject(&details))
@@ -23,7 +23,7 @@ func buildCases(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	require.NoError(t, mockCommunications(details[0], m))
 
-	return client.Services{
+	return &client.Services{
 		Support: m,
 	}
 }

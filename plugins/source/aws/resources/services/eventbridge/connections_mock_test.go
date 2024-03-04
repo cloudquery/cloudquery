@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEventbridgeConnectionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEventbridgeConnectionsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEventbridgeClient(ctrl)
 	object := types.Connection{}
 	require.NoError(t, faker.FakeObject(&object))
@@ -25,7 +25,7 @@ func buildEventbridgeConnectionsMock(t *testing.T, ctrl *gomock.Controller) clie
 	tagsOutput := eventbridge.ListTagsForResourceOutput{}
 	require.NoError(t, faker.FakeObject(&tagsOutput))
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
-	return client.Services{
+	return &client.Services{
 		Eventbridge: m,
 	}
 }

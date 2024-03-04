@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildMetricFiltersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildMetricFiltersMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockCloudwatchlogsClient(ctrl)
 	l := types.MetricFilter{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -20,7 +20,7 @@ func buildMetricFiltersMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 		&cloudwatchlogs.DescribeMetricFiltersOutput{
 			MetricFilters: []types.MetricFilter{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Cloudwatchlogs: m,
 	}
 }

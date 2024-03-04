@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildProducts(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildProducts(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mk := mocks.NewMockServicecatalogClient(ctrl)
 
 	o := servicecatalog.SearchProductsAsAdminOutput{}
@@ -31,7 +31,7 @@ func buildProducts(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Servicecatalog: mk,
 	}
 }

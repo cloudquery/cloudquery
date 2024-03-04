@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEventsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEventsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRedshiftClient(ctrl)
 	ev := types.Event{}
 	require.NoError(t, faker.FakeObject(&ev))
@@ -22,7 +22,7 @@ func buildEventsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Events: []types.Event{ev},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Redshift: m,
 	}
 }

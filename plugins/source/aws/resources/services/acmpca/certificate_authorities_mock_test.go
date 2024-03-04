@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildACMPCACertificateAuthorities(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildACMPCACertificateAuthorities(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockAcmpcaClient(ctrl)
 
 	var ca types.CertificateAuthority
@@ -40,7 +40,7 @@ func buildACMPCACertificateAuthorities(t *testing.T, ctrl *gomock.Controller) cl
 		},
 		nil,
 	)
-	return client.Services{Acmpca: mock}
+	return &client.Services{Acmpca: mock}
 }
 
 func TestACMPCACertificateAuthorities(t *testing.T) {

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildConfigRules(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildConfigRules(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockConfigserviceClient(ctrl)
 	l := types.ConfigRule{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -30,7 +30,7 @@ func buildConfigRules(t *testing.T, ctrl *gomock.Controller) client.Services {
 		}, nil)
 	buildRemediationConfigurations(t, m)
 	buildComplianceDetails(t, m)
-	return client.Services{
+	return &client.Services{
 		Configservice: m,
 	}
 }

@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRegexPatternSetsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRegexPatternSetsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockWafv2Client(ctrl)
 
 	for _, scope := range []types.Scope{types.ScopeCloudfront, types.ScopeRegional} {
@@ -53,7 +53,7 @@ func buildRegexPatternSetsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 		)
 	}
 
-	return client.Services{Wafv2: m}
+	return &client.Services{Wafv2: m}
 }
 
 func TestWafV2RegexPatternSets(t *testing.T) {

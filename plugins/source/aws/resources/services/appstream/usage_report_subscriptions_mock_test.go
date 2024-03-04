@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildAppstreamUsageReportSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildAppstreamUsageReportSubscriptionsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockAppstreamClient(ctrl)
 	object := types.UsageReportSubscription{}
 	require.NoError(t, faker.FakeObject(&object))
@@ -26,7 +26,7 @@ func buildAppstreamUsageReportSubscriptionsMock(t *testing.T, ctrl *gomock.Contr
 	require.NoError(t, faker.FakeObject(&tagsOutput))
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any()).Return(&tagsOutput, nil).AnyTimes()
 
-	return client.Services{
+	return &client.Services{
 		Appstream: m,
 	}
 }

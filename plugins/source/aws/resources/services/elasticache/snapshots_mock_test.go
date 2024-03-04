@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildElasticacheSnapshots(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildElasticacheSnapshots(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mockElasticache := mocks.NewMockElasticacheClient(ctrl)
 	output := elasticache.DescribeSnapshotsOutput{}
 	require.NoError(t, faker.FakeObject(&output))
@@ -19,7 +19,7 @@ func buildElasticacheSnapshots(t *testing.T, ctrl *gomock.Controller) client.Ser
 
 	mockElasticache.EXPECT().DescribeSnapshots(gomock.Any(), gomock.Any(), gomock.Any()).Return(&output, nil)
 
-	return client.Services{
+	return &client.Services{
 		Elasticache: mockElasticache,
 	}
 }

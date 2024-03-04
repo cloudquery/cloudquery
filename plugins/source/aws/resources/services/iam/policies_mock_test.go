@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	g := iamTypes.Policy{}
 	require.NoError(t, faker.FakeObject(&g))
@@ -64,7 +64,7 @@ func buildIamPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Iam: m,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRoute53DelegationSetsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRoute53DelegationSetsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRoute53Client(ctrl)
 	ds := route53Types.DelegationSet{}
 	require.NoError(t, faker.FakeObject(&ds))
@@ -21,7 +21,7 @@ func buildRoute53DelegationSetsMock(t *testing.T, ctrl *gomock.Controller) clien
 		&route53.ListReusableDelegationSetsOutput{
 			DelegationSets: []route53Types.DelegationSet{ds},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Route53: m,
 	}
 }

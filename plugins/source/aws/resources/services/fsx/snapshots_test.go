@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildSnapshotsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSnapshotsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockFsxClient(ctrl)
 
 	var s types.Snapshot
@@ -29,7 +29,7 @@ func buildSnapshotsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Fsx: m,
 	}
 }

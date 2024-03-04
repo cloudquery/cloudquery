@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRoute53TrafficPoliciesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRoute53TrafficPoliciesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRoute53Client(ctrl)
 	tps := route53Types.TrafficPolicySummary{}
 	require.NoError(t, faker.FakeObject(&tps))
@@ -31,7 +31,7 @@ func buildRoute53TrafficPoliciesMock(t *testing.T, ctrl *gomock.Controller) clie
 		&route53.ListTrafficPolicyVersionsOutput{
 			TrafficPolicies: []route53Types.TrafficPolicy{tp},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Route53: m,
 	}
 }

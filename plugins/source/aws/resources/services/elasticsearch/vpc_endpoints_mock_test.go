@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildElasticSearchVpcEndpoints(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildElasticSearchVpcEndpoints(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockElasticsearchserviceClient(ctrl)
 
 	var summary types.VpcEndpointSummary
@@ -37,7 +37,7 @@ func buildElasticSearchVpcEndpoints(t *testing.T, ctrl *gomock.Controller) clien
 		nil,
 	)
 
-	return client.Services{Elasticsearchservice: m}
+	return &client.Services{Elasticsearchservice: m}
 }
 
 func TestElasticSearchVpcEndpoints(t *testing.T) {

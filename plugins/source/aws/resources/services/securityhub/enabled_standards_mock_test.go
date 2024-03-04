@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEnabledStandards(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEnabledStandards(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	shMock := mocks.NewMockSecurityhubClient(ctrl)
 	standardsSubscription := types.StandardsSubscription{}
 	require.NoError(t, faker.FakeObject(&standardsSubscription))
@@ -27,7 +27,7 @@ func buildEnabledStandards(t *testing.T, ctrl *gomock.Controller) client.Service
 		nil,
 	)
 
-	return client.Services{Securityhub: shMock}
+	return &client.Services{Securityhub: shMock}
 }
 
 func TestEnabledStandards(t *testing.T) {

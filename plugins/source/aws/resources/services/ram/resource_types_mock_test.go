@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRamResourceTypesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRamResourceTypesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRamClient(ctrl)
 	object := types.ServiceNameAndResourceType{}
 	require.NoError(t, faker.FakeObject(&object))
@@ -20,7 +20,7 @@ func buildRamResourceTypesMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 	m.EXPECT().ListResourceTypes(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ram.ListResourceTypesOutput{ResourceTypes: []types.ServiceNameAndResourceType{object}}, nil)
 
-	return client.Services{Ram: m}
+	return &client.Services{Ram: m}
 }
 
 func TestRamResourceTypes(t *testing.T) {

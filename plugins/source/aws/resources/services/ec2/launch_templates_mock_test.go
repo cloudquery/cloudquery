@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2LaunchTemplates(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2LaunchTemplates(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	lt := types.LaunchTemplate{}
 	ltv := types.LaunchTemplateVersion{}
@@ -30,7 +30,7 @@ func buildEc2LaunchTemplates(t *testing.T, ctrl *gomock.Controller) client.Servi
 			LaunchTemplateVersions: []types.LaunchTemplateVersion{ltv},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

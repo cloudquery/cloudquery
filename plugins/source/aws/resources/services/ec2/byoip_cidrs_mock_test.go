@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2ByoipCidrsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2ByoipCidrsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	l := types.ByoipCidr{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -21,7 +21,7 @@ func buildEc2ByoipCidrsMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 		&ec2.DescribeByoipCidrsOutput{
 			ByoipCidrs: []types.ByoipCidr{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildResourceGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildResourceGroupsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockResourcegroupsClient(ctrl)
 	gId := types.GroupIdentifier{}
 	require.NoError(t, faker.FakeObject(&gId))
@@ -40,7 +40,7 @@ func buildResourceGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 			GroupQuery: &query,
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Resourcegroups: m,
 	}
 }

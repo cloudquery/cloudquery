@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildProtectionGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildProtectionGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockShieldClient(ctrl)
 	pp := shield.ListProtectionGroupsOutput{}
 	require.NoError(t, faker.FakeObject(&pp))
@@ -22,7 +22,7 @@ func buildProtectionGroups(t *testing.T, ctrl *gomock.Controller) client.Service
 	require.NoError(t, faker.FakeObject(&tags))
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)
 
-	return client.Services{
+	return &client.Services{
 		Shield: m,
 	}
 }

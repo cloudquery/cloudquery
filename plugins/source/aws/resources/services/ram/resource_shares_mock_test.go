@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRamResourceSharesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRamResourceSharesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRamClient(ctrl)
 	object := types.ResourceShare{}
 	require.NoError(t, faker.FakeObject(&object))
@@ -38,7 +38,7 @@ func buildRamResourceSharesMock(t *testing.T, ctrl *gomock.Controller) client.Se
 	m.EXPECT().GetPermission(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&ram.GetPermissionOutput{Permission: &types.ResourceSharePermissionDetail{Permission: &detail}}, nil).MinTimes(1)
 
-	return client.Services{Ram: m}
+	return &client.Services{Ram: m}
 }
 
 func TestRamResourceShares(t *testing.T) {

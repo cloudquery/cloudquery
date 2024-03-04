@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildNeptuneDBClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildNeptuneDBClusters(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockNeptuneClient(ctrl)
 	l := types.DBCluster{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -32,12 +32,12 @@ func buildNeptuneDBClusters(t *testing.T, ctrl *gomock.Controller) client.Servic
 		},
 		nil,
 	)
-	return client.Services{
+	return &client.Services{
 		Neptune: m,
 	}
 }
 
-func buildNeptuneDBInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildNeptuneDBInstances(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockNeptuneClient(ctrl)
 	l := types.DBInstance{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -57,12 +57,12 @@ func buildNeptuneDBInstances(t *testing.T, ctrl *gomock.Controller) client.Servi
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Neptune: m,
 	}
 }
 
-func buildNeptuneDBSubnetGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildNeptuneDBSubnetGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockNeptuneClient(ctrl)
 	l := types.DBSubnetGroup{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -82,7 +82,7 @@ func buildNeptuneDBSubnetGroups(t *testing.T, ctrl *gomock.Controller) client.Se
 		},
 		nil,
 	)
-	return client.Services{
+	return &client.Services{
 		Neptune: m,
 	}
 }

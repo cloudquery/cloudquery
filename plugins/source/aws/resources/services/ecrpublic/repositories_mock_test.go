@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEcrPublicRepositoriesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEcrPublicRepositoriesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEcrpublicClient(ctrl)
 	l := types.Repository{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -33,7 +33,7 @@ func buildEcrPublicRepositoriesMock(t *testing.T, ctrl *gomock.Controller) clien
 	require.NoError(t, faker.FakeObject(&tagResponse))
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tagResponse, nil)
 
-	return client.Services{
+	return &client.Services{
 		Ecrpublic: m,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildAccount(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildAccount(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 
 	acc := struct {
@@ -58,7 +58,7 @@ func buildAccount(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetAccountSummary(gomock.Any(), gomock.Any(), gomock.Any()).Return(&iam.GetAccountSummaryOutput{SummaryMap: summaryData}, nil)
 	m.EXPECT().ListAccountAliases(gomock.Any(), gomock.Any(), gomock.Any()).Return(&iam.ListAccountAliasesOutput{AccountAliases: []string{"testAccount"}}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Iam: m,
 	}
 }

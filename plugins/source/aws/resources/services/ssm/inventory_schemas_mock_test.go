@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildInventorySchemas(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildInventorySchemas(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockSsmClient(ctrl)
 
 	var i types.InventoryItemSchema
@@ -27,7 +27,7 @@ func buildInventorySchemas(t *testing.T, ctrl *gomock.Controller) client.Service
 		nil,
 	)
 
-	return client.Services{Ssm: mock}
+	return &client.Services{Ssm: mock}
 }
 
 func TestInventorySchemas(t *testing.T) {

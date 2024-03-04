@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildTrustedAdvisorChecks(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildTrustedAdvisorChecks(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockSupportClient(ctrl)
 	checks := []types.TrustedAdvisorCheckDescription{}
 	require.NoError(t, faker.FakeObject(&checks))
@@ -33,7 +33,7 @@ func buildTrustedAdvisorChecks(t *testing.T, ctrl *gomock.Controller) client.Ser
 		t.Fatal(err)
 	}
 
-	return client.Services{
+	return &client.Services{
 		Support: m,
 	}
 }

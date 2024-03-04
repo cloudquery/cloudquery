@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRDSEventSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRDSEventSubscriptions(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockRdsClient(ctrl)
 	var s types.EventSubscription
 	require.NoError(t, faker.FakeObject(&s))
@@ -33,7 +33,7 @@ func buildRDSEventSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Se
 		},
 		nil,
 	)
-	return client.Services{Rds: mock}
+	return &client.Services{Rds: mock}
 }
 
 func TestRDSEventSubscriptions(t *testing.T) {

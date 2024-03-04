@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildConfigConformancePack(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildConfigConformancePack(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockConfigserviceClient(ctrl)
 
 	var cpd types.ConformancePackDetail
@@ -37,7 +37,7 @@ func buildConfigConformancePack(t *testing.T, ctrl *gomock.Controller) client.Se
 			ConformancePackRuleEvaluationResults: []types.ConformancePackEvaluationResult{cpre},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Configservice: m,
 	}
 }

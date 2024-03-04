@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildKinesisFirehoses(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildKinesisFirehoses(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	f := mocks.NewMockFirehoseClient(ctrl)
 
 	streams := firehose.ListDeliveryStreamsOutput{}
@@ -34,7 +34,7 @@ func buildKinesisFirehoses(t *testing.T, ctrl *gomock.Controller) client.Service
 	tags.HasMoreTags = aws.Bool(false)
 	f.EXPECT().ListTagsForDeliveryStream(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(&tags, nil)
 
-	return client.Services{
+	return &client.Services{
 		Firehose: f,
 	}
 }

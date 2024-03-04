@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockS3Client(ctrl)
 	b := s3Types.Bucket{}
 	require.NoError(t, faker.FakeObject(&b))
@@ -80,7 +80,7 @@ func buildS3Buckets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().GetBucketNotificationConfiguration(gomock.Any(), gomock.Any(), gomock.Any()).Return(&gbnco, nil)
 	m.EXPECT().GetObjectLockConfiguration(gomock.Any(), gomock.Any(), gomock.Any()).Return(&golco, nil)
 
-	return client.Services{S3: m}
+	return &client.Services{S3: m}
 }
 
 func TestS3Buckets(t *testing.T) {

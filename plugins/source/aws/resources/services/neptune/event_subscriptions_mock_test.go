@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildNeptuneEventSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildNeptuneEventSubscriptions(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockNeptuneClient(ctrl)
 	var s types.EventSubscription
 	require.NoError(t, faker.FakeObject(&s))
@@ -35,7 +35,7 @@ func buildNeptuneEventSubscriptions(t *testing.T, ctrl *gomock.Controller) clien
 		},
 		nil,
 	)
-	return client.Services{Neptune: mock}
+	return &client.Services{Neptune: mock}
 }
 
 func TestNeptuneEventSubscriptions(t *testing.T) {

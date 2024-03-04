@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDirectconnectLag(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDirectconnectLag(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockDirectconnectClient(ctrl)
 	lag := types.Lag{}
 	require.NoError(t, faker.FakeObject(&lag))
@@ -20,7 +20,7 @@ func buildDirectconnectLag(t *testing.T, ctrl *gomock.Controller) client.Service
 		&directconnect.DescribeLagsOutput{
 			Lags: []types.Lag{lag},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Directconnect: m,
 	}
 }

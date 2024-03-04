@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildWebhooks(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildWebhooks(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockCodepipelineClient(ctrl)
 
 	var webhook types.ListWebhookItem
@@ -27,7 +27,7 @@ func buildWebhooks(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Codepipeline: mock}
+	return &client.Services{Codepipeline: mock}
 }
 
 func TestCodePipelineWebhooks(t *testing.T) {

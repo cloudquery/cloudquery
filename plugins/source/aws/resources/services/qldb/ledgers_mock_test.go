@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildLedgersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildLedgersMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockQldbClient(ctrl)
 
 	ledger := types.LedgerSummary{}
@@ -57,7 +57,7 @@ func buildLedgersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Streams: []types.JournalKinesisStreamDescription{ke},
 		}, nil)
 
-	return client.Services{Qldb: m}
+	return &client.Services{Qldb: m}
 }
 
 func TestQldbLedgers(t *testing.T) {

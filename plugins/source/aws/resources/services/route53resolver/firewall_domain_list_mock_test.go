@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildFirewallDomainListMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildFirewallDomainListMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRoute53resolverClient(ctrl)
 	fdlm := types.FirewallDomainListMetadata{}
 	require.NoError(t, faker.FakeObject(&fdlm))
@@ -30,7 +30,7 @@ func buildFirewallDomainListMock(t *testing.T, ctrl *gomock.Controller) client.S
 			FirewallDomainList: &fdl,
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Route53resolver: m,
 	}
 }

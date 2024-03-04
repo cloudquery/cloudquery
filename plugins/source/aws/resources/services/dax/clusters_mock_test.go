@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDAXClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDAXClustersMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockDaxClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Dax: m,
 	}
 	c := types.Cluster{}

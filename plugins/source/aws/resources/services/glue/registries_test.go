@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRegistriesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRegistriesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockGlueClient(ctrl)
 
 	var r types.RegistryListItem
@@ -91,7 +91,7 @@ func buildRegistriesMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 		gomock.Any(),
 	).Return(&sm, nil)
 
-	return client.Services{
+	return &client.Services{
 		Glue: m,
 	}
 }

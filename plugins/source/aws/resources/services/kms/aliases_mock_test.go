@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildKmsAliases(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildKmsAliases(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockKmsClient(ctrl)
 
 	aliases := kms.ListAliasesOutput{}
@@ -20,7 +20,7 @@ func buildKmsAliases(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().ListAliases(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&aliases, nil)
 
-	return client.Services{
+	return &client.Services{
 		Kms: m,
 	}
 }

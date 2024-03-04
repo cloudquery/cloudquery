@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildTriggersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildTriggersMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockGlueClient(ctrl)
 
 	var name string
@@ -48,7 +48,7 @@ func buildTriggersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Glue: m,
 	}
 }

@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildWorkGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildWorkGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockAthenaClient(ctrl)
 
 	workGroupsOutput := athena.ListWorkGroupsOutput{}
@@ -63,7 +63,7 @@ func buildWorkGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	m.EXPECT().GetQueryExecution(gomock.Any(), gomock.Any(), gomock.Any()).Return(&queryExecution, nil)
 
-	return client.Services{
+	return &client.Services{
 		Athena: m,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildStateMachines(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildStateMachines(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockSfnClient(ctrl)
 	im := types.StateMachineListItem{}
 	require.NoError(t, faker.FakeObject(&im))
@@ -59,7 +59,7 @@ func buildStateMachines(t *testing.T, ctrl *gomock.Controller) client.Services {
 	require.NoError(t, faker.FakeObject(&mapRunOut))
 
 	m.EXPECT().DescribeMapRun(gomock.Any(), gomock.Any(), gomock.Any()).Return(&mapRunOut, nil)
-	return client.Services{
+	return &client.Services{
 		Sfn: m,
 	}
 }

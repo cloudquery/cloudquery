@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildIdentities(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildIdentities(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	sesClient := mocks.NewMockSesv2Client(ctrl)
 
 	ei := types.IdentityInfo{}
@@ -32,7 +32,7 @@ func buildIdentities(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Sesv2: sesClient,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildWAFWebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildWAFWebACLMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockWafClient(ctrl)
 	tempWebACLSum := types.WebACLSummary{}
 	require.NoError(t, faker.FakeObject(&tempWebACLSum))
@@ -39,7 +39,7 @@ func buildWAFWebACLMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		LoggingConfiguration: &loggingConfiguration,
 	}, nil)
 
-	return client.Services{Waf: m}
+	return &client.Services{Waf: m}
 }
 
 func TestWafWebACL(t *testing.T) {

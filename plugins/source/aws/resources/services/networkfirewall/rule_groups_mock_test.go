@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockNetworkfirewallClient(ctrl)
 	rgm := types.RuleGroupMetadata{}
 	require.NoError(t, faker.FakeObject(&rgm))
@@ -27,7 +27,7 @@ func buildRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 
 	m.EXPECT().DescribeRuleGroup(gomock.Any(), gomock.Any(), gomock.Any()).Return(&rg, nil)
 
-	return client.Services{
+	return &client.Services{
 		Networkfirewall: m,
 	}
 }

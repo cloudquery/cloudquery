@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDynamodbstreamsStreamsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDynamodbstreamsStreamsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockDynamodbstreamsClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Dynamodbstreams: m,
 	}
 	stream := types.Stream{}

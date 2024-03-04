@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildIamServerCerts(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildIamServerCerts(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	u := iamTypes.ServerCertificateMetadata{}
 	require.NoError(t, faker.FakeObject(&u))
@@ -22,7 +22,7 @@ func buildIamServerCerts(t *testing.T, ctrl *gomock.Controller) client.Services 
 			ServerCertificateMetadataList: []iamTypes.ServerCertificateMetadata{u},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Iam: m,
 	}
 }

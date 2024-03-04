@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildFindings(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildFindings(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	shMock := mocks.NewMockSecurityhubClient(ctrl)
 	findings := types.AwsSecurityFinding{}
 	require.NoError(t, faker.FakeObject(&findings))
@@ -37,7 +37,7 @@ func buildFindings(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Securityhub: shMock}
+	return &client.Services{Securityhub: shMock}
 }
 
 func TestFindings(t *testing.T) {

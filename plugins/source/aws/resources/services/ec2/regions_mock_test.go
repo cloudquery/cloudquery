@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRegionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRegionsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	r := types.Region{}
 	require.NoError(t, faker.FakeObject(&r))
@@ -25,7 +25,7 @@ func buildRegionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Regions: []types.Region{r},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

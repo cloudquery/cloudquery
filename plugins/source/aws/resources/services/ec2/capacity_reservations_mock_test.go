@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2CapacityReservations(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2CapacityReservations(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	l := types.CapacityReservation{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -21,7 +21,7 @@ func buildEc2CapacityReservations(t *testing.T, ctrl *gomock.Controller) client.
 		&ec2.DescribeCapacityReservationsOutput{
 			CapacityReservations: []types.CapacityReservation{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

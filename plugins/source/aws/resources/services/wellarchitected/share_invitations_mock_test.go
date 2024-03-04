@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildShareInvitationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildShareInvitationsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockWellarchitectedClient(ctrl)
 	for _, shareResourceType := range types.ShareResourceType("").Values() {
 		var summary types.ShareInvitationSummary
@@ -32,7 +32,7 @@ func buildShareInvitationsMock(t *testing.T, ctrl *gomock.Controller) client.Ser
 				nil,
 			)
 	}
-	return client.Services{Wellarchitected: m}
+	return &client.Services{Wellarchitected: m}
 }
 
 func TestShareInvitations(t *testing.T) {

@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildAutoscalingLaunchConfigurationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildAutoscalingLaunchConfigurationsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockAutoscalingClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Autoscaling: m,
 	}
 	l := types.LaunchConfiguration{}

@@ -28,7 +28,7 @@ type customKinesisClient struct {
 	StreamStatus            types.StreamStatus
 }
 
-func buildKinesisStreams(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildKinesisStreams(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	k := mocks.NewMockKinesisClient(ctrl)
 
 	streams := kinesis.ListStreamsOutput{}
@@ -62,7 +62,7 @@ func buildKinesisStreams(t *testing.T, ctrl *gomock.Controller) client.Services 
 	tags.HasMoreTags = aws.Bool(false)
 	k.EXPECT().ListTagsForStream(gomock.Any(), gomock.Any(), gomock.Any()).MinTimes(1).Return(&tags, nil)
 
-	return client.Services{
+	return &client.Services{
 		Kinesis: k,
 	}
 }

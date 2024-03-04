@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildSSMInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSSMInstances(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockSsmClient(ctrl)
 
 	var i types.InstanceInformation
@@ -51,7 +51,7 @@ func buildSSMInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Ssm: mock}
+	return &client.Services{Ssm: mock}
 }
 
 func TestSSMInstances(t *testing.T) {

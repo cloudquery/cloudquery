@@ -10,7 +10,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildSQSQueues(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSQSQueues(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	sqsMock := mocks.NewMockSqsClient(ctrl)
 
 	var queueURL = "https://url1"
@@ -66,7 +66,7 @@ func buildSQSQueues(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&sqs.ListQueueTagsOutput{Tags: map[string]string{"tag": "value"}},
 		nil,
 	)
-	return client.Services{Sqs: sqsMock}
+	return &client.Services{Sqs: sqsMock}
 }
 
 func TestQueues(t *testing.T) {

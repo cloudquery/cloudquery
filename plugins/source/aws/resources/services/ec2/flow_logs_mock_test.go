@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2FlowLogsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2FlowLogsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 
 	g := types.FlowLog{}
@@ -22,7 +22,7 @@ func buildEc2FlowLogsMock(t *testing.T, ctrl *gomock.Controller) client.Services
 		&ec2.DescribeFlowLogsOutput{
 			FlowLogs: []types.FlowLog{g},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

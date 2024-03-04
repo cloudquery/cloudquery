@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildNetworksMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildNetworksMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockNetworkmanagerClient(ctrl)
 
 	network := types.GlobalNetwork{}
@@ -45,7 +45,7 @@ func buildNetworksMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	}, gomock.Any()).Return(
 		&networkmanager.GetTransitGatewayRegistrationsOutput{TransitGatewayRegistrations: []types.TransitGatewayRegistration{registration}}, nil)
 
-	return client.Services{Networkmanager: m}
+	return &client.Services{Networkmanager: m}
 }
 
 func TestGlobalNetworks(t *testing.T) {

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildReleaseLabels(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildReleaseLabels(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockEmrClient(ctrl)
 
 	releaseLabels := []string{"emr-6.0.0", "emr-5.0.0"}
@@ -45,7 +45,7 @@ func buildReleaseLabels(t *testing.T, ctrl *gomock.Controller) client.Services {
 		)
 	}
 
-	return client.Services{Emr: mock}
+	return &client.Services{Emr: mock}
 }
 
 func TestReleaseLabels(t *testing.T) {

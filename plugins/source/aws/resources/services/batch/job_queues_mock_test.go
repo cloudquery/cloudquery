@@ -12,12 +12,12 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildBatchJobQueuesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildBatchJobQueuesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockBatchClient(ctrl)
 
 	buildBatchJobsMock(t, m)
 
-	services := client.Services{
+	services := &client.Services{
 		Batch: m,
 	}
 	a := types.JobQueueDetail{}

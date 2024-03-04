@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildMlTransformsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildMlTransformsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockGlueClient(ctrl)
 
 	var transforms glue.GetMLTransformsOutput
@@ -41,7 +41,7 @@ func buildMlTransformsMock(t *testing.T, ctrl *gomock.Controller) client.Service
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Glue: m,
 	}
 }

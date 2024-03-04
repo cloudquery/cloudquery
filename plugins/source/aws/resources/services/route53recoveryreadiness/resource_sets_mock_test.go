@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildResourceSets(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildResourceSets(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRoute53recoveryreadinessClient(ctrl)
 	rs := types.ResourceSetOutput{}
 	require.NoError(t, faker.FakeObject(&rs))
@@ -22,7 +22,7 @@ func buildResourceSets(t *testing.T, ctrl *gomock.Controller) client.Services {
 			ResourceSets: []types.ResourceSetOutput{rs},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Route53recoveryreadiness: m,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRepositories(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRepositories(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockCodeartifactClient(ctrl)
 
 	repoSummary := types.RepositorySummary{}
@@ -58,7 +58,7 @@ func buildRepositories(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Codeartifact: m}
+	return &client.Services{Codeartifact: m}
 }
 
 func TestRepositories(t *testing.T) {

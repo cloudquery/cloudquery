@@ -11,9 +11,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEventCategoriesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEventCategoriesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockDocdbClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Docdb: m,
 	}
 	var ec docdb.DescribeEventCategoriesOutput

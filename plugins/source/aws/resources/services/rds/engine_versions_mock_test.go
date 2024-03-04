@@ -13,9 +13,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEngineVersionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEngineVersionsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRdsClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Rds: m,
 	}
 	var ev rds.DescribeDBEngineVersionsOutput

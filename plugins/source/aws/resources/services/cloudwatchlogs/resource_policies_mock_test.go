@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildResourcePolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildResourcePolicies(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockCloudwatchlogsClient(ctrl)
 	rp := types.ResourcePolicy{}
 	require.NoError(t, faker.FakeObject(&rp))
@@ -22,7 +22,7 @@ func buildResourcePolicies(t *testing.T, ctrl *gomock.Controller) client.Service
 		&cloudwatchlogs.DescribeResourcePoliciesOutput{
 			ResourcePolicies: []types.ResourcePolicy{rp},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Cloudwatchlogs: m,
 	}
 }

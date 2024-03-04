@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRecoveryGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRecoveryGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRoute53recoveryreadinessClient(ctrl)
 	rco := types.RecoveryGroupOutput{}
 	require.NoError(t, faker.FakeObject(&rco))
@@ -22,7 +22,7 @@ func buildRecoveryGroups(t *testing.T, ctrl *gomock.Controller) client.Services 
 			RecoveryGroups: []types.RecoveryGroupOutput{rco},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Route53recoveryreadiness: m,
 	}
 }

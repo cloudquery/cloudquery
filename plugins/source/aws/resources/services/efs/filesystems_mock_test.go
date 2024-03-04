@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEfsFilesystemsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEfsFilesystemsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEfsClient(ctrl)
 	l := types.FileSystemDescription{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -33,7 +33,7 @@ func buildEfsFilesystemsMock(t *testing.T, ctrl *gomock.Controller) client.Servi
 	m.EXPECT().DescribeFileSystemPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&p, nil)
 
-	return client.Services{
+	return &client.Services{
 		Efs: m,
 	}
 }

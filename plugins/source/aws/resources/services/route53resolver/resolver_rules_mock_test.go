@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildResolverRulesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildResolverRulesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRoute53resolverClient(ctrl)
 	rr := types.ResolverRule{}
 	require.NoError(t, faker.FakeObject(&rr))
@@ -22,7 +22,7 @@ func buildResolverRulesMock(t *testing.T, ctrl *gomock.Controller) client.Servic
 			ResolverRules: []types.ResolverRule{rr},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Route53resolver: m,
 	}
 }

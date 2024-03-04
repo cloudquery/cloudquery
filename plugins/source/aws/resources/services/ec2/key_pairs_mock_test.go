@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2KeyPairs(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2KeyPairs(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	l := types.KeyPairInfo{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -21,7 +21,7 @@ func buildEc2KeyPairs(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&ec2.DescribeKeyPairsOutput{
 			KeyPairs: []types.KeyPairInfo{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

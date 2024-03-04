@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildOrganizations(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildOrganizations(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockOrganizationsClient(ctrl)
 
 	o := organizations.DescribeOrganizationOutput{}
@@ -19,7 +19,7 @@ func buildOrganizations(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	m.EXPECT().DescribeOrganization(gomock.Any(), gomock.Any(), gomock.Any()).Return(&o, nil)
 
-	return client.Services{
+	return &client.Services{
 		Organizations: m,
 	}
 }

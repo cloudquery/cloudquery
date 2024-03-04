@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDistributions(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDistributions(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockLightsailClient(ctrl)
 
 	var d lightsail.GetDistributionsOutput
@@ -33,7 +33,7 @@ func buildDistributions(t *testing.T, ctrl *gomock.Controller) client.Services {
 		gomock.Any(),
 	).Return(&r, nil)
 
-	return client.Services{Lightsail: mock}
+	return &client.Services{Lightsail: mock}
 }
 
 func TestLightsailDistributions(t *testing.T) {

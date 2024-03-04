@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildOrganizationsRoots(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildOrganizationsRoots(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockOrganizationsClient(ctrl)
 	g := types.Root{}
 	require.NoError(t, faker.FakeObject(&g))
@@ -29,7 +29,7 @@ func buildOrganizationsRoots(t *testing.T, ctrl *gomock.Controller) client.Servi
 		&organizations.ListTagsForResourceOutput{
 			Tags: tt,
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Organizations: m,
 	}
 }

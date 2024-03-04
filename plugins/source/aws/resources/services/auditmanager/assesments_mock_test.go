@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildAssessments(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildAssessments(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockAuditmanagerClient(ctrl)
 	ami := types.AssessmentMetadataItem{}
 	require.NoError(t, faker.FakeObject(&ami))
@@ -29,7 +29,7 @@ func buildAssessments(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&auditmanager.GetAssessmentOutput{
 			Assessment: &assessment,
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Auditmanager: m,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRemediationConfigurations(t *testing.T, m *mocks.MockConfigserviceClient) client.Services {
+func buildRemediationConfigurations(t *testing.T, m *mocks.MockConfigserviceClient) *client.Services {
 	l := types.RemediationConfiguration{}
 	require.NoError(t, faker.FakeObject(&l))
 
@@ -20,7 +20,7 @@ func buildRemediationConfigurations(t *testing.T, m *mocks.MockConfigserviceClie
 		&configservice.DescribeRemediationConfigurationsOutput{
 			RemediationConfigurations: []types.RemediationConfiguration{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Configservice: m,
 	}
 }

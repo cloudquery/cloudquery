@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildServices(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildServices(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockServicediscoveryClient(ctrl)
 
 	var ss types.ServiceSummary
@@ -74,7 +74,7 @@ func buildServices(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Servicediscovery: m,
 	}
 }

@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildLensesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildLensesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockWellarchitectedClient(ctrl)
 	for _, lensType := range types.LensType("").Values() {
 		var summary types.LensSummary
@@ -43,7 +43,7 @@ func buildLensesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		m.EXPECT().GetLens(gomock.Any(), getInput, gomock.Any()).
 			Return(&wellarchitected.GetLensOutput{Lens: &lens}, nil)
 	}
-	return client.Services{Wellarchitected: m}
+	return &client.Services{Wellarchitected: m}
 }
 
 func TestLenses(t *testing.T) {

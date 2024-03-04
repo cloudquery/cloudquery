@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2VpnGateways(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2VpnGateways(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	l := types.VpnGateway{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -20,7 +20,7 @@ func buildEc2VpnGateways(t *testing.T, ctrl *gomock.Controller) client.Services 
 		&ec2.DescribeVpnGatewaysOutput{
 			VpnGateways: []types.VpnGateway{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

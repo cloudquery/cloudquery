@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2InstanceTypes(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2InstanceTypes(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	info := types.InstanceTypeInfo{}
 	require.NoError(t, faker.FakeObject(&info))
@@ -24,7 +24,7 @@ func buildEc2InstanceTypes(t *testing.T, ctrl *gomock.Controller) client.Service
 			NextToken:      nil,
 			ResultMetadata: middleware.Metadata{},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

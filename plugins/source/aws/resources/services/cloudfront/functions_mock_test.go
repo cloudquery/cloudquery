@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildCloudfronFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCloudfronFunctionsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockCloudfrontClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Cloudfront: m,
 	}
 	fs := cloudfrontTypes.FunctionSummary{}

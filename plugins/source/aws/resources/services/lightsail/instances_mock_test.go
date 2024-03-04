@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildInstances(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockLightsailClient(ctrl)
 
 	var instances []types.Instance
@@ -47,7 +47,7 @@ func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 		gomock.Any(),
 	).Return(&a, nil)
 
-	return client.Services{Lightsail: mock}
+	return &client.Services{Lightsail: mock}
 }
 
 func TestLightsailInstances(t *testing.T) {

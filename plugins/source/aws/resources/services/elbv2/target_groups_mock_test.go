@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildTargetGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildTargetGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockElasticloadbalancingv2Client(ctrl)
 	l := elbv2Types.TargetGroup{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -29,7 +29,7 @@ func buildTargetGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 	th := elasticloadbalancingv2.DescribeTargetHealthOutput{}
 	require.NoError(t, faker.FakeObject(&th))
 	m.EXPECT().DescribeTargetHealth(gomock.Any(), gomock.Any(), gomock.Any()).Return(&th, nil)
-	return client.Services{
+	return &client.Services{
 		Elasticloadbalancingv2: m,
 	}
 }

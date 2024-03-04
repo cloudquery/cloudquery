@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildElasticacheReservedCacheNodes(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildElasticacheReservedCacheNodes(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mockElasticache := mocks.NewMockElasticacheClient(ctrl)
 	output := elasticache.DescribeReservedCacheNodesOutput{}
 	require.NoError(t, faker.FakeObject(&output))
@@ -19,7 +19,7 @@ func buildElasticacheReservedCacheNodes(t *testing.T, ctrl *gomock.Controller) c
 
 	mockElasticache.EXPECT().DescribeReservedCacheNodes(gomock.Any(), gomock.Any(), gomock.Any()).Return(&output, nil)
 
-	return client.Services{
+	return &client.Services{
 		Elasticache: mockElasticache,
 	}
 }

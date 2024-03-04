@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDatabasesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDatabasesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockGlueClient(ctrl)
 
 	db := glue.GetDatabasesOutput{}
@@ -33,7 +33,7 @@ func buildDatabasesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	require.NoError(t, faker.FakeObject(&tags))
 	m.EXPECT().GetTags(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)
 
-	return client.Services{
+	return &client.Services{
 		Glue: m,
 	}
 }

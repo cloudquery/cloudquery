@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDirectconnectGatewaysMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDirectconnectGatewaysMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockDirectconnectClient(ctrl)
 	l := types.DirectConnectGateway{}
 	association := types.DirectConnectGatewayAssociation{}
@@ -32,7 +32,7 @@ func buildDirectconnectGatewaysMock(t *testing.T, ctrl *gomock.Controller) clien
 		&directconnect.DescribeDirectConnectGatewayAttachmentsOutput{
 			DirectConnectGatewayAttachments: []types.DirectConnectGatewayAttachment{attachment},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Directconnect: m,
 	}
 }

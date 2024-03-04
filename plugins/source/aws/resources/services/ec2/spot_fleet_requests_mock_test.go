@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildSpotFleetRequests(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSpotFleetRequests(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	item := types.SpotFleetRequestConfig{}
 	require.NoError(t, faker.FakeObject(&item))
@@ -29,7 +29,7 @@ func buildSpotFleetRequests(t *testing.T, ctrl *gomock.Controller) client.Servic
 		&ec2.DescribeSpotFleetInstancesOutput{
 			ActiveInstances: []types.ActiveInstance{ins},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

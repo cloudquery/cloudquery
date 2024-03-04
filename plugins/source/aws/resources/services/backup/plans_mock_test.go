@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildBackupPlansMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildBackupPlansMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockBackupClient(ctrl)
 
 	var plan backup.GetBackupPlanOutput
@@ -80,7 +80,7 @@ func buildBackupPlansMock(t *testing.T, ctrl *gomock.Controller) client.Services
 		gomock.Any(),
 	).Return(&selection, nil)
 
-	return client.Services{
+	return &client.Services{
 		Backup: m,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildFlows(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildFlows(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockAppflowClient(ctrl)
 
 	var fd types.FlowDefinition
@@ -41,7 +41,7 @@ func buildFlows(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Appflow: mock}
+	return &client.Services{Appflow: mock}
 }
 
 func TestFlows(t *testing.T) {

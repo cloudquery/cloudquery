@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildCloutrailImports(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCloutrailImports(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockCloudtrailClient(ctrl)
 
 	var desc types.ImportsListItem
@@ -41,7 +41,7 @@ func buildCloutrailImports(t *testing.T, ctrl *gomock.Controller) client.Service
 		nil,
 	)
 
-	return client.Services{Cloudtrail: m}
+	return &client.Services{Cloudtrail: m}
 }
 
 func TestImports(t *testing.T) {

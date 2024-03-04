@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEcsTaskDefinitions(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEcsTaskDefinitions(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEcsClient(ctrl)
 
 	listTaskDefinitionsOutput := ecs.ListTaskDefinitionsOutput{}
@@ -23,7 +23,7 @@ func buildEcsTaskDefinitions(t *testing.T, ctrl *gomock.Controller) client.Servi
 	require.NoError(t, faker.FakeObject(&taskDefinition))
 	m.EXPECT().DescribeTaskDefinition(gomock.Any(), gomock.Any(), gomock.Any()).Return(taskDefinition, nil)
 
-	return client.Services{
+	return &client.Services{
 		Ecs: m,
 	}
 }

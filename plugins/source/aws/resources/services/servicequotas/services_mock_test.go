@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildServices(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildServices(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockServicequotasClient(ctrl)
 
 	services := servicequotas.ListServicesOutput{}
@@ -25,7 +25,7 @@ func buildServices(t *testing.T, ctrl *gomock.Controller) client.Services {
 	quotas.NextToken = nil
 	m.EXPECT().ListServiceQuotas(gomock.Any(), gomock.Any(), gomock.Any()).Return(&quotas, nil).AnyTimes()
 
-	return client.Services{
+	return &client.Services{
 		Servicequotas: m,
 	}
 }

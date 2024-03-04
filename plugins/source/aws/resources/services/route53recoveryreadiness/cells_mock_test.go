@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildCells(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCells(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRoute53recoveryreadinessClient(ctrl)
 	co := types.CellOutput{}
 	require.NoError(t, faker.FakeObject(&co))
@@ -22,7 +22,7 @@ func buildCells(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Cells: []types.CellOutput{co},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Route53recoveryreadiness: m,
 	}
 }

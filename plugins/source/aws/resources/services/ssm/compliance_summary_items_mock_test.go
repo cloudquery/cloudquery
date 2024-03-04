@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildComplianceSummaryItems(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildComplianceSummaryItems(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockSsmClient(ctrl)
 
 	var i types.ComplianceSummaryItem
@@ -27,7 +27,7 @@ func buildComplianceSummaryItems(t *testing.T, ctrl *gomock.Controller) client.S
 		nil,
 	)
 
-	return client.Services{Ssm: mock}
+	return &client.Services{Ssm: mock}
 }
 
 func TestComplianceSummaryItems(t *testing.T) {

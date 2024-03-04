@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildLambdaFunctionRecommendations(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildLambdaFunctionRecommendations(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockComputeoptimizerClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Computeoptimizer: m,
 	}
 	item := types.LambdaFunctionRecommendation{}

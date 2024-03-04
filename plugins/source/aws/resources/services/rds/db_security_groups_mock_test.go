@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRdsDbSecurityGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRdsDbSecurityGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockRdsClient(ctrl)
 	var g types.DBSecurityGroup
 	require.NoError(t, faker.FakeObject(&g))
@@ -38,7 +38,7 @@ func buildRdsDbSecurityGroups(t *testing.T, ctrl *gomock.Controller) client.Serv
 		nil,
 	)
 
-	return client.Services{Rds: mock}
+	return &client.Services{Rds: mock}
 }
 
 func TestRDSDBSecurityGroups(t *testing.T) {

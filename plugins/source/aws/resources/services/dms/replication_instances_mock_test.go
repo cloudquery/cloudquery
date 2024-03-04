@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDmsReplicationInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDmsReplicationInstances(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockDatabasemigrationserviceClient(ctrl)
 	l := types.ReplicationInstance{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -34,7 +34,7 @@ func buildDmsReplicationInstances(t *testing.T, ctrl *gomock.Controller) client.
 		&databasemigrationservice.ListTagsForResourceOutput{
 			TagList: []types.Tag{lt},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Databasemigrationservice: m,
 	}
 }

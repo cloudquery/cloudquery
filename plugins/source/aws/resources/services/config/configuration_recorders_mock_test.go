@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildConfigConfigurationRecorders(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildConfigConfigurationRecorders(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockConfigserviceClient(ctrl)
 	l := types.ConfigurationRecorder{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -29,7 +29,7 @@ func buildConfigConfigurationRecorders(t *testing.T, ctrl *gomock.Controller) cl
 		&configservice.DescribeConfigurationRecordersOutput{
 			ConfigurationRecorders: []types.ConfigurationRecorder{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Configservice: m,
 	}
 }

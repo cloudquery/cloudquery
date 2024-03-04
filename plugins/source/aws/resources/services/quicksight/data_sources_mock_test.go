@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDataSourcesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDataSourcesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockQuicksightClient(ctrl)
 
 	var ld quicksight.ListDataSourcesOutput
@@ -25,7 +25,7 @@ func buildDataSourcesMock(t *testing.T, ctrl *gomock.Controller) client.Services
 
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(&to, nil)
 
-	return client.Services{
+	return &client.Services{
 		Quicksight: m,
 	}
 }

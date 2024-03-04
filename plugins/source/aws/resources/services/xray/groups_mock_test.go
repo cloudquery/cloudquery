@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockXrayClient(ctrl)
 
 	test := "test"
@@ -49,7 +49,7 @@ func buildGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Xray: mock}
+	return &client.Services{Xray: mock}
 }
 
 func TestXrayGroups(t *testing.T) {

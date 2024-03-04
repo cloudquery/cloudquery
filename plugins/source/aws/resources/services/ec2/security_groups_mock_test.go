@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2SecurityGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2SecurityGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	l := types.SecurityGroup{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -21,7 +21,7 @@ func buildEc2SecurityGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 		&ec2.DescribeSecurityGroupsOutput{
 			SecurityGroups: []types.SecurityGroup{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

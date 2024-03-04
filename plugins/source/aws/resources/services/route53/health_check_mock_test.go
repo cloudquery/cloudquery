@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRoute53HealthChecksMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRoute53HealthChecksMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRoute53Client(ctrl)
 	hc := route53Types.HealthCheck{}
 	require.NoError(t, faker.FakeObject(&hc))
@@ -33,7 +33,7 @@ func buildRoute53HealthChecksMock(t *testing.T, ctrl *gomock.Controller) client.
 				},
 			},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Route53: m,
 	}
 }

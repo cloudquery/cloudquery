@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockWafregionalClient(ctrl)
 
 	tempRuleGroup := types.RuleGroup{}
@@ -69,7 +69,7 @@ func buildRuleGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 		nil,
 	)
 
-	return client.Services{Wafregional: m}
+	return &client.Services{Wafregional: m}
 }
 
 func TestRuleGroups(t *testing.T) {

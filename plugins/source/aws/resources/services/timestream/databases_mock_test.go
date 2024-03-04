@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildTimestreamDatabasesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildTimestreamDatabasesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockTimestreamwriteClient(ctrl)
 	database := types.Database{}
 	require.NoError(t, faker.FakeObject(&database))
@@ -32,7 +32,7 @@ func buildTimestreamDatabasesMock(t *testing.T, ctrl *gomock.Controller) client.
 	m.EXPECT().ListTagsForResource(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&timestreamwrite.ListTagsForResourceOutput{Tags: tags}, nil)
 
-	return client.Services{Timestreamwrite: m}
+	return &client.Services{Timestreamwrite: m}
 }
 
 func TestTimestreamDatabases(t *testing.T) {

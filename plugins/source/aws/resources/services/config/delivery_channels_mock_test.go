@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildConfigDeliveryChannels(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildConfigDeliveryChannels(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockConfigserviceClient(ctrl)
 
 	var dc types.DeliveryChannel
@@ -30,7 +30,7 @@ func buildConfigDeliveryChannels(t *testing.T, ctrl *gomock.Controller) client.S
 			DeliveryChannelsStatus: []types.DeliveryChannelStatus{dcs},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Configservice: m,
 	}
 }

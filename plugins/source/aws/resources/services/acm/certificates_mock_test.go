@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockAcmClient(ctrl)
 
 	var cs types.CertificateSummary
@@ -60,7 +60,7 @@ func buildACMCertificates(t *testing.T, ctrl *gomock.Controller) client.Services
 		},
 		nil,
 	)
-	return client.Services{Acm: mock}
+	return &client.Services{Acm: mock}
 }
 
 func TestACMCertificates(t *testing.T) {

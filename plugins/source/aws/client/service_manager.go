@@ -2,31 +2,29 @@ package client
 
 import "github.com/thoas/go-funk"
 
-type ServicesPartitionAccountMap map[string]map[string]*Services
-
 // ServicesManager will hold the entire map of (account X region) services
-type ServicesManager struct {
-	services ServicesPartitionAccountMap
+type ServicesManager map[string]map[string]*Services
+
+func (s ServicesManager) ServicesByPartitionAccount(partition, accountId string) *Services {
+	return s[partition][accountId]
 }
 
-func (s *ServicesManager) ServicesByPartitionAccount(partition, accountId string) *Services {
-	return s.services[partition][accountId]
-}
-
-func (s *ServicesManager) InitServices(details svcsDetail) {
+func (s ServicesManager) InitServices(details svcsDetail) {
 	s.InitServicesForPartitionAccount(details.partition, details.accountId, details.svcs)
 }
 
-func (s *ServicesManager) InitServicesForPartitionAccount(partition, accountId string, svcs Services) {
-	if s.services == nil {
-		s.services = make(map[string]map[string]*Services)
-	}
-	if s.services[partition] == nil {
-		s.services[partition] = make(map[string]*Services)
-	}
-	if s.services[partition][accountId] == nil {
-		s.services[partition][accountId] = &svcs
+func (s ServicesManager) InitServicesForPartitionAccount(partition, accountID string, svcs *Services) {
+	p, ok := s[partition]
+	if !ok {
+		p = make(map[string]*Services)
+		s[partition] = p
 	}
 
-	s.services[partition][accountId].Regions = funk.UniqString(append(s.services[partition][accountId].Regions, svcs.Regions...))
+	svc, ok := p[accountID]
+	if !ok {
+		p[accountID] = svcs
+		return
+	}
+
+	svc.Regions = funk.UniqString(append(svc.Regions, svcs.Regions...))
 }

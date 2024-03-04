@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildElasticbeanstalkEnvironments(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildElasticbeanstalkEnvironments(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockElasticbeanstalkClient(ctrl)
 
 	la := elasticbeanstalkTypes.ApplicationDescription{}
@@ -42,7 +42,7 @@ func buildElasticbeanstalkEnvironments(t *testing.T, ctrl *gomock.Controller) cl
 	require.NoError(t, faker.FakeObject(&configOptsOutput))
 	m.EXPECT().DescribeConfigurationOptions(gomock.Any(), gomock.Any(), gomock.Any()).Return(&configOptsOutput, nil)
 
-	return client.Services{
+	return &client.Services{
 		Elasticbeanstalk: m,
 	}
 }

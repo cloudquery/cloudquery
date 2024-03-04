@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildElastictranscoderPipelinesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildElastictranscoderPipelinesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockElastictranscoderClient(ctrl)
 
 	pipeline := types.Pipeline{}
@@ -33,7 +33,7 @@ func buildElastictranscoderPipelinesMock(t *testing.T, ctrl *gomock.Controller) 
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Elastictranscoder: m,
 	}
 }

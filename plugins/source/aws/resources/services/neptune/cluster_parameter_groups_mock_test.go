@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildNeptuneClusterParameterGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildNeptuneClusterParameterGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockNeptuneClient(ctrl)
 	var g types.DBClusterParameterGroup
 	require.NoError(t, faker.FakeObject(&g))
@@ -51,7 +51,7 @@ func buildNeptuneClusterParameterGroups(t *testing.T, ctrl *gomock.Controller) c
 		&neptune.DescribeDBClusterParametersOutput{Parameters: []types.Parameter{p}},
 		nil,
 	)
-	return client.Services{Neptune: mock}
+	return &client.Services{Neptune: mock}
 }
 
 func TestNeptuneClusterParameterGroups(t *testing.T) {

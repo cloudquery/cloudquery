@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildUsers(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mIdentity := mocks.NewMockIdentitystoreClient(ctrl)
 	mSSOAdmin := mocks.NewMockSsoadminClient(ctrl)
 	im := types.InstanceMetadata{}
@@ -31,7 +31,7 @@ func buildUsers(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Users: []iTypes.User{users},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Ssoadmin:      mSSOAdmin,
 		Identitystore: mIdentity,
 	}

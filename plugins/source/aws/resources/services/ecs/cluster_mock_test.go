@@ -12,9 +12,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEcsClusterMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEcsClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Ecs: m,
 	}
 	c := types.Cluster{}

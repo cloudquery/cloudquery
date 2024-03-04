@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildIamSAMLProviders(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildIamSAMLProviders(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	l := iamTypes.SAMLProviderListEntry{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -25,7 +25,7 @@ func buildIamSAMLProviders(t *testing.T, ctrl *gomock.Controller) client.Service
 	require.NoError(t, faker.FakeObject(&p))
 	m.EXPECT().GetSAMLProvider(gomock.Any(), gomock.Any(), gomock.Any()).Return(&p, nil)
 
-	return client.Services{
+	return &client.Services{
 		Iam: m,
 	}
 }

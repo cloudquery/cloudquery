@@ -13,8 +13,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildStacksWithTemplate(tmpl string) func(t *testing.T, ctrl *gomock.Controller) client.Services {
-	return func(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildStacksWithTemplate(tmpl string) func(t *testing.T, ctrl *gomock.Controller) *client.Services {
+	return func(t *testing.T, ctrl *gomock.Controller) *client.Services {
 		mock := mocks.NewMockCloudformationClient(ctrl)
 
 		var stack types.Stack
@@ -65,7 +65,7 @@ func buildStacksWithTemplate(tmpl string) func(t *testing.T, ctrl *gomock.Contro
 			nil,
 		)
 
-		return client.Services{Cloudformation: mock}
+		return &client.Services{Cloudformation: mock}
 	}
 }
 

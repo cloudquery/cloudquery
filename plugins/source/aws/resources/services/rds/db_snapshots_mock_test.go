@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRDSClient(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRDSClient(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockRdsClient(ctrl)
 
 	var s types.DBSnapshot
@@ -40,7 +40,7 @@ func buildRDSClient(t *testing.T, ctrl *gomock.Controller) client.Services {
 		},
 		nil,
 	)
-	return client.Services{Rds: mock}
+	return &client.Services{Rds: mock}
 }
 
 func TestRDSDBSnapshots(t *testing.T) {

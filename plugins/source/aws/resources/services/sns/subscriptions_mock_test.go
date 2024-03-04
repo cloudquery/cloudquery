@@ -14,7 +14,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func buildSnsSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSnsSubscriptions(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockSnsClient(ctrl)
 	sub := types.Subscription{}
 	require.NoError(t, faker.FakeObject(&sub))
@@ -57,7 +57,7 @@ func buildSnsSubscriptions(t *testing.T, ctrl *gomock.Controller) client.Service
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Sns: m,
 	}
 }

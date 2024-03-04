@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2Instances(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2Instances(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	l := types.Reservation{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -33,7 +33,7 @@ func buildEc2Instances(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Reservations: []types.Reservation{l},
 			NextToken:    nil,
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEfsAccessPointsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEfsAccessPointsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEfsClient(ctrl)
 	l := types.AccessPointDescription{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -22,7 +22,7 @@ func buildEfsAccessPointsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 			AccessPoints: []types.AccessPointDescription{l},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Efs: m,
 	}
 }

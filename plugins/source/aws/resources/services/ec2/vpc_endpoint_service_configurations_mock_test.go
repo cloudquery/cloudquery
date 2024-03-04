@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2VpcEndpointServiceConfigurations(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2VpcEndpointServiceConfigurations(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	sc := types.ServiceConfiguration{}
 	require.NoError(t, faker.FakeObject(&sc))
@@ -21,7 +21,7 @@ func buildEc2VpcEndpointServiceConfigurations(t *testing.T, ctrl *gomock.Control
 		&ec2.DescribeVpcEndpointServiceConfigurationsOutput{
 			ServiceConfigurations: []types.ServiceConfiguration{sc},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildWorkspaces(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildWorkspaces(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockAmpClient(ctrl)
 
 	var summary types.WorkspaceSummary
@@ -57,7 +57,7 @@ func buildWorkspaces(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	buildRuleGroupsNamespaces(t, m)
 
-	return client.Services{Amp: m}
+	return &client.Services{Amp: m}
 }
 
 func TestWorkspaces(t *testing.T) {

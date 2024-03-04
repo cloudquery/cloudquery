@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildApiKeysMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildApiKeysMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockApigatewayClient(ctrl)
 
 	a := types.ApiKey{}
@@ -23,7 +23,7 @@ func buildApiKeysMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Items: []types.ApiKey{a},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Apigateway: m,
 	}
 }

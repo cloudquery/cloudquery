@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildInstanceSnapshots(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildInstanceSnapshots(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockLightsailClient(ctrl)
 
 	var is lightsail.GetInstanceSnapshotsOutput
@@ -25,7 +25,7 @@ func buildInstanceSnapshots(t *testing.T, ctrl *gomock.Controller) client.Servic
 		gomock.Any(),
 	).Return(&is, nil)
 
-	return client.Services{Lightsail: mock}
+	return &client.Services{Lightsail: mock}
 }
 
 func TestLightsailInstanceSnapshots(t *testing.T) {

@@ -19,7 +19,7 @@ import (
 type svcsDetail struct {
 	partition string
 	accountId string
-	svcs      Services
+	svcs      *Services
 }
 
 func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, awsPluginSpec *spec.Spec, adminAccountSts AssumeRoleAPIClient, account spec.Account) (*svcsDetail, error) {
@@ -83,14 +83,17 @@ func (c *Client) setupAWSAccount(ctx context.Context, logger zerolog.Logger, aws
 	svcsDetails := svcsDetail{
 		partition: iamArn.Partition,
 		accountId: *output.Account,
-		svcs:      initServices(awsCfg, account.Regions),
+		svcs: &Services{
+			AWSConfig: awsCfg,
+			Regions:   account.Regions,
+		},
 	}
 
 	return &svcsDetails, nil
 }
 
 func findEnabledRegions(ctx context.Context, logger zerolog.Logger, accountName string, ec2Client services.Ec2Client, localRegions []string, accountDefaultRegion string) []string {
-	// By default we should use the default region (us-east-1)
+	// By default, we should use the default region (us-east-1)
 	regionsToCheck := []string{defaultRegion}
 	// If user specifies a Default Region we should use it
 	if accountDefaultRegion != "" {

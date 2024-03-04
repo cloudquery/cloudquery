@@ -15,7 +15,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockLambdaClient(ctrl)
 
 	lastModified := "1994-11-05T08:15:30.000+0500"
@@ -109,7 +109,7 @@ func buildLambdaFunctionsMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 	m.EXPECT().GetRuntimeManagementConfig(gomock.Any(), gomock.Any(), gomock.Any()).
 		Return(&runtimeManagementConfig, nil).AnyTimes()
 
-	return client.Services{
+	return &client.Services{
 		Lambda: m,
 	}
 }

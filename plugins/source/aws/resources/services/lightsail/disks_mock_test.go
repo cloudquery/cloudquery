@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDisks(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDisks(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockLightsailClient(ctrl)
 
 	var disks lightsail.GetDisksOutput
@@ -40,7 +40,7 @@ func buildDisks(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Lightsail: mock}
+	return &client.Services{Lightsail: mock}
 }
 
 func TestLightsailDisks(t *testing.T) {

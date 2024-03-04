@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildInstances(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mSSOAdmin := mocks.NewMockSsoadminClient(ctrl)
 	im := types.InstanceMetadata{}
 	ps := types.PermissionSet{}
@@ -75,7 +75,7 @@ func buildInstances(t *testing.T, ctrl *gomock.Controller) client.Services {
 			AttachedManagedPolicies: []types.AttachedManagedPolicy{amp},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Ssoadmin: mSSOAdmin,
 	}
 }

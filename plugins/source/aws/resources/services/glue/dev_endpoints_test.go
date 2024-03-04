@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDevEndpointsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDevEndpointsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockGlueClient(ctrl)
 
 	var devEndpoint glue.GetDevEndpointsOutput
@@ -32,7 +32,7 @@ func buildDevEndpointsMock(t *testing.T, ctrl *gomock.Controller) client.Service
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Glue: m,
 	}
 }

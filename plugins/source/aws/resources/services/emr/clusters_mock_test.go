@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEMRClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEMRClusters(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockEmrClient(ctrl)
 	var summary1 types.ClusterSummary
 	require.NoError(t, faker.FakeObject(&summary1))
@@ -130,7 +130,7 @@ func buildEMRClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Emr: mock}
+	return &client.Services{Emr: mock}
 }
 
 func TestEMRClusters(t *testing.T) {

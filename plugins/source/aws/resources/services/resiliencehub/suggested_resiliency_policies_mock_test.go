@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildSuggestedResiliencyPolicies(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSuggestedResiliencyPolicies(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockResiliencehubClient(ctrl)
 	var l resiliencehub.ListSuggestedResiliencyPoliciesOutput
 	require.NoError(t, faker.FakeObject(&l))
@@ -23,7 +23,7 @@ func buildSuggestedResiliencyPolicies(t *testing.T, ctrl *gomock.Controller) cli
 		gomock.Any(),
 	).Return(&l, nil)
 
-	return client.Services{Resiliencehub: mock}
+	return &client.Services{Resiliencehub: mock}
 }
 
 func TestResiilencehubSuggestedResiliencyPolicies(t *testing.T) {

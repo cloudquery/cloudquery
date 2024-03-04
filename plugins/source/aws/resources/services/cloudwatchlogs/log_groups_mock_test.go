@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildCloudwatchLogsLogGroupsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCloudwatchLogsLogGroupsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockCloudwatchlogsClient(ctrl)
 	l := types.LogGroup{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -38,7 +38,7 @@ func buildCloudwatchLogsLogGroupsMock(t *testing.T, ctrl *gomock.Controller) cli
 
 	m.EXPECT().GetDataProtectionPolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(dataProtectionPolicy, nil)
 
-	return client.Services{
+	return &client.Services{
 		Cloudwatchlogs: m,
 	}
 }

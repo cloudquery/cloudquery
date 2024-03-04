@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildMqBrokers(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildMqBrokers(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockMqClient(ctrl)
 
 	bs := types.BrokerSummary{}
@@ -64,7 +64,7 @@ func buildMqBrokers(t *testing.T, ctrl *gomock.Controller) client.Services {
 	m.EXPECT().DescribeConfigurationRevision(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&revision, nil)
 
-	return client.Services{Mq: m}
+	return &client.Services{Mq: m}
 }
 
 func TestMqBrokers(t *testing.T) {

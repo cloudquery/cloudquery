@@ -13,9 +13,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2ImagesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2ImagesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
-	services := client.Services{Ec2: m}
+	services := &client.Services{Ec2: m}
 	g := types.Image{}
 	require.NoError(t, faker.FakeObject(&g))
 

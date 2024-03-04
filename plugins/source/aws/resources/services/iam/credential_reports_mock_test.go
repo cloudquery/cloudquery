@@ -21,26 +21,26 @@ var exampleReportWithNilValues = `user,arn,user_creation_time,password_enabled,p
 user-cli,arn:aws:iam::123456789012:user/user-cli,2022-07-18T09:03:38+00:00,false,N/A,N/A,N/A,false,true,2022-08-01T13:51:50+00:00,2022-08-05T08:49:00+00:00,ap-northeast-3,glue,true,2022-08-29T08:39:55+00:00,2022-09-01T15:41:00+00:00,us-east-1,logs,false,N/A,false,N/A
 user-readonly,arn:aws:iam::123456789012:user/user-readonly,2022-08-31T11:10:33+00:00,false,N/A,N/A,N/A,false,true,2022-08-31T11:10:34+00:00,2022-08-31T11:23:00+00:00,us-east-1,iam,false,N/A,N/A,N/A,N/A,false,N/A,false,N/A`
 
-func buildCredentialReports(_ *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCredentialReports(_ *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	m.EXPECT().GetCredentialReport(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.GetCredentialReportOutput{
 			Content: []byte(exampleReport),
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Iam: m,
 	}
 }
 
-func buildCredentialReportsWithNilValues(ctrl *gomock.Controller) client.Services {
+func buildCredentialReportsWithNilValues(ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockIamClient(ctrl)
 	m.EXPECT().GetCredentialReport(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&iam.GetCredentialReportOutput{
 			Content: []byte(exampleReportWithNilValues),
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Iam: m,
 	}
 }

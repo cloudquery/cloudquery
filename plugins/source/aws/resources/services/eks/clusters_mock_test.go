@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEksClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEksClusters(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEksClient(ctrl)
 	l := eks.DescribeClusterOutput{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -76,7 +76,7 @@ func buildEksClusters(t *testing.T, ctrl *gomock.Controller) client.Services {
 			},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Eks: m,
 	}
 }

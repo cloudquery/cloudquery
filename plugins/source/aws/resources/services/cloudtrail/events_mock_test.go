@@ -13,9 +13,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildCloudtrailEventsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildCloudtrailEventsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockCloudtrailClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Cloudtrail: m,
 	}
 	event := types.Event{}

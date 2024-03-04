@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildReservedEc2Instances(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildReservedEc2Instances(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 	l := types.ReservedInstances{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -21,7 +21,7 @@ func buildReservedEc2Instances(t *testing.T, ctrl *gomock.Controller) client.Ser
 		&ec2.DescribeReservedInstancesOutput{
 			ReservedInstances: []types.ReservedInstances{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Ec2: m,
 	}
 }

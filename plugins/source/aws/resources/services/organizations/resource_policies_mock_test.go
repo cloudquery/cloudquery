@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildResourcePolicy(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildResourcePolicy(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockOrganizationsClient(ctrl)
 
 	o := organizations.DescribeResourcePolicyOutput{}
@@ -19,7 +19,7 @@ func buildResourcePolicy(t *testing.T, ctrl *gomock.Controller) client.Services 
 
 	m.EXPECT().DescribeResourcePolicy(gomock.Any(), gomock.Any(), gomock.Any()).Return(&o, nil)
 
-	return client.Services{
+	return &client.Services{
 		Organizations: m,
 	}
 }

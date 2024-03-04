@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildContainerServicesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildContainerServicesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockLightsailClient(ctrl)
 
 	dep := types.ContainerServiceDeployment{State: "test", Containers: map[string]types.Container{"test": {Image: aws.String("test")}}}
@@ -30,7 +30,7 @@ func buildContainerServicesMock(t *testing.T, ctrl *gomock.Controller) client.Se
 	require.NoError(t, faker.FakeObject(&i))
 	m.EXPECT().GetContainerImages(gomock.Any(), gomock.Any(), gomock.Any()).Return(&i, nil)
 
-	return client.Services{
+	return &client.Services{
 		Lightsail: m,
 	}
 }

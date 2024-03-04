@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRamResourceShareInvitationsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRamResourceShareInvitationsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRamClient(ctrl)
 	object := types.ResourceShareInvitation{}
 	require.NoError(t, faker.FakeObject(&object))
@@ -22,7 +22,7 @@ func buildRamResourceShareInvitationsMock(t *testing.T, ctrl *gomock.Controller)
 			ResourceShareInvitations: []types.ResourceShareInvitation{object},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Ram: m,
 	}
 }

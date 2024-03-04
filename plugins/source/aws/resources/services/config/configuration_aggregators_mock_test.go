@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildConfigurationAggregators(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildConfigurationAggregators(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockConfigserviceClient(ctrl)
 	l := types.ConfigurationAggregator{}
 	require.NoError(t, faker.FakeObject(&l))
@@ -21,7 +21,7 @@ func buildConfigurationAggregators(t *testing.T, ctrl *gomock.Controller) client
 		&configservice.DescribeConfigurationAggregatorsOutput{
 			ConfigurationAggregators: []types.ConfigurationAggregator{l},
 		}, nil)
-	return client.Services{
+	return &client.Services{
 		Configservice: m,
 	}
 }

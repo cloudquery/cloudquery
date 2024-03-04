@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRoute53Domains(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRoute53Domains(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockRoute53domainsClient(ctrl)
 
 	var ds types.DomainSummary
@@ -38,7 +38,7 @@ func buildRoute53Domains(t *testing.T, ctrl *gomock.Controller) client.Services 
 		&tagsOut, nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Route53domains: mock,
 	}
 }

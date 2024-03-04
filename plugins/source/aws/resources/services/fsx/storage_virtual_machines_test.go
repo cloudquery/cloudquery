@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildStorageVmsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildStorageVmsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockFsxClient(ctrl)
 
 	var vm types.StorageVirtualMachine
@@ -26,7 +26,7 @@ func buildStorageVmsMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 		&fsx.DescribeStorageVirtualMachinesOutput{StorageVirtualMachines: []types.StorageVirtualMachine{vm}},
 		nil,
 	)
-	return client.Services{
+	return &client.Services{
 		Fsx: m,
 	}
 }

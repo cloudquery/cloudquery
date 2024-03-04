@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildDataSharesMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildDataSharesMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockRedshiftClient(ctrl)
 	ds := types.DataShare{}
 	require.NoError(t, faker.FakeObject(&ds))
@@ -22,7 +22,7 @@ func buildDataSharesMock(t *testing.T, ctrl *gomock.Controller) client.Services 
 			DataShares: []types.DataShare{ds},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Redshift: m,
 	}
 }

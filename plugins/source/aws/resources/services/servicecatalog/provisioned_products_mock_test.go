@@ -11,7 +11,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildProvisionedProducts(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildProvisionedProducts(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mk := mocks.NewMockServicecatalogClient(ctrl)
 
 	o := servicecatalog.SearchProvisionedProductsOutput{}
@@ -34,7 +34,7 @@ func buildProvisionedProducts(t *testing.T, ctrl *gomock.Controller) client.Serv
 	llpo.NextPageToken = nil
 	mk.EXPECT().ListLaunchPaths(gomock.Any(), gomock.Any(), gomock.Any()).Return(&llpo, nil).MinTimes(1)
 
-	return client.Services{
+	return &client.Services{
 		Servicecatalog: mk,
 	}
 }

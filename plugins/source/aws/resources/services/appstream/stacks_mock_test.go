@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildAppstreamStacksMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildAppstreamStacksMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockAppstreamClient(ctrl)
 	stack := types.Stack{}
 	require.NoError(t, faker.FakeObject(&stack))
@@ -38,7 +38,7 @@ func buildAppstreamStacksMock(t *testing.T, ctrl *gomock.Controller) client.Serv
 			UserStackAssociations: []types.UserStackAssociation{stackUserAssociations},
 		}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Appstream: m,
 	}
 }

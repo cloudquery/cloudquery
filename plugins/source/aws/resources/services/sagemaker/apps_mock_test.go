@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildSageMakerApps(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildSageMakerApps(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockSagemakerClient(ctrl)
 
 	appDets := types.AppDetails{}
@@ -38,7 +38,7 @@ func buildSageMakerApps(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&tagsOut, nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Sagemaker: m,
 	}
 }

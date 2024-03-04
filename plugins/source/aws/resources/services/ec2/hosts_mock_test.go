@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildEc2Hosts(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildEc2Hosts(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockEc2Client(ctrl)
 
 	g := types.Host{}
@@ -23,7 +23,7 @@ func buildEc2Hosts(t *testing.T, ctrl *gomock.Controller) client.Services {
 			Hosts: []types.Host{g},
 		}, nil)
 
-	services := client.Services{
+	services := &client.Services{
 		Ec2: m,
 	}
 	return services

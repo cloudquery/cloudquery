@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildServersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildServersMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockTransferClient(ctrl)
 
 	var ls types.ListedServer
@@ -49,7 +49,7 @@ func buildServersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{
+	return &client.Services{
 		Transfer: m,
 	}
 }

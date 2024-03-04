@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildNeptuneClientForClusterSnapshots(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildNeptuneClientForClusterSnapshots(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockNeptuneClient(ctrl)
 
 	var s types.DBClusterSnapshot
@@ -55,7 +55,7 @@ func buildNeptuneClientForClusterSnapshots(t *testing.T, ctrl *gomock.Controller
 		nil,
 	)
 
-	return client.Services{Neptune: mock}
+	return &client.Services{Neptune: mock}
 }
 
 func TestNeptuneDBClusterSnapshots(t *testing.T) {

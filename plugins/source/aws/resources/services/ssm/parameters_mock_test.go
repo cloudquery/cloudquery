@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildParameters(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildParameters(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockSsmClient(ctrl)
 	var pm types.ParameterMetadata
 	require.NoError(t, faker.FakeObject(&pm))
@@ -39,7 +39,7 @@ func buildParameters(t *testing.T, ctrl *gomock.Controller) client.Services {
 		&ssm.ListTagsForResourceOutput{TagList: tags},
 		nil,
 	)
-	return client.Services{Ssm: mock}
+	return &client.Services{Ssm: mock}
 }
 
 func TestParameters(t *testing.T) {

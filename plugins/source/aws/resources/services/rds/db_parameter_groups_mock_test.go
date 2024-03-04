@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildRDSDBParameterGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildRDSDBParameterGroups(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mock := mocks.NewMockRdsClient(ctrl)
 	var g types.DBParameterGroup
 	require.NoError(t, faker.FakeObject(&g))
@@ -49,7 +49,7 @@ func buildRDSDBParameterGroups(t *testing.T, ctrl *gomock.Controller) client.Ser
 		&rds.DescribeDBParametersOutput{Parameters: []types.Parameter{p}},
 		nil,
 	)
-	return client.Services{Rds: mock}
+	return &client.Services{Rds: mock}
 }
 
 func TestRDSDBParameterGroups(t *testing.T) {

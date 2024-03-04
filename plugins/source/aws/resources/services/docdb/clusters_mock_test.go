@@ -11,9 +11,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildClustersMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildClustersMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockDocdbClient(ctrl)
-	services := client.Services{
+	services := &client.Services{
 		Docdb: m,
 	}
 	var clusters docdb.DescribeDBClustersOutput

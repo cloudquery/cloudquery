@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildVaultsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildVaultsMock(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockGlacierClient(ctrl)
 
 	v := glacier.ListVaultsOutput{}
@@ -38,7 +38,7 @@ func buildVaultsMock(t *testing.T, ctrl *gomock.Controller) client.Services {
 	require.NoError(t, faker.FakeObject(&tags))
 	m.EXPECT().ListTagsForVault(gomock.Any(), gomock.Any(), gomock.Any()).Return(&tags, nil)
 
-	return client.Services{
+	return &client.Services{
 		Glacier: m,
 	}
 }

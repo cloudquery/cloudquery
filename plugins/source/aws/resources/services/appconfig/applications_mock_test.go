@@ -12,7 +12,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildApps(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildApps(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	m := mocks.NewMockAppconfigClient(ctrl)
 
 	var app types.Application
@@ -69,7 +69,7 @@ func buildApps(t *testing.T, ctrl *gomock.Controller) client.Services {
 		nil,
 	)
 
-	return client.Services{Appconfig: m}
+	return &client.Services{Appconfig: m}
 }
 
 func TestApps(t *testing.T) {

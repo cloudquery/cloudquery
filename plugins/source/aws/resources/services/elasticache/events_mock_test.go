@@ -12,14 +12,14 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func buildElasticacheEvents(t *testing.T, ctrl *gomock.Controller) client.Services {
+func buildElasticacheEvents(t *testing.T, ctrl *gomock.Controller) *client.Services {
 	mockElasticache := mocks.NewMockElasticacheClient(ctrl)
 	event := types.Event{}
 	require.NoError(t, faker.FakeObject(&event))
 
 	mockElasticache.EXPECT().DescribeEvents(gomock.Any(), gomock.Any(), gomock.Any()).Return(&elasticache.DescribeEventsOutput{Events: []types.Event{event}}, nil)
 
-	return client.Services{
+	return &client.Services{
 		Elasticache: mockElasticache,
 	}
 }
