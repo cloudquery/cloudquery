@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"math/rand"
+	"net"
 	"net/http"
 	"time"
 
@@ -36,5 +37,6 @@ func isRetryable(err error) bool {
 	if errors.As(err, &httpErr) {
 		return httpErr.Code >= http.StatusInternalServerError || httpErr.Code == http.StatusTooManyRequests
 	}
-	return false
+	var opErr *net.OpError
+	return errors.As(err, &opErr)
 }
