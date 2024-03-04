@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.8.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.8.0...cli-v5.8.1) (2024-03-04)
+
+
+### Bug Fixes
+
+* Pass HOME env variable through to plugins ([#17004](https://github.com/cloudquery/cloudquery/issues/17004)) ([5c2fb36](https://github.com/cloudquery/cloudquery/commit/5c2fb3688a88cd29641aff0446e57e2d0a6e0485))
+
 ## [5.8.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.7.1...cli-v5.8.0) (2024-03-01)
 
 
