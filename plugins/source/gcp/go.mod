@@ -4,44 +4,13 @@ go 1.21.1
 
 require (
 	cloud.google.com/go/aiplatform v1.54.0
-	cloud.google.com/go/apigateway v1.6.4
-	cloud.google.com/go/appengine v1.8.4
-	cloud.google.com/go/artifactregistry v1.14.6
-	cloud.google.com/go/baremetalsolution v1.2.3
-	cloud.google.com/go/batch v1.6.3
-	cloud.google.com/go/beyondcorp v1.0.3
-	cloud.google.com/go/bigtable v1.18.1
-	cloud.google.com/go/billing v1.17.4
-	cloud.google.com/go/binaryauthorization v1.7.3
-	cloud.google.com/go/certificatemanager v1.7.4
 	cloud.google.com/go/compute v1.23.3
 	cloud.google.com/go/container v1.28.0
-	cloud.google.com/go/containeranalysis v0.11.3
-	cloud.google.com/go/deploy v1.15.0
-	cloud.google.com/go/domains v0.9.4
-	cloud.google.com/go/errorreporting v0.3.0
-	cloud.google.com/go/functions v1.15.4
 	cloud.google.com/go/iam v1.1.5
-	cloud.google.com/go/iot v1.7.4
-	cloud.google.com/go/kms v1.15.5
-	cloud.google.com/go/logging v1.8.1
-	cloud.google.com/go/monitoring v1.16.3
 	cloud.google.com/go/osconfig v1.12.4
-	cloud.google.com/go/redis v1.14.1
 	cloud.google.com/go/resourcemanager v1.9.4
-	cloud.google.com/go/run v1.3.3
-	cloud.google.com/go/scheduler v1.10.5
-	cloud.google.com/go/secretmanager v1.11.4
-	cloud.google.com/go/securitycenter v1.24.2
 	cloud.google.com/go/serviceusage v1.6.0
 	cloud.google.com/go/storage v1.30.1
-	cloud.google.com/go/translate v1.9.3
-	cloud.google.com/go/video v1.20.3
-	cloud.google.com/go/vision/v2 v2.7.5
-	cloud.google.com/go/vmmigration v1.7.4
-	cloud.google.com/go/vpcaccess v1.7.4
-	cloud.google.com/go/websecurityscanner v1.6.4
-	cloud.google.com/go/workflows v1.12.3
 	github.com/apache/arrow/go/v15 v15.0.0-20231219235838-1c48d69844cb
 	github.com/cloudquery/codegen v0.3.12
 	github.com/cloudquery/plugin-sdk/v4 v4.21.3
@@ -59,7 +28,6 @@ require (
 	golang.org/x/exp v0.0.0-20231219180239-dc181d75b848
 	golang.org/x/sync v0.5.0
 	google.golang.org/api v0.149.0
-	google.golang.org/genproto v0.0.0-20231211222908-989df2bf70f3
 	google.golang.org/grpc v1.60.1
 	google.golang.org/protobuf v1.31.0
 )
@@ -81,19 +49,13 @@ require (
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/bytedance/sonic v1.10.2 // indirect
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
-	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
-	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.6.3 // indirect
 	github.com/cloudquery/plugin-pb-go v1.14.6 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
-	github.com/cncf/udpa/go v0.0.0-20220112060539-c52dc94e7fbe // indirect
-	github.com/cncf/xds/go v0.0.0-20231128003011-0fa0005c9caa // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect
-	github.com/envoyproxy/go-control-plane v0.11.1 // indirect
-	github.com/envoyproxy/protoc-gen-validate v1.0.2 // indirect
 	github.com/fatih/structs v1.1.0 // indirect
 	github.com/flosch/pongo2/v4 v4.0.2 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
@@ -179,6 +141,7 @@ require (
 	golang.org/x/tools v0.16.1 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
+	google.golang.org/genproto v0.0.0-20231211222908-989df2bf70f3 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20231127180814-3a041ad873d4 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20231212172506-995d672761c0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
