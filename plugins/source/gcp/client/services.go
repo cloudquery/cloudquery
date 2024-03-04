@@ -175,6 +175,7 @@ var GcpServices = map[string]bool{
 	"looker.googleapis.com":                           true,
 	"managedidentities.googleapis.com":                true,
 	"manufacturers.googleapis.com":                    true,
+	"marketingplatformadmin.googleapis.com":           true,
 	"memcache.googleapis.com":                         true,
 	"metastore.googleapis.com":                        true,
 	"migrationcenter.googleapis.com":                  true,
