@@ -37,6 +37,19 @@
             }
           ]
         },
+        "num_sub_cols": {
+          "oneOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "description": "Number of `extra_column_*` columns to generate per row in test_sub_table. The type of the columns is int64.",
+              "default": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "required_env": {
           "oneOf": [
             {

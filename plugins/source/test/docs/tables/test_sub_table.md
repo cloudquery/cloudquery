@@ -17,3 +17,4 @@ This table depends on [test_some_table](test_some_table.md).
 |parent_resource_id (PK)|`int64`|
 |sub_resource_id (PK)|`int64`|
 |data_column|`utf8`|
+|extra_column_0|`int64`|
