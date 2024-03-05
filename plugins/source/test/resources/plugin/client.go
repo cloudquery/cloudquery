@@ -82,6 +82,17 @@ func (*Client) Close(_ context.Context) error {
 }
 
 func Configure(_ context.Context, logger zerolog.Logger, spec []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
+	if opts.NoConnection {
+		config := &client.Spec{}
+		config.SetDefaults()
+
+		return &Client{
+			logger:  logger,
+			options: opts,
+			tables:  getTables(*config),
+		}, nil
+	}
+
 	config := &client.Spec{}
 	if err := json.Unmarshal(spec, config); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
@@ -89,14 +100,6 @@ func Configure(_ context.Context, logger zerolog.Logger, spec []byte, opts plugi
 	config.SetDefaults()
 	if err := config.Validate(); err != nil {
 		return nil, fmt.Errorf("failed to validate spec: %w", err)
-	}
-
-	if opts.NoConnection {
-		return &Client{
-			logger:  logger,
-			options: opts,
-			tables:  getTables(*config),
-		}, nil
 	}
 
 	for _, env := range config.RequiredEnv {

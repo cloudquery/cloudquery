@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.2.0...plugins-source-test-v4.2.1) (2024-03-05)
+
+
+### Bug Fixes
+
+* Fix test plugin init ([#17037](https://github.com/cloudquery/cloudquery/issues/17037)) ([12fdada](https://github.com/cloudquery/cloudquery/commit/12fdada03cc7e468e8743ff6f68af043f042d2ee))
+
 ## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.1.0...plugins-source-test-v4.2.0) (2024-03-05)
 
 
