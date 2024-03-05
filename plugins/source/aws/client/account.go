@@ -14,6 +14,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/services"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
 	"github.com/rs/zerolog"
+	"github.com/thoas/go-funk"
 )
 
 type svcsDetail struct {
@@ -100,16 +101,24 @@ func findEnabledRegions(ctx context.Context, logger zerolog.Logger, accountName 
 		regionsToCheck = localRegions
 	}
 
+	deniedErrors := []string{}
 	for _, region := range regionsToCheck {
 		enabledRegions, err := getEnabledRegions(ctx, ec2Client, region)
 		if err != nil {
 			logger.Warn().Str("account", accountName).Err(err).Msgf("Failed to find disabled regions for account when checking: %s", region)
+			if IsAWSError(err, "UnauthorizedOperation") {
+				deniedErrors = append(deniedErrors, region)
+			}
 			continue
 		}
 		filteredRegions := filterDisabledRegions(localRegions, enabledRegions)
 		if len(filteredRegions) > 0 {
 			return filteredRegions
 		}
+	}
+	if !isAllRegions(localRegions) && len(deniedErrors) == len(regionsToCheck) && funk.Subset(regionsToCheck, deniedErrors) {
+		logger.Info().Str("account", accountName).Msg("Access denied for all regions, assuming all specified regions are enabled")
+		return localRegions
 	}
 	return []string{}
 }

@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/ec2"
 	"github.com/aws/aws-sdk-go-v2/service/ec2/types"
+	"github.com/aws/smithy-go"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/mocks"
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-cmp/cmp"
@@ -59,6 +60,23 @@ func Test_findEnabledRegions(t *testing.T) {
 			requestedRegions:       []string{"us-east-1", "us-east-5"},
 			requestedDefaultRegion: "",
 			expectedRegions:        []string{"us-east-1"},
+		},
+		{
+			// User does not have the permissions to call DescribeRegions
+			regionsReply:           nil,
+			regionsReplyError:      &smithy.GenericAPIError{Code: "UnauthorizedOperation", Message: "You are not authorized to perform this operation. User: arn:aws:sts::012345678910:assumed-role/RoleName is not authorized to perform: ec2:DescribeRegions with an explicit deny in an identity-based policy"},
+			requestedRegions:       []string{"us-east-1"},
+			requestedDefaultRegion: "",
+			expectedRegions:        []string{"us-east-1"},
+		},
+		{
+			// User does not have the permissions to call DescribeRegions
+			// If user is using "*" as requested region or a DefaultRegion we should still error out
+			regionsReply:           nil,
+			regionsReplyError:      &smithy.GenericAPIError{Code: "UnauthorizedOperation", Message: "You are not authorized to perform this operation. User: arn:aws:sts::012345678910:assumed-role/RoleName is not authorized to perform: ec2:DescribeRegions with an explicit deny in an identity-based policy"},
+			requestedRegions:       []string{"*"},
+			requestedDefaultRegion: "us-east-2",
+			expectedRegions:        []string{},
 		},
 		{
 			// User is making a request to a disabled region that returns an error
