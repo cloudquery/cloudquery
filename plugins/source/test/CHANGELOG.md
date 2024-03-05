@@ -3,6 +3,9 @@
 ## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.1.0...plugins-source-test-v4.2.0) (2024-03-05)
 
 
+### This Release has the Following Changes to Tables
+- Table `test_sub_table`: column added with name `extra_column_0` and type `int64`
+
 ### Features
 
 * Adjustable sub-columns in `test_sub_table` for the test source plugin ([#17009](https://github.com/cloudquery/cloudquery/issues/17009)) ([6d350d2](https://github.com/cloudquery/cloudquery/commit/6d350d213594615cb9f06a622a4c6ab0768c67f4))
