@@ -114,6 +114,8 @@
 - [aws_rds_reserved_instances](aws_rds_reserved_instances.md)
 - [aws_rds_subnet_groups](aws_rds_subnet_groups.md)
 - [aws_regions](aws_regions.md)
+- [aws_s3_access_grant_instances](aws_s3_access_grant_instances.md)
+- [aws_s3_access_grants](aws_s3_access_grants.md)
 - [aws_s3_access_points](aws_s3_access_points.md)
 - [aws_s3_accounts](aws_s3_accounts.md)
 - [aws_s3_buckets](aws_s3_buckets.md)
