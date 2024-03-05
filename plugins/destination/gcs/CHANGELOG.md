@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v3.6.0...plugins-destination-gcs-v3.6.1) (2024-03-05)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 814bf88 ([#16977](https://github.com/cloudquery/cloudquery/issues/16977)) ([d4d0e81](https://github.com/cloudquery/cloudquery/commit/d4d0e8138ec10e2c27eb0bf83e88905e838570d0))
+* **deps:** Update Google Cloud modules ([#16996](https://github.com/cloudquery/cloudquery/issues/16996)) ([c518919](https://github.com/cloudquery/cloudquery/commit/c518919f3fcb93568e179caf0b1b51c8be1010ce))
+* **deps:** Update google.golang.org/genproto digest to df926f6 ([#16978](https://github.com/cloudquery/cloudquery/issues/16978)) ([e483a55](https://github.com/cloudquery/cloudquery/commit/e483a55a623f63bd459d9bb7120be2cf44c21c43))
+* **deps:** Update google.golang.org/genproto/googleapis/api digest to df926f6 ([#16980](https://github.com/cloudquery/cloudquery/issues/16980)) ([4684a2b](https://github.com/cloudquery/cloudquery/commit/4684a2b84b9c0f3c9dfd214b2cda517a46e8a0fb))
+* **deps:** Update google.golang.org/genproto/googleapis/rpc digest to df926f6 ([#16981](https://github.com/cloudquery/cloudquery/issues/16981)) ([4d6cef9](https://github.com/cloudquery/cloudquery/commit/4d6cef9134401b9a6fcd60e70683f1992e526c4d))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.11 ([#16987](https://github.com/cloudquery/cloudquery/issues/16987)) ([05d2f54](https://github.com/cloudquery/cloudquery/commit/05d2f547bf8de4036582e262f2e7c167932eb5a6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.31.0 ([#16899](https://github.com/cloudquery/cloudquery/issues/16899)) ([2fac27a](https://github.com/cloudquery/cloudquery/commit/2fac27a2e3e789f6152b643c0af1c97ee95c4745))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.32.0 ([#16957](https://github.com/cloudquery/cloudquery/issues/16957)) ([8ffe2fe](https://github.com/cloudquery/cloudquery/commit/8ffe2fe13a11144cc4f463b01ede1d59c49fcc96))
+
 ## [3.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v3.5.1...plugins-destination-gcs-v3.6.0) (2024-02-26)
 
 
