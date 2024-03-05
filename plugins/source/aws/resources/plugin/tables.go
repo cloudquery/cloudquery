@@ -103,6 +103,8 @@ func getTables() schema.Tables {
 		rds.OptionGroups(),
 		rds.ReservedInstances(),
 		rds.SubnetGroups(),
+		s3.AccessGrants(),
+		s3.AccessGrantInstances(),
 		s3.AccessPoints(),
 		s3.Accounts(),
 		s3.Buckets(),
