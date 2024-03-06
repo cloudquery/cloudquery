@@ -21,7 +21,7 @@ Once you've obtained an offline license, you'll receive a file with a `.cqlicens
 
 ## Using the Offline License
 
-To use the offline license, you'll need to place the `.cqlicense` file (or files, as you can have many) into a common directory.  Then, when running `migrate` or `sync` commands, include the `--license` flag with the path to the directory containing the license files, or directly point it to a single license file.
+To use the offline license, you'll need to place the `.cqlicense` file (or files, as you may have more than one) into a common directory.  Then, when running `migrate` or `sync` commands, include the `--license` flag with the path to the directory containing the license files, or directly point it to a single license file.
 
 For example:
 
