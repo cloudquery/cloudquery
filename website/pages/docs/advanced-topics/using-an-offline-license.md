@@ -67,4 +67,4 @@ The result will look like this:
 }
 ```
 
-These fields should be self-explanatory, but if you have any questions about the contents of the license file, please contact our support team.
+If you have any questions about the contents of the license file, please contact our support team.
