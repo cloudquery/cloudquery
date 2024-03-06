@@ -40,9 +40,8 @@ cloudquery sync --license ~/mycompany.cqlicense ./aws.yml ./pg.yml
 ## Limitations of Using an Offline License
 
 The offline license may be used only for [sync](/docs/reference/cli/cloudquery_sync) and [migrate](/docs/reference/cli/cloudquery_migrate) commands.
-If you are setting up a new environment, you will need to have the plugins downloaded into a `.cq` directory.
-The [plugin install](/docs/reference/cli/cloudquery_plugin_install) command will not work with an offline license.
-You will need to enable internet access and [login](/docs/reference/cli/cloudquery_login) (or, [generate](/docs/deployment/generate-api-key) and use an API key) and run `cloudquery plugin install` to install the plugins first.
+If you are setting up a new environment, you will need to have the plugins downloaded into a `.cq` directory: automatic plugin downloads will **not** work with an offline license.
+You will need to enable internet access and [login](/docs/reference/cli/cloudquery_login) (or, [generate](/docs/deployment/generate-api-key) and use an API key) and run `cloudquery plugin install` manually to install the plugins first. You may also just run a `sync` or `migrate` which will download the plugins, and then you can use the offline license for subsequent runs.
 
 ## Inspecting the License File
 
