@@ -9,7 +9,7 @@ spec:
   version: "VERSION_DESTINATION_POSTGRESQL"
 
   spec:
-    connection_string: "${POSTGRESQL_CONNECTION_STRING}" # set the environment variable in a format like postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable
+    connection_string: "${POSTGRESQL_CONNECTION_STRING}" # set the environment variable in a format like postgres://postgres:pass@localhost:5432/postgres?sslmode=disable
     # you can also specify it in DSN format, which can hold special characters in the password field:
     # connection_string: "user=postgres password=pass+0-[word host=localhost port=5432 dbname=postgres"
     # Optional parameters:
