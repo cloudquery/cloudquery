@@ -5,7 +5,7 @@ description: Short walkthrough on how to use an offline license with CloudQuery
 
 # Offline Licensing
 
-If you're using CloudQuery in an environment that doesn't have internet access, you can use an offline license to activate your CloudQuery CLI.
+If you're using CloudQuery in an environment that doesn't have internet access, you can use an offline license with CloudQuery.
 This guide will walk you through the process of obtaining and using an offline license.
 
 ## Obtaining an Offline License
