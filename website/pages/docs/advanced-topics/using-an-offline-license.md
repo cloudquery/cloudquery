@@ -26,7 +26,7 @@ To use the offline license, you'll need to place the `.cqlicense` file (or files
 For example:
 
 ```bash
-mv mycompany.cqlicense /path/to/license/directory
+mv mycompany.cqlicense /path/to/license/directory/
 cloudquery sync --license /path/to/license/directory ./aws.yml ./pg.yml
 ```
 
