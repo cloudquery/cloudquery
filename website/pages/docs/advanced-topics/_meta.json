@@ -7,5 +7,6 @@
   "running-cloudquery-in-parallel": "Running CloudQuery in Parallel",
   "security": "Security",
   "managing-incremental-tables": "Managing Incremental Tables",
+  "using-an-offline-license": "Using an Offline License",
   "arrow-string-representation": "Arrow String Representation"
 }
