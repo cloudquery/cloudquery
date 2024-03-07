@@ -1,8 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/kafka
 
-go 1.21.5
-
-toolchain go1.21.6
+go 1.22.0
 
 require (
 	github.com/Shopify/sarama v1.37.2

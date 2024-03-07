@@ -32,9 +32,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.21.4-release-cache-${{ hashFiles('plugins/destination/motherduck/go.sum') }}
+          key: ${{ runner.os }}-go-1.22.0-release-cache-${{ hashFiles('plugins/destination/motherduck/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.21.4-release-cache-plugins-destination-motherduck
+            ${{ runner.os }}-go-1.22.0-release-cache-plugins-destination-motherduck
       - name: Set up Go 1.x
         uses: actions/setup-go@v5
         with:

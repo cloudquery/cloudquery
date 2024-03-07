@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/alicloud
 
-go 1.21.5
+go 1.22.0
 
 require (
 	github.com/aliyun/alibaba-cloud-sdk-go v1.62.266

@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/datadog
 
-go 1.21.5
+go 1.22.0
 
 require (
 	github.com/DataDog/datadog-api-client-go/v2 v2.17.0

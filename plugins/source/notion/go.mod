@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/notion
 
-go 1.21.5
+go 1.22.0
 
 require (
 	github.com/cloudquery/codegen v0.3.12
