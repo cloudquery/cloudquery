@@ -8,6 +8,7 @@ title: Quickstart
 
 Please see the following platform-specific guides:
 
+- [Managed Syncs](/docs/quickstart/managed)
 - [Linux](/docs/quickstart/linux)
 - [MacOS](/docs/quickstart/macos)
 - [Windows](/docs/quickstart/windows)
