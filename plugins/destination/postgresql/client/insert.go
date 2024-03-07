@@ -53,7 +53,7 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 			queries[tableName] = sql
 		}
 
-		rows := transformValues(r)
+		rows := c.transformValues(r)
 		for _, rowVals := range rows {
 			batch.Queue(sql, rowVals...)
 		}

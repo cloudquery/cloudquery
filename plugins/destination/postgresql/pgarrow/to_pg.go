@@ -147,13 +147,15 @@ func ArrowToCrateDB(t arrow.DataType) string {
 	case *arrow.Uint32Type:
 		return "bigint"
 	case *arrow.Uint64Type:
-		return "numeric(20,0)"
+		// CrateDB does not support storing numeric types.
+		return "text"
 	case *arrow.Float32Type:
 		return "real"
 	case *arrow.Float64Type:
 		return "double precision"
 	case arrow.DecimalType:
-		return "numeric(" + strconv.Itoa(int(dt.GetPrecision())) + "," + strconv.Itoa(int(dt.GetScale())) + ")"
+		// CrateDB does not support storing numeric types
+		return "text"
 	case *arrow.StringType:
 		return "text"
 	case *arrow.BinaryType:
@@ -165,10 +167,12 @@ func ArrowToCrateDB(t arrow.DataType) string {
 	case *arrow.TimestampType:
 		return "timestamp without time zone"
 	case *arrow.Time32Type, *arrow.Time64Type:
-		// CrateDB does not support "time without time zone"
-		return "time with time zone"
+		// CrateDB does not support "time without time zone", and does not support
+		// storage of "time with time zone".
+		return "text"
 	case *arrow.Date32Type, *arrow.Date64Type:
-		return "date"
+		// CrateDB does not support storing "date" type
+		return "timestamp without time zone"
 	case *cqtypes.UUIDType:
 		// CrateDB does not support UUID type
 		return "text"

@@ -83,9 +83,9 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 	}
 	for _, col := range table.Columns {
 		if c.pgType == pgTypeCrateDB {
-			// CrateDB doesn't support columns that start with an underscore,
+			// CrateDB doesn't allow columns that start with an underscore,
 			// so we trim the leading underscore from the column name
-			col.Name = strings.TrimPrefix(col.Name, "_")
+			col.Name = strings.TrimLeft(col.Name, "_")
 			// CrateDB does not support Unique constraints
 			col.Unique = false
 		}
