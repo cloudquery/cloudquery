@@ -82,6 +82,14 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 		Name: table.Name,
 	}
 	for _, col := range table.Columns {
+		if c.pgType == pgTypeCrateDB {
+			// CrateDB doesn't support columns that start with an underscore,
+			// so we trim the leading underscore from the column name
+			col.Name = strings.TrimPrefix(col.Name, "_")
+			// CrateDB does not support Unique constraints
+			col.Unique = false
+		}
+
 		// Postgres doesn't support column names longer than 63 characters
 		// and it will automatically truncate them, so we do the same here
 		// to make migrations predictable
@@ -93,6 +101,7 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 			col.NotNull = true
 		}
 		col.Type = c.PgToSchemaType(c.SchemaTypeToPg(col.Type))
+
 		normalizedTable.Columns = append(normalizedTable.Columns, col)
 		// pgTablesToPKConstraints is populated when handling migrate messages
 		if entry := c.pgTablesToPKConstraints[table.Name]; entry != nil {

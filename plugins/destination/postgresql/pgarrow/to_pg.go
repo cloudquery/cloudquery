@@ -127,3 +127,69 @@ func ArrowToCockroach(t arrow.DataType) string {
 		return "text"
 	}
 }
+
+func ArrowToCrateDB(t arrow.DataType) string {
+	switch dt := t.(type) {
+	case *arrow.BooleanType:
+		return "boolean"
+	case *arrow.Int8Type:
+		return "smallint"
+	case *arrow.Int16Type:
+		return "smallint"
+	case *arrow.Int32Type:
+		return "int"
+	case *arrow.Int64Type:
+		return "bigint"
+	case *arrow.Uint8Type:
+		return "smallint"
+	case *arrow.Uint16Type:
+		return "int"
+	case *arrow.Uint32Type:
+		return "bigint"
+	case *arrow.Uint64Type:
+		return "numeric(20,0)"
+	case *arrow.Float32Type:
+		return "real"
+	case *arrow.Float64Type:
+		return "double precision"
+	case arrow.DecimalType:
+		return "numeric(" + strconv.Itoa(int(dt.GetPrecision())) + "," + strconv.Itoa(int(dt.GetScale())) + ")"
+	case *arrow.StringType:
+		return "text"
+	case *arrow.BinaryType:
+		// CrateDB does not support bytea
+		return "text"
+	case *arrow.LargeBinaryType:
+		// CrateDB does not support bytea
+		return "text"
+	case *arrow.TimestampType:
+		return "timestamp without time zone"
+	case *arrow.Time32Type, *arrow.Time64Type:
+		// CrateDB does not support "time without time zone"
+		return "time with time zone"
+	case *arrow.Date32Type, *arrow.Date64Type:
+		return "date"
+	case *cqtypes.UUIDType:
+		// CrateDB does not support UUID type
+		return "text"
+	case *cqtypes.JSONType:
+		// CrateDB calls JSON type "object"
+		return "object"
+	case *cqtypes.MACType:
+		// CrateDB does not support macaddr type
+		return "text"
+	case *cqtypes.InetType:
+		// CrateDB does not support inet type, but we can use IP
+		return "ip"
+	case *arrow.ListType:
+		return ArrowToCrateDB(dt.Elem()) + "[]"
+	case *arrow.FixedSizeListType:
+		return ArrowToCrateDB(dt.Elem()) + "[]"
+	case *arrow.LargeListType:
+		return ArrowToCrateDB(dt.Elem()) + "[]"
+	case *arrow.MapType:
+		return "text"
+	default:
+		return "text"
+	}
+}
