@@ -10,7 +10,7 @@ require (
 	github.com/rs/zerolog v1.31.0
 	github.com/thoas/go-funk v0.9.3
 	golang.org/x/sync v0.6.0
-	google.golang.org/grpc v1.62.0
+	google.golang.org/grpc v1.62.1
 )
 
 require (
