@@ -271,9 +271,9 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			if err != nil {
 				return fmt.Errorf("failed to get record from bytes: %w", err)
 			}
+
 			atomic.AddInt64(&newResources, record.NumRows())
 			atomic.AddInt64(&totalResources, record.NumRows())
-
 			if remoteProgressReporter != nil {
 				remoteProgressReporter.SendSignal()
 			}
