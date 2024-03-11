@@ -11,6 +11,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
+      plugin_name_undashed: ${{ steps.undash_plugin_name.outputs.plugin_name }}
       plugin_name: ${{ steps.split.outputs.plugin_name }}
       plugin_kind: ${{ steps.split.outputs.plugin_kind }}
       plugin_kind_plural: ${{ steps.split.outputs.plugin_kind_plural }}
@@ -27,11 +28,25 @@ jobs:
           plugin_name=$(echo $tag | cut -d- -f3)
           plugin_kind_plural=$(if [ "$plugin_kind" = "source" ]; then echo "sources"; else echo "destinations"; fi)
           plugin_version=$(echo $tag | cut -d- -f4-)
+          # perform looping till either the plugin version passes our semver test or is empty
+          until [[ $plugin_version =~ ^v?[0-9]+\.[0-9]+ ]] || [[ $(echo $plugin_version | wc -c) -eq 0 ]] ; do
+             echo "${plugin_version} is not a valid version"
+             plugin_name="$plugin_name-$(echo $plugin_version | cut -d- -f1)"
+             plugin_version=$(echo $plugin_version | cut -d- -f2-)
+          done
           echo "plugin_name=${plugin_name}" >> $GITHUB_OUTPUT
           echo "plugin_kind=${plugin_kind}" >> $GITHUB_OUTPUT
           echo "plugin_kind_plural=${plugin_kind_plural}" >> $GITHUB_OUTPUT
           echo "plugin_version=${plugin_version}" >> $GITHUB_OUTPUT
           echo "plugin_dir=plugins/${plugin_kind}/${plugin_name}" >> $GITHUB_OUTPUT
+      - name: Undash
+        id: undash_plugin_name
+        env:
+          plugin_name: ${{ steps.split.outputs.plugin_name }}
+        run: |
+              p=$(echo $plugin_name | sed 's|-|_|g')
+              echo "plugin_name=${p}" >> $GITHUB_OUTPUT
+
       # Fail if not a valid SemVer string
       - name: Parse semver string
         uses: booxmedialtd/ws-action-parse-semver@7784200024d6b3fc01253e617ec0168daf603de3
@@ -116,7 +131,7 @@ jobs:
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@3a8ed858a4e3fb487c6f53658ec40b2b1d45d9d8
         with:
-          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name }}"
+          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name_undashed }}"
           replace: ${{ needs.prepare.outputs.plugin_version }}
           include: ${{ needs.prepare.outputs.plugin_dir }}/docs/*.md
 
@@ -190,7 +205,7 @@ jobs:
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@3a8ed858a4e3fb487c6f53658ec40b2b1d45d9d8
         with:
-          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name }}"
+          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name_undashed }}"
           replace: ${{ needs.prepare.outputs.plugin_version }}
           include: ${{ needs.prepare.outputs.plugin_dir }}/docs/*.md
 
@@ -275,7 +290,7 @@ jobs:
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@3a8ed858a4e3fb487c6f53658ec40b2b1d45d9d8
         with:
-          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name }}"
+          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name_undashed }}"
           replace: ${{ needs.prepare.outputs.plugin_version }}
           include: ${{ needs.prepare.outputs.plugin_dir }}/docs/*.md
 

@@ -7,8 +7,6 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/google/uuid"
-
 	apiAuth "github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
@@ -105,10 +103,6 @@ func sync(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
 
-	invocationUUID, err := uuid.NewRandom()
-	if err != nil {
-		return fmt.Errorf("failed to generate invocation uuid: %w", err)
-	}
 	sources := specReader.Sources
 	destinations := specReader.Destinations
 	sourcePluginClients := make(managedplugin.Clients, 0)
