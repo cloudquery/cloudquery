@@ -18,6 +18,8 @@ type Destination struct {
 	// Destination plugin PK mode
 	PKMode PKMode `json:"pk_mode,omitempty" jsonschema:"default=default"`
 
+	SyncSummary bool `json:"summary,omitempty"`
+
 	// Destination plugin own (nested) spec
 	Spec map[string]any `json:"spec,omitempty"`
 }
