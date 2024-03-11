@@ -24,13 +24,26 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 	var s *filetypes.Stream
 
 	for msg := range msgs {
-		if s == nil {
-			table := msg.GetTable()
+		fileClient := c.Client
+		table := msg.GetTable()
 
+		if s == nil {
+			if _, ok := c.objectKeys[table.Name]; !ok {
+				c.objectKeys[table.Name] = []string{}
+			}
 			objKey := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC())
+			c.objectKeys[table.Name] = append(c.objectKeys[table.Name], objKey)
+
+			if table.Name == "cloudquery_sync_summary" {
+				msg.Record = c.addObjectsSyncedToSummary(msg.Record)
+				table = msg.GetTable()
+				// The summary table is always represented as a JSON file
+				fileClient = c.jsonFiletypesClient
+			}
 
 			var err error
-			s, err = c.Client.StartStream(table, func(r io.Reader) error {
+
+			s, err = fileClient.StartStream(table, func(r io.Reader) error {
 				params := &s3.PutObjectInput{
 					Bucket: aws.String(c.spec.Bucket),
 					Key:    aws.String(objKey),
