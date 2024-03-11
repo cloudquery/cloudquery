@@ -353,7 +353,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		Warnings:  totals.Warnings,
 		SyncID:    uid,
 	}
-	if err := sendSummary(writeClients, destinationSpecs, destinationsClients, destinationTransformers, &summary); err != nil {
+	if err := sendSummary(writeClients, destinationSpecs, destinationsClients, destinationTransformers, &summary, noMigrate); err != nil {
 		return err
 	}
 
@@ -426,7 +426,7 @@ func deleteStale(client plugin.Plugin_WriteClient, tables map[string]bool, sourc
 	return nil
 }
 
-func sendSummary(writeClients []plugin.Plugin_WriteClient, destinationSpecs []specs.Destination, destinationsClients []*managedplugin.Client, destinationTransformers []*transformer.RecordTransformer, summary *syncSummary) error {
+func sendSummary(writeClients []plugin.Plugin_WriteClient, destinationSpecs []specs.Destination, destinationsClients []*managedplugin.Client, destinationTransformers []*transformer.RecordTransformer, summary *syncSummary, noMigrate bool) error {
 	summaryTable := generateSummaryTable()
 	summaryTableSchema := summaryTable.ToArrowSchema()
 
@@ -439,15 +439,17 @@ func sendSummary(writeClients []plugin.Plugin_WriteClient, destinationSpecs []sp
 		if err != nil {
 			return err
 		}
-		wr := &plugin.Write_Request{}
-		wr.Message = &plugin.Write_Request_MigrateTable{
-			MigrateTable: &plugin.Write_MessageMigrateTable{
-				MigrateForce: destinationSpecs[i].MigrateMode == specs.MigrateModeForced,
-				Table:        transformedSchemaBytes,
-			},
-		}
-		if err := writeClients[i].Send(wr); err != nil {
-			return handleSendError(err, writeClients[i], "migrate sync summary table")
+		if !noMigrate {
+			wr := &plugin.Write_Request{}
+			wr.Message = &plugin.Write_Request_MigrateTable{
+				MigrateTable: &plugin.Write_MessageMigrateTable{
+					MigrateForce: destinationSpecs[i].MigrateMode == specs.MigrateModeForced,
+					Table:        transformedSchemaBytes,
+				},
+			}
+			if err := writeClients[i].Send(wr); err != nil {
+				return handleSendError(err, writeClients[i], "migrate sync summary table")
+			}
 		}
 
 		m := destinationsClients[i].Metrics()
