@@ -25,6 +25,10 @@ const (
 func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
 	colNames := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {
+		if c.pgType == pgTypeCrateDB {
+			colNames = append(colNames, pgx.Identifier{strings.Trim(col.Name, "_")}.Sanitize())
+			continue
+		}
 		colNames = append(colNames, pgx.Identifier{col.Name}.Sanitize())
 	}
 	cols := strings.Join(colNames, ",")

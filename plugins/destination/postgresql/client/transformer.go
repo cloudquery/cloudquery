@@ -1,6 +1,7 @@
 package client
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"strings"
 
@@ -52,7 +53,7 @@ func stripNullsFromJsonValue(val any) any {
 	}
 }
 
-func transformArr(arr arrow.Array) []any {
+func (c *Client) transformArr(arr arrow.Array) []any {
 	pgArr := make([]any, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
 		if arr.IsNull(i) || !arr.IsValid(i) {
@@ -101,7 +102,11 @@ func transformArr(arr arrow.Array) []any {
 				Valid: a.IsValid(i),
 			}
 		case *array.Uint64:
-			pgArr[i] = a.Value(i)
+			if c.pgType == pgTypeCrateDB {
+				pgArr[i] = a.ValueStr(i)
+			} else {
+				pgArr[i] = a.Value(i)
+			}
 		case *array.Float32:
 			pgArr[i] = pgtype.Float4{
 				Float32: a.Value(i),
@@ -113,9 +118,17 @@ func transformArr(arr arrow.Array) []any {
 				Valid:   a.IsValid(i),
 			}
 		case *array.Binary:
-			pgArr[i] = a.Value(i)
+			if c.pgType == pgTypeCrateDB {
+				pgArr[i] = base64.StdEncoding.EncodeToString(a.Value(i))
+			} else {
+				pgArr[i] = a.Value(i)
+			}
 		case *array.LargeBinary:
-			pgArr[i] = a.Value(i)
+			if c.pgType == pgTypeCrateDB {
+				pgArr[i] = base64.StdEncoding.EncodeToString(a.Value(i))
+			} else {
+				pgArr[i] = a.Value(i)
+			}
 		case *array.String:
 			pgArr[i] = pgtype.Text{
 				String: stripNulls(a.Value(i)),
@@ -166,7 +179,7 @@ func transformArr(arr arrow.Array) []any {
 		case array.ListLike:
 			start, end := a.ValueOffsets(i)
 			nested := array.NewSlice(a.ListValues(), start, end)
-			pgArr[i] = transformArr(nested)
+			pgArr[i] = c.transformArr(nested)
 		case *types.JSONArray:
 			pgArr[i] = stripNullsFromMarshalledJson(a.Storage().(*array.Binary).Value(i))
 		default:
@@ -177,7 +190,7 @@ func transformArr(arr arrow.Array) []any {
 	return pgArr
 }
 
-func transformValues(r arrow.Record) [][]any {
+func (c *Client) transformValues(r arrow.Record) [][]any {
 	results := make([][]any, r.NumRows())
 
 	for i := range results {
@@ -186,7 +199,7 @@ func transformValues(r arrow.Record) [][]any {
 
 	for i := 0; i < int(r.NumCols()); i++ {
 		col := r.Column(i)
-		transformed := transformArr(col)
+		transformed := c.transformArr(col)
 		for l := 0; l < col.Len(); l++ {
 			results[l][i] = transformed[l]
 		}
