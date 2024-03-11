@@ -27,6 +27,12 @@ jobs:
           plugin_name=$(echo $tag | cut -d- -f3)
           plugin_kind_plural=$(if [ "$plugin_kind" = "source" ]; then echo "sources"; else echo "destinations"; fi)
           plugin_version=$(echo $tag | cut -d- -f4-)
+          # perform looping till either the plugin version passes our semver test or is empty
+          until [[ $plugin_version =~ ^v?[0-9]+\.[0-9]+ ]] || [[ $(echo $plugin_version | wc -c) -eq 0 ]] ; do
+             echo "${plugin_version} is not a valid version"
+             plugin_name="$plugin_name-$(echo $plugin_version | cut -d- -f1)"
+             plugin_version=$(echo $plugin_version | cut -d- -f2-)
+          done
           echo "plugin_name=${plugin_name}" >> $GITHUB_OUTPUT
           echo "plugin_kind=${plugin_kind}" >> $GITHUB_OUTPUT
           echo "plugin_kind_plural=${plugin_kind_plural}" >> $GITHUB_OUTPUT
