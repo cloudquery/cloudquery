@@ -113,10 +113,18 @@ jobs:
             });
             return shellescape([data.body]);
 
+      - name: Undash
+        id: undash_plugin_name
+        env:
+          plugin_name: ${{ needs.prepare.outputs.plugin_name }}
+        run: |
+             p=$(echo $plugin_name | sed 's|-|_|g')
+             echo "plugin_name=${p}" >> $GITHUB_OUTPUT
+
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@3a8ed858a4e3fb487c6f53658ec40b2b1d45d9d8
         with:
-          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name }}"
+          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ steps.undash_plugin_name.outputs.plugin_name }}"
           replace: ${{ needs.prepare.outputs.plugin_version }}
           include: ${{ needs.prepare.outputs.plugin_dir }}/docs/*.md
 

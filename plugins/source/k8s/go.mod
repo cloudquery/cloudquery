@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/k8s
 go 1.21.5
 
 require (
-	github.com/apache/arrow/go/v15 v15.0.0
+	github.com/apache/arrow/go/v15 v15.0.1
 	github.com/cloudquery/codegen v0.3.12
 	github.com/cloudquery/plugin-sdk/v4 v4.32.1
 	github.com/golang/mock v1.6.0

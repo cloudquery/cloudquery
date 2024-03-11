@@ -133,6 +133,66 @@ func CockroachToArrow(t string) arrow.DataType {
 	}
 }
 
+func CrateDBToArrow(t string) arrow.DataType {
+	t = normalize(t)
+	if strings.HasSuffix(t, "[]") {
+		return arrow.ListOf(Pg10ToArrow(t[:len(t)-2]))
+	}
+
+	parsers := []func(string) (arrow.DataType, bool){
+		parseTimestamp,
+		parseTime,
+	}
+	for _, parser := range parsers {
+		got, matched := parser(t)
+		if matched {
+			return got
+		}
+	}
+
+	switch t {
+	case "boolean":
+		return arrow.FixedWidthTypes.Boolean
+	case "smallserial":
+		return arrow.PrimitiveTypes.Int16
+	case "serial":
+		return arrow.PrimitiveTypes.Int32
+	case "bigserial", "serial8":
+		return arrow.PrimitiveTypes.Int64
+	case "smallint", "int2":
+		return arrow.PrimitiveTypes.Int16
+	case "integer", "int", "int4":
+		return arrow.PrimitiveTypes.Int32
+	case "bigint", "int8":
+		return arrow.PrimitiveTypes.Int64
+	case "numeric":
+		// Special case
+		return arrow.PrimitiveTypes.Uint64
+	case "real", "float4":
+		return arrow.PrimitiveTypes.Float32
+	case "double precision", "float8":
+		return arrow.PrimitiveTypes.Float64
+	case "uuid":
+		// CrateDB does not support UUID type
+		return arrow.BinaryTypes.String
+	case "bytea":
+		return arrow.BinaryTypes.Binary
+	case "date":
+		return arrow.FixedWidthTypes.Date32
+	case "json", "jsonb", "object":
+		return cqtypes.ExtensionTypes.JSON
+	case "cidr":
+		return cqtypes.ExtensionTypes.Inet
+	case "macaddr", "macaddr8":
+		// CrateDB does not support macaddr type
+		return arrow.BinaryTypes.String
+	case "inet", "ip":
+		return cqtypes.ExtensionTypes.Inet
+	default:
+		return arrow.BinaryTypes.String
+	}
+}
+
 func normalize(t string) string {
 	return strings.ToLower(strings.TrimSpace(t))
 }
