@@ -273,6 +273,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			}
 			atomic.AddInt64(&newResources, record.NumRows())
 			atomic.AddInt64(&totalResources, record.NumRows())
+
 			if remoteProgressReporter != nil {
 				remoteProgressReporter.SendSignal()
 			}
