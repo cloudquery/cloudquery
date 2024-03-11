@@ -19,7 +19,6 @@ import (
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
-	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
 	"github.com/vnteamopen/godebouncer"
@@ -348,10 +347,14 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	}
 	totals := sourceClient.Metrics()
 	summary := syncSummary{
-		Resources: uint64(totalResources),
-		Errors:    totals.Errors,
-		Warnings:  totals.Warnings,
-		SyncID:    uid,
+		Resources:      uint64(totalResources),
+		SourceErrors:   totals.Errors,
+		SourceWarnings: totals.Warnings,
+		SyncID:         uid,
+		SourceName:     sourceSpec.Name,
+		SourceVersion:  sourceSpec.Version,
+		SourcePath:     sourceSpec.Path,
+		CliVersion:     Version,
 	}
 	if err := sendSummary(writeClients, destinationSpecs, destinationsClients, destinationTransformers, &summary, noMigrate); err != nil {
 		return err
@@ -421,76 +424,6 @@ func deleteStale(client plugin.Plugin_WriteClient, tables map[string]bool, sourc
 			},
 		}); err != nil {
 			return err
-		}
-	}
-	return nil
-}
-
-func sendSummary(writeClients []plugin.Plugin_WriteClient, destinationSpecs []specs.Destination, destinationsClients []*managedplugin.Client, destinationTransformers []*transformer.RecordTransformer, summary *syncSummary, noMigrate bool) error {
-	summaryTable := generateSummaryTable()
-	summaryTableSchema := summaryTable.ToArrowSchema()
-
-	for i := range destinationsClients {
-		if !destinationSpecs[i].SyncSummary {
-			continue
-		}
-		transformedSchema := destinationTransformers[i].TransformSchema(summaryTableSchema)
-		transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
-		if err != nil {
-			return err
-		}
-		wr := &plugin.Write_Request{}
-		if !noMigrate {
-			wr.Message = &plugin.Write_Request_MigrateTable{
-				MigrateTable: &plugin.Write_MessageMigrateTable{
-					MigrateForce: destinationSpecs[i].MigrateMode == specs.MigrateModeForced,
-					Table:        transformedSchemaBytes,
-				},
-			}
-			if err := writeClients[i].Send(wr); err != nil {
-				return handleSendError(err, writeClients[i], "migrate sync summary table")
-			}
-		}
-
-		m := destinationsClients[i].Metrics()
-		summary.Errors += m.Errors
-		summary.Warnings += m.Warnings
-		resource := schema.NewResourceData(summaryTable, nil, nil)
-
-		err = resource.Set("resources", summary.Resources)
-		if err != nil {
-			return fmt.Errorf("failed to set resources: %w", err)
-		}
-		err = resource.Set("errors", summary.Errors)
-		if err != nil {
-			return fmt.Errorf("failed to set errors: %w", err)
-		}
-		err = resource.Set("warnings", summary.Warnings)
-		if err != nil {
-			return fmt.Errorf("failed to set warnings: %w", err)
-		}
-		err = resource.Set("sync_id", summary.SyncID)
-		if err != nil {
-			return fmt.Errorf("failed to set sync_id: %w", err)
-		}
-		vector := resource.GetValues()
-		arrowRecord := vector.ToArrowRecord(resource.Table.ToArrowSchema())
-
-		// arrowRecord := resource.GetValues().ToArrowRecord(resource.Table.ToArrowSchema())
-
-		transformedRecord := destinationTransformers[i].Transform(arrowRecord)
-		transformedRecordBytes, err := plugin.RecordToBytes(transformedRecord)
-		if err != nil {
-			return fmt.Errorf("failed to transform sync summary bytes: %w", err)
-		}
-		wr = &plugin.Write_Request{}
-		wr.Message = &plugin.Write_Request_Insert{
-			Insert: &plugin.Write_MessageInsert{
-				Record: transformedRecordBytes,
-			},
-		}
-		if err := writeClients[i].Send(wr); err != nil {
-			return handleSendError(err, writeClients[i], "insert sync summary")
 		}
 	}
 	return nil
