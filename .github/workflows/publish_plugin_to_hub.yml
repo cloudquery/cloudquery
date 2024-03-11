@@ -11,7 +11,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      plugin_name_undashed: ${{ steps.undash.outputs.plugin_name }}
+      plugin_name_undashed: ${{ steps.undash_plugin_name.outputs.plugin_name }}
       plugin_name: ${{ steps.split.outputs.plugin_name }}
       plugin_kind: ${{ steps.split.outputs.plugin_kind }}
       plugin_kind_plural: ${{ steps.split.outputs.plugin_kind_plural }}
