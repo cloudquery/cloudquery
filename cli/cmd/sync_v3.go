@@ -427,5 +427,6 @@ func deleteStale(client plugin.Plugin_WriteClient, tables map[string]bool, sourc
 			return err
 		}
 	}
+
 	return nil
 }
