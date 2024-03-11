@@ -439,8 +439,9 @@ func sendSummary(writeClients []plugin.Plugin_WriteClient, destinationSpecs []sp
 		if err != nil {
 			return err
 		}
+		wr := &plugin.Write_Request{}
 		if !noMigrate {
-			wr := &plugin.Write_Request{}
+
 			wr.Message = &plugin.Write_Request_MigrateTable{
 				MigrateTable: &plugin.Write_MessageMigrateTable{
 					MigrateForce: destinationSpecs[i].MigrateMode == specs.MigrateModeForced,
