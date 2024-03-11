@@ -270,7 +270,7 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 		return err
 	}
 
-	// CockroachDB doesn't support dropping NOT NULL constraints in the same transaction as the the primary key is changed
+	// CockroachDB doesn't support dropping NOT NULL constraints in the same transaction as the primary key is changed
 	// So we have to alter the PK in one transaction and then drop the old NOT NULL constraints in another transaction
 	if c.pgType == pgTypeCockroachDB {
 		if err == nil {

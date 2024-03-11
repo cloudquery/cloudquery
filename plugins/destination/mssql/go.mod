@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/mssql
 go 1.21.6
 
 require (
-	github.com/apache/arrow/go/v15 v15.0.0
+	github.com/apache/arrow/go/v15 v15.0.1
 	github.com/cloudquery/codegen v0.3.12
 	github.com/cloudquery/plugin-sdk/v4 v4.32.1
 	github.com/goccy/go-json v0.10.2

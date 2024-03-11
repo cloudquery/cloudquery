@@ -2,6 +2,7 @@
   "macOS": "macOS",
   "linux": "Linux",
   "windows": "Windows",
+  "managed": "Managed Syncs",
   "index": {
     "display": "hidden"
   }
