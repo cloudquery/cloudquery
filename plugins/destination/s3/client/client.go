@@ -33,14 +33,16 @@ type Client struct {
 	*filetypes.Client
 	writer *streamingbatchwriter.StreamingBatchWriter
 
-	s3Client   *s3.Client
-	uploader   *manager.Uploader
-	downloader *manager.Downloader
+	s3Client            *s3.Client
+	uploader            *manager.Uploader
+	downloader          *manager.Downloader
+	jsonFiletypesClient *filetypes.Client
+	objectKeys          map[string][]string
 }
 
 func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
-		logger: logger.With().Str("module", "s3").Logger(),
+		logger: logger.With().Str("module", "s3").Logger(), objectKeys: map[string][]string{},
 	}
 	if opts.NoConnection {
 		return c, nil
@@ -59,6 +61,15 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 		return nil, fmt.Errorf("failed to create filetypes client: %w", err)
 	}
 	c.Client = filetypesClient
+
+	// create a JSON filetypes client for the summary table
+	jsonFiletypesClient, err := filetypes.NewClient(&filetypes.FileSpec{
+		Format: filetypes.FormatTypeJSON,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to create JSON filetypes client: %w", err)
+	}
+	c.jsonFiletypesClient = jsonFiletypesClient
 
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithDefaultRegion("us-east-1"))
 	if err != nil {
