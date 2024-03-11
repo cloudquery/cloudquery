@@ -367,7 +367,6 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 				return err
 			}
 		}
-
 		if _, err := writeClients[i].CloseAndRecv(); err != nil {
 			return err
 		}
