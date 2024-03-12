@@ -51,7 +51,7 @@ type Spec struct {
 	InitializationConcurrency int `json:"initialization_concurrency" jsonschema:"minimum=1,default=4"`
 
 	// The best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
-	Concurrency int `json:"concurrency" jsonschema:"minimum=1,default=50000,example=50000"`
+	Concurrency int `json:"concurrency" jsonschema:"minimum=1,default=50000"`
 
 	// When set to `true` plugin will sync data from APIs that incur a fee.
 	UsePaidAPIs bool `json:"use_paid_apis" jsonschema:"default=false,example=false"`
