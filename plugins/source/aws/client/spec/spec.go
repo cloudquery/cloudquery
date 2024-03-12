@@ -48,7 +48,7 @@ type Spec struct {
 	// This setting controls how many accounts can be initialized concurrently.
 	// Only configurations with many accounts (either hardcoded or discovered via Organizations)
 	// should require modifying this setting, to either lower it to avoid rate limit errors, or to increase it to speed up the initialization process.
-	InitializationConcurrency int `json:"initialization_concurrency" jsonschema:"minimum=1,default=4,example=4"`
+	InitializationConcurrency int `json:"initialization_concurrency" jsonschema:"minimum=1,default=4"`
 
 	// The best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
 	Concurrency int `json:"concurrency" jsonschema:"minimum=1,default=50000,example=50000"`
