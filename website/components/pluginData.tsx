@@ -745,19 +745,6 @@ export const ALL_PLUGINS: Plugin[] = [
     },
   },
   {
-    name: "BitBucket",
-    id: "bitbucket",
-    href: "https://github.com/cloudquery/cloudquery/issues/5510",
-    kind: "source",
-    availability: "free",
-    category: "engineering-analytics",
-    logo: "/images/logos/plugins/bitbucket.svg",
-    buyLinks: {
-      standard: "https://buy.stripe.com/28o8wA1rHdJR9yw3cP",
-      extended: "https://buy.stripe.com/bIY9AE3zP2193a83cQ",
-    },
-  },
-  {
     name: "Chargebee",
     id: "chargebee",
     href: "https://github.com/cloudquery/cloudquery/issues/9048",

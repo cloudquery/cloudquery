@@ -1,1 +1,0 @@
-In order to fetch information from Bitbucket Cloud, `cloudquery` needs to authenticate using an [app password](https://support.atlassian.com/bitbucket-cloud/docs/app-passwords/). Follow the instructions on the Bitbucket website and create a read-only token with `account:read`, `projects:read` and `repositories:read` permissions.
