@@ -28,11 +28,16 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 		table := msg.GetTable()
 
 		if s == nil {
-			if _, ok := c.objectKeys[table.Name]; !ok {
-				c.objectKeys[table.Name] = []string{}
+			if _, ok := c.objectKeys.keys[table.Name]; !ok {
+				c.objectKeys.keys[table.Name] = []string{}
 			}
 			objKey := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC())
-			c.objectKeys[table.Name] = append(c.objectKeys[table.Name], objKey)
+			if c.objectKeys.current < c.objectKeys.limit {
+				c.objectKeys.keys[table.Name] = append(c.objectKeys.keys[table.Name], objKey)
+				c.objectKeys.current++
+			} else if c.objectKeys.current == c.objectKeys.limit {
+				c.logger.Warn().Msgf("maximum key limit reached, no more keys will be added to the `cloudquery_sync_summary` file")
+			}
 
 			if table.Name == "cloudquery_sync_summary" {
 				msg.Record = c.addObjectsSyncedToSummary(msg.Record)
@@ -76,6 +81,11 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 		if err := s.Write([]arrow.Record{msg.Record}); err != nil {
 			_ = s.FinishWithError(err)
 			return err
+		}
+		// reset the key counter to handle when there are multiple sources in the same sync
+		if table.Name == "cloudquery_sync_summary" {
+			c.objectKeys.current = 0
+			c.objectKeys.keys = make(map[string][]string)
 		}
 	}
 
