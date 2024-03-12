@@ -54,7 +54,7 @@ type Spec struct {
 	Concurrency int `json:"concurrency" jsonschema:"minimum=1,default=50000"`
 
 	// When set to `true` plugin will sync data from APIs that incur a fee.
-	UsePaidAPIs bool `json:"use_paid_apis" jsonschema:"default=false,example=false"`
+	UsePaidAPIs bool `json:"use_paid_apis" jsonschema:"default=false"`
 
 	// The scheduler to use when determining the priority of resources to sync. By default, it is set to `shuffle`.
 	//
