@@ -3,7 +3,7 @@ package spec
 // This is used to specify one or more accounts to extract information from.
 type Account struct {
 	// Will be used as an alias in the source plugin and in the logs.
-	ID string `json:"id" jsonschema:"required,minLength=1" jsonschema:"example=some_id"`
+	ID string `json:"id" jsonschema:"required,minLength=1,example=some_id"`
 
 	// Will be used as an alias in the source plugin and in the logs.
 	AccountName string `json:"account_name,omitempty" jsonschema:"example=my_aws_account_name"`
