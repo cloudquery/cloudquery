@@ -24,7 +24,7 @@ type Spec struct {
 	// - `"postgres:///mydb?host=/tmp"` _connect over unix socket_
 	// - `"dbname=mydb"` _unix domain socket, just specifying the db name - useful if you want to use peer authentication_
 	// - `"user=jack password=jack\\'ssooper\\\\secret host=localhost port=5432 dbname=mydb sslmode=disable"` _DSN with escaped backslash and single quote_
-	ConnectionString string `json:"connection_string,omitempty" jsonschema:"required,minLength=1" jsonschema_extras:"x-cq-secret=true"`
+	ConnectionString string `json:"connection_string,omitempty" jsonschema:"required,minLength=1,example=${POSTGRESQL_CONNECTION_STRING}"`
 
 	// Available: `error`, `warn`, `info`, `debug`, `trace`.
 	// Defines what [`pgx`](https://github.com/jackc/pgx) call events should be logged.
