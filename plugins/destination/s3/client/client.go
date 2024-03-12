@@ -37,12 +37,20 @@ type Client struct {
 	uploader            *manager.Uploader
 	downloader          *manager.Downloader
 	jsonFiletypesClient *filetypes.Client
-	objectKeys          map[string][]string
+	objectKeys          keyMap
 }
+
+type keyMap struct {
+	keys    map[string][]string
+	limit   int
+	current int
+}
+
+const MAX_KEYS = 10000
 
 func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
-		logger: logger.With().Str("module", "s3").Logger(), objectKeys: map[string][]string{},
+		logger: logger.With().Str("module", "s3").Logger(), objectKeys: keyMap{map[string][]string{}, MAX_KEYS, 0},
 	}
 	if opts.NoConnection {
 		return c, nil
