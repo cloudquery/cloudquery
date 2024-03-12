@@ -28,7 +28,7 @@ type Spec struct {
 	MaxRetries *int `json:"max_retries,omitempty" jsonschema:"default=10"`
 
 	// Defines the duration between retry attempts.
-	MaxBackoff *int `json:"max_backoff,omitempty" jsonschema:"default=30,example=30"`
+	MaxBackoff *int `json:"max_backoff,omitempty" jsonschema:"default=30"`
 
 	// The base URL endpoint the SDK API clients will use to make API calls to.
 	// The SDK will suffix URI path and query elements to this endpoint.
