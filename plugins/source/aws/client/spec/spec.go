@@ -36,7 +36,7 @@ type Spec struct {
 
 	// Specifies if the endpoint's hostname can be modified by the SDK's API client.
 	// When using something like LocalStack make sure to set it equal to `true`.
-	HostnameImmutable *bool `json:"custom_endpoint_hostname_immutable,omitempty" jsonschema:"default=false,example=false"`
+	HostnameImmutable *bool `json:"custom_endpoint_hostname_immutable,omitempty" jsonschema:"default=false"`
 
 	// The AWS partition the endpoint belongs to.
 	PartitionID string `json:"custom_endpoint_partition_id,omitempty" jsonschema:"default=,example=aws"`
