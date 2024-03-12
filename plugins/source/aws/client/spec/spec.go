@@ -25,7 +25,7 @@ type Spec struct {
 	AWSDebug bool `json:"aws_debug,omitempty" jsonschema:"default=false"`
 
 	// Defines the maximum number of times an API request will be retried.
-	MaxRetries *int `json:"max_retries,omitempty" jsonschema:"default=10,example=10"`
+	MaxRetries *int `json:"max_retries,omitempty" jsonschema:"default=10"`
 
 	// Defines the duration between retry attempts.
 	MaxBackoff *int `json:"max_backoff,omitempty" jsonschema:"default=30,example=30"`
