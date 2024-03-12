@@ -22,7 +22,7 @@ type Spec struct {
 	Organization *Organization `json:"org"`
 
 	// If `true`, will log AWS debug logs, including retries and other request/response metadata. Requires passing `--log-level debug` to the CloudQuery CLI.
-	AWSDebug bool `json:"aws_debug,omitempty" jsonschema:"default=false,example=false"`
+	AWSDebug bool `json:"aws_debug,omitempty" jsonschema:"default=false"`
 
 	// Defines the maximum number of times an API request will be retried.
 	MaxRetries *int `json:"max_retries,omitempty" jsonschema:"default=10,example=10"`
