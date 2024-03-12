@@ -3063,6 +3063,7 @@
             "ap-southeast-3": {},
             "ap-southeast-4": {},
             "ca-central-1": {},
+            "ca-west-1": {},
             "eu-central-1": {},
             "eu-central-2": {},
             "eu-north-1": {},
@@ -3648,6 +3649,7 @@
             "ap-southeast-3": {},
             "ap-southeast-4": {},
             "ca-central-1": {},
+            "ca-west-1": {},
             "eu-central-1": {},
             "eu-central-2": {},
             "eu-north-1": {},
@@ -5191,6 +5193,7 @@
             "ap-southeast-3": {},
             "ap-southeast-4": {},
             "ca-central-1": {},
+            "ca-west-1": {},
             "eu-central-1": {},
             "eu-central-2": {},
             "eu-north-1": {},
@@ -7296,6 +7299,12 @@
             "cn-northwest-1": {}
           }
         },
+        "network-firewall": {
+          "regions": {
+            "cn-north-1": {},
+            "cn-northwest-1": {}
+          }
+        },
         "oam": {
           "regions": {
             "cn-north-1": {},
@@ -7646,7 +7655,8 @@
         },
         "arc-zonal-shift": {
           "regions": {
-            "us-iso-east-1": {}
+            "us-iso-east-1": {},
+            "us-iso-west-1": {}
           }
         },
         "athena": {
