@@ -3,15 +3,15 @@ spec:
   name: aws
   path: cloudquery/aws
   registry: cloudquery
-  version: "v25.1.0" # latest version of source aws plugin
+  version: "v24.3.0"
   destinations: ["postgresql"]
-  tables: ["*"]
+  tables: ["aws_ec2_instances"]
 ---
 kind: destination
 spec:
   name: "postgresql"
   path: "cloudquery/postgresql"
   registry: cloudquery
-  version: "v7.3.7" # latest version of postgresql plugin
+  version: "v7.3.5"
   spec:
     connection_string: "postgresql://postgres:not-a-real-password@localhost:5432/postgres?sslmode=disable"

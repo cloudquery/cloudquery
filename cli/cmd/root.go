@@ -170,7 +170,7 @@ func NewCmdRoot() *cobra.Command {
 		newCmdLogin(),
 		newCmdLogout(),
 		newCmdSwitch(),
-		newCmdValidate(),
+		newCmdTestConnection(),
 		newCmdPluginInstall(true), // legacy
 		pluginCmd,
 		addonCmd,

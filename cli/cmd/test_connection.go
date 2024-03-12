@@ -14,28 +14,28 @@ import (
 )
 
 const (
-	validateShort   = "Validate spec(s) files"
-	validateExample = `# Validate spec(s) files
-cloudquery validate ./directory
-# Validate specs from directories and files
-cloudquery validate ./directory ./aws.yml ./pg.yml
+	testConnectionShort   = "Test plugins connection to sources and destinations"
+	testConnectionExample = `# Test plugins connection to sources and destinations
+cloudquery test-connection ./directory
+# Test plugins connection from directories and files
+cloudquery test-connection ./directory ./aws.yml ./pg.yml
 `
 )
 
-func newCmdValidate() *cobra.Command {
+func newCmdTestConnection() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:     "validate [files or directories]",
-		Short:   validateShort,
-		Long:    validateShort,
-		Example: validateExample,
+		Use:     "test-connection [files or directories]",
+		Short:   testConnectionShort,
+		Long:    testConnectionShort,
+		Example: testConnectionExample,
 		Args:    cobra.MinimumNArgs(1),
-		RunE:    validate,
+		RunE:    testConnection,
 		Hidden:  true,
 	}
 	return cmd
 }
 
-func validate(cmd *cobra.Command, args []string) error {
+func testConnection(cmd *cobra.Command, args []string) error {
 	cqDir, err := cmd.Flags().GetString("cq-dir")
 	if err != nil {
 		return err

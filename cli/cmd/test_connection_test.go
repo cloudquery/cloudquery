@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestValidate(t *testing.T) {
+func TestTestConnection(t *testing.T) {
 	configs := []struct {
 		name   string
 		config string
@@ -22,7 +22,7 @@ func TestValidate(t *testing.T) {
 		},
 		{
 			name:   "bad AWS and Postgres auth should fail validation",
-			config: "validate-bad-auth.yml",
+			config: "test-connection-bad-auth.yml",
 			errors: []string{"failed to init source aws", "failed to init destination postgresql"},
 		},
 	}
@@ -37,7 +37,7 @@ func TestValidate(t *testing.T) {
 			testConfig := path.Join(currentDir, "testdata", tc.config)
 			logFileName := path.Join(cqDir, "cloudquery.log")
 			cmd := NewCmdRoot()
-			cmd.SetArgs([]string{"validate", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName})
+			cmd.SetArgs([]string{"test-connection", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName})
 			err := cmd.Execute()
 			if tc.errors != nil {
 				for _, e := range tc.errors {
