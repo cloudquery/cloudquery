@@ -59,7 +59,7 @@ type Spec struct {
 	// The scheduler to use when determining the priority of resources to sync. By default, it is set to `shuffle`.
 	//
 	// For more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning).
-	Scheduler *scheduler.Strategy `json:"scheduler,omitempty" jsonschema:"default=shuffle,example=shuffle"`
+	Scheduler *scheduler.Strategy `json:"scheduler,omitempty" jsonschema:"default=shuffle"`
 }
 
 // JSONSchemaExtend is required to verify:
