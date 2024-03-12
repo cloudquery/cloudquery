@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.25](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.0.24...plugins-source-hackernews-v3.0.25) (2024-03-12)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.32.1 ([#17044](https://github.com/cloudquery/cloudquery/issues/17044)) ([d3592e7](https://github.com/cloudquery/cloudquery/commit/d3592e7f3ae600655778eb508aeccfa4e5b74e8c))
+* **deps:** Update module google.golang.org/grpc to v1.62.1 ([#17099](https://github.com/cloudquery/cloudquery/issues/17099)) ([4a3e667](https://github.com/cloudquery/cloudquery/commit/4a3e667c4352f7479b432a4164fe3df973313530))
+
 ## [3.0.24](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.0.23...plugins-source-hackernews-v3.0.24) (2024-03-04)
 
 
