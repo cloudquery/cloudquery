@@ -36,7 +36,7 @@ type Account struct {
 	ExternalID string `json:"external_id,omitempty" jsonschema:"example=external_id"`
 
 	// If specified, this region will be used as the default region for the account.
-	DefaultRegion string `json:"default_region,omitempty" jsonschema:"minLength=1,default=us-east-1,example=us-east-1"`
+	DefaultRegion string `json:"default_region,omitempty" jsonschema:"minLength=1,default=us-east-1"`
 
 	// Regions to use for this account. Defaults to global `regions` setting.
 	Regions []string `json:"regions,omitempty" jsonschema:"minLength=1,example=us-east-1"`
