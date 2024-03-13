@@ -33,7 +33,7 @@ type Spec struct {
 
 	// The best effort maximum number of Go routines to use.
 	// Lower this number to reduce memory usage.
-	Concurrency int `json:"concurrency" jsonschema:"minimum=1,default=50000,example=50000"`
+	Concurrency int `json:"concurrency" jsonschema:"minimum=1,default=50000"`
 
 	// During initialization the Azure source plugin discovers all resource groups
 	// and enabled resource providers per subscription, to be used later on during the sync process.
@@ -41,7 +41,7 @@ type Spec struct {
 	// This setting controls the maximum number of concurrent requests to the Azure API during discovery.
 	// Only accounts with many subscriptions should require modifying this setting,
 	// to either lower it to avoid network errors, or to increase it to speed up the discovery process.
-	DiscoveryConcurrency int `json:"discovery_concurrency" jsonschema:"minimum=1,default=400,example=400"`
+	DiscoveryConcurrency int `json:"discovery_concurrency" jsonschema:"minimum=1,default=400"`
 
 	// Retry options to pass to the Azure Go SDK, see more details
 	// [here](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L86).

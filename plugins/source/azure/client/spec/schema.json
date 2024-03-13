@@ -157,19 +157,13 @@
           "type": "integer",
           "minimum": 1,
           "description": "The best effort maximum number of Go routines to use.\nLower this number to reduce memory usage.",
-          "default": 50000,
-          "examples": [
-            50000
-          ]
+          "default": 50000
         },
         "discovery_concurrency": {
           "type": "integer",
           "minimum": 1,
           "description": "During initialization the Azure source plugin discovers all resource groups\nand enabled resource providers per subscription, to be used later on during the sync process.\nThe plugin runs the discovery process in parallel.\nThis setting controls the maximum number of concurrent requests to the Azure API during discovery.\nOnly accounts with many subscriptions should require modifying this setting,\nto either lower it to avoid network errors, or to increase it to speed up the discovery process.",
-          "default": 400,
-          "examples": [
-            400
-          ]
+          "default": 400
         },
         "retry_options": {
           "oneOf": [
