@@ -20,7 +20,7 @@ type Spec struct {
 
 	// The name of the cloud environment to use.
 	// See the [Azure CLI documentation](https://learn.microsoft.com/en-us/cli/azure/manage-clouds-azure-cli) for more information.
-	CloudName string `json:"cloud_name" jsonschema:"minLength=1,example=cloud_name"`
+	CloudName string `json:"cloud_name" jsonschema:"minLength=1,example=AzureCloud"`
 
 	// Enabling this setting will force all `id` column values to be lowercase.
 	// This is useful to avoid case sensitivity and uniqueness issues around the `id` primary keys.
