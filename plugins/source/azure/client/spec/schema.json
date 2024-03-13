@@ -97,7 +97,7 @@
                 "type": "string",
                 "minLength": 1,
                 "examples": [
-                  "subscription_id"
+                  "00000000-0000-0000-0000-000000000000"
                 ]
               },
               "type": "array",
@@ -116,7 +116,7 @@
                 "type": "string",
                 "minLength": 1,
                 "examples": [
-                  "subscription_id"
+                  "00000000-0000-0000-0000-000000000000"
                 ]
               },
               "type": "array",
@@ -138,7 +138,7 @@
           "minLength": 1,
           "description": "The name of the cloud environment to use.\nSee the [Azure CLI documentation](https://learn.microsoft.com/en-us/cli/azure/manage-clouds-azure-cli) for more information.",
           "examples": [
-            "cloud_name"
+            "AzureCloud"
           ]
         },
         "normalize_ids": {
