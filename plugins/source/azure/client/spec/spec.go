@@ -12,7 +12,7 @@ import (
 type Spec struct {
 	// Specify which subscriptions to sync data from.
 	// Empty means all visible subscriptions.
-	Subscriptions []string `json:"subscriptions" jsonschema:"minLength=1,uniqueItems=true,example=subscription_id"`
+	Subscriptions []string `json:"subscriptions" jsonschema:"minLength=1,uniqueItems=true,example=00000000-0000-0000-0000-000000000000"`
 
 	// A list of subscription IDs that CloudQuery will skip syncing.
 	// This is useful if CloudQuery is discovering the list of subscription IDs and there are some subscriptions that you want to not even attempt syncing.
