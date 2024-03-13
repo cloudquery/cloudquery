@@ -16,7 +16,7 @@ type Spec struct {
 
 	// A list of subscription IDs that CloudQuery will skip syncing.
 	// This is useful if CloudQuery is discovering the list of subscription IDs and there are some subscriptions that you want to not even attempt syncing.
-	SkipSubscriptions []string `json:"skip_subscriptions" jsonschema:"minLength=1,uniqueItems=true,example=subscription_id"`
+	SkipSubscriptions []string `json:"skip_subscriptions" jsonschema:"minLength=1,uniqueItems=true,example=00000000-0000-0000-0000-000000000000"`
 
 	// The name of the cloud environment to use.
 	// See the [Azure CLI documentation](https://learn.microsoft.com/en-us/cli/azure/manage-clouds-azure-cli) for more information.
