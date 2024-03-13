@@ -35,8 +35,7 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 			opts = append(opts, transformer.WithSyncGroupIdColumn(destinationSpecs[i].RenderedSyncGroupId(migrateStart, invocationUUID.String())))
 		}
 		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
-			opts = append(opts, transformer.WithRemovePKs(), transformer.WithRemovePKs())
-			opts = append(opts, transformer.WithRemoveUniqueConstraints())
+			opts = append(opts, transformer.WithRemovePKs(), transformer.WithRemoveUniqueConstraints())
 		} else if destinationSpecs[i].PKMode == specs.PKModeCQID {
 			opts = append(opts, transformer.WithRemovePKs())
 			opts = append(opts, transformer.WithCQIDPrimaryKey())
