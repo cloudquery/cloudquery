@@ -36,9 +36,7 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 		}
 		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
 			opts = append(opts, transformer.WithRemovePKs(), transformer.WithRemovePKs())
-			if sourceSpec.DeterministicCQID {
-				opts = append(opts, transformer.WithRemoveUniqueConstraints())
-			}
+			opts = append(opts, transformer.WithRemoveUniqueConstraints())
 		} else if destinationSpecs[i].PKMode == specs.PKModeCQID {
 			opts = append(opts, transformer.WithRemovePKs())
 			opts = append(opts, transformer.WithCQIDPrimaryKey())
