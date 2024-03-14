@@ -25,7 +25,7 @@ func TestFieldType(t *testing.T) {
 		{dataType: new(arrow.Float64Type), expected: "Float64"},
 		{dataType: &arrow.FixedSizeBinaryType{ByteWidth: 125}, expected: "FixedString(125)"},
 		{dataType: new(arrow.Date32Type), expected: "Date32"},
-		{dataType: new(arrow.Date64Type), expected: "DateTime64(3)"},
+		{dataType: new(arrow.Date64Type), expected: "DateTime"},
 	} {
 		ensureDefinition(t, tc)
 	}
