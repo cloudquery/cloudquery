@@ -31,7 +31,7 @@ func ensureRecord(t *testing.T, tc testCase) {
 		column := record.Column(0)
 		require.True(t, column.IsValid(0))
 
-		require.EqualValues(t, tc.expected, getValue0(column))
+		require.Exactly(t, tc.expected, getValue0(column))
 	})
 }
 

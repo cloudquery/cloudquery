@@ -54,6 +54,10 @@ func ColumnType(dataType arrow.DataType) (string, error) {
 		return "DateTime", nil
 
 	// https://clickhouse.com/docs/en/sql-reference/data-types/datetime64
+	case *arrow.Time32Type:
+		return timeType(dataType.Unit, nil)
+	case *arrow.Time64Type:
+		return timeType(dataType.Unit, nil)
 	case *arrow.TimestampType:
 		return timestampType(dataType)
 

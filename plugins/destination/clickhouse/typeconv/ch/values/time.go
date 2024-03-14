@@ -23,3 +23,18 @@ func timestampValue(arr *array.Timestamp) ([]*time.Time, error) {
 
 	return res, nil
 }
+
+type timeWithUnit interface {
+	ToTime(unit arrow.TimeUnit) time.Time
+}
+
+func timeValue[A timeWithUnit, ARR primitive[A]](arr ARR, unit arrow.TimeUnit) []*time.Time {
+	res := make([]*time.Time, arr.Len())
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsValid(i) {
+			val := arr.Value(i).ToTime(unit)
+			res[i] = &val
+		}
+	}
+	return res
+}

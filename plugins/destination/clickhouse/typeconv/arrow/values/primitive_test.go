@@ -18,6 +18,11 @@ func Test_primitive(t *testing.T) {
 		{dataType: new(arrow.Uint32Type), value: uint32(1234567), expected: uint32(1234567)},
 		{dataType: new(arrow.Uint64Type), value: uint64(123456789), expected: uint64(123456789)},
 
+		{dataType: &arrow.Time32Type{Unit: arrow.Second}, value: arrow.Time32(123), expected: arrow.Time32(123)},
+		{dataType: &arrow.Time32Type{Unit: arrow.Millisecond}, value: arrow.Time32(123), expected: arrow.Time32(123)},
+		{dataType: &arrow.Time64Type{Unit: arrow.Microsecond}, value: arrow.Time64(123), expected: arrow.Time64(123)},
+		{dataType: &arrow.Time64Type{Unit: arrow.Nanosecond}, value: arrow.Time64(123), expected: arrow.Time64(123)},
+
 		{dataType: new(arrow.Int8Type), value: int8(-123), expected: int8(-123)},
 		{dataType: new(arrow.Int16Type), value: int16(-12345), expected: int16(-12345)},
 		{dataType: new(arrow.Int32Type), value: int32(-1234567), expected: int32(-1234567)},

@@ -14,12 +14,10 @@ func Test_timestampType(t *testing.T) {
 	timeZone := loc.String()
 
 	for _, tc := range []testCase{
-		{dataType: &arrow.Time32Type{Unit: 128}, expected: "String"},
-		{dataType: &arrow.Time32Type{Unit: arrow.Second}, expected: "String"},
-		{dataType: &arrow.Time32Type{Unit: arrow.Millisecond}, expected: "String"},
-		{dataType: &arrow.Time64Type{Unit: 128}, expected: "String"},
-		{dataType: &arrow.Time64Type{Unit: arrow.Microsecond}, expected: "String"},
-		{dataType: &arrow.Time64Type{Unit: arrow.Nanosecond}, expected: "String"},
+		{dataType: &arrow.Time32Type{Unit: arrow.Second}, expected: "DateTime64(0)"},
+		{dataType: &arrow.Time32Type{Unit: arrow.Millisecond}, expected: "DateTime64(3)"},
+		{dataType: &arrow.Time64Type{Unit: arrow.Microsecond}, expected: "DateTime64(6)"},
+		{dataType: &arrow.Time64Type{Unit: arrow.Nanosecond}, expected: "DateTime64(9)"},
 		{dataType: &arrow.TimestampType{Unit: arrow.Second}, expected: "DateTime64(0)"},
 		{
 			dataType: &arrow.TimestampType{Unit: arrow.Second, TimeZone: timeZone},
