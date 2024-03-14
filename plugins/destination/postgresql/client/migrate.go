@@ -382,7 +382,7 @@ func (c *Client) removeUniqueConstraint(ctx context.Context, table *schema.Table
 	indexName := table.Name + "_" + change.ColumnName + "_key"
 	sqlStatement := "ALTER TABLE " + pgx.Identifier{table.Name}.Sanitize() + " DROP CONSTRAINT " + pgx.Identifier{indexName}.Sanitize()
 	if c.pgType == pgTypeCockroachDB {
-		sqlStatement = "DROP INDEX CASCADE " + pgx.Identifier{indexName}.Sanitize()
+		sqlStatement = "DROP INDEX " + pgx.Identifier{indexName}.Sanitize() + " CASCADE"
 	}
 	_, err := c.conn.Exec(ctx, sqlStatement)
 	if err != nil {
