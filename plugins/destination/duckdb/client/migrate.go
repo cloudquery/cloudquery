@@ -74,11 +74,6 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 				return err
 			}
 		}
-		if change.Type == schema.TableColumnChangeTypeRemoveUniqueConstraint {
-			if err := c.dropUniqueClause(ctx, table.Name, change.Current.Name); err != nil {
-				return err
-			}
-		}
 	}
 	return nil
 }
@@ -94,6 +89,9 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 		}
 
 		if change.Type == schema.TableColumnChangeTypeUpdate {
+			return false
+		}
+		if change.Type == schema.TableColumnChangeTypeRemoveUniqueConstraint {
 			return false
 		}
 	}
@@ -177,11 +175,6 @@ func (c *Client) recreateTable(ctx context.Context, table *schema.Table) error {
 
 func (c *Client) addColumn(ctx context.Context, tableName string, columnName string, columnType string) error {
 	sql := "alter table " + sanitizeID(tableName) + " add column " + sanitizeID(columnName) + " " + columnType
-	return c.exec(ctx, sql)
-}
-
-func (c *Client) dropUniqueClause(ctx context.Context, tableName string, columnName string) error {
-	sql := "ALTER TABLE " + sanitizeID(tableName) + " ALTER COLUMN " + sanitizeID(columnName) + " DROP UNIQUE"
 	return c.exec(ctx, sql)
 }
 
