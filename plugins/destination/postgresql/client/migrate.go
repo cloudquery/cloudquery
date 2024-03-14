@@ -380,8 +380,11 @@ func (c *Client) removeUniqueConstraint(ctx context.Context, table *schema.Table
 	// We only support the default unique constraint name
 	// If it is using a unique constraint that is not default it means CQ didn't create it so we shouldn't drop it
 	indexName := table.Name + "_" + change.ColumnName + "_key"
-
-	_, err := c.conn.Exec(ctx, "ALTER TABLE "+pgx.Identifier{table.Name}.Sanitize()+" DROP CONSTRAINT "+pgx.Identifier{indexName}.Sanitize())
+	sqlStatement := "ALTER TABLE " + pgx.Identifier{table.Name}.Sanitize() + " DROP CONSTRAINT " + pgx.Identifier{indexName}.Sanitize()
+	if c.pgType == pgTypeCockroachDB {
+		sqlStatement = "ALTER TABLE " + pgx.Identifier{table.Name}.Sanitize() + " DROP INDEX " + pgx.Identifier{indexName}.Sanitize()
+	}
+	_, err := c.conn.Exec(ctx, sqlStatement)
 	if err != nil {
 		return fmt.Errorf("failed to drop unique constraint on column %s on table %s: %w", change.ColumnName, table.Name, err)
 	}
