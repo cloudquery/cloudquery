@@ -1,6 +1,7 @@
 package values
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/apache/arrow/go/v15/arrow"
@@ -20,7 +21,7 @@ type testCase struct {
 
 func ensureRecord(t *testing.T, tc testCase) {
 	t.Helper()
-	t.Run(tc.dataType.String(), func(t *testing.T) {
+	t.Run(fmt.Sprintf("%s/%v", tc.dataType, tc.value), func(t *testing.T) {
 		t.Helper()
 		table := &schema.Table{Columns: schema.ColumnList{{Name: "field", Type: tc.dataType}}}
 		record, err := Record(table.ToArrowSchema(), []any{tc.value})

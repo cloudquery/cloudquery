@@ -55,12 +55,12 @@ func buildTime32Values(builder primitiveBuilder[arrow.Time32], value any, dt *ar
 		return nil
 	}
 
-	t := v.Sub(time.Date(0, 1, 1, 0, 0, 0, 0, time.UTC))
+	t := v.Sub(time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC))
 	switch dt.Unit {
 	case arrow.Second:
 		builder.Append(arrow.Time32(t.Seconds()))
 	case arrow.Millisecond:
-		builder.Append(arrow.Time32(t.Seconds()))
+		builder.Append(arrow.Time32(t.Milliseconds()))
 	default:
 		return fmt.Errorf("unsupported unit %q for time32", dt.Unit.String())
 	}
@@ -80,7 +80,7 @@ func buildTime64Values(builder primitiveBuilder[arrow.Time64], value any, dt *ar
 		return nil
 	}
 
-	t := v.Sub(time.Date(0, 1, 1, 0, 0, 0, 0, time.UTC))
+	t := v.Sub(time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC))
 	switch dt.Unit {
 	case arrow.Microsecond:
 		builder.Append(arrow.Time64(t.Microseconds()))

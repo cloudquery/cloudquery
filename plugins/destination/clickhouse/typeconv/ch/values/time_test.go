@@ -45,7 +45,7 @@ func Test_time32Value(t *testing.T) {
 	values := make([]time.Time, amount)
 	builder := array.NewTime32Builder(memory.DefaultAllocator, &arrow.Time32Type{Unit: arrow.Millisecond})
 	for i := range values {
-		values[i] = time.Date(1970, 1, 1, i%24, i%60, i%60, i-(i%int(time.Millisecond)), time.UTC)
+		values[i] = time.Unix(int64(i), int64(i-(i%int(time.Millisecond)))).UTC()
 		builder.Append(arrow.Time32(values[i].UnixMilli()))
 	}
 
@@ -66,7 +66,7 @@ func Test_time64Value(t *testing.T) {
 	values := make([]time.Time, amount)
 	builder := array.NewTime64Builder(memory.DefaultAllocator, &arrow.Time64Type{Unit: arrow.Nanosecond})
 	for i := range values {
-		values[i] = time.Date(1970, 1, 1, i%24, i%60, i%60, i, time.UTC)
+		values[i] = time.Unix(int64(i), int64(i)).UTC()
 		builder.Append(arrow.Time64(values[i].UnixNano()))
 	}
 
