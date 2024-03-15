@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	testConnectionShort   = "Test plugins connection to sources and destinations"
+	testConnectionShort   = "Test plugin connections to sources and destinations"
 	testConnectionExample = `# Test plugin connections to sources and destinations
 cloudquery test-connection ./directory
 # Test plugin connections from directories and files
