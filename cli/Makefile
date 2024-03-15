@@ -4,7 +4,7 @@ lint:
 
 .PHONY: test
 test:
-	go test -race ./...
+	go test -v -race ./...
 
 
 .PHONY: gen-docs
