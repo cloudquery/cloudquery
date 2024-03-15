@@ -1,0 +1,17 @@
+kind: source
+spec:
+  name: aws
+  path: cloudquery/aws
+  registry: cloudquery
+  version: "v24.3.0"
+  destinations: ["postgresql"]
+  tables: ["aws_ec2_instances"]
+---
+kind: destination
+spec:
+  name: "postgresql"
+  path: "cloudquery/postgresql"
+  registry: cloudquery
+  version: "v7.3.5"
+  spec:
+    connection_string: "postgresql://postgres:not-a-real-password@localhost:5432/postgres?sslmode=disable"
