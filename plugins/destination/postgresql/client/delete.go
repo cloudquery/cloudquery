@@ -35,7 +35,7 @@ func (c *Client) DeleteRecordsBatch(ctx context.Context, messages message.WriteD
 	batch := &pgx.Batch{}
 	for _, msg := range messages {
 		sql := generateDeleteCTE(msg.DeleteRecord)
-		vals := extractPredicateValues(msg.DeleteRecord.WhereClause)
+		vals := c.extractPredicateValues(msg.DeleteRecord.WhereClause)
 		batch.Queue(sql, vals...)
 	}
 	br := c.conn.SendBatch(ctx, batch)
@@ -121,7 +121,7 @@ func generateDeleteCTE(deleteRecord message.DeleteRecord) string {
 	return sb.String()
 }
 
-func extractPredicateValues(where message.PredicateGroups) []any {
+func (c *Client) extractPredicateValues(where message.PredicateGroups) []any {
 	predicateCount := 0
 	for _, predicateGroup := range where {
 		predicateCount += len(predicateGroup.Predicates)
@@ -131,7 +131,7 @@ func extractPredicateValues(where message.PredicateGroups) []any {
 	for _, predicateGroup := range where {
 		for _, predicate := range predicateGroup.Predicates {
 			col := predicate.Record.Column(0)
-			transformed := transformArr(col)
+			transformed := c.transformArr(col)
 			results[counter] = transformed[0]
 			counter++
 		}

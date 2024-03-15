@@ -82,6 +82,14 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 		Name: table.Name,
 	}
 	for _, col := range table.Columns {
+		if c.pgType == pgTypeCrateDB {
+			// CrateDB doesn't allow columns that start with an underscore,
+			// so we trim the leading underscore from the column name
+			col.Name = strings.TrimLeft(col.Name, "_")
+			// CrateDB does not support Unique constraints
+			col.Unique = false
+		}
+
 		// Postgres doesn't support column names longer than 63 characters
 		// and it will automatically truncate them, so we do the same here
 		// to make migrations predictable
@@ -93,6 +101,7 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 			col.NotNull = true
 		}
 		col.Type = c.PgToSchemaType(c.SchemaTypeToPg(col.Type))
+
 		normalizedTable.Columns = append(normalizedTable.Columns, col)
 		// pgTablesToPKConstraints is populated when handling migrate messages
 		if entry := c.pgTablesToPKConstraints[table.Name]; entry != nil {
@@ -261,7 +270,7 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 		return err
 	}
 
-	// CockroachDB doesn't support dropping NOT NULL constraints in the same transaction as the the primary key is changed
+	// CockroachDB doesn't support dropping NOT NULL constraints in the same transaction as the primary key is changed
 	// So we have to alter the PK in one transaction and then drop the old NOT NULL constraints in another transaction
 	if c.pgType == pgTypeCockroachDB {
 		if err == nil {

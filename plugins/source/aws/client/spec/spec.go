@@ -13,7 +13,7 @@ import (
 
 type Spec struct {
 	// Regions to use.
-	Regions []string `json:"regions,omitempty" jsonschema:"minLength=1"`
+	Regions []string `json:"regions,omitempty" jsonschema:"minLength=1,example=us-east-1"`
 
 	// List of all accounts to fetch information from.
 	Accounts []Account `json:"accounts"`
@@ -22,7 +22,7 @@ type Spec struct {
 	Organization *Organization `json:"org"`
 
 	// If `true`, will log AWS debug logs, including retries and other request/response metadata. Requires passing `--log-level debug` to the CloudQuery CLI.
-	AWSDebug bool `json:"aws_debug,omitempty"`
+	AWSDebug bool `json:"aws_debug,omitempty" jsonschema:"default=false"`
 
 	// Defines the maximum number of times an API request will be retried.
 	MaxRetries *int `json:"max_retries,omitempty" jsonschema:"default=10"`
@@ -36,13 +36,13 @@ type Spec struct {
 
 	// Specifies if the endpoint's hostname can be modified by the SDK's API client.
 	// When using something like LocalStack make sure to set it equal to `true`.
-	HostnameImmutable *bool `json:"custom_endpoint_hostname_immutable,omitempty"`
+	HostnameImmutable *bool `json:"custom_endpoint_hostname_immutable,omitempty" jsonschema:"default=false"`
 
 	// The AWS partition the endpoint belongs to.
-	PartitionID string `json:"custom_endpoint_partition_id,omitempty"`
+	PartitionID string `json:"custom_endpoint_partition_id,omitempty" jsonschema:"default=,example=aws"`
 
 	// The region that should be used for signing the request to the endpoint.
-	SigningRegion string `json:"custom_endpoint_signing_region,omitempty"`
+	SigningRegion string `json:"custom_endpoint_signing_region,omitempty" jsonschema:"default=,example=us-east-1"`
 
 	// During initialization the AWS source plugin fetches information about each account and region.
 	// This setting controls how many accounts can be initialized concurrently.
@@ -56,7 +56,7 @@ type Spec struct {
 	// When set to `true` plugin will sync data from APIs that incur a fee.
 	UsePaidAPIs bool `json:"use_paid_apis" jsonschema:"default=false"`
 
-	// The scheduler to use when determining the priority of resources to sync. By default it is set to `shuffle`.
+	// The scheduler to use when determining the priority of resources to sync. By default, it is set to `shuffle`.
 	//
 	// For more information about this, see [performance tuning](/docs/advanced-topics/performance-tuning).
 	Scheduler *scheduler.Strategy `json:"scheduler,omitempty" jsonschema:"default=shuffle"`
