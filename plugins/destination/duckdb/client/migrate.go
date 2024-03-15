@@ -91,6 +91,9 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 		if change.Type == schema.TableColumnChangeTypeUpdate {
 			return false
 		}
+		if change.Type == schema.TableColumnChangeTypeRemoveUniqueConstraint {
+			return false
+		}
 	}
 	return true
 }
