@@ -1,14 +1,22 @@
 package cmd
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"os"
 	"strings"
 
+	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
+	apiAuth "github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery/cli/internal/api"
 	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
+	"github.com/google/uuid"
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 )
@@ -21,6 +29,52 @@ cloudquery test-connection ./directory
 cloudquery test-connection ./directory ./aws.yml ./pg.yml
 `
 )
+
+func getSyncTestConnectionAPIClient() (*cloudquery_api.ClientWithResponses, error) {
+	authClient := apiAuth.NewTokenClient()
+	if authClient.GetTokenType() != apiAuth.SyncTestConnectionAPIKey {
+		return nil, nil
+	}
+
+	token, err := authClient.GetToken()
+	if err != nil {
+		return nil, err
+	}
+	return api.NewClient(token.Value)
+}
+
+func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, status cloudquery_api.SyncTestConnectionStatus) {
+	apiClient, err := getSyncTestConnectionAPIClient()
+	if err != nil {
+		logger.Warn().Err(err).Msg("Failed to get sync test connection API client")
+		return
+	}
+	if apiClient != nil {
+		teamName, syncTestConnectionId := os.Getenv("_CQ_TEAM_NAME"), os.Getenv("_CQ_SYNC_TEST_CONNECTION_ID")
+		if teamName == "" || syncTestConnectionId == "" {
+			log.Warn().Msg("Skipping sync test connection status update as environment variables are not set")
+			return
+		}
+		syncTestConnectionUUID, err := uuid.Parse(syncTestConnectionId)
+		if err != nil {
+			log.Warn().Err(err).Msg("Failed to parse sync test connection UUID")
+			return
+		}
+		log.Info().Str("status", string(status)).Msg("Sending sync test connection to API")
+		res, err := apiClient.UpdateSyncTestConnectionWithResponse(ctx, teamName, syncTestConnectionUUID, cloudquery_api.UpdateSyncTestConnectionJSONRequestBody{
+			Status: status,
+		})
+		if err != nil {
+			log.Warn().Err(err).Msg("Failed to send sync test connection to API")
+			return
+		}
+		if res.StatusCode() != http.StatusOK {
+			log.Warn().Str("status", res.Status()).Int("code", res.StatusCode()).Msg("Failed to send test connection to API")
+		} else {
+			log.Info().Str("status", string(status)).Msg("Sent sync test connection to API")
+		}
+	}
+}
 
 func newCmdTestConnection() *cobra.Command {
 	cmd := &cobra.Command{
@@ -42,6 +96,8 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	}
 
 	ctx := cmd.Context()
+	updateSyncTestConnectionStatus(cmd.Context(), log.Logger, cloudquery_api.SyncTestConnectionStatusStarted)
+
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
 	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
 	specReader, err := specs.NewSpecReader(args)
@@ -137,5 +193,12 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	return errors.Join(initErrors...)
+	allErrors := errors.Join(initErrors...)
+	status := cloudquery_api.SyncTestConnectionStatusCompleted
+	if allErrors != nil {
+		status = cloudquery_api.SyncTestConnectionStatusFailed
+	}
+	updateSyncTestConnectionStatus(ctx, log.Logger, status)
+
+	return allErrors
 }
