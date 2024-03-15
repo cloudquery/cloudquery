@@ -11,7 +11,7 @@ type decimalToBigInt interface {
 	BigInt() *big.Int
 }
 
-func decimalValue[A decimalToBigInt](arr primitive[A]) []*decimal.Decimal {
+func decimalValue[A decimalToBigInt, ARR primitive[A]](arr ARR) []*decimal.Decimal {
 	// decimal.Decimal = big.Int * (10 ^ exp)
 	scale := arr.DataType().(arrow.DecimalType).GetScale()
 

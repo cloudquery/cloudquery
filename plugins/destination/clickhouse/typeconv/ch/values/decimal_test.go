@@ -46,8 +46,7 @@ func Test_decimal128Value(t *testing.T) {
 				in[i] = &num
 			}
 
-			arr := builder.NewArray()
-			out := decimalValue[decimal128.Num](arr.(*array.Decimal128))
+			out := decimalValue(builder.NewDecimal128Array())
 
 			require.Equal(t, amount, len(out))
 			for i, out := range out {
@@ -96,8 +95,7 @@ func Test_decimal256Value(t *testing.T) {
 				in[i] = &num
 			}
 
-			arr := builder.NewArray()
-			out := decimalValue[decimal256.Num](arr.(*array.Decimal256))
+			out := decimalValue(builder.NewDecimal256Array())
 
 			require.Equal(t, amount, len(out))
 			for i, out := range out {

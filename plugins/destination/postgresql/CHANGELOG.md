@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.4.0...plugins-destination-postgresql-v7.5.0) (2024-03-12)
+
+
+### Features
+
+* Add connection string example to JSON schema ([#17113](https://github.com/cloudquery/cloudquery/issues/17113)) ([ed63346](https://github.com/cloudquery/cloudquery/commit/ed63346534b2f4d7502a6d9c793caf696385bb6a))
+
 ## [7.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.3.8...plugins-destination-postgresql-v7.4.0) (2024-03-12)
 
 
