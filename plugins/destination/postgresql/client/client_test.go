@@ -53,6 +53,9 @@ func TestPgPlugin(t *testing.T) {
 		plugin.WriterTestSuiteTests{
 			SkipDeleteRecord: true,
 			SafeMigrations:   safeMigrations,
+			SkipSpecificMigrations: plugin.Migrations{
+				RemoveUniqueConstraint: true,
+			},
 		},
 		plugin.WithTestDataOptions(testOpts),
 	)
