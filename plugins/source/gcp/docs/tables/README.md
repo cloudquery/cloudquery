@@ -36,6 +36,7 @@
   - [gcp_compute_machine_types](gcp_compute_machine_types.md)
   - [gcp_compute_osconfig_inventories](gcp_compute_osconfig_inventories.md)
 - [gcp_container_clusters](gcp_container_clusters.md)
+- [gcp_iam_predefined_roles](gcp_iam_predefined_roles.md)
 - [gcp_sql_instances](gcp_sql_instances.md)
   - [gcp_sql_users](gcp_sql_users.md)
 - [gcp_storage_buckets](gcp_storage_buckets.md)
