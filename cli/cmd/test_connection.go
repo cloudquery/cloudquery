@@ -17,7 +17,7 @@ const (
 	testConnectionShort   = "Test plugins connection to sources and destinations"
 	testConnectionExample = `# Test plugin connections to sources and destinations
 cloudquery test-connection ./directory
-# Test plugins connection from directories and files
+# Test plugin connections from directories and files
 cloudquery test-connection ./directory ./aws.yml ./pg.yml
 `
 )
