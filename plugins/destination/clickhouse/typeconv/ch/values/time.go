@@ -7,21 +7,6 @@ import (
 	"github.com/apache/arrow/go/v15/arrow/array"
 )
 
-type date interface {
-	ToTime() time.Time
-}
-
-func dateValue[A date](arr primitive[A]) []*time.Time {
-	res := make([]*time.Time, arr.Len())
-	for i := 0; i < arr.Len(); i++ {
-		if arr.IsValid(i) {
-			val := arr.Value(i).ToTime()
-			res[i] = &val
-		}
-	}
-	return res
-}
-
 func timestampValue(arr *array.Timestamp) ([]*time.Time, error) {
 	conv, err := arr.DataType().(*arrow.TimestampType).GetToTimeFunc()
 	if err != nil {
@@ -37,4 +22,19 @@ func timestampValue(arr *array.Timestamp) ([]*time.Time, error) {
 	}
 
 	return res, nil
+}
+
+type timeWithUnit interface {
+	ToTime(unit arrow.TimeUnit) time.Time
+}
+
+func timeValue[A timeWithUnit, ARR primitive[A]](arr ARR, unit arrow.TimeUnit) []*time.Time {
+	res := make([]*time.Time, arr.Len())
+	for i := 0; i < arr.Len(); i++ {
+		if arr.IsValid(i) {
+			val := arr.Value(i).ToTime(unit)
+			res[i] = &val
+		}
+	}
+	return res
 }

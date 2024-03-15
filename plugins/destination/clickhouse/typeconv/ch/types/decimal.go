@@ -43,10 +43,3 @@ func ensureBetween[A constraints.Ordered](x, from, to A) A {
 
 	return x
 }
-
-func max[A constraints.Ordered](x, y A) A {
-	if x < y {
-		return y
-	}
-	return x
-}

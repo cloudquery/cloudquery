@@ -1,9 +1,9 @@
 package values
 
 import (
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/apache/arrow/go/v15/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/types"
-	"github.com/google/uuid"
 )
 
 func buildValue(builder array.Builder, value any) error {
@@ -15,35 +15,35 @@ func buildValue(builder array.Builder, value any) error {
 
 	switch builder := builder.(type) {
 	case *array.BooleanBuilder:
-		buildPrimitive[bool](builder, value)
+		buildPrimitive(builder, value)
 
 	case *array.Uint8Builder:
-		buildPrimitive[uint8](builder, value)
+		buildPrimitive(builder, value)
 	case *array.Uint16Builder:
-		buildPrimitive[uint16](builder, value)
+		buildPrimitive(builder, value)
 	case *array.Uint32Builder:
-		buildPrimitive[uint32](builder, value)
+		buildPrimitive(builder, value)
 	case *array.Uint64Builder:
-		buildPrimitive[uint64](builder, value)
+		buildPrimitive(builder, value)
 
 	case *array.Int8Builder:
-		buildPrimitive[int8](builder, value)
+		buildPrimitive(builder, value)
 	case *array.Int16Builder:
-		buildPrimitive[int16](builder, value)
+		buildPrimitive(builder, value)
 	case *array.Int32Builder:
-		buildPrimitive[int32](builder, value)
+		buildPrimitive(builder, value)
 	case *array.Int64Builder:
-		buildPrimitive[int64](builder, value)
+		buildPrimitive(builder, value)
 
 	case *array.Float16Builder:
 		buildFloat16(builder, value)
 	case *array.Float32Builder:
-		buildPrimitive[float32](builder, value)
+		buildPrimitive(builder, value)
 	case *array.Float64Builder:
-		buildPrimitive[float64](builder, value)
+		buildPrimitive(builder, value)
 
 	case *array.StringBuilder:
-		buildPrimitive[string](builder, value)
+		buildPrimitive(builder, value)
 
 	case *array.BinaryBuilder: // also handles the LargeSizeBinaryBuilder
 		buildBinary(builder, value)
@@ -55,6 +55,10 @@ func buildValue(builder array.Builder, value any) error {
 	case *array.Date64Builder:
 		buildDate64Values(builder, value)
 
+	case *array.Time32Builder:
+		return buildTime32Values(builder, value, builder.Type().(*arrow.Time32Type))
+	case *array.Time64Builder:
+		return buildTime64Values(builder, value, builder.Type().(*arrow.Time64Type))
 	case *array.TimestampBuilder:
 		return buildTimestampValues(builder, value)
 
@@ -64,7 +68,7 @@ func buildValue(builder array.Builder, value any) error {
 		buildDecimal256(builder, value)
 
 	case *types.UUIDBuilder:
-		buildPrimitive[uuid.UUID](builder, value)
+		buildPrimitive(builder, value)
 
 	case *types.InetBuilder:
 		const zero = "0.0.0.0/0"
