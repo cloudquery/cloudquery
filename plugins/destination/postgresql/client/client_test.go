@@ -22,11 +22,12 @@ func getTestConnection() string {
 }
 
 var safeMigrations = plugin.SafeMigrations{
-	AddColumn:           true,
-	AddColumnNotNull:    false,
-	RemoveColumn:        true,
-	RemoveColumnNotNull: false,
-	MovePKToCQOnly:      true,
+	AddColumn:              true,
+	AddColumnNotNull:       false,
+	RemoveColumn:           true,
+	RemoveColumnNotNull:    false,
+	RemoveUniqueConstraint: true,
+	MovePKToCQOnly:         true,
 }
 
 func TestPgPlugin(t *testing.T) {
@@ -53,9 +54,6 @@ func TestPgPlugin(t *testing.T) {
 		plugin.WriterTestSuiteTests{
 			SkipDeleteRecord: true,
 			SafeMigrations:   safeMigrations,
-			SkipSpecificMigrations: plugin.Migrations{
-				RemoveUniqueConstraint: true,
-			},
 		},
 		plugin.WithTestDataOptions(testOpts),
 	)

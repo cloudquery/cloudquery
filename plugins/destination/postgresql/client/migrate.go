@@ -126,6 +126,11 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 			if err != nil {
 				return err
 			}
+		case schema.TableColumnChangeTypeRemoveUniqueConstraint:
+			err := c.removeUniqueConstraint(ctx, table, change)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil
@@ -159,6 +164,8 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 
 	for _, change := range changes {
 		switch change.Type {
+		case schema.TableColumnChangeTypeRemoveUniqueConstraint:
+			continue
 		case schema.TableColumnChangeTypeAdd:
 			if change.Current.PrimaryKey || change.Current.NotNull {
 				return false
@@ -365,6 +372,21 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	if err != nil {
 		c.logger.Error().Err(err).Str("table", tableName).Str("query", sb.String()).Msg("Failed to create table")
 		return fmt.Errorf("failed to create table %s: %w"+sb.String(), tableName, err)
+	}
+	return nil
+}
+
+func (c *Client) removeUniqueConstraint(ctx context.Context, table *schema.Table, change schema.TableColumnChange) error {
+	// We only support the default unique constraint name
+	// If it is using a unique constraint that is not default it means CQ didn't create it so we shouldn't drop it
+	indexName := table.Name + "_" + change.ColumnName + "_key"
+	sqlStatement := "ALTER TABLE " + pgx.Identifier{table.Name}.Sanitize() + " DROP CONSTRAINT " + pgx.Identifier{indexName}.Sanitize()
+	if c.pgType == pgTypeCockroachDB {
+		sqlStatement = "DROP INDEX " + pgx.Identifier{indexName}.Sanitize() + " CASCADE"
+	}
+	_, err := c.conn.Exec(ctx, sqlStatement)
+	if err != nil {
+		return fmt.Errorf("failed to drop unique constraint on column %s on table %s: %w", change.ColumnName, table.Name, err)
 	}
 	return nil
 }
