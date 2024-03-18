@@ -1,43 +1,12 @@
 package values
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/apache/arrow/go/v15/arrow/array"
 )
-
-func buildDate32Values(builder primitiveBuilder[arrow.Date32], value any) {
-	v, ok := unwrap[time.Time](value)
-	if !ok {
-		builder.AppendNull()
-		return
-	}
-
-	if v.IsZero() {
-		// work-around for empty values
-		builder.AppendEmptyValue()
-		return
-	}
-
-	builder.Append(arrow.Date32FromTime(v))
-}
-
-func buildDate64Values(builder primitiveBuilder[arrow.Date64], value any) {
-	v, ok := unwrap[time.Time](value)
-	if !ok {
-		builder.AppendNull()
-		return
-	}
-
-	if v.IsZero() {
-		// work-around for empty values
-		builder.AppendEmptyValue()
-		return
-	}
-
-	builder.Append(arrow.Date64FromTime(v))
-}
 
 func buildTimestampValues(builder *array.TimestampBuilder, value any) error {
 	v, ok := unwrap[time.Time](value)
@@ -71,4 +40,54 @@ func timeToTimestamp(value time.Time, tsType *arrow.TimestampType) (arrow.Timest
 	}
 
 	return arrow.TimestampFromTime(value, tsType.Unit)
+}
+
+func buildTime32Values(builder primitiveBuilder[arrow.Time32], value any, dt *arrow.Time32Type) error {
+	v, ok := unwrap[time.Time](value)
+	if !ok {
+		builder.AppendNull()
+		return nil
+	}
+
+	if v.IsZero() {
+		// work-around for empty values
+		builder.AppendEmptyValue()
+		return nil
+	}
+
+	t := v.Sub(time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC))
+	switch dt.Unit {
+	case arrow.Second:
+		builder.Append(arrow.Time32(t.Seconds()))
+	case arrow.Millisecond:
+		builder.Append(arrow.Time32(t.Milliseconds()))
+	default:
+		return fmt.Errorf("unsupported unit %q for time32", dt.Unit.String())
+	}
+	return nil
+}
+
+func buildTime64Values(builder primitiveBuilder[arrow.Time64], value any, dt *arrow.Time64Type) error {
+	v, ok := unwrap[time.Time](value)
+	if !ok {
+		builder.AppendNull()
+		return nil
+	}
+
+	if v.IsZero() {
+		// work-around for empty values
+		builder.AppendEmptyValue()
+		return nil
+	}
+
+	t := v.Sub(time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC))
+	switch dt.Unit {
+	case arrow.Microsecond:
+		builder.Append(arrow.Time64(t.Microseconds()))
+	case arrow.Nanosecond:
+		builder.Append(arrow.Time64(t.Nanoseconds()))
+	default:
+		return fmt.Errorf("unsupported unit %q for time64", dt.Unit.String())
+	}
+	return nil
 }

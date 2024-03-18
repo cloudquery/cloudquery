@@ -25,7 +25,11 @@ func TestFieldType(t *testing.T) {
 		{dataType: new(arrow.Float64Type), expected: "Float64"},
 		{dataType: &arrow.FixedSizeBinaryType{ByteWidth: 125}, expected: "FixedString(125)"},
 		{dataType: new(arrow.Date32Type), expected: "Date32"},
-		{dataType: new(arrow.Date64Type), expected: "DateTime64(3)"},
+		{dataType: new(arrow.Date64Type), expected: "DateTime"},
+		{dataType: &arrow.Time32Type{Unit: arrow.Second}, expected: "DateTime64(0)"},
+		{dataType: &arrow.Time32Type{Unit: arrow.Millisecond}, expected: "DateTime64(3)"},
+		{dataType: &arrow.Time64Type{Unit: arrow.Microsecond}, expected: "DateTime64(6)"},
+		{dataType: &arrow.Time64Type{Unit: arrow.Nanosecond}, expected: "DateTime64(9)"},
 	} {
 		ensureDefinition(t, tc)
 	}

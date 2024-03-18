@@ -20,6 +20,8 @@ type Client struct {
 	tables    schema.Tables
 	scheduler *scheduler.Scheduler
 
+	schedulerClient schema.ClientMeta
+
 	plugin.UnimplementedDestination
 }
 
@@ -37,12 +39,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		c.logger.Warn().Msg("State backend not supported in plugin, skipping")
 	}
 
-	schedulerClient, err := client.New(ctx, c.logger, c.config)
-	if err != nil {
-		return err
-	}
-
-	return c.scheduler.Sync(ctx, schedulerClient, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
+	return c.scheduler.Sync(ctx, c.schedulerClient, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
 }
 
 func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.Tables, error) {
@@ -57,7 +54,7 @@ func (*Client) Close(_ context.Context) error {
 	return nil
 }
 
-func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
+func Configure(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	if opts.NoConnection {
 		return &Client{
 			logger: logger,
@@ -74,6 +71,11 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 		return nil, fmt.Errorf("failed to validate spec: %w", err)
 	}
 
+	schedulerClient, err := client.New(ctx, logger, *config)
+	if err != nil {
+		return nil, err
+	}
+
 	return &Client{
 		config: *config,
 		logger: logger,
@@ -81,6 +83,7 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 			scheduler.WithLogger(logger),
 			scheduler.WithConcurrency(config.Concurrency),
 		),
-		tables: getTables(),
+		tables:          getTables(),
+		schedulerClient: schedulerClient,
 	}, nil
 }

@@ -9,7 +9,7 @@ type primitive[A any] interface {
 	Value(int) A
 }
 
-func primitiveValue[A any](arr primitive[A]) []*A {
+func primitiveValue[A any, ARR primitive[A]](arr ARR) []*A {
 	res := make([]*A, arr.Len())
 	for i := 0; i < arr.Len(); i++ {
 		if arr.IsValid(i) {

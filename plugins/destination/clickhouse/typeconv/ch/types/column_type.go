@@ -48,9 +48,16 @@ func ColumnType(dataType arrow.DataType) (string, error) {
 	case *arrow.Date32Type:
 		return "Date32", nil
 
-	// https://clickhouse.com/docs/en/sql-reference/data-types/datetime64
+	// https://clickhouse.com/docs/en/sql-reference/data-types/datetime
+	// Although `date64` claims millisecond precision, having it not on the date border is UB.
 	case *arrow.Date64Type:
-		return "DateTime64(3)", nil // 3 = milliseconds
+		return "DateTime", nil
+
+	// https://clickhouse.com/docs/en/sql-reference/data-types/datetime64
+	case *arrow.Time32Type:
+		return timeType(dataType.Unit, nil)
+	case *arrow.Time64Type:
+		return timeType(dataType.Unit, nil)
 	case *arrow.TimestampType:
 		return timestampType(dataType)
 

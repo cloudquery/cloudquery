@@ -9,7 +9,7 @@ type primitiveBuilder[A any] interface {
 	Append(A)
 }
 
-func buildPrimitive[A any](builder primitiveBuilder[A], value any) {
+func buildPrimitive[A any, B primitiveBuilder[A]](builder B, value any) {
 	v, ok := unwrap[A](value)
 	if !ok {
 		builder.AppendNull()

@@ -20,8 +20,12 @@ func timestampType(tsType *arrow.TimestampType) (string, error) {
 		loc = nil
 	}
 
+	return timeType(tsType.Unit, loc)
+}
+
+func timeType(unit arrow.TimeUnit, loc *time.Location) (string, error) {
 	var precision int
-	switch unit := tsType.TimeUnit(); unit {
+	switch unit {
 	case arrow.Second:
 		precision = 0
 	case arrow.Millisecond:
@@ -31,7 +35,7 @@ func timestampType(tsType *arrow.TimestampType) (string, error) {
 	case arrow.Nanosecond:
 		precision = 9
 	default:
-		return "", fmt.Errorf("unsupported Apache Arrow Timestamp time unit: %s", unit.String())
+		return "", fmt.Errorf("unsupported Apache Arrow time unit: %s", unit.String())
 	}
 
 	if loc != nil {

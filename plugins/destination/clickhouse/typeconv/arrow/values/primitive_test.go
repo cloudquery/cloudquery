@@ -2,6 +2,7 @@ package values
 
 import (
 	"testing"
+	"time"
 
 	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/apache/arrow/go/v15/arrow/float16"
@@ -17,6 +18,11 @@ func Test_primitive(t *testing.T) {
 		{dataType: new(arrow.Uint16Type), value: uint16(12345), expected: uint16(12345)},
 		{dataType: new(arrow.Uint32Type), value: uint32(1234567), expected: uint32(1234567)},
 		{dataType: new(arrow.Uint64Type), value: uint64(123456789), expected: uint64(123456789)},
+
+		{dataType: &arrow.Time32Type{Unit: arrow.Second}, value: time.Unix(123, 0).UTC(), expected: arrow.Time32(123)},
+		{dataType: &arrow.Time32Type{Unit: arrow.Millisecond}, value: time.UnixMilli(123).UTC(), expected: arrow.Time32(123)},
+		{dataType: &arrow.Time64Type{Unit: arrow.Microsecond}, value: time.UnixMicro(123).UTC(), expected: arrow.Time64(123)},
+		{dataType: &arrow.Time64Type{Unit: arrow.Nanosecond}, value: time.Unix(0, 123).UTC(), expected: arrow.Time64(123)},
 
 		{dataType: new(arrow.Int8Type), value: int8(-123), expected: int8(-123)},
 		{dataType: new(arrow.Int16Type), value: int16(-12345), expected: int16(-12345)},
