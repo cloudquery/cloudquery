@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
@@ -29,6 +30,7 @@ Find more information at:
 	disableSentry   = false
 	analyticsClient *AnalyticsClient
 	logFile         *os.File
+	invocationUUID  uuid.UUID
 )
 
 func NewCmdRoot() *cobra.Command {
@@ -67,6 +69,12 @@ func NewCmdRoot() *cobra.Command {
 			// PersistentPreRunE runs after argument parsing, so errors during parsing will result in printing the help
 			cmd.SilenceUsage = true
 			var err error
+
+			invocationUUID, err = uuid.NewRandom()
+			if err != nil {
+				return fmt.Errorf("failed to generate invocation uuid: %w", err)
+			}
+
 			if logFile, err = initLogging(noLogFile, logLevel, logFormat, logConsole, logFileName); err != nil {
 				return err
 			}
@@ -162,6 +170,7 @@ func NewCmdRoot() *cobra.Command {
 		newCmdLogin(),
 		newCmdLogout(),
 		newCmdSwitch(),
+		newCmdTestConnection(),
 		newCmdPluginInstall(true), // legacy
 		pluginCmd,
 		addonCmd,

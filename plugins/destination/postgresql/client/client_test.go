@@ -22,11 +22,12 @@ func getTestConnection() string {
 }
 
 var safeMigrations = plugin.SafeMigrations{
-	AddColumn:           true,
-	AddColumnNotNull:    false,
-	RemoveColumn:        true,
-	RemoveColumnNotNull: false,
-	MovePKToCQOnly:      true,
+	AddColumn:              true,
+	AddColumnNotNull:       false,
+	RemoveColumn:           true,
+	RemoveColumnNotNull:    false,
+	RemoveUniqueConstraint: true,
+	MovePKToCQOnly:         true,
 }
 
 func TestPgPlugin(t *testing.T) {

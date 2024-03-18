@@ -50,6 +50,9 @@ func TestPlugin(t *testing.T) {
 				// MovePKToCQOnly- is only a change to the underlying PKs, and because clickhouse only supports append only mode this is not a factor
 				MovePKToCQOnly: true,
 			},
+			SkipSpecificMigrations: plugin.Migrations{
+				RemoveUniqueConstraint: true,
+			},
 		},
 		plugin.WithTestSourceAllowNull(types.CanBeNullable),
 	)
