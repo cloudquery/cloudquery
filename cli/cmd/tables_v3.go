@@ -20,7 +20,7 @@ func tablesV3(ctx context.Context, sourceClient *managedplugin.Client, path stri
 		return err
 	}
 	sourcePbClient := pluginPb.NewPluginClient(sourceClient.Conn)
-	if err := initPlugin(ctx, sourcePbClient, nil, true); err != nil {
+	if err := initPlugin(ctx, sourcePbClient, nil, true, invocationUUID.String()); err != nil {
 		return fmt.Errorf("failed to init source: %w", err)
 	}
 	getTablesResp, err := sourcePbClient.GetTables(ctx, &pluginPb.GetTables_Request{
