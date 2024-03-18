@@ -45,34 +45,35 @@ func getSyncTestConnectionAPIClient() (*cloudquery_api.ClientWithResponses, erro
 
 func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, status cloudquery_api.SyncTestConnectionStatus) {
 	apiClient, err := getSyncTestConnectionAPIClient()
+	if apiClient == nil {
+		return
+	}
 	if err != nil {
 		logger.Warn().Err(err).Msg("Failed to get sync test connection API client")
 		return
 	}
-	if apiClient != nil {
-		teamName, syncTestConnectionId := os.Getenv("_CQ_TEAM_NAME"), os.Getenv("_CQ_SYNC_TEST_CONNECTION_ID")
-		if teamName == "" || syncTestConnectionId == "" {
-			log.Warn().Msg("Skipping sync test connection status update as environment variables are not set")
-			return
-		}
-		syncTestConnectionUUID, err := uuid.Parse(syncTestConnectionId)
-		if err != nil {
-			log.Warn().Err(err).Msg("Failed to parse sync test connection UUID")
-			return
-		}
-		log.Info().Str("status", string(status)).Msg("Sending sync test connection to API")
-		res, err := apiClient.UpdateSyncTestConnectionWithResponse(ctx, teamName, syncTestConnectionUUID, cloudquery_api.UpdateSyncTestConnectionJSONRequestBody{
-			Status: status,
-		})
-		if err != nil {
-			log.Warn().Err(err).Msg("Failed to send sync test connection to API")
-			return
-		}
-		if res.StatusCode() != http.StatusOK {
-			log.Warn().Str("status", res.Status()).Int("code", res.StatusCode()).Msg("Failed to send test connection to API")
-		} else {
-			log.Info().Str("status", string(status)).Msg("Sent sync test connection to API")
-		}
+	teamName, syncTestConnectionId := os.Getenv("_CQ_TEAM_NAME"), os.Getenv("_CQ_SYNC_TEST_CONNECTION_ID")
+	if teamName == "" || syncTestConnectionId == "" {
+		log.Warn().Msg("Skipping sync test connection status update as environment variables are not set")
+		return
+	}
+	syncTestConnectionUUID, err := uuid.Parse(syncTestConnectionId)
+	if err != nil {
+		log.Warn().Err(err).Msg("Failed to parse sync test connection UUID")
+		return
+	}
+	log.Info().Str("status", string(status)).Msg("Sending sync test connection to API")
+	res, err := apiClient.UpdateSyncTestConnectionWithResponse(ctx, teamName, syncTestConnectionUUID, cloudquery_api.UpdateSyncTestConnectionJSONRequestBody{
+		Status: status,
+	})
+	if err != nil {
+		log.Warn().Err(err).Msg("Failed to send sync test connection to API")
+		return
+	}
+	if res.StatusCode() != http.StatusOK {
+		log.Warn().Str("status", res.Status()).Int("code", res.StatusCode()).Msg("Failed to send test connection to API")
+	} else {
+		log.Info().Str("status", string(status)).Msg("Sent sync test connection to API")
 	}
 }
 
