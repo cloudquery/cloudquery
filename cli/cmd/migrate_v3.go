@@ -98,6 +98,16 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 				return handleSendError(err, writeClients[i], "migrate")
 			}
 		}
+		if destinationSpecs[i].SyncSummary {
+			wr, err := generateSummaryMigrateMessage(destinationTransformers[i], destinationSpecs[i])
+			if err != nil {
+				return err
+			}
+			if err := writeClients[i].Send(wr); err != nil {
+				return handleSendError(err, writeClients[i], "migrate sync summary table")
+			}
+		}
+
 		if _, err := writeClients[i].CloseAndRecv(); err != nil {
 			return err
 		}
