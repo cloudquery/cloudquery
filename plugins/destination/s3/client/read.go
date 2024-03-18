@@ -24,7 +24,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 		return fmt.Errorf("reading is not supported when path contains uuid variable. Table: %q", table.Name)
 	}
 
-	name := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Time{})
+	name := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Time{}, c.syncID)
 	writerAtBuffer := manager.NewWriteAtBuffer(make([]byte, 0, maxFileSize))
 	_, err := c.downloader.Download(ctx,
 		writerAtBuffer,
