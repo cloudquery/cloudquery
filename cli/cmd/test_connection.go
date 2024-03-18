@@ -45,11 +45,11 @@ func getSyncTestConnectionAPIClient() (*cloudquery_api.ClientWithResponses, erro
 
 func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, status cloudquery_api.SyncTestConnectionStatus) {
 	apiClient, err := getSyncTestConnectionAPIClient()
-	if apiClient == nil {
-		return
-	}
 	if err != nil {
 		logger.Warn().Err(err).Msg("Failed to get sync test connection API client")
+		return
+	}
+	if apiClient == nil {
 		return
 	}
 	teamName, syncTestConnectionId := os.Getenv("_CQ_TEAM_NAME"), os.Getenv("_CQ_SYNC_TEST_CONNECTION_ID")
