@@ -138,7 +138,8 @@ The max number of bytes to use for a single batch. Only applies to plugins that 
 (`bool`, optional, default: `false`)
 
 **Preview**. When set to `true`, CloudQuery will generate a table named `_cq_sync_summary` that includes summary details about the sync. This table will be created in the destination database and will be updated after each sync. If you are syncing multiple sources then each Source + Destination pair will be a separate row in the table. The table will include the following columns:
-	
+<!-- vale off -->
+
   column name          | type
   -------------------- | ----
   cli_version          | string
@@ -154,5 +155,5 @@ The max number of bytes to use for a single batch. Only applies to plugins that 
 	source_version       | string
 	source_warnings      | uint64
 	sync_id              | string
-
+<!-- vale on -->
 Destinations might append additional columns to this table, that are specific to the destination.
