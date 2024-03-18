@@ -218,6 +218,11 @@ export default withNextra({
         permanent: true,
         destination: "https://github.com/cloudquery/cloudquery/releases",
       },
+      {
+        source: "/register-for-cloud",
+        permanent: true,
+        destination: "https://cloud.cloudquery.io/auth/register",
+      }
     ];
   },
   webpack: (config) => {
