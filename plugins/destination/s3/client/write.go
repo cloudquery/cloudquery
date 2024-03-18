@@ -39,7 +39,7 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 				c.logger.Warn().Msgf("maximum key limit reached, no more keys will be added to the `cloudquery_sync_summary` file")
 			}
 
-			if table.Name == "cloudquery_sync_summary" {
+			if table.Name == "_cq_sync_summary" {
 				msg.Record = c.addObjectsSyncedToSummary(msg.Record)
 				table = msg.GetTable()
 				// The summary table is always represented as a JSON file
