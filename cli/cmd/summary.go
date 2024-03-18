@@ -44,30 +44,39 @@ func generateSummaryTable() *schema.Table {
 	return t[0]
 }
 
-func sendSummary(writeClients []plugin.Plugin_WriteClient, destinationSpecs []specs.Destination, destinationsClients []*managedplugin.Client, destinationTransformers []*transformer.RecordTransformer, summary *syncSummary, noMigrate bool) error {
+func generateSummaryMigrateMessage(destTransformer *transformer.RecordTransformer, destSpec specs.Destination) (*plugin.Write_Request, error) {
+	// generate schema of the summary table
 	summaryTable := generateSummaryTable()
 	summaryTableSchema := summaryTable.ToArrowSchema()
+	transformedSchema := destTransformer.TransformSchema(summaryTableSchema)
+	transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
+	if err != nil {
+		return nil, err
+	}
 
+	return &plugin.Write_Request{
+		Message: &plugin.Write_Request_MigrateTable{
+			MigrateTable: &plugin.Write_MessageMigrateTable{
+				MigrateForce: destSpec.MigrateMode == specs.MigrateModeForced,
+				Table:        transformedSchemaBytes,
+			},
+		},
+	}, nil
+}
+
+func sendSummary(writeClients []plugin.Plugin_WriteClient, destinationSpecs []specs.Destination, destinationsClients []*managedplugin.Client, destinationTransformers []*transformer.RecordTransformer, summary *syncSummary, noMigrate bool) error {
+	summaryTable := generateSummaryTable()
 	defaultCaser := caser.New()
 	for i := range destinationsClients {
 		if !destinationSpecs[i].SyncSummary {
 			continue
 		}
-
-		transformedSchema := destinationTransformers[i].TransformSchema(summaryTableSchema)
-		transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
-		if err != nil {
-			return err
-		}
 		wr := &plugin.Write_Request{}
-
 		// Respect the noMigrate flag
 		if !noMigrate {
-			wr.Message = &plugin.Write_Request_MigrateTable{
-				MigrateTable: &plugin.Write_MessageMigrateTable{
-					MigrateForce: destinationSpecs[i].MigrateMode == specs.MigrateModeForced,
-					Table:        transformedSchemaBytes,
-				},
+			wr, err := generateSummaryMigrateMessage(destinationTransformers[i], destinationSpecs[i])
+			if err != nil {
+				return err
 			}
 			if err := writeClients[i].Send(wr); err != nil {
 				return handleSendError(err, writeClients[i], "migrate sync summary table")
@@ -85,7 +94,7 @@ func sendSummary(writeClients []plugin.Plugin_WriteClient, destinationSpecs []sp
 
 		resource := schema.NewResourceData(summaryTable, nil, nil)
 		for _, col := range summaryTable.Columns {
-			err = resource.Set(col.Name, funk.Get(summary, defaultCaser.ToPascal(col.Name)))
+			err := resource.Set(col.Name, funk.Get(summary, defaultCaser.ToPascal(col.Name)))
 			if err != nil {
 				return fmt.Errorf("failed to set %s: %w", col.Name, err)
 			}
