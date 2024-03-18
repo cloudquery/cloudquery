@@ -30,7 +30,7 @@ type syncSummary struct {
 }
 
 func generateSummaryTable() *schema.Table {
-	tableName := "cloudquery_sync_summary"
+	tableName := "_cq_sync_summary"
 	t := schema.Tables{{
 		Name:      tableName,
 		Transform: transformers.TransformWithStruct(&syncSummary{}),
