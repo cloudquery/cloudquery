@@ -14,7 +14,7 @@ import (
 
 var registerOnce = gosync.OnceValue(types.RegisterAllExtensions)
 
-func tablesV3(ctx context.Context, sourceClient *managedplugin.Client, sourceSpec any, path string, format string) error {
+func tablesV3(ctx context.Context, sourceClient *managedplugin.Client, sourceSpec map[string]any, path string, format string) error {
 	err := registerOnce()
 	if err != nil {
 		return err
