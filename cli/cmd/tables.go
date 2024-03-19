@@ -111,7 +111,7 @@ func tables(cmd *cobra.Command, args []string) error {
 		maxVersion := findMaxCommonVersion(versions, []int{2, 3})
 		switch maxVersion {
 		case 3:
-			if err := tablesV3(ctx, cl, outputPath, format); err != nil {
+			if err := tablesV3(ctx, cl, source.Spec, outputPath, format); err != nil {
 				return err
 			}
 			fmt.Printf("Done generating docs for %q to directory %q\n", source.Name, outputPath)

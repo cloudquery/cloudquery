@@ -14,13 +14,13 @@ import (
 
 var registerOnce = gosync.OnceValue(types.RegisterAllExtensions)
 
-func tablesV3(ctx context.Context, sourceClient *managedplugin.Client, path string, format string) error {
+func tablesV3(ctx context.Context, sourceClient *managedplugin.Client, sourceSpec map[string]any, path string, format string) error {
 	err := registerOnce()
 	if err != nil {
 		return err
 	}
 	sourcePbClient := pluginPb.NewPluginClient(sourceClient.Conn)
-	if err := initPlugin(ctx, sourcePbClient, nil, true); err != nil {
+	if err := initPlugin(ctx, sourcePbClient, sourceSpec, true); err != nil {
 		return fmt.Errorf("failed to init source: %w", err)
 	}
 	getTablesResp, err := sourcePbClient.GetTables(ctx, &pluginPb.GetTables_Request{
