@@ -9,7 +9,7 @@ import (
 type Spec struct {
 	// The number of items to fetch concurrently
 	ItemConcurrency int `json:"item_concurrency" jsonschema:"minimum=1,default=100"`
-	// RFC3339 formatted timestamp. Syncing will begin with posts after this date. If empty everything is synced.
+	// RFC3339 formatted timestamp. Syncing will begin with posts after this date. If not specified, the plugin will fetch all items.
 	StartTime string `json:"start_time" jsonschema:"format=date-time"`
 }
 
