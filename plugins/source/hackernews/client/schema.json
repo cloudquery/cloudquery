@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/hackernews/client/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Spec": {
+      "properties": {
+        "item_concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "The number of items to fetch concurrently",
+          "default": 100
+        },
+        "start_time": {
+          "type": "string",
+          "format": "date-time",
+          "description": "RFC3339 formatted timestamp. Syncing will begin with posts after this date. If not specified, the plugin will fetch all items."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    }
+  }
+}
