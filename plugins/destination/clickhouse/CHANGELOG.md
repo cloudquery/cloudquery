@@ -1,5 +1,22 @@
 # Changelog
 
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v3.4.14...plugins-destination-clickhouse-v4.0.0) (2024-03-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* Use documented Apache Arrow type conversion ([#17208](https://github.com/cloudquery/cloudquery/issues/17208)). The following type conversions were made to match the ClickHouse [type convention](https://clickhouse.com/docs/en/sql-reference/formats#data-format-arrow):
+    * `date64` is mapped to [`DateTime`](https://clickhouse.com/docs/en/sql-reference/data-types/datetime)
+    * `time32` & `time64` are mapped to [`DateTime64`](https://clickhouse.com/docs/en/sql-reference/data-types/datetime64) with proper precision
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.0 ([#17203](https://github.com/cloudquery/cloudquery/issues/17203)) ([4b128b6](https://github.com/cloudquery/cloudquery/commit/4b128b6722dea883d66458f2f3c831184926353d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.1 ([#17220](https://github.com/cloudquery/cloudquery/issues/17220)) ([08d4950](https://github.com/cloudquery/cloudquery/commit/08d49504aee10f6883e1bd4f7e1102a274c8ee81))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.2 ([#17229](https://github.com/cloudquery/cloudquery/issues/17229)) ([41ed721](https://github.com/cloudquery/cloudquery/commit/41ed721cfa435a4937f3022501dd4d45a3a880b0))
+* **deps:** Update module google.golang.org/protobuf to v1.33.0 [SECURITY] ([#17133](https://github.com/cloudquery/cloudquery/issues/17133)) ([22461f4](https://github.com/cloudquery/cloudquery/commit/22461f41407d3bc410e965141abc453f1e9d78ca))
+* Use documented Apache Arrow type conversion ([#17208](https://github.com/cloudquery/cloudquery/issues/17208)) ([2c24352](https://github.com/cloudquery/cloudquery/commit/2c243523ef874d43ee7452cfdf0d62f6894e78c1))
+
 ## [3.4.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v3.4.13...plugins-destination-clickhouse-v3.4.14) (2024-03-12)
 
 
