@@ -367,7 +367,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		m := destinationsClients[i].Metrics()
 		totals.Warnings += m.Warnings
 		totals.Errors += m.Errors
-		syncSummaries = append(syncSummaries, syncSummary{
+		syncSummaries[i] = syncSummary{
 			Resources:           uint64(totalResources),
 			SourceErrors:        totals.Errors,
 			SourceWarnings:      totals.Warnings,
@@ -381,11 +381,11 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			DestinationName:     destinationSpecs[i].Name,
 			DestinationVersion:  destinationSpecs[i].Version,
 			DestinationPath:     destinationSpecs[i].Path,
-		})
-		err = persistSummary(summaryLocation, syncSummaries)
-		if err != nil {
-			log.Warn().Err(err).Msg("Failed to persist sync summary")
 		}
+	}
+	err = persistSummary(summaryLocation, syncSummaries)
+	if err != nil {
+		log.Warn().Err(err).Msg("Failed to persist sync summary")
 	}
 
 	err = bar.Finish()
