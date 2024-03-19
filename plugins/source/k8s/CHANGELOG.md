@@ -1,5 +1,15 @@
 # Changelog
 
+## [6.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v6.0.6...plugins-source-k8s-v6.0.7) (2024-03-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.0 ([#17203](https://github.com/cloudquery/cloudquery/issues/17203)) ([4b128b6](https://github.com/cloudquery/cloudquery/commit/4b128b6722dea883d66458f2f3c831184926353d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.1 ([#17220](https://github.com/cloudquery/cloudquery/issues/17220)) ([08d4950](https://github.com/cloudquery/cloudquery/commit/08d49504aee10f6883e1bd4f7e1102a274c8ee81))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.2 ([#17229](https://github.com/cloudquery/cloudquery/issues/17229)) ([41ed721](https://github.com/cloudquery/cloudquery/commit/41ed721cfa435a4937f3022501dd4d45a3a880b0))
+* **deps:** Update module google.golang.org/protobuf to v1.33.0 [SECURITY] ([#17160](https://github.com/cloudquery/cloudquery/issues/17160)) ([d7e1a2d](https://github.com/cloudquery/cloudquery/commit/d7e1a2dfdfc84c85ffaf02f9f548e86b0b521cb7))
+
 ## [6.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v6.0.5...plugins-source-k8s-v6.0.6) (2024-03-12)
 
 
