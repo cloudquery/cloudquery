@@ -35,6 +35,7 @@ func NewCmdSync() *cobra.Command {
 	}
 	cmd.Flags().Bool("no-migrate", false, "Disable auto-migration before sync. By default, sync runs a migration before syncing resources.")
 	cmd.Flags().String("license", "", "set offline license file")
+	cmd.Flags().String("sync-summary-filename", "cloudquery-sync-summary.json", "Sync summary filename")
 
 	return cmd
 }
@@ -258,9 +259,16 @@ func sync(cmd *cobra.Command, args []string) error {
 					spec:   *destinationForSourceBackendSpec,
 				}
 			}
-			if err := syncConnectionV3(ctx, src, dests, backend, invocationUUID.String(), noMigrate); err != nil {
+
+			summaryLocation, err := cmd.Flags().GetString("sync-summary-filename")
+			if err != nil {
+				return err
+			}
+
+			if err := syncConnectionV3(ctx, src, dests, backend, invocationUUID.String(), noMigrate, summaryLocation); err != nil {
 				return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
 			}
+
 		case 2:
 			destinationsVersions := make([][]int, 0, len(destinationClientsForSource))
 			for _, destination := range destinationClientsForSource {

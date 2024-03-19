@@ -52,7 +52,7 @@ func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
 }
 
 // nolint:dupl
-func syncConnectionV3(ctx context.Context, source v3source, destinations []v3destination, backend *v3destination, uid string, noMigrate bool) error {
+func syncConnectionV3(ctx context.Context, source v3source, destinations []v3destination, backend *v3destination, uid string, noMigrate bool, summaryLocation string) error {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	tablesForDeleteStale := make(map[string]bool, 0)
@@ -347,19 +347,6 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		return err
 	}
 	totals := sourceClient.Metrics()
-	summary := syncSummary{
-		Resources:      uint64(totalResources),
-		SourceErrors:   totals.Errors,
-		SourceWarnings: totals.Warnings,
-		SyncID:         uid,
-		SourceName:     sourceSpec.Name,
-		SourceVersion:  sourceSpec.Version,
-		SourcePath:     sourceSpec.Path,
-		CliVersion:     Version,
-	}
-	if err := sendSummary(writeClients, destinationSpecs, destinationsClients, destinationTransformers, &summary, noMigrate); err != nil {
-		return err
-	}
 
 	for i := range destinationsClients {
 		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
@@ -375,10 +362,30 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		}
 	}
 
+	syncSummaries := make([]syncSummary, len(destinationsClients))
 	for i := range destinationsClients {
 		m := destinationsClients[i].Metrics()
 		totals.Warnings += m.Warnings
 		totals.Errors += m.Errors
+		syncSummaries = append(syncSummaries, syncSummary{
+			Resources:           uint64(totalResources),
+			SourceErrors:        totals.Errors,
+			SourceWarnings:      totals.Warnings,
+			SyncID:              uid,
+			SourceName:          sourceSpec.Name,
+			SourceVersion:       sourceSpec.Version,
+			SourcePath:          sourceSpec.Path,
+			CliVersion:          Version,
+			DestinationErrors:   m.Errors,
+			DestinationWarnings: m.Warnings,
+			DestinationName:     destinationSpecs[i].Name,
+			DestinationVersion:  destinationSpecs[i].Version,
+			DestinationPath:     destinationSpecs[i].Path,
+		})
+		err = persistSummary(summaryLocation, syncSummaries)
+		if err != nil {
+			log.Warn().Err(err).Msg("Failed to persist sync summary")
+		}
 	}
 
 	err = bar.Finish()
