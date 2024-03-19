@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-awspricing-v3.0.22...plugins-source-awspricing-v3.1.0) (2024-03-19)
+
+
+### Features
+
+* Add JSON schema ([#17238](https://github.com/cloudquery/cloudquery/issues/17238)) ([720eb00](https://github.com/cloudquery/cloudquery/commit/720eb00ef52a6b7357818722b384df280325eb4b))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.0 ([#17203](https://github.com/cloudquery/cloudquery/issues/17203)) ([4b128b6](https://github.com/cloudquery/cloudquery/commit/4b128b6722dea883d66458f2f3c831184926353d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.1 ([#17220](https://github.com/cloudquery/cloudquery/issues/17220)) ([08d4950](https://github.com/cloudquery/cloudquery/commit/08d49504aee10f6883e1bd4f7e1102a274c8ee81))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.2 ([#17229](https://github.com/cloudquery/cloudquery/issues/17229)) ([41ed721](https://github.com/cloudquery/cloudquery/commit/41ed721cfa435a4937f3022501dd4d45a3a880b0))
+* **deps:** Update module google.golang.org/protobuf to v1.33.0 [SECURITY] ([#17151](https://github.com/cloudquery/cloudquery/issues/17151)) ([6469c87](https://github.com/cloudquery/cloudquery/commit/6469c8748cdbe4b193571314f3e12f55103fd01a))
+
 ## [3.0.22](https://github.com/cloudquery/cloudquery/compare/plugins-source-awspricing-v3.0.21...plugins-source-awspricing-v3.0.22) (2024-03-12)
 
 
