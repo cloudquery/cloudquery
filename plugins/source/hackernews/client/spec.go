@@ -1,13 +1,16 @@
 package client
 
 import (
+	_ "embed"
 	"fmt"
 	"time"
 )
 
 type Spec struct {
-	ItemConcurrency int    `json:"item_concurrency"`
-	StartTime       string `json:"start_time"`
+	// The number of items to fetch concurrently
+	ItemConcurrency int `json:"item_concurrency" jsonschema:"minimum=1,default=100"`
+	// RFC3339 formatted timestamp. Syncing will begin with posts after this date. If not specified, the plugin will fetch all items.
+	StartTime string `json:"start_time" jsonschema:"format=date-time"`
 }
 
 type Backend struct {
@@ -31,3 +34,6 @@ func (s *Spec) Validate() error {
 	}
 	return nil
 }
+
+//go:embed schema.json
+var JSONSchema string
