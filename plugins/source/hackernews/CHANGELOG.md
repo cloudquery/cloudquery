@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.0.26...plugins-source-hackernews-v3.1.0) (2024-03-19)
+
+
+### Features
+
+* Add JSON schema ([#17238](https://github.com/cloudquery/cloudquery/issues/17238)) ([720eb00](https://github.com/cloudquery/cloudquery/commit/720eb00ef52a6b7357818722b384df280325eb4b))
+
 ## [3.0.26](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.0.25...plugins-source-hackernews-v3.0.26) (2024-03-19)
 
 
