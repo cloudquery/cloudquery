@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-firestore-v3.1.4...plugins-source-firestore-v3.1.5) (2024-03-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module cloud.google.com/go/firestore to v1.15.0 ([#17223](https://github.com/cloudquery/cloudquery/issues/17223)) ([15bc215](https://github.com/cloudquery/cloudquery/commit/15bc215dc6f3e4cffb10adbbd4a8890df4011037))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.0 ([#17203](https://github.com/cloudquery/cloudquery/issues/17203)) ([4b128b6](https://github.com/cloudquery/cloudquery/commit/4b128b6722dea883d66458f2f3c831184926353d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.1 ([#17220](https://github.com/cloudquery/cloudquery/issues/17220)) ([08d4950](https://github.com/cloudquery/cloudquery/commit/08d49504aee10f6883e1bd4f7e1102a274c8ee81))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.2 ([#17229](https://github.com/cloudquery/cloudquery/issues/17229)) ([41ed721](https://github.com/cloudquery/cloudquery/commit/41ed721cfa435a4937f3022501dd4d45a3a880b0))
+* **deps:** Update module google.golang.org/protobuf to v1.33.0 [SECURITY] ([#17155](https://github.com/cloudquery/cloudquery/issues/17155)) ([267451e](https://github.com/cloudquery/cloudquery/commit/267451e6d854b6a390982c1fdb8d583024231ea7))
+
 ## [3.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-firestore-v3.1.3...plugins-source-firestore-v3.1.4) (2024-03-12)
 
 
