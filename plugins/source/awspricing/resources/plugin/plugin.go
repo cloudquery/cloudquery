@@ -1,6 +1,7 @@
 package plugin
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/awspricing/client"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 
@@ -18,5 +19,6 @@ func Plugin() *plugin.Plugin {
 		Configure,
 		plugin.WithKind(Kind),
 		plugin.WithTeam(Team),
+		plugin.WithJSONSchema(client.JSONSchema),
 	)
 }
