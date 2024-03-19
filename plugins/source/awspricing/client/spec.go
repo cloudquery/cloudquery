@@ -1,10 +1,16 @@
 package client
 
-type Spec struct {
-	RegionCodes []string `json:"region_codes,omitempty"`
-	OfferCodes  []string `json:"offer_codes,omitempty"`
+import _ "embed"
 
-	Concurrency int `json:"concurrency,omitempty"`
+type Spec struct {
+	// List of region codes to sync. If empty, everything will be synced.
+	RegionCodes []string `json:"region_codes,omitempty" jsonschema:"minLength=1"`
+
+	// List of offer codes to sync. If empty, everything will be synced.
+	OfferCodes []string `json:"offer_codes,omitempty" jsonschema:"minLength=1"`
+
+	// Concurrency setting for the CloudQuery scheduler
+	Concurrency int `json:"concurrency,omitempty" jsonschema:"minimum=1,default=10000"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -23,3 +29,6 @@ func (s *Spec) SetDefaults() {
 func (*Spec) Validate() error {
 	return nil
 }
+
+//go:embed schema.json
+var JSONSchema string
