@@ -1,5 +1,15 @@
 # Changelog
 
+## [3.2.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.2.4...plugins-destination-elasticsearch-v3.2.5) (2024-03-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.0 ([#17203](https://github.com/cloudquery/cloudquery/issues/17203)) ([4b128b6](https://github.com/cloudquery/cloudquery/commit/4b128b6722dea883d66458f2f3c831184926353d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.1 ([#17220](https://github.com/cloudquery/cloudquery/issues/17220)) ([08d4950](https://github.com/cloudquery/cloudquery/commit/08d49504aee10f6883e1bd4f7e1102a274c8ee81))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.2 ([#17229](https://github.com/cloudquery/cloudquery/issues/17229)) ([41ed721](https://github.com/cloudquery/cloudquery/commit/41ed721cfa435a4937f3022501dd4d45a3a880b0))
+* **deps:** Update module google.golang.org/protobuf to v1.33.0 [SECURITY] ([#17135](https://github.com/cloudquery/cloudquery/issues/17135)) ([c96a054](https://github.com/cloudquery/cloudquery/commit/c96a054f26a76eb01ed18973a7f62ee01baf77c8))
+
 ## [3.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.2.3...plugins-destination-elasticsearch-v3.2.4) (2024-03-12)
 
 
