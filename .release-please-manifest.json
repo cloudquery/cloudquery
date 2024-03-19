@@ -57,7 +57,7 @@
   "scaffold+FILLER": "0.0.0",
   "plugins/source/oracle": "4.2.15",
   "plugins/source/oracle+FILLER": "0.0.0",
-  "plugins/source/alicloud": "4.1.4",
+  "plugins/source/alicloud": "4.1.5",
   "plugins/source/alicloud+FILLER": "0.0.0",
   "plugins/destination/mssql": "4.4.3",
   "plugins/destination/mssql+FILLER": "0.0.0",
