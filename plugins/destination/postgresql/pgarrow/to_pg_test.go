@@ -40,6 +40,10 @@ func TestArrowToPg10(t *testing.T) {
 		{"time without time zone[]", arrow.ListOf(arrow.FixedWidthTypes.Time64ns)},
 		// special case for uint64
 		{"numeric(20,0)", arrow.PrimitiveTypes.Uint64},
+		{"numeric(38,0)", mustDec(arrow.NewDecimalType(arrow.DECIMAL128, 38, 0))},
+		{"numeric(1,0)", mustDec(arrow.NewDecimalType(arrow.DECIMAL128, 1, 0))},
+		{"numeric(38,15)", mustDec(arrow.NewDecimalType(arrow.DECIMAL128, 38, 15))},
+		{"numeric(50,25)", mustDec(arrow.NewDecimalType(arrow.DECIMAL256, 50, 25))},
 	}
 
 	for _, c := range cases {
@@ -78,6 +82,10 @@ func TestArrowToCockroach(t *testing.T) {
 		{"time without time zone[]", arrow.ListOf(arrow.FixedWidthTypes.Time64ns)},
 		// special case for uint64
 		{"numeric(20,0)", arrow.PrimitiveTypes.Uint64},
+		{"numeric(38,0)", mustDec(arrow.NewDecimalType(arrow.DECIMAL128, 38, 0))},
+		{"numeric(1,0)", mustDec(arrow.NewDecimalType(arrow.DECIMAL128, 1, 0))},
+		{"numeric(38,15)", mustDec(arrow.NewDecimalType(arrow.DECIMAL128, 38, 15))},
+		{"numeric(50,25)", mustDec(arrow.NewDecimalType(arrow.DECIMAL256, 50, 25))},
 	}
 
 	for _, c := range cases {
