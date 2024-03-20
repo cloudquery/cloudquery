@@ -123,6 +123,7 @@ func TestEngineJSONSchema(t *testing.T) {
 		{
 			Name: "null parameters entry",
 			Spec: `{"parameters":[null]}`,
+			Err:  true,
 		},
 	})
 }
