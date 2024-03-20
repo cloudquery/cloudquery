@@ -257,7 +257,7 @@ func parseNumeric(t string) (arrow.DataType, bool) {
 	}
 
 	if precision == 20 && scale == 0 {
-		//special case.
+		// special case
 		return arrow.PrimitiveTypes.Uint64, true
 	}
 
