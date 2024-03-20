@@ -31,7 +31,7 @@ func (r rawPrivateKeyConfigProvider) KeyID() (string, error) {
 	return r.provider.KeyID()
 }
 
-func (r rawPrivateKeyConfigProvider) PrivateRSAKey() (*rsa.PrivateKey, error) {
+func (rawPrivateKeyConfigProvider) PrivateRSAKey() (*rsa.PrivateKey, error) {
 	tfVarEnvironmentVariable := fmt.Sprintf("%s_%s", tfVarEnvironmentVariable, "private_key")
 	ocCLIEnvironmentVariable := fmt.Sprintf("%s_%s", ocCLIEnvironmentVariable, "private_key")
 	var envName string
