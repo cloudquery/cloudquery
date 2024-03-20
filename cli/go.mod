@@ -152,7 +152,7 @@ require (
 )
 
 // github.com/cloudquery/jsonschema @ cqmain
-replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240202134451-d771afde32fb
+replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66
 
 // github.com/cloudquery/godebouncer @ fix-race
 replace github.com/vnteamopen/godebouncer => github.com/cloudquery/godebouncer v0.0.0-20240220152946-054f7dbbcf18
