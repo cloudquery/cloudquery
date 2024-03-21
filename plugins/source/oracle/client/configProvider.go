@@ -20,7 +20,7 @@ type rawPrivateKeyConfigProvider struct {
 }
 
 func (rawPrivateKeyConfigProvider) PrivateRSAKey() (*rsa.PrivateKey, error) {
-	const(
+	const (
 		tfVarEnvironmentVariable = tfVarEnvironmentVariable + "private_key"
 		ocCLIEnvironmentVariable = ocCLIEnvironmentVariable + "private_key"
 	)
