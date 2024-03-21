@@ -41,9 +41,6 @@ func getValue0(arr arrow.Array) any {
 		Value(int) A
 	}
 	switch arr := arr.(type) {
-	case valuer[any]:
-		return arr.Value(0)
-
 	case valuer[bool]:
 		return arr.Value(0)
 

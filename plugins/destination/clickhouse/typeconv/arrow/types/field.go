@@ -13,9 +13,6 @@ import (
 func fieldFromColumn(col column.Interface) (*arrow.Field, error) {
 	name := util.UnquoteID(col.Name())
 	switch col := col.(type) {
-	case *column.Nothing:
-		return &arrow.Field{Name: name, Type: arrow.Null}, nil
-
 	case *column.Bool:
 		return &arrow.Field{Name: name, Type: new(arrow.BooleanType)}, nil
 

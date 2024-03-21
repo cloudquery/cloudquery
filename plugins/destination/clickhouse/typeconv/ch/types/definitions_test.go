@@ -11,7 +11,6 @@ import (
 
 func TestFieldType(t *testing.T) {
 	for _, tc := range []testCase{
-		{dataType: new(arrow.NullType), expected: "Nothing"},
 		{dataType: new(arrow.BooleanType), expected: "Bool"},
 		{dataType: new(arrow.Int8Type), expected: "Int8"},
 		{dataType: new(arrow.Int16Type), expected: "Int16"},

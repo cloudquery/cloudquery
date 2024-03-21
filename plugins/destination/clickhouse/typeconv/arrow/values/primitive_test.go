@@ -12,8 +12,6 @@ import (
 
 func Test_primitive(t *testing.T) {
 	for _, tc := range []testCase{
-		{dataType: arrow.Null, value: nil, expected: nil},
-
 		{dataType: new(arrow.BooleanType), value: true, expected: true},
 
 		{dataType: new(arrow.Uint8Type), value: uint8(123), expected: uint8(123)},

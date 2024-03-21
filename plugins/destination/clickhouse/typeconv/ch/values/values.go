@@ -7,9 +7,6 @@ import (
 
 func FromArray(arr arrow.Array) (any, error) {
 	switch arr := arr.(type) {
-	case *array.Null:
-		return primitiveValue(arr), nil
-
 	case *array.Boolean:
 		return primitiveValue(arr), nil
 
