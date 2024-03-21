@@ -20,8 +20,10 @@ type rawPrivateKeyConfigProvider struct {
 }
 
 func (rawPrivateKeyConfigProvider) PrivateRSAKey() (*rsa.PrivateKey, error) {
-	tfVarEnvironmentVariable := fmt.Sprintf("%s_%s", tfVarEnvironmentVariable, "private_key")
-	ocCLIEnvironmentVariable := fmt.Sprintf("%s_%s", ocCLIEnvironmentVariable, "private_key")
+	const(
+		tfVarEnvironmentVariable = tfVarEnvironmentVariable + "private_key"
+		ocCLIEnvironmentVariable = ocCLIEnvironmentVariable + "private_key"
+	)
 	var envName string
 	var ok bool
 	var value string
