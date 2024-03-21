@@ -14,6 +14,10 @@ func buildValue(builder array.Builder, value any) error {
 	}
 
 	switch builder := builder.(type) {
+	case *array.NullBuilder:
+		builder.AppendNull()
+		return nil
+
 	case *array.BooleanBuilder:
 		buildPrimitive(builder, value)
 

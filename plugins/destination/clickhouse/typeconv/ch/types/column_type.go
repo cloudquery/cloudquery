@@ -8,6 +8,10 @@ import (
 
 func ColumnType(dataType arrow.DataType) (string, error) {
 	switch dataType := dataType.(type) {
+	// https://clickhouse.com/docs/en/sql-reference/data-types/special-data-types/nothing
+	case *arrow.NullType:
+		return "Nothing", nil
+
 	// https://clickhouse.com/docs/en/sql-reference/data-types/boolean
 	case *arrow.BooleanType:
 		return "Bool", nil
