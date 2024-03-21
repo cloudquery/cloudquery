@@ -16,19 +16,7 @@ const (
 )
 
 type rawPrivateKeyConfigProvider struct {
-	provider common.ConfigurationProvider
-}
-
-func (r rawPrivateKeyConfigProvider) AuthType() (common.AuthConfig, error) {
-	return r.provider.AuthType()
-}
-
-func (r rawPrivateKeyConfigProvider) KeyFingerprint() (string, error) {
-	return r.provider.KeyFingerprint()
-}
-
-func (r rawPrivateKeyConfigProvider) KeyID() (string, error) {
-	return r.provider.KeyID()
+	common.ConfigurationProvider
 }
 
 func (rawPrivateKeyConfigProvider) PrivateRSAKey() (*rsa.PrivateKey, error) {
@@ -59,24 +47,12 @@ func (rawPrivateKeyConfigProvider) PrivateRSAKey() (*rsa.PrivateKey, error) {
 	return privateKey, nil
 }
 
-func (r rawPrivateKeyConfigProvider) Region() (string, error) {
-	return r.provider.Region()
-}
-
-func (r rawPrivateKeyConfigProvider) TenancyOCID() (string, error) {
-	return r.provider.TenancyOCID()
-}
-
-func (r rawPrivateKeyConfigProvider) UserOCID() (string, error) {
-	return r.provider.UserOCID()
-}
-
 func newRawPrivateKeyConfigProvider() rawPrivateKeyConfigProvider {
 	tfVarEnvProvider := common.ConfigurationProviderEnvironmentVariables(tfVarEnvironmentVariable, "")
 	ociCLIEnvProvider := common.ConfigurationProviderEnvironmentVariables(ocCLIEnvironmentVariable, "")
 	// ComposingConfigurationProvider fails on empty provider list or nil provider so we can safely ignore the error
 	provider, _ := common.ComposingConfigurationProvider([]common.ConfigurationProvider{tfVarEnvProvider, ociCLIEnvProvider})
 	return rawPrivateKeyConfigProvider{
-		provider: provider,
+		ConfigurationProvider: provider,
 	}
 }
