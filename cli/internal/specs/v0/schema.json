@@ -109,10 +109,6 @@
           "description": "Destination plugin PK mode",
           "default": "default"
         },
-        "include_sync_summary": {
-          "type": "boolean",
-          "default": false
-        },
         "spec": {
           "oneOf": [
             {
