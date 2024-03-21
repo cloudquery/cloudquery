@@ -243,7 +243,7 @@ func parseNumeric(t string) (arrow.DataType, bool) {
 
 	if len(matches[0]) < 3 || matches[0][1] == "" {
 		// no precision/scale specified
-		return &arrow.Decimal256Type{Precision: 38, Scale: 0}, true
+		return &arrow.Decimal128Type{Precision: 38, Scale: 0}, true
 	}
 
 	precision, err := strconv.ParseInt(matches[0][1], 10, 64)
@@ -260,6 +260,9 @@ func parseNumeric(t string) (arrow.DataType, bool) {
 		return arrow.PrimitiveTypes.Uint64, true
 	}
 
+	if precision <= 38 {
+		return &arrow.Decimal128Type{Precision: int32(precision), Scale: int32(scale)}, true
+	}
 	if precision <= 76 {
 		return &arrow.Decimal256Type{Precision: int32(precision), Scale: int32(scale)}, true
 	}

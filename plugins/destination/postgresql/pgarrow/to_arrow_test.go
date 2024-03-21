@@ -93,9 +93,9 @@ func TestPg10ToArrow(t *testing.T) {
 		{"time(6) with time zone", arrow.FixedWidthTypes.Time64us},
 		// special case for uint64
 		{"numeric(20,0)", arrow.PrimitiveTypes.Uint64},
-		{"numeric", &arrow.Decimal256Type{Precision: 38, Scale: 0}},
-		{"numeric (1,0)", &arrow.Decimal256Type{Precision: 1, Scale: 0}},
-		{"numeric(38,15)", &arrow.Decimal256Type{Precision: 38, Scale: 15}},
+		{"numeric", &arrow.Decimal128Type{Precision: 38, Scale: 0}},
+		{"numeric (1,0)", &arrow.Decimal128Type{Precision: 1, Scale: 0}},
+		{"numeric(38,15)", &arrow.Decimal128Type{Precision: 38, Scale: 15}},
 		{"numeric (50,25)", &arrow.Decimal256Type{Precision: 50, Scale: 25}},
 		{"numeric (1000, 1000)", arrow.BinaryTypes.String},
 
@@ -225,9 +225,9 @@ func TestCockroachToArrow(t *testing.T) {
 		{"time(6) with time zone", arrow.FixedWidthTypes.Time64us},
 		// special case for uint64
 		{"numeric(20,0)", arrow.PrimitiveTypes.Uint64},
-		{"numeric", &arrow.Decimal256Type{Precision: 38, Scale: 0}},
-		{"numeric (1,0)", &arrow.Decimal256Type{Precision: 1, Scale: 0}},
-		{"numeric(38,15)", &arrow.Decimal256Type{Precision: 38, Scale: 15}},
+		{"numeric", &arrow.Decimal128Type{Precision: 38, Scale: 0}},
+		{"numeric (1,0)", &arrow.Decimal128Type{Precision: 1, Scale: 0}},
+		{"numeric(38,15)", &arrow.Decimal128Type{Precision: 38, Scale: 15}},
 		{"numeric (50,25)", &arrow.Decimal256Type{Precision: 50, Scale: 25}},
 		{"numeric (1000, 1000)", arrow.BinaryTypes.String},
 
