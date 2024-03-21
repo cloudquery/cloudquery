@@ -129,31 +129,3 @@ The number of resources to insert in a single batch. Only applies to plugins tha
 
 The max number of bytes to use for a single batch. Only applies to plugins that utilize batching. This setting works in conjunction with `batch_size`, and batches are written whenever either `batch_size` or `batch_size_bytes` is reached. Every plugin has its own default value for `batch_size_bytes`. Note that the size in bytes is calculated based on the size of data in memory, not the serialized data, and it is best to choose a `batch_size_bytes` significantly lower than any hard limits.
 
-<!-- vale off -->
-
-#### include_sync_summary
-
-<!-- vale on -->
-
-(`bool`, optional, default: `false`)
-
-**Preview**. When set to `true`, CloudQuery will generate a table named `_cq_sync_summary` that includes summary details about the sync. This table will be created in the destination database and will be updated after each sync. If you are syncing multiple sources then each Source + Destination pair will be a separate row in the table. The table will include the following columns:
-<!-- vale off -->
-
-  column name          | type
-  -------------------- | ----
-  cli_version          | string
-	destination_errors   | uint64
-	destination_name     | string
-	destination_path     | string
-	destination_version  | string
-	destination_warnings | uint64
-	resources            | uint64
-	source_errors        | uint64
-	source_name          | string
-	source_path          | string
-	source_version       | string
-	source_warnings      | uint64
-	sync_id              | string
-<!-- vale on -->
-Destinations might append additional columns to this table, that are specific to the destination.
