@@ -35,7 +35,7 @@ func NewCmdSync() *cobra.Command {
 	}
 	cmd.Flags().Bool("no-migrate", false, "Disable auto-migration before sync. By default, sync runs a migration before syncing resources.")
 	cmd.Flags().String("license", "", "set offline license file")
-	cmd.Flags().String("sync-summary-filename", "cloudquery-sync-summary.json", "Sync summary filename")
+	cmd.Flags().String("sync-summary-location", "", "Sync summary file location")
 
 	return cmd
 }
@@ -260,7 +260,7 @@ func sync(cmd *cobra.Command, args []string) error {
 				}
 			}
 
-			summaryLocation, err := cmd.Flags().GetString("sync-summary-filename")
+			summaryLocation, err := cmd.Flags().GetString("sync-summary-location")
 			if err != nil {
 				return err
 			}
