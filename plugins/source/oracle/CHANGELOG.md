@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.3.0...plugins-source-oracle-v4.3.1) (2024-03-21)
+
+
+### Bug Fixes
+
+* Env var reference ([#17292](https://github.com/cloudquery/cloudquery/issues/17292)) ([206c807](https://github.com/cloudquery/cloudquery/commit/206c80717b1c606ec7c86d4091c1f8b6d3805ac9))
+
 ## [4.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.16...plugins-source-oracle-v4.3.0) (2024-03-21)
 
 
