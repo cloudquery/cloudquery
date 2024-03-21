@@ -10,6 +10,8 @@ to [ClickHouse data types](https://clickhouse.com/docs/en/sql-reference/data-typ
 Unsupported types are always mapped to [String](https://clickhouse.com/docs/en/sql-reference/data-types/string).
 :::
 
+<!-- vale off -->
+
 | Arrow Column Type           | ClickHouse Type                                                                    |
 |-----------------------------|------------------------------------------------------------------------------------|
 | Binary                      | [String](https://clickhouse.com/docs/en/sql-reference/data-types/string)           |
@@ -44,6 +46,8 @@ Unsupported types are always mapped to [String](https://clickhouse.com/docs/en/s
 | Uint16                      | [UInt16](https://clickhouse.com/docs/en/sql-reference/data-types/int-uint)         |
 | Uint32                      | [UInt32](https://clickhouse.com/docs/en/sql-reference/data-types/int-uint)         |
 | Uint64                      | [UInt64](https://clickhouse.com/docs/en/sql-reference/data-types/int-uint)         |
+
+<!-- vale on -->
 
 :::callout{type="info"}
 [Nested](https://clickhouse.com/docs/en/sql-reference/data-types/nested-data-structures/nested) ClickHouse types have their values converted according to the aforementioned rules.
