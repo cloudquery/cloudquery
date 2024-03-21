@@ -1,4 +1,4 @@
-cloudquery-plugin-sdk==0.1.16
+cloudquery-plugin-sdk==0.1.17
 pyarrow==15.0.0
 requests==2.31.0
 pytest==8.0.2
