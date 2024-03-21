@@ -93,10 +93,10 @@ func TestPg10ToArrow(t *testing.T) {
 		{"time(6) with time zone", arrow.FixedWidthTypes.Time64us},
 		// special case for uint64
 		{"numeric(20,0)", arrow.PrimitiveTypes.Uint64},
-		{"numeric", mustDec(arrow.NewDecimalType(arrow.DECIMAL256, 38, 0))},
-		{"numeric (1, 0)", mustDec(arrow.NewDecimalType(arrow.DECIMAL256, 1, 0))},
-		{"numeric(38, 15)", mustDec(arrow.NewDecimalType(arrow.DECIMAL256, 38, 15))},
-		{"numeric (50, 25)", mustDec(arrow.NewDecimalType(arrow.DECIMAL256, 50, 25))},
+		{"numeric", &arrow.Decimal256Type{Precision: 38, Scale: 0}},
+		{"numeric (1,0)", &arrow.Decimal256Type{Precision: 1, Scale: 0}},
+		{"numeric(38,15)", &arrow.Decimal256Type{Precision: 38, Scale: 15}},
+		{"numeric (50,25)", &arrow.Decimal256Type{Precision: 50, Scale: 25}},
 		{"numeric (1000, 1000)", arrow.BinaryTypes.String},
 
 		// types that are converted to string for now - more specific support for these types
@@ -225,10 +225,10 @@ func TestCockroachToArrow(t *testing.T) {
 		{"time(6) with time zone", arrow.FixedWidthTypes.Time64us},
 		// special case for uint64
 		{"numeric(20,0)", arrow.PrimitiveTypes.Uint64},
-		{"numeric", mustDec(arrow.NewDecimalType(arrow.DECIMAL256, 38, 0))},
-		{"numeric (1, 0)", mustDec(arrow.NewDecimalType(arrow.DECIMAL256, 1, 0))},
-		{"numeric(38, 15)", mustDec(arrow.NewDecimalType(arrow.DECIMAL256, 38, 15))},
-		{"numeric (50, 25)", mustDec(arrow.NewDecimalType(arrow.DECIMAL256, 50, 25))},
+		{"numeric", &arrow.Decimal256Type{Precision: 38, Scale: 0}},
+		{"numeric (1,0)", &arrow.Decimal256Type{Precision: 1, Scale: 0}},
+		{"numeric(38,15)", &arrow.Decimal256Type{Precision: 38, Scale: 15}},
+		{"numeric (50,25)", &arrow.Decimal256Type{Precision: 50, Scale: 25}},
 		{"numeric (1000, 1000)", arrow.BinaryTypes.String},
 
 		// types that are converted to string for now - more specific support for these types
@@ -278,11 +278,4 @@ func TestCockroachToArrow(t *testing.T) {
 			}
 		})
 	}
-}
-
-func mustDec(d arrow.DecimalType, err error) arrow.DecimalType {
-	if err != nil {
-		panic(err)
-	}
-	return d
 }
