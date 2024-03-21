@@ -2,7 +2,9 @@ package cmd
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
+	"path/filepath"
 )
 
 type syncSummary struct {
@@ -22,11 +24,14 @@ type syncSummary struct {
 }
 
 func persistSummary(filename string, summaries []syncSummary) error {
-	err := checkFile(filename)
-	if err != nil {
-		return err
+	// if filename is not specified then we don't need to persist the summary and can return
+	if filename == "" {
+		return nil
 	}
-
+	err := checkFilePath(filename)
+	if err != nil {
+		return fmt.Errorf("failed to validate summary file path: %w", err)
+	}
 	for _, summary := range summaries {
 		dataBytes, err := json.Marshal(summary)
 		if err != nil {
@@ -35,7 +40,7 @@ func persistSummary(filename string, summaries []syncSummary) error {
 		dataBytes = append(dataBytes, []byte("\n")...)
 		err = appendToFile(filename, dataBytes)
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to append summary to file: %w", err)
 		}
 	}
 	return nil
@@ -53,12 +58,16 @@ func appendToFile(fileName string, data []byte) error {
 	return f.Close()
 }
 
-func checkFile(filename string) error {
-	_, err := os.Stat(filename)
-	if os.IsNotExist(err) {
-		_, err := os.Create(filename)
-		if err != nil {
-			return err
+func checkFilePath(filename string) error {
+	dirPath := filepath.Dir(filename)
+	_, err := os.Stat(dirPath)
+	if err != nil {
+		// if error is that the directory does not exist, create it
+		if os.IsNotExist(err) {
+			err = os.MkdirAll(dirPath, 0755)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil
