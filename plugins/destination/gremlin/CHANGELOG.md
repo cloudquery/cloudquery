@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.4.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.4.3...plugins-destination-gremlin-v2.4.4) (2024-03-22)
+
+
+### Bug Fixes
+
+* Allow empty auth mode ([#17297](https://github.com/cloudquery/cloudquery/issues/17297)) ([416c987](https://github.com/cloudquery/cloudquery/commit/416c98719b11f51e7d6d1b227d0ad3d753e50ea8))
+* **deps:** Update github.com/cloudquery/jsonschema digest to 92878fa ([#16718](https://github.com/cloudquery/cloudquery/issues/16718)) ([7fe8588](https://github.com/cloudquery/cloudquery/commit/7fe858818fe1f88fcca6304c873a4614767a57b9))
+
 ## [2.4.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.4.2...plugins-destination-gremlin-v2.4.3) (2024-03-19)
 
 
