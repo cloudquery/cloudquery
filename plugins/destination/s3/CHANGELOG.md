@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v5.0.3...plugins-destination-s3-v5.0.4) (2024-03-22)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 92878fa ([#16718](https://github.com/cloudquery/cloudquery/issues/16718)) ([7fe8588](https://github.com/cloudquery/cloudquery/commit/7fe858818fe1f88fcca6304c873a4614767a57b9))
+* Update `_authentication.md` docs ([#17295](https://github.com/cloudquery/cloudquery/issues/17295)) ([99951c2](https://github.com/cloudquery/cloudquery/commit/99951c2e35496e785868faba63162d2700122fd4))
+
 ## [5.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v5.0.2...plugins-destination-s3-v5.0.3) (2024-03-19)
 
 
