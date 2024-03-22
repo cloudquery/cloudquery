@@ -22,7 +22,7 @@ const (
 type Spec struct {
 	// Connection string to connect to the database.
 	// See [SDK documentation](https://github.com/microsoft/go-mssqldb#connection-parameters-and-dsn) for details.
-	ConnectionString string `json:"connection_string" jsonschema:"required,minLength=1"`
+	ConnectionString string `json:"connection_string" jsonschema:"required,minLength=1,example=${MSSQL_CONNECTION_STRING}"`
 
 	//  If you need to authenticate via Azure Active Directory ensure you specify `azure` value.
 	//  See [SDK documentation](https://github.com/microsoft/go-mssqldb#azure-active-directory-authentication) for more information.
