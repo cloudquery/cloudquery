@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.4.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.4.4...plugins-destination-mssql-v4.4.5) (2024-03-22)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 92878fa ([#16718](https://github.com/cloudquery/cloudquery/issues/16718)) ([7fe8588](https://github.com/cloudquery/cloudquery/commit/7fe858818fe1f88fcca6304c873a4614767a57b9))
+* Update docs example to use env variable replacement ([#17298](https://github.com/cloudquery/cloudquery/issues/17298)) ([146a781](https://github.com/cloudquery/cloudquery/commit/146a7811c3c6aa1a9decc022ebdaaf807b041ed8))
+
 ## [4.4.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.4.3...plugins-destination-mssql-v4.4.4) (2024-03-19)
 
 
