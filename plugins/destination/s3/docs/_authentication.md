@@ -14,15 +14,14 @@ You can read more about AWS authentication [here](https://aws.github.io/aws-sdk-
 ### Environment Variables
 
 CloudQuery can use the credentials from the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and
-`AWS_SESSION_TOKEN` environment variables (`AWS_SESSION_TOKEN` can be optional for some accounts). For information on obtaining credentials, see the
-[AWS guide](https://aws.github.io/aws-sdk-go-v2/docs/getting-started/#get-your-aws-access-keys).
+`AWS_SESSION_TOKEN` environment variables (`AWS_SESSION_TOKEN` can be optional for some accounts). For information on obtaining credentials, see the [AWS guide](https://aws.github.io/aws-sdk-go-v2/docs/getting-started/#get-your-aws-access-keys).
 
 To export the environment variables (On Linux/Mac - similar for Windows):
 
 ```bash copy
-export AWS_ACCESS_KEY_ID={Your AWS Access Key ID}
-export AWS_SECRET_ACCESS_KEY={Your AWS secret access key}
-export AWS_SESSION_TOKEN={Your AWS session token}
+export AWS_ACCESS_KEY_ID='{Your AWS Access Key ID}'
+export AWS_SECRET_ACCESS_KEY='{Your AWS secret access key}'
+export AWS_SESSION_TOKEN='{Your AWS session token}'
 ```
 
 ### Shared Configuration files
@@ -66,7 +65,7 @@ For more information on configuring IAM, see the AWS docs [here](https://docs.aw
 
 ### User Credentials with MFA
 
-In order to leverage IAM User credentials with MFA, the STS "get-session-token" command may be used with the IAM User's long-term security credentials (Access Key and Secret Access Key).  For more information, see [here](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sts/get-session-token.html).
+In order to leverage IAM User credentials with MFA, the STS "get-session-token" command may be used with the IAM User's long-term security credentials (Access Key and Secret Access Key). For more information, see [here](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/sts/get-session-token.html).
 
 ```bash copy
 aws sts get-session-token --serial-number <YOUR_MFA_SERIAL_NUMBER> --token-code <YOUR_MFA_TOKEN_CODE> --duration-seconds 3600
