@@ -13,7 +13,7 @@ go run main.go serve
 To run a test instance of MySQL you can use the following docker command:
 
 ```bash
-docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=test -e MYSQL_DATABASE=cloudquery  -d mysql:5.7
+docker run -p 3306:3306 --name mysql -e MYSQL_ROOT_PASSWORD=test -e MYSQL_DATABASE=cloudquery  -d mysql:8.0 --innodb_log_file_size=512M --innodb_strict_mode=0
 ```
 
 > On Apple silicon you need to use the linux/amd64 platform via `--platform linux/amd64`
