@@ -3,6 +3,7 @@ package rds
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	"github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -19,6 +20,17 @@ func buildOptionGroups(t *testing.T, ctrl *gomock.Controller) client.Services {
 
 	mock.EXPECT().DescribeOptionGroups(gomock.Any(), &rds.DescribeOptionGroupsInput{}, gomock.Any()).Return(
 		&rds.DescribeOptionGroupsOutput{OptionGroupsList: []types.OptionGroup{s}},
+		nil,
+	)
+
+	mock.EXPECT().ListTagsForResource(
+		gomock.Any(),
+		&rds.ListTagsForResourceInput{ResourceName: s.OptionGroupArn},
+		gomock.Any(),
+	).Return(
+		&rds.ListTagsForResourceOutput{
+			TagList: []types.Tag{{Key: aws.String("key"), Value: aws.String("value")}},
+		},
 		nil,
 	)
 	return client.Services{Rds: mock}

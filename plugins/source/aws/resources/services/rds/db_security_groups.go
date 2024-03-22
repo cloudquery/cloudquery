@@ -35,7 +35,7 @@ func DbSecurityGroups() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveRdsDbSecurityGroupTags,
+				Resolver: resolveRDSTags("DBSecurityGroupArn"),
 			},
 		},
 	}
@@ -56,17 +56,4 @@ func fetchRdsDbSecurityGroups(ctx context.Context, meta schema.ClientMeta, paren
 		res <- page.DBSecurityGroups
 	}
 	return nil
-}
-
-func resolveRdsDbSecurityGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	g := resource.Item.(types.DBSecurityGroup)
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceRds).Rds
-	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBSecurityGroupArn}, func(options *rds.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, client.TagsToMap(out.TagList))
 }

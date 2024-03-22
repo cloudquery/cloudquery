@@ -32,7 +32,7 @@ func ClusterSnapshots() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveRDSClusterSnapshotTags,
+				Resolver: client.ResolveTagPath("TagList"),
 			},
 			{
 				Name:     "attributes",
@@ -58,11 +58,6 @@ func fetchRdsClusterSnapshots(ctx context.Context, meta schema.ClientMeta, paren
 		res <- page.DBClusterSnapshots
 	}
 	return nil
-}
-
-func resolveRDSClusterSnapshotTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	s := resource.Item.(types.DBClusterSnapshot)
-	return resource.Set(c.Name, client.TagsToMap(s.TagList))
 }
 
 func resolveRDSClusterSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {

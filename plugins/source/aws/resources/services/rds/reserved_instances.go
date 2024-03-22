@@ -32,7 +32,7 @@ func ReservedInstances() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveRdsRITags,
+				Resolver: resolveRDSTags("ReservedDBInstanceArn"),
 			},
 		},
 	}
@@ -53,16 +53,4 @@ func fetchRdsReservedInstances(ctx context.Context, meta schema.ClientMeta, pare
 		res <- output.ReservedDBInstances
 	}
 	return nil
-}
-
-func resolveRdsRITags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceRds).Rds
-	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: resource.Item.(types.ReservedDBInstance).ReservedDBInstanceArn}, func(options *rds.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, client.TagsToMap(out.TagList))
 }

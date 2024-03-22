@@ -16,6 +16,7 @@ The following field is used to calculate the value of `_cq_id`: **arn**.
 |account_id|`utf8`|
 |region|`utf8`|
 |arn|`utf8`|
+|tags|`json`|
 |db_subnet_group_arn|`utf8`|
 |db_subnet_group_description|`utf8`|
 |db_subnet_group_name|`utf8`|

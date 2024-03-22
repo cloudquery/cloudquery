@@ -33,12 +33,12 @@ func DbSnapshots() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveRDSDBSnapshotTags,
+				Resolver: client.ResolveTagPath("TagList"),
 			},
 			{
 				Name:     "attributes",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveRDSDBSnapshotAttributes,
+				Resolver: schema.PathResolver("Attributes"),
 			},
 		},
 	}
@@ -99,18 +99,4 @@ func fetchSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, dbSnap
 		return nil, nil
 	}
 	return out.DBSnapshotAttributesResult.DBSnapshotAttributes, nil
-}
-
-func resolveRDSDBSnapshotTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	s := resource.Item.(models.ExtendedSnapshots)
-	tags := map[string]*string{}
-	for _, t := range s.TagList {
-		tags[*t.Key] = t.Value
-	}
-	return resource.Set(c.Name, tags)
-}
-
-func resolveRDSDBSnapshotAttributes(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, column schema.Column) error {
-	s := resource.Item.(models.ExtendedSnapshots)
-	return resource.Set(column.Name, s.Attributes)
 }

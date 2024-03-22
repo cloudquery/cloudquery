@@ -32,7 +32,7 @@ func DbParameterGroups() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveRdsDbParameterGroupTags,
+				Resolver: resolveRDSTags("DBParameterGroupArn"),
 			},
 		},
 
@@ -79,17 +79,4 @@ func fetchRdsDbParameterGroupDbParameters(ctx context.Context, meta schema.Clien
 		res <- page.Parameters
 	}
 	return nil
-}
-
-func resolveRdsDbParameterGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	g := resource.Item.(types.DBParameterGroup)
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceRds).Rds
-	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBParameterGroupArn}, func(options *rds.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, client.TagsToMap(out.TagList))
 }

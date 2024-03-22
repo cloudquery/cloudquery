@@ -9,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 func OptionGroups() *schema.Table {
@@ -27,6 +28,11 @@ func OptionGroups() *schema.Table {
 				Type:                arrow.BinaryTypes.String,
 				Resolver:            schema.PathResolver("OptionGroupArn"),
 				PrimaryKeyComponent: true,
+			},
+			{
+				Name:     "tags",
+				Type:     sdkTypes.ExtensionTypes.JSON,
+				Resolver: resolveRDSTags("OptionGroupArn"),
 			},
 		},
 	}
