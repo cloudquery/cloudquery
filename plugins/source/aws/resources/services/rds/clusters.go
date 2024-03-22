@@ -42,20 +42,20 @@ func Clusters() *schema.Table {
 }
 
 func fetchRdsClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	var config rds.DescribeDBClustersInput
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceRds).Rds
 
-	for _, w := range cl.Spec.TableOptions.RDSDBClusters.Filters() {
-		paginator := rds.NewDescribeDBClustersPaginator(svc, &w.DescribeDBClustersInput)
-		for paginator.HasMorePages() {
-			page, err := paginator.NextPage(ctx, func(options *rds.Options) {
-				options.Region = cl.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- page.DBClusters
+	paginator := rds.NewDescribeDBClustersPaginator(svc, &config)
+
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx, func(options *rds.Options) {
+			options.Region = cl.Region
+		})
+		if err != nil {
+			return err
 		}
+		res <- page.DBClusters
 	}
 	return nil
 }
