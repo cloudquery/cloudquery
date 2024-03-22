@@ -13,7 +13,10 @@
         "connection_string": {
           "type": "string",
           "minLength": 1,
-          "description": "Connection string to connect to the database.\nSee [SDK documentation](https://github.com/microsoft/go-mssqldb#connection-parameters-and-dsn) for details."
+          "description": "Connection string to connect to the database.\nSee [SDK documentation](https://github.com/microsoft/go-mssqldb#connection-parameters-and-dsn) for details.",
+          "examples": [
+            "${MSSQL_CONNECTION_STRING}"
+          ]
         },
         "auth_mode": {
           "type": "string",
