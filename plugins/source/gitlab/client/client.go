@@ -45,6 +45,13 @@ func Configure(ctx context.Context, logger zerolog.Logger, s Spec) (schema.Clien
 	if err != nil {
 		return nil, err
 	}
+	// GET /personal_access_tokens/self
+	// More in https://docs.gitlab.com/ee/api/personal_access_tokens.html#get-single-personal-access-token
+	self, _, err := c.PersonalAccessTokens.GetSinglePersonalAccessToken()
+	if err != nil {
+		return nil, err
+	}
+	logger.Info().Str("token_name", self.Name).Msg("authenticated to GitLab")
 
 	return &Client{
 		logger:         logger,

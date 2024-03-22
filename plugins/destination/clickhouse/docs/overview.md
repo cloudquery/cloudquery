@@ -119,7 +119,3 @@ spec:
   spec:
     connection_string: "clickhouse://${CH_USER}:${CH_PASSWORD}@localhost:9000/${CH_DATABASE}?debug=true"
 ```
-
-## Apache Arrow type conversion
-
-ClickHouse Destination Plugin uses the same approach as documented in [ClickHouse reference](https://clickhouse.com/docs/en/sql-reference/formats#data-format-arrow).

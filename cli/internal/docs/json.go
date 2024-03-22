@@ -10,12 +10,13 @@ import (
 )
 
 type jsonTable struct {
-	Name        string       `json:"name"`
-	Title       string       `json:"title"`
-	Description string       `json:"description"`
-	Columns     []jsonColumn `json:"columns"`
-	Relations   []jsonTable  `json:"relations"`
-	IsPaid      bool         `json:"is_paid,omitempty"`
+	Name          string       `json:"name"`
+	Title         string       `json:"title"`
+	Description   string       `json:"description"`
+	Columns       []jsonColumn `json:"columns"`
+	Relations     []jsonTable  `json:"relations"`
+	IsPaid        bool         `json:"is_paid,omitempty"`
+	IsIncremental bool         `json:"is_incremental,omitempty"`
 }
 
 type jsonColumn struct {
@@ -56,12 +57,13 @@ func (g *Generator) jsonifyTables(tables schema.Tables) []jsonTable {
 			}
 		}
 		jsonTables[i] = jsonTable{
-			Name:        table.Name,
-			Title:       table.Title,
-			Description: table.Description,
-			Columns:     jsonColumns,
-			IsPaid:      table.IsPaid,
-			Relations:   g.jsonifyTables(table.Relations),
+			Name:          table.Name,
+			Title:         table.Title,
+			Description:   table.Description,
+			Columns:       jsonColumns,
+			IsPaid:        table.IsPaid,
+			IsIncremental: table.IsIncremental,
+			Relations:     g.jsonifyTables(table.Relations),
 		}
 	}
 	return jsonTables

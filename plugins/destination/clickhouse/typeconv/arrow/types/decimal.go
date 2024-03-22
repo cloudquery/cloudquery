@@ -6,11 +6,9 @@ import (
 )
 
 func decimalType(name string, col *column.Decimal) *arrow.Field {
-	var decimal arrow.DecimalType
-	if precision := col.Precision(); precision <= 38 {
-		decimal = &arrow.Decimal128Type{Precision: int32(precision), Scale: int32(col.Scale())}
-	} else {
-		decimal = &arrow.Decimal256Type{Precision: int32(precision), Scale: int32(col.Scale())}
+	precision, scale := int32(col.Precision()), int32(col.Scale())
+	if precision <= 38 {
+		return &arrow.Field{Name: name, Type: &arrow.Decimal128Type{Precision: precision, Scale: scale}}
 	}
-	return &arrow.Field{Name: name, Type: decimal}
+	return &arrow.Field{Name: name, Type: &arrow.Decimal256Type{Precision: precision, Scale: scale}}
 }

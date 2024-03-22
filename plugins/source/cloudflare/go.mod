@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/cloudflare/cloudflare-go v0.84.0
 	github.com/cloudquery/codegen v0.3.12
-	github.com/cloudquery/plugin-sdk/v4 v4.34.2
+	github.com/cloudquery/plugin-sdk/v4 v4.35.0
 	github.com/golang/mock v1.6.0
 	github.com/rs/zerolog v1.31.0
 	github.com/thoas/go-funk v0.9.3

@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v4.2.4...plugins-source-gitlab-v4.3.0) (2024-03-22)
+
+
+### Features
+
+* Check token validity on init ([#17305](https://github.com/cloudquery/cloudquery/issues/17305)) ([3e36c67](https://github.com/cloudquery/cloudquery/commit/3e36c67d7e16b65ce0bbaae5f937e3262d2d27ff))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 92878fa ([#16718](https://github.com/cloudquery/cloudquery/issues/16718)) ([7fe8588](https://github.com/cloudquery/cloudquery/commit/7fe858818fe1f88fcca6304c873a4614767a57b9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.35.0 ([#17299](https://github.com/cloudquery/cloudquery/issues/17299)) ([524ba20](https://github.com/cloudquery/cloudquery/commit/524ba202801c2ae1eb59a5b462a5efc62d1b4000))
+
 ## [4.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v4.2.3...plugins-source-gitlab-v4.2.4) (2024-03-19)
 
 
