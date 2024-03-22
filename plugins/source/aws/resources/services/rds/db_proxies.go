@@ -32,7 +32,7 @@ func DbProxies() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveRdsDbProxyTags,
+				Resolver: resolveRDSTags("DBProxyArn"),
 			},
 		},
 	}
@@ -53,17 +53,4 @@ func fetchDbProxies(ctx context.Context, meta schema.ClientMeta, parent *schema.
 		res <- page.DBProxies
 	}
 	return nil
-}
-
-func resolveRdsDbProxyTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	g := resource.Item.(types.DBProxy)
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceRds).Rds
-	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBProxyArn}, func(options *rds.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, client.TagsToMap(out.TagList))
 }
