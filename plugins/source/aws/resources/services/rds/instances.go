@@ -37,25 +37,27 @@ func Instances() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveRdsInstanceTags,
+				Resolver: client.ResolveTagPath("TagList"),
 			},
 		},
 	}
 }
 
 func fetchRdsInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	var config rds.DescribeDBInstancesInput
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceRds).Rds
-	paginator := rds.NewDescribeDBInstancesPaginator(svc, &config)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx, func(options *rds.Options) {
-			options.Region = cl.Region
-		})
-		if err != nil {
-			return err
+
+	for _, w := range cl.Spec.TableOptions.RdsInstances.Filters() {
+		p := rds.NewDescribeDBInstancesPaginator(svc, &w.DescribeDBInstancesInput)
+		for p.HasMorePages() {
+			output, err := p.NextPage(ctx, func(options *rds.Options) {
+				options.Region = cl.Region
+			})
+			if err != nil {
+				return err
+			}
+			res <- output.DBInstances
 		}
-		res <- page.DBInstances
 	}
 	return nil
 }
@@ -67,8 +69,4 @@ func resolveRdsInstanceProcessorFeatures(ctx context.Context, meta schema.Client
 		processorFeatures[*t.Name] = t.Value
 	}
 	return resource.Set(c.Name, processorFeatures)
-}
-
-func resolveRdsInstanceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return resource.Set(c.Name, client.TagsToMap(resource.Item.(types.DBInstance).TagList))
 }

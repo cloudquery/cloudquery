@@ -32,7 +32,7 @@ func Clusters() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveRdsClusterTags,
+				Resolver: client.ResolveTagPath("TagList"),
 			},
 		},
 		Relations: []*schema.Table{
@@ -42,23 +42,20 @@ func Clusters() *schema.Table {
 }
 
 func fetchRdsClusters(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	var config rds.DescribeDBClustersInput
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceRds).Rds
-	paginator := rds.NewDescribeDBClustersPaginator(svc, &config)
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx, func(options *rds.Options) {
-			options.Region = cl.Region
-		})
-		if err != nil {
-			return err
+
+	for _, w := range cl.Spec.TableOptions.RDSDBClusters.Filters() {
+		paginator := rds.NewDescribeDBClustersPaginator(svc, &w.DescribeDBClustersInput)
+		for paginator.HasMorePages() {
+			page, err := paginator.NextPage(ctx, func(options *rds.Options) {
+				options.Region = cl.Region
+			})
+			if err != nil {
+				return err
+			}
+			res <- page.DBClusters
 		}
-		res <- page.DBClusters
 	}
 	return nil
-}
-
-func resolveRdsClusterTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	r := resource.Item.(types.DBCluster)
-	return resource.Set(c.Name, client.TagsToMap(r.TagList))
 }
