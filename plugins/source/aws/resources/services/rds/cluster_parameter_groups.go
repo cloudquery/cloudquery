@@ -32,7 +32,7 @@ func ClusterParameterGroups() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveRdsClusterParameterGroupTags,
+				Resolver: resolveRDSTags("DBClusterParameterGroupArn"),
 			},
 		},
 
@@ -57,17 +57,4 @@ func fetchRdsClusterParameterGroups(ctx context.Context, meta schema.ClientMeta,
 		res <- page.DBClusterParameterGroups
 	}
 	return nil
-}
-
-func resolveRdsClusterParameterGroupTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	g := resource.Item.(types.DBClusterParameterGroup)
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceRds).Rds
-	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: g.DBClusterParameterGroupArn}, func(options *rds.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, client.TagsToMap(out.TagList))
 }
