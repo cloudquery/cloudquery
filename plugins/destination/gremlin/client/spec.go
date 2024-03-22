@@ -4,6 +4,7 @@ import (
 	_ "embed"
 	"fmt"
 	"runtime"
+	"slices"
 	"strings"
 
 	"github.com/invopop/jsonschema"
@@ -100,7 +101,8 @@ func (s *Spec) Validate() error {
 	if s.Endpoint == "" {
 		return fmt.Errorf("endpoint is required")
 	}
-	if s.AuthMode != authModeNone && s.AuthMode != authModeBasic && s.AuthMode != authModeAWS {
+	allowedAuthModes := []authMode{"", authModeNone, authModeBasic, authModeAWS}
+	if !slices.Contains(allowedAuthModes, s.AuthMode) {
 		return fmt.Errorf("invalid auth_mode, valid values are %q, %q and %q", authModeNone, authModeBasic, authModeAWS)
 	}
 	if s.AuthMode == authModeAWS && s.AWSRegion == "" {
