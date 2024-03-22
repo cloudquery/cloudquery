@@ -44,20 +44,18 @@ func Instances() *schema.Table {
 }
 
 func fetchRdsInstances(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
+	var config rds.DescribeDBInstancesInput
 	cl := meta.(*client.Client)
 	svc := cl.Services(client.AWSServiceRds).Rds
-
-	for _, w := range cl.Spec.TableOptions.RdsInstances.Filters() {
-		p := rds.NewDescribeDBInstancesPaginator(svc, &w.DescribeDBInstancesInput)
-		for p.HasMorePages() {
-			output, err := p.NextPage(ctx, func(options *rds.Options) {
-				options.Region = cl.Region
-			})
-			if err != nil {
-				return err
-			}
-			res <- output.DBInstances
+	paginator := rds.NewDescribeDBInstancesPaginator(svc, &config)
+	for paginator.HasMorePages() {
+		page, err := paginator.NextPage(ctx, func(options *rds.Options) {
+			options.Region = cl.Region
+		})
+		if err != nil {
+			return err
 		}
+		res <- page.DBInstances
 	}
 	return nil
 }
