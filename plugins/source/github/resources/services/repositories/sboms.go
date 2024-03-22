@@ -2,6 +2,8 @@ package repositories
 
 import (
 	"context"
+	"fmt"
+	"net/http"
 
 	"github.com/cloudquery/cloudquery/plugins/source/github/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -25,8 +27,11 @@ func fetchSboms(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	c := meta.(*client.Client)
 	repo := parent.Item.(*github.Repository)
 
-	sbom, _, err := c.Github.DependencyGraph.GetSBOM(ctx, c.Org, *repo.Name)
+	sbom, rawResp, err := c.Github.DependencyGraph.GetSBOM(ctx, c.Org, *repo.Name)
 	if err != nil {
+		if rawResp != nil && rawResp.StatusCode == http.StatusNotFound {
+			return fmt.Errorf("sbom not found for repository %s/%s. You might need to enable dependency graph under the repository insights tab", c.Org, *repo.Name)
+		}
 		return err
 	}
 	res <- sbom.SBOM
