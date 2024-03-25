@@ -14,7 +14,6 @@ func TestTableOptions_JSONSchema(t *testing.T) {
 		{
 			Name: "null",
 			Spec: `null`,
-			Err:  true,
 		},
 		{
 			Name: "array",

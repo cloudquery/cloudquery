@@ -1,5 +1,23 @@
 # Changelog
 
+## [4.4.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.4.4...plugins-destination-mssql-v4.4.5) (2024-03-22)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 92878fa ([#16718](https://github.com/cloudquery/cloudquery/issues/16718)) ([7fe8588](https://github.com/cloudquery/cloudquery/commit/7fe858818fe1f88fcca6304c873a4614767a57b9))
+* Update docs example to use env variable replacement ([#17298](https://github.com/cloudquery/cloudquery/issues/17298)) ([146a781](https://github.com/cloudquery/cloudquery/commit/146a7811c3c6aa1a9decc022ebdaaf807b041ed8))
+
+## [4.4.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.4.3...plugins-destination-mssql-v4.4.4) (2024-03-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.0 ([#17203](https://github.com/cloudquery/cloudquery/issues/17203)) ([4b128b6](https://github.com/cloudquery/cloudquery/commit/4b128b6722dea883d66458f2f3c831184926353d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.1 ([#17220](https://github.com/cloudquery/cloudquery/issues/17220)) ([08d4950](https://github.com/cloudquery/cloudquery/commit/08d49504aee10f6883e1bd4f7e1102a274c8ee81))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.2 ([#17229](https://github.com/cloudquery/cloudquery/issues/17229)) ([41ed721](https://github.com/cloudquery/cloudquery/commit/41ed721cfa435a4937f3022501dd4d45a3a880b0))
+* **deps:** Update module google.golang.org/protobuf to v1.33.0 [SECURITY] ([#17144](https://github.com/cloudquery/cloudquery/issues/17144)) ([0b0167b](https://github.com/cloudquery/cloudquery/commit/0b0167bdf9d51e2b7b0386fc0651703679586954))
+
 ## [4.4.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.4.2...plugins-destination-mssql-v4.4.3) (2024-03-12)
 
 

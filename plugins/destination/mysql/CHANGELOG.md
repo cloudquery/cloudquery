@@ -1,5 +1,32 @@
 # Changelog
 
+## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v4.2.5...plugins-destination-mysql-v5.0.0) (2024-03-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* This is a documentation (no code) change. We're dropping the documented support for MySQL versions lower than 8.0 as those are no longer supported. See https://endoflife.date/mysql. Older versions of MySQL might still work, but we won't guarantee support for them
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 92878fa ([#16718](https://github.com/cloudquery/cloudquery/issues/16718)) ([7fe8588](https://github.com/cloudquery/cloudquery/commit/7fe858818fe1f88fcca6304c873a4614767a57b9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.35.0 ([#17299](https://github.com/cloudquery/cloudquery/issues/17299)) ([524ba20](https://github.com/cloudquery/cloudquery/commit/524ba202801c2ae1eb59a5b462a5efc62d1b4000))
+
+
+### Miscellaneous Chores
+
+* Update docs for MySQL supported versions to be &gt;=8.0 ([0d5e0b8](https://github.com/cloudquery/cloudquery/commit/0d5e0b86d2288e8a17478ac0f5426e8b85e241ee))
+
+## [4.2.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v4.2.4...plugins-destination-mysql-v4.2.5) (2024-03-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.0 ([#17203](https://github.com/cloudquery/cloudquery/issues/17203)) ([4b128b6](https://github.com/cloudquery/cloudquery/commit/4b128b6722dea883d66458f2f3c831184926353d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.1 ([#17220](https://github.com/cloudquery/cloudquery/issues/17220)) ([08d4950](https://github.com/cloudquery/cloudquery/commit/08d49504aee10f6883e1bd4f7e1102a274c8ee81))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.2 ([#17229](https://github.com/cloudquery/cloudquery/issues/17229)) ([41ed721](https://github.com/cloudquery/cloudquery/commit/41ed721cfa435a4937f3022501dd4d45a3a880b0))
+* **deps:** Update module google.golang.org/protobuf to v1.33.0 [SECURITY] ([#17145](https://github.com/cloudquery/cloudquery/issues/17145)) ([eb7bf82](https://github.com/cloudquery/cloudquery/commit/eb7bf82416525b85535b86a135668df0686a189b))
+
 ## [4.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v4.2.3...plugins-destination-mysql-v4.2.4) (2024-03-12)
 
 
