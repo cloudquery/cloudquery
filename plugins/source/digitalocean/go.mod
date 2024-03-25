@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.52.1
 	github.com/aws/smithy-go v1.20.1
 	github.com/cloudquery/codegen v0.3.12
-	github.com/cloudquery/plugin-sdk/v4 v4.34.2
+	github.com/cloudquery/plugin-sdk/v4 v4.35.0
 	github.com/digitalocean/godo v1.99.0
 	github.com/golang/mock v1.6.0
 	github.com/pkg/errors v0.9.1
@@ -150,4 +150,4 @@ require (
 )
 
 // github.com/cloudquery/jsonschema @ cqmain
-replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240202134451-d771afde32fb
+replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66

@@ -1,5 +1,22 @@
 # Changelog
 
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.0.26...plugins-source-hackernews-v3.1.0) (2024-03-19)
+
+
+### Features
+
+* Add JSON schema ([#17238](https://github.com/cloudquery/cloudquery/issues/17238)) ([720eb00](https://github.com/cloudquery/cloudquery/commit/720eb00ef52a6b7357818722b384df280325eb4b))
+
+## [3.0.26](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.0.25...plugins-source-hackernews-v3.0.26) (2024-03-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.0 ([#17203](https://github.com/cloudquery/cloudquery/issues/17203)) ([4b128b6](https://github.com/cloudquery/cloudquery/commit/4b128b6722dea883d66458f2f3c831184926353d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.1 ([#17220](https://github.com/cloudquery/cloudquery/issues/17220)) ([08d4950](https://github.com/cloudquery/cloudquery/commit/08d49504aee10f6883e1bd4f7e1102a274c8ee81))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.2 ([#17229](https://github.com/cloudquery/cloudquery/issues/17229)) ([41ed721](https://github.com/cloudquery/cloudquery/commit/41ed721cfa435a4937f3022501dd4d45a3a880b0))
+* **deps:** Update module google.golang.org/protobuf to v1.33.0 [SECURITY] ([#17158](https://github.com/cloudquery/cloudquery/issues/17158)) ([94b8833](https://github.com/cloudquery/cloudquery/commit/94b8833b558d7628d8006779437c6b92402be2dc))
+
 ## [3.0.25](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.0.24...plugins-source-hackernews-v3.0.25) (2024-03-12)
 
 

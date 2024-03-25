@@ -7,7 +7,7 @@ toolchain go1.21.6
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240115115805-d7bc55542e61
 	github.com/cloudquery/codegen v0.3.12
-	github.com/cloudquery/plugin-sdk/v4 v4.34.2
+	github.com/cloudquery/plugin-sdk/v4 v4.35.0
 	github.com/google/go-cmp v0.6.0
 	github.com/invopop/jsonschema v0.12.0
 	github.com/jackc/pgx-zerolog v0.0.0-20230315001418-f978528409eb
@@ -133,4 +133,4 @@ require (
 )
 
 // github.com/cloudquery/jsonschema @ cqmain
-replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240202134451-d771afde32fb
+replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66

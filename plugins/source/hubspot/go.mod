@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/clarkmcc/go-hubspot v0.0.0-20240203002710-abe38a19e3dd
 	github.com/cloudquery/codegen v0.3.12
-	github.com/cloudquery/plugin-sdk/v4 v4.34.2
+	github.com/cloudquery/plugin-sdk/v4 v4.35.0
 	github.com/rs/zerolog v1.31.0
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/exp v0.0.0-20240222234643-814bf88cf225
@@ -128,4 +128,4 @@ require (
 )
 
 // github.com/cloudquery/jsonschema @ cqmain
-replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240202134451-d771afde32fb
+replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66

@@ -19,7 +19,14 @@
         "parameters": {
           "oneOf": [
             {
-              "items": true,
+              "items": {
+                "oneOf": [
+                  true,
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
               "type": "array",
               "description": "Engine parameters.\nCurrently, no restrictions are imposed on the parameter types."
             },

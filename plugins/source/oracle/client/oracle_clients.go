@@ -1573,7 +1573,8 @@ func getConfigProvider() (common.ConfigurationProvider, error) {
 	return common.ComposingConfigurationProvider(
 		[]common.ConfigurationProvider{
 			common.DefaultConfigProvider(), // has to be the first as the auth is checked only for the 1st in chain
-			common.ConfigurationProviderEnvironmentVariables("OCI_CLI", ""),
+			common.ConfigurationProviderEnvironmentVariables(ocCLIEnvironmentVariable, ""),
+			newRawPrivateKeyConfigProvider(),
 		},
 	)
 }

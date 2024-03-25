@@ -66,5 +66,5 @@ spec:
   version:  "VERSION_DESTINATION_MSSQL"
 
   spec:
-    connection_string: "${MS_SQL_CONN_STRING};log=255"
+    connection_string: "${MSSQL_CONNECTION_STRING};log=255"
 ```

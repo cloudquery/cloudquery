@@ -172,43 +172,43 @@
     },
     {
       "source": "/blog/cloud-asset-inventory-cloudquery-apache-superset",
-      "destination": "/how-to-guides/cloud-asset-inventory-cloudquery-apache-superset"
+      "destination": "https://www.cloudquery.io/blog/cloud-asset-inventory-cloudquery-apache-superset"
     },
     {
       "source": "/blog/cloud-asset-inventory-cloudquery-aws-quicksight",
-      "destination": "/how-to-guides/cloud-asset-inventory-cloudquery-aws-quicksight"
+      "destination": "https://www.cloudquery.io/blog/cloud-asset-inventory-cloudquery-aws-quicksight"
     },
     {
       "source": "/blog/cloud-asset-inventory-cloudquery-google-data-studio",
-      "destination": "/how-to-guides/cloud-asset-inventory-cloudquery-google-data-studio"
+      "destination": "https://www.cloudquery.io/blog/cloud-asset-inventory-cloudquery-google-data-studio"
     },
     {
       "source": "/blog/cloud-asset-inventory-cloudquery-metabase",
-      "destination": "/how-to-guides/cloud-asset-inventory-cloudquery-metabase"
+      "destination": "https://www.cloudquery.io/blog/cloud-asset-inventory-cloudquery-metabase"
     },
     {
       "source": "/blog/cloud-asset-inventory-cloudquery-microsoft-power-bi",
-      "destination": "/how-to-guides/cloud-asset-inventory-cloudquery-microsoft-power-bi"
+      "destination": "https://www.cloudquery.io/blog/cloud-asset-inventory-cloudquery-microsoft-power-bi"
     },
     {
       "source": "/blog/cloudquery-postgraphile",
-      "destination": "/how-to-guides/cloudquery-postgraphile"
+      "destination": "https://www.cloudquery.io/blog/cloudquery-postgraphile"
     },
     {
       "source": "/blog/cloudquery-postgrest",
-      "destination": "/how-to-guides/cloudquery-postgrest"
+      "destination": "https://www.cloudquery.io/blog/cloudquery-postgrest"
     },
     {
       "source": "/blog/cross-account-access-aws-assumerole",
-      "destination": "/how-to-guides/cross-account-access-aws-assumerole"
+      "destination": "https://www.cloudquery.io/blog/cross-account-access-aws-assumerole"
     },
     {
       "source": "/blog/deploying-cloudquery-into-aws-org",
-      "destination": "/how-to-guides/deploying-cloudquery-into-aws-org"
+      "destination": "https://www.cloudquery.io/blog/deploying-cloudquery-into-aws-org"
     },
     {
       "source": "/blog/open-source-cspm",
-      "destination": "/how-to-guides/open-source-cspm"
+      "destination": "https://www.cloudquery.io/blog/open-source-cspm"
     },
     {
       "source": "/docs/plugins/sources/tailscale/configuration",
@@ -1061,6 +1061,10 @@
     {
       "source": "/docs/quickstart/macos",
       "destination": "/docs/quickstart/macOS"
+    },
+    {
+      "source": "/how-to-guides/:path*",
+      "destination": "https://www.cloudquery.io/blog/:path*"
     }
   ]
 }

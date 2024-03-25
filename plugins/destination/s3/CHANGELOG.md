@@ -1,5 +1,24 @@
 # Changelog
 
+## [5.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v5.0.3...plugins-destination-s3-v5.0.4) (2024-03-22)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 92878fa ([#16718](https://github.com/cloudquery/cloudquery/issues/16718)) ([7fe8588](https://github.com/cloudquery/cloudquery/commit/7fe858818fe1f88fcca6304c873a4614767a57b9))
+* Update `_authentication.md` docs ([#17295](https://github.com/cloudquery/cloudquery/issues/17295)) ([99951c2](https://github.com/cloudquery/cloudquery/commit/99951c2e35496e785868faba63162d2700122fd4))
+
+## [5.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v5.0.2...plugins-destination-s3-v5.0.3) (2024-03-19)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#17221](https://github.com/cloudquery/cloudquery/issues/17221)) ([8400636](https://github.com/cloudquery/cloudquery/commit/840063602eeeb957cfdca93dac043bb2c8138477))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.0 ([#17203](https://github.com/cloudquery/cloudquery/issues/17203)) ([4b128b6](https://github.com/cloudquery/cloudquery/commit/4b128b6722dea883d66458f2f3c831184926353d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.1 ([#17220](https://github.com/cloudquery/cloudquery/issues/17220)) ([08d4950](https://github.com/cloudquery/cloudquery/commit/08d49504aee10f6883e1bd4f7e1102a274c8ee81))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.2 ([#17229](https://github.com/cloudquery/cloudquery/issues/17229)) ([41ed721](https://github.com/cloudquery/cloudquery/commit/41ed721cfa435a4937f3022501dd4d45a3a880b0))
+* **deps:** Update module google.golang.org/protobuf to v1.33.0 [SECURITY] ([#17148](https://github.com/cloudquery/cloudquery/issues/17148)) ([170d618](https://github.com/cloudquery/cloudquery/commit/170d6185b9836e4a60df6919a46be92e98f6caa8))
+
 ## [5.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v5.0.1...plugins-destination-s3-v5.0.2) (2024-03-12)
 
 

@@ -3,6 +3,7 @@ package rds
 import (
 	"testing"
 
+	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/rds"
 	rdsTypes "github.com/aws/aws-sdk-go-v2/service/rds/types"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client"
@@ -65,6 +66,16 @@ func buildRdsDBSubnetGroups(t *testing.T, ctrl *gomock.Controller) client.Servic
 		&rds.DescribeDBSubnetGroupsOutput{
 			DBSubnetGroups: []rdsTypes.DBSubnetGroup{l},
 		}, nil)
+	m.EXPECT().ListTagsForResource(
+		gomock.Any(),
+		&rds.ListTagsForResourceInput{ResourceName: l.DBSubnetGroupArn},
+		gomock.Any(),
+	).Return(
+		&rds.ListTagsForResourceOutput{
+			TagList: []rdsTypes.Tag{{Key: aws.String("key"), Value: aws.String("value")}},
+		},
+		nil,
+	)
 	return client.Services{
 		Rds: m,
 	}
