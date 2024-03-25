@@ -37,7 +37,7 @@ func Instances() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveRdsInstanceTags,
+				Resolver: client.ResolveTagPath("TagList"),
 			},
 		},
 	}
@@ -67,8 +67,4 @@ func resolveRdsInstanceProcessorFeatures(ctx context.Context, meta schema.Client
 		processorFeatures[*t.Name] = t.Value
 	}
 	return resource.Set(c.Name, processorFeatures)
-}
-
-func resolveRdsInstanceTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	return resource.Set(c.Name, client.TagsToMap(resource.Item.(types.DBInstance).TagList))
 }

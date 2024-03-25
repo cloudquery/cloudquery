@@ -1,5 +1,34 @@
 # Changelog
 
+## [4.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.3.0...plugins-source-oracle-v4.3.1) (2024-03-21)
+
+
+### Bug Fixes
+
+* Env var reference ([#17292](https://github.com/cloudquery/cloudquery/issues/17292)) ([206c807](https://github.com/cloudquery/cloudquery/commit/206c80717b1c606ec7c86d4091c1f8b6d3805ac9))
+
+## [4.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.16...plugins-source-oracle-v4.3.0) (2024-03-21)
+
+
+### Features
+
+* Support `private_key` env variable ([#17242](https://github.com/cloudquery/cloudquery/issues/17242)) ([84785fa](https://github.com/cloudquery/cloudquery/commit/84785fa54e32214b8a3e4ebb5fe499c678a33cfa))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 92878fa ([#16718](https://github.com/cloudquery/cloudquery/issues/16718)) ([7fe8588](https://github.com/cloudquery/cloudquery/commit/7fe858818fe1f88fcca6304c873a4614767a57b9))
+
+## [4.2.16](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.15...plugins-source-oracle-v4.2.16) (2024-03-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.0 ([#17203](https://github.com/cloudquery/cloudquery/issues/17203)) ([4b128b6](https://github.com/cloudquery/cloudquery/commit/4b128b6722dea883d66458f2f3c831184926353d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.1 ([#17220](https://github.com/cloudquery/cloudquery/issues/17220)) ([08d4950](https://github.com/cloudquery/cloudquery/commit/08d49504aee10f6883e1bd4f7e1102a274c8ee81))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.2 ([#17229](https://github.com/cloudquery/cloudquery/issues/17229)) ([41ed721](https://github.com/cloudquery/cloudquery/commit/41ed721cfa435a4937f3022501dd4d45a3a880b0))
+* **deps:** Update module google.golang.org/protobuf to v1.33.0 [SECURITY] ([#17163](https://github.com/cloudquery/cloudquery/issues/17163)) ([021f423](https://github.com/cloudquery/cloudquery/commit/021f42371471a857c88e8a608bbc196b1bba7cbf))
+
 ## [4.2.15](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.14...plugins-source-oracle-v4.2.15) (2024-03-12)
 
 
