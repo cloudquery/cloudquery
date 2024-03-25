@@ -24,13 +24,31 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 	var s *filetypes.Stream
 
 	for msg := range msgs {
-		if s == nil {
-			table := msg.GetTable()
+		fileClient := c.Client
+		table := msg.GetTable()
 
+		if s == nil {
+			if _, ok := c.objectKeys.keys[table.Name]; !ok {
+				c.objectKeys.keys[table.Name] = []string{}
+			}
 			objKey := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC())
+			if c.objectKeys.current < c.objectKeys.limit {
+				c.objectKeys.keys[table.Name] = append(c.objectKeys.keys[table.Name], objKey)
+				c.objectKeys.current++
+			} else if c.objectKeys.current == c.objectKeys.limit {
+				c.logger.Warn().Msgf("maximum key limit reached, no more keys will be added to the `cloudquery_sync_summary` file")
+			}
+
+			if table.Name == "_cq_sync_summary" {
+				msg.Record = c.addObjectsSyncedToSummary(msg.Record)
+				table = msg.GetTable()
+				// The summary table is always represented as a JSON file
+				fileClient = c.jsonFiletypesClient
+			}
 
 			var err error
-			s, err = c.Client.StartStream(table, func(r io.Reader) error {
+
+			s, err = fileClient.StartStream(table, func(r io.Reader) error {
 				params := &s3.PutObjectInput{
 					Bucket: aws.String(c.spec.Bucket),
 					Key:    aws.String(objKey),
@@ -63,6 +81,11 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 		if err := s.Write([]arrow.Record{msg.Record}); err != nil {
 			_ = s.FinishWithError(err)
 			return err
+		}
+		// reset the key counter to handle when there are multiple sources in the same sync
+		if table.Name == "cloudquery_sync_summary" {
+			c.objectKeys.current = 0
+			c.objectKeys.keys = make(map[string][]string)
 		}
 	}
 

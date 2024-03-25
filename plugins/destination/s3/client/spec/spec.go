@@ -181,10 +181,21 @@ func (s *Spec) Validate() error {
 
 func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time) string {
 	name := strings.ReplaceAll(s.Path, varTable, table)
+
+	if table == "cloudquery_sync_summary" {
+		name = strings.ReplaceAll(name, varFormat, "json")
+		fullSuffix := string(s.Format) + s.Compression.Extension()
+		if strings.HasSuffix(s.Path, fullSuffix) {
+			name = strings.TrimSuffix(name, fullSuffix)
+			name += "json"
+		}
+	}
+
 	if strings.Contains(name, varFormat) {
 		e := string(s.Format) + s.Compression.Extension()
 		name = strings.ReplaceAll(name, varFormat, e)
 	}
+
 	name = strings.ReplaceAll(name, varUUID, fileIdentifier)
 	name = strings.ReplaceAll(name, varYear, t.Format("2006"))
 	name = strings.ReplaceAll(name, varMonth, t.Format("01"))
