@@ -10,7 +10,7 @@ require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240115115805-d7bc55542e61
 	github.com/cloudquery/codegen v0.3.12
 	github.com/cloudquery/filetypes/v4 v4.2.11
-	github.com/cloudquery/plugin-sdk/v4 v4.35.0
+	github.com/cloudquery/plugin-sdk/v4 v4.36.0
 	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.12.0
@@ -42,7 +42,7 @@ require (
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.8.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.19.4 // indirect
+	github.com/cloudquery/plugin-pb-go v1.19.5 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect
