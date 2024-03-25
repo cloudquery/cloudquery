@@ -1,5 +1,24 @@
 # Changelog
 
+## [4.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.3.0...plugins-source-oracle-v4.3.1) (2024-03-21)
+
+
+### Bug Fixes
+
+* Env var reference ([#17292](https://github.com/cloudquery/cloudquery/issues/17292)) ([206c807](https://github.com/cloudquery/cloudquery/commit/206c80717b1c606ec7c86d4091c1f8b6d3805ac9))
+
+## [4.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.16...plugins-source-oracle-v4.3.0) (2024-03-21)
+
+
+### Features
+
+* Support `private_key` env variable ([#17242](https://github.com/cloudquery/cloudquery/issues/17242)) ([84785fa](https://github.com/cloudquery/cloudquery/commit/84785fa54e32214b8a3e4ebb5fe499c678a33cfa))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 92878fa ([#16718](https://github.com/cloudquery/cloudquery/issues/16718)) ([7fe8588](https://github.com/cloudquery/cloudquery/commit/7fe858818fe1f88fcca6304c873a4614767a57b9))
+
 ## [4.2.16](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.2.15...plugins-source-oracle-v4.2.16) (2024-03-19)
 
 

@@ -33,4 +33,6 @@ export OCI_CLI_tenancy_ocid="ocid1.tenancy.oc1..<unique_ID>"
 export OCI_CLI_user_ocid="ocid1.user.oc1..<unique_ID>"
 export OCI_CLI_region="us-ashburn-1"
 export OCI_CLI_private_key_path="~/.oci/oci_api_key.pem"
+# Can be used instead of `OCI_CLI_private_key_path`, starting from version v4.3.0 of the Oracle source plugin
+export OCI_CLI_private_key="<raw-content-of-private-key-with-line-breaks-replaced-with-\n>" # e.g. -----BEGIN PRIVATE KEY-----\n<private-key-content>\n-----END PRIVATE
 ```
