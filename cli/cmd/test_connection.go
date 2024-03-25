@@ -176,7 +176,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	for i, client := range sourceClients {
 		pluginClient := plugin.NewPluginClient(client.Conn)
 		log.Info().Str("source", sources[i].VersionString()).Msg("Initializing source")
-		err := initPlugin(ctx, pluginClient, sources[i].Spec, false)
+		err := initPlugin(ctx, pluginClient, sources[i].Spec, false, invocationUUID.String())
 		if err != nil {
 			initErrors = append(initErrors, fmt.Errorf("failed to init source %v: %w", sources[i].VersionString(), err))
 		} else {
@@ -186,7 +186,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	for i, client := range destinationClients {
 		pluginClient := plugin.NewPluginClient(client.Conn)
 		log.Info().Str("destination", destinations[i].VersionString()).Msg("Initializing destination")
-		err := initPlugin(ctx, pluginClient, destinations[i].Spec, false)
+		err := initPlugin(ctx, pluginClient, destinations[i].Spec, false, invocationUUID.String())
 		if err != nil {
 			initErrors = append(initErrors, fmt.Errorf("failed to init destination %v: %w", destinations[i].VersionString(), err))
 		} else {
