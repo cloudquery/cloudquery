@@ -1,5 +1,18 @@
 # Changelog
 
+## [8.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v8.1.3...plugins-source-github-v8.2.0) (2024-03-22)
+
+
+### Features
+
+* When SBOM API returns 404 recommend enabling dependency graph ([#17309](https://github.com/cloudquery/cloudquery/issues/17309)) ([2c95674](https://github.com/cloudquery/cloudquery/commit/2c95674c516b1caee2d0e269afec2c65b0fc2998))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 92878fa ([#16718](https://github.com/cloudquery/cloudquery/issues/16718)) ([7fe8588](https://github.com/cloudquery/cloudquery/commit/7fe858818fe1f88fcca6304c873a4614767a57b9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.35.0 ([#17299](https://github.com/cloudquery/cloudquery/issues/17299)) ([524ba20](https://github.com/cloudquery/cloudquery/commit/524ba202801c2ae1eb59a5b462a5efc62d1b4000))
+
 ## [8.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v8.1.2...plugins-source-github-v8.1.3) (2024-03-19)
 
 
