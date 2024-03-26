@@ -11,6 +11,7 @@ import (
 	"os/signal"
 	"strconv"
 	"strings"
+	gosync "sync"
 	"syscall"
 	"time"
 
@@ -97,10 +98,13 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	mux := http.NewServeMux()
 	refreshToken := ""
 	gotToken := make(chan struct{})
+	var once gosync.Once
 	mux.HandleFunc("/callback", func(w http.ResponseWriter, r *http.Request) {
+		once.Do(func() {
+			refreshToken = r.URL.Query().Get("token")
+			close(gotToken)
+		})
 		http.Redirect(w, r, accountsURL+"/success-close", http.StatusSeeOther)
-		refreshToken = r.URL.Query().Get("token")
-		close(gotToken)
 	})
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
