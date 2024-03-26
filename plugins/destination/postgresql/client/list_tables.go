@@ -128,6 +128,9 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 		})
 	}
 
+	c.pgTablesToPKConstraintsMu.Lock()
+	defer c.pgTablesToPKConstraintsMu.Unlock()
 	c.pgTablesToPKConstraints = tableInfo
+
 	return tables, nil
 }

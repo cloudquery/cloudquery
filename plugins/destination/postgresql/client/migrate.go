@@ -298,7 +298,10 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 			return fmt.Errorf("failed to begin transaction: %w", err)
 		}
 	}
+
+	c.pgTablesToPKConstraintsMu.RLock()
 	entry := c.pgTablesToPKConstraints[tableName]
+	c.pgTablesToPKConstraintsMu.RUnlock()
 	if entry == nil {
 		entry = new(pkConstraintDetails)
 	}
