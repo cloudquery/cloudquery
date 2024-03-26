@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v5.1.0...plugins-destination-s3-v5.1.1) (2024-03-26)
+
+
+### Bug Fixes
+
+* Update docs for new path variable ([#17338](https://github.com/cloudquery/cloudquery/issues/17338)) ([78d001a](https://github.com/cloudquery/cloudquery/commit/78d001a54531e30029894cb38e30e9f849a8da57))
+
 ## [5.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v5.0.4...plugins-destination-s3-v5.1.0) (2024-03-26)
 
 
