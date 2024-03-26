@@ -299,12 +299,14 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 		}
 	}
 
-	c.pgTablesToPKConstraintsMu.RLock()
+	c.pgTablesToPKConstraintsMu.Lock()
 	entry := c.pgTablesToPKConstraints[tableName]
-	c.pgTablesToPKConstraintsMu.RUnlock()
 	if entry == nil {
 		entry = new(pkConstraintDetails)
+		c.pgTablesToPKConstraints[tableName] = entry
 	}
+	c.pgTablesToPKConstraintsMu.Unlock()
+
 	for _, colName := range entry.columns {
 		_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ALTER COLUMN "+pgx.Identifier{colName}.Sanitize()+" DROP NOT NULL")
 		if err != nil {
