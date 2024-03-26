@@ -21,11 +21,6 @@ export const EXTERNAL_AUTHORS: Map<Author> = {
         company: "Hexagon",
         image_url: "/images/people/peterfigueiredo.jpg",
     },
-    andrewthetechie: {
-        name: "Andrew",
-        company: "AutoDesk",
-        image_url: "/images/people/andrew.png",
-    },
     michaeltay0: {
         name: "Michael Tayo",
         company: "Tempus",

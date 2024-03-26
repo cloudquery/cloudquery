@@ -47,6 +47,12 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClie
 	if err != nil {
 		return nil, err
 	}
+
+	err = db.Ping()
+	if err != nil {
+		return nil, err
+	}
+
 	c.db = db
 	return c, nil
 }
