@@ -8,6 +8,7 @@ import io.cloudquery.plugin.BackendOptions;
 import io.cloudquery.plugin.ClientNotInitializedException;
 import io.cloudquery.plugin.NewClientOptions;
 import io.cloudquery.plugin.Plugin;
+import io.cloudquery.plugin.PluginKind;
 import io.cloudquery.plugin.v3.Sync;
 import io.cloudquery.scheduler.Scheduler;
 import io.cloudquery.schema.ClientMeta;
@@ -27,6 +28,8 @@ public class BitbucketPlugin extends Plugin {
   public BitbucketPlugin() {
     super("bitbucket", PLUGIN_VERSION);
     this.setJsonSchema(Spec.jsonSchema);
+    this.setTeam("cloudquery");
+    this.setKind(PluginKind.Source);
   }
 
   @Override

@@ -76,7 +76,7 @@ ORDER BY
 `
 
 func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
-	c.pgTablesToPKConstraints = map[string]*pkConstraintDetails{}
+	tableInfo := map[string]*pkConstraintDetails{}
 	var tables schema.Tables
 	var whereClause string
 	if c.pgType == pgTypeCockroachDB {
@@ -104,10 +104,10 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 		table := tables[len(tables)-1]
 
 		// We always want to record that we saw the table, even if it doesn't have a PK constraint.
-		entry, ok := c.pgTablesToPKConstraints[tableName]
+		entry, ok := tableInfo[tableName]
 		if !ok {
 			entry = new(pkConstraintDetails)
-			c.pgTablesToPKConstraints[tableName] = entry
+			tableInfo[tableName] = entry
 		}
 		if pkName != "" {
 			entry.name = pkName
@@ -127,5 +127,10 @@ func (c *Client) listTables(ctx context.Context) (schema.Tables, error) {
 			Unique: isUnique && uniqueName == tableName+"_"+columnName+"_key",
 		})
 	}
+
+	c.pgTablesToPKConstraintsMu.Lock()
+	defer c.pgTablesToPKConstraintsMu.Unlock()
+	c.pgTablesToPKConstraints = tableInfo
+
 	return tables, nil
 }

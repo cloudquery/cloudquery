@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.4.5...plugins-destination-mssql-v4.5.0) (2024-03-26)
+
+
+### Features
+
+* Fail on Init with incorrect credentials ([#17342](https://github.com/cloudquery/cloudquery/issues/17342)) ([a654350](https://github.com/cloudquery/cloudquery/commit/a6543504269bd7da6e5ee104d71a251e39771b36))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/apache/arrow/go/v15 to v15.0.2 ([#17318](https://github.com/cloudquery/cloudquery/issues/17318)) ([09dc27b](https://github.com/cloudquery/cloudquery/commit/09dc27bfedb3ca3b6c32579cdebbe3a6a8962a93))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.35.0 ([#17299](https://github.com/cloudquery/cloudquery/issues/17299)) ([524ba20](https://github.com/cloudquery/cloudquery/commit/524ba202801c2ae1eb59a5b462a5efc62d1b4000))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.0 ([#17325](https://github.com/cloudquery/cloudquery/issues/17325)) ([eb1b4b8](https://github.com/cloudquery/cloudquery/commit/eb1b4b8b963917b87ff644318cfec9745471d50a))
+
 ## [4.4.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.4.4...plugins-destination-mssql-v4.4.5) (2024-03-22)
 
 
