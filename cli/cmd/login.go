@@ -98,19 +98,13 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	mux := http.NewServeMux()
 	refreshToken := ""
 	gotToken := make(chan struct{})
-	var callbackLock gosync.Mutex
-	callbackHandled := false
+	var once gosync.Once
 	mux.HandleFunc("/callback", func(w http.ResponseWriter, r *http.Request) {
-		callbackLock.Lock()
-		defer callbackLock.Unlock()
-		if callbackHandled {
-			http.Redirect(w, r, accountsURL+"/success-close", http.StatusSeeOther)
-			return
-		}
+		once.Do(func() {
+			refreshToken = r.URL.Query().Get("token")
+			close(gotToken)
+		})
 		http.Redirect(w, r, accountsURL+"/success-close", http.StatusSeeOther)
-		refreshToken = r.URL.Query().Get("token")
-		close(gotToken)
-		callbackHandled = true
 	})
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
