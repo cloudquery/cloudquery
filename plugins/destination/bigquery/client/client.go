@@ -97,8 +97,8 @@ func (c *Client) Close(ctx context.Context) error {
 }
 
 func (c *Client) validateCreds(ctx context.Context) error {
-	tableRef := c.client.Dataset(c.spec.DatasetID).Table("cq-test-table")
-	_, err := tableRef.Metadata(ctx)
+	datasetRef := c.client.Dataset(c.spec.DatasetID)
+	_, err := datasetRef.Metadata(ctx)
 	if err != nil {
 		if e, ok := err.(*googleapi.Error); ok {
 			// if the error is 404, the table does not exist, but the credentials are valid
