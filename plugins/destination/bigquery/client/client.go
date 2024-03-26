@@ -101,7 +101,6 @@ func (c *Client) validateCreds(ctx context.Context) error {
 	_, err := datasetRef.Metadata(ctx)
 	if err != nil {
 		if e, ok := err.(*googleapi.Error); ok {
-			// if the error is 404, the table does not exist, but the credentials are valid
 			if e.Code == http.StatusNotFound {
 				return fmt.Errorf("invalid dataset. dataset must be created before sync or migration: %w", err)
 			}
