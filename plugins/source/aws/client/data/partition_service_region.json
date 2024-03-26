@@ -9027,6 +9027,11 @@
             "us-gov-west-1": {}
           }
         },
+        "models-v2-lex": {
+          "regions": {
+            "us-gov-west-1": {}
+          }
+        },
         "models.lex": {
           "regions": {
             "us-gov-west-1": {}
@@ -9180,6 +9185,11 @@
             "us-gov-east-1-fips": {},
             "us-gov-west-1": {},
             "us-gov-west-1-fips": {}
+          }
+        },
+        "runtime-v2-lex": {
+          "regions": {
+            "us-gov-west-1": {}
           }
         },
         "runtime.lex": {
