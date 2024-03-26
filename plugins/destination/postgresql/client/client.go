@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"sync"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -32,7 +33,8 @@ type Client struct {
 	batchSize           int
 	writer              *mixedbatchwriter.MixedBatchWriter
 
-	pgTablesToPKConstraints map[string]*pkConstraintDetails
+	pgTablesToPKConstraints   map[string]*pkConstraintDetails
+	pgTablesToPKConstraintsMu sync.RWMutex
 
 	plugin.UnimplementedSource
 }
