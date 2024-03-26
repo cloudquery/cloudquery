@@ -34,12 +34,19 @@ spec:
 
 ```docker
 # Dockerfile
-FROM ghcr.io/cloudquery/cloudquery:latest
+FROM ghcr.io/cloudquery/cloudquery:latest as build
 WORKDIR /app
 COPY ./build.spec.yaml /app/build.spec.yaml
-
 ARG CLOUDQUERY_API_KEY
-RUN /app/cloudquery plugin install cloudquery.yaml
+
+RUN /app/cloudquery plugin install build.spec.yaml
+
+FROM ghcr.io/cloudquery/cloudquery:latest
+
+WORKDIR /app
+
+# Copy the .cq directory which contains the plugins
+COPY --from=build /app/.cq /app/.cq
 ```
 
 Build this container as you would normally do:
