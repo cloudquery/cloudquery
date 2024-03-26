@@ -46,7 +46,9 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.
 	if err != nil {
 		return nil, fmt.Errorf("unable to load AWS SDK config: %w", err)
 	}
-
+	if err := validateCredentials(ctx, cfg); err != nil {
+		return nil, err
+	}
 	return &Client{
 		logger:         logger.With().Str("module", "firehose").Logger(),
 		spec:           s,
@@ -60,7 +62,7 @@ func (*Client) Read(context.Context, *schema.Table, chan<- arrow.Record) error {
 	return plugin.ErrNotImplemented
 }
 
-func validateCredentials(ctx context.Context, cfg *aws.Config) error {
+func validateCredentials(ctx context.Context, cfg aws.Config) error {
 	stsClient := sts.NewFromConfig(cfg)
 	_, err := stsClient.GetCallerIdentity(ctx, &sts.GetCallerIdentityInput{})
 	if err != nil {
