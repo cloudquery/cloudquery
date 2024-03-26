@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v3.4.6...plugins-destination-bigquery-v3.5.0) (2024-03-26)
+
+
+### Features
+
+* Fail on Init with incorrect credentials ([#17343](https://github.com/cloudquery/cloudquery/issues/17343)) ([4bdd4d8](https://github.com/cloudquery/cloudquery/commit/4bdd4d871c381628e77e7c722b76bcc2fd362fd7))
+
 ## [3.4.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v3.4.5...plugins-destination-bigquery-v3.4.6) (2024-03-26)
 
 
