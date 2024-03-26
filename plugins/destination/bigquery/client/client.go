@@ -4,12 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"net/http"
 
 	"cloud.google.com/go/bigquery"
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/bigquery/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/rs/zerolog"
+	"google.golang.org/api/googleapi"
 	"google.golang.org/api/option"
 )
 
@@ -59,6 +61,10 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte, opts plugin
 		return nil, err
 	}
 
+	if err := c.validateCreds(context.Background()); err != nil {
+		return nil, fmt.Errorf("failed to validate credentials: %w", err)
+	}
+
 	return c, nil
 }
 
@@ -88,4 +94,18 @@ func (c *Client) Close(ctx context.Context) error {
 		return err
 	}
 	return c.client.Close()
+}
+
+func (c *Client) validateCreds(ctx context.Context) error {
+	datasetRef := c.client.Dataset(c.spec.DatasetID)
+	_, err := datasetRef.Metadata(ctx)
+	if err != nil {
+		if e, ok := err.(*googleapi.Error); ok {
+			if e.Code == http.StatusNotFound {
+				return fmt.Errorf("invalid dataset. dataset must be created before sync or migration: %w", err)
+			}
+		}
+		return fmt.Errorf("failed to validate credentials: %w", err)
+	}
+	return nil
 }
