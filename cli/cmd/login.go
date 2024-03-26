@@ -11,7 +11,7 @@ import (
 	"os/signal"
 	"strconv"
 	"strings"
-	goSync "sync"
+	gosync "sync"
 	"syscall"
 	"time"
 
@@ -98,7 +98,7 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	mux := http.NewServeMux()
 	refreshToken := ""
 	gotToken := make(chan struct{})
-	var callbackLock goSync.Mutex
+	var callbackLock gosync.Mutex
 	callbackHandled := false
 	mux.HandleFunc("/callback", func(w http.ResponseWriter, r *http.Request) {
 		callbackLock.Lock()
