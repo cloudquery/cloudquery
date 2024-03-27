@@ -15,6 +15,8 @@ type Api interface {
 
 	ListDNSRecords(ctx context.Context, rc *cloudflare.ResourceContainer, rr cloudflare.ListDNSRecordsParams) ([]cloudflare.DNSRecord, *cloudflare.ResultInfo, error)
 
+	ListRulesets(ctx context.Context, rc *cloudflare.ResourceContainer, params cloudflare.ListRulesetsParams) ([]cloudflare.Ruleset, error)
+
 	ListWAFPackages(ctx context.Context, zoneID string) ([]cloudflare.WAFPackage, error)
 	ListWAFGroups(ctx context.Context, zoneID, packageID string) ([]cloudflare.WAFGroup, error)
 	ListWAFRules(ctx context.Context, zoneID, packageID string) ([]cloudflare.WAFRule, error)
