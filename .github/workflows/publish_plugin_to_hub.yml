@@ -139,6 +139,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build package
+        working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: ./gradlew build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
