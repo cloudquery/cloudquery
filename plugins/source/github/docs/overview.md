@@ -30,7 +30,8 @@ This is the (nested) spec used by GitHub Source Plugin
   List of organizations to sync from. You must specify either `orgs` or `repos` in the configuration.
 
 - `concurrency` (int, optional, default: 10000):
-  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage or avoid rate limits.
+  Defaults to using rate limit reported by the GitHub REST API `/rate_limit` endpoint, or 5000 if the rate limit is not available.
 
 - `discovery_concurrency` (`int`) (default: `1`)
 

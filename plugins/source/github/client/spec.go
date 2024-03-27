@@ -21,7 +21,8 @@ type Spec struct {
 
 	// The best effort maximum number of Go routines to use.
 	// Lower this number to reduce memory usage.
-	Concurrency int `json:"concurrency,omitempty" jsonschema:"default=10000"`
+	// The plugin defaults to using the rate limit reported by the GitHub REST API `/rate_limit` endpoint, or 5000 if the rate limit is not available.
+	Concurrency int `json:"concurrency,omitempty" jsonschema:"default=5000"`
 	// Controls the number of parallel requests to GitHub when discovering repositories, a negative value means unlimited.
 	DiscoveryConcurrency int `json:"discovery_concurrency,omitempty" jsonschema:"default=1"`
 	// Include archived repositories when discovering repositories.
@@ -49,9 +50,6 @@ type AppAuthSpec struct {
 }
 
 func (s *Spec) SetDefaults() {
-	if s.Concurrency == 0 {
-		s.Concurrency = 10000
-	}
 	if s.DiscoveryConcurrency == 0 {
 		s.DiscoveryConcurrency = 1
 	}

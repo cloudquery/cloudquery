@@ -71,7 +71,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 		return nil, fmt.Errorf("failed to validate spec: %w", err)
 	}
 
-	schedulerClient, err := client.New(ctx, logger, *config)
+	schedulerClient, err := client.New(ctx, logger, config)
 	if err != nil {
 		return nil, err
 	}

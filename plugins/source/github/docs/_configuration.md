@@ -35,7 +35,10 @@ spec:
     #     base_url: "http(s)://[your-ghe-hostname]/api/v3/"
     #     upload_url: "http(s)://[your-ghe-hostname]/api/uploads/"
     # # Optional parameters
-    # concurrency: 10000 # Optional. Number of concurrent requests to GitHub API. Default is 10000.
+    # # A best effort maximum number of Go routines to use
+    # # Lower this number to reduce memory usage or avoid rate limits
+    # # Defaults to using rate limit reported by the GitHub REST API `/rate_limit` endpoint, or 5000 if the rate limit is not available.
+    # concurrency: 5000
     # discovery_concurrency: 1 # Optional. Number of concurrent requests to GitHub API during discovery phase. Default 1.
     # include_archived_repos: false # Optional. Include archived repositories in the sync. Default false.
 ```

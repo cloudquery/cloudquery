@@ -138,8 +138,8 @@
         },
         "concurrency": {
           "type": "integer",
-          "description": "The best effort maximum number of Go routines to use.\nLower this number to reduce memory usage.",
-          "default": 10000
+          "description": "The best effort maximum number of Go routines to use.\nLower this number to reduce memory usage.\nThe plugin defaults to using the rate limit reported by the GitHub REST API `/rate_limit` endpoint, or 5000 if the rate limit is not available.",
+          "default": 5000
         },
         "discovery_concurrency": {
           "type": "integer",

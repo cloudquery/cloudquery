@@ -76,12 +76,7 @@ func limitDetectedCallback(logger zerolog.Logger) github_ratelimit.OnLimitDetect
 	}
 }
 
-func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMeta, error) {
-	if err := spec.Validate(); err != nil {
-		return nil, fmt.Errorf("failed to validate GitHub spec: %w", err)
-	}
-	spec.SetDefaults()
-
+func New(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.ClientMeta, error) {
 	ghServices := map[string]GithubServices{}
 	for _, auth := range spec.AppAuth {
 		var (
@@ -127,6 +122,10 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 	}
 	ghServices[""] = defaultServices
 
+	if spec.Concurrency == 0 {
+		spec.Concurrency = detectConcurrency(ctx, logger, defaultServices)
+	}
+
 	c := &Client{
 		logger:      logger,
 		orgServices: ghServices,
@@ -152,7 +151,21 @@ func servicesForClient(c *github.Client) GithubServices {
 		Repositories:    c.Repositories,
 		Teams:           c.Teams,
 		DependencyGraph: c.DependencyGraph,
+		RateLimit:       c.RateLimit,
 	}
+}
+
+func detectConcurrency(ctx context.Context, logger zerolog.Logger, services GithubServices) int {
+	const defaultRateLimit = 2500
+	logger.Info().Msg("Auto detecting rate concurrency")
+	rateLimit, _, err := services.RateLimit.Get(ctx)
+	if err != nil {
+		logger.Warn().Msgf("Failed to get rate limit: %v, using default concurrency value of %d", err, defaultRateLimit)
+		return defaultRateLimit
+	}
+
+	logger.Info().Msgf("Setting concurrency to rate limit %d", rateLimit.Core.Limit)
+	return rateLimit.Core.Limit / 2
 }
 
 func (c *Client) removeArchivedRepos(repos []*github.Repository) []*github.Repository {
