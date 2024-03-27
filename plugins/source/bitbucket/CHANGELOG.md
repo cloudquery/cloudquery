@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.2.0...plugins-source-bitbucket-v1.2.1) (2024-03-27)
+
+
+### Bug Fixes
+
+* Add missing docs ([#17363](https://github.com/cloudquery/cloudquery/issues/17363)) ([068a941](https://github.com/cloudquery/cloudquery/commit/068a94166e478ca0a6e9818f6114df22c818794b))
+
 ## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.1.0...plugins-source-bitbucket-v1.2.0) (2024-03-27)
 
 
