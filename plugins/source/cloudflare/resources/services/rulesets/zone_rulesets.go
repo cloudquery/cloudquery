@@ -11,15 +11,24 @@ import (
 
 func ZoneRulesets() *schema.Table {
 	return &schema.Table{
-		Name:      "cloudflare_zone_rulesets",
-		Resolver:  fetchZoneRulesets,
-		Transform: client.TransformWithStruct(&cloudflare.Ruleset{}),
-		Multiplex: client.ZoneMultiplex,
+		Name:        "cloudflare_zone_rulesets",
+		Resolver:    fetchZoneRulesets,
+		Description: "https://developers.cloudflare.com/api/operations/listZoneRulesets",
+		Transform:   client.TransformWithStruct(&cloudflare.Ruleset{}),
+		Multiplex:   client.ZoneMultiplex,
 		Columns: []schema.Column{
 			{
-				Name:     "ruleset_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.PathResolver("ID"),
+				Name:        "zone_id",
+				Type:        arrow.BinaryTypes.String,
+				Resolver:    client.ResolveZoneID,
+				Description: `Zone identifier tag.`,
+				PrimaryKey:  true,
+			},
+			{
+				Name:       "ruleset_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ID"),
+				PrimaryKey: true,
 			},
 		},
 	}
