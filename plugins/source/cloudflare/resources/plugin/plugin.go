@@ -13,6 +13,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/dns_records"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/images"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/ips"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/rulesets"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/waf_overrides"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/waf_packages"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/worker_meta_data"
@@ -103,6 +104,8 @@ func getTables() schema.Tables {
 		dns_records.DNSRecords(),
 		images.Images(),
 		ips.IPs(),
+		rulesets.AccountRulesets(),
+		rulesets.ZoneRulesets(),
 		waf_packages.WAFPackages(),
 		waf_overrides.WAFOverrides(),
 		worker_meta_data.WorkerMetaData(),
