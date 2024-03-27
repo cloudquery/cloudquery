@@ -139,6 +139,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Build package
+        working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: ./gradlew build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -146,6 +147,9 @@ jobs:
 
       - name: Run package command
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
         run: |
           rm -rf docs/tables.md
           java -jar app/build/libs/app.jar package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .

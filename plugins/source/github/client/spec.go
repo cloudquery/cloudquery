@@ -24,8 +24,8 @@ type Spec struct {
 	Concurrency int `json:"concurrency,omitempty" jsonschema:"default=10000"`
 	// Controls the number of parallel requests to GitHub when discovering repositories, a negative value means unlimited.
 	DiscoveryConcurrency int `json:"discovery_concurrency,omitempty" jsonschema:"default=1"`
-	// Skip archived repositories when discovering repositories.
-	SkipArchivedRepos bool `json:"skip_archived_repos,omitempty"`
+	// Include archived repositories when discovering repositories.
+	IncludeArchivedRepos bool `json:"include_archived_repos,omitempty"`
 }
 
 type EnterpriseSettings struct {

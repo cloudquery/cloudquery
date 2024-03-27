@@ -146,9 +146,9 @@
           "description": "Controls the number of parallel requests to GitHub when discovering repositories, a negative value means unlimited.",
           "default": 1
         },
-        "skip_archived_repos": {
+        "include_archived_repos": {
           "type": "boolean",
-          "description": "Skip archived repositories when discovering repositories."
+          "description": "Include archived repositories when discovering repositories."
         }
       },
       "additionalProperties": false,

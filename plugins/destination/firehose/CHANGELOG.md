@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.3.7...plugins-destination-firehose-v2.4.0) (2024-03-26)
+
+
+### Features
+
+* Fail on Init with incorrect credentials ([#17345](https://github.com/cloudquery/cloudquery/issues/17345)) ([1aead75](https://github.com/cloudquery/cloudquery/commit/1aead75f9d2420fff32584ec7461b42e315afc24))
+
 ## [2.3.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.3.6...plugins-destination-firehose-v2.3.7) (2024-03-26)
 
 
