@@ -149,6 +149,10 @@
         "include_archived_repos": {
           "type": "boolean",
           "description": "Include archived repositories when discovering repositories."
+        },
+        "local_cache_path": {
+          "type": "string",
+          "description": "Path to a local cache directory. If set, the plugin will cache the GitHub API responses in this directory. Defaults to an empty string (no cache)"
         }
       },
       "additionalProperties": false,
