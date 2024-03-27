@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [6.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v6.1.6...plugins-source-cloudflare-v6.2.0) (2024-03-27)
 
 
+### This Release has the Following Changes to Tables
+- Table `cloudflare_access_applications`: column added with name `allow_authenticate_via_warp` and type `bool`
+- Table `cloudflare_account_rulesets` was added
+- Table `cloudflare_zone_rulesets` was added
+
 ### Features
 
 * Add Support for Cloudflare Rulesets ([#17366](https://github.com/cloudquery/cloudquery/issues/17366)) ([fe8f18a](https://github.com/cloudquery/cloudquery/commit/fe8f18a657595ca0a802c4894feedfb132fc26c8))
