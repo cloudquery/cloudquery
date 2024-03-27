@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v6.1.6...plugins-source-cloudflare-v6.2.0) (2024-03-27)
+
+
+### Features
+
+* Add Support for Cloudflare Rulesets ([#17366](https://github.com/cloudquery/cloudquery/issues/17366)) ([fe8f18a](https://github.com/cloudquery/cloudquery/commit/fe8f18a657595ca0a802c4894feedfb132fc26c8))
+
 ## [6.1.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v6.1.5...plugins-source-cloudflare-v6.1.6) (2024-03-26)
 
 
