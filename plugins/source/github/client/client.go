@@ -77,11 +77,6 @@ func limitDetectedCallback(logger zerolog.Logger) github_ratelimit.OnLimitDetect
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMeta, error) {
-	if err := spec.Validate(); err != nil {
-		return nil, fmt.Errorf("failed to validate GitHub spec: %w", err)
-	}
-	spec.SetDefaults()
-
 	ghServices := map[string]GithubServices{}
 	for _, auth := range spec.AppAuth {
 		var (
