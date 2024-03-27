@@ -15,6 +15,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/ips"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/rulesets"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/waf_overrides"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/waf_packages"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/worker_meta_data"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/worker_routes"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/zones"
@@ -105,6 +106,7 @@ func getTables() schema.Tables {
 		ips.IPs(),
 		rulesets.AccountRulesets(),
 		rulesets.ZoneRulesets(),
+		waf_packages.WAFPackages(),
 		waf_overrides.WAFOverrides(),
 		worker_meta_data.WorkerMetaData(),
 		worker_routes.WorkerRoutes(),
