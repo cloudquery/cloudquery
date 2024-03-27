@@ -41,3 +41,7 @@ This is the (nested) spec used by GitHub Source Plugin
 - `include_archived_repos` (`bool`) (default: `false`)
 
   By default archived repositories are not included in the sync. To include archived repositories set `include_archived_repos` to `true`.
+
+- `local_cache_path` (`string`, optional, default: empty):
+  Path to a local cache directory. If set, the plugin will cache the GitHub API responses in this directory. Defaults to an empty string (no cache).
+  By using a cache, the plugin can use [conditional requests when appropriate](https://docs.github.com/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api?#use-conditional-requests-if-appropriate), and help avoid hitting GitHub API rate limits.

@@ -11,6 +11,7 @@ require (
 	github.com/gofri/go-github-ratelimit v1.0.3
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v59 v59.0.0
+	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.32.0
 	golang.org/x/sync v0.6.0
@@ -54,6 +55,7 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/gomarkdown/markdown v0.0.0-20231222211730-1d6d20845b47 // indirect
+	github.com/google/btree v1.1.2 // indirect
 	github.com/google/flatbuffers v23.5.26+incompatible // indirect
 	github.com/google/go-github/v57 v57.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
@@ -86,6 +88,7 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/pelletier/go-toml/v2 v2.1.1 // indirect
+	github.com/peterbourgon/diskv v2.0.1+incompatible // indirect
 	github.com/pierrec/lz4/v4 v4.1.21 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
