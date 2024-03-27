@@ -17,6 +17,10 @@ type Api interface {
 
 	ListRulesets(ctx context.Context, rc *cloudflare.ResourceContainer, params cloudflare.ListRulesetsParams) ([]cloudflare.Ruleset, error)
 
+	ListWAFPackages(ctx context.Context, zoneID string) ([]cloudflare.WAFPackage, error)
+	ListWAFGroups(ctx context.Context, zoneID, packageID string) ([]cloudflare.WAFGroup, error)
+	ListWAFRules(ctx context.Context, zoneID, packageID string) ([]cloudflare.WAFRule, error)
+
 	ListWorkers(ctx context.Context, rc *cloudflare.ResourceContainer, params cloudflare.ListWorkersParams) (cloudflare.WorkerListResponse, *cloudflare.ResultInfo, error)
 	ListWorkerRoutes(ctx context.Context, rc *cloudflare.ResourceContainer, params cloudflare.ListWorkerRoutesParams) (cloudflare.WorkerRoutesResponse, error)
 	ListWorkerCronTriggers(ctx context.Context, rc *cloudflare.ResourceContainer, params cloudflare.ListWorkerCronTriggersParams) ([]cloudflare.WorkerCronTrigger, error)
