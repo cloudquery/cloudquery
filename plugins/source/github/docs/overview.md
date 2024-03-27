@@ -38,6 +38,6 @@ This is the (nested) spec used by GitHub Source Plugin
   By default the plugin discovers repositories one organization at a time. You can increase `discovery_concurrency` to discover multiple organizations in parallel, or use a negative value to discover all organizations in parallel.
   Please note that it's possible to hit GitHub API rate limits when using a high value for `discovery_concurrency`.
 
-- `skip_archived_repos` (`bool`) (default: `false`)
+- `include_archived_repos` (`bool`) (default: `false`)
 
-  By default archived repositories are included in the sync. To skip archived repositories set `skip_archived_repos` to `true`.
+  By default archived repositories are not included in the sync. To include archived repositories set `include_archived_repos` to `true`.
