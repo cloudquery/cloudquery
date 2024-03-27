@@ -11,15 +11,25 @@ import (
 
 func AccountRulesets() *schema.Table {
 	return &schema.Table{
-		Name:      "cloudflare_account_rulesets",
-		Resolver:  fetchAccountRulesets,
-		Transform: client.TransformWithStruct(&cloudflare.Ruleset{}),
-		Multiplex: client.AccountMultiplex,
+		Name:        "cloudflare_account_rulesets",
+		Description: "https://developers.cloudflare.com/api/operations/listAccountRulesets",
+		Resolver:    fetchAccountRulesets,
+		Transform:   client.TransformWithStruct(&cloudflare.Ruleset{}),
+		Multiplex:   client.AccountMultiplex,
 		Columns: []schema.Column{
+
 			{
-				Name:     "ruleset_id",
-				Type:     arrow.BinaryTypes.String,
-				Resolver: schema.PathResolver("ID"),
+				Name:        "account_id",
+				Type:        arrow.BinaryTypes.String,
+				Resolver:    client.ResolveAccountID,
+				Description: `The Account ID of the resource.`,
+				PrimaryKey:  true,
+			},
+			{
+				Name:       "ruleset_id",
+				Type:       arrow.BinaryTypes.String,
+				Resolver:   schema.PathResolver("ID"),
+				PrimaryKey: true,
 			},
 		},
 	}
