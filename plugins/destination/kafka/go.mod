@@ -9,7 +9,7 @@ require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240115115805-d7bc55542e61
 	github.com/cloudquery/codegen v0.3.12
 	github.com/cloudquery/filetypes/v4 v4.2.11
-	github.com/cloudquery/plugin-sdk/v4 v4.36.0
+	github.com/cloudquery/plugin-sdk/v4 v4.36.1
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.31.0
 	github.com/wk8/go-ordered-map/v2 v2.1.8
@@ -34,7 +34,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.2.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.8.1 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.9.0 // indirect
 	github.com/cloudquery/plugin-pb-go v1.19.5 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -64,7 +64,9 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.0.1 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.16.0 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
+	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
+	github.com/hashicorp/go-retryablehttp v0.7.5 // indirect
 	github.com/hashicorp/go-uuid v1.0.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/iris-contrib/schema v0.0.6 // indirect
