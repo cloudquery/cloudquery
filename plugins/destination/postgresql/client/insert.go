@@ -100,6 +100,7 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 			detail = tableDetail{
 				indexes: table.PrimaryKeysIndexes(),
 				sql:     sql,
+				values:  make(map[string]bool),
 			}
 			details[tableName] = detail
 		}
