@@ -56,6 +56,7 @@ func getPKValues(r arrow.Record, pkIndex []int) []string {
 	for ri := range results {
 		for _, i := range pkIndex {
 			col := r.Column(i)
+			results[ri] += fmt.Sprintf("%d", i)
 			results[ri] += col.String()
 		}
 	}
