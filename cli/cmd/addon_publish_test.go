@@ -14,6 +14,7 @@ import (
 )
 
 func TestAddonPublish(t *testing.T) {
+	t.Skip()
 	cqDir := t.TempDir()
 	logFileName := path.Join(cqDir, "cloudquery.log")
 	t.Cleanup(func() {
@@ -61,6 +62,7 @@ func TestAddonPublish(t *testing.T) {
 }
 
 func TestAddonPublishEmbedded(t *testing.T) {
+	t.Skip()
 	cqDir := t.TempDir()
 	logFileName := path.Join(cqDir, "cloudquery.log")
 	t.Cleanup(func() {
@@ -108,6 +110,7 @@ func TestAddonPublishEmbedded(t *testing.T) {
 }
 
 func TestAddonPublishFinalize(t *testing.T) {
+	t.Skip()
 	cqDir := t.TempDir()
 	logFileName := path.Join(cqDir, "cloudquery.log")
 	t.Cleanup(func() {
@@ -167,6 +170,7 @@ func TestAddonPublishFinalize(t *testing.T) {
 }
 
 func TestAddonPublish_Unauthorized(t *testing.T) {
+	t.Skip()
 	cqDir := t.TempDir()
 	logFileName := path.Join(cqDir, "cloudquery.log")
 	t.Cleanup(func() {

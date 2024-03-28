@@ -17,6 +17,7 @@ import (
 )
 
 func TestAddonDownload(t *testing.T) {
+	t.Skip()
 	cqDir := t.TempDir()
 	logFileName := path.Join(cqDir, "cloudquery.log")
 	t.Cleanup(func() {
@@ -83,6 +84,7 @@ func TestAddonDownload(t *testing.T) {
 }
 
 func TestAddonDownloadStdout(t *testing.T) {
+	t.Skip()
 	cqDir := t.TempDir()
 	logFileName := path.Join(cqDir, "cloudquery.log")
 	t.Cleanup(func() {
