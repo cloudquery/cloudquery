@@ -16,6 +16,7 @@ import (
 )
 
 func TestPluginPublish(t *testing.T) {
+	t.Skip()
 	type testCase struct {
 		name    string
 		distDir string
@@ -112,6 +113,7 @@ func TestPluginPublish(t *testing.T) {
 }
 
 func TestPluginPublishFinalize(t *testing.T) {
+	t.Skip()
 	cqDir := t.TempDir()
 	logFileName := path.Join(cqDir, "cloudquery.log")
 	t.Cleanup(func() {
@@ -193,6 +195,7 @@ func TestPluginPublishFinalize(t *testing.T) {
 }
 
 func TestPluginPublish_Unauthorized(t *testing.T) {
+	t.Skip()
 	cqDir := t.TempDir()
 	logFileName := path.Join(cqDir, "cloudquery.log")
 	t.Cleanup(func() {

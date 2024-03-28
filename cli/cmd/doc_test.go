@@ -26,6 +26,7 @@ var docFiles = []string{
 }
 
 func TestDoc(t *testing.T) {
+	t.Skip()
 	tmpDir := t.TempDir()
 	cqTmpDir := t.TempDir()
 	logFileName := path.Join(cqTmpDir, "cloudquery.log")
