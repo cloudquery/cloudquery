@@ -3,6 +3,7 @@ package cmd
 import (
 	"crypto/sha256"
 	"encoding/json"
+	"path"
 
 	"encoding/hex"
 	"net/http"
@@ -16,6 +17,11 @@ import (
 )
 
 func TestAddonDownload(t *testing.T) {
+	cqDir := t.TempDir()
+	logFileName := path.Join(cqDir, "cloudquery.log")
+	t.Cleanup(func() {
+		CloseLogFile()
+	})
 	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	tempDir := t.TempDir()
@@ -62,7 +68,7 @@ func TestAddonDownload(t *testing.T) {
 
 	cmd := NewCmdRoot()
 	t.Setenv(envAPIURL, ts.URL)
-	args := []string{"addon", "download", "cloudquery/visualization/test@v1.2.3", "-t", tempDir}
+	args := []string{"addon", "download", "cloudquery/visualization/test@v1.2.3", "-t", tempDir, "--cq-dir", cqDir, "--log-file-name", logFileName}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -77,6 +83,11 @@ func TestAddonDownload(t *testing.T) {
 }
 
 func TestAddonDownloadStdout(t *testing.T) {
+	cqDir := t.TempDir()
+	logFileName := path.Join(cqDir, "cloudquery.log")
+	t.Cleanup(func() {
+		CloseLogFile()
+	})
 	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
@@ -120,7 +131,7 @@ func TestAddonDownloadStdout(t *testing.T) {
 
 	cmd := NewCmdRoot()
 	t.Setenv(envAPIURL, ts.URL)
-	args := []string{"addon", "download", "cloudquery/visualization/test@v1.2.3", "-t", "-"}
+	args := []string{"addon", "download", "cloudquery/visualization/test@v1.2.3", "-t", "-", "--cq-dir", cqDir, "--log-file-name", logFileName}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {

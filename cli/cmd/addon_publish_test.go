@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"path"
 	"strings"
 	"testing"
 
@@ -13,6 +14,11 @@ import (
 )
 
 func TestAddonPublish(t *testing.T) {
+	cqDir := t.TempDir()
+	logFileName := path.Join(cqDir, "cloudquery.log")
+	t.Cleanup(func() {
+		CloseLogFile()
+	})
 	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
@@ -43,7 +49,7 @@ func TestAddonPublish(t *testing.T) {
 
 	cmd := NewCmdRoot()
 	t.Setenv(envAPIURL, ts.URL)
-	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3"}
+	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3", "--cq-dir", cqDir, "--log-file-name", logFileName}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -55,6 +61,11 @@ func TestAddonPublish(t *testing.T) {
 }
 
 func TestAddonPublishEmbedded(t *testing.T) {
+	cqDir := t.TempDir()
+	logFileName := path.Join(cqDir, "cloudquery.log")
+	t.Cleanup(func() {
+		CloseLogFile()
+	})
 	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
@@ -85,7 +96,7 @@ func TestAddonPublishEmbedded(t *testing.T) {
 
 	cmd := NewCmdRoot()
 	t.Setenv(envAPIURL, ts.URL)
-	args := []string{"addon", "publish", "testdata/addon-v1/manifest-embedded-message.json", "v1.2.3"}
+	args := []string{"addon", "publish", "testdata/addon-v1/manifest-embedded-message.json", "v1.2.3", "--cq-dir", cqDir, "--log-file-name", logFileName}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -97,6 +108,11 @@ func TestAddonPublishEmbedded(t *testing.T) {
 }
 
 func TestAddonPublishFinalize(t *testing.T) {
+	cqDir := t.TempDir()
+	logFileName := path.Join(cqDir, "cloudquery.log")
+	t.Cleanup(func() {
+		CloseLogFile()
+	})
 	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
@@ -139,7 +155,7 @@ func TestAddonPublishFinalize(t *testing.T) {
 	t.Setenv(envAPIURL, ts.URL)
 
 	cmd := NewCmdRoot()
-	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3", "--finalize"}
+	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3", "--finalize", "--cq-dir", cqDir, "--log-file-name", logFileName}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -151,6 +167,11 @@ func TestAddonPublishFinalize(t *testing.T) {
 }
 
 func TestAddonPublish_Unauthorized(t *testing.T) {
+	cqDir := t.TempDir()
+	logFileName := path.Join(cqDir, "cloudquery.log")
+	t.Cleanup(func() {
+		CloseLogFile()
+	})
 	t.Setenv("CLOUDQUERY_API_KEY", "badkey")
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -163,7 +184,7 @@ func TestAddonPublish_Unauthorized(t *testing.T) {
 	t.Setenv(envAPIURL, ts.URL)
 
 	cmd := NewCmdRoot()
-	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3", "--finalize"}
+	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3", "--finalize", "--cq-dir", cqDir, "--log-file-name", logFileName}
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err == nil {

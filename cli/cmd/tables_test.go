@@ -17,6 +17,9 @@ func getTablesCommand(t *testing.T, config string, format string) (*cobra.Comman
 	testConfig := path.Join(currentDir, "testdata", config)
 	tmpDir := t.TempDir()
 	logFileName := path.Join(tmpDir, "cloudquery.log")
+	t.Cleanup(func() {
+		CloseLogFile()
+	})
 	outputDirectory := path.Join(tmpDir, "cq-docs")
 	cmd := NewCmdRoot()
 	args := []string{"tables", testConfig, "--cq-dir", tmpDir, "--log-file-name", logFileName, "--output-dir", outputDirectory}
@@ -51,7 +54,6 @@ func TestTables(t *testing.T) {
 
 	for _, tc := range configs {
 		t.Run(tc.name, func(t *testing.T) {
-			defer CloseLogFile()
 			cmd, cqDir := getTablesCommand(t, tc.config, tc.format)
 			commandError := cmd.Execute()
 			require.NoError(t, commandError)

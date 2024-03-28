@@ -22,20 +22,21 @@ func TestTestConnection(t *testing.T) {
 		},
 		{
 			name:   "bad AWS and Postgres auth should fail validation",
-			config: "test-connection-bad-auth.yml",
-			errors: []string{"failed to init source aws", "failed to init destination postgresql"},
+			config: "test-connection-bad-connection.yml",
+			errors: []string{"failed to init source cloudflare", "failed to init destination postgresql"},
 		},
 	}
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
-	cqDir := t.TempDir()
-	defer os.RemoveAll(cqDir)
 
 	for _, tc := range configs {
 		t.Run(tc.name, func(t *testing.T) {
-			defer CloseLogFile()
-			testConfig := path.Join(currentDir, "testdata", tc.config)
+			cqDir := t.TempDir()
 			logFileName := path.Join(cqDir, "cloudquery.log")
+			t.Cleanup(func() {
+				CloseLogFile()
+			})
+			testConfig := path.Join(currentDir, "testdata", tc.config)
 			cmd := NewCmdRoot()
 			cmd.SetArgs([]string{"test-connection", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName})
 			err := cmd.Execute()

@@ -26,11 +26,13 @@ var docFiles = []string{
 }
 
 func TestDoc(t *testing.T) {
-	defer CloseLogFile()
-	cmd := NewCmdRoot()
 	tmpDir := t.TempDir()
 	cqTmpDir := t.TempDir()
 	logFileName := path.Join(cqTmpDir, "cloudquery.log")
+	t.Cleanup(func() {
+		CloseLogFile()
+	})
+	cmd := NewCmdRoot()
 	cmd.SetArgs([]string{"doc", tmpDir, "--cq-dir", cqTmpDir, "--log-file-name", logFileName})
 
 	err := cmd.Execute()

@@ -192,14 +192,15 @@ func TestSync(t *testing.T) {
 	}
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
-	cqDir := t.TempDir()
-	defer os.RemoveAll(cqDir)
 
 	for _, tc := range configs {
 		t.Run(tc.name, func(t *testing.T) {
-			defer CloseLogFile()
-			testConfig := path.Join(currentDir, "testdata", tc.config)
+			cqDir := t.TempDir()
 			logFileName := path.Join(cqDir, "cloudquery.log")
+			t.Cleanup(func() {
+				CloseLogFile()
+			})
+			testConfig := path.Join(currentDir, "testdata", tc.config)
 			cmd := NewCmdRoot()
 
 			argList := []string{"sync", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName}
@@ -234,9 +235,12 @@ func TestSync(t *testing.T) {
 		})
 
 		t.Run(tc.name+"_no_migrate", func(t *testing.T) {
-			defer CloseLogFile()
-			testConfig := path.Join(currentDir, "testdata", tc.config)
+			cqDir := t.TempDir()
 			logFileName := path.Join(cqDir, "cloudquery.log")
+			t.Cleanup(func() {
+				CloseLogFile()
+			})
+			testConfig := path.Join(currentDir, "testdata", tc.config)
 
 			cmd := NewCmdRoot()
 			cmd.SetArgs([]string{"sync", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName, "--no-migrate"})
@@ -255,13 +259,14 @@ func TestSyncCqDir(t *testing.T) {
 	currentDir := path.Dir(filename)
 	testConfig := path.Join(currentDir, "testdata", "sync-success-sourcev1-destv0.yml")
 	cqDir := t.TempDir()
-	defer os.RemoveAll(cqDir)
 	logFileName := path.Join(cqDir, "cloudquery.log")
+	t.Cleanup(func() {
+		CloseLogFile()
+	})
 
 	cmd := NewCmdRoot()
 	cmd.SetArgs([]string{"sync", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName})
 	err := cmd.Execute()
-	defer CloseLogFile()
 	require.NoError(t, err)
 
 	// check that destination plugin was downloaded to the cache using --cq-dir
@@ -307,7 +312,7 @@ func TestSync_IsolatedPluginEnvironmentsInCloud(t *testing.T) {
 	}
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
-	cqDir := t.TempDir()
+
 	t.Setenv("CLOUDQUERY_API_KEY", "cqsr_123")
 	t.Setenv("_CQ_TEAM_NAME", "test_team")
 	t.Setenv("_CQ_SYNC_NAME", "test_sync")
@@ -317,9 +322,14 @@ func TestSync_IsolatedPluginEnvironmentsInCloud(t *testing.T) {
 
 	for _, tc := range configs {
 		t.Run(tc.name, func(t *testing.T) {
+			cqDir := t.TempDir()
+			logFileName := path.Join(cqDir, "cloudquery.log")
+			t.Cleanup(func() {
+				CloseLogFile()
+			})
 			testConfig := path.Join(currentDir, "testdata", tc.config)
 			cmd := NewCmdRoot()
-			cmd.SetArgs([]string{"sync", testConfig, "--cq-dir", cqDir})
+			cmd.SetArgs([]string{"sync", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName})
 			err := cmd.Execute()
 			if tc.err != "" {
 				assert.Contains(t, err.Error(), tc.err)
