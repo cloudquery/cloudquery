@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
@@ -34,6 +35,33 @@ func (c *Client) pgTables(ctx context.Context) (map[string]struct{}, error) {
 	return list, nil
 }
 
+type tableDetails map[string]tableDetail
+type tableDetail struct {
+	indexes []int
+	values  map[string]bool
+	sql     string
+}
+
+// When a batch is sent and inserted into the DB we need to reset the PKValues
+func (p *tableDetails) resetValues() {
+	for _, v := range *p {
+		v.values = make(map[string]bool)
+	}
+}
+
+// extracts PKValues from an Arrow record into a string
+// An arrow record may have multiple rows and multiple PK columns so a list of pk value strings is returned
+func getPKValues(r arrow.Record, pkIndex []int) []string {
+	results := make([]string, r.NumRows())
+	for ri := range results {
+		for _, i := range pkIndex {
+			col := r.Column(i)
+			results[ri] += col.String()
+		}
+	}
+	return results
+}
+
 // InsertBatch inserts records into the destination table. It forms part of the writer.MixedBatchWriter interface.
 func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts) error {
 	pgTables, err := c.pgTables(ctx)
@@ -45,7 +73,7 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 
 	// Queries cache.
 	// We may consider LRU cache in the future, but even for 10K records it may be OK to just save.
-	queries := make(map[string]string, 100)
+	details := make(tableDetails, 100)
 
 	for _, msg := range messages {
 		r := msg.Record
@@ -59,8 +87,9 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 			return fmt.Errorf("table %s not found", tableName)
 		}
 
-		sql, ok := queries[tableName]
+		detail, ok := details[tableName]
 		if !ok {
+			var sql string
 			// cache the query
 			table := c.normalizeTable(msg.GetTable())
 			if len(table.PrimaryKeysIndexes()) > 0 {
@@ -68,18 +97,50 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 			} else {
 				sql = c.insert(table)
 			}
-			queries[tableName] = sql
+			detail = tableDetail{
+				indexes: table.PrimaryKeysIndexes(),
+				sql:     sql,
+			}
+			details[tableName] = detail
 		}
 
 		rows := c.transformValues(r)
-		for _, rowVals := range rows {
-			batch.Queue(sql, rowVals...)
+		var pkVal []string
+		if _, ok := details[tableName]; ok {
+			pkVal = getPKValues(r, detail.indexes)
+		}
+		for i, rowVals := range rows {
+			if len(detail.indexes) == 0 {
+				batch.Queue(detail.sql, rowVals...)
+				continue
+			}
+			// If the PK value is not in the map of existing pk values, add it to the map and batch the query
+			if _, ok := detail.values[pkVal[i]]; !ok {
+				detail.values[pkVal[i]] = true
+				batch.Queue(detail.sql, rowVals...)
+			} else {
+				c.logger.Warn().Msgf("Duplicate primary key value found for table %s in batch. Flushing batch and creating a new one", tableName)
+				// If the PK Value is already in the map, we know that this would trigger an error on insert
+				// So we will flush the batch and then add the value to the new empty batch
+				details[tableName] = detail
+				if err := c.flushBatch(ctx, batch); err != nil {
+					return err
+				}
+
+				batch = new(pgx.Batch)
+				details.resetValues()
+				// Add the value to the new batch
+				detail = details[tableName]
+				detail.values[pkVal[i]] = true
+				batch.Queue(detail.sql, rowVals...)
+			}
 		}
 		if batch.Len() >= c.batchSize {
 			if err := c.flushBatch(ctx, batch); err != nil {
 				return err
 			}
 			batch = new(pgx.Batch)
+			details.resetValues()
 		}
 	}
 
