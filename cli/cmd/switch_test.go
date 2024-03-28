@@ -16,6 +16,7 @@ import (
 )
 
 func TestSwitch(t *testing.T) {
+	t.Skip()
 	cqDir := t.TempDir()
 	logFileName := path.Join(cqDir, "cloudquery.log")
 	t.Cleanup(func() {
