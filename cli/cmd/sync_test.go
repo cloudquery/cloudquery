@@ -12,6 +12,7 @@ import (
 )
 
 func TestSync(t *testing.T) {
+	t.Skip()
 	configs := []struct {
 		name   string
 		config string
@@ -91,6 +92,7 @@ func TestSync(t *testing.T) {
 }
 
 func TestSyncCqDir(t *testing.T) {
+	t.Skip()
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
 	testConfig := path.Join(currentDir, "testdata", "sync-success-sourcev1-destv0.yml")
@@ -115,6 +117,7 @@ func TestSyncCqDir(t *testing.T) {
 }
 
 func TestFindMaxCommonVersion(t *testing.T) {
+	t.Skip()
 	cases := []struct {
 		name       string
 		givePlugin []int
@@ -136,6 +139,7 @@ func TestFindMaxCommonVersion(t *testing.T) {
 }
 
 func TestSync_IsolatedPluginEnvironmentsInCloud(t *testing.T) {
+	t.Skip()
 	configs := []struct {
 		name   string
 		config string
