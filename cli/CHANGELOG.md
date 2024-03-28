@@ -5,6 +5,24 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.12.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.11.0...cli-v5.12.0) (2024-03-26)
+
+
+### Features
+
+* Add `is_incremental` to json Table Output  ([#17306](https://github.com/cloudquery/cloudquery/issues/17306)) ([1ed86a6](https://github.com/cloudquery/cloudquery/commit/1ed86a6948b92af2b9d39d6718e5eba11492eec7))
+* Pass the given spec to the `tables` handler of the plugin ([#17235](https://github.com/cloudquery/cloudquery/issues/17235)) ([72d967b](https://github.com/cloudquery/cloudquery/commit/72d967bac74721e6f0dab9b13b1b16e2b7ad4d2e))
+* Support Sending the `sync_id` to plugins ([#17236](https://github.com/cloudquery/cloudquery/issues/17236)) ([d70d993](https://github.com/cloudquery/cloudquery/commit/d70d993413fcfc4988bd6ba51f744fce89aca038))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 92878fa ([#16718](https://github.com/cloudquery/cloudquery/issues/16718)) ([7fe8588](https://github.com/cloudquery/cloudquery/commit/7fe858818fe1f88fcca6304c873a4614767a57b9))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.19.5 ([#17324](https://github.com/cloudquery/cloudquery/issues/17324)) ([6576a7a](https://github.com/cloudquery/cloudquery/commit/6576a7ae1d281c19182b21db98f6194ad9384e91))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.35.0 ([#17299](https://github.com/cloudquery/cloudquery/issues/17299)) ([524ba20](https://github.com/cloudquery/cloudquery/commit/524ba202801c2ae1eb59a5b462a5efc62d1b4000))
+* **deps:** Update module github.com/docker/docker to v25.0.5+incompatible [SECURITY] ([#17287](https://github.com/cloudquery/cloudquery/issues/17287)) ([975667e](https://github.com/cloudquery/cloudquery/commit/975667eb64198fe10911e450aaadb3e2a1daa642))
+* Ensure login callback is only handled once ([#17331](https://github.com/cloudquery/cloudquery/issues/17331)) ([3bdfc96](https://github.com/cloudquery/cloudquery/commit/3bdfc96eab5d99ee6e46145d235c6afa6642f36b))
+
 ## [5.11.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.10.0...cli-v5.11.0) (2024-03-18)
 
 

@@ -57,6 +57,11 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.Ne
 	mssql.SetContextLogger(c)
 	c.db = sql.OpenDB(connector)
 
+	err = c.db.Ping()
+	if err != nil {
+		return nil, err
+	}
+
 	c.writer, err = batchwriter.New(c,
 		batchwriter.WithLogger(c.logger),
 		batchwriter.WithBatchSize(spec.BatchSize),

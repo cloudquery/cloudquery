@@ -45,12 +45,12 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 
 	// initialize destinations first, so that their connections may be used as backends by the source
 	for i, destinationSpec := range destinationSpecs {
-		if err := initPlugin(ctx, destinationsPbClients[i], destinationSpec.Spec, false); err != nil {
+		if err := initPlugin(ctx, destinationsPbClients[i], destinationSpec.Spec, false, invocationUUID.String()); err != nil {
 			return fmt.Errorf("failed to init destination %v: %w", destinationSpec.Name, err)
 		}
 	}
 
-	err := initPlugin(ctx, sourcePbClient, sourceSpec.Spec, true)
+	err := initPlugin(ctx, sourcePbClient, sourceSpec.Spec, true, invocationUUID.String())
 	if err != nil {
 		return fmt.Errorf("failed to init source %v: %w", sourceSpec.Name, err)
 	}

@@ -1,5 +1,15 @@
 # Changelog
 
+## [6.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v6.0.7...plugins-source-k8s-v6.0.8) (2024-03-26)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 92878fa ([#16718](https://github.com/cloudquery/cloudquery/issues/16718)) ([7fe8588](https://github.com/cloudquery/cloudquery/commit/7fe858818fe1f88fcca6304c873a4614767a57b9))
+* **deps:** Update module github.com/apache/arrow/go/v15 to v15.0.2 ([#17318](https://github.com/cloudquery/cloudquery/issues/17318)) ([09dc27b](https://github.com/cloudquery/cloudquery/commit/09dc27bfedb3ca3b6c32579cdebbe3a6a8962a93))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.35.0 ([#17299](https://github.com/cloudquery/cloudquery/issues/17299)) ([524ba20](https://github.com/cloudquery/cloudquery/commit/524ba202801c2ae1eb59a5b462a5efc62d1b4000))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.0 ([#17325](https://github.com/cloudquery/cloudquery/issues/17325)) ([eb1b4b8](https://github.com/cloudquery/cloudquery/commit/eb1b4b8b963917b87ff644318cfec9745471d50a))
+
 ## [6.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v6.0.6...plugins-source-k8s-v6.0.7) (2024-03-19)
 
 

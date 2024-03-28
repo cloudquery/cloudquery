@@ -43,6 +43,7 @@ The following tables depend on cloudflare_access_applications:
 |http_only_cookie_attribute|`bool`|
 |service_auth_401_redirect|`bool`|
 |path_cookie_attribute|`bool`|
+|allow_authenticate_via_warp|`bool`|
 |custom_pages|`list<item: utf8, nullable>`|
 |tags|`list<item: utf8, nullable>`|
 |access_app_launcher_customization|`json`|

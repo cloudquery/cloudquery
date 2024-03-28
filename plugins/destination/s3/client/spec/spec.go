@@ -22,6 +22,7 @@ const (
 	varDay    = "{{DAY}}"
 	varHour   = "{{HOUR}}"
 	varMinute = "{{MINUTE}}"
+	varSyncID = "{{SYNC_ID}}"
 )
 
 type Spec struct {
@@ -179,7 +180,7 @@ func (s *Spec) Validate() error {
 	return s.FileSpec.Validate()
 }
 
-func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time) string {
+func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time, syncID string) string {
 	name := strings.ReplaceAll(s.Path, varTable, table)
 	if strings.Contains(name, varFormat) {
 		e := string(s.Format) + s.Compression.Extension()
@@ -191,11 +192,16 @@ func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.
 	name = strings.ReplaceAll(name, varDay, t.Format("02"))
 	name = strings.ReplaceAll(name, varHour, t.Format("15"))
 	name = strings.ReplaceAll(name, varMinute, t.Format("04"))
+	name = strings.ReplaceAll(name, varSyncID, syncID)
 	return filepath.Clean(name)
 }
 
 func (s *Spec) PathContainsUUID() bool {
 	return strings.Contains(s.Path, varUUID)
+}
+
+func (s *Spec) PathContainsSyncID() bool {
+	return strings.Contains(s.Path, varSyncID)
 }
 
 func (s *Spec) batchingEnabled() bool {

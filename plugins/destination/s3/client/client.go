@@ -27,7 +27,7 @@ type Client struct {
 	streamingbatchwriter.IgnoreMigrateTable
 	streamingbatchwriter.UnimplementedDeleteStale
 	streamingbatchwriter.UnimplementedDeleteRecords
-
+	syncID string
 	logger zerolog.Logger
 	spec   *spec.Spec
 	*filetypes.Client
@@ -41,6 +41,7 @@ type Client struct {
 func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "s3").Logger(),
+		syncID: opts.InvocationID,
 	}
 	if opts.NoConnection {
 		return c, nil
@@ -53,6 +54,10 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 		return nil, err
 	}
 	c.spec.SetDefaults()
+
+	if c.syncID == "" && c.spec.PathContainsSyncID() {
+		return nil, fmt.Errorf("path contains {{SYNC_ID}}. Upgrade your CLI to use this path variable")
+	}
 
 	filetypesClient, err := filetypes.NewClient(&c.spec.FileSpec)
 	if err != nil {
@@ -89,7 +94,7 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 
 		params := &s3.PutObjectInput{
 			Bucket: aws.String(c.spec.Bucket),
-			Key:    aws.String(c.spec.ReplacePathVariables("TEST_TABLE", "TEST_UUID", timeNow)),
+			Key:    aws.String(c.spec.ReplacePathVariables("TEST_TABLE", "TEST_UUID", timeNow, c.syncID)),
 			Body:   bytes.NewReader([]byte("")),
 		}
 

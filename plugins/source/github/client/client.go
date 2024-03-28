@@ -77,11 +77,6 @@ func limitDetectedCallback(logger zerolog.Logger) github_ratelimit.OnLimitDetect
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMeta, error) {
-	if err := spec.Validate(); err != nil {
-		return nil, fmt.Errorf("failed to validate GitHub spec: %w", err)
-	}
-	spec.SetDefaults()
-
 	ghServices := map[string]GithubServices{}
 	for _, auth := range spec.AppAuth {
 		var (
@@ -134,7 +129,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 		repos:       spec.Repos,
 	}
 	c.logger.Info().Msg("Discovering repositories")
-	orgRepositories, err := c.discoverRepositories(ctx, spec.DiscoveryConcurrency, spec.Orgs, spec.Repos, spec.SkipArchivedRepos)
+	orgRepositories, err := c.discoverRepositories(ctx, spec.DiscoveryConcurrency, spec.Orgs, spec.Repos, spec.IncludeArchivedRepos)
 	if err != nil {
 		return nil, fmt.Errorf("failed to discover repositories: %w", err)
 	}
@@ -155,11 +150,11 @@ func servicesForClient(c *github.Client) GithubServices {
 	}
 }
 
-func (c *Client) filterArchivedRepos(repos []*github.Repository) []*github.Repository {
+func (c *Client) removeArchivedRepos(repos []*github.Repository) []*github.Repository {
 	filtered := []*github.Repository{}
 	for _, repo := range repos {
 		if repo.GetArchived() {
-			c.logger.Info().Msgf("Skipping archived repository %q", repo.GetFullName())
+			c.logger.Debug().Msgf("Skipping archived repository %q", repo.GetFullName())
 			continue
 		}
 		filtered = append(filtered, repo)
@@ -167,7 +162,7 @@ func (c *Client) filterArchivedRepos(repos []*github.Repository) []*github.Repos
 	return filtered
 }
 
-func (c *Client) discoverRepositories(ctx context.Context, discoveryConcurrency int, orgs []string, repos []string, skipArchivedRepos bool) (map[string][]*github.Repository, error) {
+func (c *Client) discoverRepositories(ctx context.Context, discoveryConcurrency int, orgs []string, repos []string, includeArchivedRepos bool) (map[string][]*github.Repository, error) {
 	orgRepos := make(map[string][]*github.Repository)
 	orgReposLock := sync.Mutex{}
 	errorGroup, gtx := errgroup.WithContext(ctx)
@@ -184,8 +179,8 @@ func (c *Client) discoverRepositories(ctx context.Context, discoveryConcurrency 
 				if err != nil {
 					return err
 				}
-				if skipArchivedRepos {
-					repos = c.filterArchivedRepos(repos)
+				if !includeArchivedRepos {
+					repos = c.removeArchivedRepos(repos)
 				}
 				orgRepositories = append(orgRepositories, repos...)
 

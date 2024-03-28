@@ -2,6 +2,7 @@ package pgarrow
 
 import (
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/apache/arrow/go/v15/arrow"
@@ -11,6 +12,7 @@ import (
 var (
 	reTimestamp = regexp.MustCompile(`timestamp\s*(?:\(([0-6])\))?(?: with(?:out)? time zone)?`)
 	reTime      = regexp.MustCompile(`time\s*(?:\(([0-6])\))?(?: with(?:out)? time zone)?`)
+	reNumeric   = regexp.MustCompile(`numeric\s*(?:\(([0-9]+)\s*,\s*([0-9]+)\))?`)
 )
 
 func Pg10ToArrow(t string) arrow.DataType {
@@ -22,6 +24,7 @@ func Pg10ToArrow(t string) arrow.DataType {
 	parsers := []func(string) (arrow.DataType, bool){
 		parseTimestamp,
 		parseTime,
+		parseNumeric,
 	}
 	for _, parser := range parsers {
 		got, matched := parser(t)
@@ -45,10 +48,6 @@ func Pg10ToArrow(t string) arrow.DataType {
 		return arrow.PrimitiveTypes.Int32
 	case "bigint", "int8":
 		return arrow.PrimitiveTypes.Int64
-	case "numeric(20,0)":
-		// special case.
-		// TODO: add Decimal128/256 support
-		return arrow.PrimitiveTypes.Uint64
 	case "real", "float4":
 		return arrow.PrimitiveTypes.Float32
 	case "double precision", "float8":
@@ -81,6 +80,7 @@ func CockroachToArrow(t string) arrow.DataType {
 	parsers := []func(string) (arrow.DataType, bool){
 		parseTimestamp,
 		parseTime,
+		parseNumeric,
 	}
 	for _, parser := range parsers {
 		got, matched := parser(t)
@@ -105,10 +105,6 @@ func CockroachToArrow(t string) arrow.DataType {
 	case "int", "bigint", "int8", "int64", "integer":
 		// Cockroach has different aliases for ints
 		return arrow.PrimitiveTypes.Int64
-	case "numeric(20,0)":
-		// special case.
-		// TODO: add Decimal128/256 support
-		return arrow.PrimitiveTypes.Uint64
 	case "real", "float4":
 		return arrow.PrimitiveTypes.Float32
 	case "double precision", "float8":
@@ -142,6 +138,7 @@ func CrateDBToArrow(t string) arrow.DataType {
 	parsers := []func(string) (arrow.DataType, bool){
 		parseTimestamp,
 		parseTime,
+		parseNumeric,
 	}
 	for _, parser := range parsers {
 		got, matched := parser(t)
@@ -165,9 +162,6 @@ func CrateDBToArrow(t string) arrow.DataType {
 		return arrow.PrimitiveTypes.Int32
 	case "bigint", "int8":
 		return arrow.PrimitiveTypes.Int64
-	case "numeric":
-		// Special case
-		return arrow.PrimitiveTypes.Uint64
 	case "real", "float4":
 		return arrow.PrimitiveTypes.Float32
 	case "double precision", "float8":
@@ -239,4 +233,39 @@ func parseTime(t string) (arrow.DataType, bool) {
 	default:
 		return arrow.FixedWidthTypes.Time64us, true
 	}
+}
+
+func parseNumeric(t string) (arrow.DataType, bool) {
+	matches := reNumeric.FindAllStringSubmatch(t, -1)
+	if len(matches) == 0 {
+		return nil, false
+	}
+
+	if len(matches[0]) < 3 || matches[0][1] == "" {
+		// no precision/scale specified
+		return &arrow.Decimal128Type{Precision: 38, Scale: 0}, true
+	}
+
+	precision, err := strconv.ParseInt(matches[0][1], 10, 64)
+	if precision == 0 || err != nil {
+		panic("precision cannot be 0")
+	}
+	scale, err := strconv.ParseInt(matches[0][2], 10, 64)
+	if err != nil {
+		panic("error parsing scale " + err.Error())
+	}
+
+	if precision == 20 && scale == 0 {
+		// special case
+		return arrow.PrimitiveTypes.Uint64, true
+	}
+
+	if precision <= 38 {
+		return &arrow.Decimal128Type{Precision: int32(precision), Scale: int32(scale)}, true
+	}
+	if precision <= 76 {
+		return &arrow.Decimal256Type{Precision: int32(precision), Scale: int32(scale)}, true
+	}
+
+	return arrow.BinaryTypes.String, true
 }

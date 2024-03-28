@@ -127,12 +127,12 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 
 	// initialize destinations first, so that their connections may be used as backends by the source
 	for i, destinationSpec := range destinationSpecs {
-		if err := initPlugin(ctx, destinationsPbClients[i], destinationSpec.Spec, false); err != nil {
+		if err := initPlugin(ctx, destinationsPbClients[i], destinationSpec.Spec, false, uid); err != nil {
 			return fmt.Errorf("failed to init destination %v: %w", destinationSpec.Name, err)
 		}
 	}
 	if backend != nil {
-		if err := initPlugin(ctx, backendPbClient, backend.spec.Spec, false); err != nil {
+		if err := initPlugin(ctx, backendPbClient, backend.spec.Spec, false, uid); err != nil {
 			return fmt.Errorf("failed to init backend %v: %w", backend.spec.Name, err)
 		}
 	}
@@ -151,7 +151,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		return fmt.Errorf("failed to unmarshal source spec JSON after variable replacement: %w", err)
 	}
 
-	if err = initPlugin(ctx, sourcePbClient, sourceSpec.Spec, false); err != nil {
+	if err = initPlugin(ctx, sourcePbClient, sourceSpec.Spec, false, uid); err != nil {
 		return fmt.Errorf("failed to init source %v: %w", sourceSpec.Name, err)
 	}
 

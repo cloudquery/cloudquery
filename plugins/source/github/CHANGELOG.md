@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v8.2.0...plugins-source-github-v8.2.1) (2024-03-26)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.0 ([#17325](https://github.com/cloudquery/cloudquery/issues/17325)) ([eb1b4b8](https://github.com/cloudquery/cloudquery/commit/eb1b4b8b963917b87ff644318cfec9745471d50a))
+
 ## [8.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v8.1.3...plugins-source-github-v8.2.0) (2024-03-22)
 
 

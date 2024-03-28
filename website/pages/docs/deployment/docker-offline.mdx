@@ -7,7 +7,10 @@ description: Learn how to build a container with plugins pre-installed
 
 You can run CloudQuery in a container with plugins pre-installed. This is useful for isolated deployments where you don't want to download plugins from the internet.
 
+Downloading plugins requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in a CI environment or inside of a docker build process. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key)
+
 To download the plugins based on your configuration file, use the `cloudquery plugin install` command. Below is an example `Dockerfile` based on the [CloudQuery container](/docs/deployment/docker). It uses a `build.spec.yaml` with the minimum configuration required to download the plugins.
+
 
 ```yaml
 # build.spec.yaml
@@ -31,17 +34,25 @@ spec:
 
 ```docker
 # Dockerfile
-FROM ghcr.io/cloudquery/cloudquery:latest
+FROM ghcr.io/cloudquery/cloudquery:latest as build
 WORKDIR /app
 COPY ./build.spec.yaml /app/build.spec.yaml
+ARG CLOUDQUERY_API_KEY
 
-RUN /app/cloudquery plugin install cloudquery.yaml
+RUN /app/cloudquery plugin install build.spec.yaml
+
+FROM ghcr.io/cloudquery/cloudquery:latest
+
+WORKDIR /app
+
+# Copy the .cq directory which contains the plugins
+COPY --from=build /app/.cq /app/.cq
 ```
 
 Build this container as you would normally do:
 
 ```bash
-docker build ./ -t my-cq-container:latest
+docker build --build-arg CLOUDQUERY_API_KEY=<your-api-key> ./ -t my-cq-container:latest
 ```
 
 ### Run the Container

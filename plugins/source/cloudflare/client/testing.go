@@ -36,7 +36,8 @@ func MockTestHelper(t *testing.T, table *schema.Table, builder func(*testing.T, 
 			Zones:     []string{TestZoneID},
 		},
 	})
-
+	c.AccountId = TestAccountID
+	c.ZoneId = TestZoneID
 	tables := schema.Tables{table}
 	if err := transformers.TransformTables(tables); err != nil {
 		t.Fatal(err)

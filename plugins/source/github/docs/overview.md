@@ -29,8 +29,8 @@ This is the (nested) spec used by GitHub Source Plugin
 - `orgs` (`[]string`, optional. Default: empty):
   List of organizations to sync from. You must specify either `orgs` or `repos` in the configuration.
 
-- `concurrency` (int, optional, default: 10000):
-  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+- `concurrency` (int, optional, default: 1500):
+  The best effort maximum number of Go routines to use. Lower this number to reduce memory usage or to avoid hitting GitHub API rate limits.
 
 - `discovery_concurrency` (`int`) (default: `1`)
 
@@ -38,6 +38,6 @@ This is the (nested) spec used by GitHub Source Plugin
   By default the plugin discovers repositories one organization at a time. You can increase `discovery_concurrency` to discover multiple organizations in parallel, or use a negative value to discover all organizations in parallel.
   Please note that it's possible to hit GitHub API rate limits when using a high value for `discovery_concurrency`.
 
-- `skip_archived_repos` (`bool`) (default: `false`)
+- `include_archived_repos` (`bool`) (default: `false`)
 
-  By default archived repositories are included in the sync. To skip archived repositories set `skip_archived_repos` to `true`.
+  By default archived repositories are not included in the sync. To include archived repositories set `include_archived_repos` to `true`.

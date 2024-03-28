@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.3.1...plugins-source-oracle-v4.3.2) (2024-03-26)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.35.0 ([#17299](https://github.com/cloudquery/cloudquery/issues/17299)) ([524ba20](https://github.com/cloudquery/cloudquery/commit/524ba202801c2ae1eb59a5b462a5efc62d1b4000))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.0 ([#17325](https://github.com/cloudquery/cloudquery/issues/17325)) ([eb1b4b8](https://github.com/cloudquery/cloudquery/commit/eb1b4b8b963917b87ff644318cfec9745471d50a))
+
 ## [4.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.3.0...plugins-source-oracle-v4.3.1) (2024-03-21)
 
 

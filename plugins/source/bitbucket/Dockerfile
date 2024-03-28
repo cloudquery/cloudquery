@@ -1,4 +1,4 @@
-FROM gradle:8.3-jdk20 as build
+FROM --platform=$BUILDPLATFORM gradle:8.3-jdk20 as build
 ARG GITHUB_ACTOR
 ARG GITHUB_TOKEN
 
@@ -6,7 +6,7 @@ WORKDIR /code
 
 COPY . .
 
-RUN gradle jar
+RUN gradle jar --no-daemon
 
 FROM eclipse-temurin:20-jre
 

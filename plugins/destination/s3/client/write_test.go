@@ -137,7 +137,7 @@ func TestReplacePathVariables(t *testing.T) {
 				FileSpec: filetypes.FileSpec{Format: filetypes.FormatTypeJSON},
 			},
 		}
-		if diff := cmp.Diff(tc.expectedPath, c.spec.ReplacePathVariables(tc.tableName, tc.uuid, tm)); diff != "" {
+		if diff := cmp.Diff(tc.expectedPath, c.spec.ReplacePathVariables(tc.tableName, tc.uuid, tm, c.syncID)); diff != "" {
 			t.Errorf("unexpected Path Substitution (-want +got):\n%s", diff)
 		}
 	}

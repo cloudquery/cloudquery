@@ -145,6 +145,21 @@ func (mr *MockApiMockRecorder) ListImages(arg0, arg1, arg2 interface{}) *gomock.
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListImages", reflect.TypeOf((*MockApi)(nil).ListImages), arg0, arg1, arg2)
 }
 
+// ListRulesets mocks base method.
+func (m *MockApi) ListRulesets(arg0 context.Context, arg1 *cloudflare.ResourceContainer, arg2 cloudflare.ListRulesetsParams) ([]cloudflare.Ruleset, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListRulesets", arg0, arg1, arg2)
+	ret0, _ := ret[0].([]cloudflare.Ruleset)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListRulesets indicates an expected call of ListRulesets.
+func (mr *MockApiMockRecorder) ListRulesets(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListRulesets", reflect.TypeOf((*MockApi)(nil).ListRulesets), arg0, arg1, arg2)
+}
+
 // ListWAFGroups mocks base method.
 func (m *MockApi) ListWAFGroups(arg0 context.Context, arg1, arg2 string) ([]cloudflare.WAFGroup, error) {
 	m.ctrl.T.Helper()

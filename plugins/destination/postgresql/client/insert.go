@@ -13,15 +13,32 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-// InsertBatch inserts records into the destination table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts) error {
+func (c *Client) pgTables(ctx context.Context) (map[string]struct{}, error) {
+	c.pgTablesToPKConstraintsMu.RLock()
 	// This happens when the CLI was invoked with `sync --no-migrate`
-	if c.pgTablesToPKConstraints == nil {
+	if len(c.pgTablesToPKConstraints) == 0 {
+		c.pgTablesToPKConstraintsMu.RUnlock()
 		// listTables populates c.pgTablesToPKConstraints
 		_, err := c.listTables(ctx)
 		if err != nil {
-			return err
+			return nil, err
 		}
+		c.pgTablesToPKConstraintsMu.RLock()
+	}
+
+	list := make(map[string]struct{}, len(c.pgTablesToPKConstraints))
+	for k := range c.pgTablesToPKConstraints {
+		list[k] = struct{}{}
+	}
+	c.pgTablesToPKConstraintsMu.RUnlock()
+	return list, nil
+}
+
+// InsertBatch inserts records into the destination table. It forms part of the writer.MixedBatchWriter interface.
+func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts) error {
+	pgTables, err := c.pgTables(ctx)
+	if err != nil {
+		return err
 	}
 
 	batch := new(pgx.Batch)
@@ -37,7 +54,8 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 		if !ok {
 			return fmt.Errorf("table name not found in metadata")
 		}
-		if _, ok = c.pgTablesToPKConstraints[tableName]; !ok {
+
+		if _, ok := pgTables[tableName]; !ok {
 			return fmt.Errorf("table %s not found", tableName)
 		}
 
