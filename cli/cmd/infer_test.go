@@ -109,11 +109,12 @@ spec:
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			cqDir := t.TempDir()
+			logFileName := path.Join(cqDir, "cloudquery.log")
 			t.Cleanup(func() {
-				os.RemoveAll(cqDir)
+				CloseLogFile()
 			})
 			testConfig := filepath.Join(cqDir, "config.yml")
-			logFileName := path.Join(cqDir, "cloudquery.log")
+
 			err := os.WriteFile(testConfig, []byte(tc.config), 0644)
 			require.NoError(t, err)
 

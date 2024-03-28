@@ -40,14 +40,15 @@ func TestMigrate(t *testing.T) {
 	}
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
-	cqDir := t.TempDir()
-	defer os.RemoveAll(cqDir)
 
 	for _, tc := range configs {
 		t.Run(tc.name, func(t *testing.T) {
-			defer CloseLogFile()
-			testConfig := path.Join(currentDir, "testdata", tc.config)
+			cqDir := t.TempDir()
 			logFileName := path.Join(cqDir, "cloudquery.log")
+			t.Cleanup(func() {
+				CloseLogFile()
+			})
+			testConfig := path.Join(currentDir, "testdata", tc.config)
 			cmd := NewCmdRoot()
 			cmd.SetArgs([]string{"migrate", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName})
 			err := cmd.Execute()
