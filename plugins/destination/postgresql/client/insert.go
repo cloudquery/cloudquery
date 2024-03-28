@@ -38,14 +38,14 @@ func (c *Client) pgTables(ctx context.Context) (map[string]struct{}, error) {
 type tableDetails map[string]tableDetail
 type tableDetail struct {
 	indexes []int
-	values  map[string]bool
+	values  map[string]struct{}
 	sql     string
 }
 
 // When a batch is sent and inserted into the DB we need to reset the PKValues
 func (p *tableDetails) resetValues() {
 	for _, v := range *p {
-		v.values = make(map[string]bool)
+		v.values = make(map[string]struct{})
 	}
 }
 
@@ -100,7 +100,7 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 			detail = tableDetail{
 				indexes: table.PrimaryKeysIndexes(),
 				sql:     sql,
-				values:  make(map[string]bool),
+				values:  make(map[string]struct{}),
 			}
 			details[tableName] = detail
 		}
@@ -117,10 +117,10 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 			}
 			// If the PK value is not in the map of existing pk values, add it to the map and batch the query
 			if _, ok := detail.values[pkVal[i]]; !ok {
-				detail.values[pkVal[i]] = true
+				detail.values[pkVal[i]] = struct{}{}
 				batch.Queue(detail.sql, rowVals...)
 			} else {
-				c.logger.Warn().Msgf("Duplicate primary key value found for table %s in batch. Flushing batch and creating a new one", tableName)
+				c.logger.Debug().Msgf("duplicate primary key value found for table %s in batch. Flushing batch and creating a new one", tableName)
 				// If the PK Value is already in the map, we know that this would trigger an error on insert
 				// So we will flush the batch and then add the value to the new empty batch
 				details[tableName] = detail
@@ -132,7 +132,7 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 				details.resetValues()
 				// Add the value to the new batch
 				detail = details[tableName]
-				detail.values[pkVal[i]] = true
+				detail.values[pkVal[i]] = struct{}{}
 				batch.Queue(detail.sql, rowVals...)
 			}
 		}
