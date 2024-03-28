@@ -11,7 +11,6 @@ import (
 )
 
 func TestMigrate(t *testing.T) {
-	t.Skip()
 	configs := []struct {
 		name   string
 		config string
