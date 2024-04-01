@@ -11,6 +11,12 @@ In this tutorial, we will show you how to load AWS resources into a Postgres dat
 
 ## Prerequisites
 
+### Generating a CloudQuery API key
+
+Downloading plugins requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in a CI environment like GitHub Actions. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key)
+
+### AWS Authentication
+
 Since we'll be running CloudQuery in the context of a GitHub Action runner, we'll need to add AWS authentication.
 
 To set up authentication with AWS from GitHub Actions you can follow the [Configuring OpenID Connect in Amazon Web Services blog](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services) from GitHub.
@@ -75,6 +81,7 @@ jobs:
       - name: Sync with CloudQuery
         run: cloudquery sync cloudquery.yml --log-console
         env:
+          CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }} # See https://docs.cloudquery.io/docs/deployment/generate-api-key
           CQ_DSN: ${{ secrets.CQ_DSN }} # Connection string to a PostgreSQL database
 ```
 
@@ -152,6 +159,7 @@ jobs:
       - name: Sync with CloudQuery
         run: cloudquery sync cloudquery-regions.yml --log-console
         env:
+          CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }} # See https://docs.cloudquery.io/docs/deployment/generate-api-key
           CQ_DSN: ${{ secrets.CQ_DSN }} # Connection string to a PostgreSQL database
 ```
 
