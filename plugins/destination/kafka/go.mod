@@ -8,7 +8,7 @@ require (
 	github.com/Shopify/sarama v1.37.2
 	github.com/apache/arrow/go/v15 v15.0.0-20240115115805-d7bc55542e61
 	github.com/cloudquery/codegen v0.3.12
-	github.com/cloudquery/filetypes/v4 v4.2.11
+	github.com/cloudquery/filetypes/v4 v4.2.12
 	github.com/cloudquery/plugin-sdk/v4 v4.36.1
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.31.0
@@ -108,7 +108,7 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.8.4 // indirect
+	github.com/stretchr/testify v1.9.0 // indirect
 	github.com/tdewolff/minify/v2 v2.20.18 // indirect
 	github.com/tdewolff/parse/v2 v2.7.12 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
