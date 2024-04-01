@@ -376,7 +376,7 @@ func loadDockerImage(ctx context.Context, cli *client.Client, imagePath string) 
 	return nil
 }
 
-func pushImage(ctx context.Context, dockerClient *client.Client, t TargetBuild, opts types.ImagePushOptions) error {
+func pushImage(ctx context.Context, dockerClient *client.Client, t TargetBuild, opts image.PushOptions) error {
 	fmt.Printf("Pushing %s\n", t.DockerImageTag)
 	opts.Platform = fmt.Sprintf("%s/%s", t.OS, t.Arch)
 	out, err := dockerClient.ImagePush(ctx, t.DockerImageTag, opts)
@@ -595,7 +595,7 @@ func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON
 	if err != nil {
 		return fmt.Errorf("failed to encode Docker auth config: %v", err)
 	}
-	opts := types.ImagePushOptions{
+	opts := image.PushOptions{
 		RegistryAuth: encodedAuth,
 	}
 	for _, t := range pkgJSON.SupportedTargets {
