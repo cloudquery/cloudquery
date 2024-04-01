@@ -8,12 +8,12 @@ require (
 	cloud.google.com/go/storage v1.39.1
 	github.com/apache/arrow/go/v15 v15.0.0-20240115115805-d7bc55542e61
 	github.com/cloudquery/codegen v0.3.12
-	github.com/cloudquery/filetypes/v4 v4.2.11
+	github.com/cloudquery/filetypes/v4 v4.2.12
 	github.com/cloudquery/plugin-sdk/v4 v4.36.1
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.31.0
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 	github.com/wk8/go-ordered-map/v2 v2.1.8
 	google.golang.org/api v0.171.0
 )
