@@ -1,3 +1,5 @@
+//go:build !windows
+
 package cmd
 
 import (
@@ -16,7 +18,6 @@ import (
 )
 
 func TestSwitch(t *testing.T) {
-	t.Skip()
 	cqDir := t.TempDir()
 	logFileName := path.Join(cqDir, "cloudquery.log")
 	t.Cleanup(func() {
