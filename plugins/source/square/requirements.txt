@@ -1,5 +1,5 @@
 black==24.3.0
-cloudquery-plugin-sdk==0.1.17
+cloudquery-plugin-sdk==0.1.18
 pyarrow==15.0.0
 squareup==29.0.0.20230720
 pytest==8.0.2
