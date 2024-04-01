@@ -98,7 +98,6 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 				return handleSendError(err, writeClients[i], "migrate")
 			}
 		}
-
 		if _, err := writeClients[i].CloseAndRecv(); err != nil {
 			return err
 		}
