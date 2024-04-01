@@ -7,7 +7,7 @@ require (
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.2.1
 	github.com/cloudquery/cloudquery-api-go v1.9.0
-	github.com/cloudquery/codegen v0.3.12
+	github.com/cloudquery/codegen v0.3.13
 	github.com/cloudquery/plugin-pb-go v1.19.5
 	github.com/cloudquery/plugin-sdk/v4 v4.36.1
 	github.com/distribution/reference v0.5.0
@@ -17,14 +17,14 @@ require (
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.6.0
-	github.com/invopop/jsonschema v0.11.0
+	github.com/invopop/jsonschema v0.12.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/rs/zerolog v1.31.0
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
 	github.com/schollz/progressbar/v3 v3.13.1
 	github.com/spf13/cobra v1.6.1
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 	github.com/thoas/go-funk v0.9.3
 	github.com/vnteamopen/godebouncer v1.1.1-0.20230626172639-4b59d27e1b8c
 	github.com/wk8/go-ordered-map/v2 v2.1.8
@@ -54,7 +54,7 @@ require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
-	github.com/bytedance/sonic v1.10.2 // indirect
+	github.com/bytedance/sonic v1.11.2 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
