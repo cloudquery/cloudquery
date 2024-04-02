@@ -60,15 +60,5 @@ func appendToFile(fileName string, data []byte) error {
 
 func checkFilePath(filename string) error {
 	dirPath := filepath.Dir(filename)
-	_, err := os.Stat(dirPath)
-	if err != nil {
-		// if error is that the directory does not exist, create it
-		if os.IsNotExist(err) {
-			err = os.MkdirAll(dirPath, 0755)
-			if err != nil {
-				return err
-			}
-		}
-	}
-	return nil
+	return os.MkdirAll(dirPath, 0755)
 }
