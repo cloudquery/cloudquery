@@ -1,5 +1,26 @@
 # Changelog
 
+## [9.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v8.2.1...plugins-source-github-v9.0.0) (2024-04-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* Change default concurrency to 1500 instead of 10000 to better align with GitHub rate limits ([#17369](https://github.com/cloudquery/cloudquery/issues/17369))
+* Skip archived repositories by default, rename `skip_archived_repos` to `include_archived_repos` ([#17339](https://github.com/cloudquery/cloudquery/issues/17339))
+
+### Features
+
+* Skip archived repositories by default, rename `skip_archived_repos` to `include_archived_repos` ([#17339](https://github.com/cloudquery/cloudquery/issues/17339)) ([b1ab433](https://github.com/cloudquery/cloudquery/commit/b1ab433925f5620b8f800b32678cb72f333bb8b2))
+
+
+### Bug Fixes
+
+* Change default concurrency to 1500 instead of 10000 to better align with GitHub rate limits ([#17369](https://github.com/cloudquery/cloudquery/issues/17369)) ([b757cf7](https://github.com/cloudquery/cloudquery/commit/b757cf72fe7c82e2cca599865b3b3d62e0330a7c))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.13 ([#17444](https://github.com/cloudquery/cloudquery/issues/17444)) ([da276fe](https://github.com/cloudquery/cloudquery/commit/da276fe64c46ec0a5f182c83ebc32a90d55f5d50))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.1 ([#17372](https://github.com/cloudquery/cloudquery/issues/17372)) ([aaf6187](https://github.com/cloudquery/cloudquery/commit/aaf61873ae5d2e01ea5f3b8b319e4f79afb7b29c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.2 ([#17450](https://github.com/cloudquery/cloudquery/issues/17450)) ([2947506](https://github.com/cloudquery/cloudquery/commit/294750650269f8191c6dfff060c4d3a546405763))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.3 ([#17456](https://github.com/cloudquery/cloudquery/issues/17456)) ([020865a](https://github.com/cloudquery/cloudquery/commit/020865a6fde8c896947a844021f0cd7daeb01b06))
+
 ## [8.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v8.2.0...plugins-source-github-v8.2.1) (2024-03-26)
 
 
