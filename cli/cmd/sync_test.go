@@ -206,7 +206,7 @@ func TestSync(t *testing.T) {
 			summaryPath := ""
 			if len(tc.summary) > 0 {
 				summaryPath = path.Join(cqDir, "/test/cloudquery-summary.jsonl")
-				argList = append(argList, "--sync-summary-location", summaryPath)
+				argList = append(argList, "--summary-location", summaryPath)
 			}
 
 			cmd.SetArgs(argList)
