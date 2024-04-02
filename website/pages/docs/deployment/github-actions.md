@@ -13,7 +13,7 @@ In this tutorial, we will show you how to load AWS resources into a Postgres dat
 
 ### Generating a CloudQuery API key
 
-Downloading plugins requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in a CI environment like GitHub Actions. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key)
+Downloading plugins requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in a CI environment like GitHub Actions. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key).
 
 ### AWS Authentication
 
