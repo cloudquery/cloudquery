@@ -27,7 +27,7 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 		if s == nil {
 			table := msg.GetTable()
 
-			objKey := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC())
+			objKey := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC(), c.syncID)
 
 			var err error
 			s, err = c.Client.StartStream(table, func(r io.Reader) error {

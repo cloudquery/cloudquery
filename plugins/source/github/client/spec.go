@@ -19,13 +19,12 @@ type Spec struct {
 	AppAuth            []AppAuthSpec       `json:"app_auth" jsonschema:"minItems=1"`
 	EnterpriseSettings *EnterpriseSettings `json:"enterprise"`
 
-	// The best effort maximum number of Go routines to use.
-	// Lower this number to reduce memory usage.
-	Concurrency int `json:"concurrency,omitempty" jsonschema:"default=10000"`
+	// The best effort maximum number of Go routines to use. Lower this number to reduce memory usage or to avoid hitting GitHub API rate limits.
+	Concurrency int `json:"concurrency,omitempty" jsonschema:"default=1500"`
 	// Controls the number of parallel requests to GitHub when discovering repositories, a negative value means unlimited.
 	DiscoveryConcurrency int `json:"discovery_concurrency,omitempty" jsonschema:"default=1"`
-	// Skip archived repositories when discovering repositories.
-	SkipArchivedRepos bool `json:"skip_archived_repos,omitempty"`
+	// Include archived repositories when discovering repositories.
+	IncludeArchivedRepos bool `json:"include_archived_repos,omitempty"`
 }
 
 type EnterpriseSettings struct {
@@ -50,7 +49,7 @@ type AppAuthSpec struct {
 
 func (s *Spec) SetDefaults() {
 	if s.Concurrency == 0 {
-		s.Concurrency = 10000
+		s.Concurrency = 1500
 	}
 	if s.DiscoveryConcurrency == 0 {
 		s.DiscoveryConcurrency = 1

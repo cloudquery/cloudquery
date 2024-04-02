@@ -427,6 +427,10 @@
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/azuredevops/tables/:path*"
     },
     {
+      "source": "/docs/plugins/sources/bitbucket/tables/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/bitbucket/tables/:path*"
+    },
+    {
       "source": "/docs/plugins/sources/cloudflare/tables/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/cloudflare/tables/:path*"
     },
@@ -617,6 +621,10 @@
     {
       "source": "/docs/plugins/sources/azuredevops/:path*",
       "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/azuredevops"
+    },
+    {
+      "source": "/docs/plugins/sources/bitbucket/:path*",
+      "destination": "https://hub.cloudquery.io/plugins/source/cloudquery/bitbucket"
     },
     {
       "source": "/docs/plugins/sources/cloudflare/:path*",
@@ -1061,6 +1069,10 @@
     {
       "source": "/docs/quickstart/macos",
       "destination": "/docs/quickstart/macOS"
+    },
+    {
+      "source": "/docs/quickstart/managed",
+      "destination": "/docs/quickstart/cloudquery-cloud"
     },
     {
       "source": "/how-to-guides/:path*",

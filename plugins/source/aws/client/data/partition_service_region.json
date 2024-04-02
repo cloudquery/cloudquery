@@ -156,6 +156,7 @@
             "ap-east-1": {},
             "ap-northeast-1": {},
             "ap-northeast-2": {},
+            "ap-northeast-3": {},
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
@@ -178,6 +179,7 @@
           "regions": {
             "ap-northeast-1": {},
             "ap-northeast-2": {},
+            "ap-northeast-3": {},
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
@@ -200,6 +202,7 @@
           "regions": {
             "ap-northeast-1": {},
             "ap-northeast-2": {},
+            "ap-northeast-3": {},
             "ap-south-1": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
@@ -1563,6 +1566,7 @@
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ap-southeast-3": {},
+            "ap-southeast-4": {},
             "ca-central-1": {},
             "eu-central-1": {},
             "eu-central-2": {},
@@ -3968,8 +3972,14 @@
         },
         "media-pipelines-chime": {
           "regions": {
+            "ap-northeast-1": {},
+            "ap-northeast-2": {},
+            "ap-south-1": {},
             "ap-southeast-1": {},
+            "ap-southeast-2": {},
+            "ca-central-1": {},
             "eu-central-1": {},
+            "eu-west-2": {},
             "us-east-1": {},
             "us-west-2": {}
           }
@@ -4016,6 +4026,7 @@
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
+            "me-central-1": {},
             "sa-east-1": {},
             "us-east-1": {},
             "us-east-2": {},
@@ -4029,6 +4040,7 @@
             "ap-northeast-2": {},
             "ap-northeast-3": {},
             "ap-south-1": {},
+            "ap-south-2": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ap-southeast-4": {},
@@ -4038,6 +4050,7 @@
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
+            "me-central-1": {},
             "sa-east-1": {},
             "us-east-1": {},
             "us-east-2": {},
@@ -4514,6 +4527,7 @@
             "ap-northeast-2": {},
             "ap-northeast-3": {},
             "ap-south-1": {},
+            "ap-south-2": {},
             "ap-southeast-1": {},
             "ap-southeast-2": {},
             "ap-southeast-3": {},
@@ -4523,6 +4537,7 @@
             "eu-central-2": {},
             "eu-north-1": {},
             "eu-south-1": {},
+            "eu-south-2": {},
             "eu-west-1": {},
             "eu-west-2": {},
             "eu-west-3": {},
@@ -7953,6 +7968,12 @@
             "us-iso-west-1": {}
           }
         },
+        "s3-outposts": {
+          "regions": {
+            "fips-us-iso-east-1": {},
+            "us-iso-east-1": {}
+          }
+        },
         "secretsmanager": {
           "regions": {
             "us-iso-east-1": {},
@@ -8235,6 +8256,16 @@
             "us-isob-east-1": {}
           }
         },
+        "medialive": {
+          "regions": {
+            "us-isob-east-1": {}
+          }
+        },
+        "mediapackage": {
+          "regions": {
+            "us-isob-east-1": {}
+          }
+        },
         "metering.marketplace": {
           "regions": {
             "us-isob-east-1": {}
@@ -8297,6 +8328,12 @@
         },
         "s3": {
           "regions": {
+            "us-isob-east-1": {}
+          }
+        },
+        "s3-outposts": {
+          "regions": {
+            "fips-us-isob-east-1": {},
             "us-isob-east-1": {}
           }
         },
@@ -9027,6 +9064,11 @@
             "us-gov-west-1": {}
           }
         },
+        "models-v2-lex": {
+          "regions": {
+            "us-gov-west-1": {}
+          }
+        },
         "models.lex": {
           "regions": {
             "us-gov-west-1": {}
@@ -9180,6 +9222,11 @@
             "us-gov-east-1-fips": {},
             "us-gov-west-1": {},
             "us-gov-west-1-fips": {}
+          }
+        },
+        "runtime-v2-lex": {
+          "regions": {
+            "us-gov-west-1": {}
           }
         },
         "runtime.lex": {
