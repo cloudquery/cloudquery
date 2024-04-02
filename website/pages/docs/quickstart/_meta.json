@@ -2,7 +2,7 @@
   "macOS": "macOS",
   "linux": "Linux",
   "windows": "Windows",
-  "managed": "Managed Syncs",
+  "cloudquery-cloud": "CloudQuery Cloud",
   "index": {
     "display": "hidden"
   }
