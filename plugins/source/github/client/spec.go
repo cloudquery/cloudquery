@@ -25,7 +25,7 @@ type Spec struct {
 	DiscoveryConcurrency int `json:"discovery_concurrency,omitempty" jsonschema:"default=1"`
 	// Include archived repositories when discovering repositories.
 	IncludeArchivedRepos bool `json:"include_archived_repos,omitempty"`
-	// Path to a local cache directory. If set, the plugin will cache the GitHub API responses in this directory. Defaults to an empty string (no cache)
+	// Path to a local directory that will hold the cache. If set, the plugin will cache the GitHub API responses in this directory. Defaults to an empty string (no cache)
 	LocalCachePath string `json:"local_cache_path,omitempty"`
 }
 

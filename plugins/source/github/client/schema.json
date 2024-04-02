@@ -152,7 +152,7 @@
         },
         "local_cache_path": {
           "type": "string",
-          "description": "Path to a local cache directory. If set, the plugin will cache the GitHub API responses in this directory. Defaults to an empty string (no cache)"
+          "description": "Path to a local directory that will hold the cache. If set, the plugin will cache the GitHub API responses in this directory. Defaults to an empty string (no cache)"
         }
       },
       "additionalProperties": false,
