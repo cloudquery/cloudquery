@@ -1071,6 +1071,10 @@
       "destination": "/docs/quickstart/macOS"
     },
     {
+      "source": "/docs/quickstart/managed",
+      "destination": "/docs/quickstart/cloudquery-cloud"
+    },
+    {
       "source": "/how-to-guides/:path*",
       "destination": "https://www.cloudquery.io/blog/:path*"
     }
