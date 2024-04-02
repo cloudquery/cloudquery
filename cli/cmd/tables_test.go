@@ -31,7 +31,6 @@ func getTablesCommand(t *testing.T, config string, format string) (*cobra.Comman
 }
 
 func TestTables(t *testing.T) {
-	t.Skip()
 	configs := []struct {
 		name   string
 		config string
