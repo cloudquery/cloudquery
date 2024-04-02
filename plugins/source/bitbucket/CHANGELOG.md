@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.2.1...plugins-source-bitbucket-v1.2.2) (2024-04-02)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency com.konghq:unirest-java to v3.14.5 ([#17434](https://github.com/cloudquery/cloudquery/issues/17434)) ([2cd361f](https://github.com/cloudquery/cloudquery/commit/2cd361f56fe71ee166f7a18518b8727a78d98de3))
+* **deps:** Update dependency io.cloudquery:plugin-pb-java to v0.0.15 ([#17437](https://github.com/cloudquery/cloudquery/issues/17437)) ([cb147e3](https://github.com/cloudquery/cloudquery/commit/cb147e3570eea2ff7cc3419a69a81467bf9c9191))
+
 ## [1.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.2.0...plugins-source-bitbucket-v1.2.1) (2024-03-27)
 
 
