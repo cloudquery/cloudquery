@@ -1,17 +1,17 @@
 ---
-title: Quickstart - Managed Syncs
-description: A quickstart guide for running managed syncs in CloudQuery Cloud
+title: CloudQuery Cloud
+description: A quickstart guide for running syncs in CloudQuery Cloud
 ---
 
-## What Are Managed Syncs
+## What is CloudQuery Cloud
 
 :::callout{type="info"}
-Managed Syncs is currently in beta. Not all functionality may be available. See the [limitations](#limitations-of-managed-syncs-compared-to-self-hosted) section below.
+CloudQuery Cloud is currently in beta. Not all functionality may be available. See the [limitations](#limitations-of-managed-syncs-compared-to-self-hosted) section below.
 :::
 
-Managed syncs are a great way to get started with CloudQuery and syncing data from source to destination without the need to deploy your own infrastructure. You only need to select a source and destination plugin and CloudQuery will take care of the rest.
+CloudQuery Cloud is a great way to get started with CloudQuery and syncing data from source to destination without the need to deploy your own infrastructure. You only need to select a source and destination plugin and CloudQuery will take care of the rest.
 
-With Managed Syncs, you can:
+With CloudQuery Cloud, you can:
 
 - Sync data from any [CloudQuery official source](https://hub.cloudquery.io/plugins/source?authors=official) to any [CloudQuery official destination](https://hub.cloudquery.io/plugins/destination?authors=official).
 - Schedule syncs to run at regular intervals.
@@ -100,11 +100,11 @@ Errors and warnings are displayed in the logs section. Only errors that prevent 
 
 ## API Access
 
-Managed syncs can be controlled using API. To use the API, you will need to [generate an API key](/docs/deployment/generate-api-key). For the list of available endpoints, see our [API Reference](https://api-docs.cloudquery.io/#tag/syncs).
+Cloud syncs can be controlled using API. To use the API, you will need to [generate an API key](/docs/deployment/generate-api-key). For the list of available endpoints, see our [API Reference](https://api-docs.cloudquery.io/#tag/syncs).
 
-## Limitations of Managed Syncs Compared to Self-hosted
+## Limitations of Cloud Syncs Compared to Self-hosted
 
 - Backend Options are not available. This is a limitation during beta phase and will be removed before the general availability.
-- Docker-based plugins cannot be used with Managed Syncs. This is a limitation during beta phase and will be removed before the general availability.
-- Not all authentication mechanisms that work on self-hosted syncs work with Managed Syncs. We are continuously adding support for more authentication mechanisms.
-- Community and custom plugins cannot be used with Managed Syncs. This is by design and will not be removed in the near future.
+- Docker-based plugins cannot be used with CloudQuery Cloud. This is a limitation during beta phase and will be removed before the general availability.
+- Not all authentication mechanisms that work on self-hosted syncs work with CloudQuery Cloud. We are continuously adding support for more authentication mechanisms.
+- Community and custom plugins cannot be used with CloudQuery Cloud. This is by design and will not be removed in the near future.
