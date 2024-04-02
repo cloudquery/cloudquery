@@ -3,6 +3,7 @@ package client
 import (
 	_ "embed"
 	"fmt"
+	"os"
 
 	"github.com/invopop/jsonschema"
 )
@@ -87,6 +88,15 @@ func (s *Spec) Validate() error {
 	for _, repo := range s.Repos {
 		if err := validateRepo(repo); err != nil {
 			return err
+		}
+	}
+	if s.LocalCachePath != "" {
+		fileInfo, err := os.Stat(s.LocalCachePath)
+		if err != nil && !os.IsNotExist(err) {
+			return fmt.Errorf("error accessing local cache path: %w", err)
+		}
+		if fileInfo != nil && !fileInfo.IsDir() {
+			return fmt.Errorf("local cache path is not a directory")
 		}
 	}
 	return nil
