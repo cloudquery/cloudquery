@@ -10,11 +10,11 @@ import (
 	"time"
 
 	"github.com/bradleyfalzon/ghinstallation/v2"
+	"github.com/cloudquery/httpcache"
+	"github.com/cloudquery/httpcache/diskcache"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/gofri/go-github-ratelimit/github_ratelimit"
 	"github.com/google/go-github/v59/github"
-	"github.com/gregjones/httpcache"
-	"github.com/gregjones/httpcache/diskcache"
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/errgroup"
 )

@@ -6,12 +6,12 @@ require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/bradleyfalzon/ghinstallation/v2 v2.9.0
 	github.com/cloudquery/codegen v0.3.13
+	github.com/cloudquery/httpcache v0.0.0-20240402184320-d10dd7525777
 	github.com/cloudquery/plugin-sdk/v4 v4.36.3
 	github.com/ghodss/yaml v1.0.0
 	github.com/gofri/go-github-ratelimit v1.0.3
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v59 v59.0.0
-	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.32.0
 	golang.org/x/sync v0.6.0
@@ -61,6 +61,7 @@ require (
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/css v1.0.1 // indirect
+	github.com/gregjones/httpcache v0.0.0-20190611155906-901d90724c79 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.1.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
