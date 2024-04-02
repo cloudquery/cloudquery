@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.3.2...plugins-source-oracle-v4.3.3) (2024-04-02)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to a685a6e ([#17429](https://github.com/cloudquery/cloudquery/issues/17429)) ([093bc86](https://github.com/cloudquery/cloudquery/commit/093bc86544890918f8a7d8d15357f7103ce47106))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.13 ([#17444](https://github.com/cloudquery/cloudquery/issues/17444)) ([da276fe](https://github.com/cloudquery/cloudquery/commit/da276fe64c46ec0a5f182c83ebc32a90d55f5d50))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.1 ([#17372](https://github.com/cloudquery/cloudquery/issues/17372)) ([aaf6187](https://github.com/cloudquery/cloudquery/commit/aaf61873ae5d2e01ea5f3b8b319e4f79afb7b29c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.2 ([#17450](https://github.com/cloudquery/cloudquery/issues/17450)) ([2947506](https://github.com/cloudquery/cloudquery/commit/294750650269f8191c6dfff060c4d3a546405763))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.3 ([#17456](https://github.com/cloudquery/cloudquery/issues/17456)) ([020865a](https://github.com/cloudquery/cloudquery/commit/020865a6fde8c896947a844021f0cd7daeb01b06))
+
 ## [4.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-oracle-v4.3.1...plugins-source-oracle-v4.3.2) (2024-03-26)
 
 
