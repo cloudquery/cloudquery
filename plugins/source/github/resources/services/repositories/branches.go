@@ -38,10 +38,10 @@ func fetchBranches(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 			return err
 		}
 		res <- branches
-		opts.ListOptions.Page = resp.NextPage
-		if opts.ListOptions.Page == resp.LastPage {
+		if resp.NextPage == 0 {
 			break
 		}
+		opts.Page = resp.NextPage
 	}
 
 	return nil
