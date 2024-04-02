@@ -22,12 +22,19 @@ func fetchSecrets(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	c := meta.(*client.Client)
 	repo := parent.Item.(*github.Repository)
 
-	secrets, _, err := c.Github.Dependabot.ListRepoSecrets(ctx, c.Org, *repo.Name, nil)
-	if err != nil {
-		return err
-	}
+	opts := &github.ListOptions{PerPage: 100}
+	for {
+		secrets, resp, err := c.Github.Dependabot.ListRepoSecrets(ctx, c.Org, *repo.Name, opts)
+		if err != nil {
+			return err
+		}
+		res <- secrets.Secrets
 
-	res <- secrets.Secrets
+		if resp.NextPage == 0 {
+			break
+		}
+		opts.Page = resp.NextPage
+	}
 
 	return nil
 }
