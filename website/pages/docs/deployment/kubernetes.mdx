@@ -20,6 +20,7 @@ src="https://www.youtube.com/embed/3dJVj6JjHqY">
 
 ## Prerequisites
 
+- A CloudQuery API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key).
 - A Kubernetes Cluster
 - A Postgres Database server
 - Credentials (with Read privileges) for a supported API - in the example we'll use a DigitalOcean account
@@ -31,6 +32,7 @@ We can do this in a single command:
 
 ```bash copy
 kubectl create secret generic cloudquery-secret \
+--from-literal=CLOUDQUERY_API_KEY=<your_cloudquery_api_key> \
 --from-literal=DIGITALOCEAN_TOKEN=<your_token> \
 --from-literal=SPACES_ACCESS_KEY_ID=<your_access_key> \
 --from-literal=SPACES_SECRET_ACCESS_KEY=<your_secret_key> \
