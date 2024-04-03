@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
-	"path"
 	"strings"
 	"testing"
 
@@ -42,11 +41,6 @@ func TestPluginPublish(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			cqDir := t.TempDir()
-			logFileName := path.Join(cqDir, "cloudquery.log")
-			t.Cleanup(func() {
-				CloseLogFile()
-			})
 			t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 			wantCalls := map[string]int{
 				"PUT /plugins/cloudquery/source/test/versions/v1.2.3":                      1,
@@ -98,7 +92,7 @@ func TestPluginPublish(t *testing.T) {
 			cmd := NewCmdRoot()
 			t.Setenv(envAPIURL, ts.URL)
 			allArgs := tc.args
-			allArgs = append(allArgs, "--cq-dir", cqDir, "--log-file-name", logFileName)
+			allArgs = append(allArgs, testCommandArgs(t)...)
 			cmd.SetArgs(allArgs)
 			err := cmd.Execute()
 			if err != nil {
@@ -112,11 +106,6 @@ func TestPluginPublish(t *testing.T) {
 }
 
 func TestPluginPublishFinalize(t *testing.T) {
-	cqDir := t.TempDir()
-	logFileName := path.Join(cqDir, "cloudquery.log")
-	t.Cleanup(func() {
-		CloseLogFile()
-	})
 	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
@@ -181,7 +170,7 @@ func TestPluginPublishFinalize(t *testing.T) {
 	t.Setenv(envAPIURL, ts.URL)
 
 	cmd := NewCmdRoot()
-	args := []string{"plugin", "publish", "--dist-dir", "testdata/dist-v1-with-team-package-json", "--finalize", "--cq-dir", cqDir, "--log-file-name", logFileName}
+	args := append([]string{"plugin", "publish", "--dist-dir", "testdata/dist-v1-with-team-package-json", "--finalize"}, testCommandArgs(t)...)
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -193,11 +182,6 @@ func TestPluginPublishFinalize(t *testing.T) {
 }
 
 func TestPluginPublish_Unauthorized(t *testing.T) {
-	cqDir := t.TempDir()
-	logFileName := path.Join(cqDir, "cloudquery.log")
-	t.Cleanup(func() {
-		CloseLogFile()
-	})
 	t.Setenv("CLOUDQUERY_API_KEY", "badkey")
 
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -210,7 +194,7 @@ func TestPluginPublish_Unauthorized(t *testing.T) {
 	t.Setenv(envAPIURL, ts.URL)
 
 	cmd := NewCmdRoot()
-	args := []string{"plugin", "publish", "--dist-dir", "testdata/dist-v1-with-team-package-json", "--finalize", "--cq-dir", cqDir, "--log-file-name", logFileName}
+	args := append([]string{"plugin", "publish", "--dist-dir", "testdata/dist-v1-with-team-package-json", "--finalize"}, testCommandArgs(t)...)
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err == nil {

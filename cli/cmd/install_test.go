@@ -49,18 +49,14 @@ func TestInstall(t *testing.T) {
 	for _, tc := range configs {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			cqDir := t.TempDir()
-			logFileName := path.Join(cqDir, "cloudquery.log")
-			t.Cleanup(func() {
-				CloseLogFile()
-			})
 			testConfig := path.Join(currentDir, "testdata", tc.config)
 			cmd := NewCmdRoot()
-			cmd.SetArgs([]string{"plugin", "install", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName})
+			baseArgs := testCommandArgs(t)
+			cmd.SetArgs(append([]string{"plugin", "install", testConfig}, baseArgs...))
 			err := cmd.Execute()
 			assert.NoError(t, err)
 			// check if all files were created
-			justFiles := readFiles(t, cqDir, "")
+			justFiles := readFiles(t, baseArgs[1], "")
 
 			sourceFiles, destFiles := 0, 0
 			for _, file := range justFiles {
@@ -78,7 +74,7 @@ func TestInstall(t *testing.T) {
 			}
 
 			// check that log was written and contains some lines
-			b, logFileError := os.ReadFile(path.Join(cqDir, "cloudquery.log"))
+			b, logFileError := os.ReadFile(baseArgs[3])
 			logContent := string(b)
 			require.NoError(t, logFileError, "failed to read cloudquery.log")
 			require.NotEmpty(t, logContent, "cloudquery.log empty; expected some logs")

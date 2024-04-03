@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"os"
-	"path"
 	"sort"
 	"testing"
 
@@ -27,13 +26,8 @@ var docFiles = []string{
 
 func TestDoc(t *testing.T) {
 	tmpDir := t.TempDir()
-	cqTmpDir := t.TempDir()
-	logFileName := path.Join(cqTmpDir, "cloudquery.log")
-	t.Cleanup(func() {
-		CloseLogFile()
-	})
 	cmd := NewCmdRoot()
-	cmd.SetArgs([]string{"doc", tmpDir, "--cq-dir", cqTmpDir, "--log-file-name", logFileName})
+	cmd.SetArgs(append([]string{"doc", tmpDir}, testCommandArgs(t)...))
 
 	err := cmd.Execute()
 	require.NoError(t, err)

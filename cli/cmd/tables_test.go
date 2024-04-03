@@ -16,17 +16,13 @@ func getTablesCommand(t *testing.T, config string, format string) (*cobra.Comman
 	currentDir := path.Dir(filename)
 	testConfig := path.Join(currentDir, "testdata", config)
 	tmpDir := t.TempDir()
-	logFileName := path.Join(tmpDir, "cloudquery.log")
-	t.Cleanup(func() {
-		CloseLogFile()
-	})
 	outputDirectory := path.Join(tmpDir, "cq-docs")
 	cmd := NewCmdRoot()
-	args := []string{"tables", testConfig, "--cq-dir", tmpDir, "--log-file-name", logFileName, "--output-dir", outputDirectory}
+	args := []string{"tables", testConfig, "--output-dir", outputDirectory}
 	if format != "" {
 		args = append(args, "--format", format)
 	}
-	cmd.SetArgs(args)
+	cmd.SetArgs(append(args, testCommandArgs(t)...))
 	return cmd, tmpDir
 }
 
@@ -54,14 +50,14 @@ func TestTables(t *testing.T) {
 
 	for _, tc := range configs {
 		t.Run(tc.name, func(t *testing.T) {
-			cmd, cqDir := getTablesCommand(t, tc.config, tc.format)
+			cmd, docsDir := getTablesCommand(t, tc.config, tc.format)
 			commandError := cmd.Execute()
 			require.NoError(t, commandError)
 
 			if tc.format == "markdown" {
-				require.FileExists(t, path.Join(cqDir, "cq-docs/test/README.md"))
+				require.FileExists(t, path.Join(docsDir, "cq-docs/test/README.md"))
 			} else {
-				require.FileExists(t, path.Join(cqDir, "cq-docs/test/__tables.json"))
+				require.FileExists(t, path.Join(docsDir, "cq-docs/test/__tables.json"))
 			}
 		})
 	}

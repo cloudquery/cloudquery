@@ -195,18 +195,15 @@ func TestSync(t *testing.T) {
 
 	for _, tc := range configs {
 		t.Run(tc.name, func(t *testing.T) {
-			cqDir := t.TempDir()
-			logFileName := path.Join(cqDir, "cloudquery.log")
-			t.Cleanup(func() {
-				CloseLogFile()
-			})
 			testConfig := path.Join(currentDir, "testdata", tc.config)
 			cmd := NewCmdRoot()
 
-			argList := []string{"sync", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName}
+			baseArgs := testCommandArgs(t)
+			argList := append([]string{"sync", testConfig}, baseArgs...)
 			summaryPath := ""
 			if len(tc.summary) > 0 {
-				summaryPath = path.Join(cqDir, "/test/cloudquery-summary.jsonl")
+				tmp := t.TempDir()
+				summaryPath = path.Join(tmp, "/test/cloudquery-summary.jsonl")
 				argList = append(argList, "--summary-location", summaryPath)
 			}
 
@@ -228,22 +225,17 @@ func TestSync(t *testing.T) {
 			}
 
 			// check that log was written and contains some lines from the plugin
-			b, logFileError := os.ReadFile(path.Join(cqDir, "cloudquery.log"))
+			b, logFileError := os.ReadFile(baseArgs[3])
 			logContent := string(b)
 			require.NoError(t, logFileError, "failed to read cloudquery.log")
 			require.NotEmpty(t, logContent, "cloudquery.log empty; expected some logs")
 		})
 
 		t.Run(tc.name+"_no_migrate", func(t *testing.T) {
-			cqDir := t.TempDir()
-			logFileName := path.Join(cqDir, "cloudquery.log")
-			t.Cleanup(func() {
-				CloseLogFile()
-			})
 			testConfig := path.Join(currentDir, "testdata", tc.config)
 
 			cmd := NewCmdRoot()
-			cmd.SetArgs([]string{"sync", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName, "--no-migrate"})
+			cmd.SetArgs(append([]string{"sync", testConfig, "--no-migrate"}, testCommandArgs(t)...))
 			err := cmd.Execute()
 			if tc.err != "" {
 				assert.Contains(t, err.Error(), tc.err)
@@ -258,19 +250,15 @@ func TestSyncCqDir(t *testing.T) {
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
 	testConfig := path.Join(currentDir, "testdata", "sync-success-sourcev1-destv0.yml")
-	cqDir := t.TempDir()
-	logFileName := path.Join(cqDir, "cloudquery.log")
-	t.Cleanup(func() {
-		CloseLogFile()
-	})
 
 	cmd := NewCmdRoot()
-	cmd.SetArgs([]string{"sync", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName})
+	baseArgs := testCommandArgs(t)
+	cmd.SetArgs(append([]string{"sync", testConfig}, baseArgs...))
 	err := cmd.Execute()
 	require.NoError(t, err)
 
 	// check that destination plugin was downloaded to the cache using --cq-dir
-	p := path.Join(cqDir, "plugins")
+	p := path.Join(baseArgs[1], "plugins")
 	files, err := os.ReadDir(p)
 	if err != nil {
 		t.Fatalf("failed to read cache directory %v: %v", p, err)
@@ -322,14 +310,9 @@ func TestSync_IsolatedPluginEnvironmentsInCloud(t *testing.T) {
 
 	for _, tc := range configs {
 		t.Run(tc.name, func(t *testing.T) {
-			cqDir := t.TempDir()
-			logFileName := path.Join(cqDir, "cloudquery.log")
-			t.Cleanup(func() {
-				CloseLogFile()
-			})
 			testConfig := path.Join(currentDir, "testdata", tc.config)
 			cmd := NewCmdRoot()
-			cmd.SetArgs([]string{"sync", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName})
+			cmd.SetArgs(append([]string{"sync", testConfig}, testCommandArgs(t)...))
 			err := cmd.Execute()
 			if tc.err != "" {
 				assert.Contains(t, err.Error(), tc.err)

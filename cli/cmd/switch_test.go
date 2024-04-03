@@ -18,12 +18,6 @@ import (
 )
 
 func TestSwitch(t *testing.T) {
-	cqDir := t.TempDir()
-	logFileName := path.Join(cqDir, "cloudquery.log")
-	t.Cleanup(func() {
-		CloseLogFile()
-	})
-
 	configDir := t.TempDir()
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch {
@@ -45,20 +39,21 @@ func TestSwitch(t *testing.T) {
 	err := config.SetConfigHome(configDir)
 	require.NoError(t, err)
 
+	baseArgs := testCommandArgs(t)
 	// calling switch before a team is set should not result in an error
 	cmd := NewCmdRoot()
-	cmd.SetArgs([]string{"switch", "--cq-dir", cqDir, "--log-file-name", logFileName})
+	cmd.SetArgs(append([]string{"switch"}, baseArgs...))
 	err = cmd.Execute()
 	require.NoError(t, err)
 
 	// now set the team
 	cmd = NewCmdRoot()
-	cmd.SetArgs([]string{"switch", "my-team", "--cq-dir", cqDir, "--log-file-name", logFileName})
+	cmd.SetArgs(append([]string{"switch", "my-team"}, baseArgs...))
 	err = cmd.Execute()
 	require.NoError(t, err)
 
 	cmd = NewCmdRoot()
-	cmd.SetArgs([]string{"switch", "--cq-dir", cqDir, "--log-file-name", logFileName})
+	cmd.SetArgs(append([]string{"switch"}, baseArgs...))
 	buf := new(bytes.Buffer)
 	cmd.SetOut(buf)
 	err = cmd.Execute()

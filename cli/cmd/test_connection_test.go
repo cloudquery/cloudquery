@@ -31,14 +31,10 @@ func TestTestConnection(t *testing.T) {
 
 	for _, tc := range configs {
 		t.Run(tc.name, func(t *testing.T) {
-			cqDir := t.TempDir()
-			logFileName := path.Join(cqDir, "cloudquery.log")
-			t.Cleanup(func() {
-				CloseLogFile()
-			})
 			testConfig := path.Join(currentDir, "testdata", tc.config)
 			cmd := NewCmdRoot()
-			cmd.SetArgs([]string{"test-connection", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName})
+			baseArgs := testCommandArgs(t)
+			cmd.SetArgs(append([]string{"test-connection", testConfig}, baseArgs...))
 			err := cmd.Execute()
 			if tc.errors != nil {
 				for _, e := range tc.errors {
@@ -49,7 +45,7 @@ func TestTestConnection(t *testing.T) {
 			}
 
 			// check that log was written and contains some lines from the plugin
-			b, logFileError := os.ReadFile(path.Join(cqDir, "cloudquery.log"))
+			b, logFileError := os.ReadFile(baseArgs[3])
 			logContent := string(b)
 			require.NoError(t, logFileError, "failed to read cloudquery.log")
 			require.NotEmpty(t, logContent, "cloudquery.log empty; expected some logs")
