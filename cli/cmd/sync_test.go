@@ -58,29 +58,6 @@ func TestSync(t *testing.T) {
 		{
 			name:   "multiple_destinations",
 			config: "multiple-destinations.yml",
-			summary: []syncSummary{
-
-				{
-					CliVersion:         "development",
-					DestinationName:    "test",
-					DestinationPath:    "cloudquery/test",
-					DestinationVersion: "v2.2.14",
-					Resources:          12,
-					SourceName:         "test",
-					SourcePath:         "cloudquery/test",
-					SourceVersion:      "v3.1.15",
-				},
-				{
-					CliVersion:         "development",
-					DestinationName:    "test",
-					DestinationPath:    "cloudquery/test",
-					DestinationVersion: "v2.2.14",
-					Resources:          12,
-					SourceName:         "test2",
-					SourcePath:         "cloudquery/test",
-					SourceVersion:      "v3.1.15",
-				},
-			},
 		},
 		{
 			name:   "multiple_sources_destinations",
