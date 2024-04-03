@@ -19,6 +19,7 @@ src="https://www.youtube.com/embed/rz4aU1IMF30">
 
 ## Prerequisites
 
+- A CloudQuery API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key).
 - A Google Cloud account. You can [sign up here](https://cloud.google.com/).
 - A Google Cloud Project with billing enabled
 - The following APIs enabled on the project, at a minimum:
@@ -129,7 +130,7 @@ Similarly, if you are using a different source, follow the [documentation for yo
 1. Back in the SSH session connected to the VM instance, run the following command to start the sync:
 
    ```bash copy
-   ./cloudquery sync config.yaml
+   CLOUDQUERY_API_KEY=<your-api-key-value> ./cloudquery sync config.yaml
    ```
 2. You should see a successful sync! If not, check the CLI output and `cloudquery.log` for errors.
 3. You can now fine-tune your configuration file: you may want to try `tables: ["*"]` to sync all tables at least once and get a complete asset inventory. Be aware, however, that this can take a long time on large account. We also don't recommend using `*` in production, as when you perform version upgrades, this will cause new tables to automatically get synced and may cause unexpected issues. In general, we recommend only syncing the tables you need.
