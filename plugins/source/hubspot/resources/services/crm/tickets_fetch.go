@@ -13,7 +13,13 @@ func fetchTickets(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	hubspotClient := tickets.NewAPIClient(tickets.NewConfiguration())
 	cqClient := meta.(*client.Client)
 
-	var after string
+	const key = "tickets"
+
+	after, err := getCursor(ctx, cqClient, key)
+	if err != nil {
+		return err
+	}
+
 	for {
 		if err := cqClient.RateLimiter.Wait(ctx); err != nil {
 			return nil
@@ -43,11 +49,11 @@ func fetchTickets(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 			break
 		}
 		next := paging.GetNext()
-		after = next.After
-		if after == "" {
+		if next.After == "" {
 			break
 		}
+		after = next.After
 	}
 
-	return nil
+	return setCursor(ctx, cqClient, key, after)
 }

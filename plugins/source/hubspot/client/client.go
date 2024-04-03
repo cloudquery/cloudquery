@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"github.com/cloudquery/plugin-sdk/v4/state"
 
 	"github.com/clarkmcc/go-hubspot"
 	"github.com/cloudquery/cloudquery/plugins/source/hubspot/client/spec"
@@ -10,20 +11,17 @@ import (
 	"golang.org/x/time/rate"
 )
 
-// Empirically tested that this is the largest page size that HubSpot allows.
+// DefaultPageSize is empirically tested that this is the largest page size that HubSpot allows.
 const DefaultPageSize = 100
 
 type Client struct {
-	Authorizer *hubspot.TokenAuthorizer
-
-	Spec spec.Spec
-
+	Authorizer  *hubspot.TokenAuthorizer
+	Spec        spec.Spec
 	RateLimiter *rate.Limiter
-
-	// Used for multiplexing when fetching `crm_pipelines`.
+	// ObjectType is used for multiplexing when fetching `crm_pipelines`.
 	ObjectType string
-
-	Logger zerolog.Logger
+	Logger     zerolog.Logger
+	Backend    state.Client
 }
 
 func (c *Client) ID() string {
@@ -41,11 +39,12 @@ func (c *Client) withObjectType(objectType string) *Client {
 	return &newClient
 }
 
-func New(_ context.Context, logger zerolog.Logger, s spec.Spec) (schema.ClientMeta, error) {
+func New(_ context.Context, logger zerolog.Logger, s spec.Spec, backend state.Client) (schema.ClientMeta, error) {
 	return &Client{
 		Logger:     logger,
 		Authorizer: hubspot.NewTokenAuthorizer(s.AppToken),
 		Spec:       s,
+		Backend:    backend,
 		RateLimiter: rate.NewLimiter(
 			/* r= */ rate.Limit(s.MaxRequestsPerSecond),
 			/* b= */ 1,

@@ -1,13 +1,4 @@
----
-name: HubSpot
-stage: GA
-title: HubSpot Source Plugin
-description: CloudQuery HubSpot source plugin documentation
----
-
 # HubSpot Source Plugin
-
-:badge
 
 The CloudQuery HubSpot plugin extracts HubSpot information and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)). It is based on the [HubSpot API](https://developers.hubspot.com/docs/api/overview) and the [github.com/clarkmcc/go-hubspot](https://github.com/clarkmcc/go-hubspot) library.
 
@@ -19,13 +10,43 @@ You can use the `max_requests_per_second` configuration option to change this va
 
 ## Authentication
 
-:authentication
+In Order for CloudQuery to sync resources from your HubSpot setup, you will need to authenticate with your HubSpot account. You will need to create a [HubSpot Private App](https://developers.hubspot.com/docs/api/private-apps), and copy the App Token to the spec.
+If not specified `HUBSPOT_APP_TOKEN` environment variable will be used instead.
+
+```bash copy
+export HUBSPOT_APP_TOKEN=<your_app_token> # optional, if not using spec configuration
+```
 
 ## Configuration
 
-The following example sets up the HubSpot plugin, and connects it to a postgresql destination:
+The following example sets up the HubSpot plugin and connects it to a postgresql destination. Incremental syncing is enabled and will be saved to the `cq_state_hubspot` table.
 
-:configuration
+```yaml copy
+kind: source
+spec:
+  name: "hubspot"
+  path: cloudquery/hubspot
+  registry: cloudquery
+  version: "VERSION_SOURCE_HUBSPOT"
+  destinations: ["DESTINATION_NAME"]
+  backend_options:
+    table_name: "cq_state_hubspot"
+    connection: "@@plugins.DESTINATION_NAME.connection"
+  tables: ["*"]
+  spec:
+    # required, unless the HUBSPOT_APP_TOKEN environment variable is set
+    app_token: "${HUBSPOT_APP_TOKEN}"
+    # optional, default is 5.
+    # See https://developers.hubspot.com/docs/api/usage-details#rate-limits
+    # max_requests_per_second: 5
+```
+
+:::callout{type="info"}
+Note that if `backend_options` is omitted, by default no backend will be used.
+This will result in all items being fetched on every sync.
+
+For more information about managing state for incremental tables, see [Managing Incremental Tables](https://cloudquery.io/docs/advanced-topics/managing-incremental-tables).
+:::
 
 ### HubSpot Spec
 
