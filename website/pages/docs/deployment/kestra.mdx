@@ -14,6 +14,11 @@ You can use Kestra to:
 - run your syncs based on events from other systems e.g. a new file in your S3 bucket, new message in a queue, or a new webhook request
 - monitor your syncs from a friendly UI and get notified when they fail.
 
+## Prerequisites
+
+- [Docker installed](https://docs.docker.com/get-docker/)
+- [A CloudQuery API key](/docs/deployment/generate-api-key)
+
 ## Step 1: Install Kestra
 
 Follow the [Getting started guide](https://kestra.io/docs/getting-started) to launch Kestra locally in Docker. It's as easy as running a single Docker command:
@@ -36,6 +41,9 @@ namespace: dev
 tasks:
   - id: hn_to_csv
     type: io.kestra.plugin.cloudquery.Sync
+    env:
+      # Visit https://kestra.io/docs/concepts/secret to learn how to manage secrets in Kestra
+      CLOUDQUERY_API_KEY: "{{ secret('CLOUDQUERY_API_KEY') }}"
     incremental: false
     outputFiles:
       - "cloudquery/**"
