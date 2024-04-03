@@ -139,7 +139,6 @@ spec:
   # Source spec section
   name: aws
   path: cloudquery/aws
-  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_s3_buckets"]
   destinations: ["postgresql"]
@@ -150,7 +149,6 @@ kind: destination
 spec:
   name: "postgresql"
   path: "cloudquery/postgresql"
-  registry: "cloudquery"
   version: "VERSION_DESTINATION_POSTGRESQL"
   write_mode: "overwrite-delete-stale"
   spec:
