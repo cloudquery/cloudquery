@@ -65,26 +65,6 @@ func TestSync(t *testing.T) {
 			summary: []syncSummary{
 				{
 					CliVersion:         "development",
-					DestinationName:    "test",
-					DestinationPath:    "cloudquery/test",
-					DestinationVersion: "v2.2.14",
-					Resources:          12,
-					SourceName:         "test",
-					SourcePath:         "cloudquery/test",
-					SourceVersion:      "v3.1.15",
-				},
-				{
-					CliVersion:         "development",
-					DestinationName:    "test",
-					DestinationPath:    "cloudquery/test",
-					DestinationVersion: "v2.2.14",
-					Resources:          12,
-					SourceName:         "test2",
-					SourcePath:         "cloudquery/test",
-					SourceVersion:      "v3.1.15",
-				},
-				{
-					CliVersion:         "development",
 					DestinationName:    "test-1",
 					DestinationPath:    "cloudquery/test",
 					DestinationVersion: "v2.2.14",
@@ -109,46 +89,6 @@ func TestSync(t *testing.T) {
 			name:   "different_backend_from_destination",
 			config: "different-backend-from-destination.yml",
 			summary: []syncSummary{
-				{
-					CliVersion:         "development",
-					DestinationName:    "test",
-					DestinationPath:    "cloudquery/test",
-					DestinationVersion: "v2.2.14",
-					Resources:          12,
-					SourceName:         "test",
-					SourcePath:         "cloudquery/test",
-					SourceVersion:      "v3.1.15",
-				},
-				{
-					CliVersion:         "development",
-					DestinationName:    "test",
-					DestinationPath:    "cloudquery/test",
-					DestinationVersion: "v2.2.14",
-					Resources:          12,
-					SourceName:         "test2",
-					SourcePath:         "cloudquery/test",
-					SourceVersion:      "v3.1.15",
-				},
-				{
-					CliVersion:         "development",
-					DestinationName:    "test-1",
-					DestinationPath:    "cloudquery/test",
-					DestinationVersion: "v2.2.14",
-					Resources:          12,
-					SourceName:         "test-1",
-					SourcePath:         "cloudquery/test",
-					SourceVersion:      "v3.1.15",
-				},
-				{
-					CliVersion:         "development",
-					DestinationName:    "test-2",
-					DestinationPath:    "cloudquery/test",
-					DestinationVersion: "v2.2.14",
-					Resources:          12,
-					SourceName:         "test-2",
-					SourcePath:         "cloudquery/test",
-					SourceVersion:      "v3.1.15",
-				},
 				{
 					CliVersion:         "development",
 					DestinationName:    "test1",
@@ -194,11 +134,9 @@ func TestSync(t *testing.T) {
 
 			if len(tc.summary) > 0 {
 				summaries := readSummaries(t, summaryPath)
-				// have to ignore SyncID because it's random
-				diff := cmp.Diff(tc.summary, summaries, cmpopts.IgnoreFields(syncSummary{}, "SyncID"))
-				if diff != "" {
-					t.Errorf("unexpected summaries: %v", diff)
-				}
+				// have to ignore SyncID because it's random and plugin versions since we update those frequently using an automated process
+				diff := cmp.Diff(tc.summary, summaries, cmpopts.IgnoreFields(syncSummary{}, "SyncID", "DestinationVersion", "SourceVersion"))
+				require.Empty(t, diff, "unexpected summaries: %v", diff)
 			}
 
 			// check that log was written and contains some lines from the plugin
@@ -215,9 +153,9 @@ func TestSync(t *testing.T) {
 			cmd.SetArgs(append([]string{"sync", testConfig, "--no-migrate"}, testCommandArgs(t)...))
 			err := cmd.Execute()
 			if tc.err != "" {
-				assert.Contains(t, err.Error(), tc.err)
+				require.Contains(t, err.Error(), tc.err)
 			} else {
-				assert.NoError(t, err)
+				require.NoError(t, err)
 			}
 		})
 	}
