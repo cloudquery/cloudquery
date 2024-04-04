@@ -72,7 +72,7 @@ aws logs create-log-group --log-group-name <REPLACE_WITH_LOG_GROUP_NAME>
 
 Downloading plugins requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in ECS. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key).
 
-Once you have a CloudQUery API Key you are going to create a Secret in AWS Secrets Manager to store the API Key. To create a secret, use the following command:
+Once you have a CloudQuery API Key you are going to create a Secret in AWS Secrets Manager to store the API Key. To create a secret, use the following command:
 
 ```bash
 aws secretsmanager create-secret \
