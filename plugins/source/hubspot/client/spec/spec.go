@@ -6,10 +6,6 @@ import (
 	"os"
 )
 
-const (
-	defaultConcurrency = 1000
-)
-
 type Spec struct {
 	// In order for CloudQuery to sync resources from your HubSpot setup, you will need to authenticate with your HubSpot account. You will need to create a [HubSpot Private App](https://developers.hubspot.com/docs/api/private-apps), and copy the App Token here.
 	// If not specified `HUBSPOT_APP_TOKEN` environment variable will be used instead.
@@ -27,13 +23,17 @@ func (s *Spec) SetDefaults() {
 		s.AppToken = os.Getenv("HUBSPOT_APP_TOKEN")
 	}
 
-	// https://developers.hubspot.com/docs/api/usage-details#rate-limits
-	// Hubspot, for Pro and Enterprise, accounts, has rate limits of:
-	// - 15 requests / second / private-app
-	// - 500,000 requests / day / org (5.7 requests / second / org).
-	// I chose the default of 5, which should be safe for most accounts and use-cases (but may be too much for "Starter"
-	// subscriptions in case cloudquery is run 24/7).
-	var defaultRateLimitPerSecond = 5
+	const (
+		// https://developers.hubspot.com/docs/api/usage-details#rate-limits
+		// Hubspot, for Pro and Enterprise, accounts, has rate limits of:
+		// - 15 requests / second / private-app
+		// - 500,000 requests / day / org (5.7 requests / second / org).
+		// I chose the default of 5, which should be safe for most accounts and use-cases (but may be too much for "Starter"
+		// subscriptions in case cloudquery is run 24/7).
+		defaultRateLimitPerSecond = 5
+
+		defaultConcurrency = 1000
+	)
 
 	if s.MaxRequestsPerSecond <= 0 {
 		s.MaxRequestsPerSecond = defaultRateLimitPerSecond
