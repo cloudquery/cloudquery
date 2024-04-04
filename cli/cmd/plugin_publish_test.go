@@ -91,7 +91,9 @@ func TestPluginPublish(t *testing.T) {
 
 			cmd := NewCmdRoot()
 			t.Setenv(envAPIURL, ts.URL)
-			cmd.SetArgs(tc.args)
+			allArgs := tc.args
+			allArgs = append(allArgs, testCommandArgs(t)...)
+			cmd.SetArgs(allArgs)
 			err := cmd.Execute()
 			if err != nil {
 				t.Fatal(err)
@@ -168,7 +170,7 @@ func TestPluginPublishFinalize(t *testing.T) {
 	t.Setenv(envAPIURL, ts.URL)
 
 	cmd := NewCmdRoot()
-	args := []string{"plugin", "publish", "--dist-dir", "testdata/dist-v1-with-team-package-json", "--finalize"}
+	args := append([]string{"plugin", "publish", "--dist-dir", "testdata/dist-v1-with-team-package-json", "--finalize"}, testCommandArgs(t)...)
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -192,7 +194,7 @@ func TestPluginPublish_Unauthorized(t *testing.T) {
 	t.Setenv(envAPIURL, ts.URL)
 
 	cmd := NewCmdRoot()
-	args := []string{"plugin", "publish", "--dist-dir", "testdata/dist-v1-with-team-package-json", "--finalize"}
+	args := append([]string{"plugin", "publish", "--dist-dir", "testdata/dist-v1-with-team-package-json", "--finalize"}, testCommandArgs(t)...)
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err == nil {

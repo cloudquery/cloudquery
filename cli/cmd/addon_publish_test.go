@@ -43,7 +43,7 @@ func TestAddonPublish(t *testing.T) {
 
 	cmd := NewCmdRoot()
 	t.Setenv(envAPIURL, ts.URL)
-	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3"}
+	args := append([]string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3"}, testCommandArgs(t)...)
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -85,7 +85,7 @@ func TestAddonPublishEmbedded(t *testing.T) {
 
 	cmd := NewCmdRoot()
 	t.Setenv(envAPIURL, ts.URL)
-	args := []string{"addon", "publish", "testdata/addon-v1/manifest-embedded-message.json", "v1.2.3"}
+	args := append([]string{"addon", "publish", "testdata/addon-v1/manifest-embedded-message.json", "v1.2.3"}, testCommandArgs(t)...)
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -139,7 +139,7 @@ func TestAddonPublishFinalize(t *testing.T) {
 	t.Setenv(envAPIURL, ts.URL)
 
 	cmd := NewCmdRoot()
-	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3", "--finalize"}
+	args := append([]string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3", "--finalize"}, testCommandArgs(t)...)
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -163,7 +163,7 @@ func TestAddonPublish_Unauthorized(t *testing.T) {
 	t.Setenv(envAPIURL, ts.URL)
 
 	cmd := NewCmdRoot()
-	args := []string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3", "--finalize"}
+	args := append([]string{"addon", "publish", "testdata/addon-v1/manifest.json", "v1.2.3", "--finalize"}, testCommandArgs(t)...)
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err == nil {
