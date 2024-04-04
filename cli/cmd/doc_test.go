@@ -18,6 +18,7 @@ var docFiles = []string{
 	"cloudquery_sync.md",
 	"cloudquery_migrate.md",
 	"cloudquery_tables.md",
+	"cloudquery_test-connection.md",
 	"cloudquery_plugin.md",
 	"cloudquery_plugin_install.md",
 	"cloudquery_plugin_publish.md",
