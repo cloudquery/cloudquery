@@ -34,11 +34,8 @@ spec:
     connection: "@@plugins.DESTINATION_NAME.connection"
   tables: ["*"]
   spec:
-    # required, unless the HUBSPOT_APP_TOKEN environment variable is set
-    app_token: "${HUBSPOT_APP_TOKEN}"
-    # optional, default is 5.
-    # See https://developers.hubspot.com/docs/api/usage-details#rate-limits
-    # max_requests_per_second: 5
+    app_token: "${HUBSPOT_APP_TOKEN}" # required, unless the HUBSPOT_APP_TOKEN environment variable is set
+    # max_requests_per_second: 5 # optional, see https://developers.hubspot.com/docs/api/usage-details#rate-limits
 ```
 
 :::callout{type="info"}
