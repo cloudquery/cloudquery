@@ -13,7 +13,7 @@ func fetchQuotes(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	hubspotClient := quotes.NewAPIClient(quotes.NewConfiguration())
 	cqClient := meta.(*client.Client)
 
-	const key = "quotes"
+	const key = "hubspot_crm_quotes"
 
 	after, err := getCursor(ctx, cqClient, key)
 	if err != nil {

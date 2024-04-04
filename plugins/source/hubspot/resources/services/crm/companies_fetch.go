@@ -12,7 +12,7 @@ func fetchCompanies(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	hubspotClient := companies.NewAPIClient(companies.NewConfiguration())
 	cqClient := meta.(*client.Client)
 
-	const key = "companies"
+	const key = "hubspot_crm_companies"
 
 	after, err := getCursor(ctx, cqClient, key)
 	if err != nil {

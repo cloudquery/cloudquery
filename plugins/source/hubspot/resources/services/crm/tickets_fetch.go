@@ -13,7 +13,7 @@ func fetchTickets(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 	hubspotClient := tickets.NewAPIClient(tickets.NewConfiguration())
 	cqClient := meta.(*client.Client)
 
-	const key = "tickets"
+	const key = "hubspot_crm_tickets"
 
 	after, err := getCursor(ctx, cqClient, key)
 	if err != nil {

@@ -13,7 +13,7 @@ func fetchOwners(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	hubspotClient := owners.NewAPIClient(owners.NewConfiguration())
 	cqClient := meta.(*client.Client)
 
-	const key = "owners"
+	const key = "hubspot_crm_owners"
 
 	after, err := getCursor(ctx, cqClient, key)
 	if err != nil {

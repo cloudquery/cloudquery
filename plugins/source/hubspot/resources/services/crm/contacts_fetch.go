@@ -15,7 +15,7 @@ func fetchContacts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	hubspotClient := contacts.NewAPIClient(config)
 	cqClient := meta.(*client.Client)
 
-	const key = "contacts"
+	const key = "hubspot_crm_contacts"
 
 	after, err := getCursor(ctx, cqClient, key)
 	if err != nil {

@@ -13,7 +13,7 @@ func fetchProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	hubspotClient := products.NewAPIClient(products.NewConfiguration())
 	cqClient := meta.(*client.Client)
 
-	const key = "products"
+	const key = "hubspot_crm_products"
 
 	after, err := getCursor(ctx, cqClient, key)
 	if err != nil {

@@ -32,12 +32,11 @@ var customExceptions = map[string]string{
 }
 
 type Client struct {
-	logger      zerolog.Logger
-	config      spec.Spec
-	backendConn *grpc.ClientConn
-	scheduler   *scheduler.Scheduler
-	options     plugin.NewClientOptions
-	allTables   schema.Tables
+	logger    zerolog.Logger
+	config    spec.Spec
+	scheduler *scheduler.Scheduler
+	options   plugin.NewClientOptions
+	allTables schema.Tables
 	plugin.UnimplementedDestination
 }
 
@@ -63,9 +62,8 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	if options.BackendOptions == nil {
 		c.logger.Info().Msg("No backend options provided, using no state backend")
 		stateClient = &state.NoOpClient{}
-		c.backendConn = nil
 	} else {
-		c.backendConn, err = grpc.DialContext(ctx, options.BackendOptions.Connection,
+		backendConn, err := grpc.DialContext(ctx, options.BackendOptions.Connection,
 			grpc.WithTransportCredentials(insecure.NewCredentials()),
 			grpc.WithDefaultCallOptions(
 				grpc.MaxCallRecvMsgSize(maxMsgSize),
@@ -75,7 +73,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		if err != nil {
 			return fmt.Errorf("failed to dial grpc source plugin at %s: %w", options.BackendOptions.Connection, err)
 		}
-		stateClient, err = state.NewClient(ctx, c.backendConn, options.BackendOptions.TableName)
+		stateClient, err = state.NewClient(ctx, backendConn, options.BackendOptions.TableName)
 		if err != nil {
 			return fmt.Errorf("failed to create state client: %w", err)
 		}
@@ -133,7 +131,7 @@ func getTables() schema.Tables {
 	if err := transformers.TransformTables(tables); err != nil {
 		panic(err)
 	}
-	if err := transformers.Apply(tables, titleTransformer); err != nil {
+	if err := transformers.Apply(tables, titleTransformer()); err != nil {
 		panic(err)
 	}
 	for _, table := range tables {
@@ -142,15 +140,16 @@ func getTables() schema.Tables {
 	return tables
 }
 
-func titleTransformer(table *schema.Table) error {
-	if table.Title != "" {
-		return nil
-	}
+func titleTransformer() func(table *schema.Table) error {
 	exceptions := maps.Clone(docs.DefaultTitleExceptions)
 	for k, v := range customExceptions {
 		exceptions[k] = v
 	}
 	csr := caser.New(caser.WithCustomExceptions(exceptions))
-	table.Title = csr.ToTitle(table.Name)
-	return nil
+	return func(table *schema.Table) error {
+		if table.Title == "" {
+			table.Title = csr.ToTitle(table.Name)
+		}
+		return nil
+	}
 }
