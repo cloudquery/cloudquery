@@ -5,7 +5,7 @@ go 1.21.5
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/cloudquery/codegen v0.3.13
-	github.com/cloudquery/plugin-sdk/v4 v4.36.4
+	github.com/cloudquery/plugin-sdk/v4 v4.36.5
 	github.com/gorilla/mux v1.8.0
 	github.com/invopop/jsonschema v0.12.0
 	github.com/okta/okta-sdk-golang/v4 v4.0.0
