@@ -23,7 +23,7 @@ func TestValidateConfig(t *testing.T) {
 		{
 			name:   "bad AWS and Postgres auth should fail validation",
 			config: "validate-config-error.yml",
-			errors: []string{"failed to validate source config aws", "failed to validate destination config postgresql"},
+			errors: []string{"failed to validate source config cloudflare", "failed to validate destination config postgresql"},
 		},
 	}
 	_, filename, _, _ := runtime.Caller(0)

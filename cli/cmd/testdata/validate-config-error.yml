@@ -1,12 +1,12 @@
 kind: source
 spec:
-  name: aws
-  path: cloudquery/aws
+  name: cloudflare
+  path: cloudquery/cloudflare
   registry: cloudquery
-  version: "v25.5.0"
+  version: "v6.1.2"
   destinations: ["postgresql"]
   tables: ["aws_ec2_instances"]
-  spec: 
+  spec:
     invalid_key: "invalid_value"
 ---
 kind: destination
