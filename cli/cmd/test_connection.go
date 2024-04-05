@@ -88,18 +88,11 @@ func newCmdTestConnection() *cobra.Command {
 		Hidden:  true,
 	}
 
-	cmd.Flags().Bool("no-init", false, "Disable initialization of plugins. Useful for validating spec(s) without connecting to sources and destinations")
-
 	return cmd
 }
 
 func testConnection(cmd *cobra.Command, args []string) error {
 	cqDir, err := cmd.Flags().GetString("cq-dir")
-	if err != nil {
-		return err
-	}
-
-	noInit, err := cmd.Flags().GetBool("no-init")
 	if err != nil {
 		return err
 	}
@@ -184,13 +177,9 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	for i, client := range sourceClients {
 		pluginClient := plugin.NewPluginClient(client.Conn)
 		log.Info().Str("source", sources[i].VersionString()).Msg("Initializing source")
-		err := initPlugin(ctx, pluginClient, sources[i].Spec, false, noInit, invocationUUID.String())
+		err := initPlugin(ctx, pluginClient, sources[i].Spec, false, invocationUUID.String())
 		if err != nil {
-			if noInit {
-				initErrors = append(initErrors, fmt.Errorf("failed to validate source config %v: %w", sources[i].VersionString(), err))
-			} else {
-				initErrors = append(initErrors, fmt.Errorf("failed to init source %v: %w", sources[i].VersionString(), err))
-			}
+			initErrors = append(initErrors, fmt.Errorf("failed to init source %v: %w", sources[i].VersionString(), err))
 		} else {
 			log.Info().Str("source", sources[i].VersionString()).Msg("Initialized source")
 		}
@@ -198,13 +187,9 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	for i, client := range destinationClients {
 		pluginClient := plugin.NewPluginClient(client.Conn)
 		log.Info().Str("destination", destinations[i].VersionString()).Msg("Initializing destination")
-		err := initPlugin(ctx, pluginClient, destinations[i].Spec, false, noInit, invocationUUID.String())
+		err := initPlugin(ctx, pluginClient, destinations[i].Spec, false, invocationUUID.String())
 		if err != nil {
-			if noInit {
-				initErrors = append(initErrors, fmt.Errorf("failed to validate destination config %v: %w", sources[i].VersionString(), err))
-			} else {
-				initErrors = append(initErrors, fmt.Errorf("failed to init destination %v: %w", destinations[i].VersionString(), err))
-			}
+			initErrors = append(initErrors, fmt.Errorf("failed to init destination %v: %w", destinations[i].VersionString(), err))
 		} else {
 			log.Info().Str("destination", destinations[i].VersionString()).Msg("Initialized destination")
 		}

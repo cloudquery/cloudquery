@@ -37,4 +37,5 @@ Find more information at:
 * [cloudquery switch](/docs/reference/cli/cloudquery_switch)	 - Switches between teams.
 * [cloudquery sync](/docs/reference/cli/cloudquery_sync)	 - Sync resources from configured source plugins to destinations
 * [cloudquery tables](/docs/reference/cli/cloudquery_tables)	 - Generate documentation for all supported tables of source plugins specified in the spec(s)
+* [cloudquery validate-config](/docs/reference/cli/cloudquery_validate-config)	 - Validate configs
 
