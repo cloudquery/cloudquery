@@ -3,11 +3,11 @@ title: "validate-config"
 ---
 ## cloudquery validate-config
 
-Validate configs
+Validate config
 
 ### Synopsis
 
-Validate configs without requiring any credentials or connections. This validation is stricter than the validation done during `sync`, but if it passes this validation it will pass the sync validation.
+Validate configuration without requiring any credentials or connections. This validation is stricter than the validation done during `sync`, but if it passes this validation it will pass the sync validation.
 
 ```
 cloudquery validate-config [files or directories] [flags]
