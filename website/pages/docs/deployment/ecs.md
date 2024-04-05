@@ -37,6 +37,7 @@ spec:
   write_mode: "append"
   spec:
     bucket: <REPLACE_WITH_S3_DESTINATION_BUCKET>
+    region: <REPLACE_WITH_AWS_REGION>
     path: "{{TABLE}}/{{UUID}}.parquet"
     format: "parquet"
     athena: true
@@ -67,7 +68,21 @@ Prior to running replace `<REPLACE_WITH_LOG_GROUP_NAME>` with the name you want 
 aws logs create-log-group --log-group-name <REPLACE_WITH_LOG_GROUP_NAME>
 ```
 
-## Step 4: Set Log Group Retention
+## Step 4: Create Secret to CloudQuery API Key
+
+Downloading plugins requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in ECS. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key).
+
+Once you have a CloudQuery API Key you are going to create a Secret in AWS Secrets Manager to store the API Key. To create a secret, use the following command:
+
+```bash
+aws secretsmanager create-secret \
+    --name CQ-APIKey \
+    --description "API Key to authenticate with CloudQuery hub" \
+    --secret-string "<REPLACE_WITH_CQ_API_KEY>"
+
+```
+
+## Step 5: Set Log Group Retention
 After creating a log group, you need to set the retention policy for your log group. To set the retention policy, use the following command:
 
 Replace `<REPLACE_WITH_LOG_GROUP_NAME>` with the name of the log group that you created in Step 3.
@@ -77,7 +92,7 @@ aws logs put-retention-policy --log-group-name <REPLACE_WITH_LOG_GROUP_NAME> --r
 ```
 This command will set the retention period for your log group to 14 days. You can modify the retention period based on your requirements.
 
-## Step 5: Create an IAM Role
+## Step 6: Create an IAM Role
 To allow the ECS task to access the required AWS services, you need to create an IAM role.
 
 Create a new file named `task-role-trust-policy.json` with the following content:
@@ -111,6 +126,15 @@ Create a new file named `data-access.json` with the following content:
 {
     "Version": "2012-10-17",
     "Statement": [
+        {
+            "Action": [
+                "secretsmanager:GetSecretValue"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "<REPLACE_WITH_ARN_OF_SECRET>"
+            ]
+        },
         {
             "Action": [
                 "s3:PutObject"
@@ -154,7 +178,7 @@ Create a new file named `data-access.json` with the following content:
 }
 ```
 
-Replace the `REPLACE_WITH_S3_DESTINATION_BUCKET` placeholder with the name of the S3 bucket you want to use to store the data.
+Replace the `REPLACE_WITH_S3_DESTINATION_BUCKET` placeholder with the name of the S3 bucket you want to use to store the data. 
 
 
 This policy will allow the ECS task to write data to the S3 bucket you specified while also ensuring that CloudQuery never has access to any of your data.
@@ -171,7 +195,7 @@ aws iam attach-role-policy --role-name <REPLACE_WITH_TASK_ROLE_NAME>  --policy-a
 
 At this point you have a single IAM role that will be used by the Fargate task to access the required AWS services.
 
-## Step 6: Register a Task Definition
+## Step 7: Register a Task Definition
 A task definition is a blueprint that defines one or more containers that run together on the same host machine. In this step, we will create a task definition for the CloudQuery container.
 
 In the task that you are going to create you will override the default entrypoint and create a custom command that will run the `cloudquery sync` command. This will enable you to store the configuration file as an environment variable, rather than having to create a custom image with the configuration file baked in.
@@ -193,6 +217,10 @@ Create a new file named `task-definition.json` with the following content:
       "environment": [
         { "name": "CQ_CONFIG", "value": "<REPLACE_WITH_CQ_BASE64_ENCODED_CONFIG>" }
       ],
+      "secrets": [{
+        "name": "CLOUDQUERY_API_KEY",
+        "valueFrom": "<REPLACE_WITH_FULL_ARN_OF_SECRET>"
+      }]
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
@@ -231,7 +259,7 @@ aws ecs register-task-definition --cli-input-json file://task-definition.json
 ```
 This command registers the task definition with AWS ECS and returns the task definition's ARN, which you will use in the next step when you run the task.
 
-## Step 7: Run the CloudQuery Task on ECS
+## Step 8: Run the CloudQuery Task on ECS
 Now that the task definition is registered, it's time to run the CloudQuery task on ECS using the `aws ecs run-task` command.
 
 ```bash
@@ -239,7 +267,7 @@ aws ecs run-task \
   --cluster <REPLACE_WITH_ECS_CLUSTER_NAME> \
   --task-definition <REPLACE_WITH_TASK_ARN> \
   --launch-type FARGATE \
-  --network-configuration 'awsvpcConfiguration={subnets=[<REPLACE_WITH_SUBNET_1>,<REPLACE_WITH_SUBNET_2>],securityGroups=[<REPLACE_WITH_SG_1>,<REPLACE_WITH_SG_2>]}'
+  --network-configuration 'awsvpcConfiguration={subnets=[<REPLACE_WITH_SUBNET_1>,<REPLACE_WITH_SUBNET_2>],securityGroups=[<REPLACE_WITH_SG_1>,<REPLACE_WITH_SG_2>],assignPublicIp=ENABLED}'
 ```
 Replace the following placeholders: 
   - `<REPLACE_WITH_ECS_CLUSTER_NAME>` with the name of the ECS cluster you created in Step 2
@@ -247,8 +275,9 @@ Replace the following placeholders:
   - `<REPLACE_WITH_SUBNET_1>` and `<REPLACE_WITH_SUBNET_2>` with the IDs of the subnets in which you want to run the task. You can specify any number of subnets that you want
   - `<REPLACE_WITH_SG_1>` and `<REPLACE_WITH_SG_2>` with the IDs of the security groups for the task. You can specify any number of security groups that you want
 
+Note: if you are deploying this in a private subnet you will need to set the `assignPublicIp` to `DISABLED`
 
-## Step 8: Schedule the Task to Run on a Regular Basis
+## Step 9: Schedule the Task to Run on a Regular Basis
 
 Now that you have a task that runs CloudQuery, you can schedule it to run on a regular basis using AWS EventBridge scheduler. An EventBridge schedule is able to start a task on a regular basis, but to do so it needs a role that it can assume which has the `ecs:RunTask` permission. In this step, you will create a role that has the required permissions and then you will create a schedule that will run the task on a regular basis.
 
@@ -343,6 +372,7 @@ Now that you have an IAM role that the scheduler service create the following JS
         "TaskCount": 1,
         "NetworkConfiguration": {
           "AwsvpcConfiguration": {
+            "AssignPublicIp": "ENABLED",
             "Subnets": [
               "<REPLACE_WITH_SUBNET_1>",
               "<REPLACE_WITH_SUBNET_2>"
