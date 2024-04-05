@@ -45,7 +45,7 @@ For the CloudQuery docker container to use this configuration file you will need
 docker run --pull always \
   -v <ABSOLUTE_PATH_TO_CONFIG_FILE>:/config.yml \
   # set any env variable with -e <ENV_VAR_NAME>=<ENV_VAR_VALUE>
-  -e CLOUDQUERY_API_KEY==<REPLACE_WITH_CQ_API_KEY>
+  -e CLOUDQUERY_API_KEY=<REPLACE_WITH_CQ_API_KEY>
   ghcr.io/cloudquery/cloudquery:latest \
   sync /config.yml
 ```
