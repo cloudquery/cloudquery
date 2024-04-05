@@ -24,5 +24,5 @@ func getCursor(ctx context.Context, cqClient *client.Client, key string) (string
 }
 
 func generateKey(cqClient *client.Client, tableName string) string {
-	return fmt.Sprintf("%s-%s", cqClient.ID(), tableName)
+	return cqClient.ID() + "-" + tableName
 }
