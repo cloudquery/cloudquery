@@ -15,7 +15,7 @@ import (
 
 const (
 	validateConfigShort   = "Validate config"
-	validateConfigLong    = "Validate configuration without requiring any credentials or connections. This validation is stricter than the validation done during `sync`, but if it passes this validation it will pass the sync validation."
+	validateConfigLong    = "Validate configuration without requiring any credentials or connections. This will not validate the tables specified in the tables list. This validation is stricter than the validation done during `sync`, but if it passes this validation it will pass the sync validation."
 	validateConfigExample = `# Validate configs
 cloudquery validate-config ./directory
 # Validate configs from directories and files

@@ -7,7 +7,7 @@ Validate config
 
 ### Synopsis
 
-Validate configuration without requiring any credentials or connections. This validation is stricter than the validation done during `sync`, but if it passes this validation it will pass the sync validation.
+Validate configuration without requiring any credentials or connections. This will not validate the tables specified in the tables list. This validation is stricter than the validation done during `sync`, but if it passes this validation it will pass the sync validation.
 
 ```
 cloudquery validate-config [files or directories] [flags]
