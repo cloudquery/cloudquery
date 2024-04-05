@@ -1,35 +1,32 @@
 ---
-title: "sync"
+title: "test-connection"
 ---
-## cloudquery sync
+## cloudquery test-connection
 
-Sync resources from configured source plugins to destinations
+Test plugin connections to sources and destinations
 
 ### Synopsis
 
-Sync resources from configured source plugins to destinations
+Test plugin connections to sources and destinations
 
 ```
-cloudquery sync [files or directories] [flags]
+cloudquery test-connection [files or directories] [flags]
 ```
 
 ### Examples
 
 ```
-# Sync resources from configuration in a directory
-cloudquery sync ./directory
-# Sync resources from directories and files
-cloudquery sync ./directory ./aws.yml ./pg.yml
+# Test plugin connections to sources and destinations
+cloudquery test-connection ./directory
+# Test plugin connections from directories and files
+cloudquery test-connection ./directory ./aws.yml ./pg.yml
 
 ```
 
 ### Options
 
 ```
-  -h, --help                      help for sync
-      --license string            set offline license file
-      --no-migrate                Disable auto-migration before sync. By default, sync runs a migration before syncing resources.
-      --summary-location string   Sync summary file location. This feature is in Preview. Please provide feedback to help us improve it.
+  -h, --help   help for test-connection
 ```
 
 ### Options inherited from parent commands

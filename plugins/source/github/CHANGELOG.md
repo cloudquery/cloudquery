@@ -1,5 +1,17 @@
 # Changelog
 
+## [9.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v9.0.0...plugins-source-github-v9.1.0) (2024-04-02)
+
+
+### Features
+
+* Add support for conditional requests via local cache ([#17368](https://github.com/cloudquery/cloudquery/issues/17368)) ([6d866d1](https://github.com/cloudquery/cloudquery/commit/6d866d18f3e8072eb83a633d0ae09aa852798f1a))
+
+
+### Bug Fixes
+
+* GitHub pagination handling ([#17462](https://github.com/cloudquery/cloudquery/issues/17462)) ([822684f](https://github.com/cloudquery/cloudquery/commit/822684f01aec6e72e579874243e8df2012661552))
+
 ## [9.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v8.2.1...plugins-source-github-v9.0.0) (2024-04-02)
 
 
