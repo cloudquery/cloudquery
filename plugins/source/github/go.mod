@@ -14,6 +14,7 @@ require (
 	github.com/google/go-github/v59 v59.0.0
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.32.0
+	github.com/tj/go-naturaldate v1.3.0
 	golang.org/x/sync v0.6.0
 )
 
