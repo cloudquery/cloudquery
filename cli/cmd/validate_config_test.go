@@ -28,16 +28,15 @@ func TestValidateConfig(t *testing.T) {
 	}
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
-	cqDir := t.TempDir()
-	defer os.RemoveAll(cqDir)
 
 	for _, tc := range configs {
 		t.Run(tc.name, func(t *testing.T) {
-			defer CloseLogFile()
-			testConfig := path.Join(currentDir, "testdata", tc.config)
-			logFileName := path.Join(cqDir, "cloudquery.log")
 			cmd := NewCmdRoot()
-			cmd.SetArgs([]string{"validate-config", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName})
+			testConfig := path.Join(currentDir, "testdata", tc.config)
+			baseArgs := testCommandArgs(t)
+
+			args := append([]string{"validate-config", testConfig}, baseArgs...)
+			cmd.SetArgs(args)
 			err := cmd.Execute()
 			if tc.errors != nil {
 				for _, e := range tc.errors {
@@ -48,7 +47,7 @@ func TestValidateConfig(t *testing.T) {
 			}
 
 			// check that log was written and contains some lines from the plugin
-			b, logFileError := os.ReadFile(path.Join(cqDir, "cloudquery.log"))
+			b, logFileError := os.ReadFile(baseArgs[3])
 			logContent := string(b)
 			require.NoError(t, logFileError, "failed to read cloudquery.log")
 			require.NotEmpty(t, logContent, "cloudquery.log empty; expected some logs")
