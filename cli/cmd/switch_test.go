@@ -18,7 +18,8 @@ import (
 )
 
 func TestSwitch(t *testing.T) {
-	configDir := t.TempDir()
+	baseArgs := testCommandArgs(t)
+	configDir := baseArgs[1]
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case r.URL.Path == "/teams":
@@ -39,7 +40,6 @@ func TestSwitch(t *testing.T) {
 	err := config.SetConfigHome(configDir)
 	require.NoError(t, err)
 
-	baseArgs := testCommandArgs(t)
 	// calling switch before a team is set should not result in an error
 	cmd := NewCmdRoot()
 	cmd.SetArgs(append([]string{"switch"}, baseArgs...))
