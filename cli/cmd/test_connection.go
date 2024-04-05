@@ -86,7 +86,6 @@ func newCmdTestConnection() *cobra.Command {
 		Args:    cobra.MinimumNArgs(1),
 		RunE:    testConnection,
 	}
-
 	return cmd
 }
 
