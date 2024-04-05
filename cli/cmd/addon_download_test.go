@@ -62,7 +62,7 @@ func TestAddonDownload(t *testing.T) {
 
 	cmd := NewCmdRoot()
 	t.Setenv(envAPIURL, ts.URL)
-	args := []string{"addon", "download", "cloudquery/visualization/test@v1.2.3", "-t", tempDir}
+	args := append([]string{"addon", "download", "cloudquery/visualization/test@v1.2.3", "-t", tempDir}, testCommandArgs(t)...)
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {
@@ -120,7 +120,7 @@ func TestAddonDownloadStdout(t *testing.T) {
 
 	cmd := NewCmdRoot()
 	t.Setenv(envAPIURL, ts.URL)
-	args := []string{"addon", "download", "cloudquery/visualization/test@v1.2.3", "-t", "-"}
+	args := append([]string{"addon", "download", "cloudquery/visualization/test@v1.2.3", "-t", "-"}, testCommandArgs(t)...)
 	cmd.SetArgs(args)
 	err := cmd.Execute()
 	if err != nil {

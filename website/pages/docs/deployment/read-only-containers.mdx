@@ -15,6 +15,8 @@ To create a container that works with a read-only file system, you will need the
 - a CloudQuery config file that contains the specs needed for the sync
 - a start script used as an entry point for the container that will start the plugins and run the sync
 
+> Downloading plugins requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in a CI environment or inside of a docker build process. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key)
+
 In the example below, we will use the [XKCD](https://github.com/hermanschaaf/cq-source-xkcd) source plugin and [PostgreSQL](https://hub.cloudquery.io/plugins/destination/cloudquery/postgresql/v6.1.3/docs) destination plugin.
 
 ### Create a config file for the installation
@@ -27,13 +29,13 @@ spec:
   name: xkcd
   path: hermanschaaf/xkcd
   version: v2.0.0
+  registry: github
   destinations: ["postgresql"]
   tables: ["*"]
 ---
 kind: destination
 spec:
   name: "postgresql"
-  registry: "cloudquery"
   path: "cloudquery/postgresql"
   version: "VERSION_DESTINATION_POSTGRESQL"
 ```
@@ -64,7 +66,7 @@ spec:
 
 This shell script will start the plugins and the sync with the provided parameters when we run the container. To make it easier to maintain, we will use the `find` command to get the path to the actual plugin binary. This way, we don't have to worry about the version of the plugin.
 
-```shell
+```shell copy filename="start.sh"
 #!/bin/sh
 # get path to the xkcd plugin:
 xkcd_plugin_path=$(find .cq -regex ".*/xkcd/.*/plugin")
@@ -82,12 +84,19 @@ sh -c "${postgresql_plugin_path} serve --address localhost:7779" & \
 We will use the `ghcr.io/cloudquery/cloudquery:latest` container as a base and add all the files in it. Then we will override the entry point with our start script:
 
 ```docker
-FROM ghcr.io/cloudquery/cloudquery:latest
+FROM ghcr.io/cloudquery/cloudquery:latest as build
 WORKDIR /app
 # this is the install.yaml file we created above
 COPY ./install.yaml /app/install.yaml
+ARG CLOUDQUERY_API_KEY
 # install the plugins
 RUN /app/cloudquery plugin install install.yaml
+
+FROM ghcr.io/cloudquery/cloudquery:latest
+WORKDIR /app
+# Copy the .cq directory which contains the plugins
+COPY --from=build /app/.cq /app/.cq
+
 # add the sync config file
 COPY ./sync.yaml /app/sync.yaml
 # add the start script
@@ -102,7 +111,7 @@ ENTRYPOINT [ "/app/start.sh"]
 First, build the container as you would normally do:
 
 ```bash
-docker build ./ -t my-cq-container:latest
+docker build --build-arg CLOUDQUERY_API_KEY=<your-api-key> ./ -t my-cq-container:latest
 ```
 
 Run the container with `--read-only` option and a command to pass to our start script. You will also need to add the `--no-log-file` option to skip logging to a file. Here is an example:
