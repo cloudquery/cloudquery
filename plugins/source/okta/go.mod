@@ -135,3 +135,5 @@ require (
 
 // github.com/cloudquery/jsonschema @ cqmain
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66
+
+replace github.com/okta/okta-sdk-golang/v4 => github.com/cloudquery/okta-sdk-golang/v4 v4.0.1-0.20240405141335-5497c68a9a1e
