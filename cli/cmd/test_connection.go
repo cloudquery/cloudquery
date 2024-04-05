@@ -87,7 +87,6 @@ func newCmdTestConnection() *cobra.Command {
 		RunE:    testConnection,
 		Hidden:  true,
 	}
-
 	return cmd
 }
 
