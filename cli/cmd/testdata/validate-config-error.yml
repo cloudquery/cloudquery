@@ -5,7 +5,7 @@ spec:
   registry: cloudquery
   version: "v6.1.2"
   destinations: ["postgresql"]
-  tables: ["aws_ec2_instances"]
+  tables: ["*"]
   spec:
     invalid_key: "invalid_value"
 ---
