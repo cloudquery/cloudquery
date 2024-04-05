@@ -5,7 +5,7 @@ go 1.21.5
 require (
 	github.com/apache/arrow/go/v15 v15.0.2
 	github.com/cloudquery/codegen v0.3.13
-	github.com/cloudquery/plugin-sdk/v4 v4.36.5
+	github.com/cloudquery/plugin-sdk/v4 v4.37.0
 	github.com/golang/mock v1.6.0
 	github.com/google/gnostic-models v0.6.9-0.20230804172637-c7be7c783f49
 	github.com/rs/zerolog v1.32.0
