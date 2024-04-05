@@ -1,0 +1,20 @@
+kind: source
+spec:
+  name: aws
+  path: cloudquery/aws
+  registry: cloudquery
+  version: "v25.5.0"
+  destinations: ["postgresql"]
+  tables: ["aws_ec2_instances"]
+  spec: 
+    invalid_key: "invalid_value"
+---
+kind: destination
+spec:
+  name: "postgresql"
+  path: "cloudquery/postgresql"
+  registry: cloudquery
+  version: "v7.3.5"
+  spec:
+    connection_string: "postgresql://postgres:not-a-real-password@localhost:5432/postgres?sslmode=disable"
+    invalid_key: "invalid_value"

@@ -134,7 +134,7 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 		log.Info().Str("destination", destinations[i].VersionString()).Msg("Initializing destination")
 		err = validatePluginSpec(ctx, pluginClient, destinations[i].Spec)
 		if err != nil {
-			initErrors = append(initErrors, fmt.Errorf("failed to validate destination config %v: %w", sources[i].VersionString(), err))
+			initErrors = append(initErrors, fmt.Errorf("failed to validate destination config %v: %w", destinations[i].VersionString(), err))
 		} else {
 			log.Info().Str("destination", destinations[i].VersionString()).Msg("validated successfully")
 		}
