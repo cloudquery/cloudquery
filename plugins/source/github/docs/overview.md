@@ -45,3 +45,16 @@ This is the (nested) spec used by GitHub Source Plugin
 - `local_cache_path` (`string`, optional, default: empty):
   Path to a local directory that will hold the cache. If set, the plugin will cache the GitHub API responses in this directory. Defaults to an empty string (no cache).
   By using a cache, the plugin can use [conditional requests when appropriate](https://docs.github.com/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api?#use-conditional-requests-if-appropriate), and help avoid hitting GitHub API rate limits.
+
+- `table_options` ([Table Options](#github-table-options-spec) spec) (optional)
+
+  Options to apply to specific tables. See [Table Options](#Table Options) for more information.
+
+### GitHub Table Options Spec
+
+- `github_workflow_runs`
+
+  - `created_since` (`string` in natural date format) (optional)
+
+    Sync only workflow runs created after this date (inclusive). Defaults to all workflows.
+    Examples of valid formats are: `7 days ago`, `last month` (see more [here](https://github.com/tj/go-naturaldate?tab=readme-ov-file#go-natural-date))
