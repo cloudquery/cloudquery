@@ -36,24 +36,26 @@ func fetchWorkflowRuns(ctx context.Context, meta schema.ClientMeta, _ *schema.Re
 	if c.Spec.TableOptions.WorkflowRuns.ParsedTimeSince != "" {
 		actionOpts.Created = ">=" + c.Spec.TableOptions.WorkflowRuns.ParsedTimeSince
 	}
-	var lastCreatedAt string
+	var earliestCreatedAt string
 	for {
 		workflowRuns, resp, err := c.Github.Actions.ListRepositoryWorkflowRuns(ctx, *repo.Owner.Login, *repo.Name, actionOpts)
 		if err != nil {
 			return err
 		}
 		// When setting created_at, the API will return a maximum of 1000 records, so if we reached the limit we need to get the other records
-		// Workflows runs are sorted by created_at in descending order, so we need to scope down the query
 		if len(workflowRuns.WorkflowRuns) == 0 && actionOpts.Page > 0 && actionOpts.Created != "" {
 			actionOpts.Page = 0
-			actionOpts.Created = c.Spec.TableOptions.WorkflowRuns.ParsedTimeSince + ".." + lastCreatedAt
+			// Workflows runs are sorted by created_at in descending order, so we need to scope down the query "back in time"
+			// We use the earliest created_at to set it as the upper bound of the query so
+			// First 1000 results are the most recent ones, the next 1000 are the ones before that, and so on
+			actionOpts.Created = c.Spec.TableOptions.WorkflowRuns.ParsedTimeSince + ".." + earliestCreatedAt
 			workflowRuns, resp, err = c.Github.Actions.ListRepositoryWorkflowRuns(ctx, *repo.Owner.Login, *repo.Name, actionOpts)
 			if err != nil {
 				return err
 			}
 		}
 		if len(workflowRuns.WorkflowRuns) > 0 {
-			lastCreatedAt = workflowRuns.WorkflowRuns[len(workflowRuns.WorkflowRuns)-1].GetCreatedAt().Format(time.RFC3339)
+			earliestCreatedAt = workflowRuns.WorkflowRuns[len(workflowRuns.WorkflowRuns)-1].GetCreatedAt().Format(time.RFC3339)
 		}
 		res <- workflowRuns.WorkflowRuns
 
