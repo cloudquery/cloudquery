@@ -153,11 +153,39 @@
         "local_cache_path": {
           "type": "string",
           "description": "Path to a local directory that will hold the cache. If set, the plugin will cache the GitHub API responses in this directory. Defaults to an empty string (no cache)"
+        },
+        "table_options": {
+          "$ref": "#/$defs/TableOptions",
+          "description": "Table options to set for specific tables."
         }
       },
       "additionalProperties": false,
       "type": "object",
       "description": "Spec is the (nested) spec used by GitHub Source Plugin"
+    },
+    "TableOptions": {
+      "properties": {
+        "github_workflow_runs": {
+          "$ref": "#/$defs/WorkflowRunsOptions",
+          "description": "Table options for the github_workflow_runs table."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "WorkflowRunsOptions": {
+      "properties": {
+        "created_since": {
+          "type": "string",
+          "description": "Time to look back for workflow runs in natural date format. Defaults to all workflows.\nExamples: \"14 days ago\", \"last month\"",
+          "examples": [
+            "14 days ago",
+            "last month"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
     }
   }
 }

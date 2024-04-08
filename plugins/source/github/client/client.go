@@ -33,6 +33,8 @@ type Client struct {
 	orgs            []string
 	orgRepositories map[string][]*github.Repository
 	repos           []string
+
+	Spec Spec
 }
 
 func (c *Client) Logger() *zerolog.Logger {
@@ -139,6 +141,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 		orgServices: ghServices,
 		orgs:        spec.Orgs,
 		repos:       spec.Repos,
+		Spec:        spec,
 	}
 	c.logger.Info().Msg("Discovering repositories")
 	orgRepositories, err := c.discoverRepositories(ctx, spec.DiscoveryConcurrency, spec.Orgs, spec.Repos, spec.IncludeArchivedRepos)
