@@ -166,7 +166,8 @@
     "TableOptions": {
       "properties": {
         "github_workflow_runs": {
-          "$ref": "#/$defs/WorkflowRunsOptions"
+          "$ref": "#/$defs/WorkflowRunsOptions",
+          "description": "Table options for the github_workflow_runs table."
         }
       },
       "additionalProperties": false,

@@ -36,6 +36,7 @@ type Spec struct {
 }
 
 type TableOptions struct {
+	// Table options for the github_workflow_runs table.
 	WorkflowRuns WorkflowRunsOptions `json:"github_workflow_runs,omitempty"`
 }
 
