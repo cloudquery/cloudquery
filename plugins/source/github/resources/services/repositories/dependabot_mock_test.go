@@ -8,22 +8,19 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-github/v59/github"
+	"github.com/stretchr/testify/require"
 )
 
 func buildDependabot(t *testing.T, ctrl *gomock.Controller) client.DependabotService {
 	mock := mocks.NewMockDependabotService(ctrl)
 
 	var alert github.DependabotAlert
-	if err := faker.FakeObject(&alert); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&alert))
 	mock.EXPECT().ListRepoAlerts(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		[]*github.DependabotAlert{&alert}, &github.Response{}, nil)
 
 	var secret github.Secret
-	if err := faker.FakeObject(&secret); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&secret))
 	mock.EXPECT().ListRepoSecrets(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		&github.Secrets{TotalCount: 1, Secrets: []*github.Secret{&secret}}, &github.Response{}, nil)
 

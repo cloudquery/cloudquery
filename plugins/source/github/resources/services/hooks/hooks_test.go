@@ -9,31 +9,26 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-github/v59/github"
+	"github.com/stretchr/testify/require"
 )
 
 func buildHooks(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
 	mock := mocks.NewMockOrganizationsService(ctrl)
 
 	var cs github.Hook
-	if err := faker.FakeObject(&cs); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&cs))
 	cs.Config = map[string]any{"key": "value"}
 	cs.LastResponse = map[string]any{"key": "value"}
 	mock.EXPECT().ListHooks(gomock.Any(), "testorg", gomock.Any()).Return([]*github.Hook{&cs}, &github.Response{}, nil)
 
 	var hd *github.HookDelivery
-	if err := faker.FakeObject(&hd); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&hd))
 	hd.Request = nil
 	hd.Response = nil
 	mock.EXPECT().ListHookDeliveries(gomock.Any(), "testorg", *cs.ID, gomock.Any()).Return([]*github.HookDelivery{hd}, &github.Response{}, nil)
 
 	var hdGet *github.HookDelivery
-	if err := faker.FakeObject(&hdGet); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&hdGet))
 	rawRequest := json.RawMessage("{}")
 	rawResponse := json.RawMessage("{}")
 	hdGet.Request = &github.HookRequest{Headers: make(map[string]string), RawPayload: &rawRequest}
