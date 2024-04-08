@@ -52,11 +52,6 @@ func TestTables(t *testing.T) {
 			config: "multiple-sources.yml",
 			format: "markdown",
 		},
-		{
-			name:   "should generate tables in markdown format",
-			config: "multiple-sources.yml",
-			format: "markdown",
-		},
 	}
 
 	for _, tc := range configs {
