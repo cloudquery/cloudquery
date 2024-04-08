@@ -48,7 +48,7 @@ func newCmdPluginDocsUpload() *cobra.Command {
 		},
 	}
 	cmd.Flags().StringP("docs-dir", "D", "docs", "Path to the docs directory")
-	cmd.Flags().Bool("sync", false, "Syncronize docs with CloudQuery Hub, deleting any docs that are not present locally")
+	cmd.Flags().Bool("sync", false, "Synchronize docs with CloudQuery Hub, deleting any docs that are not present locally")
 
 	return cmd
 }
