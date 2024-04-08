@@ -11,8 +11,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.16.15
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.53.1
 	github.com/cloudquery/codegen v0.3.13
-	github.com/cloudquery/filetypes/v4 v4.2.15
-	github.com/cloudquery/plugin-sdk/v4 v4.37.0
+	github.com/cloudquery/filetypes/v4 v4.2.16
+	github.com/cloudquery/plugin-sdk/v4 v4.38.0
 	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.12.0
