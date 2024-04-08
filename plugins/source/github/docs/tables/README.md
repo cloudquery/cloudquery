@@ -29,6 +29,8 @@
 - [github_traffic_paths](github_traffic_paths.md)
 - [github_traffic_referrers](github_traffic_referrers.md)
 - [github_traffic_views](github_traffic_views.md)
+- [github_users](github_users.md)
+  - [github_user_keys](github_user_keys.md)
 - [github_workflow_runs](github_workflow_runs.md)
   - [github_workflow_jobs](github_workflow_jobs.md)
   - [github_workflow_run_usage](github_workflow_run_usage.md)
