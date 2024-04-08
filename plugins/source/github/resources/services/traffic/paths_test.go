@@ -8,15 +8,14 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-github/v59/github"
+	"github.com/stretchr/testify/require"
 )
 
 func buildPaths(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
 	repositoriesMock := mocks.NewMockRepositoriesService(ctrl)
 
 	var paths []*github.TrafficPath
-	if err := faker.FakeObject(&paths); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&paths))
 
 	repositoriesMock.EXPECT().ListTrafficPaths(gomock.Any(), "test string", "test string").Return(paths, nil, nil)
 	return client.GithubServices{Repositories: repositoriesMock}
