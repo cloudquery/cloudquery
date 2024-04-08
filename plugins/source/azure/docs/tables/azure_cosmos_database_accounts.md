@@ -2,7 +2,7 @@
 
 This table shows data for Azure Cosmos Database Accounts.
 
-https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/database-accounts/list?tabs=HTTP#databaseaccountgetresults
+https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/database-accounts/get?view=rest-cosmos-db-resource-provider-2023-11-15&tabs=HTTP#databaseaccountgetresults
 
 The primary key for this table is **id**.
 

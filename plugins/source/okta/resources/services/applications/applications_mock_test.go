@@ -55,7 +55,7 @@ func handleApplications(router *mux.Router) error {
 		return err
 	}
 	ag.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
-	ag.Profile = map[string]map[string]any{"top-key": {"key": "value"}}
+	ag.Profile = map[string]any{"top-key": "value"}
 	ag.AdditionalProperties = map[string]any{"key": "value"}
 	ag.Links = &okta.LinksSelf{
 		Self: &okta.HrefObjectSelfLink{Href: "#"},
@@ -79,7 +79,7 @@ func handleApplications(router *mux.Router) error {
 		return err
 	}
 	au.Embedded = map[string]map[string]any{"top-key": {"key": "value"}}
-	au.Profile = map[string]map[string]any{"top-key": {"key": "value"}}
+	au.Profile = map[string]any{"top-key": "value"}
 	au.AdditionalProperties = map[string]any{"key": "value"}
 	t := time.Now()
 	au.PasswordChanged = *okta.NewNullableTime(&t)

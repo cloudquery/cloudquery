@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.1.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v4.1.6...plugins-source-okta-v4.1.7) (2024-04-05)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.4 ([#17485](https://github.com/cloudquery/cloudquery/issues/17485)) ([f370de4](https://github.com/cloudquery/cloudquery/commit/f370de449e61244398e6f413b973cbfa15c019a6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.5 ([#17526](https://github.com/cloudquery/cloudquery/issues/17526)) ([554c499](https://github.com/cloudquery/cloudquery/commit/554c499eb9bc9f98f6f3dc4be23fd02049f48dcd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.37.0 ([#17532](https://github.com/cloudquery/cloudquery/issues/17532)) ([8080970](https://github.com/cloudquery/cloudquery/commit/8080970f40d22b6bc9db4c359780c744b476bb02))
+* Switch to CloudQuery Okta SDK fork until fix is released ([#17533](https://github.com/cloudquery/cloudquery/issues/17533)) ([6447f45](https://github.com/cloudquery/cloudquery/commit/6447f453fa1972c7d14396f54b161b12310dd7bc))
+
 ## [4.1.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v4.1.5...plugins-source-okta-v4.1.6) (2024-04-02)
 
 
