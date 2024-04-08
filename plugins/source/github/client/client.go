@@ -162,6 +162,7 @@ func servicesForClient(c *github.Client) GithubServices {
 		Repositories:    c.Repositories,
 		Teams:           c.Teams,
 		DependencyGraph: c.DependencyGraph,
+		Users:           c.Users,
 	}
 }
 
