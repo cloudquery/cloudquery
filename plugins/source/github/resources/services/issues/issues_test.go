@@ -8,15 +8,14 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-github/v59/github"
+	"github.com/stretchr/testify/require"
 )
 
 func buildIssues(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
 	mock := mocks.NewMockIssuesService(ctrl)
 
 	var cs github.Issue
-	if err := faker.FakeObject(&cs); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&cs))
 	someId := int64(5555555)
 	cs.Repository = &github.Repository{ID: &someId}
 

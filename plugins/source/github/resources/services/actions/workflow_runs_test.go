@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-github/v59/github"
+	"github.com/stretchr/testify/require"
 )
 
 func buildWorkflowRuns(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
@@ -15,25 +16,17 @@ func buildWorkflowRuns(t *testing.T, ctrl *gomock.Controller) client.GithubServi
 
 	// create mock for repositories
 	var repository github.Repository
-	if err := faker.FakeObject(&repository); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&repository))
 
 	var runs github.WorkflowRuns
-	if err := faker.FakeObject(&runs); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&runs))
 	runs.TotalCount = github.Int(1)
 
 	var runUsage github.WorkflowRunUsage
-	if err := faker.FakeObject(&runUsage); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&runUsage))
 
 	var workflowJobs github.Jobs
-	if err := faker.FakeObject(&workflowJobs); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&workflowJobs))
 	workflowJobs.TotalCount = github.Int(1)
 
 	actionsMock.EXPECT().ListRepositoryWorkflowRuns(gomock.Any(), *repository.Owner.Login, *repository.Name, gomock.Any()).Return(&runs, &github.Response{}, nil)

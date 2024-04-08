@@ -14,6 +14,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-github/v59/github"
 	"github.com/rs/zerolog"
+	"github.com/stretchr/testify/require"
 )
 
 type TestOptions struct{}
@@ -28,9 +29,8 @@ func GithubMockTestHelper(t *testing.T, table *schema.Table, builder func(*testi
 	sched := scheduler.NewScheduler(scheduler.WithLogger(l))
 
 	var cs github.Repository
-	if err := faker.FakeObject(&cs); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&cs))
+
 	someId := int64(5555555)
 	cs.Parent = &github.Repository{ID: &someId}
 	cs.TemplateRepository = &github.Repository{ID: &someId}
