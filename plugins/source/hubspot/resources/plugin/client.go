@@ -70,6 +70,7 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 				grpc.MaxCallSendMsgSize(maxMsgSize),
 			),
 		)
+		defer backendConn.Close()
 		if err != nil {
 			return fmt.Errorf("failed to dial grpc source plugin at %s: %w", options.BackendOptions.Connection, err)
 		}
