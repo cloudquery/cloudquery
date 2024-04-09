@@ -2,17 +2,18 @@ package client
 
 import (
 	"context"
-	"github.com/cloudquery/plugin-sdk/v4/state"
-
 	"github.com/clarkmcc/go-hubspot"
 	"github.com/cloudquery/cloudquery/plugins/source/hubspot/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/state"
 	"github.com/rs/zerolog"
 	"golang.org/x/time/rate"
 )
 
 // DefaultPageSize is empirically tested that this is the largest page size that HubSpot allows.
 const DefaultPageSize = 100
+const SearchApiMaxPageSize = 100
+const SearchApiMaxPaginationItemCount = 10000
 
 type Client struct {
 	Authorizer  *hubspot.TokenAuthorizer

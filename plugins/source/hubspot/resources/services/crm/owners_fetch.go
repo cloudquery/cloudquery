@@ -13,13 +13,7 @@ func fetchOwners(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 	hubspotClient := owners.NewAPIClient(owners.NewConfiguration())
 	cqClient := meta.(*client.Client)
 
-	const key = "hubspot_crm_owners"
-
-	after, err := getCursor(ctx, cqClient, key)
-	if err != nil {
-		return err
-	}
-
+	var after string
 	for {
 		if err := cqClient.RateLimiter.Wait(ctx); err != nil {
 			return nil
@@ -45,11 +39,11 @@ func fetchOwners(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 			break
 		}
 		next := paging.GetNext()
-		if next.After == "" {
+		after = next.After
+		if after == "" {
 			break
 		}
-		after = next.After
 	}
 
-	return setCursor(ctx, cqClient, key, after)
+	return nil
 }

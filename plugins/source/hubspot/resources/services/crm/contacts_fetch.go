@@ -2,11 +2,13 @@ package crm
 
 import (
 	"context"
-
+	"fmt"
 	"github.com/clarkmcc/go-hubspot"
 	"github.com/clarkmcc/go-hubspot/generated/v3/contacts"
 	"github.com/cloudquery/cloudquery/plugins/source/hubspot/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"strconv"
+	"time"
 )
 
 func fetchContacts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
@@ -15,9 +17,11 @@ func fetchContacts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 	hubspotClient := contacts.NewAPIClient(config)
 	cqClient := meta.(*client.Client)
 
-	const key = "hubspot_crm_contacts"
+	const tableName = "hubspot_crm_contacts"
 
-	after, err := getCursor(ctx, cqClient, key)
+	after := ""
+
+	lastModifiedDate, err := getLastModifiedDate(ctx, cqClient, tableName)
 	if err != nil {
 		return err
 	}
@@ -27,35 +31,71 @@ func fetchContacts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 			return nil
 		}
 
-		req := hubspotClient.BasicApi.
-			GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
-			Properties(cqClient.Spec.TableOptions.ForTable("hubspot_crm_contacts").GetProperties()).
-			Associations(cqClient.Spec.TableOptions.ForTable("hubspot_crm_contacts").GetAssociations()).
-			Limit(client.DefaultPageSize)
+		req := contacts.PublicObjectSearchRequest{
+			Limit:      client.SearchApiMaxPageSize,
+			Properties: []string{},
+			Sorts: []string{
+				`{"propertyName": "lastmodifieddate", "direction": "ASCENDING}"`,
+			},
+		}
+
+		if !lastModifiedDate.IsZero() {
+			val := lastModifiedDate.Format(time.RFC3339)
+			req.FilterGroups = []contacts.FilterGroup{
+				{
+					Filters: []contacts.Filter{
+						{
+							PropertyName: "lastmodifieddate",
+							Operator:     "GTE",
+							Value:        &val,
+						},
+					},
+				},
+			}
+		}
 
 		if len(after) > 0 {
-			req = req.After(after)
-		}
-		out, _, err := req.Execute()
-		if err != nil {
-			return err
+			req.After = after
 		}
 
+		out, _, err := hubspotClient.SearchApi.
+			Search(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
+			PublicObjectSearchRequest(req).
+			Execute()
+
+		if err != nil {
+			return fmt.Errorf("failed to execute search req: %w", err)
+		}
 		res <- out.Results
 
 		if !out.HasPaging() {
 			break
 		}
+
 		paging := out.GetPaging()
 		if !paging.HasNext() {
 			break
 		}
-		next := paging.GetNext()
-		if next.After == "" {
+
+		after = paging.GetNext().After
+		if after == "" {
 			break
 		}
-		after = next.After
+
+		if after == strconv.Itoa(client.SearchApiMaxPaginationItemCount) {
+			newLastModifiedDate := out.Results[len(out.Results)-1].Properties["lastmodifieddate"]
+			t, err := time.Parse(time.RFC3339, newLastModifiedDate)
+			if err != nil {
+				return err
+			}
+			lastModifiedDate = t
+			after = ""
+		}
 	}
 
-	return setCursor(ctx, cqClient, key, after)
+	if !lastModifiedDate.IsZero() {
+		return setLastModifiedDate(ctx, cqClient, tableName, lastModifiedDate)
+	}
+
+	return nil
 }

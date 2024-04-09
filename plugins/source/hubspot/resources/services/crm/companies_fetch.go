@@ -2,6 +2,7 @@ package crm
 
 import (
 	"context"
+
 	"github.com/clarkmcc/go-hubspot"
 	"github.com/clarkmcc/go-hubspot/generated/v3/companies"
 	"github.com/cloudquery/cloudquery/plugins/source/hubspot/client"
@@ -12,13 +13,7 @@ func fetchCompanies(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	hubspotClient := companies.NewAPIClient(companies.NewConfiguration())
 	cqClient := meta.(*client.Client)
 
-	const key = "hubspot_crm_companies"
-
-	after, err := getCursor(ctx, cqClient, key)
-	if err != nil {
-		return err
-	}
-
+	var after string
 	for {
 		if err := cqClient.RateLimiter.Wait(ctx); err != nil {
 			return nil
@@ -48,11 +43,11 @@ func fetchCompanies(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			break
 		}
 		next := paging.GetNext()
-		if next.After == "" {
+		after = next.After
+		if after == "" {
 			break
 		}
-		after = next.After
 	}
 
-	return setCursor(ctx, cqClient, key, after)
+	return nil
 }

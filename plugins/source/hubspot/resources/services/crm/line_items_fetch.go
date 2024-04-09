@@ -13,13 +13,7 @@ func fetchLineItems(ctx context.Context, meta schema.ClientMeta, parent *schema.
 	hubspotClient := line_items.NewAPIClient(line_items.NewConfiguration())
 	cqClient := meta.(*client.Client)
 
-	const key = "hubspot_crm_line_items"
-
-	after, err := getCursor(ctx, cqClient, key)
-	if err != nil {
-		return err
-	}
-
+	var after string
 	for {
 		if err := cqClient.RateLimiter.Wait(ctx); err != nil {
 			return nil
@@ -49,11 +43,11 @@ func fetchLineItems(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			break
 		}
 		next := paging.GetNext()
-		if next.After == "" {
+		after = next.After
+		if after == "" {
 			break
 		}
-		after = next.After
 	}
 
-	return setCursor(ctx, cqClient, key, after)
+	return nil
 }
