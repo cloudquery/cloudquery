@@ -15,10 +15,10 @@ type Spec struct {
 	ConnectionString string `json:"connection_string" jsonschema:"required,minLength=1"`
 
 	// Username to connect to the database.
-	Username string `json:"username"`
+	Username string `json:"username" jsonschema:"required,minLength=1"`
 
 	// Password to connect to the database.
-	Password string `json:"password"`
+	Password string `json:"password" jsonschema:"required,minLength=1"`
 
 	// Number of records to batch together before sending to the database.
 	BatchSize int `json:"batch_size" jsonschema:"minimum=1,default=1000"`
