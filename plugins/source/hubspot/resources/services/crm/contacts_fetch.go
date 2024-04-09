@@ -86,7 +86,7 @@ func fetchContacts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 			newLastModifiedDate := out.Results[len(out.Results)-1].Properties["lastmodifieddate"]
 			t, err := time.Parse(time.RFC3339, newLastModifiedDate)
 			if err != nil {
-				return err
+				return fmt.Errorf("failed to parse new last modified date: %w", err)
 			}
 			lastModifiedDate = t
 			after = ""
