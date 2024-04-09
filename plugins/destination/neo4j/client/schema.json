@@ -12,10 +12,12 @@
         },
         "username": {
           "type": "string",
+          "minLength": 1,
           "description": "Username to connect to the database."
         },
         "password": {
           "type": "string",
+          "minLength": 1,
           "description": "Password to connect to the database."
         },
         "batch_size": {
@@ -34,7 +36,9 @@
       "additionalProperties": false,
       "type": "object",
       "required": [
-        "connection_string"
+        "connection_string",
+        "username",
+        "password"
       ]
     }
   }
