@@ -11,7 +11,7 @@
   "plugins/source/digitalocean+FILLER": "0.0.0",
   "plugins/source/gcp": "10.0.0",
   "plugins/source/gcp+FILLER": "0.0.0",
-  "plugins/source/github": "9.2.0",
+  "plugins/source/github": "9.2.1",
   "plugins/source/github+FILLER": "0.0.0",
   "plugins/source/k8s": "6.0.9",
   "plugins/source/k8s+FILLER": "0.0.0",
@@ -105,5 +105,5 @@
   "plugins/source/airtable+FILLER": "0.0.0",
   "plugins/source/bitbucket": "1.2.2",
   "plugins/source/bitbucket+FILLER": "0.0.0",
-  "plugins/source/notion": "1.1.6"
+  "plugins/source/notion": "1.1.7"
 }
