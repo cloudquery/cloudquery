@@ -43,7 +43,7 @@
   "plugins/destination/gcs+FILLER": "0.0.0",
   "plugins/destination/s3": "5.1.2",
   "plugins/destination/s3+FILLER": "0.0.0",
-  "plugins/destination/file": "4.0.6",
+  "plugins/destination/file": "4.0.7",
   "plugins/destination/file+FILLER": "0.0.0",
   "plugins/destination/azblob": "3.5.7",
   "plugins/destination/azblob+FILLER": "0.0.0",
