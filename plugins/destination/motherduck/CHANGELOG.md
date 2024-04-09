@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-motherduck-v1.0.6...plugins-destination-motherduck-v1.0.7) (2024-04-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.38.0 ([#17562](https://github.com/cloudquery/cloudquery/issues/17562)) ([fb0d1b4](https://github.com/cloudquery/cloudquery/commit/fb0d1b4eba8e9d0fcfc436cc1881317f178896bc))
+
 ## [1.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-motherduck-v1.0.5...plugins-destination-motherduck-v1.0.6) (2024-04-09)
 
 
