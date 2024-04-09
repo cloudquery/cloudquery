@@ -110,12 +110,14 @@ func (c *Client) Close(ctx context.Context) error {
 
 func (c *Client) exec(ctx context.Context, query string, args ...any) error {
 	r, err := c.db.ExecContext(ctx, query, args...)
-	if err != nil {
-		return err
-	}
 	if c.spec.Debug {
-		rowsAffected, rowsErr := r.RowsAffected()
-		c.logger.Debug().Str("query", query).Any("values", args).Int64("rowsAffected", rowsAffected).Err(rowsErr).Msg("exec query")
+		logEvent := c.logger.Debug().Str("query", query).Any("values", args)
+		if err != nil {
+			logEvent.Err(err).Msg("exec query")
+		} else {
+			rowsAffected, rowsErr := r.RowsAffected()
+			logEvent.Int64("rowsAffected", rowsAffected).Err(rowsErr).Msg("exec query")
+		}
 	}
-	return nil
+	return err
 }
