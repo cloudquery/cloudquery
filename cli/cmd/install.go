@@ -56,7 +56,7 @@ func installPlugin(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
-	teamName, err := auth.GetTeamForToken(authToken)
+	teamName, err := auth.GetTeamForToken(ctx, authToken)
 	if err != nil {
 		return fmt.Errorf("failed to get team name: %w", err)
 	}
