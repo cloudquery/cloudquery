@@ -10,8 +10,17 @@ import (
 )
 
 func fetchProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	hubspotClient := products.NewAPIClient(products.NewConfiguration())
 	cqClient := meta.(*client.Client)
+
+	if cqClient.IsIncrementalSync() {
+		return syncIncrementally(ctx, cqClient, res, "products", "hs_lastmodifieddate")
+	}
+
+	return syncAllProducts(ctx, cqClient, res)
+}
+
+func syncAllProducts(ctx context.Context, cqClient *client.Client, res chan<- any) error {
+	hubspotClient := products.NewAPIClient(products.NewConfiguration())
 
 	var after string
 	for {
@@ -23,7 +32,7 @@ func fetchProducts(ctx context.Context, meta schema.ClientMeta, parent *schema.R
 			GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
 			Properties(cqClient.Spec.TableOptions.ForTable("hubspot_crm_products").GetProperties()).
 			Associations(cqClient.Spec.TableOptions.ForTable("hubspot_crm_products").GetAssociations()).
-			Limit(client.MaxPageSize)
+			Limit(maxPageSize)
 
 		if len(after) > 0 {
 			req = req.After(after)

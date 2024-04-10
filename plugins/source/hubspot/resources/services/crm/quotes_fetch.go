@@ -10,8 +10,17 @@ import (
 )
 
 func fetchQuotes(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	hubspotClient := quotes.NewAPIClient(quotes.NewConfiguration())
 	cqClient := meta.(*client.Client)
+
+	if cqClient.IsIncrementalSync() {
+		return syncIncrementally(ctx, cqClient, res, "quotes", "hs_lastmodifieddate")
+	}
+
+	return syncAllQuotes(ctx, cqClient, res)
+}
+
+func syncAllQuotes(ctx context.Context, cqClient *client.Client, res chan<- any) error {
+	hubspotClient := quotes.NewAPIClient(quotes.NewConfiguration())
 
 	var after string
 	for {
@@ -23,7 +32,7 @@ func fetchQuotes(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 			GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
 			Properties(cqClient.Spec.TableOptions.ForTable("hubspot_crm_quotes").GetProperties()).
 			Associations(cqClient.Spec.TableOptions.ForTable("hubspot_crm_quotes").GetAssociations()).
-			Limit(client.MaxPageSize)
+			Limit(maxPageSize)
 
 		if len(after) > 0 {
 			req = req.After(after)

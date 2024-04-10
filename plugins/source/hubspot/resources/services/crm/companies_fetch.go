@@ -2,7 +2,6 @@ package crm
 
 import (
 	"context"
-
 	"github.com/clarkmcc/go-hubspot"
 	"github.com/clarkmcc/go-hubspot/generated/v3/companies"
 	"github.com/cloudquery/cloudquery/plugins/source/hubspot/client"
@@ -10,8 +9,17 @@ import (
 )
 
 func fetchCompanies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	hubspotClient := companies.NewAPIClient(companies.NewConfiguration())
 	cqClient := meta.(*client.Client)
+
+	if cqClient.IsIncrementalSync() {
+		return syncIncrementally(ctx, cqClient, res, "companies", "hs_lastmodifieddate")
+	}
+
+	return syncAllCompanies(ctx, cqClient, res)
+}
+
+func syncAllCompanies(ctx context.Context, cqClient *client.Client, res chan<- any) error {
+	hubspotClient := companies.NewAPIClient(companies.NewConfiguration())
 
 	var after string
 	for {
@@ -23,7 +31,7 @@ func fetchCompanies(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
 			Properties(cqClient.Spec.TableOptions.ForTable("hubspot_crm_companies").GetProperties()).
 			Associations(cqClient.Spec.TableOptions.ForTable("hubspot_crm_companies").GetAssociations()).
-			Limit(client.MaxPageSize)
+			Limit(maxPageSize)
 
 		if len(after) > 0 {
 			req = req.After(after)

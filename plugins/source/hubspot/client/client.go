@@ -10,12 +10,6 @@ import (
 	"golang.org/x/time/rate"
 )
 
-// MaxPageSize is empirically tested that this is the largest page size that HubSpot allows.
-const MaxPageSize = 100
-
-// SearchApiMaxPaginationItemCount is the pagination hard limit imposed by the Hubspot Search API. Stored as a string because that's the type being compared to.
-const SearchApiMaxPaginationItemCount = "10000"
-
 type Client struct {
 	Authorizer  *hubspot.TokenAuthorizer
 	Spec        spec.Spec

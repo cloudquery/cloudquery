@@ -10,8 +10,17 @@ import (
 )
 
 func fetchTickets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	hubspotClient := tickets.NewAPIClient(tickets.NewConfiguration())
 	cqClient := meta.(*client.Client)
+
+	if cqClient.IsIncrementalSync() {
+		return syncIncrementally(ctx, cqClient, res, "tickets", "hs_lastmodifieddate")
+	}
+
+	return syncAllTickets(ctx, cqClient, res)
+}
+
+func syncAllTickets(ctx context.Context, cqClient *client.Client, res chan<- any) error {
+	hubspotClient := tickets.NewAPIClient(tickets.NewConfiguration())
 
 	var after string
 	for {
@@ -23,7 +32,7 @@ func fetchTickets(ctx context.Context, meta schema.ClientMeta, parent *schema.Re
 			GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
 			Properties(cqClient.Spec.TableOptions.ForTable("hubspot_crm_tickets").GetProperties()).
 			Associations(cqClient.Spec.TableOptions.ForTable("hubspot_crm_tickets").GetAssociations()).
-			Limit(client.MaxPageSize)
+			Limit(maxPageSize)
 
 		if len(after) > 0 {
 			req = req.After(after)

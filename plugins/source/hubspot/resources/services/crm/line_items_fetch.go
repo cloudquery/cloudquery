@@ -2,7 +2,6 @@ package crm
 
 import (
 	"context"
-
 	"github.com/clarkmcc/go-hubspot"
 	"github.com/clarkmcc/go-hubspot/generated/v3/line_items"
 	"github.com/cloudquery/cloudquery/plugins/source/hubspot/client"
@@ -10,8 +9,17 @@ import (
 )
 
 func fetchLineItems(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	hubspotClient := line_items.NewAPIClient(line_items.NewConfiguration())
 	cqClient := meta.(*client.Client)
+
+	if cqClient.IsIncrementalSync() {
+		return syncIncrementally(ctx, cqClient, res, "line_items", "hs_lastmodifieddate")
+	}
+
+	return syncAllLineItems(ctx, cqClient, res)
+}
+
+func syncAllLineItems(ctx context.Context, cqClient *client.Client, res chan<- any) error {
+	hubspotClient := line_items.NewAPIClient(line_items.NewConfiguration())
 
 	var after string
 	for {
@@ -23,7 +31,7 @@ func fetchLineItems(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			GetCrmV3ObjectsLineItemsGetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
 			Properties(cqClient.Spec.TableOptions.ForTable("hubspot_crm_line_items").GetProperties()).
 			Associations(cqClient.Spec.TableOptions.ForTable("hubspot_crm_line_items").GetAssociations()).
-			Limit(client.MaxPageSize)
+			Limit(maxPageSize)
 
 		if len(after) > 0 {
 			req = req.After(after)
