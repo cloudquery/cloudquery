@@ -3,10 +3,24 @@ package spec
 import (
 	"encoding/json"
 	"fmt"
+	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
+)
+
+const (
+	varFormat = "{{FORMAT}}"
+	varTable  = "{{TABLE}}"
+	varUUID   = "{{UUID}}"
+	varYear   = "{{YEAR}}"
+	varMonth  = "{{MONTH}}"
+	varDay    = "{{DAY}}"
+	varHour   = "{{HOUR}}"
+	varMinute = "{{MINUTE}}"
+	varSyncID = "{{SYNC_ID}}"
 )
 
 type Spec struct {
@@ -108,4 +122,29 @@ func isValidJson(content string) error {
 
 func int64ptr(i int64) *int64 {
 	return &i
+}
+
+func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time, syncID string) string {
+	name := strings.ReplaceAll(s.Path, varTable, table)
+	if strings.Contains(name, varFormat) {
+		e := string(s.Format) + s.Compression.Extension()
+		name = strings.ReplaceAll(name, varFormat, e)
+	}
+	name = strings.ReplaceAll(name, varUUID, fileIdentifier)
+	name = strings.ReplaceAll(name, varYear, t.Format("2006"))
+	name = strings.ReplaceAll(name, varMonth, t.Format("01"))
+	name = strings.ReplaceAll(name, varDay, t.Format("02"))
+	name = strings.ReplaceAll(name, varHour, t.Format("15"))
+	name = strings.ReplaceAll(name, varMinute, t.Format("04"))
+	name = strings.ReplaceAll(name, varSyncID, syncID)
+
+	/* If name does not contain any variables, we revert to the behaviour before
+	we introduced path variables. */
+	if name == s.Path {
+		name = fmt.Sprintf("%s/%s.%s%s.%s", s.Path, table, s.Format, s.FileSpec.Compression.Extension(), fileIdentifier)
+		if s.NoRotate {
+			name = fmt.Sprintf("%s/%s.%s%s", s.Path, table, s.Format, s.FileSpec.Compression.Extension())
+		}
+	}
+	return filepath.Clean(name)
 }
