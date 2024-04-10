@@ -57,7 +57,7 @@ services:
         condition: service_healthy
   airtable:
     container_name: airtable
-    image: docker.cloudquery.io/cloudquery/source-airtable:v2.1.2
+    image: docker.cloudquery.io/cloudquery/source-airtable:VERSION_SOURCE_AIRTABLE
     # We use `cloudquery login` and `cloudquery plugin install spec.yml` to pull the image locally
     pull_policy: never
     restart: always
@@ -98,7 +98,7 @@ configs:
       spec:
         name: "postgresql"
         path: "cloudquery/postgresql"
-        version: "v8.0.2"
+        version: "VERSION_DESTINATION_POSTGRESQL"
         spec:
           # Notice we use the container name as the host to connect via Docker internal DNS
           connection_string: "postgresql://postgres:pass@postgres:5432/postgres?sslmode=disable"
