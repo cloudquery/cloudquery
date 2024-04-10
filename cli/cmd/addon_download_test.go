@@ -77,7 +77,6 @@ func TestAddonDownload(t *testing.T) {
 }
 
 func TestAddonDownloadStdout(t *testing.T) {
-	t.Skip()
 	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{

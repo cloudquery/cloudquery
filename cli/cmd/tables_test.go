@@ -97,6 +97,7 @@ func TestTablesWithFilter(t *testing.T) {
 			require.NoError(t, err)
 			content, err := io.ReadAll(file)
 			require.NoError(t, err)
+			_ = file.Close()
 			type table struct {
 				Name string `json:"name"`
 			}
