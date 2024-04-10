@@ -48,6 +48,8 @@ jobs:
           skip-build-cache: true
       - name: Build
         run: go build .
+      - name: Collect Workflow Telemetry
+        uses: catchpoint/workflow-telemetry-action@v2
       - name: Test
         run: make test
       - name: gen
