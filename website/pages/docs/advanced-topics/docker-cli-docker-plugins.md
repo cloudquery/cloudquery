@@ -1,4 +1,4 @@
-# Running Docker Plugins With the CLI Docker Image
+# Running Docker Plugins
 
 CloudQuery CLI uses the [Docker CLI](https://docs.docker.com/engine/reference/commandline/cli/) and [Engine API](https://docs.docker.com/engine/api/) to run Docker plugins.
 When using the CloudQuery CLI Docker image, Docker plugins don't work out of the box, as the Docker CLI and Engine API are not available in the container by default.
