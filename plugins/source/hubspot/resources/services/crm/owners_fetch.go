@@ -19,7 +19,7 @@ func fetchOwners(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 			return nil
 		}
 
-		req := hubspotClient.OwnersApi.GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).Limit(client.DefaultPageSize)
+		req := hubspotClient.OwnersApi.GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).Limit(client.MaxPageSize)
 
 		if len(after) > 0 {
 			req = req.After(after)

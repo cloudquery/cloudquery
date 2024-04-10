@@ -11,7 +11,7 @@ func Contacts() *schema.Table {
 		Name:        "hubspot_crm_contacts",
 		Description: "https://developers.hubspot.com/docs/api/crm/contacts",
 		Transform: transformers.TransformWithStruct(
-			contacts.SimplePublicObject{},
+			contacts.SimplePublicObjectWithAssociations{},
 			transformers.WithPrimaryKeys("Id"),
 			transformers.WithSkipFields("PropertiesWithHistory"),
 		),

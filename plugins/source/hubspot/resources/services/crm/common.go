@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"github.com/cloudquery/cloudquery/plugins/source/hubspot/client"
-	"strconv"
 	"time"
 )
 
@@ -34,6 +33,8 @@ func generateKey(c *client.Client, tableName string) string {
 	return fmt.Sprintf("%s-%s-last-modified-date", c.ID(), tableName)
 }
 
-func timeToMilliStr(t time.Time) string {
-	return strconv.FormatInt(t.UnixMilli(), 10)
+func sortAscByField(fieldName string) []string {
+	return []string{
+		`{"propertyName":"` + fieldName + `","direction":"ASCENDING}"`,
+	}
 }

@@ -23,7 +23,7 @@ func fetchQuotes(ctx context.Context, meta schema.ClientMeta, parent *schema.Res
 			GetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
 			Properties(cqClient.Spec.TableOptions.ForTable("hubspot_crm_quotes").GetProperties()).
 			Associations(cqClient.Spec.TableOptions.ForTable("hubspot_crm_quotes").GetAssociations()).
-			Limit(client.DefaultPageSize)
+			Limit(client.MaxPageSize)
 
 		if len(after) > 0 {
 			req = req.After(after)

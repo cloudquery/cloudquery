@@ -23,7 +23,7 @@ func fetchLineItems(ctx context.Context, meta schema.ClientMeta, parent *schema.
 			GetCrmV3ObjectsLineItemsGetPage(hubspot.WithAuthorizer(ctx, cqClient.Authorizer)).
 			Properties(cqClient.Spec.TableOptions.ForTable("hubspot_crm_line_items").GetProperties()).
 			Associations(cqClient.Spec.TableOptions.ForTable("hubspot_crm_line_items").GetAssociations()).
-			Limit(client.DefaultPageSize)
+			Limit(client.MaxPageSize)
 
 		if len(after) > 0 {
 			req = req.After(after)

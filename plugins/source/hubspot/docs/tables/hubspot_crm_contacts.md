@@ -12,6 +12,7 @@ The primary key for this table is **id**.
 | ------------- | ------------- |
 |_cq_id|`uuid`|
 |_cq_parent_id|`uuid`|
+|associations|`json`|
 |created_at|`timestamp[us, tz=UTC]`|
 |archived|`bool`|
 |archived_at|`timestamp[us, tz=UTC]`|
