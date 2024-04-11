@@ -2,12 +2,15 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"os"
 	"slices"
+	"strings"
 	"sync"
 	"testing"
 	"time"
 
+	"github.com/apache/arrow/go/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
@@ -148,5 +151,38 @@ func validateNoEmptyColumnsExcept(t *testing.T, tables schema.Tables, messages m
 		if len(emptyColumns) > 0 {
 			t.Fatalf("found empty column(s): %v in %s", emptyColumns, table.Name)
 		}
+	}
+}
+
+func validateTagData(t *testing.T, tables schema.Tables, messages message.SyncMessages, except map[string][]string) {
+	tablesWithIssues := []string{}
+	for _, table := range tables.FlattenTables() {
+		if table.Column("tags") == nil {
+			continue
+		}
+
+		records := messages.GetInserts().GetRecordsForTable(table)
+		for _, resource := range records {
+			for colIndex, arr := range resource.Columns() {
+				if table.Columns[colIndex].Name != "tags" {
+					continue
+				}
+				for i := 0; i < arr.Len(); i++ {
+					if arr.IsValid(i) {
+						if arrow.TypeEqual(arr.DataType(), sdkTypes.ExtensionTypes.JSON) {
+							val := arr.GetOneForMarshal(i).(json.RawMessage)
+							if strings.HasPrefix(string(val), "[") && strings.HasSuffix(string(val), "]") {
+								tablesWithIssues = append(tablesWithIssues, table.Name)
+								break
+							}
+						}
+
+					}
+				}
+			}
+		}
+	}
+	if len(tablesWithIssues) > 0 {
+		t.Fatalf("found improperly structured tags in %v", tablesWithIssues)
 	}
 }
