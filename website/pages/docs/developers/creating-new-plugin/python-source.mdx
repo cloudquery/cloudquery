@@ -84,7 +84,7 @@ python main.py serve
 
 This will start a gRPC server on port 7777. You can then create a config file that sets the `registry` and `path` properties to point to this server. For example:
 
-```yaml copy filename=config.yaml
+```yaml filename="config.yaml"
 kind: source
 spec:
   name: "my-plugin"
@@ -108,7 +108,7 @@ spec:
 
 With the above configuration, we can now run `cloudquery sync` as normal:
 
-```shell copy
+```shell
 cloudquery sync config.yaml
 ```
 
@@ -126,7 +126,7 @@ docker build -t my-plugin:latest .
 
 And then we can specify the `docker` registry in our config file:
 
-```yaml copy filename=config.yaml
+```yaml filename="config.yaml"
 kind: source
 spec:
   name: "my-plugin"
@@ -153,7 +153,7 @@ Releasing a Python plugin for use by the wider CloudQuery community involves pub
 
 Once published, users can then import your plugin by specifying the image path in their config file together with the `docker` registry, e.g.:
 
-```yaml copy
+```yaml
 kind: source
 spec:
   name: cloudwidgets
