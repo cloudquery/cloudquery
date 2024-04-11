@@ -1,5 +1,38 @@
 # Changelog
 
+## [9.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v9.2.0...plugins-source-github-v9.2.1) (2024-04-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.38.0 ([#17554](https://github.com/cloudquery/cloudquery/issues/17554)) ([edb6f06](https://github.com/cloudquery/cloudquery/commit/edb6f066c3a3675f5bfca3e492eba3aeb31e770b))
+
+## [9.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v9.1.0...plugins-source-github-v9.2.0) (2024-04-08)
+
+
+### Features
+
+* Add table option to filter workflow runs ([#17539](https://github.com/cloudquery/cloudquery/issues/17539)) ([202fe42](https://github.com/cloudquery/cloudquery/commit/202fe42c9a787c2deb4008fb8dd34752901637d9))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.4 ([#17485](https://github.com/cloudquery/cloudquery/issues/17485)) ([f370de4](https://github.com/cloudquery/cloudquery/commit/f370de449e61244398e6f413b973cbfa15c019a6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.5 ([#17526](https://github.com/cloudquery/cloudquery/issues/17526)) ([554c499](https://github.com/cloudquery/cloudquery/commit/554c499eb9bc9f98f6f3dc4be23fd02049f48dcd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.37.0 ([#17532](https://github.com/cloudquery/cloudquery/issues/17532)) ([8080970](https://github.com/cloudquery/cloudquery/commit/8080970f40d22b6bc9db4c359780c744b476bb02))
+
+## [9.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v9.0.0...plugins-source-github-v9.1.0) (2024-04-02)
+
+
+### Features
+
+* Add support for conditional requests via local cache ([#17368](https://github.com/cloudquery/cloudquery/issues/17368)) ([6d866d1](https://github.com/cloudquery/cloudquery/commit/6d866d18f3e8072eb83a633d0ae09aa852798f1a))
+
+
+### Bug Fixes
+
+* GitHub pagination handling ([#17462](https://github.com/cloudquery/cloudquery/issues/17462)) ([822684f](https://github.com/cloudquery/cloudquery/commit/822684f01aec6e72e579874243e8df2012661552))
+
 ## [9.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-github-v8.2.1...plugins-source-github-v9.0.0) (2024-04-02)
 
 

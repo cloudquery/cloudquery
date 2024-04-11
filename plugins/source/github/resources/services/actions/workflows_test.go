@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-github/v59/github"
+	"github.com/stretchr/testify/require"
 )
 
 func buildWorkflows(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
@@ -16,23 +17,17 @@ func buildWorkflows(t *testing.T, ctrl *gomock.Controller) client.GithubServices
 
 	// create mock for repositories
 	var repository github.Repository
-	if err := faker.FakeObject(&repository); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&repository))
 
 	var workflow github.Workflow
-	if err := faker.FakeObject(&workflow); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&workflow))
 	workflow.HTMLURL = github.String("https://github.com/testorg/repo/blob/master/.github/workflows/161335")
 	workflow.Path = github.String(".github/workflows/ci.yml")
 	count := 1
 	workflows := github.Workflows{Workflows: []*github.Workflow{&workflow}, TotalCount: &count}
 
 	workflowContent := github.RepositoryContent{}
-	if err := faker.FakeObject(&workflowContent); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&workflowContent))
 	workflowContent.Encoding = github.String("")
 	opts := github.RepositoryContentGetOptions{Ref: "master"}
 

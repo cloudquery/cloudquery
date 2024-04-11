@@ -35,6 +35,7 @@ func NewCmdSync() *cobra.Command {
 	}
 	cmd.Flags().Bool("no-migrate", false, "Disable auto-migration before sync. By default, sync runs a migration before syncing resources.")
 	cmd.Flags().String("license", "", "set offline license file")
+	cmd.Flags().String("summary-location", "", "Sync summary file location. This feature is in Preview. Please provide feedback to help us improve it.")
 
 	return cmd
 }
@@ -115,7 +116,7 @@ func sync(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
-	teamName, err := auth.GetTeamForToken(authToken)
+	teamName, err := auth.GetTeamForToken(ctx, authToken)
 	if err != nil {
 		return fmt.Errorf("failed to get team name from token: %w", err)
 	}
@@ -258,9 +259,16 @@ func sync(cmd *cobra.Command, args []string) error {
 					spec:   *destinationForSourceBackendSpec,
 				}
 			}
-			if err := syncConnectionV3(ctx, src, dests, backend, invocationUUID.String(), noMigrate); err != nil {
+
+			summaryLocation, err := cmd.Flags().GetString("summary-location")
+			if err != nil {
+				return err
+			}
+
+			if err := syncConnectionV3(ctx, src, dests, backend, invocationUUID.String(), noMigrate, summaryLocation); err != nil {
 				return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
 			}
+
 		case 2:
 			destinationsVersions := make([][]int, 0, len(destinationClientsForSource))
 			for _, destination := range destinationClientsForSource {

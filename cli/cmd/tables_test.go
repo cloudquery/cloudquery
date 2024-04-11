@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"encoding/json"
+	"io"
+	"os"
 	"path"
 	"runtime"
 	"testing"
@@ -9,21 +12,23 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func getTablesCommand(t *testing.T, config string, format string) (*cobra.Command, string) {
+func getTablesCommand(t *testing.T, config string, format, filter string) (*cobra.Command, string) {
 	t.Helper()
 
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
 	testConfig := path.Join(currentDir, "testdata", config)
 	tmpDir := t.TempDir()
-	logFileName := path.Join(tmpDir, "cloudquery.log")
 	outputDirectory := path.Join(tmpDir, "cq-docs")
 	cmd := NewCmdRoot()
-	args := []string{"tables", testConfig, "--cq-dir", tmpDir, "--log-file-name", logFileName, "--output-dir", outputDirectory}
+	args := []string{"tables", testConfig, "--output-dir", outputDirectory}
 	if format != "" {
 		args = append(args, "--format", format)
 	}
-	cmd.SetArgs(args)
+	if filter != "" {
+		args = append(args, "--filter", filter)
+	}
+	cmd.SetArgs(append(args, testCommandArgs(t)...))
 	return cmd, tmpDir
 }
 
@@ -51,15 +56,60 @@ func TestTables(t *testing.T) {
 
 	for _, tc := range configs {
 		t.Run(tc.name, func(t *testing.T) {
-			defer CloseLogFile()
-			cmd, cqDir := getTablesCommand(t, tc.config, tc.format)
+			cmd, docsDir := getTablesCommand(t, tc.config, tc.format, "")
 			commandError := cmd.Execute()
 			require.NoError(t, commandError)
 
 			if tc.format == "markdown" {
-				require.FileExists(t, path.Join(cqDir, "cq-docs/test/README.md"))
+				require.FileExists(t, path.Join(docsDir, "cq-docs/test/README.md"))
 			} else {
-				require.FileExists(t, path.Join(cqDir, "cq-docs/test/__tables.json"))
+				require.FileExists(t, path.Join(docsDir, "cq-docs/test/__tables.json"))
+			}
+		})
+	}
+}
+
+func TestTablesWithFilter(t *testing.T) {
+	configs := []struct {
+		name   string
+		config string
+		filter string
+	}{
+		{
+			name:   "should generate tables in default format",
+			config: "cloudflare-tables-with-spec-filter.yml",
+		},
+		{
+			name:   "should generate tables in json format",
+			config: "cloudflare-tables-with-spec-filter.yml",
+			filter: "spec",
+		},
+	}
+
+	for _, tc := range configs {
+		t.Run(tc.name, func(t *testing.T) {
+			cmd, docsDir := getTablesCommand(t, tc.config, "json", tc.filter)
+			commandError := cmd.Execute()
+			require.NoError(t, commandError)
+			expectedFile := path.Join(docsDir, "cq-docs/cloudflare/__tables.json")
+			require.FileExists(t, expectedFile)
+			file, err := os.Open(expectedFile)
+			require.NoError(t, err)
+			content, err := io.ReadAll(file)
+			require.NoError(t, err)
+			_ = file.Close()
+			type table struct {
+				Name string `json:"name"`
+			}
+			var tables []table
+			err = json.Unmarshal(content, &tables)
+			require.NoError(t, err)
+
+			if tc.filter == "spec" {
+				require.Len(t, tables, 1)
+				require.Equal(t, "cloudflare_access_applications", tables[0].Name)
+			} else {
+				require.Greater(t, len(tables), 1)
 			}
 		})
 	}

@@ -1,3 +1,5 @@
+//go:build !windows
+
 package cmd
 
 import (
@@ -16,7 +18,8 @@ import (
 )
 
 func TestSwitch(t *testing.T) {
-	configDir := t.TempDir()
+	baseArgs := testCommandArgs(t)
+	configDir := baseArgs[1]
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch {
 		case r.URL.Path == "/teams":
@@ -33,28 +36,24 @@ func TestSwitch(t *testing.T) {
 	t.Setenv(auth.EnvVarCloudQueryAPIKey, "test-api-key")
 	t.Setenv("CLOUDQUERY_ACCOUNTS_URL", ts.URL)
 	t.Setenv(envAPIURL, ts.URL)
-	t.Cleanup(func() {
-		CloseLogFile()
-		os.RemoveAll(configDir)
-	})
 
 	err := config.SetConfigHome(configDir)
 	require.NoError(t, err)
 
 	// calling switch before a team is set should not result in an error
 	cmd := NewCmdRoot()
-	cmd.SetArgs([]string{"switch"})
+	cmd.SetArgs(append([]string{"switch"}, baseArgs...))
 	err = cmd.Execute()
 	require.NoError(t, err)
 
 	// now set the team
 	cmd = NewCmdRoot()
-	cmd.SetArgs([]string{"switch", "my-team"})
+	cmd.SetArgs(append([]string{"switch", "my-team"}, baseArgs...))
 	err = cmd.Execute()
 	require.NoError(t, err)
 
 	cmd = NewCmdRoot()
-	cmd.SetArgs([]string{"switch"})
+	cmd.SetArgs(append([]string{"switch"}, baseArgs...))
 	buf := new(bytes.Buffer)
 	cmd.SetOut(buf)
 	err = cmd.Execute()

@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.4.1...plugins-destination-firehose-v2.4.2) (2024-04-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.27.11 ([#17544](https://github.com/cloudquery/cloudquery/issues/17544)) ([5c32451](https://github.com/cloudquery/cloudquery/commit/5c324512ad7aa752263e38d3c84f86f75d094916))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.4 ([#17485](https://github.com/cloudquery/cloudquery/issues/17485)) ([f370de4](https://github.com/cloudquery/cloudquery/commit/f370de449e61244398e6f413b973cbfa15c019a6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.5 ([#17526](https://github.com/cloudquery/cloudquery/issues/17526)) ([554c499](https://github.com/cloudquery/cloudquery/commit/554c499eb9bc9f98f6f3dc4be23fd02049f48dcd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.37.0 ([#17532](https://github.com/cloudquery/cloudquery/issues/17532)) ([8080970](https://github.com/cloudquery/cloudquery/commit/8080970f40d22b6bc9db4c359780c744b476bb02))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.38.0 ([#17554](https://github.com/cloudquery/cloudquery/issues/17554)) ([edb6f06](https://github.com/cloudquery/cloudquery/commit/edb6f066c3a3675f5bfca3e492eba3aeb31e770b))
+
+## [2.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.4.0...plugins-destination-firehose-v2.4.1) (2024-04-02)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#17426](https://github.com/cloudquery/cloudquery/issues/17426)) ([cd409d2](https://github.com/cloudquery/cloudquery/commit/cd409d24736486c3106d2a5865ca84a0b426d797))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.13 ([#17444](https://github.com/cloudquery/cloudquery/issues/17444)) ([da276fe](https://github.com/cloudquery/cloudquery/commit/da276fe64c46ec0a5f182c83ebc32a90d55f5d50))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.1 ([#17372](https://github.com/cloudquery/cloudquery/issues/17372)) ([aaf6187](https://github.com/cloudquery/cloudquery/commit/aaf61873ae5d2e01ea5f3b8b319e4f79afb7b29c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.2 ([#17450](https://github.com/cloudquery/cloudquery/issues/17450)) ([2947506](https://github.com/cloudquery/cloudquery/commit/294750650269f8191c6dfff060c4d3a546405763))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.3 ([#17456](https://github.com/cloudquery/cloudquery/issues/17456)) ([020865a](https://github.com/cloudquery/cloudquery/commit/020865a6fde8c896947a844021f0cd7daeb01b06))
+
 ## [2.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.3.7...plugins-destination-firehose-v2.4.0) (2024-03-26)
 
 

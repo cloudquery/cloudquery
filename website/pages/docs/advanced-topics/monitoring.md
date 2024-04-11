@@ -79,7 +79,7 @@ exporters:
       key: "<DATADOG_API_KEY>"
 ```
 
-Once ingestion starts you should be able to start seeing the traces in Datadog under ServiceCatalog and Traces with ability to view average p95 latency, error rate, total duration and other useful information you can query to either split the worload better or improve the plugin scheduling if you are the plugin author:
+Once ingestion starts you should be able to start seeing the traces in Datadog under ServiceCatalog and Traces with ability to view average p95 latency, error rate, total duration and other useful information you can query to either split the workload better or improve the plugin scheduling if you are the plugin author:
 
 ![Datadog](/images/docs/monitoring/cq_otel_datadog.png)
 

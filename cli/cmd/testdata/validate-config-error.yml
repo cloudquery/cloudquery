@@ -1,11 +1,13 @@
 kind: source
 spec:
-  name: aws
-  path: cloudquery/aws
+  name: cloudflare
+  path: cloudquery/cloudflare
   registry: cloudquery
-  version: "v24.3.0"
+  version: "v6.1.2"
   destinations: ["postgresql"]
-  tables: ["aws_ec2_instances"]
+  tables: ["*"]
+  spec:
+    invalid_key: "invalid_value"
 ---
 kind: destination
 spec:
@@ -15,3 +17,4 @@ spec:
   version: "v7.3.5"
   spec:
     connection_string: "postgresql://postgres:not-a-real-password@localhost:5432/postgres?sslmode=disable"
+    invalid_key: "invalid_value"

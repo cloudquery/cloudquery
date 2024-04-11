@@ -1,5 +1,32 @@
 # Changelog
 
+## [3.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-awspricing-v3.1.3...plugins-source-awspricing-v3.1.4) (2024-04-10)
+
+
+### Bug Fixes
+
+* Update Connection information for AWS Pricing ([#17582](https://github.com/cloudquery/cloudquery/issues/17582)) ([6da5c18](https://github.com/cloudquery/cloudquery/commit/6da5c18db2a35cfed8195ade519431b97d9a76f8))
+
+## [3.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-awspricing-v3.1.2...plugins-source-awspricing-v3.1.3) (2024-04-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.4 ([#17485](https://github.com/cloudquery/cloudquery/issues/17485)) ([f370de4](https://github.com/cloudquery/cloudquery/commit/f370de449e61244398e6f413b973cbfa15c019a6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.5 ([#17526](https://github.com/cloudquery/cloudquery/issues/17526)) ([554c499](https://github.com/cloudquery/cloudquery/commit/554c499eb9bc9f98f6f3dc4be23fd02049f48dcd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.37.0 ([#17532](https://github.com/cloudquery/cloudquery/issues/17532)) ([8080970](https://github.com/cloudquery/cloudquery/commit/8080970f40d22b6bc9db4c359780c744b476bb02))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.38.0 ([#17554](https://github.com/cloudquery/cloudquery/issues/17554)) ([edb6f06](https://github.com/cloudquery/cloudquery/commit/edb6f066c3a3675f5bfca3e492eba3aeb31e770b))
+
+## [3.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-awspricing-v3.1.1...plugins-source-awspricing-v3.1.2) (2024-04-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.13 ([#17444](https://github.com/cloudquery/cloudquery/issues/17444)) ([da276fe](https://github.com/cloudquery/cloudquery/commit/da276fe64c46ec0a5f182c83ebc32a90d55f5d50))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.1 ([#17372](https://github.com/cloudquery/cloudquery/issues/17372)) ([aaf6187](https://github.com/cloudquery/cloudquery/commit/aaf61873ae5d2e01ea5f3b8b319e4f79afb7b29c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.2 ([#17450](https://github.com/cloudquery/cloudquery/issues/17450)) ([2947506](https://github.com/cloudquery/cloudquery/commit/294750650269f8191c6dfff060c4d3a546405763))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.3 ([#17456](https://github.com/cloudquery/cloudquery/issues/17456)) ([020865a](https://github.com/cloudquery/cloudquery/commit/020865a6fde8c896947a844021f0cd7daeb01b06))
+
 ## [3.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-awspricing-v3.1.0...plugins-source-awspricing-v3.1.1) (2024-03-26)
 
 
