@@ -5,6 +5,18 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.15.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.14.1...cli-v5.15.0) (2024-04-10)
+
+
+### Features
+
+* Add filter flag to tables command ([#17584](https://github.com/cloudquery/cloudquery/issues/17584)) ([591f635](https://github.com/cloudquery/cloudquery/commit/591f635707789c42c34499004f7c904da37fc5c9))
+
+
+### Bug Fixes
+
+* Get team for API tokens ([#17580](https://github.com/cloudquery/cloudquery/issues/17580)) ([9cbabbc](https://github.com/cloudquery/cloudquery/commit/9cbabbcc42734e4927925fb3a26932d54f929176))
+
 ## [5.14.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.14.0...cli-v5.14.1) (2024-04-09)
 
 
