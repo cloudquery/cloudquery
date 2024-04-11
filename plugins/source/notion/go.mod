@@ -4,7 +4,7 @@ go 1.21.5
 
 require (
 	github.com/cloudquery/codegen v0.3.13
-	github.com/cloudquery/plugin-sdk/v4 v4.37.0
+	github.com/cloudquery/plugin-sdk/v4 v4.38.0
 	github.com/rs/zerolog v1.32.0
 )
 

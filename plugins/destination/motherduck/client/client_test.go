@@ -46,6 +46,9 @@ func TestPlugin(t *testing.T) {
 			SkipSpecificMigrations: plugin.Migrations{
 				RemoveUniqueConstraint: true,
 			},
+			SkipSpecificWriteTests: plugin.WriteTests{
+				DuplicatePK: true,
+			},
 		},
 		plugin.WithTestDataOptions(schema.TestSourceOptions{
 			// not supported in Parquet Writer

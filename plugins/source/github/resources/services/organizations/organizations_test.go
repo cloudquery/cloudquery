@@ -8,28 +8,23 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-github/v59/github"
+	"github.com/stretchr/testify/require"
 )
 
 func buildOrganizations(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
 	mock := mocks.NewMockOrganizationsService(ctrl)
 
 	var cs *github.Organization
-	if err := faker.FakeObject(&cs); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&cs))
 	mock.EXPECT().Get(gomock.Any(), gomock.Any()).Return(cs, &github.Response{}, nil)
 
 	var u github.User
-	if err := faker.FakeObject(&u); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&u))
 	mock.EXPECT().ListMembers(gomock.Any(), gomock.Any(), gomock.Any()).Return(
 		[]*github.User{&u}, &github.Response{}, nil)
 
 	var m github.Membership
-	if err := faker.FakeObject(&m); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&m))
 	mock.EXPECT().GetOrgMembership(gomock.Any(), *u.Login, gomock.Any()).Return(
 		&m, &github.Response{}, nil)
 

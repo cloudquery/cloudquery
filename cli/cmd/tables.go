@@ -20,6 +20,8 @@ cloudquery tables ./directory
 cloudquery tables ./directory --format markdown
 # You can also specify an output directory. The default is ./cq-docs
 cloudquery tables ./directory --output-dir ./docs
+# You can also filter which tables are included in the output. The default is all, use --filter=spec to include only tables referenced in the spec
+cloudquery tables ./directory --filter spec
 `
 )
 
@@ -34,6 +36,7 @@ func NewCmdTables() *cobra.Command {
 	}
 	cmd.Flags().String("output-dir", "cq-docs", "Base output directory for generated files")
 	cmd.Flags().String("format", "json", "Output format. One of: json, markdown")
+	cmd.Flags().String("filter", "all", "Filter tables. One of: all, spec")
 	return cmd
 }
 
@@ -51,6 +54,10 @@ func tables(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	filter, err := cmd.Flags().GetString("filter")
+	if err != nil {
+		return err
+	}
 	ctx := cmd.Context()
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
 	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
@@ -63,7 +70,7 @@ func tables(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
-	teamName, err := auth.GetTeamForToken(authToken)
+	teamName, err := auth.GetTeamForToken(ctx, authToken)
 	if err != nil {
 		return fmt.Errorf("failed to get team name: %w", err)
 	}
@@ -111,7 +118,7 @@ func tables(cmd *cobra.Command, args []string) error {
 		maxVersion := findMaxCommonVersion(versions, []int{2, 3})
 		switch maxVersion {
 		case 3:
-			if err := tablesV3(ctx, cl, source.Spec, outputPath, format); err != nil {
+			if err := tablesV3(ctx, cl, source, outputPath, format, filter); err != nil {
 				return err
 			}
 			fmt.Printf("Done generating docs for %q to directory %q\n", source.Name, outputPath)

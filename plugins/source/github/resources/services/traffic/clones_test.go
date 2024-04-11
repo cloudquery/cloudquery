@@ -8,15 +8,14 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/google/go-github/v59/github"
+	"github.com/stretchr/testify/require"
 )
 
 func buildClones(t *testing.T, ctrl *gomock.Controller) client.GithubServices {
 	repositoriesMock := mocks.NewMockRepositoriesService(ctrl)
 
 	var clones *github.TrafficClones
-	if err := faker.FakeObject(&clones); err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, faker.FakeObject(&clones))
 
 	opts := github.TrafficBreakdownOptions{}
 

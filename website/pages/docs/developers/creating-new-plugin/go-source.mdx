@@ -209,7 +209,7 @@ go run main.go serve
 
 This will start a gRPC server on port 7777. You can then create a config file that sets the `registry` and `path` properties to point to this server. For example:
 
-```yaml copy filename=config.yaml
+```yaml filename="config.yaml"
 kind: source
 spec:
   name: "xkcd"
@@ -233,7 +233,7 @@ spec:
 
 With the above configuration, we can now run `cloudquery sync` as normal:
 
-```shell copy
+```shell
 cloudquery sync config.yaml
 ```
 
@@ -243,13 +243,13 @@ Note that when running a source plugin as a gRPC server, errors with the source 
 
 To run the plugin as a standalone binary, you can run the following command in the root of the plugin directory:
 
-```shell copy
+```shell
 go build
 ```
 
 This will create a binary with the name of the plugin directory (so, `cq-source-<plugin-name>`). We can then refer to this binary by setting the registry to `local` and `path` as the path to the binary. Example:
 
-```yaml copy filename=config.yaml
+```yaml filename="config.yaml"
 kind: source
 spec:
   name: "xkcd"
@@ -273,7 +273,7 @@ spec:
 
 With the above configuration, we can now run `cloudquery sync` as normal:
 
-```shell copy
+```shell
 cloudquery sync config.yaml
 ```
 
