@@ -135,7 +135,6 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 		if err != nil {
 			return nil, fmt.Errorf("failed to authenticate with GitHub using access token: %w", err)
 		}
-
 	} else {
 		defaultServices = ghServices[spec.AppAuth[0].Org]
 	}
