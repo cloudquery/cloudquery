@@ -3,6 +3,7 @@ package cmd
 import (
 	"crypto/sha256"
 	"encoding/json"
+	"io"
 
 	"encoding/hex"
 	"net/http"
@@ -13,6 +14,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestAddonDownload(t *testing.T) {
@@ -77,6 +79,13 @@ func TestAddonDownload(t *testing.T) {
 }
 
 func TestAddonDownloadStdout(t *testing.T) {
+	oldStdout := os.Stdout
+	r, w, _ := os.Pipe()
+	os.Stdout = w
+	defer func() {
+		os.Stdout = oldStdout
+	}()
+
 	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
 
 	wantCalls := map[string]int{
@@ -129,4 +138,6 @@ func TestAddonDownloadStdout(t *testing.T) {
 	if diff := cmp.Diff(wantCalls, gotCalls); diff != "" {
 		t.Fatalf("mismatch (-want +got):\n%s", diff)
 	}
+	out, _ := io.ReadAll(r)
+	require.Equal(t, payload, out)
 }
