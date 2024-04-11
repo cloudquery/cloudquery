@@ -51,3 +51,7 @@ This is the (nested) spec used by the Airtable source plugin:
 - `concurrency` (`integer`) (optional) (default: `10000`)
 
   Best effort maximum number of tables to sync concurrently.
+
+## Running in a Containerized Environment
+
+To run the Airtable plugin in a containerized environment, see the [Using CloudQuery Docker Registry Plugins Inside a Containerized Environment](https://docs.cloudquery.io/docs/advanced-topics/using-cloud-query-docker-registry-plugins-inside-a-containerized-environment) guide.
