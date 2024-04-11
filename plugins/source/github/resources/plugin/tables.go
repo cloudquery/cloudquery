@@ -11,7 +11,6 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/repositories"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/teams"
 	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/traffic"
-	"github.com/cloudquery/cloudquery/plugins/source/github/resources/services/users"
 	"github.com/cloudquery/plugin-sdk/v4/docs"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
@@ -35,7 +34,6 @@ func getTables() []*schema.Table {
 		traffic.Paths(),
 		traffic.Views(),
 		traffic.Referrers(),
-		users.Users(),
 	}
 
 	if err := transformers.TransformTables(tables); err != nil {
