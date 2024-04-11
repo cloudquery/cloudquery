@@ -111,6 +111,10 @@ func (s *Spec) Validate() error {
 	return s.FileSpec.Validate()
 }
 
+func (s *Spec) PathContainsUUID() bool {
+	return strings.Contains(s.Path, varUUID)
+}
+
 func isValidJson(content string) error {
 	var v map[string]any
 	err := json.Unmarshal([]byte(content), &v)

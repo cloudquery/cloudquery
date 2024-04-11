@@ -17,6 +17,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 const bucket = "cq-dest-gcs"
@@ -39,9 +40,28 @@ func TestPlugin(t *testing.T) {
 		})
 
 		t.Run("write/"+string(ft), func(t *testing.T) {
-			testPluginCustom(t, &s)
+			testPluginCustom(t, &s, false, "")
 		})
 	}
+	t.Run("should give an error while reading when no_rotate is false", func(t *testing.T) {
+		s := spec.Spec{
+			Bucket:   bucket,
+			Path:     t.TempDir(),
+			NoRotate: false,
+			FileSpec: filetypes.FileSpec{Format: filetypes.FormatTypeCSV},
+		}
+		testPluginCustom(t, &s, true, "reading is not supported when `no_rotate` is false")
+	})
+
+	t.Run("should give an error while reading when {{UUID}} path variable is present", func(t *testing.T) {
+		s := spec.Spec{
+			Bucket:   bucket,
+			Path:     "{{UUID}}",
+			NoRotate: true,
+			FileSpec: filetypes.FileSpec{Format: filetypes.FormatTypeCSV},
+		}
+		testPluginCustom(t, &s, true, "reading is not supported when path contains uuid variable")
+	})
 }
 
 func testPlugin(t *testing.T, s *spec.Spec) {
@@ -66,7 +86,7 @@ func testPlugin(t *testing.T, s *spec.Spec) {
 	)
 }
 
-func testPluginCustom(t *testing.T, s *spec.Spec) {
+func testPluginCustom(t *testing.T, s *spec.Spec, expectErrorWhenReading bool, readErrorString string) {
 	ctx := context.Background()
 
 	var client plugin.Client
@@ -119,10 +139,12 @@ func testPluginCustom(t *testing.T, s *spec.Spec) {
 	}
 
 	readRecords, err := readAll(ctx, client, table)
-	if err != nil {
-		t.Fatal(fmt.Errorf("failed to sync: %w", err))
+	if expectErrorWhenReading {
+		require.ErrorContains(t, err, readErrorString)
+		return
+	} else {
+		require.NoError(t, err)
 	}
-
 	totalItems := plugin.TotalRows(readRecords)
 	assert.Equalf(t, int64(2), totalItems, "expected 2 items, got %d", totalItems)
 }
