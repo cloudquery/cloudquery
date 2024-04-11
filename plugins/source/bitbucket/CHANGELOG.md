@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.2.2...plugins-source-bitbucket-v1.2.3) (2024-04-11)
+
+
+### Bug Fixes
+
+* Set parents for child tables ([#17594](https://github.com/cloudquery/cloudquery/issues/17594)) ([0a8f086](https://github.com/cloudquery/cloudquery/commit/0a8f086445dea32354bf65478602c1c823a99afb))
+
 ## [1.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.2.1...plugins-source-bitbucket-v1.2.2) (2024-04-02)
 
 
