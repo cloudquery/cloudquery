@@ -41,7 +41,39 @@ func (s Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 		},
 	}
 
-	sc.AllOf = append(sc.AllOf, noRotateNoBatch)
+	// path patterns: should be a clean path
+	cleanPath := &jsonschema.Schema{
+		Title: "`path` is a clean path value",
+		Not: &jsonschema.Schema{
+			Title: "`path` is not a clean path value",
+			AnyOf: []*jsonschema.Schema{
+				{
+					Title: "`path` contains `./`",
+					Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+						properties := orderedmap.New[string, *jsonschema.Schema]()
+						properties.Set("path", &jsonschema.Schema{
+							Type:    "string",
+							Pattern: `^.*\./.*$`,
+						})
+						return properties
+					}(),
+				},
+				{
+					Title: "`path` contains `//`",
+					Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+						properties := orderedmap.New[string, *jsonschema.Schema]()
+						properties.Set("path", &jsonschema.Schema{
+							Type:    "string",
+							Pattern: `^.*//.*$`,
+						})
+						return properties
+					}(),
+				},
+			},
+		},
+	}
+
+	sc.AllOf = append(sc.AllOf, noRotateNoBatch, cleanPath)
 }
 
 //go:embed schema.json

@@ -39,6 +39,32 @@
     "Spec": {
       "allOf": [
         {
+          "not": {
+            "anyOf": [
+              {
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "pattern": "^.*\\./.*$"
+                  }
+                },
+                "title": "`path` contains `./`"
+              },
+              {
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "pattern": "^.*//.*$"
+                  }
+                },
+                "title": "`path` contains `//`"
+              }
+            ],
+            "title": "`path` is not a clean path value"
+          },
+          "title": "`path` is a clean path value"
+        },
+        {
           "if": {
             "properties": {
               "no_rotate": {

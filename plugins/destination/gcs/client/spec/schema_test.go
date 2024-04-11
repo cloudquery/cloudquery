@@ -71,7 +71,26 @@ func TestSpecJSONSchema(t *testing.T) {
 			Spec: `{"format": "csv", "path": "abc", "bucket": 123}`,
 			Err:  true,
 		},
-
+		{
+			Name: "path starts with /",
+			Spec: `{"format": "csv", "path": "/{{UUID}}", "bucket": "b", "region": "r"}`,
+			Err:  true,
+		},
+		{
+			Name: "path contains //",
+			Spec: `{"format": "csv", "path": "{{UUID}}//", "bucket": "b", "region": "r"}`,
+			Err:  true,
+		},
+		{
+			Name: "path contains ./",
+			Spec: `{"format": "csv", "path": "{{UUID}}/./", "bucket": "b", "region": "r"}`,
+			Err:  true,
+		},
+		{
+			Name: "path contains ../",
+			Spec: `{"format": "csv", "path": "{{UUID}}/../", "bucket": "b", "region": "r"}`,
+			Err:  true,
+		},
 		{
 			Name: "null no_rotate",
 			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate": null}`,
