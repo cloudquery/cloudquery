@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/apache/arrow/go/arrow"
+	"github.com/apache/arrow/go/v15/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/aws/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
@@ -63,6 +63,7 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 	}
 
 	validateNoEmptyColumnsExcept(t, tables, messages, testOpts.SkipEmptyCheckColumns)
+	validateTagData(t, tables, messages)
 }
 
 func AwsCreateMockClient(t *testing.T, ctrl *gomock.Controller, builder func(*testing.T, *gomock.Controller) Services, testOpts TestOptions) Client {
@@ -154,7 +155,7 @@ func validateNoEmptyColumnsExcept(t *testing.T, tables schema.Tables, messages m
 	}
 }
 
-func validateTagData(t *testing.T, tables schema.Tables, messages message.SyncMessages, except map[string][]string) {
+func validateTagData(t *testing.T, tables schema.Tables, messages message.SyncMessages) {
 	tablesWithIssues := []string{}
 	for _, table := range tables.FlattenTables() {
 		if table.Column("tags") == nil {
