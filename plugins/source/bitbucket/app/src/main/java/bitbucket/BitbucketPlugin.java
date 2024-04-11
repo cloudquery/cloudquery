@@ -95,6 +95,8 @@ public class BitbucketPlugin extends Plugin {
   public void close() {}
 
   private static List<Table> getTables() {
-    return List.of(Workspaces.getTable());
+    List<Table> tables = List.of(Workspaces.getTable());
+    Tables.setParents(tables, null);
+    return tables;
   }
 }
