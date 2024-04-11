@@ -73,7 +73,39 @@ func (s Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 		},
 	}
 
-	sc.AllOf = append(sc.AllOf, noRotateNoBatch, cleanPath)
+	pathWithUUID := &jsonschema.Schema{
+		Title: "Require {{UUID}} to be present in path",
+		Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+			// we make the non-zero requirement, so we want to allow only null here
+			properties := orderedmap.New[string, *jsonschema.Schema]()
+			properties.Set("path", &jsonschema.Schema{
+				Type:    "string",
+				Pattern: `^.*\{\{UUID\}\}.*$`,
+			})
+			return properties
+		}(),
+	}
+	// no_rotate:true -> no {{UUID}} should be present in path
+	noRotateNoUUID := &jsonschema.Schema{
+		Title: "Disallow {{UUID}} in path when using no_rotate",
+		If: &jsonschema.Schema{
+			Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+				noRotate := *sc.Properties.Value("no_rotate")
+				noRotate.Default = nil
+				noRotate.Const = true
+				noRotate.Description = ""
+				properties := orderedmap.New[string, *jsonschema.Schema]()
+				properties.Set("no_rotate", &noRotate)
+				return properties
+			}(),
+			Required: []string{"no_rotate"},
+		},
+		Then: &jsonschema.Schema{
+			Not: pathWithUUID,
+		},
+	}
+
+	sc.AllOf = append(sc.AllOf, noRotateNoBatch, cleanPath, noRotateNoUUID)
 }
 
 //go:embed schema.json

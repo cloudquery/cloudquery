@@ -77,6 +77,31 @@
             ]
           },
           "then": {
+            "not": {
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "pattern": "^.*\\{\\{UUID\\}\\}.*$"
+                }
+              },
+              "title": "Require {{UUID}} to be present in path"
+            }
+          },
+          "title": "Disallow {{UUID}} in path when using no_rotate"
+        },
+        {
+          "if": {
+            "properties": {
+              "no_rotate": {
+                "type": "boolean",
+                "const": true
+              }
+            },
+            "required": [
+              "no_rotate"
+            ]
+          },
+          "then": {
             "properties": {
               "batch_size": {
                 "type": "null"

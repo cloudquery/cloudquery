@@ -161,7 +161,16 @@ func TestSpecJSONSchema(t *testing.T) {
 			Name: "null batch_timeout",
 			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "batch_timeout":null}`,
 		},
-
+		// no_rotate + path({{UUID}})
+		{
+			Name: "no_rotate:true & path:{{UUID}}",
+			Spec: `{"format": "csv", "path": "{{UUID}}", "bucket": "b", "no_rotate":true}`,
+			Err:  true,
+		},
+		{
+			Name: "no_rotate:true & path:abc",
+			Spec: `{"format": "csv", "path": "abc", "bucket": "b", "no_rotate":true}`,
+		},
 		// no_rotate + batching
 		{
 			Name: "no_rotate:false & batch_size:100",
