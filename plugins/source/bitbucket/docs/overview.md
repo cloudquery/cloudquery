@@ -1,5 +1,5 @@
 ---
-name: Bitucket
+name: Bitbucket
 stage: Preview
 title: Bitbucket Source Plugin
 description: CloudQuery Bitbucket source plugin documentation
@@ -51,3 +51,7 @@ This is the (nested) spec used by the Bitbucket source plugin:
 - `password` (`string`) (required):
 
   The Bitbucket password associated with the [app password](https://support.atlassian.com/bitbucket-cloud/docs/app-passwords/).
+
+## Running in a Containerized Environment
+
+To run the Bitbucket plugin in a containerized environment, see the [Using CloudQuery Docker Registry Plugins Inside a Containerized Environment](https://docs.cloudquery.io/docs/advanced-topics/using-cloud-query-docker-registry-plugins-inside-a-containerized-environment) guide.
