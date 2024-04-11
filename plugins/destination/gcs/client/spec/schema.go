@@ -105,7 +105,45 @@ func (s Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 		},
 	}
 
-	sc.AllOf = append(sc.AllOf, noRotateNoBatch, cleanPath, noRotateNoUUID)
+	/* batching enabled -> require {{UUID}} in path or require no path variables in path,
+	since we will use UUID by default if batch */
+	uuidWhenBatching := &jsonschema.Schema{
+		Title: "Require {{UUID}} in path when batching",
+		If: &jsonschema.Schema{
+			// It's enough to disallow setting no_rotate to true
+			// As otherwise we're requiring the positive batch size (& bytes) values
+			Title: "Disallow setting no_rotate to true",
+			Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+				noRotate := *sc.Properties.Value("no_rotate")
+				noRotate.Default = nil
+				noRotate.Const = false
+				noRotate.Description = ""
+				properties := orderedmap.New[string, *jsonschema.Schema]()
+				properties.Set("no_rotate", &noRotate)
+				return properties
+			}(),
+		},
+		Then: &jsonschema.Schema{
+			AnyOf: []*jsonschema.Schema{
+				pathWithUUID,
+				{
+					Title: "`path` does not contain path variables",
+					Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+						properties := orderedmap.New[string, *jsonschema.Schema]()
+						properties.Set("path", &jsonschema.Schema{
+							Not: &jsonschema.Schema{
+								Type:    "string",
+								Pattern: `^.*{{.*}}.*$`,
+							},
+						})
+						return properties
+					}(),
+				},
+			},
+		},
+	}
+
+	sc.AllOf = append(sc.AllOf, noRotateNoBatch, cleanPath, noRotateNoUUID, uuidWhenBatching)
 }
 
 //go:embed schema.json
