@@ -141,9 +141,10 @@ func testPluginCustom(t *testing.T, s *spec.Spec, expectErrorWhenReading bool, r
 	readRecords, err := readAll(ctx, client, table)
 	if expectErrorWhenReading {
 		require.ErrorContains(t, err, readErrorString)
-	} else {
-		require.NoError(t, err)
+		return
 	}
+
+	require.NoError(t, err)
 	totalItems := plugin.TotalRows(readRecords)
 	assert.Equalf(t, int64(2), totalItems, "expected 2 items, got %d", totalItems)
 }
