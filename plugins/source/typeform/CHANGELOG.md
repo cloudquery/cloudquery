@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.3.5...plugins-source-typeform-v1.4.0) (2024-04-12)
+
+
+### Features
+
+* Add reference to running in a Containerized Environment doc ([#17593](https://github.com/cloudquery/cloudquery/issues/17593)) ([9b07ab3](https://github.com/cloudquery/cloudquery/commit/9b07ab328eb8b3ef7fab61c9d8458244cc33af93))
+
 ## [1.3.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.3.4...plugins-source-typeform-v1.3.5) (2024-04-02)
 
 
