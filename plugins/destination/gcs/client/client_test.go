@@ -141,7 +141,6 @@ func testPluginCustom(t *testing.T, s *spec.Spec, expectErrorWhenReading bool, r
 	readRecords, err := readAll(ctx, client, table)
 	if expectErrorWhenReading {
 		require.ErrorContains(t, err, readErrorString)
-		return
 	} else {
 		require.NoError(t, err)
 	}
