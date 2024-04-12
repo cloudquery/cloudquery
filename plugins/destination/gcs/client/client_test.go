@@ -40,7 +40,7 @@ func TestPlugin(t *testing.T) {
 		})
 
 		t.Run("write/"+string(ft), func(t *testing.T) {
-			testPluginCustom(t, &s, false, "")
+			testPluginCustom(t, &s, "")
 		})
 	}
 	t.Run("should give an error while reading when no_rotate is false", func(t *testing.T) {
@@ -50,7 +50,7 @@ func TestPlugin(t *testing.T) {
 			NoRotate: false,
 			FileSpec: filetypes.FileSpec{Format: filetypes.FormatTypeCSV},
 		}
-		testPluginCustom(t, &s, true, "reading is not supported when `no_rotate` is false")
+		testPluginCustom(t, &s, "reading is not supported when `no_rotate` is false")
 	})
 
 	t.Run("should give an error while reading when {{UUID}} path variable is present", func(t *testing.T) {
@@ -60,7 +60,7 @@ func TestPlugin(t *testing.T) {
 			NoRotate: true,
 			FileSpec: filetypes.FileSpec{Format: filetypes.FormatTypeCSV},
 		}
-		testPluginCustom(t, &s, true, "reading is not supported when path contains uuid variable")
+		testPluginCustom(t, &s, "reading is not supported when path contains uuid variable")
 	})
 }
 
@@ -86,7 +86,7 @@ func testPlugin(t *testing.T, s *spec.Spec) {
 	)
 }
 
-func testPluginCustom(t *testing.T, s *spec.Spec, expectErrorWhenReading bool, readErrorString string) {
+func testPluginCustom(t *testing.T, s *spec.Spec, readErrorString string) {
 	ctx := context.Background()
 
 	var client plugin.Client
@@ -139,7 +139,7 @@ func testPluginCustom(t *testing.T, s *spec.Spec, expectErrorWhenReading bool, r
 	}
 
 	readRecords, err := readAll(ctx, client, table)
-	if expectErrorWhenReading {
+	if readErrorString != "" {
 		require.ErrorContains(t, err, readErrorString)
 		return
 	}
