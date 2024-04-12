@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v4.3.3...plugins-source-gitlab-v4.3.4) (2024-04-12)
+
+
+### Bug Fixes
+
+* Add link to GitHub docs in JSON Schema ([#17607](https://github.com/cloudquery/cloudquery/issues/17607)) ([de32974](https://github.com/cloudquery/cloudquery/commit/de3297476bcc5e3aa71bc1b14c4fdf6cf5b49ba0))
+
 ## [4.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-gitlab-v4.3.2...plugins-source-gitlab-v4.3.3) (2024-04-09)
 
 
