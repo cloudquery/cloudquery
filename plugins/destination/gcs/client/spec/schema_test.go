@@ -71,7 +71,26 @@ func TestSpecJSONSchema(t *testing.T) {
 			Spec: `{"format": "csv", "path": "abc", "bucket": 123}`,
 			Err:  true,
 		},
-
+		{
+			Name: "path starts with /",
+			Spec: `{"format": "csv", "path": "/{{UUID}}", "bucket": "b", "region": "r"}`,
+			Err:  true,
+		},
+		{
+			Name: "path contains //",
+			Spec: `{"format": "csv", "path": "{{UUID}}//", "bucket": "b", "region": "r"}`,
+			Err:  true,
+		},
+		{
+			Name: "path contains ./",
+			Spec: `{"format": "csv", "path": "{{UUID}}/./", "bucket": "b", "region": "r"}`,
+			Err:  true,
+		},
+		{
+			Name: "path contains ../",
+			Spec: `{"format": "csv", "path": "{{UUID}}/../", "bucket": "b", "region": "r"}`,
+			Err:  true,
+		},
 		{
 			Name: "null no_rotate",
 			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "no_rotate": null}`,
@@ -141,6 +160,30 @@ func TestSpecJSONSchema(t *testing.T) {
 		{
 			Name: "null batch_timeout",
 			Spec: `{"format": "csv", "path": "abc", "bucket": "abc", "batch_timeout":null}`,
+		},
+
+		// no_rotate + path({{UUID}})
+		{
+			Name: "no_rotate:false & path:{{UUID}}",
+			Spec: `{"format": "csv", "path": "{{UUID}}", "bucket": "b", "no_rotate":false}`,
+		},
+		{
+			Name: "no_rotate:true & path:{{UUID}}",
+			Spec: `{"format": "csv", "path": "{{UUID}}", "bucket": "b", "no_rotate":true}`,
+			Err:  true,
+		},
+		{
+			Name: "no_rotate:false & path:abc",
+			Spec: `{"format": "csv", "path": "abc", "bucket": "b", "no_rotate":false}`,
+		},
+		{
+			Name: "no_rotate:true & path:abc",
+			Spec: `{"format": "csv", "path": "abc", "bucket": "b", "no_rotate":true}`,
+		},
+		{
+			Name: "no_rotate:false & path:{{TABLE}}",
+			Spec: `{"format": "csv", "path": "{{TABLE}}", "bucket": "b", "no_rotate":false}`,
+			Err:  true,
 		},
 
 		// no_rotate + batching
