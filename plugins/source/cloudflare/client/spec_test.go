@@ -74,5 +74,10 @@ func TestJSONSchema(t *testing.T) {
 			Spec: `{"bad_configuration": "bad"}`,
 			Err:  true,
 		},
+		{
+			Name: "spec with all auth fields",
+			Spec: `{"api_token": "secret", "api_key": "key", "api_email": "email"}`,
+			Err:  true,
+		},
 	})
 }
