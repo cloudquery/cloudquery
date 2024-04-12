@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-awspricing-v3.1.3...plugins-source-awspricing-v3.1.4) (2024-04-10)
+
+
+### Bug Fixes
+
+* Update Connection information for AWS Pricing ([#17582](https://github.com/cloudquery/cloudquery/issues/17582)) ([6da5c18](https://github.com/cloudquery/cloudquery/commit/6da5c18db2a35cfed8195ade519431b97d9a76f8))
+
 ## [3.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-awspricing-v3.1.2...plugins-source-awspricing-v3.1.3) (2024-04-09)
 
 
