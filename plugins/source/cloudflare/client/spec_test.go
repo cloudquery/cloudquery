@@ -11,6 +11,7 @@ func TestJSONSchema(t *testing.T) {
 		{
 			Name: "empty spec",
 			Spec: `{}`,
+			Err:  true,
 		},
 		{
 			Name: "spec with token",
@@ -22,29 +23,30 @@ func TestJSONSchema(t *testing.T) {
 			Err:  true,
 		},
 		{
-			Name: "spec with api key",
-			Spec: `{"api_key": "key"}`,
+			Name: "spec with api key and email",
+			Spec: `{"api_key": "key", "api_email": "email"}`,
 		},
 		{
 			Name: "spec with integer api key",
-			Spec: `{"api_key": 1234}`,
+			Spec: `{"api_key": 1234, "api_email": "email"}`,
 			Err:  true,
 		},
 		{
-			Name: "spec with api email",
-			Spec: `{"api_email": "email"}`,
+			Name: "spec with integer api email",
+			Spec: `{"api_key": "email", "api_email": 1234}`,
+			Err:  true,
 		},
 		{
 			Name: "spec with accounts",
-			Spec: `{"accounts": ["account1", "account2"]}`,
+			Spec: `{"api_token": "secret", "accounts": ["account1", "account2"]}`,
 		},
 		{
 			Name: "spec with empty accounts",
-			Spec: `{"accounts": []}`,
+			Spec: `{"api_token": "secret", "accounts": []}`,
 		},
 		{
 			Name: "spec with null accounts",
-			Spec: `{"accounts": null}`,
+			Spec: `{"api_token": "secret", "accounts": null}`,
 		},
 		{
 			Name: "spec with integer accounts",
@@ -53,19 +55,19 @@ func TestJSONSchema(t *testing.T) {
 		},
 		{
 			Name: "spec with zones",
-			Spec: `{"zones": ["zone1", "zone2"]}`,
+			Spec: `{"api_token": "secret", "zones": ["zone1", "zone2"]}`,
 		},
 		{
 			Name: "spec with empty zones",
-			Spec: `{"zones": []}`,
+			Spec: `{"api_token": "secret", "zones": []}`,
 		},
 		{
 			Name: "spec with null zones",
-			Spec: `{"zones": null}`,
+			Spec: `{"api_token": "secret", "zones": null}`,
 		},
 		{
 			Name: "spec with concurrency",
-			Spec: `{"concurrency": 100}`,
+			Spec: `{"api_token": "secret", "concurrency": 100}`,
 		},
 		{
 			Name: "spect with unknown field",
