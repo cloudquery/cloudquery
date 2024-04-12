@@ -15,6 +15,7 @@ type GithubServices struct {
 	Repositories    RepositoriesService
 	Teams           TeamsService
 	DependencyGraph DependencyGraphService
+	Users           UsersService
 }
 
 //go:generate mockgen -package=mocks -destination=./mocks/mock_teams.go . TeamsService
@@ -86,4 +87,10 @@ type DependabotService interface {
 //go:generate mockgen -package=mocks -destination=./mocks/mock_dependency_graph.go . DependencyGraphService
 type DependencyGraphService interface {
 	GetSBOM(ctx context.Context, owner, repo string) (*github.SBOM, *github.Response, error)
+}
+
+//go:generate mockgen -package=mocks -destination=./mocks/mock_users.go . UsersService
+type UsersService interface {
+	Get(ctx context.Context, user string) (*github.User, *github.Response, error)
+	ListKeys(ctx context.Context, user string, opts *github.ListOptions) ([]*github.Key, *github.Response, error)
 }
