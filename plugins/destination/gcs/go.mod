@@ -10,6 +10,7 @@ require (
 	github.com/cloudquery/codegen v0.3.13
 	github.com/cloudquery/filetypes/v4 v4.2.16
 	github.com/cloudquery/plugin-sdk/v4 v4.38.1
+	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.32.0

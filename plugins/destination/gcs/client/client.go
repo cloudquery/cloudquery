@@ -22,6 +22,7 @@ type Client struct {
 	streamingbatchwriter.UnimplementedDeleteStale
 	streamingbatchwriter.UnimplementedDeleteRecords
 
+	syncID string
 	logger zerolog.Logger
 	spec   *spec.Spec
 
@@ -32,9 +33,10 @@ type Client struct {
 	writer *streamingbatchwriter.StreamingBatchWriter
 }
 
-func New(ctx context.Context, logger zerolog.Logger, s []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, s []byte, newClientOpts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "gcs").Logger(),
+		syncID: newClientOpts.InvocationID,
 	}
 
 	if err := json.Unmarshal(s, &c.spec); err != nil {

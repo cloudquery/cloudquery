@@ -2,7 +2,7 @@ package client
 
 import (
 	"context"
-	"fmt"
+	"time"
 
 	"cloud.google.com/go/storage"
 	"github.com/apache/arrow/go/v15/arrow"
@@ -20,11 +20,7 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 	for msg := range msgs {
 		if w == nil {
 			table := msg.GetTable()
-
-			name := fmt.Sprintf("%s/%s.%s%s.%s", c.spec.Path, table.Name, c.spec.Format, c.spec.FileSpec.Compression.Extension(), uuid.NewString())
-			if c.spec.NoRotate {
-				name = fmt.Sprintf("%s/%s.%s%s", c.spec.Path, table.Name, c.spec.Format, c.spec.FileSpec.Compression.Extension())
-			}
+			name := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC(), c.syncID)
 
 			w = c.gcsClient.Bucket(c.spec.Bucket).Object(name).NewWriter(ctx)
 
