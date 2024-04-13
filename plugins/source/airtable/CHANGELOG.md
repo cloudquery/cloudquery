@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.1.3...plugins-source-airtable-v2.2.0) (2024-04-12)
+
+
+### Features
+
+* Add reference to running in a Containerized Environment doc ([#17593](https://github.com/cloudquery/cloudquery/issues/17593)) ([9b07ab3](https://github.com/cloudquery/cloudquery/commit/9b07ab328eb8b3ef7fab61c9d8458244cc33af93))
+
+## [2.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.1.2...plugins-source-airtable-v2.1.3) (2024-04-11)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-sdk-javascript to v0.1.10 ([#17590](https://github.com/cloudquery/cloudquery/issues/17590)) ([ef50ccb](https://github.com/cloudquery/cloudquery/commit/ef50ccbcceb317b5c9a3f0177dffebbdd76e95a2))
+
 ## [2.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.1.1...plugins-source-airtable-v2.1.2) (2024-04-02)
 
 

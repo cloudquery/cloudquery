@@ -7,13 +7,15 @@ require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.9.0
 	github.com/cloudquery/codegen v0.3.13
 	github.com/cloudquery/httpcache v0.0.0-20240402185306-9cae36e50fd1
-	github.com/cloudquery/plugin-sdk/v4 v4.37.0
+	github.com/cloudquery/plugin-sdk/v4 v4.38.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/gofri/go-github-ratelimit v1.0.3
 	github.com/golang/mock v1.6.0
 	github.com/google/go-github/v59 v59.0.0
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.32.0
+	github.com/stretchr/testify v1.9.0
+	github.com/tj/go-naturaldate v1.3.0
 	golang.org/x/sync v0.6.0
 )
 
@@ -97,7 +99,6 @@ require (
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/cobra v1.8.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.9.0 // indirect
 	github.com/tdewolff/minify/v2 v2.20.18 // indirect
 	github.com/tdewolff/parse/v2 v2.7.12 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect

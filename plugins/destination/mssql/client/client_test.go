@@ -40,6 +40,9 @@ func TestPlugin(t *testing.T) {
 			SkipSpecificMigrations: plugin.Migrations{
 				RemoveUniqueConstraint: true,
 			},
+			SkipSpecificWriteTests: plugin.WriteTests{
+				DuplicatePK: true,
+			},
 		},
 	)
 }

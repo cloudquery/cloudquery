@@ -5,6 +5,26 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.15.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.14.1...cli-v5.15.0) (2024-04-10)
+
+
+### Features
+
+* Add filter flag to tables command ([#17584](https://github.com/cloudquery/cloudquery/issues/17584)) ([591f635](https://github.com/cloudquery/cloudquery/commit/591f635707789c42c34499004f7c904da37fc5c9))
+
+
+### Bug Fixes
+
+* Get team for API tokens ([#17580](https://github.com/cloudquery/cloudquery/issues/17580)) ([9cbabbc](https://github.com/cloudquery/cloudquery/commit/9cbabbcc42734e4927925fb3a26932d54f929176))
+
+## [5.14.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.14.0...cli-v5.14.1) (2024-04-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.19.9 ([#17565](https://github.com/cloudquery/cloudquery/issues/17565)) ([2332df8](https://github.com/cloudquery/cloudquery/commit/2332df8e7522b291f5b3abb5829c6262112f56fe))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.38.0 ([#17554](https://github.com/cloudquery/cloudquery/issues/17554)) ([edb6f06](https://github.com/cloudquery/cloudquery/commit/edb6f066c3a3675f5bfca3e492eba3aeb31e770b))
+
 ## [5.14.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.13.1...cli-v5.14.0) (2024-04-05)
 
 

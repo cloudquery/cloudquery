@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v5.1.2...plugins-destination-s3-v5.1.3) (2024-04-09)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#17541](https://github.com/cloudquery/cloudquery/issues/17541)) ([fcb16a4](https://github.com/cloudquery/cloudquery/commit/fcb16a4ea455d7dd8eb62a7adcb7efa62a1f2e77))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.14 ([#17525](https://github.com/cloudquery/cloudquery/issues/17525)) ([4839d53](https://github.com/cloudquery/cloudquery/commit/4839d53643176cc23f69da3680d697b5257a1b8c))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.15 ([#17527](https://github.com/cloudquery/cloudquery/issues/17527)) ([c868fe7](https://github.com/cloudquery/cloudquery/commit/c868fe7375c0e8188fc504b737615a8d11743ccf))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.16 ([#17557](https://github.com/cloudquery/cloudquery/issues/17557)) ([c4a4c02](https://github.com/cloudquery/cloudquery/commit/c4a4c02da469035365198d6ca142a5ba2e266b96))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.4 ([#17485](https://github.com/cloudquery/cloudquery/issues/17485)) ([f370de4](https://github.com/cloudquery/cloudquery/commit/f370de449e61244398e6f413b973cbfa15c019a6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.5 ([#17526](https://github.com/cloudquery/cloudquery/issues/17526)) ([554c499](https://github.com/cloudquery/cloudquery/commit/554c499eb9bc9f98f6f3dc4be23fd02049f48dcd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.37.0 ([#17532](https://github.com/cloudquery/cloudquery/issues/17532)) ([8080970](https://github.com/cloudquery/cloudquery/commit/8080970f40d22b6bc9db4c359780c744b476bb02))
+
 ## [5.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v5.1.1...plugins-destination-s3-v5.1.2) (2024-04-02)
 
 

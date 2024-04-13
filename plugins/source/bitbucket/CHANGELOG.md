@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.2.3...plugins-source-bitbucket-v1.3.0) (2024-04-12)
+
+
+### Features
+
+* Add reference to running in a Containerized Environment doc ([#17593](https://github.com/cloudquery/cloudquery/issues/17593)) ([9b07ab3](https://github.com/cloudquery/cloudquery/commit/9b07ab328eb8b3ef7fab61c9d8458244cc33af93))
+
+## [1.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.2.2...plugins-source-bitbucket-v1.2.3) (2024-04-11)
+
+
+### Bug Fixes
+
+* Set parents for child tables ([#17594](https://github.com/cloudquery/cloudquery/issues/17594)) ([0a8f086](https://github.com/cloudquery/cloudquery/commit/0a8f086445dea32354bf65478602c1c823a99afb))
+
 ## [1.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.2.1...plugins-source-bitbucket-v1.2.2) (2024-04-02)
 
 

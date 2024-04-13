@@ -15,6 +15,8 @@ The AWS Pricing Source plugin for CloudQuery extracts data from the [AWS Bulk Pr
 
 The following configuration syncs from AWS Pricing service to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/quickstart) if you need help setting up the destination.
 
+There is no connection string or credentials required to sync this data as all data is publicly available at `https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/index.json`
+
 :configuration
 
 ## AWS Pricing Spec

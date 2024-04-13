@@ -2,8 +2,10 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"os"
 	"slices"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -60,6 +62,7 @@ func AwsMockTestHelper(t *testing.T, parentTable *schema.Table, builder func(*te
 	}
 
 	validateNoEmptyColumnsExcept(t, tables, messages, testOpts.SkipEmptyCheckColumns)
+	validateTagData(t, tables, messages)
 }
 
 func AwsCreateMockClient(t *testing.T, ctrl *gomock.Controller, builder func(*testing.T, *gomock.Controller) Services, testOpts TestOptions) Client {
@@ -148,5 +151,29 @@ func validateNoEmptyColumnsExcept(t *testing.T, tables schema.Tables, messages m
 		if len(emptyColumns) > 0 {
 			t.Fatalf("found empty column(s): %v in %s", emptyColumns, table.Name)
 		}
+	}
+}
+
+func validateTagData(t *testing.T, tables schema.Tables, messages message.SyncMessages) {
+	tablesWithIssues := []string{}
+	for _, table := range tables.FlattenTables() {
+		index := table.Columns.Index("tags")
+		if index == -1 {
+			continue
+		}
+		records := messages.GetInserts().GetRecordsForTable(table)
+		for _, resource := range records {
+			arr := resource.Column(index)
+			for i := 0; i < arr.Len(); i++ {
+				val := arr.GetOneForMarshal(i).(json.RawMessage)
+				if strings.HasPrefix(string(val), "[") && strings.HasSuffix(string(val), "]") {
+					tablesWithIssues = append(tablesWithIssues, table.Name)
+					break
+				}
+			}
+		}
+	}
+	if len(tablesWithIssues) > 0 {
+		t.Fatalf("found improperly structured tags in %v", tablesWithIssues)
 	}
 }

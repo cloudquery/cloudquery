@@ -33,6 +33,8 @@ type Client struct {
 	orgs            []string
 	orgRepositories map[string][]*github.Repository
 	repos           []string
+
+	Spec Spec
 }
 
 func (c *Client) Logger() *zerolog.Logger {
@@ -129,6 +131,10 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 			return nil, fmt.Errorf("failed to create GitHub client for access token: %w", err)
 		}
 		defaultServices = servicesForClient(ghc)
+		_, _, err = defaultServices.Users.Get(ctx, "")
+		if err != nil {
+			return nil, fmt.Errorf("failed to authenticate with GitHub using access token: %w", err)
+		}
 	} else {
 		defaultServices = ghServices[spec.AppAuth[0].Org]
 	}
@@ -139,6 +145,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 		orgServices: ghServices,
 		orgs:        spec.Orgs,
 		repos:       spec.Repos,
+		Spec:        spec,
 	}
 	c.logger.Info().Msg("Discovering repositories")
 	orgRepositories, err := c.discoverRepositories(ctx, spec.DiscoveryConcurrency, spec.Orgs, spec.Repos, spec.IncludeArchivedRepos)
@@ -159,6 +166,7 @@ func servicesForClient(c *github.Client) GithubServices {
 		Repositories:    c.Repositories,
 		Teams:           c.Teams,
 		DependencyGraph: c.DependencyGraph,
+		Users:           c.Users,
 	}
 }
 

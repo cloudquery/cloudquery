@@ -81,7 +81,7 @@ Specifies the update method to use when inserting rows. The exact semantics depe
 
 (`string`, optional, default: `safe`. Available: `safe`, `forced`)
 
-Specifies the migration mode to use when source tables are changed. In `safe` mode (the default), CloudQuery will not run migrations that would result in data loss, and will print an error instead. In `forced` mode, CloudQuery will run migrations that may result in data loss and the migration should succeed without errors, unless a table has user created dependant objects (e.g. views).
+Specifies the migration mode to use when source tables are changed. In `safe` mode (the default), CloudQuery will not run migrations that would result in data loss, and will print an error instead. In `forced` mode, CloudQuery will run migrations that may result in data loss and the migration should succeed without errors, unless a table has user created dependent objects (e.g. views).
 `migrate_mode: forced` is only supported for the ClickHouse, MySQL, PostgreSQL, MSSQL and SQLite destination plugins at the moment.
 
 Read more about how CloudQuery handles migrations [here](/docs/advanced-topics/migrations).
