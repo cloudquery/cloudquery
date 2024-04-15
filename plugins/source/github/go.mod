@@ -5,7 +5,7 @@ go 1.21.5
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/bradleyfalzon/ghinstallation/v2 v2.9.0
-	github.com/cloudquery/codegen v0.3.13
+	github.com/cloudquery/codegen v0.3.14
 	github.com/cloudquery/httpcache v0.0.0-20240402185306-9cae36e50fd1
 	github.com/cloudquery/plugin-sdk/v4 v4.38.2
 	github.com/ghodss/yaml v1.0.0

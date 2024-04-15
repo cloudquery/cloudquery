@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.26.1
 	github.com/aws/aws-sdk-go-v2/config v1.27.11
 	github.com/cenkalti/backoff/v4 v4.3.0
-	github.com/cloudquery/codegen v0.3.13
+	github.com/cloudquery/codegen v0.3.14
 	github.com/cloudquery/plugin-sdk/v4 v4.38.2
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.32.0
