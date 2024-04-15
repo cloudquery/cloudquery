@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.27.11
 	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.16.15
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.53.1
-	github.com/cloudquery/codegen v0.3.13
+	github.com/cloudquery/codegen v0.3.14
 	github.com/cloudquery/filetypes/v4 v4.2.16
 	github.com/cloudquery/plugin-sdk/v4 v4.38.2
 	github.com/google/go-cmp v0.6.0

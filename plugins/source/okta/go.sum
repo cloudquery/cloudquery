@@ -47,8 +47,8 @@ github.com/chenzhuoyu/iasm v0.9.1 h1:tUHQJXo3NhBqw6s33wkGn9SP3bvrWLdlVIJ3hQBL7P0
 github.com/chenzhuoyu/iasm v0.9.1/go.mod h1:Xjy2NpN3h7aUqeqM+woSuuvxmIe6+DDsiNLIrkAmYog=
 github.com/cloudquery/cloudquery-api-go v1.9.1 h1:Nq6SnE4V9A8YprLMXO/8QszWJMNloqW6c2G00ADYoI4=
 github.com/cloudquery/cloudquery-api-go v1.9.1/go.mod h1:F4kuaNBAVqsS9ZRHuX+tV2m6+Khoa2Rb9lROGhinGPk=
-github.com/cloudquery/codegen v0.3.13 h1:ZQZhaN/xXyr8qBhIlyPuTyncssI8JqsKwIQamWxIAPM=
-github.com/cloudquery/codegen v0.3.13/go.mod h1:gF9EOua45yxt5n5Zc8NrZ63HT6rGc6wDCV+Apc9d0Mg=
+github.com/cloudquery/codegen v0.3.14 h1:6bf2iCsan9OOwcnuVMeEwBV0HX2O81oUM7/NYPsJUWw=
+github.com/cloudquery/codegen v0.3.14/go.mod h1:fk8Umrv5bupqA2Zoeio9gpFHarNRs6UrYZMUKIJhtMs=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66 h1:OZLPSIBYEfvkAUeOeM8CwTgVQy5zhayI99ishCrsFV0=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66/go.mod h1:0SoZ/U7yJlNOR+fWsBSeTvTbGXB6DK01tzJ7m2Xfg34=
 github.com/cloudquery/okta-sdk-golang/v4 v4.0.1-0.20240405141335-5497c68a9a1e h1:0vx91JlME5We01H2YJqZInrMMpoWvwgVhcYd1MiSsjA=

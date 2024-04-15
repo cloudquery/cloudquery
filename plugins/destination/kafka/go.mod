@@ -7,7 +7,7 @@ toolchain go1.21.6
 require (
 	github.com/Shopify/sarama v1.37.2
 	github.com/apache/arrow/go/v15 v15.0.0-20240115115805-d7bc55542e61
-	github.com/cloudquery/codegen v0.3.13
+	github.com/cloudquery/codegen v0.3.14
 	github.com/cloudquery/filetypes/v4 v4.2.16
 	github.com/cloudquery/plugin-sdk/v4 v4.38.2
 	github.com/invopop/jsonschema v0.12.0
