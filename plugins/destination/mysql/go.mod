@@ -4,7 +4,7 @@ go 1.21.5
 
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
-	github.com/cloudquery/codegen v0.3.14
+	github.com/cloudquery/codegen v0.3.15
 	github.com/cloudquery/plugin-sdk/v4 v4.38.2
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/google/uuid v1.6.0
