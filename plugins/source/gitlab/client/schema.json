@@ -8,7 +8,7 @@
         "access_token": {
           "type": "string",
           "minLength": 1,
-          "description": "An access token for your GitLab server. Instructions on how to generate an access token here."
+          "description": "An access token for your GitLab server. For instructions on how to generate an access token [visit the GitLab docs](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token)."
         },
         "base_url": {
           "type": "string",

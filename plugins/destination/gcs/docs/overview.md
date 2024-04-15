@@ -28,7 +28,17 @@ This is the (nested) spec used by the CSV destination Plugin.
 
 - `path` (`string`) (required)
 
-  Path to where the files will be uploaded in the above bucket.
+  Path to where the files will be uploaded in the above bucket. If no path variables are present, the path will be appended with TABLE, FORMAT and Compression extension by default. The path supports the following placeholder variables:
+
+  - `{{TABLE}}` will be replaced with the table name
+  - `{{SYNC_ID}}` will be replaced with the unique identifier of the sync. This value is a UUID and is randomly generated for each sync.
+  - `{{FORMAT}}` will be replaced with the file format, such as `csv`, `json` or `parquet`. If compression is enabled, the format will be `csv.gz`, `json.gz` etc.
+  - `{{UUID}}` will be replaced with a random UUID to uniquely identify each file
+  - `{{YEAR}}` will be replaced with the current year in `YYYY` format
+  - `{{MONTH}}` will be replaced with the current month in `MM` format
+  - `{{DAY}}` will be replaced with the current day in `DD` format
+  - `{{HOUR}}` will be replaced with the current hour in `HH` format
+  - `{{MINUTE}}` will be replaced with the current minute in `mm` format
 
 - `format` (`string`) (required)
 
