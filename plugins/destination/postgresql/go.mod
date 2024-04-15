@@ -6,7 +6,7 @@ toolchain go1.21.6
 
 require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240115115805-d7bc55542e61
-	github.com/cloudquery/codegen v0.3.14
+	github.com/cloudquery/codegen v0.3.15
 	github.com/cloudquery/plugin-sdk/v4 v4.38.2
 	github.com/google/go-cmp v0.6.0
 	github.com/invopop/jsonschema v0.12.0

@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.27.11
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.53.1
 	github.com/aws/smithy-go v1.20.2
-	github.com/cloudquery/codegen v0.3.14
+	github.com/cloudquery/codegen v0.3.15
 	github.com/cloudquery/plugin-sdk/v4 v4.38.2
 	github.com/digitalocean/godo v1.99.0
 	github.com/golang/mock v1.6.0
