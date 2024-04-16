@@ -39,9 +39,9 @@ func (s Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 				return properties
 			}(),
 		},
-		Extras: map[string]interface{}{
-			"errorMessage": map[string]interface{}{
-				"properties": map[string]interface{}{
+		Extras: map[string]any{
+			"errorMessage": map[string]any{
+				"properties": map[string]any{
 					"no_rotate":        "batching options must not be present when no_rotate is enabled",
 					"batch_size":       "batching options must not be present when no_rotate is enabled",
 					"batch_size_bytes": "batching options must not be present when no_rotate is enabled",
@@ -54,9 +54,9 @@ func (s Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 	// path patterns: should be a clean path
 	cleanPath := &jsonschema.Schema{
 		Title: "`path` is a clean path value",
-		Extras: map[string]interface{}{
-			"errorMessage": map[string]interface{}{
-				"properties": map[string]interface{}{
+		Extras: map[string]any{
+			"errorMessage": map[string]any{
+				"properties": map[string]any{
 					"path": "value must not contain ./ or //",
 				},
 			},
@@ -125,9 +125,9 @@ func (s Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 			Required: []string{"no_rotate"},
 		},
 		Then: pathNotWithUUID,
-		Extras: map[string]interface{}{
-			"errorMessage": map[string]interface{}{
-				"properties": map[string]interface{}{
+		Extras: map[string]any{
+			"errorMessage": map[string]any{
+				"properties": map[string]any{
 					"path": "the {{UUID}} placeholder must not be present in the path when no_rotate is enabled",
 				},
 			},
@@ -170,9 +170,9 @@ func (s Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 				},
 			},
 		},
-		Extras: map[string]interface{}{
-			"errorMessage": map[string]interface{}{
-				"properties": map[string]interface{}{
+		Extras: map[string]any{
+			"errorMessage": map[string]any{
+				"properties": map[string]any{
 					"path": "value must contain the {{UUID}} placeholder or no path variables at all",
 				},
 			},
