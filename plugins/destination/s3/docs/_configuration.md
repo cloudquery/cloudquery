@@ -13,7 +13,7 @@ spec:
   spec:
     bucket: "bucket_name"
     region: "region-name" # Example: us-east-1
-    path: "path/to/files/{{TABLE}}/{{UUID}}.parquet"
+    path: "path/to/files/{{TABLE}}/{{UUID}}.{{FORMAT}}"
     format: "parquet" # options: parquet, json, csv
     format_spec:
       # CSV-specific parameters:

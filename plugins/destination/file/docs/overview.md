@@ -22,7 +22,9 @@ This is the (nested) spec used by the file destination Plugin.
 
 - `path` (`string`) (**required**)
 
-  Path template string that determines where files will be written. The path supports the following placeholder variables:
+  Path template string that determines where files will be written, for example `path/to/files/{{TABLE}}/{{UUID}}.parquet`.
+
+  The path supports the following placeholder variables:
 
   - `{{TABLE}}` will be replaced with the table name
   - `{{FORMAT}}` will be replaced with the file format, such as `csv`, `json` or `parquet`. If compression is enabled, the format will be `csv.gz`, `json.gz` etc.
