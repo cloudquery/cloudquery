@@ -13,7 +13,7 @@ import (
 )
 
 func DbProxies() *schema.Table {
-	tableName := "aws_db_proxies"
+	tableName := "aws_rds_db_proxies"
 	return &schema.Table{
 		Name:        tableName,
 		Description: `https://docs.aws.amazon.com/AmazonRDS/latest/APIReference/API_DBProxy.html`,
