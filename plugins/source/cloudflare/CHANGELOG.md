@@ -5,6 +5,13 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v6.2.3...plugins-source-cloudflare-v6.2.4) (2024-04-16)
+
+
+### Bug Fixes
+
+* Require either `api_token` or `api_key,api_email` in schema ([#17605](https://github.com/cloudquery/cloudquery/issues/17605)) ([33df4fd](https://github.com/cloudquery/cloudquery/commit/33df4fd45a3fef0199695fdbfd9c485453e71f46))
+
 ## [6.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v6.2.2...plugins-source-cloudflare-v6.2.3) (2024-04-16)
 
 
