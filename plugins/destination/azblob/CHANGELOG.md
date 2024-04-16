@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.5.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v3.5.8...plugins-destination-azblob-v3.5.9) (2024-04-16)
+
+
+### Bug Fixes
+
+* **deps:** Update Azure modules ([#17613](https://github.com/cloudquery/cloudquery/issues/17613)) ([ceb4333](https://github.com/cloudquery/cloudquery/commit/ceb43333f9705754f1cdaa941be6c852c9a63a69))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.14 ([#17658](https://github.com/cloudquery/cloudquery/issues/17658)) ([478eb9c](https://github.com/cloudquery/cloudquery/commit/478eb9c03f764322402703b3975b71b7086a5dea))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.15 ([#17659](https://github.com/cloudquery/cloudquery/issues/17659)) ([58586d0](https://github.com/cloudquery/cloudquery/commit/58586d012a8f4f38b0a693dcbd46d2340bb72a61))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.38.1 ([#17610](https://github.com/cloudquery/cloudquery/issues/17610)) ([a12d17b](https://github.com/cloudquery/cloudquery/commit/a12d17b6f93ef5379b0c11d1338f02dad28f1914))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.38.2 ([#17656](https://github.com/cloudquery/cloudquery/issues/17656)) ([058910b](https://github.com/cloudquery/cloudquery/commit/058910bcb37a6130deb55720a4a1afaec123a319))
+
 ## [3.5.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v3.5.7...plugins-destination-azblob-v3.5.8) (2024-04-09)
 
 
