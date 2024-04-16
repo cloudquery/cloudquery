@@ -12,6 +12,7 @@ var GcpServices = map[string]bool{
 	"accessapproval.googleapis.com":                   true,
 	"accesscontextmanager.googleapis.com":             true,
 	"acmedns.googleapis.com":                          true,
+	"addressvalidation.googleapis.com":                true,
 	"adexchangebuyer2.googleapis.com":                 true,
 	"adexperiencereport.googleapis.com":               true,
 	"admin.googleapis.com":                            true,
