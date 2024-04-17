@@ -10,7 +10,7 @@ spec:
   write_mode: "append"
   spec:
     path: "path/to/files/{{TABLE}}/{{UUID}}.{{FORMAT}}"
-    format: "csv" # options: parquet, json, csv
+    format: "parquet" # options: parquet, json, csv
     # Optional parameters
     # format_spec:
       # CSV-specific parameters:

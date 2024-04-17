@@ -34,7 +34,8 @@ type Spec struct {
 	// Region where bucket is located.
 	Region string `json:"region,omitempty" jsonschema:"required,minLength=1"`
 
-	//  Path to where the files will be uploaded in the above bucket. The path supports the following placeholder variables:
+	//    Path to where the files will be uploaded in the above bucket, for example `path/to/files/{{TABLE}}/{{UUID}}.parquet`.
+	//    The path supports the following placeholder variables:
 	//
 	// - `{{TABLE}}` will be replaced with the table name
 	// - `{{FORMAT}}` will be replaced with the file format, such as `csv`, `json` or `parquet`. If compression is enabled, the format will be `csv.gz`, `json.gz` etc.
@@ -46,7 +47,7 @@ type Spec struct {
 	// - `{{MINUTE}}` will be replaced with the current minute in `mm` format
 	//
 	// **Note** that timestamps are in `UTC` and will be the current time at the time the file is written, not when the sync started.
-	Path string `json:"path,omitempty" jsonschema:"required,pattern=^[^/].*$"` // other cases (//, ./, ../) are covered in extended part
+	Path string `json:"path,omitempty" jsonschema:"required,pattern=^[^/].*$,example=path/to/files/{{TABLE}}/{{UUID}}.parquet" jsonschema_extras:"errorMessage=value should not start with /"` // other cases (//, ./, ../) are covered in extended part
 
 	// If set to `true`, the plugin will write to one file per table.
 	// Otherwise, for every batch a new file will be created with a different `.<UUID>` suffix.

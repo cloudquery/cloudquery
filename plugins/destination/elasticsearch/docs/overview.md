@@ -24,6 +24,7 @@ This is the spec used by the Elasticsearch destination plugin.
 - `addresses` (`[]string`) (optional) (default: `["http://localhost:9200"]`)
 
    A list of Elasticsearch nodes to use.
+   Mutually exclusive with `cloud_id`.
 
 - `username` (`string`) (optional)
 
@@ -33,9 +34,10 @@ This is the spec used by the Elasticsearch destination plugin.
 
    Password for HTTP Basic Authentication.
 
-- `cloud_id` (`string`) (optional)
+- `cloud_id` (`string`) (optional) (example: `MyDeployment:abcdefgh`)
 
-   Endpoint for the Elastic Service (https://elastic.co/cloud).
+   Endpoint for the Elasticsearch Service (https://elastic.co/cloud).
+   Mutually exclusive with `addresses`.
 
 - `api_key` (`string`) (optional)
 

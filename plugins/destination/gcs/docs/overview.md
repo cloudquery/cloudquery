@@ -28,7 +28,11 @@ This is the (nested) spec used by the CSV destination Plugin.
 
 - `path` (`string`) (required)
 
-  Path to where the files will be uploaded in the above bucket. If no path variables are present, the path will be appended with TABLE, FORMAT and Compression extension by default. The path supports the following placeholder variables:
+  Path to where the files will be uploaded in the above bucket, for example `path/to/files/{{TABLE}}/{{UUID}}.parquet`.
+
+  If no path variables are present, the path will be appended with TABLE, FORMAT and Compression extension by default.
+
+  The path supports the following placeholder variables:
 
   - `{{TABLE}}` will be replaced with the table name
   - `{{SYNC_ID}}` will be replaced with the unique identifier of the sync. This value is a UUID and is randomly generated for each sync.

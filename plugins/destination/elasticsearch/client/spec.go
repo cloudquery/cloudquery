@@ -15,6 +15,7 @@ const (
 
 type Spec struct {
 	// A list of Elasticsearch nodes to use.
+	// Mutually exclusive with `cloud_id`.
 	Addresses []string `json:"addresses" jsonschema:"default=http://localhost:9200"`
 
 	// Username for HTTP Basic Authentication.
@@ -23,8 +24,9 @@ type Spec struct {
 	// Password for HTTP Basic Authentication.
 	Password string `json:"password"`
 
-	// Endpoint for the Elastic Service (https://elastic.co/cloud).
-	CloudID string `json:"cloud_id"`
+	// Endpoint for the Elasticsearch Service (https://elastic.co/cloud).
+	// Mutually exclusive with `addresses`.
+	CloudID string `json:"cloud_id" jsonschema:"example=MyDeployment:abcdefgh"`
 
 	// Base64-encoded token for authorization; if set, overrides username/password and service token.
 	APIKey string `json:"api_key"`

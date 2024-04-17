@@ -29,8 +29,20 @@ type Spec struct {
 	// Bucket where to sync the files.
 	Bucket string `json:"bucket,omitempty" jsonschema:"required,minLength=1"`
 
-	// Path to where the files will be uploaded in the above bucket.
-	Path string `json:"path,omitempty" jsonschema:"required,minLength=1"`
+	// Path to where the files will be uploaded in the above bucket, for example `path/to/files/{{TABLE}}/{{UUID}}.parquet`
+	//
+	// The path supports the following placeholder variables:
+	// - `{{TABLE}}` will be replaced with the table name
+	// - `{{FORMAT}}` will be replaced with the file format, such as `csv`, `json` or `parquet`. If compression is enabled, the format will be `csv.gz`, `json.gz` etc.
+	// - `{{UUID}}` will be replaced with a random UUID to uniquely identify each file
+	// - `{{YEAR}}` will be replaced with the current year in `YYYY` format
+	// - `{{MONTH}}` will be replaced with the current month in `MM` format
+	// - `{{DAY}}` will be replaced with the current day in `DD` format
+	// - `{{HOUR}}` will be replaced with the current hour in `HH` format
+	// - `{{MINUTE}}` will be replaced with the current minute in `mm` format
+	//
+	//  **Note** that timestamps are in `UTC` and will be the current time at the time the file is written, not when the sync started.
+	Path string `json:"path,omitempty" jsonschema:"required,minLength=1,example=path/to/files/{{TABLE}}/{{UUID}}.parquet" jsonschema_extras:"errorMessage=value should not start with /"`
 
 	// If set to `true`, the plugin will write to one file per table.
 	// Otherwise, for every batch a new file will be created with a different `.<UUID>` suffix.
