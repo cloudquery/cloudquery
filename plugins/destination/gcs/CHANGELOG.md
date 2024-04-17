@@ -1,5 +1,26 @@
 # Changelog
 
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v3.6.6...plugins-destination-gcs-v4.0.0) (2024-04-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* Add path variable support to GCS destination plugin.  ([#17602](https://github.com/cloudquery/cloudquery/issues/17602))
+
+### Features
+
+* Add custom JSON schema errors ([#17669](https://github.com/cloudquery/cloudquery/issues/17669)) ([a3ad426](https://github.com/cloudquery/cloudquery/commit/a3ad426db818fa51bba1107362d6036a2e6a7078))
+* Add path variable support to GCS destination plugin.  ([#17602](https://github.com/cloudquery/cloudquery/issues/17602)) ([1ea5680](https://github.com/cloudquery/cloudquery/commit/1ea5680c8c9887087a0a7c86576970b1646e3fea))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.14 ([#17658](https://github.com/cloudquery/cloudquery/issues/17658)) ([478eb9c](https://github.com/cloudquery/cloudquery/commit/478eb9c03f764322402703b3975b71b7086a5dea))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.15 ([#17659](https://github.com/cloudquery/cloudquery/issues/17659)) ([58586d0](https://github.com/cloudquery/cloudquery/commit/58586d012a8f4f38b0a693dcbd46d2340bb72a61))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.38.1 ([#17610](https://github.com/cloudquery/cloudquery/issues/17610)) ([a12d17b](https://github.com/cloudquery/cloudquery/commit/a12d17b6f93ef5379b0c11d1338f02dad28f1914))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.38.2 ([#17656](https://github.com/cloudquery/cloudquery/issues/17656)) ([058910b](https://github.com/cloudquery/cloudquery/commit/058910bcb37a6130deb55720a4a1afaec123a319))
+* **deps:** Update module google.golang.org/api to v0.172.0 ([#17617](https://github.com/cloudquery/cloudquery/issues/17617)) ([1e62b14](https://github.com/cloudquery/cloudquery/commit/1e62b1463cf880e076d6f483eca7c9659fa10336))
+
 ## [3.6.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v3.6.5...plugins-destination-gcs-v3.6.6) (2024-04-09)
 
 
