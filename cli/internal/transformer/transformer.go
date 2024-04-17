@@ -13,7 +13,7 @@ const (
 	cqSyncTime       = "_cq_sync_time"
 	cqSourceName     = "_cq_source_name"
 	cqIDColumnName   = "_cq_id"
-	cqExternalSyncId = "_cq_external_sync_id"
+	cqExternalSyncId = "_cq_external_sync_group_id"
 )
 
 type RecordTransformer struct {
@@ -25,8 +25,8 @@ type RecordTransformer struct {
 	removePks               bool
 	removeUniqueConstraints bool
 	cqIDPrimaryKey          bool
-	withExternalSyncID      bool
-	ExternalSyncId          string
+	withExternalSyncGroupID bool
+	externalSyncGroupId     string
 }
 
 type RecordTransformerOption func(*RecordTransformer)
@@ -47,10 +47,10 @@ func WithSyncTimeColumn(t time.Time) RecordTransformerOption {
 	}
 }
 
-func WithExternalSyncIDColumn(externalSyncId string) RecordTransformerOption {
+func WithExternalSyncGroupIdColumn(externalSyncId string) RecordTransformerOption {
 	return func(transformer *RecordTransformer) {
-		transformer.withExternalSyncID = true
-		transformer.ExternalSyncId = externalSyncId
+		transformer.withExternalSyncGroupID = true
+		transformer.externalSyncGroupId = externalSyncId
 		transformer.internalColumns++
 	}
 }
@@ -89,7 +89,7 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 	if t.withSourceName && !sc.HasField(cqSourceName) {
 		fields = append(fields, arrow.Field{Name: cqSourceName, Type: arrow.BinaryTypes.String, Nullable: true})
 	}
-	if t.withExternalSyncID && !sc.HasField(cqExternalSyncId) {
+	if t.withExternalSyncGroupID && !sc.HasField(cqExternalSyncId) {
 		fields = append(fields, arrow.Field{
 			Name: cqExternalSyncId,
 			Type: arrow.BinaryTypes.String,
@@ -145,10 +145,10 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 		}
 		cols = append(cols, sourceBldr.NewArray())
 	}
-	if t.withExternalSyncID && !sc.HasField(cqExternalSyncId) {
+	if t.withExternalSyncGroupID && !sc.HasField(cqExternalSyncId) {
 		externalSyncIDBldr := array.NewStringBuilder(memory.DefaultAllocator)
 		for i := 0; i < nRows; i++ {
-			externalSyncIDBldr.Append(t.ExternalSyncId)
+			externalSyncIDBldr.Append(t.externalSyncGroupId)
 		}
 		cols = append(cols, externalSyncIDBldr.NewArray())
 	}
