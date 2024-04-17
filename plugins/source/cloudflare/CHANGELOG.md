@@ -5,6 +5,17 @@ All notable changes to this provider will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [7.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v6.2.4...plugins-source-cloudflare-v7.0.0) (2024-04-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* Remove `CLOUDFLARE_API_TOKEN, CLOUDFLARE_EMAIL, CLOUDFLARE_API_KEY` env variables support to align with other plugins. Please use the configuration YAML spec and environment variables replacement
+
+### Features
+
+* Remove env variables support ([7db52dc](https://github.com/cloudquery/cloudquery/commit/7db52dc1aa2a00c8d441eade9a073f134becd39e))
+
 ## [6.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-cloudflare-v6.2.3...plugins-source-cloudflare-v6.2.4) (2024-04-16)
 
 
