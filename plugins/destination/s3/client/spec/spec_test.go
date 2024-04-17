@@ -47,7 +47,7 @@ func TestSpec_SetDefaults(t *testing.T) {
 	}
 }
 
-func TestSpec_Validate(t *testing.T) {
+func TestGetContentType(t *testing.T) {
 	cases := []struct {
 		Give        Spec
 		ContentType string
@@ -74,7 +74,7 @@ func int64Ptr(i int64) *int64 {
 	return &i
 }
 
-func TestGetContenType(t *testing.T) {
+func TestSpec_Validate(t *testing.T) {
 	zero, one, dur0 := int64(0), int64(1), configtype.NewDuration(0)
 	cases := []struct {
 		Give    Spec

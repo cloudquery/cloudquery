@@ -231,7 +231,7 @@ func (s *Spec) GetContentType() string {
 	}
 	switch {
 	case s.Compression == filetypes.CompressionTypeGZip:
-		// https: //www.iana.org/assignments/media-types/application/gzip
+		// https://www.iana.org/assignments/media-types/application/gzip
 		return "application/gzip"
 	case s.Compression != "":
 		// https://www.iana.org/assignments/media-types/application/octet-stream
