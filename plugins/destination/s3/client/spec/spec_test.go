@@ -48,6 +48,33 @@ func TestSpec_SetDefaults(t *testing.T) {
 }
 
 func TestSpec_Validate(t *testing.T) {
+	cases := []struct {
+		Give        Spec
+		ContentType string
+	}{
+		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}}, ContentType: "application/json"},
+		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "csv"}}, ContentType: "text/csv"},
+		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "parquet"}}, ContentType: "application/vnd.apache.parquet"},
+		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "parquet", Compression: "gzip"}}, ContentType: "application/gzip"},
+		{Give: Spec{Path: "test/path", ContentType: "application/custom", FileSpec: filetypes.FileSpec{Format: "parquet", Compression: "gzip"}}, ContentType: "application/custom"},
+	}
+	for i, tc := range cases {
+		tc := tc
+		t.Run(fmt.Sprintf("Case %d", i+1), func(t *testing.T) {
+			require.Equal(t, tc.ContentType, tc.Give.GetContentType())
+		})
+	}
+}
+
+func boolPtr(b bool) *bool {
+	return &b
+}
+
+func int64Ptr(i int64) *int64 {
+	return &i
+}
+
+func TestGetContenType(t *testing.T) {
 	zero, one, dur0 := int64(0), int64(1), configtype.NewDuration(0)
 	cases := []struct {
 		Give    Spec
@@ -73,12 +100,4 @@ func TestSpec_Validate(t *testing.T) {
 			}
 		})
 	}
-}
-
-func boolPtr(b bool) *bool {
-	return &b
-}
-
-func int64Ptr(i int64) *int64 {
-	return &i
 }

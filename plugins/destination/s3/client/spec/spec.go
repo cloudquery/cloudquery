@@ -224,3 +224,31 @@ func (s *Spec) batchingEnabled() bool {
 func ptr[A any](a A) *A {
 	return &a
 }
+
+func (s *Spec) GetContentType() string {
+	if s.ContentType != "" {
+		return s.ContentType
+	}
+	switch {
+	case s.Compression == filetypes.CompressionTypeGZip:
+		// https: //www.iana.org/assignments/media-types/application/gzip
+		return "application/gzip"
+	case s.Compression != "":
+		// https://www.iana.org/assignments/media-types/application/octet-stream
+		return "application/octet-stream"
+	}
+
+	switch s.Format {
+	case "json":
+		// https://www.iana.org/assignments/media-types/application/json
+		return "application/json"
+	case "csv":
+		// https://www.iana.org/assignments/media-types/text/csv
+		return "text/csv"
+	case "parquet":
+		// https://www.iana.org/assignments/media-types/application/vnd.apache.parquet
+		return "application/vnd.apache.parquet"
+	}
+	// This is the default content type for all unknown files
+	return "application/octet-stream"
+}
