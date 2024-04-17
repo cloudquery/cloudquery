@@ -61,6 +61,12 @@ type Spec struct {
 	// If you are sure that the bucket and path are writable, you can set this to `false` to skip the test.
 	TestWrite *bool `json:"test_write,omitempty" jsonschema:"default=true"`
 
+	// This allows you to set the Content Type of objects uploaded to S3. This will override the default the content type set based on the file format
+	// "csv": "text/csv"
+	// "json": "application/json"
+	// "parquet":" "application/vnd.apache.parquet"
+	ContentType string `json:"content_type,omitempty" jsonschema:"default="`
+
 	// Endpoint to use for S3 API calls. This is useful for S3-compatible storage services such as MinIO.
 	// **Note**: if you want to use path-style addressing, i.e., `https://s3.amazonaws.com/BUCKET/KEY`, `use_path_style` should be enabled, too.
 	Endpoint string `json:"endpoint,omitempty"  jsonschema:"default="`
@@ -218,4 +224,32 @@ func (s *Spec) batchingEnabled() bool {
 
 func ptr[A any](a A) *A {
 	return &a
+}
+
+func (s *Spec) GetContentType() string {
+	if s.ContentType != "" {
+		return s.ContentType
+	}
+	switch {
+	case s.Compression == filetypes.CompressionTypeGZip:
+		// https://www.iana.org/assignments/media-types/application/gzip
+		return "application/gzip"
+	case s.Compression != "":
+		// https://www.iana.org/assignments/media-types/application/octet-stream
+		return "application/octet-stream"
+	}
+
+	switch s.Format {
+	case "json":
+		// https://www.iana.org/assignments/media-types/application/json
+		return "application/json"
+	case "csv":
+		// https://www.iana.org/assignments/media-types/text/csv
+		return "text/csv"
+	case "parquet":
+		// https://www.iana.org/assignments/media-types/application/vnd.apache.parquet
+		return "application/vnd.apache.parquet"
+	}
+	// This is the default content type for all unknown files
+	return "application/octet-stream"
 }

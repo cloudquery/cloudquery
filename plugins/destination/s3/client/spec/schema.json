@@ -311,6 +311,11 @@
             }
           ]
         },
+        "content_type": {
+          "type": "string",
+          "description": "This allows you to set the Content Type of objects uploaded to S3. This will override the default the content type set based on the file format\n\"csv\": \"text/csv\"\n\"json\": \"application/json\"\n\"parquet\":\" \"application/vnd.apache.parquet\"",
+          "default": ""
+        },
         "endpoint": {
           "type": "string",
           "description": "Endpoint to use for S3 API calls. This is useful for S3-compatible storage services such as MinIO.\n**Note**: if you want to use path-style addressing, i.e., `https://s3.amazonaws.com/BUCKET/KEY`, `use_path_style` should be enabled, too.",

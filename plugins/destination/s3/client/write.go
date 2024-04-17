@@ -32,9 +32,10 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 			var err error
 			s, err = c.Client.StartStream(table, func(r io.Reader) error {
 				params := &s3.PutObjectInput{
-					Bucket: aws.String(c.spec.Bucket),
-					Key:    aws.String(objKey),
-					Body:   r,
+					Bucket:      aws.String(c.spec.Bucket),
+					Key:         aws.String(objKey),
+					Body:        r,
+					ContentType: aws.String(c.spec.GetContentType()),
 				}
 
 				sseConfiguration := c.spec.ServerSideEncryptionConfiguration
