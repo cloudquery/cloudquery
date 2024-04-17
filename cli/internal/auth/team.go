@@ -3,6 +3,7 @@ package auth
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"os"
 
 	cqapi "github.com/cloudquery/cloudquery-api-go"
@@ -30,6 +31,9 @@ func GetTeamForToken(ctx context.Context, token auth.Token) (string, error) {
 		resp, err := apiClient.ListTeamsWithResponse(ctx, &cqapi.ListTeamsParams{})
 		if err != nil {
 			return "", fmt.Errorf("failed to list teams: %w", err)
+		}
+		if resp.StatusCode() != http.StatusOK {
+			return "", fmt.Errorf("failed to list teams for API key, status code: %s", resp.Status())
 		}
 		return resp.JSON200.Items[0].Name, nil
 	default:
