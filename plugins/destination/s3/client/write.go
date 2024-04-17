@@ -32,9 +32,10 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 			var err error
 			s, err = c.Client.StartStream(table, func(r io.Reader) error {
 				params := &s3.PutObjectInput{
-					Bucket: aws.String(c.spec.Bucket),
-					Key:    aws.String(objKey),
-					Body:   r,
+					Bucket:      aws.String(c.spec.Bucket),
+					Key:         aws.String(objKey),
+					Body:        r,
+					ContentType: aws.String(c.contentType()),
 				}
 
 				sseConfiguration := c.spec.ServerSideEncryptionConfiguration
@@ -126,4 +127,22 @@ func sanitizeJSONKeysForObject(data any) any {
 	default:
 		return data
 	}
+}
+
+func (c *Client) contentType() string {
+	if c.spec.ContentType != "" {
+		return c.spec.ContentType
+	}
+	switch c.spec.Format {
+	case "json":
+		// https://www.iana.org/assignments/media-types/application/json
+		return "application/json"
+	case "csv":
+		// https://www.iana.org/assignments/media-types/text/csv
+		return "text/csv"
+	case "parquet":
+		// https://www.iana.org/assignments/media-types/application/vnd.apache.parquet
+		return "application/vnd.apache.parquet"
+	}
+	return ""
 }
