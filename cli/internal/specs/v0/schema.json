@@ -109,7 +109,7 @@
           "description": "Destination plugin PK mode",
           "default": "default"
         },
-        "external_sync_id": {
+        "external_sync_group_id": {
           "type": "string"
         },
         "spec": {
