@@ -61,8 +61,8 @@ func (d *Destination) Validate() error {
 	return d.Metadata.Validate()
 }
 
-func (s *Destination) RenderedExternalSyncGroupId(t time.Time) string {
-	renderedValue := strings.ReplaceAll(s.ExternalSyncGroupId, varYear, t.Format("2006"))
+func (d *Destination) RenderedExternalSyncGroupId(t time.Time) string {
+	renderedValue := strings.ReplaceAll(d.ExternalSyncGroupId, varYear, t.Format("2006"))
 	renderedValue = strings.ReplaceAll(renderedValue, varMonth, t.Format("01"))
 	renderedValue = strings.ReplaceAll(renderedValue, varDay, t.Format("02"))
 	renderedValue = strings.ReplaceAll(renderedValue, varHour, t.Format("15"))
