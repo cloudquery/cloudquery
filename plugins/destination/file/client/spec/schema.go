@@ -25,6 +25,22 @@ func (s Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 			return properties
 		}(),
 	}
+
+	pathNotWithUUID := &jsonschema.Schema{
+		Title: "Disallow {{UUID}} in path",
+		Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+			// we make the non-zero requirement, so we want to allow only null here
+			properties := orderedmap.New[string, *jsonschema.Schema]()
+			properties.Set("path", &jsonschema.Schema{
+				Type: "string",
+				Not: &jsonschema.Schema{
+					Pattern: `^.*\{\{UUID\}\}.*$`,
+				},
+			})
+			return properties
+		}(),
+	}
+
 	// no_rotate:true -> no {{UUID}} should be present in path
 	noRotateNoUUID := &jsonschema.Schema{
 		Title: "Disallow {{UUID}} in path when using no_rotate",
@@ -40,10 +56,16 @@ func (s Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 			}(),
 			Required: []string{"no_rotate"},
 		},
-		Then: &jsonschema.Schema{
-			Not: pathWithUUID,
+		Then: pathNotWithUUID,
+		Extras: map[string]any{
+			"errorMessage": map[string]any{
+				"properties": map[string]any{
+					"path": "the {{UUID}} placeholder must not be present in the path when no_rotate is enabled",
+				},
+			},
 		},
 	}
+
 	// no_rotate:true -> only nulls for batch options
 	noRotateNoBatch := &jsonschema.Schema{
 		Title: "Disallow batching when using no_rotate",
@@ -70,6 +92,16 @@ func (s Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 				return properties
 			}(),
 		},
+		Extras: map[string]any{
+			"errorMessage": map[string]any{
+				"properties": map[string]any{
+					"no_rotate":        "batching options must not be present when no_rotate is enabled",
+					"batch_size":       "batching options must not be present when no_rotate is enabled",
+					"batch_size_bytes": "batching options must not be present when no_rotate is enabled",
+					"batch_timeout":    "batching options must not be present when no_rotate is enabled",
+				},
+			},
+		},
 	}
 
 	// batching enabled -> require {{UUID}} in path
@@ -90,6 +122,13 @@ func (s Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 			}(),
 		},
 		Then: pathWithUUID,
+		Extras: map[string]any{
+			"errorMessage": map[string]any{
+				"properties": map[string]any{
+					"path": "the {{UUID}} placeholder must be present in the path",
+				},
+			},
+		},
 	}
 
 	sc.AllOf = append(sc.AllOf, noRotateNoUUID, noRotateNoBatch, uuidWhenBatching)
