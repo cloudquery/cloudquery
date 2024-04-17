@@ -133,6 +133,10 @@ func (c *Client) contentType() string {
 	if c.spec.ContentType != "" {
 		return c.spec.ContentType
 	}
+	if c.spec.Compression != "" {
+		// https: //www.iana.org/assignments/media-types/application/gzip
+		return "application/gzip"
+	}
 	switch c.spec.Format {
 	case "json":
 		// https://www.iana.org/assignments/media-types/application/json
