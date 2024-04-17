@@ -3,6 +3,16 @@ package specs
 import (
 	"bytes"
 	"encoding/json"
+	"strings"
+	"time"
+)
+
+const (
+	varYear   = "{{YEAR}}"
+	varMonth  = "{{MONTH}}"
+	varDay    = "{{DAY}}"
+	varHour   = "{{HOUR}}"
+	varMinute = "{{MINUTE}}"
 )
 
 // Destination plugin spec
@@ -17,6 +27,8 @@ type Destination struct {
 
 	// Destination plugin PK mode
 	PKMode PKMode `json:"pk_mode,omitempty" jsonschema:"default=default"`
+
+	ExternalSyncId string `json:"external_sync_id,omitempty"`
 
 	// Destination plugin own (nested) spec
 	Spec map[string]any `json:"spec,omitempty"`
@@ -47,4 +59,13 @@ func (d *Destination) UnmarshalSpec(out any) error {
 
 func (d *Destination) Validate() error {
 	return d.Metadata.Validate()
+}
+
+func (s *Destination) RenderedExternalSyncId(t time.Time) string {
+	renderedValue := strings.ReplaceAll(s.ExternalSyncId, varYear, t.Format("2006"))
+	renderedValue = strings.ReplaceAll(renderedValue, varMonth, t.Format("01"))
+	renderedValue = strings.ReplaceAll(renderedValue, varDay, t.Format("02"))
+	renderedValue = strings.ReplaceAll(renderedValue, varHour, t.Format("15"))
+	renderedValue = strings.ReplaceAll(renderedValue, varMinute, t.Format("04"))
+	return renderedValue
 }
