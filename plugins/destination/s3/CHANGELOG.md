@@ -1,5 +1,16 @@
 # Changelog
 
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v5.2.0...plugins-destination-s3-v6.0.0) (2024-04-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* Set S3 `ContentType` for each object based on format set in `spec` while also allowing users to override and set a custom value ([#17680](https://github.com/cloudquery/cloudquery/issues/17680))
+
+### Features
+
+* Set S3 `ContentType` for each object based on format set in `spec` while also allowing users to override and set a custom value ([#17680](https://github.com/cloudquery/cloudquery/issues/17680)) ([7609be6](https://github.com/cloudquery/cloudquery/commit/7609be605dd864bd66b173afb1ae04abd2a8b0a8)), closes [#17679](https://github.com/cloudquery/cloudquery/issues/17679)
+
 ## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v5.1.3...plugins-destination-s3-v5.2.0) (2024-04-17)
 
 
