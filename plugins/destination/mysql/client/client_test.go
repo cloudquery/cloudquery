@@ -41,9 +41,6 @@ func TestPlugin(t *testing.T) {
 				RemoveColumnNotNull: false,
 				ChangeColumn:        false,
 			},
-			SkipSpecificMigrations: plugin.Migrations{
-				RemoveUniqueConstraint: true,
-			},
 		},
 	)
 }
