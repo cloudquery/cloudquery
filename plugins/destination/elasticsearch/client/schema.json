@@ -13,7 +13,7 @@
                   "type": "string"
                 },
                 "type": "array",
-                "description": "A list of Elasticsearch nodes to use.",
+                "description": "A list of Elasticsearch nodes to use.\nMutually exclusive with `cloud_id`.",
                 "default": [
                   "http://localhost:9200"
                 ]
@@ -27,7 +27,10 @@
           "cloud_id": {
             "type": "string",
             "minLength": 1,
-            "description": "Endpoint for the Elastic Service (https://elastic.co/cloud)."
+            "description": "Endpoint for the Elasticsearch Service (https://elastic.co/cloud).\nMutually exclusive with `addresses`.",
+            "examples": [
+              "MyDeployment:abcdefgh"
+            ]
           }
         },
         "required": [
@@ -44,7 +47,7 @@
                 "type": "string"
               },
               "type": "array",
-              "description": "A list of Elasticsearch nodes to use.",
+              "description": "A list of Elasticsearch nodes to use.\nMutually exclusive with `cloud_id`.",
               "default": [
                 "http://localhost:9200"
               ]
@@ -64,7 +67,10 @@
         },
         "cloud_id": {
           "type": "string",
-          "description": "Endpoint for the Elastic Service (https://elastic.co/cloud)."
+          "description": "Endpoint for the Elasticsearch Service (https://elastic.co/cloud).\nMutually exclusive with `addresses`.",
+          "examples": [
+            "MyDeployment:abcdefgh"
+          ]
         },
         "api_key": {
           "type": "string",
