@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"errors"
-	"os"
 	"strings"
 
 	"github.com/cloudflare/cloudflare-go"
@@ -132,42 +131,9 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec *Spec) (schema.C
 }
 
 func getCloudflareClient(config *Spec) (*cloudflare.API, error) {
-	// Try to get the API token from the environment
-	token := config.Token
-	if token == "" {
-		token = getApiTokenFromEnv()
+	if config.Token != "" {
+		return cloudflare.NewWithAPIToken(config.Token)
 	}
 
-	if token != "" {
-		return cloudflare.NewWithAPIToken(token)
-	}
-
-	apiKey, apiEmail := config.ApiKey, config.ApiEmail
-
-	if config.ApiKey == "" || config.ApiEmail == "" {
-		apiKey, apiEmail = getApiKeyAndEmailFromEnv()
-	}
-
-	if apiKey != "" && apiEmail != "" {
-		return cloudflare.New(apiKey, apiEmail)
-	}
-
-	return nil, errors.New("no API token or API key/email provided")
-}
-
-func getApiTokenFromEnv() string {
-	apiToken := os.Getenv("CLOUDFLARE_API_TOKEN")
-	if apiToken == "" {
-		return ""
-	}
-	return apiToken
-}
-
-func getApiKeyAndEmailFromEnv() (string, string) {
-	apiKey := os.Getenv("CLOUDFLARE_API_KEY")
-	apiEmail := os.Getenv("CLOUDFLARE_EMAIL")
-	if apiKey == "" || apiEmail == "" {
-		return "", ""
-	}
-	return apiKey, apiEmail
+	return cloudflare.New(config.ApiKey, config.ApiEmail)
 }

@@ -55,6 +55,9 @@ func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 	if err := json.Unmarshal(specBytes, spec); err != nil {
 		return nil, err
 	}
+	if err := spec.Validate(); err != nil {
+		return nil, err
+	}
 	spec.SetDefaults()
 	syncClient, err := client.Configure(ctx, logger, spec)
 	if err != nil {

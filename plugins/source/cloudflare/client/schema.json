@@ -4,15 +4,40 @@
   "$ref": "#/$defs/Spec",
   "$defs": {
     "Spec": {
+      "oneOf": [
+        {
+          "required": [
+            "api_token"
+          ]
+        },
+        {
+          "required": [
+            "api_key",
+            "api_email"
+          ]
+        }
+      ],
       "properties": {
         "api_token": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "${CLOUDFLARE_API_TOKEN}"
+          ]
         },
         "api_key": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "${CLOUDFLARE_API_KEY}"
+          ]
         },
         "api_email": {
-          "type": "string"
+          "type": "string",
+          "minLength": 1,
+          "examples": [
+            "${CLOUDFLARE_EMAIL}"
+          ]
         },
         "accounts": {
           "oneOf": [
@@ -41,7 +66,8 @@
           ]
         },
         "concurrency": {
-          "type": "integer"
+          "type": "integer",
+          "default": 10000
         }
       },
       "additionalProperties": false,
