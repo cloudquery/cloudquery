@@ -82,6 +82,14 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 		Name: table.Name,
 	}
 	for _, col := range table.Columns {
+		if c.pgType == pgTypeCrateDB {
+			// CrateDB doesn't allow columns that start with an underscore,
+			// so we trim the leading underscore from the column name
+			col.Name = strings.TrimLeft(col.Name, "_")
+			// CrateDB does not support Unique constraints
+			col.Unique = false
+		}
+
 		// Postgres doesn't support column names longer than 63 characters
 		// and it will automatically truncate them, so we do the same here
 		// to make migrations predictable
@@ -93,6 +101,7 @@ func (c *Client) normalizeTable(table *schema.Table) *schema.Table {
 			col.NotNull = true
 		}
 		col.Type = c.PgToSchemaType(c.SchemaTypeToPg(col.Type))
+
 		normalizedTable.Columns = append(normalizedTable.Columns, col)
 		// pgTablesToPKConstraints is populated when handling migrate messages
 		if entry := c.pgTablesToPKConstraints[table.Name]; entry != nil {
@@ -114,6 +123,11 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 			}
 		case schema.TableColumnChangeTypeMoveToCQOnly:
 			err := c.migrateToCQID(ctx, table, change.Current)
+			if err != nil {
+				return err
+			}
+		case schema.TableColumnChangeTypeRemoveUniqueConstraint:
+			err := c.removeUniqueConstraint(ctx, table, change)
 			if err != nil {
 				return err
 			}
@@ -150,6 +164,8 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 
 	for _, change := range changes {
 		switch change.Type {
+		case schema.TableColumnChangeTypeRemoveUniqueConstraint:
+			continue
 		case schema.TableColumnChangeTypeAdd:
 			if change.Current.PrimaryKey || change.Current.NotNull {
 				return false
@@ -261,7 +277,7 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 		return err
 	}
 
-	// CockroachDB doesn't support dropping NOT NULL constraints in the same transaction as the the primary key is changed
+	// CockroachDB doesn't support dropping NOT NULL constraints in the same transaction as the primary key is changed
 	// So we have to alter the PK in one transaction and then drop the old NOT NULL constraints in another transaction
 	if c.pgType == pgTypeCockroachDB {
 		if err == nil {
@@ -282,10 +298,15 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 			return fmt.Errorf("failed to begin transaction: %w", err)
 		}
 	}
+
+	c.pgTablesToPKConstraintsMu.Lock()
 	entry := c.pgTablesToPKConstraints[tableName]
 	if entry == nil {
 		entry = new(pkConstraintDetails)
+		c.pgTablesToPKConstraints[tableName] = entry
 	}
+	c.pgTablesToPKConstraintsMu.Unlock()
+
 	for _, colName := range entry.columns {
 		_, err = tx.Exec(ctx, "ALTER TABLE "+sanitizedTableName+" ALTER COLUMN "+pgx.Identifier{colName}.Sanitize()+" DROP NOT NULL")
 		if err != nil {
@@ -356,6 +377,21 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	if err != nil {
 		c.logger.Error().Err(err).Str("table", tableName).Str("query", sb.String()).Msg("Failed to create table")
 		return fmt.Errorf("failed to create table %s: %w"+sb.String(), tableName, err)
+	}
+	return nil
+}
+
+func (c *Client) removeUniqueConstraint(ctx context.Context, table *schema.Table, change schema.TableColumnChange) error {
+	// We only support the default unique constraint name
+	// If it is using a unique constraint that is not default it means CQ didn't create it so we shouldn't drop it
+	indexName := table.Name + "_" + change.ColumnName + "_key"
+	sqlStatement := "ALTER TABLE " + pgx.Identifier{table.Name}.Sanitize() + " DROP CONSTRAINT " + pgx.Identifier{indexName}.Sanitize()
+	if c.pgType == pgTypeCockroachDB {
+		sqlStatement = "DROP INDEX " + pgx.Identifier{indexName}.Sanitize() + " CASCADE"
+	}
+	_, err := c.conn.Exec(ctx, sqlStatement)
+	if err != nil {
+		return fmt.Errorf("failed to drop unique constraint on column %s on table %s: %w", change.ColumnName, table.Name, err)
 	}
 	return nil
 }

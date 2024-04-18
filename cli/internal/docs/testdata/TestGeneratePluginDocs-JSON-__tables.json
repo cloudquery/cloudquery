@@ -20,7 +20,8 @@
         "is_incremental_key": true
       }
     ],
-    "relations": []
+    "relations": [],
+    "is_incremental": true
   },
   {
     "name": "paid_table",

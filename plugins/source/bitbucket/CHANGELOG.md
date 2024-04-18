@@ -1,5 +1,41 @@
 # Changelog
 
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.2.3...plugins-source-bitbucket-v1.3.0) (2024-04-12)
+
+
+### Features
+
+* Add reference to running in a Containerized Environment doc ([#17593](https://github.com/cloudquery/cloudquery/issues/17593)) ([9b07ab3](https://github.com/cloudquery/cloudquery/commit/9b07ab328eb8b3ef7fab61c9d8458244cc33af93))
+
+## [1.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.2.2...plugins-source-bitbucket-v1.2.3) (2024-04-11)
+
+
+### Bug Fixes
+
+* Set parents for child tables ([#17594](https://github.com/cloudquery/cloudquery/issues/17594)) ([0a8f086](https://github.com/cloudquery/cloudquery/commit/0a8f086445dea32354bf65478602c1c823a99afb))
+
+## [1.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.2.1...plugins-source-bitbucket-v1.2.2) (2024-04-02)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency com.konghq:unirest-java to v3.14.5 ([#17434](https://github.com/cloudquery/cloudquery/issues/17434)) ([2cd361f](https://github.com/cloudquery/cloudquery/commit/2cd361f56fe71ee166f7a18518b8727a78d98de3))
+* **deps:** Update dependency io.cloudquery:plugin-pb-java to v0.0.15 ([#17437](https://github.com/cloudquery/cloudquery/issues/17437)) ([cb147e3](https://github.com/cloudquery/cloudquery/commit/cb147e3570eea2ff7cc3419a69a81467bf9c9191))
+
+## [1.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.2.0...plugins-source-bitbucket-v1.2.1) (2024-03-27)
+
+
+### Bug Fixes
+
+* Add missing docs ([#17363](https://github.com/cloudquery/cloudquery/issues/17363)) ([068a941](https://github.com/cloudquery/cloudquery/commit/068a94166e478ca0a6e9818f6114df22c818794b))
+
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.1.0...plugins-source-bitbucket-v1.2.0) (2024-03-27)
+
+
+### Features
+
+* Update SDK, support package command ([#17336](https://github.com/cloudquery/cloudquery/issues/17336)) ([dfb0c61](https://github.com/cloudquery/cloudquery/commit/dfb0c61a9cd75a5391c01a8b8abe2cb56c2b27b7))
+
 ## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.0.5...plugins-source-bitbucket-v1.1.0) (2024-02-13)
 
 

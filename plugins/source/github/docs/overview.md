@@ -29,8 +29,8 @@ This is the (nested) spec used by GitHub Source Plugin
 - `orgs` (`[]string`, optional. Default: empty):
   List of organizations to sync from. You must specify either `orgs` or `repos` in the configuration.
 
-- `concurrency` (int, optional, default: 10000):
-  A best effort maximum number of Go routines to use. Lower this number to reduce memory usage.
+- `concurrency` (int, optional, default: 1500):
+  The best effort maximum number of Go routines to use. Lower this number to reduce memory usage or to avoid hitting GitHub API rate limits.
 
 - `discovery_concurrency` (`int`) (default: `1`)
 
@@ -38,6 +38,23 @@ This is the (nested) spec used by GitHub Source Plugin
   By default the plugin discovers repositories one organization at a time. You can increase `discovery_concurrency` to discover multiple organizations in parallel, or use a negative value to discover all organizations in parallel.
   Please note that it's possible to hit GitHub API rate limits when using a high value for `discovery_concurrency`.
 
-- `skip_archived_repos` (`bool`) (default: `false`)
+- `include_archived_repos` (`bool`) (default: `false`)
 
-  By default archived repositories are included in the sync. To skip archived repositories set `skip_archived_repos` to `true`.
+  By default archived repositories are not included in the sync. To include archived repositories set `include_archived_repos` to `true`.
+
+- `local_cache_path` (`string`, optional, default: empty):
+  Path to a local directory that will hold the cache. If set, the plugin will cache the GitHub API responses in this directory. Defaults to an empty string (no cache).
+  By using a cache, the plugin can use [conditional requests when appropriate](https://docs.github.com/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api?#use-conditional-requests-if-appropriate), and help avoid hitting GitHub API rate limits.
+
+- `table_options` ([Table Options](#github-table-options-spec) spec) (optional)
+
+  Options to apply to specific tables. See [Table Options](#Table Options) for more information.
+
+### GitHub Table Options Spec
+
+- `github_workflow_runs`
+
+  - `created_since` (`string` in natural date format) (optional)
+
+    Sync only workflow runs created after this date (inclusive). Defaults to all workflows.
+    Examples of valid formats are: `7 days ago`, `last month` (see more [here](https://github.com/tj/go-naturaldate?tab=readme-ov-file#go-natural-date))

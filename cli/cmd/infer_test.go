@@ -5,7 +5,6 @@ package cmd
 import (
 	"io"
 	"os"
-	"path"
 	"path/filepath"
 	"testing"
 
@@ -37,7 +36,7 @@ spec:
   path: localhost:7777
   registry: grpc
 `,
-			outContains:        "Downloading https://storage.googleapis.com/cq-cloud-releases/cloudquery/source/gcp/v10.0.0/",
+			outContains:        "Downloading https://plugins.cloudquery.io/cq-cloud-releases/cloudquery/source/gcp/v10.0.0/",
 			wantErrContains:    "",
 			wantErrNotContains: "",
 		},
@@ -108,12 +107,9 @@ spec:
 	for _, tc := range configs {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			cqDir := t.TempDir()
-			t.Cleanup(func() {
-				os.RemoveAll(cqDir)
-			})
-			testConfig := filepath.Join(cqDir, "config.yml")
-			logFileName := path.Join(cqDir, "cloudquery.log")
+			tmpDir := t.TempDir()
+			testConfig := filepath.Join(tmpDir, "config.yml")
+
 			err := os.WriteFile(testConfig, []byte(tc.config), 0644)
 			require.NoError(t, err)
 
@@ -125,7 +121,8 @@ spec:
 			}()
 
 			cmd := NewCmdRoot()
-			cmd.SetArgs([]string{"plugin", "install", testConfig, "--cq-dir", cqDir, "--log-file-name", logFileName})
+			basedArgs := testCommandArgs(t)
+			cmd.SetArgs(append([]string{"plugin", "install", testConfig}, basedArgs...))
 			err = cmd.Execute()
 
 			_ = w.Close()
@@ -146,7 +143,7 @@ spec:
 			}
 
 			// check that log was written and contains some lines
-			b, logFileError := os.ReadFile(path.Join(cqDir, "cloudquery.log"))
+			b, logFileError := os.ReadFile(basedArgs[3])
 			logContent := string(b)
 			require.NoError(t, logFileError, "failed to read cloudquery.log")
 			require.NotEmpty(t, logContent, "cloudquery.log empty; expected some logs")

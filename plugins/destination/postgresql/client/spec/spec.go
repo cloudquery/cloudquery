@@ -16,15 +16,12 @@ const (
 )
 
 type Spec struct {
-	// Connection string to connect to the database. This can be a URL or a DSN, as per [`pgxpool`](https://pkg.go.dev/github.com/jackc/pgx/v4/pgxpool#ParseConfig)
+	// Connection string to connect to the database. This can be a URL or a DSN, for example:
 	//
-	// - `"postgres://jack:secret@localhost:5432/mydb?sslmode=prefer"` _connect with tcp and prefer TLS_
-	// - `"postgres://jack:secret@localhost:5432/mydb?sslmode=disable&application_name=pgxtest&search_path=myschema&connect_timeout=5"` _be explicit with all options_
-	// - `"postgres://localhost:5432/mydb?sslmode=disable"` _connect with os username cloudquery is being run as_
-	// - `"postgres:///mydb?host=/tmp"` _connect over unix socket_
-	// - `"dbname=mydb"` _unix domain socket, just specifying the db name - useful if you want to use peer authentication_
-	// - `"user=jack password=jack\\'ssooper\\\\secret host=localhost port=5432 dbname=mydb sslmode=disable"` _DSN with escaped backslash and single quote_
-	ConnectionString string `json:"connection_string,omitempty" jsonschema:"required,minLength=1" jsonschema_extras:"x-cq-secret=true"`
+	// - `"postgres://user:pass@localhost:5432/mydb?sslmode=prefer"` connect with tcp and prefer TLS
+	// - `"postgres://user:pass@localhost:5432/mydb?sslmode=disable&search_path=myschema"` connect with tcp, disable TLS and use a custom schema
+	// - `"user=user password=pass host=localhost port=5432 dbname=mydb sslmode=disable"` DSN format
+	ConnectionString string `json:"connection_string,omitempty" jsonschema:"required,minLength=1,example=${POSTGRESQL_CONNECTION_STRING}"`
 
 	// Available: `error`, `warn`, `info`, `debug`, `trace`.
 	// Defines what [`pgx`](https://github.com/jackc/pgx) call events should be logged.

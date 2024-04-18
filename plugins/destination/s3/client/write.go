@@ -27,14 +27,15 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 		if s == nil {
 			table := msg.GetTable()
 
-			objKey := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC())
+			objKey := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC(), c.syncID)
 
 			var err error
 			s, err = c.Client.StartStream(table, func(r io.Reader) error {
 				params := &s3.PutObjectInput{
-					Bucket: aws.String(c.spec.Bucket),
-					Key:    aws.String(objKey),
-					Body:   r,
+					Bucket:      aws.String(c.spec.Bucket),
+					Key:         aws.String(objKey),
+					Body:        r,
+					ContentType: aws.String(c.spec.GetContentType()),
 				}
 
 				sseConfiguration := c.spec.ServerSideEncryptionConfiguration

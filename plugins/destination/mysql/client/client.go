@@ -133,7 +133,7 @@ func (c *Client) setMaxIndexLength(ctx context.Context) {
 		c.logger.Warn().Err(err).Msgf("failed to detect max index length, using default value of %d bytes", maxIndexLengthInBytes)
 	}
 
-	// In MySQL >= 5.7 the max PK length is 3072 bytes for dynamic or compressed row format, and 767 bytes for redundant or compact row format.
+	// In MySQL >= 8.0 the max PK length is 3072 bytes for dynamic or compressed row format, and 767 bytes for redundant or compact row format.
 	// We need to divide the max length in bytes by 4, since we use utf8mb4 charset, which can take up to 4 bytes per character.
 	switch rowFormat.String {
 	case "redundant", "compact":

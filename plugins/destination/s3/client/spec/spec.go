@@ -22,6 +22,7 @@ const (
 	varDay    = "{{DAY}}"
 	varHour   = "{{HOUR}}"
 	varMinute = "{{MINUTE}}"
+	varSyncID = "{{SYNC_ID}}"
 )
 
 type Spec struct {
@@ -33,7 +34,8 @@ type Spec struct {
 	// Region where bucket is located.
 	Region string `json:"region,omitempty" jsonschema:"required,minLength=1"`
 
-	//  Path to where the files will be uploaded in the above bucket. The path supports the following placeholder variables:
+	//    Path to where the files will be uploaded in the above bucket, for example `path/to/files/{{TABLE}}/{{UUID}}.parquet`.
+	//    The path supports the following placeholder variables:
 	//
 	// - `{{TABLE}}` will be replaced with the table name
 	// - `{{FORMAT}}` will be replaced with the file format, such as `csv`, `json` or `parquet`. If compression is enabled, the format will be `csv.gz`, `json.gz` etc.
@@ -45,7 +47,7 @@ type Spec struct {
 	// - `{{MINUTE}}` will be replaced with the current minute in `mm` format
 	//
 	// **Note** that timestamps are in `UTC` and will be the current time at the time the file is written, not when the sync started.
-	Path string `json:"path,omitempty" jsonschema:"required,pattern=^[^/].*$"` // other cases (//, ./, ../) are covered in extended part
+	Path string `json:"path,omitempty" jsonschema:"required,pattern=^[^/].*$,example=path/to/files/{{TABLE}}/{{UUID}}.parquet" jsonschema_extras:"errorMessage=value should not start with /"` // other cases (//, ./, ../) are covered in extended part
 
 	// If set to `true`, the plugin will write to one file per table.
 	// Otherwise, for every batch a new file will be created with a different `.<UUID>` suffix.
@@ -58,6 +60,12 @@ type Spec struct {
 	// Ensure write access to the given bucket and path by writing a test object on each sync.
 	// If you are sure that the bucket and path are writable, you can set this to `false` to skip the test.
 	TestWrite *bool `json:"test_write,omitempty" jsonschema:"default=true"`
+
+	// This allows you to set the Content Type of objects uploaded to S3. This will override the default the content type set based on the file format
+	// "csv": "text/csv"
+	// "json": "application/json"
+	// "parquet":" "application/vnd.apache.parquet"
+	ContentType string `json:"content_type,omitempty" jsonschema:"default="`
 
 	// Endpoint to use for S3 API calls. This is useful for S3-compatible storage services such as MinIO.
 	// **Note**: if you want to use path-style addressing, i.e., `https://s3.amazonaws.com/BUCKET/KEY`, `use_path_style` should be enabled, too.
@@ -179,7 +187,7 @@ func (s *Spec) Validate() error {
 	return s.FileSpec.Validate()
 }
 
-func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time) string {
+func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time, syncID string) string {
 	name := strings.ReplaceAll(s.Path, varTable, table)
 	if strings.Contains(name, varFormat) {
 		e := string(s.Format) + s.Compression.Extension()
@@ -191,11 +199,16 @@ func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.
 	name = strings.ReplaceAll(name, varDay, t.Format("02"))
 	name = strings.ReplaceAll(name, varHour, t.Format("15"))
 	name = strings.ReplaceAll(name, varMinute, t.Format("04"))
+	name = strings.ReplaceAll(name, varSyncID, syncID)
 	return filepath.Clean(name)
 }
 
 func (s *Spec) PathContainsUUID() bool {
 	return strings.Contains(s.Path, varUUID)
+}
+
+func (s *Spec) PathContainsSyncID() bool {
+	return strings.Contains(s.Path, varSyncID)
 }
 
 func (s *Spec) batchingEnabled() bool {
@@ -211,4 +224,32 @@ func (s *Spec) batchingEnabled() bool {
 
 func ptr[A any](a A) *A {
 	return &a
+}
+
+func (s *Spec) GetContentType() string {
+	if s.ContentType != "" {
+		return s.ContentType
+	}
+	switch {
+	case s.Compression == filetypes.CompressionTypeGZip:
+		// https://www.iana.org/assignments/media-types/application/gzip
+		return "application/gzip"
+	case s.Compression != "":
+		// https://www.iana.org/assignments/media-types/application/octet-stream
+		return "application/octet-stream"
+	}
+
+	switch s.Format {
+	case "json":
+		// https://www.iana.org/assignments/media-types/application/json
+		return "application/json"
+	case "csv":
+		// https://www.iana.org/assignments/media-types/text/csv
+		return "text/csv"
+	case "parquet":
+		// https://www.iana.org/assignments/media-types/application/vnd.apache.parquet
+		return "application/vnd.apache.parquet"
+	}
+	// This is the default content type for all unknown files
+	return "application/octet-stream"
 }

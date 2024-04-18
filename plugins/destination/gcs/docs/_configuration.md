@@ -10,8 +10,8 @@ spec:
   write_mode: "append"
   spec:
     bucket: "bucket_name"
-    path: "path/to/files"
-    format: "csv" # options: parquet, json, csv
+    path: "path/to/files/{{TABLE}}/{{UUID}}.{{FORMAT}}"
+    format: "parquet" # options: parquet, json, csv
     format_spec:
       # CSV-specific parameters:
       # delimiter: ","

@@ -9,7 +9,10 @@
           "oneOf": [
             {
               "type": "integer",
-              "description": "Described in the\n[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L90)."
+              "description": "Described in the\n[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L90).",
+              "examples": [
+                3
+              ]
             },
             {
               "type": "null"
@@ -21,7 +24,10 @@
             {
               "type": "integer",
               "minimum": 0,
-              "description": "Disabled by default. Described in the\n[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L95)."
+              "description": "Disabled by default. Described in the\n[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L95).",
+              "examples": [
+                0
+              ]
             },
             {
               "type": "null"
@@ -33,7 +39,10 @@
             {
               "type": "integer",
               "minimum": 0,
-              "description": "Described in the\n[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L101)."
+              "description": "Described in the\n[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L101).",
+              "examples": [
+                4
+              ]
             },
             {
               "type": "null"
@@ -45,7 +54,10 @@
             {
               "type": "integer",
               "minimum": 0,
-              "description": "Described in the\n[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L106)."
+              "description": "Described in the\n[Azure Go SDK](https://github.com/Azure/azure-sdk-for-go/blob/f951bf52fb68cbb978b7b95d41147693c1863366/sdk/azcore/policy/policy.go#L106).",
+              "examples": [
+                60
+              ]
             },
             {
               "type": "null"
@@ -56,7 +68,11 @@
           "oneOf": [
             {
               "items": {
-                "type": "integer"
+                "type": "integer",
+                "examples": [
+                  408,
+                  500
+                ]
               },
               "type": "array",
               "uniqueItems": true,
@@ -79,7 +95,10 @@
             {
               "items": {
                 "type": "string",
-                "minLength": 1
+                "minLength": 1,
+                "examples": [
+                  "00000000-0000-0000-0000-000000000000"
+                ]
               },
               "type": "array",
               "uniqueItems": true,
@@ -95,7 +114,10 @@
             {
               "items": {
                 "type": "string",
-                "minLength": 1
+                "minLength": 1,
+                "examples": [
+                  "00000000-0000-0000-0000-000000000000"
+                ]
               },
               "type": "array",
               "uniqueItems": true,
@@ -114,7 +136,10 @@
             "AzureChina"
           ],
           "minLength": 1,
-          "description": "The name of the cloud environment to use.\nSee the [Azure CLI documentation](https://learn.microsoft.com/en-us/cli/azure/manage-clouds-azure-cli) for more information."
+          "description": "The name of the cloud environment to use.\nSee the [Azure CLI documentation](https://learn.microsoft.com/en-us/cli/azure/manage-clouds-azure-cli) for more information.",
+          "examples": [
+            "AzureCloud"
+          ]
         },
         "normalize_ids": {
           "type": "boolean",
@@ -123,7 +148,10 @@
         "oidc_token": {
           "type": "string",
           "minLength": 1,
-          "description": "An OIDC token can be used to authenticate with Azure instead of `AZURE_CLIENT_SECRET`.\nThis is useful for Azure AD workload identity federation.\nWhen using this option, the `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables must be set."
+          "description": "An OIDC token can be used to authenticate with Azure instead of `AZURE_CLIENT_SECRET`.\nThis is useful for Azure AD workload identity federation.\nWhen using this option, the `AZURE_CLIENT_ID` and `AZURE_TENANT_ID` environment variables must be set.",
+          "examples": [
+            "oidc_token"
+          ]
         },
         "concurrency": {
           "type": "integer",

@@ -3,8 +3,11 @@ package client
 import (
 	_ "embed"
 	"fmt"
+	"os"
+	"time"
 
 	"github.com/invopop/jsonschema"
+	"github.com/tj/go-naturaldate"
 )
 
 // Spec is the (nested) spec used by GitHub Source Plugin
@@ -19,13 +22,29 @@ type Spec struct {
 	AppAuth            []AppAuthSpec       `json:"app_auth" jsonschema:"minItems=1"`
 	EnterpriseSettings *EnterpriseSettings `json:"enterprise"`
 
-	// The best effort maximum number of Go routines to use.
-	// Lower this number to reduce memory usage.
-	Concurrency int `json:"concurrency,omitempty" jsonschema:"default=10000"`
+	// The best effort maximum number of Go routines to use. Lower this number to reduce memory usage or to avoid hitting GitHub API rate limits.
+	Concurrency int `json:"concurrency,omitempty" jsonschema:"default=1500"`
 	// Controls the number of parallel requests to GitHub when discovering repositories, a negative value means unlimited.
 	DiscoveryConcurrency int `json:"discovery_concurrency,omitempty" jsonschema:"default=1"`
-	// Skip archived repositories when discovering repositories.
-	SkipArchivedRepos bool `json:"skip_archived_repos,omitempty"`
+	// Include archived repositories when discovering repositories.
+	IncludeArchivedRepos bool `json:"include_archived_repos,omitempty"`
+	// Path to a local directory that will hold the cache. If set, the plugin will cache the GitHub API responses in this directory. Defaults to an empty string (no cache)
+	LocalCachePath string `json:"local_cache_path,omitempty"`
+
+	// Table options to set for specific tables.
+	TableOptions TableOptions `json:"table_options,omitempty"`
+}
+
+type TableOptions struct {
+	// Table options for the github_workflow_runs table.
+	WorkflowRuns WorkflowRunsOptions `json:"github_workflow_runs,omitempty"`
+}
+
+type WorkflowRunsOptions struct {
+	// Time to look back for workflow runs in natural date format. Defaults to all workflows.
+	// Examples: "14 days ago", "last month"
+	CreatedSince    string `json:"created_since,omitempty" jsonschema:"example=14 days ago,example=last month"`
+	ParsedTimeSince string `json:"-"`
 }
 
 type EnterpriseSettings struct {
@@ -50,7 +69,7 @@ type AppAuthSpec struct {
 
 func (s *Spec) SetDefaults() {
 	if s.Concurrency == 0 {
-		s.Concurrency = 10000
+		s.Concurrency = 1500
 	}
 	if s.DiscoveryConcurrency == 0 {
 		s.DiscoveryConcurrency = 1
@@ -87,6 +106,22 @@ func (s *Spec) Validate() error {
 		if err := validateRepo(repo); err != nil {
 			return err
 		}
+	}
+	if s.LocalCachePath != "" {
+		fileInfo, err := os.Stat(s.LocalCachePath)
+		if err != nil && !os.IsNotExist(err) {
+			return fmt.Errorf("error accessing local cache path: %w", err)
+		}
+		if fileInfo != nil && !fileInfo.IsDir() {
+			return fmt.Errorf("local cache path is not a directory")
+		}
+	}
+	if s.TableOptions.WorkflowRuns.CreatedSince != "" {
+		parsedTimeSince, err := naturaldate.Parse(s.TableOptions.WorkflowRuns.CreatedSince, time.Now(), naturaldate.WithDirection(naturaldate.Past))
+		if err != nil {
+			return fmt.Errorf("failed to parse created_since: %w", err)
+		}
+		s.TableOptions.WorkflowRuns.ParsedTimeSince = parsedTimeSince.Format(time.RFC3339)
 	}
 	return nil
 }

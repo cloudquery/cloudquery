@@ -1,5 +1,33 @@
 # Changelog
 
+## [1.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.3.5...plugins-source-typeform-v1.4.0) (2024-04-12)
+
+
+### Features
+
+* Add reference to running in a Containerized Environment doc ([#17593](https://github.com/cloudquery/cloudquery/issues/17593)) ([9b07ab3](https://github.com/cloudquery/cloudquery/commit/9b07ab328eb8b3ef7fab61c9d8458244cc33af93))
+
+## [1.3.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.3.4...plugins-source-typeform-v1.3.5) (2024-04-02)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.18 ([#17441](https://github.com/cloudquery/cloudquery/issues/17441)) ([8fa286d](https://github.com/cloudquery/cloudquery/commit/8fa286db082439a52febf85a9eb1aa7d66ffaa28))
+
+## [1.3.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.3.3...plugins-source-typeform-v1.3.4) (2024-03-26)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.17 ([#17288](https://github.com/cloudquery/cloudquery/issues/17288)) ([47f4414](https://github.com/cloudquery/cloudquery/commit/47f44146a7a262397d3b93db2d78615dfc2ca81b))
+
+## [1.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.3.2...plugins-source-typeform-v1.3.3) (2024-03-12)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.16 ([#17105](https://github.com/cloudquery/cloudquery/issues/17105)) ([cb24442](https://github.com/cloudquery/cloudquery/commit/cb24442f1fa14bedd1a5cb119b16807b60eac750))
+
 ## [1.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.3.1...plugins-source-typeform-v1.3.2) (2024-03-05)
 
 

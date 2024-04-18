@@ -82,3 +82,22 @@ func boolPtr(b bool) *bool {
 func int64Ptr(i int64) *int64 {
 	return &i
 }
+
+func TestGetContentType(t *testing.T) {
+	cases := []struct {
+		Give        Spec
+		ContentType string
+	}{
+		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}}, ContentType: "application/json"},
+		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "csv"}}, ContentType: "text/csv"},
+		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "parquet"}}, ContentType: "application/vnd.apache.parquet"},
+		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "parquet", Compression: "gzip"}}, ContentType: "application/gzip"},
+		{Give: Spec{Path: "test/path", ContentType: "application/custom", FileSpec: filetypes.FileSpec{Format: "parquet", Compression: "gzip"}}, ContentType: "application/custom"},
+	}
+	for i, tc := range cases {
+		tc := tc
+		t.Run(fmt.Sprintf("Case %d", i+1), func(t *testing.T) {
+			require.Equal(t, tc.ContentType, tc.Give.GetContentType())
+		})
+	}
+}

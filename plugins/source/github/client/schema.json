@@ -138,22 +138,54 @@
         },
         "concurrency": {
           "type": "integer",
-          "description": "The best effort maximum number of Go routines to use.\nLower this number to reduce memory usage.",
-          "default": 10000
+          "description": "The best effort maximum number of Go routines to use. Lower this number to reduce memory usage or to avoid hitting GitHub API rate limits.",
+          "default": 1500
         },
         "discovery_concurrency": {
           "type": "integer",
           "description": "Controls the number of parallel requests to GitHub when discovering repositories, a negative value means unlimited.",
           "default": 1
         },
-        "skip_archived_repos": {
+        "include_archived_repos": {
           "type": "boolean",
-          "description": "Skip archived repositories when discovering repositories."
+          "description": "Include archived repositories when discovering repositories."
+        },
+        "local_cache_path": {
+          "type": "string",
+          "description": "Path to a local directory that will hold the cache. If set, the plugin will cache the GitHub API responses in this directory. Defaults to an empty string (no cache)"
+        },
+        "table_options": {
+          "$ref": "#/$defs/TableOptions",
+          "description": "Table options to set for specific tables."
         }
       },
       "additionalProperties": false,
       "type": "object",
       "description": "Spec is the (nested) spec used by GitHub Source Plugin"
+    },
+    "TableOptions": {
+      "properties": {
+        "github_workflow_runs": {
+          "$ref": "#/$defs/WorkflowRunsOptions",
+          "description": "Table options for the github_workflow_runs table."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "WorkflowRunsOptions": {
+      "properties": {
+        "created_since": {
+          "type": "string",
+          "description": "Time to look back for workflow runs in natural date format. Defaults to all workflows.\nExamples: \"14 days ago\", \"last month\"",
+          "examples": [
+            "14 days ago",
+            "last month"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
     }
   }
 }

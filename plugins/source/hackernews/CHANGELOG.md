@@ -1,5 +1,70 @@
 # Changelog
 
+## [3.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.1.3...plugins-source-hackernews-v3.1.4) (2024-04-16)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.14 ([#17658](https://github.com/cloudquery/cloudquery/issues/17658)) ([478eb9c](https://github.com/cloudquery/cloudquery/commit/478eb9c03f764322402703b3975b71b7086a5dea))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.15 ([#17659](https://github.com/cloudquery/cloudquery/issues/17659)) ([58586d0](https://github.com/cloudquery/cloudquery/commit/58586d012a8f4f38b0a693dcbd46d2340bb72a61))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.38.1 ([#17610](https://github.com/cloudquery/cloudquery/issues/17610)) ([a12d17b](https://github.com/cloudquery/cloudquery/commit/a12d17b6f93ef5379b0c11d1338f02dad28f1914))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.38.2 ([#17656](https://github.com/cloudquery/cloudquery/issues/17656)) ([058910b](https://github.com/cloudquery/cloudquery/commit/058910bcb37a6130deb55720a4a1afaec123a319))
+* **deps:** Update module google.golang.org/grpc to v1.63.2 ([#17620](https://github.com/cloudquery/cloudquery/issues/17620)) ([d268a81](https://github.com/cloudquery/cloudquery/commit/d268a81534b7f4bcb5c56bddef02cffd78418cfb))
+
+## [3.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.1.2...plugins-source-hackernews-v3.1.3) (2024-04-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.4 ([#17485](https://github.com/cloudquery/cloudquery/issues/17485)) ([f370de4](https://github.com/cloudquery/cloudquery/commit/f370de449e61244398e6f413b973cbfa15c019a6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.5 ([#17526](https://github.com/cloudquery/cloudquery/issues/17526)) ([554c499](https://github.com/cloudquery/cloudquery/commit/554c499eb9bc9f98f6f3dc4be23fd02049f48dcd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.37.0 ([#17532](https://github.com/cloudquery/cloudquery/issues/17532)) ([8080970](https://github.com/cloudquery/cloudquery/commit/8080970f40d22b6bc9db4c359780c744b476bb02))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.38.0 ([#17554](https://github.com/cloudquery/cloudquery/issues/17554)) ([edb6f06](https://github.com/cloudquery/cloudquery/commit/edb6f066c3a3675f5bfca3e492eba3aeb31e770b))
+
+## [3.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.1.1...plugins-source-hackernews-v3.1.2) (2024-04-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.13 ([#17444](https://github.com/cloudquery/cloudquery/issues/17444)) ([da276fe](https://github.com/cloudquery/cloudquery/commit/da276fe64c46ec0a5f182c83ebc32a90d55f5d50))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.1 ([#17372](https://github.com/cloudquery/cloudquery/issues/17372)) ([aaf6187](https://github.com/cloudquery/cloudquery/commit/aaf61873ae5d2e01ea5f3b8b319e4f79afb7b29c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.2 ([#17450](https://github.com/cloudquery/cloudquery/issues/17450)) ([2947506](https://github.com/cloudquery/cloudquery/commit/294750650269f8191c6dfff060c4d3a546405763))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.3 ([#17456](https://github.com/cloudquery/cloudquery/issues/17456)) ([020865a](https://github.com/cloudquery/cloudquery/commit/020865a6fde8c896947a844021f0cd7daeb01b06))
+
+## [3.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.1.0...plugins-source-hackernews-v3.1.1) (2024-03-26)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 92878fa ([#16718](https://github.com/cloudquery/cloudquery/issues/16718)) ([7fe8588](https://github.com/cloudquery/cloudquery/commit/7fe858818fe1f88fcca6304c873a4614767a57b9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.35.0 ([#17299](https://github.com/cloudquery/cloudquery/issues/17299)) ([524ba20](https://github.com/cloudquery/cloudquery/commit/524ba202801c2ae1eb59a5b462a5efc62d1b4000))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.0 ([#17325](https://github.com/cloudquery/cloudquery/issues/17325)) ([eb1b4b8](https://github.com/cloudquery/cloudquery/commit/eb1b4b8b963917b87ff644318cfec9745471d50a))
+
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.0.26...plugins-source-hackernews-v3.1.0) (2024-03-19)
+
+
+### Features
+
+* Add JSON schema ([#17238](https://github.com/cloudquery/cloudquery/issues/17238)) ([720eb00](https://github.com/cloudquery/cloudquery/commit/720eb00ef52a6b7357818722b384df280325eb4b))
+
+## [3.0.26](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.0.25...plugins-source-hackernews-v3.0.26) (2024-03-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.0 ([#17203](https://github.com/cloudquery/cloudquery/issues/17203)) ([4b128b6](https://github.com/cloudquery/cloudquery/commit/4b128b6722dea883d66458f2f3c831184926353d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.1 ([#17220](https://github.com/cloudquery/cloudquery/issues/17220)) ([08d4950](https://github.com/cloudquery/cloudquery/commit/08d49504aee10f6883e1bd4f7e1102a274c8ee81))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.2 ([#17229](https://github.com/cloudquery/cloudquery/issues/17229)) ([41ed721](https://github.com/cloudquery/cloudquery/commit/41ed721cfa435a4937f3022501dd4d45a3a880b0))
+* **deps:** Update module google.golang.org/protobuf to v1.33.0 [SECURITY] ([#17158](https://github.com/cloudquery/cloudquery/issues/17158)) ([94b8833](https://github.com/cloudquery/cloudquery/commit/94b8833b558d7628d8006779437c6b92402be2dc))
+
+## [3.0.25](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.0.24...plugins-source-hackernews-v3.0.25) (2024-03-12)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.32.1 ([#17044](https://github.com/cloudquery/cloudquery/issues/17044)) ([d3592e7](https://github.com/cloudquery/cloudquery/commit/d3592e7f3ae600655778eb508aeccfa4e5b74e8c))
+* **deps:** Update module google.golang.org/grpc to v1.62.1 ([#17099](https://github.com/cloudquery/cloudquery/issues/17099)) ([4a3e667](https://github.com/cloudquery/cloudquery/commit/4a3e667c4352f7479b432a4164fe3df973313530))
+
 ## [3.0.24](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.0.23...plugins-source-hackernews-v3.0.24) (2024-03-04)
 
 

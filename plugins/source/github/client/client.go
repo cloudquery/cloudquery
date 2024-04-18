@@ -10,6 +10,8 @@ import (
 	"time"
 
 	"github.com/bradleyfalzon/ghinstallation/v2"
+	"github.com/cloudquery/httpcache"
+	"github.com/cloudquery/httpcache/diskcache"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/gofri/go-github-ratelimit/github_ratelimit"
 	"github.com/google/go-github/v59/github"
@@ -31,6 +33,8 @@ type Client struct {
 	orgs            []string
 	orgRepositories map[string][]*github.Repository
 	repos           []string
+
+	Spec Spec
 }
 
 func (c *Client) Logger() *zerolog.Logger {
@@ -77,11 +81,6 @@ func limitDetectedCallback(logger zerolog.Logger) github_ratelimit.OnLimitDetect
 }
 
 func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMeta, error) {
-	if err := spec.Validate(); err != nil {
-		return nil, fmt.Errorf("failed to validate GitHub spec: %w", err)
-	}
-	spec.SetDefaults()
-
 	ghServices := map[string]GithubServices{}
 	for _, auth := range spec.AppAuth {
 		var (
@@ -96,10 +95,15 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse InstallationID %v: %w", auth.InstallationID, err)
 		}
+		transport := http.DefaultTransport
+		if spec.LocalCachePath != "" {
+			cache := diskcache.New(spec.LocalCachePath)
+			transport = httpcache.NewTransport(cache)
+		}
 		if auth.PrivateKeyPath != "" {
-			itr, err = ghinstallation.NewKeyFromFile(http.DefaultTransport, appId, installationId, auth.PrivateKeyPath)
+			itr, err = ghinstallation.NewKeyFromFile(transport, appId, installationId, auth.PrivateKeyPath)
 		} else {
-			itr, err = ghinstallation.New(http.DefaultTransport, appId, installationId, []byte(auth.PrivateKey))
+			itr, err = ghinstallation.New(transport, appId, installationId, []byte(auth.PrivateKey))
 		}
 		if err != nil {
 			return nil, fmt.Errorf("failed to create GitHub client for org %v: %w", auth.Org, err)
@@ -116,12 +120,21 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 
 	var defaultServices GithubServices
 	if spec.AccessToken != "" {
-		httpClient := github.NewClient(nil).WithAuthToken(spec.AccessToken)
+		var cl *http.Client
+		if spec.LocalCachePath != "" {
+			cache := diskcache.New(spec.LocalCachePath)
+			cl = httpcache.NewTransport(cache).Client()
+		}
+		httpClient := github.NewClient(cl).WithAuthToken(spec.AccessToken)
 		ghc, err := githubClientForHTTPClient(httpClient.Client().Transport, logger, spec.EnterpriseSettings)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create GitHub client for access token: %w", err)
 		}
 		defaultServices = servicesForClient(ghc)
+		_, _, err = defaultServices.Users.Get(ctx, "")
+		if err != nil {
+			return nil, fmt.Errorf("failed to authenticate with GitHub using access token: %w", err)
+		}
 	} else {
 		defaultServices = ghServices[spec.AppAuth[0].Org]
 	}
@@ -132,9 +145,10 @@ func New(ctx context.Context, logger zerolog.Logger, spec Spec) (schema.ClientMe
 		orgServices: ghServices,
 		orgs:        spec.Orgs,
 		repos:       spec.Repos,
+		Spec:        spec,
 	}
 	c.logger.Info().Msg("Discovering repositories")
-	orgRepositories, err := c.discoverRepositories(ctx, spec.DiscoveryConcurrency, spec.Orgs, spec.Repos, spec.SkipArchivedRepos)
+	orgRepositories, err := c.discoverRepositories(ctx, spec.DiscoveryConcurrency, spec.Orgs, spec.Repos, spec.IncludeArchivedRepos)
 	if err != nil {
 		return nil, fmt.Errorf("failed to discover repositories: %w", err)
 	}
@@ -152,14 +166,15 @@ func servicesForClient(c *github.Client) GithubServices {
 		Repositories:    c.Repositories,
 		Teams:           c.Teams,
 		DependencyGraph: c.DependencyGraph,
+		Users:           c.Users,
 	}
 }
 
-func (c *Client) filterArchivedRepos(repos []*github.Repository) []*github.Repository {
+func (c *Client) removeArchivedRepos(repos []*github.Repository) []*github.Repository {
 	filtered := []*github.Repository{}
 	for _, repo := range repos {
 		if repo.GetArchived() {
-			c.logger.Info().Msgf("Skipping archived repository %q", repo.GetFullName())
+			c.logger.Debug().Msgf("Skipping archived repository %q", repo.GetFullName())
 			continue
 		}
 		filtered = append(filtered, repo)
@@ -167,7 +182,7 @@ func (c *Client) filterArchivedRepos(repos []*github.Repository) []*github.Repos
 	return filtered
 }
 
-func (c *Client) discoverRepositories(ctx context.Context, discoveryConcurrency int, orgs []string, repos []string, skipArchivedRepos bool) (map[string][]*github.Repository, error) {
+func (c *Client) discoverRepositories(ctx context.Context, discoveryConcurrency int, orgs []string, repos []string, includeArchivedRepos bool) (map[string][]*github.Repository, error) {
 	orgRepos := make(map[string][]*github.Repository)
 	orgReposLock := sync.Mutex{}
 	errorGroup, gtx := errgroup.WithContext(ctx)
@@ -184,8 +199,8 @@ func (c *Client) discoverRepositories(ctx context.Context, discoveryConcurrency 
 				if err != nil {
 					return err
 				}
-				if skipArchivedRepos {
-					repos = c.filterArchivedRepos(repos)
+				if !includeArchivedRepos {
+					repos = c.removeArchivedRepos(repos)
 				}
 				orgRepositories = append(orgRepositories, repos...)
 

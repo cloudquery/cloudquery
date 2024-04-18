@@ -11,6 +11,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
+      plugin_name_undashed: ${{ steps.undash_plugin_name.outputs.plugin_name }}
       plugin_name: ${{ steps.split.outputs.plugin_name }}
       plugin_kind: ${{ steps.split.outputs.plugin_kind }}
       plugin_kind_plural: ${{ steps.split.outputs.plugin_kind_plural }}
@@ -27,11 +28,25 @@ jobs:
           plugin_name=$(echo $tag | cut -d- -f3)
           plugin_kind_plural=$(if [ "$plugin_kind" = "source" ]; then echo "sources"; else echo "destinations"; fi)
           plugin_version=$(echo $tag | cut -d- -f4-)
+          # perform looping till either the plugin version passes our semver test or is empty
+          until [[ $plugin_version =~ ^v?[0-9]+\.[0-9]+ ]] || [[ $(echo $plugin_version | wc -c) -eq 0 ]] ; do
+             echo "${plugin_version} is not a valid version"
+             plugin_name="$plugin_name-$(echo $plugin_version | cut -d- -f1)"
+             plugin_version=$(echo $plugin_version | cut -d- -f2-)
+          done
           echo "plugin_name=${plugin_name}" >> $GITHUB_OUTPUT
           echo "plugin_kind=${plugin_kind}" >> $GITHUB_OUTPUT
           echo "plugin_kind_plural=${plugin_kind_plural}" >> $GITHUB_OUTPUT
           echo "plugin_version=${plugin_version}" >> $GITHUB_OUTPUT
           echo "plugin_dir=plugins/${plugin_kind}/${plugin_name}" >> $GITHUB_OUTPUT
+      - name: Undash
+        id: undash_plugin_name
+        env:
+          plugin_name: ${{ steps.split.outputs.plugin_name }}
+        run: |
+              p=$(echo $plugin_name | sed 's|-|_|g')
+              echo "plugin_name=${p}" >> $GITHUB_OUTPUT
+
       # Fail if not a valid SemVer string
       - name: Parse semver string
         uses: booxmedialtd/ws-action-parse-semver@7784200024d6b3fc01253e617ec0168daf603de3
@@ -59,8 +74,97 @@ jobs:
             if (pluginFiles.includes('main.py')) {
               return 'python';
             }
+            if (pluginFiles.includes('settings.gradle')) {
+              return 'java';
+            }
             return 'unsupported';
           result-encoding: string
+  publish-plugin-to-hub-java:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    needs: prepare
+    if: needs.prepare.outputs.plugin_releaser == 'java'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "20"
+          cache: "gradle"
+          cache-dependency-path: "${{ needs.prepare.outputs.plugin_dir }}/**/build.gradle"
+
+      # Needed for shell escape
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Install shell escape
+        run: |
+          npm install shell-escape@0.2.0
+
+      - name: Get Release Notes
+        id: release-notes
+        uses: actions/github-script@v7
+        env:
+          PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
+        with:
+          result-encoding: string
+          script: |
+            const shellescape = require('shell-escape');
+            const { PRERELEASE } = process.env;
+            if (PRERELEASE) {
+              return shellescape(["This is a pre-release version of the plugin and should be used for testing purposes only"])
+            }
+            const { data } = await github.rest.repos.getReleaseByTag({
+              owner: "cloudquery",
+              repo: context.repo.repo,
+              tag: context.ref.replace('refs/tags/', ''),
+            });
+            return shellescape([data.body]);
+
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@3a8ed858a4e3fb487c6f53658ec40b2b1d45d9d8
+        with:
+          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name_undashed }}"
+          replace: ${{ needs.prepare.outputs.plugin_version }}
+          include: ${{ needs.prepare.outputs.plugin_dir }}/docs/*.md
+
+      - # Required for the package command to work
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build package
+        working-directory: ${{ needs.prepare.outputs.plugin_dir }}
+        run: ./gradlew build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+
+      - name: Run package command
+        working-directory: ${{ needs.prepare.outputs.plugin_dir }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTOR: ${{ github.actor }}
+        run: |
+          rm -rf docs/tables.md
+          java -jar app/build/libs/app.jar package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
+
+      - name: Setup CloudQuery
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: v5.15.2
+
+      - name: Publish plugin to hub
+        working-directory: ${{ needs.prepare.outputs.plugin_dir }}
+        env:
+          CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
+        run: |
+          cloudquery plugin publish --finalize
   publish-plugin-to-hub-python:
     timeout-minutes: 60
     runs-on: ubuntu-latest
@@ -116,7 +220,7 @@ jobs:
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@3a8ed858a4e3fb487c6f53658ec40b2b1d45d9d8
         with:
-          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name }}"
+          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name_undashed }}"
           replace: ${{ needs.prepare.outputs.plugin_version }}
           include: ${{ needs.prepare.outputs.plugin_dir }}/docs/*.md
 
@@ -133,7 +237,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v5.8.3
+          version: v5.15.2
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -190,7 +294,7 @@ jobs:
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@3a8ed858a4e3fb487c6f53658ec40b2b1d45d9d8
         with:
-          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name }}"
+          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name_undashed }}"
           replace: ${{ needs.prepare.outputs.plugin_version }}
           include: ${{ needs.prepare.outputs.plugin_dir }}/docs/*.md
 
@@ -207,7 +311,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v5.8.3
+          version: v5.15.2
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -275,7 +379,7 @@ jobs:
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@3a8ed858a4e3fb487c6f53658ec40b2b1d45d9d8
         with:
-          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name }}"
+          find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name_undashed }}"
           replace: ${{ needs.prepare.outputs.plugin_version }}
           include: ${{ needs.prepare.outputs.plugin_dir }}/docs/*.md
 
@@ -288,7 +392,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v5.8.3
+          version: v5.15.2
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}

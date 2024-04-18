@@ -14,11 +14,7 @@
   },
   "register-for-cloud": {
     "title": "Register for CloudQuery Cloud",
-    "type": "page",
-    "theme": {
-      "layout": "full",
-      "sidebar": false
-    }
+    "href": "https://cloud.cloudquery.io/auth/register"
   },
   "hub": {
     "title": "Hub",

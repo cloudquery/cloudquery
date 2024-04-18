@@ -3,10 +3,24 @@ package spec
 import (
 	"encoding/json"
 	"fmt"
+	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
+)
+
+const (
+	varFormat = "{{FORMAT}}"
+	varTable  = "{{TABLE}}"
+	varUUID   = "{{UUID}}"
+	varYear   = "{{YEAR}}"
+	varMonth  = "{{MONTH}}"
+	varDay    = "{{DAY}}"
+	varHour   = "{{HOUR}}"
+	varMinute = "{{MINUTE}}"
+	varSyncID = "{{SYNC_ID}}"
 )
 
 type Spec struct {
@@ -15,8 +29,20 @@ type Spec struct {
 	// Bucket where to sync the files.
 	Bucket string `json:"bucket,omitempty" jsonschema:"required,minLength=1"`
 
-	// Path to where the files will be uploaded in the above bucket.
-	Path string `json:"path,omitempty" jsonschema:"required,minLength=1"`
+	// Path to where the files will be uploaded in the above bucket, for example `path/to/files/{{TABLE}}/{{UUID}}.parquet`
+	//
+	// The path supports the following placeholder variables:
+	// - `{{TABLE}}` will be replaced with the table name
+	// - `{{FORMAT}}` will be replaced with the file format, such as `csv`, `json` or `parquet`. If compression is enabled, the format will be `csv.gz`, `json.gz` etc.
+	// - `{{UUID}}` will be replaced with a random UUID to uniquely identify each file
+	// - `{{YEAR}}` will be replaced with the current year in `YYYY` format
+	// - `{{MONTH}}` will be replaced with the current month in `MM` format
+	// - `{{DAY}}` will be replaced with the current day in `DD` format
+	// - `{{HOUR}}` will be replaced with the current hour in `HH` format
+	// - `{{MINUTE}}` will be replaced with the current minute in `mm` format
+	//
+	//  **Note** that timestamps are in `UTC` and will be the current time at the time the file is written, not when the sync started.
+	Path string `json:"path,omitempty" jsonschema:"required,minLength=1,example=path/to/files/{{TABLE}}/{{UUID}}.parquet" jsonschema_extras:"errorMessage=value should not start with /"`
 
 	// If set to `true`, the plugin will write to one file per table.
 	// Otherwise, for every batch a new file will be created with a different `.<UUID>` suffix.
@@ -97,6 +123,10 @@ func (s *Spec) Validate() error {
 	return s.FileSpec.Validate()
 }
 
+func (s *Spec) PathContainsUUID() bool {
+	return strings.Contains(s.Path, varUUID)
+}
+
 func isValidJson(content string) error {
 	var v map[string]any
 	err := json.Unmarshal([]byte(content), &v)
@@ -108,4 +138,29 @@ func isValidJson(content string) error {
 
 func int64ptr(i int64) *int64 {
 	return &i
+}
+
+func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time, syncID string) string {
+	name := strings.ReplaceAll(s.Path, varTable, table)
+	if strings.Contains(name, varFormat) {
+		e := string(s.Format) + s.Compression.Extension()
+		name = strings.ReplaceAll(name, varFormat, e)
+	}
+	name = strings.ReplaceAll(name, varUUID, fileIdentifier)
+	name = strings.ReplaceAll(name, varYear, t.Format("2006"))
+	name = strings.ReplaceAll(name, varMonth, t.Format("01"))
+	name = strings.ReplaceAll(name, varDay, t.Format("02"))
+	name = strings.ReplaceAll(name, varHour, t.Format("15"))
+	name = strings.ReplaceAll(name, varMinute, t.Format("04"))
+	name = strings.ReplaceAll(name, varSyncID, syncID)
+
+	/* If name does not contain any variables, we revert to the behaviour before
+	we introduced path variables. */
+	if name == s.Path {
+		name = fmt.Sprintf("%s/%s.%s%s.%s", s.Path, table, s.Format, s.FileSpec.Compression.Extension(), fileIdentifier)
+		if s.NoRotate {
+			name = fmt.Sprintf("%s/%s.%s%s", s.Path, table, s.Format, s.FileSpec.Compression.Extension())
+		}
+	}
+	return filepath.Clean(name)
 }

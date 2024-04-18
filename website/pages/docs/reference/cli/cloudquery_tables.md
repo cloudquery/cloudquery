@@ -22,12 +22,15 @@ cloudquery tables ./directory
 cloudquery tables ./directory --format markdown
 # You can also specify an output directory. The default is ./cq-docs
 cloudquery tables ./directory --output-dir ./docs
+# You can also filter which tables are included in the output. The default is all, use --filter=spec to include only tables referenced in the spec
+cloudquery tables ./directory --filter spec
 
 ```
 
 ### Options
 
 ```
+      --filter string       Filter tables. One of: all, spec (default "all")
       --format string       Output format. One of: json, markdown (default "json")
   -h, --help                help for tables
       --output-dir string   Base output directory for generated files (default "cq-docs")

@@ -35,7 +35,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.1'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.1'
     implementation 'com.google.guava:guava:31.1-jre'
-    implementation 'com.konghq:unirest-java:3.14.2'
+    implementation 'com.konghq:unirest-java:3.14.5'
 
     // gRPC
     implementation 'io.grpc:grpc-protobuf:1.61.1'
@@ -46,8 +46,8 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
     implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
 
-    implementation 'io.cloudquery:plugin-pb-java:0.0.14'
-    implementation 'io.cloudquery:plugin-sdk-java:0.0.21'
+    implementation 'io.cloudquery:plugin-pb-java:0.0.15'
+    implementation 'io.cloudquery:plugin-sdk-java:0.0.24'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

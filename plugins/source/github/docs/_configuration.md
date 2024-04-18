@@ -35,9 +35,10 @@ spec:
     #     base_url: "http(s)://[your-ghe-hostname]/api/v3/"
     #     upload_url: "http(s)://[your-ghe-hostname]/api/uploads/"
     # # Optional parameters
-    # concurrency: 10000 # Optional. Number of concurrent requests to GitHub API. Default is 10000.
+    # concurrency: 1500 # Optional. The best effort maximum number of Go routines to use. Lower this number to reduce memory usage or to avoid hitting GitHub API rate limits. Default 1500.
     # discovery_concurrency: 1 # Optional. Number of concurrent requests to GitHub API during discovery phase. Default 1.
-    # skip_archived_repos: false # Optional. Skip archived repositories. Default false.
+    # include_archived_repos: false # Optional. Include archived repositories in the sync. Default false.
+    # local_cache_path: "" # Optional. Path to a local directory that will hold the cache. If set, the plugin will cache the GitHub API responses in this directory. Defaults to an empty string (no cache).
 ```
 
 See [tables](/docs/plugins/sources/github/tables) for a full list of available tables.

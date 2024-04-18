@@ -10,7 +10,7 @@ This guide will walk you through the process of obtaining and using an offline l
 
 ## Obtaining an Offline License
 
-To obtain an offline license, you'll need to contact our sales team by filling out the form in our [pricing page](https://cloudquery.io/pricing).
+To obtain an offline license, you'll need to contact our sales team by filling out the form in our [pricing page](https://www.cloudquery.io/pricing).
 
 The license will be assigned to your organization and will be valid for a specific period of time.
 If you need to use CloudQuery in a different organization or after the license has expired, you'll need to obtain a new license.

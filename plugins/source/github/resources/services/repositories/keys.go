@@ -31,10 +31,10 @@ func fetchKeys(ctx context.Context, meta schema.ClientMeta, parent *schema.Resou
 			return err
 		}
 		res <- keysList
-		opts.Page = resp.NextPage
-		if opts.Page == resp.LastPage {
+		if resp.NextPage == 0 {
 			break
 		}
+		opts.Page = resp.NextPage
 	}
 
 	return nil

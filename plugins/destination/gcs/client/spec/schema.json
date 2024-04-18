@@ -63,7 +63,109 @@
               }
             }
           },
-          "title": "Disallow batching when using no_rotate"
+          "title": "Disallow batching when using no_rotate",
+          "errorMessage": {
+            "properties": {
+              "batch_size": "batching options must not be present when no_rotate is enabled",
+              "batch_size_bytes": "batching options must not be present when no_rotate is enabled",
+              "batch_timeout": "batching options must not be present when no_rotate is enabled",
+              "no_rotate": "batching options must not be present when no_rotate is enabled"
+            }
+          }
+        },
+        {
+          "properties": {
+            "path": {
+              "not": {
+                "anyOf": [
+                  {
+                    "pattern": "^.*\\./.*$"
+                  },
+                  {
+                    "pattern": "^.*//.*$"
+                  }
+                ]
+              },
+              "type": "string"
+            }
+          },
+          "title": "`path` is a clean path value",
+          "errorMessage": {
+            "properties": {
+              "path": "value must not contain ./ or //"
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "no_rotate": {
+                "type": "boolean",
+                "const": true
+              }
+            },
+            "required": [
+              "no_rotate"
+            ]
+          },
+          "then": {
+            "properties": {
+              "path": {
+                "not": {
+                  "pattern": "^.*\\{\\{UUID\\}\\}.*$"
+                },
+                "type": "string"
+              }
+            },
+            "title": "Disallow {{UUID}} in path"
+          },
+          "title": "Disallow {{UUID}} in path when using no_rotate",
+          "errorMessage": {
+            "properties": {
+              "path": "the {{UUID}} placeholder must not be present in the path when no_rotate is enabled"
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "no_rotate": {
+                "type": "boolean",
+                "const": false
+              }
+            },
+            "title": "Disallow setting no_rotate to true"
+          },
+          "then": {
+            "anyOf": [
+              {
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "pattern": "^.*\\{\\{UUID\\}\\}.*$"
+                  }
+                },
+                "title": "Require {{UUID}} to be present in path"
+              },
+              {
+                "properties": {
+                  "path": {
+                    "not": {
+                      "type": "string",
+                      "pattern": "^.*\\{\\{.*\\}\\}.*$"
+                    }
+                  }
+                },
+                "title": "`path` does not contain path variables"
+              }
+            ]
+          },
+          "title": "Require {{UUID}} in path when batching",
+          "errorMessage": {
+            "properties": {
+              "path": "value must contain the {{UUID}} placeholder or no path variables at all"
+            }
+          }
         }
       ],
       "oneOf": [
@@ -168,7 +270,11 @@
         "path": {
           "type": "string",
           "minLength": 1,
-          "description": "Path to where the files will be uploaded in the above bucket."
+          "description": "Path to where the files will be uploaded in the above bucket, for example `path/to/files/{{TABLE}}/{{UUID}}.parquet`\n\nThe path supports the following placeholder variables:\n- `{{TABLE}}` will be replaced with the table name\n- `{{FORMAT}}` will be replaced with the file format, such as `csv`, `json` or `parquet`. If compression is enabled, the format will be `csv.gz`, `json.gz` etc.\n- `{{UUID}}` will be replaced with a random UUID to uniquely identify each file\n- `{{YEAR}}` will be replaced with the current year in `YYYY` format\n- `{{MONTH}}` will be replaced with the current month in `MM` format\n- `{{DAY}}` will be replaced with the current day in `DD` format\n- `{{HOUR}}` will be replaced with the current hour in `HH` format\n- `{{MINUTE}}` will be replaced with the current minute in `mm` format\n\n **Note** that timestamps are in `UTC` and will be the current time at the time the file is written, not when the sync started.",
+          "examples": [
+            "path/to/files/{{TABLE}}/{{UUID}}.parquet"
+          ],
+          "errorMessage": "value should not start with /"
         },
         "no_rotate": {
           "type": "boolean",

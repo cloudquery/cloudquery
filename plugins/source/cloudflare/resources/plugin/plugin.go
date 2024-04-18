@@ -13,6 +13,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/dns_records"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/images"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/ips"
+	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/rulesets"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/waf_overrides"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/waf_packages"
 	"github.com/cloudquery/cloudquery/plugins/source/cloudflare/resources/services/worker_meta_data"
@@ -52,6 +53,9 @@ func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 	}
 	spec := &client.Spec{}
 	if err := json.Unmarshal(specBytes, spec); err != nil {
+		return nil, err
+	}
+	if err := spec.Validate(); err != nil {
 		return nil, err
 	}
 	spec.SetDefaults()
@@ -103,6 +107,8 @@ func getTables() schema.Tables {
 		dns_records.DNSRecords(),
 		images.Images(),
 		ips.IPs(),
+		rulesets.AccountRulesets(),
+		rulesets.ZoneRulesets(),
 		waf_packages.WAFPackages(),
 		waf_overrides.WAFOverrides(),
 		worker_meta_data.WorkerMetaData(),

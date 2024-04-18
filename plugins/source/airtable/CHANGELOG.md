@@ -1,5 +1,31 @@
 # Changelog
 
+## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.1.3...plugins-source-airtable-v2.2.0) (2024-04-12)
+
+
+### Features
+
+* Add reference to running in a Containerized Environment doc ([#17593](https://github.com/cloudquery/cloudquery/issues/17593)) ([9b07ab3](https://github.com/cloudquery/cloudquery/commit/9b07ab328eb8b3ef7fab61c9d8458244cc33af93))
+
+## [2.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.1.2...plugins-source-airtable-v2.1.3) (2024-04-11)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-sdk-javascript to v0.1.10 ([#17590](https://github.com/cloudquery/cloudquery/issues/17590)) ([ef50ccb](https://github.com/cloudquery/cloudquery/commit/ef50ccbcceb317b5c9a3f0177dffebbdd76e95a2))
+
+## [2.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.1.1...plugins-source-airtable-v2.1.2) (2024-04-02)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-sdk-javascript to v0.1.8 ([#17442](https://github.com/cloudquery/cloudquery/issues/17442)) ([27fc0a4](https://github.com/cloudquery/cloudquery/commit/27fc0a413e30c41b9b868ff50d9a1a5ba163a103))
+* **deps:** Update dependency @cloudquery/plugin-sdk-javascript to v0.1.9 ([#17445](https://github.com/cloudquery/cloudquery/issues/17445)) ([3093aaf](https://github.com/cloudquery/cloudquery/commit/3093aaf010baa47d6721b2d1a03bc71b0f694d21))
+* **deps:** Update dependency @tsconfig/node20 to v20.1.4 ([#17430](https://github.com/cloudquery/cloudquery/issues/17430)) ([2e85b73](https://github.com/cloudquery/cloudquery/commit/2e85b737af23099d028954c9176e638eee42fa4b))
+* **deps:** Update dependency camelcase-keys to v9.1.3 ([#17433](https://github.com/cloudquery/cloudquery/issues/17433)) ([8c73200](https://github.com/cloudquery/cloudquery/commit/8c732004f3a7b669c02a43c8159d018f6d5bfa32))
+* **deps:** Update dependency eslint-plugin-import to v2.29.1 ([#17436](https://github.com/cloudquery/cloudquery/issues/17436)) ([d07bb84](https://github.com/cloudquery/cloudquery/commit/d07bb84817d1054104f360761e6fea127360513f))
+* **deps:** Update dependency p-map to v7.0.1 ([#17438](https://github.com/cloudquery/cloudquery/issues/17438)) ([7d417c5](https://github.com/cloudquery/cloudquery/commit/7d417c594587be53cea6563ddbae9c17eb5e4655))
+
 ## [2.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.1.0...plugins-source-airtable-v2.1.1) (2024-03-05)
 
 

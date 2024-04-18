@@ -32,7 +32,7 @@ func EventSubscriptions() *schema.Table {
 			{
 				Name:     "tags",
 				Type:     sdkTypes.ExtensionTypes.JSON,
-				Resolver: resolveRDSEventSubscriptionTags,
+				Resolver: resolveRDSTags("EventSubscriptionArn"),
 			},
 		},
 	}
@@ -53,17 +53,4 @@ func fetchRdsEventSubscriptions(ctx context.Context, meta schema.ClientMeta, par
 		res <- page.EventSubscriptionsList
 	}
 	return nil
-}
-
-func resolveRDSEventSubscriptionTags(ctx context.Context, meta schema.ClientMeta, resource *schema.Resource, c schema.Column) error {
-	s := resource.Item.(types.EventSubscription)
-	cl := meta.(*client.Client)
-	svc := cl.Services(client.AWSServiceRds).Rds
-	out, err := svc.ListTagsForResource(ctx, &rds.ListTagsForResourceInput{ResourceName: s.EventSubscriptionArn}, func(options *rds.Options) {
-		options.Region = cl.Region
-	})
-	if err != nil {
-		return err
-	}
-	return resource.Set(c.Name, client.TagsToMap(out.TagList))
 }

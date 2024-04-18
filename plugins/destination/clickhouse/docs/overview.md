@@ -96,6 +96,15 @@ spec:
       - "{replica}"
 ```
 
+### Connecting to ClickHouse Cloud
+
+To connect to [ClickHouse Cloud](https://clickhouse.com/cloud), you need to set the `secure=true` parameter, username is `default`, and the port is `9440`. Use a connection string similar to:
+
+```yaml copy
+    connection_string: "clickhouse://default:${CH_PASSWORD}@<your-server-id>.<region>.<provider>.clickhouse.cloud:9440/${CH_DATABASE}?secure=true"
+```
+
+See [Quick Start: Using the ClickHouse Client](https://clickhouse.com/docs/en/cloud-quick-start#5-using-the-clickhouse-client) for more details.
 
 #### Verbose logging for debug
 

@@ -1,5 +1,91 @@
 # Changelog
 
+## [8.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.0.3...plugins-destination-postgresql-v8.0.4) (2024-04-16)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.14 ([#17658](https://github.com/cloudquery/cloudquery/issues/17658)) ([478eb9c](https://github.com/cloudquery/cloudquery/commit/478eb9c03f764322402703b3975b71b7086a5dea))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.15 ([#17659](https://github.com/cloudquery/cloudquery/issues/17659)) ([58586d0](https://github.com/cloudquery/cloudquery/commit/58586d012a8f4f38b0a693dcbd46d2340bb72a61))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.38.1 ([#17610](https://github.com/cloudquery/cloudquery/issues/17610)) ([a12d17b](https://github.com/cloudquery/cloudquery/commit/a12d17b6f93ef5379b0c11d1338f02dad28f1914))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.38.2 ([#17656](https://github.com/cloudquery/cloudquery/issues/17656)) ([058910b](https://github.com/cloudquery/cloudquery/commit/058910bcb37a6130deb55720a4a1afaec123a319))
+
+## [8.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.0.2...plugins-destination-postgresql-v8.0.3) (2024-04-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.38.0 ([#17554](https://github.com/cloudquery/cloudquery/issues/17554)) ([edb6f06](https://github.com/cloudquery/cloudquery/commit/edb6f066c3a3675f5bfca3e492eba3aeb31e770b))
+
+## [8.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.0.1...plugins-destination-postgresql-v8.0.2) (2024-04-08)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.4 ([#17485](https://github.com/cloudquery/cloudquery/issues/17485)) ([f370de4](https://github.com/cloudquery/cloudquery/commit/f370de449e61244398e6f413b973cbfa15c019a6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.5 ([#17526](https://github.com/cloudquery/cloudquery/issues/17526)) ([554c499](https://github.com/cloudquery/cloudquery/commit/554c499eb9bc9f98f6f3dc4be23fd02049f48dcd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.37.0 ([#17532](https://github.com/cloudquery/cloudquery/issues/17532)) ([8080970](https://github.com/cloudquery/cloudquery/commit/8080970f40d22b6bc9db4c359780c744b476bb02))
+* Simplify connecting string description in JSON schema ([#17550](https://github.com/cloudquery/cloudquery/issues/17550)) ([6a1407b](https://github.com/cloudquery/cloudquery/commit/6a1407b8c641089c12f655a37a0b5147f926933b))
+
+## [8.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.0.0...plugins-destination-postgresql-v8.0.1) (2024-04-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.13 ([#17444](https://github.com/cloudquery/cloudquery/issues/17444)) ([da276fe](https://github.com/cloudquery/cloudquery/commit/da276fe64c46ec0a5f182c83ebc32a90d55f5d50))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.1 ([#17372](https://github.com/cloudquery/cloudquery/issues/17372)) ([aaf6187](https://github.com/cloudquery/cloudquery/commit/aaf61873ae5d2e01ea5f3b8b319e4f79afb7b29c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.2 ([#17450](https://github.com/cloudquery/cloudquery/issues/17450)) ([2947506](https://github.com/cloudquery/cloudquery/commit/294750650269f8191c6dfff060c4d3a546405763))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.3 ([#17456](https://github.com/cloudquery/cloudquery/issues/17456)) ([020865a](https://github.com/cloudquery/cloudquery/commit/020865a6fde8c896947a844021f0cd7daeb01b06))
+
+## [8.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.6.0...plugins-destination-postgresql-v8.0.0) (2024-03-26)
+
+
+### ⚠ BREAKING CHANGES
+
+* Support Decimal types ([#17247](https://github.com/cloudquery/cloudquery/issues/17247))
+
+### Features
+
+* Support Decimal types ([#17247](https://github.com/cloudquery/cloudquery/issues/17247)) ([06199a7](https://github.com/cloudquery/cloudquery/commit/06199a7c6ac75e3747892836e6108adc09dda760))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 92878fa ([#16718](https://github.com/cloudquery/cloudquery/issues/16718)) ([7fe8588](https://github.com/cloudquery/cloudquery/commit/7fe858818fe1f88fcca6304c873a4614767a57b9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.35.0 ([#17299](https://github.com/cloudquery/cloudquery/issues/17299)) ([524ba20](https://github.com/cloudquery/cloudquery/commit/524ba202801c2ae1eb59a5b462a5efc62d1b4000))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.36.0 ([#17325](https://github.com/cloudquery/cloudquery/issues/17325)) ([eb1b4b8](https://github.com/cloudquery/cloudquery/commit/eb1b4b8b963917b87ff644318cfec9745471d50a))
+* Make sure to scan table list during state backend operations ([#17337](https://github.com/cloudquery/cloudquery/issues/17337)) ([0bf8ea8](https://github.com/cloudquery/cloudquery/commit/0bf8ea8f213f0f051b5f7a22246092bd85892fed))
+
+## [7.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.5.0...plugins-destination-postgresql-v7.6.0) (2024-03-19)
+
+
+### Features
+
+* Support removing a unique constraint ([#17130](https://github.com/cloudquery/cloudquery/issues/17130)) ([8ec2656](https://github.com/cloudquery/cloudquery/commit/8ec2656b92f9d76cc46d2eefe51f2b57e748d755))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.0 ([#17203](https://github.com/cloudquery/cloudquery/issues/17203)) ([4b128b6](https://github.com/cloudquery/cloudquery/commit/4b128b6722dea883d66458f2f3c831184926353d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.1 ([#17220](https://github.com/cloudquery/cloudquery/issues/17220)) ([08d4950](https://github.com/cloudquery/cloudquery/commit/08d49504aee10f6883e1bd4f7e1102a274c8ee81))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.34.2 ([#17229](https://github.com/cloudquery/cloudquery/issues/17229)) ([41ed721](https://github.com/cloudquery/cloudquery/commit/41ed721cfa435a4937f3022501dd4d45a3a880b0))
+* **deps:** Update module github.com/jackc/pgx/v5 to v5.5.4 [SECURITY] ([#17207](https://github.com/cloudquery/cloudquery/issues/17207)) ([869e735](https://github.com/cloudquery/cloudquery/commit/869e7358ff6f1b095c98e41039deb3e7b07ba855))
+* **deps:** Update module google.golang.org/protobuf to v1.33.0 [SECURITY] ([#17147](https://github.com/cloudquery/cloudquery/issues/17147)) ([addbc38](https://github.com/cloudquery/cloudquery/commit/addbc388830e33bf9a35a982ac62d796abff9e05))
+
+## [7.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.4.0...plugins-destination-postgresql-v7.5.0) (2024-03-12)
+
+
+### Features
+
+* Add connection string example to JSON schema ([#17113](https://github.com/cloudquery/cloudquery/issues/17113)) ([ed63346](https://github.com/cloudquery/cloudquery/commit/ed63346534b2f4d7502a6d9c793caf696385bb6a))
+
+## [7.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.3.8...plugins-destination-postgresql-v7.4.0) (2024-03-12)
+
+
+### Features
+
+* Add support for CrateDB to Postgres destination ([#17088](https://github.com/cloudquery/cloudquery/issues/17088)) ([316984a](https://github.com/cloudquery/cloudquery/commit/316984ab4ea7f9761b31242b3307878bc40bee83))
+
 ## [7.3.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v7.3.7...plugins-destination-postgresql-v7.3.8) (2024-03-06)
 
 

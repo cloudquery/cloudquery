@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
+	"sync"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -32,7 +33,8 @@ type Client struct {
 	batchSize           int
 	writer              *mixedbatchwriter.MixedBatchWriter
 
-	pgTablesToPKConstraints map[string]*pkConstraintDetails
+	pgTablesToPKConstraints   map[string]*pkConstraintDetails
+	pgTablesToPKConstraintsMu sync.RWMutex
 
 	plugin.UnimplementedSource
 }
@@ -46,6 +48,7 @@ const (
 	invalid pgType = iota
 	pgTypePostgreSQL
 	pgTypeCockroachDB
+	pgTypeCrateDB
 )
 
 func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
@@ -160,6 +163,8 @@ func (c *Client) getPgType(ctx context.Context) (pgType, error) {
 		typ = pgTypePostgreSQL
 	case "cockroachdb":
 		typ = pgTypeCockroachDB
+	case "cratedb":
+		typ = pgTypeCrateDB
 	default:
 		return typ, fmt.Errorf("unknown database type %s", name)
 	}

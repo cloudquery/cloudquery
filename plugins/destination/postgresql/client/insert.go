@@ -13,15 +13,32 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-// InsertBatch inserts records into the destination table. It forms part of the writer.MixedBatchWriter interface.
-func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts) error {
+func (c *Client) pgTables(ctx context.Context) (map[string]struct{}, error) {
+	c.pgTablesToPKConstraintsMu.RLock()
 	// This happens when the CLI was invoked with `sync --no-migrate`
-	if c.pgTablesToPKConstraints == nil {
+	if len(c.pgTablesToPKConstraints) == 0 {
+		c.pgTablesToPKConstraintsMu.RUnlock()
 		// listTables populates c.pgTablesToPKConstraints
 		_, err := c.listTables(ctx)
 		if err != nil {
-			return err
+			return nil, err
 		}
+		c.pgTablesToPKConstraintsMu.RLock()
+	}
+
+	list := make(map[string]struct{}, len(c.pgTablesToPKConstraints))
+	for k := range c.pgTablesToPKConstraints {
+		list[k] = struct{}{}
+	}
+	c.pgTablesToPKConstraintsMu.RUnlock()
+	return list, nil
+}
+
+// InsertBatch inserts records into the destination table. It forms part of the writer.MixedBatchWriter interface.
+func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts) error {
+	pgTables, err := c.pgTables(ctx)
+	if err != nil {
+		return err
 	}
 
 	batch := new(pgx.Batch)
@@ -37,7 +54,8 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 		if !ok {
 			return fmt.Errorf("table name not found in metadata")
 		}
-		if _, ok = c.pgTablesToPKConstraints[tableName]; !ok {
+
+		if _, ok := pgTables[tableName]; !ok {
 			return fmt.Errorf("table %s not found", tableName)
 		}
 
@@ -53,7 +71,7 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 			queries[tableName] = sql
 		}
 
-		rows := transformValues(r)
+		rows := c.transformValues(r)
 		for _, rowVals := range rows {
 			batch.Queue(sql, rowVals...)
 		}
@@ -114,12 +132,13 @@ func (*Client) insert(table *schema.Table) string {
 }
 
 func (c *Client) upsert(table *schema.Table) string {
+	if c.pgType == pgTypeCrateDB {
+		return c.upsertCrateDB(table)
+	}
 	var sb strings.Builder
-
 	sb.WriteString(c.insert(table))
 	columns := table.Columns
 	columnsLen := len(columns)
-
 	constraintName := table.PkConstraintName
 	sb.WriteString(" on conflict on constraint ")
 	sb.WriteString(pgx.Identifier{constraintName}.Sanitize())
@@ -134,6 +153,32 @@ func (c *Client) upsert(table *schema.Table) string {
 			sb.WriteString("")
 		}
 	}
+
+	return sb.String()
+}
+
+// CrateDB differs from normal Postgres in that it does not support constraint-name
+// based upserts, and errors out if a primary key is written to during upsert.
+func (c *Client) upsertCrateDB(table *schema.Table) string {
+	var sb strings.Builder
+	sb.WriteString(c.insert(table))
+	columns := table.Columns
+	if len(table.PrimaryKeysIndexes()) == len(table.Columns) {
+		sb.WriteString(" on conflict do nothing")
+		return sb.String()
+	}
+	pks := table.PrimaryKeys()
+	sb.WriteString(fmt.Sprintf(" on conflict (%s) ", strings.Join(pks, ",")))
+
+	sb.WriteString(" do update set ")
+	cols := make([]string, 0, len(columns)-len(pks))
+	for _, column := range columns {
+		if column.PrimaryKey {
+			continue
+		}
+		cols = append(cols, pgx.Identifier{column.Name}.Sanitize()+"=excluded."+pgx.Identifier{column.Name}.Sanitize())
+	}
+	sb.WriteString(strings.Join(cols, ","))
 
 	return sb.String()
 }

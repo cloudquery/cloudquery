@@ -11,6 +11,12 @@ Apache Airflow is a popular open source workflow management tool. It can be used
 
 ## Prerequisites
 
+### Generating a CloudQuery API key
+
+Downloading plugins requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in an Apache Airflow environment. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key).
+
+### Apache Airflow Installation
+
 This guide assumes that you have a working Airflow installation and an available Kubernetes cluster, and experience with operating both of these. If you don't, you should consider some simpler orchestration options to get started, such as [GitHub Actions](/docs/deployment/github-actions), [Kestra](/docs/deployment/kestra), or even a simple cron-based deployment. 
 
 If you decide to proceed with Airflow, you can install it locally on Kubernetes using [Minikube](https://minikube.sigs.k8s.io/) and the [Airflow Helm chart](https://airflow.apache.org/docs/helm-chart/). 
@@ -102,6 +108,11 @@ with DAG(
         namespace='airflow',
         image='ghcr.io/cloudquery/cloudquery:latest',
         cmds=['/app/cloudquery', 'sync', '/mnt/config.yaml', '--log-console', '--log-level', 'info'],
+        # We're passing the CloudQuery API key as an environment variable for brevity, but it's better to use a k8s secret
+        # See https://airflow.apache.org/docs/apache-airflow-providers-cncf-kubernetes/stable/operators.html
+        env_vars={
+            "CLOUDQUERY_API_KEY": "<value-of-cloudquery-api-token-ideally-not-hardcoded>",
+        },
         arguments=[],
         volume_mounts=[
         k8s.V1VolumeMount(
@@ -128,7 +139,6 @@ spec:
   # Source spec section
   name: aws
   path: cloudquery/aws
-  registry: cloudquery
   version: "VERSION_SOURCE_AWS"
   tables: ["aws_s3_buckets"]
   destinations: ["postgresql"]
@@ -139,7 +149,6 @@ kind: destination
 spec:
   name: "postgresql"
   path: "cloudquery/postgresql"
-  registry: "cloudquery"
   version: "VERSION_DESTINATION_POSTGRESQL"
   write_mode: "overwrite-delete-stale"
   spec:
