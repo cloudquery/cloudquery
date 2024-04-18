@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.8.1...plugins-destination-sqlite-v2.8.2) (2024-04-18)
+
+
+### Bug Fixes
+
+* Add proper `linux/arm64` value for compilation ([#17693](https://github.com/cloudquery/cloudquery/issues/17693)) ([3288c1f](https://github.com/cloudquery/cloudquery/commit/3288c1fbb4250f36bb1b811cfe546fc2e739d5aa))
+
 ## [2.8.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.8.0...plugins-destination-sqlite-v2.8.1) (2024-04-18)
 
 
