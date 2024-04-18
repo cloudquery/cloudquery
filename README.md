@@ -5,9 +5,9 @@
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)  [![Go Report Card](https://goreportcard.com/badge/github.com/cloudquery/cloudquery)](https://goreportcard.com/report/github.com/cloudquery/cloudquery)  [![CLI Workflow](https://github.com/cloudquery/cloudquery/actions/workflows/cli.yml/badge.svg)](https://github.com/cloudquery/cloudquery/actions/workflows/cli.yml)  
 
 CloudQuery is an [open-source](https://github.com/cloudquery/cloudquery),
-high-performance data integration framework built for developers.
+high-performance data integration framework built for developers, with support for a wide range of plugins.
 
-CloudQuery extracts, transforms, and loads configuration from cloud APIs to
+CloudQuery extracts, transforms, and loads configuration from cloud APIs, files or databases to
 variety of supported destinations such as databases, data lakes, or streaming platforms
 for further analysis.
 
@@ -17,11 +17,10 @@ See the **[Quickstart guide](https://www.cloudquery.io/docs/quickstart)** for in
 
 ## Why CloudQuery?
 
-- **Open source**: Extensible plugin architecture. Contribute to our official plugins or develop your own with CloudQuery SDK.
 - **Blazing fast**: CloudQuery is optimized for performance, utilizing the excellent Go concurrency model with light-weight goroutines.
 - **Deploy anywhere**: CloudQuery plugins are single-binary executables and can be deployed and run anywhere.
+- **Open source**: Language-agnostic, extensible plugin architecture using [Apache Arrow](https://arrow.apache.org/): develop your own plugins in Go, Python, Java or JavaScript using the [CloudQuery SDK](https://docs.cloudquery.io/docs/developers/creating-new-plugin).
 - **Pre-built queries**: CloudQuery maintains a number of out-of-the-box security and compliance policies for cloud infrastructure.
-- **Eliminate data silos**: Eliminate data silos across your organization, unifying data between security, infrastructure, marketing and finance teams.
 - **Unlimited scale**: CloudQuery plugins are stateless and can be scaled horizontally on any platform, such as EC2, Kubernetes, batch jobs or any other compute.
 
 ## Use Cases
