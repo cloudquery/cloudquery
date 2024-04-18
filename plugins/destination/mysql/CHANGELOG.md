@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.0.4...plugins-destination-mysql-v5.0.5) (2024-04-18)
+
+
+### Bug Fixes
+
+* Ignore removal of Unique Constraint change ([#17687](https://github.com/cloudquery/cloudquery/issues/17687)) ([d0fb928](https://github.com/cloudquery/cloudquery/commit/d0fb928b6ea0815ce5c5264d8a31000880d93601))
+
 ## [5.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.0.3...plugins-destination-mysql-v5.0.4) (2024-04-16)
 
 
