@@ -30,6 +30,7 @@ See the **[Quickstart guide](https://www.cloudquery.io/docs/quickstart)** for in
 - **Cloud FinOps**: Collect and unify billing data from cloud providers to drive financial accountability.
 - **ELT Platform**: With hundreds of plugin combinations and extensible architecture, CloudQuery can be used for reliable, efficient export from any API to any database, or from one database to another.
 - **Attack Surface Management**: [Open source solution](https://www.cloudquery.io/how-to-guides/attack-surface-management-with-graph) for continuous discovery, analysis and monitoring of potential attack vectors that make up your organization's attack surface.
+- **Eliminate data silos**: Eliminate data silos across your organization, unifying data between security, infrastructure, marketing and finance teams.
 
 ### Links
 
