@@ -21,7 +21,6 @@ func main() {
 		internalPlugin.Version,
 		client.New,
 		plugin.WithBuildTargets([]plugin.BuildTarget{
-			{OS: plugin.GoOSLinux, Arch: plugin.GoArchArm64, CGO: true},
 			{OS: plugin.GoOSLinux, Arch: plugin.GoArchAmd64, CGO: true},
 			{OS: plugin.GoOSWindows, Arch: plugin.GoArchAmd64, CGO: true},
 			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchAmd64, CGO: true},
