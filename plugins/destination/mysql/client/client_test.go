@@ -35,11 +35,12 @@ func TestPlugin(t *testing.T) {
 		plugin.WriterTestSuiteTests{
 			SkipDeleteRecord: true,
 			SafeMigrations: plugin.SafeMigrations{
-				AddColumn:           true,
-				AddColumnNotNull:    false,
-				RemoveColumn:        true,
-				RemoveColumnNotNull: false,
-				ChangeColumn:        false,
+				AddColumn:              true,
+				AddColumnNotNull:       false,
+				RemoveColumn:           true,
+				RemoveColumnNotNull:    false,
+				ChangeColumn:           false,
+				RemoveUniqueConstraint: true,
 			},
 		},
 	)
