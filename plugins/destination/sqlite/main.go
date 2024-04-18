@@ -22,7 +22,7 @@ func main() {
 		client.New,
 		plugin.WithBuildTargets([]plugin.BuildTarget{
 			{OS: plugin.GoOSLinux, Arch: plugin.GoArchAmd64, CGO: true},
-			{OS: plugin.GoOSLinux, Arch: plugin.GoArchArm64, CGO: true},
+			{OS: plugin.GoOSLinux, Arch: plugin.GoArchArm64, CGO: true, Env: []string{"CC=aarch64-linux-gnu-gcc"}},
 			{OS: plugin.GoOSWindows, Arch: plugin.GoArchAmd64, CGO: true},
 			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchAmd64, CGO: true},
 			{OS: plugin.GoOSDarwin, Arch: plugin.GoArchArm64, CGO: true},
