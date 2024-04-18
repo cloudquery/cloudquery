@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.8.0...plugins-destination-sqlite-v2.8.1) (2024-04-18)
+
+
+### Bug Fixes
+
+* Re-enable CGO in build ([#17689](https://github.com/cloudquery/cloudquery/issues/17689)) ([4a9e282](https://github.com/cloudquery/cloudquery/commit/4a9e282d5275f986e105d722d7b3545acaae49c7))
+
 ## [2.8.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.7.9...plugins-destination-sqlite-v2.8.0) (2024-04-17)
 
 
