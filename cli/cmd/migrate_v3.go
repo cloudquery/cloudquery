@@ -31,8 +31,8 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 			transformer.WithSourceNameColumn(sourceSpec.Name),
 			transformer.WithSyncTimeColumn(migrateStart),
 		}
-		if destinationSpecs[i].ExternalSyncGroupId != "" {
-			opts = append(opts, transformer.WithExternalSyncGroupIdColumn(destinationSpecs[i].RenderedExternalSyncGroupId(migrateStart)))
+		if destinationSpecs[i].SyncGroupId != "" {
+			opts = append(opts, transformer.WithSyncGroupIdColumn(destinationSpecs[i].RenderedSyncGroupId(migrateStart)))
 		}
 		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
 			opts = append(opts, transformer.WithRemovePKs(), transformer.WithRemovePKs())

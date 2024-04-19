@@ -28,7 +28,7 @@ type Destination struct {
 	// Destination plugin PK mode
 	PKMode PKMode `json:"pk_mode,omitempty" jsonschema:"default=default"`
 
-	ExternalSyncGroupId string `json:"external_sync_group_id,omitempty"`
+	SyncGroupId string `json:"sync_group_id,omitempty"`
 
 	// Destination plugin own (nested) spec
 	Spec map[string]any `json:"spec,omitempty"`
@@ -61,8 +61,8 @@ func (d *Destination) Validate() error {
 	return d.Metadata.Validate()
 }
 
-func (d *Destination) RenderedExternalSyncGroupId(t time.Time) string {
-	renderedValue := strings.ReplaceAll(d.ExternalSyncGroupId, varYear, t.Format("2006"))
+func (d *Destination) RenderedSyncGroupId(t time.Time) string {
+	renderedValue := strings.ReplaceAll(d.SyncGroupId, varYear, t.Format("2006"))
 	renderedValue = strings.ReplaceAll(renderedValue, varMonth, t.Format("01"))
 	renderedValue = strings.ReplaceAll(renderedValue, varDay, t.Format("02"))
 	renderedValue = strings.ReplaceAll(renderedValue, varHour, t.Format("15"))

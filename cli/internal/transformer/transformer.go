@@ -10,10 +10,10 @@ import (
 )
 
 const (
-	cqSyncTime       = "_cq_sync_time"
-	cqSourceName     = "_cq_source_name"
-	cqIDColumnName   = "_cq_id"
-	cqExternalSyncId = "_cq_external_sync_group_id"
+	cqSyncTime     = "_cq_sync_time"
+	cqSourceName   = "_cq_source_name"
+	cqIDColumnName = "_cq_id"
+	cqSyncGroupId  = "_cq_sync_group_id"
 )
 
 type RecordTransformer struct {
@@ -25,8 +25,8 @@ type RecordTransformer struct {
 	removePks               bool
 	removeUniqueConstraints bool
 	cqIDPrimaryKey          bool
-	withExternalSyncGroupID bool
-	externalSyncGroupId     string
+	withSyncGroupID         bool
+	syncGroupId             string
 }
 
 type RecordTransformerOption func(*RecordTransformer)
@@ -47,10 +47,10 @@ func WithSyncTimeColumn(t time.Time) RecordTransformerOption {
 	}
 }
 
-func WithExternalSyncGroupIdColumn(externalSyncId string) RecordTransformerOption {
+func WithSyncGroupIdColumn(syncGroupId string) RecordTransformerOption {
 	return func(transformer *RecordTransformer) {
-		transformer.withExternalSyncGroupID = true
-		transformer.externalSyncGroupId = externalSyncId
+		transformer.withSyncGroupID = true
+		transformer.syncGroupId = syncGroupId
 		transformer.internalColumns++
 	}
 }
@@ -89,9 +89,9 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 	if t.withSourceName && !sc.HasField(cqSourceName) {
 		fields = append(fields, arrow.Field{Name: cqSourceName, Type: arrow.BinaryTypes.String, Nullable: true})
 	}
-	if t.withExternalSyncGroupID && !sc.HasField(cqExternalSyncId) {
+	if t.withSyncGroupID && !sc.HasField(cqSyncGroupId) {
 		fields = append(fields, arrow.Field{
-			Name: cqExternalSyncId,
+			Name: cqSyncGroupId,
 			Type: arrow.BinaryTypes.String,
 			Metadata: arrow.NewMetadata(
 				[]string{schema.MetadataPrimaryKey},
@@ -145,12 +145,12 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 		}
 		cols = append(cols, sourceBldr.NewArray())
 	}
-	if t.withExternalSyncGroupID && !sc.HasField(cqExternalSyncId) {
-		externalSyncIDBldr := array.NewStringBuilder(memory.DefaultAllocator)
+	if t.withSyncGroupID && !sc.HasField(cqSyncGroupId) {
+		syncGroupIdBldr := array.NewStringBuilder(memory.DefaultAllocator)
 		for i := 0; i < nRows; i++ {
-			externalSyncIDBldr.Append(t.externalSyncGroupId)
+			syncGroupIdBldr.Append(t.syncGroupId)
 		}
-		cols = append(cols, externalSyncIDBldr.NewArray())
+		cols = append(cols, syncGroupIdBldr.NewArray())
 	}
 
 	for i := range sc.Fields() {
