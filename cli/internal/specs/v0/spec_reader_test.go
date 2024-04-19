@@ -188,10 +188,9 @@ var specLoaderTestCases = []specLoaderTestCase{
 		destinations: []*Destination{
 			{
 				Metadata: Metadata{
-					Name:     "postgresql",
-					Path:     "cloudquery/postgresql",
-					Version:  "v1.0.0",
-					Registry: RegistryCloudQuery,
+					Name:    "postgresql",
+					Path:    "cloudquery/postgresql",
+					Version: "v1.0.0",
 				},
 				WriteMode:   WriteModeAppend,
 				SyncGroupId: "{{YEAR}}-{{MONTH}}-{{DAY}}-{{HOUR}}-{{MINUTE}}",
@@ -233,10 +232,9 @@ var specLoaderTestCases = []specLoaderTestCase{
 		destinations: []*Destination{
 			{
 				Metadata: Metadata{
-					Name:     "postgresql",
-					Path:     "cloudquery/postgresql",
-					Version:  "v1.0.0",
-					Registry: RegistryCloudQuery,
+					Name:    "postgresql",
+					Path:    "cloudquery/postgresql",
+					Version: "v1.0.0",
 				},
 				WriteMode:   WriteModeOverwrite,
 				SyncGroupId: "{{YEAR}}-{{MONTH}}-{{DAY}}-{{HOUR}}-{{MINUTE}}",
