@@ -6,8 +6,9 @@ require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/cloudflare/cloudflare-go v0.91.0
 	github.com/cloudquery/codegen v0.3.15
-	github.com/cloudquery/plugin-sdk/v4 v4.38.2
+	github.com/cloudquery/plugin-sdk/v4 v4.39.0
 	github.com/golang/mock v1.6.0
+	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.32.0
 	github.com/stretchr/testify v1.9.0
 	github.com/thoas/go-funk v0.9.3
@@ -59,7 +60,6 @@ require (
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-retryablehttp v0.7.5 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/invopop/jsonschema v0.12.0 // indirect
 	github.com/iris-contrib/schema v0.0.6 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect

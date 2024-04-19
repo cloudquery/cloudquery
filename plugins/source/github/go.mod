@@ -7,7 +7,7 @@ require (
 	github.com/bradleyfalzon/ghinstallation/v2 v2.9.0
 	github.com/cloudquery/codegen v0.3.15
 	github.com/cloudquery/httpcache v0.0.0-20240402185306-9cae36e50fd1
-	github.com/cloudquery/plugin-sdk/v4 v4.38.2
+	github.com/cloudquery/plugin-sdk/v4 v4.39.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/gofri/go-github-ratelimit v1.0.3
 	github.com/golang/mock v1.6.0
