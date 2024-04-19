@@ -23,7 +23,7 @@ func SecurityGroups() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.SecurityGroup{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(false),
 			{
 				Name:                "arn",
@@ -64,7 +64,7 @@ func resolveSecurityGroupArn(_ context.Context, meta schema.ClientMeta, resource
 		Partition: cl.Partition,
 		Service:   "ec2",
 		Region:    cl.Region,
-		AccountID: cl.AccountID,
+		AccountID: aws.ToString(item.OwnerId),
 		Resource:  "security-group/" + aws.ToString(item.GroupId),
 	}
 	return resource.Set(c.Name, a.String())

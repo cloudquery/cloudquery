@@ -23,7 +23,7 @@ func VpcEndpoints() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.VpcEndpoint{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(false),
 			{
 				Name:                "arn",
@@ -62,7 +62,7 @@ func resolveVpcEndpointArn(_ context.Context, meta schema.ClientMeta, resource *
 		Partition: cl.Partition,
 		Service:   "ec2",
 		Region:    cl.Region,
-		AccountID: cl.AccountID,
+		AccountID: aws.ToString(item.OwnerId),
 		Resource:  "vpc-endpoint/" + aws.ToString(item.VpcEndpointId),
 	}
 	return resource.Set(c.Name, a.String())

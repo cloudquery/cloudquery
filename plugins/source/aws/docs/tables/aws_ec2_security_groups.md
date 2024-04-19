@@ -5,7 +5,7 @@ This table shows data for Amazon Elastic Compute Cloud (EC2) Security Groups.
 https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_SecurityGroup.html
 
 The primary key for this table is **_cq_id**.
-The following field is used to calculate the value of `_cq_id`: **arn**.
+The following fields are used to calculate the value of `_cq_id`: (**account_id**, **arn**).
 
 ## Columns
 
