@@ -83,6 +83,7 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 		okta.WithCache(true),
 		okta.WithRateLimitMaxBackOff(int64(config.RateLimit.MaxBackoff.Duration()/time.Second)), // this param takes int64 of seconds
 		okta.WithRateLimitMaxRetries(config.RateLimit.MaxRetries),
+		okta.WithRateLimitPrevent(true),
 	)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create okta configuration: %w", err)
