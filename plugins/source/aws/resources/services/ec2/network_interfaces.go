@@ -23,7 +23,7 @@ func NetworkInterfaces() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.NetworkInterface{}, transformers.WithSkipFields("TagSet")),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(false),
 			{
 				Name:                "arn",
@@ -63,7 +63,7 @@ func resolveNetworkInterfaceArn(_ context.Context, meta schema.ClientMeta, resou
 		Partition: cl.Partition,
 		Service:   "ec2",
 		Region:    cl.Region,
-		AccountID: cl.AccountID,
+		AccountID: aws.ToString(item.OwnerId),
 		Resource:  "network-interface/" + aws.ToString(item.NetworkInterfaceId),
 	}
 	return resource.Set(c.Name, a.String())

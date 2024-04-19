@@ -23,7 +23,7 @@ func Hosts() *schema.Table {
 		Multiplex:   client.ServiceAccountRegionMultiplexer(tableName, "ec2"),
 		Transform:   transformers.TransformWithStruct(&types.Host{}),
 		Columns: []schema.Column{
-			client.DefaultAccountIDColumn(false),
+			client.DefaultAccountIDColumn(true),
 			client.DefaultRegionColumn(false),
 			{
 				Name:                "arn",
@@ -64,7 +64,7 @@ func resolveHostArn(_ context.Context, meta schema.ClientMeta, resource *schema.
 		Partition: cl.Partition,
 		Service:   "ec2",
 		Region:    cl.Region,
-		AccountID: cl.AccountID,
+		AccountID: aws.ToString(item.OwnerId),
 		Resource:  "hosts/" + aws.ToString(item.HostId),
 	}
 	return resource.Set(c.Name, a.String())
