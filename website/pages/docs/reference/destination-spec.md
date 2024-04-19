@@ -107,7 +107,7 @@ Supported by destination plugins released on 2023-03-21 and later
 
 <!-- vale on -->
 
-:::callout{type="warn"}
+:::callout{type="warning"}
 Supported only for `write_mode: append` and `write_mode: overwrite` modes at the moment.
 :::
 
