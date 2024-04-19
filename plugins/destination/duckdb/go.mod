@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow/go/v15 v15.0.0-20240114144300-7e703aae55c1
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cloudquery/codegen v0.3.15
-	github.com/cloudquery/plugin-sdk/v4 v4.38.2
+	github.com/cloudquery/plugin-sdk/v4 v4.39.0
 	github.com/google/uuid v1.6.0
 	github.com/marcboeker/go-duckdb v1.5.6
 	github.com/rs/zerolog v1.32.0
@@ -134,6 +134,3 @@ require (
 
 // github.com/cloudquery/jsonschema @ cqmain
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66
-
-// https://github.com/cloudquery/plugin-sdk/pull/1637
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.38.3-0.20240419082535-22d598604e5c
