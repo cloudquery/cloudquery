@@ -168,6 +168,82 @@ var specLoaderTestCases = []specLoaderTestCase{
 		},
 	},
 	{
+		name: "sync_group_id_append",
+		path: []string{getPath("sync_group_id_append.yml")},
+		err: func() string {
+			return ""
+		},
+		sources: []*Source{
+			{
+				Metadata: Metadata{
+					Name:     "gcp",
+					Path:     "cloudquery/gcp",
+					Version:  "v1.0.0",
+					Registry: RegistryLocal,
+				},
+				Destinations: []string{"postgresql"},
+				Tables:       []string{"test"},
+			},
+		},
+		destinations: []*Destination{
+			{
+				Metadata: Metadata{
+					Name:     "postgresql",
+					Path:     "cloudquery/postgresql",
+					Version:  "v1.0.0",
+					Registry: RegistryCloudQuery,
+				},
+				WriteMode:   WriteModeAppend,
+				SyncGroupId: "{{YEAR}}-{{MONTH}}-{{DAY}}-{{HOUR}}-{{MINUTE}}",
+			},
+		},
+	},
+	{
+		name: "sync_group_id_default",
+		path: []string{getPath("sync_group_id_default.yml")},
+		err: func() string {
+			return "destination postgresql: sync_group_id is not supported with write_mode: overwrite-delete-stale"
+		},
+	},
+	{
+		name: "sync_group_id_overwrite_delete_stale",
+		path: []string{getPath("sync_group_id_overwrite_delete_stale.yml")},
+		err: func() string {
+			return "destination postgresql: sync_group_id is not supported with write_mode: overwrite-delete-stale"
+		},
+	},
+	{
+		name: "sync_group_id_overwrite",
+		path: []string{getPath("sync_group_id_overwrite.yml")},
+		err: func() string {
+			return ""
+		},
+		sources: []*Source{
+			{
+				Metadata: Metadata{
+					Name:     "gcp",
+					Path:     "cloudquery/gcp",
+					Version:  "v1.0.0",
+					Registry: RegistryLocal,
+				},
+				Destinations: []string{"postgresql"},
+				Tables:       []string{"test"},
+			},
+		},
+		destinations: []*Destination{
+			{
+				Metadata: Metadata{
+					Name:     "postgresql",
+					Path:     "cloudquery/postgresql",
+					Version:  "v1.0.0",
+					Registry: RegistryCloudQuery,
+				},
+				WriteMode:   WriteModeOverwrite,
+				SyncGroupId: "{{YEAR}}-{{MONTH}}-{{DAY}}-{{HOUR}}-{{MINUTE}}",
+			},
+		},
+	},
+	{
 		name: "multiple sources success",
 		path: []string{getPath("multiple_sources.yml")},
 		err: func() string {
