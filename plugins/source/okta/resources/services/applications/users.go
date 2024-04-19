@@ -25,7 +25,7 @@ func fetchUsers(ctx context.Context, meta schema.ClientMeta, parent *schema.Reso
 	cl := meta.(*client.Client)
 	app := parent.Item.(*okta.Application)
 
-	req := cl.ApplicationUsersAPI.ListApplicationUsers(ctx, *app.Id).Limit(200)
+	req := cl.ApplicationUsersAPI.ListApplicationUsers(ctx, *app.Id).Limit(500)
 	items, resp, err := cl.ApplicationUsersAPI.ListApplicationUsersExecute(req)
 	if err != nil {
 		return err
