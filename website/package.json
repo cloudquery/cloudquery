@@ -19,7 +19,7 @@
     "@typeform/embed": "2.16.1",
     "@typeform/embed-react": "2.31.0",
     "copy-to-clipboard": "3.3.3",
-    "glob": "^9.0.1",
+    "glob": "^9.3.5",
     "gray-matter": "^4.0.3",
     "hastscript": "^8.0.0",
     "locate-path": "^7.2.0",
