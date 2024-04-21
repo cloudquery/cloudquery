@@ -27,7 +27,7 @@
     "next-seo": "^5.15.0",
     "next-sitemap": "^4.0.0",
     "nextra": "^2.13.2",
-    "nextra-theme-docs": "^2.13.2",
+    "nextra-theme-docs": "^2.13.4",
     "prism-react-renderer": "1.3.5",
     "prismjs": "1.29.0",
     "react": "18.2.0",
