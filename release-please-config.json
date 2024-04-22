@@ -71,54 +71,15 @@
       "component": "plugins-source-airtable",
       "release-type": "node"
     },
-    "plugins/source/alicloud": {
-      "component": "plugins-source-alicloud"
-    },
-    "plugins/source/awspricing": {
-      "component": "plugins-source-awspricing"
-    },
     "plugins/source/bitbucket": {
       "component": "plugins-source-bitbucket",
       "release-type": "simple"
     },
-    "plugins/source/cloudflare": {
-      "component": "plugins-source-cloudflare"
-    },
-    "plugins/source/datadog": {
-      "component": "plugins-source-datadog"
-    },
-    "plugins/source/digitalocean": {
-      "component": "plugins-source-digitalocean"
-    },
-    "plugins/source/firestore": {
-      "component": "plugins-source-firestore"
-    },
-    "plugins/source/github": {
-      "component": "plugins-source-github"
-    },
-    "plugins/source/gitlab": {
-      "component": "plugins-source-gitlab"
-    },
     "plugins/source/hackernews": {
       "component": "plugins-source-hackernews"
     },
-    "plugins/source/hubspot": {
-      "component": "plugins-source-hubspot"
-    },
     "plugins/source/k8s": {
       "component": "plugins-source-k8s"
-    },
-    "plugins/source/notion": {
-      "component": "plugins-source-notion"
-    },
-    "plugins/source/okta": {
-      "component": "plugins-source-okta"
-    },
-    "plugins/source/oracle": {
-      "component": "plugins-source-oracle"
-    },
-    "plugins/source/pagerduty": {
-      "component": "plugins-source-pagerduty"
     },
     "plugins/source/square": {
       "component": "plugins-source-square",
@@ -129,9 +90,7 @@
     },
     "plugins/source/typeform": {
       "component": "plugins-source-typeform",
-      "extra-files": [
-        "plugin/plugin.py"
-      ],
+      "extra-files": ["plugin/plugin.py"],
       "release-type": "python"
     },
     "scaffold": {
