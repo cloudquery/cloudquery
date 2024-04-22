@@ -103,7 +103,7 @@ Supported by destination plugins released on 2023-03-21 and later
 
 <!-- vale off -->
 
-### sync_group_id
+### sync_group_id (preview)
 
 <!-- vale on -->
 
