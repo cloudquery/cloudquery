@@ -5,6 +5,18 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.16.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.15.3...cli-v5.16.0) (2024-04-22)
+
+
+### Features
+
+* Add sync group ID destination spec configuration ([#17683](https://github.com/cloudquery/cloudquery/issues/17683)) ([d49014c](https://github.com/cloudquery/cloudquery/commit/d49014c901d2a93fcb9c2205d6416f135b3be03a))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.39.0 ([#17710](https://github.com/cloudquery/cloudquery/issues/17710)) ([e6b3986](https://github.com/cloudquery/cloudquery/commit/e6b39865d674cefb5b001a1c97a25779246087b5))
+
 ## [5.15.3](https://github.com/cloudquery/cloudquery/compare/cli-v5.15.2...cli-v5.15.3) (2024-04-19)
 
 
