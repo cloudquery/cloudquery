@@ -13,6 +13,7 @@ const (
 	cqSyncTime     = "_cq_sync_time"
 	cqSourceName   = "_cq_source_name"
 	cqIDColumnName = "_cq_id"
+	cqSyncGroupId  = "_cq_sync_group_id"
 )
 
 type RecordTransformer struct {
@@ -24,6 +25,8 @@ type RecordTransformer struct {
 	removePks               bool
 	removeUniqueConstraints bool
 	cqIDPrimaryKey          bool
+	withSyncGroupID         bool
+	syncGroupId             string
 }
 
 type RecordTransformerOption func(*RecordTransformer)
@@ -40,6 +43,14 @@ func WithSyncTimeColumn(t time.Time) RecordTransformerOption {
 	return func(transformer *RecordTransformer) {
 		transformer.syncTime = t
 		transformer.withSyncTime = true
+		transformer.internalColumns++
+	}
+}
+
+func WithSyncGroupIdColumn(syncGroupId string) RecordTransformerOption {
+	return func(transformer *RecordTransformer) {
+		transformer.withSyncGroupID = true
+		transformer.syncGroupId = syncGroupId
 		transformer.internalColumns++
 	}
 }
@@ -78,6 +89,15 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 	if t.withSourceName && !sc.HasField(cqSourceName) {
 		fields = append(fields, arrow.Field{Name: cqSourceName, Type: arrow.BinaryTypes.String, Nullable: true})
 	}
+	if t.withSyncGroupID && !sc.HasField(cqSyncGroupId) {
+		fields = append(fields, arrow.Field{
+			Name: cqSyncGroupId,
+			Type: arrow.BinaryTypes.String,
+			Metadata: arrow.NewMetadata(
+				[]string{schema.MetadataPrimaryKey},
+				[]string{schema.MetadataTrue},
+			)})
+	}
 	for _, field := range sc.Fields() {
 		mdMap := field.Metadata.ToMap()
 
@@ -89,7 +109,7 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 			delete(mdMap, schema.MetadataPrimaryKey)
 		}
 		if field.Name == cqIDColumnName && t.cqIDPrimaryKey {
-			mdMap[schema.MetadataPrimaryKey] = "true"
+			mdMap[schema.MetadataPrimaryKey] = schema.MetadataTrue
 		}
 
 		newMd := arrow.MetadataFrom(mdMap)
@@ -124,6 +144,13 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 			sourceBldr.Append(t.sourceName)
 		}
 		cols = append(cols, sourceBldr.NewArray())
+	}
+	if t.withSyncGroupID && !sc.HasField(cqSyncGroupId) {
+		syncGroupIdBldr := array.NewStringBuilder(memory.DefaultAllocator)
+		for i := 0; i < nRows; i++ {
+			syncGroupIdBldr.Append(t.syncGroupId)
+		}
+		cols = append(cols, syncGroupIdBldr.NewArray())
 	}
 
 	for i := range sc.Fields() {

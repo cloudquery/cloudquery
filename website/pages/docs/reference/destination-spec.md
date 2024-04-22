@@ -101,6 +101,21 @@ Specifies the Primary Keys that the destination will configure when using the `o
 
 Supported by destination plugins released on 2023-03-21 and later
 
+<!-- vale off -->
+
+### sync_group_id (preview)
+
+<!-- vale on -->
+
+:::callout{type="warning"}
+Supported only for `write_mode: append` and `write_mode: overwrite` modes at the moment.
+:::
+
+A value for an additional column named `_cq_sync_group_id` that will be added to each table. In `overwrite` mode the column will be added as an additional primary key.
+This is useful when splitting a sync into [multiple parallel jobs](https://docs.cloudquery.io/docs/advanced-topics/running-cloudquery-in-parallel). Using the same `sync_group_id` allows identifying separate syncs jobs as belonging to the same group.
+The value supports the following placeholders: `{{YEAR}}, {{MONTH}}, {{DAY}}, {{HOUR}}, {{MINUTE}}` which are based on the sync time.
+A common use case is to use set `sync_group_id: {{YEAR}}-{{MONTH}}-{{DAY}}` to group syncs by day, in order to provide an historical view of the data, partitioned by day.
+
 ### spec
 
 (`object`, optional)

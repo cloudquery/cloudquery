@@ -1,0 +1,16 @@
+kind: source
+spec:
+  name: gcp
+  path: cloudquery/gcp
+  version: v1.0.0
+  registry: local
+  destinations: [postgresql]
+  tables: [test]
+---
+kind: destination
+spec:
+  name: postgresql
+  path: cloudquery/postgresql
+  version: v1.0.0
+  sync_group_id: "{{YEAR}}-{{MONTH}}-{{DAY}}-{{HOUR}}-{{MINUTE}}"
+  write_mode: overwrite

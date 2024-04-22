@@ -179,7 +179,14 @@ func (r *SpecReader) validate() error {
 		}
 	}
 
-	return nil
+	var err error
+	for _, destination := range r.Destinations {
+		if destination.SyncGroupId != "" && destination.WriteMode == WriteModeOverwriteDeleteStale {
+			err = errors.Join(err, fmt.Errorf("destination %s: sync_group_id is not supported with write_mode: %s", destination.Name, destination.WriteMode))
+		}
+	}
+
+	return err
 }
 
 func (r *SpecReader) GetSourceByName(name string) *Source {
