@@ -12,7 +12,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.53.1
 	github.com/cloudquery/codegen v0.3.15
 	github.com/cloudquery/filetypes/v4 v4.2.16
-	github.com/cloudquery/plugin-sdk/v4 v4.39.0
+	github.com/cloudquery/plugin-sdk/v4 v4.39.1
 	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.12.0
