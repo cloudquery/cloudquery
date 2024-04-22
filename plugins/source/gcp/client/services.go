@@ -88,6 +88,7 @@ var GcpServices = map[string]bool{
 	"cloudtrace.googleapis.com":                       true,
 	"composer.googleapis.com":                         true,
 	"compute.googleapis.com":                          true,
+	"config.googleapis.com":                           true,
 	"connectors.googleapis.com":                       true,
 	"contactcenteraiplatform.googleapis.com":          true,
 	"contactcenterinsights.googleapis.com":            true,
