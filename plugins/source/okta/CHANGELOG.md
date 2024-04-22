@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v4.1.9...plugins-source-okta-v4.2.0) (2024-04-22)
+
+
+### Features
+
+* Increase application users limit to 500 ([#17696](https://github.com/cloudquery/cloudquery/issues/17696)) ([ee67b9f](https://github.com/cloudquery/cloudquery/commit/ee67b9fd088146b6d89678f45485d030a7435816))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.39.0 ([#17710](https://github.com/cloudquery/cloudquery/issues/17710)) ([e6b3986](https://github.com/cloudquery/cloudquery/commit/e6b39865d674cefb5b001a1c97a25779246087b5))
+* Prevent reaching Okta rate limits ([#17695](https://github.com/cloudquery/cloudquery/issues/17695)) ([9eecce9](https://github.com/cloudquery/cloudquery/commit/9eecce95efb38cbb8a65eb17d69424e4c0a5106e))
+
 ## [4.1.9](https://github.com/cloudquery/cloudquery/compare/plugins-source-okta-v4.1.8...plugins-source-okta-v4.1.9) (2024-04-16)
 
 
