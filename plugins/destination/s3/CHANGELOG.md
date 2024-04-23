@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v6.0.1...plugins-destination-s3-v6.1.0) (2024-04-23)
+
+
+### Features
+
+* Add support for `{{TABLE_HYPHEN}}` Path variable for S3 Destination Plugin ([#17766](https://github.com/cloudquery/cloudquery/issues/17766)) ([fb53b3c](https://github.com/cloudquery/cloudquery/commit/fb53b3cfe7066874513f27cb781721b04e2415d6))
+
 ## [6.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v6.0.0...plugins-destination-s3-v6.0.1) (2024-04-23)
 
 
