@@ -37,6 +37,7 @@ This is the (nested) spec used by the CSV destination Plugin.
   The path supports the following placeholder variables:
 
   - `{{TABLE}}` will be replaced with the table name
+  - `{{TABLE_HYPHEN}}` will be replaced with the table name with hyphens instead of undescores.
   - `{{SYNC_ID}}` will be replaced with the unique identifier of the sync. This value is a UUID and is randomly generated for each sync.
   - `{{FORMAT}}` will be replaced with the file format, such as `csv`, `json` or `parquet`. If compression is enabled, the format will be `csv.gz`, `json.gz` etc.
   - `{{UUID}}` will be replaced with a random UUID to uniquely identify each file
