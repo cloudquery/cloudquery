@@ -21,7 +21,10 @@ cloudquery addon download addon-team/addon-type/addon-name@v1.0.0 [-t directory]
 ```
 
 # Download an addon to local disk
-cloudquery addon download addon-team/addon-type/addon-name@v1.0.0
+cloudquery addon download <publisher>/<addon-type>/<addon-name>@v1.0.0
+
+# Further example 
+cloudquery addon download cloudquery/transformation/aws-compliance-premium@v1.9.0
 ```
 
 ### Options
