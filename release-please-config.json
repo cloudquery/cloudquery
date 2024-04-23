@@ -90,7 +90,9 @@
     },
     "plugins/source/typeform": {
       "component": "plugins-source-typeform",
-      "extra-files": ["plugin/plugin.py"],
+      "extra-files": [
+        "plugin/plugin.py"
+      ],
       "release-type": "python"
     },
     "scaffold": {
