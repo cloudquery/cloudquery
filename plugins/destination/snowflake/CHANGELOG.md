@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.5.3...plugins-destination-snowflake-v3.6.0) (2024-04-23)
+
+
+### Features
+
+* Add `linux/arm64` target for Snowflake destination ([#17706](https://github.com/cloudquery/cloudquery/issues/17706)) ([053d995](https://github.com/cloudquery/cloudquery/commit/053d9950209ddea8266a0c51fbeecc2ca27e19e0))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.39.1 ([#17760](https://github.com/cloudquery/cloudquery/issues/17760)) ([7f6faad](https://github.com/cloudquery/cloudquery/commit/7f6faad99e6678d17d449d0da18e0340a2537848))
+
 ## [3.5.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v3.5.2...plugins-destination-snowflake-v3.5.3) (2024-04-16)
 
 
