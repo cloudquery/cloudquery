@@ -14,15 +14,16 @@ import (
 )
 
 const (
-	varFormat = "{{FORMAT}}"
-	varTable  = "{{TABLE}}"
-	varUUID   = "{{UUID}}"
-	varYear   = "{{YEAR}}"
-	varMonth  = "{{MONTH}}"
-	varDay    = "{{DAY}}"
-	varHour   = "{{HOUR}}"
-	varMinute = "{{MINUTE}}"
-	varSyncID = "{{SYNC_ID}}"
+	varFormat      = "{{FORMAT}}"
+	varTable       = "{{TABLE}}"
+	varUUID        = "{{UUID}}"
+	varYear        = "{{YEAR}}"
+	varMonth       = "{{MONTH}}"
+	varDay         = "{{DAY}}"
+	varHour        = "{{HOUR}}"
+	varMinute      = "{{MINUTE}}"
+	varSyncID      = "{{SYNC_ID}}"
+	varTableHyphen = "{{TABLE_HYPHEN}}"
 )
 
 type Spec struct {
@@ -38,6 +39,7 @@ type Spec struct {
 	//    The path supports the following placeholder variables:
 	//
 	// - `{{TABLE}}` will be replaced with the table name
+	// - `{{TABLE_HYPHEN}}` will be replaced with the table name with hyphens instead of underscores
 	// - `{{FORMAT}}` will be replaced with the file format, such as `csv`, `json` or `parquet`. If compression is enabled, the format will be `csv.gz`, `json.gz` etc.
 	// - `{{UUID}}` will be replaced with a random UUID to uniquely identify each file
 	// - `{{YEAR}}` will be replaced with the current year in `YYYY` format
@@ -200,6 +202,7 @@ func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.
 	name = strings.ReplaceAll(name, varHour, t.Format("15"))
 	name = strings.ReplaceAll(name, varMinute, t.Format("04"))
 	name = strings.ReplaceAll(name, varSyncID, syncID)
+	name = strings.ReplaceAll(name, varTableHyphen, strings.ReplaceAll(table, "_", "-"))
 	return filepath.Clean(name)
 }
 
