@@ -7,6 +7,7 @@ import (
 	"github.com/apache/arrow/go/v15/arrow/array"
 	"github.com/apache/arrow/go/v15/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"golang.org/x/exp/constraints"
 )
 
 const (
@@ -128,34 +129,35 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 	sc := record.Schema()
 	newSchema := t.TransformSchema(sc)
-	nRows := int(record.NumRows())
+	nRows := record.NumRows()
 
 	cols := make([]arrow.Array, 0, len(sc.Fields())+t.internalColumns)
 	if t.withSyncTime && !sc.HasField(cqSyncTime) {
-		syncTimeBldr := array.NewTimestampBuilder(memory.DefaultAllocator, &arrow.TimestampType{Unit: arrow.Microsecond, TimeZone: "UTC"})
-		for i := 0; i < nRows; i++ {
-			syncTimeBldr.AppendTime(t.syncTime)
-		}
-		cols = append(cols, syncTimeBldr.NewArray())
+		ts, _ := arrow.TimestampFromTime(t.syncTime, arrow.Microsecond)
+		builder := array.NewTimestampBuilder(memory.DefaultAllocator, &arrow.TimestampType{Unit: arrow.Microsecond, TimeZone: "UTC"})
+		builder.AppendValues(repeat(ts, nRows), nil)
+		cols = append(cols, builder.NewArray())
 	}
 	if t.withSourceName && !sc.HasField(cqSourceName) {
-		sourceBldr := array.NewStringBuilder(memory.DefaultAllocator)
-		for i := 0; i < nRows; i++ {
-			sourceBldr.Append(t.sourceName)
-		}
-		cols = append(cols, sourceBldr.NewArray())
+		builder := array.NewStringBuilder(memory.DefaultAllocator)
+		builder.AppendStringValues(repeat(t.sourceName, nRows), nil)
+		cols = append(cols, builder.NewArray())
 	}
 	if t.withSyncGroupID && !sc.HasField(cqSyncGroupId) {
-		syncGroupIdBldr := array.NewStringBuilder(memory.DefaultAllocator)
-		for i := 0; i < nRows; i++ {
-			syncGroupIdBldr.Append(t.syncGroupId)
-		}
-		cols = append(cols, syncGroupIdBldr.NewArray())
+		builder := array.NewStringBuilder(memory.DefaultAllocator)
+		builder.AppendStringValues(repeat(t.syncGroupId, nRows), nil)
+		cols = append(cols, builder.NewArray())
 	}
 
-	for i := range sc.Fields() {
-		cols = append(cols, record.Column(i))
-	}
+	copy(cols[t.internalColumns:], record.Columns())
 
-	return array.NewRecord(newSchema, cols, int64(nRows))
+	return array.NewRecord(newSchema, cols, nRows)
+}
+
+func repeat[A any, L constraints.Integer](val A, n L) []A {
+	res := make([]A, n)
+	for i := L(0); i < n; i++ {
+		res[i] = val
+	}
+	return res
 }
