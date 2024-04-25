@@ -131,7 +131,7 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 	newSchema := t.TransformSchema(sc)
 	nRows := record.NumRows()
 
-	cols := make([]arrow.Array, 0, len(sc.Fields())+t.internalColumns)
+	cols := make([]arrow.Array, 0, len(sc.Fields())+t.internalColumns) // alloc together with the proper capacity
 	if t.withSyncTime && !sc.HasField(cqSyncTime) {
 		ts, _ := arrow.TimestampFromTime(t.syncTime, arrow.Microsecond)
 		builder := array.NewTimestampBuilder(memory.DefaultAllocator, &arrow.TimestampType{Unit: arrow.Microsecond, TimeZone: "UTC"})
@@ -149,6 +149,7 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 		cols = append(cols, builder.NewArray())
 	}
 
+	cols = cols[:len(sc.Fields())+t.internalColumns] // resize back as we have the capacity
 	copy(cols[t.internalColumns:], record.Columns())
 
 	return array.NewRecord(newSchema, cols, nRows)
