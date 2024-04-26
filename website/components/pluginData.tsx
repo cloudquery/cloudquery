@@ -29,7 +29,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/alicloud-dark.svg",
     id: "alicloud",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
   },
   {
@@ -50,7 +50,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/aws-dark.svg",
     id: "aws",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
   },
   {
@@ -59,7 +59,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/aws-dark.svg",
     id: "awspricing",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-finops",
     website:
       "https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/price-changes.html",
@@ -69,7 +69,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/azure.svg",
     id: "azure",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
   },
   {
@@ -94,7 +94,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/cloudflare.svg",
     id: "cloudflare",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
   },
   {
@@ -121,7 +121,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/datadog-dark.svg",
     id: "datadog",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "engineering-analytics",
   },
   {
@@ -129,7 +129,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/digitalocean.svg",
     id: "digitalocean",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
   },
   {
@@ -179,7 +179,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/github-dark.svg",
     id: "github",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "engineering-analytics",
   },
   {
@@ -187,7 +187,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/gitlab.svg",
     id: "gitlab",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "engineering-analytics",
   },
   {
@@ -215,7 +215,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/gcp.svg",
     id: "gcp",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
   },
   {
@@ -252,7 +252,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/hubspot.svg",
     id: "hubspot",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "marketing-analytics",
   },
   {
@@ -312,7 +312,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/okta.svg",
     id: "okta",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
   },
   {
@@ -329,7 +329,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/oracle.svg",
     id: "oracle",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "cloud-infrastructure",
   },
   {
@@ -345,7 +345,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logo: "/images/logos/plugins/pagerduty.svg",
     id: "pagerduty",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "engineering-analytics",
   },
   {
