@@ -83,6 +83,8 @@ jobs:
             --exclude "${{ steps.vercel.outputs.url }}/blog/*" \
             --exclude "${{ steps.vercel.outputs.url }}/integrations" \
             --exclude "${{ steps.vercel.outputs.url }}/integrations/*" \
+            --exclude "${{ steps.vercel.outputs.url }}/terms" \
+            --exclude "${{ steps.vercel.outputs.url }}/privacy" \
             --exclude cloudquery.io/discord \
             --exclude cloudquery.io/buy \
             --exclude localhost \
