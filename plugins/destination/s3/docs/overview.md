@@ -75,6 +75,10 @@ This is the (nested) spec used by the CSV destination Plugin.
   When `athena` is set to `true`, the S3 plugin will sanitize keys in JSON columns to be compatible with the Hive Metastore / Athena.
   This allows tables to be created with a Glue Crawler and then queried via Athena, without changes to the table schema.
 
+- `write_empty_objects_for_empty_tables` (`boolean`) (optional) (default: `false`)
+
+  By default only tables with resources are persisted to objects during the sync. If you'd like to persist empty objects for empty tables enable this option. Useful when using CloudQuery Compliance policies to ensure all tables have their schema populated by a query engine like Athena
+
 - `test_write` (`boolean`) (optional) (default: `true`)
 
   Ensure write access to the given bucket and path by writing a test object on each sync.
