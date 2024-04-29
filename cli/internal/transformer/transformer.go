@@ -7,7 +7,6 @@ import (
 	"github.com/apache/arrow/go/v15/arrow/array"
 	"github.com/apache/arrow/go/v15/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"golang.org/x/exp/constraints"
 )
 
 const (
@@ -129,36 +128,34 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 	sc := record.Schema()
 	newSchema := t.TransformSchema(sc)
-	nRows := record.NumRows()
+	nRows := int(record.NumRows())
 
 	cols := make([]arrow.Array, 0, len(sc.Fields())+t.internalColumns) // alloc together with the proper capacity
 	if t.withSyncTime && !sc.HasField(cqSyncTime) {
 		ts, _ := arrow.TimestampFromTime(t.syncTime, arrow.Microsecond)
-		builder := array.NewTimestampBuilder(memory.DefaultAllocator, &arrow.TimestampType{Unit: arrow.Microsecond, TimeZone: "UTC"})
-		builder.AppendValues(repeat(ts, nRows), nil)
-		cols = append(cols, builder.NewArray())
+		syncTimeBldr := array.NewTimestampBuilder(memory.DefaultAllocator, &arrow.TimestampType{Unit: arrow.Microsecond, TimeZone: "UTC"})
+		for i := 0; i < nRows; i++ {
+			syncTimeBldr.Append(ts)
+		}
+		cols = append(cols, syncTimeBldr.NewArray())
 	}
 	if t.withSourceName && !sc.HasField(cqSourceName) {
-		builder := array.NewStringBuilder(memory.DefaultAllocator)
-		builder.AppendStringValues(repeat(t.sourceName, nRows), nil)
-		cols = append(cols, builder.NewArray())
+		sourceBldr := array.NewStringBuilder(memory.DefaultAllocator)
+		for i := 0; i < nRows; i++ {
+			sourceBldr.Append(t.sourceName)
+		}
+		cols = append(cols, sourceBldr.NewArray())
 	}
 	if t.withSyncGroupID && !sc.HasField(cqSyncGroupId) {
-		builder := array.NewStringBuilder(memory.DefaultAllocator)
-		builder.AppendStringValues(repeat(t.syncGroupId, nRows), nil)
-		cols = append(cols, builder.NewArray())
+		syncGroupIdBldr := array.NewStringBuilder(memory.DefaultAllocator)
+		for i := 0; i < nRows; i++ {
+			syncGroupIdBldr.Append(t.syncGroupId)
+		}
+		cols = append(cols, syncGroupIdBldr.NewArray())
 	}
 
 	cols = cols[:len(sc.Fields())+t.internalColumns] // resize back as we have the capacity
 	copy(cols[t.internalColumns:], record.Columns())
 
-	return array.NewRecord(newSchema, cols, nRows)
-}
-
-func repeat[A any, L constraints.Integer](val A, n L) []A {
-	res := make([]A, n)
-	for i := L(0); i < n; i++ {
-		res[i] = val
-	}
-	return res
+	return array.NewRecord(newSchema, cols, int64(nRows))
 }
