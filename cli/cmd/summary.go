@@ -25,7 +25,7 @@ type syncSummary struct {
 
 func persistSummary(filename string, summaries []syncSummary) error {
 	// if filename is not specified then we don't need to persist the summary and can return
-	if filename == "" {
+	if len(filename) == 0 { // just ofr test
 		return nil
 	}
 	err := checkFilePath(filename)
