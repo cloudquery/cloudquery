@@ -58,7 +58,7 @@ Here are the basic steps of adding support for incremental tables to your plugin
 
 1. Within the plugin client initialize the state client using `state.NewConnectedClient` or `state.NewConnectedClientWithOptions` ([see example in our Hacker News plugin](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/hackernews/resources/plugin/client.go)).
 2. **You must** call `Close()` on the returned client.
-3. When defining tables add `IsIncremental: true` to the table definition and `IncrementalKey: true` to the column definition ([see example](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/hackernews/resources/services/items/items.go)).
+3. When defining tables add `IsIncremental: true` to the table definition. Add `IncrementalKey: true` to the column definition for the column that is used as the cursor ([see example](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/hackernews/resources/services/items/items.go)).
 4. In your table resolver manipulate the cursor using the `stateClient.GetKey()` and `stateClient.SetKey()` methods.
 5. **You must** call `stateClient.Flush()` in the plugin client after the sync runs (see the Hacker News example above). If you don't this then the new **cursor will not be persisted** to the state backend.
 
