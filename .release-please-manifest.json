@@ -1,5 +1,5 @@
 {
-  "cli": "5.17.0",
+  "cli": "5.17.1",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "22.19.2",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -31,7 +31,7 @@
   "plugins/destination/snowflake+FILLER": "0.0.0",
   "plugins/source/datadog": "4.3.10",
   "plugins/source/datadog+FILLER": "0.0.0",
-  "plugins/destination/bigquery": "3.5.4",
+  "plugins/destination/bigquery": "3.5.5",
   "plugins/destination/bigquery+FILLER": "0.0.0",
   "plugins/source/pagerduty": "3.2.8",
   "plugins/source/pagerduty+FILLER": "0.0.0",
