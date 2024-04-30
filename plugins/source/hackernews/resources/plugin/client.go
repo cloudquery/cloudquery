@@ -33,9 +33,6 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		return err
 	}
 	hnClient := hackernews.NewClient()
-	if err != nil {
-		return fmt.Errorf("failed to create hackernews client: %w", err)
-	}
 
 	stateClient, err := state.NewConnectedClient(ctx, options.BackendOptions)
 	if err != nil {
@@ -63,7 +60,7 @@ func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.
 	return tt, nil
 }
 
-func (c *Client) Close(_ context.Context) error {
+func (*Client) Close(_ context.Context) error {
 	return nil
 }
 
