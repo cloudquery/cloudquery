@@ -54,6 +54,15 @@ Some APIs lend themselves to being synced incrementally: rather than fetch all p
 
 Incremental tables are great for efficiency, but add some additional complexity both on you and on your users. As the plugin author, you should consider first whether the table needs to be incremental, then whether it can be made to be incremental. You can also [read more about managing incremental tables](/docs/advanced-topics/managing-incremental-tables).
 
+Here are the basic steps of adding support for incremental tables to your plugin:
+
+1. Within the plugin client initialize the state client using `state.NewConnectedClient` or `state.NewConnectedClientWithOptions` ([see example](https://github.com/cloudquery/cloudquery/blob/5d23e729faeb4ccff65b74ca1326876f599e4e57/plugins/source/hackernews/resources/plugin/client.go#L37)).
+2. **You must** call `Close()` on the returned client.
+3. When defining incremental tables add `IsIncremental: true` to the table definition ([see example](https://github.com/cloudquery/cloudquery/blob/5d23e729faeb4ccff65b74ca1326876f599e4e57/plugins/source/hackernews/resources/services/items/items.go#L18)).
+4. Add `IncrementalKey: true` to the column definition for the column that is used as the cursor ([see example](https://github.com/cloudquery/cloudquery/blob/5d23e729faeb4ccff65b74ca1326876f599e4e57/plugins/source/hackernews/resources/services/items/items.go#L31)).
+5. In your table resolver manipulate the cursor using the `stateClient.GetKey()` and `stateClient.SetKey()` methods.
+6. **You must** call `stateClient.Flush()` in the plugin client after the sync runs successfully ([see example](https://github.com/cloudquery/cloudquery/blob/5d23e729faeb4ccff65b74ca1326876f599e4e57/plugins/source/hackernews/resources/plugin/client.go#L52)). If you don't this then the **new cursor will not be persisted** to the state backend.
+
 ## Creating Your First Plugin
 
 In this section we will go through all the steps of building a simple source plugin. We will start by creating a new plugin from scratch, then we will add a table to it. To serve as a fun real-world example, we will create a plugin that fetches comic data from the [XKCD API](https://xkcd.com/json.html).
