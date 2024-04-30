@@ -132,9 +132,10 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 
 	cols := make([]arrow.Array, 0, len(sc.Fields())+t.internalColumns)
 	if t.withSyncTime && !sc.HasField(cqSyncTime) {
+		ts, _ := arrow.TimestampFromTime(t.syncTime, arrow.Microsecond)
 		syncTimeBldr := array.NewTimestampBuilder(memory.DefaultAllocator, &arrow.TimestampType{Unit: arrow.Microsecond, TimeZone: "UTC"})
 		for i := 0; i < nRows; i++ {
-			syncTimeBldr.AppendTime(t.syncTime)
+			syncTimeBldr.Append(ts)
 		}
 		cols = append(cols, syncTimeBldr.NewArray())
 	}
@@ -153,9 +154,7 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 		cols = append(cols, syncGroupIdBldr.NewArray())
 	}
 
-	for i := range sc.Fields() {
-		cols = append(cols, record.Column(i))
-	}
+	cols = append(cols, record.Columns()...)
 
 	return array.NewRecord(newSchema, cols, int64(nRows))
 }
