@@ -154,8 +154,7 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 		cols = append(cols, syncGroupIdBldr.NewArray())
 	}
 
-	cols = cols[:len(sc.Fields())+t.internalColumns] // resize back as we have the capacity
-	copy(cols[t.internalColumns:], record.Columns())
+	cols = append(cols, record.Columns()...)
 
 	return array.NewRecord(newSchema, cols, int64(nRows))
 }
