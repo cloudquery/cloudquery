@@ -63,8 +63,8 @@ const navigation = {
     { name: "Careers", href: "/careers" },
   ],
   legal: [
-    { name: "Privacy Policy", href: "/privacy" },
-    { name: "Terms of Use", href: "/terms" },
+    { name: "Privacy Policy", href: "https://www.cloudquery.io/legal/privacy-policy" },
+    { name: "Terms of Use", href: "https://www.cloudquery.io/legal/website-terms-of-service" },
     {
       name: "Opt out of data collection",
       href: "#",

@@ -1,5 +1,19 @@
 # Changelog
 
+## [6.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v6.2.0...plugins-destination-s3-v6.2.1) (2024-04-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.40.0 ([#17796](https://github.com/cloudquery/cloudquery/issues/17796)) ([1622575](https://github.com/cloudquery/cloudquery/commit/1622575f1eb776cafc637573010fd66f85877079))
+
+## [6.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v6.1.0...plugins-destination-s3-v6.2.0) (2024-04-29)
+
+
+### Features
+
+* S3 initialize empty objects when using Athena and Parquet ([#17793](https://github.com/cloudquery/cloudquery/issues/17793)) ([f3cd612](https://github.com/cloudquery/cloudquery/commit/f3cd6123e81538f2e6343739bdcb9aa329e8ccf2))
+
 ## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v6.0.1...plugins-destination-s3-v6.1.0) (2024-04-23)
 
 

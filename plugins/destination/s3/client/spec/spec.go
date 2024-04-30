@@ -85,6 +85,9 @@ type Spec struct {
 	// This option is intended to be used when using a custom endpoint using the `endpoint` option.
 	EndpointSkipTLSVerify bool `json:"endpoint_skip_tls_verify,omitempty" jsonschema:"default=false"`
 
+	// If set to `true`, the plugin will create empty parquet files with the table headers and data types for those tables that have no data.
+	GenerateEmptyObjects bool `json:"write_empty_objects_for_empty_tables,omitempty" jsonschema:"default=false"`
+
 	// Maximum number of items that may be grouped together to be written in a single write.
 	//
 	// Defaults to `10000` unless `no_rotate` is `true` (will be `0` then).
@@ -163,6 +166,10 @@ func (s *Spec) Validate() error {
 	}
 	if s.Path != path.Clean(s.Path) {
 		return fmt.Errorf("`path` should not contain relative paths or duplicate slashes")
+	}
+
+	if s.GenerateEmptyObjects && s.Format != filetypes.FormatTypeParquet {
+		return fmt.Errorf("`write_empty_objects_for_empty_tables` can only be used with `parquet` format")
 	}
 
 	if s.NoRotate {
