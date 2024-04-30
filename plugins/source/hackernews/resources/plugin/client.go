@@ -13,15 +13,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/state"
 	"github.com/hermanschaaf/hackernews"
 	"github.com/rs/zerolog"
-	"google.golang.org/grpc"
 )
 
 type Client struct {
-	logger      zerolog.Logger
-	config      client.Spec
-	tables      schema.Tables
-	scheduler   *scheduler.Scheduler
-	backendConn *grpc.ClientConn
+	logger    zerolog.Logger
+	config    client.Spec
+	tables    schema.Tables
+	scheduler *scheduler.Scheduler
 	plugin.UnimplementedDestination
 }
 
@@ -66,9 +64,6 @@ func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.
 }
 
 func (c *Client) Close(_ context.Context) error {
-	if c.backendConn != nil {
-		return c.backendConn.Close()
-	}
 	return nil
 }
 
