@@ -130,7 +130,7 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 	newSchema := t.TransformSchema(sc)
 	nRows := int(record.NumRows())
 
-	cols := make([]arrow.Array, 0, len(sc.Fields())+t.internalColumns) // alloc together with the proper capacity
+	cols := make([]arrow.Array, 0, len(sc.Fields())+t.internalColumns)
 	if t.withSyncTime && !sc.HasField(cqSyncTime) {
 		ts, _ := arrow.TimestampFromTime(t.syncTime, arrow.Microsecond)
 		syncTimeBldr := array.NewTimestampBuilder(memory.DefaultAllocator, &arrow.TimestampType{Unit: arrow.Microsecond, TimeZone: "UTC"})
