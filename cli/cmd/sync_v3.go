@@ -404,6 +404,13 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		msg = "Sync completed with errors, see logs for details"
 	}
 	fmt.Printf("%s. Resources: %d, Errors: %d, Warnings: %d, Time: %s\n", msg, totalResources, totals.Errors, totals.Warnings, syncTimeTook.Truncate(time.Second).String())
+	log.Info().
+		Int64("resources", totalResources).
+		Uint64("errors", totals.Errors).
+		Uint64("warnings", totals.Warnings).
+		Str("duration", syncTimeTook.Truncate(time.Second).String()).
+		Str("result", msg).
+		Msg("Sync summary")
 
 	if remoteProgressReporter != nil {
 		remoteProgressReporter.SendSignal()
