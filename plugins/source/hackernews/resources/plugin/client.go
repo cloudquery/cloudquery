@@ -4,8 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"time"
-
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client"
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/resources/services/items"
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -14,24 +12,14 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/state"
 	"github.com/hermanschaaf/hackernews"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
-
 	"github.com/rs/zerolog"
 )
 
-const (
-	defaultMaxRetries = 5
-	defaultBackoff    = 10 * time.Second
-	maxMsgSize        = 100 * 1024 * 1024 // 100 MiB
-)
-
 type Client struct {
-	logger      zerolog.Logger
-	config      client.Spec
-	tables      schema.Tables
-	scheduler   *scheduler.Scheduler
-	backendConn *grpc.ClientConn
+	logger    zerolog.Logger
+	config    client.Spec
+	tables    schema.Tables
+	scheduler *scheduler.Scheduler
 	plugin.UnimplementedDestination
 }
 
@@ -45,32 +33,12 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		return err
 	}
 	hnClient := hackernews.NewClient()
-	if err != nil {
-		return fmt.Errorf("failed to create hackernews client: %w", err)
-	}
 
-	var stateClient state.Client
-	if options.BackendOptions == nil {
-		c.logger.Info().Msg("No backend options provided, using no state backend")
-		stateClient = &state.NoOpClient{}
-		c.backendConn = nil
-	} else {
-		c.backendConn, err = grpc.DialContext(ctx, options.BackendOptions.Connection,
-			grpc.WithTransportCredentials(insecure.NewCredentials()),
-			grpc.WithDefaultCallOptions(
-				grpc.MaxCallRecvMsgSize(maxMsgSize),
-				grpc.MaxCallSendMsgSize(maxMsgSize),
-			),
-		)
-		if err != nil {
-			return fmt.Errorf("failed to dial grpc source plugin at %s: %w", options.BackendOptions.Connection, err)
-		}
-		stateClient, err = state.NewClient(ctx, c.backendConn, options.BackendOptions.TableName)
-		if err != nil {
-			return fmt.Errorf("failed to create state client: %w", err)
-		}
-		c.logger.Info().Str("table_name", options.BackendOptions.TableName).Msg("Connected to state backend")
+	stateClient, err := state.NewConnectedClient(ctx, options.BackendOptions)
+	if err != nil {
+		return fmt.Errorf("failed to create state client: %w", err)
 	}
+	defer stateClient.Close()
 
 	schedulerClient, err := client.New(c.logger, c.config, hnClient, stateClient)
 	if err != nil {
@@ -92,10 +60,7 @@ func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.
 	return tt, nil
 }
 
-func (c *Client) Close(_ context.Context) error {
-	if c.backendConn != nil {
-		return c.backendConn.Close()
-	}
+func (*Client) Close(_ context.Context) error {
 	return nil
 }
 
