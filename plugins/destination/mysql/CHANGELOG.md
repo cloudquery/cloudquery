@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.0.6...plugins-destination-mysql-v5.0.7) (2024-04-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.40.0 ([#17796](https://github.com/cloudquery/cloudquery/issues/17796)) ([1622575](https://github.com/cloudquery/cloudquery/commit/1622575f1eb776cafc637573010fd66f85877079))
+
 ## [5.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.0.5...plugins-destination-mysql-v5.0.6) (2024-04-23)
 
 
