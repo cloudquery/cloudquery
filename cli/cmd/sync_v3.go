@@ -350,6 +350,19 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		return err
 	}
 	totals := sourceClient.Metrics()
+	summary := syncSummary{
+		Resources:      uint64(totalResources),
+		SourceErrors:   totals.Errors,
+		SourceWarnings: totals.Warnings,
+		SyncID:         uid,
+		SourceName:     sourceSpec.Name,
+		SourceVersion:  sourceSpec.Version,
+		SourcePath:     sourceSpec.Path,
+		CliVersion:     Version,
+	}
+	if err := sendSummary(writeClients, destinationSpecs, destinationsClients, destinationTransformers, &summary, noMigrate); err != nil {
+		return err
+	}
 
 	for i := range destinationsClients {
 		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
