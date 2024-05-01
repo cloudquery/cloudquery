@@ -30,7 +30,7 @@ type Destination struct {
 
 	SyncGroupId string `json:"sync_group_id,omitempty"`
 
-	SyncSummary bool `json:"sync_summary,omitempty"`
+	SyncSummary bool `json:"send_sync_summary,omitempty"`
 
 	// Destination plugin own (nested) spec
 	Spec map[string]any `json:"spec,omitempty"`

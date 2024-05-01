@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/internal/transformer"
@@ -17,19 +18,20 @@ import (
 )
 
 type syncSummary struct {
-	CliVersion          string `json:"cli_version"`
-	DestinationErrors   uint64 `json:"destination_errors"`
-	DestinationName     string `json:"destination_name"`
-	DestinationPath     string `json:"destination_path"`
-	DestinationVersion  string `json:"destination_version"`
-	DestinationWarnings uint64 `json:"destination_warnings"`
-	Resources           uint64 `json:"resources"`
-	SourceErrors        uint64 `json:"source_errors"`
-	SourceName          string `json:"source_name"`
-	SourcePath          string `json:"source_path"`
-	SourceVersion       string `json:"source_version"`
-	SourceWarnings      uint64 `json:"source_warnings"`
-	SyncID              string `json:"sync_id"`
+	CliVersion          string    `json:"cli_version"`
+	DestinationErrors   uint64    `json:"destination_errors"`
+	DestinationName     string    `json:"destination_name"`
+	DestinationPath     string    `json:"destination_path"`
+	DestinationVersion  string    `json:"destination_version"`
+	DestinationWarnings uint64    `json:"destination_warnings"`
+	Resources           uint64    `json:"resources"`
+	SourceErrors        uint64    `json:"source_errors"`
+	SourceName          string    `json:"source_name"`
+	SourcePath          string    `json:"source_path"`
+	SourceVersion       string    `json:"source_version"`
+	SourceWarnings      uint64    `json:"source_warnings"`
+	SyncID              string    `json:"sync_id"`
+	SyncStartTime       time.Time `json:"sync_start_time"`
 }
 
 func persistSummary(filename string, summaries []syncSummary) error {
