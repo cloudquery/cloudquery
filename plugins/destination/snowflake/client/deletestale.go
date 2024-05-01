@@ -18,7 +18,7 @@ func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales
 		sb.WriteString(`"` + strings.ToUpper(schema.CqSourceNameColumn.Name) + `"`)
 		sb.WriteString(" = ? and \"")
 		sb.WriteString(strings.ToUpper(schema.CqSyncTimeColumn.Name))
-		sb.WriteString("\"::timestamp_ntz < ?::timestamp_ntz")
+		sb.WriteString("\" < ?::timestamp_tz")
 		sql := sb.String()
 		if _, err := c.db.ExecContext(ctx, sql, msg.SourceName, msg.SyncTime); err != nil {
 			return err
