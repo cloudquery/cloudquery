@@ -3,11 +3,10 @@ module cloudquery/tablesdiff
 go 1.21.4
 
 require (
-	github.com/bluekeyes/go-gitdiff v0.7.1
+	github.com/bluekeyes/go-gitdiff v0.7.2
 	github.com/google/go-cmp v0.5.9
 	github.com/stretchr/testify v1.8.4
 )
-
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
