@@ -86,9 +86,9 @@ func generateSummaryTable() *schema.Table {
 	if err := transformers.TransformTables(t); err != nil {
 		panic(err)
 	}
-	for i := range t[0].Columns {
-		t[0].Columns[i].NotNull = true
-	}
+	//for i := range t[0].Columns {
+	//	t[0].Columns[i].NotNull = true
+	//}
 	return t[0]
 }
 
