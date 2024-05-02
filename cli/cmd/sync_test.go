@@ -125,7 +125,8 @@ func TestSync(t *testing.T) {
 			if len(tc.summary) > 0 {
 				summaries := readSummaries(t, summaryPath)
 				// have to ignore SyncID because it's random and plugin versions since we update those frequently using an automated process
-				diff := cmp.Diff(tc.summary, summaries, cmpopts.IgnoreFields(syncSummary{}, "SyncID", "DestinationVersion", "SourceVersion"))
+				// also ignore SyncStartTime because it's a timestamp
+				diff := cmp.Diff(tc.summary, summaries, cmpopts.IgnoreFields(syncSummary{}, "SyncID", "DestinationVersion", "SourceVersion", "SyncStartTime"))
 				require.Empty(t, diff, "unexpected summaries: %v", diff)
 			}
 
