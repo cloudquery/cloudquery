@@ -30,8 +30,8 @@ type syncSummary struct {
 	SourcePath          string    `json:"source_path"`
 	SourceVersion       string    `json:"source_version"`
 	SourceWarnings      uint64    `json:"source_warnings"`
-	SyncID              string    `json:"sync_id"`
-	SyncStartTime       time.Time `json:"sync_start_time"`
+	SyncID              string    `json:"cq_sync_id"`
+	SyncTime            time.Time `json:"cq_sync_time"`
 }
 
 func persistSummary(filename string, summaries []syncSummary) error {
@@ -75,7 +75,7 @@ func checkFilePath(filename string) error {
 }
 
 func generateSummaryTable() *schema.Table {
-	tableName := "cloudquery_sync_summary"
+	tableName := "cloudquery_sync_summaries"
 	t := schema.Tables{{
 		Name: tableName,
 		Transform: transformers.TransformWithStruct(
