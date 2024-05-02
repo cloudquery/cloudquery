@@ -378,6 +378,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		log.Warn().Err(err).Msg("Failed to persist sync summary")
 	}
 	for _, summary := range syncSummaries {
+		log.Info().Interface("summary", summary).Msg("Sync summary")
 		if err := sendSummary(writeClients, destinationSpecs, destinationsClients, destinationTransformers, &summary, noMigrate); err != nil {
 			return err
 		}

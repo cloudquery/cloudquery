@@ -77,15 +77,18 @@ func checkFilePath(filename string) error {
 func generateSummaryTable() *schema.Table {
 	tableName := "cloudquery_sync_summary"
 	t := schema.Tables{{
-		Name:      tableName,
-		Transform: transformers.TransformWithStruct(&syncSummary{}),
-		Columns:   []schema.Column{},
+		Name: tableName,
+		Transform: transformers.TransformWithStruct(
+			&syncSummary{},
+		),
+		Columns: []schema.Column{},
 	}}
-
 	if err := transformers.TransformTables(t); err != nil {
 		panic(err)
 	}
-
+	for i := range t[0].Columns {
+		t[0].Columns[i].NotNull = true
+	}
 	return t[0]
 }
 
@@ -127,10 +130,11 @@ func sendSummary(writeClients []plugin.Plugin_WriteClient, destinationSpecs []sp
 		summary.DestinationName = destinationSpecs[i].Name
 		summary.DestinationVersion = destinationSpecs[i].Version
 		summary.DestinationPath = destinationSpecs[i].Path
+		summary.CliVersion = Version
 
 		resource := schema.NewResourceData(summaryTable, nil, nil)
 		for _, col := range summaryTable.Columns {
-			err = resource.Set(col.Name, funk.Get(summary, defaultCaser.ToPascal(col.Name)))
+			err = resource.Set(col.Name, funk.Get(summary, defaultCaser.ToPascal(col.Name), funk.WithAllowZero()))
 			if err != nil {
 				return fmt.Errorf("failed to set %s: %w", col.Name, err)
 			}
