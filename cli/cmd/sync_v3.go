@@ -345,25 +345,12 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			return fmt.Errorf("unknown message type: %T", m)
 		}
 	}
+
 	err = syncClient.CloseSend()
 	if err != nil {
 		return err
 	}
 	totals := sourceClient.Metrics()
-
-	for i := range destinationsClients {
-		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
-			if err := deleteStale(writeClients[i], tablesForDeleteStale, sourceName, syncTime); err != nil {
-				return err
-			}
-		}
-		if _, err := writeClients[i].CloseAndRecv(); err != nil {
-			return err
-		}
-		if _, err := destinationsPbClients[i].Close(ctx, &plugin.Close_Request{}); err != nil {
-			return err
-		}
-	}
 
 	syncSummaries := make([]syncSummary, len(destinationsClients))
 	for i := range destinationsClients {
@@ -375,6 +362,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			SourceErrors:        totals.Errors,
 			SourceWarnings:      totals.Warnings,
 			SyncID:              uid,
+			SyncStartTime:       syncTime,
 			SourceName:          sourceSpec.Name,
 			SourceVersion:       sourceSpec.Version,
 			SourcePath:          sourceSpec.Path,
@@ -391,6 +379,20 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	}
 	for _, summary := range syncSummaries {
 		if err := sendSummary(writeClients, destinationSpecs, destinationsClients, destinationTransformers, &summary, noMigrate); err != nil {
+			return err
+		}
+	}
+
+	for i := range destinationsClients {
+		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
+			if err := deleteStale(writeClients[i], tablesForDeleteStale, sourceName, syncTime); err != nil {
+				return err
+			}
+		}
+		if _, err := writeClients[i].CloseAndRecv(); err != nil {
+			return err
+		}
+		if _, err := destinationsPbClients[i].Close(ctx, &plugin.Close_Request{}); err != nil {
 			return err
 		}
 	}
