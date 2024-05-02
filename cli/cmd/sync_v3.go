@@ -362,7 +362,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			SourceErrors:        totals.Errors,
 			SourceWarnings:      totals.Warnings,
 			SyncID:              uid,
-			SyncStartTime:       syncTime,
+			SyncTime:            syncTime,
 			SourceName:          sourceSpec.Name,
 			SourceVersion:       sourceSpec.Version,
 			SourcePath:          sourceSpec.Path,
