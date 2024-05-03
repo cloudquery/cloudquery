@@ -15,7 +15,7 @@ const (
 	createOrReplaceFileFormat = `create or replace file format cq_plugin_json_format type = 'JSON'`
 	createOrReplaceStage      = `create or replace stage cq_plugin_stage file_format = cq_plugin_json_format;`
 	putFileIntoStage          = `put 'file://%v' @cq_plugin_stage auto_compress=true`
-	copyIntoTable             = `copy into %s from '@cq_plugin_stage/%v' file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
+	copyIntoTable             = `copy into %s from '@cq_plugin_stage' files=('%s.gz') on_error = ABORT_STATEMENT file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
 )
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
