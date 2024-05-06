@@ -8,11 +8,11 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cloudquery/cloudquery-api-go v1.9.1
 	github.com/cloudquery/codegen v0.3.15
-	github.com/cloudquery/plugin-pb-go v1.19.9
+	github.com/cloudquery/plugin-pb-go v1.19.10
 	github.com/cloudquery/plugin-sdk/v4 v4.40.0
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
-	github.com/docker/docker v26.0.2+incompatible
+	github.com/docker/docker v26.1.1+incompatible
 	github.com/getsentry/sentry-go v0.27.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.6.0
@@ -29,7 +29,7 @@ require (
 	github.com/vnteamopen/godebouncer v1.1.1-0.20230626172639-4b59d27e1b8c
 	github.com/wk8/go-ordered-map/v2 v2.1.8
 	github.com/yuin/goldmark v1.6.0
-	golang.org/x/exp v0.0.0-20240404231335-c0f41cb1a7a0
+	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f
 	golang.org/x/net v0.24.0
 	golang.org/x/sync v0.7.0
 	golang.org/x/term v0.19.0
@@ -49,7 +49,7 @@ require (
 	github.com/adrg/xdg v0.4.0 // indirect
 	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
-	github.com/avast/retry-go/v4 v4.5.1 // indirect
+	github.com/avast/retry-go/v4 v4.6.0 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
