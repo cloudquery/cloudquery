@@ -6,10 +6,10 @@ toolchain go1.21.6
 
 require (
 	cloud.google.com/go/storage v1.40.0
-	github.com/apache/arrow/go/v15 v15.0.0-20240115115805-d7bc55542e61
-	github.com/cloudquery/codegen v0.3.15
-	github.com/cloudquery/filetypes/v4 v4.2.17
-	github.com/cloudquery/plugin-sdk/v4 v4.40.1
+	github.com/apache/arrow/go/v16 v16.0.0
+	github.com/cloudquery/codegen v0.3.16
+	github.com/cloudquery/filetypes/v4 v4.2.19
+	github.com/cloudquery/plugin-sdk/v4 v4.40.2
 	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.12.0
@@ -44,7 +44,7 @@ require (
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.9.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.19.10 // indirect
+	github.com/cloudquery/plugin-pb-go v1.19.11 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect
@@ -66,7 +66,7 @@ require (
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/gomarkdown/markdown v0.0.0-20231222211730-1d6d20845b47 // indirect
-	github.com/google/flatbuffers v23.5.26+incompatible // indirect
+	github.com/google/flatbuffers v24.3.25+incompatible // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.3 // indirect
