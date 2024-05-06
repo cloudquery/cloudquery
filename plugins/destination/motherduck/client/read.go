@@ -95,7 +95,7 @@ func reverseTransformRecord(sc *arrow.Schema, rec arrow.Record) arrow.Record {
 }
 
 func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
-	if arrow.TypeEqual(dt, transformTypeForWriting(dt)) {
+	if arrow.TypeEqual(dt, arr.DataType()) {
 		return arr
 	}
 
