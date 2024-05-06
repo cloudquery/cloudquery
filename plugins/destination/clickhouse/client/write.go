@@ -3,7 +3,7 @@ package client
 import (
 	"context"
 
-	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/apache/arrow/go/v16/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/values"
 	"github.com/cloudquery/plugin-sdk/v4/message"
