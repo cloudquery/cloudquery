@@ -1,5 +1,5 @@
 {
-  "cli": "5.18.0",
+  "cli": "5.18.1",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "22.19.2",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -51,9 +51,9 @@
   "plugins/destination/neo4j+FILLER": "0.0.0",
   "plugins/destination/kafka": "3.3.10",
   "plugins/destination/kafka+FILLER": "0.0.0",
-  "plugins/source/hackernews": "3.1.6",
+  "plugins/source/hackernews": "3.1.7",
   "plugins/source/hackernews+FILLER": "0.0.0",
-  "scaffold": "3.0.13",
+  "scaffold": "3.0.14",
   "scaffold+FILLER": "0.0.0",
   "plugins/source/oracle": "4.3.5",
   "plugins/source/oracle+FILLER": "0.0.0",
