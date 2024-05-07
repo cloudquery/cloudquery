@@ -7,11 +7,11 @@ import (
 	"os"
 	"strings"
 
-	"github.com/apache/arrow/go/v15/arrow"
-	"github.com/apache/arrow/go/v15/arrow/array"
-	"github.com/apache/arrow/go/v15/arrow/memory"
-	"github.com/apache/arrow/go/v15/parquet/file"
-	"github.com/apache/arrow/go/v15/parquet/pqarrow"
+	"github.com/apache/arrow/go/v16/arrow"
+	"github.com/apache/arrow/go/v16/arrow/array"
+	"github.com/apache/arrow/go/v16/arrow/memory"
+	"github.com/apache/arrow/go/v16/parquet/file"
+	"github.com/apache/arrow/go/v16/parquet/pqarrow"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
@@ -95,7 +95,7 @@ func reverseTransformRecord(sc *arrow.Schema, rec arrow.Record) arrow.Record {
 }
 
 func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
-	if arrow.TypeEqual(dt, transformTypeForWriting(dt)) {
+	if arrow.TypeEqual(dt, arr.DataType()) {
 		return arr
 	}
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/apache/arrow/go/v15/arrow/array"
+	"github.com/apache/arrow/go/v16/arrow/array"
 )
 
 func buildList(builder array.ListLikeBuilder, values any) error {
