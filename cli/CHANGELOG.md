@@ -5,6 +5,16 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.18.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.18.0...cli-v5.18.1) (2024-05-07)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.19.10 ([#17861](https://github.com/cloudquery/cloudquery/issues/17861)) ([93e381f](https://github.com/cloudquery/cloudquery/commit/93e381f2e0684ab54b7f51d33ad42457f5051829))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.40.1 ([#17865](https://github.com/cloudquery/cloudquery/issues/17865)) ([a532364](https://github.com/cloudquery/cloudquery/commit/a532364842076cbfadbf146ab18634607a693ddf))
+* **deps:** Update module google.golang.org/protobuf to v1.34.0 ([#17854](https://github.com/cloudquery/cloudquery/issues/17854)) ([308d61d](https://github.com/cloudquery/cloudquery/commit/308d61d3796e38837c2261dadcaf011958a9d6a5))
+* **deps:** Upgrade `github.com/apache/arrow/go` to `v16` ([#17889](https://github.com/cloudquery/cloudquery/issues/17889)) ([98b2634](https://github.com/cloudquery/cloudquery/commit/98b2634b1295f0a071acc5146e7672b7d22e316b))
+
 ## [5.18.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.17.1...cli-v5.18.0) (2024-04-30)
 
 
