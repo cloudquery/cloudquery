@@ -127,6 +127,12 @@ func TestSync(t *testing.T) {
 				// have to ignore SyncID because it's random and plugin versions since we update those frequently using an automated process
 				// also ignore SyncTime because it's a timestamp
 				diff := cmp.Diff(tc.summary, summaries, cmpopts.IgnoreFields(syncSummary{}, "SyncID", "DestinationVersion", "SourceVersion", "SyncTime"))
+				for _, s := range summaries {
+					assert.NotEmpty(t, s.SyncID)
+					assert.NotEmpty(t, s.SyncTime)
+					assert.NotEmpty(t, s.DestinationVersion)
+					assert.NotEmpty(t, s.SourceVersion)
+				}
 				require.Empty(t, diff, "unexpected summaries: %v", diff)
 			}
 
