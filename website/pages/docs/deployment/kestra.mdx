@@ -35,9 +35,9 @@ Once the container is running, open http://localhost:8080 in your browser.
 Inside the Kestra UI, go to the `Flows` page and click on `Create`. You can now paste the following content (make sure to update the connection string and set the CloudQuery API key):
 
 ```yaml
-id: cloudquery_sync
+id: hn_to_csv
 namespace: dev
-description: Caching CloudQuery plugins
+description: Hackernews to CSV
 
 tasks:
   - id: wdir
@@ -55,20 +55,21 @@ tasks:
               version: v3.0.21
               tables: ["*"]
               destinations:
-                - postgresql
+                - file
               spec:
                 item_concurrency: 100
-                start_time: "2024-01-22T00:00:00Z"
+                start_time: "2024-04-30T00:00:00Z"
             ---
             kind: destination
             spec:
-              name: "postgresql"
-              path: "cloudquery/postgresql"
+              name: "file"
+              path: "cloudquery/file"
               registry: "cloudquery"
-              version: "v8.0.5"
-
+              version: "v4.1.2"
+              write_mode: "append"
               spec:
-                connection_string: "YOUR_POSTGRES_CONNECTION_STRING"
+                path: "/tmp/sync/{{'{{TABLE}}/{{UUID}}.{{FORMAT}}'}}"
+                format: "csv" # options: parquet, json, csv
       - id: run_sync
         type: io.kestra.plugin.cloudquery.CloudQueryCLI
         env:
@@ -76,9 +77,12 @@ tasks:
           CLOUDQUERY_API_KEY: "{{ secret('CLOUDQUERY_API_KEY') }}"
         commands:
           - cloudquery sync config.yml --log-console --log-level=debug
+        outputFiles:
+          - "**/*.csv"
+
 ```
 
-The flow will extract all tables from the HackerNews API and load them to a destination PostgreSQL database. You may notice that the input to the `config_files` task is virtually identical to your CloudQuery configuration file.
+The flow will extract all tables from the HackerNews API and load them to CSV file. You may notice that the input to the `config_files` task is virtually identical to your CloudQuery configuration file.
 
 import { Callout } from 'nextra-theme-docs';
 
