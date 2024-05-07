@@ -366,7 +366,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			SourceName:          sourceSpec.Name,
 			SourceVersion:       sourceSpec.Version,
 			SourcePath:          sourceSpec.Path,
-			CliVersion:          Version,
+			CLIVersion:          Version,
 			DestinationErrors:   m.Errors,
 			DestinationWarnings: m.Warnings,
 			DestinationName:     destinationSpecs[i].Name,
