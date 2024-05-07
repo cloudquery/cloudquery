@@ -32,7 +32,7 @@ func TestSync(t *testing.T) {
 			config: "multiple-sources.yml",
 			summary: []syncSummary{
 				{
-					CliVersion:        "development",
+					CLIVersion:        "development",
 					DestinationErrors: 0,
 					DestinationName:   "test",
 					DestinationPath:   "cloudquery/test",
@@ -41,7 +41,7 @@ func TestSync(t *testing.T) {
 					SourcePath:        "cloudquery/test",
 				},
 				{
-					CliVersion:        "development",
+					CLIVersion:        "development",
 					DestinationErrors: 0,
 					DestinationName:   "test",
 					DestinationPath:   "cloudquery/test",
@@ -60,7 +60,7 @@ func TestSync(t *testing.T) {
 			config: "multiple-sources-destinations.yml",
 			summary: []syncSummary{
 				{
-					CliVersion:      "development",
+					CLIVersion:      "development",
 					DestinationName: "test-1",
 					DestinationPath: "cloudquery/test",
 					Resources:       12,
@@ -68,7 +68,7 @@ func TestSync(t *testing.T) {
 					SourcePath:      "cloudquery/test",
 				},
 				{
-					CliVersion:      "development",
+					CLIVersion:      "development",
 					DestinationName: "test-2",
 					DestinationPath: "cloudquery/test",
 					Resources:       12,
@@ -82,7 +82,7 @@ func TestSync(t *testing.T) {
 			config: "different-backend-from-destination.yml",
 			summary: []syncSummary{
 				{
-					CliVersion:      "development",
+					CLIVersion:      "development",
 					DestinationName: "test1",
 					DestinationPath: "cloudquery/test",
 					Resources:       12,
