@@ -1,0 +1,46 @@
+name: Source Plugin Square Workflow
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - "plugins/source/square/**"
+      - ".github/workflows/source_square.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/source/square/**"
+      - ".github/workflows/source_square.yml"
+
+jobs:
+  plugins-source-square:
+    timeout-minutes: 30
+    name: "plugins/source/square"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/square
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Check formatting
+        run: make fmt-check
+
+      -
+        # Required for the package command tests to work
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Run tests
+        run: make test

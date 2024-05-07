@@ -3,7 +3,7 @@ package values
 import (
 	"math/big"
 
-	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/apache/arrow/go/v16/arrow"
 	"github.com/shopspring/decimal"
 )
 
