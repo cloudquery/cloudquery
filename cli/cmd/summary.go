@@ -18,7 +18,7 @@ import (
 )
 
 type syncSummary struct {
-	CliVersion          string    `json:"cli_version"`
+	CLIVersion          string    `json:"cli_version"`
 	DestinationErrors   uint64    `json:"destination_errors"`
 	DestinationName     string    `json:"destination_name"`
 	DestinationPath     string    `json:"destination_path"`
@@ -74,7 +74,7 @@ func checkFilePath(filename string) error {
 	return os.MkdirAll(dirPath, 0755)
 }
 
-func generateSummaryTable() *schema.Table {
+func generateSummaryTable() (*schema.Table, error) {
 	tableName := "cloudquery_sync_summaries"
 	t := schema.Tables{{
 		Name: tableName,
@@ -84,38 +84,49 @@ func generateSummaryTable() *schema.Table {
 		Columns: []schema.Column{},
 	}}
 	if err := transformers.TransformTables(t); err != nil {
-		panic(err)
+		return nil, err
 	}
-	return t[0]
+	return t[0], nil
+}
+
+func migrateSummaryTable(writeClient plugin.Plugin_WriteClient, destTransformer *transformer.RecordTransformer, spec specs.Destination) error {
+	summaryTable, err := generateSummaryTable()
+	if err != nil {
+		return err
+	}
+	summaryTableSchema := summaryTable.ToArrowSchema()
+	transformedSchema := destTransformer.TransformSchema(summaryTableSchema)
+	transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
+	if err != nil {
+		return err
+	}
+	wr := &plugin.Write_Request{}
+	wr.Message = &plugin.Write_Request_MigrateTable{
+		MigrateTable: &plugin.Write_MessageMigrateTable{
+			MigrateForce: spec.MigrateMode == specs.MigrateModeForced,
+			Table:        transformedSchemaBytes,
+		},
+	}
+	if err := writeClient.Send(wr); err != nil {
+		return handleSendError(err, writeClient, "migrate sync summary table")
+	}
+	return nil
 }
 
 func sendSummary(writeClients []plugin.Plugin_WriteClient, destinationSpecs []specs.Destination, destinationsClients []*managedplugin.Client, destinationTransformers []*transformer.RecordTransformer, summary *syncSummary, noMigrate bool) error {
-	summaryTable := generateSummaryTable()
-	summaryTableSchema := summaryTable.ToArrowSchema()
-
+	summaryTable, err := generateSummaryTable()
+	if err != nil {
+		return err
+	}
 	defaultCaser := caser.New()
 	for i := range destinationsClients {
 		if !destinationSpecs[i].SyncSummary {
 			continue
 		}
-
-		transformedSchema := destinationTransformers[i].TransformSchema(summaryTableSchema)
-		transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
-		if err != nil {
-			return err
-		}
-		wr := &plugin.Write_Request{}
-
 		// Respect the noMigrate flag
 		if !noMigrate {
-			wr.Message = &plugin.Write_Request_MigrateTable{
-				MigrateTable: &plugin.Write_MessageMigrateTable{
-					MigrateForce: destinationSpecs[i].MigrateMode == specs.MigrateModeForced,
-					Table:        transformedSchemaBytes,
-				},
-			}
-			if err := writeClients[i].Send(wr); err != nil {
-				return handleSendError(err, writeClients[i], "migrate sync summary table")
+			if err := migrateSummaryTable(writeClients[i], destinationTransformers[i], destinationSpecs[i]); err != nil {
+				return fmt.Errorf("failed to migrate sync summary table: %w", err)
 			}
 		}
 
@@ -127,11 +138,12 @@ func sendSummary(writeClients []plugin.Plugin_WriteClient, destinationSpecs []sp
 		summary.DestinationName = destinationSpecs[i].Name
 		summary.DestinationVersion = destinationSpecs[i].Version
 		summary.DestinationPath = destinationSpecs[i].Path
-		summary.CliVersion = Version
+
+		summary.CLIVersion = Version
 
 		resource := schema.NewResourceData(summaryTable, nil, nil)
 		for _, col := range summaryTable.Columns {
-			err = resource.Set(col.Name, funk.Get(summary, defaultCaser.ToPascal(col.Name), funk.WithAllowZero()))
+			err := resource.Set(col.Name, funk.Get(summary, defaultCaser.ToPascal(col.Name), funk.WithAllowZero()))
 			if err != nil {
 				return fmt.Errorf("failed to set %s: %w", col.Name, err)
 			}
@@ -145,7 +157,8 @@ func sendSummary(writeClients []plugin.Plugin_WriteClient, destinationSpecs []sp
 		if err != nil {
 			return fmt.Errorf("failed to transform sync summary bytes: %w", err)
 		}
-		wr = &plugin.Write_Request{}
+
+		wr := &plugin.Write_Request{}
 		wr.Message = &plugin.Write_Request_Insert{
 			Insert: &plugin.Write_MessageInsert{
 				Record: transformedRecordBytes,
