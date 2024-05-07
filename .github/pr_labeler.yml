@@ -46,14 +46,10 @@ area/plugin/source/airtable:
   - plugins/source/airtable/**/*
 area/plugin/source/bitbucket:
   - plugins/source/bitbucket/**/*
-area/plugin/source/firestore:
-  - plugins/source/firestore/**/*
 area/plugin/source/hackernews:
   - plugins/source/hackernews/**/*
 area/plugin/source/k8s:
   - plugins/source/k8s/**/*
-area/plugin/source/notion:
-  - plugins/source/notion/**/*
 area/plugin/source/square:
   - plugins/source/square/**/*
 area/plugin/source/typeform:
