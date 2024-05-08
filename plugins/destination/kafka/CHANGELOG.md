@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v4.0.0...plugins-destination-kafka-v4.1.0) (2024-05-08)
+
+
+### Features
+
+* Expose Kafka Topic Details in spec ([#17910](https://github.com/cloudquery/cloudquery/issues/17910)) ([e7f5a87](https://github.com/cloudquery/cloudquery/commit/e7f5a87df059148890053cb59acf7a8e82d5f23c))
+
 ## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v3.3.10...plugins-destination-kafka-v4.0.0) (2024-05-07)
 
 
