@@ -81,7 +81,6 @@ func generateSummaryTable() (*schema.Table, error) {
 		Transform: transformers.TransformWithStruct(
 			&syncSummary{},
 		),
-		Columns: []schema.Column{},
 	}}
 	if err := transformers.TransformTables(t); err != nil {
 		return nil, err
