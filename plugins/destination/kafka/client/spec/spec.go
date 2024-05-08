@@ -50,7 +50,6 @@ func (s *Spec) SetDefaults() {
 	}
 	if s.TopicDetails.NumPartitions < 1 {
 		s.TopicDetails.NumPartitions = 1
-
 	}
 	if s.TopicDetails.ReplicationFactor < 1 {
 		s.TopicDetails.ReplicationFactor = 1

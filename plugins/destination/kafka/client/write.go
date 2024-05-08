@@ -76,9 +76,8 @@ func (c *Client) createTopics(_ context.Context, tables schema.Tables) error {
 	defer admin.Close()
 	for _, table := range tables {
 		err := admin.CreateTopic(table.Name, &sarama.TopicDetail{
-
 			NumPartitions:     int32(c.spec.TopicDetails.NumPartitions),
-			ReplicationFactor: 1,
+			ReplicationFactor: int16(c.spec.TopicDetails.ReplicationFactor),
 		}, false)
 		if err != nil {
 			if strings.Contains(err.Error(), "Topic with this name already exists") {
