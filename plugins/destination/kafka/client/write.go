@@ -76,7 +76,8 @@ func (c *Client) createTopics(_ context.Context, tables schema.Tables) error {
 	defer admin.Close()
 	for _, table := range tables {
 		err := admin.CreateTopic(table.Name, &sarama.TopicDetail{
-			NumPartitions:     1,
+
+			NumPartitions:     int32(c.spec.TopicDetails.NumPartitions),
 			ReplicationFactor: 1,
 		}, false)
 		if err != nil {

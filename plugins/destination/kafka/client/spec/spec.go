@@ -6,6 +6,13 @@ import (
 	"github.com/cloudquery/filetypes/v4"
 )
 
+type topicDetails struct {
+	// Number of partitions to create for the topic.
+	NumPartitions int `json:"num_partitions,omitempty" jsonschema:"minimum=1"`
+	// Replication factor for the topic.
+	ReplicationFactor int `json:"replication_factor,omitempty" jsonschema:"minimum=1"`
+}
+
 type Spec struct {
 	filetypes.FileSpec
 
@@ -26,6 +33,9 @@ type Spec struct {
 
 	// Number of records to write before starting a new object.
 	BatchSize int `json:"batch_size" jsonschema:"minimum=1,default=1000"`
+
+	// Topic details, such as number of partitions and replication factor.
+	TopicDetails topicDetails `json:"topic_details"`
 }
 
 func (s *Spec) SetDefaults() {
@@ -37,6 +47,13 @@ func (s *Spec) SetDefaults() {
 
 	if s.BatchSize < 1 {
 		s.BatchSize = 1000
+	}
+	if s.TopicDetails.NumPartitions < 1 {
+		s.TopicDetails.NumPartitions = 1
+
+	}
+	if s.TopicDetails.ReplicationFactor < 1 {
+		s.TopicDetails.ReplicationFactor = 1
 	}
 }
 
