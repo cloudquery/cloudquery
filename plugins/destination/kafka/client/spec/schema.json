@@ -230,11 +230,13 @@
       "properties": {
         "num_partitions": {
           "type": "integer",
-          "minimum": 1
+          "minimum": 1,
+          "default": 1
         },
         "replication_factor": {
           "type": "integer",
-          "minimum": 1
+          "minimum": 1,
+          "default": 1
         }
       },
       "additionalProperties": false,
