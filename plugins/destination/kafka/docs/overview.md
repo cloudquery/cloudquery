@@ -75,7 +75,7 @@ This is the (nested) plugin spec
 
   Number of partitions for the newly created topic.
 
-- `replication_factor` (`integer`) (optional) (1: `1000`)
+- `replication_factor` (`integer`) (optional) (default: `1`)
 
   Replication factor for the topic.
 
