@@ -27,6 +27,9 @@ spec:
     # client_id: cq-destination-kafka
     # verbose: false
     # batch_size: 1000
+    # topic_details:
+      # num_partitions: 1
+      # replication_factor: 1
 ```
 
 Note that the Kafka plugin only supports `append` `write_mode`. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).

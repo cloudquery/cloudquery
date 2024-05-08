@@ -8,9 +8,9 @@ import (
 
 type topicDetails struct {
 	// Number of partitions to create for the topic.
-	NumPartitions int `json:"num_partitions,omitempty" jsonschema:"minimum=1"`
+	NumPartitions int `json:"num_partitions,omitempty" jsonschema:"minimum=1,default=1"`
 	// Replication factor for the topic.
-	ReplicationFactor int `json:"replication_factor,omitempty" jsonschema:"minimum=1"`
+	ReplicationFactor int `json:"replication_factor,omitempty" jsonschema:"minimum=1,default=1"`
 }
 
 type Spec struct {
