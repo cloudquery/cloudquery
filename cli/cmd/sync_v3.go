@@ -365,6 +365,8 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		}
 	}
 
+	sourceWarnings := totals.Warnings
+	sourceErrors := totals.Errors
 	syncSummaries := make([]syncSummary, len(destinationsClients))
 	for i := range destinationsClients {
 		m := destinationsClients[i].Metrics()
@@ -372,8 +374,8 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		totals.Errors += m.Errors
 		syncSummaries[i] = syncSummary{
 			Resources:           uint64(totalResources),
-			SourceErrors:        totals.Errors,
-			SourceWarnings:      totals.Warnings,
+			SourceErrors:        sourceErrors,
+			SourceWarnings:      sourceWarnings,
 			SyncID:              uid,
 			SourceName:          sourceSpec.Name,
 			SourceVersion:       sourceSpec.Version,
