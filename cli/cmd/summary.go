@@ -30,8 +30,8 @@ type syncSummary struct {
 	SourcePath          string    `json:"source_path"`
 	SourceVersion       string    `json:"source_version"`
 	SourceWarnings      uint64    `json:"source_warnings"`
-	SyncID              string    `json:"cq_sync_id"`
-	SyncTime            time.Time `json:"cq_sync_time"`
+	SyncID              string    `json:"sync_id"`
+	SyncTime            time.Time `json:"sync_time"`
 }
 
 func persistSummary(filename string, summaries []syncSummary) error {
@@ -80,6 +80,7 @@ func generateSummaryTable() (*schema.Table, error) {
 		Name: tableName,
 		Transform: transformers.TransformWithStruct(
 			&syncSummary{},
+			transformers.WithSkipFields("SyncTime"),
 		),
 	}}
 	if err := transformers.TransformTables(t); err != nil {
@@ -116,66 +117,60 @@ func migrateSummaryTable(writeClient plugin.Plugin_WriteClient, destTransformer 
 	return nil
 }
 
-func sendSummary(writeClients []plugin.Plugin_WriteClient, destinationSpecs []specs.Destination, destinationsClients []*managedplugin.Client, destinationTransformers []*transformer.RecordTransformer, summary *syncSummary, noMigrate bool) error {
+func sendSummary(writeClient plugin.Plugin_WriteClient, destinationSpec specs.Destination, destinationsClient *managedplugin.Client, destinationTransformer *transformer.RecordTransformer, summary *syncSummary, noMigrate bool) error {
 	summaryTable, err := generateSummaryTable()
 	if err != nil {
 		return err
 	}
-	defaultCaser := caser.New()
-	for i := range destinationsClients {
-		if !destinationSpecs[i].SyncSummary {
-			continue
-		}
 
-		// Only send the summary to the destination that matches the current destination
-		if destinationSpecs[i].Name != summary.DestinationName || destinationSpecs[i].Version != summary.DestinationVersion || destinationSpecs[i].Path != summary.DestinationPath {
-			continue
-		}
+	csr := caser.New(caser.WithCustomInitialisms(map[string]bool{"CLI": true}), caser.WithCustomExceptions(map[string]string{"cli": "CLI"}))
 
-		// Respect the noMigrate flag
-		if !noMigrate {
-			if err := migrateSummaryTable(writeClients[i], destinationTransformers[i], destinationSpecs[i]); err != nil {
-				return fmt.Errorf("failed to migrate sync summary table: %w", err)
-			}
-		}
+	if !destinationSpec.SyncSummary {
+		return nil
+	}
 
-		// Get Information about the DestinationPlugin
-		m := destinationsClients[i].Metrics()
-		summary.DestinationErrors = m.Errors
-		summary.DestinationWarnings = m.Warnings
-
-		summary.DestinationName = destinationSpecs[i].Name
-		summary.DestinationVersion = destinationSpecs[i].Version
-		summary.DestinationPath = destinationSpecs[i].Path
-
-		summary.CLIVersion = Version
-
-		resource := schema.NewResourceData(summaryTable, nil, nil)
-		for _, col := range summaryTable.Columns {
-			err := resource.Set(col.Name, funk.Get(summary, defaultCaser.ToPascal(col.Name), funk.WithAllowZero()))
-			if err != nil {
-				return fmt.Errorf("failed to set %s: %w", col.Name, err)
-			}
-		}
-
-		vector := resource.GetValues()
-		arrowRecord := vector.ToArrowRecord(resource.Table.ToArrowSchema())
-
-		transformedRecord := destinationTransformers[i].Transform(arrowRecord)
-		transformedRecordBytes, err := plugin.RecordToBytes(transformedRecord)
-		if err != nil {
-			return fmt.Errorf("failed to transform sync summary bytes: %w", err)
-		}
-
-		wr := &plugin.Write_Request{}
-		wr.Message = &plugin.Write_Request_Insert{
-			Insert: &plugin.Write_MessageInsert{
-				Record: transformedRecordBytes,
-			},
-		}
-		if err := writeClients[i].Send(wr); err != nil {
-			return handleSendError(err, writeClients[i], "insert sync summary")
+	// Respect the noMigrate flag
+	if !noMigrate {
+		if err := migrateSummaryTable(writeClient, destinationTransformer, destinationSpec); err != nil {
+			return fmt.Errorf("failed to migrate sync summary table: %w", err)
 		}
 	}
+
+	// Get Information about the DestinationPlugin
+	m := destinationsClient.Metrics()
+	summary.DestinationErrors = m.Errors
+	summary.DestinationWarnings = m.Warnings
+
+	summary.DestinationName = destinationSpec.Name
+	summary.DestinationVersion = destinationSpec.Version
+	summary.DestinationPath = destinationSpec.Path
+
+	resource := schema.NewResourceData(summaryTable, nil, nil)
+	for _, col := range summaryTable.Columns {
+		err := resource.Set(col.Name, funk.Get(summary, csr.ToPascal(col.Name), funk.WithAllowZero()))
+		if err != nil {
+			return fmt.Errorf("failed to set %s: %w", col.Name, err)
+		}
+	}
+
+	vector := resource.GetValues()
+	arrowRecord := vector.ToArrowRecord(resource.Table.ToArrowSchema())
+
+	transformedRecord := destinationTransformer.Transform(arrowRecord)
+	transformedRecordBytes, err := plugin.RecordToBytes(transformedRecord)
+	if err != nil {
+		return fmt.Errorf("failed to transform sync summary bytes: %w", err)
+	}
+
+	wr := &plugin.Write_Request{}
+	wr.Message = &plugin.Write_Request_Insert{
+		Insert: &plugin.Write_MessageInsert{
+			Record: transformedRecordBytes,
+		},
+	}
+	if err := writeClient.Send(wr); err != nil {
+		return handleSendError(err, writeClient, "insert sync summary")
+	}
+
 	return nil
 }
