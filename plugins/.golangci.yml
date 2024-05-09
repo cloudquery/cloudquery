@@ -1,11 +1,5 @@
 run:
   tests: true
-  skip-dirs:
-    - bin
-    - docs
-    - client/mocks
-    - resources/forks
-    - codegen
   timeout: 15m
   build-tags:
     - all
@@ -119,3 +113,10 @@ issues:
     - path: services\.go
       linters:
         - dupl
+  exclude-dirs:
+    - bin
+    - docs
+    - client/mocks
+    - resources/forks
+    - codegen
+
