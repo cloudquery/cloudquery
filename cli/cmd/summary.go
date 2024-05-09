@@ -89,6 +89,10 @@ func generateSummaryTable() (*schema.Table, error) {
 }
 
 func migrateSummaryTable(writeClient plugin.Plugin_WriteClient, destTransformer *transformer.RecordTransformer, spec specs.Destination) error {
+	if !spec.SyncSummary {
+		return nil
+	}
+
 	summaryTable, err := generateSummaryTable()
 	if err != nil {
 		return err
@@ -122,6 +126,12 @@ func sendSummary(writeClients []plugin.Plugin_WriteClient, destinationSpecs []sp
 		if !destinationSpecs[i].SyncSummary {
 			continue
 		}
+
+		// Only send the summary to the destination that matches the current destination
+		if destinationSpecs[i].Name != summary.DestinationName || destinationSpecs[i].Version != summary.DestinationVersion || destinationSpecs[i].Path != summary.DestinationPath {
+			continue
+		}
+
 		// Respect the noMigrate flag
 		if !noMigrate {
 			if err := migrateSummaryTable(writeClients[i], destinationTransformers[i], destinationSpecs[i]); err != nil {
