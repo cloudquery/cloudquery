@@ -62,8 +62,8 @@ github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d/go.mod h1:8EPpV
 github.com/chenzhuoyu/iasm v0.9.0/go.mod h1:Xjy2NpN3h7aUqeqM+woSuuvxmIe6+DDsiNLIrkAmYog=
 github.com/chenzhuoyu/iasm v0.9.1 h1:tUHQJXo3NhBqw6s33wkGn9SP3bvrWLdlVIJ3hQBL7P0=
 github.com/chenzhuoyu/iasm v0.9.1/go.mod h1:Xjy2NpN3h7aUqeqM+woSuuvxmIe6+DDsiNLIrkAmYog=
-github.com/cloudquery/cloudquery-api-go v1.10.0 h1:nUc9xMaJgzLmq0/rZaerlT3Pz+IFuZj5adnKAhLr8yQ=
-github.com/cloudquery/cloudquery-api-go v1.10.0/go.mod h1:F4kuaNBAVqsS9ZRHuX+tV2m6+Khoa2Rb9lROGhinGPk=
+github.com/cloudquery/cloudquery-api-go v1.11.0 h1:o28LS1E8W0AgnCajSe1gTaLvMB6n2OY5a6QwDxGx0xk=
+github.com/cloudquery/cloudquery-api-go v1.11.0/go.mod h1:F4kuaNBAVqsS9ZRHuX+tV2m6+Khoa2Rb9lROGhinGPk=
 github.com/cloudquery/codegen v0.3.16 h1:kZLOuVvEIHuk6QoFlRWQvUr5XRMxzYsDXpsNnF8SJHQ=
 github.com/cloudquery/codegen v0.3.16/go.mod h1:NOLLrXLTKpiJ3z7d11HiS4vIT+HkKaKe+q3USwuq4+E=
 github.com/cloudquery/godebouncer v0.0.0-20240220152946-054f7dbbcf18 h1:5Wy7tEhLm3l3+9ibNABU4EWKSRtCeiFTzGpJtNrGrtE=
