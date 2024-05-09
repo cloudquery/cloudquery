@@ -378,8 +378,17 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	}
 	for _, summary := range syncSummaries {
 		log.Info().Interface("summary", summary).Msg("Sync summary")
-		if err := sendSummary(writeClients, destinationSpecs, destinationsClients, destinationTransformers, &summary, noMigrate); err != nil {
-			return err
+		for i := range destinationsClients {
+			if !destinationSpecs[i].SyncSummary {
+				continue
+			}
+			// Only send the summary to the destination that matches the current destination
+			if destinationSpecs[i].Name != summary.DestinationName || destinationSpecs[i].Version != summary.DestinationVersion || destinationSpecs[i].Path != summary.DestinationPath {
+				continue
+			}
+			if err := sendSummary(writeClients[i], destinationSpecs[i], destinationsClients[i], destinationTransformers[i], &summary, noMigrate); err != nil {
+				return err
+			}
 		}
 	}
 
