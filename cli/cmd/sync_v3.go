@@ -11,7 +11,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/apache/arrow/go/v16/arrow"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/api"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
@@ -351,16 +351,15 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		return err
 	}
 	totals := sourceClient.Metrics()
-
+	sourceWarnings := totals.Warnings
+	sourceErrors := totals.Errors
 	syncSummaries := make([]syncSummary, len(destinationsClients))
 	for i := range destinationsClients {
 		m := destinationsClients[i].Metrics()
-		totals.Warnings += m.Warnings
-		totals.Errors += m.Errors
 		syncSummaries[i] = syncSummary{
 			Resources:           uint64(totalResources),
-			SourceErrors:        totals.Errors,
-			SourceWarnings:      totals.Warnings,
+			SourceErrors:        sourceErrors,
+			SourceWarnings:      sourceWarnings,
 			SyncID:              uid,
 			SyncTime:            syncTime,
 			SourceName:          sourceSpec.Name,

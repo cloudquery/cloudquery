@@ -1,7 +1,7 @@
 package client
 
 import (
-	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/apache/arrow/go/v16/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
@@ -21,7 +21,7 @@ func (*Client) SchemaTypeToSnowflake(t arrow.DataType) string {
 	case *arrow.BinaryType, *arrow.LargeBinaryType:
 		return "binary"
 	case *arrow.TimestampType:
-		return "timestamp_ntz"
+		return "timestamp_tz"
 	case *types.JSONType, *arrow.StructType:
 		return "variant"
 	default:

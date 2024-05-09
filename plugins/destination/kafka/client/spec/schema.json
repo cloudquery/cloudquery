@@ -213,6 +213,10 @@
           "minimum": 1,
           "description": "Number of records to write before starting a new object.",
           "default": 1000
+        },
+        "topic_details": {
+          "$ref": "#/$defs/topicDetails",
+          "description": "Topic details, such as number of partitions and replication factor."
         }
       },
       "additionalProperties": false,
@@ -221,6 +225,22 @@
         "format",
         "brokers"
       ]
+    },
+    "topicDetails": {
+      "properties": {
+        "num_partitions": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1
+        },
+        "replication_factor": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
     }
   }
 }
