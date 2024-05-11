@@ -1,5 +1,21 @@
 # Changelog
 
+## [5.6.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.6.1...plugins-destination-duckdb-v5.6.2) (2024-05-07)
+
+
+### Bug Fixes
+
+* Compare the actual read data type instead of assumed one ([#17890](https://github.com/cloudquery/cloudquery/issues/17890)) ([ee94e67](https://github.com/cloudquery/cloudquery/commit/ee94e67eb863a3ec6a3c06714db2dce3e9cedcc9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.40.1 ([#17865](https://github.com/cloudquery/cloudquery/issues/17865)) ([a532364](https://github.com/cloudquery/cloudquery/commit/a532364842076cbfadbf146ab18634607a693ddf))
+* **deps:** Upgrade `github.com/apache/arrow/go` to `v16` ([#17889](https://github.com/cloudquery/cloudquery/issues/17889)) ([98b2634](https://github.com/cloudquery/cloudquery/commit/98b2634b1295f0a071acc5146e7672b7d22e316b))
+
+## [5.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.6.0...plugins-destination-duckdb-v5.6.1) (2024-04-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.40.0 ([#17796](https://github.com/cloudquery/cloudquery/issues/17796)) ([1622575](https://github.com/cloudquery/cloudquery/commit/1622575f1eb776cafc637573010fd66f85877079))
+
 ## [5.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.5.5...plugins-destination-duckdb-v5.6.0) (2024-04-23)
 
 

@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/Shopify/sarama"
-	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/apache/arrow/go/v16/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
@@ -76,8 +76,8 @@ func (c *Client) createTopics(_ context.Context, tables schema.Tables) error {
 	defer admin.Close()
 	for _, table := range tables {
 		err := admin.CreateTopic(table.Name, &sarama.TopicDetail{
-			NumPartitions:     1,
-			ReplicationFactor: 1,
+			NumPartitions:     int32(c.spec.TopicDetails.NumPartitions),
+			ReplicationFactor: int16(c.spec.TopicDetails.ReplicationFactor),
 		}, false)
 		if err != nil {
 			if strings.Contains(err.Error(), "Topic with this name already exists") {

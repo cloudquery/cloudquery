@@ -43,7 +43,7 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClie
 	if err != nil {
 		return nil, err
 	}
-	db, err := sql.Open("snowflake", dsn+"&BINARY_INPUT_FORMAT=BASE64&BINARY_OUTPUT_FORMAT=BASE64")
+	db, err := sql.Open("snowflake", dsn+"&BINARY_INPUT_FORMAT=BASE64&BINARY_OUTPUT_FORMAT=BASE64&timezone=UTC")
 	if err != nil {
 		return nil, err
 	}

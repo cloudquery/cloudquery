@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/column"
-	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/apache/arrow/go/v16/arrow"
 )
 
 // https://clickhouse.com/docs/en/sql-reference/data-types/map

@@ -44,56 +44,20 @@ area/plugin/destination/sqlite:
   - plugins/destination/sqlite/**/*
 area/plugin/source/airtable:
   - plugins/source/airtable/**/*
-area/plugin/source/alicloud:
-  - plugins/source/alicloud/**/*
-area/plugin/source/aws:
-  - plugins/source/aws/**/*
-area/plugin/source/awspricing:
-  - plugins/source/awspricing/**/*
-area/plugin/source/azure:
-  - plugins/source/azure/**/*
 area/plugin/source/bitbucket:
   - plugins/source/bitbucket/**/*
-area/plugin/source/cloudflare:
-  - plugins/source/cloudflare/**/*
-area/plugin/source/datadog:
-  - plugins/source/datadog/**/*
-area/plugin/source/digitalocean:
-  - plugins/source/digitalocean/**/*
 area/plugin/source/firestore:
   - plugins/source/firestore/**/*
-area/plugin/source/gandi:
-  - plugins/source/gandi/**/*
-area/plugin/source/gcp:
-  - plugins/source/gcp/**/*
-area/plugin/source/github:
-  - plugins/source/github/**/*
-area/plugin/source/gitlab:
-  - plugins/source/gitlab/**/*
-area/plugin/source/googleads:
-  - plugins/source/googleads/**/*
 area/plugin/source/hackernews:
   - plugins/source/hackernews/**/*
-area/plugin/source/hubspot:
-  - plugins/source/hubspot/**/*
 area/plugin/source/k8s:
   - plugins/source/k8s/**/*
 area/plugin/source/notion:
   - plugins/source/notion/**/*
-area/plugin/source/okta:
-  - plugins/source/okta/**/*
-area/plugin/source/oracle:
-  - plugins/source/oracle/**/*
-area/plugin/source/pagerduty:
-  - plugins/source/pagerduty/**/*
-area/plugin/source/plausible:
-  - plugins/source/plausible/**/*
 area/plugin/source/square:
   - plugins/source/square/**/*
 area/plugin/source/typeform:
   - plugins/source/typeform/**/*
-area/plugin/source/vercel:
-  - plugins/source/vercel/**/*
 area/scaffold:
   - scaffold/**/*
 area/website:

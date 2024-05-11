@@ -11,7 +11,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/apache/arrow/go/v15/arrow"
+	"github.com/apache/arrow/go/v16/arrow"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/api"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
@@ -365,6 +365,8 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		}
 	}
 
+	sourceWarnings := totals.Warnings
+	sourceErrors := totals.Errors
 	syncSummaries := make([]syncSummary, len(destinationsClients))
 	for i := range destinationsClients {
 		m := destinationsClients[i].Metrics()
@@ -372,8 +374,8 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		totals.Errors += m.Errors
 		syncSummaries[i] = syncSummary{
 			Resources:           uint64(totalResources),
-			SourceErrors:        totals.Errors,
-			SourceWarnings:      totals.Warnings,
+			SourceErrors:        sourceErrors,
+			SourceWarnings:      sourceWarnings,
 			SyncID:              uid,
 			SourceName:          sourceSpec.Name,
 			SourceVersion:       sourceSpec.Version,
@@ -404,6 +406,13 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		msg = "Sync completed with errors, see logs for details"
 	}
 	fmt.Printf("%s. Resources: %d, Errors: %d, Warnings: %d, Time: %s\n", msg, totalResources, totals.Errors, totals.Warnings, syncTimeTook.Truncate(time.Second).String())
+	log.Info().
+		Int64("resources", totalResources).
+		Uint64("errors", totals.Errors).
+		Uint64("warnings", totals.Warnings).
+		Str("duration", syncTimeTook.Truncate(time.Second).String()).
+		Str("result", msg).
+		Msg("Sync summary")
 
 	if remoteProgressReporter != nil {
 		remoteProgressReporter.SendSignal()

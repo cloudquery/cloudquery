@@ -161,7 +161,47 @@ func (s Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 		},
 	}
 
-	sc.AllOf = append(sc.AllOf, cleanPath, noRotateNoUUID, noRotateNoBatch, uuidWhenBatching)
+	forceParquet := func(sc *jsonschema.Schema, field string) *jsonschema.Schema {
+		val := *sc.Properties.Value(field)
+		val.Enum = nil
+		val.Const = "parquet"
+		return &val
+	}
+
+	// write_empty_objects_for_empty_tables enabled -> require parquet format
+	parquetEmptyObjects := &jsonschema.Schema{
+		Title: "write_empty_objects_for_empty_tables requires parquet format",
+		If: &jsonschema.Schema{
+			Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+				noRotate := *sc.Properties.Value("write_empty_objects_for_empty_tables")
+				noRotate.Default = nil
+				noRotate.Const = true
+				noRotate.Description = ""
+				properties := orderedmap.New[string, *jsonschema.Schema]()
+				properties.Set("write_empty_objects_for_empty_tables", &noRotate)
+				return properties
+			}(),
+			Required: []string{"write_empty_objects_for_empty_tables"},
+		},
+		Then: &jsonschema.Schema{
+			// require properties not to be empty or null
+			Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+				properties := jsonschema.NewProperties()
+				properties.Set("format", forceParquet(sc, "format"))
+				return properties
+			}(),
+			Required: []string{"format"},
+		},
+		Extras: map[string]any{
+			"errorMessage": map[string]any{
+				"properties": map[string]any{
+					"format": "when using `write_empty_objects_for_empty_tables` format must be set to `parquet`",
+				},
+			},
+		},
+	}
+
+	sc.AllOf = append(sc.AllOf, cleanPath, noRotateNoUUID, noRotateNoBatch, uuidWhenBatching, parquetEmptyObjects)
 }
 
 //go:embed schema.json

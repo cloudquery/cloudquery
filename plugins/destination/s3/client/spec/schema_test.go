@@ -303,5 +303,22 @@ func TestSpecJSONSchema(t *testing.T) {
 			Name: "server side encryption (success)",
 			Spec: `{"format": "csv", "path": "{{UUID}}", "bucket": "b", "region": "r", "server_side_encryption_configuration": {"server_side_encryption":"AES256", "sse_kms_key_id":"1234-5678"}}`,
 		},
+		{
+			Name: "Empty objects false format parquet",
+			Spec: `{"format": "parquet", "path": "{{UUID}}", "bucket": "b", "region": "r","write_empty_objects_for_empty_tables":false}`,
+		},
+		{
+			Name: "Empty objects false format csv",
+			Spec: `{"format": "csv", "path": "{{UUID}}", "bucket": "b", "region": "r","write_empty_objects_for_empty_tables":false}`,
+		},
+		{
+			Name: "Empty objects true",
+			Spec: `{"format": "parquet", "path": "{{UUID}}", "bucket": "b", "region": "r","write_empty_objects_for_empty_tables":true}`,
+		},
+		{
+			Name: "Empty objects true format must be parquet",
+			Spec: `{"format": "csv", "path": "{{UUID}}", "bucket": "b", "region": "r","write_empty_objects_for_empty_tables":true}`,
+			Err:  true,
+		},
 	})
 }

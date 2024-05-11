@@ -24,6 +24,7 @@ spec:
     # compression: "" # options: gzip
     # no_rotate: false
     # athena: false # <- set this to true for Athena compatibility
+    # write_empty_objects_for_empty_tables: false # <- set this to true if using with the CloudQuery Compliance policies
     # test_write: true # tests the ability to write to the bucket before processing the data
     # endpoint: "" # Endpoint to use for S3 API calls.
     # endpoint_skip_tls_verify # Disable TLS verification if using an untrusted certificate

@@ -53,6 +53,11 @@ This is the (nested) plugin spec
 
   Number of records to write before starting a new object.
 
+- `topic_details` ([topic_details](#topic_details)) (optional)
+
+  Optional parameters to set topic details.
+
+
 ### format_spec
 
 - `delimiter` (`string`) (optional) (default: `,`)
@@ -62,3 +67,15 @@ This is the (nested) plugin spec
 - `skip_header` (`boolean`) (optional) (default: `false`)
 
   Specifies if the first line of a file should be the headers (when format is `csv`).
+
+
+### topic_details
+
+- `num_partitions` (`integer`) (optional) (default: `1`)
+
+  Number of partitions for the newly created topic.
+
+- `replication_factor` (`integer`) (optional) (default: `1`)
+
+  Replication factor for the topic.
+

@@ -32,45 +32,57 @@ Once the container is running, open http://localhost:8080 in your browser.
 
 ## Step 2: Create a Kestra flow
 
-Inside the Kestra UI, go to the `Flows` page and click on `Create`. You can now paste the following content:
+Inside the Kestra UI, go to the `Flows` page and click on `Create`. You can now paste the following content (make sure to update the connection string and set the CloudQuery API key):
 
-```yaml copy
-id: cloudquery_sync
+```yaml
+id: hn_to_csv
 namespace: dev
+description: Hackernews to CSV
 
 tasks:
-  - id: hn_to_csv
-    type: io.kestra.plugin.cloudquery.Sync
-    env:
-      # Visit https://kestra.io/docs/concepts/secret to learn how to manage secrets in Kestra
-      CLOUDQUERY_API_KEY: "{{ secret('CLOUDQUERY_API_KEY') }}"
-    incremental: false
-    outputFiles:
-      - "cloudquery/**"
-    configs:
-      - kind: source
-        spec:
-          name: hackernews
-          path: cloudquery/hackernews
-          registry: cloudquery
-          version: v3.0.21
-          tables: ["*"]
-          destinations:
-            - file
-          spec:
-            item_concurrency: 100
-            start_time: "2024-01-22T00:00:00Z"
-      - kind: destination
-        spec:
-          name: file
-          path: cloudquery/file
-          version: v3.4.17
-          spec:
-            path: "cloudquery/{{TABLE}}/{{UUID}}.{{FORMAT}}"
-            format: csv
+  - id: wdir
+    type: io.kestra.core.tasks.flows.WorkingDirectory
+    tasks:
+      - id: config_files
+        type: io.kestra.core.tasks.storages.LocalFiles
+        inputs:
+          config.yml: |
+            kind: source
+            spec:
+              name: hackernews
+              path: cloudquery/hackernews
+              registry: cloudquery
+              version: v3.0.21
+              tables: ["*"]
+              destinations:
+                - file
+              spec:
+                item_concurrency: 100
+                start_time: "2024-04-30T00:00:00Z"
+            ---
+            kind: destination
+            spec:
+              name: "file"
+              path: "cloudquery/file"
+              registry: "cloudquery"
+              version: "v4.1.2"
+              write_mode: "append"
+              spec:
+                path: "/tmp/sync/{{'{{TABLE}}/{{UUID}}.{{FORMAT}}'}}"
+                format: "csv" # options: parquet, json, csv
+      - id: run_sync
+        type: io.kestra.plugin.cloudquery.CloudQueryCLI
+        env:
+          # Visit https://kestra.io/docs/concepts/secret to learn how to manage secrets in Kestra
+          CLOUDQUERY_API_KEY: "{{ secret('CLOUDQUERY_API_KEY') }}"
+        commands:
+          - cloudquery sync config.yml --log-console --log-level=debug
+        outputFiles:
+          - "**/*.csv"
+
 ```
 
-The flow will extract all tables from the HackerNews API and load them to a CSV file. You can download that CSV file from the Outputs tab in the Kestra UI after each flow execution. You may notice that the `configs` property is virtually identical to your CloudQuery configuration file. All we had to add was to move the CloudQuery sources and destinations into a list of `configs` in the `cloudquery.Sync` task.
+The flow will extract all tables from the HackerNews API and load them to CSV file. You may notice that the input to the `config_files` task is virtually identical to your CloudQuery configuration file.
 
 import { Callout } from 'nextra-theme-docs';
 
@@ -81,7 +93,6 @@ Kestra flows are built using a declarative YAML syntax, in the same way as you k
 Once you configured the flow in the editor, click on `Save`.
 
 ![Kestra Flow Editor Screenshot](/images/docs/deployment/kestra-flow.png)
-
 
 ## Step 3: Run the flow
 
@@ -118,6 +129,33 @@ This cron expression will run the flow every day at 09:00. You can use [crontab.
 With this in place, remember to click `Save` again. Your CloudQuery sync will now run on a regular schedule.
 
 ## Next steps
+
+### Caching
+
+To speed up your syncs and save bandwidth, you can cache the downloaded plugins locally. Kestra does not provide cache for container-based tasks, but you can use a shared volume to cache the plugins.
+
+To do this, you need to configure Kestra to [enable volume mounts](https://kestra.io/docs/configuration-guide/tasks#kestratasksscriptsdockervolume-enabled) first.
+
+Then configure your CloudQuery task to use the shared volume:
+
+```yaml
+- id: run_sync
+  type: io.kestra.plugin.cloudquery.CloudQueryCLI
+  env:
+    CLOUDQUERY_API_KEY: "{{ secret('CLOUDQUERY_API_KEY') }}"
+  # Mount the shared volume to the CloudQuery container
+  docker:
+    image: ghcr.io/cloudquery/cloudquery:latest
+    volumes:
+      - "/tmp/cq:/app/.cq"
+  commands:
+  # Use the shared volume for downloading plugins
+    - cloudquery sync config.yml --log-console --log-level=debug  --cq-dir=/app/.cq
+```
+
+Note: The shared volume is mounted to the `/tmp/cq` directory in the example above on the host machine. You can adjust the path to your needs.
+
+### Production deployment
 
 This tutorial was just a quick introduction to help you get started with a CloudQuery deployment on [Kestra](https://kestra.io/). You can now create additional Kestra tasks to perform transformations, send notifications and more. For more information, check out the [CloudQuery docs](/docs) and the [Kestra docs](https://kestra.io/docs/). 
 

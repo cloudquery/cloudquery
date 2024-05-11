@@ -34,6 +34,20 @@ func (m *MockBackendClient) EXPECT() *MockBackendClientMockRecorder {
 	return m.recorder
 }
 
+// Close mocks base method.
+func (m *MockBackendClient) Close() error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Close")
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Close indicates an expected call of Close.
+func (mr *MockBackendClientMockRecorder) Close() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockBackendClient)(nil).Close))
+}
+
 // Flush mocks base method.
 func (m *MockBackendClient) Flush(ctx context.Context) error {
 	m.ctrl.T.Helper()

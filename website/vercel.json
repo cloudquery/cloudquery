@@ -1077,6 +1077,14 @@
     {
       "source": "/how-to-guides/:path*",
       "destination": "https://www.cloudquery.io/blog/:path*"
+    },
+    {
+      "source": "/privacy",
+      "destination": "https://www.cloudquery.io/legal/privacy-policy"
+    },
+    {
+      "source": "/terms",
+      "destination": "https://www.cloudquery.io/legal/website-terms-of-service"
     }
   ]
 }

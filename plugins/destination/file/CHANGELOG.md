@@ -1,5 +1,25 @@
 # Changelog
 
+## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v4.1.2...plugins-destination-file-v5.0.0) (2024-05-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deps:** Upgrade `github.com/apache/arrow/go` to `v16` ([#17888](https://github.com/cloudquery/cloudquery/issues/17888)). Now `timestamp` values will include zone in JSON & CSV outputs (e.g., `2021-01-02 00:00:00` will become `2021-01-02 00:00:00Z`).
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.17 ([#17856](https://github.com/cloudquery/cloudquery/issues/17856)) ([220cc0e](https://github.com/cloudquery/cloudquery/commit/220cc0ed3cde92ee1ed1c412693861e6f4c936b0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.40.1 ([#17865](https://github.com/cloudquery/cloudquery/issues/17865)) ([a532364](https://github.com/cloudquery/cloudquery/commit/a532364842076cbfadbf146ab18634607a693ddf))
+* **deps:** Upgrade `github.com/apache/arrow/go` to `v16` ([#17888](https://github.com/cloudquery/cloudquery/issues/17888)) ([2c8ddbd](https://github.com/cloudquery/cloudquery/commit/2c8ddbd9a2c748c1eaae38a4468792c8612b9681))
+
+## [4.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v4.1.1...plugins-destination-file-v4.1.2) (2024-04-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.40.0 ([#17796](https://github.com/cloudquery/cloudquery/issues/17796)) ([1622575](https://github.com/cloudquery/cloudquery/commit/1622575f1eb776cafc637573010fd66f85877079))
+
 ## [4.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v4.1.0...plugins-destination-file-v4.1.1) (2024-04-23)
 
 

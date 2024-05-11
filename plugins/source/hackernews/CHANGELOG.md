@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.1.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.1.6...plugins-source-hackernews-v3.1.7) (2024-05-07)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.40.1 ([#17865](https://github.com/cloudquery/cloudquery/issues/17865)) ([a532364](https://github.com/cloudquery/cloudquery/commit/a532364842076cbfadbf146ab18634607a693ddf))
+* **deps:** Upgrade `github.com/apache/arrow/go` to `v16` ([#17889](https://github.com/cloudquery/cloudquery/issues/17889)) ([98b2634](https://github.com/cloudquery/cloudquery/commit/98b2634b1295f0a071acc5146e7672b7d22e316b))
+
+## [3.1.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.1.5...plugins-source-hackernews-v3.1.6) (2024-04-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.40.0 ([#17796](https://github.com/cloudquery/cloudquery/issues/17796)) ([1622575](https://github.com/cloudquery/cloudquery/commit/1622575f1eb776cafc637573010fd66f85877079))
+
 ## [3.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.1.4...plugins-source-hackernews-v3.1.5) (2024-04-23)
 
 

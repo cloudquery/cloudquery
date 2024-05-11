@@ -12,6 +12,6 @@ spec:
   name: postgresql
   path: cloudquery/postgresql
   registry: cloudquery
-  version: "v8.0.5" # latest version of postgresql plugin
+  version: "v8.0.7" # latest version of postgresql plugin
   spec:
     connection_string: ${CQ_DSN}

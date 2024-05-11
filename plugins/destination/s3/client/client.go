@@ -24,7 +24,6 @@ import (
 
 type Client struct {
 	plugin.UnimplementedSource
-	streamingbatchwriter.IgnoreMigrateTable
 	streamingbatchwriter.UnimplementedDeleteStale
 	streamingbatchwriter.UnimplementedDeleteRecords
 	syncID string
@@ -36,12 +35,15 @@ type Client struct {
 	s3Client   *s3.Client
 	uploader   *manager.Uploader
 	downloader *manager.Downloader
+
+	initializedTables map[string]string
 }
 
 func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
-		logger: logger.With().Str("module", "s3").Logger(),
-		syncID: opts.InvocationID,
+		logger:            logger.With().Str("module", "s3").Logger(),
+		syncID:            opts.InvocationID,
+		initializedTables: make(map[string]string),
 	}
 	if opts.NoConnection {
 		return c, nil
