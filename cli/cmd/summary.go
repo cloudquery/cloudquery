@@ -125,10 +125,6 @@ func sendSummary(writeClient plugin.Plugin_WriteClient, destinationSpec specs.De
 
 	csr := caser.New(caser.WithCustomInitialisms(map[string]bool{"CLI": true}), caser.WithCustomExceptions(map[string]string{"cli": "CLI"}))
 
-	if !destinationSpec.SyncSummary {
-		return nil
-	}
-
 	// Respect the noMigrate flag
 	if !noMigrate {
 		if err := migrateSummaryTable(writeClient, destinationTransformer, destinationSpec); err != nil {
