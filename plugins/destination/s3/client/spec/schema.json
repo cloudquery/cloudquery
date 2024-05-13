@@ -347,6 +347,20 @@
           "description": "This allows you to set the Content Type of objects uploaded to S3. This will override the default the content type set based on the file format\n\"csv\": \"text/csv\"\n\"json\": \"application/json\"\n\"parquet\":\" \"application/vnd.apache.parquet\"",
           "default": ""
         },
+        "acl": {
+          "type": "string",
+          "description": "Canned ACL for the object. Possible values are:\n- `private`\n- `public-read`\n- `public-read-write`\n- `authenticated-read`\n- `aws-exec-read`\n- `bucket-owner-read`\n- `bucket-owner-full-control`\n- `log-delivery-write`",
+          "default": "",
+          "enum": [
+            "private",
+            "public-read",
+            "public-read-write",
+            "authenticated-read",
+            "aws-exec-read",
+            "bucket-owner-read",
+            "bucket-owner-full-control"
+          ]
+        },
         "endpoint": {
           "type": "string",
           "description": "Endpoint to use for S3 API calls. This is useful for S3-compatible storage services such as MinIO.\n**Note**: if you want to use path-style addressing, i.e., `https://s3.amazonaws.com/BUCKET/KEY`, `use_path_style` should be enabled, too.",
