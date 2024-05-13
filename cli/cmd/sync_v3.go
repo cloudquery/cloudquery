@@ -376,6 +376,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	if err := persistSummary(summaryLocation, syncSummaries); err != nil {
 		log.Warn().Err(err).Msg("Failed to persist sync summary")
 	}
+	var metadataDataErrors error
 	for _, summary := range syncSummaries {
 		log.Info().Interface("summary", summary).Msg("Sync summary")
 		for i := range destinationsClients {
@@ -387,9 +388,13 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 				continue
 			}
 			if err := sendSummary(writeClients[i], destinationSpecs[i], destinationsClients[i], destinationTransformers[i], &summary, noMigrate); err != nil {
-				return err
+				metadataDataErrors = errors.Join(metadataDataErrors, err)
 			}
 		}
+	}
+	// a single error for one of the destination should not stop all of the other table from being written
+	if metadataDataErrors != nil {
+		return metadataDataErrors
 	}
 
 	for i := range destinationsClients {
