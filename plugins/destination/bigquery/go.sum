@@ -69,8 +69,8 @@ github.com/chenzhuoyu/iasm v0.9.0/go.mod h1:Xjy2NpN3h7aUqeqM+woSuuvxmIe6+DDsiNLI
 github.com/chenzhuoyu/iasm v0.9.1 h1:tUHQJXo3NhBqw6s33wkGn9SP3bvrWLdlVIJ3hQBL7P0=
 github.com/chenzhuoyu/iasm v0.9.1/go.mod h1:Xjy2NpN3h7aUqeqM+woSuuvxmIe6+DDsiNLIrkAmYog=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
-github.com/cloudquery/cloudquery-api-go v1.11.0 h1:o28LS1E8W0AgnCajSe1gTaLvMB6n2OY5a6QwDxGx0xk=
-github.com/cloudquery/cloudquery-api-go v1.11.0/go.mod h1:F4kuaNBAVqsS9ZRHuX+tV2m6+Khoa2Rb9lROGhinGPk=
+github.com/cloudquery/cloudquery-api-go v1.11.1 h1:R7f+Lk16Exx0FAIx+0XuFC35e4UhJXctCxCubPOxitc=
+github.com/cloudquery/cloudquery-api-go v1.11.1/go.mod h1:F4kuaNBAVqsS9ZRHuX+tV2m6+Khoa2Rb9lROGhinGPk=
 github.com/cloudquery/codegen v0.3.16 h1:kZLOuVvEIHuk6QoFlRWQvUr5XRMxzYsDXpsNnF8SJHQ=
 github.com/cloudquery/codegen v0.3.16/go.mod h1:NOLLrXLTKpiJ3z7d11HiS4vIT+HkKaKe+q3USwuq4+E=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66 h1:OZLPSIBYEfvkAUeOeM8CwTgVQy5zhayI99ishCrsFV0=
@@ -79,8 +79,8 @@ github.com/cloudquery/plugin-pb-go v1.19.12 h1:2lDCGdSf1MtIdrNmO7+QEVTlGhqWydpK8
 github.com/cloudquery/plugin-pb-go v1.19.12/go.mod h1:gCQQ29Sd7Ym/tECgFezAf25Sjrsd8NPiDDCWmDMTYIo=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0/go.mod h1:pAX6ojIW99b/Vg4CkhnsGkRIzNaVEceYMR+Bdit73ug=
-github.com/cloudquery/plugin-sdk/v4 v4.41.1 h1:689LKgPOKsiAwBlvjkulSMUX1WHswnrM89cUeKTNtQ4=
-github.com/cloudquery/plugin-sdk/v4 v4.41.1/go.mod h1:GQnazETOvzeWmRfEQgl9gV7USojz+KpEUXV27DUDWWs=
+github.com/cloudquery/plugin-sdk/v4 v4.42.0 h1:SBjGDBuEZFBjz7GGBPXPb/iuiHqB13n7spJXav0IqMQ=
+github.com/cloudquery/plugin-sdk/v4 v4.42.0/go.mod h1:NdMMpHZAsmNPpACaIjjlGZtu7uPdHA364oWmyT2deGI=
 github.com/cncf/udpa/go v0.0.0-20191209042840-269d4d468f6f/go.mod h1:M8M6+tZqaGXZJjfX53e64911xZQV5JYwmTeXPW+k8Sc=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.3/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
