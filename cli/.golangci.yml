@@ -1,10 +1,6 @@
 run:
   tests: true
   timeout: 5m
-  skip-dirs:
-    - bin
-    - docs
-    - internal/pb
 
 linters-settings:
   errcheck:
@@ -93,3 +89,8 @@ linters:
     - unparam
     - unused
 
+issues: 
+  exclude-dirs:
+    - bin
+    - docs
+    - internal/pb
