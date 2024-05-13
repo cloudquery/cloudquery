@@ -8,10 +8,9 @@ import (
     "strings"
     "time"
 
+    "github.com/aws/aws-sdk-go-v2/service/s3/types"
     "github.com/cloudquery/filetypes/v4"
     "github.com/cloudquery/plugin-sdk/v4/configtype"
-
-    "github.com/aws/aws-sdk-go-v2/service/s3/types"
 )
 
 const (
