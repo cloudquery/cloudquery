@@ -95,15 +95,8 @@ export default function Nextra({ Component, pageProps }) {
                 : (window.sa_event.q = [a]);
             })}
       </Script>
-      <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
       {consent && <Analytics />}
       <noscript>
-        {/* eslint-disable @next/next/no-img-element */}
-        <img
-          src="https://queue.simpleanalyticscdn.com/noscript.gif"
-          alt=""
-          referrerPolicy="no-referrer-when-downgrade"
-        />
         {consent && <AnalyticsNoScript />}
       </noscript>
       <CQCookieConsent
