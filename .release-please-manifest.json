@@ -51,7 +51,7 @@
   "plugins/destination/neo4j+FILLER": "0.0.0",
   "plugins/destination/kafka": "4.1.1",
   "plugins/destination/kafka+FILLER": "0.0.0",
-  "plugins/source/hackernews": "3.1.7",
+  "plugins/source/hackernews": "3.1.8",
   "plugins/source/hackernews+FILLER": "0.0.0",
   "scaffold": "3.0.14",
   "scaffold+FILLER": "0.0.0",
