@@ -134,6 +134,7 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 	if t.withSyncTime && !sc.HasField(cqSyncTime) {
 		ts, _ := arrow.TimestampFromTime(t.syncTime, arrow.Microsecond)
 		syncTimeBldr := array.NewTimestampBuilder(memory.DefaultAllocator, &arrow.TimestampType{Unit: arrow.Microsecond, TimeZone: "UTC"})
+		syncTimeBldr.Reserve(nRows)
 		for i := 0; i < nRows; i++ {
 			syncTimeBldr.Append(ts)
 		}
@@ -141,6 +142,7 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 	}
 	if t.withSourceName && !sc.HasField(cqSourceName) {
 		sourceBldr := array.NewStringBuilder(memory.DefaultAllocator)
+		sourceBldr.Reserve(nRows)
 		for i := 0; i < nRows; i++ {
 			sourceBldr.Append(t.sourceName)
 		}
@@ -148,6 +150,7 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 	}
 	if t.withSyncGroupID && !sc.HasField(cqSyncGroupId) {
 		syncGroupIdBldr := array.NewStringBuilder(memory.DefaultAllocator)
+		syncGroupIdBldr.Reserve(nRows)
 		for i := 0; i < nRows; i++ {
 			syncGroupIdBldr.Append(t.syncGroupId)
 		}
