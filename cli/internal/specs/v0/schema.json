@@ -112,6 +112,9 @@
         "sync_group_id": {
           "type": "string"
         },
+        "send_sync_summary": {
+          "type": "boolean"
+        },
         "spec": {
           "oneOf": [
             {
