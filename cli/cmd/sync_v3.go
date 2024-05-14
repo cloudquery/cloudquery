@@ -382,14 +382,10 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			continue
 		}
 		// Only send the summary to the destination that matches the current destination
-		if destinationSpecs[i].Name != summary.DestinationName || destinationSpecs[i].Version != summary.DestinationVersion || destinationSpecs[i].Path != summary.DestinationPath {
-			continue
-		}
 		if err := sendSummary(writeClients[i], destinationSpecs[i], destinationsClients[i], destinationTransformers[i], &summary, noMigrate); err != nil {
 			metadataDataErrors = errors.Join(metadataDataErrors, err)
 		}
 	}
-	// a single error for one of the destination should not stop all of the other table from being written
 	if metadataDataErrors != nil {
 		return metadataDataErrors
 	}
