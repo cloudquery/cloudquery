@@ -353,6 +353,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	totals := sourceClient.Metrics()
 	sourceWarnings := totals.Warnings
 	sourceErrors := totals.Errors
+	var metadataDataErrors error
 	syncSummaries := make([]syncSummary, len(destinationsClients))
 	for i := range destinationsClients {
 		m := destinationsClients[i].Metrics()
@@ -372,12 +373,11 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			DestinationVersion:  destinationSpecs[i].Version,
 			DestinationPath:     destinationSpecs[i].Path,
 		}
-	}
-	if err := persistSummary(summaryLocation, syncSummaries); err != nil {
-		log.Warn().Err(err).Msg("Failed to persist sync summary")
-	}
-	var metadataDataErrors error
-	for _, summary := range syncSummaries {
+
+		if err := persistSummary(summaryLocation, syncSummaries[i]); err != nil {
+			log.Warn().Err(err).Msg("Failed to persist sync summary")
+		}
+		summary := syncSummaries[i]
 		log.Info().Interface("summary", summary).Msg("Sync summary")
 		for i := range destinationsClients {
 			if !destinationSpecs[i].SyncSummary {
