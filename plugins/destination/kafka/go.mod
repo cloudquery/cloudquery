@@ -9,7 +9,7 @@ require (
 	github.com/apache/arrow/go/v16 v16.0.0
 	github.com/cloudquery/codegen v0.3.16
 	github.com/cloudquery/filetypes/v4 v4.2.19
-	github.com/cloudquery/plugin-sdk/v4 v4.40.2
+	github.com/cloudquery/plugin-sdk/v4 v4.42.0
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.32.0
 	github.com/wk8/go-ordered-map/v2 v2.1.8
@@ -34,8 +34,8 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.9.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.19.11 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.11.1 // indirect
+	github.com/cloudquery/plugin-pb-go v1.19.12 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect
@@ -140,7 +140,7 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20240228224816-df926f6c8641 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240401170217-c3f982113cda // indirect
 	google.golang.org/grpc v1.63.2 // indirect
-	google.golang.org/protobuf v1.34.0 // indirect
+	google.golang.org/protobuf v1.34.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
