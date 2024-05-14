@@ -39,7 +39,7 @@ const getCanonicalUrl = (path: string) => {
 const Analytics = () => (
   <>
     <Script
-      src={`https://www.googletagmanager.com/gtag/js?id=AW-11077035012`}
+      src={`https://www.googletagmanager.com/gtag/js?id=G-B2GFFZDNSG`}
     />
     <Script id="google-tag-manager">
       {`window.dataLayer = window.dataLayer || [];
@@ -49,7 +49,7 @@ const Analytics = () => (
           gtag('consent', 'default', {
             'ad_storage': 'granted'
           });
-          gtag('config', 'AW-11077035012');`}
+          gtag('config', 'G-B2GFFZDNSG');`}
     </Script>
     <Script>{`window.faitracker=window.faitracker||function(){this.q=[];var t=new CustomEvent("FAITRACKER_QUEUED_EVENT");return this.init=function(t,e,a){this.TOKEN=t,this.INIT_PARAMS=e,this.INIT_CALLBACK=a,window.dispatchEvent(new CustomEvent("FAITRACKER_INIT_EVENT"))},this.call=function(){var e={k:"",a:[]};if(arguments&&arguments.length>=1){for(var a=1;a<arguments.length;a++)e.a.push(arguments[a]);e.k=arguments[0]}this.q.push(e),window.dispatchEvent(t)},this.message=function(){window.addEventListener("message",function(t){"faitracker"===t.data.origin&&this.call("message",t.data.type,t.data.message)})},this.message(),this.init("gm3eyhbta0tee4d4mmzghwgpl4wa0vsf",{host:"https://analytics.cloudquery.io"}),this}(),function(){var t=document.createElement("script");t.type="text/javascript",t.src="https://asset.dyh8ken8pc.com/dyh8ken8pc.js",t.async=!0,(d=document.getElementsByTagName("script")[0]).parentNode.insertBefore(t,d)}();`}</Script>
 
@@ -57,7 +57,7 @@ const Analytics = () => (
       new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
       j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-MNQGLJBB');`}</Script>
+    })(window,document,'script','dataLayer','GTM-MW35BS6');`}</Script>
     <Script
       type="text/javascript"
       id="hs-script-loader"
@@ -70,7 +70,7 @@ const Analytics = () => (
 
 const AnalyticsNoScript = () => (
     <>
-        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MNQGLJBB"
+        <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MW35BS6"
                 height="0" width="0" style={{'display': 'none', 'visibility': 'hidden'}}></iframe>
     </>
 )
