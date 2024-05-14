@@ -34,7 +34,7 @@ type syncSummary struct {
 	SyncTime            time.Time `json:"sync_time"`
 }
 
-func persistSummary(filename string, summaries []syncSummary) error {
+func persistSummary(filename string, summary syncSummary) error {
 	// if filename is not specified then we don't need to persist the summary and can return
 	if filename == "" {
 		return nil
@@ -43,16 +43,14 @@ func persistSummary(filename string, summaries []syncSummary) error {
 	if err != nil {
 		return fmt.Errorf("failed to validate summary file path: %w", err)
 	}
-	for _, summary := range summaries {
-		dataBytes, err := json.Marshal(summary)
-		if err != nil {
-			return err
-		}
-		dataBytes = append(dataBytes, []byte("\n")...)
-		err = appendToFile(filename, dataBytes)
-		if err != nil {
-			return fmt.Errorf("failed to append summary to file: %w", err)
-		}
+	dataBytes, err := json.Marshal(summary)
+	if err != nil {
+		return err
+	}
+	dataBytes = append(dataBytes, []byte("\n")...)
+	err = appendToFile(filename, dataBytes)
+	if err != nil {
+		return fmt.Errorf("failed to append summary to file: %w", err)
 	}
 	return nil
 }
