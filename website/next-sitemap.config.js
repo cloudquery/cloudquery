@@ -1,5 +1,3 @@
-const { getIntegrationsPaths } = require("./utils/integrations");
-
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
   siteUrl: "https://docs.cloudquery.io",
@@ -28,12 +26,5 @@ module.exports = {
         ],
       },
     ],
-  },
-  additionalPaths: async () => {
-    const integrationsData = await getIntegrationsPaths();
-    const integrationsPaths = integrationsData.map(({ params: { slug } }) => {
-      return { loc: `/integrations/${slug.join("/")}`};
-    })
-    return integrationsPaths;
   },
 };
