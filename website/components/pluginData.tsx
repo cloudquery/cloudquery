@@ -86,7 +86,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/firestore-dark.svg",
     id: "firestore",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "databases",
   },
   {
@@ -304,7 +304,7 @@ export const ALL_PLUGINS: Plugin[] = [
     logoDark: "/images/logos/plugins/notion.svg",
     id: "notion",
     kind: "source",
-    availability: "free",
+    availability: "premium",
     category: "other",
   },
   {
