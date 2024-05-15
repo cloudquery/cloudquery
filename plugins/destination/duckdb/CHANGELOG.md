@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.6.3...plugins-destination-duckdb-v5.7.0) (2024-05-15)
+
+
+### Features
+
+* Upgrade DuckDB library to v1.6.4 (DuckDB driver v0.10.2) ([#17961](https://github.com/cloudquery/cloudquery/issues/17961)) ([061ea87](https://github.com/cloudquery/cloudquery/commit/061ea877e2ff897595a157485ffa1c4505d1a667))
+
 ## [5.6.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.6.2...plugins-destination-duckdb-v5.6.3) (2024-05-14)
 
 
