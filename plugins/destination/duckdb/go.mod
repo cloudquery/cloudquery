@@ -8,7 +8,7 @@ require (
 	github.com/cloudquery/codegen v0.3.16
 	github.com/cloudquery/plugin-sdk/v4 v4.42.0
 	github.com/google/uuid v1.6.0
-	github.com/marcboeker/go-duckdb v1.5.6
+	github.com/marcboeker/go-duckdb v1.6.4
 	github.com/rs/zerolog v1.32.0
 )
 
@@ -22,6 +22,7 @@ require (
 	github.com/adrg/xdg v0.4.0 // indirect
 	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
+	github.com/apache/arrow/go/v14 v14.0.2 // indirect
 	github.com/apache/thrift v0.19.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
