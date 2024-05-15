@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.0.1...plugins-destination-s3-v7.1.0) (2024-05-15)
+
+
+### Features
+
+* Add support for ACL configuration in S3 Destination ([#17953](https://github.com/cloudquery/cloudquery/issues/17953)) ([5dbf8da](https://github.com/cloudquery/cloudquery/commit/5dbf8da5e2e56f865f6e28a283aa5de8a8352861))
+
 ## [7.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.0.0...plugins-destination-s3-v7.0.1) (2024-05-14)
 
 
