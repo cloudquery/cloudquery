@@ -373,6 +373,10 @@
           "description": "Disable TLS verification for requests to your S3 endpoint.\n\nThis option is intended to be used when using a custom endpoint using the `endpoint` option.",
           "default": false
         },
+        "acl": {
+          "type": "string",
+          "default": ""
+        },
         "write_empty_objects_for_empty_tables": {
           "type": "boolean",
           "description": "If set to `true`, the plugin will create empty parquet files with the table headers and data types for those tables that have no data.",

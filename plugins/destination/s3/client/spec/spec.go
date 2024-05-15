@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"path"
 	"path/filepath"
+	"slices"
 	"strings"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
-
-	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 )
 
 const (
@@ -84,6 +84,8 @@ type Spec struct {
 	//
 	// This option is intended to be used when using a custom endpoint using the `endpoint` option.
 	EndpointSkipTLSVerify bool `json:"endpoint_skip_tls_verify,omitempty" jsonschema:"default=false"`
+
+	ACL string `json:"acl,omitempty" jsonschema:"default="`
 
 	// If set to `true`, the plugin will create empty parquet files with the table headers and data types for those tables that have no data.
 	GenerateEmptyObjects bool `json:"write_empty_objects_for_empty_tables,omitempty" jsonschema:"default=false"`
@@ -184,6 +186,15 @@ func (s *Spec) Validate() error {
 
 	if !strings.Contains(s.Path, varUUID) && s.batchingEnabled() {
 		return fmt.Errorf("`path` should contain %s when using a non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`", varUUID)
+	}
+
+	if s.ACL != "" {
+		acl := types.ObjectCannedACL(s.ACL)
+		cannedACLS := acl.Values()
+
+		if !slices.Contains(cannedACLS, acl) {
+			return fmt.Errorf("invalid `acl` value: %s", s.ACL)
+		}
 	}
 
 	// required for s.FileSpec.Validate call

@@ -53,7 +53,7 @@ func TestSpec_Validate(t *testing.T) {
 		Give    Spec
 		WantErr bool
 	}{
-		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0}, WantErr: false},
+		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, ACL: "bucket-owner-full-control"}, WantErr: false},
 		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}, Region: "region", BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0}, WantErr: true}, // no bucket
 		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: false, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0}, WantErr: false},
 		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "parquet"}, NoRotate: false, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, GenerateEmptyObjects: true}, WantErr: false},
@@ -64,6 +64,7 @@ func TestSpec_Validate(t *testing.T) {
 		{Give: Spec{Path: "/test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0}, WantErr: true},                             // begins with a slash
 		{Give: Spec{Path: "//test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0}, WantErr: true},                            // duplicate slashes
 		{Give: Spec{Path: "test//path", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0}, WantErr: true},                                                                // duplicate slashes
+		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, ACL: "invalid"}, WantErr: true},
 	}
 	for i, tc := range cases {
 		tc := tc

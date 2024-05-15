@@ -12,6 +12,7 @@ import (
 	"github.com/apache/arrow/go/v16/arrow/memory"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	awstypes "github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -28,6 +29,10 @@ func (c *Client) createObject(ctx context.Context, table *schema.Table, objKey s
 			Key:         aws.String(objKey),
 			Body:        r,
 			ContentType: aws.String(c.spec.GetContentType()),
+		}
+
+		if c.spec.ACL != "" {
+			params.ACL = awstypes.ObjectCannedACL(c.spec.ACL)
 		}
 
 		sseConfiguration := c.spec.ServerSideEncryptionConfiguration
