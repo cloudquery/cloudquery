@@ -116,6 +116,19 @@ This is useful when splitting a sync into [multiple parallel jobs](https://docs.
 The value supports the following placeholders: `{{YEAR}}, {{MONTH}}, {{DAY}}, {{HOUR}}, {{MINUTE}}` which are based on the sync time.
 A common use case is to use set `sync_group_id: "{{YEAR}}-{{MONTH}}-{{DAY}}"` to group syncs by day, in order to provide an historical view of the data, partitioned by day.
 
+
+
+<!-- vale off -->
+
+### send_sync_summary (preview)
+
+<!-- vale on -->
+
+(`bool`, optional)
+
+When set to `true`, CloudQuery will send a summary of the sync to the destination plugin. The summary includes the number of resources synced, number of errors and details about the plugins (both source and destination). This information will be available in the destination as a separate table named `cloudquery_sync_summaries`.
+
+
 ### spec
 
 (`object`, optional)
