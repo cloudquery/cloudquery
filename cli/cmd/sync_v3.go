@@ -345,11 +345,50 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			return fmt.Errorf("unknown message type: %T", m)
 		}
 	}
+
 	err = syncClient.CloseSend()
 	if err != nil {
 		return err
 	}
 	totals := sourceClient.Metrics()
+	sourceWarnings := totals.Warnings
+	sourceErrors := totals.Errors
+	var metadataDataErrors error
+	for i := range destinationsClients {
+		m := destinationsClients[i].Metrics()
+		summary := syncSummary{
+			Resources:           uint64(totalResources),
+			SourceErrors:        sourceErrors,
+			SourceWarnings:      sourceWarnings,
+			SyncID:              uid,
+			SyncTime:            syncTime,
+			SourceName:          sourceSpec.Name,
+			SourceVersion:       sourceSpec.Version,
+			SourcePath:          sourceSpec.Path,
+			CLIVersion:          Version,
+			DestinationErrors:   m.Errors,
+			DestinationWarnings: m.Warnings,
+			DestinationName:     destinationSpecs[i].Name,
+			DestinationVersion:  destinationSpecs[i].Version,
+			DestinationPath:     destinationSpecs[i].Path,
+		}
+
+		if err := persistSummary(summaryLocation, summary); err != nil {
+			log.Warn().Err(err).Msg("Failed to persist sync summary")
+		}
+
+		log.Info().Interface("summary", summary).Msg("Sync summary")
+		if !destinationSpecs[i].SyncSummary {
+			continue
+		}
+		// Only send the summary to the destination that matches the current destination
+		if err := sendSummary(writeClients[i], destinationSpecs[i], destinationsClients[i], destinationTransformers[i], &summary, noMigrate); err != nil {
+			metadataDataErrors = errors.Join(metadataDataErrors, err)
+		}
+	}
+	if metadataDataErrors != nil {
+		return metadataDataErrors
+	}
 
 	for i := range destinationsClients {
 		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
@@ -363,34 +402,6 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		if _, err := destinationsPbClients[i].Close(ctx, &plugin.Close_Request{}); err != nil {
 			return err
 		}
-	}
-
-	sourceWarnings := totals.Warnings
-	sourceErrors := totals.Errors
-	syncSummaries := make([]syncSummary, len(destinationsClients))
-	for i := range destinationsClients {
-		m := destinationsClients[i].Metrics()
-		totals.Warnings += m.Warnings
-		totals.Errors += m.Errors
-		syncSummaries[i] = syncSummary{
-			Resources:           uint64(totalResources),
-			SourceErrors:        sourceErrors,
-			SourceWarnings:      sourceWarnings,
-			SyncID:              uid,
-			SourceName:          sourceSpec.Name,
-			SourceVersion:       sourceSpec.Version,
-			SourcePath:          sourceSpec.Path,
-			CliVersion:          Version,
-			DestinationErrors:   m.Errors,
-			DestinationWarnings: m.Warnings,
-			DestinationName:     destinationSpecs[i].Name,
-			DestinationVersion:  destinationSpecs[i].Version,
-			DestinationPath:     destinationSpecs[i].Path,
-		}
-	}
-	err = persistSummary(summaryLocation, syncSummaries)
-	if err != nil {
-		log.Warn().Err(err).Msg("Failed to persist sync summary")
 	}
 
 	err = bar.Finish()

@@ -101,6 +101,10 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 				return handleSendError(err, writeClients[i], "migrate")
 			}
 		}
+
+		if err := migrateSummaryTable(writeClients[i], destinationTransformers[i], destinationSpecs[i]); err != nil {
+			return fmt.Errorf("failed to migrate sync summary table: %w", err)
+		}
 		if _, err := writeClients[i].CloseAndRecv(); err != nil {
 			return err
 		}
