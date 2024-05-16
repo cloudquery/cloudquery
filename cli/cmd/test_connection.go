@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -19,6 +20,8 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
+	"google.golang.org/grpc/codes"
+	grpcstatus "google.golang.org/grpc/status"
 )
 
 const (
@@ -172,6 +175,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	}()
 
 	var initErrors []error
+	var testConnectionResults []testConnectionResult
 	for i, client := range sourceClients {
 		pluginClient := plugin.NewPluginClient(client.Conn)
 		log.Info().Str("source", sources[i].VersionString()).Msg("Initializing source")
@@ -181,6 +185,11 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		} else {
 			log.Info().Str("source", sources[i].VersionString()).Msg("Initialized source")
 		}
+		testResult, err := testPluginConnection(ctx, pluginClient, sources[i].Spec)
+		if err != nil {
+			return fmt.Errorf("failed to test source %v: %w", sources[i].VersionString(), err)
+		}
+		testConnectionResults = append(testConnectionResults, *testResult)
 	}
 	for i, client := range destinationClients {
 		pluginClient := plugin.NewPluginClient(client.Conn)
@@ -191,6 +200,11 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		} else {
 			log.Info().Str("destination", destinations[i].VersionString()).Msg("Initialized destination")
 		}
+		testResult, err := testPluginConnection(ctx, pluginClient, destinations[i].Spec)
+		if err != nil {
+			return fmt.Errorf("failed to test destination %v: %w", destinations[i].VersionString(), err)
+		}
+		testConnectionResults = append(testConnectionResults, *testResult)
 	}
 
 	allErrors := errors.Join(initErrors...)
@@ -200,5 +214,49 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	}
 	updateSyncTestConnectionStatus(ctx, log.Logger, status)
 
+	log.Info().Any("testresults", testConnectionResults).Msg("Test connection completed")
+
 	return allErrors
+}
+
+type testConnectionResult struct {
+	Success            bool
+	FailureCode        string
+	FailureDescription string
+}
+
+func testPluginConnection(ctx context.Context, pclient plugin.PluginClient, spec map[string]any) (*testConnectionResult, error) {
+	var (
+		specBytes []byte
+		err       error
+	)
+
+	if len(spec) == 0 { // All nil or empty values to be marshaled as null
+		specBytes = []byte(`null`)
+	} else {
+		specBytes, err = json.Marshal(spec)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	in := &plugin.TestConnection_Request{
+		Spec: specBytes,
+	}
+
+	resp, err := pclient.TestConnection(ctx, in)
+	if err != nil {
+		if gRPCErr, ok := grpcstatus.FromError(err); ok {
+			if gRPCErr.Code() == codes.Unimplemented {
+				return &testConnectionResult{}, nil
+			}
+		}
+		return nil, err
+	}
+
+	return &testConnectionResult{
+		Success:            resp.Success,
+		FailureCode:        resp.FailureCode,
+		FailureDescription: resp.FailureDescription,
+	}, nil
 }
