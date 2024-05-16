@@ -4,7 +4,6 @@ on:
     tags:
       - "plugins-*-*-v*.*.*"
       - "!plugins-destination-duckdb-v*.*.*"
-      - "!plugins-destination-motherduck-v*.*.*"
       - "!plugins-destination-sqlite-v*.*.*"
       - "!plugins-destination-snowflake-v*.*.*"
       - "!plugins-source-test-v*.*.*"
