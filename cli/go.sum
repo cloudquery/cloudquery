@@ -82,8 +82,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/deepmap/oapi-codegen v1.16.2 h1:xGHx0dNqYfy9gE8a7AVgVM8Sd5oF9SEgePzP+UPAUXI=
 github.com/deepmap/oapi-codegen v1.16.2/go.mod h1:rdYoEA2GE+riuZ91DvpmBX9hJbQpuY9wchXpfQ3n+ho=
-github.com/disq/plugin-sdk/v4 v4.0.0-20240516105137-5410a74c47c5 h1:gX8YOslVFebwm8Zj8HKAdsNBW1HMppYrU7hx17r19eY=
-github.com/disq/plugin-sdk/v4 v4.0.0-20240516105137-5410a74c47c5/go.mod h1:DCDRl1PqITfbec+B42/B/Ia0OviUKpRJsx2NfLeAS9E=
+github.com/disq/plugin-sdk/v4 v4.0.0-20240516151118-4958828f53c9 h1:G7yM4U2Ued1cGwNS9RylFpHUD8LkquKCzWWOszxvEI4=
+github.com/disq/plugin-sdk/v4 v4.0.0-20240516151118-4958828f53c9/go.mod h1:DCDRl1PqITfbec+B42/B/Ia0OviUKpRJsx2NfLeAS9E=
 github.com/distribution/reference v0.6.0 h1:0IXCQ5g4/QMHHkarYzh5l+u8T3t73zM5QvfrDyIgxBk=
 github.com/distribution/reference v0.6.0/go.mod h1:BbU0aIcezP1/5jX/8MP0YiH4SdvB5Y4f/wlDRiLyi3E=
 github.com/docker/distribution v2.8.3+incompatible h1:AtKxIZ36LoNK51+Z6RpzLpddBirtxJnzDrHLEKxTAYk=

@@ -15,6 +15,7 @@ import (
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
+	sdkPlugin "github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -177,14 +178,8 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	var testConnectionResults []testConnectionResult
 	for i, client := range sourceClients {
 		pluginClient := plugin.NewPluginClient(client.Conn)
-		log.Info().Str("source", sources[i].VersionString()).Msg("Initializing source")
-		err := initPlugin(ctx, pluginClient, sources[i].Spec, false, invocationUUID.String())
-		if err != nil {
-			initErrors = append(initErrors, fmt.Errorf("failed to init source %v: %w", sources[i].VersionString(), err))
-		} else {
-			log.Info().Str("source", sources[i].VersionString()).Msg("Initialized source")
-		}
-		testResult, err := testPluginConnection(ctx, pluginClient, sources[i].Spec)
+		log.Info().Str("source", sources[i].VersionString()).Msg("Testing source")
+		testResult, err := testPluginConnection(ctx, pluginClient, sources[i].Spec, invocationUUID.String())
 		if err != nil {
 			return fmt.Errorf("failed to test source %v: %w", sources[i].VersionString(), err)
 		}
@@ -192,14 +187,8 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	}
 	for i, client := range destinationClients {
 		pluginClient := plugin.NewPluginClient(client.Conn)
-		log.Info().Str("destination", destinations[i].VersionString()).Msg("Initializing destination")
-		err := initPlugin(ctx, pluginClient, destinations[i].Spec, false, invocationUUID.String())
-		if err != nil {
-			initErrors = append(initErrors, fmt.Errorf("failed to init destination %v: %w", destinations[i].VersionString(), err))
-		} else {
-			log.Info().Str("destination", destinations[i].VersionString()).Msg("Initialized destination")
-		}
-		testResult, err := testPluginConnection(ctx, pluginClient, destinations[i].Spec)
+		log.Info().Str("destination", destinations[i].VersionString()).Msg("Testing destination")
+		testResult, err := testPluginConnection(ctx, pluginClient, destinations[i].Spec, invocationUUID.String())
 		if err != nil {
 			return fmt.Errorf("failed to test destination %v: %w", destinations[i].VersionString(), err)
 		}
@@ -220,11 +209,11 @@ func testConnection(cmd *cobra.Command, args []string) error {
 
 type testConnectionResult struct {
 	Success            bool
-	FailureCode        string
-	FailureDescription string
+	FailureCode        string `json:",omitempty"`
+	FailureDescription string `json:",omitempty"`
 }
 
-func testPluginConnection(ctx context.Context, pclient plugin.PluginClient, spec map[string]any) (*testConnectionResult, error) {
+func testPluginConnection(ctx context.Context, client plugin.PluginClient, spec map[string]any, invocationID string) (*testConnectionResult, error) {
 	specBytes, err := marshalSpec(spec)
 	if err != nil {
 		return nil, err
@@ -234,11 +223,22 @@ func testPluginConnection(ctx context.Context, pclient plugin.PluginClient, spec
 		Spec: specBytes,
 	}
 
-	resp, err := pclient.TestConnection(ctx, in)
+	resp, err := client.TestConnection(ctx, in)
 	if err != nil {
 		if gRPCErr, ok := grpcstatus.FromError(err); ok {
 			if gRPCErr.Code() == codes.Unimplemented {
-				return &testConnectionResult{}, nil
+				err := initPlugin(ctx, client, spec, false, invocationUUID.String())
+				if err != nil {
+					return &testConnectionResult{
+						Success:            false,
+						FailureCode:        string(sdkPlugin.TestConnFailureCodeUnknown),
+						FailureDescription: err.Error(),
+					}, nil
+				}
+
+				return &testConnectionResult{
+					Success: true,
+				}, nil
 			}
 		}
 		return nil, err
