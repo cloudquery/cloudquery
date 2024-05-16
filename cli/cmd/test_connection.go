@@ -174,14 +174,15 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		}
 	}()
 
-	var initErrors []error
-	var testConnectionResults []testConnectionResult
+	var allErrors error
+	testConnectionResults := make([]testConnectionResult, 0, len(sourceClients)+len(destinationClients))
 	for i, client := range sourceClients {
 		pluginClient := plugin.NewPluginClient(client.Conn)
 		log.Info().Str("source", sources[i].VersionString()).Msg("Testing source")
 		testResult, err := testPluginConnection(ctx, pluginClient, sources[i].Spec, invocationUUID.String())
 		if err != nil {
-			return fmt.Errorf("failed to test source %v: %w", sources[i].VersionString(), err)
+			allErrors = errors.Join(allErrors, fmt.Errorf("failed to test source %v: %w", sources[i].VersionString(), err))
+			continue
 		}
 		testResult.pluginRef = sources[i].VersionString()
 		testConnectionResults = append(testConnectionResults, *testResult)
@@ -191,13 +192,13 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		log.Info().Str("destination", destinations[i].VersionString()).Msg("Testing destination")
 		testResult, err := testPluginConnection(ctx, pluginClient, destinations[i].Spec, invocationUUID.String())
 		if err != nil {
-			return fmt.Errorf("failed to test destination %v: %w", destinations[i].VersionString(), err)
+			allErrors = errors.Join(allErrors, fmt.Errorf("failed to test destination %v: %w", destinations[i].VersionString(), err))
+			continue
 		}
 		testResult.pluginRef = destinations[i].VersionString()
 		testConnectionResults = append(testConnectionResults, *testResult)
 	}
 
-	allErrors := errors.Join(initErrors...)
 	status := cloudquery_api.SyncTestConnectionStatusCompleted
 	if allErrors != nil {
 		status = cloudquery_api.SyncTestConnectionStatusFailed
