@@ -26,7 +26,7 @@
     },
     {
       matchPackageNames: ["github.com/marcboeker/go-duckdb"],
-      matchFileNames: ["plugins/destination/motherduck/**", "plugins/destination/duckdb/**"],
+      matchFileNames: ["plugins/destination/duckdb/**"],
       enabled: false,
     },
   ],

@@ -40,9 +40,6 @@
     "plugins/destination/mongodb": {
       "component": "plugins-destination-mongodb"
     },
-    "plugins/destination/motherduck": {
-      "component": "plugins-destination-motherduck"
-    },
     "plugins/destination/mssql": {
       "component": "plugins-destination-mssql"
     },
