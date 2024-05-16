@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"errors"
 	"os"
 	"path"
 	"runtime"
@@ -40,11 +39,8 @@ func TestTestConnection(t *testing.T) {
 			err := cmd.Execute()
 			if len(tc.errors) > 0 {
 				var errs *testConnectionFailureErrors
-				if errors.As(err, &errs) {
-					AssertErrorsContainAny(t, errs.Unwrap(), tc.errors)
-				} else {
-					t.Errorf("Expected error to be of type testConnectionFailureErrors, got %v", err)
-				}
+				require.ErrorAs(t, err, &errs)
+				assertErrorsContainAny(t, errs.Unwrap(), tc.errors)
 			} else {
 				assert.NoError(t, err)
 			}
@@ -58,9 +54,9 @@ func TestTestConnection(t *testing.T) {
 	}
 }
 
-// ErrorsContainAny checks if any error in a slice contains at least one of the substrings.
-func ErrorsContainAny(errors []error, substrings []string) bool {
-	for _, err := range errors {
+// errorsContainAny checks if any error in a slice contains at least one of the substrings.
+func errorsContainAny(errs []error, substrings []string) bool {
+	for _, err := range errs {
 		if err != nil {
 			errMsg := err.Error()
 			for _, substr := range substrings {
@@ -73,9 +69,9 @@ func ErrorsContainAny(errors []error, substrings []string) bool {
 	return false
 }
 
-// AssertErrorsContainAny asserts that at least one error message in the slice contains at least one of the substrings.
-func AssertErrorsContainAny(t *testing.T, errors []error, substrings []string) {
-	if !ErrorsContainAny(errors, substrings) {
-		t.Errorf("Expected at least one error in %v to contain at least one of %v", errors, substrings)
+// assertErrorsContainAny asserts that at least one error message in the slice contains at least one of the substrings.
+func assertErrorsContainAny(t *testing.T, errs []error, substrings []string) {
+	if !errorsContainAny(errs, substrings) {
+		t.Errorf("Expected at least one error in %v to contain at least one of %v", errs, substrings)
 	}
 }

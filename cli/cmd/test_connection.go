@@ -241,7 +241,8 @@ type testConnectionFailureErrors struct {
 	errs []error
 }
 
-func (e *testConnectionFailureErrors) Error() string {
+func (*testConnectionFailureErrors) Error() string {
+	// The errs are already shown in the console, so we don't need to show them again here
 	return "at least one test connection failed"
 }
 
