@@ -183,6 +183,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return fmt.Errorf("failed to test source %v: %w", sources[i].VersionString(), err)
 		}
+		testResult.pluginRef = sources[i].VersionString()
 		testConnectionResults = append(testConnectionResults, *testResult)
 	}
 	for i, client := range destinationClients {
@@ -192,6 +193,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		if err != nil {
 			return fmt.Errorf("failed to test destination %v: %w", destinations[i].VersionString(), err)
 		}
+		testResult.pluginRef = destinations[i].VersionString()
 		testConnectionResults = append(testConnectionResults, *testResult)
 	}
 
@@ -204,10 +206,36 @@ func testConnection(cmd *cobra.Command, args []string) error {
 
 	log.Info().Any("testresults", testConnectionResults).Msg("Test connection completed")
 
+	maxLength := 0
+	for _, testResult := range testConnectionResults {
+		if len(testResult.pluginRef) > maxLength {
+			maxLength = len(testResult.pluginRef)
+		}
+	}
+
+	hasFailures := false
+	for i, testResult := range testConnectionResults {
+		if i == 0 {
+			cmd.Println("Test Connection Results")
+		}
+		cmd.Print("  ", testResult.pluginRef, strings.Repeat(" ", maxLength-len(testResult.pluginRef)+1))
+		if testResult.Success {
+			cmd.Println("Success")
+			continue
+		}
+		cmd.Println("Failure:", testResult.FailureCode, "\t", testResult.FailureDescription)
+		hasFailures = true
+	}
+
+	if hasFailures {
+		allErrors = errors.Join(allErrors, errors.New("at least one test connection failed"))
+	}
+
 	return allErrors
 }
 
 type testConnectionResult struct {
+	pluginRef          string
 	Success            bool
 	FailureCode        string `json:",omitempty"`
 	FailureDescription string `json:",omitempty"`
