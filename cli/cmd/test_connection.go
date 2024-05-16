@@ -25,8 +25,8 @@ import (
 )
 
 const (
-	testConnectionShort   = "Test plugin connections to sources and destinations"
-	testConnectionExample = `# Test plugin connections to sources and destinations
+	testConnectionShort   = "Test plugin connections to sources and/or destinations"
+	testConnectionExample = `# Test plugin connections to sources and/or destinations
 cloudquery test-connection ./directory
 # Test plugin connections from directories and files
 cloudquery test-connection ./directory ./aws.yml ./pg.yml
@@ -103,7 +103,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
 	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
-	specReader, err := specs.NewSpecReader(args)
+	specReader, err := specs.NewTestConnectionSpecReader(args)
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}

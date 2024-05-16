@@ -3,11 +3,11 @@ title: "test-connection"
 ---
 ## cloudquery test-connection
 
-Test plugin connections to sources and destinations
+Test plugin connections to sources and/or destinations
 
 ### Synopsis
 
-Test plugin connections to sources and destinations
+Test plugin connections to sources and/or destinations
 
 ```
 cloudquery test-connection [files or directories] [flags]
@@ -16,7 +16,7 @@ cloudquery test-connection [files or directories] [flags]
 ### Examples
 
 ```
-# Test plugin connections to sources and destinations
+# Test plugin connections to sources and/or destinations
 cloudquery test-connection ./directory
 # Test plugin connections from directories and files
 cloudquery test-connection ./directory ./aws.yml ./pg.yml
