@@ -216,7 +216,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	hasFailures := false
+	connFailures := make([]error, 0, len(testConnectionResults))
 	for i, testResult := range testConnectionResults {
 		if i == 0 {
 			cmd.Println("Test Connection Results")
@@ -227,14 +227,26 @@ func testConnection(cmd *cobra.Command, args []string) error {
 			continue
 		}
 		cmd.Println("Failure:", testResult.FailureCode, "\t", testResult.FailureDescription)
-		hasFailures = true
+		connFailures = append(connFailures, fmt.Errorf("test connection failed for %s %s: %s: %s", testResult.pluginKind, testResult.pluginRef, testResult.FailureCode, testResult.FailureDescription))
 	}
 
-	if hasFailures {
-		allErrors = errors.Join(allErrors, errors.New("at least one test connection failed"))
+	if len(connFailures) > 0 {
+		allErrors = errors.Join(allErrors, &testConnectionFailureErrors{errs: connFailures})
 	}
 
 	return allErrors
+}
+
+type testConnectionFailureErrors struct {
+	errs []error
+}
+
+func (e *testConnectionFailureErrors) Error() string {
+	return "at least one test connection failed"
+}
+
+func (e *testConnectionFailureErrors) Unwrap() []error {
+	return e.errs
 }
 
 type testConnectionResult struct {
