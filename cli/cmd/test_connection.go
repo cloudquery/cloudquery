@@ -185,6 +185,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 			continue
 		}
 		testResult.pluginRef = sources[i].VersionString()
+		testResult.pluginKind = "source"
 		testConnectionResults = append(testConnectionResults, *testResult)
 	}
 	for i, client := range destinationClients {
@@ -196,6 +197,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 			continue
 		}
 		testResult.pluginRef = destinations[i].VersionString()
+		testResult.pluginKind = "destination"
 		testConnectionResults = append(testConnectionResults, *testResult)
 	}
 
@@ -219,7 +221,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		if i == 0 {
 			cmd.Println("Test Connection Results")
 		}
-		cmd.Print("  ", testResult.pluginRef, strings.Repeat(" ", maxLength-len(testResult.pluginRef)+1))
+		cmd.Printf("%12s %s %s", testResult.pluginKind, testResult.pluginRef, strings.Repeat(" ", maxLength-len(testResult.pluginRef)+1))
 		if testResult.Success {
 			cmd.Println("Success")
 			continue
@@ -237,6 +239,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 
 type testConnectionResult struct {
 	pluginRef          string
+	pluginKind         string
 	Success            bool
 	FailureCode        string `json:",omitempty"`
 	FailureDescription string `json:",omitempty"`
