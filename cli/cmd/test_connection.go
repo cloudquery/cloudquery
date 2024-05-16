@@ -221,7 +221,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		if i == 0 {
 			cmd.Println("Test Connection Results")
 		}
-		cmd.Printf("%12s %s %s", testResult.pluginKind, testResult.pluginRef, strings.Repeat(" ", maxLength-len(testResult.pluginRef)+1))
+		cmd.Printf("%-12s %s %s", testResult.pluginKind, testResult.pluginRef, strings.Repeat(" ", maxLength-len(testResult.pluginRef)+1))
 		if testResult.Success {
 			cmd.Println("Success")
 			continue
