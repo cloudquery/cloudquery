@@ -179,7 +179,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	for i, client := range sourceClients {
 		pluginClient := plugin.NewPluginClient(client.Conn)
 		log.Info().Str("source", sources[i].VersionString()).Msg("Testing source")
-		testResult, err := testPluginConnection(ctx, pluginClient, sources[i].Spec, invocationUUID.String())
+		testResult, err := testPluginConnection(ctx, pluginClient, sources[i].Spec)
 		if err != nil {
 			allErrors = errors.Join(allErrors, fmt.Errorf("failed to test source %v: %w", sources[i].VersionString(), err))
 			continue
@@ -190,7 +190,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	for i, client := range destinationClients {
 		pluginClient := plugin.NewPluginClient(client.Conn)
 		log.Info().Str("destination", destinations[i].VersionString()).Msg("Testing destination")
-		testResult, err := testPluginConnection(ctx, pluginClient, destinations[i].Spec, invocationUUID.String())
+		testResult, err := testPluginConnection(ctx, pluginClient, destinations[i].Spec)
 		if err != nil {
 			allErrors = errors.Join(allErrors, fmt.Errorf("failed to test destination %v: %w", destinations[i].VersionString(), err))
 			continue
@@ -242,7 +242,7 @@ type testConnectionResult struct {
 	FailureDescription string `json:",omitempty"`
 }
 
-func testPluginConnection(ctx context.Context, client plugin.PluginClient, spec map[string]any, invocationID string) (*testConnectionResult, error) {
+func testPluginConnection(ctx context.Context, client plugin.PluginClient, spec map[string]any) (*testConnectionResult, error) {
 	specBytes, err := marshalSpec(spec)
 	if err != nil {
 		return nil, err
