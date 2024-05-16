@@ -105,18 +105,9 @@ func initPlugin(ctx context.Context, client plugin.PluginClient, spec map[string
 		}
 	}
 
-	var (
-		specBytes []byte
-		err       error
-	)
-
-	if len(spec) == 0 { // All nil or empty values to be marshaled as null
-		specBytes = []byte(`null`)
-	} else {
-		specBytes, err = json.Marshal(spec)
-		if err != nil {
-			return err
-		}
+	specBytes, err := marshalSpec(spec)
+	if err != nil {
+		return err
 	}
 
 	_, err = client.Init(ctx, &plugin.Init_Request{Spec: specBytes, NoConnection: noConnection, InvocationId: syncID})
@@ -184,4 +175,13 @@ func parseJSONSchema(jsonSchema string) (*jsonschema.Schema, error) {
 	}
 
 	return sc, nil
+}
+
+func marshalSpec(spec map[string]any) ([]byte, error) {
+	// All nil or empty values to be marshaled as null
+	if len(spec) == 0 {
+		return []byte(`null`), nil
+	}
+
+	return json.Marshal(spec)
 }

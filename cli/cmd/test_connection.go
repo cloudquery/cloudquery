@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
@@ -226,18 +225,9 @@ type testConnectionResult struct {
 }
 
 func testPluginConnection(ctx context.Context, pclient plugin.PluginClient, spec map[string]any) (*testConnectionResult, error) {
-	var (
-		specBytes []byte
-		err       error
-	)
-
-	if len(spec) == 0 { // All nil or empty values to be marshaled as null
-		specBytes = []byte(`null`)
-	} else {
-		specBytes, err = json.Marshal(spec)
-		if err != nil {
-			return nil, err
-		}
+	specBytes, err := marshalSpec(spec)
+	if err != nil {
+		return nil, err
 	}
 
 	in := &plugin.TestConnection_Request{
