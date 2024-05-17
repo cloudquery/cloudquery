@@ -15,7 +15,6 @@ import (
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
-	sdkPlugin "github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -284,7 +283,7 @@ func testPluginConnection(ctx context.Context, client plugin.PluginClient, spec 
 				if err != nil {
 					return &testConnectionResult{
 						Success:            false,
-						FailureCode:        string(sdkPlugin.TestConnFailureCodeUnknown),
+						FailureCode:        "UNKNOWN",
 						FailureDescription: err.Error(),
 					}, nil
 				}
