@@ -216,7 +216,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	if allErrors != nil {
 		status = cloudquery_api.SyncTestConnectionStatusFailed
 	}
-	updateSyncTestConnectionStatus(ctx, log.Logger, status, testConnectionResults...)
+	updateSyncTestConnectionStatus(context.Background(), log.Logger, status, testConnectionResults...)
 
 	log.Info().Any("testresults", testConnectionResults).Msg("Test connection completed")
 
