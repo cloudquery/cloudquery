@@ -18,7 +18,7 @@ func ConnectionTester(ctx context.Context, _ zerolog.Logger, specBytes []byte) e
 	var s spec.Spec
 	if err := json.Unmarshal(specBytes, &s); err != nil {
 		return &plugin.TestConnError{
-			Code:    plugin.TestConnFailureCodeUnknown,
+			Code:    plugin.TestConnFailureCodeInvalidSpec,
 			Message: fmt.Errorf("failed to unmarshal spec: %w", err),
 		}
 	}
