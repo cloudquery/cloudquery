@@ -5,6 +5,19 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.19.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.18.2...cli-v5.19.0) (2024-05-17)
+
+
+### Features
+
+* Sync Metadata table ([#17842](https://github.com/cloudquery/cloudquery/issues/17842)) ([377bde2](https://github.com/cloudquery/cloudquery/commit/377bde22106053364a48614cad481ff8057e21ca))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.42.1 ([#17965](https://github.com/cloudquery/cloudquery/issues/17965)) ([d652b81](https://github.com/cloudquery/cloudquery/commit/d652b81e18a35d122280ee1e59c601d7b1a0e607))
+* Remove JSON schema validation warnings ([#17994](https://github.com/cloudquery/cloudquery/issues/17994)) ([7a7ff25](https://github.com/cloudquery/cloudquery/commit/7a7ff25f26b376eb592400b99dd0746c7599c8ae))
+
 ## [5.18.2](https://github.com/cloudquery/cloudquery/compare/cli-v5.18.1...cli-v5.18.2) (2024-05-14)
 
 
