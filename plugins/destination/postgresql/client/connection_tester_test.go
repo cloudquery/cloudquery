@@ -37,7 +37,7 @@ func TestConnectionTester(t *testing.T) {
 			name:      "should return an error for an invalid spec",
 			specBytes: []byte("invalid"),
 			wantErr: &wantErr{
-				Code:             plugin.TestConnFailureCodeUnknown,
+				Code:             plugin.TestConnFailureCodeInvalidSpec,
 				ErrorDescription: "failed to unmarshal spec: invalid character 'i' looking for beginning of value",
 			},
 		},
