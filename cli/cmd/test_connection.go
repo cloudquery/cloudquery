@@ -46,7 +46,7 @@ func getSyncTestConnectionAPIClient() (*cloudquery_api.ClientWithResponses, erro
 	return api.NewClient(token.Value)
 }
 
-func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, status cloudquery_api.SyncTestConnectionStatus) {
+func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, status cloudquery_api.SyncTestConnectionStatus, tcrs ...testConnectionResult) {
 	apiClient, err := getSyncTestConnectionAPIClient()
 	if err != nil {
 		logger.Warn().Err(err).Msg("Failed to get sync test connection API client")
@@ -65,10 +65,22 @@ func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, 
 		log.Warn().Err(err).Msg("Failed to parse sync test connection UUID")
 		return
 	}
+
+	failedTestResult, err := fetchFailedTestResults(tcrs)
+	if err != nil {
+		log.Warn().Err(err).Msg("Failed to fetch failed test results")
+		return
+	}
+
 	log.Info().Str("status", string(status)).Msg("Sending sync test connection to API")
-	res, err := apiClient.UpdateSyncTestConnectionWithResponse(ctx, teamName, syncTestConnectionUUID, cloudquery_api.UpdateSyncTestConnectionJSONRequestBody{
+	requestBody := cloudquery_api.UpdateSyncTestConnectionJSONRequestBody{
 		Status: status,
-	})
+	}
+	if failedTestResult != nil {
+		requestBody.FailureCode = &failedTestResult.FailureCode
+		requestBody.FailureReason = &failedTestResult.FailureDescription
+	}
+	res, err := apiClient.UpdateSyncTestConnectionWithResponse(ctx, teamName, syncTestConnectionUUID, requestBody)
 	if err != nil {
 		log.Warn().Err(err).Msg("Failed to send sync test connection to API")
 		return
@@ -205,7 +217,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	if allErrors != nil {
 		status = cloudquery_api.SyncTestConnectionStatusFailed
 	}
-	updateSyncTestConnectionStatus(ctx, log.Logger, status)
+	updateSyncTestConnectionStatus(ctx, log.Logger, status, testConnectionResults...)
 
 	log.Info().Any("testresults", testConnectionResults).Msg("Test connection completed")
 
@@ -290,4 +302,27 @@ func testPluginConnection(ctx context.Context, client plugin.PluginClient, spec 
 		FailureCode:        resp.FailureCode,
 		FailureDescription: resp.FailureDescription,
 	}, nil
+}
+
+// fetchFailedTestResults fetch the failed test results.
+//
+// The function returns any failed test results, or nil if all tests passed. The hackernews plugin is excluded from the
+// failed test results since it was previously used as a test case for the test connection command.
+func fetchFailedTestResults(results []testConnectionResult) (*testConnectionResult, error) {
+	var failedResults []testConnectionResult
+
+	for _, result := range results {
+		if !result.Success && !strings.HasPrefix(result.pluginRef, "hackernews") {
+			failedResults = append(failedResults, result)
+		}
+	}
+
+	switch len(failedResults) {
+	case 0:
+		return nil, nil
+	case 1:
+		return &failedResults[0], nil
+	default:
+		return nil, fmt.Errorf("multiple test connection failures are not supported")
+	}
 }
