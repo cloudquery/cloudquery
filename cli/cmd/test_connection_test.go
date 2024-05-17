@@ -4,7 +4,6 @@ import (
 	"os"
 	"path"
 	"runtime"
-	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -24,7 +23,7 @@ func TestTestConnection(t *testing.T) {
 		{
 			name:   "bad AWS and Postgres auth should fail validation",
 			config: "test-connection-bad-connection.yml",
-			errors: []string{"cloudquery/cloudflare", "cloudquery/postgresql"},
+			errors: []string{"cloudflare (cloudquery/cloudflare@v6.1.2)", "postgresql (cloudquery/postgresql@v7.3.5)"},
 		},
 	}
 	_, filename, _, _ := runtime.Caller(0)
@@ -38,9 +37,12 @@ func TestTestConnection(t *testing.T) {
 			cmd.SetArgs(append([]string{"test-connection", testConfig}, baseArgs...))
 			err := cmd.Execute()
 			if len(tc.errors) > 0 {
-				var errs *testConnectionFailureErrors
+				var errs *testConnectionFailures
 				require.ErrorAs(t, err, &errs)
-				assertErrorsContainAny(t, errs.Unwrap(), tc.errors)
+				require.Len(t, errs.failed, len(tc.errors))
+				for i, want := range tc.errors {
+					assert.Equal(t, want, errs.failed[i].pluginRef)
+				}
 			} else {
 				assert.NoError(t, err)
 			}
@@ -51,27 +53,5 @@ func TestTestConnection(t *testing.T) {
 			require.NoError(t, logFileError, "failed to read cloudquery.log")
 			require.NotEmpty(t, logContent, "cloudquery.log empty; expected some logs")
 		})
-	}
-}
-
-// errorsContainAny checks if any error in a slice contains at least one of the substrings.
-func errorsContainAny(errs []error, substrings []string) bool {
-	for _, err := range errs {
-		if err != nil {
-			errMsg := err.Error()
-			for _, substr := range substrings {
-				if strings.Contains(errMsg, substr) {
-					return true
-				}
-			}
-		}
-	}
-	return false
-}
-
-// assertErrorsContainAny asserts that at least one error message in the slice contains at least one of the substrings.
-func assertErrorsContainAny(t *testing.T, errs []error, substrings []string) {
-	if !errorsContainAny(errs, substrings) {
-		t.Errorf("Expected at least one error in %v to contain at least one of %v", errs, substrings)
 	}
 }

@@ -216,7 +216,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		}
 	}
 
-	connFailures := make([]error, 0, len(testConnectionResults))
+	connFailures := make([]testConnectionResult, 0, len(testConnectionResults))
 	for i, testResult := range testConnectionResults {
 		if i == 0 {
 			cmd.Println("Test Connection Results")
@@ -227,27 +227,23 @@ func testConnection(cmd *cobra.Command, args []string) error {
 			continue
 		}
 		cmd.Println("Failure:", testResult.FailureCode, "\t", testResult.FailureDescription)
-		connFailures = append(connFailures, fmt.Errorf("test connection failed for %s %s: %s: %s", testResult.pluginKind, testResult.pluginRef, testResult.FailureCode, testResult.FailureDescription))
+		connFailures = append(connFailures, testConnectionResults[i])
 	}
 
 	if len(connFailures) > 0 {
-		allErrors = errors.Join(allErrors, &testConnectionFailureErrors{errs: connFailures})
+		allErrors = errors.Join(allErrors, &testConnectionFailures{failed: connFailures})
 	}
 
 	return allErrors
 }
 
-type testConnectionFailureErrors struct {
-	errs []error
+type testConnectionFailures struct {
+	failed []testConnectionResult
 }
 
-func (*testConnectionFailureErrors) Error() string {
+func (*testConnectionFailures) Error() string {
 	// The errs are already shown in the console, so we don't need to show them again here
 	return "at least one test connection failed"
-}
-
-func (e *testConnectionFailureErrors) Unwrap() []error {
-	return e.errs
 }
 
 type testConnectionResult struct {
