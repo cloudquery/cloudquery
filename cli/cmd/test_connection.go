@@ -283,7 +283,7 @@ func testPluginConnection(ctx context.Context, client plugin.PluginClient, spec 
 				if err != nil {
 					return &testConnectionResult{
 						Success:            false,
-						FailureCode:        "UNKNOWN",
+						FailureCode:        "OTHER",
 						FailureDescription: err.Error(),
 					}, nil
 				}
