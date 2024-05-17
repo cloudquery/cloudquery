@@ -195,8 +195,8 @@ func testConnection(cmd *cobra.Command, args []string) error {
 			allErrors = errors.Join(allErrors, fmt.Errorf("failed to test source %v: %w", sources[i].VersionString(), err))
 			continue
 		}
-		testResult.pluginRef = sources[i].VersionString()
-		testResult.pluginKind = "source"
+		testResult.PluginRef = sources[i].VersionString()
+		testResult.PluginKind = "source"
 		testConnectionResults = append(testConnectionResults, *testResult)
 	}
 	for i, client := range destinationClients {
@@ -207,8 +207,8 @@ func testConnection(cmd *cobra.Command, args []string) error {
 			allErrors = errors.Join(allErrors, fmt.Errorf("failed to test destination %v: %w", destinations[i].VersionString(), err))
 			continue
 		}
-		testResult.pluginRef = destinations[i].VersionString()
-		testResult.pluginKind = "destination"
+		testResult.PluginRef = destinations[i].VersionString()
+		testResult.PluginKind = "destination"
 		testConnectionResults = append(testConnectionResults, *testResult)
 	}
 
@@ -222,22 +222,22 @@ func testConnection(cmd *cobra.Command, args []string) error {
 
 	maxLength := 0
 	for _, testResult := range testConnectionResults {
-		if len(testResult.pluginRef) > maxLength {
-			maxLength = len(testResult.pluginRef)
+		if len(testResult.PluginRef) > maxLength {
+			maxLength = len(testResult.PluginRef)
 		}
 	}
 
 	connFailures := make([]testConnectionResult, 0, len(testConnectionResults))
 	for i, testResult := range testConnectionResults {
 		if i == 0 {
-			cmd.Println("Test Connection Results")
+			fmt.Println("Test Connection Results")
 		}
-		cmd.Printf("%-12s %s %s", testResult.pluginKind, testResult.pluginRef, strings.Repeat(" ", maxLength-len(testResult.pluginRef)+1))
+		fmt.Printf("%-12s %s %s", testResult.PluginKind, testResult.PluginRef, strings.Repeat(" ", maxLength-len(testResult.PluginRef)+1))
 		if testResult.Success {
-			cmd.Println("Success")
+			fmt.Println("Success")
 			continue
 		}
-		cmd.Println("Failure:", testResult.FailureCode, "\t", testResult.FailureDescription)
+		fmt.Println("Failure:", testResult.FailureCode, "\t", testResult.FailureDescription)
 		connFailures = append(connFailures, testConnectionResults[i])
 	}
 
@@ -258,11 +258,11 @@ func (*testConnectionFailures) Error() string {
 }
 
 type testConnectionResult struct {
-	pluginRef          string
-	pluginKind         string
-	Success            bool
-	FailureCode        string `json:",omitempty"`
-	FailureDescription string `json:",omitempty"`
+	PluginRef          string `json:"plugin_ref"`
+	PluginKind         string `json:"plugin_kind"`
+	Success            bool   `json:"success"`
+	FailureCode        string `json:"failure_code,omitempty"`
+	FailureDescription string `json:"failure_description,omitempty"`
 }
 
 func testPluginConnection(ctx context.Context, client plugin.PluginClient, spec map[string]any) (*testConnectionResult, error) {
@@ -312,7 +312,7 @@ func filterFailedTestResults(results []testConnectionResult) (*testConnectionRes
 
 	for _, result := range results {
 		if !result.Success {
-			if strings.Contains(result.pluginRef, "cloudquery/file@v4.0.4)") || strings.Contains(result.pluginRef, "cloudquery/hackernews@v3.0.25)") {
+			if strings.Contains(result.PluginRef, "cloudquery/file@v4.0.4)") || strings.Contains(result.PluginRef, "cloudquery/hackernews@v3.0.25)") {
 				continue
 			}
 			failedResults = append(failedResults, result)

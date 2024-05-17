@@ -41,7 +41,7 @@ func TestTestConnection(t *testing.T) {
 				require.ErrorAs(t, err, &errs)
 				require.Len(t, errs.failed, len(tc.errors))
 				for i, want := range tc.errors {
-					assert.Equal(t, want, errs.failed[i].pluginRef)
+					assert.Equal(t, want, errs.failed[i].PluginRef)
 				}
 			} else {
 				assert.NoError(t, err)

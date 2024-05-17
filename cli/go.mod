@@ -158,4 +158,4 @@ replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0
 // github.com/cloudquery/godebouncer @ fix-race
 replace github.com/vnteamopen/godebouncer => github.com/cloudquery/godebouncer v0.0.0-20240220152946-054f7dbbcf18
 
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/disq/plugin-sdk/v4 v4.0.0-20240517134557-b6dbb12827fd
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/disq/plugin-sdk/v4 v4.0.0-20240517142303-e843104eb52a
