@@ -1,5 +1,5 @@
 {
-  "cli": "5.18.2",
+  "cli": "5.19.0",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "22.19.2",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -81,8 +81,6 @@
   "plugins/source/awspricing+FILLER": "0.0.0",
   "plugins/destination/duckdb": "5.7.0",
   "plugins/destination/duckdb+FILLER": "0.0.0",
-  "plugins/destination/motherduck": "1.0.12",
-  "plugins/destination/motherduck+FILLER": "0.0.0",
   "plugins/source/mysql": "2.0.12",
   "plugins/source/mysql+FILLER": "0.0.0",
   "plugins/destination/gremlin": "2.4.12",
