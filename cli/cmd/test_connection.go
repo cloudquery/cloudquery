@@ -313,7 +313,7 @@ func filterFailedTestResults(results []testConnectionResult) (*testConnectionRes
 
 	for _, result := range results {
 		if !result.Success {
-			if strings.Contains(result.pluginRef, "cloudquery/file v4.0.4") || strings.Contains(result.pluginRef, "cloudquery/hackernews v3.0.25") {
+			if strings.Contains(result.pluginRef, "cloudquery/file@v4.0.4)") || strings.Contains(result.pluginRef, "cloudquery/hackernews@v3.0.25)") {
 				continue
 			}
 			failedResults = append(failedResults, result)
