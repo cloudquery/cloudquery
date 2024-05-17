@@ -66,7 +66,7 @@ func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, 
 		return
 	}
 
-	failedTestResult, err := fetchFailedTestResults(tcrs)
+	failedTestResult, err := filterFailedTestResults(tcrs)
 	if err != nil {
 		log.Warn().Err(err).Msg("Failed to fetch failed test results")
 		return
@@ -304,15 +304,18 @@ func testPluginConnection(ctx context.Context, client plugin.PluginClient, spec 
 	}, nil
 }
 
-// fetchFailedTestResults fetch the failed test results.
+// filterFailedTestResults fetch the failed test results.
 //
 // The function returns any failed test results, or nil if all tests passed. The hackernews plugin is excluded from the
 // failed test results since it was previously used as a test case for the test connection command.
-func fetchFailedTestResults(results []testConnectionResult) (*testConnectionResult, error) {
+func filterFailedTestResults(results []testConnectionResult) (*testConnectionResult, error) {
 	var failedResults []testConnectionResult
 
 	for _, result := range results {
-		if !result.Success && !strings.HasPrefix(result.pluginRef, "hackernews") {
+		if !result.Success {
+			if strings.Contains(result.pluginRef, "cloudquery/file v4.0.4") || strings.Contains(result.pluginRef, "cloudquery/hackernews v3.0.25") {
+				continue
+			}
 			failedResults = append(failedResults, result)
 		}
 	}
