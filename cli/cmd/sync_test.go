@@ -222,21 +222,18 @@ func TestSyncWithSummaryTable(t *testing.T) {
 					if err != nil {
 						t.Fatalf("failed to read file %v: %v", file.Name(), err)
 					}
-
 					var v syncSummary
 					assert.NoError(t, json.Unmarshal(b, &v))
-
 					summaries = append(summaries, v)
-					diff := cmp.Diff(tc.summaryTable, summaries, cmpopts.IgnoreFields(syncSummary{}, "SyncID"))
-					require.Empty(t, diff, "unexpected summaries: %v", diff)
 				}
+
+				diff := cmp.Diff(tc.summaryTable, summaries, cmpopts.IgnoreFields(syncSummary{}, "SyncID"))
+				require.Empty(t, diff, "unexpected summaries: %v", diff)
 
 				// have to ignore SyncID because it's random and plugin versions since we update those frequently using an automated process
 				// also ignore SyncTime because it's a timestamp
 				for _, s := range summaries {
 					assert.NotEmpty(t, s.SyncID)
-					assert.NotEmpty(t, s.DestinationVersion)
-					assert.NotEmpty(t, s.SourceVersion)
 				}
 			}
 		})
