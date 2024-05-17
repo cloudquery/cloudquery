@@ -45,18 +45,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 		return nil, fmt.Errorf("failed to create batch writer: %w", err)
 	}
 
-	if strings.HasPrefix(c.spec.ConnectionString, "md:") {
-		// Motherduck, add 'custom_user_agent' to the connection string
-		if strings.Contains(c.spec.ConnectionString, "?") {
-			c.spec.ConnectionString += "&"
-		} else {
-			c.spec.ConnectionString += "?"
-		}
-		c.spec.ConnectionString += fmt.Sprintf("custom_user_agent=%s_%s_%s/%s(%s_%s)",
-			internalPlugin.Team, internalPlugin.Kind, internalPlugin.Name, strings.TrimPrefix(internalPlugin.Version, "v"), runtime.GOOS, runtime.GOARCH)
-	}
-
-	c.connector, err = duckdb.NewConnector(c.spec.ConnectionString, nil)
+	c.connector, err = duckdb.NewConnector(amendConnectionString(c.spec.ConnectionString), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -89,6 +78,29 @@ func (c *Client) Close(ctx context.Context) error {
 	return err
 }
 
+func TestConnection(ctx context.Context, _ zerolog.Logger, specBytes []byte) error {
+	var s Spec
+	if err := json.Unmarshal(specBytes, &s); err != nil {
+		return &plugin.TestConnError{
+			Code:    plugin.TestConnFailureCodeInvalidSpec,
+			Message: fmt.Errorf("failed to unmarshal spec: %w", err),
+		}
+	}
+	s.SetDefaults()
+
+	connector, err := duckdb.NewConnector(amendConnectionString(s.ConnectionString), nil)
+	if err != nil {
+		return err
+	}
+	db := sql.OpenDB(connector)
+	if err := db.PingContext(ctx); err != nil {
+		_ = db.Close()
+		return err
+	}
+
+	return db.Close()
+}
+
 func (c *Client) exec(ctx context.Context, query string, args ...any) error {
 	r, err := c.db.ExecContext(ctx, query, args...)
 	if c.spec.Debug {
@@ -101,4 +113,20 @@ func (c *Client) exec(ctx context.Context, query string, args ...any) error {
 		}
 	}
 	return err
+}
+
+func amendConnectionString(s string) string {
+	if !strings.HasPrefix(s, "md:") {
+		return s
+	}
+
+	// Motherduck, add 'custom_user_agent' to the connection string
+	if strings.Contains(s, "?") {
+		s += "&"
+	} else {
+		s += "?"
+	}
+	s += fmt.Sprintf("custom_user_agent=%s_%s_%s/%s(%s_%s)",
+		internalPlugin.Team, internalPlugin.Kind, internalPlugin.Name, strings.TrimPrefix(internalPlugin.Version, "v"), runtime.GOOS, runtime.GOARCH)
+	return s
 }

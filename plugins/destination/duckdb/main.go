@@ -28,6 +28,7 @@ func main() {
 		plugin.WithKind(internalPlugin.Kind),
 		plugin.WithTeam(internalPlugin.Team),
 		plugin.WithJSONSchema(client.JSONSchema),
+		plugin.WithConnectionTester(client.TestConnection),
 	)
 	server := serve.Plugin(p,
 		serve.WithPluginSentryDSN(sentryDSN),
