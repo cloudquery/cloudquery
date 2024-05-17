@@ -31,8 +31,8 @@ require (
 	github.com/bytedance/sonic v1.11.2 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.11.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.19.12 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.11.2 // indirect
+	github.com/cloudquery/plugin-pb-go v1.19.13 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect
@@ -136,6 +136,4 @@ require (
 // github.com/cloudquery/jsonschema @ cqmain
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66
 
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/disq/plugin-sdk/v4 v4.0.0-20240516105137-5410a74c47c5
-
-replace github.com/cloudquery/plugin-pb-go => github.com/cloudquery/plugin-pb-go v1.19.13-0.20240516105108-3fdf6ac15ea2
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/disq/plugin-sdk/v4 v4.0.0-20240517134557-b6dbb12827fd
