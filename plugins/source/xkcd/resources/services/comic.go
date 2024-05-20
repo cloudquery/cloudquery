@@ -18,7 +18,7 @@ func ComicsTable() *schema.Table {
 	}
 }
 
-func fetchComics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- interface{}) error {
+func fetchComics(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
 	comic, err := c.XKCD.GetLatestComic(0)
 	if err != nil {

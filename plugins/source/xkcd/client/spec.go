@@ -4,7 +4,7 @@ type Spec struct {
 	Concurrency int `json:"concurrency,omitempty"`
 }
 
-func (s Spec) Validate() error {
+func (Spec) Validate() error {
 	return nil
 }
 

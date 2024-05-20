@@ -45,5 +45,4 @@ func TestHelper(t *testing.T, table *schema.Table, ts *httptest.Server) {
 		t.Fatalf("failed to sync: %v", err)
 	}
 	plugin.ValidateNoEmptyColumns(t, tables, messages)
-
 }

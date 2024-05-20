@@ -13,7 +13,7 @@ type Client struct {
 	Backend state.Client
 }
 
-func (c *Client) ID() string {
+func (*Client) ID() string {
 	return "xkcd"
 }
 
