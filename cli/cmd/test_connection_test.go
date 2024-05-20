@@ -23,7 +23,7 @@ func TestTestConnection(t *testing.T) {
 		{
 			name:   "bad AWS and Postgres auth should fail validation",
 			config: "test-connection-bad-connection.yml",
-			errors: []string{"failed to init source cloudflare", "failed to init destination postgresql"},
+			errors: []string{"cloudflare (cloudquery/cloudflare@v6.1.2)", "postgresql (cloudquery/postgresql@v7.3.5)"},
 		},
 	}
 	_, filename, _, _ := runtime.Caller(0)
@@ -36,9 +36,12 @@ func TestTestConnection(t *testing.T) {
 			baseArgs := testCommandArgs(t)
 			cmd.SetArgs(append([]string{"test-connection", testConfig}, baseArgs...))
 			err := cmd.Execute()
-			if tc.errors != nil {
-				for _, e := range tc.errors {
-					assert.Contains(t, err.Error(), e)
+			if len(tc.errors) > 0 {
+				var errs *testConnectionFailures
+				require.ErrorAs(t, err, &errs)
+				require.Len(t, errs.failed, len(tc.errors))
+				for i, want := range tc.errors {
+					assert.Equal(t, want, errs.failed[i].PluginRef)
 				}
 			} else {
 				assert.NoError(t, err)
