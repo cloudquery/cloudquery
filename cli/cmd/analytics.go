@@ -48,6 +48,8 @@ func initAnalytics() (*AnalyticsClient, error) {
 	} else {
 		opts = []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
 	}
+	// TODO: Remove once there's a documented migration path per https://github.com/grpc/grpc-go/issues/7244
+	// nolint:staticcheck
 	conn, err := grpc.Dial(host, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to dial analytics host %v: %w", host, err)
