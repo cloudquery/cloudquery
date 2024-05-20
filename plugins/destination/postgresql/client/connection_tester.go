@@ -35,7 +35,7 @@ func ConnectionTester(ctx context.Context, _ zerolog.Logger, specBytes []byte) e
 		}
 	}
 
-	c, err := pgxpool.NewWithConfig(context.Background(), pgxConfig)
+	c, err := pgxpool.NewWithConfig(ctx, pgxConfig)
 	if err != nil {
 		return &plugin.TestConnError{
 			Message: processError(err),
