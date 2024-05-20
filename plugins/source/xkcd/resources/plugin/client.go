@@ -54,6 +54,8 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		stateClient = &state.NoOpClient{}
 		c.backendConn = nil
 	} else {
+		// TODO: Remove once there's a documented migration path per https://github.com/grpc/grpc-go/issues/7244
+		// nolint:staticcheck
 		c.backendConn, err = grpc.DialContext(ctx, options.BackendOptions.Connection,
 			grpc.WithTransportCredentials(insecure.NewCredentials()),
 			grpc.WithDefaultCallOptions(
