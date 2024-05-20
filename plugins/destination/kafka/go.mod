@@ -8,7 +8,7 @@ require (
 	github.com/Shopify/sarama v1.37.2
 	github.com/apache/arrow/go/v16 v16.1.0
 	github.com/cloudquery/codegen v0.3.16
-	github.com/cloudquery/filetypes/v4 v4.2.19
+	github.com/cloudquery/filetypes/v4 v4.2.20
 	github.com/cloudquery/plugin-sdk/v4 v4.43.1
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.32.0
