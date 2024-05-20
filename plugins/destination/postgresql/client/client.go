@@ -89,11 +89,11 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 		return nil, fmt.Errorf("failed to connect to postgresql: %w", err)
 	}
 
-	c.currentDatabaseName, err = c.currentDatabase(ctx)
+	c.currentDatabaseName, err = currentDatabase(ctx, c.conn)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get current database: %w", err)
 	}
-	c.currentSchemaName, err = c.currentSchema(ctx)
+	c.currentSchemaName, err = currentSchema(ctx, c.conn)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get current schema: %w", err)
 	}
@@ -127,18 +127,18 @@ func (c *Client) Close(ctx context.Context) error {
 	return nil
 }
 
-func (c *Client) currentDatabase(ctx context.Context) (string, error) {
+func currentDatabase(ctx context.Context, conn *pgxpool.Pool) (string, error) {
 	var db string
-	err := c.conn.QueryRow(ctx, "select current_database()").Scan(&db)
+	err := conn.QueryRow(ctx, "select current_database()").Scan(&db)
 	if err != nil {
 		return "", err
 	}
 	return db, nil
 }
 
-func (c *Client) currentSchema(ctx context.Context) (string, error) {
+func currentSchema(ctx context.Context, conn *pgxpool.Pool) (string, error) {
 	var schema string
-	err := c.conn.QueryRow(ctx, "select current_schema()").Scan(&schema)
+	err := conn.QueryRow(ctx, "select current_schema()").Scan(&schema)
 	if err != nil {
 		return "", err
 	}
