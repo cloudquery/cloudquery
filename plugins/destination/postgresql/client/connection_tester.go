@@ -18,14 +18,12 @@ func ConnectionTester(ctx context.Context, _ zerolog.Logger, specBytes []byte) e
 	var s spec.Spec
 	if err := json.Unmarshal(specBytes, &s); err != nil {
 		return &plugin.TestConnError{
-			Code:    plugin.TestConnFailureCodeInvalidSpec,
 			Message: fmt.Errorf("failed to unmarshal spec: %w", err),
 		}
 	}
 	s.SetDefaults()
 	if err := s.Validate(); err != nil {
 		return &plugin.TestConnError{
-			Code:    plugin.TestConnFailureCodeInvalidSpec,
 			Message: fmt.Errorf("failed to validate spec: %w", err),
 		}
 	}
@@ -33,7 +31,6 @@ func ConnectionTester(ctx context.Context, _ zerolog.Logger, specBytes []byte) e
 	pgxConfig, err := pgxpool.ParseConfig(s.ConnectionString)
 	if err != nil {
 		return &plugin.TestConnError{
-			Code:    plugin.TestConnFailureCodeInvalidCredentials,
 			Message: processError(err),
 		}
 	}
@@ -41,7 +38,6 @@ func ConnectionTester(ctx context.Context, _ zerolog.Logger, specBytes []byte) e
 	c, err := pgxpool.NewWithConfig(context.Background(), pgxConfig)
 	if err != nil {
 		return &plugin.TestConnError{
-			Code:    plugin.TestConnFailureCodeInvalidCredentials,
 			Message: processError(err),
 		}
 	}
@@ -50,7 +46,6 @@ func ConnectionTester(ctx context.Context, _ zerolog.Logger, specBytes []byte) e
 	_, err = currentDatabase(ctx, c)
 	if err != nil {
 		return &plugin.TestConnError{
-			Code:    plugin.TestConnFailureCodeInvalidCredentials,
 			Message: processError(err),
 		}
 	}
@@ -58,7 +53,6 @@ func ConnectionTester(ctx context.Context, _ zerolog.Logger, specBytes []byte) e
 	_, err = currentSchema(ctx, c)
 	if err != nil {
 		return &plugin.TestConnError{
-			Code:    plugin.TestConnFailureCodeInvalidCredentials,
 			Message: processError(err),
 		}
 	}
