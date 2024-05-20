@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"os"
 	"testing"
 
@@ -24,6 +25,7 @@ const (
 
 func TestConnectionTester(t *testing.T) {
 	type wantErr struct {
+		Code             string
 		ErrorDescription string
 	}
 
@@ -36,6 +38,7 @@ func TestConnectionTester(t *testing.T) {
 			name:      "should return an error for an invalid spec",
 			specBytes: []byte("invalid"),
 			wantErr: &wantErr{
+				Code:             "INVALID_SPEC",
 				ErrorDescription: "failed to unmarshal spec: invalid character 'i' looking for beginning of value",
 			},
 		},
@@ -94,10 +97,14 @@ func TestConnectionTester(t *testing.T) {
 
 			err := p.TestConnection(context.Background(), logger, tt.specBytes)
 			if tt.wantErr != nil {
-				var target *plugin.TestConnError
 				require.Error(t, err)
-				require.ErrorAs(t, err, &target)
-				assert.Equal(t, tt.wantErr.ErrorDescription, target.Message.Error())
+				var target *plugin.TestConnError
+				if errors.As(err, &target) {
+					assert.Equal(t, tt.wantErr.Code, target.Code)
+					assert.Equal(t, tt.wantErr.ErrorDescription, target.Message.Error())
+					return
+				}
+				assert.Equal(t, tt.wantErr.ErrorDescription, err.Error())
 			} else {
 				require.NoError(t, err)
 			}

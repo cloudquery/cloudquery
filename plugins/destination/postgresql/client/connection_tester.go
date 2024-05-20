@@ -18,43 +18,37 @@ func ConnectionTester(ctx context.Context, _ zerolog.Logger, specBytes []byte) e
 	var s spec.Spec
 	if err := json.Unmarshal(specBytes, &s); err != nil {
 		return &plugin.TestConnError{
+			Code:    "INVALID_SPEC",
 			Message: fmt.Errorf("failed to unmarshal spec: %w", err),
 		}
 	}
 	s.SetDefaults()
 	if err := s.Validate(); err != nil {
 		return &plugin.TestConnError{
+			Code:    "INVALID_SPEC",
 			Message: fmt.Errorf("failed to validate spec: %w", err),
 		}
 	}
 
 	pgxConfig, err := pgxpool.ParseConfig(s.ConnectionString)
 	if err != nil {
-		return &plugin.TestConnError{
-			Message: processError(err),
-		}
+		return processError(err)
 	}
 
 	c, err := pgxpool.NewWithConfig(ctx, pgxConfig)
 	if err != nil {
-		return &plugin.TestConnError{
-			Message: processError(err),
-		}
+		return processError(err)
 	}
 	defer c.Close()
 
 	_, err = currentDatabase(ctx, c)
 	if err != nil {
-		return &plugin.TestConnError{
-			Message: processError(err),
-		}
+		return processError(err)
 	}
 
 	_, err = currentSchema(ctx, c)
 	if err != nil {
-		return &plugin.TestConnError{
-			Message: processError(err),
-		}
+		return processError(err)
 	}
 
 	return nil
