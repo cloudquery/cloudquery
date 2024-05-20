@@ -1,0 +1,19 @@
+kind: "source"
+spec:
+  name: "test"
+  path: "cloudquery/test"
+  registry: "github"
+  destinations: [test]
+  version: "v3.1.15" # latest version of source test plugin
+  tables: ["*"]
+---
+kind: "destination"
+spec:
+  name: "test"
+  path: "cloudquery/file"
+  registry: "github"
+  version: "v4.0.1" # latest version of plugin available on github
+  send_sync_summary: true
+  spec:
+    format: "json"
+    path: ${CQ_FILE_DESTINATION}
