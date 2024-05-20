@@ -3,9 +3,9 @@ module github.com/cloudquery/cloudquery/plugins/destination/neo4j
 go 1.21.5
 
 require (
-	github.com/apache/arrow/go/v16 v16.0.0
+	github.com/apache/arrow/go/v16 v16.1.0
 	github.com/cloudquery/codegen v0.3.16
-	github.com/cloudquery/plugin-sdk/v4 v4.42.2
+	github.com/cloudquery/plugin-sdk/v4 v4.43.0
 	github.com/neo4j/neo4j-go-driver/v5 v5.6.0
 	github.com/rs/zerolog v1.32.0
 	github.com/stretchr/testify v1.9.0
@@ -28,8 +28,8 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.11.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.19.12 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.11.2 // indirect
+	github.com/cloudquery/plugin-pb-go v1.19.13 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect
