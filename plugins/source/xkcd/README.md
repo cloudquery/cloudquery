@@ -18,10 +18,10 @@ The following source configuration file will sync all comics to a local SQLite d
 kind: source
 spec:
   name: xkcd
-  path: hermanschaaf/xkcd
-  version: v2.0.0
+  path: cloudquery/xkcd
+  version: v1.0.0
   destinations: ["sqlite"]
-  tables: ["*"]
+  tables: ["xkcd_comics"]
   spec:
 ---
 kind: destination
@@ -35,6 +35,6 @@ spec:
 
 Save the file as `config.yaml`, then run:
 
-```
+```shell
 cloudquery sync config.yaml
 ```
