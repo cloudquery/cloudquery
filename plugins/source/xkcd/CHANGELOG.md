@@ -3,6 +3,9 @@
 ## 1.0.0 (2024-05-20)
 
 
+### This Release has the Following Changes to Tables
+- Table `xkcd_comics` was added
+
 ### Features
 
 * Add XKCD plugin ([#18017](https://github.com/cloudquery/cloudquery/issues/18017)) ([1ea4e5a](https://github.com/cloudquery/cloudquery/commit/1ea4e5ac8ca1f5242367962d7f95af2073d0de62))
