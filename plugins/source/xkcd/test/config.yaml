@@ -1,0 +1,15 @@
+kind: source
+spec:
+  name: xkcd
+  version: v1.0.0
+  destinations: [test]
+  path: ./cq-source-xkcd
+  registry: local
+  tables: [ "*" ]
+  spec:
+---
+kind: destination
+spec:
+  name: test
+  path: cloudquery/test
+  version: "v2.2.3" # latest version of test plugin

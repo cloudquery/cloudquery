@@ -1,0 +1,65 @@
+variables:
+  component: source/xkcd
+  binary: xkcd
+
+project_name: plugins/source/xkcd
+
+monorepo:
+  tag_prefix: plugins-source-xkcd-
+  dir: plugins/source/xkcd
+
+includes:
+  - from_file:
+      # Relative to the directory Go Releaser is run from (which is the root of the repository)
+      path: ./plugins/.goreleaser.yaml
+
+
+dockers:
+  - goos: linux
+    goarch: amd64
+    use: buildx
+    dockerfile: Dockerfile.goreleaser
+    image_templates:
+      - "ghcr.io/cloudquery/cq-source-xkcd:latest-linux-amd64"
+      - "ghcr.io/cloudquery/cq-source-xkcd:{{.Version}}-linux-amd64"
+      - "ghcr.io/cloudquery/cq-source-xkcd:{{ .Major }}.{{ .Minor }}-linux-amd64"
+    build_flag_templates:
+      - "--builder=mybuilder"
+      - "--platform=linux/amd64"
+      - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+  - goos: linux
+    goarch: arm64
+    use: buildx
+    dockerfile: Dockerfile.goreleaser
+    image_templates:
+      - "ghcr.io/cloudquery/cq-source-xkcd:latest-linux-arm64"
+      - "ghcr.io/cloudquery/cq-source-xkcd:{{.Version}}-linux-arm64"
+      - "ghcr.io/cloudquery/cq-source-xkcd:{{ .Major }}.{{ .Minor }}-linux-arm64"
+    build_flag_templates:
+      - "--builder=mybuilder"
+      - "--platform=linux/arm64"
+      - "--label=org.opencontainers.image.source=https://github.com/cloudquery/cloudquery"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+
+docker_manifests:
+  # https://goreleaser.com/customization/docker_manifest/
+
+  - name_template: ghcr.io/cloudquery/cq-source-xkcd:latest
+    image_templates:
+      - ghcr.io/cloudquery/cq-source-xkcd:latest-linux-amd64
+      - ghcr.io/cloudquery/cq-source-xkcd:latest-linux-arm64
+
+  - name_template: ghcr.io/cloudquery/cq-source-xkcd:{{.Version}}
+    image_templates:
+      - ghcr.io/cloudquery/cq-source-xkcd:{{.Version}}-linux-amd64
+      - ghcr.io/cloudquery/cq-source-xkcd:{{.Version}}-linux-arm64
+
+  - name_template: ghcr.io/cloudquery/cq-source-xkcd:{{ .Major }}.{{ .Minor }}
+    image_templates:
+      - ghcr.io/cloudquery/cq-source-xkcd:{{ .Major }}.{{ .Minor }}-linux-amd64
+      - ghcr.io/cloudquery/cq-source-xkcd:{{ .Major }}.{{ .Minor }}-linux-arm64
