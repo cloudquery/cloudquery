@@ -189,6 +189,21 @@ func (r *SpecReader) validate() error {
 	return err
 }
 
+func (r *SpecReader) validateTestConnection() error {
+	if len(r.Sources) == 0 && len(r.Destinations) == 0 {
+		return errors.New("expecting at least one source or destination")
+	}
+
+	var err error
+	for _, destination := range r.Destinations {
+		if destination.SyncGroupId != "" && destination.WriteMode == WriteModeOverwriteDeleteStale {
+			err = errors.Join(err, fmt.Errorf("destination %s: sync_group_id is not supported with write_mode: %s", destination.Name, destination.WriteMode))
+		}
+	}
+
+	return err
+}
+
 func (r *SpecReader) GetSourceByName(name string) *Source {
 	return r.sourcesMap[name]
 }
@@ -217,6 +232,32 @@ func (r *SpecReader) GetDestinationNamesForSource(name string) []string {
 }
 
 func NewSpecReader(paths []string) (*SpecReader, error) {
+	reader, err := newSpecReader(paths)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := reader.validate(); err != nil {
+		return nil, err
+	}
+
+	return reader, nil
+}
+
+func NewTestConnectionSpecReader(paths []string) (*SpecReader, error) {
+	reader, err := newSpecReader(paths)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := reader.validateTestConnection(); err != nil {
+		return nil, err
+	}
+
+	return reader, nil
+}
+
+func newSpecReader(paths []string) (*SpecReader, error) {
 	reader := &SpecReader{
 		sourcesMap:             make(map[string]*Source),
 		destinationsMap:        make(map[string]*Destination),
@@ -245,10 +286,6 @@ func NewSpecReader(paths []string) (*SpecReader, error) {
 				return nil, err
 			}
 		}
-	}
-
-	if err := reader.validate(); err != nil {
-		return nil, err
 	}
 
 	return reader, nil
