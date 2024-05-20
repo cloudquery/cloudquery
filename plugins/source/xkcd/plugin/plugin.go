@@ -3,6 +3,6 @@ package plugin
 var (
 	Name    = "xkcd"
 	Kind    = "source"
-	Team    = "hermanschaaf"
+	Team    = "cloudquery"
 	Version = "development"
 )
