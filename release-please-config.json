@@ -92,6 +92,9 @@
       ],
       "release-type": "python"
     },
+    "plugins/source/xkcd": {
+      "component": "plugins-source-xkcd"
+    },
     "scaffold": {
       "component": "scaffold"
     }
