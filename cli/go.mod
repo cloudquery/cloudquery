@@ -3,13 +3,13 @@ module github.com/cloudquery/cloudquery/cli
 go 1.21.5
 
 require (
-	github.com/apache/arrow/go/v16 v16.0.0
+	github.com/apache/arrow/go/v16 v16.1.0
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cloudquery/cloudquery-api-go v1.11.2
 	github.com/cloudquery/codegen v0.3.16
 	github.com/cloudquery/plugin-pb-go v1.19.13
-	github.com/cloudquery/plugin-sdk/v4 v4.42.2
+	github.com/cloudquery/plugin-sdk/v4 v4.43.0
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/docker/docker v26.1.1+incompatible
@@ -157,5 +157,3 @@ replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0
 
 // github.com/cloudquery/godebouncer @ fix-race
 replace github.com/vnteamopen/godebouncer => github.com/cloudquery/godebouncer v0.0.0-20240220152946-054f7dbbcf18
-
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/disq/plugin-sdk/v4 v4.0.0-20240517142303-e843104eb52a
