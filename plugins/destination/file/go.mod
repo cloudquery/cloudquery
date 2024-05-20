@@ -5,7 +5,7 @@ go 1.21.5
 toolchain go1.21.6
 
 require (
-	github.com/apache/arrow/go/v16 v16.0.0
+	github.com/apache/arrow/go/v16 v16.1.0
 	github.com/cloudquery/codegen v0.3.16
 	github.com/cloudquery/filetypes/v4 v4.2.19
 	github.com/cloudquery/plugin-sdk/v4 v4.42.2

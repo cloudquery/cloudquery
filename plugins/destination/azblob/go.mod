@@ -7,7 +7,7 @@ toolchain go1.21.6
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.5.2
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.3.2
-	github.com/apache/arrow/go/v16 v16.0.0
+	github.com/apache/arrow/go/v16 v16.1.0
 	github.com/cloudquery/codegen v0.3.16
 	github.com/cloudquery/filetypes/v4 v4.2.19
 	github.com/cloudquery/plugin-sdk/v4 v4.42.2
