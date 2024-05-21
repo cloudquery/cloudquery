@@ -1,5 +1,20 @@
 # Changelog
 
+## [5.8.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.7.0...plugins-destination-duckdb-v5.8.0) (2024-05-21)
+
+
+### Features
+
+* Add explicit Test Connection support for DuckDB ([#17999](https://github.com/cloudquery/cloudquery/issues/17999)) ([2a1e46d](https://github.com/cloudquery/cloudquery/commit/2a1e46dd4fc3d9c60bb0ad640736e3db0e8af300))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.42.1 ([#17965](https://github.com/cloudquery/cloudquery/issues/17965)) ([d652b81](https://github.com/cloudquery/cloudquery/commit/d652b81e18a35d122280ee1e59c601d7b1a0e607))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.42.2 ([#18000](https://github.com/cloudquery/cloudquery/issues/18000)) ([5fc0f46](https://github.com/cloudquery/cloudquery/commit/5fc0f46ce912a6b5c1d232b405ca6f2a30584461))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.43.0 ([#18014](https://github.com/cloudquery/cloudquery/issues/18014)) ([20592c8](https://github.com/cloudquery/cloudquery/commit/20592c8ba2a2da05a6dac60701e821fc0623bf60))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.43.1 ([#18026](https://github.com/cloudquery/cloudquery/issues/18026)) ([364307c](https://github.com/cloudquery/cloudquery/commit/364307c5a7e954cc3521498678e3aa658eb4937a))
+
 ## [5.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.6.3...plugins-destination-duckdb-v5.7.0) (2024-05-15)
 
 
