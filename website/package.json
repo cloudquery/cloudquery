@@ -31,7 +31,7 @@
     "react": "18.2.0",
     "react-cookie-consent": "^8.0.1",
     "react-dom": "18.2.0",
-    "react-hot-toast": "2.4.0",
+    "react-hot-toast": "2.4.1",
     "remark-directive": "^2.0.0",
     "sharp": "^0.32.0",
     "unist-util-visit": "^5.0.0"
