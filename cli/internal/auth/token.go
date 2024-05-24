@@ -40,6 +40,11 @@ func GetAuthTokenIfNeeded(logger zerolog.Logger, sources []*specs.Source, destin
 	tc := cqapiauth.NewTokenClient()
 	token, err := tc.GetToken()
 	if err != nil {
+		hasLoginHint := strings.Contains(err.Error(), "Hint:")
+		if hasLoginHint {
+			return cqapiauth.UndefinedToken, nil
+		}
+
 		return cqapiauth.UndefinedToken, err
 	}
 
