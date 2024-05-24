@@ -39,7 +39,7 @@
     fileMatch: ["go\\.mod\\.tpl$"],
   },
   dockerfile: {
-    fileMatch: ["Dockerfile\\.goreleaser$", "Dockerfile\\.ubuntu\\.goreleaser"],
+    fileMatch: ["Dockerfile\\.goreleaser$", "Dockerfile\\.ubuntu\\.goreleaser$"],
   },
   "github-actions": {
     fileMatch: ["\\.yaml\\.tpl$"],
