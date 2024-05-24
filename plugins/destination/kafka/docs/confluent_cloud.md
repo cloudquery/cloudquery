@@ -1,10 +1,10 @@
 ## Connecting to Confluent Cloud
 
-Confluent Cloud is a fully managed data streaming platform that you can use as a destination with this plugin. You can get started for free with a time-limited trial at [confluent.io](https://www.confluent.io/get-started/).
+Confluent Cloud is a fully managed data streaming platform that you can use as a destination with this plugin. You can get started with a time-limited trial at [confluent.io](https://www.confluent.io/get-started/).
 
 To configure CloudQuery Kafka plugin, you need to create an API key in the [Confluent Cloud Console](https://docs.confluent.io/cloud/current/access-management/authenticate/api-keys/api-keys.html#create-a-resource-api-key).
 
-Download the file with the API key and secret and use them for the `sasl_username` and `sasl_password` properties in the Kafka plugin documentation. The file will also contain the url for the bootstrap server. Use that in the `brokers` property in the configuration:
+Download the file with the API key and secret and use them for the `sasl_username` and `sasl_password` properties in the Kafka plugin documentation. The file will also contain the URL for the bootstrap server. Use that in the `brokers` property in the configuration:
 
 ```yaml
 kind: destination
