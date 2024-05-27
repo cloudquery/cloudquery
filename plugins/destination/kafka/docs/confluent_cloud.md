@@ -1,6 +1,8 @@
 ## Connecting to Confluent Cloud
 
-Confluent Cloud is a fully managed data streaming platform that you can use as a destination with this plugin. You can get started with a time-limited trial at [confluent.io](https://www.confluent.io/get-started/).
+![Confluent Cloud Logo](../../docs/assets/confluent-logotype-white.png)
+
+Confluent Cloud is a fully managed data streaming platform that you can use as a destination with this plugin. You can get started with a time-limited trial at [confluent.io](https://www.confluent.io/confluent-cloud/tryfree/?utm_campaign=tm.pmm_cd.cwc_partner_cloudquery_tryfree&utm_source=cloudquery&utm_medium=partnerref).
 
 To configure CloudQuery Kafka plugin, you need to create an API key in the [Confluent Cloud Console](https://docs.confluent.io/cloud/current/access-management/authenticate/api-keys/api-keys.html#create-a-resource-api-key).
 
