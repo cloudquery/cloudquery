@@ -38,8 +38,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 		}
 	}
 
-	record := builder.NewRecord()
-	res <- record
+	res <- builder.NewRecord()
 	return nil
 }
 
