@@ -7,7 +7,7 @@ spec:
   path: "cloudquery/postgresql"
   registry: "cloudquery"
   version: "VERSION_DESTINATION_POSTGRESQL"
-
+  # Learn more about the configuration options at https://cql.ink/postgresql_destination
   spec:
     connection_string: "${POSTGRESQL_CONNECTION_STRING}" # set the environment variable in a format like postgres://postgres:pass@localhost:5432/postgres?sslmode=disable
     # you can also specify it in DSN format, which can hold special characters in the password field:
