@@ -6,6 +6,8 @@ import (
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 	"github.com/apache/arrow/go/v16/arrow"
+	"github.com/apache/arrow/go/v16/arrow/array"
+	"github.com/apache/arrow/go/v16/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/arrow/values"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -23,6 +25,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 
 	columnTypes := rows.ColumnTypes()
 
+	builder := array.NewRecordBuilder(memory.DefaultAllocator, sc)
 	for rows.Next() {
 		row := rowArr(columnTypes)
 
@@ -30,14 +33,12 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 			return err
 		}
 
-		record, err := values.Record(sc, row)
-		if err != nil {
+		if err := values.AppendToRecordBuilder(builder, row); err != nil {
 			return err
 		}
-
-		res <- record
 	}
 
+	res <- builder.NewRecord()
 	return nil
 }
 
