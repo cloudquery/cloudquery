@@ -8,6 +8,7 @@ spec:
   registry: cloudquery
   version: "VERSION_DESTINATION_SNOWFLAKE"
   write_mode: "append"
+  # Learn more about the configuration options at https://cql.ink/snowflake_destination
   spec:
     connection_string: "${SNOWFLAKE_CONNECTION_STRING}"
     # Optional parameters
