@@ -17,9 +17,9 @@ This guide will show you how to run Docker plugins with the CloudQuery CLI Docke
 ```yaml filename="spec.yml"
 kind: source
 spec:
-  name: airtable
-  registry: docker
-  path: docker.cloudquery.io/cloudquery/source-airtable:VERSION_SOURCE_AIRTABLE
+  name: "airtable"
+  path: cloudquery/airtable
+  version: VERSION_SOURCE_AIRTABLE
   tables: ["*"]
   destinations: ["postgresql"]
 ---
