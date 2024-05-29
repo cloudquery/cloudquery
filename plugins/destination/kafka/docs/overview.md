@@ -21,6 +21,10 @@ This is the (nested) plugin spec
 
   List of brokers to connect to.
 
+  Example broker address:
+
+  - `"localhost:9092"` default url for a local Kafka broker
+
 - `format` (`string`) (required)
 
   Format of the output file. Supported values are `csv`, `json` and `parquet`.
