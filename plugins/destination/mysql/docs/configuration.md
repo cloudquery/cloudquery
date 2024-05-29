@@ -19,6 +19,11 @@ This is the (nested) spec used by the MySQL destination plugin.
 - `connection_string` (`string`) (required)
 
   Connection string to connect to the database. See the [Go driver documentation](https://github.com/go-sql-driver/mysql#dsn-data-source-name) for details.
+  
+  - `"user:password@tcp(127.0.0.1:3306)/dbname"` connect with TCP
+  - `"user:password@127.0.0.1:3306/dbname?charset=utf8mb4\u0026parseTime=True\u0026loc=Local"` connect and set charset, time parsing, and location
+  - `"user:password@localhost:3306/dbname?timeout=30s\u0026readTimeout=1s\u0026writeTimeout=1s"` connect and set various timeouts
+  - `"user:password@/dbname?loc=UTC\u0026allowNativePasswords=true\u0026tls=preferred"` connect and set location and native password allowance, and prefer TLS
 
 - `batch_size` (`integer`) (optional) (default: `1000`)
 
