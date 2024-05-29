@@ -14,26 +14,20 @@ import (
 )
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
-	sc := table.ToArrowSchema()
-	query := queries.Read(table)
-
-	rows, err := c.conn.Query(ctx, query)
+	rows, err := c.conn.Query(ctx, queries.Read(table))
 	if err != nil {
 		return err
 	}
 	defer rows.Close()
 
-	columnTypes := rows.ColumnTypes()
-
-	builder := array.NewRecordBuilder(memory.DefaultAllocator, sc)
+	row := rowArr(rows.ColumnTypes())
+	builder := array.NewRecordBuilder(memory.DefaultAllocator, table.ToArrowSchema())
 	for rows.Next() {
-		row := rowArr(columnTypes)
-
-		if err := rows.Scan(row...); err != nil {
+		if err = rows.Scan(row...); err != nil {
 			return err
 		}
 
-		if err := values.AppendToRecordBuilder(builder, row); err != nil {
+		if err = values.AppendToRecordBuilder(builder, row); err != nil {
 			return err
 		}
 	}
