@@ -189,7 +189,7 @@
           },
           "type": "array",
           "minItems": 1,
-          "description": "List of brokers to connect to."
+          "description": "List of brokers to connect to.\n\nExample broker address:\n\n- `\"localhost:9092\"` default url for a local Kafka broker"
         },
         "verbose": {
           "type": "boolean",
