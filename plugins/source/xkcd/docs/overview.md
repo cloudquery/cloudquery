@@ -1,7 +1,3 @@
-# CloudQuery XKCD Source Plugin
-
-:badge
-
 This CloudQuery source plugin fetches data from the [XKCD API](https://xkcd.com/json.html), allowing you to load the XKCD comic data into any CloudQuery-supported destination (e.g. PostgreSQL, Elasticsearch, Snowflake, etc.). See [CloudQuery destinations](https://www.cloudquery.io/docs/plugins/destinations/overview) for a complete list of supported destinations.
 
 It was originally developed as part of a live-coding tutorial on how to write your own CloudQuery source plugin. It only took 30 minutes! You can watch the video here: https://www.youtube.com/watch?v=3Ka_Ob8E6P8

@@ -6,6 +6,7 @@ spec:
   registry: "cloudquery"
   version: "VERSION_DESTINATION_CLICKHOUSE"
   write_mode: "append"
+  # Learn more about the configuration options at https://cql.ink/clickhouse_destination
   spec:
     connection_string: "clickhouse://${CH_USER}:${CH_PASSWORD}@localhost:9000/${CH_DATABASE}"
     # Optional parameters

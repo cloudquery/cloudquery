@@ -8,6 +8,7 @@ spec:
   registry: "cloudquery"
   version: "VERSION_DESTINATION_FILE"
   write_mode: "append"
+  # Learn more about the configuration options at https://cql.ink/file_destination
   spec:
     path: "path/to/files/{{TABLE}}/{{UUID}}.{{FORMAT}}"
     format: "parquet" # options: parquet, json, csv
