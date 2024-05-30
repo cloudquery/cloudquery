@@ -23,7 +23,7 @@ This is the (nested) plugin spec
 
   Example broker address:
 
-  - `"localhost:9092"` default url for a local Kafka broker
+  - `"localhost:9092"` default URL for a local Kafka broker
 
 - `format` (`string`) (required)
 
