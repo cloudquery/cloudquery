@@ -9,5 +9,5 @@ import (
 
 func Insert(table *schema.Table) string {
 	return `INSERT INTO ` + util.SanitizeID(table.Name) +
-		`(` + strings.Join(util.Sanitized(table.Columns.Names()...), `, `) + `)`
+		` (` + strings.Join(util.Sanitized(table.Columns.Names()...), `, `) + `)`
 }
