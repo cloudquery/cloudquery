@@ -12,7 +12,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.28.10
 	github.com/cloudquery/codegen v0.3.16
 	github.com/cloudquery/plugin-sdk/v4 v4.43.1
-	github.com/goccy/go-json v0.10.2
+	github.com/goccy/go-json v0.10.3
 	github.com/rs/zerolog v1.32.0
 	github.com/stretchr/testify v1.9.0
 )
