@@ -12,6 +12,11 @@ const (
 
 type Spec struct {
 	// MongoDB URI as described in the official MongoDB [documentation](https://www.mongodb.com/docs/manual/reference/connection-string/).
+	//
+	// Example connection strings:
+	// - `"mongodb://username:password@hostname:port/database"` basic connection
+	// - `"mongodb+srv://username:password@cluster.example.com/database"` connecting to a MongoDB Atlas cluster
+	// - `"mongodb://localhost:27017/myDatabase?authSource=admin"` specify authentication source
 	ConnectionString string `json:"connection_string" jsonschema:"required,minLength=1"`
 
 	// Database to sync the data to.

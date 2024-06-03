@@ -21,6 +21,11 @@ This is the (nested) spec used by the Microsoft SQL Server destination plugin.
   Connection string to connect to the database.
   See [SDK documentation](https://github.com/microsoft/go-mssqldb#connection-parameters-and-dsn) for details.
 
+  Example connection strings:
+	- `"sqlserver://username:password@hostname/instance"` basic connection using a named instance
+	- `"sqlserver://username:password@localhost?database=master&connection+timeout=30"` select "master" database and set connection timeout (default instance)
+
+
 - `auth_mode` (`string`) (optional) (default: `ms`)
 
   If you need to authenticate via Azure Active Directory ensure you specify `azure` value.
