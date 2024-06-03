@@ -34,6 +34,10 @@ This is the (nested) spec used by the ClickHouse destination plugin.
   Connection string to connect to the database.
   See [SDK documentation](https://github.com/ClickHouse/clickhouse-go#dsn) for more details.
 
+  Example connection string:
+
+  - `"clickhouse://username:password@host1:9000,host2:9000/database?dial_timeout=200ms&max_execution_time=60"`
+
 - `cluster` (`string`) (optional) (default: not used)
 
   Cluster name to be used for [distributed DDL](https://clickhouse.com/docs/en/sql-reference/distributed-ddl).

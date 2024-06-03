@@ -17,6 +17,10 @@ type Spec struct {
 	filetypes.FileSpec
 
 	// List of brokers to connect to.
+	//
+	// Example broker address:
+	//
+	// - `"localhost:9092"` default url for a local Kafka broker
 	Brokers []string `json:"brokers,omitempty" jsonschema:"required,minLength=1,minItems=1"`
 
 	// If `true`, the plugin will log all underlying Kafka client messages to the log.
