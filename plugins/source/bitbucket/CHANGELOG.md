@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.3.1...plugins-source-bitbucket-v1.3.2) (2024-06-03)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.11.3 ([#18094](https://github.com/cloudquery/cloudquery/issues/18094)) ([821a1bc](https://github.com/cloudquery/cloudquery/commit/821a1bc04455692579d4cc9714dac61f7a8efcb6))
+
 ## [1.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.3.0...plugins-source-bitbucket-v1.3.1) (2024-05-07)
 
 
