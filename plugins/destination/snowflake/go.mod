@@ -5,8 +5,8 @@ go 1.21.6
 require (
 	github.com/apache/arrow/go/v16 v16.1.0
 	github.com/cloudquery/codegen v0.3.16
-	github.com/cloudquery/plugin-sdk/v4 v4.43.1
-	github.com/goccy/go-json v0.10.2
+	github.com/cloudquery/plugin-sdk/v4 v4.44.1
+	github.com/goccy/go-json v0.10.3
 	github.com/rs/zerolog v1.32.0
 	github.com/snowflakedb/gosnowflake v1.7.2
 	github.com/stretchr/testify v1.9.0
@@ -51,7 +51,7 @@ require (
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.11.2 // indirect
-	github.com/cloudquery/plugin-pb-go v1.19.15 // indirect
+	github.com/cloudquery/plugin-pb-go v1.19.17 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/danieljoos/wincred v1.2.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
