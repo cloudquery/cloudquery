@@ -5,7 +5,7 @@ go 1.21.5
 toolchain go1.22.3
 
 require (
-	github.com/cloudquery/plugin-sdk/v4 v4.43.1
+	github.com/cloudquery/plugin-sdk/v4 v4.44.1
 	github.com/rs/zerolog v1.32.0
 	golang.org/x/sync v0.7.0
 	google.golang.org/grpc v1.64.0
@@ -30,7 +30,7 @@ require (
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.11.2 // indirect
-	github.com/cloudquery/plugin-pb-go v1.19.15 // indirect
+	github.com/cloudquery/plugin-pb-go v1.19.17 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.15.0 // indirect
