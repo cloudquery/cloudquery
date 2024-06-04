@@ -24,147 +24,93 @@ func (c *Client) ColumnToBigQuerySchema(col schema.Column) *bigquery.FieldSchema
 
 	// TODO: handle repeated; we currently don't handle the case where we get a list of lists,
 	//       but that's not a valid case right now and isn't being explicitly tested for.
-	if isListType(col.Type) {
+	switch col.Type.(type) {
+	case *arrow.MapType:
+	// nop
+	case arrow.ListLikeType:
 		sc.Repeated = true
 	}
 	return &sc
 }
 
-func isListType(t arrow.DataType) bool {
-	return t.ID() == arrow.LIST || t.ID() == arrow.LARGE_LIST || t.ID() == arrow.FIXED_SIZE_LIST
-}
-
-func (c *Client) DataTypeToBigQueryType(dataType arrow.DataType) bigquery.FieldType {
-	switch {
+func (c *Client) DataTypeToBigQueryType(dt arrow.DataType) bigquery.FieldType {
+	switch dt := dt.(type) {
 	// handle known extensions that require special handling
-	case typeOneOf(dataType,
-		types.ExtensionTypes.JSON):
+	case *types.JSONType:
 		return bigquery.JSONFieldType
-	case typeOneOf(dataType,
-		types.ExtensionTypes.Inet,
-		types.ExtensionTypes.MAC,
-		types.ExtensionTypes.UUID):
+	case *types.InetType, *types.MACType, *types.UUIDType:
 		return bigquery.StringFieldType
 
 	// handle complex types
-	case dataType.ID() == arrow.MAP:
+	case *arrow.MapType:
 		return bigquery.JSONFieldType
-	case dataType.ID() == arrow.STRUCT:
+	case *arrow.StructType:
 		return bigquery.RecordFieldType
-	case isListType(dataType):
-		switch v := dataType.(type) {
-		case *arrow.ListType:
-			return c.DataTypeToBigQueryType(v.Elem())
-		case *arrow.LargeListType:
-			return c.DataTypeToBigQueryType(v.Elem())
-		case *arrow.FixedSizeListType:
-			return c.DataTypeToBigQueryType(v.Elem())
-		}
-		fallthrough
+	case arrow.ListLikeType:
+		return c.DataTypeToBigQueryType(dt.Elem())
 
 	// handle basic types
-	case typeOneOf(dataType,
-		arrow.FixedWidthTypes.Boolean):
+	case *arrow.BooleanType:
 		return bigquery.BooleanFieldType
-	case typeOneOf(dataType,
-		arrow.PrimitiveTypes.Int8,
-		arrow.PrimitiveTypes.Int16,
-		arrow.PrimitiveTypes.Int32,
-		arrow.PrimitiveTypes.Int64,
-		arrow.PrimitiveTypes.Uint8,
-		arrow.PrimitiveTypes.Uint16,
-		arrow.PrimitiveTypes.Uint32):
+	case *arrow.Int8Type, *arrow.Int16Type, *arrow.Int32Type, *arrow.Int64Type,
+		*arrow.Uint8Type, *arrow.Uint16Type, *arrow.Uint32Type:
 		return bigquery.IntegerFieldType
-	case typeOneOf(dataType,
-		arrow.PrimitiveTypes.Uint64):
+	case *arrow.Uint64Type:
 		return bigquery.NumericFieldType
-	case typeOneOf(dataType,
-		arrow.PrimitiveTypes.Float32,
-		arrow.PrimitiveTypes.Float64):
+	case *arrow.Float16Type, *arrow.Float32Type, *arrow.Float64Type:
 		return bigquery.FloatFieldType
-	case typeOneOf(dataType,
-		arrow.BinaryTypes.String,
-		arrow.BinaryTypes.LargeString):
-		return bigquery.StringFieldType
-	case typeOneOf(dataType,
-		arrow.BinaryTypes.Binary,
-		arrow.BinaryTypes.LargeBinary):
+	case arrow.BinaryDataType:
+		if dt.IsUtf8() {
+			return bigquery.StringFieldType
+		}
 		return bigquery.BytesFieldType
-	case typeOneOf(dataType,
-		arrow.FixedWidthTypes.Date32,
-		arrow.FixedWidthTypes.Date64):
+
+	case *arrow.Date32Type, *arrow.Date64Type:
 		return bigquery.DateFieldType
-	case typeOneOf(dataType,
-		arrow.FixedWidthTypes.Timestamp_s,
-		arrow.FixedWidthTypes.Timestamp_ms,
-		arrow.FixedWidthTypes.Timestamp_us):
+	case *arrow.TimestampType:
 		return bigquery.TimestampFieldType
-	case typeOneOf(dataType,
-		arrow.FixedWidthTypes.Timestamp_ns):
-		return bigquery.RecordFieldType
-	case typeOneOf(dataType,
-		arrow.FixedWidthTypes.Time32s,
-		arrow.FixedWidthTypes.Time32ms,
-		arrow.FixedWidthTypes.Time64us,
-		arrow.FixedWidthTypes.Time64ns):
+	case *arrow.Time32Type, *arrow.Time64Type:
 		return bigquery.TimeFieldType
-	case typeOneOf(dataType,
-		arrow.FixedWidthTypes.Duration_s,
-		arrow.FixedWidthTypes.Duration_ms,
-		arrow.FixedWidthTypes.Duration_us,
-		arrow.FixedWidthTypes.Duration_ns):
+	case *arrow.DurationType:
 		// BigQuery does not support intervals with precisions higher than seconds,
 		// and in the case of seconds the max value is not large enough to contain the
 		// max Arrow duration, so we store durations as plain integers. Users will need
 		// to cast or transform to interval, if necessary.
 		return bigquery.IntegerFieldType
-	case typeOneOf(dataType,
-		arrow.FixedWidthTypes.MonthInterval):
-		return bigquery.RecordFieldType
-	case typeOneOf(dataType,
-		arrow.FixedWidthTypes.DayTimeInterval):
-		return bigquery.RecordFieldType
-	case typeOneOf(dataType,
-		arrow.FixedWidthTypes.MonthDayNanoInterval):
+	case *arrow.MonthIntervalType, *arrow.DayTimeIntervalType, *arrow.MonthDayNanoIntervalType:
 		return bigquery.RecordFieldType
 		// We don't use `typeOneOf` as `arrow.TypeEqual` checks for equality of precision and scale.
-	case arrow.IsDecimal(dataType.ID()):
+	case arrow.DecimalType:
 		// BigQuery NumericFieldType has a scale limit of 9, so we use BigNumeric for both decimal128 and decimal256.
 		return bigquery.BigNumericFieldType
-	default:
-		panic("unsupported data type: " + dataType.String())
 	}
+	panic("unsupported data type: " + dt.String())
 }
 
-func (c *Client) DataTypeToBigQuerySchema(dataType arrow.DataType) bigquery.Schema {
-	switch {
-	case dataType.ID() == arrow.STRUCT:
-		v := dataType.(*arrow.StructType)
-		fields := make([]*bigquery.FieldSchema, len(v.Fields()))
-		for i, field := range v.Fields() {
+func (c *Client) DataTypeToBigQuerySchema(dt arrow.DataType) bigquery.Schema {
+	switch dt := dt.(type) {
+	case *arrow.StructType:
+		fields := make([]*bigquery.FieldSchema, len(dt.Fields()))
+		for i, field := range dt.Fields() {
 			fields[i] = c.ColumnToBigQuerySchema(schema.Column{
 				Name: field.Name,
 				Type: field.Type,
 			})
 		}
 		return fields
-	case arrow.IsListLike(dataType.ID()):
-		switch v := dataType.(type) {
-		case *arrow.ListType:
-			return c.DataTypeToBigQuerySchema(v.Elem())
-		case *arrow.LargeListType:
-			return c.DataTypeToBigQuerySchema(v.Elem())
-		default:
-			panic("unsupported list type: " + dataType.String())
-		}
-	case arrow.TypeEqual(dataType, arrow.FixedWidthTypes.MonthInterval):
+	case *arrow.MapType: // as it matches the listLike as well
+		return nil
+	case arrow.ListLikeType:
+		return c.DataTypeToBigQuerySchema(dt.Elem())
+
+	case *arrow.MonthIntervalType:
 		return []*bigquery.FieldSchema{
 			{
 				Name: "months",
 				Type: bigquery.IntegerFieldType,
 			},
 		}
-	case arrow.TypeEqual(dataType, arrow.FixedWidthTypes.DayTimeInterval):
+	case *arrow.DayTimeIntervalType:
 		return []*bigquery.FieldSchema{
 			{
 				Name: "days",
@@ -175,7 +121,7 @@ func (c *Client) DataTypeToBigQuerySchema(dataType arrow.DataType) bigquery.Sche
 				Type: bigquery.IntegerFieldType,
 			},
 		}
-	case arrow.TypeEqual(dataType, arrow.FixedWidthTypes.MonthDayNanoInterval):
+	case *arrow.MonthDayNanoIntervalType:
 		return []*bigquery.FieldSchema{
 			{
 				Name: "months",
@@ -190,26 +136,7 @@ func (c *Client) DataTypeToBigQuerySchema(dataType arrow.DataType) bigquery.Sche
 				Type: bigquery.IntegerFieldType,
 			},
 		}
-	case typeOneOf(dataType, arrow.FixedWidthTypes.Timestamp_ns):
-		return []*bigquery.FieldSchema{
-			{
-				Name: "timestamp",
-				Type: bigquery.TimestampFieldType,
-			},
-			{
-				Name: "nanoseconds",
-				Type: bigquery.IntegerFieldType,
-			},
-		}
+	default:
+		return nil
 	}
-	return nil
-}
-
-func typeOneOf(left arrow.DataType, dt ...arrow.DataType) bool {
-	for _, t := range dt {
-		if arrow.TypeEqual(left, t) {
-			return true
-		}
-	}
-	return false
 }
