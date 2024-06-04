@@ -113,7 +113,7 @@ func getValueForBigQuery(col arrow.Array, i int) any {
 	case *array.Timestamp:
 		return v.GetOneForMarshal(i)
 	case *types.JSONArray:
-		return v.ValueStr(i)
+		return v.GetOneForMarshal(i)
 	}
 	return col.GetOneForMarshal(i)
 }
