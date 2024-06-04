@@ -60,7 +60,12 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	ctx, cancel := context.WithTimeout(ctx, writeTimeout)
 	defer cancel()
 
-	for err := inserter.Put(ctx, batch); err != nil; err = inserter.Put(ctx, batch) {
+	for {
+		err := inserter.Put(ctx, batch)
+		if err == nil {
+			return nil
+		}
+
 		// check if bigquery error is 404 (table does not exist yet), then wait a bit and retry until it does exist
 		var apiErr *googleapi.Error
 		if errors.As(err, &apiErr) {
@@ -73,8 +78,6 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 		}
 		return fmt.Errorf("failed to put item into BigQuery table %s: %w", name, err)
 	}
-
-	return nil
 }
 
 func getValueForBigQuery(col arrow.Array, i int) any {

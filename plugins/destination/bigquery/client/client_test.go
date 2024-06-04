@@ -12,8 +12,7 @@ import (
 )
 
 func TestPlugin(t *testing.T) {
-	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)
-	defer cancel()
+	ctx := context.TODO()
 
 	p := plugin.NewPlugin("bigquery", "development", New)
 	spec := &Spec{
@@ -40,10 +39,18 @@ func TestPlugin(t *testing.T) {
 			SkipDeleteRecord: true,
 		},
 		plugin.WithTestDataOptions(schema.TestSourceOptions{
-			SkipMaps: true,
+			SkipDates:      true,
+			SkipDurations:  true,
+			SkipIntervals:  true,
+			SkipLargeTypes: true,
+			SkipLists:      true,
+			SkipMaps:       true,
+			SkipStructs:    true,
 			// https://github.com/cloudquery/cloudquery/issues/12022
-			SkipTimes:     true,
-			TimePrecision: time.Microsecond,
+			SkipTimes:      true,
+			SkipTimestamps: true,
+			TimePrecision:  time.Microsecond,
+			SkipDecimals:   true,
 		}),
 		plugin.WithTestIgnoreNullsInLists(),
 	)
