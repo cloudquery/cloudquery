@@ -12,6 +12,7 @@ import (
 	"github.com/apache/arrow/go/v16/arrow"
 	"github.com/apache/arrow/go/v16/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/types"
 	"google.golang.org/api/googleapi"
 )
 
@@ -116,6 +117,8 @@ func getValueForBigQuery(col arrow.Array, i int) any {
 		return v.Value(i)
 	case *array.Duration:
 		return v.Value(i)
+	case *types.JSONArray:
+		return v.ValueStr(i)
 	default:
 		return v.GetOneForMarshal(i)
 	}
