@@ -15,10 +15,10 @@ func TestPlugin(t *testing.T) {
 
 	p := plugin.NewPlugin("bigquery", "development", New)
 	spec := &Spec{
-		ProjectID:        os.Getenv("BIGQUERY_PROJECT_ID"),
-		DatasetID:        os.Getenv("BIGQUERY_DATASET_ID"),
+		ProjectID:        getEnvDefault("BIGQUERY_PROJECT_ID", "test"),
+		DatasetID:        getEnvDefault("BIGQUERY_DATASET_ID", "test"),
 		DatasetLocation:  os.Getenv("BIGQUERY_DATASET_LOCATION"),
-		Endpoint:         os.Getenv("BIGQUERY_ENDPOINT"),
+		Endpoint:         getEnvDefault("BIGQUERY_ENDPOINT", "http://localhost:9050"),
 		TimePartitioning: "none",
 	}
 	specBytes, err := json.Marshal(spec)
@@ -44,4 +44,12 @@ func TestPlugin(t *testing.T) {
 		}),
 		plugin.WithTestIgnoreNullsInLists(),
 	)
+}
+
+func getEnvDefault(key string, value string) string {
+	v, ok := os.LookupEnv(key)
+	if ok {
+		return v
+	}
+	return value
 }
