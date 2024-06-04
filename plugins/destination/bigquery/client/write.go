@@ -3,14 +3,15 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"net/http"
 	"time"
 
 	"cloud.google.com/go/bigquery"
 	"github.com/apache/arrow/go/v16/arrow"
 	"github.com/apache/arrow/go/v16/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/message"
-	"github.com/cloudquery/plugin-sdk/v4/types"
 	"google.golang.org/api/googleapi"
 )
 
@@ -56,16 +57,19 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 		}
 	}
 	// flush final rows
-	timeoutCtx, cancel := context.WithTimeout(ctx, writeTimeout)
+	ctx, cancel := context.WithTimeout(ctx, writeTimeout)
 	defer cancel()
 
-	for err := inserter.Put(timeoutCtx, batch); err != nil; err = inserter.Put(timeoutCtx, batch) {
+	for err := inserter.Put(ctx, batch); err != nil; err = inserter.Put(ctx, batch) {
 		// check if bigquery error is 404 (table does not exist yet), then wait a bit and retry until it does exist
-		if e, ok := err.(*googleapi.Error); ok && e.Code == 404 {
-			// retry
-			c.logger.Info().Str("table", name).Msg("Table does not exist yet, waiting for it to be created before retrying write")
-			time.Sleep(1 * time.Second)
-			continue
+		var apiErr *googleapi.Error
+		if errors.As(err, &apiErr) {
+			if apiErr.Code == http.StatusNotFound {
+				// retry
+				c.logger.Info().Str("table", name).Msg("Table does not exist yet, waiting for it to be created before retrying write")
+				time.Sleep(1 * time.Second)
+				continue
+			}
 		}
 		return fmt.Errorf("failed to put item into BigQuery table %s: %w", name, err)
 	}
@@ -83,12 +87,11 @@ func getValueForBigQuery(col arrow.Array, i int) any {
 		}
 		return m
 	case *array.Map:
-		b, _ := json.Marshal(col.GetOneForMarshal(i))
+		b, _ := json.Marshal(v.GetOneForMarshal(i))
 		return string(b)
 	case array.ListLike:
-		col := col.(array.ListLike)
-		from, to := col.ValueOffsets(i)
-		slc := array.NewSlice(col.ListValues(), from, to)
+		from, to := v.ValueOffsets(i)
+		slc := array.NewSlice(v.ListValues(), from, to)
 		elems := make([]any, 0, slc.Len())
 		for j := 0; j < slc.Len(); j++ {
 			if slc.IsNull(j) {
@@ -110,10 +113,7 @@ func getValueForBigQuery(col arrow.Array, i int) any {
 		return v.Value(i)
 	case *array.Duration:
 		return v.Value(i)
-	case *array.Timestamp:
-		return v.GetOneForMarshal(i)
-	case *types.JSONArray:
+	default:
 		return v.GetOneForMarshal(i)
 	}
-	return col.GetOneForMarshal(i)
 }

@@ -12,7 +12,8 @@ import (
 )
 
 func TestPlugin(t *testing.T) {
-	ctx := context.Background()
+	ctx, cancel := context.WithTimeout(context.TODO(), time.Minute)
+	defer cancel()
 
 	p := plugin.NewPlugin("bigquery", "development", New)
 	spec := &Spec{
