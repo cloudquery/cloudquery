@@ -18,6 +18,7 @@ import (
 	"github.com/cenkalti/backoff/v4"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery-api-go/config"
+	"github.com/cloudquery/cloudquery/cli/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/internal/env"
 	"github.com/cloudquery/cloudquery/cli/internal/team"
 	"github.com/pkg/browser"
@@ -187,9 +188,9 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	}
 
 	// Create a context for the shutdown with a 15-second timeout.
-	ctx, cancel := context.WithTimeout(ctx, 15*time.Second)
+	ctxWithTimeout, cancel := context.WithTimeout(ctx, 15*time.Second)
 	defer cancel()
-	if err := server.Shutdown(ctx); err != nil {
+	if err := server.Shutdown(ctxWithTimeout); err != nil {
 		return fmt.Errorf("failed to shutdown server: %w", err)
 	}
 
@@ -197,6 +198,7 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 		return serverErr
 	}
 
+	analytics.TrackLogin(ctx, invocationUUID)
 	cmd.Println("CLI successfully authenticated.")
 
 	return nil

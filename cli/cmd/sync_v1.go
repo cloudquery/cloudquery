@@ -26,9 +26,9 @@ func syncConnectionV1(ctx context.Context, sourceClient *managedplugin.Client, d
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	defer func() {
-		if analyticsClient != nil {
-			log.Info().Msg("Sending sync summary to " + analyticsClient.Host())
-			if err := analyticsClient.SendSyncMetrics(context.Background(), sourceSpec, destinationSpecs, uid, &mt, exitReason); err != nil {
+		if oldAnalyticsClient != nil {
+			log.Info().Msg("Sending sync summary to " + oldAnalyticsClient.Host())
+			if err := oldAnalyticsClient.SendSyncMetrics(context.Background(), sourceSpec, destinationSpecs, uid, &mt, exitReason); err != nil {
 				log.Warn().Err(err).Msg("Failed to send sync summary")
 			}
 		}
