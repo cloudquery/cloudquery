@@ -45,7 +45,7 @@
         "connection_string": {
           "type": "string",
           "minLength": 1,
-          "description": "Connection string to connect to the database.\nSee [SDK documentation](https://github.com/ClickHouse/clickhouse-go#dsn) for more details."
+          "description": "Connection string to connect to the database.\nSee [SDK documentation](https://github.com/ClickHouse/clickhouse-go#dsn) for more details.\n\nExample connection string:\n\n- `\"clickhouse://username:password@host1:9000,host2:9000/database?dial_timeout=200ms\u0026max_execution_time=60\"`"
         },
         "cluster": {
           "type": "string",
