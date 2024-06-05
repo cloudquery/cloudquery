@@ -28,9 +28,8 @@ func initRudderStack() {
 	client = rudderstack.New(writeKey, dataPlaneURL)
 }
 
-func Init(ctx context.Context) error {
+func Init() {
 	initRudderStack()
-	return nil
 }
 
 func getEnvironment(token cqauth.Token) string {
@@ -87,7 +86,6 @@ func redactDestination(destination *specs.Destination) *specs.Destination {
 			Version: destination.Metadata.Version,
 		},
 	}
-
 }
 
 func redactDestinations(destinations []*specs.Destination) []*specs.Destination {
@@ -96,7 +94,6 @@ func redactDestinations(destinations []*specs.Destination) []*specs.Destination 
 		redacted[i] = redactDestination(destination)
 	}
 	return redacted
-
 }
 
 func Identify(ctx context.Context) {
@@ -109,7 +106,7 @@ func Identify(ctx context.Context) {
 		return
 	}
 
-	client.Enqueue(rudderstack.Identify{
+	_ = client.Enqueue(rudderstack.Identify{
 		UserId: details.userId,
 		Traits: rudderstack.Traits{
 			"team":        details.currentTeam,
@@ -128,7 +125,7 @@ func TrackLogin(ctx context.Context, invocationUUID uuid.UUID) {
 		return
 	}
 
-	client.Enqueue(rudderstack.Track{
+	_ = client.Enqueue(rudderstack.Track{
 		UserId: details.userId,
 		Event:  "Login",
 		Properties: rudderstack.Properties{
@@ -154,7 +151,7 @@ func TrackSyncStarted(ctx context.Context, invocationUUID uuid.UUID, event SyncS
 		return
 	}
 
-	client.Enqueue(rudderstack.Track{
+	_ = client.Enqueue(rudderstack.Track{
 		UserId: details.userId,
 		Event:  "Sync Started",
 		Properties: rudderstack.Properties{
@@ -187,11 +184,11 @@ func TrackSyncFinished(ctx context.Context, invocationUUID uuid.UUID, event Sync
 	}
 
 	toRedact := make([]*specs.Destination, len(event.Destinations))
-	for i, destination := range event.Destinations {
-		toRedact[i] = &destination
+	for i := range event.Destinations {
+		toRedact[i] = &event.Destinations[i]
 	}
 
-	client.Enqueue(rudderstack.Track{
+	_ = client.Enqueue(rudderstack.Track{
 		UserId: details.userId,
 		Event:  "Sync Finished",
 		Properties: rudderstack.Properties{

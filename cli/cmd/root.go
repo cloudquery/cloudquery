@@ -90,11 +90,9 @@ func NewCmdRoot() *cobra.Command {
 			if (Version != "development" || customAnalyticsHost) && sendStats {
 				oldAnalyticsClient, err = initAnalytics()
 				if err != nil {
-					log.Warn().Err(err).Msg("failed to initialize old analytics client")
+					log.Warn().Err(err).Msg("failed to initialize analytics client")
 				}
-				if err := analytics.Init(cmd.Context()); err != nil {
-					log.Warn().Err(err).Msg("failed to initialize analytics")
-				}
+				analytics.Init()
 			}
 
 			sendErrors := funk.ContainsString([]string{"all", "errors"}, telemetryLevel.String())
