@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.20.5](https://github.com/cloudquery/cloudquery/compare/cli-v5.20.4...cli-v5.20.5) (2024-06-06)
+
+
+### Bug Fixes
+
+* Check if `CQ_ANALYTICS_HOST` exists to determine if a custom host is set ([#18124](https://github.com/cloudquery/cloudquery/issues/18124)) ([c6f5bbf](https://github.com/cloudquery/cloudquery/commit/c6f5bbf5d59052ac92e9109352a047be9c62c468))
+* Progressbar related error when `log-console` option is used ([#18161](https://github.com/cloudquery/cloudquery/issues/18161)) ([bbac469](https://github.com/cloudquery/cloudquery/commit/bbac469cc20bcef6dc963c251288729347499f71))
+
 ## [5.20.4](https://github.com/cloudquery/cloudquery/compare/cli-v5.20.3...cli-v5.20.4) (2024-06-04)
 
 
