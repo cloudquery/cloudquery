@@ -54,6 +54,7 @@ func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
 
 // nolint:dupl
 func syncConnectionV3(ctx context.Context, source v3source, destinations []v3destination, backend *v3destination, uid string, noMigrate bool, summaryLocation string) error {
+
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	tablesForDeleteStale := make(map[string]bool, 0)
@@ -66,6 +67,11 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		destinationSpecs[i] = destinations[i].spec
 		destinationsClients[i] = destinations[i].client
 	}
+
+	analytics.TrackSyncStarted(ctx, invocationUUID, analytics.SyncStartedEvent{
+		Source:       sourceSpec,
+		Destinations: destinationSpecs,
+	})
 
 	progressAPIClient, err := getProgressAPIClient()
 	if err != nil {
@@ -429,13 +435,12 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		Str("result", msg).
 		Msg("Sync summary")
 
-	analytics.TrackSyncFinished(ctx, invocationUUID, analytics.SyncFinishedEvent{
+	analytics.TrackSyncCompleted(ctx, invocationUUID, analytics.SyncFinishedEvent{
 		Source:        sourceSpec,
 		Destinations:  destinationSpecs,
 		Errors:        totals.Errors,
 		Warnings:      totals.Warnings,
 		Duration:      syncTimeTook,
-		Result:        msg,
 		ResourceCount: totalResources,
 	})
 

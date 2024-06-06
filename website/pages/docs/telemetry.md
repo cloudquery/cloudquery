@@ -28,6 +28,7 @@ Errors are stack traces sent whenever a panic occurs in the CLI or an official p
 ### Anonymous Stats
 
 Anonymous stats are numbers about the sync that was performed, such as the number of errors and number of resources fetched, as well as the plugin versions used. These are sent at the end of a sync. They contain no identifying information. We use this data to understand which plugins are being used and how much, which helps guide our roadmap and development efforts.
+We also anonymously track command that are run, and if they result in an error. This helps us understand how the CLI is being used and how many errors are being encountered.
 
 ### Identifiable Stats
 

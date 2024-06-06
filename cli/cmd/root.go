@@ -35,6 +35,25 @@ Find more information at:
 	invocationUUID     uuid.UUID
 )
 
+func wrapRunE(cmd *cobra.Command) {
+	// Ideally we could use PersistentPostRunE, but it doesn't get called if the command has an error
+	// See https://github.com/spf13/cobra/issues/1893
+	if cmd.RunE != nil {
+		wrapped := cmd.RunE
+		cmd.RunE = func(cmd *cobra.Command, args []string) error {
+			analytics.TrackCommandStart(cmd.Context(), cmd.Name(), invocationUUID)
+			err := wrapped(cmd, args)
+			analytics.TrackCommandEnd(cmd.Context(), cmd.Name(), invocationUUID, err)
+			return err
+		}
+	}
+
+	childCommands := cmd.Commands()
+	for i := range childCommands {
+		wrapRunE(childCommands[i])
+	}
+}
+
 func NewCmdRoot() *cobra.Command {
 	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
 	logFormat := enum.NewEnum([]string{"text", "json"}, "text")
@@ -105,7 +124,7 @@ func NewCmdRoot() *cobra.Command {
 				disableSentry = true
 			}
 
-			analytics.Identify(cmd.Context())
+			analytics.Identify(cmd.Context(), invocationUUID)
 
 			return nil
 		},
@@ -180,6 +199,7 @@ func NewCmdRoot() *cobra.Command {
 		pluginCmd,
 		addonCmd,
 	)
+
 	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true
 	cobra.OnFinalize(func() {
@@ -188,6 +208,8 @@ func NewCmdRoot() *cobra.Command {
 		}
 		analytics.Close()
 	})
+
+	wrapRunE(cmd)
 
 	return cmd
 }

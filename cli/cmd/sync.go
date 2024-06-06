@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	apiAuth "github.com/cloudquery/cloudquery-api-go/auth"
-	"github.com/cloudquery/cloudquery/cli/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -125,10 +124,6 @@ func sync(cmd *cobra.Command, args []string) error {
 	// in a cloud sync environment, we pass only the relevant environment variables to the plugin
 	osEnviron := os.Environ()
 
-	analytics.TrackSyncStarted(ctx, invocationUUID, analytics.SyncStartedEvent{
-		Sources:      specReader.Sources,
-		Destinations: specReader.Destinations,
-	})
 	for _, source := range sources {
 		opts := []managedplugin.Option{
 			managedplugin.WithLogger(log.Logger),

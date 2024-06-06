@@ -2,6 +2,8 @@ package analytics
 
 import (
 	"context"
+	"os"
+	"strings"
 	"time"
 
 	cqauth "github.com/cloudquery/cloudquery-api-go/auth"
@@ -22,25 +24,18 @@ type eventDetails struct {
 	environment string
 }
 
-func initRudderStack() {
+func Init() {
 	writeKey := env.GetEnvOrDefault("CQ_RUDDERSTACK_WRITE_KEY", "2h38sP5iH58EYKBTRsGByJDDr6r")
 	dataPlaneURL := env.GetEnvOrDefault("CQ_RUDDERSTACK_DATA_PLANE_URL", "https://analytics-events.cloudquery.io")
 	client = rudderstack.New(writeKey, dataPlaneURL)
 }
 
-func Init() {
-	initRudderStack()
-}
-
-func getEnvironment(token cqauth.Token) string {
-	switch token.Type {
-	case cqauth.SyncRunAPIKey, cqauth.SyncTestConnectionAPIKey:
+func getEnvironment() string {
+	_, ok := os.LookupEnv("CQ_CLOUD")
+	if ok {
 		return "cloud"
-	case cqauth.APIKey, cqauth.BearerToken:
-		return "cli"
-	default:
-		return "unknown"
 	}
+	return "cli"
 }
 
 func getEventDetails(ctx context.Context) *eventDetails {
@@ -58,12 +53,12 @@ func getEventDetails(ctx context.Context) *eventDetails {
 	return &eventDetails{
 		userId:      userId,
 		currentTeam: currentTeam,
-		environment: getEnvironment(token),
+		environment: getEnvironment(),
 	}
 }
 
-func redactSource(source *specs.Source) *specs.Source {
-	return &specs.Source{
+func redactSource(source specs.Source) specs.Source {
+	return specs.Source{
 		Metadata: specs.Metadata{
 			Path:    source.Metadata.Path,
 			Version: source.Metadata.Version,
@@ -71,16 +66,8 @@ func redactSource(source *specs.Source) *specs.Source {
 	}
 }
 
-func redactSources(sources []*specs.Source) []*specs.Source {
-	redacted := make([]*specs.Source, len(sources))
-	for i, source := range sources {
-		redacted[i] = redactSource(source)
-	}
-	return redacted
-}
-
-func redactDestination(destination *specs.Destination) *specs.Destination {
-	return &specs.Destination{
+func redactDestination(destination specs.Destination) specs.Destination {
+	return specs.Destination{
 		Metadata: specs.Metadata{
 			Path:    destination.Metadata.Path,
 			Version: destination.Metadata.Version,
@@ -88,26 +75,33 @@ func redactDestination(destination *specs.Destination) *specs.Destination {
 	}
 }
 
-func redactDestinations(destinations []*specs.Destination) []*specs.Destination {
-	redacted := make([]*specs.Destination, len(destinations))
+func redactDestinations(destinations []specs.Destination) []specs.Destination {
+	redacted := make([]specs.Destination, len(destinations))
 	for i, destination := range destinations {
 		redacted[i] = redactDestination(destination)
 	}
 	return redacted
 }
 
-func Identify(ctx context.Context) {
+func Identify(ctx context.Context, invocationUUID uuid.UUID) {
 	if client == nil {
 		return
 	}
 
 	details := getEventDetails(ctx)
 	if details == nil {
+		_ = client.Enqueue(rudderstack.Identify{
+			AnonymousId: invocationUUID.String(),
+			Traits: rudderstack.Traits{
+				"environment": getEnvironment(),
+			},
+		})
 		return
 	}
 
 	_ = client.Enqueue(rudderstack.Identify{
-		UserId: details.userId,
+		AnonymousId: invocationUUID.String(),
+		UserId:      details.userId,
 		Traits: rudderstack.Traits{
 			"team":        details.currentTeam,
 			"environment": details.environment,
@@ -115,7 +109,43 @@ func Identify(ctx context.Context) {
 	})
 }
 
-func TrackLogin(ctx context.Context, invocationUUID uuid.UUID) {
+func TrackCommandStart(ctx context.Context, commandName string, invocationUUID uuid.UUID) {
+	if client == nil {
+		return
+	}
+
+	_ = client.Enqueue(rudderstack.Track{
+		AnonymousId: invocationUUID.String(),
+		Event:       "command_" + strings.ToLower(commandName) + "_start",
+		Properties: rudderstack.Properties{
+			"invocationUUID": invocationUUID,
+		},
+	})
+
+}
+
+func TrackCommandEnd(ctx context.Context, commandName string, invocationUUID uuid.UUID, err error) {
+	if client == nil {
+		return
+	}
+
+	status := "success"
+	if err != nil {
+		status = "error"
+	}
+
+	_ = client.Enqueue(rudderstack.Track{
+		AnonymousId: invocationUUID.String(),
+		Event:       "command_" + strings.ToLower(commandName) + "_end",
+		Properties: rudderstack.Properties{
+			"invocationUUID": invocationUUID,
+			"status":         status,
+		},
+	})
+
+}
+
+func TrackLoginSuccess(ctx context.Context, invocationUUID uuid.UUID) {
 	if client == nil {
 		return
 	}
@@ -126,8 +156,9 @@ func TrackLogin(ctx context.Context, invocationUUID uuid.UUID) {
 	}
 
 	_ = client.Enqueue(rudderstack.Track{
-		UserId: details.userId,
-		Event:  "Login",
+		AnonymousId: invocationUUID.String(),
+		UserId:      details.userId,
+		Event:       "login_success",
 		Properties: rudderstack.Properties{
 			"invocationUUID": invocationUUID,
 			"team":           details.currentTeam,
@@ -137,8 +168,8 @@ func TrackLogin(ctx context.Context, invocationUUID uuid.UUID) {
 }
 
 type SyncStartedEvent struct {
-	Sources      []*specs.Source
-	Destinations []*specs.Destination
+	Source       specs.Source
+	Destinations []specs.Destination
 }
 
 func TrackSyncStarted(ctx context.Context, invocationUUID uuid.UUID, event SyncStartedEvent) {
@@ -153,12 +184,13 @@ func TrackSyncStarted(ctx context.Context, invocationUUID uuid.UUID, event SyncS
 
 	_ = client.Enqueue(rudderstack.Track{
 		UserId: details.userId,
-		Event:  "Sync Started",
+		Event:  "sync_run_started",
 		Properties: rudderstack.Properties{
-			"invocationUUID": invocationUUID,
-			"environment":    details.environment,
-			"sources":        redactSources(event.Sources),
-			"destinations":   redactDestinations(event.Destinations),
+			"invocation_uuid": invocationUUID,
+			"team":            details.currentTeam,
+			"environment":     details.environment,
+			"source":          redactSource(event.Source),
+			"destinations":    redactDestinations(event.Destinations),
 		},
 	})
 }
@@ -169,11 +201,10 @@ type SyncFinishedEvent struct {
 	Errors        uint64
 	Warnings      uint64
 	Duration      time.Duration
-	Result        string
 	ResourceCount int64
 }
 
-func TrackSyncFinished(ctx context.Context, invocationUUID uuid.UUID, event SyncFinishedEvent) {
+func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event SyncFinishedEvent) {
 	if client == nil {
 		return
 	}
@@ -183,24 +214,20 @@ func TrackSyncFinished(ctx context.Context, invocationUUID uuid.UUID, event Sync
 		return
 	}
 
-	toRedact := make([]*specs.Destination, len(event.Destinations))
-	for i := range event.Destinations {
-		toRedact[i] = &event.Destinations[i]
-	}
-
 	_ = client.Enqueue(rudderstack.Track{
 		UserId: details.userId,
-		Event:  "Sync Finished",
+		Event:  "sync_run_completed",
 		Properties: rudderstack.Properties{
-			"invocationUUID": invocationUUID,
-			"environment":    details.environment,
-			"source":         redactSource(&event.Source),
-			"destinations":   redactDestinations(toRedact),
-			"duration":       event.Duration,
-			"result":         event.Result,
-			"resourceCount":  event.ResourceCount,
-			"errors":         event.Errors,
-			"warnings":       event.Warnings,
+			"invocation_uuid": invocationUUID,
+			"team":            details.currentTeam,
+			"environment":     details.environment,
+			"source":          redactSource(event.Source),
+			"destinations":    redactDestinations(event.Destinations),
+			"duration":        event.Duration,
+			"status":          "success",
+			"resource_count":  event.ResourceCount,
+			"errors":          event.Errors,
+			"warnings":        event.Warnings,
 		},
 	})
 }
