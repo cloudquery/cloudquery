@@ -4,7 +4,7 @@ kind: source
 spec:
   name: bitbucket
   path: cloudquery/bitbucket
-  version: VERSION_SOURCE_BITBUCKET
+  version: "VERSION_SOURCE_BITBUCKET"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   # bitbucket-specific configuration
