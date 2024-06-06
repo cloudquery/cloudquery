@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.15](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.4.14...plugins-destination-gremlin-v2.4.15) (2024-06-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/docker/docker to v26.1.3+incompatible ([#18083](https://github.com/cloudquery/cloudquery/issues/18083)) ([c1c3754](https://github.com/cloudquery/cloudquery/commit/c1c375447429487083baab6a56b27303890321e7))
+
 ## [2.4.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.4.13...plugins-destination-gremlin-v2.4.14) (2024-06-04)
 
 
