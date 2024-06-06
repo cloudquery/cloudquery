@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.0.3...plugins-destination-gcs-v5.0.4) (2024-06-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/docker/docker to v26.1.3+incompatible ([#18083](https://github.com/cloudquery/cloudquery/issues/18083)) ([c1c3754](https://github.com/cloudquery/cloudquery/commit/c1c375447429487083baab6a56b27303890321e7))
+
 ## [5.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.0.2...plugins-destination-gcs-v5.0.3) (2024-06-04)
 
 
