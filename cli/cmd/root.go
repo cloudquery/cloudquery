@@ -28,6 +28,7 @@ Find more information at:
 	https://www.cloudquery.io`
 
 	disableSentry   = false
+	logConsole      = false
 	analyticsClient *AnalyticsClient
 	logFile         *os.File
 	invocationUUID  uuid.UUID
@@ -37,7 +38,6 @@ func NewCmdRoot() *cobra.Command {
 	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
 	logFormat := enum.NewEnum([]string{"text", "json"}, "text")
 	telemetryLevel := enum.NewEnum([]string{"none", "errors", "stats", "all"}, "all")
-	logConsole := false
 	noLogFile := false
 	logFileName := "cloudquery.log"
 	sentryDsn := sentryDsnDefault
