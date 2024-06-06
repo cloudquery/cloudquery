@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.0.11...plugins-destination-mysql-v5.0.12) (2024-06-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/docker/docker to v26.1.3+incompatible ([#18083](https://github.com/cloudquery/cloudquery/issues/18083)) ([c1c3754](https://github.com/cloudquery/cloudquery/commit/c1c375447429487083baab6a56b27303890321e7))
+
 ## [5.0.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.0.10...plugins-destination-mysql-v5.0.11) (2024-06-04)
 
 
