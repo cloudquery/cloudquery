@@ -132,6 +132,9 @@ func sync(cmd *cobra.Command, args []string) error {
 			managedplugin.WithTeamName(teamName),
 			managedplugin.WithLicenseFile(licenseFile),
 		}
+		if logConsole {
+			opts = append(opts, managedplugin.WithNoProgress())
+		}
 		if cqDir != "" {
 			opts = append(opts, managedplugin.WithDirectory(cqDir))
 		}
@@ -170,6 +173,9 @@ func sync(cmd *cobra.Command, args []string) error {
 			managedplugin.WithAuthToken(authToken.Value),
 			managedplugin.WithTeamName(teamName),
 			managedplugin.WithLicenseFile(licenseFile),
+		}
+		if logConsole {
+			opts = append(opts, managedplugin.WithNoProgress())
 		}
 		if cqDir != "" {
 			opts = append(opts, managedplugin.WithDirectory(cqDir))
