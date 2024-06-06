@@ -18,8 +18,8 @@ This example syncs from Bitbucket to a Postgres destination. The (top level) sou
 kind: source
 spec:
   name: bitbucket
-  registry: docker
-  path: ghcr.io/cloudquery/cq-source-bitbucket:VERSION_SOURCE_BITBUCKET
+  path: cloudquery/bitbucket
+  version: "VERSION_SOURCE_BITBUCKET"
   tables: ["*"]
   destinations: ["DESTINATION_NAME"]
   # bitbucket-specific configuration
