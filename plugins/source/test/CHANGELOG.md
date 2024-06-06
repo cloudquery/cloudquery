@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.14](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.2.13...plugins-source-test-v4.2.14) (2024-06-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/docker/docker to v26.1.3+incompatible ([#18083](https://github.com/cloudquery/cloudquery/issues/18083)) ([c1c3754](https://github.com/cloudquery/cloudquery/commit/c1c375447429487083baab6a56b27303890321e7))
+
 ## [4.2.13](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.2.12...plugins-source-test-v4.2.13) (2024-06-04)
 
 
