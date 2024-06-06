@@ -172,7 +172,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	syncReq := &plugin.Sync_Request{
 		Tables:              sourceSpec.Tables,
 		SkipTables:          sourceSpec.SkipTables,
-		SkipDependentTables: sourceSpec.SkipDependentTables,
+		SkipDependentTables: *sourceSpec.SkipDependentTables,
 		DeterministicCqId:   sourceSpec.DeterministicCQID,
 	}
 	if sourceSpec.BackendOptions != nil {
