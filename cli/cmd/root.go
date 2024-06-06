@@ -41,9 +41,13 @@ func wrapRunE(cmd *cobra.Command) {
 	if cmd.RunE != nil {
 		wrapped := cmd.RunE
 		cmd.RunE = func(cmd *cobra.Command, args []string) error {
-			analytics.TrackCommandStart(cmd.Context(), cmd.Name(), invocationUUID)
+			commandName := cmd.Name()
+			if cmd.Parent() != nil {
+				commandName = cmd.Parent().Name() + "_" + commandName
+			}
+			analytics.TrackCommandStart(cmd.Context(), commandName, invocationUUID)
 			err := wrapped(cmd, args)
-			analytics.TrackCommandEnd(cmd.Context(), cmd.Name(), invocationUUID, err)
+			analytics.TrackCommandEnd(cmd.Context(), commandName, invocationUUID, err)
 			return err
 		}
 	}
