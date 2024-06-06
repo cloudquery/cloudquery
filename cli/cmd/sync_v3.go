@@ -186,14 +186,17 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		return err
 	}
 
-	bar := progressbar.NewOptions(-1,
-		progressbar.OptionSetDescription("Syncing resources..."),
-		progressbar.OptionSetItsString("resources"),
-		progressbar.OptionShowIts(),
-		progressbar.OptionSetElapsedTime(true),
-		progressbar.OptionShowCount(),
-		progressbar.OptionClearOnFinish(),
-	)
+	bar := progressBar(noopProgressBar{})
+	if !logConsole {
+		bar = progressbar.NewOptions(-1,
+			progressbar.OptionSetDescription("Syncing resources..."),
+			progressbar.OptionSetItsString("resources"),
+			progressbar.OptionShowIts(),
+			progressbar.OptionSetElapsedTime(true),
+			progressbar.OptionShowCount(),
+			progressbar.OptionClearOnFinish(),
+		)
+	}
 
 	// Add a ticker to update the progress bar every 100ms
 	t := time.NewTicker(100 * time.Millisecond)
