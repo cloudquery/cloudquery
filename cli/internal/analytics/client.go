@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	cqapi "github.com/cloudquery/cloudquery-api-go"
 	cqauth "github.com/cloudquery/cloudquery-api-go/auth"
 	internalAuth "github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/env"
@@ -19,7 +20,7 @@ var (
 )
 
 type eventDetails struct {
-	userId      string
+	user        cqapi.User
 	currentTeam string
 	environment string
 }
@@ -44,43 +45,17 @@ func getEventDetails(ctx context.Context) *eventDetails {
 	if err != nil {
 		return nil
 	}
-	userId, _ := internalAuth.GetUserId(ctx, token)
-	if userId == "" {
+	user, _ := internalAuth.GetUser(ctx, token)
+	if user == nil {
 		return nil
 	}
 	currentTeam, _ := internalAuth.GetTeamForToken(ctx, token)
 
 	return &eventDetails{
-		userId:      userId,
+		user:        *user,
 		currentTeam: currentTeam,
 		environment: getEnvironment(),
 	}
-}
-
-func redactSource(source specs.Source) specs.Source {
-	return specs.Source{
-		Metadata: specs.Metadata{
-			Path:    source.Metadata.Path,
-			Version: source.Metadata.Version,
-		},
-	}
-}
-
-func redactDestination(destination specs.Destination) specs.Destination {
-	return specs.Destination{
-		Metadata: specs.Metadata{
-			Path:    destination.Metadata.Path,
-			Version: destination.Metadata.Version,
-		},
-	}
-}
-
-func redactDestinations(destinations []specs.Destination) []specs.Destination {
-	redacted := make([]specs.Destination, len(destinations))
-	for i, destination := range destinations {
-		redacted[i] = redactDestination(destination)
-	}
-	return redacted
 }
 
 func Identify(ctx context.Context, invocationUUID uuid.UUID) {
@@ -99,13 +74,17 @@ func Identify(ctx context.Context, invocationUUID uuid.UUID) {
 		return
 	}
 
-	_ = client.Enqueue(rudderstack.Identify{
+	err := client.Enqueue(rudderstack.Identify{
 		AnonymousId: invocationUUID.String(),
-		UserId:      details.userId,
-		Traits: rudderstack.Traits{
-			"team":        details.currentTeam,
-			"environment": details.environment,
-		},
+		UserId:      details.user.ID.String(),
+	})
+	if err != nil {
+		return
+	}
+
+	_ = client.Enqueue(rudderstack.Group{
+		UserId:  details.user.ID.String(),
+		GroupId: details.currentTeam,
 	})
 }
 
@@ -118,7 +97,7 @@ func TrackCommandStart(ctx context.Context, commandName string, invocationUUID u
 		AnonymousId: invocationUUID.String(),
 		Event:       "command_" + strings.ToLower(commandName) + "_start",
 		Properties: rudderstack.Properties{
-			"invocationUUID": invocationUUID,
+			"invocation_uuid": invocationUUID,
 		},
 	})
 
@@ -138,8 +117,8 @@ func TrackCommandEnd(ctx context.Context, commandName string, invocationUUID uui
 		AnonymousId: invocationUUID.String(),
 		Event:       "command_" + strings.ToLower(commandName) + "_end",
 		Properties: rudderstack.Properties{
-			"invocationUUID": invocationUUID,
-			"status":         status,
+			"invocation_uuid": invocationUUID,
+			"status":          status,
 		},
 	})
 
@@ -157,12 +136,12 @@ func TrackLoginSuccess(ctx context.Context, invocationUUID uuid.UUID) {
 
 	_ = client.Enqueue(rudderstack.Track{
 		AnonymousId: invocationUUID.String(),
-		UserId:      details.userId,
+		UserId:      details.user.ID.String(),
 		Event:       "login_success",
 		Properties: rudderstack.Properties{
-			"invocationUUID": invocationUUID,
-			"team":           details.currentTeam,
-			"environment":    details.environment,
+			"invocation_uuid": invocationUUID,
+			"team":            details.currentTeam,
+			"environment":     details.environment,
 		},
 	})
 }
@@ -170,6 +149,26 @@ func TrackLoginSuccess(ctx context.Context, invocationUUID uuid.UUID) {
 type SyncStartedEvent struct {
 	Source       specs.Source
 	Destinations []specs.Destination
+}
+
+func getSyncCommonProps(invocationUUID uuid.UUID, event SyncStartedEvent, details *eventDetails) rudderstack.Properties {
+	destinationPaths := make([]string, len(event.Destinations))
+	for i, d := range event.Destinations {
+		destinationPaths[i] = d.Path
+	}
+
+	props := rudderstack.NewProperties().
+		Set("invocation_uuid", invocationUUID).
+		Set("sync_run_id", invocationUUID).
+		Set("team", details.currentTeam).
+		Set("environment", details.environment).
+		Set("sync_name", event.Source.Name).
+		Set("source_path", event.Source.Path).
+		Set("destination_paths", destinationPaths).
+		Set("user_id", details.user.ID).
+		Set("user_email", details.user.Email)
+
+	return props
 }
 
 func TrackSyncStarted(ctx context.Context, invocationUUID uuid.UUID, event SyncStartedEvent) {
@@ -183,21 +182,14 @@ func TrackSyncStarted(ctx context.Context, invocationUUID uuid.UUID, event SyncS
 	}
 
 	_ = client.Enqueue(rudderstack.Track{
-		UserId: details.userId,
-		Event:  "sync_run_started",
-		Properties: rudderstack.Properties{
-			"invocation_uuid": invocationUUID,
-			"team":            details.currentTeam,
-			"environment":     details.environment,
-			"source":          redactSource(event.Source),
-			"destinations":    redactDestinations(event.Destinations),
-		},
+		UserId:     details.user.ID.String(),
+		Event:      "sync_run_started",
+		Properties: getSyncCommonProps(invocationUUID, event, details),
 	})
 }
 
 type SyncFinishedEvent struct {
-	Source        specs.Source
-	Destinations  []specs.Destination
+	SyncStartedEvent
 	Errors        uint64
 	Warnings      uint64
 	Duration      time.Duration
@@ -214,21 +206,17 @@ func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event Syn
 		return
 	}
 
+	props := getSyncCommonProps(invocationUUID, event.SyncStartedEvent, details).
+		Set("duration", event.Duration).
+		Set("status", "success").
+		Set("resource_count", event.ResourceCount).
+		Set("errors", event.Errors).
+		Set("warnings", event.Warnings)
+
 	_ = client.Enqueue(rudderstack.Track{
-		UserId: details.userId,
-		Event:  "sync_run_completed",
-		Properties: rudderstack.Properties{
-			"invocation_uuid": invocationUUID,
-			"team":            details.currentTeam,
-			"environment":     details.environment,
-			"source":          redactSource(event.Source),
-			"destinations":    redactDestinations(event.Destinations),
-			"duration":        event.Duration,
-			"status":          "success",
-			"resource_count":  event.ResourceCount,
-			"errors":          event.Errors,
-			"warnings":        event.Warnings,
-		},
+		UserId:     details.user.ID.String(),
+		Event:      "sync_run_completed",
+		Properties: props,
 	})
 }
 

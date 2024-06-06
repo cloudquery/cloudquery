@@ -5,23 +5,24 @@ import (
 	"fmt"
 	"net/http"
 
+	cqapi "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/api"
 )
 
-func GetUserId(ctx context.Context, token auth.Token) (string, error) {
+func GetUser(ctx context.Context, token auth.Token) (*cqapi.User, error) {
 	apiClient, err := api.NewClient(token.Value)
 	if err != nil {
-		return "", fmt.Errorf("failed to create api client: %w", err)
+		return nil, fmt.Errorf("failed to create api client: %w", err)
 	}
 	resp, err := apiClient.GetCurrentUserWithResponse(ctx)
 	if err != nil {
-		return "", fmt.Errorf("failed to get current user: %w", err)
+		return nil, fmt.Errorf("failed to get current user: %w", err)
 	}
 
 	if resp.StatusCode() != http.StatusOK {
-		return "", fmt.Errorf("failed to get current user, status code: %s", resp.Status())
+		return nil, fmt.Errorf("failed to get current user, status code: %s", resp.Status())
 	}
 
-	return resp.JSON200.ID.String(), nil
+	return resp.JSON200, nil
 }

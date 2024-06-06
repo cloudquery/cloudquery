@@ -68,10 +68,11 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		destinationsClients[i] = destinations[i].client
 	}
 
-	analytics.TrackSyncStarted(ctx, invocationUUID, analytics.SyncStartedEvent{
+	syncStartedEvent := analytics.SyncStartedEvent{
 		Source:       sourceSpec,
 		Destinations: destinationSpecs,
-	})
+	}
+	analytics.TrackSyncStarted(ctx, invocationUUID, syncStartedEvent)
 
 	progressAPIClient, err := getProgressAPIClient()
 	if err != nil {
@@ -436,12 +437,11 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		Msg("Sync summary")
 
 	analytics.TrackSyncCompleted(ctx, invocationUUID, analytics.SyncFinishedEvent{
-		Source:        sourceSpec,
-		Destinations:  destinationSpecs,
-		Errors:        totals.Errors,
-		Warnings:      totals.Warnings,
-		Duration:      syncTimeTook,
-		ResourceCount: totalResources,
+		SyncStartedEvent: syncStartedEvent,
+		Errors:           totals.Errors,
+		Warnings:         totals.Warnings,
+		Duration:         syncTimeTook,
+		ResourceCount:    totalResources,
 	})
 
 	if remoteProgressReporter != nil {
