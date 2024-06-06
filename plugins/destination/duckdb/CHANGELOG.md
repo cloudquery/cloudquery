@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.8.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.8.1...plugins-destination-duckdb-v5.8.2) (2024-06-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/docker/docker to v26.1.3+incompatible ([#18083](https://github.com/cloudquery/cloudquery/issues/18083)) ([c1c3754](https://github.com/cloudquery/cloudquery/commit/c1c375447429487083baab6a56b27303890321e7))
+
 ## [5.8.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.8.0...plugins-destination-duckdb-v5.8.1) (2024-06-04)
 
 
