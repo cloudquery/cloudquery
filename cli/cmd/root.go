@@ -111,7 +111,7 @@ func NewCmdRoot() *cobra.Command {
 				if err != nil {
 					log.Warn().Err(err).Msg("failed to initialize analytics client")
 				}
-				analytics.Init()
+				analytics.InitClient()
 			}
 
 			sendErrors := funk.ContainsString([]string{"all", "errors"}, telemetryLevel.String())

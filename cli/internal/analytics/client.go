@@ -25,7 +25,7 @@ type eventDetails struct {
 	environment string
 }
 
-func Init() {
+func InitClient() {
 	writeKey := env.GetEnvOrDefault("CQ_RUDDERSTACK_WRITE_KEY", "2h38sP5iH58EYKBTRsGByJDDr6r")
 	dataPlaneURL := env.GetEnvOrDefault("CQ_RUDDERSTACK_DATA_PLANE_URL", "https://analytics-events.cloudquery.io")
 	client = rudderstack.New(writeKey, dataPlaneURL)
@@ -100,7 +100,6 @@ func TrackCommandStart(ctx context.Context, commandName string, invocationUUID u
 			"invocation_uuid": invocationUUID,
 		},
 	})
-
 }
 
 func TrackCommandEnd(ctx context.Context, commandName string, invocationUUID uuid.UUID, err error) {
@@ -121,7 +120,6 @@ func TrackCommandEnd(ctx context.Context, commandName string, invocationUUID uui
 			"status":          status,
 		},
 	})
-
 }
 
 func TrackLoginSuccess(ctx context.Context, invocationUUID uuid.UUID) {
