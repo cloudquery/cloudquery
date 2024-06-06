@@ -54,7 +54,6 @@ func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
 
 // nolint:dupl
 func syncConnectionV3(ctx context.Context, source v3source, destinations []v3destination, backend *v3destination, uid string, noMigrate bool, summaryLocation string) error {
-
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	tablesForDeleteStale := make(map[string]bool, 0)
