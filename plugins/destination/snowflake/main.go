@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"log"
-	
+
 	"github.com/cloudquery/cloudquery/plugins/destination/snowflake/client"
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/snowflake/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
