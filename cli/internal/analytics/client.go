@@ -156,6 +156,9 @@ func getSyncCommonProps(invocationUUID uuid.UUID, event SyncStartedEvent, detail
 	}
 
 	props := rudderstack.NewProperties().
+		// we are using the same invocation_uuid for sync_run_id
+		// invocation_uuid to be consistent with the rest of the events
+		// sync_run_id to match with cloud events
 		Set("invocation_uuid", invocationUUID).
 		Set("sync_run_id", invocationUUID).
 		Set("team", details.currentTeam).
