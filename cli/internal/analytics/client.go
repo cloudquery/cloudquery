@@ -210,7 +210,7 @@ func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event Syn
 	props := getSyncCommonProps(invocationUUID, event.SyncStartedEvent, details).
 		Set("duration", event.Duration).
 		Set("status", "success").
-		Set("resource_count", event.ResourceCount).
+		Set("total_rows", event.ResourceCount).
 		Set("errors", event.Errors).
 		Set("warnings", event.Warnings)
 
