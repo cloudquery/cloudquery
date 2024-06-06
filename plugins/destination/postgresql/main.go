@@ -26,8 +26,11 @@ func main() {
 		serve.WithPluginSentryDSN(sentryDSN),
 		serve.WithDestinationV0V1Server(),
 	)
+
+	done := instrumentPprof()
+	defer done()
 	err := server.Serve(context.Background())
 	if err != nil {
-		log.Fatalf("failed to serve plugin: %v", err)
+		log.Println("failed to serve plugin:", err)
 	}
 }
