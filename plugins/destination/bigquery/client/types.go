@@ -144,20 +144,6 @@ func (c *Client) DataTypeToBigQuerySchema(dt arrow.DataType) bigquery.Schema {
 				Type: bigquery.IntegerFieldType,
 			},
 		}
-	case *arrow.TimestampType:
-		// TODO: remove this
-		if dt.Unit == arrow.Nanosecond {
-			return []*bigquery.FieldSchema{
-				{
-					Name: "timestamp",
-					Type: bigquery.TimestampFieldType,
-				},
-				{
-					Name: "nanoseconds",
-					Type: bigquery.IntegerFieldType,
-				},
-			}
-		}
 	}
 	return nil
 }
