@@ -110,6 +110,8 @@ func (c *Client) DataTypeToBigQuerySchema(dt arrow.DataType) bigquery.Schema {
 			})
 		}
 		return fields
+	case *arrow.MapType:
+		return nil
 	case arrow.ListLikeType:
 		// TODO: handle maps
 		return c.DataTypeToBigQuerySchema(dt.Elem())
