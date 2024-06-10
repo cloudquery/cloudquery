@@ -93,9 +93,6 @@ func getValueForBigQuery(col arrow.Array, i int) any {
 		elems := make([]any, 0, slc.Len())
 		for j := 0; j < slc.Len(); j++ {
 			if slc.IsNull(j) {
-				continue
-			}
-			if slc.IsNull(j) {
 				// LIMITATION: BigQuery does not support null values in repeated columns.
 				// Therefore, these get stripped out here. In the future, perhaps we should support
 				// an option to use JSON instead of repeated columns for users who need to preserve
