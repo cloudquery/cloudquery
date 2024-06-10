@@ -11,7 +11,6 @@ import (
 	"github.com/apache/arrow/go/v16/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/types"
-	"google.golang.org/api/googleapi"
 )
 
 const (
@@ -61,7 +60,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 
 	for err := inserter.Put(timeoutCtx, batch); err != nil; err = inserter.Put(timeoutCtx, batch) {
 		// check if bigquery error is 404 (table does not exist yet), then wait a bit and retry until it does exist
-		if e, ok := err.(*googleapi.Error); ok && e.Code == 404 {
+		if isAPINotFoundError(err) {
 			// retry
 			c.logger.Info().Str("table", name).Msg("Table does not exist yet, waiting for it to be created before retrying write")
 			time.Sleep(1 * time.Second)
