@@ -73,10 +73,6 @@ func (c *Client) DataTypeToBigQueryType(dt arrow.DataType) bigquery.FieldType {
 	case *arrow.Date32Type, *arrow.Date64Type:
 		return bigquery.DateFieldType
 	case *arrow.TimestampType:
-		// TODO: remove
-		if dt.Unit == arrow.Nanosecond {
-			return bigquery.RecordFieldType
-		}
 		return bigquery.TimestampFieldType
 	case *arrow.Time32Type, *arrow.Time64Type:
 		return bigquery.TimeFieldType
