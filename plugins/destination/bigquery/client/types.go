@@ -7,13 +7,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
-// TimestampNanoseconds is a struct to hold a timestamp with nanosecond precision,
-// because BigQuery does not support nanosecond precision timestamps.
-type TimestampNanoseconds struct {
-	Timestamp   string `json:"timestamp" bigquery:"timestamp"`
-	Nanoseconds int    `json:"nanoseconds" bigquery:"nanoseconds"`
-}
-
 func (c *Client) ColumnToBigQuerySchema(col schema.Column) *bigquery.FieldSchema {
 	sc := bigquery.FieldSchema{
 		Name:        col.Name,
