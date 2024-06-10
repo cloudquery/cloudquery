@@ -16,7 +16,7 @@ CloudQuery utilizes structured [logging](../reference/cli/cloudquery) (in plain 
 
 ## OpenTelemetry (Preview)
 
-ELT workloads can be long running and sometimes it is necessary to better understand what calls are taking the most time; to potentially optimize those on the plugin side, ignore them or split them to a different workload. Plugins come with open-telemetry library built-in but it is up to the plugin author to instrument the most important parts - usually it is the API SDKs - this way it is possible to see what calls take the longest time, where throttling and errors are happening.
+ELT workloads can be long running and sometimes it is necessary to better understand what calls are taking the most time; to potentially optimize those on the plugin side, ignore them or split them to a different workload. Plugins come with an OpenTelemetry library built in, but it is up to the plugin author to instrument the most important parts--usually the API calls--this way it is possible to see what calls take the longest time, or where throttling and errors are happening.
 
 CloudQuery supports [OpenTelemetry](https://opentelemetry.io/) tracing out of the box and can be enabled easily via [configuration](/docs/reference/source-spec).
 
@@ -52,11 +52,11 @@ After that you can open [http://localhost:16686](http://localhost:16686) and see
 
 ![jaeger](/images/docs/jaeger.png)
 
-In production, it is common to use an Open-Telemetry [collector](https://opentelemetry.io/docs/concepts/components/#collector) that runs locally or as a gateway to batch the traces and forward it to the final backend. This helps with performance, fault-tolerance and decoupling of the backend in case the tracing backend changes.
+In production, it is common to use an OpenTelemetry [collector](https://opentelemetry.io/docs/concepts/components/#collector) that runs locally or as a gateway to batch the traces and forward it to the final backend. This helps with performance, fault-tolerance and decoupling of the backend in case the tracing backend changes.
 
 ### OpenTelemetry and Datadog
 
-In this quick example we will show how to connect an open telemetry collector to Datadog via open-telemetry exporter.
+In this quick example we will show how to connect an open telemetry collector to Datadog via OpenTelemetry exporter.
 
 Firstly, you will need to have an [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) running either locally or as a gateway. Here is an example of running it locally with docker:
 
