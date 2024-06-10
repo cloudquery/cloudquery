@@ -137,11 +137,7 @@ func appendValue(builder array.Builder, value any) error {
 		bldr.Append(arrow.MonthInterval(t[0].(int64)))
 		return nil
 	case *array.TimestampBuilder:
-		ts, err := arrow.TimestampFromTime(value.(time.Time), bldr.Type().(*arrow.TimestampType).Unit)
-		if err != nil {
-			return fmt.Errorf("failed to call arrow.TimestampFromString: %w", err)
-		}
-		bldr.Append(ts)
+		bldr.AppendTime(value.(time.Time))
 		return nil
 	case *array.Decimal128Builder:
 		r := value.(*big.Rat)
