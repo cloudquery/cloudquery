@@ -30,8 +30,15 @@ func (c *Client) ColumnToBigQuerySchema(col schema.Column) *bigquery.FieldSchema
 	return &sc
 }
 
-func isListType(t arrow.DataType) bool {
-	return t.ID() == arrow.LIST || t.ID() == arrow.LARGE_LIST || t.ID() == arrow.FIXED_SIZE_LIST
+func isListType(dt arrow.DataType) bool {
+	switch dt.(type) {
+	case *arrow.MapType:
+		return false
+	case arrow.ListLikeType:
+		return true
+	default:
+		return false
+	}
 }
 
 func (c *Client) DataTypeToBigQueryType(dt arrow.DataType) bigquery.FieldType {
