@@ -52,7 +52,7 @@ After that you can open [http://localhost:16686](http://localhost:16686) and see
 
 ![jaeger](/images/docs/jaeger.png)
 
-In production, it is usually common to use an Open-Telemtery [collector](https://opentelemetry.io/docs/concepts/components/#collector) that runs locally or as a gateway that then batches the traces and forwards it to the final backend. This helps with performance, fault-tolerance and decoupling of the backend in case the tracing backend changes.
+In production, it is common to use an Open-Telemetry [collector](https://opentelemetry.io/docs/concepts/components/#collector) that runs locally or as a gateway to batch the traces and forward it to the final backend. This helps with performance, fault-tolerance and decoupling of the backend in case the tracing backend changes.
 
 ### OpenTelemetry and Datadog
 
