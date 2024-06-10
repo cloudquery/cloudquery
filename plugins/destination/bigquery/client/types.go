@@ -63,7 +63,7 @@ func (c *Client) DataTypeToBigQueryType(dt arrow.DataType) bigquery.FieldType {
 		return bigquery.IntegerFieldType
 	case *arrow.Uint64Type:
 		return bigquery.NumericFieldType
-	case *arrow.Float32Type, *arrow.Float64Type:
+	case *arrow.Float16Type, *arrow.Float32Type, *arrow.Float64Type:
 		return bigquery.FloatFieldType
 	case arrow.BinaryDataType:
 		if dt.IsUtf8() {
