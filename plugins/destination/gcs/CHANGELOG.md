@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.0.3...plugins-destination-gcs-v5.1.0) (2024-06-11)
+
+
+### Features
+
+* Remove logging of error events to Sentry in plugins ([#18165](https://github.com/cloudquery/cloudquery/issues/18165)) ([fc4ff27](https://github.com/cloudquery/cloudquery/commit/fc4ff27d37f9250b4cf912474073169406cb01fa))
+
+
+### Bug Fixes
+
+* **deps:** Update module google.golang.org/api to v0.183.0 ([#18196](https://github.com/cloudquery/cloudquery/issues/18196)) ([55d0f64](https://github.com/cloudquery/cloudquery/commit/55d0f647a735f0aecdd36bc3bed3663caf904fa3))
+
 ## [5.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.0.2...plugins-destination-gcs-v5.0.3) (2024-06-04)
 
 

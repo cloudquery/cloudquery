@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-meilisearch-v2.3.14...plugins-destination-meilisearch-v2.4.0) (2024-06-11)
+
+
+### Features
+
+* Remove logging of error events to Sentry in plugins ([#18165](https://github.com/cloudquery/cloudquery/issues/18165)) ([fc4ff27](https://github.com/cloudquery/cloudquery/commit/fc4ff27d37f9250b4cf912474073169406cb01fa))
+
 ## [2.3.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-meilisearch-v2.3.13...plugins-destination-meilisearch-v2.3.14) (2024-06-04)
 
 
