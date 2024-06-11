@@ -112,6 +112,10 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	ctx := cmd.Context()
 	updateSyncTestConnectionStatus(cmd.Context(), log.Logger, cloudquery_api.SyncTestConnectionStatusStarted)
 
+	// in the cloud sync environment, we pass only the relevant environment variables to the plugin
+	_, isolatePluginEnvironment := os.LookupEnv("CQ_CLOUD")
+	osEnviron := os.Environ()
+
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
 	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
 	specReader, err := specs.NewTestConnectionSpecReader(args)
@@ -154,6 +158,9 @@ func testConnection(cmd *cobra.Command, args []string) error {
 			Registry:   SpecRegistryToPlugin(source.Registry),
 			DockerAuth: source.DockerRegistryAuthToken,
 		}
+		if isolatePluginEnvironment {
+			sourcePluginConfigs[i].Environment = filterPluginEnv(osEnviron, source.Name, "source")
+		}
 		sourceRegInferred[i] = source.RegistryInferred()
 	}
 	destinationPluginConfigs := make([]managedplugin.Config, len(destinations))
@@ -165,6 +172,9 @@ func testConnection(cmd *cobra.Command, args []string) error {
 			Path:       destination.Path,
 			Registry:   SpecRegistryToPlugin(destination.Registry),
 			DockerAuth: destination.DockerRegistryAuthToken,
+		}
+		if isolatePluginEnvironment {
+			destinationPluginConfigs[i].Environment = filterPluginEnv(osEnviron, destination.Name, "destination")
 		}
 		destinationRegInferred[i] = destination.RegistryInferred()
 	}
