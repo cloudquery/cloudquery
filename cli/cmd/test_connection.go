@@ -113,7 +113,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	updateSyncTestConnectionStatus(cmd.Context(), log.Logger, cloudquery_api.SyncTestConnectionStatusStarted)
 
 	// in the cloud sync environment, we pass only the relevant environment variables to the plugin
-	isolatePluginEnvironment := apiAuth.NewTokenClient().GetTokenType() == apiAuth.SyncTestConnectionAPIKey
+	_, isolatePluginEnvironment := os.LookupEnv("CQ_CLOUD")
 	osEnviron := os.Environ()
 
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
