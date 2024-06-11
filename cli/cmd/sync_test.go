@@ -296,6 +296,7 @@ func TestSync_IsolatedPluginEnvironmentsInCloud(t *testing.T) {
 	currentDir := path.Dir(filename)
 
 	t.Setenv("CLOUDQUERY_API_KEY", "cqsr_123")
+	t.Setenv("CQ_CLOUD", "1")
 	t.Setenv("_CQ_TEAM_NAME", "test_team")
 	t.Setenv("_CQ_SYNC_NAME", "test_sync")
 	t.Setenv("_CQ_SYNC_RUN_ID", uuid.Must(uuid.NewUUID()).String())
