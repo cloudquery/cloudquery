@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.6.0...plugins-destination-mssql-v4.6.1) (2024-06-11)
+
+
+### Bug Fixes
+
+* Fix example connection string for MSSQL destination ([#18220](https://github.com/cloudquery/cloudquery/issues/18220)) ([99d0c6d](https://github.com/cloudquery/cloudquery/commit/99d0c6d7b93b675dd8d218cddb73c5d48b139dfc))
+
 ## [4.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.5.10...plugins-destination-mssql-v4.6.0) (2024-06-11)
 
 
