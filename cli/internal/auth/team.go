@@ -12,11 +12,11 @@ import (
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/cloudquery/cloudquery/cli/internal/api"
-	"github.com/cloudquery/cloudquery/cli/internal/team"
+	teamapi "github.com/cloudquery/cloudquery/cli/internal/team"
 )
 
 func getAvailableUserTeams(ctx context.Context, token auth.Token) []string {
-	cl, err := team.NewClient(token.Value)
+	cl, err := teamapi.NewClient(token.Value)
 	if err != nil {
 		return nil
 	}
