@@ -25,10 +25,23 @@ type eventDetails struct {
 	environment string
 }
 
+type noOpLogger struct{}
+
+func (noOpLogger) Logf(format string, args ...any)   {}
+func (noOpLogger) Errorf(format string, args ...any) {}
+
 func InitClient() {
 	writeKey := env.GetEnvOrDefault("CQ_RUDDERSTACK_WRITE_KEY", "2h38sP5iH58EYKBTRsGByJDDr6r")
 	dataPlaneURL := env.GetEnvOrDefault("CQ_RUDDERSTACK_DATA_PLANE_URL", "https://analytics-events.cloudquery.io")
-	client = rudderstack.New(writeKey, dataPlaneURL)
+	config := rudderstack.Config{
+		DataPlaneUrl: dataPlaneURL,
+		Logger:       noOpLogger{},
+	}
+	var err error
+	client, err = rudderstack.NewWithConfig(writeKey, config)
+	if err != nil {
+		client = nil
+	}
 }
 
 func getEnvironment() string {
