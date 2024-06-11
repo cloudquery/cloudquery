@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.4.9...plugins-destination-firehose-v2.5.0) (2024-06-11)
+
+
+### Features
+
+* Remove logging of error events to Sentry in plugins ([#18165](https://github.com/cloudquery/cloudquery/issues/18165)) ([fc4ff27](https://github.com/cloudquery/cloudquery/commit/fc4ff27d37f9250b4cf912474073169406cb01fa))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#18192](https://github.com/cloudquery/cloudquery/issues/18192)) ([5b4250b](https://github.com/cloudquery/cloudquery/commit/5b4250be24d1228b995a303ead9bab6b91da9626))
+
 ## [2.4.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.4.8...plugins-destination-firehose-v2.4.9) (2024-06-04)
 
 

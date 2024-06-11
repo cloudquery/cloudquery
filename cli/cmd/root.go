@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 
+	analytics "github.com/cloudquery/cloudquery/cli/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
 	"github.com/cloudquery/cloudquery/cli/internal/env"
 	"github.com/rs/zerolog/log"
@@ -27,12 +28,35 @@ Open source data integration at scale.
 Find more information at:
 	https://www.cloudquery.io`
 
-	disableSentry   = false
-	logConsole      = false
-	analyticsClient *AnalyticsClient
-	logFile         *os.File
-	invocationUUID  uuid.UUID
+	disableSentry      = false
+	logConsole         = false
+	oldAnalyticsClient *AnalyticsClient
+	logFile            *os.File
+	invocationUUID     uuid.UUID
 )
+
+func wrapRunE(cmd *cobra.Command) {
+	// Ideally we could use PersistentPostRunE, but it doesn't get called if the command has an error
+	// See https://github.com/spf13/cobra/issues/1893
+	if cmd.RunE != nil {
+		wrapped := cmd.RunE
+		cmd.RunE = func(cmd *cobra.Command, args []string) error {
+			commandName := cmd.Name()
+			if cmd.Parent() != nil {
+				commandName = cmd.Parent().Name() + "_" + commandName
+			}
+			analytics.TrackCommandStart(cmd.Context(), commandName, invocationUUID)
+			err := wrapped(cmd, args)
+			analytics.TrackCommandEnd(cmd.Context(), commandName, invocationUUID, err)
+			return err
+		}
+	}
+
+	childCommands := cmd.Commands()
+	for i := range childCommands {
+		wrapRunE(childCommands[i])
+	}
+}
 
 func NewCmdRoot() *cobra.Command {
 	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
@@ -87,10 +111,11 @@ func NewCmdRoot() *cobra.Command {
 			sendStats := funk.ContainsString([]string{"all", "stats"}, telemetryLevel.String())
 			_, customAnalyticsHost := os.LookupEnv("CQ_ANALYTICS_HOST")
 			if (Version != "development" || customAnalyticsHost) && sendStats {
-				analyticsClient, err = initAnalytics()
+				oldAnalyticsClient, err = initAnalytics()
 				if err != nil {
 					log.Warn().Err(err).Msg("failed to initialize analytics client")
 				}
+				analytics.InitClient()
 			}
 
 			sendErrors := funk.ContainsString([]string{"all", "errors"}, telemetryLevel.String())
@@ -102,6 +127,8 @@ func NewCmdRoot() *cobra.Command {
 			} else {
 				disableSentry = true
 			}
+
+			analytics.Identify(cmd.Context(), invocationUUID)
 
 			return nil
 		},
@@ -176,13 +203,17 @@ func NewCmdRoot() *cobra.Command {
 		pluginCmd,
 		addonCmd,
 	)
+
 	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true
 	cobra.OnFinalize(func() {
-		if analyticsClient != nil {
-			analyticsClient.Close()
+		if oldAnalyticsClient != nil {
+			oldAnalyticsClient.Close()
 		}
+		analytics.Close()
 	})
+
+	wrapRunE(cmd)
 
 	return cmd
 }
