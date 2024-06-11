@@ -51,6 +51,10 @@ type TargetBuild struct {
 	DockerImageTag string `json:"docker_image_tag"`
 }
 
+type Opts struct {
+	NoProgress bool
+}
+
 type LoadResponse struct {
 	Stream string `json:"stream"`
 }
@@ -376,7 +380,7 @@ func loadDockerImage(ctx context.Context, cli *client.Client, imagePath string) 
 	return nil
 }
 
-func pushImage(ctx context.Context, dockerClient *client.Client, t TargetBuild, opts image.PushOptions) error {
+func pushImage(ctx context.Context, dockerClient *client.Client, t TargetBuild, opts image.PushOptions, progress bool) error {
 	fmt.Printf("Pushing %s\n", t.DockerImageTag)
 	opts.Platform = fmt.Sprintf("%s/%s", t.OS, t.Arch)
 	out, err := dockerClient.ImagePush(ctx, t.DockerImageTag, opts)
@@ -384,6 +388,14 @@ func pushImage(ctx context.Context, dockerClient *client.Client, t TargetBuild, 
 		return fmt.Errorf("failed to push Docker image: %v", err)
 	}
 	defer out.Close()
+
+	if !progress {
+		_, err = io.Copy(io.Discard, out)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
 
 	// Create a progress reader to display the download progress
 	pr := &dockerProgressReader{
@@ -564,7 +576,7 @@ func pushManifest(ctx context.Context, pkgJSON PackageJSONV1, dockerToken string
 	return nil
 }
 
-func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON PackageJSONV1) error {
+func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON PackageJSONV1, popts Opts) error {
 	// We use a mix of the Docker Go SDK that implements the Docker Engine API https://docs.docker.com/engine/api/latest/
 	// and talking to the registry directly since the Docker Engine API doesn't support the manifest API yet
 
@@ -599,7 +611,7 @@ func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON
 		RegistryAuth: encodedAuth,
 	}
 	for _, t := range pkgJSON.SupportedTargets {
-		if err := pushImage(ctx, dockerClient, t, opts); err != nil {
+		if err := pushImage(ctx, dockerClient, t, opts, !popts.NoProgress); err != nil {
 			return err
 		}
 	}

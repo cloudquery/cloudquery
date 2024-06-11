@@ -6,21 +6,22 @@ require (
 	github.com/apache/arrow/go/v16 v16.1.0
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.3.0
-	github.com/cloudquery/cloudquery-api-go v1.11.2
+	github.com/cloudquery/cloudquery-api-go v1.11.3
 	github.com/cloudquery/codegen v0.3.16
-	github.com/cloudquery/plugin-pb-go v1.19.17
-	github.com/cloudquery/plugin-sdk/v4 v4.43.1
+	github.com/cloudquery/plugin-pb-go v1.19.19
+	github.com/cloudquery/plugin-sdk/v4 v4.44.2
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
-	github.com/docker/docker v26.1.1+incompatible
-	github.com/getsentry/sentry-go v0.27.0
+	github.com/docker/docker v26.1.3+incompatible
+	github.com/getsentry/sentry-go v0.28.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.12.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
-	github.com/rs/zerolog v1.32.0
+	github.com/rs/zerolog v1.33.0
+	github.com/rudderlabs/analytics-go/v4 v4.2.0
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
 	github.com/schollz/progressbar/v3 v3.14.2
 	github.com/spf13/cobra v1.8.0
@@ -29,10 +30,10 @@ require (
 	github.com/vnteamopen/godebouncer v1.1.1-0.20230626172639-4b59d27e1b8c
 	github.com/wk8/go-ordered-map/v2 v2.1.8
 	github.com/yuin/goldmark v1.6.0
-	golang.org/x/exp v0.0.0-20240416160154-fe59bbe5cc7f
-	golang.org/x/net v0.24.0
+	golang.org/x/exp v0.0.0-20240531132922-fd00a4e0eefc
+	golang.org/x/net v0.25.0
 	golang.org/x/sync v0.7.0
-	golang.org/x/term v0.19.0
+	golang.org/x/term v0.20.0
 	google.golang.org/grpc v1.64.0
 	google.golang.org/protobuf v1.34.1
 	gopkg.in/yaml.v3 v3.0.1
@@ -76,7 +77,7 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.18.0 // indirect
-	github.com/goccy/go-json v0.10.2 // indirect
+	github.com/goccy/go-json v0.10.3 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
@@ -123,10 +124,14 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/schollz/closestmatch v2.1.0+incompatible // indirect
+	github.com/segmentio/backo-go v1.1.0 // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/tdewolff/minify/v2 v2.20.18 // indirect
 	github.com/tdewolff/parse/v2 v2.7.12 // indirect
+	github.com/tidwall/gjson v1.14.4 // indirect
+	github.com/tidwall/match v1.1.1 // indirect
+	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
@@ -136,18 +141,18 @@ require (
 	github.com/yosssi/ace v0.0.5 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.49.0 // indirect
-	go.opentelemetry.io/otel v1.26.0 // indirect
-	go.opentelemetry.io/otel/metric v1.26.0 // indirect
-	go.opentelemetry.io/otel/trace v1.26.0 // indirect
+	go.opentelemetry.io/otel v1.27.0 // indirect
+	go.opentelemetry.io/otel/metric v1.27.0 // indirect
+	go.opentelemetry.io/otel/trace v1.27.0 // indirect
 	golang.org/x/arch v0.7.0 // indirect
-	golang.org/x/crypto v0.22.0 // indirect
+	golang.org/x/crypto v0.23.0 // indirect
 	golang.org/x/mod v0.17.0 // indirect
-	golang.org/x/sys v0.19.0 // indirect
-	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/sys v0.20.0 // indirect
+	golang.org/x/text v0.15.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
-	golang.org/x/tools v0.20.0 // indirect
+	golang.org/x/tools v0.21.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240401170217-c3f982113cda // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20240515191416-fc5f0ca64291 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

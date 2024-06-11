@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.3.14...plugins-destination-mongodb-v2.4.0) (2024-06-11)
+
+
+### Features
+
+* Remove logging of error events to Sentry in plugins ([#18165](https://github.com/cloudquery/cloudquery/issues/18165)) ([fc4ff27](https://github.com/cloudquery/cloudquery/commit/fc4ff27d37f9250b4cf912474073169406cb01fa))
+
+## [2.3.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.3.13...plugins-destination-mongodb-v2.3.14) (2024-06-04)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.44.1 ([#18076](https://github.com/cloudquery/cloudquery/issues/18076)) ([7cd7012](https://github.com/cloudquery/cloudquery/commit/7cd70128389844d0221f7dce7102375f8931ef77))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.44.2 ([#18113](https://github.com/cloudquery/cloudquery/issues/18113)) ([508347b](https://github.com/cloudquery/cloudquery/commit/508347b8d2168564f69ccb33171f290267647c12))
+* **deps:** Update module github.com/goccy/go-json to v0.10.3 ([#18084](https://github.com/cloudquery/cloudquery/issues/18084)) ([4b787ad](https://github.com/cloudquery/cloudquery/commit/4b787adec363edd2e958c4a9b31af2ae45c761f0))
+
 ## [2.3.13](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.3.12...plugins-destination-mongodb-v2.3.13) (2024-05-21)
 
 

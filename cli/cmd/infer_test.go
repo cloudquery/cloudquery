@@ -36,7 +36,7 @@ spec:
   path: localhost:7777
   registry: grpc
 `,
-			outContains:        "Downloading https://plugins.cloudquery.io/cq-cloud-releases/cloudquery/source/gcp/v10.0.0/",
+			outContains:        "Downloading https://assets.cloudquery.io/cq-cloud-releases/cloudquery/source/gcp/v10.0.0/",
 			wantErrContains:    "",
 			wantErrNotContains: "",
 		},

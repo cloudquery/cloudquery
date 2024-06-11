@@ -4,14 +4,12 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"net/http"
 
 	"cloud.google.com/go/bigquery"
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/bigquery/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/rs/zerolog"
-	"google.golang.org/api/googleapi"
 	"google.golang.org/api/option"
 )
 
@@ -100,10 +98,8 @@ func validateCreds(ctx context.Context, c *bigquery.Client, datasetID string) er
 	datasetRef := c.Dataset(datasetID)
 	_, err := datasetRef.Metadata(ctx)
 	if err != nil {
-		if e, ok := err.(*googleapi.Error); ok {
-			if e.Code == http.StatusNotFound {
-				return fmt.Errorf("invalid dataset. dataset must be created before sync or migration: %w", err)
-			}
+		if isAPINotFoundError(err) {
+			return fmt.Errorf("invalid dataset. dataset must be created before sync or migration: %w", err)
 		}
 		return fmt.Errorf("failed to validate credentials: %w", err)
 	}

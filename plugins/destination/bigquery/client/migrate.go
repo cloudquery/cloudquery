@@ -3,14 +3,12 @@ package client
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"time"
 
 	"cloud.google.com/go/bigquery"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"golang.org/x/sync/errgroup"
-	"google.golang.org/api/googleapi"
 )
 
 const (
@@ -66,10 +64,8 @@ func (c *Client) doesTableExist(ctx context.Context, client *bigquery.Client, ta
 	tableRef := client.Dataset(c.spec.DatasetID).Table(table)
 	md, err := tableRef.Metadata(ctx)
 	if err != nil {
-		if e, ok := err.(*googleapi.Error); ok {
-			if e.Code == http.StatusNotFound {
-				return false, nil
-			}
+		if isAPINotFoundError(err) {
+			return false, nil
 		}
 		c.logger.Error().Str("dataset", c.spec.DatasetID).Str("table", table).Err(err).Msg("Got unexpected error while checking table metadata")
 		return false, err

@@ -6,9 +6,8 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"time"
-
 	"slices"
+	"time"
 
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/internal/transformer"
@@ -86,9 +85,9 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, d
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	defer func() {
-		if analyticsClient != nil {
-			log.Info().Msg("Sending sync summary to " + analyticsClient.Host())
-			if err := analyticsClient.SendSyncMetrics(context.Background(), sourceSpec, destinationSpecs, uid, &mt, exitReason); err != nil {
+		if oldAnalyticsClient != nil {
+			log.Info().Msg("Sending sync summary to " + oldAnalyticsClient.Host())
+			if err := oldAnalyticsClient.SendSyncMetrics(context.Background(), sourceSpec, destinationSpecs, uid, &mt, exitReason); err != nil {
 				log.Warn().Err(err).Msg("Failed to send sync summary")
 			}
 		}
@@ -185,14 +184,18 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, d
 			return err
 		}
 	}
-	bar := progressbar.NewOptions(-1,
-		progressbar.OptionSetDescription("Syncing resources..."),
-		progressbar.OptionSetItsString("resources"),
-		progressbar.OptionShowIts(),
-		progressbar.OptionSetElapsedTime(true),
-		progressbar.OptionShowCount(),
-		progressbar.OptionClearOnFinish(),
-	)
+
+	bar := progressBar(noopProgressBar{})
+	if !logConsole {
+		bar = progressbar.NewOptions(-1,
+			progressbar.OptionSetDescription("Syncing resources..."),
+			progressbar.OptionSetItsString("resources"),
+			progressbar.OptionShowIts(),
+			progressbar.OptionSetElapsedTime(true),
+			progressbar.OptionShowCount(),
+			progressbar.OptionClearOnFinish(),
+		)
+	}
 
 	// Add a ticker to update the progress bar every second.
 	t := time.NewTicker(1 * time.Second)

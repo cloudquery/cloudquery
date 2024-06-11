@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.3.1...plugins-source-bitbucket-v1.3.2) (2024-06-06)
+
+
+### Bug Fixes
+
+* Update BitBucket configuration ([#18163](https://github.com/cloudquery/cloudquery/issues/18163)) ([eae7787](https://github.com/cloudquery/cloudquery/commit/eae77871964d9834f7a1af53f0a9711e696bbf03))
+
 ## [1.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.3.0...plugins-source-bitbucket-v1.3.1) (2024-05-07)
 
 

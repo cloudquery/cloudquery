@@ -1,5 +1,27 @@
 # Changelog
 
+## [7.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.1.2...plugins-destination-s3-v7.2.0) (2024-06-11)
+
+
+### Features
+
+* Remove logging of error events to Sentry in plugins ([#18165](https://github.com/cloudquery/cloudquery/issues/18165)) ([fc4ff27](https://github.com/cloudquery/cloudquery/commit/fc4ff27d37f9250b4cf912474073169406cb01fa))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#18194](https://github.com/cloudquery/cloudquery/issues/18194)) ([8be9ca6](https://github.com/cloudquery/cloudquery/commit/8be9ca604772c75fb8e5381e4166f81622a23e36))
+
+## [7.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.1.1...plugins-destination-s3-v7.1.2) (2024-06-04)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#18062](https://github.com/cloudquery/cloudquery/issues/18062)) ([e742837](https://github.com/cloudquery/cloudquery/commit/e7428378b7bfe8a502b8d2ff17011d8b22d13688))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.21 ([#18117](https://github.com/cloudquery/cloudquery/issues/18117)) ([2d71679](https://github.com/cloudquery/cloudquery/commit/2d716794a145e8646f14f6a9806b08f1d0603c3c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.44.1 ([#18076](https://github.com/cloudquery/cloudquery/issues/18076)) ([7cd7012](https://github.com/cloudquery/cloudquery/commit/7cd70128389844d0221f7dce7102375f8931ef77))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.44.2 ([#18113](https://github.com/cloudquery/cloudquery/issues/18113)) ([508347b](https://github.com/cloudquery/cloudquery/commit/508347b8d2168564f69ccb33171f290267647c12))
+
 ## [7.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.1.0...plugins-destination-s3-v7.1.1) (2024-05-21)
 
 
