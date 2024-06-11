@@ -17,7 +17,7 @@ This data cannot be disabled and is required for the commercial offering to func
 
 # Telemetry Data
 
-By default, the CloudQuery CLI collects some anonymous usage data. There are two types of data we collect: **errors** and **stats**. These are described below. The [Controlling what is sent](#controlling-what-is-sent) section describes how to control what you send to CloudQuery. 
+By default, the CloudQuery CLI collects usage data. There are two types of data we collect: **errors** and **stats**. These are described below. The [Controlling what is sent](#controlling-what-is-sent) section describes how to control what you send to CloudQuery. 
  
 ## Errors
 
@@ -25,7 +25,17 @@ Errors are stack traces sent whenever a panic occurs in the CLI or an official p
  
 ## Stats
 
-Stats data are numbers about the sync that was performed, such as the number of errors and number of resources fetched, as well as the plugin versions used. These are sent at the end of a sync. They contain no identifying information. We use this data to understand which plugins are being used and how much, which helps guide our roadmap and development efforts.  
+### Anonymous Stats
+
+Anonymous stats are numbers about the sync that was performed, such as the number of errors and number of resources fetched, as well as the plugin versions used. These are sent at the end of a sync. They contain no identifying information. We use this data to understand which plugins are being used and how much, which helps guide our roadmap and development efforts.
+We also anonymously track command that are run, and if they result in an error. This helps us understand how the CLI is being used and how many errors are being encountered.
+
+### Identifiable Stats
+
+Identifiable stats are the same as anonymous stats, but they also include a unique identifier for the user or team.
+Identifiable stats are collected when the CLI is authenticated via `cloudquery login` or using an [API key](/docs/deployment/generate-api-key).
+We track the following user event types, `Login`, `Sync Started` and `Sync Finished`.
+We use this information to understand usage patterns, which helps us improve the product and our support.
 
 ## Controlling what is sent
 

@@ -1,5 +1,5 @@
 {
-  "cli": "5.20.5",
+  "cli": "5.21.0",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "22.19.2",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -21,7 +21,7 @@
   "plugins/source/terraform+FILLER": "0.0.0",
   "plugins/source/test": "4.2.13",
   "plugins/source/test+FILLER": "0.0.0",
-  "plugins/destination/postgresql": "8.1.1",
+  "plugins/destination/postgresql": "8.2.0",
   "plugins/destination/postgresql+FILLER": "0.0.0",
   "plugins/destination/test": "2.3.14",
   "plugins/destination/test+FILLER": "0.0.0",

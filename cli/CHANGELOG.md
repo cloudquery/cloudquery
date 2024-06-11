@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.21.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.20.5...cli-v5.21.0) (2024-06-11)
+
+
+### Features
+
+* Track login, sync started, sync ended, generic command start, end events ([#18128](https://github.com/cloudquery/cloudquery/issues/18128)) ([2802209](https://github.com/cloudquery/cloudquery/commit/2802209621f2f8de0311e0768a31989c3886d94c))
+
 ## [5.20.5](https://github.com/cloudquery/cloudquery/compare/cli-v5.20.4...cli-v5.20.5) (2024-06-06)
 
 
