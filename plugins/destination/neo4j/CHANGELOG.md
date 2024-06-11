@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v5.1.14...plugins-destination-neo4j-v5.2.0) (2024-06-11)
+
+
+### Features
+
+* Remove logging of error events to Sentry in plugins ([#18165](https://github.com/cloudquery/cloudquery/issues/18165)) ([fc4ff27](https://github.com/cloudquery/cloudquery/commit/fc4ff27d37f9250b4cf912474073169406cb01fa))
+
 ## [5.1.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v5.1.13...plugins-destination-neo4j-v5.1.14) (2024-06-04)
 
 
