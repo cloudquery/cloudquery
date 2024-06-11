@@ -1,5 +1,19 @@
 # Changelog
 
+## [4.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v4.2.0...plugins-destination-kafka-v4.2.1) (2024-06-11)
+
+
+### Bug Fixes
+
+* Set Confluent Cloud doc Hub title ([#18204](https://github.com/cloudquery/cloudquery/issues/18204)) ([a3ef263](https://github.com/cloudquery/cloudquery/commit/a3ef2632cb37bce66f7fa4b7af86e8f5f54964d3))
+
+## [4.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v4.1.3...plugins-destination-kafka-v4.2.0) (2024-06-11)
+
+
+### Features
+
+* Remove logging of error events to Sentry in plugins ([#18165](https://github.com/cloudquery/cloudquery/issues/18165)) ([fc4ff27](https://github.com/cloudquery/cloudquery/commit/fc4ff27d37f9250b4cf912474073169406cb01fa))
+
 ## [4.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v4.1.2...plugins-destination-kafka-v4.1.3) (2024-06-04)
 
 

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -40,7 +41,8 @@ func TestPlugin(t *testing.T) {
 		plugin.WithTestDataOptions(schema.TestSourceOptions{
 			SkipMaps: true,
 			// https://github.com/cloudquery/cloudquery/issues/12022
-			SkipTimes: true,
+			SkipTimes:     true,
+			TimePrecision: time.Microsecond,
 		}),
 		plugin.WithTestIgnoreNullsInLists(),
 	)

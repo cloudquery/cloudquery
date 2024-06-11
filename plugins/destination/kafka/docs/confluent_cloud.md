@@ -1,3 +1,6 @@
+---
+hub-title: Confluent Cloud
+---
 ## Connecting to Confluent Cloud
 
 ![Confluent Cloud Logo](../../docs/assets/confluent-logotype-white.png)
