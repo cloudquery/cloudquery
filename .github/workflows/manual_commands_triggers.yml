@@ -32,7 +32,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v5.20.5
+          version: v5.21.2
 
       - name: Set up Go 1.x
         uses: actions/setup-go@v5
