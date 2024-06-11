@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.5.10...plugins-destination-mssql-v4.6.0) (2024-06-11)
+
+
+### Features
+
+* Remove logging of error events to Sentry in plugins ([#18165](https://github.com/cloudquery/cloudquery/issues/18165)) ([fc4ff27](https://github.com/cloudquery/cloudquery/commit/fc4ff27d37f9250b4cf912474073169406cb01fa))
+
 ## [4.5.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.5.9...plugins-destination-mssql-v4.5.10) (2024-06-04)
 
 
