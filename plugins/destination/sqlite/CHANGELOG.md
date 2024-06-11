@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.8.8...plugins-destination-sqlite-v2.9.0) (2024-06-11)
+
+
+### Features
+
+* Remove logging of error events to Sentry in plugins ([#18165](https://github.com/cloudquery/cloudquery/issues/18165)) ([fc4ff27](https://github.com/cloudquery/cloudquery/commit/fc4ff27d37f9250b4cf912474073169406cb01fa))
+
 ## [2.8.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.8.7...plugins-destination-sqlite-v2.8.8) (2024-06-04)
 
 
