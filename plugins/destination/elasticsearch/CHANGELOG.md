@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.2.15...plugins-destination-elasticsearch-v3.3.0) (2024-06-11)
+
+
+### Features
+
+* Remove logging of error events to Sentry in plugins ([#18165](https://github.com/cloudquery/cloudquery/issues/18165)) ([fc4ff27](https://github.com/cloudquery/cloudquery/commit/fc4ff27d37f9250b4cf912474073169406cb01fa))
+
 ## [3.2.15](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.2.14...plugins-destination-elasticsearch-v3.2.15) (2024-06-04)
 
 
