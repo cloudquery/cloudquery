@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.9.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.8.1...plugins-destination-duckdb-v5.9.0) (2024-06-11)
+
+
+### Features
+
+* Remove logging of error events to Sentry in plugins ([#18165](https://github.com/cloudquery/cloudquery/issues/18165)) ([fc4ff27](https://github.com/cloudquery/cloudquery/commit/fc4ff27d37f9250b4cf912474073169406cb01fa))
+
 ## [5.8.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.8.0...plugins-destination-duckdb-v5.8.1) (2024-06-04)
 
 

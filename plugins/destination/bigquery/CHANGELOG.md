@@ -1,5 +1,22 @@
 # Changelog
 
+## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v3.6.1...plugins-destination-bigquery-v4.0.0) (2024-06-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* Apache Arrow `timestamp` now always maps to BigQuery `timestamp` type ([#18198](https://github.com/cloudquery/cloudquery/issues/18198)). Previously, `timestamp` with `nanoseconds` precision was mapped to a `record` type.
+
+### Features
+
+* Remove logging of error events to Sentry in plugins ([#18165](https://github.com/cloudquery/cloudquery/issues/18165)) ([fc4ff27](https://github.com/cloudquery/cloudquery/commit/fc4ff27d37f9250b4cf912474073169406cb01fa))
+
+
+### Bug Fixes
+
+* **deps:** Update module google.golang.org/api to v0.183.0 ([#18195](https://github.com/cloudquery/cloudquery/issues/18195)) ([c560cfa](https://github.com/cloudquery/cloudquery/commit/c560cfad3c3714cd8537a72b009b2b425f3b3e7c))
+* Support Apache Arrow types with non-default options ([#18198](https://github.com/cloudquery/cloudquery/issues/18198)). Previously some Apache Arrow types (namely, `timestamp` with non-default time zone) would result in plugin failure. ([4b775f9](https://github.com/cloudquery/cloudquery/commit/4b775f952e0261c2e4d9e9dbbcbc6aeab295e14b))
+
 ## [3.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v3.6.0...plugins-destination-bigquery-v3.6.1) (2024-06-04)
 
 
