@@ -1,6 +1,6 @@
 ---
 title: Billing and Usage | Overview
-description: Learn about CloudQuery billing model
+description: Learn about CloudQuery's billing model
 ---
 
 # Billing and Usage Overview
