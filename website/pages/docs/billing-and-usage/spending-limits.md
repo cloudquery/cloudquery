@@ -9,4 +9,4 @@ You can set your maximum spend per month in your billing page by clicking the pe
 
 ![Setting spending limit](/images/docs/billing-and-usage/spending-limit.png)
 
- When running a sync, CloudQuery CLI will continously check your current spend and once you reach the limit, the sync will end with an error.
+ When running a sync, CloudQuery CLI will periodically check your current spend and if you reach the limit, the sync will end with an error.
