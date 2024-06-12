@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/Shopify/sarama"
+	"github.com/IBM/sarama"
 	"github.com/cloudquery/cloudquery/plugins/destination/kafka/client/spec"
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/kafka/resources/plugin"
 	"github.com/cloudquery/filetypes/v4"
