@@ -6,7 +6,7 @@ spec:
   registry: "cloudquery"
   version: "VERSION_DESTINATION_MSSQL"
   spec:
-    # Connection string in the format `server=localhost;user id=SA;password=yourStrongP@ssword;port=1433;database=cloudquery;`
+    # Connection string in the format `server=localhost;user_id=SA;password=yourStrongP@ssword;port=1433;database=cloudquery;`
     connection_string: "${MSSQL_CONNECTION_STRING}"
     # Optional parameters:
     # auth_mode: ms
