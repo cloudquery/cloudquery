@@ -5,7 +5,7 @@ description: CloudQuery is an open source ELT framework that can be used as an a
 
 # Spending Limits
 
-You can set your maxium spend per month in your billing page by clicking the pencil icon.
+You can set your maximum spend per month in your billing page by clicking the pencil icon.
 
 ![Setting spending limit](/images/docs/billing-and-usage/spending-limit.png)
 

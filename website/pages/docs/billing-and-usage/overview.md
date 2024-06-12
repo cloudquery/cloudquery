@@ -19,11 +19,11 @@ Plugins are split in two categories: API plugins and Database plugins. Each cate
 
 Some source plugins are [free](https://hub.cloudquery.io/plugins/source?tiers=free) to use without charges. Similarly, your own plugins created with CloudQuery SDK are free to use.
 
-Some plugins (such as AWS, GCP, or Azure) have some tables that are free to sync. These tables usually contain static metadata that does not change very often and have large amount of rows. These tables are marked `Free` in the individual plugin documentation.
+Some plugins (such as AWS, GCP, or Azure) have some tables that are free to sync. These tables usually contain static metadata that does not change often and have large amount of rows. These tables are marked `Free` in the individual plugin documentation.
 
 ### Additional charges for cloud syncs
 
-When running syncs with Cloudquery Cloud, you may incur additional costs in the form of Egress, vCPU, and vRAM.
+When running syncs with CloudQuery Cloud, you may incur additional costs in the form of Egress, vCPU, and vRAM.
 
 ### Monitoring your usage
 
