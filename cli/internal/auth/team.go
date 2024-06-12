@@ -4,14 +4,11 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
 	"os"
 	"strings"
 
-	cqapi "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery-api-go/config"
-	"github.com/cloudquery/cloudquery/cli/internal/api"
 	teamapi "github.com/cloudquery/cloudquery/cli/internal/team"
 )
 
@@ -27,6 +24,14 @@ func getAvailableUserTeams(ctx context.Context, token auth.Token) []string {
 	return teams
 }
 
+func configFileMissing(err error) bool {
+	return err != nil && errors.Is(err, os.ErrNotExist)
+}
+
+func emptyTeam(err error, team string) bool {
+	return err == nil && team == ""
+}
+
 // GetTeamForToken returns the team for the given token
 // If the token is a bearer token, we need to get the team from the configuration.
 // For api keys the team name is not required as the key is bound to a team name already.
@@ -34,31 +39,35 @@ func GetTeamForToken(ctx context.Context, token auth.Token) (string, error) {
 	switch token.Type {
 	case auth.BearerToken:
 		team, err := config.GetValue("team")
-		if errors.Is(err, os.ErrNotExist) {
+		if configFileMissing(err) || emptyTeam(err, team) {
 			teams := getAvailableUserTeams(ctx, token)
-			message := "your current team is not set.\n\nTo set your current team, run `cloudquery switch <team>`"
+			message := "team is not set.\n\n. Hint: use `cloudquery login` and/or `cloudquery switch <team>`"
 			if len(teams) > 0 {
-				message = fmt.Sprintf("your current team is not set.\n\nAvailable teams: %s.\n\nTo set your current team, run `cloudquery switch <team>`", strings.Join(teams, ", "))
+				message = fmt.Sprintf("team is not set.\n\nAvailable teams: %s.\n\nTo set your team, run `cloudquery switch <team>`", strings.Join(teams, ", "))
 			}
 			return "", fmt.Errorf(message)
 		}
 		if err != nil {
-			return "", fmt.Errorf("failed to get team from config: %w", err)
+			return "", fmt.Errorf("failed to get team name from config: %w. Hint: use `cloudquery login` and/or `cloudquery switch <team>`", err)
 		}
 		return team, nil
 	case auth.APIKey:
-		apiClient, err := api.NewClient(token.Value)
+		cl, err := teamapi.NewClient(token.Value)
 		if err != nil {
-			return "", fmt.Errorf("failed to create api client: %w", err)
+			return "", fmt.Errorf("failed to create API client for api key: %w", err)
 		}
-		resp, err := apiClient.ListTeamsWithResponse(ctx, &cqapi.ListTeamsParams{})
+		teams, err := cl.ListAllTeams(ctx)
 		if err != nil {
-			return "", fmt.Errorf("failed to list teams: %w", err)
+			return "", fmt.Errorf("failed to list teams for api key: %w", err)
 		}
-		if resp.StatusCode() != http.StatusOK {
-			return "", fmt.Errorf("failed to list teams for API key, status code: %s", resp.Status())
+		switch l := len(teams); l {
+		case 0:
+			return "", errors.New("team api key has no assigned team")
+		case 1:
+			return teams[0], nil
+		default:
+			return "", fmt.Errorf("team api key has more than one team: %s", strings.Join(teams, ", "))
 		}
-		return resp.JSON200.Items[0].Name, nil
 	default:
 		return os.Getenv("_CQ_TEAM_NAME"), nil
 	}
