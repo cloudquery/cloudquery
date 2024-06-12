@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.0.0...plugins-destination-bigquery-v4.0.1) (2024-06-12)
+
+
+### Bug Fixes
+
+* Remove Primary Key Validation ([#18234](https://github.com/cloudquery/cloudquery/issues/18234)) ([73e05f8](https://github.com/cloudquery/cloudquery/commit/73e05f829432eece4c49225d0e3c1fc116daf5e6))
+
 ## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v3.6.1...plugins-destination-bigquery-v4.0.0) (2024-06-11)
 
 
