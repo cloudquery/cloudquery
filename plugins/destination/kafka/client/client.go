@@ -9,6 +9,7 @@ import (
 
 	"github.com/Shopify/sarama"
 	"github.com/cloudquery/cloudquery/plugins/destination/kafka/client/spec"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/kafka/resources/plugin"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/rs/zerolog"
@@ -54,7 +55,7 @@ func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClie
 	c.conf.Metadata.Full = true
 	c.conf.Version = sarama.V1_0_0_0
 	c.conf.Metadata.Full = true
-	c.conf.ClientID = c.spec.ClientID
+	c.conf.ClientID = `cwc|1c04a227-aef8-47a9-9353-e20bbb6a9616|cq-destination-kafka|` + internalPlugin.Version
 
 	if c.spec.SASLUsername != "" {
 		c.conf.Net.SASL.Enable = true

@@ -45,10 +45,6 @@ This is the (nested) plugin spec
 
   If connecting via SASL/PLAIN, the password to use.
 
-- `client_id` (`string`) (optional) (default: `cq-destination-kafka`)
-
-  Client ID to be set for Kafka API calls.
-
 - `verbose` (`boolean`) (optional) (default: `false`)
 
   If `true`, the plugin will log all underlying Kafka client messages to the log.
