@@ -1,6 +1,6 @@
 ---
 title: Billing and Usage | Spending Limits
-description: CloudQuery is an open source ELT framework that can be used as an alternative to Airbyte. CloudQuery is built for performance, and is easy to deploy and maintain.
+description: Learn how to control your spending with CloudQuery.
 ---
 
 # Spending Limits
