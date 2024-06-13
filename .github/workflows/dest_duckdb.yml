@@ -35,7 +35,7 @@ jobs:
           cache: true
           cache-dependency-path: plugins/destination/duckdb/go.sum
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v6
         with:
           version: v1.55.2
           working-directory: plugins/destination/duckdb
