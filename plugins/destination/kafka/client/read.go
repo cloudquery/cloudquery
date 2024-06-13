@@ -5,7 +5,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/Shopify/sarama"
+	"github.com/IBM/sarama"
 	"github.com/apache/arrow/go/v16/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
