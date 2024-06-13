@@ -1,4 +1,7 @@
 * @cloudquery/cloudquery-framework
+.github/workflows/source_* @cloudquery/cloudquery-plugins
+.github/workflows/dest_* @cloudquery/cloudquery-plugins
+plugins/** @cloudquery/cloudquery-plugins
 
 **/go.mod
 **/go.sum
