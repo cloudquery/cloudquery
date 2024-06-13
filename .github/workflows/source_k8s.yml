@@ -41,8 +41,6 @@ jobs:
           version: v1.55.2
           working-directory: plugins/source/k8s
           args: "--config ../../.golangci.yml"
-          skip-pkg-cache: true
-          skip-build-cache: true
       - name: Setup CloudQuery
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v3

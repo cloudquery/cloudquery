@@ -40,8 +40,6 @@ jobs:
           version: v1.55.2
           working-directory: plugins/destination/snowflake
           args: "--config ../../.golangci.yml"
-          skip-pkg-cache: true
-          skip-build-cache: true
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen

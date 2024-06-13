@@ -40,8 +40,6 @@ jobs:
           version: v1.55.2
           working-directory: plugins/destination/test
           args: "--config ../../.golangci.yml"
-          skip-pkg-cache: true
-          skip-build-cache: true
       - name: Build
         run: go build .
       - name: Test

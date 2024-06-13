@@ -39,8 +39,6 @@ jobs:
         with:
           version: v1.55.2
           working-directory: scaffold
-          skip-pkg-cache: true
-          skip-build-cache: true
       - name: Build
         run: go build .
       - name: Test
