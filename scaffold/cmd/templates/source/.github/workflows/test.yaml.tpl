@@ -20,11 +20,9 @@ jobs:
         with:
           go-version-file: go.mod
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v6
         with:
           version: v1.55.2
-          skip-pkg-cache: true
-          skip-build-cache: true
           args: --timeout=10m
       - name: Get dependencies
         run: go get -t -d ./...

@@ -41,13 +41,11 @@ jobs:
           cache: true
           cache-dependency-path: plugins/destination/bigquery/go.sum
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v6
         with:
           version: v1.55.2
           working-directory: plugins/destination/bigquery
           args: "--config ../../.golangci.yml"
-          skip-pkg-cache: true
-          skip-build-cache: true
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
