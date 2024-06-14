@@ -5,6 +5,50 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.21.4](https://github.com/cloudquery/cloudquery/compare/cli-v5.21.3...cli-v5.21.4) (2024-06-14)
+
+
+### Bug Fixes
+
+* Add groupType to team Group event ([#18240](https://github.com/cloudquery/cloudquery/issues/18240)) ([18f962c](https://github.com/cloudquery/cloudquery/commit/18f962cf7c6702b295f5ed5a0115369ee002710d))
+* When a config file is missing, prompt the user to select run `cloudquery switch &lt;team&gt;` ([#18225](https://github.com/cloudquery/cloudquery/issues/18225)) ([865a989](https://github.com/cloudquery/cloudquery/commit/865a989ba59cf9585283440c34bf4747e213e469))
+
+## [5.21.3](https://github.com/cloudquery/cloudquery/compare/cli-v5.21.2...cli-v5.21.3) (2024-06-11)
+
+
+### Bug Fixes
+
+* Don't print rudderstack logs ([#18215](https://github.com/cloudquery/cloudquery/issues/18215)) ([f013215](https://github.com/cloudquery/cloudquery/commit/f0132151acd3fa24cbfbc32d3827881072ec7e75))
+
+## [5.21.2](https://github.com/cloudquery/cloudquery/compare/cli-v5.21.1...cli-v5.21.2) (2024-06-11)
+
+
+### Bug Fixes
+
+* Isolate env variables in `test-connection` command if necessary ([#18200](https://github.com/cloudquery/cloudquery/issues/18200)) ([e23ce4a](https://github.com/cloudquery/cloudquery/commit/e23ce4a715912794f2326f8bb0d9ff512712880b))
+
+## [5.21.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.21.0...cli-v5.21.1) (2024-06-11)
+
+
+### Bug Fixes
+
+* Use plain email string for user email ([#18208](https://github.com/cloudquery/cloudquery/issues/18208)) ([6c396a2](https://github.com/cloudquery/cloudquery/commit/6c396a22db97d3d006bd8a0a10f9d0bcec944fda))
+
+## [5.21.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.20.5...cli-v5.21.0) (2024-06-11)
+
+
+### Features
+
+* Track login, sync started, sync ended, generic command start, end events ([#18128](https://github.com/cloudquery/cloudquery/issues/18128)) ([2802209](https://github.com/cloudquery/cloudquery/commit/2802209621f2f8de0311e0768a31989c3886d94c))
+
+## [5.20.5](https://github.com/cloudquery/cloudquery/compare/cli-v5.20.4...cli-v5.20.5) (2024-06-06)
+
+
+### Bug Fixes
+
+* Check if `CQ_ANALYTICS_HOST` exists to determine if a custom host is set ([#18124](https://github.com/cloudquery/cloudquery/issues/18124)) ([c6f5bbf](https://github.com/cloudquery/cloudquery/commit/c6f5bbf5d59052ac92e9109352a047be9c62c468))
+* Progressbar related error when `log-console` option is used ([#18161](https://github.com/cloudquery/cloudquery/issues/18161)) ([bbac469](https://github.com/cloudquery/cloudquery/commit/bbac469cc20bcef6dc963c251288729347499f71))
+
 ## [5.20.4](https://github.com/cloudquery/cloudquery/compare/cli-v5.20.3...cli-v5.20.4) (2024-06-04)
 
 

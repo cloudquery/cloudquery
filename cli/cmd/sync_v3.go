@@ -13,6 +13,7 @@ import (
 
 	"github.com/apache/arrow/go/v16/arrow"
 	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery/cli/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/internal/api"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/internal/transformer"
@@ -66,15 +67,21 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		destinationsClients[i] = destinations[i].client
 	}
 
+	syncStartedEvent := analytics.SyncStartedEvent{
+		Source:       sourceSpec,
+		Destinations: destinationSpecs,
+	}
+	analytics.TrackSyncStarted(ctx, invocationUUID, syncStartedEvent)
+
 	progressAPIClient, err := getProgressAPIClient()
 	if err != nil {
 		return fmt.Errorf("failed to get API client: %w", err)
 	}
 
 	defer func() {
-		if analyticsClient != nil {
-			log.Info().Msg("Sending sync summary to " + analyticsClient.Host())
-			if err := analyticsClient.SendSyncMetrics(context.Background(), sourceSpec, destinationSpecs, uid, &mt, exitReason); err != nil {
+		if oldAnalyticsClient != nil {
+			log.Info().Msg("Sending sync summary to " + oldAnalyticsClient.Host())
+			if err := oldAnalyticsClient.SendSyncMetrics(context.Background(), sourceSpec, destinationSpecs, uid, &mt, exitReason); err != nil {
 				log.Warn().Err(err).Msg("Failed to send sync summary")
 			}
 		}
@@ -186,14 +193,17 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		return err
 	}
 
-	bar := progressbar.NewOptions(-1,
-		progressbar.OptionSetDescription("Syncing resources..."),
-		progressbar.OptionSetItsString("resources"),
-		progressbar.OptionShowIts(),
-		progressbar.OptionSetElapsedTime(true),
-		progressbar.OptionShowCount(),
-		progressbar.OptionClearOnFinish(),
-	)
+	bar := progressBar(noopProgressBar{})
+	if !logConsole {
+		bar = progressbar.NewOptions(-1,
+			progressbar.OptionSetDescription("Syncing resources..."),
+			progressbar.OptionSetItsString("resources"),
+			progressbar.OptionShowIts(),
+			progressbar.OptionSetElapsedTime(true),
+			progressbar.OptionShowCount(),
+			progressbar.OptionClearOnFinish(),
+		)
+	}
 
 	// Add a ticker to update the progress bar every 100ms
 	t := time.NewTicker(100 * time.Millisecond)
@@ -424,6 +434,14 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		Str("duration", syncTimeTook.Truncate(time.Second).String()).
 		Str("result", msg).
 		Msg("Sync summary")
+
+	analytics.TrackSyncCompleted(ctx, invocationUUID, analytics.SyncFinishedEvent{
+		SyncStartedEvent: syncStartedEvent,
+		Errors:           totals.Errors,
+		Warnings:         totals.Warnings,
+		Duration:         syncTimeTook,
+		ResourceCount:    totalResources,
+	})
 
 	if remoteProgressReporter != nil {
 		remoteProgressReporter.SendSignal()

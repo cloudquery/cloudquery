@@ -70,6 +70,9 @@ func migrate(cmd *cobra.Command, args []string) error {
 		managedplugin.WithTeamName(teamName),
 		managedplugin.WithLicenseFile(licenseFile),
 	}
+	if logConsole {
+		opts = append(opts, managedplugin.WithNoProgress())
+	}
 	if cqDir != "" {
 		opts = append(opts, managedplugin.WithDirectory(cqDir))
 	}

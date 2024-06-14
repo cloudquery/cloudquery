@@ -11,10 +11,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/serve"
 )
 
-const (
-	sentryDSN = "https://19d1257d36854a51b17c06614e76dc2d@o1396617.ingest.sentry.io/4503896817336320"
-)
-
 func main() {
 	p := pluginSDK.NewPlugin(plugin.Name, plugin.Version, client.New,
 		pluginSDK.WithKind(plugin.Kind),
@@ -22,10 +18,7 @@ func main() {
 		pluginSDK.WithJSONSchema(spec.JSONSchema),
 		pluginSDK.WithConnectionTester(client.ConnectionTester),
 	)
-	server := serve.Plugin(p,
-		serve.WithPluginSentryDSN(sentryDSN),
-		serve.WithDestinationV0V1Server(),
-	)
+	server := serve.Plugin(p,	serve.WithPluginSentryDSN(sentryDSN))
 
 	done := instrumentPprof()
 	defer done()

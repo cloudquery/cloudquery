@@ -157,7 +157,9 @@ func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) er
 
 func publishPluginAssets(ctx context.Context, c *cloudquery_api.ClientWithResponses, token, distDir string, pkgJSON publish.PackageJSONV1) error {
 	if pkgJSON.PackageType == string(cloudquery_api.PluginPackageTypeDocker) {
-		return publish.PublishToDockerRegistry(ctx, token, distDir, pkgJSON)
+		return publish.PublishToDockerRegistry(ctx, token, distDir, pkgJSON, publish.Opts{
+			NoProgress: logConsole,
+		})
 	}
 
 	return publish.PublishNativeBinaries(ctx, c, distDir, pkgJSON)

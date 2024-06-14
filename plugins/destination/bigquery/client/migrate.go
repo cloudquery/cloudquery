@@ -3,14 +3,12 @@ package client
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"time"
 
 	"cloud.google.com/go/bigquery"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"golang.org/x/sync/errgroup"
-	"google.golang.org/api/googleapi"
 )
 
 const (
@@ -22,12 +20,6 @@ const (
 func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
 	eg, gctx := errgroup.WithContext(ctx)
 	eg.SetLimit(concurrentMigrations)
-	for _, msg := range msgs {
-		if len(msg.Table.PrimaryKeys()) > 0 {
-			return fmt.Errorf("primary keys are not supported by the BigQuery plugin. Hint: try setting `write_mode: append` in the destination spec")
-		}
-	}
-
 	for _, msg := range msgs {
 		table := msg.Table
 		eg.Go(func() error {
@@ -66,10 +58,8 @@ func (c *Client) doesTableExist(ctx context.Context, client *bigquery.Client, ta
 	tableRef := client.Dataset(c.spec.DatasetID).Table(table)
 	md, err := tableRef.Metadata(ctx)
 	if err != nil {
-		if e, ok := err.(*googleapi.Error); ok {
-			if e.Code == http.StatusNotFound {
-				return false, nil
-			}
+		if isAPINotFoundError(err) {
+			return false, nil
 		}
 		c.logger.Error().Str("dataset", c.spec.DatasetID).Str("table", table).Err(err).Msg("Got unexpected error while checking table metadata")
 		return false, err

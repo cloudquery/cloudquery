@@ -7,7 +7,6 @@ import (
 	"slices"
 	"strings"
 
-	apiAuth "github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -94,7 +93,7 @@ func sync(cmd *cobra.Command, args []string) error {
 	}
 
 	// in the cloud sync environment, we pass only the relevant environment variables to the plugin
-	isolatePluginEnvironment := apiAuth.NewTokenClient().GetTokenType() == apiAuth.SyncRunAPIKey
+	_, isolatePluginEnvironment := os.LookupEnv("CQ_CLOUD")
 
 	ctx := cmd.Context()
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
@@ -131,6 +130,9 @@ func sync(cmd *cobra.Command, args []string) error {
 			managedplugin.WithAuthToken(authToken.Value),
 			managedplugin.WithTeamName(teamName),
 			managedplugin.WithLicenseFile(licenseFile),
+		}
+		if logConsole {
+			opts = append(opts, managedplugin.WithNoProgress())
 		}
 		if cqDir != "" {
 			opts = append(opts, managedplugin.WithDirectory(cqDir))
@@ -170,6 +172,9 @@ func sync(cmd *cobra.Command, args []string) error {
 			managedplugin.WithAuthToken(authToken.Value),
 			managedplugin.WithTeamName(teamName),
 			managedplugin.WithLicenseFile(licenseFile),
+		}
+		if logConsole {
+			opts = append(opts, managedplugin.WithNoProgress())
 		}
 		if cqDir != "" {
 			opts = append(opts, managedplugin.WithDirectory(cqDir))

@@ -11,7 +11,6 @@ import (
 	"github.com/apache/arrow/go/v16/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/types"
-	"google.golang.org/api/googleapi"
 )
 
 const (
@@ -61,7 +60,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 
 	for err := inserter.Put(timeoutCtx, batch); err != nil; err = inserter.Put(timeoutCtx, batch) {
 		// check if bigquery error is 404 (table does not exist yet), then wait a bit and retry until it does exist
-		if e, ok := err.(*googleapi.Error); ok && e.Code == 404 {
+		if isAPINotFoundError(err) {
 			// retry
 			c.logger.Info().Str("table", name).Msg("Table does not exist yet, waiting for it to be created before retrying write")
 			time.Sleep(1 * time.Second)
@@ -93,9 +92,6 @@ func getValueForBigQuery(col arrow.Array, i int) any {
 		elems := make([]any, 0, slc.Len())
 		for j := 0; j < slc.Len(); j++ {
 			if slc.IsNull(j) {
-				continue
-			}
-			if slc.IsNull(j) {
 				// LIMITATION: BigQuery does not support null values in repeated columns.
 				// Therefore, these get stripped out here. In the future, perhaps we should support
 				// an option to use JSON instead of repeated columns for users who need to preserve
@@ -112,18 +108,7 @@ func getValueForBigQuery(col arrow.Array, i int) any {
 	case *array.Duration:
 		return v.Value(i)
 	case *array.Timestamp:
-		unit := v.DataType().(*arrow.TimestampType).Unit
-		switch unit {
-		case arrow.Nanosecond:
-			t := v.Value(i).ToTime(arrow.Nanosecond)
-			format := "2006-01-02 15:04:05.999999"
-			return TimestampNanoseconds{
-				Timestamp:   t.Format(format),
-				Nanoseconds: t.Nanosecond() % 1000,
-			}
-		default:
-			return v.GetOneForMarshal(i)
-		}
+		return v.Value(i).ToTime(v.DataType().(*arrow.TimestampType).Unit)
 	case *types.JSONArray:
 		return v.ValueStr(i)
 	}
