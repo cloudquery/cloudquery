@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.21.4](https://github.com/cloudquery/cloudquery/compare/cli-v5.21.3...cli-v5.21.4) (2024-06-14)
+
+
+### Bug Fixes
+
+* Add groupType to team Group event ([#18240](https://github.com/cloudquery/cloudquery/issues/18240)) ([18f962c](https://github.com/cloudquery/cloudquery/commit/18f962cf7c6702b295f5ed5a0115369ee002710d))
+* When a config file is missing, prompt the user to select run `cloudquery switch &lt;team&gt;` ([#18225](https://github.com/cloudquery/cloudquery/issues/18225)) ([865a989](https://github.com/cloudquery/cloudquery/commit/865a989ba59cf9585283440c34bf4747e213e469))
+
 ## [5.21.3](https://github.com/cloudquery/cloudquery/compare/cli-v5.21.2...cli-v5.21.3) (2024-06-11)
 
 
