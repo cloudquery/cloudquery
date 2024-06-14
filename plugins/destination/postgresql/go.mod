@@ -35,7 +35,7 @@ require (
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.1 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.11.3 // indirect
-	github.com/cloudquery/plugin-pb-go v1.19.19 // indirect
+	github.com/cloudquery/plugin-pb-go v1.20.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/deepmap/oapi-codegen v1.16.2 // indirect
@@ -136,4 +136,4 @@ require (
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66
 
 // https://github.com/cloudquery/plugin-sdk/pull/1719
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.44.3-0.20240606055234-2ce34d2c9752
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.45.2-0.20240614164836-3dc0b31dcdf5
