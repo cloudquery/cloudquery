@@ -98,6 +98,9 @@ func Identify(ctx context.Context, invocationUUID uuid.UUID) {
 	_ = client.Enqueue(rudderstack.Group{
 		UserId:  details.user.ID.String(),
 		GroupId: details.currentTeam,
+		Traits: rudderstack.Traits{
+			"groupType": "team",
+		},
 	})
 }
 
