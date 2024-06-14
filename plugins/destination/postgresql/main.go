@@ -18,7 +18,7 @@ func main() {
 		pluginSDK.WithJSONSchema(spec.JSONSchema),
 		pluginSDK.WithConnectionTester(client.ConnectionTester),
 	)
-	server := serve.Plugin(p,	serve.WithPluginSentryDSN(sentryDSN))
+	server := serve.Plugin(p, serve.WithDestinationV0V1Server())
 
 	done := instrumentPprof()
 	defer done()
