@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.2.0...plugins-destination-s3-v7.2.1) (2024-06-14)
+
+
+### Bug Fixes
+
+* Don't fail on non existing key ([#18244](https://github.com/cloudquery/cloudquery/issues/18244)) ([f9b6bf9](https://github.com/cloudquery/cloudquery/commit/f9b6bf9f21286a222cdfcb3b788e2d59249625a6))
+
 ## [7.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.1.2...plugins-destination-s3-v7.2.0) (2024-06-11)
 
 
