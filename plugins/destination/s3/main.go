@@ -17,8 +17,12 @@ func main() {
 		plugin.WithTeam(internalPlugin.Team),
 		plugin.WithJSONSchema(spec.JSONSchema),
 	)
+	server := serve.Plugin(p, serve.WithDestinationV0V1Server())
 
-	if err := serve.Plugin(p, serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
-		log.Fatalf("failed to serve plugin: %v", err)
+	done := instrumentPprof()
+	defer done()
+	err := server.Serve(context.Background())
+	if err != nil {
+		log.Println("failed to serve plugin:", err)
 	}
 }
