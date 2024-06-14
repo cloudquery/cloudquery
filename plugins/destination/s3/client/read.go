@@ -3,13 +3,17 @@ package client
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
+	"net/http"
 	"time"
 
 	"github.com/apache/arrow/go/v16/arrow"
 	"github.com/aws/aws-sdk-go-v2/aws"
+	awshttp "github.com/aws/aws-sdk-go-v2/aws/transport/http"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/smithy-go"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/google/uuid"
 )
@@ -32,7 +36,17 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 			Bucket: aws.String(c.spec.Bucket),
 			Key:    aws.String(name),
 		})
+
 	if err != nil {
+		var smithyError *smithy.OperationError
+		if errors.As(err, &smithyError); smithyError != nil {
+			var httpError *awshttp.ResponseError
+			if errors.As(smithyError.Err, &httpError); httpError != nil {
+				if httpError.HTTPStatusCode() == http.StatusNotFound {
+					return nil
+				}
+			}
+		}
 		return err
 	}
 	r := bytes.NewReader(writerAtBuffer.Bytes())
