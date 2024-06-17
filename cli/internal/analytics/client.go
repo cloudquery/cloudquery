@@ -207,10 +207,11 @@ func TrackSyncStarted(ctx context.Context, invocationUUID uuid.UUID, event SyncS
 
 type SyncFinishedEvent struct {
 	SyncStartedEvent
-	Errors        uint64
-	Warnings      uint64
-	Duration      time.Duration
-	ResourceCount int64
+	Errors            uint64
+	Warnings          uint64
+	Duration          time.Duration
+	ResourceCount     int64
+	AbortedDueToError error
 }
 
 func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event SyncFinishedEvent) {
