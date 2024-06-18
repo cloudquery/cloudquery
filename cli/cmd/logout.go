@@ -2,14 +2,11 @@ package cmd
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
 
-	authpb "github.com/cloudquery/cloudquery-api-go/auth"
-	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/cloudquery/cloudquery/cli/internal/auth"
 
 	"github.com/spf13/cobra"
@@ -44,7 +41,7 @@ func newCmdLogout() *cobra.Command {
 }
 
 func runLogout(_ context.Context, cmd *cobra.Command) error {
-	err := errors.Join(auth.Logout(), authpb.RemoveRefreshToken(), config.UnsetValue("team"))
+	err := auth.Logout()
 	if err != nil {
 		return fmt.Errorf("failed to logout: %w", err)
 	}
