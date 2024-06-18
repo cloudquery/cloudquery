@@ -100,6 +100,7 @@ func Identify(ctx context.Context, invocationUUID uuid.UUID) {
 		GroupId: details.currentTeam,
 		Traits: rudderstack.Traits{
 			"groupType": "team",
+			"name":      details.currentTeam,
 		},
 	})
 }
@@ -207,10 +208,11 @@ func TrackSyncStarted(ctx context.Context, invocationUUID uuid.UUID, event SyncS
 
 type SyncFinishedEvent struct {
 	SyncStartedEvent
-	Errors        uint64
-	Warnings      uint64
-	Duration      time.Duration
-	ResourceCount int64
+	Errors            uint64
+	Warnings          uint64
+	Duration          time.Duration
+	ResourceCount     int64
+	AbortedDueToError error
 }
 
 func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event SyncFinishedEvent) {
@@ -228,7 +230,8 @@ func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event Syn
 		Set("status", "success").
 		Set("total_rows", event.ResourceCount).
 		Set("errors", event.Errors).
-		Set("warnings", event.Warnings)
+		Set("warnings", event.Warnings).
+		Set("aborted_due_to_error", event.AbortedDueToError)
 
 	_ = client.Enqueue(rudderstack.Track{
 		UserId:     details.user.ID.String(),
