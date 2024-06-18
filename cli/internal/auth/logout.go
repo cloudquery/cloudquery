@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"errors"
 	"fmt"
 
 	cqapiauth "github.com/cloudquery/cloudquery-api-go/auth"
@@ -8,15 +9,14 @@ import (
 )
 
 func Logout() error {
-	err := cqapiauth.RemoveRefreshToken()
-	if err != nil {
-		return fmt.Errorf("failed to remove refresh token: %w", err)
+	var errs []error
+	if err := cqapiauth.RemoveRefreshToken(); err != nil {
+		errs = append(errs, fmt.Errorf("failed to remove refresh token: %w", err))
 	}
 
-	err = config.UnsetValue("team")
-	if err != nil {
-		return fmt.Errorf("failed to unset team: %w", err)
+	if err := config.UnsetValue("team"); err != nil {
+		errs = append(errs, fmt.Errorf("failed to unset team: %w", err))
 	}
 
-	return nil
+	return errors.Join(errs...)
 }
