@@ -53,7 +53,7 @@ func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
 }
 
 // nolint:dupl
-func syncConnectionV3(ctx context.Context, source v3source, destinations []v3destination, backend *v3destination, uid string, noMigrate bool, summaryLocation string) error {
+func syncConnectionV3(ctx context.Context, source v3source, destinations []v3destination, backend *v3destination, uid string, noMigrate bool, summaryLocation string) (syncErr error) {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	tablesForDeleteStale := make(map[string]bool, 0)
@@ -72,6 +72,21 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		Destinations: destinationSpecs,
 	}
 	analytics.TrackSyncStarted(ctx, invocationUUID, syncStartedEvent)
+	var (
+		syncTimeTook   time.Duration
+		totalResources = int64(0)
+		totals         = sourceClient.Metrics()
+	)
+	defer func() {
+		analytics.TrackSyncCompleted(ctx, invocationUUID, analytics.SyncFinishedEvent{
+			SyncStartedEvent:  syncStartedEvent,
+			Errors:            totals.Errors,
+			Warnings:          totals.Warnings,
+			Duration:          syncTimeTook,
+			ResourceCount:     totalResources,
+			AbortedDueToError: syncErr,
+		})
+	}()
 
 	progressAPIClient, err := getProgressAPIClient()
 	if err != nil {
@@ -226,7 +241,6 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	isStateBackendEnabled := sourceSpec.BackendOptions != nil && sourceSpec.BackendOptions.TableName != ""
 
 	// Read from the sync stream and write to all destinations.
-	totalResources := int64(0)
 	isComplete := int64(0)
 
 	var remoteProgressReporter *godebouncer.Debouncer
@@ -360,7 +374,6 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	if err != nil {
 		return err
 	}
-	totals := sourceClient.Metrics()
 	sourceWarnings := totals.Warnings
 	sourceErrors := totals.Errors
 	var metadataDataErrors error
@@ -419,7 +432,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		log.Warn().Err(err).Msg("Failed to finish progress bar")
 	}
 	atomic.StoreInt64(&isComplete, 1)
-	syncTimeTook := time.Since(syncTime)
+	syncTimeTook = time.Since(syncTime)
 	exitReason = ExitReasonCompleted
 
 	msg := "Sync completed successfully"
@@ -434,14 +447,6 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		Str("duration", syncTimeTook.Truncate(time.Second).String()).
 		Str("result", msg).
 		Msg("Sync summary")
-
-	analytics.TrackSyncCompleted(ctx, invocationUUID, analytics.SyncFinishedEvent{
-		SyncStartedEvent: syncStartedEvent,
-		Errors:           totals.Errors,
-		Warnings:         totals.Warnings,
-		Duration:         syncTimeTook,
-		ResourceCount:    totalResources,
-	})
 
 	if remoteProgressReporter != nil {
 		remoteProgressReporter.SendSignal()
