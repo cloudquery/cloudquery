@@ -100,6 +100,7 @@ func Identify(ctx context.Context, invocationUUID uuid.UUID) {
 		GroupId: details.currentTeam,
 		Traits: rudderstack.Traits{
 			"groupType": "team",
+			"name":      details.currentTeam,
 		},
 	})
 }
