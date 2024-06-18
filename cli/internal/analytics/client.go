@@ -229,7 +229,8 @@ func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event Syn
 		Set("status", "success").
 		Set("total_rows", event.ResourceCount).
 		Set("errors", event.Errors).
-		Set("warnings", event.Warnings)
+		Set("warnings", event.Warnings).
+		Set("aborted_due_to_error", event.AbortedDueToError)
 
 	_ = client.Enqueue(rudderstack.Track{
 		UserId:     details.user.ID.String(),

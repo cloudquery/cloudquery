@@ -77,14 +77,16 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		totalResources = int64(0)
 		totals         = sourceClient.Metrics()
 	)
-	defer analytics.TrackSyncCompleted(ctx, invocationUUID, analytics.SyncFinishedEvent{
-		SyncStartedEvent:  syncStartedEvent,
-		Errors:            totals.Errors,
-		Warnings:          totals.Warnings,
-		Duration:          syncTimeTook,
-		ResourceCount:     totalResources,
-		AbortedDueToError: syncErr,
-	})
+	defer func() {
+		analytics.TrackSyncCompleted(ctx, invocationUUID, analytics.SyncFinishedEvent{
+			SyncStartedEvent:  syncStartedEvent,
+			Errors:            totals.Errors,
+			Warnings:          totals.Warnings,
+			Duration:          syncTimeTook,
+			ResourceCount:     totalResources,
+			AbortedDueToError: syncErr,
+		})
+	}()
 
 	progressAPIClient, err := getProgressAPIClient()
 	if err != nil {
