@@ -1,8 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/postgresql
 
-go 1.21.5
-
-toolchain go1.21.6
+go 1.21.11
 
 require (
 	github.com/apache/arrow/go/v16 v16.1.0

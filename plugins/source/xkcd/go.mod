@@ -1,6 +1,6 @@
 module github.com/hermanschaaf/cq-source-xkcd
 
-go 1.21.5
+go 1.21.11
 
 toolchain go1.22.3
 
