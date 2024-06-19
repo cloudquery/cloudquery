@@ -5,7 +5,7 @@ go 1.21.5
 toolchain go1.22.3
 
 require (
-	github.com/cloudquery/plugin-sdk/v4 v4.45.4
+	github.com/cloudquery/plugin-sdk/v4 v4.45.5
 	github.com/rs/zerolog v1.33.0
 	golang.org/x/sync v0.7.0
 	google.golang.org/grpc v1.64.0
