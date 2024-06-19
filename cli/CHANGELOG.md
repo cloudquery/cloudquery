@@ -5,6 +5,15 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.22.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.22.0...cli-v5.22.1) (2024-06-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.45.4 ([#18299](https://github.com/cloudquery/cloudquery/issues/18299)) ([200480a](https://github.com/cloudquery/cloudquery/commit/200480a04ecaa8a826df2aa86429d1e1c9416f73))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.45.5 ([#18327](https://github.com/cloudquery/cloudquery/issues/18327)) ([42d5850](https://github.com/cloudquery/cloudquery/commit/42d5850e4d11e49d8567c2b182a3b26409cad150))
+* Skip relations of incremental tables from delete stale ([#18239](https://github.com/cloudquery/cloudquery/issues/18239)) ([4c65730](https://github.com/cloudquery/cloudquery/commit/4c657304a666e064b3b9a9eb6d2cc5d46a7eb5af))
+
 ## [5.22.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.21.6...cli-v5.22.0) (2024-06-18)
 
 
