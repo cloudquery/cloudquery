@@ -332,6 +332,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 				return err
 			}
 
+			// This works since we sync and send migrate messages for parents before children
 			if isStateBackendEnabled && (table.IsIncremental || (table.Parent != nil && skippedFromDeleteStale[table.Parent.Name])) {
 				skippedFromDeleteStale[table.Name] = true
 			} else {
