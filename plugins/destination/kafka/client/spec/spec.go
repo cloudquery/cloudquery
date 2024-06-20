@@ -33,7 +33,7 @@ type Spec struct {
 	SASLPassword string `json:"sasl_password,omitempty"`
 
 	// Number of records to write before starting a new object.
-	BatchSize int `json:"batch_size" jsonschema:"minimum=1,default=1000"`
+	BatchSize int64 `json:"batch_size" jsonschema:"minimum=1,default=1000"`
 
 	// Topic details, such as number of partitions and replication factor.
 	TopicDetails topicDetails `json:"topic_details"`

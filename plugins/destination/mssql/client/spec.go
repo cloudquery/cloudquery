@@ -40,10 +40,10 @@ type Spec struct {
 	Schema string `json:"schema,omitempty" jsonschema:"default=dbo"`
 
 	// Maximum number of items that may be grouped together to be written in a single write.
-	BatchSize int `json:"batch_size,omitempty" jsonschema:"minimum=1,default=1000"`
+	BatchSize int64 `json:"batch_size,omitempty" jsonschema:"minimum=1,default=1000"`
 
 	// Maximum size of items that may be grouped together to be written in a single write.
-	BatchSizeBytes int `json:"batch_size_bytes,omitempty" jsonschema:"minimum=1,default=5242880"`
+	BatchSizeBytes int64 `json:"batch_size_bytes,omitempty" jsonschema:"minimum=1,default=5242880"`
 
 	// Timeout for writing a single batch.
 	BatchTimeout *configtype.Duration `json:"batch_timeout,omitempty"`
