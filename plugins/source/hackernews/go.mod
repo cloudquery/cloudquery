@@ -1,11 +1,11 @@
 module github.com/cloudquery/cloudquery/plugins/source/hackernews
 
-go 1.21.5
+go 1.21.11
 
 require (
 	github.com/apache/arrow/go/v16 v16.1.0
 	github.com/cloudquery/codegen v0.3.16
-	github.com/cloudquery/plugin-sdk/v4 v4.45.2
+	github.com/cloudquery/plugin-sdk/v4 v4.45.5
 	github.com/golang/mock v1.6.0
 	github.com/hermanschaaf/hackernews v1.0.1
 	github.com/rs/zerolog v1.33.0

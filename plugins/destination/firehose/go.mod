@@ -1,8 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/firehose
 
-go 1.21.5
-
-toolchain go1.21.6
+go 1.21.11
 
 require (
 	github.com/apache/arrow/go/v16 v16.1.0
@@ -11,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.29.1
 	github.com/aws/aws-sdk-go-v2/service/sts v1.28.12
 	github.com/cloudquery/codegen v0.3.16
-	github.com/cloudquery/plugin-sdk/v4 v4.45.2
+	github.com/cloudquery/plugin-sdk/v4 v4.45.5
 	github.com/goccy/go-json v0.10.3
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.9.0

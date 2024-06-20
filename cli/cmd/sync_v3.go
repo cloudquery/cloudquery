@@ -11,7 +11,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/apache/arrow/go/v16/arrow"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/internal/api"
@@ -20,6 +19,7 @@ import (
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
 	"github.com/vnteamopen/godebouncer"
@@ -56,6 +56,7 @@ func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
 func syncConnectionV3(ctx context.Context, source v3source, destinations []v3destination, backend *v3destination, uid string, noMigrate bool, summaryLocation string) (syncErr error) {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
+	skippedFromDeleteStale := make(map[string]bool, 0)
 	tablesForDeleteStale := make(map[string]bool, 0)
 
 	sourceSpec := source.spec
@@ -340,10 +341,16 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			if err != nil {
 				return err
 			}
-			tableName := tableNameFromSchema(sc)
+			table, err := schema.NewTableFromArrowSchema(sc)
+			if err != nil {
+				return err
+			}
 
-			if !isStateBackendEnabled || !tableIsIncremental(sc) {
-				tablesForDeleteStale[tableName] = true
+			// This works since we sync and send migrate messages for parents before children
+			if isStateBackendEnabled && (table.IsIncremental || (table.Parent != nil && skippedFromDeleteStale[table.Parent.Name])) {
+				skippedFromDeleteStale[table.Name] = true
+			} else {
+				tablesForDeleteStale[table.Name] = true
 			}
 			if noMigrate {
 				continue
@@ -453,16 +460,6 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		<-remoteProgressReporter.Done()
 	}
 	return nil
-}
-
-func tableNameFromSchema(sc *arrow.Schema) string {
-	tableName, _ := sc.Metadata().GetValue("cq:table_name")
-	return tableName
-}
-
-func tableIsIncremental(sc *arrow.Schema) bool {
-	inc, _ := sc.Metadata().GetValue("cq:extension:incremental")
-	return inc == "true"
 }
 
 func deleteStale(client plugin.Plugin_WriteClient, tables map[string]bool, sourceName string, syncTime time.Time) error {

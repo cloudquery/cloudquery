@@ -1,15 +1,13 @@
 module github.com/cloudquery/cloudquery/plugins/destination/kafka
 
-go 1.21.5
-
-toolchain go1.21.6
+go 1.21.11
 
 require (
 	github.com/IBM/sarama v1.43.2
 	github.com/apache/arrow/go/v16 v16.1.0
 	github.com/cloudquery/codegen v0.3.16
 	github.com/cloudquery/filetypes/v4 v4.2.21
-	github.com/cloudquery/plugin-sdk/v4 v4.45.2
+	github.com/cloudquery/plugin-sdk/v4 v4.45.5
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.33.0
 	github.com/wk8/go-ordered-map/v2 v2.1.8
