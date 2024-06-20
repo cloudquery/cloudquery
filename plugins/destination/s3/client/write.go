@@ -11,6 +11,7 @@ import (
 	"github.com/apache/arrow/go/v16/arrow/array"
 	"github.com/apache/arrow/go/v16/arrow/memory"
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	awstypes "github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/filetypes/v4"
@@ -41,7 +42,7 @@ func (c *Client) createObject(ctx context.Context, table *schema.Table, objKey s
 			params.ServerSideEncryption = sseConfiguration.ServerSideEncryption
 		}
 
-		_, err := c.uploader.Upload(ctx, params)
+		_, err := manager.NewUploader(c.s3Client).Upload(ctx, params)
 		return err
 	})
 	return s, err
