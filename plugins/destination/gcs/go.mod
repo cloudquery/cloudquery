@@ -7,7 +7,7 @@ require (
 	github.com/apache/arrow/go/v16 v16.1.0
 	github.com/cloudquery/codegen v0.3.16
 	github.com/cloudquery/filetypes/v4 v4.2.21
-	github.com/cloudquery/plugin-sdk/v4 v4.45.6
+	github.com/cloudquery/plugin-sdk/v4 v4.46.0
 	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.12.0
