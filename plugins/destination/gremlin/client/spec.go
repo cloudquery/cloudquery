@@ -45,10 +45,10 @@ type Spec struct {
 	CompleteTypes bool `json:"complete_types" jsonschema:"default=false"`
 
 	// Number of records to batch together before sending to the database.
-	BatchSize int `json:"batch_size" jsonschema:"minimum=1,default=200"`
+	BatchSize int64 `json:"batch_size" jsonschema:"minimum=1,default=200"`
 
 	// Number of bytes (as Arrow buffer size) to batch together before sending to the database.
-	BatchSizeBytes int `json:"batch_size_bytes" jsonschema:"minimum=1,default=4194304"`
+	BatchSizeBytes int64 `json:"batch_size_bytes" jsonschema:"minimum=1,default=4194304"`
 }
 
 type authMode string

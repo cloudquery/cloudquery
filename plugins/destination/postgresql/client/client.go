@@ -30,7 +30,7 @@ type Client struct {
 	currentDatabaseName string
 	currentSchemaName   string
 	pgType              pgType
-	batchSize           int
+	batchSize           int64
 	writer              *mixedbatchwriter.MixedBatchWriter
 
 	pgTablesToPKConstraints   map[string]*pkConstraintDetails
