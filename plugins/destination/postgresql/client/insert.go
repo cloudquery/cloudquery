@@ -75,7 +75,7 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 		for _, rowVals := range rows {
 			batch.Queue(sql, rowVals...)
 		}
-		if batch.Len() >= c.batchSize {
+		if int64(batch.Len()) >= c.batchSize {
 			if err := c.flushBatch(ctx, batch); err != nil {
 				return err
 			}
