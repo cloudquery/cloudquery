@@ -419,6 +419,12 @@
               "type": "null"
             }
           ]
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum number of tables to write concurrently.\n\nDefaults to `100`.",
+          "default": 1
         }
       },
       "additionalProperties": false,

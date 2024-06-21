@@ -104,6 +104,11 @@ type Spec struct {
 	//
 	// Defaults to `30s` unless `no_rotate` is `true` (will be `0s` then).
 	BatchTimeout *configtype.Duration `json:"batch_timeout" jsonschema:"default=30s"`
+
+	// Maximum number of files to write concurrently.
+	//
+	// Defaults to `100`.
+	Concurrency int `json:"concurrency,omitempty" jsonschema:"minimum=1,default=1"`
 }
 
 type ServerSideEncryptionConfiguration struct {
@@ -150,6 +155,9 @@ func (s *Spec) SetDefaults() {
 			s.BatchTimeout = &d
 		}
 	}
+	if s.Concurrency == 0 {
+		s.Concurrency = 100
+	}
 }
 
 func (s *Spec) Validate() error {
@@ -195,6 +203,10 @@ func (s *Spec) Validate() error {
 		if !slices.Contains(cannedACLS, acl) {
 			return fmt.Errorf("invalid `acl` value: %s", s.ACL)
 		}
+	}
+
+	if s.Concurrency <= 0 {
+		return fmt.Errorf("`concurrency` must be greater than 0")
 	}
 
 	// required for s.FileSpec.Validate call

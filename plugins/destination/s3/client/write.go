@@ -49,6 +49,11 @@ func (c *Client) createObject(ctx context.Context, table *schema.Table, objKey s
 }
 
 func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInsert) error {
+	c.tableConcurrencyCh <- struct{}{}
+	defer func() {
+		<-c.tableConcurrencyCh
+	}()
+
 	var s *filetypes.Stream
 
 	for msg := range msgs {

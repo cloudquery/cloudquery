@@ -35,6 +35,8 @@ type Client struct {
 	s3Client *s3.Client
 
 	initializedTables map[string]string
+
+	tableConcurrencyCh chan struct{}
 }
 
 func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
@@ -50,11 +52,12 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 	if err := json.Unmarshal(s, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal s3 spec: %w", err)
 	}
+	c.spec.SetDefaults()
 	if err := c.spec.Validate(); err != nil {
 		return nil, err
 	}
-	c.spec.SetDefaults()
 
+	c.tableConcurrencyCh = make(chan struct{}, c.spec.Concurrency)
 	if c.syncID == "" && c.spec.PathContainsSyncID() {
 		return nil, fmt.Errorf("path contains {{SYNC_ID}}. Upgrade your CLI to use this path variable")
 	}
