@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v5.1.1...plugins-destination-file-v5.1.2) (2024-06-20)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/cloudquery/plugin-sdk/v4` to v4.45.6 ([#18338](https://github.com/cloudquery/cloudquery/issues/18338)) ([d34a2c0](https://github.com/cloudquery/cloudquery/commit/d34a2c056095ff94483a54a9db5ae10d455669ac))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.45.4 ([#18299](https://github.com/cloudquery/cloudquery/issues/18299)) ([200480a](https://github.com/cloudquery/cloudquery/commit/200480a04ecaa8a826df2aa86429d1e1c9416f73))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.45.5 ([#18327](https://github.com/cloudquery/cloudquery/issues/18327)) ([42d5850](https://github.com/cloudquery/cloudquery/commit/42d5850e4d11e49d8567c2b182a3b26409cad150))
+
 ## [5.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v5.1.0...plugins-destination-file-v5.1.1) (2024-06-18)
 
 

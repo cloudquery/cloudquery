@@ -45,10 +45,10 @@ type Spec struct {
 	Concurrency int `json:"concurrency" jsonschema:"minimum=1"`
 
 	// Number of documents to batch together per request.
-	BatchSize int `json:"batch_size" jsonschema:"minimum=1,default=1000"`
+	BatchSize int64 `json:"batch_size" jsonschema:"minimum=1,default=1000"`
 
 	// Number of bytes to batch together per request.
-	BatchSizeBytes int `json:"batch_size_bytes" jsonschema:"minimum=1,default=5242880"`
+	BatchSizeBytes int64 `json:"batch_size_bytes" jsonschema:"minimum=1,default=5242880"`
 }
 
 //go:embed schema.json

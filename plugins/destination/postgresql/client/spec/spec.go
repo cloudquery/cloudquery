@@ -28,10 +28,10 @@ type Spec struct {
 	PgxLogLevel LogLevel `json:"pgx_log_level,omitempty" jsonschema:"default=error"`
 
 	// Maximum number of items that may be grouped together to be written in a single write.
-	BatchSize int `json:"batch_size,omitempty" jsonschema:"minimum=1,default=10000"`
+	BatchSize int64 `json:"batch_size,omitempty" jsonschema:"minimum=1,default=10000"`
 
 	// Maximum size of items that may be grouped together to be written in a single write.
-	BatchSizeBytes int `json:"batch_size_bytes,omitempty" jsonschema:"minimum=1,default=100000000"`
+	BatchSizeBytes int64 `json:"batch_size_bytes,omitempty" jsonschema:"minimum=1,default=100000000"`
 
 	// Maximum interval between batch writes.
 	BatchTimeout configtype.Duration `json:"batch_timeout,omitempty"`
