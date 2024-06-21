@@ -26,15 +26,15 @@ func TestSpec_SetDefaults(t *testing.T) {
 
 		{
 			Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}},
-			Want: Spec{Path: "test/path/{{TABLE}}.json.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, TestWrite: boolPtr(true), BatchSize: int64Ptr(10000), BatchSizeBytes: int64Ptr(50 * 1024 * 1024), BatchTimeout: &dur30, Concurrency: 100},
+			Want: Spec{Path: "test/path/{{TABLE}}.json.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, TestWrite: boolPtr(true), BatchSize: int64Ptr(10000), BatchSizeBytes: int64Ptr(50 * 1024 * 1024), BatchTimeout: &dur30, Concurrency: 125},
 		},
 		{
 			Give: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}, TestWrite: boolPtr(false)},
-			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}, TestWrite: boolPtr(false), BatchSize: int64Ptr(10000), BatchSizeBytes: int64Ptr(50 * 1024 * 1024), BatchTimeout: &dur30, Concurrency: 100},
+			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}, TestWrite: boolPtr(false), BatchSize: int64Ptr(10000), BatchSizeBytes: int64Ptr(50 * 1024 * 1024), BatchTimeout: &dur30, Concurrency: 125},
 		},
 		{
 			Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: true},
-			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json"}, TestWrite: boolPtr(true), NoRotate: true, BatchSize: int64Ptr(0), BatchSizeBytes: int64Ptr(0), BatchTimeout: &dur0, Concurrency: 100},
+			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json"}, TestWrite: boolPtr(true), NoRotate: true, BatchSize: int64Ptr(0), BatchSizeBytes: int64Ptr(0), BatchTimeout: &dur0, Concurrency: 125},
 		},
 		{
 			Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: true, Concurrency: 500},
@@ -57,18 +57,18 @@ func TestSpec_Validate(t *testing.T) {
 		Give    Spec
 		WantErr bool
 	}{
-		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, ACL: "bucket-owner-full-control", Concurrency: 100}, WantErr: false},
-		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}, Region: "region", BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, Concurrency: 100}, WantErr: true}, // no bucket
-		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: false, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, Concurrency: 100}, WantErr: false},
-		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "parquet"}, NoRotate: false, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, GenerateEmptyObjects: true, Concurrency: 100}, WantErr: false},
-		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "parquet"}, NoRotate: false, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, GenerateEmptyObjects: false, Concurrency: 100}, WantErr: false},
-		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: false, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, GenerateEmptyObjects: true, Concurrency: 100}, WantErr: true}, // when empty_objects is enabled, format must be parquet
-		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, Concurrency: 100}, WantErr: true},                              // can't have no_rotate and {{UUID}}
-		{Give: Spec{Path: "test/path/{{TABLE}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: false, Bucket: "mybucket", Region: region, BatchSize: &one, BatchSizeBytes: &zero, BatchTimeout: &dur0, Concurrency: 100}, WantErr: true},                                       // can't have nonzero batch size and no {{UUID}}
-		{Give: Spec{Path: "/test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, Concurrency: 100}, WantErr: true},                             // begins with a slash
-		{Give: Spec{Path: "//test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, Concurrency: 100}, WantErr: true},                            // duplicate slashes
-		{Give: Spec{Path: "test//path", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, Concurrency: 100}, WantErr: true},                                                                // duplicate slashes
-		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, ACL: "invalid", Concurrency: 100}, WantErr: true},
+		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, ACL: "bucket-owner-full-control", Concurrency: 125}, WantErr: false},
+		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}, Region: "region", BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, Concurrency: 125}, WantErr: true}, // no bucket
+		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: false, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, Concurrency: 125}, WantErr: false},
+		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "parquet"}, NoRotate: false, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, GenerateEmptyObjects: true, Concurrency: 125}, WantErr: false},
+		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "parquet"}, NoRotate: false, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, GenerateEmptyObjects: false, Concurrency: 125}, WantErr: false},
+		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: false, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, GenerateEmptyObjects: true, Concurrency: 125}, WantErr: true}, // when empty_objects is enabled, format must be parquet
+		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, Concurrency: 125}, WantErr: true},                              // can't have no_rotate and {{UUID}}
+		{Give: Spec{Path: "test/path/{{TABLE}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: false, Bucket: "mybucket", Region: region, BatchSize: &one, BatchSizeBytes: &zero, BatchTimeout: &dur0, Concurrency: 125}, WantErr: true},                                       // can't have nonzero batch size and no {{UUID}}
+		{Give: Spec{Path: "/test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, Concurrency: 125}, WantErr: true},                             // begins with a slash
+		{Give: Spec{Path: "//test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, Concurrency: 125}, WantErr: true},                            // duplicate slashes
+		{Give: Spec{Path: "test//path", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, Concurrency: 125}, WantErr: true},                                                                // duplicate slashes
+		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, ACL: "invalid", Concurrency: 125}, WantErr: true},
 		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "parquet"}, NoRotate: false, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, GenerateEmptyObjects: true, Concurrency: -1}, WantErr: true},
 	}
 	for i, tc := range cases {

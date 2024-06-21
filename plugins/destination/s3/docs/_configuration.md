@@ -33,7 +33,7 @@ spec:
     # batch_size: 10000 # 10K entries
     # batch_size_bytes: 52428800 # 50 MiB
     # batch_timeout: 30s # 30 seconds
-    # concurrency: 100 # up to 100 files can be written concurrently
+    # concurrency: 125 # up to 125 files can be written concurrently
 ```
 
 It is also possible to use `{{YEAR}}`, `{{MONTH}}`, `{{DAY}}` and `{{HOUR}}` in the path to create a directory structure based on the current time. For example:

@@ -116,7 +116,7 @@ This is the (nested) spec used by the CSV destination Plugin.
 
   Maximum interval between batch writes.
 
-- `concurrency` (`integer`) (optional) (default: `100`)
+- `concurrency` (`integer`) (optional) (default: `125`)
 
   Maximum number of files that can be written concurrently.
 

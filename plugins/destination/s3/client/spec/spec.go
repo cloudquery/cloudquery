@@ -107,8 +107,8 @@ type Spec struct {
 
 	// Maximum number of files to write concurrently.
 	//
-	// Defaults to `100`.
-	Concurrency int `json:"concurrency,omitempty" jsonschema:"minimum=1,default=1"`
+	// Defaults to `125`.
+	Concurrency int `json:"concurrency,omitempty" jsonschema:"minimum=1,default=125"`
 }
 
 type ServerSideEncryptionConfiguration struct {
@@ -156,7 +156,7 @@ func (s *Spec) SetDefaults() {
 		}
 	}
 	if s.Concurrency == 0 {
-		s.Concurrency = 100
+		s.Concurrency = 125
 	}
 }
 

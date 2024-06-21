@@ -423,8 +423,8 @@
         "concurrency": {
           "type": "integer",
           "minimum": 1,
-          "description": "Maximum number of tables to write concurrently.\n\nDefaults to `100`.",
-          "default": 1
+          "description": "Maximum number of files to write concurrently.\n\nDefaults to `125`.",
+          "default": 125
         }
       },
       "additionalProperties": false,
