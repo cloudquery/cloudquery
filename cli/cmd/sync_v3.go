@@ -11,7 +11,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/apache/arrow/go/v16/arrow"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/internal/api"
@@ -20,6 +19,7 @@ import (
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
 	"github.com/vnteamopen/godebouncer"
@@ -53,9 +53,10 @@ func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
 }
 
 // nolint:dupl
-func syncConnectionV3(ctx context.Context, source v3source, destinations []v3destination, backend *v3destination, uid string, noMigrate bool, summaryLocation string) error {
+func syncConnectionV3(ctx context.Context, source v3source, destinations []v3destination, backend *v3destination, uid string, noMigrate bool, summaryLocation string) (syncErr error) {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
+	skippedFromDeleteStale := make(map[string]bool, 0)
 	tablesForDeleteStale := make(map[string]bool, 0)
 
 	sourceSpec := source.spec
@@ -72,6 +73,21 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		Destinations: destinationSpecs,
 	}
 	analytics.TrackSyncStarted(ctx, invocationUUID, syncStartedEvent)
+	var (
+		syncTimeTook   time.Duration
+		totalResources = int64(0)
+		totals         = sourceClient.Metrics()
+	)
+	defer func() {
+		analytics.TrackSyncCompleted(ctx, invocationUUID, analytics.SyncFinishedEvent{
+			SyncStartedEvent:  syncStartedEvent,
+			Errors:            totals.Errors,
+			Warnings:          totals.Warnings,
+			Duration:          syncTimeTook,
+			ResourceCount:     totalResources,
+			AbortedDueToError: syncErr,
+		})
+	}()
 
 	progressAPIClient, err := getProgressAPIClient()
 	if err != nil {
@@ -226,7 +242,6 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	isStateBackendEnabled := sourceSpec.BackendOptions != nil && sourceSpec.BackendOptions.TableName != ""
 
 	// Read from the sync stream and write to all destinations.
-	totalResources := int64(0)
 	isComplete := int64(0)
 
 	var remoteProgressReporter *godebouncer.Debouncer
@@ -326,10 +341,16 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			if err != nil {
 				return err
 			}
-			tableName := tableNameFromSchema(sc)
+			table, err := schema.NewTableFromArrowSchema(sc)
+			if err != nil {
+				return err
+			}
 
-			if !isStateBackendEnabled || !tableIsIncremental(sc) {
-				tablesForDeleteStale[tableName] = true
+			// This works since we sync and send migrate messages for parents before children
+			if isStateBackendEnabled && (table.IsIncremental || (table.Parent != nil && skippedFromDeleteStale[table.Parent.Name])) {
+				skippedFromDeleteStale[table.Name] = true
+			} else {
+				tablesForDeleteStale[table.Name] = true
 			}
 			if noMigrate {
 				continue
@@ -360,7 +381,6 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	if err != nil {
 		return err
 	}
-	totals := sourceClient.Metrics()
 	sourceWarnings := totals.Warnings
 	sourceErrors := totals.Errors
 	var metadataDataErrors error
@@ -419,7 +439,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		log.Warn().Err(err).Msg("Failed to finish progress bar")
 	}
 	atomic.StoreInt64(&isComplete, 1)
-	syncTimeTook := time.Since(syncTime)
+	syncTimeTook = time.Since(syncTime)
 	exitReason = ExitReasonCompleted
 
 	msg := "Sync completed successfully"
@@ -435,29 +455,11 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		Str("result", msg).
 		Msg("Sync summary")
 
-	analytics.TrackSyncCompleted(ctx, invocationUUID, analytics.SyncFinishedEvent{
-		SyncStartedEvent: syncStartedEvent,
-		Errors:           totals.Errors,
-		Warnings:         totals.Warnings,
-		Duration:         syncTimeTook,
-		ResourceCount:    totalResources,
-	})
-
 	if remoteProgressReporter != nil {
 		remoteProgressReporter.SendSignal()
 		<-remoteProgressReporter.Done()
 	}
 	return nil
-}
-
-func tableNameFromSchema(sc *arrow.Schema) string {
-	tableName, _ := sc.Metadata().GetValue("cq:table_name")
-	return tableName
-}
-
-func tableIsIncremental(sc *arrow.Schema) bool {
-	inc, _ := sc.Metadata().GetValue("cq:extension:incremental")
-	return inc == "true"
 }
 
 func deleteStale(client plugin.Plugin_WriteClient, tables map[string]bool, sourceName string, syncTime time.Time) error {

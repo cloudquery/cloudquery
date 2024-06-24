@@ -28,10 +28,10 @@ type Spec struct {
 	PrivateKey string `json:"private_key,omitempty"`
 
 	// Number of records to batch together before sending to the database.
-	BatchSize int `json:"batch_size,omitempty" jsonschema:"minimum=1,default=1000"`
+	BatchSize int64 `json:"batch_size,omitempty" jsonschema:"minimum=1,default=1000"`
 
 	// Number of bytes (as Arrow buffer size) to batch together before sending to the database.
-	BatchSizeBytes int `json:"batch_size_bytes,omitempty" jsonschema:"minimum=1,default=4194304"`
+	BatchSizeBytes int64 `json:"batch_size_bytes,omitempty" jsonschema:"minimum=1,default=4194304"`
 
 	// By default, tables are migrated one at a time.
 	// This option allows you to migrate multiple tables concurrently.

@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/cli
 
-go 1.21.5
+go 1.21.11
 
 require (
 	github.com/apache/arrow/go/v16 v16.1.0
@@ -8,8 +8,8 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cloudquery/cloudquery-api-go v1.11.3
 	github.com/cloudquery/codegen v0.3.16
-	github.com/cloudquery/plugin-pb-go v1.19.19
-	github.com/cloudquery/plugin-sdk/v4 v4.44.2
+	github.com/cloudquery/plugin-pb-go v1.20.2
+	github.com/cloudquery/plugin-sdk/v4 v4.48.0
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/docker/docker v26.1.3+incompatible
@@ -35,7 +35,7 @@ require (
 	golang.org/x/sync v0.7.0
 	golang.org/x/term v0.20.0
 	google.golang.org/grpc v1.64.0
-	google.golang.org/protobuf v1.34.1
+	google.golang.org/protobuf v1.34.2
 	gopkg.in/yaml.v3 v3.0.1
 )
 

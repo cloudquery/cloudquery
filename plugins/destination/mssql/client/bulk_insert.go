@@ -16,8 +16,8 @@ func (c *Client) bulkInsert(ctx context.Context, tx *sql.Tx, table *schema.Table
 		mssql.CopyIn(queries.SanitizedTableName(c.spec.Schema, table),
 			mssql.BulkOptions{
 				KeepNulls:         true,
-				KilobytesPerBatch: c.spec.BatchSizeBytes >> 10,
-				RowsPerBatch:      c.spec.BatchSize,
+				KilobytesPerBatch: int(c.spec.BatchSizeBytes >> 10),
+				RowsPerBatch:      int(c.spec.BatchSize),
 				Tablock:           true,
 			},
 			table.Columns.Names()...,
