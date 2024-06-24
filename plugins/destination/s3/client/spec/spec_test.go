@@ -69,7 +69,6 @@ func TestSpec_Validate(t *testing.T) {
 		{Give: Spec{Path: "//test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, Concurrency: 125}, WantErr: true},                            // duplicate slashes
 		{Give: Spec{Path: "test//path", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, Concurrency: 125}, WantErr: true},                                                                // duplicate slashes
 		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, ACL: "invalid", Concurrency: 125}, WantErr: true},
-		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "parquet"}, NoRotate: false, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, GenerateEmptyObjects: true, Concurrency: -1}, WantErr: true},
 	}
 	for i, tc := range cases {
 		tc := tc

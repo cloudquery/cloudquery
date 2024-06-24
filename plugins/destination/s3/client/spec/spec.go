@@ -205,10 +205,6 @@ func (s *Spec) Validate() error {
 		}
 	}
 
-	if s.Concurrency <= 0 {
-		return fmt.Errorf("`concurrency` must be greater than 0")
-	}
-
 	// required for s.FileSpec.Validate call
 	err := s.FileSpec.UnmarshalSpec()
 	if err != nil {
