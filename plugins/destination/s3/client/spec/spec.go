@@ -155,7 +155,7 @@ func (s *Spec) SetDefaults() {
 			s.BatchTimeout = &d
 		}
 	}
-	if s.Concurrency == 0 {
+	if s.Concurrency <= 0 {
 		s.Concurrency = 125
 	}
 }
