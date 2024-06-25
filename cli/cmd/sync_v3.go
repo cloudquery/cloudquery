@@ -126,7 +126,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			transformer.WithSyncTimeColumn(syncTime),
 		}
 		if destinationSpecs[i].SyncGroupId != "" {
-			opts = append(opts, transformer.WithSyncGroupIdColumn(destinationSpecs[i].RenderedSyncGroupId(syncTime)))
+			opts = append(opts, transformer.WithSyncGroupIdColumn(destinationSpecs[i].RenderedSyncGroupId(syncTime, uid)))
 		}
 		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
 			opts = append(opts, transformer.WithRemovePKs())
