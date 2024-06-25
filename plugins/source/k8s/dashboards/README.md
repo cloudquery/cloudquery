@@ -4,10 +4,10 @@ This directory contains pre-built dashboards. Currently those are available only
 
 Checkout those tutorials:
 
-* [Building Open Source Cloud Asset Inventory with CloudQuery and Grafana](https://www.cloudquery.io/blog/open-source-cloud-asset-inventory-with-cloudquery-and-grafana)
-* [Building Open Source Cloud Asset Inventory with CloudQuery and Apache Superset](https://www.cloudquery.io/blog/cloud-asset-inventory-cloudquery-apache-superset)
-* [Building Open Source Cloud Asset Inventory with CloudQuery and AWS QuickSight](https://www.cloudquery.io/blog/cloud-asset-inventory-cloudquery-aws-quicksight)
-* [Building Open Source Cloud Asset Inventory with Metabase](https://www.cloudquery.io/blog/cloud-asset-inventory-cloudquery-metabase)
+* [Building a Cloud Asset Inventory with CloudQuery and Grafana](https://www.cloudquery.io/blog/open-source-cloud-asset-inventory-with-cloudquery-and-grafana)
+* [Building a Cloud Asset Inventory with CloudQuery and Apache Superset](https://www.cloudquery.io/blog/cloud-asset-inventory-cloudquery-apache-superset)
+* [Building a Cloud Asset Inventory with CloudQuery and AWS QuickSight](https://www.cloudquery.io/blog/cloud-asset-inventory-cloudquery-aws-quicksight)
+* [Building a Cloud Asset Inventory with Metabase](https://www.cloudquery.io/blog/cloud-asset-inventory-cloudquery-metabase)
 
 ## What's inside?
 
