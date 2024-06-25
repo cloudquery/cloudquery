@@ -13,6 +13,7 @@ const (
 	varDay    = "{{DAY}}"
 	varHour   = "{{HOUR}}"
 	varMinute = "{{MINUTE}}"
+	varSyncId = "{{SYNC_ID}}"
 )
 
 // Destination plugin spec
@@ -63,11 +64,12 @@ func (d *Destination) Validate() error {
 	return d.Metadata.Validate()
 }
 
-func (d *Destination) RenderedSyncGroupId(t time.Time) string {
+func (d *Destination) RenderedSyncGroupId(t time.Time, sync_id string) string {
 	renderedValue := strings.ReplaceAll(d.SyncGroupId, varYear, t.Format("2006"))
 	renderedValue = strings.ReplaceAll(renderedValue, varMonth, t.Format("01"))
 	renderedValue = strings.ReplaceAll(renderedValue, varDay, t.Format("02"))
 	renderedValue = strings.ReplaceAll(renderedValue, varHour, t.Format("15"))
 	renderedValue = strings.ReplaceAll(renderedValue, varMinute, t.Format("04"))
+	renderedValue = strings.ReplaceAll(renderedValue, varSyncId, sync_id)
 	return renderedValue
 }
