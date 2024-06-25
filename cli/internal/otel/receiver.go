@@ -24,7 +24,6 @@ import (
 type Span struct {
 	TraceID        string         `json:"trace_id"`
 	SpanID         string         `json:"span_id"`
-	TraceState     string         `json:"trace_state"`
 	ParentSpanID   string         `json:"parent_span_id"`
 	Name           string         `json:"name"`
 	StartTimestamp time.Time      `json:"start_timestamp"`
@@ -105,7 +104,6 @@ func (c Consumer) ConsumeTraces(ctx context.Context, td ptrace.Traces) error {
 					TraceID:        hex.EncodeToString(traceID[:]),
 					SpanID:         hex.EncodeToString(spanID[:]),
 					ParentSpanID:   hex.EncodeToString(parentSpanID[:]),
-					TraceState:     span.TraceState().AsRaw(),
 					Name:           span.Name(),
 					StartTimestamp: span.StartTimestamp().AsTime(),
 					EndTimestamp:   span.EndTimestamp().AsTime(),
