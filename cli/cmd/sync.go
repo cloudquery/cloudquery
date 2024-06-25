@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/cli/internal/auth"
+	"github.com/cloudquery/cloudquery/cli/internal/otel"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
@@ -123,7 +124,16 @@ func sync(cmd *cobra.Command, args []string) error {
 	// in a cloud sync environment, we pass only the relevant environment variables to the plugin
 	osEnviron := os.Environ()
 
+	otelReceiver, err := otel.StartOtelReceiver(ctx)
+	if err == nil {
+		defer otelReceiver.Shutdown(ctx)
+	}
+
 	for _, source := range sources {
+		if source.OtelEndpoint == "" {
+			source.OtelEndpoint = otelReceiver.Endpoint
+			source.OtelEndpointInsecure = true
+		}
 		opts := []managedplugin.Option{
 			managedplugin.WithLogger(log.Logger),
 			managedplugin.WithOtelEndpoint(source.OtelEndpoint),
