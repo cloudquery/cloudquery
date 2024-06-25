@@ -84,7 +84,7 @@ func newDefaultMetricConsumer(metricsFile *os.File) ConsumeMetric {
 }
 
 // Capabilities implements consumer.Traces.
-func (c Consumer) Capabilities() consumer.Capabilities {
+func (Consumer) Capabilities() consumer.Capabilities {
 	return consumer.Capabilities{MutatesData: false}
 }
 
@@ -141,7 +141,6 @@ func (c Consumer) ConsumeMetrics(ctx context.Context, md pmetric.Metrics) error 
 						Attributes:  dataPoint.Attributes().AsRaw(),
 					})
 				}
-
 			}
 		}
 	}
@@ -165,40 +164,40 @@ func getPort() (int, error) {
 
 type OtelReceiverOption func(*Consumer)
 
-func WithSpanConsumer(consumer ConsumeSpan) OtelReceiverOption {
+func WithSpanConsumer(consumerSpan ConsumeSpan) OtelReceiverOption {
 	return func(c *Consumer) {
-		c.consumeSpan = consumer
+		c.consumeSpan = consumerSpan
 	}
 }
 
-func WithMetricConsumer(consumer ConsumeMetric) OtelReceiverOption {
+func WithMetricConsumer(consumerMetric ConsumeMetric) OtelReceiverOption {
 	return func(c *Consumer) {
-		c.consumeMetric = consumer
+		c.consumeMetric = consumerMetric
 	}
 }
 
 func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelReceiver, error) {
-	consumer := Consumer{}
+	c := Consumer{}
 	for _, opt := range opts {
-		opt(&consumer)
+		opt(&c)
 	}
 
-	if consumer.consumeSpan == nil {
+	if c.consumeSpan == nil {
 		tracesFile, err := os.OpenFile("traces.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
 			return nil, err
 		}
-		consumer.consumeSpan = newDefaultSpanConsumer(tracesFile)
-		consumer.tracesFile = tracesFile
+		c.consumeSpan = newDefaultSpanConsumer(tracesFile)
+		c.tracesFile = tracesFile
 	}
 
-	if consumer.consumeMetric == nil {
+	if c.consumeMetric == nil {
 		metricsFile, err := os.OpenFile("metrics.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
 			return nil, err
 		}
-		consumer.consumeMetric = newDefaultMetricConsumer(metricsFile)
-		consumer.metricsFile = metricsFile
+		c.consumeMetric = newDefaultMetricConsumer(metricsFile)
+		c.metricsFile = metricsFile
 	}
 
 	factory := otlpreceiver.NewFactory()
@@ -221,16 +220,16 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 	}
 
 	var components []component.Component
-	if consumer.consumeSpan != nil {
-		traces, err := factory.CreateTracesReceiver(ctx, settings, config, consumer)
+	if c.consumeSpan != nil {
+		traces, err := factory.CreateTracesReceiver(ctx, settings, config, c)
 		if err != nil {
 			return nil, err
 		}
 		components = append(components, traces)
 	}
 
-	if consumer.consumeMetric != nil {
-		metrics, err := factory.CreateMetricsReceiver(ctx, settings, config, consumer)
+	if c.consumeMetric != nil {
+		metrics, err := factory.CreateMetricsReceiver(ctx, settings, config, c)
 		if err != nil {
 			return nil, err
 		}
@@ -244,20 +243,19 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 	}
 
 	return &OtelReceiver{
-		consumer:   consumer,
+		consumer:   c,
 		components: components,
 		Endpoint:   config.HTTP.Endpoint,
 	}, nil
 }
 
-func (r *OtelReceiver) Shutdown(ctx context.Context) error {
+func (r *OtelReceiver) Shutdown(ctx context.Context) {
 	if r == nil {
-		return nil
+		return
 	}
 
-	err := r.consumer.Shutdown(ctx)
+	_ = r.consumer.Shutdown(ctx)
 	for _, c := range r.components {
-		err = errors.Join(err, c.Shutdown(ctx))
+		_ = c.Shutdown(ctx)
 	}
-	return err
 }
