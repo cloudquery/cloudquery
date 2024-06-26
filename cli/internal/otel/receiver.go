@@ -3,13 +3,15 @@ package otel
 import (
 	"context"
 	"encoding/hex"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net"
 	"os"
+	"sort"
+	"sync"
 	"time"
 
+	"github.com/jedib0t/go-pretty/v6/table"
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/consumer"
 	"go.opentelemetry.io/collector/pdata/pmetric"
@@ -19,6 +21,7 @@ import (
 	noopmetric "go.opentelemetry.io/otel/metric/noop"
 	nooptrace "go.opentelemetry.io/otel/trace/noop"
 	"go.uber.org/zap"
+	"golang.org/x/exp/maps"
 )
 
 type Span struct {
@@ -39,21 +42,32 @@ type Metric struct {
 	Attributes  map[string]any `json:"attributes"`
 }
 
+type TableMetric struct {
+	Table     string     `json:"table"`
+	ClientId  string     `json:"client_id"`
+	StartTime *time.Time `json:"start_time"`
+	EndTime   *time.Time `json:"end_time"`
+	Resources int64      `json:"resources"`
+	Errors    int64      `json:"errors"`
+	Panics    int64      `json:"panics"`
+}
+
 type ConsumeSpan = func(context.Context, Span)
 
 type ConsumeMetric = func(context.Context, Metric)
 
 type Consumer struct {
-	tracesFile    *os.File
-	consumeSpan   ConsumeSpan
-	metricsFile   *os.File
-	consumeMetric ConsumeMetric
+	consumeSpan     ConsumeSpan
+	quit            chan any
+	metricsFilename string
+	metricsFile     *os.File
+	consumeMetric   ConsumeMetric
 }
 
 func (c *Consumer) Shutdown(ctx context.Context) error {
 	var err error
-	if c.tracesFile != nil {
-		err = errors.Join(err, c.tracesFile.Close())
+	if c.quit != nil {
+		close(c.quit)
 	}
 	if c.metricsFile != nil {
 		err = errors.Join(err, c.metricsFile.Close())
@@ -61,24 +75,100 @@ func (c *Consumer) Shutdown(ctx context.Context) error {
 	return err
 }
 
-func newDefaultSpanConsumer(tracesFile *os.File) ConsumeSpan {
+func newDefaultSpanConsumer() ConsumeSpan {
 	return func(ctx context.Context, span Span) {
-		asJson, err := json.Marshal(span)
-		if err != nil {
-			return
-		}
-		_, _ = tracesFile.Write(append(asJson, '\n'))
+		// do nothing
 	}
 }
 
-func newDefaultMetricConsumer(metricsFile *os.File) ConsumeMetric {
-	return func(ctx context.Context, metric Metric) {
-		// write metric to file as json
-		asJson, err := json.Marshal(metric)
-		if err != nil {
-			return
+func newDefaultMetricConsumer(metricsFile *os.File, quit chan any) ConsumeMetric {
+	tableLock := sync.Mutex{}
+	metricsMap := make(map[string]*TableMetric)
+	ticker := time.NewTicker(20 * time.Second)
+
+	renderTable := func() {
+		tableLock.Lock()
+		metrics := maps.Values(metricsMap)
+		tableLock.Unlock()
+		metricsFile.Seek(0, 0)
+		t := table.NewWriter()
+		t.SetOutputMirror(metricsFile)
+		t.AppendHeader(table.Row{"Table", "Client ID", "Start Time", "End Time", "Resources", "Errors", "Panics"})
+		sort.SliceStable(metrics, func(i, j int) bool {
+			m1 := metrics[i]
+			m2 := metrics[j]
+
+			if m1.EndTime == nil && m2.EndTime != nil {
+				return true
+			}
+
+			if m1.EndTime != nil && m2.EndTime == nil {
+				return false
+			}
+
+			return m1.Table+m1.ClientId < m2.Table+m2.ClientId
+		})
+		for _, metrics := range metrics {
+			row := table.Row{
+				metrics.Table,
+				metrics.ClientId,
+				metrics.StartTime,
+				metrics.EndTime,
+				metrics.Resources,
+				metrics.Errors,
+				metrics.Panics,
+			}
+			if metrics.EndTime == nil {
+				row[3] = "N/A"
+			}
+			t.AppendRow(row)
 		}
-		_, _ = metricsFile.Write(append(asJson, '\n'))
+		t.Render()
+	}
+
+	go func() {
+		for {
+			select {
+			case <-ticker.C:
+				renderTable()
+			case <-quit:
+				renderTable()
+				ticker.Stop()
+				return
+			}
+		}
+	}()
+
+	return func(ctx context.Context, metric Metric) {
+		table := metric.Attributes["sync.table.name"].(string)
+		clientId := metric.Attributes["sync.client.id"].(string)
+
+		tableLock.Lock()
+		key := table + clientId
+		metrics, ok := metricsMap[key]
+		if !ok {
+			metrics = &TableMetric{
+				Table:    table,
+				ClientId: clientId,
+			}
+			metricsMap[key] = metrics
+		}
+
+		tableLock.Unlock()
+		switch metric.Name {
+		case "sync.table.start_time":
+			startTime := time.Unix(0, metric.Value)
+			metrics.StartTime = &startTime
+		case "sync.table.end_time":
+			endTime := time.Unix(0, metric.Value)
+			metrics.EndTime = &endTime
+		case "sync.table.resources":
+			metrics.Resources = metric.Value
+		case "sync.table.errors":
+			metrics.Errors = metric.Value
+		case "sync.table.panics":
+			metrics.Panics = metric.Value
+		}
 	}
 }
 
@@ -174,6 +264,12 @@ func WithMetricConsumer(consumerMetric ConsumeMetric) OtelReceiverOption {
 	}
 }
 
+func WithMetricsFilename(filename string) OtelReceiverOption {
+	return func(c *Consumer) {
+		c.metricsFilename = filename
+	}
+}
+
 func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelReceiver, error) {
 	c := Consumer{}
 	for _, opt := range opts {
@@ -181,21 +277,21 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 	}
 
 	if c.consumeSpan == nil {
-		tracesFile, err := os.OpenFile("traces.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-		if err != nil {
-			return nil, err
-		}
-		c.consumeSpan = newDefaultSpanConsumer(tracesFile)
-		c.tracesFile = tracesFile
+		c.consumeSpan = newDefaultSpanConsumer()
 	}
 
 	if c.consumeMetric == nil {
-		metricsFile, err := os.OpenFile("metrics.json", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if c.metricsFilename == "" {
+			c.metricsFilename = "metrics.txt"
+		}
+		metricsFile, err := os.Create(c.metricsFilename)
 		if err != nil {
 			return nil, err
 		}
-		c.consumeMetric = newDefaultMetricConsumer(metricsFile)
+		quit := make(chan any)
+		c.consumeMetric = newDefaultMetricConsumer(metricsFile, quit)
 		c.metricsFile = metricsFile
+		c.quit = quit
 	}
 
 	factory := otlpreceiver.NewFactory()
