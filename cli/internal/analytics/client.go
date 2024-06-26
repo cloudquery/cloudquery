@@ -3,7 +3,6 @@ package analytics
 import (
 	"context"
 	"os"
-	"strings"
 	"time"
 
 	cqapi "github.com/cloudquery/cloudquery-api-go"
@@ -105,40 +104,6 @@ func Identify(ctx context.Context, invocationUUID uuid.UUID) {
 	})
 }
 
-func TrackCommandStart(ctx context.Context, commandName string, invocationUUID uuid.UUID) {
-	if client == nil {
-		return
-	}
-
-	_ = client.Enqueue(rudderstack.Track{
-		AnonymousId: invocationUUID.String(),
-		Event:       "command_" + strings.ToLower(commandName) + "_start",
-		Properties: rudderstack.Properties{
-			"invocation_uuid": invocationUUID,
-		},
-	})
-}
-
-func TrackCommandEnd(ctx context.Context, commandName string, invocationUUID uuid.UUID, err error) {
-	if client == nil {
-		return
-	}
-
-	status := "success"
-	if err != nil {
-		status = "error"
-	}
-
-	_ = client.Enqueue(rudderstack.Track{
-		AnonymousId: invocationUUID.String(),
-		Event:       "command_" + strings.ToLower(commandName) + "_end",
-		Properties: rudderstack.Properties{
-			"invocation_uuid": invocationUUID,
-			"status":          status,
-		},
-	})
-}
-
 func TrackLoginSuccess(ctx context.Context, invocationUUID uuid.UUID) {
 	if client == nil {
 		return
@@ -225,9 +190,14 @@ func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event Syn
 		return
 	}
 
+	status := "success"
+	if event.AbortedDueToError != nil {
+		status = "error"
+	}
+
 	props := getSyncCommonProps(invocationUUID, event.SyncStartedEvent, details).
 		Set("duration", event.Duration).
-		Set("status", "success").
+		Set("status", status).
 		Set("total_rows", event.ResourceCount).
 		Set("errors", event.Errors).
 		Set("warnings", event.Warnings).
