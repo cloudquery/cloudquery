@@ -3,7 +3,6 @@ package analytics
 import (
 	"context"
 	"os"
-	"strings"
 	"time"
 
 	cqapi "github.com/cloudquery/cloudquery-api-go"
@@ -101,40 +100,6 @@ func Identify(ctx context.Context, invocationUUID uuid.UUID) {
 		Traits: rudderstack.Traits{
 			"groupType": "team",
 			"name":      details.currentTeam,
-		},
-	})
-}
-
-func TrackCommandStart(ctx context.Context, commandName string, invocationUUID uuid.UUID) {
-	if client == nil {
-		return
-	}
-
-	_ = client.Enqueue(rudderstack.Track{
-		AnonymousId: invocationUUID.String(),
-		Event:       "command_" + strings.ToLower(commandName) + "_start",
-		Properties: rudderstack.Properties{
-			"invocation_uuid": invocationUUID,
-		},
-	})
-}
-
-func TrackCommandEnd(ctx context.Context, commandName string, invocationUUID uuid.UUID, err error) {
-	if client == nil {
-		return
-	}
-
-	status := "success"
-	if err != nil {
-		status = "error"
-	}
-
-	_ = client.Enqueue(rudderstack.Track{
-		AnonymousId: invocationUUID.String(),
-		Event:       "command_" + strings.ToLower(commandName) + "_end",
-		Properties: rudderstack.Properties{
-			"invocation_uuid": invocationUUID,
-			"status":          status,
 		},
 	})
 }
