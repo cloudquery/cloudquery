@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.23.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.23.0...cli-v5.23.1) (2024-06-25)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/hashicorp/go-retryablehttp to v0.7.7 [SECURITY] ([#18369](https://github.com/cloudquery/cloudquery/issues/18369)) ([1e223bf](https://github.com/cloudquery/cloudquery/commit/1e223bf58529449ab7b30d1a0d046a40a0488cf1))
+* Fix hardcoded status property on sync_run_completed. ([#18372](https://github.com/cloudquery/cloudquery/issues/18372)) ([024a7ae](https://github.com/cloudquery/cloudquery/commit/024a7ae0cd1f3bc10b1cf1655b66d641c3226ffb))
+
 ## [5.23.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.22.1...cli-v5.23.0) (2024-06-25)
 
 
