@@ -105,8 +105,6 @@ func NewCmdRoot() *cobra.Command {
 				disableSentry = true
 			}
 
-			analytics.Identify(cmd.Context(), invocationUUID)
-
 			return nil
 		},
 	}
