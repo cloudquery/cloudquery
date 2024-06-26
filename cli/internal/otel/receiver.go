@@ -90,7 +90,10 @@ func newDefaultMetricConsumer(metricsFile *os.File, quit chan any) ConsumeMetric
 		tableLock.Lock()
 		metrics := maps.Values(metricsMap)
 		tableLock.Unlock()
-		metricsFile.Seek(0, 0)
+		_, err := metricsFile.Seek(0, 0)
+		if err != nil {
+			return
+		}
 		t := table.NewWriter()
 		t.SetOutputMirror(metricsFile)
 		t.AppendHeader(table.Row{"Table", "Client ID", "Start Time", "End Time", "Resources", "Errors", "Panics"})
