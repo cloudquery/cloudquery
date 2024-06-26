@@ -70,40 +70,6 @@ func getEventDetails(ctx context.Context) *eventDetails {
 	}
 }
 
-func Identify(ctx context.Context, invocationUUID uuid.UUID) {
-	if client == nil {
-		return
-	}
-
-	details := getEventDetails(ctx)
-	if details == nil {
-		_ = client.Enqueue(rudderstack.Identify{
-			AnonymousId: invocationUUID.String(),
-			Traits: rudderstack.Traits{
-				"environment": getEnvironment(),
-			},
-		})
-		return
-	}
-
-	err := client.Enqueue(rudderstack.Identify{
-		AnonymousId: invocationUUID.String(),
-		UserId:      details.user.ID.String(),
-	})
-	if err != nil {
-		return
-	}
-
-	_ = client.Enqueue(rudderstack.Group{
-		UserId:  details.user.ID.String(),
-		GroupId: details.currentTeam,
-		Traits: rudderstack.Traits{
-			"groupType": "team",
-			"name":      details.currentTeam,
-		},
-	})
-}
-
 func TrackLoginSuccess(ctx context.Context, invocationUUID uuid.UUID) {
 	if client == nil {
 		return
@@ -115,9 +81,8 @@ func TrackLoginSuccess(ctx context.Context, invocationUUID uuid.UUID) {
 	}
 
 	_ = client.Enqueue(rudderstack.Track{
-		AnonymousId: invocationUUID.String(),
-		UserId:      details.user.ID.String(),
-		Event:       "login_success",
+		UserId: details.user.ID.String(),
+		Event:  "login_success",
 		Properties: rudderstack.Properties{
 			"invocation_uuid": invocationUUID,
 			"team":            details.currentTeam,
