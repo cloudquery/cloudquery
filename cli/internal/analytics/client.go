@@ -15,7 +15,8 @@ import (
 )
 
 var (
-	client rudderstack.Client
+	client                 rudderstack.Client
+	cachedSyncEventDetails *eventDetails
 )
 
 type eventDetails struct {
@@ -51,7 +52,15 @@ func getEnvironment() string {
 	return "cli"
 }
 
-func getEventDetails(ctx context.Context) *eventDetails {
+// getSyncEventDetails returns the cached event details if available, otherwise it fetches the details from the API
+func getSyncEventDetails(ctx context.Context) *eventDetails {
+	if cachedSyncEventDetails == nil {
+		refreshSyncEventDetails(ctx)
+	}
+	return cachedSyncEventDetails
+}
+
+func refreshSyncEventDetails(ctx context.Context) *eventDetails {
 	tc := cqauth.NewTokenClient()
 	token, err := tc.GetToken()
 	if err != nil {
@@ -63,11 +72,16 @@ func getEventDetails(ctx context.Context) *eventDetails {
 	}
 	currentTeam, _ := internalAuth.GetTeamForToken(ctx, token)
 
-	return &eventDetails{
+	eventDetails := &eventDetails{
 		user:        *user,
 		currentTeam: currentTeam,
 		environment: getEnvironment(),
 	}
+
+	// Cache event details for future use
+	cachedSyncEventDetails = eventDetails
+
+	return eventDetails
 }
 
 func TrackLoginSuccess(ctx context.Context, invocationUUID uuid.UUID) {
@@ -75,7 +89,7 @@ func TrackLoginSuccess(ctx context.Context, invocationUUID uuid.UUID) {
 		return
 	}
 
-	details := getEventDetails(ctx)
+	details := refreshSyncEventDetails(ctx)
 	if details == nil {
 		return
 	}
@@ -124,7 +138,7 @@ func TrackSyncStarted(ctx context.Context, invocationUUID uuid.UUID, event SyncS
 		return
 	}
 
-	details := getEventDetails(ctx)
+	details := getSyncEventDetails(ctx)
 	if details == nil {
 		return
 	}
@@ -150,7 +164,7 @@ func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event Syn
 		return
 	}
 
-	details := getEventDetails(ctx)
+	details := getSyncEventDetails(ctx)
 	if details == nil {
 		return
 	}
