@@ -41,7 +41,7 @@ const FEATURES: Features = [
   },
   {
     name: "Cloud Security Posture Management",
-    description: `Use as an open source CSPM solution to monitor and enforce security policies across your cloud infrastructure for AWS, GCP, Azure and many more.`,
+    description: `Use as a CSPM solution to monitor and enforce security policies across your cloud infrastructure for AWS, GCP, Azure and many more.`,
     Icon: LockClosedIcon,
     page: "home",
   },

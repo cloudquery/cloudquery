@@ -39,7 +39,6 @@ body:
   - type: checkboxes
     attributes:
       label: Pull request (optional)
-      description: Plugins are **open core**, and as such not all contributions to plugins directory will be accepted if they are part of the commercial plugin offering - please wait to hear from the CloudQuery team about whether a PR would be accepted before opening a PR.
       options:
         - label: I can submit a pull request
           required: false
