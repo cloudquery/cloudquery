@@ -58,7 +58,28 @@ In production, it is common to use an OpenTelemetry [collector](https://opentele
 
 In this example we will show how to send OpenTelemetry traces from the CLI directly to a Datadog agent.
 
-First, you will need to [enable OpenTelemetry ingestion on the Datadog Agent](https://docs.datadoghq.com/opentelemetry/interoperability/otlp_ingest_in_the_agent#enabling-otlp-ingestion-on-the-datadog-agent). Add the configuration below to your `datadog.yaml` file:
+First, you will need to [enable OpenTelemetry ingestion on the Datadog Agent](https://docs.datadoghq.com/opentelemetry/interoperability/otlp_ingest_in_the_agent#enabling-otlp-ingestion-on-the-datadog-agent).
+You can use either of the ways described below to enable it:
+1. Pass the `DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_HTTP_ENDPOINT` env variable to you agent with a value of `0.0.0.0:4318`. In a common docker compose setup, it will look like this:
+
+```yaml
+version: "3.0"
+services:
+  agent:
+    image: gcr.io/datadoghq/agent:7
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+    environment:
+      DD_API_KEY: ${DD_API_KEY}
+      DD_SITE: "datadoghq.eu"
+      DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_HTTP_ENDPOINT: "0.0.0.0:4318"
+    ports:
+      - "4318:4318"
+```
+
+2. Add the configuration below to your `datadog.yaml` file:
 
 ```yaml
 otlp_config:
