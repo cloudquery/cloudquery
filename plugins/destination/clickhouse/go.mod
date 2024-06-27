@@ -6,7 +6,7 @@ require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.10.1
 	github.com/apache/arrow/go/v16 v16.1.0
 	github.com/cloudquery/codegen v0.3.16
-	github.com/cloudquery/plugin-sdk/v4 v4.48.0
+	github.com/cloudquery/plugin-sdk/v4 v4.49.0
 	github.com/goccy/go-json v0.10.3
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.33.0
@@ -18,6 +18,8 @@ require (
 	github.com/adrg/xdg v0.4.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-retryablehttp v0.7.7 // indirect
+	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp v1.27.0 // indirect
+	go.opentelemetry.io/otel/sdk/metric v1.27.0 // indirect
 )
 
 require (
