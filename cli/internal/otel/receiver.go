@@ -3,7 +3,6 @@ package otel
 import (
 	"context"
 	"encoding/hex"
-	"errors"
 	"fmt"
 	"net"
 	"os"
@@ -65,14 +64,13 @@ type Consumer struct {
 }
 
 func (c *Consumer) Shutdown(ctx context.Context) error {
-	var err error
 	if c.quit != nil {
 		close(c.quit)
 	}
 	if c.metricsFile != nil {
-		err = errors.Join(err, c.metricsFile.Close())
+		return c.metricsFile.Close()
 	}
-	return err
+	return nil
 }
 
 func newDefaultSpanConsumer() ConsumeSpan {
