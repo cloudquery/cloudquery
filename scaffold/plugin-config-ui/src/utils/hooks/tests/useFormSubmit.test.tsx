@@ -54,7 +54,7 @@ describe('useFormSubmit', () => {
 
   test('validation failed', async () => {
     const onValidate = jest.fn(() => Promise.resolve({ errors: { key: 'value' } }));
-    renderHook(() => useFormSubmit(onValidate));
+    renderHook(() => useFormSubmit(onValidate as any));
 
     await act(async () => {
       formMessageHandler.sendMessage('validate', undefined);

@@ -29,13 +29,22 @@ export function CloudAppMock({ children }: Props) {
     formMessageHandler.sendMessage('init', {
       initialValues: {
         migrateMode: undefined,
-        secrets: [],
         tables: undefined,
         writeMode: undefined,
         spec: {
-          name: 'Roger Federer',
-          email: 'roger.federer@tennis.com',
+          connection_string:
+            'postgresql://${username}:${password}@localhost:5432/mydatabase?ssl=true',
         },
+        secrets: [
+          {
+            name: 'username',
+            value: '',
+          },
+          {
+            name: 'password',
+            value: '',
+          },
+        ],
       },
     });
   }, []);
@@ -83,9 +92,9 @@ export function CloudAppMock({ children }: Props) {
       </Stack>
       <Stack padding={2}>
         <div>Values:</div>
-        <pre>{values || '-'}</pre>
+        <pre style={{ wordBreak: 'break-all', whiteSpace: 'break-spaces' }}>{values || '-'}</pre>
         <div>Errors:</div>
-        <pre>{errors || '-'}</pre>
+        <pre style={{ wordBreak: 'break-all', whiteSpace: 'break-spaces' }}>{errors || '-'}</pre>
       </Stack>
     </>
   );

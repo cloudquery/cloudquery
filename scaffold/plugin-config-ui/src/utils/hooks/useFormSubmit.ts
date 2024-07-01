@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 import { pluginUiMessageHandler } from '../messageHandler';
-import { FormValues } from '../../types';
+import { PluginUiMessagePayload } from '@cloudquery/plugin-config-ui-connector';
 
 interface Success {
-  values: FormValues;
+  values: PluginUiMessagePayload['validation_passed']['values'];
   errors?: never;
 }
 
 interface Failure {
   values?: never;
-  errors: Record<string, any>;
+  errors: PluginUiMessagePayload['validation_failed']['errors'];
 }
 
 export function useFormSubmit(onValidate: () => Promise<Success | Failure>) {

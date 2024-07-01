@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { pluginUiMessageHandler } from '../messageHandler';
-import { FormValues } from '../../types';
+import { FormValues } from '../formSchema';
+import { prepareInitialValues } from '../prepareInitialValues';
 
 export function useFormInit() {
   const [initialized, setInitialized] = useState(false);
@@ -8,8 +9,10 @@ export function useFormInit() {
 
   useEffect(() => {
     return pluginUiMessageHandler.subscribeToMessage('init', ({ initialValues }) => {
-      const values = initialValues as FormValues;
-      setInitialValues(values);
+      if (initialValues?.spec?.connection_string) {
+        setInitialValues(prepareInitialValues(initialValues));
+      }
+
       setInitialized(true);
     });
   }, []);

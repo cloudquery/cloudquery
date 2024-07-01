@@ -11,6 +11,15 @@ declare module 'yup' {
     url(): MixedSchema<TType>;
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  interface MixedSchema<TType extends Yup.Maybe<{}>> {
+    email(): MixedSchema<TType>;
+    max(minValue: number): MixedSchema<TType>;
+    min(maxValue: number): MixedSchema<TType>;
+    required(): MixedSchema<TType>;
+    url(): MixedSchema<TType>;
+  }
+
   interface ArraySchema<
     TIn extends any[] | null | undefined,
     TContext,
@@ -36,6 +45,126 @@ Yup.addMethod(Yup.string, 'email', function (errorMessage) {
     return (
       emailRegex.test(value || '') || this.createError({ message: errorMessage, path: this.path })
     );
+  });
+});
+
+Yup.addMethod(Yup.mixed, 'required', function () {
+  return this.test(`required`, '', function (value) {
+    if (typeof value === 'string') {
+      try {
+        Yup.string().required().validateSync(value, { context: this.options.context });
+
+        return true;
+      } catch (error: any) {
+        return this.createError({ message: error.message, path: this.path });
+      }
+    }
+
+    return value !== undefined && value !== null
+      ? true
+      : this.createError({ message: '', path: this.path });
+  });
+});
+
+Yup.addMethod(Yup.mixed, 'oneOf', function (allowedValues: any[]) {
+  return this.test(`oneOf`, '', function (value) {
+    if (!value) {
+      return true;
+    }
+
+    try {
+      if (typeof value === 'string') {
+        Yup.string().oneOf(allowedValues).validateSync(value, { context: this.options.context });
+      } else if (typeof value === 'number') {
+        Yup.number().oneOf(allowedValues).validateSync(value, { context: this.options.context });
+      } else if (typeof value === 'boolean') {
+        Yup.boolean().oneOf(allowedValues).validateSync(value, { context: this.options.context });
+      } else if (Array.isArray(value)) {
+        Yup.array().oneOf(allowedValues).validateSync(value, { context: this.options.context });
+      }
+
+      return true;
+    } catch (error: any) {
+      return this.createError({ message: error.message, path: this.path });
+    }
+  });
+});
+
+Yup.addMethod(Yup.mixed, 'min', function (minValue: number) {
+  return this.test(`min`, '', function (value) {
+    if (['number', 'string'].includes(typeof value)) {
+      try {
+        if (typeof value === 'string' && value.trim().length > 0) {
+          Yup.string().min(minValue).validateSync(value, { context: this.options.context });
+        } else if (typeof value === 'number') {
+          Yup.number().min(minValue).validateSync(value, { context: this.options.context });
+        }
+
+        return true;
+      } catch (error: any) {
+        return this.createError({
+          message: error.message,
+          params: {
+            min: minValue,
+          },
+          path: this.path,
+        });
+      }
+    }
+
+    return true;
+  });
+});
+
+Yup.addMethod(Yup.mixed, 'max', function (maxValue: number) {
+  return this.test(`max`, '', function (value) {
+    if (['number', 'string'].includes(typeof value)) {
+      try {
+        if (typeof value === 'string' && value.trim().length > 0) {
+          Yup.string().max(maxValue).validateSync(value, { context: this.options.context });
+        } else if (typeof value === 'number') {
+          Yup.number().max(maxValue).validateSync(value, { context: this.options.context });
+        }
+
+        return true;
+      } catch (error: any) {
+        return this.createError({
+          message: error.message,
+          params: {
+            max: maxValue,
+          },
+          path: this.path,
+        });
+      }
+    }
+
+    return true;
+  });
+});
+
+Yup.addMethod(Yup.mixed, 'email', function () {
+  return this.test(`email`, '', function (value) {
+    if (typeof value === 'string' && value.trim()) {
+      return emailRegex.test(value || '') || this.createError({ message: '', path: this.path });
+    }
+
+    return true;
+  });
+});
+
+Yup.addMethod(Yup.mixed, 'url', function () {
+  return this.test(`url`, '', function (value) {
+    if (typeof value === 'string' && value.trim()) {
+      try {
+        Yup.string().url().validateSync(value, { context: this.options.context });
+
+        return true;
+      } catch (error: any) {
+        return this.createError({ message: error.message, path: this.path });
+      }
+    }
+
+    return true;
   });
 });
 
