@@ -56,30 +56,42 @@ In production, it is common to use an OpenTelemetry [collector](https://opentele
 
 ### OpenTelemetry and Datadog
 
-In this quick example we will show how to connect an open telemetry collector to Datadog via OpenTelemetry exporter.
+In this example we will show how to send OpenTelemetry traces from the CLI directly to a Datadog agent.
 
-Firstly, you will need to have an [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) running either locally or as a gateway. Here is an example of running it locally with docker:
-
-```bash
-docker run  -p 4319:4319 -v $(pwd)/config.yml:/etc/otelcol-contrib/config.yaml otel/opentelemetry-collector-contrib:0.91.0
-```
-
-following is an example for OTEL collector `config.yml` to receive traces locally on 4318 and export them to Datadog:
+First, you will need to [enable OpenTelemetry ingestion on the Datadog Agent](https://docs.datadoghq.com/opentelemetry/interoperability/otlp_ingest_in_the_agent#enabling-otlp-ingestion-on-the-datadog-agent).
+You can use either of the ways described below to enable it:
+1. Pass the `DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_HTTP_ENDPOINT` env variable to you agent with a value of `0.0.0.0:4318`. In a common docker compose setup, it will look like this:
 
 ```yaml
-receivers:
-  otlp:
-    protocols:
-      http:
-        endpoint: 0.0.0.0:4318
-exporters:
-  datadog:
-    api:
-      site: "datadoghq.com" # or your tenant site https://docs.datadoghq.com/getting_started/site/
-      key: "<DATADOG_API_KEY>"
+version: "3.0"
+services:
+  agent:
+    image: gcr.io/datadoghq/agent:7
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+    environment:
+      DD_API_KEY: ${DD_API_KEY}
+      DD_SITE: "datadoghq.eu"
+      DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_HTTP_ENDPOINT: "0.0.0.0:4318"
+    ports:
+      - "4318:4318"
 ```
 
-Once ingestion starts you should be able to start seeing the traces in Datadog under ServiceCatalog and Traces with ability to view average p95 latency, error rate, total duration and other useful information you can query to either split the workload better or improve the plugin scheduling if you are the plugin author:
+2. Add the configuration below to your `datadog.yaml` file:
+
+```yaml
+otlp_config:
+  receiver:
+    protocols:
+      http:
+        endpoint: localhost:4318
+```
+
+> You might need to restart the Datadog agent after changing the configuration.
+
+Once ingestion starts you should be able to start seeing the traces in Datadog under ServiceCatalog and Traces with ability to view average p95 latency, error rate, total duration and other useful information you can query to optimize sync time.
 
 ![Datadog](/images/docs/monitoring/cq_otel_datadog.png)
 
