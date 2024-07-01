@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.3.2...plugins-source-bitbucket-v1.3.3) (2024-07-01)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency io.cloudquery:plugin-pb-java to v0.0.18 ([#18429](https://github.com/cloudquery/cloudquery/issues/18429)) ([ad9f401](https://github.com/cloudquery/cloudquery/commit/ad9f401b407761ffe5abf5a2fd51b77155ebcf74))
+* **deps:** Update dependency io.cloudquery:plugin-sdk-java to v0.0.29 ([#18433](https://github.com/cloudquery/cloudquery/issues/18433)) ([e55bd0d](https://github.com/cloudquery/cloudquery/commit/e55bd0d543000759baa72a9be3c39a061d03ed71))
+
 ## [1.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-bitbucket-v1.3.1...plugins-source-bitbucket-v1.3.2) (2024-06-06)
 
 
