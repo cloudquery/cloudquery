@@ -149,9 +149,10 @@ spec:
 				Version:          "v1.1.0",
 				registryInferred: true,
 			},
-			Destinations: []string{"test"},
-			Tables:       []string{"test"},
-			Spec:         map[string]any{},
+			Destinations:        []string{"test"},
+			Tables:              []string{"test"},
+			Spec:                map[string]any{},
+			SkipDependentTables: &boolTrue,
 		},
 	},
 	{
@@ -173,9 +174,10 @@ spec:
 				Path:     "cloudquery/test",
 				Version:  "v1.1.0",
 			},
-			Destinations: []string{"test"},
-			Tables:       []string{"test"},
-			Spec:         map[string]any{},
+			Destinations:        []string{"test"},
+			Tables:              []string{"test"},
+			Spec:                map[string]any{},
+			SkipDependentTables: &boolTrue,
 		},
 	}}
 
@@ -506,7 +508,6 @@ func TestSource_JSONSchemaExtend(t *testing.T) {
 		},
 		{
 			Name: "null skip_dependent_tables",
-			Err:  true,
 			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
 "skip_dependent_tables":null
 }`,

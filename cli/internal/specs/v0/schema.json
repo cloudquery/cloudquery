@@ -217,9 +217,16 @@
           ]
         },
         "skip_dependent_tables": {
-          "type": "boolean",
-          "description": "SkipDependentTables changes the matching behavior with regard to dependent tables. If set to true, dependent tables will not be synced unless they are explicitly matched by Tables.",
-          "default": false
+          "oneOf": [
+            {
+              "type": "boolean",
+              "description": "SkipDependentTables changes the matching behavior with regard to dependent tables. If set to `false`, dependent tables will be included in the sync when their parents are matched, even if not explicitly included by the `tables` configuration.",
+              "default": true
+            },
+            {
+              "type": "null"
+            }
+          ]
         },
         "destinations": {
           "items": {

@@ -41,7 +41,7 @@ func CLISourceSpecToPbSpec(spec specs.Source) pbSpecs.Source {
 		Registry:            CLIRegistryToPbRegistry(spec.Registry),
 		Tables:              spec.Tables,
 		SkipTables:          spec.SkipTables,
-		SkipDependentTables: spec.SkipDependentTables,
+		SkipDependentTables: *spec.SkipDependentTables,
 		Destinations:        spec.Destinations,
 		Spec:                spec.Spec,
 		DeterministicCQID:   spec.DeterministicCQID,
