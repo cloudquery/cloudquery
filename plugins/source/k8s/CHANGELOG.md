@@ -1,5 +1,15 @@
 # Changelog
 
+## [6.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v6.1.2...plugins-source-k8s-v6.1.3) (2024-07-01)
+
+
+### Bug Fixes
+
+* Align wording and description with current licensing ([#18371](https://github.com/cloudquery/cloudquery/issues/18371)) ([ba91d48](https://github.com/cloudquery/cloudquery/commit/ba91d4823e4a805620650ff0a82ba44387b7d979))
+* **deps:** Update golang.org/x/exp digest to 7f521ea ([#18428](https://github.com/cloudquery/cloudquery/issues/18428)) ([5d18290](https://github.com/cloudquery/cloudquery/commit/5d1829066fa91705ea83ecc6d212b7e64704860d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.0 ([#18415](https://github.com/cloudquery/cloudquery/issues/18415)) ([3f4ef53](https://github.com/cloudquery/cloudquery/commit/3f4ef5366078eebd38ab7c1cc52afc0eaeee08f4))
+* **deps:** Update module github.com/hashicorp/go-retryablehttp to v0.7.7 [SECURITY] ([#18369](https://github.com/cloudquery/cloudquery/issues/18369)) ([1e223bf](https://github.com/cloudquery/cloudquery/commit/1e223bf58529449ab7b30d1a0d046a40a0488cf1))
+
 ## [6.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-k8s-v6.1.1...plugins-source-k8s-v6.1.2) (2024-06-25)
 
 
