@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/scaffold
 
-go 1.21.11
+go 1.22.3
 
 require github.com/spf13/cobra v1.6.1
 

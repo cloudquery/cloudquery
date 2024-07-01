@@ -146,9 +146,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.21.11-release-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
+          key: ${{ runner.os }}-go-1.22.3-release-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
           restore-keys: |
-            ${{ runner.os }}-go-1.21.11-release-cache-plugins-${{ needs.prepare.outputs.plugin_type }}-${{ needs.prepare.outputs.plugin_name }}
+            ${{ runner.os }}-go-1.22.3-release-cache-plugins-${{ needs.prepare.outputs.plugin_type }}-${{ needs.prepare.outputs.plugin_name }}
       - name: Set up Go 1.x
         uses: actions/setup-go@v5
         with:

@@ -33,9 +33,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.21.11-release-cache-${{ hashFiles('plugins/source/test/go.sum') }}
+          key: ${{ runner.os }}-go-1.22.3-release-cache-${{ hashFiles('plugins/source/test/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.21.11-release-cache-plugins-source-test
+            ${{ runner.os }}-go-1.22.3-release-cache-plugins-source-test
       - name: Set up Go 1.x
         uses: actions/setup-go@v5
         with:

@@ -1,8 +1,6 @@
 module github.com/hermanschaaf/cq-source-xkcd
 
-go 1.21.11
-
-toolchain go1.22.3
+go 1.22.3
 
 require (
 	github.com/cloudquery/plugin-sdk/v4 v4.49.0
