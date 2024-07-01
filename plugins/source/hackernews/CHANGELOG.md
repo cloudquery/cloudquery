@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.2.2...plugins-source-hackernews-v3.2.3) (2024-07-01)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.0 ([#18415](https://github.com/cloudquery/cloudquery/issues/18415)) ([3f4ef53](https://github.com/cloudquery/cloudquery/commit/3f4ef5366078eebd38ab7c1cc52afc0eaeee08f4))
+* **deps:** Update module github.com/hashicorp/go-retryablehttp to v0.7.7 [SECURITY] ([#18369](https://github.com/cloudquery/cloudquery/issues/18369)) ([1e223bf](https://github.com/cloudquery/cloudquery/commit/1e223bf58529449ab7b30d1a0d046a40a0488cf1))
+
 ## [3.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.2.1...plugins-source-hackernews-v3.2.2) (2024-06-25)
 
 
