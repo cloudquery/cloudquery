@@ -5,6 +5,16 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.24.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.24.0...cli-v5.24.1) (2024-07-01)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 7f521ea ([#18428](https://github.com/cloudquery/cloudquery/issues/18428)) ([5d18290](https://github.com/cloudquery/cloudquery/commit/5d1829066fa91705ea83ecc6d212b7e64704860d))
+* **deps:** Update module github.com/docker/docker to v26.1.4+incompatible ([#18435](https://github.com/cloudquery/cloudquery/issues/18435)) ([4bbaece](https://github.com/cloudquery/cloudquery/commit/4bbaece458403f5b3ee746500651f8b5c39f5d41))
+* **deps:** Update module github.com/getsentry/sentry-go to v0.28.1 ([#18436](https://github.com/cloudquery/cloudquery/issues/18436)) ([bb88a05](https://github.com/cloudquery/cloudquery/commit/bb88a05f9d99bb5c466e24ef01806b1c6c8be1b4))
+* **deps:** Update module github.com/schollz/progressbar/v3 to v3.14.4 ([#18437](https://github.com/cloudquery/cloudquery/issues/18437)) ([9c089f5](https://github.com/cloudquery/cloudquery/commit/9c089f512920516dd0d711393597c63d4b9a92a2))
+
 ## [5.24.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.23.4...cli-v5.24.0) (2024-06-27)
 
 
