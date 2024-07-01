@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.1.2...plugins-destination-gcs-v5.1.3) (2024-07-01)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.23 ([#18418](https://github.com/cloudquery/cloudquery/issues/18418)) ([8ce67da](https://github.com/cloudquery/cloudquery/commit/8ce67daf27607fe8fc320e58d99912155915cfa5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.0 ([#18415](https://github.com/cloudquery/cloudquery/issues/18415)) ([3f4ef53](https://github.com/cloudquery/cloudquery/commit/3f4ef5366078eebd38ab7c1cc52afc0eaeee08f4))
+* **deps:** Update module github.com/hashicorp/go-retryablehttp to v0.7.7 [SECURITY] ([#18369](https://github.com/cloudquery/cloudquery/issues/18369)) ([1e223bf](https://github.com/cloudquery/cloudquery/commit/1e223bf58529449ab7b30d1a0d046a40a0488cf1))
+* **deps:** Update module google.golang.org/api to v0.186.0 ([#18427](https://github.com/cloudquery/cloudquery/issues/18427)) ([27a683b](https://github.com/cloudquery/cloudquery/commit/27a683b8897f4d8281dc1d4465bddfe83e079b81))
+
 ## [5.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.1.1...plugins-destination-gcs-v5.1.2) (2024-06-25)
 
 
