@@ -30,7 +30,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 
 	name := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Time{}, c.syncID)
 	writerAtBuffer := manager.NewWriteAtBuffer(make([]byte, 0, maxFileSize))
-	_, err := c.downloader.Download(ctx,
+	_, err := manager.NewDownloader(c.s3Client).Download(ctx,
 		writerAtBuffer,
 		&s3.GetObjectInput{
 			Bucket: aws.String(c.spec.Bucket),

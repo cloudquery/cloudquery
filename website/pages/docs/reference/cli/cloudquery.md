@@ -9,7 +9,7 @@ CloudQuery CLI
 
 CloudQuery CLI
 
-Open source data integration at scale.
+High performance data integration at scale.
 
 Find more information at:
 	https://www.cloudquery.io

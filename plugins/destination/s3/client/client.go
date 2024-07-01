@@ -32,9 +32,7 @@ type Client struct {
 	*filetypes.Client
 	writer *streamingbatchwriter.StreamingBatchWriter
 
-	s3Client   *s3.Client
-	uploader   *manager.Uploader
-	downloader *manager.Downloader
+	s3Client *s3.Client
 
 	initializedTables map[string]string
 }
@@ -87,8 +85,6 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 		}
 		o.UsePathStyle = c.spec.UsePathStyle
 	})
-	c.uploader = manager.NewUploader(c.s3Client)
-	c.downloader = manager.NewDownloader(c.s3Client)
 
 	if *c.spec.TestWrite {
 		// we want to run this test because we want it to fail early if the bucket is not accessible
@@ -106,7 +102,7 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 			params.ServerSideEncryption = sseConfiguration.ServerSideEncryption
 		}
 
-		if _, err := c.uploader.Upload(ctx, params); err != nil {
+		if _, err := manager.NewUploader(c.s3Client).Upload(ctx, params); err != nil {
 			return nil, fmt.Errorf("failed to write test file to S3: %w", err)
 		}
 	}

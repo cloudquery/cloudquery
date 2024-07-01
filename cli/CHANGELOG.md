@@ -5,6 +5,75 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.24.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.23.4...cli-v5.24.0) (2024-06-27)
+
+
+### Features
+
+* Add per table sync metrics file flag ([#18397](https://github.com/cloudquery/cloudquery/issues/18397)) ([4fd9c94](https://github.com/cloudquery/cloudquery/commit/4fd9c94b489598f4954063e0874ceac1801974c6))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.0 ([#18415](https://github.com/cloudquery/cloudquery/issues/18415)) ([3f4ef53](https://github.com/cloudquery/cloudquery/commit/3f4ef5366078eebd38ab7c1cc52afc0eaeee08f4))
+
+## [5.23.4](https://github.com/cloudquery/cloudquery/compare/cli-v5.23.3...cli-v5.23.4) (2024-06-26)
+
+
+### Bug Fixes
+
+* Cache sync event details to track Cmd+C. ([#18409](https://github.com/cloudquery/cloudquery/issues/18409)) ([a4e1a03](https://github.com/cloudquery/cloudquery/commit/a4e1a0335bbd2e784a5eae39604dfd0cdbc99487))
+
+## [5.23.3](https://github.com/cloudquery/cloudquery/compare/cli-v5.23.2...cli-v5.23.3) (2024-06-26)
+
+
+### Bug Fixes
+
+* Align wording and description with current licensing ([#18371](https://github.com/cloudquery/cloudquery/issues/18371)) ([ba91d48](https://github.com/cloudquery/cloudquery/commit/ba91d4823e4a805620650ff0a82ba44387b7d979))
+* Remove identify, group events ([#18406](https://github.com/cloudquery/cloudquery/issues/18406)) ([8a1c95d](https://github.com/cloudquery/cloudquery/commit/8a1c95d682cd7c21e809a09e83f6bfceba6625a0))
+
+## [5.23.2](https://github.com/cloudquery/cloudquery/compare/cli-v5.23.1...cli-v5.23.2) (2024-06-26)
+
+
+### Bug Fixes
+
+* Remove tracking of start and end of each command ([#18400](https://github.com/cloudquery/cloudquery/issues/18400)) ([0a865ff](https://github.com/cloudquery/cloudquery/commit/0a865ff5dc9615a18bd8fbde96c1b501280331c1))
+
+## [5.23.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.23.0...cli-v5.23.1) (2024-06-25)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/hashicorp/go-retryablehttp to v0.7.7 [SECURITY] ([#18369](https://github.com/cloudquery/cloudquery/issues/18369)) ([1e223bf](https://github.com/cloudquery/cloudquery/commit/1e223bf58529449ab7b30d1a0d046a40a0488cf1))
+* Fix hardcoded status property on sync_run_completed. ([#18372](https://github.com/cloudquery/cloudquery/issues/18372)) ([024a7ae](https://github.com/cloudquery/cloudquery/commit/024a7ae0cd1f3bc10b1cf1655b66d641c3226ffb))
+
+## [5.23.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.22.1...cli-v5.23.0) (2024-06-25)
+
+
+### Features
+
+* Enable {{SYNC_ID}} to be used in `sync_group_id` ([#18364](https://github.com/cloudquery/cloudquery/issues/18364)) ([1fe34a5](https://github.com/cloudquery/cloudquery/commit/1fe34a53502d8d21cf2b44ff8d0c0b175b69f98d))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.20.2 ([#18333](https://github.com/cloudquery/cloudquery/issues/18333)) ([add2213](https://github.com/cloudquery/cloudquery/commit/add221333b03e7910683a19ca0b6ef17993907c1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.45.6 ([#18340](https://github.com/cloudquery/cloudquery/issues/18340)) ([f284668](https://github.com/cloudquery/cloudquery/commit/f284668c7912ce7191cc5d70f11135874f7d98c9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.46.0 ([#18341](https://github.com/cloudquery/cloudquery/issues/18341)) ([5db9574](https://github.com/cloudquery/cloudquery/commit/5db9574defbd47b798254dacb1f4e466ccfacf74))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.46.1 ([#18350](https://github.com/cloudquery/cloudquery/issues/18350)) ([8ff8909](https://github.com/cloudquery/cloudquery/commit/8ff89094c231abfbc1cec38f8901a546139f2d01))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.47.0 ([#18351](https://github.com/cloudquery/cloudquery/issues/18351)) ([9c5bbdc](https://github.com/cloudquery/cloudquery/commit/9c5bbdccebdc2c65df491f70f76483aa0bb1c533))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.47.1 ([#18352](https://github.com/cloudquery/cloudquery/issues/18352)) ([b31812a](https://github.com/cloudquery/cloudquery/commit/b31812a821233cffa2b9bbc6a7644797f380fa82))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.48.0 ([#18363](https://github.com/cloudquery/cloudquery/issues/18363)) ([61baf97](https://github.com/cloudquery/cloudquery/commit/61baf97d1704878dcb129be56bd6457109b1719a))
+
+## [5.22.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.22.0...cli-v5.22.1) (2024-06-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.45.4 ([#18299](https://github.com/cloudquery/cloudquery/issues/18299)) ([200480a](https://github.com/cloudquery/cloudquery/commit/200480a04ecaa8a826df2aa86429d1e1c9416f73))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.45.5 ([#18327](https://github.com/cloudquery/cloudquery/issues/18327)) ([42d5850](https://github.com/cloudquery/cloudquery/commit/42d5850e4d11e49d8567c2b182a3b26409cad150))
+* Skip relations of incremental tables from delete stale ([#18239](https://github.com/cloudquery/cloudquery/issues/18239)) ([4c65730](https://github.com/cloudquery/cloudquery/commit/4c657304a666e064b3b9a9eb6d2cc5d46a7eb5af))
+
 ## [5.22.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.21.6...cli-v5.22.0) (2024-06-18)
 
 

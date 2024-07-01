@@ -1,6 +1,7 @@
 package client
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"io"
@@ -11,6 +12,7 @@ import (
 	"github.com/apache/arrow/go/v16/arrow/array"
 	"github.com/apache/arrow/go/v16/arrow/memory"
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	awstypes "github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/filetypes/v4"
@@ -24,10 +26,21 @@ var reInvalidJSONKey = regexp.MustCompile(`\W`)
 
 func (c *Client) createObject(ctx context.Context, table *schema.Table, objKey string) (*filetypes.Stream, error) {
 	s, err := c.Client.StartStream(table, func(r io.Reader) error {
+		// If we don't use a reader that supports seeking, the S3 SDK will allocate a 5MB buffer each time it reads a chunk
+		// While this can work for large files, it's not optimal for small files, based on our tests we're mostly uploading small files
+		// And depending on source concurrency and destination batch settings, we can upload quite a bit of small files at the same time
+		// For example we've seen 220 concurrent uploads where most files are only a few dozen KB, this means we're allocating ~1GB of memory, where we could be allocating only a few MBs
+		// The memory is only cleared after the upload is finished, which makes it even worse
+		// Please note that for large files the memory we read is capped by the batch size setting which defaults to 50MB
+		allData, err := io.ReadAll(r)
+		if err != nil {
+			return err
+		}
+		readerSeeker := bytes.NewReader(allData)
 		params := &s3.PutObjectInput{
 			Bucket:      aws.String(c.spec.Bucket),
 			Key:         aws.String(objKey),
-			Body:        r,
+			Body:        readerSeeker,
 			ContentType: aws.String(c.spec.GetContentType()),
 		}
 
@@ -41,7 +54,7 @@ func (c *Client) createObject(ctx context.Context, table *schema.Table, objKey s
 			params.ServerSideEncryption = sseConfiguration.ServerSideEncryption
 		}
 
-		_, err := c.uploader.Upload(ctx, params)
+		_, err = manager.NewUploader(c.s3Client).Upload(ctx, params)
 		return err
 	})
 	return s, err
