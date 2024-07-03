@@ -11,6 +11,7 @@ import (
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/internal/hub"
+	"golang.org/x/sync/errgroup"
 )
 
 func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginKind, pluginName, version, uiDir string) error {
@@ -57,11 +58,19 @@ func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithRespo
 		return errors.New("upload response is nil, failed")
 	}
 
+	eg, egCtx := errgroup.WithContext(ctx)
+	eg.SetLimit(4)
+
 	for _, asset := range resp.JSON201.Assets {
+		asset := asset
 		details := urlPathVsDetails[asset.Name]
-		if err := hub.UploadFileWithContentType(asset.UploadURL, details[0], details[1]); err != nil {
-			return fmt.Errorf("failed to upload: %w", err)
-		}
+		eg.Go(func() error {
+			return hub.UploadFileWithContentType(egCtx, asset.UploadURL, details[0], details[1])
+		})
+	}
+
+	if err := eg.Wait(); err != nil {
+		return fmt.Errorf("failed to upload: %w", err)
 	}
 
 	finalizeResp, err := c.FinalizePluginUIAssetUploadWithResponse(
