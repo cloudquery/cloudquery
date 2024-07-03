@@ -89,6 +89,7 @@ func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithRespo
 }
 
 func readFlatDir(base string) (files []string, err error) {
+	base = filepath.Dir(base)
 	err = filepath.WalkDir(base, func(path string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err
