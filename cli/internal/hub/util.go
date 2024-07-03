@@ -67,6 +67,10 @@ func ErrorFromHTTPResponse(httpResp *http.Response, resp any) error {
 }
 
 func UploadFile(uploadURL, localPath string) error {
+	return UploadFileWithContentType(uploadURL, localPath, "application/octet-stream")
+}
+
+func UploadFileWithContentType(uploadURL, localPath, contentType string) error {
 	file, err := os.Open(localPath)
 	if err != nil {
 		return fmt.Errorf("failed to open file: %w", err)
@@ -77,7 +81,7 @@ func UploadFile(uploadURL, localPath string) error {
 	if err != nil {
 		return fmt.Errorf("failed to create request: %w", err)
 	}
-	req.Header.Set("Content-Type", "application/octet-stream")
+	req.Header.Set("Content-Type", contentType)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
