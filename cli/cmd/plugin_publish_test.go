@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"strings"
+	gosync "sync"
 	"testing"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
@@ -200,10 +201,13 @@ func TestPluginPublishWithUI(t *testing.T) {
 		"PUT /plugins/cloudquery/source/test/versions/v1.2.3/uiassets":  1,
 	}
 	gotCalls := map[string]int{}
+	mu := &gosync.Mutex{}
 	uiID := ""
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
+		mu.Lock()
 		gotCalls[r.Method+" "+r.URL.Path]++
+		mu.Unlock()
 		// t.Log(r.Method, r.URL.Path)
 		switch r.URL.Path {
 		case "/plugins/cloudquery/source/test/versions/v1.2.3":
@@ -240,7 +244,7 @@ func TestPluginPublishWithUI(t *testing.T) {
 			w.Write([]byte(`{}`))
 		case "/plugins/cloudquery/source/test/versions/v1.2.3/uiassets":
 			checkAuthHeader(t, r)
-			if r.Method == "POST" {
+			if r.Method == http.MethodPost {
 				uiID = uuid.NewString()
 
 				resp := cloudquery_api.UploadPluginUIAssets201Response{UIID: uiID}
@@ -265,7 +269,9 @@ func TestPluginPublishWithUI(t *testing.T) {
 				if err := json.NewEncoder(w).Encode(resp); err != nil {
 					t.Fatal(err)
 				}
-			} else {
+				return
+			}
+			if r.Method == http.MethodPut {
 				var rq cloudquery_api.FinalizePluginUIAssetUploadRequest
 				if err := json.NewDecoder(r.Body).Decode(&rq); err != nil {
 					t.Fatal(err)
@@ -275,7 +281,9 @@ func TestPluginPublishWithUI(t *testing.T) {
 					t.Fatalf("unexpected UIID %q", rq.UIID)
 				}
 				w.WriteHeader(http.StatusNoContent)
+				return
 			}
+			w.WriteHeader(http.StatusNotAcceptable)
 		}
 	}))
 	defer ts.Close()
