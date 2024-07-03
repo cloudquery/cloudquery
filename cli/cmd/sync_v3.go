@@ -282,6 +282,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 				log.Warn().Str("status", res.Status()).Int("code", res.StatusCode()).Msg("Failed to send sync progress to API")
 			}
 		}), godebouncer.WithOptions(godebouncer.Options{Trailing: true, Leading: true}))
+		defer remoteProgressReporter.Cancel()
 	}
 
 	for {
@@ -458,7 +459,6 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	if remoteProgressReporter != nil {
 		remoteProgressReporter.SendSignal()
 		<-remoteProgressReporter.Done()
-		remoteProgressReporter.Cancel()
 	}
 	return nil
 }
