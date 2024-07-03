@@ -20,6 +20,14 @@ func AddColumn(schemaName string, table *schema.Table, column *schema.Column) st
 	})
 }
 
+func UpdateColumnType(schemaName string, table *schema.Table, column *schema.Column) string {
+	return execTemplate("col_update_type.sql.tpl", &colQueryBuilder{
+		Schema: schemaName,
+		Table:  table.Name,
+		Column: column,
+	})
+}
+
 func GetValueColumns(table *schema.Table) []string {
 	columns := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {

@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"database/sql"
-
 	"slices"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
