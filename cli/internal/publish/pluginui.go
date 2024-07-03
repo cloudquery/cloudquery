@@ -2,6 +2,7 @@ package publish
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -60,6 +61,10 @@ func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithRespo
 		return hub.ErrorFromHTTPResponse(resp.HTTPResponse, resp)
 	}
 
+	if resp.JSON201 == nil {
+		return errors.New("upload response is nil, failed")
+	}
+
 	for _, asset := range resp.JSON201.Assets {
 		details := urlPathVsDetails[asset.Name]
 		if err := hub.UploadFileWithContentType(asset.UploadURL, details[0], details[1]); err != nil {
@@ -89,7 +94,7 @@ func readFlatDir(base string) (files []string, err error) {
 			return err
 		}
 		if !d.IsDir() {
-			files = append(files, path)
+			files = append(files, strings.TrimPrefix(path, base+string(os.PathSeparator)))
 		}
 		return nil
 	})
