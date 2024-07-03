@@ -23,7 +23,7 @@ var (
 	rootShort = "CloudQuery CLI"
 	rootLong  = `CloudQuery CLI
 
-Open source data integration at scale.
+High performance data integration at scale.
 
 Find more information at:
 	https://www.cloudquery.io`
@@ -34,29 +34,6 @@ Find more information at:
 	logFile            *os.File
 	invocationUUID     uuid.UUID
 )
-
-func wrapRunE(cmd *cobra.Command) {
-	// Ideally we could use PersistentPostRunE, but it doesn't get called if the command has an error
-	// See https://github.com/spf13/cobra/issues/1893
-	if cmd.RunE != nil {
-		wrapped := cmd.RunE
-		cmd.RunE = func(cmd *cobra.Command, args []string) error {
-			commandName := cmd.Name()
-			if cmd.Parent() != nil {
-				commandName = cmd.Parent().Name() + "_" + commandName
-			}
-			analytics.TrackCommandStart(cmd.Context(), commandName, invocationUUID)
-			err := wrapped(cmd, args)
-			analytics.TrackCommandEnd(cmd.Context(), commandName, invocationUUID, err)
-			return err
-		}
-	}
-
-	childCommands := cmd.Commands()
-	for i := range childCommands {
-		wrapRunE(childCommands[i])
-	}
-}
 
 func NewCmdRoot() *cobra.Command {
 	logLevel := enum.NewEnum([]string{"trace", "debug", "info", "warn", "error"}, "info")
@@ -127,8 +104,6 @@ func NewCmdRoot() *cobra.Command {
 			} else {
 				disableSentry = true
 			}
-
-			analytics.Identify(cmd.Context(), invocationUUID)
 
 			return nil
 		},
@@ -212,8 +187,6 @@ func NewCmdRoot() *cobra.Command {
 		}
 		analytics.Close()
 	})
-
-	wrapRunE(cmd)
 
 	return cmd
 }
