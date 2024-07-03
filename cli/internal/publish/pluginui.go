@@ -41,6 +41,10 @@ func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithRespo
 		})
 	}
 
+	if _, ok := urlPathVsDetails["index.html"]; !ok {
+		return errors.New("index.html is required in the UI directory")
+	}
+
 	resp, err := c.UploadPluginUIAssetsWithResponse(
 		ctx, teamName, cloudquery_api.PluginKind(pluginKind), pluginName, version,
 		cloudquery_api.UploadPluginUIAssetsJSONRequestBody{
@@ -90,7 +94,7 @@ func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithRespo
 }
 
 func readFlatDir(base string) (files []string, err error) {
-	base = filepath.Dir(base)
+	base = filepath.Dir(base + string(filepath.Separator))
 	err = filepath.WalkDir(base, func(path string, d os.DirEntry, err error) error {
 		if err != nil {
 			return err
