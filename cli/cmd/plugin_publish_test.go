@@ -271,9 +271,8 @@ func TestPluginPublishWithUI(t *testing.T) {
 					t.Fatal(err)
 				}
 				if rq.UIID != uiID || rq.UIID == "" {
-					t.Fatalf("unexpected UIID %q", rq.UIID)
 					w.WriteHeader(http.StatusUnprocessableEntity)
-					return
+					t.Fatalf("unexpected UIID %q", rq.UIID)
 				}
 				w.WriteHeader(http.StatusNoContent)
 			}
