@@ -458,6 +458,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	if remoteProgressReporter != nil {
 		remoteProgressReporter.SendSignal()
 		<-remoteProgressReporter.Done()
+		remoteProgressReporter.Cancel()
 	}
 	return nil
 }
