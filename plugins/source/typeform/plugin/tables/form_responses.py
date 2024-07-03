@@ -6,6 +6,7 @@ from cloudquery.sdk.schema import Column
 from cloudquery.sdk.schema import Table
 from cloudquery.sdk.schema.resource import Resource
 from cloudquery.sdk.types import JSONType
+from cloudquery.sdk.stateclient.stateclient import StateClient
 
 from plugin.client import Client
 
@@ -43,6 +44,7 @@ class FormResponsesResolver(TableResolver):
     def resolve(
         self, client: Client, parent_resource: Resource
     ) -> Generator[Any, None, None]:
+        print("In FormResponsesResolver.resolve, I found this stateclient: ", self.state_client)
         for form_response in client.client.list_form_responses(
             form_id=parent_resource.item["id"]
         ):
