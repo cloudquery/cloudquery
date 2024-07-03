@@ -12,8 +12,8 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.49.0
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
-	github.com/docker/docker v26.1.3+incompatible
-	github.com/getsentry/sentry-go v0.28.0
+	github.com/docker/docker v26.1.4+incompatible
+	github.com/getsentry/sentry-go v0.28.1
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.6.0
@@ -24,7 +24,7 @@ require (
 	github.com/rs/zerolog v1.33.0
 	github.com/rudderlabs/analytics-go/v4 v4.2.0
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
-	github.com/schollz/progressbar/v3 v3.14.2
+	github.com/schollz/progressbar/v3 v3.14.4
 	github.com/spf13/cobra v1.8.0
 	github.com/stretchr/testify v1.9.0
 	github.com/thoas/go-funk v0.9.3
