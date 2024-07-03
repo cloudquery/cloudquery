@@ -42,8 +42,6 @@ area/plugin/destination/sqlite:
   - plugins/destination/sqlite/**/*
 area/plugin/source/airtable:
   - plugins/source/airtable/**/*
-area/plugin/source/bitbucket:
-  - plugins/source/bitbucket/**/*
 area/plugin/source/hackernews:
   - plugins/source/hackernews/**/*
 area/plugin/source/k8s:
