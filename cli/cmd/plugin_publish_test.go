@@ -8,10 +8,13 @@ import (
 	"net/http/httptest"
 	"os"
 	"strings"
+	gosync "sync"
 	"testing"
 
+	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/internal/hub"
 	"github.com/google/go-cmp/cmp"
+	"github.com/google/uuid"
 )
 
 func TestPluginPublish(t *testing.T) {
@@ -172,6 +175,123 @@ func TestPluginPublishFinalize(t *testing.T) {
 	cmd := NewCmdRoot()
 	args := append([]string{"plugin", "publish", "--dist-dir", "testdata/dist-v1-with-team-package-json", "--finalize"}, testCommandArgs(t)...)
 	cmd.SetArgs(args)
+	err := cmd.Execute()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if diff := cmp.Diff(wantCalls, gotCalls); diff != "" {
+		t.Fatalf("mismatch (-want +got):\n%s", diff)
+	}
+}
+
+func TestPluginPublishWithUI(t *testing.T) {
+	const distDir = "testdata/dist-v1-with-team-package-json"
+
+	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
+	wantCalls := map[string]int{
+		"PUT /plugins/cloudquery/source/test/versions/v1.2.3":                      1,
+		"PUT /plugins/cloudquery/source/test/versions/v1.2.3/tables":               1,
+		"POST /plugins/cloudquery/source/test/versions/v1.2.3/docs":                1,
+		"POST /plugins/cloudquery/source/test/versions/v1.2.3/assets/linux_amd64":  1,
+		"POST /plugins/cloudquery/source/test/versions/v1.2.3/assets/darwin_amd64": 1,
+		"PUT /upload-linux":   1,
+		"PUT /upload-darwin":  1,
+		"PUT /upload-uiasset": 2,
+		"POST /plugins/cloudquery/source/test/versions/v1.2.3/uiassets": 1,
+		"PUT /plugins/cloudquery/source/test/versions/v1.2.3/uiassets":  1,
+	}
+	gotCalls := map[string]int{}
+	mu := &gosync.Mutex{}
+	uiID := ""
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		mu.Lock()
+		gotCalls[r.Method+" "+r.URL.Path]++
+		mu.Unlock()
+		// t.Log(r.Method, r.URL.Path)
+		switch r.URL.Path {
+		case "/plugins/cloudquery/source/test/versions/v1.2.3":
+			checkAuthHeader(t, r)
+			w.WriteHeader(http.StatusCreated)
+			w.Write([]byte(`{"name": "v1.2.3"}`))
+			checkCreatePluginVersionRequest(t, r)
+		case "/plugins/cloudquery/source/test/versions/v1.2.3/tables":
+			checkAuthHeader(t, r)
+			w.WriteHeader(http.StatusCreated)
+			w.Write([]byte(`{}`))
+			checkCreateTablesRequest(t, r)
+		case "/plugins/cloudquery/source/test/versions/v1.2.3/docs":
+			checkAuthHeader(t, r)
+			w.WriteHeader(http.StatusCreated)
+			w.Write([]byte(`{}`))
+			checkCreateDocsRequest(t, r, distDir)
+		case "/plugins/cloudquery/source/test/versions/v1.2.3/assets/linux_amd64":
+			checkAuthHeader(t, r)
+			w.WriteHeader(http.StatusCreated)
+			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-linux")))
+		case "/plugins/cloudquery/source/test/versions/v1.2.3/assets/darwin_amd64":
+			checkAuthHeader(t, r)
+			w.WriteHeader(http.StatusCreated)
+			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-darwin")))
+		case "/upload-linux":
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte(`{}`))
+		case "/upload-darwin":
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte(`{}`))
+		case "/upload-uiasset":
+			w.WriteHeader(http.StatusOK)
+			w.Write([]byte(`{}`))
+		case "/plugins/cloudquery/source/test/versions/v1.2.3/uiassets":
+			checkAuthHeader(t, r)
+			switch r.Method {
+			case http.MethodPost:
+				uiID = uuid.NewString()
+
+				resp := cloudquery_api.UploadPluginUIAssets201Response{UIID: uiID}
+				var rq cloudquery_api.UploadPluginUIAssetsRequest
+				if err := json.NewDecoder(r.Body).Decode(&rq); err != nil {
+					t.Fatal(err)
+				}
+				if len(rq.Assets) != 2 {
+					t.Fatalf("expected 2 assets, got %d", len(rq.Assets))
+				}
+				for _, a := range rq.Assets {
+					if a.Name != "index.html" && a.Name != "static/style.css" {
+						t.Fatalf("unexpected asset name %q", a.Name)
+					}
+					resp.Assets = append(resp.Assets, cloudquery_api.PluginUIAsset{
+						Name:      a.Name,
+						UploadURL: "http://" + r.Host + "/upload-uiasset",
+					})
+				}
+
+				w.WriteHeader(http.StatusCreated)
+				if err := json.NewEncoder(w).Encode(resp); err != nil {
+					t.Fatal(err)
+				}
+			case http.MethodPut:
+				var rq cloudquery_api.FinalizePluginUIAssetUploadRequest
+				if err := json.NewDecoder(r.Body).Decode(&rq); err != nil {
+					t.Fatal(err)
+				}
+				if rq.UIID != uiID || rq.UIID == "" {
+					w.WriteHeader(http.StatusUnprocessableEntity)
+					t.Fatalf("unexpected UIID %q", rq.UIID)
+				}
+				w.WriteHeader(http.StatusNoContent)
+			default:
+				w.WriteHeader(http.StatusNotAcceptable)
+			}
+		}
+	}))
+	defer ts.Close()
+
+	cmd := NewCmdRoot()
+	t.Setenv(envAPIURL, ts.URL)
+	allArgs := []string{"plugin", "publish", "--dist-dir", "testdata/dist-v1-with-team-package-json", "--ui-dir", "testdata/ui-build"}
+	allArgs = append(allArgs, testCommandArgs(t)...)
+	cmd.SetArgs(allArgs)
 	err := cmd.Execute()
 	if err != nil {
 		t.Fatal(err)
