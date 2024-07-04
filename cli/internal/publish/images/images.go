@@ -18,12 +18,11 @@ import (
 	"github.com/cloudquery/cloudquery/cli/internal/hub"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/ast"
-	"golang.org/x/net/html"
-
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/text"
 	"github.com/yuin/goldmark/util"
 	"golang.org/x/exp/maps"
+	"golang.org/x/net/html"
 	"golang.org/x/sync/errgroup"
 )
 
