@@ -128,7 +128,7 @@ func getSyncCommonProps(invocationUUID uuid.UUID, event SyncStartedEvent, detail
 		Set("source_path", event.Source.Path).
 		Set("destination_paths", destinationPaths).
 		Set("user_id", details.user.ID).
-		Set("user_email", string(details.user.Email))
+		Set("user_email", details.user.Email)
 
 	return props
 }
