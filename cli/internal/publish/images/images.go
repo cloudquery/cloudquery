@@ -336,6 +336,7 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 						if len(el.Title) == 0 { // if no title, make sure the element ends with the link
 							parts := bytes.SplitN(lineLiteral, el.Destination, 2)
 							// nolint:revive
+							// max-control-nesting: control flow nesting exceeds 5 (revive)
 							if len(parts) != 2 || !bytes.HasPrefix(bytes.TrimSpace(parts[1]), []byte(")")) { // HasPrefix because we can be inside a link
 								continue
 							}
