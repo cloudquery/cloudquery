@@ -18,12 +18,11 @@ import (
 	"github.com/cloudquery/cloudquery/cli/internal/hub"
 	"github.com/yuin/goldmark"
 	"github.com/yuin/goldmark/ast"
-	"golang.org/x/net/html"
-
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/text"
 	"github.com/yuin/goldmark/util"
 	"golang.org/x/exp/maps"
+	"golang.org/x/net/html"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -322,31 +321,10 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 				return ast.WalkContinue, nil
 			}
 
-			p := el.BaseNode.Parent()
-			for p != nil && imgRef.endPos == 0 {
-				if p.Kind() == ast.KindParagraph {
-					for i := 0; i < p.Lines().Len(); i++ {
-						// we can have multiple lines in a paragraph, so we need to check each one to match destination/title, hoping there are no dupes
-						lineLiteral := src[p.Lines().At(i).Start:p.Lines().At(i).Stop]
-
-						// these checks are false negative if this image is a reference, but we handled them above
-						if !bytes.Contains(lineLiteral, el.Destination) || (len(el.Title) > 0 && !bytes.Contains(lineLiteral, el.Title)) {
-							continue
-						}
-						if len(el.Title) == 0 { // if no title, make sure the element ends with the link
-							parts := bytes.SplitN(lineLiteral, el.Destination, 2)
-							// nolint:revive
-							// max-control-nesting: control flow nesting exceeds 5 (revive)
-							if len(parts) != 2 || !bytes.HasPrefix(bytes.TrimSpace(parts[1]), []byte(")")) { // HasPrefix because we can be inside a link
-								continue
-							}
-						}
-						imgRef.startPos, imgRef.endPos = p.Lines().At(i).Start, p.Lines().At(i).Stop
-						break
-					}
-					break
+			if el.BaseNode.Parent() != nil && imgRef.endPos == 0 {
+				if seg, found := handleImage(el, src); found {
+					imgRef.startPos, imgRef.endPos = seg.Start, seg.Stop
 				}
-				p = p.Parent()
 			}
 			imgs = append(imgs, imgRef)
 		case *ast.CodeBlock:
@@ -467,6 +445,33 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 		}
 		return nil
 	}()
+}
+
+func handleImage(el *ast.Image, source []byte) (seg text.Segment, found bool) {
+	p := el.BaseNode.Parent()
+	for p != nil {
+		if p.Kind() == ast.KindParagraph {
+			for i := 0; i < p.Lines().Len(); i++ {
+				// we can have multiple lines in a paragraph, so we need to check each one to match destination/title, hoping there are no dupes
+				lineLiteral := source[p.Lines().At(i).Start:p.Lines().At(i).Stop]
+
+				// these checks are false negative if this image is a reference, but we handled them above
+				if !bytes.Contains(lineLiteral, el.Destination) || (len(el.Title) > 0 && !bytes.Contains(lineLiteral, el.Title)) {
+					continue
+				}
+				if len(el.Title) == 0 { // if no title, make sure the element ends with the link
+					parts := bytes.SplitN(lineLiteral, el.Destination, 2)
+					if len(parts) != 2 || !bytes.HasPrefix(bytes.TrimSpace(parts[1]), []byte(")")) { // HasPrefix because we can be inside a link
+						continue
+					}
+				}
+				return p.Lines().At(i), true
+			}
+			break
+		}
+		p = p.Parent()
+	}
+	return seg, false
 }
 
 func parseHTMLImages(htmlBytes []byte, htmlOffset int) ([]reference, error) {

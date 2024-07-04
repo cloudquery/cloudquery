@@ -1,0 +1,1 @@
+ALTER TABLE {{sanitizeID .Schema .Table}} ALTER COLUMN {{template "col_def.sql.tpl" .Column}};

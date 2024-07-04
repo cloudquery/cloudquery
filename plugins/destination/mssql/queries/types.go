@@ -11,7 +11,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
-func SQLType(dataType arrow.DataType) string {
+const DefaultMaxLengthNvarchar = "4000"
+
+func SQLType(dataType arrow.DataType, pk bool) string {
 	switch dataType := dataType.(type) {
 	case *arrow.BooleanType:
 		return "bit"
@@ -32,11 +34,11 @@ func SQLType(dataType arrow.DataType) string {
 	case *arrow.Float64Type:
 		return "float" // == float(53)
 
-	case *arrow.LargeStringType:
+	case *arrow.StringType, *arrow.LargeStringType, *types.InetType, *types.MACType:
+		if pk {
+			return "nvarchar(" + DefaultMaxLengthNvarchar + ")"
+		}
 		return "nvarchar(max)" // we will also use it as the default type
-
-	case *arrow.StringType, *types.InetType, *types.MACType:
-		return "nvarchar(4000)" // feasible to see these as PK, so need to limit the value
 
 	case *arrow.FixedSizeBinaryType:
 		return "varbinary(" + strconv.Itoa(dataType.ByteWidth) + ")"

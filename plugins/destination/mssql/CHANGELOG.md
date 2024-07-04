@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.6.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.6.6...plugins-destination-mssql-v4.6.7) (2024-07-03)
+
+
+### Bug Fixes
+
+* Replace string type mapping with nvarchar(max) in the MSSQL destination plugin ([#18441](https://github.com/cloudquery/cloudquery/issues/18441)) ([ff2da56](https://github.com/cloudquery/cloudquery/commit/ff2da56d81b1f47d6f8a2fd4725f9947463e38d5))
+
 ## [4.6.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.6.5...plugins-destination-mssql-v4.6.6) (2024-07-03)
 
 
