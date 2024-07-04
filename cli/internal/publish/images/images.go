@@ -323,9 +323,8 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 			}
 
 			if el.BaseNode.Parent() != nil && imgRef.endPos == 0 {
-				s, e := handleImage(el, src)
-				if e > 0 {
-					imgRef.startPos, imgRef.endPos = s, e
+				if seg, found := handleImage(el, src); found {
+					imgRef.startPos, imgRef.endPos = seg.Start, seg.Stop
 				}
 			}
 			imgs = append(imgs, imgRef)
@@ -449,7 +448,7 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 	}()
 }
 
-func handleImage(el *ast.Image, source []byte) (startPos int, endPos int) {
+func handleImage(el *ast.Image, source []byte) (seg text.Segment, found bool) {
 	p := el.BaseNode.Parent()
 	for p != nil {
 		if p.Kind() == ast.KindParagraph {
@@ -467,13 +466,13 @@ func handleImage(el *ast.Image, source []byte) (startPos int, endPos int) {
 						continue
 					}
 				}
-				return p.Lines().At(i).Start, p.Lines().At(i).Stop
+				return p.Lines().At(i), true
 			}
 			break
 		}
 		p = p.Parent()
 	}
-	return 0, 0
+	return seg, false
 }
 
 func parseHTMLImages(htmlBytes []byte, htmlOffset int) ([]reference, error) {
