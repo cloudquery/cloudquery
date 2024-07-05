@@ -35,6 +35,9 @@ func newCmdScaffoldSource() *cobra.Command {
 	return cmd
 }
 
+// Note: The long list here is deliberate, to make sure that node_modules does not accidentally
+// get included in the binary.
+//
 //go:embed templates/source/*
 //go:embed templates/plugin-config-ui/public/*
 //go:embed templates/plugin-config-ui/src/*
