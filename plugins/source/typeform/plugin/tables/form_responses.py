@@ -30,6 +30,7 @@ class FormResponses(Table):
                 Column("variables", JSONType()),
                 Column("tags", JSONType()),
             ],
+            is_incremental=True,
         )
         self._resolver = FormResponsesResolver(table=self)
 
