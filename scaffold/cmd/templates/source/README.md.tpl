@@ -47,6 +47,10 @@ make lint
 make gen-docs
 ```
 
+### Develop a Web UI for the plugin
+
+See [plugin-config-ui/README.md](plugin-config-ui/README.md) for more information.
+
 ### Obtain API key
 
 Please refer to the [documentation](https://docs.cloudquery.io/docs/deployment/generate-api-key) for instructions.
