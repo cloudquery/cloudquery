@@ -31,10 +31,11 @@ class FormResponses(Table):
                 Column("tags", JSONType()),
             ],
         )
+        self._resolver = FormResponsesResolver(table=self)
 
     @property
     def resolver(self):
-        return FormResponsesResolver(table=self)
+        return self._resolver
 
 
 class FormResponsesResolver(TableResolver):
@@ -44,9 +45,15 @@ class FormResponsesResolver(TableResolver):
     def resolve(
         self, client: Client, parent_resource: Resource
     ) -> Generator[Any, None, None]:
-        print("In FormResponsesResolver.resolve, I found this stateclient: ", self.state_client)
+        since = self.state_client.get_key("typeform_form_responses_since")
+
         for form_response in client.client.list_form_responses(
-            form_id=parent_resource.item["id"]
+            form_id=parent_resource.item["id"],
+            since=since,
         ):
+            if not since or form_response["submitted_at"] >= since:
+                since = form_response["submitted_at"]
+                self.state_client.set_key("typeform_form_responses_since", since)
+
             form_response["form_id"] = parent_resource.item["id"]
             yield form_response
