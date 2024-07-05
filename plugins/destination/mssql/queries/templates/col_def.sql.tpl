@@ -1,2 +1,2 @@
-{{sanitizeID .Name}} {{.Type | sql}}
+{{sanitizeID .Name}} {{sql .Type .PrimaryKey}}
 {{- if .NotNull }} NOT NULL {{- end}}

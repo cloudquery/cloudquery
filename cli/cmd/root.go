@@ -148,11 +148,20 @@ func NewCmdRoot() *cobra.Command {
 		newCmdPluginDocsDownload(),
 		newCmdPluginDocsUpload(),
 	)
+	pluginUIAssetsCmd := &cobra.Command{
+		Use:    "uiassets",
+		Short:  "Plugin UI asset commands",
+		Hidden: true,
+	}
+	pluginUIAssetsCmd.AddCommand(
+		newCmdPluginUIAssetsUpload(),
+	)
 
 	pluginCmd.AddCommand(
 		newCmdPluginInstall(false),
 		newCmdPluginPublish(),
 		pluginDocCmd,
+		pluginUIAssetsCmd,
 	)
 
 	addonCmd := &cobra.Command{

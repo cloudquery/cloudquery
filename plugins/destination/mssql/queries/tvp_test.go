@@ -69,12 +69,14 @@ func TestTVPAddType(t *testing.T) {
 		expected   = `CREATE TYPE [cq].[cq_tbl_table_name] AS TABLE (
   [_cq_id] uniqueidentifier NOT NULL,
   [_cq_parent_id] uniqueidentifier,
-  [_cq_source_name] nvarchar(4000),
+  [_cq_source_name] nvarchar(max),
   [_cq_sync_time] datetime2,
   [extra_col_pk1] float NOT NULL,
   [extra_col_pk2] bit NOT NULL,
+  [extra_col_pk3] nvarchar(4000) NOT NULL,
   [extra_col_not_pk1] bigint,
-  [extra_col_not_pk2] varbinary(max)
+  [extra_col_not_pk2] varbinary(max),
+  [extra_col_not_pk3] nvarchar(max)
 );`
 	)
 
@@ -87,8 +89,10 @@ func TestTVPAddType(t *testing.T) {
 			schema.CqSyncTimeColumn,
 			schema.Column{Name: "extra_col_pk1", Type: arrow.PrimitiveTypes.Float64, PrimaryKey: true, NotNull: true},
 			schema.Column{Name: "extra_col_pk2", Type: arrow.FixedWidthTypes.Boolean, PrimaryKey: true, NotNull: true},
+			schema.Column{Name: "extra_col_pk3", Type: new(arrow.StringType), PrimaryKey: true, NotNull: true},
 			schema.Column{Name: "extra_col_not_pk1", Type: arrow.PrimitiveTypes.Int64},
 			schema.Column{Name: "extra_col_not_pk2", Type: new(arrow.BinaryType)},
+			schema.Column{Name: "extra_col_not_pk3", Type: new(arrow.StringType)},
 		},
 	})
 
