@@ -1,6 +1,8 @@
 # Getting Started with custom Plugin UI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### `npm install`
+
+This will install all the dependencies required for the Plugin UI to run.
 
 ## Available Scripts
 
@@ -32,3 +34,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 If the `index.html` is not put in the root directory, then you need to prepend PUBLIC_PATH to this command:
 
 ```PUBLIC_PATH=/my-app npm run build```
+
+## Learn More
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
