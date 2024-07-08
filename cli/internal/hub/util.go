@@ -1,6 +1,7 @@
 package hub
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io"
@@ -67,17 +68,21 @@ func ErrorFromHTTPResponse(httpResp *http.Response, resp any) error {
 }
 
 func UploadFile(uploadURL, localPath string) error {
+	return UploadFileWithContentType(context.Background(), uploadURL, localPath, "application/octet-stream")
+}
+
+func UploadFileWithContentType(ctx context.Context, uploadURL, localPath, contentType string) error {
 	file, err := os.Open(localPath)
 	if err != nil {
 		return fmt.Errorf("failed to open file: %w", err)
 	}
 	defer file.Close()
 
-	req, err := http.NewRequest(http.MethodPut, uploadURL, file)
+	req, err := http.NewRequestWithContext(ctx, http.MethodPut, uploadURL, file)
 	if err != nil {
 		return fmt.Errorf("failed to create request: %w", err)
 	}
-	req.Header.Set("Content-Type", "application/octet-stream")
+	req.Header.Set("Content-Type", contentType)
 
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
