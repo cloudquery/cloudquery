@@ -24,8 +24,8 @@ class TypeformClient:
         if resp["page_count"] > page:
             yield from self.list_forms(page + 1)
 
-    def list_form_responses(self, form_id, page=1):
-        params = {"page": page, "page_size": 1000}
+    def list_form_responses(self, *, form_id, since, page=1):
+        params = {"page": page, "page_size": 1000, "since": since}
         resp = self._get(f"/forms/{form_id}/responses", params=params)
         if resp.status_code != 200:
             raise Exception(f"Failed to list form responses: {resp.text}")
@@ -35,4 +35,6 @@ class TypeformClient:
             yield form
 
         if resp["page_count"] > page:
-            yield from self.list_form_responses(form_id, page + 1)
+            yield from self.list_form_responses(
+                form_id=form_id, since=since, page=page + 1
+            )
