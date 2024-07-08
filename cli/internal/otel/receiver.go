@@ -63,14 +63,10 @@ type Consumer struct {
 	consumeMetric   ConsumeMetric
 }
 
-func (c *Consumer) Shutdown(ctx context.Context) error {
+func (c *Consumer) Shutdown(ctx context.Context) {
 	if c.quit != nil {
 		close(c.quit)
 	}
-	if c.metricsFile != nil {
-		return c.metricsFile.Close()
-	}
-	return nil
 }
 
 func newDefaultSpanConsumer() ConsumeSpan {
@@ -135,6 +131,10 @@ func newDefaultMetricConsumer(metricsFile *os.File, quit chan any) ConsumeMetric
 			case <-quit:
 				renderTable()
 				ticker.Stop()
+				err := metricsFile.Close()
+				if err != nil {
+					fmt.Println("Error closing file:", err)
+				}
 				return
 			}
 		}
@@ -145,6 +145,7 @@ func newDefaultMetricConsumer(metricsFile *os.File, quit chan any) ConsumeMetric
 		clientId := metric.Attributes["sync.client.id"].(string)
 
 		tableLock.Lock()
+		defer tableLock.Unlock()
 		key := table + clientId
 		metrics, ok := metricsMap[key]
 		if !ok {
@@ -155,7 +156,6 @@ func newDefaultMetricConsumer(metricsFile *os.File, quit chan any) ConsumeMetric
 			metricsMap[key] = metrics
 		}
 
-		tableLock.Unlock()
 		switch metric.Name {
 		case "sync.table.start_time":
 			startTime := time.Unix(0, metric.Value)
@@ -349,7 +349,7 @@ func (r *OtelReceiver) Shutdown(ctx context.Context) {
 		return
 	}
 
-	_ = r.consumer.Shutdown(ctx)
+	r.consumer.Shutdown(ctx)
 	for _, c := range r.components {
 		_ = c.Shutdown(ctx)
 	}
