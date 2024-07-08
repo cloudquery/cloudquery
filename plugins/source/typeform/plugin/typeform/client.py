@@ -35,4 +35,6 @@ class TypeformClient:
             yield form
 
         if resp["page_count"] > page:
-            yield from self.list_form_responses(form_id=form_id, since=since, page=page + 1)
+            yield from self.list_form_responses(
+                form_id=form_id, since=since, page=page + 1
+            )
