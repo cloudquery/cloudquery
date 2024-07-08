@@ -131,10 +131,7 @@ func newDefaultMetricConsumer(metricsFile *os.File, quit chan any) ConsumeMetric
 			case <-quit:
 				renderTable()
 				ticker.Stop()
-				err := metricsFile.Close()
-				if err != nil {
-					fmt.Println("Error closing file:", err)
-				}
+				_ = metricsFile.Close()
 				return
 			}
 		}
