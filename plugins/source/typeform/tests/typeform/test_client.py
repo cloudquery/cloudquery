@@ -116,7 +116,7 @@ class TestMockServer(object):
             base_url="http://localhost:{}".format(self.mock_server_port),
             access_token="fake",
         )
-        forms = list(client.list_form_responses("form1"))
+        forms = list(client.list_form_responses(form_id="form1", since=None))
         assert len(forms) == 2
         assert forms[0]["submitted_at"] == "2017-09-14T22:38:22Z"
         assert forms[1]["submitted_at"] == "2017-09-14T22:33:56Z"
