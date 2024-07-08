@@ -12,9 +12,15 @@ export const sslModeValues = [
 ] as const;
 
 export const formValidationSchema = yup.object({
-  migrateMode: yup.string(),
-  writeMode: yup.string(),
-  secrets: yup
+  migrateMode: yup
+    .string()
+    .oneOf(['forced', 'safe'] as const)
+    .default('safe'),
+  writeMode: yup
+    .string()
+    .oneOf(['append', 'overwrite', 'overwrite-delete-stale'] as const)
+    .default('append'),
+  envs: yup
     .array()
     .of(
       yup.object({

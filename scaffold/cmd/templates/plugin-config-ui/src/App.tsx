@@ -1,16 +1,20 @@
 import { Box, CssBaseline, Stack, ThemeProvider, createTheme } from '@mui/material';
 import { Form } from './Form';
 import { Fragment, useMemo } from 'react';
-import { useFormInit } from './utils/hooks/useFormInit';
-import { useWatchPluginUiHeight } from './utils/hooks/useWatchPluginUiHeight';
-import { createThemeOptions } from '@cloudquery/cloud-ui';
+import {
+  createThemeOptions,
+  usePluginUiFormHeightChange,
+  usePluginUiFormInit,
+} from '@cloudquery/cloud-ui';
 import { CloudAppMock } from './CloudAppMock';
+import { pluginUiMessageHandler } from './utils/messageHandler';
+import { prepareInitialValues } from './utils/prepareInitialValues';
 
-const DevWrapper = process.env.NODE_ENV === 'development' ? CloudAppMock : Fragment;
+const DevWrapper = process.env.NODE_ENV === 'production' ? CloudAppMock : Fragment;
 
 function App() {
-  const { initialValues, initialized } = useFormInit();
-  const containerRef = useWatchPluginUiHeight();
+  const { initialValues, initialized } = usePluginUiFormInit(pluginUiMessageHandler, false);
+  const containerRef = usePluginUiFormHeightChange(pluginUiMessageHandler);
 
   const theme = useMemo(() => createTheme(createThemeOptions()), []);
 
@@ -20,8 +24,10 @@ function App() {
         <CssBaseline />
         <DevWrapper>
           {initialized && (
-            <Stack padding={2}>
-              <Form initialValues={initialValues} />
+            <Stack paddingY={2}>
+              <Form
+                initialValues={initialValues ? prepareInitialValues(initialValues) : undefined}
+              />
             </Stack>
           )}
         </DevWrapper>

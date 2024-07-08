@@ -31,11 +31,8 @@ export function CloudAppMock({ children }: Props) {
         migrateMode: undefined,
         tables: undefined,
         writeMode: undefined,
-        spec: {
-          connection_string:
-            'postgresql://${username}:${password}@localhost:5432/mydatabase?ssl=true',
-        },
-        secrets: [
+        spec: {},
+        envs: [
           {
             name: 'username',
             value: '',

@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@cloudquery/cloud-ui": "^0.0.2",
-    "@cloudquery/plugin-config-ui-connector": "^0.0.4",
+    "@cloudquery/cloud-ui": "^0.0.9",
+    "@cloudquery/plugin-config-ui-connector": "^0.0.9",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
@@ -27,6 +27,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",

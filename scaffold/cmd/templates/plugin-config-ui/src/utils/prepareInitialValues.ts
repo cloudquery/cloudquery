@@ -31,7 +31,7 @@ export function prepareInitialValues(
     sslMode: connectionObj.sslMode || ('require' as const),
   };
 
-  for (const secret of initialValues?.secrets || []) {
+  for (const secret of initialValues?.envs || []) {
     if (get(spec, secret.name)) {
       if (secret.value) {
         set(spec, secret.name, secret.value);

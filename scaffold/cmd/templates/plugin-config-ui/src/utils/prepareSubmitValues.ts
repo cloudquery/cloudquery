@@ -14,7 +14,7 @@ export function prepareSubmitValues(values: FormValues) {
     url.searchParams.set('client_encoding', values.spec.clientEncoding);
   }
 
-  const secrets = [] as Array<{ name: string; value: string }>;
+  const envs = [] as Array<{ name: string; value: string }>;
 
   const userInfo = [
     values.spec.username ? '${username}' : '',
@@ -24,13 +24,13 @@ export function prepareSubmitValues(values: FormValues) {
     .join(':');
 
   if (values.spec.username) {
-    secrets.push({
+    envs.push({
       name: 'username',
       value: typeof values.spec.username === 'symbol' ? '' : String(values.spec.username),
     });
   }
   if (values.spec.password) {
-    secrets.push({
+    envs.push({
       name: 'password',
       value: typeof values.spec.password === 'symbol' ? '' : String(values.spec.password),
     });
@@ -47,7 +47,7 @@ export function prepareSubmitValues(values: FormValues) {
 
   return {
     ...values,
-    secrets,
+    envs,
     tables: ['*'],
     spec: {
       connection_string: finalUrl,

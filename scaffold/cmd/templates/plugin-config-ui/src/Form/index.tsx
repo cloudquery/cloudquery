@@ -1,18 +1,16 @@
 import { FormControlLabel, MenuItem, Stack, Switch, TextField } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
-import { useFormSubmit } from '../utils/hooks/useFormSubmit';
-import { FormFieldGroup } from '@cloudquery/cloud-ui';
+import { FormFieldGroup, FormFieldReset, usePluginUiFormSubmit } from '@cloudquery/cloud-ui';
 import { FormValues, formValidationSchema, sslModeValues } from '../utils/formSchema';
 import { getYupValidationResolver } from '../utils/validation';
-import { FormFieldReset } from './formFieldReset';
-import get from 'lodash.get';
 import { prepareSubmitValues } from '../utils/prepareSubmitValues';
+import { pluginUiMessageHandler } from '../utils/messageHandler';
 
 interface Props {
   initialValues: FormValues | undefined;
 }
 
-const secretPlaceholder = '************';
+const envPlaceholder = '************';
 
 export function Form({ initialValues }: Props) {
   const {
@@ -27,7 +25,7 @@ export function Form({ initialValues }: Props) {
   });
   const sslValue = watch('spec.ssl');
 
-  const handleValidate: Parameters<typeof useFormSubmit>[0] = async () => {
+  const handleValidate: Parameters<typeof usePluginUiFormSubmit>[0] = async () => {
     try {
       const values: FormValues = await new Promise((resolve, reject) => {
         handleSubmit(resolve, reject)();
@@ -41,7 +39,7 @@ export function Form({ initialValues }: Props) {
     }
   };
 
-  useFormSubmit(handleValidate);
+  usePluginUiFormSubmit(handleValidate, pluginUiMessageHandler);
 
   return (
     <FormFieldGroup title="PostgreSQL Connection">
@@ -96,14 +94,16 @@ export function Form({ initialValues }: Props) {
               label="Username"
               {...field}
               disabled={typeof field.value === 'symbol'}
-              value={typeof field.value === 'symbol' ? secretPlaceholder : field.value}
+              value={typeof field.value === 'symbol' ? envPlaceholder : field.value}
             />
-            <FormFieldReset
-              initialValue={get(defaultValues?.spec, 'username')}
-              isReadonly={typeof field.value === 'symbol'}
-              path="spec.username"
-              setValue={setValue}
-            />
+            {typeof defaultValues?.spec.username === 'symbol' && (
+              <FormFieldReset
+                isResetted={typeof field.value !== 'symbol'}
+                inputSelectorToFocus='input[name="spec.username"]'
+                onCancel={() => setValue('spec.username', defaultValues?.spec.username)}
+                onReset={() => setValue('spec.username', '')}
+              />
+            )}
           </Stack>
         )}
       />
@@ -119,14 +119,16 @@ export function Form({ initialValues }: Props) {
               label="Password"
               {...field}
               disabled={typeof field.value === 'symbol'}
-              value={typeof field.value === 'symbol' ? secretPlaceholder : field.value}
+              value={typeof field.value === 'symbol' ? envPlaceholder : field.value}
             />
-            <FormFieldReset
-              initialValue={get(defaultValues?.spec, 'password')}
-              isReadonly={typeof field.value === 'symbol'}
-              path="spec.password"
-              setValue={setValue}
-            />
+            {typeof defaultValues?.spec.username === 'symbol' && (
+              <FormFieldReset
+                isResetted={typeof field.value !== 'symbol'}
+                inputSelectorToFocus='input[name="spec.password"]'
+                onCancel={() => setValue('spec.password', defaultValues?.spec.password)}
+                onReset={() => setValue('spec.password', '')}
+              />
+            )}
           </Stack>
         )}
       />
