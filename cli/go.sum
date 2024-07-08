@@ -36,8 +36,8 @@ github.com/cloudquery/godebouncer v0.0.0-20240220152946-054f7dbbcf18 h1:5Wy7tEhL
 github.com/cloudquery/godebouncer v0.0.0-20240220152946-054f7dbbcf18/go.mod h1:0Rxvtp9fhnRCt+k4QrpXY0OPUyyjF0zVO7wCrnsqsCU=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66 h1:OZLPSIBYEfvkAUeOeM8CwTgVQy5zhayI99ishCrsFV0=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66/go.mod h1:0SoZ/U7yJlNOR+fWsBSeTvTbGXB6DK01tzJ7m2Xfg34=
-github.com/cloudquery/plugin-pb-go v1.20.2 h1:PSNto3ohy74/CJOKqCOl+Sr+DA8D//vpax8LBGwozys=
-github.com/cloudquery/plugin-pb-go v1.20.2/go.mod h1:jYMI0dar0SQzK772RhJS1HvF6Q65MzsnpJ+A0N9vQEA=
+github.com/cloudquery/plugin-pb-go v1.20.3 h1:PXxo6evE+VFX3Ilm03fF51IeDj4BlDOPFv/eYumOTFs=
+github.com/cloudquery/plugin-pb-go v1.20.3/go.mod h1:9JMoY4E4+kTPZQSP4IvrMPHLvraZs5j8K9chb5fEPVA=
 github.com/cloudquery/plugin-sdk/v4 v4.49.0 h1:VdJbKnOyuQ2QEn6U0TisJL+7+iEriP+dJhFYWvyOD9c=
 github.com/cloudquery/plugin-sdk/v4 v4.49.0/go.mod h1:U0p3vDUlwfM0dOJttb/3+TdaE8J8yUiIMcm7gneCpbA=
 github.com/containerd/log v0.1.0 h1:TCJt7ioM2cr/tfR8GPbGf9/VRAX8D2B4PjzCpfX540I=
@@ -52,8 +52,8 @@ github.com/distribution/reference v0.6.0 h1:0IXCQ5g4/QMHHkarYzh5l+u8T3t73zM5Qvfr
 github.com/distribution/reference v0.6.0/go.mod h1:BbU0aIcezP1/5jX/8MP0YiH4SdvB5Y4f/wlDRiLyi3E=
 github.com/docker/distribution v2.8.3+incompatible h1:AtKxIZ36LoNK51+Z6RpzLpddBirtxJnzDrHLEKxTAYk=
 github.com/docker/distribution v2.8.3+incompatible/go.mod h1:J2gT2udsDAN96Uj4KfcMRqY0/ypR+oyYUYmja8H+y+w=
-github.com/docker/docker v26.1.4+incompatible h1:vuTpXDuoga+Z38m1OZHzl7NKisKWaWlhjQk7IDPSLsU=
-github.com/docker/docker v26.1.4+incompatible/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
+github.com/docker/docker v27.0.3+incompatible h1:aBGI9TeQ4MPlhquTQKq9XbK79rKFVwXNUAYz9aXyEBE=
+github.com/docker/docker v27.0.3+incompatible/go.mod h1:eEKB0N0r5NX/I1kEveEz05bcu8tLC/8azJZsviup8Sk=
 github.com/docker/go-connections v0.5.0 h1:USnMq7hx7gwdVZq1L49hLXaFtUdTADjXGp+uj1Br63c=
 github.com/docker/go-connections v0.5.0/go.mod h1:ov60Kzw0kKElRwhNs9UlUHAE/F9Fe6GLaXnqyDdmEXc=
 github.com/docker/go-metrics v0.0.1 h1:AgB/0SvBxihN0X8OR4SjsblXkbMvalQ8cjmtKQ2rQV8=
