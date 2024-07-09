@@ -70,7 +70,7 @@ func normalizeTable(table *schema.Table) *schema.Table {
 		// Since multiple schema types can map to the same MSSQL type
 		// we need to normalize them to avoid false positives when detecting schema changes.
 		// This should never return an error
-		col.Type = queries.SchemaType(queries.SQLType(col.Type))
+		col.Type = queries.SchemaType(queries.SQLType(col.Type, col.PrimaryKey))
 		col.NotNull = col.NotNull || col.PrimaryKey
 		columns[i] = col
 	}

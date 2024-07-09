@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.4.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-meilisearch-v2.4.3...plugins-destination-meilisearch-v2.4.4) (2024-07-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.12.0 ([#18448](https://github.com/cloudquery/cloudquery/issues/18448)) ([a5850e1](https://github.com/cloudquery/cloudquery/commit/a5850e1190e7d40437b3fbcea5c3b8f6b4b059ac))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.17 ([#18491](https://github.com/cloudquery/cloudquery/issues/18491)) ([b43fd16](https://github.com/cloudquery/cloudquery/commit/b43fd1602fa41e7df89b1007b119d5796867cc50))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.1 ([#18497](https://github.com/cloudquery/cloudquery/issues/18497)) ([3416eb7](https://github.com/cloudquery/cloudquery/commit/3416eb7d870fb8e9a0132bda3a571a235817a3f6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.2 ([#18504](https://github.com/cloudquery/cloudquery/issues/18504)) ([2d80936](https://github.com/cloudquery/cloudquery/commit/2d80936e5f952b29f1ddf6267c2331a504a38b2d))
+
+## [2.4.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-meilisearch-v2.4.2...plugins-destination-meilisearch-v2.4.3) (2024-07-03)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.0 ([#18415](https://github.com/cloudquery/cloudquery/issues/18415)) ([3f4ef53](https://github.com/cloudquery/cloudquery/commit/3f4ef5366078eebd38ab7c1cc52afc0eaeee08f4))
+* **deps:** Update module github.com/hashicorp/go-retryablehttp to v0.7.7 [SECURITY] ([#18369](https://github.com/cloudquery/cloudquery/issues/18369)) ([1e223bf](https://github.com/cloudquery/cloudquery/commit/1e223bf58529449ab7b30d1a0d046a40a0488cf1))
+
 ## [2.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-meilisearch-v2.4.1...plugins-destination-meilisearch-v2.4.2) (2024-06-25)
 
 

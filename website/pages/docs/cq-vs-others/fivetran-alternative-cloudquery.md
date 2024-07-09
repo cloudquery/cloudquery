@@ -1,16 +1,27 @@
 ---
 title: Fivetran alternative | Comparison with CloudQuery
-description: CloudQuery is an open source ELT framework that can be used as an alternative to Fivetran. CloudQuery is built for performance, and is easy to deploy and maintain.
+description: Compare CloudQuery and Fivetran ELT solutions. Discover CloudQuery’s cost-effective, flexible, high-performance, self-hosted advantages over Fivetran.
 ---
 
 # CloudQuery Vs Fivetran
 
-Fivetran is a closed source managed ELT SaaS solution with a few key differences.
+## What is CloudQuery?
 
-**Key Differences:**
+CloudQuery is an ELT  tool that enables high-performance data extraction and loading with a [plugin-based architecture](/docs/developers/architecture), allowing for extensive customization and scalability. Built with Go, it offers low memory usage and high efficiency, supporting a rich type system for accurate data handling. CloudQuery can be self-hosted, ensuring data remains within your infrastructure and providing a cost-effective pricing model based on usage.
 
-- **Open Source and extendable**: CloudQuery is open-source and has a [pluggable architecture](/docs/developers/architecture) which means you can contribute missing resources to existing plugins or you can easily create your own plugins (Using CloudQuery SDK) to grab data from in-house data stores or other SaaS applications.
-- **High Performance** - CloudQuery SDK and connectors are written in Go utilizing excellent support of go-routines which enables high-performance and low memory usage.
-- **Type System** - CloudQuery SDK supports a rich type system for connectors which enables richer schemas and more accurate data.
-- **Self-hosted** - You can run CloudQuery on your own infrastructure, ensuring that your data doesn't leave your infrastructure. Fivetran only offers a managed solution at the moment.
-- **Connectors** - Fivetran has more source connectors than CloudQuery at the moment. The CloudQuery team adds and maintains official, widely-used connectors, while also developing the CloudQuery SDK to enable developers to write their own high-performance connectors.
+## What is Fivetran?
+
+Fivetran is a managed ELT SaaS solution that automates data pipelines from various sources to centralized destinations. It offers a comprehensive range of connectors but comes with a higher and more [complex pricing structure based on Monthly Active Rows (MAR)](https://www.fivetran.com/legal#sct).
+
+## Key Differences
+
+| Feature                        | CloudQuery                                                                                         | Fivetran                                                      |
+|--------------------------------|---------------------------------------------------------------------------------------------------|--------------------------------------------------------------|
+| Bring Your Own Cloud (BYOC)    | Allows users to run the service in their own cloud environment, providing greater control and security. | Does not offer BYOC, as it is a fully managed service.       |
+| Performance                    | Built with Go, leveraging go-routines for high performance and low memory usage.                  | High performance but as a managed service, users have less control over optimization. |
+| Cross-Platform CLI             | Driven by a single binary cross-platform CLI, making it easy to deploy and manage across different environments. | Provides a web-based interface with limited CLI support.     |
+| Open Source and Extendable     | Open-source framework with a [plugin-based architecture](/docs/developers/architecture). Users can create their own data source or destination plugins using the CloudQuery SDK to access data from in-house stores or other SaaS applications. | Closed-source managed ELT SaaS solution.                    |
+| Type System                    | Supports a rich type system for connectors, enabling richer schemas and more accurate data.       | Standard-type systems without the customization CloudQuery offers. |
+| Connectors                     | Growing list of connectors, supported by the community and official team.                        | Extensive list of connectors.                                |
+
+CloudQuery and Fivetran offer robust ELT solutions but differ significantly. CloudQuery allows self-hosting with BYOC, ensuring greater control and security, and features a high-performance, low-memory Go-based architecture. Its open-source framework and pluggable architecture enable extensive customization and accurate data handling. In contrast, Fivetran, a managed service, offers many connectors but lacks CloudQuery’s flexibility and control. For a customizable, cost-effective, high-performance ELT solution with self-hosting capabilities, CloudQuery is a compelling alternative to Fivetran.

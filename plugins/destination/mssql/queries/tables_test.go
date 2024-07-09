@@ -14,7 +14,7 @@ func TestCreateTable(t *testing.T) {
 		expected   = `CREATE TABLE [cq].[table_name] (
   [_cq_id] uniqueidentifier NOT NULL,
   [_cq_parent_id] uniqueidentifier,
-  [_cq_source_name] nvarchar(4000),
+  [_cq_source_name] nvarchar(max),
   [_cq_sync_time] datetime2,
   [extra_col] float NOT NULL,
   CONSTRAINT [table_name_cqpk] PRIMARY KEY (
@@ -45,7 +45,7 @@ func TestCreateTableNoPK(t *testing.T) {
 		expected   = `CREATE TABLE [cq].[table_name] (
   [_cq_id] uniqueidentifier NOT NULL,
   [_cq_parent_id] uniqueidentifier,
-  [_cq_source_name] nvarchar(4000),
+  [_cq_source_name] nvarchar(max),
   [_cq_sync_time] datetime2,
   [extra_col] float NOT NULL
 );`
@@ -74,7 +74,7 @@ func TestCreateTableCustomPKConstraintName(t *testing.T) {
 		expected   = `CREATE TABLE [cq].[table_name] (
   [_cq_id] uniqueidentifier UNIQUE NOT NULL,
   [_cq_parent_id] uniqueidentifier,
-  [_cq_source_name] nvarchar(4000),
+  [_cq_source_name] nvarchar(max),
   [_cq_sync_time] datetime2,
   [extra_col] float NOT NULL,
   CONSTRAINT [custom_pk_constraint_name] PRIMARY KEY (

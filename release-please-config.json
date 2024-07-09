@@ -68,10 +68,6 @@
       "component": "plugins-source-airtable",
       "release-type": "node"
     },
-    "plugins/source/bitbucket": {
-      "component": "plugins-source-bitbucket",
-      "release-type": "simple"
-    },
     "plugins/source/hackernews": {
       "component": "plugins-source-hackernews"
     },
