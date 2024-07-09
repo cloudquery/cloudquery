@@ -1,21 +1,18 @@
 import { Box, CssBaseline, Stack, ThemeProvider, createTheme } from '@mui/material';
 import { Form } from './Form';
 import { Fragment, useMemo } from 'react';
-import {
-  createThemeOptions,
-  usePluginUiFormHeightChange,
-  usePluginUiFormInit,
-} from '@cloudquery/cloud-ui';
+import { createThemeOptions } from '@cloudquery/cloud-ui';
 import { CloudAppMock } from './CloudAppMock';
 import { pluginUiMessageHandler } from './utils/messageHandler';
 import { prepareInitialValues } from './utils/prepareInitialValues';
+import { useFormHeightChange, useFormInit } from '@cloudquery/plugin-config-ui-lib';
 
 const DevWrapper =
   process.env.NODE_ENV === 'production' || window.self !== window.top ? Fragment : CloudAppMock;
 
 function App() {
-  const { initialValues, initialized } = usePluginUiFormInit(pluginUiMessageHandler, false);
-  const containerRef = usePluginUiFormHeightChange(pluginUiMessageHandler);
+  const { initialValues, initialized } = useFormInit(pluginUiMessageHandler, false);
+  const containerRef = useFormHeightChange(pluginUiMessageHandler);
 
   const theme = useMemo(() => createTheme(createThemeOptions()), []);
 

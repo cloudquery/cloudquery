@@ -1,10 +1,12 @@
 {
-  "name": "ui",
+  "name": "plugin-config-ui",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
-    "@cloudquery/cloud-ui": "^0.1.2",
-    "@cloudquery/plugin-config-ui-connector": "^0.0.9",
+    "@cloudquery/cloud-ui": "^0.1.6",
+    "@cloudquery/plugin-config-ui-connector": "^0.1.0",
+    "@cloudquery/plugin-config-ui-lib": "^0.0.3",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
@@ -50,15 +52,12 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
     "lint": "eslint src --ext .ts,.tsx --max-warnings 0",
     "lint:fix": "eslint src --ext .ts,.tsx --max-warnings 0 --fix"
   },
   "eslintConfig": {
     "extends": [
-      "react-app",
-      "react-app/jest"
+      "react-app"
     ]
   },
   "browserslist": {

@@ -1,15 +1,11 @@
 import { FormControlLabel, MenuItem, Stack, Switch, TextField } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
-import {
-  FormFieldGroup,
-  FormFieldReset,
-  getYupValidationResolver,
-  usePluginUiFormSubmit,
-} from '@cloudquery/cloud-ui';
+import { FormFieldGroup, FormFieldReset, getYupValidationResolver } from '@cloudquery/cloud-ui';
 import { FormValues, formValidationSchema, sslModeValues } from '../utils/formSchema';
 import { prepareSubmitValues } from '../utils/prepareSubmitValues';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
 import { useState } from 'react';
+import { useFormSubmit } from '@cloudquery/plugin-config-ui-lib';
 
 interface Props {
   initialValues: FormValues | undefined;
@@ -37,7 +33,7 @@ export function Form({ initialValues }: Props) {
 
   const sslValue = watch('spec.ssl');
 
-  const handleValidate: Parameters<typeof usePluginUiFormSubmit>[0] = async () => {
+  const handleValidate: Parameters<typeof useFormSubmit>[0] = async () => {
     try {
       const values: FormValues = await new Promise((resolve, reject) => {
         handleSubmit(resolve, reject)();
@@ -51,7 +47,7 @@ export function Form({ initialValues }: Props) {
     }
   };
 
-  usePluginUiFormSubmit(handleValidate, pluginUiMessageHandler);
+  useFormSubmit(handleValidate, pluginUiMessageHandler);
 
   const defaultUsername = defaultValues?.spec?.username;
   const defaultPassword = defaultValues?.spec?.password;

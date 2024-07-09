@@ -52,7 +52,6 @@ export function prepareSubmitValues(
     migrateMode: values.migrateMode,
     writeMode: values.writeMode,
     envs,
-    tables: ['*'],
     spec: {
       connection_string: finalUrl,
     },
