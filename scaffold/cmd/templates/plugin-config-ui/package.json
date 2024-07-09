@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@cloudquery/cloud-ui": "^0.0.9",
+    "@cloudquery/cloud-ui": "^0.1.2",
     "@cloudquery/plugin-config-ui-connector": "^0.0.9",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",

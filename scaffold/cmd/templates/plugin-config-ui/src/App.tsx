@@ -10,7 +10,8 @@ import { CloudAppMock } from './CloudAppMock';
 import { pluginUiMessageHandler } from './utils/messageHandler';
 import { prepareInitialValues } from './utils/prepareInitialValues';
 
-const DevWrapper = process.env.NODE_ENV === 'production' ? CloudAppMock : Fragment;
+const DevWrapper =
+  process.env.NODE_ENV === 'production' || window.self !== window.top ? Fragment : CloudAppMock;
 
 function App() {
   const { initialValues, initialized } = usePluginUiFormInit(pluginUiMessageHandler, false);

@@ -1,10 +1,15 @@
 import { FormControlLabel, MenuItem, Stack, Switch, TextField } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
-import { FormFieldGroup, FormFieldReset, usePluginUiFormSubmit } from '@cloudquery/cloud-ui';
+import {
+  FormFieldGroup,
+  FormFieldReset,
+  getYupValidationResolver,
+  usePluginUiFormSubmit,
+} from '@cloudquery/cloud-ui';
 import { FormValues, formValidationSchema, sslModeValues } from '../utils/formSchema';
-import { getYupValidationResolver } from '../utils/validation';
 import { prepareSubmitValues } from '../utils/prepareSubmitValues';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
+import { useState } from 'react';
 
 interface Props {
   initialValues: FormValues | undefined;
@@ -12,17 +17,24 @@ interface Props {
 
 const envPlaceholder = '************';
 
+const formDefaultValues = formValidationSchema.getDefault();
+const formValidationResolver = getYupValidationResolver(formValidationSchema);
+
 export function Form({ initialValues }: Props) {
+  const [usernameResetted, setUsernameResetted] = useState(false);
+  const [passwordResetted, setPasswordResetted] = useState(false);
+
   const {
     control,
     handleSubmit,
     formState: { defaultValues },
     setValue,
     watch,
-  } = useForm({
-    defaultValues: initialValues || formValidationSchema.getDefault(),
-    resolver: getYupValidationResolver(formValidationSchema),
+  } = useForm<FormValues>({
+    defaultValues: initialValues || formDefaultValues,
+    resolver: formValidationResolver,
   });
+
   const sslValue = watch('spec.ssl');
 
   const handleValidate: Parameters<typeof usePluginUiFormSubmit>[0] = async () => {
@@ -40,6 +52,29 @@ export function Form({ initialValues }: Props) {
   };
 
   usePluginUiFormSubmit(handleValidate, pluginUiMessageHandler);
+
+  const defaultUsername = defaultValues?.spec?.username;
+  const defaultPassword = defaultValues?.spec?.password;
+
+  const handleReset = (field: 'username' | 'password') => {
+    if (field === 'username') {
+      setUsernameResetted(true);
+      setValue('spec.username', '');
+    } else {
+      setPasswordResetted(true);
+      setValue('spec.password', '');
+    }
+  };
+
+  const handelCancelReset = (field: 'username' | 'password') => {
+    if (field === 'username') {
+      setUsernameResetted(false);
+      setValue('spec.username', defaultUsername || '');
+    } else {
+      setPasswordResetted(false);
+      setValue('spec.password', defaultPassword || '');
+    }
+  };
 
   return (
     <FormFieldGroup title="PostgreSQL Connection">
@@ -93,15 +128,19 @@ export function Form({ initialValues }: Props) {
               helperText={fieldState.error?.message}
               label="Username"
               {...field}
-              disabled={typeof field.value === 'symbol'}
-              value={typeof field.value === 'symbol' ? envPlaceholder : field.value}
+              disabled={defaultUsername === '${username}' && !usernameResetted}
+              value={
+                defaultUsername === '${username}' && !usernameResetted
+                  ? envPlaceholder
+                  : field.value
+              }
             />
-            {typeof defaultValues?.spec.username === 'symbol' && (
+            {defaultUsername === '${username}' && (
               <FormFieldReset
-                isResetted={typeof field.value !== 'symbol'}
+                isResetted={usernameResetted}
                 inputSelectorToFocus='input[name="spec.username"]'
-                onCancel={() => setValue('spec.username', defaultValues?.spec.username)}
-                onReset={() => setValue('spec.username', '')}
+                onCancel={() => handelCancelReset('username')}
+                onReset={() => handleReset('username')}
               />
             )}
           </Stack>
@@ -118,15 +157,19 @@ export function Form({ initialValues }: Props) {
               helperText={fieldState.error?.message}
               label="Password"
               {...field}
-              disabled={typeof field.value === 'symbol'}
-              value={typeof field.value === 'symbol' ? envPlaceholder : field.value}
+              disabled={defaultPassword === '${password}' && !passwordResetted}
+              value={
+                defaultPassword === '${password}' && !passwordResetted
+                  ? envPlaceholder
+                  : field.value
+              }
             />
-            {typeof defaultValues?.spec.username === 'symbol' && (
+            {defaultPassword === '${password}' && (
               <FormFieldReset
-                isResetted={typeof field.value !== 'symbol'}
+                isResetted={passwordResetted}
                 inputSelectorToFocus='input[name="spec.password"]'
-                onCancel={() => setValue('spec.password', defaultValues?.spec.password)}
-                onReset={() => setValue('spec.password', '')}
+                onCancel={() => handelCancelReset('password')}
+                onReset={() => handleReset('password')}
               />
             )}
           </Stack>

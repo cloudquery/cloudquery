@@ -1,4 +1,5 @@
-import { YupInferType, yup } from './validation';
+import { resetYupDefaultErrorMessages } from '@cloudquery/cloud-ui';
+import * as yup from 'yup';
 
 export const existingSecretValue = Symbol('existing-secret-value');
 
@@ -10,6 +11,8 @@ export const sslModeValues = [
   'verify-ca',
   'verify-full',
 ] as const;
+
+resetYupDefaultErrorMessages(yup);
 
 export const formValidationSchema = yup.object({
   migrateMode: yup
@@ -29,11 +32,11 @@ export const formValidationSchema = yup.object({
       }),
     )
     .default([]),
-  tables: yup.array().of(yup.string().required()),
+  tables: yup.array().of(yup.string().required()).default(['*']),
   spec: yup.object({
     originalProtocol: yup.string().required().default('postgresql'),
-    username: yup.mixed().max(63).default(''),
-    password: yup.mixed().max(63).default(''),
+    username: yup.string().max(63).default(''),
+    password: yup.string().max(63).default(''),
     host: yup.string().max(253).required().default(''),
     port: yup
       .string()
@@ -47,4 +50,4 @@ export const formValidationSchema = yup.object({
   }),
 });
 
-export type FormValues = YupInferType<typeof formValidationSchema>;
+export type FormValues = yup.InferType<typeof formValidationSchema>;

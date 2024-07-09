@@ -1,6 +1,9 @@
+import { PluginUiMessagePayload } from '@cloudquery/plugin-config-ui-connector';
 import { FormValues } from './formSchema';
 
-export function prepareSubmitValues(values: FormValues) {
+export function prepareSubmitValues(
+  values: FormValues,
+): PluginUiMessagePayload['validation_passed']['values'] {
   const url = new URL('https://cloudquery.io');
   url.protocol = values.spec.originalProtocol;
   url.hostname = values.spec.host;
@@ -26,13 +29,13 @@ export function prepareSubmitValues(values: FormValues) {
   if (values.spec.username) {
     envs.push({
       name: 'username',
-      value: typeof values.spec.username === 'symbol' ? '' : String(values.spec.username),
+      value: values.spec.username === '${username}' ? '' : values.spec.username,
     });
   }
   if (values.spec.password) {
     envs.push({
       name: 'password',
-      value: typeof values.spec.password === 'symbol' ? '' : String(values.spec.password),
+      value: values.spec.password === '${password}' ? '' : values.spec.password,
     });
   }
 
@@ -46,7 +49,8 @@ export function prepareSubmitValues(values: FormValues) {
   }
 
   return {
-    ...values,
+    migrateMode: values.migrateMode,
+    writeMode: values.writeMode,
     envs,
     tables: ['*'],
     spec: {

@@ -1,8 +1,5 @@
 import { FormMessagePayload } from '@cloudquery/plugin-config-ui-connector';
-import { FormValues, existingSecretValue } from './formSchema';
-
-import get from 'lodash.get';
-import set from 'lodash.set';
+import { FormValues } from './formSchema';
 
 interface ConnectionOptions {
   originalProtocol: string;
@@ -30,16 +27,6 @@ export function prepareInitialValues(
     ssl: !!connectionObj.sslMode,
     sslMode: connectionObj.sslMode || ('require' as const),
   };
-
-  for (const secret of initialValues?.envs || []) {
-    if (get(spec, secret.name)) {
-      if (secret.value) {
-        set(spec, secret.name, secret.value);
-      } else {
-        set(spec, secret.name, existingSecretValue);
-      }
-    }
-  }
 
   return {
     ...(initialValues as FormValues),
