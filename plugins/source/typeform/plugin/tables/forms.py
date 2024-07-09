@@ -28,10 +28,11 @@ class Forms(Table):
             ],
             relations=[FormResponses()],
         )
+        self._resolver = FormsResolver(table=self)
 
     @property
     def resolver(self):
-        return FormsResolver(table=self)
+        return self._resolver
 
 
 class FormsResolver(TableResolver):
