@@ -1,5 +1,13 @@
 # Changelog
 
+## [7.2.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.2.7...plugins-destination-s3-v7.2.8) (2024-07-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.3 ([#18513](https://github.com/cloudquery/cloudquery/issues/18513)) ([d12da90](https://github.com/cloudquery/cloudquery/commit/d12da90f5ca67b8e590c433ad2762d48c499e6aa))
+* Handle concurrent map writes ([#18538](https://github.com/cloudquery/cloudquery/issues/18538)) ([34fb27a](https://github.com/cloudquery/cloudquery/commit/34fb27a7b98855143596d91788f83ca211760cb4))
+
 ## [7.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.2.6...plugins-destination-s3-v7.2.7) (2024-07-09)
 
 
