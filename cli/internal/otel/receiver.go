@@ -90,7 +90,7 @@ func newDefaultMetricConsumer(metricsFile *os.File, quit chan any) ConsumeMetric
 		}
 		t := table.NewWriter()
 		t.SetOutputMirror(metricsFile)
-		t.AppendHeader(table.Row{"Table", "Client ID", "Start Time", "End Time", "Resources", "Errors", "Panics"})
+		t.AppendHeader(table.Row{"Table", "Client ID", "Start Time", "End Time", "Duration", "Resources", "Errors", "Panics"})
 		sort.SliceStable(metrics, func(i, j int) bool {
 			m1 := metrics[i]
 			m2 := metrics[j]
@@ -106,17 +106,28 @@ func newDefaultMetricConsumer(metricsFile *os.File, quit chan any) ConsumeMetric
 			return m1.Table+m1.ClientId < m2.Table+m2.ClientId
 		})
 		for _, metrics := range metrics {
+			var duration time.Duration
+			switch {
+			case metrics.StartTime != nil && metrics.EndTime != nil:
+				duration = metrics.EndTime.Sub(*metrics.StartTime)
+			case metrics.StartTime != nil:
+				duration = time.Since(*metrics.StartTime)
+			}
 			row := table.Row{
 				metrics.Table,
 				metrics.ClientId,
 				metrics.StartTime,
 				metrics.EndTime,
+				duration,
 				metrics.Resources,
 				metrics.Errors,
 				metrics.Panics,
 			}
 			if metrics.EndTime == nil {
 				row[3] = "N/A"
+			}
+			if duration == 0 {
+				row[4] = "N/A"
 			}
 			t.AppendRow(row)
 		}
@@ -239,7 +250,7 @@ type OtelReceiver struct {
 	Endpoint   string
 }
 
-func getPort() (int, error) {
+func getFreePort() (int, error) {
 	listener, err := net.Listen("tcp", ":0")
 	if err != nil {
 		return 0, err
@@ -295,8 +306,7 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 	factory := otlpreceiver.NewFactory()
 	config := factory.CreateDefaultConfig().(*otlpreceiver.Config)
 	config.GRPC = nil
-	// This will list on the first available port
-	port, err := getPort()
+	port, err := getFreePort()
 	if err != nil {
 		return nil, err
 	}

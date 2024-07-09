@@ -21,6 +21,8 @@ const (
 cloudquery sync ./directory
 # Sync resources from directories and files
 cloudquery sync ./directory ./aws.yml ./pg.yml
+# Log tables metrics to a file
+cloudquery sync ./directory ./aws.yml ./pg.yml --tables-metrics-location metrics.txt
 `
 )
 
@@ -37,8 +39,6 @@ func NewCmdSync() *cobra.Command {
 	cmd.Flags().String("license", "", "set offline license file")
 	cmd.Flags().String("summary-location", "", "Sync summary file location. This feature is in Preview. Please provide feedback to help us improve it.")
 	cmd.Flags().String("tables-metrics-location", "", "Tables metrics file location. This feature is in Preview. Please provide feedback to help us improve it.")
-	// Hide the flag until we release all plugins with https://github.com/cloudquery/plugin-sdk/releases/tag/v4.49.0
-	_ = cmd.Flags().MarkHidden("tables-metrics-location")
 
 	return cmd
 }
