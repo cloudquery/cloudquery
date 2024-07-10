@@ -5,9 +5,9 @@ type Section = {
   header?: string;
   bodies: {
     code?: string;
-    image?: any;
+    image?: string;
     text?: string;
-    Node?: any;
+    Node?: React.JSXElementConstructor<any>;
   }[];
 };
 
@@ -23,7 +23,7 @@ export function Sections({ sections }: Props) {
           <Typography variant="h6">{section.header}</Typography>
           {section.bodies.map((body, index) => {
             if (body.Node) {
-              return <body.Node />;
+              return <body.Node key={index} />;
             } else if (body.code) {
               return <CodeSnippet key={index} text={body.code} />;
             } else if (body.image) {

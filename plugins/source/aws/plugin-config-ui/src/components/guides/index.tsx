@@ -5,6 +5,7 @@ import { AWSConsoleConnection } from './awsConsoleGuide';
 import { AWSManualConnect } from './awsManualGuide';
 import { AWSConsoleReconnect } from './awsConsoleReconnectGuide';
 import { AWSSelectServices } from './awsSelectServicesGuide';
+import { SetupType } from '../../utils/formSchema';
 
 interface Props {}
 
@@ -15,9 +16,9 @@ export function Guides({}: Props) {
   const setupType = form.watch('_setupType');
 
   const Content = useMemo(() => {
-    if (setupType === 'manual') {
+    if (setupType === SetupType.Manual) {
       return AWSManualConnect;
-    } else if (setupType === 'console') {
+    } else if (setupType === SetupType.Console) {
       if (hasARN) {
         return AWSConsoleReconnect;
       } else {

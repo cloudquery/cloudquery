@@ -4,6 +4,7 @@ import useTheme from '@mui/material/styles/useTheme';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Typography from '@mui/material/Typography';
+import { forwardRef } from 'react';
 
 type Option = {
   value: any;
@@ -17,7 +18,10 @@ interface Props {
   value: boolean;
 }
 
-export function ExclusiveToggle({ optionA, optionB, onChange, value }: Props) {
+export const ExclusiveToggle = forwardRef(function ExclusiveToggle(
+  { optionA, optionB, onChange, value }: Props,
+  ref,
+) {
   const { palette } = useTheme();
 
   const buttonSx = {
@@ -34,6 +38,7 @@ export function ExclusiveToggle({ optionA, optionB, onChange, value }: Props) {
           onChange(newValue);
         }}
         value={value}
+        ref={ref}
       >
         <Stack direction="row" spacing={2} width="100%">
           <ToggleButton sx={buttonSx} fullWidth={true} value={optionA.value}>
@@ -64,4 +69,4 @@ export function ExclusiveToggle({ optionA, optionB, onChange, value }: Props) {
       </ToggleButtonGroup>
     </Stack>
   );
-}
+});

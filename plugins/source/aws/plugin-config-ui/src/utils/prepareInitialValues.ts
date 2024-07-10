@@ -1,6 +1,8 @@
 import { FormMessagePayload } from '@cloudquery/plugin-config-ui-connector';
 import { FormValues } from './formSchema';
 
+// TODO: the shape of this, per the API
+
 interface ConnectionOptions {
   originalProtocol: string;
   host: string | null;

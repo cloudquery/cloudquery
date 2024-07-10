@@ -12,19 +12,22 @@ export const sslModeValues = [
   'verify-full',
 ] as const;
 
+export enum SetupType {
+  Manual = 'manual',
+  Console = 'console',
+}
+export const setupTypes = Object.values(SetupType);
+
 resetYupDefaultErrorMessages(yup);
 
+// TODO: the shape of this, per the API
 export const formValidationSchema = yup.object({
   name: yup.string().default('').required(),
   arn: yup.string().default('').required(),
   regions: yup.array().of(yup.string().required()).default([]),
   services: yup.array().of(yup.string().required()).default([]),
-  _setupType: yup
-    .string()
-    .oneOf(['manual', 'console'] as const)
-    .default('console'),
+  _setupType: yup.string().oneOf(setupTypes).default(SetupType.Console),
 
-  // todo: not sure what is needed yet
   migrateMode: yup
     .string()
     .oneOf(['forced', 'safe'] as const)

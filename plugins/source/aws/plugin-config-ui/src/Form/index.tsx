@@ -1,14 +1,14 @@
 import { Grid, Stack } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
-import { FormFieldGroup, FormFieldReset, getYupValidationResolver } from '@cloudquery/cloud-ui';
-import { FormValues, formValidationSchema, sslModeValues } from '../utils/formSchema';
+import { FormFieldGroup, getYupValidationResolver } from '@cloudquery/cloud-ui';
+import { FormValues, formValidationSchema } from '../utils/formSchema';
 import { prepareSubmitValues } from '../utils/prepareSubmitValues';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
 import { useState } from 'react';
 import { useFormSubmit } from '@cloudquery/plugin-config-ui-lib';
 
 import { Connect } from './connect';
-import { AWSFormStepper } from './stepper';
+import { AWSFormStepper } from '../components/stepper';
 import { Guides } from '../components/guides';
 import { SelectServices } from './selectServices';
 
@@ -20,7 +20,7 @@ const formDefaultValues = formValidationSchema.getDefault();
 const formValidationResolver = getYupValidationResolver(formValidationSchema);
 
 export function Form({ initialValues }: Props) {
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
   const form = useForm<FormValues>({
     defaultValues: initialValues || formDefaultValues,
     resolver: formValidationResolver,
@@ -49,34 +49,16 @@ export function Form({ initialValues }: Props) {
 
   useFormSubmit(handleValidate, pluginUiMessageHandler);
 
-  // const handleReset = (field: 'username' | 'password') => {
-  //   if (field === 'username') {
-  //     setUsernameResetted(true);
-  //     setValue('spec.username', '');
-  //   } else {
-  //     setPasswordResetted(true);
-  //     setValue('spec.password', '');
-  //   }
-  // };
-
-  // const handelCancelReset = (field: 'username' | 'password') => {
-  //   if (field === 'username') {
-  //     setUsernameResetted(false);
-  //     setValue('spec.username', defaultUsername || '');
-  //   } else {
-  //     setPasswordResetted(false);
-  //     setValue('spec.password', defaultPassword || '');
-  //   }
-  // };
-
   return (
     <Stack gap={5}>
       <FormProvider {...form}>
         <AWSFormStepper activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
         <Grid container spacing={2}>
           <Grid item xs={7} md={6}>
-            {activeIndex === 0 && <Connect />}
-            {activeIndex === 1 && <SelectServices />}
+            <FormFieldGroup title="AWS Connection">
+              {activeIndex === 0 && <Connect />}
+              {activeIndex === 1 && <SelectServices />}
+            </FormFieldGroup>
           </Grid>
           <Grid item xs={5} md={6}>
             <Guides />
