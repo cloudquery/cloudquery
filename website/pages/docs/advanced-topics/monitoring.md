@@ -56,44 +56,28 @@ In production, it is common to use an OpenTelemetry [collector](https://opentele
 
 ### OpenTelemetry and Datadog
 
-In this example we will show how to send OpenTelemetry traces from the CLI directly to a Datadog agent.
+In this example we will show how to send OpenTelemetry traces from the CLI directly to Datadog.
 
-First, you will need to [enable OpenTelemetry ingestion on the Datadog Agent](https://docs.datadoghq.com/opentelemetry/interoperability/otlp_ingest_in_the_agent#enabling-otlp-ingestion-on-the-datadog-agent).
-You can use either of the ways described below to enable it:
-1. Pass the `DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_HTTP_ENDPOINT` env variable to you agent with a value of `0.0.0.0:4318`. In a common docker compose setup, it will look like this:
+First, you will need to [setup OpenTelemetry in Datadog](https://docs.datadoghq.com/opentelemetry/).
+You can chose either to send data directly to a Datadog agent or use the OpenTelemetry collector, follow the instructions in the link above and chose what's best for you.
 
-```yaml
-version: "3.0"
-services:
-  agent:
-    image: gcr.io/datadoghq/agent:7
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /proc/:/host/proc/:ro
-      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
-    environment:
-      DD_API_KEY: ${DD_API_KEY}
-      DD_SITE: "datadoghq.eu"
-      DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_HTTP_ENDPOINT: "0.0.0.0:4318"
-    ports:
-      - "4318:4318"
-```
-
-2. Add the configuration below to your `datadog.yaml` file:
+Once you have the agent or collector ready, you can specify the endpoint in the source spec:
 
 ```yaml
-otlp_config:
-  receiver:
-    protocols:
-      http:
-        endpoint: localhost:4318
+kind: source
+spec:
+  name: "aws"
+  path: "cloudquery/aws"
+  registry: "cloudquery"
+  version: "VERSION_SOURCE_AWS"
+  tables: ["aws_s3_buckets"]
+  destinations: ["postgresql"]
+  otel_endpoint: "0.0.0.0:4318"
+  otel_endpoint_insecure: true
+  spec:
 ```
 
-> You might need to restart the Datadog agent after changing the configuration.
-
-Once ingestion starts you should be able to start seeing the traces in Datadog under ServiceCatalog and Traces with ability to view average p95 latency, error rate, total duration and other useful information you can query to optimize sync time.
+Once ingestion starts you should be able to start seeing the traces in Datadog under APM->Traces->Explorer.
 
 ![Datadog](/images/docs/monitoring/cq_otel_datadog.png)
-
-![Datadog](/images/docs/monitoring/cq_otel_datadog_traces.png)
 
