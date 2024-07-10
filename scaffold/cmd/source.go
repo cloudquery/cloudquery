@@ -73,7 +73,7 @@ func runScaffoldSource(org string, name string, outputDir string) error {
 }
 
 func copyGoFiles(data scaffoldData, outputDir string) error {
-	return fs.WalkDir(sourceFS, "templates/source", func(fpath string, d fs.DirEntry, err error) error {
+	err := fs.WalkDir(sourceFS, "templates/source", func(fpath string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return fmt.Errorf("failed to walk directory: %w", err)
 		}
@@ -94,7 +94,7 @@ func copyGoFiles(data scaffoldData, outputDir string) error {
 	if err != nil {
 		return err
 	}
-	
+
 	n := len(data.Name)
 	fmt.Println("------------------------------------------------")
 	fmt.Printf("Successfully created new plugin under %s 🎉\n\n", outputDir)
