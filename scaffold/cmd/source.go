@@ -46,7 +46,6 @@ func newCmdScaffoldSource() *cobra.Command {
 //go:embed templates/plugin-config-ui/.gitignore
 //go:embed templates/plugin-config-ui/.nvmrc
 //go:embed templates/plugin-config-ui/package.json
-//go:embed templates/plugin-config-ui/package-lock.json
 //go:embed templates/plugin-config-ui/README.md
 //go:embed templates/plugin-config-ui/tsconfig.json
 var sourceFS embed.FS
