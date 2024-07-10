@@ -74,11 +74,11 @@ export function Form({ initialValues }: Props) {
       <FormProvider {...form}>
         <AWSFormStepper activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
         <Grid container spacing={2}>
-          <Grid item xs={8} md={6}>
+          <Grid item xs={7} md={6}>
             {activeIndex === 0 && <Connect />}
             {activeIndex === 1 && <SelectServices />}
           </Grid>
-          <Grid item xs={4} md={6}>
+          <Grid item xs={5} md={6}>
             <Guides />
           </Grid>
         </Grid>
