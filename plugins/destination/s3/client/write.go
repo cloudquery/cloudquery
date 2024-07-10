@@ -68,11 +68,12 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 			table := msg.GetTable()
 			objKey := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC(), c.syncID)
 			// if object was already initialized, use the same key
-			// We don't need any locking here because all messages for the same table are processed sequentially
+			c.initializedTablesLock.Lock()
 			if val, ok := c.initializedTables[table.Name]; ok {
 				objKey = val
 				delete(c.initializedTables, table.Name)
 			}
+			c.initializedTablesLock.Unlock()
 
 			var err error
 			s, err = c.createObject(ctx, table, objKey)

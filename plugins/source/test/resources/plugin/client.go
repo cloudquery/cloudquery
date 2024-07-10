@@ -119,6 +119,7 @@ func Configure(_ context.Context, logger zerolog.Logger, spec []byte, opts plugi
 		config:  *config,
 		scheduler: scheduler.NewScheduler(
 			scheduler.WithLogger(logger),
+			scheduler.WithInvocationID(opts.InvocationID),
 		),
 		tables: getTables(*config),
 	}, nil
