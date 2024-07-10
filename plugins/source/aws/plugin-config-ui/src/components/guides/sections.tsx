@@ -17,9 +17,9 @@ type Props = {
 
 export function Sections({ sections }: Props) {
   return (
-    <Stack gap={1.5}>
+    <Stack gap={3}>
       {sections.map((section, index) => (
-        <Stack key={index} gap={1}>
+        <Stack key={index} gap={2}>
           <Typography variant="h6">{section.header}</Typography>
           {section.bodies.map((body, index) => {
             if (body.Node) {
@@ -30,7 +30,7 @@ export function Sections({ sections }: Props) {
               return <img key={body.image} src={body.image} alt={body.text} />;
             } else {
               return (
-                <Typography key={index} variant="body1">
+                <Typography key={index} variant="body1" color="secondary">
                   {body.text}
                 </Typography>
               );

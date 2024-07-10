@@ -13,6 +13,7 @@ import {
 import { Box, Stack } from '@mui/system';
 import { useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
+import { Logo } from '../components/logo';
 
 interface Props {}
 
@@ -30,12 +31,14 @@ export function SelectServices({}: Props) {
       <Stack gap={1}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="h5">Select regions and services</Typography>
-          <Box display="flex" justifyContent="space-between" alignItems="center">
-            TODO:logo
+          <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
+            <Logo src="/images/aws.webp" alt="AWS" />
             <Typography variant="body1">AWS</Typography>
           </Box>
         </Box>
-        <Typography variant="caption">Select services you want to sync your data from</Typography>
+        <Typography variant="caption" color="secondary">
+          Select services you want to sync your data from
+        </Typography>
         <Stack gap={3}>
           <Controller
             name="regions"
@@ -78,13 +81,13 @@ export function SelectServices({}: Props) {
                   <Box display="grid" gap={2} gridTemplateColumns={{ xs: '1fr 1fr' }} width="100%">
                     {filteredServices.map((service) => (
                       <ToggleButton
-                        sx={{ display: 'flex', justifyContent: 'space-between', py: 0.5 }}
+                        sx={{ display: 'flex', justifyContent: 'space-between', py: 0.5, pr: 0 }}
                         key={service}
                         value={service}
                       >
-                        <Box>
-                          TODO:Logo
-                          {service}
+                        <Box display="flex" alignItems="center" gap={1}>
+                          <Logo src="/images/aws.webp" alt={service} height={32} width={32} />
+                          <Typography variant="body1">{service}</Typography>
                         </Box>
                         <Checkbox checked={field.value?.includes(service)} />
                       </ToggleButton>

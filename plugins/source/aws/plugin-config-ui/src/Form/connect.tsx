@@ -2,6 +2,7 @@ import { FormFieldGroup } from '@cloudquery/cloud-ui';
 import { Box, Button, FormHelperText, Stack, TextField, Typography } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 import { ExclusiveToggle } from './selector';
+import { Logo } from '../components/logo';
 
 interface Props {}
 
@@ -12,8 +13,8 @@ export function Connect({}: Props) {
       <Stack gap={1}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="h5">Connect to AWS</Typography>
-          <Box display="flex" justifyContent="space-between" alignItems="center">
-            TODO:logo
+          <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
+            <Logo src="/images/aws.webp" alt="AWS" />
             <Typography variant="body1">AWS</Typography>
           </Box>
         </Box>
