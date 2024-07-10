@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"sync"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -34,7 +35,8 @@ type Client struct {
 
 	s3Client *s3.Client
 
-	initializedTables map[string]string
+	initializedTablesLock sync.Mutex
+	initializedTables     map[string]string
 }
 
 func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClientOptions) (plugin.Client, error) {

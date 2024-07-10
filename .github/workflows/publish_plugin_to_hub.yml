@@ -6,6 +6,10 @@ on:
       - "!plugins-destination-duckdb-v*.*.*"
       - "!plugins-destination-sqlite-v*.*.*"
       - "!plugins-destination-snowflake-v*.*.*"
+
+env:
+  ui_dir_name: cloud-config-ui
+
 jobs:
   prepare:
     runs-on: ubuntu-latest
@@ -18,6 +22,7 @@ jobs:
       plugin_dir: ${{ steps.split.outputs.plugin_dir }}
       prerelease: ${{ steps.semver_parser.outputs.prerelease }}
       plugin_releaser: ${{ steps.set-result.outputs.result }}
+      ui_dir_arg: ${{ steps.check-ui-directory.outputs.result }}
     steps:
       - name: Split tag
         id: split
@@ -78,10 +83,55 @@ jobs:
             }
             return 'unsupported';
           result-encoding: string
-  publish-plugin-to-hub-java:
+
+      - uses: actions/github-script@v7
+        id: check-ui-directory
+        env:
+          PLUGIN_DIR: ${{steps.split.outputs.plugin_dir}}
+        with:
+          script: |
+            const fs = require('fs').promises;
+            const path = require('path');
+            const pluginFiles = await fs.readdir(process.env.PLUGIN_DIR);
+            if (pluginFiles.includes(process.env.ui_dir_name)) {
+              return '--ui-dir ' + process.env.PLUGIN_DIR + '/' + process.env.ui_dir_name + '/build';
+            }
+            return '';
+          result-encoding: string
+
+  build-config-ui:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     needs: prepare
+    steps:
+      - name: Checkout
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        uses: actions/checkout@v4
+      - name: Use Node.js LTS
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+          cache-dependency-path: '${{needs.prepare.outputs.plugin_dir}}/${{env.ui_dir_name}}/package-lock.json'
+
+      - name: Install dependencies
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        run: npm ci
+        working-directory: '${{needs.prepare.outputs.plugin_dir}}/${{env.ui_dir_name}}'
+
+      - name: Build config UI
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        working-directory: '${{needs.prepare.outputs.plugin_dir}}/${{env.ui_dir_name}}'
+        run: |
+          npm run build
+
+  publish-plugin-to-hub-java:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    needs:
+      - prepare
+      - build-config-ui
     if: needs.prepare.outputs.plugin_releaser == 'java'
     steps:
       - name: Checkout
@@ -163,11 +213,14 @@ jobs:
         env:
           CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
         run: |
-          cloudquery plugin publish --finalize
+          cloudquery plugin publish --finalize ${{ needs.prepare.outputs.ui_dir_arg }}
+
   publish-plugin-to-hub-python:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    needs: prepare
+    needs:
+      - prepare
+      - build-config-ui
     if: needs.prepare.outputs.plugin_releaser == 'python'
     steps:
       - name: Checkout
@@ -243,11 +296,14 @@ jobs:
         env:
           CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
         run: |
-          cloudquery plugin publish --finalize
+          cloudquery plugin publish --finalize ${{ needs.prepare.outputs.ui_dir_arg }}
+
   publish-plugin-to-hub-node:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    needs: prepare
+    needs:
+      - prepare
+      - build-config-ui
     if: needs.prepare.outputs.plugin_releaser == 'node'
     steps:
       - name: Checkout
@@ -317,12 +373,14 @@ jobs:
         env:
           CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
         run: |
-          cloudquery plugin publish --finalize
+          cloudquery plugin publish --finalize ${{ needs.prepare.outputs.ui_dir_arg }}
 
   publish-plugin-to-hub-go:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    needs: prepare
+    needs:
+      - prepare
+      - build-config-ui
     if: needs.prepare.outputs.plugin_releaser == 'go'
     steps:
       - name: Checkout
@@ -398,4 +456,4 @@ jobs:
         env:
           CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
         run: |
-          cloudquery plugin publish --finalize
+          cloudquery plugin publish --finalize ${{ needs.prepare.outputs.ui_dir_arg }}
