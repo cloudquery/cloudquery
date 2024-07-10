@@ -61,7 +61,7 @@ const AWS_MANUAL_SECTIONS = [
         ),
       },
       {
-        image: '/screenshots/createIAM1a.png',
+        image: '/screenshots/createIAM1a.webp',
         text: 'Create IAM role',
       },
       {
@@ -85,7 +85,7 @@ const AWS_MANUAL_SECTIONS = [
 }`,
       },
       {
-        image: '/screenshots/createIAM1b.png',
+        image: '/screenshots/createIAM1b.webp',
         text: 'Select trusted entity',
       },
     ],
@@ -98,7 +98,7 @@ const AWS_MANUAL_SECTIONS = [
 the box next to the policy with the name “ReadOnlyAccess”.`,
       },
       {
-        image: '/screenshots/createIAM2.png',
+        image: '/screenshots/createIAM2.webp',
         text: 'Add permissions',
       },
     ],
@@ -110,7 +110,7 @@ the box next to the policy with the name “ReadOnlyAccess”.`,
         text: `Set the role name to “CloudQueryIntegrationRoleForAWSSource”`,
       },
       {
-        image: '/screenshots/createIAM3.png',
+        image: '/screenshots/createIAM3.webp',
         text: 'Name, review, and create',
       },
     ],
@@ -119,7 +119,7 @@ the box next to the policy with the name “ReadOnlyAccess”.`,
     header: 'Step 4: Scroll down to click the “Create role”',
     bodies: [
       {
-        image: '/screenshots/createIAM4.png',
+        image: '/screenshots/createIAM4.webp',
         text: 'Create role',
       },
     ],
@@ -128,7 +128,7 @@ the box next to the policy with the name “ReadOnlyAccess”.`,
     header: 'Step 5: Select the role that you just created.',
     bodies: [
       {
-        image: '/screenshots/createIAM5.png',
+        image: '/screenshots/createIAM5.webp',
         text: 'Select role',
       },
     ],
@@ -137,7 +137,7 @@ the box next to the policy with the name “ReadOnlyAccess”.`,
     header: 'Step 6: In the Summary section, copy the ARN value and enter it in the input below ',
     bodies: [
       {
-        image: '/screenshots/createIAM6.png',
+        image: '/screenshots/createIAM6.webp',
         text: 'Copy ARN',
       },
     ],

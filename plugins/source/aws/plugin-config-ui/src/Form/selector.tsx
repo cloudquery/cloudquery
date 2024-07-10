@@ -1,5 +1,3 @@
-import React, { useEffect } from 'react';
-
 import Radio from '@mui/material/Radio';
 import Stack from '@mui/material/Stack';
 import useTheme from '@mui/material/styles/useTheme';

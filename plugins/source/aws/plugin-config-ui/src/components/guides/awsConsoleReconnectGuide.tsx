@@ -10,7 +10,7 @@ const SECTIONS = [
         text: 'In the tab, review the parameters of the CloudFormation Stack and acknowledge that AWS might create IAM resources and click the Create Stack button.',
       },
       {
-        image: '/screenshots/cloudFormation1.png',
+        image: '/screenshots/cloudFormation1.webp',
         text: 'Create stack',
       },
     ],
@@ -22,7 +22,7 @@ const SECTIONS = [
         text: `Once the stack creation is complete, find the ARN of the newly created IAM role in the output of the CloudFormation stack and enter it in the field on the left.`,
       },
       {
-        image: '/screenshots/cloudFormation2.png',
+        image: '/screenshots/cloudFormation2.webp',
         text: 'Copy ARN',
       },
     ],
