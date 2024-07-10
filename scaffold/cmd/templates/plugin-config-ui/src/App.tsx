@@ -1,4 +1,11 @@
-import { Box, CssBaseline, Stack, ThemeProvider, createTheme } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  CssBaseline,
+  Stack,
+  ThemeProvider,
+  createTheme,
+} from '@mui/material';
 import { Form } from './Form';
 import { Fragment, useMemo } from 'react';
 import { createThemeOptions } from '@cloudquery/cloud-ui';
@@ -21,11 +28,15 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <DevWrapper>
-          {initialized && (
+          {initialized ? (
             <Stack paddingY={2}>
               <Form
                 initialValues={initialValues ? prepareInitialValues(initialValues) : undefined}
               />
+            </Stack>
+          ) : (
+            <Stack alignItems="center" paddingY={2}>
+              <CircularProgress />
             </Stack>
           )}
         </DevWrapper>

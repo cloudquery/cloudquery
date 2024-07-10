@@ -31,17 +31,10 @@ export function CloudAppMock({ children }: Props) {
         migrateMode: undefined,
         tables: undefined,
         writeMode: undefined,
-        spec: {},
-        envs: [
-          {
-            name: 'username',
-            value: '',
-          },
-          {
-            name: 'password',
-            value: '',
-          },
-        ],
+        spec: {
+          token: '7fd87gh6asd7fyf8g',
+        },
+        envs: [],
       },
     });
   }, []);
