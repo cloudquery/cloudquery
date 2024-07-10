@@ -81,3 +81,6 @@ Once ingestion starts you should be able to start seeing the traces in Datadog u
 
 ![Datadog](/images/docs/monitoring/cq_otel_datadog.png)
 
+We also provide a Datadog dashboard you can download from [here](/assets/datadog-dashboard.json) and import it into your Datadog account.
+
+![Datadog](/images/docs/monitoring/cq_otel_datadog_dashboard.png)
