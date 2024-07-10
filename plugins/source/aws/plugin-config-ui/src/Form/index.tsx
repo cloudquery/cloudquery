@@ -20,7 +20,7 @@ const formDefaultValues = formValidationSchema.getDefault();
 const formValidationResolver = getYupValidationResolver(formValidationSchema);
 
 export function Form({ initialValues }: Props) {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(1);
   const form = useForm<FormValues>({
     defaultValues: initialValues || formDefaultValues,
     resolver: formValidationResolver,
@@ -72,7 +72,7 @@ export function Form({ initialValues }: Props) {
   return (
     <Stack gap={5}>
       <FormProvider {...form}>
-        <AWSFormStepper activeIndex={activeIndex} />
+        <AWSFormStepper activeIndex={activeIndex} setActiveIndex={setActiveIndex} />
         <Grid container spacing={2}>
           <Grid item xs={8} md={6}>
             {activeIndex === 0 && <Connect />}

@@ -1,8 +1,111 @@
+import { FormFieldGroup } from '@cloudquery/cloud-ui';
+import {
+  Autocomplete,
+  Button,
+  Checkbox,
+  Grid,
+  Tab,
+  Tabs,
+  TextField,
+  ToggleButton,
+  Typography,
+} from '@mui/material';
+import { Box, Stack } from '@mui/system';
+import { useMemo, useState } from 'react';
+import { Controller } from 'react-hook-form';
+
 interface Props {}
 
 export function SelectServices({}: Props) {
+  const [showServices, setShowServices] = useState<'popular' | 'all'>('popular');
+
+  const TODORegionOpts = ['us-east-1', 'eu-north-1'];
+  const TODOServiceOpts = ['EC2', 'RDS', 'S3', 'DynamoDB'];
+  const filteredServices = useMemo(() => {
+    return showServices === 'popular' ? TODOServiceOpts.slice(0, 2) : TODOServiceOpts;
+  }, [TODOServiceOpts, showServices]);
+
   return (
-    <>select services</>
+    <FormFieldGroup title="AWS Connection">
+      <Stack gap={1}>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Typography variant="h5">Select regions and services</Typography>
+          <Box display="flex" justifyContent="space-between" alignItems="center">
+            TODO:logo
+            <Typography variant="body1">AWS</Typography>
+          </Box>
+        </Box>
+        <Typography variant="caption">Select services you want to sync your data from</Typography>
+        <Stack gap={3}>
+          <Controller
+            name="regions"
+            render={({ field, fieldState }) => {
+              // TODO: connect to hook form properly
+              console.log({ field });
+              return (
+                <Autocomplete
+                  multiple
+                  id="regions-select"
+                  options={TODORegionOpts}
+                  getOptionLabel={(option) => option}
+                  defaultValue={[]}
+                  filterSelectedOptions
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      {...field}
+                      error={!!fieldState.error}
+                      fullWidth={true}
+                      helperText={fieldState.error?.message}
+                      label="Regions"
+                    />
+                  )}
+                />
+              );
+            }}
+          />
+          <Controller
+            name="services"
+            render={({ field, fieldState }) => {
+              // TODO: connect to hook form properly
+              console.log({ field, fieldState });
+              return (
+                <Stack gap={2}>
+                  <Tabs value={showServices} onChange={(_, newValue) => setShowServices(newValue)}>
+                    <Tab label="Popular Services" value="popular"></Tab>
+                    <Tab label="All Services" value="all"></Tab>
+                  </Tabs>
+                  <Box display="grid" gap={2} gridTemplateColumns={{ xs: '1fr 1fr' }} width="100%">
+                    {filteredServices.map((service) => (
+                      <ToggleButton
+                        sx={{ display: 'flex', justifyContent: 'space-between', py: 0.5 }}
+                        key={service}
+                        value={service}
+                      >
+                        <Box>
+                          TODO:Logo
+                          {service}
+                        </Box>
+                        <Checkbox checked={field.value?.includes(service)} />
+                      </ToggleButton>
+                    ))}
+                  </Box>
+                  <Button
+                    fullWidth
+                    onClick={() => setShowServices(showServices === 'popular' ? 'all' : 'popular')}
+                  >
+                    {showServices === 'popular'
+                      ? 'Show all services'
+                      : 'Show only popular services'}
+                  </Button>
+                </Stack>
+              );
+            }}
+          />
+        </Stack>
+      </Stack>
+    </FormFieldGroup>
+
     // <FormFieldGroup title="PostgreSQL Connection">
     //   <Controller
     //     control={control}

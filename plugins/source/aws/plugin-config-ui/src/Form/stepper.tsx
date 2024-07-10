@@ -56,9 +56,10 @@ function SyncFormStepIcon({
 
 interface Props {
   activeIndex: number;
+  setActiveIndex: (index: number) => void;
 }
 
-export function AWSFormStepper({ activeIndex }: Props) {
+export function AWSFormStepper({ activeIndex, setActiveIndex }: Props) {
   const steps = [AWSFormStep.ConnectAWS, AWSFormStep.SelectServices];
   return (
     <Stepper
@@ -76,6 +77,8 @@ export function AWSFormStepper({ activeIndex }: Props) {
         return (
           <Step key={step} {...stepProps}>
             <StepLabel
+              // TODO: not sure we want this control after DEV
+              onClick={() => setActiveIndex(index)}
               StepIconComponent={(props) => (
                 <SyncFormStepIcon {...props} label={(index + 1).toString()} />
               )}
