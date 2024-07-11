@@ -5,6 +5,7 @@ import (
 	"context"
 	"crypto/tls"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"sync"
@@ -22,6 +23,8 @@ import (
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/rs/zerolog"
 )
+
+var errTestWriteFailed = errors.New("failed to write test file to S3")
 
 type Client struct {
 	plugin.UnimplementedSource
@@ -44,6 +47,7 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 		logger:            logger.With().Str("module", "s3").Logger(),
 		syncID:            opts.InvocationID,
 		initializedTables: make(map[string]string),
+		spec:              &spec.Spec{},
 	}
 	if opts.NoConnection {
 		return c, nil
@@ -58,7 +62,7 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 	c.spec.SetDefaults()
 
 	if c.syncID == "" && c.spec.PathContainsSyncID() {
-		return nil, fmt.Errorf("path contains {{SYNC_ID}}. Upgrade your CLI to use this path variable")
+		return nil, errors.New("path contains {{SYNC_ID}}. Upgrade your CLI to use this path variable")
 	}
 
 	filetypesClient, err := filetypes.NewClient(&c.spec.FileSpec)
@@ -105,7 +109,7 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 		}
 
 		if _, err := manager.NewUploader(c.s3Client).Upload(ctx, params); err != nil {
-			return nil, fmt.Errorf("failed to write test file to S3: %w", err)
+			return nil, errors.Join(errTestWriteFailed, err)
 		}
 	}
 
