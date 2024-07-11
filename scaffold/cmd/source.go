@@ -39,16 +39,15 @@ func newCmdScaffoldSource() *cobra.Command {
 // get included in the binary.
 //
 //go:embed templates/source/*
-//go:embed templates/plugin-config-ui/public/*
-//go:embed templates/plugin-config-ui/src/*
-//go:embed templates/plugin-config-ui/.eslintrc.json
-//go:embed templates/plugin-config-ui/.prettierrc
-//go:embed templates/plugin-config-ui/.gitignore
-//go:embed templates/plugin-config-ui/.nvmrc
-//go:embed templates/plugin-config-ui/package.json
-//go:embed templates/plugin-config-ui/package-lock.json
-//go:embed templates/plugin-config-ui/README.md
-//go:embed templates/plugin-config-ui/tsconfig.json
+//go:embed templates/cloud-config-ui/public/*
+//go:embed templates/cloud-config-ui/src/*
+//go:embed templates/cloud-config-ui/.eslintrc.json
+//go:embed templates/cloud-config-ui/.prettierrc
+//go:embed templates/cloud-config-ui/.gitignore
+//go:embed templates/cloud-config-ui/.nvmrc
+//go:embed templates/cloud-config-ui/package.json
+//go:embed templates/cloud-config-ui/README.md
+//go:embed templates/cloud-config-ui/tsconfig.json
 var sourceFS embed.FS
 
 type scaffoldData struct {
@@ -61,14 +60,25 @@ func runScaffoldSource(org string, name string, outputDir string) error {
 		Org:  org,
 		Name: name,
 	}
-	err := copyGoFiles(data, outputDir)
-	if err != nil {
+	if err := copyGoFiles(data, outputDir); err != nil {
 		return fmt.Errorf("failed to copy go files: %w", err)
 	}
-	err = copyConfigUIFiles(data, outputDir)
-	if err != nil {
+	if err := copyConfigUIFiles(data, outputDir); err != nil {
 		return fmt.Errorf("failed to copy config ui files: %w", err)
 	}
+
+	n := len(data.Name)
+	fmt.Println("------------------------------------------------")
+	fmt.Printf("Successfully created new plugin under %s 🎉\n\n", outputDir)
+	fmt.Printf("Next steps:\n")
+	fmt.Printf("1. cd %s\n", outputDir)
+	fmt.Printf("2. go mod tidy             %s# fetch dependencies\n", strings.Repeat(" ", n))
+	fmt.Printf("3. go build .              %s# build the plugin\n", strings.Repeat(" ", n))
+	fmt.Printf("4. ./cq-source-%s serve      # run the plugin as a gRPC server\n\n", data.Name)
+	fmt.Printf("------------------------------------------------\n\n")
+	fmt.Printf("For more information, see the README.md in the plugin directory.\n\n")
+	fmt.Println("Developer guide: https://cql.ink/go-source-plugin-developer-guide")
+
 	return nil
 }
 
@@ -91,27 +101,10 @@ func copyGoFiles(data scaffoldData, outputDir string) error {
 		}
 		return nil
 	})
-	if err != nil {
-		return err
-	}
-	
-	n := len(data.Name)
-	fmt.Println("------------------------------------------------")
-	fmt.Printf("Successfully created new plugin under %s 🎉\n\n", outputDir)
-	fmt.Printf("Next steps:\n")
-	fmt.Printf("1. cd %s\n", outputDir)
-	fmt.Printf("2. go mod tidy             %s# fetch dependencies\n", strings.Repeat(" ", n))
-	fmt.Printf("3. go build .              %s# build the plugin\n", strings.Repeat(" ", n))
-	fmt.Printf("4. ./cq-source-%s serve      # run the plugin as a gRPC server\n\n", data.Name)
-	fmt.Printf("------------------------------------------------\n\n")
-	fmt.Printf("For more information, see the README.md in the plugin directory.\n\n")
-	fmt.Println("Developer guide: https://cql.ink/go-source-plugin-developer-guide")
-
-	return nil
 }
 
 func copyConfigUIFiles(data scaffoldData, outputDir string) error {
-	return fs.WalkDir(sourceFS, "templates/plugin-config-ui", func(fpath string, d fs.DirEntry, err error) error {
+	return fs.WalkDir(sourceFS, "templates/cloud-config-ui", func(fpath string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return fmt.Errorf("failed to walk directory: %w", err)
 		}
