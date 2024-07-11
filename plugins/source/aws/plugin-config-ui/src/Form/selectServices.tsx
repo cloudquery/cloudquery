@@ -12,29 +12,30 @@ import { Box, Stack } from '@mui/system';
 import { useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { Logo } from '../components/logo';
-import { awsServices } from '../utils/constants';
+import { awsRegions } from '../utils/constants';
+import { AWSServices } from '../hooks/useGetAWSServices';
 
 enum ServiceList {
   All = 'all',
   Popular = 'popular',
 }
 
-interface Props {}
+interface Props {
+  awsServices: AWSServices;
+}
 
-export function SelectServices({}: Props) {
+export function SelectServices({ awsServices }: Props) {
   const [showServices, setShowServices] = useState<ServiceList.All | ServiceList.Popular>(
     ServiceList.Popular,
   );
 
-  // TODO: where do these come from?
-  const TODORegionOpts = ['us-east-1', 'eu-north-1'];
-  const TODOServiceOpts = awsServices;
-
+  const regionOptions = awsRegions;
+  const serviceOptions = awsServices;
   const filteredServices = useMemo(() => {
-    const servicesArray = Object.values(TODOServiceOpts);
+    const servicesArray = Object.values(serviceOptions);
     // TODO: filter services by some metric
-    return showServices === ServiceList.Popular ? servicesArray.slice(0, 2) : servicesArray;
-  }, [TODOServiceOpts, showServices]);
+    return showServices === ServiceList.Popular ? servicesArray.slice(0, 8) : servicesArray;
+  }, [serviceOptions, showServices]);
 
   return (
     <Stack gap={1}>
@@ -50,7 +51,7 @@ export function SelectServices({}: Props) {
       </Typography>
       <Stack gap={3}>
         <Controller
-          name="regions"
+          name="spec.regions"
           render={({ field, fieldState }) => {
             // TODO: connect to hook form properly
             console.log({ field });
@@ -58,7 +59,7 @@ export function SelectServices({}: Props) {
               <Autocomplete
                 multiple
                 id="regions-select"
-                options={TODORegionOpts}
+                options={regionOptions}
                 getOptionLabel={(option) => option}
                 defaultValue={[]}
                 filterSelectedOptions
@@ -77,7 +78,7 @@ export function SelectServices({}: Props) {
           }}
         />
         <Controller
-          name="_services"
+          name="services"
           render={({ field }) => {
             return (
               <Stack gap={2}>

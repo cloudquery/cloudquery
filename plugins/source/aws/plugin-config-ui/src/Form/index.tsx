@@ -12,6 +12,7 @@ import { AWSFormStepper } from '../components/stepper';
 import { Guides } from '../components/guides';
 import { SelectServices } from './selectServices';
 import { useGetPlugin } from '../hooks/useGetPlugin';
+import { useGetAWSServices } from '../hooks/useGetAWSServices';
 
 interface Props {
   initialValues: FormValues | undefined;
@@ -33,6 +34,7 @@ export function Form({ initialValues }: Props) {
     setValue,
     watch,
   } = form;
+  const awsServices = useGetAWSServices();
 
   const handleValidate: Parameters<typeof useFormSubmit>[0] = async () => {
     try {
@@ -41,7 +43,7 @@ export function Form({ initialValues }: Props) {
       });
 
       return {
-        values: prepareSubmitValues(values),
+        values: prepareSubmitValues(values, awsServices),
       };
     } catch (error) {
       return { errors: error as Record<string, any> };
@@ -49,9 +51,6 @@ export function Form({ initialValues }: Props) {
   };
 
   useFormSubmit(handleValidate, pluginUiMessageHandler);
-
-  const { data: pluginData, error: pluginDataError, isLoading: pluginDataLoading } = useGetPlugin();
-  console.log({ pluginData });
 
   return (
     <Stack gap={5}>
@@ -61,7 +60,7 @@ export function Form({ initialValues }: Props) {
           <Grid item xs={7} md={6}>
             <FormFieldGroup title="AWS Connection">
               {activeIndex === 0 && <Connect />}
-              {activeIndex === 1 && <SelectServices />}
+              {activeIndex === 1 && <SelectServices awsServices={awsServices} />}
             </FormFieldGroup>
           </Grid>
           <Grid item xs={5} md={6}>
