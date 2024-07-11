@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client"
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/resources/services/items"
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -101,6 +102,7 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 		logger: logger,
 		scheduler: scheduler.NewScheduler(
 			scheduler.WithLogger(logger),
+			scheduler.WithInvocationID(opts.InvocationID),
 		),
 		tables: getTables(),
 	}, nil

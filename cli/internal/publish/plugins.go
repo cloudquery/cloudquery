@@ -29,6 +29,7 @@ import (
 	"github.com/docker/docker/api/types/registry"
 	"github.com/docker/docker/client"
 	"github.com/opencontainers/go-digest"
+	v1 "github.com/opencontainers/image-spec/specs-go/v1"
 	"github.com/schollz/progressbar/v3"
 )
 
@@ -382,7 +383,10 @@ func loadDockerImage(ctx context.Context, cli *client.Client, imagePath string) 
 
 func pushImage(ctx context.Context, dockerClient *client.Client, t TargetBuild, opts image.PushOptions, progress bool) error {
 	fmt.Printf("Pushing %s\n", t.DockerImageTag)
-	opts.Platform = fmt.Sprintf("%s/%s", t.OS, t.Arch)
+	opts.Platform = &v1.Platform{
+		OS:           t.OS,
+		Architecture: t.Arch,
+	}
 	out, err := dockerClient.ImagePush(ctx, t.DockerImageTag, opts)
 	if err != nil {
 		return fmt.Errorf("failed to push Docker image: %v", err)

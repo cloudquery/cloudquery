@@ -30,6 +30,7 @@ cloudquery plugin publish
   -D, --dist-dir string   Path to the dist directory (default "dist")
   -f, --finalize          Finalize the plugin version after publishing. If false, the plugin version will be marked as draft.
   -h, --help              help for publish
+  -U, --ui-dir string     Path to the built plugin UI directory
 ```
 
 ### Options inherited from parent commands

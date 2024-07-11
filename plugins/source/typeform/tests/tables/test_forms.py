@@ -37,7 +37,8 @@ def test_forms(mock_typeform_client):
     ]
     client.list_form_responses.return_value = [
         {
-            "response_id": "response_id",
+            "answers": [],
+            "submitted_at": "2017-09-14T22:38:22Z",
         },
     ]
 

@@ -53,6 +53,7 @@ func newCmdPluginPublish() *cobra.Command {
 		},
 	}
 	cmd.Flags().StringP("dist-dir", "D", "dist", "Path to the dist directory")
+	cmd.Flags().StringP("ui-dir", "U", "", "Path to the built plugin UI directory")
 	cmd.Flags().BoolP("finalize", "f", false, `Finalize the plugin version after publishing. If false, the plugin version will be marked as draft.`)
 
 	return cmd
@@ -63,6 +64,17 @@ func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) er
 	token, err := tc.GetToken()
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
+	}
+
+	uiDir := cmd.Flag("ui-dir").Value.String()
+	if uiDir != "" {
+		fi, err := os.Stat(uiDir)
+		if err != nil {
+			return fmt.Errorf("failed checking UI directory: %w", err)
+		}
+		if !fi.IsDir() {
+			return errors.New("UI directory must be a directory")
+		}
 	}
 
 	distDir := cmd.Flag("dist-dir").Value.String()
@@ -124,6 +136,13 @@ func runPluginPublish(ctx context.Context, cmd *cobra.Command, args []string) er
 	// upload binaries
 	if err := publishPluginAssets(ctx, c, token.String(), distDir, pkgJSON); err != nil {
 		return fmt.Errorf("failed to upload binaries: %w", err)
+	}
+
+	if uiDir != "" {
+		fmt.Println("Uploading UI assets...")
+		if err := publish.UploadPluginUIAssets(ctx, c, teamName, string(pkgJSON.Kind), pluginName, pkgJSON.Version, uiDir); err != nil {
+			return fmt.Errorf("failed to upload UI assets: %w", err)
+		}
 	}
 
 	// optional: mark plugin as draft=false

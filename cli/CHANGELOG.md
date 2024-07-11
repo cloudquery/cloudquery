@@ -5,6 +5,58 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.25.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.24.0...cli-v5.25.0) (2024-07-09)
+
+
+### Features
+
+* Add support for plugin UI uploads ([#18447](https://github.com/cloudquery/cloudquery/issues/18447)) ([54b829e](https://github.com/cloudquery/cloudquery/commit/54b829e74f5738ae82c3b1a5922d0df1e87ebb33))
+* Unhide `--tables-metrics-location` flag, add duration to table ([#18498](https://github.com/cloudquery/cloudquery/issues/18498)) ([83948b5](https://github.com/cloudquery/cloudquery/commit/83948b5da60b18113980a03db9699d41b6d1c723))
+
+
+### Bug Fixes
+
+* Attempt mitigation of race in tests. ([#18446](https://github.com/cloudquery/cloudquery/issues/18446)) ([f9774c1](https://github.com/cloudquery/cloudquery/commit/f9774c15e591dbcfa6f354aa15368d3aa2bff840))
+* **deps:** Update golang.org/x/exp digest to 7f521ea ([#18428](https://github.com/cloudquery/cloudquery/issues/18428)) ([5d18290](https://github.com/cloudquery/cloudquery/commit/5d1829066fa91705ea83ecc6d212b7e64704860d))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.12.0 ([#18448](https://github.com/cloudquery/cloudquery/issues/18448)) ([a5850e1](https://github.com/cloudquery/cloudquery/commit/a5850e1190e7d40437b3fbcea5c3b8f6b4b059ac))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.12.1 ([#18478](https://github.com/cloudquery/cloudquery/issues/18478)) ([f58c2b7](https://github.com/cloudquery/cloudquery/commit/f58c2b7a942b7988ec20e04d801a2eb163908d06))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.17 ([#18491](https://github.com/cloudquery/cloudquery/issues/18491)) ([b43fd16](https://github.com/cloudquery/cloudquery/commit/b43fd1602fa41e7df89b1007b119d5796867cc50))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.20.3 ([#18495](https://github.com/cloudquery/cloudquery/issues/18495)) ([86fac37](https://github.com/cloudquery/cloudquery/commit/86fac370045021e57d9f47f4e7fb06465d6ee0bd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.1 ([#18497](https://github.com/cloudquery/cloudquery/issues/18497)) ([3416eb7](https://github.com/cloudquery/cloudquery/commit/3416eb7d870fb8e9a0132bda3a571a235817a3f6))
+* **deps:** Update module github.com/docker/docker to v26.1.4+incompatible ([#18435](https://github.com/cloudquery/cloudquery/issues/18435)) ([4bbaece](https://github.com/cloudquery/cloudquery/commit/4bbaece458403f5b3ee746500651f8b5c39f5d41))
+* **deps:** Update module github.com/getsentry/sentry-go to v0.28.1 ([#18436](https://github.com/cloudquery/cloudquery/issues/18436)) ([bb88a05](https://github.com/cloudquery/cloudquery/commit/bb88a05f9d99bb5c466e24ef01806b1c6c8be1b4))
+* **deps:** Update module github.com/rs/cors to v1.11.0 [SECURITY] ([#18482](https://github.com/cloudquery/cloudquery/issues/18482)) ([2ab40a3](https://github.com/cloudquery/cloudquery/commit/2ab40a3c2f08a72b8c4bfa3cb258cc7e202352d6))
+* **deps:** Update module github.com/schollz/progressbar/v3 to v3.14.4 ([#18437](https://github.com/cloudquery/cloudquery/issues/18437)) ([9c089f5](https://github.com/cloudquery/cloudquery/commit/9c089f512920516dd0d711393597c63d4b9a92a2))
+* **deps:** Update module google.golang.org/grpc to v1.65.0 ([#18488](https://github.com/cloudquery/cloudquery/issues/18488)) ([4d6343d](https://github.com/cloudquery/cloudquery/commit/4d6343d68ff64e1585c6c791680360695028b79d))
+* Don't close metrics file before last print ([#18499](https://github.com/cloudquery/cloudquery/issues/18499)) ([efb8119](https://github.com/cloudquery/cloudquery/commit/efb8119d2c0d126ddd3200df5c44fd2ebeb61b30))
+
+## [5.24.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.23.4...cli-v5.24.0) (2024-06-27)
+
+
+### Features
+
+* Add per table sync metrics file flag ([#18397](https://github.com/cloudquery/cloudquery/issues/18397)) ([4fd9c94](https://github.com/cloudquery/cloudquery/commit/4fd9c94b489598f4954063e0874ceac1801974c6))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.0 ([#18415](https://github.com/cloudquery/cloudquery/issues/18415)) ([3f4ef53](https://github.com/cloudquery/cloudquery/commit/3f4ef5366078eebd38ab7c1cc52afc0eaeee08f4))
+
+## [5.23.4](https://github.com/cloudquery/cloudquery/compare/cli-v5.23.3...cli-v5.23.4) (2024-06-26)
+
+
+### Bug Fixes
+
+* Cache sync event details to track Cmd+C. ([#18409](https://github.com/cloudquery/cloudquery/issues/18409)) ([a4e1a03](https://github.com/cloudquery/cloudquery/commit/a4e1a0335bbd2e784a5eae39604dfd0cdbc99487))
+
+## [5.23.3](https://github.com/cloudquery/cloudquery/compare/cli-v5.23.2...cli-v5.23.3) (2024-06-26)
+
+
+### Bug Fixes
+
+* Align wording and description with current licensing ([#18371](https://github.com/cloudquery/cloudquery/issues/18371)) ([ba91d48](https://github.com/cloudquery/cloudquery/commit/ba91d4823e4a805620650ff0a82ba44387b7d979))
+* Remove identify, group events ([#18406](https://github.com/cloudquery/cloudquery/issues/18406)) ([8a1c95d](https://github.com/cloudquery/cloudquery/commit/8a1c95d682cd7c21e809a09e83f6bfceba6625a0))
+
 ## [5.23.2](https://github.com/cloudquery/cloudquery/compare/cli-v5.23.1...cli-v5.23.2) (2024-06-26)
 
 

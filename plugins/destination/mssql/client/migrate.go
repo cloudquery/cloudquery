@@ -95,6 +95,9 @@ func (c *Client) autoMigrateTable(ctx context.Context, have, want *schema.Table)
 		if change.Type == schema.TableColumnChangeTypeAdd {
 			statements = append(statements, queries.AddColumn(c.spec.Schema, want, &change.Current))
 		}
+		if change.Type == schema.TableColumnChangeTypeUpdate {
+			statements = append(statements, queries.UpdateColumnType(c.spec.Schema, want, &change.Current))
+		}
 	}
 
 	err := c.execStatements(ctx, want.Name, statements)

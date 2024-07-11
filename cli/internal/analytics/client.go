@@ -15,7 +15,8 @@ import (
 )
 
 var (
-	client rudderstack.Client
+	client                 rudderstack.Client
+	cachedSyncEventDetails *eventDetails
 )
 
 type eventDetails struct {
@@ -51,7 +52,15 @@ func getEnvironment() string {
 	return "cli"
 }
 
-func getEventDetails(ctx context.Context) *eventDetails {
+// getSyncEventDetails returns the cached event details if available, otherwise it fetches the details from the API
+func getSyncEventDetails(ctx context.Context) *eventDetails {
+	if cachedSyncEventDetails == nil {
+		refreshSyncEventDetails(ctx)
+	}
+	return cachedSyncEventDetails
+}
+
+func refreshSyncEventDetails(ctx context.Context) *eventDetails {
 	tc := cqauth.NewTokenClient()
 	token, err := tc.GetToken()
 	if err != nil {
@@ -63,45 +72,16 @@ func getEventDetails(ctx context.Context) *eventDetails {
 	}
 	currentTeam, _ := internalAuth.GetTeamForToken(ctx, token)
 
-	return &eventDetails{
+	eventDetails := &eventDetails{
 		user:        *user,
 		currentTeam: currentTeam,
 		environment: getEnvironment(),
 	}
-}
 
-func Identify(ctx context.Context, invocationUUID uuid.UUID) {
-	if client == nil {
-		return
-	}
+	// Cache event details for future use
+	cachedSyncEventDetails = eventDetails
 
-	details := getEventDetails(ctx)
-	if details == nil {
-		_ = client.Enqueue(rudderstack.Identify{
-			AnonymousId: invocationUUID.String(),
-			Traits: rudderstack.Traits{
-				"environment": getEnvironment(),
-			},
-		})
-		return
-	}
-
-	err := client.Enqueue(rudderstack.Identify{
-		AnonymousId: invocationUUID.String(),
-		UserId:      details.user.ID.String(),
-	})
-	if err != nil {
-		return
-	}
-
-	_ = client.Enqueue(rudderstack.Group{
-		UserId:  details.user.ID.String(),
-		GroupId: details.currentTeam,
-		Traits: rudderstack.Traits{
-			"groupType": "team",
-			"name":      details.currentTeam,
-		},
-	})
+	return eventDetails
 }
 
 func TrackLoginSuccess(ctx context.Context, invocationUUID uuid.UUID) {
@@ -109,15 +89,14 @@ func TrackLoginSuccess(ctx context.Context, invocationUUID uuid.UUID) {
 		return
 	}
 
-	details := getEventDetails(ctx)
+	details := refreshSyncEventDetails(ctx)
 	if details == nil {
 		return
 	}
 
 	_ = client.Enqueue(rudderstack.Track{
-		AnonymousId: invocationUUID.String(),
-		UserId:      details.user.ID.String(),
-		Event:       "login_success",
+		UserId: details.user.ID.String(),
+		Event:  "login_success",
 		Properties: rudderstack.Properties{
 			"invocation_uuid": invocationUUID,
 			"team":            details.currentTeam,
@@ -149,7 +128,7 @@ func getSyncCommonProps(invocationUUID uuid.UUID, event SyncStartedEvent, detail
 		Set("source_path", event.Source.Path).
 		Set("destination_paths", destinationPaths).
 		Set("user_id", details.user.ID).
-		Set("user_email", string(details.user.Email))
+		Set("user_email", details.user.Email)
 
 	return props
 }
@@ -159,7 +138,7 @@ func TrackSyncStarted(ctx context.Context, invocationUUID uuid.UUID, event SyncS
 		return
 	}
 
-	details := getEventDetails(ctx)
+	details := getSyncEventDetails(ctx)
 	if details == nil {
 		return
 	}
@@ -185,7 +164,7 @@ func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event Syn
 		return
 	}
 
-	details := getEventDetails(ctx)
+	details := getSyncEventDetails(ctx)
 	if details == nil {
 		return
 	}
