@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -36,6 +37,8 @@ type Client struct {
 
 	maxIndexLength int
 }
+
+var errValidateConnectionFailed = errors.New("failed to validate mysql connection")
 
 func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{logger: logger.With().Str("module", "mysql").Logger()}
@@ -73,7 +76,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	c.db = db
 
 	if err := c.validateConnection(ctx); err != nil {
-		return nil, err
+		return nil, errors.Join(errValidateConnectionFailed, err)
 	}
 
 	if err := c.getVersion(ctx); err != nil {
