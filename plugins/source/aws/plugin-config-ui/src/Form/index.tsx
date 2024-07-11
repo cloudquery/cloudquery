@@ -11,6 +11,7 @@ import { Connect } from './connect';
 import { AWSFormStepper } from '../components/stepper';
 import { Guides } from '../components/guides';
 import { SelectServices } from './selectServices';
+import { useGetPlugin } from '../hooks/useGetPlugin';
 
 interface Props {
   initialValues: FormValues | undefined;
@@ -48,6 +49,9 @@ export function Form({ initialValues }: Props) {
   };
 
   useFormSubmit(handleValidate, pluginUiMessageHandler);
+
+  const { data: pluginData, error: pluginDataError, isLoading: pluginDataLoading } = useGetPlugin();
+  console.log({ pluginData });
 
   return (
     <Stack gap={5}>

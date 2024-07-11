@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="40px" height="40px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Icon-Architecture-Group/32/EC2-instance-contents_32</title>
+    <g id="Icon-Architecture-Group/32/EC2-instance-contents_32" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" fill="#ED7100" x="0" y="0" width="40" height="40"></rect>
+        <path d="M10,29 L29,29 L29,10 L10,10 L10,29 Z M33,12 L33,11 L30,11 L30,9.5 C30,9.224 29.776,9 29.5,9 L28,9 L28,6 L27,6 L27,9 L24,9 L24,6 L23,6 L23,9 L20,9 L20,6 L19,6 L19,9 L16,9 L16,6 L15,6 L15,9 L12,9 L12,6 L11,6 L11,9 L9.5,9 C9.224,9 9,9.224 9,9.5 L9,11 L6,11 L6,12 L9,12 L9,15 L6,15 L6,16 L9,16 L9,19 L6,19 L6,20 L9,20 L9,23 L6,23 L6,24 L9,24 L9,27 L6,27 L6,28 L9,28 L9,29.5 C9,29.776 9.224,30 9.5,30 L11,30 L11,33 L12,33 L12,30 L15,30 L15,33 L16,33 L16,30 L19,30 L19,33 L20,33 L20,30 L23,30 L23,33 L24,33 L24,30 L27,30 L27,33 L28,33 L28,30 L29.5,30 C29.776,30 30,29.776 30,29.5 L30,28 L33,28 L33,27 L30,27 L30,24 L33,24 L33,23 L30,23 L30,20 L33,20 L33,19 L30,19 L30,16 L33,16 L33,15 L30,15 L30,12 L33,12 Z" id="Fill-1" fill="#FFFFFF"></path>
+    </g>
+</svg>

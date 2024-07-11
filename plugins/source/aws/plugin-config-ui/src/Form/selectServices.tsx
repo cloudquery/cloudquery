@@ -12,6 +12,7 @@ import { Box, Stack } from '@mui/system';
 import { useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { Logo } from '../components/logo';
+import { awsServices } from '../utils/constants';
 
 enum ServiceList {
   All = 'all',
@@ -27,11 +28,12 @@ export function SelectServices({}: Props) {
 
   // TODO: where do these come from?
   const TODORegionOpts = ['us-east-1', 'eu-north-1'];
-  const TODOServiceOpts = ['EC2', 'RDS', 'S3', 'DynamoDB'];
+  const TODOServiceOpts = awsServices;
 
   const filteredServices = useMemo(() => {
+    const servicesArray = Object.values(TODOServiceOpts);
     // TODO: filter services by some metric
-    return showServices === ServiceList.Popular ? TODOServiceOpts.slice(0, 2) : TODOServiceOpts;
+    return showServices === ServiceList.Popular ? servicesArray.slice(0, 2) : servicesArray;
   }, [TODOServiceOpts, showServices]);
 
   return (
@@ -75,30 +77,50 @@ export function SelectServices({}: Props) {
           }}
         />
         <Controller
-          name="services"
-          render={({ field, fieldState }) => {
-            // TODO: connect to hook form properly
-            console.log({ field, fieldState });
+          name="_services"
+          render={({ field }) => {
             return (
               <Stack gap={2}>
                 <Tabs value={showServices} onChange={(_, newValue) => setShowServices(newValue)}>
                   <Tab label="Popular Services" value={ServiceList.Popular}></Tab>
                   <Tab label="All Services" value={ServiceList.All}></Tab>
                 </Tabs>
-                <Box display="grid" gap={2} gridTemplateColumns={{ xs: '1fr 1fr' }} width="100%">
-                  {filteredServices.map((service) => (
-                    <ToggleButton
-                      sx={{ display: 'flex', justifyContent: 'space-between', py: 0.5, pr: 0 }}
-                      key={service}
-                      value={service}
-                    >
-                      <Box display="flex" alignItems="center" gap={1}>
-                        <Logo src="/images/aws.webp" alt={service} height={32} width={32} />
-                        <Typography variant="body1">{service}</Typography>
-                      </Box>
-                      <Checkbox checked={field.value?.includes(service)} />
-                    </ToggleButton>
-                  ))}
+                <Box
+                  display="grid"
+                  gap={2}
+                  gridTemplateColumns={{ xs: 'minmax(0, 1fr) minmax(0, 1fr)' }}
+                  width="100%"
+                >
+                  {filteredServices.map((service) => {
+                    const isChecked = field.value?.includes(service.name);
+
+                    return (
+                      <ToggleButton
+                        sx={{ display: 'flex', justifyContent: 'space-between', py: 0.5, pr: 0 }}
+                        key={service.name}
+                        value={service.name}
+                        onClick={() =>
+                          field.onChange(() =>
+                            isChecked
+                              ? field.value.filter((name: string) => name !== service.name)
+                              : [...field.value, service.name],
+                          )
+                        }
+                      >
+                        <Box display="flex" alignItems="center" gap={1}>
+                          <Logo
+                            src={service.logo}
+                            fallbackSrc="/images/aws.webp"
+                            alt={service.name}
+                            height={32}
+                            width={32}
+                          />
+                          <Typography variant="body1">{service.name}</Typography>
+                        </Box>
+                        <Checkbox checked={isChecked} />
+                      </ToggleButton>
+                    );
+                  })}
                 </Box>
                 <Button
                   fullWidth

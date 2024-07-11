@@ -5,8 +5,8 @@
   "homepage": "./",
   "dependencies": {
     "@cloudquery/cloud-ui": "^0.1.6",
-    "@cloudquery/plugin-config-ui-connector": "^0.1.0",
-    "@cloudquery/plugin-config-ui-lib": "^0.0.3",
+    "@cloudquery/plugin-config-ui-connector": "0.1.2",
+    "@cloudquery/plugin-config-ui-lib": "^0.0.4",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
@@ -15,6 +15,7 @@
     "@mui/system": "^5.15.20",
     "@mui/x-date-pickers": "^7.6.2",
     "@mui/x-tree-view": "^7.6.2",
+    "@tanstack/react-query": "4.35.3",
     "humanize-string": "^3.0.0",
     "pg-connection-string": "^2.6.4",
     "react": "^18.3.1",

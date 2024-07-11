@@ -4,11 +4,31 @@ import { ExclusiveToggle } from '../components/selector';
 import { Logo } from '../components/logo';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
 import { SetupType } from '../utils/formSchema';
+import { useAuthenticateConnectorAWS } from '../hooks/useAuthenticateAWS';
 
 interface Props {}
 
 export function Connect({}: Props) {
   const form = useFormContext();
+
+  const { mutateAsync } = useAuthenticateConnectorAWS({});
+
+  const handleClick = async () => {
+    const rsp = await mutateAsync({
+      connectorId: 'abc',
+      data: {
+        plugin_kind: 'source',
+        plugin_name: 'aws',
+        plugin_team: 'cloudquery',
+      },
+    });
+    console.log({ rsp });
+    // TODO: rsp should have a redirect_url for below
+    // pluginUiMessageHandler.sendMessage('open_url', {
+    //   url: 'http://www.google.com?TODO=1',
+    // });
+  };
+
   return (
     <Stack gap={1}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -47,18 +67,7 @@ export function Connect({}: Props) {
         {form.watch('_setupType') === SetupType.Console && (
           <Stack gap={1}>
             <Box>
-              <Button
-                variant="contained"
-                fullWidth={false}
-                onClick={() => {
-                  console.log('hi');
-                  // TODO: Open AWS Console
-                  // get url using AuthenticateConnectorAWS
-                  pluginUiMessageHandler.sendMessage('open_url', {
-                    url: 'http://www.google.com?TODO=1',
-                  });
-                }}
-              >
+              <Button variant="contained" fullWidth={false} onClick={handleClick}>
                 Connect CloudQuery via AWS Console
               </Button>
             </Box>

@@ -25,7 +25,7 @@ export const formValidationSchema = yup.object({
   name: yup.string().default('').required(),
   arn: yup.string().default('').required(),
   regions: yup.array().of(yup.string().required()).default([]),
-  services: yup.array().of(yup.string().required()).default([]),
+  _services: yup.array().of(yup.string().required()).default([]),
   _setupType: yup.string().oneOf(setupTypes).default(SetupType.Console),
 
   migrateMode: yup

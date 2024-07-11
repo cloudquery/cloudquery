@@ -6,13 +6,25 @@ import { CloudAppMock } from './CloudAppMock';
 import { pluginUiMessageHandler } from './utils/messageHandler';
 import { prepareInitialValues } from './utils/prepareInitialValues';
 import { useFormHeightChange, useFormInit } from '@cloudquery/plugin-config-ui-lib';
+import { QueryClientProvider } from '@tanstack/react-query';
+import { getQueryClient } from './utils/getQueryClient';
+import { AuthProvider } from './contexts/authProvider';
+const localEnvironment = require('./local-env.json');
 
 const DevWrapper =
   process.env.NODE_ENV === 'production' || window.self !== window.top ? Fragment : CloudAppMock;
 
+const DEV_API_TOKEN =
+  process.env.NODE_ENV === 'production' ? undefined : localEnvironment?.DEV_API_TOKEN;
+
 function App() {
-  const { initialValues, initialized } = useFormInit(pluginUiMessageHandler, false);
+  const { initialValues, initialized, apiAuthorizationToken } = useFormInit(
+    pluginUiMessageHandler,
+    false,
+  );
+
   const containerRef = useFormHeightChange(pluginUiMessageHandler);
+  const queryClient = getQueryClient();
 
   const theme = useMemo(() => createTheme(createThemeOptions()), []);
 
@@ -22,11 +34,16 @@ function App() {
         <CssBaseline />
         <DevWrapper>
           {initialized && (
-            <Stack paddingY={2}>
-              <Form
-                initialValues={initialValues ? prepareInitialValues(initialValues) : undefined}
-              />
-            </Stack>
+            <AuthProvider value={DEV_API_TOKEN ?? apiAuthorizationToken}>
+              <QueryClientProvider client={queryClient}>
+                <Stack paddingY={2}>
+                  <Form
+                    initialValues={undefined}
+                    // initialValues={initialValues ? prepareInitialValues(initialValues) : undefined} // TODO
+                  />
+                </Stack>
+              </QueryClientProvider>
+            </AuthProvider>
           )}
         </DevWrapper>
       </ThemeProvider>

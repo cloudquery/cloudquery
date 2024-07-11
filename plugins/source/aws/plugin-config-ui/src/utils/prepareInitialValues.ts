@@ -31,7 +31,7 @@ export function prepareInitialValues(
   };
 
   return {
-    ...(initialValues as FormValues),
+    ...(initialValues as any), // TODO
     spec,
   };
 }
