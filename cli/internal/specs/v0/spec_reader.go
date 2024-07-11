@@ -189,7 +189,7 @@ func (r *SpecReader) validate() error {
 	return err
 }
 
-func (r *SpecReader) validateTestConnection() error {
+func (r *SpecReader) relaxedValidate() error {
 	if len(r.Sources) == 0 && len(r.Destinations) == 0 {
 		return errors.New("expecting at least one source or destination")
 	}
@@ -244,13 +244,13 @@ func NewSpecReader(paths []string) (*SpecReader, error) {
 	return reader, nil
 }
 
-func NewTestConnectionSpecReader(paths []string) (*SpecReader, error) {
+func NewRelaxedSpecReader(paths []string) (*SpecReader, error) {
 	reader, err := newSpecReader(paths)
 	if err != nil {
 		return nil, err
 	}
 
-	if err := reader.validateTestConnection(); err != nil {
+	if err := reader.relaxedValidate(); err != nil {
 		return nil, err
 	}
 
