@@ -56,32 +56,31 @@ In production, it is common to use an OpenTelemetry [collector](https://opentele
 
 ### OpenTelemetry and Datadog
 
-In this quick example we will show how to connect an open telemetry collector to Datadog via OpenTelemetry exporter.
+In this example we will show how to send OpenTelemetry traces from the CLI directly to Datadog.
 
-Firstly, you will need to have an [OpenTelemetry Collector](https://opentelemetry.io/docs/collector/) running either locally or as a gateway. Here is an example of running it locally with docker:
+First, you will need to [setup OpenTelemetry in Datadog](https://docs.datadoghq.com/opentelemetry/).
+You can chose either to send data directly to a Datadog agent or use the OpenTelemetry collector, follow the instructions in the link above and chose what's best for you.
 
-```bash
-docker run  -p 4319:4319 -v $(pwd)/config.yml:/etc/otelcol-contrib/config.yaml otel/opentelemetry-collector-contrib:0.91.0
-```
-
-following is an example for OTEL collector `config.yml` to receive traces locally on 4318 and export them to Datadog:
+Once you have the agent or collector ready, you can specify the endpoint in the source spec:
 
 ```yaml
-receivers:
-  otlp:
-    protocols:
-      http:
-        endpoint: 0.0.0.0:4318
-exporters:
-  datadog:
-    api:
-      site: "datadoghq.com" # or your tenant site https://docs.datadoghq.com/getting_started/site/
-      key: "<DATADOG_API_KEY>"
+kind: source
+spec:
+  name: "aws"
+  path: "cloudquery/aws"
+  registry: "cloudquery"
+  version: "VERSION_SOURCE_AWS"
+  tables: ["aws_s3_buckets"]
+  destinations: ["postgresql"]
+  otel_endpoint: "0.0.0.0:4318"
+  otel_endpoint_insecure: true
+  spec:
 ```
 
-Once ingestion starts you should be able to start seeing the traces in Datadog under ServiceCatalog and Traces with ability to view average p95 latency, error rate, total duration and other useful information you can query to either split the workload better or improve the plugin scheduling if you are the plugin author:
+Once ingestion starts you should be able to start seeing the traces in Datadog under APM->Traces->Explorer.
 
 ![Datadog](/images/docs/monitoring/cq_otel_datadog.png)
 
-![Datadog](/images/docs/monitoring/cq_otel_datadog_traces.png)
+We also provide a Datadog dashboard you can download from [here](/assets/datadog-dashboard.json) and import it into your Datadog account.
 
+![Datadog](/images/docs/monitoring/cq_otel_datadog_dashboard.png)
