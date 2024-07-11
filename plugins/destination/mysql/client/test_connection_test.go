@@ -29,9 +29,9 @@ func TestConnectionTester(t *testing.T) {
 			err:  plugin.NewTestConnError(codeInvalidSpec, nil),
 		},
 		{
-			name: "unauthorized",
+			name: "connection failed",
 			spec: []byte(`{"connection_string": "connstr"}`),
-			err:  plugin.NewTestConnError(codeUnauthorized, errValidateConnectionFailed),
+			err:  plugin.NewTestConnError(codeConnectionFailed, errValidateConnectionFailed),
 			clientbuilder: func() (plugin.Client, error) {
 				return nil, errValidateConnectionFailed
 			},

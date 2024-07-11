@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	codeInvalidSpec  = "INVALID_SPEC"
-	codeUnauthorized = "UNAUTHORIZED"
+	codeInvalidSpec      = "INVALID_SPEC"
+	codeConnectionFailed = "CONNECTION_FAILED"
 )
 
 func NewConnectionTester(createClientFn func(context.Context, zerolog.Logger, []byte, plugin.NewClientOptions) (plugin.Client, error)) plugin.ConnectionTester {
@@ -20,7 +20,7 @@ func NewConnectionTester(createClientFn func(context.Context, zerolog.Logger, []
 			return nil
 		}
 		if errors.Is(err, errValidateConnectionFailed) {
-			return plugin.NewTestConnError(codeUnauthorized, err)
+			return plugin.NewTestConnError(codeConnectionFailed, err)
 		}
 
 		return plugin.NewTestConnError(codeInvalidSpec, err)
