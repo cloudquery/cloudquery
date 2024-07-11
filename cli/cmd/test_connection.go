@@ -118,7 +118,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
 	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
-	specReader, err := specs.NewTestConnectionSpecReader(args)
+	specReader, err := specs.NewRelaxedSpecReader(args)
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
