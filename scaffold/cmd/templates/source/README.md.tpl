@@ -49,7 +49,7 @@ make gen-docs
 
 ### Develop a Web UI for the plugin
 
-See [plugin-config-ui/README.md](plugin-config-ui/README.md) for more information.
+See [cloud-config-ui/README.md](cloud-config-ui/README.md) for more information.
 
 ### Obtain API key
 

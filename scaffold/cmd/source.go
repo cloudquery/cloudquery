@@ -39,15 +39,15 @@ func newCmdScaffoldSource() *cobra.Command {
 // get included in the binary.
 //
 //go:embed templates/source/*
-//go:embed templates/plugin-config-ui/public/*
-//go:embed templates/plugin-config-ui/src/*
-//go:embed templates/plugin-config-ui/.eslintrc.json
-//go:embed templates/plugin-config-ui/.prettierrc
-//go:embed templates/plugin-config-ui/.gitignore
-//go:embed templates/plugin-config-ui/.nvmrc
-//go:embed templates/plugin-config-ui/package.json
-//go:embed templates/plugin-config-ui/README.md
-//go:embed templates/plugin-config-ui/tsconfig.json
+//go:embed templates/cloud-config-ui/public/*
+//go:embed templates/cloud-config-ui/src/*
+//go:embed templates/cloud-config-ui/.eslintrc.json
+//go:embed templates/cloud-config-ui/.prettierrc
+//go:embed templates/cloud-config-ui/.gitignore
+//go:embed templates/cloud-config-ui/.nvmrc
+//go:embed templates/cloud-config-ui/package.json
+//go:embed templates/cloud-config-ui/README.md
+//go:embed templates/cloud-config-ui/tsconfig.json
 var sourceFS embed.FS
 
 type scaffoldData struct {
@@ -104,7 +104,7 @@ func copyGoFiles(data scaffoldData, outputDir string) error {
 }
 
 func copyConfigUIFiles(data scaffoldData, outputDir string) error {
-	return fs.WalkDir(sourceFS, "templates/plugin-config-ui", func(fpath string, d fs.DirEntry, err error) error {
+	return fs.WalkDir(sourceFS, "templates/cloud-config-ui", func(fpath string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return fmt.Errorf("failed to walk directory: %w", err)
 		}

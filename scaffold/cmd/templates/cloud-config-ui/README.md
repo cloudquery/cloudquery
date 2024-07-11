@@ -6,13 +6,15 @@ This will install all the dependencies required for the Plugin UI to run.
 
 ## Plugin tables
 
-In case your plugin is a source plugin and you want to use the list of tables in your plugin UI, then make sure to build the plugin first to get generated list of tables. Inside the plugin root directory run `go build`. This will generate a plugin file and then you should run `./{generated-plugin-file-name} doc --format=json docs`. The generated file with table should be located inside `docs/__tables.json`. Then navigate back to the `plugin-config-ui` directory inside your plugin and run `npm install`. After that you can import the list of tables inside the application like this:
+In case your plugin is a source plugin and you want to use the list of tables in your plugin UI, then make sure to build the plugin first to get a generated list of tables. Inside the plugin root directory run `go build`. This will generate a plugin file and then you should run `./{generated-plugin-file-name} doc --format=json docs`. The generated file with table should be located inside `docs/__tables.json`. Then navigate back to the `cloud-config-ui` directory inside your plugin and run `npm install`. After that you can import the list of tables inside the application like this:
 
 ```ts
 import pluginTables from '@cloudquery-plugin/tables';
 ```
 
-If you change your plugin configuration that should update the list of plugins, you only need to regenerate `tables.json`, the frontend app will automatically detect changes there.
+If you change your plugin configuration that should update the list of plugins, you only need to regenerate `__tables.json`, the frontend app will automatically detect changes there.
+
+There is no need to commit `__tables.json` file as its content will be automatically included during the build of the plugin UI.
 
 ## Available Scripts
 
