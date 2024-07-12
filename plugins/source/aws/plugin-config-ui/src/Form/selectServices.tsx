@@ -6,7 +6,9 @@ import {
   Tabs,
   TextField,
   ToggleButton,
+  Tooltip,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import { useMemo, useState } from 'react';
@@ -24,13 +26,14 @@ interface Props {
   awsServices: AWSServices;
 }
 
-export function SelectServices({ awsServices }: Props) {
+export function SelectServices({ awsServices: serviceOptions }: Props) {
+  const { palette } = useTheme();
   const [showServices, setShowServices] = useState<ServiceList.All | ServiceList.Popular>(
     ServiceList.Popular,
   );
 
   const regionOptions = awsRegions;
-  const serviceOptions = awsServices;
+
   const filteredServices = useMemo(() => {
     const servicesArray = Object.values(serviceOptions);
     // TODO: filter services by some metric
@@ -108,17 +111,44 @@ export function SelectServices({ awsServices }: Props) {
                           )
                         }
                       >
-                        <Box display="flex" alignItems="center" gap={1}>
-                          <Logo
-                            src={service.logo}
-                            fallbackSrc="/images/aws.webp"
-                            alt={service.name}
-                            height={32}
-                            width={32}
-                          />
-                          <Typography variant="body1">{service.label}</Typography>
+                        <Box
+                          display="flex"
+                          alignItems="center"
+                          gap={1}
+                          justifyContent="space-between"
+                          width="100%"
+                        >
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            gap={1}
+                            flexShrink={1}
+                            width="70%"
+                          >
+                            <Logo
+                              src={service.logo}
+                              fallbackSrc="/images/aws.webp"
+                              alt={service.name}
+                              height={32}
+                              width={32}
+                            />
+                            <Tooltip title={service.label}>
+                              <Typography
+                                sx={{
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  whiteSpace: 'nowrap',
+                                }}
+                                color={palette.grey[400]}
+                                fontWeight="bold"
+                                variant="body1"
+                              >
+                                {service.label}
+                              </Typography>
+                            </Tooltip>
+                          </Box>
+                          <Checkbox checked={isChecked} />
                         </Box>
-                        <Checkbox checked={isChecked} />
                       </ToggleButton>
                     );
                   })}

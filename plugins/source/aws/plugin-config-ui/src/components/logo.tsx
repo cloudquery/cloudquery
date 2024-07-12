@@ -16,6 +16,7 @@ export function Logo({ width = 24, height = 24, src, alt, fallbackSrc }: Props) 
     <Box
       sx={{
         borderRadius: `${PADDING}px`,
+        padding: `${PADDING}px`,
         backgroundColor: palette.secondary.light,
         height,
         width,
