@@ -13,7 +13,7 @@ interface BasicError {
   status: number;
 }
 
-const getPlugin = (authToken: string, signal?: AbortSignal) => {
+export const getPlugin = (authToken: string, signal?: AbortSignal) => {
   const headers = new Headers();
   headers.append('Authorization', `Bearer ${authToken}`);
   headers.append('Content-Type', 'application/json');

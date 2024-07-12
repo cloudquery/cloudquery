@@ -1,19 +1,3 @@
-// export const listPluginVersionTables = (
-//   teamName: string,
-//   pluginKind: 'source' | 'destination',
-//   pluginName: string,
-//   versionName: string,
-//   params?: ListPluginVersionTablesParams,
-//   signal?: AbortSignal,
-// ) => {
-//   return customFetch<ListPluginVersionTables200>({
-//     method: 'GET',
-//     params,
-//     signal,
-//     url: `/plugins/${teamName}/${pluginKind}/${pluginName}/versions/${versionName}/tables`,
-//   });
-// };
-
 import {
   UseQueryOptions,
   UseQueryResult,
@@ -23,20 +7,24 @@ import {
 } from '@tanstack/react-query';
 import { useContext } from 'react';
 import { AuthContext } from '../contexts/authContext';
+import { getPlugin } from './useGetPlugin';
 
 interface BasicError {
   message: string;
   status: number;
 }
 
-const getPluginTables = (authToken: string, version?: string, signal?: AbortSignal) => {
+const getPluginTables = async (authToken: string, signal?: AbortSignal) => {
   const headers = new Headers();
   headers.append('Authorization', `Bearer ${authToken}`);
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
 
+  const plugin = await getPlugin(authToken, signal);
+
+  // TODO: BE note about possibly optimizing to use a single fetch call*
   return fetch(
-    `https://api.cloudquery.io/plugins/cloudquery/source/aws/versions/${version}/tables`,
+    `https://api.cloudquery.io/plugins/cloudquery/source/aws/versions/${plugin.latest_version}/tables?page=1&per_page=1000`,
     { headers, signal },
   ).then((res) => res.json());
 };
@@ -44,23 +32,19 @@ const getPluginTables = (authToken: string, version?: string, signal?: AbortSign
 export const useGetPluginTables = <
   TData = Awaited<ReturnType<typeof getPluginTables>>,
   TError = BasicError,
->(
-  version?: string,
-  options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getPluginTables>>, TError, TData>;
-  },
-): UseQueryResult<TData, TError> => {
+>(options?: {
+  query?: UseQueryOptions<Awaited<ReturnType<typeof getPluginTables>>, TError, TData>;
+}): UseQueryResult<TData, TError> => {
   const authToken = useContext(AuthContext);
-  const queryKey = [`/plugins/cloudquery/source/aws/versions/${version}/tables`];
+  const queryKey = [`/plugins/cloudquery/source/aws/versions/latest/tables`];
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getPluginTables>>> = ({ signal }) =>
-    getPluginTables(authToken.value, version, signal);
+    getPluginTables(authToken.value, signal);
 
   const query = useQuery({
     queryFn,
     queryKey,
     ...options,
-    enabled: !!version,
   } as UseQueryOptions<Awaited<ReturnType<typeof getPluginTables>>, TError, TData> & {
     queryKey: QueryKey;
   }) as UseQueryResult<TData, TError> & { queryKey: QueryKey };

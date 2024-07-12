@@ -1,5 +1,4 @@
 import { awsServiceLabelMap } from '../utils/constants';
-import { useGetPlugin } from './useGetPlugin';
 import { useGetPluginTables } from './useGetPluginTables';
 
 export type AWSService = {
@@ -13,10 +12,7 @@ export type AWSServices = Record<string, AWSService>;
 
 export const useGetAWSServices = (): AWSServices => {
   try {
-    // TODO: BE note about possibly optimizing to use a single fetch call*
-    const { data: pluginData } = useGetPlugin();
-
-    const { data: tablesData } = useGetPluginTables(pluginData.latest_version);
+    const { data: tablesData } = useGetPluginTables();
 
     const tablesDataTODO = tablesData?.items ?? [];
 
