@@ -28,6 +28,8 @@ type Client struct {
 }
 
 var errInvalidSpec = errors.New("invalid spec")
+var errUnauthorized = errors.New("unauthorized")
+var errUnreachable = errors.New("unreachable")
 
 func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
@@ -79,8 +81,15 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.
 	}
 	info, err := es.Info().Do(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get Elasticsearch cluster info: %w", err)
+		return nil, errors.Join(errUnreachable, err)
 	}
+	if info.StatusCode != 200 {
+		if info.StatusCode == 401 {
+			return nil, errors.Join(errUnauthorized, errors.New("status code is 401"))
+		}
+		return nil, fmt.Errorf("failed to ping Elasticsearch: status code is %d", info.StatusCode)
+	}
+
 	defer info.Body.Close()
 	b, err := io.ReadAll(info.Body)
 	if err != nil {

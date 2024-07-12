@@ -38,7 +38,7 @@ func TestConnectionTester(t *testing.T) {
 			spec: []byte(`{"addresses": ["test"]}`),
 			err:  &plugin.TestConnError{Code: codeUnreachable},
 			clientBuilder: func() (plugin.Client, error) {
-				return nil, errors.New(errUnreachable)
+				return nil, errUnreachable
 			},
 		},
 		{
@@ -46,7 +46,7 @@ func TestConnectionTester(t *testing.T) {
 			spec: []byte(`{"addresses": ["test"]}`),
 			err:  &plugin.TestConnError{Code: codeUnauthorized},
 			clientBuilder: func() (plugin.Client, error) {
-				return nil, errors.New(errUnauthorized)
+				return nil, errUnauthorized
 			},
 		},
 		{
