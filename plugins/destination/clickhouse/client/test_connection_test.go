@@ -71,29 +71,31 @@ func TestConnectionTester(t *testing.T) {
 	}
 	for _, tt := range tests {
 		tt := tt
-		if tt.clientBuilder == nil {
-			tt.clientBuilder = func() (plugin.Client, error) {
-				return &Client{}, nil
+		t.Run(tt.name, func(t *testing.T) {
+			if tt.clientBuilder == nil {
+				tt.clientBuilder = func() (plugin.Client, error) {
+					return &Client{}, nil
+				}
 			}
-		}
-		tester := NewConnectionTester(func(_ context.Context, _ zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
-			sp := &spec.Spec{}
-			if err := json.Unmarshal(specBytes, sp); err != nil {
-				return nil, errInvalidSpec
+			tester := NewConnectionTester(func(_ context.Context, _ zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+				sp := &spec.Spec{}
+				if err := json.Unmarshal(specBytes, sp); err != nil {
+					return nil, errInvalidSpec
+				}
+				sp.SetDefaults()
+				if err := sp.Validate(); err != nil {
+					return nil, errInvalidSpec
+				}
+				return tt.clientBuilder()
+			})
+			err := tester(context.Background(), zerolog.Nop(), tt.spec)
+			if tt.err == nil {
+				require.NoError(t, err)
+				return
 			}
-			sp.SetDefaults()
-			if err := sp.Validate(); err != nil {
-				return nil, errInvalidSpec
-			}
-			return tt.clientBuilder()
+			var expErr *plugin.TestConnError
+			require.ErrorAs(t, err, &expErr)
+			require.Equal(t, tt.err.Code, err.(*plugin.TestConnError).Code)
 		})
-		err := tester(context.Background(), zerolog.Nop(), tt.spec)
-		if tt.err == nil {
-			require.NoError(t, err)
-			return
-		}
-		var expErr *plugin.TestConnError
-		require.ErrorAs(t, err, &expErr)
-		require.Equal(t, tt.err.Code, err.(*plugin.TestConnError).Code)
 	}
 }
