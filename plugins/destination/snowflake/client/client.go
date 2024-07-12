@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"sync"
 
@@ -13,6 +14,8 @@ import (
 
 	_ "github.com/snowflakedb/gosnowflake" // "snowflake" database/sql driver.
 )
+
+var errInvalidSpec = errors.New("invalid spec")
 
 type Client struct {
 	plugin.UnimplementedSource
@@ -32,20 +35,21 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClie
 		setupWriteOnce: &sync.Once{},
 	}
 	if err := json.Unmarshal(spec, &c.spec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal snowflake spec: %w", err)
+		return nil, errors.Join(errInvalidSpec, err)
 	}
 	c.spec.SetDefaults()
 	c.writer, err = batchwriter.New(c, batchwriter.WithLogger(c.logger), batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
 	if err != nil {
-		return nil, err
+		return nil, errors.Join(errInvalidSpec, err)
 	}
 	dsn, err := c.spec.DSN()
 	if err != nil {
-		return nil, err
+		return nil, errors.Join(errInvalidSpec, err)
 	}
+
 	db, err := sql.Open("snowflake", dsn+"&BINARY_INPUT_FORMAT=BASE64&BINARY_OUTPUT_FORMAT=BASE64&timezone=UTC")
 	if err != nil {
-		return nil, err
+		return nil, errors.Join(errInvalidSpec, err)
 	}
 
 	err = db.Ping()
