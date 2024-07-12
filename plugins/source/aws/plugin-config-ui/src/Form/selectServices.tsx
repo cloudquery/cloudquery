@@ -116,7 +116,7 @@ export function SelectServices({ awsServices }: Props) {
                             height={32}
                             width={32}
                           />
-                          <Typography variant="body1">{service.name}</Typography>
+                          <Typography variant="body1">{service.label}</Typography>
                         </Box>
                         <Checkbox checked={isChecked} />
                       </ToggleButton>

@@ -19,7 +19,9 @@ const getPlugin = (authToken: string, signal?: AbortSignal) => {
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
 
-  return fetch(`https://api.cloudquery.io/plugins/cloudquery/source/aws`, { headers, signal });
+  return fetch(`https://api.cloudquery.io/plugins/cloudquery/source/aws`, { headers, signal }).then(
+    (res) => res.json(),
+  );
 };
 
 export const useGetPlugin = <

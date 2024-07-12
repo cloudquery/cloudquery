@@ -38,7 +38,7 @@ const getPluginTables = (authToken: string, version?: string, signal?: AbortSign
   return fetch(
     `https://api.cloudquery.io/plugins/cloudquery/source/aws/versions/${version}/tables`,
     { headers, signal },
-  );
+  ).then((res) => res.json());
 };
 
 export const useGetPluginTables = <
