@@ -14,16 +14,11 @@ export function Connect({}: Props) {
   const { mutateAsync } = useAuthenticateConnectorAWS({});
 
   const handleClick = async () => {
-    const rsp = await mutateAsync({
-      connectorId: 'abc',
-      data: {
-        plugin_kind: 'source',
-        plugin_name: 'aws',
-        plugin_team: 'cloudquery',
-      },
-    });
+    const rsp = await mutateAsync({}); // todo: maybe pass name
     console.log({ rsp });
+    form.setValue('connector_id', rsp.connector_id);
 
+    // TODO: open the URL in a new tab, message broker needs update?
     pluginUiMessageHandler.sendMessage('open_url', {
       url: rsp.redirect_url,
     });

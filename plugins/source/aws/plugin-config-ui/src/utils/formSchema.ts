@@ -33,6 +33,7 @@ export const formValidationSchema = yup.object({
   name: yup.string().default('').required(),
   arn: yup.string().default('').required(),
   services: yup.array().of(yup.string().required()).default([]), // => tables
+  connector_id: yup.string().default(''),
 
   // derived
   spec: yup

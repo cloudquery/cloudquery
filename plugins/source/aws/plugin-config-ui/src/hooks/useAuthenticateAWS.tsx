@@ -58,20 +58,20 @@ const authenticateConnectorAWS = async (authToken: string) => {
         plugin_team: 'cloudquery',
       }),
     },
-  ).then((res) => res.json());
+  ).then((res) => ({ connector_id: newConnector.id, ...res.json() }));
 };
 
 export const useAuthenticateConnectorAWS = <TError = BasicError, TContext = unknown>(options?: {
   mutation?: UseMutationOptions<
     Awaited<ReturnType<typeof authenticateConnectorAWS>>,
     TError,
-    { connectorId: string; data: ConnectorAuthRequestAWS },
+    {},
     TContext
   >;
 }): UseMutationResult<
   Awaited<ReturnType<typeof authenticateConnectorAWS>>,
   TError,
-  { connectorId: string; data: ConnectorAuthRequestAWS },
+  {},
   TContext
 > => {
   const authToken = useContext(AuthContext);

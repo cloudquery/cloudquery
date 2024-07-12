@@ -1,4 +1,4 @@
-import { Grid, Stack } from '@mui/material';
+import { Button, Grid, Stack } from '@mui/material';
 import { useForm, FormProvider } from 'react-hook-form';
 import { FormFieldGroup, getYupValidationResolver } from '@cloudquery/cloud-ui';
 import { FormValues, formValidationSchema } from '../utils/formSchema';
@@ -11,8 +11,8 @@ import { Connect } from './connect';
 import { AWSFormStepper } from '../components/stepper';
 import { Guides } from '../components/guides';
 import { SelectServices } from './selectServices';
-import { useGetPlugin } from '../hooks/useGetPlugin';
 import { useGetAWSServices } from '../hooks/useGetAWSServices';
+import { useAuthenticateConnectorFinishAWS } from '../hooks/useAuthenticateAWSFinish';
 
 interface Props {
   initialValues: FormValues | undefined;
@@ -36,6 +36,8 @@ export function Form({ initialValues }: Props) {
   } = form;
   const awsServices = useGetAWSServices();
 
+  const { mutateAsync: finishAWSAuth } = useAuthenticateConnectorFinishAWS();
+
   const handleValidate: Parameters<typeof useFormSubmit>[0] = async () => {
     try {
       const values: FormValues = await new Promise((resolve, reject) => {
@@ -51,6 +53,14 @@ export function Form({ initialValues }: Props) {
     }
   };
 
+  // TODO: move this into Test Connection as pre-req
+  const doThing = () => {
+    finishAWSAuth({
+      connectorId: form.getValues('connector_id'),
+      data: { role_arn: form.getValues('arn') },
+    });
+  };
+
   useFormSubmit(handleValidate, pluginUiMessageHandler);
 
   return (
@@ -62,6 +72,7 @@ export function Form({ initialValues }: Props) {
             <FormFieldGroup title="AWS Connection">
               {activeIndex === 0 && <Connect />}
               {activeIndex === 1 && <SelectServices awsServices={awsServices} />}
+              <Button onClick={doThing}>TODO:Do Thing</Button>
             </FormFieldGroup>
           </Grid>
           <Grid item xs={5} md={6}>

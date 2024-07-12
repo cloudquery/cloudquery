@@ -56,20 +56,22 @@ export function SelectServices({ awsServices: serviceOptions }: Props) {
         <Controller
           name="spec.regions"
           render={({ field, fieldState }) => {
-            // TODO: connect to hook form properly
-            console.log({ field });
+            const { onChange, value, ...fieldProps } = field;
             return (
               <Autocomplete
                 multiple
                 id="regions-select"
                 options={regionOptions}
                 getOptionLabel={(option) => option}
-                defaultValue={[]}
+                value={value}
+                onChange={(_, newValue) => {
+                  onChange(newValue);
+                }}
                 filterSelectedOptions
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    {...field}
+                    {...fieldProps}
                     error={!!fieldState.error}
                     fullWidth={true}
                     helperText={fieldState.error?.message}
