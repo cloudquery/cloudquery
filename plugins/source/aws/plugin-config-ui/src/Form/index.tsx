@@ -39,6 +39,7 @@ export function Form({ initialValues }: Props) {
   const handleValidate: Parameters<typeof useFormSubmit>[0] = async () => {
     try {
       const values: FormValues = await new Promise((resolve, reject) => {
+        // TODO: this should trigger AuthenticateConnectorFinishAWS prior to Testing Connection
         handleSubmit(resolve, reject)();
       });
 

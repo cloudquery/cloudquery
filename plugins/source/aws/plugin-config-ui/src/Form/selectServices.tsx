@@ -36,7 +36,7 @@ export function SelectServices({ awsServices: serviceOptions }: Props) {
 
   const filteredServices = useMemo(() => {
     const servicesArray = Object.values(serviceOptions);
-    // TODO: filter services by some metric
+    // TODO: filter services by some metric, maybe ask Michal
     return showServices === ServiceList.Popular ? servicesArray.slice(0, 8) : servicesArray;
   }, [serviceOptions, showServices]);
 

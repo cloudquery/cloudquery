@@ -23,20 +23,42 @@ interface BasicError {
   status: number;
 }
 
-const authenticateConnectorAWS = (
-  authToken: string,
-  connectorId: string,
-  connectorAuthRequestAWS: ConnectorAuthRequestAWS,
-) => {
+export const createConnector = async (authToken: string, name: string) => {
   const headers = new Headers();
   headers.append('Authorization', `Bearer ${authToken}`);
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
 
+  return fetch(`https://api.cloudquery.io/teams/cloudquery/connectors`, {
+    headers,
+    method: 'POST',
+    body: JSON.stringify({
+      type: 'aws',
+      name,
+    }),
+  }).then((res) => res.json());
+};
+
+const authenticateConnectorAWS = async (authToken: string) => {
+  const headers = new Headers();
+  headers.append('Authorization', `Bearer ${authToken}`);
+  headers.append('Content-Type', 'application/json');
+  headers.append('Accept', 'application/json');
+
+  const newConnector = await createConnector(authToken, 'TODO:name');
+
   return fetch(
-    `https://api.cloudquery.io/teams/cloudquery/connectors/${connectorId}/authenticate/aws`,
-    { headers, method: 'POST', body: JSON.stringify(connectorAuthRequestAWS) },
-  );
+    `https://api.cloudquery.io/teams/cloudquery/connectors/${newConnector.id}/authenticate/aws`,
+    {
+      headers,
+      method: 'POST',
+      body: JSON.stringify({
+        plugin_kind: 'source',
+        plugin_name: 'aws',
+        plugin_team: 'cloudquery',
+      }),
+    },
+  ).then((res) => res.json());
 };
 
 export const useAuthenticateConnectorAWS = <TError = BasicError, TContext = unknown>(options?: {
@@ -58,11 +80,9 @@ export const useAuthenticateConnectorAWS = <TError = BasicError, TContext = unkn
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof authenticateConnectorAWS>>,
-    { connectorId: string; data: ConnectorAuthRequestAWS }
-  > = (props) => {
-    const { connectorId, data } = props ?? {};
-
-    return authenticateConnectorAWS(authToken.value, connectorId, data);
+    {}
+  > = () => {
+    return authenticateConnectorAWS(authToken.value);
   };
 
   const mutationOptions = { mutationFn, ...providedMutationOptions };

@@ -23,10 +23,10 @@ export function Connect({}: Props) {
       },
     });
     console.log({ rsp });
-    // TODO: rsp should have a redirect_url for below
-    // pluginUiMessageHandler.sendMessage('open_url', {
-    //   url: 'http://www.google.com?TODO=1',
-    // });
+
+    pluginUiMessageHandler.sendMessage('open_url', {
+      url: rsp.redirect_url,
+    });
   };
 
   return (
