@@ -15,7 +15,7 @@ import { useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { Logo } from '../components/logo';
 import { awsRegions } from '../utils/constants';
-import { AWSServices } from '../hooks/useGetAWSServices';
+import { AWSService, AWSServices } from '../hooks/useGetAWSServices';
 
 enum ServiceList {
   All = 'all',
@@ -26,6 +26,10 @@ interface Props {
   awsServices: AWSServices;
 }
 
+interface StyledAWSService extends AWSService {
+  sx?: any;
+}
+
 export function SelectServices({ awsServices: serviceOptions }: Props) {
   const { palette } = useTheme();
   const [showServices, setShowServices] = useState<ServiceList.All | ServiceList.Popular>(
@@ -34,10 +38,15 @@ export function SelectServices({ awsServices: serviceOptions }: Props) {
 
   const regionOptions = awsRegions;
 
-  const filteredServices = useMemo(() => {
+  const filteredServices: StyledAWSService[] = useMemo(() => {
     const servicesArray = Object.values(serviceOptions);
     // TODO: filter services by some metric, maybe ask Michal
-    return showServices === ServiceList.Popular ? servicesArray.slice(0, 8) : servicesArray;
+    return showServices === ServiceList.Popular
+      ? servicesArray.map((service, index) => ({
+          ...service,
+          sx: index > 5 ? { display: 'none' } : {},
+        }))
+      : servicesArray;
   }, [serviceOptions, showServices]);
 
   return (
@@ -102,7 +111,13 @@ export function SelectServices({ awsServices: serviceOptions }: Props) {
 
                     return (
                       <ToggleButton
-                        sx={{ display: 'flex', justifyContent: 'space-between', py: 0.5, pr: 0 }}
+                        sx={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          py: 0.5,
+                          pr: 0,
+                          ...service.sx,
+                        }}
                         key={service.name}
                         value={service.name}
                         onClick={() =>

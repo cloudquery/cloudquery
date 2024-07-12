@@ -35,7 +35,9 @@ export const ExclusiveToggle = forwardRef(function ExclusiveToggle(
         color="primary"
         exclusive={true}
         onChange={(_, newValue) => {
-          onChange(newValue);
+          if (!!newValue) {
+            onChange(newValue);
+          }
         }}
         value={value}
         ref={ref}

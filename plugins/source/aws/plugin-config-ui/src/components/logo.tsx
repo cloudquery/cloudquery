@@ -32,7 +32,7 @@ export function Logo({ width = 24, height = 24, src, alt, fallbackSrc }: Props) 
         width={width - PADDING}
         onError={({ currentTarget }) => {
           if (fallbackSrc) {
-            currentTarget.onerror = null; // prevents looping
+            currentTarget.onerror = null;
             currentTarget.src = fallbackSrc;
           }
         }}
