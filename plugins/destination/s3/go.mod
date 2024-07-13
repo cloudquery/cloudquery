@@ -4,10 +4,10 @@ go 1.21.11
 
 require (
 	github.com/apache/arrow/go/v16 v16.1.0
-	github.com/aws/aws-sdk-go-v2 v1.30.1
-	github.com/aws/aws-sdk-go-v2/config v1.27.24
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.17.5
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.58.0
+	github.com/aws/aws-sdk-go-v2 v1.30.3
+	github.com/aws/aws-sdk-go-v2/config v1.27.26
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.17.7
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.58.2
 	github.com/aws/smithy-go v1.20.3
 	github.com/cloudquery/codegen v0.3.17
 	github.com/cloudquery/filetypes/v4 v4.2.25
@@ -28,19 +28,19 @@ require (
 	github.com/apache/thrift v0.19.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.6.3 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.17.24 // indirect
-	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.9 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.13 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.13 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.17.26 // indirect
+	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.11 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.15 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.15 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.0 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/v4a v1.3.13 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/v4a v1.3.15 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.11.3 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.3.15 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.15 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.17.13 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.22.1 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.26.2 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sts v1.30.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.3.17 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.17 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.17.15 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.22.3 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.26.4 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sts v1.30.3 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
@@ -59,7 +59,6 @@ require (
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-retryablehttp v0.7.7 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/klauspost/asmfmt v1.3.2 // indirect
 	github.com/klauspost/compress v1.17.7 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.7 // indirect
