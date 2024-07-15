@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/mongodb
 
-go 1.21.11
+go 1.22.4
 
 require (
 	github.com/apache/arrow/go/v16 v16.1.0
@@ -8,6 +8,7 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.49.3
 	github.com/goccy/go-json v0.10.3
 	github.com/rs/zerolog v1.33.0
+	github.com/stretchr/testify v1.9.0
 	go.mongodb.org/mongo-driver v1.12.1
 )
 
@@ -46,7 +47,6 @@ require (
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1 // indirect
 	github.com/spf13/cobra v1.8.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.9.0 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect

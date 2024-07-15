@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/ClickHouse/clickhouse-go/v2"
@@ -40,14 +41,16 @@ func (c *Client) Close(ctx context.Context) error {
 	return c.conn.Close()
 }
 
+var errInvalidSpec = errors.New("invalid spec")
+
 func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var s spec.Spec
 	if err := json.Unmarshal(specBytes, &s); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
+		return nil, errors.Join(errInvalidSpec, err)
 	}
 	s.SetDefaults()
 	if err := s.Validate(); err != nil {
-		return nil, err
+		return nil, errors.Join(errInvalidSpec, err)
 	}
 
 	options, err := s.Options()

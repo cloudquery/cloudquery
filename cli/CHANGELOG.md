@@ -5,6 +5,16 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [5.25.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.25.0...cli-v5.25.1) (2024-07-15)
+
+
+### Bug Fixes
+
+* Allow `plugin install` command to be run with a single-plugin spec ([#18571](https://github.com/cloudquery/cloudquery/issues/18571)) ([4c15f86](https://github.com/cloudquery/cloudquery/commit/4c15f86292f28a2d8466ad15bc0e22979bfe4738))
+* Allow `tables` command to be run with a single-plugin spec ([#18542](https://github.com/cloudquery/cloudquery/issues/18542)) ([0ed62e5](https://github.com/cloudquery/cloudquery/commit/0ed62e5a2345d37e975e20d67e5733200f32b654))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.2 ([#18504](https://github.com/cloudquery/cloudquery/issues/18504)) ([2d80936](https://github.com/cloudquery/cloudquery/commit/2d80936e5f952b29f1ddf6267c2331a504a38b2d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.3 ([#18513](https://github.com/cloudquery/cloudquery/issues/18513)) ([d12da90](https://github.com/cloudquery/cloudquery/commit/d12da90f5ca67b8e590c433ad2762d48c499e6aa))
+
 ## [5.25.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.24.0...cli-v5.25.0) (2024-07-09)
 
 

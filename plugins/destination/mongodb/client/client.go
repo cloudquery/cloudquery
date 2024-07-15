@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
@@ -21,19 +22,25 @@ type Client struct {
 	writer *batchwriter.BatchWriter
 }
 
+var errInvalidSpec = errors.New("invalid spec")
+var errConnectionFailed = errors.New("failed to connect to MongoDB")
+
 func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "mongo-dest").Logger(),
 	}
 	if err := json.Unmarshal(spec, &c.spec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal MongoDB spec: %w", err)
+		return nil, errors.Join(errInvalidSpec, err)
 	}
 	if err := c.spec.Validate(); err != nil {
-		return nil, err
+		return nil, errors.Join(errInvalidSpec, err)
 	}
 	c.client, err = mongo.Connect(context.Background(), options.Client().ApplyURI(c.spec.ConnectionString).SetRegistry(getRegistry()))
 	if err != nil {
+		return nil, errors.Join(errConnectionFailed, err)
+	}
+	if err := c.client.Ping(ctx, nil); err != nil {
 		return nil, err
 	}
 	c.writer, err = batchwriter.New(c, batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes), batchwriter.WithLogger(c.logger))
