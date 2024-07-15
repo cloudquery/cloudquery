@@ -69,7 +69,7 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 				return false
 			}
 		case schema.TableColumnChangeTypeRemoveUniqueConstraint:
-			return true
+			continue
 		default:
 			return false
 		}
@@ -78,8 +78,13 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 }
 func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, changes []schema.TableColumnChange) error {
 	for _, change := range changes {
-		if change.Type == schema.TableColumnChangeTypeAdd {
+		switch change.Type {
+		case schema.TableColumnChangeTypeAdd:
 			if err := c.addColumn(ctx, table, table.Columns.Get(change.ColumnName)); err != nil {
+				return err
+			}
+		case schema.TableColumnChangeTypeRemoveUniqueConstraint:
+			if err := c.removeUniqueConstraint(ctx, table, table.Columns.Get(change.ColumnName)); err != nil {
 				return err
 			}
 		}
