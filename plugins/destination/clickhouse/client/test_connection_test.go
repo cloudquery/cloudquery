@@ -2,15 +2,16 @@ package client
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
+	"net"
 	"testing"
 
+	"github.com/ClickHouse/clickhouse-go/v2/lib/proto"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/goccy/go-json"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
-	"go.mongodb.org/mongo-driver/x/mongo/driver/auth"
-	"go.mongodb.org/mongo-driver/x/mongo/driver/topology"
 )
 
 func TestConnectionTester(t *testing.T) {
@@ -22,64 +23,52 @@ func TestConnectionTester(t *testing.T) {
 	}{
 		{
 			name: "ok",
-			spec: []byte(`{"connection_string": "test", "database":"test"}`),
+			spec: []byte(`{"connection_string": "test"}`),
 			err:  nil,
 		},
 		{
 			name: "invalid spec",
-			spec: []byte(`{"connection_string": "test"}`),
+			spec: []byte(`{"connection_string": 12}`),
 			err:  &plugin.TestConnError{Code: codeInvalidSpec},
 		},
 		{
 			name: "invalid spec JSON",
-			spec: []byte(`{"connection_string": 12`),
+			spec: []byte(`{"connection_string"`),
 			err:  &plugin.TestConnError{Code: codeInvalidSpec},
 		},
 		{
-			name: "connection failed",
-			spec: []byte(`{"connection_string": "test", "database":"test"}`),
-			err:  &plugin.TestConnError{Code: codeConnectionFailed},
-			clientBuilder: func() (plugin.Client, error) {
-				return nil, errConnectionFailed
-			},
-		},
-		{
 			name: "unreachable",
-			spec: []byte(`{"connection_string": "test", "database":"test"}`),
+			spec: []byte(`{"connection_string": "test"}`),
 			err:  &plugin.TestConnError{Code: codeUnreachable},
 			clientBuilder: func() (plugin.Client, error) {
-				return nil, topology.ServerSelectionError{}
+				return nil, &net.OpError{}
 			},
 		},
 		{
 			name: "unauthorized",
-			spec: []byte(`{"connection_string": "test", "database":"test"}`),
+			spec: []byte(`{"connection_string": "test"}`),
 			err:  &plugin.TestConnError{Code: codeUnauthorized},
 			clientBuilder: func() (plugin.Client, error) {
-				err := topology.ConnectionError{
-					Wrapped: &auth.Error{},
-				}
-				return nil, err
+				return nil, &proto.Exception{Message: authFailedStr}
 			},
 		},
 		{
-			name: "connection error without wrapped auth error",
-			spec: []byte(`{"connection_string": "test", "database":"test"}`),
+			name: "connection failed with proto exception",
+			spec: []byte(`{"connection_string": "test"}`),
 			err:  &plugin.TestConnError{Code: codeConnectionFailed},
 			clientBuilder: func() (plugin.Client, error) {
-				return nil, topology.ConnectionError{}
+				return nil, &proto.Exception{}
 			},
 		},
 		{
-			name: "unrecognized error",
-			spec: []byte(`{"connection_string": "test", "database":"test"}`),
+			name: "connection failed with other error",
+			spec: []byte(`{"connection_string": "test"}`),
 			err:  &plugin.TestConnError{Code: codeConnectionFailed},
 			clientBuilder: func() (plugin.Client, error) {
-				return nil, errors.New("unrecognized error")
+				return nil, errors.New("test")
 			},
 		},
 	}
-
 	for _, tt := range tests {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
@@ -89,7 +78,7 @@ func TestConnectionTester(t *testing.T) {
 				}
 			}
 			tester := NewConnectionTester(func(_ context.Context, _ zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
-				sp := &Spec{}
+				sp := &spec.Spec{}
 				if err := json.Unmarshal(specBytes, sp); err != nil {
 					return nil, errInvalidSpec
 				}

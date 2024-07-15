@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"time"
@@ -26,6 +27,10 @@ type Client struct {
 	writer      *batchwriter.BatchWriter
 }
 
+var errInvalidSpec = errors.New("invalid spec")
+var errUnauthorized = errors.New("unauthorized")
+var errUnreachable = errors.New("unreachable")
+
 func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
@@ -33,12 +38,12 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.
 		spec:   &Spec{},
 	}
 	if err := json.Unmarshal(specBytes, c.spec); err != nil {
-		return nil, err
+		return nil, errors.Join(errInvalidSpec, err)
 	}
 
 	c.spec.SetDefaults()
 	if err := c.spec.Validate(); err != nil {
-		return nil, err
+		return nil, errors.Join(errInvalidSpec, err)
 	}
 	c.writer, err = batchwriter.New(c, batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes), batchwriter.WithLogger(c.logger))
 	if err != nil {
@@ -76,8 +81,15 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.
 	}
 	info, err := es.Info().Do(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get Elasticsearch cluster info: %w", err)
+		return nil, errors.Join(errUnreachable, err)
 	}
+	if info.StatusCode != 200 {
+		if info.StatusCode == 401 {
+			return nil, errors.Join(errUnauthorized, errors.New("status code is 401"))
+		}
+		return nil, fmt.Errorf("failed to ping Elasticsearch: status code is %d", info.StatusCode)
+	}
+
 	defer info.Body.Close()
 	b, err := io.ReadAll(info.Body)
 	if err != nil {
