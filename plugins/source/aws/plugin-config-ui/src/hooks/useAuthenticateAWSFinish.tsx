@@ -24,6 +24,7 @@ interface BasicError {
  */
 export const authenticateConnectorFinishAWS = (
   authToken: string,
+  team: string,
   connectorId: string,
   connectorAuthFinishRequestAWS: ConnectorAuthFinishRequestAWS,
 ) => {
@@ -33,7 +34,7 @@ export const authenticateConnectorFinishAWS = (
   headers.append('Accept', 'application/json');
 
   return fetch(
-    `https://api.cloudquery.io/teams/cloudquery/connectors/${connectorId}/authenticate/aws`,
+    `https://api.cloudquery.io/teams/${team}/connectors/${connectorId}/authenticate/aws`,
     {
       headers,
       method: 'PATCH',
@@ -58,7 +59,7 @@ export const useAuthenticateConnectorFinishAWS = <
   { connectorId: string; data: ConnectorAuthFinishRequestAWS },
   TContext
 > => {
-  const authToken = useContext(AuthContext);
+  const { token, team } = useContext(AuthContext);
 
   const { mutation: providedMutationOptions } = options ?? {};
 
@@ -68,7 +69,7 @@ export const useAuthenticateConnectorFinishAWS = <
   > = (props) => {
     const { connectorId, data } = props ?? {};
 
-    return authenticateConnectorFinishAWS(authToken.value, connectorId, data);
+    return authenticateConnectorFinishAWS(token, team, connectorId, data);
   };
 
   const mutationOptions = { mutationFn, ...providedMutationOptions };

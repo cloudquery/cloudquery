@@ -4,14 +4,16 @@ import { AuthContext } from './authContext';
 
 interface Props {
   children: React.ReactNode;
-  value: string;
+  token: string;
+  team: string;
 }
-export const AuthProvider: FC<Props> = ({ children, value }) => {
+export const AuthProvider: FC<Props> = ({ children, token, team }) => {
   const contextValue = useMemo(
     () => ({
-      value,
+      token,
+      team,
     }),
-    [value],
+    [token, team],
   );
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

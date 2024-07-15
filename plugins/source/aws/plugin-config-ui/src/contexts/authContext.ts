@@ -1,9 +1,11 @@
 import { createContext } from 'react';
 
 interface Context {
-  value: string;
+  token: string;
+  team: string;
 }
 
 export const AuthContext = createContext<Context>({
-  value: undefined as any,
+  token: undefined as any,
+  team: undefined as any,
 });

@@ -23,7 +23,7 @@ interface BasicError {
   status: number;
 }
 
-export const createConnector = async (authToken: string, connectorName: string) => {
+export const createConnector = async (authToken: string, team: string, connectorName: string) => {
   const headers = new Headers();
   headers.append('Authorization', `Bearer ${authToken}`);
   headers.append('Content-Type', 'application/json');
@@ -31,7 +31,7 @@ export const createConnector = async (authToken: string, connectorName: string) 
 
   const name = connectorName || 'AWS Connector';
 
-  return fetch(`https://api.cloudquery.io/teams/cloudquery/connectors`, {
+  return fetch(`https://api.cloudquery.io/teams/${team}/connectors`, {
     headers,
     method: 'POST',
     body: JSON.stringify({
@@ -41,16 +41,16 @@ export const createConnector = async (authToken: string, connectorName: string) 
   }).then((res) => res.json());
 };
 
-const authenticateConnectorAWS = async (authToken: string, name: string) => {
+const authenticateConnectorAWS = async (authToken: string, team: string, name: string) => {
   const headers = new Headers();
   headers.append('Authorization', `Bearer ${authToken}`);
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
 
-  const newConnector = await createConnector(authToken, name);
+  const newConnector = await createConnector(authToken, team, name);
 
   return fetch(
-    `https://api.cloudquery.io/teams/cloudquery/connectors/${newConnector.id}/authenticate/aws`,
+    `https://api.cloudquery.io/teams/${team}/connectors/${newConnector.id}/authenticate/aws`,
     {
       headers,
       method: 'POST',
@@ -76,7 +76,7 @@ export const useAuthenticateConnectorAWS = <TError = BasicError, TContext = unkn
   { name: string },
   TContext
 > => {
-  const authToken = useContext(AuthContext);
+  const { token, team } = useContext(AuthContext);
 
   const { mutation: providedMutationOptions } = options ?? {};
 
@@ -84,7 +84,7 @@ export const useAuthenticateConnectorAWS = <TError = BasicError, TContext = unkn
     Awaited<ReturnType<typeof authenticateConnectorAWS>>,
     { name: string }
   > = ({ name }) => {
-    return authenticateConnectorAWS(authToken.value, name);
+    return authenticateConnectorAWS(token, team, name);
   };
 
   const mutationOptions = { mutationFn, ...providedMutationOptions };

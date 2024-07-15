@@ -35,11 +35,11 @@ export const useGetPluginTables = <
 >(options?: {
   query?: UseQueryOptions<Awaited<ReturnType<typeof getPluginTables>>, TError, TData>;
 }): UseQueryResult<TData, TError> => {
-  const authToken = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
   const queryKey = [`/plugins/cloudquery/source/aws/versions/latest/tables`];
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getPluginTables>>> = ({ signal }) =>
-    getPluginTables(authToken.value, signal);
+    getPluginTables(token, signal);
 
   const query = useQuery({
     queryFn,

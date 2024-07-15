@@ -14,8 +14,12 @@ const localEnvironment = require('./local-env.json');
 const DevWrapper =
   process.env.NODE_ENV === 'production' || window.self !== window.top ? Fragment : CloudAppMock;
 
+// TODO: this needs to be passed in (or something)
 const DEV_API_TOKEN =
   process.env.NODE_ENV === 'production' ? undefined : localEnvironment?.DEV_API_TOKEN;
+
+// todo: this will have to be passed in also
+const TODO_DEV_TEAM = 'cloudquery-chris';
 
 function App() {
   const { initialValues, initialized, apiAuthorizationToken } = useFormInit(
@@ -34,7 +38,7 @@ function App() {
         <CssBaseline />
         <DevWrapper>
           {initialized && (
-            <AuthProvider value={DEV_API_TOKEN ?? apiAuthorizationToken}>
+            <AuthProvider token={DEV_API_TOKEN ?? apiAuthorizationToken} team={TODO_DEV_TEAM}>
               <QueryClientProvider client={queryClient}>
                 <Stack paddingY={2}>
                   <Form

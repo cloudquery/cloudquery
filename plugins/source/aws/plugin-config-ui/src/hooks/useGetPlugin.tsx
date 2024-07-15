@@ -30,11 +30,11 @@ export const useGetPlugin = <
 >(options?: {
   query?: UseQueryOptions<Awaited<ReturnType<typeof getPlugin>>, TError, TData>;
 }): UseQueryResult<TData, TError> => {
-  const authToken = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
   const queryKey = [`/plugins/cloudquery/source/aws`];
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getPlugin>>> = ({ signal }) =>
-    getPlugin(authToken.value, signal);
+    getPlugin(token, signal);
 
   const query = useQuery({
     queryFn,
