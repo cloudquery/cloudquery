@@ -15,6 +15,7 @@ func main() {
 		plugin.WithKind(internalPlugin.Kind),
 		plugin.WithTeam(internalPlugin.Team),
 		plugin.WithJSONSchema(client.JSONSchema),
+		plugin.WithConnectionTester(client.NewConnectionTester(client.New)),
 	)
 	if err := serve.Plugin(p, serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
 		log.Fatal(err)
