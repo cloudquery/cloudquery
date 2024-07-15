@@ -11,14 +11,16 @@ interface Props {}
 export function Connect({}: Props) {
   const form = useFormContext();
 
-  const { mutateAsync } = useAuthenticateConnectorAWS({});
+  const { mutateAsync: authenticateAWS } = useAuthenticateConnectorAWS({});
+
+  const hasLaunchedConnectionConsole = !!form.watch('connector_id');
 
   const handleClick = async () => {
-    const rsp = await mutateAsync({}); // todo: maybe pass name
+    const rsp = await authenticateAWS({}); // TODO:SUBMIT
     console.log({ rsp });
     form.setValue('connector_id', rsp.connector_id);
 
-    // TODO: open the URL in a new tab, message broker needs update?
+    // TODO:SUBMIT
     pluginUiMessageHandler.sendMessage('open_url', {
       url: rsp.redirect_url,
     });
@@ -62,8 +64,12 @@ export function Connect({}: Props) {
         {form.watch('_setupType') === SetupType.Console && (
           <Stack gap={1}>
             <Box>
-              <Button variant="contained" fullWidth={false} onClick={handleClick}>
-                Connect CloudQuery via AWS Console
+              <Button
+                variant={hasLaunchedConnectionConsole ? 'outlined' : 'contained'}
+                fullWidth={false}
+                onClick={handleClick}
+              >
+                {hasLaunchedConnectionConsole ? 'Reconnect' : 'Connect'} CloudQuery via AWS Console
               </Button>
             </Box>
 

@@ -40,7 +40,7 @@ const SECTIONS = [
   },
 ];
 
-export function AWSConsoleReconnect() {
+export function AWSConsoleConnect() {
   return (
     <Stack gap={3} p={3}>
       <AWSGuideHeader />

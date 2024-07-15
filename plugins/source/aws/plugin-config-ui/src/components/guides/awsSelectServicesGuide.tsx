@@ -14,9 +14,9 @@ const SERVICES_SECTION = [
       {
         Node: () => (
           <div>
-            See the [AWS Plugin Documentation](
+            See the (
             <Link target="_blank" href="TODO:link">
-              TODO:link
+              [AWS Plugin Documentation]
             </Link>
             ) to see the full list of tables and their schema.
           </div>

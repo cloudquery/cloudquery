@@ -9,7 +9,6 @@ export const setupTypes = Object.values(SetupType);
 
 resetYupDefaultErrorMessages(yup);
 
-// TODO: the shape of this, per the API
 export const formValidationSchema = yup.object({
   // defaults
   migrateMode: yup
@@ -45,8 +44,10 @@ export const formValidationSchema = yup.object({
         .default([]),
     })
     .required(),
+
   // form state
-  _setupType: yup.string().oneOf(setupTypes).default(SetupType.Console).strip(true),
+  _setupType: yup.string().oneOf(setupTypes).default(SetupType.Console),
+  _activeIndex: yup.number().default(0),
 });
 
 export type FormValues = yup.InferType<typeof formValidationSchema>;

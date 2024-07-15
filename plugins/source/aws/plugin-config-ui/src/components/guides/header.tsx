@@ -10,7 +10,7 @@ export function AWSGuideHeader() {
         variant="outlined"
         endIcon={<LinkIcon />}
         onClick={() => {
-          //TODO
+          //TODO:link
         }}
       >
         Open docs

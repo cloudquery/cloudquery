@@ -1,9 +1,9 @@
 import { Card, CardContent } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 import { useMemo } from 'react';
-import { AWSConsoleConnection } from './awsConsoleGuide';
+import { AWSConsoleOverview } from './awsConsoleOverviewGuide';
 import { AWSManualConnect } from './awsManualGuide';
-import { AWSConsoleReconnect } from './awsConsoleReconnectGuide';
+import { AWSConsoleConnect } from './awsConsoleConnectGuide';
 import { AWSSelectServices } from './awsSelectServicesGuide';
 import { SetupType } from '../../utils/formSchema';
 
@@ -12,22 +12,24 @@ interface Props {}
 export function Guides({}: Props) {
   const form = useFormContext();
 
-  const hasARN = !!form.watch('arn');
+  const usingConsoleConnection = form.watch('connector_id');
   const setupType = form.watch('_setupType');
+  const isSelectServices = form.watch('_activeIndex') === 1;
 
   const Content = useMemo(() => {
-    if (setupType === SetupType.Manual) {
+    if (isSelectServices) {
+      return AWSSelectServices;
+    } else if (setupType === SetupType.Manual) {
       return AWSManualConnect;
     } else if (setupType === SetupType.Console) {
-      if (hasARN) {
-        return AWSConsoleReconnect;
+      if (usingConsoleConnection) {
+        return AWSConsoleConnect;
       } else {
-        return AWSConsoleConnection;
+        return AWSConsoleOverview;
       }
-    } else {
-      return AWSSelectServices;
     }
-  }, [hasARN, setupType]);
+    return () => <></>;
+  }, [usingConsoleConnection, setupType, isSelectServices]);
 
   return (
     <Card>

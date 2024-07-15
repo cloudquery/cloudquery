@@ -1,4 +1,4 @@
-import { awsServiceLabelMap } from '../utils/constants';
+import { awsServiceLabelMap, serviceNameResolutions } from '../utils/constants';
 import { useGetPluginTables } from './useGetPluginTables';
 
 export type AWSService = {
@@ -10,30 +10,15 @@ export type AWSService = {
 
 export type AWSServices = Record<string, AWSService>;
 
-const serviceNameResolutions: Record<string, string> = {
-  acmpca: 'acm',
-  apigatewayv2: 'apigateway',
-  cloudwatchlogs: 'cloudwatch',
-  dynamodbstreams: 'dynamodb',
-  elbv1: 'elb',
-  elbv2: 'elb',
-  route53recoverycontrolconfig: 'route53',
-  route53resolver: 'route53',
-  route53recoveryreadiness: 'route53',
-  ssmincidents: 'ssm',
-  wafregional: 'waf',
-  wafv2: 'waf',
-};
-
 export const useGetAWSServices = (): AWSServices => {
   try {
-    const { data: tablesData } = useGetPluginTables();
+    const { data } = useGetPluginTables();
 
-    const tablesDataTODO = tablesData?.items ?? [];
+    const tablesData = data?.items ?? [];
 
     let awsServices = {} as AWSServices;
 
-    for (const table of tablesDataTODO) {
+    for (const table of tablesData) {
       let serviceName = table.name.split('_')[1];
 
       if (serviceNameResolutions[serviceName]) {
@@ -55,7 +40,7 @@ export const useGetAWSServices = (): AWSServices => {
     return awsServices;
   } catch (e) {
     console.log(e);
-    // TODO: toast? through message broker or install on the plugin?
+    // TODO:ERROR, toast?
   }
   return {} as AWSServices;
 };

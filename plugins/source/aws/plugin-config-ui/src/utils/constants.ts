@@ -1,4 +1,17 @@
-// TODO: keep adding to this list (possibility of deduping things like is amp and amplify supposed to be the same thing?)
+export const top8Services = ['ec2', 's3', 'elb', 'kms', 'cloudfront', 'route53', 'iam', 'rds'];
+
+// NOTE: this is attempted logical grouping of like tables into a single service
+export const serviceNameResolutions: Record<string, string> = {
+  cloudwatchlogs: 'cloudwatch',
+  dynamodbstreams: 'dynamodb',
+  route53recoverycontrolconfig: 'route53',
+  route53resolver: 'route53',
+  route53recoveryreadiness: 'route53',
+  ssmincidents: 'ssm',
+  elbv1: 'elb',
+  elbv2: 'elb',
+};
+
 export const awsServiceLabelMap: Record<string, string> = {
   AWSCloudMap: 'Cloud Map',
   account: 'Account',
@@ -251,11 +264,12 @@ export const awsServiceLabelMap: Record<string, string> = {
   workspaces: 'WorkSpaces',
   vpclattice: 'VPC Lattice',
   waf: 'Web Application Firewall (WAF)',
-  wafregional: 'WAF Classic (Regional)',
-  wafv2: 'WAF',
+  wafregional: 'Web Application Firewall (Regional)',
+  wafv2: 'Web Application Firewall (v2)',
   wellarchitected: 'Well-Architected Tool',
   xray: 'X-Ray',
 };
+
 // TODO: build step will eventually provide this
 // currently sourced from cloudquery-private/plugins/source/aws/client/data/partition_service_region.json
 export const awsRegions = [

@@ -151,7 +151,7 @@ export function AWSManualConnect() {
       <Divider />
       <Typography variant="h5">AWS connection</Typography>
       <Sections sections={GENERIC_SECTIONS} />
-      <Typography variant="h5">Connect Account via the AWS IAM Console</Typography>{' '}
+      <Typography variant="h5">Connect Account via the AWS IAM Console</Typography>
       <Sections sections={AWS_MANUAL_SECTIONS} />
     </Stack>
   );

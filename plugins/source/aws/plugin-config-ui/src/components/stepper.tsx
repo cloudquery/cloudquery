@@ -6,6 +6,7 @@ import Stepper from '@mui/material/Stepper';
 import Box from '@mui/material/Box';
 import { StepIconProps } from '@mui/material/StepIcon';
 import useTheme from '@mui/material/styles/useTheme';
+import { useFormContext } from 'react-hook-form';
 
 export enum AWSFormStep {
   ConnectAWS = 'Connect AWS',
@@ -54,12 +55,12 @@ function SyncFormStepIcon({
   );
 }
 
-interface Props {
-  activeIndex: number;
-  setActiveIndex: (index: number) => void;
-}
+interface Props {}
 
-export function AWSFormStepper({ activeIndex, setActiveIndex }: Props) {
+export function AWSFormStepper({}: Props) {
+  const { watch, setValue } = useFormContext();
+  const activeIndex = watch('_activeIndex');
+
   const steps = [AWSFormStep.ConnectAWS, AWSFormStep.SelectServices];
   return (
     <Stepper
@@ -77,8 +78,7 @@ export function AWSFormStepper({ activeIndex, setActiveIndex }: Props) {
         return (
           <Step key={step} {...stepProps}>
             <StepLabel
-              // TODO: not sure we want this control after DEV
-              onClick={() => setActiveIndex(index)}
+              onClick={() => setValue('_activeIndex', index)}
               StepIconComponent={(props) => (
                 <SyncFormStepIcon {...props} label={(index + 1).toString()} />
               )}

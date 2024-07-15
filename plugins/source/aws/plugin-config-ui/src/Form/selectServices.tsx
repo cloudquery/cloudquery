@@ -11,10 +11,10 @@ import {
   useTheme,
 } from '@mui/material';
 import { Box, Stack } from '@mui/system';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { Logo } from '../components/logo';
-import { awsRegions } from '../utils/constants';
+import { awsRegions, top8Services } from '../utils/constants';
 import { AWSService, AWSServices } from '../hooks/useGetAWSServices';
 
 enum ServiceList {
@@ -38,16 +38,23 @@ export function SelectServices({ awsServices: serviceOptions }: Props) {
 
   const regionOptions = awsRegions;
 
-  const filteredServices: StyledAWSService[] = useMemo(() => {
-    const servicesArray = Object.values(serviceOptions);
-    // TODO: filter services by some metric, maybe ask Michal
-    return showServices === ServiceList.Popular
-      ? servicesArray.map((service, index) => ({
-          ...service,
-          sx: index > 5 ? { display: 'none' } : {},
-        }))
-      : servicesArray;
-  }, [serviceOptions, showServices]);
+  // prefetch logos
+  useEffect(() => {
+    if (serviceOptions) {
+      Object.values(serviceOptions).forEach((service) => {
+        const img = new Image();
+        img.src = service.logo;
+      });
+    }
+  }, [serviceOptions]);
+
+  const filteredServices: StyledAWSService[] = useMemo(
+    () =>
+      showServices === ServiceList.Popular
+        ? top8Services.map((name) => serviceOptions[name]).filter(Boolean)
+        : Object.values(serviceOptions),
+    [serviceOptions, showServices],
+  );
 
   return (
     <Stack gap={1}>
