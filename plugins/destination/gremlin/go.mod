@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/gremlin
 
-go 1.21.11
+go 1.22.4
 
 require (
 	github.com/apache/arrow/go/v16 v16.1.0
