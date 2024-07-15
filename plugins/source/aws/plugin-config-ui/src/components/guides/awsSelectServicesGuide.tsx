@@ -1,5 +1,4 @@
-import { Divider, Link, Stack, Typography } from '@mui/material';
-import { AWSGuideHeader } from './header';
+import { Link, Stack, Typography } from '@mui/material';
 import { Sections } from './sections';
 
 const SERVICES_SECTION = [
@@ -14,11 +13,11 @@ const SERVICES_SECTION = [
       {
         Node: () => (
           <div>
-            See the (
+            See the [
             <Link target="_blank" href="TODO:link">
-              [AWS Plugin Documentation]
+              AWS Plugin Documentation
             </Link>
-            ) to see the full list of tables and their schema.
+            ] to see the full list of tables and their schema.
           </div>
         ),
       },
@@ -28,9 +27,7 @@ const SERVICES_SECTION = [
 
 export function AWSSelectServices() {
   return (
-    <Stack gap={3} p={3}>
-      <AWSGuideHeader />
-      <Divider />
+    <Stack gap={3}>
       <Typography variant="h5">Select services</Typography>
       <Sections sections={SERVICES_SECTION} />
     </Stack>

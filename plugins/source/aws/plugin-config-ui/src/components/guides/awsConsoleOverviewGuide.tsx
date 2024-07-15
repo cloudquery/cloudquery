@@ -1,5 +1,4 @@
-import { Divider, Stack, Typography } from '@mui/material';
-import { AWSGuideHeader } from './header';
+import { Stack, Typography } from '@mui/material';
 import { Sections } from './sections';
 
 const SECTIONS = [
@@ -35,9 +34,7 @@ const SECTIONS = [
 
 export function AWSConsoleOverview() {
   return (
-    <Stack gap={3} p={3}>
-      <AWSGuideHeader />
-      <Divider />
+    <Stack gap={3}>
       <Typography variant="h5">AWS connection</Typography>
       <Sections sections={SECTIONS} />
     </Stack>

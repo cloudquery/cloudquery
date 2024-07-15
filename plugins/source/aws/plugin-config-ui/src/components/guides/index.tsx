@@ -1,4 +1,4 @@
-import { Card, CardContent } from '@mui/material';
+import { Box, Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
 import { useMemo } from 'react';
 import { AWSConsoleOverview } from './awsConsoleOverviewGuide';
@@ -6,6 +6,7 @@ import { AWSManualConnect } from './awsManualGuide';
 import { AWSConsoleConnect } from './awsConsoleConnectGuide';
 import { AWSSelectServices } from './awsSelectServicesGuide';
 import { SetupType } from '../../utils/formSchema';
+import { AWSGuideHeader } from './header';
 
 interface Props {}
 
@@ -33,8 +34,15 @@ export function Guides({}: Props) {
 
   return (
     <Card>
-      <CardContent>
-        <Content />
+      <CardHeader></CardHeader>
+      <CardContent sx={{ pt: 0 }}>
+        <Stack gap={3} p={3} pt={0}>
+          <AWSGuideHeader />
+          <Divider />
+          <Box height="calc(100vh - 300px)" sx={{ overflowY: 'auto' }}>
+            <Content />
+          </Box>
+        </Stack>
       </CardContent>
     </Card>
   );

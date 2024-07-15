@@ -20,7 +20,7 @@ export function Sections({ sections }: Props) {
     <Stack gap={3}>
       {sections.map((section, index) => (
         <Stack key={index} gap={2}>
-          <Typography variant="h6">{section.header}</Typography>
+          {section.header && <Typography variant="h6">{section.header}</Typography>}
           {section.bodies.map((body, index) => {
             if (body.Node) {
               return <body.Node key={index} />;

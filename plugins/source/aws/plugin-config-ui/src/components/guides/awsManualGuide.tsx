@@ -1,5 +1,4 @@
-import { Divider, Link, Stack, Typography } from '@mui/material';
-import { AWSGuideHeader } from './header';
+import { Link, Stack, Typography } from '@mui/material';
 import { Sections } from './sections';
 
 const GENERIC_SECTIONS = [
@@ -146,9 +145,7 @@ the box next to the policy with the name “ReadOnlyAccess”.`,
 
 export function AWSManualConnect() {
   return (
-    <Stack gap={3} p={3}>
-      <AWSGuideHeader />
-      <Divider />
+    <Stack gap={3}>
       <Typography variant="h5">AWS connection</Typography>
       <Sections sections={GENERIC_SECTIONS} />
       <Typography variant="h5">Connect Account via the AWS IAM Console</Typography>

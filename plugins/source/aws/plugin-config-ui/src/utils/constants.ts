@@ -24,6 +24,7 @@ export const awsServiceLabelMap: Record<string, string> = {
   amplifyuibuilder: 'Amplify UI Builder',
   aoss: 'OpenSearch Serverless',
   apigateway: 'API Gateway',
+  apigatewayv2: 'API Gateway V2',
   appconfig: 'AppConfig',
   appflow: 'AppFlow',
   applicationautoscaling: 'Application Auto Scaling',

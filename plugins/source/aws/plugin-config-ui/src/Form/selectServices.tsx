@@ -52,7 +52,7 @@ export function SelectServices({ awsServices: serviceOptions }: Props) {
     () =>
       showServices === ServiceList.Popular
         ? top8Services.map((name) => serviceOptions[name]).filter(Boolean)
-        : Object.values(serviceOptions),
+        : Object.values(serviceOptions).sort((a, b) => a.label.localeCompare(b.label)),
     [serviceOptions, showServices],
   );
 
@@ -112,6 +112,8 @@ export function SelectServices({ awsServices: serviceOptions }: Props) {
                   gap={2}
                   gridTemplateColumns={{ xs: 'minmax(0, 1fr) minmax(0, 1fr)' }}
                   width="100%"
+                  maxHeight="calc(100vh - 550px)"
+                  sx={{ overflowY: 'auto' }}
                 >
                   {filteredServices.map((service) => {
                     const isChecked = field.value?.includes(service.name);

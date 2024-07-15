@@ -23,11 +23,13 @@ interface BasicError {
   status: number;
 }
 
-export const createConnector = async (authToken: string, name: string) => {
+export const createConnector = async (authToken: string, connectorName: string) => {
   const headers = new Headers();
   headers.append('Authorization', `Bearer ${authToken}`);
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
+
+  const name = connectorName || 'AWS Connector';
 
   return fetch(`https://api.cloudquery.io/teams/cloudquery/connectors`, {
     headers,
@@ -39,13 +41,13 @@ export const createConnector = async (authToken: string, name: string) => {
   }).then((res) => res.json());
 };
 
-const authenticateConnectorAWS = async (authToken: string) => {
+const authenticateConnectorAWS = async (authToken: string, name: string) => {
   const headers = new Headers();
   headers.append('Authorization', `Bearer ${authToken}`);
   headers.append('Content-Type', 'application/json');
   headers.append('Accept', 'application/json');
 
-  const newConnector = await createConnector(authToken, 'TODO:name');
+  const newConnector = await createConnector(authToken, name);
 
   return fetch(
     `https://api.cloudquery.io/teams/cloudquery/connectors/${newConnector.id}/authenticate/aws`,
@@ -71,7 +73,7 @@ export const useAuthenticateConnectorAWS = <TError = BasicError, TContext = unkn
 }): UseMutationResult<
   Awaited<ReturnType<typeof authenticateConnectorAWS>>,
   TError,
-  {},
+  { name: string },
   TContext
 > => {
   const authToken = useContext(AuthContext);
@@ -80,9 +82,9 @@ export const useAuthenticateConnectorAWS = <TError = BasicError, TContext = unkn
 
   const mutationFn: MutationFunction<
     Awaited<ReturnType<typeof authenticateConnectorAWS>>,
-    {}
-  > = () => {
-    return authenticateConnectorAWS(authToken.value);
+    { name: string }
+  > = ({ name }) => {
+    return authenticateConnectorAWS(authToken.value, name);
   };
 
   const mutationOptions = { mutationFn, ...providedMutationOptions };

@@ -11,18 +11,18 @@ interface Props {}
 export function Connect({}: Props) {
   const form = useFormContext();
 
-  const { mutateAsync: authenticateAWS } = useAuthenticateConnectorAWS({});
+  const { mutateAsync: authenticateAWS } = useAuthenticateConnectorAWS();
 
   const hasLaunchedConnectionConsole = !!form.watch('connector_id');
 
   const handleClick = async () => {
-    const rsp = await authenticateAWS({}); // TODO:SUBMIT
-    console.log({ rsp });
-    form.setValue('connector_id', rsp.connector_id);
+    const { connector_id, redirect_url } = await authenticateAWS({ name: form.getValues('name') }); // TODO:SUBMIT
+
+    form.setValue('connector_id', connector_id);
 
     // TODO:SUBMIT
     pluginUiMessageHandler.sendMessage('open_url', {
-      url: rsp.redirect_url,
+      url: redirect_url,
     });
   };
 
@@ -83,7 +83,10 @@ export function Connect({}: Props) {
               error={!!fieldState.error}
               fullWidth={true}
               helperText={
-                fieldState.error?.message ?? 'It will be provided when you finish running the stack'
+                fieldState.error?.message ??
+                (form.watch('_setupType') === SetupType.Console
+                  ? 'It will be provided when you finish running the stack'
+                  : '')
               }
               label="ARN"
               {...field}

@@ -64,7 +64,7 @@ export function Form({ initialValues }: Props) {
           <AWSFormStepper />
           <Grid container spacing={2}>
             <Grid item xs={7} md={6}>
-              <FormFieldGroup title="AWS Connection">
+              <FormFieldGroup>
                 <Stack gap={2}>
                   <Box sx={{ display: activeIndex === 0 ? 'block' : 'none' }}>
                     <Connect />
