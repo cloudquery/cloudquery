@@ -84,7 +84,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 				return err
 			}
 		case schema.TableColumnChangeTypeRemoveUniqueConstraint:
-			if err := c.removeUniqueConstraint(ctx, table, table.Columns.Get(change.ColumnName)); err != nil {
+			if err := c.dropIndex(ctx, table, table.Columns.Get(change.ColumnName)); err != nil {
 				return err
 			}
 		}

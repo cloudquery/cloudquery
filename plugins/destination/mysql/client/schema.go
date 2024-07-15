@@ -131,7 +131,7 @@ func (c *Client) addColumn(ctx context.Context, table *schema.Table, column *sch
 	return err
 }
 
-func (c *Client) removeUniqueConstraint(ctx context.Context, table *schema.Table, column *schema.Column) error {
+func (c *Client) dropIndex(ctx context.Context, table *schema.Table, column *schema.Column) error {
 	builder := strings.Builder{}
 	builder.WriteString("ALTER TABLE ")
 	builder.WriteString(identifier(table.Name))
