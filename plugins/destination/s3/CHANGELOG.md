@@ -1,5 +1,17 @@
 # Changelog
 
+## [7.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.2.8...plugins-destination-s3-v7.3.0) (2024-07-16)
+
+
+### Features
+
+* Add s3 destination connection test ([#18544](https://github.com/cloudquery/cloudquery/issues/18544)) ([50fdfcc](https://github.com/cloudquery/cloudquery/commit/50fdfcc267644d6059865131094af0f85d3c710d))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#18564](https://github.com/cloudquery/cloudquery/issues/18564)) ([5e7a67c](https://github.com/cloudquery/cloudquery/commit/5e7a67cbc50c4d9f0ec8ce9a52f0c6f95fa37a7b))
+
 ## [7.2.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.2.7...plugins-destination-s3-v7.2.8) (2024-07-09)
 
 
