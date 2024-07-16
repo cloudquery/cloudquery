@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.1.4...plugins-destination-mysql-v5.2.0) (2024-07-16)
+
+
+### Features
+
+* Add connection test to MySQL destination ([#18549](https://github.com/cloudquery/cloudquery/issues/18549)) ([b79835d](https://github.com/cloudquery/cloudquery/commit/b79835d0bc706ea27f373d5a856c6b411ac90118))
+* Auto migrate removal of unique constraints ([#18569](https://github.com/cloudquery/cloudquery/issues/18569)) ([6043d4c](https://github.com/cloudquery/cloudquery/commit/6043d4c4f729ff207b442a4d5a088bcd75fb4630))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.3 ([#18513](https://github.com/cloudquery/cloudquery/issues/18513)) ([d12da90](https://github.com/cloudquery/cloudquery/commit/d12da90f5ca67b8e590c433ad2762d48c499e6aa))
+
 ## [5.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.1.3...plugins-destination-mysql-v5.1.4) (2024-07-09)
 
 
