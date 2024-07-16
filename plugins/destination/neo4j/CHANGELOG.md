@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v5.2.4...plugins-destination-neo4j-v5.3.0) (2024-07-16)
+
+
+### Features
+
+* Add connection test to the neo4j destination plugin ([#18553](https://github.com/cloudquery/cloudquery/issues/18553)) ([5f8667e](https://github.com/cloudquery/cloudquery/commit/5f8667ee36524ece1b7f3aa1f21956c328e1ac77))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.3 ([#18513](https://github.com/cloudquery/cloudquery/issues/18513)) ([d12da90](https://github.com/cloudquery/cloudquery/commit/d12da90f5ca67b8e590c433ad2762d48c499e6aa))
+
 ## [5.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v5.2.3...plugins-destination-neo4j-v5.2.4) (2024-07-09)
 
 
