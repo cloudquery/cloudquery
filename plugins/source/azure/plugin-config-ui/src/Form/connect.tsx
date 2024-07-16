@@ -1,6 +1,6 @@
 import { Box, Stack, TextField, Typography } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
-import { Logo } from '../components/logo';
+import { Logo } from '../components/todoShare/logo';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
 
 interface Props {}

@@ -6,7 +6,7 @@ import { prepareSubmitValues } from '../utils/prepareSubmitValues';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
 
 import { Connect } from './connect';
-import { AWSFormStepper } from '../components/stepper';
+import { AWSFormStepper } from '../components/todoGetFromShared/stepper';
 import { Guides } from '../components/guides';
 import { SelectServices } from './selectServices';
 import { useGetAWSServices } from '../hooks/useGetAWSServices';
@@ -19,6 +19,11 @@ interface Props {
 
 const formDefaultValues = formValidationSchema.getDefault();
 const formValidationResolver = getYupValidationResolver(formValidationSchema);
+
+export enum AWSFormStep {
+  ConnectAWS = 'Connect AWS',
+  SelectServices = 'Select services',
+}
 
 export function Form({ initialValues }: Props) {
   const form = useForm<FormValues>({
@@ -61,7 +66,7 @@ export function Form({ initialValues }: Props) {
     <form autoComplete="off" noValidate={true} onSubmit={handleSubmit(onSubmit)}>
       <Stack gap={5}>
         <FormProvider {...form}>
-          <AWSFormStepper />
+          <AWSFormStepper steps={[AWSFormStep.ConnectAWS, AWSFormStep.SelectServices]} />
           <Grid container spacing={2}>
             <Grid item xs={7} md={6}>
               <FormFieldGroup>

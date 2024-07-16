@@ -1,8 +1,8 @@
 import { Typography } from '@mui/material';
 import { Box, Stack } from '@mui/system';
-import { Logo } from '../components/logo';
+import { Logo } from '../components/todoShare/logo';
 import { top8Services } from '../utils/constants';
-import { ServiceList, ServiceTypes } from '../components/serviceList';
+import { ServiceList, ServiceTypes } from '../components/todoShare/serviceList';
 
 interface Props {
   services: ServiceTypes;

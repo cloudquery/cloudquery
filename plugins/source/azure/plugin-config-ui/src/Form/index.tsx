@@ -6,7 +6,7 @@ import { prepareSubmitValues } from '../utils/prepareSubmitValues';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
 
 import { Connect } from './connect';
-import { AzureFormStepper } from '../components/stepper';
+import { AzureFormStepper } from '../components/todoShare/stepper';
 import { Guides } from '../components/guides';
 import { SelectServices } from './selectServices';
 import { useGetServices } from '../hooks/useGetServices';
@@ -18,6 +18,11 @@ interface Props {
 
 const formDefaultValues = formValidationSchema.getDefault();
 const formValidationResolver = getYupValidationResolver(formValidationSchema);
+
+export enum AzureFormStep {
+  Connect = 'Connect Azure',
+  SelectServices = 'Select services',
+}
 
 export function Form({ initialValues }: Props) {
   const form = useForm<FormValues>({
@@ -53,7 +58,7 @@ export function Form({ initialValues }: Props) {
     <form autoComplete="off" noValidate={true} onSubmit={handleSubmit(onSubmit)}>
       <Stack gap={5}>
         <FormProvider {...form}>
-          <AzureFormStepper />
+          <AzureFormStepper steps={[AzureFormStep.Connect, AzureFormStep.SelectServices]} />
           <Grid container spacing={2}>
             <Grid item xs={7} md={6}>
               <FormFieldGroup>

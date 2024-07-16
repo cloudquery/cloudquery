@@ -1,6 +1,6 @@
 import { PluginUiMessagePayload } from '@cloudquery/plugin-config-ui-connector';
 import { FormValues } from './formSchema';
-import { ServiceTypes } from '../components/serviceList';
+import { ServiceTypes } from '../components/todoShare/serviceList';
 
 export function prepareSubmitValues(
   values: FormValues,

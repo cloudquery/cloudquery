@@ -8,11 +8,6 @@ import { StepIconProps } from '@mui/material/StepIcon';
 import useTheme from '@mui/material/styles/useTheme';
 import { useFormContext } from 'react-hook-form';
 
-export enum AWSFormStep {
-  ConnectAWS = 'Connect AWS',
-  SelectServices = 'Select services',
-}
-
 function SyncFormStepIcon({
   active,
   className,
@@ -55,13 +50,14 @@ function SyncFormStepIcon({
   );
 }
 
-interface Props {}
+interface Props {
+  steps: string[];
+}
 
-export function AWSFormStepper({}: Props) {
+export function AWSFormStepper({ steps }: Props) {
   const { watch, setValue } = useFormContext();
   const activeIndex = watch('_activeIndex');
 
-  const steps = [AWSFormStep.ConnectAWS, AWSFormStep.SelectServices];
   return (
     <Stepper
       activeStep={activeIndex}

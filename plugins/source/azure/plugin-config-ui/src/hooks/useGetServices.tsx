@@ -1,6 +1,6 @@
 import { serviceLabelMap, serviceNameResolutions } from '../utils/constants';
 import tableData from './TODO-tabledata.json';
-import { ServiceTypes } from '../components/serviceList';
+import { ServiceTypes } from '../components/todoShare/serviceList';
 
 export const useGetServices = (): ServiceTypes => {
   try {

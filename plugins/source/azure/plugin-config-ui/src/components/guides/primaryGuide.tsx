@@ -1,5 +1,5 @@
 import { Link, Stack, Typography } from '@mui/material';
-import { Sections } from './sections';
+import { RenderGuide } from '../todoShare/renderGuide';
 
 const GENERIC_SECTIONS = [
   {
@@ -80,7 +80,7 @@ export function PrimaryGuide() {
   return (
     <Stack gap={3}>
       <Typography variant="h5">Select services</Typography>
-      <Sections sections={GENERIC_SECTIONS} />
+      <RenderGuide sections={GENERIC_SECTIONS} />
     </Stack>
   );
 }

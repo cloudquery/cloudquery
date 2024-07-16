@@ -1,5 +1,5 @@
 import { Link, Stack, Typography } from '@mui/material';
-import { Sections } from './sections';
+import { RenderGuide } from '../todoShare/renderGuide';
 
 const SERVICES_SECTION = [
   {
@@ -32,7 +32,7 @@ export function AzureSelectServices() {
   return (
     <Stack gap={3}>
       <Typography variant="h5">Select services</Typography>
-      <Sections sections={SERVICES_SECTION} />
+      <RenderGuide sections={SERVICES_SECTION} />
     </Stack>
   );
 }

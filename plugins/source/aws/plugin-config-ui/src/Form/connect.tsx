@@ -1,7 +1,7 @@
 import { Box, Button, FormHelperText, Stack, TextField, Typography } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
-import { ExclusiveToggle } from '../components/exclusiveToggle';
-import { Logo } from '../components/logo';
+import { ExclusiveToggle } from '../components/todoShare/exclusiveToggle';
+import { Logo } from '../components/todoGetFromShared/logo';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
 import { SetupType } from '../utils/formSchema';
 import { useAuthenticateConnectorAWS } from '../hooks/useAuthenticateAWS';
@@ -55,8 +55,10 @@ export function Connect({}: Props) {
           name="_setupType"
           render={({ field }) => (
             <ExclusiveToggle
-              optionA={{ label: 'AWS Console', value: SetupType.Console }}
-              optionB={{ label: 'Manual setup', value: SetupType.Manual }}
+              options={[
+                { label: 'AWS Console', value: SetupType.Console },
+                { label: 'Manual setup', value: SetupType.Manual },
+              ]}
               {...field}
             />
           )}

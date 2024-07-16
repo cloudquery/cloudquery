@@ -1,5 +1,5 @@
 import { Stack, Typography } from '@mui/material';
-import { Sections } from './sections';
+import { Sections } from '../todoGetFromShared/sections';
 
 const SECTIONS = [
   {

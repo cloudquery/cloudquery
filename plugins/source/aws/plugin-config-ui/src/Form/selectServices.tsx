@@ -1,12 +1,12 @@
 import { Autocomplete, TextField, Typography } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 import { Controller } from 'react-hook-form';
-import { Logo } from '../components/logo';
+import { Logo } from '../components/todoGetFromShared/logo';
 import { awsRegions, top8Services } from '../utils/constants';
-import { ServiceList,ServiceTypes } from '../components/serviceList';
+import { ServiceList, ServiceTypes } from '../components/todoGetFromShared/serviceList';
 
 interface Props {
-  awsServices: ServiceTypes
+  awsServices: ServiceTypes;
 }
 
 export function SelectServices({ awsServices: serviceOptions }: Props) {
