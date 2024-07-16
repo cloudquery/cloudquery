@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.1.4...plugins-destination-gcs-v5.1.5) (2024-07-16)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.3 ([#18513](https://github.com/cloudquery/cloudquery/issues/18513)) ([d12da90](https://github.com/cloudquery/cloudquery/commit/d12da90f5ca67b8e590c433ad2762d48c499e6aa))
+* **deps:** Update module google.golang.org/api to v0.188.0 ([#18566](https://github.com/cloudquery/cloudquery/issues/18566)) ([c909d00](https://github.com/cloudquery/cloudquery/commit/c909d00e13d7635627caa431241305679f3ce188))
+
 ## [5.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.1.3...plugins-destination-gcs-v5.1.4) (2024-07-09)
 
 
