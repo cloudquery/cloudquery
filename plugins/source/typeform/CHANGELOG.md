@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.5.0...plugins-source-typeform-v1.5.1) (2024-07-16)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.29 ([#18546](https://github.com/cloudquery/cloudquery/issues/18546)) ([4e93fe7](https://github.com/cloudquery/cloudquery/commit/4e93fe751ff058fc7df575798a81f7ece089df9f))
+
 ## [1.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.4.3...plugins-source-typeform-v1.5.0) (2024-07-09)
 
 

@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.6.8...plugins-destination-mssql-v4.7.0) (2024-07-16)
+
+
+### Features
+
+* Add MSSQL connection test ([#18568](https://github.com/cloudquery/cloudquery/issues/18568)) ([2aa965f](https://github.com/cloudquery/cloudquery/commit/2aa965f4fb7aa4f8013750e8e3bcab912ca6718e))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.3 ([#18513](https://github.com/cloudquery/cloudquery/issues/18513)) ([d12da90](https://github.com/cloudquery/cloudquery/commit/d12da90f5ca67b8e590c433ad2762d48c499e6aa))
+* Fix user id format in example configuration comment ([#18561](https://github.com/cloudquery/cloudquery/issues/18561)) ([71eb413](https://github.com/cloudquery/cloudquery/commit/71eb4138e6906a50614826c1ec5a8d28353e2ddf))
+
 ## [4.6.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.6.7...plugins-destination-mssql-v4.6.8) (2024-07-09)
 
 
