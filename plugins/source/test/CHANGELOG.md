@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.2.17...plugins-source-test-v4.3.0) (2024-07-16)
+
+
+### Features
+
+* Pass invocation ID to scheduler ([#18510](https://github.com/cloudquery/cloudquery/issues/18510)) ([2fd34f8](https://github.com/cloudquery/cloudquery/commit/2fd34f831cf1c6761050b186087a802b97011df6))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.3 ([#18513](https://github.com/cloudquery/cloudquery/issues/18513)) ([d12da90](https://github.com/cloudquery/cloudquery/commit/d12da90f5ca67b8e590c433ad2762d48c499e6aa))
+
 ## [4.2.17](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.2.16...plugins-source-test-v4.2.17) (2024-07-09)
 
 
