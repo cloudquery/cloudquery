@@ -33,6 +33,8 @@ type Destination struct {
 
 	SyncSummary bool `json:"send_sync_summary,omitempty"`
 
+	Transformations []TransformationSpec `json:"transformations,omitempty"`
+
 	// Destination plugin own (nested) spec
 	Spec map[string]any `json:"spec,omitempty"`
 }
@@ -61,6 +63,11 @@ func (d *Destination) UnmarshalSpec(out any) error {
 }
 
 func (d *Destination) Validate() error {
+	for _, t := range d.Transformations {
+		if err := t.Validate(); err != nil {
+			return err
+		}
+	}
 	return d.Metadata.Validate()
 }
 

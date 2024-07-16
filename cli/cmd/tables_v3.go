@@ -59,5 +59,8 @@ func tablesV3(ctx context.Context, sourceClient *managedplugin.Client, sourceSpe
 	if format == "json" {
 		f = docs.FormatJSON
 	}
+	if format == "spec" {
+		f = docs.FormatSpec
+	}
 	return g.Generate(path, f)
 }

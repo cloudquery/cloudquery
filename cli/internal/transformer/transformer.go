@@ -6,6 +6,7 @@ import (
 	"github.com/apache/arrow/go/v16/arrow"
 	"github.com/apache/arrow/go/v16/arrow/array"
 	"github.com/apache/arrow/go/v16/arrow/memory"
+	"github.com/cloudquery/cloudquery/cli/transformations"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
@@ -27,9 +28,19 @@ type RecordTransformer struct {
 	cqIDPrimaryKey          bool
 	withSyncGroupID         bool
 	syncGroupId             string
+
+	// Transformations are added via the destination spec, and the client will run them
+	transformations       []transformations.Transformation
+	transformationsClient *transformations.TransformationClient
 }
 
 type RecordTransformerOption func(*RecordTransformer)
+
+func WithTransformation(transformation transformations.Transformation) RecordTransformerOption {
+	return func(transformer *RecordTransformer) {
+		transformer.transformations = append(transformer.transformations, transformation)
+	}
+}
 
 func WithSourceNameColumn(name string) RecordTransformerOption {
 	return func(transformer *RecordTransformer) {
@@ -122,7 +133,22 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 		})
 	}
 	scMd := sc.Metadata()
-	return arrow.NewSchema(fields, &scMd)
+	newSchema := arrow.NewSchema(fields, &scMd)
+
+	// Apply schema changes from the initial schema based on the transformations from the destination spec
+	if len(t.transformations) > 0 {
+		if t.transformationsClient == nil {
+			t.transformationsClient = transformations.NewTransformationClient()
+			t.transformationsClient.SetInitialSchema(newSchema)
+			err := t.transformationsClient.AddTransformations(t.transformations)
+			if err != nil {
+				panic(err)
+			}
+		}
+		newSchema = t.transformationsClient.GetTransformedSchema()
+	}
+
+	return newSchema
 }
 
 func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
@@ -159,5 +185,17 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 
 	cols = append(cols, record.Columns()...)
 
-	return array.NewRecord(newSchema, cols, int64(nRows))
+	// Apply data transformations from the destination spec
+	var newRecord arrow.Record
+	if len(t.transformations) > 0 {
+		newRecord = array.NewRecord(t.transformationsClient.GetInitialSchema(), cols, int64(nRows))
+		var err error
+		newRecord, err = t.transformationsClient.TransformRecord(newRecord)
+		if err != nil {
+			panic(err)
+		}
+	} else {
+		newRecord = array.NewRecord(newSchema, cols, int64(nRows))
+	}
+	return newRecord
 }

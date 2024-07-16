@@ -11,6 +11,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/internal/api"
@@ -20,13 +21,11 @@ import (
 	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
 	"github.com/vnteamopen/godebouncer"
 	"google.golang.org/protobuf/types/known/timestamppb"
-
-	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
-	"github.com/google/uuid"
 )
 
 type v3source struct {
@@ -125,6 +124,16 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			transformer.WithSourceNameColumn(sourceName),
 			transformer.WithSyncTimeColumn(syncTime),
 		}
+
+		// Add transformations to the transformer
+		for _, transformationSpec := range destinationSpecs[i].Transformations {
+			transformation, err := transformationSpec.ToTransformation()
+			if err != nil {
+				return fmt.Errorf("failed to build transformation: %w", err)
+			}
+			opts = append(opts, transformer.WithTransformation(transformation))
+		}
+
 		if destinationSpecs[i].SyncGroupId != "" {
 			opts = append(opts, transformer.WithSyncGroupIdColumn(destinationSpecs[i].RenderedSyncGroupId(syncTime, uid)))
 		}
@@ -308,6 +317,10 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			}
 			for i := range destinationsPbClients {
 				transformedRecord := destinationTransformers[i].Transform(record)
+				// A transformation can add a WHERE clause that removes a record
+				if transformedRecord == nil {
+					continue
+				}
 				transformedRecordBytes, err := plugin.RecordToBytes(transformedRecord)
 				if err != nil {
 					return fmt.Errorf("failed to transform record bytes: %w", err)

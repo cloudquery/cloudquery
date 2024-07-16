@@ -21,10 +21,11 @@ type Format int
 const (
 	FormatMarkdown Format = iota
 	FormatJSON
+	FormatSpec
 )
 
 func (r Format) String() string {
-	return [...]string{"markdown", "json"}[r]
+	return [...]string{"markdown", "json", "spec"}[r]
 }
 
 func FormatFromString(s string) (Format, error) {
@@ -33,6 +34,8 @@ func FormatFromString(s string) (Format, error) {
 		return FormatMarkdown, nil
 	case "json":
 		return FormatJSON, nil
+	case "spec":
+		return FormatSpec, nil
 	default:
 		return FormatMarkdown, fmt.Errorf("unknown format %s", s)
 	}
@@ -78,6 +81,8 @@ func (g *Generator) Generate(dir string, format Format) error {
 		return g.renderTablesAsMarkdown(dir)
 	case FormatJSON:
 		return g.renderTablesAsJSON(dir)
+	case FormatSpec:
+		return g.renderTablesAsSpec(dir)
 	default:
 		return fmt.Errorf("unsupported format: %v", format)
 	}
