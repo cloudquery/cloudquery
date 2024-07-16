@@ -12,13 +12,16 @@ const SERVICES_SECTION = [
       },
       {
         Node: () => (
-          <div>
+          <Typography variant="body1" color="secondary">
             See the [
-            <Link target="_blank" href="TODO:link">
+            <Link
+              target="_blank"
+              href="https://hub.cloudquery.io/plugins/source/cloudquery/aws/latest/docs"
+            >
               AWS Plugin Documentation
             </Link>
             ] to see the full list of tables and their schema.
-          </div>
+          </Typography>
         ),
       },
     ],

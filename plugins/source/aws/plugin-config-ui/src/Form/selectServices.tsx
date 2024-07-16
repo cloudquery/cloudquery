@@ -1,60 +1,16 @@
-import {
-  Autocomplete,
-  Button,
-  Checkbox,
-  Tab,
-  Tabs,
-  TextField,
-  ToggleButton,
-  Tooltip,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Autocomplete, TextField, Typography } from '@mui/material';
 import { Box, Stack } from '@mui/system';
-import { useEffect, useMemo, useState } from 'react';
 import { Controller } from 'react-hook-form';
 import { Logo } from '../components/logo';
 import { awsRegions, top8Services } from '../utils/constants';
-import { AWSService, AWSServices } from '../hooks/useGetAWSServices';
-
-enum ServiceList {
-  All = 'all',
-  Popular = 'popular',
-}
+import { ServiceList, ServiceType } from '../components/serviceList';
 
 interface Props {
-  awsServices: AWSServices;
-}
-
-interface StyledAWSService extends AWSService {
-  sx?: any;
+  awsServices: Record<string, ServiceType>;
 }
 
 export function SelectServices({ awsServices: serviceOptions }: Props) {
-  const { palette } = useTheme();
-  const [showServices, setShowServices] = useState<ServiceList.All | ServiceList.Popular>(
-    ServiceList.Popular,
-  );
-
   const regionOptions = awsRegions;
-
-  // prefetch logos
-  useEffect(() => {
-    if (serviceOptions) {
-      Object.values(serviceOptions).forEach((service) => {
-        const img = new Image();
-        img.src = service.logo;
-      });
-    }
-  }, [serviceOptions]);
-
-  const filteredServices: StyledAWSService[] = useMemo(
-    () =>
-      showServices === ServiceList.Popular
-        ? top8Services.map((name) => serviceOptions[name]).filter(Boolean)
-        : Object.values(serviceOptions).sort((a, b) => a.label.localeCompare(b.label)),
-    [serviceOptions, showServices],
-  );
 
   return (
     <Stack gap={1}>
@@ -98,102 +54,11 @@ export function SelectServices({ awsServices: serviceOptions }: Props) {
             );
           }}
         />
-        <Controller
-          name="services"
-          render={({ field }) => {
-            return (
-              <Stack gap={2}>
-                <Tabs value={showServices} onChange={(_, newValue) => setShowServices(newValue)}>
-                  <Tab label="Popular Services" value={ServiceList.Popular}></Tab>
-                  <Tab label="All Services" value={ServiceList.All}></Tab>
-                </Tabs>
-                <Box
-                  display="grid"
-                  gap={2}
-                  gridTemplateColumns={{ xs: 'minmax(0, 1fr) minmax(0, 1fr)' }}
-                  width="100%"
-                  maxHeight="calc(100vh - 550px)"
-                  sx={{ overflowY: 'auto' }}
-                >
-                  {filteredServices.map((service) => {
-                    const isChecked = field.value?.includes(service.name);
-
-                    return (
-                      <ToggleButton
-                        sx={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          py: 0.5,
-                          pr: 0,
-                          ...service.sx,
-                        }}
-                        key={service.name}
-                        value={service.name}
-                        onClick={() =>
-                          field.onChange(() =>
-                            isChecked
-                              ? field.value.filter((name: string) => name !== service.name)
-                              : [...field.value, service.name],
-                          )
-                        }
-                      >
-                        <Box
-                          display="flex"
-                          alignItems="center"
-                          gap={1}
-                          justifyContent="space-between"
-                          width="100%"
-                        >
-                          <Box
-                            display="flex"
-                            alignItems="center"
-                            gap={1}
-                            flexShrink={1}
-                            width="70%"
-                          >
-                            <Logo
-                              src={service.logo}
-                              fallbackSrc="/images/aws.webp"
-                              alt={service.name}
-                              height={32}
-                              width={32}
-                            />
-                            <Tooltip title={service.label}>
-                              <Typography
-                                sx={{
-                                  overflow: 'hidden',
-                                  textOverflow: 'ellipsis',
-                                  whiteSpace: 'nowrap',
-                                }}
-                                color={palette.grey[400]}
-                                fontWeight="bold"
-                                variant="body1"
-                              >
-                                {service.label}
-                              </Typography>
-                            </Tooltip>
-                          </Box>
-                          <Checkbox checked={isChecked} />
-                        </Box>
-                      </ToggleButton>
-                    );
-                  })}
-                </Box>
-                <Button
-                  fullWidth
-                  onClick={() =>
-                    setShowServices(
-                      showServices === ServiceList.Popular ? ServiceList.All : ServiceList.Popular,
-                    )
-                  }
-                >
-                  {showServices === ServiceList.Popular
-                    ? 'Show all services'
-                    : 'Show only popular services'}
-                </Button>
-              </Stack>
-            );
-          }}
+        <ServiceList
+          topServices={top8Services}
+          services={serviceOptions}
+          formControlName="services"
+          fallbackLogoSrc="/images/aws.webp"
         />
       </Stack>
     </Stack>

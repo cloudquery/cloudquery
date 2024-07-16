@@ -1,5 +1,5 @@
 {
-  "name": "plugin-config-ui",
+  "name": "aws-source-plugin-config-ui",
   "version": "0.1.0",
   "private": true,
   "homepage": "./",

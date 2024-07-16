@@ -1,6 +1,6 @@
 import { Box, Button, FormHelperText, Stack, TextField, Typography } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
-import { ExclusiveToggle } from '../components/selector';
+import { ExclusiveToggle } from '../components/exclusiveToggle';
 import { Logo } from '../components/logo';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
 import { SetupType } from '../utils/formSchema';
