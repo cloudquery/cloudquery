@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.3.4...plugins-destination-elasticsearch-v3.4.0) (2024-07-16)
+
+
+### Features
+
+* Add ElasticSearch destination connection test ([#18560](https://github.com/cloudquery/cloudquery/issues/18560)) ([95e656e](https://github.com/cloudquery/cloudquery/commit/95e656e768ed7f84d8026c20c4ee3bee6ebc5824))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.3 ([#18513](https://github.com/cloudquery/cloudquery/issues/18513)) ([d12da90](https://github.com/cloudquery/cloudquery/commit/d12da90f5ca67b8e590c433ad2762d48c499e6aa))
+
 ## [3.3.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.3.3...plugins-destination-elasticsearch-v3.3.4) (2024-07-09)
 
 
