@@ -7,7 +7,7 @@
     "@cloudquery-plugin/tables": "file:../docs/__tables.json",
     "@cloudquery/cloud-ui": "^0.1.6",
     "@cloudquery/plugin-config-ui-connector": "^0.2.0",
-    "@cloudquery/plugin-config-ui-lib": "^0.0.7",
+    "@cloudquery/plugin-config-ui-lib": "^0.0.8",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
