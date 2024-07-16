@@ -1,0 +1,3042 @@
+[
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/advisor/recommendation-metadata/list?tabs=HTTP#metadataentity",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_advisor_recommendation_metadata",
+    "relations": [],
+    "title": "Azure Advisor Recommendation Metadata"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/advisor/recommendations/list?tabs=HTTP#resourcerecommendationbase",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_advisor_recommendations",
+    "relations": [],
+    "title": "Azure Advisor Recommendations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/advisor/suppressions/list?tabs=HTTP#suppressioncontractlistresult",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_advisor_suppressions",
+    "relations": [],
+    "title": "Azure Advisor Suppressions"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/analysisservices/servers/list?tabs=HTTP#analysisservicesserver",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_analysisservices_servers",
+    "relations": [],
+    "title": "Azure Analysis Services Servers"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/apimanagement/armapimanagement/v2#ServiceResource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_apimanagement_service",
+    "relations": [],
+    "title": "Azure API Management Service"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/appcompliance/reports/list?tabs=HTTP#reportresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_appcomplianceautomation_reports",
+    "relations": [],
+    "title": "Azure App Compliance Automation Reports"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/appconfiguration/stable/configuration-stores/list?tabs=HTTP#configurationstore",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_appconfiguration_configuration_stores",
+    "relations": [],
+    "title": "Azure Appconfiguration Configuration Stores"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/application-insights/components/list?tabs=HTTP#applicationinsightscomponent",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_applicationinsights_components",
+    "relations": [],
+    "title": "Azure Application Insights Components"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/application-insights/web-tests/list?tabs=HTTP#webtest",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_applicationinsights_web_tests",
+    "relations": [],
+    "title": "Azure Application Insights Web Tests"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/appservice/app-service-certificate-orders/list?tabs=HTTP#appservicecertificateorder",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_appservice_certificate_orders",
+    "relations": [],
+    "title": "Azure App Service Certificate Orders"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/appservice/certificates/list?tabs=HTTP#certificate",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_appservice_certificates",
+    "relations": [],
+    "title": "Azure App Service Certificates"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/appservice/deleted-web-apps/list#deletedsite",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_appservice_deleted_web_apps",
+    "relations": [],
+    "title": "Azure App Service Deleted Web Apps"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/appservice/domains/list?tabs=HTTP#domain",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_appservice_domains",
+    "relations": [],
+    "title": "Azure App Service Domains"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/appservice/app-service-environments/list?tabs=HTTP#appserviceenvironmentresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_appservice_environments",
+    "relations": [],
+    "title": "Azure App Service Environments"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/appservice/app-service-environments/list-app-service-plans?tabs=HTTP#appserviceplan",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_appservice_plans",
+    "relations": [],
+    "title": "Azure App Service Plans"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/appservice/recommendations/list#recommendation",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_appservice_recommendations",
+    "relations": [],
+    "title": "Azure App Service Recommendations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/appservice/resource-health-metadata/list?tabs=HTTP#resourcehealthmetadata",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_appservice_resource_health_metadata",
+    "relations": [],
+    "title": "Azure App Service Resource Health Metadata"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/appservice/static-sites/list?tabs=HTTP#staticsitearmresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_appservice_static_sites",
+    "relations": [],
+    "title": "Azure App Service Static Sites"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/appservice/top-level-domains/list?tabs=HTTP#topleveldomain",
+    "is_incremental": false,
+    "is_paid": false,
+    "name": "azure_appservice_top_level_domains",
+    "relations": [],
+    "title": "Azure App Service Top Level Domains"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/get-auth-settings#siteauthsettings",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_appservice_web_app_auth_settings",
+    "parent": "azure_appservice_web_apps",
+    "relations": [],
+    "title": "Azure App Service Web App Auth Settings"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/list-configurations#siteconfigresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_appservice_web_app_configurations",
+    "parent": "azure_appservice_web_apps",
+    "relations": [],
+    "title": "Azure App Service Web App Configurations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/list#site",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_appservice_web_apps",
+    "relations": [
+      "azure_appservice_web_app_auth_settings",
+      "azure_appservice_web_app_configurations",
+      "azure_appservice_web_app_vnet_connections"
+    ],
+    "title": "Azure App Service Web Apps"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/appservice/web-apps/list-vnet-connections#vnetinforesource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_appservice_web_app_vnet_connections",
+    "parent": "azure_appservice_web_apps",
+    "relations": [],
+    "title": "Azure App Service Web App Vnet Connections"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/authorization/classic-administrators/list?tabs=HTTP#classicadministrator",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_authorization_classic_administrators",
+    "relations": [],
+    "title": "Azure Authorization Classic Administrators"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/authorization/provider-operations-metadata/list?tabs=HTTP#provideroperationsmetadata",
+    "is_incremental": false,
+    "is_paid": false,
+    "name": "azure_authorization_provider_operations_metadata",
+    "relations": [],
+    "title": "Azure Authorization Provider Operations Metadata"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/authorization/role-assignments/get?tabs=HTTP#roleassignment",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_authorization_role_assignments",
+    "relations": [],
+    "title": "Azure Authorization Role Assignments"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/authorization/role-definitions/list?tabs=HTTP#roledefinition",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_authorization_role_definitions",
+    "relations": [],
+    "title": "Azure Authorization Role Definitions"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/automation/automation-account/list?tabs=HTTP#automationaccount",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_automation_account",
+    "relations": [],
+    "title": "Azure Automation Account"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata#PostgresInstance",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_azurearcdata_postgres_instances",
+    "relations": [],
+    "title": "Azure Azure Arc Data Postgres Instances"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata#SQLManagedInstance",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_azurearcdata_sql_managed_instances",
+    "relations": [],
+    "title": "Azure Azure Arc Data SQL Managed Instances"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurearcdata/armazurearcdata#SQLServerInstance",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_azurearcdata_sql_server_instances",
+    "relations": [],
+    "title": "Azure Azure Arc Data SQL Server Instances"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/batchmanagement/batch-account/list?tabs=HTTP#batchaccount",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_batch_account",
+    "relations": [],
+    "title": "Azure Batch Account"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/billing/2020-05-01/billing-accounts/list?tabs=HTTP#billingaccount",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_billing_accounts",
+    "relations": [],
+    "title": "Azure Billing Accounts"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling#EnrollmentAccountSummary",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_billing_enrollment_accounts",
+    "relations": [],
+    "title": "Azure Billing Enrollment Accounts"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/billing/armbilling#Period",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_billing_periods",
+    "relations": [],
+    "title": "Azure Billing Periods"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/botservice/armbotservice#Bot",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_botservice_bots",
+    "relations": [],
+    "title": "Azure Botservice Bots"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cdn/edge-nodes/list?tabs=HTTP#edgenode",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cdn_edge_nodes",
+    "relations": [],
+    "title": "Azure Content Delivery Network (CDN) Edge Nodes"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cdn/endpoints/list-by-profile?tabs=HTTP#endpoint",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cdn_endpoints",
+    "parent": "azure_cdn_profiles",
+    "relations": [],
+    "title": "Azure Content Delivery Network (CDN) Endpoints"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v2#ManagedRuleSetDefinition",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cdn_managed_rule_sets",
+    "relations": [],
+    "title": "Azure Content Delivery Network (CDN) Managed Rule Sets"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cdn/profiles/list?tabs=HTTP#profile",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cdn_profiles",
+    "relations": ["azure_cdn_endpoints", "azure_cdn_rule_sets", "azure_cdn_security_policies"],
+    "title": "Azure Content Delivery Network (CDN) Profiles"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v2#RuleSet",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cdn_rule_sets",
+    "parent": "azure_cdn_profiles",
+    "relations": [],
+    "title": "Azure Content Delivery Network (CDN) Rule Sets"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v2#SecurityPolicy",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cdn_security_policies",
+    "parent": "azure_cdn_profiles",
+    "relations": [],
+    "title": "Azure Content Delivery Network (CDN) Security Policies"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cognitiveservices/accountmanagement/deployments/list?tabs=HTTP#deployment",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cognitiveservices_account_deployments",
+    "parent": "azure_cognitiveservices_accounts",
+    "relations": [],
+    "title": "Azure Cognitive Services Account Deployments"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices#AccountModel",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cognitiveservices_account_models",
+    "parent": "azure_cognitiveservices_accounts",
+    "relations": [],
+    "title": "Azure Cognitive Services Account Models"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cognitiveservices/accountmanagement/private-endpoint-connections/list?tabs=HTTP#privateendpointconnection",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cognitiveservices_account_private_endpoint_connections",
+    "parent": "azure_cognitiveservices_accounts",
+    "relations": [],
+    "title": "Azure Cognitive Services Account Private Endpoint Connections"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cognitiveservices/accountmanagement/private-link-resources/list?tabs=HTTP#privatelinkresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cognitiveservices_account_private_link_resources",
+    "parent": "azure_cognitiveservices_accounts",
+    "relations": [],
+    "title": "Azure Cognitive Services Account Private Link Resources"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cognitiveservices/accountmanagement/accounts/list?tabs=HTTP#account",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cognitiveservices_accounts",
+    "relations": [
+      "azure_cognitiveservices_account_skus",
+      "azure_cognitiveservices_account_usages",
+      "azure_cognitiveservices_account_models",
+      "azure_cognitiveservices_account_deployments",
+      "azure_cognitiveservices_account_private_endpoint_connections",
+      "azure_cognitiveservices_account_private_link_resources"
+    ],
+    "title": "Azure Cognitive Services Accounts"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cognitiveservices/accountmanagement/accounts/list-skus?tabs=HTTP#accountsku",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cognitiveservices_account_skus",
+    "parent": "azure_cognitiveservices_accounts",
+    "relations": [],
+    "title": "Azure Cognitive Services Account Skus"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cognitiveservices/accountmanagement/accounts/list-usages?tabs=HTTP#usage",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cognitiveservices_account_usages",
+    "parent": "azure_cognitiveservices_accounts",
+    "relations": [],
+    "title": "Azure Cognitive Services Account Usages"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cognitiveservices/accountmanagement/commitment-plans/list?tabs=HTTP#commitmentplan",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cognitiveservices_commitment_plans",
+    "relations": [],
+    "title": "Azure Cognitive Services Commitment Plans"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cognitiveservices/accountmanagement/deleted-accounts/list?tabs=HTTP#account",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cognitiveservices_deleted_accounts",
+    "relations": [],
+    "title": "Azure Cognitive Services Deleted Accounts"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cognitiveservices/accountmanagement/resource-skus/list?tabs=HTTP#resourcesku",
+    "is_incremental": false,
+    "is_paid": false,
+    "name": "azure_cognitiveservices_resource_skus",
+    "relations": [],
+    "title": "Azure Cognitive Services Resource Skus"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/availability-sets/list-by-subscription?tabs=HTTP#availabilityset",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_availability_sets",
+    "relations": [],
+    "title": "Azure Compute Availability Sets"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/capacity-reservation-groups/list-by-resource-group?tabs=HTTP#capacityreservationgroup",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_capacity_reservation_groups",
+    "relations": ["azure_compute_capacity_reservations"],
+    "title": "Azure Compute Capacity Reservation Groups"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/capacity-reservations/list-by-capacity-reservation-group?tabs=HTTP#capacityreservation",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_capacity_reservations",
+    "parent": "azure_compute_capacity_reservation_groups",
+    "relations": [],
+    "title": "Azure Compute Capacity Reservations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/cloud-services/list?tabs=HTTP#cloudservice",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_cloud_services",
+    "relations": [],
+    "title": "Azure Compute Cloud Services"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/disk-accesses/list?tabs=HTTP#diskaccess",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_disk_accesses",
+    "relations": [],
+    "title": "Azure Compute Disk Accesses"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/disk-encryption-sets/list?tabs=HTTP#diskencryptionset",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_disk_encryption_sets",
+    "relations": [],
+    "title": "Azure Compute Disk Encryption Sets"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/disks/list?tabs=HTTP#disk",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_disks",
+    "relations": [],
+    "title": "Azure Compute Disks"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/galleries/list?tabs=HTTP#gallery",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_galleries",
+    "relations": ["azure_compute_gallery_images"],
+    "title": "Azure Compute Galleries"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/gallery-images/list-by-gallery?tabs=HTTP#galleryimage",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_gallery_images",
+    "parent": "azure_compute_galleries",
+    "relations": ["azure_compute_gallery_image_versions"],
+    "title": "Azure Compute Gallery Images"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/gallery-image-versions/list-by-gallery-image?tabs=HTTP#galleryimageversion",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_gallery_image_versions",
+    "parent": "azure_compute_gallery_images",
+    "relations": [],
+    "title": "Azure Compute Gallery Image Versions"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/images/list?tabs=HTTP#image",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_images",
+    "relations": [],
+    "title": "Azure Compute Images"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/restore-point-collections/get?view=rest-compute-2024-03-01&tabs=HTTP",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_restore_point_collections",
+    "relations": [],
+    "title": "Azure Compute Restore Point Collections"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/resource-skus/list?tabs=HTTP#resourceskusresult",
+    "is_incremental": false,
+    "is_paid": false,
+    "name": "azure_compute_skus",
+    "relations": [],
+    "title": "Azure Compute Skus"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/snapshots/list?tabs=HTTP#snapshot",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_snapshots",
+    "relations": [],
+    "title": "Azure Compute Snapshots"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/ssh-public-keys/list-by-subscription?tabs=HTTP#sshpublickeyresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_ssh_public_keys",
+    "relations": [],
+    "title": "Azure Compute SSH Public Keys"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/virtual-machine-extensions/list?tabs=HTTP#virtualmachineextension",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_virtual_machine_extensions",
+    "parent": "azure_compute_virtual_machines",
+    "relations": [],
+    "title": "Azure Compute Virtual Machine Extensions"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/virtual-machines/assess-patches?tabs=HTTP#virtualmachineassesspatchesresult.\n\nThis will begin patch assessments on available virtual machines and can take long to complete.\n\nNot available for all VMs. More at https://learn.microsoft.com/en-us/azure/virtual-machines/automatic-vm-guest-patching#requirements-for-enabling-automatic-vm-guest-patching\n",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_virtual_machine_patch_assessments",
+    "parent": "azure_compute_virtual_machines",
+    "relations": [],
+    "title": "Azure Compute Virtual Machine Patch Assessments"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/virtual-machines/list?tabs=HTTP#virtualmachine",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_virtual_machines",
+    "relations": [
+      "azure_compute_virtual_machine_extensions",
+      "azure_compute_virtual_machine_patch_assessments"
+    ],
+    "title": "Azure Compute Virtual Machines"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-interface-in-vm-ss/list-virtual-machine-scale-set-network-interfaces?tabs=HTTP#networkinterface",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_virtual_machine_scale_set_network_interfaces",
+    "parent": "azure_compute_virtual_machine_scale_sets",
+    "relations": [],
+    "title": "Azure Compute Virtual Machine Scale Set Network Interfaces"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/virtual-machine-scale-sets/list?tabs=HTTP#virtualmachinescaleset",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_virtual_machine_scale_sets",
+    "relations": [
+      "azure_compute_virtual_machine_scale_set_vms",
+      "azure_compute_virtual_machine_scale_set_network_interfaces"
+    ],
+    "title": "Azure Compute Virtual Machine Scale Sets"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/compute/virtual-machine-scale-set-vms/list?tabs=HTTP#virtualmachinescalesetvm",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_compute_virtual_machine_scale_set_vms",
+    "parent": "azure_compute_virtual_machine_scale_sets",
+    "relations": [],
+    "title": "Azure Compute Virtual Machine Scale Set Vms"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/confluent/marketplace-agreements/list?tabs=HTTP#confluentagreementresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_confluent_marketplace_agreements",
+    "relations": [],
+    "title": "Azure Confluent Marketplace Agreements"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware#Cluster",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_connectedvmware_clusters",
+    "relations": [],
+    "title": "Azure Connected VMware Clusters"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware#Datastore",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_connectedvmware_datastores",
+    "relations": [],
+    "title": "Azure Connected VMware Datastores"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware#Host",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_connectedvmware_hosts",
+    "relations": [],
+    "title": "Azure Connected VMware Hosts"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware#ResourcePool",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_connectedvmware_resource_pools",
+    "relations": [],
+    "title": "Azure Connected VMware Resource Pools"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware#VCenter",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_connectedvmware_v_centers",
+    "relations": [],
+    "title": "Azure Connected VMware V Centers"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/azure/templates/microsoft.connectedvmwarevsphere/2022-01-10-preview/virtualmachines#virtualmachines-1",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_connectedvmware_virtual_machines",
+    "relations": [],
+    "title": "Azure Connected VMware Virtual Machines"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware#VirtualMachineTemplate",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_connectedvmware_virtual_machine_templates",
+    "relations": [],
+    "title": "Azure Connected VMware Virtual Machine Templates"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/connectedvmware/armconnectedvmware#VirtualNetwork",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_connectedvmware_virtual_networks",
+    "relations": [],
+    "title": "Azure Connected VMware Virtual Networks"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/balances/get-by-billing-account?tabs=HTTP#balance",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_billing_account_balances",
+    "relations": [],
+    "title": "Azure Consumption Billing Account Balances"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/budgets/list?tabs=HTTP#budget",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_billing_account_budgets",
+    "relations": [],
+    "title": "Azure Consumption Billing Account Budgets"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/charges/list?tabs=HTTP#modernchargesummary",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_billing_account_charges",
+    "relations": [],
+    "title": "Azure Consumption Billing Account Charges"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/events/list-by-billing-account?tabs=HTTP#eventsummary",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_billing_account_events",
+    "relations": [],
+    "title": "Azure Consumption Billing Account Events"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/usage-details/list?tabs=HTTP#legacyusagedetail",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_billing_account_legacy_usage_details",
+    "relations": [],
+    "title": "Azure Consumption Billing Account Legacy Usage Details"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/lots/list-by-billing-account?tabs=HTTP#lotsummary",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_billing_account_lots",
+    "relations": [],
+    "title": "Azure Consumption Billing Account Lots"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/marketplaces/list?tabs=HTTP#marketplace",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_billing_account_marketplaces",
+    "relations": [],
+    "title": "Azure Consumption Billing Account Marketplaces"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/usage-details/list?tabs=HTTP#modernusagedetail",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_billing_account_modern_usage_details",
+    "relations": [],
+    "title": "Azure Consumption Billing Account Modern Usage Details"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/reservation-recommendations/list?tabs=HTTP#legacyreservationrecommendation",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_billing_account_reservation_recommendations",
+    "relations": [],
+    "title": "Azure Consumption Billing Account Reservation Recommendations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/tags/get?tabs=HTTP#tagsresult",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_billing_account_tags",
+    "relations": [],
+    "title": "Azure Consumption Billing Account Tags"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/reservations-details/list?tabs=HTTP#reservationdetail",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_billing_profile_reservation_details",
+    "relations": [],
+    "title": "Azure Consumption Billing Profile Reservation Details"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/reservation-recommendations/list?tabs=HTTP#modernreservationrecommendation",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_billing_profile_reservation_recommendations",
+    "relations": [],
+    "title": "Azure Consumption Billing Profile Reservation Recommendations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/reservations-summaries/list?tabs=HTTP#reservationsummary",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_billing_profile_reservation_summaries",
+    "relations": [],
+    "title": "Azure Consumption Billing Profile Reservation Summaries"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/reservation-transactions/list?tabs=HTTP#reservationtransaction",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_billing_profile_reservation_transactions",
+    "relations": [],
+    "title": "Azure Consumption Billing Profile Reservation Transactions"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/budgets/list?tabs=HTTP#budget",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_subscription_budgets",
+    "relations": [],
+    "title": "Azure Consumption Subscription Budgets"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/usage-details/list?tabs=HTTP#legacyusagedetail",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_subscription_legacy_usage_details",
+    "relations": [],
+    "title": "Azure Consumption Subscription Legacy Usage Details"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/budgets/list?tabs=HTTP#budget",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_subscription_marketplaces",
+    "relations": [],
+    "title": "Azure Consumption Subscription Marketplaces"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/price-sheet/get?tabs=HTTP#pricesheetresult",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_subscription_price_sheets",
+    "relations": [],
+    "title": "Azure Consumption Subscription Price Sheets"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/reservation-recommendations/list?tabs=HTTP#legacyreservationrecommendation",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_subscription_reservation_recommendations",
+    "relations": [],
+    "title": "Azure Consumption Subscription Reservation Recommendations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/consumption/tags/get?tabs=HTTP#tagsresult",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_consumption_subscription_tags",
+    "relations": [],
+    "title": "Azure Consumption Subscription Tags"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/container-instances/container-groups/list?tabs=HTTP#containergroup",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_containerinstance_container_groups",
+    "relations": [],
+    "title": "Azure Container Instance Container Groups"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/containerregistry/registries/list?tabs=HTTP#registry",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_containerregistry_registries",
+    "relations": [],
+    "title": "Azure Container Registry Registries"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/aks/managed-clusters/list?tabs=HTTP#managedcluster",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_containerservice_managed_clusters",
+    "relations": ["azure_containerservice_managed_cluster_upgrade_profiles"],
+    "title": "Azure Container Service Managed Clusters"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/aks/managed-clusters/get-upgrade-profile?tabs=HTTP#managedclusterupgradeprofile",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_containerservice_managed_cluster_upgrade_profiles",
+    "parent": "azure_containerservice_managed_clusters",
+    "relations": [],
+    "title": "Azure Container Service Managed Cluster Upgrade Profiles"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/aks/snapshots/list?tabs=HTTP#snapshot",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_containerservice_snapshots",
+    "relations": [],
+    "title": "Azure Container Service Snapshots"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/database-accounts/get?view=rest-cosmos-db-resource-provider-2023-11-15&tabs=HTTP#databaseaccountgetresults",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cosmos_database_accounts",
+    "relations": ["azure_cosmos_mongo_db_databases", "azure_cosmos_sql_databases"],
+    "title": "Azure Cosmos Database Accounts"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/locations/list?tabs=HTTP#locationgetresult",
+    "is_incremental": false,
+    "is_paid": false,
+    "name": "azure_cosmos_locations",
+    "relations": [],
+    "title": "Azure Cosmos Locations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/mongo-db-resources/list-mongo-db-databases?tabs=HTTP#mongodbdatabasegetresults",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cosmos_mongo_db_databases",
+    "parent": "azure_cosmos_database_accounts",
+    "relations": [],
+    "title": "Azure Cosmos Mongo DB Databases"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/restorable-database-accounts/list?tabs=HTTP#restorabledatabaseaccountgetresult",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cosmos_restorable_database_accounts",
+    "relations": [],
+    "title": "Azure Cosmos Restorable Database Accounts"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cosmos-db-resource-provider/2022-05-15/sql-resources/list-sql-databases?tabs=HTTP#sqldatabasegetresults",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_cosmos_sql_databases",
+    "parent": "azure_cosmos_database_accounts",
+    "relations": [],
+    "title": "Azure Cosmos SQL Databases"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cost-management/query/usage?tabs=HTTP#queryresult",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_costmanagement_view_queries",
+    "parent": "azure_costmanagement_views",
+    "relations": [],
+    "title": "Azure Cost Management View Queries"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/cost-management/views/list?tabs=HTTP#view",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_costmanagement_views",
+    "relations": ["azure_costmanagement_view_queries"],
+    "title": "Azure Cost Management Views"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/customerinsights/armcustomerinsights#Hub",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_customerinsights_hubs",
+    "relations": [],
+    "title": "Azure Customer Insights Hubs"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/managed-grafana/grafana/list-by-resource-group?tabs=HTTP#managedgrafana",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_dashboard_grafana",
+    "relations": [],
+    "title": "Azure Dashboard Grafana"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/databox/armdatabox/v2#JobResource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_databox_jobs",
+    "relations": [],
+    "title": "Azure Data Box Jobs"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/databricks/access-connectors/list-by-subscription?view=rest-databricks-2023-05-01&tabs=HTTP",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_databricks_access_connectors",
+    "relations": [],
+    "title": "Azure Databricks Access Connectors"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/databricks/operations/list",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_databricks_operations",
+    "relations": [],
+    "title": "Azure Databricks Operations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/databricks/outbound-network-dependencies-endpoints/list",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_databricks_outbound_network_dependencies_endpoints",
+    "parent": "azure_databricks_workspaces",
+    "relations": [],
+    "title": "Azure Databricks Outbound Network Dependencies Endpoints"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/databricks/private-endpoint-connections/list",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_databricks_private_endpoint_connections",
+    "parent": "azure_databricks_workspaces",
+    "relations": [],
+    "title": "Azure Databricks Private Endpoint Connections"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/databricks/private-link-resources/list",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_databricks_private_link_resources",
+    "parent": "azure_databricks_workspaces",
+    "relations": [],
+    "title": "Azure Databricks Private Link Resources"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/databricks/v-net-peering/list-by-workspace?view=rest-databricks-2023-02-01&tabs=HTTP#virtualnetworkpeeringlist",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_databricks_virtual_network_peerings",
+    "parent": "azure_databricks_workspaces",
+    "relations": [],
+    "title": "Azure Databricks Virtual Network Peerings"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/databricks/workspaces/list-by-subscription?view=rest-databricks-2023-02-01&tabs=HTTP#workspace",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_databricks_workspaces",
+    "relations": [
+      "azure_databricks_outbound_network_dependencies_endpoints",
+      "azure_databricks_private_endpoint_connections",
+      "azure_databricks_private_link_resources",
+      "azure_databricks_virtual_network_peerings"
+    ],
+    "title": "Azure Databricks Workspaces"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/datacatalog/data-catalog-data-catalog#list",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_datacatalog_catalogs",
+    "relations": [],
+    "title": "Azure Datacatalog Catalogs"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/datadog/marketplace-agreements/list?tabs=HTTP#datadogagreementresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_datadog_marketplace_agreements",
+    "relations": [],
+    "title": "Azure Datadog Marketplace Agreements"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/datadog/monitors/list?tabs=HTTP#datadogmonitorresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_datadog_monitors",
+    "relations": [],
+    "title": "Azure Datadog Monitors"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/datafactory/factories/list?tabs=HTTP#factory",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_datafactory_factories",
+    "relations": [],
+    "title": "Azure Data Factory Factories"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/datalakeanalytics/accounts/list?tabs=HTTP#datalakeanalyticsaccountbasic",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_datalakeanalytics_accounts",
+    "relations": [],
+    "title": "Azure Data Lake Analytics Accounts"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/datalakestore/accounts/list?tabs=HTTP#datalakestoreaccountbasic",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_datalakestore_accounts",
+    "relations": [],
+    "title": "Azure Data Lake Store Accounts"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/datamigration/services/list?tabs=HTTP#datamigrationservice",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_datamigration_services",
+    "relations": [],
+    "title": "Azure Datamigration Services"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/datashare/accounts/list-by-resource-group",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_datashare_accounts",
+    "relations": [],
+    "title": "Azure Datashare Accounts"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/desktopvirtualization/host-pools/list?tabs=HTTP#hostpool",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_desktopvirtualization_host_pools",
+    "relations": [],
+    "title": "Azure Desktop Virtualization Host Pools"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devhub/armdevhub#Workflow",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_devhub_workflow",
+    "relations": [],
+    "title": "Azure Devhub Workflow"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/devops/armdevops#PipelineTemplateDefinition",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_devops_pipeline_template_definitions",
+    "relations": [],
+    "title": "Azure DevOps Pipeline Template Definitions"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/dns/record-sets/list-by-dns-zone?tabs=HTTP#recordset",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_dns_record_sets",
+    "parent": "azure_dns_zones",
+    "relations": [],
+    "title": "Azure DNS Record Sets"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/dns/dnsresolver/dns-forwarding-rulesets/list?tabs=HTTP#dnsforwardingruleset",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_dnsresolver_dns_forwarding_rulesets",
+    "relations": [],
+    "title": "Azure DNS Resolver DNS Forwarding Rulesets"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/dns/dnsresolver/dns-resolvers/list?tabs=HTTP#dnsresolver",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_dnsresolver_dns_resolvers",
+    "relations": [],
+    "title": "Azure DNS Resolver DNS Resolvers"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/dns/zones/list?tabs=HTTP#zone",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_dns_zones",
+    "relations": ["azure_dns_record_sets"],
+    "title": "Azure DNS Zones"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/elastic/monitors/list?tabs=HTTP#elasticmonitorresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_elastic_monitors",
+    "relations": [],
+    "title": "Azure Elastic Monitors"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/engagementfabric/armengagementfabric#Account",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_engagementfabric_accounts",
+    "relations": [],
+    "title": "Azure Engagement Fabric Accounts"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/eventgrid/controlplane-version2022-06-15/topic-types/list?tabs=HTTP#topictypeinfo",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_eventgrid_topic_types",
+    "relations": [],
+    "title": "Azure Eventgrid Topic Types"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/eventhub/clusters/list-by-resource-group",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_eventhub_clusters",
+    "relations": [],
+    "title": "Azure Event Hub Clusters"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/eventhub/stable/network-rule-sets/list-network-rule-set?tabs=HTTP#networkruleset",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_eventhub_namespace_network_rule_sets",
+    "parent": "azure_eventhub_namespaces",
+    "relations": [],
+    "title": "Azure Event Hub Namespace Network Rule Sets"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/eventhub/stable/namespaces/list?tabs=HTTP#ehnamespace",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_eventhub_namespaces",
+    "relations": ["azure_eventhub_namespace_network_rule_sets"],
+    "title": "Azure Event Hub Namespaces"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/frontdoorservice/frontdoor/front-doors/list?tabs=HTTP#frontdoor",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_frontdoor_front_doors",
+    "relations": [],
+    "title": "Azure Frontdoor Front Doors"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/frontdoor/webapplicationfirewall/managed-rule-sets/list#managedrulesetdefinition",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_frontdoor_managed_rule_sets",
+    "relations": [],
+    "title": "Azure Frontdoor Managed Rule Sets"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/internetanalyzer/network-experiment-profiles/list?tabs=HTTP#profile",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_frontdoor_network_experiment_profiles",
+    "relations": [],
+    "title": "Azure Frontdoor Network Experiment Profiles"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hanaonazure/armhanaonazure#SapMonitor",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_hanaonazure_sap_monitors",
+    "relations": [],
+    "title": "Azure HANA on Azure SAP Monitors"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/hdinsight/2021-06-01/clusters/list?tabs=HTTP#cluster",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_hdinsight_clusters",
+    "relations": [],
+    "title": "Azure HDInsight Clusters"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/healthbot/armhealthbot#HealthBot",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_healthbot_bots",
+    "relations": [],
+    "title": "Azure Healthbot Bots"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/healthcareapis/services/list?tabs=HTTP#servicesdescription",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_healthcareapis_services",
+    "relations": [],
+    "title": "Azure Healthcare APIs Services"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/hybridcompute/private-link-scopes/list?tabs=HTTP#hybridcomputeprivatelinkscope",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_hybridcompute_private_link_scopes",
+    "relations": [],
+    "title": "Azure Hybrid Compute Private Link Scopes"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybriddatamanager/armhybriddatamanager#DataManager",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_hybriddatamanager_data_managers",
+    "relations": [],
+    "title": "Azure Hybrid Data Manager Data Managers"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/keyvault/keyvault/vaults/get?tabs=HTTP#vault",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_keyvault_keyvault",
+    "relations": ["azure_keyvault_keyvault_keys", "azure_keyvault_keyvault_secrets"],
+    "title": "Azure Key Vault Key Vault"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault#Key",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_keyvault_keyvault_keys",
+    "parent": "azure_keyvault_keyvault",
+    "relations": [],
+    "title": "Azure Key Vault Key Vault Keys"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/keyvault/managedhsm/managed-hsms/list-by-subscription?tabs=HTTP#managedhsm",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_keyvault_keyvault_managed_hsms",
+    "relations": [],
+    "title": "Azure Key Vault Key Vault Managed Hsms"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault#Secret",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_keyvault_keyvault_secrets",
+    "parent": "azure_keyvault_keyvault",
+    "relations": [],
+    "title": "Azure Key Vault Key Vault Secrets"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/azurerekusto/clusters/list?tabs=HTTP#cluster",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_kusto_clusters",
+    "relations": [],
+    "title": "Azure Kusto Clusters"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/logic/workflows/list-by-subscription?tabs=HTTP#workflow",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_logic_workflows",
+    "relations": [],
+    "title": "Azure Logic Workflows"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/azureml/workspaces/list-by-resource-group",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_machinelearningservices_workspaces",
+    "relations": [],
+    "title": "Azure Machinelearningservices Workspaces"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/maintenance/maintenance-configurations/list?tabs=HTTP#maintenanceconfiguration",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_maintenance_configurations",
+    "relations": [],
+    "title": "Azure Maintenance Configurations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/maintenance/public-maintenance-configurations/list?tabs=HTTP#maintenanceconfiguration",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_maintenance_public_maintenance_configurations",
+    "relations": [],
+    "title": "Azure Maintenance Public Maintenance Configurations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/managementgroups/entities/list?tabs=HTTP",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_managementgroups_entities",
+    "relations": [],
+    "title": "Azure Managementgroups Entities"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/managementgroups/management-groups/list?tabs=HTTP#managementgrouplistresult",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_managementgroups_management_groups",
+    "relations": [],
+    "title": "Azure Managementgroups Management Groups"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/mariadb/configurations/list-by-server?tabs=HTTP#configuration",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_mariadb_server_configurations",
+    "parent": "azure_mariadb_servers",
+    "relations": [],
+    "title": "Azure MariaDB Server Configurations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/mariadb/servers/list?tabs=HTTP#server",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_mariadb_servers",
+    "relations": ["azure_mariadb_server_configurations"],
+    "title": "Azure MariaDB Servers"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/marketplace/armmarketplace#PrivateStore",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_marketplace_private_store",
+    "relations": [],
+    "title": "Azure Marketplace Private Store"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/monitor/action-groups/list-by-resource-group",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_monitor_action_groups",
+    "relations": [],
+    "title": "Azure Monitor Action Groups"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/monitor/activity-log-alerts/list-by-subscription-id?tabs=HTTP#activitylogalertresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_monitor_activity_log_alerts",
+    "relations": [],
+    "title": "Azure Monitor Activity Log Alerts"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/monitor/autoscale-settings/list-by-subscription?tabs=HTTP#autoscalesettingresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_monitor_autoscale_settings",
+    "relations": [],
+    "title": "Azure Monitor Autoscale Settings"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/monitor/diagnostic-settings/list?tabs=HTTP#diagnosticsettingsresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_monitor_diagnostic_settings",
+    "parent": "azure_monitor_resources",
+    "relations": [],
+    "title": "Azure Monitor Diagnostic Settings"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/monitor/log-profiles/list?tabs=HTTP#logprofileresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_monitor_log_profiles",
+    "relations": [],
+    "title": "Azure Monitor Log Profiles"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/monitor/metric-alerts/list-by-resource-group",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_monitor_metric_alerts",
+    "relations": [],
+    "title": "Azure Monitor Metric Alerts"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/monitor/privatelinkscopes(preview)/private%20link%20scopes%20(preview)/list?tabs=HTTP#azuremonitorprivatelinkscope",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_monitor_private_link_scopes",
+    "relations": [],
+    "title": "Azure Monitor Private Link Scopes"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/resources/resources/list#genericresourceexpanded",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_monitor_resources",
+    "relations": ["azure_monitor_diagnostic_settings"],
+    "title": "Azure Monitor Resources"
+  },
+  {
+    "description": "https://docs.microsoft.com/en-us/rest/api/monitor/scheduledqueryrules/listbyresourcegroup",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_monitor_scheduled_query_rules",
+    "relations": [],
+    "title": "Azure Monitor Scheduled Query Rules"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/monitor/subscription-diagnostic-settings/list?tabs=HTTP#subscriptiondiagnosticsettingsresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_monitor_subscription_diagnostic_settings",
+    "relations": [],
+    "title": "Azure Monitor Subscription Diagnostic Settings"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/monitor/activity-log-alerts/list-by-subscription-id?tabs=HTTP#activitylogalertresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_monitor_tenant_activity_log_alerts",
+    "relations": [],
+    "title": "Azure Monitor Tenant Activity Log Alerts"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/monitor/tenant-activity-logs/list?tabs=HTTP#eventdata",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_monitor_tenant_activity_logs",
+    "relations": [],
+    "title": "Azure Monitor Tenant Activity Logs"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/mysql/flexibleserver/configurations/list-by-server",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_mysqlflexibleservers_server_configurations",
+    "parent": "azure_mysqlflexibleservers_servers",
+    "relations": [],
+    "title": "Azure Mysqlflexibleservers Server Configurations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/mysql/flexibleserver/firewall-rules/list-by-server",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_mysqlflexibleservers_server_firewall_rules",
+    "parent": "azure_mysqlflexibleservers_servers",
+    "relations": [],
+    "title": "Azure Mysqlflexibleservers Server Firewall Rules"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/mysql/flexibleserver/servers/list?tabs=HTTP#server",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_mysqlflexibleservers_servers",
+    "relations": [
+      "azure_mysqlflexibleservers_server_configurations",
+      "azure_mysqlflexibleservers_server_firewall_rules"
+    ],
+    "title": "Azure Mysqlflexibleservers Servers"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/mysql/singleserver/configurations/list-by-server?tabs=HTTP#configuration",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_mysql_server_configurations",
+    "parent": "azure_mysql_servers",
+    "relations": [],
+    "title": "Azure MySQL Server Configurations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/mysql/singleserver/databases/list-by-server?tabs=HTTP#database",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_mysql_server_databases",
+    "parent": "azure_mysql_servers",
+    "relations": [],
+    "title": "Azure MySQL Server Databases"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/mysql/singleserver/servers(2017-12-01)/list?tabs=HTTP#server",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_mysql_servers",
+    "relations": ["azure_mysql_server_configurations", "azure_mysql_server_databases"],
+    "title": "Azure MySQL Servers"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/application-gateway/application-gateways/list?tabs=HTTP#applicationgateway",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_application_gateways",
+    "relations": [],
+    "title": "Azure Network Application Gateways"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/application-security-groups/list?tabs=HTTP#applicationsecuritygroup",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_application_security_groups",
+    "relations": [],
+    "title": "Azure Network Application Security Groups"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/firewall/azure-firewall-fqdn-tags/list-all?tabs=HTTP#azurefirewallfqdntag",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_azure_firewall_fqdn_tags",
+    "relations": [],
+    "title": "Azure Network Azure Firewall FQDN Tags"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/firewall/azure-firewalls/list?tabs=HTTP#azurefirewall",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_azure_firewalls",
+    "relations": [],
+    "title": "Azure Network Azure Firewalls"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/bastion-hosts/list?tabs=HTTP#bastionhost",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_bastion_hosts",
+    "relations": [],
+    "title": "Azure Network Bastion Hosts"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/expressroute/bgp-service-communities/list?tabs=HTTP#bgpservicecommunity",
+    "is_incremental": false,
+    "is_paid": false,
+    "name": "azure_network_bgp_service_communities",
+    "relations": [],
+    "title": "Azure Network Border Gateway Protocol (BGP) Service Communities"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/custom-ip-prefixes/list?tabs=HTTP#customipprefix",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_custom_ip_prefixes",
+    "relations": [],
+    "title": "Azure Network Custom IP Prefixes"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/ddos-protection-plans/list?tabs=HTTP#ddosprotectionplan",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_ddos_protection_plans",
+    "relations": [],
+    "title": "Azure Network Distributed Denial of Service (DDoS) Protection Plans"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/dscp-configuration/list?tabs=HTTP#dscpconfiguration",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_dscp_configuration",
+    "relations": [],
+    "title": "Azure Network Differentiated Services Code Point (DSCP) Configuration"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-circuit-authorizations/list?tabs=HTTP#expressroutecircuitauthorization",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_express_route_circuit_authorizations",
+    "parent": "azure_network_express_route_circuits",
+    "relations": [],
+    "title": "Azure Network Express Route Circuit Authorizations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-circuit-peerings/list?tabs=HTTP#expressroutecircuitpeering",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_express_route_circuit_peerings",
+    "parent": "azure_network_express_route_circuits",
+    "relations": [],
+    "title": "Azure Network Express Route Circuit Peerings"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-circuits/list?tabs=HTTP#expressroutecircuit",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_express_route_circuits",
+    "relations": [
+      "azure_network_express_route_circuit_authorizations",
+      "azure_network_express_route_circuit_peerings"
+    ],
+    "title": "Azure Network Express Route Circuits"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-gateways/list-by-subscription?tabs=HTTP#expressroutegateway",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_express_route_gateways",
+    "relations": [],
+    "title": "Azure Network Express Route Gateways"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-ports/list?tabs=HTTP#expressrouteport",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_express_route_ports",
+    "relations": [],
+    "title": "Azure Network Express Route Ports"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-ports-locations/list?tabs=HTTP#expressrouteportslocation",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_express_route_ports_locations",
+    "relations": [],
+    "title": "Azure Network Express Route Ports Locations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/expressroute/express-route-service-providers/list?tabs=HTTP#expressrouteserviceprovider",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_express_route_service_providers",
+    "relations": [],
+    "title": "Azure Network Express Route Service Providers"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/firewall-policies/list-all?tabs=HTTP#firewallpolicy",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_firewall_policies",
+    "relations": [],
+    "title": "Azure Network Firewall Policies"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkfunction/armnetworkfunction#AzureTrafficCollector",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_networkfunction_azure_traffic_collectors_by_subscription",
+    "relations": [],
+    "title": "Azure Network Function Azure Traffic Collectors By Subscription"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-interface-ip-configurations/list?tabs=HTTP#ipconfiguration",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_interface_ip_configurations",
+    "parent": "azure_network_interfaces",
+    "relations": [],
+    "title": "Azure Network Interface IP Configurations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-interfaces/list?tabs=HTTP#networkinterface",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_interfaces",
+    "relations": ["azure_network_interface_ip_configurations"],
+    "title": "Azure Network Interfaces"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/ip-allocations/list?tabs=HTTP#ipallocation",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_ip_allocations",
+    "relations": [],
+    "title": "Azure Network IP Allocations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/ip-groups/list?tabs=HTTP#ipgroup",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_ip_groups",
+    "relations": [],
+    "title": "Azure Network IP Groups"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/load-balancer/load-balancers/list?tabs=HTTP#loadbalancer",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_load_balancers",
+    "relations": [],
+    "title": "Azure Network Load Balancers"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/nat-gateways/list?tabs=HTTP#natgateway",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_nat_gateways",
+    "relations": [],
+    "title": "Azure Network Network Address Translation (NAT) Gateways"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/private-link-services/list-by-subscription?tabs=HTTP#privateendpoint",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_private_endpoints",
+    "relations": [],
+    "title": "Azure Network Private Endpoints"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/private-link-services/list-by-subscription?tabs=HTTP#privatelinkservice",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_private_link_services",
+    "relations": [],
+    "title": "Azure Network Private Link Services"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-profiles/list?tabs=HTTP#networkprofile",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_profiles",
+    "relations": [],
+    "title": "Azure Network Profiles"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/public-ip-addresses/list?tabs=HTTP#publicipaddress",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_public_ip_addresses",
+    "relations": [],
+    "title": "Azure Network Public IP Addresses"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/public-ip-prefixes/list?tabs=HTTP#publicipprefix",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_public_ip_prefixes",
+    "relations": [],
+    "title": "Azure Network Public IP Prefixes"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/expressroute/route-filters/list?tabs=HTTP#routefilter",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_route_filters",
+    "relations": [],
+    "title": "Azure Network Route Filters"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/route-tables/list?tabs=HTTP#routetable",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_route_tables",
+    "relations": [],
+    "title": "Azure Network Route Tables"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-security-groups/list?tabs=HTTP#networksecuritygroup",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_security_groups",
+    "relations": [],
+    "title": "Azure Network Security Groups"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/security-partner-providers/list?tabs=HTTP#securitypartnerprovider",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_security_partner_providers",
+    "relations": [],
+    "title": "Azure Network Security Partner Providers"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/expressroute/service-endpoint-policies/list?tabs=HTTP#serviceendpointpolicy",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_service_endpoint_policies",
+    "relations": [],
+    "title": "Azure Network Service Endpoint Policies"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/networkmanager/management-group-network-manager-connections/list?tabs=HTTP#networkmanagerconnection",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_subscription_network_manager_connections",
+    "relations": [],
+    "title": "Azure Network Subscription Network Manager Connections"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/network-virtual-appliances/list?tabs=HTTP#networkvirtualappliance",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_virtual_appliances",
+    "relations": [],
+    "title": "Azure Network Virtual Appliances"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualwan/virtual-hubs/list?tabs=HTTP#virtualhub",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_virtual_hubs",
+    "relations": [],
+    "title": "Azure Network Virtual Hubs"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/network-gateway/virtual-network-gateway-connections/list?tabs=HTTP#virtualnetworkgatewayconnection",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_virtual_network_gateway_connections",
+    "relations": [],
+    "title": "Azure Network Virtual Network Gateway Connections"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/network-gateway/virtual-network-gateways/list?tabs=HTTP#virtualnetworkgateway",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_virtual_network_gateways",
+    "relations": [],
+    "title": "Azure Network Virtual Network Gateways"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/virtual-networks/list-all?tabs=HTTP#virtualnetwork",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_virtual_networks",
+    "relations": ["azure_network_virtual_network_subnets"],
+    "title": "Azure Network Virtual Networks"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/subnets/list?tabs=HTTP#subnet",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_virtual_network_subnets",
+    "parent": "azure_network_virtual_networks",
+    "relations": [],
+    "title": "Azure Network Virtual Network Subnets"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/network-gateway/virtual-network-taps/list-all?tabs=HTTP#virtualnetworktap",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_virtual_network_taps",
+    "relations": [],
+    "title": "Azure Network Virtual Network Taps"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualnetwork/virtual-routers/list?tabs=HTTP#virtualrouter",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_virtual_routers",
+    "relations": [],
+    "title": "Azure Network Virtual Routers"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualwan/virtual-wans/list?tabs=HTTP#virtualwan",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_virtual_wans",
+    "relations": [],
+    "title": "Azure Network Virtual Wide Area Networks (WANs)"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualwan/vpn-gateways/list?tabs=HTTP#vpngateway",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_vpn_gateways",
+    "relations": [],
+    "title": "Azure Network Virtual Private Network (VPN) Gateways"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualwan/vpn-server-configurations/list?tabs=HTTP#vpnserverconfiguration",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_vpn_server_configurations",
+    "relations": [],
+    "title": "Azure Network Virtual Private Network (VPN) Server Configurations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/virtualwan/vpn-sites/list?tabs=HTTP#vpnsite",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_vpn_sites",
+    "relations": [],
+    "title": "Azure Network Virtual Private Network (VPN) Sites"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/network-watcher/flow-logs/list?tabs=HTTP#definitions",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_watcher_flow_logs",
+    "parent": "azure_network_watchers",
+    "relations": [],
+    "title": "Azure Network Watcher Flow Logs"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/network-watcher/network-watchers/list-all?tabs=HTTP#networkwatcher",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_watchers",
+    "relations": ["azure_network_watcher_flow_logs"],
+    "title": "Azure Network Watchers"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/application-gateway/web-application-firewall-policies/list?tabs=HTTP#webapplicationfirewallpolicy",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_network_web_application_firewall_policies",
+    "relations": [],
+    "title": "Azure Network Web Application Firewall Policies"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/nginx/armnginx/v3#Deployment",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_nginx_deployments",
+    "relations": [],
+    "title": "Azure Nginx Deployments"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/notificationhubs/namespaces/list?tabs=HTTP#namespaceresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_notificationhubs_namespaces",
+    "relations": [],
+    "title": "Azure Notificationhubs Namespaces"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights#Cluster",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_operationalinsights_clusters",
+    "relations": [],
+    "title": "Azure Operational Insights Clusters"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/operationalinsights/armoperationalinsights#Workspace",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_operationalinsights_workspaces",
+    "relations": [],
+    "title": "Azure Operational Insights Workspaces"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/peering/peering-service-countries/list?tabs=HTTP#peeringservicecountry",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_peering_service_countries",
+    "relations": [],
+    "title": "Azure Peering Service Countries"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/peering/peering-service-locations/list?tabs=HTTP#peeringservicelocation",
+    "is_incremental": false,
+    "is_paid": false,
+    "name": "azure_peering_service_locations",
+    "relations": [],
+    "title": "Azure Peering Service Locations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/peering/peering-service-providers/list?tabs=HTTP#peeringserviceprovider",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_peering_service_providers",
+    "relations": [],
+    "title": "Azure Peering Service Providers"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/policy/policy-assignments/list?tabs=HTTP#policyassignment",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_policy_assignments",
+    "relations": [],
+    "title": "Azure Policy Assignments"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armpolicy#DataPolicyManifest",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_policy_data_policy_manifests",
+    "relations": [],
+    "title": "Azure Policy Data Policy Manifests"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/policy/policy-definitions/list?tabs=HTTP#policydefinition",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_policy_definitions",
+    "relations": [],
+    "title": "Azure Policy Definitions"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/policy/policy-exemptions/list?tabs=HTTP#policyexemption",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_policy_exemptions",
+    "relations": [],
+    "title": "Azure Policy Exemptions"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/policy/policy-set-definitions/list?tabs=HTTP#policysetdefinition",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_policy_set_definitions",
+    "relations": [],
+    "title": "Azure Policy Set Definitions"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal#Violation",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_portal_list_tenant_configuration_violations",
+    "relations": [],
+    "title": "Azure Portal List Tenant Configuration Violations"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/portal/armportal#Configuration",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_portal_tenant_configurations",
+    "relations": [],
+    "title": "Azure Portal Tenant Configurations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/databases/list-by-server?tabs=HTTP#database",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_postgresql_databases",
+    "parent": "azure_postgresql_servers",
+    "relations": [],
+    "title": "Azure PostgreSQL Databases"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/postgresql/flexibleserver/configurations/list-by-server?view=rest-postgresql-flexibleserver-2022-12-01&tabs=HTTP",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_postgresqlflexibleservers_server_configurations",
+    "parent": "azure_postgresqlflexibleservers_servers",
+    "relations": [],
+    "title": "Azure PostgreSQL Flexible Servers Server Configurations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/postgresql/flexibleserver/firewall-rules/list-by-server",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_postgresqlflexibleservers_server_firewall_rules",
+    "parent": "azure_postgresqlflexibleservers_servers",
+    "relations": [],
+    "title": "Azure PostgreSQL Flexible Servers Server Firewall Rules"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/postgresql/flexibleserver/servers/list?tabs=HTTP#server",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_postgresqlflexibleservers_servers",
+    "relations": [
+      "azure_postgresqlflexibleservers_server_configurations",
+      "azure_postgresqlflexibleservers_server_firewall_rules"
+    ],
+    "title": "Azure PostgreSQL Flexible Servers Servers"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/postgresqlhsc/armpostgresqlhsc#ServerGroup",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_postgresqlhsc_server_groups",
+    "relations": [],
+    "title": "Azure PostgreSQL Hyperscale (Citus) Server Groups"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/configurations/list-by-server?tabs=HTTP#configuration",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_postgresql_server_configurations",
+    "parent": "azure_postgresql_servers",
+    "relations": [],
+    "title": "Azure PostgreSQL Server Configurations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/firewall-rules/list-by-server?tabs=HTTP#firewallrule",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_postgresql_server_firewall_rules",
+    "parent": "azure_postgresql_servers",
+    "relations": [],
+    "title": "Azure PostgreSQL Server Firewall Rules"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/postgresql/singleserver/servers/list?tabs=HTTP#server",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_postgresql_servers",
+    "relations": [
+      "azure_postgresql_server_configurations",
+      "azure_postgresql_server_firewall_rules",
+      "azure_postgresql_databases"
+    ],
+    "title": "Azure PostgreSQL Servers"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/power-bi-embedded/capacities/list?tabs=HTTP#dedicatedcapacity",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_powerbidedicated_capacities",
+    "relations": [],
+    "title": "Azure Power BI Dedicated Capacities"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/dns/privatedns/record-sets/list?tabs=HTTP#recordset",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_privatedns_private_zone_record_sets",
+    "parent": "azure_privatedns_private_zones",
+    "relations": [],
+    "title": "Azure Privatedns Private Zone Record Sets"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/dns/privatedns/private-zones/list?tabs=HTTP#privatezone",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_privatedns_private_zones",
+    "relations": [
+      "azure_privatedns_private_zone_record_sets",
+      "azure_privatedns_private_zone_virtual_network_links"
+    ],
+    "title": "Azure Privatedns Private Zones"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/dns/privatedns/virtual-network-links/list?tabs=HTTP#virtualnetworklink",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_privatedns_private_zone_virtual_network_links",
+    "parent": "azure_privatedns_private_zones",
+    "relations": [],
+    "title": "Azure Privatedns Private Zone Virtual Network Links"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/providerhub/armproviderhub#ProviderRegistration",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_providerhub_provider_registrations",
+    "relations": [],
+    "title": "Azure Providerhub Provider Registrations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/recoveryservices/private-link-resources/list?view=rest-recoveryservices-2023-04-01&tabs=HTTP#privatelinkresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_recoveryservices_private_link_resources",
+    "parent": "azure_recoveryservices_vaults",
+    "relations": [],
+    "title": "Azure Recovery Services Private Link Resources"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/recoveryservices/replication-usages/list?view=rest-recoveryservices-2023-04-01&tabs=HTTP#replicationusage",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_recoveryservices_vault_replication_usages",
+    "parent": "azure_recoveryservices_vaults",
+    "relations": [],
+    "title": "Azure Recovery Services Vault Replication Usages"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/recoveryservices/vaults/list-by-subscription-id?view=rest-recoveryservices-2023-04-01&tabs=HTTP#vault",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_recoveryservices_vaults",
+    "relations": [
+      "azure_recoveryservices_vault_usages",
+      "azure_recoveryservices_vault_replication_usages",
+      "azure_recoveryservices_private_link_resources"
+    ],
+    "title": "Azure Recovery Services Vaults"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/recoveryservices/usages/list-by-vaults?view=rest-recoveryservices-2023-04-01&tabs=HTTP#vaultusage",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_recoveryservices_vault_usages",
+    "parent": "azure_recoveryservices_vaults",
+    "relations": [],
+    "title": "Azure Recovery Services Vault Usages"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/openshift/open-shift-clusters/list?tabs=HTTP#openshiftcluster",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_redhatopenshift_open_shift_clusters",
+    "relations": [],
+    "title": "Azure Redhatopenshift Open Shift Clusters"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/redis/redis/list-by-subscription?tabs=HTTP#redisresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_redis_caches",
+    "relations": [],
+    "title": "Azure Redis Caches"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/relay/namespaces/list?tabs=HTTP#relaynamespace",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_relay_namespaces",
+    "relations": [],
+    "title": "Azure Relay Namespaces"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/reserved-vm-instances/reservation/list-all?tabs=HTTP#reservationresponse",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_reservations_reservation",
+    "relations": [],
+    "title": "Azure Reservations Reservation"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/reserved-vm-instances/reservation-order/get?tabs=HTTP#reservationorderresponse",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_reservations_reservation_order",
+    "relations": [],
+    "title": "Azure Reservations Reservation Order"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/resources/resource-links/list-at-subscription#resourcelink",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_resources_links",
+    "relations": [],
+    "title": "Azure Resources Links"
+  },
+  {
+    "description": "https://docs.microsoft.com/en-us/rest/api/resources/providers/list",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_resources_providers",
+    "relations": [],
+    "title": "Azure Resources Providers"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/resources/resource-groups/list#resourcegroup",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_resources_resource_groups",
+    "relations": [],
+    "title": "Azure Resources Resource Groups"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/resources/resources/list#genericresourceexpanded",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_resources_resources",
+    "relations": [],
+    "title": "Azure Resources Resources"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/authorization/role-management-policy-assignments/list-for-scope?tabs=HTTP#rolemanagementpolicyassignment",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_role_management_policy_assignments",
+    "relations": [],
+    "title": "Azure Role Management Policy Assignments"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/saas/armsaas#Resource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_saas_resources",
+    "relations": [],
+    "title": "Azure Software as a Service (SaaS) Resources"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/search/armsearch#Service",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_search_services",
+    "relations": [],
+    "title": "Azure Search Services"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/adaptive-application-controls/list?view=rest-defenderforcloud-2020-01-01&tabs=HTTP",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_adaptive_application_controls",
+    "relations": [],
+    "title": "Azure Security Adaptive Application Controls"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/alerts/list?tabs=HTTP#alert",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_alerts",
+    "relations": [],
+    "title": "Azure Security Alerts"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/alerts-suppression-rules/list?tabs=HTTP#alertssuppressionrule",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_alerts_suppression_rules",
+    "relations": [],
+    "title": "Azure Security Alerts Suppression Rules"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/allowed-connections/list?tabs=HTTP#allowedconnectionsresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_allowed_connections",
+    "relations": [],
+    "title": "Azure Security Allowed Connections"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity#Application",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_applications",
+    "relations": [],
+    "title": "Azure Security Applications"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/assessments/list?tabs=HTTP#securityassessment",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_assessments",
+    "relations": [],
+    "title": "Azure Security Assessments"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/assessments-metadata/list?tabs=HTTP#securityassessmentmetadata",
+    "is_incremental": false,
+    "is_paid": false,
+    "name": "azure_security_assessments_metadata",
+    "relations": [],
+    "title": "Azure Security Assessments Metadata"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/automations/list?tabs=HTTP#automation",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_automations",
+    "relations": [],
+    "title": "Azure Security Automations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/auto-provisioning-settings/list?tabs=HTTP#autoprovisioningsetting",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_auto_provisioning_settings",
+    "relations": [],
+    "title": "Azure Security Auto Provisioning Settings"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity#ConnectorSetting",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_connectors",
+    "relations": [],
+    "title": "Azure Security Connectors"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity#Contact",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_contacts",
+    "relations": [],
+    "title": "Azure Security Contacts"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/discovered-security-solutions/list?tabs=HTTP#discoveredsecuritysolution",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_discovered_security_solutions",
+    "relations": [],
+    "title": "Azure Security Discovered Security Solutions"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/external-security-solutions/list?tabs=HTTP#externalsecuritysolutionlist",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_external_security_solutions",
+    "relations": [],
+    "title": "Azure Security External Security Solutions"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity#GovernanceRule",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_governance_rule",
+    "relations": [],
+    "title": "Azure Security Governance Rule"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/jit-network-access-policies/list?tabs=HTTP#jitnetworkaccesspolicy",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_jit_network_access_policies",
+    "relations": [],
+    "title": "Azure Security Jit Network Access Policies"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/locations/get?tabs=HTTP#asclocation",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_locations",
+    "relations": [],
+    "title": "Azure Security Locations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/pricings/list?tabs=HTTP#pricing",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_pricings",
+    "relations": [],
+    "title": "Azure Security Pricings"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/regulatory-compliance-standards/list?tabs=HTTP#regulatorycompliancestandard",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_regulatory_compliance_standards",
+    "relations": [],
+    "title": "Azure Security Regulatory Compliance Standards"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/secure-score-control-definitions/list?tabs=HTTP#securescorecontroldefinitionitem",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_secure_score_control_definitions",
+    "relations": [],
+    "title": "Azure Security Secure Score Control Definitions"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/secure-score-controls/list?tabs=HTTP#securescorecontroldetails",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_secure_score_controls",
+    "relations": [],
+    "title": "Azure Security Secure Score Controls"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/secure-scores/list?tabs=HTTP#securescoreitem",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_secure_scores",
+    "relations": [],
+    "title": "Azure Security Secure Scores"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/settings/list?tabs=HTTP#settingslist",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_settings",
+    "relations": [],
+    "title": "Azure Security Settings"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity#Solution",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_solutions",
+    "relations": [],
+    "title": "Azure Security Solutions"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/sub-assessments/list-all?tabs=HTTP#securitysubassessment",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_sub_assessments",
+    "relations": [],
+    "title": "Azure Security Sub Assessments"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/tasks/list?tabs=HTTP#securitytask",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_tasks",
+    "relations": [],
+    "title": "Azure Security Tasks"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/topology/list?tabs=HTTP#topologyresource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_topology",
+    "relations": [],
+    "title": "Azure Security Topology"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/defenderforcloud/workspace-settings/list?tabs=HTTP#workspacesetting",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_security_workspace_settings",
+    "relations": [],
+    "title": "Azure Security Workspace Settings"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/servicebus/stable/namespaces/list?tabs=HTTP#sbnamespace",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_servicebus_namespaces",
+    "relations": ["azure_servicebus_namespace_topics"],
+    "title": "Azure Service Bus Namespaces"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/servicebus/stable/topics%20%E2%80%93%20authorization%20rules/list-authorization-rules?tabs=HTTP#sbauthorizationrule",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_servicebus_namespace_topic_authorization_rules",
+    "parent": "azure_servicebus_namespace_topics",
+    "relations": ["azure_servicebus_namespace_topic_rule_access_keys"],
+    "title": "Azure Service Bus Namespace Topic Authorization Rules"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/servicebus/stable/topics%20%E2%80%93%20authorization%20rules/list-keys?tabs=HTTP#accesskeys",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_servicebus_namespace_topic_rule_access_keys",
+    "parent": "azure_servicebus_namespace_topic_authorization_rules",
+    "relations": [],
+    "title": "Azure Service Bus Namespace Topic Rule Access Keys"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/servicebus/stable/topics/list-by-namespace?tabs=HTTP#sbtopic",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_servicebus_namespace_topics",
+    "parent": "azure_servicebus_namespaces",
+    "relations": ["azure_servicebus_namespace_topic_authorization_rules"],
+    "title": "Azure Service Bus Namespace Topics"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/instance-pools/list?tabs=HTTP#instancepool",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_instance_pools",
+    "relations": [],
+    "title": "Azure SQL Instance Pools"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/managed-instance-encryption-protectors/list-by-instance?tabs=HTTP#managedinstanceencryptionprotector",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_managed_instance_encryption_protectors",
+    "parent": "azure_sql_managed_instances",
+    "relations": [],
+    "title": "Azure SQL Managed Instance Encryption Protectors"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/managed-instances/list?tabs=HTTP#managedinstance",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_managed_instances",
+    "relations": [
+      "azure_sql_managed_instance_encryption_protectors",
+      "azure_sql_managed_instance_vulnerability_assessments"
+    ],
+    "title": "Azure SQL Managed Instances"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/managed-instance-vulnerability-assessments/list-by-instance?tabs=HTTP#managedinstancevulnerabilityassessment",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_managed_instance_vulnerability_assessments",
+    "parent": "azure_sql_managed_instances",
+    "relations": [],
+    "title": "Azure SQL Managed Instance Vulnerability Assessments"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/server-azure-ad-administrators/list-by-server?tabs=HTTP#serverazureadadministrator",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_server_admins",
+    "parent": "azure_sql_servers",
+    "relations": [],
+    "title": "Azure SQL Server Admins"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/server-advanced-threat-protection-settings/list-by-server?tabs=HTTP#advancedthreatprotectionstate",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_server_advanced_threat_protection_settings",
+    "parent": "azure_sql_servers",
+    "relations": [],
+    "title": "Azure SQL Server Advanced Threat Protection Settings"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/server-blob-auditing-policies/list-by-server?tabs=HTTP#serverblobauditingpolicy",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_server_blob_auditing_policies",
+    "parent": "azure_sql_servers",
+    "relations": [],
+    "title": "Azure SQL Server Blob Auditing Policies"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/database-blob-auditing-policies/list-by-database?tabs=HTTP#databaseblobauditingpolicy",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_server_database_blob_auditing_policies",
+    "parent": "azure_sql_server_databases",
+    "relations": [],
+    "title": "Azure SQL Server Database Blob Auditing Policies"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/long-term-retention-policies/list-by-database?tabs=HTTP#longtermretentionpolicy",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_server_database_long_term_retention_policies",
+    "parent": "azure_sql_server_databases",
+    "relations": [],
+    "title": "Azure SQL Server Database Long Term Retention Policies"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/databases/list-by-server?tabs=HTTP#database",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_server_databases",
+    "parent": "azure_sql_servers",
+    "relations": [
+      "azure_sql_server_database_blob_auditing_policies",
+      "azure_sql_transparent_data_encryptions",
+      "azure_sql_server_database_threat_protections",
+      "azure_sql_server_database_vulnerability_assessments",
+      "azure_sql_server_database_long_term_retention_policies"
+    ],
+    "title": "Azure SQL Server Databases"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/database-advanced-threat-protection-settings/list-by-database?tabs=HTTP#databaseadvancedthreatprotection",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_server_database_threat_protections",
+    "parent": "azure_sql_server_databases",
+    "relations": [],
+    "title": "Azure SQL Server Database Threat Protections"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/database-vulnerability-assessments/list-by-database?tabs=HTTP#databasevulnerabilityassessment",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_server_database_vulnerability_assessments",
+    "parent": "azure_sql_server_databases",
+    "relations": ["azure_sql_server_database_vulnerability_assessment_scans"],
+    "title": "Azure SQL Server Database Vulnerability Assessments"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/database-vulnerability-assessment-scans/list-by-database?tabs=HTTP#vulnerabilityassessmentscanrecord",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_server_database_vulnerability_assessment_scans",
+    "parent": "azure_sql_server_database_vulnerability_assessments",
+    "relations": [],
+    "title": "Azure SQL Server Database Vulnerability Assessment Scans"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/encryption-protectors/list-by-server?tabs=HTTP#encryptionprotector",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_server_encryption_protectors",
+    "parent": "azure_sql_servers",
+    "relations": [],
+    "title": "Azure SQL Server Encryption Protectors"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/firewall-rules/list-by-server?tabs=HTTP#firewallrule",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_server_firewall_rules",
+    "parent": "azure_sql_servers",
+    "relations": [],
+    "title": "Azure SQL Server Firewall Rules"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/servers/list?tabs=HTTP#server",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_servers",
+    "relations": [
+      "azure_sql_server_vulnerability_assessments",
+      "azure_sql_server_blob_auditing_policies",
+      "azure_sql_server_admins",
+      "azure_sql_server_encryption_protectors",
+      "azure_sql_server_databases",
+      "azure_sql_server_virtual_network_rules",
+      "azure_sql_server_security_alert_policies",
+      "azure_sql_server_advanced_threat_protection_settings",
+      "azure_sql_server_firewall_rules"
+    ],
+    "title": "Azure SQL Servers"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/server-security-alert-policies/list-by-server?tabs=HTTP#serversecurityalertpolicy",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_server_security_alert_policies",
+    "parent": "azure_sql_servers",
+    "relations": [],
+    "title": "Azure SQL Server Security Alert Policies"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2020-08-01-preview/virtual-network-rules/list-by-server?tabs=HTTP#virtualnetworkrule",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_server_virtual_network_rules",
+    "parent": "azure_sql_servers",
+    "relations": [],
+    "title": "Azure SQL Server Virtual Network Rules"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/server-vulnerability-assessments/list-by-server?tabs=HTTP#servervulnerabilityassessment",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_server_vulnerability_assessments",
+    "parent": "azure_sql_servers",
+    "relations": [],
+    "title": "Azure SQL Server Vulnerability Assessments"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/transparent-data-encryptions/list-by-database?tabs=HTTP#logicaldatabasetransparentdataencryption",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_transparent_data_encryptions",
+    "parent": "azure_sql_server_databases",
+    "relations": [],
+    "title": "Azure SQL Transparent Data Encryptions"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sql/2021-11-01/virtual-clusters/list?tabs=HTTP#virtualcluster",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sql_virtual_clusters",
+    "relations": [],
+    "title": "Azure SQL Virtual Clusters"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sqlvm/2022-07-01-preview/sql-virtual-machine-groups/list?tabs=HTTP#sqlvirtualmachinegroup",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sqlvirtualmachine_groups",
+    "relations": [],
+    "title": "Azure SQL Virtual Machine Groups"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/sqlvm/2022-07-01-preview/sql-virtual-machines/list?tabs=HTTP#sqlvirtualmachine",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_sqlvirtualmachine_sql_virtual_machines",
+    "relations": [],
+    "title": "Azure SQL Virtual Machine SQL Virtual Machines"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/storagerp/storage-accounts/list-keys?view=rest-storagerp-2023-01-01&tabs=HTTP",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_storage_account_keys",
+    "parent": "azure_storage_accounts",
+    "relations": [],
+    "title": "Azure Storage Account Keys"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/storagerp/storage-accounts/list?tabs=HTTP#storageaccount",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_storage_accounts",
+    "relations": [
+      "azure_storage_tables",
+      "azure_storage_containers",
+      "azure_storage_blob_services",
+      "azure_storage_file_shares",
+      "azure_storage_queues",
+      "azure_storage_queue_services",
+      "azure_storage_account_keys"
+    ],
+    "title": "Azure Storage Accounts"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/storagerp/blob-services/list?tabs=HTTP#blobserviceproperties",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_storage_blob_services",
+    "parent": "azure_storage_accounts",
+    "relations": [],
+    "title": "Azure Storage Blob Services"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/storagecache/caches/list?tabs=HTTP#cache",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_storagecache_caches",
+    "relations": [],
+    "title": "Azure Storagecache Caches"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/storagerp/blob-containers/list?tabs=HTTP#listcontaineritem",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_storage_containers",
+    "parent": "azure_storage_accounts",
+    "relations": [],
+    "title": "Azure Storage Containers"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/storagerp/file-shares/list?tabs=HTTP#fileshareitem",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_storage_file_shares",
+    "parent": "azure_storage_accounts",
+    "relations": [],
+    "title": "Azure Storage File Shares"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/storageservices/get-queue-acl#response-body",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_storage_queue_acl",
+    "parent": "azure_storage_queues",
+    "relations": [],
+    "title": "Azure Storage Queue ACL"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/storagerp/queue/list?tabs=HTTP#listqueue",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_storage_queues",
+    "parent": "azure_storage_accounts",
+    "relations": ["azure_storage_queue_acl"],
+    "title": "Azure Storage Queues"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/storagerp/queue-services/list?tabs=HTTP#queueserviceproperties",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_storage_queue_services",
+    "parent": "azure_storage_accounts",
+    "relations": [],
+    "title": "Azure Storage Queue Services"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync#PrivateEndpointConnection",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_storagesync_service_private_endpoint_connections",
+    "parent": "azure_storagesync_services",
+    "relations": [],
+    "title": "Azure Storage Sync Service Private Endpoint Connections"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync#PrivateLinkResource",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_storagesync_service_private_link_resources",
+    "parent": "azure_storagesync_services",
+    "relations": [],
+    "title": "Azure Storage Sync Service Private Link Resources"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync#RegisteredServer",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_storagesync_service_registered_servers",
+    "parent": "azure_storagesync_services",
+    "relations": [],
+    "title": "Azure Storage Sync Service Registered Servers"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync#Service",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_storagesync_services",
+    "relations": [
+      "azure_storagesync_service_private_endpoint_connections",
+      "azure_storagesync_service_private_link_resources",
+      "azure_storagesync_service_registered_servers",
+      "azure_storagesync_service_sync_groups"
+    ],
+    "title": "Azure Storage Sync Services"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync#SyncGroup",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_storagesync_service_sync_groups",
+    "parent": "azure_storagesync_services",
+    "relations": ["azure_storagesync_service_sync_group_server_endpoints"],
+    "title": "Azure Storage Sync Service Sync Groups"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagesync/armstoragesync#ServerEndpoint",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_storagesync_service_sync_group_server_endpoints",
+    "parent": "azure_storagesync_service_sync_groups",
+    "relations": [],
+    "title": "Azure Storage Sync Service Sync Group Server Endpoints"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/storagerp/table/list?tabs=HTTP#table",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_storage_tables",
+    "parent": "azure_storage_accounts",
+    "relations": [],
+    "title": "Azure Storage Tables"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/streamanalytics/2020-03-01/streaming-jobs/list?tabs=HTTP#streamingjob",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_streamanalytics_streaming_jobs",
+    "relations": [],
+    "title": "Azure Stream Analytics Streaming Jobs"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/resources/subscriptions/list-locations?tabs=HTTP#location",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_subscription_subscription_locations",
+    "parent": "azure_subscription_subscriptions",
+    "relations": [],
+    "title": "Azure Subscription Subscription Locations"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/resources/subscriptions/list?tabs=HTTP#subscription",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_subscription_subscriptions",
+    "relations": ["azure_subscription_subscription_locations"],
+    "title": "Azure Subscription Subscriptions"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/resources/tenants/list?tabs=HTTP#tenantiddescription",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_subscription_tenants",
+    "relations": [],
+    "title": "Azure Subscription Tenants"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/support/services/list?tabs=HTTP#service",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_support_services",
+    "relations": [],
+    "title": "Azure Support Services"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/support/support-tickets/list?tabs=HTTP#supportticketdetails",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_support_tickets",
+    "relations": [],
+    "title": "Azure Support Tickets"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/synapse/private-link-hubs/list?tabs=HTTP#privatelinkhub",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_synapse_private_link_hubs",
+    "relations": [],
+    "title": "Azure Synapse Private Link Hubs"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/synapse/workspaces/list?tabs=HTTP#workspace",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_synapse_workspaces",
+    "relations": [],
+    "title": "Azure Synapse Workspaces"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/trafficmanager/profiles/list-by-subscription?tabs=HTTP#profile",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_trafficmanager_profiles",
+    "relations": [],
+    "title": "Azure Trafficmanager Profiles"
+  },
+  {
+    "description": "https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/windowsiot/armwindowsiot#DeviceService",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_windowsiot_services",
+    "relations": [],
+    "title": "Azure Windows IoT Services"
+  },
+  {
+    "description": "https://learn.microsoft.com/en-us/rest/api/workloads/sap-monitor/list?tabs=HTTP#monitor",
+    "is_incremental": false,
+    "is_paid": true,
+    "name": "azure_workloads_monitors",
+    "relations": [],
+    "title": "Azure Workloads Monitors"
+  }
+]
