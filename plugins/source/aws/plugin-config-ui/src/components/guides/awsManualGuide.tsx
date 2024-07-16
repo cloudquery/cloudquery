@@ -49,14 +49,14 @@ const AWS_MANUAL_SECTIONS = [
     header: 'Step 1: Create IAM role',
     bodies: [
       {
-        Node: () => (
-          <div>
+        text: (
+          <>
             Open the [AWS IAM Console](
             <Link target="_blank" href="https://console.aws.amazon.com/iam/home#home">
               https://console.aws.amazon.com/iam/home#home
             </Link>
             ), navigate to Access management - Roles. Then click Create Role.
-          </div>
+          </>
         ),
       },
       {

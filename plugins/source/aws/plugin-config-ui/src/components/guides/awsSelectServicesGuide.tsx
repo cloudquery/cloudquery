@@ -11,8 +11,8 @@ const SERVICES_SECTION = [
         text: 'The most popular services are listed on top. Note that some services may take a while to sync depending on the amount of resources used.',
       },
       {
-        Node: () => (
-          <Typography variant="body1" color="secondary">
+        text: (
+          <>
             See the [
             <Link
               target="_blank"
@@ -21,7 +21,7 @@ const SERVICES_SECTION = [
               AWS Plugin Documentation
             </Link>
             ] to see the full list of tables and their schema.
-          </Typography>
+          </>
         ),
       },
     ],

@@ -3,10 +3,10 @@ import { Box, Stack } from '@mui/system';
 import { Controller } from 'react-hook-form';
 import { Logo } from '../components/logo';
 import { awsRegions, top8Services } from '../utils/constants';
-import { ServiceList, ServiceType } from '../components/serviceList';
+import { ServiceList,ServiceTypes } from '../components/serviceList';
 
 interface Props {
-  awsServices: Record<string, ServiceType>;
+  awsServices: ServiceTypes
 }
 
 export function SelectServices({ awsServices: serviceOptions }: Props) {

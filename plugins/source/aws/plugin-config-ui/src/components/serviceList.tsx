@@ -26,8 +26,10 @@ export type ServiceType = {
   tables: string[];
 };
 
+export type ServiceTypes = Record<string, ServiceType>;
+
 interface Props {
-  services: Record<string, ServiceType>;
+  services: ServiceTypes;
   topServices: string[];
   formControlName: string;
   fallbackLogoSrc?: string;
