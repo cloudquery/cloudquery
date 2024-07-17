@@ -60,7 +60,7 @@ In this example we will show how to send OpenTelemetry traces from the CLI direc
 First, you will need to [setup OpenTelemetry with Datadog](https://docs.datadoghq.com/opentelemetry/).
 There are multiple ways to configure OpenTelemetry with Datadog. We'll show only a subset of them here, and you can find more information in the link above.
 
-### Using an OpenTelemetry collector
+### Option 1: Using an OpenTelemetry collector
 
 To config an OpenTelemetry collector with Datadog, you need to create a configuration file, for example `otel_collector_config.yaml` with the content below:
 
@@ -109,7 +109,7 @@ docker run \
 
 > For additional ways to run the collector, please refer to the [official documentation](https://docs.datadoghq.com/opentelemetry/collector_exporter/deployment#running-the-collector).
 
-### Direct OTEL Ingestion by the Datadog Agent via a configuration file
+### Option 2: Direct OTEL Ingestion by the Datadog Agent via a configuration file
 
 [Locate](https://docs.datadoghq.com/agent/configuration/agent-configuration-files/) your `datadog.yaml` file and add the following configuration:
 
@@ -123,7 +123,7 @@ otlp_config:
 
 [Restart](https://docs.datadoghq.com/agent/configuration/agent-commands/#restart-the-agent) the Datadog agent for the change to take effect.
 
-### Direct OTEL ingestion by the Datadog Agent via environment variables
+### Option 3: Direct OTEL ingestion by the Datadog Agent via environment variables
 
 Pass the `DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_HTTP_ENDPOINT` environment variable to the Datadog agent with a value of `0.0.0.0:4318`.
 If you're using Docker compose, you can find an example below:
@@ -171,6 +171,10 @@ Once ingestion starts you should be able to start seeing the traces in Datadog u
 
 ![Datadog](/images/docs/monitoring/cq_otel_datadog.png)
 
-We also provide a Datadog dashboard you can download from [here](/assets/datadog-dashboard.json) and import it into your Datadog account.
+We also provide a Datadog dashboard you can download from [here](/assets/datadog-dashboard.json) and import it into your Datadog account:
+1. Click "New Dashboard"
+2. In the name field, type "CloudQuery Sync Dashboard", then click "New Dashboard"
+3. Click "Configure" -> "Import dashboard JSON..."
+4. Drag the JSON file into the window, or copy-paste the contents.
 
 ![Datadog](/images/docs/monitoring/cq_otel_datadog_dashboard.png)
