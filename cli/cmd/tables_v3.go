@@ -30,7 +30,7 @@ func tablesV3(ctx context.Context, sourceClient *managedplugin.Client, sourceSpe
 	if filter == "spec" {
 		req.Tables = sourceSpec.Tables
 		req.SkipTables = sourceSpec.SkipTables
-		req.SkipDependentTables = sourceSpec.SkipDependentTables
+		req.SkipDependentTables = *sourceSpec.SkipDependentTables
 	}
 	getTablesResp, err := sourcePbClient.GetTables(ctx, req)
 	if err != nil {
