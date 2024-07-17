@@ -8,11 +8,11 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cloudquery/cloudquery-api-go v1.12.2
 	github.com/cloudquery/codegen v0.3.17
-	github.com/cloudquery/plugin-pb-go v1.20.5
+	github.com/cloudquery/plugin-pb-go v1.20.6
 	github.com/cloudquery/plugin-sdk/v4 v4.49.3
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
-	github.com/docker/docker v27.0.3+incompatible
+	github.com/docker/docker v26.1.4+incompatible
 	github.com/getsentry/sentry-go v0.28.1
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.6.0
@@ -20,7 +20,6 @@ require (
 	github.com/invopop/jsonschema v0.12.0
 	github.com/jedib0t/go-pretty/v6 v6.5.9
 	github.com/opencontainers/go-digest v1.0.0
-	github.com/opencontainers/image-spec v1.1.0
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/rs/zerolog v1.33.0
 	github.com/rudderlabs/analytics-go/v4 v4.2.0
@@ -97,6 +96,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/mostynb/go-grpc-compression v1.2.3 // indirect
 	github.com/oapi-codegen/runtime v1.1.1 // indirect
+	github.com/opencontainers/image-spec v1.1.0 // indirect
 	github.com/pierrec/lz4/v4 v4.1.21 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
