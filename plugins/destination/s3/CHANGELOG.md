@@ -1,5 +1,106 @@
 # Changelog
 
+## [7.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.2.8...plugins-destination-s3-v7.3.0) (2024-07-16)
+
+
+### Features
+
+* Add s3 destination connection test ([#18544](https://github.com/cloudquery/cloudquery/issues/18544)) ([50fdfcc](https://github.com/cloudquery/cloudquery/commit/50fdfcc267644d6059865131094af0f85d3c710d))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#18564](https://github.com/cloudquery/cloudquery/issues/18564)) ([5e7a67c](https://github.com/cloudquery/cloudquery/commit/5e7a67cbc50c4d9f0ec8ce9a52f0c6f95fa37a7b))
+
+## [7.2.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.2.7...plugins-destination-s3-v7.2.8) (2024-07-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.3 ([#18513](https://github.com/cloudquery/cloudquery/issues/18513)) ([d12da90](https://github.com/cloudquery/cloudquery/commit/d12da90f5ca67b8e590c433ad2762d48c499e6aa))
+* Handle concurrent map writes ([#18538](https://github.com/cloudquery/cloudquery/issues/18538)) ([34fb27a](https://github.com/cloudquery/cloudquery/commit/34fb27a7b98855143596d91788f83ca211760cb4))
+
+## [7.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.2.6...plugins-destination-s3-v7.2.7) (2024-07-09)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#18483](https://github.com/cloudquery/cloudquery/issues/18483)) ([cb87aeb](https://github.com/cloudquery/cloudquery/commit/cb87aeb2a48cf82839463182ed65d42d5907fe8f))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.12.0 ([#18448](https://github.com/cloudquery/cloudquery/issues/18448)) ([a5850e1](https://github.com/cloudquery/cloudquery/commit/a5850e1190e7d40437b3fbcea5c3b8f6b4b059ac))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.17 ([#18491](https://github.com/cloudquery/cloudquery/issues/18491)) ([b43fd16](https://github.com/cloudquery/cloudquery/commit/b43fd1602fa41e7df89b1007b119d5796867cc50))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.24 ([#18500](https://github.com/cloudquery/cloudquery/issues/18500)) ([3dba068](https://github.com/cloudquery/cloudquery/commit/3dba0683b05d42f25ad6b61dfd009c1593ec4f98))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.25 ([#18508](https://github.com/cloudquery/cloudquery/issues/18508)) ([40d75dd](https://github.com/cloudquery/cloudquery/commit/40d75dd218e11f3e96638c882a18da2a2bb2cfa9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.1 ([#18497](https://github.com/cloudquery/cloudquery/issues/18497)) ([3416eb7](https://github.com/cloudquery/cloudquery/commit/3416eb7d870fb8e9a0132bda3a571a235817a3f6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.2 ([#18504](https://github.com/cloudquery/cloudquery/issues/18504)) ([2d80936](https://github.com/cloudquery/cloudquery/commit/2d80936e5f952b29f1ddf6267c2331a504a38b2d))
+
+## [7.2.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.2.5...plugins-destination-s3-v7.2.6) (2024-07-03)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#18424](https://github.com/cloudquery/cloudquery/issues/18424)) ([e178631](https://github.com/cloudquery/cloudquery/commit/e178631d9b27403673918cff444c738732d2dbcb))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.23 ([#18418](https://github.com/cloudquery/cloudquery/issues/18418)) ([8ce67da](https://github.com/cloudquery/cloudquery/commit/8ce67daf27607fe8fc320e58d99912155915cfa5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.0 ([#18415](https://github.com/cloudquery/cloudquery/issues/18415)) ([3f4ef53](https://github.com/cloudquery/cloudquery/commit/3f4ef5366078eebd38ab7c1cc52afc0eaeee08f4))
+* **deps:** Update module github.com/hashicorp/go-retryablehttp to v0.7.7 [SECURITY] ([#18369](https://github.com/cloudquery/cloudquery/issues/18369)) ([1e223bf](https://github.com/cloudquery/cloudquery/commit/1e223bf58529449ab7b30d1a0d046a40a0488cf1))
+
+## [7.2.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.2.4...plugins-destination-s3-v7.2.5) (2024-06-25)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.48.0 ([#18363](https://github.com/cloudquery/cloudquery/issues/18363)) ([61baf97](https://github.com/cloudquery/cloudquery/commit/61baf97d1704878dcb129be56bd6457109b1719a))
+
+## [7.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.2.3...plugins-destination-s3-v7.2.4) (2024-06-24)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#18356](https://github.com/cloudquery/cloudquery/issues/18356)) ([b22a81d](https://github.com/cloudquery/cloudquery/commit/b22a81d944b52ab5d8e330259873041c3309c9df))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.22 ([#18349](https://github.com/cloudquery/cloudquery/issues/18349)) ([9f104f1](https://github.com/cloudquery/cloudquery/commit/9f104f1d221c24fb6a075a11f354823cb946872e))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.46.0 ([#18341](https://github.com/cloudquery/cloudquery/issues/18341)) ([5db9574](https://github.com/cloudquery/cloudquery/commit/5db9574defbd47b798254dacb1f4e466ccfacf74))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.46.1 ([#18350](https://github.com/cloudquery/cloudquery/issues/18350)) ([8ff8909](https://github.com/cloudquery/cloudquery/commit/8ff89094c231abfbc1cec38f8901a546139f2d01))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.47.0 ([#18351](https://github.com/cloudquery/cloudquery/issues/18351)) ([9c5bbdc](https://github.com/cloudquery/cloudquery/commit/9c5bbdccebdc2c65df491f70f76483aa0bb1c533))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.47.1 ([#18352](https://github.com/cloudquery/cloudquery/issues/18352)) ([b31812a](https://github.com/cloudquery/cloudquery/commit/b31812a821233cffa2b9bbc6a7644797f380fa82))
+* Pass a reader with seeking support to S3 SDK upload method ([#18361](https://github.com/cloudquery/cloudquery/issues/18361)) ([5916c95](https://github.com/cloudquery/cloudquery/commit/5916c95df3003a32b3567c10ef08648655653e63))
+
+## [7.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.2.2...plugins-destination-s3-v7.2.3) (2024-06-20)
+
+
+### Bug Fixes
+
+* **deps:** Update `github.com/cloudquery/plugin-sdk/v4` to v4.45.6 ([#18338](https://github.com/cloudquery/cloudquery/issues/18338)) ([d34a2c0](https://github.com/cloudquery/cloudquery/commit/d34a2c056095ff94483a54a9db5ae10d455669ac))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.45.4 ([#18299](https://github.com/cloudquery/cloudquery/issues/18299)) ([200480a](https://github.com/cloudquery/cloudquery/commit/200480a04ecaa8a826df2aa86429d1e1c9416f73))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.45.5 ([#18327](https://github.com/cloudquery/cloudquery/issues/18327)) ([42d5850](https://github.com/cloudquery/cloudquery/commit/42d5850e4d11e49d8567c2b182a3b26409cad150))
+* Don't reuse memory pools between tables ([#18336](https://github.com/cloudquery/cloudquery/issues/18336)) ([c55168a](https://github.com/cloudquery/cloudquery/commit/c55168a4afa31e31111fc01cac06088e1e3f0ae3))
+
+## [7.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.2.1...plugins-destination-s3-v7.2.2) (2024-06-18)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.45.0 ([#18246](https://github.com/cloudquery/cloudquery/issues/18246)) ([b462a91](https://github.com/cloudquery/cloudquery/commit/b462a91c6c260661171b5afc2a0e063202fcde1d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.45.1 ([#18273](https://github.com/cloudquery/cloudquery/issues/18273)) ([c54ebbf](https://github.com/cloudquery/cloudquery/commit/c54ebbfadcaac9f5f9085681dd5e4065b494dc74))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.45.2 ([#18289](https://github.com/cloudquery/cloudquery/issues/18289)) ([c5b1b3e](https://github.com/cloudquery/cloudquery/commit/c5b1b3ec80d7d3cf7d32514a72942d50b2fbf546))
+
+## [7.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.2.0...plugins-destination-s3-v7.2.1) (2024-06-14)
+
+
+### Bug Fixes
+
+* Don't fail on non existing key ([#18244](https://github.com/cloudquery/cloudquery/issues/18244)) ([f9b6bf9](https://github.com/cloudquery/cloudquery/commit/f9b6bf9f21286a222cdfcb3b788e2d59249625a6))
+
+## [7.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.1.2...plugins-destination-s3-v7.2.0) (2024-06-11)
+
+
+### Features
+
+* Remove logging of error events to Sentry in plugins ([#18165](https://github.com/cloudquery/cloudquery/issues/18165)) ([fc4ff27](https://github.com/cloudquery/cloudquery/commit/fc4ff27d37f9250b4cf912474073169406cb01fa))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#18194](https://github.com/cloudquery/cloudquery/issues/18194)) ([8be9ca6](https://github.com/cloudquery/cloudquery/commit/8be9ca604772c75fb8e5381e4166f81622a23e36))
+
 ## [7.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.1.1...plugins-destination-s3-v7.1.2) (2024-06-04)
 
 

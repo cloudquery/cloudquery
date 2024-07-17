@@ -126,6 +126,7 @@ func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts 
 		scheduler: scheduler.NewScheduler(
 			scheduler.WithLogger(logger),
 			scheduler.WithConcurrency(config.Concurrency),
+			scheduler.WithInvocationID(opts.InvocationID),
 		),
 		services: xkcdClient,
 		tables:   getTables(),

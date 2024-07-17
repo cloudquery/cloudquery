@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 
+	analytics "github.com/cloudquery/cloudquery/cli/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
 	"github.com/cloudquery/cloudquery/cli/internal/env"
 	"github.com/rs/zerolog/log"
@@ -22,16 +23,16 @@ var (
 	rootShort = "CloudQuery CLI"
 	rootLong  = `CloudQuery CLI
 
-Open source data integration at scale.
+High performance data integration at scale.
 
 Find more information at:
 	https://www.cloudquery.io`
 
-	disableSentry   = false
-	logConsole      = false
-	analyticsClient *AnalyticsClient
-	logFile         *os.File
-	invocationUUID  uuid.UUID
+	disableSentry      = false
+	logConsole         = false
+	oldAnalyticsClient *AnalyticsClient
+	logFile            *os.File
+	invocationUUID     uuid.UUID
 )
 
 func NewCmdRoot() *cobra.Command {
@@ -87,10 +88,11 @@ func NewCmdRoot() *cobra.Command {
 			sendStats := funk.ContainsString([]string{"all", "stats"}, telemetryLevel.String())
 			_, customAnalyticsHost := os.LookupEnv("CQ_ANALYTICS_HOST")
 			if (Version != "development" || customAnalyticsHost) && sendStats {
-				analyticsClient, err = initAnalytics()
+				oldAnalyticsClient, err = initAnalytics()
 				if err != nil {
 					log.Warn().Err(err).Msg("failed to initialize analytics client")
 				}
+				analytics.InitClient()
 			}
 
 			sendErrors := funk.ContainsString([]string{"all", "errors"}, telemetryLevel.String())
@@ -146,11 +148,20 @@ func NewCmdRoot() *cobra.Command {
 		newCmdPluginDocsDownload(),
 		newCmdPluginDocsUpload(),
 	)
+	pluginUIAssetsCmd := &cobra.Command{
+		Use:    "uiassets",
+		Short:  "Plugin UI asset commands",
+		Hidden: true,
+	}
+	pluginUIAssetsCmd.AddCommand(
+		newCmdPluginUIAssetsUpload(),
+	)
 
 	pluginCmd.AddCommand(
 		newCmdPluginInstall(false),
 		newCmdPluginPublish(),
 		pluginDocCmd,
+		pluginUIAssetsCmd,
 	)
 
 	addonCmd := &cobra.Command{
@@ -176,12 +187,14 @@ func NewCmdRoot() *cobra.Command {
 		pluginCmd,
 		addonCmd,
 	)
+
 	cmd.CompletionOptions.HiddenDefaultCmd = true
 	cmd.DisableAutoGenTag = true
 	cobra.OnFinalize(func() {
-		if analyticsClient != nil {
-			analyticsClient.Close()
+		if oldAnalyticsClient != nil {
+			oldAnalyticsClient.Close()
 		}
+		analytics.Close()
 	})
 
 	return cmd

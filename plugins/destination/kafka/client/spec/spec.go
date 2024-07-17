@@ -32,11 +32,8 @@ type Spec struct {
 	// If connecting via SASL/PLAIN, the password to use.
 	SASLPassword string `json:"sasl_password,omitempty"`
 
-	// Client ID to be set for Kafka API calls.
-	ClientID string `json:"client_id,omitempty" jsonschema:"default=cq-destination-kafka"`
-
 	// Number of records to write before starting a new object.
-	BatchSize int `json:"batch_size" jsonschema:"minimum=1,default=1000"`
+	BatchSize int64 `json:"batch_size" jsonschema:"minimum=1,default=1000"`
 
 	// Topic details, such as number of partitions and replication factor.
 	TopicDetails topicDetails `json:"topic_details"`
@@ -44,10 +41,6 @@ type Spec struct {
 
 func (s *Spec) SetDefaults() {
 	s.FileSpec.SetDefaults()
-
-	if s.ClientID == "" {
-		s.ClientID = "cq-destination-kafka"
-	}
 
 	if s.BatchSize < 1 {
 		s.BatchSize = 1000

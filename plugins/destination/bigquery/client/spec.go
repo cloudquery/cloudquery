@@ -64,10 +64,10 @@ type Spec struct {
 	Endpoint string `json:"endpoint"`
 
 	// Number of records to write before starting a new object.
-	BatchSize int `json:"batch_size" jsonschema:"minimum=1,default=10000"`
+	BatchSize int64 `json:"batch_size" jsonschema:"minimum=1,default=10000"`
 
 	// Number of bytes (as Arrow buffer size) to write before starting a new object.
-	BatchSizeBytes int `json:"batch_size_bytes" jsonschema:"minimum=1,default=5242880"`
+	BatchSizeBytes int64 `json:"batch_size_bytes" jsonschema:"minimum=1,default=5242880"`
 
 	// Maximum interval between batch writes.
 	BatchTimeout configtype.Duration `json:"batch_timeout"`

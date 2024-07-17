@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.3.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.4...plugins-source-square-v1.3.5) (2024-07-16)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.29 ([#18546](https://github.com/cloudquery/cloudquery/issues/18546)) ([4e93fe7](https://github.com/cloudquery/cloudquery/commit/4e93fe751ff058fc7df575798a81f7ece089df9f))
+
+## [1.3.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.3...plugins-source-square-v1.3.4) (2024-07-09)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.27 ([#18489](https://github.com/cloudquery/cloudquery/issues/18489)) ([4358ce3](https://github.com/cloudquery/cloudquery/commit/4358ce3255876cc79ab9b6b2df89bad99aa46699))
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.28 ([#18509](https://github.com/cloudquery/cloudquery/issues/18509)) ([e1cf3ad](https://github.com/cloudquery/cloudquery/commit/e1cf3ad1538fa05876e25f204b212d1a6d8ef7b6))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.12.0 ([#18448](https://github.com/cloudquery/cloudquery/issues/18448)) ([a5850e1](https://github.com/cloudquery/cloudquery/commit/a5850e1190e7d40437b3fbcea5c3b8f6b4b059ac))
+
 ## [1.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.2...plugins-source-square-v1.3.3) (2024-06-04)
 
 

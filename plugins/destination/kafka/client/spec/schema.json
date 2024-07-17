@@ -203,11 +203,6 @@
           "type": "string",
           "description": "If connecting via SASL/PLAIN, the password to use."
         },
-        "client_id": {
-          "type": "string",
-          "description": "Client ID to be set for Kafka API calls.",
-          "default": "cq-destination-kafka"
-        },
         "batch_size": {
           "type": "integer",
           "minimum": 1,

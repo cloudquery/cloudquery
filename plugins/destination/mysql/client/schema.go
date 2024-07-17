@@ -61,14 +61,17 @@ func (c *Client) getTableColumns(ctx context.Context, tableName string) ([]schem
 
 		schemaType := mySQLTypeToArrowType(typ)
 		var primaryKey bool
+		var unique bool
 		if constraintType != nil {
 			primaryKey = strings.Contains(*constraintType, "PRIMARY KEY")
+			unique = strings.Contains(*constraintType, "UNIQUE")
 		}
 		columns = append(columns, schema.Column{
 			Name:       name,
 			Type:       schemaType,
 			PrimaryKey: primaryKey,
 			NotNull:    nullable != "YES",
+			Unique:     unique,
 		})
 	}
 
@@ -123,6 +126,17 @@ func (c *Client) addColumn(ctx context.Context, table *schema.Table, column *sch
 	if column.Unique {
 		builder.WriteString(" UNIQUE")
 	}
+	builder.WriteString(";")
+	_, err := c.db.ExecContext(ctx, builder.String())
+	return err
+}
+
+func (c *Client) dropIndex(ctx context.Context, table *schema.Table, column *schema.Column) error {
+	builder := strings.Builder{}
+	builder.WriteString("ALTER TABLE ")
+	builder.WriteString(identifier(table.Name))
+	builder.WriteString(" DROP INDEX ")
+	builder.WriteString(identifier(column.Name))
 	builder.WriteString(";")
 	_, err := c.db.ExecContext(ctx, builder.String())
 	return err

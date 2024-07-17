@@ -6,12 +6,13 @@ from cloudquery.sdk import message
 from cloudquery.sdk import plugin
 from cloudquery.sdk import schema
 from cloudquery.sdk.scheduler import Scheduler, TableResolver
+from cloudquery.sdk.stateclient.stateclient import StateClientBuilder
 
 from plugin import tables
 from plugin.client import Client, Spec
 
 PLUGIN_NAME = "typeform"
-PLUGIN_VERSION = "1.4.3"  # {x-release-please-version}
+PLUGIN_VERSION = "1.5.1"  # {x-release-please-version}
 
 
 class TypeformPlugin(plugin.Plugin):
@@ -64,6 +65,9 @@ class TypeformPlugin(plugin.Plugin):
     def sync(
         self, options: plugin.SyncOptions
     ) -> Generator[message.SyncMessage, None, None]:
+        state_client = StateClientBuilder.build(backend_options=options.backend_options)
+        self._scheduler.set_post_sync_hook(state_client.flush)
+
         resolvers: list[TableResolver] = []
         for table in self.get_tables(
             plugin.TableOptions(
@@ -73,6 +77,12 @@ class TypeformPlugin(plugin.Plugin):
             )
         ):
             resolvers.append(table.resolver)
+
+        for resolver in resolvers:
+            resolver.set_state_client(state_client)
+            for r in resolver.child_resolvers:
+                r.set_state_client(state_client)
+
         return self._scheduler.sync(
             self._client, resolvers, options.deterministic_cq_id
         )

@@ -137,28 +137,8 @@ func appendValue(builder array.Builder, value any) error {
 		bldr.Append(arrow.MonthInterval(t[0].(int64)))
 		return nil
 	case *array.TimestampBuilder:
-		unit := bldr.Type().(*arrow.TimestampType).Unit
-		switch unit {
-		case arrow.Nanosecond:
-			v := value.([]bigquery.Value)
-			t := v[0].(time.Time)
-			nano := v[1].(int64)
-			nanoTime := t.Add(time.Duration(nano) * time.Nanosecond)
-			ts, err := arrow.TimestampFromString(nanoTime.Format(time.RFC3339Nano), arrow.Nanosecond)
-			if err != nil {
-				return fmt.Errorf("failed to call arrow.TimestampFromString: %w", err)
-			}
-			bldr.Append(ts)
-			return nil
-		default:
-			t := value.(time.Time)
-			ts, err := arrow.TimestampFromString(t.Format(time.RFC3339Nano), unit)
-			if err != nil {
-				return fmt.Errorf("failed to call arrow.TimestampFromString: %w", err)
-			}
-			bldr.Append(ts)
-			return nil
-		}
+		bldr.AppendTime(value.(time.Time))
+		return nil
 	case *array.Decimal128Builder:
 		r := value.(*big.Rat)
 		str, precision, scale := parseRat(r)

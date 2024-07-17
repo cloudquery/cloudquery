@@ -35,12 +35,10 @@ jobs:
           cache: true
           cache-dependency-path: scaffold/go.sum
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v6
         with:
           version: v1.55.2
           working-directory: scaffold
-          skip-pkg-cache: true
-          skip-build-cache: true
       - name: Build
         run: go build .
       - name: Test
@@ -60,9 +58,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.21.4-release-cache-${{ hashFiles('scaffold/go.sum') }}
+          key: ${{ runner.os }}-go-1.22.4-release-cache-${{ hashFiles('scaffold/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.21.4-release-cache-scaffold
+            ${{ runner.os }}-go-1.22.4-release-cache-scaffold
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v5

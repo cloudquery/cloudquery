@@ -3,6 +3,10 @@ on:
   push:
     tags:
       - "plugins-destination-snowflake-v*.*.*"
+
+env:
+  ui_dir_name: cloud-config-ui
+
 jobs:
   prepare:
     runs-on: ubuntu-latest
@@ -13,6 +17,7 @@ jobs:
       plugin_version: ${{ steps.split.outputs.plugin_version }}
       plugin_dir: ${{ steps.split.outputs.plugin_dir }}
       prerelease: ${{ steps.semver_parser.outputs.prerelease }}
+      ui_dir_arg: ${{ steps.check-ui-directory.outputs.result }}
     steps:
       - name: Split tag
         id: split
@@ -33,6 +38,48 @@ jobs:
         id: semver_parser
         with:
           input_string: ${{steps.split.outputs.plugin_version}}
+      - uses: actions/github-script@v7
+        id: check-ui-directory
+        env:
+          PLUGIN_DIR: ${{steps.split.outputs.plugin_dir}}
+        with:
+          script: |
+            const fs = require('fs').promises;
+            const path = require('path');
+            const pluginFiles = await fs.readdir(process.env.PLUGIN_DIR);
+            if (pluginFiles.includes(process.env.ui_dir_name)) {
+              return '--ui-dir ' + process.env.PLUGIN_DIR + '/' + process.env.ui_dir_name + '/build';
+            }
+            return '';
+          result-encoding: string
+
+  build-config-ui:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    needs: prepare
+    steps:
+      - name: Checkout
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        uses: actions/checkout@v4
+      - name: Use Node.js LTS
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+          cache-dependency-path: '${{needs.prepare.outputs.plugin_dir}}/${{env.ui_dir_name}}/package-lock.json'
+
+      - name: Install dependencies
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        run: npm ci
+        working-directory: '${{needs.prepare.outputs.plugin_dir}}/${{env.ui_dir_name}}'
+
+      - name: Build config UI
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        working-directory: '${{needs.prepare.outputs.plugin_dir}}/${{env.ui_dir_name}}'
+        run: |
+          npm run build
+
   publish-plugin-to-hub:
     timeout-minutes: 60
     runs-on: ubuntu-latest
@@ -42,7 +89,9 @@ jobs:
         CC: /usr/bin/gencc.sh
         CXX: /usr/bin/gencpp.sh
         GOAMD64: v1
-    needs: prepare
+    needs:
+      - prepare
+      - build-config-ui
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -54,9 +103,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.21.6-publish-plugin-to-hub-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
+          key: ${{ runner.os }}-go-1.22.4-publish-plugin-to-hub-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
           restore-keys: |
-            ${{ runner.os }}-go-1.21.6-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}
+            ${{ runner.os }}-go-1.22.4-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}
 
       - name: Set up Go 1.x
         uses: actions/setup-go@v5
@@ -107,11 +156,11 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v5.20.4
+          version: v5.25.1
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         env:
           CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
         run: |
-          cloudquery plugin publish --finalize
+          cloudquery plugin publish --finalize ${{ needs.prepare.outputs.ui_dir_arg }}

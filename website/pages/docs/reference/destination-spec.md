@@ -82,7 +82,7 @@ Specifies the update method to use when inserting rows. The exact semantics depe
 (`string`, optional, default: `safe`. Available: `safe`, `forced`)
 
 Specifies the migration mode to use when source tables are changed. In `safe` mode (the default), CloudQuery will not run migrations that would result in data loss, and will print an error instead. In `forced` mode, CloudQuery will run migrations that may result in data loss and the migration should succeed without errors, unless a table has user created dependent objects (e.g. views).
-`migrate_mode: forced` is only supported for the ClickHouse, MySQL, PostgreSQL, MSSQL and SQLite destination plugins at the moment.
+Not all destination plugins support `migrate_mode: forced`, refer to the specific destination plugin page to see if it is supported.
 
 Read more about how CloudQuery handles migrations [here](/docs/advanced-topics/migrations).
 
@@ -113,8 +113,10 @@ Supported only for `write_mode: append` and `write_mode: overwrite` modes at the
 
 A value for an additional column named `_cq_sync_group_id` that will be added to each table. In `overwrite` mode the column will be added as an additional primary key.
 This is useful when splitting a sync into [multiple parallel jobs](https://docs.cloudquery.io/docs/advanced-topics/running-cloudquery-in-parallel). Using the same `sync_group_id` allows identifying separate syncs jobs as belonging to the same group.
-The value supports the following placeholders: `{{YEAR}}, {{MONTH}}, {{DAY}}, {{HOUR}}, {{MINUTE}}` which are based on the sync time.
-A common use case is to use set `sync_group_id: "{{YEAR}}-{{MONTH}}-{{DAY}}"` to group syncs by day, in order to provide an historical view of the data, partitioned by day.
+The value supports the following placeholders: `{{SYNC_ID}}, {{YEAR}}, {{MONTH}}, {{DAY}}, {{HOUR}}, {{MINUTE}}` which are set at sync time.
+Common use cases include:
+1. Setting `sync_group_id: "{{YEAR}}-{{MONTH}}-{{DAY}}"` to group syncs by day, in order to provide an historical view of the data, partitioned by day.
+2. Setting `sync_group_id: "{{SYNC_ID}}" to enable joining data from different tables that were all part of the same sync job.
 
 
 

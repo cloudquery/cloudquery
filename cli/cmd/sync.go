@@ -7,8 +7,8 @@ import (
 	"slices"
 	"strings"
 
-	apiAuth "github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/auth"
+	"github.com/cloudquery/cloudquery/cli/internal/otel"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
@@ -21,6 +21,8 @@ const (
 cloudquery sync ./directory
 # Sync resources from directories and files
 cloudquery sync ./directory ./aws.yml ./pg.yml
+# Log tables metrics to a file
+cloudquery sync ./directory ./aws.yml ./pg.yml --tables-metrics-location metrics.txt
 `
 )
 
@@ -36,6 +38,7 @@ func NewCmdSync() *cobra.Command {
 	cmd.Flags().Bool("no-migrate", false, "Disable auto-migration before sync. By default, sync runs a migration before syncing resources.")
 	cmd.Flags().String("license", "", "set offline license file")
 	cmd.Flags().String("summary-location", "", "Sync summary file location. This feature is in Preview. Please provide feedback to help us improve it.")
+	cmd.Flags().String("tables-metrics-location", "", "Tables metrics file location. This feature is in Preview. Please provide feedback to help us improve it.")
 
 	return cmd
 }
@@ -94,7 +97,7 @@ func sync(cmd *cobra.Command, args []string) error {
 	}
 
 	// in the cloud sync environment, we pass only the relevant environment variables to the plugin
-	isolatePluginEnvironment := apiAuth.NewTokenClient().GetTokenType() == apiAuth.SyncRunAPIKey
+	_, isolatePluginEnvironment := os.LookupEnv("CQ_CLOUD")
 
 	ctx := cmd.Context()
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
@@ -124,7 +127,23 @@ func sync(cmd *cobra.Command, args []string) error {
 	// in a cloud sync environment, we pass only the relevant environment variables to the plugin
 	osEnviron := os.Environ()
 
+	tableMetricsLocation, err := cmd.Flags().GetString("tables-metrics-location")
+	if err != nil {
+		return err
+	}
+	var otelReceiver *otel.OtelReceiver
+	if tableMetricsLocation != "" {
+		otelReceiver, err = otel.StartOtelReceiver(ctx, otel.WithMetricsFilename(tableMetricsLocation))
+		if err == nil {
+			defer otelReceiver.Shutdown(ctx)
+		}
+	}
+
 	for _, source := range sources {
+		if source.OtelEndpoint == "" && otelReceiver != nil {
+			source.OtelEndpoint = otelReceiver.Endpoint
+			source.OtelEndpointInsecure = true
+		}
 		opts := []managedplugin.Option{
 			managedplugin.WithLogger(log.Logger),
 			managedplugin.WithOtelEndpoint(source.OtelEndpoint),

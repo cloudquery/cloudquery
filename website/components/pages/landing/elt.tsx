@@ -63,7 +63,7 @@ export default function Home() {
                         Sync any source to any destination, transform and visualize.
                     </p>
                     <p className="max-w-2xl mt-6 nx-text-xl font-medium leading-tight text-gray-400 sm:nx-text-2xl md:nx-text-3xl lg:nx-text-4xl">
-                        CloudQuery is an open source high performance data integration platform built for developers.
+                        CloudQuery is an open source framework for high performance data integration built for developers.
                     </p>
                 </div>
                 <div className="flex fix-flex-col h-32 mt-4 md:mt-0 mb-6 md:mb-0 items-center gap-3 md:flex-row xl:flex-row">

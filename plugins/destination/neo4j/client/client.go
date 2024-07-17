@@ -25,10 +25,10 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 		logger: logger.With().Str("module", "neo4j").Logger(),
 	}
 	if err := json.Unmarshal(spec, &c.spec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal neo4j spec: %w", err)
+		return nil, fmt.Errorf("failed to unmarshal spec: %w, %w", errInvalidSpec, err)
 	}
 	if err := c.spec.Validate(); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: %w", errInvalidSpec, err)
 	}
 	c.spec.SetDefaults()
 
@@ -39,8 +39,12 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	if err != nil {
 		return nil, err
 	}
+
 	if err := c.client.VerifyConnectivity(ctx); err != nil {
-		return nil, err
+		if neo4j.IsConnectivityError(err) {
+			return nil, fmt.Errorf("%w: %w", errUnreachable, err)
+		}
+		return nil, fmt.Errorf("%w: %w", errUnauthorized, err)
 	}
 
 	c.writer, err = batchwriter.New(c, batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes), batchwriter.WithLogger(c.logger))

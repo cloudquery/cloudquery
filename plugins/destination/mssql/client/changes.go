@@ -1,10 +1,10 @@
 package client
 
 import (
+	"slices"
 	"strings"
 
-	"slices"
-
+	"github.com/apache/arrow/go/v16/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
@@ -35,6 +35,10 @@ func needsTableDrop(change schema.TableColumnChange) bool {
 	case schema.TableColumnChangeTypeRemove:
 		return change.Previous.NotNull || change.Previous.PrimaryKey
 	case schema.TableColumnChangeTypeUpdate:
+		// allow changing string to large string without a table drop
+		if change.Previous.Type == arrow.BinaryTypes.String && change.Current.Type == arrow.BinaryTypes.LargeString {
+			return false
+		}
 		return true
 	default:
 		return true

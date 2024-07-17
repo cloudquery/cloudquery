@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.5.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.5.0...plugins-source-typeform-v1.5.1) (2024-07-16)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.29 ([#18546](https://github.com/cloudquery/cloudquery/issues/18546)) ([4e93fe7](https://github.com/cloudquery/cloudquery/commit/4e93fe751ff058fc7df575798a81f7ece089df9f))
+
+## [1.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.4.3...plugins-source-typeform-v1.5.0) (2024-07-09)
+
+
+### Features
+
+* Implement support for Incremental Table on Typeform's FormResponses table ([#18492](https://github.com/cloudquery/cloudquery/issues/18492)) ([5127370](https://github.com/cloudquery/cloudquery/commit/5127370784b2137a3e9eee3ca29036c6a50fb0b9))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.28 ([#18509](https://github.com/cloudquery/cloudquery/issues/18509)) ([e1cf3ad](https://github.com/cloudquery/cloudquery/commit/e1cf3ad1538fa05876e25f204b212d1a6d8ef7b6))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.12.0 ([#18448](https://github.com/cloudquery/cloudquery/issues/18448)) ([a5850e1](https://github.com/cloudquery/cloudquery/commit/a5850e1190e7d40437b3fbcea5c3b8f6b4b059ac))
+* Fix pagination logic for responses on Typeform plugin. ([#18479](https://github.com/cloudquery/cloudquery/issues/18479)) ([d0923b0](https://github.com/cloudquery/cloudquery/commit/d0923b02c50c66b591fcd96c9a3037ec153b239f))
+
 ## [1.4.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-typeform-v1.4.2...plugins-source-typeform-v1.4.3) (2024-06-04)
 
 
