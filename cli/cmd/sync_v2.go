@@ -21,7 +21,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func getSourceV2DestV3DestinationsTransformers(destinationSpecs []specs.Destination, destinationsVersions [][]int, sourceSpec specs.Source) []*transformer.RecordTransformer {
+func getSourceV2DestV3DestinationsTransformers(destinationSpecs []specs.Destination, destinationsVersions [][]int) []*transformer.RecordTransformer {
 	destinationsTransformers := make([]*transformer.RecordTransformer, 0, len(destinationsVersions))
 	for i := range destinationsVersions {
 		// We only need to transform to destinations that are v3
@@ -32,9 +32,7 @@ func getSourceV2DestV3DestinationsTransformers(destinationSpecs []specs.Destinat
 		opts := []transformer.RecordTransformerOption{}
 		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
 			opts = append(opts, transformer.WithRemovePKs(), transformer.WithRemovePKs())
-			if sourceSpec.DeterministicCQID {
-				opts = append(opts, transformer.WithRemoveUniqueConstraints())
-			}
+			opts = append(opts, transformer.WithRemoveUniqueConstraints())
 		} else if destinationSpecs[i].PKMode == specs.PKModeCQID {
 			opts = append(opts, transformer.WithRemovePKs())
 			opts = append(opts, transformer.WithCQIDPrimaryKey())
@@ -103,7 +101,7 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, d
 
 	sourcePbClient := source.NewSourceClient(sourceClient.Conn)
 	destinationsPbClients := make([]destination.DestinationClient, len(destinationsClients))
-	destinationsTransformers := getSourceV2DestV3DestinationsTransformers(destinationSpecs, destinationsVersions, sourceSpec)
+	destinationsTransformers := getSourceV2DestV3DestinationsTransformers(destinationSpecs, destinationsVersions)
 	for i := range destinationsClients {
 		destinationsPbClients[i] = destination.NewDestinationClient(destinationsClients[i].Conn)
 	}
