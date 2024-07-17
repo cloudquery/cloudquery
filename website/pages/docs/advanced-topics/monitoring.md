@@ -174,7 +174,7 @@ Once ingestion starts you should be able to start seeing the traces in Datadog u
 We also provide a Datadog dashboard you can download from [here](/assets/datadog-dashboard.json) and import it into your Datadog account:
 1. Click "New Dashboard"
 2. In the name field, type "CloudQuery Sync Dashboard", then click "New Dashboard"
-3. Click "Configure" -> "Import dashboard JSON..."
+3. Click "Configure" -> "Import dashboard JSON…"
 4. Drag the JSON file into the window, or copy-paste the contents.
 
 ![Datadog](/images/docs/monitoring/cq_otel_datadog_dashboard.png)
