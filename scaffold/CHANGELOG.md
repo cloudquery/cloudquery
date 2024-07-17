@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.1.1](https://github.com/cloudquery/cloudquery/compare/scaffold-v3.1.0...scaffold-v3.1.1) (2024-07-17)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-config-ui-connector to ^0.2.0 ([#18574](https://github.com/cloudquery/cloudquery/issues/18574)) ([b8c1408](https://github.com/cloudquery/cloudquery/commit/b8c140846e34ce950764d6d0c617427b4581a24d))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.4 ([#18555](https://github.com/cloudquery/cloudquery/issues/18555)) ([9c0191b](https://github.com/cloudquery/cloudquery/commit/9c0191b0d8d7995cf850d2812e6c2baea77a937c))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.5 ([#18567](https://github.com/cloudquery/cloudquery/issues/18567)) ([bc382d7](https://github.com/cloudquery/cloudquery/commit/bc382d7a27da9b4cc656243fe6556b085069e309))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.7 ([#18570](https://github.com/cloudquery/cloudquery/issues/18570)) ([d84ff34](https://github.com/cloudquery/cloudquery/commit/d84ff3499707c024e78e8cdf98c6519129a92a96))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.8 ([#18577](https://github.com/cloudquery/cloudquery/issues/18577)) ([e756bf4](https://github.com/cloudquery/cloudquery/commit/e756bf4880dbbd5b0913dcc151bec0d52bdfde44))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.9 ([#18578](https://github.com/cloudquery/cloudquery/issues/18578)) ([46174e5](https://github.com/cloudquery/cloudquery/commit/46174e5d85dc397c44c39ee324767136eab6ec24))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.2 ([#18504](https://github.com/cloudquery/cloudquery/issues/18504)) ([2d80936](https://github.com/cloudquery/cloudquery/commit/2d80936e5f952b29f1ddf6267c2331a504a38b2d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.3 ([#18513](https://github.com/cloudquery/cloudquery/issues/18513)) ([d12da90](https://github.com/cloudquery/cloudquery/commit/d12da90f5ca67b8e590c433ad2762d48c499e6aa))
+
 ## [3.1.0](https://github.com/cloudquery/cloudquery/compare/scaffold-v3.0.20...scaffold-v3.1.0) (2024-07-09)
 
 
