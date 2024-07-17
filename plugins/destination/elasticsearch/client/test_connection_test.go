@@ -9,8 +9,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
-	"go.mongodb.org/mongo-driver/x/mongo/driver/auth"
-	"go.mongodb.org/mongo-driver/x/mongo/driver/topology"
 )
 
 func TestConnectionTester(t *testing.T) {
@@ -22,64 +20,44 @@ func TestConnectionTester(t *testing.T) {
 	}{
 		{
 			name: "ok",
-			spec: []byte(`{"connection_string": "test", "database":"test"}`),
+			spec: []byte(`{"addresses": ["test"]}`),
 			err:  nil,
 		},
 		{
 			name: "invalid spec",
-			spec: []byte(`{"connection_string": "test"}`),
+			spec: []byte(`{"addresses": 12}`),
 			err:  &plugin.TestConnError{Code: codeInvalidSpec},
 		},
 		{
 			name: "invalid spec JSON",
-			spec: []byte(`{"connection_string": 12`),
+			spec: []byte(`{"addresses"`),
 			err:  &plugin.TestConnError{Code: codeInvalidSpec},
 		},
 		{
-			name: "connection failed",
-			spec: []byte(`{"connection_string": "test", "database":"test"}`),
-			err:  &plugin.TestConnError{Code: codeConnectionFailed},
-			clientBuilder: func() (plugin.Client, error) {
-				return nil, errConnectionFailed
-			},
-		},
-		{
 			name: "unreachable",
-			spec: []byte(`{"connection_string": "test", "database":"test"}`),
+			spec: []byte(`{"addresses": ["test"]}`),
 			err:  &plugin.TestConnError{Code: codeUnreachable},
 			clientBuilder: func() (plugin.Client, error) {
-				return nil, topology.ServerSelectionError{}
+				return nil, errUnreachable
 			},
 		},
 		{
 			name: "unauthorized",
-			spec: []byte(`{"connection_string": "test", "database":"test"}`),
+			spec: []byte(`{"addresses": ["test"]}`),
 			err:  &plugin.TestConnError{Code: codeUnauthorized},
 			clientBuilder: func() (plugin.Client, error) {
-				err := topology.ConnectionError{
-					Wrapped: &auth.Error{},
-				}
-				return nil, err
+				return nil, errUnauthorized
 			},
 		},
 		{
-			name: "connection error without wrapped auth error",
-			spec: []byte(`{"connection_string": "test", "database":"test"}`),
+			name: "connection failed with other error",
+			spec: []byte(`{"addresses": ["test"]}`),
 			err:  &plugin.TestConnError{Code: codeConnectionFailed},
 			clientBuilder: func() (plugin.Client, error) {
-				return nil, topology.ConnectionError{}
-			},
-		},
-		{
-			name: "unrecognized error",
-			spec: []byte(`{"connection_string": "test", "database":"test"}`),
-			err:  &plugin.TestConnError{Code: codeConnectionFailed},
-			clientBuilder: func() (plugin.Client, error) {
-				return nil, errors.New("unrecognized error")
+				return nil, errors.New("test")
 			},
 		},
 	}
-
 	for _, tt := range tests {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
