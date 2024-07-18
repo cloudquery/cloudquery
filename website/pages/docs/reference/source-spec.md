@@ -120,7 +120,7 @@ Specify which tables to skip when syncing the source plugin. It accepts wildcard
 (`bool`, optional, default: `true`, introduced in CLI `v2.3.7`)
 
 If set to `false`, dependent tables will be included in the sync when their parents are matched, even if not explicitly included by the `tables` configuration.
-Prior to CLI version `v4.0.0`, this option defaulted to `false`. We've changed the default to `true` to avoid new tables implicitly being synced when added to plugins.
+Prior to CLI version `v6.0.0`, this option defaulted to `false`. We've changed the default to `true` to avoid new tables implicitly being synced when added to plugins.
 
 ### destinations
 
