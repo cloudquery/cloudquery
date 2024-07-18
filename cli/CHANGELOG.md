@@ -5,6 +5,26 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.25.1...cli-v6.0.0) (2024-07-18)
+
+
+### ⚠ BREAKING CHANGES
+
+* Change `skip_dependent_tables` default from `false` to `true` ([#18191](https://github.com/cloudquery/cloudquery/issues/18191)), to avoid new tables implicitly being synced when added to plugins. See more in the [reference docs](https://docs.cloudquery.io/docs/reference/source-spec#skip_dependent_tables)
+* Remove unique constraints in append mode ([#17129](https://github.com/cloudquery/cloudquery/issues/17129)). This should not be breaking for most destinations (based on our tests, only DuckDB since it does not support removal of unique constraints), and will allow syncs to work when append mode is configured and the source schema has a unique constraint on a column.
+
+### Features
+
+* Change `skip_dependent_tables` default from `false` to `true` ([#18191](https://github.com/cloudquery/cloudquery/issues/18191)) ([3c86963](https://github.com/cloudquery/cloudquery/commit/3c86963887983774f5782a1647ae274bdce5dbd6))
+* Remove unique constraints in append mode ([#17129](https://github.com/cloudquery/cloudquery/issues/17129)) ([4aeb94e](https://github.com/cloudquery/cloudquery/commit/4aeb94e5b7453797009dba47baaef2f5fe3398fe))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.12.2 ([#18584](https://github.com/cloudquery/cloudquery/issues/18584)) ([d38ac1b](https://github.com/cloudquery/cloudquery/commit/d38ac1b8f7f7369a1c017bd2b7a477b068346724))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.20.5 ([#18590](https://github.com/cloudquery/cloudquery/issues/18590)) ([5bfa3ca](https://github.com/cloudquery/cloudquery/commit/5bfa3ca8bbdcf9493777bc607b05473dc808cfc7))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.20.6 ([#18593](https://github.com/cloudquery/cloudquery/issues/18593)) ([64cbb9a](https://github.com/cloudquery/cloudquery/commit/64cbb9a6415ef689f211549c0fef570d89185132))
+
 ## [5.25.1](https://github.com/cloudquery/cloudquery/compare/cli-v5.25.0...cli-v5.25.1) (2024-07-15)
 
 

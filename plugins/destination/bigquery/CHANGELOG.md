@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.0.7...plugins-destination-bigquery-v4.1.0) (2024-07-18)
+
+
+### Features
+
+* Provide better error message when a write fails on entity too large ([#18592](https://github.com/cloudquery/cloudquery/issues/18592)) ([ba3498c](https://github.com/cloudquery/cloudquery/commit/ba3498c593d3d1c770ba9ec19ca086cea966be88))
+
 ## [4.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.0.6...plugins-destination-bigquery-v4.0.7) (2024-07-16)
 
 

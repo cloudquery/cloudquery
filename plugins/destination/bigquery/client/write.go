@@ -1,6 +1,7 @@
 package client
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -18,12 +19,12 @@ const (
 )
 
 type item struct {
-	cols map[string]bigquery.Value
+	Cols map[string]bigquery.Value `json:"cols"`
 }
 
 func (i *item) Save() (map[string]bigquery.Value, string, error) {
 	// we're not doing de-dup at the moment
-	return i.cols, bigquery.NoDedupeID, nil
+	return i.Cols, bigquery.NoDedupeID, nil
 }
 
 func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) error {
@@ -36,6 +37,23 @@ func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) err
 	return nil
 }
 
+func (c *Client) serializeBatchForError(batch []*item) string {
+	buffer := new(bytes.Buffer)
+	encoder := json.NewEncoder(buffer)
+	encoder.SetEscapeHTML(false)
+	err := encoder.Encode(batch)
+	if err != nil {
+		c.logger.Info().Err(err).Msg("Failed to serialize batch for error")
+		return ""
+	}
+	const maxBufferSize = 1000
+	if buffer.Len() > maxBufferSize {
+		buffer.Truncate(maxBufferSize)
+		buffer.WriteString("... (truncated)")
+	}
+	return buffer.String()
+}
+
 func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
 	inserter := c.client.Dataset(c.spec.DatasetID).Table(name).Inserter()
 	inserter.IgnoreUnknownValues = true
@@ -44,11 +62,11 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	for _, msg := range msgs {
 		rec := msg.Record
 		for i := 0; i < int(rec.NumRows()); i++ {
-			saver := &item{cols: make(map[string]bigquery.Value, rec.NumCols())}
+			saver := &item{Cols: make(map[string]bigquery.Value, rec.NumCols())}
 			for n, col := range rec.Columns() {
 				if col.IsValid(i) {
 					// save some bandwidth by not sending nil values
-					saver.cols[rec.ColumnName(n)] = getValueForBigQuery(col, i)
+					saver.Cols[rec.ColumnName(n)] = getValueForBigQuery(col, i)
 				}
 			}
 			batch = append(batch, saver)
@@ -65,6 +83,13 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 			c.logger.Info().Str("table", name).Msg("Table does not exist yet, waiting for it to be created before retrying write")
 			time.Sleep(1 * time.Second)
 			continue
+		}
+		if isEntityTooLargeError(err) {
+			batchData := c.serializeBatchForError(batch)
+			if batchData == "" {
+				return fmt.Errorf("batch too big to be inserted into BigQuery table %s. See limitations here https://cloud.google.com/bigquery/quotas#streaming_inserts", name)
+			}
+			return fmt.Errorf("batch too big to be inserted into BigQuery table %s. See limitations here https://cloud.google.com/bigquery/quotas#streaming_inserts. Batch data: %s", name, batchData)
 		}
 		return fmt.Errorf("failed to put item into BigQuery table %s: %w", name, err)
 	}
