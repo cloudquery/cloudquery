@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.3.0...plugins-destination-s3-v7.3.1) (2024-07-18)
+
+
+### Bug Fixes
+
+* Don't use a reader with seeking support when `no_rotate` is true ([#18608](https://github.com/cloudquery/cloudquery/issues/18608)) ([b5e06d3](https://github.com/cloudquery/cloudquery/commit/b5e06d30e7118674e8f16e0df3f096e64259b924))
+
 ## [7.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.2.8...plugins-destination-s3-v7.3.0) (2024-07-16)
 
 
