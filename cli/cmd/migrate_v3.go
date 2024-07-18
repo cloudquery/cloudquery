@@ -35,10 +35,7 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 			opts = append(opts, transformer.WithSyncGroupIdColumn(destinationSpecs[i].RenderedSyncGroupId(migrateStart, invocationUUID.String())))
 		}
 		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
-			opts = append(opts, transformer.WithRemovePKs(), transformer.WithRemovePKs())
-			if sourceSpec.DeterministicCQID {
-				opts = append(opts, transformer.WithRemoveUniqueConstraints())
-			}
+			opts = append(opts, transformer.WithRemovePKs(), transformer.WithRemoveUniqueConstraints())
 		} else if destinationSpecs[i].PKMode == specs.PKModeCQID {
 			opts = append(opts, transformer.WithRemovePKs())
 			opts = append(opts, transformer.WithCQIDPrimaryKey())
@@ -72,7 +69,7 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 	getTablesRes, err := sourcePbClient.GetTables(ctx, &plugin.GetTables_Request{
 		Tables:              sourceSpec.Tables,
 		SkipTables:          sourceSpec.SkipTables,
-		SkipDependentTables: sourceSpec.SkipDependentTables,
+		SkipDependentTables: *sourceSpec.SkipDependentTables,
 	})
 	if err != nil {
 		return err

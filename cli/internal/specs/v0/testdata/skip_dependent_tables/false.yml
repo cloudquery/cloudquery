@@ -1,0 +1,14 @@
+kind: source
+spec:
+  name: gcp
+  path: cloudquery/gcp
+  version: v1.0.0
+  destinations: [postgresql]
+  tables: [test]
+  skip_dependent_tables: false
+---
+kind: destination
+spec:
+  name: postgresql
+  path: cloudquery/postgresql
+  version: v1.0.0

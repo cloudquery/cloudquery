@@ -35,6 +35,8 @@ func getPath(pathParts ...string) string {
 	return path.Join("testdata", path.Join(pathParts...))
 }
 
+var boolTrue = true
+var boolFalse = false
 var specLoaderTestCases = []specLoaderTestCase{
 	{
 		name: "success",
@@ -549,6 +551,105 @@ var specLoaderTestCases = []specLoaderTestCase{
 					registryInferred: true,
 				},
 				Spec: map[string]any{"service_account_key_json": getExpectedApplicationDefaultCredentials()},
+			},
+		},
+	},
+	{
+		name: "skip_dependent_tables defaults to true",
+		path: []string{getPath("skip_dependent_tables/default.yml")},
+		err: func() string {
+			return ""
+		},
+		sources: []*Source{
+			{
+				Metadata: Metadata{
+					Name:             "gcp",
+					Path:             "cloudquery/gcp",
+					Version:          "v1.0.0",
+					Registry:         RegistryCloudQuery,
+					registryInferred: true,
+				},
+				SkipDependentTables: &boolTrue,
+				Destinations:        []string{"postgresql"},
+				Tables:              []string{"test"},
+			},
+		},
+		destinations: []*Destination{
+			{
+				Metadata: Metadata{
+					Name:             "postgresql",
+					Path:             "cloudquery/postgresql",
+					Version:          "v1.0.0",
+					Registry:         RegistryCloudQuery,
+					registryInferred: true,
+				},
+				WriteMode: WriteModeOverwriteDeleteStale,
+			},
+		},
+	},
+	{
+		name: "skip_dependent_tables when set to true",
+		path: []string{getPath("skip_dependent_tables/true.yml")},
+		err: func() string {
+			return ""
+		},
+		sources: []*Source{
+			{
+				Metadata: Metadata{
+					Name:             "gcp",
+					Path:             "cloudquery/gcp",
+					Version:          "v1.0.0",
+					Registry:         RegistryCloudQuery,
+					registryInferred: true,
+				},
+				SkipDependentTables: &boolTrue,
+				Destinations:        []string{"postgresql"},
+				Tables:              []string{"test"},
+			},
+		},
+		destinations: []*Destination{
+			{
+				Metadata: Metadata{
+					Name:             "postgresql",
+					Path:             "cloudquery/postgresql",
+					Version:          "v1.0.0",
+					Registry:         RegistryCloudQuery,
+					registryInferred: true,
+				},
+				WriteMode: WriteModeOverwriteDeleteStale,
+			},
+		},
+	},
+	{
+		name: "skip_dependent_tables when set to false",
+		path: []string{getPath("skip_dependent_tables/false.yml")},
+		err: func() string {
+			return ""
+		},
+		sources: []*Source{
+			{
+				Metadata: Metadata{
+					Name:             "gcp",
+					Path:             "cloudquery/gcp",
+					Version:          "v1.0.0",
+					Registry:         RegistryCloudQuery,
+					registryInferred: true,
+				},
+				SkipDependentTables: &boolFalse,
+				Destinations:        []string{"postgresql"},
+				Tables:              []string{"test"},
+			},
+		},
+		destinations: []*Destination{
+			{
+				Metadata: Metadata{
+					Name:             "postgresql",
+					Path:             "cloudquery/postgresql",
+					Version:          "v1.0.0",
+					Registry:         RegistryCloudQuery,
+					registryInferred: true,
+				},
+				WriteMode: WriteModeOverwriteDeleteStale,
 			},
 		},
 	},
