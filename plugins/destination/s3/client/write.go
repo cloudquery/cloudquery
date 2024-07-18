@@ -48,14 +48,14 @@ func (c *Client) adjustReaderIfNeeded(r io.Reader) (io.Reader, error) {
 
 func (c *Client) createObject(ctx context.Context, table *schema.Table, objKey string) (*filetypes.Stream, error) {
 	s, err := c.Client.StartStream(table, func(r io.Reader) error {
-		adjustReader, err := c.adjustReaderIfNeeded(r)
+		adjustedReader, err := c.adjustReaderIfNeeded(r)
 		if err != nil {
 			return err
 		}
 		params := &s3.PutObjectInput{
 			Bucket:      aws.String(c.spec.Bucket),
 			Key:         aws.String(objKey),
-			Body:        adjustReader,
+			Body:        adjustedReader,
 			ContentType: aws.String(c.spec.GetContentType()),
 		}
 
