@@ -4,6 +4,10 @@
 
 This will install all the dependencies required for the Plugin UI to run.
 
+Make sure to copy `.env.example.json` to `.env.json` inside `src` folder before running locally:
+* `authToken` and `teamName` is required if you need to use CloudQuery API. You can get the token by navigating to https://cloud.cloudquery.io and inspecting any fetch request: you can extract the token from the `Authorization` header.
+* `initialValues` is required if you want to see how your plugin behaves with initial values
+
 ## Plugin tables
 
 In case your plugin is a source plugin and you want to use the list of tables in your plugin UI, then make sure to build the plugin first to get a generated list of tables. Inside the plugin root directory run `go build`. This will generate a plugin file and then you should run `./{generated-plugin-file-name} doc --format=json docs`. The generated file with table should be located inside `docs/__tables.json`. Then navigate back to the `cloud-config-ui` directory inside your plugin and run `npm install`. After that you can import the list of tables inside the application like this:
