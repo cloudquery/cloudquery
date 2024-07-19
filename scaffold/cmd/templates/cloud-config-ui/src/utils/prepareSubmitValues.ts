@@ -5,6 +5,7 @@ export function prepareSubmitValues(
   values: FormValues,
 ): PluginUiMessagePayload['validation_passed']['values'] {
   return {
+    name: values.name,
     spec: {
       token: values.token,
     },
@@ -12,6 +13,7 @@ export function prepareSubmitValues(
 
     // required for source plugin
     // tables: [],
+    // skipTables: [],
 
     // required for destination plugin
     // migrateMode: 'forced',

@@ -1,10 +1,10 @@
-import { TextField } from '@mui/material';
+import TextField from '@mui/material/TextField';
 import { Controller, useForm } from 'react-hook-form';
-import { FormFieldGroup, getYupValidationResolver } from '@cloudquery/cloud-ui';
+import { getYupValidationResolver } from '@cloudquery/cloud-ui';
 import { FormValues, formValidationSchema } from '../utils/formSchema';
 import { prepareSubmitValues } from '../utils/prepareSubmitValues';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
-import { useFormSubmit } from '@cloudquery/plugin-config-ui-lib';
+import { FormFieldGroup, useFormSubmit } from '@cloudquery/plugin-config-ui-lib';
 
 interface Props {
   initialValues: FormValues | undefined;
@@ -36,7 +36,22 @@ export function Form({ initialValues }: Props) {
   useFormSubmit(handleValidate, pluginUiMessageHandler);
 
   return (
-    <FormFieldGroup title="Token">
+    <FormFieldGroup title={initialValues ? 'Update a {plugin-kind}' : 'Create a {plugin-kind}'}>
+      <Controller
+        control={control}
+        name="name"
+        render={({ field, fieldState }) => (
+          <TextField
+            error={!!fieldState.error}
+            fullWidth={true}
+            helperText={fieldState.error?.message}
+            label="{plugin-kind} name"
+            disabled={!!initialValues}
+            autoComplete="off"
+            {...field}
+          />
+        )}
+      />
       <Controller
         control={control}
         name="token"

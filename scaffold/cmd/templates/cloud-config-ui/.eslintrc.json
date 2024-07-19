@@ -3,6 +3,7 @@
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:prettier/recommended",
@@ -33,12 +34,8 @@
     "jsx-a11y/anchor-is-valid": [
       "error",
       {
-        "components": [
-          "Link"
-        ],
-        "specialLink": [
-          "to"
-        ]
+        "components": ["Link"],
+        "specialLink": ["to"]
       }
     ],
     "jsx-a11y/label-has-associated-control": [
@@ -89,18 +86,9 @@
       }
     ],
     "react/display-name": "off",
-    "react/jsx-boolean-value": [
-      "error",
-      "always"
-    ],
-    "react/jsx-first-prop-new-line": [
-      "error",
-      "multiline"
-    ],
-    "react/jsx-fragments": [
-      "error",
-      "syntax"
-    ],
+    "react/jsx-boolean-value": ["error", "always"],
+    "react/jsx-first-prop-new-line": ["error", "multiline"],
+    "react/jsx-fragments": ["error", "syntax"],
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
     "unicorn/filename-case": "off",
@@ -109,10 +97,5 @@
     "unicorn/no-useless-undefined": "off",
     "unicorn/prevent-abbreviations": "off"
   },
-  "ignorePatterns": [
-    "node_modules/",
-    "dist/",
-    "*.js",
-    "*.cjs"
-  ]
+  "ignorePatterns": ["node_modules/", "dist/", "*.js", "*.cjs"]
 }
