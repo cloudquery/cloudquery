@@ -6,7 +6,7 @@ import (
 	"math/rand"
 	"strconv"
 
-	"github.com/apache/arrow/go/v16/arrow"
+	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/test/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"golang.org/x/exp/maps"

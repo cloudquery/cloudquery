@@ -3,10 +3,10 @@ module github.com/cloudquery/cloudquery/plugins/destination/elasticsearch
 go 1.22.4
 
 require (
-	github.com/apache/arrow/go/v16 v16.1.0
+	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cloudquery/codegen v0.3.17
-	github.com/cloudquery/plugin-sdk/v4 v4.50.0
+	github.com/cloudquery/plugin-sdk/v4 v4.50.1
 	github.com/elastic/go-elasticsearch/v8 v8.6.0
 	github.com/goccy/go-json v0.10.3
 	github.com/invopop/jsonschema v0.12.0
@@ -25,7 +25,7 @@ require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.12.3 // indirect
-	github.com/cloudquery/plugin-pb-go v1.20.6 // indirect
+	github.com/cloudquery/plugin-pb-go v1.20.8 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/elastic/elastic-transport-go/v8 v8.0.0-20211216131617-bbee439d559c // indirect
@@ -38,9 +38,10 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.20.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-retryablehttp v0.7.7 // indirect
+	github.com/huandu/xstrings v1.4.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/klauspost/compress v1.17.7 // indirect
-	github.com/klauspost/cpuid/v2 v2.2.7 // indirect
+	github.com/klauspost/compress v1.17.9 // indirect
+	github.com/klauspost/cpuid/v2 v2.2.8 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect

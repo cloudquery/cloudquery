@@ -3,7 +3,7 @@ package values
 import (
 	"time"
 
-	"github.com/apache/arrow/go/v16/arrow"
+	"github.com/apache/arrow/go/v17/arrow"
 )
 
 func buildDate32Values(builder primitiveBuilder[arrow.Date32], value any) {
