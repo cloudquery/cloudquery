@@ -5,6 +5,17 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.0.0...cli-v6.0.1) (2024-07-22)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.12.3 ([#18613](https://github.com/cloudquery/cloudquery/issues/18613)) ([9f1ced6](https://github.com/cloudquery/cloudquery/commit/9f1ced6a4ffc2fd7d6751b671d8b463eb0d0bca5))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.20.7 ([#18645](https://github.com/cloudquery/cloudquery/issues/18645)) ([91172f4](https://github.com/cloudquery/cloudquery/commit/91172f41222c8affca89a5c596a1576bbfdf2593))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.4 ([#18616](https://github.com/cloudquery/cloudquery/issues/18616)) ([b818bfb](https://github.com/cloudquery/cloudquery/commit/b818bfbcc5c47839e4d00f28615ed7c7016a32df))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.50.0 ([#18642](https://github.com/cloudquery/cloudquery/issues/18642)) ([703b60c](https://github.com/cloudquery/cloudquery/commit/703b60c58851a6c57f23f1e41a188b83e7e384ae))
+* Use `invocation_id` instead of `invocation-id` in the CLI logger ([#18641](https://github.com/cloudquery/cloudquery/issues/18641)) ([7c51f70](https://github.com/cloudquery/cloudquery/commit/7c51f70587210a6e625ee7bceb6d2d4a10bef1d8))
+
 ## [6.0.0](https://github.com/cloudquery/cloudquery/compare/cli-v5.25.1...cli-v6.0.0) (2024-07-18)
 
 
