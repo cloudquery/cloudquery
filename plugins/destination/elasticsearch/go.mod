@@ -5,7 +5,7 @@ go 1.22.4
 require (
 	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cenkalti/backoff/v4 v4.3.0
-	github.com/cloudquery/codegen v0.3.17
+	github.com/cloudquery/codegen v0.3.18
 	github.com/cloudquery/plugin-sdk/v4 v4.50.1
 	github.com/elastic/go-elasticsearch/v8 v8.6.0
 	github.com/goccy/go-json v0.10.3
