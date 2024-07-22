@@ -93,6 +93,10 @@ service:
       receivers: [otlp]
       processors: [batch/datadog]
       exporters: [datadog]
+    logs:
+      receivers: [otlp]
+      processors: [batch/datadog]
+      exporters: [datadog]
 ```
 
 Then run the collector with the following command (replacing `DATADOG_SITE` and `DATADOG_API_KEY` with your own values):
@@ -119,6 +123,9 @@ otlp_config:
     protocols:
       http:
         endpoint: 0.0.0.0:4318
+  logs:
+    enabled: true
+logs_enabled: true
 ```
 
 [Restart](https://docs.datadoghq.com/agent/configuration/agent-commands/#restart-the-agent) the Datadog agent for the change to take effect.
@@ -141,6 +148,8 @@ services:
       DD_API_KEY: redacted
       DD_SITE: "datadoghq.eu"
       DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_HTTP_ENDPOINT: "0.0.0.0:4318"
+      DD_LOGS_ENABLED: "true"
+      DD_OTLP_CONFIG_LOGS_ENABLED: "true"
     ports:
       - "4318:4318"
 ```
