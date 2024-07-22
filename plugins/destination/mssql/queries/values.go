@@ -1,8 +1,8 @@
 package queries
 
 import (
-	"github.com/apache/arrow/go/v16/arrow"
-	"github.com/apache/arrow/go/v16/arrow/array"
+	"github.com/apache/arrow/go/v17/arrow"
+	"github.com/apache/arrow/go/v17/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	mssql "github.com/microsoft/go-mssqldb"
 )

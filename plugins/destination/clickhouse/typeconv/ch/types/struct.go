@@ -3,7 +3,7 @@ package types
 import (
 	"strings"
 
-	"github.com/apache/arrow/go/v16/arrow"
+	"github.com/apache/arrow/go/v17/arrow"
 )
 
 // https://clickhouse.com/docs/en/sql-reference/data-types/tuple
