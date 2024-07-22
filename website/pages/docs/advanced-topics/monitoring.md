@@ -18,9 +18,9 @@ CloudQuery utilizes structured [logging](../reference/cli/cloudquery) (in plain 
 
 ELT workloads can be long running and sometimes it is necessary to better understand what calls are taking the most time; to potentially optimize those on the plugin side, ignore them or split them to a different workload. Plugins come with an OpenTelemetry library built in, but it is up to the plugin author to instrument the most important parts--usually the API calls--this way it is possible to see what calls take the longest time, or where throttling and errors are happening.
 
-CloudQuery supports [OpenTelemetry](https://opentelemetry.io/) tracing out of the box and can be enabled easily via [configuration](/docs/reference/source-spec).
+CloudQuery supports [OpenTelemetry](https://opentelemetry.io/) traces, metrics and logs out of the box and can be enabled easily via [configuration](/docs/reference/source-spec).
 
-To collect traces you need a [backend](https://opentelemetry.io/docs/concepts/components/#exporters) that supports OpenTelemetry protocol. For example you can use [Jaeger](https://opentelemetry.io/docs/instrumentation/go/exporters/#jaeger) to visualize and analyze traces.
+To collect OpenTelemetry data you need a [backend](https://opentelemetry.io/docs/concepts/components/#exporters) that supports OpenTelemetry protocol. For example you can use [Jaeger](https://opentelemetry.io/docs/instrumentation/go/exporters/#jaeger) to visualize and analyze traces.
 
 To start Jaeger locally you can use Docker:
 
@@ -56,7 +56,7 @@ In production, it is common to use an OpenTelemetry [collector](https://opentele
 
 ## OpenTelemetry and Datadog
 
-In this example we will show how to send OpenTelemetry traces from the CLI directly to Datadog.
+In this example we will show how to send OpenTelemetry traces, metrics and logs directly to Datadog.
 First, you will need to [setup OpenTelemetry with Datadog](https://docs.datadoghq.com/opentelemetry/).
 There are multiple ways to configure OpenTelemetry with Datadog. We'll show only a subset of them here, and you can find more information in the link above.
 
