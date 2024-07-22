@@ -8,7 +8,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cloudquery/cloudquery-api-go v1.12.3
 	github.com/cloudquery/codegen v0.3.17
-	github.com/cloudquery/plugin-pb-go v1.20.7
+	github.com/cloudquery/plugin-pb-go v1.20.8
 	github.com/cloudquery/plugin-sdk/v4 v4.50.0
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
@@ -52,6 +52,7 @@ require (
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/adrg/xdg v0.4.0 // indirect
+	github.com/apache/arrow/go/v17 v17.0.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/avast/retry-go/v4 v4.6.0 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
@@ -79,8 +80,8 @@ require (
 	github.com/hashicorp/go-version v1.7.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/klauspost/compress v1.17.8 // indirect
-	github.com/klauspost/cpuid/v2 v2.2.7 // indirect
+	github.com/klauspost/compress v1.17.9 // indirect
+	github.com/klauspost/cpuid/v2 v2.2.8 // indirect
 	github.com/knadh/koanf/maps v0.1.1 // indirect
 	github.com/knadh/koanf/providers/confmap v0.1.0 // indirect
 	github.com/knadh/koanf/v2 v2.1.1 // indirect
