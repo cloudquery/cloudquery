@@ -6,7 +6,7 @@ require (
 	github.com/IBM/sarama v1.43.2
 	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cloudquery/codegen v0.3.17
-	github.com/cloudquery/filetypes/v4 v4.2.25
+	github.com/cloudquery/filetypes/v4 v4.2.26
 	github.com/cloudquery/plugin-sdk/v4 v4.50.1
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.33.0
@@ -18,7 +18,6 @@ require (
 	github.com/adrg/xdg v0.4.0 // indirect
 	github.com/andybalholm/brotli v1.1.0 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
-	github.com/apache/arrow/go/v16 v16.1.0 // indirect
 	github.com/apache/thrift v0.20.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
