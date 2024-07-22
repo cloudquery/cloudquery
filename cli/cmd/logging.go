@@ -48,6 +48,6 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 		}
 	}
 	mw := io.MultiWriter(writers...)
-	log.Logger = zerolog.New(mw).Level(zerologLevel).With().Str("module", "cli").Str("invocation-id", invocationUUID.String()).Timestamp().Logger()
+	log.Logger = zerolog.New(mw).Level(zerologLevel).With().Str("module", "cli").Str("invocation_id", invocationUUID.String()).Timestamp().Logger()
 	return logFile, nil
 }
