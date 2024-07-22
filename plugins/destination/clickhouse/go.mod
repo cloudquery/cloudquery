@@ -4,7 +4,7 @@ go 1.22.4
 
 require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.10.1
-	github.com/apache/arrow/go/v16 v16.1.0
+	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cloudquery/codegen v0.3.17
 	github.com/cloudquery/plugin-sdk/v4 v4.50.0
 	github.com/goccy/go-json v0.10.3
@@ -16,6 +16,7 @@ require (
 
 require (
 	github.com/adrg/xdg v0.4.0 // indirect
+	github.com/apache/arrow/go/v16 v16.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-retryablehttp v0.7.7 // indirect
 	github.com/oapi-codegen/runtime v1.1.1 // indirect
@@ -46,8 +47,8 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.20.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/invopop/jsonschema v0.12.0
-	github.com/klauspost/compress v1.17.7 // indirect
-	github.com/klauspost/cpuid/v2 v2.2.7 // indirect
+	github.com/klauspost/compress v1.17.9 // indirect
+	github.com/klauspost/cpuid/v2 v2.2.8 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
