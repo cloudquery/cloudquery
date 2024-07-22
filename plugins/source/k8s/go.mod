@@ -5,7 +5,7 @@ go 1.22.4
 require (
 	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cloudquery/codegen v0.3.17
-	github.com/cloudquery/plugin-sdk/v4 v4.50.0
+	github.com/cloudquery/plugin-sdk/v4 v4.50.1
 	github.com/golang/mock v1.6.0
 	github.com/google/gnostic-models v0.6.9-0.20230804172637-c7be7c783f49
 	github.com/rs/zerolog v1.33.0
@@ -20,13 +20,12 @@ require (
 require (
 	github.com/adrg/xdg v0.4.0 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0 // indirect
-	github.com/apache/arrow/go/v16 v16.1.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.12.3 // indirect
-	github.com/cloudquery/plugin-pb-go v1.20.6 // indirect
+	github.com/cloudquery/plugin-pb-go v1.20.8 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/emicklei/go-restful/v3 v3.11.2 // indirect

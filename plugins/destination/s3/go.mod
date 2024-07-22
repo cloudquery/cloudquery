@@ -11,7 +11,7 @@ require (
 	github.com/aws/smithy-go v1.20.3
 	github.com/cloudquery/codegen v0.3.17
 	github.com/cloudquery/filetypes/v4 v4.2.25
-	github.com/cloudquery/plugin-sdk/v4 v4.50.0
+	github.com/cloudquery/plugin-sdk/v4 v4.50.1
 	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.12.0
@@ -46,7 +46,7 @@ require (
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.12.3 // indirect
-	github.com/cloudquery/plugin-pb-go v1.20.6 // indirect
+	github.com/cloudquery/plugin-pb-go v1.20.8 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
@@ -59,6 +59,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.20.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-retryablehttp v0.7.7 // indirect
+	github.com/huandu/xstrings v1.4.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/klauspost/asmfmt v1.3.2 // indirect
 	github.com/klauspost/compress v1.17.9 // indirect
