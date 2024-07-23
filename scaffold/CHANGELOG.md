@@ -90,7 +90,7 @@
 
 ### Bug Fixes
 
-* **deps:** Update module github.com/apache/arrow/go/v16 to v16.1.0 ([#18013](https://github.com/cloudquery/cloudquery/issues/18013)) ([2953d7f](https://github.com/cloudquery/cloudquery/commit/2953d7f396e80cf8dfa4d196ff12d807e6c79f90))
+* **deps:** Update module github.com/apache/arrow/go/v17 to v16.1.0 ([#18013](https://github.com/cloudquery/cloudquery/issues/18013)) ([2953d7f](https://github.com/cloudquery/cloudquery/commit/2953d7f396e80cf8dfa4d196ff12d807e6c79f90))
 * **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.19.13 ([#18001](https://github.com/cloudquery/cloudquery/issues/18001)) ([042f3b8](https://github.com/cloudquery/cloudquery/commit/042f3b865407a0a5a7d079c758de360bb6fa62b1))
 * **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.19.14 ([#18018](https://github.com/cloudquery/cloudquery/issues/18018)) ([ff3d6b6](https://github.com/cloudquery/cloudquery/commit/ff3d6b62707ed0979d1e930fcc3f0866643de3f5))
 * **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.19.15 ([#18025](https://github.com/cloudquery/cloudquery/issues/18025)) ([5d4e484](https://github.com/cloudquery/cloudquery/commit/5d4e484c91b8ab7da810884d398f7604c86a0265))

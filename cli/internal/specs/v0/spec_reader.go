@@ -20,12 +20,15 @@ import (
 type SpecReader struct {
 	sourcesMap      map[string]*Source
 	destinationsMap map[string]*Destination
+	transformersMap map[string]*Transformer
 
 	sourceWarningsMap      map[string]Warnings
 	destinationWarningsMap map[string]Warnings
+	transformerWarningsMap map[string]Warnings
 
 	Sources      []*Source
 	Destinations []*Destination
+	Transformers []*Transformer
 }
 
 var fileRegex = regexp.MustCompile(`\$\{file:([^}]+)\}`)
@@ -132,6 +135,24 @@ func (r *SpecReader) loadSpecsFromFile(path string) error {
 			}
 			r.destinationsMap[destination.Name] = destination
 			r.Destinations = append(r.Destinations, destination)
+		case KindTransformer:
+			transformer := s.Spec.(*Transformer)
+			if r.transformersMap[transformer.Name] != nil {
+				return fmt.Errorf("duplicate transformer name %s", transformer.Name)
+			}
+			r.transformerWarningsMap[transformer.Name] = transformer.GetWarnings()
+			transformer.SetDefaults()
+			if err := transformer.Validate(); err != nil {
+				return fmt.Errorf("failed to validate transformer %s: %w", transformer.Name, err)
+			}
+			if transformer.Registry == RegistryGitHub {
+				log.Warn().
+					Str("name", transformer.Name).
+					Str("kind", "transformer").
+					Msg("registry: github is deprecated & will be removed in future releases")
+			}
+			r.transformersMap[transformer.Name] = transformer
+			r.Transformers = append(r.Transformers, transformer)
 		default:
 			return fmt.Errorf("unknown kind %s", s.Kind)
 		}
@@ -220,6 +241,10 @@ func (r *SpecReader) GetDestinationWarningsByName(name string) Warnings {
 	return r.destinationWarningsMap[name]
 }
 
+func (r *SpecReader) GetTransformerWarningsByName(name string) Warnings {
+	return r.transformerWarningsMap[name]
+}
+
 func (r *SpecReader) GetDestinationNamesForSource(name string) []string {
 	var destinations []string
 	source := r.sourcesMap[name]
@@ -261,10 +286,13 @@ func newSpecReader(paths []string) (*SpecReader, error) {
 	reader := &SpecReader{
 		sourcesMap:             make(map[string]*Source),
 		destinationsMap:        make(map[string]*Destination),
+		transformersMap:        make(map[string]*Transformer),
 		Sources:                make([]*Source, 0),
 		Destinations:           make([]*Destination, 0),
+		Transformers:           make([]*Transformer, 0),
 		sourceWarningsMap:      make(map[string]Warnings),
 		destinationWarningsMap: make(map[string]Warnings),
+		transformerWarningsMap: make(map[string]Warnings),
 	}
 	for _, path := range paths {
 		file, err := os.Open(path)

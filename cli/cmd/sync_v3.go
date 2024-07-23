@@ -16,6 +16,7 @@ import (
 	"github.com/cloudquery/cloudquery/cli/internal/api"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/internal/transformer"
+	"github.com/cloudquery/cloudquery/cli/internal/transformerpipeline"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
@@ -23,6 +24,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
 	"github.com/vnteamopen/godebouncer"
+	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
@@ -39,6 +41,11 @@ type v3destination struct {
 	spec   specs.Destination
 }
 
+type v3transformer struct {
+	client *managedplugin.Client
+	spec   specs.Transformer
+}
+
 func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
 	authClient := auth.NewTokenClient()
 	if authClient.GetTokenType() != auth.SyncRunAPIKey {
@@ -53,7 +60,7 @@ func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
 }
 
 // nolint:dupl
-func syncConnectionV3(ctx context.Context, source v3source, destinations []v3destination, backend *v3destination, uid string, noMigrate bool, summaryLocation string) (syncErr error) {
+func syncConnectionV3(ctx context.Context, source v3source, destinations []v3destination, transformersByDestination map[string][]v3transformer, backend *v3destination, uid string, noMigrate bool, summaryLocation string) (syncErr error) {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	skippedFromDeleteStale := make(map[string]bool, 0)
@@ -109,14 +116,35 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	for i := range destinationsClients {
 		destinationStrings[i] = destinationSpecs[i].VersionString()
 	}
-	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("Start sync")
-	defer log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Time("sync_time", syncTime).Msg("End sync")
+
+	// Get all distinct transformer version strings
+	transformerStrings := []string{}
+	_transformerSet := make(map[string]struct{})
+	for _, transformers := range transformersByDestination {
+		for _, tf := range transformers {
+			name := tf.spec.Name
+			if _, ok := _transformerSet[name]; !ok {
+				transformerStrings = append(transformerStrings, tf.spec.VersionString())
+				_transformerSet[name] = struct{}{}
+			}
+		}
+	}
+
+	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Strs("transformers", transformerStrings).Time("sync_time", syncTime).Msg("Start sync")
+	defer log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Strs("transformers", transformerStrings).Time("sync_time", syncTime).Msg("End sync")
 
 	variables := specs.Variables{
 		Plugins: make(map[string]specs.PluginVariables),
 	}
 	sourcePbClient := plugin.NewPluginClient(sourceClient.Conn)
 	destinationsPbClients := make([]plugin.PluginClient, len(destinationsClients))
+	transformerPbClientsByDestination := map[string][]plugin.PluginClient{}
+	for name, transformers := range transformersByDestination {
+		for _, tf := range transformers {
+			transformerPbClientsByDestination[name] = append(transformerPbClientsByDestination[name], plugin.NewPluginClient(tf.client.Conn))
+		}
+	}
+
 	destinationTransformers := make([]*transformer.RecordTransformer, len(destinationsClients))
 	backendPbClient := plugin.PluginClient(nil)
 	for i := range destinationsClients {
@@ -160,6 +188,13 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			return fmt.Errorf("failed to init backend %v: %w", backend.spec.Name, err)
 		}
 	}
+	for name, transformers := range transformersByDestination {
+		for i, tf := range transformers {
+			if err := initPlugin(ctx, transformerPbClientsByDestination[name][i], tf.spec.Spec, false, uid); err != nil {
+				return fmt.Errorf("failed to init transformer %v: %w", tf.spec.Name, err)
+			}
+		}
+	}
 
 	// replace @@plugins.name.connection with the actual GRPC connection string from the client
 	// NOTE: if this becomes a stable feature, it can move out of sync_v3 and into sync.go
@@ -180,10 +215,22 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	}
 
 	writeClients := make([]plugin.Plugin_WriteClient, len(destinationsPbClients))
+	writeClientsByName := map[string]plugin.Plugin_WriteClient{}
 	for i := range destinationsPbClients {
 		writeClients[i], err = destinationsPbClients[i].Write(ctx)
 		if err != nil {
 			return err
+		}
+		writeClientsByName[destinationSpecs[i].Name] = writeClients[i]
+	}
+	transformClientsByDestination := map[string][]plugin.Plugin_TransformClient{}
+	for name, transformerPbClients := range transformerPbClientsByDestination {
+		for _, transformerPbClient := range transformerPbClients {
+			pbClient, err := transformerPbClient.Transform(ctx)
+			if err != nil {
+				return err
+			}
+			transformClientsByDestination[name] = append(transformClientsByDestination[name], pbClient)
 		}
 	}
 
@@ -283,97 +330,146 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		defer remoteProgressReporter.Cancel()
 	}
 
-	for {
-		r, err := syncClient.Recv()
+	// Note: we want to stop this errorgroup if ctx is cancelled, but we don't want to cancel ctx if gctx is cancelled.
+	// gctx is always cancelled when the errorgroup returns, and this isn't necessarily an error.
+	eg, gctx := errgroup.WithContext(ctx)
+	pipelineByDestinationName := map[string]*transformerpipeline.TransformerPipeline{}
+
+	// Each destination has its own transformer pipeline
+	for i := range destinationsPbClients {
+		destinationName := destinationSpecs[i].Name
+
+		// Start a pipeline of transformers that will receive & transform the source records
+		var (
+			pipeline *transformerpipeline.TransformerPipeline
+			err      error
+		)
+		pipeline, gctx, err = transformerpipeline.New(gctx, transformClientsByDestination[destinationName])
 		if err != nil {
-			if errors.Is(err, io.EOF) {
-				break
-			}
-			return fmt.Errorf("unexpected error from sync client receive: %w", err)
+			return fmt.Errorf("failed to create transformer pipeline: %w", err)
 		}
-		syncResponseMsg := r.GetMessage()
-		switch m := syncResponseMsg.(type) {
-		case *plugin.Sync_Response_Insert:
-			record, err := plugin.NewRecordFromBytes(m.Insert.Record)
-			if err != nil {
-				return fmt.Errorf("failed to get record from bytes: %w", err)
+		err = pipeline.OnOutput(func(recordBytes []byte) error {
+			// recordBytes is a record that started from the source and has been transformed by all transformers
+			// It is now ready to be sent to all destinations
+			wr := &plugin.Write_Request{}
+			wr.Message = &plugin.Write_Request_Insert{
+				Insert: &plugin.Write_MessageInsert{
+					Record: recordBytes,
+				},
 			}
+			if err := writeClientsByName[destinationName].Send(wr); err != nil {
+				return handleSendError(err, writeClientsByName[destinationName], "insert")
+			}
+			return nil
+		})
+		if err != nil {
+			return fmt.Errorf("failed to create register pipeline output: %w", err)
+		}
+		eg.Go(pipeline.RunBlocking) // each transformer runs in its own goroutine
+		pipelineByDestinationName[destinationName] = pipeline
+	}
 
-			atomic.AddInt64(&newResources, record.NumRows())
-			atomic.AddInt64(&totalResources, record.NumRows())
-			if remoteProgressReporter != nil {
-				remoteProgressReporter.SendSignal()
+	eg.Go(func() error {
+		// Close all transformation pipelines when the source is done
+		defer func() {
+			for _, pipeline := range pipelineByDestinationName {
+				if err := pipeline.Close(); err != nil {
+					log.Warn().Err(err).Msg("Failed to close transformer pipeline")
+				}
 			}
-			for i := range destinationsPbClients {
-				transformedRecord := destinationTransformers[i].Transform(record)
-				transformedRecordBytes, err := plugin.RecordToBytes(transformedRecord)
+		}()
+		for {
+			r, err := syncClient.Recv()
+			if err != nil {
+				if errors.Is(err, io.EOF) {
+					break
+				}
+				return fmt.Errorf("unexpected error from sync client receive: %w", err)
+			}
+			syncResponseMsg := r.GetMessage()
+			switch m := syncResponseMsg.(type) {
+			case *plugin.Sync_Response_Insert:
+				recordBytes := m.Insert.Record
+				record, err := plugin.NewRecordFromBytes(recordBytes)
 				if err != nil {
-					return fmt.Errorf("failed to transform record bytes: %w", err)
+					return fmt.Errorf("failed to get record from bytes: %w", err)
 				}
-				wr := &plugin.Write_Request{}
-				wr.Message = &plugin.Write_Request_Insert{
-					Insert: &plugin.Write_MessageInsert{
-						Record: transformedRecordBytes,
-					},
-				}
-				if err := writeClients[i].Send(wr); err != nil {
-					return handleSendError(err, writeClients[i], "insert")
-				}
-			}
-		case *plugin.Sync_Response_DeleteRecord:
-			for i := range destinationsPbClients {
-				wr := &plugin.Write_Request{}
-				// Transformations aren't required here because DeleteRecord is only in V3
-				wr.Message = &plugin.Write_Request_DeleteRecord{
-					DeleteRecord: &plugin.Write_MessageDeleteRecord{
-						TableName:      m.DeleteRecord.TableName,
-						TableRelations: m.DeleteRecord.TableRelations,
-						WhereClause:    m.DeleteRecord.WhereClause,
-					},
-				}
-				if err := writeClients[i].Send(wr); err != nil {
-					return handleSendError(err, writeClients[i], "delete")
-				}
-			}
-		case *plugin.Sync_Response_MigrateTable:
-			sc, err := plugin.NewSchemaFromBytes(m.MigrateTable.Table)
-			if err != nil {
-				return err
-			}
-			table, err := schema.NewTableFromArrowSchema(sc)
-			if err != nil {
-				return err
-			}
 
-			// This works since we sync and send migrate messages for parents before children
-			if isStateBackendEnabled && (table.IsIncremental || (table.Parent != nil && skippedFromDeleteStale[table.Parent.Name])) {
-				skippedFromDeleteStale[table.Name] = true
-			} else {
-				tablesForDeleteStale[table.Name] = true
-			}
-			if noMigrate {
-				continue
-			}
-			for i := range destinationsPbClients {
-				transformedSchema := destinationTransformers[i].TransformSchema(sc)
-				transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
+				atomic.AddInt64(&newResources, record.NumRows())
+				atomic.AddInt64(&totalResources, record.NumRows())
+				if remoteProgressReporter != nil {
+					remoteProgressReporter.SendSignal()
+				}
+				for i := range destinationsPbClients {
+					destinationName := destinationSpecs[i].Name
+					transformedRecord := destinationTransformers[i].Transform(record)
+					transformedRecordBytes, err := plugin.RecordToBytes(transformedRecord)
+					if err != nil {
+						return fmt.Errorf("failed to transform record bytes: %w", err)
+					}
+					if err := pipelineByDestinationName[destinationName].Send(transformedRecordBytes); err != nil {
+						return err
+					}
+				}
+			case *plugin.Sync_Response_DeleteRecord:
+				for i := range destinationsPbClients {
+					wr := &plugin.Write_Request{}
+					// Transformations aren't required here because DeleteRecord is only in V3
+					wr.Message = &plugin.Write_Request_DeleteRecord{
+						DeleteRecord: &plugin.Write_MessageDeleteRecord{
+							TableName:      m.DeleteRecord.TableName,
+							TableRelations: m.DeleteRecord.TableRelations,
+							WhereClause:    m.DeleteRecord.WhereClause,
+						},
+					}
+					if err := writeClients[i].Send(wr); err != nil {
+						return handleSendError(err, writeClients[i], "delete")
+					}
+				}
+			case *plugin.Sync_Response_MigrateTable:
+				sc, err := plugin.NewSchemaFromBytes(m.MigrateTable.Table)
 				if err != nil {
 					return err
 				}
-				wr := &plugin.Write_Request{}
-				wr.Message = &plugin.Write_Request_MigrateTable{
-					MigrateTable: &plugin.Write_MessageMigrateTable{
-						MigrateForce: destinationSpecs[i].MigrateMode == specs.MigrateModeForced,
-						Table:        transformedSchemaBytes,
-					},
+				table, err := schema.NewTableFromArrowSchema(sc)
+				if err != nil {
+					return err
 				}
-				if err := writeClients[i].Send(wr); err != nil {
-					return handleSendError(err, writeClients[i], "migrate")
+
+				// This works since we sync and send migrate messages for parents before children
+				if isStateBackendEnabled && (table.IsIncremental || (table.Parent != nil && skippedFromDeleteStale[table.Parent.Name])) {
+					skippedFromDeleteStale[table.Name] = true
+				} else {
+					tablesForDeleteStale[table.Name] = true
 				}
+				if noMigrate {
+					continue
+				}
+				for i := range destinationsPbClients {
+					transformedSchema := destinationTransformers[i].TransformSchema(sc)
+					transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
+					if err != nil {
+						return err
+					}
+					wr := &plugin.Write_Request{}
+					wr.Message = &plugin.Write_Request_MigrateTable{
+						MigrateTable: &plugin.Write_MessageMigrateTable{
+							MigrateForce: destinationSpecs[i].MigrateMode == specs.MigrateModeForced,
+							Table:        transformedSchemaBytes,
+						},
+					}
+					if err := writeClients[i].Send(wr); err != nil {
+						return handleSendError(err, writeClients[i], "migrate")
+					}
+				}
+			default:
+				return fmt.Errorf("unknown message type: %T", m)
 			}
-		default:
-			return fmt.Errorf("unknown message type: %T", m)
 		}
+		return nil
+	})
+	if err := eg.Wait(); err != nil { // wait for source & transformers to finish. If any fails, sync fails.
+		return err
 	}
 
 	err = syncClient.CloseSend()
