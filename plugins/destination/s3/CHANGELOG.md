@@ -1,5 +1,19 @@
 # Changelog
 
+## [7.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.3.1...plugins-destination-s3-v7.3.2) (2024-07-23)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#18649](https://github.com/cloudquery/cloudquery/issues/18649)) ([ecf86d4](https://github.com/cloudquery/cloudquery/commit/ecf86d4f81c9af9f6ab1f14c9f34f2a7c732a4b2))
+* **deps:** Update module github.com/apache/arrow/go/v16 to v17 ([#18657](https://github.com/cloudquery/cloudquery/issues/18657)) ([3ae9b11](https://github.com/cloudquery/cloudquery/commit/3ae9b1148b93939e436a81f4bca2a446945886d6))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.19 ([#18666](https://github.com/cloudquery/cloudquery/issues/18666)) ([cf70b57](https://github.com/cloudquery/cloudquery/commit/cf70b57853af4dd4b69be202766d337c1cfe16d7))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.27 ([#18661](https://github.com/cloudquery/cloudquery/issues/18661)) ([ec19e4c](https://github.com/cloudquery/cloudquery/commit/ec19e4c33268bc1e95a46e6cee95bc34ef07bd9b))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.2.29 ([#18667](https://github.com/cloudquery/cloudquery/issues/18667)) ([ff5421a](https://github.com/cloudquery/cloudquery/commit/ff5421a625b61c207b005b93b0198a1499da5995))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.4 ([#18616](https://github.com/cloudquery/cloudquery/issues/18616)) ([b818bfb](https://github.com/cloudquery/cloudquery/commit/b818bfbcc5c47839e4d00f28615ed7c7016a32df))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.50.0 ([#18642](https://github.com/cloudquery/cloudquery/issues/18642)) ([703b60c](https://github.com/cloudquery/cloudquery/commit/703b60c58851a6c57f23f1e41a188b83e7e384ae))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.51.0 ([#18664](https://github.com/cloudquery/cloudquery/issues/18664)) ([c98a04d](https://github.com/cloudquery/cloudquery/commit/c98a04d96e2b7a478da0c335143745d9387a8830))
+
 ## [7.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.3.0...plugins-destination-s3-v7.3.1) (2024-07-18)
 
 
