@@ -8,7 +8,7 @@ export const formValidationSchema = yup.object({
   /** This is the name of plugin source/destination */
   name: yup
     .string()
-    .default(generateName('{plugin-name}'))
+    .default(generateName('{{.Name}}'))
     .matches(
       /^[a-z](-?[\da-z]+)+$/,
       'Name must consist of a lower case letter, followed by alphanumeric segments separated by single dashes',

@@ -41,24 +41,26 @@ func newCmdScaffoldSource() *cobra.Command {
 //go:embed templates/source/*
 //go:embed templates/cloud-config-ui/public/*
 //go:embed templates/cloud-config-ui/src/*
-//go:embed templates/cloud-config-ui/.eslintrc.json
-//go:embed templates/cloud-config-ui/.prettierrc
-//go:embed templates/cloud-config-ui/.gitignore
-//go:embed templates/cloud-config-ui/.nvmrc
-//go:embed templates/cloud-config-ui/package.json
-//go:embed templates/cloud-config-ui/README.md
-//go:embed templates/cloud-config-ui/tsconfig.json
+//go:embed templates/cloud-config-ui/.eslintrc.json.tpl
+//go:embed templates/cloud-config-ui/.prettierrc.tpl
+//go:embed templates/cloud-config-ui/.gitignore.tpl
+//go:embed templates/cloud-config-ui/.nvmrc.tpl
+//go:embed templates/cloud-config-ui/package.json.tpl
+//go:embed templates/cloud-config-ui/README.md.tpl
+//go:embed templates/cloud-config-ui/tsconfig.json.tpl
 var sourceFS embed.FS
 
 type scaffoldData struct {
 	Org  string
 	Name string
+	Kind string
 }
 
 func runScaffoldSource(org string, name string, outputDir string) error {
 	data := scaffoldData{
 		Org:  org,
 		Name: name,
+		Kind: "source",
 	}
 	if err := copyGoFiles(data, outputDir); err != nil {
 		return fmt.Errorf("failed to copy go files: %w", err)
@@ -112,7 +114,7 @@ func copyConfigUIFiles(data scaffoldData, outputDir string) error {
 			return nil
 		}
 		if strings.HasSuffix(fpath, ".tpl") {
-			outputPath := strings.TrimSuffix(strings.TrimPrefix(fpath, "templates/source"), ".tpl")
+			outputPath := strings.TrimSuffix(strings.TrimPrefix(fpath, "templates/"), ".tpl")
 			fullPath := outputDir + "/" + outputPath
 			err = writeTemplate(data, fpath, fullPath)
 			if err != nil {
