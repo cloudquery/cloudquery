@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.1.0...plugins-source-xkcd-v1.1.1) (2024-07-23)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/apache/arrow/go/v16 to v17 ([#18657](https://github.com/cloudquery/cloudquery/issues/18657)) ([3ae9b11](https://github.com/cloudquery/cloudquery/commit/3ae9b1148b93939e436a81f4bca2a446945886d6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.4 ([#18616](https://github.com/cloudquery/cloudquery/issues/18616)) ([b818bfb](https://github.com/cloudquery/cloudquery/commit/b818bfbcc5c47839e4d00f28615ed7c7016a32df))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.50.0 ([#18642](https://github.com/cloudquery/cloudquery/issues/18642)) ([703b60c](https://github.com/cloudquery/cloudquery/commit/703b60c58851a6c57f23f1e41a188b83e7e384ae))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.51.0 ([#18664](https://github.com/cloudquery/cloudquery/issues/18664)) ([c98a04d](https://github.com/cloudquery/cloudquery/commit/c98a04d96e2b7a478da0c335143745d9387a8830))
+
 ## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.0.6...plugins-source-xkcd-v1.1.0) (2024-07-16)
 
 
