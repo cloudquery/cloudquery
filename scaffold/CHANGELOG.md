@@ -1,5 +1,27 @@
 # Changelog
 
+## [3.1.3](https://github.com/cloudquery/cloudquery/compare/scaffold-v3.1.2...scaffold-v3.1.3) (2024-07-23)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.14 ([#18603](https://github.com/cloudquery/cloudquery/issues/18603)) ([68ae7d8](https://github.com/cloudquery/cloudquery/commit/68ae7d883f4ed9d6bd7ed7acc5eadb2bd461a58b))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.15 ([#18605](https://github.com/cloudquery/cloudquery/issues/18605)) ([7b3b35f](https://github.com/cloudquery/cloudquery/commit/7b3b35f591b8158537dcd49ed64c5f7576df5d4c))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.16 ([#18606](https://github.com/cloudquery/cloudquery/issues/18606)) ([3f34da6](https://github.com/cloudquery/cloudquery/commit/3f34da6221f52f1d30a6743d15b32186c763ca24))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.18 ([#18607](https://github.com/cloudquery/cloudquery/issues/18607)) ([8b8a902](https://github.com/cloudquery/cloudquery/commit/8b8a902b9647aa6ad13db151bafed0e288efb560))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.20 ([#18610](https://github.com/cloudquery/cloudquery/issues/18610)) ([4990507](https://github.com/cloudquery/cloudquery/commit/49905077545ad503a661e032ed1dbbac5537c6fa))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.21 ([#18611](https://github.com/cloudquery/cloudquery/issues/18611)) ([9820af6](https://github.com/cloudquery/cloudquery/commit/9820af61d19c7b9a6a0fed1f9f584837ccd2565d))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.22 ([#18612](https://github.com/cloudquery/cloudquery/issues/18612)) ([d0cbd51](https://github.com/cloudquery/cloudquery/commit/d0cbd517213f157b8b12802605e8c88c27229618))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.24 ([#18615](https://github.com/cloudquery/cloudquery/issues/18615)) ([796630b](https://github.com/cloudquery/cloudquery/commit/796630bc9ebc6ba54a080c50cfd09a8cc5fbe9d5))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.25 ([#18644](https://github.com/cloudquery/cloudquery/issues/18644)) ([4bd863d](https://github.com/cloudquery/cloudquery/commit/4bd863d59730dffc9fb96018e18713a41050a6aa))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.27 ([#18647](https://github.com/cloudquery/cloudquery/issues/18647)) ([ab9b797](https://github.com/cloudquery/cloudquery/commit/ab9b7971668f50f9e4a41176363e6f9b9638255f))
+* **deps:** Update module github.com/apache/arrow/go/v16 to v17 ([#18657](https://github.com/cloudquery/cloudquery/issues/18657)) ([3ae9b11](https://github.com/cloudquery/cloudquery/commit/3ae9b1148b93939e436a81f4bca2a446945886d6))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.20.7 ([#18645](https://github.com/cloudquery/cloudquery/issues/18645)) ([91172f4](https://github.com/cloudquery/cloudquery/commit/91172f41222c8affca89a5c596a1576bbfdf2593))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.49.4 ([#18616](https://github.com/cloudquery/cloudquery/issues/18616)) ([b818bfb](https://github.com/cloudquery/cloudquery/commit/b818bfbcc5c47839e4d00f28615ed7c7016a32df))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.50.0 ([#18642](https://github.com/cloudquery/cloudquery/issues/18642)) ([703b60c](https://github.com/cloudquery/cloudquery/commit/703b60c58851a6c57f23f1e41a188b83e7e384ae))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.51.0 ([#18664](https://github.com/cloudquery/cloudquery/issues/18664)) ([c98a04d](https://github.com/cloudquery/cloudquery/commit/c98a04d96e2b7a478da0c335143745d9387a8830))
+* Update plugin custom UI scaffold  ([#18646](https://github.com/cloudquery/cloudquery/issues/18646)) ([9a410f4](https://github.com/cloudquery/cloudquery/commit/9a410f457649012d2b0e6d7e31b54bb1c21cd162))
+
 ## [3.1.2](https://github.com/cloudquery/cloudquery/compare/scaffold-v3.1.1...scaffold-v3.1.2) (2024-07-18)
 
 
