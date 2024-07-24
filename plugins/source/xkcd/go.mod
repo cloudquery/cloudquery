@@ -3,7 +3,7 @@ module github.com/hermanschaaf/cq-source-xkcd
 go 1.22.4
 
 require (
-	github.com/cloudquery/plugin-sdk/v4 v4.51.0
+	github.com/cloudquery/plugin-sdk/v4 v4.52.1
 	github.com/rs/zerolog v1.33.0
 	golang.org/x/sync v0.7.0
 	google.golang.org/grpc v1.65.0
