@@ -10,7 +10,7 @@ This page contains a number of tips and tricks for improving the performance of 
 ## Identifying Slow Tables
 
 The first step in improving the performance of a sync is to identify which tables are taking the longest to sync. This can be done by running the `cloudquery sync` command with the `--tables-metrics-location` flag.
-This flag takes a path to a file where the metrics will be written. The metrics are displayed as human-readable table and refreshed as the sync progresses.
+This flag takes a path to a file where the metrics will be written. The metrics are displayed as a human-readable table and refreshed as the sync progresses.
 To use this feature run `cloudquery sync --tables-metrics-location metrics.txt` and open the file `metrics.txt` in a text editor that supports live updates. Alternatively, you can use `watch cat metrics.txt` to monitor the file in real-time.
 You can see an example output below. Tables that are still in progress will be shown first with a `N/A` in the `END TIME` column, and the rest sorted by table name.
 The `CLIENT ID` column differs between plugins and can be used to identify which account, region, project, location, etc. is being synced (the terms differ between plugins).
@@ -67,7 +67,7 @@ The `CLIENT ID` column differs between plugins and can be used to identify which
 ```
 
 :::callout{type="info"}
-This feature is available starting from CLI version [v5.25.0](https://github.com/cloudquery/cloudquery/releases/tag/cli-v5.25.0) and plugins released on 2024-07-10 or later.
+This feature is available starting from CLI version [v5.25.0](https://github.com/cloudquery/cloudquery/releases/tag/cli-v5.25.0) and plugins released on July 10th 2024 or later.
 :::
 
 ## Use Wildcard Matching
