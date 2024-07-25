@@ -7,6 +7,69 @@ description: Tips and tricks for improving the performance of `cloudquery sync` 
 
 This page contains a number of tips and tricks for improving the performance of `cloudquery sync` for large cloud estates.
 
+## Identifying Slow Tables
+
+The first step in improving the performance of a sync is to identify which tables are taking the longest to sync. This can be done by running the `cloudquery sync` command with the `--tables-metrics-location` flag.
+This flag takes a path to a file where the metrics will be written. The metrics are displayed as human-readable table and refreshed as the sync progresses.
+To use this feature run `cloudquery sync --tables-metrics-location metrics.txt` and open the file `metrics.txt` in a text editor that supports live updates. Alternatively, you can use `watch cat metrics.txt` to monitor the file in real-time.
+You can see an example output below. Tables that are still in progress will be shown first with a `N/A` in the `END TIME` column, and the rest sorted by table name.
+The `CLIENT ID` column differs between plugins and can be used to identify which account, region, project, location, etc. is being synced (the terms differ between plugins).
+
+```text
++-----------------------------------------------------+-----------------------+---------------------------------------+---------------------------------------+------------+-----------+--------+--------+
+| TABLE                                               | CLIENT ID             | START TIME                            | END TIME                              |   DURATION | RESOURCES | ERRORS | PANICS |
++-----------------------------------------------------+-----------------------+---------------------------------------+---------------------------------------+------------+-----------+--------+--------+
+| gcp_compute_interconnect_locations                  | project:cq-playground | 2024-07-25 13:25:45.349231 +0100 WEST | N/A                                   | 13.398995s |         3 |      0 |      0 |
+| gcp_compute_zones                                   | project:cq-playground | 2024-07-25 13:25:45.34586 +0100 WEST  | N/A                                   | 13.402371s |         9 |      0 |      0 |
+| gcp_compute_addresses                               | project:cq-playground | 2024-07-25 13:25:45.345863 +0100 WEST | 2024-07-25 13:25:46.189411 +0100 WEST |  843.548ms |         0 |      0 |      0 |
+| gcp_compute_autoscalers                             | project:cq-playground | 2024-07-25 13:25:45.345865 +0100 WEST | 2024-07-25 13:25:46.004631 +0100 WEST |  658.766ms |         0 |      0 |      0 |
+| gcp_compute_backend_buckets                         | project:cq-playground | 2024-07-25 13:25:45.34589 +0100 WEST  | 2024-07-25 13:25:45.855523 +0100 WEST |  509.633ms |         1 |      0 |      0 |
+| gcp_compute_backend_services                        | project:cq-playground | 2024-07-25 13:25:45.345819 +0100 WEST | 2024-07-25 13:25:45.996089 +0100 WEST |   650.27ms |         6 |      0 |      0 |
+| gcp_compute_disk_types                              | project:cq-playground | 2024-07-25 13:25:45.348244 +0100 WEST | 2024-07-25 13:25:47.491563 +0100 WEST |  2.143319s |      1074 |      0 |      0 |
+| gcp_compute_disks                                   | project:cq-playground | 2024-07-25 13:25:45.348809 +0100 WEST | 2024-07-25 13:25:46.058995 +0100 WEST |  710.186ms |         0 |      0 |      0 |
+| gcp_compute_external_vpn_gateways                   | project:cq-playground | 2024-07-25 13:25:45.348643 +0100 WEST | 2024-07-25 13:25:45.800374 +0100 WEST |  451.731ms |         0 |      0 |      0 |
+| gcp_compute_firewalls                               | project:cq-playground | 2024-07-25 13:25:45.347932 +0100 WEST | 2024-07-25 13:25:45.800827 +0100 WEST |  452.895ms |         0 |      0 |      0 |
+| gcp_compute_forwarding_rules                        | project:cq-playground | 2024-07-25 13:25:45.348903 +0100 WEST | 2024-07-25 13:25:46.012584 +0100 WEST |  663.681ms |         2 |      0 |      0 |
+| gcp_compute_global_addresses                        | project:cq-playground | 2024-07-25 13:25:45.348121 +0100 WEST | 2024-07-25 13:25:45.799297 +0100 WEST |  451.176ms |         0 |      0 |      0 |
+| gcp_compute_health_checks                           | project:cq-playground | 2024-07-25 13:25:45.348224 +0100 WEST | 2024-07-25 13:25:46.036481 +0100 WEST |  688.257ms |         1 |      0 |      0 |
+| gcp_compute_images                                  | project:cq-playground | 2024-07-25 13:25:45.345884 +0100 WEST | 2024-07-25 13:25:45.832301 +0100 WEST |  486.417ms |         0 |      0 |      0 |
+| gcp_compute_instance_groups                         | project:cq-playground | 2024-07-25 13:25:45.347338 +0100 WEST | 2024-07-25 13:25:46.062304 +0100 WEST |  714.966ms |         0 |      0 |      0 |
+| gcp_compute_instances                               | project:cq-playground | 2024-07-25 13:25:45.348076 +0100 WEST | 2024-07-25 13:25:46.152832 +0100 WEST |  804.756ms |         0 |      0 |      0 |
+| gcp_compute_interconnect_attachments                | project:cq-playground | 2024-07-25 13:25:46.238178 +0100 WEST | 2024-07-25 13:25:54.035826 +0100 WEST |  7.797648s |         0 |      0 |      0 |
+| gcp_compute_interconnect_remote_locations           | project:cq-playground | 2024-07-25 13:25:45.349069 +0100 WEST | 2024-07-25 13:25:45.869177 +0100 WEST |  520.108ms |        69 |      0 |      0 |
+| gcp_compute_interconnects                           | project:cq-playground | 2024-07-25 13:25:45.349127 +0100 WEST | 2024-07-25 13:25:45.799541 +0100 WEST |  450.414ms |         0 |      0 |      0 |
+| gcp_compute_machine_types                           | project:cq-playground | 2024-07-25 13:25:45.857729 +0100 WEST | 2024-07-25 13:25:54.233986 +0100 WEST |  8.376257s |      2121 |      0 |      0 |
+| gcp_compute_network_endpoint_groups                 | project:cq-playground | 2024-07-25 13:25:45.34896 +0100 WEST  | 2024-07-25 13:25:46.042662 +0100 WEST |  693.702ms |         4 |      0 |      0 |
+| gcp_compute_networks                                | project:cq-playground | 2024-07-25 13:25:45.349043 +0100 WEST | 2024-07-25 13:25:45.865695 +0100 WEST |  516.652ms |         1 |      0 |      0 |
+| gcp_compute_osconfig_inventories                    | project:cq-playground | 2024-07-25 13:25:45.857659 +0100 WEST | 2024-07-25 13:25:54.049883 +0100 WEST |  8.192224s |         0 |      0 |      0 |
+| gcp_compute_osconfig_os_patch_deployments           | project:cq-playground | 2024-07-25 13:25:45.345874 +0100 WEST | 2024-07-25 13:25:46.012176 +0100 WEST |  666.302ms |         1 |      0 |      0 |
+| gcp_compute_osconfig_os_patch_jobs_instance_details | project:cq-playground | 2024-07-25 13:25:45.995674 +0100 WEST | 2024-07-25 13:25:48.640675 +0100 WEST |  2.645001s |         3 |      0 |      0 |
+| gcp_compute_osconfig_os_patch_jobs                  | project:cq-playground | 2024-07-25 13:25:45.348153 +0100 WEST | 2024-07-25 13:25:48.640696 +0100 WEST |  3.292543s |         3 |      0 |      0 |
+| gcp_compute_osconfig_os_policy_assignment_reports   | project:cq-playground | 2024-07-25 13:25:45.857781 +0100 WEST | 2024-07-25 13:25:54.189788 +0100 WEST |  8.332007s |         0 |      0 |      0 |
+| gcp_compute_osconfig_os_policy_assignments          | project:cq-playground | 2024-07-25 13:25:45.857757 +0100 WEST | 2024-07-25 13:25:54.159643 +0100 WEST |  8.301886s |         2 |      0 |      0 |
+| gcp_compute_osconfig_os_vulnerability_reports       | project:cq-playground | 2024-07-25 13:25:45.857441 +0100 WEST | 2024-07-25 13:25:54.145726 +0100 WEST |  8.288285s |         0 |      0 |      0 |
+| gcp_compute_projects                                | project:cq-playground | 2024-07-25 13:25:45.34828 +0100 WEST  | 2024-07-25 13:25:45.875861 +0100 WEST |  527.581ms |         1 |      0 |      0 |
+| gcp_compute_routers                                 | project:cq-playground | 2024-07-25 13:25:45.348312 +0100 WEST | 2024-07-25 13:25:46.082812 +0100 WEST |    734.5ms |         0 |      0 |      0 |
+| gcp_compute_routes                                  | project:cq-playground | 2024-07-25 13:25:45.345797 +0100 WEST | 2024-07-25 13:25:45.779476 +0100 WEST |  433.679ms |        43 |      0 |      0 |
+| gcp_compute_security_policies                       | project:cq-playground | 2024-07-25 13:25:45.347514 +0100 WEST | 2024-07-25 13:25:45.932167 +0100 WEST |  584.653ms |         0 |      0 |      0 |
+| gcp_compute_ssl_certificates                        | project:cq-playground | 2024-07-25 13:25:45.347976 +0100 WEST | 2024-07-25 13:25:46.045754 +0100 WEST |  697.778ms |         2 |      0 |      0 |
+| gcp_compute_ssl_policies                            | project:cq-playground | 2024-07-25 13:25:45.347981 +0100 WEST | 2024-07-25 13:25:45.858365 +0100 WEST |  510.384ms |         1 |      0 |      0 |
+| gcp_compute_subnetworks                             | project:cq-playground | 2024-07-25 13:25:45.345729 +0100 WEST | 2024-07-25 13:25:46.182778 +0100 WEST |  837.049ms |        42 |      0 |      0 |
+| gcp_compute_target_http_proxies                     | project:cq-playground | 2024-07-25 13:25:45.34819 +0100 WEST  | 2024-07-25 13:25:46.060256 +0100 WEST |  712.066ms |         2 |      0 |      0 |
+| gcp_compute_target_instances                        | project:cq-playground | 2024-07-25 13:25:45.347976 +0100 WEST | 2024-07-25 13:25:46.035427 +0100 WEST |  687.451ms |         0 |      0 |      0 |
+| gcp_compute_target_pools                            | project:cq-playground | 2024-07-25 13:25:45.348173 +0100 WEST | 2024-07-25 13:25:46.055082 +0100 WEST |  706.909ms |         0 |      0 |      0 |
+| gcp_compute_target_ssl_proxies                      | project:cq-playground | 2024-07-25 13:25:45.345808 +0100 WEST | 2024-07-25 13:25:45.774172 +0100 WEST |  428.364ms |         0 |      0 |      0 |
+| gcp_compute_target_vpn_gateways                     | project:cq-playground | 2024-07-25 13:25:45.347995 +0100 WEST | 2024-07-25 13:25:46.033584 +0100 WEST |  685.589ms |         0 |      0 |      0 |
+| gcp_compute_url_maps                                | project:cq-playground | 2024-07-25 13:25:45.345904 +0100 WEST | 2024-07-25 13:25:45.996447 +0100 WEST |  650.543ms |         3 |      0 |      0 |
+| gcp_compute_vpn_gateways                            | project:cq-playground | 2024-07-25 13:25:45.347537 +0100 WEST | 2024-07-25 13:25:46.003861 +0100 WEST |  656.324ms |         0 |      0 |      0 |
+| gcp_compute_vpn_tunnels                             | project:cq-playground | 2024-07-25 13:25:45.348019 +0100 WEST | 2024-07-25 13:25:47.007435 +0100 WEST |  1.659416s |         0 |      0 |      0 |
++-----------------------------------------------------+-----------------------+---------------------------------------+---------------------------------------+------------+-----------+--------+--------+
+```
+
+:::callout{type="info"}
+This feature is available starting from CLI version [v5.25.0](https://github.com/cloudquery/cloudquery/releases/tag/cli-v5.25.0) and plugins released on 2024-07-10 or later.
+:::
+
 ## Use Wildcard Matching
 
 import { Callout } from 'nextra-theme-docs'
