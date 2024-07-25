@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/bigquery v1.61.0
 	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cloudquery/codegen v0.3.19
-	github.com/cloudquery/plugin-sdk/v4 v4.51.0
+	github.com/cloudquery/plugin-sdk/v4 v4.52.1
 	github.com/goccy/go-json v0.10.3
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.33.0
