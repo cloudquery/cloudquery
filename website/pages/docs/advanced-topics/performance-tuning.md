@@ -72,8 +72,6 @@ This feature is available starting from CLI version [v5.25.0](https://github.com
 
 ## Use Wildcard Matching
 
-import { Callout } from 'nextra-theme-docs'
-
 Sometimes the easiest way to improve the performance of the `sync` command is to limit the number of tables that get synced. The `tables` and `skip_tables` source config options both support wildcard matching. This means that you can use `*` anywhere in a name to match multiple tables.
 
 For example, when using the `aws` source plugin, it is possible to use a wildcard pattern to match all tables related to AWS EC2:
@@ -92,53 +90,9 @@ skip_tables:
 - "aws_ec2_ebs_*"
 ```
 
-<Callout> 
-
+:::callout{type="info"}
 The CloudQuery CLI will warn if a wildcard pattern does not match any known tables.
-
-</Callout>
-
-## Improve Performance by Skipping Relations
-
-Some tables require many API calls to sync. This is especially true of tables that depend on other tables, because often multiple API calls need to be made for every row in the parent table. This can lead to thousands of API calls, increasing the time it takes to sync. If you know that some child tables are not strictly necessary, you can skip them by default by setting the `skip_dependent_tables` source config option to `true`:
-
-```
-kind: source
-spec:
-  ...
-  skip_dependent_tables: true
-  ...
-```
-
-Setting `skip_dependent_tables: true` will cause tables that depend on other tables to not be synced unless they are selected by the `tables` setting. 
-
-Let's say we have three tables: `A`, `B` and `C`. `A` is the top-level table. `B` depends on it, and `C` depends on `B`:
-
-```text copy
-A 
-↳ B
-  ↳ C
-```
-
-We might want table `A`, but not need table `B` or `C`. We have two options: 
-
- 1. Set `skip_dependent_tables: true`
-    ```yaml copy
-    tables: ["A"]
-    skip_dependent_tables: true
-    ```
-
-    This skips `B` and `C` by not syncing dependent tables unless they are explicitly included.
-    
-    OR
-    
- 2. Use `skip_tables`:
-    ```yaml copy
-    tables: ["A"]
-    skip_tables: ["B"]
-    ```
-
-    Note how this skips both `B` and `C` by skipping `B`: `C` won't be included because it depends on `B`. You can also explicitly skip both `B` and `C`.
+:::
 
 ## Tune Concurrency
 
@@ -219,6 +173,25 @@ spec:
     # ...
 ```
 
-:::callout{type="info"}
+:::callout{type="warn"}
 The `shuffle` scheduler is the **default** for the AWS source plugin.
 :::
+
+## Avoid `skip_dependent_tables: false`
+
+Starting with version [v6.0.0](https://github.com/cloudquery/cloudquery/releases/tag/cli-v6.0.0) of the CloudQuery CLI `skip_dependent_tables` is set to `true` by default, to avoid new tables implicitly being synced when added to plugins. This can be overridden by setting `skip_dependent_tables: false` in the source config.
+
+When setting `skip_dependent_tables: false`, all tables that depend on other tables will be synced by default
+When syncing dependent tables multiple API calls need to be made for every row in the parent table. This can lead to thousands of API calls, increasing the time it takes to sync.
+
+Let's say we have three tables: `A`, `B` and `C`. `A` is the top-level table. `B` depends on it, and `C` depends on `B`:
+
+```text copy
+A
+↳ B
+  ↳ C
+```
+
+By default only `A` will be synced. If you set `skip_dependent_tables: false`, `B` and `C` will also be synced. This can be a problem if `A` has a large number of rows, as it will result in a large number of API calls to sync `B` and `C`.
+
+To avoid setting `skip_dependent_tables: false` and still get dependent tables synced, you can explicitly list the dependent tables in the source config, or [use wildcard matching](#use-wildcard-matching).
