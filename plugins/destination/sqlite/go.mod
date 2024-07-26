@@ -5,7 +5,7 @@ go 1.22.4
 require (
 	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cloudquery/codegen v0.3.19
-	github.com/cloudquery/plugin-sdk/v4 v4.53.0
+	github.com/cloudquery/plugin-sdk/v4 v4.53.1
 	github.com/mattn/go-sqlite3 v1.14.22
 	github.com/rs/zerolog v1.33.0
 )
