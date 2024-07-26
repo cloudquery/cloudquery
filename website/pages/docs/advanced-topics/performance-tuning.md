@@ -181,7 +181,7 @@ The `shuffle` scheduler is the **default** for the AWS source plugin.
 
 Starting with version [v6.0.0](https://github.com/cloudquery/cloudquery/releases/tag/cli-v6.0.0) of the CloudQuery CLI `skip_dependent_tables` is set to `true` by default, to avoid new tables implicitly being synced when added to plugins. This can be overridden by setting `skip_dependent_tables: false` in the source config.
 
-When setting `skip_dependent_tables: false`, all tables that depend on other tables will be synced by default
+When setting `skip_dependent_tables: false`, all tables that depend on other tables will be synced by default.
 When syncing dependent tables multiple API calls need to be made for every row in the parent table. This can lead to thousands of API calls, increasing the time it takes to sync.
 
 Let's say we have three tables: `A`, `B` and `C`. `A` is the top-level table. `B` depends on it, and `C` depends on `B`:
