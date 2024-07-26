@@ -18,7 +18,7 @@ func TestRemoveColumns(t *testing.T) {
 
 	require.Equal(t, int64(1), updatedRecord.NumCols())
 	require.Equal(t, int64(2), updatedRecord.NumRows())
-	requireAllColsShareRecordsLen(t, updatedRecord)
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
 	require.Equal(t, "col2", updatedRecord.ColumnName(0))
 }
 
@@ -31,7 +31,7 @@ func TestAddLiteralStringColumn(t *testing.T) {
 
 	require.Equal(t, int64(3), updatedRecord.NumCols())
 	require.Equal(t, int64(2), updatedRecord.NumRows())
-	requireAllColsShareRecordsLen(t, updatedRecord)
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
 	require.Equal(t, "col3", updatedRecord.ColumnName(2))
 	require.Equal(t, "literal", updatedRecord.Column(2).(*array.String).Value(0))
 	require.Equal(t, "literal", updatedRecord.Column(2).(*array.String).Value(1))
@@ -46,7 +46,7 @@ func TestObfuscateColumns(t *testing.T) {
 
 	require.Equal(t, int64(2), updatedRecord.NumCols())
 	require.Equal(t, int64(2), updatedRecord.NumRows())
-	requireAllColsShareRecordsLen(t, updatedRecord)
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
 	require.Equal(t, "col1", updatedRecord.ColumnName(0))
 	require.Equal(t, "col2", updatedRecord.ColumnName(1))
 	require.Equal(t, "cc1d9c865e8380c2d566dc724c66369051acfaa3e9e8f36ad6c67d7d9b8461a5", updatedRecord.Column(0).(*array.String).Value(0))
@@ -70,7 +70,7 @@ func createTestRecord() arrow.Record {
 	return bld.NewRecord()
 }
 
-func requireAllColsShareRecordsLen(t *testing.T, record arrow.Record) {
+func requireAllColsLenMatchRecordsLen(t *testing.T, record arrow.Record) {
 	for i := 0; i < int(record.NumCols()); i++ {
 		require.Equal(t, int(record.NumRows()), record.Column(i).Len(), "Expected length of %d for column %d", record.NumRows(), i)
 	}
