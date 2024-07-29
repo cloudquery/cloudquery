@@ -82,7 +82,7 @@ jobs:
     permissions:
       id-token: write
       contents: read
-    runs-on: large-ubuntu-16-cores
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./plugins/destination/postgresql
