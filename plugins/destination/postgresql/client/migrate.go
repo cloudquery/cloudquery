@@ -64,6 +64,9 @@ func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMi
 					return err
 				}
 			}
+			if err := c.createPerformanceIndexes(ctx, table); err != nil {
+				return err
+			}
 		}
 	}
 	conn, err := c.conn.Acquire(ctx)
@@ -398,4 +401,26 @@ func (c *Client) removeUniqueConstraint(ctx context.Context, table *schema.Table
 
 func getPKName(table *schema.Table) string {
 	return table.Name + "_cqpk"
+}
+
+func (c *Client) createPerformanceIndexes(ctx context.Context, table *schema.Table) error {
+
+	columns := []string{"_cq_source_name", "_cq_sync_time"}
+
+	for _, col := range columns {
+		if table.Columns.Get(col) == nil {
+			c.logger.Debug().Msgf("no performance indexes created because %s column is not present", col)
+			return nil
+		}
+	}
+
+	indexName := "cq_performance_idx"
+
+	sqlStatement := "CREATE INDEX IF NOT EXISTS " + pgx.Identifier{indexName}.Sanitize() + " ON " + pgx.Identifier{table.Name}.Sanitize() + "(" + pgx.Identifier{columns[0]}.Sanitize() + ", " + pgx.Identifier{columns[0]}.Sanitize() + ")"
+	_, err := c.conn.Exec(ctx, sqlStatement)
+	if err != nil {
+		return fmt.Errorf("failed to create performance index on table %s: %w", table.Name, err)
+	}
+
+	return nil
 }
