@@ -32,7 +32,7 @@ cloudquery sync ./directory ./aws.yml ./pg.yml --tables-metrics-location metrics
       --license string                   set offline license file
       --no-migrate                       Disable auto-migration before sync. By default, sync runs a migration before syncing resources.
       --summary-location string          Sync summary file location. This feature is in Preview. Please provide feedback to help us improve it.
-      --tables-metrics-location string   Tables metrics file location. This feature is in Preview. Please provide feedback to help us improve it.
+      --tables-metrics-location string   Tables metrics file location. This feature is in Preview. Please provide feedback to help us improve it. Works with plugins released on 2024-07-10 or later.
 ```
 
 ### Options inherited from parent commands
