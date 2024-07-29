@@ -136,7 +136,7 @@ Specify the names of the destinations to sync the data of the source plugin to.
 
 (`bool`, optional, default: `false`, introduced in CLI `v2.4.1`)
 
-A flag that indicates whether the value of `_cq_id` should be a UUID that is a hash of the primary keys or a random UUID. If a resource has no primary keys defined the value will always be a random UUID. This option cannot be used when you are using a destination that enforces primary keys in `append` write mode as the `_cq_id` needs to be unique for each row.
+If set to `false`, the value of `_cq_id` will always be a random UUID. If set to `true`, and the resource has at least one primary key defined then the value of `_cq_id` will be a UUID that is a hash of the primary keys. If a resource has no primary keys defined the value will always be a random UUID. If you are using a CLI version before `v6.0.0`, then this option cannot be used when you are using a destination that enforces primary keys in `append` write mode as the `_cq_id` needs to be unique for each row.
 
 Supported by source plugins released on 2023-03-08 and later
 
