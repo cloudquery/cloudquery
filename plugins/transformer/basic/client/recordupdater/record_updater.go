@@ -86,7 +86,7 @@ func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.Record, er
 			if column.DataType().ID() != arrow.STRING {
 				return nil, fmt.Errorf("column %v is not a string column", r.record.ColumnName(i))
 			}
-			newColumns = append(newColumns, r._obfuscateColumn(column))
+			newColumns = append(newColumns, r.obfuscateColumn(column))
 		} else {
 			newColumns = append(newColumns, column)
 		}
@@ -129,7 +129,7 @@ func (*RecordUpdater) buildStringColumn(literalValue string, numRows int) arrow.
 	return bld.NewStringArray()
 }
 
-func (*RecordUpdater) _obfuscateColumn(column arrow.Array) arrow.Array {
+func (*RecordUpdater) obfuscateColumn(column arrow.Array) arrow.Array {
 	bld := array.NewStringBuilder(memory.DefaultAllocator)
 	for i := 0; i < column.Len(); i++ {
 		if !column.IsValid(i) {
