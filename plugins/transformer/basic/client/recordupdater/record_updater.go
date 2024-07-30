@@ -122,8 +122,7 @@ func (r *RecordUpdater) colIndicesByNames(columnNames []string) (map[int]struct{
 }
 
 func (*RecordUpdater) buildStringColumn(literalValue string, numRows int) arrow.Array {
-	mem := memory.NewGoAllocator()
-	bld := array.NewStringBuilder(mem)
+	bld := array.NewStringBuilder(memory.DefaultAllocator)
 	for i := 0; i < numRows; i++ {
 		bld.AppendString(literalValue)
 	}
@@ -131,8 +130,7 @@ func (*RecordUpdater) buildStringColumn(literalValue string, numRows int) arrow.
 }
 
 func (*RecordUpdater) _obfuscateColumn(column arrow.Array) arrow.Array {
-	mem := memory.NewGoAllocator()
-	bld := array.NewStringBuilder(mem)
+	bld := array.NewStringBuilder(memory.DefaultAllocator)
 	for i := 0; i < column.Len(); i++ {
 		if !column.IsValid(i) {
 			bld.AppendNull()

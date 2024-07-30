@@ -54,8 +54,7 @@ func TestObfuscateColumns(t *testing.T) {
 }
 
 func createTestRecord() arrow.Record {
-	mem := memory.NewGoAllocator()
-	bld := array.NewRecordBuilder(mem, arrow.NewSchema(
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
 		[]arrow.Field{
 			{Name: "col1", Type: arrow.BinaryTypes.String},
 			{Name: "col2", Type: arrow.BinaryTypes.String},

@@ -56,8 +56,7 @@ func TestIsRecordsTableMatch_NoMetadata(t *testing.T) {
 	patterns := []string{"table_*", "data_*"}
 	matcher := New(patterns)
 
-	mem := memory.NewGoAllocator()
-	bld := array.NewRecordBuilder(mem, arrow.NewSchema(
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
 		[]arrow.Field{
 			{Name: "col1", Type: arrow.BinaryTypes.String},
 		},
@@ -76,8 +75,7 @@ func TestIsRecordsTableMatch_NoMetadata(t *testing.T) {
 func createTestRecordWithMetadata(tableName string) arrow.Record {
 	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{tableName})
 
-	mem := memory.NewGoAllocator()
-	bld := array.NewRecordBuilder(mem, arrow.NewSchema(
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
 		[]arrow.Field{
 			{Name: "col1", Type: arrow.BinaryTypes.String},
 		},
