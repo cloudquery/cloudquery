@@ -416,7 +416,7 @@ func (c *Client) createPerformanceIndexes(ctx context.Context, table *schema.Tab
 
 	indexName := "cq_performance_idx"
 
-	sqlStatement := "CREATE INDEX IF NOT EXISTS " + pgx.Identifier{indexName}.Sanitize() + " ON " + pgx.Identifier{table.Name}.Sanitize() + "(" + pgx.Identifier{columns[0]}.Sanitize() + ", " + pgx.Identifier{columns[0]}.Sanitize() + ")"
+	sqlStatement := "CREATE INDEX IF NOT EXISTS " + pgx.Identifier{indexName}.Sanitize() + " ON " + pgx.Identifier{table.Name}.Sanitize() + "(" + pgx.Identifier{columns[0]}.Sanitize() + ", " + pgx.Identifier{columns[1]}.Sanitize() + ")"
 	_, err := c.conn.Exec(ctx, sqlStatement)
 	if err != nil {
 		return fmt.Errorf("failed to create performance index on table %s: %w", table.Name, err)
