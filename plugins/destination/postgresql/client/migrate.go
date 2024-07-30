@@ -404,7 +404,6 @@ func getPKName(table *schema.Table) string {
 }
 
 func (c *Client) createPerformanceIndexes(ctx context.Context, table *schema.Table) error {
-
 	columns := []string{"_cq_source_name", "_cq_sync_time"}
 
 	for _, col := range columns {
