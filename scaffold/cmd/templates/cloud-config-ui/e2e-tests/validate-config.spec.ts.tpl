@@ -31,6 +31,7 @@ test("Submit the form", async ({ page }) => {
         // migrate_mode: spec.migrateMode,
 
         // use for source
+        // destinations: ['postgresql'],
         // tables: spec.tables,
         // skip_tables: spec.skipTables,
       },
@@ -45,8 +46,11 @@ test("Submit the form", async ({ page }) => {
         version: "{v6.2.5 | v8.2.7}", // use v6.2.5 for source or v8.2.7 for destination
         spec: {
           connection_string: "test",
-          // tables: ['*'], // use when kind is source
         },
+
+        // use for source
+        // destinations: ['postgresql'],
+        // tables: ['*'],
       },
     });
 

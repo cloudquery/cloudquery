@@ -50,7 +50,6 @@ test('Submit the form', async ({ page }) => {
         name: 'postgresql',
         registry: 'local',
         path: '../postgresql',
-        destinations: ['postgresql'],
         spec: spec.spec,
         write_mode: spec.writeMode,
         migrate_mode: spec.migrateMode,
@@ -64,10 +63,11 @@ test('Submit the form', async ({ page }) => {
         path: 'cloudquery/postgresql',
         registry: 'cloudquery',
         version: 'v6.2.5',
+        destinations: ['postgresql'],
         spec: {
           connection_string: 'test',
-          tables: ['*'],
         },
+        tables: ['*'],
       },
     });
 
