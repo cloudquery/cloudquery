@@ -1,6 +1,9 @@
 package spec
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 const (
 	KindRemoveColumns    = "remove_columns"
@@ -29,41 +32,42 @@ func (s *Spec) SetDefaults() {
 }
 
 func (s *Spec) Validate() error {
+	var err error
 	for _, t := range s.TransformationSpecs {
 		switch t.Kind {
 		case KindRemoveColumns:
 			if len(t.Columns) == 0 {
-				return fmt.Errorf("'columns' field must be specified for remove_columns transformation")
+				err = errors.Join(err, fmt.Errorf("'columns' field must be specified for remove_columns transformation"))
 			}
 			if t.Name != "" {
-				return fmt.Errorf("'name' field must not be specified for remove_columns transformation")
+				err = errors.Join(err, fmt.Errorf("'name' field must not be specified for remove_columns transformation"))
 			}
 			if t.Value != "" {
-				return fmt.Errorf("'value' field must not be specified for remove_columns transformation")
+				err = errors.Join(err, fmt.Errorf("'value' field must not be specified for remove_columns transformation"))
 			}
 		case KindAddColumn:
 			if t.Name == "" {
-				return fmt.Errorf("'name' field must be specified for add_column transformation")
+				err = errors.Join(err, fmt.Errorf("'name' field must be specified for add_column transformation"))
 			}
 			if t.Value == "" {
-				return fmt.Errorf("'value' field must be specified for add_column transformation")
+				err = errors.Join(err, fmt.Errorf("'value' field must be specified for add_column transformation"))
 			}
 			if len(t.Columns) > 0 {
-				return fmt.Errorf("'columns' field must not be specified for add_column transformation")
+				err = errors.Join(err, fmt.Errorf("'columns' field must not be specified for add_column transformation"))
 			}
 		case KindObfuscateColumns:
 			if len(t.Columns) == 0 {
-				return fmt.Errorf("'columns' field must be specified for obfuscate_columns transformation")
+				err = errors.Join(err, fmt.Errorf("'columns' field must be specified for obfuscate_columns transformation"))
 			}
 			if t.Name != "" {
-				return fmt.Errorf("'name' field must not be specified for obfuscate_columns transformation")
+				err = errors.Join(err, fmt.Errorf("'name' field must not be specified for obfuscate_columns transformation"))
 			}
 			if t.Value != "" {
-				return fmt.Errorf("'value' field must not be specified for obfuscate_columns transformation")
+				err = errors.Join(err, fmt.Errorf("'value' field must not be specified for obfuscate_columns transformation"))
 			}
 		default:
-			return fmt.Errorf("invalid transformation kind: %s; must be one of: remove_columns, add_column, obfuscate_columns", t.Kind)
+			err = errors.Join(err, fmt.Errorf("invalid transformation kind: %s; must be one of: remove_columns, add_column, obfuscate_columns", t.Kind))
 		}
 	}
-	return nil
+	return err
 }
