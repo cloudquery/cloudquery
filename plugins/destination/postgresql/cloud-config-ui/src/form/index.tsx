@@ -189,9 +189,13 @@ export function Form({ initialValues }: Props) {
                     <>
                       Specifies the migration mode to use when source tables are changed.{' '}
                       <a
-                        href="https://docs.cloudquery.io/docs/reference/destination-spec#migrate_mode"
-                        target="_blank"
-                        rel="noreferrer"
+                        href="#"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          pluginUiMessageHandler.sendMessage('open_url', {
+                            url: 'https://docs.cloudquery.io/docs/reference/destination-spec#migrate_mode',
+                          });
+                        }}
                       >
                         Learn more
                       </a>
@@ -229,9 +233,13 @@ export function Form({ initialValues }: Props) {
                     <>
                       Specifies the update method to use when inserting rows.{' '}
                       <a
-                        href="https://docs.cloudquery.io/docs/reference/destination-spec#write_mode"
-                        target="_blank"
-                        rel="noreferrer"
+                        href="#"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          pluginUiMessageHandler.sendMessage('open_url', {
+                            url: 'https://docs.cloudquery.io/docs/reference/destination-spec#write_mode',
+                          });
+                        }}
                       >
                         Learn more
                       </a>

@@ -31,19 +31,13 @@
       }
     ],
     "jsx-a11y/alt-text": "off",
-    "jsx-a11y/anchor-is-valid": [
-      "error",
-      {
-        "components": ["Link"],
-        "specialLink": ["to"]
-      }
-    ],
     "jsx-a11y/label-has-associated-control": [
       "error",
       {
         "depth": 5
       }
     ],
+    "jsx-a11y/anchor-is-valid": "off",
     "jsx-a11y/media-has-caption": "off",
     "jsx-a11y/no-autofocus": "off",
     "jsx-a11y/no-onchange": "off",
