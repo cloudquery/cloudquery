@@ -65,7 +65,11 @@ func (r *RecordUpdater) AddLiteralStringColumn(columnName, columnValue string, p
 	if position == int(r.record.NumCols()) {
 		newColumns = append(newColumns, r.buildStringColumn(columnValue, int(r.record.NumRows())))
 	}
-	r.record = array.NewRecord(r.schemaUpdater.AddStringColumnAtPos(columnName, position, true), newColumns, r.record.NumRows())
+	newSchema, err := r.schemaUpdater.AddStringColumnAtPos(columnName, position, true)
+	if err != nil {
+		return nil, err
+	}
+	r.record = array.NewRecord(newSchema, newColumns, r.record.NumRows())
 	return r.record, nil
 }
 

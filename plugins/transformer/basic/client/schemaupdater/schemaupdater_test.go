@@ -22,7 +22,8 @@ func TestAddStringColumnAtPos(t *testing.T) {
 	schema := createTestSchema()
 	updater := New(schema)
 
-	updatedSchema := updater.AddStringColumnAtPos("col3", 1, false)
+	updatedSchema, err := updater.AddStringColumnAtPos("col3", 1, false)
+	require.NoError(t, err)
 
 	require.Equal(t, 3, updatedSchema.NumFields(), "Expected 3 fields")
 	require.Equal(t, "col3", updatedSchema.Field(1).Name, "Expected field name 'col3'")
@@ -33,7 +34,8 @@ func TestAddStringColumnAtEnd(t *testing.T) {
 	schema := createTestSchema()
 	updater := New(schema)
 
-	updatedSchema := updater.AddStringColumnAtPos("col3", -1, true)
+	updatedSchema, err := updater.AddStringColumnAtPos("col3", -1, true)
+	require.NoError(t, err)
 
 	require.Equal(t, 3, updatedSchema.NumFields(), "Expected 3 fields")
 	require.Equal(t, "col3", updatedSchema.Field(2).Name, "Expected field name 'col3'")
@@ -52,7 +54,8 @@ func TestTransformMaintainsMetadata(t *testing.T) {
 		&md3,
 	)
 	updater := New(schema)
-	updatedSchema := updater.AddStringColumnAtPos("col3", -1, true)
+	updatedSchema, err := updater.AddStringColumnAtPos("col3", -1, true)
+	require.NoError(t, err)
 
 	require.Equal(t, schema.Metadata(), updatedSchema.Metadata(), "Expected metadata to be retained")
 	require.Equal(t, schema.Field(0).Metadata, updatedSchema.Field(0).Metadata, "Expected metadata to be retained")

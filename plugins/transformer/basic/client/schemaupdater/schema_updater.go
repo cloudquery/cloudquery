@@ -26,22 +26,12 @@ func (s *SchemaUpdater) RemoveColumnIndices(colIndices map[int]struct{}) *arrow.
 	return s.schema
 }
 
-func (s *SchemaUpdater) AddStringColumnAtPos(columnName string, zeroIndexedPosition int, isNullable bool) *arrow.Schema {
-	oldMetadata := s.schema.Metadata()
-	oldFields := s.schema.Fields()
+func (s *SchemaUpdater) AddStringColumnAtPos(columnName string, zeroIndexedPosition int, isNullable bool) (*arrow.Schema, error) {
 	if zeroIndexedPosition == -1 {
-		zeroIndexedPosition = len(oldFields)
+		zeroIndexedPosition = s.schema.NumFields()
 	}
-	newFields := make([]arrow.Field, 0, len(oldFields)+1)
-	for i, field := range oldFields {
-		if i == zeroIndexedPosition {
-			newFields = append(newFields, arrow.Field{Name: columnName, Type: arrow.BinaryTypes.String, Nullable: isNullable})
-		}
-		newFields = append(newFields, field)
-	}
-	if zeroIndexedPosition == len(oldFields) {
-		newFields = append(newFields, arrow.Field{Name: columnName, Type: arrow.BinaryTypes.String, Nullable: isNullable})
-	}
-	s.schema = arrow.NewSchema(newFields, &oldMetadata)
-	return s.schema
+	return s.schema.AddField(
+		zeroIndexedPosition,
+		arrow.Field{Name: columnName, Type: arrow.BinaryTypes.String, Nullable: isNullable},
+	)
 }
