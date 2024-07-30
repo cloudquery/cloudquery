@@ -19,18 +19,16 @@ type Transformer struct {
 func NewFromSpec(sp spec.TransformationSpec) (*Transformer, error) {
 	tr := &Transformer{matcher: tablematcher.New(sp.Tables)}
 
-	fns := map[string]TransformationFn{
-		spec.KindAddColumn:        AddLiteralStringColumnAsLastColumn(sp.Name, sp.Value),
-		spec.KindRemoveColumns:    RemoveColumns(sp.Columns),
-		spec.KindObfuscateColumns: ObfuscateColumns(sp.Columns),
-	}
-
-	fn, ok := fns[sp.Kind]
-	if !ok {
+	switch sp.Kind {
+	case spec.KindAddColumn:
+		tr.fn = AddLiteralStringColumnAsLastColumn(sp.Name, sp.Value)
+	case spec.KindRemoveColumns:
+		tr.fn = RemoveColumns(sp.Columns)
+	case spec.KindObfuscateColumns:
+		tr.fn = ObfuscateColumns(sp.Columns)
+	default:
 		return nil, fmt.Errorf("unknown transformation kind: %s", sp.Kind)
 	}
-
-	tr.fn = fn
 
 	return tr, nil
 }
