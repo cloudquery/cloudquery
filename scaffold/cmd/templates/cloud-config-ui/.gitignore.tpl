@@ -1,6 +1,5 @@
 # dependencies
 /node_modules
-package-lock.json
 
 # testing
 /coverage
@@ -9,3 +8,9 @@ package-lock.json
 /build
 
 # misc
+.env.json
+
+# e2e-tests
+/playwright-report
+/test-results
+/temp
