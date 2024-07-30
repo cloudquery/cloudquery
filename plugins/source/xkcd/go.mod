@@ -3,7 +3,7 @@ module github.com/hermanschaaf/cq-source-xkcd
 go 1.22.4
 
 require (
-	github.com/cloudquery/plugin-sdk/v4 v4.51.0
+	github.com/cloudquery/plugin-sdk/v4 v4.54.0
 	github.com/rs/zerolog v1.33.0
 	golang.org/x/sync v0.7.0
 	google.golang.org/grpc v1.65.0
@@ -17,8 +17,8 @@ require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.12.3 // indirect
-	github.com/cloudquery/plugin-pb-go v1.20.8 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.12.4 // indirect
+	github.com/cloudquery/plugin-pb-go v1.21.1 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect

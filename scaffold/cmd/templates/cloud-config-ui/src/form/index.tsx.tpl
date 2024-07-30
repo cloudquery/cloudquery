@@ -36,7 +36,7 @@ export function Form({ initialValues }: Props) {
   useFormSubmit(handleValidate, pluginUiMessageHandler);
 
   return (
-    <FormFieldGroup title={initialValues ? 'Update a {plugin-kind}' : 'Create a {plugin-kind}'}>
+    <FormFieldGroup title={initialValues ? 'Update a {{.Kind}}' : 'Create a {{.Kind}}'}>
       <Controller
         control={control}
         name="name"
@@ -45,7 +45,7 @@ export function Form({ initialValues }: Props) {
             error={!!fieldState.error}
             fullWidth={true}
             helperText={fieldState.error?.message}
-            label="{plugin-kind} name"
+            label="{{.Kind}} name"
             disabled={!!initialValues}
             autoComplete="off"
             {...field}
