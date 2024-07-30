@@ -23,7 +23,7 @@ type Client struct {
 
 func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
-		logger: logger.With().Str("module", "basic").Logger(),
+		logger: logger.With().Str("module", opts.PluginMeta.Name).Logger(),
 	}
 	if opts.NoConnection {
 		return c, nil
