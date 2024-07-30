@@ -413,6 +413,11 @@ func (c *Client) createPerformanceIndexes(ctx context.Context, table *schema.Tab
 			return nil
 		}
 	}
+	// If there are no primary keys, this means that append mode is being used as the write mode as even when table has no PKs the _cq_id is added as a PK
+	if len(table.PrimaryKeys()) == 0 {
+		c.logger.Debug().Msg("indexes are not needed because no primary keys are present which means that `append` write mode is being used")
+		return nil
+	}
 
 	indexName := "cq_performance_idx"
 
