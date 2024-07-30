@@ -5,6 +5,31 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.1.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.0.1...cli-v6.1.0) (2024-07-30)
+
+
+### Features
+
+* Add `type_schema` to tables JSON ([#18582](https://github.com/cloudquery/cloudquery/issues/18582)) ([1f7e70d](https://github.com/cloudquery/cloudquery/commit/1f7e70d2652ef3e44e12a7e2e31e983decaf0f05))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/apache/arrow/go/v16 to v17 ([#18657](https://github.com/cloudquery/cloudquery/issues/18657)) ([3ae9b11](https://github.com/cloudquery/cloudquery/commit/3ae9b1148b93939e436a81f4bca2a446945886d6))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.12.4 ([#18713](https://github.com/cloudquery/cloudquery/issues/18713)) ([cd3879b](https://github.com/cloudquery/cloudquery/commit/cd3879be9fc5594cf1f72cef232e0ca54d0709ac))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.18 ([#18662](https://github.com/cloudquery/cloudquery/issues/18662)) ([2169cec](https://github.com/cloudquery/cloudquery/commit/2169cecb0f6686e01e1c789d09c6661d8ec5ddad))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.19 ([#18666](https://github.com/cloudquery/cloudquery/issues/18666)) ([cf70b57](https://github.com/cloudquery/cloudquery/commit/cf70b57853af4dd4b69be202766d337c1cfe16d7))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.21.0 ([#18712](https://github.com/cloudquery/cloudquery/issues/18712)) ([a84b4dc](https://github.com/cloudquery/cloudquery/commit/a84b4dcee8b37db1fcb4f77d2091d78b106cb259))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.21.1 ([#18715](https://github.com/cloudquery/cloudquery/issues/18715)) ([262e36d](https://github.com/cloudquery/cloudquery/commit/262e36dca0a50b26666e6d7986ca136673dd9b47))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.21.2 ([#18745](https://github.com/cloudquery/cloudquery/issues/18745)) ([bfa032d](https://github.com/cloudquery/cloudquery/commit/bfa032d5a5c7fa8b397af8150e6a9c5630a35f18))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.51.0 ([#18664](https://github.com/cloudquery/cloudquery/issues/18664)) ([c98a04d](https://github.com/cloudquery/cloudquery/commit/c98a04d96e2b7a478da0c335143745d9387a8830))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.52.1 ([#18674](https://github.com/cloudquery/cloudquery/issues/18674)) ([01f8463](https://github.com/cloudquery/cloudquery/commit/01f84633e82f1921a2a5a805d1aa1d5a5a6abac6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.53.0 ([#18703](https://github.com/cloudquery/cloudquery/issues/18703)) ([2fbc27d](https://github.com/cloudquery/cloudquery/commit/2fbc27d8c1aa066d24611c74099c3e437b821617))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.53.1 ([#18705](https://github.com/cloudquery/cloudquery/issues/18705)) ([5432049](https://github.com/cloudquery/cloudquery/commit/5432049699370d058b7a28b9be546a4871537756))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.54.0 ([#18717](https://github.com/cloudquery/cloudquery/issues/18717)) ([c8ccd1f](https://github.com/cloudquery/cloudquery/commit/c8ccd1ff6c40ef7385a72669769531c72d9c7128))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.55.0 ([#18742](https://github.com/cloudquery/cloudquery/issues/18742)) ([4045944](https://github.com/cloudquery/cloudquery/commit/4045944b8e9f4414145e6484a62692852ba9b174))
+* Improve `--tables-metrics-location` reference docs ([#18699](https://github.com/cloudquery/cloudquery/issues/18699)) ([5b18119](https://github.com/cloudquery/cloudquery/commit/5b18119a4350dcbdef0b1a9c2d10bdcccbdd4950))
+
 ## [6.0.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.0.0...cli-v6.0.1) (2024-07-22)
 
 
