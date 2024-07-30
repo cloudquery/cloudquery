@@ -111,6 +111,12 @@ export function Form({ initialValues }: Props) {
                 }
                 label="Log level"
                 select={true}
+                SelectProps={{
+                  MenuProps: {
+                    autoFocus: false,
+                    disableAutoFocus: true,
+                  },
+                }}
                 required={true}
                 {...field}
               >
@@ -194,6 +200,12 @@ export function Form({ initialValues }: Props) {
                 }
                 label="Migrate mode"
                 select={true}
+                SelectProps={{
+                  MenuProps: {
+                    autoFocus: false,
+                    disableAutoFocus: true,
+                  },
+                }}
                 {...field}
               >
                 {migrateModeValues.map((value) => (
@@ -228,6 +240,12 @@ export function Form({ initialValues }: Props) {
                 }
                 label="Write mode"
                 select={true}
+                SelectProps={{
+                  MenuProps: {
+                    autoFocus: false,
+                    disableAutoFocus: true,
+                  },
+                }}
                 {...field}
               >
                 {writeModeValues.map((value) => (

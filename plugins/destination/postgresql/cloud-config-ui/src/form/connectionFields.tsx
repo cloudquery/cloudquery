@@ -221,6 +221,12 @@ export function FormConnectionFields({ specIsValid, isUpdating }: Props) {
               helperText={fieldState.error?.message}
               label="SSL Mode"
               select={true}
+              SelectProps={{
+                MenuProps: {
+                  autoFocus: false,
+                  disableAutoFocus: true,
+                },
+              }}
               {...field}
             >
               <MenuItem value={''} hidden={true} />
