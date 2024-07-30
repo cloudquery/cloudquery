@@ -66,6 +66,7 @@ test('Submit the form', async ({ page }) => {
         version: 'v6.2.5',
         spec: {
           connection_string: 'test',
+          tables: ['*'],
         },
       },
     });

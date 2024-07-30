@@ -45,6 +45,7 @@ test("Submit the form", async ({ page }) => {
         version: "{v6.2.5 | v8.2.7}", // use v6.2.5 for source or v8.2.7 for destination
         spec: {
           connection_string: "test",
+          // tables: ['*'], // use when kind is source
         },
       },
     });
