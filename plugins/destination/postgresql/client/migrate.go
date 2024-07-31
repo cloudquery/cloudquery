@@ -64,8 +64,10 @@ func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMi
 					return err
 				}
 			}
-			if err := c.createPerformanceIndexes(ctx, table); err != nil {
-				return err
+			if c.spec.CreatePerformanceIndexes {
+				if err := c.createPerformanceIndexes(ctx, table); err != nil {
+					return err
+				}
 			}
 		}
 	}

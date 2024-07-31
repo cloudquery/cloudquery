@@ -35,6 +35,9 @@ type Spec struct {
 
 	// Maximum interval between batch writes.
 	BatchTimeout configtype.Duration `json:"batch_timeout,omitempty"`
+
+	// Option to create specific indexes to improve deletion performance
+	CreatePerformanceIndexes bool `json:"create_performance_indexes,omitempty" jsonschema:"default=false"`
 }
 
 func (s *Spec) SetDefaults() {
