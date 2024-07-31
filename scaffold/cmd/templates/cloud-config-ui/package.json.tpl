@@ -6,8 +6,8 @@
   "dependencies": {
     "@cloudquery-plugin/tables": "file:../docs/__tables.json",
     "@cloudquery/cloud-ui": "^0.1.9",
-    "@cloudquery/plugin-config-ui-connector": "^0.2.4",
-    "@cloudquery/plugin-config-ui-lib": "^0.0.27",
+    "@cloudquery/plugin-config-ui-connector": "^0.2.8",
+    "@cloudquery/plugin-config-ui-lib": "^0.0.32",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
@@ -27,7 +27,8 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-    "@types/node": "^16.18.99",
+    "@playwright/test": "^1.45.3",
+    "@types/node": "^16.18.104",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "eslint": "^8.57.0",
@@ -38,8 +39,11 @@
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-react": "^7.34.2",
     "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-sort-destructure-keys": "^2.0.0",
     "eslint-plugin-unicorn": "^54.0.0",
-    "prettier": "^3.3.1"
+    "http-server": "^14.1.1",
+    "prettier": "^3.3.1",
+    "yaml": "^2.5.0"
   },
   "scripts": {
     "start": "PORT=3001 react-scripts start",
