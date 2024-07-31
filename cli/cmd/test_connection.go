@@ -74,7 +74,7 @@ func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, 
 	log.Info().Str("status", string(status)).Msg("Sending sync test connection to API")
 
 	var statusCode int
-	switch os.Getenv("_CQ_SYNC_TEST_CONNECTION_KIND") {
+	switch kind := os.Getenv("_CQ_SYNC_TEST_CONNECTION_KIND"); kind {
 	case "source":
 		requestBody := cloudquery_api.UpdateSyncTestConnectionForSyncSourceJSONRequestBody{
 			Status: status,
@@ -89,7 +89,7 @@ func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, 
 			return
 		}
 		statusCode = res.StatusCode()
-	default:
+	case "destination":
 		requestBody := cloudquery_api.UpdateSyncTestConnectionForSyncDestinationJSONRequestBody{
 			Status: status,
 		}
@@ -103,6 +103,9 @@ func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, 
 			return
 		}
 		statusCode = res.StatusCode()
+	default:
+		log.Debug().Str("kind", kind).Msg("Unhandled plugin kind for test connection result API call")
+		return
 	}
 	if statusCode != http.StatusOK {
 		log.Warn().Str("status", string(status)).Int("code", statusCode).Msg("Failed to send test connection result to API")
