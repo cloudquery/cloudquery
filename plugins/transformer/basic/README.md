@@ -1,3 +1,3 @@
 # CloudQuery Basic Transformer Plugin
 
-This transformer plugin applies basic transformations in an arrow record
+This transformer plugin applies basic transformations to an Arrow record
