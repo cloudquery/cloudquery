@@ -72,6 +72,17 @@ func (c *Client) Transform(ctx context.Context, recvRecords <-chan arrow.Record,
 	}
 }
 
+func (c *Client) TransformSchema(ctx context.Context, schema *arrow.Schema) (*arrow.Schema, error) {
+	for _, tf := range c.tfs {
+		var err error
+		schema, err = tf.TransformSchema(schema)
+		if err != nil {
+			return nil, err
+		}
+	}
+	return schema, nil
+}
+
 func (*Client) Close(ctx context.Context) error {
 	return nil
 }

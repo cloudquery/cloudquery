@@ -29,7 +29,7 @@ func TestIsTableMatch(t *testing.T) {
 	}
 }
 
-func TestIsRecordsTableMatch(t *testing.T) {
+func TestIsSchemasTableMatch(t *testing.T) {
 	tests := []struct {
 		patterns  []string
 		tableName string
@@ -46,13 +46,13 @@ func TestIsRecordsTableMatch(t *testing.T) {
 		matcher := New(tt.patterns)
 
 		record := createTestRecordWithMetadata(tt.tableName)
-		result, err := matcher.IsRecordsTableMatch(record)
+		result, err := matcher.IsSchemasTableMatch(record.Schema())
 		require.NoError(t, err, "Unexpected error")
 		require.Equal(t, tt.expected, result, "Expected %v for table name %s, got %v", tt.expected, tt.tableName, result)
 	}
 }
 
-func TestIsRecordsTableMatch_NoMetadata(t *testing.T) {
+func TestIsSchemasTableMatch_NoMetadata(t *testing.T) {
 	patterns := []string{"table_*", "data_*"}
 	matcher := New(patterns)
 
@@ -67,7 +67,7 @@ func TestIsRecordsTableMatch_NoMetadata(t *testing.T) {
 	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1"}, nil)
 	record := bld.NewRecord()
 
-	_, err := matcher.IsRecordsTableMatch(record)
+	_, err := matcher.IsSchemasTableMatch(record.Schema())
 	require.Error(t, err, "Expected error")
 	require.EqualError(t, err, "table name not found in record's metadata", "Expected error message 'table name not found in record's metadata'")
 }

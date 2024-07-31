@@ -42,8 +42,8 @@ func (t *TableMatcher) isTableMatch(tableName string) bool {
 	return isMatch
 }
 
-func (t *TableMatcher) IsRecordsTableMatch(record arrow.Record) (bool, error) {
-	table, ok := record.Schema().Metadata().GetValue(schema.MetadataTableName)
+func (t *TableMatcher) IsSchemasTableMatch(sc *arrow.Schema) (bool, error) {
+	table, ok := sc.Metadata().GetValue(schema.MetadataTableName)
 	if !ok {
 		return false, errors.New("table name not found in record's metadata")
 	}

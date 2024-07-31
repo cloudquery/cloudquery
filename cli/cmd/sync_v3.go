@@ -11,9 +11,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/apache/arrow/go/v17/arrow"
-	"github.com/apache/arrow/go/v17/arrow/array"
-	"github.com/apache/arrow/go/v17/arrow/memory"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/internal/api"
@@ -32,11 +29,6 @@ import (
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/google/uuid"
-)
-
-const (
-	MetadataMessageTypeKey          = "cq:extension:message_type"
-	MetadataMessageTypeMigrateValue = "migrate"
 )
 
 type v3source struct {
@@ -365,7 +357,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 				},
 			}
 			if err := writeClientsByName[destinationName].Send(wr); err != nil {
-				return handleSendError(err, writeClientsByName[destinationName], msgType)
+				return handleSendError(err, writeClientsByName[destinationName], "insert")
 			}
 			return nil
 		})
@@ -455,18 +447,8 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 				for i := range destinationsPbClients {
 					destinationName := destinationSpecs[i].Name
 					transformedSchema := destinationTransformers[i].TransformSchema(sc)
-
-					// Since Transformer plugins only have `.Transform()` which transforms records,
-					// but in this case we must transform the schema, we create an empty record with the schema.
-					//
-					// The transformer won't care about this difference, but the destination still needs to
-					// receive the proper message (MigrateTable), so we inject a metadata key to remember that.
-					transformedRecord := makeEmptyRecordWithMigrateMetadata(transformedSchema)
-					transformedRecordBytes, err := plugin.RecordToBytes(transformedRecord)
+					transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
 					if err != nil {
-						return fmt.Errorf("failed to transform record bytes: %w", err)
-					}
-					if err := pipelineByDestinationName[destinationName].Send(transformedRecordBytes); err != nil {
 						return err
 					}
 					// Sequentially apply schema transformations from transformers
@@ -600,23 +582,4 @@ func deleteStale(client plugin.Plugin_WriteClient, tables map[string]bool, sourc
 	}
 
 	return nil
-}
-
-func makeEmptyRecordWithMigrateMetadata(s *arrow.Schema) arrow.Record {
-	// Add a temporary message type to the metadata to indicate that this record is for migrating a table
-	mdMap := s.Metadata().ToMap()
-	mdMap[MetadataMessageTypeKey] = MetadataMessageTypeMigrateValue
-	newMd := arrow.MetadataFrom(mdMap)
-	mem := memory.NewGoAllocator()
-
-	cols := []arrow.Array{}
-	for _, field := range s.Fields() {
-		cols = append(cols, array.NewBuilder(mem, field.Type).NewArray())
-	}
-	return array.NewRecord(arrow.NewSchema(s.Fields(), &newMd), cols, 0)
-}
-
-func isMigrateTableRecord(record arrow.Record) bool {
-	value, ok := record.Schema().Metadata().GetValue(MetadataMessageTypeKey)
-	return ok && value == MetadataMessageTypeMigrateValue
 }
