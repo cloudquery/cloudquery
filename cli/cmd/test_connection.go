@@ -72,22 +72,42 @@ func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, 
 	}
 
 	log.Info().Str("status", string(status)).Msg("Sending sync test connection to API")
-	requestBody := cloudquery_api.UpdateSyncTestConnectionJSONRequestBody{
-		Status: status,
+
+	var statusCode int
+	switch os.Getenv("_CQ_SYNC_TEST_CONNECTION_KIND") {
+	case "source":
+		requestBody := cloudquery_api.UpdateSyncTestConnectionForSyncSourceJSONRequestBody{
+			Status: status,
+		}
+		if failedTestResult != nil {
+			requestBody.FailureCode = &failedTestResult.FailureCode
+			requestBody.FailureReason = &failedTestResult.FailureDescription
+		}
+		res, err := apiClient.UpdateSyncTestConnectionForSyncSourceWithResponse(ctx, teamName, syncTestConnectionUUID, requestBody)
+		if err != nil {
+			log.Warn().Err(err).Msg("Failed to send sync test connection result to API")
+			return
+		}
+		statusCode = res.StatusCode()
+	default:
+		requestBody := cloudquery_api.UpdateSyncTestConnectionForSyncDestinationJSONRequestBody{
+			Status: status,
+		}
+		if failedTestResult != nil {
+			requestBody.FailureCode = &failedTestResult.FailureCode
+			requestBody.FailureReason = &failedTestResult.FailureDescription
+		}
+		res, err := apiClient.UpdateSyncTestConnectionForSyncDestinationWithResponse(ctx, teamName, syncTestConnectionUUID, requestBody)
+		if err != nil {
+			log.Warn().Err(err).Msg("Failed to send sync test connection result to API")
+			return
+		}
+		statusCode = res.StatusCode()
 	}
-	if failedTestResult != nil {
-		requestBody.FailureCode = &failedTestResult.FailureCode
-		requestBody.FailureReason = &failedTestResult.FailureDescription
-	}
-	res, err := apiClient.UpdateSyncTestConnectionWithResponse(ctx, teamName, syncTestConnectionUUID, requestBody)
-	if err != nil {
-		log.Warn().Err(err).Msg("Failed to send sync test connection to API")
-		return
-	}
-	if res.StatusCode() != http.StatusOK {
-		log.Warn().Str("status", res.Status()).Int("code", res.StatusCode()).Msg("Failed to send test connection to API")
+	if statusCode != http.StatusOK {
+		log.Warn().Str("status", string(status)).Int("code", statusCode).Msg("Failed to send test connection result to API")
 	} else {
-		log.Info().Str("status", string(status)).Msg("Sent sync test connection to API")
+		log.Info().Str("status", string(status)).Msg("Sent sync test connection result to API")
 	}
 }
 
@@ -318,16 +338,12 @@ func testPluginConnection(ctx context.Context, client plugin.PluginClient, spec 
 
 // filterFailedTestResults fetch the failed test results.
 //
-// The function returns any failed test results, or nil if all tests passed. The hackernews plugin is excluded from the
-// failed test results since it was previously used as a test case for the test connection command.
+// The function returns any failed test results, or nil if all tests passed.
 func filterFailedTestResults(results []testConnectionResult) (*testConnectionResult, error) {
 	var failedResults []testConnectionResult
 
 	for _, result := range results {
 		if !result.Success {
-			if strings.Contains(result.PluginRef, "cloudquery/file@v4.0.4)") || strings.Contains(result.PluginRef, "cloudquery/hackernews@v3.0.25)") {
-				continue
-			}
 			failedResults = append(failedResults, result)
 		}
 	}
