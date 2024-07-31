@@ -76,6 +76,10 @@ jobs:
           go-version-file: plugins/source/hackernews/go.mod
           cache: true
           cache-dependency-path: plugins/source/hackernews/go.sum
+      - name: Setup CloudQuery
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: "v6.0.1"
       - name: Gen
         run: make gen
       - name: Build
@@ -100,10 +104,6 @@ jobs:
       - name: Run E2E tests and generate configs
         working-directory: "plugins/source/hackernews/cloud-config-ui"
         run: E2E_TESTS_GENERATE_CONFIG=true npm run test:e2e
-      - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@v3
-        with:
-          version: "v6.0.1"
       - name: Validate CloudQuery config
         working-directory: "plugins/source/hackernews/cloud-config-ui"
         run: dotenv -e ./temp/.env -- cloudquery validate-config ./temp/config.yml
