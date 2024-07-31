@@ -42,7 +42,10 @@ export function getFormValidationSchema(
         .number()
         .default(initialValues?.spec?.item_concurrency ?? 100)
         .required(),
-      startTimeEnabled: yup.boolean().default(!!initialValues?.spec?.startTime).required(),
+      startTimeEnabled: yup
+        .boolean()
+        .default(!initialValues || !!initialValues?.spec?.startTime)
+        .required(),
       startTime: yup
         .mixed<dayjs.Dayjs>()
         .default(getDefaultStartTime(initialValues?.spec?.startTime)),
