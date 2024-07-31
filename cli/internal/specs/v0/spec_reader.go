@@ -205,6 +205,11 @@ func (r *SpecReader) validate() error {
 		if destination.SyncGroupId != "" && destination.WriteMode == WriteModeOverwriteDeleteStale {
 			err = errors.Join(err, fmt.Errorf("destination %s: sync_group_id is not supported with write_mode: %s", destination.Name, destination.WriteMode))
 		}
+		for _, transformer := range destination.Transformers {
+			if r.transformersMap[transformer] == nil {
+				err = errors.Join(err, fmt.Errorf("destination %s references unknown transformer %s", destination.Name, transformer))
+			}
+		}
 	}
 
 	return err

@@ -252,7 +252,7 @@ func sync(cmd *cobra.Command, args []string) error {
 			Path:       transformer.Path,
 			DockerAuth: transformer.DockerRegistryAuthToken,
 		}
-		transPluginClient, err := managedplugin.NewClient(ctx, managedplugin.PluginDestination, cfg, opts...) // TODO: s/PluginDestination/PluginTransformer/
+		transPluginClient, err := managedplugin.NewClient(ctx, managedplugin.PluginTransformer, cfg, opts...)
 		if err != nil {
 			return enrichClientError(managedplugin.Clients{}, []bool{transformer.RegistryInferred()}, err)
 		}
@@ -318,15 +318,8 @@ func sync(cmd *cobra.Command, args []string) error {
 					log.Warn().Str("destination", destination.Name()).Str("field", field).Msg(msg)
 				}
 				for _, transformer := range transformerClientsForDestination[destination.Name()] {
-					versions, err := transformer.Versions(ctx)
-					if err != nil {
-						return fmt.Errorf("failed to get transformer versions: %w", err)
-					}
-					if !slices.Contains(versions, 3) {
-						return fmt.Errorf("transformer plugin %[1]s does not support CloudQuery protocol version 3, required by the %[2]s source plugin. Please upgrade to a newer version of the %[1]s transformer plugin", transformer.Name(), source.Name)
-					}
-					destWarnings := specReader.GetTransformerWarningsByName(source.Name)
-					for field, msg := range destWarnings {
+					transformerWarnings := specReader.GetTransformerWarningsByName(source.Name)
+					for field, msg := range transformerWarnings {
 						log.Warn().Str("transformer", transformer.Name()).Str("field", field).Msg(msg)
 					}
 				}
