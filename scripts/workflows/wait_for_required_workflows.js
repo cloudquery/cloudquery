@@ -23,6 +23,15 @@ module.exports = async ({github, context}) => {
     const matchesFile = (action) => {
         return files.some(file => file.startsWith(`${action}/`) || matchesWorkflow(file, action))
     }
+
+    const getPluginsWithConfigUI = () => {
+        const cloudConfigUIDir = "/cloud-config-ui"
+        const configUIDirectories = fs.readdirSync("plugins", {recursive: true}).filter(directory => directory.endsWith(cloudConfigUIDir))
+        const plugins = configUIDirectories.map(directory => `plugins/${directory.replace(cloudConfigUIDir, "")}`)
+        console.log(`Found the following plugins with config UI: ${plugins.join(", ")}`)
+        return plugins
+    } 
+
     const sources = fs.readdirSync("plugins/source", {withFileTypes: true}).filter(dirent => dirent.isDirectory()).map(dirent => `plugins/source/${dirent.name}`)
     const destinations = fs.readdirSync("plugins/destination", {withFileTypes: true}).filter(dirent => dirent.isDirectory()).map(dirent => `plugins/destination/${dirent.name}`)
     const transformers = fs.readdirSync("plugins/transformer", {withFileTypes: true}).filter(dirent => dirent.isDirectory()).map(dirent => `plugins/transformer/${dirent.name}`)
@@ -43,6 +52,14 @@ module.exports = async ({github, context}) => {
         actions = [...actions, 'validate-release']
         actions = actions.filter(action => action !== "cli")
         actions = ["cli (ubuntu-latest)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
+    }
+
+    const pluginsWithConfigUI = getPluginsWithConfigUI()
+    for (const action of actions) {
+        if (pluginsWithConfigUI.includes(action)) {
+            console.log(`Adding validate-config-ui to the list of required workflows for plugin ${action}`)
+            actions = [...actions, 'validate-config-ui']
+        }
     }
 
     pendingActions = [...actions]
