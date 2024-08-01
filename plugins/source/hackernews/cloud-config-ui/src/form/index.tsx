@@ -1,7 +1,6 @@
 import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
 import Stack from '@mui/material/Stack';
-import FormHelperText from '@mui/material/FormHelperText';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import { getYupValidationResolver } from '@cloudquery/cloud-ui';
@@ -66,9 +65,9 @@ export function Form({ initialValues }: Props) {
   return (
     <FormProvider {...formContext}>
       <Stack spacing={2}>
-        <FormFieldGroup title={initialValues ? 'Update a source' : 'Create a source'}>
+        <FormFieldGroup title={'Configure Hacker News'}>
           <Stack>
-            <Stack marginBottom={2} spacing={2}>
+            <Stack spacing={2}>
               <Controller
                 control={control}
                 name="name"
@@ -76,7 +75,10 @@ export function Form({ initialValues }: Props) {
                   <TextField
                     error={!!fieldState.error}
                     fullWidth={true}
-                    helperText={fieldState.error?.message}
+                    helperText={
+                      fieldState.error?.message ??
+                      'Unique source name that helps identify the source in your workspace.'
+                    }
                     label="Source name"
                     disabled={!!initialValues}
                     autoComplete="off"
@@ -84,45 +86,48 @@ export function Form({ initialValues }: Props) {
                   />
                 )}
               />
-              <Stack>
-                <Controller
-                  control={control}
-                  name="spec.startTime"
-                  render={({ field, fieldState }) => (
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DateTimeField
-                        disableFuture={true}
-                        disabled={!startTimeEnabled}
-                        label="Start time"
-                        slotProps={{
-                          textField: {
-                            error: !!fieldState.error,
-                            name: field.name,
-                            InputProps: {
-                              endAdornment: (
-                                <InputAdornment position="end">
-                                  <Controller
-                                    control={control}
-                                    name="spec.startTimeEnabled"
-                                    render={({ field }) => (
-                                      <Switch {...field} checked={field.value} />
-                                    )}
-                                  />
-                                </InputAdornment>
-                              ),
-                            },
+            </Stack>
+          </Stack>
+        </FormFieldGroup>
+        <FormFieldGroup title={'Options'}>
+          <Stack>
+            <Stack spacing={2}>
+              <Controller
+                control={control}
+                name="spec.startTime"
+                render={({ field, fieldState }) => (
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DateTimeField
+                      disableFuture={true}
+                      disabled={!startTimeEnabled}
+                      label="Start time"
+                      slotProps={{
+                        textField: {
+                          error: !!fieldState.error,
+                          name: field.name,
+                          helperText:
+                            fieldState.error?.message ??
+                            'The earliest news date that the source should fetch.',
+                          InputProps: {
+                            endAdornment: (
+                              <InputAdornment position="end">
+                                <Controller
+                                  control={control}
+                                  name="spec.startTimeEnabled"
+                                  render={({ field }) => (
+                                    <Switch {...field} checked={field.value} />
+                                  )}
+                                />
+                              </InputAdornment>
+                            ),
                           },
-                        }}
-                        {...field}
-                      />
-                      <FormHelperText sx={{ pl: '1em' }}>
-                        {fieldState.error?.message ||
-                          'The earliest news date that the source should fetch.'}
-                      </FormHelperText>
-                    </LocalizationProvider>
-                  )}
-                />
-              </Stack>
+                        },
+                      }}
+                      {...field}
+                    />
+                  </LocalizationProvider>
+                )}
+              />
               <Controller
                 control={control}
                 name="spec.itemConcurrency"
@@ -133,7 +138,7 @@ export function Form({ initialValues }: Props) {
                     required={true}
                     helperText={
                       fieldState.error?.message ||
-                      'Maximum number of news items to fetch concurrently.'
+                      'Maximum number of news items to fetch concurrently. Recommended value is 100.'
                     }
                     label="Item concurrency"
                     {...field}
