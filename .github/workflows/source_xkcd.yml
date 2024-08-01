@@ -55,7 +55,7 @@ jobs:
         run: go build .
       - name: Test
         run: make test
-  plugins-source-xkcd-config-ui:
+  validate-config-ui:
     timeout-minutes: 15
     if: github.event_name == 'pull_request'
     name: "plugins/source/xkcd/cloud-config-ui"
