@@ -22,6 +22,7 @@ jobs:
       plugin_dir: ${{ steps.split.outputs.plugin_dir }}
       prerelease: ${{ steps.semver_parser.outputs.prerelease }}
       plugin_releaser: ${{ steps.set-result.outputs.result }}
+      ui_build_dir: ${{ steps.split.outputs.ui_build_dir }}
       ui_dir_arg: ${{ steps.check-ui-directory.outputs.result }}
     steps:
       - name: Split tag
@@ -43,13 +44,14 @@ jobs:
           echo "plugin_kind_plural=${plugin_kind_plural}" >> $GITHUB_OUTPUT
           echo "plugin_version=${plugin_version}" >> $GITHUB_OUTPUT
           echo "plugin_dir=plugins/${plugin_kind}/${plugin_name}" >> $GITHUB_OUTPUT
+          echo "ui_build_dir=plugins/${plugin_kind}/${plugin_name}/$ui_dir_name/build" >> $GITHUB_OUTPUT
       - name: Undash
         id: undash_plugin_name
         env:
           plugin_name: ${{ steps.split.outputs.plugin_name }}
         run: |
-              p=$(echo $plugin_name | sed 's|-|_|g')
-              echo "plugin_name=${p}" >> $GITHUB_OUTPUT
+          p=$(echo $plugin_name | sed 's|-|_|g')
+          echo "plugin_name=${p}" >> $GITHUB_OUTPUT
 
       # Fail if not a valid SemVer string
       - name: Parse semver string
@@ -94,7 +96,7 @@ jobs:
             const path = require('path');
             const pluginFiles = await fs.readdir(process.env.PLUGIN_DIR);
             if (pluginFiles.includes(process.env.ui_dir_name)) {
-              return '--ui-dir ' + process.env.PLUGIN_DIR + '/' + process.env.ui_dir_name + '/build';
+              return '--ui-dir ' + process.env.ui_dir_name + '/build';
             }
             return '';
           result-encoding: string
@@ -111,20 +113,32 @@ jobs:
         if: needs.prepare.outputs.ui_dir_arg != ''
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
-          cache: 'npm'
-          cache-dependency-path: '${{needs.prepare.outputs.plugin_dir}}/${{env.ui_dir_name}}/package-lock.json'
+          node-version: "lts/*"
+          cache: "npm"
+          cache-dependency-path: "${{needs.prepare.outputs.plugin_dir}}/${{env.ui_dir_name}}/package-lock.json"
 
       - name: Install dependencies
         if: needs.prepare.outputs.ui_dir_arg != ''
         run: npm ci
-        working-directory: '${{needs.prepare.outputs.plugin_dir}}/${{env.ui_dir_name}}'
+        working-directory: "${{needs.prepare.outputs.plugin_dir}}/${{env.ui_dir_name}}"
 
       - name: Build config UI
         if: needs.prepare.outputs.ui_dir_arg != ''
-        working-directory: '${{needs.prepare.outputs.plugin_dir}}/${{env.ui_dir_name}}'
+        env:
+          PLUGIN_TEAM: cloudquery
+          PLUGIN_KIND: ${{needs.prepare.outputs.plugin_kind}}
+          PLUGIN_NAME: ${{needs.prepare.outputs.plugin_name}}
+          PLUGIN_VERSION: ${{needs.prepare.outputs.plugin_version}}
+        working-directory: "${{needs.prepare.outputs.plugin_dir}}/${{env.ui_dir_name}}"
         run: |
           npm run build
+
+      - name: Upload build artifacts
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: build_dir
+          path: ${{ needs.prepare.outputs.ui_build_dir }}
 
   publish-plugin-to-hub-java:
     timeout-minutes: 60
@@ -139,6 +153,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Download build artifacts
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: build_dir
+          path: ${{ needs.prepare.outputs.ui_build_dir }}
+
       - uses: actions/setup-java@v4
         with:
           distribution: "temurin"
@@ -150,7 +171,7 @@ jobs:
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
+          node-version: "lts/*"
 
       - name: Install shell escape
         run: |
@@ -206,7 +227,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v6.0.1
+          version: v6.1.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -228,10 +249,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Download build artifacts
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: build_dir
+          path: ${{ needs.prepare.outputs.ui_build_dir }}
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install dependencies
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -243,8 +271,8 @@ jobs:
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
-      
+          node-version: "lts/*"
+
       - name: Install shell escape
         run: |
           npm install shell-escape@0.2.0
@@ -289,7 +317,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v6.0.1
+          version: v6.1.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -311,17 +339,24 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Download build artifacts
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: build_dir
+          path: ${{ needs.prepare.outputs.ui_build_dir }}
+
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
-          cache: 'npm'
-          cache-dependency-path: '${{needs.prepare.outputs.plugin_dir}}/package-lock.json'
+          node-version: "lts/*"
+          cache: "npm"
+          cache-dependency-path: "${{needs.prepare.outputs.plugin_dir}}/package-lock.json"
 
       - name: Install dependencies
         run: npm ci
         working-directory: ${{needs.prepare.outputs.plugin_dir}}
-      
+
       - name: Install shell escape
         run: |
           npm install shell-escape@0.2.0
@@ -366,7 +401,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v6.0.1
+          version: v6.1.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -388,6 +423,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Download build artifacts
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: build_dir
+          path: ${{ needs.prepare.outputs.ui_build_dir }}
+
       - uses: actions/cache@v4
         with:
           path: |
@@ -407,7 +449,7 @@ jobs:
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: 'lts/*'
+          node-version: "lts/*"
 
       - name: Install shell escape
         run: |
@@ -449,7 +491,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v6.0.1
+          version: v6.1.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}

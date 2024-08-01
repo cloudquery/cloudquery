@@ -5,6 +5,25 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.2.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.1.0...cli-v6.2.0) (2024-08-01)
+
+
+### Features
+
+* Add `PermissionsNeeded` to `tables` command JSON output ([#18711](https://github.com/cloudquery/cloudquery/issues/18711)) ([70eeea4](https://github.com/cloudquery/cloudquery/commit/70eeea48ceb51b71ee8020ee97d38d0a30f99c4c))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 8a7402a ([#18799](https://github.com/cloudquery/cloudquery/issues/18799)) ([feed49d](https://github.com/cloudquery/cloudquery/commit/feed49d232ebd93cfc84148ba0991adc97321600))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.12.5 ([#18762](https://github.com/cloudquery/cloudquery/issues/18762)) ([68af9ca](https://github.com/cloudquery/cloudquery/commit/68af9ca27cdc41575569eb60fd80d94b28b591fe))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.21.3 ([#18750](https://github.com/cloudquery/cloudquery/issues/18750)) ([abc54d1](https://github.com/cloudquery/cloudquery/commit/abc54d15a9ede4e88aad3eddfc8fe2b3e11d6e23))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.21.4 ([#18809](https://github.com/cloudquery/cloudquery/issues/18809)) ([4f82b9c](https://github.com/cloudquery/cloudquery/commit/4f82b9caec1ef3e79bb93c76c2cdf67203b47d9b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.56.0 ([#18763](https://github.com/cloudquery/cloudquery/issues/18763)) ([45da614](https://github.com/cloudquery/cloudquery/commit/45da614ef7aaaf83e7820beec5ee33b00e9f5c0f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.57.0 ([#18810](https://github.com/cloudquery/cloudquery/issues/18810)) ([42cc5de](https://github.com/cloudquery/cloudquery/commit/42cc5de457e5734c66d3c0f08ef61b35b2b60ca9))
+* **deps:** Update module github.com/docker/docker to v26.1.5+incompatible ([#18806](https://github.com/cloudquery/cloudquery/issues/18806)) ([b564721](https://github.com/cloudquery/cloudquery/commit/b5647210aa6ca7458d2cc60be8e368a7d10225c0))
+* **deps:** Update module github.com/schollz/progressbar/v3 to v3.14.5 ([#18807](https://github.com/cloudquery/cloudquery/issues/18807)) ([961c5bd](https://github.com/cloudquery/cloudquery/commit/961c5bdf04f4b27d4b26ce0823b6b944f784a57b))
+
 ## [6.1.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.0.1...cli-v6.1.0) (2024-07-30)
 
 
