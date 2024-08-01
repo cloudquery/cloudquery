@@ -33,6 +33,9 @@ type Destination struct {
 
 	SyncSummary bool `json:"send_sync_summary,omitempty"`
 
+	// Transformers are the names of transformer plugins to send sync data through
+	Transformers []string `json:"transformers,omitempty"`
+
 	// Destination plugin own (nested) spec
 	Spec map[string]any `json:"spec,omitempty"`
 }
