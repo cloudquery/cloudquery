@@ -44,7 +44,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v6.0.1
+          version: v6.2.0
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -55,4 +55,56 @@ jobs:
         run: go build .
       - name: Test
         run: make test
-  
+  validate-config-ui:
+    timeout-minutes: 15
+    if: github.event_name == 'pull_request'
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/xkcd
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: plugins/source/xkcd/go.mod
+          cache: true
+          cache-dependency-path: plugins/source/xkcd/go.sum
+      - name: Setup CloudQuery
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: "v6.0.1"
+      - name: Gen
+        run: make gen
+      - name: Build
+        run: go build .
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "npm"
+          cache-dependency-path: "plugins/source/xkcd/cloud-config-ui/package-lock.json"
+      - name: Install dependencies
+        working-directory: "plugins/source/xkcd/cloud-config-ui"
+        run: npm ci
+      - name: Install dotenv
+        run: npm install dotenv-cli -g
+      - name: Install Playwright
+        working-directory: "plugins/source/xkcd/cloud-config-ui"
+        run: npx playwright install --with-deps
+      - name: Build config UI
+        working-directory: "plugins/source/xkcd/cloud-config-ui"
+        run: REACT_APP_USE_CLOUD_APP_MOCK=true npm run build
+      - name: Run E2E tests and generate configs
+        working-directory: "plugins/source/xkcd/cloud-config-ui"
+        run: E2E_TESTS_GENERATE_CONFIG=true npm run test:e2e
+      - name: Validate CloudQuery config
+        working-directory: "plugins/source/xkcd/cloud-config-ui"
+        run: dotenv -e ./temp/.env -- cloudquery validate-config ./temp/config.yml
+        env:
+          CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
