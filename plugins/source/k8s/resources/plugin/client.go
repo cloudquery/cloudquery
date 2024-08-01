@@ -1,0 +1,184 @@
+package plugin
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"maps"
+	"strings"
+
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/admissionregistration"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/apps"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/autoscaling"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/batch"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/certificates"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/coordination"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/core"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/custom_resources"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/discovery"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/networking"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/nodes"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/policy"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/rbac"
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/resources/services/storage"
+	"github.com/cloudquery/plugin-sdk/v4/caser"
+	"github.com/cloudquery/plugin-sdk/v4/docs"
+	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/scheduler"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/cloudquery/plugin-sdk/v4/transformers"
+	"github.com/rs/zerolog"
+)
+
+var customExceptions = map[string]string{
+	"admissionregistration": "Admission Registration",
+	"crds":                  "Custom Resource Definitions (CRDs)",
+	"csi":                   "Container Storage Interface (CSI)",
+	"hpas":                  "Horizontal Pod Autoscalers (HPAs)",
+	"k8s":                   "Kubernetes (K8s)",
+	"pvcs":                  "Persistent Volume Claims (PVCs)",
+	"pvs":                   "Persistent Volumes (PVs)",
+	"rbac":                  "Role-Based Access Control (RBAC)",
+}
+
+func titleTransformer(table *schema.Table) error {
+	if table.Title != "" {
+		return nil
+	}
+	exceptions := maps.Clone(docs.DefaultTitleExceptions)
+	for k, v := range customExceptions {
+		exceptions[k] = v
+	}
+
+	csr := caser.New(caser.WithCustomExceptions(exceptions))
+	t := csr.ToTitle(table.Name)
+	table.Title = strings.Trim(strings.ReplaceAll(t, "  ", " "), " ")
+
+	return nil
+}
+
+type Client struct {
+	plugin.UnimplementedDestination
+	scheduler  *scheduler.Scheduler
+	syncClient *client.Client
+	options    plugin.NewClientOptions
+	tables     schema.Tables
+}
+
+func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, options plugin.NewClientOptions) (plugin.Client, error) {
+	c := &Client{
+		options: options,
+	}
+
+	if options.NoConnection {
+		return c, nil
+	}
+
+	s := &spec.Spec{}
+	if err := json.Unmarshal(specBytes, s); err != nil {
+		return nil, err
+	}
+
+	s.SetDefaults()
+	syncClient, err := client.Configure(ctx, logger, *s)
+	if err != nil {
+		return nil, err
+	}
+
+	c.syncClient = syncClient.(*client.Client)
+
+	c.tables = c.getTables(ctx)
+	c.scheduler = scheduler.NewScheduler(
+		scheduler.WithLogger(logger),
+		scheduler.WithConcurrency(s.Concurrency),
+		scheduler.WithInvocationID(options.InvocationID),
+	)
+
+	return c, nil
+}
+
+func (*Client) Close(_ context.Context) error {
+	return nil
+}
+
+func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.Tables, error) {
+	return c.tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+}
+
+func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<- message.SyncMessage) error {
+	if c.options.NoConnection {
+		return fmt.Errorf("no connection")
+	}
+
+	tables, err := c.tables.FilterDfs(options.Tables, options.SkipTables, options.SkipDependentTables)
+	if err != nil {
+		return err
+	}
+
+	return c.scheduler.Sync(ctx, c.syncClient, tables, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
+}
+
+func (c *Client) getTables(ctx context.Context) schema.Tables {
+	tables := []*schema.Table{
+		discovery.EndpointSlices(),
+		admissionregistration.MutatingWebhookConfigurations(),
+		admissionregistration.ValidatingWebhookConfigurations(),
+		apps.DaemonSets(),
+		apps.Deployments(),
+		apps.ReplicaSets(),
+		apps.StatefulSets(),
+		autoscaling.Hpas(),
+		batch.Jobs(),
+		batch.CronJobs(),
+		certificates.SigningRequests(),
+		coordination.Leases(),
+		core.ComponentStatuses(),
+		core.ConfigMaps(),
+		core.Endpoints(),
+		core.Events(),
+		core.LimitRanges(),
+		core.Namespaces(),
+		core.Nodes(),
+		core.Pvs(),
+		core.Pvcs(),
+		core.Pods(),
+		core.PodTemplates(),
+		core.ReplicationControllers(),
+		core.ResourceQuotas(),
+		core.Secrets(),
+		core.Services(),
+		core.ServiceAccounts(),
+		custom_resources.CRDs(),
+		networking.Ingresses(),
+		networking.NetworkPolicies(),
+		networking.IngressClasses(),
+		nodes.RuntimeClasses(),
+		rbac.ClusterRoles(),
+		rbac.ClusterRoleBindings(),
+		rbac.Roles(),
+		rbac.RoleBindings(),
+		policy.PodDisruptionBudgets(),
+		storage.CsiDrivers(),
+		storage.CsiNodes(),
+		storage.CsiStorageCapacities(),
+		storage.StorageClasses(),
+		storage.VolumeAttachments(),
+	}
+
+	if err := transformers.TransformTables(tables); err != nil {
+		panic(err)
+	}
+
+	if err := transformers.Apply(tables, titleTransformer); err != nil {
+		panic(err)
+	}
+
+	for _, table := range tables {
+		schema.AddCqIDs(table)
+	}
+
+	return tables
+}

@@ -5,14 +5,16 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/spec"
-	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/rs/zerolog"
 	"golang.org/x/exp/maps"
 	v1 "k8s.io/api/core/v1"
 	apiextensionsclientset "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/dynamic"
 	"k8s.io/client-go/kubernetes"
+
+	"github.com/cloudquery/cloudquery/plugins/source/k8s/client/spec"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/rs/zerolog"
 
 	// import all k8s auth options
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
@@ -23,12 +25,18 @@ import (
 
 type Client struct {
 	logger zerolog.Logger
-	// map context_name -> Services struct
-	clients map[string]kubernetes.Interface
+
 	// map context_name -> namespaces
 	namespaces map[string][]v1.Namespace
+
+	// map context_name -> Services struct
+	clients map[string]kubernetes.Interface
+
 	// map context_name -> API extensions
 	apiExtensions map[string]apiextensionsclientset.Interface
+
+	// map context_name -> Dynamic client
+	dynamicClients map[string]dynamic.Interface
 
 	spec     *spec.Spec
 	contexts []string
@@ -55,6 +63,10 @@ func (c *Client) Client() kubernetes.Interface {
 
 func (c *Client) APIExtensions() apiextensionsclientset.Interface {
 	return c.apiExtensions[c.Context]
+}
+
+func (c *Client) DynamicClient() dynamic.Interface {
+	return c.dynamicClients[c.Context]
 }
 
 func (c *Client) Namespaces() []v1.Namespace {
@@ -95,34 +107,45 @@ func Configure(ctx context.Context, logger zerolog.Logger, s spec.Spec) (schema.
 	}
 
 	c := Client{
-		logger:        logger,
-		clients:       make(map[string]kubernetes.Interface),
-		namespaces:    make(map[string][]v1.Namespace),
-		apiExtensions: make(map[string]apiextensionsclientset.Interface),
-		spec:          &s,
-		contexts:      contexts,
-		Context:       contexts[0],
-		paths:         make(map[string]struct{}),
+		logger:         logger,
+		clients:        make(map[string]kubernetes.Interface),
+		namespaces:     make(map[string][]v1.Namespace),
+		apiExtensions:  make(map[string]apiextensionsclientset.Interface),
+		dynamicClients: make(map[string]dynamic.Interface),
+		spec:           &s,
+		contexts:       contexts,
+		Context:        contexts[0],
+		paths:          make(map[string]struct{}),
 	}
 
 	for _, ctxName := range contexts {
 		logger.Info().Str("context", ctxName).Msg("creating k8s client for context")
+
 		restConfig, err := buildRESTConfig(logger, rawKubeConfig, ctxName)
 		if err != nil {
 			return nil, fmt.Errorf("failed to build k8s RES config for context %q: %w", ctxName, err)
 		}
+
 		kClient, err := kubernetes.NewForConfig(restConfig)
 		if err != nil {
 			return nil, fmt.Errorf("failed to build k8s client for context %q: %w", ctxName, err)
 		}
+
+		dClient, err := dynamic.NewForConfig(restConfig)
+		if err != nil {
+			return nil, fmt.Errorf("failed to build k8s dynamic client for context %q: %w", ctxName, err)
+		}
+
 		apiExtClient, err := apiextensionsclientset.NewForConfig(restConfig)
 		if err != nil {
 			return nil, fmt.Errorf("failed to build k8s API Extensions client for context %q: %w", ctxName, err)
 		}
+
 		c.paths, err = getAPIsMap(kClient)
 		if err != nil {
 			logger.Warn().Err(err).Msg("Failed to get OpenAPI schema. It might be not supported in the current version of Kubernetes. OpenAPI has been supported since Kubernetes 1.4")
 		}
+
 		namespaces, err := discoverNamespaces(ctx, kClient)
 		if err != nil {
 			return nil, fmt.Errorf("failed to discover namespaces for context %q: %w", ctxName, err)
@@ -131,6 +154,7 @@ func Configure(ctx context.Context, logger zerolog.Logger, s spec.Spec) (schema.
 		c.clients[ctxName] = kClient
 		c.namespaces[ctxName] = namespaces
 		c.apiExtensions[ctxName] = apiExtClient
+		c.dynamicClients[ctxName] = dClient
 	}
 
 	return &c, nil

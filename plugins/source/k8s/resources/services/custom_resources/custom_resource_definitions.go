@@ -1,13 +1,14 @@
-package crd
+package custom_resources
 
 import (
 	"context"
 
+	"k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	"k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func CRDs() *schema.Table {
@@ -17,6 +18,7 @@ func CRDs() *schema.Table {
 		Multiplex: client.ContextMultiplex,
 		Transform: client.TransformWithStruct(new(v1.CustomResourceDefinition), transformers.WithPrimaryKeys("UID")),
 		Columns:   schema.ColumnList{client.ContextColumn},
+		Relations: schema.Tables{resources()},
 	}
 }
 
