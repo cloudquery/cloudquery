@@ -7,6 +7,7 @@ spec:
   path: "cloudquery/postgresql"
   registry: "cloudquery"
   version: "VERSION_DESTINATION_POSTGRESQL"
+  write_mode: "overwrite-delete-stale"
   # Learn more about the configuration options at https://cql.ink/postgresql_destination
   spec:
     connection_string: "${POSTGRESQL_CONNECTION_STRING}" # set the environment variable in a format like postgres://postgres:pass@localhost:5432/postgres?sslmode=disable
@@ -17,4 +18,6 @@ spec:
     # batch_size: 10000 # 10K entries
     # batch_size_bytes: 100000000 # 100 MB
     # batch_timeout: 60s
+
+    # create_performance_indexes: false #create indexes that help with performance when using `write_mode: overwrite-delete-stale`
 ```

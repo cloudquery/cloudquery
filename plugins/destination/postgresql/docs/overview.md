@@ -62,6 +62,10 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 
   Maximum interval between batch writes.
 
+- `create_performance_indexes` (`boolean`) (optional) (default: `false`)
+
+  Creates indexes on tables that help with performance when using `write_mode: overwrite-delete-stale`.
+
 ### Verbose logging for debug
 
 The PostgreSQL destination can be run in debug mode.
