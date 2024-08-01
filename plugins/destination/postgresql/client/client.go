@@ -33,6 +33,8 @@ type Client struct {
 	batchSize           int64
 	writer              *mixedbatchwriter.MixedBatchWriter
 
+	spec *spec.Spec
+
 	pgTablesToPKConstraints   map[string]*pkConstraintDetails
 	pgTablesToPKConstraintsMu sync.RWMutex
 
@@ -67,7 +69,7 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 	if err := s.Validate(); err != nil {
 		return nil, err
 	}
-
+	c.spec = &s
 	c.batchSize = s.BatchSize
 	c.logger.Info().Str("pgx_log_level", s.PgxLogLevel.String()).Msg("Initializing postgresql destination")
 	pgxConfig, err := pgxpool.ParseConfig(s.ConnectionString)
