@@ -17,7 +17,7 @@ type Client struct {
 	plugin.UnimplementedDestination
 
 	logger zerolog.Logger
-	spec   *spec.Spec
+	spec   spec.Spec
 	tfs    []*transformers.Transformer
 }
 
