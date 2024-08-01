@@ -4,6 +4,11 @@ This table shows data for Kubernetes (K8s) Custom Resource Definitions (CRDs).
 
 The primary key for this table is **uid**.
 
+## Relations
+
+The following tables depend on k8s_crds:
+  - [k8s_custom_resources](k8s_custom_resources.md)
+
 ## Columns
 
 | Name          | Type          |

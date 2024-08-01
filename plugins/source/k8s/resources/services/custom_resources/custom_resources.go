@@ -29,7 +29,7 @@ func resources() *schema.Table {
 }
 
 type customResource struct {
-	metav1.TypeMeta   `json:","`
+	metav1.TypeMeta   `json:",inline"` //nolint:all
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 	Spec              map[string]any `json:"spec,omitempty"`
 	Status            map[string]any `json:"status,omitempty"`

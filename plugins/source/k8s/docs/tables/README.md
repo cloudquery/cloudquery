@@ -30,6 +30,7 @@
 - [k8s_core_service_accounts](k8s_core_service_accounts.md)
 - [k8s_core_services](k8s_core_services.md)
 - [k8s_crds](k8s_crds.md)
+  - [k8s_custom_resources](k8s_custom_resources.md)
 - [k8s_discovery_endpoint_slices](k8s_discovery_endpoint_slices.md)
 - [k8s_networking_ingress_classes](k8s_networking_ingress_classes.md)
 - [k8s_networking_ingresses](k8s_networking_ingresses.md)

@@ -72,6 +72,7 @@ func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 	c := &Client{
 		options: options,
 	}
+	c.tables = getTables()
 
 	if options.NoConnection {
 		return c, nil
@@ -89,7 +90,6 @@ func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 	}
 
 	c.client = syncClient.(*client.Client)
-	c.tables = getTables()
 
 	c.scheduler = scheduler.NewScheduler(
 		scheduler.WithLogger(logger),
