@@ -44,7 +44,7 @@ module.exports = async ({github, context}) => {
         actions = ["cli (ubuntu-latest)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
     }
 
-    const pluginsWithConfigUI = ["plugins/destination/postgresql"]
+    const pluginsWithConfigUI = ["plugins/destination/postgresql", "plugins/source/xkcd"]
     if (actions.some(action => pluginsWithConfigUI.includes(action))) {
         actions = [...actions, 'validate-config-ui']
     }
