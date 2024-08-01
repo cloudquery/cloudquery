@@ -109,6 +109,8 @@ func sync(cmd *cobra.Command, args []string) error {
 
 	sources := specReader.Sources
 	destinations := specReader.Destinations
+	transformers := specReader.Transformers
+
 	sourcePluginClients := make(managedplugin.Clients, 0)
 	defer func() {
 		if err := sourcePluginClients.Terminate(); err != nil {
@@ -220,6 +222,43 @@ func sync(cmd *cobra.Command, args []string) error {
 		destinationPluginClients = append(destinationPluginClients, destPluginClient)
 	}
 
+	transformerPluginClients := make(managedplugin.Clients, 0)
+	defer func() {
+		if err := transformerPluginClients.Terminate(); err != nil {
+			fmt.Println(err)
+		}
+	}()
+	for _, transformer := range transformers {
+		opts := []managedplugin.Option{
+			managedplugin.WithLogger(log.Logger),
+			managedplugin.WithAuthToken(authToken.Value),
+			managedplugin.WithTeamName(teamName),
+			managedplugin.WithLicenseFile(licenseFile),
+		}
+		if logConsole {
+			opts = append(opts, managedplugin.WithNoProgress())
+		}
+		if cqDir != "" {
+			opts = append(opts, managedplugin.WithDirectory(cqDir))
+		}
+		if disableSentry {
+			opts = append(opts, managedplugin.WithNoSentry())
+		}
+
+		cfg := managedplugin.Config{
+			Name:       transformer.Name,
+			Registry:   SpecRegistryToPlugin(transformer.Registry),
+			Version:    transformer.Version,
+			Path:       transformer.Path,
+			DockerAuth: transformer.DockerRegistryAuthToken,
+		}
+		transPluginClient, err := managedplugin.NewClient(ctx, managedplugin.PluginTransformer, cfg, opts...)
+		if err != nil {
+			return enrichClientError(managedplugin.Clients{}, []bool{transformer.RegistryInferred()}, err)
+		}
+		transformerPluginClients = append(transformerPluginClients, transPluginClient)
+	}
+
 	for _, source := range sources {
 		cl := sourcePluginClients.ClientByName(source.Name)
 		versions, err := cl.Versions(ctx)
@@ -230,12 +269,26 @@ func sync(cmd *cobra.Command, args []string) error {
 
 		var destinationClientsForSource []*managedplugin.Client
 		var destinationForSourceSpec []specs.Destination
+		var transformerClientsForDestination = map[string][]*managedplugin.Client{}
+		var transformerForDestinationSpec = map[string][]specs.Transformer{}
 		var backendClientForSource *managedplugin.Client
 		var destinationForSourceBackendSpec *specs.Destination
 		for _, destination := range destinations {
 			if slices.Contains(source.Destinations, destination.Name) {
 				destinationClientsForSource = append(destinationClientsForSource, destinationPluginClients.ClientByName(destination.Name))
 				destinationForSourceSpec = append(destinationForSourceSpec, *destination)
+
+				// Each destination defines their own transformers
+				ts := []*managedplugin.Client{}
+				tsSpecs := []specs.Transformer{}
+				for _, transformer := range transformers {
+					if slices.Contains(destination.Transformers, transformer.Name) {
+						ts = append(ts, transformerPluginClients.ClientByName(transformer.Name))
+						tsSpecs = append(tsSpecs, *transformer)
+					}
+				}
+				transformerClientsForDestination[destination.Name] = ts
+				transformerForDestinationSpec[destination.Name] = tsSpecs
 				continue
 			}
 
@@ -264,6 +317,12 @@ func sync(cmd *cobra.Command, args []string) error {
 				for field, msg := range destWarnings {
 					log.Warn().Str("destination", destination.Name()).Str("field", field).Msg(msg)
 				}
+				for _, transformer := range transformerClientsForDestination[destination.Name()] {
+					transformerWarnings := specReader.GetTransformerWarningsByName(source.Name)
+					for field, msg := range transformerWarnings {
+						log.Warn().Str("transformer", transformer.Name()).Str("field", field).Msg(msg)
+					}
+				}
 			}
 
 			src := v3source{
@@ -277,6 +336,16 @@ func sync(cmd *cobra.Command, args []string) error {
 					spec:   destinationForSourceSpec[i],
 				})
 			}
+			transfs := map[string][]v3transformer{}
+			for destinationName, transformerClients := range transformerClientsForDestination {
+				for i, transformer := range transformerClients {
+					transfs[destinationName] = append(transfs[destinationName], v3transformer{
+						client: transformer,
+						spec:   transformerForDestinationSpec[destinationName][i],
+					})
+				}
+			}
+
 			var backend *v3destination
 			if backendClientForSource != nil && destinationForSourceBackendSpec != nil {
 				backend = &v3destination{
@@ -290,7 +359,7 @@ func sync(cmd *cobra.Command, args []string) error {
 				return err
 			}
 
-			if err := syncConnectionV3(ctx, src, dests, backend, invocationUUID.String(), noMigrate, summaryLocation); err != nil {
+			if err := syncConnectionV3(ctx, src, dests, transfs, backend, invocationUUID.String(), noMigrate, summaryLocation); err != nil {
 				return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
 			}
 

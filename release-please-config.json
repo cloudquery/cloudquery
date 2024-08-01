@@ -91,6 +91,9 @@
     "plugins/source/xkcd": {
       "component": "plugins-source-xkcd"
     },
+    "plugins/transformer/basic": {
+      "component": "plugins-transformer-basic"
+    },
     "scaffold": {
       "component": "scaffold"
     }
