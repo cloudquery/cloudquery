@@ -58,7 +58,6 @@ jobs:
   validate-config-ui:
     timeout-minutes: 15
     if: github.event_name == 'pull_request'
-    name: "plugins/source/xkcd/cloud-config-ui"
     permissions:
       id-token: write
       contents: read
