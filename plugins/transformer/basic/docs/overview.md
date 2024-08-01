@@ -28,23 +28,4 @@ The `migrate_mode: forced` setting might make sense if you plan on modifying the
 
 Then, add your transformer spec. Here's an example that transforms the XKCD source table:
 
-```yaml copy
----
-kind: transformer
-spec:
-  name: "basic"
-  path: "localhost:7777" # TODO change this when it's published
-  registry: "grpc" # TODO change this when it's published
-  spec:
-    transformations:
-      - kind: obfuscate_columns
-        tables: ["xkcd_comics"]
-        columns: ["safe_title", "title"]
-      - kind: remove_columns
-        tables: ["xkcd_comics"]
-        columns: ["transcript", "news"]
-      - kind: add_column
-        tables: ["xkcd_comics"]
-        name: "source"
-        value: "xkcd"
-```
+:configuration
