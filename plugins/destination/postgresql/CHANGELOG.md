@@ -1,5 +1,33 @@
 # Changelog
 
+## [8.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.3.0...plugins-destination-postgresql-v8.3.1) (2024-07-31)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/cloud-ui to v0.1.10 ([#18760](https://github.com/cloudquery/cloudquery/issues/18760)) ([94d4917](https://github.com/cloudquery/cloudquery/commit/94d4917cd121e3e85124b0afdf998a6f3b4fcd5f))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-connector to v0.2.9 ([#18758](https://github.com/cloudquery/cloudquery/issues/18758)) ([f7568d7](https://github.com/cloudquery/cloudquery/commit/f7568d7f60b72b828bdac91342fd3d56f338b0a0))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.35 ([#18787](https://github.com/cloudquery/cloudquery/issues/18787)) ([f21a0c9](https://github.com/cloudquery/cloudquery/commit/f21a0c943bfa68014255fdc36c99256a5f60ca76))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.36 ([#18788](https://github.com/cloudquery/cloudquery/issues/18788)) ([d3b78c5](https://github.com/cloudquery/cloudquery/commit/d3b78c5f5091e42d42fbe23609ff303e0a651af6))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.37 ([#18789](https://github.com/cloudquery/cloudquery/issues/18789)) ([bdcef31](https://github.com/cloudquery/cloudquery/commit/bdcef31682d0c2bef225f744fe299aa917ce6e0d))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.38 ([#18791](https://github.com/cloudquery/cloudquery/issues/18791)) ([cf45e5a](https://github.com/cloudquery/cloudquery/commit/cf45e5a2d6225fccce9248919f1c280e5db286b6))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.40 ([#18795](https://github.com/cloudquery/cloudquery/issues/18795)) ([0b318fa](https://github.com/cloudquery/cloudquery/commit/0b318fa313eb69648af6911dafade8f5bd32f540))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.56.0 ([#18763](https://github.com/cloudquery/cloudquery/issues/18763)) ([45da614](https://github.com/cloudquery/cloudquery/commit/45da614ef7aaaf83e7820beec5ee33b00e9f5c0f))
+
+## [8.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.2.8...plugins-destination-postgresql-v8.3.0) (2024-07-30)
+
+
+### Features
+
+* PostgreSQL destination plugin cloud config UI ([#18714](https://github.com/cloudquery/cloudquery/issues/18714)) ([f347db6](https://github.com/cloudquery/cloudquery/commit/f347db6db8b61d38541cc268bd520bb18cc82c51))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.34 ([#18744](https://github.com/cloudquery/cloudquery/issues/18744)) ([a7afdd3](https://github.com/cloudquery/cloudquery/commit/a7afdd3ddfb6583889a9926ac405a274cb548bf4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.54.0 ([#18717](https://github.com/cloudquery/cloudquery/issues/18717)) ([c8ccd1f](https://github.com/cloudquery/cloudquery/commit/c8ccd1ff6c40ef7385a72669769531c72d9c7128))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.55.0 ([#18742](https://github.com/cloudquery/cloudquery/issues/18742)) ([4045944](https://github.com/cloudquery/cloudquery/commit/4045944b8e9f4414145e6484a62692852ba9b174))
+
 ## [8.2.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.2.7...plugins-destination-postgresql-v8.2.8) (2024-07-30)
 
 
