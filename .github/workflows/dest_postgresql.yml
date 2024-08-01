@@ -75,4 +75,57 @@ jobs:
           wait-for-it -h localhost -p 26257
       - name: Test CockroachDB
         run: CQ_DEST_PG_TEST_CONN="postgresql://root@localhost:26257/postgres?sslmode=disable" make test
-  
+  plugins-destination-postgresql-config-ui:
+    timeout-minutes: 15
+    if: github.event_name == 'pull_request'
+    name: "plugins/destination/postgresql/cloud-config-ui"
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/destination/postgresql
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: plugins/destination/postgresql/go.mod
+          cache: true
+          cache-dependency-path: plugins/destination/postgresql/go.sum
+      - name: Gen
+        run: make gen
+      - name: Build
+        run: go build .
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "npm"
+          cache-dependency-path: "plugins/destination/postgresql/cloud-config-ui/package-lock.json"
+      - name: Install dependencies
+        working-directory: "plugins/destination/postgresql/cloud-config-ui"
+        run: npm ci
+      - name: Install dotenv
+        run: npm install dotenv-cli -g
+      - name: Install Playwright
+        working-directory: "plugins/destination/postgresql/cloud-config-ui"
+        run: npx playwright install --with-deps
+      - name: Build config UI
+        working-directory: "plugins/destination/postgresql/cloud-config-ui"
+        run: REACT_APP_USE_CLOUD_APP_MOCK=true npm run build
+      - name: Run E2E tests and generate configs
+        working-directory: "plugins/destination/postgresql/cloud-config-ui"
+        run: E2E_TESTS_GENERATE_CONFIG=true npm run test:e2e
+      - name: Setup CloudQuery
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: v6.1.0
+      - name: Validate CloudQuery config
+        working-directory: "plugins/destination/postgresql/cloud-config-ui"
+        run: dotenv -e ./temp/.env -- cloudquery validate-config ./temp/config.yml
+        env:
+          CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
