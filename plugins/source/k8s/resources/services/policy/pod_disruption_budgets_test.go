@@ -6,17 +6,17 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/mocks"
 
-	resourcemock "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks/policy/v1"
-	"github.com/cloudquery/plugin-sdk/v4/faker"
-	"github.com/golang/mock/gomock"
 	v1 "k8s.io/api/core/v1"
 	policy "k8s.io/api/policy/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
-	"k8s.io/client-go/kubernetes"
+
+	resourcemock "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks/policy/v1"
+	"github.com/cloudquery/plugin-sdk/v4/faker"
+	"github.com/golang/mock/gomock"
 )
 
-func createPodDisruptionBudgets(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
+func createPodDisruptionBudgets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	r := policy.PodDisruptionBudget{}
 	if err := faker.FakeObject(&r); err != nil {
 		t.Fatal(err)
@@ -31,14 +31,14 @@ func createPodDisruptionBudgets(t *testing.T, ctrl *gomock.Controller) kubernete
 
 	serviceClient := resourcemock.NewMockPolicyV1Interface(ctrl)
 
-	serviceClient.EXPECT().PodDisruptionBudgets("default").Return(resourceClient)
+	serviceClient.EXPECT().PodDisruptionBudgets(metav1.NamespaceAll).Return(resourceClient)
 
 	cl := mocks.NewMockInterface(ctrl)
 	cl.EXPECT().PolicyV1().Return(serviceClient)
 
-	return cl
+	return client.Services{CoreAPI: cl}
 }
 
 func TestPodDisruptionBudgets(t *testing.T) {
-	client.K8sMockTestHelper(t, PodDisruptionBudgets(), createPodDisruptionBudgets, client.WithTestNamespaces(v1.Namespace{ObjectMeta: metav1.ObjectMeta{Name: "default"}}))
+	client.MockTestHelper(t, PodDisruptionBudgets(), createPodDisruptionBudgets, client.WithTestNamespaces(v1.Namespace{ObjectMeta: metav1.ObjectMeta{Name: "default"}}))
 }

@@ -112,3 +112,5 @@ package main
 //go:generate mockgen --destination=mocks/apiextensions/interface.go --package=apiextensions "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset" Interface
 //go:generate mockgen --destination=mocks/apiextensions/v1/apiextensions.go --package=v1 "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/typed/apiextensions/v1" ApiextensionsV1Interface
 //go:generate mockgen --destination=mocks/apiextensions/v1/custom_resource_definitions.go --package=v1 "k8s.io/apiextensions-apiserver/pkg/client/clientset/clientset/typed/apiextensions/v1" CustomResourceDefinitionInterface
+
+//go:generate mockgen --destination=mocks/dynamic/interface.go --package=dynamic "k8s.io/client-go/dynamic" Interface,ResourceInterface,NamespaceableResourceInterface

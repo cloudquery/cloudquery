@@ -3,19 +3,19 @@ package apps
 import (
 	"testing"
 
+	resource "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/intstr"
+
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/mocks"
 	resourcemock "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks/apps/v1"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
-	resource "k8s.io/api/apps/v1"
-	corev1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/util/intstr"
-	"k8s.io/client-go/kubernetes"
 )
 
-func createStatefulSets(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
+func createStatefulSets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	r := resource.StatefulSet{}
 	if err := faker.FakeObject(&r); err != nil {
 		t.Fatal(err)
@@ -33,14 +33,14 @@ func createStatefulSets(t *testing.T, ctrl *gomock.Controller) kubernetes.Interf
 
 	serviceClient := resourcemock.NewMockAppsV1Interface(ctrl)
 
-	serviceClient.EXPECT().StatefulSets("").Return(resourceClient)
+	serviceClient.EXPECT().StatefulSets(metav1.NamespaceAll).Return(resourceClient)
 
 	cl := mocks.NewMockInterface(ctrl)
 	cl.EXPECT().AppsV1().Return(serviceClient)
 
-	return cl
+	return client.Services{CoreAPI: cl}
 }
 
 func TestStatefulSets(t *testing.T) {
-	client.K8sMockTestHelper(t, StatefulSets(), createStatefulSets)
+	client.MockTestHelper(t, StatefulSets(), createStatefulSets)
 }

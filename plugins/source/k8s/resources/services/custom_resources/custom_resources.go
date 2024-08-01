@@ -29,10 +29,10 @@ func resources() *schema.Table {
 }
 
 type customResource struct {
-	metav1.TypeMeta   `json:",inline"`
+	metav1.TypeMeta   `json:","`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
-	Spec              map[string]interface{} `json:"spec,omitempty"`
-	Status            map[string]interface{} `json:"status,omitempty"`
+	Spec              map[string]any `json:"spec,omitempty"`
+	Status            map[string]any `json:"status,omitempty"`
 }
 
 func fetchCustomResources(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
@@ -40,7 +40,7 @@ func fetchCustomResources(ctx context.Context, meta schema.ClientMeta, parent *s
 	p := parent.Item.(v1.CustomResourceDefinition)
 
 	for _, version := range p.Spec.Versions {
-		c.logger.Debug().Msgf("Fetching resources for CRD %s/%s\n", p.Name, version.Name)
+		c.Logger().Debug().Msgf("Fetching resources for CRD %s/%s", p.Name, version.Name)
 
 		gvk := kubernetesschema.GroupVersionResource{
 			Group:    p.Spec.Group,
@@ -50,16 +50,16 @@ func fetchCustomResources(ctx context.Context, meta schema.ClientMeta, parent *s
 
 		var resource dynamic.ResourceInterface
 		if p.Spec.Scope == v1.NamespaceScoped {
-			resource = c.DynamicClient().Resource(gvk).Namespace(metav1.NamespaceAll)
+			resource = c.DynamicAPI().Resource(gvk).Namespace(metav1.NamespaceAll)
 		} else {
-			resource = c.DynamicClient().Resource(gvk)
+			resource = c.DynamicAPI().Resource(gvk)
 		}
 
 		opts := metav1.ListOptions{}
 		for {
 			rs, err := resource.List(ctx, opts)
 			if err != nil {
-				c.logger.Warn().Msgf("Error listing resources for %s: %s\n", gvk.String(), err.Error())
+				c.Logger().Warn().Msgf("Error listing resources for %s: %s", gvk.String(), err.Error())
 				break
 			}
 

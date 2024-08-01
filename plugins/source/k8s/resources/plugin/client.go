@@ -62,10 +62,10 @@ func titleTransformer(table *schema.Table) error {
 
 type Client struct {
 	plugin.UnimplementedDestination
-	scheduler  *scheduler.Scheduler
-	syncClient *client.Client
-	options    plugin.NewClientOptions
-	tables     schema.Tables
+	scheduler *scheduler.Scheduler
+	client    *client.Client
+	options   plugin.NewClientOptions
+	tables    schema.Tables
 }
 
 func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, options plugin.NewClientOptions) (plugin.Client, error) {
@@ -88,9 +88,9 @@ func newClient(ctx context.Context, logger zerolog.Logger, specBytes []byte, opt
 		return nil, err
 	}
 
-	c.syncClient = syncClient.(*client.Client)
+	c.client = syncClient.(*client.Client)
+	c.tables = getTables()
 
-	c.tables = c.getTables(ctx)
 	c.scheduler = scheduler.NewScheduler(
 		scheduler.WithLogger(logger),
 		scheduler.WithConcurrency(s.Concurrency),
@@ -118,10 +118,10 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		return err
 	}
 
-	return c.scheduler.Sync(ctx, c.syncClient, tables, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
+	return c.scheduler.Sync(ctx, c.client, tables, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
 }
 
-func (c *Client) getTables(ctx context.Context) schema.Tables {
+func getTables() schema.Tables {
 	tables := []*schema.Table{
 		discovery.EndpointSlices(),
 		admissionregistration.MutatingWebhookConfigurations(),

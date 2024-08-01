@@ -3,11 +3,12 @@ package core
 import (
 	"context"
 
+	v1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	v1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func Namespaces() *schema.Table {
@@ -27,7 +28,7 @@ func fetchNamespaces(ctx context.Context, meta schema.ClientMeta, parent *schema
 		res <- c.Namespaces()
 		return nil
 	}
-	cl := c.Client().CoreV1().Namespaces()
+	cl := c.CoreAPI().CoreV1().Namespaces()
 
 	opts := metav1.ListOptions{}
 	for {

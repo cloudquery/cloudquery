@@ -3,11 +3,12 @@ package networking
 import (
 	"context"
 
+	v1 "k8s.io/api/networking/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	v1 "k8s.io/api/networking/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func NetworkPolicies() *schema.Table {
@@ -21,7 +22,7 @@ func NetworkPolicies() *schema.Table {
 }
 
 func fetchNetworkPolicies(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client).Client().NetworkingV1().NetworkPolicies("")
+	cl := meta.(*client.Client).CoreAPI().NetworkingV1().NetworkPolicies(metav1.NamespaceAll)
 
 	opts := metav1.ListOptions{}
 	for {

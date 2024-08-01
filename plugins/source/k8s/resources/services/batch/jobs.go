@@ -3,11 +3,12 @@ package batch
 import (
 	"context"
 
+	v1 "k8s.io/api/batch/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	v1 "k8s.io/api/batch/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func Jobs() *schema.Table {
@@ -21,7 +22,7 @@ func Jobs() *schema.Table {
 }
 
 func fetchJobs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client).Client().BatchV1().Jobs("")
+	cl := meta.(*client.Client).CoreAPI().BatchV1().Jobs(metav1.NamespaceAll)
 
 	opts := metav1.ListOptions{}
 	for {

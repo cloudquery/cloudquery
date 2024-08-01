@@ -3,11 +3,12 @@ package discovery
 import (
 	"context"
 
+	v1 "k8s.io/api/discovery/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	v1 "k8s.io/api/discovery/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func EndpointSlices() *schema.Table {
@@ -21,7 +22,7 @@ func EndpointSlices() *schema.Table {
 }
 
 func fetchEndpointSlices(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client).Client().DiscoveryV1().EndpointSlices("")
+	cl := meta.(*client.Client).CoreAPI().DiscoveryV1().EndpointSlices(metav1.NamespaceAll)
 
 	opts := metav1.ListOptions{}
 	for {

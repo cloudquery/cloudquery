@@ -23,7 +23,7 @@ func PodDisruptionBudgets() *schema.Table {
 
 func fetchPodDisruptionBudgets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	c := meta.(*client.Client)
-	cl := c.Client().PolicyV1().PodDisruptionBudgets(metav1.NamespaceAll)
+	cl := c.CoreAPI().PolicyV1().PodDisruptionBudgets(metav1.NamespaceAll)
 
 	opts := metav1.ListOptions{}
 	for {

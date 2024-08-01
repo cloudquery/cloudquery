@@ -6,15 +6,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/mocks"
 
+	resource "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	resourcemock "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks/core/v1"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
-	resource "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
 )
 
-func createResourceQuotas(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
+func createResourceQuotas(t *testing.T, ctrl *gomock.Controller) client.Services {
 	r := resource.ResourceQuota{}
 	if err := faker.FakeObject(&r); err != nil {
 		t.Fatal(err)
@@ -27,14 +27,14 @@ func createResourceQuotas(t *testing.T, ctrl *gomock.Controller) kubernetes.Inte
 
 	serviceClient := resourcemock.NewMockCoreV1Interface(ctrl)
 
-	serviceClient.EXPECT().ResourceQuotas("").Return(resourceClient)
+	serviceClient.EXPECT().ResourceQuotas(metav1.NamespaceAll).Return(resourceClient)
 
 	cl := mocks.NewMockInterface(ctrl)
 	cl.EXPECT().CoreV1().Return(serviceClient)
 
-	return cl
+	return client.Services{CoreAPI: cl}
 }
 
 func TestResourceQuotas(t *testing.T) {
-	client.K8sMockTestHelper(t, ResourceQuotas(), createResourceQuotas)
+	client.MockTestHelper(t, ResourceQuotas(), createResourceQuotas)
 }

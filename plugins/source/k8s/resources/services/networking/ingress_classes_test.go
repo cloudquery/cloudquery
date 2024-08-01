@@ -6,15 +6,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/mocks"
 
+	resource "k8s.io/api/networking/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	resourcemock "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks/networking/v1"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
-	resource "k8s.io/api/networking/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
 )
 
-func createIngressClasses(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
+func createIngressClasses(t *testing.T, ctrl *gomock.Controller) client.Services {
 	r := resource.IngressClass{}
 	if err := faker.FakeObject(&r); err != nil {
 		t.Fatal(err)
@@ -32,9 +32,9 @@ func createIngressClasses(t *testing.T, ctrl *gomock.Controller) kubernetes.Inte
 	cl := mocks.NewMockInterface(ctrl)
 	cl.EXPECT().NetworkingV1().Return(serviceClient)
 
-	return cl
+	return client.Services{CoreAPI: cl}
 }
 
 func TestIngressClasses(t *testing.T) {
-	client.K8sMockTestHelper(t, IngressClasses(), createIngressClasses)
+	client.MockTestHelper(t, IngressClasses(), createIngressClasses)
 }

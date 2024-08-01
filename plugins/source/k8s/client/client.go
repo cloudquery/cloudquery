@@ -16,27 +16,19 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
 
-	// import all k8s auth options
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/tools/clientcmd/api"
 )
 
+type contextName string
+
 type Client struct {
 	logger zerolog.Logger
 
-	// map context_name -> namespaces
 	namespaces map[string][]v1.Namespace
-
-	// map context_name -> Services struct
-	clients map[string]kubernetes.Interface
-
-	// map context_name -> API extensions
-	apiExtensions map[string]apiextensionsclientset.Interface
-
-	// map context_name -> Dynamic client
-	dynamicClients map[string]dynamic.Interface
+	apis       map[contextName]Services
 
 	spec     *spec.Spec
 	contexts []string
@@ -57,16 +49,16 @@ func (c *Client) ID() string {
 	return fmt.Sprintf("context:%s", c.Context)
 }
 
-func (c *Client) Client() kubernetes.Interface {
-	return c.clients[c.Context]
+func (c *Client) CoreAPI() kubernetes.Interface {
+	return c.apis[contextName(c.Context)].CoreAPI
 }
 
-func (c *Client) APIExtensions() apiextensionsclientset.Interface {
-	return c.apiExtensions[c.Context]
+func (c *Client) APIExtensionsAPI() apiextensionsclientset.Interface {
+	return c.apis[contextName(c.Context)].APIExtensionsAPI
 }
 
-func (c *Client) DynamicClient() dynamic.Interface {
-	return c.dynamicClients[c.Context]
+func (c *Client) DynamicAPI() dynamic.Interface {
+	return c.apis[contextName(c.Context)].DynamicAPI
 }
 
 func (c *Client) Namespaces() []v1.Namespace {
@@ -107,15 +99,13 @@ func Configure(ctx context.Context, logger zerolog.Logger, s spec.Spec) (schema.
 	}
 
 	c := Client{
-		logger:         logger,
-		clients:        make(map[string]kubernetes.Interface),
-		namespaces:     make(map[string][]v1.Namespace),
-		apiExtensions:  make(map[string]apiextensionsclientset.Interface),
-		dynamicClients: make(map[string]dynamic.Interface),
-		spec:           &s,
-		contexts:       contexts,
-		Context:        contexts[0],
-		paths:          make(map[string]struct{}),
+		logger:     logger,
+		apis:       make(map[contextName]Services),
+		namespaces: make(map[string][]v1.Namespace),
+		spec:       &s,
+		contexts:   contexts,
+		Context:    contexts[0],
+		paths:      make(map[string]struct{}),
 	}
 
 	for _, ctxName := range contexts {
@@ -131,14 +121,18 @@ func Configure(ctx context.Context, logger zerolog.Logger, s spec.Spec) (schema.
 			return nil, fmt.Errorf("failed to build k8s client for context %q: %w", ctxName, err)
 		}
 
-		dClient, err := dynamic.NewForConfig(restConfig)
-		if err != nil {
-			return nil, fmt.Errorf("failed to build k8s dynamic client for context %q: %w", ctxName, err)
-		}
-
 		apiExtClient, err := apiextensionsclientset.NewForConfig(restConfig)
 		if err != nil {
 			return nil, fmt.Errorf("failed to build k8s API Extensions client for context %q: %w", ctxName, err)
+		}
+
+		// Disable deprecated resource warnings for CRD resources as we are intentionally trying to sync those.
+		// This makes sense for this use-case as we are trying to sync deprecated versions of a CRD even if there are newer versions available.
+		restConfig.WarningHandler = rest.NoWarnings{}
+
+		dClient, err := dynamic.NewForConfig(restConfig)
+		if err != nil {
+			return nil, fmt.Errorf("failed to build k8s dynamic client for context %q: %w", ctxName, err)
 		}
 
 		c.paths, err = getAPIsMap(kClient)
@@ -151,10 +145,12 @@ func Configure(ctx context.Context, logger zerolog.Logger, s spec.Spec) (schema.
 			return nil, fmt.Errorf("failed to discover namespaces for context %q: %w", ctxName, err)
 		}
 
-		c.clients[ctxName] = kClient
+		c.apis[contextName(ctxName)] = Services{
+			CoreAPI:          kClient,
+			DynamicAPI:       dClient,
+			APIExtensionsAPI: apiExtClient,
+		}
 		c.namespaces[ctxName] = namespaces
-		c.apiExtensions[ctxName] = apiExtClient
-		c.dynamicClients[ctxName] = dClient
 	}
 
 	return &c, nil

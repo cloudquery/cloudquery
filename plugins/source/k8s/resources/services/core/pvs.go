@@ -3,11 +3,12 @@ package core
 import (
 	"context"
 
+	v1 "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	v1 "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func Pvs() *schema.Table {
@@ -21,7 +22,7 @@ func Pvs() *schema.Table {
 }
 
 func fetchPvs(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client).Client().CoreV1().PersistentVolumes()
+	cl := meta.(*client.Client).CoreAPI().CoreV1().PersistentVolumes()
 
 	opts := metav1.ListOptions{}
 	for {

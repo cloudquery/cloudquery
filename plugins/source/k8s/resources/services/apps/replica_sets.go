@@ -3,11 +3,12 @@ package apps
 import (
 	"context"
 
+	v1 "k8s.io/api/apps/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
-	v1 "k8s.io/api/apps/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func ReplicaSets() *schema.Table {
@@ -21,7 +22,7 @@ func ReplicaSets() *schema.Table {
 }
 
 func fetchReplicaSets(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client).Client().AppsV1().ReplicaSets("")
+	cl := meta.(*client.Client).CoreAPI().AppsV1().ReplicaSets(metav1.NamespaceAll)
 	opts := metav1.ListOptions{}
 	for {
 		result, err := cl.List(ctx, opts)

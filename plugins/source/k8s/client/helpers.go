@@ -4,10 +4,11 @@ import (
 	"context"
 	"reflect"
 
-	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/thoas/go-funk"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
+
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/thoas/go-funk"
 )
 
 type OwnerReferences struct {
@@ -23,38 +24,6 @@ func ContextMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
 		clients = append(clients, client.WithContext(ctxName))
 	}
 	return clients
-}
-
-func ContextNamespaceMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
-	client := meta.(*Client)
-	clients := make([]schema.ClientMeta, 0)
-	for _, ctxName := range client.contexts {
-		for _, ns := range client.namespaces[ctxName] {
-			clients = append(clients, client.WithContext(ctxName).WithNamespace(ns.Name))
-		}
-	}
-	return clients
-}
-
-// APIFilterContextMultiplex returns a list of clients for each context from the cq config
-func APIFilterContextMultiplex(path string) func(meta schema.ClientMeta) []schema.ClientMeta {
-	return func(meta schema.ClientMeta) []schema.ClientMeta {
-		client := meta.(*Client)
-
-		// in kubernetes version below 1.4 paths is nil
-		if client.paths != nil {
-			if _, ok := client.paths[path]; !ok {
-				client.Logger().Warn().Str("path", path).Msg("The resource is not supported by current version of k8s")
-				return []schema.ClientMeta{}
-			}
-		}
-
-		clients := make([]schema.ClientMeta, 0, len(client.contexts))
-		for _, ctxName := range client.contexts {
-			clients = append(clients, client.WithContext(ctxName))
-		}
-		return clients
-	}
 }
 
 // ResolveContext is a resolver that fills the k8s context field.

@@ -6,15 +6,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/mocks"
 
+	resource "k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	resourcemock "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks/core/v1"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
-	resource "k8s.io/api/core/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
 )
 
-func createSecrets(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
+func createSecrets(t *testing.T, ctrl *gomock.Controller) client.Services {
 	r := resource.Secret{}
 	if err := faker.FakeObject(&r); err != nil {
 		t.Fatal(err)
@@ -27,14 +27,14 @@ func createSecrets(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
 
 	serviceClient := resourcemock.NewMockCoreV1Interface(ctrl)
 
-	serviceClient.EXPECT().Secrets("").Return(resourceClient)
+	serviceClient.EXPECT().Secrets(metav1.NamespaceAll).Return(resourceClient)
 
 	cl := mocks.NewMockInterface(ctrl)
 	cl.EXPECT().CoreV1().Return(serviceClient)
 
-	return cl
+	return client.Services{CoreAPI: cl}
 }
 
 func TestSecrets(t *testing.T) {
-	client.K8sMockTestHelper(t, Secrets(), createSecrets)
+	client.MockTestHelper(t, Secrets(), createSecrets)
 }

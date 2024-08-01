@@ -6,15 +6,15 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/client"
 	"github.com/cloudquery/cloudquery/plugins/source/k8s/mocks"
 
+	resource "k8s.io/api/coordination/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	resourcemock "github.com/cloudquery/cloudquery/plugins/source/k8s/mocks/coordination/v1"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
-	resource "k8s.io/api/coordination/v1"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/client-go/kubernetes"
 )
 
-func createLeases(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
+func createLeases(t *testing.T, ctrl *gomock.Controller) client.Services {
 	r := resource.Lease{}
 	if err := faker.FakeObject(&r); err != nil {
 		t.Fatal(err)
@@ -27,14 +27,14 @@ func createLeases(t *testing.T, ctrl *gomock.Controller) kubernetes.Interface {
 
 	serviceClient := resourcemock.NewMockCoordinationV1Interface(ctrl)
 
-	serviceClient.EXPECT().Leases("").Return(resourceClient)
+	serviceClient.EXPECT().Leases(metav1.NamespaceAll).Return(resourceClient)
 
 	cl := mocks.NewMockInterface(ctrl)
 	cl.EXPECT().CoordinationV1().Return(serviceClient)
 
-	return cl
+	return client.Services{CoreAPI: cl}
 }
 
 func TestLeases(t *testing.T) {
-	client.K8sMockTestHelper(t, Leases(), createLeases)
+	client.MockTestHelper(t, Leases(), createLeases)
 }

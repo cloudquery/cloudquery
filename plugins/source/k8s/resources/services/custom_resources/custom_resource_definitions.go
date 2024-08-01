@@ -23,7 +23,7 @@ func CRDs() *schema.Table {
 }
 
 func fetchCRDs(ctx context.Context, meta schema.ClientMeta, _ *schema.Resource, res chan<- any) error {
-	cl := meta.(*client.Client).APIExtensions().ApiextensionsV1().CustomResourceDefinitions()
+	cl := meta.(*client.Client).APIExtensionsAPI().ApiextensionsV1().CustomResourceDefinitions()
 
 	opts := metav1.ListOptions{}
 	for {
