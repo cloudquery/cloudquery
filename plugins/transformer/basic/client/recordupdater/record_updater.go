@@ -35,7 +35,7 @@ func (r *RecordUpdater) RemoveColumns(columnNames []string) (arrow.Record, error
 	}
 
 	oldRecord := r.record.Columns()
-	newColumns := make([]arrow.Array, 0, len(oldRecord)-1)
+	newColumns := make([]arrow.Array, 0, len(oldRecord)-len(colIndices))
 	for i, column := range oldRecord {
 		if _, ok := colIndices[i]; ok {
 			continue
