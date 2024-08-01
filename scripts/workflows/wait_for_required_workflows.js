@@ -34,7 +34,8 @@ module.exports = async ({github, context}) => {
 
     const sources = fs.readdirSync("plugins/source", {withFileTypes: true}).filter(dirent => dirent.isDirectory()).map(dirent => `plugins/source/${dirent.name}`)
     const destinations = fs.readdirSync("plugins/destination", {withFileTypes: true}).filter(dirent => dirent.isDirectory()).map(dirent => `plugins/destination/${dirent.name}`)
-    const allComponents = ["cli", "scaffold", ...sources, ...destinations]
+    const transformers = fs.readdirSync("plugins/transformer", {withFileTypes: true}).filter(dirent => dirent.isDirectory()).map(dirent => `plugins/transformer/${dirent.name}`)
+    const allComponents = ["cli", "scaffold", ...sources, ...destinations, ...transformers]
     console.log(`All components: ${allComponents.join(", ")}`)
     let actions = allComponents.filter(action => matchesFile(action))
     if (actions.length === 0) {
