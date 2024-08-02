@@ -37,7 +37,7 @@ export function Form({ initialValues }: Props) {
 
   const defaultValues = { ...formSchema.getDefault() };
   // Needed because yup strips the prototype off of the dayjs object
-  defaultValues.spec.startTime = getDefaultStartTime(initialValues?.spec?.startTime);
+  defaultValues.spec.startTime = getDefaultStartTime(initialValues?.spec?.start_time);
 
   const formContext = useForm<FormValues>({
     defaultValues,
