@@ -3,8 +3,6 @@ package spec
 import (
 	"errors"
 	"fmt"
-	"reflect"
-	"strings"
 	"text/template"
 )
 
@@ -38,49 +36,40 @@ func (s *Spec) SetDefaults() {
 	}
 }
 
-var kindToRequiredFields = map[string]map[string]struct{}{
-	KindRemoveColumns:    {"Columns": {}},
-	KindAddColumn:        {"Name": {}, "Value": {}},
-	KindObfuscateColumns: {"Columns": {}},
-	KindChangeTableNames: {"NewTableNameTemplate": {}},
-}
-
-var fieldsToCheck = []string{"Columns", "Name", "Value", "FromTableName", "NewTableNameTemplate"}
-
 func (s *Spec) Validate() error {
 	var err error
 	for _, t := range s.TransformationSpecs {
-		requiredFields, ok := kindToRequiredFields[t.Kind]
-		if !ok {
-			kinds := make([]string, 0, len(kindToRequiredFields))
-			for k := range kindToRequiredFields {
-				kinds = append(kinds, k)
+		switch t.Kind {
+		case KindRemoveColumns:
+			if len(t.Columns) == 0 {
+				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "columns", t.Kind))
 			}
-			return fmt.Errorf("unknown transformation kind: %s, supported kinds are: %s", t.Kind, strings.Join(kinds, ", "))
-		}
-		for fieldName := range requiredFields {
-			fieldValue := reflect.ValueOf(t).FieldByName(fieldName)
-			if !fieldValue.IsValid() {
-				panic(fmt.Sprintf("field %s is not valid", fieldName)) // this would be a bug on kindToRequiredFields/fieldsToCheck
+			if t.Name != "" || t.Value != "" || t.NewTableNameTemplate != "" {
+				err = errors.Join(err, fmt.Errorf("name/value/new_table_name_template fields must not be specified for %s transformation", t.Kind))
 			}
-			if fieldValue.Kind() == reflect.String && fieldValue.String() == "" {
-				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", fieldName, t.Kind))
+		case KindAddColumn:
+			if t.Name == "" || t.Value == "" {
+				err = errors.Join(err, fmt.Errorf("'%s' and '%s' fields must be specified for %s transformation", "name", "value", t.Kind))
 			}
-			if fieldValue.Kind() == reflect.Slice && fieldValue.Len() == 0 {
-				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", fieldName, t.Kind))
+			if t.NewTableNameTemplate != "" {
+				err = errors.Join(err, fmt.Errorf("new_table_name_template field must not be specified for %s transformation", t.Kind))
 			}
-		}
-		for _, fieldName := range fieldsToCheck {
-			if _, ok := requiredFields[fieldName]; ok {
-				continue
+		case KindObfuscateColumns:
+			if len(t.Columns) == 0 {
+				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "columns", t.Kind))
 			}
-			fieldValue := reflect.ValueOf(t).FieldByName(fieldName)
-			if fieldValue.Kind() == reflect.String && fieldValue.String() != "" {
-				err = errors.Join(err, fmt.Errorf("'%s' field must not be specified for %s transformation", fieldName, t.Kind))
+			if t.Name != "" || t.Value != "" || t.NewTableNameTemplate != "" {
+				err = errors.Join(err, fmt.Errorf("name/value/new_table_name_template fields must not be specified for %s transformation", t.Kind))
 			}
-			if fieldValue.Kind() == reflect.Slice && fieldValue.Len() > 0 {
-				err = errors.Join(err, fmt.Errorf("'%s' field must not be specified for %s transformation", fieldName, t.Kind))
+		case KindChangeTableNames:
+			if t.NewTableNameTemplate == "" {
+				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "new_table_name_template", t.Kind))
 			}
+			if t.Name != "" || t.Value != "" || len(t.Columns) > 0 {
+				err = errors.Join(err, fmt.Errorf("name/value/columns fields must not be specified for %s transformation", t.Kind))
+			}
+		default:
+			err = errors.Join(err, fmt.Errorf("unknown transformation kind: %s", t.Kind))
 		}
 
 		// Non-trivial validations
@@ -90,5 +79,6 @@ func (s *Spec) Validate() error {
 			}
 		}
 	}
+
 	return err
 }
