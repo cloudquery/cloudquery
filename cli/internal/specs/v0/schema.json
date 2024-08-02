@@ -349,7 +349,9 @@
           },
           "then": {
             "properties": {
-              "spec": null
+              "spec": {
+                "$ref": "#/$defs/Transformer"
+              }
             }
           }
         }
@@ -372,7 +374,9 @@
             {
               "$ref": "#/$defs/Destination"
             },
-            null
+            {
+              "$ref": "#/$defs/Transformer"
+            }
           ]
         }
       },
@@ -382,6 +386,83 @@
         "kind",
         "spec"
       ]
+    },
+    "Transformer": {
+      "if": {
+        "properties": {
+          "registry": {
+            "enum": [
+              "",
+              "github",
+              "cloudquery"
+            ]
+          }
+        },
+        "title": "if registry is unset or is either `github` or `cloudquery`"
+      },
+      "then": {
+        "properties": {
+          "version": {
+            "type": "string",
+            "pattern": "^v.*$"
+          }
+        },
+        "required": [
+          "version"
+        ],
+        "title": "require version to be present"
+      },
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Name of the plugin to use"
+        },
+        "version": {
+          "type": "string",
+          "description": "Version of the plugin to be used"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Path is the canonical path to the plugin in a given registry\nFor example:\n* for `registry: github` the `path` will be: `org/repo`\n* for `registry: local` the `path` will be the path to the binary: `./path/to/binary`\n* for `registry: grpc` the `path` will be the address of the gRPC server: `host:port`\n* for `registry: cloudquery` the `path` will be: `team/name`"
+        },
+        "registry": {
+          "type": "string",
+          "enum": [
+            "",
+            "github",
+            "local",
+            "grpc",
+            "docker",
+            "cloudquery"
+          ],
+          "description": "Registry can be \"\", \"github\", \"local\", \"grpc\", \"docker\", \"cloudquery\"",
+          "default": "cloudquery"
+        },
+        "docker_registry_auth_token": {
+          "type": "string",
+          "description": "DockerRegistryAuthToken is the token to use to authenticate with the docker registry"
+        },
+        "spec": {
+          "oneOf": [
+            {
+              "type": "object",
+              "description": "Transformer plugin own (nested) spec"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "name",
+        "path"
+      ],
+      "description": "Transformer plugin spec"
     }
   }
 }
