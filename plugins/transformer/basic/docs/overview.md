@@ -3,7 +3,7 @@ This CloudQuery transformer plugin provides basic transformation capabilities:
 - Removing columns
 - Adding literal string columns
 - Obfuscating string columns
-- Renaming tables using a name template
+- Renaming tables using a name template (use `{{.OldName}}` to refer to the original name, see example below)
 
 ## Configuration
 
