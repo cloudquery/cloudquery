@@ -8,7 +8,7 @@ require (
 	github.com/cloudquery/codegen v0.3.19
 	github.com/cloudquery/plugin-sdk/v4 v4.57.0
 	github.com/google/uuid v1.6.0
-	github.com/marcboeker/go-duckdb v1.6.4
+	github.com/marcboeker/go-duckdb v1.7.0
 	github.com/rs/zerolog v1.33.0
 )
 
