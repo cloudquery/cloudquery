@@ -15,8 +15,8 @@ type SchemaUpdater struct {
 	schema *arrow.Schema
 }
 
-func New(schema *arrow.Schema) *SchemaUpdater {
-	return &SchemaUpdater{schema: schema}
+func New(sc *arrow.Schema) *SchemaUpdater {
+	return &SchemaUpdater{schema: sc}
 }
 
 func (s *SchemaUpdater) RemoveColumnIndices(colIndices map[int]struct{}) *arrow.Schema {

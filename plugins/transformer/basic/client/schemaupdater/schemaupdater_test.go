@@ -9,8 +9,8 @@ import (
 )
 
 func TestRemoveColumnIndices(t *testing.T) {
-	schema := createTestSchema()
-	updater := New(schema)
+	sc := createTestSchema()
+	updater := New(sc)
 
 	colIndices := map[int]struct{}{0: {}}
 	updatedSchema := updater.RemoveColumnIndices(colIndices)
@@ -20,8 +20,8 @@ func TestRemoveColumnIndices(t *testing.T) {
 }
 
 func TestAddStringColumnAtPos(t *testing.T) {
-	schema := createTestSchema()
-	updater := New(schema)
+	sc := createTestSchema()
+	updater := New(sc)
 
 	updatedSchema, err := updater.AddStringColumnAtPos("col3", 1, false)
 	require.NoError(t, err)
@@ -32,8 +32,8 @@ func TestAddStringColumnAtPos(t *testing.T) {
 }
 
 func TestAddStringColumnAtEnd(t *testing.T) {
-	schema := createTestSchema()
-	updater := New(schema)
+	sc := createTestSchema()
+	updater := New(sc)
 
 	updatedSchema, err := updater.AddStringColumnAtPos("col3", -1, true)
 	require.NoError(t, err)
@@ -47,20 +47,20 @@ func TestTransformMaintainsMetadata(t *testing.T) {
 	md1 := arrow.NewMetadata([]string{"key1", "key2"}, []string{"value1", "value2"})
 	md2 := arrow.NewMetadata([]string{"key3", "key4"}, []string{"value3", "value4"})
 	md3 := arrow.NewMetadata([]string{"key5", "key6"}, []string{"value5", "value6"})
-	schema := arrow.NewSchema(
+	sc := arrow.NewSchema(
 		[]arrow.Field{
 			{Name: "col1", Type: arrow.BinaryTypes.String, Nullable: true, Metadata: md1},
 			{Name: "col2", Type: arrow.BinaryTypes.String, Nullable: true, Metadata: md2},
 		},
 		&md3,
 	)
-	updater := New(schema)
+	updater := New(sc)
 	updatedSchema, err := updater.AddStringColumnAtPos("col3", -1, true)
 	require.NoError(t, err)
 
-	require.Equal(t, schema.Metadata(), updatedSchema.Metadata(), "Expected metadata to be retained")
-	require.Equal(t, schema.Field(0).Metadata, updatedSchema.Field(0).Metadata, "Expected metadata to be retained")
-	require.Equal(t, schema.Field(1).Metadata, updatedSchema.Field(1).Metadata, "Expected metadata to be retained")
+	require.Equal(t, sc.Metadata(), updatedSchema.Metadata(), "Expected metadata to be retained")
+	require.Equal(t, sc.Field(0).Metadata, updatedSchema.Field(0).Metadata, "Expected metadata to be retained")
+	require.Equal(t, sc.Field(1).Metadata, updatedSchema.Field(1).Metadata, "Expected metadata to be retained")
 }
 
 func TestChangeTableName(t *testing.T) {
