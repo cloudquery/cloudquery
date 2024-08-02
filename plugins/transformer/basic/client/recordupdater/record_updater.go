@@ -96,6 +96,15 @@ func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.Record, er
 	return r.record, nil
 }
 
+func (r *RecordUpdater) ChangeTableName(newTableNamePattern string) (arrow.Record, error) {
+	newSchema, err := r.schemaUpdater.ChangeTableName(newTableNamePattern)
+	if err != nil {
+		return nil, err
+	}
+	r.record = array.NewRecord(newSchema, r.record.Columns(), r.record.NumRows())
+	return r.record, nil
+}
+
 func (r *RecordUpdater) colIndicesByNames(columnNames []string) (map[int]struct{}, error) {
 	colNameMap := make(map[string]struct{})
 	for _, columnName := range columnNames {

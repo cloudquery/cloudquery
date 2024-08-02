@@ -30,6 +30,8 @@ func NewFromSpec(sp spec.TransformationSpec) (*Transformer, error) {
 		tr.fn = RemoveColumns(sp.Columns)
 	case spec.KindObfuscateColumns:
 		tr.fn = ObfuscateColumns(sp.Columns)
+	case spec.KindChangeTableNames:
+		tr.fn = ChangeTableName(sp.NewTableNameTemplate)
 	default:
 		return nil, fmt.Errorf("unknown transformation kind: %s", sp.Kind)
 	}
@@ -85,6 +87,12 @@ func RemoveColumns(columnNames []string) TransformationFn {
 func ObfuscateColumns(columnNames []string) TransformationFn {
 	return func(record arrow.Record) (arrow.Record, error) {
 		return recordupdater.New(record).ObfuscateColumns(columnNames)
+	}
+}
+
+func ChangeTableName(newTableNamePattern string) TransformationFn {
+	return func(record arrow.Record) (arrow.Record, error) {
+		return recordupdater.New(record).ChangeTableName(newTableNamePattern)
 	}
 }
 

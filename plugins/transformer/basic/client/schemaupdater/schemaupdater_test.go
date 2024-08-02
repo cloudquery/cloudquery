@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/apache/arrow/go/v17/arrow"
+	"github.com/cloudquery/plugin-sdk/v2/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -62,12 +63,28 @@ func TestTransformMaintainsMetadata(t *testing.T) {
 	require.Equal(t, schema.Field(1).Metadata, updatedSchema.Field(1).Metadata, "Expected metadata to be retained")
 }
 
+func TestChangeTableName(t *testing.T) {
+	testSchema := createTestSchema()
+	updater := New(testSchema)
+
+	updatedSchema, err := updater.ChangeTableName("cq_sync_{{.OldName}}")
+	require.NoError(t, err)
+
+	newTableName, ok := updatedSchema.Metadata().GetValue(schema.MetadataTableName)
+	require.True(t, ok, "Expected table name to be present in metadata")
+	require.Equal(t, "cq_sync_testTable", newTableName, "Expected table name to be 'cq_sync_testTable'")
+	require.Equal(t, testSchema.NumFields(), updatedSchema.NumFields(), "Expected number of fields to remain the same")
+	require.Equal(t, testSchema.Field(0).Name, updatedSchema.Field(0).Name, "Expected field name to remain the same")
+	require.Equal(t, testSchema.Field(1).Name, updatedSchema.Field(1).Name, "Expected field name to remain the same")
+}
+
 func createTestSchema() *arrow.Schema {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
 	return arrow.NewSchema(
 		[]arrow.Field{
 			{Name: "col1", Type: arrow.BinaryTypes.String, Nullable: true},
 			{Name: "col2", Type: arrow.BinaryTypes.String, Nullable: true},
 		},
-		nil,
+		&md,
 	)
 }

@@ -3,6 +3,7 @@ This CloudQuery transformer plugin provides basic transformation capabilities:
 - Removing columns
 - Adding literal string columns
 - Obfuscating string columns
+- Renaming tables using a templated name
 
 ## Configuration
 
@@ -29,3 +30,5 @@ The `migrate_mode: forced` setting might make sense if you plan on modifying the
 Then, add your transformer spec. Here's an example that transforms the XKCD source table:
 
 :configuration
+
+Note: transformations are applied sequentially. If you rename tables, the table matcher configuration of subsequent transformations will need to be updated to the new names.
