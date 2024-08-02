@@ -369,13 +369,10 @@
         "spec": {
           "oneOf": [
             {
-              "$ref": "#/$defs/Source"
+              "description": "CloudQuery plugin (top-level) spec"
             },
             {
-              "$ref": "#/$defs/Destination"
-            },
-            {
-              "$ref": "#/$defs/Transformer"
+              "type": "null"
             }
           ]
         }
