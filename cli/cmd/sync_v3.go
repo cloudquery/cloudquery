@@ -15,6 +15,7 @@ import (
 	"github.com/cloudquery/cloudquery/cli/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/internal/api"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
+	"github.com/cloudquery/cloudquery/cli/internal/tablenamechanger"
 	"github.com/cloudquery/cloudquery/cli/internal/transformer"
 	"github.com/cloudquery/cloudquery/cli/internal/transformerpipeline"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -330,6 +331,12 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		defer remoteProgressReporter.Cancel()
 	}
 
+	// Transformers can change table names. We need to keep track of table name changes
+	// in case we do things that depend on table names.
+	//
+	// Note that transformers run per-destination, so we need to keep track of table name changes per-destination.
+	tableNameChanger := tablenamechanger.New(destinationSpecs)
+
 	// Note: we want to stop this errorgroup if ctx is cancelled, but we don't want to cancel ctx if gctx is cancelled.
 	// gctx is always cancelled when the errorgroup returns, and this isn't necessarily an error.
 	eg, gctx := errgroup.WithContext(ctx)
@@ -412,11 +419,14 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 				}
 			case *plugin.Sync_Response_DeleteRecord:
 				for i := range destinationsPbClients {
+					// Table name might have changed due to a transformation.
+					tableName := tableNameChanger.UpdateTableName(destinationSpecs[i].Name, m.DeleteRecord.TableName)
+
 					wr := &plugin.Write_Request{}
 					// Transformations aren't required here because DeleteRecord is only in V3
 					wr.Message = &plugin.Write_Request_DeleteRecord{
 						DeleteRecord: &plugin.Write_MessageDeleteRecord{
-							TableName:      m.DeleteRecord.TableName,
+							TableName:      tableName,
 							TableRelations: m.DeleteRecord.TableRelations,
 							WhereClause:    m.DeleteRecord.WhereClause,
 						},
@@ -458,6 +468,11 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 							return err
 						}
 						transformedSchemaBytes = resp.Schema
+					}
+
+					// Table name might have changed due to a transformation.
+					if err := tableNameChanger.LearnTableNameChange(destinationName, table.Name, transformedSchemaBytes); err != nil {
+						return err
 					}
 
 					wr := &plugin.Write_Request{}
@@ -526,7 +541,9 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 
 	for i := range destinationsClients {
 		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
-			if err := deleteStale(writeClients[i], tablesForDeleteStale, sourceName, syncTime); err != nil {
+			// Table names might have changed due to transformers
+			updatedTablesForDeleteStale := tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, tablesForDeleteStale)
+			if err := deleteStale(writeClients[i], updatedTablesForDeleteStale, sourceName, syncTime); err != nil {
 				return err
 			}
 		}
