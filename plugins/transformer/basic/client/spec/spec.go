@@ -59,11 +59,7 @@ func (s *Spec) Validate() error {
 			return fmt.Errorf("unknown transformation kind: %s, supported kinds are: %s", t.Kind, strings.Join(kinds, ", "))
 		}
 		for fieldName := range requiredFields {
-			value := reflect.ValueOf(t)
-			if value == reflect.Zero(value.Type()) {
-				panic(fmt.Sprintf("reflect.ValueOf(%v) is zero", t)) // this would be a nil on s.TransformationSpecs
-			}
-			fieldValue := value.FieldByName(fieldName)
+			fieldValue := reflect.ValueOf(t).FieldByName(fieldName)
 			if !fieldValue.IsValid() {
 				panic(fmt.Sprintf("field %s is not valid", fieldName)) // this would be a bug on kindToRequiredFields/fieldsToCheck
 			}
