@@ -1,6 +1,11 @@
 import TextField from '@mui/material/TextField';
 import Switch from '@mui/material/Switch';
 import Stack from '@mui/material/Stack';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import { Logo } from '@cloudquery/plugin-config-ui-lib';
+import Box from '@mui/material/Box';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 import { getYupValidationResolver } from '@cloudquery/cloud-ui';
@@ -14,6 +19,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimeField } from '@mui/x-date-pickers/DateTimeField';
 
+import { assetPrefix } from '../utils/constants';
+import { getFieldHelperText } from '@cloudquery/cloud-ui';
 import {
   FormFieldGroup,
   scrollToFirstFormFieldError,
@@ -64,31 +71,42 @@ export function Form({ initialValues }: Props) {
 
   return (
     <FormProvider {...formContext}>
-      <Stack spacing={2}>
-        <FormFieldGroup title={'Configure Hacker News'}>
-          <Stack>
-            <Stack spacing={2}>
-              <Controller
-                control={control}
-                name="name"
-                render={({ field, fieldState }) => (
-                  <TextField
-                    error={!!fieldState.error}
-                    fullWidth={true}
-                    helperText={
-                      fieldState.error?.message ??
-                      'Unique source name that helps identify the source in your workspace.'
-                    }
-                    label="Source name"
-                    disabled={!!initialValues}
-                    autoComplete="off"
-                    {...field}
+      <Stack gap={2}>
+        <Card>
+          <CardContent>
+            <Stack gap={2}>
+              <Box display="flex" justifyContent="space-between" alignItems="center">
+                <Typography variant="h5">Configure source</Typography>
+                <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
+                  <Logo src={`${assetPrefix}/images/hackernews.webp`} alt="Hacker News" />
+                  <Typography variant="body1">Hacker News</Typography>
+                </Box>
+              </Box>
+              <Stack>
+                <Stack spacing={2}>
+                  <Controller
+                    control={control}
+                    name="name"
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        error={!!fieldState.error}
+                        fullWidth={true}
+                        helperText={getFieldHelperText(
+                          fieldState.error?.message,
+                          'Pick a name to help you identify this source.',
+                        )}
+                        label="Source name"
+                        disabled={!!initialValues}
+                        autoComplete="off"
+                        {...field}
+                      />
+                    )}
                   />
-                )}
-              />
+                </Stack>
+              </Stack>
             </Stack>
-          </Stack>
-        </FormFieldGroup>
+          </CardContent>
+        </Card>
         <FormFieldGroup title={'Options'}>
           <Stack>
             <Stack spacing={2}>
@@ -105,9 +123,10 @@ export function Form({ initialValues }: Props) {
                         textField: {
                           error: !!fieldState.error,
                           name: field.name,
-                          helperText:
-                            fieldState.error?.message ??
+                          helperText: getFieldHelperText(
+                            fieldState.error?.message,
                             'The earliest news date that the source should fetch.',
+                          ),
                           InputProps: {
                             endAdornment: (
                               <InputAdornment position="end">
@@ -136,10 +155,10 @@ export function Form({ initialValues }: Props) {
                     error={!!fieldState.error}
                     fullWidth={true}
                     required={true}
-                    helperText={
-                      fieldState.error?.message ||
-                      'Maximum number of news items to fetch concurrently. Recommended value is 100.'
-                    }
+                    helperText={getFieldHelperText(
+                      fieldState.error?.message,
+                      'Maximum number of news items to fetch concurrently. Recommended value is 100.',
+                    )}
                     label="Item concurrency"
                     {...field}
                   />
