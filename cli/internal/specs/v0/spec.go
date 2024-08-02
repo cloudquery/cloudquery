@@ -59,11 +59,6 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 	destination, _ := sc.Properties.Delete("Destination")
 	transformer, _ := sc.Properties.Delete("Transformer")
 
-	// update `spec` property
-	spec := sc.Properties.Value("spec")
-	// we can use `one_of because source & destination specs are mutually exclusive based on the kind
-	spec.OneOf = []*jsonschema.Schema{source, destination, transformer}
-
 	sc.AllOf = []*jsonschema.Schema{
 		{
 			// `kind: source` implies source spec

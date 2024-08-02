@@ -14,6 +14,11 @@ linters-settings:
   dupl:
     # tokens count to trigger issue, 150 by default
     threshold: 500
+  govet:
+    enable-all: true
+    disable:
+      - fieldalignment
+      - shadow
 
   misspell:
     ignore-words:

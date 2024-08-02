@@ -10,6 +10,7 @@ func unwrap[A any](value any) (A, bool) {
 
 	switch v := value.(type) {
 	case **A:
+		//nolint:govet
 		if v == (**A)(nil) || v == nil {
 			return unwrapped, false
 		}
@@ -25,6 +26,7 @@ func unwrap[A any](value any) (A, bool) {
 		panic(fmt.Sprintf("unwrapping %T to %T isn't supported", value, unwrapped))
 	}
 
+	//nolint:govet
 	if ptr == nil || ptr == (*A)(nil) {
 		return unwrapped, false
 	}
