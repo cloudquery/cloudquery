@@ -7,22 +7,18 @@ export function prepareSubmitValues(
 ): PluginUiMessagePayload['validation_passed']['values'] {
   const envs = [] as Array<{ name: string; value: string }>;
 
-  if (values.spec.username) {
+  if (values.username) {
     envs.push({
       name: 'username',
       value:
-        values.spec.username === '${username}'
-          ? ''
-          : escapeSingleQuotesAndBackslashes(values.spec.username),
+        values.username === '${username}' ? '' : escapeSingleQuotesAndBackslashes(values.username),
     });
   }
-  if (values.spec.password) {
+  if (values.password) {
     envs.push({
       name: 'password',
       value:
-        values.spec.password === '${password}'
-          ? ''
-          : escapeSingleQuotesAndBackslashes(values.spec.password),
+        values.password === '${password}' ? '' : escapeSingleQuotesAndBackslashes(values.password),
     });
   }
 
@@ -31,10 +27,10 @@ export function prepareSubmitValues(
     envs,
     spec: {
       connection_string: generateConnectionUrl(values, true),
-      pgx_log_level: values.spec.pgxLogLevel,
-      batch_size: values.spec.batchSize,
-      batch_size_bytes: values.spec.batchSizeBytes,
-      batch_timeout: values.spec.batchTimeout,
+      pgx_log_level: values.pgxLogLevel,
+      batch_size: values.batchSize,
+      batch_size_bytes: values.batchSizeBytes,
+      batch_timeout: values.batchTimeout,
     },
     migrateMode: values.migrateMode,
     writeMode: values.writeMode,
