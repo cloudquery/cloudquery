@@ -38,6 +38,8 @@ func (s *Spec) UnmarshalJSON(data []byte) error {
 		s.Spec = new(Source)
 	case KindDestination:
 		s.Spec = new(Destination)
+	case KindTransformer:
+		s.Spec = new(Transformer)
 	default:
 		return fmt.Errorf("unknown kind %s", s.Kind)
 	}
@@ -55,11 +57,7 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 	// delete & obtain the values
 	source, _ := sc.Properties.Delete("Source")
 	destination, _ := sc.Properties.Delete("Destination")
-
-	// update `spec` property
-	spec := sc.Properties.Value("spec")
-	// we can use `one_of because source & destination specs are mutually exclusive based on the kind
-	spec.OneOf = []*jsonschema.Schema{source, destination}
+	transformer, _ := sc.Properties.Delete("Transformer")
 
 	sc.AllOf = []*jsonschema.Schema{
 		{
@@ -98,6 +96,26 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
 					properties := jsonschema.NewProperties()
 					properties.Set("spec", destination)
+					return properties
+				}(),
+			},
+		},
+		{
+			// `kind: transformer` implies transformer spec
+			If: &jsonschema.Schema{
+				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+					properties := jsonschema.NewProperties()
+					kind := *sc.Properties.Value("kind")
+					kind.Const = "transformer"
+					kind.Enum = nil
+					properties.Set("kind", &kind)
+					return properties
+				}(),
+			},
+			Then: &jsonschema.Schema{
+				Properties: func() *orderedmap.OrderedMap[string, *jsonschema.Schema] {
+					properties := jsonschema.NewProperties()
+					properties.Set("spec", transformer)
 					return properties
 				}(),
 			},

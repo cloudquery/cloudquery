@@ -51,6 +51,15 @@ func TestSpec_JSONSchemaExtend(t *testing.T) {
 			Spec: `{"kind":"destination","spec":{"name":"a","path":"b","registry":"local"}}`,
 		},
 		{
+			Name: "kind:transformer",
+			Spec: `{"kind":"transformer","spec":{"name":"a","path":"b","registry":"local"}}`,
+		},
+		{
+			Name: "kind:transformer with additional properties",
+			Spec: `{"kind":"transformer","spec":{"name":"a","path":"b","registry":"local","additional":"property"}}`,
+			Err:  true,
+		},
+		{
 			Name: "missing spec",
 			Err:  true,
 			Spec: `{"kind":"source"}`,

@@ -1,0 +1,47 @@
+name: Transformer Plugin Basic Workflow
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - "plugins/transformer/basic/**"
+      - ".github/workflows/transf_basic.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/transformer/basic/**"
+      - ".github/workflows/transf_basic.yml"
+
+jobs:
+  plugins-transformer-basic:
+    timeout-minutes: 30
+    name: "plugins/transformer/basic"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/transformer/basic
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: plugins/transformer/basic/go.mod
+          cache: true
+          cache-dependency-path: plugins/transformer/basic/go.sum
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.55.2
+          working-directory: plugins/transformer/basic
+          args: "--config ../../.golangci.yml"
+      - name: Build
+        run: go build .
+      - name: Test
+        run: make test
+  

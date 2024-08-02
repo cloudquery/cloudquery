@@ -75,10 +75,9 @@ jobs:
           wait-for-it -h localhost -p 26257
       - name: Test CockroachDB
         run: CQ_DEST_PG_TEST_CONN="postgresql://root@localhost:26257/postgres?sslmode=disable" make test
-  plugins-destination-postgresql-config-ui:
+  validate-config-ui:
     timeout-minutes: 15
     if: github.event_name == 'pull_request'
-    name: "plugins/destination/postgresql/cloud-config-ui"
     permissions:
       id-token: write
       contents: read
@@ -123,7 +122,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: "v6.0.1"
+          version: v6.2.0
       - name: Validate CloudQuery config
         working-directory: "plugins/destination/postgresql/cloud-config-ui"
         run: dotenv -e ./temp/.env -- cloudquery validate-config ./temp/config.yml

@@ -53,6 +53,11 @@
           "$ref": "#/$defs/Duration",
           "description": "Maximum interval between batch writes.",
           "default": "60s"
+        },
+        "create_performance_indexes": {
+          "type": "boolean",
+          "description": "Option to create specific indexes to improve deletion performance",
+          "default": false
         }
       },
       "additionalProperties": false,
