@@ -13,6 +13,7 @@ import { pluginUiMessageHandler } from '../utils/messageHandler';
 
 import { assetPrefix } from '../utils/constants';
 import { useCallback } from 'react';
+import { getFieldHelperText } from '@cloudquery/cloud-ui';
 import {
   useFormSubmit,
   useFormCurrentValues,
@@ -73,9 +74,10 @@ export function Form({ initialValues }: Props) {
                   <TextField
                     error={!!fieldState.error}
                     fullWidth={true}
-                    helperText={
-                      fieldState.error?.message || 'Pick a name to help you identify this source.'
-                    }
+                    helperText={getFieldHelperText(
+                      fieldState.error?.message,
+                      'Pick a name to help you identify this source.',
+                    )}
                     label="Source name"
                     disabled={!!initialValues}
                     autoComplete="off"
