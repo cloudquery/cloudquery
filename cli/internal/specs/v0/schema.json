@@ -115,6 +115,20 @@
         "send_sync_summary": {
           "type": "boolean"
         },
+        "transformers": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "description": "Transformers are the names of transformer plugins to send sync data through"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
         "spec": {
           "oneOf": [
             {
@@ -322,6 +336,22 @@
               }
             }
           }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "type": "string",
+                "const": "transformer",
+                "description": "CloudQuery plugin kind"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "spec": null
+            }
+          }
         }
       ],
       "properties": {
@@ -329,7 +359,8 @@
           "type": "string",
           "enum": [
             "source",
-            "destination"
+            "destination",
+            "transformer"
           ],
           "description": "CloudQuery plugin kind"
         },
@@ -340,7 +371,8 @@
             },
             {
               "$ref": "#/$defs/Destination"
-            }
+            },
+            null
           ]
         }
       },
