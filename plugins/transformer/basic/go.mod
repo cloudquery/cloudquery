@@ -4,7 +4,6 @@ go 1.22.4
 
 require (
 	github.com/apache/arrow/go/v17 v17.0.0
-	github.com/cloudquery/plugin-sdk/v2 v2.7.0
 	github.com/cloudquery/plugin-sdk/v4 v4.57.0
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.9.0
@@ -17,6 +16,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.12.5 // indirect
 	github.com/cloudquery/plugin-pb-go v1.21.4 // indirect
+	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
