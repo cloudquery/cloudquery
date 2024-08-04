@@ -63,7 +63,7 @@ export function Form({ initialValues }: Props) {
             <Box display="flex" marginBottom={3} justifyContent="space-between" alignItems="center">
               <Typography variant="h5">Configure destination</Typography>
               <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
-                <Logo src="/images/postgresql.png" alt="AWS" />
+                <Logo src="images/postgresql.png" alt="PostgreSQL" />
                 <Typography variant="body1">PostgreSQL</Typography>
               </Box>
             </Box>
