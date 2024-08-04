@@ -14,14 +14,11 @@ test('Submit the form', async ({ page }) => {
   await page.getByLabel('Username').fill('john_doe');
   await page.getByLabel('Password').click();
   await page.getByLabel('Password').fill('securePass123');
-  await page.getByLabel('SSL').check();
   await page.getByLabel('SSL Mode').click();
   await page.getByRole('option', { name: 'verify-ca' }).click();
-  await expect(
-    page.getByText(
-      `dbtype='postgresql' user='john_doe' password='\${password}' host='database.example.com' dbname='sample_db' port='5432' sslmode='verify-ca'`,
-    ),
-  ).toBeVisible();
+
+  await page.getByText('Advanced Options').click();
+
   await page.getByLabel('Log level *').click();
   await page.getByRole('option', { name: 'warn' }).click();
   await page.getByLabel('Batch size *', { exact: true }).click();
@@ -42,8 +39,12 @@ test('Submit the form', async ({ page }) => {
 
   expect(valuesText).toBeTruthy();
 
+  const spec = JSON.parse(valuesText as string);
+  expect(spec.spec.connection_string).toBe(
+    `dbtype='postgresql' user='\${username}' password='\${password}' host='database.example.com' dbname='sample_db' port='5432' sslmode='verify-ca'`,
+  );
+
   if (process.env.E2E_TESTS_GENERATE_CONFIG === 'true') {
-    const spec = JSON.parse(valuesText as string);
     const destinationConfig = YAML.stringify({
       kind: 'destination',
       spec: {

@@ -2,7 +2,7 @@ import { resetYupDefaultErrorMessages } from '@cloudquery/cloud-ui';
 import { generateName } from '@cloudquery/plugin-config-ui-lib';
 import * as yup from 'yup';
 
-export const existingSecretValue = Symbol('existing-secret-value');
+export const connectionTypeValues = ['string', 'fields'] as const;
 
 export const sslModeValues = [
   'allow',
@@ -37,25 +37,47 @@ export const formValidationSchema = yup.object({
       }),
     )
     .default([]),
-  spec: yup.object({
-    username: yup.string().max(63).default(''),
-    password: yup.string().max(63).default(''),
-    host: yup.string().max(253).required().default(''),
-    port: yup
-      .string()
-      .max(5)
-      .matches(/^($)|(\d+)$/, 'Port must be a number')
-      .default(''),
-    database: yup.string().max(63).required().default(''),
-    clientEncoding: yup.string().max(255).default(''),
-    ssl: yup.bool().default(false),
-    sslMode: yup.string().oneOf(sslModeValues).default('require'),
-    pgxLogLevel: yup.string().oneOf(pgxLogLevelValues).default('error').required(),
-    batchSize: yup.number().integer().default(1000).required(),
-    batchSizeBytes: yup.number().integer().default(100_000_000).required(),
-    batchTimeout: yup.string().default('60s').required(),
-  }),
-  connectionType: yup.string().oneOf(['multipleFields', 'singleField']).default('multipleFields'),
+  connectionType: yup.string().oneOf(connectionTypeValues).default('fields').required(),
+  connectionString: yup
+    .string()
+    .default('')
+    .when('connectionType', {
+      is: 'string',
+      // eslint-disable-next-line unicorn/no-thenable
+      then: (schema) => schema.required(),
+    }),
+  username: yup.string().max(63).default(''),
+  password: yup.string().max(63).default(''),
+  host: yup
+    .string()
+    .max(253)
+    .default('')
+    .when('connectionType', {
+      is: 'fields',
+      // eslint-disable-next-line unicorn/no-thenable
+      then: (schema) => schema.required(),
+    }),
+  port: yup
+    .string()
+    .max(5)
+    .matches(/^($)|(\d+)$/, 'Port must be a number')
+    .default(''),
+  database: yup
+    .string()
+    .max(63)
+    .default('')
+    .when('connectionType', {
+      is: 'fields',
+      // eslint-disable-next-line unicorn/no-thenable
+      then: (schema) => schema.required(),
+    }),
+  ssl: yup.bool().default(true),
+  sslMode: yup.string().oneOf(sslModeValues).default('require'),
+  schemaName: yup.string().default(''),
+  pgxLogLevel: yup.string().oneOf(pgxLogLevelValues).default('error').required(),
+  batchSize: yup.number().integer().default(10_000).required(),
+  batchSizeBytes: yup.number().integer().default(100_000_000).required(),
+  batchTimeout: yup.string().default('60s').required(),
   migrateMode: yup.string().oneOf(migrateModeValues).default('safe').required(),
   writeMode: yup.string().oneOf(writeModeValues).default('overwrite-delete-stale').required(),
 });
