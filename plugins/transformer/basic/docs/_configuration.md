@@ -16,4 +16,7 @@ spec:
         tables: ["xkcd_comics"]
         name: "source"
         value: "xkcd"
+      - kind: change_table_names
+        tables: ["*"]
+        new_table_name_template: "cq_sync_{{.OldName}}"
 ```

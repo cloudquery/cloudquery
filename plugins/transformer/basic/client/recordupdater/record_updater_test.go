@@ -6,6 +6,7 @@ import (
 	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/apache/arrow/go/v17/arrow/array"
 	"github.com/apache/arrow/go/v17/arrow/memory"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -53,13 +54,30 @@ func TestObfuscateColumns(t *testing.T) {
 	require.Equal(t, "528e5290f8ff0eb0325f0472b9c1a9ef4fac0b02ff6094b64d9382af4a10444b", updatedRecord.Column(0).(*array.String).Value(1))
 }
 
+func TestChangeTableName(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+
+	updatedRecord, err := updater.ChangeTableName("cq_sync_{{.OldName}}")
+	require.NoError(t, err)
+
+	require.Equal(t, int64(2), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+
+	newTableName, ok := updatedRecord.Schema().Metadata().GetValue(schema.MetadataTableName)
+	require.True(t, ok, "Expected table name to be present in metadata")
+	require.Equal(t, "cq_sync_testTable", newTableName)
+}
+
 func createTestRecord() arrow.Record {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
 	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
 		[]arrow.Field{
 			{Name: "col1", Type: arrow.BinaryTypes.String},
 			{Name: "col2", Type: arrow.BinaryTypes.String},
 		},
-		nil,
+		&md,
 	))
 	defer bld.Release()
 

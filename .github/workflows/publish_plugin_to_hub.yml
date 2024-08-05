@@ -17,7 +17,6 @@ jobs:
       plugin_name_undashed: ${{ steps.undash_plugin_name.outputs.plugin_name }}
       plugin_name: ${{ steps.split.outputs.plugin_name }}
       plugin_kind: ${{ steps.split.outputs.plugin_kind }}
-      plugin_kind_plural: ${{ steps.split.outputs.plugin_kind_plural }}
       plugin_version: ${{ steps.split.outputs.plugin_version }}
       plugin_dir: ${{ steps.split.outputs.plugin_dir }}
       prerelease: ${{ steps.semver_parser.outputs.prerelease }}
@@ -31,7 +30,6 @@ jobs:
           tag=${{ github.ref_name }}
           plugin_kind=$(echo $tag | cut -d- -f2)
           plugin_name=$(echo $tag | cut -d- -f3)
-          plugin_kind_plural=$(if [ "$plugin_kind" = "source" ]; then echo "sources"; else echo "destinations"; fi)
           plugin_version=$(echo $tag | cut -d- -f4-)
           # perform looping till either the plugin version passes our semver test or is empty
           until [[ $plugin_version =~ ^v?[0-9]+\.[0-9]+ ]] || [[ $(echo $plugin_version | wc -c) -eq 0 ]] ; do
@@ -41,7 +39,6 @@ jobs:
           done
           echo "plugin_name=${plugin_name}" >> $GITHUB_OUTPUT
           echo "plugin_kind=${plugin_kind}" >> $GITHUB_OUTPUT
-          echo "plugin_kind_plural=${plugin_kind_plural}" >> $GITHUB_OUTPUT
           echo "plugin_version=${plugin_version}" >> $GITHUB_OUTPUT
           echo "plugin_dir=plugins/${plugin_kind}/${plugin_name}" >> $GITHUB_OUTPUT
           echo "ui_build_dir=plugins/${plugin_kind}/${plugin_name}/$ui_dir_name/build" >> $GITHUB_OUTPUT
@@ -227,7 +224,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v6.2.0
+          version: v6.3.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -317,7 +314,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v6.2.0
+          version: v6.3.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -401,7 +398,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v6.2.0
+          version: v6.3.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -491,7 +488,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v6.2.0
+          version: v6.3.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}

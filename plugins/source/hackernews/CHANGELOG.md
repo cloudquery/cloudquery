@@ -1,5 +1,26 @@
 # Changelog
 
+## [3.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.4.0...plugins-source-hackernews-v3.5.0) (2024-08-05)
+
+
+### Features
+
+* Hacker News source plugin UI v2 ([#18840](https://github.com/cloudquery/cloudquery/issues/18840)) ([ff8da04](https://github.com/cloudquery/cloudquery/commit/ff8da04905d86394123a873377510add119e6318))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/cloud-ui to v0.1.12 ([#18836](https://github.com/cloudquery/cloudquery/issues/18836)) ([b24afab](https://github.com/cloudquery/cloudquery/commit/b24afab030164a5b2eb075e8d2e948dff95501a6))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-connector to v0.2.10 ([#18850](https://github.com/cloudquery/cloudquery/issues/18850)) ([ec926b5](https://github.com/cloudquery/cloudquery/commit/ec926b50405be69f7aac42ebc8d7fbfd063d6c46))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.42 ([#18834](https://github.com/cloudquery/cloudquery/issues/18834)) ([827d13b](https://github.com/cloudquery/cloudquery/commit/827d13bd49589a6190cffecbd1e973a508c8a608))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.44 ([#18838](https://github.com/cloudquery/cloudquery/issues/18838)) ([745aeca](https://github.com/cloudquery/cloudquery/commit/745aecab9bf1b216d7e25db247dfc231f58fe550))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.45 ([#18841](https://github.com/cloudquery/cloudquery/issues/18841)) ([4476f38](https://github.com/cloudquery/cloudquery/commit/4476f38b7897574c405c76f76166769756ee9117))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.46 ([#18844](https://github.com/cloudquery/cloudquery/issues/18844)) ([60f5924](https://github.com/cloudquery/cloudquery/commit/60f59247d2ed57593086b98b42bc962fa1dbe635))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.47 ([#18849](https://github.com/cloudquery/cloudquery/issues/18849)) ([029638e](https://github.com/cloudquery/cloudquery/commit/029638ecb6a59a743ddd00fac9d3700c9f579e0f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.57.1 ([#18830](https://github.com/cloudquery/cloudquery/issues/18830)) ([605c202](https://github.com/cloudquery/cloudquery/commit/605c2027954f06f8314bad4ebb4f8fb378e7ce93))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.58.0 ([#18839](https://github.com/cloudquery/cloudquery/issues/18839)) ([6b57bca](https://github.com/cloudquery/cloudquery/commit/6b57bca07781db60497006b870d241609ebc8aab))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.58.1 ([#18852](https://github.com/cloudquery/cloudquery/issues/18852)) ([4320340](https://github.com/cloudquery/cloudquery/commit/4320340ac9a0db098696f567956e8b0c721f714c))
+
 ## [3.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.3.3...plugins-source-hackernews-v3.4.0) (2024-08-02)
 
 

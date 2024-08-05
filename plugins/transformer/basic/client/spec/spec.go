@@ -3,12 +3,14 @@ package spec
 import (
 	"errors"
 	"fmt"
+	"text/template"
 )
 
 const (
 	KindRemoveColumns    = "remove_columns"
 	KindAddColumn        = "add_column"
 	KindObfuscateColumns = "obfuscate_columns"
+	KindChangeTableNames = "change_table_names"
 )
 
 type TransformationSpec struct {
@@ -17,6 +19,9 @@ type TransformationSpec struct {
 	Columns []string `json:"columns"`
 	Name    string   `json:"name"`
 	Value   string   `json:"value"`
+
+	// For change_table_names transformation
+	NewTableNameTemplate string `json:"new_table_name_template"`
 }
 
 type Spec struct {
@@ -37,37 +42,43 @@ func (s *Spec) Validate() error {
 		switch t.Kind {
 		case KindRemoveColumns:
 			if len(t.Columns) == 0 {
-				err = errors.Join(err, fmt.Errorf("'columns' field must be specified for remove_columns transformation"))
+				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "columns", t.Kind))
 			}
-			if t.Name != "" {
-				err = errors.Join(err, fmt.Errorf("'name' field must not be specified for remove_columns transformation"))
-			}
-			if t.Value != "" {
-				err = errors.Join(err, fmt.Errorf("'value' field must not be specified for remove_columns transformation"))
+			if t.Name != "" || t.Value != "" || t.NewTableNameTemplate != "" {
+				err = errors.Join(err, fmt.Errorf("name/value/new_table_name_template fields must not be specified for %s transformation", t.Kind))
 			}
 		case KindAddColumn:
-			if t.Name == "" {
-				err = errors.Join(err, fmt.Errorf("'name' field must be specified for add_column transformation"))
+			if t.Name == "" || t.Value == "" {
+				err = errors.Join(err, fmt.Errorf("'%s' and '%s' fields must be specified for %s transformation", "name", "value", t.Kind))
 			}
-			if t.Value == "" {
-				err = errors.Join(err, fmt.Errorf("'value' field must be specified for add_column transformation"))
-			}
-			if len(t.Columns) > 0 {
-				err = errors.Join(err, fmt.Errorf("'columns' field must not be specified for add_column transformation"))
+			if t.NewTableNameTemplate != "" {
+				err = errors.Join(err, fmt.Errorf("new_table_name_template field must not be specified for %s transformation", t.Kind))
 			}
 		case KindObfuscateColumns:
 			if len(t.Columns) == 0 {
-				err = errors.Join(err, fmt.Errorf("'columns' field must be specified for obfuscate_columns transformation"))
+				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "columns", t.Kind))
 			}
-			if t.Name != "" {
-				err = errors.Join(err, fmt.Errorf("'name' field must not be specified for obfuscate_columns transformation"))
+			if t.Name != "" || t.Value != "" || t.NewTableNameTemplate != "" {
+				err = errors.Join(err, fmt.Errorf("name/value/new_table_name_template fields must not be specified for %s transformation", t.Kind))
 			}
-			if t.Value != "" {
-				err = errors.Join(err, fmt.Errorf("'value' field must not be specified for obfuscate_columns transformation"))
+		case KindChangeTableNames:
+			if t.NewTableNameTemplate == "" {
+				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "new_table_name_template", t.Kind))
+			}
+			if t.Name != "" || t.Value != "" || len(t.Columns) > 0 {
+				err = errors.Join(err, fmt.Errorf("name/value/columns fields must not be specified for %s transformation", t.Kind))
 			}
 		default:
-			err = errors.Join(err, fmt.Errorf("invalid transformation kind: %s; must be one of: remove_columns, add_column, obfuscate_columns", t.Kind))
+			err = errors.Join(err, fmt.Errorf("unknown transformation kind: %s", t.Kind))
+		}
+
+		// Non-trivial validations
+		if t.Kind == KindChangeTableNames {
+			if _, tplErr := template.New("table_name").Parse(t.NewTableNameTemplate); err != nil {
+				err = errors.Join(err, fmt.Errorf("error parsing new_table_name_template: %v", tplErr))
+			}
 		}
 	}
+
 	return err
 }

@@ -5,6 +5,22 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.3.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.2.0...cli-v6.3.0) (2024-08-05)
+
+
+### Features
+
+* Implement transformations support. ([#18669](https://github.com/cloudquery/cloudquery/issues/18669)) ([2af93ed](https://github.com/cloudquery/cloudquery/commit/2af93ed549499a0d2adf99162d5096d73e64546d))
+* Support table name changes on basic transformer. ([#18833](https://github.com/cloudquery/cloudquery/issues/18833)) ([67d3701](https://github.com/cloudquery/cloudquery/commit/67d3701e6e49d6dcbb7844cc654ae8fe2223d6ad))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.12.6 ([#18828](https://github.com/cloudquery/cloudquery/issues/18828)) ([3a48c89](https://github.com/cloudquery/cloudquery/commit/3a48c8973fcbe48f4d5e02d3829f37077ebb5f62))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.57.1 ([#18830](https://github.com/cloudquery/cloudquery/issues/18830)) ([605c202](https://github.com/cloudquery/cloudquery/commit/605c2027954f06f8314bad4ebb4f8fb378e7ce93))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.58.0 ([#18839](https://github.com/cloudquery/cloudquery/issues/18839)) ([6b57bca](https://github.com/cloudquery/cloudquery/commit/6b57bca07781db60497006b870d241609ebc8aab))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.58.1 ([#18852](https://github.com/cloudquery/cloudquery/issues/18852)) ([4320340](https://github.com/cloudquery/cloudquery/commit/4320340ac9a0db098696f567956e8b0c721f714c))
+
 ## [6.2.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.1.0...cli-v6.2.0) (2024-08-01)
 
 

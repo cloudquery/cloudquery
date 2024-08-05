@@ -7,7 +7,7 @@ import (
 	"github.com/apache/arrow/go/v17/arrow/array"
 	"github.com/apache/arrow/go/v17/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/transformer/basic/client/spec"
-	"github.com/cloudquery/plugin-sdk/v2/schema"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/stretchr/testify/require"
 )
 
@@ -39,6 +39,14 @@ func TestNewFromSpec(t *testing.T) {
 			spec: spec.TransformationSpec{
 				Kind:    spec.KindObfuscateColumns,
 				Columns: []string{"col2"},
+			},
+			wantErr: false,
+		},
+		{
+			name: "ChangeTableNames",
+			spec: spec.TransformationSpec{
+				Kind:                 spec.KindChangeTableNames,
+				NewTableNameTemplate: "cq_sync_{{.OldName}}",
 			},
 			wantErr: false,
 		},
@@ -110,6 +118,20 @@ func TestTransform(t *testing.T) {
 				require.Equal(t, "dd0fff6ac351dd46cd26e2d5c61e479ce7c68ef12489e04284c0fd66648723cb", record.Column(1).(*array.String).Value(1), "Expected sha256 value in new_col column")
 				require.Equal(t, int64(2), record.NumCols(), "Expected 2 columns")
 				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
+			},
+		},
+		{
+			name: "ChangeTableName",
+			spec: spec.TransformationSpec{
+				Kind:                 spec.KindChangeTableNames,
+				NewTableNameTemplate: "cq_sync_{{.OldName}}",
+				Tables:               []string{"*"},
+			},
+			record: createTestRecord(),
+			validate: func(t *testing.T, record arrow.Record) {
+				newTableName, ok := record.Schema().Metadata().GetValue(schema.MetadataTableName)
+				require.True(t, ok, "Expected table name to be present in metadata")
+				require.Equal(t, "cq_sync_table1", newTableName)
 			},
 		},
 	}

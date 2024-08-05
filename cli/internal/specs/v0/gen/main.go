@@ -23,6 +23,7 @@ func main() {
 					return reflect.VisibleFields(reflect.TypeOf(struct {
 						Source      specs.Source
 						Destination specs.Destination
+						Transformer specs.Transformer
 					}{}))
 				}
 				return nil

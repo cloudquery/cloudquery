@@ -44,11 +44,11 @@ export function getFormValidationSchema(
         .required(),
       startTimeEnabled: yup
         .boolean()
-        .default(!initialValues || !!initialValues?.spec?.startTime)
+        .default(!initialValues || !!initialValues?.spec?.start_time)
         .required(),
       startTime: yup
         .mixed<dayjs.Dayjs>()
-        .default(getDefaultStartTime(initialValues?.spec?.startTime)),
+        .default(getDefaultStartTime(initialValues?.spec?.start_time)),
     }),
   });
 }

@@ -13,6 +13,12 @@ linters-settings:
     # tokens count to trigger issue, 150 by default
     threshold: 500
 
+  govet:
+    enable-all: true
+    disable:
+      - fieldalignment
+      - shadow
+
   revive:
     enable-all-rules: true
     rules:
@@ -45,7 +51,7 @@ linters-settings:
       - name: exported
         disabled: false
         arguments:
-          - 'disableStutteringCheck'
+          - "disableStutteringCheck"
       - name: unused-parameter
         disabled: true
       - name: confusing-naming
@@ -63,10 +69,10 @@ linters-settings:
 
   gofmt:
     rewrite-rules:
-    - pattern:     'interface{}'
-      replacement: 'any'
-    - pattern:     'a[b:len(a)]'
-      replacement: 'a[b:]'
+      - pattern: "interface{}"
+        replacement: "any"
+      - pattern: "a[b:len(a)]"
+        replacement: "a[b:]"
 
 linters:
   enable:
@@ -89,7 +95,7 @@ linters:
     - unparam
     - unused
 
-issues: 
+issues:
   exclude-dirs:
     - bin
     - docs
