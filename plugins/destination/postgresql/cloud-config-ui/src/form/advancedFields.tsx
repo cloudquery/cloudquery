@@ -45,7 +45,7 @@ export function AdvancedFields() {
                     fullWidth={true}
                     helperText={getFieldHelperText(
                       fieldState.error?.message,
-                      'Defines what pgx call events should be logged.',
+                      'Configure the level of detail of the log from this source.',
                     )}
                     label="Log level"
                     select={true}

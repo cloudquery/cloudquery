@@ -77,7 +77,7 @@ export function Form({ initialValues }: Props) {
                     fullWidth={true}
                     helperText={getFieldHelperText(
                       fieldState.error?.message,
-                      'Pick a name to help you identify this destination.',
+                      'Unique destination name that helps identify the destination within your workspace.',
                     )}
                     label="Destination name"
                     disabled={!!initialValues}

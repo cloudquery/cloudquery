@@ -22,7 +22,12 @@ export function Guides() {
             {
               bodies: [
                 {
-                  text: 'The PostgreSQL destination lets you sync data from any CloudQuery source to a PostgreSQL-compatible database.',
+                  text: (
+                    <>
+                      The PostgreSQL destination lets you sync data from any CloudQuery source to a
+                      PostgreSQL&#8209;compatible database.
+                    </>
+                  ),
                 },
               ],
             },
