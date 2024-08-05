@@ -41,10 +41,8 @@ The name field may be used to uniquely identify a particular transformer configu
 (`string`, optional, default: `cloudquery`, available: `github`, `cloudquery`, `local`, `grpc`, `docker`)
 
 - `cloudquery`: CloudQuery will look for and download the plugin from the official CloudQuery registry, and then execute it.
-- `github`: **Deprecated**. CloudQuery will look for and download the plugin from GitHub, and then execute it.
 - `local`: CloudQuery will execute the plugin from a local path.
 - `grpc`: mostly useful in debug mode when plugin is already running in a different terminal, CloudQuery will connect to the gRPC plugin server directly without spawning the process.
-- `docker`: CloudQuery will run the plugin in a Docker container. This is most useful for plugins written in Python, as they do not support the `local`, `github` and `cloudquery` registries.
 
 ### path
 
