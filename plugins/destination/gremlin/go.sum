@@ -30,8 +30,8 @@ github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.11.3 h1:dT3MqvG
 github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.11.3/go.mod h1:GlAeCkHwugxdHaueRr4nhPuY+WW+gR8UjlcqzPr1SPI=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.17 h1:HGErhhrxZlQ044RiM+WdoZxp0p+EGM62y3L6pwA4olE=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.17/go.mod h1:RkZEx4l0EHYDJpWppMJ3nD9wZJAa8/0lq9aVC+r2UII=
-github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.21.9 h1:1Y6NAaK/9Wjxb4VAlUOMUQuTrOKNXfLrhaSzNdLKkwo=
-github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.21.9/go.mod h1:KpgKQ+ZF5kssRykR4yxANtddzYFatCqlv8yHddRHne4=
+github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.23.3 h1:ZkaFS2PmZFk710zqw7Yki2douIA6fL5JVvy7rP4q9qg=
+github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.23.3/go.mod h1:ZK5KBD+u8g1Frfqe1atGaH19dSnY9SbHuSUimYv1cy0=
 github.com/aws/aws-sdk-go-v2/service/sso v1.22.4 h1:BXx0ZIxvrJdSgSvKTZ+yRBeSqqgPM89VPlulEcl37tM=
 github.com/aws/aws-sdk-go-v2/service/sso v1.22.4/go.mod h1:ooyCOXjvJEsUw7x+ZDHeISPMhtwI3ZCB7ggFMcFfWLU=
 github.com/aws/aws-sdk-go-v2/service/ssooidc v1.26.4 h1:yiwVzJW2ZxZTurVbYWA7QOrAaCYQR72t0wrSBfoesUE=
@@ -59,8 +59,8 @@ github.com/cloudquery/plugin-pb-go v1.21.5 h1:89PQoG1aoUrvkd5xLnEUirOVn5s+zMeLBE
 github.com/cloudquery/plugin-pb-go v1.21.5/go.mod h1:r2VXmBTwPGtb51ypDr55KX3gvz67rmJkVTDffeQ9TO8=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0/go.mod h1:pAX6ojIW99b/Vg4CkhnsGkRIzNaVEceYMR+Bdit73ug=
-github.com/cloudquery/plugin-sdk/v4 v4.58.0 h1:Ai8nz+kSfMIah9hDeOzneDfB7UFAkTEFKUjkvpBqpck=
-github.com/cloudquery/plugin-sdk/v4 v4.58.0/go.mod h1:jJDJq2D8zNEHHDZn+RDvztzP+vp2QmtV+v9hTb6WeDQ=
+github.com/cloudquery/plugin-sdk/v4 v4.58.1 h1:4NS6A2blo3MPncOkbKBw43GzQF99YqbUNIvuPcV6QtE=
+github.com/cloudquery/plugin-sdk/v4 v4.58.1/go.mod h1:lwEGIieSh3kLHZ2+6nuAaDwBfeMra8Zo5huwiOIoPrg=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.4/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
