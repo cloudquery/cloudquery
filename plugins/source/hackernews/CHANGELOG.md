@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.5.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.5.0...plugins-source-hackernews-v3.5.1) (2024-08-05)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-config-ui-connector to v0.2.11 ([#18860](https://github.com/cloudquery/cloudquery/issues/18860)) ([f7287b9](https://github.com/cloudquery/cloudquery/commit/f7287b93b1e8b93194956016e16eddadba8a36f6))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.49 ([#18851](https://github.com/cloudquery/cloudquery/issues/18851)) ([faed134](https://github.com/cloudquery/cloudquery/commit/faed134a2ab79ad9b23d1131c3f668f679b75d1d))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.50 ([#18861](https://github.com/cloudquery/cloudquery/issues/18861)) ([79b4291](https://github.com/cloudquery/cloudquery/commit/79b4291f41c055fe1383d3c5205d0b798106c15f))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.52 ([#18862](https://github.com/cloudquery/cloudquery/issues/18862)) ([c275aed](https://github.com/cloudquery/cloudquery/commit/c275aed8c28060f525bcd6a2f8fd35a73d8b5a51))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.53 ([#18863](https://github.com/cloudquery/cloudquery/issues/18863)) ([c64d143](https://github.com/cloudquery/cloudquery/commit/c64d14305055788862be479c9ce6e7c02189d9e0))
+
 ## [3.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.4.0...plugins-source-hackernews-v3.5.0) (2024-08-05)
 
 
