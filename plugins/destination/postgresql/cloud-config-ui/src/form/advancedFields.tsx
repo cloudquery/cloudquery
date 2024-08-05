@@ -45,7 +45,7 @@ export function AdvancedFields() {
                     fullWidth={true}
                     helperText={getFieldHelperText(
                       fieldState.error?.message,
-                      'Configure the level of detail of the log from this source.',
+                      'Configure the level of detail of the log from this destination.',
                     )}
                     label="Log level"
                     select={true}
