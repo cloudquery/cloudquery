@@ -145,7 +145,7 @@ export function FormConnectionFields() {
                   fullWidth={true}
                   helperText={getFieldHelperText(
                     fieldState.error?.message,
-                    'Port to connect to, e.g. 5432.',
+                    'Port to connect to. Optional, defaults to 5432.',
                   )}
                   label="Port"
                   autoComplete="off"
@@ -181,7 +181,7 @@ export function FormConnectionFields() {
                     fullWidth={true}
                     helperText={getFieldHelperText(
                       fieldState.error?.message,
-                      'Username to use when authenticating.',
+                      'Username to use when authenticating. Optional, defaults to empty.',
                     )}
                     label="Username"
                     autoComplete="off"
@@ -214,7 +214,7 @@ export function FormConnectionFields() {
                     fullWidth={true}
                     helperText={getFieldHelperText(
                       fieldState.error?.message,
-                      'Password to use when authenticating.',
+                      'Password to use when authenticating. Optional, defaults to empty.',
                     )}
                     label="Password"
                     autoComplete="off"
@@ -247,7 +247,7 @@ export function FormConnectionFields() {
                   fullWidth={true}
                   helperText={getFieldHelperText(
                     fieldState.error?.message,
-                    'Name of the PostgreSQL schema you want to connect to. E.g. public.',
+                    'Name of the PostgreSQL schema you want to connect to. Optional, defaults to public.',
                   )}
                   label="Schema"
                   autoComplete="off"
