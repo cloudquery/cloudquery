@@ -176,7 +176,14 @@ spec:
   spec:
 ```
 
-Once ingestion starts you should be able to start seeing the traces in Datadog under APM->Traces->Explorer.
+Run `cloudquery sync spec.yml --log-level debug`.
+
+:::callout{type="info"}
+Running with `--log-level debug` is recommended to get more detailed logs about requests retries and errors.
+:::
+
+After ingestion starts, you should start seeing traces in the Datadog [**APM Traces Explorer**](https://app.datadoghq.com/apm/traces).
+You can also validate metrics and logs in the [**Metrics Summary**](https://app.datadoghq.com/metric/summary) and [**Log Explorer**](https://app.datadoghq.com/logs).
 
 ![Datadog](/images/docs/monitoring/cq_otel_datadog.png)
 
