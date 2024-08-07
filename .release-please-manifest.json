@@ -13,8 +13,6 @@
   "plugins/source/gcp+FILLER": "0.0.0",
   "plugins/source/github": "9.3.0",
   "plugins/source/github+FILLER": "0.0.0",
-  "plugins/source/k8s": "6.2.4",
-  "plugins/source/k8s+FILLER": "0.0.0",
   "plugins/source/okta": "4.1.9",
   "plugins/source/okta+FILLER": "0.0.0",
   "plugins/source/terraform": "3.0.12",
