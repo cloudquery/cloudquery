@@ -71,7 +71,20 @@ func NewCmdRoot() *cobra.Command {
 			cmd.SilenceUsage = true
 			var err error
 
-			invocationUUID, err = uuid.NewRandom()
+			uuidInput, err := cmd.Flags().GetString("invocation-uuid")
+			if err != nil {
+				return err
+			}
+
+			if uuidInput != "" {
+				invocationUUID, err = uuid.Parse(uuidInput)
+				if err != nil {
+					return fmt.Errorf("failed to parse invocation uuid: %w", err)
+				}
+			} else {
+				invocationUUID, err = uuid.NewRandom()
+			}
+
 			if err != nil {
 				return fmt.Errorf("failed to generate invocation uuid: %w", err)
 			}
@@ -132,6 +145,8 @@ func NewCmdRoot() *cobra.Command {
 	// Telemetry (analytics) flags
 	f := cmd.PersistentFlags().VarPF(telemetryLevel, "telemetry-level", "", "Telemetry level (none, errors, stats, all)")
 	f.DefValue = "all"
+
+	cmd.PersistentFlags().String("invocation-uuid", "", "invocation uuid, useful for when using Open Telemetry integration for tracing and logging to be able to correlate logs and traces through many services")
 
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
 
