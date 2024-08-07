@@ -1,5 +1,5 @@
 {
-  "title": "CloudQuery Sync Dashboard",
+  "title": "CloudQuery Syncs Insights",
   "description": "",
   "widgets": [
     {
@@ -180,6 +180,40 @@
         ]
       },
       "layout": { "x": 0, "y": 0, "width": 12, "height": 6 }
+    },
+    {
+      "id": 5021998435653025,
+      "definition": {
+        "title": "Permission errors over time",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": false,
+        "legend_layout": "auto",
+        "legend_columns": ["avg", "min", "max", "value", "sum"],
+        "type": "timeseries",
+        "requests": [
+          {
+            "formulas": [{ "formula": "a" }],
+            "queries": [
+              {
+                "data_source": "logs",
+                "name": "a",
+                "indexes": ["*"],
+                "compute": { "aggregation": "count" },
+                "group_by": [],
+                "search": {
+                  "query": "*:(*permissions OR denied*) -status:(info OR debug) @service.name:$service.value"
+                },
+                "storage": "hot"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": { "palette": "dog_classic" },
+            "display_type": "bars"
+          }
+        ]
+      },
+      "layout": { "x": 0, "y": 6, "width": 12, "height": 3 }
     },
     {
       "id": 2851755114443664,
