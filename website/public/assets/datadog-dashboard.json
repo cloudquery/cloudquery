@@ -145,7 +145,41 @@
         "size": "sm",
         "has_uniform_y_axes": true
       },
-      "layout": { "x": 0, "y": 5, "width": 12, "height": 7 }
+      "layout": { "x": 0, "y": 5, "width": 12, "height": 3 }
+    },
+    {
+      "id": 4618294854537207,
+      "definition": {
+        "title": "Throttled APIs detected in logs over time",
+        "title_size": "16",
+        "title_align": "left",
+        "show_legend": false,
+        "legend_layout": "auto",
+        "legend_columns": ["avg", "min", "max", "value", "sum"],
+        "type": "timeseries",
+        "requests": [
+          {
+            "formulas": [{ "formula": "a" }],
+            "queries": [
+              {
+                "data_source": "logs",
+                "name": "a",
+                "indexes": ["*"],
+                "compute": { "aggregation": "count" },
+                "group_by": [],
+                "search": {
+                  "query": "(@retry.attempt:>=2 OR \"retrying request\") @service.name:$service.value"
+                },
+                "storage": "hot"
+              }
+            ],
+            "response_format": "timeseries",
+            "style": { "palette": "dog_classic" },
+            "display_type": "bars"
+          }
+        ]
+      },
+      "layout": { "x": 0, "y": 0, "width": 12, "height": 6 }
     },
     {
       "id": 2851755114443664,
