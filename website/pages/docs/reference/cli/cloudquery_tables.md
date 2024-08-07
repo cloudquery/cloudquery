@@ -40,6 +40,7 @@ cloudquery tables ./directory --filter spec
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
+      --invocation-uuid string   invocation uuid, useful for when using Open Telemetry integration for tracing and logging to be able to correlate logs and traces through many services
       --log-console              enable console logging
       --log-file-name string     Log filename (default "cloudquery.log")
       --log-format string        Logging format (json, text) (default "text")
