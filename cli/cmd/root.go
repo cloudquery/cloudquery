@@ -5,15 +5,12 @@ import (
 	"os"
 	"time"
 
-	guuid "github.com/google/uuid"
-
-	"github.com/cloudquery/cloudquery/cli/internal/uuid"
-
-	"github.com/rs/zerolog"
-
 	analytics "github.com/cloudquery/cloudquery/cli/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/internal/enum"
 	"github.com/cloudquery/cloudquery/cli/internal/env"
+	"github.com/cloudquery/cloudquery/cli/internal/uuid"
+	guuid "github.com/google/uuid"
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"github.com/thoas/go-funk"
@@ -47,7 +44,7 @@ func NewCmdRoot() *cobra.Command {
 	sentryDsn := sentryDsnDefault
 	var err error
 	if invocationUUID.UUID, err = guuid.NewRandom(); err != nil {
-		fmt.Fprintf(os.Stderr, "failed to generate invocation uuid: "+err.Error())
+		fmt.Fprintf(os.Stderr, "failed to generate invocation uuid: %s", err.Error())
 		os.Exit(1)
 	}
 
@@ -60,7 +57,7 @@ func NewCmdRoot() *cobra.Command {
 	}
 	err = telemetryLevel.Set(env.GetEnvOrDefault("CQ_TELEMETRY_LEVEL", defaultTelemetryValue))
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to set telemetry level: "+err.Error())
+		fmt.Fprintf(os.Stderr, "failed to set telemetry level: %s", err.Error())
 		os.Exit(1)
 	}
 
