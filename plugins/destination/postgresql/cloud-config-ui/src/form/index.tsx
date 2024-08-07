@@ -22,14 +22,18 @@ import { FormConnectionFields } from './connectionFields';
 
 interface Props {
   initialValues: FormValues | undefined;
+  isManagedDestination: boolean;
 }
 
 const formDefaultValues = formValidationSchema.getDefault();
 const formValidationResolver = getYupValidationResolver(formValidationSchema);
 
-export function Form({ initialValues }: Props) {
+export function Form({ initialValues, isManagedDestination }: Props) {
   const formContext = useForm<FormValues>({
-    defaultValues: initialValues || formDefaultValues,
+    defaultValues: initialValues || {
+      ...formDefaultValues,
+      connectionType: isManagedDestination ? 'string' : 'fields',
+    },
     resolver: formValidationResolver,
   });
   const { control, handleSubmit: handleFormSubmit, getValues } = formContext;
