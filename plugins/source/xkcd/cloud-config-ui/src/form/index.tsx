@@ -1,16 +1,23 @@
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import { Logo } from '@cloudquery/plugin-config-ui-lib';
+import Box from '@mui/material/Box';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { getYupValidationResolver } from '@cloudquery/cloud-ui';
 import { FormValues, formValidationSchema } from '../utils/formSchema';
 import { prepareSubmitValues } from '../utils/prepareSubmitValues';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
+
+import { assetPrefix } from '../utils/constants';
 import { useCallback } from 'react';
+import { getFieldHelperText } from '@cloudquery/cloud-ui';
 import {
-  FormFieldGroup,
-  scrollToFirstFormFieldError,
-  useFormCurrentValues,
   useFormSubmit,
+  useFormCurrentValues,
+  scrollToFirstFormFieldError,
 } from '@cloudquery/plugin-config-ui-lib';
 
 interface Props {
@@ -49,10 +56,17 @@ export function Form({ initialValues }: Props) {
 
   return (
     <FormProvider {...formContext}>
-      <Stack spacing={2}>
-        <FormFieldGroup title={initialValues ? 'Update a source' : 'Create a source'}>
-          <Stack>
-            <Stack marginBottom={2}>
+      <Card>
+        <CardContent>
+          <Stack gap={2}>
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+              <Typography variant="h5">Configure source</Typography>
+              <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
+                <Logo src={`${assetPrefix}/images/xkcd.webp`} alt="XKCD" />
+                <Typography variant="body1">XKCD</Typography>
+              </Box>
+            </Box>
+            <Stack>
               <Controller
                 control={control}
                 name="name"
@@ -60,7 +74,10 @@ export function Form({ initialValues }: Props) {
                   <TextField
                     error={!!fieldState.error}
                     fullWidth={true}
-                    helperText={fieldState.error?.message}
+                    helperText={getFieldHelperText(
+                      fieldState.error?.message,
+                      'Pick a name to help you identify this source.',
+                    )}
                     label="Source name"
                     disabled={!!initialValues}
                     autoComplete="off"
@@ -70,8 +87,8 @@ export function Form({ initialValues }: Props) {
               />
             </Stack>
           </Stack>
-        </FormFieldGroup>
-      </Stack>
+        </CardContent>
+      </Card>
     </FormProvider>
   );
 }

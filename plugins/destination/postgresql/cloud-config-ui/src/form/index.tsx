@@ -1,25 +1,24 @@
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import MenuItem from '@mui/material/MenuItem';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
-import { getYupValidationResolver } from '@cloudquery/cloud-ui';
-import {
-  FormValues,
-  formValidationSchema,
-  migrateModeValues,
-  pgxLogLevelValues,
-  writeModeValues,
-} from '../utils/formSchema';
+import { getFieldHelperText, getYupValidationResolver } from '@cloudquery/cloud-ui';
+import { FormValues, formValidationSchema } from '../utils/formSchema';
 import { prepareSubmitValues } from '../utils/prepareSubmitValues';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
-import { useCallback, useEffect, useState } from 'react';
-import { FormConnectionFields } from './connectionFields';
+import { useCallback } from 'react';
 import {
-  FormFieldGroup,
+  Logo,
   scrollToFirstFormFieldError,
   useFormCurrentValues,
   useFormSubmit,
 } from '@cloudquery/plugin-config-ui-lib';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import { FormSyncOptions } from './syncOptions';
+import { AdvancedFields } from './advancedFields';
+import { FormConnectionFields } from './connectionFields';
 
 interface Props {
   initialValues: FormValues | undefined;
@@ -29,15 +28,11 @@ const formDefaultValues = formValidationSchema.getDefault();
 const formValidationResolver = getYupValidationResolver(formValidationSchema);
 
 export function Form({ initialValues }: Props) {
-  const [specIsValid, setSpecIsValid] = useState(false);
-
   const formContext = useForm<FormValues>({
     defaultValues: initialValues || formDefaultValues,
     resolver: formValidationResolver,
   });
-  const { control, handleSubmit: handleFormSubmit, watch, getValues } = formContext;
-
-  const values = watch();
+  const { control, handleSubmit: handleFormSubmit, getValues } = formContext;
 
   const getCurrentValues = useCallback(() => prepareSubmitValues(getValues()), [getValues]);
   useFormCurrentValues(pluginUiMessageHandler, getCurrentValues);
@@ -60,24 +55,18 @@ export function Form({ initialValues }: Props) {
 
   useFormSubmit(handleValidate, pluginUiMessageHandler);
 
-  useEffect(() => {
-    try {
-      formValidationSchema.validateSync(getValues(), {
-        abortEarly: false,
-      });
-
-      setSpecIsValid(true);
-    } catch (error: any) {
-      const isSpecInvalid = error.inner.some((err: any) => err.path.startsWith('spec.'));
-      setSpecIsValid(!isSpecInvalid);
-    }
-  }, [getValues, values]);
-
   return (
     <FormProvider {...formContext}>
       <Stack spacing={2}>
-        <FormFieldGroup title={initialValues ? 'Update a destination' : 'Create a destination'}>
-          <Stack>
+        <Card>
+          <CardContent>
+            <Box display="flex" marginBottom={3} justifyContent="space-between" alignItems="center">
+              <Typography variant="h5">Configure destination</Typography>
+              <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
+                <Logo src="images/postgresql.png" alt="PostgreSQL" />
+                <Typography variant="body1">PostgreSQL</Typography>
+              </Box>
+            </Box>
             <Stack marginBottom={2}>
               <Controller
                 control={control}
@@ -86,7 +75,10 @@ export function Form({ initialValues }: Props) {
                   <TextField
                     error={!!fieldState.error}
                     fullWidth={true}
-                    helperText={fieldState.error?.message}
+                    helperText={getFieldHelperText(
+                      fieldState.error?.message,
+                      'Unique destination name that helps identify the destination within your workspace.',
+                    )}
                     label="Destination name"
                     disabled={!!initialValues}
                     autoComplete="off"
@@ -95,176 +87,11 @@ export function Form({ initialValues }: Props) {
                 )}
               />
             </Stack>
-          </Stack>
-          <FormConnectionFields specIsValid={specIsValid} isUpdating={!!initialValues} />
-        </FormFieldGroup>
-        <FormFieldGroup title="Advanced">
-          <Controller
-            control={control}
-            name="spec.pgxLogLevel"
-            render={({ field, fieldState }) => (
-              <TextField
-                error={!!fieldState.error}
-                fullWidth={true}
-                helperText={
-                  fieldState.error?.message || 'Defines what pgx call events should be logged.'
-                }
-                label="Log level"
-                select={true}
-                SelectProps={{
-                  MenuProps: {
-                    autoFocus: false,
-                    disableAutoFocus: true,
-                  },
-                }}
-                required={true}
-                {...field}
-              >
-                {pgxLogLevelValues.map((value) => (
-                  <MenuItem key={value} value={value}>
-                    {value}
-                  </MenuItem>
-                ))}
-              </TextField>
-            )}
-          />
-          <Controller
-            control={control}
-            name="spec.batchSize"
-            render={({ field, fieldState }) => (
-              <TextField
-                error={!!fieldState.error}
-                fullWidth={true}
-                required={true}
-                helperText={
-                  fieldState.error?.message ||
-                  'Maximum number of items that may be grouped together to be written in a single write.'
-                }
-                label="Batch size"
-                {...field}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name="spec.batchSizeBytes"
-            render={({ field, fieldState }) => (
-              <TextField
-                error={!!fieldState.error}
-                fullWidth={true}
-                required={true}
-                helperText={
-                  fieldState.error?.message ||
-                  'Maximum size of items that may be grouped together to be written in a single write.'
-                }
-                label="Batch size (bytes)"
-                {...field}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name="spec.batchTimeout"
-            render={({ field, fieldState }) => (
-              <TextField
-                error={!!fieldState.error}
-                fullWidth={true}
-                required={true}
-                helperText={fieldState.error?.message || 'Maximum interval between batch writes.'}
-                label="Batch timeout"
-                {...field}
-              />
-            )}
-          />
-          <Controller
-            control={control}
-            name="migrateMode"
-            render={({ field, fieldState }) => (
-              <TextField
-                error={!!fieldState.error}
-                fullWidth={true}
-                required={true}
-                helperText={
-                  fieldState.error?.message || (
-                    <>
-                      Specifies the migration mode to use when source tables are changed.{' '}
-                      <a
-                        href="#"
-                        onClick={(event) => {
-                          event.preventDefault();
-                          pluginUiMessageHandler.sendMessage('open_url', {
-                            url: 'https://docs.cloudquery.io/docs/reference/destination-spec#migrate_mode',
-                          });
-                        }}
-                      >
-                        Learn more
-                      </a>
-                    </>
-                  )
-                }
-                label="Migrate mode"
-                select={true}
-                SelectProps={{
-                  MenuProps: {
-                    autoFocus: false,
-                    disableAutoFocus: true,
-                  },
-                }}
-                {...field}
-              >
-                {migrateModeValues.map((value) => (
-                  <MenuItem key={value} value={value}>
-                    {value}
-                  </MenuItem>
-                ))}
-              </TextField>
-            )}
-          />
-          <Controller
-            control={control}
-            name="writeMode"
-            render={({ field, fieldState }) => (
-              <TextField
-                error={!!fieldState.error}
-                fullWidth={true}
-                required={true}
-                helperText={
-                  fieldState.error?.message || (
-                    <>
-                      Specifies the update method to use when inserting rows.{' '}
-                      <a
-                        href="#"
-                        onClick={(event) => {
-                          event.preventDefault();
-                          pluginUiMessageHandler.sendMessage('open_url', {
-                            url: 'https://docs.cloudquery.io/docs/reference/destination-spec#write_mode',
-                          });
-                        }}
-                      >
-                        Learn more
-                      </a>
-                    </>
-                  )
-                }
-                label="Write mode"
-                select={true}
-                SelectProps={{
-                  MenuProps: {
-                    autoFocus: false,
-                    disableAutoFocus: true,
-                  },
-                }}
-                {...field}
-              >
-                {writeModeValues.map((value) => (
-                  <MenuItem key={value} value={value}>
-                    {value}
-                  </MenuItem>
-                ))}
-              </TextField>
-            )}
-          />
-        </FormFieldGroup>
+          </CardContent>
+        </Card>
+        <FormConnectionFields />
+        <FormSyncOptions />
+        <AdvancedFields />
       </Stack>
     </FormProvider>
   );
