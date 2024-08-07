@@ -34,7 +34,7 @@ cloudquery migrate ./directory ./aws.yml ./pg.yml
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
-      --invocation-uuid uuid     useful for when using Open Telemetry integration for tracing and logging to be able to correlate logs and traces through many services (default 20ca6cb3-d72e-479c-b789-29ee71f082c8)
+      --invocation-uuid uuid     useful for when using Open Telemetry integration for tracing and logging to be able to correlate logs and traces through many services (default <UUID>)
       --log-console              enable console logging
       --log-file-name string     Log filename (default "cloudquery.log")
       --log-format string        Logging format (json, text) (default "text")
