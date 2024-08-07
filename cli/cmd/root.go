@@ -5,7 +5,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/google/uuid"
+	guuid "github.com/google/uuid"
+
+	"github.com/cloudquery/cloudquery/cli/internal/uuid"
+
 	"github.com/rs/zerolog"
 
 	analytics "github.com/cloudquery/cloudquery/cli/internal/analytics"
@@ -42,6 +45,11 @@ func NewCmdRoot() *cobra.Command {
 	noLogFile := false
 	logFileName := "cloudquery.log"
 	sentryDsn := sentryDsnDefault
+	var err error
+	if invocationUUID.UUID, err = guuid.NewRandom(); err != nil {
+		fmt.Fprintf(os.Stderr, "failed to generate invocation uuid: "+err.Error())
+		os.Exit(1)
+	}
 
 	// support legacy telemetry environment variable,
 	// but the newer CQ_TELEMETRY_LEVEL environment variable takes precedence
@@ -50,7 +58,7 @@ func NewCmdRoot() *cobra.Command {
 	if legacyTelemetry != "" {
 		defaultTelemetryValue = "none"
 	}
-	err := telemetryLevel.Set(env.GetEnvOrDefault("CQ_TELEMETRY_LEVEL", defaultTelemetryValue))
+	err = telemetryLevel.Set(env.GetEnvOrDefault("CQ_TELEMETRY_LEVEL", defaultTelemetryValue))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to set telemetry level: "+err.Error())
 		os.Exit(1)
@@ -70,24 +78,6 @@ func NewCmdRoot() *cobra.Command {
 			// PersistentPreRunE runs after argument parsing, so errors during parsing will result in printing the help
 			cmd.SilenceUsage = true
 			var err error
-
-			uuidInput, err := cmd.Flags().GetString("invocation-uuid")
-			if err != nil {
-				return err
-			}
-
-			if uuidInput != "" {
-				invocationUUID, err = uuid.Parse(uuidInput)
-				if err != nil {
-					return fmt.Errorf("failed to parse invocation uuid: %w", err)
-				}
-			} else {
-				invocationUUID, err = uuid.NewRandom()
-			}
-
-			if err != nil {
-				return fmt.Errorf("failed to generate invocation uuid: %w", err)
-			}
 
 			if logFile, err = initLogging(noLogFile, logLevel, logFormat, logConsole, logFileName); err != nil {
 				return err
@@ -146,7 +136,7 @@ func NewCmdRoot() *cobra.Command {
 	f := cmd.PersistentFlags().VarPF(telemetryLevel, "telemetry-level", "", "Telemetry level (none, errors, stats, all)")
 	f.DefValue = "all"
 
-	cmd.PersistentFlags().String("invocation-uuid", "", "invocation uuid, useful for when using Open Telemetry integration for tracing and logging to be able to correlate logs and traces through many services")
+	cmd.PersistentFlags().Var(&invocationUUID, "invocation-uuid", "useful for when using Open Telemetry integration for tracing and logging to be able to correlate logs and traces through many services")
 
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
 
