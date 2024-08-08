@@ -1,5 +1,53 @@
 # Changelog
 
+## [1.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.3.0...plugins-source-xkcd-v1.3.1) (2024-08-06)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-config-ui-connector to v0.2.11 ([#18860](https://github.com/cloudquery/cloudquery/issues/18860)) ([f7287b9](https://github.com/cloudquery/cloudquery/commit/f7287b93b1e8b93194956016e16eddadba8a36f6))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.49 ([#18851](https://github.com/cloudquery/cloudquery/issues/18851)) ([faed134](https://github.com/cloudquery/cloudquery/commit/faed134a2ab79ad9b23d1131c3f668f679b75d1d))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.50 ([#18861](https://github.com/cloudquery/cloudquery/issues/18861)) ([79b4291](https://github.com/cloudquery/cloudquery/commit/79b4291f41c055fe1383d3c5205d0b798106c15f))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.52 ([#18862](https://github.com/cloudquery/cloudquery/issues/18862)) ([c275aed](https://github.com/cloudquery/cloudquery/commit/c275aed8c28060f525bcd6a2f8fd35a73d8b5a51))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.53 ([#18863](https://github.com/cloudquery/cloudquery/issues/18863)) ([c64d143](https://github.com/cloudquery/cloudquery/commit/c64d14305055788862be479c9ce6e7c02189d9e0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.58.1 ([#18852](https://github.com/cloudquery/cloudquery/issues/18852)) ([4320340](https://github.com/cloudquery/cloudquery/commit/4320340ac9a0db098696f567956e8b0c721f714c))
+
+## [1.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.2.0...plugins-source-xkcd-v1.3.0) (2024-08-04)
+
+
+### Features
+
+* XKCD source plugin UI v2 ([#18837](https://github.com/cloudquery/cloudquery/issues/18837)) ([5a20677](https://github.com/cloudquery/cloudquery/commit/5a2067707fcca2b574a55709940285627f36684c))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/cloud-ui to v0.1.12 ([#18836](https://github.com/cloudquery/cloudquery/issues/18836)) ([b24afab](https://github.com/cloudquery/cloudquery/commit/b24afab030164a5b2eb075e8d2e948dff95501a6))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-connector to v0.2.10 ([#18850](https://github.com/cloudquery/cloudquery/issues/18850)) ([ec926b5](https://github.com/cloudquery/cloudquery/commit/ec926b50405be69f7aac42ebc8d7fbfd063d6c46))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.42 ([#18834](https://github.com/cloudquery/cloudquery/issues/18834)) ([827d13b](https://github.com/cloudquery/cloudquery/commit/827d13bd49589a6190cffecbd1e973a508c8a608))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.44 ([#18838](https://github.com/cloudquery/cloudquery/issues/18838)) ([745aeca](https://github.com/cloudquery/cloudquery/commit/745aecab9bf1b216d7e25db247dfc231f58fe550))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.45 ([#18841](https://github.com/cloudquery/cloudquery/issues/18841)) ([4476f38](https://github.com/cloudquery/cloudquery/commit/4476f38b7897574c405c76f76166769756ee9117))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.46 ([#18844](https://github.com/cloudquery/cloudquery/issues/18844)) ([60f5924](https://github.com/cloudquery/cloudquery/commit/60f59247d2ed57593086b98b42bc962fa1dbe635))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.47 ([#18849](https://github.com/cloudquery/cloudquery/issues/18849)) ([029638e](https://github.com/cloudquery/cloudquery/commit/029638ecb6a59a743ddd00fac9d3700c9f579e0f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.57.1 ([#18830](https://github.com/cloudquery/cloudquery/issues/18830)) ([605c202](https://github.com/cloudquery/cloudquery/commit/605c2027954f06f8314bad4ebb4f8fb378e7ce93))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.58.0 ([#18839](https://github.com/cloudquery/cloudquery/issues/18839)) ([6b57bca](https://github.com/cloudquery/cloudquery/commit/6b57bca07781db60497006b870d241609ebc8aab))
+
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.1.3...plugins-source-xkcd-v1.2.0) (2024-08-01)
+
+
+### Features
+
+* XKCD source plugin cloud config UI ([#18746](https://github.com/cloudquery/cloudquery/issues/18746)) ([6cc162e](https://github.com/cloudquery/cloudquery/commit/6cc162e08b1f3d5b041801a98ac5239e6360ed4f))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/cloud-ui to v0.1.10 ([#18815](https://github.com/cloudquery/cloudquery/issues/18815)) ([cb33beb](https://github.com/cloudquery/cloudquery/commit/cb33beb6f132c3b2d1d37b36dda3788b8b3ca577))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.40 ([#18817](https://github.com/cloudquery/cloudquery/issues/18817)) ([4c46395](https://github.com/cloudquery/cloudquery/commit/4c463953763a945abdabd5e75a0ff214ed7d4dea))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.41 ([#18824](https://github.com/cloudquery/cloudquery/issues/18824)) ([d0d10ac](https://github.com/cloudquery/cloudquery/commit/d0d10ace49a467d4c70805f8f21215284d0a138c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.56.0 ([#18763](https://github.com/cloudquery/cloudquery/issues/18763)) ([45da614](https://github.com/cloudquery/cloudquery/commit/45da614ef7aaaf83e7820beec5ee33b00e9f5c0f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.57.0 ([#18810](https://github.com/cloudquery/cloudquery/issues/18810)) ([42cc5de](https://github.com/cloudquery/cloudquery/commit/42cc5de457e5734c66d3c0f08ef61b35b2b60ca9))
+
 ## [1.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.1.2...plugins-source-xkcd-v1.1.3) (2024-07-30)
 
 

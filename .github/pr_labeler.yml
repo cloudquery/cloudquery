@@ -46,14 +46,14 @@ area/plugin/source/bitbucket:
   - plugins/source/bitbucket/**/*
 area/plugin/source/hackernews:
   - plugins/source/hackernews/**/*
-area/plugin/source/k8s:
-  - plugins/source/k8s/**/*
 area/plugin/source/square:
   - plugins/source/square/**/*
 area/plugin/source/typeform:
   - plugins/source/typeform/**/*
 area/plugin/source/xkcd:
   - plugins/source/xkcd/**/*
+area/plugin/transform/basic:
+  - plugins/transform/basic/**/*
 area/scaffold:
   - scaffold/**/*
 area/website:

@@ -71,9 +71,6 @@
     "plugins/source/hackernews": {
       "component": "plugins-source-hackernews"
     },
-    "plugins/source/k8s": {
-      "component": "plugins-source-k8s"
-    },
     "plugins/source/square": {
       "component": "plugins-source-square",
       "release-type": "python"
@@ -90,6 +87,9 @@
     },
     "plugins/source/xkcd": {
       "component": "plugins-source-xkcd"
+    },
+    "plugins/transformer/basic": {
+      "component": "plugins-transformer-basic"
     },
     "scaffold": {
       "component": "scaffold"
