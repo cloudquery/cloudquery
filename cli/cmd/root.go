@@ -44,7 +44,7 @@ func NewCmdRoot() *cobra.Command {
 	sentryDsn := sentryDsnDefault
 	var err error
 	if invocationUUID.UUID, err = guuid.NewRandom(); err != nil {
-		fmt.Fprintf(os.Stderr, "failed to generate invocation uuid: %s", err.Error())
+		fmt.Fprintf(os.Stderr, "failed to generate invocation uuid: %v", err)
 		os.Exit(1)
 	}
 
@@ -57,7 +57,7 @@ func NewCmdRoot() *cobra.Command {
 	}
 	err = telemetryLevel.Set(env.GetEnvOrDefault("CQ_TELEMETRY_LEVEL", defaultTelemetryValue))
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "failed to set telemetry level: %s", err.Error())
+		fmt.Fprintf(os.Stderr, "failed to set telemetry level: %v", err)
 		os.Exit(1)
 	}
 
