@@ -10,9 +10,9 @@ type UUID struct {
 	guuid.UUID
 }
 
-func (u *UUID) Set(p string) error {
+func (u *UUID) Set(str string) error {
 	var err error
-	u.UUID, err = guuid.Parse(p)
+	u.UUID, err = guuid.Parse(str)
 	return err
 }
 
