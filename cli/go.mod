@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.3.0
-	github.com/cloudquery/cloudquery-api-go v1.12.6
+	github.com/cloudquery/cloudquery-api-go v1.12.7
 	github.com/cloudquery/codegen v0.3.19
 	github.com/cloudquery/plugin-pb-go v1.21.5
 	github.com/cloudquery/plugin-sdk/v4 v4.58.1
@@ -146,3 +146,5 @@ replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0
 
 // github.com/cloudquery/godebouncer @ fix-race
 replace github.com/vnteamopen/godebouncer => github.com/cloudquery/godebouncer v0.0.0-20240220152946-054f7dbbcf18
+
+replace github.com/cloudquery/plugin-pb-go => github.com/cloudquery/plugin-pb-go v0.0.0-20240808140843-e32084da4f3a

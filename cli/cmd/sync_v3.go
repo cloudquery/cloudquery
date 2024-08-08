@@ -203,7 +203,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	if err != nil {
 		return fmt.Errorf("failed to marshal source spec JSON before variable replacement: %w", err)
 	}
-	specBytesExpanded, err := specs.ReplaceVariables(string(specBytes), variables)
+	specBytesExpanded, err := specs.ReplaceVariables(string(specBytes), variables, source.spec.Metadata.Registry)
 	if err != nil {
 		return fmt.Errorf("failed to replace variables: %w", err)
 	}

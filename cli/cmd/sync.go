@@ -141,6 +141,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		}
 	}
 
+	isThereADockerSourcePluginWithBackend := false
 	for _, source := range sources {
 		if source.OtelEndpoint == "" && otelReceiver != nil {
 			source.OtelEndpoint = otelReceiver.Endpoint
@@ -152,6 +153,10 @@ func sync(cmd *cobra.Command, args []string) error {
 			managedplugin.WithAuthToken(authToken.Value),
 			managedplugin.WithTeamName(teamName),
 			managedplugin.WithLicenseFile(licenseFile),
+		}
+		if source.Registry == specs.RegistryDocker && source.BackendOptions != nil && source.BackendOptions.Connection != "" {
+			isThereADockerSourcePluginWithBackend = true
+			opts = append(opts, managedplugin.WithDockerExtraHosts([]string{"host.docker.internal:host-gateway"}))
 		}
 		if logConsole {
 			opts = append(opts, managedplugin.WithNoProgress())
@@ -194,6 +199,9 @@ func sync(cmd *cobra.Command, args []string) error {
 			managedplugin.WithAuthToken(authToken.Value),
 			managedplugin.WithTeamName(teamName),
 			managedplugin.WithLicenseFile(licenseFile),
+		}
+		if isThereADockerSourcePluginWithBackend {
+			opts = append(opts, managedplugin.WithUseTCP())
 		}
 		if logConsole {
 			opts = append(opts, managedplugin.WithNoProgress())

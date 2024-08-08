@@ -43,7 +43,7 @@ func TestReplaceVariables(t *testing.T) {
 		},
 	}
 	for _, c := range cases {
-		res, err := ReplaceVariables(c.src, c.variables)
+		res, err := ReplaceVariables(c.src, c.variables, RegistryLocal)
 		if err != nil && !c.expectErr {
 			t.Fatalf("ReplaceVariables(%q) got unexpected error: %v", c.src, err)
 		} else if err == nil && c.expectErr {
