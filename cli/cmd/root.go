@@ -133,7 +133,7 @@ func NewCmdRoot() *cobra.Command {
 	f := cmd.PersistentFlags().VarPF(telemetryLevel, "telemetry-level", "", "Telemetry level (none, errors, stats, all)")
 	f.DefValue = "all"
 
-	iUUID := cmd.PersistentFlags().VarPF(&invocationUUID, "invocation-uuid", "", "useful for when using Open Telemetry integration for tracing and logging to be able to correlate logs and traces through many services")
+	iUUID := cmd.PersistentFlags().VarPF(&invocationUUID, "invocation-id", "", "useful for when using Open Telemetry integration for tracing and logging to be able to correlate logs and traces through many services")
 	iUUID.DefValue = "<UUID>"
 	cmd.SetHelpCommand(&cobra.Command{Hidden: true})
 
