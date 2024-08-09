@@ -22,7 +22,7 @@ var reVariables = regexp.MustCompile(`@@(plugins\.[a-zA-Z0-9_\.-]+)`)
 // ReplaceVariables replaces variables starting with @@ in the src string
 // with the values from the values from variables by dot notation.
 // Example: @@plugins.aws.connection will be replaced with the value of variables.Plugins["aws"].Connection
-func ReplaceVariables(src string, variables Variables, registry Registry) (string, error) {
+func ReplaceVariables(src string, variables Variables, shouldReplaceLocalhost bool) (string, error) {
 	var lastErr error
 	bytes, err := json.Marshal(variables)
 	if err != nil {
@@ -47,7 +47,7 @@ func ReplaceVariables(src string, variables Variables, registry Registry) (strin
 		}
 		// Edge case: if the plugin whose spec's variables are being replaced is a docker plugin,
 		// it won't be able to connect to localhost, so we replace localhost with host.docker.internal
-		if strings.Contains(variablePath, ".connection") && registry == RegistryDocker {
+		if strings.HasPrefix(variablePath, "plugins.") && strings.HasSuffix(variablePath, ".connection") && shouldReplaceLocalhost {
 			for _, needle := range []string{"localhost", "0.0.0.0", "127.0.0.1"} {
 				resString = strings.ReplaceAll(resString, needle, "host.docker.internal")
 			}
