@@ -22,14 +22,18 @@ import { FormConnectionFields } from './connectionFields';
 
 interface Props {
   initialValues: FormValues | undefined;
+  isManagedDestination: boolean;
 }
 
 const formDefaultValues = formValidationSchema.getDefault();
 const formValidationResolver = getYupValidationResolver(formValidationSchema);
 
-export function Form({ initialValues }: Props) {
+export function Form({ initialValues, isManagedDestination }: Props) {
   const formContext = useForm<FormValues>({
-    defaultValues: initialValues || formDefaultValues,
+    defaultValues: initialValues || {
+      ...formDefaultValues,
+      connectionType: isManagedDestination ? 'string' : 'fields',
+    },
     resolver: formValidationResolver,
   });
   const { control, handleSubmit: handleFormSubmit, getValues } = formContext;
@@ -63,7 +67,7 @@ export function Form({ initialValues }: Props) {
             <Box display="flex" marginBottom={3} justifyContent="space-between" alignItems="center">
               <Typography variant="h5">Configure destination</Typography>
               <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
-                <Logo src="/images/postgresql.png" alt="AWS" />
+                <Logo src="images/postgresql.png" alt="PostgreSQL" />
                 <Typography variant="body1">PostgreSQL</Typography>
               </Box>
             </Box>
@@ -77,7 +81,7 @@ export function Form({ initialValues }: Props) {
                     fullWidth={true}
                     helperText={getFieldHelperText(
                       fieldState.error?.message,
-                      'Pick a name to help you identify this destination.',
+                      'Unique destination name that helps identify the destination within your workspace.',
                     )}
                     label="Destination name"
                     disabled={!!initialValues}

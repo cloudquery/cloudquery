@@ -25,7 +25,7 @@ const connectionTypeOptions = [
 ];
 
 export function FormConnectionFields() {
-  const [usernameResetted, setUsernameResetted] = useState(false);
+  const [connectionStringResetted, setConnectionStringResetted] = useState(false);
   const [passwordResetted, setPasswordResetted] = useState(false);
 
   const {
@@ -38,14 +38,14 @@ export function FormConnectionFields() {
 
   const values = watch();
 
-  const defaultUsername = defaultValues?.username;
+  const defaultConnectionString = defaultValues?.connectionString;
   const defaultPassword = defaultValues?.password;
 
-  const handleReset = (field: 'username' | 'password') => {
+  const handleReset = (field: 'connectionString' | 'password') => {
     switch (field) {
-      case 'username': {
-        setUsernameResetted(true);
-        setValue('username', '');
+      case 'connectionString': {
+        setConnectionStringResetted(true);
+        setValue('connectionString', '');
 
         break;
       }
@@ -59,11 +59,11 @@ export function FormConnectionFields() {
     }
   };
 
-  const handelCancelReset = (field: 'username' | 'password') => {
+  const handelCancelReset = (field: 'connectionString' | 'password') => {
     switch (field) {
-      case 'username': {
-        setUsernameResetted(false);
-        setValue('username', defaultUsername || '');
+      case 'connectionString': {
+        setConnectionStringResetted(false);
+        setValue('connectionString', defaultConnectionString || '');
 
         break;
       }
@@ -84,6 +84,8 @@ export function FormConnectionFields() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values]);
 
+  const defaultConnectionStringIsSecret = defaultConnectionString?.includes('${password}');
+
   return (
     <FormFieldGroup
       title="Connect to your database"
@@ -102,18 +104,35 @@ export function FormConnectionFields() {
             control={control}
             name="connectionString"
             render={({ field, fieldState }) => (
-              <TextField
-                error={!!fieldState.error}
-                fullWidth={true}
-                helperText={getFieldHelperText(
-                  fieldState.error?.message,
-                  'Connection string to connect to the database. E.g. postgres://jack:secret@localhost:5432/mydb?sslmode=prefer',
+              <Stack direction="row" alignItems="flex-start" spacing={2}>
+                <TextField
+                  error={!!fieldState.error}
+                  fullWidth={true}
+                  helperText={getFieldHelperText(
+                    fieldState.error?.message,
+                    'Connection string to connect to the database. E.g. postgres://jack:secret@localhost:5432/mydb?sslmode=prefer',
+                  )}
+                  label="Connection string"
+                  autoComplete="off"
+                  required={true}
+                  {...field}
+                  disabled={defaultConnectionStringIsSecret && !connectionStringResetted}
+                  value={
+                    defaultConnectionStringIsSecret && !connectionStringResetted
+                      ? defaultConnectionString?.replace('${password}', envPlaceholder)
+                      : field.value
+                  }
+                />
+                {defaultConnectionStringIsSecret && (
+                  <FormFieldReset
+                    isResetted={connectionStringResetted}
+                    inputSelectorToFocus='input[name="connectionString"]'
+                    onCancel={() => handelCancelReset('connectionString')}
+                    onReset={() => handleReset('connectionString')}
+                    sx={{ minHeight: 55 }}
+                  />
                 )}
-                label="Connection string"
-                autoComplete="off"
-                required={true}
-                {...field}
-              />
+              </Stack>
             )}
           />
         ) : (
@@ -145,7 +164,7 @@ export function FormConnectionFields() {
                   fullWidth={true}
                   helperText={getFieldHelperText(
                     fieldState.error?.message,
-                    'Port to connect to, e.g. 5432.',
+                    'Port to connect to. Optional, defaults to 5432.',
                   )}
                   label="Port"
                   autoComplete="off"
@@ -181,26 +200,12 @@ export function FormConnectionFields() {
                     fullWidth={true}
                     helperText={getFieldHelperText(
                       fieldState.error?.message,
-                      'Username to use when authenticating.',
+                      'Username to use when authenticating. Optional, defaults to empty.',
                     )}
                     label="Username"
                     autoComplete="off"
                     {...field}
-                    disabled={defaultUsername === '${username}' && !usernameResetted}
-                    value={
-                      defaultUsername === '${username}' && !usernameResetted
-                        ? envPlaceholder
-                        : field.value
-                    }
                   />
-                  {defaultUsername === '${username}' && (
-                    <FormFieldReset
-                      isResetted={usernameResetted}
-                      inputSelectorToFocus='input[name="username"]'
-                      onCancel={() => handelCancelReset('username')}
-                      onReset={() => handleReset('username')}
-                    />
-                  )}
                 </Stack>
               )}
             />
@@ -208,13 +213,13 @@ export function FormConnectionFields() {
               control={control}
               name="password"
               render={({ field, fieldState }) => (
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row" alignItems="flex-start" spacing={2}>
                   <TextField
                     error={!!fieldState.error}
                     fullWidth={true}
                     helperText={getFieldHelperText(
                       fieldState.error?.message,
-                      'Password to use when authenticating.',
+                      'Password to use when authenticating. Optional, defaults to empty.',
                     )}
                     label="Password"
                     autoComplete="off"
@@ -233,6 +238,7 @@ export function FormConnectionFields() {
                       inputSelectorToFocus='input[name="password"]'
                       onCancel={() => handelCancelReset('password')}
                       onReset={() => handleReset('password')}
+                      sx={{ minHeight: 55 }}
                     />
                   )}
                 </Stack>
@@ -247,7 +253,7 @@ export function FormConnectionFields() {
                   fullWidth={true}
                   helperText={getFieldHelperText(
                     fieldState.error?.message,
-                    'Name of the PostgreSQL schema you want to connect to. E.g. public.',
+                    'Name of the PostgreSQL schema you want to connect to. Optional, defaults to public.',
                   )}
                   label="Schema"
                   autoComplete="off"

@@ -198,7 +198,7 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 		return serverErr
 	}
 
-	analytics.TrackLoginSuccess(ctx, invocationUUID)
+	analytics.TrackLoginSuccess(ctx, invocationUUID.UUID)
 	cmd.Println("CLI successfully authenticated.")
 
 	return nil

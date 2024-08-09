@@ -85,14 +85,14 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		Source:       sourceSpec,
 		Destinations: destinationSpecs,
 	}
-	analytics.TrackSyncStarted(ctx, invocationUUID, syncStartedEvent)
+	analytics.TrackSyncStarted(ctx, invocationUUID.UUID, syncStartedEvent)
 	var (
 		syncTimeTook   time.Duration
 		totalResources = int64(0)
 		totals         = sourceClient.Metrics()
 	)
 	defer func() {
-		analytics.TrackSyncCompleted(ctx, invocationUUID, analytics.SyncFinishedEvent{
+		analytics.TrackSyncCompleted(ctx, invocationUUID.UUID, analytics.SyncFinishedEvent{
 			SyncStartedEvent:  syncStartedEvent,
 			Errors:            totals.Errors,
 			Warnings:          totals.Warnings,

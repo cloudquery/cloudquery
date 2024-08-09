@@ -41,7 +41,7 @@ test('Submit the form', async ({ page }) => {
 
   const spec = JSON.parse(valuesText as string);
   expect(spec.spec.connection_string).toBe(
-    `dbtype='postgresql' user='\${username}' password='\${password}' host='database.example.com' dbname='sample_db' port='5432' sslmode='verify-ca'`,
+    `dbtype='postgresql' user='john_doe' password='\${password}' host='database.example.com' dbname='sample_db' port='5432' sslmode='verify-ca'`,
   );
 
   if (process.env.E2E_TESTS_GENERATE_CONFIG === 'true') {
