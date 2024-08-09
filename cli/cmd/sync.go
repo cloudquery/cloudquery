@@ -141,6 +141,10 @@ func sync(cmd *cobra.Command, args []string) error {
 		}
 	}
 
+	// To force backend destinations to use TCP if the sources are using Docker
+	backendsForDockerSource := map[string]struct{}{}    // destination plugin names
+	dockerSourcesUsingBackends := map[string]struct{}{} // source plugin names
+
 	for _, source := range sources {
 		if source.OtelEndpoint == "" && otelReceiver != nil {
 			source.OtelEndpoint = otelReceiver.Endpoint
@@ -152,6 +156,12 @@ func sync(cmd *cobra.Command, args []string) error {
 			managedplugin.WithAuthToken(authToken.Value),
 			managedplugin.WithTeamName(teamName),
 			managedplugin.WithLicenseFile(licenseFile),
+		}
+		// To force backend destinations to use TCP if the sources are using Docker
+		if source.Registry == specs.RegistryDocker && source.BackendOptions.PluginName() != "" {
+			opts = append(opts, managedplugin.WithDockerExtraHosts([]string{"host.docker.internal:host-gateway"}))
+			backendsForDockerSource[source.BackendOptions.PluginName()] = struct{}{}
+			dockerSourcesUsingBackends[source.Name] = struct{}{}
 		}
 		if logConsole {
 			opts = append(opts, managedplugin.WithNoProgress())
@@ -194,6 +204,9 @@ func sync(cmd *cobra.Command, args []string) error {
 			managedplugin.WithAuthToken(authToken.Value),
 			managedplugin.WithTeamName(teamName),
 			managedplugin.WithLicenseFile(licenseFile),
+		}
+		if _, ok := backendsForDockerSource[destination.Name]; ok {
+			opts = append(opts, managedplugin.WithUseTCP())
 		}
 		if logConsole {
 			opts = append(opts, managedplugin.WithNoProgress())
@@ -325,9 +338,11 @@ func sync(cmd *cobra.Command, args []string) error {
 				}
 			}
 
+			_, shouldReplaceLocalhost := dockerSourcesUsingBackends[source.Name]
 			src := v3source{
-				client: cl,
-				spec:   *source,
+				client:                 cl,
+				spec:                   *source,
+				shouldReplaceLocalhost: shouldReplaceLocalhost,
 			}
 			dests := make([]v3destination, 0, len(destinationClientsForSource))
 			for i, destination := range destinationClientsForSource {
