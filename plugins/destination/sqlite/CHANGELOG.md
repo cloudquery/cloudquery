@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.9.9...plugins-destination-sqlite-v2.9.10) (2024-08-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.59.0 ([#18881](https://github.com/cloudquery/cloudquery/issues/18881)) ([8f7667f](https://github.com/cloudquery/cloudquery/commit/8f7667f78c89514203806a458dafcbf3f389e45b))
+
 ## [2.9.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.9.8...plugins-destination-sqlite-v2.9.9) (2024-08-06)
 
 
