@@ -644,3 +644,42 @@ func TestSource_JSONSchemaExtend(t *testing.T) {
 		},
 	})
 }
+
+func TestBackendOptionsPluginName(t *testing.T) {
+	tests := []struct {
+		name     string
+		options  *BackendOptions
+		expected string
+	}{
+		{
+			name:     "nil doesn't blow up",
+			options:  nil,
+			expected: "",
+		},
+		{
+			name: "No interpolation results in empty plugin name",
+			options: &BackendOptions{
+				TableName:  "test_table",
+				Connection: "localhost:7777",
+			},
+			expected: "",
+		},
+		{
+			name: "Proper variable name results in correct plugin name",
+			options: &BackendOptions{
+				TableName:  "test_table",
+				Connection: "@@plugins.aws.connection",
+			},
+			expected: "aws",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			actual := tt.options.PluginName()
+			if actual != tt.expected {
+				t.Errorf("unexpected plugin name, got: %s, want: %s", actual, tt.expected)
+			}
+		})
+	}
+}

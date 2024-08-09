@@ -8,7 +8,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cloudquery/cloudquery-api-go v1.12.7
 	github.com/cloudquery/codegen v0.3.19
-	github.com/cloudquery/plugin-pb-go v1.21.5
+	github.com/cloudquery/plugin-pb-go v1.22.0
 	github.com/cloudquery/plugin-sdk/v4 v4.59.0
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
