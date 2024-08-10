@@ -27,6 +27,7 @@ import {
   useFormCurrentValues,
   useFormSubmit,
 } from '@cloudquery/plugin-config-ui-lib';
+import { PluginTableSelector } from './tableSelector';
 
 interface Props {
   initialValues?: FormMessagePayload['init']['initialValues'];
@@ -71,7 +72,7 @@ export function Form({ initialValues }: Props) {
 
   return (
     <FormProvider {...formContext}>
-      <Stack gap={2}>
+      <Stack spacing={2}>
         <Card>
           <CardContent>
             <Stack gap={2}>
@@ -107,6 +108,9 @@ export function Form({ initialValues }: Props) {
             </Stack>
           </CardContent>
         </Card>
+        <FormFieldGroup title="Tables">
+          <PluginTableSelector />
+        </FormFieldGroup>
         <FormFieldGroup title={'Options'}>
           <Stack>
             <Stack spacing={2}>

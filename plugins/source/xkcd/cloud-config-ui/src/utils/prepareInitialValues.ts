@@ -8,5 +8,6 @@ export function prepareInitialValues(
     name: initialValues?.name || '',
     envs: initialValues?.envs || [],
     spec: {},
+    tables: Object.fromEntries((initialValues?.tables || []).map((table) => [table, true])),
   };
 }
