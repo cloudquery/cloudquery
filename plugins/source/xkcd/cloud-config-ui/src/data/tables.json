@@ -1,0 +1,63 @@
+[
+  {
+    "name": "xkcd_comics",
+    "title": "XKCD Comics",
+    "description": "",
+    "columns": [
+      {
+        "name": "_cq_id",
+        "type": "uuid"
+      },
+      {
+        "name": "_cq_parent_id",
+        "type": "uuid"
+      },
+      {
+        "name": "month",
+        "type": "utf8"
+      },
+      {
+        "name": "num",
+        "type": "int64",
+        "is_primary_key": true
+      },
+      {
+        "name": "link",
+        "type": "utf8"
+      },
+      {
+        "name": "year",
+        "type": "utf8"
+      },
+      {
+        "name": "news",
+        "type": "utf8"
+      },
+      {
+        "name": "safe_title",
+        "type": "utf8"
+      },
+      {
+        "name": "transcript",
+        "type": "utf8"
+      },
+      {
+        "name": "alt",
+        "type": "utf8"
+      },
+      {
+        "name": "img",
+        "type": "utf8"
+      },
+      {
+        "name": "title",
+        "type": "utf8"
+      },
+      {
+        "name": "day",
+        "type": "utf8"
+      }
+    ],
+    "relations": []
+  }
+]
