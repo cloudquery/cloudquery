@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"slices"
+	"strings"
 
 	"github.com/invopop/jsonschema"
 )
@@ -17,6 +18,17 @@ type BackendOptions struct {
 	// Connection string for the destination plugin.
 	// Can be either `@@plugin.name.connection` or a fully-qualified gRPC connection string.
 	Connection string `json:"connection,omitempty" jsonschema:"required,minLength=1"`
+}
+
+// PluginName returns the name of the plugin from the connection string variable.
+//
+// Note that `Connection` gets string replaced with the actual connection value during the sync
+// process, so calling this function will only work before the sync process starts.
+func (b *BackendOptions) PluginName() string {
+	if b == nil || !strings.HasPrefix(b.Connection, "@@plugins.") {
+		return ""
+	}
+	return strings.Split(b.Connection, ".")[1]
 }
 
 // Source plugin spec
