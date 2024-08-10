@@ -20,7 +20,7 @@ export function getFormValidationSchema(
   return yup.object({
     name: yup
       .string()
-      .default(generateName('hackernews'))
+      .default(initialValues?.name || generateName('hackernews'))
       .matches(
         /^[a-z](-?[\da-z]+)+$/,
         'Name must consist of a lower case letter, followed by alphanumeric segments separated by single dashes',
@@ -35,7 +35,7 @@ export function getFormValidationSchema(
           value: yup.string().default(''),
         }),
       )
-      .default([]),
+      .default(initialValues?.envs || []),
 
     spec: yup.object({
       itemConcurrency: yup
