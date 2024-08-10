@@ -9,7 +9,9 @@ export function prepareSubmitValues(
   return {
     name: values.name,
     envs,
-    tables: ['xkcd_comics'],
+    tables: Object.keys(values.tables).filter(
+      (key) => values.tables[key as keyof typeof values.tables],
+    ),
     spec: {},
   };
 }

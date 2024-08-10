@@ -50,6 +50,24 @@ export function getFormValidationSchema(
         .mixed<dayjs.Dayjs>()
         .default(getDefaultStartTime(initialValues?.spec?.start_time)),
     }),
+
+    tables: yup
+      .object()
+      .test('valid tables', function (value: Record<string, true>) {
+        if (Object.keys(value || {}).filter((key) => value[key]).length === 0) {
+          return this.createError({
+            message: 'At least one table must be selected',
+            path: 'tables',
+          });
+        }
+
+        return true;
+      })
+      .default(
+        initialValues?.tables
+          ? Object.fromEntries(initialValues.tables.map((table) => [table, true]))
+          : { hackernews_items: true },
+      ),
   });
 }
 
