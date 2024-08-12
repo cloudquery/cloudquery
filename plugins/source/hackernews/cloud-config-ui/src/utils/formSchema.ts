@@ -1,8 +1,10 @@
 import { resetYupDefaultErrorMessages } from '@cloudquery/cloud-ui';
 import { FormMessagePayload } from '@cloudquery/plugin-config-ui-connector';
 import { generateName } from '@cloudquery/plugin-config-ui-lib';
-import { default as dayjs } from '../utils/date';
+
 import * as yup from 'yup';
+
+import { default as dayjs } from '../utils/date';
 
 resetYupDefaultErrorMessages(yup);
 

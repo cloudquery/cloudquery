@@ -1,25 +1,26 @@
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import { FormFieldGroup, Logo } from '@cloudquery/plugin-config-ui-lib';
-import Box from '@mui/material/Box';
-import { Controller, FormProvider, useForm } from 'react-hook-form';
-import { getYupValidationResolver } from '@cloudquery/cloud-ui';
-import { FormValues, formValidationSchema } from '../utils/formSchema';
-import { prepareSubmitValues } from '../utils/prepareSubmitValues';
-import { pluginUiMessageHandler } from '../utils/messageHandler';
-
-import { assetPrefix } from '../utils/constants';
 import { useCallback } from 'react';
-import { getFieldHelperText } from '@cloudquery/cloud-ui';
+
+import { getYupValidationResolver, getFieldHelperText } from '@cloudquery/cloud-ui';
 import {
+  FormFieldGroup,
+  Logo,
   useFormSubmit,
   useFormCurrentValues,
   scrollToFirstFormFieldError,
 } from '@cloudquery/plugin-config-ui-lib';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
+
 import { PluginTableSelector } from './tableSelector';
+import { assetPrefix } from '../utils/constants';
+import { FormValues, formValidationSchema } from '../utils/formSchema';
+import { pluginUiMessageHandler } from '../utils/messageHandler';
+import { prepareSubmitValues } from '../utils/prepareSubmitValues';
 
 interface Props {
   initialValues: FormValues | undefined;

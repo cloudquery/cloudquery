@@ -1,5 +1,6 @@
 {
   "root": true,
+  "plugins": ["import", "custom-rules"],
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
@@ -7,7 +8,8 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:jsx-a11y/recommended",
     "plugin:prettier/recommended",
-    "plugin:unicorn/recommended"
+    "plugin:unicorn/recommended",
+    "plugin:import/typescript"
   ],
   "globals": {
     "JSX": true
@@ -18,6 +20,7 @@
     "node": true
   },
   "rules": {
+    "custom-rules/mui-material-imports": "error",
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "@typescript-eslint/no-empty-interface": "error",
     "@typescript-eslint/no-explicit-any": 0,
@@ -44,6 +47,37 @@
         "depth": 5
       }
     ],
+    "import/newline-after-import": "error",
+    "import/no-duplicates": ["error", { "prefer-inline": false }],
+    "import/no-unresolved": "error",
+    "import/order": [
+      "error",
+      {
+        "alphabetize": {
+          "caseInsensitive": true,
+          "order": "asc"
+        },
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          ["sibling", "parent"],
+          "index",
+          "object",
+          "type",
+          "unknown"
+        ],
+        "newlines-between": "always-and-inside-groups",
+        "pathGroups": [
+          {
+            "group": "external",
+            "pattern": "react",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"]
+      }
+    ],
     "jsx-a11y/media-has-caption": "off",
     "jsx-a11y/no-autofocus": "off",
     "jsx-a11y/no-onchange": "off",
@@ -56,7 +90,7 @@
     "no-prototype-builtins": 0,
     "no-undef": "error",
     "no-unexpected-multiline": "error",
-    "no-unused-vars": "off",
+    "no-unused-vars": "error",
     "object-curly-newline": [
       "error",
       {
@@ -89,7 +123,8 @@
     "react/jsx-boolean-value": ["error", "always"],
     "react/jsx-first-prop-new-line": ["error", "multiline"],
     "react/jsx-fragments": ["error", "syntax"],
-    "react/jsx-uses-react": "off",
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
     "react/react-in-jsx-scope": "off",
     "unicorn/filename-case": "off",
     "unicorn/no-nested-ternary": "off",
@@ -97,5 +132,10 @@
     "unicorn/no-useless-undefined": "off",
     "unicorn/prevent-abbreviations": "off"
   },
-  "ignorePatterns": ["node_modules/", "dist/", "*.js", "*.cjs"]
+  "ignorePatterns": ["node_modules/", "dist/", "*.js", "*.cjs"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
 }

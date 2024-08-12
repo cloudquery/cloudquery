@@ -1,15 +1,16 @@
-import { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
-import tables from '../data/tables.json';
-import { useFormContext, useWatch } from 'react-hook-form';
-import React from 'react';
-import FormHelperText from '@mui/material/FormHelperText';
-import { FormValues } from '../utils/formSchema';
 import {
   generatePluginTableList,
   generateTablesFromJson,
   TableSelector,
 } from '@cloudquery/plugin-config-ui-lib';
+import FormHelperText from '@mui/material/FormHelperText';
+import { useFormContext, useWatch } from 'react-hook-form';
+
+import tables from '../data/tables.json';
+
+import { FormValues } from '../utils/formSchema';
 
 function _PluginTableSelector() {
   const {
