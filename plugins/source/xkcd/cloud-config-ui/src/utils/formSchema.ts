@@ -1,6 +1,7 @@
 import { resetYupDefaultErrorMessages } from '@cloudquery/cloud-ui';
 import { generateName } from '@cloudquery/plugin-config-ui-lib';
 import * as yup from 'yup';
+
 resetYupDefaultErrorMessages(yup);
 
 export const formValidationSchema = yup.object({
