@@ -21,7 +21,6 @@
     "react-hook-form": "^7.52.2",
     "react-scripts": "^5.0.1",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4",
     "yup": "^1.4.0"
   },
   "devDependencies": {
