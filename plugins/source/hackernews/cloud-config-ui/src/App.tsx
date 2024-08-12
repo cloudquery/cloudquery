@@ -1,12 +1,15 @@
-import Stack from '@mui/material/Stack';
-import CssBaseline from '@mui/material/CssBaseline';
-import ThemeProvider from '@mui/material/styles/ThemeProvider';
-import createTheme from '@mui/material/styles/createTheme';
-import { Form } from './form';
 import { Fragment, useMemo } from 'react';
+
 import { createThemeOptions } from '@cloudquery/cloud-ui';
-import { pluginUiMessageHandler } from './utils/messageHandler';
 import { CloudAppMock, useFormHeightChange, useFormInit } from '@cloudquery/plugin-config-ui-lib';
+import CssBaseline from '@mui/material/CssBaseline';
+import Stack from '@mui/material/Stack';
+import createTheme from '@mui/material/styles/createTheme';
+import ThemeProvider from '@mui/material/styles/ThemeProvider';
+
+import { Form } from './form';
+
+import { pluginUiMessageHandler } from './utils/messageHandler';
 
 const useCloudAppMock =
   (process.env.REACT_APP_USE_CLOUD_APP_MOCK === 'true' || process.env.NODE_ENV !== 'production') &&
