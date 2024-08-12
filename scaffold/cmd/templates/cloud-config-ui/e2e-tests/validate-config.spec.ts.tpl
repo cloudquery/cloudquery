@@ -1,29 +1,30 @@
-import test, { expect } from "@playwright/test";
-import fs from "node:fs";
-import YAML from "yaml";
+import fs from 'node:fs';
 
-test("Submit the form", async ({ page }) => {
-  await page.goto("/");
+import test, { expect } from '@playwright/test';
+import YAML from 'yaml';
+
+test('Submit the form', async ({ page }) => {
+  await page.goto('/');
 
   // fill the form
 
-  await page.getByRole("button", { name: "Submit" }).click();
+  await page.getByRole('button', { name: 'Submit' }).click();
   const valuesText = await page
-    .locator("text=Values:")
-    .locator("xpath=following-sibling::*[1]")
+    .locator('text=Values:')
+    .locator('xpath=following-sibling::*[1]')
     .textContent();
 
   expect(valuesText).toBeTruthy();
 
-  if (process.env.E2E_TESTS_GENERATE_CONFIG === "true") {
+  if (process.env.E2E_TESTS_GENERATE_CONFIG === 'true') {
     const spec = JSON.parse(valuesText as string);
     const localConfig = YAML.stringify({
-      kind: "{plugin_kind}",
+      kind: '{plugin_kind}',
       spec: {
-        name: "{plugin_name}",
-        registry: "local",
-        path: "../{plugin_name}",
-        destinations: ["{plugin_name}"],
+        name: '{plugin_name}',
+        registry: 'local',
+        path: '../{plugin_name}',
+        destinations: ['{plugin_name}'],
         spec: spec.spec,
 
         // use for destination
@@ -38,14 +39,14 @@ test("Submit the form", async ({ page }) => {
     });
 
     const anotherConfig = YAML.stringify({
-      kind: "{source | destination}", // should be opposite to localConfig
+      kind: '{source | destination}', // should be opposite to localConfig
       spec: {
-        name: "postgresql",
-        path: "cloudquery/postgresql",
-        registry: "cloudquery",
-        version: "{v6.2.5 | v8.2.7}", // use v6.2.5 for source or v8.2.7 for destination
+        name: 'postgresql',
+        path: 'cloudquery/postgresql',
+        registry: 'cloudquery',
+        version: '{v6.2.5 | v8.2.7}', // use v6.2.5 for source or v8.2.7 for destination
         spec: {
-          connection_string: "test",
+          connection_string: 'test',
         },
 
         // use for source
@@ -54,22 +55,17 @@ test("Submit the form", async ({ page }) => {
       },
     });
 
-    if (!fs.existsSync("temp")) {
-      fs.mkdirSync("temp");
+    if (!fs.existsSync('temp')) {
+      fs.mkdirSync('temp');
     }
 
-    fs.writeFileSync(
-      "./temp/config.yml",
-      `${localConfig}---\n${anotherConfig}`
-    );
+    fs.writeFileSync('./temp/config.yml', `${localConfig}---\n${anotherConfig}`);
 
     fs.writeFileSync(
-      "./temp/.env",
+      './temp/.env',
       `${spec.envs
-        .map(
-          (env: { name: string; value: string }) => `${env.name}=${env.value}`
-        )
-        .join("\n")}`
+        .map((env: { name: string; value: string }) => `${env.name}=${env.value}`)
+        .join('\n')}`,
     );
   }
 });
