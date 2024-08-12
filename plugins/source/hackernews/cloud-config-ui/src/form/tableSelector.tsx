@@ -8,7 +8,7 @@ import {
 import FormHelperText from '@mui/material/FormHelperText';
 import { useFormContext, useWatch } from 'react-hook-form';
 
-import tables from '../data/tables.json';
+import tables from '../data/__tables.json';
 
 import { FormValues } from '../utils/formSchema';
 
