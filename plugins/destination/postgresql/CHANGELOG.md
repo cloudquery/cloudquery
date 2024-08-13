@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.5.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.5.0...plugins-destination-postgresql-v8.5.1) (2024-08-13)
+
+
+### Bug Fixes
+
+* Update README ([#18929](https://github.com/cloudquery/cloudquery/issues/18929)) ([bc8a40f](https://github.com/cloudquery/cloudquery/commit/bc8a40fe42d6c7e72d6791881c9e7954b72f8006))
+
 ## [8.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.4.0...plugins-destination-postgresql-v8.5.0) (2024-08-13)
 
 
