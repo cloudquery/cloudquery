@@ -11,10 +11,10 @@ Make sure to copy `.env.example.json` to `.env.json` inside `src` folder before 
 
 ## Plugin tables
 
-In case your plugin is a source plugin and you want to use the list of tables in your plugin UI, then make sure to build the plugin first to get a generated list of tables. Inside the plugin root directory run `go build`. This will generate a plugin file and then you should run `./hackernews doc --format=json docs`. The generated file with table should be located inside `docs/__tables.json`. Then navigate back to the `cloud-config-ui` directory inside your plugin and run `npm start` or `npm run build`, they both will copy the generated `__tables.json` file to the `src/data` folder. After that you can import the list of tables inside the application like this:
+In case your plugin is a source plugin and you want to use the list of tables in your plugin UI, then make sure to build the plugin first to get a generated list of tables. Inside the plugin root directory run `go build`. This will generate a plugin file and then you should navigate back to the `cloud-config-ui` directory inside your plugin and run `npm start` or `npm run build`, they both will generate a `__tables.json` file in the `src/data` folder. After that you can import the list of tables inside the application like this:
 
 ```ts
-import pluginTables from 'data/tables.json';
+import pluginTables from 'data/__tables.json';
 ```
 
 ## Available Scripts
