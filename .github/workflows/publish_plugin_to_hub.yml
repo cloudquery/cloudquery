@@ -106,6 +106,29 @@ jobs:
       - name: Checkout
         if: needs.prepare.outputs.ui_dir_arg != ''
         uses: actions/checkout@v4
+
+      - name: Set up Go 1.x
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
+          cache: true
+          cache-dependency-path: ${{ needs.prepare.outputs.plugin_dir }}/go.sum
+
+      - name: Setup CloudQuery
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: v6.3.0
+
+      - name: Gen
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        run: make gen
+
+      - name: Build
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        run: go build .
+
       - name: Use Node.js LTS
         if: needs.prepare.outputs.ui_dir_arg != ''
         uses: actions/setup-node@v4
