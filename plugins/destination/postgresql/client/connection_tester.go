@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"net"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
@@ -37,12 +38,12 @@ func ConnectionTester(ctx context.Context, _ zerolog.Logger, specBytes []byte) e
 
 	_, err = currentDatabase(ctx, c)
 	if err != nil {
-		return processError(err, "DATABASE_FAILED")
+		return processError(err, "UNKNOWN_DATABASE")
 	}
 
 	_, err = currentSchema(ctx, c)
 	if err != nil {
-		return processError(err, "SCHEMA_FAILED")
+		return processError(err, "UNKNOWN_SCHEMA")
 	}
 
 	return nil
@@ -55,6 +56,10 @@ func processError(err error, preferredErrorCode string) error {
 	}
 	var pgErr *pgconn.PgError
 	if errors.As(err, &pgErr) {
+		if strings.Contains(pgErr.Message, "password authentication failed") {
+			return plugin.NewTestConnError("AUTH_FAILED", errors.New(pgErr.Message))
+		}
+
 		return plugin.NewTestConnError(preferredErrorCode, errors.New(pgErr.Message))
 	}
 	return plugin.NewTestConnError(preferredErrorCode, err)
