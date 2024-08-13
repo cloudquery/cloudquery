@@ -75,13 +75,34 @@ This is the (nested) spec used by the CSV destination Plugin.
 
 ### format_spec
 
+#### csv
+
 - `delimiter` (`string`) (optional) (default: `,`)
 
-  Character that will be used as want to use as the delimiter if the format type is `csv`.
+  Delimiter to use in the CSV file.
 
 - `skip_header` (`boolean`) (optional) (default: `false`)
 
-  Specifies if the first line of a file should be the headers (when format is `csv`).
+  If set to `true`, the CSV file will not contain a header row as the first row.
+
+#### json
+
+Reserved for future use.
+
+#### parquet
+
+- `version` (`string`) (optional) (default: `v2Latest`)
+
+  Parquet format version to use. Supported values are `v1.0`, `v2.4`, `v2.6` and `v2Latest`.
+  `v2Latest` is an alias for the latest version available in the Parquet library which is currently `v2.6`.
+
+  Useful when the reader consuming the Parquet files does not support the latest version.
+
+- `root_repetition` (`string`) (optional) (default: `repeated`)
+
+  [Repetition option to use for the root node](https://github.com/apache/arrow/issues/20243). Supported values are `undefined`, `required`, `optional` and `repeated`.
+
+  Some Parquet readers require a specific root repetition option to be able to read the file. For example, importing Parquet files into [Snowflake](https://www.snowflake.com/en/) requires the root repetition to be `undefined`.
 
 ## Authentication
 
