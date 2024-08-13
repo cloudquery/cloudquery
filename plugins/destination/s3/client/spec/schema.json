@@ -32,6 +32,30 @@
       "description": "CloudQuery JSON file output spec."
     },
     "ParquetSpec": {
+      "properties": {
+        "version": {
+          "type": "string",
+          "enum": [
+            "v1.0",
+            "v2.4",
+            "v2.6",
+            "v2Latest"
+          ],
+          "description": "Parquet format version",
+          "default": "v2Latest"
+        },
+        "root_repetition": {
+          "type": "string",
+          "enum": [
+            "undefined",
+            "required",
+            "optional",
+            "repeated"
+          ],
+          "description": "Root repetition",
+          "default": "repeated"
+        }
+      },
       "additionalProperties": false,
       "type": "object",
       "description": "CloudQuery Parquet file output spec."
