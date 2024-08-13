@@ -49,7 +49,7 @@ func fieldFromColumn(col column.Interface) (*arrow.Field, error) {
 		}
 		return &arrow.Field{Name: name, Type: &arrow.FixedSizeBinaryType{ByteWidth: byteWidth}}, nil
 
-	case *column.Date32:
+	case *column.Date, *column.Date32:
 		return &arrow.Field{Name: name, Type: new(arrow.Date32Type)}, nil
 
 	case *column.DateTime:
