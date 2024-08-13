@@ -38,3 +38,4 @@ Save the file as `config.yml`, then run:
 ```shell
 cloudquery sync config.yml
 ```
+
