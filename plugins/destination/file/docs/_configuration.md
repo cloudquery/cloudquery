@@ -14,9 +14,12 @@ spec:
     format: "parquet" # options: parquet, json, csv
     # Optional parameters
     # format_spec:
-      # CSV-specific parameters:
+      # CSV specific parameters:
       # delimiter: ","
       # skip_header: false
+      # Parquet specific parameters:
+      # version: "v2Latest"
+      # root_repetition: "repeated"
     # compression: "" # options: gzip
     # no_rotate: false
     # batch_size: 10000

@@ -22,7 +22,7 @@ func TestField(t *testing.T) {
 		{columnType: "Float32", expected: new(arrow.Float32Type)},
 		{columnType: "Float64", expected: new(arrow.Float64Type)},
 		{columnType: "FixedString(125)", expected: &arrow.FixedSizeBinaryType{ByteWidth: 125}},
-		{columnType: "Date", expected: new(arrow.StringType)},
+		{columnType: "Date", expected: new(arrow.Date32Type)},
 		{columnType: "Date32", expected: new(arrow.Date32Type)},
 		{columnType: "UUID", expected: new(types.UUIDType)},
 	} {
