@@ -121,11 +121,8 @@ jobs:
         with:
           version: v6.3.0
 
-      - name: Gen
-        if: needs.prepare.outputs.ui_dir_arg != ''
-        run: make gen
-
       - name: Build
+        working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         if: needs.prepare.outputs.ui_dir_arg != ''
         run: go build .
 
