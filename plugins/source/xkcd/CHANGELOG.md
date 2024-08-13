@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.3.2...plugins-source-xkcd-v1.3.3) (2024-08-13)
+
+
+### Bug Fixes
+
+* Update README ([#18929](https://github.com/cloudquery/cloudquery/issues/18929)) ([bc8a40f](https://github.com/cloudquery/cloudquery/commit/bc8a40fe42d6c7e72d6791881c9e7954b72f8006))
+
 ## [1.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.3.1...plugins-source-xkcd-v1.3.2) (2024-08-13)
 
 
