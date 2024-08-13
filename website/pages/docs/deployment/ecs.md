@@ -220,7 +220,7 @@ Create a new file named `task-definition.json` with the following content:
       "secrets": [{
         "name": "CLOUDQUERY_API_KEY",
         "valueFrom": "<REPLACE_WITH_FULL_ARN_OF_SECRET>"
-      }]
+      }],
       "logConfiguration": {
         "logDriver": "awslogs",
         "options": {
