@@ -50,6 +50,7 @@ func TestConnectionTester(t *testing.T) {
 			name:      "should return an error for an invalid connection string",
 			specBytes: marshalSpec(t, &spec.Spec{ConnectionString: invalidConnectionString}),
 			wantErr: &wantErr{
+				Code:             "INVALID_CONFIG",
 				ErrorDescription: "cannot parse `invalid`: failed to parse as DSN (invalid dsn)",
 			},
 		},
@@ -57,6 +58,7 @@ func TestConnectionTester(t *testing.T) {
 			name:      "should return an error for an unknown host",
 			specBytes: marshalSpec(t, &spec.Spec{ConnectionString: unknownHostConnectionString}),
 			wantErr: &wantErr{
+				Code:             "DNS_FAILED",
 				ErrorDescription: "no such host \"unknownhost\"",
 			},
 		},
@@ -64,6 +66,7 @@ func TestConnectionTester(t *testing.T) {
 			name:      "should return an error for an unknown database",
 			specBytes: marshalSpec(t, &spec.Spec{ConnectionString: unknownDatabaseConnectionString}),
 			wantErr: &wantErr{
+				Code:             "UNKNOWN_DATABASE",
 				ErrorDescription: "database \"unknowndb\" does not exist",
 			},
 		},
@@ -71,6 +74,7 @@ func TestConnectionTester(t *testing.T) {
 			name:      "should return an error for an unknown user",
 			specBytes: marshalSpec(t, &spec.Spec{ConnectionString: unknownUserConnectionString}),
 			wantErr: &wantErr{
+				Code:             "AUTH_FAILED",
 				ErrorDescription: "password authentication failed for user \"unknownuser\"",
 			},
 		},
@@ -78,6 +82,7 @@ func TestConnectionTester(t *testing.T) {
 			name:      "should return an error for an unknown password",
 			specBytes: marshalSpec(t, &spec.Spec{ConnectionString: unknownPasswordConnectionString}),
 			wantErr: &wantErr{
+				Code:             "AUTH_FAILED",
 				ErrorDescription: "password authentication failed for user \"postgres\"",
 			},
 		},
