@@ -48,7 +48,7 @@
   },
   "scripts": {
     "start": "node scripts/initialize.js && PORT=3001 react-scripts start",
-    "build": "node scripts/initialize.js && react-scripts build",
+    "build": "node scripts/initialize.js -f && react-scripts build",
     "lint": "eslint src --ext .ts,.tsx --max-warnings 0",
     "lint:fix": "eslint src --ext .ts,.tsx --max-warnings 0 --fix",
     "test:e2e": "playwright test"
