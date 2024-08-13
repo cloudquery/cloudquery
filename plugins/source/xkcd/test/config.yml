@@ -5,7 +5,7 @@ spec:
   destinations: [test]
   path: ./cq-source-xkcd
   registry: local
-  tables: [ "*" ]
+  tables: ["*"]
   spec:
 ---
 kind: destination
