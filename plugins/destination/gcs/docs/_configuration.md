@@ -13,9 +13,12 @@ spec:
     path: "path/to/files/{{TABLE}}/{{UUID}}.{{FORMAT}}"
     format: "parquet" # options: parquet, json, csv
     format_spec:
-      # CSV-specific parameters:
+      # CSV specific parameters:
       # delimiter: ","
       # skip_header: false
+      # Parquet specific parameters:
+      # version: "v2Latest"
+      # root_repetition: "repeated"
 
     # Optional parameters
     # compression: "" # options: gzip
