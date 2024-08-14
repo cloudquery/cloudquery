@@ -28,6 +28,7 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@playwright/test": "^1.45.3",
+    "@types/jest": "^29.5.12",
     "@types/node": "^16.18.104",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -43,6 +44,7 @@
     "eslint-plugin-sort-destructure-keys": "^2.0.0",
     "eslint-plugin-unicorn": "^55.0.0",
     "http-server": "^14.1.1",
+    "jest": "^27.5.1",
     "prettier": "^3.3.1",
     "yaml": "^2.5.0"
   },
@@ -51,6 +53,7 @@
     "build": "node scripts/initialize.js && react-scripts build",
     "lint": "eslint src --ext .ts,.tsx --max-warnings 0",
     "lint:fix": "eslint src --ext .ts,.tsx --max-warnings 0 --fix",
+    "test": "react-scripts test --watchAll=false --transformIgnorePatterns 'node_modules/(?!my-library-dir)/'",
     "test:e2e": "playwright test"
   },
   "eslintConfig": {
