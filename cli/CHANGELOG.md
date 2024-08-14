@@ -5,6 +5,21 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.4.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.3.0...cli-v6.4.0) (2024-08-13)
+
+
+### Features
+
+* Enable StateClient usage under docker plugins. ([#18880](https://github.com/cloudquery/cloudquery/issues/18880)) ([2d542da](https://github.com/cloudquery/cloudquery/commit/2d542dac2ad412387ef1cfda48753c181980c634))
+* Enable user to override `invocation_id` ([#18878](https://github.com/cloudquery/cloudquery/issues/18878)) ([3af7f5e](https://github.com/cloudquery/cloudquery/commit/3af7f5ee72c1131bb4c8191498dfc50e32546568))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.12.7 ([#18865](https://github.com/cloudquery/cloudquery/issues/18865)) ([32a17d8](https://github.com/cloudquery/cloudquery/commit/32a17d8138aa3bccb717adab7d1e4405061c7530))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.59.0 ([#18881](https://github.com/cloudquery/cloudquery/issues/18881)) ([8f7667f](https://github.com/cloudquery/cloudquery/commit/8f7667f78c89514203806a458dafcbf3f389e45b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.60.0 ([#18922](https://github.com/cloudquery/cloudquery/issues/18922)) ([7626636](https://github.com/cloudquery/cloudquery/commit/7626636913f7a0b26fb4abd25202697ace7b7132))
+
 ## [6.3.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.2.0...cli-v6.3.0) (2024-08-05)
 
 
