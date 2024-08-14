@@ -123,6 +123,8 @@ func getSyncCommonProps(invocationUUID uuid.UUID, event SyncStartedEvent, detail
 		Set("invocation_uuid", invocationUUID).
 		Set("sync_run_id", invocationUUID).
 		Set("team", details.currentTeam).
+		Set("$groups", rudderstack.NewProperties().
+			Set("team", details.currentTeam)).
 		Set("environment", details.environment).
 		Set("sync_name", event.Source.Name).
 		Set("source_path", event.Source.Path).
