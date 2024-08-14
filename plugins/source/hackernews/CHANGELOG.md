@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.5.2...plugins-source-hackernews-v3.5.3) (2024-08-13)
+
+
+### Bug Fixes
+
+* **main:** Plugin UI data generation dx and ci fixes ([#18915](https://github.com/cloudquery/cloudquery/issues/18915)) ([0cc7050](https://github.com/cloudquery/cloudquery/commit/0cc7050eca720c452124b3c1828225cc36ac2897))
+
 ## [3.5.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.5.1...plugins-source-hackernews-v3.5.2) (2024-08-13)
 
 
