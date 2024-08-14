@@ -101,6 +101,9 @@ func TrackLoginSuccess(ctx context.Context, invocationUUID uuid.UUID) {
 			"invocation_uuid": invocationUUID,
 			"team":            details.currentTeam,
 			"environment":     details.environment,
+			"$groups": rudderstack.Properties{
+				"team": details.currentTeam,
+			},
 		},
 	})
 }
