@@ -35,6 +35,4 @@ If you use cloud syncs, your egress, vCPU, and vRAM consumption will be displaye
 
 ![Cloud syncs usage](/images/docs/billing-and-usage/cloud-syncs.png)
 
-## AWS Marketplace
-
-You can also purchase CloudQuery directly through the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-lowyuyay5a37s#pdp-pricing). This option streamlines billing and usage management, seamlessly integrating CloudQuery into your existing AWS environment. Explore the pricing and get started with CloudQuery on the AWS Marketplace today.
+You can purchase CloudQuery directly through the [AWS Marketplace](https://aws.amazon.com/marketplace/pp/prodview-lowyuyay5a37s#pdp-pricing).
