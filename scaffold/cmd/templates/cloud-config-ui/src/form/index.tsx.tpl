@@ -64,7 +64,7 @@ export function Form({ initialValues }: Props) {
                     fullWidth={true}
                     helperText={getFieldHelperText(
                       fieldState.error?.message,
-                      'Pick a name to help you identify this source.',
+                      'Unique source name that helps identify the source within your workspace.',
                     )}
                     label="Source name"
                     disabled={!!initialValues}
