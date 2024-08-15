@@ -17,7 +17,6 @@ import Typography from '@mui/material/Typography';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 
 import { PluginTableSelector } from './tableSelector';
-import { assetPrefix } from '../utils/constants';
 import { FormValues, formValidationSchema } from '../utils/formSchema';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
 import { prepareSubmitValues } from '../utils/prepareSubmitValues';
@@ -65,7 +64,7 @@ export function Form({ initialValues }: Props) {
               <Box display="flex" justifyContent="space-between" alignItems="center">
                 <Typography variant="h5">Configure source</Typography>
                 <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
-                  <Logo src={`${assetPrefix}/images/xkcd.webp`} alt="XKCD" />
+                  <Logo src={`/images/xkcd.webp`} alt="XKCD" />
                   <Typography variant="body1">XKCD</Typography>
                 </Box>
               </Box>
