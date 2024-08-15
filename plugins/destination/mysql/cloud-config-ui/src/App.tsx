@@ -22,10 +22,7 @@ const DevWrapper = useCloudAppMock ? CloudAppMock : Fragment;
 const devWrapperProps: any = useCloudAppMock ? require('./.env.json') : undefined;
 
 function App() {
-  const { initialValues, initialized, isManagedDestination } = useFormInit(
-    pluginUiMessageHandler,
-    false,
-  );
+  const { initialValues, initialized } = useFormInit(pluginUiMessageHandler, false);
   useFormHeightChange(pluginUiMessageHandler);
 
   const theme = useMemo(() => createTheme(createThemeOptions()), []);
@@ -39,7 +36,6 @@ function App() {
             <Box flex="1 1 0" minWidth={480}>
               <Form
                 initialValues={initialValues ? prepareInitialValues(initialValues) : undefined}
-                isManagedDestination={isManagedDestination}
               />
             </Box>
             <Box sx={{ width: 360, minWidth: 360 }}>

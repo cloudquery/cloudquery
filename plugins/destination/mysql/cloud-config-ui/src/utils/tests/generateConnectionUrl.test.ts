@@ -10,7 +10,6 @@ const baseTestFormValues = {
   connectionParams: {
     tls: false,
     tlsMode: 'preferred',
-    schemaName: '',
     parseTime: false,
     charset: '',
     loc: '',
@@ -25,13 +24,13 @@ describe('generateConnectionUrl', () => {
   });
 
   test('returns a no-db connection string', async () => {
-    const result = generateConnectionUrl({ ...baseTestFormValues, database: undefined });
+    const result = generateConnectionUrl({ ...baseTestFormValues, database: '' });
 
     expect(result).toBe('username:${password}@host:port/');
   });
 
   test('returns a no-address connection string', async () => {
-    const result = generateConnectionUrl({ ...baseTestFormValues, host: undefined });
+    const result = generateConnectionUrl({ ...baseTestFormValues, host: '' });
 
     expect(result).toBe('username:${password}@/database');
   });
@@ -71,6 +70,22 @@ describe('generateConnectionUrl', () => {
     );
   });
 
+  test('returns a timeout, readTimeout, writeTimeout connection string', async () => {
+    const result = generateConnectionUrl({
+      ...baseTestFormValues,
+      connectionParams: {
+        ...baseTestFormValues.connectionParams,
+        timeout: 30,
+        readTimeout: 60,
+        writeTimeout: 90,
+      },
+    });
+
+    expect(result).toBe(
+      'username:${password}@host:port/database?timeout=30s&readTimeout=60s&writeTimeout=90s',
+    );
+  });
+
   test('returns a kitchen sink string', async () => {
     const result = generateConnectionUrl({
       ...baseTestFormValues,
@@ -82,11 +97,15 @@ describe('generateConnectionUrl', () => {
         parseTime: true,
         charset: 'utf8',
         loc: 'UTC',
+        timeout: 30,
+        readTimeout: 60,
+        writeTimeout: 90,
+        allowNativePasswords: true,
       },
     });
 
     expect(result).toBe(
-      'username:${password}@tcp(host:port)/database?tlsMode=preferred&parseTime=True&charset=utf8&loc=UTC',
+      'username:${password}@tcp(host:port)/database?tlsMode=preferred&parseTime=True&charset=utf8&loc=UTC&timeout=30s&readTimeout=60s&writeTimeout=90s&allowNativePasswords=true',
     );
   });
 });

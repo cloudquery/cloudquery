@@ -41,15 +41,7 @@ export const formValidationSchema = yup.object({
     }),
   username: yup.string().max(63).default(''),
   password: yup.string().max(63).default(''),
-  host: yup
-    .string()
-    .max(253)
-    .default('')
-    .when('connectionType', {
-      is: 'fields',
-      // eslint-disable-next-line unicorn/no-thenable
-      then: (schema) => schema.required(),
-    }),
+  host: yup.string().max(253).default(''),
   port: yup
     .string()
     .max(5)
@@ -67,21 +59,28 @@ export const formValidationSchema = yup.object({
   tcp: yup.bool().default(false),
   connectionParams: yup.object({
     tls: yup.bool().default(false),
-    tlsMode: yup.string().oneOf(tlsModeValues).default('preferred'),
-    schemaName: yup.string().default(''),
+    tlsMode: yup
+      .string()
+      .oneOf(tlsModeValues)
+      .default('preferred')
+      .when('tls', {
+        is: (tls: boolean) => !tls,
+        // eslint-disable-next-line unicorn/no-thenable
+        then: (schema: any) => schema.strip(), // todo make sure this is stripped
+      }),
     parseTime: yup.bool().default(false),
     charset: yup.string().default(''),
     loc: yup
       .string()
       .default('')
       .when('parseTime', {
-        is: (parseTime: boolean) => !!parseTime,
+        is: (parseTime: boolean) => !parseTime,
         // eslint-disable-next-line unicorn/no-thenable
-        then: (schema: any) => schema.default('Local'),
+        then: (schema: any) => schema.strip(), // todo make sure this is stripped
       }),
-    timeout: yup.number(),
-    readTimeout: yup.number(),
-    writeTimeout: yup.number(),
+    timeout: yup.number().integer().default(0),
+    readTimeout: yup.number().integer().default(0),
+    writeTimeout: yup.number().integer().default(0),
     allowNativePasswords: yup.bool().default(false),
   }),
 

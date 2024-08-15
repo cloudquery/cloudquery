@@ -12,7 +12,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 
 import { FormValues } from '../utils/formSchema';
 
-export function AdvancedFields() {
+export function AdvancedSyncFields() {
   const { control } = useFormContext<FormValues>();
 
   return (
@@ -32,7 +32,7 @@ export function AdvancedFields() {
             sx={{ backgroundColor: 'transparent', paddingLeft: 0 }}
             expandIcon={<ExpandMoreIcon />}
           >
-            <Typography variant="h6">Advanced Options</Typography>
+            <Typography variant="h6">Advanced Sync Options</Typography>
           </AccordionSummary>
           <AccordionDetails sx={{ paddingLeft: 0 }}>
             <Stack spacing={2}>

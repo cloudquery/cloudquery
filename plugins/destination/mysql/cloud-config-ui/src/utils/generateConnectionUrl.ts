@@ -8,7 +8,7 @@ export function generateConnectionUrl(values: FormValues): string {
   const address = host ? `${host}:${port}` : undefined;
   const wrappedAddress = address ? (values.tcp ? `tcp(${address})` : address) : '';
 
-  let base = `${values.username}:${password}@${wrappedAddress}/${db}`;
+  const base = `${values.username}:${password}@${wrappedAddress}/${db}`;
 
   const normalizedConnectionParams: Record<string, boolean | string> = {};
   if (values.connectionParams.tls && values.connectionParams.tlsMode) {
@@ -25,6 +25,25 @@ export function generateConnectionUrl(values: FormValues): string {
 
   if (values.connectionParams.loc) {
     normalizedConnectionParams['loc'] = values.connectionParams.loc;
+  }
+
+  if (values.connectionParams.timeout) {
+    normalizedConnectionParams['timeout'] = `${values.connectionParams.timeout.toString()}s`;
+  }
+
+  if (values.connectionParams.readTimeout) {
+    normalizedConnectionParams['readTimeout'] =
+      `${values.connectionParams.readTimeout.toString()}s`;
+  }
+
+  if (values.connectionParams.writeTimeout) {
+    normalizedConnectionParams['writeTimeout'] =
+      `${values.connectionParams.writeTimeout.toString()}s`;
+  }
+
+  if (values.connectionParams.allowNativePasswords) {
+    normalizedConnectionParams['allowNativePasswords'] =
+      values.connectionParams.allowNativePasswords;
   }
 
   const queryParams = new URLSearchParams(normalizedConnectionParams as any).toString();

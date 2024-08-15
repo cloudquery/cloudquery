@@ -15,7 +15,8 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 
-import { AdvancedFields } from './advancedFields';
+import { AdvancedConnectionFields } from './advancedConnectionFields';
+import { AdvancedSyncFields } from './advancedSyncFields';
 import { FormConnectionFields } from './connectionFields';
 import { FormSyncOptions } from './syncOptions';
 import { FormValues, formValidationSchema } from '../utils/formSchema';
@@ -24,18 +25,14 @@ import { prepareSubmitValues } from '../utils/prepareSubmitValues';
 
 interface Props {
   initialValues: FormValues | undefined;
-  isManagedDestination: boolean;
 }
 
 const formDefaultValues = formValidationSchema.getDefault();
 const formValidationResolver = getYupValidationResolver(formValidationSchema);
 
-export function Form({ initialValues, isManagedDestination }: Props) {
+export function Form({ initialValues }: Props) {
   const formContext = useForm<FormValues>({
-    defaultValues: initialValues || {
-      ...formDefaultValues,
-      connectionType: isManagedDestination ? 'string' : 'fields',
-    },
+    defaultValues: initialValues || formDefaultValues,
     resolver: formValidationResolver,
   });
   const { control, handleSubmit: handleFormSubmit, getValues } = formContext;
@@ -96,8 +93,9 @@ export function Form({ initialValues, isManagedDestination }: Props) {
           </CardContent>
         </Card>
         <FormConnectionFields />
+        <AdvancedConnectionFields />
         <FormSyncOptions />
-        <AdvancedFields />
+        <AdvancedSyncFields />
       </Stack>
     </FormProvider>
   );

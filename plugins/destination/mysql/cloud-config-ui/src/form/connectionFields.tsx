@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { getFieldHelperText } from '@cloudquery/cloud-ui';
 import { FormFieldGroup, ExclusiveToggle } from '@cloudquery/plugin-config-ui-lib';
+
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { Controller, useFormContext } from 'react-hook-form';
@@ -108,7 +109,7 @@ export function FormConnectionFields() {
                   fullWidth={true}
                   helperText={getFieldHelperText(
                     fieldState.error?.message,
-                    'Connection string to connect to the database. E.g. postgres://jack:secret@localhost:5432/mydb?sslmode=prefer',
+                    'Connection string to connect to the database. E.g. user:password@localhost:3306/dbname?tls=preferred\u0026readTimeout=1s\u0026writeTimeout=1s',
                   )}
                   label="Connection string"
                   autoComplete="off"
@@ -144,11 +145,10 @@ export function FormConnectionFields() {
                   fullWidth={true}
                   helperText={getFieldHelperText(
                     fieldState.error?.message,
-                    'Host to connect to. E.g. 1.2.3.4 or mydb.host.com.',
+                    'Host to connect to. E.g. 1.2.3.4 or mydb.host.com. Optional, defaults to empty.',
                   )}
                   label="Host"
                   autoComplete="off"
-                  required={true}
                   {...field}
                 />
               )}
@@ -162,7 +162,7 @@ export function FormConnectionFields() {
                   fullWidth={true}
                   helperText={getFieldHelperText(
                     fieldState.error?.message,
-                    'Port to connect to. Optional, defaults to 5432.',
+                    'Port to connect to. Optional, defaults to empty.',
                   )}
                   label="Port"
                   autoComplete="off"
@@ -179,10 +179,9 @@ export function FormConnectionFields() {
                   fullWidth={true}
                   helperText={getFieldHelperText(
                     fieldState.error?.message,
-                    'Name of the PostgreSQL database you want to connect to.',
+                    'Name of the MySQL database you want to connect to .Optional, defaults to empty.',
                   )}
                   label="Database"
-                  required={true}
                   autoComplete="off"
                   {...field}
                 />
@@ -242,67 +241,6 @@ export function FormConnectionFields() {
                 </Stack>
               )}
             />
-            {/* <Controller
-              control={control}
-              name="schemaName"
-              render={({ field, fieldState }) => (
-                <TextField
-                  error={!!fieldState.error}
-                  fullWidth={true}
-                  helperText={getFieldHelperText(
-                    fieldState.error?.message,
-                    'Name of the PostgreSQL schema you want to connect to. Optional, defaults to public.',
-                  )}
-                  label="Schema"
-                  autoComplete="off"
-                  {...field}
-                />
-              )}
-            /> */}
-            {/* <Controller
-              control={control}
-              name="connectionParams.tls"
-              render={({ field }) => (
-                <Box>
-                  <FormControlLabel
-                    control={<Switch checked={field.value} {...field} />}
-                    label="TLS"
-                  />
-                </Box>
-              )}
-            />
-            {values.connectionParams.tls && (
-              <Controller
-                control={control}
-                name="connectionParams.tlsMode"
-                render={({ field, fieldState }) => (
-                  <TextField
-                    error={!!fieldState.error}
-                    fullWidth={true}
-                    helperText={getFieldHelperText(
-                      fieldState.error?.message,
-                      'SSL connections to encrypt client/server communications using TLS protocols for increased security.',
-                    )}
-                    label="TLS Mode"
-                    select={true}
-                    SelectProps={{
-                      MenuProps: {
-                        autoFocus: false,
-                        disableAutoFocus: true,
-                      },
-                    }}
-                    {...field}
-                  >
-                    <MenuItem value={''} hidden={true} />
-                    {tlsModeValues.map((value) => (
-                      <MenuItem key={value} value={value}>
-                        {value}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                )}
-              />
-            )} */}
           </Stack>
         )}
       </Stack>
