@@ -122,7 +122,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v6.4.0
+          version: v6.4.1
       - name: Validate CloudQuery config
         working-directory: "plugins/destination/postgresql/cloud-config-ui"
         run: dotenv -e ./temp/.env -- cloudquery validate-config ./temp/config.yml
