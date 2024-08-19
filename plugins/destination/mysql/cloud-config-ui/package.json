@@ -4,9 +4,9 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
-    "@cloudquery/cloud-ui": "^0.1.12",
-    "@cloudquery/plugin-config-ui-connector": "^0.2.12",
-    "@cloudquery/plugin-config-ui-lib": "^0.0.57",
+    "@cloudquery/cloud-ui": "^0.1.13",
+    "@cloudquery/plugin-config-ui-connector": "0.2.13",
+    "@cloudquery/plugin-config-ui-lib": "^0.0.58",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
@@ -54,7 +54,8 @@
     "lint": "eslint src --ext .ts,.tsx --max-warnings 0",
     "lint:fix": "eslint src --ext .ts,.tsx --max-warnings 0 --fix",
     "test": "react-scripts test --watchAll=false --transformIgnorePatterns 'node_modules/(?!my-library-dir)/'",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "dev:test:e2e": "REACT_APP_USE_CLOUD_APP_MOCK=true npm run build && playwright test"
   },
   "eslintConfig": {
     "extends": [

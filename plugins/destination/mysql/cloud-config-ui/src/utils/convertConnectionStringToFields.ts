@@ -1,4 +1,4 @@
-export const connectionStringToFields = (connectionString: string) => {
+export const convertConnectionStringToFields = (connectionString: string) => {
   const connectionParams: Record<string, any> = {};
 
   const username = connectionString.split(':')[0] ?? '';

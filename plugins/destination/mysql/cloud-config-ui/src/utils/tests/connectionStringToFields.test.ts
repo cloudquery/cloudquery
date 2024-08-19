@@ -1,8 +1,8 @@
-import { connectionStringToFields } from '../connectionStringToFields';
+import { convertConnectionStringToFields } from '../convertConnectionStringToFields';
 
 describe('connectionStringToFields', () => {
   test('returns fields from a simple connection string', async () => {
-    const result = connectionStringToFields(
+    const result = convertConnectionStringToFields(
       'user:password@localhost:3306/dbname?timeout=30s\u0026readTimeout=1s\u0026writeTimeout=1s',
     );
 
@@ -22,7 +22,7 @@ describe('connectionStringToFields', () => {
   });
 
   test('returns fields from a kitchen sink connection string', async () => {
-    const result = connectionStringToFields(
+    const result = convertConnectionStringToFields(
       'username:${password}@tcp(host:port)/database?tlsMode=preferred\u0026parseTime=True\u0026charset=utf8\u0026loc=UTC\u0026timeout=30s\u0026readTimeout=60s\u0026writeTimeout=90s\u0026allowNativePasswords=true',
     );
 

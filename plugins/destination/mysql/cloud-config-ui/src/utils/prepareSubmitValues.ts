@@ -1,8 +1,8 @@
 import { PluginUiMessagePayload } from '@cloudquery/plugin-config-ui-connector';
 
+import { convertConnectionStringToFields } from './convertConnectionStringToFields';
 import { FormValues } from './formSchema';
 import { escapeSingleQuotesAndBackslashes, generateConnectionUrl } from './generateConnectionUrl';
-import { generateConnectionString, parseConnectionString } from './parseConnectionString';
 
 export function prepareSubmitValues(
   values: FormValues,
@@ -11,14 +11,16 @@ export function prepareSubmitValues(
   let { connectionString } = values;
 
   if (values.connectionType === 'string') {
-    const { password, ...connectionStringProps } = parseConnectionString(values.connectionString);
+    const { password, ...connectionStringProps } = convertConnectionStringToFields(
+      values.connectionString,
+    );
 
     if (password && password !== '${password}') {
       envs.push({ name: 'password', value: password });
-      connectionString = generateConnectionString({
+      connectionString = generateConnectionUrl({
         ...connectionStringProps,
         password: '${password}',
-      });
+      } as FormValues);
     } else if (password && password === '${password}') {
       envs.push({ name: 'password', value: '' });
     }

@@ -4,53 +4,66 @@ import YAML from 'yaml';
 
 test('Submit the form', async ({ page }) => {
   await page.goto('/');
-  await page.getByLabel('Host *').click();
-  await page.getByLabel('Host *').fill('database.example.com');
+  await page.getByLabel('Host').click();
+  await page.getByLabel('Host').fill('localhost');
   await page.getByLabel('Port').click();
-  await page.getByLabel('Port').fill('5432');
-  await page.getByLabel('Database *').click();
-  await page.getByLabel('Database *').fill('sample_db');
+  await page.getByLabel('Port').fill('3306');
+  await page.getByLabel('Database').click();
+  await page.getByLabel('Database').fill('sample_db');
   await page.getByLabel('Username').click();
   await page.getByLabel('Username').fill('john_doe');
   await page.getByLabel('Password').click();
   await page.getByLabel('Password').fill('securePass123');
-  await page.getByLabel('SSL Mode').click();
-  await page.getByRole('option', { name: 'verify-ca' }).click();
 
-  await page.getByText('Advanced Options').click();
+  await page.getByRole('button', { name: 'Advanced Connection Options' }).click();
+  await page.getByLabel('TCP').click();
+  await page.getByLabel('TLS').click();
+  await page.getByLabel('TLS Mode').click();
+  await page.getByRole('option', { name: 'preferred' }).click();
+  await page.getByLabel('Parse Time').click();
+  await page.getByLabel('Location').click();
+  await page.getByLabel('Location').fill('Local');
+  await page.getByLabel('Charset').click();
+  await page.getByLabel('Charset').fill('utf8mb4');
+  await page.getByLabel('Timeout', { exact: true }).click();
+  await page.getByLabel('Timeout', { exact: true }).fill('6');
+  await page.getByLabel('Read Timeout').click();
+  await page.getByLabel('Read Timeout').fill('7');
+  await page.getByLabel('Write Timeout').click();
+  await page.getByLabel('Write Timeout').fill('8');
 
-  await page.getByLabel('Log level *').click();
-  await page.getByRole('option', { name: 'warn' }).click();
+  await page.getByLabel('Migrate mode *').click();
+  await page.getByRole('option', { name: 'forced' }).click();
+  await page.getByLabel('Write mode *').click();
+  await page.getByRole('option', { name: 'overwrite', exact: true }).click();
+
+  await page.getByRole('button', { name: 'Advanced Sync Options' }).click();
+
   await page.getByLabel('Batch size *', { exact: true }).click();
   await page.getByLabel('Batch size *', { exact: true }).fill('12');
   await page.getByLabel('Batch size (bytes) *').click();
   await page.getByLabel('Batch size (bytes) *').fill('2500');
-  await page.getByLabel('Batch timeout *').click();
-  await page.getByLabel('Batch timeout *').fill('120s');
-  await page.getByLabel('Migrate mode *').click();
-  await page.getByRole('option', { name: 'forced' }).click();
-  await page.getByLabel('Write mode *').click();
-  await page.getByRole('option', { name: 'append' }).click();
+
   await page.getByRole('button', { name: 'Submit' }).click();
+
   const valuesText = await page
     .locator('text=Values:')
     .locator('xpath=following-sibling::*[1]')
     .textContent();
-
   expect(valuesText).toBeTruthy();
 
   const spec = JSON.parse(valuesText as string);
   expect(spec.spec.connection_string).toBe(
-    `dbtype='postgresql' user='john_doe' password='\${password}' host='database.example.com' dbname='sample_db' port='5432' sslmode='verify-ca'`,
+    'john_doe:${password}@tcp(localhost:3306)/sample_db?tlsMode=preferred&parseTime=True&charset=utf8mb4&loc=Local&timeout=6s&readTimeout=7s&writeTimeout=8s',
   );
 
   if (process.env.E2E_TESTS_GENERATE_CONFIG === 'true') {
     const destinationConfig = YAML.stringify({
       kind: 'destination',
       spec: {
-        name: 'postgresql',
+        name: 'mysql',
         registry: 'local',
-        path: '../postgresql',
+        path: '../mysql',
         spec: spec.spec,
         write_mode: spec.writeMode,
         migrate_mode: spec.migrateMode,

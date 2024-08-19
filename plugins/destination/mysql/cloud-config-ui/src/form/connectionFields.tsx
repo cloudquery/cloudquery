@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 
 import { getFieldHelperText } from '@cloudquery/cloud-ui';
-import { FormFieldGroup, ExclusiveToggle } from '@cloudquery/plugin-config-ui-lib';
+import { FormFieldGroup, ExclusiveToggle, FormFieldReset } from '@cloudquery/plugin-config-ui-lib';
 
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { Controller, useFormContext } from 'react-hook-form';
 
-import { FormFieldReset } from './formFieldReset';
 import { FormValues } from '../utils/formSchema';
 
 const envPlaceholder = '************';

@@ -1,7 +1,7 @@
 import { FormMessagePayload } from '@cloudquery/plugin-config-ui-connector';
 
+import { convertConnectionStringToFields } from './convertConnectionStringToFields';
 import { connectionTypeValues, formValidationSchema, FormValues } from './formSchema';
-import { connectionStringToFields } from './connectionStringtoFields';
 
 const defaultValues = formValidationSchema.getDefault();
 
@@ -10,7 +10,7 @@ export function prepareInitialValues(
 ): FormValues {
   const url = initialValues?.spec?.connection_string || '';
 
-  const connectionObj: Record<string, any> = connectionStringToFields(url);
+  const connectionObj: Record<string, any> = convertConnectionStringToFields(url);
 
   const spec = {
     connectionType: connectionTypeValues[1],
