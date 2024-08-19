@@ -77,7 +77,7 @@ test('Submit the form', async ({ page }) => {
         path: 'cloudquery/postgresql',
         registry: 'cloudquery',
         version: 'v6.2.5',
-        destinations: ['postgresql'],
+        destinations: ['mysql'],
         spec: {
           connection_string: 'test',
         },
