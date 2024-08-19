@@ -1,66 +1,15 @@
 ---
-title: Monitoring CloudQuery
-description: Short walkthrough on how to use OpenTelemetry to monitor CloudQuery Syncs
+title: OpenTelemetry and Datadog
+description: Walkthrough on how to use OpenTelemetry to monitor CloudQuery Syncs with Datadog
 ---
 
-# Monitoring
-
-Monitoring CloudQuery can be done in a number of main ways:
-
-- Logging
-- OpenTelemetry
-
-## Logging
-
-CloudQuery utilizes structured [logging](../reference/cli/cloudquery) (in plain and JSON formats) which can be analyzed by local tools such as `jq`, `grep` and remote aggregations tools like `loki`, `datadog` or any other popular log aggregation that supports structured logging.
-
-## OpenTelemetry (Preview)
-
-ELT workloads can be long running and sometimes it is necessary to better understand what calls are taking the most time; to potentially optimize those on the plugin side, ignore them or split them to a different workload. Plugins come with an OpenTelemetry library built in, but it is up to the plugin author to instrument the most important parts--usually the API calls--this way it is possible to see what calls take the longest time, or where throttling and errors are happening.
-
-CloudQuery supports [OpenTelemetry](https://opentelemetry.io/) traces, metrics and logs out of the box and can be enabled easily via [configuration](/docs/reference/source-spec).
-
-To collect OpenTelemetry data you need a [backend](https://opentelemetry.io/docs/concepts/components/#exporters) that supports OpenTelemetry protocol. For example you can use [Jaeger](https://opentelemetry.io/docs/instrumentation/go/exporters/#jaeger) to visualize and analyze traces.
-
-To start Jaeger locally you can use Docker:
-
-```bash
-docker run -d \
-  -e COLLECTOR_OTLP_ENABLED=true \
-  -p 16686:16686 \
-  -p 4318:4318 \
-  jaegertracing/all-in-one:1.58
-```
-
-and then specify in the source spec the following:
-
-```yaml
-kind: source
-spec:
-  name: "aws"
-  path: "cloudquery/aws"
-  registry: "cloudquery"
-  version: "VERSION_SOURCE_AWS"
-  tables: ["aws_s3_buckets"]
-  destinations: ["postgresql"]
-  otel_endpoint: "localhost:4318"
-  otel_endpoint_insecure: true # this is only in development when running local jaeger
-  spec:
-```
-
-After that you can open [http://localhost:16686](http://localhost:16686) and see the traces:
-
-![jaeger](/images/docs/jaeger.png)
-
-In production, it is common to use an OpenTelemetry [collector](https://opentelemetry.io/docs/concepts/components/#collector) that runs locally or as a gateway to batch the traces and forward it to the final backend. This helps with performance, fault-tolerance and decoupling of the backend in case the tracing backend changes.
-
-## OpenTelemetry and Datadog
+# OpenTelemetry and Datadog
 
 In this example we will show how to send OpenTelemetry traces, metrics and logs directly to Datadog.
 First, you will need to [setup OpenTelemetry with Datadog](https://docs.datadoghq.com/opentelemetry/).
 There are multiple ways to configure OpenTelemetry with Datadog. We'll show only a subset of them here, and you can find more information in the link above.
 
-### Option 1: Using an OpenTelemetry collector
+## Option 1: Using an OpenTelemetry collector
 
 To config an OpenTelemetry collector with Datadog, you need to create a configuration file, for example `otel_collector_config.yaml` with the content below:
 
@@ -113,7 +62,7 @@ docker run \
 
 > For additional ways to run the collector, please refer to the [official documentation](https://docs.datadoghq.com/opentelemetry/collector_exporter/deployment#running-the-collector).
 
-### Option 2: Direct OTEL Ingestion by the Datadog Agent via a configuration file
+## Option 2: Direct OTEL Ingestion by the Datadog Agent via a configuration file
 
 [Locate](https://docs.datadoghq.com/agent/configuration/agent-configuration-files/) your `datadog.yaml` file and add the following configuration:
 
@@ -130,7 +79,7 @@ logs_enabled: true
 
 [Restart](https://docs.datadoghq.com/agent/configuration/agent-commands/#restart-the-agent) the Datadog agent for the change to take effect.
 
-### Option 3: Direct OTEL ingestion by the Datadog Agent via environment variables
+## Option 3: Direct OTEL ingestion by the Datadog Agent via environment variables
 
 Pass the `DD_OTLP_CONFIG_RECEIVER_PROTOCOLS_HTTP_ENDPOINT` environment variable to the Datadog agent with a value of `0.0.0.0:4318`.
 If you're using Docker compose, you can find an example below:
@@ -158,7 +107,7 @@ services:
 
 > For additional ways to configure the Datadog agent, please refer to the [official documentation](https://docs.datadoghq.com/opentelemetry/interoperability/otlp_ingest_in_the_agent#enabling-otlp-ingestion-on-the-datadog-agent).
 
-### Start CloudQuery Configured with Datadog
+## Start CloudQuery Configured with Datadog
 
 Once you have the agent or collector ready, you can specify the endpoint in the source spec:
 
