@@ -1,5 +1,25 @@
 # Changelog
 
+## [7.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.4.0...plugins-destination-s3-v7.4.1) (2024-08-13)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.60.0 ([#18922](https://github.com/cloudquery/cloudquery/issues/18922)) ([7626636](https://github.com/cloudquery/cloudquery/commit/7626636913f7a0b26fb4abd25202697ace7b7132))
+
+## [7.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.3.5...plugins-destination-s3-v7.4.0) (2024-08-13)
+
+
+### Features
+
+* Document new parquet options ([#18919](https://github.com/cloudquery/cloudquery/issues/18919)) ([2432c58](https://github.com/cloudquery/cloudquery/commit/2432c58b413ad053b12bbf6679bcd981171f6903))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.3.0 ([#18917](https://github.com/cloudquery/cloudquery/issues/18917)) ([727ed92](https://github.com/cloudquery/cloudquery/commit/727ed92b39161137ceea2f99e89b70c3cb732eae))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.59.0 ([#18881](https://github.com/cloudquery/cloudquery/issues/18881)) ([8f7667f](https://github.com/cloudquery/cloudquery/commit/8f7667f78c89514203806a458dafcbf3f389e45b))
+
 ## [7.3.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.3.4...plugins-destination-s3-v7.3.5) (2024-08-06)
 
 

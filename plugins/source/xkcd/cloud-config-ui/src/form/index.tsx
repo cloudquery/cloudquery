@@ -1,24 +1,26 @@
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import { Logo } from '@cloudquery/plugin-config-ui-lib';
-import Box from '@mui/material/Box';
-import { Controller, FormProvider, useForm } from 'react-hook-form';
-import { getYupValidationResolver } from '@cloudquery/cloud-ui';
-import { FormValues, formValidationSchema } from '../utils/formSchema';
-import { prepareSubmitValues } from '../utils/prepareSubmitValues';
-import { pluginUiMessageHandler } from '../utils/messageHandler';
-
-import { assetPrefix } from '../utils/constants';
 import { useCallback } from 'react';
-import { getFieldHelperText } from '@cloudquery/cloud-ui';
+
+import { getYupValidationResolver, getFieldHelperText } from '@cloudquery/cloud-ui';
 import {
+  FormFieldGroup,
+  Logo,
   useFormSubmit,
   useFormCurrentValues,
   scrollToFirstFormFieldError,
 } from '@cloudquery/plugin-config-ui-lib';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
+
+import { PluginTableSelector } from './tableSelector';
+import { assetPrefix } from '../utils/constants';
+import { FormValues, formValidationSchema } from '../utils/formSchema';
+import { pluginUiMessageHandler } from '../utils/messageHandler';
+import { prepareSubmitValues } from '../utils/prepareSubmitValues';
 
 interface Props {
   initialValues: FormValues | undefined;
@@ -56,39 +58,44 @@ export function Form({ initialValues }: Props) {
 
   return (
     <FormProvider {...formContext}>
-      <Card>
-        <CardContent>
-          <Stack gap={2}>
-            <Box display="flex" justifyContent="space-between" alignItems="center">
-              <Typography variant="h5">Configure source</Typography>
-              <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
-                <Logo src={`${assetPrefix}/images/xkcd.webp`} alt="XKCD" />
-                <Typography variant="body1">XKCD</Typography>
+      <Stack spacing={2}>
+        <Card>
+          <CardContent>
+            <Stack gap={2}>
+              <Box display="flex" justifyContent="space-between" alignItems="center">
+                <Typography variant="h5">Configure source</Typography>
+                <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
+                  <Logo src={`${assetPrefix}/images/xkcd.webp`} alt="XKCD" />
+                  <Typography variant="body1">XKCD</Typography>
+                </Box>
               </Box>
-            </Box>
-            <Stack>
-              <Controller
-                control={control}
-                name="name"
-                render={({ field, fieldState }) => (
-                  <TextField
-                    error={!!fieldState.error}
-                    fullWidth={true}
-                    helperText={getFieldHelperText(
-                      fieldState.error?.message,
-                      'Pick a name to help you identify this source.',
-                    )}
-                    label="Source name"
-                    disabled={!!initialValues}
-                    autoComplete="off"
-                    {...field}
-                  />
-                )}
-              />
+              <Stack>
+                <Controller
+                  control={control}
+                  name="name"
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      error={!!fieldState.error}
+                      fullWidth={true}
+                      helperText={getFieldHelperText(
+                        fieldState.error?.message,
+                        'Pick a name to help you identify this source.',
+                      )}
+                      label="Source name"
+                      disabled={!!initialValues}
+                      autoComplete="off"
+                      {...field}
+                    />
+                  )}
+                />
+              </Stack>
             </Stack>
-          </Stack>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+        <FormFieldGroup title="Tables">
+          <PluginTableSelector />
+        </FormFieldGroup>
+      </Stack>
     </FormProvider>
   );
 }

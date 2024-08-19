@@ -106,6 +106,26 @@ jobs:
       - name: Checkout
         if: needs.prepare.outputs.ui_dir_arg != ''
         uses: actions/checkout@v4
+
+      - name: Set up Go 1.x
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
+          cache: true
+          cache-dependency-path: ${{ needs.prepare.outputs.plugin_dir }}/go.sum
+
+      - name: Setup CloudQuery
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: v6.4.1
+
+      - name: Build
+        working-directory: ${{ needs.prepare.outputs.plugin_dir }}
+        if: needs.prepare.outputs.ui_dir_arg != ''
+        run: go build .
+
       - name: Use Node.js LTS
         if: needs.prepare.outputs.ui_dir_arg != ''
         uses: actions/setup-node@v4
@@ -224,7 +244,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v6.3.0
+          version: v6.4.1
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -314,7 +334,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v6.3.0
+          version: v6.4.1
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -398,7 +418,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v6.3.0
+          version: v6.4.1
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -488,7 +508,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v3
         with:
-          version: v6.3.0
+          version: v6.4.1
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}

@@ -35,6 +35,11 @@ import (
 type v3source struct {
 	client *managedplugin.Client
 	spec   specs.Source
+
+	// If true, source is running in docker and communicates
+	// to a backend in the host system. It must replace localhost
+	// with host.docker.internal.
+	shouldReplaceLocalhost bool
 }
 
 type v3destination struct {
@@ -203,7 +208,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	if err != nil {
 		return fmt.Errorf("failed to marshal source spec JSON before variable replacement: %w", err)
 	}
-	specBytesExpanded, err := specs.ReplaceVariables(string(specBytes), variables)
+	specBytesExpanded, err := specs.ReplaceVariables(string(specBytes), variables, source.shouldReplaceLocalhost)
 	if err != nil {
 		return fmt.Errorf("failed to replace variables: %w", err)
 	}

@@ -1,4 +1,5 @@
 import { PluginUiMessagePayload } from '@cloudquery/plugin-config-ui-connector';
+
 import { FormValues } from './formSchema';
 
 export function prepareSubmitValues(
@@ -14,7 +15,9 @@ export function prepareSubmitValues(
   return {
     name: values.name,
     envs,
-    tables: ['hackernews_items'],
+    tables: Object.keys(values.tables).filter(
+      (key) => values.tables[key as keyof typeof values.tables],
+    ),
     spec,
   };
 }

@@ -18,7 +18,7 @@ gen-docs: build
 		exit 1; \
 	}
 	rm -rf docs/tables
-	cloudquery tables --format markdown --output-dir docs/ test/config.yaml
+	cloudquery tables --format markdown --output-dir docs/ test/config.yml
 	mv -vf docs/xkcd docs/tables
 
 # All gen targets

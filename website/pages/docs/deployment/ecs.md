@@ -284,10 +284,13 @@ aws cloudformation deploy --template-file cloudquery-ecs-resources.yaml --stack-
 
 ## Step 4: Run a test CloudQuery sync
 
-Now that the task definition is registered, it's time to run the CloudQuery task on ECS using the `aws ecs run-task` command. To get the values for Cluster Name and Task ARN you can use the following command:
+To get the values for Cluster Name and Task ARN you can use the following command:
+
 ```bash
 aws cloudformation describe-stacks --stack-name <STACK_NAME> --query "Stacks[].Outputs"
 ```
+
+Now that the task definition is registered, it's time to run the CloudQuery task on ECS using the `aws ecs run-task` command:
 
 ```bash
 aws ecs run-task \

@@ -6,9 +6,9 @@ It was originally developed as part of a live-coding tutorial on how to write yo
 
 ## Links
 
- - [Video Tutorial](https://www.youtube.com/watch?v=3Ka_Ob8E6P8)
- - [CloudQuery Quickstart Guide](https://www.cloudquery.io/docs/quickstart)
- - [Supported Tables](docs/tables/README.md)
+- [Video Tutorial](https://www.youtube.com/watch?v=3Ka_Ob8E6P8)
+- [CloudQuery Quickstart Guide](https://www.cloudquery.io/docs/quickstart)
+- [Supported Tables](docs/tables/README.md)
 
 ## Configuration
 
@@ -33,8 +33,9 @@ spec:
     connection_string: ./db.sqlite
 ```
 
-Save the file as `config.yaml`, then run:
+Save the file as `config.yml`, then run:
 
 ```shell
-cloudquery sync config.yaml
+cloudquery sync config.yml
 ```
+
