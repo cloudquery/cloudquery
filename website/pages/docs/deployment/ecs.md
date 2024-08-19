@@ -1,13 +1,13 @@
 ---
 title: Running CloudQuery on Amazon ECS
-description: In this tutorial we will be deploying CloudQuery on AWS ECS using Fargate. You will be using the AWS CLI and and AWS Cloudformation to create the required resources. At the end of the tutorial you will have a CloudQuery instance running on AWS ECS that will periodically collect data from your AWS account and store it in an S3 bucket. You can then query the data using Athena.
+description: In this tutorial we will be deploying CloudQuery on AWS ECS using Fargate. You will be using the AWS CLI and and AWS CloudFormation to create the required resources. At the end of the tutorial you will have a CloudQuery instance running on AWS ECS that will periodically collect data from your AWS account and store it in an S3 bucket. You can then query the data using Athena.
 tag: tutorial
 date: 2023/03/03
 ---
 
 # Running CloudQuery on Amazon ECS
 
-In this tutorial we will be deploying CloudQuery on AWS ECS using Fargate. You will be using the AWS CLI and and AWS Cloudformation to create the required resources. At the end of the tutorial you will have a CloudQuery instance running on AWS ECS that will periodically collect data from your AWS account and store it in an S3 bucket. You can then query the data using Athena.
+In this tutorial we will be deploying CloudQuery on AWS ECS using Fargate. You will be using the AWS CLI and and AWS CloudFormation to create the required resources. At the end of the tutorial you will have a CloudQuery instance running on AWS ECS that will periodically collect data from your AWS account and store it in an S3 bucket. You can then query the data using Athena.
 
 ## Prerequisites
 Before starting the deployment process, you need to have the following prerequisites:
@@ -269,7 +269,7 @@ Outputs:
 ```
 
 
-## Step 3: Deploy the Cloudformation Template
+## Step 3: Deploy the CloudFormation Template
 
 You can deploy the CloudFormation template using the `aws cloudformation deploy` command. This command will create the required resources for the deployment of CloudQuery on AWS ECS with Fargate. If you are using the AWS Marketplace version of CloudQuery, you can set the `AWSMarketplace` parameter to `true`.
 
