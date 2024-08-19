@@ -43,7 +43,7 @@ export function Guides() {
                 {
                   text: (
                     <>
-                      TODO
+                      {/* TODO : These IPs relevant for mysql plugin? */}
                       <Box>
                         To allow CloudQuery network access to your MySQL instance, make sure the
                         following CloudQuery IPs are in your firewall allowlist:

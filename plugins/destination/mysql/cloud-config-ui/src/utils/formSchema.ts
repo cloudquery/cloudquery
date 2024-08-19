@@ -66,7 +66,7 @@ export const formValidationSchema = yup.object({
       .when('tls', {
         is: (tls: boolean) => !tls,
         // eslint-disable-next-line unicorn/no-thenable
-        then: (schema: any) => schema.strip(), // todo make sure this is stripped
+        then: (schema: any) => schema.strip(),
       }),
     parseTime: yup.bool().default(false),
     charset: yup.string().default(''),
@@ -76,7 +76,7 @@ export const formValidationSchema = yup.object({
       .when('parseTime', {
         is: (parseTime: boolean) => !parseTime,
         // eslint-disable-next-line unicorn/no-thenable
-        then: (schema: any) => schema.strip(), // todo make sure this is stripped
+        then: (schema: any) => schema.strip(),
       }),
     timeout: yup.number().integer().default(0),
     readTimeout: yup.number().integer().default(0),
