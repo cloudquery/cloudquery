@@ -17,7 +17,7 @@ import Typography from '@mui/material/Typography';
 
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 
-import { TableFields } from './tableFields';
+import { PluginTableSelector } from '../components/tableSelector';
 import tablesData from '../data/__tables.json';
 import { FormValues, formValidationSchema } from '../utils/formSchema';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
@@ -110,7 +110,7 @@ export function Form({ initialValues }: Props) {
           />
         </FormFieldGroup>
         <FormFieldGroup title="Tables Selection">
-          <TableFields tablesList={tablesList} />
+          <PluginTableSelector pluginTables={tablesList} />
         </FormFieldGroup>
       </Stack>
     </FormProvider>
