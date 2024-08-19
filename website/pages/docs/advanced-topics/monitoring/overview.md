@@ -13,7 +13,7 @@ Monitoring CloudQuery can be done in a number of ways:
 
 ## Logging
 
-CloudQuery utilizes structured [logging](../reference/cli/cloudquery) (in plain and JSON formats) which can be analyzed by local tools such as `jq`, `grep` and remote aggregations tools like `loki`, `datadog` or any other popular log aggregation that supports structured logging.
+CloudQuery utilizes structured [logging](/docs/reference/cli/cloudquery) (in plain and JSON formats) which can be analyzed by local tools such as `jq`, `grep` and remote aggregations tools like `loki`, `datadog` or any other popular log aggregation that supports structured logging.
 
 ## OpenTelemetry (Preview)
 
