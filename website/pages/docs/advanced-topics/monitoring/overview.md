@@ -17,11 +17,10 @@ CloudQuery utilizes structured [logging](../reference/cli/cloudquery) (in plain 
 
 ## OpenTelemetry (Preview)
 
-ELT workloads can be long running and sometimes it is necessary to better understand what calls are taking the most time; to potentially optimize those on the plugin side, ignore them or split them to a different workload. Plugins come with an OpenTelemetry library built in, but it is up to the plugin author to instrument the most important parts--usually the API calls--this way it is possible to see what calls take the longest time, or where throttling and errors are happening.
-
+ELT workloads can be long running and sometimes it is necessary to better understand what calls are taking the most time, to optimize those on the plugin side, ignore them or split them to a different workload.
 CloudQuery supports [OpenTelemetry](https://opentelemetry.io/) traces, metrics and logs out of the box and can be enabled easily via [configuration](/docs/reference/source-spec).
 
-To collect OpenTelemetry data you need a [backend](https://opentelemetry.io/docs/concepts/components/#exporters) that supports OpenTelemetry protocol. For example you can use [Jaeger](https://opentelemetry.io/docs/instrumentation/go/exporters/#jaeger) to visualize and analyze traces.
+To collect OpenTelemetry data you need a [backend](https://opentelemetry.io/docs/concepts/components/#exporters) that supports the OpenTelemetry protocol. For example you can use [Jaeger](https://opentelemetry.io/docs/instrumentation/go/exporters/#jaeger) to visualize and analyze traces.
 
 To start Jaeger locally you can use Docker:
 
