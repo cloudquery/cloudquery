@@ -39,13 +39,17 @@ func newCmdScaffoldSource() *cobra.Command {
 // get included in the binary.
 //
 //go:embed templates/source/*
+//go:embed templates/cloud-config-ui/e2e-tests/*
+//go:embed templates/cloud-config-ui/eslint-plugin-custom-rules/*
 //go:embed templates/cloud-config-ui/public/*
+//go:embed templates/cloud-config-ui/scripts/*
 //go:embed templates/cloud-config-ui/src/*
 //go:embed templates/cloud-config-ui/.eslintrc.json.tpl
 //go:embed templates/cloud-config-ui/.prettierrc.tpl
 //go:embed templates/cloud-config-ui/.gitignore.tpl
 //go:embed templates/cloud-config-ui/.nvmrc.tpl
 //go:embed templates/cloud-config-ui/package.json.tpl
+//go:embed templates/cloud-config-ui/playwright.config.ts.tpl
 //go:embed templates/cloud-config-ui/README.md.tpl
 //go:embed templates/cloud-config-ui/tsconfig.json.tpl
 var sourceFS embed.FS

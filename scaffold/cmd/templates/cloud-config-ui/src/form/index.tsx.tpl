@@ -1,5 +1,13 @@
+import { useMemo } from 'react';
+
 import { getFieldHelperText, getYupValidationResolver } from '@cloudquery/cloud-ui';
-import { FormFieldGroup, Logo, useFormSubmit } from '@cloudquery/plugin-config-ui-lib';
+import { FormMessagePayload } from '@cloudquery/plugin-config-ui-connector';
+import {
+  FormFieldGroup,
+  generateTablesFromJson,
+  Logo,
+  useFormSubmit,
+} from '@cloudquery/plugin-config-ui-lib';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -7,24 +15,32 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, FormProvider, useForm } from 'react-hook-form';
 
+import { TableFields } from './tableFields';
+import tablesData from '../data/__tables.json';
 import { FormValues, formValidationSchema } from '../utils/formSchema';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
+import { prepareInitialValues } from '../utils/prepareInitialValues';
 import { prepareSubmitValues } from '../utils/prepareSubmitValues';
 
 interface Props {
-  initialValues: FormValues | undefined;
+  initialValues?: Exclude<FormMessagePayload['init']['initialValues'], undefined>;
 }
 
-const formDefaultValues = formValidationSchema.getDefault();
 const formValidationResolver = getYupValidationResolver(formValidationSchema);
 
 export function Form({ initialValues }: Props) {
-  const { control, handleSubmit } = useForm<FormValues>({
-    defaultValues: initialValues || formDefaultValues,
+  const tablesList = useMemo(() => generateTablesFromJson(tablesData), []);
+  const values = useMemo(() => {
+    return prepareInitialValues(initialValues, tablesList);
+  }, [initialValues, tablesList]);
+  const form = useForm<FormValues>({
+    defaultValues: values,
+    values,
     resolver: formValidationResolver,
   });
+  const { control, handleSubmit } = form;
 
   const handleValidate: Parameters<typeof useFormSubmit>[0] = async () => {
     try {
@@ -33,7 +49,7 @@ export function Form({ initialValues }: Props) {
       });
 
       return {
-        values: prepareSubmitValues(values),
+        values: prepareSubmitValues(values, tablesList),
       };
     } catch (error) {
       return { errors: error as Record<string, any> };
@@ -43,55 +59,60 @@ export function Form({ initialValues }: Props) {
   useFormSubmit(handleValidate, pluginUiMessageHandler);
 
   return (
-    <Stack spacing={2}>
-      <Card>
-        <CardContent>
-          <Stack gap={2}>
-            <Box display="flex" justifyContent="space-between" alignItems="center">
-              <Typography variant="h5">Configure {`{pluginKind}`}</Typography>
-              <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
-                <Logo src={`images/xkcd.webp`} alt="{pluginTitle}" />
-                <Typography variant="body1">{`{pluginTitle}`}</Typography>
+    <FormProvider {...form}>
+      <Stack spacing={2}>
+        <Card>
+          <CardContent>
+            <Stack gap={2}>
+              <Box display="flex" justifyContent="space-between" alignItems="center">
+                <Typography variant="h5">Configure source</Typography>
+                <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
+                  <Logo src={`images/icon.png`} alt="{{.Name}}" />
+                  <Typography variant="body1">{`{{.Name}}`}</Typography>
+                </Box>
               </Box>
-            </Box>
-            <Stack>
-              <Controller
-                control={control}
-                name="name"
-                render={({ field, fieldState }) => (
-                  <TextField
-                    error={!!fieldState.error}
-                    fullWidth={true}
-                    helperText={getFieldHelperText(
-                      fieldState.error?.message,
-                      'Unique source name that helps identify the source within your workspace.',
-                    )}
-                    label="Source name"
-                    disabled={!!initialValues}
-                    autoComplete="off"
-                    {...field}
-                  />
-                )}
-              />
+              <Stack>
+                <Controller
+                  control={control}
+                  name="name"
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      error={!!fieldState.error}
+                      fullWidth={true}
+                      helperText={getFieldHelperText(
+                        fieldState.error?.message,
+                        'Unique source name that helps identify the source within your workspace.',
+                      )}
+                      label="Source name"
+                      disabled={!!initialValues}
+                      autoComplete="off"
+                      {...field}
+                    />
+                  )}
+                />
+              </Stack>
             </Stack>
-          </Stack>
-        </CardContent>
-      </Card>
-      <FormFieldGroup title="Configration">
-        <Controller
-          control={control}
-          name="token"
-          render={({ field, fieldState }) => (
-            <TextField
-              error={!!fieldState.error}
-              fullWidth={true}
-              helperText={fieldState.error?.message}
-              label="Token"
-              {...field}
-            />
-          )}
-        />
-      </FormFieldGroup>
-    </Stack>
+          </CardContent>
+        </Card>
+        <FormFieldGroup title="Configuration">
+          <Controller
+            control={control}
+            name="token"
+            render={({ field, fieldState }) => (
+              <TextField
+                error={!!fieldState.error}
+                fullWidth={true}
+                helperText={fieldState.error?.message}
+                label="Token"
+                {...field}
+              />
+            )}
+          />
+        </FormFieldGroup>
+        <FormFieldGroup title="Tables Selection">
+          <TableFields tablesList={tablesList} />
+        </FormFieldGroup>
+      </Stack>
+    </FormProvider>
   );
 }
