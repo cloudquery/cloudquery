@@ -62,18 +62,13 @@ Once you have a CloudQuery API Key you are going to create a Secret in AWS Secre
 aws secretsmanager create-secret \
     --name CQ-APIKey \
     --description "API Key to authenticate with CloudQuery hub" \
-    --secret-string "cqtk_D48Fp2bZLcFuwwtJEoVE2WJgiC0Y8Rpp"
-
+    --secret-string "<CQ_API_KEY>"
 ```
 
 
 
-aws cloudformation deploy --template-file /path_to_template/template.json --stack-name my-new-stack --parameter-overrides Key1=Value1 Key2=Value2 --tags Key1=Value1 Key2=Value2
-
-
 ## Step 3: Create CloudFormation template
 This template will create the required resources for the deployment of CloudQuery on AWS ECS. Create a new file named `cloudquery-ecs-resources.yaml` with the following content:
-
 
 ```yaml
 AWSTemplateFormatVersion: '2010-09-09'
@@ -273,12 +268,9 @@ Outputs:
 
 You can deploy the CloudFormation template using the `aws cloudformation deploy` command. This command will create the required resources for the deployment of CloudQuery on AWS ECS with Fargate. If you are using the AWS Marketplace version of CloudQuery, you can set the `AWSMarketplace` parameter to `true`.
 
-
 ``` bash
 aws cloudformation deploy --template-file cloudquery-ecs-resources.yaml --stack-name <STACK_NAME> --parameter-overrides CQApiKey=<SECRET_ARN> CQVersion=latest PrivateSubnetIds=<SUBNET_ID_1>,<SUBNET_ID_2> SecurityGroupIds=<SecurityGroup_ID_1>  DestinationS3Bucket=<DESTINATION_BUCKET> CQConfiguration=<BASE64_ENCODED_CONFIG>
-
 ```
-
 
 
 
