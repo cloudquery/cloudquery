@@ -263,7 +263,7 @@ Outputs:
 ```
 
 
-## Step 3: Deploy the CloudFormation Template
+## Step 4: Deploy the CloudFormation Template
 
 You can deploy the CloudFormation template using the `aws cloudformation deploy` command. This command will create the required resources for the deployment of CloudQuery on AWS ECS with Fargate. If you are using the AWS Marketplace version of CloudQuery, you can set the `AWSMarketplace` parameter to `true`.
 
@@ -273,7 +273,7 @@ aws cloudformation deploy --template-file cloudquery-ecs-resources.yaml --stack-
 
 
 
-## Step 4: Run a CloudQuery sync
+## Step 5: Run a CloudQuery sync
 
 To get the values for Cluster Name and Task ARN you can use the following command:
 
