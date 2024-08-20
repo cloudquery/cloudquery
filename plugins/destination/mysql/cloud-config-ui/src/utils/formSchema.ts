@@ -56,7 +56,7 @@ export const formValidationSchema = yup.object({
       // eslint-disable-next-line unicorn/no-thenable
       then: (schema) => schema.required(),
     }),
-  tcp: yup.bool().default(false),
+  tcp: yup.bool().default(true),
   connectionParams: yup.object({
     tls: yup.bool().default(false),
     tlsMode: yup

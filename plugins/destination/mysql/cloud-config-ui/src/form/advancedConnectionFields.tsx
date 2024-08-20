@@ -58,7 +58,7 @@ export function AdvancedConnectionFields() {
                     <FormHelperText error={!!fieldState.error?.message}>
                       {getFieldHelperText(
                         fieldState.error?.message,
-                        'If true, will enable connection over TCP to the server. Optional, defaults to false.',
+                        'If true, will enable connection over TCP to the server. Optional, defaults to true.',
                       )}
                     </FormHelperText>
                   </FormControl>

@@ -23,11 +23,11 @@ describe('connectionStringToFields', () => {
 
   test('returns fields from a kitchen sink connection string', async () => {
     const result = convertConnectionStringToFields(
-      'username:${password}@tcp(host:port)/database?tlsMode=preferred\u0026parseTime=True\u0026charset=utf8\u0026loc=UTC\u0026timeout=30s\u0026readTimeout=60s\u0026writeTimeout=90s\u0026allowNativePasswords=true',
+      'user@gmail.com:${password}@tcp(host:port)/database?tlsMode=preferred\u0026parseTime=True\u0026charset=utf8\u0026loc=UTC\u0026timeout=30s\u0026readTimeout=60s\u0026writeTimeout=90s\u0026allowNativePasswords=true',
     );
 
     expect(result).toMatchObject({
-      username: 'username',
+      username: 'user@gmail.com',
       password: '${password}',
       host: 'host',
       port: 'port',

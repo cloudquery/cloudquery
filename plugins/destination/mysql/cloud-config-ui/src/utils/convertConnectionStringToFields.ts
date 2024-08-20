@@ -1,13 +1,14 @@
 export const convertConnectionStringToFields = (connectionString: string) => {
   const connectionParams: Record<string, any> = {};
 
-  const username = connectionString.split(':')[0] ?? '';
-  const password = connectionString.split(':')[1]?.split('@')[0] ?? '';
-  const address = connectionString.split('@')[1]?.split('/')[0] ?? '';
+  const [username, ...following] = connectionString.split(':') ?? ['', ''];
+  const rest = following.join(':');
+  const password = rest?.split('@')[0] ?? '';
+  const address = rest.split('@')[1]?.split('/')[0] ?? '';
   const tcp = address.startsWith('tcp(');
   const host = (tcp ? address.split('(')[1]?.split(':')[0] : address.split(':')[0]) ?? '';
   const port = (tcp ? address.split(':')[1]?.split(')')[0] : address.split(':')[1]) ?? '';
-  const database = connectionString.split('/')[1]?.split('?')[0] ?? '';
+  const database = rest.split('/')[1]?.split('?')[0] ?? '';
 
   const params = decodeURI(connectionString).split('?')[1].split('&');
   for (const param of params) {

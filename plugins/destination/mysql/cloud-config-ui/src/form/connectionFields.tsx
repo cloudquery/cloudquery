@@ -34,7 +34,9 @@ export function FormConnectionFields() {
     trigger,
   } = useFormContext<FormValues>();
 
-  const values = watch();
+  const connectionString = watch('connectionString');
+  const password = watch('password');
+  const connectionType = watch('connectionType');
 
   const defaultConnectionString = defaultValues?.connectionString;
   const defaultPassword = defaultValues?.password;
@@ -80,7 +82,7 @@ export function FormConnectionFields() {
       trigger();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values]);
+  }, [connectionString, password]);
 
   const defaultConnectionStringIsSecret = defaultConnectionString?.includes('${password}');
 
@@ -91,13 +93,13 @@ export function FormConnectionFields() {
     >
       <Stack spacing={3}>
         <ExclusiveToggle
-          value={values.connectionType}
+          value={connectionType}
           onChange={(value: string | number | boolean) =>
             setValue('connectionType', value as 'string' | 'fields')
           }
           options={connectionTypeOptions}
         />
-        {values.connectionType === 'string' ? (
+        {connectionType === 'string' ? (
           <Controller
             control={control}
             name="connectionString"
@@ -178,7 +180,7 @@ export function FormConnectionFields() {
                   fullWidth={true}
                   helperText={getFieldHelperText(
                     fieldState.error?.message,
-                    'Name of the MySQL database you want to connect to .Optional, defaults to empty.',
+                    'Name of the MySQL database you want to connect to. Optional, defaults to empty.',
                   )}
                   label="Database"
                   autoComplete="off"
