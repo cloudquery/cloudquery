@@ -83,7 +83,7 @@ jobs:
         working-directory: ${{ matrix.plugin.ui }}
 
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@v3
+        uses: cloudquery/setup-cloudquery@v4
         with:
           version: v6.4.1
 
