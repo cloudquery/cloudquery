@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.5.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.5.1...plugins-destination-postgresql-v8.5.2) (2024-08-20)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.58 ([#18944](https://github.com/cloudquery/cloudquery/issues/18944)) ([f92213c](https://github.com/cloudquery/cloudquery/commit/f92213cb8f4033b24138c84eec2eeb4f3d108f25))
+
 ## [8.5.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.5.0...plugins-destination-postgresql-v8.5.1) (2024-08-13)
 
 
