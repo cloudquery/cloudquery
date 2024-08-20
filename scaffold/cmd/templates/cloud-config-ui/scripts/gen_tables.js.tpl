@@ -4,10 +4,9 @@ var argv = require('minimist')(process.argv.slice(2));
 const generateTables = () =>
   require('child_process').execSync(
     `cd ..
-dirname="$(basename $(pwd))"
 cloudquery tables --output-dir data test/config.yml
 mkdir -p cloud-config-ui/src/data
-mv data/$dirname/__tables.json cloud-config-ui/src/data/__tables.json`,
+mv data/{{.Name}}/__tables.json cloud-config-ui/src/data/__tables.json`,
     (error) => {
       if (error !== null) {
         console.log(`exec error: ${error}`);
