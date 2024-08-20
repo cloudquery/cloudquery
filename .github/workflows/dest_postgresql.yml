@@ -120,7 +120,7 @@ jobs:
         working-directory: "plugins/destination/postgresql/cloud-config-ui"
         run: E2E_TESTS_GENERATE_CONFIG=true npm run test:e2e
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@v3
+        uses: cloudquery/setup-cloudquery@v4
         with:
           version: v6.4.1
       - name: Validate CloudQuery config
