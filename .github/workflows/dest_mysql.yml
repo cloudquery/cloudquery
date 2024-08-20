@@ -70,6 +70,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: plugins/destination/mysql/go.mod
+          cache: true
+          cache-dependency-path: plugins/destination/mysql/go.sum
+      - name: Build
+        run: go build .
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
