@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.5.3...plugins-source-hackernews-v3.5.4) (2024-08-20)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.58 ([#18944](https://github.com/cloudquery/cloudquery/issues/18944)) ([f92213c](https://github.com/cloudquery/cloudquery/commit/f92213cb8f4033b24138c84eec2eeb4f3d108f25))
+
 ## [3.5.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.5.2...plugins-source-hackernews-v3.5.3) (2024-08-13)
 
 
