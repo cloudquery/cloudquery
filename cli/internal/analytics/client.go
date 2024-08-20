@@ -20,9 +20,10 @@ var (
 )
 
 type eventDetails struct {
-	user        cqapi.User
-	currentTeam string
-	environment string
+	user                cqapi.User
+	currentTeam         string
+	currentTeamInternal bool
+	environment         string
 }
 
 type noOpLogger struct{}
@@ -72,10 +73,13 @@ func refreshSyncEventDetails(ctx context.Context) *eventDetails {
 	}
 	currentTeam, _ := internalAuth.GetTeamForToken(ctx, token)
 
+	currentTeamInternal, _ := internalAuth.IsTeamInternal(ctx, currentTeam)
+
 	eventDetails := &eventDetails{
-		user:        *user,
-		currentTeam: currentTeam,
-		environment: getEnvironment(),
+		user:                *user,
+		currentTeam:         currentTeam,
+		currentTeamInternal: currentTeamInternal,
+		environment:         getEnvironment(),
 	}
 
 	// Cache event details for future use
@@ -91,6 +95,10 @@ func TrackLoginSuccess(ctx context.Context, invocationUUID uuid.UUID) {
 
 	details := refreshSyncEventDetails(ctx)
 	if details == nil {
+		return
+	}
+
+	if details.currentTeamInternal {
 		return
 	}
 
@@ -148,6 +156,10 @@ func TrackSyncStarted(ctx context.Context, invocationUUID uuid.UUID, event SyncS
 		return
 	}
 
+	if details.currentTeamInternal {
+		return
+	}
+
 	_ = client.Enqueue(rudderstack.Track{
 		UserId:     details.user.ID.String(),
 		Event:      "sync_run_started",
@@ -171,6 +183,10 @@ func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event Syn
 
 	details := getSyncEventDetails(ctx)
 	if details == nil {
+		return
+	}
+
+	if details.currentTeamInternal {
 		return
 	}
 

@@ -71,10 +71,27 @@ func runSwitch(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to switch teams: %w", err)
 	}
+
+	team, err := cl.GetTeam(cmd.Context(), selectedTeam)
+	if err != nil {
+		return fmt.Errorf("failed to get team: %w", err)
+	}
+
 	err = config.SetValue("team", selectedTeam)
 	if err != nil {
 		return fmt.Errorf("failed to set team value: %w", err)
 	}
+
+	teamInternalStr := "false"
+	if team.Internal {
+		teamInternalStr = "true"
+	}
+
+	err = config.SetValue("team_internal", teamInternalStr)
+	if err != nil {
+		return fmt.Errorf("failed to set team metadata: %w", err)
+	}
+
 	cmd.Printf("Successfully switched teams to %v.\n", selectedTeam)
 	return nil
 }
