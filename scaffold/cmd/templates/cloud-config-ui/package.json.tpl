@@ -49,7 +49,8 @@
     "build": "node scripts/initialize.js -f && react-scripts build",
     "lint": "eslint src --ext .ts,.tsx --max-warnings 0",
     "lint:fix": "eslint src --ext .ts,.tsx --max-warnings 0 --fix",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "dev:test:e2e": "REACT_APP_USE_CLOUD_APP_MOCK=true npm run build && playwright test"
   },
   "eslintConfig": {
     "extends": [
