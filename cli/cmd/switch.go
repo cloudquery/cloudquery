@@ -72,7 +72,7 @@ func runSwitch(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to switch teams: %w", err)
 	}
 
-	team, err := cl.GetTeam(cmd.Context(), selectedTeam)
+	teamInfo, err := cl.GetTeam(cmd.Context(), selectedTeam)
 	if err != nil {
 		return fmt.Errorf("failed to get team: %w", err)
 	}
@@ -83,7 +83,7 @@ func runSwitch(cmd *cobra.Command, args []string) error {
 	}
 
 	teamInternalStr := "false"
-	if team.Internal {
+	if teamInfo.Internal {
 		teamInternalStr = "true"
 	}
 

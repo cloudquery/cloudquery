@@ -264,13 +264,13 @@ func setTeamOnLogin(ctx context.Context, cmd *cobra.Command, token string) error
 			return fmt.Errorf("failed to set team: %w", err)
 		}
 
-		team, err := cl.GetTeam(cmd.Context(), currentTeam)
+		teamInfo, err := cl.GetTeam(cmd.Context(), currentTeam)
 		if err != nil {
 			return fmt.Errorf("failed to get team: %w", err)
 		}
 
 		teamInternalStr := "false"
-		if team.Internal {
+		if teamInfo.Internal {
 			teamInternalStr = "true"
 		}
 
