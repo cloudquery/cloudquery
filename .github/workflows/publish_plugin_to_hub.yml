@@ -142,10 +142,10 @@ jobs:
       - name: Build config UI
         if: needs.prepare.outputs.ui_dir_arg != ''
         env:
-          PLUGIN_TEAM: cloudquery
-          PLUGIN_KIND: ${{needs.prepare.outputs.plugin_kind}}
-          PLUGIN_NAME: ${{needs.prepare.outputs.plugin_name}}
-          PLUGIN_VERSION: ${{needs.prepare.outputs.plugin_version}}
+          REACT_APP_PLUGIN_TEAM: cloudquery
+          REACT_APP_PLUGIN_KIND: ${{needs.prepare.outputs.plugin_kind}}
+          REACT_APP_PLUGIN_NAME: ${{needs.prepare.outputs.plugin_name}}
+          REACT_APP_PLUGIN_VERSION: ${{needs.prepare.outputs.plugin_version}}
         working-directory: "${{needs.prepare.outputs.plugin_dir}}/${{env.ui_dir_name}}"
         run: |
           npm run build
