@@ -52,7 +52,7 @@ cat cloudquery.yml | base64
 ```
 
 
-## Step 2: Create Secret to CloudQuery API Key
+## Step 2: Create a Secret to store a CloudQuery API Key
 
 Downloading plugins requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in ECS. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key).
 
@@ -67,7 +67,7 @@ aws secretsmanager create-secret \
 
 
 
-## Step 3: Create CloudFormation template
+## Step 3: Create a CloudFormation template
 This template will create the required resources for the deployment of CloudQuery on AWS ECS. Create a new file named `cloudquery-ecs-resources.yaml` with the following content:
 
 ```yaml
@@ -274,7 +274,7 @@ aws cloudformation deploy --template-file cloudquery-ecs-resources.yaml --stack-
 
 
 
-## Step 4: Run a test CloudQuery sync
+## Step 4: Run a CloudQuery sync
 
 To get the values for Cluster Name and Task ARN you can use the following command:
 
