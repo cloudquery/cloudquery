@@ -71,8 +71,8 @@ aws secretsmanager create-secret \
 This template will create the required resources for the deployment of CloudQuery on AWS ECS. Create a new file named `cloudquery-ecs-resources.yaml` with the following content:
 
 ```yaml
-AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Deploy CloudQuery on AWS ECS with Fargate'
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Deploy CloudQuery on AWS ECS with Fargate"
 
 Parameters:
   CQVersion:
@@ -87,7 +87,7 @@ Parameters:
     Type: String
   SecurityGroupIds:
     Description: Please enter a comma separated list of Security Group IDs that you want to attach to the Fargate node.
-    Type: String   
+    Type: String
   DestinationS3Bucket:
     Description: Please enter the name of the S3 bucket where you want to store the CloudQuery results
     Type: String
@@ -105,10 +105,10 @@ Parameters:
 Resources:
   #### ECS Cluster:
   ECSCluster:
-    Type: 'AWS::ECS::Cluster'
-  
+    Type: "AWS::ECS::Cluster"
+
   ScheduledWorkerTask:
-    Type: 'AWS::ECS::TaskDefinition'
+    Type: "AWS::ECS::TaskDefinition"
     Properties:
       RequiresCompatibilities:
         - FARGATE
@@ -118,12 +118,12 @@ Resources:
       ExecutionRoleArn: !GetAtt ExecutionRole.Arn
       TaskRoleArn: !GetAtt ExecutionRole.Arn
       ContainerDefinitions:
-        - Essential: 'true'
-          Command: 
+        - Essential: "true"
+          Command:
             - "echo $CQ_CONFIG| base64 -d  > ./file.yml;/app/cloudquery sync ./file.yml --log-console --log-format json"
           Image: !Sub ghcr.io/cloudquery/cloudquery:${CQVersion}
           Name: ScheduledWorker
-          EntryPoint: 
+          EntryPoint:
             - "/bin/sh"
             - "-c"
           Environment:
@@ -134,8 +134,8 @@ Resources:
             - Name: CQ_AWS_MARKETPLACE_CONTAINER
               Value: !Ref AWSMarketplace
           Secrets:
-               - ValueFrom: !Ref CQApiKey
-                 Name: CLOUDQUERY_API_KEY
+            - ValueFrom: !Ref CQApiKey
+              Name: CLOUDQUERY_API_KEY
           LogConfiguration:
             LogDriver: awslogs
             Options:
@@ -144,61 +144,61 @@ Resources:
               awslogs-stream-prefix: !Ref AWS::StackName
   LogGroup:
     DeletionPolicy: Retain
-    UpdateReplacePolicy: Retain  
+    UpdateReplacePolicy: Retain
     Type: AWS::Logs::LogGroup
-    Properties: 
+    Properties:
       RetentionInDays: 14
   # Scheduler Configurations
   Schedule:
     Type: AWS::Scheduler::Schedule
-    Properties: 
-      FlexibleTimeWindow: 
+    Properties:
+      FlexibleTimeWindow:
         Mode: "OFF"
       ScheduleExpression: !Ref ScheduleExpression
       State: ENABLED
-      Target: 
-          Arn: !GetAtt ECSCluster.Arn
-          EcsParameters: 
-              NetworkConfiguration: 
-                AwsvpcConfiguration: 
-                  AssignPublicIp: DISABLED
-                  SecurityGroups: !Split [ "," , !Ref SecurityGroupIds]
-                  Subnets: !Split [ "," , !Ref PrivateSubnetIds]
-              LaunchType: FARGATE
-              PlatformVersion: 1.4.0
-              TaskCount: 1
-              TaskDefinitionArn: !Ref ScheduledWorkerTask
-          RoleArn: !GetAtt SchedulerExecutionRole.Arn
-        
+      Target:
+        Arn: !GetAtt ECSCluster.Arn
+        EcsParameters:
+          NetworkConfiguration:
+            AwsvpcConfiguration:
+              AssignPublicIp: DISABLED
+              SecurityGroups: !Split [",", !Ref SecurityGroupIds]
+              Subnets: !Split [",", !Ref PrivateSubnetIds]
+          LaunchType: FARGATE
+          PlatformVersion: 1.4.0
+          TaskCount: 1
+          TaskDefinitionArn: !Ref ScheduledWorkerTask
+        RoleArn: !GetAtt SchedulerExecutionRole.Arn
+
   SchedulerExecutionRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
+        Version: "2012-10-17"
         Statement:
-        - Action:
-          - sts:AssumeRole
-          Effect: Allow
-          Principal:
-            Service:
-            - scheduler.amazonaws.com
-        Version: '2012-10-17'
+          - Action:
+              - sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                - scheduler.amazonaws.com
       Path: "/"
       Policies:
-      - PolicyName: SchedulerExecutionRole
-        PolicyDocument:  
-          Version: '2012-10-17'
-          Statement:
-          - Action:
-            - ecs:RunTask
-            Effect: Allow
-            Resource: !Ref ScheduledWorkerTask
-            Condition:
-              ArnEquals:
-                ecs:cluster: !GetAtt ECSCluster.Arn
-          - Effect: Allow
-            Action:
-              - iam:PassRole
-            Resource: !GetAtt ExecutionRole.Arn
+        - PolicyName: SchedulerExecutionRole
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Action:
+                  - ecs:RunTask
+                Effect: Allow
+                Resource: !Ref ScheduledWorkerTask
+                Condition:
+                  ArnEquals:
+                    ecs:cluster: !GetAtt ECSCluster.Arn
+              - Effect: Allow
+                Action:
+                  - iam:PassRole
+                Resource: !GetAtt ExecutionRole.Arn
 
   ####### IAM role for Fargate execution#####
   ExecutionRole:
@@ -209,7 +209,7 @@ Resources:
           - Effect: Allow
             Principal:
               Service: ecs-tasks.amazonaws.com
-            Action: 'sts:AssumeRole'
+            Action: "sts:AssumeRole"
       Policies:
         - PolicyName: AccessAPIKeySecret
           PolicyDocument:
@@ -220,7 +220,7 @@ Resources:
                   - secretsmanager:GetSecretValue
                 Resource: !Sub ${CQApiKey}
         - PolicyName: WriteDataToS3Destination
-          PolicyDocument: 
+          PolicyDocument:
             Version: 2012-10-17
             Statement:
               - Effect: Allow
@@ -232,13 +232,12 @@ Resources:
             Version: 2012-10-17
             Statement:
               - Effect: Deny
-                NotResource: 
+                NotResource:
                   - !Sub arn:${AWS::Partition}:s3:::${DestinationS3Bucket}/*
                 Action:
                   - s3:GetObject
-              -
-                Effect: Deny
-                Resource: '*'
+              - Effect: Deny
+                Resource: "*"
                 Action:
                   - cloudformation:GetTemplate
                   - dynamodb:GetItem
@@ -253,9 +252,9 @@ Resources:
                   - sdb:Select*
                   - sqs:ReceiveMessage
       ManagedPolicyArns:
-        - 'arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy'
-        - 'arn:aws:iam::aws:policy/ReadOnlyAccess'
-        - 'arn:aws:iam::aws:policy/AWSMarketplaceMeteringFullAccess'
+        - "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+        - "arn:aws:iam::aws:policy/ReadOnlyAccess"
+        - "arn:aws:iam::aws:policy/AWSMarketplaceMeteringFullAccess"
 Outputs:
   ClusterId:
     Value: !Ref ECSCluster
