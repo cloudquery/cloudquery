@@ -74,7 +74,7 @@ jobs:
           go run main.go package -m ${{"{{"}} steps.release-notes.outputs.result {{"}}"}} ${{"{{"}} steps.semver_parser.outputs.fullversion {{"}}"}} .
 
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@v3
+        uses: cloudquery/setup-cloudquery@v4
         with:
           version: v5.0.1
 

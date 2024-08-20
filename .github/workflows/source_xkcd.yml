@@ -42,7 +42,7 @@ jobs:
           args: "--config ../../.golangci.yml"
       - name: Setup CloudQuery
         if: github.event_name == 'pull_request'
-        uses: cloudquery/setup-cloudquery@v3
+        uses: cloudquery/setup-cloudquery@v4
         with:
           version: v6.4.1
       - name: gen
@@ -76,7 +76,7 @@ jobs:
           cache: true
           cache-dependency-path: plugins/source/xkcd/go.sum
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@v3
+        uses: cloudquery/setup-cloudquery@v4
         with:
           version: v6.4.1
       - name: Gen
