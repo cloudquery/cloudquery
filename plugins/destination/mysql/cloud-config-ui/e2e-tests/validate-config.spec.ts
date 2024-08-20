@@ -16,7 +16,6 @@ test('Submit the form', async ({ page }) => {
   await page.getByLabel('Password').fill('securePass123');
 
   await page.getByRole('button', { name: 'Advanced Connection Options' }).click();
-  await page.getByLabel('TCP').click();
   await page.getByLabel('TLS').click();
   await page.getByLabel('TLS Mode').click();
   await page.getByRole('option', { name: 'preferred' }).click();
