@@ -47,6 +47,10 @@
       "destination": "/docs"
     },
     {
+      "source": "/docs/advanced-topics/monitoring",
+      "destination": "/docs/advanced-topics/monitoring/overview"
+    },
+    {
       "source": "/docs/developers",
       "destination": "/docs/developers/architecture"
     },
