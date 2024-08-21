@@ -1,7 +1,25 @@
 import { convertConnectionStringToFields } from '../convertConnectionStringToFields';
 
 describe('connectionStringToFields', () => {
+  test('returns fields from a barebones connection string', async () => {
+    const result = convertConnectionStringToFields('/abc');
+
+    expect(result).toMatchObject({ database: 'abc' });
+  });
+
   test('returns fields from a simple connection string', async () => {
+    const result = convertConnectionStringToFields('user:password@localhost:3306/dbname');
+
+    expect(result).toMatchObject({
+      username: 'user',
+      password: 'password',
+      host: 'localhost',
+      port: '3306',
+      database: 'dbname',
+    });
+  });
+
+  test('returns fields from a simple connection string with params', async () => {
     const result = convertConnectionStringToFields(
       'user:password@localhost:3306/dbname?timeout=30s\u0026readTimeout=1s\u0026writeTimeout=1s',
     );

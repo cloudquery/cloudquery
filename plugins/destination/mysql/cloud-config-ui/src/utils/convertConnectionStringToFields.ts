@@ -8,9 +8,9 @@ export const convertConnectionStringToFields = (connectionString: string) => {
   const tcp = address.startsWith('tcp(');
   const host = (tcp ? address.split('(')[1]?.split(':')[0] : address.split(':')[0]) ?? '';
   const port = (tcp ? address.split(':')[1]?.split(')')[0] : address.split(':')[1]) ?? '';
-  const database = rest.split('/')[1]?.split('?')[0] ?? '';
+  const database = connectionString.split('/')[1]?.split('?')?.[0] ?? '';
 
-  const params = decodeURI(connectionString).split('?')[1].split('&');
+  const params = decodeURI(connectionString).split('?')?.[1]?.split('&') ?? [];
   for (const param of params) {
     const [key, value] = param.split('=');
     if (key.toLowerCase().includes('timeout')) {

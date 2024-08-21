@@ -47,15 +47,7 @@ export const formValidationSchema = yup.object({
     .max(5)
     .matches(/^($)|(\d+)$/, 'Port must be a number')
     .default(''),
-  database: yup
-    .string()
-    .max(63)
-    .default('')
-    .when('connectionType', {
-      is: 'fields',
-      // eslint-disable-next-line unicorn/no-thenable
-      then: (schema) => schema.required(),
-    }),
+  database: yup.string().max(63).default(''),
   tcp: yup.bool().default(true),
   connectionParams: yup.object({
     tls: yup.bool().default(false),

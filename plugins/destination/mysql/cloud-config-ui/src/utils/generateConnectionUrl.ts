@@ -2,13 +2,14 @@ import { FormValues } from './formSchema';
 
 export function generateConnectionUrl(values: FormValues): string {
   const password = values.password ? '${password}' : '';
+  const credentials = values.username ? `${values.username}:${password}@` : '';
   const db = values.database ? `${escapeSingleQuotesAndBackslashes(values.database.trim())}` : '';
   const host = values.host ? `${escapeSingleQuotesAndBackslashes(values.host.trim())}` : undefined;
   const port = values.port ?? undefined;
   const address = host ? `${host}:${port}` : undefined;
   const wrappedAddress = address ? (values.tcp ? `tcp(${address})` : address) : '';
 
-  const base = `${values.username}:${password}@${wrappedAddress}/${db}`;
+  const base = `${credentials}${wrappedAddress}/${db}`;
 
   const normalizedConnectionParams: Record<string, boolean | string> = {};
   if (values.connectionParams.tls && values.connectionParams.tlsMode) {

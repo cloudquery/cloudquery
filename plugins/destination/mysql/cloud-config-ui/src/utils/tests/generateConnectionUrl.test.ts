@@ -17,6 +17,12 @@ const baseTestFormValues = {
 } as unknown as FormValues;
 
 describe('generateConnectionUrl', () => {
+  test('returns a barebones connection string', async () => {
+    const result = generateConnectionUrl({ database: 'abc', connectionParams: {} } as any);
+
+    expect(result).toBe('/abc');
+  });
+
   test('returns a simple connection string', async () => {
     const result = generateConnectionUrl(baseTestFormValues);
 
