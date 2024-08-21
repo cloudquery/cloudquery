@@ -42,9 +42,9 @@ jobs:
           args: "--config ../../.golangci.yml"
       - name: Setup CloudQuery
         if: github.event_name == 'pull_request'
-        uses: cloudquery/setup-cloudquery@v3
+        uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.4.0
+          version: v6.4.1
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen

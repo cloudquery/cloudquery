@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.4.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.4.0...cli-v6.4.1) (2024-08-15)
+
+
+### Bug Fixes
+
+* Emit event groups in a format that posthog accepts ([#18936](https://github.com/cloudquery/cloudquery/issues/18936)) ([95ebcb3](https://github.com/cloudquery/cloudquery/commit/95ebcb355a38476530940c47fd7113464fb17d15))
+
 ## [6.4.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.3.0...cli-v6.4.0) (2024-08-13)
 
 

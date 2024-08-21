@@ -10,7 +10,7 @@ Make sure to copy `.env.example.json` to `.env.json` inside `src` folder before 
 
 ## Plugin tables
 
-In case your plugin is a source plugin and you want to use the list of tables in your plugin UI, then make sure to build the plugin first to get a generated list of tables. Inside the plugin root directory run `go build`. This will generate a plugin file and then you should navigate back to the `cloud-config-ui` directory inside your plugin and run `npm start` or `npm run build`, they both will generate a `__tables.json` file in the `src/data` folder. After that you can import the list of tables inside the application like this:
+In case your plugin is a source plugin and you want to use the list of tables in your plugin UI, then make sure to build the plugin first to get a generated list of tables. Inside the plugin root directory run `go build`. This will generate a plugin file. Then navigate back to the `cloud-config-ui` directory inside your plugin and run `npm start` or `npm run build`, they both will generate a `__tables.json` file and move it to the `src/data` folder. After that you can import the list of tables inside the application like this:
 
 ```ts
 import pluginTables from 'data/__tables.json';
@@ -34,6 +34,10 @@ Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `npm run build`
+
+Builds the `data/__tables.json` file.
+
+Copies the `.env.example.json` to `.env.json`.
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.

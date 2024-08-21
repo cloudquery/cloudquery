@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.3.3...plugins-source-xkcd-v1.3.4) (2024-08-20)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.58 ([#18944](https://github.com/cloudquery/cloudquery/issues/18944)) ([f92213c](https://github.com/cloudquery/cloudquery/commit/f92213cb8f4033b24138c84eec2eeb4f3d108f25))
+
 ## [1.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.3.2...plugins-source-xkcd-v1.3.3) (2024-08-13)
 
 
