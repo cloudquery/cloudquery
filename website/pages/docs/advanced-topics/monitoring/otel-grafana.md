@@ -29,12 +29,12 @@ services:
   loki:
     image: grafana/loki:latest
     ports:
-      - "3100:3100"
+      - "3100"
     command: -config.file=/etc/loki/local-config.yaml
   collector:
     image: otel/opentelemetry-collector-contrib:latest
     ports:
-      - "4318:4318"
+      - "4318:4318" # 4318 needs to be exposed to the host for the collector to ingest data
       - "8090"
     volumes:
       - ./collector/collector.yaml:/etc/otelcol-contrib/config.yaml
@@ -44,7 +44,7 @@ services:
       - "--enable-feature=remote-write-receiver"
       - "--config.file=/etc/prometheus/prometheus.yaml"
     ports:
-      - "9090:9090"
+      - "9090"
     volumes:
       - prometheus:/prometheus
       - ./prometheus/prometheus.yaml:/etc/prometheus/prometheus.yaml
@@ -58,7 +58,7 @@ services:
     environment:
       GF_FEATURE_TOGGLES_ENABLE: "tempoApmTable"
     ports:
-      - "3000:3000"
+      - "3000:3000" # 3000 needs to be exposed to the host for the Grafana UI
 volumes:
   prometheus:
     driver: local
@@ -104,6 +104,23 @@ storage:
       path: /tmp/tempo/wal
     local:
       path: /tmp/tempo/blocks
+# Needed for aggregation functions, e.g. quantile_over_time
+# Visit https://grafana.com/docs/tempo/latest/traceql/metrics-queries/ for more information
+query_frontend:
+  search:
+    max_duration: 0
+  metrics:
+    max_duration: 0
+overrides:
+  metrics_generator_processors: ["local-blocks"]
+metrics_generator:
+  processor:
+    local_blocks:
+      filter_server_spans: false
+  storage:
+    path: /var/tempo/generator/wal
+  traces_storage:
+    path: /var/tempo/generator/traces
 ```
 
 This configuration will tell [Tempo][Tempo] to listen on port 3200 and receive [OpenTelemetry][OpenTelemetry] traces via HTTP on the default port of 4318.
