@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.2](https://github.com/cloudquery/cloudquery/compare/scaffold-v3.3.1...scaffold-v3.3.2) (2024-08-20)
+
+
+### Bug Fixes
+
+* UI Scaffold table generation ([#18969](https://github.com/cloudquery/cloudquery/issues/18969)) ([08468c4](https://github.com/cloudquery/cloudquery/commit/08468c497eaf57b74ff13275a8743b9fcb5048c1))
+
 ## [3.3.1](https://github.com/cloudquery/cloudquery/compare/scaffold-v3.3.0...scaffold-v3.3.1) (2024-08-20)
 
 
