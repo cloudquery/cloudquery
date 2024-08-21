@@ -68,7 +68,7 @@ volumes:
     driver: local
 ```
 
-This Docker Compose configures [Prometheus][Prometheus], [Tempo][Tempo], an [OpenTelemetry collector][Collector] and Grafana with a custom configuration, and [Loki][Loki] with the default configuration, 
+This Docker Compose file configures [Prometheus][Prometheus], [Tempo][Tempo], an [OpenTelemetry collector][Collector] and Grafana with a custom configuration, and [Loki][Loki] with the default configuration.
 
 ## Step 2: Configure Prometheus
 
