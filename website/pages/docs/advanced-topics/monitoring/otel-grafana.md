@@ -83,7 +83,7 @@ scrape_configs:
       - targets: ["collector:8090"]
 ```
 
-This configuration will tell [Prometheus][Prometheus] to scrape the [OpenTelemetry][OTEL] collector every 15 seconds.
+This configuration will tell [Prometheus][Prometheus] to scrape the [OpenTelemetry][OpenTelemetry] collector every 15 seconds.
 
 ## Step 3: Configure Tempo
 
@@ -106,7 +106,7 @@ storage:
       path: /tmp/tempo/blocks
 ```
 
-This configuration will tell [Tempo][Tempo] to listen on port 3200 and receive [OpenTelemetry][OTEL] traces via HTTP on the default port of 4318.
+This configuration will tell [Tempo][Tempo] to listen on port 3200 and receive [OpenTelemetry][OpenTelemetry] traces via HTTP on the default port of 4318.
 
 ## Step 4: Configure the OpenTelemetry collector
 
@@ -186,13 +186,13 @@ datasources:
 
 This configuration will tell [Grafana][Grafana] to use [Prometheus][Prometheus], [Loki][Loki], and [Tempo][Tempo] as data sources.
 
-## Step 7: Download the CloudQuery Grafana Dashboard
+## Step 6: Download the CloudQuery Grafana Dashboard
 
 Create a file with the path `grafana/cloudquery-dashboard.json` with the content from [here](/assets/grafana-dashboard.json).
 
 > If you'd like to import the dashboard to an existing Grafana instance, you can download an external version of it from [here](/assets/grafana-dashboard-external.json).
 
-## Step 8: Configure Grafana with the CloudQuery Dashboard
+## Step 7: Configure Grafana with the CloudQuery Dashboard
 
 Create a file with the path `grafana/dashboards.yaml` with the following content:
 
@@ -210,11 +210,11 @@ providers:
 
 This configuration will tell [Grafana][Grafana] to load the [CloudQuery][CloudQuery] dashboard.
 
-## Step 9: Start the services
+## Step 8: Start the services
 
 Run `docker-compose up` to start the services. Once the services are up and running, you should be able to access [Grafana][Grafana] at [http://localhost:3000](http://localhost:3000) with the default credentials `admin:admin`.
 
-## Step 10: Configure a Source Plugin with OpenTelemetry
+## Step 9: Configure a Source Plugin with OpenTelemetry
 
 You can use the example source configuration below to start a sync with [OpenTelemetry][OpenTelemetry] enabled:
 
@@ -232,7 +232,7 @@ spec:
   spec:
 ```
 
-## Step 11: Run the sync
+## Step 10: Run the sync
 
 Run `cloudquery sync spec.yml --log-level debug`.
 
