@@ -112,12 +112,12 @@
           "type": "timeseries",
           "requests": [
             {
-              "formulas": [{ "formula": "p99" }],
+              "formulas": [{ "formula": "p95" }],
               "queries": [
                 {
                   "data_source": "metrics",
-                  "name": "p99",
-                  "query": "p99:trace.io.cloudquery.internal{service:$service.value,resource_name:sync.table.$sync.table.name.value}"
+                  "name": "p95",
+                  "query": "p95:trace.io.cloudquery.internal{service:$service.value,resource_name:sync.table.$sync.table.name.value}"
                 }
               ],
               "response_format": "timeseries",
