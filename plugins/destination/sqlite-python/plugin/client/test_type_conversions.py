@@ -1,6 +1,7 @@
 import pyarrow as pa
 from plugin.client.type_conversions import arrow_type_to_sqlite_str
 
+
 def test_arrow_type_to_sqlite_str():
     # Test binary types
     assert arrow_type_to_sqlite_str(pa.binary()) == "blob"
@@ -29,7 +30,7 @@ def test_arrow_type_to_sqlite_str():
     assert arrow_type_to_sqlite_str(pa.bool_()) == "boolean"
 
     # Test timestamp type
-    assert arrow_type_to_sqlite_str(pa.timestamp('us')) == "timestamp"
+    assert arrow_type_to_sqlite_str(pa.timestamp("us")) == "timestamp"
 
     # Test unknown type
     assert arrow_type_to_sqlite_str(pa.null()) == "text"

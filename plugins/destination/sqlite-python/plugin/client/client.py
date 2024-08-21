@@ -3,18 +3,14 @@ import json
 from typing import Any, Generator
 from uuid import UUID
 
-import numpy as np
 import pandas as pd
 
-from plugin.sqlite.client import SQLClient, SQLiteColumn
+from plugin.sqlite.client import SQLClient
 from cloudquery.sdk.schema import Table
 import pyarrow as pa
-# from plugin.client.type_conversions import arrow_type_to_sqlite_str
 from cloudquery.sdk import message
+from cloudquery.sdk.schema.table import CQ_SYNC_TIME_COLUMN, CQ_SOURCE_NAME_COLUMN
 
-METADATA_TABLE_NAME = "cq:table_name"
-CQ_SYNC_TIME_COLUMN = "cq_sync_time"
-CQ_SOURCE_NAME_COLUMN = "cq_source_name"
 
 @dataclass
 class Spec:
@@ -42,6 +38,7 @@ class Spec:
 }
 """
 
+
 class Client:
     def __init__(self, spec: Spec) -> None:
         self._spec = spec
@@ -53,7 +50,7 @@ class Client:
     @property
     def client(self) -> SQLClient:
         return self._sqlite
-    
+
     def create_table(self, msg: message.WriteMigrateTableMessage):
         self._sqlite.migrate_client.migrate_tables([msg])
 
@@ -85,29 +82,48 @@ class Client:
             col_names=[c.name for c in table.columns],
         ):
             yield pa.RecordBatch.from_pandas(
-            pd.DataFrame([row], columns=[c.name for c in table.columns]), 
-            schema=schema
-        )
+                pd.DataFrame([row], columns=[c.name for c in table.columns]),
+                schema=schema,
+            )
 
     def close(self):
         self._sqlite.close()
+
 
 def get_value(field, arr, i):
     if not arr[i].is_valid:
         return None
     data_type = arr.type.id
-    if data_type in [pa.bool_().id, pa.int8().id, pa.int16().id, pa.int32().id, pa.int64().id, pa.uint8().id, pa.uint16().id, pa.uint32().id, pa.uint64().id, pa.float32().id, pa.float64().id, pa.string().id, pa.binary().id, pa.large_binary().id] or isinstance(arr.type, pa.FixedSizeBinaryType):
+    if data_type in [
+        pa.bool_().id,
+        pa.int8().id,
+        pa.int16().id,
+        pa.int32().id,
+        pa.int64().id,
+        pa.uint8().id,
+        pa.uint16().id,
+        pa.uint32().id,
+        pa.uint64().id,
+        pa.float32().id,
+        pa.float64().id,
+        pa.string().id,
+        pa.binary().id,
+        pa.large_binary().id,
+    ] or isinstance(arr.type, pa.FixedSizeBinaryType):
         return arr[i].as_py()
     elif data_type == pa.uint64().id:
         return int(arr[i].as_py())
-    elif str(field.type) == 'uuid':
+    elif str(field.type) == "uuid":
         return str(UUID(bytes=arr[i].as_py()))
-    elif str(field.type) == 'json':
+    elif str(field.type) == "json":
         return json.dumps(json.loads(arr[i].as_py()))
     elif isinstance(arr[i], pa.TimestampScalar):
-        return pd.Timestamp(arr[i].value, unit=arr[i].type.unit, tz=arr[i].type.tz).isoformat()
+        return pd.Timestamp(
+            arr[i].value, unit=arr[i].type.unit, tz=arr[i].type.tz
+        ).isoformat()
     else:
         return str(arr[i])
+
 
 def _record_to_sqlite(record: pa.RecordBatch):
     res = []

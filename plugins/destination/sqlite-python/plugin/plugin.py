@@ -17,6 +17,7 @@ from plugin.client import Client, Spec
 PLUGIN_NAME = "sqlite-python"
 PLUGIN_VERSION = "0.0.1"  # {x-release-please-version}
 
+
 class SQLitePlugin(plugin.Plugin):
     def __init__(self) -> None:
         super().__init__(
@@ -49,10 +50,12 @@ class SQLitePlugin(plugin.Plugin):
             elif isinstance(msg, message.WriteInsertMessage):
                 self._client.insert(msg.record)
             elif isinstance(msg, message.WriteDeleteStale):
-                self._client.delete_stale(msg.table_name, msg.source_name, msg.sync_time)
+                self._client.delete_stale(
+                    msg.table_name, msg.source_name, msg.sync_time
+                )
 
     def read(self, table: Table) -> Generator[message.ReadMessage, None, None]:
-        for record in self._client.read(table): 
+        for record in self._client.read(table):
             yield message.ReadMessage(record)
 
     def close(self) -> None:
