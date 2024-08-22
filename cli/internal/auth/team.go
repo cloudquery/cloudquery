@@ -72,3 +72,14 @@ func GetTeamForToken(ctx context.Context, token auth.Token) (string, error) {
 		return os.Getenv("_CQ_TEAM_NAME"), nil
 	}
 }
+
+// IsTeamInternal checks if the team has the internal flag set
+// We store this in the configuration on team switch.
+func IsTeamInternal(ctx context.Context, team string) (bool, error) {
+	internalStr, err := config.GetValue("team_internal")
+	if err != nil {
+		return false, fmt.Errorf("could not get team internal flag: %w", err)
+	}
+
+	return internalStr == "true", nil
+}
