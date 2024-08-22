@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net"
 	"strings"
 	"time"
 
@@ -88,13 +89,13 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 func (c *Client) validateConnection(ctx context.Context) error {
 	rows, err := c.db.QueryContext(ctx, "select database()")
 	if err != nil {
-		return plugin.NewTestConnError("QUERY_DATABASE_FAILED", err)
+		return categorizeError(err, "QUERY_DATABASE_FAILED")
 	}
 	defer rows.Close()
 	for rows.Next() {
 		var name *string
 		if err := rows.Scan(&name); err != nil {
-			return plugin.NewTestConnError("SCAN_DATABASE_FAILED", err)
+			return categorizeError(err, "SCAN_DATABASE_FAILED")
 		}
 		if name == nil {
 			return plugin.NewTestConnError(
@@ -109,13 +110,13 @@ func (c *Client) validateConnection(ctx context.Context) error {
 func (c *Client) getVersion(ctx context.Context) error {
 	rows, err := c.db.QueryContext(ctx, "SELECT VERSION()")
 	if err != nil {
-		return plugin.NewTestConnError("QUERY_VERSION_FAILED", err)
+		return categorizeError(err, "QUERY_VERSION_FAILED")
 	}
 	defer rows.Close()
 	for rows.Next() {
 		var versionString *string
 		if err := rows.Scan(&versionString); err != nil {
-			return plugin.NewTestConnError("SCAN_VERSION_FAILED", err)
+			return categorizeError(err, "SCAN_VERSION_FAILED")
 		}
 		if strings.Contains(*versionString, "-MariaDB") {
 			c.serverType = ServerTypeMariaDB
@@ -152,4 +153,26 @@ func (c *Client) Close(ctx context.Context) error {
 		return fmt.Errorf("failed to close writer: %w", err)
 	}
 	return c.db.Close()
+}
+
+func categorizeError(err error, defaultCode string) error {
+	var opErr *net.OpError
+	if errors.As(err, &opErr) {
+		return plugin.NewTestConnError("UNREACHABLE", err)
+	}
+	var myErr *mysql.MySQLError
+	if errors.As(err, &myErr) {
+		switch myErr.Number {
+		case 1045:
+			return plugin.NewTestConnError("ACCESS_DENIED", err)
+		case 1049:
+			return plugin.NewTestConnError("UNKNOWN_DATABASE", err)
+		default:
+			if myErr.SQLState != [5]byte{} {
+				return plugin.NewTestConnError(fmt.Sprintf("MYSQL_ERROR_%d_%s", myErr.Number, myErr.SQLState), err)
+			}
+			return plugin.NewTestConnError(fmt.Sprintf("MYSQL_ERROR_%d", myErr.Number), err)
+		}
+	}
+	return plugin.NewTestConnError(defaultCode, err)
 }
