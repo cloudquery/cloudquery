@@ -11,9 +11,8 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
+	"github.com/go-sql-driver/mysql"
 	"github.com/rs/zerolog"
-
-	mysql "github.com/go-sql-driver/mysql"
 )
 
 type ServerType int64
@@ -43,12 +42,12 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	var err error
 
 	if err := json.Unmarshal(spec, &c.spec); err != nil {
-		return nil, plugin.NewTestConnError("INVALID_SPEC", err)
+		return nil, plugin.NewTestConnError(codeInvalidSpec, err)
 	}
 
 	c.spec.SetDefaults()
 	if err := c.spec.Validate(); err != nil {
-		return nil, plugin.NewTestConnError("INVALID_SPEC", err)
+		return nil, plugin.NewTestConnError(codeInvalidSpec, err)
 	}
 	c.writer, err = batchwriter.New(c, batchwriter.WithLogger(c.logger), batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
 	if err != nil {
@@ -65,7 +64,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	dsn.Params["parseTime"] = "true"
 	db, err := sql.Open("mysql", dsn.FormatDSN())
 	if err != nil {
-		return nil, plugin.NewTestConnError("CONNECT_FAILED", err)
+		return nil, plugin.NewTestConnError(codeConnectFailed, err)
 	}
 
 	db.SetConnMaxLifetime(time.Minute * 3)

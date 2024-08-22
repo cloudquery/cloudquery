@@ -27,14 +27,14 @@ func TestConnectionTester(t *testing.T) {
 		{
 			name:    "invalid spec",
 			spec:    []byte(`{null}`),
-			errCode: "INVALID_SPEC",
+			errCode: codeInvalidSpec,
 		},
 		{
 			name:    "connection failed",
 			spec:    []byte(`{"connection_string": "connstr"}`),
-			errCode: "CONNECT_FAILED",
+			errCode: codeConnectFailed,
 			clientbuilder: func() (plugin.Client, error) {
-				err := plugin.NewTestConnError("CONNECT_FAILED", errors.New("failed"))
+				err := plugin.NewTestConnError(codeConnectFailed, errors.New("failed"))
 				return nil, fmt.Errorf("failed to validate connection: %w", err)
 			},
 		},
@@ -51,11 +51,11 @@ func TestConnectionTester(t *testing.T) {
 			tester := NewConnectionTester(func(_ context.Context, _ zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 				sp := &Spec{}
 				if err := json.Unmarshal(specBytes, &sp); err != nil {
-					return nil, plugin.NewTestConnError("INVALID_SPEC", err)
+					return nil, plugin.NewTestConnError(codeInvalidSpec, err)
 				}
 				sp.SetDefaults()
 				if err := sp.Validate(); err != nil {
-					return nil, plugin.NewTestConnError("INVALID_SPEC", err)
+					return nil, plugin.NewTestConnError(codeInvalidSpec, err)
 				}
 
 				return tc.clientbuilder()
