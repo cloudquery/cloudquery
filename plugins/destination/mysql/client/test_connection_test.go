@@ -69,7 +69,7 @@ func TestConnectionTester(t *testing.T) {
 
 			var expErr *plugin.TestConnError
 			require.ErrorAs(t, err, &expErr)
-			require.Equal(t, tc.errCode, err.(*plugin.TestConnError).Code)
+			require.Equal(t, tc.errCode, expErr.Code)
 		})
 	}
 }
