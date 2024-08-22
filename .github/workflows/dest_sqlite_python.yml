@@ -1,0 +1,46 @@
+name: Destination Plugin SQLite-Python Workflow
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - "plugins/destination/sqlite-python/**"
+      - ".github/workflows/dest_sqlite_python.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/destination/sqlite-python/**"
+      - ".github/workflows/dest_sqlite_python.yml"
+
+jobs:
+  plugins-destination-sqlite-python:
+    timeout-minutes: 30
+    name: "plugins/source/sqlite-python"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/sqlite-python
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Check formatting
+        run: make fmt-check
+      -
+        # Required for the package command tests to work
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Run tests
+        run: make test
+  

@@ -61,6 +61,9 @@
     "plugins/destination/sqlite": {
       "component": "plugins-destination-sqlite"
     },
+    "plugins/destination/sqlite-python": {
+      "component": "plugins-destination-sqlite-python"
+    },
     "plugins/destination/test": {
       "component": "plugins-destination-test"
     },

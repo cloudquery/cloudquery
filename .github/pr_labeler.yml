@@ -40,6 +40,8 @@ area/plugin/destination/snowflake:
   - plugins/destination/snowflake/**/*
 area/plugin/destination/sqlite:
   - plugins/destination/sqlite/**/*
+area/plugin/destination/sqlite-python:
+  - plugins/destination/sqlite/**/*
 area/plugin/source/airtable:
   - plugins/source/airtable/**/*
 area/plugin/source/bitbucket:
