@@ -1,12 +1,11 @@
 import { useCallback } from 'react';
 
-import { getYupValidationResolver, getFieldHelperText } from '@cloudquery/cloud-ui';
+import { getFieldHelperText, getYupValidationResolver } from '@cloudquery/cloud-ui';
 import {
-  FormFieldGroup,
   Logo,
-  useFormSubmit,
-  useFormCurrentValues,
   scrollToFirstFormFieldError,
+  useFormCurrentValues,
+  useFormSubmit,
 } from '@cloudquery/plugin-config-ui-lib';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -16,7 +15,10 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 
-import { PluginTableSelector } from './tableSelector';
+import { AdvancedConnectionFields } from './advancedConnectionFields';
+import { AdvancedSyncFields } from './advancedSyncFields';
+import { FormConnectionFields } from './connectionFields';
+import { FormSyncOptions } from './syncOptions';
 import { FormValues, formValidationSchema } from '../utils/formSchema';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
 import { prepareSubmitValues } from '../utils/prepareSubmitValues';
@@ -34,6 +36,7 @@ export function Form({ initialValues }: Props) {
     resolver: formValidationResolver,
   });
   const { control, handleSubmit: handleFormSubmit, getValues } = formContext;
+
   const getCurrentValues = useCallback(() => prepareSubmitValues(getValues()), [getValues]);
   useFormCurrentValues(pluginUiMessageHandler, getCurrentValues);
 
@@ -60,40 +63,39 @@ export function Form({ initialValues }: Props) {
       <Stack spacing={2}>
         <Card>
           <CardContent>
-            <Stack gap={2}>
-              <Box display="flex" justifyContent="space-between" alignItems="center">
-                <Typography variant="h5">Configure source</Typography>
-                <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
-                  <Logo src={`/images/xkcd.webp`} alt="XKCD" />
-                  <Typography variant="body1">XKCD</Typography>
-                </Box>
+            <Box display="flex" marginBottom={3} justifyContent="space-between" alignItems="center">
+              <Typography variant="h5">Configure destination</Typography>
+              <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
+                <Logo src="images/mysql.webp" alt="MySQL" />
+                <Typography variant="body1">MySQL</Typography>
               </Box>
-              <Stack>
-                <Controller
-                  control={control}
-                  name="name"
-                  render={({ field, fieldState }) => (
-                    <TextField
-                      error={!!fieldState.error}
-                      fullWidth={true}
-                      helperText={getFieldHelperText(
-                        fieldState.error?.message,
-                        'Unique destination name that helps identify the destination within your workspace.',
-                      )}
-                      label="Source name"
-                      disabled={!!initialValues}
-                      autoComplete="off"
-                      {...field}
-                    />
-                  )}
-                />
-              </Stack>
+            </Box>
+            <Stack marginBottom={2}>
+              <Controller
+                control={control}
+                name="name"
+                render={({ field, fieldState }) => (
+                  <TextField
+                    error={!!fieldState.error}
+                    fullWidth={true}
+                    helperText={getFieldHelperText(
+                      fieldState.error?.message,
+                      'Unique destination name that helps identify the destination within your workspace.',
+                    )}
+                    label="Destination name"
+                    disabled={!!initialValues}
+                    autoComplete="off"
+                    {...field}
+                  />
+                )}
+              />
             </Stack>
           </CardContent>
         </Card>
-        <FormFieldGroup title="Tables">
-          <PluginTableSelector />
-        </FormFieldGroup>
+        <FormConnectionFields />
+        <AdvancedConnectionFields />
+        <FormSyncOptions />
+        <AdvancedSyncFields />
       </Stack>
     </FormProvider>
   );
