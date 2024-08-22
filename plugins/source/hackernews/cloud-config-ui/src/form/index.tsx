@@ -8,6 +8,7 @@ import {
   scrollToFirstFormFieldError,
   useFormCurrentValues,
   useFormSubmit,
+  FormWrapper,
 } from '@cloudquery/plugin-config-ui-lib';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -67,110 +68,112 @@ export function Form({ initialValues }: Props) {
     }
   };
 
-  useFormSubmit(handleValidate, pluginUiMessageHandler);
+  const { formDisabled } = useFormSubmit(handleValidate, pluginUiMessageHandler);
 
   return (
-    <FormProvider {...formContext}>
-      <Stack spacing={2}>
-        <Card>
-          <CardContent>
-            <Stack gap={2}>
-              <Box display="flex" justifyContent="space-between" alignItems="center">
-                <Typography variant="h5">Configure source</Typography>
-                <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
-                  <Logo src={`/images/hackernews.webp`} alt="Hacker News" />
-                  <Typography variant="body1">Hacker News</Typography>
+    <FormWrapper formDisabled={formDisabled}>
+      <FormProvider {...formContext}>
+        <Stack spacing={2}>
+          <Card>
+            <CardContent>
+              <Stack gap={2}>
+                <Box display="flex" justifyContent="space-between" alignItems="center">
+                  <Typography variant="h5">Configure source</Typography>
+                  <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
+                    <Logo src={`/images/hackernews.webp`} alt="Hacker News" />
+                    <Typography variant="body1">Hacker News</Typography>
+                  </Box>
                 </Box>
-              </Box>
-              <Stack>
-                <Stack spacing={2}>
-                  <Controller
-                    control={control}
-                    name="name"
-                    render={({ field, fieldState }) => (
-                      <TextField
-                        error={!!fieldState.error}
-                        fullWidth={true}
-                        helperText={getFieldHelperText(
-                          fieldState.error?.message,
-                          'Unique destination name that helps identify the destination within your workspace.',
-                        )}
-                        label="Source name"
-                        disabled={!!initialValues}
-                        autoComplete="off"
-                        {...field}
-                      />
-                    )}
-                  />
+                <Stack>
+                  <Stack spacing={2}>
+                    <Controller
+                      control={control}
+                      name="name"
+                      render={({ field, fieldState }) => (
+                        <TextField
+                          error={!!fieldState.error}
+                          fullWidth={true}
+                          helperText={getFieldHelperText(
+                            fieldState.error?.message,
+                            'Unique destination name that helps identify the destination within your workspace.',
+                          )}
+                          label="Source name"
+                          disabled={!!initialValues}
+                          autoComplete="off"
+                          {...field}
+                        />
+                      )}
+                    />
+                  </Stack>
                 </Stack>
               </Stack>
-            </Stack>
-          </CardContent>
-        </Card>
-        <FormFieldGroup title="Tables">
-          <PluginTableSelector />
-        </FormFieldGroup>
-        <FormFieldGroup title={'Options'}>
-          <Stack>
-            <Stack spacing={2}>
-              <Controller
-                control={control}
-                name="spec.startTime"
-                render={({ field, fieldState }) => (
-                  <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimeField
-                      disableFuture={true}
-                      disabled={!startTimeEnabled}
-                      label="Start time"
-                      slotProps={{
-                        textField: {
-                          error: !!fieldState.error,
-                          name: field.name,
-                          helperText: getFieldHelperText(
-                            fieldState.error?.message,
-                            'The earliest news date that the source should fetch.',
-                          ),
-                          InputProps: {
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <Controller
-                                  control={control}
-                                  name="spec.startTimeEnabled"
-                                  render={({ field }) => (
-                                    <Switch {...field} checked={field.value} />
-                                  )}
-                                />
-                              </InputAdornment>
+            </CardContent>
+          </Card>
+          <FormFieldGroup title="Tables">
+            <PluginTableSelector />
+          </FormFieldGroup>
+          <FormFieldGroup title={'Options'}>
+            <Stack>
+              <Stack spacing={2}>
+                <Controller
+                  control={control}
+                  name="spec.startTime"
+                  render={({ field, fieldState }) => (
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DateTimeField
+                        disableFuture={true}
+                        disabled={!startTimeEnabled}
+                        label="Start time"
+                        slotProps={{
+                          textField: {
+                            error: !!fieldState.error,
+                            name: field.name,
+                            helperText: getFieldHelperText(
+                              fieldState.error?.message,
+                              'The earliest news date that the source should fetch.',
                             ),
+                            InputProps: {
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <Controller
+                                    control={control}
+                                    name="spec.startTimeEnabled"
+                                    render={({ field }) => (
+                                      <Switch {...field} checked={field.value} />
+                                    )}
+                                  />
+                                </InputAdornment>
+                              ),
+                            },
                           },
-                        },
-                      }}
+                        }}
+                        {...field}
+                      />
+                    </LocalizationProvider>
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name="spec.itemConcurrency"
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      error={!!fieldState.error}
+                      fullWidth={true}
+                      required={true}
+                      helperText={getFieldHelperText(
+                        fieldState.error?.message,
+                        'Maximum number of news items to fetch concurrently. Recommended value is 100.',
+                      )}
+                      label="Item concurrency"
                       {...field}
                     />
-                  </LocalizationProvider>
-                )}
-              />
-              <Controller
-                control={control}
-                name="spec.itemConcurrency"
-                render={({ field, fieldState }) => (
-                  <TextField
-                    error={!!fieldState.error}
-                    fullWidth={true}
-                    required={true}
-                    helperText={getFieldHelperText(
-                      fieldState.error?.message,
-                      'Maximum number of news items to fetch concurrently. Recommended value is 100.',
-                    )}
-                    label="Item concurrency"
-                    {...field}
-                  />
-                )}
-              />
+                  )}
+                />
+              </Stack>
             </Stack>
-          </Stack>
-        </FormFieldGroup>
-      </Stack>
-    </FormProvider>
+          </FormFieldGroup>
+        </Stack>
+      </FormProvider>
+    </FormWrapper>
   );
 }
