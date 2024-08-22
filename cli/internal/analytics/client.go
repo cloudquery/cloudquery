@@ -20,10 +20,10 @@ var (
 )
 
 type eventDetails struct {
-	user                cqapi.User
-	currentTeam         string
-	currentTeamInternal bool
-	environment         string
+	user                  cqapi.User
+	currentTeam           string
+	isCurrentTeamInternal bool
+	environment           string
 }
 
 type noOpLogger struct{}
@@ -76,10 +76,10 @@ func refreshSyncEventDetails(ctx context.Context) *eventDetails {
 	currentTeamInternal, _ := internalAuth.IsTeamInternal(ctx, currentTeam)
 
 	eventDetails := &eventDetails{
-		user:                *user,
-		currentTeam:         currentTeam,
-		currentTeamInternal: currentTeamInternal,
-		environment:         getEnvironment(),
+		user:                  *user,
+		currentTeam:           currentTeam,
+		isCurrentTeamInternal: currentTeamInternal,
+		environment:           getEnvironment(),
 	}
 
 	// Cache event details for future use
@@ -98,7 +98,7 @@ func TrackLoginSuccess(ctx context.Context, invocationUUID uuid.UUID) {
 		return
 	}
 
-	if details.currentTeamInternal {
+	if details.isCurrentTeamInternal {
 		return
 	}
 
@@ -156,7 +156,7 @@ func TrackSyncStarted(ctx context.Context, invocationUUID uuid.UUID, event SyncS
 		return
 	}
 
-	if details.currentTeamInternal {
+	if details.isCurrentTeamInternal {
 		return
 	}
 
@@ -186,7 +186,7 @@ func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event Syn
 		return
 	}
 
-	if details.currentTeamInternal {
+	if details.isCurrentTeamInternal {
 		return
 	}
 
