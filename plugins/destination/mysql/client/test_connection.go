@@ -16,13 +16,10 @@ const (
 func NewConnectionTester(createClientFn func(context.Context, zerolog.Logger, []byte, plugin.NewClientOptions) (plugin.Client, error)) plugin.ConnectionTester {
 	return func(ctx context.Context, logger zerolog.Logger, spec []byte) error {
 		_, err := createClientFn(ctx, logger, spec, plugin.NewClientOptions{})
-		if err == nil {
-			return nil
+		var tcErr *plugin.TestConnError
+		if errors.As(err, &tcErr) {
+			return tcErr
 		}
-		if errors.Is(err, errValidateConnectionFailed) {
-			return plugin.NewTestConnError(codeConnectionFailed, err)
-		}
-
-		return plugin.NewTestConnError(codeInvalidSpec, err)
+		return err
 	}
 }

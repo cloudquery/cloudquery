@@ -38,19 +38,17 @@ type Client struct {
 	maxIndexLength int
 }
 
-var errValidateConnectionFailed = errors.New("failed to validate mysql connection")
-
 func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{logger: logger.With().Str("module", "mysql").Logger()}
 	var err error
 
 	if err := json.Unmarshal(spec, &c.spec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
+		return nil, plugin.NewTestConnError("INVALID_SPEC", err)
 	}
 
 	c.spec.SetDefaults()
 	if err := c.spec.Validate(); err != nil {
-		return nil, err
+		return nil, plugin.NewTestConnError("INVALID_SPEC", err)
 	}
 	c.writer, err = batchwriter.New(c, batchwriter.WithLogger(c.logger), batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
 	if err != nil {
@@ -59,7 +57,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 
 	dsn, err := mysql.ParseDSN(c.spec.ConnectionString)
 	if err != nil {
-		return nil, fmt.Errorf("invalid MySQL connection string: %w", err)
+		return nil, plugin.NewTestConnError("INVALID_DSN", err)
 	}
 	if dsn.Params == nil {
 		dsn.Params = map[string]string{}
@@ -67,7 +65,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	dsn.Params["parseTime"] = "true"
 	db, err := sql.Open("mysql", dsn.FormatDSN())
 	if err != nil {
-		return nil, fmt.Errorf("failed to open mysql connection: %w", err)
+		return nil, plugin.NewTestConnError("CONNECT_FAILED", err)
 	}
 
 	db.SetConnMaxLifetime(time.Minute * 3)
@@ -76,7 +74,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	c.db = db
 
 	if err := c.validateConnection(ctx); err != nil {
-		return nil, errors.Join(errValidateConnectionFailed, err)
+		return nil, fmt.Errorf("failed to validate connection: %w", err)
 	}
 
 	if err := c.getVersion(ctx); err != nil {
@@ -91,16 +89,19 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 func (c *Client) validateConnection(ctx context.Context) error {
 	rows, err := c.db.QueryContext(ctx, "select database()")
 	if err != nil {
-		return err
+		return plugin.NewTestConnError("QUERY_DATABASE_FAILED", err)
 	}
 	defer rows.Close()
 	for rows.Next() {
 		var name *string
 		if err := rows.Scan(&name); err != nil {
-			return err
+			return plugin.NewTestConnError("SCAN_DATABASE_FAILED", err)
 		}
 		if name == nil {
-			return fmt.Errorf("default database is not selected. Update connection string to include database name")
+			return plugin.NewTestConnError(
+				"DEFAULT_DATABASE_FAILED",
+				errors.New("default database is not selected. Update connection string to include database name"),
+			)
 		}
 	}
 	return nil
@@ -109,13 +110,13 @@ func (c *Client) validateConnection(ctx context.Context) error {
 func (c *Client) getVersion(ctx context.Context) error {
 	rows, err := c.db.QueryContext(ctx, "SELECT VERSION()")
 	if err != nil {
-		return err
+		return plugin.NewTestConnError("QUERY_VERSION_FAILED", err)
 	}
 	defer rows.Close()
 	for rows.Next() {
 		var versionString *string
 		if err := rows.Scan(&versionString); err != nil {
-			return err
+			return plugin.NewTestConnError("SCAN_VERSION_FAILED", err)
 		}
 		if strings.Contains(*versionString, "-MariaDB") {
 			c.serverType = ServerTypeMariaDB
