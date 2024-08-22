@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - "plugins/source/**/cloud-config-ui/**"
+      - "plugins/destination/**/cloud-config-ui/**"
     branches:
       - main
 
@@ -24,6 +25,7 @@ jobs:
         with:
           files: |
             plugins/source/**/cloud-config-ui/**
+            plugins/destination/**/cloud-config-ui/**
           dir_names: "true"
       - name: Generate plugins matrix
         id: matrix
