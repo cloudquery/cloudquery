@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v5.0.0...plugins-destination-clickhouse-v5.0.1) (2024-08-22)
+
+
+### Bug Fixes
+
+* Fix Date issues ([#18980](https://github.com/cloudquery/cloudquery/issues/18980)) ([ea2e20e](https://github.com/cloudquery/cloudquery/commit/ea2e20e0b9a640b09c35d30cc0c3ae5220277e5f))
+
 ## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v4.2.4...plugins-destination-clickhouse-v5.0.0) (2024-08-13)
 
 
