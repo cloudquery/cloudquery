@@ -19,7 +19,7 @@ on:
 jobs:
   plugins-destination-sqlite-python:
     timeout-minutes: 30
-    name: "plugins/source/sqlite-python"
+    name: "plugins/destination/sqlite-python"
     runs-on: ubuntu-latest
     defaults:
       run:
