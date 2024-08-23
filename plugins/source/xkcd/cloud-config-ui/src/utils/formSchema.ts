@@ -6,7 +6,7 @@ resetYupDefaultErrorMessages(yup);
 
 export const formValidationSchema = yup.object({
   displayName: yup.string().default(generateDisplayName('XKCD')).max(255).required(),
-  name: yup.string().default('').max(255).required(),
+  name: yup.string().default('').max(255),
   envs: yup
     .array()
     .of(
