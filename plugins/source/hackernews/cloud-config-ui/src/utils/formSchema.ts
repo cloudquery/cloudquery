@@ -28,8 +28,7 @@ export function getFormValidationSchema(
     name: yup
       .string()
       .default(initialValues?.name || '')
-      .max(255)
-      .required(),
+      .max(255),
     envs: yup
       .array()
       .of(
