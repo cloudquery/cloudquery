@@ -74,11 +74,11 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	c.db = db
 
 	if err := c.validateConnection(ctx); err != nil {
-		return nil, fmt.Errorf("failed to validate connection: %w", err)
+		return nil, fmt.Errorf("failed to validate connection: %w", categorizeError(err, "DEFAULT_DATABASE_FAILED"))
 	}
 
 	if err := c.getVersion(ctx); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to get version: %w", categorizeError(err, "QUERY_VERSION_FAILED"))
 	}
 
 	c.setMaxIndexLength(ctx)
@@ -89,19 +89,16 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 func (c *Client) validateConnection(ctx context.Context) error {
 	rows, err := c.db.QueryContext(ctx, "select database()")
 	if err != nil {
-		return categorizeError(err, "QUERY_DATABASE_FAILED")
+		return err
 	}
 	defer rows.Close()
 	for rows.Next() {
 		var name *string
 		if err := rows.Scan(&name); err != nil {
-			return categorizeError(err, "SCAN_DATABASE_FAILED")
+			return err
 		}
 		if name == nil {
-			return plugin.NewTestConnError(
-				"DEFAULT_DATABASE_FAILED",
-				errors.New("default database is not selected. Update connection string to include database name"),
-			)
+			return errors.New("default database is not selected. Update connection string to include database name")
 		}
 	}
 	return nil
@@ -110,13 +107,13 @@ func (c *Client) validateConnection(ctx context.Context) error {
 func (c *Client) getVersion(ctx context.Context) error {
 	rows, err := c.db.QueryContext(ctx, "SELECT VERSION()")
 	if err != nil {
-		return categorizeError(err, "QUERY_VERSION_FAILED")
+		return err
 	}
 	defer rows.Close()
 	for rows.Next() {
 		var versionString *string
 		if err := rows.Scan(&versionString); err != nil {
-			return categorizeError(err, "SCAN_VERSION_FAILED")
+			return err
 		}
 		if strings.Contains(*versionString, "-MariaDB") {
 			c.serverType = ServerTypeMariaDB
