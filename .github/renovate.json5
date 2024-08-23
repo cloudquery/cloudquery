@@ -29,6 +29,11 @@
       matchFileNames: ["plugins/destination/duckdb/**"],
       enabled: false,
     },
+    {
+      matchPackageNames: ["@cloudquery/plugin-config-ui-connector", "@cloudquery/plugin-config-ui-lib"],
+      commitMessagePrefix: "chore(deps): ",
+      groupName: "CloudQuery Plugin Config UI packages",
+    },
   ],
   ignorePaths: [
     "plugins/source/aws/**",

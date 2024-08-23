@@ -278,14 +278,14 @@ aws cloudformation deploy --template-file cloudquery-ecs-resources.yaml --stack-
 To get the values for Cluster Name and Task ARN you can use the following command:
 
 ```bash
-aws cloudformation describe-stacks --stack-name <STACK_NAME> --query "Stacks[].Outputs"
+aws cloudformation describe-stacks --stack-name <STACK_NAME> --capabilities CAPABILITY_IAM --query "Stacks[].Outputs"
 ```
 
 Now that the task definition is registered, it's time to run the CloudQuery task on ECS using the `aws ecs run-task` command:
 
 ```bash
 aws ecs run-task \
-  --cluster <REPLACE_WITH_ECS_CLUSTER_NAME> \
+  --cluster <REPLACE_WITH_ECS_CLUSTER_ID> \
   --task-definition <REPLACE_WITH_TASK_ARN> \
   --launch-type FARGATE \
   --network-configuration 'awsvpcConfiguration={subnets=[<REPLACE_WITH_SUBNET_1>,<REPLACE_WITH_SUBNET_2>],securityGroups=[<REPLACE_WITH_SG_1>,<REPLACE_WITH_SG_2>],assignPublicIp=ENABLED}'
