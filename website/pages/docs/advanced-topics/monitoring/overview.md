@@ -10,6 +10,7 @@ Monitoring CloudQuery can be done in a number of ways:
 - [Logging](#logging)
 - [OpenTelemetry](#opentelemetry-preview)
 - [Datadog](/docs/advanced-topics/monitoring/otel-datadog)
+- [Grafana](/docs/advanced-topics/monitoring/otel-grafana)
 
 ## Logging
 

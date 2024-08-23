@@ -1,4 +1,5 @@
 {
     "overview": "Overview",
-    "otel-datadog": "OpenTelemetry and Datadog"
+    "otel-datadog": "OpenTelemetry and Datadog",
+    "otel-grafana": "OpenTelemetry and Grafana"
 }
