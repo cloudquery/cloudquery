@@ -11,6 +11,8 @@ import (
 	"github.com/cloudquery/cloudquery/cli/internal/api"
 )
 
+type Team = cloudquery_api.Team
+
 type Client struct {
 	api *cloudquery_api.ClientWithResponses
 }
@@ -70,4 +72,17 @@ func (c *Client) ListAllTeams(ctx context.Context) ([]string, error) {
 		page++
 	}
 	return teams, nil
+}
+
+func (c *Client) GetTeam(ctx context.Context, team string) (*Team, error) {
+	resp, err := c.api.GetTeamByNameWithResponse(ctx, team)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode() != http.StatusOK || resp.JSON200 == nil {
+		return nil, fmt.Errorf("failed to get team %q: %s", team, resp.Status())
+	}
+
+	return resp.JSON200, nil
 }
