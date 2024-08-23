@@ -56,4 +56,123 @@ jobs:
           wait-for-it -h localhost -p 3306
       - name: Test MySQL
         run: make test
-  
+  validate-config-ui:
+    timeout-minutes: 15
+    if: github.event_name == 'pull_request'
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/destination/mysql
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: plugins/destination/mysql/go.mod
+          cache: true
+          cache-dependency-path: plugins/destination/mysql/go.sum
+      - name: Build
+        run: go build .
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "npm"
+          cache-dependency-path: "plugins/destination/mysql/cloud-config-ui/package-lock.json"
+      - name: Install dependencies
+        working-directory: "plugins/destination/mysql/cloud-config-ui"
+        run: npm ci
+      - name: Install dotenv
+        run: npm install dotenv-cli -g
+      - name: Install Playwright
+        working-directory: "plugins/destination/mysql/cloud-config-ui"
+        run: npx playwright install --with-deps
+      - name: Build config UI
+        working-directory: "plugins/destination/mysql/cloud-config-ui"
+        run: REACT_APP_USE_CLOUD_APP_MOCK=true npm run build
+      - name: Run E2E tests and generate configs
+        working-directory: "plugins/destination/mysql/cloud-config-ui"
+        run: E2E_TESTS_GENERATE_CONFIG=true npm run test:e2e
+      - name: Run unit tests
+        working-directory: "plugins/destination/mysql/cloud-config-ui"
+        run: npm run test
+      - name: Setup CloudQuery
+        uses: cloudquery/setup-cloudquery@v3
+        with:
+          version: v6.4.1
+      - name: Validate CloudQuery config
+        working-directory: "plugins/destination/mysql/cloud-config-ui"
+        run: dotenv -e ./temp/.env -- cloudquery validate-config ./temp/config.yml
+        env:
+          CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
+
+  deploy:
+    if: github.event.action != 'closed' && github.event_name == 'pull_request' && !startsWith(github.head_ref, 'release')
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    defaults:
+      run:
+        working-directory: ./plugins/destination/mysql/cloud-config-ui
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-deploy
+      cancel-in-progress: false # to make sure that old Vercel deployments are deleted
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy to Vercel
+        run: |
+          DEPLOYMENT_URL=$(vercel --token $VERCEL_TOKEN)
+          echo "Deployed to: $DEPLOYMENT_URL"
+          echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_ENV
+          ALIAS_DEPLOYMENT_BASE_URL=plugin-destination-mysql-cloud-ui-${{ github.event.pull_request.number }}.vercel.app
+          ALIAS_DEPLOYMENT_URL=https://$ALIAS_DEPLOYMENT_BASE_URL
+          vercel --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID alias $DEPLOYMENT_URL $ALIAS_DEPLOYMENT_BASE_URL
+          echo "Alias deployed to: $ALIAS_DEPLOYMENT_URL"
+          echo "ALIAS_DEPLOYMENT_URL=$ALIAS_DEPLOYMENT_URL" >> $GITHUB_ENV
+      - name: Find Comment
+        uses: peter-evans/find-comment@v3
+        id: find-comment
+        with:
+          token: ${{ secrets.GH_CQ_BOT }}
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "cq-bot"
+          body-includes: "MySQL Cloud UI deployed to Vercel:"
+
+      - name: Delete Previous Vercel Deployment (if comment with URL exists)
+        if: steps.find-comment.outputs.comment-id != ''
+        run: |
+          echo "Comment found:"
+          echo "${{ steps.find-comment.outputs.comment-body }}"
+          PREVIOUS_DEPLOYMENT_URL=$(echo "${{ steps.find-comment.outputs.comment-body }}" | awk '/Unique Vercel deployment URL:/ {getline; print $1}')
+          echo "Previous deployment URL: $PREVIOUS_DEPLOYMENT_URL"
+          if vercel rm "$PREVIOUS_DEPLOYMENT_URL" --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID --yes; then
+            echo "Deployment $PREVIOUS_DEPLOYMENT_URL was successfully deleted."
+          else
+            echo "Failed to delete deployment $PREVIOUS_DEPLOYMENT_URL. It may not exist or there was an error."
+          fi
+      - name: Create or update comment
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ secrets.GH_CQ_BOT }}
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            🚀 MySQL Cloud UI deployed to Vercel:
+            ${{ env.ALIAS_DEPLOYMENT_URL }}
+            You can also check out this plugin in action at:
+            https://cloud.cloudquery.io/teams/cloudquery-test/destinations/create?plugin-cloud-ui=cloudquery|destination|mysql|${{ env.ALIAS_DEPLOYMENT_URL }}
+            Unique Vercel deployment URL:
+            ${{ env.DEPLOYMENT_URL }}
+          edit-mode: replace

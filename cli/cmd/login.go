@@ -263,6 +263,22 @@ func setTeamOnLogin(ctx context.Context, cmd *cobra.Command, token string) error
 		if err != nil {
 			return fmt.Errorf("failed to set team: %w", err)
 		}
+
+		teamInfo, err := cl.GetTeam(cmd.Context(), currentTeam)
+		if err != nil {
+			return fmt.Errorf("failed to get team: %w", err)
+		}
+
+		teamInternalStr := "false"
+		if teamInfo.Internal {
+			teamInternalStr = "true"
+		}
+
+		err = config.SetValue("team_internal", teamInternalStr)
+		if err != nil {
+			return fmt.Errorf("failed to set team metadata: %w", err)
+		}
+
 		cmd.Printf("Your current team is set to %s.\n", currentTeam)
 
 	default:
