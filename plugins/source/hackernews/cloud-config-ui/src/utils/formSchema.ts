@@ -1,6 +1,6 @@
 import { resetYupDefaultErrorMessages } from '@cloudquery/cloud-ui';
 import { FormMessagePayload } from '@cloudquery/plugin-config-ui-connector';
-import { generateDisplayName, generateName } from '@cloudquery/plugin-config-ui-lib';
+import { generateDisplayName } from '@cloudquery/plugin-config-ui-lib';
 
 import * as yup from 'yup';
 
