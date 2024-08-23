@@ -88,7 +88,7 @@ export function Form({ initialValues }: Props) {
                   <Stack spacing={2}>
                     <Controller
                       control={control}
-                      name="name"
+                      name="displayName"
                       render={({ field, fieldState }) => (
                         <TextField
                           error={!!fieldState.error}

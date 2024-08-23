@@ -1,4 +1,5 @@
 import { PluginUiMessagePayload } from '@cloudquery/plugin-config-ui-connector';
+import { convertStringToSlug } from '@cloudquery/plugin-config-ui-lib';
 
 import { FormValues } from './formSchema';
 
@@ -13,7 +14,8 @@ export function prepareSubmitValues(
   };
 
   return {
-    name: values.name,
+    displayName: values.displayName,
+    name: values.name || convertStringToSlug(values.displayName),
     envs,
     tables: Object.keys(values.tables).filter(
       (key) => values.tables[key as keyof typeof values.tables],

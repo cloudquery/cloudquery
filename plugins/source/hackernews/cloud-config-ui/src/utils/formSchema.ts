@@ -1,6 +1,6 @@
 import { resetYupDefaultErrorMessages } from '@cloudquery/cloud-ui';
 import { FormMessagePayload } from '@cloudquery/plugin-config-ui-connector';
-import { generateName } from '@cloudquery/plugin-config-ui-lib';
+import { generateDisplayName, generateName } from '@cloudquery/plugin-config-ui-lib';
 
 import * as yup from 'yup';
 
@@ -20,13 +20,14 @@ export function getFormValidationSchema(
   initialValues?: FormMessagePayload['init']['initialValues'],
 ) {
   return yup.object({
+    displayName: yup
+      .string()
+      .default(initialValues?.displayName || generateDisplayName('Hacker News'))
+      .max(255)
+      .required(),
     name: yup
       .string()
-      .default(initialValues?.name || generateName('hackernews'))
-      .matches(
-        /^[a-z](-?[\da-z]+)+$/,
-        'Name must consist of a lower case letter, followed by alphanumeric segments separated by single dashes',
-      )
+      .default(initialValues?.name || '')
       .max(255)
       .required(),
     envs: yup
