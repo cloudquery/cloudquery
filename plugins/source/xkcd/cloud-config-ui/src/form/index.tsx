@@ -71,7 +71,7 @@ export function Form({ initialValues }: Props) {
               <Stack>
                 <Controller
                   control={control}
-                  name="name"
+                  name="displayName"
                   render={({ field, fieldState }) => (
                     <TextField
                       error={!!fieldState.error}
@@ -81,7 +81,6 @@ export function Form({ initialValues }: Props) {
                         'Unique destination name that helps identify the destination within your workspace.',
                       )}
                       label="Source name"
-                      disabled={!!initialValues}
                       autoComplete="off"
                       {...field}
                     />

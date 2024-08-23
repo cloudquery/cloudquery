@@ -7,6 +7,7 @@ export function prepareInitialValues(
 ): FormValues {
   return {
     name: initialValues?.name || '',
+    displayName: initialValues?.displayName || initialValues?.name || '',
     envs: initialValues?.envs || [],
     spec: {},
     tables: Object.fromEntries((initialValues?.tables || []).map((table) => [table, true])),

@@ -1,17 +1,18 @@
 import { resetYupDefaultErrorMessages } from '@cloudquery/cloud-ui';
-import { generateName } from '@cloudquery/plugin-config-ui-lib';
+import { generateDisplayName } from '@cloudquery/plugin-config-ui-lib';
 import * as yup from 'yup';
 
 resetYupDefaultErrorMessages(yup);
 
 export const formValidationSchema = yup.object({
+  displayName: yup
+    .string()
+    .default(generateDisplayName('XKCD'))
+    .max(255)
+    .required(),
   name: yup
     .string()
-    .default(generateName('xkcd'))
-    .matches(
-      /^[a-z](-?[\da-z]+)+$/,
-      'Name must consist of a lower case letter, followed by alphanumeric segments separated by single dashes',
-    )
+    .default('')
     .max(255)
     .required(),
   envs: yup
