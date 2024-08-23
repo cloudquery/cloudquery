@@ -98,7 +98,6 @@ export function Form({ initialValues }: Props) {
                             'Unique destination name that helps identify the destination within your workspace.',
                           )}
                           label="Source name"
-                          disabled={!!initialValues}
                           autoComplete="off"
                           {...field}
                         />
