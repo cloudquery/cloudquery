@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"testing"
 
@@ -15,25 +16,26 @@ func TestConnectionTester(t *testing.T) {
 	tests := []struct {
 		name          string
 		spec          []byte
-		err           *plugin.TestConnError
+		errCode       string
 		clientbuilder func() (plugin.Client, error)
 	}{
 		{
-			name: "ok",
-			spec: []byte(`{"connection_string": "connstr"}`),
-			err:  nil,
+			name:    "ok",
+			spec:    []byte(`{"connection_string": "connstr"}`),
+			errCode: "",
 		},
 		{
-			name: "invalid spec",
-			spec: []byte(`{null}`),
-			err:  plugin.NewTestConnError(codeInvalidSpec, nil),
+			name:    "invalid spec",
+			spec:    []byte(`{null}`),
+			errCode: codeInvalidSpec,
 		},
 		{
-			name: "connection failed",
-			spec: []byte(`{"connection_string": "connstr"}`),
-			err:  plugin.NewTestConnError(codeConnectionFailed, errValidateConnectionFailed),
+			name:    "connection failed",
+			spec:    []byte(`{"connection_string": "connstr"}`),
+			errCode: codeConnectFailed,
 			clientbuilder: func() (plugin.Client, error) {
-				return nil, errValidateConnectionFailed
+				err := plugin.NewTestConnError(codeConnectFailed, errors.New("failed"))
+				return nil, fmt.Errorf("failed to validate connection: %w", err)
 			},
 		},
 	}
@@ -49,25 +51,25 @@ func TestConnectionTester(t *testing.T) {
 			tester := NewConnectionTester(func(_ context.Context, _ zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 				sp := &Spec{}
 				if err := json.Unmarshal(specBytes, &sp); err != nil {
-					return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
+					return nil, plugin.NewTestConnError(codeInvalidSpec, err)
 				}
 				sp.SetDefaults()
 				if err := sp.Validate(); err != nil {
-					return nil, err
+					return nil, plugin.NewTestConnError(codeInvalidSpec, err)
 				}
 
 				return tc.clientbuilder()
 			})
 
 			err := tester(context.Background(), zerolog.Nop(), tc.spec)
-			if tc.err == nil {
+			if tc.errCode == "" {
 				require.NoError(t, err)
 				return
 			}
 
 			var expErr *plugin.TestConnError
 			require.ErrorAs(t, err, &expErr)
-			require.Equal(t, tc.err.Code, err.(*plugin.TestConnError).Code)
+			require.Equal(t, tc.errCode, expErr.Code)
 		})
 	}
 }
