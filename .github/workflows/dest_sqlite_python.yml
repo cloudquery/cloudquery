@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./plugins/source/sqlite-python
+        working-directory: ./plugins/destination/sqlite-python
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
