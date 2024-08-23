@@ -23,7 +23,6 @@ import { DateTimeField } from '@mui/x-date-pickers/DateTimeField';
 import { Controller, FormProvider, useForm, useWatch } from 'react-hook-form';
 
 import { PluginTableSelector } from './tableSelector';
-import { assetPrefix } from '../utils/constants';
 import { FormValues, getFormValidationSchema, getDefaultStartTime } from '../utils/formSchema';
 
 import { pluginUiMessageHandler } from '../utils/messageHandler';
@@ -79,7 +78,7 @@ export function Form({ initialValues }: Props) {
               <Box display="flex" justifyContent="space-between" alignItems="center">
                 <Typography variant="h5">Configure source</Typography>
                 <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
-                  <Logo src={`${assetPrefix}/images/hackernews.webp`} alt="Hacker News" />
+                  <Logo src={`/images/hackernews.webp`} alt="Hacker News" />
                   <Typography variant="body1">Hacker News</Typography>
                 </Box>
               </Box>
@@ -94,7 +93,7 @@ export function Form({ initialValues }: Props) {
                         fullWidth={true}
                         helperText={getFieldHelperText(
                           fieldState.error?.message,
-                          'Pick a name to help you identify this source.',
+                          'Unique destination name that helps identify the destination within your workspace.',
                         )}
                         label="Source name"
                         disabled={!!initialValues}
