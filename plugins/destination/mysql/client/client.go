@@ -6,14 +6,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net"
 	"strings"
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
+	"github.com/go-sql-driver/mysql"
 	"github.com/rs/zerolog"
-
-	mysql "github.com/go-sql-driver/mysql"
 )
 
 type ServerType int64
@@ -38,19 +38,17 @@ type Client struct {
 	maxIndexLength int
 }
 
-var errValidateConnectionFailed = errors.New("failed to validate mysql connection")
-
 func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{logger: logger.With().Str("module", "mysql").Logger()}
 	var err error
 
 	if err := json.Unmarshal(spec, &c.spec); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
+		return nil, plugin.NewTestConnError(codeInvalidSpec, err)
 	}
 
 	c.spec.SetDefaults()
 	if err := c.spec.Validate(); err != nil {
-		return nil, err
+		return nil, plugin.NewTestConnError(codeInvalidSpec, err)
 	}
 	c.writer, err = batchwriter.New(c, batchwriter.WithLogger(c.logger), batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes))
 	if err != nil {
@@ -59,7 +57,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 
 	dsn, err := mysql.ParseDSN(c.spec.ConnectionString)
 	if err != nil {
-		return nil, fmt.Errorf("invalid MySQL connection string: %w", err)
+		return nil, plugin.NewTestConnError("INVALID_DSN", err)
 	}
 	if dsn.Params == nil {
 		dsn.Params = map[string]string{}
@@ -67,7 +65,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	dsn.Params["parseTime"] = "true"
 	db, err := sql.Open("mysql", dsn.FormatDSN())
 	if err != nil {
-		return nil, fmt.Errorf("failed to open mysql connection: %w", err)
+		return nil, plugin.NewTestConnError(codeConnectFailed, err)
 	}
 
 	db.SetConnMaxLifetime(time.Minute * 3)
@@ -76,11 +74,11 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	c.db = db
 
 	if err := c.validateConnection(ctx); err != nil {
-		return nil, errors.Join(errValidateConnectionFailed, err)
+		return nil, fmt.Errorf("failed to validate connection: %w", categorizeError(err, "DEFAULT_DATABASE_FAILED"))
 	}
 
 	if err := c.getVersion(ctx); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to get version: %w", categorizeError(err, "QUERY_VERSION_FAILED"))
 	}
 
 	c.setMaxIndexLength(ctx)
@@ -100,7 +98,7 @@ func (c *Client) validateConnection(ctx context.Context) error {
 			return err
 		}
 		if name == nil {
-			return fmt.Errorf("default database is not selected. Update connection string to include database name")
+			return errors.New("default database is not selected. Update connection string to include database name")
 		}
 	}
 	return nil
@@ -152,4 +150,26 @@ func (c *Client) Close(ctx context.Context) error {
 		return fmt.Errorf("failed to close writer: %w", err)
 	}
 	return c.db.Close()
+}
+
+func categorizeError(err error, defaultCode string) error {
+	var opErr *net.OpError
+	if errors.As(err, &opErr) {
+		return plugin.NewTestConnError("UNREACHABLE", err)
+	}
+	var myErr *mysql.MySQLError
+	if errors.As(err, &myErr) {
+		switch myErr.Number {
+		case 1045:
+			return plugin.NewTestConnError("ACCESS_DENIED", err)
+		case 1049:
+			return plugin.NewTestConnError("UNKNOWN_DATABASE", err)
+		default:
+			if myErr.SQLState != [5]byte{} {
+				return plugin.NewTestConnError(fmt.Sprintf("MYSQL_ERROR_%d_%s", myErr.Number, myErr.SQLState), err)
+			}
+			return plugin.NewTestConnError(fmt.Sprintf("MYSQL_ERROR_%d", myErr.Number), err)
+		}
+	}
+	return plugin.NewTestConnError(defaultCode, err)
 }

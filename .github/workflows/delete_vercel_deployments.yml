@@ -1,0 +1,48 @@
+name: Delete Vercel Deployments from PR Comments
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  delete_vercel_deployments:
+    runs-on: ubuntu-latest
+    if: ${{ !startsWith(github.event.pull_request.head.ref, 'release') }}
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: Delete Vercel Deployments from PR Comments
+        run: |
+          PR_NUMBER=${{ github.event.pull_request.number }}
+          REPO=${{ github.repository }}
+          echo "Fetching comments for PR #$PR_NUMBER"
+          comments=$(gh api -X GET /repos/$REPO/issues/$PR_NUMBER/comments --paginate)
+          # Iterate through each comment
+          echo "$comments" | jq -c '.[]' | while read -r comment; do
+            body=$(echo "$comment" | jq -r '.body')
+            
+            # Check if the comment contains "Unique Vercel deployment URL"
+            if echo "$body" | grep -q "Unique Vercel deployment URL"; then
+              echo "Found comment with deployment URL"
+              
+              # Extract the deployment URL from the next line
+              deployment_url=$(echo "$body" | awk '/Unique Vercel deployment URL:/ {getline; print $1}')
+              
+              if [ -n "$deployment_url" ]; then
+                echo "Attempting to delete deployment: $deployment_url"
+                
+                # Delete the deployment using Vercel CLI
+                if vercel remove "$deployment_url" --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID --yes; then
+                  echo "Successfully deleted deployment: $deployment_url"
+                else
+                  echo "Failed to delete deployment: $deployment_url"
+                fi
+              else
+                echo "No deployment URL found in the comment"
+              fi
+            fi
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GH_CQ_BOT }}
