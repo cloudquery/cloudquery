@@ -19,7 +19,7 @@ export const formValidationSchema = yup.object({
   spec: yup.object({}),
   tables: yup
     .object()
-    .test('valid tables', function(value: Record<string, true>) {
+    .test('valid tables', function (value: Record<string, true>) {
       if (Object.keys(value || {}).filter((key) => value[key]).length === 0) {
         return this.createError({
           message: 'At least one table must be selected',
