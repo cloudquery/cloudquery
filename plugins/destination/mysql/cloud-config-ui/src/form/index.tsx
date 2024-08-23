@@ -58,6 +58,7 @@ export function Form({ initialValues }: Props) {
   };
 
   const { formDisabled } = useFormSubmit(handleValidate, pluginUiMessageHandler);
+  console.log({ formDisabled });
 
   return (
     <FormWrapper formDisabled={formDisabled}>
