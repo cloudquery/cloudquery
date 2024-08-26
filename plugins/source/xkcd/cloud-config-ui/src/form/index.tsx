@@ -66,7 +66,7 @@ export function Form({ initialValues }: Props) {
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Typography variant="h5">Configure source</Typography>
                   <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
-                    <Logo src={`/images/xkcd.webp`} alt="XKCD" />
+                    <Logo src={`images/xkcd.webp`} alt="XKCD" />
                     <Typography variant="body1">XKCD</Typography>
                   </Box>
                 </Box>
