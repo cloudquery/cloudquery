@@ -10,6 +10,7 @@ import (
 
 	cqapi "github.com/cloudquery/cloudquery-api-go"
 	cqauth "github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery/cli/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/internal/api"
 	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/fatih/color"
@@ -215,8 +216,25 @@ func selectDestination(allPlugins []cqapi.ListPlugin, acceptDefaults bool) (stri
 	return destination, nil
 }
 
-func initCmd(cmd *cobra.Command, args []string) error {
-	source, destination, specPath, _acceptDefaults, err := parseFlags(cmd)
+func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
+	ctx := cmd.Context()
+	source, destination, specPath, acceptDefaults, err := parseFlags(cmd)
+	analytics.TrackInitStarted(ctx, invocationUUID.UUID, analytics.InitEvent{
+		Source:         source,
+		Destination:    destination,
+		AcceptDefaults: acceptDefaults,
+		SpecPath:       specPath,
+		Error:          initCommandError,
+	})
+	defer func() {
+		analytics.TrackInitCompleted(ctx, invocationUUID.UUID, analytics.InitEvent{
+			Source:         source,
+			Destination:    destination,
+			AcceptDefaults: acceptDefaults,
+			SpecPath:       specPath,
+			Error:          initCommandError,
+		})
+	}()
 	if err != nil {
 		return err
 	}
@@ -266,7 +284,7 @@ func initCmd(cmd *cobra.Command, args []string) error {
 	}
 
 	if source == "" {
-		source, err = selectSource(allPlugins, _acceptDefaults)
+		source, err = selectSource(allPlugins, acceptDefaults)
 		if err != nil {
 			return err
 		}
@@ -275,7 +293,7 @@ func initCmd(cmd *cobra.Command, args []string) error {
 	_, sourceIndex, _ := lo.FindIndexOf(allPlugins, pluginFilter(source, cqapi.PluginKindSource))
 
 	if destination == "" {
-		destination, err = selectDestination(allPlugins, _acceptDefaults)
+		destination, err = selectDestination(allPlugins, acceptDefaults)
 		if err != nil {
 			return err
 		}

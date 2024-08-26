@@ -3,6 +3,7 @@ package cmd
 import (
 	"os"
 	"path"
+	"runtime"
 	"testing"
 
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
@@ -132,6 +133,11 @@ func TestInit(t *testing.T) {
 			cmd.SetArgs(append(initArgs, baseArgs...))
 
 			if !tc.yes && (tc.source == "" || tc.destination == "") {
+				// skip the prompt tests on Windows
+				if runtime.GOOS == "windows" {
+					t.Skip("Skipping prompt tests on Windows")
+					return
+				}
 				oldStdin := os.Stdin
 				r, w, err := os.Pipe()
 				require.NoError(t, err)
