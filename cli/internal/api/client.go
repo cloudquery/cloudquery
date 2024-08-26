@@ -50,7 +50,7 @@ func ListAllPlugins(cl *cloudquery_api.ClientWithResponses) ([]cloudquery_api.Li
 			return nil, fmt.Errorf("failed to list plugins: %w", err)
 		}
 		if resp.StatusCode() != http.StatusOK || resp.JSON200 == nil {
-			return nil, fmt.Errorf("failed to list teams: %s", resp.Status())
+			return nil, fmt.Errorf("failed to list plugins: %s", resp.Status())
 		}
 		plugins = append(plugins, resp.JSON200.Items...)
 		if resp.JSON200.Metadata.LastPage == nil || *resp.JSON200.Metadata.LastPage <= int(page) {
@@ -59,4 +59,18 @@ func ListAllPlugins(cl *cloudquery_api.ClientWithResponses) ([]cloudquery_api.Li
 		page++
 	}
 	return plugins, nil
+}
+
+func GetPluginVersion(cl *cloudquery_api.ClientWithResponses, teamName string, kind cloudquery_api.PluginKind, pluginName, pluginVersion string) (*cloudquery_api.PluginVersionDetails, error) {
+	resp, err := cl.GetPluginVersionWithResponse(context.Background(), teamName, kind, pluginName, pluginVersion)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get plugin %q: %w", pluginName, err)
+	}
+	if resp.JSON200 == nil {
+		return nil, fmt.Errorf("failed to get plugin %q: %w", pluginName, err)
+	}
+	if resp.StatusCode() != http.StatusOK {
+		return nil, fmt.Errorf("failed to get plugin %q: %s", pluginName, resp.Status())
+	}
+	return resp.JSON200, nil
 }

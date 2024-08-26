@@ -13,6 +13,21 @@ Generate a configuration file for a sync
 cloudquery init [flags]
 ```
 
+### Examples
+
+```
+# Display prompts to select source and destination plugins and generate a configuration file from them
+cloudquery init
+# Generate a configuration file for a sync from aws to bigquery
+cloudquery init --source aws --destination bigquery
+# Display a prompt to select a source plugin and generate a configuration file for a sync from it to bigquery
+cloudquery init --destination bigquery
+# Display a prompt to select a destination plugin and generate a configuration file for a sync from aws to it
+cloudquery init --source aws
+# Accept all defaults and generate a configuration file for a sync from the first source and destination plugins
+cloudquery init --yes
+```
+
 ### Options
 
 ```
@@ -20,6 +35,7 @@ cloudquery init [flags]
   -h, --help                 help for init
       --source string        Source plugin name or path
       --spec-path string     Output spec file path
+      --yes                  Accept all defaults
 ```
 
 ### Options inherited from parent commands

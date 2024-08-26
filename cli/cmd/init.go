@@ -3,6 +3,8 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"os"
+	"regexp"
 	"sort"
 	"strings"
 
@@ -10,6 +12,7 @@ import (
 	cqauth "github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/api"
 	"github.com/cloudquery/cloudquery/cli/internal/auth"
+	"github.com/fatih/color"
 	"github.com/manifoldco/promptui"
 	"github.com/samber/lo"
 	"github.com/spf13/cobra"
@@ -17,12 +20,23 @@ import (
 
 const (
 	initShort   = `Generate a configuration file for a sync`
-	initExample = ``
+	initExample = `# Display prompts to select source and destination plugins and generate a configuration file from them
+cloudquery init
+# Generate a configuration file for a sync from aws to bigquery
+cloudquery init --source aws --destination bigquery
+# Display a prompt to select a source plugin and generate a configuration file for a sync from it to bigquery
+cloudquery init --destination bigquery
+# Display a prompt to select a destination plugin and generate a configuration file for a sync from aws to it
+cloudquery init --source aws
+# Accept all defaults and generate a configuration file for a sync from the first source and destination plugins
+cloudquery init --yes`
 )
 
 var (
 	sourcesOrder      = []string{"aws", "azure", "gcp"}
-	destinationsOrder = []string{"postgresql", "bigquery"}
+	destinationsOrder = []string{"postgresql", "bigquery", "s3"}
+	bold              = color.New(color.Bold)
+	successful        = color.New(color.Bold, color.FgGreen)
 )
 
 func newCmdInit() *cobra.Command {
@@ -37,6 +51,7 @@ func newCmdInit() *cobra.Command {
 	cmd.Flags().String("source", "", "Source plugin name or path")
 	cmd.Flags().String("destination", "", "Destination plugin name or path")
 	cmd.Flags().String("spec-path", "", "Output spec file path")
+	cmd.Flags().Bool("yes", false, "Accept all defaults")
 	return cmd
 }
 
@@ -51,7 +66,7 @@ func normalizePluginPath(pluginNameOrPath string) (string, error) {
 	return pluginNameOrPath, nil
 }
 
-func parseFlags(cmd *cobra.Command) (source, destination, specPath string, allErrors error) {
+func parseFlags(cmd *cobra.Command) (source, destination, specPath string, acceptDefaults bool, allErrors error) {
 	source, err := cmd.Flags().GetString("source")
 	allErrors = errors.Join(allErrors, err)
 	if source != "" {
@@ -66,12 +81,15 @@ func parseFlags(cmd *cobra.Command) (source, destination, specPath string, allEr
 	}
 	specPath, err = cmd.Flags().GetString("spec-path")
 	allErrors = errors.Join(allErrors, err)
-	return source, destination, specPath, allErrors
+
+	acceptDefaults, err = cmd.Flags().GetBool("yes")
+	allErrors = errors.Join(allErrors, err)
+	return source, destination, specPath, acceptDefaults, allErrors
 }
 
 func pluginFilter(pluginPath string, kind cqapi.PluginKind) func(plugin cqapi.ListPlugin) bool {
 	return func(plugin cqapi.ListPlugin) bool {
-		return plugin.TeamName+"/"+plugin.Name == pluginPath && plugin.Kind == kind
+		return plugin.TeamName+"/"+plugin.Name == pluginPath && plugin.Kind == kind && plugin.LatestVersion != nil
 	}
 }
 
@@ -81,7 +99,7 @@ func pluginName(plugin cqapi.ListPlugin, _ int) string {
 
 func officialReleasedPluginsByKind(kind cqapi.PluginKind) func(plugin cqapi.ListPlugin, _ int) bool {
 	return func(plugin cqapi.ListPlugin, _ int) bool {
-		return plugin.Kind == kind && plugin.Official && plugin.ReleaseStage != cqapi.PluginReleaseStageComingSoon
+		return plugin.Kind == kind && plugin.Official && plugin.ReleaseStage != cqapi.PluginReleaseStageComingSoon && plugin.LatestVersion != nil
 	}
 }
 
@@ -102,8 +120,103 @@ func pluginsSorter(plugins []cqapi.ListPlugin, prioritySlice []string) func(a, b
 	}
 }
 
+func extractYamlFromMarkdownCodeBlock(markdown string) string {
+	re := regexp.MustCompile("```yaml.*?\n([\\s\\S]+?)\n```")
+
+	matches := re.FindStringSubmatch(markdown)
+	if len(matches) < 2 {
+		return ""
+	}
+
+	return matches[1]
+}
+
+func defaultConfigForPlugin(plugin cqapi.ListPlugin) *strings.Builder {
+	sb := strings.Builder{}
+	sb.WriteString("kind: " + string(plugin.Kind) + "\n")
+	sb.WriteString("spec:\n")
+	sb.WriteString("  name: " + plugin.Name + "\n")
+	sb.WriteString("  path: " + plugin.TeamName + "/" + plugin.Name + "\n")
+	sb.WriteString("  version: " + *plugin.LatestVersion + "\n")
+	return &sb
+}
+
+func configForSourcePlugin(source cqapi.ListPlugin, version *cqapi.PluginVersionDetails) string {
+	exampleConfig := extractYamlFromMarkdownCodeBlock(version.ExampleConfig)
+	if exampleConfig != "" {
+		return exampleConfig
+	}
+
+	defaultConfig := defaultConfigForPlugin(source)
+	defaultConfig.WriteString("  tables: ['*']\n")
+	defaultConfig.WriteString("  destinations: ['DESTINATION_NAME']")
+	return defaultConfig.String()
+}
+
+func configForDestinationPlugin(destination cqapi.ListPlugin, version *cqapi.PluginVersionDetails) string {
+	exampleConfig := extractYamlFromMarkdownCodeBlock(version.ExampleConfig)
+	if exampleConfig != "" {
+		return exampleConfig
+	}
+
+	defaultConfig := defaultConfigForPlugin(destination)
+	return defaultConfig.String()
+}
+
+func selectSource(allPlugins []cqapi.ListPlugin, acceptDefaults bool) (string, error) {
+	officialSources := lo.Filter(allPlugins, officialReleasedPluginsByKind(cqapi.PluginKindSource))
+	sort.SliceStable(officialSources, pluginsSorter(officialSources, sourcesOrder))
+	if acceptDefaults {
+		return officialSources[0].Name, nil
+	}
+
+	prompt := promptui.Select{
+		Label:             "Select Source Plugin",
+		Items:             lo.Map(officialSources, pluginName),
+		Stdin:             os.Stdin,
+		Size:              10,
+		StartInSearchMode: true,
+		Searcher: func(input string, index int) bool {
+			return strings.Contains(officialSources[index].Name, input)
+		},
+	}
+
+	_, source, err := prompt.Run()
+	if err != nil {
+		return "", fmt.Errorf("source prompt failed %w", err)
+	}
+
+	return source, nil
+}
+
+func selectDestination(allPlugins []cqapi.ListPlugin, acceptDefaults bool) (string, error) {
+	officialDestinations := lo.Filter(allPlugins, officialReleasedPluginsByKind(cqapi.PluginKindDestination))
+	sort.SliceStable(officialDestinations, pluginsSorter(officialDestinations, destinationsOrder))
+	if acceptDefaults {
+		return officialDestinations[0].Name, nil
+	}
+
+	prompt := promptui.Select{
+		Label:             "Select Destination Plugin",
+		Items:             lo.Map(officialDestinations, pluginName),
+		Stdin:             os.Stdin,
+		Size:              10,
+		StartInSearchMode: true,
+		Searcher: func(input string, index int) bool {
+			return strings.Contains(officialDestinations[index].Name, input)
+		},
+	}
+
+	_, destination, err := prompt.Run()
+	if err != nil {
+		return "", fmt.Errorf("destination prompt failed %w", err)
+	}
+
+	return destination, nil
+}
+
 func initCmd(cmd *cobra.Command, args []string) error {
-	source, destination, _, err := parseFlags(cmd)
+	source, destination, specPath, _acceptDefaults, err := parseFlags(cmd)
 	if err != nil {
 		return err
 	}
@@ -126,66 +239,88 @@ func initCmd(cmd *cobra.Command, args []string) error {
 		}
 	}
 
+	fmt.Println("Fetching plugins...")
 	allPlugins, err := api.ListAllPlugins(apiClient)
 	if err != nil {
 		return err
 	}
 
-	var notFoundPlugins error
+	var notFoundPluginsErrors error
 	if source != "" {
 		sourcePluginFilter := pluginFilter(source, cqapi.PluginKindSource)
 		sourceFound := lo.SomeBy(allPlugins, sourcePluginFilter)
 		if !sourceFound {
-			notFoundPlugins = errors.Join(notFoundPlugins, fmt.Errorf("source plugin %q not found", source))
+			notFoundPluginsErrors = errors.Join(notFoundPluginsErrors, fmt.Errorf("source plugin %q not found", source))
 		}
 	}
 	if destination != "" {
 		destinationPluginFilter := pluginFilter(destination, cqapi.PluginKindDestination)
 		destinationFound := lo.SomeBy(allPlugins, destinationPluginFilter)
 		if !destinationFound {
-			notFoundPlugins = errors.Join(notFoundPlugins, fmt.Errorf("destination plugin %q not found", destination))
+			notFoundPluginsErrors = errors.Join(notFoundPluginsErrors, fmt.Errorf("destination plugin %q not found", destination))
 		}
 	}
 
-	if notFoundPlugins != nil {
-		return notFoundPlugins
+	if notFoundPluginsErrors != nil {
+		return notFoundPluginsErrors
 	}
-
-	officialDestinations := lo.Filter(allPlugins, officialReleasedPluginsByKind(cqapi.PluginKindDestination))
 
 	if source == "" {
-		officialSources := lo.Filter(allPlugins, officialReleasedPluginsByKind(cqapi.PluginKindSource))
-		sort.SliceStable(officialSources, pluginsSorter(officialSources, sourcesOrder))
-		prompt := promptui.Select{
-			Label: "Select Source Plugin",
-			Items: lo.Map(officialSources, pluginName),
-		}
-
-		_, source, err = prompt.Run()
+		source, err = selectSource(allPlugins, _acceptDefaults)
 		if err != nil {
-			return fmt.Errorf("prompt failed %w", err)
+			return err
 		}
 		source, _ = normalizePluginPath(source)
 	}
 	_, sourceIndex, _ := lo.FindIndexOf(allPlugins, pluginFilter(source, cqapi.PluginKindSource))
 
 	if destination == "" {
-		sort.SliceStable(officialDestinations, pluginsSorter(officialDestinations, destinationsOrder))
-		prompt := promptui.Select{
-			Label: "Select Destination Plugin",
-			Items: lo.Map(officialDestinations, pluginName),
-		}
-
-		_, destination, err = prompt.Run()
+		destination, err = selectDestination(allPlugins, _acceptDefaults)
 		if err != nil {
-			return fmt.Errorf("prompt failed %w", err)
+			return err
 		}
 		destination, _ = normalizePluginPath(destination)
 	}
 	_, destinationIndex, _ := lo.FindIndexOf(allPlugins, pluginFilter(destination, cqapi.PluginKindDestination))
 
-	fmt.Println("Selected Source Plugin:", source, sourceIndex)
-	fmt.Println("Selected Destination Plugin:", destination, destinationIndex)
+	sourcePlugin := allPlugins[sourceIndex]
+	fmt.Printf("Getting configuration for source plugin %s...\n", bold.Sprintf("%s/%s@%s", sourcePlugin.TeamName, sourcePlugin.Name, *sourcePlugin.LatestVersion))
+	sourceVersion, err := api.GetPluginVersion(apiClient, sourcePlugin.TeamName, sourcePlugin.Kind, sourcePlugin.Name, *sourcePlugin.LatestVersion)
+	if err != nil {
+		return fmt.Errorf("failed to get source plugin %s/%s@%s version %w", sourcePlugin.TeamName, sourcePlugin.Name, *sourcePlugin.LatestVersion, err)
+	}
 
+	destinationPlugin := allPlugins[destinationIndex]
+	fmt.Printf("Getting configuration for destination plugin %s...\n", bold.Sprintf("%s/%s@%s", destinationPlugin.TeamName, destinationPlugin.Name, *destinationPlugin.LatestVersion))
+	destinationVersion, err := api.GetPluginVersion(apiClient, destinationPlugin.TeamName, destinationPlugin.Kind, destinationPlugin.Name, *destinationPlugin.LatestVersion)
+	if err != nil {
+		return fmt.Errorf("failed to get destination plugin %s/%s@%s version %w", destinationPlugin.TeamName, destinationPlugin.Name, *destinationPlugin.LatestVersion, err)
+	}
+
+	if specPath == "" {
+		specPath = sourcePlugin.Name + "_to_" + destinationPlugin.Name + ".yaml"
+	}
+	fmt.Printf("Writing spec to %s...\n", bold.Sprint(specPath))
+	var yamlSpec strings.Builder
+	sourceConfig := configForSourcePlugin(sourcePlugin, sourceVersion)
+	yamlSpec.WriteString(strings.ReplaceAll(sourceConfig, "DESTINATION_NAME", destinationPlugin.Name))
+	yamlSpec.WriteString("\n---\n")
+	yamlSpec.WriteString(configForDestinationPlugin(destinationPlugin, destinationVersion))
+
+	if err := os.WriteFile(specPath, []byte(yamlSpec.String()), 0644); err != nil {
+		return fmt.Errorf("failed to write spec file %w", err)
+	}
+
+	if user != nil {
+		successful.Println("Sync spec file generated successfully!")
+		fmt.Println("You can now run the sync with the following command:")
+		bold.Printf("cloudquery sync %s\n", specPath)
+	} else {
+		successful.Println("Sync spec file generated successfully!")
+		fmt.Println("To run the sync please login with the following command:")
+		bold.Println("cloudquery login")
+		fmt.Println("Then you can run the sync with the following command:")
+		bold.Printf("cloudquery sync %s\n", specPath)
+	}
 	return nil
 }
