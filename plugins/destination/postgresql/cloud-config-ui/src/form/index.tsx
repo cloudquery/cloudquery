@@ -7,6 +7,7 @@ import { prepareSubmitValues } from '../utils/prepareSubmitValues';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
 import { useCallback } from 'react';
 import {
+  FormWrapper,
   Logo,
   scrollToFirstFormFieldError,
   useFormCurrentValues,
@@ -57,46 +58,53 @@ export function Form({ initialValues, isManagedDestination }: Props) {
     }
   };
 
-  useFormSubmit(handleValidate, pluginUiMessageHandler);
+  const { formDisabled } = useFormSubmit(handleValidate, pluginUiMessageHandler);
 
   return (
-    <FormProvider {...formContext}>
-      <Stack spacing={2}>
-        <Card>
-          <CardContent>
-            <Box display="flex" marginBottom={3} justifyContent="space-between" alignItems="center">
-              <Typography variant="h5">Configure destination</Typography>
-              <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
-                <Logo src="images/postgresql.png" alt="PostgreSQL" />
-                <Typography variant="body1">PostgreSQL</Typography>
+    <FormWrapper formDisabled={formDisabled}>
+      <FormProvider {...formContext}>
+        <Stack spacing={2}>
+          <Card>
+            <CardContent>
+              <Box
+                display="flex"
+                marginBottom={3}
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Typography variant="h5">Configure destination</Typography>
+                <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
+                  <Logo src="images/postgresql.png" alt="PostgreSQL" />
+                  <Typography variant="body1">PostgreSQL</Typography>
+                </Box>
               </Box>
-            </Box>
-            <Stack marginBottom={2}>
-              <Controller
-                control={control}
-                name="name"
-                render={({ field, fieldState }) => (
-                  <TextField
-                    error={!!fieldState.error}
-                    fullWidth={true}
-                    helperText={getFieldHelperText(
-                      fieldState.error?.message,
-                      'Unique destination name that helps identify the destination within your workspace.',
-                    )}
-                    label="Destination name"
-                    disabled={!!initialValues}
-                    autoComplete="off"
-                    {...field}
-                  />
-                )}
-              />
-            </Stack>
-          </CardContent>
-        </Card>
-        <FormConnectionFields />
-        <FormSyncOptions />
-        <AdvancedFields />
-      </Stack>
-    </FormProvider>
+              <Stack marginBottom={2}>
+                <Controller
+                  control={control}
+                  name="name"
+                  render={({ field, fieldState }) => (
+                    <TextField
+                      error={!!fieldState.error}
+                      fullWidth={true}
+                      helperText={getFieldHelperText(
+                        fieldState.error?.message,
+                        'Unique destination name that helps identify the destination within your workspace.',
+                      )}
+                      label="Destination name"
+                      disabled={!!initialValues}
+                      autoComplete="off"
+                      {...field}
+                    />
+                  )}
+                />
+              </Stack>
+            </CardContent>
+          </Card>
+          <FormConnectionFields />
+          <FormSyncOptions />
+          <AdvancedFields />
+        </Stack>
+      </FormProvider>
+    </FormWrapper>
   );
 }

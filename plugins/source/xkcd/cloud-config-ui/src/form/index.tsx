@@ -7,6 +7,7 @@ import {
   useFormSubmit,
   useFormCurrentValues,
   scrollToFirstFormFieldError,
+  FormWrapper,
 } from '@cloudquery/plugin-config-ui-lib';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -53,48 +54,50 @@ export function Form({ initialValues }: Props) {
     }
   };
 
-  useFormSubmit(handleValidate, pluginUiMessageHandler);
+  const { formDisabled } = useFormSubmit(handleValidate, pluginUiMessageHandler);
 
   return (
-    <FormProvider {...formContext}>
-      <Stack spacing={2}>
-        <Card>
-          <CardContent>
-            <Stack gap={2}>
-              <Box display="flex" justifyContent="space-between" alignItems="center">
-                <Typography variant="h5">Configure source</Typography>
-                <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
-                  <Logo src={`/images/xkcd.webp`} alt="XKCD" />
-                  <Typography variant="body1">XKCD</Typography>
+    <FormWrapper formDisabled={formDisabled}>
+      <FormProvider {...formContext}>
+        <Stack spacing={2}>
+          <Card>
+            <CardContent>
+              <Stack gap={2}>
+                <Box display="flex" justifyContent="space-between" alignItems="center">
+                  <Typography variant="h5">Configure source</Typography>
+                  <Box display="flex" justifyContent="space-between" alignItems="center" gap={1.5}>
+                    <Logo src={`/images/xkcd.webp`} alt="XKCD" />
+                    <Typography variant="body1">XKCD</Typography>
+                  </Box>
                 </Box>
-              </Box>
-              <Stack>
-                <Controller
-                  control={control}
-                  name="name"
-                  render={({ field, fieldState }) => (
-                    <TextField
-                      error={!!fieldState.error}
-                      fullWidth={true}
-                      helperText={getFieldHelperText(
-                        fieldState.error?.message,
-                        'Unique destination name that helps identify the destination within your workspace.',
-                      )}
-                      label="Source name"
-                      disabled={!!initialValues}
-                      autoComplete="off"
-                      {...field}
-                    />
-                  )}
-                />
+                <Stack>
+                  <Controller
+                    control={control}
+                    name="name"
+                    render={({ field, fieldState }) => (
+                      <TextField
+                        error={!!fieldState.error}
+                        fullWidth={true}
+                        helperText={getFieldHelperText(
+                          fieldState.error?.message,
+                          'Unique destination name that helps identify the destination within your workspace.',
+                        )}
+                        label="Source name"
+                        disabled={!!initialValues}
+                        autoComplete="off"
+                        {...field}
+                      />
+                    )}
+                  />
+                </Stack>
               </Stack>
-            </Stack>
-          </CardContent>
-        </Card>
-        <FormFieldGroup title="Tables">
-          <PluginTableSelector />
-        </FormFieldGroup>
-      </Stack>
-    </FormProvider>
+            </CardContent>
+          </Card>
+          <FormFieldGroup title="Tables">
+            <PluginTableSelector />
+          </FormFieldGroup>
+        </Stack>
+      </FormProvider>
+    </FormWrapper>
   );
 }
