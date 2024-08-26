@@ -224,7 +224,7 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 		Destination:    destination,
 		AcceptDefaults: acceptDefaults,
 		SpecPath:       specPath,
-		Error:          initCommandError,
+		Error:          err,
 	})
 	defer func() {
 		analytics.TrackInitCompleted(ctx, invocationUUID.UUID, analytics.InitEvent{
