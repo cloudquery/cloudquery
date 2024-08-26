@@ -64,13 +64,13 @@ func ListAllPlugins(cl *cloudquery_api.ClientWithResponses) ([]cloudquery_api.Li
 func GetPluginVersion(cl *cloudquery_api.ClientWithResponses, teamName string, kind cloudquery_api.PluginKind, pluginName, pluginVersion string) (*cloudquery_api.PluginVersionDetails, error) {
 	resp, err := cl.GetPluginVersionWithResponse(context.Background(), teamName, kind, pluginName, pluginVersion)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get plugin %q: %w", pluginName, err)
+		return nil, fmt.Errorf("failed to get plugin version %s/%s@%s: %w", teamName, pluginName, pluginVersion, err)
 	}
 	if resp.JSON200 == nil {
-		return nil, fmt.Errorf("failed to get plugin %q: %w", pluginName, err)
+		return nil, fmt.Errorf("failed to get plugin version %s/%s@%s: %w", teamName, pluginName, pluginVersion, err)
 	}
 	if resp.StatusCode() != http.StatusOK {
-		return nil, fmt.Errorf("failed to get plugin %q: %s", pluginName, resp.Status())
+		return nil, fmt.Errorf("failed to get plugin version %s/%s@%s: %s", teamName, pluginName, pluginVersion, resp.Status())
 	}
 	return resp.JSON200, nil
 }
