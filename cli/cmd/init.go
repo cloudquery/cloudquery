@@ -144,7 +144,7 @@ spec:
 `
 	var buf bytes.Buffer
 	t := template.Must(template.New("config").Parse(tmpl))
-	t.Execute(&buf, plugin)
+	_ = t.Execute(&buf, plugin)
 
 	sb := strings.Builder{}
 	sb.WriteString(buf.String())
