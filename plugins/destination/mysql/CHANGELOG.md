@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.2.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.2.5...plugins-destination-mysql-v5.2.6) (2024-08-27)
+
+
+### Bug Fixes
+
+* Better test connection error codes ([#18985](https://github.com/cloudquery/cloudquery/issues/18985)) ([fb59a59](https://github.com/cloudquery/cloudquery/commit/fb59a592d4e9966b72288603fc2c25fe84864a8b))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.59 ([#18987](https://github.com/cloudquery/cloudquery/issues/18987)) ([0d0d46b](https://github.com/cloudquery/cloudquery/commit/0d0d46bd1a460bc9cce8eb43c9ff611f8ba51d57))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.61 ([#18992](https://github.com/cloudquery/cloudquery/issues/18992)) ([430cd48](https://github.com/cloudquery/cloudquery/commit/430cd48e3693f8edb26f90a3f64b3a4526e0ed8f))
+
 ## [5.2.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.2.4...plugins-destination-mysql-v5.2.5) (2024-08-13)
 
 
