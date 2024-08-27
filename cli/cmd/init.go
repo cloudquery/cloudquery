@@ -1,8 +1,10 @@
 package cmd
 
 import (
+	"bytes"
 	"errors"
 	"fmt"
+	"html/template"
 	"os"
 	"regexp"
 	"sort"
@@ -133,12 +135,18 @@ func extractYamlFromMarkdownCodeBlock(markdown string) string {
 }
 
 func defaultConfigForPlugin(plugin cqapi.ListPlugin) *strings.Builder {
+	tmpl := `kind: {{.Kind}}
+spec:
+  name: {{.Name}}
+  path: {{.TeamName}}/{{.Name}}
+  version: {{.LatestVersion}}
+`
+	var buf bytes.Buffer
+	t := template.Must(template.New("config").Parse(tmpl))
+	t.Execute(&buf, plugin)
+
 	sb := strings.Builder{}
-	sb.WriteString("kind: " + string(plugin.Kind) + "\n")
-	sb.WriteString("spec:\n")
-	sb.WriteString("  name: " + plugin.Name + "\n")
-	sb.WriteString("  path: " + plugin.TeamName + "/" + plugin.Name + "\n")
-	sb.WriteString("  version: " + *plugin.LatestVersion + "\n")
+	sb.WriteString(buf.String())
 	return &sb
 }
 
