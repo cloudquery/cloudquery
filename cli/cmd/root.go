@@ -188,6 +188,7 @@ func NewCmdRoot() *cobra.Command {
 		newCmdPluginInstall(true), // legacy
 		pluginCmd,
 		addonCmd,
+		newCmdInit(),
 	)
 
 	cmd.CompletionOptions.HiddenDefaultCmd = true

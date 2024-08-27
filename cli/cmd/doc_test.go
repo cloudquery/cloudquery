@@ -13,6 +13,7 @@ var docFiles = []string{
 	"cloudquery_addon.md",
 	"cloudquery_addon_download.md",
 	"cloudquery_addon_publish.md",
+	"cloudquery_init.md",
 	"cloudquery_login.md",
 	"cloudquery_logout.md",
 	"cloudquery_sync.md",
