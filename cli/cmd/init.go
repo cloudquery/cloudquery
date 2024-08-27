@@ -40,6 +40,7 @@ var (
 	destinationsOrder = []string{"postgresql", "bigquery", "s3"}
 	bold              = color.New(color.Bold)
 	successful        = color.New(color.Bold, color.FgGreen)
+	link              = color.New(color.Bold, color.FgCyan)
 )
 
 func newCmdInit() *cobra.Command {
@@ -224,6 +225,10 @@ func selectDestination(allPlugins []cqapi.ListPlugin, acceptDefaults bool) (stri
 	return destination, nil
 }
 
+func linkForPlugin(plugin cqapi.ListPlugin) string {
+	return link.Sprintf("https://hub.cloudquery.io/plugins/%s/%s/%s", plugin.Kind, plugin.TeamName, plugin.Name)
+}
+
 func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	ctx := cmd.Context()
 	source, destination, specPath, acceptDefaults, err := parseFlags(cmd)
@@ -339,13 +344,24 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 
 	if user != nil {
 		successful.Println("Sync spec file generated successfully!")
-		fmt.Println("You can now run the sync with the following command:")
+		fmt.Println()
+		fmt.Println("Next steps:")
+		fmt.Println("1. Review the generated config file trello_to_postgresql.yaml and make sure to fill in all authentication details. Learn more about the plugins configuration at:")
+		fmt.Printf("   %s: %s\n", bold.Sprint(sourcePlugin.DisplayName), linkForPlugin(sourcePlugin))
+		fmt.Printf("   %s: %s\n", bold.Sprint(destinationPlugin.DisplayName), linkForPlugin(destinationPlugin))
+		fmt.Println("2. Run the following command to start the sync:")
 		bold.Printf("cloudquery sync %s\n", specPath)
 	} else {
 		successful.Println("Sync spec file generated successfully!")
-		fmt.Println("To run the sync please login with the following command:")
-		bold.Println("cloudquery login")
-		fmt.Println("Then you can run the sync with the following command:")
+		fmt.Println()
+		fmt.Println("Next steps:")
+		fmt.Println("1. Review the generated config file trello_to_postgresql.yaml and make sure to fill in all authentication details. Learn more about the plugins configuration at:")
+		fmt.Printf("   %s: %s\n", bold.Sprint(sourcePlugin.DisplayName), linkForPlugin(sourcePlugin))
+		fmt.Printf("   %s: %s\n", bold.Sprint(destinationPlugin.DisplayName), linkForPlugin(destinationPlugin))
+		fmt.Println("2. Run the following command to log in:")
+		bold.Printf("cloudquery login\n")
+		fmt.Println()
+		fmt.Println("3. Run the following command to start the sync:")
 		bold.Printf("cloudquery sync %s\n", specPath)
 	}
 	return nil
