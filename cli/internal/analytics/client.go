@@ -228,7 +228,7 @@ func teamServiceAccountEmail(teamName string) string {
 	return teamName + "@service-account.cloudquery.io"
 }
 
-func getUserIDEmail(user cqapi.User, teamName string) (string, string) {
+func getUserIDEmail(user cqapi.User, teamName string) (userID, email string) {
 	if getEnvironment() == "cloud" {
 		return teamServiceAccountUser(teamName), teamServiceAccountEmail(teamName)
 	}
