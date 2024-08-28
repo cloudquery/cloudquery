@@ -127,6 +127,8 @@ func getSyncCommonProps(invocationUUID uuid.UUID, event SyncStartedEvent, detail
 		destinationPaths[i] = d.Path
 	}
 
+	userID, userEmail := getUserIDEmail(details.user, details.currentTeam)
+
 	props := rudderstack.NewProperties().
 		// we are using the same invocation_uuid for sync_run_id
 		// invocation_uuid to be consistent with the rest of the events
@@ -140,8 +142,8 @@ func getSyncCommonProps(invocationUUID uuid.UUID, event SyncStartedEvent, detail
 		Set("sync_name", event.Source.Name).
 		Set("source_path", event.Source.Path).
 		Set("destination_paths", destinationPaths).
-		Set("user_id", details.user.ID).
-		Set("user_email", details.user.Email)
+		Set("user_id", userID).
+		Set("user_email", userEmail)
 
 	return props
 }
@@ -218,6 +220,22 @@ type InitEvent struct {
 	Error          error
 }
 
+func teamServiceAccountUser(teamName string) string {
+	return teamName + "_service_account"
+}
+
+func teamServiceAccountEmail(teamName string) string {
+	return teamName + "@service-account.cloudquery.io"
+}
+
+func getUserIDEmail(user cqapi.User, teamName string) (string, string) {
+	if getEnvironment() == "cloud" {
+		return teamServiceAccountUser(teamName), teamServiceAccountEmail(teamName)
+	}
+
+	return user.ID.String(), user.Email
+}
+
 func getInitCommonProps(invocationUUID uuid.UUID, event InitEvent, details *eventDetails) rudderstack.Properties {
 	props := rudderstack.NewProperties().
 		Set("invocation_uuid", invocationUUID).
@@ -228,12 +246,14 @@ func getInitCommonProps(invocationUUID uuid.UUID, event InitEvent, details *even
 		Set("error", event.Error)
 
 	if details != nil {
+		userID, userEmail := getUserIDEmail(details.user, details.currentTeam)
+
 		props.Set("team", details.currentTeam).
 			Set("$groups", rudderstack.NewProperties().
 				Set("team", details.currentTeam)).
 			Set("environment", details.environment).
-			Set("user_id", details.user.ID).
-			Set("user_email", details.user.Email)
+			Set("user_id", userID).
+			Set("user_email", userEmail)
 	}
 
 	return props
