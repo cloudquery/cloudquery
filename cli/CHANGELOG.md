@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.5.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.4.2...cli-v6.5.0) (2024-08-27)
+
+
+### Features
+
+* Add init command ([#19016](https://github.com/cloudquery/cloudquery/issues/19016)) ([2170360](https://github.com/cloudquery/cloudquery/commit/2170360d65ac0211f572043f77fbf645599cd9d0))
+
 ## [6.4.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.4.1...cli-v6.4.2) (2024-08-26)
 
 

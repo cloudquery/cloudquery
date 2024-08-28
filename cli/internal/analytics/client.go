@@ -210,6 +210,96 @@ func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event Syn
 	})
 }
 
+type InitEvent struct {
+	Source         string
+	Destination    string
+	AcceptDefaults bool
+	SpecPath       string
+	Error          error
+}
+
+func getInitCommonProps(invocationUUID uuid.UUID, event InitEvent, details *eventDetails) rudderstack.Properties {
+	props := rudderstack.NewProperties().
+		Set("invocation_uuid", invocationUUID).
+		Set("source", event.Source).
+		Set("destination", event.Destination).
+		Set("accept_defaults", event.AcceptDefaults).
+		Set("spec_path", event.SpecPath).
+		Set("error", event.Error)
+
+	if details != nil {
+		props.Set("team", details.currentTeam).
+			Set("$groups", rudderstack.NewProperties().
+				Set("team", details.currentTeam)).
+			Set("environment", details.environment).
+			Set("user_id", details.user.ID).
+			Set("user_email", details.user.Email)
+	}
+
+	return props
+}
+
+func TrackInitStarted(ctx context.Context, invocationUUID uuid.UUID, event InitEvent) {
+	if client == nil {
+		return
+	}
+
+	details := getSyncEventDetails(ctx)
+	if details != nil && details.isCurrentTeamInternal {
+		return
+	}
+
+	props := getInitCommonProps(invocationUUID, event, details)
+	if details != nil {
+		_ = client.Enqueue(rudderstack.Track{
+			UserId:     details.user.ID.String(),
+			Event:      "init_started",
+			Properties: props,
+		})
+		return
+	}
+
+	_ = client.Enqueue(rudderstack.Track{
+		AnonymousId: invocationUUID.String(),
+		Event:       "init_started",
+		Properties:  props,
+	})
+}
+
+func TrackInitCompleted(ctx context.Context, invocationUUID uuid.UUID, event InitEvent) {
+	if client == nil {
+		return
+	}
+
+	details := getSyncEventDetails(ctx)
+	if details != nil && details.isCurrentTeamInternal {
+		return
+	}
+
+	status := "success"
+	if event.Error != nil {
+		status = "error"
+	}
+
+	props := getInitCommonProps(invocationUUID, event, details).
+		Set("status", status)
+
+	if details != nil {
+		_ = client.Enqueue(rudderstack.Track{
+			UserId:     details.user.ID.String(),
+			Event:      "init_completed",
+			Properties: props,
+		})
+		return
+	}
+
+	_ = client.Enqueue(rudderstack.Track{
+		AnonymousId: invocationUUID.String(),
+		Event:       "init_completed",
+		Properties:  props,
+	})
+}
+
 func Close() {
 	if client == nil {
 		return
