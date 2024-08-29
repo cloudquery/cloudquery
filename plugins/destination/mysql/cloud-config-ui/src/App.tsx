@@ -19,10 +19,19 @@ const useCloudAppMock =
   window.self === window.top;
 const DevWrapper = useCloudAppMock ? CloudAppMock : Fragment;
 // eslint-disable-next-line unicorn/prefer-module
-const devWrapperProps: any = useCloudAppMock ? require('./.env.json') : undefined;
+const { plugin, ...devWrapperProps }: any = useCloudAppMock ? require('./.env.json') : {};
+
+const pluginProps = useCloudAppMock
+  ? plugin
+  : {
+      team: process.env.REACT_APP_PLUGIN_TEAM,
+      kind: process.env.REACT_APP_PLUGIN_KIND,
+      name: process.env.REACT_APP_PLUGIN_NAME,
+      version: process.env.REACT_APP_PLUGIN_VERSION,
+    };
 
 function App() {
-  const { initialValues, initialized } = useFormInit(pluginUiMessageHandler, false);
+  const { initialValues, initialized, teamName } = useFormInit(pluginUiMessageHandler, true);
   useFormHeightChange(pluginUiMessageHandler);
 
   const theme = useMemo(() => createTheme(createThemeOptions()), []);
@@ -36,6 +45,8 @@ function App() {
             <Box flex="1 1 0" minWidth={480}>
               <Form
                 initialValues={initialValues ? prepareInitialValues(initialValues) : undefined}
+                teamName={teamName}
+                plugin={pluginProps}
               />
             </Box>
             <Box sx={{ width: 360, minWidth: 360 }}>
