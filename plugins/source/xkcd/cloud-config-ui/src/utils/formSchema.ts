@@ -8,10 +8,10 @@ export function useFormSchema({
 }: {
   initialValues?: FormMessagePayload['init']['initialValues'];
 }) {
-  const fields = useMemo(() => ({}), []);
+  const formFields = useMemo(() => ({ fields: {} }), [initialValues]);
 
   return useCoreFormSchema({
     initialValues,
-    fields,
+    ...formFields,
   });
 }
