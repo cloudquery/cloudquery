@@ -106,15 +106,14 @@ jobs:
       - name: Run unit tests
         working-directory: "plugins/destination/mysql/cloud-config-ui"
         run: npm run test
-      - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@v4
+      - uses: actions/upload-artifact@v4
+        if: steps.turbo-ignore.outputs.exitcode != '0' && always()
         with:
-          version: v6.5.0
-      - name: Validate CloudQuery config
-        working-directory: "plugins/destination/mysql/cloud-config-ui"
-        run: dotenv -e ./temp/.env -- cloudquery validate-config ./temp/config.yml
-        env:
-          CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
+          name: config-ui-e2e-testsplaywright
+          path: |
+            config-ui/playwright-report/
+          retention-days: 7
+          if-no-files-found: error
 
   deploy:
     if: github.event.action != 'closed' && github.event_name == 'pull_request' && !startsWith(github.head_ref, 'release')

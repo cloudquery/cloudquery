@@ -21,9 +21,9 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:3000',
     headless: process.env.CI ? true : false,
-    trace: process.env.CI ? 'on-first-retry' : 'retain-on-failure',
+    trace: 'retain-on-failure',
     video: {
-      mode: process.env.CI ? 'on-first-retry' : 'retain-on-failure',
+      mode: 'retain-on-failure',
       size: { height: 480, width: 640 },
     },
   },
