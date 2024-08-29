@@ -8,7 +8,7 @@ export function useFormSchema({
 }: {
   initialValues?: FormMessagePayload['init']['initialValues'];
 }) {
-  const formFields = useMemo(() => ({ fields: {} }), [initialValues]);
+  const formFields = useMemo(() => ({ fields: {} }), []);
 
   return useCoreFormSchema({
     initialValues,

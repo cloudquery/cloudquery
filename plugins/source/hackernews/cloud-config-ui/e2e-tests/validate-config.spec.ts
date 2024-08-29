@@ -5,10 +5,10 @@ import YAML from 'yaml';
 test('Submit the form', async ({ page }) => {
   await page.goto('/');
   await page.getByLabel('Start time', { exact: true }).click();
-  await page.getByLabel('Start time', { exact: true }).fill("07/07/2024 10:00 PM")
-  await page.getByLabel('Item concurrency *', { exact: true }).click();
-  await page.getByLabel('Item concurrency *', { exact: true }).fill('50');
-  await page.getByRole('button', { name: 'Submit' }).click();
+  await page.getByLabel('Start time', { exact: true }).fill('07/07/2024 10:00 PM');
+  await page.getByLabel('Item concurrency', { exact: true }).click();
+  await page.getByLabel('Item concurrency', { exact: true }).fill('50');
+  await page.getByRole('button', { name: 'Test connection' }).click();
   const valuesText = await page
     .locator('text=Values:')
     .locator('xpath=following-sibling::*[1]')

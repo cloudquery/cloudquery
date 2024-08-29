@@ -4,7 +4,7 @@ import YAML from 'yaml';
 
 test('Submit the form', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: 'Submit' }).click();
+  await page.getByRole('button', { name: 'Test connection' }).click();
   const valuesText = await page
     .locator('text=Values:')
     .locator('xpath=following-sibling::*[1]')
