@@ -82,7 +82,7 @@ export function FormConnectionFields() {
       trigger();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values]);
+  }, [values.connectionType]);
 
   const defaultConnectionStringIsSecret = defaultConnectionString?.includes('${password}');
 
