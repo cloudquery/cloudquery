@@ -31,6 +31,7 @@ Find more information at:
 ### SEE ALSO
 
 * [cloudquery addon](/docs/reference/cli/cloudquery_addon)	 - Addon commands
+* [cloudquery init](/docs/reference/cli/cloudquery_init)	 - Generate a configuration file for a sync
 * [cloudquery login](/docs/reference/cli/cloudquery_login)	 - Login to CloudQuery Hub.
 * [cloudquery logout](/docs/reference/cli/cloudquery_logout)	 - Log out of CloudQuery Hub.
 * [cloudquery migrate](/docs/reference/cli/cloudquery_migrate)	 - Update schema of your destinations based on the latest changes in sources from your configuration

@@ -104,7 +104,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.4.1
+          version: v6.5.0
       - name: Validate CloudQuery config
         working-directory: "plugins/destination/mysql/cloud-config-ui"
         run: dotenv -e ./temp/.env -- cloudquery validate-config ./temp/config.yml
