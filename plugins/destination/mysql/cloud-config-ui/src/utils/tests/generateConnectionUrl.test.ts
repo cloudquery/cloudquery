@@ -1,4 +1,3 @@
-import { FormValues } from '../formSchema';
 import { generateConnectionUrl } from '../generateConnectionUrl';
 
 const baseTestFormValues = {
@@ -14,7 +13,7 @@ const baseTestFormValues = {
     charset: '',
     loc: '',
   },
-} as unknown as FormValues;
+} as any;
 
 describe('generateConnectionUrl', () => {
   test('returns a barebones connection string', async () => {
