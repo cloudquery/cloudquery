@@ -38,7 +38,13 @@ jobs:
             const path = require('path');
             const child_process = require('child_process');
             const allDirs = process.env.ALL_CHANGED_FILES.split(' ').filter(Boolean);
-            const uiBuildDirs = allDirs.filter((dir) => dir.endsWith('${{ env.ui_dir_name }}'));
+            const uiBuildDirs = Array.from(
+              new Set(
+                allDirs
+                  .filter((dir) => dir.includes('${{ env.ui_dir_name }}'))
+                  .map((dir) => dir.split('${{ env.ui_dir_name }}')[0] + '${{ env.ui_dir_name }}')
+              )
+            );
             const toPluginDataFromUIDir = (uiDir) => {
               const pluginDir = path.join(uiDir, "..");
               const name = path.basename(pluginDir);
