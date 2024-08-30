@@ -114,10 +114,6 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 					return err
 				}
 				transformedSchemaBytes = resp.Schema
-				transformedSchema, err = plugin.NewSchemaFromBytes(transformedSchemaBytes)
-				if err != nil {
-					return err
-				}
 			}
 
 			wr := &plugin.Write_Request{}
