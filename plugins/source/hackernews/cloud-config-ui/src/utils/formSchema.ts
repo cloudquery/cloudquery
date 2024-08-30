@@ -25,7 +25,7 @@ export function useFormSchema({
               : new Date(),
           ),
       },
-      secretFields: {
+      stateFields: {
         _startTimeEnabled: yup
           .boolean()
           .default(!initialValues || !!initialValues?.spec?.start_time)
