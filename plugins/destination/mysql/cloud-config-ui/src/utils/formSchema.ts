@@ -23,7 +23,7 @@ export function useFormSchema({
 
     return {
       fields: {
-        connectionString: yup
+        connection_string: yup
           .string()
           .default(url)
           .when('_connectionType', {

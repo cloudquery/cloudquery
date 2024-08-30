@@ -32,7 +32,7 @@ export function FormConnectionFields() {
 
       {connectionType === 'string' && (
         <ControlSecretField
-          name="connectionString"
+          name="connection_string"
           helperText="Connection string to connect to the database. E.g. user:password@localhost:3306/dbname?tls=preferred\u0026readTimeout=1s\u0026writeTimeout=1s"
           label="Connection string"
         />
