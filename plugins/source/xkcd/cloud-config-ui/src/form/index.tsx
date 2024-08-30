@@ -26,15 +26,17 @@ export function Form({ initialValues }: Props) {
   const { tablesList } = usePluginContext();
 
   const formValidationSchema = useFormSchema({ initialValues });
-  const formValidationResolver = getYupValidationResolver(formValidationSchema);
-
-  const values = useMemo(() => {
-    return formValidationSchema.getDefault();
-  }, [formValidationSchema]);
+  const { formValidationResolver, defaultValues } = useMemo(
+    () => ({
+      formValidationResolver: getYupValidationResolver(formValidationSchema),
+      defaultValues: formValidationSchema.getDefault(),
+    }),
+    [formValidationSchema],
+  );
 
   const form = useForm({
-    defaultValues: values,
-    values,
+    defaultValues,
+    values: defaultValues,
     resolver: formValidationResolver,
   });
 
