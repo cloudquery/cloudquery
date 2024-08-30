@@ -82,13 +82,6 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 			return err
 		}
 	}
-	for _, transformerPbClients := range transformerPbClientsByDestination {
-		for _, transformerPbClient := range transformerPbClients {
-			if _, err := transformerPbClient.Transform(ctx); err != nil {
-				return err
-			}
-		}
-	}
 
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Msg("Start fetching resources")
 	fmt.Printf("Starting migration for: %s -> %s\n", sourceSpec.VersionString(), destinationStrings)
