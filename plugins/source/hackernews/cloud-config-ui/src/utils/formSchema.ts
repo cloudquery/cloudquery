@@ -17,7 +17,13 @@ export function useFormSchema({
           .number()
           .default(initialValues?.spec?.item_concurrency ?? 100)
           .required(),
-        start_time: yup.mixed().default(initialValues?.spec?.start_time),
+        start_time: yup
+          .date()
+          .default(
+            initialValues?.spec?.start_time
+              ? new Date(initialValues?.spec?.start_time)
+              : new Date(),
+          ),
       },
       secretFields: {
         _startTimeEnabled: yup

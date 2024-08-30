@@ -40,15 +40,15 @@
     "eslint-plugin-sort-destructure-keys": "^2.0.0",
     "eslint-plugin-unicorn": "^55.0.0",
     "http-server": "^14.1.1",
-    "prettier": "^3.3.3",
-    "yaml": "^2.5.0"
+    "prettier": "^3.3.3"
   },
   "scripts": {
     "start": "node scripts/initialize.js && PORT=3001 react-scripts start",
     "build": "node scripts/initialize.js -f && react-scripts build",
     "lint": "eslint src --ext .ts,.tsx --max-warnings 0",
     "lint:fix": "eslint src --ext .ts,.tsx --max-warnings 0 --fix",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "dev:test:e2e": "REACT_APP_USE_CLOUD_APP_MOCK=true npm run build && playwright test"
   },
   "eslintConfig": {
     "extends": [

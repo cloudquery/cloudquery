@@ -6,6 +6,7 @@ export function prepareSubmitValues(
   tablesList?: PluginTable[],
 ): PluginUiMessagePayload['validation_passed']['values'] {
   const payload = corePrepareSubmitValues(values, tablesList);
+  console.log({ values, payload });
 
   if (values.item_concurrency) {
     payload.spec.item_concurrency = Number(values.item_concurrency);
