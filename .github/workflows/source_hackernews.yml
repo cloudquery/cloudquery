@@ -75,8 +75,6 @@ jobs:
         uses: cloudquery/setup-cloudquery@v4
         with:
           version: v6.5.0
-      - name: Gen
-        run: make gen
       - name: Build
         run: go build .
       - name: Use Node.js LTS
@@ -105,11 +103,9 @@ jobs:
       - name: Run E2E tests and generate configs
         working-directory: "plugins/source/hackernews/cloud-config-ui"
         run: E2E_TESTS_GENERATE_CONFIG=true npm run test:e2e
-      - name: Validate CloudQuery config
+      - name: Run unit tests
         working-directory: "plugins/source/hackernews/cloud-config-ui"
-        run: dotenv -e ./temp/.env -- cloudquery validate-config ./temp/config.yml
-        env:
-          CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
+        run: npm run test
 
   deploy:
     if: github.event.action != 'closed' && github.event_name == 'pull_request' && !startsWith(github.head_ref, 'release')
@@ -133,19 +129,14 @@ jobs:
 
       - name: Deploy to Vercel
         run: |
-          PLUGIN_VERSION=$(jq -r '."plugins/source/hackernews"' ../../../../.release-please-manifest.json)
-          echo "Plugin version: $PLUGIN_VERSION"
-
-          DEPLOYMENT_URL=$(vercel --token $VERCEL_TOKEN --build-env REACT_APP_PLUGIN_TEAM=cloudquery --build-env REACT_APP_PLUGIN_KIND=source --build-env REACT_APP_PLUGIN_NAME=hackernews --build-env REACT_APP_PLUGIN_VERSION=v$PLUGIN_VERSION)
+          DEPLOYMENT_URL=$(vercel --token $VERCEL_TOKEN)
           echo "Deployed to: $DEPLOYMENT_URL"
           echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_ENV
-
           ALIAS_DEPLOYMENT_BASE_URL=plugin-source-hackernews-cloud-ui-${{ github.event.pull_request.number }}.vercel.app
           ALIAS_DEPLOYMENT_URL=https://$ALIAS_DEPLOYMENT_BASE_URL
           vercel --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID alias $DEPLOYMENT_URL $ALIAS_DEPLOYMENT_BASE_URL
           echo "Alias deployed to: $ALIAS_DEPLOYMENT_URL"
           echo "ALIAS_DEPLOYMENT_URL=$ALIAS_DEPLOYMENT_URL" >> $GITHUB_ENV
-
       - name: Find Comment
         uses: peter-evans/find-comment@v3
         id: find-comment
@@ -160,17 +151,13 @@ jobs:
         run: |
           echo "Comment found:"
           echo "${{ steps.find-comment.outputs.comment-body }}"
-
           PREVIOUS_DEPLOYMENT_URL=$(echo "${{ steps.find-comment.outputs.comment-body }}" | awk '/Unique Vercel deployment URL:/ {getline; print $1}')
-
           echo "Previous deployment URL: $PREVIOUS_DEPLOYMENT_URL"
-
           if vercel rm "$PREVIOUS_DEPLOYMENT_URL" --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID --yes; then
             echo "Deployment $PREVIOUS_DEPLOYMENT_URL was successfully deleted."
           else
             echo "Failed to delete deployment $PREVIOUS_DEPLOYMENT_URL. It may not exist or there was an error."
           fi
-
       - name: Create or update comment
         uses: peter-evans/create-or-update-comment@v3
         with:
@@ -180,10 +167,8 @@ jobs:
           body: |
             🚀 Hacker News Cloud UI deployed to Vercel:
             ${{ env.ALIAS_DEPLOYMENT_URL }}
-
             You can also check out this plugin in action at:
             https://cloud.cloudquery.io/teams/cloudquery-test/sources/create?plugin-cloud-ui=cloudquery|source|hackernews|${{ env.ALIAS_DEPLOYMENT_URL }}
-
             Unique Vercel deployment URL:
             ${{ env.DEPLOYMENT_URL }}
           edit-mode: replace
