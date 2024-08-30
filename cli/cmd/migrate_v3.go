@@ -13,18 +13,30 @@ import (
 )
 
 // nolint:dupl
-func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination) error {
+func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, transformersForDestination map[string][]*managedplugin.Client, transformerSpecsByName map[string]specs.Transformer) error {
 	destinationStrings := make([]string, len(destinationSpecs))
 	for i := range destinationSpecs {
 		destinationStrings[i] = destinationSpecs[i].VersionString()
 	}
+	transformerStrings := []string{}
+	for _, transformerSpec := range transformerSpecsByName {
+		transformerStrings = append(transformerStrings, transformerSpec.VersionString())
+	}
+
+	transformerPbClientsByDestination := map[string][]plugin.PluginClient{}
+	for name, transformers := range transformersForDestination {
+		for _, tf := range transformers {
+			transformerPbClientsByDestination[name] = append(transformerPbClientsByDestination[name], plugin.NewPluginClient(tf.Conn))
+		}
+	}
+
 	migrateStart := time.Now().UTC()
-	log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationStrings).Time("migrate_time", migrateStart).Msg("Start migration")
-	defer log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationStrings).Time("migrate_time", migrateStart).Msg("End migration")
+	log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationStrings).Strs("transformers", transformerStrings).Time("migrate_time", migrateStart).Msg("Start migration")
+	defer log.Info().Str("source", sourceSpec.Name).Strs("destinations", destinationStrings).Strs("transformers", transformerStrings).Time("migrate_time", migrateStart).Msg("End migration")
 
 	sourcePbClient := plugin.NewPluginClient(sourceClient.Conn)
 	destinationsPbClients := make([]plugin.PluginClient, len(destinationsClients))
-	destinationTransformers := make([]*transformer.RecordTransformer, len(destinationsClients))
+	destinationRecordTransformers := make([]*transformer.RecordTransformer, len(destinationsClients))
 	for i := range destinationsClients {
 		destinationsPbClients[i] = plugin.NewPluginClient(destinationsClients[i].Conn)
 		opts := []transformer.RecordTransformerOption{
@@ -40,7 +52,7 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 			opts = append(opts, transformer.WithRemovePKs())
 			opts = append(opts, transformer.WithCQIDPrimaryKey())
 		}
-		destinationTransformers[i] = transformer.NewRecordTransformer(opts...)
+		destinationRecordTransformers[i] = transformer.NewRecordTransformer(opts...)
 	}
 
 	// initialize destinations first, so that their connections may be used as backends by the source
@@ -55,11 +67,26 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 		return fmt.Errorf("failed to init source %v: %w", sourceSpec.Name, err)
 	}
 
+	for name, transformers := range transformersForDestination {
+		for i, tf := range transformers {
+			if err := initPlugin(ctx, transformerPbClientsByDestination[name][i], transformerSpecsByName[tf.Name()].Spec, false, invocationUUID.String()); err != nil {
+				return fmt.Errorf("failed to init transformer %v: %w", tf.Name(), err)
+			}
+		}
+	}
+
 	writeClients := make([]plugin.Plugin_WriteClient, len(destinationsPbClients))
 	for i := range destinationsPbClients {
 		writeClients[i], err = destinationsPbClients[i].Write(ctx)
 		if err != nil {
 			return err
+		}
+	}
+	for _, transformerPbClients := range transformerPbClientsByDestination {
+		for _, transformerPbClient := range transformerPbClients {
+			if _, err := transformerPbClient.Transform(ctx); err != nil {
+				return err
+			}
 		}
 	}
 
@@ -82,11 +109,24 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 
 	for i := range destinationsClients {
 		for _, sc := range schemas {
-			transformedSchema := destinationTransformers[i].TransformSchema(sc)
+			transformedSchema := destinationRecordTransformers[i].TransformSchema(sc)
 			transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
 			if err != nil {
 				return err
 			}
+			// Sequentially apply schema transformations from transformers
+			for _, transformerPbClient := range transformerPbClientsByDestination[destinationSpecs[i].Name] {
+				resp, err := transformerPbClient.TransformSchema(ctx, &plugin.TransformSchema_Request{Schema: transformedSchemaBytes})
+				if err != nil {
+					return err
+				}
+				transformedSchemaBytes = resp.Schema
+				transformedSchema, err = plugin.NewSchemaFromBytes(transformedSchemaBytes)
+				if err != nil {
+					return err
+				}
+			}
+
 			wr := &plugin.Write_Request{}
 			wr.Message = &plugin.Write_Request_MigrateTable{
 				MigrateTable: &plugin.Write_MessageMigrateTable{
@@ -99,7 +139,7 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 			}
 		}
 
-		if err := migrateSummaryTable(writeClients[i], destinationTransformers[i], destinationSpecs[i]); err != nil {
+		if err := migrateSummaryTable(writeClients[i], destinationRecordTransformers[i], destinationSpecs[i]); err != nil {
 			return fmt.Errorf("failed to migrate sync summary table: %w", err)
 		}
 		if _, err := writeClients[i].CloseAndRecv(); err != nil {
