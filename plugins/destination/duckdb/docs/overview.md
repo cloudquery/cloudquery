@@ -36,4 +36,4 @@ This is the top level spec used by the DuckDB destination Plugin.
 
 - `appender` (`boolean`) (optional) (default: `false`)
 
-  Enables Appender API (Preview)
+  Enables `Appender API` (Preview)
