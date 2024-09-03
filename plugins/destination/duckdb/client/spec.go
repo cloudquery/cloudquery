@@ -19,6 +19,9 @@ type Spec struct {
 
 	// Enables debug logging
 	Debug bool `json:"debug,omitempty" jsonschema:"default=false"`
+
+	// Use appender API for append only mode
+	Appender bool `json:"appender,omitempty" jsonschema:"default=false"`
 }
 
 //go:embed schema.json

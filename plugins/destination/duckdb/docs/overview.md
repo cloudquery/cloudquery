@@ -33,3 +33,7 @@ This is the top level spec used by the DuckDB destination Plugin.
 - `debug` (`boolean`) (optional) (default: `false`)
 
   Enables debug logging.
+
+- `appender` (`boolean`) (optional) (default: `false`)
+
+  Enables Appender API (Preview)

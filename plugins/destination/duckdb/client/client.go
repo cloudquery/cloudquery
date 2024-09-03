@@ -9,9 +9,11 @@ import (
 	"fmt"
 	"runtime"
 	"strings"
+	"sync"
 
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/duckdb/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/marcboeker/go-duckdb"
 	"github.com/rs/zerolog"
@@ -23,10 +25,15 @@ type Client struct {
 
 	connector driver.Connector
 	db        *sql.DB
+	conn      driver.Conn // used in Appender
 
 	logger zerolog.Logger
 	spec   Spec
 	writer *batchwriter.BatchWriter
+
+	// current state of tables, used in Appender
+	dbTablesMu *sync.RWMutex
+	dbTables   map[string]*schema.Table
 }
 
 var _ plugin.Client = (*Client)(nil)
@@ -34,7 +41,9 @@ var _ plugin.Client = (*Client)(nil)
 func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
-		logger: logger.With().Str("module", "duckdb-dest").Logger(),
+		logger:     logger.With().Str("module", "duckdb-dest").Logger(),
+		dbTablesMu: &sync.RWMutex{},
+		dbTables:   make(map[string]*schema.Table),
 	}
 	if err := json.Unmarshal(spec, &c.spec); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
@@ -73,8 +82,13 @@ func (c *Client) Close(ctx context.Context) error {
 		err1 = fmt.Errorf("failed to close writer: %w", err1)
 	}
 
-	err := errors.Join(err1, c.db.Close())
-	c.db = nil
+	err := errors.Join(err1, c.db.Close(), func() error {
+		if c.conn == nil {
+			return nil
+		}
+		return c.conn.Close()
+	}())
+	c.db, c.conn = nil, nil
 	return err
 }
 
