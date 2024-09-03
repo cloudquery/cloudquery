@@ -119,7 +119,7 @@ func (c *Client) copyFromFile(ctx context.Context, tableName string, fileName st
 func (c *Client) appendRows(ctx context.Context, table *schema.Table, msgs message.WriteInserts) (retErr error) {
 	defer func() {
 		if retErr != nil {
-			fmt.Println("===", retErr.Error())
+			c.logger.Err(retErr).Msg("appendRows failed")
 		}
 	}()
 	if c.conn == nil {
