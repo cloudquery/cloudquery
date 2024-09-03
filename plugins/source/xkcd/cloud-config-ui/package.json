@@ -6,15 +6,12 @@
   "dependencies": {
     "@cloudquery/cloud-ui": "^0.1.13",
     "@cloudquery/plugin-config-ui-connector": "^0.2.16",
-    "@cloudquery/plugin-config-ui-lib": "^0.0.71",
+    "@cloudquery/plugin-config-ui-lib": "^0.0.74",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",
-    "@mui/lab": "^5.0.0-alpha.170",
     "@mui/material": "^5.15.20",
     "@mui/system": "^5.15.20",
-    "@mui/x-date-pickers": "^7.6.2",
-    "@mui/x-tree-view": "^7.6.2",
     "humanize-string": "^3.0.0",
     "pg-connection-string": "^2.6.4",
     "react": "^18.3.1",
@@ -42,15 +39,15 @@
     "eslint-plugin-sort-destructure-keys": "^2.0.0",
     "eslint-plugin-unicorn": "^55.0.0",
     "http-server": "^14.1.1",
-    "prettier": "^3.3.3",
-    "yaml": "^2.5.0"
+    "prettier": "^3.3.3"
   },
   "scripts": {
     "start": "node scripts/initialize.js && PORT=3001 react-scripts start",
     "build": "node scripts/initialize.js -f && react-scripts build",
     "lint": "eslint src --ext .ts,.tsx --max-warnings 0",
     "lint:fix": "eslint src --ext .ts,.tsx --max-warnings 0 --fix",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "dev:test:e2e": "REACT_APP_USE_CLOUD_APP_MOCK=true npm run build && playwright test"
   },
   "eslintConfig": {
     "extends": [

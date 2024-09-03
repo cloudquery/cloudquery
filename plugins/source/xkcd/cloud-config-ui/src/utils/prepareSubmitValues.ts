@@ -1,18 +1,11 @@
 import { PluginUiMessagePayload } from '@cloudquery/plugin-config-ui-connector';
-
-import { FormValues } from './formSchema';
+import { corePrepareSubmitValues, PluginTable } from '@cloudquery/plugin-config-ui-lib';
 
 export function prepareSubmitValues(
-  values: FormValues,
+  values: Record<string, any>,
+  tablesList?: PluginTable[],
 ): PluginUiMessagePayload['validation_passed']['values'] {
-  const envs = [] as Array<{ name: string; value: string }>;
+  const payload = corePrepareSubmitValues(values, tablesList);
 
-  return {
-    name: values.name,
-    envs,
-    tables: Object.keys(values.tables).filter(
-      (key) => values.tables[key as keyof typeof values.tables],
-    ),
-    spec: {},
-  };
+  return payload;
 }
