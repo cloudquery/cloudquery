@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"embed"
 	"fmt"
 	"go/format"
 	"io/fs"
@@ -11,6 +10,7 @@ import (
 	"strings"
 	"text/template"
 
+	"github.com/cloudquery/cloudquery/scaffold/sourcetpl"
 	"github.com/spf13/cobra"
 )
 
@@ -35,25 +35,6 @@ func newCmdScaffoldSource() *cobra.Command {
 	return cmd
 }
 
-// Note: The long list here is deliberate, to make sure that node_modules does not accidentally
-// get included in the binary.
-//
-//go:embed templates/source/*
-//go:embed templates/cloud-config-ui/e2e-tests/*
-//go:embed templates/cloud-config-ui/eslint-plugin-custom-rules/*
-//go:embed templates/cloud-config-ui/public/*
-//go:embed templates/cloud-config-ui/scripts/*
-//go:embed templates/cloud-config-ui/src/*
-//go:embed templates/cloud-config-ui/.eslintrc.json.tpl
-//go:embed templates/cloud-config-ui/.prettierrc.tpl
-//go:embed templates/cloud-config-ui/.gitignore.tpl
-//go:embed templates/cloud-config-ui/.nvmrc.tpl
-//go:embed templates/cloud-config-ui/package.json.tpl
-//go:embed templates/cloud-config-ui/playwright.config.ts.tpl
-//go:embed templates/cloud-config-ui/README.md.tpl
-//go:embed templates/cloud-config-ui/tsconfig.json.tpl
-var sourceFS embed.FS
-
 type scaffoldData struct {
 	Org  string
 	Name string
@@ -68,9 +49,6 @@ func runScaffoldSource(org string, name string, outputDir string) error {
 	}
 	if err := copyGoFiles(data, outputDir); err != nil {
 		return fmt.Errorf("failed to copy go files: %w", err)
-	}
-	if err := copyConfigUIFiles(data, outputDir); err != nil {
-		return fmt.Errorf("failed to copy config ui files: %w", err)
 	}
 
 	n := len(data.Name)
@@ -89,7 +67,7 @@ func runScaffoldSource(org string, name string, outputDir string) error {
 }
 
 func copyGoFiles(data scaffoldData, outputDir string) error {
-	return fs.WalkDir(sourceFS, "templates/source", func(fpath string, d fs.DirEntry, err error) error {
+	return fs.WalkDir(sourcetpl.SourcePluginTemplatesFS, "templates/source", func(fpath string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return fmt.Errorf("failed to walk directory: %w", err)
 		}
@@ -109,45 +87,8 @@ func copyGoFiles(data scaffoldData, outputDir string) error {
 	})
 }
 
-func copyConfigUIFiles(data scaffoldData, outputDir string) error {
-	return fs.WalkDir(sourceFS, "templates/cloud-config-ui", func(fpath string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return fmt.Errorf("failed to walk directory: %w", err)
-		}
-		if d.IsDir() {
-			return nil
-		}
-		if strings.HasSuffix(fpath, ".tpl") {
-			outputPath := strings.TrimSuffix(strings.TrimPrefix(fpath, "templates/"), ".tpl")
-			fullPath := outputDir + "/" + outputPath
-			err = writeTemplate(data, fpath, fullPath)
-			if err != nil {
-				return fmt.Errorf("failed to write template: %w", err)
-			}
-			return nil
-		}
-		fullPath := outputDir + "/" + strings.TrimPrefix(fpath, "templates")
-		return copyFile(fpath, fullPath)
-	})
-}
-
-func copyFile(inputPath string, outputPath string) error {
-	b, err := fs.ReadFile(sourceFS, inputPath)
-	if err != nil {
-		return fmt.Errorf("failed to read file: %w", err)
-	}
-	baseDir := path.Dir(outputPath)
-	if err := os.MkdirAll(baseDir, 0755); err != nil {
-		return fmt.Errorf("failed to create directory %s: %w", baseDir, err)
-	}
-	if err := os.WriteFile(outputPath, b, 0644); err != nil {
-		return fmt.Errorf("failed to write file: %w", err)
-	}
-	return nil
-}
-
 func writeTemplate(data scaffoldData, tplPath string, outputPath string) error {
-	tpl, err := template.New(filepath.Base(tplPath)).ParseFS(sourceFS, tplPath)
+	tpl, err := template.New(filepath.Base(tplPath)).ParseFS(sourcetpl.SourcePluginTemplatesFS, tplPath)
 	if err != nil {
 		return fmt.Errorf("failed to parse template %s: %w", tplPath, err)
 	}
