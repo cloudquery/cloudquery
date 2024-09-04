@@ -8,7 +8,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cloudquery/cloudquery-api-go v1.13.0
 	github.com/cloudquery/codegen v0.3.19
-	github.com/cloudquery/plugin-pb-go v1.22.1
+	github.com/cloudquery/plugin-pb-go v1.22.2
 	github.com/cloudquery/plugin-sdk/v4 v4.61.0
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
@@ -27,7 +27,7 @@ require (
 	github.com/rudderlabs/analytics-go/v4 v4.2.0
 	github.com/samber/lo v1.47.0
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
-	github.com/schollz/progressbar/v3 v3.14.5
+	github.com/schollz/progressbar/v3 v3.14.6
 	github.com/spf13/cobra v1.8.1
 	github.com/stretchr/testify v1.9.0
 	github.com/thoas/go-funk v0.9.3
