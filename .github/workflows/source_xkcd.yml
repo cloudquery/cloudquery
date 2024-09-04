@@ -126,14 +126,19 @@ jobs:
 
       - name: Deploy to Vercel
         run: |
-          DEPLOYMENT_URL=$(vercel --token $VERCEL_TOKEN)
+          PLUGIN_VERSION=$(jq -r '."plugins/source/xkcd"' ../../../../.release-please-manifest.json)
+          echo "Plugin version: $PLUGIN_VERSION"
+
+          DEPLOYMENT_URL=$(vercel --token $VERCEL_TOKEN --build-env REACT_APP_PLUGIN_TEAM=cloudquery --build-env REACT_APP_PLUGIN_KIND=source --build-env REACT_APP_PLUGIN_NAME=xkcd --build-env REACT_APP_PLUGIN_VERSION=v$PLUGIN_VERSION)
           echo "Deployed to: $DEPLOYMENT_URL"
           echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_ENV
+
           ALIAS_DEPLOYMENT_BASE_URL=plugin-source-xkcd-cloud-ui-${{ github.event.pull_request.number }}.vercel.app
           ALIAS_DEPLOYMENT_URL=https://$ALIAS_DEPLOYMENT_BASE_URL
           vercel --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID alias $DEPLOYMENT_URL $ALIAS_DEPLOYMENT_BASE_URL
           echo "Alias deployed to: $ALIAS_DEPLOYMENT_URL"
           echo "ALIAS_DEPLOYMENT_URL=$ALIAS_DEPLOYMENT_URL" >> $GITHUB_ENV
+
       - name: Find Comment
         uses: peter-evans/find-comment@v3
         id: find-comment
