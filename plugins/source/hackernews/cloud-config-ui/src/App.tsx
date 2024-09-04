@@ -1,14 +1,22 @@
 import { Fragment, useMemo } from 'react';
 
 import { createThemeOptions } from '@cloudquery/cloud-ui';
-import { CloudAppMock, useFormHeightChange, useFormInit } from '@cloudquery/plugin-config-ui-lib';
+
+import {
+  CloudAppMock,
+  CloudQueryTables,
+  PluginContextProvider,
+  useFormHeightChange,
+  useFormInit,
+} from '@cloudquery/plugin-config-ui-lib';
+import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import Stack from '@mui/material/Stack';
 import createTheme from '@mui/material/styles/createTheme';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 
+import config from './config';
+import tablesData from './data/__tables.json';
 import { Form } from './form';
-
 import { pluginUiMessageHandler } from './utils/messageHandler';
 
 const useCloudAppMock =
@@ -16,25 +24,44 @@ const useCloudAppMock =
   window.self === window.top;
 const DevWrapper = useCloudAppMock ? CloudAppMock : Fragment;
 // eslint-disable-next-line unicorn/prefer-module
-const devWrapperProps: any = useCloudAppMock ? require('./.env.json') : undefined;
+const { plugin, ...devWrapperProps }: any = useCloudAppMock ? require('./.env.json') : {};
+
+const pluginProps = useCloudAppMock
+  ? plugin
+  : {
+      team: process.env.REACT_APP_PLUGIN_TEAM,
+      kind: process.env.REACT_APP_PLUGIN_KIND,
+      name: process.env.REACT_APP_PLUGIN_NAME,
+      version: process.env.REACT_APP_PLUGIN_VERSION,
+    };
 
 function App() {
-  const { initialValues, initialized } = useFormInit(pluginUiMessageHandler, false);
+  const { initialValues, initialized, teamName, context } = useFormInit(
+    pluginUiMessageHandler,
+    true,
+  );
+
   useFormHeightChange(pluginUiMessageHandler);
 
   const theme = useMemo(() => createTheme(createThemeOptions()), []);
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <DevWrapper {...devWrapperProps}>
-        {initialized && (
-          <Stack>
-            <Form initialValues={initialValues} />
-          </Stack>
-        )}
-      </DevWrapper>
-    </ThemeProvider>
+    <PluginContextProvider
+      config={config}
+      plugin={pluginProps}
+      teamName={teamName}
+      tablesData={tablesData as CloudQueryTables}
+      hideStepper={context === 'wizard'} // TODO: Delete after iframe deprecation
+    >
+      <Box>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <DevWrapper {...devWrapperProps}>
+            {initialized && <Form initialValues={initialValues} />}
+          </DevWrapper>
+        </ThemeProvider>
+      </Box>
+    </PluginContextProvider>
   );
 }
 

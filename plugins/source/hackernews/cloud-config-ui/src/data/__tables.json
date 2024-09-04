@@ -1,7 +1,7 @@
 [
   {
     "name": "hackernews_items",
-    "title": "Hackernews Items",
+    "title": "",
     "description": "https://github.com/HackerNews/API#items",
     "columns": [
       {
@@ -71,6 +71,7 @@
         "type": "int64"
       }
     ],
-    "relations": []
+    "relations": [],
+    "is_incremental": true
   }
 ]
