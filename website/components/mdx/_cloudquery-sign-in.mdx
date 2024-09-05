@@ -1,3 +1,21 @@
+import SignInLinux from './_cloudquery-sign-in-login-linux.mdx';
+import SignInWindows from './_cloudquery-sign-in-login-windows.mdx';
+import SignInMacos from './_cloudquery-sign-in-login-macos.mdx';
+
+export const SignIn = ({ os }) => {
+    switch (os) {
+        case "linux":
+            return <SignInLinux />
+        case "windows":
+            return <SignInWindows />
+        case "macos":
+            return <SignInMacos />
+        default:
+            return <SignInMacos />
+    }
+
+}
+
 ## Sign in with CloudQuery
 
 We recommend that you authenticate using the CloudQuery CLI. Once signed in, you can use CloudQuery with premium plugins up to a free quota and premium plugins in preview without limitations.
@@ -8,9 +26,8 @@ You will be able to create a new account when you sign in with the CLI for the f
 
 To sign in from the CLI, run the following command:
 
-```bash
-cloudquery login
-```
+<SignIn os={props.os} />
+
 A new browser window will open where you will complete the sign-in process.
 
 :::callout{type="info"}
