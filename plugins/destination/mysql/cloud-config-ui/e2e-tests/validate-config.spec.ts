@@ -35,14 +35,12 @@ test('Submit the form', async ({ page }) => {
   await page.getByLabel('Write mode *').click();
   await page.getByRole('option', { name: 'overwrite', exact: true }).click();
 
-  await page.getByRole('button', { name: 'Advanced Sync Options' }).click();
+  await page.getByLabel('Batch size', { exact: true }).click();
+  await page.getByLabel('Batch size', { exact: true }).fill('12');
+  await page.getByLabel('Batch size (bytes)').click();
+  await page.getByLabel('Batch size (bytes)').fill('2500');
 
-  await page.getByLabel('Batch size *', { exact: true }).click();
-  await page.getByLabel('Batch size *', { exact: true }).fill('12');
-  await page.getByLabel('Batch size (bytes) *').click();
-  await page.getByLabel('Batch size (bytes) *').fill('2500');
-
-  await page.getByRole('button', { name: 'Submit' }).click();
+  await page.getByRole('button', { name: 'Test connection' }).click();
 
   await expect(page.getByText('Testing the destination connection')).toBeVisible();
 });

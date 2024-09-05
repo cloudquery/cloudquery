@@ -196,7 +196,6 @@ const config: DestinationConfig = {
         {
           component: 'collapsible-section',
           title: 'Advanced Sync Options',
-          defaultExpanded: false,
           children: [
             {
               component: 'control-number-field',

@@ -93,6 +93,7 @@ export function useFormSchema({
             .bool()
             .default(connectionObj.connectionParams?.allowNativePasswords ?? false),
         }),
+
         // spec
         batch_size: yup
           .number()
