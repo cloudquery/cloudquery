@@ -39,9 +39,7 @@ function prepareSubmitValuesFromFields(
 function prepareSubmitValuesFromConnectionString(
   values: Record<string, any>,
 ): PluginUiMessagePayload['validation_passed']['values'] {
-  const mutatedValues = { ...values };
   const connectionFields = convertConnectionStringToFields(values.connection_string);
-  mutatedValues.password = connectionFields.password;
 
-  return prepareSubmitValuesFromFields(mutatedValues);
+  return prepareSubmitValuesFromFields({ ...values, ...connectionFields });
 }
