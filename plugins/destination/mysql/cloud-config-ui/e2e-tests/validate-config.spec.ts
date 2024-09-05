@@ -30,9 +30,9 @@ test('Submit the form', async ({ page }) => {
   await page.getByLabel('Write Timeout').click();
   await page.getByLabel('Write Timeout').fill('8');
 
-  await page.getByLabel('Migrate mode *').click();
+  await page.getByLabel('Migrate mode').click();
   await page.getByRole('option', { name: 'forced' }).click();
-  await page.getByLabel('Write mode *').click();
+  await page.getByLabel('Write mode').click();
   await page.getByRole('option', { name: 'overwrite', exact: true }).click();
 
   await page.getByLabel('Batch size', { exact: true }).click();
