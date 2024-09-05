@@ -7,18 +7,13 @@ import { generateConnectionUrl } from './generateConnectionUrl';
 export function prepareSubmitValues(
   values: Record<string, any>,
 ): PluginUiMessagePayload['validation_passed']['values'] {
-  const mutatedValues = { ...values };
-  if (values._connectionType === 'string') {
-    const { password } = convertConnectionStringToFields(values.connectionString);
-    mutatedValues.password = password;
-  }
-
-  const payload = corePrepareSubmitValues(mutatedValues);
+  const payload =
+    values._connectionType === 'string'
+      ? prepareSubmitValuesFromConnectionString(values)
+      : prepareSubmitValuesFromFields(values);
 
   payload.migrateMode = values.migrateMode;
   payload.writeMode = values.writeMode;
-
-  payload.spec.connection_string = generateConnectionUrl(mutatedValues);
 
   if (values.batch_size) {
     payload.spec.batch_size = Number(values.batch_size);
@@ -28,7 +23,25 @@ export function prepareSubmitValues(
     payload.spec.batch_size_bytes = Number(values.batch_size_bytes);
   }
 
-  console.log({ payload });
+  return payload;
+}
+
+function prepareSubmitValuesFromFields(
+  values: Record<string, any>,
+): PluginUiMessagePayload['validation_passed']['values'] {
+  const payload = corePrepareSubmitValues(values);
+  payload.spec.connection_string = generateConnectionUrl(values);
+  delete payload.spec.password;
 
   return payload;
+}
+
+function prepareSubmitValuesFromConnectionString(
+  values: Record<string, any>,
+): PluginUiMessagePayload['validation_passed']['values'] {
+  const mutatedValues = { ...values };
+  const connectionFields = convertConnectionStringToFields(values.connection_string);
+  mutatedValues.password = connectionFields.password;
+
+  return prepareSubmitValuesFromFields(mutatedValues);
 }

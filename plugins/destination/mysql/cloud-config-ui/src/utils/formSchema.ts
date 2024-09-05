@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import { FormMessagePayload } from '@cloudquery/plugin-config-ui-connector';
-import { useCoreFormSchema } from '@cloudquery/plugin-config-ui-lib';
+import { secretFieldValue, useCoreFormSchema } from '@cloudquery/plugin-config-ui-lib';
 
 import * as yup from 'yup';
 
@@ -20,12 +20,19 @@ export function useFormSchema({
   const formFields = useMemo(() => {
     const url = initialValues?.spec?.connection_string || '';
     const connectionObj: Record<string, any> = convertConnectionStringToFields(url);
+    const partialSecretRegex = /\${[^}]+}/g;
 
     return {
+      secretFields: {
+        password: yup
+          .string()
+          .max(63)
+          .default(connectionObj.password ? secretFieldValue : ''),
+      },
       fields: {
         connection_string: yup
           .string()
-          .default(url)
+          .default(url.replaceAll(partialSecretRegex, secretFieldValue))
           .when('_connectionType', {
             is: 'string',
             // eslint-disable-next-line unicorn/no-thenable
@@ -116,9 +123,6 @@ export function useFormSchema({
           .oneOf(connectionTypeValues)
           .default(connectionTypeValues[1])
           .required(),
-      },
-      secretFields: {
-        password: yup.string().max(63).default(''),
       },
     };
   }, [initialValues]);
