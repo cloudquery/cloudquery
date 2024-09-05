@@ -3,6 +3,7 @@ import ConfigureSyncCommandLinux from './_configure-sync-command-linux.mdx';
 import ConfigureSyncCommandWindow from './_configure-sync-command-windows.mdx';
 import ConfigureSyncCommandMacos from './_configure-sync-command-macos.mdx';
 
+{/* <!-- vale off --> */}
 export const SyncCommand = ({ os }) => {
     switch (os) {
         case "linux":
@@ -16,6 +17,7 @@ export const SyncCommand = ({ os }) => {
     }
 }
 
+{/* <!-- vale on --> */}
 ## Configure Destination Plugin
 
 Destination plugins define where you will be syncing your data to (See: [available destinations](https://hub.cloudquery.io/plugins/destination)).
