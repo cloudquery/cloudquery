@@ -11,6 +11,9 @@ import (
 	"sync/atomic"
 	"time"
 
+	"golang.org/x/sync/errgroup"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/internal/api"
@@ -25,8 +28,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/schollz/progressbar/v3"
 	"github.com/vnteamopen/godebouncer"
-	"golang.org/x/sync/errgroup"
-	"google.golang.org/protobuf/types/known/timestamppb"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/google/uuid"
@@ -369,6 +370,10 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 				},
 			}
 			if err := writeClientsByName[destinationName].Send(wr); err != nil {
+				// Close the transformations pipeline when the destination is closed.
+				if err := pipeline.Close(); err != nil {
+					return err
+				}
 				return handleSendError(err, writeClientsByName[destinationName], "insert")
 			}
 			return nil

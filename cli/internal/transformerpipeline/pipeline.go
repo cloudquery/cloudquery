@@ -3,10 +3,12 @@ package transformerpipeline
 import (
 	"context"
 	"errors"
+	"fmt"
 	"io"
 
-	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"golang.org/x/sync/errgroup"
+
+	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 )
 
 // TransformerPipeline runs a pipeline of transform clients.
@@ -68,6 +70,11 @@ func (lp *TransformerPipeline) Send(data []byte) error {
 	if lp.clientWrappers[len(lp.clientWrappers)-1].nextSendFn == nil {
 		return errors.New("OnOutput must be registered before Send is called, otherwise what do I do with the transformed data?")
 	}
+
+	if lp.clientWrappers[0].closed {
+		return fmt.Errorf("cannot send data to a closed pipeline")
+	}
+
 	return lp.clientWrappers[0].client.Send(&plugin.Transform_Request{Record: data})
 }
 
@@ -82,6 +89,13 @@ func (lp *TransformerPipeline) OnOutput(fn func([]byte) error) error {
 }
 
 func (lp *TransformerPipeline) Close() error {
+	// Closing the pipeline happens on both source as well as destination close.
+	// Not handling this will result in a close of closed channel panic.
+	if lp.clientWrappers[0].closed {
+		return nil
+	}
+	lp.clientWrappers[0].closed = true
+
 	// Close the first transformer. The rest will follow gracefully, otherwise records will be lost.
 	return lp.clientWrappers[0].client.CloseSend()
 }
@@ -91,6 +105,7 @@ type clientWrapper struct {
 	client     plugin.Plugin_TransformClient
 	nextSendFn func(*plugin.Transform_Request) error
 	nextClose  func() error
+	closed     bool
 }
 
 func (s clientWrapper) startBlocking() error {
