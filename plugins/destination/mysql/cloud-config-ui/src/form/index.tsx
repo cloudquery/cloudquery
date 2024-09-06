@@ -36,8 +36,9 @@ export function Form({ initialValues }: Props) {
     values: defaultValues,
     resolver: formValidationResolver,
   });
+  const { getValues } = form;
 
-  const getCurrentValues = useCallback(() => prepareSubmitValues(form.getValues()), [form]);
+  const getCurrentValues = useCallback(() => prepareSubmitValues(getValues()), [getValues]);
 
   return (
     <FormProvider {...form}>
