@@ -3,12 +3,10 @@ package transformerpipeline
 import (
 	"context"
 	"errors"
-	"fmt"
 	"io"
 
-	"golang.org/x/sync/errgroup"
-
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
+	"golang.org/x/sync/errgroup"
 )
 
 // TransformerPipeline runs a pipeline of transform clients.
@@ -72,7 +70,7 @@ func (lp *TransformerPipeline) Send(data []byte) error {
 	}
 
 	if lp.clientWrappers[0].closed {
-		return fmt.Errorf("cannot send data to a closed pipeline")
+		return errors.New("cannot send data to a closed pipeline")
 	}
 
 	return lp.clientWrappers[0].client.Send(&plugin.Transform_Request{Record: data})
