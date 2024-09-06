@@ -11,26 +11,25 @@ import (
 	"sync/atomic"
 	"time"
 
+	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
+	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/plugin-pb-go/managedplugin"
+	"github.com/cloudquery/plugin-pb-go/metrics"
+	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/google/uuid"
+	"github.com/rs/zerolog/log"
+	"github.com/schollz/progressbar/v3"
+	"github.com/vnteamopen/godebouncer"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/internal/api"
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/internal/tablenamechanger"
 	"github.com/cloudquery/cloudquery/cli/internal/transformer"
 	"github.com/cloudquery/cloudquery/cli/internal/transformerpipeline"
-	"github.com/cloudquery/plugin-pb-go/managedplugin"
-	"github.com/cloudquery/plugin-pb-go/metrics"
-	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
-	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/rs/zerolog/log"
-	"github.com/schollz/progressbar/v3"
-	"github.com/vnteamopen/godebouncer"
-
-	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
-	"github.com/google/uuid"
 )
 
 type v3source struct {
@@ -371,9 +370,8 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 			}
 			if err := writeClientsByName[destinationName].Send(wr); err != nil {
 				// Close the transformations pipeline when the destination is closed.
-				if err := pipeline.Close(); err != nil {
-					return err
-				}
+				pipeline.Close()
+
 				return handleSendError(err, writeClientsByName[destinationName], "insert")
 			}
 			return nil
@@ -389,9 +387,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		// Close all transformation pipelines when the source is done
 		defer func() {
 			for _, pipeline := range pipelineByDestinationName {
-				if err := pipeline.Close(); err != nil {
-					log.Warn().Err(err).Msg("Failed to close transformer pipeline")
-				}
+				pipeline.Close()
 			}
 		}()
 		for {

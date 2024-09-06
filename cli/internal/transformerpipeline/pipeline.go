@@ -69,7 +69,7 @@ func (lp *TransformerPipeline) Send(data []byte) error {
 		return errors.New("OnOutput must be registered before Send is called, otherwise what do I do with the transformed data?")
 	}
 
-	if lp.clientWrappers[0].closed {
+	if lp.clientWrappers[0].isClosed {
 		return errors.New("cannot send data to a closed pipeline")
 	}
 
@@ -86,16 +86,16 @@ func (lp *TransformerPipeline) OnOutput(fn func([]byte) error) error {
 	return nil
 }
 
-func (lp *TransformerPipeline) Close() error {
+func (lp *TransformerPipeline) Close() {
 	// Closing the pipeline happens on both source as well as destination close.
 	// Not handling this will result in a close of closed channel panic.
-	if lp.clientWrappers[0].closed {
-		return nil
+	if lp.clientWrappers[0].isClosed {
+		return
 	}
-	lp.clientWrappers[0].closed = true
 
 	// Close the first transformer. The rest will follow gracefully, otherwise records will be lost.
-	return lp.clientWrappers[0].client.CloseSend()
+	lp.clientWrappers[0].client.CloseSend()
+	lp.clientWrappers[0].isClosed = true
 }
 
 type clientWrapper struct {
@@ -103,7 +103,7 @@ type clientWrapper struct {
 	client     plugin.Plugin_TransformClient
 	nextSendFn func(*plugin.Transform_Request) error
 	nextClose  func() error
-	closed     bool
+	isClosed   bool
 }
 
 func (s clientWrapper) startBlocking() error {
