@@ -1,12 +1,12 @@
 import { Callout } from 'nextra-theme-docs';
 import ConfigureSyncCommandLinux from './_configure-sync-command-linux.mdx';
-import ConfigureSyncCommandWindow from './_configure-sync-command-windows.mdx';
+import ConfigureSyncCommandWindows from './_configure-sync-command-windows.mdx';
 import ConfigureSyncCommandMacos from './_configure-sync-command-macos.mdx';
 import InitCommandLinux from './_configure-init-command-linux.mdx';
-import InitCommandWindow from './_configure-init-command-windows.mdx';
+import InitCommandWindows from './_configure-init-command-windows.mdx';
 import InitCommandMacos from './_configure-init-command-macos.mdx';
 import SqliteCommandLinux from './_configure-sqlite-command-linux.mdx';
-import SqliteCommandWindow from './_configure-sqlite-command-windows.mdx';
+import SqliteCommandWindows from './_configure-sqlite-command-windows.mdx';
 import SqliteCommandMacos from './_configure-sqlite-command-macos.mdx';
 
 {/* <!-- vale off --> */}
@@ -15,7 +15,7 @@ export const SyncCommand = ({ os }) => {
         case "linux":
             return <ConfigureSyncCommandLinux />
         case "windows":
-            return <ConfigureSyncCommandWindow />
+            return <ConfigureSyncCommandWindows />
         case "macos":
             return <ConfigureSyncCommandMacos />
         default:
@@ -28,7 +28,7 @@ export const InitCommand = ({ os }) => {
         case "linux":
             return <InitCommandLinux />
         case "windows":
-            return <InitCommandWindow />
+            return <InitCommandWindows />
         case "macos":
             return <InitCommandMacos />
         default:
@@ -41,7 +41,7 @@ export const SqliteCommand = ({ os }) => {
         case "linux":
             return <SqliteCommandLinux />
         case "windows":
-            return <SqliteCommandWindow />
+            return <SqliteCommandWindows />
         case "macos":
             return <SqliteCommandMacos />
         default:
