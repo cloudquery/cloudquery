@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.6.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.6.1...cli-v6.6.2) (2024-09-06)
+
+
+### Bug Fixes
+
+* Close Transformers pipeline on both source and destination closes ([#19105](https://github.com/cloudquery/cloudquery/issues/19105)) ([25682d6](https://github.com/cloudquery/cloudquery/commit/25682d6f758c1cac3954e14c060cee8e5650b0b1))
+
 ## [6.6.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.6.0...cli-v6.6.1) (2024-09-05)
 
 
