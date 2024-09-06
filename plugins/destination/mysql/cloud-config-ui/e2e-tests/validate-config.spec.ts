@@ -35,6 +35,7 @@ test('Submit the form', async ({ page }) => {
   await page.getByLabel('Write mode').click();
   await page.getByRole('option', { name: 'overwrite', exact: true }).click();
 
+  await page.getByRole('button', { name: 'Advanced Sync Options' }).click();
   await page.getByLabel('Batch size', { exact: true }).click();
   await page.getByLabel('Batch size', { exact: true }).fill('12');
   await page.getByLabel('Batch size (bytes)').click();
