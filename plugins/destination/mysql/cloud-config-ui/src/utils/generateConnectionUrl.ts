@@ -1,6 +1,6 @@
-import { FormValues } from './formSchema';
+import { escapeSingleQuotesAndBackslashes } from '@cloudquery/plugin-config-ui-lib';
 
-export function generateConnectionUrl(values: FormValues): string {
+export function generateConnectionUrl(values: any): string {
   const password = values.password ? '${password}' : '';
   const credentials = values.username ? `${values.username}:${password}@` : '';
   const db = values.database ? `${escapeSingleQuotesAndBackslashes(values.database.trim())}` : '';
@@ -50,8 +50,4 @@ export function generateConnectionUrl(values: FormValues): string {
   const queryParams = new URLSearchParams(normalizedConnectionParams as any).toString();
 
   return queryParams ? `${base}?${queryParams}` : base;
-}
-
-export function escapeSingleQuotesAndBackslashes(str: string) {
-  return str.replaceAll('\\', '\\\\').replaceAll("'", String.raw`\'`);
 }
