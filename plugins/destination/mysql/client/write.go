@@ -114,11 +114,11 @@ func (c *Client) writeResources(ctx context.Context, overwrite bool, table *sche
 	return nil
 }
 
-func (c *Client) appendTableBatch(ctx context.Context, table *schema.Table, resources message.WriteInserts) error {
+func (c *Client) appendTableBatch(ctx context.Context, resources message.WriteInserts) error {
 	return c.writeResources(ctx, false, resources[0].GetTable(), resources)
 }
 
-func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, msgs message.WriteInserts) error {
+func (c *Client) overwriteTableBatch(ctx context.Context, msgs message.WriteInserts) error {
 	return c.writeResources(ctx, true, msgs[0].GetTable(), msgs)
 }
 
@@ -139,7 +139,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	table := msgs[0].GetTable()
 	hasPks := len(table.PrimaryKeys()) > 0
 	if hasPks {
-		return c.overwriteTableBatch(ctx, table, msgs)
+		return c.overwriteTableBatch(ctx, msgs)
 	}
-	return c.appendTableBatch(ctx, table, msgs)
+	return c.appendTableBatch(ctx, msgs)
 }
