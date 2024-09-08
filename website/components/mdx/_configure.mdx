@@ -80,21 +80,23 @@ To learn about the available options for the [`sync`](/docs/reference/cli/cloudq
 
 Once the sync is done you can query the data via the database directly via the [`sqlite3`](https://www.sqlite.org/cli.html) command line tool or any other SQLite client.
 
-Run the following command to get the oldest 10 XKCD comics and their image URLs:
+Run the following command to get the oldest 10 XKCD comics:
 
 <SqliteCommand os={props.os} />
 
 The output should look like this:
 
 ```
-Barrel - Part 1|https://imgs.xkcd.com/comics/barrel_cropped_(1).jpg
-Petit Trees (sketch)|https://imgs.xkcd.com/comics/tree_cropped_(1).jpg
-Island (sketch)|https://imgs.xkcd.com/comics/island_color.jpg
-Landscape (sketch)|https://imgs.xkcd.com/comics/landscape_cropped_(1).jpg
-Blown apart|https://imgs.xkcd.com/comics/blownapart_color.jpg
-Irony|https://imgs.xkcd.com/comics/irony_color.jpg
-Girl sleeping (Sketch -- 11th grade Spanish class)|https://imgs.xkcd.com/comics/girl_sleeping_noline_(1).jpg
-Red spiders|https://imgs.xkcd.com/comics/red_spiders_small.jpg
-Serenity is coming out tomorrow|https://imgs.xkcd.com/comics/firefly.jpg
-Pi Equals|https://imgs.xkcd.com/comics/pi.jpg
+num  title                                             
+---  --------------------------------------------------
+1    Barrel - Part 1                                   
+2    Petit Trees (sketch)                              
+3    Island (sketch)                                   
+4    Landscape (sketch)                                
+5    Blown apart                                       
+6    Irony                                             
+7    Girl sleeping (Sketch -- 11th grade Spanish class)
+8    Red spiders                                       
+9    Serenity is coming out tomorrow                   
+10   Pi Equals
 ```
