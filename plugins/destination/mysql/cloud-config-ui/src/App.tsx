@@ -4,8 +4,8 @@ import { createThemeOptions } from '@cloudquery/cloud-ui';
 
 import {
   CloudAppMock,
+  ConfigUIForm,
   PluginContextProvider,
-  useFormHeightChange,
   useFormInit,
 } from '@cloudquery/plugin-config-ui-lib';
 import Box from '@mui/material/Box';
@@ -13,9 +13,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import createTheme from '@mui/material/styles/createTheme';
 import ThemeProvider from '@mui/material/styles/ThemeProvider';
 
-import config from './config';
-import { Form } from './form';
+import { useConfig } from './hooks/useConfig';
 import { pluginUiMessageHandler } from './utils/messageHandler';
+import { prepareSubmitValues } from './utils/prepareSubmitValues';
 
 const useCloudAppMock =
   (process.env.REACT_APP_USE_CLOUD_APP_MOCK === 'true' || process.env.NODE_ENV !== 'production') &&
@@ -39,9 +39,9 @@ function App() {
     true,
   );
 
-  useFormHeightChange(pluginUiMessageHandler);
-
   const theme = useMemo(() => createTheme(createThemeOptions()), []);
+
+  const config = useConfig({ initialValues });
 
   return (
     <PluginContextProvider
@@ -49,12 +49,14 @@ function App() {
       plugin={pluginProps}
       teamName={teamName}
       hideStepper={context === 'wizard'} // TODO: Delete after iframe deprecation
+      pluginUiMessageHandler={pluginUiMessageHandler}
+      initialValues={initialValues}
     >
       <Box>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <DevWrapper {...devWrapperProps}>
-            {initialized && <Form initialValues={initialValues} />}
+            {initialized && <ConfigUIForm prepareSubmitValues={prepareSubmitValues} />}
           </DevWrapper>
         </ThemeProvider>
       </Box>
