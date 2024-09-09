@@ -16,6 +16,9 @@ spec:
         tables: ["xkcd_comics"]
         name: "source"
         value: "xkcd"
+      - kind: add_current_timestamp_column
+        tables: ["xkcd_comics"]
+        name: "current_timestamp"
       - kind: change_table_names
         tables: ["*"]
         new_table_name_template: "cq_sync_{{.OldName}}"
