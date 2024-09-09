@@ -64,7 +64,7 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 
 - `create_performance_indexes` (`boolean`) (optional) (default: `false`)
 
-  Creates indexes on tables that help with performanmove_to_cq_onlyce when using `write_mode: overwrite-delete-stale`.
+  Creates indexes on tables that help with performance when using `write_mode: overwrite-delete-stale`.
 
 ### Verbose logging for debug
 
