@@ -27,6 +27,8 @@ func NewFromSpec(sp spec.TransformationSpec) (*Transformer, error) {
 	switch sp.Kind {
 	case spec.KindAddColumn:
 		tr.fn = AddLiteralStringColumnAsLastColumn(sp.Name, sp.Value)
+	case spec.KindAddTimestampColumn:
+		tr.fn = AddTimestampColumnAsLastColumn(sp.Name)
 	case spec.KindRemoveColumns:
 		tr.fn = RemoveColumns(sp.Columns)
 	case spec.KindObfuscateColumns:
@@ -79,7 +81,7 @@ func AddLiteralStringColumnAsLastColumn(name, value string) TransformationFn {
 	}
 }
 
-func AddTimestampColumnAsLastColumn(name, value string) TransformationFn {
+func AddTimestampColumnAsLastColumn(name string) TransformationFn {
 	return func(record arrow.Record) (arrow.Record, error) {
 		t := time.Now()
 		return recordupdater.New(record).AddTimestampColumn(name, t, -1)

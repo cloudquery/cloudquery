@@ -11,7 +11,7 @@ const (
 	KindAddColumn          = "add_column"
 	KindObfuscateColumns   = "obfuscate_columns"
 	KindChangeTableNames   = "change_table_names"
-	KindAddTimestampColumn = "add_timestamp_column"
+	KindAddTimestampColumn = "add_current_timestamp_column"
 )
 
 type TransformationSpec struct {
