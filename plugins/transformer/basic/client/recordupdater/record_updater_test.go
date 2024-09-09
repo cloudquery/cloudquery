@@ -2,6 +2,7 @@ package recordupdater
 
 import (
 	"testing"
+	"time"
 
 	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/apache/arrow/go/v17/arrow/array"
@@ -36,6 +37,20 @@ func TestAddLiteralStringColumn(t *testing.T) {
 	require.Equal(t, "col3", updatedRecord.ColumnName(2))
 	require.Equal(t, "literal", updatedRecord.Column(2).(*array.String).Value(0))
 	require.Equal(t, "literal", updatedRecord.Column(2).(*array.String).Value(1))
+}
+
+func TestAddTimestampColumn(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+	now := time.Now()
+	updatedRecord, err := updater.AddTimestampColumn("col3", now, -1)
+	require.NoError(t, err)
+
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "col3", updatedRecord.ColumnName(2))
+	require.Equal(t, arrow.Timestamp(now.UnixMicro()), updatedRecord.Column(2).(*array.Timestamp).Value(0))
 }
 
 func TestObfuscateColumns(t *testing.T) {

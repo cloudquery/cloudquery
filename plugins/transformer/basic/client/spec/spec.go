@@ -7,10 +7,11 @@ import (
 )
 
 const (
-	KindRemoveColumns    = "remove_columns"
-	KindAddColumn        = "add_column"
-	KindObfuscateColumns = "obfuscate_columns"
-	KindChangeTableNames = "change_table_names"
+	KindRemoveColumns      = "remove_columns"
+	KindAddColumn          = "add_column"
+	KindObfuscateColumns   = "obfuscate_columns"
+	KindChangeTableNames   = "change_table_names"
+	KindAddTimestampColumn = "add_timestamp_column"
 )
 
 type TransformationSpec struct {

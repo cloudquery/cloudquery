@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/apache/arrow/go/v17/arrow/array"
@@ -66,6 +67,32 @@ func (r *RecordUpdater) AddLiteralStringColumn(columnName, columnValue string, p
 		newColumns = append(newColumns, r.buildStringColumn(columnValue, int(r.record.NumRows())))
 	}
 	newSchema, err := r.schemaUpdater.AddStringColumnAtPos(columnName, position, true)
+	if err != nil {
+		return nil, err
+	}
+	r.record = array.NewRecord(newSchema, newColumns, r.record.NumRows())
+	return r.record, nil
+}
+
+func (r *RecordUpdater) AddTimestampColumn(columnName string, timeVal time.Time, position int) (arrow.Record, error) {
+	if position == -1 {
+		position = int(r.record.NumCols())
+	}
+	if position < 0 || position > int(r.record.NumCols()) {
+		return nil, fmt.Errorf("invalid position %v", position)
+	}
+
+	newColumns := make([]arrow.Array, 0, int(r.record.NumCols())+1)
+	for i := 0; i < int(r.record.NumCols()); i++ {
+		if i == position {
+			newColumns = append(newColumns, r.buildCurrentTimestampColumn(timeVal, int(r.record.NumRows())))
+		}
+		newColumns = append(newColumns, r.record.Column(i))
+	}
+	if position == int(r.record.NumCols()) {
+		newColumns = append(newColumns, r.buildCurrentTimestampColumn(timeVal, int(r.record.NumRows())))
+	}
+	newSchema, err := r.schemaUpdater.AddTimestampColumnAtPos(columnName, position, true)
 	if err != nil {
 		return nil, err
 	}
@@ -136,6 +163,15 @@ func (*RecordUpdater) buildStringColumn(literalValue string, numRows int) arrow.
 		bld.AppendString(literalValue)
 	}
 	return bld.NewStringArray()
+}
+
+func (*RecordUpdater) buildCurrentTimestampColumn(t time.Time, numRows int) arrow.Array {
+	ts, _ := arrow.TimestampFromTime(t, arrow.Microsecond)
+	syncTimeBldr := array.NewTimestampBuilder(memory.DefaultAllocator, &arrow.TimestampType{Unit: arrow.Microsecond, TimeZone: "UTC"})
+	for i := 0; i < numRows; i++ {
+		syncTimeBldr.Append(ts)
+	}
+	return syncTimeBldr.NewArray()
 }
 
 func (*RecordUpdater) obfuscateColumn(column arrow.Array) arrow.Array {
