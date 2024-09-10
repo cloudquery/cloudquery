@@ -352,11 +352,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		destinationName := destinationSpecs[i].Name
 
 		// Start a pipeline of transformers that will receive & transform the source records
-		var (
-			pipeline *transformerpipeline.TransformerPipeline
-			err      error
-		)
-		pipeline, gctx, err = transformerpipeline.New(gctx, transformClientsByDestination[destinationName])
+		pipeline, _, err := transformerpipeline.New(gctx, transformClientsByDestination[destinationName])
 		if err != nil {
 			return fmt.Errorf("failed to create transformer pipeline: %w", err)
 		}
