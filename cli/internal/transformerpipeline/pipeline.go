@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"io"
+	"sync/atomic"
 
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"golang.org/x/sync/errgroup"
@@ -22,24 +23,24 @@ import (
 // - Send records to the pipeline with `Send`.
 // - When done, close the pipeline with `Close`. Otherwise, `RunBlocking` won't finish.
 type TransformerPipeline struct {
-	clientWrappers []clientWrapper
+	clientWrappers []*clientWrapper
 	eg             *errgroup.Group
 }
 
 func New(ctx context.Context, transformClients []plugin.Plugin_TransformClient) (*TransformerPipeline, context.Context, error) {
 	var (
 		eg, gctx = errgroup.WithContext(ctx)
-		tp       = &TransformerPipeline{clientWrappers: make([]clientWrapper, len(transformClients)), eg: eg}
+		tp       = &TransformerPipeline{clientWrappers: make([]*clientWrapper, len(transformClients)), eg: eg}
 	)
 
 	// Make sure there's at least one transformer
 	if len(transformClients) == 0 {
-		tp.clientWrappers = append(tp.clientWrappers, clientWrapper{client: newIdentityTransformer()})
+		tp.clientWrappers = append(tp.clientWrappers, &clientWrapper{client: newIdentityTransformer()})
 	}
 
 	// Wrap the clients to add orchestration logic
 	for i, client := range transformClients {
-		tp.clientWrappers[i] = clientWrapper{i: i, client: client}
+		tp.clientWrappers[i] = &clientWrapper{i: i, client: client}
 	}
 
 	// Connect each client to the next one
@@ -69,7 +70,7 @@ func (lp *TransformerPipeline) Send(data []byte) error {
 		return errors.New("OnOutput must be registered before Send is called, otherwise what do I do with the transformed data?")
 	}
 
-	if lp.clientWrappers[0].isClosed {
+	if lp.clientWrappers[0].isClosed.Load() {
 		return errors.New("cannot send data to a closed pipeline")
 	}
 
@@ -89,13 +90,13 @@ func (lp *TransformerPipeline) OnOutput(fn func([]byte) error) error {
 func (lp *TransformerPipeline) Close() {
 	// Closing the pipeline happens on both source as well as destination close.
 	// Not handling this will result in a close of closed channel panic.
-	if lp.clientWrappers[0].isClosed {
+	if lp.clientWrappers[0].isClosed.Load() {
 		return
 	}
 
 	// Close the first transformer. The rest will follow gracefully, otherwise records will be lost.
 	lp.clientWrappers[0].client.CloseSend()
-	lp.clientWrappers[0].isClosed = true
+	lp.clientWrappers[0].isClosed.Store(true)
 }
 
 type clientWrapper struct {
@@ -103,10 +104,10 @@ type clientWrapper struct {
 	client     plugin.Plugin_TransformClient
 	nextSendFn func(*plugin.Transform_Request) error
 	nextClose  func() error
-	isClosed   bool
+	isClosed   atomic.Bool
 }
 
-func (s clientWrapper) startBlocking() error {
+func (s *clientWrapper) startBlocking() error {
 	if s.nextSendFn == nil {
 		return errors.New("nextSendFn is nil")
 	}
