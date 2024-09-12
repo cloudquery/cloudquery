@@ -14,6 +14,9 @@ type Spec struct {
 	// If true, will return an error on migrate table messages rather than consume from the channel
 	ErrorOnMigrate bool `json:"error_on_migrate,omitempty" jsonschema:"default=false"`
 
+	// If true, will return an error on insert record messages rather than consume from the channel
+	ErrorOnInsert bool `json:"error_on_insert,omitempty" jsonschema:"default=false"`
+
 	// Whether to use a BatchWriter or not.
 	BatchWriter bool `json:"batch_writer" jsonschema:"default=false"`
 

@@ -20,6 +20,11 @@
           "description": "If true, will return an error on migrate table messages rather than consume from the channel",
           "default": false
         },
+        "error_on_insert": {
+          "type": "boolean",
+          "description": "If true, will return an error on insert record messages rather than consume from the channel",
+          "default": false
+        },
         "batch_writer": {
           "type": "boolean",
           "description": "Whether to use a BatchWriter or not.",

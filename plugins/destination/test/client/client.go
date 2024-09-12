@@ -22,7 +22,13 @@ type Client struct {
 	plugin.UnimplementedSource
 }
 
-var _ plugin.Client = (*Client)(nil)
+var (
+	_ plugin.Client = (*Client)(nil)
+
+	ErrOnWrite   = errors.New("error_on_write is true")
+	ErrOnMigrate = errors.New("error_on_migrate is true")
+	ErrOnInsert  = errors.New("error_on_insert is true")
+)
 
 func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var spec Spec
@@ -58,6 +64,10 @@ func (*Client) Read(context.Context, *schema.Table, chan<- arrow.Record) error {
 
 //revive:disable We need to range over the channel to clear it, but revive thinks it can be removed
 func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage) error {
+	if c.spec.ErrorOnWrite {
+		return ErrOnWrite
+	}
+
 	if c.spec.BatchWriter {
 		if err := c.writer.Write(ctx, messages); err != nil {
 			return fmt.Errorf("failed to write: %w", err)
@@ -69,18 +79,18 @@ func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage
 		return nil
 	}
 
-	if c.spec.ErrorOnWrite {
-		return errors.New("error_on_write is true")
-	}
 	for m := range messages {
 		if c.spec.ErrorOnMigrate {
 			if _, ok := m.(*message.WriteMigrateTable); ok {
-				return errors.New("error_on_migrate is true")
+				return ErrOnMigrate
 			}
 		}
 
 		if m, ok := m.(*message.WriteInsert); ok {
 			m.Record.Release()
+			if c.spec.ErrorOnInsert {
+				return ErrOnInsert
+			}
 		}
 	}
 	return nil
@@ -94,15 +104,15 @@ func (c *Client) Close(ctx context.Context) error {
 }
 
 func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
-	if c.spec.ErrorOnWrite {
-		return errors.New("error_on_write is true")
+	if c.spec.ErrorOnInsert {
+		return ErrOnInsert
 	}
 	return nil
 }
 
 func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
 	if c.spec.ErrorOnMigrate {
-		return errors.New("error_on_migrate is true")
+		return ErrOnMigrate
 	}
 	return nil
 }
