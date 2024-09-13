@@ -74,13 +74,14 @@ func (r *RecordUpdater) AddLiteralStringColumn(columnName, columnValue string, p
 	return r.record, nil
 }
 
-func (r *RecordUpdater) AddTimestampColumn(columnName string, timeVal time.Time, position int) (arrow.Record, error) {
+func (r *RecordUpdater) AddTimestampColumn(columnName string, position int) (arrow.Record, error) {
 	if position == -1 {
 		position = int(r.record.NumCols())
 	}
 	if position < 0 || position > int(r.record.NumCols()) {
 		return nil, fmt.Errorf("invalid position %v", position)
 	}
+	timeVal := time.Now()
 
 	newColumns := make([]arrow.Array, 0, int(r.record.NumCols())+1)
 	for i := 0; i < int(r.record.NumCols()); i++ {

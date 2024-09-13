@@ -2,7 +2,6 @@ package transformers
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/apache/arrow/go/v17/arrow/array"
@@ -83,8 +82,7 @@ func AddLiteralStringColumnAsLastColumn(name, value string) TransformationFn {
 
 func AddTimestampColumnAsLastColumn(name string) TransformationFn {
 	return func(record arrow.Record) (arrow.Record, error) {
-		t := time.Now()
-		return recordupdater.New(record).AddTimestampColumn(name, t, -1)
+		return recordupdater.New(record).AddTimestampColumn(name, -1)
 	}
 }
 

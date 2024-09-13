@@ -43,7 +43,7 @@ func TestAddTimestampColumn(t *testing.T) {
 	record := createTestRecord()
 	updater := New(record)
 	now := time.Now()
-	updatedRecord, err := updater.AddTimestampColumn("col3", now, -1)
+	updatedRecord, err := updater.AddTimestampColumn("col3", -1)
 	require.NoError(t, err)
 
 	require.Equal(t, int64(3), updatedRecord.NumCols())
