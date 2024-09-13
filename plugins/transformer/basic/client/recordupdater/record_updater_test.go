@@ -43,6 +43,7 @@ func TestAddTimestampColumn(t *testing.T) {
 	record := createTestRecord()
 	updater := New(record)
 	initial := time.Now()
+	// Sleep to ensure that the timestamp is different, otherwise it fails on GitHub Actions, but succeeds locally
 	time.Sleep(10 * time.Millisecond)
 	updatedRecord, err := updater.AddTimestampColumn("col3", -1)
 	time.Sleep(10 * time.Millisecond)
