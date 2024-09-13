@@ -242,8 +242,11 @@ func getInitCommonProps(invocationUUID uuid.UUID, event InitEvent, details *even
 		Set("source", event.Source).
 		Set("destination", event.Destination).
 		Set("accept_defaults", event.AcceptDefaults).
-		Set("spec_path", event.SpecPath).
-		Set("error", event.Error)
+		Set("spec_path", event.SpecPath)
+
+	if event.Error != nil {
+		props.Set("error", event.Error.Error())
+	}
 
 	if details != nil {
 		userID, userEmail := getUserIDEmail(details.user, details.currentTeam)
