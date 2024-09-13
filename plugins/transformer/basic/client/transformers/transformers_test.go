@@ -50,6 +50,15 @@ func TestNewFromSpec(t *testing.T) {
 			},
 			wantErr: false,
 		},
+
+		{
+			name: "AddTimestampColumn",
+			spec: spec.TransformationSpec{
+				Kind:                 spec.KindAddTimestampColumn,
+				NewTableNameTemplate: "_last_updated",
+			},
+			wantErr: false,
+		},
 		{
 			name: "InvalidKind",
 			spec: spec.TransformationSpec{
@@ -90,6 +99,19 @@ func TestTransform(t *testing.T) {
 				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
 				require.Equal(t, "default", record.Column(2).(*array.String).Value(0), "Expected 'default' value in new_col column")
 				require.Equal(t, "default", record.Column(2).(*array.String).Value(1), "Expected 'default' value in new_col column")
+			},
+		},
+		{
+			name: "AddTimestampColumn",
+			spec: spec.TransformationSpec{
+				Kind:   spec.KindAddTimestampColumn,
+				Name:   "new_col",
+				Tables: []string{"*"},
+			},
+			record: createTestRecord(),
+			validate: func(t *testing.T, record arrow.Record) {
+				require.Equal(t, int64(3), record.NumCols(), "Expected 3 columns")
+				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
 			},
 		},
 		{

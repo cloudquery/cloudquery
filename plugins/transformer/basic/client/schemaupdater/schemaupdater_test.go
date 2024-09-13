@@ -41,6 +41,20 @@ func TestAddStringColumnAtEnd(t *testing.T) {
 	require.Equal(t, 3, updatedSchema.NumFields(), "Expected 3 fields")
 	require.Equal(t, "col3", updatedSchema.Field(2).Name, "Expected field name 'col3'")
 	require.True(t, updatedSchema.Field(2).Nullable, "Expected field 'col3' to be nullable")
+	require.Equal(t, "utf8", updatedSchema.Field(2).Type.Name(), "Expected timestamp field")
+}
+
+func TestAddTimestampColumnAtEnd(t *testing.T) {
+	sc := createTestSchema()
+	updater := New(sc)
+
+	updatedSchema, err := updater.AddTimestampColumnAtPos("col3", -1, true)
+	require.NoError(t, err)
+
+	require.Equal(t, "timestamp", updatedSchema.Field(2).Type.Name(), "Expected timestamp field")
+	require.Equal(t, 3, updatedSchema.NumFields(), "Expected 3 fields")
+	require.Equal(t, "col3", updatedSchema.Field(2).Name, "Expected field name 'col3'")
+	require.True(t, updatedSchema.Field(2).Nullable, "Expected field 'col3' to be nullable")
 }
 
 func TestTransformMaintainsMetadata(t *testing.T) {
