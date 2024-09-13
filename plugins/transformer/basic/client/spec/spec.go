@@ -55,6 +55,16 @@ func (s *Spec) Validate() error {
 			if t.NewTableNameTemplate != "" {
 				err = errors.Join(err, fmt.Errorf("new_table_name_template field must not be specified for %s transformation", t.Kind))
 			}
+		case KindAddTimestampColumn:
+			if t.Name == "" {
+				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "name", t.Kind))
+			}
+			if t.Value != "" || len(t.Columns) > 0 || t.NewTableNameTemplate != "" {
+				err = errors.Join(err, fmt.Errorf("value/columns/new_table_name_template fields must not be specified for %s transformation", t.Kind))
+			}
+			if t.NewTableNameTemplate != "" {
+				err = errors.Join(err, fmt.Errorf("new_table_name_template field must not be specified for %s transformation", t.Kind))
+			}
 		case KindObfuscateColumns:
 			if len(t.Columns) == 0 {
 				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "columns", t.Kind))
