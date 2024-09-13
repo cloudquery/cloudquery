@@ -2,7 +2,7 @@ This CloudQuery transformer plugin provides basic transformation capabilities:
 
 - Removing columns
 - Adding literal string columns
-- Adding a column with the current timestamp
+- Adding a column with the timestamp that the record was processed by the transformer
 - Obfuscating string columns
 - Renaming tables using a name template (use `{{.OldName}}` to refer to the original name, see example below)
 
