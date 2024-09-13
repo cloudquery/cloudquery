@@ -1,5 +1,24 @@
 # Changelog
 
+## [3.5.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.5.5...plugins-source-hackernews-v3.5.6) (2024-09-04)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @playwright/test to v1.46.1 ([#19052](https://github.com/cloudquery/cloudquery/issues/19052)) ([5b8accf](https://github.com/cloudquery/cloudquery/commit/5b8accf2047074fb222b976f4da3e2bab079edb5))
+* **deps:** Update dependency @types/react to v18.3.5 ([#19061](https://github.com/cloudquery/cloudquery/issues/19061)) ([967963b](https://github.com/cloudquery/cloudquery/commit/967963b1b2c6d2a78ecb999deb6bc7e4b3bc6230))
+* **deps:** Update dependency eslint-import-resolver-typescript to v3.6.3 ([#19065](https://github.com/cloudquery/cloudquery/issues/19065)) ([77d8cc0](https://github.com/cloudquery/cloudquery/commit/77d8cc05c02d2c336796a6e24d3649a287efb356))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.61.0 ([#19069](https://github.com/cloudquery/cloudquery/issues/19069)) ([bf8ab33](https://github.com/cloudquery/cloudquery/commit/bf8ab3356a44e3fee8e03f68fbc3994471cdb6fa))
+
+## [3.5.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.5.4...plugins-source-hackernews-v3.5.5) (2024-08-26)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-config-ui-connector to v0.2.15 ([#18938](https://github.com/cloudquery/cloudquery/issues/18938)) ([ca1f932](https://github.com/cloudquery/cloudquery/commit/ca1f932a93ca3a5f8a2da378b914ba215675bfe6))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.59 ([#18987](https://github.com/cloudquery/cloudquery/issues/18987)) ([0d0d46b](https://github.com/cloudquery/cloudquery/commit/0d0d46bd1a460bc9cce8eb43c9ff611f8ba51d57))
+* **deps:** Update dependency @cloudquery/plugin-config-ui-lib to ^0.0.61 ([#18992](https://github.com/cloudquery/cloudquery/issues/18992)) ([430cd48](https://github.com/cloudquery/cloudquery/commit/430cd48e3693f8edb26f90a3f64b3a4526e0ed8f))
+
 ## [3.5.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.5.3...plugins-source-hackernews-v3.5.4) (2024-08-20)
 
 

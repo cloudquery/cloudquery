@@ -127,6 +127,8 @@ func getSyncCommonProps(invocationUUID uuid.UUID, event SyncStartedEvent, detail
 		destinationPaths[i] = d.Path
 	}
 
+	userID, userEmail := getUserIDEmail(details.user, details.currentTeam)
+
 	props := rudderstack.NewProperties().
 		// we are using the same invocation_uuid for sync_run_id
 		// invocation_uuid to be consistent with the rest of the events
@@ -140,8 +142,8 @@ func getSyncCommonProps(invocationUUID uuid.UUID, event SyncStartedEvent, detail
 		Set("sync_name", event.Source.Name).
 		Set("source_path", event.Source.Path).
 		Set("destination_paths", destinationPaths).
-		Set("user_id", details.user.ID).
-		Set("user_email", details.user.Email)
+		Set("user_id", userID).
+		Set("user_email", userEmail)
 
 	return props
 }
@@ -207,6 +209,117 @@ func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event Syn
 		UserId:     details.user.ID.String(),
 		Event:      "sync_run_completed",
 		Properties: props,
+	})
+}
+
+type InitEvent struct {
+	Source         string
+	Destination    string
+	AcceptDefaults bool
+	SpecPath       string
+	Error          error
+}
+
+func teamServiceAccountUser(teamName string) string {
+	return teamName + "_service_account"
+}
+
+func teamServiceAccountEmail(teamName string) string {
+	return teamName + "@service-account.cloudquery.io"
+}
+
+func getUserIDEmail(user cqapi.User, teamName string) (userID, email string) {
+	if getEnvironment() == "cloud" {
+		return teamServiceAccountUser(teamName), teamServiceAccountEmail(teamName)
+	}
+
+	return user.ID.String(), user.Email
+}
+
+func getInitCommonProps(invocationUUID uuid.UUID, event InitEvent, details *eventDetails) rudderstack.Properties {
+	props := rudderstack.NewProperties().
+		Set("invocation_uuid", invocationUUID).
+		Set("source", event.Source).
+		Set("destination", event.Destination).
+		Set("accept_defaults", event.AcceptDefaults).
+		Set("spec_path", event.SpecPath)
+
+	if event.Error != nil {
+		props.Set("error", event.Error.Error())
+	}
+
+	if details != nil {
+		userID, userEmail := getUserIDEmail(details.user, details.currentTeam)
+
+		props.Set("team", details.currentTeam).
+			Set("$groups", rudderstack.NewProperties().
+				Set("team", details.currentTeam)).
+			Set("environment", details.environment).
+			Set("user_id", userID).
+			Set("user_email", userEmail)
+	}
+
+	return props
+}
+
+func TrackInitStarted(ctx context.Context, invocationUUID uuid.UUID, event InitEvent) {
+	if client == nil {
+		return
+	}
+
+	details := getSyncEventDetails(ctx)
+	if details != nil && details.isCurrentTeamInternal {
+		return
+	}
+
+	props := getInitCommonProps(invocationUUID, event, details)
+	if details != nil {
+		_ = client.Enqueue(rudderstack.Track{
+			UserId:     details.user.ID.String(),
+			Event:      "init_started",
+			Properties: props,
+		})
+		return
+	}
+
+	_ = client.Enqueue(rudderstack.Track{
+		AnonymousId: invocationUUID.String(),
+		Event:       "init_started",
+		Properties:  props,
+	})
+}
+
+func TrackInitCompleted(ctx context.Context, invocationUUID uuid.UUID, event InitEvent) {
+	if client == nil {
+		return
+	}
+
+	details := getSyncEventDetails(ctx)
+	if details != nil && details.isCurrentTeamInternal {
+		return
+	}
+
+	status := "success"
+	if event.Error != nil {
+		status = "error"
+	}
+
+	props := getInitCommonProps(invocationUUID, event, details).
+		Set("status", status)
+
+	if details != nil {
+		_ = client.Enqueue(rudderstack.Track{
+			UserId:     details.user.ID.String(),
+			Event:      "init_completed",
+			Properties: props,
+		})
+		return
+	}
+
+	_ = client.Enqueue(rudderstack.Track{
+		AnonymousId: invocationUUID.String(),
+		Event:       "init_completed",
+		Properties:  props,
 	})
 }
 

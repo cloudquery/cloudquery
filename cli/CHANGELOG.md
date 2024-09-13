@@ -5,6 +5,49 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.6.3](https://github.com/cloudquery/cloudquery/compare/cli-v6.6.2...cli-v6.6.3) (2024-09-13)
+
+
+### Bug Fixes
+
+* Use error string for  analytics events ([#19133](https://github.com/cloudquery/cloudquery/issues/19133)) ([3bd759c](https://github.com/cloudquery/cloudquery/commit/3bd759c81d52bdcfd23bb84dabbeef05d212f2e9))
+
+## [6.6.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.6.1...cli-v6.6.2) (2024-09-06)
+
+
+### Bug Fixes
+
+* Close Transformers pipeline on both source and destination closes ([#19105](https://github.com/cloudquery/cloudquery/issues/19105)) ([25682d6](https://github.com/cloudquery/cloudquery/commit/25682d6f758c1cac3954e14c060cee8e5650b0b1))
+
+## [6.6.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.6.0...cli-v6.6.1) (2024-09-05)
+
+
+### Bug Fixes
+
+* Use correct spec path in init command hint ([#19096](https://github.com/cloudquery/cloudquery/issues/19096)) ([dc080dd](https://github.com/cloudquery/cloudquery/commit/dc080dd77ab2d33f29956b10003324cabf9e9fbd))
+
+## [6.6.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.5.0...cli-v6.6.0) (2024-09-04)
+
+
+### Features
+
+* Implement transformations in migrate cmd. ([#19034](https://github.com/cloudquery/cloudquery/issues/19034)) ([9039e89](https://github.com/cloudquery/cloudquery/commit/9039e89819dd5ef252048727e17cbaf9ca676af0))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 9b4947d ([#19051](https://github.com/cloudquery/cloudquery/issues/19051)) ([153f62b](https://github.com/cloudquery/cloudquery/commit/153f62b9aef6197052ced180567ccbea8ab0aa96))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.22.2 ([#19085](https://github.com/cloudquery/cloudquery/issues/19085)) ([ac9fedd](https://github.com/cloudquery/cloudquery/commit/ac9fedda5a0dbd1ee9a7e40fd6bb942b5711709a))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.61.0 ([#19069](https://github.com/cloudquery/cloudquery/issues/19069)) ([bf8ab33](https://github.com/cloudquery/cloudquery/commit/bf8ab3356a44e3fee8e03f68fbc3994471cdb6fa))
+* **deps:** Update module google.golang.org/grpc to v1.66.0 ([#19048](https://github.com/cloudquery/cloudquery/issues/19048)) ([4407598](https://github.com/cloudquery/cloudquery/commit/44075986f4ff78177be456f881bc35f179f2f4a6))
+
+## [6.5.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.4.2...cli-v6.5.0) (2024-08-27)
+
+
+### Features
+
+* Add init command ([#19016](https://github.com/cloudquery/cloudquery/issues/19016)) ([2170360](https://github.com/cloudquery/cloudquery/commit/2170360d65ac0211f572043f77fbf645599cd9d0))
+
 ## [6.4.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.4.1...cli-v6.4.2) (2024-08-26)
 
 

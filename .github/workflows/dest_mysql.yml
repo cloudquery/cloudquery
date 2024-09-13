@@ -95,21 +95,17 @@ jobs:
       - name: Build config UI
         working-directory: "plugins/destination/mysql/cloud-config-ui"
         run: REACT_APP_USE_CLOUD_APP_MOCK=true npm run build
+        env:
+          REACT_APP_PLUGIN_TEAM: cloudquery
+          REACT_APP_PLUGIN_KIND: destination
+          REACT_APP_PLUGIN_NAME: mysql
+          REACT_APP_PLUGIN_VERSION: development
       - name: Run E2E tests and generate configs
         working-directory: "plugins/destination/mysql/cloud-config-ui"
         run: E2E_TESTS_GENERATE_CONFIG=true npm run test:e2e
       - name: Run unit tests
         working-directory: "plugins/destination/mysql/cloud-config-ui"
         run: npm run test
-      - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@v4
-        with:
-          version: v6.4.2
-      - name: Validate CloudQuery config
-        working-directory: "plugins/destination/mysql/cloud-config-ui"
-        run: dotenv -e ./temp/.env -- cloudquery validate-config ./temp/config.yml
-        env:
-          CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
 
   deploy:
     if: github.event.action != 'closed' && github.event_name == 'pull_request' && !startsWith(github.head_ref, 'release')
@@ -133,14 +129,19 @@ jobs:
 
       - name: Deploy to Vercel
         run: |
-          DEPLOYMENT_URL=$(vercel --token $VERCEL_TOKEN)
+          PLUGIN_VERSION=$(jq -r '."plugins/destination/mysql"' ../../../../.release-please-manifest.json)
+          echo "Plugin version: $PLUGIN_VERSION"
+
+          DEPLOYMENT_URL=$(vercel --token $VERCEL_TOKEN --build-env REACT_APP_PLUGIN_TEAM=cloudquery --build-env REACT_APP_PLUGIN_KIND=destination --build-env REACT_APP_PLUGIN_NAME=mysql --build-env REACT_APP_PLUGIN_VERSION=v$PLUGIN_VERSION)
           echo "Deployed to: $DEPLOYMENT_URL"
           echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_ENV
+
           ALIAS_DEPLOYMENT_BASE_URL=plugin-destination-mysql-cloud-ui-${{ github.event.pull_request.number }}.vercel.app
           ALIAS_DEPLOYMENT_URL=https://$ALIAS_DEPLOYMENT_BASE_URL
           vercel --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID alias $DEPLOYMENT_URL $ALIAS_DEPLOYMENT_BASE_URL
           echo "Alias deployed to: $ALIAS_DEPLOYMENT_URL"
           echo "ALIAS_DEPLOYMENT_URL=$ALIAS_DEPLOYMENT_URL" >> $GITHUB_ENV
+
       - name: Find Comment
         uses: peter-evans/find-comment@v3
         id: find-comment

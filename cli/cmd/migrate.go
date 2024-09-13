@@ -55,6 +55,12 @@ func migrate(cmd *cobra.Command, args []string) error {
 	}
 	sources := specReader.Sources
 	destinations := specReader.Destinations
+	transformers := specReader.Transformers
+
+	transformerSpecsByName := make(map[string]specs.Transformer)
+	for _, transformer := range transformers {
+		transformerSpecsByName[transformer.Name] = *transformer
+	}
 
 	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations)
 	if err != nil {
@@ -103,6 +109,18 @@ func migrate(cmd *cobra.Command, args []string) error {
 		}
 		destinationRegInferred[i] = destination.RegistryInferred()
 	}
+	transformerPluginConfigs := make([]managedplugin.Config, len(transformers))
+	transformerRegInferred := make([]bool, len(transformers))
+	for i, transformer := range transformers {
+		transformerPluginConfigs[i] = managedplugin.Config{
+			Name:       transformer.Name,
+			Version:    transformer.Version,
+			Path:       transformer.Path,
+			Registry:   SpecRegistryToPlugin(transformer.Registry),
+			DockerAuth: transformer.DockerRegistryAuthToken,
+		}
+		transformerRegInferred[i] = transformer.RegistryInferred()
+	}
 
 	managedSourceClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, sourcePluginConfigs, opts...)
 	if err != nil {
@@ -122,6 +140,15 @@ func migrate(cmd *cobra.Command, args []string) error {
 			fmt.Println(err)
 		}
 	}()
+	transformerPluginClients, err := managedplugin.NewClients(ctx, managedplugin.PluginTransformer, transformerPluginConfigs, opts...)
+	if err != nil {
+		return enrichClientError(transformerPluginClients, transformerRegInferred, err)
+	}
+	defer func() {
+		if err := transformerPluginClients.Terminate(); err != nil {
+			fmt.Println(err)
+		}
+	}()
 	for _, source := range sources {
 		cl := managedSourceClients.ClientByName(source.Name)
 		versions, err := cl.Versions(ctx)
@@ -132,10 +159,14 @@ func migrate(cmd *cobra.Command, args []string) error {
 
 		var destinationClientsForSource []*managedplugin.Client
 		var destinationForSourceSpec []specs.Destination
+		transformersForDestination := make(map[string][]*managedplugin.Client)
 		for _, destination := range destinations {
 			if slices.Contains(source.Destinations, destination.Name) {
 				destinationClientsForSource = append(destinationClientsForSource, destinationPluginClients.ClientByName(destination.Name))
 				destinationForSourceSpec = append(destinationForSourceSpec, *destination)
+				for _, transformerName := range destination.Transformers {
+					transformersForDestination[destination.Name] = append(transformersForDestination[destination.Name], transformerPluginClients.ClientByName(transformerName))
+				}
 			}
 		}
 		switch maxVersion {
@@ -149,7 +180,7 @@ func migrate(cmd *cobra.Command, args []string) error {
 					return fmt.Errorf("destination plugin %[1]s does not support CloudQuery protocol version 3, required by the %[2]s source plugin. Please upgrade to a newer version of the %[1]s destination plugin", destination.Name(), source.Name)
 				}
 			}
-			if err := migrateConnectionV3(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec); err != nil {
+			if err := migrateConnectionV3(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, transformersForDestination, transformerSpecsByName); err != nil {
 				return fmt.Errorf("failed to migrate v3 source %s: %w", cl.Name(), err)
 			}
 		case 2:
