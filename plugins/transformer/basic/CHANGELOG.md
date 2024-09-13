@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v1.0.2...plugins-transformer-basic-v1.1.0) (2024-09-13)
+
+
+### Features
+
+* Add new transform that adds a column with the current timestamp ([#19126](https://github.com/cloudquery/cloudquery/issues/19126)) ([78d8065](https://github.com/cloudquery/cloudquery/commit/78d80652475c3f146ea32c0868c111a88d442ab2))
+
 ## [1.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v1.0.1...plugins-transformer-basic-v1.0.2) (2024-09-03)
 
 
