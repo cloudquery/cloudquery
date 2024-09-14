@@ -6,7 +6,7 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.62.0
 	github.com/rs/zerolog v1.33.0
 	golang.org/x/sync v0.8.0
-	google.golang.org/grpc v1.66.0
+	google.golang.org/grpc v1.66.2
 )
 
 require (
