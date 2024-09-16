@@ -1,7 +1,13 @@
 import { Callout } from 'nextra-theme-docs';
 import ConfigureSyncCommandLinux from './_configure-sync-command-linux.mdx';
-import ConfigureSyncCommandWindow from './_configure-sync-command-windows.mdx';
+import ConfigureSyncCommandWindows from './_configure-sync-command-windows.mdx';
 import ConfigureSyncCommandMacos from './_configure-sync-command-macos.mdx';
+import InitCommandLinux from './_configure-init-command-linux.mdx';
+import InitCommandWindows from './_configure-init-command-windows.mdx';
+import InitCommandMacos from './_configure-init-command-macos.mdx';
+import SqliteCommandLinux from './_configure-sqlite-command-linux.mdx';
+import SqliteCommandWindows from './_configure-sqlite-command-windows.mdx';
+import SqliteCommandMacos from './_configure-sqlite-command-macos.mdx';
 
 {/* <!-- vale off --> */}
 export const SyncCommand = ({ os }) => {
@@ -9,7 +15,7 @@ export const SyncCommand = ({ os }) => {
         case "linux":
             return <ConfigureSyncCommandLinux />
         case "windows":
-            return <ConfigureSyncCommandWindow />
+            return <ConfigureSyncCommandWindows />
         case "macos":
             return <ConfigureSyncCommandMacos />
         default:
@@ -17,136 +23,88 @@ export const SyncCommand = ({ os }) => {
     }
 }
 
+export const InitCommand = ({ os }) => {
+    switch (os) {
+        case "linux":
+            return <InitCommandLinux />
+        case "windows":
+            return <InitCommandWindows />
+        case "macos":
+            return <InitCommandMacos />
+        default:
+            return <InitCommandMacos />
+    }
+}
+
+export const SqliteCommand = ({ os }) => {
+    switch (os) {
+        case "linux":
+            return <SqliteCommandLinux />
+        case "windows":
+            return <SqliteCommandWindows />
+        case "macos":
+            return <SqliteCommandMacos />
+        default:
+            return <SqliteCommandMacos />
+    }
+}
+
 {/* <!-- vale on --> */}
-## Configure Destination Plugin
+## Create a Sync Configuration
 
-Destination plugins define where you will be syncing your data to (See: [available destinations](https://hub.cloudquery.io/plugins/destination)).
+CloudQuery supports many [sources](https://hub.cloudquery.io/plugins/source) and [destinations](https://hub.cloudquery.io/plugins/destination).
 
-For example, let's configure the [PostgreSQL](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/postgresql) destination plugin
-(See all available versions [here](https://github.com/cloudquery/cloudquery/releases?q=plugins-destination-postgresql&expanded=true)).
-Create a file in a new directory `cloudquery-config/postgresql.yml`: 
+In this guide we'll create a configuration to sync from the [XKCD source](https://hub.cloudquery.io/plugins/source/cloudquery/xkcd/latest/docs) to the [SQLite destination](https://hub.cloudquery.io/plugins/destination/cloudquery/sqlite/latest/docs) using the [`init`](/docs/reference/cli/cloudquery_init) command.
 
-```yaml copy
-kind: destination
-spec:
-  ## Required. name of the plugin.
-  ## This is an alias so it should be unique if you have a number of postgresql destination plugins.
-  name: "postgresql"
+Run the following command to create a configuration file:
 
-  ## Optional. Where to search for the plugin. Default: "github". Options: "github", "cloudquery", "local", "grpc".
-  # registry: "github"
+<InitCommand os={props.os} />
 
-  ## Path for the plugin.
-  ## If registry is "github" path should be "repo/name"
-  ## If registry is "cloudquery" path should be "team/name"
-  ## If registry is "local", path is path to binary. If "grpc" then it should be address of the plugin (usually useful in debug).
-  path: "cloudquery/postgresql"
-
-  ## Optional. Registry to download the plugin from. Defaults to "github"
-  registry: "cloudquery"
-
-  ## Required. Must be a specific version starting with v, e.g. v1.2.3
-  ## checkout latest versions here https://github.com/cloudquery/cloudquery/releases?q=plugins-destination-postgresql&expanded=true
-  version: "VERSION_DESTINATION_POSTGRESQL"
-
-  ## Optional. Default: "overwrite-delete-stale". Available: "overwrite-delete-stale", "overwrite", "append". 
-  ##  Not all modes are supported by all plugins, so make sure to check the plugin documentation for more details.
-  write_mode: "overwrite-delete-stale" # overwrite-delete-stale, overwrite, append
-
-  spec:
-    ## plugin-specific configuration for PostgreSQL.
-    ## See all available options here: https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/postgresql#postgresql-spec
-
-    ## Required. Connection string to your PostgreSQL instance
-    ## In production it is highly recommended to use environment variable expansion
-    ## connection_string: ${PG_CONNECTION_STRING}
-    connection_string: "postgresql://postgres:pass@localhost:5432/postgres?sslmode=disable"
-```
-
-- All general options for destination spec you can find under [references/destination-spec](/docs/reference/destination-spec).
-- All options for `postgresql` destination plugin spec you can find [here](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/postgresql#postgresql-spec)
-
-For a list of all available destination plugin spec options, see [Destination Spec Reference](/docs/reference/destination-spec).
-
-<Callout>
-
-If you have multiple destination plugins (or running multiple cloudquery instances in parallel), it's required
-that every plugin configuration has a unique `name` (e.g. `postgres1`, `postgres2`, …).
-
+<Callout type="info">
+To pick from a list of available sources and destinations, run the [`init`](/docs/reference/cli/cloudquery_init) command without any arguments.
 </Callout>
-
-## Configure Source Plugin
-
-Source plugins define the APIs you want to sync from (See [available sources](https://hub.cloudquery.io/plugins/source)).
-
-For example, let's configure the [AWS](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/aws) source plugin.
-Create an `aws.yml` file in your `cloudquery-config` directory:
-
-```yaml copy
-kind: source
-spec:
-  ## Required. name of the plugin to use.
-  ## This should be unique if you have number of aws plugins.
-  name: "aws"
-  ## Optional. Where to search for the plugin. Default: "github". Options: "github", "cloudquery", "local", "grpc"
-  # registry: "github"
-
-  ## Path for the plugin.
-  ## If registry is "github" path should be "repo/name"
-  ## If registry is "cloudquery" path should be "team/name"
-  ## If registry is "local", path is path to binary. If "grpc" then it should be address of the plugin (usually useful in debug).
-  path: "cloudquery/aws"
-
-  ## Optional. Registry to download the plugin from. Defaults to "github"
-  registry: "cloudquery"
-
-  ## Required. Must be a specific version starting with v, e.g. v1.2.3
-  ## checkout latest versions here https://github.com/cloudquery/cloudquery/releases?q=plugins-source-aws&expanded=true
-  version: "VERSION_SOURCE_AWS"
-
-  ## Required. You can use ["*"] to sync all tables or specify specific tables. Please note that syncing all tables can be slow
-  ## See all tables: https://www.cloudquery.io/docs/plugins/sources/aws/tables
-  tables: ["aws_s3_buckets"]
-
-  ## Required. all destinations you want to sync data to.
-  destinations: ["postgresql"]
-
-  spec:
-    ## Optional. plugin specific configuration
-    ## By default will use the current aws credentials available (just like AWS CLI)
-    ## See all available options here: https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/configuration.md
-```
-
-- All general options for source spec you can find under [references/source-spec](/docs/reference/source-spec).
-- All options for `aws` source plugin spec you can find [here](https://github.com/cloudquery/cloudquery/blob/main/plugins/source/aws/docs/configuration.md)
-
-<Callout>
-
-If you have multiple source plugins (or running multiple cloudquery instances in parallel), it's required
-that every plugin configuration has a unique `name` (e.g. `aws1`, `aws2`, …).
-
-Running multiple plugins with the same name can cause unexpected behavior (e.g. empty tables). 
-
-You can read more [here](/docs/advanced-topics/running-cloudquery-in-parallel).
-
-</Callout>
-
-## Authenticate with the Cloud Provider
-
-CloudQuery uses similar authentication methods to the official SDKs of each cloud provider.
-The AWS authentication guide is located [here](https://hub.cloudquery.io/plugins/source/cloudquery/aws/latest/docs#authentication).
-
-You can find authentication for other plugins in their corresponding [docs](https://hub.cloudquery.io/plugins/source).
 
 ## Start Syncing
 
-Now you can start syncing the data from your source plugins to the specified destinations.
-
-You can run the sync by specifying the directory with the configuration files or each file individually
+Run the following command to start syncing:
 
 <SyncCommand os={props.os} />
 
 You should see a spinner with number of resources synced and the time it took to sync.
-Once the sync is done you can query the data via the database directly.
 
-Note: All logs are written by default to `cloudquery.log` so you can easily see if any APIs failed and analyse those further.
+<Callout type="info">
+To learn about the available options for the [`sync`](/docs/reference/cli/cloudquery_sync) command, run `cloudquery sync --help`.
+</Callout>
+
+## Examine the Data
+
+Once the sync is done you can query the data via the database directly via the [`sqlite3`](https://www.sqlite.org/cli.html) command line tool or any other SQLite client.
+
+Run the following command to get the oldest 10 XKCD comics:
+
+<SqliteCommand os={props.os} />
+
+The output should look like this:
+
+```
+num  title                                             
+---  --------------------------------------------------
+1    Barrel - Part 1                                   
+2    Petit Trees (sketch)                              
+3    Island (sketch)                                   
+4    Landscape (sketch)                                
+5    Blown apart                                       
+6    Irony                                             
+7    Girl sleeping (Sketch -- 11th grade Spanish class)
+8    Red spiders                                       
+9    Serenity is coming out tomorrow                   
+10   Pi Equals
+```
+
+## Next Steps
+
+Now that you have successfully synced data from the [XKCD source](https://hub.cloudquery.io/plugins/source/cloudquery/xkcd/latest/docs) to the [SQLite destination](https://hub.cloudquery.io/plugins/destination/cloudquery/sqlite/latest/docs), you can explore more sources and destinations:
+
+- [Explore Source Plugins](https://hub.cloudquery.io/plugins/source)
+- [Explore Destination Plugins](https://hub.cloudquery.io/plugins/destination)
+- [Visit our Website for more information](https://www.cloudquery.io/)

@@ -2,6 +2,7 @@ package recordupdater
 
 import (
 	"testing"
+	"time"
 
 	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/apache/arrow/go/v17/arrow/array"
@@ -36,6 +37,29 @@ func TestAddLiteralStringColumn(t *testing.T) {
 	require.Equal(t, "col3", updatedRecord.ColumnName(2))
 	require.Equal(t, "literal", updatedRecord.Column(2).(*array.String).Value(0))
 	require.Equal(t, "literal", updatedRecord.Column(2).(*array.String).Value(1))
+}
+
+func TestAddTimestampColumn(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+	initial := time.Now()
+	// Sleep to ensure that the timestamp is different, otherwise it fails on GitHub Actions, but succeeds locally
+	time.Sleep(10 * time.Millisecond)
+	updatedRecord, err := updater.AddTimestampColumn("col3", -1)
+	time.Sleep(10 * time.Millisecond)
+	after := time.Now()
+	require.NoError(t, err)
+
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "col3", updatedRecord.ColumnName(2))
+	unit := updatedRecord.Column(2).DataType().(*arrow.TimestampType).Unit
+
+	colVal := updatedRecord.Column(2).(*array.Timestamp).Value(0).ToTime(unit).UTC()
+	// Check if the timestamp is within the expected range
+	require.True(t, colVal.Before(after))
+	require.True(t, colVal.After(initial))
 }
 
 func TestObfuscateColumns(t *testing.T) {
