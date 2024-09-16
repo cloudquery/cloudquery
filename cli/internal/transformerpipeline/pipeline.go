@@ -153,11 +153,7 @@ func (s *clientWrapper) startBlocking() error {
 			if s.isClosed.Load() {
 				return s.nextClose()
 			}
-		case req, ok := <-recvCh: // Propagate records to next transformer
-			if !ok {
-				s.isClosed.Store(true)
-				return s.nextClose()
-			}
+		case req := <-recvCh: // Propagate records to next transformer
 			if err := s.nextSendFn(req); err != nil {
 				return err
 			}
