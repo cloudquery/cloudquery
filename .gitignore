@@ -34,3 +34,4 @@ __debug_bin
 venv
 __pycache__
 cli/cloudquery-sync-summary.json
+__debug_bin*
