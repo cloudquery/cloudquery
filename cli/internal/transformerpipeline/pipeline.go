@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"io"
+	"sync/atomic"
+	"time"
 
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"golang.org/x/sync/errgroup"
@@ -69,11 +71,29 @@ func (lp *TransformerPipeline) Send(data []byte) error {
 		return errors.New("OnOutput must be registered before Send is called, otherwise what do I do with the transformed data?")
 	}
 
-	if lp.clientWrappers[0].isClosed {
-		return errors.New("cannot send data to a closed pipeline")
+	if lp.clientWrappers[0].isClosed.Load() {
+		return nil
 	}
 
-	return lp.clientWrappers[0].client.Send(&plugin.Transform_Request{Record: data})
+	sendCh := make(chan error)
+
+	// Send can block forever (e.g. if grpc buffer is full), so we run it asynchronously
+	// and check if pipeline is closed every second.
+	go func() {
+		err := lp.clientWrappers[0].client.Send(&plugin.Transform_Request{Record: data})
+		sendCh <- err
+	}()
+
+	select {
+	case err := <-sendCh:
+		return err
+	case <-time.After(1 * time.Second): // Check if pipeline is closed every second
+		if lp.clientWrappers[0].isClosed.Load() {
+			return nil
+		}
+	}
+
+	return nil
 }
 
 func (lp *TransformerPipeline) OnOutput(fn func([]byte) error) error {
@@ -81,21 +101,21 @@ func (lp *TransformerPipeline) OnOutput(fn func([]byte) error) error {
 		return errors.New("argument to OnOutput cannot be nil")
 	}
 	lp.clientWrappers[len(lp.clientWrappers)-1].nextSendFn = func(req *plugin.Transform_Request) error {
-		return fn(req.Record)
+		err := fn(req.Record)
+		if err != nil {
+			// Our undocumented convention is that destination errors are unrecoverable. Thus, at this
+			// point we close the pipeline.
+			lp.Close()
+		}
+		return err
 	}
 	return nil
 }
 
 func (lp *TransformerPipeline) Close() {
-	// Closing the pipeline happens on both source as well as destination close.
-	// Not handling this will result in a close of closed channel panic.
-	if lp.clientWrappers[0].isClosed {
-		return
-	}
-
-	// Close the first transformer. The rest will follow gracefully, otherwise records will be lost.
-	lp.clientWrappers[0].client.CloseSend()
-	lp.clientWrappers[0].isClosed = true
+	// Close() can happen in any goroutine, and closing is not thread safe.
+	// Instead of closing, we set a flag that we check on send/recv.
+	lp.clientWrappers[0].isClosed.Store(true)
 }
 
 type clientWrapper struct {
@@ -103,25 +123,44 @@ type clientWrapper struct {
 	client     plugin.Plugin_TransformClient
 	nextSendFn func(*plugin.Transform_Request) error
 	nextClose  func() error
-	isClosed   bool
+	isClosed   atomic.Bool
 }
 
-func (s clientWrapper) startBlocking() error {
+func (s *clientWrapper) startBlocking() error {
 	if s.nextSendFn == nil {
 		return errors.New("nextSendFn is nil")
 	}
+
+	recvCh := make(chan *plugin.Transform_Request)
+	errCh := make(chan error)
+
+	// Recv can block forever (e.g. if transformer decides to), so
+	// we run it asynchronously and check if pipeline is closed every second.
+	go func() {
+		for {
+			data, err := s.client.Recv()
+			if err != nil {
+				errCh <- err
+			} else {
+				recvCh <- &plugin.Transform_Request{Record: data.Record}
+			}
+		}
+	}()
+
 	for {
-		data, err := s.client.Recv()
-		if err == io.EOF {
-			err := s.nextClose()
-			return err
-		}
-		if err != nil {
-			return err
-		}
-		if err := s.nextSendFn(
-			&plugin.Transform_Request{Record: data.Record},
-		); err != nil {
+		select {
+		case <-time.After(1 * time.Second): // Check if pipeline is closed every second
+			if s.isClosed.Load() {
+				return s.nextClose()
+			}
+		case req := <-recvCh: // Propagate records to next transformer
+			if err := s.nextSendFn(req); err != nil {
+				return err
+			}
+		case err := <-errCh:
+			if err == io.EOF {
+				return s.nextClose()
+			}
 			return err
 		}
 	}
