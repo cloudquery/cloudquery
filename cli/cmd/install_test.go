@@ -14,10 +14,11 @@ import (
 
 func TestInstall(t *testing.T) {
 	configs := []struct {
-		name            string
-		config          string
-		wantSourceFiles int
-		wantDestFiles   int
+		name                 string
+		config               string
+		wantSourceFiles      int
+		wantDestFiles        int
+		wantTransformerFiles int
 	}{
 		{
 			name:            "sync_success_sourcev1_destv0",
@@ -43,6 +44,14 @@ func TestInstall(t *testing.T) {
 			wantSourceFiles: 2,
 			wantDestFiles:   2,
 		},
+		// cannot test transformers as all transformers require auth as they are hosted on the hub
+		// {
+		// 	name:                 "transformer",
+		// 	config:               "transformation.yml",
+		// 	wantSourceFiles:      1,
+		// 	wantDestFiles:        1,
+		// 	wantTransformerFiles: 1,
+		// },
 	}
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
@@ -58,16 +67,20 @@ func TestInstall(t *testing.T) {
 			// check if all files were created
 			justFiles := readFiles(t, baseArgs[1], "")
 
-			sourceFiles, destFiles := 0, 0
+			sourceFiles, destFiles, transformerFiles := 0, 0, 0
 			for _, file := range justFiles {
-				if strings.HasPrefix(file, "plugins/source") {
+				switch {
+				case strings.HasPrefix(file, "plugins/source"):
 					sourceFiles++
-				} else if strings.HasPrefix(file, "plugins/destination") {
+				case strings.HasPrefix(file, "plugins/destination"):
 					destFiles++
+				case strings.HasPrefix(file, "plugins/transformer"):
+					transformerFiles++
 				}
 			}
 			assert.Equalf(t, tc.wantSourceFiles, sourceFiles, "expected %d source files, got %d", tc.wantSourceFiles, sourceFiles)
 			assert.Equalf(t, tc.wantDestFiles, destFiles, "expected %d destination files, got %d", tc.wantDestFiles, destFiles)
+			assert.Equalf(t, tc.wantTransformerFiles, transformerFiles, "expected %d transformer files, got %d", tc.wantTransformerFiles, transformerFiles)
 			if t.Failed() {
 				t.Logf("files found: %v", justFiles)
 				t.FailNow()
