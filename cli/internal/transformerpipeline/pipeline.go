@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"io"
+	"sync/atomic"
 	"time"
 
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
@@ -70,7 +71,7 @@ func (lp *TransformerPipeline) Send(data []byte) error {
 		return errors.New("OnOutput must be registered before Send is called, otherwise what do I do with the transformed data?")
 	}
 
-	if lp.clientWrappers[0].isClosed {
+	if lp.clientWrappers[0].isClosed.Load() {
 		return nil
 	}
 
@@ -87,7 +88,7 @@ func (lp *TransformerPipeline) Send(data []byte) error {
 	case err := <-sendCh:
 		return err
 	case <-time.After(1 * time.Second): // Check if pipeline is closed every second
-		if lp.clientWrappers[0].isClosed {
+		if lp.clientWrappers[0].isClosed.Load() {
 			return nil
 		}
 	}
@@ -114,7 +115,7 @@ func (lp *TransformerPipeline) OnOutput(fn func([]byte) error) error {
 func (lp *TransformerPipeline) Close() {
 	// Close() can happen in any goroutine, and closing is not thread safe.
 	// Instead of closing, we set a flag that we check on send/recv.
-	lp.clientWrappers[0].isClosed = true
+	lp.clientWrappers[0].isClosed.Store(true)
 }
 
 type clientWrapper struct {
@@ -122,7 +123,7 @@ type clientWrapper struct {
 	client     plugin.Plugin_TransformClient
 	nextSendFn func(*plugin.Transform_Request) error
 	nextClose  func() error
-	isClosed   bool
+	isClosed   atomic.Bool
 }
 
 func (s *clientWrapper) startBlocking() error {
@@ -149,12 +150,12 @@ func (s *clientWrapper) startBlocking() error {
 	for {
 		select {
 		case <-time.After(1 * time.Second): // Check if pipeline is closed every second
-			if s.isClosed {
+			if s.isClosed.Load() {
 				return s.nextClose()
 			}
 		case req, ok := <-recvCh: // Propagate records to next transformer
 			if !ok {
-				s.isClosed = true
+				s.isClosed.Store(true)
 				return s.nextClose()
 			}
 			if err := s.nextSendFn(req); err != nil {
@@ -162,7 +163,7 @@ func (s *clientWrapper) startBlocking() error {
 			}
 		case err := <-errCh:
 			if err == io.EOF {
-				s.nextClose()
+				return s.nextClose()
 			}
 			return err
 		}
