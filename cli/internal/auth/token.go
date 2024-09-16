@@ -12,6 +12,15 @@ func tokenNeeded(registry specs.Registry, path string) bool {
 	return registry == specs.RegistryCloudQuery || (registry == specs.RegistryDocker && strings.HasPrefix(path, "docker.cloudquery.io"))
 }
 
+func transformerNeedsToken(sources []*specs.Transformer) bool {
+	for _, source := range sources {
+		if tokenNeeded(source.Registry, source.Path) {
+			return true
+		}
+	}
+	return false
+}
+
 func sourcesNeedToken(sources []*specs.Source) bool {
 	for _, source := range sources {
 		if tokenNeeded(source.Registry, source.Path) {
@@ -30,8 +39,8 @@ func destinationsNeedToken(destinations []*specs.Destination) bool {
 	return false
 }
 
-func GetAuthTokenIfNeeded(logger zerolog.Logger, sources []*specs.Source, destinations []*specs.Destination) (cqapiauth.Token, error) {
-	needsToken := sourcesNeedToken(sources) || destinationsNeedToken(destinations)
+func GetAuthTokenIfNeeded(logger zerolog.Logger, sources []*specs.Source, destinations []*specs.Destination, transformers []*specs.Transformer) (cqapiauth.Token, error) {
+	needsToken := sourcesNeedToken(sources) || destinationsNeedToken(destinations) || transformerNeedsToken(transformers)
 	if !needsToken {
 		logger.Debug().Msg("no need to get token since no source or destination uses the CloudQuery registry")
 		return cqapiauth.UndefinedToken, nil
