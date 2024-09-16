@@ -12,9 +12,9 @@ func tokenNeeded(registry specs.Registry, path string) bool {
 	return registry == specs.RegistryCloudQuery || (registry == specs.RegistryDocker && strings.HasPrefix(path, "docker.cloudquery.io"))
 }
 
-func transformerNeedsToken(sources []*specs.Transformer) bool {
-	for _, source := range sources {
-		if tokenNeeded(source.Registry, source.Path) {
+func transformerNeedsToken(transformers []*specs.Transformer) bool {
+	for _, transformer := range transformers {
+		if tokenNeeded(transformer.Registry, transformer.Path) {
 			return true
 		}
 	}
