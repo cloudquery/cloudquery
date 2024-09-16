@@ -9,7 +9,7 @@ require (
 	github.com/cloudquery/cloudquery-api-go v1.13.0
 	github.com/cloudquery/codegen v0.3.19
 	github.com/cloudquery/plugin-pb-go v1.22.2
-	github.com/cloudquery/plugin-sdk/v4 v4.61.0
+	github.com/cloudquery/plugin-sdk/v4 v4.62.0
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/docker/docker v26.1.5+incompatible
@@ -46,7 +46,7 @@ require (
 	golang.org/x/net v0.28.0
 	golang.org/x/sync v0.8.0
 	golang.org/x/term v0.23.0
-	google.golang.org/grpc v1.66.0
+	google.golang.org/grpc v1.66.2
 	google.golang.org/protobuf v1.34.2
 	gopkg.in/yaml.v3 v3.0.1
 )

@@ -96,6 +96,33 @@ func TestValidate(t *testing.T) {
 			wantErr: true,
 		},
 		{
+			name: "ValidAddTimestampColumn",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindAddTimestampColumn, Name: "col1"},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "InvalidAddTimestampColumn",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindAddTimestampColumn},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "InvalidAddTimestampColumnValue",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindAddTimestampColumn, Value: "default"},
+				},
+			},
+			wantErr: true,
+		},
+		{
 			name: "ValidObfuscateColumns",
 			input: Spec{
 				TransformationSpecs: []TransformationSpec{
@@ -104,6 +131,7 @@ func TestValidate(t *testing.T) {
 			},
 			wantErr: false,
 		},
+
 		{
 			name: "InvalidObfuscateColumnsNoColumns",
 			input: Spec{
