@@ -66,7 +66,7 @@ func tables(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
 	sources := specReader.Sources
-	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, nil)
+	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, nil, nil)
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
