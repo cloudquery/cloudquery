@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.2.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.2.7...plugins-destination-mysql-v5.2.8) (2024-09-16)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.62.0 ([#19137](https://github.com/cloudquery/cloudquery/issues/19137)) ([ed315d0](https://github.com/cloudquery/cloudquery/commit/ed315d011d6a205e1a8ba851570f8e9533698c52))
+* **main:** Write to mysql in bulk ([#19123](https://github.com/cloudquery/cloudquery/issues/19123)) ([0d1b9d5](https://github.com/cloudquery/cloudquery/commit/0d1b9d5dfd1ef45a86e65f07b5b35659a6d9ddd3))
+
 ## [5.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.2.6...plugins-destination-mysql-v5.2.7) (2024-09-04)
 
 
