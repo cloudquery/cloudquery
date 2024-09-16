@@ -65,7 +65,7 @@ func writeManyRows() error {
 		return err
 	}
 
-	const numberOfTables = 10
+	const numberOfTables = 5
 	const recordsPerTable = 20
 	msgs := make([]message.WriteMessage, 0)
 	for i := 0; i < numberOfTables; i++ {
