@@ -22,6 +22,8 @@ cloudquery sync ./directory
 cloudquery sync ./directory ./aws.yml ./pg.yml
 # Log tables metrics to a file
 cloudquery sync ./directory ./aws.yml ./pg.yml --tables-metrics-location metrics.txt
+# Shard the sync process into 4 shards and run the first shard
+cloudquery sync spec.yml --shard 1/4
 
 ```
 
@@ -31,6 +33,7 @@ cloudquery sync ./directory ./aws.yml ./pg.yml --tables-metrics-location metrics
   -h, --help                             help for sync
       --license string                   set offline license file
       --no-migrate                       Disable auto-migration before sync. By default, sync runs a migration before syncing resources.
+      --shard string                     Allows splitting the sync process into multiple shards. This feature is in Preview. Please provide feedback to help us improve it. Works with plugins released on 2024-09-24 or later.
       --summary-location string          Sync summary file location. This feature is in Preview. Please provide feedback to help us improve it.
       --tables-metrics-location string   Tables metrics file location. This feature is in Preview. Please provide feedback to help us improve it. Works with plugins released on 2024-07-10 or later.
 ```

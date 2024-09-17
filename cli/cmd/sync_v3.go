@@ -77,6 +77,11 @@ func newSafeWriteClient(client grpc.ClientStreamingClient[plugin.Write_Request, 
 	return safeWriteClient{client: client, mu: &gosync.Mutex{}}
 }
 
+type shard struct {
+	num   int
+	total int
+}
+
 func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
 	authClient := auth.NewTokenClient()
 	if authClient.GetTokenType() != auth.SyncRunAPIKey {
@@ -91,7 +96,7 @@ func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
 }
 
 // nolint:dupl
-func syncConnectionV3(ctx context.Context, source v3source, destinations []v3destination, transformersByDestination map[string][]v3transformer, backend *v3destination, uid string, noMigrate bool, summaryLocation string) (syncErr error) {
+func syncConnectionV3(ctx context.Context, source v3source, destinations []v3destination, transformersByDestination map[string][]v3transformer, backend *v3destination, uid string, noMigrate bool, summaryLocation string, shard *shard) (syncErr error) {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	skippedFromDeleteStale := make(map[string]bool, 0)
@@ -143,6 +148,9 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	// https://github.com/golang/go/issues/41087
 	syncTime := time.Now().UTC().Truncate(time.Microsecond)
 	sourceName := sourceSpec.Name
+	if shard != nil {
+		sourceName = fmt.Sprintf("%s-%d/%d", sourceName, shard.num, shard.total)
+	}
 	destinationStrings := make([]string, len(destinationsClients))
 	for i := range destinationsClients {
 		destinationStrings[i] = destinationSpecs[i].VersionString()
@@ -279,6 +287,12 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		syncReq.Backend = &plugin.Sync_BackendOptions{
 			TableName:  sourceSpec.BackendOptions.TableName,
 			Connection: sourceSpec.BackendOptions.Connection,
+		}
+	}
+	if shard != nil {
+		syncReq.Shard = &plugin.Sync_Request_Shard{
+			Num:   int32(shard.num),
+			Total: int32(shard.total),
 		}
 	}
 	syncClient, err := sourcePbClient.Sync(ctx, syncReq)
