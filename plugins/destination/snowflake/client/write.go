@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/apache/arrow/go/v17/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/goccy/go-json"
 )
 
@@ -16,6 +18,7 @@ const (
 	createOrReplaceStage      = `create or replace stage cq_plugin_stage file_format = cq_plugin_json_format;`
 	putFileIntoStage          = `put 'file://%v' @cq_plugin_stage auto_compress=true`
 	copyIntoTable             = `copy into %s from '@cq_plugin_stage' files=('%s.gz') on_error = ABORT_STATEMENT file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
+	mergeIntoTable            = `MERGE INTO %s dest USING (SELECT %s FROM @cq_plugin_stage/%s.gz t) source ON %s WHEN MATCHED THEN UPDATE SET %s WHEN NOT MATCHED THEN INSERT %s` // tableName, columns, stagedFile, primaryKeys, columnsToUpdate, insertColumns
 )
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
@@ -69,6 +72,10 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to put file into stage with last resource %s: %w", sql, err)
 	}
+	table := msgs[0].GetTable()
+	if len(table.PrimaryKeys()) > 0 {
+		return c.mergeIntoTable(ctx, table, f)
+	}
 
 	sql = fmt.Sprintf(copyIntoTable, tableName, escapePath(filepath.Base(f.Name())))
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
@@ -77,6 +84,56 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	return err
 }
 
+func (c *Client) mergeIntoTable(ctx context.Context, table *schema.Table, f *os.File) error {
+	// tableName, columns, stagedFile, primaryKeys, columnsToUpdate, insertColumns
+	sql := fmt.Sprintf(mergeIntoTable, table.Name, c.createColumnsList(table), escapePath(filepath.Base(f.Name())), createPrimaryKeyList(table), updateColumnsList(table), insertColumnsList(table))
+
+	if _, err := c.db.ExecContext(ctx, sql); err != nil {
+		return fmt.Errorf("failed to copy file into table with last resource %s: %w", sql, err)
+	}
+	return nil
+}
+
+func (c *Client) createColumnsList(table *schema.Table) string {
+	columnString := ""
+	for _, col := range table.Columns {
+		columnString += fmt.Sprintf("$1:%s::%s as %s,", col.Name, c.SchemaTypeToSnowflake(col.Type), col.Name)
+	}
+	return strings.TrimSuffix(columnString, ",")
+}
+
+func createPrimaryKeyList(table *schema.Table) string {
+	columnString := ""
+	for _, col := range table.PrimaryKeys() {
+		columnString += fmt.Sprintf("source.%s=dest.%s,", col, col)
+	}
+	// remove the last comma
+	return strings.TrimSuffix(columnString, ",")
+}
+
+func updateColumnsList(table *schema.Table) string {
+	columnString := ""
+	for _, col := range table.Columns {
+		columnString += fmt.Sprintf("%s=source.%s,", strings.ToUpper(col.Name), strings.ToUpper(col.Name))
+	}
+	return strings.TrimSuffix(columnString, ",")
+}
+
+func insertColumnsList(table *schema.Table) string {
+	columnString := "("
+
+	for _, col := range table.Columns {
+		columnString += strings.ToUpper(col.Name) + ","
+	}
+	columnString = strings.TrimSuffix(columnString, ",")
+	columnString += ") VALUES ("
+	for _, col := range table.Columns {
+		columnString += "source." + strings.ToUpper(col.Name) + ","
+	}
+	columnString = strings.TrimSuffix(columnString, ",")
+	columnString += ")"
+	return columnString
+}
 func (c *Client) setupWrite(ctx context.Context) error {
 	var setupErr error
 	c.setupWriteOnce.Do(func() {
