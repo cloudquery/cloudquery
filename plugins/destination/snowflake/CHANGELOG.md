@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v4.2.7...plugins-destination-snowflake-v4.3.0) (2024-09-18)
+
+
+### Features
+
+* Handle updates via `Merge` ([#19173](https://github.com/cloudquery/cloudquery/issues/19173)) ([4ba88b7](https://github.com/cloudquery/cloudquery/commit/4ba88b7eaf0efbdc3274b9fe6fe396cdb18ce794))
+
 ## [4.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v4.2.6...plugins-destination-snowflake-v4.2.7) (2024-09-18)
 
 
