@@ -117,7 +117,7 @@ func sync(cmd *cobra.Command, args []string) error {
 			fmt.Println(err)
 		}
 	}()
-	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations)
+	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, transformers)
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
