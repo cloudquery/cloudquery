@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.5.6...plugins-source-hackernews-v3.5.7) (2024-09-18)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.62.0 ([#19137](https://github.com/cloudquery/cloudquery/issues/19137)) ([ed315d0](https://github.com/cloudquery/cloudquery/commit/ed315d011d6a205e1a8ba851570f8e9533698c52))
+
 ## [3.5.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.5.5...plugins-source-hackernews-v3.5.6) (2024-09-04)
 
 
