@@ -18,7 +18,7 @@ const (
 	createOrReplaceStage      = `create or replace stage cq_plugin_stage file_format = cq_plugin_json_format;`
 	putFileIntoStage          = `put 'file://%v' @cq_plugin_stage auto_compress=true`
 	copyIntoTable             = `copy into %s from '@cq_plugin_stage' files=('%s.gz') on_error = ABORT_STATEMENT file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
-	mergeIntoTable            = `MERGE INTO %s dest USING (SELECT %s FROM @cq_plugin_stage/%s.gz t) source ON %s WHEN MATCHED THEN UPDATE SET %s WHEN NOT MATCHED THEN INSERT %s` // tableName, columns, stagedFile, primaryKeys, columnsToUpdate, insertColumns
+	mergeIntoTable            = `MERGE INTO %s dest USING (SELECT %s FROM @cq_plugin_stage/%s.gz t) source ON %s WHEN MATCHED THEN %s WHEN NOT MATCHED THEN %s`
 )
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
@@ -85,16 +85,17 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 }
 
 func (c *Client) mergeIntoTable(ctx context.Context, table *schema.Table, f *os.File) error {
-	// tableName, columns, stagedFile, primaryKeys, columnsToUpdate, insertColumns
 	sql := fmt.Sprintf(mergeIntoTable, table.Name, c.createColumnsList(table), escapePath(filepath.Base(f.Name())), createPrimaryKeyList(table), updateColumnsList(table), insertColumnsList(table))
 
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
-		return fmt.Errorf("failed to copy file into table with last resource %s: %w", sql, err)
+		return fmt.Errorf("failed to merge file into table: %s: %w", sql, err)
 	}
 	return nil
 }
 
 func (c *Client) createColumnsList(table *schema.Table) string {
+	// creates a string like:
+	// $1:COL1::TEXT as COL1, $1:COL2::NUMBER as COL2, $1:COL3::TIMESTAMP_TZ as COL3
 	columnString := ""
 	for _, col := range table.Columns {
 		columnString += fmt.Sprintf("$1:%s::%s as %s,", col.Name, c.SchemaTypeToSnowflake(col.Type), col.Name)
@@ -103,6 +104,8 @@ func (c *Client) createColumnsList(table *schema.Table) string {
 }
 
 func createPrimaryKeyList(table *schema.Table) string {
+	// creates a string like:
+	// source.COL1=dest.COL1, source.COL2=dest.COL2, source.COL3=dest.COL3
 	columnString := ""
 	for _, col := range table.PrimaryKeys() {
 		columnString += fmt.Sprintf("source.%s=dest.%s,", col, col)
@@ -112,16 +115,20 @@ func createPrimaryKeyList(table *schema.Table) string {
 }
 
 func updateColumnsList(table *schema.Table) string {
-	columnString := ""
+	// creates a string like:
+	// UPDATE SET COL1=source.COL1, COL2=source.COL2, COL3=source.COL3
+	columnString := " UPDATE SET "
 	for _, col := range table.Columns {
 		columnString += fmt.Sprintf("%s=source.%s,", strings.ToUpper(col.Name), strings.ToUpper(col.Name))
 	}
+	// remove the last comma
 	return strings.TrimSuffix(columnString, ",")
 }
 
 func insertColumnsList(table *schema.Table) string {
-	columnString := "("
-
+	// creates a string like:
+	// INSERT (COL1, COL2, COL3) VALUES (source.COL1, source.COL2, source.COL3)
+	columnString := "INSERT ("
 	for _, col := range table.Columns {
 		columnString += strings.ToUpper(col.Name) + ","
 	}
