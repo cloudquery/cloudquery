@@ -72,16 +72,25 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to put file into stage with last resource %s: %w", sql, err)
 	}
+
 	table := msgs[0].GetTable()
+
+	// if the table has primary keys, use MERGE in order to upsert rather than just append
 	if len(table.PrimaryKeys()) > 0 {
 		return c.mergeIntoTable(ctx, table, f)
 	}
 
-	sql = fmt.Sprintf(copyIntoTable, tableName, escapePath(filepath.Base(f.Name())))
+	return c.copyIntoTable(ctx, table, f)
+}
+
+func (c *Client) copyIntoTable(ctx context.Context, table *schema.Table, f *os.File) error {
+	sql := fmt.Sprintf(copyIntoTable, table.Name, escapePath(filepath.Base(f.Name())))
+
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to copy file into table with last resource %s: %w", sql, err)
 	}
-	return err
+
+	return nil
 }
 
 func (c *Client) mergeIntoTable(ctx context.Context, table *schema.Table, f *os.File) error {
@@ -90,6 +99,7 @@ func (c *Client) mergeIntoTable(ctx context.Context, table *schema.Table, f *os.
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to merge file into table: %s: %w", sql, err)
 	}
+
 	return nil
 }
 
