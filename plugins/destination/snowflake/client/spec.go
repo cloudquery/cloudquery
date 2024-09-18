@@ -13,8 +13,8 @@ import (
 )
 
 const (
-	defaultBatchSize          = 1000
-	defaultBatchSizeBytes     = 4 * 1024 * 1024
+	defaultBatchSize          = 5000
+	defaultBatchSizeBytes     = 20 * 1024 * 1024
 	defaultMigrateConcurrency = 1
 )
 
