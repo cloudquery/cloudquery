@@ -35,6 +35,8 @@ jobs:
         id: semver_parser
         with:
           input_string: ${{steps.split.outputs.plugin_version}}
+      - name: Checkout
+        uses: actions/checkout@v4
       - uses: actions/github-script@v7
         id: check-ui-directory
         env:
