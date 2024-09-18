@@ -72,7 +72,7 @@ func (lp *TransformerPipeline) Send(data []byte) error {
 	}
 
 	if lp.clientWrappers[0].isClosed.Load() {
-		return nil
+		return errors.New("pipeline is closed")
 	}
 
 	sendCh := make(chan error)
@@ -84,16 +84,16 @@ func (lp *TransformerPipeline) Send(data []byte) error {
 		sendCh <- err
 	}()
 
-	select {
-	case err := <-sendCh:
-		return err
-	case <-time.After(1 * time.Second): // Check if pipeline is closed every second
-		if lp.clientWrappers[0].isClosed.Load() {
-			return nil
+	for {
+		select {
+		case err := <-sendCh:
+			return err
+		case <-time.After(1 * time.Second): // Check if pipeline is closed every second
+			if lp.clientWrappers[0].isClosed.Load() {
+				return errors.New("pipeline is closed")
+			}
 		}
 	}
-
-	return nil
 }
 
 func (lp *TransformerPipeline) OnOutput(fn func([]byte) error) error {
