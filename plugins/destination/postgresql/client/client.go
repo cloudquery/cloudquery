@@ -13,8 +13,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/writers/mixedbatchwriter"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jackc/pgx/v5/tracelog"
+	"github.com/otan/gopgkrb5"
 	"github.com/rs/zerolog"
 )
 
@@ -53,6 +55,10 @@ const (
 	pgTypeCrateDB
 )
 
+func init() {
+	pgconn.RegisterGSSProvider(func() (pgconn.GSS, error) { return gopgkrb5.NewGSS() })
+}
+
 func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	c := &Client{
 		logger: logger.With().Str("module", "pg-dest").Logger(),
@@ -72,6 +78,7 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 	c.spec = &s
 	c.batchSize = s.BatchSize
 	c.logger.Info().Str("pgx_log_level", s.PgxLogLevel.String()).Msg("Initializing postgresql destination")
+
 	pgxConfig, err := pgxpool.ParseConfig(s.ConnectionString)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse connection string %w", err)
