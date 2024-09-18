@@ -4,6 +4,7 @@ addon
 Addon
 Airbyte
 Airtable
+Aiven
 Ajv
 Alibaba
 anonymized
