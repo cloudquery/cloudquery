@@ -43,6 +43,16 @@ func (s *SchemaUpdater) AddStringColumnAtPos(columnName string, zeroIndexedPosit
 	)
 }
 
+func (s *SchemaUpdater) AddTimestampColumnAtPos(columnName string, zeroIndexedPosition int, isNullable bool) (*arrow.Schema, error) {
+	if zeroIndexedPosition == -1 {
+		zeroIndexedPosition = s.schema.NumFields()
+	}
+	return s.schema.AddField(
+		zeroIndexedPosition,
+		arrow.Field{Name: columnName, Type: arrow.FixedWidthTypes.Timestamp_us, Nullable: isNullable},
+	)
+}
+
 func (s *SchemaUpdater) ChangeTableName(newTableNamePattern string) (*arrow.Schema, error) {
 	existingMetadata := s.schema.Metadata()
 	tableName, ok := existingMetadata.GetValue(schema.MetadataTableName)

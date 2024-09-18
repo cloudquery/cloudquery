@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.4.0...plugins-destination-test-v2.4.1) (2024-09-18)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.62.0 ([#19137](https://github.com/cloudquery/cloudquery/issues/19137)) ([ed315d0](https://github.com/cloudquery/cloudquery/commit/ed315d011d6a205e1a8ba851570f8e9533698c52))
+
+## [2.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.3.25...plugins-destination-test-v2.4.0) (2024-09-13)
+
+
+### Features
+
+* Add batching and more error options to test destination ([#19131](https://github.com/cloudquery/cloudquery/issues/19131)) ([9c9d813](https://github.com/cloudquery/cloudquery/commit/9c9d813e9d2b84b0b08fba97d1a8b8d225180533))
+
 ## [2.3.25](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.3.24...plugins-destination-test-v2.3.25) (2024-09-04)
 
 

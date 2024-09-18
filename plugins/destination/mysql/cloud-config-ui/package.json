@@ -6,7 +6,7 @@
   "dependencies": {
     "@cloudquery/cloud-ui": "^0.1.13",
     "@cloudquery/plugin-config-ui-connector": "^0.2.16",
-    "@cloudquery/plugin-config-ui-lib": "^0.0.80",
+    "@cloudquery/plugin-config-ui-lib": "0.0.82-rc.17",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^5.15.20",

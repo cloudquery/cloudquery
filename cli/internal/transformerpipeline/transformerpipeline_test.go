@@ -35,7 +35,7 @@ func TestTransformerPipelineDoesntChangeInputsWithTwoIdentityTransformers(t *tes
 		for _, input := range inputs {
 			require.NoError(t, pipeline.Send([]byte(input)))
 		}
-		require.NoError(t, pipeline.Close())
+		pipeline.Close()
 	}()
 
 	// Blocks until pipeline is closed and all messages passed through
@@ -70,7 +70,7 @@ func TestTransformerPipelineReversesInputs(t *testing.T) {
 		for _, input := range inputs {
 			require.NoError(t, pipeline.Send([]byte(input)))
 		}
-		require.NoError(t, pipeline.Close())
+		pipeline.Close()
 	}()
 
 	// Blocks until pipeline is closed and all messages passed through
@@ -105,7 +105,7 @@ func TestTransformerPipelineDoesntChangeInputsWithTwoReversers(t *testing.T) {
 		for _, input := range inputs {
 			require.NoError(t, pipeline.Send([]byte(input)))
 		}
-		require.NoError(t, pipeline.Close())
+		pipeline.Close()
 	}()
 
 	// Blocks until pipeline is closed and all messages passed through

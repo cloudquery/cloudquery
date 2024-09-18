@@ -11,7 +11,7 @@ import (
 	"golang.org/x/exp/maps"
 )
 
-func getInsertQueryBuild(table *schema.Table) *strings.Builder {
+func getInsertQueryBuild(table *schema.Table, rowCount int, overwrite bool) *strings.Builder {
 	builder := strings.Builder{}
 	builder.WriteString("INSERT INTO " + identifier(table.Name))
 	builder.WriteString(" (")
@@ -22,9 +22,27 @@ func getInsertQueryBuild(table *schema.Table) *strings.Builder {
 			builder.WriteString(", ")
 		}
 	}
-	builder.WriteString(") VALUES (")
-	builder.WriteString(strings.TrimSuffix(strings.Repeat("?,", len(table.Columns)), ","))
-	builder.WriteString(")")
+	builder.WriteString(") VALUES ")
+
+	for i := 1; i <= rowCount; i++ {
+		if i > 1 {
+			builder.WriteString(", ")
+		}
+		builder.WriteString("(")
+		builder.WriteString(strings.TrimSuffix(strings.Repeat("?,", len(table.Columns)), ","))
+		builder.WriteString(")")
+	}
+
+	if overwrite {
+		builder.WriteString(" ON DUPLICATE KEY UPDATE ")
+		for i, col := range table.Columns {
+			builder.WriteString(fmt.Sprintf("%s = VALUES(%s)", identifier(col.Name), identifier(col.Name)))
+			if i < len(table.Columns)-1 {
+				builder.WriteString(", ")
+			}
+		}
+	}
+
 	return &builder
 }
 
@@ -39,7 +57,7 @@ func logTablesWithTruncation(logger zerolog.Logger, tables map[string]bool) {
 	logger.Warn().Strs("tables", keys).Msg("tables contain a value in a primary key that is longer than what is supported by MySQL. only the first 191 characters will be included in the index. To see the complete record enable debug logs using `--log-level debug`")
 }
 
-func (c *Client) writeResources(ctx context.Context, query string, table *schema.Table, msgs message.WriteInserts) error {
+func (c *Client) writeResources(ctx context.Context, overwrite bool, table *schema.Table, msgs message.WriteInserts) error {
 	tablesWithTruncation := make(map[string]bool)
 	pks := make([]int, 0)
 	for i, col := range table.Columns {
@@ -53,6 +71,9 @@ func (c *Client) writeResources(ctx context.Context, query string, table *schema
 		// only if the PK is a blob or a text do we care about the length of the data
 		pks = append(pks, i)
 	}
+
+	rowCount := 0
+	queryArgs := []any{}
 	for _, msg := range msgs {
 		rec := msg.Record
 		transformedRecords, err := transformRecord(rec)
@@ -78,34 +99,27 @@ func (c *Client) writeResources(ctx context.Context, query string, table *schema
 		}
 
 		for _, transformedRecord := range transformedRecords {
-			_, err := c.db.ExecContext(ctx, query, transformedRecord...)
-			if err != nil {
-				logTablesWithTruncation(c.logger, tablesWithTruncation)
-				return err
-			}
+			queryArgs = append(queryArgs, transformedRecord...)
+			rowCount++
 		}
+	}
+
+	query := getInsertQueryBuild(table, rowCount, overwrite)
+	_, err := c.db.ExecContext(ctx, query.String(), queryArgs...)
+	if err != nil {
+		logTablesWithTruncation(c.logger, tablesWithTruncation)
+		return err
 	}
 	logTablesWithTruncation(c.logger, tablesWithTruncation)
 	return nil
 }
 
-func (c *Client) appendTableBatch(ctx context.Context, table *schema.Table, resources message.WriteInserts) error {
-	builder := getInsertQueryBuild(table)
-	builder.WriteString(";")
-	return c.writeResources(ctx, builder.String(), resources[0].GetTable(), resources)
+func (c *Client) appendTableBatch(ctx context.Context, resources message.WriteInserts) error {
+	return c.writeResources(ctx, false, resources[0].GetTable(), resources)
 }
 
-func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, msgs message.WriteInserts) error {
-	builder := getInsertQueryBuild(table)
-	builder.WriteString(" ON DUPLICATE KEY UPDATE ")
-	for i, col := range table.Columns {
-		builder.WriteString(fmt.Sprintf("%s = VALUES(%s)", identifier(col.Name), identifier(col.Name)))
-		if i < len(table.Columns)-1 {
-			builder.WriteString(", ")
-		}
-	}
-
-	return c.writeResources(ctx, builder.String(), msgs[0].GetTable(), msgs)
+func (c *Client) overwriteTableBatch(ctx context.Context, msgs message.WriteInserts) error {
+	return c.writeResources(ctx, true, msgs[0].GetTable(), msgs)
 }
 
 func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) error {
@@ -125,7 +139,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	table := msgs[0].GetTable()
 	hasPks := len(table.PrimaryKeys()) > 0
 	if hasPks {
-		return c.overwriteTableBatch(ctx, table, msgs)
+		return c.overwriteTableBatch(ctx, msgs)
 	}
-	return c.appendTableBatch(ctx, table, msgs)
+	return c.appendTableBatch(ctx, msgs)
 }

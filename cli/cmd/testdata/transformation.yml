@@ -1,0 +1,29 @@
+kind: "source"
+spec:
+  name: "test"
+  path: "cloudquery/test"
+  registry: "github"
+  destinations: [test]
+  version: "v3.1.15" # latest version of source test plugin
+  tables: ["*"]
+---
+kind: "destination"
+spec:
+  name: "test"
+  path: "cloudquery/test"
+  registry: "github"
+  version: "v2.2.14" # latest version of destination test plugin
+  transformers:
+    - basic # we add the basic transformer here
+---
+kind: transformer
+spec:
+  name: "basic"
+  registry: cloudquery
+  path: "cloudquery/basic"
+  version: "v1.1.0"
+  spec:
+    transformations:
+      - kind: add_current_timestamp_column
+        tables: ["*"]
+        name: "_record_processed_at"

@@ -148,7 +148,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	sources := specReader.Sources
 	destinations := specReader.Destinations
 
-	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations)
+	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, nil)
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}

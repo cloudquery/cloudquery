@@ -51,8 +51,9 @@ func installPlugin(cmd *cobra.Command, args []string) error {
 	}
 	sources := specReader.Sources
 	destinations := specReader.Destinations
+	transformers := specReader.Transformers
 
-	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations)
+	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, transformers)
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
@@ -100,11 +101,28 @@ func installPlugin(cmd *cobra.Command, args []string) error {
 		}
 		destinationRegInferred[i] = destination.RegistryInferred()
 	}
+
+	transformerPluginConfigs := make([]managedplugin.Config, len(transformers))
+	transformerRegInferred := make([]bool, len(transformers))
+	for i, transformer := range transformers {
+		transformerPluginConfigs[i] = managedplugin.Config{
+			Name:       transformer.Name,
+			Version:    transformer.Version,
+			Path:       transformer.Path,
+			Registry:   SpecRegistryToPlugin(transformer.Registry),
+			DockerAuth: transformer.DockerRegistryAuthToken,
+		}
+		transformerRegInferred[i] = transformer.RegistryInferred()
+	}
+
 	if clist, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, sourcePluginConfigs, opts...); err != nil {
 		return enrichClientError(clist, sourceRegInferred, err)
 	}
 	if clist, err := managedplugin.NewClients(ctx, managedplugin.PluginDestination, destinationPluginConfigs, opts...); err != nil {
 		return enrichClientError(clist, destinationRegInferred, err)
+	}
+	if clist, err := managedplugin.NewClients(ctx, managedplugin.PluginTransformer, transformerPluginConfigs, opts...); err != nil {
+		return enrichClientError(clist, transformerRegInferred, err)
 	}
 
 	return nil

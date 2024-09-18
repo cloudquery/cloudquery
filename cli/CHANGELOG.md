@@ -5,6 +5,34 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.7.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.6.3...cli-v6.7.0) (2024-09-16)
+
+
+### Features
+
+* Add `install` support for Transformer plugins ([#19166](https://github.com/cloudquery/cloudquery/issues/19166)) ([cc6ca4b](https://github.com/cloudquery/cloudquery/commit/cc6ca4b837d4bc832c70f1bf8d2e0b3b05d69084))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.62.0 ([#19137](https://github.com/cloudquery/cloudquery/issues/19137)) ([ed315d0](https://github.com/cloudquery/cloudquery/commit/ed315d011d6a205e1a8ba851570f8e9533698c52))
+* **deps:** Update module google.golang.org/grpc to v1.66.2 ([#19160](https://github.com/cloudquery/cloudquery/issues/19160)) ([8699db3](https://github.com/cloudquery/cloudquery/commit/8699db39ca99eb159b2958b0588717917fd0f509))
+* Fix transformers-related hang. ([#19165](https://github.com/cloudquery/cloudquery/issues/19165)) ([e151df2](https://github.com/cloudquery/cloudquery/commit/e151df2d2ee09f4d77f13f8d7e92cb3f092c2b03))
+
+## [6.6.3](https://github.com/cloudquery/cloudquery/compare/cli-v6.6.2...cli-v6.6.3) (2024-09-13)
+
+
+### Bug Fixes
+
+* Use error string for  analytics events ([#19133](https://github.com/cloudquery/cloudquery/issues/19133)) ([3bd759c](https://github.com/cloudquery/cloudquery/commit/3bd759c81d52bdcfd23bb84dabbeef05d212f2e9))
+
+## [6.6.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.6.1...cli-v6.6.2) (2024-09-06)
+
+
+### Bug Fixes
+
+* Close Transformers pipeline on both source and destination closes ([#19105](https://github.com/cloudquery/cloudquery/issues/19105)) ([25682d6](https://github.com/cloudquery/cloudquery/commit/25682d6f758c1cac3954e14c060cee8e5650b0b1))
+
 ## [6.6.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.6.0...cli-v6.6.1) (2024-09-05)
 
 
