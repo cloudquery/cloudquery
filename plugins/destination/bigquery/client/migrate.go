@@ -15,7 +15,15 @@ const (
 	concurrentMigrations = 10
 	checkTableFrequency  = 6 * time.Second
 	maxTableChecks       = 20
+	maxDescriptionLength = 16384
 )
+
+func trimDescription(description string) string {
+	if len(description) > maxDescriptionLength {
+		return description[:maxDescriptionLength]
+	}
+	return description
+}
 
 func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
 	eg, gctx := errgroup.WithContext(ctx)
@@ -130,7 +138,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, client *bigquery.Client, 
 	}
 	tm := bigquery.TableMetadataToUpdate{
 		Name:        table.Name,
-		Description: table.Description,
+		Description: trimDescription(table.Description),
 		Schema:      wantSchema,
 	}
 	_, err = bqTable.Update(ctx, tm, "")
@@ -196,7 +204,7 @@ func (c *Client) createTable(ctx context.Context, client *bigquery.Client, table
 	tm := bigquery.TableMetadata{
 		Name:             table.Name,
 		Location:         "",
-		Description:      table.Description,
+		Description:      trimDescription(table.Description),
 		Schema:           bqSchema,
 		TimePartitioning: c.timePartitioning(),
 	}
