@@ -36,30 +36,20 @@ export const useConfig = ({ initialValues }: Props): SourceConfig => {
               title: 'Options',
               children: [
                 {
-                  component: 'control-boolean-field',
-                  name: '_startTimeEnabled',
-                  label: 'Filter by start time',
-                  type: 'toggle',
-                  helperText:
-                    'If true, will only return data after a specified date. Optional, defaults to true.',
-                  schema: yup
-                    .boolean()
-                    .default(!initialValues || !!initialValues?.spec?.start_time)
-                    .required(),
-                },
-                {
                   component: 'control-date-time-field',
                   name: 'start_time',
                   label: 'Start time',
-                  helperText: 'The earliest news date that the source should fetch.',
-                  shouldRender: (values: any) => !!values._startTimeEnabled,
+                  clearable: true,
+                  helperText:
+                    'The earliest news date that the source should fetch. Optional, defaults to no date filtering.',
                   schema: yup
                     .date()
                     .default(
                       initialValues?.spec?.start_time
                         ? new Date(initialValues?.spec?.start_time)
-                        : new Date(),
-                    ),
+                        : null,
+                    )
+                    .nullable(),
                 },
                 {
                   component: 'control-text-field',
