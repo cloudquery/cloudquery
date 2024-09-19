@@ -73,6 +73,10 @@ func (s safeWriteClient) CloseAndRecv() (*plugin.Write_Response, error) {
 	return s.client.CloseAndRecv()
 }
 
+func newSafeWriteClient(client grpc.ClientStreamingClient[plugin.Write_Request, plugin.Write_Response]) safeWriteClient {
+	return safeWriteClient{client: client, mu: &gosync.Mutex{}}
+}
+
 func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
 	authClient := auth.NewTokenClient()
 	if authClient.GetTokenType() != auth.SyncRunAPIKey {
@@ -248,7 +252,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		if err != nil {
 			return err
 		}
-		writeClients[i] = safeWriteClient{client: writeClient, mu: &gosync.Mutex{}}
+		writeClients[i] = newSafeWriteClient(writeClient)
 		writeClientsByName[destinationSpecs[i].Name] = writeClients[i]
 	}
 	transformClientsByDestination := map[string][]plugin.Plugin_TransformClient{}

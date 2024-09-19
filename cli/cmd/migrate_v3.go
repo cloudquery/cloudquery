@@ -3,7 +3,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	gosync "sync"
 	"time"
 
 	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
@@ -82,7 +81,7 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 		if err != nil {
 			return err
 		}
-		writeClients[i] = safeWriteClient{client: writeClient, mu: &gosync.Mutex{}}
+		writeClients[i] = newSafeWriteClient(writeClient)
 	}
 
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Msg("Start fetching resources")
