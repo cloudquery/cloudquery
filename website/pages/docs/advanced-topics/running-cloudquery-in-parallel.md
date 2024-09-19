@@ -29,9 +29,9 @@ You can find an example of how to run the syncs in parallel in the [GitHub Actio
 
 | Source Plugin | Minimal Version                                                                   |
 | ------------- | --------------------------------------------------------------------------------- |
-| AWS           | [v27.20.0](https://hub.cloudquery.io/plugins/source/cloudquery/azure/latest/docs) |
+| AWS           | [v27.20.0](https://hub.cloudquery.io/plugins/source/cloudquery/aws/latest/docs) |
 | Azure         | [v14.8.0](https://hub.cloudquery.io/plugins/source/cloudquery/azure/latest/docs)  |
-| GCP           | [v16.3.0](https://hub.cloudquery.io/plugins/source/cloudquery/azure/latest/docs)  |
+| GCP           | [v16.3.0](https://hub.cloudquery.io/plugins/source/cloudquery/gcp/latest/docs)  |
 
 ## Splitting Syncs Manually
 
