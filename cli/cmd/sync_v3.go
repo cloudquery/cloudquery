@@ -153,7 +153,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	syncTime := time.Now().UTC().Truncate(time.Microsecond)
 	sourceName := sourceSpec.Name
 	if shard != nil {
-		sourceName = fmt.Sprintf("%s-%d/%d", sourceName, shard.num, shard.total)
+		sourceName = fmt.Sprintf("%s_%d_%d", sourceName, shard.num, shard.total)
 	}
 	destinationStrings := make([]string, len(destinationsClients))
 	for i := range destinationsClients {
