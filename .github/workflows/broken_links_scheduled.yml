@@ -41,6 +41,7 @@ jobs:
             --exclude "${{ steps.vercel.outputs.url }}/integrations/*" \
             --exclude linkedin \
             --exclude cloudquery.io/discord \
+            --exclude cloudquery.io/community \
             --exclude cloudquery.io/buy \
             --exclude fonts.gstatic.com \
             --exclude fonts.googleapis.com \

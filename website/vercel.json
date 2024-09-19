@@ -15,6 +15,10 @@
       "destination": "/docs"
     },
     {
+      "source": "/community",
+      "destination": "https://community.cloudquery.io"
+    },
+    {
       "source": "/discord",
       "destination": "https://discord.gg/QwnWfrcfHg"
     },

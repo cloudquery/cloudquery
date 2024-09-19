@@ -12,5 +12,5 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           issue-message: |
             Thanks for reporting this issue 👍  
-            You can reach us via [Discord](https://www.cloudquery.io/discord) too. 
+            You can reach us on our [Community](https://community.cloudquery.io) too. 
             If you enjoy using this project, please consider starring it for support

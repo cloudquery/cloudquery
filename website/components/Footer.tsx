@@ -52,8 +52,8 @@ const navigation = {
       href: "https://github.com/cloudquery/cloudquery",
     },
     {
-      name: "Discord",
-      href: "https://www.cloudquery.io/discord",
+      name: "Community",
+      href: "https://community.cloudquery.io",
     },
   ],
   company: [
