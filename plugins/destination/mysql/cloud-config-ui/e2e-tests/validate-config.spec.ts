@@ -11,8 +11,8 @@ test('Submit the form', async ({ page }) => {
   await page.getByLabel('Database').fill('sample_db');
   await page.getByLabel('Username').click();
   await page.getByLabel('Username').fill('john_doe');
-  await page.getByLabel('Password').click();
-  await page.getByLabel('Password').fill('securePass123');
+  await page.getByLabel('Password *', { exact: true }).click();
+  await page.getByLabel('Password *', { exact: true }).fill('securePass123');
 
   await page.getByRole('button', { name: 'Advanced Connection Options' }).click();
   await page.getByLabel('TLS').click();

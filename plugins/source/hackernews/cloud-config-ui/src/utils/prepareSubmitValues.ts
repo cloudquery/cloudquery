@@ -11,7 +11,7 @@ export function prepareSubmitValues(
     payload.spec.item_concurrency = Number(values.item_concurrency);
   }
 
-  if (values._startTimeEnabled) {
+  if (values.start_time) {
     payload.spec.start_time = values.start_time.toISOString();
   }
 

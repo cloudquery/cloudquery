@@ -32,6 +32,7 @@ function prepareSubmitValuesFromFields(
   const payload = corePrepareSubmitValues(values);
   payload.spec.connection_string = generateConnectionUrl(values);
   delete payload.spec.password;
+  payload.envs = payload.envs.filter(({ name }) => name !== 'connection_string');
 
   return payload;
 }
