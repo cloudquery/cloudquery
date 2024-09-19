@@ -130,4 +130,4 @@ jobs:
           CQ_DSN: ${{ secrets.CQ_DSN }} # Connection string to a PostgreSQL database
 ```
 
-Once committed to the default branch of the repository, the above workflow will run daily at 3 a.m and will sync the AWS source plugin with the PostgreSQL destination plugin, in parallel, using the regions defined in the matrix.
+Once committed to the default branch of the repository, the above workflow will run daily at 3 a.m and will sync the AWS source plugin with the PostgreSQL destination plugin, in parallel.
