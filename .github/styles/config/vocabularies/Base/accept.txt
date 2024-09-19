@@ -222,6 +222,7 @@ SendGrid
 serverless
 Severability
 sharding
+Sharding
 Shippo
 Shipup
 Shopify
