@@ -23,7 +23,7 @@ cloudquery sync --shard 4/4
 The `shard` flag will automatically split the sync into parts, ensure each part gets a unique source name, and that the parts don't overlap.
 It's recommended to run the parts in parallel, as the sync will be faster than running a single sync.
 
-You can find an example of how to run the syncs in parallel in the [GitHub Actions Deployment Guide](/docs/deployment/github-actions) section.
+You can find an example of how to run the syncs in parallel in the [GitHub Actions Deployment Guide](/docs/deployment/github-actions#running-cloudquery-in-parallel-to-speed-up-sync-time) section.
 
 ### Supported Source Plugins for Sharding
 
