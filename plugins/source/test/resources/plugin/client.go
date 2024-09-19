@@ -65,7 +65,12 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		Spec:   c.config,
 	}
 
-	return c.scheduler.Sync(ctx, schedulerClient, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
+	schedulerOptions := []scheduler.SyncOption{scheduler.WithSyncDeterministicCQID(options.DeterministicCQID)}
+	if options.Shard != nil {
+		schedulerOptions = append(schedulerOptions, scheduler.WithShard(options.Shard.Num, options.Shard.Total))
+	}
+
+	return c.scheduler.Sync(ctx, schedulerClient, tt, res, schedulerOptions...)
 }
 
 func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.Tables, error) {

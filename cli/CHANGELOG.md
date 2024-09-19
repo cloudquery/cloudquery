@@ -5,6 +5,23 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.8.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.7.1...cli-v6.8.0) (2024-09-19)
+
+
+### Features
+
+* Add sharding support ([#19169](https://github.com/cloudquery/cloudquery/issues/19169)) ([e9dfd0b](https://github.com/cloudquery/cloudquery/commit/e9dfd0bb264e3dbea1c39f2401ae50d3f07ace51))
+
+## [6.7.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.7.0...cli-v6.7.1) (2024-09-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.22.3 ([#19171](https://github.com/cloudquery/cloudquery/issues/19171)) ([c690a76](https://github.com/cloudquery/cloudquery/commit/c690a7683bb27a1f1d0fccd6b0111ee2b8796a7f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.63.0 ([#19176](https://github.com/cloudquery/cloudquery/issues/19176)) ([00b2de0](https://github.com/cloudquery/cloudquery/commit/00b2de08ed424b7dbcc60a143a386c9c42133a70))
+* Don't interleave send calls from difference Go routines ([#19209](https://github.com/cloudquery/cloudquery/issues/19209)) ([d6dc789](https://github.com/cloudquery/cloudquery/commit/d6dc7893f16d8a22df1c58642883b49cd059bffe))
+* Fix lack of error on destination close. ([#19178](https://github.com/cloudquery/cloudquery/issues/19178)) ([c11ad21](https://github.com/cloudquery/cloudquery/commit/c11ad21d2394eb67ae6e77234553b037eed7d5eb))
+
 ## [6.7.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.6.3...cli-v6.7.0) (2024-09-16)
 
 

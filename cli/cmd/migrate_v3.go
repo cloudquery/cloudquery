@@ -75,12 +75,13 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 		}
 	}
 
-	writeClients := make([]plugin.Plugin_WriteClient, len(destinationsPbClients))
+	writeClients := make([]safeWriteClient, len(destinationsPbClients))
 	for i := range destinationsPbClients {
-		writeClients[i], err = destinationsPbClients[i].Write(ctx)
+		writeClient, err := destinationsPbClients[i].Write(ctx)
 		if err != nil {
 			return err
 		}
+		writeClients[i] = newSafeWriteClient(writeClient)
 	}
 
 	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Msg("Start fetching resources")
