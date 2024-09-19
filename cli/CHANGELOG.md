@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.8.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.7.1...cli-v6.8.0) (2024-09-19)
+
+
+### Features
+
+* Add sharding support ([#19169](https://github.com/cloudquery/cloudquery/issues/19169)) ([e9dfd0b](https://github.com/cloudquery/cloudquery/commit/e9dfd0bb264e3dbea1c39f2401ae50d3f07ace51))
+
 ## [6.7.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.7.0...cli-v6.7.1) (2024-09-19)
 
 
