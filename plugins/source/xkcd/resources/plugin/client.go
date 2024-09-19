@@ -74,7 +74,11 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 	}
 
 	schedulerClient := client.New(c.logger, c.config, c.services, stateClient)
-	err = c.scheduler.Sync(ctx, schedulerClient, tt, res, scheduler.WithSyncDeterministicCQID(options.DeterministicCQID))
+	schedulerOptions := []scheduler.SyncOption{scheduler.WithSyncDeterministicCQID(options.DeterministicCQID)}
+	if options.Shard != nil {
+		schedulerOptions = append(schedulerOptions, scheduler.WithShard(options.Shard.Num, options.Shard.Total))
+	}
+	err = c.scheduler.Sync(ctx, schedulerClient, tt, res, schedulerOptions...)
 	if err != nil {
 		return fmt.Errorf("failed to sync: %w", err)
 	}
