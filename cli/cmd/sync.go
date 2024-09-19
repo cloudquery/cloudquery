@@ -42,7 +42,7 @@ func NewCmdSync() *cobra.Command {
 	cmd.Flags().String("license", "", "set offline license file")
 	cmd.Flags().String("summary-location", "", "Sync summary file location. This feature is in Preview. Please provide feedback to help us improve it.")
 	cmd.Flags().String("tables-metrics-location", "", "Tables metrics file location. This feature is in Preview. Please provide feedback to help us improve it. Works with plugins released on 2024-07-10 or later.")
-	cmd.Flags().String("shard", "", "Allows splitting the sync process into multiple shards. This feature is in Preview. Please provide feedback to help us improve it. Works with plugins released on 2024-09-24 or later.")
+	cmd.Flags().String("shard", "", "Allows splitting the sync process into multiple shards. This feature is in Preview. Please provide feedback to help us improve it. For a list of supported plugins visit https://docs.cloudquery.io/docs/advanced-topics/running-cloudquery-in-parallel")
 
 	return cmd
 }
