@@ -119,6 +119,8 @@ func TrackLoginSuccess(ctx context.Context, invocationUUID uuid.UUID) {
 type SyncStartedEvent struct {
 	Source       specs.Source
 	Destinations []specs.Destination
+	ShardNum     int
+	ShardTotal   int
 }
 
 func getSyncCommonProps(invocationUUID uuid.UUID, event SyncStartedEvent, details *eventDetails) rudderstack.Properties {
@@ -144,6 +146,11 @@ func getSyncCommonProps(invocationUUID uuid.UUID, event SyncStartedEvent, detail
 		Set("destination_paths", destinationPaths).
 		Set("user_id", userID).
 		Set("user_email", userEmail)
+
+	if event.ShardNum > 0 && event.ShardTotal > 0 {
+		props = props.Set("shard_num", event.ShardNum).
+			Set("shard_total", event.ShardTotal)
+	}
 
 	return props
 }
