@@ -96,28 +96,6 @@ By default, CloudQuery extracts all supported resources, which can take a bit of
 
 With the [GitHub Actions matrix configuration](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs), you can split the sync process into multiple jobs and run them in parallel.
 
-First, we'll need to create a new `cloudquery-regions.yml` configuration file under the root of the repository:
-
-```yaml copy
-kind: source
-spec:
-  name: 'aws'
-  path: cloudquery/aws
-  registry: cloudquery
-  version: "VERSION_SOURCE_AWS"
-  destinations: ['postgresql']
-  tables: ['*']
----
-kind: destination
-spec:
-  name: 'postgresql'
-  path: cloudquery/postgresql
-  registry: cloudquery
-  version: "VERSION_DESTINATION_POSTGRESQL"
-  spec:
-    connection_string: ${CQ_DSN} # The CQ_DSN environment variable will be set by GitHub Action workflow
-```
-
 To do so, create the following workflow file under `.github/workflows/cloudquery-parallel.yml`:
 
 ```yaml copy
@@ -146,7 +124,7 @@ jobs:
         with:
           version: "vVERSION_CLI"
       - name: Sync with CloudQuery
-        run: cloudquery sync cloudquery-regions.yml --log-console --shard ${{ matrix.shard }}
+        run: cloudquery sync cloudquery.yml --log-console --shard ${{ matrix.shard }}
         env:
           CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }} # See https://docs.cloudquery.io/docs/deployment/generate-api-key
           CQ_DSN: ${{ secrets.CQ_DSN }} # Connection string to a PostgreSQL database
