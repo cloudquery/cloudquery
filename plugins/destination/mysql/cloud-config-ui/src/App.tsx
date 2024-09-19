@@ -1,6 +1,4 @@
-import { Fragment, useMemo } from 'react';
-
-import { createThemeOptions } from '@cloudquery/cloud-ui';
+import { Fragment } from 'react';
 
 import {
   CloudAppMock,
@@ -8,10 +6,6 @@ import {
   PluginContextProvider,
   useFormInit,
 } from '@cloudquery/plugin-config-ui-lib';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import createTheme from '@mui/material/styles/createTheme';
-import ThemeProvider from '@mui/material/styles/ThemeProvider';
 
 import { useConfig } from './hooks/useConfig';
 import { pluginUiMessageHandler } from './utils/messageHandler';
@@ -39,8 +33,6 @@ function App() {
     true,
   );
 
-  const theme = useMemo(() => createTheme(createThemeOptions()), []);
-
   const config = useConfig({ initialValues });
 
   return (
@@ -52,14 +44,9 @@ function App() {
       pluginUiMessageHandler={pluginUiMessageHandler}
       initialValues={initialValues}
     >
-      <Box>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <DevWrapper {...devWrapperProps}>
-            {initialized && <ConfigUIForm prepareSubmitValues={prepareSubmitValues} />}
-          </DevWrapper>
-        </ThemeProvider>
-      </Box>
+      <DevWrapper {...devWrapperProps}>
+        {initialized && <ConfigUIForm prepareSubmitValues={prepareSubmitValues} />}
+      </DevWrapper>
     </PluginContextProvider>
   );
 }
