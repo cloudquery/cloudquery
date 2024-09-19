@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.1.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.1.9...plugins-destination-bigquery-v4.1.10) (2024-09-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.63.0 ([#19176](https://github.com/cloudquery/cloudquery/issues/19176)) ([00b2de0](https://github.com/cloudquery/cloudquery/commit/00b2de08ed424b7dbcc60a143a386c9c42133a70))
+* Truncate table description if over the limit ([#19208](https://github.com/cloudquery/cloudquery/issues/19208)) ([6a0b6e1](https://github.com/cloudquery/cloudquery/commit/6a0b6e10e6d1d3b08b44295134bf4dec4bb8e8e1))
+
 ## [4.1.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.1.8...plugins-destination-bigquery-v4.1.9) (2024-09-18)
 
 
