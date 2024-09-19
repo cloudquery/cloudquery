@@ -20,15 +20,15 @@
     },
     {
       "source": "/discord",
-      "destination": "https://discord.gg/QwnWfrcfHg"
+      "destination": "https://community.cloudquery.io"
     },
     {
       "source": "/discrod",
-      "destination": "https://discord.gg/QwnWfrcfHg"
+      "destination": "https://community.cloudquery.io"
     },
     {
       "source": "/dicsord",
-      "destination": "https://discord.gg/QwnWfrcfHg"
+      "destination": "https://community.cloudquery.io"
     },
     {
       "source": "/og-image/:title",
