@@ -30,7 +30,7 @@ const theme: DocsThemeConfig = {
   }),
   search: { component: null },
   chat: {
-    link: "https://www.cloudquery.io/discord",
+    link: "https://community.cloudquery.io",
   },
   feedback: {
     content: "Question? Give us feedback →",
