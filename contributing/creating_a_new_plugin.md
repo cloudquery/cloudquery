@@ -13,5 +13,5 @@ See the following links for more information on writing source plugins (we will 
 
 ## Writing a Destination Plugin
 
-This section is a work in progress. For now, raise an issue or reach out to us on Discord if 
+This section is a work in progress. For now, raise an issue or reach out to us on our [Community](https://community.cloudquery.io) if 
 you would like to request (or work on) a new destination plugin.  

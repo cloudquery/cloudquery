@@ -7,11 +7,11 @@ The following is a set of guidelines for contributing to this repository.
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the [CloudQuery Code of Conduct](./CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. To report inappropriate behavior in violation of the code, please start by reaching out to us on our [Discord channel](https://cloudquery.io/discord).
+This project and everyone participating in it is governed by the [CloudQuery Code of Conduct](./CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. To report inappropriate behavior in violation of the code, please start by reaching out to us on our [Community](https://community.cloudquery.io).
 
 ## I don't want to read this whole thing, I just have a question
 
-> **Note:** Please don't file an issue to ask a question. You'll get faster results by reaching out to the community on our [Discord channel](https://cloudquery.io/discord)
+> **Note:** Please don't file an issue to ask a question. You'll get faster results by reaching out to the [community](https://community.cloudquery.io)
 
 ## What To Know Before Getting Started
 
@@ -58,7 +58,7 @@ Follow our [bug reporting template](https://github.com/cloudquery/cloudquery/iss
 ### Your First Code Contribution
 
 Unsure where to begin contributing to CloudQuery? You can start by looking through these [`good first issue` issues](https://github.com/cloudquery/cloudquery/issues?q=is%3Aopen+is%3Aissue+label%3A%22good+first+issue%22).
-If you don't see any issues that you think you can help with reach out to the community on Discord and we would be happy to work with you!
+If you don't see any issues that you think you can help with, reach out to the [Community](https://community.cloudquery.io) and we would be happy to work with you!
 
 #### Local Development
 
