@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	gosync "sync"
 	"sync/atomic"
 	"time"
 
@@ -22,6 +23,7 @@ import (
 	"github.com/schollz/progressbar/v3"
 	"github.com/vnteamopen/godebouncer"
 	"golang.org/x/sync/errgroup"
+	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/cloudquery/cloudquery/cli/internal/analytics"
@@ -50,6 +52,29 @@ type v3destination struct {
 type v3transformer struct {
 	client *managedplugin.Client
 	spec   specs.Transformer
+}
+
+type safeWriteClient struct {
+	client grpc.ClientStreamingClient[plugin.Write_Request, plugin.Write_Response]
+	mu     *gosync.Mutex
+}
+
+// It is not safe to call write.Send on the same stream in different goroutines
+func (s safeWriteClient) Send(req *plugin.Write_Request) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.client.Send(req)
+}
+
+// It is also not safe to call CloseSend concurrently with SendMsg
+func (s safeWriteClient) CloseAndRecv() (*plugin.Write_Response, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.client.CloseAndRecv()
+}
+
+func newSafeWriteClient(client grpc.ClientStreamingClient[plugin.Write_Request, plugin.Write_Response]) safeWriteClient {
+	return safeWriteClient{client: client, mu: &gosync.Mutex{}}
 }
 
 func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
@@ -220,13 +245,14 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		return fmt.Errorf("failed to init source %v: %w", sourceSpec.Name, err)
 	}
 
-	writeClients := make([]plugin.Plugin_WriteClient, len(destinationsPbClients))
-	writeClientsByName := map[string]plugin.Plugin_WriteClient{}
+	writeClients := make([]safeWriteClient, len(destinationsPbClients))
+	writeClientsByName := map[string]safeWriteClient{}
 	for i := range destinationsPbClients {
-		writeClients[i], err = destinationsPbClients[i].Write(ctx)
+		writeClient, err := destinationsPbClients[i].Write(ctx)
 		if err != nil {
 			return err
 		}
+		writeClients[i] = newSafeWriteClient(writeClient)
 		writeClientsByName[destinationSpecs[i].Name] = writeClients[i]
 	}
 	transformClientsByDestination := map[string][]plugin.Plugin_TransformClient{}
@@ -589,7 +615,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	return nil
 }
 
-func deleteStale(client plugin.Plugin_WriteClient, tables map[string]bool, sourceName string, syncTime time.Time) error {
+func deleteStale(client safeWriteClient, tables map[string]bool, sourceName string, syncTime time.Time) error {
 	for tableName := range tables {
 		if err := client.Send(&plugin.Write_Request{
 			Message: &plugin.Write_Request_Delete{
