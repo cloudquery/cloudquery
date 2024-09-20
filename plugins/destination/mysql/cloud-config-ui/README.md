@@ -33,6 +33,6 @@ Your app is ready to be deployed!
 
 ### `npm run dev:test:e2e`
 
-This mimics how e2e tests will run in the ci environment. The tests are conducted against the production cloud app. In CI, the test will make use of the deployed preview link to use the latest plugin code in the cloud app.
+This mimics how e2e tests will run in the CI environment. The tests are conducted against the production cloud app. In CI, the test will make use of the deployed preview link to use the latest plugin code in the cloud app.
 
-It is imperitive that the `.env` file is populated with the needed environment variables for the e2e tests to run properly. See the `.env.example` file for a reference of the needed variables.
+The `.env` file should be copied from `.env.example` and populated with the needed environment variables for the e2e tests to run properly.
