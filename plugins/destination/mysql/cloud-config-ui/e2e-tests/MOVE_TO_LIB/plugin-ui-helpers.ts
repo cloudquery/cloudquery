@@ -48,11 +48,13 @@ export const createPlugin = async ({
 
   await expect(page.getByText(`Create a ${kind}`)).toBeVisible();
 
-  await fillInput(page, 'input[type="text"]', pluginName);
+  await page.locator('input[type="text"]').clear();
+  await page.locator('input[type="text"]').fill(pluginName);
+
   await click(page, page.getByRole('button', { name: pluginLabel }));
 
   await expect(page.getByText(pluginLabel)).toBeTruthy();
-  await expect(page.locator('iframe[name="Plugin UI"]')).toBeVisible({ timeout: 30_000 });
+  await expect(page.locator('iframe[name="Plugin UI"]')).toBeVisible({ timeout: 30000 });
   await expect(page.getByText('Previewing')).toBeVisible();
 
   const iframeElement = page.frame({ name: 'Plugin UI' });
@@ -65,10 +67,9 @@ export const createPlugin = async ({
   await fillFieldsSteps?.(iframeElement);
 
   await click(iframeElement, iframeElement.getByRole('button', { name: 'Test connection' }));
-  await expect(iframeElement.locator('div:has-text("Connection test")')).toBeTruthy();
   await expect(iframeElement.locator('button:has-text("Cancel test")')).toBeTruthy();
   await expect(page.getByText(`Edit ${kind}`)).toBeVisible({
-    timeout: 30_000,
+    timeout: 30000,
   });
 
   return page.url();
@@ -88,7 +89,9 @@ export const editPlugin = async ({
 
   await expect(page.getByText(`Create a ${kind}`)).toBeVisible();
 
-  await fillInput(page, 'input[type="text"]', pluginName);
+  await page.locator('input[type="text"]').clear();
+  await page.locator('input[type="text"]').fill(pluginName);
+
   await click(page, page.getByRole('button', { name: pluginLabel }));
   await expect(page.getByText('Previewing')).toBeVisible({ timeout: 3000 });
 
@@ -96,7 +99,7 @@ export const editPlugin = async ({
 
   await expect(page.getByText(pluginNewName)).toBeTruthy();
   await page.getByRole('tab', { name: `Edit ${kind}` }).click();
-  await expect(page.locator('iframe[name="Plugin UI"]')).toBeVisible({ timeout: 30_000 });
+  await expect(page.locator('iframe[name="Plugin UI"]')).toBeVisible({ timeout: 30000 });
   await expect(page.getByText('Previewing')).toBeVisible();
 
   const iframeElement = page.frame({ name: 'Plugin UI' });
@@ -114,10 +117,9 @@ export const editPlugin = async ({
   await fillFieldsSteps?.(iframeElement);
 
   await click(iframeElement, iframeElement.getByRole('button', { name: 'Test connection' }));
-  await expect(iframeElement.locator('div:has-text("Connection test")')).toBeTruthy();
   await expect(iframeElement.locator('button:has-text("Cancel test")')).toBeTruthy();
   await expect(page.getByText(`Edit ${kind}`)).toBeVisible({
-    timeout: 30_000,
+    timeout: 30000,
   });
 };
 
@@ -134,7 +136,9 @@ export const deletePlugin = async ({
 
   await expect(page.getByText(`Create a ${kind}`)).toBeVisible();
 
-  await fillInput(page, 'input[type="text"]', pluginName);
+  await page.locator('input[type="text"]').clear();
+  await page.locator('input[type="text"]').fill(pluginName);
+
   await click(page, page.getByRole('button', { name: pluginLabel }));
   await expect(page.getByText('Previewing')).toBeVisible({ timeout: 3000 });
 
@@ -142,7 +146,7 @@ export const deletePlugin = async ({
 
   await expect(page.getByText(pluginNewName)).toBeTruthy();
   await page.getByRole('tab', { name: `Edit ${kind}` }).click();
-  await expect(page.locator('iframe[name="Plugin UI"]')).toBeVisible({ timeout: 30_000 });
+  await expect(page.locator('iframe[name="Plugin UI"]')).toBeVisible({ timeout: 30000 });
   await expect(page.getByText('Previewing')).toBeVisible();
 
   const iframeElement = page.frame({ name: 'Plugin UI' });

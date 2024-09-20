@@ -11,20 +11,22 @@ import {
 test.describe.configure({ mode: 'serial' });
 
 test.describe('MySQL Destination', () => {
-  const newName = getPersistentName();
-  let pluginUrl = '';
+  const parameters = {
+    pluginNewName: getPersistentName(),
+    kind: 'destination' as 'destination',
+    pluginName: 'mysql',
+    pluginLabel: 'MySQL',
+    pluginUrl: '',
+  };
 
   test.beforeEach('login', async ({ page }) => {
     await login(page);
   });
 
   test('create plugin', async ({ page }) => {
-    pluginUrl = await createPlugin({
+    parameters.pluginUrl = await createPlugin({
+      ...parameters,
       page,
-      kind: 'destination',
-      pluginName: 'mysql',
-      pluginLabel: 'MySQL',
-      pluginNewName: newName,
       fillFieldsSteps: async (iframeElement: Frame) => {
         await iframeElement.getByLabel('Host').click();
         await iframeElement
@@ -57,12 +59,8 @@ test.describe('MySQL Destination', () => {
 
   test('edit plugin', async ({ page }) => {
     await editPlugin({
-      pluginUrl,
+      ...parameters,
       page,
-      kind: 'destination',
-      pluginName: 'mysql',
-      pluginLabel: 'MySQL',
-      pluginNewName: newName,
       fillFieldsSteps: async (iframeElement: Frame) => {
         await iframeElement.getByRole('button', { name: 'Advanced Sync Options' }).click();
         await iframeElement.getByLabel('Batch size', { exact: true }).click();
@@ -75,12 +73,8 @@ test.describe('MySQL Destination', () => {
 
   test('delete plugin', async ({ page }) => {
     await deletePlugin({
-      pluginUrl,
+      ...parameters,
       page,
-      kind: 'destination',
-      pluginName: 'mysql',
-      pluginLabel: 'MySQL',
-      pluginNewName: newName,
     });
   });
 });
