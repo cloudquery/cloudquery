@@ -5,6 +5,7 @@ import (
 	"math"
 	"os"
 	"slices"
+	"strconv"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/cli/internal/auth"
@@ -23,6 +24,8 @@ cloudquery sync ./directory
 cloudquery sync ./directory ./aws.yml ./pg.yml
 # Log tables metrics to a file
 cloudquery sync ./directory ./aws.yml ./pg.yml --tables-metrics-location metrics.txt
+# Shard the sync process into 4 shards and run the first shard
+cloudquery sync spec.yml --shard 1/4
 `
 )
 
@@ -39,6 +42,7 @@ func NewCmdSync() *cobra.Command {
 	cmd.Flags().String("license", "", "set offline license file")
 	cmd.Flags().String("summary-location", "", "Sync summary file location. This feature is in Preview. Please provide feedback to help us improve it.")
 	cmd.Flags().String("tables-metrics-location", "", "Tables metrics file location. This feature is in Preview. Please provide feedback to help us improve it. Works with plugins released on 2024-07-10 or later.")
+	cmd.Flags().String("shard", "", "Allows splitting the sync process into multiple shards. This feature is in Preview. Please provide feedback to help us improve it. For a list of supported plugins visit https://docs.cloudquery.io/docs/advanced-topics/running-cloudquery-in-parallel")
 
 	return cmd
 }
@@ -80,6 +84,41 @@ func findMaxCommonVersion(pluginSupported []int, cliSupported []int) int {
 	return maxCommon
 }
 
+func parseShard(cmd *cobra.Command) (*shard, error) {
+	shardFlag, err := cmd.Flags().GetString("shard")
+	if err != nil {
+		return nil, err
+	}
+	if shardFlag == "" {
+		return nil, nil
+	}
+
+	parts := strings.Split(shardFlag, "/")
+	if len(parts) != 2 {
+		return nil, fmt.Errorf("invalid shard format: %s. Valid format is num/total, e.g. 1/4", shardFlag)
+	}
+
+	num, err := strconv.Atoi(parts[0])
+	if err != nil {
+		return nil, fmt.Errorf("invalid shard format: %s. Shard num should be a valid integer", shardFlag)
+	}
+
+	total, err := strconv.Atoi(parts[1])
+	if err != nil {
+		return nil, fmt.Errorf("invalid shard format: %s. Total shards should be a valid integer", shardFlag)
+	}
+
+	if num < 1 || total < 1 {
+		return nil, fmt.Errorf("invalid shard format: %s. Shard num and total shards should be greater than 0", shardFlag)
+	}
+
+	if num > total {
+		return nil, fmt.Errorf("invalid shard format: %s. Shard num should be less than or equal to total shards", shardFlag)
+	}
+
+	return &shard{num: num, total: total}, nil
+}
+
 func sync(cmd *cobra.Command, args []string) error {
 	cqDir, err := cmd.Flags().GetString("cq-dir")
 	if err != nil {
@@ -92,6 +131,11 @@ func sync(cmd *cobra.Command, args []string) error {
 	}
 
 	licenseFile, err := cmd.Flags().GetString("license")
+	if err != nil {
+		return err
+	}
+
+	shard, err := parseShard(cmd)
 	if err != nil {
 		return err
 	}
@@ -374,7 +418,7 @@ func sync(cmd *cobra.Command, args []string) error {
 				return err
 			}
 
-			if err := syncConnectionV3(ctx, src, dests, transfs, backend, invocationUUID.String(), noMigrate, summaryLocation); err != nil {
+			if err := syncConnectionV3(ctx, src, dests, transfs, backend, invocationUUID.String(), noMigrate, summaryLocation, shard); err != nil {
 				return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
 			}
 

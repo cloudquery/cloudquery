@@ -96,33 +96,6 @@ By default, CloudQuery extracts all supported resources, which can take a bit of
 
 With the [GitHub Actions matrix configuration](https://docs.github.com/en/actions/using-jobs/using-a-matrix-for-your-jobs), you can split the sync process into multiple jobs and run them in parallel.
 
-> In the example below, we'll split the sync process using regions, but you can split it by any other dimension, such as tables, accounts or any combination that makes sense for your use case.
-
-First, we'll need to create a new `cloudquery-regions.yml` configuration file under the root of the repository:
-
-```yaml copy
-kind: source
-spec:
-  name: 'aws-REGION_PLACEHOLDER' # when splitting configurations, we need to keep the names unique
-  path: cloudquery/aws
-  registry: cloudquery
-  version: "VERSION_SOURCE_AWS"
-  destinations: ['postgresql-REGION_PLACEHOLDER']
-  tables: ['*']
-  spec:
-    regions:
-      - REGION_PLACEHOLDER # This will be replaced by the matrix value
----
-kind: destination
-spec:
-  name: 'postgresql-REGION_PLACEHOLDER' # when splitting configurations, we need to keep the names unique
-  path: cloudquery/postgresql
-  registry: cloudquery
-  version: "VERSION_DESTINATION_POSTGRESQL"
-  spec:
-    connection_string: ${CQ_DSN} # The CQ_DSN environment variable will be set by GitHub Action workflow
-```
-
 To do so, create the following workflow file under `.github/workflows/cloudquery-parallel.yml`:
 
 ```yaml copy
@@ -138,15 +111,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        region: [us-east-1, us-east-2, us-west-1, us-west-2, eu-west-1, eu-west-2] # List of regions to sync in parallel
+        shard: [1/4, 2/4, 3/4, 4/4] # Split the sync into 4 parts
     steps:
       - uses: actions/checkout@v3 # Checkout the code so we have access to the config file
-      - name: Set region in config file
-        uses: jacobtomlinson/gha-find-replace@657b0d1fe020da9943d1702b576f5d37d43b9c03
-        with:
-          include: cloudquery-regions.yml
-          find: REGION_PLACEHOLDER
-          replace: ${{ matrix.region }}
       - name: Configure AWS credentials # Setup AWS credentials (example)
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -157,10 +124,10 @@ jobs:
         with:
           version: "vVERSION_CLI"
       - name: Sync with CloudQuery
-        run: cloudquery sync cloudquery-regions.yml --log-console
+        run: cloudquery sync cloudquery.yml --log-console --shard ${{ matrix.shard }}
         env:
           CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }} # See https://docs.cloudquery.io/docs/deployment/generate-api-key
           CQ_DSN: ${{ secrets.CQ_DSN }} # Connection string to a PostgreSQL database
 ```
 
-Once committed to the default branch of the repository, the above workflow will run daily at 3 a.m and will sync the AWS source plugin with the PostgreSQL destination plugin, in parallel, using the regions defined in the matrix.
+Once committed to the default branch of the repository, the above workflow will run daily at 3 a.m and will sync the AWS source plugin with the PostgreSQL destination plugin, in parallel.

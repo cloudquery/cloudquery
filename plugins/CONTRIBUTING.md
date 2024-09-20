@@ -2,7 +2,7 @@
 
 :+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
 
-Please don't file an issue to ask a question. You'll get faster results by reaching out to the community on our [Discord channel](https://cloudquery.io/discord).
+Please don't file an issue to ask a question. You'll get faster results by reaching out to the community on our [Community](https://community.cloudquery.io).
 
 The following is a set of guidelines for contributing to this repository.
 
@@ -26,4 +26,4 @@ Unsure where to begin contributing to CloudQuery? There are a few key labels tha
 * `documentation` - Those are great for beginners as it gives the opportunity to both learn and put it in writing for everyone else.
 * `resource` - This is usually support for a new resource that was requested.
 
-If you don't see any issues that you think you can help with reach out to the community on [Discord](https://cloudquery.io/discord)--we would be happy to work with you!
+If you don't see any issues that you think you can help with reach out to the community on our [Community](https://community.cloudquery.io) -- we would be happy to work with you!

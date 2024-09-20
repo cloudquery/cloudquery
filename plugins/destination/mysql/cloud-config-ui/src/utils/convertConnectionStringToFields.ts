@@ -1,5 +1,11 @@
-export const convertConnectionStringToFields = (connectionString: string) => {
+export const convertConnectionStringToFields = (connectionString?: string) => {
   const connectionParams: Record<string, any> = {};
+
+  if (!connectionString) {
+    return {
+      connectionParams,
+    };
+  }
 
   const [username, ...following] = connectionString.split(':') ?? ['', ''];
   const rest = following.join(':');
