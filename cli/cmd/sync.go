@@ -155,6 +155,18 @@ func sync(cmd *cobra.Command, args []string) error {
 	destinations := specReader.Destinations
 	transformers := specReader.Transformers
 
+	tableMetricsLocation, err := cmd.Flags().GetString("tables-metrics-location")
+	if err != nil {
+		return err
+	}
+	var otelReceiver *otel.OtelReceiver
+	if tableMetricsLocation != "" {
+		otelReceiver, err = otel.StartOtelReceiver(ctx, otel.WithMetricsFilename(tableMetricsLocation))
+		if err == nil {
+			defer otelReceiver.Shutdown(ctx)
+		}
+	}
+
 	sourcePluginClients := make(managedplugin.Clients, 0)
 	defer func() {
 		if err := sourcePluginClients.Terminate(); err != nil {
@@ -172,18 +184,6 @@ func sync(cmd *cobra.Command, args []string) error {
 
 	// in a cloud sync environment, we pass only the relevant environment variables to the plugin
 	osEnviron := os.Environ()
-
-	tableMetricsLocation, err := cmd.Flags().GetString("tables-metrics-location")
-	if err != nil {
-		return err
-	}
-	var otelReceiver *otel.OtelReceiver
-	if tableMetricsLocation != "" {
-		otelReceiver, err = otel.StartOtelReceiver(ctx, otel.WithMetricsFilename(tableMetricsLocation))
-		if err == nil {
-			defer otelReceiver.Shutdown(ctx)
-		}
-	}
 
 	// To force backend destinations to use TCP if the sources are using Docker
 	backendsForDockerSource := map[string]struct{}{}    // destination plugin names
