@@ -1,10 +1,10 @@
 import cryptoRandomString from 'crypto-random-string';
 import { expect, Frame, Page, test } from '@playwright/test';
-import { click, fillInput, getMainTestUser } from './e2e-helpers';
+import { click, fillInput, getMainTestUser, getPluginUrl, getRootUrl } from './e2e-helpers';
 
 export const getPersistentName = () => `name-${cryptoRandomString(10)}`;
 
-type PluginControlOpts = {
+type CreatePluginControlOpts = {
   page: Page;
   kind: 'source' | 'destination';
   pluginName: string;
@@ -12,6 +12,10 @@ type PluginControlOpts = {
   pluginNewName: string;
   fillFieldsSteps?: (iframeElement: Frame) => Promise<void>;
 };
+
+interface EditPluginControlOpts extends CreatePluginControlOpts {
+  pluginUrl: string;
+}
 
 export const login = async (page: Page) => {
   await page.goto('https://cloud.cloudquery.io/auth/login');
@@ -29,8 +33,6 @@ export const login = async (page: Page) => {
   await page.locator(String.raw`button[type="submit"]`).click();
 
   await expect(page.getByRole('heading', { name: 'Overview' })).toBeVisible({ timeout: 5000 });
-
-  await page.goto(process.env.CQ_CI_PLAYWRIGHT_PREVIEW_LINK ?? 'https://cloud.cloudquery.io');
 };
 
 export const createPlugin = async ({
@@ -40,24 +42,25 @@ export const createPlugin = async ({
   pluginNewName,
   pluginLabel,
   fillFieldsSteps,
-}: PluginControlOpts) => {
+}: CreatePluginControlOpts): Promise<string> => {
   test.setTimeout(300_000);
-  await page.goto(`https://cloud.cloudquery.io/teams/cq-bot-team/${kind}s/create`);
+  await page.goto(getRootUrl());
 
   await expect(page.getByText(`Create a ${kind}`)).toBeVisible();
 
-  await fillInput(page, 'input[name="search"]', pluginName);
+  await fillInput(page, 'input[type="text"]', pluginName);
   await click(page, page.getByRole('button', { name: pluginLabel }));
 
   await expect(page.getByText(pluginLabel)).toBeTruthy();
   await expect(page.locator('iframe[name="Plugin UI"]')).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByText('Previewing')).toBeVisible();
+
   const iframeElement = page.frame({ name: 'Plugin UI' });
 
   if (!iframeElement) {
     throw new Error('iframe not found');
   }
 
-  await expect(iframeElement.getByText('Previewing')).toBeVisible();
   await fillInput(iframeElement, '[name="displayName"]', pluginNewName);
   await fillFieldsSteps?.(iframeElement);
 
@@ -67,30 +70,41 @@ export const createPlugin = async ({
   await expect(page.getByText(`Edit ${kind}`)).toBeVisible({
     timeout: 30_000,
   });
+
+  return page.url();
 };
 
 export const editPlugin = async ({
   page,
   kind,
   pluginNewName,
+  pluginName,
+  pluginLabel,
   fillFieldsSteps,
-}: PluginControlOpts) => {
+  pluginUrl,
+}: EditPluginControlOpts) => {
   test.setTimeout(300_000);
-  await page.goto(`https://cloud.cloudquery.io/teams/cq-bot-team/${kind}s`);
+  await page.goto(getRootUrl());
 
-  await fillInput(page, 'input[type="text"]', pluginNewName);
-  await click(page, page.getByText(pluginNewName));
+  await expect(page.getByText(`Create a ${kind}`)).toBeVisible();
+
+  await fillInput(page, 'input[type="text"]', pluginName);
+  await click(page, page.getByRole('button', { name: pluginLabel }));
+  await expect(page.getByText('Previewing')).toBeVisible({ timeout: 3000 });
+
+  await page.goto(getPluginUrl(pluginUrl));
 
   await expect(page.getByText(pluginNewName)).toBeTruthy();
   await page.getByRole('tab', { name: `Edit ${kind}` }).click();
   await expect(page.locator('iframe[name="Plugin UI"]')).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByText('Previewing')).toBeVisible();
+
   const iframeElement = page.frame({ name: 'Plugin UI' });
 
   if (!iframeElement) {
     throw new Error('iframe not found');
   }
 
-  await expect(iframeElement.getByText('Previewing')).toBeVisible();
   await expect(
     iframeElement.getByRole('textbox', {
       name: `${kind === 'destination' ? 'Destination' : 'Source'} name`,
@@ -107,23 +121,36 @@ export const editPlugin = async ({
   });
 };
 
-export const deletePlugin = async ({ page, kind, pluginNewName }: PluginControlOpts) => {
+export const deletePlugin = async ({
+  page,
+  kind,
+  pluginNewName,
+  pluginName,
+  pluginLabel,
+  pluginUrl,
+}: EditPluginControlOpts) => {
   test.setTimeout(300_000);
-  await page.goto(`https://cloud.cloudquery.io/teams/cq-bot-team/${kind}s`);
+  await page.goto(getRootUrl());
 
-  await fillInput(page, 'input[type="text"]', pluginNewName);
-  await click(page, page.getByText(pluginNewName));
+  await expect(page.getByText(`Create a ${kind}`)).toBeVisible();
+
+  await fillInput(page, 'input[type="text"]', pluginName);
+  await click(page, page.getByRole('button', { name: pluginLabel }));
+  await expect(page.getByText('Previewing')).toBeVisible({ timeout: 3000 });
+
+  await page.goto(getPluginUrl(pluginUrl));
 
   await expect(page.getByText(pluginNewName)).toBeTruthy();
   await page.getByRole('tab', { name: `Edit ${kind}` }).click();
   await expect(page.locator('iframe[name="Plugin UI"]')).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByText('Previewing')).toBeVisible();
+
   const iframeElement = page.frame({ name: 'Plugin UI' });
 
   if (!iframeElement) {
     throw new Error('iframe not found');
   }
 
-  await expect(iframeElement.getByText('Previewing')).toBeVisible();
   await expect(
     iframeElement.getByRole('textbox', {
       name: `${kind === 'destination' ? 'Destination' : 'Source'} name`,

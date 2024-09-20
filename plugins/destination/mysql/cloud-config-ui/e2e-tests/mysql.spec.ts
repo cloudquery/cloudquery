@@ -12,13 +12,14 @@ test.describe.configure({ mode: 'serial' });
 
 test.describe('MySQL Destination', () => {
   const newName = getPersistentName();
+  let pluginUrl = '';
 
   test.beforeEach('login', async ({ page }) => {
     await login(page);
   });
 
   test('create plugin', async ({ page }) => {
-    await createPlugin({
+    pluginUrl = await createPlugin({
       page,
       kind: 'destination',
       pluginName: 'mysql',
@@ -56,6 +57,7 @@ test.describe('MySQL Destination', () => {
 
   test('edit plugin', async ({ page }) => {
     await editPlugin({
+      pluginUrl,
       page,
       kind: 'destination',
       pluginName: 'mysql',
@@ -73,6 +75,7 @@ test.describe('MySQL Destination', () => {
 
   test('delete plugin', async ({ page }) => {
     await deletePlugin({
+      pluginUrl,
       page,
       kind: 'destination',
       pluginName: 'mysql',

@@ -14,6 +14,20 @@ export const getMainTestUser = () => {
   };
 };
 
+export function getRootUrl() {
+  return process.env.CQ_CI_PLAYWRIGHT_PREVIEW_LINK
+    ? process.env.CQ_CI_PLAYWRIGHT_PREVIEW_LINK.replace('cloudquery-test', 'cq-bot-team')
+    : 'https://cloud.cloudquery.io';
+}
+
+export function getPluginUrl(url: string) {
+  if (process.env.CQ_CI_PLAYWRIGHT_PREVIEW_LINK) {
+    return `${url}?${process.env.CQ_CI_PLAYWRIGHT_PREVIEW_LINK.split('?')[1]}`;
+  } else {
+    return url;
+  }
+}
+
 export function getRandomTestUser(browserType: string) {
   return {
     email: `e2e-test-${process.env.GITHUB_JOB_ID}-${browserType}@cloudquery.io`,
