@@ -57,6 +57,7 @@ export const createPlugin = async ({
     throw new Error('iframe not found');
   }
 
+  await expect(iframeElement.getByText('Previewing')).toBeVisible();
   await fillInput(iframeElement, '[name="displayName"]', pluginNewName);
   await fillFieldsSteps?.(iframeElement);
 
@@ -89,6 +90,7 @@ export const editPlugin = async ({
     throw new Error('iframe not found');
   }
 
+  await expect(iframeElement.getByText('Previewing')).toBeVisible();
   await expect(
     iframeElement.getByRole('textbox', {
       name: `${kind === 'destination' ? 'Destination' : 'Source'} name`,
@@ -121,6 +123,7 @@ export const deletePlugin = async ({ page, kind, pluginNewName }: PluginControlO
     throw new Error('iframe not found');
   }
 
+  await expect(iframeElement.getByText('Previewing')).toBeVisible();
   await expect(
     iframeElement.getByRole('textbox', {
       name: `${kind === 'destination' ? 'Destination' : 'Source'} name`,
