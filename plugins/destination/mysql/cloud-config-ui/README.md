@@ -33,6 +33,12 @@ Your app is ready to be deployed!
 
 ### `npm run dev:test:e2e`
 
-This mimics how e2e tests will run in the CI environment. The tests are conducted against the production cloud app. In CI, the test will make use of the deployed preview link to use the latest plugin code in the cloud app.
+This command enables the ability to locally write and run e2e tests.
 
-The `.env` file should be copied from `.env.example` and populated with the needed environment variables for the e2e tests to run properly.
+This mimics how e2e tests will run in the CI environment. The tests are conducted against the production cloud app with the preview url from a built PR.
+
+The `.env` file should be copied from `.env.example` and populated with the needed environment variables for the e2e tests to run properly. Specifically, the following variables are required for the e2e tests to run:
+
+- CQ_CI_PLAYWRIGHT_TEST_USER_EMAIL: this can be any valid Cloudquery username
+- CQ_CI_PLAYWRIGHT_TEST_USER_PASSWORD: this can be any valid Cloudquery password
+- CQ_CI_PLAYWRIGHT_PREVIEW_LINK: this will be generated and commented on a successfully built PR. It will be in a format like: `https://cloud.cloudquery.io/teams/cloudquery-test/destinations/create?plugin-cloud-ui=cloudquery|destination|mysql|https://plugin-destination-mysql-cloud-ui-19223.vercel.app`
