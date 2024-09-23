@@ -1,50 +1,50 @@
 import { PluginUiMessagePayload } from '@cloudquery/plugin-config-ui-connector';
-import { FormValues } from './formSchema';
-import { escapeSingleQuotesAndBackslashes, generateConnectionUrl } from './generateConnectionUrl';
-import { generateConnectionString, parseConnectionString } from './parseConnectionString';
+import { corePrepareSubmitValues } from '@cloudquery/plugin-config-ui-lib';
+import { generateConnectionUrl } from './generateConnectionUrl';
+import { parseConnectionString } from './parseConnectionString';
 
 export function prepareSubmitValues(
-  values: FormValues,
+  values: Record<string, any>,
 ): PluginUiMessagePayload['validation_passed']['values'] {
-  const envs = [] as Array<{ name: string; value: string }>;
-  let { connectionString } = values;
+  const payload =
+    values._connectionType === 'string'
+      ? prepareSubmitValuesFromConnectionString(values)
+      : prepareSubmitValuesFromFields(values);
 
-  if (values.connectionType === 'string') {
-    const { password, ...connectionStringProps } = parseConnectionString(values.connectionString);
+  payload.migrateMode = values.migrateMode;
+  payload.writeMode = values.writeMode;
 
-    if (password && password !== '${password}') {
-      envs.push({ name: 'password', value: password });
-      connectionString = generateConnectionString({
-        ...connectionStringProps,
-        password: '${password}',
-      });
-    } else if (password && password === '${password}') {
-      envs.push({ name: 'password', value: '' });
-    }
-  } else {
-    if (values.password) {
-      envs.push({
-        name: 'password',
-        value:
-          values.password === '${password}'
-            ? ''
-            : escapeSingleQuotesAndBackslashes(values.password),
-      });
-    }
+  if (values.pgx_log_level) {
+    payload.spec.pgx_log_level = values.pgx_log_level;
+  }
+  if (values.batch_size) {
+    payload.spec.batch_size = values.batch_size;
+  }
+  if (values.batch_size_bytes) {
+    payload.spec.batch_size_bytes = values.batch_size_bytes;
+  }
+  if (values.batch_timeout) {
+    payload.spec.batch_timeout = values.batch_timeout;
   }
 
-  return {
-    name: values.name,
-    envs,
-    spec: {
-      connection_string:
-        values.connectionType === 'string' ? connectionString : generateConnectionUrl(values),
-      pgx_log_level: values.pgxLogLevel,
-      batch_size: values.batchSize,
-      batch_size_bytes: values.batchSizeBytes,
-      batch_timeout: values.batchTimeout,
-    },
-    migrateMode: values.migrateMode,
-    writeMode: values.writeMode,
-  };
+  return payload;
+}
+
+function prepareSubmitValuesFromFields(
+  values: Record<string, any>,
+): PluginUiMessagePayload['validation_passed']['values'] {
+  const payload = corePrepareSubmitValues(values);
+  payload.spec.connection_string = generateConnectionUrl(values);
+  delete payload.spec.password;
+  payload.envs = payload.envs.filter(({ name }) => name !== 'connection_string');
+
+  return payload;
+}
+
+function prepareSubmitValuesFromConnectionString(
+  values: Record<string, any>,
+): PluginUiMessagePayload['validation_passed']['values'] {
+  const connectionFields = parseConnectionString(values.connection_string);
+
+  return prepareSubmitValuesFromFields({ ...values, ...connectionFields });
 }

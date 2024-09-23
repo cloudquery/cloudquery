@@ -1,6 +1,4 @@
-import { FormValues } from './formSchema';
-
-export function generateConnectionUrl(values: FormValues): string {
+export function generateConnectionUrl(values: any): string {
   const password = values.password ? '${password}' : '';
 
   let finalUrl = `dbtype='postgresql' user='${values.username}' password='${password}' host='${escapeSingleQuotesAndBackslashes(values.host)}' dbname='${escapeSingleQuotesAndBackslashes(values.database)}'`;
