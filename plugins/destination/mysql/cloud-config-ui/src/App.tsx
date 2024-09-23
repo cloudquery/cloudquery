@@ -7,11 +7,9 @@ import { pluginUiMessageHandler } from './utils/messageHandler';
 import { prepareSubmitValues } from './utils/prepareSubmitValues';
 
 const CloudAppMock: React.FC<any> = React.lazy(() =>
-  import('@cloudquery/plugin-config-ui-lib/dist/components/cloudAppMock').then(
-    ({ CloudAppMock }) => ({
-      default: CloudAppMock,
-    }),
-  ),
+  import('@cloudquery/plugin-config-ui-lib/components/cloudAppMock').then(({ CloudAppMock }) => ({
+    default: CloudAppMock,
+  })),
 );
 
 const CloudAppMockWrapper = (props: any) => (
@@ -24,7 +22,7 @@ const useCloudAppMock =
   (process.env.REACT_APP_USE_CLOUD_APP_MOCK === 'true' || process.env.NODE_ENV !== 'production') &&
   window.self === window.top;
 const DevWrapper = useCloudAppMock ? CloudAppMockWrapper : Fragment;
-// eslint-disable-next-line unicorn/prefer-module
+// eslint-disable-next-line @typescript-eslint/no-require-imports, unicorn/prefer-module
 const { plugin, ...devWrapperProps }: any = useCloudAppMock ? require('./.env.json') : {};
 
 const pluginProps = useCloudAppMock

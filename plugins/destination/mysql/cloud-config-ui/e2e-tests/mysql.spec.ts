@@ -1,11 +1,4 @@
 import { Frame, test } from '@playwright/test';
-// import {
-//   getPersistentName,
-//   login,
-//   createPlugin,
-//   editPlugin,
-//   deletePlugin,
-// } from './plugin-ui-e2e-helpers';
 
 import {
   createPlugin,
