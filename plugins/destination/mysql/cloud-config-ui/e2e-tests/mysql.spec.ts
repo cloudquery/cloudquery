@@ -1,4 +1,11 @@
 import { Frame, test } from '@playwright/test';
+// import {
+//   getPersistentName,
+//   login,
+//   createPlugin,
+//   editPlugin,
+//   deletePlugin,
+// } from './plugin-ui-e2e-helpers';
 
 import {
   createPlugin,
@@ -6,7 +13,7 @@ import {
   editPlugin,
   getPersistentName,
   login,
-} from './MOVE_TO_LIB/plugin-ui-helpers';
+} from '@cloudquery/plugin-config-ui-lib/dist/e2e-utils';
 
 test.describe.configure({ mode: 'serial' });
 
