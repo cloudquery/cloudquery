@@ -172,7 +172,7 @@ func (Consumer) ConsumeTraces(ctx context.Context, td ptrace.Traces) error {
 }
 
 // ConsumeLogs implements consumer.Logs.
-func (c Consumer) ConsumeLogs(ctx context.Context, ld plog.Logs) error {
+func (Consumer) ConsumeLogs(ctx context.Context, ld plog.Logs) error {
 	// Do nothing, the CLI only needs metrics to print the table metrics file
 	return nil
 }
