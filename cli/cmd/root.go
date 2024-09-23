@@ -180,6 +180,7 @@ func NewCmdRoot() *cobra.Command {
 		NewCmdMigrate(),
 		newCmdDoc(),
 		NewCmdTables(),
+		NewCmdRelations(),
 		newCmdLogin(),
 		newCmdLogout(),
 		newCmdSwitch(),
