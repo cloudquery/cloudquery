@@ -12,6 +12,7 @@ import (
 	"github.com/jedib0t/go-pretty/v6/table"
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/consumer"
+	"go.opentelemetry.io/collector/pdata/plog"
 	"go.opentelemetry.io/collector/pdata/pmetric"
 	"go.opentelemetry.io/collector/pdata/ptrace"
 	"go.opentelemetry.io/collector/receiver"
@@ -170,6 +171,12 @@ func (Consumer) ConsumeTraces(ctx context.Context, td ptrace.Traces) error {
 	return nil
 }
 
+// ConsumeLogs implements consumer.Logs.
+func (c Consumer) ConsumeLogs(ctx context.Context, ld plog.Logs) error {
+	// Do nothing, the CLI only needs metrics to print the table metrics file
+	return nil
+}
+
 // ConsumeMetrics implements consumer.Metrics.
 func (c Consumer) ConsumeMetrics(ctx context.Context, md pmetric.Metrics) error {
 	resourceMetrics := md.ResourceMetrics()
@@ -268,6 +275,12 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 		return nil, err
 	}
 	components = append(components, metrics)
+
+	logs, err := factory.CreateLogsReceiver(ctx, settings, config, c)
+	if err != nil {
+		return nil, err
+	}
+	components = append(components, logs)
 
 	for _, c := range components {
 		if err := c.Start(ctx, nil); err != nil {
