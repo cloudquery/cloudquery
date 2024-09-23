@@ -165,7 +165,7 @@ func (Consumer) Capabilities() consumer.Capabilities {
 }
 
 // ConsumeTraces implements consumer.Traces.
-func (c Consumer) ConsumeTraces(ctx context.Context, td ptrace.Traces) error {
+func (Consumer) ConsumeTraces(ctx context.Context, td ptrace.Traces) error {
 	// Do nothing, the CLI only needs metrics to print the table metrics file
 	return nil
 }
