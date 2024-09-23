@@ -2,7 +2,6 @@ package otel
 
 import (
 	"context"
-	"encoding/hex"
 	"fmt"
 	"net"
 	"os"
@@ -23,17 +22,7 @@ import (
 	"golang.org/x/exp/maps"
 )
 
-type Span struct {
-	TraceID        string         `json:"trace_id"`
-	SpanID         string         `json:"span_id"`
-	ParentSpanID   string         `json:"parent_span_id"`
-	Name           string         `json:"name"`
-	StartTimestamp time.Time      `json:"start_timestamp"`
-	EndTimestamp   time.Time      `json:"end_timestamp"`
-	Attributes     map[string]any `json:"attributes"`
-}
-
-type Metric struct {
+type pluginMetric struct {
 	Name        string         `json:"name"`
 	Description string         `json:"description"`
 	Unit        string         `json:"unit"`
@@ -41,7 +30,7 @@ type Metric struct {
 	Attributes  map[string]any `json:"attributes"`
 }
 
-type TableMetric struct {
+type tableMetric struct {
 	Table     string     `json:"table"`
 	ClientId  string     `json:"client_id"`
 	StartTime *time.Time `json:"start_time"`
@@ -51,16 +40,11 @@ type TableMetric struct {
 	Panics    int64      `json:"panics"`
 }
 
-type ConsumeSpan = func(context.Context, Span)
-
-type ConsumeMetric = func(context.Context, Metric)
-
 type Consumer struct {
-	consumeSpan     ConsumeSpan
 	quit            chan any
 	metricsFilename string
 	metricsFile     *os.File
-	consumeMetric   ConsumeMetric
+	consumeMetric   func(context.Context, pluginMetric)
 }
 
 func (c *Consumer) Shutdown(ctx context.Context) {
@@ -69,15 +53,9 @@ func (c *Consumer) Shutdown(ctx context.Context) {
 	}
 }
 
-func newDefaultSpanConsumer() ConsumeSpan {
-	return func(ctx context.Context, span Span) {
-		// do nothing
-	}
-}
-
-func newDefaultMetricConsumer(metricsFile *os.File, quit chan any) ConsumeMetric {
+func newMetricConsumer(metricsFile *os.File, quit chan any) func(context.Context, pluginMetric) {
 	tableLock := sync.Mutex{}
-	metricsMap := make(map[string]*TableMetric)
+	metricsMap := make(map[string]*tableMetric)
 	ticker := time.NewTicker(20 * time.Second)
 
 	renderTable := func() {
@@ -148,7 +126,7 @@ func newDefaultMetricConsumer(metricsFile *os.File, quit chan any) ConsumeMetric
 		}
 	}()
 
-	return func(ctx context.Context, metric Metric) {
+	return func(ctx context.Context, metric pluginMetric) {
 		table := metric.Attributes["sync.table.name"].(string)
 		clientId := metric.Attributes["sync.client.id"].(string)
 
@@ -157,7 +135,7 @@ func newDefaultMetricConsumer(metricsFile *os.File, quit chan any) ConsumeMetric
 		key := table + clientId
 		metrics, ok := metricsMap[key]
 		if !ok {
-			metrics = &TableMetric{
+			metrics = &tableMetric{
 				Table:    table,
 				ClientId: clientId,
 			}
@@ -187,30 +165,8 @@ func (Consumer) Capabilities() consumer.Capabilities {
 }
 
 // ConsumeTraces implements consumer.Traces.
-func (c Consumer) ConsumeTraces(ctx context.Context, td ptrace.Traces) error {
-	resourceSpans := td.ResourceSpans()
-	for i := 0; i < resourceSpans.Len(); i++ {
-		resourceSpan := resourceSpans.At(i)
-		scopedSpans := resourceSpan.ScopeSpans()
-		for j := 0; j < scopedSpans.Len(); j++ {
-			spans := scopedSpans.At(j).Spans()
-			for k := 0; k < spans.Len(); k++ {
-				span := spans.At(k)
-				traceID := span.TraceID()
-				spanID := span.SpanID()
-				parentSpanID := span.ParentSpanID()
-				c.consumeSpan(ctx, Span{
-					TraceID:        hex.EncodeToString(traceID[:]),
-					SpanID:         hex.EncodeToString(spanID[:]),
-					ParentSpanID:   hex.EncodeToString(parentSpanID[:]),
-					Name:           span.Name(),
-					StartTimestamp: span.StartTimestamp().AsTime(),
-					EndTimestamp:   span.EndTimestamp().AsTime(),
-					Attributes:     span.Attributes().AsRaw(),
-				})
-			}
-		}
-	}
+func (Consumer) ConsumeTraces(ctx context.Context, td ptrace.Traces) error {
+	// Do nothing, the CLI only needs metrics to print the table metrics file
 	return nil
 }
 
@@ -230,7 +186,7 @@ func (c Consumer) ConsumeMetrics(ctx context.Context, md pmetric.Metrics) error 
 				dataPoints := metric.Sum().DataPoints()
 				for l := 0; l < dataPoints.Len(); l++ {
 					dataPoint := dataPoints.At(l)
-					c.consumeMetric(ctx, Metric{
+					c.consumeMetric(ctx, pluginMetric{
 						Name:        metric.Name(),
 						Description: metric.Description(),
 						Unit:        metric.Unit(),
@@ -261,18 +217,6 @@ func getFreePort() (int, error) {
 
 type OtelReceiverOption func(*Consumer)
 
-func WithSpanConsumer(consumerSpan ConsumeSpan) OtelReceiverOption {
-	return func(c *Consumer) {
-		c.consumeSpan = consumerSpan
-	}
-}
-
-func WithMetricConsumer(consumerMetric ConsumeMetric) OtelReceiverOption {
-	return func(c *Consumer) {
-		c.consumeMetric = consumerMetric
-	}
-}
-
 func WithMetricsFilename(filename string) OtelReceiverOption {
 	return func(c *Consumer) {
 		c.metricsFilename = filename
@@ -285,23 +229,14 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 		opt(&c)
 	}
 
-	if c.consumeSpan == nil {
-		c.consumeSpan = newDefaultSpanConsumer()
+	metricsFile, err := os.Create(c.metricsFilename)
+	if err != nil {
+		return nil, err
 	}
-
-	if c.consumeMetric == nil {
-		if c.metricsFilename == "" {
-			c.metricsFilename = "metrics.txt"
-		}
-		metricsFile, err := os.Create(c.metricsFilename)
-		if err != nil {
-			return nil, err
-		}
-		quit := make(chan any)
-		c.consumeMetric = newDefaultMetricConsumer(metricsFile, quit)
-		c.metricsFile = metricsFile
-		c.quit = quit
-	}
+	quit := make(chan any)
+	c.consumeMetric = newMetricConsumer(metricsFile, quit)
+	c.metricsFile = metricsFile
+	c.quit = quit
 
 	factory := otlpreceiver.NewFactory()
 	config := factory.CreateDefaultConfig().(*otlpreceiver.Config)
@@ -322,21 +257,17 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 	}
 
 	var components []component.Component
-	if c.consumeSpan != nil {
-		traces, err := factory.CreateTracesReceiver(ctx, settings, config, c)
-		if err != nil {
-			return nil, err
-		}
-		components = append(components, traces)
+	traces, err := factory.CreateTracesReceiver(ctx, settings, config, c)
+	if err != nil {
+		return nil, err
 	}
+	components = append(components, traces)
 
-	if c.consumeMetric != nil {
-		metrics, err := factory.CreateMetricsReceiver(ctx, settings, config, c)
-		if err != nil {
-			return nil, err
-		}
-		components = append(components, metrics)
+	metrics, err := factory.CreateMetricsReceiver(ctx, settings, config, c)
+	if err != nil {
+		return nil, err
 	}
+	components = append(components, metrics)
 
 	for _, c := range components {
 		if err := c.Start(ctx, nil); err != nil {
