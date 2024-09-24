@@ -29,13 +29,13 @@ test.describe('PostgreSQL Destination', () => {
       page,
       fillFieldsSteps: async (iframeElement: Frame) => {
         await iframeElement.getByLabel('Host').click();
-        await iframeElement.getByLabel('Host').fill('database.example.com');
+        await iframeElement.getByLabel('Host').fill('pg-123f5827-cloudquery-c7ec.l.aivencloud.com');
         await iframeElement.getByLabel('Port').click();
-        await iframeElement.getByLabel('Port').fill('5432');
+        await iframeElement.getByLabel('Port').fill('20188');
         await iframeElement.getByLabel('Database').click();
-        await iframeElement.getByLabel('Database').fill('sample_db');
+        await iframeElement.getByLabel('Database').fill('defaultdb');
         await iframeElement.getByLabel('Username').click();
-        await iframeElement.getByLabel('Username').fill('john_doe');
+        await iframeElement.getByLabel('Username').fill('avnadmin');
         await iframeElement.getByLabel('Password').click();
         await iframeElement
           .getByLabel('Password *', { exact: true })
