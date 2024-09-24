@@ -7,7 +7,6 @@ import { pluginUiMessageHandler } from './utils/messageHandler';
 import {
   CloudAppMock,
   ConfigUIForm,
-  // useFormHeightChange,
   useFormInit,
   PluginContextProvider,
 } from '@cloudquery/plugin-config-ui-lib';
