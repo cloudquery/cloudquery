@@ -224,7 +224,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
             },
             {
               component: 'collapsible-section',
-              title: 'Advanced Sync Options',
+              title: 'Advanced Options',
               defaultExpanded: false,
               children: [
                 {
