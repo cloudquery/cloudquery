@@ -1,24 +1,28 @@
-import CssBaseline from '@mui/material/CssBaseline';
-import ThemeProvider from '@mui/material/styles/ThemeProvider';
-import createTheme from '@mui/material/styles/createTheme';
-import { Fragment, useMemo } from 'react';
-import { createThemeOptions } from '@cloudquery/cloud-ui';
-import { pluginUiMessageHandler } from './utils/messageHandler';
-import {
-  CloudAppMock,
-  ConfigUIForm,
-  useFormInit,
-  PluginContextProvider,
-} from '@cloudquery/plugin-config-ui-lib';
+import React, { Fragment, Suspense } from 'react';
+
+import { ConfigUIForm, PluginContextProvider, useFormInit } from '@cloudquery/plugin-config-ui-lib';
+
 import { useConfig } from './hooks/useConfig';
-import Box from '@mui/material/Box';
+import { pluginUiMessageHandler } from './utils/messageHandler';
 import { prepareSubmitValues } from './utils/prepareSubmitValues';
+
+const CloudAppMock: React.FC<any> = React.lazy(() =>
+  import('@cloudquery/plugin-config-ui-lib/components/cloudAppMock').then(({ CloudAppMock }) => ({
+    default: CloudAppMock,
+  })),
+);
+
+const CloudAppMockWrapper = (props: any) => (
+  <Suspense>
+    <CloudAppMock {...props} />
+  </Suspense>
+);
 
 const useCloudAppMock =
   (process.env.REACT_APP_USE_CLOUD_APP_MOCK === 'true' || process.env.NODE_ENV !== 'production') &&
   window.self === window.top;
-const DevWrapper = useCloudAppMock ? CloudAppMock : Fragment;
-// eslint-disable-next-line unicorn/prefer-module
+const DevWrapper = useCloudAppMock ? CloudAppMockWrapper : Fragment;
+// eslint-disable-next-line @typescript-eslint/no-require-imports, unicorn/prefer-module
 const { plugin, ...devWrapperProps }: any = useCloudAppMock ? require('./.env.json') : {};
 
 const pluginProps = useCloudAppMock
@@ -33,11 +37,8 @@ const pluginProps = useCloudAppMock
 function App() {
   const { initialValues, initialized, teamName, context } = useFormInit(
     pluginUiMessageHandler,
-    false,
+    true,
   );
-  // useFormHeightChange(pluginUiMessageHandler);
-
-  const theme = useMemo(() => createTheme(createThemeOptions()), []);
 
   const config = useConfig({ initialValues });
 
@@ -50,14 +51,9 @@ function App() {
       pluginUiMessageHandler={pluginUiMessageHandler}
       initialValues={initialValues}
     >
-      <Box>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <DevWrapper {...devWrapperProps}>
-            {initialized && <ConfigUIForm prepareSubmitValues={prepareSubmitValues} />}
-          </DevWrapper>
-        </ThemeProvider>
-      </Box>
+      <DevWrapper {...devWrapperProps}>
+        {initialized && <ConfigUIForm prepareSubmitValues={prepareSubmitValues} />}
+      </DevWrapper>
     </PluginContextProvider>
   );
 }

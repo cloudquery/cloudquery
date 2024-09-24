@@ -1,5 +1,7 @@
 import { PluginUiMessagePayload } from '@cloudquery/plugin-config-ui-connector';
+
 import { escapeSingleQuotesAndBackslashes, generateConnectionUrl } from './generateConnectionUrl';
+
 import { generateConnectionString, parseConnectionString } from './parseConnectionString';
 
 export function prepareSubmitValues(
