@@ -14,10 +14,10 @@ Starting from version [v6.8.0](https://github.com/cloudquery/cloudquery/releases
 For example, to split a sync into 4 parts, you can run:
 
 ```bash
-cloudquery sync --shard 1/4
-cloudquery sync --shard 2/4
-cloudquery sync --shard 3/4
-cloudquery sync --shard 4/4
+cloudquery sync config.yml --shard 1/4
+cloudquery sync config.yml --shard 2/4
+cloudquery sync config.yml --shard 3/4
+cloudquery sync config.yml --shard 4/4
 ```
 
 The `shard` flag will automatically split the sync into parts, ensure each part gets a unique source name, and that the parts don't overlap.
