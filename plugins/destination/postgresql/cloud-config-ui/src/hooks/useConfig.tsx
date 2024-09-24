@@ -59,7 +59,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                 },
                 {
                   component: 'control-secret-field',
-                  name: 'connection_string',
+                  name: 'connectionString',
                   helperText:
                     'Connection string to connect to the database. E.g. postgres://jack:secret@localhost:5432/mydb?sslmode=prefer',
                   label: 'Connection string',
@@ -154,7 +154,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                   label: 'SSL',
                   type: 'toggle',
                   shouldRender: (values: any) => values.connectionType === 'fields',
-                  schema: yup.bool().default(connectionObj.sslMode ? true : false),
+                  schema: yup.bool().default(true),
                 },
                 {
                   component: 'control-select-field',
@@ -229,7 +229,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
               children: [
                 {
                   component: 'control-select-field',
-                  name: 'pgx_log_level',
+                  name: 'pgxLogLevel',
                   helperText: 'Configure the level of detail of the log from this destination.',
                   label: 'Log level',
                   options: [...pgxLogLevelValues],
@@ -241,7 +241,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                 },
                 {
                   component: 'control-text-field',
-                  name: 'batch_size',
+                  name: 'batchSize',
                   helperText:
                     'Maximum number of items that may be grouped together to be written in a single write. Default is 10,000.',
                   label: 'Batch size',
@@ -253,7 +253,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                 },
                 {
                   component: 'control-text-field',
-                  name: 'batch_size_bytes',
+                  name: 'batchSizeBytes',
                   helperText:
                     'Maximum size of items that may be grouped together to be written in a single write. Default is 100,000,000 = 100MB.',
                   label: 'Batch size (bytes)',
@@ -265,7 +265,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                 },
                 {
                   component: 'control-text-field',
-                  name: 'batch_timeout',
+                  name: 'batchTimeout',
                   helperText: 'Maximum interval between batch writes. Defaults to 60s.',
                   label: 'Batch timeout',
                   schema: yup
