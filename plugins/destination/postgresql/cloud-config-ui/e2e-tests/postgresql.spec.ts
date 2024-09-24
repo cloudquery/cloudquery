@@ -40,24 +40,17 @@ test.describe('PostgreSQL Destination', () => {
         await iframeElement
           .getByLabel('Password *', { exact: true })
           .fill(process.env.CQ_CI_PLAYWRIGHT_POSTGRESQL_PASSWORD!);
-        await iframeElement.getByLabel('SSL Mode').click();
-        await iframeElement.getByRole('option', { name: 'verify-ca' }).click();
 
-        await iframeElement.getByText('Advanced Options').click();
+        await iframeElement.getByLabel('Migrate mode').click();
+        await iframeElement.getByRole('option', { name: 'forced' }).click();
+        await iframeElement.getByLabel('Write mode').click();
+        await iframeElement.getByRole('option', { name: 'overwrite', exact: true }).click();
 
-        await iframeElement.getByLabel('Log level').click();
-        await iframeElement.getByRole('option', { name: 'warn' }).click();
+        await iframeElement.getByRole('button', { name: 'Advanced Options' }).click();
         await iframeElement.getByLabel('Batch size', { exact: true }).click();
         await iframeElement.getByLabel('Batch size', { exact: true }).fill('12');
         await iframeElement.getByLabel('Batch size (bytes)').click();
         await iframeElement.getByLabel('Batch size (bytes)').fill('2500');
-        await iframeElement.getByLabel('Batch timeout').click();
-        await iframeElement.getByLabel('Batch timeout').fill('120s');
-        await iframeElement.getByLabel('Migrate mode').click();
-        await iframeElement.getByRole('option', { name: 'forced' }).click();
-        await iframeElement.getByLabel('Write mode').click();
-        await iframeElement.getByRole('option', { name: 'append' }).click();
-        await iframeElement.getByRole('button', { name: 'Submit' }).click();
       },
     });
   });
@@ -67,7 +60,7 @@ test.describe('PostgreSQL Destination', () => {
       ...parameters,
       page,
       fillFieldsSteps: async (iframeElement: Frame) => {
-        await iframeElement.getByRole('button', { name: 'Advanced Sync Options' }).click();
+        await iframeElement.getByRole('button', { name: 'Advanced Options' }).click();
         await iframeElement.getByLabel('Batch size', { exact: true }).click();
         await iframeElement.getByLabel('Batch size', { exact: true }).fill('22');
         await iframeElement.getByLabel('Batch size (bytes)').click();
