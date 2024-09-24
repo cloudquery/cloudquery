@@ -1,21 +1,28 @@
-import { Fragment } from 'react';
+import React, { Fragment, Suspense } from 'react';
 
-import {
-  CloudAppMock,
-  ConfigUIForm,
-  PluginContextProvider,
-  useFormInit,
-} from '@cloudquery/plugin-config-ui-lib';
+import { ConfigUIForm, PluginContextProvider, useFormInit } from '@cloudquery/plugin-config-ui-lib';
 
 import { useConfig } from './hooks/useConfig';
 import { pluginUiMessageHandler } from './utils/messageHandler';
 import { prepareSubmitValues } from './utils/prepareSubmitValues';
 
+const CloudAppMock: React.FC<any> = React.lazy(() =>
+  import('@cloudquery/plugin-config-ui-lib/components/cloudAppMock').then(({ CloudAppMock }) => ({
+    default: CloudAppMock,
+  })),
+);
+
+const CloudAppMockWrapper = (props: any) => (
+  <Suspense>
+    <CloudAppMock {...props} />
+  </Suspense>
+);
+
 const useCloudAppMock =
   (process.env.REACT_APP_USE_CLOUD_APP_MOCK === 'true' || process.env.NODE_ENV !== 'production') &&
   window.self === window.top;
-const DevWrapper = useCloudAppMock ? CloudAppMock : Fragment;
-// eslint-disable-next-line unicorn/prefer-module
+const DevWrapper = useCloudAppMock ? CloudAppMockWrapper : Fragment;
+// eslint-disable-next-line @typescript-eslint/no-require-imports, unicorn/prefer-module
 const { plugin, ...devWrapperProps }: any = useCloudAppMock ? require('./.env.json') : {};
 
 const pluginProps = useCloudAppMock

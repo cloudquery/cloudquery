@@ -30,3 +30,15 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
+
+### `npm run dev:test:e2e`
+
+This command enables the ability to locally write and run e2e tests.
+
+This mimics how e2e tests will run in the CI environment. The tests are conducted against the production cloud app with the preview URL from a built PR.
+
+The `.env` file should be copied from `.env.example` and populated with the needed environment variables for the e2e tests to run properly. Specifically, the following variables are required for the e2e tests to run:
+
+- CQ_CI_PLAYWRIGHT_TEST_USER_EMAIL: this can be any valid CloudQuery username
+- CQ_CI_PLAYWRIGHT_TEST_USER_PASSWORD: this can be any valid CloudQuery password
+- CQ_CI_PLAYWRIGHT_PREVIEW_LINK: this will be generated and commented on a successfully built PR. It will be in a format like: `https://cloud.cloudquery.io/teams/cloudquery-test/destinations/create?plugin-cloud-ui=cloudquery|destination|mysql|https://plugin-destination-mysql-cloud-ui-19223.vercel.app`

@@ -56,56 +56,6 @@ jobs:
           wait-for-it -h localhost -p 3306
       - name: Test MySQL
         run: make test
-  validate-config-ui:
-    timeout-minutes: 15
-    if: github.event_name == 'pull_request'
-    permissions:
-      id-token: write
-      contents: read
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./plugins/destination/mysql
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v5
-        with:
-          go-version-file: plugins/destination/mysql/go.mod
-          cache: true
-          cache-dependency-path: plugins/destination/mysql/go.sum
-      - name: Build
-        run: go build .
-      - name: Use Node.js LTS
-        uses: actions/setup-node@v4
-        with:
-          node-version: "lts/*"
-          cache: "npm"
-          cache-dependency-path: "plugins/destination/mysql/cloud-config-ui/package-lock.json"
-      - name: Install dependencies
-        working-directory: "plugins/destination/mysql/cloud-config-ui"
-        run: npm ci
-      - name: Install dotenv
-        run: npm install dotenv-cli -g
-      - name: Install Playwright
-        working-directory: "plugins/destination/mysql/cloud-config-ui"
-        run: npx playwright install --with-deps
-      - name: Build config UI
-        working-directory: "plugins/destination/mysql/cloud-config-ui"
-        run: REACT_APP_USE_CLOUD_APP_MOCK=true npm run build
-        env:
-          REACT_APP_PLUGIN_TEAM: cloudquery
-          REACT_APP_PLUGIN_KIND: destination
-          REACT_APP_PLUGIN_NAME: mysql
-          REACT_APP_PLUGIN_VERSION: development
-      - name: Run E2E tests and generate configs
-        working-directory: "plugins/destination/mysql/cloud-config-ui"
-        run: E2E_TESTS_GENERATE_CONFIG=true npm run test:e2e
-      - name: Run unit tests
-        working-directory: "plugins/destination/mysql/cloud-config-ui"
-        run: npm run test
 
   deploy:
     if: github.event.action != 'closed' && github.event_name == 'pull_request' && !startsWith(github.head_ref, 'release')
@@ -114,6 +64,8 @@ jobs:
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    outputs:
+      previewLink: ${{ steps.create-preview.outputs.previewLink}}
     defaults:
       run:
         working-directory: ./plugins/destination/mysql/cloud-config-ui
@@ -163,6 +115,10 @@ jobs:
           else
             echo "Failed to delete deployment $PREVIOUS_DEPLOYMENT_URL. It may not exist or there was an error."
           fi
+      - name: Create Preview Link Url
+        id: create-preview
+        run: echo "previewLink=https://cloud.cloudquery.io/teams/cloudquery-test/destinations/create?plugin-cloud-ui=cloudquery|destination|mysql|${{ env.ALIAS_DEPLOYMENT_URL }}" >> "$GITHUB_OUTPUT"
+
       - name: Create or update comment
         uses: peter-evans/create-or-update-comment@v3
         with:
@@ -173,7 +129,64 @@ jobs:
             🚀 MySQL Cloud UI deployed to Vercel:
             ${{ env.ALIAS_DEPLOYMENT_URL }}
             You can also check out this plugin in action at:
-            https://cloud.cloudquery.io/teams/cloudquery-test/destinations/create?plugin-cloud-ui=cloudquery|destination|mysql|${{ env.ALIAS_DEPLOYMENT_URL }}
+            ${{ steps.create-preview.outputs.previewLink }}
             Unique Vercel deployment URL:
             ${{ env.DEPLOYMENT_URL }}
           edit-mode: replace
+
+  validate-config-ui:
+    timeout-minutes: 15
+    if: github.event_name == 'pull_request'
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    needs: deploy
+    env:
+      CQ_CI_PLAYWRIGHT_PREVIEW_LINK: ${{ needs.deploy.outputs.previewLink }}
+      CQ_CI_PLAYWRIGHT_TEST_USER_EMAIL: ${{ secrets.CQ_CI_PLAYWRIGHT_TEST_USER_EMAIL }}
+      CQ_CI_PLAYWRIGHT_TEST_USER_PASSWORD: ${{ secrets.CQ_CI_PLAYWRIGHT_TEST_USER_PASSWORD }}
+      CQ_CI_PLAYWRIGHT_MYSQL_PASSWORD: ${{ secrets.CQ_CI_PLAYWRIGHT_MYSQL_PASSWORD }}
+    defaults:
+      run:
+        working-directory: ./plugins/destination/mysql
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: plugins/destination/mysql/go.mod
+          cache: true
+          cache-dependency-path: plugins/destination/mysql/go.sum
+      - name: Build
+        run: go build .
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "npm"
+          cache-dependency-path: "plugins/destination/mysql/cloud-config-ui/package-lock.json"
+      - name: Install dependencies
+        working-directory: "plugins/destination/mysql/cloud-config-ui"
+        run: npm ci
+      - name: Install dotenv
+        run: npm install dotenv-cli -g
+      - name: Install Playwright
+        working-directory: "plugins/destination/mysql/cloud-config-ui"
+        run: npx playwright install --with-deps
+      - name: Build config UI
+        working-directory: "plugins/destination/mysql/cloud-config-ui"
+        run: REACT_APP_USE_CLOUD_APP_MOCK=true npm run build
+        env:
+          REACT_APP_PLUGIN_TEAM: cloudquery
+          REACT_APP_PLUGIN_KIND: destination
+          REACT_APP_PLUGIN_NAME: mysql
+          REACT_APP_PLUGIN_VERSION: development
+      - name: Run E2E tests and generate configs
+        working-directory: "plugins/destination/mysql/cloud-config-ui"
+        run: CQ_CI_PLAYWRIGHT_PREVIEW_LINK='${{ env.CQ_CI_PLAYWRIGHT_PREVIEW_LINK }}' E2E_TESTS_GENERATE_CONFIG=true npm run test:e2e
+      - name: Run unit tests
+        working-directory: "plugins/destination/mysql/cloud-config-ui"
+        run: npm run test
