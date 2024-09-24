@@ -50,6 +50,7 @@
     "build": "node scripts/initialize.js && react-scripts build",
     "lint": "eslint src --ext .ts,.tsx --max-warnings 0",
     "lint:fix": "eslint src --ext .ts,.tsx --max-warnings 0 --fix",
+    "test": "react-scripts test --watchAll=false --transformIgnorePatterns 'node_modules/(?!my-library-dir)/'",
     "test:e2e": "playwright test",
     "dev:test:e2e": "REACT_APP_USE_CLOUD_APP_MOCK=true npm run build && playwright test"
   },
