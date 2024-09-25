@@ -212,7 +212,7 @@ jobs:
         with:
           name: postgresql-e2e-testsplaywright
           path: |
-            plugins/source/postgresql/cloud-config-ui/test-results/
+            plugins/destination/postgresql/cloud-config-ui/test-results/
           retention-days: 1
           overwrite: true
       - name: Run unit tests
