@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.8.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.8.1...cli-v6.8.2) (2024-09-25)
+
+
+### Bug Fixes
+
+* Fix incorrect location of metrics calculation. ([#19239](https://github.com/cloudquery/cloudquery/issues/19239)) ([1e1c3af](https://github.com/cloudquery/cloudquery/commit/1e1c3af60d18e1ce439a14bf24a7ef7d5e4e0485))
+
 ## [6.8.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.8.0...cli-v6.8.1) (2024-09-23)
 
 
