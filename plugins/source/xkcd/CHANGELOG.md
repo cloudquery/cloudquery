@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.3.7...plugins-source-xkcd-v1.4.0) (2024-09-25)
+
+
+### Features
+
+* Add sharding support ([#19205](https://github.com/cloudquery/cloudquery/issues/19205)) ([7fd1e2c](https://github.com/cloudquery/cloudquery/commit/7fd1e2c0421fc75557fd4f28c525487b78d0d785))
+
 ## [1.3.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.3.6...plugins-source-xkcd-v1.3.7) (2024-09-18)
 
 
