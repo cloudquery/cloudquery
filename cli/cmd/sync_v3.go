@@ -550,6 +550,7 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	if err != nil {
 		return err
 	}
+	totals = sourceClient.Metrics()
 	sourceWarnings := totals.Warnings
 	sourceErrors := totals.Errors
 	var metadataDataErrors error
