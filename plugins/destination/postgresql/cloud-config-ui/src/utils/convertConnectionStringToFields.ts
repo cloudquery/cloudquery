@@ -1,16 +1,10 @@
-type ConnectionFields = {
-  protocol: 'postgres' | 'postgresql';
-  username: string | null;
-  password: string | null;
-  host: string | null;
-  port: number;
-  database: string | null;
-  queryParams: Record<string, string>;
-};
+export const convertConnectionStringToFields = (connectionString?: string) => {
+  const connectionParams: Record<string, any> = {};
 
-export const convertConnectionStringToFields = (connectionString?: string): ConnectionFields => {
   if (!connectionString) {
-    return {} as ConnectionFields;
+    return {
+      connectionParams,
+    };
   }
 
   // Check if the string starts with 'postgres://' or 'postgresql://'
@@ -32,20 +26,20 @@ export const convertConnectionStringToFields = (connectionString?: string): Conn
   const [userInfoHost, database] = mainPart.split('/');
 
   // Initialize components
-  let username = null,
+  let user = null,
     password = null,
     host = null,
     port = '5432'; // default port is 5432
 
-  // Check if there is user info (username and password)
+  // Check if there is user info (user and password)
   if (userInfoHost.includes('@')) {
     const [userInfo, hostPort] = userInfoHost.split('@');
 
     // Check if password is included
     if (userInfo.includes(':')) {
-      [username, password] = userInfo.split(':');
+      [user, password] = userInfo.split(':');
     } else {
-      username = userInfo;
+      user = userInfo;
     }
 
     // Check if port is included
@@ -64,23 +58,27 @@ export const convertConnectionStringToFields = (connectionString?: string): Conn
   }
 
   // Parse query parameters if present
-  const queryParams = {};
   if (queryString) {
     const pairs = queryString.split('&');
     for (const pair of pairs) {
       const [key, value] = pair.split('=');
-      queryParams[key] = decodeURIComponent(value || '');
+      if (key === 'sslmode') {
+        connectionParams.ssl = true;
+        connectionParams.sslmode = decodeURIComponent(value || '');
+      } else {
+        connectionParams[key] = decodeURIComponent(value || '');
+      }
     }
   }
 
   // Return parsed components
   return {
     protocol: connectionString.startsWith('postgresql://') ? 'postgresql' : 'postgres',
-    username,
+    user,
     password,
     host,
     port: Number.parseInt(port, 10),
     database,
-    queryParams,
+    connectionParams,
   };
 };

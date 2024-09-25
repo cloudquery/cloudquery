@@ -1,10 +1,12 @@
-import { convertConnectionStringToFields } from '../connectionStringToFields';
+import { convertConnectionStringToFields } from '../convertConnectionStringToFields';
 
 describe('connectionStringToFields (URI)', () => {
   test('empty connection string', () => {
     const result = convertConnectionStringToFields();
 
-    expect(result).toEqual({});
+    expect(result).toEqual({
+      connectionParams: {},
+    });
   });
 
   test('basic empty connection string', () => {
@@ -26,46 +28,50 @@ describe('connectionStringToFields (URI)', () => {
   });
 
   test('connection string with host, port, and database', () => {
-    const result = convertConnectionStringToFields('postgres://myhost:1234/mydb');
+    const result = convertConnectionStringToFields('postgres://myhost:1234/db');
 
-    expect(result).toMatchObject({ host: 'myhost', port: 1234, database: 'mydb' });
+    expect(result).toMatchObject({ host: 'myhost', port: 1234, database: 'db' });
   });
 
   test('connection string with host, port, database, username, and password', () => {
-    const result = convertConnectionStringToFields('postgres://user:pass@myhost:1234/mydb');
+    const result = convertConnectionStringToFields('postgres://user:pass@myhost:1234/db');
 
     expect(result).toMatchObject({
       host: 'myhost',
       port: 1234,
-      database: 'mydb',
-      username: 'user',
+      database: 'db',
+      user: 'user',
       password: 'pass',
     });
   });
 
   test('connection string with host, port, database, and username and environment variable password', () => {
-    const result = convertConnectionStringToFields('postgres://user:${password}@myhost:1234/mydb');
+    const result = convertConnectionStringToFields('postgres://user:${password}@myhost:1234/db');
 
     expect(result).toMatchObject({
       host: 'myhost',
       port: 1234,
-      database: 'mydb',
-      username: 'user',
+      database: 'db',
+      user: 'user',
       password: '${password}',
     });
   });
 
-  test('connection string with host, port, database, username, password, and sslmode', () => {
-    const result = convertConnectionStringToFields('postgres://user:pass@myhost:1234/mydb?sslmode=require');
+  test('connection string with host, port, database, username, password, sslmode and search_path', () => {
+    const result = convertConnectionStringToFields(
+      'postgres://user:pass@myhost:1234/db?sslmode=require&search_path=myschema',
+    );
 
     expect(result).toMatchObject({
       host: 'myhost',
       port: 1234,
-      database: 'mydb',
-      username: 'user',
+      database: 'db',
+      user: 'user',
       password: 'pass',
-      queryParams: {
+      connectionParams: {
+        ssl: true,
         sslmode: 'require',
+        search_path: 'myschema',
       },
     });
   });

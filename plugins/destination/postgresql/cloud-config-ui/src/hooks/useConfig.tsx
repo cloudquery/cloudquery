@@ -12,8 +12,8 @@ import {
   sslModeValues,
   writeModeValues,
 } from '../utils/constants';
+import { convertConnectionStringToFields } from '../utils/convertConnectionStringToFields';
 import { pluginUiMessageHandler } from '../utils/messageHandler';
-import { parseConnectionString } from '../utils/parseConnectionString';
 
 interface Props {
   initialValues?: FormMessagePayload['init']['initialValues'] | undefined;
@@ -21,7 +21,13 @@ interface Props {
 
 export const useConfig = ({ initialValues }: Props): DestinationConfig => {
   const url = initialValues?.spec?.connection_string || '';
-  const connectionObj = parseConnectionString(url);
+  const connectionObj: Record<string, any> = convertConnectionStringToFields(url);
+
+  // eslint-disable-next-line no-console
+  console.log(initialValues);
+
+  // eslint-disable-next-line no-console
+  console.log(connectionObj);
 
   return useMemo(
     () => ({
@@ -40,7 +46,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
               children: [
                 {
                   component: 'control-exclusive-toggle',
-                  name: 'connectionType',
+                  name: '_connectionType',
                   options: [
                     {
                       label: 'Regular setup',
@@ -59,15 +65,15 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                 },
                 {
                   component: 'control-secret-field',
-                  name: 'connectionString',
+                  name: 'connection_string',
                   helperText:
                     'Connection string to connect to the database. E.g. postgres://jack:secret@localhost:5432/mydb?sslmode=prefer',
                   label: 'Connection string',
-                  shouldRender: (values: any) => values.connectionType === 'string',
+                  shouldRender: (values: any) => values._connectionType === 'string',
                   schema: yup
                     .string()
                     .default(url)
-                    .when('connectionType', {
+                    .when('_connectionType', {
                       is: 'string',
                       // eslint-disable-next-line unicorn/no-thenable
                       then: (schema) => schema.required(),
@@ -78,12 +84,12 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                   name: 'host',
                   helperText: 'Host to connect to. E.g. 1.2.3.4 or mydb.host.com.',
                   label: 'Host',
-                  shouldRender: (values: any) => values.connectionType === 'fields',
+                  shouldRender: (values: any) => values._connectionType === 'fields',
                   schema: yup
                     .string()
                     .max(253)
                     .default(connectionObj.host ?? '')
-                    .when('connectionType', {
+                    .when('_connectionType', {
                       is: 'fields',
                       // eslint-disable-next-line unicorn/no-thenable
                       then: (schema) => schema.required(),
@@ -94,7 +100,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                   name: 'port',
                   helperText: 'Port to connect to. Optional, defaults to 5432.',
                   label: 'Port',
-                  shouldRender: (values: any) => values.connectionType === 'fields',
+                  shouldRender: (values: any) => values._connectionType === 'fields',
                   schema: yup
                     .string()
                     .max(5)
@@ -106,12 +112,12 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                   name: 'database',
                   helperText: 'Name of the PostgreSQL database you want to connect to.',
                   label: 'Database',
-                  shouldRender: (values: any) => values.connectionType === 'fields',
+                  shouldRender: (values: any) => values._connectionType === 'fields',
                   schema: yup
                     .string()
                     .max(63)
                     .default(connectionObj.database ?? '')
-                    .when('connectionType', {
+                    .when('_connectionType', {
                       is: 'fields',
                       // eslint-disable-next-line unicorn/no-thenable
                       then: (schema) => schema.required(),
@@ -119,10 +125,10 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                 },
                 {
                   component: 'control-text-field',
-                  name: 'username',
+                  name: 'user',
                   helperText: 'Username to use when authenticating. Optional, defaults to empty.',
                   label: 'Username',
-                  shouldRender: (values: any) => values.connectionType === 'fields',
+                  shouldRender: (values: any) => values._connectionType === 'fields',
                   schema: yup
                     .string()
                     .max(63)
@@ -133,7 +139,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                   name: 'password',
                   label: 'Password',
                   helperText: 'Password to use when authenticating. Optional, defaults to empty.',
-                  shouldRender: (values: any) => values.connectionType === 'fields',
+                  shouldRender: (values: any) => values._connectionType === 'fields',
                   schema: yup
                     .string()
                     .max(63)
@@ -141,33 +147,34 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                 },
                 {
                   component: 'control-text-field',
-                  name: 'schemaName',
+                  name: 'connectionParams.search_path',
                   helperText:
                     'Name of the PostgreSQL schema you want to connect to. Optional, defaults to public.',
                   label: 'Schema',
-                  shouldRender: (values: any) => values.connectionType === 'fields',
-                  schema: yup.string().default(connectionObj.schema ?? ''),
+                  shouldRender: (values: any) => values._connectionType === 'fields',
+                  schema: yup.string().default(connectionObj.connectionParms?.search_path ?? ''),
                 },
                 {
                   component: 'control-boolean-field',
-                  name: 'ssl',
+                  name: 'connectionParams.ssl',
                   label: 'SSL',
                   type: 'toggle',
-                  shouldRender: (values: any) => values.connectionType === 'fields',
+                  shouldRender: (values: any) => values._connectionType === 'fields',
                   schema: yup.bool().default(true),
                 },
                 {
                   component: 'control-select-field',
-                  name: 'sslMode',
+                  name: 'connectionParams.sslmode',
                   helperText:
                     'SSL connections to encrypt client/server communications using TLS protocols for increased security.',
                   label: 'SSL Mode',
-                  shouldRender: (values: any) => values.connectionType === 'fields' && !!values.ssl,
+                  shouldRender: (values: any) =>
+                    values._connectionType === 'fields' && !!values.connectionParams?.ssl,
                   options: [...sslModeValues],
                   schema: yup
                     .string()
                     .oneOf(sslModeValues)
-                    .default(connectionObj.sslMode ?? 'require'),
+                    .default(connectionObj.connectionParams.sslmode ?? 'require'),
                 },
               ],
             },
@@ -229,7 +236,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
               children: [
                 {
                   component: 'control-select-field',
-                  name: 'pgxLogLevel',
+                  name: 'pgx_log_level',
                   helperText: 'Configure the level of detail of the log from this destination.',
                   label: 'Log level',
                   options: [...pgxLogLevelValues],
@@ -241,7 +248,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                 },
                 {
                   component: 'control-text-field',
-                  name: 'batchSize',
+                  name: 'batch_size',
                   helperText:
                     'Maximum number of items that may be grouped together to be written in a single write. Default is 10,000.',
                   label: 'Batch size',
@@ -253,7 +260,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                 },
                 {
                   component: 'control-text-field',
-                  name: 'batchSizeBytes',
+                  name: 'batch_size_bytes',
                   helperText:
                     'Maximum size of items that may be grouped together to be written in a single write. Default is 100,000,000 = 100MB.',
                   label: 'Batch size (bytes)',
@@ -265,7 +272,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                 },
                 {
                   component: 'control-text-field',
-                  name: 'batchTimeout',
+                  name: 'batch_timeout',
                   helperText: 'Maximum interval between batch writes. Defaults to 60s.',
                   label: 'Batch timeout',
                   schema: yup

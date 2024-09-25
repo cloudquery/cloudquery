@@ -1,23 +1,27 @@
+import { escapeSingleQuotesAndBackslashes } from '@cloudquery/plugin-config-ui-lib';
+
 export function generateConnectionUrl(values: any): string {
   const password = values.password ? '${password}' : '';
+  const credentials = values.user ? `${values.user}:${password}@` : '';
+  const database = values.database
+    ? `${escapeSingleQuotesAndBackslashes(values.database.trim())}`
+    : '';
+  const host = values.host ? `${escapeSingleQuotesAndBackslashes(values.host.trim())}` : undefined;
+  const port = values.port ?? undefined;
+  const address = host ? `${host}:${port}` : undefined;
+  const wrappedAddress = address ? (values.tcp ? `tcp(${address})` : address) : '';
 
-  let finalUrl = `dbtype='postgresql' user='${values.username}' password='${password}' host='${escapeSingleQuotesAndBackslashes(values.host)}' dbname='${escapeSingleQuotesAndBackslashes(values.database)}'`;
+  const base = `postgres://${credentials}${wrappedAddress}/${database}`;
 
-  if (values.port) {
-    finalUrl += ` port='${values.port}'`;
+  const normalizedConnectionParams: Record<string, boolean | string> = {};
+  if (values.connectionParams.ssl && values.connectionParams.sslmode) {
+    normalizedConnectionParams['sslmode'] = values.connectionParams.sslmode;
+  }
+  if (values.connectionParams.search_path) {
+    normalizedConnectionParams['search_path'] = values.connectionParams.search_path;
   }
 
-  if (values.ssl) {
-    finalUrl += ` sslmode='${values.sslMode}'`;
-  }
+  const queryParams = new URLSearchParams(normalizedConnectionParams as any).toString();
 
-  if (values.schemaName) {
-    finalUrl += ` search_path='${values.schemaName}'`;
-  }
-
-  return finalUrl;
-}
-
-export function escapeSingleQuotesAndBackslashes(str: string) {
-  return str.replaceAll('\\', '\\\\').replaceAll("'", String.raw`\'`);
+  return queryParams ? `${base}?${queryParams}` : base;
 }
