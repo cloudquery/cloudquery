@@ -24,10 +24,10 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
   const connectionObj: Record<string, any> = convertConnectionStringToFields(url);
 
   // eslint-disable-next-line no-console
-  console.log(initialValues);
+  console.log('initialValues', initialValues);
 
   // eslint-disable-next-line no-console
-  console.log(connectionObj);
+  console.log('connectionObj', connectionObj);
 
   return useMemo(
     () => ({
@@ -160,7 +160,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                   label: 'SSL',
                   type: 'toggle',
                   shouldRender: (values: any) => values._connectionType === 'fields',
-                  schema: yup.bool().default(true),
+                  schema: yup.bool().default(connectionObj.connectionParams?.ssl ?? false),
                 },
                 {
                   component: 'control-select-field',
