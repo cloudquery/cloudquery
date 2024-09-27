@@ -11,10 +11,8 @@ export function prepareSubmitValues(
     values._connectionType === 'string'
       ? prepareSubmitValuesFromConnectionString(values)
       : prepareSubmitValuesFromFields(values);
-  // eslint-disable-next-line no-console
-  console.log(values);
 
-  payload.migrateMode = 'safe';
+  payload.migrateMode = values.migrateMode;
   payload.writeMode = values.writeMode;
 
   if (values.pgx_log_level) {

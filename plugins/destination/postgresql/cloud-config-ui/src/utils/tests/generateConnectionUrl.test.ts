@@ -1,3 +1,4 @@
+import { convertConnectionStringToFields } from '../convertConnectionStringToFields';
 import { generateConnectionUrl } from '../generateConnectionUrl';
 
 const baseTestFormValues = {
@@ -62,7 +63,7 @@ describe('generateConnectionUrl', () => {
       connectionParams: {
         ...baseTestFormValues.connectionParams,
         ssl: true,
-        tlsMode: 'require',
+        sslmode: 'require',
       },
     });
 
