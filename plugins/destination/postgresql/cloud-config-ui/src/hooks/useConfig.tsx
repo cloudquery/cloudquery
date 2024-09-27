@@ -267,7 +267,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                   schema: yup
                     .number()
                     .integer()
-                    .default(initialValues?.spec?.baatch_size_bytes ?? 100_000_000)
+                    .default(initialValues?.spec?.batch_size_bytes ?? 100_000_000)
                     .required(),
                 },
                 {
