@@ -152,7 +152,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                     'Name of the PostgreSQL schema you want to connect to. Optional, defaults to public.',
                   label: 'Schema',
                   shouldRender: (values: any) => values._connectionType === 'fields',
-                  schema: yup.string().default(connectionObj.connectionParms?.search_path ?? ''),
+                  schema: yup.string().default(connectionObj.connectionParams?.search_path ?? ''),
                 },
                 {
                   component: 'control-boolean-field',
