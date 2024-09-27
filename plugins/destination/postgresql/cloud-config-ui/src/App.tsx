@@ -7,8 +7,8 @@ import { pluginUiMessageHandler } from './utils/messageHandler';
 import { prepareSubmitValues } from './utils/prepareSubmitValues';
 
 const CloudAppMock: React.FC<any> = React.lazy(() =>
-  import('@cloudquery/plugin-config-ui-lib/components/cloudAppMock').then(({ CloudAppMock }) => ({
-    default: CloudAppMock,
+  import('@cloudquery/plugin-config-ui-lib/components/devWrapper').then(({ DevWrapper }) => ({
+    default: DevWrapper,
   })),
 );
 
@@ -23,16 +23,7 @@ const useCloudAppMock =
   window.self === window.top;
 const DevWrapper = useCloudAppMock ? CloudAppMockWrapper : Fragment;
 // eslint-disable-next-line @typescript-eslint/no-require-imports, unicorn/prefer-module
-const { plugin, ...devWrapperProps }: any = useCloudAppMock ? require('./.env.json') : {};
-
-const pluginProps = useCloudAppMock
-  ? plugin
-  : {
-      team: process.env.REACT_APP_PLUGIN_TEAM,
-      kind: process.env.REACT_APP_PLUGIN_KIND,
-      name: process.env.REACT_APP_PLUGIN_NAME,
-      version: process.env.REACT_APP_PLUGIN_VERSION,
-    };
+const { ...devWrapperProps }: any = useCloudAppMock ? require('./.env.json') : {};
 
 function App() {
   const { initialValues, initialized, teamName, context } = useFormInit(
@@ -45,7 +36,6 @@ function App() {
   return (
     <PluginContextProvider
       config={config}
-      plugin={pluginProps}
       teamName={teamName}
       hideStepper={context === 'wizard'} // TODO: Delete after iframe deprecation
       pluginUiMessageHandler={pluginUiMessageHandler}
