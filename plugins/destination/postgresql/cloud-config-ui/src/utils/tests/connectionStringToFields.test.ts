@@ -83,8 +83,6 @@ describe('connectionStringToFields (key-value)', () => {
       "dbtype='postgresql' user='user' password='pass' host='myhost' port='1234' dbname='db' sslmode='require'",
     );
 
-    console.log(result);
-
     expect(result).toMatchObject({
       host: 'myhost',
       port: 1234,
@@ -102,8 +100,6 @@ describe('connectionStringToFields (key-value)', () => {
     const result = convertConnectionStringToFields(
       "dbtype='postgresql' user='user' password='pass' host='myhost' port='' dbname='db' sslmode='require'",
     );
-
-    console.log(result);
 
     expect(result).toMatchObject({
       host: 'myhost',

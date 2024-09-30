@@ -23,12 +23,6 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
   const url = initialValues?.spec?.connection_string || '';
   const connectionObj: Record<string, any> = convertConnectionStringToFields(url);
 
-  // eslint-disable-next-line no-console
-  console.log('initialValues', initialValues);
-
-  // eslint-disable-next-line no-console
-  console.log('connectionObj', connectionObj);
-
   return useMemo(
     () => ({
       name: 'postgresql',
