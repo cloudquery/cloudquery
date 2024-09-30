@@ -26,6 +26,12 @@ describe('generateConnectionUrl', () => {
     expect(result).toBe('postgres://username:${password}@host:1234/db');
   });
 
+  test('returns a simple connection string with no port', async () => {
+    const result = generateConnectionUrl({ ...baseTestFormValues, port: '' });
+
+    expect(result).toBe('postgres://username:${password}@host/db');
+  });
+
   test('returns a no-database connection string', async () => {
     const result = generateConnectionUrl({ ...baseTestFormValues, database: '' });
 
@@ -35,7 +41,7 @@ describe('generateConnectionUrl', () => {
   test('returns a no-address connection string', async () => {
     const result = generateConnectionUrl({ ...baseTestFormValues, host: '' });
 
-    expect(result).toBe('postgres://username:${password}@/db');
+    expect(result).toBe('postgres://username:${password}@:1234/db');
   });
 
   test('returns an ssl connection string', async () => {

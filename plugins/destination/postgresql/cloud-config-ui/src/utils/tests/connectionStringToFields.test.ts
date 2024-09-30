@@ -18,7 +18,7 @@ describe('connectionStringToFields (URI)', () => {
   test('connection string with host', () => {
     const result = convertConnectionStringToFields('postgres://myhost');
 
-    expect(result).toMatchObject({ host: 'myhost' });
+    expect(result).toMatchObject({ host: 'myhost', port: undefined });
   });
 
   test('connection string with host and port', () => {
@@ -88,6 +88,26 @@ describe('connectionStringToFields (key-value)', () => {
     expect(result).toMatchObject({
       host: 'myhost',
       port: 1234,
+      database: 'db',
+      user: 'user',
+      password: 'pass',
+      connectionParams: {
+        ssl: true,
+        sslmode: 'require',
+      },
+    });
+  });
+
+  test('connection string with empty port', () => {
+    const result = convertConnectionStringToFields(
+      "dbtype='postgresql' user='user' password='pass' host='myhost' port='' dbname='db' sslmode='require'",
+    );
+
+    console.log(result);
+
+    expect(result).toMatchObject({
+      host: 'myhost',
+      port: undefined,
       database: 'db',
       user: 'user',
       password: 'pass',

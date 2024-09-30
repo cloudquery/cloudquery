@@ -6,9 +6,9 @@ export function generateConnectionUrl(values: any): string {
   const database = values.database
     ? `${escapeSingleQuotesAndBackslashes(values.database.trim())}`
     : '';
-  const host = values.host ? `${escapeSingleQuotesAndBackslashes(values.host.trim())}` : undefined;
-  const port = values.port ?? undefined;
-  const address = host ? `${host}:${port}` : undefined;
+  const host = values.host ? `${escapeSingleQuotesAndBackslashes(values.host.trim())}` : '';
+  const port = values.port ?? '';
+  const address = port ? `${host}:${port}` : `${host}`;
   const wrappedAddress = address ? (values.tcp ? `tcp(${address})` : address) : '';
 
   const base = `postgres://${credentials}${wrappedAddress}/${database}`;

@@ -39,7 +39,7 @@ function parseConnectionFieldsFromURI(connectionString: string) {
   let user = null,
     password = null,
     host = null,
-    port = '5432'; // default port is 5432
+    port = null;
 
   // Check if there is user info (user and password)
   if (userInfoHost.includes('@')) {
@@ -87,7 +87,7 @@ function parseConnectionFieldsFromURI(connectionString: string) {
     user,
     password,
     host,
-    port: Number.parseInt(port, 10),
+    port: port ? Number.parseInt(port, 10) : undefined,
     database,
     connectionParams,
   };
@@ -132,7 +132,7 @@ function parseConnectionFieldsFromKeyValue(connectionString: string) {
         break;
       }
       case 'port': {
-        connectionFields.port = Number.parseInt(cleanedValue, 10);
+        connectionFields.port = cleanedValue ? Number.parseInt(cleanedValue, 10) : undefined;
 
         break;
       }
