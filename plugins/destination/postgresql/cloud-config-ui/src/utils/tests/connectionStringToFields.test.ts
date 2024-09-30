@@ -76,3 +76,25 @@ describe('connectionStringToFields (URI)', () => {
     });
   });
 });
+
+describe('connectionStringToFields (key-value)', () => {
+  test('connection string with host, port, database, username, and password', () => {
+    const result = convertConnectionStringToFields(
+      "dbtype='postgresql' user='user' password='pass' host='myhost' port='1234' dbname='db' sslmode='require'",
+    );
+
+    console.log(result);
+
+    expect(result).toMatchObject({
+      host: 'myhost',
+      port: 1234,
+      database: 'db',
+      user: 'user',
+      password: 'pass',
+      connectionParams: {
+        ssl: true,
+        sslmode: 'require',
+      },
+    });
+  });
+});

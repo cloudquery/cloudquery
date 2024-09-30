@@ -7,13 +7,23 @@ export const convertConnectionStringToFields = (connectionString?: string) => {
     };
   }
 
-  // Check if the string starts with 'postgres://' or 'postgresql://'
-  if (
-    !connectionString.startsWith('postgres://') &&
-    !connectionString.startsWith('postgresql://')
-  ) {
-    throw new Error('Invalid connection string: must start with "postgres://" or "postgresql://"');
+  if (connectionString.startsWith('postgres://') || connectionString.startsWith('postgresql://')) {
+    return parseConnectionFieldsFromURI(connectionString);
   }
+
+  // Return parsed components
+  return parseConnectionFieldsFromKeyValue(connectionString);
+};
+
+/**
+ * Parses connection fields from URI i.e. "postgres://user:pass@myhost:1234/db?sslmode=require"
+ *
+ * @param connectionString
+ *
+ * @returns
+ */
+function parseConnectionFieldsFromURI(connectionString: string) {
+  const connectionParams: Record<string, any> = {};
 
   // Remove the protocol part ('postgres://' or 'postgresql://')
   const protocolEndIndex = connectionString.indexOf('://') + 3;
@@ -81,4 +91,59 @@ export const convertConnectionStringToFields = (connectionString?: string) => {
     database,
     connectionParams,
   };
-};
+}
+
+/**
+ * Parses connection fields from key value pairs i.e. "dbtype='postgresql' user='user' password='pass' host='myhost' port='1234' dbname='db' sslmode='require'"
+ *
+ *
+ * @param connectionString - connection string
+ *
+ * @returns {Record<string, any>} connection fields
+ */
+function parseConnectionFieldsFromKeyValue(connectionString: string) {
+  const connectionFields: Record<string, any> = {};
+  const connectionParams: Record<string, any> = {};
+
+  // Split the connection string into key-value pairs
+  const pairs = connectionString.split(' ');
+
+  // Parse key-value pairs
+  for (const pair of pairs) {
+    const [key, value] = pair.split('=');
+
+    const cleanedValue = value.replace(/'/g, '');
+
+    switch (key) {
+      case 'sslmode': {
+        connectionParams.ssl = true;
+        connectionParams.sslmode = cleanedValue;
+
+        break;
+      }
+      case 'search_path': {
+        connectionParams.search_path = cleanedValue;
+
+        break;
+      }
+      case 'dbname': {
+        connectionFields.database = cleanedValue;
+
+        break;
+      }
+      case 'port': {
+        connectionFields.port = Number.parseInt(cleanedValue, 10);
+
+        break;
+      }
+      default: {
+        connectionFields[key] = cleanedValue;
+      }
+    }
+  }
+
+  return {
+    ...connectionFields,
+    connectionParams,
+  };
+}
