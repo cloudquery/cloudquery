@@ -6,7 +6,7 @@ import {
   editPlugin,
   getPersistentName,
   login,
-} from '@cloudquery/plugin-config-ui-lib/dist/e2e-utils';
+} from '@cloudquery/plugin-config-ui-lib/e2e-utils';
 
 test.describe.configure({ mode: 'serial' });
 
