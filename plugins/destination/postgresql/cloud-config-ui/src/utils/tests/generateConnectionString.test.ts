@@ -85,7 +85,7 @@ describe('generateConnectionStringKeyValue', () => {
     const result = generateConnectionStringKeyValue(baseTestFormValues);
 
     expect(result).toBe(
-      "dbtype='postgresql' user='username' password='${password}' host='host' dbname='db' port='1234'",
+      "user='username' password='${password}' host='host' dbname='db' port='1234'",
     );
   });
 
@@ -97,16 +97,14 @@ describe('generateConnectionStringKeyValue', () => {
     });
 
     expect(result).toBe(
-      "dbtype='postgresql' user='username' password='${password}' host='host\\'with\\'single\\'quotes' dbname='db\\'with\\'single\\'quotes' port='1234'",
+      "user='username' password='${password}' host='host\\'with\\'single\\'quotes' dbname='db\\'with\\'single\\'quotes' port='1234'",
     );
   });
 
   test('returns a connection string with no port', async () => {
     const result = generateConnectionStringKeyValue({ ...baseTestFormValues, port: '' });
 
-    expect(result).toBe(
-      "dbtype='postgresql' user='username' password='${password}' host='host' dbname='db'",
-    );
+    expect(result).toBe("user='username' password='${password}' host='host' dbname='db'");
   });
 
   test('returns a connection string with ssl mode', async () => {
@@ -116,7 +114,7 @@ describe('generateConnectionStringKeyValue', () => {
     });
 
     expect(result).toBe(
-      "dbtype='postgresql' user='username' password='${password}' host='host' dbname='db' port='1234' sslmode='require'",
+      "user='username' password='${password}' host='host' dbname='db' port='1234' sslmode='require'",
     );
   });
 
@@ -127,7 +125,7 @@ describe('generateConnectionStringKeyValue', () => {
     });
 
     expect(result).toBe(
-      "dbtype='postgresql' user='username' password='${password}' host='host' dbname='db' port='1234' search_path='myschema'",
+      "user='username' password='${password}' host='host' dbname='db' port='1234' search_path='myschema'",
     );
   });
 });

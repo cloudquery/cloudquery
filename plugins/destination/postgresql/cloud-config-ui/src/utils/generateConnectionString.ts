@@ -39,7 +39,7 @@ export function generateConnectionStringURI(values: any): string {
 export function generateConnectionStringKeyValue(values: any): string {
   const password = values.password ? '${password}' : '';
 
-  let finalUrl = `dbtype='postgresql' user='${values.user}' password='${password}' host='${escapeSingleQuotesAndBackslashes(values.host)}' dbname='${escapeSingleQuotesAndBackslashes(values.database)}'`;
+  let finalUrl = `user='${values.user}' password='${password}' host='${escapeSingleQuotesAndBackslashes(values.host)}' dbname='${escapeSingleQuotesAndBackslashes(values.database)}'`;
 
   if (values.port) {
     finalUrl += ` port='${values.port}'`;
