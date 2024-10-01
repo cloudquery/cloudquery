@@ -197,6 +197,14 @@ export function Footer() {
               </div>
             </div>
           </div>
+          <div className="mt-12 xl:!mt-0">
+            <FooterHeader>Subscribe to our newsletter</FooterHeader>
+            <p className="mt-4 text-sm text-gray-600 dark:text-gray-500">
+              Join the CloudQuery newsletter and stay updated on new releases
+              and features, guides, and case studies.
+            </p>
+            <SubmitForm />
+          </div>
         </div>
         <div className="md:grid md:grid-cols-2 md:gap-8">
           <div className="md:flex md:items-center md:justify-between mt-8">
