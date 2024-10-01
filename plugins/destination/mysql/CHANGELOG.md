@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.2.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.2.8...plugins-destination-mysql-v5.2.9) (2024-10-01)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @types/node to v16.18.112 ([#19259](https://github.com/cloudquery/cloudquery/issues/19259)) ([b353efa](https://github.com/cloudquery/cloudquery/commit/b353efa34b791e92bf581cfb67a7b24cbfaf321a))
+* **deps:** Update dependency @types/react to v18.3.10 ([#19260](https://github.com/cloudquery/cloudquery/issues/19260)) ([22cc644](https://github.com/cloudquery/cloudquery/commit/22cc644be1951973c5ad3637a286fb08961cc4a7))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.63.0 ([#19176](https://github.com/cloudquery/cloudquery/issues/19176)) ([00b2de0](https://github.com/cloudquery/cloudquery/commit/00b2de08ed424b7dbcc60a143a386c9c42133a70))
+
 ## [5.2.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.2.7...plugins-destination-mysql-v5.2.8) (2024-09-16)
 
 
