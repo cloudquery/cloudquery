@@ -101,7 +101,7 @@ function parseConnectionFieldsFromURI(connectionString: string) {
  *
  * @returns {Record<string, any>} connection fields
  */
-function parseConnectionFieldsFromKeyValue(connectionString: string) {
+function parseConnectionFieldsFromKeyValue(connectionString: string): Record<string, any> {
   const connectionFields: Record<string, any> = {};
   const connectionParams: Record<string, any> = {};
 

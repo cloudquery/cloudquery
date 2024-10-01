@@ -2,7 +2,10 @@ import { PluginUiMessagePayload } from '@cloudquery/plugin-config-ui-connector';
 import { corePrepareSubmitValues } from '@cloudquery/plugin-config-ui-lib';
 
 import { convertConnectionStringToFields } from './convertConnectionStringToFields';
-import { generateConnectionUrl } from './generateConnectionUrl';
+import {
+  generateConnectionStringKeyValue,
+  generateConnectionStringURI,
+} from './generateConnectionString';
 
 export function prepareSubmitValues(
   values: Record<string, any>,
@@ -38,7 +41,10 @@ function prepareSubmitValuesFromFields(
   values: Record<string, any>,
 ): PluginUiMessagePayload['validation_passed']['values'] {
   const payload = corePrepareSubmitValues(values);
-  payload.spec.connection_string = generateConnectionUrl(values);
+  payload.spec.connection_string =
+    values._connectionType === 'string'
+      ? generateConnectionStringURI(values)
+      : generateConnectionStringKeyValue(values);
   delete payload.spec.password;
   payload.envs = payload.envs.filter(({ name }) => name !== 'connection_string');
 

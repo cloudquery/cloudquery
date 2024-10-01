@@ -168,7 +168,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                   schema: yup
                     .string()
                     .oneOf(sslModeValues)
-                    .default(connectionObj.connectionParams.sslmode ?? 'require'),
+                    .default(connectionObj.connectionParams?.sslmode ?? 'require'),
                 },
               ],
             },
