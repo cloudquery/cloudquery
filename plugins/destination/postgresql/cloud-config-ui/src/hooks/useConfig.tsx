@@ -300,7 +300,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
             header: 'Setup guide',
             bodies: [
               {
-                text: `To allow CloudQuery network access to your MySQL instance, make sure the following
+                text: `To allow CloudQuery network access to your PostgreSQL instance, make sure the following
                 CloudQuery IPs are in your firewall allowlist:`,
               },
               { code: '35.231.218.115' },
