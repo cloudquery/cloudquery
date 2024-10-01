@@ -120,7 +120,7 @@ jobs:
           token: ${{ secrets.GH_CQ_BOT }}
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: "cq-bot"
-          body-includes: "postgresql Cloud UI deployed to Vercel:"
+          body-includes: "PostgreSQL Cloud UI deployed to Vercel:"
 
       - name: Delete Previous Vercel Deployment (if comment with URL exists)
         if: steps.find-comment.outputs.comment-id != ''
