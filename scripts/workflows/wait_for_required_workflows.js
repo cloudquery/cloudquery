@@ -75,6 +75,7 @@ module.exports = async ({github, context}) => {
         const runsWithPossibleDuplicates = checkRuns.map(({id, name, conclusion}) => ({id, name, conclusion}))
         const runs = runsWithPossibleDuplicates.filter((run, index, self) => self.findIndex(({id}) => id === run.id) === index)
         console.log(`Got the following check runs: ${JSON.stringify(runs)}`)
+        const matchingRuns = runs.filter(({name}) => actions.includes(name))
         const allowedConclusions = ['success', 'skipped']
         const failedRuns = matchingRuns.filter(({conclusion}) => !allowedConclusions.includes(conclusion))
         if (failedRuns.length > 0) {
