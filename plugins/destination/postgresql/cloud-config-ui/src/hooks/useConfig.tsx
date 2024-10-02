@@ -61,7 +61,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                   component: 'control-secret-field',
                   name: 'connection_string',
                   helperText:
-                    'Connection string to connect to the database. E.g. postgres://jack:secret@localhost:5432/mydb?sslmode=prefer',
+                    'Connection string to connect to the database. E.g. postgres://user:pass@localhost:5432/mydb?sslmode=prefer',
                   label: 'Connection string',
                   shouldRender: (values: any) => values._connectionType === 'string',
                   schema: yup
