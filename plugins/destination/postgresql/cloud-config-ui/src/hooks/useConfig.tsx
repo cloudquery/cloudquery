@@ -59,7 +59,7 @@ export const useConfig = ({ initialValues, isManagedDestination }: Props): Desti
                     .string()
                     .oneOf(connectionTypeValues)
                     .default(
-                      isManagedDestination || url.startsWith('postgresql://') ? 'string' : 'fields',
+                      isManagedDestination || url.startsWith('postgres://') ? 'string' : 'fields',
                     )
                     .required(),
                 },
