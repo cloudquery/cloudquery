@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.6.0...plugins-source-hackernews-v3.6.1) (2024-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @types/react to v18.3.10 ([#19260](https://github.com/cloudquery/cloudquery/issues/19260)) ([22cc644](https://github.com/cloudquery/cloudquery/commit/22cc644be1951973c5ad3637a286fb08961cc4a7))
+
 ## [3.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.5.7...plugins-source-hackernews-v3.6.0) (2024-09-25)
 
 
