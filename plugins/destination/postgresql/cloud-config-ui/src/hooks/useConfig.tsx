@@ -17,11 +17,15 @@ import { pluginUiMessageHandler } from '../utils/messageHandler';
 
 interface Props {
   initialValues?: FormMessagePayload['init']['initialValues'] | undefined;
+  isManagedDestination: boolean;
 }
 
-export const useConfig = ({ initialValues }: Props): DestinationConfig => {
+export const useConfig = ({ initialValues, isManagedDestination }: Props): DestinationConfig => {
   const url = initialValues?.spec?.connection_string || '';
-  const connectionObj: Record<string, any> = convertConnectionStringToFields(url);
+  const connectionObj: Record<string, any> = useMemo(
+    () => convertConnectionStringToFields(url),
+    [url],
+  );
 
   return useMemo(
     () => ({
@@ -54,7 +58,13 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                   schema: yup
                     .string()
                     .oneOf(connectionTypeValues)
-                    .default(connectionTypeValues[1])
+                    .default(
+                      isManagedDestination ||
+                        url.startsWith('postgres://') ||
+                        url.startsWith('postgresql://')
+                        ? 'string'
+                        : 'fields',
+                    )
                     .required(),
                 },
                 {
@@ -324,7 +334,6 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
           "The specified schema does not exist. Please check your schema name and ensure it's created on the server.",
       },
     }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [initialValues],
+    [connectionObj, initialValues, isManagedDestination, url],
   );
 };
