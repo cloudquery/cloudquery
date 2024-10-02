@@ -1,18 +1,27 @@
 export const convertConnectionStringToFields = (connectionString?: string) => {
-  const connectionParams: Record<string, any> = {};
+  try {
+    const connectionParams: Record<string, any> = {};
 
-  if (!connectionString) {
+    if (!connectionString) {
+      return {
+        connectionParams,
+      };
+    }
+
+    if (
+      connectionString.startsWith('postgres://') ||
+      connectionString.startsWith('postgresql://')
+    ) {
+      return parseConnectionFieldsFromURI(connectionString);
+    }
+
+    // Return parsed components
+    return parseConnectionFieldsFromKeyValue(connectionString);
+  } catch {
     return {
-      connectionParams,
+      connectionParams: {},
     };
   }
-
-  if (connectionString.startsWith('postgres://') || connectionString.startsWith('postgresql://')) {
-    return parseConnectionFieldsFromURI(connectionString);
-  }
-
-  // Return parsed components
-  return parseConnectionFieldsFromKeyValue(connectionString);
 };
 
 /**

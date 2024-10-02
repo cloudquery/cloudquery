@@ -9,6 +9,14 @@ describe('connectionStringToFields (URI)', () => {
     });
   });
 
+  test('bad connection string', () => {
+    const result = convertConnectionStringToFields('bad');
+
+    expect(result).toEqual({
+      connectionParams: {},
+    });
+  });
+
   test('basic empty connection string', () => {
     const result = convertConnectionStringToFields('postgres://');
 
