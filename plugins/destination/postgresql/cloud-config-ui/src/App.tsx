@@ -1,51 +1,60 @@
-import Stack from '@mui/material/Stack';
-import CssBaseline from '@mui/material/CssBaseline';
-import ThemeProvider from '@mui/material/styles/ThemeProvider';
-import createTheme from '@mui/material/styles/createTheme';
-import { Form } from './form';
-import { Fragment, useMemo } from 'react';
-import { createThemeOptions } from '@cloudquery/cloud-ui';
+import React, { Fragment, Suspense } from 'react';
+
+import { ConfigUIForm, PluginContextProvider, useFormInit } from '@cloudquery/plugin-config-ui-lib';
+
+import { useConfig } from './hooks/useConfig';
 import { pluginUiMessageHandler } from './utils/messageHandler';
-import { prepareInitialValues } from './utils/prepareInitialValues';
-import { CloudAppMock, useFormHeightChange, useFormInit } from '@cloudquery/plugin-config-ui-lib';
-import Box from '@mui/material/Box';
-import { Guides } from './guides';
+import { prepareSubmitValues } from './utils/prepareSubmitValues';
+
+const CloudAppMock: React.FC<any> = React.lazy(() =>
+  import('@cloudquery/plugin-config-ui-lib/components/cloudAppMock').then(({ CloudAppMock }) => ({
+    default: CloudAppMock,
+  })),
+);
+
+const CloudAppMockWrapper = (props: any) => (
+  <Suspense>
+    <CloudAppMock {...props} />
+  </Suspense>
+);
 
 const useCloudAppMock =
   (process.env.REACT_APP_USE_CLOUD_APP_MOCK === 'true' || process.env.NODE_ENV !== 'production') &&
   window.self === window.top;
-const DevWrapper = useCloudAppMock ? CloudAppMock : Fragment;
-// eslint-disable-next-line unicorn/prefer-module
-const devWrapperProps: any = useCloudAppMock ? require('./.env.json') : undefined;
+const DevWrapper = useCloudAppMock ? CloudAppMockWrapper : Fragment;
+// eslint-disable-next-line @typescript-eslint/no-require-imports, unicorn/prefer-module
+const { plugin, ...devWrapperProps }: any = useCloudAppMock ? require('./.env.json') : {};
+
+const pluginProps = useCloudAppMock
+  ? plugin
+  : {
+      team: process.env.REACT_APP_PLUGIN_TEAM,
+      kind: process.env.REACT_APP_PLUGIN_KIND,
+      name: process.env.REACT_APP_PLUGIN_NAME,
+      version: process.env.REACT_APP_PLUGIN_VERSION,
+    };
 
 function App() {
-  const { initialValues, initialized, isManagedDestination } = useFormInit(
+  const { initialValues, initialized, teamName, context } = useFormInit(
     pluginUiMessageHandler,
-    false,
+    true,
   );
-  useFormHeightChange(pluginUiMessageHandler);
 
-  const theme = useMemo(() => createTheme(createThemeOptions()), []);
+  const config = useConfig({ initialValues });
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
+    <PluginContextProvider
+      config={config}
+      plugin={pluginProps}
+      teamName={teamName}
+      hideStepper={context === 'wizard'} // TODO: Delete after iframe deprecation
+      pluginUiMessageHandler={pluginUiMessageHandler}
+      initialValues={initialValues}
+    >
       <DevWrapper {...devWrapperProps}>
-        {initialized && (
-          <Stack direction="row" gap={3} flexWrap="wrap">
-            <Box flex="1 1 0" minWidth={480}>
-              <Form
-                initialValues={initialValues ? prepareInitialValues(initialValues) : undefined}
-                isManagedDestination={isManagedDestination}
-              />
-            </Box>
-            <Box sx={{ width: 360, minWidth: 360 }}>
-              <Guides />
-            </Box>
-          </Stack>
-        )}
+        {initialized && <ConfigUIForm prepareSubmitValues={prepareSubmitValues} />}
       </DevWrapper>
-    </ThemeProvider>
+    </PluginContextProvider>
   );
 }
 
