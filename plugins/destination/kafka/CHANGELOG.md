@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.1.3...plugins-destination-kafka-v5.1.4) (2024-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/IBM/sarama to v1.43.3 ([#19270](https://github.com/cloudquery/cloudquery/issues/19270)) ([f7689b0](https://github.com/cloudquery/cloudquery/commit/f7689b0f69dc512e29dbc19bea65765edbea9480))
+
 ## [5.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.1.2...plugins-destination-kafka-v5.1.3) (2024-09-25)
 
 
