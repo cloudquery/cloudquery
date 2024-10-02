@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.4.0...plugins-source-xkcd-v1.4.1) (2024-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @types/react to v18.3.10 ([#19260](https://github.com/cloudquery/cloudquery/issues/19260)) ([22cc644](https://github.com/cloudquery/cloudquery/commit/22cc644be1951973c5ad3637a286fb08961cc4a7))
+* **deps:** Update dependency eslint to v8.57.1 ([#19264](https://github.com/cloudquery/cloudquery/issues/19264)) ([2baa628](https://github.com/cloudquery/cloudquery/commit/2baa62862a4015528a5748949728bac21854d9b5))
+
 ## [1.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.3.7...plugins-source-xkcd-v1.4.0) (2024-09-25)
 
 
