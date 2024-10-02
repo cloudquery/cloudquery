@@ -8,6 +8,8 @@ export function prepareSubmitValues(
 
   payload.migrateMode = values.migrateMode;
   payload.writeMode = 'append'; // it is only option
+  payload.spec.project_id = values.project_id;
+  payload.spec.dataset_id = values.dataset_id;
 
   if (values.dataset_location) {
     payload.spec.dataset_location = values.dataset_location;
