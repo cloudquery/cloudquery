@@ -8,13 +8,17 @@ import * as yup from 'yup';
 import { Connect } from '../components/connect';
 import { Guide } from '../components/guide';
 import { UploadJSON } from '../components/upload';
+import { useGCPConnector } from '../context/GCPConnectorContext';
 import { timePartitionOptions } from '../utils/constants';
 
 interface Props {
   initialValues?: FormMessagePayload['init']['initialValues'] | undefined;
+  teamName: string;
 }
 
-export const useConfig = ({ initialValues }: Props): DestinationConfig => {
+export const useConfig = ({ initialValues, teamName }: Props): DestinationConfig => {
+  const { finishConnectorAuthentication } = useGCPConnector();
+
   return useMemo(
     () =>
       ({
@@ -28,6 +32,14 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
         },
         steps: [
           {
+            submitGuard: async (formValues: { connectorId: string; _authType: AuthType }) => {
+              return initialValues?.connectorId || formValues._authType === AuthType.OTHER
+                ? true
+                : await finishConnectorAuthentication({
+                    connectorId: formValues.connectorId,
+                    teamName,
+                  });
+            },
             children: [
               {
                 component: 'section',
@@ -180,6 +192,6 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
         guide: Guide,
       }) as DestinationConfig,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [initialValues],
+    [initialValues, finishConnectorAuthentication, teamName],
   );
 };

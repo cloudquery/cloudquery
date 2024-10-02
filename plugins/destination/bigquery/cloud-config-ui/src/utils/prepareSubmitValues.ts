@@ -26,9 +26,7 @@ export function prepareSubmitValues(
   }
 
   if (values._authType === AuthType.OTHER) {
-    payload.spec = {
-      service_account_key_json: '${service_account_key_json}',
-    };
+    payload.spec['service_account_key_json'] = '${service_account_key_json}';
     payload.envs.push({
       name: 'service_account_key_json',
       value: values.service_account_key_json,
