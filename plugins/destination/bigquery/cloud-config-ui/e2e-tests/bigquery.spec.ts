@@ -28,25 +28,20 @@ test.describe('BigQuery Destination', () => {
       ...parameters,
       page,
       fillFieldsSteps: async (iframeElement: Frame) => {
-        await iframeElement.getByLabel('Host').click();
-        await iframeElement
-          .getByLabel('Host')
-          .fill('bigquery-2aafcd8a-cloudquery-c7ec.j.aivencloud.com');
-        await iframeElement.getByLabel('Port').click();
-        await iframeElement.getByLabel('Port').fill('20188');
-        await iframeElement.getByLabel('Database').click();
-        await iframeElement.getByLabel('Database').fill('defaultdb');
-        await iframeElement.getByLabel('Username').click();
-        await iframeElement.getByLabel('Username').fill('avnadmin');
-        await iframeElement.getByLabel('Password *', { exact: true }).click();
-        await iframeElement
-          .getByLabel('Password *', { exact: true })
-          .fill(process.env.CQ_CI_PLAYWRIGHT_MYSQL_PASSWORD!);
-
-        await iframeElement.getByLabel('Migrate mode').click();
-        await iframeElement.getByRole('option', { name: 'forced' }).click();
-        await iframeElement.getByLabel('Write mode').click();
-        await iframeElement.getByRole('option', { name: 'overwrite', exact: true }).click();
+        // await iframeElement.getByLabel('Host').click();
+        // await iframeElement
+        //   .getByLabel('Host')
+        //   .fill('bigquery-2aafcd8a-cloudquery-c7ec.j.aivencloud.com');
+        // await iframeElement.getByLabel('Port').click();
+        // await iframeElement.getByLabel('Port').fill('20188');
+        // await iframeElement.getByLabel('Database').click();
+        // await iframeElement.getByLabel('Database').fill('defaultdb');
+        // await iframeElement.getByLabel('Username').click();
+        // await iframeElement.getByLabel('Username').fill('avnadmin');
+        // await iframeElement.getByLabel('Password *', { exact: true }).click();
+        // await iframeElement
+        //   .getByLabel('Password *', { exact: true })
+        //   .fill(process.env.CQ_CI_PLAYWRIGHT_MYSQL_PASSWORD!);
 
         await iframeElement.getByRole('button', { name: 'Advanced Sync Options' }).click();
         await iframeElement.getByLabel('Batch size', { exact: true }).click();

@@ -1,5 +1,5 @@
 import { PluginUiMessagePayload } from '@cloudquery/plugin-config-ui-connector';
-import { corePrepareSubmitValues } from '@cloudquery/plugin-config-ui-lib';
+import { AuthType, corePrepareSubmitValues } from '@cloudquery/plugin-config-ui-lib';
 
 export function prepareSubmitValues(
   values: Record<string, any>,
@@ -23,6 +23,16 @@ export function prepareSubmitValues(
 
   if (values.batch_size_bytes) {
     payload.spec.batch_size_bytes = Number(values.batch_size_bytes);
+  }
+
+  if (values._authType === AuthType.OTHER) {
+    payload.spec = {
+      service_account_key_json: '${service_account_key_json}',
+    };
+    payload.envs.push({
+      name: 'service_account_key_json',
+      value: values.service_account_key_json,
+    });
   }
 
   return payload;
