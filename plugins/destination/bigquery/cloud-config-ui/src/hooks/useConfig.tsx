@@ -79,6 +79,12 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                       },
                     ],
                   },
+                ],
+              },
+              {
+                component: 'section',
+                title: 'Connection Options',
+                children: [
                   {
                     component: 'control-secret-field',
                     name: 'project_id',
@@ -107,7 +113,6 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                 component: 'collapsible-section',
                 title: 'Advanced Connection Options',
                 defaultExpanded: false,
-                shouldRender: (values: any) => values._connectionType === 'fields',
                 children: [
                   {
                     component: 'control-text-field',
@@ -115,10 +120,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                     helperText:
                       'The data location of the BigQuery dataset. If set, will be used as the default location for job operations.',
                     label: 'Google Cloud BigQuery DataSet Location',
-                    schema: yup
-                      .string()
-                      .default(initialValues?.spec?.dataset_location ?? '')
-                      .required(),
+                    schema: yup.string().default(initialValues?.spec?.dataset_location ?? ''),
                   },
                   {
                     component: 'control-select-field',
@@ -135,8 +137,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                     schema: yup
                       .string()
                       .oneOf(timePartitionOptions)
-                      .default(initialValues?.spec?.time_partitioning ?? 'none')
-                      .required(),
+                      .default(initialValues?.spec?.time_partitioning ?? 'none'),
                   },
                 ],
               },
