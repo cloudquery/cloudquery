@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.1.11...plugins-destination-bigquery-v4.1.12) (2024-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module google.golang.org/api to v0.199.0 ([#19251](https://github.com/cloudquery/cloudquery/issues/19251)) ([b0e0aae](https://github.com/cloudquery/cloudquery/commit/b0e0aae1298d5d334719c41ba2fcebcf0cea3bb0))
+
 ## [4.1.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.1.10...plugins-destination-bigquery-v4.1.11) (2024-09-24)
 
 
