@@ -76,7 +76,8 @@ module.exports = async ({github, context}) => {
         const runs = runsWithPossibleDuplicates.filter((run, index, self) => self.findIndex(({id}) => id === run.id) === index)
         console.log(`Got the following check runs: ${JSON.stringify(runs)}`)
         const matchingRuns = runs.filter(({name}) => actions.includes(name))
-        const failedRuns = matchingRuns.filter(({conclusion}) => conclusion !== 'success')
+        const allowedConclusions = ['success', 'skipped']
+        const failedRuns = matchingRuns.filter(({conclusion}) => !allowedConclusions.includes(conclusion))
         if (failedRuns.length > 0) {
             throw new Error(`The following required workflows failed: ${failedRuns.map(({name}) => name).join(", ")}`)
         }

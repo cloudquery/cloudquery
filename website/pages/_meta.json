@@ -12,13 +12,13 @@
       "toc": true
     }
   },
-  "register-for-cloud": {
-    "title": "Register for CloudQuery Cloud",
-    "href": "https://cloud.cloudquery.io/auth/register"
-  },
   "hub": {
-    "title": "Hub",
+    "title": "Integrations",
     "href": "https://hub.cloudquery.io"
+  },
+  "register-for-cloud": {
+    "title": "CloudQuery Cloud",
+    "href": "https://cloud.cloudquery.io/auth/register"
   },
   "integrations": {
     "title": "Integrations",
@@ -36,11 +36,7 @@
       "typesetting": "article"
     }
   },
-  "home": {
-    "title": "Home",
-    "href": "https://www.cloudquery.io"
-  },
-  "how-to-guides":  {
+  "how-to-guides": {
     "title": "How-to Guides",
     "display": "hidden",
     "theme": {

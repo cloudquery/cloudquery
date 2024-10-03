@@ -43,7 +43,7 @@ const theme: DocsThemeConfig = {
       </>
     );
   },
-  logoLink: "/docs",
+  logoLink: "https://www.cloudquery.io",
   head: () => {
     const { frontMatter } = useConfig();
     return (
