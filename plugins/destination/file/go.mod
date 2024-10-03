@@ -5,8 +5,8 @@ go 1.22.4
 require (
 	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cloudquery/codegen v0.3.19
-	github.com/cloudquery/filetypes/v4 v4.3.0
-	github.com/cloudquery/plugin-sdk/v4 v4.64.0
+	github.com/cloudquery/filetypes/v4 v4.4.0
+	github.com/cloudquery/plugin-sdk/v4 v4.64.1
 	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.12.0
@@ -102,3 +102,7 @@ require (
 
 // github.com/cloudquery/jsonschema @ cqmain
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66
+
+replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.64.2-0.20241003143736-33b6e395606e
+
+replace github.com/cloudquery/filetypes/v4 => github.com/cloudquery/filetypes/v4 v4.4.1-0.20241003143110-56c4670c4f4f
