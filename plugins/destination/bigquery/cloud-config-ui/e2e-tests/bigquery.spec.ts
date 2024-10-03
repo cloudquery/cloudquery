@@ -12,12 +12,12 @@ import {
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('GCP Source', () => {
+test.describe('BigQuery Destination', () => {
   const parameters = {
     pluginNewName: getPersistentName(),
-    kind: 'source' as 'source',
-    pluginName: 'gcp',
-    pluginLabel: 'GCP',
+    kind: 'destination' as 'destination',
+    pluginName: 'bigquery',
+    pluginLabel: 'BigQuery',
     pluginUrl: '',
   };
 
