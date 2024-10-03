@@ -2,7 +2,7 @@ import React from 'react';
 
 import ReactDOM from 'react-dom/client';
 
-import AppWrapper from './AppWrapper';
+import App from './App';
 
 const root = ReactDOM.createRoot(document.querySelector('#root') as HTMLElement);
-root.render(<AppWrapper />);
+root.render(<App />);

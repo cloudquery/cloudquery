@@ -1,15 +1,14 @@
 import { useMemo } from 'react';
 
 import { FormMessagePayload } from '@cloudquery/plugin-config-ui-connector';
-import { AuthType, DestinationConfig } from '@cloudquery/plugin-config-ui-lib';
+import { AuthType, DestinationConfig, getGCPAuthFormula } from '@cloudquery/plugin-config-ui-lib';
 
 import * as yup from 'yup';
 
-import { Connect } from '../components/connect';
 import { Guide } from '../components/guide';
-import { UploadJSON } from '../components/upload';
-import { useGCPConnector } from '../context/GCPConnectorContext';
+
 import { timePartitionOptions } from '../utils/constants';
+import { pluginUiMessageHandler } from '../utils/messageHandler';
 
 interface Props {
   initialValues?: FormMessagePayload['init']['initialValues'] | undefined;
@@ -17,8 +16,6 @@ interface Props {
 }
 
 export const useConfig = ({ initialValues, teamName }: Props): DestinationConfig => {
-  const { finishConnectorAuthentication } = useGCPConnector();
-
   return useMemo(
     () =>
       ({
@@ -27,71 +24,14 @@ export const useConfig = ({ initialValues, teamName }: Props): DestinationConfig
         label: 'BigQuery',
         docsLink: 'https://hub.cloudquery.io/plugins/destination/cloudquery/bigquery/latest/docs',
         iconLink: 'images/logo.webp',
-        stateSchema: {
-          _serviceAccount: yup.string().default('Pending launch of the IAM Console...'),
-        },
         steps: [
           {
-            submitGuard: async (formValues: { connectorId: string; _authType: AuthType }) => {
-              return initialValues?.connectorId || formValues._authType === AuthType.OTHER
-                ? true
-                : await finishConnectorAuthentication({
-                    connectorId: formValues.connectorId,
-                    teamName,
-                  });
-            },
             children: [
               {
                 component: 'section',
                 title: 'Connect to your database',
                 subtitle: 'Set up a connection to your BigQuery instance.',
-                children: [
-                  {
-                    component: 'control-exclusive-toggle',
-                    name: '_authType',
-                    options: [
-                      {
-                        label: 'Use CloudQuery Service Account',
-                        value: AuthType.OAUTH,
-                      },
-                      {
-                        label: 'Use a service account JSON file',
-                        value: AuthType.OTHER,
-                      },
-                    ],
-                    schema: yup
-                      .mixed()
-                      .oneOf(Object.values(AuthType))
-                      .default(
-                        initialValues?.spec?.service_account_key_json
-                          ? AuthType.OTHER
-                          : AuthType.OAUTH,
-                      ),
-                  },
-                  {
-                    component: 'sub-section',
-                    shouldRender: (values: any) => values._authType === AuthType.OAUTH,
-                    children: [Connect],
-                  },
-                  {
-                    component: 'sub-section',
-                    shouldRender: (values: any) => values._authType === AuthType.OTHER,
-                    children: [
-                      {
-                        name: 'service_account_key_json',
-                        component: UploadJSON,
-                        schema: yup
-                          .string()
-                          .default(initialValues?.spec?.service_account_key_json ?? '')
-                          .when('_authType', {
-                            is: (_authType: AuthType) => _authType === AuthType.OTHER,
-                            // eslint-disable-next-line unicorn/no-thenable
-                            then: (schema: any) => schema.required(),
-                          }),
-                      },
-                    ],
-                  },
-                ],
+                children: getGCPAuthFormula({ initialValues, pluginUiMessageHandler }),
               },
               {
                 component: 'section',
@@ -192,6 +132,6 @@ export const useConfig = ({ initialValues, teamName }: Props): DestinationConfig
         guide: Guide,
       }) as DestinationConfig,
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [initialValues, finishConnectorAuthentication, teamName],
+    [initialValues, teamName],
   );
 };

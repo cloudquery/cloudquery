@@ -1,7 +1,8 @@
-import { RenderGuide, useFormContext } from '@cloudquery/plugin-config-ui-lib';
+import { RenderGuide, useFormContext, GCPConnect } from '@cloudquery/plugin-config-ui-lib';
+
+import connectionBodyContent from './connectionFields';
 
 import { pluginUiMessageHandler } from '../../utils/messageHandler';
-import { Connect } from '../connect';
 
 export function IAMGuide() {
   const form = useFormContext();
@@ -28,12 +29,13 @@ export function IAMGuide() {
           ],
         },
         {
-          header: 'Authorize CloudQuery',
+          header: 'Step 1: Authorize CloudQuery',
           bodies: [
             {
               text: (
                 <>
-                  1. Open the <Connect variant="link" />.
+                  1. Open the{' '}
+                  <GCPConnect variant="link" pluginUiMessageHandler={pluginUiMessageHandler} />.
                 </>
               ),
             },
@@ -89,6 +91,10 @@ export function IAMGuide() {
               ),
             },
           ],
+        },
+        {
+          header: 'Step 2: Fill in Connection Options',
+          bodies: connectionBodyContent,
         },
       ]}
     />
