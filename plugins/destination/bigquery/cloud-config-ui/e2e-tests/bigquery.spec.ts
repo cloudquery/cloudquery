@@ -38,12 +38,12 @@ test.describe('BigQuery Destination', () => {
         await expect(iframeElement.getByText('Successfully created GCP credentials')).toBeVisible();
         await fillInput(
           iframeElement,
-          iframeElement.getByLabel('Fastly API Key *'),
+          iframeElement.getByLabel('Google Cloud Project ID'),
           'gosurf-338418',
         );
         await fillInput(
           iframeElement,
-          iframeElement.getByLabel('Fastly API Key *'),
+          iframeElement.getByLabel('Google Cloud BigQuery DataSet ID'),
           'my_default_dataset',
         );
       },
@@ -57,7 +57,7 @@ test.describe('BigQuery Destination', () => {
       fillFieldsSteps: async (iframeElement: Frame) => {
         await fillInput(
           iframeElement,
-          iframeElement.getByLabel('Fastly API Key *'),
+          iframeElement.getByLabel('Google Cloud BigQuery DataSet ID'),
           'my_second_data_set',
         );
       },
