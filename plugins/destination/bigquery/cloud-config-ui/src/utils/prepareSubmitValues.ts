@@ -1,10 +1,11 @@
 import { PluginUiMessagePayload } from '@cloudquery/plugin-config-ui-connector';
-import { AuthType, corePrepareSubmitValues } from '@cloudquery/plugin-config-ui-lib';
+import { AuthType, corePrepareSubmitValues, PluginConfig } from '@cloudquery/plugin-config-ui-lib';
 
 export function prepareSubmitValues(
+  config: PluginConfig,
   values: Record<string, any>,
 ): PluginUiMessagePayload['validation_passed']['values'] {
-  const payload = corePrepareSubmitValues(values);
+  const payload = corePrepareSubmitValues(config, values);
 
   payload.migrateMode = values.migrateMode;
   payload.writeMode = 'append'; // it is only option

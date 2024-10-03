@@ -98,7 +98,7 @@ export const useConfig = ({ initialValues, teamName }: Props): DestinationConfig
                 title: 'Connection Options',
                 children: [
                   {
-                    component: 'control-secret-field',
+                    component: 'control-text-field',
                     name: 'project_id',
                     helperText:
                       'The id of the project where the destination BigQuery database resides.',
@@ -109,7 +109,7 @@ export const useConfig = ({ initialValues, teamName }: Props): DestinationConfig
                       .required(),
                   },
                   {
-                    component: 'control-secret-field',
+                    component: 'control-text-field',
                     name: 'dataset_id',
                     helperText:
                       'The name of the BigQuery dataset within the project, e.g. my_dataset. This dataset needs to be created before running a sync or migration.',

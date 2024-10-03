@@ -1,21 +1,23 @@
-import { Frame, test } from '@playwright/test';
+import { expect, Frame, test } from '@playwright/test';
 
 import {
+  click,
   createPlugin,
   deletePlugin,
   editPlugin,
   getPersistentName,
+  fillInput,
   login,
 } from '@cloudquery/plugin-config-ui-lib/e2e-utils';
 
 test.describe.configure({ mode: 'serial' });
 
-test.describe('BigQuery Destination', () => {
+test.describe('GCP Source', () => {
   const parameters = {
     pluginNewName: getPersistentName(),
-    kind: 'destination' as 'destination',
-    pluginName: 'bigquery',
-    pluginLabel: 'BigQuery',
+    kind: 'source' as 'source',
+    pluginName: 'gcp',
+    pluginLabel: 'GCP',
     pluginUrl: '',
   };
 
@@ -28,26 +30,22 @@ test.describe('BigQuery Destination', () => {
       ...parameters,
       page,
       fillFieldsSteps: async (iframeElement: Frame) => {
-        // await iframeElement.getByLabel('Host').click();
-        // await iframeElement
-        //   .getByLabel('Host')
-        //   .fill('bigquery-2aafcd8a-cloudquery-c7ec.j.aivencloud.com');
-        // await iframeElement.getByLabel('Port').click();
-        // await iframeElement.getByLabel('Port').fill('20188');
-        // await iframeElement.getByLabel('Database').click();
-        // await iframeElement.getByLabel('Database').fill('defaultdb');
-        // await iframeElement.getByLabel('Username').click();
-        // await iframeElement.getByLabel('Username').fill('avnadmin');
-        // await iframeElement.getByLabel('Password *', { exact: true }).click();
-        // await iframeElement
-        //   .getByLabel('Password *', { exact: true })
-        //   .fill(process.env.CQ_CI_PLAYWRIGHT_MYSQL_PASSWORD!);
+        await click(
+          iframeElement,
+          iframeElement.getByRole('button', { name: 'Create credentials' }),
+        );
 
-        await iframeElement.getByRole('button', { name: 'Advanced Sync Options' }).click();
-        await iframeElement.getByLabel('Batch size', { exact: true }).click();
-        await iframeElement.getByLabel('Batch size', { exact: true }).fill('12');
-        await iframeElement.getByLabel('Batch size (bytes)').click();
-        await iframeElement.getByLabel('Batch size (bytes)').fill('2500');
+        await expect(iframeElement.getByText('Successfully created GCP credentials')).toBeVisible();
+        await fillInput(
+          iframeElement,
+          iframeElement.getByLabel('Fastly API Key *'),
+          'gosurf-338418',
+        );
+        await fillInput(
+          iframeElement,
+          iframeElement.getByLabel('Fastly API Key *'),
+          'my_default_dataset',
+        );
       },
     });
   });
@@ -57,11 +55,11 @@ test.describe('BigQuery Destination', () => {
       ...parameters,
       page,
       fillFieldsSteps: async (iframeElement: Frame) => {
-        await iframeElement.getByRole('button', { name: 'Advanced Sync Options' }).click();
-        await iframeElement.getByLabel('Batch size', { exact: true }).click();
-        await iframeElement.getByLabel('Batch size', { exact: true }).fill('22');
-        await iframeElement.getByLabel('Batch size (bytes)').click();
-        await iframeElement.getByLabel('Batch size (bytes)').fill('2000');
+        await fillInput(
+          iframeElement,
+          iframeElement.getByLabel('Fastly API Key *'),
+          'my_second_data_set',
+        );
       },
     });
   });
