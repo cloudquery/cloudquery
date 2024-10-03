@@ -1,5 +1,16 @@
 # Changelog
 
+## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.7.8...plugins-destination-mssql-v5.0.0) (2024-10-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* Update MSSQL supported versions
+
+### Miscellaneous Chores
+
+* Update MSSQL supported versions ([3230c46](https://github.com/cloudquery/cloudquery/commit/3230c461f75626832793f9dcc078dbae51e63f82))
+
 ## [4.7.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v4.7.7...plugins-destination-mssql-v4.7.8) (2024-10-03)
 
 
