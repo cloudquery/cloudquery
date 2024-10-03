@@ -24,7 +24,7 @@ export default [
       </>
     ),
   },
-  { image: 'images/conn-1.png' },
+  { image: 'images/conn-1.webp' },
   {
     text: (
       <>
@@ -33,5 +33,5 @@ export default [
       </>
     ),
   },
-  { image: 'images/conn-2.png' },
+  { image: 'images/conn-2.webp' },
 ];

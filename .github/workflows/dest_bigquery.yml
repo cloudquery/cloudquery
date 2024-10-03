@@ -155,7 +155,6 @@ jobs:
       CQ_CI_PLAYWRIGHT_PREVIEW_LINK: ${{ needs.deploy.outputs.previewLink }}
       CQ_CI_PLAYWRIGHT_TEST_USER_EMAIL: ${{ secrets.CQ_CI_PLAYWRIGHT_TEST_USER_EMAIL }}
       CQ_CI_PLAYWRIGHT_TEST_USER_PASSWORD: ${{ secrets.CQ_CI_PLAYWRIGHT_TEST_USER_PASSWORD }}
-      CQ_CI_PLAYWRIGHT_GCP_API_KEY: ${{ secrets.CQ_CI_PLAYWRIGHT_GCP_API_KEY }}
     defaults:
       run:
         working-directory: ./plugins/destination/bigquery
