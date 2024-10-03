@@ -201,6 +201,6 @@ jobs:
         with:
           name: bigquery-e2e-testsplaywright
           path: |
-            plugins/source/bigquery/cloud-config-ui/test-results/
+            plugins/destination/bigquery/cloud-config-ui/test-results/
           retention-days: 1
           overwrite: true
