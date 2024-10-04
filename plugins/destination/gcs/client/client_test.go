@@ -36,10 +36,12 @@ func TestPlugin(t *testing.T) {
 		}
 
 		t.Run("generic/"+string(ft), func(t *testing.T) {
+			t.Parallel()
 			testPlugin(t, &s)
 		})
 
 		t.Run("write/"+string(ft), func(t *testing.T) {
+			t.Parallel()
 			testPluginCustom(t, &s, "")
 		})
 	}
@@ -137,6 +139,8 @@ func testPluginCustom(t *testing.T, s *spec.Spec, readErrorString string) {
 	if err := client.Close(ctx); err != nil {
 		t.Fatal(fmt.Errorf("failed to close client: %w", err))
 	}
+
+	time.Sleep(2 * time.Second)
 
 	readRecords, err := readAll(ctx, client, table)
 	if readErrorString != "" {
