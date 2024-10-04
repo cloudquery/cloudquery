@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"io"
 	"regexp"
 	"time"
@@ -81,7 +82,14 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 	for msg := range msgs {
 		if s == nil {
 			table := msg.GetTable()
-			objKey := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC(), c.syncID)
+
+			if c.hasSyncGroupId == nil {
+				hasSyncGroupId := table.Column("_cq_sync_group_id") != nil
+				c.syncGroupID = getSyncGroupId(msg.Record)
+				c.hasSyncGroupId = &hasSyncGroupId
+			}
+
+			objKey := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC(), c.syncGroupID, c.syncID)
 			// if object was already initialized, use the same key
 			c.initializedTablesLock.Lock()
 			if val, ok := c.initializedTables[table.Name]; ok {
@@ -125,7 +133,11 @@ func (c *Client) MigrateTable(ctx context.Context, ch <-chan *message.WriteMigra
 			continue
 		}
 		table := msg.GetTable()
-		objKey := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC(), c.syncID)
+		if table.Column("_cq_sync_group_id") != nil {
+			return errors.New("migrations are not supported for syncs having sync_group_id set. Set generate_empty_objects to false")
+		}
+
+		objKey := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Now().UTC(), "", c.syncID)
 		// We don't need any locking here because all messages for the same table are processed sequentially
 		c.initializedTables[table.Name] = objKey
 		s, err := c.createObject(ctx, table, objKey)
@@ -193,4 +205,13 @@ func sanitizeJSONKeysForObject(data any) any {
 	default:
 		return data
 	}
+}
+
+func getSyncGroupId(record arrow.Record) string {
+	for i, col := range record.Columns() {
+		if record.Schema().Field(i).Name == "_cq_sync_group_id" {
+			return col.GetOneForMarshal(0).(string)
+		}
+	}
+	return ""
 }

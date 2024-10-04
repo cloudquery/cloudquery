@@ -22,6 +22,7 @@ const (
 	varDay         = "{{DAY}}"
 	varHour        = "{{HOUR}}"
 	varMinute      = "{{MINUTE}}"
+	varSyncGroupID = "{{SYNC_GROUP_ID}}"
 	varSyncID      = "{{SYNC_ID}}"
 	varTableHyphen = "{{TABLE_HYPHEN}}"
 )
@@ -41,6 +42,7 @@ type Spec struct {
 	// - `{{TABLE}}` will be replaced with the table name
 	// - `{{TABLE_HYPHEN}}` will be replaced with the table name with hyphens instead of underscores
 	// - `{{FORMAT}}` will be replaced with the file format, such as `csv`, `json` or `parquet`. If compression is enabled, the format will be `csv.gz`, `json.gz` etc.
+	// - `{{SYNC_GROUP_ID}}` will be replaced with the sync_group_id defined in the destination config of each sync
 	// - `{{UUID}}` will be replaced with a random UUID to uniquely identify each file
 	// - `{{YEAR}}` will be replaced with the current year in `YYYY` format
 	// - `{{MONTH}}` will be replaced with the current month in `MM` format
@@ -207,7 +209,7 @@ func (s *Spec) Validate() error {
 	return s.FileSpec.Validate()
 }
 
-func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time, syncID string) string {
+func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time, syncGroupId, syncID string) string {
 	name := strings.ReplaceAll(s.Path, varTable, table)
 	if strings.Contains(name, varFormat) {
 		e := string(s.Format) + s.Compression.Extension()
@@ -219,6 +221,7 @@ func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.
 	name = strings.ReplaceAll(name, varDay, t.Format("02"))
 	name = strings.ReplaceAll(name, varHour, t.Format("15"))
 	name = strings.ReplaceAll(name, varMinute, t.Format("04"))
+	name = strings.ReplaceAll(name, varSyncGroupID, syncGroupId)
 	name = strings.ReplaceAll(name, varSyncID, syncID)
 	name = strings.ReplaceAll(name, varTableHyphen, strings.ReplaceAll(table, "_", "-"))
 	return filepath.Clean(name)

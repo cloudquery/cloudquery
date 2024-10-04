@@ -87,12 +87,14 @@ func TestSanitizeJSONKeys(t *testing.T) {
 func TestReplacePathVariables(t *testing.T) {
 	cases := []struct {
 		inputPath    string
+		syncGroupId  string
 		uuid         string
 		tableName    string
 		expectedPath string
 	}{
 		{
 			inputPath:    "test/test/{{TABLE}}/{{UUID}}",
+			syncGroupId:  "",
 			uuid:         "",
 			tableName:    "",
 			expectedPath: "test/test",
@@ -100,38 +102,51 @@ func TestReplacePathVariables(t *testing.T) {
 		{
 			inputPath:    "test/test/{{TABLE}}/{{UUID}}.json",
 			tableName:    "test-table",
+			syncGroupId:  "",
 			uuid:         "",
 			expectedPath: "test/test/test-table/.json",
 		},
 		{
 			inputPath:    "test/test/{{TABLE}}/{{UUID}}.json",
 			tableName:    "test-table",
+			syncGroupId:  "",
 			uuid:         "FAKE-UUID",
 			expectedPath: "test/test/test-table/FAKE-UUID.json",
 		},
 		{
 			inputPath:    "test/test/{{TABLE}}/{{UUID}}.json",
 			tableName:    "",
+			syncGroupId:  "",
 			uuid:         "FAKE-UUID",
 			expectedPath: "test/test/FAKE-UUID.json",
 		},
 		{
 			inputPath:    "test/test/{{TABLE}}/{{UUID}}.{{FORMAT}}",
 			tableName:    "",
+			syncGroupId:  "",
 			uuid:         "FAKE-UUID",
 			expectedPath: "test/test/FAKE-UUID.json",
 		},
 		{
 			inputPath:    "test/test/{{TABLE}}/year={{YEAR}}/month={{MONTH}}/day={{DAY}}/hour={{HOUR}}/minute={{MINUTE}}/{{UUID}}.json",
 			tableName:    "test-table",
+			syncGroupId:  "",
 			uuid:         "FAKE-UUID",
 			expectedPath: "test/test/test-table/year=2021/month=03/day=05/hour=04/minute=01/FAKE-UUID.json",
 		},
 		{
 			inputPath:    "test/test/{{TABLE_HYPHEN}}/{{UUID}}.json",
 			tableName:    "test_table",
+			syncGroupId:  "",
 			uuid:         "FAKE-UUID",
 			expectedPath: "test/test/test-table/FAKE-UUID.json",
+		},
+		{
+			inputPath:    "{{SYNC_GROUP_ID}}/test/{{TABLE}}/{{UUID}}.json",
+			tableName:    "test_table",
+			syncGroupId:  "test-sync-group",
+			uuid:         "FAKE-UUID",
+			expectedPath: "test-sync-group/test/test_table/FAKE-UUID.json",
 		},
 	}
 
@@ -143,7 +158,7 @@ func TestReplacePathVariables(t *testing.T) {
 				FileSpec: filetypes.FileSpec{Format: filetypes.FormatTypeJSON},
 			},
 		}
-		if diff := cmp.Diff(tc.expectedPath, c.spec.ReplacePathVariables(tc.tableName, tc.uuid, tm, c.syncID)); diff != "" {
+		if diff := cmp.Diff(tc.expectedPath, c.spec.ReplacePathVariables(tc.tableName, tc.uuid, tm, tc.syncGroupId, c.syncID)); diff != "" {
 			t.Errorf("unexpected Path Substitution (-want +got):\n%s", diff)
 		}
 	}

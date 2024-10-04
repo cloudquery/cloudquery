@@ -30,11 +30,14 @@ type Client struct {
 	plugin.UnimplementedSource
 	streamingbatchwriter.UnimplementedDeleteStale
 	streamingbatchwriter.UnimplementedDeleteRecords
-	syncID string
 	logger zerolog.Logger
 	spec   *spec.Spec
 	*filetypes.Client
 	writer *streamingbatchwriter.StreamingBatchWriter
+
+	syncID         string
+	syncGroupID    string
+	hasSyncGroupId *bool
 
 	s3Client *s3.Client
 
@@ -98,7 +101,7 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 
 		params := &s3.PutObjectInput{
 			Bucket: aws.String(c.spec.Bucket),
-			Key:    aws.String(c.spec.ReplacePathVariables("TEST_TABLE", "TEST_UUID", timeNow, c.syncID)),
+			Key:    aws.String(c.spec.ReplacePathVariables("TEST_TABLE", "TEST_UUID", timeNow, "", c.syncID)),
 			Body:   bytes.NewReader([]byte("")),
 		}
 
