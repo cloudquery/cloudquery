@@ -54,7 +54,7 @@ jobs:
             --exclude returngis.net \
             --exclude plausible.io \
             --exclude localhost \
-            --exclude twitter.com \
+            --exclude x.com \
             --exclude mongodb.com \
             --exclude regex101.com \
             --exclude help.shopify.com/en/manual/apps/app-types/custom-apps \
@@ -64,6 +64,7 @@ jobs:
             --exclude egghead.io \
             --exclude app.datadoghq.com \
             --exclude aws.amazon.com \
+            --exclude app.drata.com \
             ${{ steps.vercel.outputs.url }}/docs \
             | grep -v '───OK───' | grep -v '──SKIP──' | grep -v '0 broken'
       - name: Slack Notify

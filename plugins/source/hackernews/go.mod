@@ -5,7 +5,7 @@ go 1.22.4
 require (
 	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cloudquery/codegen v0.3.19
-	github.com/cloudquery/plugin-sdk/v4 v4.64.0
+	github.com/cloudquery/plugin-sdk/v4 v4.65.0
 	github.com/golang/mock v1.6.0
 	github.com/hermanschaaf/hackernews v1.0.1
 	github.com/rs/zerolog v1.33.0
