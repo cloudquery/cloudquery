@@ -209,7 +209,7 @@ func (s *Spec) Validate() error {
 	return s.FileSpec.Validate()
 }
 
-func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time, syncGroupId, syncID string) string {
+func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.Time, syncGroupID, syncID string) string {
 	name := strings.ReplaceAll(s.Path, varTable, table)
 	if strings.Contains(name, varFormat) {
 		e := string(s.Format) + s.Compression.Extension()
@@ -221,7 +221,7 @@ func (s *Spec) ReplacePathVariables(table string, fileIdentifier string, t time.
 	name = strings.ReplaceAll(name, varDay, t.Format("02"))
 	name = strings.ReplaceAll(name, varHour, t.Format("15"))
 	name = strings.ReplaceAll(name, varMinute, t.Format("04"))
-	name = strings.ReplaceAll(name, varSyncGroupID, syncGroupId)
+	name = strings.ReplaceAll(name, varSyncGroupID, syncGroupID)
 	name = strings.ReplaceAll(name, varSyncID, syncID)
 	name = strings.ReplaceAll(name, varTableHyphen, strings.ReplaceAll(table, "_", "-"))
 	return filepath.Clean(name)

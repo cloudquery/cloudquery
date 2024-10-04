@@ -25,6 +25,8 @@ import (
 
 var reInvalidJSONKey = regexp.MustCompile(`\W`)
 
+const cqSyncGroupId = "_cq_sync_group_id"
+
 // If we don't use a reader that supports seeking, the S3 SDK will allocate a 5MB buffer each time it reads a chunk
 // While this can work for large files, it's not optimal for small files, based on our tests we're mostly uploading small files
 // And depending on source concurrency and destination batch settings, we can upload quite a bit of small files at the same time
@@ -84,7 +86,7 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 			table := msg.GetTable()
 
 			if c.hasSyncGroupId == nil {
-				hasSyncGroupId := table.Column("_cq_sync_group_id") != nil
+				hasSyncGroupId := table.Column(cqSyncGroupId) != nil
 				c.syncGroupID = getSyncGroupId(msg.Record)
 				c.hasSyncGroupId = &hasSyncGroupId
 			}
@@ -133,7 +135,7 @@ func (c *Client) MigrateTable(ctx context.Context, ch <-chan *message.WriteMigra
 			continue
 		}
 		table := msg.GetTable()
-		if table.Column("_cq_sync_group_id") != nil {
+		if table.Column(cqSyncGroupId) != nil {
 			return errors.New("migrations are not supported for syncs having sync_group_id set. Set generate_empty_objects to false")
 		}
 
@@ -209,7 +211,7 @@ func sanitizeJSONKeysForObject(data any) any {
 
 func getSyncGroupId(record arrow.Record) string {
 	for i, col := range record.Columns() {
-		if record.Schema().Field(i).Name == "_cq_sync_group_id" {
+		if record.Schema().Field(i).Name == cqSyncGroupId {
 			return col.GetOneForMarshal(0).(string)
 		}
 	}
