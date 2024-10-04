@@ -1,6 +1,6 @@
 import { Link, RenderGuide, GCPConnect } from '@cloudquery/plugin-config-ui-lib';
 
-import connectionBodyContent from './connectionFields';
+import { connectionFields } from './connectionFields';
 
 import { pluginUiMessageHandler } from '../../utils/messageHandler';
 
@@ -148,7 +148,7 @@ export function ServiceAccountGuide() {
         },
         {
           header: 'Step 3: Fill in Connection Options',
-          bodies: connectionBodyContent,
+          bodies: connectionFields,
         },
       ]}
     />

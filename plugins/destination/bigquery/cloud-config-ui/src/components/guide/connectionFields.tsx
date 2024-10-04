@@ -1,8 +1,8 @@
-import { Link } from '@cloudquery/plugin-config-ui-lib';
+import { GuideSectionBody, Link } from '@cloudquery/plugin-config-ui-lib';
 
 import { pluginUiMessageHandler } from '../../utils/messageHandler';
 
-export default [
+export const connectionFields: GuideSectionBody[] = [
   {
     text: (
       <>
