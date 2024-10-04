@@ -109,6 +109,7 @@ func TestPlugin(t *testing.T) {
 	for _, ts := range testSpecs(t) {
 		ts := ts
 		t.Run(ts.testName, func(t *testing.T) {
+			t.Parallel()
 			if ts.Spec.Format == filetypes.FormatTypeParquet || ts.Spec.Compression != filetypes.CompressionTypeNone {
 				testPluginCustom(t, &ts.Spec)
 			} else {
