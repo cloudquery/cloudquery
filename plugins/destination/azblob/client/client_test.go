@@ -124,15 +124,13 @@ func testPluginCustom(t *testing.T, s *spec.Spec) {
 		t.Fatal(fmt.Errorf("failed to close client: %w", err))
 	}
 
-	time.Sleep(2 * time.Second)
+	assert.EventuallyWithT(t, func(c *assert.CollectT) {
+		readRecords, err := readAll(ctx, client, table)
+		assert.NoError(c, err)
 
-	readRecords, err := readAll(ctx, client, table)
-	if err != nil {
-		t.Fatal(fmt.Errorf("failed to sync: %w", err))
-	}
-
-	totalItems := plugin.TotalRows(readRecords)
-	assert.Equalf(t, int64(2), totalItems, "expected 2 items, got %d", totalItems)
+		totalItems := plugin.TotalRows(readRecords)
+		assert.Equalf(c, int64(2), totalItems, "expected 2 items, got %d", totalItems)
+	}, 2*time.Second, 100*time.Millisecond)
 }
 
 func readAll(ctx context.Context, client plugin.Client, table *schema.Table) ([]arrow.Record, error) {
