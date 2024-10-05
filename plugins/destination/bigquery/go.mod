@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/bigquery
 go 1.22.4
 
 require (
-	cloud.google.com/go/bigquery v1.63.0
+	cloud.google.com/go/bigquery v1.63.1
 	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cloudquery/codegen v0.3.19
 	github.com/cloudquery/plugin-sdk/v4 v4.65.0
@@ -89,7 +89,7 @@ require (
 require (
 	cloud.google.com/go v0.115.1
 	cloud.google.com/go/compute/metadata v0.5.2 // indirect
-	cloud.google.com/go/iam v1.2.0 // indirect
+	cloud.google.com/go/iam v1.2.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/go-cmp v0.6.0
