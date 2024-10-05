@@ -142,7 +142,7 @@ func testPluginCustom(t *testing.T, s *spec.Spec, readErrorString string) {
 	assert.EventuallyWithT(t, func(c *assert.CollectT) {
 		readRecords, err := readAll(ctx, client, table)
 		if readErrorString != "" {
-			assert.ErrorContains(t, err, readErrorString)
+			assert.ErrorContains(c, err, readErrorString)
 			return
 		}
 		assert.NoError(c, err)
