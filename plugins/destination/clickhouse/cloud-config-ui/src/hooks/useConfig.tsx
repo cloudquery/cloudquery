@@ -454,7 +454,8 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                 text: (
                   <>
                     3. Enter the gathered details interpolated into the <b>Connection String</b>{' '}
-                    input to the left. Replacing the host port with <b>9440</b>:
+                    input to the left. Replacing the host port with <b>9440</b> and adding the query
+                    parameter <b>secure=true</b>:
                   </>
                 ),
               },
