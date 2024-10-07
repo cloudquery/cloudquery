@@ -61,11 +61,14 @@ function parseConnectionFieldsFromURI(connectionString: string) {
       connectionParams[key] = decodeURIComponent(value || '');
 
       switch (key) {
+        // handle boolean values
         case 'debug': {
           connectionParams[key] = value === 'true';
 
           break;
         }
+
+        // handle postfixes
         case 'dial_timeout': {
           connectionParams[key] = value.replace('ms', '');
 

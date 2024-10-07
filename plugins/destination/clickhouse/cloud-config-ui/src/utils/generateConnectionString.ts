@@ -5,9 +5,6 @@ export function generateConnectionStringURI(values: any): string {
   const username = values.username ? '${username}' : '';
   const database = values.database ? '${database}' : '';
   const credentials = `${username}:${password}@`;
-  // const database = values.database
-  //   ? `${escapeSingleQuotesAndBackslashes(values.database.trim())}`
-  //   : '';
   const address = values.hosts
     ? values.hosts
         .map((host: string) => `${escapeSingleQuotesAndBackslashes(host.trim())}`)
@@ -17,6 +14,7 @@ export function generateConnectionStringURI(values: any): string {
   const base = `clickhouse://${credentials}${address}/${database}`;
 
   const normalizedConnectionParams: Record<string, boolean | string> = values.connectionParams;
+  // handle postfixes
   if (values.connectionParams.dial_timeout) {
     normalizedConnectionParams['dial_timeout'] = `${values.connectionParams.dial_timeout}ms`;
   }
