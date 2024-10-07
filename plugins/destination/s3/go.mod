@@ -11,7 +11,7 @@ require (
 	github.com/aws/smithy-go v1.22.0
 	github.com/cloudquery/codegen v0.3.19
 	github.com/cloudquery/filetypes/v4 v4.3.0
-	github.com/cloudquery/plugin-sdk/v4 v4.65.0
+	github.com/cloudquery/plugin-sdk/v4 v4.66.0
 	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.12.0
@@ -38,8 +38,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.4.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.12.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.18.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.28.3 // indirect
-	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.24.3 // indirect
+	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.29.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.25.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.24.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.28.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.32.0 // indirect
@@ -100,7 +100,7 @@ require (
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20240903143218-8af14fe29dc1 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240903143218-8af14fe29dc1 // indirect
-	google.golang.org/grpc v1.67.0 // indirect
+	google.golang.org/grpc v1.67.1 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
