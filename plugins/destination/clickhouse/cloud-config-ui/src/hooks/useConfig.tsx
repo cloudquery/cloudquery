@@ -86,10 +86,17 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                       yup
                         .string()
                         .max(253)
-                        .matches(/^[^:]+:(\d+)$/, 'Must be a valid host with port number.'),
+                        .matches(
+                          /^(https?:\/\/)?[^:]+:(\d+)$/,
+                          'Must be a valid host with port number, optionally starting with http:// or https://.',
+                        ),
                     )
                     .default(connectionObj.hosts ?? [])
-                    .min(1),
+                    .when('_connectionType', {
+                      is: 'fields',
+                      // eslint-disable-next-line unicorn/no-thenable
+                      then: (schema) => schema.min(1),
+                    }),
                 },
                 {
                   component: 'control-secret-field',
@@ -101,7 +108,11 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                     .string()
                     .max(63)
                     .default(connectionObj.database ?? '')
-                    .required(),
+                    .when('_connectionType', {
+                      is: 'fields',
+                      // eslint-disable-next-line unicorn/no-thenable
+                      then: (schema) => schema.required(),
+                    }),
                 },
                 {
                   component: 'control-secret-field',
@@ -113,7 +124,11 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                     .string()
                     .max(63)
                     .default(connectionObj.username ?? '')
-                    .required(),
+                    .when('_connectionType', {
+                      is: 'fields',
+                      // eslint-disable-next-line unicorn/no-thenable
+                      then: (schema) => schema.required(),
+                    }),
                 },
                 {
                   component: 'control-secret-field',
@@ -125,7 +140,11 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                     .string()
                     .max(63)
                     .default(connectionObj.password ?? '')
-                    .required(),
+                    .when('_connectionType', {
+                      is: 'fields',
+                      // eslint-disable-next-line unicorn/no-thenable
+                      then: (schema) => schema.required(),
+                    }),
                 },
               ],
             },
@@ -361,31 +380,19 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
                 text: `To allow CloudQuery network access to your ClickHouse instance, make sure the following
                 CloudQuery IPs are in your firewall allowlist:`,
               },
-              // TODO
               { code: '35.231.218.115' },
               { code: '35.231.72.234' },
             ],
           },
         ],
       },
-      // TODO
       errorCodes: {
-        INVALID_DSN:
-          'The connection string (DSN) is invalid or in an incorrect format. Please check and correct your connection details.',
-        CONNECT_FAILED:
-          'Failed to establish a connection to the ClickHouse database. This is rare and might indicate a driver issue.',
-        DEFAULT_DATABASE_FAILED:
-          "Unable to determine the default database. Please ensure you've specified a database name in your connection string.",
-        QUERY_VERSION_FAILED:
-          'Failed to retrieve the ClickHouse version. This might indicate restricted permissions or a connection issue.',
+        INVALID_SPEC: 'Operation failed. The data payload does not meet the required data schema.',
+        CONNECTION_FAILED:
+          'Failed to establish a connection to ClickHouse. This is rare and might indicate a driver issue.',
+        UNAUTHORIZED: 'Operation failed. This might be due to insufficient permissions.',
         UNREACHABLE:
           'The ClickHouse server is unreachable. Check your host, port, and network settings.',
-        ACCESS_DENIED: 'Access denied. The provided username or password is incorrect.',
-        UNKNOWN_DATABASE:
-          "The specified database does not exist. Please check your database name and ensure it's created on the server.",
-        PING_FAILED:
-          'Failed to ping the ClickHouse server. This might indicate network issues or server unavailability.',
-        LIST_FAILED: 'Failed to list databases. This might be due to insufficient permissions.',
       },
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
