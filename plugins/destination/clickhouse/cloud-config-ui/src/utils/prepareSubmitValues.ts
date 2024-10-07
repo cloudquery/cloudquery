@@ -38,6 +38,7 @@ function prepareSubmitValuesFromFields(
 
   const { connection_string, envs } = generateConnectionStringURI(values);
   payload.spec.connection_string = connection_string;
+
   payload.envs = envs;
 
   delete payload.spec.password;

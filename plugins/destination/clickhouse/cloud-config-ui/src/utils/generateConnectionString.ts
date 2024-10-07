@@ -15,7 +15,11 @@ export function generateConnectionStringURI(values: any): {
   const credentials = `${username}:${password}@`;
   const address = values.hosts
     ? values.hosts
-        .map((host: string) => `${escapeSingleQuotesAndBackslashes(host.trim())}`)
+        .map((host: string) =>
+          `${escapeSingleQuotesAndBackslashes(host.trim())}`
+            .replace('http://', '')
+            .replace('https://', ''),
+        )
         .join(',')
     : '';
 
@@ -38,7 +42,7 @@ export function generateConnectionStringURI(values: any): {
       .filter((key: string) => key !== 'connection_string')
       .map((key: string) => ({
         name: key,
-        value: values[key],
+        value: values[key]?.[0] === '$' ? undefined : values[key],
       })),
   };
 }
