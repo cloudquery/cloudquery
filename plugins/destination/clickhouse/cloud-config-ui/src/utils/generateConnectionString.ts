@@ -1,6 +1,14 @@
 import { escapeSingleQuotesAndBackslashes } from '@cloudquery/plugin-config-ui-lib';
 
-export function generateConnectionStringURI(values: any): string {
+export function generateConnectionStringURI(values: any): {
+  connection_string: string;
+  envs: [
+    {
+      name: string;
+      value: string;
+    },
+  ];
+} {
   const password = values.password ? '${password}' : '';
   const username = values.username ? '${username}' : '';
   const database = values.database ? '${database}' : '';
@@ -24,5 +32,13 @@ export function generateConnectionStringURI(values: any): string {
 
   const queryParams = new URLSearchParams(values.connectionParams as any).toString();
 
-  return queryParams ? `${base}?${queryParams}` : base;
+  return {
+    connection_string: queryParams ? `${base}?${queryParams}` : base,
+    envs: values._secretKeys
+      .filter((key: string) => key !== 'connection_string')
+      .map((key: string) => ({
+        name: key,
+        value: values[key],
+      })),
+  };
 }

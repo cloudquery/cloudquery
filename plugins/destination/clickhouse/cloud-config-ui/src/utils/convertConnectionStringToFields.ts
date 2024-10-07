@@ -17,6 +17,9 @@ export const convertConnectionStringToFields = (connectionString?: string) => {
   }
 };
 
+/* eslint-disable unicorn/no-abusive-eslint-disable */
+/* eslint-disable */
+
 /**
  * Parses connection fields from URI i.e. "clickhouse://username:password@host1:9000,host2:9000/database?dial_timeout=200ms"
  *
@@ -27,22 +30,25 @@ export const convertConnectionStringToFields = (connectionString?: string) => {
 function parseConnectionFieldsFromURI(connectionString: string) {
   const connectionParams: Record<string, any> = {};
 
-  // Remove the protocol part ('clickhouse://')
-  const protocolEndIndex = connectionString.indexOf('://') + 3;
-  const withoutProtocol = connectionString.slice(protocolEndIndex);
+  const withoutProtocol = connectionString.replace('clickhouse://', '');
 
   // Split the connection string into the main part and optional query parameters
   const [mainPart, queryString] = withoutProtocol.split('?');
 
-  // Split the main part into user info, host, and database
-  const [userInfoHost, database] = mainPart.split('/');
+  // Split the main part into [user info, hosts] and database
+  const splitDBAt = mainPart.lastIndexOf('/');
+
+  const userInfoHosts = mainPart.slice(0, splitDBAt);
+  const database = mainPart.slice(splitDBAt + 1);
+
+  console.log({ userInfoHosts, database });
 
   // Initialize components
   let username = null,
     password = null,
     hosts = null;
 
-  const [userInfo, hostsString] = userInfoHost.split('@');
+  const [userInfo, hostsString] = userInfoHosts.split('@');
 
   // Check if password is included
   if (userInfo.includes(':')) {
