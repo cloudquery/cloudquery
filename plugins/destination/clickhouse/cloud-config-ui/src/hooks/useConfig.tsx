@@ -374,7 +374,7 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
             ],
           },
           {
-            header: 'Setup guide',
+            header: 'Step 1: Update ClickHouse Allowlist',
             bodies: [
               {
                 text: `To allow CloudQuery network access to your ClickHouse instance, make sure the following
@@ -382,6 +382,85 @@ export const useConfig = ({ initialValues }: Props): DestinationConfig => {
               },
               { code: '35.231.218.115' },
               { code: '35.231.72.234' },
+            ],
+          },
+          {
+            shouldRender: (values: any) => values._connectionType === 'fields',
+            header: 'Step 2: Gather ClickHouse Cloud connection details',
+            bodies: [
+              {
+                text: (
+                  <>
+                    1. Click <b>Connect</b> in the ClickHouse sidebar to see the <b>Host</b>, and{' '}
+                    <b>Password</b>.
+                  </>
+                ),
+              },
+              { image: 'images/connect.png' },
+              { image: 'images/cred.png' },
+              {
+                text: (
+                  <>
+                    2. Identify the target <b>Database</b> in ClickHouse.
+                  </>
+                ),
+              },
+              {
+                image: 'images/db.png',
+              },
+              {
+                text: (
+                  <>
+                    3. Enter the gathered details to the left. Replacing the host port with{' '}
+                    <b>9440</b>:
+                  </>
+                ),
+              },
+              {
+                text: (
+                  <>
+                    4. Open the <b>Advanced Connection Options</b>, to the left, and toggle{' '}
+                    <b>SSL/TLS</b> to be enabled.
+                  </>
+                ),
+              },
+            ],
+          },
+          {
+            shouldRender: (values: any) => values._connectionType === 'string',
+            header: 'Step 2: Gather ClickHouse Cloud connection details',
+            bodies: [
+              {
+                text: (
+                  <>
+                    1. Click <b>Connect</b> in the ClickHouse sidebar to see the <b>Host</b>, and{' '}
+                    <b>Password</b>.
+                  </>
+                ),
+              },
+              { image: 'images/connect.png' },
+              { image: 'images/cred.png' },
+              {
+                text: (
+                  <>
+                    2. Identify the target <b>Database</b> in ClickHouse.
+                  </>
+                ),
+              },
+              {
+                image: 'images/db.png',
+              },
+              {
+                text: (
+                  <>
+                    3. Enter the gathered details interpolated into the <b>Connection String</b>{' '}
+                    input to the left. Replacing the host port with <b>9440</b>:
+                  </>
+                ),
+              },
+              {
+                code: `clickhouse://<USERNAME>:<PASSWORD>@oxhgpaltim.westus3.azure.clickhouse.cloud:9440/<DATABASE>?secure=true`,
+              },
             ],
           },
         ],
