@@ -115,8 +115,8 @@ A value for an additional column named `_cq_sync_group_id` that will be added to
 This is useful when splitting a sync into [multiple parallel jobs](https://docs.cloudquery.io/docs/advanced-topics/running-cloudquery-in-parallel). Using the same `sync_group_id` allows identifying separate syncs jobs as belonging to the same group.
 The value supports the following placeholders: `{{SYNC_ID}}, {{YEAR}}, {{MONTH}}, {{DAY}}, {{HOUR}}, {{MINUTE}}` which are set at sync time.
 Common use cases include:
-1. Setting `sync_group_id: "{{YEAR}}-{{MONTH}}-{{DAY}}"` to group syncs by day, in order to provide an historical view of the data, partitioned by day.
-2. Setting `sync_group_id: "{{SYNC_ID}}" to enable joining data from different tables that were all part of the same sync job.
+1. Setting `sync_group_id: "{{YEAR}}-{{MONTH}}-{{DAY}}"` to group syncs by day, in order to provide a historical view of the data, partitioned by day.
+2. Setting `sync_group_id: "{{SYNC_ID}}"` to enable joining data from different tables that were all part of the same sync job.
 
 
 
