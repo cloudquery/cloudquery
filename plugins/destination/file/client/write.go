@@ -13,6 +13,8 @@ import (
 	"github.com/google/uuid"
 )
 
+var syncAfterWrite bool // used in testing
+
 func (c *Client) WriteTable(_ context.Context, msgs <-chan *message.WriteInsert) error {
 	var (
 		f *os.File
@@ -40,6 +42,9 @@ func (c *Client) WriteTable(_ context.Context, msgs <-chan *message.WriteInsert)
 
 		if err := h.WriteContent([]arrow.Record{msg.Record}); err != nil {
 			return err
+		}
+		if syncAfterWrite {
+			_ = f.Sync()
 		}
 	}
 
