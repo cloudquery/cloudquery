@@ -60,4 +60,53 @@ jobs:
         run: go build .
       - name: Test s3 plugin
         run: make test
-  
+
+  validate-config-ui:
+    timeout-minutes: 15
+    if: github.event_name == 'pull_request'
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    needs: deploy
+    env:
+      CQ_CI_PLAYWRIGHT_PREVIEW_LINK: ${{ needs.deploy.outputs.previewLink }}
+      CQ_CI_PLAYWRIGHT_TEST_USER_EMAIL: ${{ secrets.CQ_CI_PLAYWRIGHT_TEST_USER_EMAIL }}
+      CQ_CI_PLAYWRIGHT_TEST_USER_PASSWORD: ${{ secrets.CQ_CI_PLAYWRIGHT_TEST_USER_PASSWORD }}
+    defaults:
+      run:
+        working-directory: ./plugins/destination/s3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: plugins/destination/s3/go.mod
+          cache: true
+          cache-dependency-path: plugins/destination/s3/go.sum
+      - name: Build
+        run: go build .
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "npm"
+          cache-dependency-path: "plugins/destination/s3/cloud-config-ui/package-lock.json"
+      - name: Install dependencies
+        working-directory: "plugins/destination/s3/cloud-config-ui"
+        run: npm ci
+      - name: Install dotenv
+        run: npm install dotenv-cli -g
+      - name: Install Playwright
+        working-directory: "plugins/destination/s3/cloud-config-ui"
+        run: npx playwright install --with-deps
+      - name: Build config UI
+        working-directory: "plugins/destination/s3/cloud-config-ui"
+        run: REACT_APP_USE_CLOUD_APP_MOCK=true npm run build
+        env:
+          REACT_APP_PLUGIN_TEAM: cloudquery
+          REACT_APP_PLUGIN_KIND: destination
+          REACT_APP_PLUGIN_NAME: s3
+          REACT_APP_PLUGIN_VERSION: development
