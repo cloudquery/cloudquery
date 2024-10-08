@@ -138,28 +138,30 @@ export const useConfig = ({
                     .when('_step', {
                       is: 1,
                       // eslint-disable-next-line unicorn/no-thenable
-                      then: (schema) => schema.required(),
-                    })
-                    .test(
-                      'clean-path',
-                      'value must not contain ./ or //',
-                      (value) => !/(\.\/|\/\/)/.test(value ?? ''),
-                    )
-                    .when('no_rotate', {
-                      is: true,
-                      // eslint-disable-next-line unicorn/no-thenable
                       then: (schema) =>
-                        schema.test(
-                          'no-uuid-in-path',
-                          'the {{UUID}} placeholder must not be present in the path when no_rotate is enabled',
-                          (value) => !/{{UUID}}/.test(value ?? ''),
-                        ),
-                      otherwise: (schema) =>
-                        schema.test(
-                          'uuid-in-path',
-                          'the {{UUID}} placeholder must be present in the path',
-                          (value) => /{{UUID}}/.test(value ?? ''),
-                        ),
+                        schema
+                          .required()
+                          .test(
+                            'clean-path',
+                            'value must not contain ./ or //',
+                            (value) => !/(\.\/|\/\/)/.test(value ?? ''),
+                          )
+                          .when('no_rotate', {
+                            is: true,
+                            // eslint-disable-next-line unicorn/no-thenable
+                            then: (schema) =>
+                              schema.test(
+                                'no-uuid-in-path',
+                                'the {{UUID}} placeholder must not be present in the path when no_rotate is enabled',
+                                (value) => !/{{UUID}}/.test(value ?? ''),
+                              ),
+                            otherwise: (schema) =>
+                              schema.test(
+                                'uuid-in-path',
+                                'the {{UUID}} placeholder must be present in the path',
+                                (value) => /{{UUID}}/.test(value ?? ''),
+                              ),
+                          }),
                     }),
                 },
                 {

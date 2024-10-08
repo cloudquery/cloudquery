@@ -34,27 +34,27 @@ export type ConnectProps = {
  */
 export function OAuthConnect({ pluginUiMessageHandler }: ConnectProps) {
   const { plugin, teamName } = usePluginContext();
-  const form = useFormContext();
+  const { setValue, formState, watch, trigger, getValues } = useFormContext();
   const { callApi } = useApiCall(pluginUiMessageHandler);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const connectorId = form.watch('connectorId');
-  const authType = form.watch('_authType');
+  const connectorId = watch('connectorId');
+  const authType = watch('_authType');
   const [shouldTriggerBucket, setShouldTriggerBucket] = useState(false);
 
   const handleClick = async () => {
     setShouldTriggerBucket(true);
-    await form.trigger('bucket');
+    await trigger('bucket');
 
-    if (form.formState.errors.bucket) {
+    if (formState.errors.bucket) {
       return;
     }
 
     setIsLoading(true);
 
-    form.setValue('connectorId', '');
-    form.setValue('arn', '');
-    form.setValue('externalId', '');
+    setValue('connectorId', '');
+    setValue('arn', '');
+    setValue('externalId', '');
 
     try {
       const {
@@ -74,14 +74,14 @@ export function OAuthConnect({ pluginUiMessageHandler }: ConnectProps) {
         authPluginType: 'aws',
         authenticatePayload: {
           spec: {
-            bucket: form.getValues('bucket'),
+            bucket: getValues('bucket'),
           },
         },
       });
-      form.setValue('connectorId', newConnectorId);
+      setValue('connectorId', newConnectorId);
 
-      if (form.getValues('externalId') === '') {
-        form.setValue('externalId', suggestedExternalId);
+      if (getValues('externalId') === '') {
+        setValue('externalId', suggestedExternalId);
       }
 
       pluginUiMessageHandler.sendMessage('open_url', {
@@ -109,12 +109,12 @@ export function OAuthConnect({ pluginUiMessageHandler }: ConnectProps) {
             onChange={(...rest) => {
               field.onChange(...rest);
               if (shouldTriggerBucket) {
-                form.trigger('bucket');
+                trigger('bucket');
               }
 
-              form.setValue('connectorId', '');
-              form.setValue('arn', '');
-              form.setValue('externalId', '');
+              setValue('connectorId', '');
+              setValue('arn', '');
+              setValue('externalId', '');
             }}
           />
         )}
@@ -137,17 +137,29 @@ export function OAuthConnect({ pluginUiMessageHandler }: ConnectProps) {
           </FormControl>
         </Box>
 
-        {connectorId ? (
+        {!error && !formState.errors.connectorId && !isLoading && connectorId && (
           <Typography variant="body2" color="textSecondary">
-            To reopen the AWS IAM Console {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-            <Link sx={{ cursor: 'pointer' }} onClick={handleClick}>
+            To reconnect CloudQuery via AWS IAM Console{' '}
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <Link underline="always" sx={{ cursor: 'pointer' }} onClick={handleClick}>
               click here
             </Link>
           </Typography>
-        ) : (
+        )}
+        {!error && !formState.errors.connectorId && !isLoading && !connectorId && (
           <Typography variant="body2" color="textSecondary">
             This will open a new browser tab.
           </Typography>
+        )}
+        {!!error && (
+          <FormHelperText error={true} sx={{ marginTop: 2 }}>
+            {error.message || 'Something went wrong during authentication. Please try again.'}
+          </FormHelperText>
+        )}
+        {!error && formState.errors.connectorId && (
+          <FormHelperText error={true} sx={{ marginTop: 2 }}>
+            {`You must authenticate with AWS IAM Console to continue.`}
+          </FormHelperText>
         )}
       </Stack>
       <Controller
