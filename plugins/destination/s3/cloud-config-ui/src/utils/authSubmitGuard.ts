@@ -18,8 +18,8 @@ export const authSubmitGuard = async (
 
     if (
       connectorId === initialValues?.connectorId &&
-      externalId === initialValues?.externalId &&
-      arn === initialValues?.arn
+      externalId === initialValues?.spec?.externalId &&
+      arn === initialValues?.spec?.arn
     ) {
       return true;
     }
