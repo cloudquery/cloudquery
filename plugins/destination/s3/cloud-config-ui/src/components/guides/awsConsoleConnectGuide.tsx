@@ -4,7 +4,15 @@ import { pluginUiMessageHandler } from '../../utils/messageHandler';
 
 const SECTIONS = [
   {
-    header: 'Step 1: Navigate to the AWS Console',
+    header: 'Step 1: Enter the name of the S3 bucket',
+    bodies: [
+      {
+        text: 'Enter the name of the S3 bucket CloudQuery will sync to.',
+      },
+    ],
+  },
+  {
+    header: 'Step 2: Navigate to the AWS Console',
     bodies: [
       {
         text: `Click the Reconnect CloudQuery via AWS Console button`,
@@ -15,7 +23,7 @@ const SECTIONS = [
     ],
   },
   {
-    header: 'Step 2: Create stack',
+    header: 'Step 3: Create stack',
     bodies: [
       {
         text: 'In the tab, review the parameters of the CloudFormation Stack and acknowledge that AWS might create IAM resources and click the Create Stack button.',
@@ -27,7 +35,7 @@ const SECTIONS = [
     ],
   },
   {
-    header: 'Step 3: Find ARN and paste it into the input field',
+    header: 'Step 4: Find ARN and paste it into the input field',
     bodies: [
       {
         text: `Once the stack creation is complete, find the ARN of the newly created IAM role in the output of the CloudFormation stack and enter it in the field on the left.`,
@@ -39,7 +47,7 @@ const SECTIONS = [
     ],
   },
   {
-    header: 'Step 4: Proceed to the next page',
+    header: 'Step 5: Proceed to the next page',
     bodies: [
       {
         text: `Click the Continue button on the left to select the data to sync. `,

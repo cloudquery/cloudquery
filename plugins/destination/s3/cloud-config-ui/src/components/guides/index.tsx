@@ -1,10 +1,9 @@
 import { AuthType, useFormContext, usePluginContext } from '@cloudquery/plugin-config-ui-lib';
 
-import { AWSAdvancedGuide } from './awsAdvancedGuide';
 import { AWSConsoleConnect } from './awsConsoleConnectGuide';
 import { AWSConsoleOverview } from './awsConsoleOverviewGuide';
 import { AWSManualConnect } from './awsManualGuide';
-import { AWSSelectServices } from './awsSelectServicesGuide';
+import { BucketConfigurationGuide } from './bucketConfigurationGuide';
 
 export function Guides() {
   const { initialValues } = usePluginContext();
@@ -14,14 +13,11 @@ export function Guides() {
   const connectorId = form.watch('connectorId');
   const externalId = form.watch('externalId');
   const authType = form.watch('_authType');
-  const isSelectServices = form.watch('_activeIndex') === 1;
-  const isAdvanced = form.watch('_activeIndex') === 2;
+  const step = form.watch('_step');
   const arnTouched = !!form.formState.dirtyFields.arn;
 
-  if (isAdvanced) {
-    return <AWSAdvancedGuide />;
-  } else if (isSelectServices) {
-    return <AWSSelectServices editMode={editMode} />;
+  if (step === 1) {
+    return <BucketConfigurationGuide />;
   } else if (authType === AuthType.OTHER) {
     return (
       <AWSManualConnect
@@ -31,9 +27,9 @@ export function Guides() {
       />
     );
   } else if (authType === AuthType.OAUTH && connectorId) {
-    return <AWSConsoleConnect />;
-  } else if (authType === AuthType.OAUTH) {
     return <AWSConsoleOverview />;
+  } else if (authType === AuthType.OAUTH) {
+    return <AWSConsoleConnect />;
   } else {
     return null;
   }

@@ -71,6 +71,16 @@ export const useConfig = ({
                       schema: yup
                         .string()
                         .default(initialValues?.spec?.arn ?? '')
+                        .matches(
+                          new RegExp(
+                            /^arn:(aws|aws-us-gov|aws-cn):iam:(\w+(?:-\w+)+)?:\d{12}:role\/[\w.-]+$/,
+                          ),
+                          {
+                            message:
+                              'ARN must be a valid AWS ARN format, example: arn:aws:iam::123456789012:role/CloudQueryIntegrationRoleForAWSSource',
+                            name: 'arn',
+                          },
+                        )
                         .required('ARN cannot be empty'),
                     },
                     {

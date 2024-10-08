@@ -31,7 +31,15 @@ const getAwsManualSections = ({
 
   return [
     {
-      header: 'Step 1: Create IAM role',
+      header: 'Step 1: Enter the name of the S3 bucket',
+      bodies: [
+        {
+          text: 'Enter the name of the S3 bucket CloudQuery will sync to.',
+        },
+      ],
+    },
+    {
+      header: 'Step 2: Create IAM role',
       bodies: [
         {
           text: (
@@ -84,7 +92,7 @@ const getAwsManualSections = ({
       ],
     },
     {
-      header: 'Step 2: Click Next to specify the permissions',
+      header: 'Step 3: Click Next to specify the permissions',
       bodies: [
         {
           text: `In the list of permission policies, filter by type “AWS managed - job function” and check 
@@ -97,7 +105,7 @@ the box next to the policy with the name “ReadOnlyAccess”.`,
       ],
     },
     {
-      header: 'Step 3: Click Next',
+      header: 'Step 4: Click Next',
       bodies: [
         {
           text: `Set the role name to “CloudQueryIntegrationRoleForAWSSource”`,
@@ -109,7 +117,7 @@ the box next to the policy with the name “ReadOnlyAccess”.`,
       ],
     },
     {
-      header: 'Step 4: Scroll down to click the “Create role”',
+      header: 'Step 5: Scroll down to click the “Create role”',
       bodies: [
         {
           image: `images/createIAM4.webp`,
@@ -118,7 +126,7 @@ the box next to the policy with the name “ReadOnlyAccess”.`,
       ],
     },
     {
-      header: 'Step 5: Select the role that you just created',
+      header: 'Step 6: Select the role that you just created',
       bodies: [
         {
           image: `images/createIAM5.webp`,
@@ -127,7 +135,7 @@ the box next to the policy with the name “ReadOnlyAccess”.`,
       ],
     },
     {
-      header: 'Step 6: Get the ARN',
+      header: 'Step 7: Get the ARN',
       bodies: [
         {
           text: 'In the Summary section, copy the ARN value and enter it in the input on the left ',
@@ -139,7 +147,7 @@ the box next to the policy with the name “ReadOnlyAccess”.`,
       ],
     },
     showExternalIdStep && {
-      header: 'Step 7: The External ID',
+      header: 'Step 8: The External ID',
       bodies: [
         {
           text: (
@@ -170,7 +178,7 @@ the box next to the policy with the name “ReadOnlyAccess”.`,
       ].filter(Boolean),
     },
     {
-      header: `Step ${showExternalIdStep ? 8 : 7}: Proceed to the next page`,
+      header: `Step ${showExternalIdStep ? 9 : 8}: Proceed to the next page`,
       bodies: [
         {
           text: `Click the Continue button on the left to select the data to sync. `,
