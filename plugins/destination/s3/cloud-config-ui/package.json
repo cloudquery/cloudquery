@@ -1,5 +1,5 @@
 {
-  "name": "postgresql-destination-cloud-config-ui",
+  "name": "s3-destination-cloud-config-ui",
   "version": "0.1.0",
   "private": true,
   "homepage": "./",
