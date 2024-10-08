@@ -12,7 +12,7 @@ const SECTIONS = [
             Specify the region, path, and a format to sync in. Path can be configured using macros.
             For the list of macros, see the detailed plugin{' '}
             <Link
-              href="https://cloudquery.io/docs/plugins/destinations/s3/overview"
+              href="https://hub.cloudquery.io/plugins/destination/cloudquery/s3/latest/docs"
               pluginUiMessageHandler={pluginUiMessageHandler}
             >
               documentation
