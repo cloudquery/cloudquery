@@ -48,4 +48,4 @@ The `.env` file should be copied from `.env.example` and populated with the need
 
 - CQ_CI_PLAYWRIGHT_TEST_USER_EMAIL: this can be any valid CloudQuery username
 - CQ_CI_PLAYWRIGHT_TEST_USER_PASSWORD: this can be any valid CloudQuery password
-- CQ_CI_PLAYWRIGHT_PREVIEW_LINK: this will be generated and commented on a successfully built PR. It will be in a format like: `https://cloud.cloudquery.io/teams/cloudquery-test/destinations/create?plugin-cloud-ui=cloudquery|destination|mysql|https://plugin-destination-mysql-cloud-ui-19223.vercel.app`
+- CQ_CI_PLAYWRIGHT_PREVIEW_LINK: this will be generated and commented on a successfully built PR. It will be in a format like: `https://cloud.cloudquery.io/teams/cloudquery-test/destinations/create?plugin-cloud-ui=cloudquery|destination|bigquery|https://plugin-destination-bigquery-cloud-ui-19223.vercel.app`

@@ -13,7 +13,7 @@ function App() {
     true,
   );
 
-  const config = useConfig({ initialValues });
+  const config = useConfig({ initialValues, teamName });
 
   return (
     <DevWrapper {...envJson}>
