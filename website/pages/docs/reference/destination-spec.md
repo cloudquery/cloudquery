@@ -116,7 +116,7 @@ This is useful when splitting a sync into [multiple parallel jobs](https://docs.
 The value supports the following placeholders: `{{SYNC_ID}}, {{YEAR}}, {{MONTH}}, {{DAY}}, {{HOUR}}, {{MINUTE}}` which are set at sync time.
 Common use cases include:
 1. Setting `sync_group_id: "{{YEAR}}-{{MONTH}}-{{DAY}}"` to group syncs by day, in order to provide a historical view of the data, partitioned by day.
-2. Setting `sync_group_id: "{{SYNC_ID}}"` to enable joining data from different tables that were all part of the same sync job.
+2. Setting `sync_group_id: "{{SYNC_ID}}"` to enable joining data from different tables that were all part of the same sync job. The value of `SYNC_ID` can be controlled using the `--invocation-id` flag passed to the `cloudquery sync` command.
 
 
 
