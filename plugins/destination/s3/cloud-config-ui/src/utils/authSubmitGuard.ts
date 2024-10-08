@@ -10,12 +10,17 @@ export const authSubmitGuard = async (
   teamName: string,
   callApi: ReturnType<typeof useApiCall>['callApi'],
   setValue: (field: string, value: any) => void,
-  initialValues: any,
+  initialValues?: any,
 ) => {
   try {
-    let { connectorId } = formValues;
+    const { connectorId, externalId, arn } = formValues;
+    let connectorIdValue = connectorId;
 
-    if (connectorId === initialValues.connectorId) {
+    if (
+      connectorId === initialValues?.connectorId &&
+      externalId === initialValues?.externalId &&
+      arn === initialValues?.arn
+    ) {
       return true;
     }
 
@@ -39,10 +44,10 @@ export const authSubmitGuard = async (
       });
 
       setValue('connectorId', newConnectorId);
-      connectorId = newConnectorId;
+      connectorIdValue = newConnectorId;
     }
     await finishAuthConnectorAuthentication({
-      connectorId,
+      connectorId: connectorIdValue,
       authPluginType: 'aws',
       teamName,
       callApi,

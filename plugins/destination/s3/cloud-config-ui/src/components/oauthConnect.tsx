@@ -79,10 +79,9 @@ export function OAuthConnect({ pluginUiMessageHandler }: ConnectProps) {
         },
       });
       setValue('connectorId', newConnectorId);
+      setValue('externalId', suggestedExternalId);
 
-      if (getValues('externalId') === '') {
-        setValue('externalId', suggestedExternalId);
-      }
+      trigger('connectorId');
 
       pluginUiMessageHandler.sendMessage('open_url', {
         url: redirectUrl,
