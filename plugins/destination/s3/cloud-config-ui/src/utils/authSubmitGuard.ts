@@ -10,17 +10,27 @@ export const authSubmitGuard = async (
   teamName: string,
   callApi: ReturnType<typeof useApiCall>['callApi'],
   setValue: (field: string, value: any) => void,
-  initialValues?: any,
 ) => {
   try {
-    const { connectorId, externalId, arn } = formValues;
+    const {
+      connectorId,
+      externalId,
+      arn,
+      _finishedConnectorId,
+      _finishedExternalId,
+      _finishedArn,
+    } = formValues;
     let connectorIdValue = connectorId;
 
-    if (
-      connectorId === initialValues?.connectorId &&
-      externalId === initialValues?.spec?.externalId &&
-      arn === initialValues?.spec?.arn
-    ) {
+    const finishedValuesMatch =
+      _finishedConnectorId &&
+      _finishedExternalId &&
+      _finishedArn &&
+      _finishedConnectorId === connectorId &&
+      _finishedExternalId === externalId &&
+      _finishedArn === arn;
+
+    if (finishedValuesMatch) {
       return true;
     }
 
@@ -43,8 +53,8 @@ export const authSubmitGuard = async (
         },
       });
 
-      setValue('connectorId', newConnectorId);
       connectorIdValue = newConnectorId;
+      setValue('connectorId', connectorIdValue);
     }
     await finishAuthConnectorAuthentication({
       connectorId: connectorIdValue,
@@ -57,6 +67,10 @@ export const authSubmitGuard = async (
         external_id: formValues.externalId,
       },
     });
+
+    setValue('_finishedConnectorId', connectorIdValue);
+    setValue('_finishedExternalId', formValues.externalId);
+    setValue('_finishedArn', formValues.arn);
 
     return true;
   } catch {
