@@ -54,6 +54,7 @@ export const authSubmitGuard = async (
       });
 
       connectorIdValue = newConnectorId;
+      setValue('connectorId', connectorIdValue);
     }
     await finishAuthConnectorAuthentication({
       connectorId: connectorIdValue,
