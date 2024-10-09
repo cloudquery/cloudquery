@@ -71,6 +71,7 @@ export const useConfig = ({
                       schema: yup
                         .string()
                         .default(initialValues?.spec?.arn ?? '')
+                        .trim()
                         .matches(
                           new RegExp(
                             /^arn:(aws|aws-us-gov|aws-cn):iam:(\w+(?:-\w+)+)?:\d{12}:role\/[\w.-]+$/,
@@ -92,12 +93,12 @@ export const useConfig = ({
                       schema: yup
                         .string()
                         .default(initialValues?.spec?.externalId ?? '')
+                        .trim()
                         .when('_authType', {
                           is: AuthType.OTHER,
                           // eslint-disable-next-line unicorn/no-thenable
                           then: (schema) => schema.required('External ID is required'),
-                        })
-                        .trim(),
+                        }),
                     },
                     {
                       component: 'control-text-field',
@@ -107,6 +108,7 @@ export const useConfig = ({
                       schema: yup
                         .string()
                         .default(initialValues?.spec?.bucket ?? '')
+                        .trim()
                         .required(),
                     },
                   ],
@@ -116,7 +118,7 @@ export const useConfig = ({
           ],
         },
         {
-          submitGuard: (...params) => authSubmitGuard(...params, initialValues),
+          submitGuard: authSubmitGuard,
           children: [
             {
               component: 'section',
@@ -131,6 +133,7 @@ export const useConfig = ({
                   schema: yup
                     .string()
                     .default(initialValues?.spec?.region ?? '')
+                    .trim()
                     .when('_step', {
                       is: 1,
                       // eslint-disable-next-line unicorn/no-thenable
@@ -145,6 +148,7 @@ export const useConfig = ({
                   schema: yup
                     .string()
                     .default(initialValues?.spec?.path ?? '')
+                    .trim()
                     .when('_step', {
                       is: 1,
                       // eslint-disable-next-line unicorn/no-thenable
@@ -205,7 +209,10 @@ export const useConfig = ({
                   shouldRender: (values) => values.format === 'csv',
                   helperText: 'Delimiter to use in the CSV file.',
                   label: 'Delimiter',
-                  schema: yup.string().default(initialValues?.spec?.format_spec?.delimiter ?? ','),
+                  schema: yup
+                    .string()
+                    .default(initialValues?.spec?.format_spec?.delimiter ?? ',')
+                    .trim(),
                 },
                 {
                   component: 'control-boolean-field',
@@ -232,6 +239,7 @@ export const useConfig = ({
                   label: 'Parquet format version to use',
                   schema: yup
                     .string()
+                    .oneOf(['v1.0', 'v2.4', 'v2.6', 'v2Latest'])
                     .default(initialValues?.spec?.format_spec?.version ?? 'v2Latest'),
                 },
                 {
@@ -252,7 +260,8 @@ export const useConfig = ({
                   label: 'Root node repetition type',
                   schema: yup
                     .string()
-                    .default(initialValues?.spec?.format_spec?.root_repetition ?? 'repeated'),
+                    .default(initialValues?.spec?.format_spec?.root_repetition ?? 'repeated')
+                    .trim(),
                 },
               ],
             },
@@ -284,6 +293,7 @@ export const useConfig = ({
                       initialValues?.spec?.server_side_encryption_configuration?.sse_kms_key_id ??
                         '',
                     )
+                    .trim()
                     .when(['server_side_encryption_configuration_active', '_step'], {
                       is: (active: boolean, step: number) => active === true && step === 1,
                       // eslint-disable-next-line unicorn/no-thenable
@@ -304,6 +314,7 @@ export const useConfig = ({
                       initialValues?.spec?.server_side_encryption_configuration
                         ?.server_side_encryption ?? '',
                     )
+                    .trim()
                     .when(['server_side_encryption_configuration_active', '_step'], {
                       is: (active: boolean, step: number) => active === true && step === 1,
                       // eslint-disable-next-line unicorn/no-thenable
@@ -380,7 +391,10 @@ export const useConfig = ({
                   helperText:
                     'Endpoint to use for S3 API calls. This is useful for S3-compatible storage services such as MinIO.\nNote: if you want to use path-style addressing, i.e., https://s3.amazonaws.com/BUCKET/KEY, use_path_style should be enabled, too.',
                   label: 'Endpoint',
-                  schema: yup.string().default(initialValues?.spec?.endpoint ?? ''),
+                  schema: yup
+                    .string()
+                    .default(initialValues?.spec?.endpoint ?? '')
+                    .trim(),
                 },
                 {
                   component: 'control-select-field',
@@ -401,7 +415,19 @@ export const useConfig = ({
                   helperText:
                     'Canned ACL to apply to the object. Supported values are private, public-read, public-read-write, authenticated-read, aws-exec-read, bucket-owner-read, bucket-owner-full-control.',
                   label: 'Canned ACL',
-                  schema: yup.string().default(initialValues?.spec?.acl ?? ''),
+                  schema: yup
+                    .string()
+                    .oneOf([
+                      '',
+                      'private',
+                      'public-read',
+                      'public-read-write',
+                      'authenticated-read',
+                      'aws-exec-read',
+                      'bucket-owner-read',
+                      'bucket-owner-full-control',
+                    ])
+                    .default(initialValues?.spec?.acl ?? ''),
                 },
                 {
                   component: 'control-boolean-field',
@@ -453,7 +479,10 @@ export const useConfig = ({
                   name: 'batch_timeout',
                   helperText: 'Maximum interval between batch writes.',
                   label: 'Batch Timeout',
-                  schema: yup.string().default(initialValues?.spec?.batch_timeout ?? '30s'),
+                  schema: yup
+                    .string()
+                    .default(initialValues?.spec?.batch_timeout ?? '30s')
+                    .trim(),
                 },
               ],
             },
@@ -463,6 +492,13 @@ export const useConfig = ({
       ],
       auth: [AuthType.OTHER],
       guide: Guides,
+      stateSchema: {
+        // those fields are used to store connector authentication state in order to prevent
+        // reauthentication when it's not necessary.
+        _finishedConnectorId: yup.string().default(initialValues?.connectorId ?? ''),
+        _finishedExternalId: yup.string().default(initialValues?.spec?.externalId ?? ''),
+        _finishedArn: yup.string().default(initialValues?.spec?.arn ?? ''),
+      },
     }),
     [initialValues],
   );

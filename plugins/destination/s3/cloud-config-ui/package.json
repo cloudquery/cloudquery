@@ -4,19 +4,9 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
-    "@cloudquery/plugin-config-ui-connector": "^0.2.16",
     "@cloudquery/plugin-config-ui-lib": "4.2.1",
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
-    "@mui/icons-material": "^6.0.0",
-    "@mui/lab": "^6.0.0-beta.9",
-    "@mui/material": "^6.0.0",
-    "@mui/system": "^6.0.0",
     "@tanstack/react-query": "^4.35.3",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "typescript": "^4.9.5",
-    "yup": "^1.4.0"
+    "typescript": "^4.9.5"
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
