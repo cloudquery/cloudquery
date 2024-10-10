@@ -1,7 +1,6 @@
 package publish
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
@@ -45,12 +44,10 @@ func writeTempFile(t *testing.T, filename string, data []byte) (string, error) {
 	fullpath := filepath.Join(dir, filename)
 
 	fp, err := os.Create(fullpath)
-	if err != nil {
-		return "", fmt.Errorf("failed to create temp file: %w", err)
-	}
+	require.NoError(t, err)
 	defer fp.Close()
-	if _, err := fp.Write(data); err != nil {
-		return "", fmt.Errorf("failed to write temp file: %w", err)
-	}
+
+	_, err = fp.Write(data)
+	require.NoError(t, err)
 	return fullpath, nil
 }
