@@ -7,7 +7,7 @@ description: Learn about CloudQuery's billing model
 
 ## How CloudQuery Pricing Works
 
-The basic pricing model is usage-based: You get billed per synced row. We charge when a record is pulled from a source, whether a record has changed or not
+The basic pricing model is usage-based: You get billed per synced row. We charge when a record is pulled from a source, whether a record has changed or not.
 
 If you sync from a single source to multiple destinations, you get charged only once for the rows synced.
 
