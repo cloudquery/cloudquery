@@ -40,8 +40,7 @@ func TestQuickContentType(t *testing.T) {
 
 			if tt.tryNoExt {
 				t.Run(tt.filename+"-noext", func(t *testing.T) {
-					fullpath, err := copyTempFile(t, fullpath, "unknown-file")
-					require.NoError(t, err)
+					fullpath := copyTempFile(t, fullpath, "unknown-file")
 
 					qt, err := quickContentType(fullpath)
 					require.NoError(t, err)
@@ -52,7 +51,7 @@ func TestQuickContentType(t *testing.T) {
 	}
 }
 
-func copyTempFile(t *testing.T, src, destName string) (string, error) {
+func copyTempFile(t *testing.T, src, destName string) string {
 	t.Helper()
 
 	dir := t.TempDir()
@@ -68,5 +67,5 @@ func copyTempFile(t *testing.T, src, destName string) (string, error) {
 
 	_, err = io.Copy(fp, srcHandle)
 	require.NoError(t, err)
-	return fullpath, nil
+	return fullpath
 }
