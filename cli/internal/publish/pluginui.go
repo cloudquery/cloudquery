@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"mime"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -119,24 +120,9 @@ func quickContentType(filename string) (string, error) {
 		return "", fmt.Errorf("failed to read file: %w", err)
 	}
 
-	contentType := http.DetectContentType(filebytes)
-	switch {
-	case contentType == "application/octet-stream":
-		switch filepath.Ext(filename) {
-		case ".html", ".htm":
-			return "text/html", nil
-		case ".css":
-			return "text/css", nil
-		case ".js":
-			return "application/javascript", nil
-		case ".svg":
-			return "image/svg+xml", nil
-		}
-	case strings.HasPrefix(contentType, "text/plain"):
-		switch filepath.Ext(filename) {
-		case ".svg":
-			return "image/svg+xml", nil
-		}
+	contentType := mime.TypeByExtension(filepath.Ext(filename))
+	if contentType == "" {
+		contentType = http.DetectContentType(filebytes)
 	}
 	return contentType, nil
 }
