@@ -42,10 +42,12 @@ func GetTeamForToken(ctx context.Context, token auth.Token) (string, error) {
 		if configFileMissing(err) || emptyTeam(err, team) {
 			teams := getAvailableUserTeams(ctx, token)
 			message := "team is not set.\n\n. Hint: use `cloudquery login` and/or `cloudquery switch <team>`"
+			args := []any{}
 			if len(teams) > 0 {
-				message = fmt.Sprintf("team is not set.\n\nAvailable teams: %s.\n\nTo set your team, run `cloudquery switch <team>`", strings.Join(teams, ", "))
+				message = "team is not set.\n\nAvailable teams: %s.\n\nTo set your team, run `cloudquery switch <team>`"
+				args = []any{strings.Join(teams, ", ")}
 			}
-			return "", fmt.Errorf(message)
+			return "", fmt.Errorf(message, args...)
 		}
 		if err != nil {
 			return "", fmt.Errorf("failed to get team name from config: %w. Hint: use `cloudquery login` and/or `cloudquery switch <team>`", err)
