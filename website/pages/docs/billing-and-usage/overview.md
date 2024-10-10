@@ -7,7 +7,7 @@ description: Learn about CloudQuery's billing model
 
 ## How CloudQuery Pricing Works
 
-The basic pricing model is usage-based: You get billed per synced row. A row means a resource synced with a source plugin that creates or updates a single row in the destination.
+The basic pricing model is usage-based: You get billed per synced row. We charge when a record is pulled from a source, whether a record has changed or not
 
 If you sync from a single source to multiple destinations, you get charged only once for the rows synced.
 
@@ -27,7 +27,7 @@ When running syncs with CloudQuery Cloud, you may incur additional costs in Egre
 
 ### Monitoring your usage
 
-You can see your exact consumption in CloudQuery Cloud's billing page, which includes details on the rows synced with individual plugins broken down by day and how much of the free quota you used in the current month.
+You can see your exact consumption on CloudQuery Cloud's billing page, which includes details on the rows synced with individual plugins broken down by day and how much of the free quota you used in the current month.
 
 ![Usage chart](/images/docs/billing-and-usage/usage-chart.png)
 
