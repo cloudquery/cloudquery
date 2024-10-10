@@ -120,7 +120,8 @@ func quickContentType(filename string) (string, error) {
 	}
 
 	contentType := http.DetectContentType(filebytes)
-	if contentType == "application/octet-stream" {
+	switch {
+	case contentType == "application/octet-stream":
 		switch filepath.Ext(filename) {
 		case ".html", ".htm":
 			return "text/html", nil
@@ -128,6 +129,13 @@ func quickContentType(filename string) (string, error) {
 			return "text/css", nil
 		case ".js":
 			return "application/javascript", nil
+		case ".svg":
+			return "image/svg+xml", nil
+		}
+	case strings.HasPrefix(contentType, "text/plain"):
+		switch filepath.Ext(filename) {
+		case ".svg":
+			return "image/svg+xml", nil
 		}
 	}
 	return contentType, nil
