@@ -42,6 +42,8 @@ area/plugin/destination/sqlite:
   - plugins/destination/sqlite/**/*
 area/plugin/destination/sqlite-python:
   - plugins/destination/sqlite/**/*
+area/plugin/destination/test:
+  - plugins/destination/test/**/*
 area/plugin/source/airtable:
   - plugins/source/airtable/**/*
 area/plugin/source/bitbucket:
@@ -54,6 +56,8 @@ area/plugin/source/typeform:
   - plugins/source/typeform/**/*
 area/plugin/source/xkcd:
   - plugins/source/xkcd/**/*
+area/plugin/source/test:
+  - plugins/source/test/**/*
 area/plugin/transform/basic:
   - plugins/transform/basic/**/*
 area/scaffold:
