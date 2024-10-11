@@ -36,7 +36,7 @@ func TestSync(t *testing.T) {
 					DestinationErrors: 0,
 					DestinationName:   "test",
 					DestinationPath:   "cloudquery/test",
-					Resources:         12,
+					Resources:         13,
 					SourceName:        "test",
 					SourcePath:        "cloudquery/test",
 				},
@@ -45,7 +45,7 @@ func TestSync(t *testing.T) {
 					DestinationErrors: 0,
 					DestinationName:   "test",
 					DestinationPath:   "cloudquery/test",
-					Resources:         12,
+					Resources:         13,
 					SourceName:        "test2",
 					SourcePath:        "cloudquery/test",
 				},
@@ -63,7 +63,7 @@ func TestSync(t *testing.T) {
 					CLIVersion:      "development",
 					DestinationName: "test-1",
 					DestinationPath: "cloudquery/test",
-					Resources:       12,
+					Resources:       13,
 					SourceName:      "test-1",
 					SourcePath:      "cloudquery/test",
 				},
@@ -71,7 +71,7 @@ func TestSync(t *testing.T) {
 					CLIVersion:      "development",
 					DestinationName: "test-2",
 					DestinationPath: "cloudquery/test",
-					Resources:       12,
+					Resources:       13,
 					SourceName:      "test-2",
 					SourcePath:      "cloudquery/test",
 				},
@@ -85,7 +85,7 @@ func TestSync(t *testing.T) {
 					CLIVersion:      "development",
 					DestinationName: "test1",
 					DestinationPath: "cloudquery/test",
-					Resources:       12,
+					Resources:       13,
 					SourceName:      "test",
 					SourcePath:      "cloudquery/test",
 				},
@@ -174,11 +174,11 @@ func TestSyncWithSummaryTable(t *testing.T) {
 					DestinationErrors:  0,
 					DestinationName:    "test",
 					DestinationPath:    "cloudquery/file",
-					DestinationVersion: "v4.0.1",
-					Resources:          12,
+					DestinationVersion: "v5.2.4",
+					Resources:          13,
 					SourceName:         "test",
 					SourcePath:         "cloudquery/test",
-					SourceVersion:      "v3.1.15",
+					SourceVersion:      "v4.5.0",
 				},
 			},
 		},
@@ -295,9 +295,8 @@ func TestSync_IsolatedPluginEnvironmentsInCloud(t *testing.T) {
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
 
-	t.Setenv("CLOUDQUERY_API_KEY", "cqsr_123")
 	t.Setenv("CQ_CLOUD", "1")
-	t.Setenv("_CQ_TEAM_NAME", "test_team")
+	t.Setenv("_CQ_TEAM_NAME", "cloudquery")
 	t.Setenv("_CQ_SYNC_NAME", "test_sync")
 	t.Setenv("_CQ_SYNC_RUN_ID", uuid.Must(uuid.NewUUID()).String())
 	t.Setenv("__SOURCE_TEST__TEST_KEY", "test_value")
