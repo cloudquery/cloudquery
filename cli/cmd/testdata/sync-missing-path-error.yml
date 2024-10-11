@@ -4,10 +4,10 @@ spec:
   path: "cloudquery/test"
   registry: "github"
   destinations: [test]
-  version: "v3.1.15" # latest version of source test plugin
+  version: "v4.5.0" # latest version of source test plugin
   tables: ["*"]
 ---
 kind: "destination"
 spec:
   name: "test"
-  version: "v2.2.14" # latest version of destination test plugin
+  version: "v2.5.0" # latest version of destination test plugin
