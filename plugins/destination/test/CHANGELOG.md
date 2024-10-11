@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.4.3...plugins-destination-test-v2.5.0) (2024-10-11)
+
+
+### Features
+
+* Add test connection handling ([#19350](https://github.com/cloudquery/cloudquery/issues/19350)) ([190e53a](https://github.com/cloudquery/cloudquery/commit/190e53ab9bd417d058e809b2e9f443c1e8abf0fe))
+
 ## [2.4.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.4.2...plugins-destination-test-v2.4.3) (2024-10-08)
 
 
