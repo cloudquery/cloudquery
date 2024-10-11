@@ -10,17 +10,18 @@ import SqliteCommandWindows from './_configure-sqlite-command-windows.mdx';
 import SqliteCommandMacos from './_configure-sqlite-command-macos.mdx';
 
 {/* <!-- vale off --> */}
+
 export const SyncCommand = ({ os }) => {
-switch (os) {
-case "linux":
-return <ConfigureSyncCommandLinux />
-case "windows":
-return <ConfigureSyncCommandWindows />
-case "macos":
-return <ConfigureSyncCommandMacos />
-default:
-return <ConfigureSyncCommandMacos />
-}
+    switch (os) {
+        case "linux":
+            return <ConfigureSyncCommandLinux />
+        case "windows":
+            return <ConfigureSyncCommandWindows />
+        case "macos":
+            return <ConfigureSyncCommandMacos />
+        default:
+            return <ConfigureSyncCommandMacos />
+    }
 }
 
 export const InitCommand = ({ os }) => {
