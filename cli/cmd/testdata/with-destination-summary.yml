@@ -2,7 +2,6 @@ kind: "source"
 spec:
   name: "test"
   path: "cloudquery/test"
-  registry: "github"
   destinations: [test]
   version: "v4.5.0" # latest version of source test plugin
   tables: ["*"]
@@ -11,8 +10,7 @@ kind: "destination"
 spec:
   name: "test"
   path: "cloudquery/file"
-  registry: "github"
-  version: "v4.0.1" # latest version of plugin available on github
+  version: "v5.2.4" # latest version of destination file plugin
   send_sync_summary: true
   spec:
     format: "json"

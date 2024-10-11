@@ -16,6 +16,8 @@ on:
       - "cli/**"
       - ".github/workflows/cli.yml"
 
+env:
+  CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
 jobs:
   cli:
     timeout-minutes: 30

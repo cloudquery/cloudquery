@@ -2,8 +2,7 @@ kind: source
 spec:
   name: cloudflare
   path: cloudquery/cloudflare
-  registry: cloudquery
-  version: "v6.1.2"
+  version: "v9.6.0" # latest version of source cloudflare plugin
   destinations: ["postgresql"]
   tables: ["*"]
   spec:
@@ -13,8 +12,7 @@ kind: destination
 spec:
   name: "postgresql"
   path: "cloudquery/postgresql"
-  registry: cloudquery
-  version: "v7.3.5"
+  version: "v8.6.2" # latest version of destination postgresql plugin
   spec:
     connection_string: "postgresql://postgres:not-a-real-password@localhost:5432/postgres?sslmode=disable"
     invalid_key: "invalid_value"

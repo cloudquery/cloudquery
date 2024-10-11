@@ -2,7 +2,6 @@ kind: "source"
 spec:
   name: "test"
   path: "cloudquery/test"
-  registry: "github"
   destinations: ["test1"]
   backend_options:
     table_name: "test_backend"
@@ -14,12 +13,10 @@ kind: "destination"
 spec:
   name: "test1"
   path: "cloudquery/test"
-  registry: "github"
   version: "v2.5.0" # latest version of destination test plugin
 ---
 kind: "destination"
 spec:
   name: "test2"
   path: "cloudquery/test"
-  registry: "github"
   version: "v2.5.0" # latest version of destination test plugin
