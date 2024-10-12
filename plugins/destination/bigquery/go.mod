@@ -87,7 +87,7 @@ require (
 )
 
 require (
-	cloud.google.com/go v0.115.1
+	cloud.google.com/go v0.116.0
 	cloud.google.com/go/compute/metadata v0.5.2 // indirect
 	cloud.google.com/go/iam v1.2.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
