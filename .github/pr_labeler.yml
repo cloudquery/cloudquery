@@ -52,12 +52,12 @@ area/plugin/source/hackernews:
   - plugins/source/hackernews/**/*
 area/plugin/source/square:
   - plugins/source/square/**/*
+area/plugin/source/test:
+  - plugins/source/test/**/*
 area/plugin/source/typeform:
   - plugins/source/typeform/**/*
 area/plugin/source/xkcd:
   - plugins/source/xkcd/**/*
-area/plugin/source/test:
-  - plugins/source/test/**/*
 area/plugin/transform/basic:
   - plugins/transform/basic/**/*
 area/scaffold:
