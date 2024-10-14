@@ -123,9 +123,8 @@ func ProcessDocument(ctx context.Context, c *cloudquery_api.ClientWithResponses,
 		}
 		item := item
 		absFile := ims[listKey{name: item.Name, sum: item.Checksum}][0].absFile
-		contentType := ims[listKey{name: item.Name, sum: item.Checksum}][0].contentType
 		eg.Go(func() error {
-			return uploadFile(egCtx, *item.UploadURL, absFile, contentType)
+			return uploadImage(egCtx, item, absFile)
 		})
 	}
 
@@ -226,18 +225,26 @@ func replaceMarkdownImages(contents string, ims map[listKey][]reference) (string
 	return contents, nil
 }
 
-func uploadFile(ctx context.Context, uploadURL, file, contentType string) error {
+func uploadImage(ctx context.Context, item cloudquery_api.TeamImage, file string) error {
 	f, err := os.Open(file)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 
-	req, err := http.NewRequest(http.MethodPut, uploadURL, f)
+	req, err := http.NewRequest(http.MethodPut, *item.UploadURL, f)
 	if err != nil {
 		return err
 	}
-	req.Header.Set("Content-Type", contentType)
+	for k, v := range item.RequiredHeaders {
+		if headers, ok := v.([]interface{}); ok {
+			for _, h := range headers {
+				if header, ok := h.(string); ok {
+					req.Header.Add(k, header)
+				}
+			}
+		}
+	}
 
 	resp, err := http.DefaultClient.Do(req.WithContext(ctx))
 	if err != nil {
