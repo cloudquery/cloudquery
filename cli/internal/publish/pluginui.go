@@ -4,14 +4,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"mime"
-	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/internal/hub"
+	"github.com/cloudquery/cloudquery/cli/internal/publish/images"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -30,7 +29,7 @@ func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithRespo
 			urlPath = strings.ReplaceAll(urlPath, string(os.PathSeparator), "/")
 		}
 
-		contentType, err := quickContentType(fullPath)
+		contentType, err := images.QuickContentType(fullPath)
 		if err != nil {
 			return err
 		}
@@ -106,23 +105,4 @@ func readFlatDir(base string) (files []string, err error) {
 		return nil
 	})
 	return files, err
-}
-
-func quickContentType(filename string) (string, error) {
-	filebytes := make([]byte, 512)
-
-	fp, err := os.Open(filename)
-	if err != nil {
-		return "", fmt.Errorf("failed to open file: %w", err)
-	}
-	defer fp.Close()
-	if _, err := fp.Read(filebytes); err != nil {
-		return "", fmt.Errorf("failed to read file: %w", err)
-	}
-
-	contentType := mime.TypeByExtension(filepath.Ext(filename))
-	if contentType == "" {
-		contentType = http.DetectContentType(filebytes)
-	}
-	return contentType, nil
 }
