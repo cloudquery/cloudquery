@@ -237,7 +237,7 @@ func uploadImage(ctx context.Context, item cloudquery_api.TeamImage, file string
 		return err
 	}
 	for k, v := range item.RequiredHeaders {
-		if headers, ok := v.([]interface{}); ok {
+		if headers, ok := v.([]any); ok {
 			for _, h := range headers {
 				if header, ok := h.(string); ok {
 					req.Header.Add(k, header)
