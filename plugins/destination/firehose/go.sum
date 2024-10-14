@@ -27,10 +27,10 @@ github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.12.0 h1:TToQNkv
 github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.12.0/go.mod h1:0jp+ltwkf+SwG2fm/PKo8t4y8pJSgOCO4D8Lz3k0aHQ=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.12.2 h1:s7NA1SOw8q/5c0wr8477yOPp0z+uBaXBnLE0XYb0POA=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.12.2/go.mod h1:fnjjWyAW/Pj5HYOxl9LJqWtEwS7W2qgcRLWP+uWbss0=
-github.com/aws/aws-sdk-go-v2/service/licensemanager v1.29.0 h1:l4LuDV2zXPDCfevU10FuN8Nbk+URQ4p/IJBUdo9Yxwg=
-github.com/aws/aws-sdk-go-v2/service/licensemanager v1.29.0/go.mod h1:f82KSyNWSqz7Brp77x75Lo1+ItBYNx1EINb25N5wYzY=
-github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.25.0 h1:i5gAeJBHocyHHATRUC6+2QiVIsLBnz3GCdI5Xr69z70=
-github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.25.0/go.mod h1:W8dAXXS+vPt5u8IR0sFk3vsrwF2MxJs77LadGDHwFCk=
+github.com/aws/aws-sdk-go-v2/service/licensemanager v1.29.2 h1:Nno5V/uk9E5Zv4pAbxrWIwIPssg47Ry7WTaSZ+kz5Ck=
+github.com/aws/aws-sdk-go-v2/service/licensemanager v1.29.2/go.mod h1:kC8FKuo+HC1DqV84jtpZFxNW7aVR+TepFesRAzcQicY=
+github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.25.2 h1:fRCnZ2ZoT0KeJWMZ9z+2sPVPQ/N/Fu6iKfEJWN+lwMs=
+github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.25.2/go.mod h1:cZsJQOQ8vOE2BpwF1K+gsgILFDY6h2eoHSj0dTHq9cc=
 github.com/aws/aws-sdk-go-v2/service/sso v1.24.2 h1:bSYXVyUzoTHoKalBmwaZxs97HU9DWWI3ehHSAMa7xOk=
 github.com/aws/aws-sdk-go-v2/service/sso v1.24.2/go.mod h1:skMqY7JElusiOUjMJMOv1jJsP7YUg7DrhgqZZWuzu1U=
 github.com/aws/aws-sdk-go-v2/service/ssooidc v1.28.2 h1:AhmO1fHINP9vFYUE0LHzCWg/LfUWUF+zFPEcY9QXb7o=
@@ -48,8 +48,8 @@ github.com/buger/jsonparser v1.1.1 h1:2PnMjfWD7wBILjqQbt530v576A/cAbQvEW9gGIpYMU
 github.com/buger/jsonparser v1.1.1/go.mod h1:6RYKKt7H4d4+iWqouImQ9R2FZql3VbhNgx27UK13J/0=
 github.com/cenkalti/backoff/v4 v4.3.0 h1:MyRJ/UdXutAwSAT+s3wNd7MfTIcy71VQueUuFK343L8=
 github.com/cenkalti/backoff/v4 v4.3.0/go.mod h1:Y3VNntkOUPxTVeUxJ/G5vcM//AlwfmyYozVcomhLiZE=
-github.com/cloudquery/cloudquery-api-go v1.13.0 h1:/yv9iaCUFjcmIgkLjY3iPVEWajtGFyFzaSaykszdJmo=
-github.com/cloudquery/cloudquery-api-go v1.13.0/go.mod h1:5oo8HHnv2Y7NgcVvZn59xFlYKJUyeP0tcN8JH3IP2Aw=
+github.com/cloudquery/cloudquery-api-go v1.13.1 h1:jU/mpVjgamRXZUWEu+ucNZcLk9OIm5YV6q9B5en5rqQ=
+github.com/cloudquery/cloudquery-api-go v1.13.1/go.mod h1:5oo8HHnv2Y7NgcVvZn59xFlYKJUyeP0tcN8JH3IP2Aw=
 github.com/cloudquery/codegen v0.3.19 h1:DeHCWEdgiRF6PCAaVZcMujxU9/jKlSOuPutplUpCXRI=
 github.com/cloudquery/codegen v0.3.19/go.mod h1:NCAex4htqLN/VwPlg3HwxnB7aEq8sU6UEl8c5ax0KQc=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66 h1:OZLPSIBYEfvkAUeOeM8CwTgVQy5zhayI99ishCrsFV0=
@@ -58,8 +58,8 @@ github.com/cloudquery/plugin-pb-go v1.22.4 h1:D8MIjdDt5Kuw4Nn8FAOJm1H5GXPzezFGIb
 github.com/cloudquery/plugin-pb-go v1.22.4/go.mod h1:GB971fKGXCil5XdhD0dCH1w7SqJCOQIgSA9OjKhVjo4=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0/go.mod h1:pAX6ojIW99b/Vg4CkhnsGkRIzNaVEceYMR+Bdit73ug=
-github.com/cloudquery/plugin-sdk/v4 v4.66.0 h1:f9tAukt1XRIYOAmkm5PgpEp/QkCMY9HMB6plkR+0E5g=
-github.com/cloudquery/plugin-sdk/v4 v4.66.0/go.mod h1:JzzDGj2jGo4hVFo17acHZ6UyW4NzqlkdAZA25ExGoy4=
+github.com/cloudquery/plugin-sdk/v4 v4.66.1 h1:Y9hk8pAv8Ig/bLR/PPdm+Bcz6EQlP4hyeG0frX3zOvE=
+github.com/cloudquery/plugin-sdk/v4 v4.66.1/go.mod h1:SXVkvxiPIVinx5ledafAWgVWrN77jCBU0WPJWRdZvhw=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.4/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -204,8 +204,8 @@ google.golang.org/genproto/googleapis/rpc v0.0.0-20240903143218-8af14fe29dc1 h1:
 google.golang.org/genproto/googleapis/rpc v0.0.0-20240903143218-8af14fe29dc1/go.mod h1:UqMtugtsSgubUsoxbuAoiCXvqvErP7Gf0so0mK9tHxU=
 google.golang.org/grpc v1.67.1 h1:zWnc1Vrcno+lHZCOofnIMvycFcc0QRGIzm9dhnDX68E=
 google.golang.org/grpc v1.67.1/go.mod h1:1gLDyUQU7CTLJI90u3nXZ9ekeghjeM7pTDZlqFNg2AA=
-google.golang.org/protobuf v1.34.2 h1:6xV6lTsCfpGD21XK49h7MhtcApnLqkfYgPcdHftf6hg=
-google.golang.org/protobuf v1.34.2/go.mod h1:qYOHts0dSfpeUzUFpOMr/WGzszTmLH+DiWniOlNbLDw=
+google.golang.org/protobuf v1.35.1 h1:m3LfL6/Ca+fqnjnlqQXNpFPABW1UD7mjh8KO2mKFytA=
+google.golang.org/protobuf v1.35.1/go.mod h1:9fA7Ob0pmnwhb644+1+CVWFRbNajQ6iRojtC/QF5bRE=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c h1:Hei/4ADfdWqJk1ZMxUNpqntNwaWcugrBjAiHlqqRiVk=
 gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c/go.mod h1:JHkPIbrfpd72SG/EVd6muEfDQjcINNoR0C8j2r3qZ4Q=
