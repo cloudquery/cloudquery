@@ -36,35 +36,70 @@ function FooterHeader({ children }: { children: ReactNode }) {
 }
 
 const navigation = {
-  general: [
-    { name: "Documentation", href: "/docs" },
-    { name: "Blog", href: "https://www.cloudquery.io/blog" },
-    { name: "Case Studies", href: "/case-studies" },
+  solutions: [
+    {
+      name: "Cloud Teams",
+      href: "https://www.cloudquery.io/solutions/for-cloud-teams",
+    },
+    {
+      name: "Product & Marketing",
+      href: "https://www.cloudquery.io/solutions/for-product-and-marketing",
+    },
+    {
+      name: "Engineering Teams",
+      href: "https://www.cloudquery.io/solutions/for-engineering-teams",
+    },
+    {
+      name: "Developers",
+      href: "https://www.cloudquery.io/solutions/for-developers",
+    },
+    {
+      name: "Powered By CloudQuery",
+      href: "https://www.cloudquery.io/solutions/powered-by-cloudquery",
+    },
+    {
+      name: "Cloud Infrastructure and Security",
+      href: "https://www.cloudquery.io/solutions/for-cloud-teams",
+    },
+  ],
+
+  resources: [
     {
       name: "Integrations",
-      href: "/integrations",
+      href: "https://hub.cloudquery.io/plugins/source",
     },
-    { name: "FAQ", href: "/docs/faq" },
-  ],
-  support: [
-    {
-      name: "GitHub",
-      href: "https://github.com/cloudquery/cloudquery",
-    },
+    { name: "Documentation", href: "/docs" },
+    { name: "Blog", href: "https://www.cloudquery.io/blog" },
     {
       name: "Community",
       href: "https://community.cloudquery.io",
     },
+    {
+      name: "Case Studies",
+      href: "https://www.cloudquery.io/blog?tags=use%20cases",
+    },
+
+    { name: "FAQ", href: "/docs/faq" },
+    { name: "Careers", href: "https://apply.workable.com/cloudquery" },
   ],
-  company: [
-    { name: "GitHub", href: "https://github.com/cloudquery/cloudquery" },
-    { name: "Twitter", href: "https://twitter.com/cloudqueryio" },
-    { name: "Brand Logo", href: "/logo" },
-    { name: "Careers", href: "/careers" },
-  ],
+
   legal: [
-    { name: "Privacy Policy", href: "https://www.cloudquery.io/legal/privacy-policy" },
-    { name: "Terms of Use", href: "https://www.cloudquery.io/legal/website-terms-of-service" },
+    {
+      name: "Terms of Use",
+      href: "https://www.cloudquery.io/legal/website-terms-of-service",
+    },
+    {
+      name: "Privacy Policy",
+      href: "https://www.cloudquery.io/legal/privacy-policy",
+    },
+    {
+      name: "Legal",
+      href: "https://www.cloudquery.io/legal",
+    },
+    {
+      name: "Trust Center",
+      href: "https://app.drata.com/trust/cc9ec5bb-5e31-4fe3-9175-362b3ad96c70",
+    },
     {
       name: "Opt out of data collection",
       href: "#",
@@ -75,6 +110,18 @@ const navigation = {
       href: "#",
       onclick: () => optIn(),
     },
+  ],
+
+  socials: [
+    { name: "X", href: "https://x.com/cloudqueryio" },
+    {
+      name: "LinkedIn",
+      href: "https://www.linkedin.com/company/cloudqueryio",
+    },
+    { name: "YouTube", href: "https://www.youtube.com/@cloudqueryio" },
+    { name: "Threads", href: "https://www.threads.net/@cloudqueryio" },
+    { name: "Brand Logo", href: "/logo" },
+    { name: "Careers", href: "/careers" },
   ],
 };
 
@@ -106,7 +153,7 @@ export function Footer() {
               <div>
                 <FooterHeader>Solutions</FooterHeader>
                 <ul role="list" className="mt-4 space-y-1.5 list-none ml-0">
-                  {navigation.general.map((item) => (
+                  {navigation.solutions.map((item) => (
                     <li key={item.name}>
                       <FooterLink href={item.href}>{item.name}</FooterLink>
                     </li>
@@ -114,9 +161,9 @@ export function Footer() {
                 </ul>
               </div>
               <div className="mt-12 md:!mt-0">
-                <FooterHeader>Support</FooterHeader>
+                <FooterHeader>Resources</FooterHeader>
                 <ul role="list" className="mt-4 space-y-1.5 list-none ml-0">
-                  {navigation.support.map((item) => (
+                  {navigation.resources.map((item) => (
                     <li key={item.name}>
                       <FooterLink href={item.href}>{item.name}</FooterLink>
                     </li>
@@ -124,18 +171,9 @@ export function Footer() {
                 </ul>
               </div>
             </div>
-            <div className="md:grid md:grid-cols-2 md:gap-8">
+
+            <div className="md:grid md:grid-cols-2 md:gap-8 mt-12 md:!mt-0">
               <div>
-                <FooterHeader>Company</FooterHeader>
-                <ul role="list" className="mt-4 space-y-1.5 list-none ml-0">
-                  {navigation.company.map((item) => (
-                    <li key={item.name}>
-                      <FooterLink href={item.href}>{item.name}</FooterLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="mt-12 md:!mt-0">
                 <FooterHeader>Legal</FooterHeader>
                 <ul role="list" className="mt-4 space-y-1.5 list-none ml-0">
                   {navigation.legal.map((item) => (
@@ -143,6 +181,16 @@ export function Footer() {
                       <FooterLink href={item.href} onClick={item.onclick}>
                         {item.name}
                       </FooterLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="mt-12 md:!mt-0">
+                <FooterHeader>Socials</FooterHeader>
+                <ul role="list" className="mt-4 space-y-1.5 list-none ml-0">
+                  {navigation.socials.map((item) => (
+                    <li key={item.name}>
+                      <FooterLink href={item.href}>{item.name}</FooterLink>
                     </li>
                   ))}
                 </ul>
@@ -196,7 +244,7 @@ function SubmitForm() {
 
     await fetch(
       `https://cloudquery.us1.list-manage.com/subscribe/post-json?${params.toString()}`,
-      { mode: "no-cors" },
+      { mode: "no-cors" }
     );
 
     router.push("/confirm");

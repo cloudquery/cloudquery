@@ -1,5 +1,27 @@
 # Changelog
 
+## [8.6.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.6.1...plugins-destination-postgresql-v8.6.2) (2024-10-08)
+
+
+### Bug Fixes
+
+* Catch any unparseable strings ([#19284](https://github.com/cloudquery/cloudquery/issues/19284)) ([24536fb](https://github.com/cloudquery/cloudquery/commit/24536fb6e2102ceb90cf253a26eaf9328552c050))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.64.0 ([#19287](https://github.com/cloudquery/cloudquery/issues/19287)) ([49941ee](https://github.com/cloudquery/cloudquery/commit/49941ee0c985fe6cb88581818064c8152a388304))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.65.0 ([#19322](https://github.com/cloudquery/cloudquery/issues/19322)) ([87a68ea](https://github.com/cloudquery/cloudquery/commit/87a68ea489068a621948112137f987252b83273c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.66.0 ([#19332](https://github.com/cloudquery/cloudquery/issues/19332)) ([137a232](https://github.com/cloudquery/cloudquery/commit/137a2328637ef226e5dba446b92c2d670f798540))
+* Update the helper text ([#19282](https://github.com/cloudquery/cloudquery/issues/19282)) ([2044260](https://github.com/cloudquery/cloudquery/commit/2044260b6ca9c11ca454aad32452f817421b469c))
+
+## [8.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.6.0...plugins-destination-postgresql-v8.6.1) (2024-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @types/node to v16.18.112 ([#19259](https://github.com/cloudquery/cloudquery/issues/19259)) ([b353efa](https://github.com/cloudquery/cloudquery/commit/b353efa34b791e92bf581cfb67a7b24cbfaf321a))
+* **deps:** Update dependency @types/react to v18.3.10 ([#19260](https://github.com/cloudquery/cloudquery/issues/19260)) ([22cc644](https://github.com/cloudquery/cloudquery/commit/22cc644be1951973c5ad3637a286fb08961cc4a7))
+* **deps:** Update dependency eslint to v8.57.1 ([#19264](https://github.com/cloudquery/cloudquery/issues/19264)) ([2baa628](https://github.com/cloudquery/cloudquery/commit/2baa62862a4015528a5748949728bac21854d9b5))
+* **deps:** Update dependency yaml to v2.5.1 ([#19268](https://github.com/cloudquery/cloudquery/issues/19268)) ([9a993b2](https://github.com/cloudquery/cloudquery/commit/9a993b276cc50ce71c47b8e89353d911b8372777))
+* **deps:** Update material-ui monorepo ([#19269](https://github.com/cloudquery/cloudquery/issues/19269)) ([1b92590](https://github.com/cloudquery/cloudquery/commit/1b92590c8b8b2b114eebb16e4cfc808ce3541d7b))
+
 ## [8.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.5.5...plugins-destination-postgresql-v8.6.0) (2024-09-25)
 
 
