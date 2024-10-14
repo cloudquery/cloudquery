@@ -393,7 +393,7 @@ func TestQuickContentType(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.filename, func(t *testing.T) {
 			fullpath := filepath.Join(dataDir, tt.filename)
-			qt, err := QuickContentType(fullpath)
+			qt, err := DetectContentType(fullpath)
 			require.NoError(t, err)
 			require.Equal(t, tt.want, qt)
 
@@ -401,7 +401,7 @@ func TestQuickContentType(t *testing.T) {
 				t.Run(tt.filename+"-noext", func(t *testing.T) {
 					fullpath := copyTempFile(t, fullpath, "unknown-file")
 
-					qt, err := QuickContentType(fullpath)
+					qt, err := DetectContentType(fullpath)
 					require.NoError(t, err)
 					require.Equal(t, tt.want, qt)
 				})

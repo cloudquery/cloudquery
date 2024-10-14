@@ -29,7 +29,7 @@ func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithRespo
 			urlPath = strings.ReplaceAll(urlPath, string(os.PathSeparator), "/")
 		}
 
-		contentType, err := images.QuickContentType(fullPath)
+		contentType, err := images.DetectContentType(fullPath)
 		if err != nil {
 			return err
 		}

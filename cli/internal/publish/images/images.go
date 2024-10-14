@@ -41,9 +41,13 @@ type listKey struct {
 	name, sum string
 }
 
-func QuickContentType(filename string) (string, error) {
-	filebytes := make([]byte, 512)
+func DetectContentType(filename string) (string, error) {
+	contentType := mime.TypeByExtension(filepath.Ext(filename))
+	if contentType != "" {
+		return contentType, nil
+	}
 
+	filebytes := make([]byte, 512)
 	fp, err := os.Open(filename)
 	if err != nil {
 		return "", fmt.Errorf("failed to open file: %w", err)
@@ -53,11 +57,7 @@ func QuickContentType(filename string) (string, error) {
 		return "", fmt.Errorf("failed to read file: %w", err)
 	}
 
-	contentType := mime.TypeByExtension(filepath.Ext(filename))
-	if contentType == "" {
-		contentType = http.DetectContentType(filebytes)
-	}
-	return contentType, nil
+	return http.DetectContentType(filebytes), nil
 }
 
 func ProcessDocument(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, docDir, contents string) (string, error) {
@@ -77,7 +77,7 @@ func ProcessDocument(ctx context.Context, c *cloudquery_api.ClientWithResponses,
 			continue
 		}
 		absFile := v[0].absFile
-		contentType, err := QuickContentType(absFile)
+		contentType, err := DetectContentType(absFile)
 		if err != nil {
 			return "", fmt.Errorf("failed to get content type for file %q: %w", absFile, err)
 		}
