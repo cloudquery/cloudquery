@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.8.5](https://github.com/cloudquery/cloudquery/compare/cli-v6.8.4...cli-v6.8.5) (2024-10-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.13.1 ([#19374](https://github.com/cloudquery/cloudquery/issues/19374)) ([20edcab](https://github.com/cloudquery/cloudquery/commit/20edcab862eab41e3e11f8f2568086afcd63b07e))
+* Send content type when uploading images ([#19373](https://github.com/cloudquery/cloudquery/issues/19373)) ([d037966](https://github.com/cloudquery/cloudquery/commit/d037966ddbb4a4d800c1a1ba53e42dff607b6ddb))
+
 ## [6.8.4](https://github.com/cloudquery/cloudquery/compare/cli-v6.8.3...cli-v6.8.4) (2024-10-12)
 
 
