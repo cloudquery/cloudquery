@@ -71,13 +71,9 @@ By default, when you run the script, it will sync the `aws_ec2_instances` table.
 
 ## Authenticate to AWS
 
-CloudQuery supports authenticating to your AWS instance several different ways.
+The CloudQuery AWS plugin requires read only permissions in order to sync information from your AWS cloud environment.
 
-The CloudQuery AWS plugin needs to be authenticated with your account(s) in order to sync information from your cloud setup.
-
-The plugin requires only read permissions (we will never make any changes to your cloud setup), so, following the principle of the least privilege, it's recommended to grant it read-only permissions.
-
-There are [multiple ways to authenticate with AWS](https://hub.cloudquery.io/plugins/source/cloudquery/aws/latest/docs#authentication). Be sure you authenticate before you run your first sync.
+There are [several different methods for authenticating to your AWS cloud environment](https://hub.cloudquery.io/plugins/source/cloudquery/aws/latest/docs#authentication). Be sure you authenticate before you run your first sync.
 
 ## Start Syncing
 
@@ -102,7 +98,7 @@ Run the following command to get your oldest 10 EC2 instances:
 The output should look like this:
 
 ```
-num  instance_id              region            launch_time
+account_id  instance_id              region            launch_time
 ---  ------------------------ ----------------  -------------------
 1    i-0jklm0123nopq4567      us-west-1         2021-06-10 07:30:00
 2    i-0ijkl9012mnop3456      ca-central-1      2021-07-25 12:40:00
