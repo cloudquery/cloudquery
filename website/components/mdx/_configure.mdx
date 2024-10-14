@@ -10,6 +10,7 @@ import SqliteCommandWindows from './_configure-sqlite-command-windows.mdx';
 import SqliteCommandMacos from './_configure-sqlite-command-macos.mdx';
 
 {/* <!-- vale off --> */}
+
 export const SyncCommand = ({ os }) => {
     switch (os) {
         case "linux":
@@ -50,11 +51,12 @@ export const SqliteCommand = ({ os }) => {
 }
 
 {/* <!-- vale on --> */}
+
 ## Create a Sync Configuration
 
 CloudQuery supports many [sources](https://hub.cloudquery.io/plugins/source) and [destinations](https://hub.cloudquery.io/plugins/destination).
 
-In this guide we'll create a configuration to sync from the [XKCD source](https://hub.cloudquery.io/plugins/source/cloudquery/xkcd/latest/docs) to the [SQLite destination](https://hub.cloudquery.io/plugins/destination/cloudquery/sqlite/latest/docs) using the [`init`](/docs/reference/cli/cloudquery_init) command.
+In this guide we'll create a configuration to sync from the [AWS source](https://hub.cloudquery.io/plugins/source/cloudquery/aws/latest/docs) to the [SQLite destination](https://hub.cloudquery.io/plugins/destination/cloudquery/sqlite/latest/docs) using the [`init`](/docs/reference/cli/cloudquery_init) command.
 
 Run the following command to create a configuration file:
 
@@ -62,7 +64,16 @@ Run the following command to create a configuration file:
 
 <Callout type="info">
 To pick from a list of available sources and destinations, run the [`init`](/docs/reference/cli/cloudquery_init) command without any arguments.
+
+By default, when you run the script, it will sync the `aws_ec2_instances` table. You can find all the available resources you can sync on the [AWS source plugin page](https://hub.cloudquery.io/plugins/source/cloudquery/aws/latest/tables).
+
 </Callout>
+
+## Authenticate to AWS
+
+The CloudQuery AWS plugin requires read only permissions in order to sync information from your AWS cloud environment.
+
+There are [several different methods for authenticating to your AWS cloud environment](https://hub.cloudquery.io/plugins/source/cloudquery/aws/latest/docs#authentication). Be sure you authenticate before you run your first sync.
 
 ## Start Syncing
 
@@ -80,30 +91,30 @@ To learn about the available options for the [`sync`](/docs/reference/cli/cloudq
 
 Once the sync is done you can query the data via the database directly via the [`sqlite3`](https://www.sqlite.org/cli.html) command line tool or any other SQLite client.
 
-Run the following command to get the oldest 10 XKCD comics:
+Run the following command to get your oldest 10 EC2 instances:
 
 <SqliteCommand os={props.os} />
 
 The output should look like this:
 
 ```
-num  title                                             
----  --------------------------------------------------
-1    Barrel - Part 1                                   
-2    Petit Trees (sketch)                              
-3    Island (sketch)                                   
-4    Landscape (sketch)                                
-5    Blown apart                                       
-6    Irony                                             
-7    Girl sleeping (Sketch -- 11th grade Spanish class)
-8    Red spiders                                       
-9    Serenity is coming out tomorrow                   
-10   Pi Equals
+account_id  instance_id              region            launch_time
+---  ------------------------ ----------------  -------------------
+012345678901    i-0jklm0123nopq4567      us-west-1         2021-06-10 07:30:00
+012345678901    i-0ijkl9012mnop3456      ca-central-1      2021-07-25 12:40:00
+012345678901    i-0hijk8901lmno2345      sa-east-1         2021-08-15 15:10:00
+012345678901    i-0ghij7890klmn1234      eu-central-1      2021-08-30 11:50:00
+012345678901    i-0fghi6789jklm0123      us-east-2         2021-09-05 17:20:00
+012345678901    i-0efgh5678ijkl9012      ap-northeast-1    2021-10-25 08:00:00
+012345678901    i-0defg4567hijk8901      ap-southeast-1    2021-11-10 13:15:00
+012345678901    i-0cdef3456ghij7890      eu-west-1         2021-11-20 09:45:00
+012345678901    i-0bcde2345fghi6789      us-west-2         2021-12-15 14:30:00
+012345678901   i-0abcd1234efgh5678      us-east-1         2022-01-01 10:00:00
 ```
 
 ## Next Steps
 
-Now that you have successfully synced data from the [XKCD source](https://hub.cloudquery.io/plugins/source/cloudquery/xkcd/latest/docs) to the [SQLite destination](https://hub.cloudquery.io/plugins/destination/cloudquery/sqlite/latest/docs), you can explore more sources and destinations:
+Now that you have successfully synced data from the [AWS source](https://hub.cloudquery.io/plugins/source/cloudquery/aws/latest/docs) to the [SQLite destination](https://hub.cloudquery.io/plugins/destination/cloudquery/sqlite/latest/docs), you can explore more sources and destinations:
 
 - [Explore Source Plugins](https://hub.cloudquery.io/plugins/source)
 - [Explore Destination Plugins](https://hub.cloudquery.io/plugins/destination)
