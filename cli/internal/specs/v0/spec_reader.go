@@ -2,6 +2,7 @@ package specs
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -13,8 +14,13 @@ import (
 	"strconv"
 	"strings"
 
+	cqapi "github.com/cloudquery/cloudquery-api-go"
+	cqauth "github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery/cli/internal/api"
+	"github.com/cloudquery/cloudquery/cli/internal/auth"
 	"github.com/ghodss/yaml"
 	"github.com/rs/zerolog/log"
+	"github.com/samber/lo"
 )
 
 type SpecReader struct {
@@ -228,6 +234,42 @@ func (r *SpecReader) relaxedValidate() error {
 	}
 
 	return err
+}
+
+func (r *SpecReader) reportOutdatedVersions(ctx context.Context) {
+	filterFunc := func(m Metadata) bool {
+		return m.Registry == RegistryCloudQuery && strings.HasPrefix(m.Name, "cloudquery")
+	}
+
+	cloudquerySources := lo.Filter(r.Sources, func(s *Source, _ int) bool {
+		return filterFunc(s.Metadata)
+	})
+
+	cloudqueryDestinations := lo.Filter(r.Destinations, func(d *Destination, _ int) bool {
+		return filterFunc(d.Metadata)
+	})
+
+	authClient := cqauth.NewTokenClient()
+	token, err := authClient.GetToken()
+	var user *cqapi.User
+	if err == nil {
+		user, _ = auth.GetUser(ctx, token)
+	}
+
+	apiClient, err := api.NewAnonymousClient()
+	if err != nil {
+		// Ignore errors here, we can't check for outdated versions
+		return
+	}
+	if user != nil {
+		apiClient, err = api.NewClient(token.Value)
+		if err != nil {
+			// Ignore errors here, we can't check for outdated versions
+			return
+		}
+	}
+
+	return
 }
 
 func (r *SpecReader) GetSourceByName(name string) *Source {
