@@ -50,10 +50,8 @@ type Consumer struct {
 }
 
 func (c *Consumer) Shutdown(ctx context.Context) {
-	if c.quit != nil {
-		close(c.quit)
-		c.wg.Wait()
-	}
+	close(c.quit)
+	c.wg.Wait()
 }
 
 func newMetricConsumer(metricsFile *os.File, quit chan any, wg *sync.WaitGroup) func(context.Context, pluginMetric) {
