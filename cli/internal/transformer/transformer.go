@@ -100,8 +100,8 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 	}
 	fields = append(fields, sc.Fields()...)
 
-	transformedFields := make([]arrow.Field, 0, len(fields))
-	for _, field := range fields {
+	transformedFields := make([]arrow.Field, len(fields))
+	for i, field := range fields {
 		mdMap := field.Metadata.ToMap()
 		if _, ok := mdMap[schema.MetadataUnique]; ok && t.removeUniqueConstraints {
 			delete(mdMap, schema.MetadataUnique)
@@ -114,12 +114,12 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 			mdMap[schema.MetadataPrimaryKey] = schema.MetadataTrue
 		}
 
-		transformedFields = append(transformedFields, arrow.Field{
+		transformedFields[i] = arrow.Field{
 			Name:     field.Name,
 			Type:     field.Type,
 			Nullable: field.Nullable,
 			Metadata: arrow.MetadataFrom(mdMap),
-		})
+		}
 	}
 	scMd := sc.Metadata()
 	return arrow.NewSchema(transformedFields, &scMd)
