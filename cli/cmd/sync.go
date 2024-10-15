@@ -161,6 +161,15 @@ func sync(cmd *cobra.Command, args []string) error {
 	}
 	var otelReceiver *otel.OtelReceiver
 	if tableMetricsLocation != "" {
+		var sourcesWithOtelEndpoint []string
+		for _, source := range sources {
+			if source.OtelEndpoint != "" {
+				sourcesWithOtelEndpoint = append(sourcesWithOtelEndpoint, source.Name)
+			}
+		}
+		if len(sourcesWithOtelEndpoint) > 0 {
+			return fmt.Errorf("the `--tables-metrics-location` flag is not supported for sources with `otel_endpoint` configured. Either remove the `--tables-metrics-location` flag or do not configure `otel_endpoint` for the following sources: %s", strings.Join(sourcesWithOtelEndpoint, ", "))
+		}
 		otelReceiver, err = otel.StartOtelReceiver(ctx, otel.WithMetricsFilename(tableMetricsLocation))
 		if err == nil {
 			defer otelReceiver.Shutdown(ctx)
@@ -190,7 +199,7 @@ func sync(cmd *cobra.Command, args []string) error {
 	dockerSourcesUsingBackends := map[string]struct{}{} // source plugin names
 
 	for _, source := range sources {
-		if source.OtelEndpoint == "" && otelReceiver != nil {
+		if otelReceiver != nil {
 			source.OtelEndpoint = otelReceiver.Endpoint
 			source.OtelEndpointInsecure = true
 		}
