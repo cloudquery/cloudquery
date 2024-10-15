@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.8.7](https://github.com/cloudquery/cloudquery/compare/cli-v6.8.6...cli-v6.8.7) (2024-10-15)
+
+
+### Bug Fixes
+
+* Fail if both `--table-metrics-location` and `otel_endpoint` are configured ([#19407](https://github.com/cloudquery/cloudquery/issues/19407)) ([92c8175](https://github.com/cloudquery/cloudquery/commit/92c81752ddc95617c48326df97aea353400525fa))
+* Wait for last print of table metrics before exiting ([#19409](https://github.com/cloudquery/cloudquery/issues/19409)) ([7513709](https://github.com/cloudquery/cloudquery/commit/7513709b860ed979ba353e64622f74144265f39c))
+
 ## [6.8.6](https://github.com/cloudquery/cloudquery/compare/cli-v6.8.5...cli-v6.8.6) (2024-10-15)
 
 
