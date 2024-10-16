@@ -182,6 +182,9 @@ func sync(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get team name from token: %w", err)
 	}
 
+	pluginVersionWarner, _ := managedplugin.NewPluginVersionWarner(log.Logger, authToken.Value)
+	specs.WarnOnOutdatedVersions(ctx, pluginVersionWarner, sources, destinations, transformers)
+
 	// in a cloud sync environment, we pass only the relevant environment variables to the plugin
 	osEnviron := os.Environ()
 

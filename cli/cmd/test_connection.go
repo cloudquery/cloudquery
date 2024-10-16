@@ -156,6 +156,10 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to get team name: %w", err)
 	}
+
+	pluginVersionWarner, _ := managedplugin.NewPluginVersionWarner(log.Logger, authToken.Value)
+	specs.WarnOnOutdatedVersions(ctx, pluginVersionWarner, sources, destinations, nil)
+
 	opts := []managedplugin.Option{
 		managedplugin.WithLogger(log.Logger),
 		managedplugin.WithAuthToken(authToken.Value),
