@@ -24,7 +24,7 @@ func TestTestConnection(t *testing.T) {
 		{
 			name:   "bad AWS and Postgres auth should fail validation",
 			config: "test-connection-bad-connection.yml",
-			errors: []string{"cloudflare (cloudquery/cloudflare@v9.6.0)", "postgresql (cloudquery/postgresql@v8.6.2)"},
+			errors: []string{"cloudflare (cloudquery/cloudflare@v9.7.0)", "postgresql (cloudquery/postgresql@v8.6.2)"},
 		},
 	}
 	_, filename, _, _ := runtime.Caller(0)
