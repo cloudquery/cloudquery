@@ -985,6 +985,28 @@
     {
       "source": "/terms",
       "destination": "https://www.cloudquery.io/legal/website-terms-of-service"
+    },
+    {
+      "source": "/docs/cq-vs-others/overview",
+      "destination": "https://www.cloudquery.io/blog?tags=comparisons"
+    },
+    {
+      "source": "/case-studies",
+      "destination": "https://www.cloudquery.io/blog?tags=use%20cases"
+    },
+    {
+      "source": "/case-studies/how-hexagon-built-an-infrastructure-data-lake",
+      "destination": "https://www.cloudquery.io/blog/how-hexagon-built-an-infrastructure-data-lake"
+    },
+    {
+      "source": "/case-studies/tempus-multi-cloud-asset-inventory",
+      "destination": "https://www.cloudquery.io/blog/tempus-multi-cloud-asset-inventory"
+    },
+    {
+      "source": "/case-studies/dunelm-cspm-puzzle",
+      "destination": "https://www.cloudquery.io/blog/dunelm-cloudquery-snowflake-enhance-aws-security"
     }
   ]
 }
+
+
