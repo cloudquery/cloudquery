@@ -10,6 +10,12 @@ import (
 )
 
 func WarnOnOutdatedVersions(ctx context.Context, p *managedplugin.PluginVersionWarner, sources []*Source, destinations []*Destination, transformers []*Transformer) {
+	if p == nil {
+		// This cannot happen at the time of writing. It could be nil if:
+		// - The API base url is not set properly (but it's hardcoded)
+		// - The options passed to getHubClient fail (but no options are passed)
+		return // However, avoid panicking in case it's nil.
+	}
 	for _, source := range sources {
 		org, name, err := pluginPathToOrgName(source.Path)
 		if err != nil {
