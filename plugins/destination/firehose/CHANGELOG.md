@@ -1,5 +1,30 @@
 # Changelog
 
+## [2.5.18](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.5.17...plugins-destination-firehose-v2.5.18) (2024-10-16)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#19357](https://github.com/cloudquery/cloudquery/issues/19357)) ([bc10d71](https://github.com/cloudquery/cloudquery/commit/bc10d7126fe766141598e225174ab9d213d758d2))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.66.1 ([#19380](https://github.com/cloudquery/cloudquery/issues/19380)) ([0b37067](https://github.com/cloudquery/cloudquery/commit/0b3706722e10da4e5f065b86927c555df5fd350f))
+
+## [2.5.17](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.5.16...plugins-destination-firehose-v2.5.17) (2024-10-08)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#19329](https://github.com/cloudquery/cloudquery/issues/19329)) ([98e7b07](https://github.com/cloudquery/cloudquery/commit/98e7b07c4f4c10cd5c79eccfc5c85d1499cf75ec))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.64.0 ([#19287](https://github.com/cloudquery/cloudquery/issues/19287)) ([49941ee](https://github.com/cloudquery/cloudquery/commit/49941ee0c985fe6cb88581818064c8152a388304))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.65.0 ([#19322](https://github.com/cloudquery/cloudquery/issues/19322)) ([87a68ea](https://github.com/cloudquery/cloudquery/commit/87a68ea489068a621948112137f987252b83273c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.66.0 ([#19332](https://github.com/cloudquery/cloudquery/issues/19332)) ([137a232](https://github.com/cloudquery/cloudquery/commit/137a2328637ef226e5dba446b92c2d670f798540))
+
+## [2.5.16](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.5.15...plugins-destination-firehose-v2.5.16) (2024-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#19246](https://github.com/cloudquery/cloudquery/issues/19246)) ([9be941a](https://github.com/cloudquery/cloudquery/commit/9be941a4b1e260d3e14959bcfd4cde41b9920562))
+
 ## [2.5.15](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.5.14...plugins-destination-firehose-v2.5.15) (2024-09-25)
 
 

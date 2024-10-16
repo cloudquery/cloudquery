@@ -42,6 +42,8 @@ area/plugin/destination/sqlite:
   - plugins/destination/sqlite/**/*
 area/plugin/destination/sqlite-python:
   - plugins/destination/sqlite/**/*
+area/plugin/destination/test:
+  - plugins/destination/test/**/*
 area/plugin/source/airtable:
   - plugins/source/airtable/**/*
 area/plugin/source/bitbucket:
@@ -50,6 +52,8 @@ area/plugin/source/hackernews:
   - plugins/source/hackernews/**/*
 area/plugin/source/square:
   - plugins/source/square/**/*
+area/plugin/source/test:
+  - plugins/source/test/**/*
 area/plugin/source/typeform:
   - plugins/source/typeform/**/*
 area/plugin/source/xkcd:

@@ -7,19 +7,19 @@ concurrency:
 on:
   pull_request:
     paths:
-      - "plugins/destination/bigquery/**"
-      - ".github/workflows/dest_bigquery.yml"
+      - 'plugins/destination/bigquery/**'
+      - '.github/workflows/dest_bigquery.yml'
   push:
     branches:
       - main
     paths:
-      - "plugins/destination/bigquery/**"
-      - ".github/workflows/dest_bigquery.yml"
+      - 'plugins/destination/bigquery/**'
+      - '.github/workflows/dest_bigquery.yml'
 
 jobs:
   plugins-destination-bigquery:
     timeout-minutes: 10
-    name: "plugins/destination/bigquery"
+    name: 'plugins/destination/bigquery'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -45,7 +45,7 @@ jobs:
         with:
           version: v1.55.2
           working-directory: plugins/destination/bigquery
-          args: "--config ../../.golangci.yml"
+          args: '--config ../../.golangci.yml'
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -65,4 +65,141 @@ jobs:
           BIGQUERY_PROJECT_ID: ${{ secrets.BIGQUERY_TEST_PROJECT_ID }}
           BIGQUERY_DATASET_ID: ${{ secrets.BIGQUERY_TEST_DATASET_ID }}
           BIGQUERY_DATASET_LOCATION: us-west1
- 
+
+  deploy:
+    if: github.event.action != 'closed' && github.event_name == 'pull_request' && !startsWith(github.head_ref, 'release')
+    runs-on: ubuntu-latest
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    outputs:
+      previewLink: ${{ steps.create-preview.outputs.previewLink}}
+    defaults:
+      run:
+        working-directory: ./plugins/destination/bigquery/cloud-config-ui
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}-deploy
+      cancel-in-progress: false # to make sure that old Vercel deployments are deleted
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Deploy to Vercel
+        run: |
+          PLUGIN_VERSION=$(jq -r '."plugins/destination/bigquery"' ../../../../.release-please-manifest.json)
+          echo "Plugin version: $PLUGIN_VERSION"
+
+          DEPLOYMENT_URL=$(vercel --token $VERCEL_TOKEN --build-env REACT_APP_PLUGIN_TEAM=cloudquery --build-env REACT_APP_PLUGIN_KIND=destination --build-env REACT_APP_PLUGIN_NAME=bigquery --build-env REACT_APP_PLUGIN_VERSION=v$PLUGIN_VERSION)
+          echo "Deployed to: $DEPLOYMENT_URL"
+          echo "DEPLOYMENT_URL=$DEPLOYMENT_URL" >> $GITHUB_ENV
+
+          ALIAS_DEPLOYMENT_BASE_URL=plugin-destination-bigquery-cloud-ui-${{ github.event.pull_request.number }}.vercel.app
+          ALIAS_DEPLOYMENT_URL=https://$ALIAS_DEPLOYMENT_BASE_URL
+          vercel --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID alias $DEPLOYMENT_URL $ALIAS_DEPLOYMENT_BASE_URL
+          echo "Alias deployed to: $ALIAS_DEPLOYMENT_URL"
+          echo "ALIAS_DEPLOYMENT_URL=$ALIAS_DEPLOYMENT_URL" >> $GITHUB_ENV
+
+      - name: Find Comment
+        uses: peter-evans/find-comment@v3
+        id: find-comment
+        with:
+          token: ${{ secrets.GH_CQ_BOT }}
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'cq-bot'
+          body-includes: 'BigQuery Cloud UI deployed to Vercel:'
+
+      - name: Delete Previous Vercel Deployment (if comment with URL exists)
+        if: steps.find-comment.outputs.comment-id != ''
+        run: |
+          echo "Comment found:"
+          echo "${{ steps.find-comment.outputs.comment-body }}"
+          PREVIOUS_DEPLOYMENT_URL=$(echo "${{ steps.find-comment.outputs.comment-body }}" | awk '/Unique Vercel deployment URL:/ {getline; print $1}')
+          echo "Previous deployment URL: $PREVIOUS_DEPLOYMENT_URL"
+          if vercel rm "$PREVIOUS_DEPLOYMENT_URL" --token $VERCEL_TOKEN --scope $VERCEL_ORG_ID --yes; then
+            echo "Deployment $PREVIOUS_DEPLOYMENT_URL was successfully deleted."
+          else
+            echo "Failed to delete deployment $PREVIOUS_DEPLOYMENT_URL. It may not exist or there was an error."
+          fi
+      - name: Create Preview Link Url
+        id: create-preview
+        run: echo "previewLink=https://cloud.cloudquery.io/teams/cloudquery-test/destinations/create?plugin-cloud-ui=cloudquery|destination|bigquery|${{ env.ALIAS_DEPLOYMENT_URL }}" >> "$GITHUB_OUTPUT"
+
+      - name: Create or update comment
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ secrets.GH_CQ_BOT }}
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            🚀 BigQuery Cloud UI deployed to Vercel:
+            ${{ env.ALIAS_DEPLOYMENT_URL }}
+            You can also check out this plugin in action at:
+            ${{ steps.create-preview.outputs.previewLink }}
+            Unique Vercel deployment URL:
+            ${{ env.DEPLOYMENT_URL }}
+          edit-mode: replace
+
+  validate-config-ui:
+    timeout-minutes: 15
+    if: github.event_name == 'pull_request'
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    needs: deploy
+    env:
+      CQ_CI_PLAYWRIGHT_PREVIEW_LINK: ${{ needs.deploy.outputs.previewLink }}
+      CQ_CI_PLAYWRIGHT_TEST_USER_EMAIL: ${{ secrets.CQ_CI_PLAYWRIGHT_TEST_USER_EMAIL }}
+      CQ_CI_PLAYWRIGHT_TEST_USER_PASSWORD: ${{ secrets.CQ_CI_PLAYWRIGHT_TEST_USER_PASSWORD }}
+    defaults:
+      run:
+        working-directory: ./plugins/destination/bigquery
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: plugins/destination/bigquery/go.mod
+          cache: true
+          cache-dependency-path: plugins/destination/bigquery/go.sum
+      - name: Build
+        run: go build .
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+          cache-dependency-path: 'plugins/destination/bigquery/cloud-config-ui/package-lock.json'
+      - name: Install dependencies
+        working-directory: 'plugins/destination/bigquery/cloud-config-ui'
+        run: npm ci
+      - name: Install dotenv
+        run: npm install dotenv-cli -g
+      - name: Install Playwright
+        working-directory: 'plugins/destination/bigquery/cloud-config-ui'
+        run: npx playwright install --with-deps
+      - name: Build config UI
+        working-directory: 'plugins/destination/bigquery/cloud-config-ui'
+        run: REACT_APP_USE_CLOUD_APP_MOCK=true npm run build
+        env:
+          REACT_APP_PLUGIN_TEAM: cloudquery
+          REACT_APP_PLUGIN_KIND: destination
+          REACT_APP_PLUGIN_NAME: bigquery
+          REACT_APP_PLUGIN_VERSION: development
+      - name: Run E2E tests and generate configs
+        working-directory: 'plugins/destination/bigquery/cloud-config-ui'
+        run: CQ_CI_PLAYWRIGHT_PREVIEW_LINK='${{ env.CQ_CI_PLAYWRIGHT_PREVIEW_LINK }}' E2E_TESTS_GENERATE_CONFIG=true npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bigquery-e2e-testsplaywright
+          path: |
+            plugins/destination/bigquery/cloud-config-ui/test-results/
+          retention-days: 1
+          overwrite: true

@@ -1,5 +1,30 @@
 # Changelog
 
+## [2.5.18](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.5.17...plugins-destination-gremlin-v2.5.18) (2024-10-16)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#19358](https://github.com/cloudquery/cloudquery/issues/19358)) ([283522b](https://github.com/cloudquery/cloudquery/commit/283522b52455411ec5dfe4d44b8605de09ae24bc))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.66.1 ([#19380](https://github.com/cloudquery/cloudquery/issues/19380)) ([0b37067](https://github.com/cloudquery/cloudquery/commit/0b3706722e10da4e5f065b86927c555df5fd350f))
+
+## [2.5.17](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.5.16...plugins-destination-gremlin-v2.5.17) (2024-10-08)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#19330](https://github.com/cloudquery/cloudquery/issues/19330)) ([7d9fb75](https://github.com/cloudquery/cloudquery/commit/7d9fb752c3fa70e003451ca39413e124282775ef))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.64.0 ([#19287](https://github.com/cloudquery/cloudquery/issues/19287)) ([49941ee](https://github.com/cloudquery/cloudquery/commit/49941ee0c985fe6cb88581818064c8152a388304))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.65.0 ([#19322](https://github.com/cloudquery/cloudquery/issues/19322)) ([87a68ea](https://github.com/cloudquery/cloudquery/commit/87a68ea489068a621948112137f987252b83273c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.66.0 ([#19332](https://github.com/cloudquery/cloudquery/issues/19332)) ([137a232](https://github.com/cloudquery/cloudquery/commit/137a2328637ef226e5dba446b92c2d670f798540))
+
+## [2.5.16](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.5.15...plugins-destination-gremlin-v2.5.16) (2024-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.27.39 ([#19250](https://github.com/cloudquery/cloudquery/issues/19250)) ([03dbcd4](https://github.com/cloudquery/cloudquery/commit/03dbcd4914d749a6ce8b31c973b3b41aab1a5242))
+
 ## [2.5.15](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.5.14...plugins-destination-gremlin-v2.5.15) (2024-09-25)
 
 

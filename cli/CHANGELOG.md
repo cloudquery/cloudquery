@@ -5,6 +5,51 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.8.7](https://github.com/cloudquery/cloudquery/compare/cli-v6.8.6...cli-v6.8.7) (2024-10-15)
+
+
+### Bug Fixes
+
+* Fail if both `--table-metrics-location` and `otel_endpoint` are configured ([#19407](https://github.com/cloudquery/cloudquery/issues/19407)) ([92c8175](https://github.com/cloudquery/cloudquery/commit/92c81752ddc95617c48326df97aea353400525fa))
+* Wait for last print of table metrics before exiting ([#19409](https://github.com/cloudquery/cloudquery/issues/19409)) ([7513709](https://github.com/cloudquery/cloudquery/commit/7513709b860ed979ba353e64622f74144265f39c))
+
+## [6.8.6](https://github.com/cloudquery/cloudquery/compare/cli-v6.8.5...cli-v6.8.6) (2024-10-15)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.23.1 ([#19381](https://github.com/cloudquery/cloudquery/issues/19381)) ([ae74028](https://github.com/cloudquery/cloudquery/commit/ae7402870b26682c607235e52b968ef789947fc9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.66.1 ([#19380](https://github.com/cloudquery/cloudquery/issues/19380)) ([0b37067](https://github.com/cloudquery/cloudquery/commit/0b3706722e10da4e5f065b86927c555df5fd350f))
+* Remove constraints from internal fields if needed ([#19403](https://github.com/cloudquery/cloudquery/issues/19403)) ([aeb717a](https://github.com/cloudquery/cloudquery/commit/aeb717ad60971dad1cea5a6e9d9a31ae406fdd2a))
+
+## [6.8.5](https://github.com/cloudquery/cloudquery/compare/cli-v6.8.4...cli-v6.8.5) (2024-10-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.13.1 ([#19374](https://github.com/cloudquery/cloudquery/issues/19374)) ([20edcab](https://github.com/cloudquery/cloudquery/commit/20edcab862eab41e3e11f8f2568086afcd63b07e))
+* Send content type when uploading images ([#19373](https://github.com/cloudquery/cloudquery/issues/19373)) ([d037966](https://github.com/cloudquery/cloudquery/commit/d037966ddbb4a4d800c1a1ba53e42dff607b6ddb))
+
+## [6.8.4](https://github.com/cloudquery/cloudquery/compare/cli-v6.8.3...cli-v6.8.4) (2024-10-12)
+
+
+### Bug Fixes
+
+* Fix incorrect test-connection result for non-cloud requests. ([#19349](https://github.com/cloudquery/cloudquery/issues/19349)) ([1a7555c](https://github.com/cloudquery/cloudquery/commit/1a7555c5ceb57d57f7c9aa97a55efa218a5e6829))
+
+## [6.8.3](https://github.com/cloudquery/cloudquery/compare/cli-v6.8.2...cli-v6.8.3) (2024-10-10)
+
+
+### Bug Fixes
+
+* Auto detect SVG content-type ([#19342](https://github.com/cloudquery/cloudquery/issues/19342)) ([f355be8](https://github.com/cloudquery/cloudquery/commit/f355be8d716819873fce34243717da45b9ae5123))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.22.4 ([#19274](https://github.com/cloudquery/cloudquery/issues/19274)) ([c6eda0c](https://github.com/cloudquery/cloudquery/commit/c6eda0c48a5f9384a55c0a817d54093278930aa9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.64.0 ([#19287](https://github.com/cloudquery/cloudquery/issues/19287)) ([49941ee](https://github.com/cloudquery/cloudquery/commit/49941ee0c985fe6cb88581818064c8152a388304))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.65.0 ([#19322](https://github.com/cloudquery/cloudquery/issues/19322)) ([87a68ea](https://github.com/cloudquery/cloudquery/commit/87a68ea489068a621948112137f987252b83273c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.66.0 ([#19332](https://github.com/cloudquery/cloudquery/issues/19332)) ([137a232](https://github.com/cloudquery/cloudquery/commit/137a2328637ef226e5dba446b92c2d670f798540))
+* **deps:** Update module google.golang.org/grpc to v1.67.0 ([#19255](https://github.com/cloudquery/cloudquery/issues/19255)) ([a154662](https://github.com/cloudquery/cloudquery/commit/a154662f8a18a184e2577c778eaef0239d2e9ada))
+* **deps:** Update module google.golang.org/grpc to v1.67.1 ([#19327](https://github.com/cloudquery/cloudquery/issues/19327)) ([5299c4b](https://github.com/cloudquery/cloudquery/commit/5299c4b1545fda1659390d3cc51d8bc363ba8b14))
+
 ## [6.8.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.8.1...cli-v6.8.2) (2024-09-25)
 
 

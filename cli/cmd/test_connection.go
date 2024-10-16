@@ -315,6 +315,13 @@ func testPluginConnection(ctx context.Context, client plugin.PluginClient, spec 
 	if err != nil {
 		if gRPCErr, ok := grpcstatus.FromError(err); ok {
 			if gRPCErr.Code() == codes.Unimplemented {
+				if !isCloudBasedRequest() {
+					return &testConnectionResult{
+						Success:            false,
+						FailureCode:        "UNIMPLEMENTED",
+						FailureDescription: gRPCErr.Message(),
+					}, nil
+				}
 				err := initPlugin(ctx, client, spec, false, invocationUUID.String())
 				if err != nil {
 					return &testConnectionResult{
@@ -359,4 +366,8 @@ func filterFailedTestResults(results []testConnectionResult) (*testConnectionRes
 	default:
 		return nil, fmt.Errorf("multiple test connection failures are not supported")
 	}
+}
+
+func isCloudBasedRequest() bool {
+	return os.Getenv("CQ_CLOUD") != ""
 }

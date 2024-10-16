@@ -2,8 +2,7 @@ kind: source
 spec:
   name: cloudflare
   path: cloudquery/cloudflare
-  registry: cloudquery
-  version: "v6.1.2"
+  version: "v9.7.0" # latest version of source cloudflare plugin
   destinations: ["test"]
   tables: ["cloudflare_access_applications"]
 ---
@@ -11,5 +10,4 @@ kind: "destination"
 spec:
   name: "test"
   path: "cloudquery/test"
-  registry: "github"
-  version: "v2.2.14" # latest version of destination test plugin
+  version: "v2.5.0" # latest version of destination test plugin

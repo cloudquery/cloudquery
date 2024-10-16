@@ -1,5 +1,30 @@
 # Changelog
 
+## [4.1.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.1.13...plugins-destination-bigquery-v4.1.14) (2024-10-16)
+
+
+### Bug Fixes
+
+* **deps:** Update module cloud.google.com/go to v0.116.0 ([#19362](https://github.com/cloudquery/cloudquery/issues/19362)) ([a732e77](https://github.com/cloudquery/cloudquery/commit/a732e77f8f532b501d540412cedc7060ba50fee5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.66.1 ([#19380](https://github.com/cloudquery/cloudquery/issues/19380)) ([0b37067](https://github.com/cloudquery/cloudquery/commit/0b3706722e10da4e5f065b86927c555df5fd350f))
+
+## [4.1.13](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.1.12...plugins-destination-bigquery-v4.1.13) (2024-10-08)
+
+
+### Bug Fixes
+
+* **deps:** Update module cloud.google.com/go/bigquery to v1.63.1 ([#19326](https://github.com/cloudquery/cloudquery/issues/19326)) ([c242692](https://github.com/cloudquery/cloudquery/commit/c242692e33e429905c6e5791bd17c5dd3b9630b2))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.64.0 ([#19287](https://github.com/cloudquery/cloudquery/issues/19287)) ([49941ee](https://github.com/cloudquery/cloudquery/commit/49941ee0c985fe6cb88581818064c8152a388304))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.65.0 ([#19322](https://github.com/cloudquery/cloudquery/issues/19322)) ([87a68ea](https://github.com/cloudquery/cloudquery/commit/87a68ea489068a621948112137f987252b83273c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.66.0 ([#19332](https://github.com/cloudquery/cloudquery/issues/19332)) ([137a232](https://github.com/cloudquery/cloudquery/commit/137a2328637ef226e5dba446b92c2d670f798540))
+
+## [4.1.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.1.11...plugins-destination-bigquery-v4.1.12) (2024-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module google.golang.org/api to v0.199.0 ([#19251](https://github.com/cloudquery/cloudquery/issues/19251)) ([b0e0aae](https://github.com/cloudquery/cloudquery/commit/b0e0aae1298d5d334719c41ba2fcebcf0cea3bb0))
+
 ## [4.1.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.1.10...plugins-destination-bigquery-v4.1.11) (2024-09-24)
 
 
