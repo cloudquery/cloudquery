@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.5.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.5.0...plugins-source-test-v4.5.1) (2024-10-16)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.66.1 ([#19380](https://github.com/cloudquery/cloudquery/issues/19380)) ([0b37067](https://github.com/cloudquery/cloudquery/commit/0b3706722e10da4e5f065b86927c555df5fd350f))
+
 ## [4.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.4.1...plugins-source-test-v4.5.0) (2024-10-11)
 
 
