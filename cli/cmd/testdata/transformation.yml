@@ -3,14 +3,14 @@ spec:
   name: "test"
   path: "cloudquery/test"
   destinations: [test]
-  version: "v4.5.0" # latest version of source test plugin
+  version: "v4.5.1" # latest version of source test plugin
   tables: ["*"]
 ---
 kind: "destination"
 spec:
   name: "test"
   path: "cloudquery/test"
-  version: "v2.5.0" # latest version of destination test plugin
+  version: "v2.5.1" # latest version of destination test plugin
   transformers:
     - basic # we add the basic transformer here
 ---

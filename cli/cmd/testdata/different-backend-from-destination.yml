@@ -6,17 +6,17 @@ spec:
   backend_options:
     table_name: "test_backend"
     connection: "@@plugins.test2.connection"
-  version: "v4.5.0" # latest version of source test plugin
+  version: "v4.5.1" # latest version of source test plugin
   tables: ["*"]
 ---
 kind: "destination"
 spec:
   name: "test1"
   path: "cloudquery/test"
-  version: "v2.5.0" # latest version of destination test plugin
+  version: "v2.5.1" # latest version of destination test plugin
 ---
 kind: "destination"
 spec:
   name: "test2"
   path: "cloudquery/test"
-  version: "v2.5.0" # latest version of destination test plugin
+  version: "v2.5.1" # latest version of destination test plugin
