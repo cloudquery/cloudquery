@@ -987,10 +987,6 @@
       "destination": "https://www.cloudquery.io/legal/website-terms-of-service"
     },
     {
-      "source": "/docs/cq-vs-others/overview",
-      "destination": "https://www.cloudquery.io/blog?tags=comparisons"
-    },
-    {
       "source": "/case-studies",
       "destination": "https://www.cloudquery.io/blog?tags=use%20cases"
     },
@@ -1005,8 +1001,41 @@
     {
       "source": "/case-studies/dunelm-cspm-puzzle",
       "destination": "https://www.cloudquery.io/blog/dunelm-cloudquery-snowflake-enhance-aws-security"
+    },
+    {
+      "source": "/docs/cq-vs-others/overview",
+      "destination": "https://www.cloudquery.io/blog?tags=comparisons"
+    },
+    {
+      "source": "/docs/cq-vs-others/aws-config-alternative-cloudquery",
+      "destination": "https://www.cloudquery.io/blog/aws-config-vs-cloudquery"
+    },
+    {
+      "source": "/docs/cq-vs-others/airbyte-alternative-cloudquery",
+      "destination": "https://www.cloudquery.io/blog/cloudquery-vs-airbyte"
+    },
+    {
+      "source": "/docs/cq-vs-others/cloudsploit-alternative-cloudquery",
+      "destination": "https://www.cloudquery.io/blog/cloudquery-vs-cloudsploit"
+    },
+    {
+      "source": "/docs/cq-vs-others/fivetran-alternative-cloudquery",
+      "destination": "https://www.cloudquery.io/blog/cloudquery-vs-fivetran"
+    },
+    {
+      "source": "/docs/cq-vs-others/google-cloud-asset-inventory-alternative-cloudquery",
+      "destination": "https://www.cloudquery.io/blog/cloudquery-vs-google-cloud-asset-inventory"
+    },
+    {
+      "source": "/docs/cq-vs-others/cspm-alternative-cloudquery",
+      "destination": "https://www.cloudquery.io/blog/cspm-vs-cloudquery"
+    },
+    {
+      "source": "/docs/cq-vs-others/steampipe-alternative-cloudquery",
+      "destination": "https://www.cloudquery.io/blog/steampipe-vs-cloudquery"
     }
   ]
 }
 
 
+/docs/cq-vs-others/airbyte-alternative-cloudquery
