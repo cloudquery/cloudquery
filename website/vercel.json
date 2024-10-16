@@ -1003,6 +1003,10 @@
       "destination": "https://www.cloudquery.io/blog/dunelm-cloudquery-snowflake-enhance-aws-security"
     },
     {
+      "source": "/case-studies/add-your-case-study",
+      "destination": "https://www.cloudquery.io/blog?tags=use%20cases"
+    },
+    {
       "source": "/docs/cq-vs-others/overview",
       "destination": "https://www.cloudquery.io/blog?tags=comparisons"
     },
