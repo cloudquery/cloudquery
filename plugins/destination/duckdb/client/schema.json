@@ -26,6 +26,11 @@
           "type": "boolean",
           "description": "Enables debug logging",
           "default": false
+        },
+        "appender": {
+          "type": "boolean",
+          "description": "Use appender API for append only mode",
+          "default": false
         }
       },
       "additionalProperties": false,
