@@ -178,7 +178,7 @@ func TestSyncWithSummaryTable(t *testing.T) {
 					Resources:          13,
 					SourceName:         "test",
 					SourcePath:         "cloudquery/test",
-					SourceVersion:      "v4.5.0",
+					SourceVersion:      "v4.5.1",
 				},
 			},
 		},
