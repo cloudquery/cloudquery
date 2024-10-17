@@ -174,7 +174,7 @@ func TestSyncWithSummaryTable(t *testing.T) {
 					DestinationErrors:  0,
 					DestinationName:    "test",
 					DestinationPath:    "cloudquery/file",
-					DestinationVersion: "v5.2.4",
+					DestinationVersion: "v5.2.5",
 					Resources:          13,
 					SourceName:         "test",
 					SourcePath:         "cloudquery/test",
