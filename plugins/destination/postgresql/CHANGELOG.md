@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.6.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.6.3...plugins-destination-postgresql-v8.6.4) (2024-10-17)
+
+
+### Bug Fixes
+
+* Set default `pgx_log_level` level ([#19421](https://github.com/cloudquery/cloudquery/issues/19421)) ([ee83d29](https://github.com/cloudquery/cloudquery/commit/ee83d29a36912c903c0f4b07ceced7473347cb29))
+
 ## [8.6.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.6.2...plugins-destination-postgresql-v8.6.3) (2024-10-16)
 
 
