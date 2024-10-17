@@ -7,6 +7,7 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
 	"github.com/invopop/jsonschema"
+	"github.com/jackc/pgx/v5/tracelog"
 )
 
 const (
@@ -49,6 +50,9 @@ func (s *Spec) SetDefaults() {
 	}
 	if s.BatchTimeout.Duration() <= 0 {
 		s.BatchTimeout = configtype.NewDuration(defaultBatchTimeout)
+	}
+	if s.PgxLogLevel == 0 {
+		s.PgxLogLevel = LogLevel(tracelog.LogLevelError)
 	}
 }
 
