@@ -373,27 +373,6 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 	eg, gctx := errgroup.WithContext(ctx)
 	pipelineByDestinationName := map[string]*transformerpipeline.TransformerPipeline{}
 
-	// Add a ticker to update the progress bar every 100ms
-	t := time.NewTicker(100 * time.Millisecond)
-	newResources := int64(0)
-	go func() {
-		for {
-			select {
-			case <-gctx.Done():
-				t.Stop()
-				change := atomic.SwapInt64(&newResources, 0)
-				_ = bar.Add(int(change))
-				if err := bar.Finish(); err != nil {
-					log.Warn().Err(err).Msg("Failed to finish progress bar")
-				}
-				return
-			case <-t.C:
-				change := atomic.SwapInt64(&newResources, 0)
-				_ = bar.Add(int(change))
-			}
-		}
-	}()
-
 	// Each destination has its own transformer pipeline
 	for i := range destinationsPbClients {
 		destinationName := destinationSpecs[i].Name
@@ -426,6 +405,27 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		eg.Go(pipeline.RunBlocking) // each transformer runs in its own goroutine
 		pipelineByDestinationName[destinationName] = pipeline
 	}
+
+	// Add a ticker to update the progress bar every 100ms
+	t := time.NewTicker(100 * time.Millisecond)
+	newResources := int64(0)
+	go func() {
+		for {
+			select {
+			case <-gctx.Done():
+				t.Stop()
+				change := atomic.SwapInt64(&newResources, 0)
+				_ = bar.Add(int(change))
+				if err := bar.Finish(); err != nil {
+					log.Warn().Err(err).Msg("Failed to finish progress bar")
+				}
+				return
+			case <-t.C:
+				change := atomic.SwapInt64(&newResources, 0)
+				_ = bar.Add(int(change))
+			}
+		}
+	}()
 
 	eg.Go(func() error {
 		// Close all transformation pipelines when the source is done
