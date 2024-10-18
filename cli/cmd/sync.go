@@ -43,6 +43,8 @@ func NewCmdSync() *cobra.Command {
 	cmd.Flags().String("summary-location", "", "Sync summary file location. This feature is in Preview. Please provide feedback to help us improve it.")
 	cmd.Flags().String("tables-metrics-location", "", "Tables metrics file location. This feature is in Preview. Please provide feedback to help us improve it. Works with plugins released on 2024-07-10 or later.")
 	cmd.Flags().String("shard", "", "Allows splitting the sync process into multiple shards. This feature is in Preview. Please provide feedback to help us improve it. For a list of supported plugins visit https://docs.cloudquery.io/docs/advanced-topics/running-cloudquery-in-parallel")
+	cmd.Flags().Bool("cq-columns-not-null", false, "Force CloudQuery internal columns to be NOT NULL. This feature is in Preview. Please provide feedback to help us improve it.")
+	cmd.Flags().MarkHidden("cq-columns-not-null")
 
 	return cmd
 }
@@ -136,6 +138,11 @@ func sync(cmd *cobra.Command, args []string) error {
 	}
 
 	shard, err := parseShard(cmd)
+	if err != nil {
+		return err
+	}
+
+	cqColumnsNotNull, err := cmd.Flags().GetBool("cq-columns-not-null")
 	if err != nil {
 		return err
 	}
@@ -430,7 +437,18 @@ func sync(cmd *cobra.Command, args []string) error {
 				return err
 			}
 
-			if err := syncConnectionV3(ctx, src, dests, transfs, backend, invocationUUID.String(), noMigrate, summaryLocation, shard); err != nil {
+			syncOptions := syncV3Options{
+				source:                    src,
+				destinations:              dests,
+				transformersByDestination: transfs,
+				backend:                   backend,
+				uid:                       invocationUUID.String(),
+				noMigrate:                 noMigrate,
+				summaryLocation:           summaryLocation,
+				shard:                     shard,
+				cqColumnsNotNull:          cqColumnsNotNull,
+			}
+			if err := syncConnectionV3(ctx, syncOptions); err != nil {
 				return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
 			}
 
