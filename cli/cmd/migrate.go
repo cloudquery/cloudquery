@@ -33,7 +33,7 @@ func NewCmdMigrate() *cobra.Command {
 	}
 	cmd.Flags().String("license", "", "set offline license file")
 	cmd.Flags().Bool("cq-columns-not-null", false, "Force CloudQuery internal columns to be NOT NULL. This feature is in Preview. Please provide feedback to help us improve it.")
-	cmd.Flags().MarkHidden("cq-columns-not-null")
+	_ = cmd.Flags().MarkHidden("cq-columns-not-null")
 	return cmd
 }
 
