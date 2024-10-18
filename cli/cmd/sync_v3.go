@@ -413,9 +413,6 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 				},
 			}
 			if err := writeClientsByName[destinationName].Send(wr); err != nil {
-				// Close the transformations pipeline when the destination is closed.
-				pipeline.Close()
-
 				return handleSendError(err, writeClientsByName[destinationName], "insert")
 			}
 			return nil
@@ -464,6 +461,11 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 						return fmt.Errorf("failed to transform record bytes: %w", err)
 					}
 					if err := pipelineByDestinationName[destinationName].Send(transformedRecordBytes); err != nil {
+						if errors.Is(err, transformerpipeline.ErrPipelineClosed) {
+							// If the pipeline is closed, we should stop processing records. The error that cause the pipeline to close
+							// Will be returned by the pipeline itself.
+							return nil
+						}
 						return err
 					}
 				}
