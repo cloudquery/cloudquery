@@ -17,8 +17,8 @@ cloud.google.com/go/longrunning v0.6.1 h1:lOLTFxYpr8hcRtcwWir5ITh1PAKUD/sG2lKrTS
 cloud.google.com/go/longrunning v0.6.1/go.mod h1:nHISoOZpBcmlwbJmiVk5oDRz0qG/ZxPynEGs1iZ79s0=
 cloud.google.com/go/monitoring v1.21.0 h1:EMc0tB+d3lUewT2NzKC/hr8cSR9WsUieVywzIHetGro=
 cloud.google.com/go/monitoring v1.21.0/go.mod h1:tuJ+KNDdJbetSsbSGTqnaBvbauS5kr3Q/koy3Up6r+4=
-cloud.google.com/go/storage v1.44.0 h1:abBzXf4UJKMmQ04xxJf9dYM/fNl24KHoTuBjyJDX2AI=
-cloud.google.com/go/storage v1.44.0/go.mod h1:wpPblkIuMP5jCB/E48Pz9zIo2S/zD8g+ITmxKkPCITE=
+cloud.google.com/go/storage v1.45.0 h1:5av0QcIVj77t+44mV4gffFC/LscFRUhto6UBMB5SimM=
+cloud.google.com/go/storage v1.45.0/go.mod h1:wpPblkIuMP5jCB/E48Pz9zIo2S/zD8g+ITmxKkPCITE=
 cloud.google.com/go/trace v1.11.0 h1:UHX6cOJm45Zw/KIbqHe4kII8PupLt/V5tscZUkeiJVI=
 cloud.google.com/go/trace v1.11.0/go.mod h1:Aiemdi52635dBR7o3zuc9lLjXo3BwGaChEjCa3tJNmM=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
