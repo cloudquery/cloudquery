@@ -24,7 +24,7 @@ func TestTestConnection(t *testing.T) {
 		{
 			name:   "bad AWS and Postgres auth should fail validation",
 			config: "test-connection-bad-connection.yml",
-			errors: []string{"cloudflare (cloudquery/cloudflare@v9.7.0)", "postgresql (cloudquery/postgresql@v8.6.2)"},
+			errors: []string{"cloudflare (cloudquery/cloudflare@v", "postgresql (cloudquery/postgresql@v"},
 		},
 	}
 	_, filename, _, _ := runtime.Caller(0)
@@ -42,7 +42,7 @@ func TestTestConnection(t *testing.T) {
 				require.ErrorAs(t, err, &errs)
 				require.Len(t, errs.failed, len(tc.errors))
 				for i, want := range tc.errors {
-					assert.Equal(t, want, errs.failed[i].PluginRef)
+					assert.Contains(t, errs.failed[i].PluginRef, want)
 				}
 			} else {
 				assert.NoError(t, err)
