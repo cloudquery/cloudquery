@@ -1,34 +1,34 @@
 ---
-title: Plugins
-description: "CloudQuery has a pluggable architecture and relies on two types of plugins: source plugins and destination plugins."
+title: Integrations
+description: "CloudQuery has a pluggable architecture and relies on two types of integrations: source integrations and destination integrations."
 ---
 
-# Plugins
+# Integrations
 
-CloudQuery has a pluggable architecture, with plugins communicating over [gRPC](https://github.com/cloudquery/plugin-pb). A plugin can be implemented to be a source, destination or both.
+CloudQuery has a pluggable architecture, with integrations communicating over [gRPC](https://github.com/cloudquery/plugin-pb). An integration can be implemented as a source, destination, or both.
 
-- **Source plugin** - Responsible for extracting and transforming configuration from cloud-providers, SaaS apps, and other APIs ([Available source plugins](https://hub.cloudquery.io/plugins/source)).
-- **Destination plugin** - Responsible for writing the data from the source plugins to various destinations such as databases, message queues and storage ([Available destination plugins](https://hub.cloudquery.io/plugins/destination)).
+- **Source integration**—Responsible for extracting and transforming configuration from cloud providers, SaaS apps, and other APIs ([Available source integrations](https://hub.cloudquery.io/plugins/source)).
+- **Destination integration**—Responsible for writing data from the source integrations to various destinations such as databases, message queues, and storage ([Available destination integrations](https://hub.cloudquery.io/plugins/destination)).
 
-All plugins are split to official (maintained by CloudQuery) and community (maintained by members of the community in their own repositories).
+All integrations are split between official (maintained by CloudQuery) and community (maintained by community members in their own repositories).
 
-## Source Plugin
+## Source Integration
 
-The core responsibilities of a source plugin:
+The core responsibilities of a source integration:
 
 - Define the schema (tables).
-- Authenticate with the supported APIs, SaaS services and/or cloud providers.
-- Extracting data from the supported APIs and transform them into the defined schema.
-- Send the data via [protobuf](https://github.com/cloudquery/plugin-sdk/tree/main/internal/pb) to the CLI for further processing and storage at the defined destination plugins.
+- Authenticate with the supported APIs, SaaS services, and/or cloud providers.
+- Extract data from the supported APIs and transform them into the defined schema.
+- Send the data via protobuf to the CLI for further processing and storage at the defined destination integrations.
 
 See [Configuration Reference](../reference/source-spec)
 
-## Destination Plugin
+## Destination Integration
 
-The core responsibilities of a destination plugin:
+The core responsibilities of a destination integration:
 
 - Authenticate with the destination (such as database, message queue, storage).
-- Auto-migrate the schemas defined by the source plugins.
+- Auto-migrate the schemas defined by the source integrations.
 - Save each incoming object in the appropriate table.
 
 See [Configuration Reference](../reference/destination-spec)
