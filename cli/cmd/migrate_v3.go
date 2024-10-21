@@ -24,13 +24,15 @@ type migrateV3Options struct {
 
 // nolint:dupl
 func migrateConnectionV3(ctx context.Context, migrateOptions migrateV3Options) error {
-	sourceClient := migrateOptions.sourceClient
-	destinationsClients := migrateOptions.destinationsClients
-	sourceSpec := migrateOptions.sourceSpec
-	destinationSpecs := migrateOptions.destinationSpecs
-	transformersForDestination := migrateOptions.transformersForDestination
-	transformerSpecsByName := migrateOptions.transformerSpecsByName
-	cqColumnsNotNull := migrateOptions.cqColumnsNotNull
+	var (
+		sourceClient               = migrateOptions.sourceClient
+		destinationsClients        = migrateOptions.destinationsClients
+		sourceSpec                 = migrateOptions.sourceSpec
+		destinationSpecs           = migrateOptions.destinationSpecs
+		transformersForDestination = migrateOptions.transformersForDestination
+		transformerSpecsByName     = migrateOptions.transformerSpecsByName
+		cqColumnsNotNull           = migrateOptions.cqColumnsNotNull
+	)
 
 	destinationStrings := make([]string, len(destinationSpecs))
 	for i := range destinationSpecs {

@@ -108,15 +108,17 @@ type syncV3Options struct {
 }
 
 func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr error) {
-	source := syncOptions.source
-	destinations := syncOptions.destinations
-	transformersByDestination := syncOptions.transformersByDestination
-	backend := syncOptions.backend
-	uid := syncOptions.uid
-	noMigrate := syncOptions.noMigrate
-	summaryLocation := syncOptions.summaryLocation
-	shard := syncOptions.shard
-	cqColumnsNotNull := syncOptions.cqColumnsNotNull
+	var (
+		source                    = syncOptions.source
+		destinations              = syncOptions.destinations
+		transformersByDestination = syncOptions.transformersByDestination
+		backend                   = syncOptions.backend
+		uid                       = syncOptions.uid
+		noMigrate                 = syncOptions.noMigrate
+		summaryLocation           = syncOptions.summaryLocation
+		shard                     = syncOptions.shard
+		cqColumnsNotNull          = syncOptions.cqColumnsNotNull
+	)
 
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
