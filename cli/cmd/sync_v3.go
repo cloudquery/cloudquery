@@ -95,8 +95,31 @@ func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
 	return api.NewClient(token.Value)
 }
 
-// nolint:dupl
-func syncConnectionV3(ctx context.Context, source v3source, destinations []v3destination, transformersByDestination map[string][]v3transformer, backend *v3destination, uid string, noMigrate bool, summaryLocation string, shard *shard) (syncErr error) {
+type syncV3Options struct {
+	source                    v3source
+	destinations              []v3destination
+	transformersByDestination map[string][]v3transformer
+	backend                   *v3destination
+	uid                       string
+	noMigrate                 bool
+	summaryLocation           string
+	shard                     *shard
+	cqColumnsNotNull          bool
+}
+
+func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr error) {
+	var (
+		source                    = syncOptions.source
+		destinations              = syncOptions.destinations
+		transformersByDestination = syncOptions.transformersByDestination
+		backend                   = syncOptions.backend
+		uid                       = syncOptions.uid
+		noMigrate                 = syncOptions.noMigrate
+		summaryLocation           = syncOptions.summaryLocation
+		shard                     = syncOptions.shard
+		cqColumnsNotNull          = syncOptions.cqColumnsNotNull
+	)
+
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	skippedFromDeleteStale := make(map[string]bool, 0)
@@ -195,6 +218,9 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		opts := []transformer.RecordTransformerOption{
 			transformer.WithSourceNameColumn(sourceName),
 			transformer.WithSyncTimeColumn(syncTime),
+		}
+		if cqColumnsNotNull {
+			opts = append(opts, transformer.WithCQColumnsNotNull())
 		}
 		if destinationSpecs[i].SyncGroupId != "" {
 			opts = append(opts, transformer.WithSyncGroupIdColumn(destinationSpecs[i].RenderedSyncGroupId(syncTime, uid)))

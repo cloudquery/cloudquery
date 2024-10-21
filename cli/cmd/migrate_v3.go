@@ -12,8 +12,28 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+type migrateV3Options struct {
+	sourceClient               *managedplugin.Client
+	destinationsClients        managedplugin.Clients
+	sourceSpec                 specs.Source
+	destinationSpecs           []specs.Destination
+	transformersForDestination map[string][]*managedplugin.Client
+	transformerSpecsByName     map[string]specs.Transformer
+	cqColumnsNotNull           bool
+}
+
 // nolint:dupl
-func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, transformersForDestination map[string][]*managedplugin.Client, transformerSpecsByName map[string]specs.Transformer) error {
+func migrateConnectionV3(ctx context.Context, migrateOptions migrateV3Options) error {
+	var (
+		sourceClient               = migrateOptions.sourceClient
+		destinationsClients        = migrateOptions.destinationsClients
+		sourceSpec                 = migrateOptions.sourceSpec
+		destinationSpecs           = migrateOptions.destinationSpecs
+		transformersForDestination = migrateOptions.transformersForDestination
+		transformerSpecsByName     = migrateOptions.transformerSpecsByName
+		cqColumnsNotNull           = migrateOptions.cqColumnsNotNull
+	)
+
 	destinationStrings := make([]string, len(destinationSpecs))
 	for i := range destinationSpecs {
 		destinationStrings[i] = destinationSpecs[i].VersionString()
@@ -42,6 +62,9 @@ func migrateConnectionV3(ctx context.Context, sourceClient *managedplugin.Client
 		opts := []transformer.RecordTransformerOption{
 			transformer.WithSourceNameColumn(sourceSpec.Name),
 			transformer.WithSyncTimeColumn(migrateStart),
+		}
+		if cqColumnsNotNull {
+			opts = append(opts, transformer.WithCQColumnsNotNull())
 		}
 		if destinationSpecs[i].SyncGroupId != "" {
 			opts = append(opts, transformer.WithSyncGroupIdColumn(destinationSpecs[i].RenderedSyncGroupId(migrateStart, invocationUUID.String())))
