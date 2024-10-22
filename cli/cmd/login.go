@@ -283,7 +283,7 @@ func setTeamOnLogin(ctx context.Context, cmd *cobra.Command, token string) error
 
 	default:
 		cmd.Printf("Your current team is not set.\n\n")
-		cmd.Printf("Teams available to you: " + strings.Join(teams, ", ") + "\n\n")
+		cmd.Printf("Teams available to you: %s\n\n", strings.Join(teams, ", "))
 		cmd.Printf("To set your current team, run `cloudquery switch <team>`\n\n")
 		// we don't fail here immediately, as there are some additional commands the user can run in this state
 	}

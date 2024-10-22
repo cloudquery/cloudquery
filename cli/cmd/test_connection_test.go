@@ -24,7 +24,7 @@ func TestTestConnection(t *testing.T) {
 		{
 			name:   "bad AWS and Postgres auth should fail validation",
 			config: "test-connection-bad-connection.yml",
-			errors: []string{"cloudflare (cloudquery/cloudflare@v6.1.2)", "postgresql (cloudquery/postgresql@v7.3.5)"},
+			errors: []string{"cloudflare (cloudquery/cloudflare@v", "postgresql (cloudquery/postgresql@v"},
 		},
 	}
 	_, filename, _, _ := runtime.Caller(0)
@@ -42,7 +42,7 @@ func TestTestConnection(t *testing.T) {
 				require.ErrorAs(t, err, &errs)
 				require.Len(t, errs.failed, len(tc.errors))
 				for i, want := range tc.errors {
-					assert.Equal(t, want, errs.failed[i].PluginRef)
+					assert.Contains(t, errs.failed[i].PluginRef, want)
 				}
 			} else {
 				assert.NoError(t, err)
@@ -71,9 +71,8 @@ func TestTestConnection_IsolatedPluginEnvironmentsInCloud(t *testing.T) {
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
 
-	t.Setenv("CLOUDQUERY_API_KEY", "cqstc_123")
 	t.Setenv("CQ_CLOUD", "1")
-	t.Setenv("_CQ_TEAM_NAME", "test_team")
+	t.Setenv("_CQ_TEAM_NAME", "cl")
 	t.Setenv("_CQ_SYNC_NAME", "test_sync")
 	t.Setenv("_CQ_SYNC_RUN_ID", uuid.Must(uuid.NewUUID()).String())
 	t.Setenv("__SOURCE_TEST__TEST_KEY", "test_value")

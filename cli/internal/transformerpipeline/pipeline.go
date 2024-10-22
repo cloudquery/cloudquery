@@ -11,6 +11,10 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
+var (
+	ErrPipelineClosed = errors.New("pipeline is closed")
+)
+
 // TransformerPipeline runs a pipeline of transform clients.
 //
 // Ideally we'd just call the result of each transform to the next one, but transformations are not synchronous calls,
@@ -72,7 +76,7 @@ func (lp *TransformerPipeline) Send(data []byte) error {
 	}
 
 	if lp.clientWrappers[0].isClosed.Load() {
-		return errors.New("pipeline is closed")
+		return ErrPipelineClosed
 	}
 
 	sendCh := make(chan error)
@@ -90,7 +94,7 @@ func (lp *TransformerPipeline) Send(data []byte) error {
 			return err
 		case <-time.After(1 * time.Second): // Check if pipeline is closed every second
 			if lp.clientWrappers[0].isClosed.Load() {
-				return errors.New("pipeline is closed")
+				return ErrPipelineClosed
 			}
 		}
 	}

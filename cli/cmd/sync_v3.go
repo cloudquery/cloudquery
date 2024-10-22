@@ -95,8 +95,31 @@ func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
 	return api.NewClient(token.Value)
 }
 
-// nolint:dupl
-func syncConnectionV3(ctx context.Context, source v3source, destinations []v3destination, transformersByDestination map[string][]v3transformer, backend *v3destination, uid string, noMigrate bool, summaryLocation string, shard *shard) (syncErr error) {
+type syncV3Options struct {
+	source                    v3source
+	destinations              []v3destination
+	transformersByDestination map[string][]v3transformer
+	backend                   *v3destination
+	uid                       string
+	noMigrate                 bool
+	summaryLocation           string
+	shard                     *shard
+	cqColumnsNotNull          bool
+}
+
+func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr error) {
+	var (
+		source                    = syncOptions.source
+		destinations              = syncOptions.destinations
+		transformersByDestination = syncOptions.transformersByDestination
+		backend                   = syncOptions.backend
+		uid                       = syncOptions.uid
+		noMigrate                 = syncOptions.noMigrate
+		summaryLocation           = syncOptions.summaryLocation
+		shard                     = syncOptions.shard
+		cqColumnsNotNull          = syncOptions.cqColumnsNotNull
+	)
+
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	skippedFromDeleteStale := make(map[string]bool, 0)
@@ -195,6 +218,9 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		opts := []transformer.RecordTransformerOption{
 			transformer.WithSourceNameColumn(sourceName),
 			transformer.WithSyncTimeColumn(syncTime),
+		}
+		if cqColumnsNotNull {
+			opts = append(opts, transformer.WithCQColumnsNotNull())
 		}
 		if destinationSpecs[i].SyncGroupId != "" {
 			opts = append(opts, transformer.WithSyncGroupIdColumn(destinationSpecs[i].RenderedSyncGroupId(syncTime, uid)))
@@ -316,24 +342,6 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		)
 	}
 
-	// Add a ticker to update the progress bar every 100ms
-	t := time.NewTicker(100 * time.Millisecond)
-	newResources := int64(0)
-	defer t.Stop()
-	go func() {
-		for {
-			select {
-			case <-ctx.Done():
-				change := atomic.SwapInt64(&newResources, 0)
-				_ = bar.Add(int(change))
-				return
-			case <-t.C:
-				change := atomic.SwapInt64(&newResources, 0)
-				_ = bar.Add(int(change))
-			}
-		}
-	}()
-
 	isStateBackendEnabled := sourceSpec.BackendOptions != nil && sourceSpec.BackendOptions.TableName != ""
 
 	// Read from the sync stream and write to all destinations.
@@ -413,9 +421,6 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 				},
 			}
 			if err := writeClientsByName[destinationName].Send(wr); err != nil {
-				// Close the transformations pipeline when the destination is closed.
-				pipeline.Close()
-
 				return handleSendError(err, writeClientsByName[destinationName], "insert")
 			}
 			return nil
@@ -426,6 +431,27 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		eg.Go(pipeline.RunBlocking) // each transformer runs in its own goroutine
 		pipelineByDestinationName[destinationName] = pipeline
 	}
+
+	// Add a ticker to update the progress bar every 100ms
+	t := time.NewTicker(100 * time.Millisecond)
+	newResources := int64(0)
+	go func() {
+		for {
+			select {
+			case <-gctx.Done():
+				t.Stop()
+				change := atomic.SwapInt64(&newResources, 0)
+				_ = bar.Add(int(change))
+				if err := bar.Finish(); err != nil {
+					log.Warn().Err(err).Msg("Failed to finish progress bar")
+				}
+				return
+			case <-t.C:
+				change := atomic.SwapInt64(&newResources, 0)
+				_ = bar.Add(int(change))
+			}
+		}
+	}()
 
 	eg.Go(func() error {
 		// Close all transformation pipelines when the source is done
@@ -464,6 +490,11 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 						return fmt.Errorf("failed to transform record bytes: %w", err)
 					}
 					if err := pipelineByDestinationName[destinationName].Send(transformedRecordBytes); err != nil {
+						if errors.Is(err, transformerpipeline.ErrPipelineClosed) {
+							// If the pipeline is closed, we should stop processing records. The error that cause the pipeline to close
+							// Will be returned by the pipeline itself.
+							return nil
+						}
 						return err
 					}
 				}
@@ -606,10 +637,6 @@ func syncConnectionV3(ctx context.Context, source v3source, destinations []v3des
 		}
 	}
 
-	err = bar.Finish()
-	if err != nil {
-		log.Warn().Err(err).Msg("Failed to finish progress bar")
-	}
 	atomic.StoreInt64(&isComplete, 1)
 	syncTimeTook = time.Since(syncTime)
 	exitReason = ExitReasonCompleted

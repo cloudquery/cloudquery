@@ -32,6 +32,8 @@ func NewCmdMigrate() *cobra.Command {
 		RunE:    migrate,
 	}
 	cmd.Flags().String("license", "", "set offline license file")
+	cmd.Flags().Bool("cq-columns-not-null", false, "Force CloudQuery internal columns to be NOT NULL. This feature is in Preview. Please provide feedback to help us improve it.")
+	_ = cmd.Flags().MarkHidden("cq-columns-not-null")
 	return cmd
 }
 
@@ -42,6 +44,11 @@ func migrate(cmd *cobra.Command, args []string) error {
 	}
 
 	licenseFile, err := cmd.Flags().GetString("license")
+	if err != nil {
+		return err
+	}
+
+	cqColumnsNotNull, err := cmd.Flags().GetBool("cq-columns-not-null")
 	if err != nil {
 		return err
 	}
@@ -70,6 +77,10 @@ func migrate(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to get team name: %w", err)
 	}
+
+	pluginVersionWarner, _ := managedplugin.NewPluginVersionWarner(log.Logger, authToken.Value)
+	specs.WarnOnOutdatedVersions(ctx, pluginVersionWarner, sources, destinations, transformers)
+
 	opts := []managedplugin.Option{
 		managedplugin.WithLogger(log.Logger),
 		managedplugin.WithAuthToken(authToken.Value),
@@ -180,7 +191,17 @@ func migrate(cmd *cobra.Command, args []string) error {
 					return fmt.Errorf("destination plugin %[1]s does not support CloudQuery protocol version 3, required by the %[2]s source plugin. Please upgrade to a newer version of the %[1]s destination plugin", destination.Name(), source.Name)
 				}
 			}
-			if err := migrateConnectionV3(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, transformersForDestination, transformerSpecsByName); err != nil {
+
+			migrateOptions := migrateV3Options{
+				sourceClient:               cl,
+				destinationsClients:        destinationClientsForSource,
+				sourceSpec:                 *source,
+				destinationSpecs:           destinationForSourceSpec,
+				transformersForDestination: transformersForDestination,
+				transformerSpecsByName:     transformerSpecsByName,
+				cqColumnsNotNull:           cqColumnsNotNull,
+			}
+			if err := migrateConnectionV3(ctx, migrateOptions); err != nil {
 				return fmt.Errorf("failed to migrate v3 source %s: %w", cl.Name(), err)
 			}
 		case 2:

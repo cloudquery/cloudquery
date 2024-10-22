@@ -2,30 +2,26 @@ kind: "source"
 spec:
   name: "test-1"
   path: "cloudquery/test"
-  registry: "github"
   destinations: [test-1]
-  version: "v3.1.15" # latest version of source test plugin
+  version: "v4.5.1" # latest version of source test plugin
   tables: ["*"]
 ---
 kind: "source"
 spec:
   name: "test-2"
   path: "cloudquery/test"
-  registry: "github"
   destinations: [test-2]
-  version: "v3.1.15" # latest version of source test plugin
+  version: "v4.5.1" # latest version of source test plugin
   tables: ["*"]
 ---
 kind: "destination"
 spec:
   name: "test-1"
   path: "cloudquery/test"
-  registry: "github"
-  version: "v2.2.14" # latest version of destination test plugin
+  version: "v2.5.1" # latest version of destination test plugin
 ---
 kind: "destination"
 spec:
   name: "test-2"
   path: "cloudquery/test"
-  registry: "github"
-  version: "v2.2.14" # latest version of destination test plugin
+  version: "v2.5.1" # latest version of destination test plugin

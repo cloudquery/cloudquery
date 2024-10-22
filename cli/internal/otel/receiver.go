@@ -46,15 +46,15 @@ type Consumer struct {
 	metricsFilename string
 	metricsFile     *os.File
 	consumeMetric   func(context.Context, pluginMetric)
+	wg              *sync.WaitGroup
 }
 
 func (c *Consumer) Shutdown(ctx context.Context) {
-	if c.quit != nil {
-		close(c.quit)
-	}
+	close(c.quit)
+	c.wg.Wait()
 }
 
-func newMetricConsumer(metricsFile *os.File, quit chan any) func(context.Context, pluginMetric) {
+func newMetricConsumer(metricsFile *os.File, quit chan any, wg *sync.WaitGroup) func(context.Context, pluginMetric) {
 	tableLock := sync.Mutex{}
 	metricsMap := make(map[string]*tableMetric)
 	ticker := time.NewTicker(20 * time.Second)
@@ -113,7 +113,9 @@ func newMetricConsumer(metricsFile *os.File, quit chan any) func(context.Context
 		t.Render()
 	}
 
+	wg.Add(1)
 	go func() {
+		defer wg.Done()
 		for {
 			select {
 			case <-ticker.C:
@@ -231,7 +233,9 @@ func WithMetricsFilename(filename string) OtelReceiverOption {
 }
 
 func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelReceiver, error) {
-	c := Consumer{}
+	c := Consumer{
+		wg: &sync.WaitGroup{},
+	}
 	for _, opt := range opts {
 		opt(&c)
 	}
@@ -241,7 +245,7 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 		return nil, err
 	}
 	quit := make(chan any)
-	c.consumeMetric = newMetricConsumer(metricsFile, quit)
+	c.consumeMetric = newMetricConsumer(metricsFile, quit, c.wg)
 	c.metricsFile = metricsFile
 	c.quit = quit
 

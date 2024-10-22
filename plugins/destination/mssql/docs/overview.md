@@ -12,5 +12,5 @@ This includes both Microsoft SQL Server and Azure SQL Server.
 
 Supported database versions:
 
-- Microsoft SQL Server >= 2017
-- Azure SQL Database >= 2017
+- Microsoft SQL Server >= 2019
+- Azure SQL Database >= 2019

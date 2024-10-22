@@ -27,6 +27,7 @@ type RecordTransformer struct {
 	cqIDPrimaryKey          bool
 	withSyncGroupID         bool
 	syncGroupId             string
+	cqColumnsNotNull        bool
 }
 
 type RecordTransformerOption func(*RecordTransformer)
@@ -73,6 +74,12 @@ func WithCQIDPrimaryKey() RecordTransformerOption {
 	}
 }
 
+func WithCQColumnsNotNull() RecordTransformerOption {
+	return func(transformer *RecordTransformer) {
+		transformer.cqColumnsNotNull = true
+	}
+}
+
 func NewRecordTransformer(opts ...RecordTransformerOption) *RecordTransformer {
 	t := &RecordTransformer{}
 	for _, opt := range opts {
@@ -84,10 +91,10 @@ func NewRecordTransformer(opts ...RecordTransformerOption) *RecordTransformer {
 func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 	fields := make([]arrow.Field, 0, len(sc.Fields())+t.internalColumns)
 	if t.withSyncTime && !sc.HasField(cqSyncTime) {
-		fields = append(fields, arrow.Field{Name: cqSyncTime, Type: arrow.FixedWidthTypes.Timestamp_us, Nullable: true})
+		fields = append(fields, arrow.Field{Name: cqSyncTime, Type: arrow.FixedWidthTypes.Timestamp_us, Nullable: !t.cqColumnsNotNull})
 	}
 	if t.withSourceName && !sc.HasField(cqSourceName) {
-		fields = append(fields, arrow.Field{Name: cqSourceName, Type: arrow.BinaryTypes.String, Nullable: true})
+		fields = append(fields, arrow.Field{Name: cqSourceName, Type: arrow.BinaryTypes.String, Nullable: !t.cqColumnsNotNull})
 	}
 	if t.withSyncGroupID && !sc.HasField(cqSyncGroupId) {
 		fields = append(fields, arrow.Field{
@@ -98,9 +105,11 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 				[]string{schema.MetadataTrue},
 			)})
 	}
-	for _, field := range sc.Fields() {
-		mdMap := field.Metadata.ToMap()
+	fields = append(fields, sc.Fields()...)
 
+	transformedFields := make([]arrow.Field, len(fields))
+	for i, field := range fields {
+		mdMap := field.Metadata.ToMap()
 		if _, ok := mdMap[schema.MetadataUnique]; ok && t.removeUniqueConstraints {
 			delete(mdMap, schema.MetadataUnique)
 		}
@@ -112,17 +121,15 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 			mdMap[schema.MetadataPrimaryKey] = schema.MetadataTrue
 		}
 
-		newMd := arrow.MetadataFrom(mdMap)
-
-		fields = append(fields, arrow.Field{
+		transformedFields[i] = arrow.Field{
 			Name:     field.Name,
 			Type:     field.Type,
 			Nullable: field.Nullable,
-			Metadata: newMd,
-		})
+			Metadata: arrow.MetadataFrom(mdMap),
+		}
 	}
 	scMd := sc.Metadata()
-	return arrow.NewSchema(fields, &scMd)
+	return arrow.NewSchema(transformedFields, &scMd)
 }
 
 func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {

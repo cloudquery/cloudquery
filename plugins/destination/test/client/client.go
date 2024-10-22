@@ -124,3 +124,16 @@ func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales
 func (c *Client) DeleteRecord(ctx context.Context, msgs message.WriteDeleteRecords) error {
 	return nil
 }
+
+func TestConnection(ctx context.Context, _ zerolog.Logger, specBytes []byte) error {
+	var s Spec
+	if err := json.Unmarshal(specBytes, &s); err != nil {
+		return &plugin.TestConnError{
+			Code:    "INVALID_SPEC",
+			Message: fmt.Errorf("failed to unmarshal spec: %w", err),
+		}
+	}
+	s.SetDefaults()
+
+	return nil
+}

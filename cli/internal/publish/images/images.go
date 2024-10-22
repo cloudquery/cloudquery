@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
+	"mime"
 	"net/http"
 	"net/url"
 	"os"
@@ -27,9 +28,10 @@ import (
 )
 
 type reference struct {
-	ref     string // image filename inc. all paths (to replace with URL)
-	absFile string // absolute path to image file, to upload
-	url     string // result of upload
+	ref         string // image filename inc. all paths (to replace with URL)
+	absFile     string // absolute path to image file, to upload
+	contentType string // content type of the file
+	url         string // result of upload
 
 	startPos int // start of complete markdown tag. if html: start of actual ref
 	endPos   int // exclusive
@@ -37,6 +39,25 @@ type reference struct {
 
 type listKey struct {
 	name, sum string
+}
+
+func DetectContentType(filename string) (string, error) {
+	contentType := mime.TypeByExtension(filepath.Ext(filename))
+	if contentType != "" {
+		return contentType, nil
+	}
+
+	filebytes := make([]byte, 512)
+	fp, err := os.Open(filename)
+	if err != nil {
+		return "", fmt.Errorf("failed to open file: %w", err)
+	}
+	defer fp.Close()
+	if _, err := fp.Read(filebytes); err != nil {
+		return "", fmt.Errorf("failed to read file: %w", err)
+	}
+
+	return http.DetectContentType(filebytes), nil
 }
 
 func ProcessDocument(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, docDir, contents string) (string, error) {
@@ -51,10 +72,20 @@ func ProcessDocument(ctx context.Context, c *cloudquery_api.ClientWithResponses,
 	fmt.Println("Preparing to upload images...")
 
 	reqs := make([]cloudquery_api.TeamImageCreate, 0, len(ims))
-	for k := range ims {
+	for k, v := range ims {
+		if len(v) == 0 {
+			continue
+		}
+		absFile := v[0].absFile
+		contentType, err := DetectContentType(absFile)
+		if err != nil {
+			return "", fmt.Errorf("failed to get content type for file %q: %w", absFile, err)
+		}
+		v[0].contentType = contentType
 		reqs = append(reqs, cloudquery_api.TeamImageCreate{
-			Name:     k.name,
-			Checksum: k.sum,
+			Name:        k.name,
+			Checksum:    k.sum,
+			ContentType: cloudquery_api.ContentType(contentType),
 		})
 	}
 
@@ -93,7 +124,7 @@ func ProcessDocument(ctx context.Context, c *cloudquery_api.ClientWithResponses,
 		item := item
 		absFile := ims[listKey{name: item.Name, sum: item.Checksum}][0].absFile
 		eg.Go(func() error {
-			return uploadFile(egCtx, *item.UploadURL, absFile)
+			return uploadImage(egCtx, item, absFile)
 		})
 	}
 
@@ -194,27 +225,26 @@ func replaceMarkdownImages(contents string, ims map[listKey][]reference) (string
 	return contents, nil
 }
 
-func uploadFile(ctx context.Context, uploadURL, file string) error {
+func uploadImage(ctx context.Context, item cloudquery_api.TeamImage, file string) error {
 	f, err := os.Open(file)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 
-	first512 := make([]byte, 512)
-	if _, err := f.Read(first512); err != nil {
-		return err
-	}
-	ct := http.DetectContentType(first512)
-	if _, err := f.Seek(0, io.SeekStart); err != nil {
-		return err
-	}
-
-	req, err := http.NewRequest(http.MethodPut, uploadURL, f)
+	req, err := http.NewRequest(http.MethodPut, *item.UploadURL, f)
 	if err != nil {
 		return err
 	}
-	req.Header.Set("Content-Type", ct)
+	for k, v := range item.RequiredHeaders {
+		if headers, ok := v.([]any); ok {
+			for _, h := range headers {
+				if header, ok := h.(string); ok {
+					req.Header.Add(k, header)
+				}
+			}
+		}
+	}
 
 	resp, err := http.DefaultClient.Do(req.WithContext(ctx))
 	if err != nil {

@@ -36,7 +36,7 @@ func TestSync(t *testing.T) {
 					DestinationErrors: 0,
 					DestinationName:   "test",
 					DestinationPath:   "cloudquery/test",
-					Resources:         12,
+					Resources:         13,
 					SourceName:        "test",
 					SourcePath:        "cloudquery/test",
 				},
@@ -45,7 +45,7 @@ func TestSync(t *testing.T) {
 					DestinationErrors: 0,
 					DestinationName:   "test",
 					DestinationPath:   "cloudquery/test",
-					Resources:         12,
+					Resources:         13,
 					SourceName:        "test2",
 					SourcePath:        "cloudquery/test",
 				},
@@ -63,7 +63,7 @@ func TestSync(t *testing.T) {
 					CLIVersion:      "development",
 					DestinationName: "test-1",
 					DestinationPath: "cloudquery/test",
-					Resources:       12,
+					Resources:       13,
 					SourceName:      "test-1",
 					SourcePath:      "cloudquery/test",
 				},
@@ -71,7 +71,7 @@ func TestSync(t *testing.T) {
 					CLIVersion:      "development",
 					DestinationName: "test-2",
 					DestinationPath: "cloudquery/test",
-					Resources:       12,
+					Resources:       13,
 					SourceName:      "test-2",
 					SourcePath:      "cloudquery/test",
 				},
@@ -85,7 +85,7 @@ func TestSync(t *testing.T) {
 					CLIVersion:      "development",
 					DestinationName: "test1",
 					DestinationPath: "cloudquery/test",
-					Resources:       12,
+					Resources:       13,
 					SourceName:      "test",
 					SourcePath:      "cloudquery/test",
 				},
@@ -124,8 +124,7 @@ func TestSync(t *testing.T) {
 
 			if len(tc.summary) > 0 {
 				summaries := readSummaries(t, summaryPath)
-				// have to ignore SyncID because it's random and plugin versions since we update those frequently using an automated process
-				// also ignore SyncTime because it's a timestamp
+				// Ignore random fields or fields that are updated over time
 				diff := cmp.Diff(tc.summary, summaries, cmpopts.IgnoreFields(syncSummary{}, "SyncID", "DestinationVersion", "SourceVersion", "SyncTime"))
 				for _, s := range summaries {
 					assert.NotEmpty(t, s.SyncID)
@@ -174,11 +173,11 @@ func TestSyncWithSummaryTable(t *testing.T) {
 					DestinationErrors:  0,
 					DestinationName:    "test",
 					DestinationPath:    "cloudquery/file",
-					DestinationVersion: "v4.0.1",
-					Resources:          12,
+					DestinationVersion: "v5.2.5",
+					Resources:          13,
 					SourceName:         "test",
 					SourcePath:         "cloudquery/test",
-					SourceVersion:      "v3.1.15",
+					SourceVersion:      "v4.5.1",
 				},
 			},
 		},
@@ -227,7 +226,14 @@ func TestSyncWithSummaryTable(t *testing.T) {
 					summaries = append(summaries, v)
 				}
 
-				diff := cmp.Diff(tc.summaryTable, summaries, cmpopts.IgnoreFields(syncSummary{}, "SyncID"))
+				// Ignore random fields or fields that are updated over time
+				diff := cmp.Diff(tc.summaryTable, summaries, cmpopts.IgnoreFields(syncSummary{}, "SyncID", "DestinationVersion", "SourceVersion"))
+				for _, s := range summaries {
+					assert.NotEmpty(t, s.SyncID)
+					assert.NotEmpty(t, s.DestinationVersion)
+					assert.NotEmpty(t, s.SourceVersion)
+				}
+
 				require.Empty(t, diff, "unexpected summaries: %v", diff)
 
 				// have to ignore SyncID because it's random and plugin versions since we update those frequently using an automated process
@@ -295,9 +301,8 @@ func TestSync_IsolatedPluginEnvironmentsInCloud(t *testing.T) {
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
 
-	t.Setenv("CLOUDQUERY_API_KEY", "cqsr_123")
 	t.Setenv("CQ_CLOUD", "1")
-	t.Setenv("_CQ_TEAM_NAME", "test_team")
+	t.Setenv("_CQ_TEAM_NAME", "cloudquery")
 	t.Setenv("_CQ_SYNC_NAME", "test_sync")
 	t.Setenv("_CQ_SYNC_RUN_ID", uuid.Must(uuid.NewUUID()).String())
 	t.Setenv("__SOURCE_TEST__TEST_KEY", "test_value")

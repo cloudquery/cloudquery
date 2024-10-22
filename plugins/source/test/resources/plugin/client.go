@@ -177,3 +177,16 @@ func (c *Client) OnSyncFinish(_ context.Context) error {
 	}
 	return nil
 }
+
+func TestConnection(ctx context.Context, _ zerolog.Logger, specBytes []byte) error {
+	var s client.Spec
+	if err := json.Unmarshal(specBytes, &s); err != nil {
+		return &plugin.TestConnError{
+			Code:    "INVALID_SPEC",
+			Message: fmt.Errorf("failed to unmarshal spec: %w", err),
+		}
+	}
+	s.SetDefaults()
+
+	return nil
+}
