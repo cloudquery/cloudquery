@@ -1,13 +1,13 @@
-name: 🔄 New Destination Plugin
-description: Request a new destination plugin
-title: "feat: Add a <plugin-name> destination plugin"
+name: 🔄 New Destination Integration
+description: Request a new destination integration
+title: "feat: Add a <plugin-name> destination integration"
 labels: [kind/feat, area/new-plugin, area/new-destination-plugin]
 body:
   - type: textarea
     id: description
     attributes:
-      label: Describe the plugin
-      description: Please describe what is the destination plugin you'd like to add
+      label: Describe the integration
+      description: Please describe what is the destination integration you'd like to add
     validations:
       required: true
 
@@ -21,9 +21,9 @@ body:
 
   - type: checkboxes
     attributes:
-      label: Publish my own Plugin (optional)
-      description: Community members are encouraged to publish their own plugins on the CloudQuery Hub. To find out more about this option check out the [CloudQuery Hub documentation](https://docs.cloudquery.io/docs/developers/publishing-a-plugin-to-the-hub).
+      label: Publish my own Intgration (optional)
+      description: Community members are encouraged to publish their own integrations on the CloudQuery Hub. To find out more about this option check out the [CloudQuery Hub documentation](https://docs.cloudquery.io/docs/developers/publishing-an-integration-to-the-hub).
       options:
-        - label: I am interested in writing my own plugin
+        - label: I am interested in writing my own integration
           required: false
 
