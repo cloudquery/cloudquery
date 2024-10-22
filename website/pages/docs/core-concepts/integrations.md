@@ -1,11 +1,11 @@
 ---
 title: Integrations
-description: "CloudQuery has a plugin-based architecture and relies on two types of integrations: source integrations and destination integrations."
+description: "CloudQuery has a integration-based architecture and relies on two types of integrations: source integrations and destination integrations."
 ---
 
 # Integrations
 
-CloudQuery has a plugin-based architecture, with integrations communicating over [gRPC](https://github.com/cloudquery/plugin-pb). A integration can be implemented to be a source, destination or both.
+CloudQuery has a integration-based architecture, with integrations communicating over [gRPC](https://github.com/cloudquery/plugin-pb). An integration can be implemented to be a source, destination or both.
 
 - **Source integration** - Responsible for extracting and transforming configuration from cloud-providers, SaaS apps, and other APIs ([Available source integrations](https://hub.cloudquery.io/plugins/source)).
 - **Destination integration** - Responsible for writing the data from the source integrations to various destinations such as databases, message queues and storage ([Available destination integrations](https://hub.cloudquery.io/plugins/destination)).

@@ -30,7 +30,7 @@ The CLI may print out environment variables, including sensitive information, wh
 
 ### Error: "failed to migrate source"…
 
-If you see an error such as `failed to migrate source`, it means that, while upgrading a integrations, the migration of the SQL schema failed.
+If you see an error such as `failed to migrate source`, it means that, while upgrading an integrations, the migration of the SQL schema failed.
 CloudQuery makes a best-effort attempt to automatically and transparently manage the schemas of integrations, but this can sometimes fail during version upgrades.
 
 The easiest solution is to drop and recreate the database or schema (or less destructively, all the integration's tables, such as `aws_*`).

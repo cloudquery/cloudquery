@@ -65,11 +65,11 @@ Here are the basic steps of adding support for incremental tables to your integr
 
 ## Creating Your First Integration for CloudQuery
 
-In this section we will go through all the steps of building a simple source integration. We will start by creating a new integration from scratch, then we will add a table to it. To serve as a fun real-world example, we will create a integration that fetches comic data from the [XKCD API](https://xkcd.com/json.html).
+In this section we will go through all the steps of building a simple source integration. We will start by creating a new integration from scratch, then we will add a table to it. To serve as a fun real-world example, we will create an integration that fetches comic data from the [XKCD API](https://xkcd.com/json.html).
 
 ### Initializing Your Integration with the `scaffold` Tool
 
-The easiest way to get started writing a integration is to use the `scaffold` tool. This tool will create a new integration directory with all the boilerplate code you need to get started. It will also create a `services` directory with an example table.
+The easiest way to get started writing an integration is to use the `scaffold` tool. This tool will create a new integration directory with all the boilerplate code you need to get started. It will also create a `services` directory with an example table.
 
 The scaffold tool is available as a binary for Linux, macOS and Windows. You can download the latest version from the [releases page](https://github.com/cloudquery/cloudquery/releases?q=scaffold&expanded=true).
 
@@ -204,7 +204,7 @@ In the above example, we used a `Client` struct that we haven't talked about yet
 
 ### Testing the CloudQuery Integration
 
-There are two options for running a integration before as a developer before it is released: as a gRPC server, or as a standalone binary. We will briefly summarize both options here, or you can read about them in more detail in [Running Locally](/docs/developers/running-locally).
+There are two options for running an integration before as a developer before it is released: as a gRPC server, or as a standalone binary. We will briefly summarize both options here, or you can read about them in more detail in [Running Locally](/docs/developers/running-locally).
 
 #### Run the integration as a gRPC Server
 
@@ -323,7 +323,7 @@ As big fans of meta-jokes, we define only comics with "XKCD" in the title to be 
 
 ### Adding Multiplexing
 
-For our simple XKCD integration, multiplexing is not necessary. But let's say we were writing a integration that can fetch from multiple accounts. In that case, we may define an `AccountMultiplex` multiplexer inside a new `multiplexers.go` file in the `client` directory:
+For our simple XKCD integration, multiplexing is not necessary. But let's say we were writing an integration that can fetch from multiple accounts. In that case, we may define an `AccountMultiplex` multiplexer inside a new `multiplexers.go` file in the `client` directory:
 
 ```go
 func AccountMultiplex(meta schema.ClientMeta) []schema.ClientMeta {
@@ -384,14 +384,14 @@ The [GitHub integration multiplexers](https://github.com/cloudquery/cloudquery/b
 
 ## Publishing Your CloudQuery Integration
 
-Visit the [Publishing a integration to the Hub](/docs/developers/publishing-an-integration-to-the-hub) guide for instructions on how to publish your integration to the CloudQuery Hub.
+Visit the [Publishing an integration to the Hub](/docs/developers/publishing-an-integration-to-the-hub) guide for instructions on how to publish your integration to the CloudQuery Hub.
 
 ## Real-world Examples
 
 A good way to learn how to create a new integrations is to look at the following examples:
 
 - The [XKCD Source integration](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/xkcd) contains the full code from this tutorial.
-- The [Hacker News Source integration](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/hackernews) is a good example of a integration with incremental tables.
+- The [Hacker News Source integration](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/hackernews) is a good example of an integration with incremental tables.
 - The [K8s Source integration](https://github.com/cloudquery/cloudquery/tree/plugins-source-k8s-v6.2.4/plugins/source/k8s) is a good example of a more complex integration with many tables and mock tests.
 
 This guide doesn't cover destination integrations yet, but you can also look at the following examples:
