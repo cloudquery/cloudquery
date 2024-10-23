@@ -1068,7 +1068,7 @@
     },
     {
       "source": "/docs/developers/publishing-a-plugin-to-the-hub",
-      "destination": "/docs/developers/publishing-an-Integration-to-the-hub"
+      "destination": "/docs/developers/publishing-an-integration-to-the-hub"
     },
     {
       "source": "/docs/advanced-topics/using-cloud-query-docker-registry-plugins-inside-a-containerized-environment",
