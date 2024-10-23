@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/apache/arrow/go/v17/arrow"
+	"github.com/cloudquery/cloudquery/plugins/transformer/json/client/schemaupdater"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
@@ -24,6 +25,8 @@ func NewColumnBuilders(typeSchema map[string]string, originalColumn *types.JSONA
 			NewUTF8ColumnsBuilder(typeSchema, originalColumn),
 			NewTimestampColumnsBuilder(typeSchema, originalColumn),
 			NewBoolColumnsBuilder(typeSchema, originalColumn),
+			NewFloat64ColumnsBuilder(typeSchema, originalColumn),
+			NewJSONColumnsBuilder(typeSchema, originalColumn),
 		},
 	}
 
@@ -54,7 +57,12 @@ func (b *ColumnBuilders) Build(key string) (arrow.Array, error) {
 
 func (*ColumnBuilders) requireNoUnknownTypes(typeSchema map[string]string) error {
 	for key, typ := range typeSchema {
-		if typ != Int64Type && typ != UTF8Type && typ != TimestampType && typ != BoolType {
+		if typ != schemaupdater.Int64Type &&
+			typ != schemaupdater.Float64Type &&
+			typ != schemaupdater.JSONType &&
+			typ != schemaupdater.UTF8Type &&
+			typ != schemaupdater.TimestampType &&
+			typ != schemaupdater.BoolType {
 			return fmt.Errorf("unsupported type for column [%s]: [%s]", key, typ)
 		}
 	}

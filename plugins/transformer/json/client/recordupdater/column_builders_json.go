@@ -8,16 +8,16 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
-type UTF8ColumnsBuilder struct {
+type JSONColumnsBuilder struct {
 	i          int
 	values     map[string][]*string
 	typeSchema map[string]string
 }
 
-func NewUTF8ColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) ColumnBuilder {
-	b := &UTF8ColumnsBuilder{i: -1, values: make(map[string][]*string), typeSchema: typeSchema}
+func NewJSONColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) ColumnBuilder {
+	b := &JSONColumnsBuilder{i: -1, values: make(map[string][]*string), typeSchema: typeSchema}
 	for key, typ := range typeSchema {
-		if typ != schemaupdater.UTF8Type {
+		if typ != schemaupdater.JSONType {
 			continue
 		}
 		b.values[key] = make([]*string, originalColumn.Len())
@@ -25,10 +25,10 @@ func NewUTF8ColumnsBuilder(typeSchema map[string]string, originalColumn *types.J
 	return b
 }
 
-func (b *UTF8ColumnsBuilder) AddRow(row map[string]any) {
+func (b *JSONColumnsBuilder) AddRow(row map[string]any) {
 	b.i++
 	for key, typ := range b.typeSchema {
-		if typ != schemaupdater.UTF8Type {
+		if typ != schemaupdater.JSONType {
 			continue
 		}
 		value, exists := row[key]
@@ -42,21 +42,17 @@ func (b *UTF8ColumnsBuilder) AddRow(row map[string]any) {
 	}
 }
 
-func (b *UTF8ColumnsBuilder) Build(key string) (arrow.Array, error) {
+func (b *JSONColumnsBuilder) Build(key string) (arrow.Array, error) {
 	if _, ok := b.values[key]; !ok {
 		return nil, nil
 	}
-	return buildUTF8Column(b.values[key]), nil
+	return buildJSONColumn(b.values[key]), nil
 }
 
-func buildUTF8Column(values []*string) arrow.Array {
-	bld := array.NewStringBuilder(memory.DefaultAllocator)
+func buildJSONColumn(values []*string) arrow.Array {
+	bld := types.NewJSONBuilder(array.NewExtensionBuilder(memory.DefaultAllocator, types.NewJSONType()))
 	for _, value := range values {
-		if value == nil {
-			bld.AppendNull()
-			continue
-		}
-		bld.Append(*value)
+		bld.Append(value)
 	}
-	return bld.NewStringArray()
+	return bld.NewJSONArray()
 }

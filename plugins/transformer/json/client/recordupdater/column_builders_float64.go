@@ -8,27 +8,27 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
-type Int64ColumnsBuilder struct {
+type Float64ColumnsBuilder struct {
 	i          int
-	values     map[string][]*int64
+	values     map[string][]*float64
 	typeSchema map[string]string
 }
 
-func NewInt64ColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) ColumnBuilder {
-	b := &Int64ColumnsBuilder{i: -1, values: make(map[string][]*int64), typeSchema: typeSchema}
+func NewFloat64ColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) ColumnBuilder {
+	b := &Float64ColumnsBuilder{i: -1, values: make(map[string][]*float64), typeSchema: typeSchema}
 	for key, typ := range typeSchema {
-		if typ != schemaupdater.Int64Type {
+		if typ != schemaupdater.Float64Type {
 			continue
 		}
-		b.values[key] = make([]*int64, originalColumn.Len())
+		b.values[key] = make([]*float64, originalColumn.Len())
 	}
 	return b
 }
 
-func (b *Int64ColumnsBuilder) AddRow(row map[string]any) {
+func (b *Float64ColumnsBuilder) AddRow(row map[string]any) {
 	b.i++
 	for key, typ := range b.typeSchema {
-		if typ != schemaupdater.Int64Type {
+		if typ != schemaupdater.Float64Type {
 			continue
 		}
 		value, exists := row[key]
@@ -37,21 +37,20 @@ func (b *Int64ColumnsBuilder) AddRow(row map[string]any) {
 			continue
 		}
 		if v, ok := value.(float64); ok {
-			int64Value := int64(v)
-			b.values[key][b.i] = &int64Value
+			b.values[key][b.i] = &v
 		}
 	}
 }
 
-func (b *Int64ColumnsBuilder) Build(key string) (arrow.Array, error) {
+func (b *Float64ColumnsBuilder) Build(key string) (arrow.Array, error) {
 	if _, ok := b.values[key]; !ok {
 		return nil, nil
 	}
-	return buildInt64Column(b.values[key]), nil
+	return buildFloat64Column(b.values[key]), nil
 }
 
-func buildInt64Column(values []*int64) arrow.Array {
-	bld := array.NewInt64Builder(memory.DefaultAllocator)
+func buildFloat64Column(values []*float64) arrow.Array {
+	bld := array.NewFloat64Builder(memory.DefaultAllocator)
 	for _, value := range values {
 		if value == nil {
 			bld.AppendNull()
@@ -59,5 +58,5 @@ func buildInt64Column(values []*int64) arrow.Array {
 		}
 		bld.Append(*value)
 	}
-	return bld.NewInt64Array()
+	return bld.NewFloat64Array()
 }

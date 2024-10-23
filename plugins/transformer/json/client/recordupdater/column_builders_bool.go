@@ -4,10 +4,9 @@ import (
 	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/apache/arrow/go/v17/arrow/array"
 	"github.com/apache/arrow/go/v17/arrow/memory"
+	"github.com/cloudquery/cloudquery/plugins/transformer/json/client/schemaupdater"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
-
-const BoolType = "bool"
 
 type BoolColumnsBuilder struct {
 	i          int
@@ -18,7 +17,7 @@ type BoolColumnsBuilder struct {
 func NewBoolColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) ColumnBuilder {
 	b := &BoolColumnsBuilder{i: -1, values: make(map[string][]*bool), typeSchema: typeSchema}
 	for key, typ := range typeSchema {
-		if typ != BoolType {
+		if typ != schemaupdater.BoolType {
 			continue
 		}
 		b.values[key] = make([]*bool, originalColumn.Len())
@@ -29,7 +28,7 @@ func NewBoolColumnsBuilder(typeSchema map[string]string, originalColumn *types.J
 func (b *BoolColumnsBuilder) AddRow(row map[string]any) {
 	b.i++
 	for key, typ := range b.typeSchema {
-		if typ != BoolType {
+		if typ != schemaupdater.BoolType {
 			continue
 		}
 		value, exists := row[key]

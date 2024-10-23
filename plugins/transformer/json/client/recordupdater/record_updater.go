@@ -43,6 +43,7 @@ func (r *RecordUpdater) FlattenJSONFields() (arrow.Record, error) {
 			fmt.Println("failed to unmarshal type schema", rawTypeSchema)
 			continue
 		}
+		typeSchema = preprocessTypeSchema(typeSchema)
 		fieldTypeSchemas[field.Name] = typeSchema
 	}
 
@@ -162,4 +163,13 @@ func (r *RecordUpdater) snakeCaseKeys(data map[string]any) map[string]any {
 		newData[r.caser.ToSnake(key)] = value
 	}
 	return newData
+}
+
+func preprocessTypeSchema(typeSchema map[string]string) map[string]string {
+	for key, typ := range typeSchema {
+		if typ == "any" {
+			typeSchema[key] = schemaupdater.JSONType
+		}
+	}
+	return typeSchema
 }

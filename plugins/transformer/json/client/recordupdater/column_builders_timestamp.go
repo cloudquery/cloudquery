@@ -6,10 +6,9 @@ import (
 	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/apache/arrow/go/v17/arrow/array"
 	"github.com/apache/arrow/go/v17/arrow/memory"
+	"github.com/cloudquery/cloudquery/plugins/transformer/json/client/schemaupdater"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
-
-const TimestampType = "timestamp"
 
 type TimestampColumnsBuilder struct {
 	i          int
@@ -20,7 +19,7 @@ type TimestampColumnsBuilder struct {
 func NewTimestampColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) ColumnBuilder {
 	b := &TimestampColumnsBuilder{i: -1, values: make(map[string][]*time.Time), typeSchema: typeSchema}
 	for key, typ := range typeSchema {
-		if typ != TimestampType {
+		if typ != schemaupdater.TimestampType {
 			continue
 		}
 		b.values[key] = make([]*time.Time, originalColumn.Len())
@@ -31,7 +30,7 @@ func NewTimestampColumnsBuilder(typeSchema map[string]string, originalColumn *ty
 func (b *TimestampColumnsBuilder) AddRow(row map[string]any) {
 	b.i++
 	for key, typ := range b.typeSchema {
-		if typ != TimestampType {
+		if typ != schemaupdater.TimestampType {
 			continue
 		}
 		value, exists := row[key]
