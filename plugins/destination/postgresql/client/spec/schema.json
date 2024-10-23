@@ -28,7 +28,7 @@
         "connection_string": {
           "type": "string",
           "minLength": 1,
-          "description": "Connection string to connect to the database. This can be a URL or a DSN, for example:\n\n- `\"postgres://user:pass@localhost:5432/mydb?sslmode=prefer\"` connect with tcp and prefer TLS\n- `\"postgres://user:pass@localhost:5432/mydb?sslmode=disable\u0026search_path=myschema\"` connect with tcp, disable TLS and use a custom schema\n- `\"user=user password=pass host=localhost port=5432 dbname=mydb sslmode=disable\"` DSN format",
+          "description": "Connection string to connect to the database. This can be a DSN or a URI, for example:\n\n- `\"user=user password=pass host=localhost port=5432 dbname=mydb sslmode=disable\"` DSN format\n- `\"postgres://user:pass@localhost:5432/mydb?sslmode=prefer\"` connect with tcp and prefer TLS\n- `\"postgres://user:pass@localhost:5432/mydb?sslmode=disable\u0026search_path=myschema\"` connect with tcp, disable TLS and use a custom schema",
           "examples": [
             "${POSTGRESQL_CONNECTION_STRING}"
           ]

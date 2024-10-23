@@ -17,11 +17,11 @@ const (
 )
 
 type Spec struct {
-	// Connection string to connect to the database. This can be a URL or a DSN, for example:
+	// Connection string to connect to the database. This can be a DSN or a URI, for example:
 	//
+	// - `"user=user password=pass host=localhost port=5432 dbname=mydb sslmode=disable"` DSN format
 	// - `"postgres://user:pass@localhost:5432/mydb?sslmode=prefer"` connect with tcp and prefer TLS
 	// - `"postgres://user:pass@localhost:5432/mydb?sslmode=disable&search_path=myschema"` connect with tcp, disable TLS and use a custom schema
-	// - `"user=user password=pass host=localhost port=5432 dbname=mydb sslmode=disable"` DSN format
 	ConnectionString string `json:"connection_string,omitempty" jsonschema:"required,minLength=1,example=${POSTGRESQL_CONNECTION_STRING}"`
 
 	// Available: `error`, `warn`, `info`, `debug`, `trace`.
