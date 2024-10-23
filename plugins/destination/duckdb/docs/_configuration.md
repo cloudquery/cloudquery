@@ -15,7 +15,7 @@ spec:
     # batch_size: 1000
     # batch_size_bytes: 4194304 # 4 MiB
     # debug: false
-
+    # appender: false
 ```
 
 After running `cloudquery sync`, you can explore the data locally with the DuckDB CLI: `duckdb /path/to/example.db`.
