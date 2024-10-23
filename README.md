@@ -4,33 +4,30 @@
 
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)  [![Go Report Card](https://goreportcard.com/badge/github.com/cloudquery/cloudquery)](https://goreportcard.com/report/github.com/cloudquery/cloudquery)  [![CLI Workflow](https://github.com/cloudquery/cloudquery/actions/workflows/cli.yml/badge.svg)](https://github.com/cloudquery/cloudquery/actions/workflows/cli.yml)  
 
-CloudQuery is an [open-source](https://github.com/cloudquery/cloudquery),
-high-performance data integration framework built for developers, with support for a wide range of plugins.
+CloudQuery is a versatile [open-source](https://github.com/cloudquery/cloudquery) data movement tool built for developers that allows you to sync data from any [source](https://hub.cloudquery.io/plugins/source) to any [destination](https://hub.cloudquery.io/plugins/destination).
 
-CloudQuery extracts, transforms, and loads configuration from cloud APIs, files or databases to
-variety of supported destinations such as databases, data lakes, or streaming platforms
-for further analysis.
+### **Installation**
 
-### Installation
+Check out the [quickstart guide](https://www.cloudquery.io/docs/quickstart) for step-by-step instructions on completing your first sync with CloudQuery.
 
-See the **[Quickstart guide](https://www.cloudquery.io/docs/quickstart)** for instructions how to start syncing data with CloudQuery.
+## **Why CloudQuery?**
 
-## Why CloudQuery?
+- **High-performance data ingestion and processing:** Using Go's concurrency model and Apache Arrow, CloudQuery can quickly stream large amounts of data using [GRPC](https://docs.cloudquery.io/docs/developers/architecture).
+- **Sync your data to any data destination:** You can move your data to any data source
+- **Deploy anywhere:** CloudQuery can be run as a single-binary executable and deployed and run anywhere. This means you can run it in your [CI/CD pipelines](https://docs.cloudquery.io/docs/deployment/github-actions), inside your application, locally, or in the cloud.
+- **Unlimited scale:** CloudQuery plugins are completely stateless and can be scaled horizontally on any platform, such as [VMs](https://docs.cloudquery.io/docs/deployment/google-cloud-vm), [Kubernetes](https://docs.cloudquery.io/docs/deployment/kubernetes), or batch jobs.
+- **Security and compliance:** Reliable security measures protect sensitive data, and compliance features help meet industry standards.
+- **Blazing fast**: CloudQuery is optimized for performance, utilizing the excellent Go concurrency model with lightweight goroutines and [streaming your data over GRPC](https://docs.cloudquery.io/docs/developers/architecture).
+- **Open source framework**: Develop plugins in [Go](https://docs.cloudquery.io/docs/developers/creating-new-plugin/go-source), [Python](https://docs.cloudquery.io/docs/developers/creating-new-plugin/python-source), [Java](https://docs.cloudquery.io/docs/developers/creating-new-plugin/java-source), or [JavaScript](https://docs.cloudquery.io/docs/developers/creating-new-plugin/javascript-source) using the [open source CloudQuery SDK](https://github.com/cloudquery).
 
-- **Blazing fast**: CloudQuery is optimized for performance, utilizing the excellent Go concurrency model with light-weight goroutines.
-- **Deploy anywhere**: CloudQuery plugins are single-binary executables and can be deployed and run anywhere.
-- **Open source framework**: Language-agnostic, extensible plugin architecture using [Apache Arrow](https://arrow.apache.org/): develop your own plugins in Go, Python, Java or JavaScript using the [CloudQuery SDK](https://docs.cloudquery.io/docs/developers/creating-new-plugin).
-- **Pre-built queries**: CloudQuery maintains a number of out-of-the-box security and compliance policies for cloud infrastructure.
-- **Unlimited scale**: CloudQuery plugins are stateless and can be scaled horizontally on any platform, such as EC2, Kubernetes, batch jobs or any other compute.
+## **Use Cases**
 
-## Use Cases
-
-- **Cloud Security Posture Management**: Use as a CSPM solution to monitor and enforce security policies across your cloud infrastructure for AWS, GCP, Azure and many more.
-- **Cloud Asset Inventory**: First-class support for major cloud infrastructure providers such as AWS, GCP and Azure allow you to collect and unify configuration data.
-- **Cloud FinOps**: Collect and unify billing data from cloud providers to drive financial accountability.
-- **ELT Platform**: With hundreds of plugin combinations and extensible architecture, CloudQuery can be used for reliable, efficient export from any API to any database, or from one database to another.
-- **Attack Surface Management**: [solution](https://www.cloudquery.io/how-to-guides/attack-surface-management-with-graph) for continuous discovery, analysis and monitoring of potential attack vectors that make up your organization's attack surface.
-- **Eliminate data silos**: Eliminate data silos across your organization, unifying data between security, infrastructure, marketing and finance teams.
+- [**Cloud Security Posture Management (CSPM)**](https://www.cloudquery.io/blog/how-to-build-a-cspm-with-grafana-and-cloudquery): Use as a [CSPM](https://www.cloudquery.io/blog/how-to-build-a-cspm-with-grafana-and-cloudquery) solution to monitor and enforce security policies across your cloud infrastructure for [AWS](https://hub.cloudquery.io/plugins/source/cloudquery/aws/latest/docs), [GCP](https://hub.cloudquery.io/plugins/source/cloudquery/gcp/latest/docs), [Azure](https://hub.cloudquery.io/plugins/source/cloudquery/azure/latest/docs) and many more.
+- [**Cloud Asset Inventory**](https://www.cloudquery.io/blog/what-is-a-cloud-asset-inventory): First-class support for [all major cloud infrastructure providers](https://hub.cloudquery.io/plugins/source?categories=cloud-infrastructure) such as [AWS](https://www.cloudquery.io/blog/building-cloud-asset-inventory-with-aws), [GCP](https://www.cloudquery.io/blog/building-cloud-asset-inventory-with-gcp), and [Azure](https://www.cloudquery.io/blog/how-to-build-a-cloud-asset-inventory-for-azure) allows you to [collect and unify your cloud configuration data](https://www.cloudquery.io/blog/how-to-build-a-multi-cloud-asset-inventory).
+- **Cloud FinOps**: Collect and unify billing data from cloud providers to save money on your cloud expenses.
+- **ELT Platform**: With hundreds of plugin combinations and extensible architecture, CloudQuery can be used for reliable, efficient export from any API to any database or from one database to another.
+- **Attack Surface Management**: [Solution](https://www.cloudquery.io/how-to-guides/attack-surface-management-with-graph) for continuous discovery, analysis, and monitoring of potential attack vectors that make up your organization's attack surface.
+- **Eliminate data silos**: Eliminate data silos across your organization, unifying data between [security](https://hub.cloudquery.io/plugins/source?categories=security), [infrastructure](https://hub.cloudquery.io/plugins/source?categories=cloud-infrastructure), [marketing](https://hub.cloudquery.io/plugins/source?categories=marketing-analytics), and [finance](https://hub.cloudquery.io/plugins/source?categories=finance) teams.
 
 ### Links
 
