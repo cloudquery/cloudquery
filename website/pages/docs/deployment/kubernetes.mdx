@@ -106,11 +106,11 @@ spec:
 
 Looking at this completed manifest, there are three key elements to pay attention to: `args`, `envFrom`, `volumes`
 
-In the `args`, you'll see the arguments to be passed to cloudquery, in `envFrom` you're instructing Kubernetes to use the secret you created earlier, and in `volumes` you're telling Kubernetes where to find the config file.
+In the `args`, you'll see the arguments to be passed to CloudQuery, in `envFrom` you're instructing Kubernetes to use the secret you created earlier, and in `volumes` you're telling Kubernetes where to find the configuration file.
 
 ## Step 3: Defining the ConfigMap to hold the CloudQuery Config
 
-When using Kubernetes config files are commonly stored on a special type of object called a ConfigMap.
+When using Kubernetes configuration files are commonly stored on a special type of object called a ConfigMap.
 ConfigMaps enable you to define collections of text files that can be mounted as directories by Pods and Jobs.
 
 A ConfigMap definition is relatively simple, containing a `data` object where files are defined as key-value pairs.
@@ -123,7 +123,7 @@ metadata:
 data: {}
 ```
 
-In this case, you want to define a ConfigMap to store a CloudQuery config file, that defines a Source plugin and a Destination plugin.
+In this case, you want to define a ConfigMap to store a CloudQuery configuration file, that defines a Source integration and a Destination integration.
 
 ```yaml copy
 apiVersion: v1
@@ -160,11 +160,11 @@ data:
         connection_string: ${PG_CONNECTION_STR}
 ```
 
-In this example we're using the DigitalOcean source plugin and the Postgres destination plugin. But you can find out more about building config files and integrations [here](/integrations).
+In this example we're using the DigitalOcean source integration and the Postgres destination integration. But you can find out more about building configuration files and integrations [here](/integrations).
 
 ## Step 4: Apply the manifest
 
-Apply the config from a terminal using `kubectl apply`
+Apply the configuration from a terminal using `kubectl apply`
 
 ```bash copy
 kubectl apply -f cronjob.yaml -f configmap.yaml

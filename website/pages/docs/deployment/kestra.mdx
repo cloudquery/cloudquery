@@ -9,7 +9,8 @@ date: 2024/01/22
 
 This tutorial shows how to run CloudQuery as a [Kestra](https://kestra.io/) flow, using the HackerNews API as a source and CSV file as a destination. Kestra is an open-source event-driven orchestrator, which has a [dedicated CloudQuery plugin](https://kestra.io/plugins/plugin-cloudquery).
 
-You can use Kestra to: 
+You can use Kestra to:
+
 - schedule [CloudQuery syncs](https://kestra.io/plugins/tasks/io.kestra.plugin.cloudquery.Sync) in a simple, declarative way using a built-in code editor
 - run your syncs based on events from other systems e.g. a new file in your S3 bucket, new message in a queue, or a new webhook request
 - monitor your syncs from a friendly UI and get notified when they fail.
@@ -27,8 +28,7 @@ Follow the [Getting started guide](https://kestra.io/docs/getting-started) to la
 docker run --pull=always --rm -it -p 8080:8080 --user=root -v /var/run/docker.sock:/var/run/docker.sock -v /tmp:/tmp kestra/kestra:latest server local
 ```
 
-Once the container is running, open http://localhost:8080 in your browser.  
-
+Once the container is running, open http://localhost:8080 in your browser.
 
 ## Step 2: Create a Kestra flow
 
@@ -157,6 +157,6 @@ Note: The shared volume is mounted to the `/tmp/cq` directory in the example abo
 
 ### Production deployment
 
-This tutorial was just a quick introduction to help you get started with a CloudQuery deployment on [Kestra](https://kestra.io/). You can now create additional Kestra tasks to perform transformations, send notifications and more. For more information, check out the [CloudQuery docs](/docs) and the [Kestra docs](https://kestra.io/docs/). 
+This tutorial was just a quick introduction to help you get started with a CloudQuery deployment on [Kestra](https://kestra.io/). You can now create additional Kestra tasks to perform transformations, send notifications and more. For more information, check out the [CloudQuery docs](/docs) and the [Kestra docs](https://kestra.io/docs/).
 
 To productionize your Kestra deployment, you will likely need to deploy it to a cloud environment, such as Kubernetes. For more information, see the [Kestra Deployment with Kubernetes guide](https://kestra.io/docs/installation/kubernetes) and if you have any questions, you can reach the Kestra team [via Community Slack](https://kestra.io/slack).

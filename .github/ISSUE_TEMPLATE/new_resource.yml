@@ -1,13 +1,13 @@
 name: ✅ New Resource
-description: Ask to add a new resource to an existing source plugin
-title: "feat: Add <resource-name> to <plugin-name> source plugin"
+description: Ask to add a new resource to an existing source integration
+title: "feat: Add <resource-name> to <integration-name> source integration"
 labels: [kind/feat, area/new-resource]
 body:
   - type: textarea
     id: description
     attributes:
       label: Describe the resource
-      description: Please describe what is the resource you'd like to add to the source plugin
+      description: Please describe what is the resource you'd like to add to the source integration
     validations:
       required: true
 
@@ -15,7 +15,7 @@ body:
     id: use-case
     attributes:
       label: Use Case
-      description: Please describe what's the reason for adding this resource to the source plugin
+      description: Please describe what's the reason for adding this resource to the source integration
     validations:
       required: true
 

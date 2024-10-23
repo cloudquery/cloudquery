@@ -1,8 +1,8 @@
-# Using CloudQuery Docker Registry Plugins Inside a Containerized Environment 
+# Using CloudQuery Docker Registry Integrations Inside a Containerized Environment 
 
-CloudQuery CLI uses the [Docker CLI](https://docs.docker.com/engine/reference/commandline/cli/) and [Engine API](https://docs.docker.com/engine/api/) to run Docker plugins.
-When using the CloudQuery CLI Docker image, Docker plugins don't work out of the box, as the Docker CLI and Engine API are not available in the container by default.
-This guide will show you how to run Docker plugins with the CloudQuery CLI Docker image using Docker Compose.
+CloudQuery CLI uses the [Docker CLI](https://docs.docker.com/engine/reference/commandline/cli/) and [Engine API](https://docs.docker.com/engine/api/) to run Docker integrations.
+When using the CloudQuery CLI Docker image, Docker integrations don't work out of the box, as the Docker CLI and Engine API are not available in the container by default.
+This guide will show you how to run Docker integrations with the CloudQuery CLI Docker image using Docker Compose.
 
 ## Prerequisites
 
@@ -12,7 +12,7 @@ This guide will show you how to run Docker plugins with the CloudQuery CLI Docke
 ## Setup
 
 1. Run `cloudquery login` to authenticate with the CloudQuery registry.
-2. Create a file named `spec.yml` with the configuration for the Docker plugin. We will use this spec file to pull the Docker plugin image locally from the private CloudQuery Docker registry. The `airtable` and `postgresql` plugins are used as an example.
+2. Create a file named `spec.yml` with the configuration for the Docker integration. We will use this spec file to pull the Docker integration image locally from the private CloudQuery Docker registry. The `airtable` and `postgresql` integrations are used as an example.
 
 ```yaml filename="spec.yml"
 kind: source
@@ -29,12 +29,12 @@ spec:
   path: "cloudquery/postgresql"
   version: "VERSION_DESTINATION_POSTGRESQL"
 ```
-3. Run `cloudquery plugin install spec.yml` to pull the Docker plugin image locally.
+3. Run `cloudquery plugin install spec.yml` to pull the Docker integration image locally.
 
 ## Running a Sync
 
 1. [Create a CloudQuery API Key](https://docs.cloudquery.io/docs/deployment/generate-api-key) to be used with the Docker Compose file.
-2. Create a `docker-compose.yml` file with the following content. The file configures the CLI docker image, the Docker plugin image, a PostgreSQL database and a configuration spec that sets up a connection between the CLI and the Docker plugin using gRPC.
+2. Create a `docker-compose.yml` file with the following content. The file configures the CLI docker image, the Docker integration image, a PostgreSQL database and a configuration spec that sets up a connection between the CLI and the Docker integration using gRPC.
 
 ```yaml filename="docker-compose.yml"
 version: '3.1'

@@ -1,0 +1,16 @@
+---
+title: Overview
+description: Learn how to write a new CloudQuery integration from scratch in Go, Python, Java and JavaScript.
+---
+
+# Creating a New Integration
+
+CloudQuery's modular architecture means that a source integration can be used to fetch data from any third-party API, and then be combined with a destination integration to insert data into any supported destination.
+
+At its core, the CloudQuery protocol is language-agnostic and integrations can be written in any language, as long as the language has libraries for [gRPC](https://grpc.io/docs/languages/) and [Apache Arrow](https://arrow.apache.org/). For ease of development, however, we recommend using our SDKs, which offer a high-level abstraction over the underlying protocol. The following table summarizes the current state of our SDKs and links to language-specific integration development guides:
+
+|                             | Go                                                                                       | Python                                                                                                | Java                                                                 | JavaScript                                                                 |
+| --------------------------- | ---------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| Source Integration SDK      | Yes ([Guide](/docs/developers/creating-new-integration/go-source))                       | Yes ([Guide](/docs/developers/creating-new-integration/python-source))                                | Yes ([Guide](/docs/developers/creating-new-integration/java-source)) | Yes ([Guide](/docs/developers/creating-new-integration/javascript-source)) |
+| Destination Integration SDK | Yes ([Examples](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination)) | Yes ([Example](https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/sqlite-python)) | No                                                                   | No                                                                         |
+| Release stage               | GA                                                                                       | Preview                                                                                               | Preview                                                              | Preview                                                                    |

@@ -1,12 +1,12 @@
 # Adding a New Resource
 
-This guide will help you add a new resource to an existing source plugin (a.k.a. "provider", such as AWS, GCP, Azure or K8s). If you wish to support a completely new cloud platform, first see [creating a new plugin](./creating_a_new_plugin.md).
+This guide will help you add a new resource to an existing source integration (a.k.a. "provider", such as AWS, GCP, Azure or K8s). If you wish to support a completely new cloud platform, first see [creating a new integration](./creating_a_new_integration.md).
 
 ## General Guidance
 
 ## Setting up the service
 
-If the service to which the resource belongs has not been used before in the plugin, there are a few steps that need to be done to configure it.
+If the service to which the resource belongs has not been used before in the integration, there are a few steps that need to be done to configure it.
 
 1. Create the service interface in `client/services.go`
    - Don't forget to add the new service interface name to the go:generate comment.
@@ -30,13 +30,13 @@ Here are the general steps to follow:
 - Create a new recipe file for the resource, if one does not exist already.
 - Add the resource to the recipe file.
 - Run `go run main.go` in the `codegen` directory. The generated table will be in `plugins/source/<plugin>/resources/services/<service>/<resource>.go`.
-- To regenerate from updated config, re-run `go run main.go` from the `codegen` directory again.
+- To regenerate from updated configuration, re-run `go run main.go` from the `codegen` directory again.
 - Implement one or more resolver functions (as referenced by the generated file) in `plugins/source/<plugin>/resources/services/<service>/<resource>_fetch.go`.
 - Add a mock test for the resource in `plugins/source/<plugin>/resources/services/<service>/<resource>_mock_test.go`
 
 ## Specific Guides
 
-See the following guides for deep-dives into adding resources for specific source plugins:
+See the following guides for deep-dives into adding resources for specific source integrations:
 
 - [Adding a new resource (AWS)](../plugins/source/aws/CONTRIBUTING.md)
 - [Adding a new resource (Azure)](../plugins/source/azure/CONTRIBUTING.md)

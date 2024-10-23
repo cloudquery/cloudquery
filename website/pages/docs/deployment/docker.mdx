@@ -37,7 +37,7 @@ spec:
 
 ### Run the Container
 
-Downloading plugins requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in a CI environment or inside of a docker build process. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key)
+Downloading integrations requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in a CI environment or inside of a docker build process. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key)
 
 For the CloudQuery docker container to use this configuration file you will need to mount the volume to the container like so:
 
@@ -50,7 +50,7 @@ docker run --pull=always \
   sync /config.yml
 ```
 
-As with running any `cloudquery` command on your CLI you can override the config with the [optional flags](/docs/reference/cli/cloudquery) with the docker container. You will also need to make sure you load any ENV variables for source and destination plugins, such as your `AWS_*` keys etc.
+As with running any `cloudquery` command on your CLI you can override the configuration with the [optional flags](/docs/reference/cli/cloudquery) with the docker container. You will also need to make sure you load any ENV variables for source and destination integrations, such as your `AWS_*` keys etc.
 
 If you split the configuration between multiple files, you can mount the directory containing them, instead of just the `config.yml` file.
 
@@ -62,7 +62,7 @@ If you are running Docker on an ARM Apple device and you see a segmentation faul
 
 ## Caching
 
-Due to the way `cloudquery` is [designed](/docs/developers/architecture) it downloads all the components to interact with source and destination plugins. This means that with a docker container it runs the download step each time, as the local cache is lost between executions. To avoid this we recommend mounting a volume to cache the data and configuring `cloudquery` to use this via the `--cq-dir` optional flag. An example of this would be:
+Due to the way `cloudquery` is [designed](/docs/developers/architecture) it downloads all the components to interact with source and destination integrations. This means that with a docker container it runs the download step each time, as the local cache is lost between executions. To avoid this we recommend mounting a volume to cache the data and configuring `cloudquery` to use this via the `--cq-dir` optional flag. An example of this would be:
 
 ```bash copy
 docker run --pull=always \

@@ -1,6 +1,6 @@
 ```yaml copy
 kind: source
-# Common source-plugin configuration
+# Common source-integration configuration
 spec:
   name: square
   registry: docker

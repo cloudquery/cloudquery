@@ -1,7 +1,7 @@
 # Development Environment Setup
 
 ## Requirements
- * [Go](https://go.dev/doc/install) 1.19+ (to build the plugins)
+ * [Go](https://go.dev/doc/install) 1.19+ (to build the integrations)
 
 ## Quick Start
 
@@ -13,7 +13,7 @@ Clone the repository:
 git clone https://github.com/cloudquery/cloudquery
 ```
 
-Build the CLI and all plugins:
+Build the CLI and all integrations:
 
 ```bash
 ./scripts/build.sh
@@ -36,7 +36,7 @@ Build the CLI and all plugins:
      spec:
      # plugin-specific config
    ```
-3. Create a config file for the destination plugin to load data into. See the [Destination Plugin](../plugins/destination)'s README.md for examples.
+3. Create a configuration file for the destination plugin to load data into. See the [Destination Integration](../plugins/destination)'s README.md for examples.
 4. Open another terminal and run `bin/cloudquery sync <config-dir>`, where `<config-dir>` is the directory containing the config files.
 
 Note that plugin logs will be output to the plugin process terminal.
@@ -51,6 +51,6 @@ make test  # This runs go test -race ./...
 
 Unit Tests don't require any credentials, but some may require internet access.
 
-Unit tests for plugins include:
+Unit tests for integrations include:
 - Specific resource tests. You can find those next to each resource, in the `resources/services` folder under the plugin directory.
 - Client tests. You can find those in the `client` folder.

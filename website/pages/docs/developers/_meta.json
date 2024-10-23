@@ -1,9 +1,9 @@
 {
   "architecture": "Architecture",
-  "creating-new-plugin": "Creating a New Plugin",
+  "creating-new-integration": "Creating a New Integration",
   "publishing-an-addon-to-the-hub": "Publishing an Addon to the Hub",
-  "publishing-a-plugin-to-the-hub": "Publishing a Plugin to the Hub",
+  "publishing-an-integration-to-the-hub": "Publishing an Integration to the Hub",
   "codegen": "Generating Resources",
-  "running-locally": "Running Plugins Locally",
+  "running-locally": "Running Integrations Locally",
   "build": "Building From Source"
 }

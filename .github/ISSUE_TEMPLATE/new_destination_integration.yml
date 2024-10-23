@@ -1,0 +1,29 @@
+name: 🔄 New Destination Integration
+description: Request a new destination integration
+title: "feat: Add a <integration-name> destination integration"
+labels: [kind/feat, area/new-integration, area/new-destination-integration]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the integration
+      description: Please describe what is the destination integration you'd like to add
+    validations:
+      required: true
+
+  - type: input
+    id: api-docs
+    attributes:
+      label: Link to API documentation
+      description: Add a link to the Go SDK or REST API documentation for the destination
+    validations:
+      required: true
+
+  - type: checkboxes
+    attributes:
+      label: Publish my own Integration (optional)
+      description: Community members are encouraged to publish their own integrations on the CloudQuery Hub. To find out more about this option check out the [CloudQuery Hub documentation](https://docs.cloudquery.io/docs/developers/publishing-an-integration-to-the-hub).
+      options:
+        - label: I am interested in writing my own integration
+          required: false
+

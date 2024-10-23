@@ -1,11 +1,11 @@
 ---
 title: Generate an API Key
-description: Generate an API Key for CloudQuery Hub and Premium Plugins
+description: Generate an API Key for CloudQuery Hub and Premium integrations
 ---
 
 # Generate a CloudQuery API Key
 
-In automated environments, an API Key can be used with CloudQuery Hub and premium plugins instead of `cloudquery login`. 
+In automated environments, an API Key can be used with CloudQuery Hub and premium integrations instead of `cloudquery login`. 
 
 Create an API key by following these steps:
 

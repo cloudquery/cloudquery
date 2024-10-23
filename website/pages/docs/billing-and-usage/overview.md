@@ -13,13 +13,13 @@ If you sync from a single source to multiple destinations, you get charged only 
 
 ### Plugin Categories and a Free Quota
 
-CloudQuery bills you at the end of each calendar month based on your usage during that month: the total number of rows you synced that month in each plugin category. The pricing tiers in the table above indicate the cost per million rows for the specified amount of rows in each tier. The more you sync, the cheaper the rows get. After the free tier, the next 9 million rows are priced as indicated in the second tier, the next 90 million as indicated in the third tier, and so on.
+CloudQuery bills you at the end of each calendar month based on your usage during that month: the total number of rows you synced that month in each integration category. The pricing tiers in the table above indicate the cost per million rows for the specified amount of rows in each tier. The more you sync, the cheaper the rows get. After the free tier, the next 9 million rows are priced as indicated in the second tier, the next 90 million as indicated in the third tier, and so on.
 
-Plugins are divided into two categories: API plugins and Database plugins. Each category has a price per row, and the price decreases the more you sync within a month. For the actual prices, see the [Pricing](https://www.cloudquery.io/pricing) page.
+Plugins are divided into two categories: API integrations and Database integrations. Each category has a price per row, and the price decreases the more you sync within a month. For the actual prices, see the [Pricing](https://www.cloudquery.io/pricing) page.
 
-Some source plugins are [free](https://hub.cloudquery.io/plugins/source?tiers=free) and can be used without charges. Similarly, your plugins created with CloudQuery SDK are free to use.
+Some source integrations are [free](https://hub.cloudquery.io/ integrations/source?tiers=free) and can be used without charges. Similarly, your integrations created with CloudQuery SDK are free to use.
 
-Some plugins (such as AWS, GCP, or Azure) have tables that are free to sync. These tables usually contain static metadata that does not change often and have a large number of rows. They are marked `Free` in the individual plugin documentation.
+Some integrations (such as AWS, GCP, or Azure) have tables that are free to sync. These tables usually contain static metadata that does not change often and have a large number of rows. They are marked `Free` in the individual integration documentation.
 
 ### Additional charges for cloud syncs
 
@@ -27,7 +27,7 @@ When running syncs with CloudQuery Cloud, you may incur additional costs in Egre
 
 ### Monitoring your usage
 
-You can see your exact consumption on CloudQuery Cloud's billing page, which includes details on the rows synced with individual plugins broken down by day and how much of the free quota you used in the current month.
+You can see your exact consumption on CloudQuery Cloud's billing page, which includes details on the rows synced with individual integrations broken down by day and how much of the free quota you used in the current month.
 
 ![Usage chart](/images/docs/billing-and-usage/usage-chart.png)
 

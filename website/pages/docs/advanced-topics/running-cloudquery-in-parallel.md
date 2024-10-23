@@ -25,9 +25,9 @@ It's recommended to run the parts in parallel, as the sync will be faster than r
 
 You can find an example of how to run the syncs in parallel in the [GitHub Actions Deployment Guide](/docs/deployment/github-actions#running-cloudquery-in-parallel-to-speed-up-sync-time) section.
 
-### Supported Source Plugins for Sharding
+### Supported Source Integrations for Sharding
 
-| Source Plugin | Minimal Version                                                                   |
+| Source Integration | Minimal Version                                                                   |
 | ------------- | --------------------------------------------------------------------------------- |
 | AWS           | [v27.20.0](https://hub.cloudquery.io/plugins/source/cloudquery/aws/latest/docs) |
 | Azure         | [v14.8.0](https://hub.cloudquery.io/plugins/source/cloudquery/azure/latest/docs)  |
@@ -39,10 +39,10 @@ If you are using an older version of the CloudQuery CLI, or if you want to manua
 
 ### Unique Names
 
-Every source and destination plugin configuration must have a unique `name`. This is required because the `name` is
+Every source and destination integration configuration must have a unique `name`. This is required because the `name` is
 written into the database (`_cq_source_name`), and is used to later delete stale resources.
 
-For instance, a configuration with multiple source plugins could look like:
+For instance, a configuration with multiple source integrations could look like:
 
 ```yaml copy
 kind: source
@@ -67,17 +67,17 @@ spec:
   ...
 ```
 
-If the names are not unique, then the different plugins may delete/overwrite each other's resources.
+If the names are not unique, then the different integrations may delete/overwrite each other's resources.
 
 ### No Overlapping Syncs
 
-When splitting a sync into multiple source-plugin configurations to be run in parallel, it is important
-that these syncs don't overlap - the set of Account/Table/Region that every source-plugin grabs must not intersect.
+When splitting a sync into multiple source-integration configurations to be run in parallel, it is important
+that these syncs don't overlap - the set of Account/Table/Region that every source-integration grabs must not intersect.
 
-For instance, in GCP, if the first source-plugin fetches resource `A` from project `1`, the second source-plugin
+For instance, in GCP, if the first source-integration fetches resource `A` from project `1`, the second source-integration
 can fetch resource `B` from project `1`, or resource `A` from project `2`, but can never fetch resource `A` from project `1`.
 
-For another example, if the first source-plugin fetches from region `europe-west1` in project `1`, the second source-plugin
+For another example, if the first source-integration fetches from region `europe-west1` in project `1`, the second source-integration
 can fetch from region `europe-west1` in project `2`, or from region `europe-west2` in project `1`, but can never fetch from
 region `europe-west1` in project `1`.
 

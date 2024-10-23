@@ -1,0 +1,173 @@
+---
+title: Creating a New CloudQuery Source Integration in JavaScript
+description: Learn how to write a new CloudQuery source integration from scratch in JavaScript.
+---
+
+# Creating a New CloudQuery Source Integration in JavaScript
+
+This guide will help you develop a new source or destination integration for CloudQuery in JavaScript. CloudQuery's modular architecture means that a source integration can be used to fetch data from any third-party API, and then be combined with a destination integration to insert data into any supported destination. We will cover the basics of how to get started, and then dive into some more advanced topics. We will also cover how to release your integration for use by the wider CloudQuery community.
+
+This guide assumes that you are somewhat familiar with CloudQuery. If you are not, we recommend starting by reading the [Quickstart guide](/docs/quickstart) and playing around with the CloudQuery CLI a bit first.
+
+Though you by no means need to be an expert, you will also need some familiarity with JavaScript and Node.js. If you are new to JavaScript or Node.js, we recommend starting with the [official Node.js tutorial](https://nodejs.org/en/learn/getting-started/introduction-to-nodejs).
+
+The JavaScript SDK emits TypeScript type definitions, and we'll refer to those throughout this guide. If you are not familiar with TypeScript, you can [read more about it here](https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html).
+
+## Core Concepts
+
+Before we dive in, let's quickly cover some core concepts of CloudQuery integrations, so that they're familiar when we see our first example.
+
+### Syncs
+
+A sync is the process that gets kicked off when a user runs `cloudquery sync`. A sync is responsible for fetching data from a third-party API and inserting it into the destination (database, data lake, stream, etc.). When you write a source integration for CloudQuery, you will only need to implement the part that interfaces with the third-party API. The rest of the sync process, such as delivering to the destination database, is handled by the CloudQuery SDK.
+
+### Tables and Services
+
+A **table** is the term CloudQuery uses for a collection of related data. In most databases it directly maps to an actual database table, but in some destinations it could be stored as a file, stream or other medium. A table is defined by a name, a list of columns, and a resolver function. The resolver function is responsible for fetching data from the third-party API and sending it to CloudQuery. We will look at examples of this soon!
+
+Every table will typically have its own `.js` file inside the integration `tables` directory.
+
+### Resolvers
+
+Resolvers are functions associated with a table that get called when it's time to populate data for that table. There are two types of resolvers:
+
+#### Table resolvers
+
+Table resolvers are responsible for fetching data from the third-party API. In JavaScript, a table resolver in an object that matches the [`TableResolver`](https://github.com/cloudquery/plugin-sdk-javascript/blob/7a4c4a54d7fcfb266d7cd75c371b86a378ac7969/src/schema/table.ts#L16) TypeScript type. For top-level tables, `resolve` will only be called once per multiplexer client. For dependent tables, the resolver will be called once for each parent row, and the parent resource will be passed in as well. (More on this, and multiplexers, shortly.)
+
+#### Column resolvers
+
+[Column resolvers](https://github.com/cloudquery/plugin-sdk-javascript/blob/7a4c4a54d7fcfb266d7cd75c371b86a378ac7969/src/schema/column.ts#L13) are responsible for mapping data from the third-party API into the columns of the table. In most cases, you will not need to implement this, as the SDK will automatically map data from the struct passed in by the table resolver to the columns of the table. But in some cases, you may need to implement a custom column resolver to fetch additional data or do custom transformations.
+
+### Multiplexers
+
+[Multiplexers](https://github.com/cloudquery/plugin-sdk-javascript/blob/7a4c4a54d7fcfb266d7cd75c371b86a378ac7969/src/schema/table.ts#L18) are a way to parallelize the fetching of data from the third-party API. Some top-level tables require multiple calls to fetch all their data. For example, a sync for the GitHub source integration that fetches data for multiple organizations, will need to make one call per organization to list all repositories. By multiplexing over organizations, these top-level queries can also be done in parallel. Each table defines the multiplexer that it should use. The CloudQuery integration SDK will then call the table resolver once for each client in the multiplexer. Many integrations will not need to use multiplexers, but they are useful for integrations that need to fetch data for multiple accounts, organizations, or other entities.
+
+## Apache Arrow JavaScript SDK
+
+Like other CloudQuery SDK the JavaScript SDK uses [Apache Arrow] as part of the underlying CloudQuery type system.
+When writing a source integration you should not install the Apache JavaScript SDK via `npm` and instead use the version of the SDK that is bundled with the CloudQuery JavaScript SDK for maximum compatibility.
+See [example in the Airtable integration](https://github.com/cloudquery/cloudquery/blob/cb4a46ed9bdd205f19f3d92636a40914aedc6b24/plugins/source/airtable/src/tables.ts#L12).
+
+## Creating Your First Integration
+
+As the JavaScript SDK is still new, we don't yet have an integration scaffold generator. For now, we recommend starting by copying the code from an [existing JavaScript integration](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/airtable).
+
+Before running the integration locally, you will need to install its dependencies:
+
+```
+npm ci
+```
+
+If you copied a reference integration, this will include the CloudQuery Integration SDK. If you are starting from scratch, you will need to install the SDK separately:
+
+```
+npm i @cloudquery/plugin-sdk-javascript
+```
+
+### Testing the Integration
+
+There are two options for running an integration before as a developer before it is released: as a gRPC server, or as a standalone binary. We will briefly summarize both options here, or you can read about them in more detail in [Running Locally](/docs/developers/running-locally).
+
+#### Run the Integration as a gRPC Server
+
+This mode is especially useful for setting breakpoints your code for debugging, as you can run it in server mode from your IDE and attach a debugger to it. To run the integration as a gRPC server, you can run the following command in the root of the integration directory:
+
+```shell
+# Assuming you copied a reference integration
+npm run dev
+# Or if you are starting from scratch
+node 'path-to-main-node-file' serve
+```
+
+This will start a gRPC server on port 7777. You can then create a config file that sets the `registry` and `path` properties to point to this server. For example:
+
+```yaml filename="config.yaml"
+kind: source
+spec:
+  name: "my-integration"
+  registry: "grpc"
+  path: "localhost:7777"
+  version: "v1.0.0"
+  tables:
+    ["*"]
+  destinations:
+    - "sqlite"
+---
+kind: destination
+spec:
+  name: sqlite
+  path: cloudquery/sqlite
+  registry: cloudquery
+  version: "VERSION_DESTINATION_SQLITE"
+  spec:
+    connection_string: ./db.sql
+```
+
+With the above configuration, we can now run `cloudquery sync` as normal:
+
+```shell
+cloudquery sync config.yaml
+```
+
+Note that when running a source integration as a gRPC server, errors with the source integration will be printed to the console running the gRPC server, _not_ to the CloudQuery log like usual.
+
+#### Run the Integration as a Docker Container
+
+You can also build a Docker container for the integration, and then either run it directly as a gRPC server or via the `docker` registry in a configuration file. See an [example Docker file for a JavaScript integration here](https://github.com/cloudquery/cloudquery/blob/cb4a46ed9bdd205f19f3d92636a40914aedc6b24/plugins/source/airtable/Dockerfile).
+
+We need to first build the image:
+
+```shell
+docker build -t my-plugin:latest .
+```
+
+And then we can specify the `docker` registry in our configuration file:
+
+```yaml filename="config.yaml"
+kind: source
+spec:
+  name: "my-plugin"
+  registry: "docker"
+  path: "my-plugin:latest"
+  tables:
+    ["*"]
+  destinations:
+    - "sqlite"
+---
+kind: destination
+spec:
+  name: sqlite
+  path: cloudquery/sqlite
+  version: "VERSION_DESTINATION_SQLITE"
+  spec:
+    connection_string: ./db.sql
+```
+
+## Releasing and Deploying Your Integration
+
+Releasing a JavaScript integration for use by the wider CloudQuery community involves publishing a Docker image to any registry of your choice. We recommend using [Docker Hub](https://hub.docker.com/), but you can also use [GitHub Container Registry](https://docs.github.com/en/packages/guides/about-github-container-registry) or any other registry that supports Docker images. The entrypoint should be `node 'path-to-main-node-file'`. You can see an [example Dockerfile here](https://github.com/cloudquery/cloudquery/blob/cb4a46ed9bdd205f19f3d92636a40914aedc6b24/plugins/source/airtable/Dockerfile).
+
+Once published, users can then import your integration by specifying the image path in their configuration file together with the `docker` registry, e.g.:
+
+```yaml
+kind: source
+spec:
+  name: cloudwidgets
+  path: ghcr.io/myorg/cloudwidgets
+  registry: docker
+```
+
+This will download and run the integration as a Docker container when `cloudquery sync` is run.
+
+## Real-world Examples
+
+A good way to learn how to create a new integrations in JavaScript is to look at the following examples:
+
+- The [Airtable Source Integration](https://github.com/cloudquery/cloudquery/tree/main/plugins/source/airtable) is an example of dynamically generating tables based on the schema of a third-party API and mapping API types to arrow types.
+
+## Resources
+
+- [CloudQuery Community](https://community.cloudquery.io)
+- [JavaScript SDK Source Code](https://github.com/cloudquery/plugin-sdk-javascript)
+- [CloudQuery Integration SDK on `npm`](https://www.npmjs.com/package/@cloudquery/plugin-sdk-javascript)
