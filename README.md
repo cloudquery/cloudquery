@@ -36,6 +36,7 @@ Check out the [quickstart guide](https://www.cloudquery.io/docs/quickstart) for 
 - Integrations: [https://hub.cloudquery.io](https://hub.cloudquery.io)
 - Open Source Releases: [https://github.com/cloudquery/cloudquery/releases](https://github.com/cloudquery/cloudquery/releases)
 - Plugin SDK: [https://github.com/cloudquery/plugin-sdk](https://github.com/cloudquery/plugin-sdk)
+- CloudQuery Guru: It is a CloudQuery-focused AI to answer your questions. [https://gurubase.io/g/cloudquery](https://gurubase.io/g/cloudquery) 
 
 ## License
 
