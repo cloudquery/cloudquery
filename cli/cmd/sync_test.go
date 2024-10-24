@@ -12,6 +12,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/google/uuid"
+	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -20,6 +21,7 @@ func TestSync(t *testing.T) {
 	configs := []struct {
 		name    string
 		config  string
+		shard   string
 		err     string
 		summary []syncSummary
 	}{
@@ -39,6 +41,7 @@ func TestSync(t *testing.T) {
 					Resources:         13,
 					SourceName:        "test",
 					SourcePath:        "cloudquery/test",
+					SourceTables:      []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
 				},
 				{
 					CLIVersion:        "development",
@@ -48,6 +51,7 @@ func TestSync(t *testing.T) {
 					Resources:         13,
 					SourceName:        "test2",
 					SourcePath:        "cloudquery/test",
+					SourceTables:      []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
 				},
 			},
 		},
@@ -66,6 +70,7 @@ func TestSync(t *testing.T) {
 					Resources:       13,
 					SourceName:      "test-1",
 					SourcePath:      "cloudquery/test",
+					SourceTables:    []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
 				},
 				{
 					CLIVersion:      "development",
@@ -74,6 +79,7 @@ func TestSync(t *testing.T) {
 					Resources:       13,
 					SourceName:      "test-2",
 					SourcePath:      "cloudquery/test",
+					SourceTables:    []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
 				},
 			},
 		},
@@ -88,6 +94,43 @@ func TestSync(t *testing.T) {
 					Resources:       13,
 					SourceName:      "test",
 					SourcePath:      "cloudquery/test",
+					SourceTables:    []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+				},
+			},
+		},
+		{
+			name:   "with_sync_group_id",
+			config: "with-sync-group-id.yml",
+			summary: []syncSummary{
+				{
+					CLIVersion:      "development",
+					DestinationName: "test1",
+					DestinationPath: "cloudquery/test",
+					Resources:       13,
+					SourceName:      "test",
+					SourcePath:      "cloudquery/test",
+					SourceTables:    []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+					SyncGroupID:     lo.ToPtr("sync_group_id_test"),
+				},
+			},
+		},
+		{
+			name:   "with_sync_group_id_and_shard",
+			config: "with-sync-group-id.yml",
+			shard:  "1/2",
+			summary: []syncSummary{
+				{
+					CLIVersion:      "development",
+					DestinationName: "test1",
+					DestinationPath: "cloudquery/test",
+					// Less resources due to sharding
+					Resources:    11,
+					SourceName:   "test",
+					SourcePath:   "cloudquery/test",
+					SourceTables: []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+					SyncGroupID:  lo.ToPtr("sync_group_id_test"),
+					ShardNum:     lo.ToPtr(1),
+					ShardTotal:   lo.ToPtr(2),
 				},
 			},
 		},
@@ -112,6 +155,10 @@ func TestSync(t *testing.T) {
 				tmp := t.TempDir()
 				summaryPath = path.Join(tmp, "/test/cloudquery-summary.jsonl")
 				argList = append(argList, "--summary-location", summaryPath)
+			}
+
+			if tc.shard != "" {
+				argList = append(argList, "--shard", tc.shard)
 			}
 
 			cmd.SetArgs(argList)

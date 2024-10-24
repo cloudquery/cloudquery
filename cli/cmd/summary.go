@@ -30,8 +30,12 @@ type syncSummary struct {
 	SourcePath          string    `json:"source_path"`
 	SourceVersion       string    `json:"source_version"`
 	SourceWarnings      uint64    `json:"source_warnings"`
+	SourceTables        []string  `json:"source_tables"`
 	SyncID              string    `json:"sync_id"`
 	SyncTime            time.Time `json:"sync_time"`
+	SyncGroupID         *string   `json:"sync_group_id,omitempty"`
+	ShardNum            *int      `json:"shard_num,omitempty"`
+	ShardTotal          *int      `json:"shard_total,omitempty"`
 }
 
 func persistSummary(filename string, summary syncSummary) error {
