@@ -1,0 +1,15 @@
+kind: "source"
+spec:
+  name: "test"
+  path: "cloudquery/test"
+  destinations: ["test1"]
+  version: "v4.5.1" # latest version of source test plugin
+  tables: ["*"]
+---
+kind: "destination"
+spec:
+  name: "test1"
+  path: "cloudquery/test"
+  write_mode: append
+  version: "v2.5.1" # latest version of destination test plugin
+  sync_group_id: "sync_group_id_test"

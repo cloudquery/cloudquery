@@ -15,6 +15,23 @@ import (
 
 var registerOnce = gosync.OnceValue(types.RegisterAllExtensions)
 
+func getTables(ctx context.Context, sourcePbClient pluginPb.PluginClient, req *pluginPb.GetTables_Request) (schema.Tables, error) {
+	getTablesResp, err := sourcePbClient.GetTables(ctx, req)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get tables: %w", err)
+	}
+	schemas, err := pluginPb.NewSchemasFromBytes(getTablesResp.Tables)
+	if err != nil {
+		return nil, fmt.Errorf("failed to parse schemas: %w", err)
+	}
+	tables, err := schema.NewTablesFromArrowSchemas(schemas)
+	if err != nil {
+		return nil, fmt.Errorf("failed to convert schemas to tables: %w", err)
+	}
+
+	return tables, nil
+}
+
 func tablesV3(ctx context.Context, sourceClient *managedplugin.Client, sourceSpec *specs.Source, path, format, filter string) error {
 	err := registerOnce()
 	if err != nil {
@@ -24,28 +41,23 @@ func tablesV3(ctx context.Context, sourceClient *managedplugin.Client, sourceSpe
 	if err := initPlugin(ctx, sourcePbClient, sourceSpec.Spec, true, invocationUUID.String()); err != nil {
 		return fmt.Errorf("failed to init source: %w", err)
 	}
-	req := &pluginPb.GetTables_Request{
-		Tables: []string{"*"},
-	}
-	if filter == "spec" {
-		req.Tables = sourceSpec.Tables
-		req.SkipTables = sourceSpec.SkipTables
-		req.SkipDependentTables = *sourceSpec.SkipDependentTables
-	}
-	getTablesResp, err := sourcePbClient.GetTables(ctx, req)
-	if err != nil {
-		return fmt.Errorf("failed to get tables: %w", err)
-	}
+
 	name, err := sourcePbClient.GetName(ctx, &pluginPb.GetName_Request{})
 	if err != nil {
 		return fmt.Errorf("failed to get source name: %w", err)
 	}
 
-	schemas, err := pluginPb.NewSchemasFromBytes(getTablesResp.Tables)
-	if err != nil {
-		return fmt.Errorf("failed to parse schemas: %w", err)
+	req := &pluginPb.GetTables_Request{
+		Tables: []string{"*"},
 	}
-	tables, err := schema.NewTablesFromArrowSchemas(schemas)
+
+	if filter == "spec" {
+		req.Tables = sourceSpec.Tables
+		req.SkipTables = sourceSpec.SkipTables
+		req.SkipDependentTables = *sourceSpec.SkipDependentTables
+	}
+
+	tables, err := getTables(ctx, sourcePbClient, req)
 	if err != nil {
 		return fmt.Errorf("failed to convert schemas to tables: %w", err)
 	}
