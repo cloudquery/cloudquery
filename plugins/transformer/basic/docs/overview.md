@@ -32,4 +32,26 @@ Then, add your transformer spec. Here's an example that transforms the XKCD sour
 
 :configuration
 
+JSON is supported for removing paths and obfuscating string values. Array indexes are supported in both cases. For example, with a JSON column named `tags`:
+```json
+{"foo":{"bar":["a","b","c"]},"hello":"world"}
+```
+
+You can obfuscate `"a"` and remove `"b"` with:
+```yaml copy
+kind: transformer
+spec:
+  name: "basic"
+  path: "cloudquery/basic"
+  registry: "cloudquery"
+  spec:
+    transformations:
+      - kind: obfuscate_columns
+        tables: ["example"]
+        columns: ["tags.foo.bar.0"]
+      - kind: remove_columns
+        tables: ["example"]
+        columns: ["tags.hello", "tags.foo.bar.1"]
+```
+
 Note: transformations are applied sequentially. If you rename tables, the table matcher configuration of subsequent transformations will need to be updated to the new names.
