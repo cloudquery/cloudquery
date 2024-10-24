@@ -225,6 +225,7 @@ func TestSyncWithSummaryTable(t *testing.T) {
 					SourceName:         "test",
 					SourcePath:         "cloudquery/test",
 					SourceVersion:      "v4.5.1",
+					SourceTables:       []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
 				},
 			},
 		},
