@@ -41,7 +41,7 @@ spec:
 			wantErrNotContains: "",
 		},
 		{
-			name: "infer registry fail: recommend github",
+			name: "infer registry fail: recommend latest on hub",
 			config: `
 kind: source
 spec:
@@ -57,7 +57,7 @@ spec:
   path: localhost:7777
   registry: grpc
 `,
-			wantErrContains:    "Hint",
+			wantErrContains:    "version v99.999.0 does not exist, consider using the latest version at https://hub.cloudquery.io/plugins/source/cloudquery/gcp/v",
 			wantErrNotContains: "",
 		},
 		{
