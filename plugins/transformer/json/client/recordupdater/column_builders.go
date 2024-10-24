@@ -15,11 +15,15 @@ type ColumnBuilder interface {
 }
 
 type ColumnBuilders struct {
-	builders []ColumnBuilder
+	tableName string
+	colName   string
+	builders  []ColumnBuilder
 }
 
-func NewColumnBuilders(typeSchema map[string]string, originalColumn *types.JSONArray) (*ColumnBuilders, error) {
+func NewColumnBuilders(tableName string, colName string, typeSchema map[string]string, originalColumn *types.JSONArray) (*ColumnBuilders, error) {
 	b := &ColumnBuilders{
+		tableName: tableName,
+		colName:   colName,
 		builders: []ColumnBuilder{
 			NewInt64ColumnsBuilder(typeSchema, originalColumn),
 			NewUTF8ColumnsBuilder(typeSchema, originalColumn),
@@ -55,7 +59,7 @@ func (b *ColumnBuilders) Build(key string) (arrow.Array, error) {
 	return nil, fmt.Errorf("column %s not found", key)
 }
 
-func (*ColumnBuilders) requireNoUnknownTypes(typeSchema map[string]string) error {
+func (b *ColumnBuilders) requireNoUnknownTypes(typeSchema map[string]string) error {
 	for key, typ := range typeSchema {
 		if typ != schemaupdater.Int64Type &&
 			typ != schemaupdater.Float64Type &&
@@ -63,7 +67,7 @@ func (*ColumnBuilders) requireNoUnknownTypes(typeSchema map[string]string) error
 			typ != schemaupdater.UTF8Type &&
 			typ != schemaupdater.TimestampType &&
 			typ != schemaupdater.BoolType {
-			return fmt.Errorf("unsupported type for column [%s]: [%s]", key, typ)
+			return fmt.Errorf("unsupported type for column [%s] on original column [%s.%s]: [%s]", key, b.tableName, b.colName, typ)
 		}
 	}
 	return nil

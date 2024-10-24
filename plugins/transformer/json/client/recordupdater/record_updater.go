@@ -19,13 +19,17 @@ type RecordUpdater struct {
 	record        arrow.Record
 	schemaUpdater *schemaupdater.SchemaUpdater
 	caser         *caser.Caser
+	tableName     string
 }
 
 func New(record arrow.Record) *RecordUpdater {
+	tableName, _ := record.Schema().Metadata().GetValue(schema.MetadataTableName)
+
 	return &RecordUpdater{
 		record:        record,
 		schemaUpdater: schemaupdater.New(record.Schema()),
 		caser:         caser.New(),
+		tableName:     tableName,
 	}
 }
 
@@ -105,7 +109,7 @@ func (r *RecordUpdater) buildNewColumnsFromColumn(colName string, col arrow.Arra
 		return nil, fmt.Errorf("expected JSONArray column, got %T", col)
 	}
 
-	builders, err := NewColumnBuilders(typeSchema, col.(*types.JSONArray))
+	builders, err := NewColumnBuilders(r.tableName, colName, typeSchema, col.(*types.JSONArray))
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +171,7 @@ func (r *RecordUpdater) snakeCaseKeys(data map[string]any) map[string]any {
 
 func preprocessTypeSchema(typeSchema map[string]string) map[string]string {
 	for key, typ := range typeSchema {
-		if typ == "any" {
+		if typ == "any" || typ == "binary" {
 			typeSchema[key] = schemaupdater.JSONType
 		}
 	}
