@@ -82,7 +82,8 @@ func generateSummaryTable() (*schema.Table, error) {
 		Name: tableName,
 		Transform: transformers.TransformWithStruct(
 			&syncSummary{},
-			transformers.WithSkipFields("SyncTime"),
+			// Already added as `_cq` internal columns
+			transformers.WithSkipFields("SyncTime", "SyncGroupID"),
 		),
 	}}
 	if err := transformers.TransformTables(t); err != nil {
