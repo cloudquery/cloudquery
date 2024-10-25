@@ -32,7 +32,7 @@ Extra fields are typed based on the `TypeSchema` metadata:
 
 ## Configuration
 
-First, add the transformer to your destination. For example, this will add a json transformer to a PostgreSQL destination:
+First, add the transformer to your destination. For example, this will add a jsonflattener transformer to a PostgreSQL destination:
 
 ```yaml copy
 kind: destination
@@ -44,7 +44,7 @@ spec:
   write_mode: "overwrite-delete-stale"
   migrate_mode: forced # optional
   transformers:
-    - "json"
+    - "jsonflattener"
 
   spec:
     connection_string: "postgresql://your.user:your.password@localhost:5432/db_name"

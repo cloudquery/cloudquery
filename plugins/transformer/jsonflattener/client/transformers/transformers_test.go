@@ -7,7 +7,7 @@ import (
 	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/apache/arrow/go/v17/arrow/array"
 	"github.com/apache/arrow/go/v17/arrow/memory"
-	"github.com/cloudquery/cloudquery/plugins/transformer/json/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/goccy/go-json"

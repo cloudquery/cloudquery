@@ -4,9 +4,9 @@ import (
 	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/apache/arrow/go/v17/arrow/array"
 	"github.com/apache/arrow/go/v17/arrow/memory"
-	"github.com/cloudquery/cloudquery/plugins/transformer/json/client/recordupdater"
-	"github.com/cloudquery/cloudquery/plugins/transformer/json/client/spec"
-	"github.com/cloudquery/cloudquery/plugins/transformer/json/client/tablematcher"
+	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater"
+	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/tablematcher"
 )
 
 type TransformationFn = func(arrow.Record) (arrow.Record, error)

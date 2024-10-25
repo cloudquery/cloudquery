@@ -7,23 +7,23 @@ concurrency:
 on:
   pull_request:
     paths:
-      - "plugins/transformer/json/**"
-      - ".github/workflows/transf_json.yml"
+      - "plugins/transformer/jsonflattener/**"
+      - ".github/workflows/transf_jsonflattener.yml"
   push:
     branches:
       - main
     paths:
-      - "plugins/transformer/json/**"
-      - ".github/workflows/transf_json.yml"
+      - "plugins/transformer/jsonflattener/**"
+      - ".github/workflows/transf_jsonflattener.yml"
 
 jobs:
   plugins-transformer-json:
     timeout-minutes: 30
-    name: "plugins/transformer/json"
+    name: "plugins/transformer/jsonflattener"
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./plugins/transformer/json
+        working-directory: ./plugins/transformer/jsonflattener
     steps:
       - uses: actions/checkout@v4
         with:
@@ -31,14 +31,14 @@ jobs:
       - name: Set up Go 1.x
         uses: actions/setup-go@v5
         with:
-          go-version-file: plugins/transformer/json/go.mod
+          go-version-file: plugins/transformer/jsonflattener/go.mod
           cache: true
-          cache-dependency-path: plugins/transformer/json/go.sum
+          cache-dependency-path: plugins/transformer/jsonflattener/go.sum
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
           version: v1.55.2
-          working-directory: plugins/transformer/json
+          working-directory: plugins/transformer/jsonflattener
           args: "--config ../../.golangci.yml"
       - name: Build
         run: go build .

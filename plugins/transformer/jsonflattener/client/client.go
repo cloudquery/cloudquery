@@ -6,8 +6,8 @@ import (
 	"fmt"
 
 	"github.com/apache/arrow/go/v17/arrow"
-	"github.com/cloudquery/cloudquery/plugins/transformer/json/client/spec"
-	"github.com/cloudquery/cloudquery/plugins/transformer/json/client/transformers"
+	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/transformers"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/rs/zerolog"
 )

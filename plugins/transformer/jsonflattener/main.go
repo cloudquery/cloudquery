@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/cloudquery/cloudquery/plugins/transformer/json/client"
-	internalPlugin "github.com/cloudquery/cloudquery/plugins/transformer/json/resources/plugin"
+	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/serve"
 )

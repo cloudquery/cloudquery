@@ -6,8 +6,8 @@ import (
 
 	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/apache/arrow/go/v17/arrow/array"
-	"github.com/cloudquery/cloudquery/plugins/transformer/json/client/schemaupdater"
-	"github.com/cloudquery/cloudquery/plugins/transformer/json/client/util"
+	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/schemaupdater"
+	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/util"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"

@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/transformer/json
+module github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener
 
 go 1.22.4
 

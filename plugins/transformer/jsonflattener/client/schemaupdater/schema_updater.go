@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/apache/arrow/go/v17/arrow"
-	"github.com/cloudquery/cloudquery/plugins/transformer/json/client/util"
+	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/util"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
