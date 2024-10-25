@@ -12,6 +12,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/google/uuid"
+	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -20,6 +21,7 @@ func TestSync(t *testing.T) {
 	configs := []struct {
 		name    string
 		config  string
+		shard   string
 		err     string
 		summary []syncSummary
 	}{
@@ -39,6 +41,7 @@ func TestSync(t *testing.T) {
 					Resources:         13,
 					SourceName:        "test",
 					SourcePath:        "cloudquery/test",
+					SourceTables:      []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
 				},
 				{
 					CLIVersion:        "development",
@@ -48,6 +51,7 @@ func TestSync(t *testing.T) {
 					Resources:         13,
 					SourceName:        "test2",
 					SourcePath:        "cloudquery/test",
+					SourceTables:      []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
 				},
 			},
 		},
@@ -66,6 +70,7 @@ func TestSync(t *testing.T) {
 					Resources:       13,
 					SourceName:      "test-1",
 					SourcePath:      "cloudquery/test",
+					SourceTables:    []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
 				},
 				{
 					CLIVersion:      "development",
@@ -74,6 +79,7 @@ func TestSync(t *testing.T) {
 					Resources:       13,
 					SourceName:      "test-2",
 					SourcePath:      "cloudquery/test",
+					SourceTables:    []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
 				},
 			},
 		},
@@ -88,6 +94,43 @@ func TestSync(t *testing.T) {
 					Resources:       13,
 					SourceName:      "test",
 					SourcePath:      "cloudquery/test",
+					SourceTables:    []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+				},
+			},
+		},
+		{
+			name:   "with_sync_group_id",
+			config: "with-sync-group-id.yml",
+			summary: []syncSummary{
+				{
+					CLIVersion:      "development",
+					DestinationName: "test1",
+					DestinationPath: "cloudquery/test",
+					Resources:       13,
+					SourceName:      "test",
+					SourcePath:      "cloudquery/test",
+					SourceTables:    []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+					SyncGroupID:     lo.ToPtr("sync_group_id_test"),
+				},
+			},
+		},
+		{
+			name:   "with_sync_group_id_and_shard",
+			config: "with-sync-group-id.yml",
+			shard:  "1/2",
+			summary: []syncSummary{
+				{
+					CLIVersion:      "development",
+					DestinationName: "test1",
+					DestinationPath: "cloudquery/test",
+					// Less resources due to sharding
+					Resources:    11,
+					SourceName:   "test",
+					SourcePath:   "cloudquery/test",
+					SourceTables: []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+					SyncGroupID:  lo.ToPtr("sync_group_id_test"),
+					ShardNum:     lo.ToPtr(1),
+					ShardTotal:   lo.ToPtr(2),
 				},
 			},
 		},
@@ -112,6 +155,10 @@ func TestSync(t *testing.T) {
 				tmp := t.TempDir()
 				summaryPath = path.Join(tmp, "/test/cloudquery-summary.jsonl")
 				argList = append(argList, "--summary-location", summaryPath)
+			}
+
+			if tc.shard != "" {
+				argList = append(argList, "--shard", tc.shard)
 			}
 
 			cmd.SetArgs(argList)
@@ -157,17 +204,40 @@ func TestSync(t *testing.T) {
 	}
 }
 
+type syncSummaryTable struct {
+	CLIVersion          string   `json:"cli_version"`
+	DestinationErrors   uint64   `json:"destination_errors"`
+	DestinationName     string   `json:"destination_name"`
+	DestinationPath     string   `json:"destination_path"`
+	DestinationVersion  string   `json:"destination_version"`
+	DestinationWarnings uint64   `json:"destination_warnings"`
+	Resources           uint64   `json:"resources"`
+	SourceErrors        uint64   `json:"source_errors"`
+	SourcePath          string   `json:"source_path"`
+	SourceVersion       string   `json:"source_version"`
+	SourceWarnings      uint64   `json:"source_warnings"`
+	SourceTables        []string `json:"source_tables"`
+	SyncID              string   `json:"sync_id"`
+	ShardNum            *int     `json:"shard_num,omitempty"`
+	ShardTotal          *int     `json:"shard_total,omitempty"`
+	// Internal columns are prefixed with _cq_ in the destination schema (hence in the file destination JSON)
+	SyncGroupID *string `json:"_cq_sync_group_id,omitempty"`
+	SyncTime    string  `json:"_cq_sync_time"`
+	SourceName  string  `json:"_cq_source_name"`
+}
+
 func TestSyncWithSummaryTable(t *testing.T) {
 	configs := []struct {
 		name         string
 		config       string
+		shard        string
 		err          string
-		summaryTable []syncSummary
+		summaryTable []syncSummaryTable
 	}{
 		{
 			name:   "with-destination-summary",
 			config: "with-destination-summary.yml",
-			summaryTable: []syncSummary{
+			summaryTable: []syncSummaryTable{
 				{
 					CLIVersion:         "development",
 					DestinationErrors:  0,
@@ -178,6 +248,30 @@ func TestSyncWithSummaryTable(t *testing.T) {
 					SourceName:         "test",
 					SourcePath:         "cloudquery/test",
 					SourceVersion:      "v4.5.1",
+					SourceTables:       []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+				},
+			},
+		},
+		{
+			name:   "with-destination-summary-with-sync-group-id-and-shard",
+			config: "with-destination-summary-with-sync-group-id-and-shard.yml",
+			shard:  "1/2",
+			summaryTable: []syncSummaryTable{
+				{
+					CLIVersion:         "development",
+					DestinationErrors:  0,
+					DestinationName:    "test",
+					DestinationPath:    "cloudquery/file",
+					DestinationVersion: "v5.2.5",
+					// Less resources due to sharding
+					Resources:     11,
+					SourceName:    "test_1_2",
+					SourcePath:    "cloudquery/test",
+					SourceVersion: "v4.5.1",
+					SourceTables:  []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+					SyncGroupID:   lo.ToPtr("sync_group_id_test"),
+					ShardNum:      lo.ToPtr(1),
+					ShardTotal:    lo.ToPtr(2),
 				},
 			},
 		},
@@ -199,6 +293,9 @@ func TestSyncWithSummaryTable(t *testing.T) {
 				// this is the only way to inject the dynamic output path
 				os.Setenv("CQ_FILE_DESTINATION", path.Join(datadir, "/data/{{TABLE}}/{{UUID}}.{{FORMAT}}"))
 			}
+			if tc.shard != "" {
+				argList = append(argList, "--shard", tc.shard)
+			}
 			cmd.SetArgs(argList)
 			err := cmd.Execute()
 			if tc.err != "" {
@@ -206,41 +303,40 @@ func TestSyncWithSummaryTable(t *testing.T) {
 			} else {
 				assert.NoError(t, err)
 			}
-			summaries := []syncSummary{}
-			if len(tc.summaryTable) > 0 {
-				// find all json files in the data directory
-				files, err := os.ReadDir(summaryTablePath)
+			summaries := []syncSummaryTable{}
+			// find all json files in the data directory
+			files, err := os.ReadDir(summaryTablePath)
+			if err != nil {
+				t.Fatalf("failed to read directory %v: %v", summaryTablePath, err)
+			}
+			for _, file := range files {
+				if file.IsDir() {
+					continue
+				}
+				b, err := os.ReadFile(path.Join(summaryTablePath, file.Name()))
 				if err != nil {
-					t.Fatalf("failed to read directory %v: %v", summaryTablePath, err)
+					t.Fatalf("failed to read file %v: %v", file.Name(), err)
 				}
-				for _, file := range files {
-					if file.IsDir() {
-						continue
-					}
-					b, err := os.ReadFile(path.Join(summaryTablePath, file.Name()))
-					if err != nil {
-						t.Fatalf("failed to read file %v: %v", file.Name(), err)
-					}
-					var v syncSummary
-					assert.NoError(t, json.Unmarshal(b, &v))
-					summaries = append(summaries, v)
-				}
+				var v syncSummaryTable
+				assert.NoError(t, json.Unmarshal(b, &v))
+				summaries = append(summaries, v)
+			}
 
-				// Ignore random fields or fields that are updated over time
-				diff := cmp.Diff(tc.summaryTable, summaries, cmpopts.IgnoreFields(syncSummary{}, "SyncID", "DestinationVersion", "SourceVersion"))
-				for _, s := range summaries {
-					assert.NotEmpty(t, s.SyncID)
-					assert.NotEmpty(t, s.DestinationVersion)
-					assert.NotEmpty(t, s.SourceVersion)
-				}
+			// Ignore random fields or fields that are updated over time
+			diff := cmp.Diff(tc.summaryTable, summaries, cmpopts.IgnoreFields(syncSummaryTable{}, "SyncID", "SyncTime", "DestinationVersion", "SourceVersion"))
+			for _, s := range summaries {
+				assert.NotEmpty(t, s.SyncID)
+				assert.NotEmpty(t, s.SyncTime)
+				assert.NotEmpty(t, s.DestinationVersion)
+				assert.NotEmpty(t, s.SourceVersion)
+			}
 
-				require.Empty(t, diff, "unexpected summaries: %v", diff)
+			require.Empty(t, diff, "unexpected summaries: %v", diff)
 
-				// have to ignore SyncID because it's random and plugin versions since we update those frequently using an automated process
-				// also ignore SyncTime because it's a timestamp
-				for _, s := range summaries {
-					assert.NotEmpty(t, s.SyncID)
-				}
+			// have to ignore SyncID because it's random and plugin versions since we update those frequently using an automated process
+			// also ignore SyncTime because it's a timestamp
+			for _, s := range summaries {
+				assert.NotEmpty(t, s.SyncID)
 			}
 		})
 	}

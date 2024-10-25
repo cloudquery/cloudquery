@@ -20,6 +20,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
+	"github.com/samber/lo"
 	"github.com/schollz/progressbar/v3"
 	"github.com/vnteamopen/godebouncer"
 	"golang.org/x/sync/errgroup"
@@ -213,6 +214,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 
 	destinationTransformers := make([]*transformer.RecordTransformer, len(destinationsClients))
 	backendPbClient := plugin.PluginClient(nil)
+	syncGroupId := make([]string, len(destinationsClients))
 	for i := range destinationsClients {
 		destinationsPbClients[i] = plugin.NewPluginClient(destinationsClients[i].Conn)
 		opts := []transformer.RecordTransformerOption{
@@ -223,7 +225,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			opts = append(opts, transformer.WithCQColumnsNotNull())
 		}
 		if destinationSpecs[i].SyncGroupId != "" {
-			opts = append(opts, transformer.WithSyncGroupIdColumn(destinationSpecs[i].RenderedSyncGroupId(syncTime, uid)))
+			syncGroupId[i] = destinationSpecs[i].RenderedSyncGroupId(syncTime, uid)
+			opts = append(opts, transformer.WithSyncGroupIdColumn(syncGroupId[i]))
 		}
 		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
 			opts = append(opts, transformer.WithRemovePKs())
@@ -577,6 +580,20 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		return err
 	}
 
+	syncSummaryEnabled := summaryLocation != "" || lo.SomeBy(destinationSpecs, func(d specs.Destination) bool { return d.SyncSummary })
+	var sourceTables schema.Tables
+	if syncSummaryEnabled {
+		sourceTables, err = getTables(ctx, sourcePbClient, &plugin.GetTables_Request{
+			Tables:              sourceSpec.Tables,
+			SkipTables:          sourceSpec.SkipTables,
+			SkipDependentTables: *sourceSpec.SkipDependentTables,
+		})
+
+		if err != nil {
+			return err
+		}
+	}
+
 	err = syncClient.CloseSend()
 	if err != nil {
 		return err
@@ -596,12 +613,22 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			SourceName:          sourceSpec.Name,
 			SourceVersion:       sourceSpec.Version,
 			SourcePath:          sourceSpec.Path,
+			SourceTables:        sourceTables.TableNames(),
 			CLIVersion:          Version,
 			DestinationErrors:   m.Errors,
 			DestinationWarnings: m.Warnings,
 			DestinationName:     destinationSpecs[i].Name,
 			DestinationVersion:  destinationSpecs[i].Version,
 			DestinationPath:     destinationSpecs[i].Path,
+		}
+
+		if destinationSpecs[i].SyncGroupId != "" {
+			summary.SyncGroupID = lo.ToPtr(syncGroupId[i])
+		}
+
+		if shard != nil {
+			summary.ShardNum = lo.ToPtr(shard.num)
+			summary.ShardTotal = lo.ToPtr(shard.total)
 		}
 
 		if err := persistSummary(summaryLocation, summary); err != nil {
