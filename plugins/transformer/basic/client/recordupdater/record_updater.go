@@ -278,7 +278,7 @@ func (*RecordUpdater) obfuscateJSONColumn(column arrow.Array, jc jsonColumn) arr
 			continue
 		}
 
-		bld.AppendBytes([]byte(fmt.Sprintf("%x", sha256.Sum256([]byte(column.ValueStr(i))))))
+		bld.AppendBytes([]byte(column.ValueStr(i)))
 	}
 	return bld.NewJSONArray()
 }
