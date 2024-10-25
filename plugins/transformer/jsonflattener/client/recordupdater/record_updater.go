@@ -41,7 +41,7 @@ func (r *RecordUpdater) FlattenJSONFields() (arrow.Record, error) {
 		if !ok || rawTypeSchema == "" {
 			continue
 		}
-		var unprocessedTypeSchema map[string]interface{}
+		var unprocessedTypeSchema map[string]any
 		if err := json.Unmarshal([]byte(rawTypeSchema), &unprocessedTypeSchema); err != nil {
 			// In this case it can be an array
 			fmt.Println("failed to unmarshal type schema", rawTypeSchema)
@@ -169,7 +169,7 @@ func (r *RecordUpdater) snakeCaseKeys(data map[string]any) map[string]any {
 	return newData
 }
 
-func preprocessTypeSchema(unprocessedTypeSchema map[string]interface{}) map[string]string {
+func preprocessTypeSchema(unprocessedTypeSchema map[string]any) map[string]string {
 	typeSchema := make(map[string]string)
 	for key, typ := range unprocessedTypeSchema {
 		if _, ok := typ.(string); !ok {
@@ -178,8 +178,9 @@ func preprocessTypeSchema(unprocessedTypeSchema map[string]interface{}) map[stri
 		}
 		strTyp := typ.(string)
 		if strTyp == "any" || strTyp == "binary" {
-			typeSchema[key] = schemaupdater.JSONType
+			strTyp = schemaupdater.JSONType
 		}
+		typeSchema[key] = strTyp
 	}
 	return typeSchema
 }
