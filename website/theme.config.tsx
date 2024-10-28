@@ -6,6 +6,16 @@ import { Badge } from "./components/Badge";
 import { Callout, useConfig } from "nextra-theme-docs";
 import { components } from "./utils/components";
 import { getSlackAppLink } from "./utils/slack-app-link";
+import { WebSite, WithContext } from "schema-dts";
+import Script from "next/script";
+
+const jsonLd: WithContext<WebSite> = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "CloudQuery",
+  alternateName: ["CloudQuery Docs"],
+  url: "https://docs.cloudquery.io/",
+};
 
 const theme: DocsThemeConfig = {
   project: {
@@ -48,6 +58,13 @@ const theme: DocsThemeConfig = {
     const { frontMatter } = useConfig();
     return (
       <>
+        <Script
+          id="faq-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLd),
+          }}
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link
           rel="apple-touch-icon"
