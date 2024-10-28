@@ -53,6 +53,47 @@ func TestNestedJSONFlattenedToFirstLevel(t *testing.T) {
 	require.Equal(t, json.RawMessage(`{"key_a":"value","key_b":2,"key_c":true}`), updatedRecord.Column(1).(*types.JSONArray).GetOneForMarshal(0))
 }
 
+func TestDifferentCasingWorks(t *testing.T) {
+	record := testRecord(
+		[]string{"col"},
+		map[string]string{"col": `{"subcolumn_one": "utf8"}`}, // Note the different casing
+		[]arrow.Array{buildJSONColumn([]*any{toP(`{"subcolumnOne": "value", "unknownColumn": 2}`)})},
+	)
+	updater := New(record)
+
+	updatedRecord, err := updater.FlattenJSONFields()
+	require.NoError(t, err)
+
+	require.Equal(t, int64(2), updatedRecord.NumCols())
+	require.Equal(t, int64(1), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "col", updatedRecord.ColumnName(0))
+	require.Equal(t, "col__subcolumn_one", updatedRecord.ColumnName(1))
+	require.Equal(t, "utf8", updatedRecord.Schema().Field(1).Type.String())
+	require.Equal(t, "value", updatedRecord.Column(1).(*array.String).Value(0))
+}
+
+func TestDifferentCasingWorksEvenWhenFirstRowIsNull(t *testing.T) {
+	record := testRecord(
+		[]string{"col"},
+		map[string]string{"col": `{"subcolumn_one": "utf8"}`}, // Note the different casing
+		// Note first 3 rows are nil
+		[]arrow.Array{buildJSONColumn([]*any{nil, nil, nil, toP(`{"subcolumnOne": "value", "unknownColumn": 2}`)})},
+	)
+	updater := New(record)
+
+	updatedRecord, err := updater.FlattenJSONFields()
+	require.NoError(t, err)
+
+	require.Equal(t, int64(2), updatedRecord.NumCols())
+	require.Equal(t, int64(4), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "col", updatedRecord.ColumnName(0))
+	require.Equal(t, "col__subcolumn_one", updatedRecord.ColumnName(1))
+	require.Equal(t, "utf8", updatedRecord.Schema().Field(1).Type.String())
+	require.Equal(t, "value", updatedRecord.Column(1).(*array.String).Value(3))
+}
+
 func requireAllColsLenMatchRecordsLen(t *testing.T, record arrow.Record) {
 	for i := 0; i < int(record.NumCols()); i++ {
 		require.Equal(t, int(record.NumRows()), record.Column(i).Len(), "Expected length of %d for column %d", record.NumRows(), i)

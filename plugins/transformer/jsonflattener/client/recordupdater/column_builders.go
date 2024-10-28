@@ -82,12 +82,20 @@ func (b *columnBuilders) requireNoUnknownTypes(typeSchema map[string]string) err
 
 func (b *columnBuilders) preprocessRowKeys(row map[string]any) map[string]any {
 	if b.preprocessRowKeysFn == nil {
-		b.choosePreprocessRowKeysFn(row)
+		var isPerfectMatch bool
+		b.preprocessRowKeysFn, isPerfectMatch = b.choosePreprocessRowKeysFn(row)
+
+		// If the match is not perfect, choose again on the next row.
+		if !isPerfectMatch {
+			defer func() { b.preprocessRowKeysFn = nil }()
+		}
 	}
 	return b.preprocessRowKeysFn(row)
 }
 
-func (b *columnBuilders) choosePreprocessRowKeysFn(row map[string]any) {
+// choosePreprocessRowKeysFn tries different key preprocess functions try to match the typeSchema.
+// It returns true if the match was perfect.
+func (b *columnBuilders) choosePreprocessRowKeysFn(row map[string]any) (func(map[string]any) map[string]any, bool) {
 	preprocessFns := []struct {
 		fn      func(map[string]any) map[string]any
 		matches int
@@ -116,7 +124,7 @@ func (b *columnBuilders) choosePreprocessRowKeysFn(row map[string]any) {
 		}
 	}
 
-	b.preprocessRowKeysFn = bestFn
+	return bestFn, maxMatches == len(b.typeSchema)
 }
 
 func (*columnBuilders) preprocessRowKeysFnIdentity(row map[string]any) map[string]any {
