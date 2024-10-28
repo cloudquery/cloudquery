@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v1.1.5...plugins-transformer-basic-v1.2.0) (2024-10-28)
+
+
+### Features
+
+* JSON path support for basic transformer ([#19498](https://github.com/cloudquery/cloudquery/issues/19498)) ([875cd18](https://github.com/cloudquery/cloudquery/commit/875cd189b8cfea58807ed7d524c3b2a3d697a255))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.67.1 ([#19467](https://github.com/cloudquery/cloudquery/issues/19467)) ([7c20418](https://github.com/cloudquery/cloudquery/commit/7c20418bd8fbb5b9a74726c90251fcde9a53b94a))
+
 ## [1.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v1.1.4...plugins-transformer-basic-v1.1.5) (2024-10-21)
 
 
