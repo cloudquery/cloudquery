@@ -44,7 +44,7 @@ spec:
   name: "postgresql"
   path: "cloudquery/postgresql"
   registry: "cloudquery"
-  version: "v8.0.7"
+  version: "VERSION_DESTINATION_POSTGRESQL"
   write_mode: "overwrite-delete-stale"
   migrate_mode: forced # optional
   transformers:
