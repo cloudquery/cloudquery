@@ -109,7 +109,7 @@ func (r *RecordUpdater) buildNewColumnsFromColumn(colName string, col arrow.Arra
 		return nil, fmt.Errorf("expected JSONArray column, got %T", col)
 	}
 
-	builders, err := NewColumnBuilders(r.tableName, colName, typeSchema, col.(*types.JSONArray))
+	builders, err := newColumnBuilders(r.tableName, colName, typeSchema, col.(*types.JSONArray))
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +119,7 @@ func (r *RecordUpdater) buildNewColumnsFromColumn(colName string, col arrow.Arra
 		if err != nil {
 			return nil, err
 		}
-		builders.AddRow(row)
+		builders.addRow(row)
 	}
 
 	// Order of the new columns must match with the schema.
@@ -127,7 +127,7 @@ func (r *RecordUpdater) buildNewColumnsFromColumn(colName string, col arrow.Arra
 	newColumns := make([]arrow.Array, 0, len(typeSchema))
 	keys := util.SortedKeys(typeSchema)
 	for _, key := range keys {
-		col, err := builders.Build(key)
+		col, err := builders.build(key)
 		if err != nil {
 			return nil, err
 		}

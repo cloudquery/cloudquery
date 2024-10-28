@@ -8,23 +8,23 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
-// ColumnBuilder creates separate columns from ONE json column, based on the type schema.
-type ColumnBuilder interface {
-	AddRow(row map[string]any)
-	Build(key string) (arrow.Array, error)
+// columnBuilder creates separate columns from ONE json column, based on the type schema.
+type columnBuilder interface {
+	addRow(row map[string]any)
+	build(key string) (arrow.Array, error)
 }
 
-type ColumnBuilders struct {
+type columnBuilders struct {
 	tableName string
 	colName   string
-	builders  []ColumnBuilder
+	builders  []columnBuilder
 }
 
-func NewColumnBuilders(tableName string, colName string, typeSchema map[string]string, originalColumn *types.JSONArray) (*ColumnBuilders, error) {
-	b := &ColumnBuilders{
+func newColumnBuilders(tableName string, colName string, typeSchema map[string]string, originalColumn *types.JSONArray) (*columnBuilders, error) {
+	b := &columnBuilders{
 		tableName: tableName,
 		colName:   colName,
-		builders: []ColumnBuilder{
+		builders: []columnBuilder{
 			NewInt64ColumnsBuilder(typeSchema, originalColumn),
 			NewUTF8ColumnsBuilder(typeSchema, originalColumn),
 			NewTimestampColumnsBuilder(typeSchema, originalColumn),
@@ -40,15 +40,15 @@ func NewColumnBuilders(tableName string, colName string, typeSchema map[string]s
 	return b, nil
 }
 
-func (b *ColumnBuilders) AddRow(row map[string]any) {
+func (b *columnBuilders) addRow(row map[string]any) {
 	for _, builder := range b.builders {
-		builder.AddRow(row)
+		builder.addRow(row)
 	}
 }
 
-func (b *ColumnBuilders) Build(key string) (arrow.Array, error) {
+func (b *columnBuilders) build(key string) (arrow.Array, error) {
 	for _, builder := range b.builders {
-		col, err := builder.Build(key)
+		col, err := builder.build(key)
 		if err != nil {
 			return nil, err
 		}
@@ -59,7 +59,7 @@ func (b *ColumnBuilders) Build(key string) (arrow.Array, error) {
 	return nil, fmt.Errorf("column %s not found", key)
 }
 
-func (b *ColumnBuilders) requireNoUnknownTypes(typeSchema map[string]string) error {
+func (b *columnBuilders) requireNoUnknownTypes(typeSchema map[string]string) error {
 	for key, typ := range typeSchema {
 		if typ != schemaupdater.Int64Type &&
 			typ != schemaupdater.Float64Type &&

@@ -14,7 +14,7 @@ type Int64ColumnsBuilder struct {
 	typeSchema map[string]string
 }
 
-func NewInt64ColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) ColumnBuilder {
+func NewInt64ColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) columnBuilder {
 	b := &Int64ColumnsBuilder{i: -1, values: make(map[string][]*int64), typeSchema: typeSchema}
 	for key, typ := range typeSchema {
 		if typ != schemaupdater.Int64Type {
@@ -25,7 +25,7 @@ func NewInt64ColumnsBuilder(typeSchema map[string]string, originalColumn *types.
 	return b
 }
 
-func (b *Int64ColumnsBuilder) AddRow(row map[string]any) {
+func (b *Int64ColumnsBuilder) addRow(row map[string]any) {
 	b.i++
 	for key, typ := range b.typeSchema {
 		if typ != schemaupdater.Int64Type {
@@ -43,7 +43,7 @@ func (b *Int64ColumnsBuilder) AddRow(row map[string]any) {
 	}
 }
 
-func (b *Int64ColumnsBuilder) Build(key string) (arrow.Array, error) {
+func (b *Int64ColumnsBuilder) build(key string) (arrow.Array, error) {
 	if _, ok := b.values[key]; !ok {
 		return nil, nil
 	}

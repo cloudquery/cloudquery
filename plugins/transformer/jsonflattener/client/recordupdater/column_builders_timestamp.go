@@ -16,7 +16,7 @@ type TimestampColumnsBuilder struct {
 	typeSchema map[string]string
 }
 
-func NewTimestampColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) ColumnBuilder {
+func NewTimestampColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) columnBuilder {
 	b := &TimestampColumnsBuilder{i: -1, values: make(map[string][]*time.Time), typeSchema: typeSchema}
 	for key, typ := range typeSchema {
 		if typ != schemaupdater.TimestampType {
@@ -27,7 +27,7 @@ func NewTimestampColumnsBuilder(typeSchema map[string]string, originalColumn *ty
 	return b
 }
 
-func (b *TimestampColumnsBuilder) AddRow(row map[string]any) {
+func (b *TimestampColumnsBuilder) addRow(row map[string]any) {
 	b.i++
 	for key, typ := range b.typeSchema {
 		if typ != schemaupdater.TimestampType {
@@ -44,7 +44,7 @@ func (b *TimestampColumnsBuilder) AddRow(row map[string]any) {
 	}
 }
 
-func (b *TimestampColumnsBuilder) Build(key string) (arrow.Array, error) {
+func (b *TimestampColumnsBuilder) build(key string) (arrow.Array, error) {
 	if _, ok := b.values[key]; !ok {
 		return nil, nil
 	}
