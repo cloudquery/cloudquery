@@ -1,6 +1,7 @@
 import copy from "copy-to-clipboard";
 import Head from "next/head";
 import Link from "next/link";
+import Script from "next/script";
 import toast, { Toaster } from "react-hot-toast";
 import { Container } from "../Container";
 import Features from "../Features";
@@ -8,6 +9,7 @@ import { Plugins } from "../Plugins";
 import { LogosBlock } from "../clients/LogosBlock";
 import { QueriesExamples } from "../QueriesExamples";
 import React from "react";
+import { WebSite, WithContext } from "schema-dts";
 
 const HERO_IMAGE_DATA = [
   {
@@ -32,6 +34,14 @@ const HERO_IMAGE_DATA = [
   },
 ]
 
+const jsonLd: WithContext<WebSite> = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "CloudQuery",
+  alternateName: ["CloudQuery Docs"],
+  url: "https://docs.cloudquery.io/",
+};
+
 export default function Home() {
   const onClick = (code: string) => {
     copy(code);
@@ -41,6 +51,13 @@ export default function Home() {
   return <>
     <Head>
       <title>CloudQuery</title>
+      <Script
+        id="faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(jsonLd),
+        }}
+      />
       <meta
         name="og:description"
         content="CloudQuery is an open source high performance data integration platform built for developers."
