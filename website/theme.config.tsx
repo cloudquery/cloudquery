@@ -7,7 +7,6 @@ import { Callout, useConfig } from "nextra-theme-docs";
 import { components } from "./utils/components";
 import { getSlackAppLink } from "./utils/slack-app-link";
 import { WebSite, WithContext } from "schema-dts";
-import Script from "next/script";
 
 const jsonLd: WithContext<WebSite> = {
   "@context": "https://schema.org",
@@ -58,7 +57,7 @@ const theme: DocsThemeConfig = {
     const { frontMatter } = useConfig();
     return (
       <>
-        <Script
+        <script
           id="faq-schema"
           type="application/ld+json"
           dangerouslySetInnerHTML={{
