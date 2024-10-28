@@ -5,6 +5,7 @@ import (
 
 	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/schemaupdater"
+	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
@@ -15,15 +16,20 @@ type columnBuilder interface {
 }
 
 type columnBuilders struct {
-	tableName string
-	colName   string
-	builders  []columnBuilder
+	tableName           string
+	colName             string
+	typeSchema          map[string]string
+	preprocessRowKeysFn func(row map[string]any) map[string]any
+	builders            []columnBuilder
+	caser               *caser.Caser
 }
 
 func newColumnBuilders(tableName string, colName string, typeSchema map[string]string, originalColumn *types.JSONArray) (*columnBuilders, error) {
 	b := &columnBuilders{
-		tableName: tableName,
-		colName:   colName,
+		tableName:  tableName,
+		colName:    colName,
+		typeSchema: typeSchema,
+		caser:      caser.New(),
 		builders: []columnBuilder{
 			NewInt64ColumnsBuilder(typeSchema, originalColumn),
 			NewUTF8ColumnsBuilder(typeSchema, originalColumn),
@@ -41,6 +47,7 @@ func newColumnBuilders(tableName string, colName string, typeSchema map[string]s
 }
 
 func (b *columnBuilders) addRow(row map[string]any) {
+	row = b.preprocessRowKeys(row)
 	for _, builder := range b.builders {
 		builder.addRow(row)
 	}
@@ -71,4 +78,55 @@ func (b *columnBuilders) requireNoUnknownTypes(typeSchema map[string]string) err
 		}
 	}
 	return nil
+}
+
+func (b *columnBuilders) preprocessRowKeys(row map[string]any) map[string]any {
+	if b.preprocessRowKeysFn == nil {
+		b.choosePreprocessRowKeysFn(row)
+	}
+	return b.preprocessRowKeysFn(row)
+}
+
+func (b *columnBuilders) choosePreprocessRowKeysFn(row map[string]any) {
+	preprocessFns := []struct {
+		fn      func(map[string]any) map[string]any
+		matches int
+	}{
+		{b.preprocessRowKeysFnIdentity, 0},
+		{b.preprocessRowKaysFnSnakeCase, 0},
+	}
+
+	// Run each function and count key matches
+	for i := range preprocessFns {
+		processedRow := preprocessFns[i].fn(row)
+		for key := range b.typeSchema {
+			if _, ok := processedRow[key]; ok {
+				preprocessFns[i].matches++
+			}
+		}
+	}
+
+	// Find function with most key matches
+	maxMatches := -1
+	var bestFn func(map[string]any) map[string]any
+	for _, p := range preprocessFns {
+		if p.matches > maxMatches {
+			maxMatches = p.matches
+			bestFn = p.fn
+		}
+	}
+
+	b.preprocessRowKeysFn = bestFn
+}
+
+func (*columnBuilders) preprocessRowKeysFnIdentity(row map[string]any) map[string]any {
+	return row
+}
+
+func (b *columnBuilders) preprocessRowKaysFnSnakeCase(row map[string]any) map[string]any {
+	newRow := make(map[string]any)
+	for key, value := range row {
+		newRow[b.caser.ToSnake(key)] = value
+	}
+	return newRow
 }

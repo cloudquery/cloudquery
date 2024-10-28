@@ -8,7 +8,6 @@ import (
 	"github.com/apache/arrow/go/v17/arrow/array"
 	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/schemaupdater"
 	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/util"
-	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
@@ -18,7 +17,6 @@ import (
 type RecordUpdater struct {
 	record        arrow.Record
 	schemaUpdater *schemaupdater.SchemaUpdater
-	caser         *caser.Caser
 	tableName     string
 }
 
@@ -28,7 +26,6 @@ func New(record arrow.Record) *RecordUpdater {
 	return &RecordUpdater{
 		record:        record,
 		schemaUpdater: schemaupdater.New(record.Schema()),
-		caser:         caser.New(),
 		tableName:     tableName,
 	}
 }
@@ -137,7 +134,7 @@ func (r *RecordUpdater) buildNewColumnsFromColumn(colName string, col arrow.Arra
 	return newColumns, nil
 }
 
-func (r *RecordUpdater) preprocessRow(colName string, rowIndex int, rawRow any) (map[string]any, error) {
+func (*RecordUpdater) preprocessRow(colName string, rowIndex int, rawRow any) (map[string]any, error) {
 	var row map[string]any
 
 	switch typedRawRow := rawRow.(type) {
@@ -156,27 +153,21 @@ func (r *RecordUpdater) preprocessRow(colName string, rowIndex int, rawRow any) 
 	default:
 		return nil, fmt.Errorf("expected JSON column for column %s, got %T", colName, rawRow)
 	}
-	row = r.snakeCaseKeys(row)
 
 	return row, nil
-}
-
-func (r *RecordUpdater) snakeCaseKeys(data map[string]any) map[string]any {
-	newData := make(map[string]any)
-	for key, value := range data {
-		newData[r.caser.ToSnake(key)] = value
-	}
-	return newData
 }
 
 func preprocessTypeSchema(unprocessedTypeSchema map[string]any) map[string]string {
 	typeSchema := make(map[string]string)
 	for key, typ := range unprocessedTypeSchema {
+		// If the type of a given key is not string, we consider it as a JSON type
+		// so that we don't flatten deeper than the first level.
 		if _, ok := typ.(string); !ok {
 			typeSchema[key] = schemaupdater.JSONType
 			continue
 		}
 		strTyp := typ.(string)
+		// Binary and any are treated as JSON types, that is, we don't process them.
 		if strTyp == "any" || strTyp == "binary" {
 			strTyp = schemaupdater.JSONType
 		}

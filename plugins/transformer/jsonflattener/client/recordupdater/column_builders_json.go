@@ -10,17 +10,17 @@ import (
 
 type JSONColumnsBuilder struct {
 	i          int
-	values     map[string][]*string
+	values     map[string][]*any
 	typeSchema map[string]string
 }
 
 func NewJSONColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) columnBuilder {
-	b := &JSONColumnsBuilder{i: -1, values: make(map[string][]*string), typeSchema: typeSchema}
+	b := &JSONColumnsBuilder{i: -1, values: make(map[string][]*any), typeSchema: typeSchema}
 	for key, typ := range typeSchema {
 		if typ != schemaupdater.JSONType {
 			continue
 		}
-		b.values[key] = make([]*string, originalColumn.Len())
+		b.values[key] = make([]*any, originalColumn.Len())
 	}
 	return b
 }
@@ -36,9 +36,7 @@ func (b *JSONColumnsBuilder) addRow(row map[string]any) {
 			b.values[key][b.i] = nil
 			continue
 		}
-		if v, ok := value.(string); ok {
-			b.values[key][b.i] = &v
-		}
+		b.values[key][b.i] = &value
 	}
 }
 
@@ -49,7 +47,7 @@ func (b *JSONColumnsBuilder) build(key string) (arrow.Array, error) {
 	return buildJSONColumn(b.values[key]), nil
 }
 
-func buildJSONColumn(values []*string) arrow.Array {
+func buildJSONColumn(values []*any) arrow.Array {
 	bld := types.NewJSONBuilder(array.NewExtensionBuilder(memory.DefaultAllocator, types.NewJSONType()))
 	for _, value := range values {
 		bld.Append(value)
