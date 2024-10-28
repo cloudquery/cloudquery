@@ -270,7 +270,6 @@ func (*RecordUpdater) obfuscateJSONColumns(column arrow.Array, jcs []jsonColumn)
 					continue
 				}
 			}
-			str = val.Str
 		}
 		bld.AppendBytes([]byte(str))
 	}
