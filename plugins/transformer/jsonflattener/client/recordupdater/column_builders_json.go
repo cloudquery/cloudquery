@@ -49,6 +49,7 @@ func (b *JSONColumnsBuilder) build(key string) (arrow.Array, error) {
 
 func buildJSONColumn(values []*any) arrow.Array {
 	bld := types.NewJSONBuilder(array.NewExtensionBuilder(memory.DefaultAllocator, types.NewJSONType()))
+	defer bld.Release()
 	for _, value := range values {
 		bld.Append(value)
 	}

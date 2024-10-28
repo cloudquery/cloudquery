@@ -52,6 +52,7 @@ func (b *Int64ColumnsBuilder) build(key string) (arrow.Array, error) {
 
 func buildInt64Column(values []*int64) arrow.Array {
 	bld := array.NewInt64Builder(memory.DefaultAllocator)
+	defer bld.Release()
 	for _, value := range values {
 		if value == nil {
 			bld.AppendNull()

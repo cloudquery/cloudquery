@@ -51,6 +51,7 @@ func (b *Float64ColumnsBuilder) build(key string) (arrow.Array, error) {
 
 func buildFloat64Column(values []*float64) arrow.Array {
 	bld := array.NewFloat64Builder(memory.DefaultAllocator)
+	defer bld.Release()
 	for _, value := range values {
 		if value == nil {
 			bld.AppendNull()

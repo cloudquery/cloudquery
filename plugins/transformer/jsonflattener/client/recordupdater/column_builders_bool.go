@@ -51,6 +51,7 @@ func (b *BoolColumnsBuilder) build(key string) (arrow.Array, error) {
 
 func buildBoolColumn(values []*bool) arrow.Array {
 	bld := array.NewBooleanBuilder(memory.DefaultAllocator)
+	defer bld.Release()
 	for _, value := range values {
 		if value == nil {
 			bld.AppendNull()

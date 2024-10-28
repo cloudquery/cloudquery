@@ -51,6 +51,7 @@ func (b *UTF8ColumnsBuilder) build(key string) (arrow.Array, error) {
 
 func buildUTF8Column(values []*string) arrow.Array {
 	bld := array.NewStringBuilder(memory.DefaultAllocator)
+	defer bld.Release()
 	for _, value := range values {
 		if value == nil {
 			bld.AppendNull()

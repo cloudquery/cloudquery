@@ -53,6 +53,7 @@ func (b *TimestampColumnsBuilder) build(key string) (arrow.Array, error) {
 
 func buildTimestampColumn(values []*time.Time) (arrow.Array, error) {
 	bld := array.NewTimestampBuilder(memory.DefaultAllocator, &arrow.TimestampType{Unit: arrow.Microsecond, TimeZone: "UTC"})
+	defer bld.Release()
 	for _, value := range values {
 		if value == nil {
 			bld.AppendNull()
