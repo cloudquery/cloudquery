@@ -24,7 +24,7 @@ const othersJSONLd: (path: string) => WithContext<WebPage> = (path: string) =>({
   "@type": "WebPage",
   name: "CloudQuery",
   alternateName: ["CloudQuery Docs"],
-  url: `https://${hostname}/${path}`,
+  url: `https://${hostname}${path}`,
   isPartOf: {
     "@type": "WebSite",
     name: "CloudQuery",
