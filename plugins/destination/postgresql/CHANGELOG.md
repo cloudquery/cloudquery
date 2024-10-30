@@ -1,5 +1,13 @@
 # Changelog
 
+## [8.6.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.6.4...plugins-destination-postgresql-v8.6.5) (2024-10-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.67.1 ([#19467](https://github.com/cloudquery/cloudquery/issues/19467)) ([7c20418](https://github.com/cloudquery/cloudquery/commit/7c20418bd8fbb5b9a74726c90251fcde9a53b94a))
+* Show DSN connection string format first ([#19460](https://github.com/cloudquery/cloudquery/issues/19460)) ([e150806](https://github.com/cloudquery/cloudquery/commit/e150806d23fc31370edc3ab56d3f9e8451d56b1f))
+
 ## [8.6.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.6.3...plugins-destination-postgresql-v8.6.4) (2024-10-22)
 
 
