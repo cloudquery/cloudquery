@@ -5,5 +5,5 @@ spec:
   path: "cloudquery/jsonflattener"
   version: VERSION_TRANSFORMER_JSONFLATTENER
   spec:
-    tables: ["xkcd_comics"]
+    tables: ["aws_ec2_instances"]
 ```
