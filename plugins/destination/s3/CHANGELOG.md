@@ -1,5 +1,13 @@
 # Changelog
 
+## [7.4.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.4.10...plugins-destination-s3-v7.4.11) (2024-10-30)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#19501](https://github.com/cloudquery/cloudquery/issues/19501)) ([6531bca](https://github.com/cloudquery/cloudquery/commit/6531bca4a2bd84b6cb196205acbead8a068c25c8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.67.1 ([#19467](https://github.com/cloudquery/cloudquery/issues/19467)) ([7c20418](https://github.com/cloudquery/cloudquery/commit/7c20418bd8fbb5b9a74726c90251fcde9a53b94a))
+
 ## [7.4.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.4.9...plugins-destination-s3-v7.4.10) (2024-10-22)
 
 
