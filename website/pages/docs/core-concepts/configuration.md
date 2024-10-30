@@ -1,9 +1,9 @@
 ---
-title: CloudQuery Plugin Configuration
+title: CloudQuery Integration Configuration
 description: CloudQuery syncs fetch data from cloud accounts (sources) and writes it to one or more destinations. A sync requires at least one source- and one destination configuration. Configuration files are specified in YAML format and can be either split across multiple files or combined.
 ---
 
-# CloudQuery Plugin Configuration
+# CloudQuery Integration Configuration
 
 A CloudQuery sync fetches data from cloud accounts (sources) and writes it to one or more destinations. 
 A sync requires at least one source- and one destination configuration. 
@@ -11,9 +11,9 @@ Configuration files are specified in YAML format and can be either split across 
 
 ## Example using multiple files
 
-One option is to maintain configuration for your source and destination plugins in separate files.
+One option is to maintain configuration for your source and destination integrations in separate files.
 
-Here is a simple example with only one source and one destination plugin:
+Here is a simple example with only one source and one destination integration:
 
 ```yaml copy filename="aws.yml"
 kind: source
@@ -94,4 +94,4 @@ Now we can run a sync using:
 cloudquery sync config.yml
 ```
 
-This example shows only two plugin sections, but a config file is allowed to contain any number of plugin sections. 
+This example shows only two integration sections, but a configuration file is allowed to contain any number of integration sections. 

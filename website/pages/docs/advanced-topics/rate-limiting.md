@@ -5,7 +5,7 @@ description: CloudQuery provides a few options to control the rate at which reso
 
 # Rate Limiting
 
-There is currently one main lever to control the rate at which CloudQuery fetches resources from cloud providers. This setting is called `concurrency` available in most source plugins, and it can be specified as part of the plugin source spec (Each spec is described in the relevant page in the [hub](https://hub.cloudquery.io/)). 
+There is currently one main lever to control the rate at which CloudQuery fetches resources from cloud providers. This setting is called `concurrency` available in most source integrations, and it can be specified as part of the integration source spec (Each spec is described in the relevant page in the [hub](https://hub.cloudquery.io/)). 
 
 ## Concurrency
 

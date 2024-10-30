@@ -1,6 +1,6 @@
 ---
 title: CloudQuery Transformations
-description: CloudQuery maintains official transformations to jumpstart your data warehouse analytics. Ranging from security, compliance, cost, marketing and more
+description: CloudQuery maintains official transformations to jump start your data warehouse analytics. Ranging from security, compliance, cost, marketing and more
 ---
 
 # Transformations (aka Policies)

@@ -5,23 +5,23 @@ description: Learn how to run containers with a read-only file system.
 
 # Containers with Read-Only Root Filesystem
 
-By default, CloudQuery requires a read-write file system to create a socket file used by the plugins to communicate with the CLI. It is however not possible to create a read-write socket on a read-only file system. For this to work, a plugin needs to be started as a gRPC server locally.
+By default, CloudQuery requires a read-write file system to create a socket file used by the integrations to communicate with the CLI. It is however not possible to create a read-write socket on a read-only file system. For this to work, an integration needs to be started as a gRPC server locally.
 
 ## Creating a container that works with a read-only file system
 
 To create a container that works with a read-only file system, you will need the following:
 
-- a CloudQuery config file that is used to install the required plugins
-- a CloudQuery config file that contains the specs needed for the sync
-- a start script used as an entry point for the container that will start the plugins and run the sync
+- a CloudQuery configuration file that is used to install the required integrations
+- a CloudQuery configuration file that contains the specs needed for the sync
+- a start script used as an entry point for the container that will start the integrations and run the sync
 
-> Downloading plugins requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in a CI environment or inside of a docker build process. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key)
+> Downloading integrations requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in a CI environment or inside of a docker build process. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key)
 
-In the example below, we will use the [XKCD](https://github.com/hermanschaaf/cq-source-xkcd) source plugin and [PostgreSQL](https://hub.cloudquery.io/plugins/destination/cloudquery/postgresql/v6.1.3/docs) destination plugin.
+In the example below, we will use the [XKCD](https://github.com/hermanschaaf/cq-source-xkcd) source integration and [PostgreSQL](https://hub.cloudquery.io/plugins/destination/cloudquery/postgresql/v6.1.3/docs) destination integration.
 
-### Create a config file for the installation
+### Create a configuration file for the installation
 
-This config file should reference the plugins that you want to install with the actual source where they should be downloaded from:
+This configuration file should reference the integrations that you want to install with the actual source where they should be downloaded from:
 
 ```yaml copy filename="install.yaml"
 kind: source
@@ -42,7 +42,7 @@ spec:
 
 ### Create a config file for the sync
 
-This config file should reference the plugins running as gRPC servers (fill in the `connection_string`). We will run XKCD on port 7778 and PostgreSQL on port 7779:
+This config file should reference the integrations running as gRPC servers (fill in the `connection_string`). We will run XKCD on port 7778 and PostgreSQL on port 7779:
 
 ```yaml copy filename="sync.yaml"
 kind: source
@@ -62,18 +62,18 @@ spec:
     connection_string: "[REDACTED]"
 ```
 
-### Create a start script to start the plugins
+### Create a start script to start the integrations
 
-This shell script will start the plugins and the sync with the provided parameters when we run the container. To make it easier to maintain, we will use the `find` command to get the path to the actual plugin binary. This way, we don't have to worry about the version of the plugin.
+This shell script will start the integrations and the sync with the provided parameters when we run the container. To make it easier to maintain, we will use the `find` command to get the path to the actual integration binary. This way, we don't have to worry about the version of the integration.
 
 ```shell copy filename="start.sh"
 #!/bin/sh
-# get path to the xkcd plugin:
+# get path to the xkcd integration:
 xkcd_plugin_path=$(find .cq -regex ".*/xkcd/.*/plugin")
-# get path to the postgresql plugin:
+# get path to the postgresql integration:
 postgresql_plugin_path=$(find .cq -regex ".*/postgresql/.*/plugin")
 
-# start the plugins and run the sync with the provided parameters:
+# start the integrations and run the sync with the provided parameters:
 sh -c "${xkcd_plugin_path} serve --address localhost:7778" & \
 sh -c "${postgresql_plugin_path} serve --address localhost:7779" & \
 /app/cloudquery $@
@@ -89,12 +89,12 @@ WORKDIR /app
 # this is the install.yaml file we created above
 COPY ./install.yaml /app/install.yaml
 ARG CLOUDQUERY_API_KEY
-# install the plugins
+# install the integrations
 RUN /app/cloudquery plugin install install.yaml
 
 FROM ghcr.io/cloudquery/cloudquery:latest
 WORKDIR /app
-# Copy the .cq directory which contains the plugins
+# Copy the .cq directory which contains the integrations
 COPY --from=build /app/.cq /app/.cq
 
 # add the sync config file
@@ -104,7 +104,6 @@ COPY --chmod=0755 ./start.sh /app/start.sh
 # override the start script
 ENTRYPOINT [ "/app/start.sh"]
 ```
-
 
 ## Run the Container
 
@@ -122,6 +121,6 @@ docker run --read-only --add-host=host.docker.internal:host-gateway my-cq-contai
 
 ## Related Documentation
 
-- [Running plugins locally](/docs/developers/running-locally)
+- [Running integrations locally](/docs/developers/running-locally)
 - [Deployment - Docker](/docs/deployment/docker)
 - [Deployment - Docker Offline Installation](/docs/deployment/docker-offline)
