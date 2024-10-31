@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cloudquery/codegen v0.3.19
-	github.com/cloudquery/plugin-sdk/v4 v4.67.1
+	github.com/cloudquery/plugin-sdk/v4 v4.68.0
 	github.com/elastic/go-elasticsearch/v8 v8.6.0
 	github.com/goccy/go-json v0.10.3
 	github.com/invopop/jsonschema v0.12.0
@@ -40,7 +40,7 @@ require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.13.1 // indirect
-	github.com/cloudquery/plugin-pb-go v1.24.1 // indirect
+	github.com/cloudquery/plugin-pb-go v1.25.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/elastic/elastic-transport-go/v8 v8.0.0-20211216131617-bbee439d559c // indirect
