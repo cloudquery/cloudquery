@@ -1037,6 +1037,42 @@
     {
       "source": "/docs/cq-vs-others/steampipe-alternative-cloudquery",
       "destination": "https://www.cloudquery.io/blog/steampipe-vs-cloudquery"
+    },
+    {
+      "source": "/docs/core-concepts/plugins",
+      "destination": "/docs/core-concepts/integrations"
+    },
+    {
+      "source": "/docs/developers/creating-new-plugin",
+      "destination": "/docs/developers/creating-new-integration"
+    },
+    {
+      "source": "/docs/developers/creating-new-plugin/go-source",
+      "destination": "/docs/developers/creating-new-integration/go-source"
+    },
+    {
+      "source": "/docs/developers/creating-new-plugin/java-source",
+      "destination": "/docs/developers/creating-new-integration/java-source"
+    },
+    {
+      "source": "/docs/developers/creating-new-plugin/javascript-source",
+      "destination": "/docs/developers/creating-new-integration/java-source"
+    },
+    {
+      "source": "/docs/developers/creating-new-plugin/python-source",
+      "destination": "/docs/developers/creating-new-integration/java-source"
+    },
+    {
+      "source": "/docs/developers/instrumenting-a-paid-plugin",
+      "destination": "/docs/developers/instrumenting-a-paid-integration"
+    },
+    {
+      "source": "/docs/developers/publishing-a-plugin-to-the-hub",
+      "destination": "/docs/developers/publishing-an-integration-to-the-hub"
+    },
+    {
+      "source": "/docs/advanced-topics/using-cloud-query-docker-registry-plugins-inside-a-containerized-environment",
+      "destination": "/docs/advanced-topics/using-cloud-query-docker-registry-integrations-inside-a-containerized-environment"
     }
   ]
 }

@@ -10,6 +10,9 @@ import (
 	"github.com/apache/arrow/go/v17/arrow/array"
 	"github.com/apache/arrow/go/v17/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/transformer/basic/client/schemaupdater"
+	"github.com/cloudquery/plugin-sdk/v4/types"
+	"github.com/tidwall/gjson"
+	"github.com/tidwall/sjson"
 )
 
 // RecordUpdater takes an `arrow.Record` and knows how to make simple subsequent changes to it.
@@ -27,24 +30,51 @@ func New(record arrow.Record) *RecordUpdater {
 }
 
 func (r *RecordUpdater) RemoveColumns(columnNames []string) (arrow.Record, error) {
-	colIndices, err := r.colIndicesByNames(columnNames)
-	if err != nil {
-		return nil, err
-	}
-	if len(colIndices) == int(r.record.NumCols()) {
-		return nil, fmt.Errorf("cannot remove all columns")
-	}
+	plainCols, jsonCols := r.splitJSONColumns(columnNames)
 
-	oldRecord := r.record.Columns()
-	newColumns := make([]arrow.Array, 0, len(oldRecord)-len(colIndices))
-	for i, column := range oldRecord {
-		if _, ok := colIndices[i]; ok {
-			continue
+	if len(plainCols) > 0 {
+		colIndices, err := r.colIndicesByNames(plainCols)
+		if err != nil {
+			return nil, err
 		}
-		newColumns = append(newColumns, column)
+		if len(colIndices) == int(r.record.NumCols()) {
+			return nil, fmt.Errorf("cannot remove all columns")
+		}
+
+		oldRecord := r.record.Columns()
+		newColumns := make([]arrow.Array, 0, len(oldRecord)-len(colIndices))
+		for i, column := range oldRecord {
+			if _, ok := colIndices[i]; ok {
+				continue
+			}
+			newColumns = append(newColumns, column)
+		}
+
+		r.record = array.NewRecord(r.schemaUpdater.RemoveColumnIndices(colIndices), newColumns, r.record.NumRows())
 	}
 
-	r.record = array.NewRecord(r.schemaUpdater.RemoveColumnIndices(colIndices), newColumns, r.record.NumRows())
+	if len(jsonCols) > 0 {
+		for i, jcs := range r.jsonColIndicesByNames(jsonCols) {
+			bld := types.NewJSONBuilder(array.NewExtensionBuilder(memory.DefaultAllocator, types.NewJSONType()))
+			for j := 0; j < r.record.Column(i).Len(); j++ {
+				valStr := r.record.Column(i).ValueStr(j)
+				if gjson.Valid(valStr) {
+					for _, jc := range jcs {
+						if val, err := sjson.Delete(valStr, jc.columnPath); err == nil {
+							valStr = val
+						}
+					}
+				}
+				bld.AppendBytes([]byte(valStr))
+			}
+
+			rec, err := r.record.SetColumn(i, bld.NewJSONArray())
+			if err != nil {
+				return nil, err
+			}
+			r.record = rec
+		}
+	}
 	return r.record, nil
 }
 
@@ -102,25 +132,40 @@ func (r *RecordUpdater) AddTimestampColumn(columnName string, position int) (arr
 }
 
 func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.Record, error) {
-	colIndex, err := r.colIndicesByNames(columnNames)
+	plainCols, jsonCols := r.splitJSONColumns(columnNames)
+
+	plainColIndex, err := r.colIndicesByNames(plainCols)
 	if err != nil {
 		return nil, err
 	}
+	jsonColIndex := r.jsonColIndicesByNames(jsonCols)
 
 	oldRecord := r.record.Columns()
 	newColumns := make([]arrow.Array, 0, len(oldRecord))
 	for i, column := range oldRecord {
-		if _, ok := colIndex[i]; ok {
+		if _, ok := plainColIndex[i]; ok {
 			if column.DataType().ID() != arrow.STRING {
 				return nil, fmt.Errorf("column %v is not a string column", r.record.ColumnName(i))
 			}
 			newColumns = append(newColumns, r.obfuscateColumn(column))
-		} else {
-			newColumns = append(newColumns, column)
+			continue
 		}
+
+		jcs, ok := jsonColIndex[i]
+		if !ok {
+			newColumns = append(newColumns, column)
+			continue
+		}
+
+		if _, ok := column.DataType().(*types.JSONType); !ok {
+			return nil, fmt.Errorf("column %v is not a JSON column", r.record.ColumnName(i))
+		}
+
+		newColumns = append(newColumns, r.obfuscateJSONColumns(column, jcs))
 	}
 
 	r.record = array.NewRecord(r.record.Schema(), newColumns, r.record.NumRows())
+
 	return r.record, nil
 }
 
@@ -158,6 +203,27 @@ func (r *RecordUpdater) colIndicesByNames(columnNames []string) (map[int]struct{
 	return colIndexes, nil
 }
 
+type jsonColumn struct {
+	columnName string
+	columnPath string
+}
+
+func (r *RecordUpdater) jsonColIndicesByNames(columns map[string]jsonColumn) map[int][]jsonColumn {
+	colNameMap := make(map[int][]jsonColumn)
+	for i := 0; i < int(r.record.NumCols()); i++ {
+		for _, jc := range columns {
+			if jc.columnName == r.record.ColumnName(i) {
+				if _, ok := colNameMap[i]; !ok {
+					colNameMap[i] = []jsonColumn{jc}
+				} else {
+					colNameMap[i] = append(colNameMap[i], jc)
+				}
+			}
+		}
+	}
+	return colNameMap
+}
+
 func (*RecordUpdater) buildStringColumn(literalValue string, numRows int) arrow.Array {
 	bld := array.NewStringBuilder(memory.DefaultAllocator)
 	for i := 0; i < numRows; i++ {
@@ -185,4 +251,55 @@ func (*RecordUpdater) obfuscateColumn(column arrow.Array) arrow.Array {
 		bld.AppendString(fmt.Sprintf("%x", sha256.Sum256([]byte(column.ValueStr(i)))))
 	}
 	return bld.NewStringArray()
+}
+
+func (*RecordUpdater) obfuscateJSONColumns(column arrow.Array, jcs []jsonColumn) arrow.Array {
+	bld := types.NewJSONBuilder(array.NewExtensionBuilder(memory.DefaultAllocator, types.NewJSONType()))
+	for i := 0; i < column.Len(); i++ {
+		if !column.IsValid(i) {
+			bld.AppendNull()
+			continue
+		}
+
+		str := column.ValueStr(i)
+		for _, jc := range jcs {
+			val := gjson.Get(column.ValueStr(i), jc.columnPath)
+			if val.Exists() && val.Type == gjson.String {
+				if modified, err := sjson.Set(str, jc.columnPath, fmt.Sprintf("%x", sha256.Sum256([]byte(val.Str)))); err == nil {
+					str = modified
+					continue
+				}
+			}
+		}
+		bld.AppendBytes([]byte(str))
+	}
+	return bld.NewJSONArray()
+}
+
+func (r *RecordUpdater) splitJSONColumns(columnNames []string) (plainCols []string, jsonCols map[string]jsonColumn) {
+	plainColMap := make(map[string]struct{})
+	jsonColMap := make(map[string]jsonColumn)
+	for _, columnName := range columnNames {
+		if idx := strings.Index(columnName, "."); idx > -1 {
+			jsonColMap[columnName] = jsonColumn{columnName: columnName[:idx], columnPath: columnName[idx+1:]}
+		} else {
+			plainColMap[columnName] = struct{}{}
+		}
+	}
+
+	jsonCols = make(map[string]jsonColumn)
+	for i := 0; i < int(r.record.NumCols()); i++ {
+		if _, ok := plainColMap[r.record.ColumnName(i)]; ok {
+			plainCols = append(plainCols, r.record.ColumnName(i))
+			continue
+		}
+
+		for _, jc := range jsonColMap {
+			if jc.columnName == r.record.ColumnName(i) {
+				jsonCols[jc.columnName+"."+jc.columnPath] = jc
+			}
+		}
+	}
+
+	return plainCols, jsonCols
 }

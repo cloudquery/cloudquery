@@ -1,0 +1,19 @@
+kind: "source"
+spec:
+  name: "test"
+  path: "cloudquery/test"
+  destinations: [test]
+  version: "v4.5.1" # latest version of source test plugin
+  tables: ["*"]
+---
+kind: "destination"
+spec:
+  name: "test"
+  path: "cloudquery/file"
+  version: "v5.2.7" # latest version of destination file plugin
+  send_sync_summary: true
+  sync_group_id: "sync_group_id_test"
+  write_mode: append
+  spec:
+    format: "json"
+    path: ${CQ_FILE_DESTINATION}

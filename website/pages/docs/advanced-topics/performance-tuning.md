@@ -13,7 +13,7 @@ The first step in improving the performance of a sync is to identify which table
 This flag takes a path to a file where the metrics will be written. The metrics are displayed as a human-readable table and refreshed as the sync progresses.
 To use this feature run `cloudquery sync --tables-metrics-location metrics.txt` and open the file `metrics.txt` in a text editor that supports live updates. Alternatively, you can use `watch cat metrics.txt` to monitor the file in real-time.
 You can see an example output below. Tables that are still in progress will be shown first with a `N/A` in the `END TIME` column, and the rest sorted by table name.
-The `CLIENT ID` column differs between plugins and can be used to identify which account, region, project, location, etc. is being synced (the terms differ between plugins).
+The `CLIENT ID` column differs between integrations and can be used to identify which account, region, project, location, etc. is being synced (the terms differ between integrations).
 
 ```text
 +-----------------------------------------------------+-----------------------+---------------------------------------+---------------------------------------+------------+-----------+--------+--------+
@@ -67,14 +67,14 @@ The `CLIENT ID` column differs between plugins and can be used to identify which
 ```
 
 :::callout{type="info"}
-This feature is available starting from CLI version [v5.25.0](https://github.com/cloudquery/cloudquery/releases/tag/cli-v5.25.0) and plugins released on July 10th 2024 or later.
+This feature is available starting from CLI version [v5.25.0](https://github.com/cloudquery/cloudquery/releases/tag/cli-v5.25.0) and integrations released on July 10th 2024 or later.
 :::
 
 ## Use Wildcard Matching
 
-Sometimes the easiest way to improve the performance of the `sync` command is to limit the number of tables that get synced. The `tables` and `skip_tables` source config options both support wildcard matching. This means that you can use `*` anywhere in a name to match multiple tables.
+Sometimes the easiest way to improve the performance of the `sync` command is to limit the number of tables that get synced. The `tables` and `skip_tables` source configuration options both support wildcard matching. This means that you can use `*` anywhere in a name to match multiple tables.
 
-For example, when using the `aws` source plugin, it is possible to use a wildcard pattern to match all tables related to AWS EC2:
+For example, when using the `aws` source integration, it is possible to use a wildcard pattern to match all tables related to AWS EC2:
 
 ```yaml copy
 tables:
@@ -96,25 +96,25 @@ The CloudQuery CLI will warn if a wildcard pattern does not match any known tabl
 
 ## Tune Concurrency
 
-The `concurrency` setting, available for all source plugins as part of the [source spec](/docs/reference/source-spec#concurrency), controls the approximate number of concurrent requests that will be made while performing a sync. Setting this to a low number will reduce the number of concurrent requests, reducing the memory used and making the sync less likely to hit rate limits. The trade-off is that syncs will take longer to complete.
+The `concurrency` setting, available for all source integrations as part of the [source spec](/docs/reference/source-spec#concurrency), controls the approximate number of concurrent requests that will be made while performing a sync. Setting this to a low number will reduce the number of concurrent requests, reducing the memory used and making the sync less likely to hit rate limits. The trade-off is that syncs will take longer to complete.
 
 ## Adjust Batch Size
 
-Most destination plugins have batching related settings that can be adjusted to improve performance. Tuning these can improve performance, but it can also increase the memory usage of the sync process. Here are the batching related settings you will come across:
+Most destination integrations have batching related settings that can be adjusted to improve performance. Tuning these can improve performance, but it can also increase the memory usage of the sync process. Here are the batching related settings you will come across:
 
-- `batch_size`: The number of rows that are inserted into the destination at once. The default value for this setting is usually between 1000 to 10000 rows, depending on the destination plugin.
+- `batch_size`: The number of rows that are inserted into the destination at once. The default value for this setting is usually between 1000 to 10000 rows, depending on the destination integration.
 
-- `batch_size_bytes`: Maximum size of items that may be grouped together to be written in a single write. This is useful for limiting the memory usage of the sync process. The default value for this varies between 4 MB to 100 MB, depending on the destination plugin.
+- `batch_size_bytes`: Maximum size of items that may be grouped together to be written in a single write. This is useful for limiting the memory usage of the sync process. The default value for this varies between 4 MB to 100 MB, depending on the destination integration.
 
-- `batch_timeout`: Maximum interval between batch writes. Even if data stops coming in, the batch will be written after this interval. The default value for this setting is usually between 10 seconds and 1 minute, depending on the destination plugin.
+- `batch_timeout`: Maximum interval between batch writes. Even if data stops coming in, the batch will be written after this interval. The default value for this setting is usually between 10 seconds and 1 minute, depending on the destination integration.
 
-Some destination plugins (such as file or S3 destinations) start a new object or file for every batch, and some simply buffer the data in memory to be written at once.
+Some destination integrations (such as file or S3 destinations) start a new object or file for every batch, and some simply buffer the data in memory to be written at once.
 
 :::callout{type="info"}
-You should check the documentation for the destination plugin you are using to see what the default values are and consider how they can be adjusted to suit your use case.
+You should check the documentation for the destination integration you are using to see what the default values are and consider how they can be adjusted to suit your use case.
 :::
 
-Here's a conservative example for the PostgreSQL destination plugin that reduces the overall memory usage, but may also increase the time it takes to sync:
+Here's a conservative example for the PostgreSQL destination integration that reduces the overall memory usage, but may also increase the time it takes to sync:
 
 ```yaml
 kind: destination
@@ -130,17 +130,17 @@ spec:
     batch_timeout: "30s" # 30 seconds, tuned down from 60 seconds
 ```
 
-With this configuration, the PostgreSQL destination plugin will write 10,000 rows at a time, or 4 MB of data at a time, or every 30 seconds, whichever comes first.
+With this configuration, the PostgreSQL destination integration will write 10,000 rows at a time, or 4 MB of data at a time, or every 30 seconds, whichever comes first.
 
 ## Use a Different Scheduler
 
-By default, CloudQuery syncs will fetch all tables in parallel, writing data to the destination(s) as they come in. However, the `concurrency` setting, mentioned above, places a limit on how many **table-clients** can be synced at a time. What "table-client" means depends on the source plugin and the table. In AWS, for example, a client is usually a combination of account and region. Get all the combinations of accounts and regions for all tables, and you have all the table-clients for a sync. For the GCP source plugin, clients generally map to projects.
+By default, CloudQuery syncs will fetch all tables in parallel, writing data to the destination(s) as they come in. However, the `concurrency` setting, mentioned above, places a limit on how many **table-clients** can be synced at a time. What "table-client" means depends on the source integration and the table. In AWS, for example, a client is usually a combination of account and region. Get all the combinations of accounts and regions for all tables, and you have all the table-clients for a sync. For the GCP source integration, clients generally map to projects.
 
 The default CloudQuery scheduler, known as `dfs`, will sync up to `concurrency / 100` table-clients at a time (we are ignoring child relations for the purposes of this discussion). Let's take an example GCP cloud estate with 5000 projects, syncing 100 tables. This makes for approximately 500,000 table-client pairs, and a concurrency of 10,000 will allow 100 table-client pairs to be synced at a time. The `dfs` scheduler will start with the first table and its first 100 projects, and then move on to finish all projects for that table before moving on to the next table. This means, in practice, only one table is really being synced at a time!
 
 Usually this works out fine, as long as the cloud platform's rate limits are aligned with the clients. But if rate limits are applied per-table, rather than per-project, `dfs` can be suboptimal. A better strategy in this case would be to choose the first client for every table before moving on to the next client. This is what the `round-robin` scheduler does.
 
-Only some plugins support this setting. The following example config enables `round-robin` scheduling for the GCP source plugin:
+Only some integrations support this setting. The following example configuration enables `round-robin` scheduling for the GCP source integration:
 
 ```yaml
 kind: source
@@ -156,7 +156,7 @@ spec:
     project_ids: ...
 ```
 
-Finally, the `shuffle` strategy aims to provide a balance between `dfs` and `round-robin` by randomizing the order in which table-client pairs are chosen. The following example enables `shuffle` for the GCP plugin, which can help reduce the likelihood of hitting rate limits by randomly mixing the underlying services to which API calls that are made concurrently, rather than hitting a single API with all calls at once:
+Finally, the `shuffle` strategy aims to provide a balance between `dfs` and `round-robin` by randomizing the order in which table-client pairs are chosen. The following example enables `shuffle` for the GCP integration, which can help reduce the likelihood of hitting rate limits by randomly mixing the underlying services to which API calls that are made concurrently, rather than hitting a single API with all calls at once:
 
 ```yaml
 kind: source
@@ -174,12 +174,12 @@ spec:
 ```
 
 :::callout{type="warn"}
-The `shuffle` scheduler is the **default** for the AWS source plugin.
+The `shuffle` scheduler is the **default** for the AWS source integration.
 :::
 
 ## Avoid `skip_dependent_tables: false`
 
-Starting with version [v6.0.0](https://github.com/cloudquery/cloudquery/releases/tag/cli-v6.0.0) of the CloudQuery CLI `skip_dependent_tables` is set to `true` by default, to avoid new tables implicitly being synced when added to plugins. This can be overridden by setting `skip_dependent_tables: false` in the source config.
+Starting with version [v6.0.0](https://github.com/cloudquery/cloudquery/releases/tag/cli-v6.0.0) of the CloudQuery CLI `skip_dependent_tables` is set to `true` by default, to avoid new tables implicitly being synced when added to integrations. This can be overridden by setting `skip_dependent_tables: false` in the source configuration.
 
 When setting `skip_dependent_tables: false`, all tables that depend on other tables will be synced by default.
 When syncing dependent tables multiple API calls need to be made for every row in the parent table. This can lead to thousands of API calls, increasing the time it takes to sync.
@@ -194,4 +194,4 @@ A
 
 By default only `A` will be synced. If you set `skip_dependent_tables: false`, `B` and `C` will also be synced. This can be a problem if `A` has a large number of rows, as it will result in a large number of API calls to sync `B` and `C`.
 
-To avoid setting `skip_dependent_tables: false` and still get dependent tables synced, you can explicitly list the dependent tables in the source config, or [use wildcard matching](#use-wildcard-matching).
+To avoid setting `skip_dependent_tables: false` and still get dependent tables synced, you can explicitly list the dependent tables in the source configuration, or [use wildcard matching](#use-wildcard-matching).

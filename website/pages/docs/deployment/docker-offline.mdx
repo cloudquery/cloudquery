@@ -1,16 +1,15 @@
 ---
 title: Docker - Offline Installation
-description: Learn how to build a container with plugins pre-installed
+description: Learn how to build a container with CloudQuery integrations pre-installed
 ---
 
 # Docker - Offline Installation
 
-You can run CloudQuery in a container with plugins pre-installed. This is useful for isolated deployments where you don't want to download plugins from the internet.
+You can run CloudQuery in a container with integrations pre-installed. This is useful for isolated deployments where you don't want to download integrations from the internet.
 
-Downloading plugins requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in a CI environment or inside of a docker build process. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key)
+Downloading integrations requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in a CI environment or inside of a docker build process. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key)
 
-To download the plugins based on your configuration file, use the `cloudquery plugin install` command. Below is an example `Dockerfile` based on the [CloudQuery container](/docs/deployment/docker). It uses a `build.spec.yaml` with the minimum configuration required to download the plugins.
-
+To download the integrations based on your configuration file, use the `cloudquery plugin install` command. Below is an example `Dockerfile` based on the [CloudQuery container](/docs/deployment/docker). It uses a `build.spec.yaml` with the minimum configuration required to download the integrations.
 
 ```yaml
 # build.spec.yaml
@@ -39,13 +38,13 @@ WORKDIR /app
 COPY ./build.spec.yaml /app/build.spec.yaml
 ARG CLOUDQUERY_API_KEY
 
-RUN /app/cloudquery plugin install build.spec.yaml
+RUN /app/cloudquery integration install build.spec.yaml
 
 FROM ghcr.io/cloudquery/cloudquery:latest
 
 WORKDIR /app
 
-# Copy the .cq directory which contains the plugins
+# Copy the .cq directory which contains the integrations
 COPY --from=build /app/.cq /app/.cq
 ```
 
@@ -61,7 +60,7 @@ Run the container as you would run the default CloudQuery container. Here is an 
 
 ```bash copy
 docker run \
-  # you can mount a different config file that uses the same plugins as in the build.spec 
+  # you can mount a different config file that uses the same integrations as in the build.spec
   -v <ABSOLUTE_PATH_TO_CONFIG_FILE>:/config.yml \
   # set any env variable with -e <ENV_VAR_NAME>=<ENV_VAR_VALUE>
   my-cq-container:latest \

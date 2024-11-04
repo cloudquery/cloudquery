@@ -1,0 +1,47 @@
+name: Transformer Plugin JSON Workflow
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - "plugins/transformer/jsonflattener/**"
+      - ".github/workflows/transf_jsonflattener.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/transformer/jsonflattener/**"
+      - ".github/workflows/transf_jsonflattener.yml"
+
+jobs:
+  plugins-transformer-json:
+    timeout-minutes: 30
+    name: "plugins/transformer/jsonflattener"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/transformer/jsonflattener
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: plugins/transformer/jsonflattener/go.mod
+          cache: true
+          cache-dependency-path: plugins/transformer/jsonflattener/go.sum
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.55.2
+          working-directory: plugins/transformer/jsonflattener
+          args: "--config ../../.golangci.yml"
+      - name: Build
+        run: go build .
+      - name: Test
+        run: make test
+  

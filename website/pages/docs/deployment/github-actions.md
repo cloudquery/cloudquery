@@ -7,13 +7,13 @@ date: 2022/10/25
 
 # Deploy-less Orchestration with GitHub Actions
 
-In this tutorial, we will show you how to load AWS resources into a Postgres database by running CloudQuery as a [GitHub Action](https://github.com/features/actions), using the AWS source- and Postgresql destination plugins.
+In this tutorial, we will show you how to load AWS resources into a Postgres database by running CloudQuery as a [GitHub Action](https://github.com/features/actions), using the AWS source- and Postgresql destination integrations.
 
 ## Prerequisites
 
 ### Generating a CloudQuery API key
 
-Downloading plugins requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in a CI environment like GitHub Actions. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key).
+Downloading integrations requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in a CI environment like GitHub Actions. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key).
 
 ### AWS Authentication
 
@@ -85,7 +85,7 @@ jobs:
           CQ_DSN: ${{ secrets.CQ_DSN }} # Connection string to a PostgreSQL database
 ```
 
-Once committed to the default branch of the repository, the above workflow will run daily at 3 a.m. and will sync the AWS source plugin with the PostgreSQL destination plugin.
+Once committed to the default branch of the repository, the above workflow will run daily at 3 a.m. and will sync the AWS source integration with the PostgreSQL destination integration.
 
 > **Warning**
 > GitHub automatically disables workflows on public repositories [if no repository activity has occurred for 60 days](https://docs.github.com/en/actions/using-workflows/disabling-and-enabling-a-workflow). This may impact your sync if the repository does not receive regular commits.
@@ -130,4 +130,4 @@ jobs:
           CQ_DSN: ${{ secrets.CQ_DSN }} # Connection string to a PostgreSQL database
 ```
 
-Once committed to the default branch of the repository, the above workflow will run daily at 3 a.m and will sync the AWS source plugin with the PostgreSQL destination plugin, in parallel.
+Once committed to the default branch of the repository, the above workflow will run daily at 3 a.m and will sync the AWS source integration with the PostgreSQL destination integration, in parallel.

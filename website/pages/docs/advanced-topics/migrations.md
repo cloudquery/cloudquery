@@ -5,8 +5,8 @@ description: A summary of potential schema changes and how they are handled by C
 
 # How CloudQuery handles changes to existing tables
 
-This section describes how CloudQuery is dealing with schema changes in plugins.
-The overall idea is to not have breaking changes, but rather always add columns, because it is common for users to build views on top which we don't want to break. Those migration tactics are usually implemented in the destination plugins as source plugins are database agnostic and just send back JSON objects.
+This section describes how CloudQuery is dealing with schema changes in integrations.
+The overall idea is to not have breaking changes, but rather always add columns, because it is common for users to build views on top which we don't want to break. Those migration tactics are usually implemented in the destination integrations as source integrations are database agnostic and just send back JSON objects.
 
 CloudQuery has [two modes](/docs/reference/destination-spec#migrate_mode) of migrating to a new schema, `safe` which is supported by all destinations, and `forced` which is only supported by ClickHouse, MySQL, PostgreSQL, MSSQL and SQLite at the moment.
 
