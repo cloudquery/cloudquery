@@ -988,7 +988,7 @@
     },
     {
       "source": "/case-studies",
-      "destination": "https://www.cloudquery.io/blog?tags=case%20studies"
+      "destination": "https://www.cloudquery.io/case-studies"
     },
     {
       "source": "/case-studies/how-hexagon-built-an-infrastructure-data-lake",
