@@ -1039,36 +1039,12 @@
       "destination": "https://www.cloudquery.io/blog/steampipe-vs-cloudquery"
     },
     {
-      "source": "/docs/glossary/soc2",
-      "destination": "https://www.cloudquery.io/blog/soc2"
+      "source": "/docs/glossary/overview",
+      "destination": "https://www.cloudquery.io/blog"
     },
     {
-      "source": "/docs/glossary/what-is-a-cspm",
-      "destination": "https://www.cloudquery.io/blog/what-is-a-cspm"
-    },
-    {
-      "source": "/docs/glossary/what-is-asm",
-      "destination": "https://www.cloudquery.io/blog/what-is-asm"
-    },
-    {
-      "source": "/docs/glossary/what-is-ciem",
-      "destination": "https://www.cloudquery.io/blog/what-is-ciem"
-    },
-    {
-      "source": "/docs/glossary/what-is-cnapp",
-      "destination": "https://www.cloudquery.io/blog/what-is-cnapp"
-    },
-    {
-      "source": "/docs/glossary/what-is-cwpp",
-      "destination": "https://www.cloudquery.io/blog/what-is-cwpp"
-    },
-    {
-      "source": "/docs/glossary/what-is-infrastructure-data-lake",
-      "destination": "https://www.cloudquery.io/blog/what-is-infrastructure-data-lake"
-    },
-    {
-      "source": "/docs/glossary/what-is-the-modern-data-stack",
-      "destination": "https://www.cloudquery.io/blog/what-is-the-modern-data-stack"
+      "source": "/docs/glossary/:path*",
+      "destination": "https://www.cloudquery.io/blog/:path*"
     }
   ]
 }
