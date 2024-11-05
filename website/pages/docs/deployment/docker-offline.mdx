@@ -38,7 +38,7 @@ WORKDIR /app
 COPY ./build.spec.yaml /app/build.spec.yaml
 ARG CLOUDQUERY_API_KEY
 
-RUN /app/cloudquery integration install build.spec.yaml
+RUN /app/cloudquery plugin install build.spec.yaml
 
 FROM ghcr.io/cloudquery/cloudquery:latest
 
