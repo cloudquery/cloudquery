@@ -1,5 +1,4 @@
-
-2. Your plugin code needs to specify the plugin name, version, team name, and plugin type in the `__init__` function. See example from our [plugin template](https://github.com/cloudquery/python-plugin-template) below:
+2. Your integration code needs to specify the integration name, version, team name, and integration type in the `__init__` function. See example from our [integration template](https://github.com/cloudquery/python-plugin-template) below:
 
 ```python
 class BitlyPlugin(plugin.Plugin):
@@ -12,9 +11,9 @@ class BitlyPlugin(plugin.Plugin):
 
 ```
 
-3. (Optional, recommended) In the root directory of your plugin repository run `git tag v1.0.0` to tag the version you're about to publish (replace `v1.0.0` with the version you'd like to publish).
+3. (Optional, recommended) In the root directory of your integration repository run `git tag v1.0.0` to tag the version you're about to publish (replace `v1.0.0` with the version you'd like to publish).
 4. (Optional, recommended) Run `git push origin v1.0.0` to push the tag.
-5. Run `python3 main.py package --docs-dir docs -m 'feat: Initial release' v1.0.0 .` to package the plugin. `v1.0.0` should match the tag you created in step 3. The `-m` specifies the changelog message that will be used in the release notes and it supports markdown. See example [here](https://hub.cloudquery.io/plugins/source/cloudquery/alicloud/v4.0.14/versions). `docs` should be a directory containing markdown files that serve as documentation for the plugin. Read more about the documentation format [here](#documentation-format).
+5. Run `python3 main.py package --docs-dir docs -m 'feat: Initial release' v1.0.0 .` to package the integration. `v1.0.0` should match the tag you created in step 3. The `-m` specifies the changelog message that will be used in the release notes and it supports markdown. See example [here](https://hub.cloudquery.io/plugins/source/cloudquery/alicloud/v4.0.14/versions). `docs` should be a directory containing markdown files that serve as documentation for the integration. Read more about the documentation format [here](#documentation-format).
 6. Run `cloudquery login` to authenticate your CLI with CloudQuery.
-7. Run `cloudquery plugin publish` to publish a draft version of the plugin. The version will show up under the versions tab of your plugin in [CloudQuery Cloud](https://cloud.cloudquery.io). As long as the version is in draft it's mutable and you can re-package the plugin and publish it again.
-8. Once you're ready run `cloudquery plugin publish -f` to publish a finalized version of the plugin. This version will be immutable and will show up in [Hub](https://hub.cloudquery.io/) if the plugin is marked as public. Allow up to 1 hour for the Hub to reflect the changes.
+7. Run `cloudquery plugin publish` to publish a draft version of the integration. The version will show up under the versions tab of your integration in [CloudQuery Cloud](https://cloud.cloudquery.io). As long as the version is in draft it's mutable and you can re-package the integration and publish it again.
+8. Once you're ready run `cloudquery plugin publish -f` to publish a finalized version of the integration. This version will be immutable and will show up in [Hub](https://hub.cloudquery.io/) if the integration is marked as public. Allow up to 1 hour for the Hub to reflect the changes.

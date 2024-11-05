@@ -8,8 +8,8 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cloudquery/cloudquery-api-go v1.13.1
 	github.com/cloudquery/codegen v0.3.19
-	github.com/cloudquery/plugin-pb-go v1.25.0
-	github.com/cloudquery/plugin-sdk/v4 v4.67.1
+	github.com/cloudquery/plugin-pb-go v1.25.2
+	github.com/cloudquery/plugin-sdk/v4 v4.68.2
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/docker/docker v26.1.5+incompatible
@@ -24,7 +24,7 @@ require (
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/rs/zerolog v1.33.0
-	github.com/rudderlabs/analytics-go/v4 v4.2.0
+	github.com/rudderlabs/analytics-go/v4 v4.2.1
 	github.com/samber/lo v1.47.0
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
 	github.com/schollz/progressbar/v3 v3.14.6
@@ -39,13 +39,13 @@ require (
 	go.opentelemetry.io/collector/pdata v1.10.0
 	go.opentelemetry.io/collector/receiver v0.103.0
 	go.opentelemetry.io/collector/receiver/otlpreceiver v0.103.0
-	go.opentelemetry.io/otel/metric v1.30.0
-	go.opentelemetry.io/otel/trace v1.30.0
+	go.opentelemetry.io/otel/metric v1.31.0
+	go.opentelemetry.io/otel/trace v1.31.0
 	go.uber.org/zap v1.27.0
-	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0
-	golang.org/x/net v0.29.0
+	golang.org/x/exp v0.0.0-20241009180824-f66d83c29e7c
+	golang.org/x/net v0.30.0
 	golang.org/x/sync v0.8.0
-	golang.org/x/term v0.24.0
+	golang.org/x/term v0.25.0
 	google.golang.org/grpc v1.67.1
 	google.golang.org/protobuf v1.35.1
 	gopkg.in/yaml.v3 v3.0.1
@@ -135,14 +135,14 @@ require (
 	go.opentelemetry.io/collector/featuregate v1.10.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.52.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.52.0 // indirect
-	go.opentelemetry.io/otel v1.30.0 // indirect
+	go.opentelemetry.io/otel v1.31.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/mod v0.21.0 // indirect
-	golang.org/x/sys v0.25.0 // indirect
-	golang.org/x/text v0.18.0 // indirect
-	golang.org/x/tools v0.25.0 // indirect
+	golang.org/x/sys v0.26.0 // indirect
+	golang.org/x/text v0.19.0 // indirect
+	golang.org/x/tools v0.26.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20240903143218-8af14fe29dc1 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20241007155032-5fefd90f89a9 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 

@@ -46,7 +46,7 @@ spec:
 This will create a configuration file that will instruct CloudQuery to collect data from AWS and store it in an S3 bucket. You will need to replace the `REPLACE_WITH_S3_DESTINATION_BUCKET` placeholder with the name of the S3 bucket you want to use to store the data. You can also modify the configuration file to collect only the data you need. For more information on how to create a configuration file, [visit our docs](/docs/reference/source-spec)
 
 
-In order to inject the config file into the prebuilt container you will have to base64 encode the content of the `cloudquery.yml` file . Assuming you are running on a Linux or MacOS machine you can do this conversion by running the following command:
+In order to inject the configuration file into the prebuilt container you will have to base64 encode the content of the `cloudquery.yml` file . Assuming you are running on a Linux or MacOS machine you can do this conversion by running the following command:
 ```bash
 cat cloudquery.yml | base64
 ```
@@ -54,7 +54,7 @@ cat cloudquery.yml | base64
 
 ## Step 2: Create a Secret to store a CloudQuery API Key
 
-Downloading plugins requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in ECS. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key).
+Downloading integrations requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in ECS. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key).
 
 Once you have a CloudQuery API Key you are going to create a Secret in AWS Secrets Manager to store the API Key. To create a secret, use the following command:
 

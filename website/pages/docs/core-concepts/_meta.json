@@ -1,5 +1,5 @@
 {
-  "plugins": "Plugins",
+  "integrations": "Integrations",
   "syncs": "Syncs",
   "configuration": "Configuration",
   "transformations": "Transformations",

@@ -1,0 +1,50 @@
+---
+title: Publishing an Integration to the Hub
+description: Learn how to publish an integration to the Hub and have it listed in https://hub.cloudquery.io/
+---
+
+import Publish from '../../../components/mdx/publish.mdx'
+
+# Publishing an Integration to the Hub
+
+With the announcement of [CloudQuery Hub](/blog/announcing-cloudquery-new-hub), we are excited to see the community contribute integrations to the Hub. This guide will walk you through the process of publishing an integration to the Hub.
+
+## Prerequisites
+
+- You have created a [CloudQuery Cloud](https://cloud.cloudquery.io/) account and completed the onboarding process to create a team
+- You have the [CloudQuery CLI](/docs/quickstart) installed (version >= `v5.0.0`)
+- The integration you'd like to publish is written in one of the following:
+  - Go with SDK version >= `v4.17.1`
+  - Python with SDK version >= `v0.1.12`
+  - JavaScript with SDK version >= `v0.1.0`
+- The integration you'd like to publish is initialized using the integration's name, team and kind. See example [here](https://github.com/cloudquery/cloudquery/blob/b7ef6f6ed8948272a429f35614fa28559397227a/plugins/source/test/resources/plugin/plugin.go#L15)
+- You are authenticated to [CloudQuery Cloud](https://cloud.cloudquery.io/) using the `cloudquery login` command
+
+## Create an Integration Definition on Hub
+
+Before publishing an integration, you need to create an integration definition on the CloudQuery Cloud site.
+
+Log in to [CloudQuery Cloud](https://cloud.cloudquery.io/). If you have not created a team yet, you will be asked to create a new one.
+
+<img src="/images/docs/publishing-plugins/create-team.png" width="50%" style={{margin:"1em"}} />
+
+The display name will be visible on Hub next to your integration. The team name is going to be used in configurations to reference your integration using `<team-name>/<high-level architecture-name>`.
+
+To create a new integration definition, create a new integration from the Integrations tab. Fill in the necessary details and upload the integration image.
+
+### Staging Releases
+
+Release your integrations for internal testing first before making it public. Set the **Visibility** to `Private` and **Release Stage** to `Preview`. This enables testing of premium integrations without being charged and with your team only (you can invite other users to your team to test the integration).
+When you want to release the integration in public, set the Visibility to `Public` and eventually, change the **Release Stage** to `GA` (Generally Available) to begin charging for the usage.
+
+## Publishing an Integration
+
+<Publish />
+
+## Documentation Format
+
+- The only documentation format supported at the moment is markdown, and the `cloudquery publish` command will only upload markdown files with the `.md` extension
+- You can have multiple markdown files as documentation. The files will be concatenated in alphabetical order, and if one of the files is named `overview.md` it will show up first
+- The markdown filename will be title cased when display in the Hub. For example `overview.md` will be displayed as `Overview`
+- HTML tags are not supported in the markdown files and will be ignored
+- Relative assets (e.g. `./assets/logo.png`) are not supported. We recommend using absolute URLs for assets e.g. `https://raw.githubusercontent.com/<owner>/<repo>/main/assets/logo.png` in case you have the assets on GitHub

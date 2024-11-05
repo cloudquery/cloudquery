@@ -6,6 +6,32 @@ import { Badge } from "./components/Badge";
 import { Callout, useConfig } from "nextra-theme-docs";
 import { components } from "./utils/components";
 import { getSlackAppLink } from "./utils/slack-app-link";
+import { WebSite, WebPage, WithContext } from "schema-dts";
+import { useRouter } from "next/router";
+
+const hostname = process.env.VERCEL_ENV === "production" ? process.env.VERCEL_PROJECT_PRODUCTION_URL : process.env.VERCEL_URL || "docs.cloudquery.io";
+
+const rootJSONLd: WithContext<WebSite> = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "CloudQuery",
+  alternateName: ["CloudQuery Docs"],
+  url: `https://${hostname}/`,
+};
+
+const othersJSONLd: (path: string) => WithContext<WebPage> = (path: string) =>({
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "CloudQuery",
+  alternateName: ["CloudQuery Docs"],
+  url: `https://${hostname}${path}`,
+  isPartOf: {
+    "@type": "WebSite",
+    name: "CloudQuery",
+    url: `https://${hostname}/`,
+  }
+});
+
 
 const theme: DocsThemeConfig = {
   project: {
@@ -45,9 +71,17 @@ const theme: DocsThemeConfig = {
   },
   logoLink: "https://www.cloudquery.io",
   head: () => {
+    const { asPath } = useRouter()
     const { frontMatter } = useConfig();
     return (
       <>
+        <script
+          id="faq-schema"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(asPath === "/" ? rootJSONLd : othersJSONLd(asPath)),
+          }}
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link
           rel="apple-touch-icon"

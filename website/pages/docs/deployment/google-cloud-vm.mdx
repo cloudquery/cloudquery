@@ -23,10 +23,11 @@ src="https://www.youtube.com/embed/rz4aU1IMF30">
 - A Google Cloud account. You can [sign up here](https://cloud.google.com/).
 - A Google Cloud Project with billing enabled
 - The following APIs enabled on the project, at a minimum:
-  * Compute Engine API
-  * Cloud Logging API
-  * Cloud SQL Admin API
-  * Cloud Resource Manager API
+
+  - Compute Engine API
+  - Cloud Logging API
+  - Cloud SQL Admin API
+  - Cloud Resource Manager API
 
   You can enable these APIs by going to the [APIs & Services](https://console.cloud.google.com/apis/dashboard) section of the Google Cloud Console and clicking on **Enable APIs and Services**.
 
@@ -37,7 +38,7 @@ src="https://www.youtube.com/embed/rz4aU1IMF30">
 3. Click on **Create Instance**.
 4. Give your instance a name and select a region and zone.
 5. Select a machine type. We recommend using a machine with at least 2 vCPUs and 8GB of memory. The required size will vary depending on the size of your dataset you are syncing and how you configure the concurrency of the sync.
-6. Under **Identity and API access**, select **Allow full access to all Cloud APIs**. This will allow the GCP source plugin to access the APIs it needs to list all GCP projects in your account. Note that this permission is **distinct from** the permissions we will later grant to the service account for this VM. You can also restrict this to only the APIs you need, but this is not covered in this tutorial.
+6. Under **Identity and API access**, select **Allow full access to all Cloud APIs**. This will allow the GCP source integration to access the APIs it needs to list all GCP projects in your account. Note that this permission is **distinct from** the permissions we will later grant to the service account for this VM. You can also restrict this to only the APIs you need, but this is not covered in this tutorial.
 7. Create the instance
 
 ## Step 2: Install CloudQuery
@@ -54,7 +55,7 @@ chmod a+x cloudquery
 
 1. Click on the hamburger menu in the top left corner and select **SQL**.
 2. Click on **Create Instance**.
-3. Select **PostgreSQL**. (Or another database if you prefer--CloudQuery supports many destinations. You will just need to then modify your destination config accordingly later.)
+3. Select **PostgreSQL**. (Or another database if you prefer--CloudQuery supports many destinations. You will just need to then modify your destination configuration accordingly later.)
 4. Give your instance a name and select a region and zone.
 5. Select a machine type. We recommend using a machine with at least 2 vCPUs and 8GB of memory. The required size will vary depending on the size of your dataset you are syncing and how you configure the concurrency of the sync.
 6. Under **Networking**, select **Private IP**. If you later want to use Cloud SQL console or access the database from a service outside of your GCP VPC network (like Grafana or Superset), then you can also add a public IP. For a sync to complete, we only need a Private IP.
@@ -63,13 +64,13 @@ chmod a+x cloudquery
 ## Step 4: Add a database and user
 
 1. Click on your newly created Cloud SQL instance from the Cloud SQL page.
-4. Click on **Databases**.
-5. Click on **Create Database**.
-6. Give your database a name, like `cloudquery`.
-7. Click on **Users**.
-8. Click on **Create User Account**.
-9. Give your user a name and password. The user name can again be `cloudquery`, with a password of your choice.
-10. Click on **Create**.
+2. Click on **Databases**.
+3. Click on **Create Database**.
+4. Give your database a name, like `cloudquery`.
+5. Click on **Users**.
+6. Click on **Create User Account**.
+7. Give your user a name and password. The user name can again be `cloudquery`, with a password of your choice.
+8. Click on **Create**.
 
 <Callout type="info">
 
@@ -108,9 +109,9 @@ spec:
 
 <Callout type="info">
 
-If you are using a database other than PostgreSQL, you will need to modify the `destination` section of the config file accordingly. See the [destinations](https://hub.cloudquery.io/plugins/destination) section of the docs for more information.
+If you are using a database other than PostgreSQL, you will need to modify the `destination` section of the configuration file accordingly. See the [destinations](https://hub.cloudquery.io/plugins/destination) section of the docs for more information.
 
-Similarly, if you are using a different source, follow the [documentation for your source plugin](https://hub.cloudquery.io/plugins/source) to get the correct config.
+Similarly, if you are using a different source, follow the [documentation for your source integration](https://hub.cloudquery.io/plugins/source) to get the correct configuration.
 
 </Callout>
 
@@ -121,9 +122,10 @@ Similarly, if you are using a different source, follow the [documentation for yo
 3. Find the service principal that is running your VM instance. You can find this information on the VM details page: it will typically be in the format `123456789012-compute@developer.gserviceaccount.com`
 4. Click **Edit principal** (the pencil icon) next to the service account.
 5. Add the following roles to the service account that is running your VM instance.
-  * **Viewer**: This will allow the GCP plugin to read GCP resources from your projects
-  * **Browser**: This is necessary to allow the GCP plugin to list all projects in your account
-   These permissions assume you are using the GCP source plugin, it may be too broad for your use case or for other plugins. Following the principle of least privilege, you should make the scope as small as possible for your needs.
+
+- **Viewer**: This will allow the GCP integration to read GCP resources from your projects
+- **Browser**: This is necessary to allow the GCP integration to list all projects in your account
+  These permissions assume you are using the GCP source integration, it may be too broad for your use case or for other integrations. Following the principle of least privilege, you should make the scope as small as possible for your needs.
 
 ## Step 7: Run a Sync
 
@@ -132,6 +134,7 @@ Similarly, if you are using a different source, follow the [documentation for yo
    ```bash copy
    CLOUDQUERY_API_KEY=<your-api-key-value> ./cloudquery sync config.yaml
    ```
+
 2. You should see a successful sync! If not, check the CLI output and `cloudquery.log` for errors.
 3. You can now fine-tune your configuration file: you may want to try `tables: ["*"]` to sync all tables at least once and get a complete asset inventory. Be aware, however, that this can take a long time on large account. We also don't recommend using `*` in production, as when you perform version upgrades, this will cause new tables to automatically get synced and may cause unexpected issues. In general, we recommend only syncing the tables you need.
 
@@ -168,7 +171,7 @@ Now that we have a working sync, we can set up a cron schedule to run it automat
 crontab -e
 ```
 
-3. Add the following line to the crontab file, replacing the path with the path to your CloudQuery binary and config file:
+3. Add the following line to the crontab file, replacing the path with the path to your CloudQuery binary and configuration file:
 
 ```bash copy
 0 1 * * * /path/to/cloudquery sync /path/to/config.yaml

@@ -5,7 +5,7 @@ description: A quickstart guide for running syncs in CloudQuery Cloud
 
 ## What is CloudQuery Cloud
 
-CloudQuery Cloud is a great way to get started with CloudQuery and syncing data from source to destination without the need to deploy your own infrastructure. It is also much easier to connect to sources and destinations with the integrated OAuth authentication support. You only need to select a source and destination plugin and CloudQuery will take care of the rest.
+CloudQuery Cloud is a great way to get started with CloudQuery and syncing data from source to destination without the need to deploy your own infrastructure. It is also much easier to connect to sources and destinations with the integrated OAuth authentication support. You only need to select a source and destination integration and CloudQuery will take care of the rest.
 
 With CloudQuery Cloud, you can:
 
@@ -22,7 +22,7 @@ If you don't have a database available, we recommend that you try a managed serv
 
 ## Creating Your First Sync
 
-First, head to [CloudQuery Cloud](https://cloud.cloudquery.io) and sign up for an account. After the sign up, you will be asked to specify team name. Team name is important if you later decide to create your own plugins. Please note that the team name cannot be changed later.
+First, head to [CloudQuery Cloud](https://cloud.cloudquery.io) and sign up for an account. After the sign up, you will be asked to specify team name. Team name is important if you later decide to create your own integrations. Please note that the team name cannot be changed later.
 
 After you have signed up and created a team, you can create your first sync from the Syncs tab.
 
@@ -32,22 +32,22 @@ Clicking the button will start a wizard that will walk you through the whole pro
 
 ### Configure a Source
 
-First, you need to define a Source - a configuration of a CloudQuery plugin that will define what service CloudQuery will connect to and get the data from. 
-To do this, select a source plugin from the list of available sources. In this example, we will use AWS as the source.
+First, you need to define a Source - a configuration of a CloudQuery integration that will define what service CloudQuery will connect to and get the data from.
+To do this, select a source integration from the list of available sources. In this example, we will use AWS as the source.
 
 [![Select a source](/images/docs/quickstart/source-1.png)](/images/docs/quickstart/source-1.png)
 
 #### Authentication
 
-Once you select the source plugin, its configuration UI will load. Notice the Setup Guide on the right side that will guide you through the individual configuration options for the specific plugin.
+Once you select the source integration, its configuration UI will load. Notice the Setup Guide on the right side that will guide you through the individual configuration options for the specific integration.
 
 [![Source Configuration](/images/docs/quickstart/source-2.png)](/images/docs/quickstart/source-2.png)
 
-Some plugins support OAuth connection, other require an API key, or access token. AWS plugin will help you deploy a CloudFormation stack to create an IAM role which will be used by CloudQuery to access the AWS data.
+Some integrations support OAuth connection, other require an API key, or access token. AWS integration will help you deploy a CloudFormation stack to create an IAM role which will be used by CloudQuery to access the AWS data.
 
 #### Selecting Tables to Sync
 
-Some plugins allow you to select which tables to Sync. Plugins with large amounts of tables (such as AWS) have a list of services to sync from instead. This makes the configuration easier. Should you require better granularity, we recommend using the self-hosted syncs instead.
+Some integrations allow you to select which tables to Sync. integrations with large amounts of tables (such as AWS) have a list of services to sync from instead. This makes the configuration easier. Should you require better granularity, we recommend using the self-hosted syncs instead.
 
 Here is a screenshot of the AWS services selection:
 
@@ -59,25 +59,25 @@ Here is a screenshot of the GitHub tables selection:
 
 #### Advanced Options
 
-Some plugins allow you to configure additional options for the source that may help you improve the sync performance and timing or its rate-limiting behavior.
+Some integrations allow you to configure additional options for the source that may help you improve the sync performance and timing or its rate-limiting behavior.
 
 #### Testing the connection
 
-Once the plugin is configured, click the **Test Connection** button to verify that CloudQuery can connect to the source. If the connection is successful, a new Source (and can be used to set up a new sync later) will be created and you can proceed to the next step.
+Once the integration is configured, click the **Test Connection** button to verify that CloudQuery can connect to the source. If the connection is successful, a new Source (and can be used to set up a new sync later) will be created and you can proceed to the next step.
 
 ### Configure a Destination
 
-Next, you need to configure where the data will be stored. For this, you will set up a Destination - a configuration of a CloudQuery plugin that will enable CloudQuery to connect to the destination database.
+Next, you need to configure where the data will be stored. For this, you will set up a Destination - a configuration of a CloudQuery integration that will enable CloudQuery to connect to the destination database.
 
-Choose a CloudQuery plugin from the list of available destinations. PostgreSQL is a good choice for most use cases and is usually the easiest to get started with.
+Choose a CloudQuery integration from the list of available destinations. PostgreSQL is a good choice for most use cases and is usually the easiest to get started with.
 
 [![Select Destination](/images/docs/quickstart/destination-1.png)](/images/docs/quickstart/destination-1.png)
 
-Once you select the plugin, follow the setup guide on the right side to configure the connection to the destination. For most of the destinations, you will be asked to provide the host name, database name, and credentials to authenticate with.
+Once you select the integration, follow the setup guide on the right side to configure the connection to the destination. For most of the destinations, you will be asked to provide the host name, database name, and credentials to authenticate with.
 
 [![Select Destination](/images/docs/quickstart/destination-2.png)](/images/docs/quickstart/destination-2.png)
 
-If you use a managed database service, such as [Neon](https://neon.tech/), or [Aiven](https://aiven.io/free-mysql-database), the configuration should be straightforward with a connection string. If you deployed your own database in a cloud provider, you may need to make sure the database is accessible from the CloudQuery Cloud IP addresses. See the sidebar on the right in the plugin configuration UI for the list of IP addresses.
+If you use a managed database service, such as [Neon](https://neon.tech/), or [Aiven](https://aiven.io/free-mysql-database), the configuration should be straightforward with a connection string. If you deployed your own database in a cloud provider, you may need to make sure the database is accessible from the CloudQuery Cloud IP addresses. See the sidebar on the right in the integration configuration UI for the list of IP addresses.
 
 Click **Test Connection** to save the Destination and proceed to the next step.
 
@@ -93,11 +93,11 @@ If you configure syncs to run Daily, they will run at midnight every day. Weekly
 
 #### Allocated Resources
 
-You can choose to allocate vCPU and vRAM resources. Some plugins may need more vRAM or vCPU to run efficiently. The default values are usually sufficient for most use cases.
+You can choose to allocate vCPU and vRAM resources. Some integrations may need more vRAM or vCPU to run efficiently. The default values are usually sufficient for most use cases.
 
 #### Incremental Sync
 
-Some source plugins support incremental syncs on some of their tables. Incremental syncs fetch only the data that changed since the last sync. Such tables are marked as "incremental" in the source plugin table documentation.
+Some source integrations support incremental syncs on some of their tables. Incremental syncs fetch only the data that changed since the last sync. Such tables are marked as "incremental" in the source integration table documentation.
 
 By default, this option is on and it means syncs will generally take less time and move fewer rows. If you need to refresh the data, disable this option.
 
@@ -117,8 +117,8 @@ Cloud syncs can be controlled using API. To use the API, you will need to [gener
 
 ## Limitations of Cloud Syncs Compared to Self-hosted
 
-- Some plugins may not be available in CloudQuery Cloud. This is due to the fact that we are still in beta and are continuously adding more plugins.
+- Some integrations may not be available in CloudQuery Cloud. This is due to the fact that we are still in beta and are continuously adding more integrations.
 - Not all configuration options that are available for self-hosted syncs are available for Cloud Syncs. This is to make the Cloud Syncs easier to use and configure. We will consider adding more options in the future based on your feedback.
-- Docker-based plugins cannot be used with CloudQuery Cloud. This is a limitation during beta phase and will be removed before the general availability.
+- Docker-based integrations cannot be used with CloudQuery Cloud. This is a limitation during beta phase and will be removed before the general availability.
 - Not all authentication mechanisms that work on self-hosted syncs work with CloudQuery Cloud. We are continuously adding support for more authentication mechanisms.
-- Community and custom plugins cannot be used with CloudQuery Cloud. This is by design and will not be removed in the near future.
+- Community and custom integrations cannot be used with CloudQuery Cloud. This is by design and will not be removed in the near future.

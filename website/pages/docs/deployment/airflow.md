@@ -13,7 +13,7 @@ Apache Airflow is a popular open source workflow management tool. It can be used
 
 ### Generating a CloudQuery API key
 
-Downloading plugins requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in an Apache Airflow environment. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key).
+Downloading integrations requires users to be authenticated, normally this means running `cloudquery login` but that is not doable in an Apache Airflow environment. The recommended way to handle this is to use an API key. More information on generating an API Key can be found [here](/docs/deployment/generate-api-key).
 
 ### Apache Airflow Installation
 
@@ -131,7 +131,7 @@ with DAG(
     )
 ```
 
-This relies on a [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) for the CloudQuery config. To create this, first create a file called `config.yaml` with the contents of your CloudQuery config file. Here we will use an example config file that syncs the `aws_ec2_instance` table from the `aws` plugin to a Postgres database, but refer to our [Quickstart guide](/docs/quickstart/) and the specific documentation for each plugin to see how to configure it for the data you wish to sync. 
+This relies on a [ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) for the CloudQuery config. To create this, first create a file called `config.yaml` with the contents of your CloudQuery config file. Here we will use an example config file that syncs the `aws_ec2_instance` table from the `aws` integration to a Postgres database, but refer to our [Quickstart guide](/docs/quickstart/) and the specific documentation for each integration to see how to configure it for the data you wish to sync. 
 
 ```yaml copy filename="config.yaml"
 kind: source
@@ -152,7 +152,7 @@ spec:
   version: "VERSION_DESTINATION_POSTGRESQL"
   write_mode: "overwrite-delete-stale"
   spec:
-    ## plugin-specific configuration for PostgreSQL.
+    ## integration-specific configuration for PostgreSQL.
     ## See all available options here: https://github.com/cloudquery/cloudquery/tree/main/plugins/destination/postgresql#postgresql-spec
     ## Required. Connection string to your PostgreSQL instance
     ## In production it is highly recommended to use environment variable expansion

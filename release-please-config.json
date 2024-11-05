@@ -91,6 +91,9 @@
     "plugins/transformer/basic": {
       "component": "plugins-transformer-basic"
     },
+    "plugins/transformer/jsonflattener": {
+      "component": "plugins-transformer-jsonflattener"
+    },
     "scaffold": {
       "component": "scaffold"
     }
