@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.4.18](https://github.com/cloudquery/cloudquery/compare/plugins-destination-meilisearch-v2.4.17...plugins-destination-meilisearch-v2.4.18) (2024-11-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.68.0 ([#19515](https://github.com/cloudquery/cloudquery/issues/19515)) ([97c6d41](https://github.com/cloudquery/cloudquery/commit/97c6d41cc6962534c4c4cb1d3368dc38e6074383))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.68.2 ([#19565](https://github.com/cloudquery/cloudquery/issues/19565)) ([7e5fe64](https://github.com/cloudquery/cloudquery/commit/7e5fe6464d39173709107f512bab4da54a687d28))
+* **deps:** Update module github.com/golang-jwt/jwt/v4 to v4.5.1 [SECURITY] ([#19567](https://github.com/cloudquery/cloudquery/issues/19567)) ([ff2f3b8](https://github.com/cloudquery/cloudquery/commit/ff2f3b85c6eefef9c5228e56bcd794c10f938688))
+
 ## [2.4.17](https://github.com/cloudquery/cloudquery/compare/plugins-destination-meilisearch-v2.4.16...plugins-destination-meilisearch-v2.4.17) (2024-10-30)
 
 
