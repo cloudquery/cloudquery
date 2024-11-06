@@ -97,7 +97,7 @@
   "plugins/source/jira+FILLER": "0.0.0",
   "plugins/source/vault": "1.0.8",
   "plugins/source/vault+FILLER": "0.0.0",
-  "plugins/source/airtable": "2.2.9",
+  "plugins/source/airtable": "2.2.10",
   "plugins/source/airtable+FILLER": "0.0.0",
   "plugins/source/bitbucket": "1.3.2",
   "plugins/source/bitbucket+FILLER": "0.0.0",
