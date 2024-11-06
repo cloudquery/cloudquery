@@ -1039,8 +1039,16 @@
       "destination": "https://www.cloudquery.io/blog/steampipe-vs-cloudquery"
     },
     {
+      "source": "/docs/glossary/overview",
+      "destination": "https://www.cloudquery.io/blog"
+    },
+    {
       "source": "/docs/core-concepts/plugins",
       "destination": "/docs/core-concepts/integrations"
+    },
+    {
+      "source": "/docs/glossary/:path*",
+      "destination": "https://www.cloudquery.io/blog/:path*"
     },
     {
       "source": "/docs/developers/creating-new-plugin",
