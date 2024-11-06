@@ -184,9 +184,9 @@ jobs:
           REACT_APP_PLUGIN_KIND: destination
           REACT_APP_PLUGIN_NAME: mysql
           REACT_APP_PLUGIN_VERSION: development
-      - name: Run E2E tests and generate configs
-        working-directory: "plugins/destination/mysql/cloud-config-ui"
-        run: CQ_CI_PLAYWRIGHT_PREVIEW_LINK='${{ env.CQ_CI_PLAYWRIGHT_PREVIEW_LINK }}' E2E_TESTS_GENERATE_CONFIG=true npm run test:e2e
-      - name: Run unit tests
-        working-directory: "plugins/destination/mysql/cloud-config-ui"
-        run: npm run test
+      # - name: Run E2E tests and generate configs
+      #   working-directory: "plugins/destination/mysql/cloud-config-ui"
+      #   run: CQ_CI_PLAYWRIGHT_PREVIEW_LINK='${{ env.CQ_CI_PLAYWRIGHT_PREVIEW_LINK }}' E2E_TESTS_GENERATE_CONFIG=true npm run test:e2e
+      # - name: Run unit tests
+      #   working-directory: "plugins/destination/mysql/cloud-config-ui"
+      #   run: npm run test

@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.0.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v5.0.8...plugins-destination-clickhouse-v5.0.9) (2024-11-06)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to f66d83c ([#19543](https://github.com/cloudquery/cloudquery/issues/19543)) ([9ba7932](https://github.com/cloudquery/cloudquery/commit/9ba793279084af457ed2d307e82f410358ed64f7))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.68.0 ([#19515](https://github.com/cloudquery/cloudquery/issues/19515)) ([97c6d41](https://github.com/cloudquery/cloudquery/commit/97c6d41cc6962534c4c4cb1d3368dc38e6074383))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.68.2 ([#19565](https://github.com/cloudquery/cloudquery/issues/19565)) ([7e5fe64](https://github.com/cloudquery/cloudquery/commit/7e5fe6464d39173709107f512bab4da54a687d28))
+
 ## [5.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v5.0.7...plugins-destination-clickhouse-v5.0.8) (2024-10-30)
 
 
