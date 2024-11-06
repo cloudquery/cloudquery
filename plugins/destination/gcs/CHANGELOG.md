@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.2.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.2.10...plugins-destination-gcs-v5.2.11) (2024-11-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module cloud.google.com/go/storage to v1.46.0 ([#19556](https://github.com/cloudquery/cloudquery/issues/19556)) ([8f545f6](https://github.com/cloudquery/cloudquery/commit/8f545f64e39887f6313a768f2f3754ba04d518bb))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.68.0 ([#19515](https://github.com/cloudquery/cloudquery/issues/19515)) ([97c6d41](https://github.com/cloudquery/cloudquery/commit/97c6d41cc6962534c4c4cb1d3368dc38e6074383))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.68.2 ([#19565](https://github.com/cloudquery/cloudquery/issues/19565)) ([7e5fe64](https://github.com/cloudquery/cloudquery/commit/7e5fe6464d39173709107f512bab4da54a687d28))
+
 ## [5.2.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.2.9...plugins-destination-gcs-v5.2.10) (2024-10-30)
 
 
