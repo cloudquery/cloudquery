@@ -147,6 +147,10 @@ Reserved for future use.
 
   Some Parquet readers require a specific root repetition option to be able to read the file. For example, importing Parquet files into [Snowflake](https://www.snowflake.com/en/) requires the root repetition to be `undefined`.
 
+- `max_row_group_length` (`integer`) (optional) (default: `134217728` (= 128 * 1024 * 1024))
+
+  The maximum number of rows in a single row group. Use a lower number to reduce memory usage when reading the Parquet files, and a higher number to increase the efficiency of reading the Parquet files.
+
 ### server_side_encryption_configuration
 
 - `sse_kms_key_id` (`string`) (required)
