@@ -20,6 +20,7 @@ spec:
       # Parquet specific parameters:
       # version: "v2Latest"
       # root_repetition: "repeated"
+      # max_row_group_length: 134217728 # 128 * 1024 * 1024
     # compression: "" # options: gzip
     # no_rotate: false
     # batch_size: 10000
