@@ -49,6 +49,12 @@
           ],
           "description": "Root repetition",
           "default": "repeated"
+        },
+        "max_row_group_length": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Max row group length",
+          "default": 134217728
         }
       },
       "additionalProperties": false,
