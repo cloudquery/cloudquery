@@ -37,6 +37,10 @@ func Configure(ctx context.Context, logger zerolog.Logger, spec []byte, opts plu
 	if err := json.Unmarshal(spec, config); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
 	}
+	config.SetDefaults()
+	if err := config.Validate(); err != nil {
+		return nil, fmt.Errorf("failed to validate spec: %w", err)
+	}
 
 	syncClient, err := client.New(ctx, logger, config)
 	if err != nil {
