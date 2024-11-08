@@ -1,5 +1,19 @@
 # Changelog
 
+## [7.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.4.12...plugins-destination-s3-v7.5.0) (2024-11-08)
+
+
+### Features
+
+* Add Parquet format `max_row_group_length` option ([#19583](https://github.com/cloudquery/cloudquery/issues/19583)) ([4130e1f](https://github.com/cloudquery/cloudquery/commit/4130e1fd449ade7fa1374eb1fded692eb5706bef))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @types/jest to v29.5.14 ([#19544](https://github.com/cloudquery/cloudquery/issues/19544)) ([f0340e5](https://github.com/cloudquery/cloudquery/commit/f0340e50b7c282d1872ee13208fa35c40c4154fe))
+* **deps:** Update dependency @types/node to v16.18.119 ([#19545](https://github.com/cloudquery/cloudquery/issues/19545)) ([299926d](https://github.com/cloudquery/cloudquery/commit/299926de3cd4ac6c063d70ecb8cacb7f49611851))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.5.0 ([#19578](https://github.com/cloudquery/cloudquery/issues/19578)) ([da0440a](https://github.com/cloudquery/cloudquery/commit/da0440a579ce02493c080dc17f753358dd5ac86c))
+
 ## [7.4.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.4.11...plugins-destination-s3-v7.4.12) (2024-11-06)
 
 

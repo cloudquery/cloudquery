@@ -39,7 +39,7 @@
   "plugins/source/gitlab+FILLER": "0.0.0",
   "plugins/destination/gcs": "5.2.11",
   "plugins/destination/gcs+FILLER": "0.0.0",
-  "plugins/destination/s3": "7.4.12",
+  "plugins/destination/s3": "7.5.0",
   "plugins/destination/s3+FILLER": "0.0.0",
   "plugins/destination/file": "5.2.8",
   "plugins/destination/file+FILLER": "0.0.0",
