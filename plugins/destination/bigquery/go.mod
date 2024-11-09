@@ -11,11 +11,11 @@ require (
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.33.0
 	golang.org/x/sync v0.8.0
-	google.golang.org/api v0.204.0
+	google.golang.org/api v0.205.0
 )
 
 require (
-	cloud.google.com/go/auth v0.10.0 // indirect
+	cloud.google.com/go/auth v0.10.1 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.5 // indirect
 	github.com/adrg/xdg v0.4.0 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
