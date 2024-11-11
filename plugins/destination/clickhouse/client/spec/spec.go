@@ -45,7 +45,8 @@ type Spec struct {
 	// Maximum interval between batch writes.
 	BatchTimeout *configtype.Duration `json:"batch_timeout,omitempty"`
 
-	// If true, the plugin will partition the data by the _cq_sync_group_id column.
+	// If true, the plugin will partition the data by the _cq_sync_group_id column,
+	// except for incremental tables as the logical content of these spans all historical syncs.
 	PartitionBySyncGroupID bool `json:"partition_by_sync_group_id,omitempty"`
 }
 

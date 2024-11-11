@@ -47,7 +47,7 @@ func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, parti
 	}
 	builder.WriteString("\n) ENGINE = ")
 	builder.WriteString(engine.String())
-	if partitionBySyncGroupID && hasColumn(table, cqSyncGroupID) {
+	if partitionBySyncGroupID && hasColumn(table, cqSyncGroupID) && !table.IsIncremental {
 		builder.WriteString(" PARTITION BY ")
 		builder.WriteString(cqSyncGroupID)
 	}

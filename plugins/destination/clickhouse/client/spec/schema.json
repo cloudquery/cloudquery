@@ -92,7 +92,7 @@
         },
         "partition_by_sync_group_id": {
           "type": "boolean",
-          "description": "If true, the plugin will partition the data by the _cq_sync_group_id column."
+          "description": "If true, the plugin will partition the data by the _cq_sync_group_id column,\nexcept for incremental tables as the logical content of these spans all historical syncs."
         }
       },
       "additionalProperties": false,
