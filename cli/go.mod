@@ -2,8 +2,6 @@ module github.com/cloudquery/cloudquery/cli
 
 go 1.22.7
 
-toolchain go1.23.3
-
 require (
 	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
