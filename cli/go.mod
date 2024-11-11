@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/cli
 
-go 1.22.4
+go 1.22.7
 
 require (
 	github.com/apache/arrow/go/v17 v17.0.0
@@ -46,7 +46,7 @@ require (
 	golang.org/x/net v0.30.0
 	golang.org/x/sync v0.8.0
 	golang.org/x/term v0.25.0
-	google.golang.org/grpc v1.67.1
+	google.golang.org/grpc v1.68.0
 	google.golang.org/protobuf v1.35.1
 	gopkg.in/yaml.v3 v3.0.1
 )
