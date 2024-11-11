@@ -27,9 +27,37 @@ func TestCreateTable(t *testing.T) {
 			schema.Column{Name: "extra_inet_col", Type: types.NewInetType()},
 			schema.Column{Name: "extra_inet_arr_col", Type: arrow.ListOf(types.NewInetType())},
 		},
-	}, "", spec.DefaultEngine())
+	}, "", spec.DefaultEngine(), false)
 	require.NoError(t, err)
 	ensureContents(t, query, "create_table.sql")
+}
+
+var CqSyncGroupIDColumn = schema.Column{
+	Name:        "_cq_sync_group_id",
+	Type:        arrow.BinaryTypes.String,
+	Description: "Internal CQ row of the sync group id (this will be the same for all rows in the same sync group)",
+}
+
+func TestCreateTableWithSyncGroupID(t *testing.T) {
+	query, err := CreateTable(&schema.Table{
+		Name: "table_name",
+		Columns: schema.ColumnList{
+			schema.CqIDColumn,
+			schema.CqParentIDColumn,
+			schema.CqSourceNameColumn,
+			schema.CqSyncTimeColumn,
+			CqSyncGroupIDColumn,
+			schema.Column{
+				Name:    "extra_col",
+				Type:    arrow.PrimitiveTypes.Float64,
+				NotNull: true,
+			},
+			schema.Column{Name: "extra_inet_col", Type: types.NewInetType()},
+			schema.Column{Name: "extra_inet_arr_col", Type: arrow.ListOf(types.NewInetType())},
+		},
+	}, "", spec.DefaultEngine(), false)
+	require.NoError(t, err)
+	ensureContents(t, query, "create_table_with_sync_group_id.sql")
 }
 
 func TestCreateTableNoOrderBy(t *testing.T) {
@@ -40,7 +68,7 @@ func TestCreateTableNoOrderBy(t *testing.T) {
 			schema.Column{Name: "extra_inet_col", Type: types.NewInetType()},
 			schema.Column{Name: "extra_inet_arr_col", Type: arrow.ListOf(types.NewInetType())},
 		},
-	}, "", spec.DefaultEngine())
+	}, "", spec.DefaultEngine(), false)
 	require.NoError(t, err)
 	ensureContents(t, query, "create_table_empty_order_by.sql")
 }
@@ -61,7 +89,7 @@ func TestCreateTableOnCluster(t *testing.T) {
 			schema.Column{Name: "extra_inet_col", Type: types.NewInetType()},
 			schema.Column{Name: "extra_inet_arr_col", Type: arrow.ListOf(types.NewInetType())},
 		},
-	}, "my_cluster", spec.DefaultEngine())
+	}, "my_cluster", spec.DefaultEngine(), false)
 	require.NoError(t, err)
 	ensureContents(t, query, "create_table_cluster.sql")
 }
@@ -85,7 +113,7 @@ func TestCreateTableWithEngine(t *testing.T) {
 	}, "", &spec.Engine{
 		Name:       "ReplicatedMergeTree",
 		Parameters: []any{"a", "b", 1, int32(2), int64(3), float32(1.2), float64(3.4), json.Number("327"), false, true},
-	})
+	}, false)
 	require.NoError(t, err)
 	ensureContents(t, query, "create_table_engine.sql")
 }

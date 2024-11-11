@@ -10,6 +10,8 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
+const cqSyncGroupID = "_cq_sync_group_id"
+
 func sortKeys(table *schema.Table) []string {
 	keys := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {
@@ -27,7 +29,7 @@ func sortKeys(table *schema.Table) []string {
 	return slices.Clip(keys)
 }
 
-func CreateTable(table *schema.Table, cluster string, engine *spec.Engine) (string, error) {
+func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, partitionBySyncGroupID bool) (string, error) {
 	builder := strings.Builder{}
 	builder.WriteString("CREATE TABLE ")
 	builder.WriteString(tableNamePart(table.Name, cluster))
@@ -45,6 +47,10 @@ func CreateTable(table *schema.Table, cluster string, engine *spec.Engine) (stri
 	}
 	builder.WriteString("\n) ENGINE = ")
 	builder.WriteString(engine.String())
+	if partitionBySyncGroupID && hasColumn(table, cqSyncGroupID) {
+		builder.WriteString(" PARTITION BY ")
+		builder.WriteString(cqSyncGroupID)
+	}
 	builder.WriteString(" ORDER BY ")
 	if orderBy := sortKeys(table); len(orderBy) > 0 {
 		builder.WriteString("(")
@@ -60,4 +66,13 @@ func CreateTable(table *schema.Table, cluster string, engine *spec.Engine) (stri
 
 func DropTable(table *schema.Table, cluster string) string {
 	return "DROP TABLE IF EXISTS " + tableNamePart(table.Name, cluster)
+}
+
+func hasColumn(table *schema.Table, columnName string) bool {
+	for _, col := range table.Columns {
+		if col.Name == columnName {
+			return true
+		}
+	}
+	return false
 }
