@@ -71,7 +71,7 @@
   "plugins/source/postgresql+FILLER": "0.0.0",
   "plugins/source/homebrew": "3.0.13",
   "plugins/source/homebrew+FILLER": "0.0.0",
-  "plugins/destination/mysql": "5.2.14",
+  "plugins/destination/mysql": "5.2.15",
   "plugins/destination/mysql+FILLER": "0.0.0",
   "plugins/destination/firehose": "2.5.22",
   "plugins/destination/firehose+FILLER": "0.0.0",
