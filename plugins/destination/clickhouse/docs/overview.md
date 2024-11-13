@@ -68,6 +68,10 @@ This is the (nested) spec used by the ClickHouse destination plugin.
 
   Maximum interval between batch writes.
 
+- `partition` (optional, [partitioning](#partitioning)) (default: no partitioning)
+
+  Partitioning strategy to be used for tables (i.e. `PARTITION BY` clause in `CREATE TABLE` statements).
+
 #### ClickHouse table engine
 
 This option allows to specify a custom table engine to be used.
@@ -98,6 +102,45 @@ spec:
       parameters:
       - "/clickhouse/tables/{shard}/{database}/{table}"
       - "{replica}"
+```
+
+#### Partitioning
+
+This option allows to specify a partitioning strategy to be used for tables. It is an array of objects.
+
+Each object has the following fields:
+
+- `tables` (array of strings) (optional) (default: `["*"]`)
+
+  List of glob patterns to match table names against. Follows the same rules as the top-level spec `tables` option.
+
+  If a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.
+
+  Partition strategy table patterns should be disjointed sets: if a table matches two partition strategies, an error will be raised at runtime.
+
+- `skip_tables` (array of strings) (optional) (default: empty)
+
+  List of glob patterns to skip matching table names against. Follows the same rules as the top-level spec `skip_tables` option.
+
+  If a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.
+
+  Partition strategy table patterns should be disjointed sets: if a table matches two partition strategies, an error will be raised at runtime.
+
+- `partition_by` (string) (required)
+
+  Partitioning strategy to use, e.g. `toYYYYMM(_cq_sync_time)`, the string is passed as is after "PARTITION BY" clause with no validation or quoting.
+
+  An unset `partition_by` is not valid.
+
+Example:
+
+```yaml copy
+partition:
+- tables: ["*"]
+  skip_tables: ["special_partition_table", "non_partitioned_table"]
+  partition_by: "toYYYYMM(_cq_sync_time)"
+- tables: ["special_partition_table"]
+  partition_by: "toYYYYMMDD(_cq_sync_time)"
 ```
 
 ### Connecting to ClickHouse Cloud

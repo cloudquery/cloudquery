@@ -1,12 +1,14 @@
 package queries
 
 import (
+	"fmt"
 	"slices"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client/spec"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
+	"github.com/cloudquery/plugin-sdk/v4/glob"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
@@ -27,7 +29,7 @@ func sortKeys(table *schema.Table) []string {
 	return slices.Clip(keys)
 }
 
-func CreateTable(table *schema.Table, cluster string, engine *spec.Engine) (string, error) {
+func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, partition []spec.PartitionStrategy) (string, error) {
 	builder := strings.Builder{}
 	builder.WriteString("CREATE TABLE ")
 	builder.WriteString(tableNamePart(table.Name, cluster))
@@ -45,6 +47,14 @@ func CreateTable(table *schema.Table, cluster string, engine *spec.Engine) (stri
 	}
 	builder.WriteString("\n) ENGINE = ")
 	builder.WriteString(engine.String())
+	partitionBy, err := resolvePartitionBy(table.Name, partition)
+	if err != nil {
+		return "", err
+	}
+	if partitionBy != "" {
+		builder.WriteString(" PARTITION BY ")
+		builder.WriteString(partitionBy)
+	}
 	builder.WriteString(" ORDER BY ")
 	if orderBy := sortKeys(table); len(orderBy) > 0 {
 		builder.WriteString("(")
@@ -60,4 +70,31 @@ func CreateTable(table *schema.Table, cluster string, engine *spec.Engine) (stri
 
 func DropTable(table *schema.Table, cluster string) string {
 	return "DROP TABLE IF EXISTS " + tableNamePart(table.Name, cluster)
+}
+
+func resolvePartitionBy(table string, partition []spec.PartitionStrategy) (string, error) {
+	hasMatchedAlready := false
+	partitionBy := ""
+	for _, p := range partition {
+		if !tableMatchesAnyGlobPatterns(table, p.SkipTables) && tableMatchesAnyGlobPatterns(table, p.Tables) {
+			if hasMatchedAlready {
+				return "", fmt.Errorf("table %q matched multiple partition strategies", table)
+			}
+			hasMatchedAlready = true
+			partitionBy = p.PartitionBy
+		}
+	}
+	if !hasMatchedAlready {
+		return "", nil
+	}
+	return partitionBy, nil
+}
+
+func tableMatchesAnyGlobPatterns(table string, patterns []string) bool {
+	for _, pattern := range patterns {
+		if glob.Glob(pattern, table) {
+			return true
+		}
+	}
+	return false
 }
