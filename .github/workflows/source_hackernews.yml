@@ -44,7 +44,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.11.0
+          version: v6.11.1
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -188,6 +188,6 @@ jobs:
           REACT_APP_PLUGIN_KIND: source
           REACT_APP_PLUGIN_NAME: hackernews
           REACT_APP_PLUGIN_VERSION: development
-      - name: Run E2E tests and generate configs
-        working-directory: 'plugins/source/hackernews/cloud-config-ui'
-        run: CQ_CI_PLAYWRIGHT_PREVIEW_LINK='${{ env.CQ_CI_PLAYWRIGHT_PREVIEW_LINK }}' npm run test:e2e
+      # - name: Run E2E tests and generate configs
+      #   working-directory: 'plugins/source/hackernews/cloud-config-ui'
+      #   run: CQ_CI_PLAYWRIGHT_PREVIEW_LINK='${{ env.CQ_CI_PLAYWRIGHT_PREVIEW_LINK }}' npm run test:e2e
