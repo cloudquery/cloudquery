@@ -1,5 +1,14 @@
 # Changelog
 
+## [8.6.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.6.6...plugins-destination-postgresql-v8.6.7) (2024-11-13)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @types/jest to v29.5.14 ([#19544](https://github.com/cloudquery/cloudquery/issues/19544)) ([f0340e5](https://github.com/cloudquery/cloudquery/commit/f0340e50b7c282d1872ee13208fa35c40c4154fe))
+* **deps:** Update dependency @types/node to v16.18.119 ([#19545](https://github.com/cloudquery/cloudquery/issues/19545)) ([299926d](https://github.com/cloudquery/cloudquery/commit/299926de3cd4ac6c063d70ecb8cacb7f49611851))
+* **deps:** Update material-ui monorepo ([#19548](https://github.com/cloudquery/cloudquery/issues/19548)) ([c3f765e](https://github.com/cloudquery/cloudquery/commit/c3f765e8b052fc12a4ccc3d0399043a783945210))
+
 ## [8.6.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.6.5...plugins-destination-postgresql-v8.6.6) (2024-11-06)
 
 
