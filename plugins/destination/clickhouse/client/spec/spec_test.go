@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/codegen/jsonschema"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSpec_JSONSchemaExtend(t *testing.T) {
@@ -133,4 +134,19 @@ func TestSpec_JSONSchemaExtend(t *testing.T) {
 			Spec: `{"connection_string":"abc","batch_timeout":null}`,
 		},
 	})
+}
+
+func TestSpec_ValidateEmptyPartitionBy(t *testing.T) {
+	spec := Spec{Partition: []PartitionStrategy{{}}}
+	spec.SetDefaults()
+	err := spec.Validate()
+	require.Error(t, err)
+	require.ErrorContains(t, err, "partition_by is required")
+}
+
+func TestSpec_ValidateEmptyTables(t *testing.T) {
+	spec := Spec{Partition: []PartitionStrategy{{PartitionBy: "test_field"}}}
+	spec.SetDefaults()
+	require.NoError(t, spec.Validate())
+	require.Equal(t, []string{"*"}, spec.Partition[0].Tables)
 }
