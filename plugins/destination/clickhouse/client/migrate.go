@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"slices"
 
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client/spec"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
@@ -48,10 +49,10 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 
 			have := have.Get(want.Name)
 			if have == nil {
-				return c.createTable(ctx, want)
+				return c.createTable(ctx, want, c.spec.Partition)
 			}
 
-			return c.autoMigrate(ctx, have, want)
+			return c.autoMigrate(ctx, have, want, c.spec.Partition)
 		})
 	}
 
@@ -96,10 +97,10 @@ func unsafeChanges(changes []schema.TableColumnChange) []schema.TableColumnChang
 	return slices.Clip(unsafe)
 }
 
-func (c *Client) createTable(ctx context.Context, table *schema.Table) (err error) {
+func (c *Client) createTable(ctx context.Context, table *schema.Table, partition []spec.PartitionStrategy) (err error) {
 	c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
 
-	query, err := queries.CreateTable(table, c.spec.Cluster, c.spec.Engine)
+	query, err := queries.CreateTable(table, c.spec.Cluster, c.spec.Engine, partition)
 	if err != nil {
 		return err
 	}
@@ -131,7 +132,7 @@ func needsTableDrop(change schema.TableColumnChange) bool {
 	return true
 }
 
-func (c *Client) autoMigrate(ctx context.Context, have, want *schema.Table) error {
+func (c *Client) autoMigrate(ctx context.Context, have, want *schema.Table, partition []spec.PartitionStrategy) error {
 	changes := want.GetChanges(have)
 
 	if unsafe := unsafeChanges(changes); len(unsafe) > 0 {
@@ -140,7 +141,7 @@ func (c *Client) autoMigrate(ctx context.Context, have, want *schema.Table) erro
 			return err
 		}
 
-		return c.createTable(ctx, want)
+		return c.createTable(ctx, want, partition)
 	}
 
 	for _, change := range changes {

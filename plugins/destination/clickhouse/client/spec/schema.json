@@ -40,6 +40,44 @@
       "type": "object",
       "description": "Engine allows to specify a custom table engine to be used."
     },
+    "PartitionStrategy": {
+      "properties": {
+        "tables": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "description": "Table glob patterns that apply for this partitioning.\n\nIf unset, the partitioning will apply to all tables.\n\nIf a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.\n\nPartition strategy table patterns should be disjointed sets: if a table matches two partition strategies,\nan error will be raised at runtime."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skip_tables": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "description": "Table glob patterns that should be skipped for this partitioning.\n\nIf unset, no tables will be skipped.\n\nIf a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.\n\nPartition strategy table patterns should be disjointed sets: if a table matches two partition strategies,\nan error will be raised at runtime."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "partition_by": {
+          "type": "string",
+          "description": "Partitioning strategy to use, e.g. `toYYYYMM(_cq_sync_time)`,\nthe string is passed as is after \"PARTITION BY\" clause with no validation or quoting.\n\nAn unset partition_by is not valid."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
     "Spec": {
       "properties": {
         "connection_string": {
@@ -84,6 +122,20 @@
               "$ref": "#/$defs/Duration",
               "description": "Maximum interval between batch writes.",
               "default": "20s"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "partition": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/PartitionStrategy"
+              },
+              "type": "array",
+              "description": "Enables partitioning of tables via the `PARTITION BY` clause."
             },
             {
               "type": "null"

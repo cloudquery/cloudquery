@@ -44,6 +44,37 @@ type Spec struct {
 
 	// Maximum interval between batch writes.
 	BatchTimeout *configtype.Duration `json:"batch_timeout,omitempty"`
+
+	// Enables partitioning of tables via the `PARTITION BY` clause.
+	Partition []PartitionStrategy `json:"partition,omitempty"`
+}
+
+type PartitionStrategy struct {
+	// Table glob patterns that apply for this partitioning.
+	//
+	// If unset, the partitioning will apply to all tables.
+	//
+	// If a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.
+	//
+	// Partition strategy table patterns should be disjointed sets: if a table matches two partition strategies,
+	// an error will be raised at runtime.
+	Tables []string `json:"tables,omitempty"`
+
+	// Table glob patterns that should be skipped for this partitioning.
+	//
+	// If unset, no tables will be skipped.
+	//
+	// If a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.
+	//
+	// Partition strategy table patterns should be disjointed sets: if a table matches two partition strategies,
+	// an error will be raised at runtime.
+	SkipTables []string `json:"skip_tables,omitempty"`
+
+	// Partitioning strategy to use, e.g. `toYYYYMM(_cq_sync_time)`,
+	// the string is passed as is after "PARTITION BY" clause with no validation or quoting.
+	//
+	// An unset partition_by is not valid.
+	PartitionBy string `json:"partition_by"`
 }
 
 func (s *Spec) Options() (*clickhouse.Options, error) {
@@ -90,9 +121,21 @@ func (s *Spec) SetDefaults() {
 		d := configtype.NewDuration(20 * time.Second) // 20s
 		s.BatchTimeout = &d
 	}
+
+	for i, p := range s.Partition {
+		if len(p.Tables) == 0 {
+			s.Partition[i].Tables = []string{"*"}
+		}
+	}
 }
 
 func (s *Spec) Validate() error {
+	for _, p := range s.Partition {
+		if len(p.PartitionBy) == 0 {
+			return fmt.Errorf("partition_by is required")
+		}
+	}
+
 	return s.Engine.Validate()
 }
 
