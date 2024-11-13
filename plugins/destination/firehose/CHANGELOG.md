@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.22](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.5.21...plugins-destination-firehose-v2.5.22) (2024-11-13)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#19585](https://github.com/cloudquery/cloudquery/issues/19585)) ([01a4033](https://github.com/cloudquery/cloudquery/commit/01a40334dff39eda51ea614989aab03e96891c63))
+
 ## [2.5.21](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.5.20...plugins-destination-firehose-v2.5.21) (2024-11-06)
 
 
