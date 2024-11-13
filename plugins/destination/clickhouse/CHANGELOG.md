@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v5.0.9...plugins-destination-clickhouse-v5.1.0) (2024-11-13)
+
+
+### Features
+
+* Implement PARTITION BY support on ClickHouse destination. ([#19596](https://github.com/cloudquery/cloudquery/issues/19596)) ([503f42a](https://github.com/cloudquery/cloudquery/commit/503f42adfe0fafa163f29a5c7c637d3c02bb9cb3))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @types/jest to v29.5.14 ([#19544](https://github.com/cloudquery/cloudquery/issues/19544)) ([f0340e5](https://github.com/cloudquery/cloudquery/commit/f0340e50b7c282d1872ee13208fa35c40c4154fe))
+* **deps:** Update dependency @types/node to v16.18.119 ([#19545](https://github.com/cloudquery/cloudquery/issues/19545)) ([299926d](https://github.com/cloudquery/cloudquery/commit/299926de3cd4ac6c063d70ecb8cacb7f49611851))
+* **deps:** Update material-ui monorepo ([#19548](https://github.com/cloudquery/cloudquery/issues/19548)) ([c3f765e](https://github.com/cloudquery/cloudquery/commit/c3f765e8b052fc12a4ccc3d0399043a783945210))
+
 ## [5.0.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v5.0.8...plugins-destination-clickhouse-v5.0.9) (2024-11-06)
 
 
