@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v5.2.8...plugins-destination-file-v5.3.0) (2024-11-13)
+
+
+### Features
+
+* Add Parquet format `max_row_group_length` option ([#19583](https://github.com/cloudquery/cloudquery/issues/19583)) ([4130e1f](https://github.com/cloudquery/cloudquery/commit/4130e1fd449ade7fa1374eb1fded692eb5706bef))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.5.0 ([#19578](https://github.com/cloudquery/cloudquery/issues/19578)) ([da0440a](https://github.com/cloudquery/cloudquery/commit/da0440a579ce02493c080dc17f753358dd5ac86c))
+
 ## [5.2.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v5.2.7...plugins-destination-file-v5.2.8) (2024-11-06)
 
 
