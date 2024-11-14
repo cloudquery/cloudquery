@@ -613,7 +613,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			SourceName:          sourceSpec.Name,
 			SourceVersion:       sourceSpec.Version,
 			SourcePath:          sourceSpec.Path,
-			SourceTables:        sourceTables.TableNames(),
+			SourceTables:        tableNameChanger.UpdateTableNamesSlice(destinationSpecs[i].Name, sourceTables.TableNames()),
 			CLIVersion:          Version,
 			DestinationErrors:   m.Errors,
 			DestinationWarnings: m.Warnings,

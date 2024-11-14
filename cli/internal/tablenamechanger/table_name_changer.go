@@ -35,6 +35,14 @@ func (c TableNameChanger) UpdateTableNames(destinationName string, tables map[st
 	return newTables
 }
 
+func (c TableNameChanger) UpdateTableNamesSlice(destinationName string, tables []string) []string {
+	newTables := make([]string, len(tables))
+	for i, oldTableName := range tables {
+		newTables[i] = c.UpdateTableName(destinationName, oldTableName)
+	}
+	return newTables
+}
+
 func (c TableNameChanger) UpdateTableName(destinationName string, oldTableName string) string {
 	if newTableName, ok := c.tableNameChanges[destinationName][oldTableName]; ok {
 		return newTableName
