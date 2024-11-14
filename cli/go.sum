@@ -46,8 +46,8 @@ github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66 h1:OZLPSIBYE
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66/go.mod h1:0SoZ/U7yJlNOR+fWsBSeTvTbGXB6DK01tzJ7m2Xfg34=
 github.com/cloudquery/plugin-pb-go v1.25.2 h1:MBu40sprExJzow9uYFTWDHrh4Eim1JvYUDKZGUi+Z6M=
 github.com/cloudquery/plugin-pb-go v1.25.2/go.mod h1:umkqvzISFic/V7gQb7KoT1YdXSSRuqeXPflgdZ5Z7Wc=
-github.com/cloudquery/plugin-sdk/v4 v4.68.2 h1:r49NmVneYK0RiC3DHiBs1zKwkxDz4Rn2/VwEjORX1jg=
-github.com/cloudquery/plugin-sdk/v4 v4.68.2/go.mod h1:xQ+hOeuzdWj0cKMaDqjd3++gcgykPr6JOvm+cLWhLUQ=
+github.com/cloudquery/plugin-sdk/v4 v4.68.3 h1:ZBYM2EFzLXJr/eQ6Pl79oEwUuV14L3rHCHp7k2II1lM=
+github.com/cloudquery/plugin-sdk/v4 v4.68.3/go.mod h1:qxM0XVVxialq+LMX0q96ubT9eNvUeyrMYqfnhWaHODk=
 github.com/containerd/log v0.1.0 h1:TCJt7ioM2cr/tfR8GPbGf9/VRAX8D2B4PjzCpfX540I=
 github.com/containerd/log v0.1.0/go.mod h1:VRRf09a7mHDIRezVKTRCrOq78v577GXq3bSa3EhrzVo=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
