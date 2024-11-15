@@ -2,8 +2,6 @@ module github.com/cloudquery/cloudquery/plugins/destination/mysql
 
 go 1.22.7
 
-toolchain go1.23.3
-
 require (
 	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cloudquery/codegen v0.3.19

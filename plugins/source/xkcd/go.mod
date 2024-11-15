@@ -2,8 +2,6 @@ module github.com/hermanschaaf/cq-source-xkcd
 
 go 1.22.7
 
-toolchain go1.23.3
-
 require (
 	github.com/cloudquery/plugin-sdk/v4 v4.68.3
 	github.com/rs/zerolog v1.33.0

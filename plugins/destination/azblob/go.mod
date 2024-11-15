@@ -2,8 +2,6 @@ module github.com/cloudquery/cloudquery/plugins/destination/azblob
 
 go 1.22.7
 
-toolchain go1.23.3
-
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.0
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.4.1
