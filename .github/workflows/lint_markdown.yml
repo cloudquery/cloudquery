@@ -21,7 +21,7 @@ jobs:
       - name: Vale
         uses: errata-ai/vale-action@3a4769d4af5f9498e586fb41abc72bbca594b400
         with:
-          vale_flags: "--glob=!{website/pages/blog/podcast-software-engineer-daily.md,**/CHANGELOG.md,**/docs/tables/README.md,plugins/source/test/docs/tables/*.md,.github/styles/proselint/README.md,**/v1-migration.md,website/pages/docs/plugins/sources/*/tables.md,plugins/source/*/docs/policies.md,**/tables/**/*,website/pages/case-studies/*.mdx,cli/internal/docs/testdata/*.md}"
+          vale_flags: "--glob=!{website/pages/blog/podcast-software-engineer-daily.md,**/CHANGELOG.md,**/docs/tables/README.md,**/docs/_licenses.md,plugins/source/test/docs/tables/*.md,.github/styles/proselint/README.md,**/v1-migration.md,website/pages/docs/plugins/sources/*/tables.md,plugins/source/*/docs/policies.md,**/tables/**/*,website/pages/case-studies/*.mdx,cli/internal/docs/testdata/*.md}"
           filter_mode: nofilter
           fail_on_error: true
           version: '3.0.3'
