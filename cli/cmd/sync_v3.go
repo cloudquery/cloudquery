@@ -439,6 +439,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	t := time.NewTicker(100 * time.Millisecond)
 	newResources := int64(0)
 	go func() {
+		ticks := 0
 		for {
 			select {
 			case <-gctx.Done():
@@ -452,6 +453,11 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			case <-t.C:
 				change := atomic.SwapInt64(&newResources, 0)
 				_ = bar.Add(int(change))
+				// Log a positive feedback message every minute, after the 15 minute mark
+				ticks++
+				if time.Since(syncTime) > 15*60*time.Second && ticks%(10*60) == 0 {
+					log.Info().Msg("Still syncing...")
+				}
 			}
 		}
 	}()
