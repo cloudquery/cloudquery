@@ -47,6 +47,9 @@ type Spec struct {
 
 	// Enables partitioning of tables via the `PARTITION BY` clause.
 	Partition []PartitionStrategy `json:"partition,omitempty"`
+
+	// Enables setting table sort keys via the `ORDER BY` clause.
+	OrderBy []OrderByStrategy `json:"order,omitempty"`
 }
 
 type PartitionStrategy struct {
@@ -75,6 +78,34 @@ type PartitionStrategy struct {
 	//
 	// An unset partition_by is not valid.
 	PartitionBy string `json:"partition_by"`
+}
+
+type OrderByStrategy struct {
+	// Table glob patterns that apply for this ORDER BY clause.
+	//
+	// If unset, the ORDER BY clause will apply to all tables.
+	//
+	// If a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.
+	//
+	// Order by strategy table patterns should be disjointed sets: if a table matches two order by strategies,
+	// an error will be raised at runtime.
+	Tables []string `json:"tables,omitempty"`
+
+	// Table glob patterns that should be skipped for this ORDER BY clause.
+	//
+	// If unset, no tables will be skipped.
+	//
+	// If a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.
+	//
+	// Order by strategy table patterns should be disjointed sets: if a table matches two order by strategies,
+	// an error will be raised at runtime.
+	SkipTables []string `json:"skip_tables,omitempty"`
+
+	// ORDER BY list of expressions to use, e.g. `_cq_sync_group_id, toYYYYMM(_cq_sync_time), _cq_id`,
+	// the strings are passed as is after "ORDER BY" clause, separated by commas, with no validation or quoting.
+	//
+	// An unset order_by is not valid.
+	OrderBy []string `json:"order_by"`
 }
 
 func (s *Spec) Options() (*clickhouse.Options, error) {
@@ -127,12 +158,24 @@ func (s *Spec) SetDefaults() {
 			s.Partition[i].Tables = []string{"*"}
 		}
 	}
+
+	for i, o := range s.OrderBy {
+		if len(o.Tables) == 0 {
+			s.OrderBy[i].Tables = []string{"*"}
+		}
+	}
 }
 
 func (s *Spec) Validate() error {
 	for _, p := range s.Partition {
 		if len(p.PartitionBy) == 0 {
 			return fmt.Errorf("partition_by is required")
+		}
+	}
+
+	for _, o := range s.OrderBy {
+		if len(o.OrderBy) == 0 {
+			return fmt.Errorf("order_by is required")
 		}
 	}
 

@@ -29,7 +29,7 @@ func sortKeys(table *schema.Table) []string {
 	return slices.Clip(keys)
 }
 
-func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, partition []spec.PartitionStrategy) (string, error) {
+func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, partition []spec.PartitionStrategy, orderBy []spec.OrderByStrategy) (string, error) {
 	builder := strings.Builder{}
 	builder.WriteString("CREATE TABLE ")
 	builder.WriteString(tableNamePart(table.Name, cluster))
@@ -56,9 +56,17 @@ func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, parti
 		builder.WriteString(partitionBy)
 	}
 	builder.WriteString(" ORDER BY ")
-	if orderBy := sortKeys(table); len(orderBy) > 0 {
+	resolvedOrderBy, err := resolveOrderBy(table.Name, orderBy)
+	if err != nil {
+		return "", err
+	}
+	if len(resolvedOrderBy) > 0 {
 		builder.WriteString("(")
-		builder.WriteString(strings.Join(util.Sanitized(orderBy...), ", "))
+		builder.WriteString(strings.Join(resolvedOrderBy, ", "))
+		builder.WriteString(")")
+	} else if sortKeys := sortKeys(table); len(sortKeys) > 0 {
+		builder.WriteString("(")
+		builder.WriteString(strings.Join(util.Sanitized(sortKeys...), ", "))
 		builder.WriteString(")")
 	} else {
 		builder.WriteString("tuple()")
@@ -88,6 +96,24 @@ func resolvePartitionBy(table string, partition []spec.PartitionStrategy) (strin
 		return "", nil
 	}
 	return partitionBy, nil
+}
+
+func resolveOrderBy(table string, orderBy []spec.OrderByStrategy) ([]string, error) {
+	hasMatchedAlready := false
+	resolvedOrderBy := []string{}
+	for _, o := range orderBy {
+		if !tableMatchesAnyGlobPatterns(table, o.SkipTables) && tableMatchesAnyGlobPatterns(table, o.Tables) {
+			if hasMatchedAlready {
+				return nil, fmt.Errorf("table %q matched multiple order by strategies", table)
+			}
+			hasMatchedAlready = true
+			resolvedOrderBy = o.OrderBy
+		}
+	}
+	if !hasMatchedAlready {
+		return nil, nil
+	}
+	return resolvedOrderBy, nil
 }
 
 func tableMatchesAnyGlobPatterns(table string, patterns []string) bool {

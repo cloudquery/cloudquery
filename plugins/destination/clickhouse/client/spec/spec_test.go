@@ -150,3 +150,19 @@ func TestSpec_ValidateEmptyTables(t *testing.T) {
 	require.NoError(t, spec.Validate())
 	require.Equal(t, []string{"*"}, spec.Partition[0].Tables)
 }
+
+func TestSpec_ValidateEmptyOrderBy(t *testing.T) {
+	spec := Spec{OrderBy: []OrderByStrategy{{}}}
+	spec.SetDefaults()
+	err := spec.Validate()
+	require.Error(t, err)
+	require.ErrorContains(t, err, "order_by is required")
+}
+
+func TestSpec_ValidateEmptyOrderByTables(t *testing.T) {
+	spec := Spec{OrderBy: []OrderByStrategy{{OrderBy: []string{"test_field"}}}}
+	spec.SetDefaults()
+	err := spec.Validate()
+	require.NoError(t, err)
+	require.Equal(t, []string{"*"}, spec.OrderBy[0].Tables)
+}
