@@ -40,6 +40,54 @@
       "type": "object",
       "description": "Engine allows to specify a custom table engine to be used."
     },
+    "OrderByStrategy": {
+      "properties": {
+        "tables": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "description": "Table glob patterns that apply for this ORDER BY clause.\n\nIf unset, the ORDER BY clause will apply to all tables.\n\nIf a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.\n\nOrder by strategy table patterns should be disjointed sets: if a table matches two order by strategies,\nan error will be raised at runtime."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skip_tables": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "description": "Table glob patterns that should be skipped for this ORDER BY clause.\n\nIf unset, no tables will be skipped.\n\nIf a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.\n\nOrder by strategy table patterns should be disjointed sets: if a table matches two order by strategies,\nan error will be raised at runtime."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "order_by": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "description": "ORDER BY list of expressions to use, e.g. `_cq_sync_group_id, toYYYYMM(_cq_sync_time), _cq_id`,\nthe strings are passed as is after \"ORDER BY\" clause, separated by commas, with no validation or quoting.\n\nAn unset order_by is not valid."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
     "PartitionStrategy": {
       "properties": {
         "tables": {
@@ -136,6 +184,20 @@
               },
               "type": "array",
               "description": "Enables partitioning of tables via the `PARTITION BY` clause."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "order": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/OrderByStrategy"
+              },
+              "type": "array",
+              "description": "Enables setting table sort keys via the `ORDER BY` clause."
             },
             {
               "type": "null"
