@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"slices"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client/spec"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
@@ -27,7 +28,7 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 		return err
 	}
 
-	if err := c.checkForced(have, want, messages); err != nil {
+	if err := c.checkForced(ctx, have, want, messages); err != nil {
 		return err
 	}
 
@@ -59,7 +60,7 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 	return eg.Wait()
 }
 
-func (c *Client) checkForced(have, want schema.Tables, messages message.WriteMigrateTables) error {
+func (c *Client) checkForced(ctx context.Context, have, want schema.Tables, messages message.WriteMigrateTables) error {
 	forcedErr := false
 	for _, m := range messages {
 		if m.MigrateForce {
@@ -77,6 +78,10 @@ func (c *Client) checkForced(have, want schema.Tables, messages message.WriteMig
 				Str("table", m.Table.Name).
 				Str("changes", util.ChangesPrettified(m.Table.Name, unsafe)).
 				Msg("migrate manually or consider using 'migrate_mode: forced'")
+			forcedErr = true
+		}
+		if err := c.checkPartitionOrOrderByChanged(ctx, m.Table, c.spec.Partition, c.spec.OrderBy); err != nil {
+			c.logger.Error().Str("table", m.Table.Name).Msg(err.Error())
 			forcedErr = true
 		}
 	}
@@ -135,7 +140,7 @@ func needsTableDrop(change schema.TableColumnChange) bool {
 func (c *Client) autoMigrate(ctx context.Context, have, want *schema.Table, partition []spec.PartitionStrategy, orderBy []spec.OrderByStrategy) error {
 	changes := want.GetChanges(have)
 
-	if unsafe := unsafeChanges(changes); len(unsafe) > 0 {
+	if unsafe := unsafeChanges(changes); len(unsafe) > 0 || c.checkPartitionOrOrderByChanged(ctx, want, c.spec.Partition, c.spec.OrderBy) != nil {
 		// we can get here only with migrate_mode: forced
 		if err := c.dropTable(ctx, have); err != nil {
 			return err
@@ -164,4 +169,47 @@ func (c *Client) autoMigrate(ctx context.Context, have, want *schema.Table, part
 	}
 
 	return nil
+}
+
+func (c *Client) checkPartitionOrOrderByChanged(ctx context.Context, table *schema.Table, partition []spec.PartitionStrategy, orderBy []spec.OrderByStrategy) error {
+	resolvedOrderBy, err := queries.ResolveOrderBy(table, orderBy)
+	if err != nil {
+		return err
+	}
+
+	resolvedPartitionBy, err := queries.ResolvePartitionBy(table.Name, partition)
+	if err != nil {
+		return err
+	}
+
+	splitPartitionBy := strings.Split(resolvedPartitionBy, ",")
+
+	wantPartitionKey := make([]string, 0, len(splitPartitionBy))
+	for _, key := range splitPartitionBy {
+		wantPartitionKey = append(wantPartitionKey, dequote(key))
+	}
+
+	wantSortingKey := make([]string, 0, len(resolvedOrderBy))
+	for _, key := range resolvedOrderBy {
+		wantSortingKey = append(wantSortingKey, dequote(key))
+	}
+
+	havePartitionKey, haveSortingKey, err := c.getPartitionKeyAndSortingKey(ctx, table)
+	if err != nil {
+		return err
+	}
+
+	if !slices.Equal(havePartitionKey, wantPartitionKey) {
+		return fmt.Errorf("partition key changed (was [%s] and would become [%s]), please drop the table manually", strings.Join(havePartitionKey, ","), strings.Join(wantPartitionKey, ","))
+	}
+
+	if !slices.Equal(haveSortingKey, wantSortingKey) {
+		return fmt.Errorf("sorting key changed (was [%s] and would become [%s]), please drop the table manually", strings.Join(haveSortingKey, ","), strings.Join(wantSortingKey, ","))
+	}
+
+	return nil
+}
+
+func dequote(s string) string {
+	return strings.TrimSpace(strings.Trim(s, `"'`+"`"))
 }

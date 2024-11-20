@@ -12,7 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func sortKeys(table *schema.Table) []string {
+func SortKeys(table *schema.Table) []string {
 	keys := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {
 		if col.NotNull || col.PrimaryKey {
@@ -47,7 +47,7 @@ func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, parti
 	}
 	builder.WriteString("\n) ENGINE = ")
 	builder.WriteString(engine.String())
-	partitionBy, err := resolvePartitionBy(table.Name, partition)
+	partitionBy, err := ResolvePartitionBy(table.Name, partition)
 	if err != nil {
 		return "", err
 	}
@@ -56,17 +56,13 @@ func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, parti
 		builder.WriteString(partitionBy)
 	}
 	builder.WriteString(" ORDER BY ")
-	resolvedOrderBy, err := resolveOrderBy(table.Name, orderBy)
+	resolvedOrderBy, err := ResolveOrderBy(table, orderBy)
 	if err != nil {
 		return "", err
 	}
 	if len(resolvedOrderBy) > 0 {
 		builder.WriteString("(")
 		builder.WriteString(strings.Join(resolvedOrderBy, ", "))
-		builder.WriteString(")")
-	} else if sortKeys := sortKeys(table); len(sortKeys) > 0 {
-		builder.WriteString("(")
-		builder.WriteString(strings.Join(util.Sanitized(sortKeys...), ", "))
 		builder.WriteString(")")
 	} else {
 		builder.WriteString("tuple()")
@@ -80,7 +76,7 @@ func DropTable(table *schema.Table, cluster string) string {
 	return "DROP TABLE IF EXISTS " + tableNamePart(table.Name, cluster)
 }
 
-func resolvePartitionBy(table string, partition []spec.PartitionStrategy) (string, error) {
+func ResolvePartitionBy(table string, partition []spec.PartitionStrategy) (string, error) {
 	hasMatchedAlready := false
 	partitionBy := ""
 	for _, p := range partition {
@@ -98,20 +94,20 @@ func resolvePartitionBy(table string, partition []spec.PartitionStrategy) (strin
 	return partitionBy, nil
 }
 
-func resolveOrderBy(table string, orderBy []spec.OrderByStrategy) ([]string, error) {
+func ResolveOrderBy(table *schema.Table, orderBy []spec.OrderByStrategy) ([]string, error) {
 	hasMatchedAlready := false
 	resolvedOrderBy := []string{}
 	for _, o := range orderBy {
-		if !tableMatchesAnyGlobPatterns(table, o.SkipTables) && tableMatchesAnyGlobPatterns(table, o.Tables) {
+		if !tableMatchesAnyGlobPatterns(table.Name, o.SkipTables) && tableMatchesAnyGlobPatterns(table.Name, o.Tables) {
 			if hasMatchedAlready {
-				return nil, fmt.Errorf("table %q matched multiple order by strategies", table)
+				return nil, fmt.Errorf("table %q matched multiple order by strategies", table.Name)
 			}
 			hasMatchedAlready = true
 			resolvedOrderBy = o.OrderBy
 		}
 	}
 	if !hasMatchedAlready {
-		return nil, nil
+		return util.Sanitized(SortKeys(table)...), nil
 	}
 	return resolvedOrderBy, nil
 }

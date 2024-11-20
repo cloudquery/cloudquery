@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -23,4 +24,14 @@ func (c *Client) getTableDefinitions(ctx context.Context, messages message.Write
 	defer rows.Close()
 
 	return queries.ScanTableSchemas(rows, messages)
+}
+
+func (c *Client) getPartitionKeyAndSortingKey(ctx context.Context, table *schema.Table) ([]string, []string, error) {
+	sql := queries.GetPartitionKeyAndSortingKeyQuery(c.database, table.Name)
+	var partitionKey, sortingKey string
+	err := c.conn.QueryRow(ctx, sql).Scan(&partitionKey, &sortingKey)
+	if err != nil {
+		return nil, nil, err
+	}
+	return strings.Split(partitionKey, ", "), strings.Split(sortingKey, ", "), nil
 }
