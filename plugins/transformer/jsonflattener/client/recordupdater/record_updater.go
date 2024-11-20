@@ -160,6 +160,12 @@ func (*RecordUpdater) preprocessRow(colName string, rowIndex int, rawRow any) (m
 func preprocessTypeSchema(unprocessedTypeSchema map[string]any) map[string]string {
 	typeSchema := make(map[string]string)
 	for key, typ := range unprocessedTypeSchema {
+		// Edge case: if the key is utf8, we don't process it, because utf8 is a special
+		// string that means that there can be many keys with any name.
+		if key == "utf8" {
+			continue
+		}
+
 		// If the type of a given key is not string, we consider it as a JSON type
 		// so that we don't flatten deeper than the first level.
 		if _, ok := typ.(string); !ok {
