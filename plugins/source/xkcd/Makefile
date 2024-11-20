@@ -21,6 +21,13 @@ gen-docs: build
 	cloudquery tables --format markdown --output-dir docs/ test/config.yml
 	mv -vf docs/xkcd docs/tables
 
+.PHONY: gen-licenses
+gen-licenses:
+ifndef CI
+	go install github.com/google/go-licenses@v1.6.0
+	go run github.com/cloudquery/licenser@v0.2.0 report .
+endif
+
 # All gen targets
 .PHONY: gen
-gen: gen-docs
+gen: gen-docs gen-licenses
