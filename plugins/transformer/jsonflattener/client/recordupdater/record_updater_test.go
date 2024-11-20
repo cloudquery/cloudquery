@@ -33,6 +33,26 @@ func TestFlattenJSONFields(t *testing.T) {
 	require.Equal(t, true, updatedRecord.Column(3).(*array.Boolean).Value(0))
 }
 
+func TestFlattenJSONFieldsDoesntFlattenFieldsKeyedUTF8(t *testing.T) {
+	record := testRecord(
+		[]string{"col1"},
+		map[string]string{"col1": `{"key_a": "utf8", "key_b": "int64", "utf8": "any"}`},
+		[]arrow.Array{buildJSONColumn([]*any{toP(`{"key_a": "value", "key_b": 2, "utf8": "any"}`)})},
+	)
+	updater := New(record)
+
+	updatedRecord, err := updater.FlattenJSONFields()
+	require.NoError(t, err)
+
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(1), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "col1__key_a", updatedRecord.ColumnName(1))
+	require.Equal(t, "value", updatedRecord.Column(1).(*array.String).Value(0))
+	require.Equal(t, "col1__key_b", updatedRecord.ColumnName(2))
+	require.Equal(t, int64(2), updatedRecord.Column(2).(*array.Int64).Value(0))
+}
+
 func TestNestedJSONFlattenedToFirstLevel(t *testing.T) {
 	record := testRecord(
 		[]string{"col1"},
