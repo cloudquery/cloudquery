@@ -5,6 +5,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client/spec"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
@@ -12,10 +13,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func sortKeys(table *schema.Table) []string {
+func SortKeys(table *schema.Table) []string {
 	keys := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {
-		if col.NotNull || col.PrimaryKey {
+		if (col.NotNull || col.PrimaryKey) && !isCompoundType(col) {
 			keys = append(keys, col.Name)
 		}
 	}
@@ -27,6 +28,19 @@ func sortKeys(table *schema.Table) []string {
 	}
 
 	return slices.Clip(keys)
+}
+
+func isCompoundType(col schema.Column) bool {
+	switch col.Type.(type) {
+	case *arrow.StructType:
+		return true
+	case *arrow.MapType:
+		return true
+	case *arrow.ListType:
+		return true
+	default:
+		return false
+	}
 }
 
 func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, partition []spec.PartitionStrategy) (string, error) {
@@ -47,7 +61,7 @@ func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, parti
 	}
 	builder.WriteString("\n) ENGINE = ")
 	builder.WriteString(engine.String())
-	partitionBy, err := resolvePartitionBy(table.Name, partition)
+	partitionBy, err := ResolvePartitionBy(table.Name, partition)
 	if err != nil {
 		return "", err
 	}
@@ -56,9 +70,13 @@ func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, parti
 		builder.WriteString(partitionBy)
 	}
 	builder.WriteString(" ORDER BY ")
-	if orderBy := sortKeys(table); len(orderBy) > 0 {
+	resolvedOrderBy, err := ResolveOrderBy(table)
+	if err != nil {
+		return "", err
+	}
+	if len(resolvedOrderBy) > 0 {
 		builder.WriteString("(")
-		builder.WriteString(strings.Join(util.Sanitized(orderBy...), ", "))
+		builder.WriteString(strings.Join(resolvedOrderBy, ", "))
 		builder.WriteString(")")
 	} else {
 		builder.WriteString("tuple()")
@@ -72,7 +90,7 @@ func DropTable(table *schema.Table, cluster string) string {
 	return "DROP TABLE IF EXISTS " + tableNamePart(table.Name, cluster)
 }
 
-func resolvePartitionBy(table string, partition []spec.PartitionStrategy) (string, error) {
+func ResolvePartitionBy(table string, partition []spec.PartitionStrategy) (string, error) {
 	hasMatchedAlready := false
 	partitionBy := ""
 	for _, p := range partition {
@@ -88,6 +106,10 @@ func resolvePartitionBy(table string, partition []spec.PartitionStrategy) (strin
 		return "", nil
 	}
 	return partitionBy, nil
+}
+
+func ResolveOrderBy(table *schema.Table) ([]string, error) {
+	return util.Sanitized(SortKeys(table)...), nil
 }
 
 func tableMatchesAnyGlobPatterns(table string, patterns []string) bool {
