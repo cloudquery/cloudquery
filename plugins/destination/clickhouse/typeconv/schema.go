@@ -46,7 +46,9 @@ func CanonizedField(field arrow.Field) (*arrow.Field, error) {
 	if err != nil {
 		return nil, err
 	}
-	clone := arrow.Field(field)
+	clone := field
+	clone.Nullable = field.Nullable
 	clone.Type = temp.Type
+	clone.Metadata = field.Metadata
 	return &clone, nil
 }
