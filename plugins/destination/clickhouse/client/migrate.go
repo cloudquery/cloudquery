@@ -50,10 +50,10 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 
 			have := have.Get(want.Name)
 			if have == nil {
-				return c.createTable(ctx, want, c.spec.Partition)
+				return c.createTable(ctx, want, c.spec.Partition, c.spec.OrderBy)
 			}
 
-			return c.autoMigrate(ctx, have, want, c.spec.Partition)
+			return c.autoMigrate(ctx, have, want, c.spec.Partition, c.spec.OrderBy)
 		})
 	}
 
@@ -80,7 +80,7 @@ func (c *Client) checkForced(ctx context.Context, have, want schema.Tables, mess
 				Msg("migrate manually or consider using 'migrate_mode: forced'")
 			forcedErr = true
 		}
-		if err := c.checkPartitionOrOrderByChanged(ctx, m.Table, c.spec.Partition); err != nil {
+		if err := c.checkPartitionOrOrderByChanged(ctx, m.Table, c.spec.Partition, c.spec.OrderBy); err != nil {
 			c.logger.Error().Str("table", m.Table.Name).Msg(err.Error())
 			forcedErr = true
 		}
@@ -102,10 +102,10 @@ func unsafeChanges(changes []schema.TableColumnChange) []schema.TableColumnChang
 	return slices.Clip(unsafe)
 }
 
-func (c *Client) createTable(ctx context.Context, table *schema.Table, partition []spec.PartitionStrategy) (err error) {
+func (c *Client) createTable(ctx context.Context, table *schema.Table, partition []spec.PartitionStrategy, orderBy []spec.OrderByStrategy) (err error) {
 	c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
 
-	query, err := queries.CreateTable(table, c.spec.Cluster, c.spec.Engine, partition)
+	query, err := queries.CreateTable(table, c.spec.Cluster, c.spec.Engine, partition, orderBy)
 	if err != nil {
 		return err
 	}
@@ -137,16 +137,16 @@ func needsTableDrop(change schema.TableColumnChange) bool {
 	return true
 }
 
-func (c *Client) autoMigrate(ctx context.Context, have, want *schema.Table, partition []spec.PartitionStrategy) error {
+func (c *Client) autoMigrate(ctx context.Context, have, want *schema.Table, partition []spec.PartitionStrategy, orderBy []spec.OrderByStrategy) error {
 	changes := want.GetChanges(have)
 
-	if unsafe := unsafeChanges(changes); len(unsafe) > 0 || c.checkPartitionOrOrderByChanged(ctx, want, c.spec.Partition) != nil {
+	if unsafe := unsafeChanges(changes); len(unsafe) > 0 || c.checkPartitionOrOrderByChanged(ctx, want, c.spec.Partition, c.spec.OrderBy) != nil {
 		// we can get here only with migrate_mode: forced
 		if err := c.dropTable(ctx, have); err != nil {
 			return err
 		}
 
-		return c.createTable(ctx, want, partition)
+		return c.createTable(ctx, want, partition, orderBy)
 	}
 
 	for _, change := range changes {
@@ -171,8 +171,8 @@ func (c *Client) autoMigrate(ctx context.Context, have, want *schema.Table, part
 	return nil
 }
 
-func (c *Client) checkPartitionOrOrderByChanged(ctx context.Context, table *schema.Table, partition []spec.PartitionStrategy) error {
-	resolvedOrderBy, err := queries.ResolveOrderBy(table)
+func (c *Client) checkPartitionOrOrderByChanged(ctx context.Context, table *schema.Table, partition []spec.PartitionStrategy, orderBy []spec.OrderByStrategy) error {
+	resolvedOrderBy, err := queries.ResolveOrderBy(table, orderBy)
 	if err != nil {
 		return err
 	}

@@ -43,7 +43,7 @@ func isCompoundType(col schema.Column) bool {
 	}
 }
 
-func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, partition []spec.PartitionStrategy) (string, error) {
+func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, partition []spec.PartitionStrategy, orderBy []spec.OrderByStrategy) (string, error) {
 	builder := strings.Builder{}
 	builder.WriteString("CREATE TABLE ")
 	builder.WriteString(tableNamePart(table.Name, cluster))
@@ -70,7 +70,7 @@ func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, parti
 		builder.WriteString(partitionBy)
 	}
 	builder.WriteString(" ORDER BY ")
-	resolvedOrderBy, err := ResolveOrderBy(table)
+	resolvedOrderBy, err := ResolveOrderBy(table, orderBy)
 	if err != nil {
 		return "", err
 	}
@@ -108,8 +108,22 @@ func ResolvePartitionBy(table string, partition []spec.PartitionStrategy) (strin
 	return partitionBy, nil
 }
 
-func ResolveOrderBy(table *schema.Table) ([]string, error) {
-	return util.Sanitized(SortKeys(table)...), nil
+func ResolveOrderBy(table *schema.Table, orderBy []spec.OrderByStrategy) ([]string, error) {
+	hasMatchedAlready := false
+	resolvedOrderBy := []string{}
+	for _, o := range orderBy {
+		if !tableMatchesAnyGlobPatterns(table.Name, o.SkipTables) && tableMatchesAnyGlobPatterns(table.Name, o.Tables) {
+			if hasMatchedAlready {
+				return nil, fmt.Errorf("table %q matched multiple order by strategies", table.Name)
+			}
+			hasMatchedAlready = true
+			resolvedOrderBy = o.OrderBy
+		}
+	}
+	if !hasMatchedAlready {
+		return util.Sanitized(SortKeys(table)...), nil
+	}
+	return resolvedOrderBy, nil
 }
 
 func tableMatchesAnyGlobPatterns(table string, patterns []string) bool {
