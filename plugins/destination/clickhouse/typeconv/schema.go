@@ -48,6 +48,5 @@ func CanonizedField(field arrow.Field) (*arrow.Field, error) {
 	}
 	clone := field
 	clone.Type = temp.Type
-	clone.Metadata = field.Metadata
 	return &clone, nil
 }
