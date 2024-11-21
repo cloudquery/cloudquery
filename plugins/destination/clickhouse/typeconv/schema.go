@@ -42,11 +42,5 @@ func CanonizedField(field arrow.Field) (*arrow.Field, error) {
 		return nil, err
 	}
 	// 2 - convert back to Apache Arrow
-	temp, err := arrow_types.Field(field.Name, fieldType)
-	if err != nil {
-		return nil, err
-	}
-	clone := arrow.Field(field)
-	clone.Type = temp.Type
-	return &clone, nil
+	return arrow_types.Field(field.Name, fieldType)
 }

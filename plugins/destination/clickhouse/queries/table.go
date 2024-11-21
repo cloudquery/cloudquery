@@ -1,6 +1,8 @@
 package queries
 
 import (
+	"fmt"
+
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/arrow/types"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
@@ -48,4 +50,8 @@ func tableNamePart(table, cluster string) string {
 		return util.SanitizeID(table) + " ON CLUSTER " + util.SanitizeID(cluster)
 	}
 	return util.SanitizeID(table)
+}
+
+func GetPartitionKeyAndSortingKeyQuery(database, table string) string {
+	return fmt.Sprintf(`SELECT partition_key, sorting_key FROM system.tables WHERE database = '%s' AND name = '%s'`, database, table)
 }
