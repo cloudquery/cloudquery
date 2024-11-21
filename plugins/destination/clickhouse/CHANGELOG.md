@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v5.1.1...plugins-destination-clickhouse-v5.2.0) (2024-11-21)
+
+
+### Features
+
+* Add license information ([#19642](https://github.com/cloudquery/cloudquery/issues/19642)) ([a81edd6](https://github.com/cloudquery/cloudquery/commit/a81edd6c5e7c2a25f3396ac80983d28c4af2f1c7))
+
 ## [5.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v5.1.0...plugins-destination-clickhouse-v5.1.1) (2024-11-20)
 
 
