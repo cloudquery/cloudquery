@@ -72,6 +72,10 @@ This is the (nested) spec used by the ClickHouse destination plugin.
 
   Partitioning strategy to be used for tables (i.e. `PARTITION BY` clause in `CREATE TABLE` statements).
 
+- `order` (optional, [ordering](#ordering)) (default: use existing primary key)
+
+  Ordering strategy to be used for tables (i.e. `ORDER BY` clause in `CREATE TABLE` statements).
+
 #### ClickHouse table engine
 
 This option allows to specify a custom table engine to be used.
@@ -141,6 +145,44 @@ partition:
   partition_by: "toYYYYMM(_cq_sync_time)"
 - tables: ["special_partition_table"]
   partition_by: "toYYYYMMDD(_cq_sync_time)"
+```
+
+#### Ordering
+
+This option allows to specify custom `ORDER BY` clauses for tables or groups of tables. It is an array of objects.
+
+Each object has the following fields:
+
+- `tables` (array of strings) (optional) (default: `["*"]`)
+
+  List of glob patterns to match table names against. Follows the same rules as the top-level spec `tables` option.
+
+  If a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.
+
+  Ordering strategy table patterns should be disjointed sets: if a table matches two ordering strategies, an error will be raised at runtime.
+
+- `skip_tables` (array of strings) (optional) (default: empty)
+
+  List of glob patterns to skip matching table names against. Follows the same rules as the top-level spec `skip_tables` option.
+
+  If a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.
+
+  Ordering strategy table patterns should be disjointed sets: if a table matches two ordering strategies, an error will be raised at runtime.
+
+- `order_by` (array of strings) (required)
+
+  Sort key to use, the strings are passed as is after "ORDER BY" clause with no validation or quoting.
+
+Example:
+
+```yaml copy
+order:
+- tables: ["aws_ec2_instances"]
+  order_by:
+  - "`account_id`"
+  - "`region`"
+  - "toYYYYMM(`_cq_sync_time`) DESC"
+  - "`_cq_id`"
 ```
 
 ### Connecting to ClickHouse Cloud
