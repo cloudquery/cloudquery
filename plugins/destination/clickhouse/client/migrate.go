@@ -182,7 +182,10 @@ func (c *Client) checkPartitionOrOrderByChanged(ctx context.Context, table *sche
 		return err
 	}
 
-	splitPartitionBy := strings.Split(resolvedPartitionBy, ",")
+	splitPartitionBy := []string{}
+	if resolvedPartitionBy != "" {
+		splitPartitionBy = strings.Split(resolvedPartitionBy, ",")
+	}
 
 	wantPartitionKey := make([]string, 0, len(splitPartitionBy))
 	for _, key := range splitPartitionBy {

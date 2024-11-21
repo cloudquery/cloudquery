@@ -5,6 +5,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client/spec"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
@@ -15,7 +16,7 @@ import (
 func SortKeys(table *schema.Table) []string {
 	keys := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {
-		if col.NotNull || col.PrimaryKey {
+		if (col.NotNull || col.PrimaryKey) && !isCompoundType(col) {
 			keys = append(keys, col.Name)
 		}
 	}
@@ -27,6 +28,19 @@ func SortKeys(table *schema.Table) []string {
 	}
 
 	return slices.Clip(keys)
+}
+
+func isCompoundType(col schema.Column) bool {
+	switch col.Type.(type) {
+	case *arrow.StructType:
+		return true
+	case *arrow.MapType:
+		return true
+	case *arrow.ListType:
+		return true
+	default:
+		return false
+	}
 }
 
 func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, partition []spec.PartitionStrategy, orderBy []spec.OrderByStrategy) (string, error) {

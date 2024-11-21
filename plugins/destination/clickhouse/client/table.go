@@ -33,5 +33,14 @@ func (c *Client) getPartitionKeyAndSortingKey(ctx context.Context, table *schema
 	if err != nil {
 		return nil, nil, err
 	}
-	return strings.Split(partitionKey, ", "), strings.Split(sortingKey, ", "), nil
+
+	splitPartitionKey := []string{}
+	if partitionKey != "" {
+		splitPartitionKey = strings.Split(partitionKey, ", ")
+	}
+	splitSortingKey := []string{}
+	if sortingKey != "" {
+		splitSortingKey = strings.Split(sortingKey, ", ")
+	}
+	return splitPartitionKey, splitSortingKey, nil
 }
