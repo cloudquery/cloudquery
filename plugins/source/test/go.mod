@@ -5,7 +5,7 @@ go 1.22.7
 require (
 	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cloudquery/codegen v0.3.19
-	github.com/cloudquery/plugin-sdk/v4 v4.68.4-0.20241122102115-73eceaa72f00
+	github.com/cloudquery/plugin-sdk/v4 v4.69.0
 	github.com/rs/zerolog v1.33.0
 	golang.org/x/exp v0.0.0-20241009180824-f66d83c29e7c
 )
