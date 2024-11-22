@@ -52,7 +52,6 @@ func TestPlugin(t *testing.T) {
 			},
 			SkipSpecificMigrations: plugin.Migrations{
 				RemoveUniqueConstraint: true,
-				MovePKToCQOnly:         true,
 			},
 		},
 		plugin.WithTestSourceAllowNull(types.CanBeNullable),
