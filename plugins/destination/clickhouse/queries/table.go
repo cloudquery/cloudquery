@@ -5,6 +5,7 @@ import (
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/arrow/types"
+	chTypes "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -33,6 +34,10 @@ func ScanTableSchemas(rows driver.Rows, messages message.WriteMigrateTables) (sc
 		field, err := types.Field(name, typ)
 		if err != nil {
 			return nil, err
+		}
+
+		if !chTypes.CanBeNullable(field.Type) {
+			field.Nullable = true
 		}
 		defs[table] = append(defs[table], schema.NewColumnFromArrowField(*field))
 	}
