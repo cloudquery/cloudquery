@@ -1,4 +1,4 @@
-//go:build !(linux && boringcrypto)
+//go:build linux && boringcrypto
 
 package plugin
 
@@ -23,5 +23,9 @@ func Plugin() *plugin.Plugin {
 		plugin.WithTeam(Team),
 		plugin.WithJSONSchema(client.JSONSchema),
 		plugin.WithConnectionTester(TestConnection),
+		plugin.WithBuildTargets([]plugin.BuildTarget{
+			{OS: plugin.GoOSLinux, Arch: plugin.GoArchAmd64, CGO: true, IncludeSymbols: true},
+			{OS: plugin.GoOSLinux, Arch: plugin.GoArchArm64, CGO: true, IncludeSymbols: true},
+		}),
 	)
 }
