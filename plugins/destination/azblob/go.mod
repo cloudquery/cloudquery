@@ -4,7 +4,7 @@ go 1.22.7
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.0
-	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.4.1
+	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.5.0
 	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cloudquery/codegen v0.3.19
 	github.com/cloudquery/filetypes/v4 v4.5.0
@@ -18,7 +18,7 @@ require (
 )
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.14.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.16.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.10.0 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.2.2 // indirect
 	github.com/JohnCGriffin/overflow v0.0.0-20211019200055-46fa312c352c // indirect
