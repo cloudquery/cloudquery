@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.6.0...plugins-source-test-v4.6.1) (2024-11-25)
+
+
+### Bug Fixes
+
+* Update readme ([#19688](https://github.com/cloudquery/cloudquery/issues/19688)) ([e0a42a8](https://github.com/cloudquery/cloudquery/commit/e0a42a88a6da5abee3b501c37e1404c3e8ee2ba5))
+
 ## [4.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.5.5...plugins-source-test-v4.6.0) (2024-11-25)
 
 
