@@ -3,6 +3,7 @@
 .github/workflows/dest_* @cloudquery/cloudquery-plugins
 .github/workflows/transf_* @cloudquery/cloudquery-plugins
 plugins/** @cloudquery/cloudquery-plugins
+plugins/transformer/** @cloudquery/cloudquery-framework
 
 **/go.mod
 **/go.sum
