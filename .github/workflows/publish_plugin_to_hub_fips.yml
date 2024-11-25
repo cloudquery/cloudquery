@@ -120,3 +120,10 @@ jobs:
         uses: cloudquery/setup-cloudquery@v4
         with:
           version: v6.11.2
+
+      - name: Publish plugin to hub
+        working-directory: ${{ needs.prepare.outputs.plugin_dir }}
+        env:
+          CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
+        run: |
+          cloudquery plugin publish --finalize
