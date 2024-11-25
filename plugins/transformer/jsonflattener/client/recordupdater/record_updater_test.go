@@ -33,6 +33,24 @@ func TestFlattenJSONFields(t *testing.T) {
 	require.Equal(t, true, updatedRecord.Column(3).(*array.Boolean).Value(0))
 }
 
+func TestFlattenJSONFieldsWithTimestamp(t *testing.T) {
+	record := testRecord(
+		[]string{"col1"},
+		map[string]string{"col1": `{"key_a": "timestamp[us, tz=UTC]"}`},
+		[]arrow.Array{buildJSONColumn([]*any{toP(`{"key_a": "2024-01-02T03:04:05.006Z"}`)})},
+	)
+	updater := New(record)
+
+	updatedRecord, err := updater.FlattenJSONFields()
+	require.NoError(t, err)
+
+	require.Equal(t, int64(2), updatedRecord.NumCols())
+	require.Equal(t, int64(1), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "col1__key_a", updatedRecord.ColumnName(1))
+	require.Equal(t, "2024-01-02T03:04:05.006Z", updatedRecord.Column(1).(*array.Timestamp).Value(0).ToTime(arrow.Microsecond).Format("2006-01-02T15:04:05.000Z"))
+}
+
 func TestFlattenJSONFieldsDoesntFlattenFieldsKeyedUTF8(t *testing.T) {
 	record := testRecord(
 		[]string{"col1"},
