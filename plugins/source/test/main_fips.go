@@ -1,9 +1,10 @@
-//go:build !(linux && boringcrypto)
+//go:build linux && boringcrypto
 
 package main
 
 import (
 	"context"
+	_ "crypto/tls/fipsonly"
 	"log"
 
 	"github.com/cloudquery/cloudquery/plugins/source/test/resources/plugin"

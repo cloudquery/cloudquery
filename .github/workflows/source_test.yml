@@ -55,4 +55,49 @@ jobs:
         run: go build .
       - name: Test
         run: make test
-  
+  validate-fips:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/cloudquery/golang-cross:v10.0.0
+      env:
+        CC: /usr/bin/gencc.sh
+        CXX: /usr/bin/gencpp.sh
+    defaults:
+      run:
+        working-directory: ./plugins/source/test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.22.4-validate-plugin-fips-cache-${{ hashFiles('plugins/source/test/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.22.4-validate-plugin-fips-cache-source-test
+
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: plugins/source/test/go.mod
+          cache: false
+
+      - name: Run package command
+        env:
+          GOEXPERIMENT: "boringcrypto"
+        run: |
+          rm -rf docs/tables.md
+          go run main.go package -m "chore: Test FIPS" "v1.0.0" .
+
+      - name: Unzip package artifacts
+        run: |
+          unzip -o dist/plugin-test-v1.0.0-linux-amd64.zip
+          chmod +x plugin-test-v1.0.0-linux-amd64
+          ./plugin-test-v1.0.0-linux-amd64 --version
+
+      - name: Validate FIPS build
+        run: |
+          go tool nm plugin-test-v1.0.0-linux-amd64 | grep -E 'sig.FIPSOnly|sig.BoringCrypto'
