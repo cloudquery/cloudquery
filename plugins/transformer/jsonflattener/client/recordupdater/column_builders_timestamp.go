@@ -34,11 +34,35 @@ func (b *TimestampColumnsBuilder) addRow(row map[string]any) {
 			continue
 		}
 		value, exists := row[key]
+		b.values[key][b.i] = nil
 		if !exists {
-			b.values[key][b.i] = nil
 			continue
 		}
-		if v, ok := value.(time.Time); ok {
+		switch v := value.(type) {
+		case string:
+			formats := []string{
+				"2006-01-02T15:04:05.000Z",
+				time.RFC3339,
+				time.RFC3339Nano,
+				"2006-01-02T15:04:05Z",
+				"2006-01-02 15:04:05",
+				"2006-01-02",
+				time.RFC822,
+				time.RFC850,
+				time.RFC1123,
+				time.RFC1123Z,
+				time.UnixDate,
+				time.RubyDate,
+				time.ANSIC,
+			}
+
+			for _, format := range formats {
+				if parsed, err := time.Parse(format, v); err == nil {
+					b.values[key][b.i] = &parsed
+					break
+				}
+			}
+		case time.Time:
 			b.values[key][b.i] = &v
 		}
 	}

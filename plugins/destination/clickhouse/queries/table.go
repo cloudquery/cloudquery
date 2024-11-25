@@ -34,6 +34,7 @@ func ScanTableSchemas(rows driver.Rows, messages message.WriteMigrateTables) (sc
 		if err != nil {
 			return nil, err
 		}
+
 		defs[table] = append(defs[table], schema.NewColumnFromArrowField(*field))
 	}
 
