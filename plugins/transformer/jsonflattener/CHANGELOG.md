@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v1.0.3...plugins-transformer-jsonflattener-v1.1.0) (2024-11-25)
+
+
+### Features
+
+* Add license information ([#19642](https://github.com/cloudquery/cloudquery/issues/19642)) ([a81edd6](https://github.com/cloudquery/cloudquery/commit/a81edd6c5e7c2a25f3396ac80983d28c4af2f1c7))
+
+
+### Bug Fixes
+
+* Add timestamp parsing logic to JSON flattener ([#19686](https://github.com/cloudquery/cloudquery/issues/19686)) ([ec27826](https://github.com/cloudquery/cloudquery/commit/ec27826060fd2c76a1d7e49e51a75db160d8dbfe))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.69.0 ([#19677](https://github.com/cloudquery/cloudquery/issues/19677)) ([84cd7bd](https://github.com/cloudquery/cloudquery/commit/84cd7bd0e40b310a4e1db19422c5f9c64ccd515a))
+
 ## [1.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v1.0.2...plugins-transformer-jsonflattener-v1.0.3) (2024-11-20)
 
 
