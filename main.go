@@ -1,5 +1,5 @@
-// This top level main file is intended so we show up in https://pkg.go.dev/github.com/cloudquery/cloudquery
-// We publish the CLI from the cli sub package
+// CloudQuery uses a monorepo approach with a separate Go module per component. Visit our GitHub repository to
+// See the full project structure and all the components https://github.com/cloudquery/cloudquery
 package main
 
 import (
