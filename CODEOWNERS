@@ -9,3 +9,4 @@ plugins/transformer/** @cloudquery/cloudquery-framework
 **/go.sum
 .release-please-manifest.json
 **/CHANGELOG.md
+website/versions/**
