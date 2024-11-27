@@ -101,3 +101,6 @@ jobs:
           body: Updates the CLI latest version to ${{steps.split.outputs.version}}
           labels: automerge
           author: cq-bot <cq-bot@users.noreply.github.com>
+      - name: Push Tag Without `cli-` component
+        if: steps.semver_parser.outputs.prerelease == ''
+        run: git tag ${{ steps.split.outputs.version }} && git push origin ${{ steps.split.outputs.version }}
