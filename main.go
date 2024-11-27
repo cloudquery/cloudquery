@@ -1,5 +1,4 @@
-// CloudQuery uses a monorepo approach with a separate Go module per component. Visit our GitHub repository to
-// See the full project structure and all the components https://github.com/cloudquery/cloudquery
+// CloudQuery uses a monorepo approach with a separate Go module per component. Visit our GitHub repository to see the full project structure and all the components https://github.com/cloudquery/cloudquery
 package main
 
 import (
