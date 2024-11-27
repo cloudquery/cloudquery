@@ -5,6 +5,20 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.12.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.11.2...cli-v6.12.0) (2024-11-27)
+
+
+### Features
+
+* Added licenses ([#19671](https://github.com/cloudquery/cloudquery/issues/19671)) ([4410538](https://github.com/cloudquery/cloudquery/commit/441053874212e5b553338a863bcf57edc6baaa5f))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.68.3 ([#19604](https://github.com/cloudquery/cloudquery/issues/19604)) ([3d378ea](https://github.com/cloudquery/cloudquery/commit/3d378ea20dba9f2f66416545855b5bd15ee575cf))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.69.0 ([#19677](https://github.com/cloudquery/cloudquery/issues/19677)) ([84cd7bd](https://github.com/cloudquery/cloudquery/commit/84cd7bd0e40b310a4e1db19422c5f9c64ccd515a))
+* **deps:** Update module google.golang.org/protobuf to v1.35.2 ([#19636](https://github.com/cloudquery/cloudquery/issues/19636)) ([b0d5d87](https://github.com/cloudquery/cloudquery/commit/b0d5d872aef1eac3aa488dd8895f0a29afa68899))
+
 ## [6.11.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.11.1...cli-v6.11.2) (2024-11-14)
 
 
