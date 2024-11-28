@@ -41,7 +41,7 @@ jobs:
           go-version-file: plugins/destination/sqlite/go.mod
           cache: false
       - name: Install GoReleaser
-        uses: goreleaser/goreleaser-action@v5
+        uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser-pro
           version: latest

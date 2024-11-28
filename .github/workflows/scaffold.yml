@@ -69,7 +69,7 @@ jobs:
           cache: false
       - name: Install GoReleaser
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: goreleaser/goreleaser-action@v5
+        uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser-pro
           version: latest
