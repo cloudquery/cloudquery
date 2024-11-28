@@ -1,9 +1,0 @@
-{
-  "architecture": "Architecture",
-  "creating-new-integration": "Creating a New Integration",
-  "publishing-an-addon-to-the-hub": "Publishing an Addon to the Hub",
-  "publishing-an-integration-to-the-hub": "Publishing an Integration to the Hub",
-  "codegen": "Generating Resources",
-  "running-locally": "Running Integrations Locally",
-  "build": "Building From Source"
-}

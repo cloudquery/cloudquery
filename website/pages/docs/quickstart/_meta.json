@@ -1,9 +1,0 @@
-{
-  "macOS": "macOS",
-  "linux": "Linux",
-  "windows": "Windows",
-  "cloudquery-cloud": "CloudQuery Cloud",
-  "index": {
-    "display": "hidden"
-  }
-}
