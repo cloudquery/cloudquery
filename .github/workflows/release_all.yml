@@ -10,7 +10,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Add token to config.yaml
-        uses: jacobtomlinson/gha-find-replace@3a8ed858a4e3fb487c6f53658ec40b2b1d45d9d8
+        uses: jacobtomlinson/gha-find-replace@f1069b438f125e5395d84d1c6fd3b559a7880cb5
         with:
           find: GITHUB_TOKEN_VALUE
           replace: ${{ secrets.GITHUB_TOKEN }}
