@@ -3,3 +3,8 @@ cloudquery-plugin-sdk<=0.1.37
 pyarrow>=15.0.2
 squareup==29.0.0.20230720
 pytest<=8.2.2
+jsonpickle>=3.3.0 # not directly required, pinned by Snyk to avoid a vulnerability
+requests>=2.32.2 # not directly required, pinned by Snyk to avoid a vulnerability
+setuptools>=70.0.0 # not directly required, pinned by Snyk to avoid a vulnerability
+urllib3>=2.2.2 # not directly required, pinned by Snyk to avoid a vulnerability
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
