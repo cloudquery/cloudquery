@@ -73,7 +73,7 @@
   "plugins/source/homebrew+FILLER": "0.0.0",
   "plugins/destination/mysql": "5.2.16",
   "plugins/destination/mysql+FILLER": "0.0.0",
-  "plugins/destination/firehose": "2.5.23",
+  "plugins/destination/firehose": "2.6.0",
   "plugins/destination/firehose+FILLER": "0.0.0",
   "plugins/source/awspricing": "3.1.5",
   "plugins/source/awspricing+FILLER": "0.0.0",
