@@ -28,7 +28,7 @@ jobs:
         working-directory: plugins/destination/meilisearch
     services:
       meilisearch:
-        image:   getmeili/meilisearch:v1.6.2
+        image:   getmeili/meilisearch:v1.11.3
         env:
           MEILI_ENV:          development
           MEILI_MASTER_KEY:   ${{ env.MEILI_MASTER_KEY }}

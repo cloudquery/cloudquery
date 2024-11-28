@@ -55,7 +55,7 @@ jobs:
             }).join('\n')
             return changesList
       - name: Find Comment
-        uses: peter-evans/find-comment@b5a462800fb9b7a44da38965cd7281bf47a81fc6
+        uses: peter-evans/find-comment@025109652c8a93d074bfe8b64ff81f011cac8928
         id: find-comment
         with:
           token: ${{ secrets.GH_CQ_BOT }}
@@ -63,7 +63,7 @@ jobs:
           comment-author: "cq-bot"
           body-includes: "### This PR has the following changes to source plugin(s) tables:"
       - name: Create or update comment
-        uses: peter-evans/create-or-update-comment@4e4c9d2bf6469297d6559f2d6dd2491723ec8326
+        uses: peter-evans/create-or-update-comment@267c0605edbbc0183ed9973a6ce2d1a158d96027
         if: steps.get-changes.outputs.result != ''
         with:
           token: ${{ secrets.GH_CQ_BOT }}
