@@ -2,15 +2,9 @@
 package main
 
 import (
-	"context"
-	"log"
-
-	"github.com/cloudquery/cloudquery/cli/cmd"
+	"fmt"
 )
 
 func main() {
-	err := cmd.NewCmdRoot().ExecuteContext(context.Background())
-	if err != nil {
-		log.Fatal(err)
-	}
+	fmt.Println("To Run CloudQuery, use the CLI module from the cli/ directory")
 }
