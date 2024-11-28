@@ -30,7 +30,7 @@ jobs:
         working-directory: plugins/destination/mssql
     services:
       mssql:
-        image:   mcr.microsoft.com/mssql/server:2019-latest
+        image:   mcr.microsoft.com/mssql/server:2022-latest
         env:
           ACCEPT_EULA:       Y
           MSSQL_SA_PASSWORD: ${{ env.DB_PASSWORD }}
