@@ -27,7 +27,7 @@ jobs:
     services:
       # Label used to access the service container
       postgres:
-        image: postgres:10
+        image: postgres:11
         env:
           POSTGRES_PASSWORD: pass
           POSTGRES_USER: postgres
