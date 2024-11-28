@@ -100,6 +100,11 @@ jobs:
         if: steps.semver_parser.outputs.prerelease == ''
         run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./frontend/old_docs_site/versions/cli.json'
 
+      - name: Update docs
+        if: steps.semver_parser.outputs.prerelease == ''
+        run: |
+          cp -r ./cli/docs/reference/*.md ./frontend/old_docs_site/pages/docs/reference/cli/
+
       - name: Create Pull Request
         if: steps.semver_parser.outputs.prerelease == ''
         uses: peter-evans/create-pull-request@v4
