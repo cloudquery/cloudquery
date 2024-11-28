@@ -9,8 +9,9 @@ test:
 
 .PHONY: gen-docs
 gen-docs:
-	rm -rf ../website/pages/docs/reference/cli/*.md
-	go run main.go doc ../website/pages/docs/reference/cli/
+	rm -rf docs/reference/*.md
+	mkdir -p docs/reference
+	go run main.go doc docs/reference
 
 .PHONY: gen-spec-schema
 gen-spec-schema:
