@@ -132,7 +132,7 @@ jobs:
               body: newDescription
             })
 
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - uses: stefanzweifel/git-auto-commit-action@v5
         if: ${{ steps.get-changes.outputs.result != '' }}
         with:
           commit_message: "chore: Add tables changes to changelog"
