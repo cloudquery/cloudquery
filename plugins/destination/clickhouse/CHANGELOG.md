@@ -1,5 +1,24 @@
 # Changelog
 
+## [6.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v5.2.0...plugins-destination-clickhouse-v6.0.0) (2024-11-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* Fix the order by bug that causes compound types to always be included in the sort key
+* Detect changes to order and partition by and fail migration (or recreate tables in `force_migrate` mode)
+
+### Features
+
+* Detect changes to order and partition by and fail migration (or recreate tables in `force_migrate` mode) ([8c355f7](https://github.com/cloudquery/cloudquery/commit/8c355f7994ced9882a2caeec2cfe53a03c99544d))
+* Implement custom ORDER BY clause support. ([#19674](https://github.com/cloudquery/cloudquery/issues/19674)) ([14f8a41](https://github.com/cloudquery/cloudquery/commit/14f8a41f1918cdedd6bbfd45efe38d51fe05c684))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.69.0 ([#19677](https://github.com/cloudquery/cloudquery/issues/19677)) ([84cd7bd](https://github.com/cloudquery/cloudquery/commit/84cd7bd0e40b310a4e1db19422c5f9c64ccd515a))
+* Fix the order by bug that causes compound types to always be included in the sort key ([8c355f7](https://github.com/cloudquery/cloudquery/commit/8c355f7994ced9882a2caeec2cfe53a03c99544d))
+
 ## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v5.1.1...plugins-destination-clickhouse-v5.2.0) (2024-11-21)
 
 
