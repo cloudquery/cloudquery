@@ -65,7 +65,7 @@
   "plugins/source/hubspot+FILLER": "0.0.0",
   "plugins/destination/elasticsearch": "3.5.0",
   "plugins/destination/elasticsearch+FILLER": "0.0.0",
-  "plugins/destination/clickhouse": "5.2.0",
+  "plugins/destination/clickhouse": "6.0.0",
   "plugins/destination/clickhouse+FILLER": "0.0.0",
   "plugins/source/postgresql": "3.0.7",
   "plugins/source/postgresql+FILLER": "0.0.0",
