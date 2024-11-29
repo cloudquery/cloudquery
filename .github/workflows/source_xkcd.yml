@@ -161,7 +161,7 @@ jobs:
             echo "Failed to delete deployment $PREVIOUS_DEPLOYMENT_URL. It may not exist or there was an error."
           fi
       - name: Create or update comment
-        uses: peter-evans/create-or-update-comment@v3
+        uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GH_CQ_BOT }}
           comment-id: ${{ steps.find-comment.outputs.comment-id }}

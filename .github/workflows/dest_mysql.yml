@@ -120,7 +120,7 @@ jobs:
         run: echo "previewLink=https://cloud.cloudquery.io/teams/cloudquery-test/destinations/create?plugin-cloud-ui=cloudquery|destination|mysql|${{ env.ALIAS_DEPLOYMENT_URL }}" >> "$GITHUB_OUTPUT"
 
       - name: Create or update comment
-        uses: peter-evans/create-or-update-comment@v3
+        uses: peter-evans/create-or-update-comment@v4
         with:
           token: ${{ secrets.GH_CQ_BOT }}
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
