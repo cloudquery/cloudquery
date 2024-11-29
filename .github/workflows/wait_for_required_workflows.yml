@@ -20,7 +20,7 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v41
+        uses: tj-actions/changed-files@v45
       - uses: actions/github-script@v7
         env:
           FILES: ${{ steps.changed-files.outputs.all_modified_files }}
