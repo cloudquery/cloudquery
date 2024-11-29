@@ -45,7 +45,7 @@ jobs:
         run: make gen
         working-directory: ${{ github.event.client_payload.slash_command.args.named.dir }}
 
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: Update code and docs"
           branch: ${{ github.event.client_payload.pull_request.head.ref }}
