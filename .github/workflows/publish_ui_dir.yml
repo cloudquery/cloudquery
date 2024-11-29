@@ -21,7 +21,7 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v44
+        uses: tj-actions/changed-files@v45
         with:
           files: |
             plugins/source/**/cloud-config-ui/**
@@ -93,7 +93,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.11.2
+          version: v6.12.1
 
       - name: Build UI for ${{ matrix.plugin.dir }}
         working-directory: ${{ matrix.plugin.ui }}
