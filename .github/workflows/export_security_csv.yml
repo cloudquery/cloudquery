@@ -22,6 +22,6 @@ jobs:
       - name: Upload CSV
         uses: actions/upload-artifact@v4
         with:
-          name: ghas-data
+          name: ghas-data-${{ github.sha }}
           path: ${{ github.workspace }}/*.csv
           if-no-files-found: error
