@@ -1,0 +1,27 @@
+name: Export Security CSV
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+  pull_request:
+  schedule:
+    - cron:  "0 0 * * 1"
+
+jobs:
+  export-security-csv:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - name: CSV export
+        uses: advanced-security/ghas-to-csv@v3
+        env:
+          GITHUB_PAT: ${{ secrets.GH_CQ_BOT }}
+      - name: Upload CSV
+        uses: actions/upload-artifact@v4
+        with:
+          name: ghas-data
+          path: ${{ github.workspace }}/*.csv
+          if-no-files-found: error
