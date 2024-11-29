@@ -45,7 +45,7 @@
   },
   "homepage": "https://github.com/cloudquery/cloudquery#readme",
   "devDependencies": {
-    "@ava/typescript": "^4.1.0",
+    "@ava/typescript": "^5.0.0",
     "@tsconfig/node20": "^20.1.2",
     "@types/uuid": "^9.0.2",
     "@types/yargs": "^17.0.24",
