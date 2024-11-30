@@ -52,7 +52,7 @@
     "@typescript-eslint/eslint-plugin": "^6.2.1",
     "@typescript-eslint/parser": "^6.2.1",
     "ava": "^6.0.1",
-    "eslint": "^8.46.0",
+    "eslint": "^9.0.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-import-resolver-typescript": "^3.5.5",
