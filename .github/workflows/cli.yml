@@ -44,7 +44,7 @@ jobs:
         uses: golangci/golangci-lint-action@v6
         if: matrix.os == 'ubuntu-latest'
         with:
-          version: v1.55.2
+          version: v1.62.0
           working-directory: cli
       - name: Build
         run: go build .
