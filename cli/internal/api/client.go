@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
-	"github.com/cloudquery/cloudquery/cli/internal/env"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 )
 
 const (

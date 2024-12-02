@@ -46,8 +46,8 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
     implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
 
-    implementation 'io.cloudquery:plugin-pb-java:0.0.26'
-    implementation 'io.cloudquery:plugin-sdk-java:0.0.34'
+    implementation 'io.cloudquery:plugin-pb-java:0.0.27'
+    implementation 'io.cloudquery:plugin-sdk-java:0.0.35'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

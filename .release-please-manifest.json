@@ -1,5 +1,5 @@
 {
-  "cli": "6.12.2",
+  "cli": "6.12.4",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "22.19.2",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -51,7 +51,7 @@
   "plugins/destination/kafka+FILLER": "0.0.0",
   "plugins/source/hackernews": "3.7.0",
   "plugins/source/hackernews+FILLER": "0.0.0",
-  "scaffold": "3.4.5",
+  "scaffold": "3.4.6",
   "scaffold+FILLER": "0.0.0",
   "plugins/source/oracle": "4.3.5",
   "plugins/source/oracle+FILLER": "0.0.0",
