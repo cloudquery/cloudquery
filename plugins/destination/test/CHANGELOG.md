@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.6.0...plugins-destination-test-v2.6.1) (2024-12-02)
+
+
+### Bug Fixes
+
+* Correct major version in `go.mod` ([#19811](https://github.com/cloudquery/cloudquery/issues/19811)) ([56644dc](https://github.com/cloudquery/cloudquery/commit/56644dc87aace839b4a8cb7e00701022ddde528f))
+
 ## [2.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.5.5...plugins-destination-test-v2.6.0) (2024-11-28)
 
 
