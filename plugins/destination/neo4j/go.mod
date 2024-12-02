@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/neo4j
+module github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5
 
 go 1.22.7
 

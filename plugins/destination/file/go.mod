@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/file
+module github.com/cloudquery/cloudquery/plugins/destination/file/v5
 
 go 1.22.7
 

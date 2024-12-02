@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/duckdb
+module github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5
 
 go 1.22.7
 

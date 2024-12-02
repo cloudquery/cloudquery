@@ -4,9 +4,9 @@ import (
 	"context"
 	"log"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/azblob/client"
-	"github.com/cloudquery/cloudquery/plugins/destination/azblob/client/spec"
-	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/azblob/resources/plugin"
+	"github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client"
+	"github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/spec"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/serve"
 )

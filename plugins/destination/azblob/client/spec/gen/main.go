@@ -6,7 +6,7 @@ import (
 	"path"
 	"runtime"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/azblob/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/spec"
 	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/cloudquery/filetypes/v4"
 )
@@ -15,7 +15,7 @@ func main() {
 	fmt.Println("Generating JSON schema for plugin spec")
 	jsonschema.GenerateIntoFile(new(spec.Spec), path.Join(currDir(), "..", "schema.json"),
 		append(filetypes.FileSpec{}.JSONSchemaOptions(),
-			jsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/destination/azblob/client/spec", path.Join(currDir(), "..")),
+			jsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/spec", path.Join(currDir(), "..")),
 			jsonschema.WithAddGoComments("github.com/cloudquery/filetypes/v4", path.Join(currDir(), "..", "..", "..", "vendor", "github.com/cloudquery/filetypes/v4")),
 		)...,
 	)

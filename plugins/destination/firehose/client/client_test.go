@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/firehose/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/goccy/go-json"
 	"github.com/stretchr/testify/require"

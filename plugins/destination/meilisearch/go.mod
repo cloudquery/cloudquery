@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/meilisearch
+module github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2
 
 go 1.22.7
 

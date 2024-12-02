@@ -3,7 +3,7 @@ package queries
 import (
 	"strings"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/util"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/util"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 

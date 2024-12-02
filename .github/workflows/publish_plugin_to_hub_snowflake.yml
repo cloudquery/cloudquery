@@ -163,3 +163,8 @@ jobs:
           CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
         run: |
           cloudquery plugin publish --finalize ${{ needs.prepare.outputs.ui_dir_arg }}
+
+      - name: Push Tag prefixed with plugin directory
+        if: needs.prepare.outputs.prerelease == ''
+        run: |
+          git tag ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }} && git push origin ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }}

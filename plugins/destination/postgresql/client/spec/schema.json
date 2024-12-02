@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/postgresql/client/spec/spec",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/spec/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
     "Duration": {

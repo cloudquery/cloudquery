@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/firehose
+module github.com/cloudquery/cloudquery/plugins/destination/firehose/v2
 
 go 1.22.7
 

@@ -6,9 +6,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/source/xkcd/client"
+	"github.com/cloudquery/cloudquery/plugins/source/xkcd/internal/xkcd"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
-	"github.com/hermanschaaf/cq-source-xkcd/client"
-	"github.com/hermanschaaf/cq-source-xkcd/internal/xkcd"
 )
 
 func TestComicsTable(t *testing.T) {

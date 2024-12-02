@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/azblob/client/spec/spec",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/spec/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
     "CSVSpec": {

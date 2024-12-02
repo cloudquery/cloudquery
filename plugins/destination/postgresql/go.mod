@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/postgresql
+module github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8
 
 go 1.22.7
 

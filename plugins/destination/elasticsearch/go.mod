@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/elasticsearch
+module github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v3
 
 go 1.22.7
 

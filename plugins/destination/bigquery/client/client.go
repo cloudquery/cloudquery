@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"cloud.google.com/go/bigquery"
-	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/bigquery/resources/plugin"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/rs/zerolog"

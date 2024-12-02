@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/queries"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )

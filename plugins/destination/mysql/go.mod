@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/mysql
+module github.com/cloudquery/cloudquery/plugins/destination/mysql/v5
 
 go 1.22.7
 

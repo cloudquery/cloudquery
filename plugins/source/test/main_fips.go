@@ -7,7 +7,7 @@ import (
 	_ "crypto/tls/fipsonly"
 	"log"
 
-	"github.com/cloudquery/cloudquery/plugins/source/test/resources/plugin"
+	"github.com/cloudquery/cloudquery/plugins/source/test/v4/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/serve"
 )
 

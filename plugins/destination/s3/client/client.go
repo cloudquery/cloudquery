@@ -16,7 +16,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/cloudquery/cloudquery/plugins/destination/s3/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/streamingbatchwriter"
 

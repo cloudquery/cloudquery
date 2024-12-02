@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/mongodb
+module github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2
 
 go 1.22.7
 

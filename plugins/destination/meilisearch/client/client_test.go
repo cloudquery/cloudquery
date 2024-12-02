@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/meilisearch/resources/plugin"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 

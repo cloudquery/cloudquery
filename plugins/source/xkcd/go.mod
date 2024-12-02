@@ -1,4 +1,4 @@
-module github.com/hermanschaaf/cq-source-xkcd
+module github.com/cloudquery/cloudquery/plugins/source/xkcd
 
 go 1.22.7
 

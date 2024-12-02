@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/apache/arrow/go/v17/arrow"
-	"github.com/cloudquery/cloudquery/plugins/source/test/client"
+	"github.com/cloudquery/cloudquery/plugins/source/test/v4/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 

@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client"
-	"github.com/cloudquery/cloudquery/plugins/source/hackernews/resources/services/items"
+	"github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client"
+	"github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/services/items"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
