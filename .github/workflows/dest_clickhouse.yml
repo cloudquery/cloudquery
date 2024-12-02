@@ -59,7 +59,7 @@ jobs:
       - name: golangci-lint
         uses: cloudquery/golangci-lint-action@master
         with:
-          version: v1.55.2
+          version: v1.62.0
           working-directory: plugins/destination/clickhouse
           args: '--config ../../.golangci.yml'
       - name: gen
