@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/scaffold
+module github.com/cloudquery/cloudquery/scaffold/v3
 
 go 1.22.4
 
