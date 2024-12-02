@@ -17,7 +17,7 @@ builds:
       - GO111MODULE=on
     main: ./main.go
     ldflags:
-      - -s -w -X github.com/cloudquery/cloudquery/scaffold/cmd.Version={{.Version}}
+      - -s -w -X github.com/cloudquery/cloudquery/scaffold/v3/cmd.Version={{.Version}}
     goos:
       - windows
       - linux
