@@ -18,14 +18,21 @@
       },
       "additionalProperties": false,
       "type": "object",
-      "required": ["table_name", "connection"],
+      "required": [
+        "table_name",
+        "connection"
+      ],
       "description": "Backend options to be used in conjunction with incremental tables (stores the incremental progres)"
     },
     "Destination": {
       "if": {
         "properties": {
           "registry": {
-            "enum": ["", "github", "cloudquery"]
+            "enum": [
+              "",
+              "github",
+              "cloudquery"
+            ]
           }
         },
         "title": "if registry is unset or is either `github` or `cloudquery`"
@@ -37,7 +44,9 @@
             "pattern": "^v.*$"
           }
         },
-        "required": ["version"],
+        "required": [
+          "version"
+        ],
         "title": "require version to be present"
       },
       "properties": {
@@ -57,7 +66,14 @@
         },
         "registry": {
           "type": "string",
-          "enum": ["", "github", "local", "grpc", "docker", "cloudquery"],
+          "enum": [
+            "",
+            "github",
+            "local",
+            "grpc",
+            "docker",
+            "cloudquery"
+          ],
           "description": "Registry can be \"\", \"github\", \"local\", \"grpc\", \"docker\", \"cloudquery\"",
           "default": "cloudquery"
         },
@@ -67,19 +83,29 @@
         },
         "write_mode": {
           "type": "string",
-          "enum": ["overwrite-delete-stale", "overwrite", "append"],
+          "enum": [
+            "overwrite-delete-stale",
+            "overwrite",
+            "append"
+          ],
           "description": "Destination plugin write mode",
           "default": "overwrite-delete-stale"
         },
         "migrate_mode": {
           "type": "string",
-          "enum": ["safe", "forced"],
+          "enum": [
+            "safe",
+            "forced"
+          ],
           "description": "Destination plugin migrate mode",
           "default": "safe"
         },
         "pk_mode": {
           "type": "string",
-          "enum": ["default", "cq-id-only"],
+          "enum": [
+            "default",
+            "cq-id-only"
+          ],
           "description": "Destination plugin PK mode",
           "default": "default"
         },
@@ -117,14 +143,21 @@
       },
       "additionalProperties": false,
       "type": "object",
-      "required": ["name", "path"],
+      "required": [
+        "name",
+        "path"
+      ],
       "description": "Destination plugin spec"
     },
     "Source": {
       "if": {
         "properties": {
           "registry": {
-            "enum": ["", "github", "cloudquery"]
+            "enum": [
+              "",
+              "github",
+              "cloudquery"
+            ]
           }
         },
         "title": "if registry is unset or is either `github` or `cloudquery`"
@@ -136,7 +169,9 @@
             "pattern": "^v.*$"
           }
         },
-        "required": ["version"],
+        "required": [
+          "version"
+        ],
         "title": "require version to be present"
       },
       "properties": {
@@ -156,7 +191,14 @@
         },
         "registry": {
           "type": "string",
-          "enum": ["", "github", "local", "grpc", "docker", "cloudquery"],
+          "enum": [
+            "",
+            "github",
+            "local",
+            "grpc",
+            "docker",
+            "cloudquery"
+          ],
           "description": "Registry can be \"\", \"github\", \"local\", \"grpc\", \"docker\", \"cloudquery\"",
           "default": "cloudquery"
         },
@@ -249,7 +291,12 @@
       },
       "additionalProperties": false,
       "type": "object",
-      "required": ["name", "path", "tables", "destinations"],
+      "required": [
+        "name",
+        "path",
+        "tables",
+        "destinations"
+      ],
       "description": "Source plugin spec"
     },
     "Spec": {
@@ -312,7 +359,11 @@
       "properties": {
         "kind": {
           "type": "string",
-          "enum": ["source", "destination", "transformer"],
+          "enum": [
+            "source",
+            "destination",
+            "transformer"
+          ],
           "description": "CloudQuery plugin kind"
         },
         "spec": {
@@ -328,13 +379,20 @@
       },
       "additionalProperties": false,
       "type": "object",
-      "required": ["kind", "spec"]
+      "required": [
+        "kind",
+        "spec"
+      ]
     },
     "Transformer": {
       "if": {
         "properties": {
           "registry": {
-            "enum": ["", "github", "cloudquery"]
+            "enum": [
+              "",
+              "github",
+              "cloudquery"
+            ]
           }
         },
         "title": "if registry is unset or is either `github` or `cloudquery`"
@@ -346,7 +404,9 @@
             "pattern": "^v.*$"
           }
         },
-        "required": ["version"],
+        "required": [
+          "version"
+        ],
         "title": "require version to be present"
       },
       "properties": {
@@ -366,7 +426,14 @@
         },
         "registry": {
           "type": "string",
-          "enum": ["", "github", "local", "grpc", "docker", "cloudquery"],
+          "enum": [
+            "",
+            "github",
+            "local",
+            "grpc",
+            "docker",
+            "cloudquery"
+          ],
           "description": "Registry can be \"\", \"github\", \"local\", \"grpc\", \"docker\", \"cloudquery\"",
           "default": "cloudquery"
         },
@@ -388,7 +455,10 @@
       },
       "additionalProperties": false,
       "type": "object",
-      "required": ["name", "path"],
+      "required": [
+        "name",
+        "path"
+      ],
       "description": "Transformer plugin spec"
     }
   }
