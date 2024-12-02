@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/IBM/sarama"
-	"github.com/cloudquery/cloudquery/plugins/destination/kafka/client/spec"
-	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/kafka/resources/plugin"
+	"github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/spec"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/resources/plugin"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/rs/zerolog"

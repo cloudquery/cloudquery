@@ -1,4 +1,4 @@
-PACKAGE_NAME          := github.com/cloudquery/cloudquery/plugins/destination/elasticsearch
+PACKAGE_NAME          := github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v3
 
 .PHONY: test
 test:

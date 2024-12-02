@@ -4,7 +4,7 @@ import (
 	"reflect"
 
 	"github.com/apache/arrow/go/v17/arrow"
-	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client"
+	"github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/transformers"
 	"github.com/hermanschaaf/hackernews"

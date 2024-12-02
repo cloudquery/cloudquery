@@ -10,7 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/firehose"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
-	"github.com/cloudquery/cloudquery/plugins/destination/firehose/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/goccy/go-json"

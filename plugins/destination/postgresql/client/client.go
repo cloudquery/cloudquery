@@ -7,7 +7,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/mixedbatchwriter"

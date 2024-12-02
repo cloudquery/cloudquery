@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
+	"github.com/cloudquery/cloudquery/plugins/source/xkcd/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/serve"
-	"github.com/hermanschaaf/cq-source-xkcd/resources/plugin"
 )
 
 func main() {

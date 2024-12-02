@@ -1,9 +1,9 @@
 package client
 
 import (
+	"github.com/cloudquery/cloudquery/plugins/source/xkcd/internal/xkcd"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/state"
-	"github.com/hermanschaaf/cq-source-xkcd/internal/xkcd"
 	"github.com/rs/zerolog"
 )
 

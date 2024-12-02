@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/snowflake
+module github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4
 
 go 1.22.7
 

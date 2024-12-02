@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/kafka/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/spec"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )

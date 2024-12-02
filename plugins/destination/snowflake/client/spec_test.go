@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/snowflake/client"
+	"github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client"
 	"github.com/cloudquery/codegen/jsonschema"
 )
 

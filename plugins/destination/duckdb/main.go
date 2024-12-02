@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/duckdb/client"
-	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/duckdb/resources/plugin"
+	"github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/serve"
 )

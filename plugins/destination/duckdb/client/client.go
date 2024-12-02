@@ -10,7 +10,7 @@ import (
 	"runtime"
 	"strings"
 
-	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/duckdb/resources/plugin"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/marcboeker/go-duckdb"

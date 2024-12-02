@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/source/hackernews
+module github.com/cloudquery/cloudquery/plugins/source/hackernews/v3
 
 go 1.22.7
 

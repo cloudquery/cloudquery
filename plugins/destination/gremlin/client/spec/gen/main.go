@@ -6,14 +6,14 @@ import (
 	"path"
 	"runtime"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/gremlin/client"
+	"github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client"
 	cqjsonschema "github.com/cloudquery/codegen/jsonschema"
 )
 
 func main() {
 	fmt.Println("Generating JSON schema for plugin spec")
 	cqjsonschema.GenerateIntoFile(new(client.Spec), path.Join(currDir(), "../..", "schema.json"),
-		cqjsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/destination/gremlin/client", path.Join(currDir(), "../..")),
+		cqjsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client", path.Join(currDir(), "../..")),
 	)
 }
 

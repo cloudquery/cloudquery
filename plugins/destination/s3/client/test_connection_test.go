@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/s3/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/assert"

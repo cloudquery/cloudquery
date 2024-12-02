@@ -6,7 +6,7 @@ import (
 	"path"
 	"runtime"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/test/client"
+	"github.com/cloudquery/cloudquery/plugins/destination/test/v2/client"
 	cqjsonschema "github.com/cloudquery/codegen/jsonschema"
 	"github.com/invopop/jsonschema"
 )
@@ -14,7 +14,7 @@ import (
 func main() {
 	fmt.Println("Generating JSON schema for plugin spec")
 	cqjsonschema.GenerateIntoFile(new(client.Spec), path.Join(currDir(), "../..", "schema.json"),
-		cqjsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/destination/test/client", path.Join(currDir(), "../..")),
+		cqjsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/destination/test/v2/client", path.Join(currDir(), "../..")),
 		func(reflector *jsonschema.Reflector) {
 			reflector.NullableFromType = false
 		},

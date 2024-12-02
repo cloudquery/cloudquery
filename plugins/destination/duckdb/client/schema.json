@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/duckdb/client/spec",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
     "Spec": {

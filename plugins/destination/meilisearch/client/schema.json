@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/meilisearch/client/spec",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
     "Duration": {

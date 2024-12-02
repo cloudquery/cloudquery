@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/gremlin
+module github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2
 
 go 1.22.7
 

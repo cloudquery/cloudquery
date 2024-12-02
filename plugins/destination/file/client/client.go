@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/file/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/spec"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/streamingbatchwriter"

@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/bigquery
+module github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4
 
 go 1.22.7
 

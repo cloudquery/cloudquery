@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/azblob
+module github.com/cloudquery/cloudquery/plugins/destination/azblob/v4
 
 go 1.22.7
 

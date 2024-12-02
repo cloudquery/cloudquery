@@ -7,8 +7,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/plugins/source/test/client"
-	"github.com/cloudquery/cloudquery/plugins/source/test/resources/services"
+	"github.com/cloudquery/cloudquery/plugins/source/test/v4/client"
+	"github.com/cloudquery/cloudquery/plugins/source/test/v4/resources/services"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/premium"

@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/s3
+module github.com/cloudquery/cloudquery/plugins/destination/s3/v7
 
 go 1.22.7
 

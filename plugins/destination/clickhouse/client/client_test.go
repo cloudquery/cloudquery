@@ -6,9 +6,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client/spec"
-	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/resources/plugin"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/client/spec"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/resources/plugin"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/typeconv/ch/types"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/goccy/go-json"
 	"github.com/stretchr/testify/require"

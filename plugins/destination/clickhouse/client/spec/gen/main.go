@@ -6,14 +6,14 @@ import (
 	"path"
 	"runtime"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/client/spec"
 	"github.com/cloudquery/codegen/jsonschema"
 )
 
 func main() {
 	fmt.Println("Generating JSON schema for plugin spec")
 	jsonschema.GenerateIntoFile(new(spec.Spec), path.Join(currDir(), "..", "schema.json"),
-		jsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client/spec", path.Join(currDir(), "..")),
+		jsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/client/spec", path.Join(currDir(), "..")),
 	)
 }
 

@@ -1,4 +1,4 @@
-PACKAGE_NAME          := github.com/cloudquery/cloudquery/plugins/destination/bigquery
+PACKAGE_NAME          := github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4
 
 .PHONY: test
 test:

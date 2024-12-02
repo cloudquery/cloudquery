@@ -1,4 +1,4 @@
-PACKAGE_NAME          := github.com/cloudquery/cloudquery/plugins/destination/sqlite
+PACKAGE_NAME          := github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2
 
 .PHONY: test
 test:

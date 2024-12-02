@@ -3,7 +3,7 @@ package client_test
 import (
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/mssql/client"
+	"github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client"
 	"github.com/cloudquery/codegen/jsonschema"
 )
 

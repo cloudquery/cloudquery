@@ -1,4 +1,4 @@
-PACKAGE_NAME          := github.com/cloudquery/cloudquery/plugins/destination/snowflake
+PACKAGE_NAME          := github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4
 
 .PHONY: test
 test:

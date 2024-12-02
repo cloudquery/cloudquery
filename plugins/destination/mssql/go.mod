@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/mssql
+module github.com/cloudquery/cloudquery/plugins/destination/mssql/v5
 
 go 1.22.7
 

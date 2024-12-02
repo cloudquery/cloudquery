@@ -4,9 +4,9 @@ import (
 	"context"
 	"log"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/firehose/client"
-	"github.com/cloudquery/cloudquery/plugins/destination/firehose/client/spec"
-	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/firehose/resources/plugin"
+	"github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client"
+	"github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/spec"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/serve"
 )

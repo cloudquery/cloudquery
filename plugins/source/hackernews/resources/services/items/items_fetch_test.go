@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client"
-	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client/mocks"
-	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client/services"
+	"github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client"
+	"github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/mocks"
+	"github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/services"
 	"github.com/cloudquery/plugin-sdk/v4/faker"
 	"github.com/golang/mock/gomock"
 	"github.com/hermanschaaf/hackernews"

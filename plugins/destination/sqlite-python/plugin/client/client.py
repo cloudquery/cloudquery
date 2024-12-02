@@ -24,7 +24,7 @@ class Spec:
     def json_schema():
         return """{
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/sqlite-python/spec",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2-python/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
     "Spec": {

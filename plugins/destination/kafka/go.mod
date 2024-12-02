@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/kafka
+module github.com/cloudquery/cloudquery/plugins/destination/kafka/v5
 
 go 1.22.7
 

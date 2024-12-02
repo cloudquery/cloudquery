@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/gremlin/client/spec",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
     "Spec": {

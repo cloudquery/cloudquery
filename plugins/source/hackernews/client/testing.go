@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client/services"
+	"github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/services"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/scheduler"
 	"github.com/cloudquery/plugin-sdk/v4/schema"

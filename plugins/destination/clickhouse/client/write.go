@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/apache/arrow/go/v17/arrow"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/queries"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/values"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/queries"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/typeconv/ch/values"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 )
 

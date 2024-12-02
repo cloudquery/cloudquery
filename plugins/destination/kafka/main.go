@@ -4,9 +4,9 @@ import (
 	"context"
 	"log"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/kafka/client"
-	"github.com/cloudquery/cloudquery/plugins/destination/kafka/client/spec"
-	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/kafka/resources/plugin"
+	"github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client"
+	"github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/spec"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/serve"
 )

@@ -10,7 +10,7 @@ import (
 	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/apache/arrow/go/v17/arrow/array"
 	"github.com/apache/arrow/go/v17/arrow/memory"
-	"github.com/cloudquery/cloudquery/plugins/destination/azblob/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/spec"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"

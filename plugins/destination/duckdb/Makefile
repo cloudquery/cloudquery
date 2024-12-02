@@ -1,4 +1,4 @@
-PACKAGE_NAME          := github.com/cloudquery/cloudquery/plugins/destination/duckdb
+PACKAGE_NAME          := github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5
 
 .PHONY: test
 test:

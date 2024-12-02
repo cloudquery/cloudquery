@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/sqlite
+module github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2
 
 go 1.22.7
 

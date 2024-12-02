@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/gremlin/client"
-	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/gremlin/resources/plugin"
+	"github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/serve"
 )

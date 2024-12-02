@@ -7,7 +7,7 @@ import (
 
 	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/ClickHouse/clickhouse-go/v2/lib/proto"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/goccy/go-json"

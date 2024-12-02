@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/test
+module github.com/cloudquery/cloudquery/plugins/destination/test/v2
 
 go 1.22.7
 

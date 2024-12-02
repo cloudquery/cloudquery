@@ -6,14 +6,14 @@ import (
 	"path"
 	"runtime"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/neo4j/client"
+	"github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client"
 	cqjsonschema "github.com/cloudquery/codegen/jsonschema"
 )
 
 func main() {
 	fmt.Println("Generating JSON schema for plugin spec")
 	cqjsonschema.GenerateIntoFile(new(client.Spec), path.Join(currDir(), "../..", "schema.json"),
-		cqjsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/destination/neo4j/client", path.Join(currDir(), "../..")),
+		cqjsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client", path.Join(currDir(), "../..")),
 	)
 }
 
