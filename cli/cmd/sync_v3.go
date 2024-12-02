@@ -27,12 +27,12 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/cloudquery/cloudquery/cli/internal/analytics"
-	"github.com/cloudquery/cloudquery/cli/internal/api"
-	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
-	"github.com/cloudquery/cloudquery/cli/internal/tablenamechanger"
-	"github.com/cloudquery/cloudquery/cli/internal/transformer"
-	"github.com/cloudquery/cloudquery/cli/internal/transformerpipeline"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/tablenamechanger"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/transformer"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/transformerpipeline"
 )
 
 type v3source struct {

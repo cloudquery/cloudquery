@@ -17,7 +17,7 @@ builds:
       - GO111MODULE=on
     main: ./main.go
     ldflags:
-      - -s -w -X github.com/cloudquery/cloudquery/cli/cmd.Version={{.Version}}
+      - -s -w -X github.com/cloudquery/cloudquery/cli/v6/cmd.Version={{.Version}}
     goos:
       - windows
       - linux
@@ -30,20 +30,18 @@ builds:
         goarch: arm64
     binary: cloudquery
 archives:
-  -
-    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
+  - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
     format: binary
-  -
-    id: homebrew
+  - id: homebrew
     name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
     format: zip
 checksum:
-  name_template: 'checksums.txt'
+  name_template: "checksums.txt"
 changelog:
   sort: asc
   filters:
     exclude:
-      - '^docs:'
-      - '^test:'
+      - "^docs:"
+      - "^test:"
 release:
   prerelease: auto
