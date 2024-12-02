@@ -14,7 +14,7 @@ import { prepareSubmitValues } from './utils/prepareSubmitValues';
 
 const useCloudAppMock =
   (process.env.REACT_APP_USE_CLOUD_APP_MOCK === 'true' || process.env.NODE_ENV !== 'production') &&
-  window.self === window.top;
+  globalThis.self === globalThis.top;
 const DevWrapper = useCloudAppMock ? CloudAppMock : Fragment;
 // eslint-disable-next-line unicorn/prefer-module
 const { plugin, ...devWrapperProps }: any = useCloudAppMock ? require('./.env.json') : {};
