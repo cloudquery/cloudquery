@@ -166,4 +166,4 @@ jobs:
       - name: Push Tag prefixed with plugin directory
         if: needs.prepare.outputs.prerelease == ''
         run: |
-          git tag ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_dir }} && git push origin ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_dir }}
+          git tag ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }} && git push origin ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }}

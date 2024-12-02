@@ -1,5 +1,3 @@
-PACKAGE_NAME          := github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4
-
 .PHONY: test
 test:
 # we clean the cache to avoid scenarios when we change something in the db and we want to retest without noticing nothing run
