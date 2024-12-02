@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/cli
+module github.com/cloudquery/cloudquery/cli/v6
 
 go 1.22.7
 

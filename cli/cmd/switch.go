@@ -8,7 +8,7 @@ import (
 
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery-api-go/config"
-	"github.com/cloudquery/cloudquery/cli/internal/team"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/team"
 	"github.com/spf13/cobra"
 )
 
