@@ -5,12 +5,12 @@ go 1.22.7
 require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.27.2
 	github.com/apache/arrow/go/v17 v17.0.0
-	github.com/cloudquery/codegen v0.3.19
+	github.com/cloudquery/codegen v0.3.20
 	github.com/cloudquery/plugin-sdk/v4 v4.69.0
 	github.com/goccy/go-json v0.10.3
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.33.0
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	golang.org/x/sync v0.9.0
 )
 
