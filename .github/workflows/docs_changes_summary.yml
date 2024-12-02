@@ -55,7 +55,7 @@ jobs:
             }).join('\n')
             return changesList
       - name: Find Comment
-        uses: peter-evans/find-comment@025109652c8a93d074bfe8b64ff81f011cac8928
+        uses: peter-evans/find-comment@995a00c77ea44c38cf1613bacfdf7377713cbf64
         id: find-comment
         with:
           token: ${{ secrets.GH_CQ_BOT }}

@@ -10,7 +10,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/cloudquery/cloudquery/scaffold/sourcetpl"
+	"github.com/cloudquery/cloudquery/scaffold/v3/sourcetpl"
 	"github.com/spf13/cobra"
 )
 
