@@ -84,9 +84,11 @@ jobs:
           # A custom token is required for publishing to Homebrew
           GITHUB_TOKEN: ${{ secrets.GH_CQ_BOT }}
 
-      - name: Push Tag Without `cli-` component
+      - name: Push Tag Without `cli-` component and tag prefixed with `cli/`
         if: steps.semver_parser.outputs.prerelease == ''
-        run: git tag ${{ steps.split.outputs.version }} && git push origin ${{ steps.split.outputs.version }}
+        run: |
+          git tag ${{ steps.split.outputs.version }} && git push origin ${{ steps.split.outputs.version }}
+          git tag cli/${{ steps.split.outputs.version }} && git push origin cli/${{ steps.split.outputs.version }}
 
       - name: Checkout
         uses: actions/checkout@v4

@@ -7,7 +7,7 @@ import (
 
 	cqapi "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery-api-go/auth"
-	"github.com/cloudquery/cloudquery/cli/internal/api"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
 )
 
 func GetUser(ctx context.Context, token auth.Token) (*cqapi.User, error) {

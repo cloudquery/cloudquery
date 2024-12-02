@@ -15,8 +15,8 @@ import (
 	"strings"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
-	"github.com/cloudquery/cloudquery/cli/internal/hub"
-	"github.com/cloudquery/cloudquery/cli/internal/publish/images"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/hub"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/publish/images"
 )
 
 type ManifestJSONV1 struct {

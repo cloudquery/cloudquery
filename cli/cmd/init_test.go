@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	cqapi "github.com/cloudquery/cloudquery-api-go"
-	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
