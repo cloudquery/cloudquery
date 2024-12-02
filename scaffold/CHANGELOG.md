@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.6](https://github.com/cloudquery/cloudquery/compare/scaffold-v3.4.5...scaffold-v3.4.6) (2024-12-02)
+
+
+### Bug Fixes
+
+* Correct major version in `go.mod` ([#19809](https://github.com/cloudquery/cloudquery/issues/19809)) ([fc3606d](https://github.com/cloudquery/cloudquery/commit/fc3606d83a9c10153e211db8a47411e19ee66f54))
+
 ## [3.4.5](https://github.com/cloudquery/cloudquery/compare/scaffold-v3.4.4...scaffold-v3.4.5) (2024-11-27)
 
 
