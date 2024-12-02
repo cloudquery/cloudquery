@@ -353,7 +353,7 @@ export const useConfig = ({
                   type: 'toggle',
                   helperText:
                     'If set to true, the plugin will write to one file per table. Otherwise, for every batch a new file will be created with a different .<UUID> suffix.',
-                  schema: yup.bool().default(!!initialValues?.spec?.no_rotate ?? false),
+                  schema: yup.bool().default(!!initialValues?.spec?.no_rotate || false),
                 },
                 {
                   component: 'control-boolean-field',
@@ -362,7 +362,7 @@ export const useConfig = ({
                   type: 'toggle',
                   helperText:
                     'When athena is set to true, the S3 plugin will sanitize keys in JSON columns to be compatible with the Hive Metastore / Athena.\nThis allows tables to be created with a Glue Crawler and then queried via Athena, without changes to the table schema.',
-                  schema: yup.bool().default(!!initialValues?.spec?.athena ?? false),
+                  schema: yup.bool().default(!!initialValues?.spec?.athena || false),
                 },
                 {
                   shouldRender: (values) => values.format === 'parquet',
@@ -374,7 +374,7 @@ export const useConfig = ({
                     "By default only tables with resources are persisted to objects during the sync. If you'd like to persist empty objects for empty tables enable this option. Useful when using CloudQuery Compliance policies to ensure all tables have their schema populated by a query engine like Athena.",
                   schema: yup
                     .bool()
-                    .default(!!initialValues?.spec?.write_empty_objects_for_empty_tables ?? false),
+                    .default(!!initialValues?.spec?.write_empty_objects_for_empty_tables || false),
                 },
                 {
                   component: 'control-boolean-field',
@@ -383,7 +383,7 @@ export const useConfig = ({
                   type: 'toggle',
                   helperText:
                     'Ensure write access to the given bucket and path by writing a test object on each sync.\nIf you are sure that the bucket and path are writable, you can set this to false to skip the test.',
-                  schema: yup.bool().default(!!initialValues?.spec?.test_write ?? true),
+                  schema: yup.bool().default(!!initialValues?.spec?.test_write || true),
                 },
                 {
                   component: 'control-text-field',
@@ -438,7 +438,7 @@ export const useConfig = ({
                     'Disable TLS verification for requests to your S3 endpoint.\nThis option is intended to be used when using a custom endpoint using the endpoint option.',
                   schema: yup
                     .bool()
-                    .default(!!initialValues?.spec?.endpoint_skip_tls_verify ?? false),
+                    .default(!!initialValues?.spec?.endpoint_skip_tls_verify || false),
                 },
                 {
                   component: 'control-boolean-field',
@@ -447,7 +447,7 @@ export const useConfig = ({
                   type: 'toggle',
                   helperText:
                     'Allows to use path-style addressing in the endpoint option, i.e., https://s3.amazonaws.com/BUCKET/KEY.\nBy default, the S3 client will use virtual hosted bucket addressing when possible (https://BUCKET.s3.amazonaws.com/KEY).',
-                  schema: yup.bool().default(!!initialValues?.spec?.use_path_style ?? false),
+                  schema: yup.bool().default(!!initialValues?.spec?.use_path_style || false),
                 },
                 {
                   shouldRender: (values) => values.no_rotate === false,
