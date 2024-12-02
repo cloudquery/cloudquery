@@ -4,12 +4,12 @@ go 1.22.7
 
 require (
 	github.com/apache/arrow/go/v17 v17.0.0
-	github.com/cloudquery/codegen v0.3.19
+	github.com/cloudquery/codegen v0.3.20
 	github.com/cloudquery/plugin-sdk/v4 v4.69.0
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.33.0
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	golang.org/x/exp v0.0.0-20241108190413-2d47ceb2692f
 )
 

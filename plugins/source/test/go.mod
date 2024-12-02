@@ -4,7 +4,7 @@ go 1.22.7
 
 require (
 	github.com/apache/arrow/go/v17 v17.0.0
-	github.com/cloudquery/codegen v0.3.19
+	github.com/cloudquery/codegen v0.3.20
 	github.com/cloudquery/plugin-sdk/v4 v4.69.0
 	github.com/rs/zerolog v1.33.0
 	golang.org/x/exp v0.0.0-20241108190413-2d47ceb2692f
@@ -60,7 +60,7 @@ require (
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.1 // indirect
 	github.com/spf13/cobra v1.8.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.9.0 // indirect
+	github.com/stretchr/testify v1.10.0 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
