@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
-	"github.com/cloudquery/cloudquery/cli/internal/api"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
 )
 
 type Team = cloudquery_api.Team

@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
-	"github.com/cloudquery/cloudquery/cli/internal/transformer"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/transformer"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/caser"

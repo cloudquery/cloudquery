@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	pbdestination "github.com/cloudquery/plugin-pb-go/pb/destination/v1"
 	pbSource "github.com/cloudquery/plugin-pb-go/pb/source/v2"
