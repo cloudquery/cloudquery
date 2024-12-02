@@ -5,7 +5,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/cloudquery/cloudquery/cli/internal/enum"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/enum"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )

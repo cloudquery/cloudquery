@@ -9,7 +9,7 @@ import (
 
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery-api-go/config"
-	teamapi "github.com/cloudquery/cloudquery/cli/internal/team"
+	teamapi "github.com/cloudquery/cloudquery/cli/v6/internal/team"
 )
 
 func getAvailableUserTeams(ctx context.Context, token auth.Token) []string {

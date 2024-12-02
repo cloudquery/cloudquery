@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	pbSpecs "github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/rs/zerolog/log"
