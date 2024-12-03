@@ -100,12 +100,12 @@ func parseShard(cmd *cobra.Command) (*shard, error) {
 		return nil, fmt.Errorf("invalid shard format: %s. Valid format is num/total, e.g. 1/4", shardFlag)
 	}
 
-	num, err := strconv.ParseInt(parts[0], 10, 64)
+	num, err := strconv.ParseInt(parts[0], 10, 32)
 	if err != nil {
 		return nil, fmt.Errorf("invalid shard format: %s. Shard num should be a valid integer", shardFlag)
 	}
 
-	total, err := strconv.ParseInt(parts[1], 10, 64)
+	total, err := strconv.ParseInt(parts[1], 10, 32)
 	if err != nil {
 		return nil, fmt.Errorf("invalid shard format: %s. Total shards should be a valid integer", shardFlag)
 	}
