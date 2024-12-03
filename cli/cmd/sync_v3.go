@@ -324,8 +324,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	}
 	if shard != nil {
 		syncReq.Shard = &plugin.Sync_Request_Shard{
-			Num:   int32(shard.num),
-			Total: int32(shard.total),
+			Num:   shard.num,
+			Total: shard.total,
 		}
 	}
 	syncClient, err := sourcePbClient.Sync(ctx, syncReq)
