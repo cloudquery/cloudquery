@@ -246,11 +246,11 @@ func parseNumeric(t string) (arrow.DataType, bool) {
 		return &arrow.Decimal128Type{Precision: 38, Scale: 0}, true
 	}
 
-	precision, err := strconv.ParseInt(matches[0][1], 10, 64)
+	precision, err := strconv.ParseInt(matches[0][1], 10, 32)
 	if precision == 0 || err != nil {
 		panic("precision cannot be 0")
 	}
-	scale, err := strconv.ParseInt(matches[0][2], 10, 64)
+	scale, err := strconv.ParseInt(matches[0][2], 10, 32)
 	if err != nil {
 		panic("error parsing scale " + err.Error())
 	}
