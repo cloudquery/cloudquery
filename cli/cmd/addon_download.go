@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path"
+	"path/filepath"
 	"strings"
 	"syscall"
 
@@ -110,5 +112,10 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return fmt.Errorf("addon download failed: %d %s", res.StatusCode, location)
 	}
 
-	return publish.DownloadAddonFromResponse(res, checksum, targetDir)
+	zipPath := "-"
+	if targetDir != "-" {
+		zipPath = filepath.Join(targetDir, path.Base(location))
+	}
+
+	return publish.DownloadAddonFromResponse(res, checksum, zipPath)
 }
