@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.3.1...plugins-destination-kafka-v5.4.0) (2024-12-04)
+
+
+### Features
+
+* Allow to enforce TLS verification ([#19855](https://github.com/cloudquery/cloudquery/issues/19855)) ([cc4bca2](https://github.com/cloudquery/cloudquery/commit/cc4bca223e17e9d23d9c111055900222351fcd43))
+
 ## [5.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.3.0...plugins-destination-kafka-v5.3.1) (2024-12-02)
 
 
