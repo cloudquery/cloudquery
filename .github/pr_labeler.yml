@@ -60,6 +60,10 @@ area/plugin/source/xkcd:
   - plugins/source/xkcd/**/*
 area/plugin/transform/basic:
   - plugins/transform/basic/**/*
+area/plugin/transform/jsonflattener:
+  - plugins/transform/jsonflattener/**/*
+area/plugin/transform/test:
+  - plugins/transform/test/**/*
 area/scaffold:
   - scaffold/**/*
 area/website:

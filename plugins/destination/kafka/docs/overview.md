@@ -45,6 +45,10 @@ This is the (nested) plugin spec
 
   If connecting via SASL/PLAIN, the password to use.
 
+- `enforce_tls_verification` (`boolean`) (optional) (default: `false`)
+
+  If `true`, the plugin will verify the TLS certificate of the Kafka broker.
+
 - `verbose` (`boolean`) (optional) (default: `false`)
 
   If `true`, the plugin will log all underlying Kafka client messages to the log.

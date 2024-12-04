@@ -32,6 +32,9 @@ type Spec struct {
 	// If connecting via SASL/PLAIN, the password to use.
 	SASLPassword string `json:"sasl_password,omitempty"`
 
+	// Enforce TLS Verification when configuring a username to connect to Kafka.
+	EnforceTLSVerification bool `json:"enforce_tls_verification,omitempty"`
+
 	// Number of records to write before starting a new object.
 	BatchSize int64 `json:"batch_size" jsonschema:"minimum=1,default=1000"`
 
