@@ -94,13 +94,13 @@ func SchemaType(sqlType string) arrow.DataType {
 			return new(arrow.LargeBinaryType)
 		}
 
-		width, err := strconv.ParseInt(precision, 10, 64)
+		width, err := strconv.Atoi(precision)
 		if err != nil {
 			// should never happen
-			panic(fmt.Errorf("failed to parse %q into int64: %w", precision, err))
+			panic(fmt.Errorf("failed to parse %q into int: %w", precision, err))
 		}
 
-		return &arrow.FixedSizeBinaryType{ByteWidth: int(width)}
+		return &arrow.FixedSizeBinaryType{ByteWidth: width}
 	}
 
 	// default to LargeString (nvarchar(max))
