@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"path"
 	"path/filepath"
 	"strings"
 	"syscall"
@@ -93,7 +92,11 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return err
 	}
 
-	location, checksum, err := publish.GetAddonMetadata(ctx, c, currentTeam, addonParts[0], addonParts[1], addonVer[0], addonVer[1])
+	addonTeam := addonParts[0]
+	addonType := addonParts[1]
+	addonName := addonVer[0]
+	addonVersion := addonVer[1]
+	location, checksum, err := publish.GetAddonMetadata(ctx, c, currentTeam, addonTeam, addonType, addonName, addonVersion)
 	if err != nil {
 		return err
 	}
@@ -114,7 +117,7 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 
 	zipPath := "-"
 	if targetDir != "-" {
-		zipPath = filepath.Join(targetDir, path.Base(location))
+		zipPath = filepath.Join(targetDir, fmt.Sprintf("%s_%s_%s_%s.zip", addonTeam, addonType, addonName, addonVersion))
 	}
 
 	return publish.DownloadAddonFromResponse(res, checksum, zipPath)
