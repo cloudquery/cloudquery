@@ -62,7 +62,7 @@ func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClie
 		c.conf.Net.SASL.User = c.spec.SASLUsername
 		c.conf.Net.SASL.Password = c.spec.SASLPassword
 		c.conf.Net.TLS.Enable = true
-		c.conf.Net.TLS.Config = &tls.Config{InsecureSkipVerify: true}
+		c.conf.Net.TLS.Config = &tls.Config{InsecureSkipVerify: !c.spec.EnforceTLSVerification}
 		c.conf.Net.SASL.Handshake = true
 	}
 
