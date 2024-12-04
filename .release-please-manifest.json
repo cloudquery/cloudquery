@@ -1,5 +1,5 @@
 {
-  "cli": "6.12.5",
+  "cli": "6.12.6",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "22.19.2",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -108,5 +108,6 @@
   "plugins/transformer/basic": "1.3.1",
   "plugins/transformer/basic+FILLER": "0.0.0",
   "plugins/transformer/jsonflattener": "1.1.1",
-  "plugins/transformer/jsonflattener+FILLER": "0.0.0"
+  "plugins/transformer/jsonflattener+FILLER": "0.0.0",
+  "plugins/transformer/test": "1.0.0"
 }
