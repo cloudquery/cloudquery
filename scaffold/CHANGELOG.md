@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.8](https://github.com/cloudquery/cloudquery/compare/scaffold-v3.4.7...scaffold-v3.4.8) (2024-12-04)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.25.6 ([#19845](https://github.com/cloudquery/cloudquery/issues/19845)) ([2f78b2b](https://github.com/cloudquery/cloudquery/commit/2f78b2b9d5c1b5438332443bbe6d4710c94f8a49))
+
 ## [3.4.7](https://github.com/cloudquery/cloudquery/compare/scaffold-v3.4.6...scaffold-v3.4.7) (2024-12-02)
 
 
