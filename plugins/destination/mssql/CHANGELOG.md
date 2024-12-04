@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v5.1.1...plugins-destination-mssql-v5.1.2) (2024-12-04)
+
+
+### Bug Fixes
+
+* Correctly handle integer conversion ([#19854](https://github.com/cloudquery/cloudquery/issues/19854)) ([5ac0780](https://github.com/cloudquery/cloudquery/commit/5ac07808bfdc79583903608ee5e1b5d7859b4bb5))
+
 ## [5.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v5.1.0...plugins-destination-mssql-v5.1.1) (2024-12-02)
 
 
