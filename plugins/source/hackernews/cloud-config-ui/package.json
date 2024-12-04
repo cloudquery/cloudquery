@@ -10,7 +10,6 @@
     "pg-connection-string": "^2.6.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-scripts": "^5.0.1",
     "typescript": "^5.0.0"
   },
   "peerDependencies": {
@@ -19,9 +18,10 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@playwright/test": "^1.46.0",
-    "@types/node": "^22.2.0",
+    "@types/node": "^22.10.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
@@ -34,15 +34,18 @@
     "eslint-plugin-sort-destructure-keys": "^2.0.0",
     "eslint-plugin-unicorn": "^55.0.0",
     "http-server": "^14.1.1",
-    "prettier": "^3.3.3"
+    "prettier": "^3.3.3",
+    "vite": "^6.0.0",
+    "vite-tsconfig-paths": "^4.3.2"
   },
   "scripts": {
-    "start": "node scripts/initialize.js && PORT=3001 react-scripts start",
-    "build": "node scripts/initialize.js -f && react-scripts build",
+    "start": "node scripts/initialize.js && PORT=3001 vite",
+    "build": "node scripts/initialize.js -f && vite build",
     "lint": "eslint src --ext .ts,.tsx --max-warnings 0",
     "lint:fix": "eslint src --ext .ts,.tsx --max-warnings 0 --fix",
     "test:e2e": "playwright test",
-    "dev:test:e2e": "REACT_APP_USE_CLOUD_APP_MOCK=true npm run build && playwright test"
+    "dev:test:e2e": "REACT_APP_USE_CLOUD_APP_MOCK=true npm run build && playwright test",
+    "dev": "vite"
   },
   "eslintConfig": {
     "extends": [
