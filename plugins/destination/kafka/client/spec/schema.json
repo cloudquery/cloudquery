@@ -233,6 +233,10 @@
           "type": "string",
           "description": "If connecting via SASL/PLAIN, the password to use."
         },
+        "enforce_tls_verification": {
+          "type": "boolean",
+          "description": "Enforce TLS Verification when configuring a username to connect to Kafka."
+        },
         "batch_size": {
           "type": "integer",
           "minimum": 1,
