@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.7.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.7.2...plugins-destination-postgresql-v8.7.3) (2024-12-04)
+
+
+### Bug Fixes
+
+* Correctly handle integer conversion ([#19852](https://github.com/cloudquery/cloudquery/issues/19852)) ([72db471](https://github.com/cloudquery/cloudquery/commit/72db4716acc3d280ed90d64ae11d0c23177229dd))
+
 ## [8.7.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.7.1...plugins-destination-postgresql-v8.7.2) (2024-12-02)
 
 

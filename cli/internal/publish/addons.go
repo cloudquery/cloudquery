@@ -10,7 +10,6 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 
@@ -155,18 +154,17 @@ func GetAddonMetadata(ctx context.Context, c *cloudquery_api.ClientWithResponses
 	return resp.JSON200.Location, resp.JSON200.Checksum, nil
 }
 
-func DownloadAddonFromResponse(res *http.Response, expectedChecksum, targetDir string) (retErr error) {
+func DownloadAddonFromResponse(res *http.Response, expectedChecksum, zipPath string) (retErr error) {
 	var (
 		fileWriter io.WriteCloser
 		size       int64
 		err        error
 	)
 
-	switch targetDir {
+	switch zipPath {
 	case "-":
 		fileWriter = os.Stdout
 	default:
-		zipPath := filepath.Join(targetDir, path.Base(res.Request.URL.Path))
 		if st, err := os.Stat(zipPath); err == nil {
 			if st.IsDir() {
 				return fmt.Errorf("file %s already exists: is a directory", zipPath)
