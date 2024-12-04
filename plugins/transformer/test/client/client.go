@@ -59,7 +59,7 @@ func (c *Client) Transform(ctx context.Context, recvRecords <-chan arrow.Record,
 	}
 }
 
-func (c *Client) TransformSchema(ctx context.Context, schema *arrow.Schema) (*arrow.Schema, error) {
+func (*Client) TransformSchema(ctx context.Context, schema *arrow.Schema) (*arrow.Schema, error) {
 	return schema, nil
 }
 

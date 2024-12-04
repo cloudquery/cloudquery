@@ -5,9 +5,9 @@ type Spec struct {
 	FailAfterNSourceRecords int  `json:"fail_after_n_source_records"`
 }
 
-func (s *Spec) SetDefaults() {
+func (*Spec) SetDefaults() {
 }
 
-func (s *Spec) Validate() error {
+func (*Spec) Validate() error {
 	return nil
 }
