@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0 (2024-12-04)
+
+
+### Features
+
+* Implement test transformer. ([#19857](https://github.com/cloudquery/cloudquery/issues/19857)) ([6048c7c](https://github.com/cloudquery/cloudquery/commit/6048c7c54a4831c6b9c7f3f469459acefd58f602))
+
 ## [1.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v1.3.0...plugins-transformer-basic-v1.3.1) (2024-12-02)
 
 
