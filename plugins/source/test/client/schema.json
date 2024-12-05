@@ -64,6 +64,11 @@
               "type": "null"
             }
           ]
+        },
+        "fail_immediately": {
+          "type": "boolean",
+          "description": "If true, the plugin will fail immediately if there are any errors.",
+          "default": false
         }
       },
       "additionalProperties": false,

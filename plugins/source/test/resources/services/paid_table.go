@@ -43,6 +43,9 @@ func TestPaidTable() *schema.Table {
 
 func fetchPaidTableData(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
+	if cl.Spec.FailImmediately {
+		return fmt.Errorf("failing immediately")
+	}
 	for i := 0; i < *cl.Spec.NumRows; i++ {
 		res <- map[string]any{
 			"resource_id": i + 1,
