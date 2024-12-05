@@ -24,7 +24,7 @@ type Spec struct {
 	// that the environment variable should be not set or empty.
 	RequiredEnv []string `json:"required_env" jsonschema:"pattern=^[\\w]+\\=[\\w]*$"`
 
-	// If true, the plugin will fail immediately if there are any errors.
+	// If true, the plugin will fail immediately at the table resolver level, before any resources are synced
 	FailImmediately bool `json:"fail_immediately" jsonschema:"default=false"`
 }
 
