@@ -26,6 +26,9 @@ type Spec struct {
 
 	// If true, the plugin will fail immediately at the table resolver level, before any resources are synced
 	FailImmediately bool `json:"fail_immediately" jsonschema:"default=false"`
+
+	// If true, the plugin will os.Exit(1) immediately at the table resolver level, before any resources are synced
+	ExitImmediately bool `json:"exit_immediately" jsonschema:"default=false"`
 }
 
 //go:embed schema.json

@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/test/v4/client"
@@ -47,6 +48,9 @@ func fetchSomeTableData(ctx context.Context, meta schema.ClientMeta, parent *sch
 	cl := meta.(*client.Client)
 	if cl.Spec.FailImmediately {
 		return ErrFailImmediately
+	}
+	if cl.Spec.ExitImmediately {
+		os.Exit(1)
 	}
 	for i := 0; i < *cl.Spec.NumRows; i++ {
 		res <- map[string]any{
