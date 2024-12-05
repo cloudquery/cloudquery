@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
+	"os"
 	"strconv"
 
 	"github.com/apache/arrow/go/v17/arrow"
@@ -56,7 +57,9 @@ func fetchSubTableData(ctx context.Context, meta schema.ClientMeta, parent *sche
 	if cl.Spec.FailImmediately {
 		return ErrFailImmediately
 	}
-
+	if cl.Spec.ExitImmediately {
+		os.Exit(1)
+	}
 	colMap := make(map[string]any, *cl.Spec.NumSubCols)
 	for i := 0; i < *cl.Spec.NumSubCols; i++ {
 		colMap["extra_column_"+strconv.FormatInt(int64(i), 10)] = rand.Int63()
