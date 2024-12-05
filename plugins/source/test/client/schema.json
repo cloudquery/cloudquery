@@ -64,6 +64,11 @@
               "type": "null"
             }
           ]
+        },
+        "fail_immediately": {
+          "type": "boolean",
+          "description": "If true, the plugin will fail immediately at the table resolver level, before any resources are synced",
+          "default": false
         }
       },
       "additionalProperties": false,

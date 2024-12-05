@@ -2,12 +2,15 @@ package services
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/cloudquery/cloudquery/plugins/source/test/v4/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
+
+var ErrFailImmediately = errors.New("failing immediately")
 
 func TestPaidTable() *schema.Table {
 	return &schema.Table{
@@ -43,6 +46,9 @@ func TestPaidTable() *schema.Table {
 
 func fetchPaidTableData(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
+	if cl.Spec.FailImmediately {
+		return ErrFailImmediately
+	}
 	for i := 0; i < *cl.Spec.NumRows; i++ {
 		res <- map[string]any{
 			"resource_id": i + 1,
