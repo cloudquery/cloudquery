@@ -46,7 +46,7 @@ func TestSomeTable(config client.Spec) *schema.Table {
 func fetchSomeTableData(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	if cl.Spec.FailImmediately {
-		return fmt.Errorf("failing immediately")
+		return ErrFailImmediately
 	}
 	for i := 0; i < *cl.Spec.NumRows; i++ {
 		res <- map[string]any{

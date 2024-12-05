@@ -54,7 +54,7 @@ func testSubTable(config client.Spec) *schema.Table {
 func fetchSubTableData(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
 	if cl.Spec.FailImmediately {
-		return fmt.Errorf("failing immediately")
+		return ErrFailImmediately
 	}
 
 	colMap := make(map[string]any, *cl.Spec.NumSubCols)
