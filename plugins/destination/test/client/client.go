@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
 
 	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -68,6 +69,10 @@ func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage
 		return ErrOnWrite
 	}
 
+	if c.spec.ExitOnWrite {
+		os.Exit(1)
+	}
+
 	if c.spec.BatchWriter {
 		if err := c.writer.Write(ctx, messages); err != nil {
 			return fmt.Errorf("failed to write: %w", err)
@@ -85,11 +90,19 @@ func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage
 				return ErrOnMigrate
 			}
 		}
+		if c.spec.ExitOnMigrate {
+			if _, ok := m.(*message.WriteMigrateTable); ok {
+				os.Exit(1)
+			}
+		}
 
 		if m, ok := m.(*message.WriteInsert); ok {
 			m.Record.Release()
 			if c.spec.ErrorOnInsert {
 				return ErrOnInsert
+			}
+			if c.spec.ExitOnInsert {
+				os.Exit(1)
 			}
 		}
 	}
@@ -107,12 +120,18 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	if c.spec.ErrorOnInsert {
 		return ErrOnInsert
 	}
+	if c.spec.ExitOnInsert {
+		os.Exit(1)
+	}
 	return nil
 }
 
 func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
 	if c.spec.ErrorOnMigrate {
 		return ErrOnMigrate
+	}
+	if c.spec.ExitOnMigrate {
+		os.Exit(1)
 	}
 	return nil
 }

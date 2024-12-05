@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os"
 
 	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/cloudquery/cloudquery/plugins/transformer/test/client/spec"
@@ -50,6 +51,9 @@ func (c *Client) Transform(ctx context.Context, recvRecords <-chan arrow.Record,
 			sourceRecords++
 			if c.spec.FailImmediately || (c.spec.FailAfterNSourceRecords > 0 && sourceRecords > c.spec.FailAfterNSourceRecords) {
 				return fmt.Errorf("failing at the transformer stage according to spec requirements")
+			}
+			if c.spec.ExitImmediately {
+				os.Exit(1)
 			}
 
 			sendRecords <- record

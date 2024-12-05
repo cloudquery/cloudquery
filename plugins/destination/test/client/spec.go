@@ -17,6 +17,15 @@ type Spec struct {
 	// If true, will return an error on insert record messages rather than consume from the channel
 	ErrorOnInsert bool `json:"error_on_insert,omitempty" jsonschema:"default=false"`
 
+	// If true, will call os.Exit(1) on any write message rather than consume from the channel
+	ExitOnWrite bool `json:"exit_on_write,omitempty" jsonschema:"default=false"`
+
+	// If true, will call os.Exit(1) on migrate table messages rather than consume from the channel
+	ExitOnMigrate bool `json:"exit_on_migrate,omitempty" jsonschema:"default=false"`
+
+	// If true, will call os.Exit(1) on insert record messages rather than consume from the channel
+	ExitOnInsert bool `json:"exit_on_insert,omitempty" jsonschema:"default=false"`
+
 	// Whether to use a BatchWriter or not.
 	BatchWriter bool `json:"batch_writer" jsonschema:"default=false"`
 
