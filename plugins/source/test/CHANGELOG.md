@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.6.3...plugins-source-test-v4.7.0) (2024-12-05)
+
+
+### Features
+
+* Add "fail immediately" spec option to test source plugin ([#19863](https://github.com/cloudquery/cloudquery/issues/19863)) ([67882f3](https://github.com/cloudquery/cloudquery/commit/67882f3dd99e71c9a7aa8108f9d00f88f0cb05d1))
+* Add `exit_immediately` spec option to all test plugins. ([#19865](https://github.com/cloudquery/cloudquery/issues/19865)) ([e9b00ac](https://github.com/cloudquery/cloudquery/commit/e9b00ac11f5574235b5f5e6506ffaaf4065aedcb))
+
 ## [4.6.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.6.2...plugins-source-test-v4.6.3) (2024-12-02)
 
 
