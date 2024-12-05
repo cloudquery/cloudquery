@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.6.2...plugins-destination-test-v2.7.0) (2024-12-05)
+
+
+### Features
+
+* Add `exit_immediately` spec option to all test plugins. ([#19865](https://github.com/cloudquery/cloudquery/issues/19865)) ([e9b00ac](https://github.com/cloudquery/cloudquery/commit/e9b00ac11f5574235b5f5e6506ffaaf4065aedcb))
+
 ## [2.6.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.6.1...plugins-destination-test-v2.6.2) (2024-12-02)
 
 

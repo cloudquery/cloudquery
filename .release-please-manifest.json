@@ -21,7 +21,7 @@
   "plugins/source/test+FILLER": "0.0.0",
   "plugins/destination/postgresql": "8.7.3",
   "plugins/destination/postgresql+FILLER": "0.0.0",
-  "plugins/destination/test": "2.6.2",
+  "plugins/destination/test": "2.7.0",
   "plugins/destination/test+FILLER": "0.0.0",
   "plugins/destination/sqlite": "2.10.1",
   "plugins/destination/sqlite+FILLER": "0.0.0",
