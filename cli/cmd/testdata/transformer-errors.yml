@@ -16,6 +16,7 @@ spec:
   version: "v2.7.0" # latest version of destination test plugin
   transformers: [test-transformer]
   spec:
+    num_rows: 1000000
 ---
 kind: "transformer"
 spec:

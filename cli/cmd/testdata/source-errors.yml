@@ -7,6 +7,7 @@ spec:
   destinations: [test]
   tables: ["test_some_table"]
   spec:
+    num_rows: 1000000
     fail_immediately: true
 ---
 kind: "destination"
