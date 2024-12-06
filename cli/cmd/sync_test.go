@@ -139,6 +139,46 @@ func TestSync(t *testing.T) {
 			config: "sync-missing-path-error.yml",
 			err:    "Error: failed to validate destination test: path is required",
 		},
+		{
+			name:   "source exits immediately",
+			config: "source-exits.yml",
+			err:    "rpc error: code = Unavailable desc = error reading from server: EOF", // rpc disconnection
+		},
+		{
+			name:   "destination exits immediately",
+			config: "destination-exits.yml",
+			err:    "write client returned error",
+		},
+		{
+			name:   "transformer exits immediately",
+			config: "transformer-exits.yml",
+			err:    "rpc error: code = Unavailable desc = error reading from server: EOF", // rpc disconnection
+		},
+		{
+			name:   "transformer succeeds",
+			config: "transformer-succeeds.yml",
+		},
+		{
+			name:   "source errors immediately",
+			config: "source-errors.yml",
+			summary: []syncSummary{
+				{
+					CLIVersion:      "development",
+					Resources:       0,
+					SourceErrors:    1,
+					DestinationName: "test",
+					DestinationPath: "cloudquery/test",
+					SourceName:      "test",
+					SourcePath:      "cloudquery/test",
+					SourceTables:    []string{"test_some_table"},
+				},
+			},
+		},
+		{
+			name:   "destination errors immediately",
+			config: "destination-errors.yml",
+			err:    "failed to sync v3 source test: EOF",
+		},
 	}
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)
