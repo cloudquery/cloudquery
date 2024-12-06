@@ -1,0 +1,17 @@
+kind: "source"
+spec:
+  name: "test"
+  registry: "cloudquery"
+  path: "cloudquery/test"
+  version: "v4.7.0" # latest version of source test plugin
+  destinations: [test]
+  tables: ["test_some_table"]
+  spec:
+    exit_immediately: true
+---
+kind: "destination"
+spec:
+  name: "test"
+  registry: "cloudquery"
+  path: "cloudquery/test"
+  version: "v2.7.0" # latest version of destination test plugin
