@@ -64,7 +64,9 @@
   },
   "overrides": {
     "react-scripts": {
-      "typescript": "^5"
+      "typescript": "^5",
+      "postcss": "^8",
+      "nth-check": "^2"
     }
   }
 }

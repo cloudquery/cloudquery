@@ -17,11 +17,11 @@
   "plugins/source/okta+FILLER": "0.0.0",
   "plugins/source/terraform": "3.0.12",
   "plugins/source/terraform+FILLER": "0.0.0",
-  "plugins/source/test": "4.6.3",
+  "plugins/source/test": "4.7.0",
   "plugins/source/test+FILLER": "0.0.0",
   "plugins/destination/postgresql": "8.7.3",
   "plugins/destination/postgresql+FILLER": "0.0.0",
-  "plugins/destination/test": "2.6.2",
+  "plugins/destination/test": "2.7.0",
   "plugins/destination/test+FILLER": "0.0.0",
   "plugins/destination/sqlite": "2.10.1",
   "plugins/destination/sqlite+FILLER": "0.0.0",
@@ -109,5 +109,5 @@
   "plugins/transformer/basic+FILLER": "0.0.0",
   "plugins/transformer/jsonflattener": "1.1.1",
   "plugins/transformer/jsonflattener+FILLER": "0.0.0",
-  "plugins/transformer/test": "1.0.0"
+  "plugins/transformer/test": "1.1.0"
 }
