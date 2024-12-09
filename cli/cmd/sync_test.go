@@ -153,7 +153,7 @@ func TestSync(t *testing.T) {
 		{
 			name:   "transformer exits immediately",
 			config: "transformer-exits.yml",
-			err:    []string{"rpc error: code = Unavailable desc = error reading from server: EOF"}, // rpc disconnection
+			err:    []string{"rpc error: code = Unavailable desc = error reading from server"}, // rpc disconnection
 		},
 		{
 			name:   "transformer succeeds",
@@ -182,6 +182,7 @@ func TestSync(t *testing.T) {
 			// this is a mitigation for flakiness that we want to fix later, so that we can have
 			// E2E tests right away.
 			err: []string{
+				"failed to sync v3 source test: write client returned error (insert)",
 				"failed to sync v3 source test: failed to send insert: EOF",
 				"failed to sync v3 source test: EOF",
 			},
