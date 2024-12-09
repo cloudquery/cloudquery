@@ -5,7 +5,7 @@ go 1.22.7
 require (
 	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cloudquery/codegen v0.3.20
-	github.com/cloudquery/plugin-sdk/v4 v4.70.1
+	github.com/cloudquery/plugin-sdk/v4 v4.70.2
 	github.com/goccy/go-json v0.10.3
 	github.com/rs/zerolog v1.33.0
 	github.com/snowflakedb/gosnowflake v1.7.2
@@ -48,8 +48,8 @@ require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.13.3 // indirect
-	github.com/cloudquery/plugin-pb-go v1.25.4 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.13.4 // indirect
+	github.com/cloudquery/plugin-pb-go v1.25.6 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/danieljoos/wincred v1.2.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
