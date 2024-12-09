@@ -150,4 +150,4 @@ require (
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66
 
 // github.com/cloudquery/godebouncer @ fix-race
-replace github.com/vnteamopen/godebouncer => github.com/cloudquery/godebouncer v0.0.0-20240220152946-054f7dbbcf18
+replace github.com/vnteamopen/godebouncer => github.com/cloudquery/godebouncer v0.0.0-20230626172639-4b59d27e1b8c
