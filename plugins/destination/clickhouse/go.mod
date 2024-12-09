@@ -5,7 +5,7 @@ go 1.22.7
 require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.27.2
 	github.com/apache/arrow/go/v17 v17.0.0
-	github.com/cloudquery/codegen v0.3.20
+	github.com/cloudquery/codegen v0.3.21
 	github.com/cloudquery/plugin-sdk/v4 v4.70.2
 	github.com/goccy/go-json v0.10.3
 	github.com/google/uuid v1.6.0
