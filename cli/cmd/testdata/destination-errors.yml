@@ -3,7 +3,7 @@ spec:
   name: "test"
   registry: "cloudquery"
   path: "cloudquery/test"
-  version: "v4.7.0" # latest version of source test plugin
+  version: "v4.7.1" # latest version of source test plugin
   destinations: [test]
   tables: ["test_some_table"]
   spec:
