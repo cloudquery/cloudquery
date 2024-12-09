@@ -341,6 +341,13 @@
           "minLength": 1,
           "description": "Region where bucket is located."
         },
+        "local_profile": {
+          "type": "string",
+          "description": "[Local profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) to use to authenticate this account with.\nShould be set to the name of the profile.\n\nFor example, with the following credentials file:\n\n  ```ini copy\n  [default]\n  aws_access_key_id=xxxx\n  aws_secret_access_key=xxxx\n\n  [user1]\n  aws_access_key_id=xxxx\n  aws_secret_access_key=xxxx\n  ```\n\n`local_profile` should be set to either `default` or `user1`.",
+          "examples": [
+            "my_aws_profile"
+          ]
+        },
         "path": {
           "type": "string",
           "pattern": "^[^/].*$",

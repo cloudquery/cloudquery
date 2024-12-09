@@ -71,7 +71,14 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 	}
 	c.Client = filetypesClient
 
-	cfg, err := config.LoadDefaultConfig(ctx, config.WithDefaultRegion("us-east-1"))
+	configFns := []func(*config.LoadOptions) error{
+		config.WithDefaultRegion("us-east-1"),
+	}
+	if c.spec.LocalProfile != "" {
+		configFns = append(configFns, config.WithSharedConfigProfile(c.spec.LocalProfile))
+	}
+
+	cfg, err := config.LoadDefaultConfig(ctx, configFns...)
 	if err != nil {
 		return nil, fmt.Errorf("unable to load AWS SDK config: %w", err)
 	}
