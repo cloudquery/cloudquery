@@ -10,7 +10,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.69.0
 	github.com/aws/smithy-go v1.22.1
 	github.com/cloudquery/codegen v0.3.21
-	github.com/cloudquery/filetypes/v4 v4.5.0
+	github.com/cloudquery/filetypes/v4 v4.5.1
 	github.com/cloudquery/plugin-sdk/v4 v4.71.0
 	github.com/google/go-cmp v0.6.0
 	github.com/google/uuid v1.6.0
