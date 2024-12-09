@@ -5,7 +5,7 @@ go 1.22.7
 require (
 	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cloudquery/codegen v0.3.21
-	github.com/cloudquery/plugin-sdk/v4 v4.70.2
+	github.com/cloudquery/plugin-sdk/v4 v4.71.0
 	github.com/goccy/go-json v0.10.3
 	github.com/rs/zerolog v1.33.0
 	github.com/snowflakedb/gosnowflake v1.7.2

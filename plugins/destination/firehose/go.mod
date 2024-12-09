@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.35.1
 	github.com/aws/aws-sdk-go-v2/service/sts v1.33.1
 	github.com/cloudquery/codegen v0.3.21
-	github.com/cloudquery/plugin-sdk/v4 v4.70.2
+	github.com/cloudquery/plugin-sdk/v4 v4.71.0
 	github.com/goccy/go-json v0.10.3
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.10.0

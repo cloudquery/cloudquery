@@ -7,7 +7,7 @@ require (
 	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cloudquery/codegen v0.3.21
 	github.com/cloudquery/filetypes/v4 v4.5.0
-	github.com/cloudquery/plugin-sdk/v4 v4.70.2
+	github.com/cloudquery/plugin-sdk/v4 v4.71.0
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.33.0
 	github.com/wk8/go-ordered-map/v2 v2.1.8
