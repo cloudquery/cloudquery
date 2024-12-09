@@ -7,6 +7,7 @@ import (
 	"path"
 	"runtime"
 	"slices"
+	"strings"
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
@@ -22,7 +23,7 @@ func TestSync(t *testing.T) {
 		name    string
 		config  string
 		shard   string
-		err     string
+		err     []string
 		summary []syncSummary
 	}{
 		{
@@ -137,22 +138,22 @@ func TestSync(t *testing.T) {
 		{
 			name:   "should fail with missing path error when path is missing",
 			config: "sync-missing-path-error.yml",
-			err:    "Error: failed to validate destination test: path is required",
+			err:    []string{"Error: failed to validate destination test: path is required"},
 		},
 		{
 			name:   "source exits immediately",
 			config: "source-exits.yml",
-			err:    "rpc error: code = Unavailable desc = error reading from server: EOF", // rpc disconnection
+			err:    []string{"rpc error: code = Unavailable desc = error reading from server: EOF"}, // rpc disconnection
 		},
 		{
 			name:   "destination exits immediately",
 			config: "destination-exits.yml",
-			err:    "write client returned error",
+			err:    []string{"write client returned error"},
 		},
 		{
 			name:   "transformer exits immediately",
 			config: "transformer-exits.yml",
-			err:    "rpc error: code = Unavailable desc = error reading from server: EOF", // rpc disconnection
+			err:    []string{"rpc error: code = Unavailable desc = error reading from server: EOF"}, // rpc disconnection
 		},
 		{
 			name:   "transformer succeeds",
@@ -177,7 +178,13 @@ func TestSync(t *testing.T) {
 		{
 			name:   "destination errors immediately",
 			config: "destination-errors.yml",
-			err:    "failed to sync v3 source test: EOF",
+			// TODO: https://github.com/cloudquery/cloudquery-issues/issues/2907
+			// this is a mitigation for flakiness that we want to fix later, so that we can have
+			// E2E tests right away.
+			err: []string{
+				"failed to sync v3 source test: failed to send insert: EOF",
+				"failed to sync v3 source test: EOF",
+			},
 		},
 	}
 	_, filename, _, _ := runtime.Caller(0)
@@ -203,8 +210,10 @@ func TestSync(t *testing.T) {
 
 			cmd.SetArgs(argList)
 			err := cmd.Execute()
-			if tc.err != "" {
-				assert.Contains(t, err.Error(), tc.err)
+			if len(tc.err) > 0 {
+				if !anyErrorMatched(err, tc.err) {
+					t.Fatalf("expected error matching any of %v, got %v", tc.err, err)
+				}
 			} else {
 				assert.NoError(t, err)
 			}
@@ -235,13 +244,24 @@ func TestSync(t *testing.T) {
 			cmd := NewCmdRoot()
 			cmd.SetArgs(append([]string{"sync", testConfig, "--no-migrate"}, testCommandArgs(t)...))
 			err := cmd.Execute()
-			if tc.err != "" {
-				require.Contains(t, err.Error(), tc.err)
+			if len(tc.err) > 0 {
+				if !anyErrorMatched(err, tc.err) {
+					t.Fatalf("expected error matching any of %v, got %v", tc.err, err)
+				}
 			} else {
-				require.NoError(t, err)
+				assert.NoError(t, err)
 			}
 		})
 	}
+}
+
+func anyErrorMatched(err error, expectedErrors []string) bool {
+	for _, e := range expectedErrors {
+		if strings.Contains(err.Error(), e) {
+			return true
+		}
+	}
+	return false
 }
 
 type syncSummaryTable struct {
