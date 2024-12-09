@@ -143,7 +143,7 @@ func TestSync(t *testing.T) {
 		{
 			name:   "source exits immediately",
 			config: "source-exits.yml",
-			err:    []string{"rpc error: code = Unavailable desc = error reading from server: EOF"}, // rpc disconnection
+			err:    []string{"rpc error: code = Unavailable desc = error reading from server"}, // rpc disconnection
 		},
 		{
 			name:   "destination exits immediately",
@@ -153,7 +153,10 @@ func TestSync(t *testing.T) {
 		{
 			name:   "transformer exits immediately",
 			config: "transformer-exits.yml",
-			err:    []string{"rpc error: code = Unavailable desc = error reading from server"}, // rpc disconnection
+			err: []string{
+				"rpc error: code = Unavailable desc = error reading from server", // rpc disconnection
+				"failed to sync v3 source test: EOF",
+			},
 		},
 		{
 			name:   "transformer succeeds",
