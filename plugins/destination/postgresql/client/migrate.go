@@ -64,10 +64,10 @@ func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMi
 					return err
 				}
 			}
-			if c.spec.CreatePerformanceIndexes {
-				if err := c.createPerformanceIndexes(ctx, table); err != nil {
-					return err
-				}
+		}
+		if c.spec.CreatePerformanceIndexes {
+			if err := c.createPerformanceIndexes(ctx, table); err != nil {
+				return err
 			}
 		}
 	}
@@ -420,7 +420,7 @@ func (c *Client) createPerformanceIndexes(ctx context.Context, table *schema.Tab
 		return nil
 	}
 
-	indexName := "cq_performance_idx"
+	indexName := table.Name + "_cqpi"
 
 	sqlStatement := "CREATE INDEX IF NOT EXISTS " + pgx.Identifier{indexName}.Sanitize() + " ON " + pgx.Identifier{table.Name}.Sanitize() + "(" + pgx.Identifier{columns[0]}.Sanitize() + ", " + pgx.Identifier{columns[1]}.Sanitize() + ")"
 	_, err := c.conn.Exec(ctx, sqlStatement)
