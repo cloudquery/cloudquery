@@ -6,7 +6,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.8.0
 	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.5.0
 	github.com/apache/arrow/go/v17 v17.0.0
-	github.com/cloudquery/codegen v0.3.20
+	github.com/cloudquery/codegen v0.3.21
 	github.com/cloudquery/filetypes/v4 v4.5.0
 	github.com/cloudquery/plugin-sdk/v4 v4.70.2
 	github.com/google/go-cmp v0.6.0

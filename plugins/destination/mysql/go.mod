@@ -4,7 +4,7 @@ go 1.22.7
 
 require (
 	github.com/apache/arrow/go/v17 v17.0.0
-	github.com/cloudquery/codegen v0.3.20
+	github.com/cloudquery/codegen v0.3.21
 	github.com/cloudquery/plugin-sdk/v4 v4.70.2
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/google/uuid v1.6.0
