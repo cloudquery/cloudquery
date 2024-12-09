@@ -30,6 +30,25 @@ This is the (nested) spec used by the CSV destination Plugin.
 
   Region where bucket is located.
 
+- `local_profile` (`string`) (optional) (default: will use current credentials)
+
+  [Local profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) to use to authenticate this account with.
+  Please note this should be set to the name of the profile.
+
+  For example, with the following credentials file:
+
+  ```toml copy
+  [default]
+  aws_access_key_id=xxxx
+  aws_secret_access_key=xxxx
+
+  [user1]
+  aws_access_key_id=xxxx
+  aws_secret_access_key=xxxx
+  ```
+
+  `local_profile` should be set to either `default` or `user1`.
+
 - `path` (`string`) (required)
 
   Path to where the files will be uploaded in the above bucket, for example `path/to/files/{{TABLE}}/{{UUID}}.parquet`.

@@ -56,6 +56,7 @@ Then, you can either export the `AWS_PROFILE` environment variable (On Linux/Mac
 export AWS_PROFILE=myprofile
 ```
 
+You can also use the `local_profile` field in plugin configuration (can be helpful for syncing between different accounts).
 
 ### IAM Roles for AWS Compute Resources
 
