@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.2.1...plugins-destination-bigquery-v4.2.2) (2024-12-11)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.21 ([#19907](https://github.com/cloudquery/cloudquery/issues/19907)) ([3fa7b33](https://github.com/cloudquery/cloudquery/commit/3fa7b33d94d91b6f4c1267721c3bd6fc040795be))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.70.2 ([#19873](https://github.com/cloudquery/cloudquery/issues/19873)) ([1c294aa](https://github.com/cloudquery/cloudquery/commit/1c294aa23b14da8cef9f78ee1a7365e50f304534))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.71.0 ([#19911](https://github.com/cloudquery/cloudquery/issues/19911)) ([2df1161](https://github.com/cloudquery/cloudquery/commit/2df11619759e8211780274ae870aadb1832411d3))
+
 ## [4.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.2.0...plugins-destination-bigquery-v4.2.1) (2024-12-02)
 
 
