@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"cloud.google.com/go/storage"
-	"github.com/cloudquery/cloudquery/plugins/destination/gcs/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/spec"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/writers/streamingbatchwriter"
 	"google.golang.org/api/option"

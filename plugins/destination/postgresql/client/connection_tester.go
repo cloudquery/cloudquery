@@ -8,7 +8,7 @@ import (
 	"net"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"

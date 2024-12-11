@@ -8,9 +8,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/cli/internal/auth"
-	"github.com/cloudquery/cloudquery/cli/internal/otel"
-	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/otel"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -100,12 +100,12 @@ func parseShard(cmd *cobra.Command) (*shard, error) {
 		return nil, fmt.Errorf("invalid shard format: %s. Valid format is num/total, e.g. 1/4", shardFlag)
 	}
 
-	num, err := strconv.Atoi(parts[0])
+	num, err := strconv.ParseInt(parts[0], 10, 32)
 	if err != nil {
 		return nil, fmt.Errorf("invalid shard format: %s. Shard num should be a valid integer", shardFlag)
 	}
 
-	total, err := strconv.Atoi(parts[1])
+	total, err := strconv.ParseInt(parts[1], 10, 32)
 	if err != nil {
 		return nil, fmt.Errorf("invalid shard format: %s. Total shards should be a valid integer", shardFlag)
 	}
@@ -118,7 +118,7 @@ func parseShard(cmd *cobra.Command) (*shard, error) {
 		return nil, fmt.Errorf("invalid shard format: %s. Shard num should be less than or equal to total shards", shardFlag)
 	}
 
-	return &shard{num: num, total: total}, nil
+	return &shard{num: int32(num), total: int32(total)}, nil
 }
 
 func sync(cmd *cobra.Command, args []string) error {

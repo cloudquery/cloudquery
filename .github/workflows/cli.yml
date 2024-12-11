@@ -44,7 +44,7 @@ jobs:
         uses: golangci/golangci-lint-action@v6
         if: matrix.os == 'ubuntu-latest'
         with:
-          version: v1.55.2
+          version: v1.62.0
           working-directory: cli
       - name: Build
         run: go build .
@@ -53,9 +53,6 @@ jobs:
       - name: gen
         if: matrix.os == 'ubuntu-latest'
         run: make gen
-      - name: Fail if docs files are changed
-        if: matrix.os == 'ubuntu-latest'
-        run: test "$(git status -s ../website/pages/docs/reference/cli/*.md | wc -l)" -eq 0
       - name: Fail if cli files are changed
         if: matrix.os == 'ubuntu-latest'
         run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)

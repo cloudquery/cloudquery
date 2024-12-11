@@ -1,0 +1,1 @@
+This CloudQuery transformer plugin is meant for testing purposes.

@@ -1,5 +1,6 @@
-cloudquery-plugin-sdk==0.1.37
+cloudquery-plugin-sdk==0.1.38
 pyarrow>=16.1.0
 requests>=2.32.3
 pytest>=8.2.2
 pandas>=2.2.2
+setuptools>=70.0.0 # not directly required, pinned by Snyk to avoid a vulnerability

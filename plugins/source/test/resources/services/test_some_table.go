@@ -3,9 +3,10 @@ package services
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/apache/arrow/go/v17/arrow"
-	"github.com/cloudquery/cloudquery/plugins/source/test/client"
+	"github.com/cloudquery/cloudquery/plugins/source/test/v4/client"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
@@ -45,6 +46,12 @@ func TestSomeTable(config client.Spec) *schema.Table {
 
 func fetchSomeTableData(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan<- any) error {
 	cl := meta.(*client.Client)
+	if cl.Spec.FailImmediately {
+		return ErrFailImmediately
+	}
+	if cl.Spec.ExitImmediately {
+		os.Exit(1)
+	}
 	for i := 0; i < *cl.Spec.NumRows; i++ {
 		res <- map[string]any{
 			"resource_id": i + 1,

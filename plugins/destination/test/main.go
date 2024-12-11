@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/test/client"
-	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/test/resources/plugin"
+	"github.com/cloudquery/cloudquery/plugins/destination/test/v2/client"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/test/v2/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/serve"
 )

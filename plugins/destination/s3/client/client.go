@@ -16,7 +16,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/cloudquery/cloudquery/plugins/destination/s3/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/streamingbatchwriter"
 
@@ -71,7 +71,14 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 	}
 	c.Client = filetypesClient
 
-	cfg, err := config.LoadDefaultConfig(ctx, config.WithDefaultRegion("us-east-1"))
+	configFns := []func(*config.LoadOptions) error{
+		config.WithDefaultRegion("us-east-1"),
+	}
+	if c.spec.LocalProfile != "" {
+		configFns = append(configFns, config.WithSharedConfigProfile(c.spec.LocalProfile))
+	}
+
+	cfg, err := config.LoadDefaultConfig(ctx, configFns...)
 	if err != nil {
 		return nil, fmt.Errorf("unable to load AWS SDK config: %w", err)
 	}

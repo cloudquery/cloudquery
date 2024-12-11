@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/cloudquery/cloudquery/cli/internal/specs/v0/spec",
+  "$id": "https://github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
     "BackendOptions": {

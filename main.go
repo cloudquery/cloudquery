@@ -3,14 +3,13 @@ package main
 
 import (
 	"context"
-	"log"
+	"fmt"
 
-	"github.com/cloudquery/cloudquery/cli/cmd"
+	"github.com/cloudquery/cloudquery/cli/v6/cmd"
 )
 
 func main() {
-	err := cmd.NewCmdRoot().ExecuteContext(context.Background())
-	if err != nil {
-		log.Fatal(err)
+	if err := cmd.NewCmdRoot().ExecuteContext(context.Background()); err != nil {
+		fmt.Println(err)
 	}
 }

@@ -3,7 +3,7 @@ spec:
   name: xkcd
   version: v1.0.0
   destinations: [test]
-  path: ./cq-source-xkcd
+  path: ./xkcd
   registry: local
   tables: ["*"]
   spec:

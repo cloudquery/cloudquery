@@ -1,8 +1,0 @@
-extends: substitution
-message: "Consider using '%s' instead of '%s'."
-ignorecase: true
-level: warning
-action:
-  name: replace
-swap:
-  It's a good idea:  It's best practice

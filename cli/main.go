@@ -9,7 +9,7 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/cloudquery/cloudquery/cli/cmd"
+	"github.com/cloudquery/cloudquery/cli/v6/cmd"
 	"github.com/getsentry/sentry-go"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"

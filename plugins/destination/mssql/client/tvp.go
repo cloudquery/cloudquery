@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/apache/arrow/go/v17/arrow"
-	"github.com/cloudquery/cloudquery/plugins/destination/mssql/queries"
+	"github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/queries"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 

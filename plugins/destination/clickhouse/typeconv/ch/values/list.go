@@ -6,7 +6,7 @@ import (
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/column"
 	"github.com/apache/arrow/go/v17/arrow/array"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/typeconv/ch/types"
 )
 
 func listValue(arr array.ListLike) (any, error) {

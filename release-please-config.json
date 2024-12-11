@@ -94,6 +94,9 @@
     "plugins/transformer/jsonflattener": {
       "component": "plugins-transformer-jsonflattener"
     },
+    "plugins/transformer/test": {
+      "component": "plugins-transformer-test"
+    },
     "scaffold": {
       "component": "scaffold"
     }

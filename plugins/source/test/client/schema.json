@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/test/client/spec",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/source/test/v4/client/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
     "Spec": {
@@ -64,6 +64,16 @@
               "type": "null"
             }
           ]
+        },
+        "fail_immediately": {
+          "type": "boolean",
+          "description": "If true, the plugin will fail immediately at the table resolver level, before any resources are synced",
+          "default": false
+        },
+        "exit_immediately": {
+          "type": "boolean",
+          "description": "If true, the plugin will os.Exit(1) immediately at the table resolver level, before any resources are synced",
+          "default": false
         }
       },
       "additionalProperties": false,

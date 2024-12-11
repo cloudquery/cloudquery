@@ -1,8 +1,8 @@
 package plugin
 
 import (
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/source/xkcd/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	internalPlugin "github.com/hermanschaaf/cq-source-xkcd/plugin"
 )
 
 func Plugin() *plugin.Plugin {

@@ -27,12 +27,12 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/cloudquery/cloudquery/cli/internal/analytics"
-	"github.com/cloudquery/cloudquery/cli/internal/api"
-	"github.com/cloudquery/cloudquery/cli/internal/specs/v0"
-	"github.com/cloudquery/cloudquery/cli/internal/tablenamechanger"
-	"github.com/cloudquery/cloudquery/cli/internal/transformer"
-	"github.com/cloudquery/cloudquery/cli/internal/transformerpipeline"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/tablenamechanger"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/transformer"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/transformerpipeline"
 )
 
 type v3source struct {
@@ -79,8 +79,8 @@ func newSafeWriteClient(client grpc.ClientStreamingClient[plugin.Write_Request, 
 }
 
 type shard struct {
-	num   int
-	total int
+	num   int32
+	total int32
 }
 
 func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
@@ -140,8 +140,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		Destinations: destinationSpecs,
 	}
 	if shard != nil {
-		syncStartedEvent.ShardNum = shard.num
-		syncStartedEvent.ShardTotal = shard.total
+		syncStartedEvent.ShardNum = int(shard.num)
+		syncStartedEvent.ShardTotal = int(shard.total)
 	}
 	analytics.TrackSyncStarted(ctx, invocationUUID.UUID, syncStartedEvent)
 	var (
@@ -324,8 +324,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	}
 	if shard != nil {
 		syncReq.Shard = &plugin.Sync_Request_Shard{
-			Num:   int32(shard.num),
-			Total: int32(shard.total),
+			Num:   shard.num,
+			Total: shard.total,
 		}
 	}
 	syncClient, err := sourcePbClient.Sync(ctx, syncReq)
@@ -627,8 +627,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		}
 
 		if shard != nil {
-			summary.ShardNum = lo.ToPtr(shard.num)
-			summary.ShardTotal = lo.ToPtr(shard.total)
+			summary.ShardNum = lo.ToPtr(int(shard.num))
+			summary.ShardTotal = lo.ToPtr(int(shard.total))
 		}
 
 		if err := persistSummary(summaryLocation, summary); err != nil {

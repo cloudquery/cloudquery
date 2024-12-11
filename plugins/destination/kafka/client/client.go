@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/IBM/sarama"
-	"github.com/cloudquery/cloudquery/plugins/destination/kafka/client/spec"
-	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/kafka/resources/plugin"
+	"github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/spec"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/resources/plugin"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/rs/zerolog"
@@ -62,7 +62,7 @@ func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClie
 		c.conf.Net.SASL.User = c.spec.SASLUsername
 		c.conf.Net.SASL.Password = c.spec.SASLPassword
 		c.conf.Net.TLS.Enable = true
-		c.conf.Net.TLS.Config = &tls.Config{InsecureSkipVerify: true}
+		c.conf.Net.TLS.Config = &tls.Config{InsecureSkipVerify: !c.spec.EnforceTLSVerification}
 		c.conf.Net.SASL.Handshake = true
 	}
 

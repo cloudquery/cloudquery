@@ -3,7 +3,7 @@ package client_test
 import (
 	"testing"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/meilisearch/client"
+	"github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client"
 	"github.com/cloudquery/codegen/jsonschema"
 )
 

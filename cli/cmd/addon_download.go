@@ -6,13 +6,14 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strings"
 	"syscall"
 
 	cqapiauth "github.com/cloudquery/cloudquery-api-go/auth"
-	"github.com/cloudquery/cloudquery/cli/internal/api"
-	"github.com/cloudquery/cloudquery/cli/internal/auth"
-	"github.com/cloudquery/cloudquery/cli/internal/publish"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/publish"
 	"github.com/spf13/cobra"
 )
 
@@ -91,7 +92,11 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return err
 	}
 
-	location, checksum, err := publish.GetAddonMetadata(ctx, c, currentTeam, addonParts[0], addonParts[1], addonVer[0], addonVer[1])
+	addonTeam := addonParts[0]
+	addonType := addonParts[1]
+	addonName := addonVer[0]
+	addonVersion := addonVer[1]
+	location, checksum, err := publish.GetAddonMetadata(ctx, c, currentTeam, addonTeam, addonType, addonName, addonVersion)
 	if err != nil {
 		return err
 	}
@@ -110,5 +115,10 @@ func runAddonDownload(ctx context.Context, cmd *cobra.Command, args []string) er
 		return fmt.Errorf("addon download failed: %d %s", res.StatusCode, location)
 	}
 
-	return publish.DownloadAddonFromResponse(res, checksum, targetDir)
+	zipPath := "-"
+	if targetDir != "-" {
+		zipPath = filepath.Join(targetDir, fmt.Sprintf("%s_%s_%s_%s.zip", addonTeam, addonType, addonName, addonVersion))
+	}
+
+	return publish.DownloadAddonFromResponse(res, checksum, zipPath)
 }

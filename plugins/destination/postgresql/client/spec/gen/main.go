@@ -6,14 +6,14 @@ import (
 	"path"
 	"runtime"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/spec"
 	"github.com/cloudquery/codegen/jsonschema"
 )
 
 func main() {
 	fmt.Println("Generating JSON schema for plugin spec")
 	jsonschema.GenerateIntoFile(new(spec.Spec), path.Join(currDir(), "..", "schema.json"),
-		jsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/destination/postgresql/client/spec", path.Join(currDir(), "..")),
+		jsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/spec", path.Join(currDir(), "..")),
 	)
 }
 

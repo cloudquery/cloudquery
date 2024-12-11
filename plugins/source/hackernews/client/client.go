@@ -3,7 +3,7 @@ package client
 import (
 	"time"
 
-	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client/services"
+	"github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/services"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/state"
 	"github.com/hermanschaaf/hackernews"

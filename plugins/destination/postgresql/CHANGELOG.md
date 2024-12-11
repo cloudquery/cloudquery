@@ -1,5 +1,49 @@
 # Changelog
 
+## [8.7.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.7.3...plugins-destination-postgresql-v8.7.4) (2024-12-10)
+
+
+### Bug Fixes
+
+* Create unique index per table, handle non existing tables ([#19914](https://github.com/cloudquery/cloudquery/issues/19914)) ([d19f414](https://github.com/cloudquery/cloudquery/commit/d19f414a1662c408c67ec2817327c6b91049d3ec))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.21 ([#19907](https://github.com/cloudquery/cloudquery/issues/19907)) ([3fa7b33](https://github.com/cloudquery/cloudquery/commit/3fa7b33d94d91b6f4c1267721c3bd6fc040795be))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.70.2 ([#19873](https://github.com/cloudquery/cloudquery/issues/19873)) ([1c294aa](https://github.com/cloudquery/cloudquery/commit/1c294aa23b14da8cef9f78ee1a7365e50f304534))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.71.0 ([#19911](https://github.com/cloudquery/cloudquery/issues/19911)) ([2df1161](https://github.com/cloudquery/cloudquery/commit/2df11619759e8211780274ae870aadb1832411d3))
+
+## [8.7.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.7.2...plugins-destination-postgresql-v8.7.3) (2024-12-04)
+
+
+### Bug Fixes
+
+* Correctly handle integer conversion ([#19852](https://github.com/cloudquery/cloudquery/issues/19852)) ([72db471](https://github.com/cloudquery/cloudquery/commit/72db4716acc3d280ed90d64ae11d0c23177229dd))
+
+## [8.7.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.7.1...plugins-destination-postgresql-v8.7.2) (2024-12-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.20 ([#19832](https://github.com/cloudquery/cloudquery/issues/19832)) ([47f140f](https://github.com/cloudquery/cloudquery/commit/47f140f5cc5331eedffe1aaea35e8feb9c6b1f6f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.70.1 ([#19834](https://github.com/cloudquery/cloudquery/issues/19834)) ([687cefd](https://github.com/cloudquery/cloudquery/commit/687cefd19d03767cd1d949d5a28db36e618699a8))
+
+## [8.7.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.7.0...plugins-destination-postgresql-v8.7.1) (2024-12-02)
+
+
+### Bug Fixes
+
+* Correct major version in `go.mod` ([#19811](https://github.com/cloudquery/cloudquery/issues/19811)) ([56644dc](https://github.com/cloudquery/cloudquery/commit/56644dc87aace839b4a8cb7e00701022ddde528f))
+* **deps:** Update dependency @types/node to v16.18.121 ([#19732](https://github.com/cloudquery/cloudquery/issues/19732)) ([754059f](https://github.com/cloudquery/cloudquery/commit/754059fffe545f521e70ac805ed5e04636fc82b2))
+* **deps:** Update dependency eslint-plugin-import to v2.31.0 ([#19742](https://github.com/cloudquery/cloudquery/issues/19742)) ([f16ef7a](https://github.com/cloudquery/cloudquery/commit/f16ef7aeaa0d213a30e5d6c912858634e943bda5))
+* **deps:** Update dependency eslint-plugin-jsx-a11y to v6.10.2 ([#19743](https://github.com/cloudquery/cloudquery/issues/19743)) ([7a2e051](https://github.com/cloudquery/cloudquery/commit/7a2e05188d8c45ab4cecba458d5deb8f86206d8b))
+* **deps:** Update dependency eslint-plugin-react to v7.37.2 ([#19747](https://github.com/cloudquery/cloudquery/issues/19747)) ([eacdad0](https://github.com/cloudquery/cloudquery/commit/eacdad04b3d3ada7e7c570078ba30cba07ce475d))
+* **deps:** Update dependency node to v22 ([#19770](https://github.com/cloudquery/cloudquery/issues/19770)) ([ceff7a4](https://github.com/cloudquery/cloudquery/commit/ceff7a4b300b38ae0f1a0a110fbef42a424d3644))
+* **deps:** Update dependency typescript to v5 ([#19771](https://github.com/cloudquery/cloudquery/issues/19771)) ([fa931ca](https://github.com/cloudquery/cloudquery/commit/fa931ca6848ac46bd2f8c4aea04e87b37bded67f))
+* **deps:** Update dependency yaml to v2.6.1 ([#19755](https://github.com/cloudquery/cloudquery/issues/19755)) ([ffb2bf2](https://github.com/cloudquery/cloudquery/commit/ffb2bf2ff5a7fdcf7236f9acaa9332f8a1fa1c5a))
+* **deps:** Update emotion monorepo to v11.13.5 ([#19733](https://github.com/cloudquery/cloudquery/issues/19733)) ([f6dd642](https://github.com/cloudquery/cloudquery/commit/f6dd642783d1e7957cf848ea03523648d6d35511))
+* **deps:** Update material-ui monorepo ([#19734](https://github.com/cloudquery/cloudquery/issues/19734)) ([25a0cc3](https://github.com/cloudquery/cloudquery/commit/25a0cc366000e9ee2f068ee590ac5f0148de2579))
+* **deps:** Update react monorepo ([#19735](https://github.com/cloudquery/cloudquery/issues/19735)) ([0e8a7bf](https://github.com/cloudquery/cloudquery/commit/0e8a7bfa1ea6772a364ab6cfc0c66f82176e4fc8))
+* **deps:** Update typescript-eslint monorepo ([#19756](https://github.com/cloudquery/cloudquery/issues/19756)) ([c9333df](https://github.com/cloudquery/cloudquery/commit/c9333df5f09a78f9d2aa91ea957dec680fe6ec12))
+* **deps:** Update typescript-eslint monorepo to v8.16.0 ([#19787](https://github.com/cloudquery/cloudquery/issues/19787)) ([1508495](https://github.com/cloudquery/cloudquery/commit/1508495f3c0ed126b97db81832afb56875effb8c))
+
 ## [8.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.6.8...plugins-destination-postgresql-v8.7.0) (2024-11-28)
 
 

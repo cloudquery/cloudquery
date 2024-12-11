@@ -72,16 +72,30 @@ jobs:
           # A custom token is required for publishing to Homebrew
           GITHUB_TOKEN: ${{ secrets.GH_CQ_BOT }}
 
+      - name: Push Tag prefixed with `scaffold/`
+        if: steps.semver_parser.outputs.prerelease == ''
+        run: |
+          git tag scaffold/${{ steps.split.outputs.version }} && git push origin scaffold/${{ steps.split.outputs.version }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_CQ_BOT }}
+          repository: cloudquery/frontend
+          ref: main
+          path: ./frontend
+
       - name: Update version file
         if: steps.semver_parser.outputs.prerelease == ''
-        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./website/versions/scaffold.json'
+        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./frontend/old_docs_site/versions/scaffold.json'
 
       - name: Create Pull Request
         if: steps.semver_parser.outputs.prerelease == ''
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v7
         with:
           # required so the PR triggers workflow runs
           token: ${{ secrets.GH_CQ_BOT }}
+          path: frontend
           branch: chore/update-scaffold-version
           base: main
           title: "chore: Update Scaffold version to ${{steps.split.outputs.version}}"

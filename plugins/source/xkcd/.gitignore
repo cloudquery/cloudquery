@@ -2,7 +2,7 @@
 .idea
 cloudquery.log
 /cloudquery
-cq-source-xkcd
+xkcd
 db
 db.sql
 dist

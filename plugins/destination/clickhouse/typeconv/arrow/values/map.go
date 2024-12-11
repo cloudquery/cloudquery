@@ -5,7 +5,7 @@ import (
 	"reflect"
 
 	"github.com/apache/arrow/go/v17/arrow/array"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/typeconv/ch/types"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/typeconv/ch/types"
 )
 
 func buildMap(builder *array.MapBuilder, value any) error {

@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/neo4j/client"
-	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/neo4j/resources/plugin"
+	"github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/serve"
 )

@@ -10,7 +10,7 @@ import (
 	"github.com/apache/arrow/go/v17/arrow"
 	"github.com/apache/arrow/go/v17/arrow/array"
 	"github.com/apache/arrow/go/v17/arrow/memory"
-	spec "github.com/cloudquery/cloudquery/plugins/destination/gcs/client/spec"
+	spec "github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/spec"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"

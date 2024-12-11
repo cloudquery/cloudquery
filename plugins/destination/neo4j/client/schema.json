@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/neo4j/client/spec",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
     "Spec": {

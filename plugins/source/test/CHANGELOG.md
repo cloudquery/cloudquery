@@ -1,5 +1,37 @@
 # Changelog
 
+## [4.7.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.7.0...plugins-source-test-v4.7.1) (2024-12-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.70.2 ([#19873](https://github.com/cloudquery/cloudquery/issues/19873)) ([1c294aa](https://github.com/cloudquery/cloudquery/commit/1c294aa23b14da8cef9f78ee1a7365e50f304534))
+* Upgrade the test source plugin to use SDK improvement. ([#19906](https://github.com/cloudquery/cloudquery/issues/19906)) ([d7c5164](https://github.com/cloudquery/cloudquery/commit/d7c51648607eb369aa6aa733d789ced79a628ac9))
+
+## [4.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.6.3...plugins-source-test-v4.7.0) (2024-12-05)
+
+
+### Features
+
+* Add "fail immediately" spec option to test source plugin ([#19863](https://github.com/cloudquery/cloudquery/issues/19863)) ([67882f3](https://github.com/cloudquery/cloudquery/commit/67882f3dd99e71c9a7aa8108f9d00f88f0cb05d1))
+* Add `exit_immediately` spec option to all test plugins. ([#19865](https://github.com/cloudquery/cloudquery/issues/19865)) ([e9b00ac](https://github.com/cloudquery/cloudquery/commit/e9b00ac11f5574235b5f5e6506ffaaf4065aedcb))
+
+## [4.6.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.6.2...plugins-source-test-v4.6.3) (2024-12-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.20 ([#19832](https://github.com/cloudquery/cloudquery/issues/19832)) ([47f140f](https://github.com/cloudquery/cloudquery/commit/47f140f5cc5331eedffe1aaea35e8feb9c6b1f6f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.70.1 ([#19834](https://github.com/cloudquery/cloudquery/issues/19834)) ([687cefd](https://github.com/cloudquery/cloudquery/commit/687cefd19d03767cd1d949d5a28db36e618699a8))
+
+## [4.6.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.6.1...plugins-source-test-v4.6.2) (2024-12-02)
+
+
+### Bug Fixes
+
+* Correct major version in `go.mod` ([#19811](https://github.com/cloudquery/cloudquery/issues/19811)) ([56644dc](https://github.com/cloudquery/cloudquery/commit/56644dc87aace839b4a8cb7e00701022ddde528f))
+* **deps:** Update golang.org/x/exp digest to 2d47ceb ([#19794](https://github.com/cloudquery/cloudquery/issues/19794)) ([5af258f](https://github.com/cloudquery/cloudquery/commit/5af258f4400742938b39575792ebdb51ff9471d8))
+
 ## [4.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.6.0...plugins-source-test-v4.6.1) (2024-11-25)
 
 

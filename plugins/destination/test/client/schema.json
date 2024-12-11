@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/test/client/spec",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/test/v2/client/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
     "Duration": {
@@ -23,6 +23,21 @@
         "error_on_insert": {
           "type": "boolean",
           "description": "If true, will return an error on insert record messages rather than consume from the channel",
+          "default": false
+        },
+        "exit_on_write": {
+          "type": "boolean",
+          "description": "If true, will call os.Exit(1) on any write message rather than consume from the channel",
+          "default": false
+        },
+        "exit_on_migrate": {
+          "type": "boolean",
+          "description": "If true, will call os.Exit(1) on migrate table messages rather than consume from the channel",
+          "default": false
+        },
+        "exit_on_insert": {
+          "type": "boolean",
+          "description": "If true, will call os.Exit(1) on insert record messages rather than consume from the channel",
           "default": false
         },
         "batch_writer": {

@@ -3,7 +3,7 @@
 package plugin
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/source/test/client"
+	"github.com/cloudquery/cloudquery/plugins/source/test/v4/client"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 )
 

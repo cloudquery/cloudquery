@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/cloudquery/cloudquery/plugins/source/hackernews/client"
 	"log"
 	"path"
 	"runtime"
+
+	"github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client"
 
 	cqjsonschema "github.com/cloudquery/codegen/jsonschema"
 )
@@ -13,7 +14,7 @@ import (
 func main() {
 	fmt.Println("Generating JSON schema for plugin spec")
 	cqjsonschema.GenerateIntoFile(new(client.Spec), path.Join(currDir(), "../..", "schema.json"),
-		cqjsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/source/hackernews/client", path.Join(currDir(), "../..")),
+		cqjsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client", path.Join(currDir(), "../..")),
 	)
 }
 

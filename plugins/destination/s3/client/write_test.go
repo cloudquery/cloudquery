@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/s3/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/spec"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/google/go-cmp/cmp"
 	"github.com/stretchr/testify/require"

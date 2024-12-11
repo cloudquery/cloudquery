@@ -7,8 +7,7 @@ import (
 
 	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/ClickHouse/clickhouse-go/v2/lib/proto"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/client/spec"
-	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/goccy/go-json"
@@ -23,15 +22,12 @@ type Client struct {
 	logger zerolog.Logger
 	writer *batchwriter.BatchWriter
 	plugin.UnimplementedSource
+	batchwriter.UnimplementedDeleteStale
 	batchwriter.UnimplementedDeleteRecord
 }
 
 var _ plugin.Client = (*Client)(nil)
 var _ batchwriter.Client = (*Client)(nil)
-
-func (*Client) DeleteStale(context.Context, message.WriteDeleteStales) error {
-	return plugin.ErrNotImplemented
-}
 
 func (c *Client) Close(ctx context.Context) error {
 	if err := c.writer.Close(ctx); err != nil {
