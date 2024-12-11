@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.7.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.7.1...plugins-source-test-v4.7.2) (2024-12-11)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/plugin-sdk/v4 digest to 9ebf38d ([#19910](https://github.com/cloudquery/cloudquery/issues/19910)) ([39a8264](https://github.com/cloudquery/cloudquery/commit/39a82645741471d41ea62e1b10de0209f5d9a131))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.21 ([#19907](https://github.com/cloudquery/cloudquery/issues/19907)) ([3fa7b33](https://github.com/cloudquery/cloudquery/commit/3fa7b33d94d91b6f4c1267721c3bd6fc040795be))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.71.0 ([#19911](https://github.com/cloudquery/cloudquery/issues/19911)) ([2df1161](https://github.com/cloudquery/cloudquery/commit/2df11619759e8211780274ae870aadb1832411d3))
+
 ## [4.7.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.7.0...plugins-source-test-v4.7.1) (2024-12-09)
 
 

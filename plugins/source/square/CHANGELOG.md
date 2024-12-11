@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.14](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.13...plugins-source-square-v1.3.14) (2024-12-11)
+
+
+### Bug Fixes
+
+* Pin indirect packages in `plugins/source/square/requirements.txt` ([#19703](https://github.com/cloudquery/cloudquery/issues/19703)) ([cdc6867](https://github.com/cloudquery/cloudquery/commit/cdc686735d5c5ffda0a181e68b0b27529b221b9f))
+
 ## [1.3.13](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.12...plugins-source-square-v1.3.13) (2024-12-02)
 
 
