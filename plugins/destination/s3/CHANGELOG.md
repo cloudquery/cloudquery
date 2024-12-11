@@ -1,5 +1,20 @@
 # Changelog
 
+## [7.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.6.1...plugins-destination-s3-v7.7.0) (2024-12-11)
+
+
+### Features
+
+* Add possibility to set local profile to use in S3 Destination spec ([#19913](https://github.com/cloudquery/cloudquery/issues/19913)) ([79e8d6a](https://github.com/cloudquery/cloudquery/commit/79e8d6a0aca3bf9778ff027bcc2f572f60242197))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.21 ([#19907](https://github.com/cloudquery/cloudquery/issues/19907)) ([3fa7b33](https://github.com/cloudquery/cloudquery/commit/3fa7b33d94d91b6f4c1267721c3bd6fc040795be))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.5.1 ([#19912](https://github.com/cloudquery/cloudquery/issues/19912)) ([c8e9e48](https://github.com/cloudquery/cloudquery/commit/c8e9e487e486caab4824b2dd624782e5470824df))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.70.2 ([#19873](https://github.com/cloudquery/cloudquery/issues/19873)) ([1c294aa](https://github.com/cloudquery/cloudquery/commit/1c294aa23b14da8cef9f78ee1a7365e50f304534))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.71.0 ([#19911](https://github.com/cloudquery/cloudquery/issues/19911)) ([2df1161](https://github.com/cloudquery/cloudquery/commit/2df11619759e8211780274ae870aadb1832411d3))
+
 ## [7.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.6.0...plugins-destination-s3-v7.6.1) (2024-12-02)
 
 
