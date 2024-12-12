@@ -4,7 +4,7 @@ go 1.22.7
 
 require (
 	github.com/apache/arrow/go/v17 v17.0.0
-	github.com/cloudquery/plugin-sdk/v4 v4.71.0
+	github.com/cloudquery/plugin-sdk/v4 v4.71.1
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.10.0
 	github.com/tidwall/gjson v1.18.0
