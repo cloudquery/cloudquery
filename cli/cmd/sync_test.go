@@ -155,6 +155,7 @@ func TestSync(t *testing.T) {
 			config: "transformer-exits.yml",
 			err: []string{
 				"rpc error: code = Unavailable desc = error reading from server", // rpc disconnection
+				"failed to sync v3 source test: EOF",
 			},
 		},
 		{
