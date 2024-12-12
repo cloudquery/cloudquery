@@ -87,7 +87,7 @@ jobs:
 
       - name: Update version file
         if: steps.semver_parser.outputs.prerelease == ''
-        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./frontend/old_docs_site/versions/scaffold.json'
+        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./frontend/apps/docs/versions/scaffold.json'
 
       - name: Create Pull Request
         if: steps.semver_parser.outputs.prerelease == ''

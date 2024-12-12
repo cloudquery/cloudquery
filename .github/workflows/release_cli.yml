@@ -100,7 +100,7 @@ jobs:
 
       - name: Update version file
         if: steps.semver_parser.outputs.prerelease == ''
-        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./frontend/old_docs_site/versions/cli.json'
+        run: 'echo "{ \"latest\": \"${{github.ref_name}}\" }" > ./frontend/apps/docs/versions/cli.json'
 
       - name: Update docs
         if: steps.semver_parser.outputs.prerelease == ''
