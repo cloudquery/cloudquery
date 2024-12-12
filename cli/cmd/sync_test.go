@@ -155,6 +155,13 @@ func TestSync(t *testing.T) {
 			config: "transformer-exits.yml",
 			err: []string{
 				"rpc error: code = Unavailable desc = error reading from server", // rpc disconnection
+			},
+		},
+		{
+			name:   "transformer errors immediately",
+			config: "transformer-errors.yml",
+			err: []string{
+				"failed to sync v3 source test: rpc error: code = Internal desc = failing at the transformer stage according to spec requirements", // rpc disconnection
 				"failed to sync v3 source test: EOF",
 			},
 		},
@@ -187,7 +194,6 @@ func TestSync(t *testing.T) {
 			err: []string{
 				"failed to sync v3 source test: write client returned error (insert)",
 				"failed to sync v3 source test: failed to send insert: EOF",
-				"failed to sync v3 source test: EOF",
 			},
 		},
 	}
@@ -260,6 +266,9 @@ func TestSync(t *testing.T) {
 }
 
 func anyErrorMatched(err error, expectedErrors []string) bool {
+	if err == nil {
+		return false
+	}
 	for _, e := range expectedErrors {
 		if strings.Contains(err.Error(), e) {
 			return true
