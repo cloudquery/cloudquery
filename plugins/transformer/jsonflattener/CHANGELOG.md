@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v1.1.2...plugins-transformer-jsonflattener-v1.1.3) (2024-12-12)
+
+
+### Bug Fixes
+
+* Bump SDK on transformer plugins ([#19929](https://github.com/cloudquery/cloudquery/issues/19929)) ([291fa4f](https://github.com/cloudquery/cloudquery/commit/291fa4f23177cd74528fdbf87e000eb56cffff93))
+
 ## [1.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v1.1.1...plugins-transformer-jsonflattener-v1.1.2) (2024-12-11)
 
 
