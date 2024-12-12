@@ -23,6 +23,6 @@ spec:
   name: "test-transformer"
   registry: "cloudquery"
   path: "cloudquery/test"
-  version: "v1.1.0" # latest version of transformer test plugin
+  version: "v1.1.2" # latest version of transformer test plugin
   spec:
     exit_immediately: true
