@@ -82,7 +82,7 @@ func createTestSchema(t *testing.T) *arrow.Schema {
 }
 
 func createArray(t *testing.T, bs []byte) arrow.Array {
-	b := types.NewJSONBuilder(array.NewExtensionBuilder(memory.NewGoAllocator(), types.NewJSONType()))
+	b := types.NewJSONBuilder(memory.NewGoAllocator())
 	defer b.Release()
 	dec := json.NewDecoder(bytes.NewReader(bs))
 	err := b.UnmarshalOne(dec)
