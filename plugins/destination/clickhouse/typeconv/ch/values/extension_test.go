@@ -18,7 +18,7 @@ func Test_extensionUUID(t *testing.T) {
 		values[i] = uuid.New()
 	}
 
-	builder := types.NewUUIDBuilder(array.NewExtensionBuilder(memory.DefaultAllocator, types.NewUUIDType()))
+	builder := types.NewUUIDBuilder(memory.DefaultAllocator)
 	for _, uid := range values {
 		builder.Append(uid)
 	}
