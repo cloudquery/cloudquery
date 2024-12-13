@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/test/v2
 go 1.22.7
 
 require (
-	github.com/apache/arrow-go/v18 v18.0.0
+	github.com/apache/arrow/go/v17 v17.0.0
 	github.com/cloudquery/codegen v0.3.21
 	github.com/cloudquery/plugin-sdk/v4 v4.71.1
 	github.com/invopop/jsonschema v0.12.0
@@ -12,8 +12,8 @@ require (
 
 require (
 	github.com/adrg/xdg v0.4.0 // indirect
+	github.com/apache/arrow-go/v18 v18.0.0 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
-	github.com/apache/arrow/go/v17 v17.0.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/aws/aws-sdk-go-v2 v1.32.5 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.28.5 // indirect
