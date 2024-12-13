@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/apache/arrow/go/v17/arrow"
+	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/cloudquery/plugins/transformer/test/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/rs/zerolog"

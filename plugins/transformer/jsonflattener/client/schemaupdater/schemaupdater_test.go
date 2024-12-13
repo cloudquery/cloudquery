@@ -4,9 +4,8 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/apache/arrow/go/v17/arrow"
-	"github.com/apache/arrow/go/v17/arrow/array"
-	"github.com/apache/arrow/go/v17/arrow/memory"
+	"github.com/apache/arrow-go/v18/arrow"
+	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/goccy/go-json"
@@ -57,7 +56,7 @@ func createTestSchema(t *testing.T) *arrow.Schema {
 }
 
 func createArray(t *testing.T, bs []byte) arrow.Array {
-	b := types.NewJSONBuilder(array.NewExtensionBuilder(memory.NewGoAllocator(), types.NewJSONType()))
+	b := types.NewJSONBuilder(memory.NewGoAllocator())
 	defer b.Release()
 	dec := json.NewDecoder(bytes.NewReader(bs))
 	err := b.UnmarshalOne(dec)

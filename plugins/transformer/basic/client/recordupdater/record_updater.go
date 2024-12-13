@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/apache/arrow/go/v17/arrow"
-	"github.com/apache/arrow/go/v17/arrow/array"
-	"github.com/apache/arrow/go/v17/arrow/memory"
+	"github.com/apache/arrow-go/v18/arrow"
+	"github.com/apache/arrow-go/v18/arrow/array"
+	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/transformer/basic/client/schemaupdater"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/tidwall/gjson"
@@ -55,7 +55,7 @@ func (r *RecordUpdater) RemoveColumns(columnNames []string) (arrow.Record, error
 
 	if len(jsonCols) > 0 {
 		for i, jcs := range r.jsonColIndicesByNames(jsonCols) {
-			bld := types.NewJSONBuilder(array.NewExtensionBuilder(memory.DefaultAllocator, types.NewJSONType()))
+			bld := types.NewJSONBuilder(memory.NewGoAllocator())
 			for j := 0; j < r.record.Column(i).Len(); j++ {
 				valStr := r.record.Column(i).ValueStr(j)
 				if gjson.Valid(valStr) {
@@ -254,7 +254,7 @@ func (*RecordUpdater) obfuscateColumn(column arrow.Array) arrow.Array {
 }
 
 func (*RecordUpdater) obfuscateJSONColumns(column arrow.Array, jcs []jsonColumn) arrow.Array {
-	bld := types.NewJSONBuilder(array.NewExtensionBuilder(memory.DefaultAllocator, types.NewJSONType()))
+	bld := types.NewJSONBuilder(memory.NewGoAllocator())
 	for i := 0; i < column.Len(); i++ {
 		if !column.IsValid(i) {
 			bld.AppendNull()
