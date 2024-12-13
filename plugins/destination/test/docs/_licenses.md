@@ -7,8 +7,8 @@ The following tools / packages are used in this plugin:
 | Name | License |
 |------|---------|
 | github.com/adrg/xdg | MIT |
+| github.com/apache/arrow-go/v18 | Apache-2.0 |
 | github.com/apache/arrow/go/v13 | Apache-2.0 |
-| github.com/apache/arrow/go/v17 | Apache-2.0 |
 | github.com/apapsch/go-jsonmerge/v2 | MIT |
 | github.com/aws/aws-sdk-go-v2 | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/config | Apache-2.0 |
@@ -49,7 +49,6 @@ The following tools / packages are used in this plugin:
 | github.com/grpc-ecosystem/grpc-gateway/v2 | BSD-3-Clause |
 | github.com/hashicorp/go-cleanhttp | MPL-2.0 |
 | github.com/hashicorp/go-retryablehttp | MPL-2.0 |
-| github.com/huandu/xstrings | MIT |
 | github.com/invopop/jsonschema | MIT |
 | github.com/klauspost/compress | Apache-2.0 |
 | github.com/klauspost/compress/internal/snapref | BSD-3-Clause |
@@ -64,6 +63,7 @@ The following tools / packages are used in this plugin:
 | github.com/santhosh-tekuri/jsonschema/v6 | Apache-2.0 |
 | github.com/spf13/cobra | Apache-2.0 |
 | github.com/spf13/pflag | BSD-3-Clause |
+| github.com/stoewer/go-strcase | MIT |
 | github.com/stretchr/testify | MIT |
 | github.com/thoas/go-funk | MIT |
 | github.com/wk8/go-ordered-map/v2 | Apache-2.0 |
