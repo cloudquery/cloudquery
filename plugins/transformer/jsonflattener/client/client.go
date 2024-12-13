@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/apache/arrow/go/v17/arrow"
+	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/spec"
 	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/transformers"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"

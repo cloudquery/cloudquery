@@ -1,9 +1,8 @@
 package recordupdater
 
 import (
-	"github.com/apache/arrow/go/v17/arrow"
-	"github.com/apache/arrow/go/v17/arrow/array"
-	"github.com/apache/arrow/go/v17/arrow/memory"
+	"github.com/apache/arrow-go/v18/arrow"
+	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/schemaupdater"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
@@ -48,7 +47,7 @@ func (b *JSONColumnsBuilder) build(key string) (arrow.Array, error) {
 }
 
 func buildJSONColumn(values []*any) arrow.Array {
-	bld := types.NewJSONBuilder(array.NewExtensionBuilder(memory.DefaultAllocator, types.NewJSONType()))
+	bld := types.NewJSONBuilder(memory.DefaultAllocator)
 	defer bld.Release()
 	for _, value := range values {
 		bld.Append(value)
