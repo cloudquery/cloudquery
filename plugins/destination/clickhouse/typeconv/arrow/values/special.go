@@ -1,7 +1,7 @@
 package values
 
 import (
-	"github.com/apache/arrow/go/v17/arrow/float16"
+	"github.com/apache/arrow-go/v18/arrow/float16"
 )
 
 func buildFloat16(builder primitiveBuilder[float16.Num], value any) {

@@ -1,7 +1,7 @@
 package types
 
 import (
-	"github.com/apache/arrow/go/v17/arrow"
+	"github.com/apache/arrow-go/v18/arrow"
 )
 
 // CanBeNullable is used to check if data type can be wrapped in `Nullable`
