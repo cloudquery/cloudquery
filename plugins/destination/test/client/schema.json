@@ -42,7 +42,17 @@
         },
         "batch_writer": {
           "type": "boolean",
-          "description": "Whether to use a BatchWriter or not.",
+          "description": "Whether to use a BatchWriter or not. Only one BatchWriter option should be true.",
+          "default": false
+        },
+        "stream_batch_writer": {
+          "type": "boolean",
+          "description": "Whether to use a StreamBatchWriter or not. Only one BatchWriter option should be true.",
+          "default": false
+        },
+        "mixed_batch_writer": {
+          "type": "boolean",
+          "description": "Whether to use a MixedBatchWriter or not. Only one BatchWriter option should be true.",
           "default": false
         },
         "batch_size": {

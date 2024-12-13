@@ -2,6 +2,7 @@ package client
 
 import (
 	_ "embed"
+	"fmt"
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
@@ -26,8 +27,14 @@ type Spec struct {
 	// If true, will call os.Exit(1) on insert record messages rather than consume from the channel
 	ExitOnInsert bool `json:"exit_on_insert,omitempty" jsonschema:"default=false"`
 
-	// Whether to use a BatchWriter or not.
+	// Whether to use a BatchWriter or not. Only one BatchWriter option should be true.
 	BatchWriter bool `json:"batch_writer" jsonschema:"default=false"`
+
+	// Whether to use a StreamBatchWriter or not. Only one BatchWriter option should be true.
+	StreamBatchWriter bool `json:"stream_batch_writer" jsonschema:"default=false"`
+
+	// Whether to use a MixedBatchWriter or not. Only one BatchWriter option should be true.
+	MixedBatchWriter bool `json:"mixed_batch_writer" jsonschema:"default=false"`
 
 	// Maximum number of items that may be grouped together to be written in a single write.
 	//
@@ -58,6 +65,19 @@ func (s *Spec) SetDefaults() {
 	if s.BatchTimeout == nil {
 		s.BatchTimeout = ptr(configtype.NewDuration(30 * time.Second))
 	}
+}
+
+func (s *Spec) Validate() error {
+	if s.BatchWriter && s.StreamBatchWriter {
+		return fmt.Errorf("batch_writer and stream_batch_writer cannot be true at the same time")
+	}
+	if s.BatchWriter && s.MixedBatchWriter {
+		return fmt.Errorf("batch_writer and mixed_batch_writer cannot be true at the same time")
+	}
+	if s.StreamBatchWriter && s.MixedBatchWriter {
+		return fmt.Errorf("stream_batch_writer and mixed_batch_writer cannot be true at the same time")
+	}
+	return nil
 }
 
 func ptr[A any](a A) *A {

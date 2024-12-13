@@ -3,7 +3,7 @@ package recordupdater
 import (
 	"fmt"
 
-	"github.com/apache/arrow/go/v17/arrow"
+	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/schemaupdater"
 	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/cloudquery/plugin-sdk/v4/types"
