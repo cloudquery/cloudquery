@@ -146,7 +146,7 @@ func sanitizeRecordJSONKeys(record arrow.Record) (arrow.Record, error) {
 	cols := make([]arrow.Array, record.NumCols())
 	for i, col := range record.Columns() {
 		if arrow.TypeEqual(col.DataType(), types.NewJSONType()) {
-			b := types.NewJSONBuilder(array.NewExtensionBuilder(memory.DefaultAllocator, types.NewJSONType()))
+			b := types.NewJSONBuilder(memory.DefaultAllocator)
 			for r := 0; r < int(record.NumRows()); r++ {
 				if col.IsNull(r) {
 					b.AppendNull()
