@@ -204,28 +204,36 @@ func newClientForStreamingBatchWriter(c *Client) streamingbatchwriter.Client {
 }
 
 func (c *ClientForStreamingBatchWriter) DeleteRecords(ctx context.Context, msgs <-chan *message.WriteDeleteRecord) error {
+	for range msgs {
+	}
 	return nil
 }
-func (c *ClientForStreamingBatchWriter) MigrateTable(context.Context, <-chan *message.WriteMigrateTable) error {
+func (c *ClientForStreamingBatchWriter) MigrateTable(ctx context.Context, msgs <-chan *message.WriteMigrateTable) error {
 	if c.spec.ErrorOnMigrate {
 		return ErrOnMigrate
 	}
 	if c.spec.ExitOnMigrate {
 		os.Exit(1)
 	}
+	for range msgs {
+	}
 	return nil
 }
 
-func (c *ClientForStreamingBatchWriter) DeleteStale(context.Context, <-chan *message.WriteDeleteStale) error {
+func (c *ClientForStreamingBatchWriter) DeleteStale(ctx context.Context, msgs <-chan *message.WriteDeleteStale) error {
+	for range msgs {
+	}
 	return nil
 }
 
-func (c *ClientForStreamingBatchWriter) WriteTable(context.Context, <-chan *message.WriteInsert) error {
+func (c *ClientForStreamingBatchWriter) WriteTable(ctx context.Context, msgs <-chan *message.WriteInsert) error {
 	if c.spec.ErrorOnInsert {
 		return ErrOnInsert
 	}
 	if c.spec.ExitOnInsert {
 		os.Exit(1)
+	}
+	for range msgs {
 	}
 	return nil
 }
