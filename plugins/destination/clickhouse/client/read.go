@@ -5,9 +5,9 @@ import (
 	"reflect"
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
-	"github.com/apache/arrow/go/v17/arrow"
-	"github.com/apache/arrow/go/v17/arrow/array"
-	"github.com/apache/arrow/go/v17/arrow/memory"
+	"github.com/apache/arrow-go/v18/arrow"
+	"github.com/apache/arrow-go/v18/arrow/array"
+	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/queries"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/typeconv/arrow/values"
 	"github.com/cloudquery/plugin-sdk/v4/schema"

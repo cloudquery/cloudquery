@@ -5,7 +5,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/apache/arrow/go/v17/arrow"
+	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/client/spec"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/typeconv/ch/types"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/util"
