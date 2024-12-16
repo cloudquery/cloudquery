@@ -11,7 +11,7 @@ The following tools / packages are used in this plugin:
 | github.com/andybalholm/brotli | MIT |
 | github.com/apache/arrow/go/v13 | Apache-2.0 |
 | github.com/apache/arrow/go/v14 | Apache-2.0 |
-| github.com/apache/arrow/go/v17 | Apache-2.0 |
+| github.com/apache/arrow-go/v18 | Apache-2.0 |
 | github.com/apache/thrift/lib/go/thrift | Apache-2.0 |
 | github.com/apapsch/go-jsonmerge/v2 | MIT |
 | github.com/aws/aws-sdk-go-v2 | Apache-2.0 |
