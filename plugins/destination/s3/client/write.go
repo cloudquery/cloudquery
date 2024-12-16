@@ -8,9 +8,9 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/apache/arrow/go/v17/arrow"
-	"github.com/apache/arrow/go/v17/arrow/array"
-	"github.com/apache/arrow/go/v17/arrow/memory"
+	"github.com/apache/arrow-go/v18/arrow"
+	"github.com/apache/arrow-go/v18/arrow/array"
+	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -146,7 +146,7 @@ func sanitizeRecordJSONKeys(record arrow.Record) (arrow.Record, error) {
 	cols := make([]arrow.Array, record.NumCols())
 	for i, col := range record.Columns() {
 		if arrow.TypeEqual(col.DataType(), types.NewJSONType()) {
-			b := types.NewJSONBuilder(array.NewExtensionBuilder(memory.DefaultAllocator, types.NewJSONType()))
+			b := types.NewJSONBuilder(memory.DefaultAllocator)
 			for r := 0; r < int(record.NumRows()); r++ {
 				if col.IsNull(r) {
 					b.AppendNull()

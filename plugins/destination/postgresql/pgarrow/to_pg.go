@@ -3,7 +3,7 @@ package pgarrow
 import (
 	"strconv"
 
-	"github.com/apache/arrow/go/v17/arrow"
+	"github.com/apache/arrow-go/v18/arrow"
 	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
