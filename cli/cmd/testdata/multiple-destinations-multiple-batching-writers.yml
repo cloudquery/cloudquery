@@ -1,0 +1,35 @@
+kind: "source"
+spec:
+  name: "test"
+  path: "cloudquery/test"
+  registry: "github"
+  destinations: ["test1", "test2", "test3"]
+  version: "v2.0.3" # v2 source
+  tables: ["*"]
+---
+kind: "destination"
+spec:
+  name: "test1"
+  path: "cloudquery/test"
+  registry: "cloudquery"
+  version: "v2.8.0" #
+  spec:
+    batch_writer: true
+---
+kind: "destination"
+spec:
+  name: "test2"
+  path: "cloudquery/test"
+  registry: "cloudquery"
+  version: "v2.8.0" # latest version of destination test plugin
+  spec:
+    stream_batch_writer: true
+---
+kind: "destination"
+spec:
+  name: "test3"
+  path: "cloudquery/test"
+  registry: "cloudquery"
+  version: "v2.8.0" # latest version of destination test plugin
+  spec:
+   mixed_batch_writer: true

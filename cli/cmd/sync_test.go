@@ -61,6 +61,10 @@ func TestSync(t *testing.T) {
 			config: "multiple-destinations.yml",
 		},
 		{
+			name:   "multiple_destinations_multiple_batching_writers",
+			config: "multiple-destinations-multiple-batching-writers.yml",
+		},
+		{
 			name:   "multiple_sources_destinations",
 			config: "multiple-sources-destinations.yml",
 			summary: []syncSummary{
