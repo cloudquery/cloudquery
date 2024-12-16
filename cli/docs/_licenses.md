@@ -8,7 +8,7 @@ The following tools / packages are used in this plugin:
 |------|---------|
 | github.com/Masterminds/semver | MIT |
 | github.com/adrg/xdg | MIT |
-| github.com/apache/arrow/go/v17 | Apache-2.0 |
+| github.com/apache/arrow-go/v18 | Apache-2.0 |
 | github.com/apapsch/go-jsonmerge/v2 | MIT |
 | github.com/avast/retry-go/v4 | MIT |
 | github.com/bahlo/generic-list-go | BSD-3-Clause |
