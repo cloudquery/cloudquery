@@ -1,12 +1,13 @@
 package queries
 
 import (
-	"github.com/apache/arrow/go/v17/arrow"
-	"github.com/apache/arrow/go/v17/arrow/array"
-	"github.com/apache/arrow/go/v17/arrow/memory"
-	"github.com/stretchr/testify/require"
 	"math/rand"
 	"testing"
+
+	"github.com/apache/arrow-go/v18/arrow"
+	"github.com/apache/arrow-go/v18/arrow/array"
+	"github.com/apache/arrow-go/v18/arrow/memory"
+	"github.com/stretchr/testify/require"
 )
 
 func TestGetRows(t *testing.T) {

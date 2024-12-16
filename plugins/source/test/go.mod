@@ -3,9 +3,9 @@ module github.com/cloudquery/cloudquery/plugins/source/test/v4
 go 1.22.7
 
 require (
-	github.com/apache/arrow/go/v17 v17.0.0
+	github.com/apache/arrow-go/v18 v18.0.0
 	github.com/cloudquery/codegen v0.3.21
-	github.com/cloudquery/plugin-sdk/v4 v4.71.1
+	github.com/cloudquery/plugin-sdk/v4 v4.72.0
 	github.com/rs/zerolog v1.33.0
 	golang.org/x/exp v0.0.0-20241108190413-2d47ceb2692f
 )
@@ -33,7 +33,7 @@ require (
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.13.4 // indirect
-	github.com/cloudquery/plugin-pb-go v1.25.6 // indirect
+	github.com/cloudquery/plugin-pb-go v1.26.0 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
@@ -48,7 +48,7 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.7.7 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/invopop/jsonschema v0.12.0 // indirect
-	github.com/klauspost/compress v1.17.9 // indirect
+	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.8 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
@@ -93,5 +93,3 @@ require (
 
 // github.com/cloudquery/jsonschema @ cqmain
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66
-
-replace github.com/cloudquery/plugin-sdk/v4 => github.com/cloudquery/plugin-sdk/v4 v4.71.1
