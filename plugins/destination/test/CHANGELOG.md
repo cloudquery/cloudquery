@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.8.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.7.1...plugins-destination-test-v2.8.0) (2024-12-16)
+
+
+### Features
+
+* Support all batch writers in test destination plugin. ([#19964](https://github.com/cloudquery/cloudquery/issues/19964)) ([f159291](https://github.com/cloudquery/cloudquery/commit/f159291c394aee0b900f68a7093d62f0fa1613a2))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.71.1 ([#19934](https://github.com/cloudquery/cloudquery/issues/19934)) ([0143675](https://github.com/cloudquery/cloudquery/commit/0143675576ac0fe3307669af904a3dc5ad9b00dc))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.72.0 ([#19963](https://github.com/cloudquery/cloudquery/issues/19963)) ([80b3c97](https://github.com/cloudquery/cloudquery/commit/80b3c9799c8d6521cd62bbdab26f5d7a7e432a02))
+* Fix hang in test destination plugin. ([#19970](https://github.com/cloudquery/cloudquery/issues/19970)) ([864dd65](https://github.com/cloudquery/cloudquery/commit/864dd658fae0773f190e8ef80817ad7cb9b20d04))
+
 ## [2.7.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.7.0...plugins-destination-test-v2.7.1) (2024-12-11)
 
 
