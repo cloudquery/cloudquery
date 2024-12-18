@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v5.1.3...plugins-destination-mssql-v5.1.4) (2024-12-18)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.71.1 ([#19934](https://github.com/cloudquery/cloudquery/issues/19934)) ([0143675](https://github.com/cloudquery/cloudquery/commit/0143675576ac0fe3307669af904a3dc5ad9b00dc))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.72.0 ([#19963](https://github.com/cloudquery/cloudquery/issues/19963)) ([80b3c97](https://github.com/cloudquery/cloudquery/commit/80b3c9799c8d6521cd62bbdab26f5d7a7e432a02))
+* **deps:** Update module golang.org/x/crypto to v0.31.0 [SECURITY] ([#19919](https://github.com/cloudquery/cloudquery/issues/19919)) ([d940f9d](https://github.com/cloudquery/cloudquery/commit/d940f9d57b97f0002dbdd5279f1b36bb057bf716))
+
 ## [5.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v5.1.2...plugins-destination-mssql-v5.1.3) (2024-12-11)
 
 
