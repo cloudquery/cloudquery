@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.4.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.2...plugins-destination-azblob-v4.4.3) (2024-12-18)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.71.1 ([#19934](https://github.com/cloudquery/cloudquery/issues/19934)) ([0143675](https://github.com/cloudquery/cloudquery/commit/0143675576ac0fe3307669af904a3dc5ad9b00dc))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.72.0 ([#19962](https://github.com/cloudquery/cloudquery/issues/19962)) ([d3e739c](https://github.com/cloudquery/cloudquery/commit/d3e739cf8f3802de63ff173660a7672047bd05d5))
+* **deps:** Update module golang.org/x/crypto to v0.31.0 [SECURITY] ([#19919](https://github.com/cloudquery/cloudquery/issues/19919)) ([d940f9d](https://github.com/cloudquery/cloudquery/commit/d940f9d57b97f0002dbdd5279f1b36bb057bf716))
+
 ## [4.4.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.1...plugins-destination-azblob-v4.4.2) (2024-12-11)
 
 
