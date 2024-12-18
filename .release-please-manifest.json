@@ -19,7 +19,7 @@
   "plugins/source/terraform+FILLER": "0.0.0",
   "plugins/source/test": "4.7.3",
   "plugins/source/test+FILLER": "0.0.0",
-  "plugins/destination/postgresql": "8.7.4",
+  "plugins/destination/postgresql": "8.7.5",
   "plugins/destination/postgresql+FILLER": "0.0.0",
   "plugins/destination/test": "2.8.0",
   "plugins/destination/test+FILLER": "0.0.0",
