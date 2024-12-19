@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow-go/v18 v18.0.0
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.3.0
-	github.com/cloudquery/cloudquery-api-go v1.13.4
+	github.com/cloudquery/cloudquery-api-go v1.13.5
 	github.com/cloudquery/codegen v0.3.21
 	github.com/cloudquery/plugin-pb-go v1.26.1
 	github.com/cloudquery/plugin-sdk/v4 v4.72.0
@@ -55,7 +55,7 @@ require (
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
-	github.com/adrg/xdg v0.4.0 // indirect
+	github.com/adrg/xdg v0.5.3 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/avast/retry-go/v4 v4.6.0 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
