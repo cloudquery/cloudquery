@@ -7,6 +7,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/recordupdater"
 	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/spec"
 	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/tablematcher"
+	"github.com/rs/zerolog"
 )
 
 type TransformationFn = func(arrow.Record) (arrow.Record, error)
@@ -18,10 +19,10 @@ type Transformer struct {
 	schemaFn SchemaTransformationFn
 }
 
-func NewFromSpec(sp spec.Spec) (*Transformer, error) {
+func NewFromSpec(logger zerolog.Logger, sp spec.Spec) (*Transformer, error) {
 	tr := &Transformer{matcher: tablematcher.New(sp.Tables)}
 
-	tr.fn = FlattenJSONFields()
+	tr.fn = FlattenJSONFields(logger)
 	tr.schemaFn = transformSchema(tr.fn)
 
 	return tr, nil
@@ -58,9 +59,9 @@ func (tr *Transformer) TransformSchema(schema *arrow.Schema) (*arrow.Schema, err
 	return tr.schemaFn(schema)
 }
 
-func FlattenJSONFields() TransformationFn {
+func FlattenJSONFields(logger zerolog.Logger) TransformationFn {
 	return func(record arrow.Record) (arrow.Record, error) {
-		record, err := recordupdater.New(record).FlattenJSONFields()
+		record, err := recordupdater.New(logger, record).FlattenJSONFields()
 		if err != nil {
 			return nil, err
 		}

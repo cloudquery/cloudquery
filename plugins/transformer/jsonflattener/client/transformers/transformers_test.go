@@ -11,6 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/goccy/go-json"
+	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 )
 
@@ -43,7 +44,7 @@ func TestTransform(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			transformer, err := NewFromSpec(tt.spec)
+			transformer, err := NewFromSpec(zerolog.Nop(), tt.spec)
 			require.NoError(t, err, "NewFromSpec() should not return an error")
 
 			transformedRecord, err := transformer.Transform(tt.record)
