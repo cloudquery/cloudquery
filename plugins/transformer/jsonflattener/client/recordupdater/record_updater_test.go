@@ -8,6 +8,7 @@ import (
 	"github.com/apache/arrow-go/v18/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
+	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 )
 
@@ -17,7 +18,7 @@ func TestFlattenJSONFields(t *testing.T) {
 		map[string]string{"col1": `{"key_a": "utf8", "key_b": "int64", "key_c": "bool"}`},
 		[]arrow.Array{buildJSONColumn([]*any{toP(`{"key_a": "value", "key_b": 2, "key_c": true}`)})},
 	)
-	updater := New(record)
+	updater := New(zerolog.Nop(), record)
 
 	updatedRecord, err := updater.FlattenJSONFields()
 	require.NoError(t, err)
@@ -39,7 +40,7 @@ func TestFlattenJSONFieldsWithTimestamp(t *testing.T) {
 		map[string]string{"col1": `{"key_a": "timestamp[us, tz=UTC]"}`},
 		[]arrow.Array{buildJSONColumn([]*any{toP(`{"key_a": "2024-01-02T03:04:05.006Z"}`)})},
 	)
-	updater := New(record)
+	updater := New(zerolog.Nop(), record)
 
 	updatedRecord, err := updater.FlattenJSONFields()
 	require.NoError(t, err)
@@ -57,7 +58,7 @@ func TestFlattenJSONFieldsDoesntFlattenFieldsKeyedUTF8(t *testing.T) {
 		map[string]string{"col1": `{"key_a": "utf8", "key_b": "int64", "utf8": "any"}`},
 		[]arrow.Array{buildJSONColumn([]*any{toP(`{"key_a": "value", "key_b": 2, "utf8": "any"}`)})},
 	)
-	updater := New(record)
+	updater := New(zerolog.Nop(), record)
 
 	updatedRecord, err := updater.FlattenJSONFields()
 	require.NoError(t, err)
@@ -77,7 +78,7 @@ func TestNestedJSONFlattenedToFirstLevel(t *testing.T) {
 		map[string]string{"col1": `{"nested": {"key_a": "utf8", "key_b": "int64", "key_c": "bool"}}`},
 		[]arrow.Array{buildJSONColumn([]*any{toP(`{"nested": {"key_a": "value", "key_b": 2, "key_c": true}}`)})},
 	)
-	updater := New(record)
+	updater := New(zerolog.Nop(), record)
 
 	updatedRecord, err := updater.FlattenJSONFields()
 	require.NoError(t, err)
@@ -97,7 +98,7 @@ func TestDifferentCasingWorks(t *testing.T) {
 		map[string]string{"col": `{"subcolumn_one": "utf8"}`}, // Note the different casing
 		[]arrow.Array{buildJSONColumn([]*any{toP(`{"subcolumnOne": "value", "unknownColumn": 2}`)})},
 	)
-	updater := New(record)
+	updater := New(zerolog.Nop(), record)
 
 	updatedRecord, err := updater.FlattenJSONFields()
 	require.NoError(t, err)
@@ -118,7 +119,7 @@ func TestDifferentCasingWorksEvenWhenFirstRowIsNull(t *testing.T) {
 		// Note first 3 rows are nil
 		[]arrow.Array{buildJSONColumn([]*any{nil, nil, nil, toP(`{"subcolumnOne": "value", "unknownColumn": 2}`)})},
 	)
-	updater := New(record)
+	updater := New(zerolog.Nop(), record)
 
 	updatedRecord, err := updater.FlattenJSONFields()
 	require.NoError(t, err)
