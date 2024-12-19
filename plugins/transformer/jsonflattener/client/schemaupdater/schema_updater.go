@@ -5,6 +5,7 @@ import (
 
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/util"
+	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
@@ -22,10 +23,11 @@ const (
 type SchemaUpdater struct {
 	schema      *arrow.Schema
 	uniqueNames map[string]bool
+	caser       *caser.Caser
 }
 
 func New(sc *arrow.Schema) *SchemaUpdater {
-	return &SchemaUpdater{schema: sc, uniqueNames: make(map[string]bool)}
+	return &SchemaUpdater{schema: sc, uniqueNames: make(map[string]bool), caser: caser.New()}
 }
 
 func (s *SchemaUpdater) AddJSONFlattenedFields(fieldTypeSchemas map[string]map[string]string) (*arrow.Schema, error) {
@@ -43,7 +45,7 @@ func (s *SchemaUpdater) AddJSONFlattenedFields(fieldTypeSchemas map[string]map[s
 			}
 			s.schema, err = s.schema.AddField(
 				s.schema.NumFields(),
-				arrow.Field{Name: s.uniqueName(fieldName, subFieldName, ""), Type: typ, Nullable: true},
+				arrow.Field{Name: s.uniqueName(fieldName, s.caser.ToSnake(subFieldName), ""), Type: typ, Nullable: true},
 			)
 			if err != nil {
 				return nil, err
