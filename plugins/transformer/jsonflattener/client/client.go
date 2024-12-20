@@ -37,7 +37,7 @@ func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClie
 		return nil, err
 	}
 
-	tf, err := transformers.NewFromSpec(c.spec)
+	tf, err := transformers.NewFromSpec(logger, c.spec)
 	if err != nil {
 		return nil, err
 	}

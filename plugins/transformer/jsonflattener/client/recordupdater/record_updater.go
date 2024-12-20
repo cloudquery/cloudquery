@@ -10,20 +10,23 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/util"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
+	"github.com/rs/zerolog"
 )
 
 // RecordUpdater takes an `arrow.Record` and knows how to make simple subsequent changes to it.
 // It doesn't know which table it belongs to or if the changes make sense.
 type RecordUpdater struct {
+	logger        zerolog.Logger
 	record        arrow.Record
 	schemaUpdater *schemaupdater.SchemaUpdater
 	tableName     string
 }
 
-func New(record arrow.Record) *RecordUpdater {
+func New(logger zerolog.Logger, record arrow.Record) *RecordUpdater {
 	tableName, _ := record.Schema().Metadata().GetValue(schema.MetadataTableName)
 
 	return &RecordUpdater{
+		logger:        logger,
 		record:        record,
 		schemaUpdater: schemaupdater.New(record.Schema()),
 		tableName:     tableName,
@@ -38,14 +41,18 @@ func (r *RecordUpdater) FlattenJSONFields() (arrow.Record, error) {
 		if !ok || rawTypeSchema == "" {
 			continue
 		}
-		var unprocessedTypeSchema map[string]any
+		var unprocessedTypeSchema any
 		if err := json.Unmarshal([]byte(rawTypeSchema), &unprocessedTypeSchema); err != nil {
-			// In this case it can be an array
-			fmt.Println("failed to unmarshal type schema", rawTypeSchema)
+			r.logger.Error().Err(err).Msg("failed to unmarshal type schema")
 			continue
 		}
-		typeSchema := preprocessTypeSchema(unprocessedTypeSchema)
-		fieldTypeSchemas[field.Name] = typeSchema
+		switch s := unprocessedTypeSchema.(type) {
+		case map[string]any:
+			typeSchema := preprocessTypeSchema(s)
+			fieldTypeSchemas[field.Name] = typeSchema
+		default:
+			r.logger.Info().Msgf("skipping unsupported type schema: %T", unprocessedTypeSchema)
+		}
 	}
 
 	if len(fieldTypeSchemas) == 0 {
