@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v1.1.4...plugins-transformer-jsonflattener-v2.0.0) (2024-12-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* ToSnake flattened columns ([#20006](https://github.com/cloudquery/cloudquery/issues/20006))
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.72.4 ([#20005](https://github.com/cloudquery/cloudquery/issues/20005)) ([ce42c41](https://github.com/cloudquery/cloudquery/commit/ce42c4137f9f028301f7880f0dac7e9eb0350c28))
+* **deps:** Update module golang.org/x/net to v0.33.0 [SECURITY] ([#19975](https://github.com/cloudquery/cloudquery/issues/19975)) ([cfe9e1b](https://github.com/cloudquery/cloudquery/commit/cfe9e1b5a15cd24ec24edc4e2daaf9a4ebd0faf9))
+* ToSnake flattened columns ([#20006](https://github.com/cloudquery/cloudquery/issues/20006)) ([c789257](https://github.com/cloudquery/cloudquery/commit/c789257d8cf092480e2a67cf926d76bb36380b24))
+* Use logger instead of stdout ([#20007](https://github.com/cloudquery/cloudquery/issues/20007)) ([72ac737](https://github.com/cloudquery/cloudquery/commit/72ac737d6ac2229cb37a7751c88c78f63465dd7b))
+
 ## [1.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v1.1.3...plugins-transformer-jsonflattener-v1.1.4) (2024-12-18)
 
 
