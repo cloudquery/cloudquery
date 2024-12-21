@@ -81,7 +81,7 @@
   "plugins/destination/duckdb+FILLER": "0.0.0",
   "plugins/source/mysql": "2.0.12",
   "plugins/source/mysql+FILLER": "0.0.0",
-  "plugins/destination/gremlin": "2.6.3",
+  "plugins/destination/gremlin": "2.6.4",
   "plugins/destination/gremlin+FILLER": "0.0.0",
   "plugins/destination/meilisearch": "2.5.3",
   "plugins/destination/meilisearch+FILLER": "1.0.0",
