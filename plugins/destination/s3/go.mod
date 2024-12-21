@@ -6,8 +6,8 @@ require (
 	github.com/apache/arrow-go/v18 v18.0.0
 	github.com/aws/aws-sdk-go-v2 v1.32.6
 	github.com/aws/aws-sdk-go-v2/config v1.28.6
-	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.17.41
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.69.0
+	github.com/aws/aws-sdk-go-v2/feature/s3/manager v1.17.43
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.71.0
 	github.com/aws/smithy-go v1.22.1
 	github.com/cloudquery/codegen v0.3.21
 	github.com/cloudquery/filetypes/v4 v4.6.0
@@ -33,11 +33,11 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.25 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.6.25 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.1 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/v4a v1.3.24 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/v4a v1.3.25 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.12.1 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.4.5 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.4.6 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.12.6 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.18.5 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.18.6 // indirect
 	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.29.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.25.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.24.7 // indirect
