@@ -62,7 +62,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
-          version: v1.62.0
+          version: v1.62.2
           working-directory: plugins/destination/kafka
           args: "--config ../../.golangci.yml"
       - name: gen
