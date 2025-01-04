@@ -77,6 +77,18 @@ func TestTransformMaintainsMetadata(t *testing.T) {
 	require.Equal(t, sc.Field(1).Metadata, updatedSchema.Field(1).Metadata, "Expected metadata to be retained")
 }
 
+func TestRenameColumn(t *testing.T) {
+	sc := createTestSchema()
+	updater := New(sc)
+
+	updatedSchema, err := updater.RenameColumn("col1", "newCol1")
+	require.NoError(t, err)
+
+	require.Equal(t, 2, updatedSchema.NumFields(), "Expected 2 fields")
+	require.Equal(t, "newCol1", updatedSchema.Field(0).Name, "Expected field name 'newCol1'")
+	require.Equal(t, "col2", updatedSchema.Field(1).Name, "Expected field name 'col2'")
+}
+
 func TestChangeTableName(t *testing.T) {
 	testSchema := createTestSchema()
 	updater := New(testSchema)

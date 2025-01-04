@@ -131,12 +131,38 @@ func TestValidate(t *testing.T) {
 			},
 			wantErr: false,
 		},
-
 		{
 			name: "InvalidObfuscateColumnsNoColumns",
 			input: Spec{
 				TransformationSpecs: []TransformationSpec{
 					{Kind: KindObfuscateColumns},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "ValidRenameColumn",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindRenameColumn, Name: "old_col", Value: "new_col"},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "InvalidRenameColumnColumnsProvided",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindRenameColumn, Columns: []string{"col1"}},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "InvalidRenameColumnNoNameNoValue",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindRenameColumn},
 				},
 			},
 			wantErr: true,

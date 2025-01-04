@@ -84,6 +84,21 @@ func TestObfuscateColumns(t *testing.T) {
 	assert.Equal(t, `{"foo":{"bar":["18ac3e7343f016890c510e93f935261169d9e3f565436429830faf0934f4f8e4","3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea","f"]}}`, updatedRecord.Column(2).ValueStr(1))
 }
 
+func TestRenameColumn(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+
+	updatedRecord, err := updater.RenameColumn("col1", "newCol1")
+	require.NoError(t, err)
+
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "newCol1", updatedRecord.ColumnName(0))
+	require.Equal(t, "col2", updatedRecord.ColumnName(1))
+	require.Equal(t, "col3", updatedRecord.ColumnName(2))
+}
+
 func TestChangeTableName(t *testing.T) {
 	record := createTestRecord()
 	updater := New(record)

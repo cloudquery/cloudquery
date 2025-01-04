@@ -53,6 +53,20 @@ func (s *SchemaUpdater) AddTimestampColumnAtPos(columnName string, zeroIndexedPo
 	)
 }
 
+func (s *SchemaUpdater) RenameColumn(oldName, newName string) (*arrow.Schema, error) {
+	oldFields := s.schema.Fields()
+	newFields := make([]arrow.Field, len(oldFields))
+
+	for i, f := range oldFields {
+		if f.Name == oldName {
+			f.Name = newName
+		}
+		newFields[i] = f
+	}
+	metadata := s.schema.Metadata()
+	return arrow.NewSchema(newFields, &metadata), nil
+}
+
 func (s *SchemaUpdater) ChangeTableName(newTableNamePattern string) (*arrow.Schema, error) {
 	existingMetadata := s.schema.Metadata()
 	tableName, ok := existingMetadata.GetValue(schema.MetadataTableName)
