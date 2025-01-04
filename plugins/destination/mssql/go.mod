@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/mssql/v5
 
-go 1.22.7
+go 1.23.4
 
 require (
 	github.com/apache/arrow-go/v18 v18.0.0
