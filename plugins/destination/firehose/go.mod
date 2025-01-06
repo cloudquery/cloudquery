@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow-go/v18 v18.0.0
 	github.com/aws/aws-sdk-go-v2 v1.32.7
 	github.com/aws/aws-sdk-go-v2/config v1.28.7
-	github.com/aws/aws-sdk-go-v2/service/firehose v1.35.2
+	github.com/aws/aws-sdk-go-v2/service/firehose v1.35.3
 	github.com/aws/aws-sdk-go-v2/service/sts v1.33.3
 	github.com/cloudquery/codegen v0.3.21
 	github.com/cloudquery/plugin-sdk/v4 v4.72.5
