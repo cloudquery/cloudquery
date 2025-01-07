@@ -39,6 +39,7 @@ func TestAddLiteralStringColumn(t *testing.T) {
 	require.Equal(t, int64(2), updatedRecord.NumRows())
 	requireAllColsLenMatchRecordsLen(t, updatedRecord)
 	require.Equal(t, "col4", updatedRecord.ColumnName(3))
+	require.False(t, updatedRecord.Schema().Field(3).Nullable, "Expected column to be non-nullable")
 	require.Equal(t, "literal", updatedRecord.Column(3).(*array.String).Value(0))
 	require.Equal(t, "literal", updatedRecord.Column(3).(*array.String).Value(1))
 }
