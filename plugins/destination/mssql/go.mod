@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow-go/v18 v18.0.0
 	github.com/cloudquery/codegen v0.3.21
 	github.com/cloudquery/plugin-sdk/v4 v4.72.5
-	github.com/goccy/go-json v0.10.3
+	github.com/goccy/go-json v0.10.4
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.12.0
 	github.com/microsoft/go-mssqldb v1.5.0
