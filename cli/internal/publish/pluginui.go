@@ -57,7 +57,7 @@ func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithRespo
 	}
 
 	assets = append(assets, cloudquery_api.PluginUIAssetUploadRequest{
-		Name:        "bundle.tar.gz",
+		Name:        uiAssetBundleTarName,
 		ContentType: lo.ToPtr("application/gzip"),
 	})
 
