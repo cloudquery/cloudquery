@@ -54,7 +54,7 @@ jobs:
     - name: golangci-lint
       uses: cloudquery/golangci-lint-action@master
       with:
-        version: v1.62.0
+        version: v1.62.2
         working-directory: plugins/destination/meilisearch
         args:              "--config ../../.golangci.yml"
     - name: gen

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v1.3.5...plugins-transformer-basic-v1.4.0) (2025-01-07)
+
+
+### Features
+
+* Add rename_column to basic transformer plugin ([#20025](https://github.com/cloudquery/cloudquery/issues/20025)) ([5174148](https://github.com/cloudquery/cloudquery/commit/5174148d976d408f1c3368d95106b1f25adcbe46))
+
 ## [1.3.5](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v1.3.4...plugins-transformer-basic-v1.3.5) (2025-01-07)
 
 
