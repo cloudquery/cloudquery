@@ -1,5 +1,16 @@
 # Changelog
 
+## [5.4.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.4.3...plugins-destination-gcs-v5.4.4) (2025-01-07)
+
+
+### Bug Fixes
+
+* **deps:** Update module cloud.google.com/go/storage to v1.48.0 ([#20015](https://github.com/cloudquery/cloudquery/issues/20015)) ([ca029ea](https://github.com/cloudquery/cloudquery/commit/ca029ea5d5fde81ac8c9fccffc14742b6321f464))
+* **deps:** Update module cloud.google.com/go/storage to v1.49.0 ([#20024](https://github.com/cloudquery/cloudquery/issues/20024)) ([1b2b19b](https://github.com/cloudquery/cloudquery/commit/1b2b19be4053acc65d1c97652612c755866f544e))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.6.2 ([#20012](https://github.com/cloudquery/cloudquery/issues/20012)) ([e55fb04](https://github.com/cloudquery/cloudquery/commit/e55fb04b5d826d7df6c14f7f58fd8dcaa6253e43))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.72.4 ([#20005](https://github.com/cloudquery/cloudquery/issues/20005)) ([ce42c41](https://github.com/cloudquery/cloudquery/commit/ce42c4137f9f028301f7880f0dac7e9eb0350c28))
+* **deps:** Update module golang.org/x/net to v0.33.0 [SECURITY] ([#19975](https://github.com/cloudquery/cloudquery/issues/19975)) ([cfe9e1b](https://github.com/cloudquery/cloudquery/commit/cfe9e1b5a15cd24ec24edc4e2daaf9a4ebd0faf9))
+
 ## [5.4.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.4.2...plugins-destination-gcs-v5.4.3) (2024-12-18)
 
 

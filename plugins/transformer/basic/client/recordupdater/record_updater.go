@@ -178,6 +178,15 @@ func (r *RecordUpdater) ChangeTableName(newTableNamePattern string) (arrow.Recor
 	return r.record, nil
 }
 
+func (r *RecordUpdater) RenameColumn(oldName, newName string) (arrow.Record, error) {
+	newSchema, err := r.schemaUpdater.RenameColumn(oldName, newName)
+	if err != nil {
+		return nil, err
+	}
+	r.record = array.NewRecord(newSchema, r.record.Columns(), r.record.NumRows())
+	return r.record, nil
+}
+
 func (r *RecordUpdater) colIndicesByNames(columnNames []string) (map[int]struct{}, error) {
 	colNameMap := make(map[string]struct{})
 	for _, columnName := range columnNames {
