@@ -1,9 +1,13 @@
 package publish
 
 import (
+	"archive/tar"
+	"compress/gzip"
 	"context"
 	"errors"
 	"fmt"
+	"io"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -11,8 +15,11 @@ import (
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/hub"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/publish/images"
+	"github.com/samber/lo"
 	"golang.org/x/sync/errgroup"
 )
+
+const uiAssetBundleTarName = "bundle.tar.gz"
 
 func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithResponses, teamName, pluginKind, pluginName, version, uiDir string) error {
 	dirEntries, err := readFlatDir(uiDir)
@@ -21,7 +28,7 @@ func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithRespo
 	}
 
 	assets := make([]cloudquery_api.PluginUIAssetUploadRequest, 0, len(dirEntries))
-	urlPathVsDetails := make(map[string][]string, len(dirEntries))
+	urlPathVsDetails := make(map[string][2]string, len(dirEntries))
 	for _, dirEntry := range dirEntries {
 		fullPath := filepath.Join(uiDir, dirEntry)
 		urlPath := dirEntry
@@ -33,7 +40,7 @@ func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithRespo
 		if err != nil {
 			return err
 		}
-		urlPathVsDetails[urlPath] = []string{fullPath, contentType}
+		urlPathVsDetails[urlPath] = [2]string{fullPath, contentType}
 
 		assets = append(assets, cloudquery_api.PluginUIAssetUploadRequest{
 			Name:        urlPath,
@@ -41,9 +48,18 @@ func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithRespo
 		})
 	}
 
+	if _, ok := urlPathVsDetails[uiAssetBundleTarName]; ok {
+		return fmt.Errorf("%s is a reserved name and cannot be used as an asset name", uiAssetBundleTarName)
+	}
+
 	if _, ok := urlPathVsDetails["index.html"]; !ok {
 		return errors.New("index.html is required in the UI directory")
 	}
+
+	assets = append(assets, cloudquery_api.PluginUIAssetUploadRequest{
+		Name:        "bundle.tar.gz",
+		ContentType: lo.ToPtr("application/gzip"),
+	})
 
 	resp, err := c.UploadPluginUIAssetsWithResponse(
 		ctx, teamName, cloudquery_api.PluginKind(pluginKind), pluginName, version,
@@ -65,13 +81,34 @@ func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithRespo
 	eg, egCtx := errgroup.WithContext(ctx)
 	eg.SetLimit(4)
 
+	var bundleAsset cloudquery_api.PluginUIAsset
 	for _, asset := range resp.JSON201.Assets {
+		if asset.Name == uiAssetBundleTarName {
+			bundleAsset = asset
+			continue
+		}
+
 		asset := asset
 		details := urlPathVsDetails[asset.Name]
 		eg.Go(func() error {
 			return hub.UploadFileWithContentType(egCtx, asset.UploadURL, details[0], details[1])
 		})
 	}
+
+	if bundleAsset.UploadURL == "" {
+		return errors.New("bundle asset URL not found in the response")
+	}
+
+	eg.Go(func() error {
+		bundlePath := filepath.Join(uiDir, uiAssetBundleTarName)
+
+		err := bundleTarGz(uiDir, bundlePath)
+		if err != nil {
+			return fmt.Errorf("failed to bundle tar.gz: %w", err)
+		}
+
+		return hub.UploadFileWithContentType(egCtx, bundleAsset.UploadURL, bundlePath, "application/gzip")
+	})
 
 	if err := eg.Wait(); err != nil {
 		return fmt.Errorf("failed to upload: %w", err)
@@ -105,4 +142,59 @@ func readFlatDir(base string) (files []string, err error) {
 		return nil
 	})
 	return files, err
+}
+
+func bundleTarGz(uiDir, bundleFilePath string) error {
+	output, err := os.Create(bundleFilePath)
+	if err != nil {
+		return err
+	}
+	defer output.Close()
+
+	gw := gzip.NewWriter(output)
+	defer gw.Close()
+
+	tw := tar.NewWriter(gw)
+	defer tw.Close()
+
+	fsys := os.DirFS(uiDir)
+
+	return fs.WalkDir(fsys, ".", func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		file, err := fsys.Open(path)
+		if err != nil {
+			return err
+		}
+		defer file.Close()
+
+		info, err := file.Stat()
+		if err != nil {
+			return err
+		}
+
+		header, err := tar.FileInfoHeader(info, info.Name())
+		if err != nil {
+			return fmt.Errorf("failed to create tar file info header: %w", err)
+		}
+
+		header.Name = path
+
+		err = tw.WriteHeader(header)
+		if err != nil {
+			return fmt.Errorf("failed to write tar header: %w", err)
+		}
+
+		if d.IsDir() {
+			return nil
+		}
+
+		if _, err := io.Copy(tw, file); err != nil {
+			return fmt.Errorf("failed to write file into tar: %w", err)
+		}
+
+		return nil
+	})
 }
