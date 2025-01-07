@@ -51,7 +51,7 @@ func TestConnectionTester(t *testing.T) {
 			specBytes: marshalSpec(t, &spec.Spec{ConnectionString: invalidConnectionString}),
 			wantErr: &wantErr{
 				Code:             "INVALID_CONFIG",
-				ErrorDescription: "cannot parse `invalid`: failed to parse as DSN (invalid dsn)",
+				ErrorDescription: "cannot parse `invalid`: failed to parse as keyword/value (invalid keyword/value)",
 			},
 		},
 		{
