@@ -78,7 +78,11 @@ func UploadFileWithContentType(ctx context.Context, uploadURL, localPath, conten
 	}
 	defer file.Close()
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPut, uploadURL, file)
+	return UploadReaderWithContentType(ctx, uploadURL, file, contentType)
+}
+
+func UploadReaderWithContentType(ctx context.Context, uploadURL string, reader io.Reader, contentType string) error {
+	req, err := http.NewRequestWithContext(ctx, http.MethodPut, uploadURL, reader)
 	if err != nil {
 		return fmt.Errorf("failed to create request: %w", err)
 	}

@@ -99,14 +99,16 @@ func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithRespo
 		return errors.New("bundle asset URL not found in the response")
 	}
 
-	eg.Go(func() error {
-		bundleArchive, err := bundleTarGz(uiDir)
-		if err != nil {
-			return fmt.Errorf("failed to bundle tar.gz: %w", err)
-		}
-		defer func() { _ = os.Remove(bundleArchive) }()
+	bundleReader, bundleWriter := io.Pipe()
+	defer bundleWriter.Close()
 
-		return hub.UploadFileWithContentType(egCtx, bundleAsset.UploadURL, bundleArchive, "application/gzip")
+	eg.Go(func() error {
+		defer bundleWriter.Close()
+		return bundleTarGz(uiDir, bundleWriter)
+	})
+
+	eg.Go(func() error {
+		return hub.UploadReaderWithContentType(egCtx, bundleAsset.UploadURL, bundleReader, "application/gzip")
 	})
 
 	if err := eg.Wait(); err != nil {
@@ -143,15 +145,7 @@ func readFlatDir(base string) (files []string, err error) {
 	return files, err
 }
 
-func bundleTarGz(uiDir string) (string, error) {
-	bundleFile, err := os.CreateTemp(os.TempDir(), "cloudquery-uiasset-bundle-*.tar.gz")
-	if err != nil {
-		return "", err
-	}
-	defer bundleFile.Close()
-
-	bundleFileName := bundleFile.Name()
-
+func bundleTarGz(uiDir string, bundleFile io.Writer) error {
 	gw := gzip.NewWriter(bundleFile)
 	defer gw.Close()
 
@@ -160,7 +154,7 @@ func bundleTarGz(uiDir string) (string, error) {
 
 	fsys := os.DirFS(uiDir)
 
-	err = fs.WalkDir(fsys, ".", func(path string, d fs.DirEntry, err error) error {
+	return fs.WalkDir(fsys, ".", func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
@@ -198,9 +192,4 @@ func bundleTarGz(uiDir string) (string, error) {
 
 		return nil
 	})
-	if err != nil {
-		return "", fmt.Errorf("failed to walk ui asset directory: %w", err)
-	}
-
-	return bundleFileName, nil
 }
