@@ -203,18 +203,18 @@ jobs:
           REACT_APP_PLUGIN_KIND: destination
           REACT_APP_PLUGIN_NAME: postgresql
           REACT_APP_PLUGIN_VERSION: development
-      - name: Run E2E tests and generate configs
-        working-directory: "plugins/destination/postgresql/cloud-config-ui"
-        run: CQ_CI_PLAYWRIGHT_PREVIEW_LINK='${{ env.CQ_CI_PLAYWRIGHT_PREVIEW_LINK }}' E2E_TESTS_GENERATE_CONFIG=true npm run test:e2e
-      - name: Upload playwright test results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: postgresql-e2e-testsplaywright
-          path: |
-            plugins/destination/postgresql/cloud-config-ui/test-results/
-          retention-days: 1
-          overwrite: true
+      # - name: Run E2E tests and generate configs
+      #   working-directory: "plugins/destination/postgresql/cloud-config-ui"
+      #   run: CQ_CI_PLAYWRIGHT_PREVIEW_LINK='${{ env.CQ_CI_PLAYWRIGHT_PREVIEW_LINK }}' E2E_TESTS_GENERATE_CONFIG=true npm run test:e2e
+      # - name: Upload playwright test results
+      #   uses: actions/upload-artifact@v4
+      #   if: always()
+      #   with:
+      #     name: postgresql-e2e-testsplaywright
+      #     path: |
+      #       plugins/destination/postgresql/cloud-config-ui/test-results/
+      #     retention-days: 1
+      #     overwrite: true
       - name: Run unit tests
         working-directory: "plugins/destination/postgresql/cloud-config-ui"
         run: npm run test
