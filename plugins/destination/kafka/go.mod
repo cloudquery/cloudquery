@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/kafka/v5
 go 1.22.7
 
 require (
-	github.com/IBM/sarama v1.43.3
+	github.com/IBM/sarama v1.44.0
 	github.com/apache/arrow-go/v18 v18.0.0
 	github.com/cloudquery/codegen v0.3.22
 	github.com/cloudquery/filetypes/v4 v4.6.2
@@ -74,7 +74,7 @@ require (
 	github.com/minio/asm2plan9s v0.0.0-20200509001527-cdd76441f9d8 // indirect
 	github.com/minio/c2goasm v0.0.0-20190812172519-36a3d3bbc4f3 // indirect
 	github.com/oapi-codegen/runtime v1.1.1 // indirect
-	github.com/pierrec/lz4/v4 v4.1.21 // indirect
+	github.com/pierrec/lz4/v4 v4.1.22 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20201227073835-cf1acfcdf475 // indirect
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.1 // indirect
