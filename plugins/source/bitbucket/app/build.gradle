@@ -26,22 +26,22 @@ repositories {
 
 dependencies {
     // Use JUnit Jupiter for testing.
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // This dependency is used by the application.
     implementation 'com.fasterxml.jackson.core:jackson-core:2.15.1'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.18.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.1'
     implementation 'com.google.guava:guava:31.1-jre'
     implementation 'com.konghq:unirest-java:3.14.5'
 
     // gRPC
-    implementation 'io.grpc:grpc-protobuf:1.61.1'
-    implementation 'io.grpc:grpc-stub:1.61.1'
-    implementation 'io.grpc:grpc-services:1.61.1'
-    testImplementation 'io.grpc:grpc-testing:1.61.1'
+    implementation 'io.grpc:grpc-protobuf:1.69.0'
+    implementation 'io.grpc:grpc-stub:1.69.0'
+    implementation 'io.grpc:grpc-services:1.69.0'
+    testImplementation 'io.grpc:grpc-testing:1.69.0'
 
     implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
     implementation 'org.apache.logging.log4j:log4j-core:2.20.0'

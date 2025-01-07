@@ -1,6 +1,6 @@
 services:
   elasticsearch:
-    image: elasticsearch:8.11.3
+    image: elasticsearch:8.17.0
     environment:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms1g -Xmx1g

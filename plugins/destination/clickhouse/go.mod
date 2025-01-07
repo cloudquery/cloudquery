@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6
 go 1.22.7
 
 require (
-	github.com/ClickHouse/clickhouse-go/v2 v2.27.2
+	github.com/ClickHouse/clickhouse-go/v2 v2.30.0
 	github.com/apache/arrow-go/v18 v18.0.0
 	github.com/cloudquery/codegen v0.3.21
 	github.com/cloudquery/plugin-sdk/v4 v4.72.5
