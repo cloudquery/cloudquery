@@ -48,8 +48,8 @@ github.com/cloudquery/godebouncer v0.0.0-20230626172639-4b59d27e1b8c h1:o8Xwg6fi
 github.com/cloudquery/godebouncer v0.0.0-20230626172639-4b59d27e1b8c/go.mod h1:0Rxvtp9fhnRCt+k4QrpXY0OPUyyjF0zVO7wCrnsqsCU=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66 h1:OZLPSIBYEfvkAUeOeM8CwTgVQy5zhayI99ishCrsFV0=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66/go.mod h1:0SoZ/U7yJlNOR+fWsBSeTvTbGXB6DK01tzJ7m2Xfg34=
-github.com/cloudquery/plugin-pb-go v1.26.3 h1:JGfBfJJMnvEKWhSkrkk/VMr+43N48DrANDXeCCnxlBo=
-github.com/cloudquery/plugin-pb-go v1.26.3/go.mod h1:TUVcxx7YTBIR+cRd++H15XHycUBWW+gDbnu7J5JsoWU=
+github.com/cloudquery/plugin-pb-go v1.26.4 h1:AY7s5M2lY5JnloBwAhgvoB6wB5OkOaNMUweAPjAHYmo=
+github.com/cloudquery/plugin-pb-go v1.26.4/go.mod h1:F1374lR+S+ACS/wHEigkr44b+Y5zkPn0g/FQ+SO0DUY=
 github.com/cloudquery/plugin-sdk/v4 v4.72.5 h1:PVXYz2L7qYOfNrqhrljih55hDWhy1HOwdRgGnWU9gQM=
 github.com/cloudquery/plugin-sdk/v4 v4.72.5/go.mod h1:WBn+4kK7kb8UrPC9pgCz3JUhnQh52WzlUfj+AmYFBpk=
 github.com/containerd/log v0.1.0 h1:TCJt7ioM2cr/tfR8GPbGf9/VRAX8D2B4PjzCpfX540I=
