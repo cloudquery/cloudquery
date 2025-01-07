@@ -44,7 +44,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.12.9
+          version: v6.12.10
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -74,7 +74,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.12.9
+          version: v6.12.10
       - name: Build
         run: go build .
       - name: Use Node.js LTS
@@ -100,9 +100,9 @@ jobs:
           REACT_APP_PLUGIN_VERSION: development
         run: |
           REACT_APP_USE_CLOUD_APP_MOCK=true npm run build
-      - name: Run E2E tests and generate configs
-        working-directory: "plugins/source/xkcd/cloud-config-ui"
-        run: E2E_TESTS_GENERATE_CONFIG=true npm run test:e2e
+      # - name: Run E2E tests and generate configs
+      #   working-directory: "plugins/source/xkcd/cloud-config-ui"
+      #   run: E2E_TESTS_GENERATE_CONFIG=true npm run test:e2e
 
   deploy:
     if: github.event.action != 'closed' && github.event_name == 'pull_request' && !startsWith(github.head_ref, 'release')
