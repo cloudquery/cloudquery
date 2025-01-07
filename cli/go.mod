@@ -34,7 +34,7 @@ require (
 	github.com/vnteamopen/godebouncer v1.1.1-0.20230626172639-4b59d27e1b8c
 	github.com/wk8/go-ordered-map/v2 v2.1.8
 	github.com/yuin/goldmark v1.7.8
-	go.opentelemetry.io/collector/component v0.103.0
+	go.opentelemetry.io/collector/component v0.116.0
 	go.opentelemetry.io/collector/consumer v1.22.0
 	go.opentelemetry.io/collector/pdata v1.22.0
 	go.opentelemetry.io/collector/receiver v0.103.0
@@ -120,13 +120,14 @@ require (
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.opentelemetry.io/collector v0.103.0 // indirect
+	go.opentelemetry.io/collector/component/componenttest v0.116.0 // indirect
 	go.opentelemetry.io/collector/config/configauth v0.103.0 // indirect
 	go.opentelemetry.io/collector/config/configcompression v1.10.0 // indirect
 	go.opentelemetry.io/collector/config/configgrpc v0.103.0 // indirect
 	go.opentelemetry.io/collector/config/confighttp v0.103.0 // indirect
 	go.opentelemetry.io/collector/config/confignet v0.103.0 // indirect
 	go.opentelemetry.io/collector/config/configopaque v1.10.0 // indirect
-	go.opentelemetry.io/collector/config/configtelemetry v0.103.0 // indirect
+	go.opentelemetry.io/collector/config/configtelemetry v0.116.0 // indirect
 	go.opentelemetry.io/collector/config/configtls v0.103.0 // indirect
 	go.opentelemetry.io/collector/config/internal v0.103.0 // indirect
 	go.opentelemetry.io/collector/confmap v0.103.0 // indirect
