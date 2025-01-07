@@ -1,5 +1,16 @@
 # Changelog
 
+## [7.7.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.7.1...plugins-destination-s3-v7.7.2) (2025-01-07)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#20013](https://github.com/cloudquery/cloudquery/issues/20013)) ([975a5ad](https://github.com/cloudquery/cloudquery/commit/975a5ad8acbb9919d7e1f537eacca4bbd5fa7174))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#20021](https://github.com/cloudquery/cloudquery/issues/20021)) ([59e799a](https://github.com/cloudquery/cloudquery/commit/59e799aa406101be263c07cdfdf2fba62280c2a6))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.6.2 ([#20012](https://github.com/cloudquery/cloudquery/issues/20012)) ([e55fb04](https://github.com/cloudquery/cloudquery/commit/e55fb04b5d826d7df6c14f7f58fd8dcaa6253e43))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.72.4 ([#20005](https://github.com/cloudquery/cloudquery/issues/20005)) ([ce42c41](https://github.com/cloudquery/cloudquery/commit/ce42c4137f9f028301f7880f0dac7e9eb0350c28))
+* **deps:** Update module golang.org/x/net to v0.33.0 [SECURITY] ([#19975](https://github.com/cloudquery/cloudquery/issues/19975)) ([cfe9e1b](https://github.com/cloudquery/cloudquery/commit/cfe9e1b5a15cd24ec24edc4e2daaf9a4ebd0faf9))
+
 ## [7.7.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.7.0...plugins-destination-s3-v7.7.1) (2024-12-18)
 
 
