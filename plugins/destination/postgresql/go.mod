@@ -9,7 +9,7 @@ require (
 	github.com/google/go-cmp v0.6.0
 	github.com/invopop/jsonschema v0.12.0
 	github.com/jackc/pgx-zerolog v0.0.0-20230315001418-f978528409eb
-	github.com/jackc/pgx/v5 v5.5.4
+	github.com/jackc/pgx/v5 v5.7.2
 	github.com/otan/gopgkrb5 v1.0.6
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.10.0
@@ -56,8 +56,8 @@ require (
 	github.com/hashicorp/go-uuid v1.0.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
-	github.com/jackc/pgservicefile v0.0.0-20231201235250-de7065d80cb9 // indirect
-	github.com/jackc/puddle/v2 v2.2.1 // indirect
+	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
+	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/jcmturner/aescts/v2 v2.0.0 // indirect
 	github.com/jcmturner/dnsutils/v2 v2.0.0 // indirect
 	github.com/jcmturner/gofork v1.7.6 // indirect
