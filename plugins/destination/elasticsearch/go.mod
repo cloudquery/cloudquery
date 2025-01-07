@@ -8,7 +8,7 @@ require (
 	github.com/cloudquery/codegen v0.3.21
 	github.com/cloudquery/plugin-sdk/v4 v4.72.5
 	github.com/elastic/go-elasticsearch/v8 v8.6.0
-	github.com/goccy/go-json v0.10.3
+	github.com/goccy/go-json v0.10.4
 	github.com/invopop/jsonschema v0.12.0
 	github.com/rs/zerolog v1.33.0
 	github.com/segmentio/fasthash v1.0.3
