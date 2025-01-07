@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.4.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v5.4.3...plugins-destination-neo4j-v5.4.4) (2025-01-07)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.72.4 ([#20005](https://github.com/cloudquery/cloudquery/issues/20005)) ([ce42c41](https://github.com/cloudquery/cloudquery/commit/ce42c4137f9f028301f7880f0dac7e9eb0350c28))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.72.5 ([#20018](https://github.com/cloudquery/cloudquery/issues/20018)) ([f019725](https://github.com/cloudquery/cloudquery/commit/f01972543e11b1176b80cc9ae224adb759b59462))
+* **deps:** Update module golang.org/x/net to v0.33.0 [SECURITY] ([#19975](https://github.com/cloudquery/cloudquery/issues/19975)) ([cfe9e1b](https://github.com/cloudquery/cloudquery/commit/cfe9e1b5a15cd24ec24edc4e2daaf9a4ebd0faf9))
+
 ## [5.4.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v5.4.2...plugins-destination-neo4j-v5.4.3) (2024-12-18)
 
 

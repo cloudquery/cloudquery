@@ -12,6 +12,7 @@ const (
 	KindObfuscateColumns   = "obfuscate_columns"
 	KindChangeTableNames   = "change_table_names"
 	KindAddTimestampColumn = "add_current_timestamp_column"
+	KindRenameColumn       = "rename_column"
 )
 
 type TransformationSpec struct {
@@ -78,6 +79,16 @@ func (s *Spec) Validate() error {
 			}
 			if t.Name != "" || t.Value != "" || len(t.Columns) > 0 {
 				err = errors.Join(err, fmt.Errorf("name/value/columns fields must not be specified for %s transformation", t.Kind))
+			}
+		case KindRenameColumn:
+			if t.Name == "" || t.Value == "" {
+				err = errors.Join(err, fmt.Errorf("'%s' and '%s' fields must be specified for %s transformation", "name", "value", t.Kind))
+			}
+			if t.NewTableNameTemplate != "" {
+				err = errors.Join(err, fmt.Errorf("new_table_name_template field must not be specified for %s transformation", t.Kind))
+			}
+			if len(t.Columns) > 0 {
+				err = errors.Join(err, fmt.Errorf("columns field must not be specified for %s transformation", t.Kind))
 			}
 		default:
 			err = errors.Join(err, fmt.Errorf("unknown transformation kind: %s", t.Kind))
