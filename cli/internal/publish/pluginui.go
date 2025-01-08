@@ -99,15 +99,8 @@ func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithRespo
 		return errors.New("bundle asset URL not found in the response")
 	}
 
-	bundleReader, bundleWriter := io.Pipe()
-	defer bundleWriter.Close()
-
 	eg.Go(func() error {
-		return bundleTarGz(uiDir, bundleWriter)
-	})
-
-	eg.Go(func() error {
-		return hub.UploadReaderWithContentType(egCtx, bundleAsset.UploadURL, bundleReader, "application/gzip")
+		return uploadBundle(egCtx, uiDir, bundleAsset.UploadURL)
 	})
 
 	if err := eg.Wait(); err != nil {
@@ -191,4 +184,27 @@ func bundleTarGz(uiDir string, bundleFile io.Writer) error {
 
 		return nil
 	})
+}
+
+func uploadBundle(ctx context.Context, uiDir, uploadURL string) error {
+	eg, egCtx := errgroup.WithContext(ctx)
+
+	bundleReader, bundleWriter := io.Pipe()
+
+	go func() { // if the context cancels, unblock the pipe
+		<-egCtx.Done()
+		bundleReader.Close()
+		bundleWriter.Close()
+	}()
+
+	eg.Go(func() error {
+		defer bundleWriter.Close() // close the pipe when we're done writing the tar.gz
+		return bundleTarGz(uiDir, bundleWriter)
+	})
+
+	eg.Go(func() error {
+		return hub.UploadReaderWithContentType(egCtx, uploadURL, bundleReader, "application/gzip")
+	})
+
+	return eg.Wait()
 }
