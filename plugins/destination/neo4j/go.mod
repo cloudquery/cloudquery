@@ -5,7 +5,7 @@ go 1.23.4
 require (
 	github.com/apache/arrow-go/v18 v18.0.0
 	github.com/cloudquery/codegen v0.3.21
-	github.com/cloudquery/plugin-sdk/v4 v4.72.6
+	github.com/cloudquery/plugin-sdk/v4 v4.73.0
 	github.com/neo4j/neo4j-go-driver/v5 v5.27.0
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.10.0
