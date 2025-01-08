@@ -203,6 +203,7 @@ func uploadBundle(ctx context.Context, uiDir, uploadURL string) error {
 	})
 
 	eg.Go(func() error {
+		defer bundleReader.Close() // close the pipe when we're done reading the tar.gz
 		return hub.UploadReaderWithContentType(egCtx, uploadURL, bundleReader, "application/gzip")
 	})
 
