@@ -8,6 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
+	"github.com/neo4j/neo4j-go-driver/v5/neo4j/config"
 	"github.com/rs/zerolog"
 )
 
@@ -33,7 +34,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	c.spec.SetDefaults()
 
 	var err error
-	c.client, err = neo4j.NewDriverWithContext(c.spec.ConnectionString, neo4j.BasicAuth(c.spec.Username, c.spec.Password, ""), func(c *neo4j.Config) {
+	c.client, err = neo4j.NewDriverWithContext(c.spec.ConnectionString, neo4j.BasicAuth(c.spec.Username, c.spec.Password, ""), func(c *config.Config) {
 		c.Log = &Logger{Base: logger}
 	})
 	if err != nil {
