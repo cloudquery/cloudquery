@@ -36,7 +36,7 @@ require (
 	github.com/yuin/goldmark v1.7.8
 	go.opentelemetry.io/collector/component v0.103.0
 	go.opentelemetry.io/collector/consumer v1.22.0
-	go.opentelemetry.io/collector/pdata v1.22.0
+	go.opentelemetry.io/collector/pdata v1.23.0
 	go.opentelemetry.io/collector/receiver v0.103.0
 	go.opentelemetry.io/collector/receiver/otlpreceiver v0.103.0
 	go.opentelemetry.io/otel/metric v1.33.0
@@ -47,7 +47,7 @@ require (
 	golang.org/x/sync v0.10.0
 	golang.org/x/term v0.27.0
 	google.golang.org/grpc v1.69.2
-	google.golang.org/protobuf v1.36.1
+	google.golang.org/protobuf v1.36.2
 	gopkg.in/yaml.v3 v3.0.1
 )
 
