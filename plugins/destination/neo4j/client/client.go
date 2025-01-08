@@ -69,7 +69,7 @@ func (c *Client) Session(ctx context.Context, cf neo4j.SessionConfig) neo4j.Sess
 	}
 
 	// maintain consistency across sessions as well
-	cf.BookmarkManager = c.client.DefaultExecuteQueryBookmarkManager()
+	cf.BookmarkManager = c.client.ExecuteQueryBookmarkManager()
 
 	return c.client.NewSession(ctx, cf)
 }
