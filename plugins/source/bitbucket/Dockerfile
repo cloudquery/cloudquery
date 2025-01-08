@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM gradle:8.3-jdk20 as build
+FROM --platform=$BUILDPLATFORM gradle:8.4-jdk20 as build
 ARG GITHUB_ACTOR
 ARG GITHUB_TOKEN
 
