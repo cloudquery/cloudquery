@@ -6,7 +6,7 @@ require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.30.0
 	github.com/apache/arrow-go/v18 v18.0.0
 	github.com/cloudquery/codegen v0.3.21
-	github.com/cloudquery/plugin-sdk/v4 v4.72.6
+	github.com/cloudquery/plugin-sdk/v4 v4.73.0
 	github.com/goccy/go-json v0.10.4
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.33.0
