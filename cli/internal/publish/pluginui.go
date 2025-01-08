@@ -103,7 +103,6 @@ func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithRespo
 	defer bundleWriter.Close()
 
 	eg.Go(func() error {
-		defer bundleWriter.Close()
 		return bundleTarGz(uiDir, bundleWriter)
 	})
 
