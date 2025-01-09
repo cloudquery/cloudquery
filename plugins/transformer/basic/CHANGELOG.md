@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v1.4.0...plugins-transformer-basic-v2.0.0) (2025-01-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* Create non-nullable string columns ([#20115](https://github.com/cloudquery/cloudquery/issues/20115))
+
+### Bug Fixes
+
+* Create non-nullable string columns ([#20115](https://github.com/cloudquery/cloudquery/issues/20115)) ([4284761](https://github.com/cloudquery/cloudquery/commit/4284761d2c1150ac2876531cc4f3bb0d809a6fc4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.72.6 ([#20047](https://github.com/cloudquery/cloudquery/issues/20047)) ([e0ca8e0](https://github.com/cloudquery/cloudquery/commit/e0ca8e042f7531d305eb925de22bb972a8b136a8))
+
 ## [1.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v1.3.5...plugins-transformer-basic-v1.4.0) (2025-01-07)
 
 
