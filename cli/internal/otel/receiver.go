@@ -263,24 +263,23 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 			Logger:         zap.NewNop(),
 			MeterProvider:  noopmetric.NewMeterProvider(),
 			TracerProvider: nooptrace.NewTracerProvider(),
-			ReportStatus:   func(*component.StatusEvent) {},
 		},
 	}
 
 	var components []component.Component
-	traces, err := factory.CreateTracesReceiver(ctx, settings, config, c)
+	traces, err := factory.CreateTraces(ctx, settings, config, c)
 	if err != nil {
 		return nil, err
 	}
 	components = append(components, traces)
 
-	metrics, err := factory.CreateMetricsReceiver(ctx, settings, config, c)
+	metrics, err := factory.CreateMetrics(ctx, settings, config, c)
 	if err != nil {
 		return nil, err
 	}
 	components = append(components, metrics)
 
-	logs, err := factory.CreateLogsReceiver(ctx, settings, config, c)
+	logs, err := factory.CreateLogs(ctx, settings, config, c)
 	if err != nil {
 		return nil, err
 	}
