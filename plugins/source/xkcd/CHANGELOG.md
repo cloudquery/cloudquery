@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.5.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.4...plugins-source-xkcd-v1.5.5) (2025-01-09)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @playwright/test to v1.49.1 ([#20028](https://github.com/cloudquery/cloudquery/issues/20028)) ([d6d2514](https://github.com/cloudquery/cloudquery/commit/d6d25147ae777dda82ee8aa21cba52d2b1746b50))
+* **deps:** Update dependency @types/node to v22.10.2 ([#20052](https://github.com/cloudquery/cloudquery/issues/20052)) ([9517572](https://github.com/cloudquery/cloudquery/commit/95175725c726d13f18805fe56d0b5ae114f1d556))
+* **deps:** Update dependency node to v22.12.0 ([#20058](https://github.com/cloudquery/cloudquery/issues/20058)) ([c1f9c1c](https://github.com/cloudquery/cloudquery/commit/c1f9c1c89099a5bf1dcaf85dc13e8fc91ac3b9af))
+* **deps:** Update dependency pg-connection-string to v2.7.0 ([#20060](https://github.com/cloudquery/cloudquery/issues/20060)) ([591a41a](https://github.com/cloudquery/cloudquery/commit/591a41a593247bec0584cb76aa8c0c72d7b2ab46))
+* **deps:** Update dependency prettier to v3.4.2 ([#20061](https://github.com/cloudquery/cloudquery/issues/20061)) ([66ab1c5](https://github.com/cloudquery/cloudquery/commit/66ab1c56c1bb4527050a99dc4a232db545258d45))
+* **deps:** Update dependency react-hook-form to v7.54.2 ([#20062](https://github.com/cloudquery/cloudquery/issues/20062)) ([65371cf](https://github.com/cloudquery/cloudquery/commit/65371cf326a9c2bd03365499fd9e91cdeaec101d))
+* **deps:** Update dependency yup to v1.6.1 ([#20065](https://github.com/cloudquery/cloudquery/issues/20065)) ([f6c5558](https://github.com/cloudquery/cloudquery/commit/f6c5558b66c93508854c6d4ba02302f1654cc9f1))
+* **deps:** Update eslint packages ([#20068](https://github.com/cloudquery/cloudquery/issues/20068)) ([c9e64e2](https://github.com/cloudquery/cloudquery/commit/c9e64e2ffe9f5bf272d22a5e46bd4fe01b72c2b0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.72.6 ([#20047](https://github.com/cloudquery/cloudquery/issues/20047)) ([e0ca8e0](https://github.com/cloudquery/cloudquery/commit/e0ca8e042f7531d305eb925de22bb972a8b136a8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.0 ([#20127](https://github.com/cloudquery/cloudquery/issues/20127)) ([6638205](https://github.com/cloudquery/cloudquery/commit/6638205f26d27c64ffb9bd686937d677688dc26a))
+* **deps:** Update react monorepo ([#20049](https://github.com/cloudquery/cloudquery/issues/20049)) ([b09e66c](https://github.com/cloudquery/cloudquery/commit/b09e66c909073437e51a4bcab9f066f340bc6476))
+
 ## [1.5.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.3...plugins-source-xkcd-v1.5.4) (2025-01-07)
 
 
