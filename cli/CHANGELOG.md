@@ -5,6 +5,26 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.13.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.12.10...cli-v6.13.0) (2025-01-09)
+
+
+### Features
+
+* Publish UI Bundle Archive ([#20116](https://github.com/cloudquery/cloudquery/issues/20116)) ([28cfb02](https://github.com/cloudquery/cloudquery/commit/28cfb021db1588f752615dba6ff7a13d8a0f8b29))
+
+
+### Bug Fixes
+
+* **deps:** Update alpine Docker tag to v3.21.1 ([#20051](https://github.com/cloudquery/cloudquery/issues/20051)) ([761ce8a](https://github.com/cloudquery/cloudquery/commit/761ce8a0b3bfb11732544366e20e12f3bfbbe501))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.26.4 ([#20036](https://github.com/cloudquery/cloudquery/issues/20036)) ([4c594a0](https://github.com/cloudquery/cloudquery/commit/4c594a0d1212fa4c4a55a28bab74e151da0f8ea0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.72.6 ([#20047](https://github.com/cloudquery/cloudquery/issues/20047)) ([e0ca8e0](https://github.com/cloudquery/cloudquery/commit/e0ca8e042f7531d305eb925de22bb972a8b136a8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.0 ([#20127](https://github.com/cloudquery/cloudquery/issues/20127)) ([6638205](https://github.com/cloudquery/cloudquery/commit/6638205f26d27c64ffb9bd686937d677688dc26a))
+* **deps:** Update module github.com/fatih/color to v1.18.0 ([#20083](https://github.com/cloudquery/cloudquery/issues/20083)) ([6d632b4](https://github.com/cloudquery/cloudquery/commit/6d632b483be8c314d79ea350baf525c1444beef9))
+* **deps:** Update module github.com/getsentry/sentry-go to v0.30.0 ([#20086](https://github.com/cloudquery/cloudquery/issues/20086)) ([8dea500](https://github.com/cloudquery/cloudquery/commit/8dea5003a64c904977df817000b2b4972ba8c019))
+* **deps:** Update module github.com/jedib0t/go-pretty/v6 to v6.6.5 ([#20092](https://github.com/cloudquery/cloudquery/issues/20092)) ([b75216c](https://github.com/cloudquery/cloudquery/commit/b75216c4a4c5934ea357129f132c8e16354b2fa7))
+* **deps:** Update module github.com/yuin/goldmark to v1.7.8 ([#20101](https://github.com/cloudquery/cloudquery/issues/20101)) ([aefac65](https://github.com/cloudquery/cloudquery/commit/aefac65a1718f35797bfec82dd27395093f85a7f))
+* **deps:** Update module go.opentelemetry.io/collector/consumer to v0.114.0 ([#20104](https://github.com/cloudquery/cloudquery/issues/20104)) ([0caed85](https://github.com/cloudquery/cloudquery/commit/0caed85c8f66ad7c1bc7032e0f71f322309c5510))
+
 ## [6.12.10](https://github.com/cloudquery/cloudquery/compare/cli-v6.12.9...cli-v6.12.10) (2025-01-07)
 
 

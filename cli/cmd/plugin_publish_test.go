@@ -196,7 +196,7 @@ func TestPluginPublishWithUI(t *testing.T) {
 		"POST /plugins/cloudquery/source/test/versions/v1.2.3/assets/darwin_amd64": 1,
 		"PUT /upload-linux":   1,
 		"PUT /upload-darwin":  1,
-		"PUT /upload-uiasset": 2,
+		"PUT /upload-uiasset": 3,
 		"POST /plugins/cloudquery/source/test/versions/v1.2.3/uiassets": 1,
 		"PUT /plugins/cloudquery/source/test/versions/v1.2.3/uiassets":  1,
 	}
@@ -253,11 +253,11 @@ func TestPluginPublishWithUI(t *testing.T) {
 				if err := json.NewDecoder(r.Body).Decode(&rq); err != nil {
 					t.Fatal(err)
 				}
-				if len(rq.Assets) != 2 {
-					t.Fatalf("expected 2 assets, got %d", len(rq.Assets))
+				if len(rq.Assets) != 3 {
+					t.Fatalf("expected 3 assets, got %d", len(rq.Assets))
 				}
 				for _, a := range rq.Assets {
-					if a.Name != "index.html" && a.Name != "static/style.css" {
+					if a.Name != "index.html" && a.Name != "static/style.css" && a.Name != "bundle.tar.gz" {
 						t.Fatalf("unexpected asset name %q", a.Name)
 					}
 					resp.Assets = append(resp.Assets, cloudquery_api.PluginUIAsset{
