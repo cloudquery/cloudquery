@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.2.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.2.11...plugins-source-airtable-v2.2.12) (2025-01-11)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-sdk-javascript to v0.1.22 ([#20037](https://github.com/cloudquery/cloudquery/issues/20037)) ([ed72c7e](https://github.com/cloudquery/cloudquery/commit/ed72c7e568911ff91501bfb60c66e2b9f54ab7a7))
+* **deps:** Update dependency eslint-import-resolver-typescript to v3.7.0 ([#20056](https://github.com/cloudquery/cloudquery/issues/20056)) ([1a3d4c5](https://github.com/cloudquery/cloudquery/commit/1a3d4c5ca16cfd3b3afdbbe0fa44addd9cb89f2e))
+* **deps:** Update dependency typescript to v5.7.2 ([#20063](https://github.com/cloudquery/cloudquery/issues/20063)) ([6bfad80](https://github.com/cloudquery/cloudquery/commit/6bfad80cda36f39b04b9db67f512bc38317c6551))
+
 ## [2.2.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.2.10...plugins-source-airtable-v2.2.11) (2024-12-03)
 
 
