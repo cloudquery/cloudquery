@@ -14,7 +14,7 @@ require (
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.10.0
 	github.com/wk8/go-ordered-map/v2 v2.1.8
-	google.golang.org/api v0.214.0
+	google.golang.org/api v0.215.0
 )
 
 require (
@@ -71,7 +71,7 @@ require (
 	github.com/google/flatbuffers v24.3.25+incompatible // indirect
 	github.com/google/s2a-go v0.1.8 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.4 // indirect
-	github.com/googleapis/gax-go/v2 v2.14.0 // indirect
+	github.com/googleapis/gax-go/v2 v2.14.1 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.2.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.24.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
@@ -125,7 +125,7 @@ require (
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
 	google.golang.org/genproto v0.0.0-20241118233622-e639e219e697 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20241209162323-e6fa225c2576 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20241209162323-e6fa225c2576 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20241223144023-3abc09e42ca8 // indirect
 	google.golang.org/grpc v1.69.2 // indirect
 	google.golang.org/protobuf v1.36.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
