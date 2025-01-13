@@ -64,10 +64,6 @@
     "plugins/destination/test": {
       "component": "plugins-destination-test"
     },
-    "plugins/source/airtable": {
-      "component": "plugins-source-airtable",
-      "release-type": "node"
-    },
     "plugins/source/hackernews": {
       "component": "plugins-source-hackernews"
     },
