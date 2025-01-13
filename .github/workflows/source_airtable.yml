@@ -5,16 +5,16 @@ concurrency:
   cancel-in-progress: true
 
 on:
-#  pull_request:
-#    paths:
-#      - "plugins/source/airtable/**"
-#      - ".github/workflows/source_airtable.yml"
-#  push:
-#    branches:
-#      - main
-#    paths:
-#      - "plugins/source/airtable/**"
-#      - ".github/workflows/source_airtable.yml"
+  pull_request:
+    paths:
+      - "plugins/source/airtable/**"
+      - ".github/workflows/source_airtable.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/source/airtable/**"
+      - ".github/workflows/source_airtable.yml"
 
 jobs:
   plugins-source-airtable:
