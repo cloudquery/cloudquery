@@ -9,12 +9,12 @@ on:
 #    paths:
 #      - "plugins/source/airtable/**"
 #      - ".github/workflows/source_airtable.yml"
-  push:
-    branches:
-      - main
-    paths:
-      - "plugins/source/airtable/**"
-      - ".github/workflows/source_airtable.yml"
+#  push:
+#    branches:
+#      - main
+#    paths:
+#      - "plugins/source/airtable/**"
+#      - ".github/workflows/source_airtable.yml"
 
 jobs:
   plugins-source-airtable:
