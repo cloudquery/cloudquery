@@ -5,16 +5,16 @@ concurrency:
   cancel-in-progress: true
 
 on:
-#  pull_request:
-#    paths:
-#      - "plugins/source/typeform/**"
-#      - ".github/workflows/source_typeform.yml"
-#  push:
-#    branches:
-#      - main
-#    paths:
-#      - "plugins/source/typeform/**"
-#      - ".github/workflows/source_typeform.yml"
+  pull_request:
+    paths:
+      - "plugins/source/typeform/**"
+      - ".github/workflows/source_typeform.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/source/typeform/**"
+      - ".github/workflows/source_typeform.yml"
 
 jobs:
   plugins-source-typeform:

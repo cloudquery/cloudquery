@@ -78,13 +78,6 @@
     "plugins/source/test": {
       "component": "plugins-source-test"
     },
-    "plugins/source/typeform": {
-      "component": "plugins-source-typeform",
-      "extra-files": [
-        "plugin/plugin.py"
-      ],
-      "release-type": "python"
-    },
     "plugins/source/xkcd": {
       "component": "plugins-source-xkcd"
     },
