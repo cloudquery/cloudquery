@@ -1,0 +1,53 @@
+name: Source Plugin Airtable Workflow
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+#  pull_request:
+#    paths:
+#      - "plugins/source/airtable/**"
+#      - ".github/workflows/source_airtable.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "plugins/source/airtable/**"
+      - ".github/workflows/source_airtable.yml"
+
+jobs:
+  plugins-source-airtable:
+    timeout-minutes: 30
+    name: "plugins/source/airtable"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/source/airtable
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: './plugins/source/airtable/package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: |
+          npm run lint
+
+      - name: Build
+        run: |
+          npm run build
+
+      -
+        # Required for the package command tests to work
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Test
+        run: |
+          npm run test

@@ -44,6 +44,8 @@ area/plugin/destination/sqlite-python:
   - plugins/destination/sqlite/**/*
 area/plugin/destination/test:
   - plugins/destination/test/**/*
+area/plugin/source/airtable:
+  - plugins/source/airtable/**/*
 area/plugin/source/bitbucket:
   - plugins/source/bitbucket/**/*
 area/plugin/source/hackernews:
