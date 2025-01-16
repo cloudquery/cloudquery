@@ -18,16 +18,19 @@ const (
 	envCLIToken   = "CLOUDQUERY_CLI_TOKEN"
 )
 
+// NewClient creates a new client with the given token.
 func NewClient(token string) (*cloudquery_api.ClientWithResponses, error) {
 	return newClient(token, false)
 }
 
+// NewAnonymousClient creates a client that doesn't require authentication.
 func NewAnonymousClient() (*cloudquery_api.ClientWithResponses, error) {
 	return NewClient("")
 }
 
-func NewLocalGroupClient(token string) (*cloudquery_api.ClientWithResponses, error) {
-	return newClient(token, true)
+// NewLocalClient creates a client that connects to the local API if possible.
+func NewLocalClient() (*cloudquery_api.ClientWithResponses, error) {
+	return newClient("", true)
 }
 
 func ListAllPlugins(cl *cloudquery_api.ClientWithResponses) ([]cloudquery_api.ListPlugin, error) {
@@ -71,9 +74,9 @@ func GetPluginVersion(cl *cloudquery_api.ClientWithResponses, teamName string, k
 	return resp.JSON200, nil
 }
 
-func getAPIURL(preferLocalGroup bool) (apiURL string, isLocalGroup bool) {
+func getAPIURL(preferLocal bool) (apiURL string, isLocal bool) {
 	regularAPI := env.GetEnvOrDefault(envAPIURL, defaultAPIURL)
-	if !preferLocalGroup {
+	if !preferLocal {
 		return regularAPI, false
 	}
 
@@ -86,16 +89,16 @@ func getAPIURL(preferLocalGroup bool) (apiURL string, isLocalGroup bool) {
 	return val, val != regularAPI
 }
 
-func overrideToken(token string, getLocalGroup bool) string {
-	if !getLocalGroup {
+func overrideToken(token string, getLocal bool) string {
+	if !getLocal {
 		return token
 	}
 	return env.GetEnvOrDefault(envCLIToken, "")
 }
 
-func newClient(token string, localGroup bool) (*cloudquery_api.ClientWithResponses, error) {
-	endpoint, isLocalGroup := getAPIURL(localGroup)
-	token = overrideToken(token, isLocalGroup)
+func newClient(token string, local bool) (*cloudquery_api.ClientWithResponses, error) {
+	endpoint, isLocal := getAPIURL(local)
+	token = overrideToken(token, isLocal)
 
 	var opts []cloudquery_api.ClientOption
 	if token != "" {
