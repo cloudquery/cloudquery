@@ -18,7 +18,7 @@ const (
 	defaultAPIURL = "https://api.cloudquery.io"
 	envAPIURL     = "CLOUDQUERY_API_URL"
 	envCLIAPIURL  = "CLOUDQUERY_CLI_API_URL"
-	envCLIToken   = "CLOUDQUERY_CLI_TOKEN"
+	envCLIKey     = "CLOUDQUERY_CLI_KEY"
 )
 
 // NewClient creates a new client with the given token.
@@ -46,7 +46,7 @@ func NewLocalClient(acceptableKeyTypes ...auth.TokenType) (*cloudquery_api.Clien
 		}
 		tokenValue, tokenType = token.Value, token.Type
 	} else {
-		tokenValue = env.GetEnvOrDefault(envCLIToken, "")
+		tokenValue = env.GetEnvOrDefault(envCLIKey, "")
 		tokenType = tokenTypeFromValue(tokenValue)
 	}
 
