@@ -28,9 +28,9 @@ func NewAnonymousClient() (*cloudquery_api.ClientWithResponses, error) {
 	return NewClient("")
 }
 
-// NewLocalClient creates a client that connects to the local API if possible.
-func NewLocalClient() (*cloudquery_api.ClientWithResponses, error) {
-	return newClient("", true)
+// NewLocalClient creates a client that connects to the local API if possible. If not, it falls back to the regular API using `nonLocalToken`.
+func NewLocalClient(nonLocalToken string) (*cloudquery_api.ClientWithResponses, error) {
+	return newClient(nonLocalToken, true)
 }
 
 func ListAllPlugins(cl *cloudquery_api.ClientWithResponses) ([]cloudquery_api.ListPlugin, error) {
