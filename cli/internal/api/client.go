@@ -140,6 +140,6 @@ func tokenTypeFromValue(token string) auth.TokenType {
 	case token != "":
 		return auth.APIKey
 	default:
-		return auth.Undefined
+		return auth.BearerToken
 	}
 }
