@@ -495,7 +495,7 @@ func filterPluginEnv(environ []string, pluginName, kind string) []string {
 	for _, v := range environ {
 		switch {
 		case strings.HasPrefix(v, "CLOUDQUERY_API_KEY="):
-			lowerPriority[v[:strings.Index(v, "=")]] = v
+			lowerPriority["CLOUDQUERY_API_KEY"] = v
 		case strings.HasPrefix(v, "_CQ_TEAM_NAME="),
 			strings.HasPrefix(v, "HOME="):
 			env = append(env, v)
