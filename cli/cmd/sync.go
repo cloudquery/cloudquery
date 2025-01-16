@@ -486,17 +486,28 @@ func sync(cmd *cobra.Command, args []string) error {
 }
 
 func filterPluginEnv(environ []string, pluginName, kind string) []string {
-	env := make([]string, 0)
+	env := make([]string, 0, len(environ))
 	cleanName := strings.ReplaceAll(pluginName, "-", "_")
 	prefix := strings.ToUpper("__" + kind + "_" + cleanName + "__")
+
+	lowerPriority := map[string]string{}
+	dupes := map[string]struct{}{}
 	for _, v := range environ {
 		switch {
-		case strings.HasPrefix(v, "CLOUDQUERY_API_KEY="),
-			strings.HasPrefix(v, "_CQ_TEAM_NAME="),
+		case strings.HasPrefix(v, "CLOUDQUERY_API_KEY="):
+			lowerPriority[v[:strings.Index(v, "=")]] = v
+		case strings.HasPrefix(v, "_CQ_TEAM_NAME="),
 			strings.HasPrefix(v, "HOME="):
 			env = append(env, v)
 		case strings.HasPrefix(v, prefix):
-			env = append(env, strings.TrimPrefix(v, prefix))
+			cleanEnv := strings.TrimPrefix(v, prefix)
+			env = append(env, cleanEnv)
+			dupes[strings.SplitN(cleanEnv, "=", 2)[0]] = struct{}{}
+		}
+	}
+	for k, v := range lowerPriority {
+		if _, ok := dupes[k]; !ok {
+			env = append(env, v)
 		}
 	}
 	return env
