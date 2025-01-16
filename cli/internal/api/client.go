@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 
@@ -22,7 +23,7 @@ const (
 
 // NewClient creates a new client with the given token.
 func NewClient(token string) (*cloudquery_api.ClientWithResponses, error) {
-	return newClient(token, false)
+	return newClient(env.GetEnvOrDefault(envAPIURL, defaultAPIURL), token)
 }
 
 // NewAnonymousClient creates a client that doesn't require authentication.
@@ -30,28 +31,32 @@ func NewAnonymousClient() (*cloudquery_api.ClientWithResponses, error) {
 	return NewClient("")
 }
 
-// NewLocalClient creates a client that connects to the local API if possible. If not, it falls back to the regular API using `nonLocalToken`.
-func NewLocalClient(nonLocalToken string) (*cloudquery_api.ClientWithResponses, error) {
-	return newClient(nonLocalToken, true)
-}
+// NewLocalClient creates a client that connects to the local API if possible. If not, it falls back to the regular API using AuthClient.
+func NewLocalClient(acceptableKeyTypes ...auth.TokenType) (*cloudquery_api.ClientWithResponses, error) {
+	var (
+		tokenType  auth.TokenType
+		tokenValue string
+	)
 
-func LocalClientPossible() (bool, auth.TokenType) {
-	_, isLocal := getAPIURL(true)
+	apiURL, isLocal := getAPIURL(true)
 	if !isLocal {
-		return false, auth.Undefined
+		token, err := auth.NewTokenClient().GetToken()
+		if err != nil {
+			return nil, err
+		}
+		tokenValue, tokenType = token.Value, token.Type
+	} else {
+		tokenValue = env.GetEnvOrDefault(envCLIToken, "")
+		tokenType = tokenTypeFromValue(tokenValue)
 	}
 
-	token := env.GetEnvOrDefault(envCLIToken, "")
-	switch {
-	case strings.HasPrefix(token, "cqsr_"):
-		return true, auth.SyncRunAPIKey
-	case strings.HasPrefix(token, "cqstc_"):
-		return true, auth.SyncTestConnectionAPIKey
-	case token != "":
-		return true, auth.APIKey
-	default:
-		return true, auth.Undefined
+	if len(acceptableKeyTypes) > 0 {
+		if !slices.Contains(acceptableKeyTypes, tokenType) {
+			return nil, nil
+		}
 	}
+
+	return newClient(apiURL, tokenValue)
 }
 
 func ListAllPlugins(cl *cloudquery_api.ClientWithResponses) ([]cloudquery_api.ListPlugin, error) {
@@ -110,17 +115,7 @@ func getAPIURL(preferLocal bool) (apiURL string, isLocal bool) {
 	return val, val != regularAPI
 }
 
-func overrideToken(token string, getLocal bool) string {
-	if !getLocal {
-		return token
-	}
-	return env.GetEnvOrDefault(envCLIToken, "")
-}
-
-func newClient(token string, local bool) (*cloudquery_api.ClientWithResponses, error) {
-	endpoint, isLocal := getAPIURL(local)
-	token = overrideToken(token, isLocal)
-
+func newClient(endpoint, token string) (*cloudquery_api.ClientWithResponses, error) {
 	var opts []cloudquery_api.ClientOption
 	if token != "" {
 		opts = append(opts, cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
@@ -134,4 +129,17 @@ func newClient(token string, local bool) (*cloudquery_api.ClientWithResponses, e
 		return nil, fmt.Errorf("failed to create api client: %w", err)
 	}
 	return c, nil
+}
+
+func tokenTypeFromValue(token string) auth.TokenType {
+	switch {
+	case strings.HasPrefix(token, "cqsr_"):
+		return auth.SyncRunAPIKey
+	case strings.HasPrefix(token, "cqstc_"):
+		return auth.SyncTestConnectionAPIKey
+	case token != "":
+		return auth.APIKey
+	default:
+		return auth.Undefined
+	}
 }

@@ -33,16 +33,7 @@ cloudquery test-connection ./directory ./aws.yml ./pg.yml
 )
 
 func getSyncTestConnectionAPIClient() (*cloudquery_api.ClientWithResponses, error) {
-	authClient := apiAuth.NewTokenClient()
-	if authClient.GetTokenType() != apiAuth.SyncTestConnectionAPIKey {
-		return nil, nil
-	}
-
-	token, err := authClient.GetToken()
-	if err != nil {
-		return nil, err
-	}
-	return api.NewClient(token.Value)
+	return api.NewLocalClient(apiAuth.SyncTestConnectionAPIKey)
 }
 
 func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, status cloudquery_api.SyncTestConnectionStatus, tcrs ...testConnectionResult) {

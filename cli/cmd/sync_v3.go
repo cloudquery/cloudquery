@@ -84,16 +84,7 @@ type shard struct {
 }
 
 func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
-	authClient := auth.NewTokenClient()
-	if authClient.GetTokenType() != auth.SyncRunAPIKey {
-		return nil, nil
-	}
-
-	token, err := authClient.GetToken()
-	if err != nil {
-		return nil, err
-	}
-	return api.NewClient(token.Value)
+	return api.NewLocalClient(auth.SyncRunAPIKey)
 }
 
 type syncV3Options struct {
