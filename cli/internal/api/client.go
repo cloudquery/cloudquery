@@ -6,8 +6,10 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
+	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 )
 
@@ -31,6 +33,25 @@ func NewAnonymousClient() (*cloudquery_api.ClientWithResponses, error) {
 // NewLocalClient creates a client that connects to the local API if possible. If not, it falls back to the regular API using `nonLocalToken`.
 func NewLocalClient(nonLocalToken string) (*cloudquery_api.ClientWithResponses, error) {
 	return newClient(nonLocalToken, true)
+}
+
+func LocalClientPossible() (bool, auth.TokenType) {
+	_, isLocal := getAPIURL(true)
+	if !isLocal {
+		return false, auth.Undefined
+	}
+
+	token := env.GetEnvOrDefault(envCLIToken, "")
+	switch {
+	case strings.HasPrefix(token, "cqsr_"):
+		return true, auth.SyncRunAPIKey
+	case strings.HasPrefix(token, "cqstc_"):
+		return true, auth.SyncTestConnectionAPIKey
+	case token != "":
+		return true, auth.APIKey
+	default:
+		return true, auth.Undefined
+	}
 }
 
 func ListAllPlugins(cl *cloudquery_api.ClientWithResponses) ([]cloudquery_api.ListPlugin, error) {
