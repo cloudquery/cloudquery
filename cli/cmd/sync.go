@@ -490,25 +490,25 @@ func filterPluginEnv(environ []string, pluginName, kind string) []string {
 	cleanName := strings.ReplaceAll(pluginName, "-", "_")
 	prefix := strings.ToUpper("__" + kind + "_" + cleanName + "__")
 
-	lowerPriority := map[string]string{}
-	dupes := map[string]struct{}{}
+	foundPluginSpecificAPIKey := false
+	globalAPIKey := ""
 	for _, v := range environ {
 		switch {
 		case strings.HasPrefix(v, "CLOUDQUERY_API_KEY="):
-			lowerPriority["CLOUDQUERY_API_KEY"] = v
+			globalAPIKey = v
 		case strings.HasPrefix(v, "_CQ_TEAM_NAME="),
 			strings.HasPrefix(v, "HOME="):
 			env = append(env, v)
 		case strings.HasPrefix(v, prefix):
 			cleanEnv := strings.TrimPrefix(v, prefix)
 			env = append(env, cleanEnv)
-			dupes[strings.SplitN(cleanEnv, "=", 2)[0]] = struct{}{}
+			if strings.HasPrefix(cleanEnv, "CLOUDQUERY_API_KEY=") {
+				foundPluginSpecificAPIKey = true
+			}
 		}
 	}
-	for k, v := range lowerPriority {
-		if _, ok := dupes[k]; !ok {
-			env = append(env, v)
-		}
+	if !foundPluginSpecificAPIKey {
+		env = append(env, globalAPIKey)
 	}
 	return env
 }
