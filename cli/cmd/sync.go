@@ -486,18 +486,29 @@ func sync(cmd *cobra.Command, args []string) error {
 }
 
 func filterPluginEnv(environ []string, pluginName, kind string) []string {
-	env := make([]string, 0)
+	env := make([]string, 0, len(environ))
 	cleanName := strings.ReplaceAll(pluginName, "-", "_")
 	prefix := strings.ToUpper("__" + kind + "_" + cleanName + "__")
+
+	foundPluginSpecificAPIKey := false
+	globalAPIKey := ""
 	for _, v := range environ {
 		switch {
-		case strings.HasPrefix(v, "CLOUDQUERY_API_KEY="),
-			strings.HasPrefix(v, "_CQ_TEAM_NAME="),
+		case strings.HasPrefix(v, "CLOUDQUERY_API_KEY="):
+			globalAPIKey = v
+		case strings.HasPrefix(v, "_CQ_TEAM_NAME="),
 			strings.HasPrefix(v, "HOME="):
 			env = append(env, v)
 		case strings.HasPrefix(v, prefix):
-			env = append(env, strings.TrimPrefix(v, prefix))
+			cleanEnv := strings.TrimPrefix(v, prefix)
+			env = append(env, cleanEnv)
+			if strings.HasPrefix(cleanEnv, "CLOUDQUERY_API_KEY=") {
+				foundPluginSpecificAPIKey = true
+			}
 		}
+	}
+	if !foundPluginSpecificAPIKey {
+		env = append(env, globalAPIKey)
 	}
 	return env
 }
