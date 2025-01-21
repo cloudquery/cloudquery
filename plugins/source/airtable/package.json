@@ -1,6 +1,6 @@
 {
   "name": "@cloudquery/cq-source-airtable",
-  "version": "2.2.11",
+  "version": "2.2.12",
   "description": "A CloudQuery source plugin to sync data from Airtable",
   "keywords": [
     "nodejs",
