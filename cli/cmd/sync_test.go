@@ -7,6 +7,7 @@ import (
 	"path"
 	"runtime"
 	"slices"
+	"sort"
 	"strings"
 	"testing"
 
@@ -497,6 +498,48 @@ func TestSync_IsolatedPluginEnvironmentsInCloud(t *testing.T) {
 	}
 }
 
+func TestSync_FilterPluginEnv(t *testing.T) {
+	cases := []struct {
+		Name        string
+		TotalEnv    []string
+		FilteredEnv []string
+	}{
+		{
+			Name: "double_api_keys",
+			TotalEnv: []string{
+				"CLOUDQUERY_API_KEY=outer-key",
+				"__SOURCE_TEST__TEST_KEY=test_value",
+				"__SOURCE_TEST__CLOUDQUERY_API_KEY=inner-key",
+				"NOT_TEST_ENV=should_not_be_visible_to_plugin",
+			},
+			FilteredEnv: []string{
+				"TEST_KEY=test_value",
+				"CLOUDQUERY_API_KEY=inner-key",
+			},
+		},
+		{
+			Name: "single_api_key",
+			TotalEnv: []string{
+				"CLOUDQUERY_API_KEY=outer-key",
+				"__SOURCE_TEST__TEST_KEY=test_value",
+				"NOT_TEST_ENV=should_not_be_visible_to_plugin",
+			},
+			FilteredEnv: []string{
+				"TEST_KEY=test_value",
+				"CLOUDQUERY_API_KEY=outer-key",
+			},
+		},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.Name, func(t *testing.T) {
+			filteredEnv := filterPluginEnv(tc.TotalEnv, "test", "source")
+			sort.Strings(filteredEnv)
+			sort.Strings(tc.FilteredEnv)
+			require.Equal(t, tc.FilteredEnv, filteredEnv)
+		})
+	}
+}
 func readSummaries(t *testing.T, filename string) []syncSummary {
 	p, err := os.ReadFile(filename)
 	assert.NoError(t, err)

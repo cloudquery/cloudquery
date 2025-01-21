@@ -80,6 +80,21 @@ docker_manifests:
   - "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}-linux-amd64"
   - "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}-linux-arm64"
 
+- name_template: "ghcr.io/cloudquery/cloudquery:{{.Version}}-ubuntu"
+  image_templates:
+  - "ghcr.io/cloudquery/cloudquery:{{.Version}}-ubuntu-amd64"
+  - "ghcr.io/cloudquery/cloudquery:{{.Version}}-ubuntu-arm64"
+
+- name_template: "ghcr.io/cloudquery/cloudquery:latest-ubuntu"
+  image_templates:
+  - "ghcr.io/cloudquery/cloudquery:latest-ubuntu-amd64"
+  - "ghcr.io/cloudquery/cloudquery:latest-ubuntu-arm64"
+
+- name_template: "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}-ubuntu"
+  image_templates:
+  - "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}-ubuntu-amd64"
+  - "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}-ubuntu-arm64"
+
 
 brews:
   -
