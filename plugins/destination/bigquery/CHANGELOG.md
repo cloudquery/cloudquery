@@ -1,5 +1,30 @@
 # Changelog
 
+## [4.2.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.2.4...plugins-destination-bigquery-v4.2.5) (2025-01-21)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @playwright/test to v1.49.1 ([#20028](https://github.com/cloudquery/cloudquery/issues/20028)) ([d6d2514](https://github.com/cloudquery/cloudquery/commit/d6d25147ae777dda82ee8aa21cba52d2b1746b50))
+* **deps:** Update dependency @types/node to v22.10.2 ([#20052](https://github.com/cloudquery/cloudquery/issues/20052)) ([9517572](https://github.com/cloudquery/cloudquery/commit/95175725c726d13f18805fe56d0b5ae114f1d556))
+* **deps:** Update dependency dotenv to v16.4.7 ([#20029](https://github.com/cloudquery/cloudquery/issues/20029)) ([4c4613a](https://github.com/cloudquery/cloudquery/commit/4c4613ac87bc5a722e92bac6201fbf7b8c7df559))
+* **deps:** Update dependency node to v22.12.0 ([#20058](https://github.com/cloudquery/cloudquery/issues/20058)) ([c1f9c1c](https://github.com/cloudquery/cloudquery/commit/c1f9c1c89099a5bf1dcaf85dc13e8fc91ac3b9af))
+* **deps:** Update dependency prettier to v3.4.2 ([#20061](https://github.com/cloudquery/cloudquery/issues/20061)) ([66ab1c5](https://github.com/cloudquery/cloudquery/commit/66ab1c56c1bb4527050a99dc4a232db545258d45))
+* **deps:** Update dependency yaml to v2.7.0 ([#20064](https://github.com/cloudquery/cloudquery/issues/20064)) ([bcec062](https://github.com/cloudquery/cloudquery/commit/bcec06206b30b3eecf5c047072873dea76775ed6))
+* **deps:** Update dependency yup to v1.6.1 ([#20065](https://github.com/cloudquery/cloudquery/issues/20065)) ([f6c5558](https://github.com/cloudquery/cloudquery/commit/f6c5558b66c93508854c6d4ba02302f1654cc9f1))
+* **deps:** Update emotion monorepo to v11.14.0 ([#20067](https://github.com/cloudquery/cloudquery/issues/20067)) ([f44ad52](https://github.com/cloudquery/cloudquery/commit/f44ad5235331bd704da537aa8a077b3384552b7a))
+* **deps:** Update eslint packages ([#20068](https://github.com/cloudquery/cloudquery/issues/20068)) ([c9e64e2](https://github.com/cloudquery/cloudquery/commit/c9e64e2ffe9f5bf272d22a5e46bd4fe01b72c2b0))
+* **deps:** Update material-ui monorepo ([#20073](https://github.com/cloudquery/cloudquery/issues/20073)) ([2b6d210](https://github.com/cloudquery/cloudquery/commit/2b6d210e1cf142b138b31ad4400bb881928b32db))
+* **deps:** Update module cloud.google.com/go to v0.118.0 ([#20134](https://github.com/cloudquery/cloudquery/issues/20134)) ([b5f8cca](https://github.com/cloudquery/cloudquery/commit/b5f8cca7236cbc63fc1a412ee9a08f8367c45cd4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.72.6 ([#20047](https://github.com/cloudquery/cloudquery/issues/20047)) ([e0ca8e0](https://github.com/cloudquery/cloudquery/commit/e0ca8e042f7531d305eb925de22bb972a8b136a8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.0 ([#20127](https://github.com/cloudquery/cloudquery/issues/20127)) ([6638205](https://github.com/cloudquery/cloudquery/commit/6638205f26d27c64ffb9bd686937d677688dc26a))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.2 ([#20142](https://github.com/cloudquery/cloudquery/issues/20142)) ([75964e3](https://github.com/cloudquery/cloudquery/commit/75964e335f6d293bd60b7ebdf83474373069f2f4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.3 ([#20154](https://github.com/cloudquery/cloudquery/issues/20154)) ([847b6ce](https://github.com/cloudquery/cloudquery/commit/847b6ceefa2f60bad025c501823dbbd16330bfe7))
+* **deps:** Update module github.com/goccy/go-json to v0.10.4 ([#20048](https://github.com/cloudquery/cloudquery/issues/20048)) ([4e8a580](https://github.com/cloudquery/cloudquery/commit/4e8a58028929d13bcdb4c52751101768859604ee))
+* **deps:** Update module google.golang.org/api to v0.215.0 ([#20135](https://github.com/cloudquery/cloudquery/issues/20135)) ([11fde96](https://github.com/cloudquery/cloudquery/commit/11fde9668bbb2b664d5305537eb8c330dd00f525))
+* **deps:** Update module google.golang.org/api to v0.216.0 ([#20148](https://github.com/cloudquery/cloudquery/issues/20148)) ([b2205f6](https://github.com/cloudquery/cloudquery/commit/b2205f68115ea778c9306a1707acf2b14823475d))
+* **deps:** Update react monorepo ([#20049](https://github.com/cloudquery/cloudquery/issues/20049)) ([b09e66c](https://github.com/cloudquery/cloudquery/commit/b09e66c909073437e51a4bcab9f066f340bc6476))
+
 ## [4.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.2.3...plugins-destination-bigquery-v4.2.4) (2025-01-07)
 
 

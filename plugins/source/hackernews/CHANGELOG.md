@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.7.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.7.4...plugins-source-hackernews-v3.7.5) (2025-01-21)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @playwright/test to v1.49.1 ([#20028](https://github.com/cloudquery/cloudquery/issues/20028)) ([d6d2514](https://github.com/cloudquery/cloudquery/commit/d6d25147ae777dda82ee8aa21cba52d2b1746b50))
+* **deps:** Update dependency @types/node to v22.10.2 ([#20052](https://github.com/cloudquery/cloudquery/issues/20052)) ([9517572](https://github.com/cloudquery/cloudquery/commit/95175725c726d13f18805fe56d0b5ae114f1d556))
+* **deps:** Update dependency node to v22.12.0 ([#20058](https://github.com/cloudquery/cloudquery/issues/20058)) ([c1f9c1c](https://github.com/cloudquery/cloudquery/commit/c1f9c1c89099a5bf1dcaf85dc13e8fc91ac3b9af))
+* **deps:** Update dependency prettier to v3.4.2 ([#20061](https://github.com/cloudquery/cloudquery/issues/20061)) ([66ab1c5](https://github.com/cloudquery/cloudquery/commit/66ab1c56c1bb4527050a99dc4a232db545258d45))
+* **deps:** Update eslint packages ([#20068](https://github.com/cloudquery/cloudquery/issues/20068)) ([c9e64e2](https://github.com/cloudquery/cloudquery/commit/c9e64e2ffe9f5bf272d22a5e46bd4fe01b72c2b0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.72.6 ([#20047](https://github.com/cloudquery/cloudquery/issues/20047)) ([e0ca8e0](https://github.com/cloudquery/cloudquery/commit/e0ca8e042f7531d305eb925de22bb972a8b136a8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.0 ([#20127](https://github.com/cloudquery/cloudquery/issues/20127)) ([6638205](https://github.com/cloudquery/cloudquery/commit/6638205f26d27c64ffb9bd686937d677688dc26a))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.2 ([#20142](https://github.com/cloudquery/cloudquery/issues/20142)) ([75964e3](https://github.com/cloudquery/cloudquery/commit/75964e335f6d293bd60b7ebdf83474373069f2f4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.3 ([#20154](https://github.com/cloudquery/cloudquery/issues/20154)) ([847b6ce](https://github.com/cloudquery/cloudquery/commit/847b6ceefa2f60bad025c501823dbbd16330bfe7))
+* **deps:** Update react monorepo ([#20049](https://github.com/cloudquery/cloudquery/issues/20049)) ([b09e66c](https://github.com/cloudquery/cloudquery/commit/b09e66c909073437e51a4bcab9f066f340bc6476))
+
 ## [3.7.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.7.3...plugins-source-hackernews-v3.7.4) (2025-01-07)
 
 
