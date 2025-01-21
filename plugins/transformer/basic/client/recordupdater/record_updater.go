@@ -15,6 +15,23 @@ import (
 	"github.com/tidwall/sjson"
 )
 
+const (
+	BoolType      = "bool"
+	UTF8Type      = "utf8"
+	Int64Type     = "int64"
+	Int32Type     = "int32"
+	Float64Type   = "float64"
+	JSONType      = "json"
+	UUIDType      = "uuid"
+	TimestampType = "timestamp[us, tz=UTC]"
+	InetType      = "inet"
+)
+
+type columnBuilder interface {
+	addRow(row map[string]any)
+	build(key string) (arrow.Array, error)
+}
+
 // RecordUpdater takes an `arrow.Record` and knows how to make simple subsequent changes to it.
 // It doesn't know which table it belongs to or if the changes make sense.
 type RecordUpdater struct {
@@ -187,6 +204,26 @@ func (r *RecordUpdater) RenameColumn(oldName, newName string) (arrow.Record, err
 	return r.record, nil
 }
 
+func (r *RecordUpdater) MultiplyPK(multiplier int) ([]arrow.Record, error) {
+	oldRecord := r.record.Columns()
+	newRecords := make([]arrow.Record, 0, multiplier)
+	pkIndices := pkIndices(r.record)
+	for i := 0; i < multiplier; i++ {
+		newColumns := make([]arrow.Array, 0, len(oldRecord))
+		for i, column := range oldRecord {
+			_, isPk := pkIndices[i]
+			clonedColumn, err := cloneMultipliedColumn(column, i, multiplier, isPk)
+			if err != nil {
+				return nil, err
+			}
+			newColumns = append(newColumns, clonedColumn)
+		}
+		newRecords = append(newRecords, array.NewRecord(r.record.Schema(), newColumns, r.record.NumRows()))
+	}
+
+	return newRecords, nil
+}
+
 func (r *RecordUpdater) colIndicesByNames(columnNames []string) (map[int]struct{}, error) {
 	colNameMap := make(map[string]struct{})
 	for _, columnName := range columnNames {
@@ -311,4 +348,23 @@ func (r *RecordUpdater) splitJSONColumns(columnNames []string) (plainCols []stri
 	}
 
 	return plainCols, jsonCols
+}
+
+const (
+	MetadataPrimaryKey          = "cq:extension:primary_key"
+	MetadataPrimaryKeyComponent = "cq:extension:primary_key_component"
+)
+
+func pkIndices(record arrow.Record) map[int]struct{} {
+	pkIndices := make(map[int]struct{})
+	for i, field := range record.Schema().Fields() {
+		mdMap := field.Metadata.ToMap()
+		if _, ok := mdMap[MetadataPrimaryKey]; ok && field.Name != "_cq_sync_group_id" {
+			pkIndices[i] = struct{}{}
+		}
+		if _, ok := mdMap[MetadataPrimaryKeyComponent]; ok && field.Name != "_cq_sync_group_id" {
+			pkIndices[i] = struct{}{}
+		}
+	}
+	return pkIndices
 }

@@ -13,14 +13,16 @@ const (
 	KindChangeTableNames   = "change_table_names"
 	KindAddTimestampColumn = "add_current_timestamp_column"
 	KindRenameColumn       = "rename_column"
+	KindMultiplyPK         = "multiply_pk"
 )
 
 type TransformationSpec struct {
-	Kind    string   `json:"kind"`
-	Tables  []string `json:"tables"` // per-transformation table glob patterns
-	Columns []string `json:"columns"`
-	Name    string   `json:"name"`
-	Value   string   `json:"value"`
+	Kind       string   `json:"kind"`
+	Tables     []string `json:"tables"` // per-transformation table glob patterns
+	Columns    []string `json:"columns"`
+	Name       string   `json:"name"`
+	Value      string   `json:"value"`
+	Multiplier int      `json:"multiplier"`
 
 	// For change_table_names transformation
 	NewTableNameTemplate string `json:"new_table_name_template"`
@@ -89,6 +91,13 @@ func (s *Spec) Validate() error {
 			}
 			if len(t.Columns) > 0 {
 				err = errors.Join(err, fmt.Errorf("columns field must not be specified for %s transformation", t.Kind))
+			}
+		case KindMultiplyPK:
+			if t.Multiplier == 0 {
+				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "multiplier", t.Kind))
+			}
+			if t.Name != "" || t.Value != "" || len(t.Columns) > 0 || t.NewTableNameTemplate != "" {
+				err = errors.Join(err, fmt.Errorf("name/value/columns/new_table_name_template fields must not be specified for %s transformation", t.Kind))
 			}
 		default:
 			err = errors.Join(err, fmt.Errorf("unknown transformation kind: %s", t.Kind))

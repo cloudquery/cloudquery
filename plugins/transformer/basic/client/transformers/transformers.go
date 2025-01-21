@@ -12,11 +12,13 @@ import (
 )
 
 type TransformationFn = func(arrow.Record) (arrow.Record, error)
+type TransformationFn2 = func(arrow.Record) ([]arrow.Record, error)
 type SchemaTransformationFn = func(*arrow.Schema) (*arrow.Schema, error)
 
 type Transformer struct {
 	matcher  *tablematcher.TableMatcher
 	fn       TransformationFn
+	Fn2      TransformationFn2
 	schemaFn SchemaTransformationFn
 }
 
@@ -36,6 +38,9 @@ func NewFromSpec(sp spec.TransformationSpec) (*Transformer, error) {
 		tr.fn = ChangeTableName(sp.NewTableNameTemplate)
 	case spec.KindRenameColumn:
 		tr.fn = RenameColumn(sp.Name, sp.Value)
+	case spec.KindMultiplyPK:
+		tr.fn = func(r arrow.Record) (arrow.Record, error) { return r, nil }
+		tr.Fn2 = MultiplyPK(sp.Multiplier)
 	default:
 		return nil, fmt.Errorf("unknown transformation kind: %s", sp.Kind)
 	}
@@ -57,6 +62,20 @@ func (tr *Transformer) Transform(record arrow.Record) (arrow.Record, error) {
 	}
 	// Apply the specific transformation kind
 	return tr.fn(record)
+}
+
+func (tr *Transformer) Transform2(record arrow.Record) ([]arrow.Record, error) {
+	// Passthrough if the record's table is not a match to any of the spec's
+	// tablepatterns, but error if the record doesn't have table metadata.
+	isMatch, err := tr.matcher.IsSchemasTableMatch(record.Schema())
+	if err != nil {
+		return nil, err
+	}
+	if !isMatch {
+		return []arrow.Record{record}, nil
+	}
+	// Apply the specific transformation kind
+	return tr.Fn2(record)
 }
 
 func (tr *Transformer) TransformSchema(schema *arrow.Schema) (*arrow.Schema, error) {
@@ -109,6 +128,12 @@ func ChangeTableName(newTableNamePattern string) TransformationFn {
 func RenameColumn(oldName, newName string) TransformationFn {
 	return func(record arrow.Record) (arrow.Record, error) {
 		return recordupdater.New(record).RenameColumn(oldName, newName)
+	}
+}
+
+func MultiplyPK(multiplier int) TransformationFn2 {
+	return func(record arrow.Record) ([]arrow.Record, error) {
+		return recordupdater.New(record).MultiplyPK(multiplier)
 	}
 }
 

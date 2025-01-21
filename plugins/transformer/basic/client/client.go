@@ -63,6 +63,17 @@ func (c *Client) Transform(ctx context.Context, recvRecords <-chan arrow.Record,
 				if err != nil {
 					return err
 				}
+
+				if tf.Fn2 != nil {
+					records, err := tf.Transform2(record)
+					if err != nil {
+						return err
+					}
+					for _, r := range records {
+						sendRecords <- r
+					}
+					continue
+				}
 			}
 
 			sendRecords <- record
