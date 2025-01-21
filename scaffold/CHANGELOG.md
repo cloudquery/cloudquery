@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.4.12](https://github.com/cloudquery/cloudquery/compare/scaffold-v3.4.11...scaffold-v3.4.12) (2025-01-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.1.0 ([#20149](https://github.com/cloudquery/cloudquery/issues/20149)) ([19efa2b](https://github.com/cloudquery/cloudquery/commit/19efa2bcada6024be3532e5f02333c9d8d3a1473))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.26.4 ([#20036](https://github.com/cloudquery/cloudquery/issues/20036)) ([4c594a0](https://github.com/cloudquery/cloudquery/commit/4c594a0d1212fa4c4a55a28bab74e151da0f8ea0))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.26.5 ([#20150](https://github.com/cloudquery/cloudquery/issues/20150)) ([a405208](https://github.com/cloudquery/cloudquery/commit/a405208aee6e35f1dc67563ca2c6ac6718270765))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.72.6 ([#20047](https://github.com/cloudquery/cloudquery/issues/20047)) ([e0ca8e0](https://github.com/cloudquery/cloudquery/commit/e0ca8e042f7531d305eb925de22bb972a8b136a8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.0 ([#20127](https://github.com/cloudquery/cloudquery/issues/20127)) ([6638205](https://github.com/cloudquery/cloudquery/commit/6638205f26d27c64ffb9bd686937d677688dc26a))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.2 ([#20142](https://github.com/cloudquery/cloudquery/issues/20142)) ([75964e3](https://github.com/cloudquery/cloudquery/commit/75964e335f6d293bd60b7ebdf83474373069f2f4))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.3 ([#20154](https://github.com/cloudquery/cloudquery/issues/20154)) ([847b6ce](https://github.com/cloudquery/cloudquery/commit/847b6ceefa2f60bad025c501823dbbd16330bfe7))
+* **deps:** Update module github.com/rs/zerolog to v1.33.0 ([#20096](https://github.com/cloudquery/cloudquery/issues/20096)) ([2ae5231](https://github.com/cloudquery/cloudquery/commit/2ae52316ab09d4b56dc88fe4775955c4997b736b))
+
 ## [3.4.11](https://github.com/cloudquery/cloudquery/compare/scaffold-v3.4.10...scaffold-v3.4.11) (2025-01-07)
 
 
