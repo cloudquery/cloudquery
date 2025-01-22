@@ -208,11 +208,11 @@ func (r *RecordUpdater) MultiplyPK(multiplier int) ([]arrow.Record, error) {
 	oldRecord := r.record.Columns()
 	newRecords := make([]arrow.Record, 0, multiplier)
 	pkIndices := pkIndices(r.record)
-	for i := 0; i < multiplier; i++ {
+	for j := 0; j < multiplier; j++ {
 		newColumns := make([]arrow.Array, 0, len(oldRecord))
 		for i, column := range oldRecord {
 			_, isPk := pkIndices[i]
-			clonedColumn, err := cloneMultipliedColumn(column, i, multiplier, isPk)
+			clonedColumn, err := cloneMultipliedColumn(column, j, multiplier, isPk)
 			if err != nil {
 				return nil, err
 			}
@@ -359,11 +359,13 @@ func pkIndices(record arrow.Record) map[int]struct{} {
 	pkIndices := make(map[int]struct{})
 	for i, field := range record.Schema().Fields() {
 		mdMap := field.Metadata.ToMap()
-		if _, ok := mdMap[MetadataPrimaryKey]; ok && field.Name != "_cq_sync_group_id" {
-			pkIndices[i] = struct{}{}
-		}
-		if _, ok := mdMap[MetadataPrimaryKeyComponent]; ok && field.Name != "_cq_sync_group_id" {
-			pkIndices[i] = struct{}{}
+		if field.Name != "_cq_sync_group_id" && field.Name != "tags" && field.Name != "labels" {
+			if _, ok := mdMap[MetadataPrimaryKey]; ok {
+				pkIndices[i] = struct{}{}
+			}
+			if _, ok := mdMap[MetadataPrimaryKeyComponent]; ok {
+				pkIndices[i] = struct{}{}
+			}
 		}
 	}
 	return pkIndices
