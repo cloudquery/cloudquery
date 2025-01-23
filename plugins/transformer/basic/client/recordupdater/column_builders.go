@@ -10,10 +10,10 @@ import (
 	"github.com/google/uuid"
 )
 
-func cloneMultipliedColumn(column arrow.Array, j, multiplier int, isPk bool) (arrow.Array, error) {
+func cloneMultipliedColumn(column arrow.Array, j int, isPk bool) (arrow.Array, error) {
 	switch column.DataType().String() {
 	case "utf8":
-		values := make([]*string, column.Len()*multiplier)
+		values := make([]*string, column.Len())
 		for i := 0; i < column.Len(); i++ {
 			value := column.GetOneForMarshal(i)
 			if value == nil {
@@ -28,7 +28,7 @@ func cloneMultipliedColumn(column arrow.Array, j, multiplier int, isPk bool) (ar
 		}
 		return buildUTF8Column(values), nil
 	case "json":
-		values := make([]*any, column.Len()*multiplier)
+		values := make([]*any, column.Len())
 		for i := 0; i < column.Len(); i++ {
 			value := column.GetOneForMarshal(i)
 			if value == nil {
@@ -44,7 +44,7 @@ func cloneMultipliedColumn(column arrow.Array, j, multiplier int, isPk bool) (ar
 		}
 		return buildJSONColumn(values), nil
 	case "inet":
-		values := make([]*any, column.Len()*multiplier)
+		values := make([]*any, column.Len())
 		for i := 0; i < column.Len(); i++ {
 			value := column.GetOneForMarshal(i)
 			if value == nil {
@@ -59,7 +59,7 @@ func cloneMultipliedColumn(column arrow.Array, j, multiplier int, isPk bool) (ar
 		}
 		return buildInetColumn(values), nil
 	case "uuid":
-		values := make([]uuid.UUID, column.Len()*multiplier)
+		values := make([]uuid.UUID, column.Len())
 		for i := 0; i < column.Len(); i++ {
 			randomUUID, _ := uuid.NewRandom()
 			if isPk {
@@ -70,7 +70,7 @@ func cloneMultipliedColumn(column arrow.Array, j, multiplier int, isPk bool) (ar
 		}
 		return buildUUIDColumn(values), nil
 	case "int64":
-		values := make([]*int64, column.Len()*multiplier)
+		values := make([]*int64, column.Len())
 		constant := int64(12345678)
 		for i := 0; i < column.Len(); i++ {
 			value := column.GetOneForMarshal(i)
@@ -86,7 +86,7 @@ func cloneMultipliedColumn(column arrow.Array, j, multiplier int, isPk bool) (ar
 		}
 		return buildInt64Column(values), nil
 	case "int32":
-		values := make([]*int32, column.Len()*multiplier)
+		values := make([]*int32, column.Len())
 		constant := int32(12345678)
 		for i := 0; i < column.Len(); i++ {
 			value := column.GetOneForMarshal(i)
@@ -102,7 +102,7 @@ func cloneMultipliedColumn(column arrow.Array, j, multiplier int, isPk bool) (ar
 		}
 		return buildInt32Column(values), nil
 	case "float64":
-		values := make([]*float64, column.Len()*multiplier)
+		values := make([]*float64, column.Len())
 		constant := float64(12345678)
 		for i := 0; i < column.Len(); i++ {
 			value := column.GetOneForMarshal(i)
@@ -118,7 +118,7 @@ func cloneMultipliedColumn(column arrow.Array, j, multiplier int, isPk bool) (ar
 		}
 		return buildFloat64Column(values), nil
 	case "bool":
-		values := make([]*bool, column.Len()*multiplier)
+		values := make([]*bool, column.Len())
 		for i := 0; i < column.Len(); i++ {
 			if val := column.GetOneForMarshal(i); val != nil {
 				if isPk {
@@ -132,7 +132,7 @@ func cloneMultipliedColumn(column arrow.Array, j, multiplier int, isPk bool) (ar
 		}
 		return buildBoolColumn(values), nil
 	case "timestamp[us, tz=UTC]":
-		values := make([]*time.Time, column.Len()*multiplier)
+		values := make([]*time.Time, column.Len())
 		constantDuration := 100 * 24 * 365 * time.Hour
 		for i := 0; i < column.Len(); i++ {
 			val := column.GetOneForMarshal(i)
@@ -152,7 +152,7 @@ func cloneMultipliedColumn(column arrow.Array, j, multiplier int, isPk bool) (ar
 		}
 		return buildTimestampColumn(values)
 	case "list<item: uuid, nullable>":
-		values := make([][]uuid.UUID, column.Len()*multiplier)
+		values := make([][]uuid.UUID, column.Len())
 		for i := 0; i < column.Len(); i++ {
 			randomUUID, _ := uuid.NewRandom()
 			if isPk {
@@ -163,7 +163,7 @@ func cloneMultipliedColumn(column arrow.Array, j, multiplier int, isPk bool) (ar
 		}
 		return buildUUIDListColumn(values)
 	case "list<item: utf8, nullable>":
-		values := make([][]string, column.Len()*multiplier)
+		values := make([][]string, column.Len())
 		for i := 0; i < column.Len(); i++ {
 			if val := column.GetOneForMarshal(i); val != nil {
 				if isPk {
@@ -177,7 +177,7 @@ func cloneMultipliedColumn(column arrow.Array, j, multiplier int, isPk bool) (ar
 		}
 		return buildUTF8ListColumn(values)
 	case "list<item: int64, nullable>":
-		values := make([][]int64, column.Len()*multiplier)
+		values := make([][]int64, column.Len())
 		for i := 0; i < column.Len(); i++ {
 			if isPk {
 				values[i] = []int64{column.GetOneForMarshal(i).(int64) + int64(i)}
@@ -187,7 +187,7 @@ func cloneMultipliedColumn(column arrow.Array, j, multiplier int, isPk bool) (ar
 		}
 		return buildInt64ListColumn(values)
 	case "list<item: json, nullable>":
-		values := make([][]json.RawMessage, column.Len()*multiplier)
+		values := make([][]json.RawMessage, column.Len())
 		for i := 0; i < column.Len(); i++ {
 			if val := column.GetOneForMarshal(i); val != nil {
 				if isPk {
@@ -201,7 +201,7 @@ func cloneMultipliedColumn(column arrow.Array, j, multiplier int, isPk bool) (ar
 		}
 		return buildJSONListColumn(values), nil
 	case "list<item: inet, nullable>":
-		values := make([][]net.IPNet, column.Len()*multiplier)
+		values := make([][]net.IPNet, column.Len())
 		for i := 0; i < column.Len(); i++ {
 			if isPk {
 				values[i] = []net.IPNet{{}}
@@ -211,7 +211,7 @@ func cloneMultipliedColumn(column arrow.Array, j, multiplier int, isPk bool) (ar
 		}
 		return buildInetListColumn(values), nil
 	case "binary":
-		values := make([][]byte, column.Len()*multiplier)
+		values := make([][]byte, column.Len())
 		for i := 0; i < column.Len(); i++ {
 			if isPk {
 				values[i] = []byte(fmt.Sprintf("%s_cloned_%d", string(column.GetOneForMarshal(i).([]uint8)), j))

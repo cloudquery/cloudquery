@@ -212,7 +212,7 @@ func (r *RecordUpdater) MultiplyPK(multiplier int) ([]arrow.Record, error) {
 		newColumns := make([]arrow.Array, 0, len(oldRecord))
 		for i, column := range oldRecord {
 			_, isPk := pkIndices[i]
-			clonedColumn, err := cloneMultipliedColumn(column, j, multiplier, isPk)
+			clonedColumn, err := cloneMultipliedColumn(column, j, isPk)
 			if err != nil {
 				return nil, err
 			}
