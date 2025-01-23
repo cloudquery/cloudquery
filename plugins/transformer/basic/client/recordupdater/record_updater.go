@@ -359,7 +359,7 @@ func pkIndices(record arrow.Record) map[int]struct{} {
 	pkIndices := make(map[int]struct{})
 	for i, field := range record.Schema().Fields() {
 		mdMap := field.Metadata.ToMap()
-		if field.Name != "_cq_sync_group_id" && field.Name != "tags" && field.Name != "labels" {
+		if field.Name != "_cq_sync_group_id" && field.Name != "_cq_client_id" && field.Name != "tags" && field.Name != "labels" {
 			if _, ok := mdMap[MetadataPrimaryKey]; ok {
 				pkIndices[i] = struct{}{}
 			}
