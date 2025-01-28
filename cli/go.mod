@@ -7,7 +7,7 @@ require (
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cloudquery/cloudquery-api-go v1.13.5
-	github.com/cloudquery/codegen v0.3.21
+	github.com/cloudquery/codegen v0.3.22
 	github.com/cloudquery/plugin-pb-go v1.26.5
 	github.com/cloudquery/plugin-sdk/v4 v4.73.3
 	github.com/distribution/reference v0.6.0
