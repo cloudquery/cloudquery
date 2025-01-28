@@ -5,7 +5,7 @@ go 1.23.4
 require (
 	cloud.google.com/go/bigquery v1.65.0
 	github.com/apache/arrow-go/v18 v18.1.0
-	github.com/cloudquery/codegen v0.3.21
+	github.com/cloudquery/codegen v0.3.22
 	github.com/cloudquery/plugin-sdk/v4 v4.73.3
 	github.com/goccy/go-json v0.10.4
 	github.com/invopop/jsonschema v0.12.0
