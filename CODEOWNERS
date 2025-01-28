@@ -1,13 +1,7 @@
-* @cloudquery/cloudquery-framework
-.github/workflows/source_* @cloudquery/cloudquery-plugins
-.github/workflows/dest_* @cloudquery/cloudquery-plugins
-.github/workflows/transf_* @cloudquery/cloudquery-plugins
-plugins/** @cloudquery/cloudquery-plugins
-plugins/transformer/** @cloudquery/cloudquery-framework
+* @cloudquery/integrations-backend
 
 **/go.mod
 **/go.sum
 .release-please-manifest.json
 **/CHANGELOG.md
-website/versions/**
 **/go.mod.tpl
