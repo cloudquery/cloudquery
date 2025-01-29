@@ -36,7 +36,6 @@ func TestFlattenJSONFields(t *testing.T) {
 	require.Equal(t, "TLSv1.2", updatedRecord.Column(4).(*array.String).Value(0))
 	require.Equal(t, "col1__minimum_tls_version", updatedRecord.ColumnName(5))
 	require.Equal(t, "TLSv1.1", updatedRecord.Column(5).(*array.String).Value(0))
-
 }
 
 func TestFlattenJSONFieldsWithTimestamp(t *testing.T) {
