@@ -57,7 +57,7 @@
   "plugins/source/oracle+FILLER": "0.0.0",
   "plugins/source/alicloud": "4.1.9",
   "plugins/source/alicloud+FILLER": "0.0.0",
-  "plugins/destination/mssql": "5.1.6",
+  "plugins/destination/mssql": "5.1.7",
   "plugins/destination/mssql+FILLER": "0.0.0",
   "plugins/source/stripe": "2.1.12",
   "plugins/source/stripe+FILLER": "0.0.0",
