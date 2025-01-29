@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.7.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.7.5...plugins-source-test-v4.7.6) (2025-01-29)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.22 ([#20167](https://github.com/cloudquery/cloudquery/issues/20167)) ([81b5b21](https://github.com/cloudquery/cloudquery/commit/81b5b217d0faa1e8f56dd2e47e1fbb1613c72f73))
+
 ## [4.7.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.7.4...plugins-source-test-v4.7.5) (2025-01-21)
 
 
