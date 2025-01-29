@@ -15,15 +15,15 @@ import (
 func TestFlattenJSONFields(t *testing.T) {
 	record := testRecord(
 		[]string{"col1"},
-		map[string]string{"col1": `{"key_a": "utf8", "key_b": "int64", "key_c": "bool"}`},
-		[]arrow.Array{buildJSONColumn([]*any{toP(`{"key_a": "value", "key_b": 2, "key_c": true}`)})},
+		map[string]string{"col1": `{"key_a": "utf8", "key_b": "int64", "key_c": "bool", "minimumTlsVersion": "utf8","minTLSVersion": "utf8"}`},
+		[]arrow.Array{buildJSONColumn([]*any{toP(`{"key_a": "value", "key_b": 2, "key_c": true,"minimumTlsVersion": "TLSv1.1", "minTLSVersion": "TLSv1.2"}`)})},
 	)
 	updater := New(zerolog.Nop(), record)
 
 	updatedRecord, err := updater.FlattenJSONFields()
 	require.NoError(t, err)
 
-	require.Equal(t, int64(4), updatedRecord.NumCols())
+	require.Equal(t, int64(6), updatedRecord.NumCols())
 	require.Equal(t, int64(1), updatedRecord.NumRows())
 	requireAllColsLenMatchRecordsLen(t, updatedRecord)
 	require.Equal(t, "col1__key_a", updatedRecord.ColumnName(1))
@@ -32,6 +32,11 @@ func TestFlattenJSONFields(t *testing.T) {
 	require.Equal(t, int64(2), updatedRecord.Column(2).(*array.Int64).Value(0))
 	require.Equal(t, "col1__key_c", updatedRecord.ColumnName(3))
 	require.Equal(t, true, updatedRecord.Column(3).(*array.Boolean).Value(0))
+	require.Equal(t, "col1__min_tls_version", updatedRecord.ColumnName(4))
+	require.Equal(t, "TLSv1.2", updatedRecord.Column(4).(*array.String).Value(0))
+	require.Equal(t, "col1__minimum_tls_version", updatedRecord.ColumnName(5))
+	require.Equal(t, "TLSv1.1", updatedRecord.Column(5).(*array.String).Value(0))
+
 }
 
 func TestFlattenJSONFieldsWithTimestamp(t *testing.T) {
