@@ -8,6 +8,7 @@ import (
 	"github.com/apache/arrow-go/v18/arrow/array"
 	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/schemaupdater"
 	"github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener/client/util"
+	"github.com/cloudquery/plugin-sdk/v4/caser"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/rs/zerolog"
@@ -166,7 +167,9 @@ func (*RecordUpdater) preprocessRow(colName string, rowIndex int, rawRow any) (m
 
 func preprocessTypeSchema(unprocessedTypeSchema map[string]any) map[string]string {
 	typeSchema := make(map[string]string)
+	customCaser := caser.New()
 	for key, typ := range unprocessedTypeSchema {
+		key = customCaser.ToSnake(key)
 		// Edge case: if the key is utf8, we don't process it, because utf8 is a special
 		// string that means that there can be many keys with any name.
 		if key == "utf8" {
