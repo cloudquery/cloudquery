@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.6...plugins-source-xkcd-v1.5.7) (2025-01-28)
+
+
+### Bug Fixes
+
+* **deps:** Update module google.golang.org/grpc to v1.69.4 ([#20162](https://github.com/cloudquery/cloudquery/issues/20162)) ([038793f](https://github.com/cloudquery/cloudquery/commit/038793f7f0794748397c9fe10ec101053167002e))
+
 ## [1.5.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.5...plugins-source-xkcd-v1.5.6) (2025-01-21)
 
 
