@@ -497,7 +497,7 @@ func filterPluginEnv(environ []string, pluginName, kind string) []string {
 		switch {
 		case strings.HasPrefix(v, "CLOUDQUERY_API_KEY="),
 			strings.HasPrefix(v, "AWS_"):
-			k, _ := splitEnv(v)
+			k := getEnvKey(v)
 			globalEnvironmentVariables[k] = v
 		case strings.HasPrefix(v, "_CQ_TEAM_NAME="),
 			strings.HasPrefix(v, "HOME="):
@@ -507,7 +507,7 @@ func filterPluginEnv(environ []string, pluginName, kind string) []string {
 			env = append(env, cleanEnv)
 			if strings.HasPrefix(cleanEnv, "CLOUDQUERY_API_KEY=") ||
 				strings.HasPrefix(cleanEnv, "AWS_") {
-				k, _ := splitEnv(cleanEnv)
+				k := getEnvKey(cleanEnv)
 				specificEnvironmentVariables[k] = true
 			}
 		}
@@ -520,10 +520,7 @@ func filterPluginEnv(environ []string, pluginName, kind string) []string {
 	return env
 }
 
-func splitEnv(v string) (key string, value string) {
+func getEnvKey(v string) string {
 	parts := strings.SplitN(v, "=", 2)
-	if len(parts) == 1 {
-		return parts[0], ""
-	}
-	return parts[0], parts[1]
+	return parts[0]
 }
