@@ -497,10 +497,10 @@ func filterPluginEnv(environ []string, pluginName, kind string) []string {
 		case strings.HasPrefix(v, "CLOUDQUERY_API_KEY="):
 			globalAPIKey = v
 		case strings.HasPrefix(v, "_CQ_TEAM_NAME="),
-			strings.HasPrefix(v, "HOME="),
-			strings.HasPrefix(v, "AWS_"):
+			strings.HasPrefix(v, "HOME="):
 			env = append(env, v)
-		case strings.HasPrefix(v, prefix):
+		case strings.HasPrefix(v, prefix),
+			strings.HasPrefix(v, "AWS_"):
 			cleanEnv := strings.TrimPrefix(v, prefix)
 			env = append(env, cleanEnv)
 			if strings.HasPrefix(cleanEnv, "CLOUDQUERY_API_KEY=") {
