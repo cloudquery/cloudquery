@@ -529,6 +529,40 @@ func TestSync_FilterPluginEnv(t *testing.T) {
 				"CLOUDQUERY_API_KEY=outer-key",
 			},
 		},
+		{
+			Name: "global_aws_values_get_overwritten",
+			TotalEnv: []string{
+				"AWS_ROLE_ARN=arn:aws:iam::123456789012:role/role-name",
+				"__SOURCE_TEST__AWS_ROLE_ARN=arn:aws:iam::123456789012:role/role-name-2",
+			},
+			FilteredEnv: []string{
+				"AWS_ROLE_ARN=arn:aws:iam::123456789012:role/role-name-2",
+			},
+		},
+		{
+			Name: "aws_values_use_global_defaults",
+			TotalEnv: []string{
+				"AWS_REGION=us-east-1",
+				"AWS_ROLE_ARN=arn:aws:iam::123456789012:role/role-name",
+				"__SOURCE_TEST__AWS_ROLE_ARN=arn:aws:iam::123456789012:role/role-name-2",
+			},
+			FilteredEnv: []string{
+				"AWS_REGION=us-east-1",
+				"AWS_ROLE_ARN=arn:aws:iam::123456789012:role/role-name-2",
+			},
+		},
+		{
+			Name: "aws_values_use_specifics_if_no_defaults",
+			TotalEnv: []string{
+				"__SOURCE_TEST__AWS_REGION=us-east-1",
+				"AWS_ROLE_ARN=arn:aws:iam::123456789012:role/role-name",
+				"__SOURCE_TEST__AWS_ROLE_ARN=arn:aws:iam::123456789012:role/role-name-2",
+			},
+			FilteredEnv: []string{
+				"AWS_REGION=us-east-1",
+				"AWS_ROLE_ARN=arn:aws:iam::123456789012:role/role-name-2",
+			},
+		},
 	}
 
 	for _, tc := range cases {
