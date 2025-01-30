@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.15.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.14.1...cli-v6.15.0) (2025-01-30)
+
+
+### Features
+
+* Passtrough `AWS_`-prefixed environment variables to plugins ([#20194](https://github.com/cloudquery/cloudquery/issues/20194)) ([7c3ad4a](https://github.com/cloudquery/cloudquery/commit/7c3ad4a1c9e88cea5cbe5aef66d35e3723e647d3))
+
 ## [6.14.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.14.0...cli-v6.14.1) (2025-01-29)
 
 
