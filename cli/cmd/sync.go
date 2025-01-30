@@ -490,26 +490,40 @@ func filterPluginEnv(environ []string, pluginName, kind string) []string {
 	cleanName := strings.ReplaceAll(pluginName, "-", "_")
 	prefix := strings.ToUpper("__" + kind + "_" + cleanName + "__")
 
-	foundPluginSpecificAPIKey := false
-	globalAPIKey := ""
+	globalEnvironmentVariables := map[string]string{}
+	specificEnvironmentVariables := map[string]bool{}
+
 	for _, v := range environ {
 		switch {
-		case strings.HasPrefix(v, "CLOUDQUERY_API_KEY="):
-			globalAPIKey = v
+		case strings.HasPrefix(v, "CLOUDQUERY_API_KEY="),
+			strings.HasPrefix(v, "AWS_"):
+			k, _ := splitEnv(v)
+			globalEnvironmentVariables[k] = v
 		case strings.HasPrefix(v, "_CQ_TEAM_NAME="),
 			strings.HasPrefix(v, "HOME="):
 			env = append(env, v)
-		case strings.HasPrefix(v, prefix),
-			strings.HasPrefix(v, "AWS_"):
+		case strings.HasPrefix(v, prefix):
 			cleanEnv := strings.TrimPrefix(v, prefix)
 			env = append(env, cleanEnv)
-			if strings.HasPrefix(cleanEnv, "CLOUDQUERY_API_KEY=") {
-				foundPluginSpecificAPIKey = true
+			if strings.HasPrefix(cleanEnv, "CLOUDQUERY_API_KEY=") ||
+				strings.HasPrefix(cleanEnv, "AWS_") {
+				k, _ := splitEnv(cleanEnv)
+				specificEnvironmentVariables[k] = true
 			}
 		}
 	}
-	if !foundPluginSpecificAPIKey {
-		env = append(env, globalAPIKey)
+	for k, v := range globalEnvironmentVariables {
+		if _, ok := specificEnvironmentVariables[k]; !ok {
+			env = append(env, v)
+		}
 	}
 	return env
+}
+
+func splitEnv(v string) (string, string) {
+	parts := strings.SplitN(v, "=", 2)
+	if len(parts) == 1 {
+		return parts[0], ""
+	}
+	return parts[0], parts[1]
 }
