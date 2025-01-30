@@ -520,7 +520,7 @@ func filterPluginEnv(environ []string, pluginName, kind string) []string {
 	return env
 }
 
-func splitEnv(v string) (string, string) {
+func splitEnv(v string) (key string, value string) {
 	parts := strings.SplitN(v, "=", 2)
 	if len(parts) == 1 {
 		return parts[0], ""
