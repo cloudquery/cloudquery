@@ -7,7 +7,7 @@ require (
 	github.com/apache/tinkerpop/gremlin-go/v3 v3.7.3
 	github.com/aws/aws-sdk-go-v2 v1.33.0
 	github.com/aws/aws-sdk-go-v2/config v1.29.1
-	github.com/cenkalti/backoff/v4 v4.3.0
+	github.com/cenkalti/backoff/v5 v5.0.1
 	github.com/cloudquery/codegen v0.3.22
 	github.com/cloudquery/plugin-sdk/v4 v4.73.3
 	github.com/invopop/jsonschema v0.12.0
@@ -35,6 +35,7 @@ require (
 	github.com/aws/smithy-go v1.22.1 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
+	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.13.5 // indirect
 	github.com/cloudquery/plugin-pb-go v1.26.5 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect

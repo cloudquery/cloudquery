@@ -5,7 +5,7 @@ go 1.23.4
 require (
 	github.com/apache/arrow-go/v18 v18.1.0
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
-	github.com/cenkalti/backoff/v4 v4.3.0
+	github.com/cenkalti/backoff/v5 v5.0.1
 	github.com/cloudquery/cloudquery-api-go v1.13.5
 	github.com/cloudquery/codegen v0.3.22
 	github.com/cloudquery/plugin-pb-go v1.26.5
