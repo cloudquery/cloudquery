@@ -9,7 +9,7 @@ require (
 	github.com/goccy/go-json v0.10.4
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.10.0
-	go.mongodb.org/mongo-driver v1.17.1
+	go.mongodb.org/mongo-driver/v2 v2.0.0
 )
 
 require (
