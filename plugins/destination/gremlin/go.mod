@@ -8,9 +8,9 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.33.0
 	github.com/aws/aws-sdk-go-v2/config v1.29.1
 	github.com/cenkalti/backoff/v4 v4.3.0
-	github.com/cloudquery/codegen v0.3.22
+	github.com/cloudquery/codegen v0.3.23
 	github.com/cloudquery/plugin-sdk/v4 v4.73.3
-	github.com/invopop/jsonschema v0.12.0
+	github.com/invopop/jsonschema v0.13.0
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.10.0
 	github.com/wk8/go-ordered-map/v2 v2.1.8

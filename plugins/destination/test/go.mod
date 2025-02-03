@@ -4,9 +4,9 @@ go 1.23.4
 
 require (
 	github.com/apache/arrow-go/v18 v18.1.0
-	github.com/cloudquery/codegen v0.3.22
+	github.com/cloudquery/codegen v0.3.23
 	github.com/cloudquery/plugin-sdk/v4 v4.73.3
-	github.com/invopop/jsonschema v0.12.0
+	github.com/invopop/jsonschema v0.13.0
 	github.com/rs/zerolog v1.33.0
 )
 
