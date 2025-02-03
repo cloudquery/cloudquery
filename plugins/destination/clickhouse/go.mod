@@ -5,7 +5,7 @@ go 1.23.4
 require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.30.0
 	github.com/apache/arrow-go/v18 v18.1.0
-	github.com/cloudquery/codegen v0.3.22
+	github.com/cloudquery/codegen v0.3.23
 	github.com/cloudquery/plugin-sdk/v4 v4.73.3
 	github.com/goccy/go-json v0.10.4
 	github.com/google/uuid v1.6.0
@@ -65,7 +65,7 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.2.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.24.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/invopop/jsonschema v0.12.0
+	github.com/invopop/jsonschema v0.13.0
 	github.com/klauspost/compress v1.17.11 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.9 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
