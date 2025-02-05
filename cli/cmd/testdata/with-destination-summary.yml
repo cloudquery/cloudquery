@@ -10,7 +10,7 @@ kind: "destination"
 spec:
   name: "test"
   path: "cloudquery/file"
-  version: "v5.4.5" # latest version of destination file plugin
+  version: "v5.4.6" # latest version of destination file plugin
   send_sync_summary: true
   spec:
     format: "json"
