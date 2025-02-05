@@ -23,7 +23,7 @@
   "plugins/destination/postgresql+FILLER": "0.0.0",
   "plugins/destination/test": "2.8.4",
   "plugins/destination/test+FILLER": "0.0.0",
-  "plugins/destination/sqlite": "2.10.6",
+  "plugins/destination/sqlite": "2.10.7",
   "plugins/destination/sqlite+FILLER": "0.0.0",
   "plugins/destination/snowflake": "4.4.7",
   "plugins/destination/snowflake+FILLER": "0.0.0",
@@ -57,7 +57,7 @@
   "plugins/source/oracle+FILLER": "0.0.0",
   "plugins/source/alicloud": "4.1.9",
   "plugins/source/alicloud+FILLER": "0.0.0",
-  "plugins/destination/mssql": "5.1.7",
+  "plugins/destination/mssql": "5.1.8",
   "plugins/destination/mssql+FILLER": "0.0.0",
   "plugins/source/stripe": "2.1.12",
   "plugins/source/stripe+FILLER": "0.0.0",
@@ -81,7 +81,7 @@
   "plugins/destination/duckdb+FILLER": "0.0.0",
   "plugins/source/mysql": "2.0.12",
   "plugins/source/mysql+FILLER": "0.0.0",
-  "plugins/destination/gremlin": "2.6.6",
+  "plugins/destination/gremlin": "2.6.7",
   "plugins/destination/gremlin+FILLER": "0.0.0",
   "plugins/destination/meilisearch": "2.5.7",
   "plugins/destination/meilisearch+FILLER": "1.0.0",
@@ -107,7 +107,7 @@
   "plugins/source/xkcd+FILLER": "0.0.0",
   "plugins/transformer/basic": "2.0.2",
   "plugins/transformer/basic+FILLER": "0.0.0",
-  "plugins/transformer/jsonflattener": "2.0.2",
+  "plugins/transformer/jsonflattener": "2.0.3",
   "plugins/transformer/jsonflattener+FILLER": "0.0.0",
-  "plugins/transformer/test": "1.1.5"
+  "plugins/transformer/test": "1.1.6"
 }
