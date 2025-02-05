@@ -1,5 +1,15 @@
 # Changelog
 
+## [7.7.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.7.4...plugins-destination-s3-v7.7.5) (2025-02-05)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @types/node to v22.10.10 ([#20198](https://github.com/cloudquery/cloudquery/issues/20198)) ([5b9c3eb](https://github.com/cloudquery/cloudquery/commit/5b9c3eb0b7145d2b9d01f3507bad097993558c00))
+* **deps:** Update dependency typescript to v5.7.3 ([#20204](https://github.com/cloudquery/cloudquery/issues/20204)) ([2165c7c](https://github.com/cloudquery/cloudquery/commit/2165c7c7d50c3ce3e909ac5c500b73187b6c5320))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.23 ([#20216](https://github.com/cloudquery/cloudquery/issues/20216)) ([561f330](https://github.com/cloudquery/cloudquery/commit/561f330a1e9e155c7c412dcaeac617b412cd2fe3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.4 ([#20218](https://github.com/cloudquery/cloudquery/issues/20218)) ([9276249](https://github.com/cloudquery/cloudquery/commit/9276249f38c54565f25ef02f476b4cf4dc047482))
+
 ## [7.7.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.7.3...plugins-destination-s3-v7.7.4) (2025-01-29)
 
 
