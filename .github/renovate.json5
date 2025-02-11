@@ -1,52 +1,83 @@
 {
   extends: [
-    "github>cloudquery/.github//.github/renovate-go-default.json5",
-    "github>cloudquery/.github//.github/renovate-node-default.json5",
-    "github>cloudquery/.github//.github/renovate-python-default.json5",
+    'github>cloudquery/.github//.github/renovate-go-default.json5',
+    'github>cloudquery/.github//.github/renovate-node-default.json5',
+    'github>cloudquery/.github//.github/renovate-python-default.json5',
   ],
-  regexManagers: [
+  customManagers: [
     {
-      fileMatch: ["Dockerfile$"],
-      matchStrings: ["GORELEASER_VERSION=(?<currentValue>.*)-pro$"],
-      extractVersionTemplate: "^(?<version>.+)-pro$",
-      depNameTemplate: "goreleaser/goreleaser-pro",
-      datasourceTemplate: "github-releases",
+      customType: 'regex',
+      fileMatch: [
+        'Dockerfile$',
+      ],
+      matchStrings: [
+        'GORELEASER_VERSION=(?<currentValue>.*)-pro$',
+      ],
+      extractVersionTemplate: '^(?<version>.+)-pro$',
+      depNameTemplate: 'goreleaser/goreleaser-pro',
+      datasourceTemplate: 'github-releases',
     },
   ],
   packageRules: [
-    { matchFileNames: ["website/**"], groupName: "Website" },
     {
-      matchPackageNames: ["github.com/jackc/pgx/v4"],
-      allowedVersions: "<5",
+      matchFileNames: [
+        'website/**',
+      ],
+      groupName: 'Website',
     },
     {
-      matchPackageNames: ["github.com/cloudquery/plugin-pb-go", "github.com/cloudquery/cloudquery-api-go"],
-      matchFileNames: ["plugins/**"],
+      matchPackageNames: [
+        'github.com/jackc/pgx/v4',
+      ],
+      allowedVersions: '<5',
+    },
+    {
+      matchPackageNames: [
+        'github.com/cloudquery/plugin-pb-go',
+        'github.com/cloudquery/cloudquery-api-go',
+      ],
+      matchFileNames: [
+        'plugins/**',
+      ],
       enabled: false,
     },
     {
-      matchPackageNames: ["github.com/marcboeker/go-duckdb"],
-      matchFileNames: ["plugins/destination/duckdb/**"],
+      matchPackageNames: [
+        'github.com/marcboeker/go-duckdb',
+      ],
+      matchFileNames: [
+        'plugins/destination/duckdb/**',
+      ],
       enabled: false,
     },
     {
-      matchPackageNames: ["@cloudquery/plugin-config-ui-connector", "@cloudquery/plugin-config-ui-lib"],
-      commitMessagePrefix: "chore(deps): ",
-      groupName: "CloudQuery Plugin Config UI packages",
+      matchPackageNames: [
+        '@cloudquery/plugin-config-ui-connector',
+        '@cloudquery/plugin-config-ui-lib',
+      ],
+      commitMessagePrefix: 'chore(deps): ',
+      groupName: 'CloudQuery Plugin Config UI packages',
     },
   ],
   ignorePaths: [
-    "plugins/source/aws/**",
-    "plugins/source/azure/**",
-    "plugins/source/gcp/**",
+    'plugins/source/aws/**',
+    'plugins/source/azure/**',
+    'plugins/source/gcp/**',
   ],
   gomod: {
-    fileMatch: ["go\\.mod\\.tpl$"],
+    fileMatch: [
+      'go\\.mod\\.tpl$',
+    ],
   },
   dockerfile: {
-    fileMatch: ["Dockerfile\\.goreleaser$", "Dockerfile\\.ubuntu\\.goreleaser$"],
+    fileMatch: [
+      'Dockerfile\\.goreleaser$',
+      'Dockerfile\\.ubuntu\\.goreleaser$',
+    ],
   },
-  "github-actions": {
-    fileMatch: ["\\.yaml\\.tpl$"],
+  'github-actions': {
+    fileMatch: [
+      '\\.yaml\\.tpl$',
+    ],
   },
 }
