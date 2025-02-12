@@ -2,7 +2,7 @@ module github.com/cloudquery/cloudquery/v6
 
 go 1.23.4
 
-require github.com/cloudquery/cloudquery/cli/v6 v6.15.1
+require github.com/cloudquery/cloudquery/cli/v6 v6.15.2
 
 require (
 	github.com/Masterminds/semver v1.5.0 // indirect
@@ -18,7 +18,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/cloudquery/cloudquery-api-go v1.13.5 // indirect
-	github.com/cloudquery/plugin-pb-go v1.26.6 // indirect
+	github.com/cloudquery/plugin-pb-go v1.26.7 // indirect
 	github.com/cloudquery/plugin-sdk/v4 v4.73.4 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
