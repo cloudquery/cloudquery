@@ -26,11 +26,13 @@ func TestSwitch(t *testing.T) {
 			// write json response
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{"items": [{"name": "my-team"}]}`))
+			_, err := w.Write([]byte(`{"items": [{"name": "my-team"}]}`))
+			require.NoError(t, err)
 		case r.URL.Path == "/teams/my-team":
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{"name": "my-team", "internal": false}`))
+			_, err := w.Write([]byte(`{"name": "my-team", "internal": false}`))
+			require.NoError(t, err)
 		default:
 			t.Fatalf("unexpected request: %s %s", r.Method, r.URL.Path)
 		}
