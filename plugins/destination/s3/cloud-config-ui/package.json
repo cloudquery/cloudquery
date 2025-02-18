@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
-    "@cloudquery/plugin-config-ui-lib": "4.2.3",
+    "@cloudquery/plugin-config-ui-lib": "5.0.2",
     "@tanstack/react-query": "^4.35.3",
     "typescript": "^5.0.0"
   },
