@@ -177,7 +177,7 @@ func (c *Client) checkPartitionOrOrderByChanged(ctx context.Context, table *sche
 		return err
 	}
 
-	resolvedPartitionBy, err := queries.ResolvePartitionBy(table.Name, partition)
+	resolvedPartitionBy, err := queries.ResolvePartitionBy(table, partition)
 	if err != nil {
 		return err
 	}
