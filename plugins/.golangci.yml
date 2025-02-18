@@ -7,7 +7,6 @@ run:
 linters-settings:
   errcheck:
     check-blank: false
-    ignore: fmt:.*,[rR]ead|[wW]rite|[cC]lose,io:Copy
   gocritic:
     disabled-checks:
       - commentFormatting
@@ -104,6 +103,8 @@ linters:
     - unused
 
 issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
   exclude-rules:
     # Exclude some linters from running on tests files.
     - path: _test\.go
