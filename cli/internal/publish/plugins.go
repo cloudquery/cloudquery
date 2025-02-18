@@ -347,11 +347,13 @@ func PublishNativeBinaries(ctx context.Context, c *cloudquery_api.ClientWithResp
 	return nil
 }
 
-func getResponseAsString(body io.ReadCloser) string {
+func getResponseAsString(body io.ReadCloser) (string, error) {
 	defer body.Close()
 	buf := new(bytes.Buffer)
-	buf.ReadFrom(body)
-	return buf.String()
+	if _, err := buf.ReadFrom(body); err != nil {
+		return "", err
+	}
+	return buf.String(), nil
 }
 
 func loadDockerImage(ctx context.Context, cli *client.Client, imagePath string) error {
@@ -368,7 +370,10 @@ func loadDockerImage(ctx context.Context, cli *client.Client, imagePath string) 
 		return errors.New("failed to load image: response body is nil")
 	}
 
-	respString := getResponseAsString(resp.Body)
+	respString, err := getResponseAsString(resp.Body)
+	if err != nil {
+		return fmt.Errorf("failed to get response as string: %w", err)
+	}
 	loadResponse := LoadResponse{}
 	if err := json.Unmarshal([]byte(respString), &loadResponse); err != nil {
 		return fmt.Errorf("failed to parse docker load response: %v", err)

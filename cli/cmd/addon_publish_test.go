@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+	"github.com/stretchr/testify/require"
 )
 
 func TestAddonPublish(t *testing.T) {
@@ -28,15 +29,18 @@ func TestAddonPublish(t *testing.T) {
 		case "/addons/cloudquery/visualization/test/versions/v1.2.3":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
-			w.Write([]byte(`{"name": "v1.2.3"}`))
+			_, err := w.Write([]byte(`{"name": "v1.2.3"}`))
+			require.NoError(t, err)
 			checkCreateAddonVersionRequest(t, r)
 		case "/addons/cloudquery/visualization/test/versions/v1.2.3/assets":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
-			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-zip")))
+			_, err := w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-zip")))
+			require.NoError(t, err)
 		case "/upload-zip":
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{}`))
+			_, err := w.Write([]byte(`{}`))
+			require.NoError(t, err)
 		}
 	}))
 	defer ts.Close()
@@ -70,15 +74,18 @@ func TestAddonPublishEmbedded(t *testing.T) {
 		case "/addons/cloudquery/visualization/test/versions/v1.2.3":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
-			w.Write([]byte(`{"name": "v1.2.3"}`))
+			_, err := w.Write([]byte(`{"name": "v1.2.3"}`))
+			require.NoError(t, err)
 			checkCreateAddonVersionRequest(t, r)
 		case "/addons/cloudquery/visualization/test/versions/v1.2.3/assets":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
-			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-zip")))
+			_, err := w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-zip")))
+			require.NoError(t, err)
 		case "/upload-zip":
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{}`))
+			_, err := w.Write([]byte(`{}`))
+			require.NoError(t, err)
 		}
 	}))
 	defer ts.Close()
@@ -123,14 +130,17 @@ func TestAddonPublishFinalize(t *testing.T) {
 				checkCreateAddonVersionRequest(t, r)
 				w.WriteHeader(http.StatusCreated)
 			}
-			w.Write([]byte(`{"name": "v1.2.3"}`))
+			_, err := w.Write([]byte(`{"name": "v1.2.3"}`))
+			require.NoError(t, err)
 		case "/addons/cloudquery/visualization/test/versions/v1.2.3/assets":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
-			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-zip")))
+			_, err := w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-zip")))
+			require.NoError(t, err)
 		case "/upload-zip":
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{}`))
+			_, err := w.Write([]byte(`{}`))
+			require.NoError(t, err)
 			gotUploads++
 		}
 	}))
@@ -156,7 +166,8 @@ func TestAddonPublish_Unauthorized(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte(`{"message": "unauthorized"}`))
+		_, err := w.Write([]byte(`{"message": "unauthorized"}`))
+		require.NoError(t, err)
 	}))
 	defer ts.Close()
 
