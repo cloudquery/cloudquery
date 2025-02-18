@@ -15,6 +15,7 @@ import (
 	"github.com/cloudquery/cloudquery/cli/v6/internal/hub"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/uuid"
+	"github.com/stretchr/testify/require"
 )
 
 func TestPluginPublish(t *testing.T) {
@@ -62,32 +63,39 @@ func TestPluginPublish(t *testing.T) {
 				case "/plugins/cloudquery/source/test/versions/v1.2.3":
 					checkAuthHeader(t, r)
 					w.WriteHeader(http.StatusCreated)
-					w.Write([]byte(`{"name": "v1.2.3"}`))
+					_, err := w.Write([]byte(`{"name": "v1.2.3"}`))
+					require.NoError(t, err)
 					checkCreatePluginVersionRequest(t, r)
 				case "/plugins/cloudquery/source/test/versions/v1.2.3/tables":
 					checkAuthHeader(t, r)
 					w.WriteHeader(http.StatusCreated)
-					w.Write([]byte(`{}`))
+					_, err := w.Write([]byte(`{}`))
+					require.NoError(t, err)
 					checkCreateTablesRequest(t, r)
 				case "/plugins/cloudquery/source/test/versions/v1.2.3/docs":
 					checkAuthHeader(t, r)
 					w.WriteHeader(http.StatusCreated)
-					w.Write([]byte(`{}`))
+					_, err := w.Write([]byte(`{}`))
+					require.NoError(t, err)
 					checkCreateDocsRequest(t, r, tc.distDir)
 				case "/plugins/cloudquery/source/test/versions/v1.2.3/assets/linux_amd64":
 					checkAuthHeader(t, r)
 					w.WriteHeader(http.StatusCreated)
-					w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-linux")))
+					_, err := w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-linux")))
+					require.NoError(t, err)
 				case "/plugins/cloudquery/source/test/versions/v1.2.3/assets/darwin_amd64":
 					checkAuthHeader(t, r)
 					w.WriteHeader(http.StatusCreated)
-					w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-darwin")))
+					_, err := w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-darwin")))
+					require.NoError(t, err)
 				case "/upload-linux":
 					w.WriteHeader(http.StatusOK)
-					w.Write([]byte(`{}`))
+					_, err := w.Write([]byte(`{}`))
+					require.NoError(t, err)
 				case "/upload-darwin":
 					w.WriteHeader(http.StatusOK)
-					w.Write([]byte(`{}`))
+					_, err := w.Write([]byte(`{}`))
+					require.NoError(t, err)
 				}
 			}))
 			defer ts.Close()
@@ -139,32 +147,39 @@ func TestPluginPublishFinalize(t *testing.T) {
 				checkCreatePluginVersionRequest(t, r)
 				w.WriteHeader(http.StatusCreated)
 			}
-			w.Write([]byte(`{"name": "v1.2.3"}`))
+			_, err := w.Write([]byte(`{"name": "v1.2.3"}`))
+			require.NoError(t, err)
 		case "/plugins/cloudquery/source/test/versions/v1.2.3/tables":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
-			w.Write([]byte(`{}`))
+			_, err := w.Write([]byte(`{}`))
+			require.NoError(t, err)
 			checkCreateTablesRequest(t, r)
 		case "/plugins/cloudquery/source/test/versions/v1.2.3/docs":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
-			w.Write([]byte(`{}`))
+			_, err := w.Write([]byte(`{}`))
+			require.NoError(t, err)
 			checkCreateDocsRequest(t, r, "testdata/dist-v1-with-team-package-json")
 		case "/plugins/cloudquery/source/test/versions/v1.2.3/assets/linux_amd64":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
-			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-linux")))
+			_, err := w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-linux")))
+			require.NoError(t, err)
 		case "/plugins/cloudquery/source/test/versions/v1.2.3/assets/darwin_amd64":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
-			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-darwin")))
+			_, err := w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-darwin")))
+			require.NoError(t, err)
 		case "/upload-linux":
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{}`))
+			_, err := w.Write([]byte(`{}`))
+			require.NoError(t, err)
 			gotUploads++
 		case "/upload-darwin":
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{}`))
+			_, err := w.Write([]byte(`{}`))
+			require.NoError(t, err)
 			gotUploads++
 		}
 	}))
@@ -213,35 +228,43 @@ func TestPluginPublishWithUI(t *testing.T) {
 		case "/plugins/cloudquery/source/test/versions/v1.2.3":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
-			w.Write([]byte(`{"name": "v1.2.3"}`))
+			_, err := w.Write([]byte(`{"name": "v1.2.3"}`))
+			require.NoError(t, err)
 			checkCreatePluginVersionRequest(t, r)
 		case "/plugins/cloudquery/source/test/versions/v1.2.3/tables":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
-			w.Write([]byte(`{}`))
+			_, err := w.Write([]byte(`{}`))
+			require.NoError(t, err)
 			checkCreateTablesRequest(t, r)
 		case "/plugins/cloudquery/source/test/versions/v1.2.3/docs":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
-			w.Write([]byte(`{}`))
+			_, err := w.Write([]byte(`{}`))
+			require.NoError(t, err)
 			checkCreateDocsRequest(t, r, distDir)
 		case "/plugins/cloudquery/source/test/versions/v1.2.3/assets/linux_amd64":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
-			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-linux")))
+			_, err := w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-linux")))
+			require.NoError(t, err)
 		case "/plugins/cloudquery/source/test/versions/v1.2.3/assets/darwin_amd64":
 			checkAuthHeader(t, r)
 			w.WriteHeader(http.StatusCreated)
-			w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-darwin")))
+			_, err := w.Write([]byte(fmt.Sprintf(`{"url": "%s"}`, "http://"+r.Host+"/upload-darwin")))
+			require.NoError(t, err)
 		case "/upload-linux":
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{}`))
+			_, err := w.Write([]byte(`{}`))
+			require.NoError(t, err)
 		case "/upload-darwin":
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{}`))
+			_, err := w.Write([]byte(`{}`))
+			require.NoError(t, err)
 		case "/upload-uiasset":
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{}`))
+			_, err := w.Write([]byte(`{}`))
+			require.NoError(t, err)
 		case "/plugins/cloudquery/source/test/versions/v1.2.3/uiassets":
 			checkAuthHeader(t, r)
 			switch r.Method {
@@ -307,7 +330,8 @@ func TestPluginPublish_Unauthorized(t *testing.T) {
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte(`{"message": "unauthorized"}`))
+		_, err := w.Write([]byte(`{"message": "unauthorized"}`))
+		require.NoError(t, err)
 	}))
 	defer ts.Close()
 

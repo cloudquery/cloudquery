@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-MAKEFILE_DIRS=$(find . -type f -name "Makefile" | xargs -n1 dirname)
+MAKEFILE_DIRS=$(find . -type f -name "Makefile" ! -path "**/node_modules/*" ! -path "**/vendor/*" | xargs -n1 dirname)
 
 for f in $MAKEFILE_DIRS; do
     if [ -d $f ]; then
