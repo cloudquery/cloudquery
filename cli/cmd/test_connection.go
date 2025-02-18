@@ -206,8 +206,25 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		destinationRegInferred[i] = destination.RegistryInferred()
 	}
 
+	reportTestConnError := func(kind string, attempted []managedplugin.Config, succeeded managedplugin.Clients, err error) {
+		var ref string
+
+		numSuccess := len(succeeded)
+		if len(attempted) > numSuccess {
+			ref = attempted[numSuccess].Path // Next one to be tried after the last successful one
+		}
+		updateSyncTestConnectionStatus(context.Background(), log.Logger, cloudquery_api.SyncTestConnectionStatusFailed, testConnectionResult{
+			PluginKind:         kind,
+			PluginRef:          ref,
+			Success:            false,
+			FailureCode:        "OTHER",
+			FailureDescription: err.Error(),
+		})
+	}
+
 	sourceClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, sourcePluginConfigs, opts...)
 	if err != nil {
+		reportTestConnError("source", sourcePluginConfigs, sourceClients, err)
 		return enrichClientError(sourceClients, sourceRegInferred, err)
 	}
 	defer func() {
@@ -217,6 +234,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	}()
 	destinationClients, err := managedplugin.NewClients(ctx, managedplugin.PluginDestination, destinationPluginConfigs, opts...)
 	if err != nil {
+		reportTestConnError("destination", destinationPluginConfigs, destinationClients, err)
 		return enrichClientError(destinationClients, destinationRegInferred, err)
 	}
 	defer func() {
