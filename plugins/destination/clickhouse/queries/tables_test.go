@@ -97,6 +97,28 @@ func TestCreateTableWithPartitionBySkipsIfNoMatch(t *testing.T) {
 	ensureContents(t, query, "create_table.sql")
 }
 
+func TestCreateTableWithPartitionBySkipsIfIncremental(t *testing.T) {
+	query, err := CreateTable(&schema.Table{
+		Name: "table_name",
+		Columns: schema.ColumnList{
+			schema.CqIDColumn,
+			schema.CqParentIDColumn,
+			schema.CqSourceNameColumn,
+			schema.CqSyncTimeColumn,
+			schema.Column{
+				Name:    "extra_col",
+				Type:    arrow.PrimitiveTypes.Float64,
+				NotNull: true,
+			},
+			schema.Column{Name: "extra_inet_col", Type: types.NewInetType()},
+			schema.Column{Name: "extra_inet_arr_col", Type: arrow.ListOf(types.NewInetType())},
+		},
+		IsIncremental: true,
+	}, "", spec.DefaultEngine(), []spec.PartitionStrategy{{Tables: []string{"*"}, SkipIncrementalTables: true, PartitionBy: "toYYYYMM(`_cq_sync_time`)"}}, nil)
+	require.NoError(t, err)
+	ensureContents(t, query, "create_table.sql")
+}
+
 func TestCreateTableWithOrderBy(t *testing.T) {
 	query, err := CreateTable(&schema.Table{
 		Name: "table_name",

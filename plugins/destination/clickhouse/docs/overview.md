@@ -130,6 +130,10 @@ Each object has the following fields:
 
   Partition strategy table patterns should be disjointed sets: if a table matches two partition strategies, an error will be raised at runtime.
 
+- `skip_incremental_tables` (boolean) (optional) (default: `false`)
+
+  If set to `true`, incremental tables will not be partitioned by this strategy.
+
 - `partition_by` (string) (required)
 
   Partitioning strategy to use, e.g. `toYYYYMM(_cq_sync_time)`, the string is passed as is after "PARTITION BY" clause with no validation or quoting.

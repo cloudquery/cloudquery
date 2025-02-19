@@ -61,7 +61,7 @@ func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, parti
 	}
 	builder.WriteString("\n) ENGINE = ")
 	builder.WriteString(engine.String())
-	partitionBy, err := ResolvePartitionBy(table.Name, partition)
+	partitionBy, err := ResolvePartitionBy(table, partition)
 	if err != nil {
 		return "", err
 	}
@@ -90,13 +90,16 @@ func DropTable(table *schema.Table, cluster string) string {
 	return "DROP TABLE IF EXISTS " + tableNamePart(table.Name, cluster)
 }
 
-func ResolvePartitionBy(table string, partition []spec.PartitionStrategy) (string, error) {
+func ResolvePartitionBy(table *schema.Table, partition []spec.PartitionStrategy) (string, error) {
 	hasMatchedAlready := false
 	partitionBy := ""
 	for _, p := range partition {
-		if !tableMatchesAnyGlobPatterns(table, p.SkipTables) && tableMatchesAnyGlobPatterns(table, p.Tables) {
+		if p.SkipIncrementalTables && table.IsIncremental {
+			continue
+		}
+		if !tableMatchesAnyGlobPatterns(table.Name, p.SkipTables) && tableMatchesAnyGlobPatterns(table.Name, p.Tables) {
 			if hasMatchedAlready {
-				return "", fmt.Errorf("table %q matched multiple partition strategies", table)
+				return "", fmt.Errorf("table %q matched multiple partition strategies", table.Name)
 			}
 			hasMatchedAlready = true
 			partitionBy = p.PartitionBy

@@ -78,6 +78,9 @@ type PartitionStrategy struct {
 	//
 	// An unset partition_by is not valid.
 	PartitionBy string `json:"partition_by"`
+
+	// Skip incremental tables from partitioning.
+	SkipIncrementalTables bool `json:"skip_incremental_tables,omitempty"`
 }
 
 type OrderByStrategy struct {
