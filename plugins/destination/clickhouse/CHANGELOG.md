@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.0.8...plugins-destination-clickhouse-v6.1.0) (2025-02-19)
+
+
+### Features
+
+* Add skip_incremental_tables suboption for partition_by. ([#20276](https://github.com/cloudquery/cloudquery/issues/20276)) ([7fbd5e7](https://github.com/cloudquery/cloudquery/commit/7fbd5e7f565c536bb919a67e8187da5bde658b70))
+
 ## [6.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.0.7...plugins-destination-clickhouse-v6.0.8) (2025-02-05)
 
 
