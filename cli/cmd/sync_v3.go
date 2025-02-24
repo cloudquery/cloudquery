@@ -197,8 +197,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		}
 	}
 
-	log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Strs("transformers", transformerStrings).Time("sync_time", syncTime).Msg("Start sync")
-	defer log.Info().Str("source", sourceSpec.VersionString()).Strs("destinations", destinationStrings).Strs("transformers", transformerStrings).Time("sync_time", syncTime).Msg("End sync")
+	log.Info().Str("source", sourceSpec.VersionString()).Str("source_name", sourceName).Str("invocation_id", invocationUUID.UUID.String()).Strs("destinations", destinationStrings).Strs("transformers", transformerStrings).Time("sync_time", syncTime).Msg("Start sync")
+	defer log.Info().Str("source", sourceSpec.VersionString()).Str("source_name", sourceName).Str("invocation_id", invocationUUID.UUID.String()).Strs("destinations", destinationStrings).Strs("transformers", transformerStrings).Time("sync_time", syncTime).Msg("End sync")
 
 	variables := specs.Variables{
 		Plugins: make(map[string]specs.PluginVariables),
