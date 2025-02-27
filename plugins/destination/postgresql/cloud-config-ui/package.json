@@ -4,8 +4,8 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
-    "@cloudquery/plugin-config-ui-connector": "^0.2.16",
-    "@cloudquery/plugin-config-ui-lib": "^3.0.7",
+    "@cloudquery/plugin-config-ui-connector": "^1.0.0",
+    "@cloudquery/plugin-config-ui-lib": "^6.0.0",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/icons-material": "^6.0.0",
