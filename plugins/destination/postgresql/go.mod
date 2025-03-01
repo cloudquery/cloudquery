@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow-go/v18 v18.1.0
 	github.com/cloudquery/codegen v0.3.23
 	github.com/cloudquery/plugin-sdk/v4 v4.73.4
-	github.com/google/go-cmp v0.6.0
+	github.com/google/go-cmp v0.7.0
 	github.com/invopop/jsonschema v0.13.0
 	github.com/jackc/pgx-zerolog v0.0.0-20230315001418-f978528409eb
 	github.com/jackc/pgx/v5 v5.7.2
