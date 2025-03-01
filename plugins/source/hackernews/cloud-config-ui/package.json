@@ -4,8 +4,8 @@
   "private": true,
   "homepage": "./",
   "dependencies": {
-    "@cloudquery/plugin-config-ui-connector": "^0.2.16",
-    "@cloudquery/plugin-config-ui-lib": "^4.2.1",
+    "@cloudquery/plugin-config-ui-connector": "^1.0.0",
+    "@cloudquery/plugin-config-ui-lib": "^6.0.0",
     "humanize-string": "^3.0.0",
     "pg-connection-string": "^2.6.4",
     "react": "^18.3.1",
