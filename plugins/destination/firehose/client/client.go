@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/apache/arrow-go/v18/arrow"
@@ -18,6 +19,11 @@ import (
 	"github.com/rs/zerolog"
 )
 
+var (
+	errInvalidSpec  = errors.New("invalid spec")
+	errUnauthorized = errors.New("unauthorized")
+)
+
 type Client struct {
 	firehoseClient *firehose.Client
 	spec           spec.Spec
@@ -31,23 +37,23 @@ var _ plugin.Client = (*Client)(nil)
 func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var s spec.Spec
 	if err := json.Unmarshal(specBytes, &s); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal spec: %w", err)
+		return nil, errors.Join(errInvalidSpec, fmt.Errorf("failed to unmarshal spec: %w", err))
 	}
 	s.SetDefaults()
 	if err := s.Validate(); err != nil {
-		return nil, err
+		return nil, errors.Join(errInvalidSpec, err)
 	}
 
 	parsedARN, err := arn.Parse(s.StreamARN)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse firehose stream ARN: %w", err)
+		return nil, errors.Join(errInvalidSpec, fmt.Errorf("failed to parse firehose stream ARN: %w", err))
 	}
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(parsedARN.Region))
 	if err != nil {
 		return nil, fmt.Errorf("unable to load AWS SDK config: %w", err)
 	}
 	if err := validateCredentials(ctx, cfg); err != nil {
-		return nil, err
+		return nil, errors.Join(errUnauthorized, err)
 	}
 	return &Client{
 		logger:         logger.With().Str("module", "firehose").Logger(),
