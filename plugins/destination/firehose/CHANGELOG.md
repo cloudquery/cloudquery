@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.6.9...plugins-destination-firehose-v2.7.0) (2025-03-06)
+
+
+### Features
+
+* Add connection test to AWS Firehose destination ([#20296](https://github.com/cloudquery/cloudquery/issues/20296)) ([5cce627](https://github.com/cloudquery/cloudquery/commit/5cce6275c8cbcbbad5fa2f77d89ca9542597c9c5))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#20288](https://github.com/cloudquery/cloudquery/issues/20288)) ([2f109ed](https://github.com/cloudquery/cloudquery/commit/2f109ed722f12909b99cc62d091a2209ca8de51d))
+
 ## [2.6.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.6.8...plugins-destination-firehose-v2.6.9) (2025-02-19)
 
 
