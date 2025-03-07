@@ -61,7 +61,7 @@ func (s *Spec) SetDefaults() {
 func (s Spec) DSN() (string, error) {
 	cs := s.ConnectionString
 	if cs == "" {
-		return "", fmt.Errorf("connection_string is required")
+		return "", errors.New("connection_string is required")
 	}
 
 	if s.PrivateKey != "" {

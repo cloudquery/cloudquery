@@ -1,7 +1,7 @@
 package spec
 
 import (
-	"fmt"
+	"errors"
 
 	"github.com/cloudquery/filetypes/v4"
 )
@@ -58,7 +58,7 @@ func (s *Spec) SetDefaults() {
 
 func (s *Spec) Validate() error {
 	if len(s.Brokers) == 0 {
-		return fmt.Errorf("at least one broker is required")
+		return errors.New("at least one broker is required")
 	}
 
 	// required for s.FileSpec.Validate call

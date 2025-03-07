@@ -63,7 +63,7 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClie
 
 func (c *Client) Close(ctx context.Context) error {
 	if c.db == nil {
-		return fmt.Errorf("client already closed or not initialized")
+		return errors.New("client already closed or not initialized")
 	}
 
 	if err := c.writer.Close(ctx); err != nil {

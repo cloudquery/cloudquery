@@ -2,7 +2,7 @@ package client
 
 import (
 	_ "embed"
-	"fmt"
+	"errors"
 	"strings"
 )
 
@@ -58,7 +58,7 @@ func (s *Spec) SetDefaults() {
 func (s *Spec) Validate() error {
 	for _, v := range s.RequiredEnv {
 		if strings.Count(v, "=") != 1 {
-			return fmt.Errorf("required_env must be in the format `key=value`")
+			return errors.New("required_env must be in the format `key=value`")
 		}
 	}
 	return nil

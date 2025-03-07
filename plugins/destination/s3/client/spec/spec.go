@@ -1,6 +1,7 @@
 package spec
 
 import (
+	"errors"
 	"fmt"
 	"path"
 	"path/filepath"
@@ -172,24 +173,24 @@ func (s *Spec) SetDefaults() {
 
 func (s *Spec) Validate() error {
 	if len(s.Bucket) == 0 {
-		return fmt.Errorf("`bucket` is required")
+		return errors.New("`bucket` is required")
 	}
 	if len(s.Region) == 0 {
-		return fmt.Errorf("`region` is required")
+		return errors.New("`region` is required")
 	}
 
 	if len(s.Path) == 0 {
-		return fmt.Errorf("`path` is required")
+		return errors.New("`path` is required")
 	}
 	if path.IsAbs(s.Path) {
-		return fmt.Errorf("`path` should not start with a \"/\"")
+		return errors.New("`path` should not start with a \"/\"")
 	}
 	if s.Path != path.Clean(s.Path) {
-		return fmt.Errorf("`path` should not contain relative paths or duplicate slashes")
+		return errors.New("`path` should not contain relative paths or duplicate slashes")
 	}
 
 	if s.GenerateEmptyObjects && s.Format != filetypes.FormatTypeParquet {
-		return fmt.Errorf("`write_empty_objects_for_empty_tables` can only be used with `parquet` format")
+		return errors.New("`write_empty_objects_for_empty_tables` can only be used with `parquet` format")
 	}
 
 	if s.NoRotate {
@@ -198,7 +199,7 @@ func (s *Spec) Validate() error {
 		}
 
 		if (s.BatchSize != nil && *s.BatchSize > 0) || (s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) || (s.BatchTimeout != nil && s.BatchTimeout.Duration() > 0) {
-			return fmt.Errorf("`no_rotate` cannot be used with non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`")
+			return errors.New("`no_rotate` cannot be used with non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`")
 		}
 	}
 

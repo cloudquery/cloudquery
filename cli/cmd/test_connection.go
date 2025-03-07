@@ -386,7 +386,7 @@ func filterFailedTestResults(results []testConnectionResult) (*testConnectionRes
 	case 1:
 		return &failedResults[0], nil
 	default:
-		return nil, fmt.Errorf("multiple test connection failures are not supported")
+		return nil, errors.New("multiple test connection failures are not supported")
 	}
 }
 
