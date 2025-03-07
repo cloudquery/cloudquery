@@ -1,8 +1,9 @@
 package client
 
 import (
-	"github.com/cloudquery/codegen/jsonschema"
 	"testing"
+
+	"github.com/cloudquery/codegen/jsonschema"
 )
 
 func TestJSONSchema(t *testing.T) {

@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 
@@ -50,7 +51,7 @@ func (c *Client) Transform(ctx context.Context, recvRecords <-chan arrow.Record,
 
 			sourceRecords++
 			if c.spec.FailImmediately || (c.spec.FailAfterNSourceRecords > 0 && sourceRecords > c.spec.FailAfterNSourceRecords) {
-				return fmt.Errorf("failing at the transformer stage according to spec requirements")
+				return errors.New("failing at the transformer stage according to spec requirements")
 			}
 			if c.spec.ExitImmediately {
 				os.Exit(1)

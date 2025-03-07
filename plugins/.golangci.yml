@@ -89,6 +89,7 @@ linters:
     - errcheck
     - gocritic
     - gofmt
+    - goimports
     - gosimple
     - govet
     - ineffassign

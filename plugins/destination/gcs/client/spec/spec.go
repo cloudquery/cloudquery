@@ -2,6 +2,7 @@ package spec
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"path/filepath"
 	"strings"
@@ -97,14 +98,14 @@ func (s *Spec) SetDefaults() {
 
 func (s *Spec) Validate() error {
 	if len(s.Bucket) == 0 {
-		return fmt.Errorf("`bucket` is required")
+		return errors.New("`bucket` is required")
 	}
 	if len(s.Path) == 0 {
-		return fmt.Errorf("`path` is required")
+		return errors.New("`path` is required")
 	}
 
 	if s.NoRotate && ((s.BatchSize != nil && *s.BatchSize > 0) || (s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) || (s.BatchTimeout != nil && s.BatchTimeout.Duration() > 0)) {
-		return fmt.Errorf("`no_rotate` cannot be used with non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`")
+		return errors.New("`no_rotate` cannot be used with non-zero `batch_size`, `batch_size_bytes` or `batch_timeout_ms`")
 	}
 
 	if len(s.ServiceAccountKeyJSON) > 0 {

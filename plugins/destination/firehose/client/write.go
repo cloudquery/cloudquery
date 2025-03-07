@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -24,7 +25,7 @@ func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage
 	arnResource := strings.Split(parsedARN.Resource, "/")
 	if len(arnResource) != 2 {
 		c.logger.Error().Err(err).Msg("invalid firehose stream ARN")
-		return fmt.Errorf("invalid firehose stream ARN")
+		return errors.New("invalid firehose stream ARN")
 	}
 	recordsBatchInput := &firehose.PutRecordBatchInput{
 		DeliveryStreamName: aws.String(arnResource[1]),
@@ -106,7 +107,7 @@ func (c *Client) Write(ctx context.Context, messages <-chan message.WriteMessage
 
 func (c *Client) sendBatch(ctx context.Context, recordsBatchInput *firehose.PutRecordBatchInput, count int) error {
 	if count >= c.spec.MaxRetries {
-		return fmt.Errorf("max retries reached")
+		return errors.New("max retries reached")
 	}
 	if recordsBatchInput == nil || len(recordsBatchInput.Records) == 0 {
 		return nil

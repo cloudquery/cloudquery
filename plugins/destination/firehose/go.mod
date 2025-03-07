@@ -9,8 +9,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.36.5
 	github.com/aws/aws-sdk-go-v2/service/sts v1.33.15
 	github.com/cloudquery/codegen v0.3.23
-	github.com/cloudquery/plugin-sdk/v4 v4.73.4
-	github.com/goccy/go-json v0.10.4
+	github.com/cloudquery/plugin-sdk/v4 v4.74.1
+	github.com/goccy/go-json v0.10.5
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.10.0
 )
@@ -26,16 +26,16 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.12.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.12.14 // indirect
-	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.29.13 // indirect
-	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.25.12 // indirect
+	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.29.18 // indirect
+	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.25.16 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.24.16 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.28.15 // indirect
 	github.com/aws/smithy-go v1.22.2 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.13.5 // indirect
-	github.com/cloudquery/plugin-pb-go v1.26.6 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.13.6 // indirect
+	github.com/cloudquery/plugin-pb-go v1.26.8 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
@@ -87,7 +87,7 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20250115164207-1a7da9e5054f // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250115164207-1a7da9e5054f // indirect
 	google.golang.org/grpc v1.70.0 // indirect
-	google.golang.org/protobuf v1.36.4 // indirect
+	google.golang.org/protobuf v1.36.5 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -37,7 +38,7 @@ func (c *Client) Close(ctx context.Context) error {
 }
 
 func (*Client) DeleteStale(context.Context, message.WriteDeleteStales) error {
-	return fmt.Errorf("DeleteStale not supported")
+	return errors.New("DeleteStale not supported")
 }
 
 func (c *Client) verifyVersion() error {
