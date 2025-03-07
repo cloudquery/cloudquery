@@ -50,8 +50,8 @@ github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66 h1:OZLPSIBYE
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66/go.mod h1:0SoZ/U7yJlNOR+fWsBSeTvTbGXB6DK01tzJ7m2Xfg34=
 github.com/cloudquery/plugin-pb-go v1.26.8 h1:mHNyOyG/MW/rjDVR0OR8DdezXmyoD4drphyHlYmnJoY=
 github.com/cloudquery/plugin-pb-go v1.26.8/go.mod h1:orruK+wdIP3kOvmEQhCcFND2bVVH7o0fFSGrqZYMt7k=
-github.com/cloudquery/plugin-sdk/v4 v4.73.4 h1:KlgJ2ceIDWF24/LWFzmvr9jl7CS3CnLA8S7RXx8n7wI=
-github.com/cloudquery/plugin-sdk/v4 v4.73.4/go.mod h1:elzBiWy5NLHVM8CBdIcNeu5nqliZ+237B9xHYyw0PQw=
+github.com/cloudquery/plugin-sdk/v4 v4.74.1 h1:oz4c7hDp9gb7QljdwKtLSvgQt97wmOlycHvgVI3cHVs=
+github.com/cloudquery/plugin-sdk/v4 v4.74.1/go.mod h1:9yIobejLxiD39lCNm30JJOJ2dQgqST71dnb0d/SVKRU=
 github.com/containerd/log v0.1.0 h1:TCJt7ioM2cr/tfR8GPbGf9/VRAX8D2B4PjzCpfX540I=
 github.com/containerd/log v0.1.0/go.mod h1:VRRf09a7mHDIRezVKTRCrOq78v577GXq3bSa3EhrzVo=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
@@ -99,8 +99,8 @@ github.com/go-logr/stdr v1.2.2/go.mod h1:mMo/vtBO5dYbehREoey6XUKy/eSumjCCveDpRre
 github.com/go-stack/stack v1.8.0/go.mod h1:v0f6uXyyMGvRgIKkXu+yp6POWl0qKG85gN/melR3HDY=
 github.com/go-viper/mapstructure/v2 v2.2.1 h1:ZAaOCxANMuZx5RCeg0mBdEZk7DZasvvZIxtHqx8aGss=
 github.com/go-viper/mapstructure/v2 v2.2.1/go.mod h1:oJDH3BJKyqBA2TXFhDsKDGDTlndYOZ6rGS0BRZIxGhM=
-github.com/goccy/go-json v0.10.4 h1:JSwxQzIqKfmFX1swYPpUThQZp/Ka4wzJdK0LWVytLPM=
-github.com/goccy/go-json v0.10.4/go.mod h1:oq7eo15ShAhp70Anwd5lgX2pLfOS3QCiwU/PULtXL6M=
+github.com/goccy/go-json v0.10.5 h1:Fq85nIqj+gXn/S5ahsiTlK3TmC85qgirsdTP/+DeaC4=
+github.com/goccy/go-json v0.10.5/go.mod h1:oq7eo15ShAhp70Anwd5lgX2pLfOS3QCiwU/PULtXL6M=
 github.com/godbus/dbus/v5 v5.0.4/go.mod h1:xhWf0FNVPg57R7Z0UbKHbJfkEywrmjJnf7w5xrFpKfA=
 github.com/gogo/protobuf v1.1.1/go.mod h1:r8qH/GZQm5c6nD/R0oafs1akxWv10x8SbQlK7atdtwQ=
 github.com/gogo/protobuf v1.3.2 h1:Ov1cvc58UF3b5XjBnZv7+opcTcQFZebYjWzi34vdm4Q=
