@@ -58,6 +58,12 @@
       commitMessagePrefix: 'chore(deps): ',
       groupName: 'CloudQuery Plugin Config UI packages',
     },
+    {
+      matchDatasources: ["golang-version"],
+      rangeStrategy: "bump",
+      addLabels: ["no automerge"],
+      schedule: ["before 3am on Saturday"],
+    },
   ],
   ignorePaths: [
     'plugins/source/aws/**',
