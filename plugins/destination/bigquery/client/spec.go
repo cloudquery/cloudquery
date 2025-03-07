@@ -3,6 +3,7 @@ package client
 import (
 	_ "embed"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"time"
 
@@ -93,10 +94,10 @@ func (s *Spec) SetDefaults() {
 
 func (s *Spec) Validate() error {
 	if s.ProjectID == "" {
-		return fmt.Errorf("project_id is required")
+		return errors.New("project_id is required")
 	}
 	if s.DatasetID == "" {
-		return fmt.Errorf("dataset_id is required")
+		return errors.New("dataset_id is required")
 	}
 	if err := s.TimePartitioning.Validate(); err != nil {
 		return fmt.Errorf("time_partitioning: %w", err)

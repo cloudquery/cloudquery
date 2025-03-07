@@ -2,7 +2,7 @@ package client
 
 import (
 	_ "embed"
-	"fmt"
+	"errors"
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
@@ -69,13 +69,13 @@ func (s *Spec) SetDefaults() {
 
 func (s *Spec) Validate() error {
 	if s.BatchWriter && s.StreamBatchWriter {
-		return fmt.Errorf("batch_writer and stream_batch_writer cannot be true at the same time")
+		return errors.New("batch_writer and stream_batch_writer cannot be true at the same time")
 	}
 	if s.BatchWriter && s.MixedBatchWriter {
-		return fmt.Errorf("batch_writer and mixed_batch_writer cannot be true at the same time")
+		return errors.New("batch_writer and mixed_batch_writer cannot be true at the same time")
 	}
 	if s.StreamBatchWriter && s.MixedBatchWriter {
-		return fmt.Errorf("stream_batch_writer and mixed_batch_writer cannot be true at the same time")
+		return errors.New("stream_batch_writer and mixed_batch_writer cannot be true at the same time")
 	}
 	return nil
 }

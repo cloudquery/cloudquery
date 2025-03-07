@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
@@ -50,7 +51,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 func (c *Client) Close(ctx context.Context) error {
 	var err error
 	if c.db == nil {
-		return fmt.Errorf("client already closed or not initialized")
+		return errors.New("client already closed or not initialized")
 	}
 	err = c.db.Close()
 	c.db = nil

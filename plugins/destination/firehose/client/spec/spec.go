@@ -2,7 +2,7 @@ package spec
 
 import (
 	_ "embed"
-	"fmt"
+	"errors"
 
 	"github.com/aws/aws-sdk-go-v2/aws/arn"
 )
@@ -46,14 +46,14 @@ func (s *Spec) SetDefaults() {
 
 func (s *Spec) Validate() error {
 	if len(s.StreamARN) == 0 {
-		return fmt.Errorf("kinesis firehose Stream ARN is required")
+		return errors.New("kinesis firehose Stream ARN is required")
 	}
 	parsedARN, err := arn.Parse(s.StreamARN)
 	if err != nil {
-		return fmt.Errorf("kinesis firehose Stream ARN is invalid")
+		return errors.New("kinesis firehose Stream ARN is invalid")
 	}
 	if parsedARN.Service != "firehose" {
-		return fmt.Errorf("kinesis firehose Stream ARN is invalid")
+		return errors.New("kinesis firehose Stream ARN is invalid")
 	}
 	return nil
 }

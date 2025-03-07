@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"strings"
 	"sync"
@@ -128,7 +129,7 @@ func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) err
 
 func (c *Client) Close(ctx context.Context) error {
 	if c.conn == nil {
-		return fmt.Errorf("client already closed or not initialized")
+		return errors.New("client already closed or not initialized")
 	}
 
 	c.conn.Close()

@@ -4,7 +4,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	_ "embed"
-	"fmt"
+	"errors"
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
@@ -51,9 +51,9 @@ type Spec struct {
 func (s *Spec) validate() error {
 	switch {
 	case len(s.Host) == 0:
-		return fmt.Errorf("empty \"host\" value")
+		return errors.New("empty \"host\" value")
 	case len(s.APIKey) == 0:
-		return fmt.Errorf("empty \"api_key\" value")
+		return errors.New("empty \"api_key\" value")
 	default:
 		return nil
 	}
@@ -96,7 +96,7 @@ func (s *Spec) getClient() (*meilisearch.Client, error) {
 	}
 
 	if ok := certPool.AppendCertsFromPEM([]byte(s.CACert)); !ok {
-		return nil, fmt.Errorf("failed to append \"ca_cert\" value")
+		return nil, errors.New("failed to append \"ca_cert\" value")
 	}
 
 	httpClient := &fasthttp.Client{

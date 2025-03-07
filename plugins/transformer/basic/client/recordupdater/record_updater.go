@@ -2,6 +2,7 @@ package recordupdater
 
 import (
 	"crypto/sha256"
+	"errors"
 	"fmt"
 	"strings"
 	"time"
@@ -38,7 +39,7 @@ func (r *RecordUpdater) RemoveColumns(columnNames []string) (arrow.Record, error
 			return nil, err
 		}
 		if len(colIndices) == int(r.record.NumCols()) {
-			return nil, fmt.Errorf("cannot remove all columns")
+			return nil, errors.New("cannot remove all columns")
 		}
 
 		oldRecord := r.record.Columns()
