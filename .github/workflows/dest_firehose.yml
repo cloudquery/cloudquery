@@ -41,7 +41,7 @@ jobs:
       - name: golangci-lint
         uses: cloudquery/golangci-lint-action@master
         with:
-          version: v1.64.5
+          version: v1.64.6
           working-directory: plugins/destination/firehose
           args: "--config ../../.golangci.yml"
       - name: gen
