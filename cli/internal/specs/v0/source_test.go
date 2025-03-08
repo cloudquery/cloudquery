@@ -25,7 +25,7 @@ var sourceUnmarshalSpecTestCases = []struct {
 spec:
   name: 3
 `,
-		"failed to decode spec: json: cannot unmarshal number into Go struct field Source.name of type string",
+		"failed to decode spec: json: cannot unmarshal number into Go struct field Source.Metadata.name of type string",
 		&Source{
 			Metadata: Metadata{Name: "test"},
 			Tables:   []string{"*"},
