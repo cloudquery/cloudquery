@@ -11,9 +11,9 @@ func AddColumn(table string, cluster string, col schema.Column) (string, error) 
 	if err != nil {
 		return "", err
 	}
-	return "ALTER TABLE " + tableNamePart(table, cluster) + " ADD COLUMN " + definition, nil
+	return "ALTER TABLE " + tableNamePart(table, cluster) + " ADD COLUMN IF NOT EXISTS " + definition, nil
 }
 
 func DropColumn(table string, cluster string, col schema.Column) string {
-	return "ALTER TABLE " + tableNamePart(table, cluster) + " DROP COLUMN " + util.SanitizeID(col.Name)
+	return "ALTER TABLE " + tableNamePart(table, cluster) + " DROP COLUMN IF EXISTS " + util.SanitizeID(col.Name)
 }
