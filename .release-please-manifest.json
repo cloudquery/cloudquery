@@ -1,5 +1,5 @@
 {
-  "cli": "6.15.4",
+  "cli": "6.15.5",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "22.19.2",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -73,7 +73,7 @@
   "plugins/source/homebrew+FILLER": "0.0.0",
   "plugins/destination/mysql": "5.3.8",
   "plugins/destination/mysql+FILLER": "0.0.0",
-  "plugins/destination/firehose": "2.7.0",
+  "plugins/destination/firehose": "2.7.1",
   "plugins/destination/firehose+FILLER": "0.0.0",
   "plugins/source/awspricing": "3.1.5",
   "plugins/source/awspricing+FILLER": "0.0.0",
