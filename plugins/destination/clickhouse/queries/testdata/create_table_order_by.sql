@@ -1,4 +1,4 @@
-CREATE TABLE `table_name` (
+CREATE TABLE IF NOT EXISTS `table_name` (
   `_cq_id` UUID,
   `_cq_parent_id` Nullable(UUID),
   `_cq_source_name` Nullable(String),
