@@ -1,5 +1,14 @@
 # Changelog
 
+## [6.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.1.0...plugins-destination-clickhouse-v6.1.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.74.1 ([#20311](https://github.com/cloudquery/cloudquery/issues/20311)) ([10f803f](https://github.com/cloudquery/cloudquery/commit/10f803f0555bdc062ccd3c7f30ffeff0746f53ab))
+* Don't fail on creating existing columns or dropping non existing ones ([#20345](https://github.com/cloudquery/cloudquery/issues/20345)) ([c128df7](https://github.com/cloudquery/cloudquery/commit/c128df7ba956993f6feb300753e2eef21ad71cd6))
+* Don't fail on creating existing tables ([#20344](https://github.com/cloudquery/cloudquery/issues/20344)) ([5eaf69a](https://github.com/cloudquery/cloudquery/commit/5eaf69a91f6d635c61f4fb0da819ed617932ffc9))
+
 ## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.0.8...plugins-destination-clickhouse-v6.1.0) (2025-02-19)
 
 
