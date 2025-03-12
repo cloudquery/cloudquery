@@ -1,1 +1,1 @@
-ALTER TABLE `table_name` ADD COLUMN `my_col` Int64
+ALTER TABLE `table_name` ADD COLUMN IF NOT EXISTS `my_col` Int64
