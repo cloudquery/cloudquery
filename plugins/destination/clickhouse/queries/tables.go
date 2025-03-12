@@ -45,7 +45,7 @@ func isCompoundType(col schema.Column) bool {
 
 func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, partition []spec.PartitionStrategy, orderBy []spec.OrderByStrategy) (string, error) {
 	builder := strings.Builder{}
-	builder.WriteString("CREATE TABLE ")
+	builder.WriteString("CREATE TABLE IF NOT EXISTS ")
 	builder.WriteString(tableNamePart(table.Name, cluster))
 	builder.WriteString(" (\n")
 	builder.WriteString("  ")
