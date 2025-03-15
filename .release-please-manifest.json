@@ -83,7 +83,7 @@
   "plugins/source/mysql+FILLER": "0.0.0",
   "plugins/destination/gremlin": "2.6.11",
   "plugins/destination/gremlin+FILLER": "0.0.0",
-  "plugins/destination/meilisearch": "2.5.8",
+  "plugins/destination/meilisearch": "2.5.9",
   "plugins/destination/meilisearch+FILLER": "1.0.0",
   "plugins/source/firestore": "3.1.9",
   "plugins/source/firestore+FILLER": "0.0.0",
