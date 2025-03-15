@@ -58,9 +58,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.24.0-release-cache-${{ hashFiles('scaffold/go.sum') }}
+          key: ${{ runner.os }}-go-1.24.1-release-cache-${{ hashFiles('scaffold/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.24.0-release-cache-scaffold
+            ${{ runner.os }}-go-1.24.1-release-cache-scaffold
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v5
