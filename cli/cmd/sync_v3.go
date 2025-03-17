@@ -377,6 +377,10 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				Warnings: int64(totals.Warnings),
 				Status:   &status,
 			}
+			if shard != nil {
+				obj.ShardNum = &shard.num
+				obj.ShardTotal = &shard.total
+			}
 
 			log.Debug().Interface("body", obj).Msg("Sending sync progress to API")
 			res, err := progressAPIClient.CreateSyncRunProgressWithResponse(ctx, teamName, syncName, syncRunUUID, obj)
