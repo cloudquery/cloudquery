@@ -48,8 +48,8 @@ jobs:
               base = context.payload.pull_request.base.sha
               head = context.payload.pull_request.head.sha
             } else if (context.eventName === 'push') {
-              base = github.event.before
-              head = github.event.after
+              base = context.payload.before
+              head = context.payload.after
             } else {
               throw new Error('Unsupported event type: ' + context.eventName)
             }
