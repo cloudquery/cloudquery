@@ -11,27 +11,25 @@ env:
   ui_dir_name: /cloud-config-ui
 
 jobs:
+  changed-files:
+    uses: ./.github/workflows/changed_files.yml
+    with:
+      files: |
+        plugins/source/**/cloud-config-ui/**
+        plugins/destination/**/cloud-config-ui/**
+      dir_names: true
   prepare:
     runs-on: ubuntu-latest
+    needs: changed-files
     outputs:
       matrix: ${{ steps.matrix.outputs.result }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v45
-        with:
-          files: |
-            plugins/source/**/cloud-config-ui/**
-            plugins/destination/**/cloud-config-ui/**
-          dir_names: "true"
       - name: Generate plugins matrix
         id: matrix
         uses: actions/github-script@v7
         env:
-          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+          ALL_CHANGED_FILES: ${{ needs.changed-files.outputs.changed_files }}
         with:
           script: |
             const fs = require('fs');

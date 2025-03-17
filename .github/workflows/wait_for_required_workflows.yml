@@ -10,20 +10,18 @@ on:
       - main
 
 jobs:
+  prepare:
+    uses: ./.github/workflows/changed_files.yml
   wait_for_required_workflows:
     timeout-minutes: 60
     name: wait-for-required-workflows
     runs-on: ubuntu-latest
+    needs: prepare
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v45
       - uses: actions/github-script@v7
         env:
-          FILES: ${{ steps.changed-files.outputs.all_modified_files }}
+          FILES: ${{ needs.prepare.outputs.changed_files }}
         with:
           script: |
             const script = require('./scripts/workflows/wait_for_required_workflows.js')
