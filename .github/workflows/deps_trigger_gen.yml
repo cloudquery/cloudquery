@@ -7,34 +7,40 @@ on:
       - '**.mod'
 
 jobs:
+  changed-files:
+    # We auto gen code for service SDK updates (e.g. AWS SDK), but not for our own SDK, as those changes should be handled manually
+    if: github.event.pull_request.user.login == 'cq-bot' && startsWith(github.event.pull_request.title, 'fix(deps)') && startsWith(github.head_ref, 'renovate/') && !contains(github.head_ref, 'cloudquery-plugin-sdk')
+    uses: ./.github/workflows/changed_files.yml
+    with:
+      files: |
+        plugins/source/*/go.mod
+        plugins/destination/*/go.mod
+        cli/go.mod
   gen-code-deps:
     timeout-minutes: 5
     runs-on: ubuntu-latest
-    # We auto gen code for service SDK updates (e.g. AWS SDK), but not for our own SDK, as those changes should be handled manually
-    if: github.event.pull_request.user.login == 'cq-bot' && startsWith(github.event.pull_request.title, 'fix(deps)') && startsWith(github.head_ref, 'renovate/') && !contains(github.head_ref, 'cloudquery-plugin-sdk')
+    needs: changed-files
+    if: needs.changed-files.outputs.any_changed == 'true'
     steps:
-      - name: Get changed files
-        id: changed-files
-        uses: Ana06/get-changed-files@v2.3.0
-        with:
-          filter: 'go.mod'
       - uses: actions/github-script@v7
-        if: startsWith(steps.changed-files.outputs.all, 'plugins/source') || startsWith(steps.changed-files.outputs.all, 'plugins/destination') || startsWith(steps.changed-files.outputs.all, 'cli')
         env:
           SHA: ${{ github.event.pull_request.head.sha }}
-          GO_MOD_FILE: ${{ steps.changed-files.outputs.all }}
+          GO_MOD_FILES: ${{ needs.changed-files.outputs.changed_files }}
         with:
           github-token: ${{ secrets.GH_CQ_BOT }}
           script: |
             const path = require('path');
             const { issue: { number: issue_number }, repo: { owner, repo } } = context;
-            const { SHA: sha, GO_MOD_FILE: goModFile } = process.env;
-            // e.g. plugins/source/aws/go.mod
-            const dir = path.dirname(goModFile);
-            console.log({ issue_number, owner, repo, sha, dir });
-            await github.rest.issues.createComment({
-              issue_number,
-              owner,
-              repo,
-              body: `/gen sha=${sha} dir=${dir}`
-            })
+            const { SHA: sha, GO_MOD_FILES: goModFiles } = process.env;
+            const goModFilesArray = goModFiles.split(' ');
+            for (const goModFile of goModFilesArray) {
+              // e.g. plugins/source/aws/go.mod
+              const dir = path.dirname(goModFile);
+              console.log({ issue_number, owner, repo, sha, dir });
+              await github.rest.issues.createComment({
+                issue_number,
+                owner,
+                repo,
+                body: `/gen sha=${sha} dir=${dir}`
+              })
+            }
