@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
@@ -123,6 +124,18 @@ type Spec struct {
 	//
 	// Defaults to `30s` unless `no_rotate` is `true` (will be `0s` then).
 	BatchTimeout *configtype.Duration `json:"batch_timeout" jsonschema:"default=30s"`
+
+	// If `true`, will log AWS debug logs, including retries and other request/response metadata. Requires passing `--log-level debug` to the CloudQuery CLI.
+	AWSDebug bool `json:"aws_debug,omitempty" jsonschema:"default=false"`
+
+	// Defines the maximum number of times an API request will be retried.
+	MaxRetries *int `json:"max_retries,omitempty" jsonschema:"default=3"`
+
+	// Defines the duration between retry attempts.
+	MaxBackoff *int `json:"max_backoff,omitempty" jsonschema:"default=30"`
+
+	// Defines the maximum size of each part in the multipart upload.
+	PartSize *int64 `json:"part_size,omitempty" jsonschema:"default=5242880"` // 5 MiB
 }
 
 type ServerSideEncryptionConfiguration struct {
@@ -168,6 +181,20 @@ func (s *Spec) SetDefaults() {
 			d := configtype.NewDuration(30 * time.Second)
 			s.BatchTimeout = &d
 		}
+	}
+
+	if s.MaxRetries == nil {
+		maxRetries := 3
+		s.MaxRetries = &maxRetries
+	}
+
+	if s.MaxBackoff == nil {
+		maxBackoff := 30
+		s.MaxBackoff = &maxBackoff
+	}
+	if s.PartSize == nil {
+		maxPartSize := manager.DefaultUploadPartSize
+		s.PartSize = &maxPartSize
 	}
 }
 
