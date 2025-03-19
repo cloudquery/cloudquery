@@ -1,0 +1,18 @@
+---
+kind: source
+spec:
+  name: azure
+  version: v1.3.3
+  destinations: [postgresql]
+  path: cloudquery/aws
+  tables: [test]
+  spec:
+    table_options:
+      azure_sql_server_auditing_events:
+        start_time: ${time:brkn123}
+---
+kind: destination
+spec:
+  name: postgresql
+  path: cloudquery/postgresql
+  version: v1.6.3

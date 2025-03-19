@@ -1,0 +1,16 @@
+kind: source
+spec:
+  name: aws
+  version: v1.3.3
+  destinations: [postgresql]
+  path: cloudquery/aws
+  tables: [test]
+  spec:
+    # Specifying non-relative time for easier testing
+    table_options: ${time:2025-01-01}
+---
+kind: destination
+spec:
+  name: postgresql
+  path: cloudquery/postgresql
+  version: v1.6.3

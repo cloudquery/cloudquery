@@ -12,7 +12,9 @@ import (
 	"slices"
 	"strconv"
 	"strings"
+	"time"
 
+	"github.com/cloudquery/plugin-sdk/v4/configtype"
 	"github.com/ghodss/yaml"
 	"github.com/rs/zerolog/log"
 )
@@ -33,6 +35,7 @@ type SpecReader struct {
 
 var fileRegex = regexp.MustCompile(`\$\{file:([^}]+)\}`)
 var envRegex = regexp.MustCompile(`\$\{([^}]+)\}`)
+var timeRegex = regexp.MustCompile(`\$\{time:([^}]+)\}`)
 
 func expandFileConfig(cfg []byte) ([]byte, error) {
 	var expandErr error
@@ -70,6 +73,20 @@ func expandEnv(cfg []byte) ([]byte, error) {
 	return cfg, expandErr
 }
 
+func expandTime(cfg []byte) ([]byte, error) {
+	var expandErr error
+	cfg = timeRegex.ReplaceAllFunc(cfg, func(match []byte) []byte {
+		relativeTime := timeRegex.FindSubmatch(match)[1]
+		parsedTime, err := configtype.ParseTime(string(relativeTime))
+		if err != nil {
+			expandErr = errors.Join(errors.New("failed to substitute time"), err)
+			return nil
+		}
+		return []byte(parsedTime.AsTime(time.Now()).Format(time.RFC3339))
+	})
+	return cfg, expandErr
+}
+
 func (r *SpecReader) loadSpecsFromFile(path string) error {
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -89,6 +106,10 @@ func (r *SpecReader) loadSpecsFromFile(path string) error {
 		doc, err = expandFileConfig(doc)
 		if err != nil {
 			return fmt.Errorf("failed to expand file variable in file %s (section %d): %w", path, i+1, err)
+		}
+		doc, err = expandTime(doc)
+		if err != nil {
+			return fmt.Errorf("failed to expand time variable in file %s (section %d): %w", path, i+1, err)
 		}
 		doc, err = expandEnv(doc)
 		if err != nil {
