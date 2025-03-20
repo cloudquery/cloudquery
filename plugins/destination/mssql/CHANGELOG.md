@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v5.1.9...plugins-destination-mssql-v5.1.10) (2025-03-20)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.36.0 [SECURITY] ([#20358](https://github.com/cloudquery/cloudquery/issues/20358)) ([66dd378](https://github.com/cloudquery/cloudquery/commit/66dd3785af221a4eb0ab5d1d9820ff5d3ac54198))
+
 ## [5.1.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v5.1.8...plugins-destination-mssql-v5.1.9) (2025-03-11)
 
 
