@@ -12,6 +12,8 @@ import (
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/aws/ratelimit"
+	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	awshttp "github.com/aws/aws-sdk-go-v2/aws/transport/http"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
@@ -73,6 +75,13 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 
 	configFns := []func(*config.LoadOptions) error{
 		config.WithDefaultRegion("us-east-1"),
+		config.WithRetryer(func() aws.Retryer {
+			return retry.NewStandard(func(so *retry.StandardOptions) {
+				so.MaxAttempts = *c.spec.MaxRetries
+				so.MaxBackoff = time.Duration(*c.spec.MaxBackoff) * time.Second
+				so.RateLimiter = ratelimit.None
+			})
+		}),
 	}
 	if c.spec.LocalProfile != "" {
 		configFns = append(configFns, config.WithSharedConfigProfile(c.spec.LocalProfile))
@@ -84,7 +93,9 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 	}
 
 	cfg.Region = c.spec.Region
-
+	if c.spec.AWSDebug {
+		cfg.ClientLogMode |= aws.LogRequestWithBody | aws.LogResponseWithBody
+	}
 	cfg.HTTPClient = awshttp.NewBuildableClient().WithTransportOptions(func(tr *http.Transport) {
 		if tr.TLSClientConfig == nil {
 			tr.TLSClientConfig = &tls.Config{}

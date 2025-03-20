@@ -26,15 +26,15 @@ func TestSpec_SetDefaults(t *testing.T) {
 
 		{
 			Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}},
-			Want: Spec{Path: "test/path/{{TABLE}}.json.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, TestWrite: boolPtr(true), BatchSize: int64Ptr(10000), BatchSizeBytes: int64Ptr(50 * 1024 * 1024), BatchTimeout: &dur30},
+			Want: Spec{Path: "test/path/{{TABLE}}.json.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, TestWrite: boolPtr(true), BatchSize: int64Ptr(10000), BatchSizeBytes: int64Ptr(50 * 1024 * 1024), BatchTimeout: &dur30, MaxRetries: intPtr(3), MaxBackoff: intPtr(30), PartSize: int64Ptr(5242880)},
 		},
 		{
 			Give: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}, TestWrite: boolPtr(false)},
-			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}, TestWrite: boolPtr(false), BatchSize: int64Ptr(10000), BatchSizeBytes: int64Ptr(50 * 1024 * 1024), BatchTimeout: &dur30},
+			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json", FormatSpec: map[string]any{"delimiter": ","}}, TestWrite: boolPtr(false), BatchSize: int64Ptr(10000), BatchSizeBytes: int64Ptr(50 * 1024 * 1024), BatchTimeout: &dur30, MaxRetries: intPtr(3), MaxBackoff: intPtr(30), PartSize: int64Ptr(5242880)},
 		},
 		{
 			Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: true},
-			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json"}, TestWrite: boolPtr(true), NoRotate: true, BatchSize: int64Ptr(0), BatchSizeBytes: int64Ptr(0), BatchTimeout: &dur0},
+			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json"}, TestWrite: boolPtr(true), NoRotate: true, BatchSize: int64Ptr(0), BatchSizeBytes: int64Ptr(0), BatchTimeout: &dur0, MaxRetries: intPtr(3), MaxBackoff: intPtr(30), PartSize: int64Ptr(5242880)},
 		},
 	}
 	for _, tc := range cases {
@@ -84,6 +84,10 @@ func boolPtr(b bool) *bool {
 }
 
 func int64Ptr(i int64) *int64 {
+	return &i
+}
+
+func intPtr(i int) *int {
 	return &i
 }
 
