@@ -8,8 +8,9 @@ spec:
   tables: [test]
   spec:
     table_options:
-      azure_sql_server_auditing_events:
-        start_time: ${time:brkn123}
+      aws_cloudtrail_events:
+        lookup_events:
+          - start_time: ${time:brkn123}
 ---
 kind: destination
 spec:

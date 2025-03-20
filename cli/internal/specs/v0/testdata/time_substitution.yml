@@ -6,8 +6,10 @@ spec:
   path: cloudquery/aws
   tables: [test]
   spec:
-    # Specifying non-relative time for easier testing
-    table_options: ${time:2025-01-01}
+    table_options:
+      aws_cloudtrail_events:
+        lookup_events:
+          - start_time: ${time:2025-01-01}  # Specifying non-relative time for easier testing
 ---
 kind: destination
 spec:

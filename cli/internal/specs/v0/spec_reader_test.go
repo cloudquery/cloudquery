@@ -671,7 +671,7 @@ var specLoaderTestCases = []specLoaderTestCase{
 				},
 				Destinations: []string{"postgresql"},
 				Tables:       []string{"test"},
-				Spec:         map[string]any{"table_options": time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC).Format(time.RFC3339)},
+				Spec:         map[string]any{"table_options": map[string]any{"aws_cloudtrail_events": map[string]any{"lookup_events": []any{map[string]any{"start_time": time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC).Format(time.RFC3339)}}}}},
 			},
 		},
 		destinations: []*Destination{
