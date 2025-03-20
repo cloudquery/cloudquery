@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.10.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.10.8...plugins-destination-duckdb-v5.10.9) (2025-03-20)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.36.0 [SECURITY] ([#20358](https://github.com/cloudquery/cloudquery/issues/20358)) ([66dd378](https://github.com/cloudquery/cloudquery/commit/66dd3785af221a4eb0ab5d1d9820ff5d3ac54198))
+
 ## [5.10.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.10.7...plugins-destination-duckdb-v5.10.8) (2025-03-12)
 
 
