@@ -5,6 +5,20 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.16.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.15.5...cli-v6.16.0) (2025-03-20)
+
+
+### Features
+
+* Sync Run Progress: Report shard num ([#20386](https://github.com/cloudquery/cloudquery/issues/20386)) ([ceca11c](https://github.com/cloudquery/cloudquery/commit/ceca11c8dd43b94e24cb1df33a725cc9d5f5f87e))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.13.7 ([#20385](https://github.com/cloudquery/cloudquery/issues/20385)) ([388d88b](https://github.com/cloudquery/cloudquery/commit/388d88ba1618cf8748a42752ad60d7e89d1ba985))
+* **deps:** Update module golang.org/x/net to v0.36.0 [SECURITY] ([#20358](https://github.com/cloudquery/cloudquery/issues/20358)) ([66dd378](https://github.com/cloudquery/cloudquery/commit/66dd3785af221a4eb0ab5d1d9820ff5d3ac54198))
+* **deps:** Update module golang.org/x/net to v0.37.0 ([#20396](https://github.com/cloudquery/cloudquery/issues/20396)) ([f1b3a8c](https://github.com/cloudquery/cloudquery/commit/f1b3a8cdf5418872a963ad7a999315a46939113d))
+
 ## [6.15.5](https://github.com/cloudquery/cloudquery/compare/cli-v6.15.4...cli-v6.15.5) (2025-03-12)
 
 
