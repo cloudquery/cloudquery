@@ -169,6 +169,15 @@ func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.Record, er
 	return r.record, nil
 }
 
+func (r *RecordUpdater) ChangePrimaryKeys(columnNames []string) (arrow.Record, error) {
+	newSchema, err := r.schemaUpdater.ChangePrimaryKeys(columnNames)
+	if err != nil {
+		return nil, err
+	}
+	r.record = array.NewRecord(newSchema, r.record.Columns(), r.record.NumRows())
+	return r.record, nil
+}
+
 func (r *RecordUpdater) ChangeTableName(newTableNamePattern string) (arrow.Record, error) {
 	newSchema, err := r.schemaUpdater.ChangeTableName(newTableNamePattern)
 	if err != nil {

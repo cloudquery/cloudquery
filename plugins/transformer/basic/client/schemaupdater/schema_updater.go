@@ -3,6 +3,7 @@ package schemaupdater
 import (
 	"bytes"
 	"errors"
+	"slices"
 	"text/template"
 
 	"github.com/apache/arrow-go/v18/arrow"
@@ -55,6 +56,7 @@ func (s *SchemaUpdater) AddTimestampColumnAtPos(columnName string, zeroIndexedPo
 
 func (s *SchemaUpdater) RenameColumn(oldName, newName string) (*arrow.Schema, error) {
 	oldFields := s.schema.Fields()
+
 	newFields := make([]arrow.Field, len(oldFields))
 
 	for i, f := range oldFields {
@@ -94,4 +96,27 @@ func (s *SchemaUpdater) ChangeTableName(newTableNamePattern string) (*arrow.Sche
 	m[schema.MetadataTableName] = newName
 	newMetadata := arrow.MetadataFrom(m)
 	return arrow.NewSchema(s.schema.Fields(), &newMetadata), nil
+}
+
+func (s *SchemaUpdater) ChangePrimaryKeys(newPks []string) (*arrow.Schema, error) {
+	table, err := schema.NewTableFromArrowSchema(s.schema)
+	if err != nil {
+		return nil, err
+	}
+	oldPks := table.PrimaryKeys()
+	for _, oldPk := range oldPks {
+		if !slices.Contains(newPks, oldPk) {
+			table.Columns.Get(oldPk).PrimaryKey = false
+		}
+	}
+	for _, newPk := range newPks {
+		if !slices.Contains(oldPks, newPk) {
+			newCol := table.Columns.Get(newPk)
+			if newCol == nil {
+				return nil, errors.New("new primary key column not found in schema")
+			}
+			newCol.PrimaryKey = true
+		}
+	}
+	return table.ToArrowSchema(), nil
 }
