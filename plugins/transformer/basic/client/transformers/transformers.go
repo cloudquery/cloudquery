@@ -31,7 +31,7 @@ func NewFromSpec(sp spec.TransformationSpec) (*Transformer, error) {
 	case spec.KindRemoveColumns:
 		tr.fn = RemoveColumns(sp.Columns)
 	case spec.KindSetPrimaryKeys:
-		tr.fn = ChangePrimaryKeys(sp.Columns)
+		tr.fn = SetPrimaryKeys(sp.Columns)
 	case spec.KindObfuscateColumns:
 		tr.fn = ObfuscateColumns(sp.Columns)
 	case spec.KindChangeTableNames:
@@ -96,9 +96,9 @@ func RemoveColumns(columnNames []string) TransformationFn {
 	}
 }
 
-func ChangePrimaryKeys(columnNames []string) TransformationFn {
+func SetPrimaryKeys(columnNames []string) TransformationFn {
 	return func(record arrow.Record) (arrow.Record, error) {
-		return recordupdater.New(record).ChangePrimaryKeys(columnNames)
+		return recordupdater.New(record).SetPrimaryKeys(columnNames)
 	}
 }
 

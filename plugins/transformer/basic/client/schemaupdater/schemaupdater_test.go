@@ -104,14 +104,14 @@ func TestChangeTableName(t *testing.T) {
 	require.Equal(t, testSchema.Field(1).Name, updatedSchema.Field(1).Name, "Expected field name to remain the same")
 }
 
-func TestUpdatePrimaryKeys(t *testing.T) {
+func TestSetPrimaryKeys(t *testing.T) {
 	testSchema := createTestSchema()
 	updater := New(testSchema)
 
 	isPk, _ := testSchema.Field(1).Metadata.GetValue(schema.MetadataPrimaryKey)
 	require.Equal(t, "", isPk, "Expected 'col2' to not be marked as primary key")
 
-	updatedSchema, err := updater.ChangePrimaryKeys([]string{"col2"})
+	updatedSchema, err := updater.SetPrimaryKeys([]string{"col2"})
 	require.NoError(t, err)
 
 	isPk, _ = updatedSchema.Field(0).Metadata.GetValue(schema.MetadataPrimaryKey)
