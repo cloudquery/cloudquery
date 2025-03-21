@@ -37,6 +37,10 @@ spec:
     # batch_size: 10000 # 10K entries
     # batch_size_bytes: 52428800 # 50 MiB
     # batch_timeout: 30s # 30 seconds
+    # max_retries: 3 # 3 retries
+    # max_backoff: 30 # 30 seconds
+    # part_size: 5242880 # 5 MiB
+    # aws_debug: true
 ```
 
 It is also possible to use `{{YEAR}}`, `{{MONTH}}`, `{{DAY}}` and `{{HOUR}}` in the path to create a directory structure based on the current time. For example:

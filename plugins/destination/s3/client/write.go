@@ -69,7 +69,9 @@ func (c *Client) createObject(ctx context.Context, table *schema.Table, objKey s
 			params.ServerSideEncryption = sseConfiguration.ServerSideEncryption
 		}
 
-		_, err = manager.NewUploader(c.s3Client).Upload(ctx, params)
+		_, err = manager.NewUploader(c.s3Client, func(uploader *manager.Uploader) {
+			uploader.PartSize = *c.spec.PartSize
+		}).Upload(ctx, params)
 		return err
 	})
 	return s, err
