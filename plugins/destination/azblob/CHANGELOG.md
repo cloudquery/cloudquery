@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.4.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.11...plugins-destination-azblob-v4.4.12) (2025-03-22)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/golang-jwt/jwt/v5 to v5.2.2 [SECURITY] ([#20403](https://github.com/cloudquery/cloudquery/issues/20403)) ([6c8dc12](https://github.com/cloudquery/cloudquery/commit/6c8dc1245f1942a5cae1ad708b6b1f4a8c34217b))
+
 ## [4.4.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.10...plugins-destination-azblob-v4.4.11) (2025-03-20)
 
 
