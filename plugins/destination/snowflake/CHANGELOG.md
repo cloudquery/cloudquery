@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.4.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v4.4.9...plugins-destination-snowflake-v4.4.10) (2025-03-22)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/golang-jwt/jwt/v5 to v5.2.2 [SECURITY] ([#20407](https://github.com/cloudquery/cloudquery/issues/20407)) ([c6efff0](https://github.com/cloudquery/cloudquery/commit/c6efff091a2f039a3af04aa1077b9b01b4a2447b))
+
 ## [4.4.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v4.4.8...plugins-destination-snowflake-v4.4.9) (2025-03-20)
 
 
