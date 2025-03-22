@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-meilisearch-v2.5.9...plugins-destination-meilisearch-v2.5.10) (2025-03-22)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/golang-jwt/jwt/v4 to v4.5.2 [SECURITY] ([#20406](https://github.com/cloudquery/cloudquery/issues/20406)) ([7e752a1](https://github.com/cloudquery/cloudquery/commit/7e752a1730aa1ca9df06bef50f072933f2425b84))
+
 ## [2.5.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-meilisearch-v2.5.8...plugins-destination-meilisearch-v2.5.9) (2025-03-20)
 
 
