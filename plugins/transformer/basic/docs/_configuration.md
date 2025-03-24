@@ -16,6 +16,9 @@ spec:
         tables: ["xkcd_comics"]
         name: "source"
         value: "xkcd"
+      - kind: add_primary_keys
+        tables: ["xkcd_comics"]
+        columns: ["_cq_source_name"]
       - kind: add_current_timestamp_column
         tables: ["xkcd_comics"]
         name: "_record_processed_at"
