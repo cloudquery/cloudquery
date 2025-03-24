@@ -31,10 +31,10 @@ github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.12.3 h1:eAh2A4b
 github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.12.3/go.mod h1:0yKJC/kb8sAnmlYa6Zs3QVYqaC8ug2AbnNChv5Ox3uA=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.12.15 h1:dM9/92u2F1JbDaGooxTq18wmmFzbJRfXfVfy96/1CXM=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.12.15/go.mod h1:SwFBy2vjtA0vZbjjaFtfN045boopadnoVPhu4Fv66vY=
-github.com/aws/aws-sdk-go-v2/service/licensemanager v1.29.18 h1:bM0yV1nt4qYOwsDQNKZPw/xF4FITYTvhOjLdGlDFZik=
-github.com/aws/aws-sdk-go-v2/service/licensemanager v1.29.18/go.mod h1:WCmjk5IGwQxhFlDfAAGAcysvgY3XWqdZezKBx8QI/Sk=
-github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.25.16 h1:bi9vS9v6QrjWrsBBFdDoIugDeWi4DzGGmoJXLtofyqQ=
-github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.25.16/go.mod h1:Jr4C898NSVtCeMmSYaHypZVkRY6GfoBOQgxltendgXE=
+github.com/aws/aws-sdk-go-v2/service/licensemanager v1.30.1 h1:dfxrN6x8BrdOen0FIj2EgeR+ILB9DeHfJrMD/9xb4j4=
+github.com/aws/aws-sdk-go-v2/service/licensemanager v1.30.1/go.mod h1:FEnHotPAuDu2NbRcGHQj3vUS0cAFjbexAurh5WrfwI8=
+github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.26.2 h1:Av1CFiJPbaE7BYvzUXkaCSrP4GgxmQcbN0jKgWworBI=
+github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.26.2/go.mod h1:ctydsY6pVUtI6JnPssiu5YZabqUt4ZNONqJHehtiKBo=
 github.com/aws/aws-sdk-go-v2/service/sso v1.25.1 h1:8JdC7Gr9NROg1Rusk25IcZeTO59zLxsKgE0gkh5O6h0=
 github.com/aws/aws-sdk-go-v2/service/sso v1.25.1/go.mod h1:qs4a9T5EMLl/Cajiw2TcbNt2UNo/Hqlyp+GiuG4CFDI=
 github.com/aws/aws-sdk-go-v2/service/ssooidc v1.29.1 h1:KwuLovgQPcdjNMfFt9OhUd9a2OwcOKhxfvF4glTzLuA=
@@ -52,8 +52,8 @@ github.com/buger/jsonparser v1.1.1 h1:2PnMjfWD7wBILjqQbt530v576A/cAbQvEW9gGIpYMU
 github.com/buger/jsonparser v1.1.1/go.mod h1:6RYKKt7H4d4+iWqouImQ9R2FZql3VbhNgx27UK13J/0=
 github.com/cenkalti/backoff/v4 v4.3.0 h1:MyRJ/UdXutAwSAT+s3wNd7MfTIcy71VQueUuFK343L8=
 github.com/cenkalti/backoff/v4 v4.3.0/go.mod h1:Y3VNntkOUPxTVeUxJ/G5vcM//AlwfmyYozVcomhLiZE=
-github.com/cloudquery/cloudquery-api-go v1.13.6 h1:ica3n5RMgehw5ehSDQEUXkLfopi9Vw0yoWRBI4TujDI=
-github.com/cloudquery/cloudquery-api-go v1.13.6/go.mod h1:ZhEjPkDGDL2KZKlQLUnsgQ0mPz3qC7qftr37q3q+IcA=
+github.com/cloudquery/cloudquery-api-go v1.13.7 h1:XWn9TVLpKswTrNQT9MY/HUiQWwhyoMWKpGWoRcQM5bE=
+github.com/cloudquery/cloudquery-api-go v1.13.7/go.mod h1:ZhEjPkDGDL2KZKlQLUnsgQ0mPz3qC7qftr37q3q+IcA=
 github.com/cloudquery/codegen v0.3.23 h1:nd34I1BD3qb5li8Jttg0AqzHPwThTv7vHHn1zHUHGo0=
 github.com/cloudquery/codegen v0.3.23/go.mod h1:KgHyHocpyWGHmnhVHyJnHpCjVClaHPgu6BaF3QAVhiQ=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66 h1:OZLPSIBYEfvkAUeOeM8CwTgVQy5zhayI99ishCrsFV0=
@@ -62,8 +62,8 @@ github.com/cloudquery/plugin-pb-go v1.26.8 h1:mHNyOyG/MW/rjDVR0OR8DdezXmyoD4drph
 github.com/cloudquery/plugin-pb-go v1.26.8/go.mod h1:orruK+wdIP3kOvmEQhCcFND2bVVH7o0fFSGrqZYMt7k=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0/go.mod h1:pAX6ojIW99b/Vg4CkhnsGkRIzNaVEceYMR+Bdit73ug=
-github.com/cloudquery/plugin-sdk/v4 v4.74.1 h1:oz4c7hDp9gb7QljdwKtLSvgQt97wmOlycHvgVI3cHVs=
-github.com/cloudquery/plugin-sdk/v4 v4.74.1/go.mod h1:9yIobejLxiD39lCNm30JJOJ2dQgqST71dnb0d/SVKRU=
+github.com/cloudquery/plugin-sdk/v4 v4.74.2 h1:AHQZ9zxm0kLummKrT+dBYAvI6zf4j4DxfFXypg7kblw=
+github.com/cloudquery/plugin-sdk/v4 v4.74.2/go.mod h1:dDLB0XrS3R+nIWh4X8J8/ZQcsJ+lmjxUxoBxhAq8iCA=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.4/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
