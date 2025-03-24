@@ -5,6 +5,18 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.17.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.16.0...cli-v6.17.0) (2025-03-24)
+
+
+### Features
+
+* Enable time substitution in spec templates ([#20399](https://github.com/cloudquery/cloudquery/issues/20399)). See our [docs](https://docs.cloudquery.io/docs/advanced-topics/environment-variable-substitution#time-variable-substitution-example) for more information. ([b46842d](https://github.com/cloudquery/cloudquery/commit/b46842dd04dea349d3dc0df4798cafd27b9cffc4))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.2.0 ([#20410](https://github.com/cloudquery/cloudquery/issues/20410)) ([ee081fb](https://github.com/cloudquery/cloudquery/commit/ee081fbb1ab7bd0c4c0955556dc6c76e17d4b9f3))
+
 ## [6.16.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.15.5...cli-v6.16.0) (2025-03-20)
 
 
