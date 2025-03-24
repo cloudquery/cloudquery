@@ -169,8 +169,8 @@ func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.Record, er
 	return r.record, nil
 }
 
-func (r *RecordUpdater) SetPrimaryKeys(columnNames []string) (arrow.Record, error) {
-	newSchema, err := r.schemaUpdater.SetPrimaryKeys(columnNames)
+func (r *RecordUpdater) AddPrimaryKeys(columnNames []string) (arrow.Record, error) {
+	newSchema, err := r.schemaUpdater.AddPrimaryKeys(columnNames)
 	if err != nil {
 		return nil, err
 	}

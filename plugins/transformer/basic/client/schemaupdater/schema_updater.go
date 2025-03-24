@@ -98,7 +98,7 @@ func (s *SchemaUpdater) ChangeTableName(newTableNamePattern string) (*arrow.Sche
 	return arrow.NewSchema(s.schema.Fields(), &newMetadata), nil
 }
 
-func (s *SchemaUpdater) SetPrimaryKeys(newPks []string) (*arrow.Schema, error) {
+func (s *SchemaUpdater) AddPrimaryKeys(newPks []string) (*arrow.Schema, error) {
 	table, err := schema.NewTableFromArrowSchema(s.schema)
 	if err != nil {
 		return nil, err
