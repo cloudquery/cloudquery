@@ -3,7 +3,6 @@ package schemaupdater
 import (
 	"bytes"
 	"errors"
-	"slices"
 	"text/template"
 
 	"github.com/apache/arrow-go/v18/arrow"
@@ -103,20 +102,12 @@ func (s *SchemaUpdater) AddPrimaryKeys(newPks []string) (*arrow.Schema, error) {
 	if err != nil {
 		return nil, err
 	}
-	oldPks := table.PrimaryKeys()
-	for _, oldPk := range oldPks {
-		if !slices.Contains(newPks, oldPk) {
-			table.Columns.Get(oldPk).PrimaryKey = false
-		}
-	}
 	for _, newPk := range newPks {
-		if !slices.Contains(oldPks, newPk) {
-			newCol := table.Columns.Get(newPk)
-			if newCol == nil {
-				return nil, errors.New("new primary key column not found in schema")
-			}
-			newCol.PrimaryKey = true
+		newCol := table.Columns.Get(newPk)
+		if newCol == nil {
+			return nil, errors.New("new primary key column not found in schema")
 		}
+		newCol.PrimaryKey = true
 	}
 	return table.ToArrowSchema(), nil
 }
