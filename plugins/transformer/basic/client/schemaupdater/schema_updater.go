@@ -106,7 +106,7 @@ func (s *SchemaUpdater) AddPrimaryKeys(newPks []string) (*arrow.Schema, error) {
 	for _, newPk := range newPks {
 		newCol := table.Columns.Get(newPk)
 		if newCol == nil {
-			return nil, fmt.Errorf("new primary key column: %s not found in: %s", newCol.Name, table.Name)
+			return nil, fmt.Errorf("new primary key column: %s not found in: %s", newPk, table.Name)
 		}
 		newCol.PrimaryKey = true
 	}
