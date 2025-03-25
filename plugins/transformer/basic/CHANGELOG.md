@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.0.4...plugins-transformer-basic-v2.1.0) (2025-03-25)
+
+
+### Features
+
+* Set Primary Key(s) for table ([#20437](https://github.com/cloudquery/cloudquery/issues/20437)) ([3d92b5d](https://github.com/cloudquery/cloudquery/commit/3d92b5d76f81659d288812842c6f15b21c42068e))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.2.0 ([#20410](https://github.com/cloudquery/cloudquery/issues/20410)) ([ee081fb](https://github.com/cloudquery/cloudquery/commit/ee081fbb1ab7bd0c4c0955556dc6c76e17d4b9f3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.74.2 ([#20434](https://github.com/cloudquery/cloudquery/issues/20434)) ([8db20d6](https://github.com/cloudquery/cloudquery/commit/8db20d6bc12153dc750857fe853ce2e3d95db65c))
+
 ## [2.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.0.3...plugins-transformer-basic-v2.0.4) (2025-03-20)
 
 
