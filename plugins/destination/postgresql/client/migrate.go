@@ -245,8 +245,7 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 	defer conn.Release()
 	tableName := table.Name
 	sanitizedTableName := pgx.Identifier{tableName}.Sanitize()
-	sanitizedPKName := pgx.Identifier{getPKName(&schema.Table{Name: tableName})}.Sanitize()
-
+	var sanitizedPKName = c.getPKName(ctx, tableName)
 	// start transaction
 	tx, err := conn.BeginTx(ctx, pgx.TxOptions{
 		IsoLevel: pgx.Serializable,
@@ -363,17 +362,9 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		}
 	}
 
-	pkConstraintName := getPKName(table)
-	c.pgTablesToPKConstraints[tableName] = &pkConstraintDetails{
-		name:    pkConstraintName,
-		columns: table.PrimaryKeys(),
-	}
-
 	if len(primaryKeys) > 0 {
 		// add composite PK constraint on primary key columns
-		sb.WriteString(", CONSTRAINT ")
-		sb.WriteString(pgx.Identifier{pkConstraintName}.Sanitize())
-		sb.WriteString(" PRIMARY KEY (")
+		sb.WriteString(", PRIMARY KEY (")
 		sb.WriteString(strings.Join(primaryKeys, ","))
 		sb.WriteString(")")
 	}
@@ -383,6 +374,11 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		c.logger.Error().Err(err).Str("table", tableName).Str("query", sb.String()).Msg("Failed to create table")
 		return fmt.Errorf("failed to create table %s: %w"+sb.String(), tableName, err)
 	}
+	c.pgTablesToPKConstraints[tableName] = &pkConstraintDetails{
+		name:    c.getPKName(ctx, tableName),
+		columns: table.PrimaryKeys(),
+	}
+
 	return nil
 }
 
@@ -401,8 +397,13 @@ func (c *Client) removeUniqueConstraint(ctx context.Context, table *schema.Table
 	return nil
 }
 
-func getPKName(table *schema.Table) string {
-	return table.Name + "_cqpk"
+func (c *Client) getPKName(ctx context.Context, tableName string) string {
+	var pkConstraintName string
+	_ = c.conn.QueryRow(ctx, `select tco.constraint_name from information_schema.table_constraints tco join information_schema.key_column_usage kcu
+     on kcu.constraint_name = tco.constraint_name
+     where tco.constraint_type = 'PRIMARY KEY'
+    and kcu.table_name = $1`, tableName).Scan(&pkConstraintName)
+	return pkConstraintName
 }
 
 func (c *Client) createPerformanceIndexes(ctx context.Context, table *schema.Table) error {
@@ -422,6 +423,7 @@ func (c *Client) createPerformanceIndexes(ctx context.Context, table *schema.Tab
 
 	indexName := table.Name + "_cqpi"
 
+	// TODO: Index names get auto trimmed which my cause overlap for long table names
 	sqlStatement := "CREATE INDEX IF NOT EXISTS " + pgx.Identifier{indexName}.Sanitize() + " ON " + pgx.Identifier{table.Name}.Sanitize() + "(" + pgx.Identifier{columns[0]}.Sanitize() + ", " + pgx.Identifier{columns[1]}.Sanitize() + ")"
 	_, err := c.conn.Exec(ctx, sqlStatement)
 	if err != nil {
