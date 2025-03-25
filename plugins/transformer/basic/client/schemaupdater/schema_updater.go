@@ -3,6 +3,7 @@ package schemaupdater
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"text/template"
 
 	"github.com/apache/arrow-go/v18/arrow"
@@ -105,7 +106,7 @@ func (s *SchemaUpdater) AddPrimaryKeys(newPks []string) (*arrow.Schema, error) {
 	for _, newPk := range newPks {
 		newCol := table.Columns.Get(newPk)
 		if newCol == nil {
-			return nil, errors.New("new primary key column not found in schema")
+			return nil, fmt.Errorf("new primary key column: %s not found in: %s", newCol.Name, table.Name)
 		}
 		newCol.PrimaryKey = true
 	}
