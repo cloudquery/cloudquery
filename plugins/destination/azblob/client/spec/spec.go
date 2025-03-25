@@ -1,7 +1,7 @@
 package spec
 
 import (
-	"fmt"
+	"errors"
 	"time"
 
 	"github.com/cloudquery/filetypes/v4"
@@ -68,17 +68,17 @@ func (s *Spec) SetDefaults() {
 
 func (s *Spec) Validate() error {
 	if len(s.StorageAccount) == 0 {
-		return fmt.Errorf("`storage_account` is required")
+		return errors.New("`storage_account` is required")
 	}
 	if len(s.Container) == 0 {
-		return fmt.Errorf("`container` is required")
+		return errors.New("`container` is required")
 	}
 	if len(s.Path) == 0 {
-		return fmt.Errorf("`path` is required")
+		return errors.New("`path` is required")
 	}
 
 	if s.NoRotate && ((s.BatchSize != nil && *s.BatchSize > 0) || (s.BatchSizeBytes != nil && *s.BatchSizeBytes > 0) || (s.BatchTimeout != nil && s.BatchTimeout.Duration() > 0)) {
-		return fmt.Errorf("`no_rotate` cannot be used with non-zero `batch_size`, `batch_size_bytes` or `batch_timeout`")
+		return errors.New("`no_rotate` cannot be used with non-zero `batch_size`, `batch_size_bytes` or `batch_timeout`")
 	}
 
 	// required for s.FileSpec.Validate call

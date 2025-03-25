@@ -44,7 +44,7 @@ jobs:
         uses: golangci/golangci-lint-action@v6
         if: matrix.os == 'ubuntu-latest'
         with:
-          version: v1.62.2
+          version: v1.64.6
           working-directory: cli
       - name: Build
         run: go build .
@@ -71,9 +71,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ubuntu-go-1.23.4-release-cache-${{ hashFiles('cli/go.sum') }}
+          key: ubuntu-go-1.24.1-release-cache-${{ hashFiles('cli/go.sum') }}
           restore-keys: |
-            ubuntu-go-1.23.4-release-cache-cli
+            ubuntu-go-1.24.1-release-cache-cli
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v5

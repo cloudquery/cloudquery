@@ -1,5 +1,43 @@
 # Changelog
 
+## [4.2.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.2.10...plugins-destination-bigquery-v4.2.11) (2025-03-20)
+
+
+### Bug Fixes
+
+* **deps:** Update module cloud.google.com/go to v0.118.3 ([#20390](https://github.com/cloudquery/cloudquery/issues/20390)) ([650a87b](https://github.com/cloudquery/cloudquery/commit/650a87bfa5932b1211d33b7a52926e9675d36056))
+
+## [4.2.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.2.9...plugins-destination-bigquery-v4.2.10) (2025-03-11)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.74.1 ([#20311](https://github.com/cloudquery/cloudquery/issues/20311)) ([10f803f](https://github.com/cloudquery/cloudquery/commit/10f803f0555bdc062ccd3c7f30ffeff0746f53ab))
+
+## [4.2.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.2.8...plugins-destination-bigquery-v4.2.9) (2025-02-19)
+
+
+### Bug Fixes
+
+* **deps:** Update Google Cloud modules ([#20243](https://github.com/cloudquery/cloudquery/issues/20243)) ([7f0328f](https://github.com/cloudquery/cloudquery/commit/7f0328f6489076a706a0ae0c6e09bb25fe3d74ac))
+
+## [4.2.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.2.7...plugins-destination-bigquery-v4.2.8) (2025-02-12)
+
+
+### Bug Fixes
+
+* **deps:** Update module google.golang.org/api to v0.219.0 ([#20251](https://github.com/cloudquery/cloudquery/issues/20251)) ([32d804b](https://github.com/cloudquery/cloudquery/commit/32d804b6608a23a9033426355ba86cdb025e0060))
+
+## [4.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.2.6...plugins-destination-bigquery-v4.2.7) (2025-02-05)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @types/node to v22.10.10 ([#20198](https://github.com/cloudquery/cloudquery/issues/20198)) ([5b9c3eb](https://github.com/cloudquery/cloudquery/commit/5b9c3eb0b7145d2b9d01f3507bad097993558c00))
+* **deps:** Update dependency typescript to v5.7.3 ([#20204](https://github.com/cloudquery/cloudquery/issues/20204)) ([2165c7c](https://github.com/cloudquery/cloudquery/commit/2165c7c7d50c3ce3e909ac5c500b73187b6c5320))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.23 ([#20216](https://github.com/cloudquery/cloudquery/issues/20216)) ([561f330](https://github.com/cloudquery/cloudquery/commit/561f330a1e9e155c7c412dcaeac617b412cd2fe3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.4 ([#20218](https://github.com/cloudquery/cloudquery/issues/20218)) ([9276249](https://github.com/cloudquery/cloudquery/commit/9276249f38c54565f25ef02f476b4cf4dc047482))
+
 ## [4.2.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.2.5...plugins-destination-bigquery-v4.2.6) (2025-01-29)
 
 

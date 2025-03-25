@@ -39,7 +39,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v6.1.1
         with:
-          version: v1.62.2
+          version: v1.64.6
           working-directory: plugins/destination/file
           args: "--config ../../.golangci.yml"
       - name: gen

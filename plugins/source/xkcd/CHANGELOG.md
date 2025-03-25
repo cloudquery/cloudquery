@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.5.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.9...plugins-source-xkcd-v1.5.10) (2025-03-20)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.36.0 [SECURITY] ([#20358](https://github.com/cloudquery/cloudquery/issues/20358)) ([66dd378](https://github.com/cloudquery/cloudquery/commit/66dd3785af221a4eb0ab5d1d9820ff5d3ac54198))
+
+## [1.5.9](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.8...plugins-source-xkcd-v1.5.9) (2025-03-11)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.74.1 ([#20311](https://github.com/cloudquery/cloudquery/issues/20311)) ([10f803f](https://github.com/cloudquery/cloudquery/commit/10f803f0555bdc062ccd3c7f30ffeff0746f53ab))
+
+## [1.5.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.7...plugins-source-xkcd-v1.5.8) (2025-02-05)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @types/node to v22.10.10 ([#20198](https://github.com/cloudquery/cloudquery/issues/20198)) ([5b9c3eb](https://github.com/cloudquery/cloudquery/commit/5b9c3eb0b7145d2b9d01f3507bad097993558c00))
+* **deps:** Update dependency typescript to v5.7.3 ([#20204](https://github.com/cloudquery/cloudquery/issues/20204)) ([2165c7c](https://github.com/cloudquery/cloudquery/commit/2165c7c7d50c3ce3e909ac5c500b73187b6c5320))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.4 ([#20218](https://github.com/cloudquery/cloudquery/issues/20218)) ([9276249](https://github.com/cloudquery/cloudquery/commit/9276249f38c54565f25ef02f476b4cf4dc047482))
+
 ## [1.5.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.6...plugins-source-xkcd-v1.5.7) (2025-01-28)
 
 

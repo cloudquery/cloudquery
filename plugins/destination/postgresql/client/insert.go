@@ -52,7 +52,7 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 		md := r.Schema().Metadata()
 		tableName, ok := md.GetValue(schema.MetadataTableName)
 		if !ok {
-			return fmt.Errorf("table name not found in metadata")
+			return errors.New("table name not found in metadata")
 		}
 
 		if _, ok := pgTables[tableName]; !ok {

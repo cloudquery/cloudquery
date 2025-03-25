@@ -1,5 +1,38 @@
 # Changelog
 
+## [6.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.1.1...plugins-destination-clickhouse-v6.1.2) (2025-03-20)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.36.0 [SECURITY] ([#20358](https://github.com/cloudquery/cloudquery/issues/20358)) ([66dd378](https://github.com/cloudquery/cloudquery/commit/66dd3785af221a4eb0ab5d1d9820ff5d3ac54198))
+
+## [6.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.1.0...plugins-destination-clickhouse-v6.1.1) (2025-03-12)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.74.1 ([#20311](https://github.com/cloudquery/cloudquery/issues/20311)) ([10f803f](https://github.com/cloudquery/cloudquery/commit/10f803f0555bdc062ccd3c7f30ffeff0746f53ab))
+* Don't fail on creating existing columns or dropping non existing ones ([#20345](https://github.com/cloudquery/cloudquery/issues/20345)) ([c128df7](https://github.com/cloudquery/cloudquery/commit/c128df7ba956993f6feb300753e2eef21ad71cd6))
+* Don't fail on creating existing tables ([#20344](https://github.com/cloudquery/cloudquery/issues/20344)) ([5eaf69a](https://github.com/cloudquery/cloudquery/commit/5eaf69a91f6d635c61f4fb0da819ed617932ffc9))
+
+## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.0.8...plugins-destination-clickhouse-v6.1.0) (2025-02-19)
+
+
+### Features
+
+* Add skip_incremental_tables suboption for partition_by. ([#20276](https://github.com/cloudquery/cloudquery/issues/20276)) ([7fbd5e7](https://github.com/cloudquery/cloudquery/commit/7fbd5e7f565c536bb919a67e8187da5bde658b70))
+
+## [6.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.0.7...plugins-destination-clickhouse-v6.0.8) (2025-02-05)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @types/node to v22.10.10 ([#20198](https://github.com/cloudquery/cloudquery/issues/20198)) ([5b9c3eb](https://github.com/cloudquery/cloudquery/commit/5b9c3eb0b7145d2b9d01f3507bad097993558c00))
+* **deps:** Update dependency typescript to v5.7.3 ([#20204](https://github.com/cloudquery/cloudquery/issues/20204)) ([2165c7c](https://github.com/cloudquery/cloudquery/commit/2165c7c7d50c3ce3e909ac5c500b73187b6c5320))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.23 ([#20216](https://github.com/cloudquery/cloudquery/issues/20216)) ([561f330](https://github.com/cloudquery/cloudquery/commit/561f330a1e9e155c7c412dcaeac617b412cd2fe3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.4 ([#20218](https://github.com/cloudquery/cloudquery/issues/20218)) ([9276249](https://github.com/cloudquery/cloudquery/commit/9276249f38c54565f25ef02f476b4cf4dc047482))
+
 ## [6.0.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.0.6...plugins-destination-clickhouse-v6.0.7) (2025-01-29)
 
 

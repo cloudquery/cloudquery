@@ -5,7 +5,6 @@ run:
 linters-settings:
   errcheck:
     check-blank: false
-    ignore: fmt:.*,[rR]ead|[wW]rite|[cC]lose,io:Copy
   gocritic:
     disabled-checks:
       - commentFormatting
@@ -82,6 +81,7 @@ linters:
     - errcheck
     - gocritic
     - gofmt
+    - goimports
     - gosimple
     - govet
     - ineffassign
@@ -96,6 +96,8 @@ linters:
     - unused
 
 issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
   exclude-dirs:
     - bin
     - docs

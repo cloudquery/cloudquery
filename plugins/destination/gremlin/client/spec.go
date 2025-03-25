@@ -2,6 +2,7 @@ package client
 
 import (
 	_ "embed"
+	"errors"
 	"fmt"
 	"runtime"
 	"slices"
@@ -99,7 +100,7 @@ func (s *Spec) SetDefaults() {
 
 func (s *Spec) Validate() error {
 	if s.Endpoint == "" {
-		return fmt.Errorf("endpoint is required")
+		return errors.New("endpoint is required")
 	}
 	allowedAuthModes := []authMode{"", authModeNone, authModeBasic, authModeAWS}
 	if !slices.Contains(allowedAuthModes, s.AuthMode) {

@@ -1,5 +1,26 @@
 # Changelog
 
+## [2.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.0.3...plugins-transformer-basic-v2.0.4) (2025-03-20)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.36.0 [SECURITY] ([#20358](https://github.com/cloudquery/cloudquery/issues/20358)) ([66dd378](https://github.com/cloudquery/cloudquery/commit/66dd3785af221a4eb0ab5d1d9820ff5d3ac54198))
+
+## [2.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.0.2...plugins-transformer-basic-v2.0.3) (2025-03-07)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.74.1 ([#20311](https://github.com/cloudquery/cloudquery/issues/20311)) ([10f803f](https://github.com/cloudquery/cloudquery/commit/10f803f0555bdc062ccd3c7f30ffeff0746f53ab))
+
+## [2.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.0.1...plugins-transformer-basic-v2.0.2) (2025-02-05)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.4 ([#20218](https://github.com/cloudquery/cloudquery/issues/20218)) ([9276249](https://github.com/cloudquery/cloudquery/commit/9276249f38c54565f25ef02f476b4cf4dc047482))
+
 ## [2.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.0.0...plugins-transformer-basic-v2.0.1) (2025-01-21)
 
 

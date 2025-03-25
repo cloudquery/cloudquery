@@ -121,6 +121,10 @@
         "partition_by": {
           "type": "string",
           "description": "Partitioning strategy to use, e.g. `toYYYYMM(_cq_sync_time)`,\nthe string is passed as is after \"PARTITION BY\" clause with no validation or quoting.\n\nAn unset partition_by is not valid."
+        },
+        "skip_incremental_tables": {
+          "type": "boolean",
+          "description": "Skip incremental tables from partitioning."
         }
       },
       "additionalProperties": false,

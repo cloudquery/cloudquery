@@ -46,9 +46,6 @@ func ListAllPlugins(cl *cloudquery_api.ClientWithResponses) ([]cloudquery_api.Li
 		if err != nil {
 			return nil, fmt.Errorf("failed to list plugins: %w", err)
 		}
-		if resp.JSON200 == nil {
-			return nil, fmt.Errorf("failed to list plugins: %w", err)
-		}
 		if resp.StatusCode() != http.StatusOK || resp.JSON200 == nil {
 			return nil, fmt.Errorf("failed to list plugins: %s", resp.Status())
 		}

@@ -238,7 +238,7 @@ func Test_configForSourcePlugin(t *testing.T) {
 			tempDir := t.TempDir()
 			specPath := path.Join(tempDir, "spec.yaml")
 			spec := configForSourcePlugin(tc.source, tc.version)
-			os.WriteFile(specPath, []byte(spec), 0644)
+			require.NoError(t, os.WriteFile(specPath, []byte(spec), 0644))
 
 			specReader, err := specs.NewRelaxedSpecReader([]string{specPath})
 			require.NoError(t, err)
@@ -304,7 +304,7 @@ func Test_configForDestinationPlugin(t *testing.T) {
 			tempDir := t.TempDir()
 			specPath := path.Join(tempDir, "spec.yaml")
 			spec := configForDestinationPlugin(tc.destination, tc.version)
-			os.WriteFile(specPath, []byte(spec), 0644)
+			require.NoError(t, os.WriteFile(specPath, []byte(spec), 0644))
 
 			specReader, err := specs.NewRelaxedSpecReader([]string{specPath})
 			require.NoError(t, err)

@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -131,7 +132,7 @@ func TestPlugin(t *testing.T) {
 					fileCount++
 				}
 				if !assert.NotContainsf(t, path, "{", "path %s still contains template", path) {
-					return fmt.Errorf("test failed")
+					return errors.New("test failed")
 				}
 				return nil
 			}))

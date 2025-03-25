@@ -50,14 +50,17 @@ func TestAddonDownload(t *testing.T) {
 				"checksum": payloadChecksum,
 				"location": "http://" + r.Host + "/assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip",
 			})
-			w.Write(b)
+			_, err := w.Write(b)
+			require.NoError(t, err)
 		case "/assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip":
 			w.Header().Set("Content-Type", "application/octet-stream")
 			w.WriteHeader(http.StatusOK)
-			w.Write(payload)
+			_, err := w.Write(payload)
+			require.NoError(t, err)
 		case "/teams":
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{"items":[{"name":"test_team","displayName":"Test Team"}]}`))
+			_, err := w.Write([]byte(`{"items":[{"name":"test_team","displayName":"Test Team"}]}`))
+			require.NoError(t, err)
 		}
 	}))
 	defer ts.Close()
@@ -115,14 +118,17 @@ func TestAddonDownloadStdout(t *testing.T) {
 				"checksum": payloadChecksum,
 				"location": "http://" + r.Host + "/assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip",
 			})
-			w.Write(b)
+			_, err := w.Write(b)
+			require.NoError(t, err)
 		case "/assets/cloudquery/addon_visualization/test/v1.2.3/cloudquery_visualization_test_v1.2.3.zip":
 			w.Header().Set("Content-Type", "application/octet-stream")
 			w.WriteHeader(http.StatusOK)
-			w.Write(payload)
+			_, err := w.Write(payload)
+			require.NoError(t, err)
 		case "/teams":
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte(`{"items":[{"name":"test_team","displayName":"Test Team"}]}`))
+			_, err := w.Write([]byte(`{"items":[{"name":"test_team","displayName":"Test Team"}]}`))
+			require.NoError(t, err)
 		}
 	}))
 	defer ts.Close()

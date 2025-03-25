@@ -5,6 +5,80 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.17.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.16.0...cli-v6.17.0) (2025-03-24)
+
+
+### Features
+
+* Enable time substitution in spec templates ([#20399](https://github.com/cloudquery/cloudquery/issues/20399)). See our [docs](https://docs.cloudquery.io/docs/advanced-topics/environment-variable-substitution#time-variable-substitution-example) for more information. ([b46842d](https://github.com/cloudquery/cloudquery/commit/b46842dd04dea349d3dc0df4798cafd27b9cffc4))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.2.0 ([#20410](https://github.com/cloudquery/cloudquery/issues/20410)) ([ee081fb](https://github.com/cloudquery/cloudquery/commit/ee081fbb1ab7bd0c4c0955556dc6c76e17d4b9f3))
+
+## [6.16.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.15.5...cli-v6.16.0) (2025-03-20)
+
+
+### Features
+
+* Sync Run Progress: Report shard num ([#20386](https://github.com/cloudquery/cloudquery/issues/20386)) ([ceca11c](https://github.com/cloudquery/cloudquery/commit/ceca11c8dd43b94e24cb1df33a725cc9d5f5f87e))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.13.7 ([#20385](https://github.com/cloudquery/cloudquery/issues/20385)) ([388d88b](https://github.com/cloudquery/cloudquery/commit/388d88ba1618cf8748a42752ad60d7e89d1ba985))
+* **deps:** Update module golang.org/x/net to v0.36.0 [SECURITY] ([#20358](https://github.com/cloudquery/cloudquery/issues/20358)) ([66dd378](https://github.com/cloudquery/cloudquery/commit/66dd3785af221a4eb0ab5d1d9820ff5d3ac54198))
+* **deps:** Update module golang.org/x/net to v0.37.0 ([#20396](https://github.com/cloudquery/cloudquery/issues/20396)) ([f1b3a8c](https://github.com/cloudquery/cloudquery/commit/f1b3a8cdf5418872a963ad7a999315a46939113d))
+
+## [6.15.5](https://github.com/cloudquery/cloudquery/compare/cli-v6.15.4...cli-v6.15.5) (2025-03-12)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.74.1 ([#20311](https://github.com/cloudquery/cloudquery/issues/20311)) ([10f803f](https://github.com/cloudquery/cloudquery/commit/10f803f0555bdc062ccd3c7f30ffeff0746f53ab))
+
+## [6.15.4](https://github.com/cloudquery/cloudquery/compare/cli-v6.15.3...cli-v6.15.4) (2025-03-06)
+
+
+### Bug Fixes
+
+* **deps:** Update alpine Docker tag to v3.21.3 ([#20287](https://github.com/cloudquery/cloudquery/issues/20287)) ([3284d76](https://github.com/cloudquery/cloudquery/commit/3284d76d8137cc8227bd531e02d98d9a41d2fd9e))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.13.6 ([#20300](https://github.com/cloudquery/cloudquery/issues/20300)) ([e36fb2d](https://github.com/cloudquery/cloudquery/commit/e36fb2d6fbe737b0c55cd03a0c88557afc186c3e))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.26.8 ([#20302](https://github.com/cloudquery/cloudquery/issues/20302)) ([1f83a61](https://github.com/cloudquery/cloudquery/commit/1f83a61f55ef93629d4f4b241e6d3df5fdf6de94))
+
+## [6.15.3](https://github.com/cloudquery/cloudquery/compare/cli-v6.15.2...cli-v6.15.3) (2025-02-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module google.golang.org/protobuf to v1.36.5 ([#20271](https://github.com/cloudquery/cloudquery/issues/20271)) ([f52e507](https://github.com/cloudquery/cloudquery/commit/f52e5079c1c14f32b2b2b18b3fe6ca1bb9a13f08))
+* Test connections to report download errors ([#20265](https://github.com/cloudquery/cloudquery/issues/20265)) ([761078c](https://github.com/cloudquery/cloudquery/commit/761078c8c6eca3036a10064748369da6625db3cd))
+
+## [6.15.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.15.1...cli-v6.15.2) (2025-02-12)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.26.7 ([#20255](https://github.com/cloudquery/cloudquery/issues/20255)) ([55fbd29](https://github.com/cloudquery/cloudquery/commit/55fbd296aa1ce614b9ecc783e6e7cacacd1b359d))
+
+## [6.15.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.15.0...cli-v6.15.1) (2025-02-05)
+
+
+### Bug Fixes
+
+* **deps:** Update alpine Docker tag to v3.21.2 ([#20197](https://github.com/cloudquery/cloudquery/issues/20197)) ([65f99bf](https://github.com/cloudquery/cloudquery/commit/65f99bf23d76eb28410d7912183e114160abcc2d))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.23 ([#20216](https://github.com/cloudquery/cloudquery/issues/20216)) ([561f330](https://github.com/cloudquery/cloudquery/commit/561f330a1e9e155c7c412dcaeac617b412cd2fe3))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.26.6 ([#20206](https://github.com/cloudquery/cloudquery/issues/20206)) ([d84c8b3](https://github.com/cloudquery/cloudquery/commit/d84c8b3dba11b4ebdde6a50816a324eb2ffe43b2))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.4 ([#20218](https://github.com/cloudquery/cloudquery/issues/20218)) ([9276249](https://github.com/cloudquery/cloudquery/commit/9276249f38c54565f25ef02f476b4cf4dc047482))
+
+## [6.15.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.14.1...cli-v6.15.0) (2025-01-30)
+
+
+### Features
+
+* Passtrough `AWS_`-prefixed environment variables to plugins ([#20194](https://github.com/cloudquery/cloudquery/issues/20194)) ([7c3ad4a](https://github.com/cloudquery/cloudquery/commit/7c3ad4a1c9e88cea5cbe5aef66d35e3723e647d3))
+
 ## [6.14.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.14.0...cli-v6.14.1) (2025-01-29)
 
 

@@ -1,5 +1,49 @@
 # Changelog
 
+## [2.6.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.6.11...plugins-destination-gremlin-v2.6.12) (2025-03-20)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.36.0 [SECURITY] ([#20358](https://github.com/cloudquery/cloudquery/issues/20358)) ([66dd378](https://github.com/cloudquery/cloudquery/commit/66dd3785af221a4eb0ab5d1d9820ff5d3ac54198))
+
+## [2.6.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.6.10...plugins-destination-gremlin-v2.6.11) (2025-03-12)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#20343](https://github.com/cloudquery/cloudquery/issues/20343)) ([f78e2e9](https://github.com/cloudquery/cloudquery/commit/f78e2e956ad215f466c0fb5cf401cb741d0b98a8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.74.1 ([#20311](https://github.com/cloudquery/cloudquery/issues/20311)) ([10f803f](https://github.com/cloudquery/cloudquery/commit/10f803f0555bdc062ccd3c7f30ffeff0746f53ab))
+
+## [2.6.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.6.9...plugins-destination-gremlin-v2.6.10) (2025-03-06)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#20290](https://github.com/cloudquery/cloudquery/issues/20290)) ([7a3b4d8](https://github.com/cloudquery/cloudquery/commit/7a3b4d8ce908340266fb3065086554249ca0e88e))
+
+## [2.6.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.6.8...plugins-destination-gremlin-v2.6.9) (2025-02-19)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#20267](https://github.com/cloudquery/cloudquery/issues/20267)) ([e799cd2](https://github.com/cloudquery/cloudquery/commit/e799cd2b9be1c22d87f940118ba44a64e77a06b4))
+
+## [2.6.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.6.7...plugins-destination-gremlin-v2.6.8) (2025-02-12)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#20246](https://github.com/cloudquery/cloudquery/issues/20246)) ([2d6c936](https://github.com/cloudquery/cloudquery/commit/2d6c93697821c8949cbd2fbb2a216b3417f2794f))
+
+## [2.6.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.6.6...plugins-destination-gremlin-v2.6.7) (2025-02-05)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.23 ([#20216](https://github.com/cloudquery/cloudquery/issues/20216)) ([561f330](https://github.com/cloudquery/cloudquery/commit/561f330a1e9e155c7c412dcaeac617b412cd2fe3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.73.4 ([#20218](https://github.com/cloudquery/cloudquery/issues/20218)) ([9276249](https://github.com/cloudquery/cloudquery/commit/9276249f38c54565f25ef02f476b4cf4dc047482))
+
 ## [2.6.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.6.5...plugins-destination-gremlin-v2.6.6) (2025-01-29)
 
 

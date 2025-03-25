@@ -1,1 +1,1 @@
-ALTER TABLE `table_name` DROP COLUMN `my_col`
+ALTER TABLE `table_name` DROP COLUMN IF EXISTS `my_col`

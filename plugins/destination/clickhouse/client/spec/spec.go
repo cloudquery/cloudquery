@@ -3,7 +3,7 @@ package spec
 import (
 	"crypto/x509"
 	_ "embed"
-	"fmt"
+	"errors"
 	"time"
 
 	"github.com/ClickHouse/clickhouse-go/v2"
@@ -78,6 +78,9 @@ type PartitionStrategy struct {
 	//
 	// An unset partition_by is not valid.
 	PartitionBy string `json:"partition_by"`
+
+	// Skip incremental tables from partitioning.
+	SkipIncrementalTables bool `json:"skip_incremental_tables,omitempty"`
 }
 
 type OrderByStrategy struct {
@@ -128,7 +131,7 @@ func (s *Spec) Options() (*clickhouse.Options, error) {
 		}
 
 		if ok := tlsConfig.RootCAs.AppendCertsFromPEM([]byte(s.CACert)); !ok {
-			return nil, fmt.Errorf("failed to append \"ca_cert\" value")
+			return nil, errors.New("failed to append \"ca_cert\" value")
 		}
 	}
 
@@ -169,13 +172,13 @@ func (s *Spec) SetDefaults() {
 func (s *Spec) Validate() error {
 	for _, p := range s.Partition {
 		if len(p.PartitionBy) == 0 {
-			return fmt.Errorf("partition_by is required")
+			return errors.New("partition_by is required")
 		}
 	}
 
 	for _, o := range s.OrderBy {
 		if len(o.OrderBy) == 0 {
-			return fmt.Errorf("order_by is required")
+			return errors.New("order_by is required")
 		}
 	}
 
