@@ -13,6 +13,7 @@ const (
 	KindChangeTableNames   = "change_table_names"
 	KindAddTimestampColumn = "add_current_timestamp_column"
 	KindRenameColumn       = "rename_column"
+	KindAddPrimaryKeys     = "add_primary_keys"
 )
 
 type TransformationSpec struct {
