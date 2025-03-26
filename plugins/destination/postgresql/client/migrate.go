@@ -2,6 +2,8 @@ package client
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"strings"
 
@@ -422,8 +424,10 @@ func (c *Client) createPerformanceIndexes(ctx context.Context, table *schema.Tab
 	}
 
 	indexName := table.Name + "_cqpi"
+	if len(table.Name) > 58 && c.pgType != pgTypeCockroachDB {
+		indexName = hashTableName(table.Name) + "_cqpi"
+	}
 
-	// TODO: Index names get auto trimmed which my cause overlap for long table names
 	sqlStatement := "CREATE INDEX IF NOT EXISTS " + pgx.Identifier{indexName}.Sanitize() + " ON " + pgx.Identifier{table.Name}.Sanitize() + "(" + pgx.Identifier{columns[0]}.Sanitize() + ", " + pgx.Identifier{columns[1]}.Sanitize() + ")"
 	_, err := c.conn.Exec(ctx, sqlStatement)
 	if err != nil {
@@ -431,4 +435,14 @@ func (c *Client) createPerformanceIndexes(ctx context.Context, table *schema.Tab
 	}
 
 	return nil
+}
+
+func hashTableName(input string) string {
+	// Max table name length
+	if len(input) > 63 {
+		input = input[:63]
+	}
+	hash := sha256.Sum256([]byte(input))
+	hashStr := hex.EncodeToString(hash[:])
+	return hashStr[:32]
 }

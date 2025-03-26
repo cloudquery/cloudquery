@@ -147,7 +147,7 @@ func TestCreateIndexesPluginNewTable(t *testing.T) {
 		require.Equal(t, fmt.Sprintf(`CREATE INDEX %[1]s_cqpi ON public.%[1]s USING btree (_cq_source_name, _cq_sync_time)`, tableName), indexes[fmt.Sprintf("%s_cqpi", tableName)])
 	} else {
 		require.Len(t, indexes, 3)
-		require.Equal(t, fmt.Sprintf(`CREATE UNIQUE INDEX %[1]s_cqpk ON postgres.public.%[1]s USING btree (_cq_id ASC)`, tableName), indexes[fmt.Sprintf("%s_pkey", tableName)])
+		require.Equal(t, fmt.Sprintf(`CREATE UNIQUE INDEX %[1]s_pkey ON postgres.public.%[1]s USING btree (_cq_id ASC)`, tableName), indexes[fmt.Sprintf("%s_pkey", tableName)])
 		require.Equal(t, fmt.Sprintf(`CREATE UNIQUE INDEX %[1]s__cq_id_key ON postgres.public.%[1]s USING btree (_cq_id ASC)`, tableName), indexes[fmt.Sprintf("%s__cq_id_key", tableName)])
 		require.Equal(t, fmt.Sprintf(`CREATE INDEX %[1]s_cqpi ON postgres.public.%[1]s USING btree (_cq_source_name ASC, _cq_sync_time ASC)`, tableName), indexes[fmt.Sprintf("%s_cqpi", tableName)])
 	}
@@ -218,45 +218,44 @@ func TestCreateIndexesPluginExistingTable(t *testing.T) {
 	}
 }
 
-// TODO: Index names get auto trimmed which my cause overlap for long table names
-// func TestCreateIndexesPluginVeryLongTable(t *testing.T) {
-//	ctx := context.Background()
-//	p := plugin.NewPlugin("postgresql", "development", New)
-//	s := &spec.Spec{
-//		ConnectionString:         getTestConnection(),
-//		PgxLogLevel:              spec.LogLevel(tracelog.LogLevelTrace),
-//		CreatePerformanceIndexes: true,
-//	}
-//	b, err := json.Marshal(s)
-//	require.NoError(t, err)
-//	err = p.Init(ctx, b, plugin.NewClientOptions{})
-//	require.NoError(t, err)
-//
-//	tableName := fmt.Sprintf("cq_test_create_indexes_super_long_name_over_characters_%d", time.Now().UnixNano())
-//	table := &schema.Table{
-//		Name: tableName,
-//		Columns: []schema.Column{
-//			{Name: "_cq_id", Type: types.ExtensionTypes.UUID, PrimaryKey: true, NotNull: true, Unique: true},
-//			{Name: "_cq_source_name", Type: arrow.BinaryTypes.String},
-//			{Name: "_cq_sync_time", Type: arrow.FixedWidthTypes.Timestamp_us},
-//		},
-//	}
-//
-//	err = p.WriteAll(ctx, []message.WriteMessage{&message.WriteMigrateTable{Table: table}})
-//	require.NoError(t, err)
-//
-//	indexes, err := getIndexesForTable(ctx, tableName)
-//	require.NoError(t, err)
-//	isPostgres, err := isPostgresDB(ctx)
-//	require.NoError(t, err)
-//	if isPostgres {
-//		require.Len(t, indexes, 2)
-//		require.Equal(t, fmt.Sprintf(`CREATE UNIQUE INDEX %[1]s_pkey ON public.%[1]s USING btree (_cq_id)`, tableName), indexes[fmt.Sprintf("%s_pkey", tableName)])
-//		require.Equal(t, fmt.Sprintf(`CREATE INDEX %[1]s_cqpi ON public.%[1]s USING btree (_cq_source_name, _cq_sync_time)`, tableName), indexes[fmt.Sprintf("%s_cqpi", tableName)])
-//	} else {
-//		require.Len(t, indexes, 3)
-//		require.Equal(t, fmt.Sprintf(`CREATE UNIQUE INDEX %[1]s_cqpk ON postgres.public.%[1]s USING btree (_cq_id ASC)`, tableName), indexes[fmt.Sprintf("%s_pkey", tableName)])
-//		require.Equal(t, fmt.Sprintf(`CREATE UNIQUE INDEX %[1]s__cq_id_key ON postgres.public.%[1]s USING btree (_cq_id ASC)`, tableName), indexes[fmt.Sprintf("%s__cq_id_key", tableName)])
-//		require.Equal(t, fmt.Sprintf(`CREATE INDEX %[1]s_cqpi ON postgres.public.%[1]s USING btree (_cq_source_name ASC, _cq_sync_time ASC)`, tableName), indexes[fmt.Sprintf("%s_cqpi", tableName)])
-//	}
-// }
+func TestCreateIndexesPluginVeryLongTable(t *testing.T) {
+	ctx := context.Background()
+	p := plugin.NewPlugin("postgresql", "development", New)
+	s := &spec.Spec{
+		ConnectionString:         getTestConnection(),
+		PgxLogLevel:              spec.LogLevel(tracelog.LogLevelTrace),
+		CreatePerformanceIndexes: true,
+	}
+	b, err := json.Marshal(s)
+	require.NoError(t, err)
+	err = p.Init(ctx, b, plugin.NewClientOptions{})
+	require.NoError(t, err)
+
+	tableName := "cq_test_with_exactly_63_characters_in_the_name_1234567890123456"
+	table := &schema.Table{
+		Name: tableName,
+		Columns: []schema.Column{
+			{Name: "_cq_id", Type: types.ExtensionTypes.UUID, PrimaryKey: true, NotNull: true, Unique: true},
+			{Name: "_cq_source_name", Type: arrow.BinaryTypes.String},
+			{Name: "_cq_sync_time", Type: arrow.FixedWidthTypes.Timestamp_us},
+		},
+	}
+
+	err = p.WriteAll(ctx, []message.WriteMessage{&message.WriteMigrateTable{Table: table}})
+	require.NoError(t, err)
+
+	indexes, err := getIndexesForTable(ctx, tableName)
+	require.NoError(t, err)
+	isPostgres, err := isPostgresDB(ctx)
+	require.NoError(t, err)
+	if isPostgres {
+		require.Len(t, indexes, 2)
+		require.Equal(t, fmt.Sprintf(`CREATE UNIQUE INDEX %[1]s_pkey ON public.%[2]s USING btree (_cq_id)`, tableName[:len(tableName)-5], tableName), indexes[fmt.Sprintf("%s_pkey", tableName[:len(tableName)-5])])
+		require.Equal(t, fmt.Sprintf(`CREATE INDEX %[1]s_cqpi ON public.%[2]s USING btree (_cq_source_name, _cq_sync_time)`, hashTableName(tableName), tableName), indexes[fmt.Sprintf("%s_cqpi", hashTableName(tableName))])
+	} else {
+		require.Len(t, indexes, 3)
+		require.Equal(t, fmt.Sprintf(`CREATE UNIQUE INDEX %[1]s_pkey ON postgres.public.%[1]s USING btree (_cq_id ASC)`, tableName), indexes[fmt.Sprintf("%s_pkey", tableName)])
+		require.Equal(t, fmt.Sprintf(`CREATE UNIQUE INDEX %[1]s__cq_id_key ON postgres.public.%[1]s USING btree (_cq_id ASC)`, tableName), indexes[fmt.Sprintf("%s__cq_id_key", tableName)])
+		require.Equal(t, fmt.Sprintf(`CREATE INDEX %[1]s_cqpi ON postgres.public.%[1]s USING btree (_cq_source_name ASC, _cq_sync_time ASC)`, tableName), indexes[fmt.Sprintf("%s_cqpi", tableName)])
+	}
+}
