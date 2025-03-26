@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -247,7 +248,10 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 	defer conn.Release()
 	tableName := table.Name
 	sanitizedTableName := pgx.Identifier{tableName}.Sanitize()
-	var sanitizedPKName = c.getPKName(ctx, tableName)
+	sanitizedPKName, err := c.getPKName(ctx, tableName)
+	if err != nil {
+		return fmt.Errorf("failed to get primary key name: %w", err)
+	}
 	// start transaction
 	tx, err := conn.BeginTx(ctx, pgx.TxOptions{
 		IsoLevel: pgx.Serializable,
@@ -376,8 +380,12 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		c.logger.Error().Err(err).Str("table", tableName).Str("query", sb.String()).Msg("Failed to create table")
 		return fmt.Errorf("failed to create table %s: %w"+sb.String(), tableName, err)
 	}
+	pkName, err := c.getPKName(ctx, tableName)
+	if err != nil {
+		return fmt.Errorf("failed to get primary key name: %w", err)
+	}
 	c.pgTablesToPKConstraints[tableName] = &pkConstraintDetails{
-		name:    c.getPKName(ctx, tableName),
+		name:    pkName,
 		columns: table.PrimaryKeys(),
 	}
 
@@ -399,13 +407,17 @@ func (c *Client) removeUniqueConstraint(ctx context.Context, table *schema.Table
 	return nil
 }
 
-func (c *Client) getPKName(ctx context.Context, tableName string) string {
+func (c *Client) getPKName(ctx context.Context, tableName string) (string, error) {
 	var pkConstraintName string
-	_ = c.conn.QueryRow(ctx, `select tco.constraint_name from information_schema.table_constraints tco join information_schema.key_column_usage kcu
+	err := c.conn.QueryRow(ctx, `select tco.constraint_name from information_schema.table_constraints tco join information_schema.key_column_usage kcu
      on kcu.constraint_name = tco.constraint_name
      where tco.constraint_type = 'PRIMARY KEY'
     and kcu.table_name = $1`, tableName).Scan(&pkConstraintName)
-	return pkConstraintName
+	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		return "", err
+	}
+
+	return pkConstraintName, nil
 }
 
 func (c *Client) createPerformanceIndexes(ctx context.Context, table *schema.Table) error {
