@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.10.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.10.9...plugins-destination-duckdb-v5.10.10) (2025-03-26)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.2.0 ([#20410](https://github.com/cloudquery/cloudquery/issues/20410)) ([ee081fb](https://github.com/cloudquery/cloudquery/commit/ee081fbb1ab7bd0c4c0955556dc6c76e17d4b9f3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.74.2 ([#20434](https://github.com/cloudquery/cloudquery/issues/20434)) ([8db20d6](https://github.com/cloudquery/cloudquery/commit/8db20d6bc12153dc750857fe853ce2e3d95db65c))
+
 ## [5.10.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v5.10.8...plugins-destination-duckdb-v5.10.9) (2025-03-20)
 
 
