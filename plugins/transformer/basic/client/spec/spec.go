@@ -13,6 +13,7 @@ const (
 	KindChangeTableNames   = "change_table_names"
 	KindAddTimestampColumn = "add_current_timestamp_column"
 	KindRenameColumn       = "rename_column"
+	KindAddPrimaryKeys     = "add_primary_keys"
 )
 
 type TransformationSpec struct {
@@ -42,7 +43,7 @@ func (s *Spec) Validate() error {
 	var err error
 	for _, t := range s.TransformationSpecs {
 		switch t.Kind {
-		case KindRemoveColumns:
+		case KindRemoveColumns, KindAddPrimaryKeys:
 			if len(t.Columns) == 0 {
 				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "columns", t.Kind))
 			}
@@ -90,6 +91,7 @@ func (s *Spec) Validate() error {
 			if len(t.Columns) > 0 {
 				err = errors.Join(err, fmt.Errorf("columns field must not be specified for %s transformation", t.Kind))
 			}
+
 		default:
 			err = errors.Join(err, fmt.Errorf("unknown transformation kind: %s", t.Kind))
 		}
