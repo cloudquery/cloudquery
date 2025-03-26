@@ -25,7 +25,7 @@
   "plugins/destination/test+FILLER": "0.0.0",
   "plugins/destination/sqlite": "2.10.10",
   "plugins/destination/sqlite+FILLER": "0.0.0",
-  "plugins/destination/snowflake": "4.4.9",
+  "plugins/destination/snowflake": "4.4.10",
   "plugins/destination/snowflake+FILLER": "0.0.0",
   "plugins/source/datadog": "4.3.10",
   "plugins/source/datadog+FILLER": "0.0.0",
