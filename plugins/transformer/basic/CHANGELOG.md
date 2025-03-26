@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.1.0...plugins-transformer-basic-v2.1.1) (2025-03-26)
+
+
+### Bug Fixes
+
+* Update validation to include `add_primary_keys` kind ([#20439](https://github.com/cloudquery/cloudquery/issues/20439)) ([7247ebf](https://github.com/cloudquery/cloudquery/commit/7247ebf8ba2548fa55579edf56dceb58b4d0dae5))
+
 ## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.0.4...plugins-transformer-basic-v2.1.0) (2025-03-25)
 
 
