@@ -49,7 +49,7 @@
   "plugins/destination/neo4j+FILLER": "0.0.0",
   "plugins/destination/kafka": "5.4.7",
   "plugins/destination/kafka+FILLER": "0.0.0",
-  "plugins/source/hackernews": "3.7.9",
+  "plugins/source/hackernews": "3.7.10",
   "plugins/source/hackernews+FILLER": "0.0.0",
   "scaffold": "3.4.16",
   "scaffold+FILLER": "0.0.0",
@@ -105,9 +105,9 @@
   "plugins/source/notion+FILLER": "0.0.0",
   "plugins/source/xkcd": "1.5.10",
   "plugins/source/xkcd+FILLER": "0.0.0",
-  "plugins/transformer/basic": "2.1.0",
+  "plugins/transformer/basic": "2.1.1",
   "plugins/transformer/basic+FILLER": "0.0.0",
-  "plugins/transformer/jsonflattener": "2.0.5",
+  "plugins/transformer/jsonflattener": "2.0.6",
   "plugins/transformer/jsonflattener+FILLER": "0.0.0",
   "plugins/transformer/test": "1.1.8"
 }
