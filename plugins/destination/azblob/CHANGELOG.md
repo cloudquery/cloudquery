@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.4.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.11...plugins-destination-azblob-v4.4.12) (2025-03-26)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.2.0 ([#20410](https://github.com/cloudquery/cloudquery/issues/20410)) ([ee081fb](https://github.com/cloudquery/cloudquery/commit/ee081fbb1ab7bd0c4c0955556dc6c76e17d4b9f3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.74.2 ([#20434](https://github.com/cloudquery/cloudquery/issues/20434)) ([8db20d6](https://github.com/cloudquery/cloudquery/commit/8db20d6bc12153dc750857fe853ce2e3d95db65c))
+* **deps:** Update module github.com/golang-jwt/jwt/v5 to v5.2.2 [SECURITY] ([#20403](https://github.com/cloudquery/cloudquery/issues/20403)) ([6c8dc12](https://github.com/cloudquery/cloudquery/commit/6c8dc1245f1942a5cae1ad708b6b1f4a8c34217b))
+
 ## [4.4.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.10...plugins-destination-azblob-v4.4.11) (2025-03-20)
 
 
