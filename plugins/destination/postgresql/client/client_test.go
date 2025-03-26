@@ -259,3 +259,60 @@ func TestCreateIndexesPluginVeryLongTable(t *testing.T) {
 		require.Equal(t, fmt.Sprintf(`CREATE INDEX %[1]s_cqpi ON postgres.public.%[1]s USING btree (_cq_source_name ASC, _cq_sync_time ASC)`, tableName), indexes[fmt.Sprintf("%s_cqpi", tableName)])
 	}
 }
+
+func TestAlreadyExistingTableWithOldIndexesShouldNotChange(t *testing.T) {
+	ctx := context.Background()
+	p := plugin.NewPlugin("postgresql", "development", New)
+	s := &spec.Spec{
+		ConnectionString:         getTestConnection(),
+		PgxLogLevel:              spec.LogLevel(tracelog.LogLevelTrace),
+		CreatePerformanceIndexes: true,
+	}
+	b, err := json.Marshal(s)
+	require.NoError(t, err)
+	err = p.Init(ctx, b, plugin.NewClientOptions{})
+	require.NoError(t, err)
+
+	tableName := fmt.Sprintf("cq_test_old_naming_scheme_%d", time.Now().UnixNano())
+	// Create table with old naming scheme
+	tableDDL := fmt.Sprintf(`create table %[1]s(
+    _cq_id          uuid,
+    _cq_source_name text,
+    _cq_sync_time   timestamp,
+    constraint %[1]s_cqpk primary key (_cq_id))`, tableName)
+	indexDdl := fmt.Sprintf(`create index %[1]s_cqpi
+    on %[1]s (_cq_source_name, _cq_sync_time)`, tableName)
+	conn, err := getConnection(ctx)
+	require.NoError(t, err)
+	_, err = conn.Exec(ctx, tableDDL)
+	require.NoError(t, err)
+	_, err = conn.Exec(ctx, indexDdl)
+	require.NoError(t, err)
+
+	table := &schema.Table{
+		Name: tableName,
+		Columns: []schema.Column{
+			{Name: "_cq_id", Type: types.ExtensionTypes.UUID, PrimaryKey: true, NotNull: true, Unique: true},
+			{Name: "_cq_source_name", Type: arrow.BinaryTypes.String},
+			{Name: "_cq_sync_time", Type: arrow.FixedWidthTypes.Timestamp_us},
+		},
+	}
+
+	err = p.WriteAll(ctx, []message.WriteMessage{&message.WriteMigrateTable{Table: table}})
+	require.NoError(t, err)
+
+	indexes, err := getIndexesForTable(ctx, tableName)
+	require.NoError(t, err)
+	isPostgres, err := isPostgresDB(ctx)
+	require.NoError(t, err)
+	// Nothing should change after the migration
+	if isPostgres {
+		require.Len(t, indexes, 2)
+		require.Equal(t, fmt.Sprintf(`CREATE UNIQUE INDEX %[1]s_cqpk ON public.%[1]s USING btree (_cq_id)`, tableName), indexes[fmt.Sprintf("%s_cqpk", tableName)])
+		require.Equal(t, fmt.Sprintf(`CREATE INDEX %[1]s_cqpi ON public.%[1]s USING btree (_cq_source_name, _cq_sync_time)`, tableName), indexes[fmt.Sprintf("%s_cqpi", tableName)])
+	} else {
+		require.Len(t, indexes, 2)
+		require.Equal(t, fmt.Sprintf(`CREATE UNIQUE INDEX %[1]s_cqpk ON postgres.public.%[1]s USING btree (_cq_id ASC)`, tableName), indexes[fmt.Sprintf("%s_cqpk", tableName)])
+		require.Equal(t, fmt.Sprintf(`CREATE INDEX %[1]s_cqpi ON postgres.public.%[1]s USING btree (_cq_source_name ASC, _cq_sync_time ASC)`, tableName), indexes[fmt.Sprintf("%s_cqpi", tableName)])
+	}
+}
