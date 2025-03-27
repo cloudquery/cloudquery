@@ -1,5 +1,18 @@
 # Changelog
 
+## [8.8.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.7.12...plugins-destination-postgresql-v8.8.0) (2025-03-27)
+
+
+### Features
+
+* Remove pk index naming from postgres destination ([#20438](https://github.com/cloudquery/cloudquery/issues/20438)) ([5314c7a](https://github.com/cloudquery/cloudquery/commit/5314c7aa4815b36f527554aec2ade6353450cd61))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.2.0 ([#20410](https://github.com/cloudquery/cloudquery/issues/20410)) ([ee081fb](https://github.com/cloudquery/cloudquery/commit/ee081fbb1ab7bd0c4c0955556dc6c76e17d4b9f3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.74.2 ([#20434](https://github.com/cloudquery/cloudquery/issues/20434)) ([8db20d6](https://github.com/cloudquery/cloudquery/commit/8db20d6bc12153dc750857fe853ce2e3d95db65c))
+
 ## [8.7.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.7.11...plugins-destination-postgresql-v8.7.12) (2025-03-20)
 
 
