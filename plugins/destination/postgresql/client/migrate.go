@@ -2,6 +2,9 @@ package client
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -245,8 +248,10 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 	defer conn.Release()
 	tableName := table.Name
 	sanitizedTableName := pgx.Identifier{tableName}.Sanitize()
-	sanitizedPKName := pgx.Identifier{getPKName(&schema.Table{Name: tableName})}.Sanitize()
-
+	sanitizedPKName, err := c.getPKName(ctx, tableName)
+	if err != nil {
+		return fmt.Errorf("failed to get primary key name: %w", err)
+	}
 	// start transaction
 	tx, err := conn.BeginTx(ctx, pgx.TxOptions{
 		IsoLevel: pgx.Serializable,
@@ -363,17 +368,9 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		}
 	}
 
-	pkConstraintName := getPKName(table)
-	c.pgTablesToPKConstraints[tableName] = &pkConstraintDetails{
-		name:    pkConstraintName,
-		columns: table.PrimaryKeys(),
-	}
-
 	if len(primaryKeys) > 0 {
 		// add composite PK constraint on primary key columns
-		sb.WriteString(", CONSTRAINT ")
-		sb.WriteString(pgx.Identifier{pkConstraintName}.Sanitize())
-		sb.WriteString(" PRIMARY KEY (")
+		sb.WriteString(", PRIMARY KEY (")
 		sb.WriteString(strings.Join(primaryKeys, ","))
 		sb.WriteString(")")
 	}
@@ -383,6 +380,15 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		c.logger.Error().Err(err).Str("table", tableName).Str("query", sb.String()).Msg("Failed to create table")
 		return fmt.Errorf("failed to create table %s: %w"+sb.String(), tableName, err)
 	}
+	pkName, err := c.getPKName(ctx, tableName)
+	if err != nil {
+		return fmt.Errorf("failed to get primary key name: %w", err)
+	}
+	c.pgTablesToPKConstraints[tableName] = &pkConstraintDetails{
+		name:    pkName,
+		columns: table.PrimaryKeys(),
+	}
+
 	return nil
 }
 
@@ -401,8 +407,17 @@ func (c *Client) removeUniqueConstraint(ctx context.Context, table *schema.Table
 	return nil
 }
 
-func getPKName(table *schema.Table) string {
-	return table.Name + "_cqpk"
+func (c *Client) getPKName(ctx context.Context, tableName string) (string, error) {
+	var pkConstraintName string
+	err := c.conn.QueryRow(ctx, `SELECT tco.constraint_name FROM information_schema.table_constraints tco JOIN information_schema.key_column_usage kcu
+     ON kcu.constraint_name = tco.constraint_name
+     WHERE tco.constraint_type = 'PRIMARY KEY'
+    AND kcu.table_name = $1`, tableName).Scan(&pkConstraintName)
+	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		return "", err
+	}
+
+	return pkConstraintName, nil
 }
 
 func (c *Client) createPerformanceIndexes(ctx context.Context, table *schema.Table) error {
@@ -421,6 +436,9 @@ func (c *Client) createPerformanceIndexes(ctx context.Context, table *schema.Tab
 	}
 
 	indexName := table.Name + "_cqpi"
+	if len(table.Name) > 58 && c.pgType != pgTypeCockroachDB {
+		indexName = hashTableName(table.Name) + "_cqpi"
+	}
 
 	sqlStatement := "CREATE INDEX IF NOT EXISTS " + pgx.Identifier{indexName}.Sanitize() + " ON " + pgx.Identifier{table.Name}.Sanitize() + "(" + pgx.Identifier{columns[0]}.Sanitize() + ", " + pgx.Identifier{columns[1]}.Sanitize() + ")"
 	_, err := c.conn.Exec(ctx, sqlStatement)
@@ -429,4 +447,14 @@ func (c *Client) createPerformanceIndexes(ctx context.Context, table *schema.Tab
 	}
 
 	return nil
+}
+
+func hashTableName(input string) string {
+	// Max table name length
+	if len(input) > 63 {
+		input = input[:63]
+	}
+	hash := sha256.Sum256([]byte(input))
+	hashStr := hex.EncodeToString(hash[:])
+	return hashStr[:32]
 }
