@@ -409,10 +409,10 @@ func (c *Client) removeUniqueConstraint(ctx context.Context, table *schema.Table
 
 func (c *Client) getPKName(ctx context.Context, tableName string) (string, error) {
 	var pkConstraintName string
-	err := c.conn.QueryRow(ctx, `select tco.constraint_name from information_schema.table_constraints tco join information_schema.key_column_usage kcu
-     on kcu.constraint_name = tco.constraint_name
-     where tco.constraint_type = 'PRIMARY KEY'
-    and kcu.table_name = $1`, tableName).Scan(&pkConstraintName)
+	err := c.conn.QueryRow(ctx, `SELECT tco.constraint_name FROM information_schema.table_constraints tco JOIN information_schema.key_column_usage kcu
+     ON kcu.constraint_name = tco.constraint_name
+     WHERE tco.constraint_type = 'PRIMARY KEY'
+    AND kcu.table_name = $1`, tableName).Scan(&pkConstraintName)
 	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
 		return "", err
 	}
