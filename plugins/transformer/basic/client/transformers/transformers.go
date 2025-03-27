@@ -30,6 +30,8 @@ func NewFromSpec(sp spec.TransformationSpec) (*Transformer, error) {
 		tr.fn = AddTimestampColumnAsLastColumn(sp.Name)
 	case spec.KindRemoveColumns:
 		tr.fn = RemoveColumns(sp.Columns)
+	case spec.KindAddPrimaryKeys:
+		tr.fn = AddPrimaryKeys(sp.Columns)
 	case spec.KindObfuscateColumns:
 		tr.fn = ObfuscateColumns(sp.Columns)
 	case spec.KindChangeTableNames:
@@ -91,6 +93,12 @@ func AddTimestampColumnAsLastColumn(name string) TransformationFn {
 func RemoveColumns(columnNames []string) TransformationFn {
 	return func(record arrow.Record) (arrow.Record, error) {
 		return recordupdater.New(record).RemoveColumns(columnNames)
+	}
+}
+
+func AddPrimaryKeys(columnNames []string) TransformationFn {
+	return func(record arrow.Record) (arrow.Record, error) {
+		return recordupdater.New(record).AddPrimaryKeys(columnNames)
 	}
 }
 

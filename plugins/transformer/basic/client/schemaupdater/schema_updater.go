@@ -3,6 +3,7 @@ package schemaupdater
 import (
 	"bytes"
 	"errors"
+	"fmt"
 	"text/template"
 
 	"github.com/apache/arrow-go/v18/arrow"
@@ -55,6 +56,7 @@ func (s *SchemaUpdater) AddTimestampColumnAtPos(columnName string, zeroIndexedPo
 
 func (s *SchemaUpdater) RenameColumn(oldName, newName string) (*arrow.Schema, error) {
 	oldFields := s.schema.Fields()
+
 	newFields := make([]arrow.Field, len(oldFields))
 
 	for i, f := range oldFields {
@@ -94,4 +96,19 @@ func (s *SchemaUpdater) ChangeTableName(newTableNamePattern string) (*arrow.Sche
 	m[schema.MetadataTableName] = newName
 	newMetadata := arrow.MetadataFrom(m)
 	return arrow.NewSchema(s.schema.Fields(), &newMetadata), nil
+}
+
+func (s *SchemaUpdater) AddPrimaryKeys(newPks []string) (*arrow.Schema, error) {
+	table, err := schema.NewTableFromArrowSchema(s.schema)
+	if err != nil {
+		return nil, err
+	}
+	for _, newPk := range newPks {
+		newCol := table.Columns.Get(newPk)
+		if newCol == nil {
+			return nil, fmt.Errorf("new primary key column: %s not found in: %s", newPk, table.Name)
+		}
+		newCol.PrimaryKey = true
+	}
+	return table.ToArrowSchema(), nil
 }
