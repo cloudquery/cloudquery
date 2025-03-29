@@ -1,7 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4
 
 go 1.24.1
-
 require (
 	cloud.google.com/go/bigquery v1.67.0
 	github.com/apache/arrow-go/v18 v18.2.0
@@ -105,7 +104,7 @@ require (
 	github.com/spf13/cobra v1.8.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
-	golang.org/x/net v0.37.0 // indirect; indirect // indirect
+	golang.org/x/net v0.38.0 // indirect; indirect // indirect
 	golang.org/x/oauth2 v0.28.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
