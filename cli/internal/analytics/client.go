@@ -2,7 +2,6 @@ package analytics
 
 import (
 	"context"
-	"os"
 	"time"
 
 	cqapi "github.com/cloudquery/cloudquery-api-go"
@@ -46,8 +45,7 @@ func InitClient() {
 }
 
 func getEnvironment() string {
-	_, ok := os.LookupEnv("CQ_CLOUD")
-	if ok {
+	if env.IsCloud() {
 		return "cloud"
 	}
 	return "cli"
