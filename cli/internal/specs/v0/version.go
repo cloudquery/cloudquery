@@ -23,7 +23,8 @@ func WarnOnOutdatedVersions(ctx context.Context, p *managedplugin.PluginVersionW
 			continue
 		}
 		// N.B.: warning is best-effort; we ignore errors, but the function still logs errors with Debug logs
-		if source.Registry == RegistryCloudQuery {
+		// We only check for outdated plugins if the registry is cloudquery or github and the org is cloudquery
+		if source.Registry == RegistryCloudQuery || (source.Registry == RegistryGitHub && org == "cloudquery") {
 			_, _ = p.WarnIfOutdated(ctx, org, name, managedplugin.PluginSource.String(), source.Version)
 		}
 	}
@@ -34,7 +35,8 @@ func WarnOnOutdatedVersions(ctx context.Context, p *managedplugin.PluginVersionW
 			continue
 		}
 		// N.B.: warning is best-effort; we ignore errors, but the function still logs errors with Debug logs
-		if destination.Registry == RegistryCloudQuery {
+		// We only check for outdated plugins if the registry is cloudquery or github and the org is cloudquery
+		if destination.Registry == RegistryCloudQuery || (destination.Registry == RegistryGitHub && org == "cloudquery") {
 			_, _ = p.WarnIfOutdated(ctx, org, name, managedplugin.PluginDestination.String(), destination.Version)
 		}
 	}
@@ -45,7 +47,8 @@ func WarnOnOutdatedVersions(ctx context.Context, p *managedplugin.PluginVersionW
 			continue
 		}
 		// N.B.: warning is best-effort; we ignore errors, but the function still logs errors with Debug logs
-		if transformer.Registry == RegistryCloudQuery {
+		// We only check for outdated plugins if the registry is cloudquery or github and the org is cloudquery
+		if transformer.Registry == RegistryCloudQuery || (transformer.Registry == RegistryGitHub && org == "cloudquery") {
 			_, _ = p.WarnIfOutdated(ctx, org, name, managedplugin.PluginTransformer.String(), transformer.Version)
 		}
 	}
