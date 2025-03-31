@@ -5,7 +5,7 @@ import (
 
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/apache/arrow-go/v18/arrow/array"
-	"github.com/apache/arrow-go/v18/arrow/memory"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
@@ -138,30 +138,29 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 	nRows := int(record.NumRows())
 
 	cols := make([]arrow.Array, 0, len(sc.Fields())+t.internalColumns)
-	if t.withSyncTime && !sc.HasField(cqSyncTime) {
-		ts, _ := arrow.TimestampFromTime(t.syncTime, arrow.Microsecond)
-		syncTimeBldr := array.NewTimestampBuilder(memory.DefaultAllocator, &arrow.TimestampType{Unit: arrow.Microsecond, TimeZone: "UTC"})
-		syncTimeBldr.Reserve(nRows)
-		for i := 0; i < nRows; i++ {
-			syncTimeBldr.Append(ts)
+	if t.withSyncTime && (!sc.HasField(cqSyncTime) || env.IsCloud()) {
+		syncTimeArray, _ := schema.TimestampArrayFromTime(t.syncTime, arrow.Microsecond, "UTC", nRows)
+		if !sc.HasField(cqSyncTime) {
+			cols = append(cols, syncTimeArray)
+		} else {
+			record, _ = schema.ReplaceFieldInRecord(record, cqSyncTime, syncTimeArray)
 		}
-		cols = append(cols, syncTimeBldr.NewArray())
 	}
-	if t.withSourceName && !sc.HasField(cqSourceName) {
-		sourceBldr := array.NewStringBuilder(memory.DefaultAllocator)
-		sourceBldr.Reserve(nRows)
-		for i := 0; i < nRows; i++ {
-			sourceBldr.Append(t.sourceName)
+	if t.withSourceName && (!sc.HasField(cqSourceName) || env.IsCloud()) {
+		sourceNameArray := schema.StringArrayFromValue(t.sourceName, nRows)
+		if !sc.HasField(cqSourceName) {
+			cols = append(cols, sourceNameArray)
+		} else {
+			record, _ = schema.ReplaceFieldInRecord(record, cqSourceName, sourceNameArray)
 		}
-		cols = append(cols, sourceBldr.NewArray())
 	}
-	if t.withSyncGroupID && !sc.HasField(cqSyncGroupId) {
-		syncGroupIdBldr := array.NewStringBuilder(memory.DefaultAllocator)
-		syncGroupIdBldr.Reserve(nRows)
-		for i := 0; i < nRows; i++ {
-			syncGroupIdBldr.Append(t.syncGroupId)
+	if t.withSyncGroupID && (!sc.HasField(cqSyncGroupId) || env.IsCloud()) {
+		syncGroupIdArray := schema.StringArrayFromValue(t.syncGroupId, nRows)
+		if !sc.HasField(cqSyncGroupId) {
+			cols = append(cols, syncGroupIdArray)
+		} else {
+			record, _ = schema.ReplaceFieldInRecord(record, cqSyncGroupId, syncGroupIdArray)
 		}
-		cols = append(cols, syncGroupIdBldr.NewArray())
 	}
 
 	cols = append(cols, record.Columns()...)

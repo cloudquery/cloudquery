@@ -8,3 +8,8 @@ func GetEnvOrDefault(env, def string) string {
 	}
 	return def
 }
+
+func IsCloud() bool {
+	_, ok := os.LookupEnv("CQ_CLOUD")
+	return ok
+}
