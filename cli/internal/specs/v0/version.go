@@ -37,7 +37,6 @@ func WarnOnOutdatedVersions(ctx context.Context, p *managedplugin.PluginVersionW
 		if destination.Registry == RegistryCloudQuery {
 			_, _ = p.WarnIfOutdated(ctx, org, name, managedplugin.PluginDestination.String(), destination.Version)
 		}
-
 	}
 	for _, transformer := range transformers {
 		org, name, err := pluginPathToOrgName(transformer.Path)
