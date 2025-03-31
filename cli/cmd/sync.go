@@ -500,6 +500,7 @@ func filterPluginEnv(environ []string, pluginName, kind string) []string {
 			k := getEnvKey(v)
 			globalEnvironmentVariables[k] = v
 		case strings.HasPrefix(v, "_CQ_TEAM_NAME="),
+			strings.HasPrefix(v, "_CQ_INSTALLATION_ID="),
 			strings.HasPrefix(v, "HOME="):
 			env = append(env, v)
 		case strings.HasPrefix(v, prefix):
