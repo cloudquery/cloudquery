@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/otel"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -148,7 +149,7 @@ func sync(cmd *cobra.Command, args []string) error {
 	}
 
 	// in the cloud sync environment, we pass only the relevant environment variables to the plugin
-	_, isolatePluginEnvironment := os.LookupEnv("CQ_CLOUD")
+	isolatePluginEnvironment := env.IsCloud()
 
 	ctx := cmd.Context()
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
