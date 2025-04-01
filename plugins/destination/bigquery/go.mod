@@ -5,8 +5,8 @@ go 1.24.1
 require (
 	cloud.google.com/go/bigquery v1.67.0
 	github.com/apache/arrow-go/v18 v18.2.0
-	github.com/cloudquery/codegen v0.3.23
-	github.com/cloudquery/plugin-sdk/v4 v4.74.2
+	github.com/cloudquery/codegen v0.3.24
+	github.com/cloudquery/plugin-sdk/v4 v4.75.0
 	github.com/goccy/go-json v0.10.5
 	github.com/invopop/jsonschema v0.13.0
 	github.com/rs/zerolog v1.33.0
@@ -80,10 +80,10 @@ require (
 	go.opentelemetry.io/otel/trace v1.35.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.5.0 // indirect
 	golang.org/x/crypto v0.36.0 // indirect
-	golang.org/x/exp v0.0.0-20241217172543-b2144cdd0a67 // indirect
-	golang.org/x/mod v0.23.0 // indirect
+	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394 // indirect
+	golang.org/x/mod v0.24.0 // indirect
 	golang.org/x/time v0.10.0 // indirect
-	golang.org/x/tools v0.30.0 // indirect
+	golang.org/x/tools v0.31.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250303144028-a0af3efb3deb // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250303144028-a0af3efb3deb // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

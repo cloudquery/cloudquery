@@ -4,8 +4,8 @@ go 1.24.1
 
 require (
 	github.com/apache/arrow-go/v18 v18.2.0
-	github.com/cloudquery/codegen v0.3.23
-	github.com/cloudquery/plugin-sdk/v4 v4.74.2
+	github.com/cloudquery/codegen v0.3.24
+	github.com/cloudquery/plugin-sdk/v4 v4.75.0
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.33.0
