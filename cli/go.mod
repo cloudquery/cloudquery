@@ -6,10 +6,10 @@ require (
 	github.com/apache/arrow-go/v18 v18.2.0
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.3.0
-	github.com/cloudquery/cloudquery-api-go v1.13.7
+	github.com/cloudquery/cloudquery-api-go v1.13.8
 	github.com/cloudquery/codegen v0.3.23
 	github.com/cloudquery/plugin-pb-go v1.26.8
-	github.com/cloudquery/plugin-sdk/v4 v4.74.2
+	github.com/cloudquery/plugin-sdk/v4 v4.75.0
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/docker/docker v26.1.5+incompatible
@@ -43,7 +43,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.34.0
 	go.uber.org/zap v1.27.0
 	golang.org/x/exp v0.0.0-20241217172543-b2144cdd0a67
-	golang.org/x/net v0.37.0
+	golang.org/x/net v0.38.0
 	golang.org/x/sync v0.12.0
 	golang.org/x/term v0.30.0
 	google.golang.org/grpc v1.71.0

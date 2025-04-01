@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/otel"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -148,7 +149,7 @@ func sync(cmd *cobra.Command, args []string) error {
 	}
 
 	// in the cloud sync environment, we pass only the relevant environment variables to the plugin
-	_, isolatePluginEnvironment := os.LookupEnv("CQ_CLOUD")
+	isolatePluginEnvironment := env.IsCloud()
 
 	ctx := cmd.Context()
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
@@ -486,7 +487,7 @@ func sync(cmd *cobra.Command, args []string) error {
 }
 
 func filterPluginEnv(environ []string, pluginName, kind string) []string {
-	env := make([]string, 0, len(environ))
+	pluginEnv := make([]string, 0, len(environ))
 	cleanName := strings.ReplaceAll(pluginName, "-", "_")
 	prefix := strings.ToUpper("__" + kind + "_" + cleanName + "__")
 
@@ -500,11 +501,12 @@ func filterPluginEnv(environ []string, pluginName, kind string) []string {
 			k := getEnvKey(v)
 			globalEnvironmentVariables[k] = v
 		case strings.HasPrefix(v, "_CQ_TEAM_NAME="),
+			strings.HasPrefix(v, "_CQ_INSTALLATION_ID="),
 			strings.HasPrefix(v, "HOME="):
-			env = append(env, v)
+			pluginEnv = append(pluginEnv, v)
 		case strings.HasPrefix(v, prefix):
 			cleanEnv := strings.TrimPrefix(v, prefix)
-			env = append(env, cleanEnv)
+			pluginEnv = append(pluginEnv, cleanEnv)
 			if strings.HasPrefix(cleanEnv, "CLOUDQUERY_API_KEY=") ||
 				strings.HasPrefix(cleanEnv, "AWS_") {
 				k := getEnvKey(cleanEnv)
@@ -514,10 +516,10 @@ func filterPluginEnv(environ []string, pluginName, kind string) []string {
 	}
 	for k, v := range globalEnvironmentVariables {
 		if _, ok := specificEnvironmentVariables[k]; !ok {
-			env = append(env, v)
+			pluginEnv = append(pluginEnv, v)
 		}
 	}
-	return env
+	return pluginEnv
 }
 
 func getEnvKey(v string) string {

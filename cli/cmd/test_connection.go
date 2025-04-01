@@ -12,6 +12,7 @@ import (
 	apiAuth "github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
@@ -136,7 +137,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	updateSyncTestConnectionStatus(cmd.Context(), log.Logger, cloudquery_api.SyncTestConnectionStatusStarted)
 
 	// in the cloud sync environment, we pass only the relevant environment variables to the plugin
-	_, isolatePluginEnvironment := os.LookupEnv("CQ_CLOUD")
+	isolatePluginEnvironment := env.IsCloud()
 	osEnviron := os.Environ()
 
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
@@ -337,7 +338,7 @@ func testPluginConnection(ctx context.Context, client plugin.PluginClient, spec 
 	if err != nil {
 		if gRPCErr, ok := grpcstatus.FromError(err); ok {
 			if gRPCErr.Code() == codes.Unimplemented {
-				if !isCloudBasedRequest() {
+				if !env.IsCloud() {
 					return &testConnectionResult{
 						Success:            false,
 						FailureCode:        "UNIMPLEMENTED",
@@ -388,8 +389,4 @@ func filterFailedTestResults(results []testConnectionResult) (*testConnectionRes
 	default:
 		return nil, errors.New("multiple test connection failures are not supported")
 	}
-}
-
-func isCloudBasedRequest() bool {
-	return os.Getenv("CQ_CLOUD") != ""
 }
