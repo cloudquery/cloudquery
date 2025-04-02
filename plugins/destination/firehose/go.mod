@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.37.1
 	github.com/aws/aws-sdk-go-v2/service/sts v1.33.17
 	github.com/cloudquery/codegen v0.3.24
-	github.com/cloudquery/plugin-sdk/v4 v4.75.0
+	github.com/cloudquery/plugin-sdk/v4 v4.76.0
 	github.com/goccy/go-json v0.10.5
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.10.0
@@ -34,8 +34,8 @@ require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.13.7 // indirect
-	github.com/cloudquery/plugin-pb-go v1.26.8 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.13.8 // indirect
+	github.com/cloudquery/plugin-pb-go v1.26.9 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
