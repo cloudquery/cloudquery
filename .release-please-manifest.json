@@ -45,7 +45,7 @@
   "plugins/destination/file+FILLER": "0.0.0",
   "plugins/destination/azblob": "4.4.12",
   "plugins/destination/azblob+FILLER": "0.0.0",
-  "plugins/destination/neo4j": "5.4.10",
+  "plugins/destination/neo4j": "5.4.11",
   "plugins/destination/neo4j+FILLER": "0.0.0",
   "plugins/destination/kafka": "5.4.8",
   "plugins/destination/kafka+FILLER": "0.0.0",
@@ -107,7 +107,7 @@
   "plugins/source/xkcd+FILLER": "0.0.0",
   "plugins/transformer/basic": "2.1.1",
   "plugins/transformer/basic+FILLER": "0.0.0",
-  "plugins/transformer/jsonflattener": "2.0.6",
+  "plugins/transformer/jsonflattener": "2.0.7",
   "plugins/transformer/jsonflattener+FILLER": "0.0.0",
   "plugins/transformer/test": "1.1.9"
 }
