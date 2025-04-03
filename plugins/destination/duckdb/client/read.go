@@ -102,7 +102,7 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 	switch dt := dt.(type) {
 	case *types.UUIDType:
 		return array.NewExtensionArrayWithStorage(dt, arr.(*array.FixedSizeBinary))
-	case *types.InetType, *types.MACType, *types.JSONType:
+	case *types.InetType, *types.MACType:
 		return reverseTransformFromString(dt, arr.(*array.String))
 	case *arrow.Uint16Type:
 		return reverseTransformUint16(arr.(*array.Uint32))
@@ -117,7 +117,7 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 		// We save date types as Timestamp
 		return reverseTransformDate64(arr.(*array.Timestamp))
 	case *arrow.StructType:
-		if sarr, ok := arr.(*array.String); ok {
+		if sarr, ok := arr.(*array.Binary); ok {
 			return reverseTransformStruct(dt, sarr)
 		}
 
@@ -138,7 +138,7 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 		))
 	case arrow.ListLikeType: // also handles maps
 		if mapdt, ok := dt.(*arrow.MapType); ok {
-			if sarr, ok := arr.(*array.String); ok {
+			if sarr, ok := arr.(*array.Binary); ok {
 				return reverseTransformMap(mapdt, sarr)
 			}
 		}
@@ -151,9 +151,39 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 			// we use data offset for list like as the `ListValues` can be a larger array (happens when slicing)
 			arr.Data().Offset(),
 		))
-
-	case *arrow.BinaryType, *arrow.LargeBinaryType:
-		return reverseTransformFromBinary(dt, arr.(*array.Binary))
+	case *types.JSONType:
+		jsonArray := arr.(*array.Binary)
+		jsonBuilder := types.NewJSONBuilder(memory.DefaultAllocator)
+		for i := 0; i < jsonArray.Len(); i++ {
+			if arr.IsNull(i) {
+				jsonBuilder.AppendNull()
+			} else {
+				jsonBuilder.AppendBytes(jsonArray.Value(i))
+			}
+		}
+		return jsonBuilder.NewJSONArray()
+	case *arrow.BinaryType:
+		binaryArray := arr.(*array.Binary)
+		binaryBuilder := array.NewBinaryBuilder(memory.DefaultAllocator, dt)
+		for i := 0; i < binaryArray.Len(); i++ {
+			if binaryArray.IsNull(i) {
+				binaryBuilder.AppendNull()
+			} else {
+				binaryBuilder.Append(binaryArray.Value(i))
+			}
+		}
+		return binaryBuilder.NewLargeBinaryArray()
+	case *arrow.LargeBinaryType:
+		largeBinaryArray := arr.(*array.Binary)
+		largeBinaryBuilder := array.NewBinaryBuilder(memory.DefaultAllocator, dt)
+		for i := 0; i < largeBinaryArray.Len(); i++ {
+			if largeBinaryArray.IsNull(i) {
+				largeBinaryBuilder.AppendNull()
+			} else {
+				largeBinaryBuilder.Append(largeBinaryArray.Value(i))
+			}
+		}
+		return largeBinaryBuilder.NewLargeBinaryArray()
 	default:
 		return reverseTransformFromString(dt, arr.(*array.String))
 	}
@@ -174,22 +204,7 @@ func reverseTransformFromString(dt arrow.DataType, arr *array.String) arrow.Arra
 	return builder.NewArray()
 }
 
-func reverseTransformFromBinary(dt arrow.DataType, arr array.BinaryLike) arrow.Array {
-	builder := array.NewBuilder(memory.DefaultAllocator, dt)
-	for i := 0; i < arr.Len(); i++ {
-		if arr.IsNull(i) {
-			builder.AppendNull()
-			continue
-		}
-		if err := builder.AppendValueFromString(arr.ValueStr(i)); err != nil {
-			panic(fmt.Errorf("failed to append from value %q: %w", arr.ValueStr(i), err))
-		}
-	}
-
-	return builder.NewArray()
-}
-
-func reverseTransformStruct(dt *arrow.StructType, arr *array.String) arrow.Array {
+func reverseTransformStruct(dt *arrow.StructType, arr *array.Binary) arrow.Array {
 	bldr := array.NewStructBuilder(memory.DefaultAllocator, dt)
 	defer bldr.Release()
 	for i := 0; i < arr.Len(); i++ {
@@ -197,14 +212,14 @@ func reverseTransformStruct(dt *arrow.StructType, arr *array.String) arrow.Array
 			bldr.AppendNull()
 			continue
 		}
-		if err := bldr.AppendValueFromString(arr.Value(i)); err != nil {
+		if err := bldr.AppendValueFromString(arr.ValueString(i)); err != nil {
 			panic(err)
 		}
 	}
 	return bldr.NewStructArray()
 }
 
-func reverseTransformMap(dt *arrow.MapType, arr *array.String) arrow.Array {
+func reverseTransformMap(dt *arrow.MapType, arr *array.Binary) arrow.Array {
 	bldr := array.NewMapBuilder(memory.DefaultAllocator, dt.KeyType(), dt.ItemType(), dt.KeysSorted)
 	defer bldr.Release()
 	for i := 0; i < arr.Len(); i++ {
@@ -212,7 +227,7 @@ func reverseTransformMap(dt *arrow.MapType, arr *array.String) arrow.Array {
 			bldr.AppendNull()
 			continue
 		}
-		if err := bldr.AppendValueFromString(arr.Value(i)); err != nil {
+		if err := bldr.AppendValueFromString(arr.ValueString(i)); err != nil {
 			panic(err)
 		}
 	}
