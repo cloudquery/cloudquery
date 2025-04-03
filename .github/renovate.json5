@@ -48,7 +48,7 @@
       matchFileNames: [
         'plugins/destination/duckdb/**',
       ],
-      allowedVersions: "<2.1.0",
+      allowedVersions: "<=2.1.0",
     },
     {
       matchPackageNames: [
