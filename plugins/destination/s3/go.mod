@@ -11,7 +11,7 @@ require (
 	github.com/aws/smithy-go v1.22.3
 	github.com/cloudquery/codegen v0.3.25
 	github.com/cloudquery/filetypes/v4 v4.6.3
-	github.com/cloudquery/plugin-sdk/v4 v4.76.0
+	github.com/cloudquery/plugin-sdk/v4 v4.77.0
 	github.com/google/go-cmp v0.7.0
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.13.0
