@@ -7,7 +7,7 @@ require (
 	github.com/apache/arrow-go/v18 v18.2.0
 	github.com/cloudquery/codegen v0.3.24
 	github.com/cloudquery/filetypes/v4 v4.6.3
-	github.com/cloudquery/plugin-sdk/v4 v4.75.0
+	github.com/cloudquery/plugin-sdk/v4 v4.76.0
 	github.com/google/go-cmp v0.7.0
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.13.0
@@ -52,8 +52,8 @@ require (
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.13.7 // indirect
-	github.com/cloudquery/plugin-pb-go v1.26.8 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.13.8 // indirect
+	github.com/cloudquery/plugin-pb-go v1.26.9 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/cncf/xds/go v0.0.0-20250121191232-2f005788dc42 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
