@@ -77,7 +77,7 @@
   "plugins/destination/firehose+FILLER": "0.0.0",
   "plugins/source/awspricing": "3.1.5",
   "plugins/source/awspricing+FILLER": "0.0.0",
-  "plugins/destination/duckdb": "5.10.11",
+  "plugins/destination/duckdb": "5.10.12",
   "plugins/destination/duckdb+FILLER": "0.0.0",
   "plugins/source/mysql": "2.0.12",
   "plugins/source/mysql+FILLER": "0.0.0",
