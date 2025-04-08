@@ -4,18 +4,16 @@
 
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)  [![Go Report Card](https://goreportcard.com/badge/github.com/cloudquery/cloudquery)](https://goreportcard.com/report/github.com/cloudquery/cloudquery)  [![CLI Workflow](https://github.com/cloudquery/cloudquery/actions/workflows/cli.yml/badge.svg)](https://github.com/cloudquery/cloudquery/actions/workflows/cli.yml)  
 
-CloudQuery is a versatile [open-source](https://github.com/cloudquery/cloudquery) data movement tool built for developers that allows you to sync data from any [source](https://hub.cloudquery.io/plugins/source) to any [destination](https://hub.cloudquery.io/plugins/destination).
+[CloudQuery](https://cloudquery.io) is a cloud governance platform that enables bringing data from wide variety of sources [sources](https://hub.cloudquery.io/plugins/source) to discover, monitor, secure and optimize your cloud infrastructure with SQL.
 
 ### **Installation**
 
-Check out the [quickstart guide](https://www.cloudquery.io/docs/quickstart) for step-by-step instructions on completing your first sync with CloudQuery.
+[Reuqest a demo](https://www.cloudquery.io/) on our website.
 
 ## **Why CloudQuery?**
 
 - **High-performance data ingestion and processing:** Using Go's concurrency model and Apache Arrow, CloudQuery can quickly stream large amounts of data using [GRPC](https://docs.cloudquery.io/docs/developers/architecture).
 - **Sync your data to any data destination:** You can move your data to any data source
-- **Deploy anywhere:** CloudQuery can be run as a single-binary executable and deployed and run anywhere. This means you can run it in your [CI/CD pipelines](https://docs.cloudquery.io/docs/deployment/github-actions), inside your application, locally, or in the cloud.
-- **Unlimited scale:** CloudQuery integrations are completely stateless and can be scaled horizontally on any platform, such as [VMs](https://docs.cloudquery.io/docs/deployment/google-cloud-vm), [Kubernetes](https://docs.cloudquery.io/docs/deployment/kubernetes), or batch jobs.
 - **Security and compliance:** Reliable security measures protect sensitive data, and compliance features help meet industry standards.
 - **Blazing fast**: CloudQuery is optimized for performance, utilizing the excellent Go concurrency model with lightweight goroutines and [streaming your data over GRPC](https://docs.cloudquery.io/docs/developers/architecture).
 - **Open source framework**: Develop integrations in [Go](https://docs.cloudquery.io/docs/developers/creating-new-integration/go-source), [Python](https://docs.cloudquery.io/docs/developers/creating-new-integration/python-source), [Java](https://docs.cloudquery.io/docs/developers/creating-new-integration/java-source), or [JavaScript](https://docs.cloudquery.io/docs/developers/creating-new-integration/javascript-source) using the [open source CloudQuery SDK](https://github.com/cloudquery).
@@ -32,9 +30,8 @@ Check out the [quickstart guide](https://www.cloudquery.io/docs/quickstart) for 
 ### Links
 
 - Homepage: [https://www.cloudquery.io](https://www.cloudquery.io)
-- Documentation: [https://www.cloudquery.io/docs](https://www.cloudquery.io/docs)
+- Documentation: [https://platform-docs.cloudquery.io/](https://platform-docs.cloudquery.io/)
 - Integrations: [https://hub.cloudquery.io](https://hub.cloudquery.io)
-- Open Source Releases: [https://github.com/cloudquery/cloudquery/releases](https://github.com/cloudquery/cloudquery/releases)
 - Plugin SDK: [https://github.com/cloudquery/plugin-sdk](https://github.com/cloudquery/plugin-sdk)
 
 ## License
