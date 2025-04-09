@@ -1,5 +1,14 @@
 # Changelog
 
+## [6.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.1.4...plugins-destination-clickhouse-v6.1.5) (2025-04-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.25 ([#20501](https://github.com/cloudquery/cloudquery/issues/20501)) ([19996da](https://github.com/cloudquery/cloudquery/commit/19996dab336a2a07bf200e007b183bf5ed38d957))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.26 ([#20537](https://github.com/cloudquery/cloudquery/issues/20537)) ([1175bd5](https://github.com/cloudquery/cloudquery/commit/1175bd5dc5918a17e42ad42e24842296f5c4b455))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.77.0 ([#20528](https://github.com/cloudquery/cloudquery/issues/20528)) ([c219c22](https://github.com/cloudquery/cloudquery/commit/c219c2222582bc4a2d048399e8ab8350b2f4e648))
+
 ## [6.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.1.3...plugins-destination-clickhouse-v6.1.4) (2025-04-02)
 
 
