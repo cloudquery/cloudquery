@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.1.5...plugins-destination-clickhouse-v6.2.0) (2025-04-14)
+
+
+### Features
+
+* Support migrating addition of `_cq_client_id` when order by is set ([#20544](https://github.com/cloudquery/cloudquery/issues/20544)) ([b0d9f34](https://github.com/cloudquery/cloudquery/commit/b0d9f340cca57bbf2827407d89f59f37a21e1dd0))
+
 ## [6.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.1.4...plugins-destination-clickhouse-v6.1.5) (2025-04-09)
 
 
