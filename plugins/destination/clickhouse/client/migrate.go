@@ -123,6 +123,11 @@ func (c *Client) dropTable(ctx context.Context, table *schema.Table) error {
 }
 
 func needsTableDrop(change schema.TableColumnChange) bool {
+	// Support for adding the cq_client_id column without dropping the table
+	if change.Type == schema.TableColumnChangeTypeAdd && change.Current.Name == schema.CqClientIDColumn.Name {
+		return false
+	}
+
 	// We can safely add a nullable column without dropping the table
 	if change.Type == schema.TableColumnChangeTypeAdd && !change.Current.NotNull {
 		return false
