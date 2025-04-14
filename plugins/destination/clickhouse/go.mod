@@ -45,7 +45,7 @@ require (
 )
 
 require (
-	github.com/ClickHouse/ch-go v0.62.0 // indirect
+	github.com/ClickHouse/ch-go v0.65.0 // indirect
 	github.com/andybalholm/brotli v1.1.1 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
