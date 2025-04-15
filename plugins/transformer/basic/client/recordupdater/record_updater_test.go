@@ -17,14 +17,14 @@ func TestRemoveColumns(t *testing.T) {
 	record := createTestRecord()
 	updater := New(record)
 
-	updatedRecord, err := updater.RemoveColumns([]string{"col1", "col3.foo.bar.0", "col3.hello", "col3.annotations.'kubectl.kubernetes.io/last-applied-configuration'"})
+	updatedRecord, err := updater.RemoveColumns([]string{"col1", "col3.foo.bar.0", "col3.hello"})
 	require.NoError(t, err)
 
 	require.Equal(t, int64(2), updatedRecord.NumCols())
 	require.Equal(t, int64(2), updatedRecord.NumRows())
 	requireAllColsLenMatchRecordsLen(t, updatedRecord)
 	require.Equal(t, "col2", updatedRecord.ColumnName(0))
-	assert.Equal(t, `{"foo":{"bar":["b","c"]}, "annotations": {}}`, updatedRecord.Column(1).ValueStr(0))
+	assert.Equal(t, `{"foo":{"bar":["b","c"]}}`, updatedRecord.Column(1).ValueStr(0))
 	assert.Equal(t, `{"foo":{"bar":["e","f"]}}`, updatedRecord.Column(1).ValueStr(1))
 }
 
@@ -81,7 +81,7 @@ func TestObfuscateColumns(t *testing.T) {
 	require.Equal(t, "col2", updatedRecord.ColumnName(1))
 	require.Equal(t, "cc1d9c865e8380c2d566dc724c66369051acfaa3e9e8f36ad6c67d7d9b8461a5", updatedRecord.Column(0).(*array.String).Value(0))
 	require.Equal(t, "528e5290f8ff0eb0325f0472b9c1a9ef4fac0b02ff6094b64d9382af4a10444b", updatedRecord.Column(0).(*array.String).Value(1))
-	assert.Equal(t, `{"foo":{"bar":["ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb","3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d","c"]},"hello":"world", "annotations": {"kubectl.kubernetes.io/last-applied-configuration": "test"}}`, updatedRecord.Column(2).ValueStr(0))
+	assert.Equal(t, `{"foo":{"bar":["ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb","3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d","c"]},"hello":"world"}`, updatedRecord.Column(2).ValueStr(0))
 	assert.Equal(t, `{"foo":{"bar":["18ac3e7343f016890c510e93f935261169d9e3f565436429830faf0934f4f8e4","3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea","f"]}}`, updatedRecord.Column(2).ValueStr(1))
 }
 
@@ -130,7 +130,7 @@ func createTestRecord() arrow.Record {
 
 	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1", "val2"}, nil)
 	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
-	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["a","b","c"]},"hello":"world", "annotations": {"kubectl.kubernetes.io/last-applied-configuration": "test"}}`))
+	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["a","b","c"]},"hello":"world"}`))
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["d","e","f"]}}`))
 
 	return bld.NewRecord()

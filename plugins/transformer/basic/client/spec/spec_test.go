@@ -69,15 +69,6 @@ func TestValidate(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name: "ValidRemoveColumnsWithQuotes",
-			input: Spec{
-				TransformationSpecs: []TransformationSpec{
-					{Kind: KindRemoveColumns, Columns: []string{"annotations.'kubectl.kubernetes.io/last-applied-configuration'"}},
-				},
-			},
-			wantErr: false,
-		},
-		{
 			name: "InvalidRemoveColumnsNoColumns",
 			input: Spec{
 				TransformationSpecs: []TransformationSpec{

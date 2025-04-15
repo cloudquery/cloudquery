@@ -51,7 +51,8 @@ spec:
         columns: ["tags.foo.bar.0"]
       - kind: remove_columns
         tables: ["example"]
-        columns: ["tags.hello", "tags.foo.bar.1", "tags.'kubectl.kubernetes.io/last-applied-configuration'"]
+        columns: ["tags.hello", "tags.foo.bar.1", "tags.kubectl\\.kubernetes\\.io\\/last-applied-configuration"]
 ```
 
 Note: transformations are applied sequentially. If you rename tables, the table matcher configuration of subsequent transformations will need to be updated to the new names.
+Note: escape syntax is [SJSON sytax](https://github.com/tidwall/sjson?tab=readme-ov-file#path-syntax).

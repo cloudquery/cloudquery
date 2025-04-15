@@ -30,33 +30,6 @@ func New(record arrow.Record) *RecordUpdater {
 	}
 }
 
-func escapeString(input string) string {
-	if !strings.ContainsRune(input, '\'') {
-		return input
-	}
-
-	result := make([]string, 0, 2*len(input))
-	parts := strings.Split(input, "'")
-	for i, part := range parts {
-		part = strings.TrimPrefix(part, ".")
-		part = strings.TrimSuffix(part, ".")
-
-		if len(part) == 0 {
-			continue
-		}
-		if i%2 == 1 {
-			replacer := strings.NewReplacer(
-				".", "\\.",
-				"/", "\\/",
-			)
-			part = replacer.Replace(part)
-		}
-
-		result = append(result, part)
-	}
-	return strings.Join(result, ".")
-}
-
 func (r *RecordUpdater) RemoveColumns(columnNames []string) (arrow.Record, error) {
 	plainCols, jsonCols := r.splitJSONColumns(columnNames)
 
@@ -88,9 +61,7 @@ func (r *RecordUpdater) RemoveColumns(columnNames []string) (arrow.Record, error
 				valStr := r.record.Column(i).ValueStr(j)
 				if gjson.Valid(valStr) {
 					for _, jc := range jcs {
-						escaped := escapeString(jc.columnPath)
-
-						if val, err := sjson.Delete(valStr, escaped); err == nil {
+						if val, err := sjson.Delete(valStr, jc.columnPath); err == nil {
 							valStr = val
 						}
 					}
