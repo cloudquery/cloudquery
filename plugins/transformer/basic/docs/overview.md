@@ -34,10 +34,10 @@ Then, add your transformer spec. Here's an example that transforms the XKCD sour
 
 JSON is supported for removing paths and obfuscating string values. Array indexes are supported in both cases. For example, with a JSON column named `tags`:
 ```json
-{"foo":{"bar":["a","b","c"]},"hello":"world"}
+{"foo":{"bar":["a","b","c"]},"hello":"world","kubectl.kubernetes.io/last-applied-configuration":"secrets"}
 ```
 
-You can obfuscate `"a"` and remove `"b"` with:
+You can obfuscate `"a"` and remove `"b"`, `"world"`, and `"secrets"` with:
 ```yaml copy
 kind: transformer
 spec:
@@ -51,7 +51,7 @@ spec:
         columns: ["tags.foo.bar.0"]
       - kind: remove_columns
         tables: ["example"]
-        columns: ["tags.hello", "tags.foo.bar.1"]
+        columns: ["tags.hello", "tags.foo.bar.1", "tags.'kubectl.kubernetes.io/last-applied-configuration'"]
 ```
 
 Note: transformations are applied sequentially. If you rename tables, the table matcher configuration of subsequent transformations will need to be updated to the new names.
