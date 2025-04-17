@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.8.9...plugins-destination-test-v2.8.10) (2025-04-17)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.38.0 [SECURITY] ([#20558](https://github.com/cloudquery/cloudquery/issues/20558)) ([7a7a41a](https://github.com/cloudquery/cloudquery/commit/7a7a41a078cfb9164544fa60eea3c19a1c87aaaa))
+
 ## [2.8.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.8.8...plugins-destination-test-v2.8.9) (2025-04-09)
 
 
