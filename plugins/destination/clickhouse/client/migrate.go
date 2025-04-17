@@ -123,8 +123,14 @@ func (c *Client) dropTable(ctx context.Context, table *schema.Table) error {
 }
 
 func needsTableDrop(change schema.TableColumnChange) bool {
-	// We can safely add a nullable column without dropping the table
-	if change.Type == schema.TableColumnChangeTypeAdd && !change.Current.NotNull {
+	// Support for adding the cq_client_id column without dropping the table
+	if change.Type == schema.TableColumnChangeTypeAdd && change.Current.Name == schema.CqClientIDColumn.Name {
+		return false
+	}
+
+	// We can add new nullable columns or non-nullable columns that are not part of the sort key
+	isCompoundType := queries.IsCompoundType(change.Current)
+	if change.Type == schema.TableColumnChangeTypeAdd && (isCompoundType || !change.Current.NotNull) {
 		return false
 	}
 

@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.1.3...plugins-transformer-basic-v2.2.0) (2025-04-15)
+
+
+### Features
+
+* Document how to escape dots and slashes in JSON paths ([#20554](https://github.com/cloudquery/cloudquery/issues/20554)) ([ae62143](https://github.com/cloudquery/cloudquery/commit/ae62143e00565a3ee881b93905bd9ef654c7d2a3))
+
+## [2.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.1.2...plugins-transformer-basic-v2.1.3) (2025-04-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.77.0 ([#20528](https://github.com/cloudquery/cloudquery/issues/20528)) ([c219c22](https://github.com/cloudquery/cloudquery/commit/c219c2222582bc4a2d048399e8ab8350b2f4e648))
+
 ## [2.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.1.1...plugins-transformer-basic-v2.1.2) (2025-04-02)
 
 

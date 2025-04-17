@@ -1,5 +1,36 @@
 # Changelog
 
+## [6.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.2.1...plugins-destination-clickhouse-v6.2.2) (2025-04-17)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.38.0 [SECURITY] ([#20558](https://github.com/cloudquery/cloudquery/issues/20558)) ([7a7a41a](https://github.com/cloudquery/cloudquery/commit/7a7a41a078cfb9164544fa60eea3c19a1c87aaaa))
+* Support compound types migrations ([#20584](https://github.com/cloudquery/cloudquery/issues/20584)) ([dd74cca](https://github.com/cloudquery/cloudquery/commit/dd74cca92e77ea343a240fb7bdb7b2a4db608203))
+
+## [6.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.2.0...plugins-destination-clickhouse-v6.2.1) (2025-04-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/ClickHouse/clickhouse-go/v2 to v2.34.0 ([#20552](https://github.com/cloudquery/cloudquery/issues/20552)) ([5eb60da](https://github.com/cloudquery/cloudquery/commit/5eb60dab04c2e2eebee164474b9b4b1c053a544f))
+
+## [6.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.1.5...plugins-destination-clickhouse-v6.2.0) (2025-04-14)
+
+
+### Features
+
+* Support migrating addition of `_cq_client_id` when order by is set ([#20544](https://github.com/cloudquery/cloudquery/issues/20544)) ([b0d9f34](https://github.com/cloudquery/cloudquery/commit/b0d9f340cca57bbf2827407d89f59f37a21e1dd0))
+
+## [6.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.1.4...plugins-destination-clickhouse-v6.1.5) (2025-04-09)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.25 ([#20501](https://github.com/cloudquery/cloudquery/issues/20501)) ([19996da](https://github.com/cloudquery/cloudquery/commit/19996dab336a2a07bf200e007b183bf5ed38d957))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.26 ([#20537](https://github.com/cloudquery/cloudquery/issues/20537)) ([1175bd5](https://github.com/cloudquery/cloudquery/commit/1175bd5dc5918a17e42ad42e24842296f5c4b455))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.77.0 ([#20528](https://github.com/cloudquery/cloudquery/issues/20528)) ([c219c22](https://github.com/cloudquery/cloudquery/commit/c219c2222582bc4a2d048399e8ab8350b2f4e648))
+
 ## [6.1.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.1.3...plugins-destination-clickhouse-v6.1.4) (2025-04-02)
 
 

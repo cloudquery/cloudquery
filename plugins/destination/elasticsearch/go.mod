@@ -1,11 +1,11 @@
 module github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v3
 
-go 1.24.1
+go 1.24.2
 
 require (
 	github.com/apache/arrow-go/v18 v18.2.0
 	github.com/cenkalti/backoff/v4 v4.3.0
-	github.com/cloudquery/codegen v0.3.25
+	github.com/cloudquery/codegen v0.3.26
 	github.com/cloudquery/plugin-sdk/v4 v4.77.0
 	github.com/elastic/go-elasticsearch/v8 v8.6.0
 	github.com/goccy/go-json v0.10.5
@@ -82,7 +82,7 @@ require (
 	go.opentelemetry.io/otel/trace v1.34.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.5.0 // indirect
 	golang.org/x/mod v0.24.0 // indirect
-	golang.org/x/net v0.37.0 // indirect
+	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
 	golang.org/x/tools v0.31.0 // indirect
