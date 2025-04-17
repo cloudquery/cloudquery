@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.8.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.8.2...plugins-destination-postgresql-v8.8.3) (2025-04-17)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.38.0 [SECURITY] ([#20558](https://github.com/cloudquery/cloudquery/issues/20558)) ([7a7a41a](https://github.com/cloudquery/cloudquery/commit/7a7a41a078cfb9164544fa60eea3c19a1c87aaaa))
+
 ## [8.8.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.8.1...plugins-destination-postgresql-v8.8.2) (2025-04-09)
 
 

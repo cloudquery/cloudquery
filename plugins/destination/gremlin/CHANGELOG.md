@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.16](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.6.15...plugins-destination-gremlin-v2.6.16) (2025-04-17)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.38.0 [SECURITY] ([#20558](https://github.com/cloudquery/cloudquery/issues/20558)) ([7a7a41a](https://github.com/cloudquery/cloudquery/commit/7a7a41a078cfb9164544fa60eea3c19a1c87aaaa))
+
 ## [2.6.15](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.6.14...plugins-destination-gremlin-v2.6.15) (2025-04-09)
 
 
