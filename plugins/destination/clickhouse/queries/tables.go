@@ -16,7 +16,7 @@ import (
 func SortKeys(table *schema.Table) []string {
 	keys := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {
-		if (col.NotNull || col.PrimaryKey) && !isCompoundType(col) {
+		if (col.NotNull || col.PrimaryKey) && !IsCompoundType(col) {
 			keys = append(keys, col.Name)
 		}
 	}
@@ -30,7 +30,7 @@ func SortKeys(table *schema.Table) []string {
 	return slices.Clip(keys)
 }
 
-func isCompoundType(col schema.Column) bool {
+func IsCompoundType(col schema.Column) bool {
 	switch col.Type.(type) {
 	case *arrow.StructType:
 		return true
