@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.2.1...plugins-destination-clickhouse-v6.2.2) (2025-04-17)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.38.0 [SECURITY] ([#20558](https://github.com/cloudquery/cloudquery/issues/20558)) ([7a7a41a](https://github.com/cloudquery/cloudquery/commit/7a7a41a078cfb9164544fa60eea3c19a1c87aaaa))
+* Support compound types migrations ([#20584](https://github.com/cloudquery/cloudquery/issues/20584)) ([dd74cca](https://github.com/cloudquery/cloudquery/commit/dd74cca92e77ea343a240fb7bdb7b2a4db608203))
+
 ## [6.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.2.0...plugins-destination-clickhouse-v6.2.1) (2025-04-14)
 
 
