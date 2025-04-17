@@ -177,8 +177,8 @@ func TestMigrateNewArrayAndMapColumns(t *testing.T) {
 	bldr.Field(0).(*sdkTypes.UUIDBuilder).Append(uuid.MustParse("123e4567-e89b-12d3-a456-426614174000"))
 	bldr.Field(1).(*array.StringBuilder).Append("foo")
 	bldr.Field(2).(*array.TimestampBuilder).Append(arrow.Timestamp(time.Now().UnixMicro()))
-	bldr.Field(3).(*array.StringBuilder).Append("cq-sync-group-id")
 	bldr.Field(4).(*array.StringBuilder).Append("cq-client-id")
+	bldr.Field(3).(*array.StringBuilder).Append("cq-sync-group-id")
 	record := bldr.NewRecord()
 
 	if err := p.WriteAll(ctx, []message.WriteMessage{&message.WriteInsert{
@@ -210,8 +210,8 @@ func TestMigrateNewArrayAndMapColumns(t *testing.T) {
 	bldr.Field(0).(*sdkTypes.UUIDBuilder).Append(uuid.MustParse("123e4567-e89b-12d3-a456-426614174000"))
 	bldr.Field(1).(*array.StringBuilder).Append("foo")
 	bldr.Field(2).(*array.TimestampBuilder).Append(arrow.Timestamp(time.Now().UnixMicro()))
-	bldr.Field(3).(*array.StringBuilder).Append("cq-sync-group-id")
 	bldr.Field(4).(*array.StringBuilder).Append("cq-client-id")
+	bldr.Field(3).(*array.StringBuilder).Append("cq-sync-group-id")
 	bldr.Field(5).(*array.ListBuilder).Append(true)
 	bldr.Field(5).(*array.ListBuilder).ValueBuilder().(*array.StringBuilder).Append("foo")
 	bldr.Field(6).(*array.MapBuilder).Append(true)
