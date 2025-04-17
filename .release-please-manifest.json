@@ -105,7 +105,7 @@
   "plugins/source/notion+FILLER": "0.0.0",
   "plugins/source/xkcd": "1.5.13",
   "plugins/source/xkcd+FILLER": "0.0.0",
-  "plugins/transformer/basic": "2.2.0",
+  "plugins/transformer/basic": "2.2.1",
   "plugins/transformer/basic+FILLER": "0.0.0",
   "plugins/transformer/jsonflattener": "2.0.8",
   "plugins/transformer/jsonflattener+FILLER": "0.0.0",
