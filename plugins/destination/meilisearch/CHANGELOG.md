@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.13](https://github.com/cloudquery/cloudquery/compare/plugins-destination-meilisearch-v2.5.12...plugins-destination-meilisearch-v2.5.13) (2025-04-17)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.38.0 [SECURITY] ([#20558](https://github.com/cloudquery/cloudquery/issues/20558)) ([7a7a41a](https://github.com/cloudquery/cloudquery/commit/7a7a41a078cfb9164544fa60eea3c19a1c87aaaa))
+
 ## [2.5.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-meilisearch-v2.5.11...plugins-destination-meilisearch-v2.5.12) (2025-04-09)
 
 
