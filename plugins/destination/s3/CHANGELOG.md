@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.8.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.8.3...plugins-destination-s3-v7.8.4) (2025-04-17)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.38.0 [SECURITY] ([#20558](https://github.com/cloudquery/cloudquery/issues/20558)) ([7a7a41a](https://github.com/cloudquery/cloudquery/commit/7a7a41a078cfb9164544fa60eea3c19a1c87aaaa))
+
 ## [7.8.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.8.2...plugins-destination-s3-v7.8.3) (2025-04-09)
 
 
