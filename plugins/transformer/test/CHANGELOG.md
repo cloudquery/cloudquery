@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.12](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-test-v1.1.11...plugins-transformer-test-v1.1.12) (2025-04-17)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/net to v0.38.0 [SECURITY] ([#20558](https://github.com/cloudquery/cloudquery/issues/20558)) ([7a7a41a](https://github.com/cloudquery/cloudquery/commit/7a7a41a078cfb9164544fa60eea3c19a1c87aaaa))
+
 ## [1.1.11](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-test-v1.1.10...plugins-transformer-test-v1.1.11) (2025-04-09)
 
 
