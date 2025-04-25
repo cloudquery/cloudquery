@@ -1,5 +1,5 @@
 {
-  "cli": "6.17.5",
+  "cli": "6.17.6",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "22.19.2",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -41,9 +41,9 @@
   "plugins/destination/gcs+FILLER": "0.0.0",
   "plugins/destination/s3": "7.8.4",
   "plugins/destination/s3+FILLER": "0.0.0",
-  "plugins/destination/file": "5.4.12",
+  "plugins/destination/file": "5.4.13",
   "plugins/destination/file+FILLER": "0.0.0",
-  "plugins/destination/azblob": "4.4.15",
+  "plugins/destination/azblob": "4.4.16",
   "plugins/destination/azblob+FILLER": "0.0.0",
   "plugins/destination/neo4j": "5.4.13",
   "plugins/destination/neo4j+FILLER": "0.0.0",
