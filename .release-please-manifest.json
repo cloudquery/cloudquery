@@ -33,7 +33,7 @@
   "plugins/destination/bigquery+FILLER": "0.0.0",
   "plugins/source/pagerduty": "3.2.8",
   "plugins/source/pagerduty+FILLER": "0.0.0",
-  "plugins/destination/mongodb": "2.6.13",
+  "plugins/destination/mongodb": "2.6.14",
   "plugins/destination/mongodb+FILLER": "0.0.0",
   "plugins/source/gitlab": "4.3.5",
   "plugins/source/gitlab+FILLER": "0.0.0",
