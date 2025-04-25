@@ -37,7 +37,7 @@
   "plugins/destination/mongodb+FILLER": "0.0.0",
   "plugins/source/gitlab": "4.3.5",
   "plugins/source/gitlab+FILLER": "0.0.0",
-  "plugins/destination/gcs": "5.4.13",
+  "plugins/destination/gcs": "5.4.14",
   "plugins/destination/gcs+FILLER": "0.0.0",
   "plugins/destination/s3": "7.8.4",
   "plugins/destination/s3+FILLER": "0.0.0",
