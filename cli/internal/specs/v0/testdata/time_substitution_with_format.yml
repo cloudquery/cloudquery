@@ -1,0 +1,18 @@
+kind: source
+spec:
+  name: aws
+  version: v1.3.3
+  destinations: [postgresql]
+  path: cloudquery/aws
+  tables: [test]
+  spec:
+    table_options:
+      aws_cloudtrail_events:
+        lookup_events:
+          - start_time: ${time:2025-01-01|2006-01-02}  # Specifying non-relative time for easier testing
+---
+kind: destination
+spec:
+  name: postgresql
+  path: cloudquery/postgresql
+  version: v1.6.3

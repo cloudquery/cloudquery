@@ -688,6 +688,39 @@ var specLoaderTestCases = []specLoaderTestCase{
 		},
 	},
 	{
+		name: "Time substitution with formatting",
+		path: []string{getPath("time_substitution_with_format.yml")},
+		err: func() string {
+			return ""
+		},
+		sources: []*Source{
+			{
+				Metadata: Metadata{
+					Name:             "aws",
+					Path:             "cloudquery/aws",
+					Version:          "v1.3.3",
+					Registry:         RegistryCloudQuery,
+					registryInferred: true,
+				},
+				Destinations: []string{"postgresql"},
+				Tables:       []string{"test"},
+				Spec:         map[string]any{"table_options": map[string]any{"aws_cloudtrail_events": map[string]any{"lookup_events": []any{map[string]any{"start_time": time.Date(2025, 1, 1, 0, 0, 0, 0, time.UTC).Format(time.DateOnly)}}}}},
+			},
+		},
+		destinations: []*Destination{
+			{
+				Metadata: Metadata{
+					Name:             "postgresql",
+					Path:             "cloudquery/postgresql",
+					Version:          "v1.6.3",
+					Registry:         RegistryCloudQuery,
+					registryInferred: true,
+				},
+				Spec: map[string]any{},
+			},
+		},
+	},
+	{
 		name: "Time substitution with error",
 		path: []string{getPath("time_substitution_with_error.yml")},
 		err: func() string {

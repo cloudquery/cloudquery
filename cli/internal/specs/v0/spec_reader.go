@@ -77,12 +77,18 @@ func expandTime(cfg []byte) ([]byte, error) {
 	var expandErr error
 	cfg = timeRegex.ReplaceAllFunc(cfg, func(match []byte) []byte {
 		relativeTime := timeRegex.FindSubmatch(match)[1]
-		parsedTime, err := configtype.ParseTime(string(relativeTime))
+		splitString := strings.Split(string(relativeTime), "|")
+		relativeTimeString := splitString[0]
+		timeFormat := time.RFC3339
+		if len(splitString) > 1 {
+			timeFormat = splitString[1]
+		}
+		parsedTime, err := configtype.ParseTime(relativeTimeString)
 		if err != nil {
 			expandErr = errors.Join(errors.New("failed to substitute time"), err)
 			return nil
 		}
-		return []byte(parsedTime.AsTime(time.Now()).Format(time.RFC3339))
+		return []byte(parsedTime.AsTime(time.Now()).Format(timeFormat))
 	})
 	return cfg, expandErr
 }
