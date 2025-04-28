@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.2.2...plugins-destination-clickhouse-v6.2.3) (2025-04-25)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.78.0 ([#20597](https://github.com/cloudquery/cloudquery/issues/20597)) ([97111d7](https://github.com/cloudquery/cloudquery/commit/97111d7f32985b4ce64151a3282c9f8dfe558a3e))
+
 ## [6.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v6.2.1...plugins-destination-clickhouse-v6.2.2) (2025-04-17)
 
 
