@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.18.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.17.6...cli-v6.18.0) (2025-04-28)
+
+
+### Features
+
+* Support different formats for time variables ([#20626](https://github.com/cloudquery/cloudquery/issues/20626)) ([4242ce5](https://github.com/cloudquery/cloudquery/commit/4242ce53144d65a070f7f9c300789e1bfe98ef16))
+
 ## [6.17.6](https://github.com/cloudquery/cloudquery/compare/cli-v6.17.5...cli-v6.17.6) (2025-04-25)
 
 
