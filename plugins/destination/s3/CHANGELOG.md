@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.8.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.8.5...plugins-destination-s3-v7.8.6) (2025-04-29)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.79.0 ([#20636](https://github.com/cloudquery/cloudquery/issues/20636)) ([1ee4f97](https://github.com/cloudquery/cloudquery/commit/1ee4f9766600e018e9afcdeb4aa11a38fccf7c9d))
+
 ## [7.8.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.8.4...plugins-destination-s3-v7.8.5) (2025-04-28)
 
 
