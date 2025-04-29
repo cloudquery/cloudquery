@@ -109,5 +109,5 @@
   "plugins/transformer/basic+FILLER": "0.0.0",
   "plugins/transformer/jsonflattener": "2.0.10",
   "plugins/transformer/jsonflattener+FILLER": "0.0.0",
-  "plugins/transformer/test": "1.1.13"
+  "plugins/transformer/test": "1.1.14"
 }
