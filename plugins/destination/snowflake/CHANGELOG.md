@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.4.15](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v4.4.14...plugins-destination-snowflake-v4.4.15) (2025-04-29)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.79.0 ([#20636](https://github.com/cloudquery/cloudquery/issues/20636)) ([1ee4f97](https://github.com/cloudquery/cloudquery/commit/1ee4f9766600e018e9afcdeb4aa11a38fccf7c9d))
+* **deps:** Update module github.com/snowflakedb/gosnowflake to v1.13.3 [SECURITY] ([#20661](https://github.com/cloudquery/cloudquery/issues/20661)) ([dbaa2ea](https://github.com/cloudquery/cloudquery/commit/dbaa2eaf2569fdf6c227e3a7ef0dd416e09227c7))
+
 ## [4.4.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v4.4.13...plugins-destination-snowflake-v4.4.14) (2025-04-28)
 
 
