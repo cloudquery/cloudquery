@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.7.7...plugins-destination-firehose-v2.7.8) (2025-04-29)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.79.0 ([#20636](https://github.com/cloudquery/cloudquery/issues/20636)) ([1ee4f97](https://github.com/cloudquery/cloudquery/commit/1ee4f9766600e018e9afcdeb4aa11a38fccf7c9d))
+
 ## [2.7.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.7.6...plugins-destination-firehose-v2.7.7) (2025-04-25)
 
 
