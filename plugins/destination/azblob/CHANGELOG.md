@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.4.17](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.16...plugins-destination-azblob-v4.4.17) (2025-04-29)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/azidentity to v1.9.0 ([#20625](https://github.com/cloudquery/cloudquery/issues/20625)) ([f26c1b8](https://github.com/cloudquery/cloudquery/commit/f26c1b8c4ea1c737b44bb78c3473009a33a87524))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.79.0 ([#20636](https://github.com/cloudquery/cloudquery/issues/20636)) ([1ee4f97](https://github.com/cloudquery/cloudquery/commit/1ee4f9766600e018e9afcdeb4aa11a38fccf7c9d))
+
 ## [4.4.16](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.15...plugins-destination-azblob-v4.4.16) (2025-04-25)
 
 
