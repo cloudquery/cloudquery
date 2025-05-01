@@ -14,6 +14,7 @@ const (
 	KindAddTimestampColumn = "add_current_timestamp_column"
 	KindRenameColumn       = "rename_column"
 	KindAddPrimaryKeys     = "add_primary_keys"
+	KindDetectAndObfuscate = "detect_and_obfuscate"
 )
 
 type TransformationSpec struct {
@@ -66,6 +67,10 @@ func (s *Spec) Validate() error {
 			}
 			if t.NewTableNameTemplate != "" {
 				err = errors.Join(err, fmt.Errorf("new_table_name_template field must not be specified for %s transformation", t.Kind))
+			}
+		case KindDetectAndObfuscate:
+			if t.Name != "" || t.Value != "" || t.NewTableNameTemplate != "" || len(t.Columns) != 0 {
+				err = errors.Join(err, fmt.Errorf("name/value/new_table_name_template/columns fields must not be specified for %s transformation", t.Kind))
 			}
 		case KindObfuscateColumns:
 			if len(t.Columns) == 0 {

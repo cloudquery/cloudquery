@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"errors"
 	"fmt"
+	"math"
 	"strings"
 	"time"
 
@@ -130,6 +131,83 @@ func (r *RecordUpdater) AddTimestampColumn(columnName string, position int) (arr
 	}
 	r.record = array.NewRecord(newSchema, newColumns, r.record.NumRows())
 	return r.record, nil
+}
+
+func (r *RecordUpdater) DetectAndObfuscate() (arrow.Record, error) {
+	oldRecord := r.record.Columns()
+	candidateColumnIndexes := []int{}
+	for i, column := range oldRecord {
+		if column.DataType().ID() != arrow.STRING || column.Len() == 0 || column.NullN() == column.Len() {
+			continue
+		}
+		candidateColumnIndexes = append(candidateColumnIndexes, i)
+	}
+	columnsToObfuscate := []int{}
+
+	for _, i := range candidateColumnIndexes {
+		column := oldRecord[i]
+		for j := 0; j < column.Len(); j++ {
+			if column.ValueStr(j) == "" {
+				continue
+			}
+			entropy := calculateEntropy(column.ValueStr(j))
+			// This could be improved by checking a set of rows instead of all of them
+			// mark the whole column for obfuscation
+			if entropy > 1.0 { // realistic number would be around 5.0
+				columnsToObfuscate = append(columnsToObfuscate, i)
+				break
+			}
+		}
+	}
+
+	if len(columnsToObfuscate) == 0 {
+		return r.record, nil
+	}
+
+	for _, i := range columnsToObfuscate {
+		column := oldRecord[i]
+		if column.DataType().ID() != arrow.STRING || column.Len() == 0 || column.NullN() == column.Len() {
+			continue
+		}
+		bld := array.NewStringBuilder(memory.DefaultAllocator)
+		for k := 0; k < column.Len(); k++ {
+			if !column.IsValid(k) {
+				bld.AppendNull()
+				continue
+			}
+			// if a column has been marked already, we wouldn't calculate the entropy for all the rows,
+			// this is just for demonstration purposes
+			entropy := calculateEntropy(column.ValueStr(k))
+			// bld.AppendString(fmt.Sprintf("%x", sha256.Sum256([]byte(column.ValueStr(k)))))
+			bld.AppendString(fmt.Sprintf("Entropy: %f| %s", entropy, column.ValueStr(k)))
+		}
+		rec, err := r.record.SetColumn(i, bld.NewStringArray())
+		if err != nil {
+			return nil, err
+		}
+		r.record = rec
+	}
+	return r.record, nil
+}
+
+func calculateEntropy(s string) float64 {
+	// Step 1: Count the frequency of each character
+	frequency := make(map[rune]int)
+	for _, r := range s {
+		frequency[r]++
+	}
+
+	// Step 2: Calculate the probability of each character
+	totalChars := float64(len(s))
+	entropy := 0.0
+	for _, count := range frequency {
+		probability := float64(count) / totalChars
+		// Step 3: Apply the entropy formula
+		entropy += probability * math.Log2(probability)
+	}
+
+	// Step 4: Negate the result to get the entropy
+	return -entropy
 }
 
 func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.Record, error) {
