@@ -1,3 +1,5 @@
+import time
+
 import pyarrow as pa
 from typing import Any, Generator
 
@@ -22,6 +24,7 @@ class Payments(Table):
             name="square_payments",
             title="Square Payments",
             columns=payments_columns,
+            is_incremental=True,
         )
 
     @property
@@ -34,13 +37,19 @@ class PaymentsResolver(TableResolver):
         super().__init__(table=table)
 
     def resolve(self, client: Client, parent_resource) -> Generator[Any, None, None]:
+        now = time.time()
+        since = self.state_client.get_key("square_payments__since")
+
         payments: PaymentsApi = client.client.payments
         cursor = None
         while True:
-            response: ApiResponse = payments.list_payments(cursor=cursor)
+            response: ApiResponse = payments.list_payments(cursor=cursor, begin_time=since)
             if response.is_error():
                 raise Exception(response)
             for payment in response.body.get("payments", []):
                 yield payment
+
             if response.cursor is None:
                 break
+
+        self.state_client.set_key("square_payments__since", now)

@@ -6,6 +6,7 @@ from typing import List, Generator
 import structlog
 from plugin.client import Client, Spec
 from plugin import tables
+from cloudquery.sdk.stateclient.stateclient import StateClientBuilder
 
 
 PLUGIN_NAME = "square"
@@ -62,6 +63,9 @@ class SquarePlugin(plugin.Plugin):
     def sync(
         self, options: plugin.SyncOptions
     ) -> Generator[message.SyncMessage, None, None]:
+        state_client = StateClientBuilder.build(backend_options=options.backend_options)
+        self._scheduler.set_post_sync_hook(state_client.flush)
+
         resolvers: list[TableResolver] = []
         for table in self.get_tables(
             plugin.TableOptions(
@@ -71,6 +75,11 @@ class SquarePlugin(plugin.Plugin):
             )
         ):
             resolvers.append(table.resolver)
+
+        for resolver in resolvers:
+            resolver.set_state_client(state_client)
+            for r in resolver.child_resolvers:
+                r.set_state_client(state_client)
 
         return self._scheduler.sync(
             self._client, resolvers, options.deterministic_cq_id
