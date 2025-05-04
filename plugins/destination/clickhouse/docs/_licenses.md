@@ -34,6 +34,7 @@ The following tools / packages are used in this plugin:
 | github.com/buger/jsonparser | MIT |
 | github.com/cenkalti/backoff/v4 | MIT |
 | github.com/cloudquery/cloudquery-api-go | MPL-2.0 |
+| github.com/cloudquery/codegen/jsonschema/docs | MPL-2.0 |
 | github.com/cloudquery/plugin-pb-go | MPL-2.0 |
 | github.com/cloudquery/plugin-sdk/v2/internal/glob | MIT |
 | github.com/cloudquery/plugin-sdk/v2/schema | MIT |
@@ -64,7 +65,6 @@ The following tools / packages are used in this plugin:
 | github.com/oapi-codegen/runtime | Apache-2.0 |
 | github.com/paulmach/orb | MIT |
 | github.com/pierrec/lz4/v4 | BSD-3-Clause |
-| github.com/pkg/errors | BSD-2-Clause |
 | github.com/pmezard/go-difflib/difflib | BSD-3-Clause |
 | github.com/rs/zerolog | MIT |
 | github.com/santhosh-tekuri/jsonschema/v6 | Apache-2.0 |
