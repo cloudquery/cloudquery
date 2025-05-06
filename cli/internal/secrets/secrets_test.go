@@ -22,6 +22,12 @@ func TestRedaction(t *testing.T) {
 			want: "wrong password DB_PASS",
 		},
 		{
+			name: "handles env var value with equals sign",
+			env:  []string{"SECRET=user=foo"},
+			msg:  "wrong password for user=foo",
+			want: "wrong password for SECRET",
+		},
+		{
 			name: "leaves original msg unchanged",
 			env:  []string{},
 			msg:  "wrong password foobar123",
