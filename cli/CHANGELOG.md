@@ -5,6 +5,18 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.19.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.18.2...cli-v6.19.0) (2025-05-06)
+
+
+### Features
+
+* Redact env secrets from output and logs ([#20691](https://github.com/cloudquery/cloudquery/issues/20691)) ([a913f10](https://github.com/cloudquery/cloudquery/commit/a913f10ea3978f68c76c7c349214d207b56534b6))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.79.1 ([#20692](https://github.com/cloudquery/cloudquery/issues/20692)) ([50f909e](https://github.com/cloudquery/cloudquery/commit/50f909e8f847d436b973721cf7450e505af72c67))
+
 ## [6.18.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.18.1...cli-v6.18.2) (2025-05-01)
 
 
