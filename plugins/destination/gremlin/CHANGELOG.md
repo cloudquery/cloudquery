@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.19](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.6.18...plugins-destination-gremlin-v2.6.19) (2025-05-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.79.1 ([#20692](https://github.com/cloudquery/cloudquery/issues/20692)) ([50f909e](https://github.com/cloudquery/cloudquery/commit/50f909e8f847d436b973721cf7450e505af72c67))
+
 ## [2.6.18](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.6.17...plugins-destination-gremlin-v2.6.18) (2025-04-29)
 
 
