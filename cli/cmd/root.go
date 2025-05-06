@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/secrets"
 	"os"
 	"time"
 
@@ -28,11 +29,12 @@ High performance data integration at scale.
 Find more information at:
 	https://www.cloudquery.io`
 
-	disableSentry      = false
-	logConsole         = false
-	oldAnalyticsClient *AnalyticsClient
-	logFile            *os.File
-	invocationUUID     uuid.UUID
+	disableSentry       = false
+	logConsole          = false
+	oldAnalyticsClient  *AnalyticsClient
+	logFile             *os.File
+	invocationUUID      uuid.UUID
+	secretAwareRedactor *secrets.SecretAwareRedactor
 )
 
 func NewCmdRoot() *cobra.Command {
@@ -47,6 +49,7 @@ func NewCmdRoot() *cobra.Command {
 		fmt.Fprintf(os.Stderr, "failed to generate invocation uuid: %v", err)
 		os.Exit(1)
 	}
+	secretAwareRedactor = secrets.NewSecretAwareRedactor()
 
 	// support legacy telemetry environment variable,
 	// but the newer CQ_TELEMETRY_LEVEL environment variable takes precedence
@@ -108,6 +111,9 @@ func NewCmdRoot() *cobra.Command {
 			return nil
 		},
 	}
+
+	cmd.SetErr(secrets.NewSecretAwareWriter(os.Stderr, secretAwareRedactor))
+	cmd.SetOut(secrets.NewSecretAwareWriter(os.Stdout, secretAwareRedactor))
 
 	cmd.PersistentFlags().String("cq-dir", ".cq", "directory to store cloudquery files, such as downloaded plugins")
 	cmd.PersistentFlags().String("data-dir", "", "set persistent data directory")
