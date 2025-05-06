@@ -5,10 +5,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/cloudquery/cloudquery/cli/v6/internal/secrets"
-	analytics "github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/enum"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/secrets"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/uuid"
 	guuid "github.com/google/uuid"
 	"github.com/rs/zerolog"
