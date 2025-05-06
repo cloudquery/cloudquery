@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.8.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.8.6...plugins-destination-s3-v7.8.7) (2025-05-05)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.17.73 ([#20680](https://github.com/cloudquery/cloudquery/issues/20680)) ([8ba8923](https://github.com/cloudquery/cloudquery/commit/8ba8923c0ca345fb75beaa88b3103ce4eb3cd273))
+
 ## [7.8.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.8.5...plugins-destination-s3-v7.8.6) (2025-04-29)
 
 
