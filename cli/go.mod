@@ -9,7 +9,7 @@ require (
 	github.com/cloudquery/cloudquery-api-go v1.13.8
 	github.com/cloudquery/codegen v0.3.26
 	github.com/cloudquery/plugin-pb-go v1.26.10
-	github.com/cloudquery/plugin-sdk/v4 v4.79.0
+	github.com/cloudquery/plugin-sdk/v4 v4.79.1
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/docker/docker v26.1.5+incompatible
@@ -23,7 +23,7 @@ require (
 	github.com/manifoldco/promptui v0.9.0
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
-	github.com/rs/zerolog v1.33.0
+	github.com/rs/zerolog v1.34.0
 	github.com/rudderlabs/analytics-go/v4 v4.2.1
 	github.com/samber/lo v1.47.0
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
@@ -46,7 +46,7 @@ require (
 	golang.org/x/net v0.39.0
 	golang.org/x/sync v0.13.0
 	golang.org/x/term v0.31.0
-	google.golang.org/grpc v1.71.1
+	google.golang.org/grpc v1.72.0
 	google.golang.org/protobuf v1.36.6
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -149,7 +149,7 @@ require (
 	golang.org/x/text v0.24.0 // indirect
 	golang.org/x/tools v0.32.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250115164207-1a7da9e5054f // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250218202821-56aae31c358a // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
