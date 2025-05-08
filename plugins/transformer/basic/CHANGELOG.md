@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.2.3...plugins-transformer-basic-v2.2.4) (2025-05-08)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.79.1 ([#20692](https://github.com/cloudquery/cloudquery/issues/20692)) ([50f909e](https://github.com/cloudquery/cloudquery/commit/50f909e8f847d436b973721cf7450e505af72c67))
+
 ## [2.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.2.2...plugins-transformer-basic-v2.2.3) (2025-04-29)
 
 
