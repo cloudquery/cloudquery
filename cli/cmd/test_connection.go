@@ -188,6 +188,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		}
 		if isolatePluginEnvironment {
 			sourcePluginConfigs[i].Environment = filterPluginEnv(osEnviron, source.Name, "source")
+			secretAwareRedactor.AddSecretEnv(sourcePluginConfigs[i].Environment)
 		}
 		sourceRegInferred[i] = source.RegistryInferred()
 	}
@@ -203,6 +204,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		}
 		if isolatePluginEnvironment {
 			destinationPluginConfigs[i].Environment = filterPluginEnv(osEnviron, destination.Name, "destination")
+			secretAwareRedactor.AddSecretEnv(destinationPluginConfigs[i].Environment)
 		}
 		destinationRegInferred[i] = destination.RegistryInferred()
 	}
@@ -219,7 +221,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 			PluginRef:          ref,
 			Success:            false,
 			FailureCode:        "OTHER",
-			FailureDescription: err.Error(),
+			FailureDescription: secretAwareRedactor.RedactStr(err.Error()),
 		})
 	}
 
@@ -350,7 +352,7 @@ func testPluginConnection(ctx context.Context, client plugin.PluginClient, spec 
 					return &testConnectionResult{
 						Success:            false,
 						FailureCode:        "OTHER",
-						FailureDescription: err.Error(),
+						FailureDescription: secretAwareRedactor.RedactStr(err.Error()),
 					}, nil
 				}
 
@@ -365,7 +367,7 @@ func testPluginConnection(ctx context.Context, client plugin.PluginClient, spec 
 	return &testConnectionResult{
 		Success:            resp.Success,
 		FailureCode:        resp.FailureCode,
-		FailureDescription: resp.FailureDescription,
+		FailureDescription: secretAwareRedactor.RedactStr(resp.FailureDescription),
 	}, nil
 }
 

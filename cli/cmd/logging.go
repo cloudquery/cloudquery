@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/cloudquery/cloudquery/cli/v6/internal/enum"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/secrets"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
@@ -48,6 +49,7 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 		}
 	}
 	mw := io.MultiWriter(writers...)
-	log.Logger = zerolog.New(mw).Level(zerologLevel).With().Str("module", "cli").Str("invocation_id", invocationUUID.String()).Timestamp().Logger()
+	secretAwareWriter := secrets.NewSecretAwareWriter(mw, secretAwareRedactor)
+	log.Logger = zerolog.New(secretAwareWriter).Level(zerologLevel).With().Str("module", "cli").Str("invocation_id", invocationUUID.String()).Timestamp().Logger()
 	return logFile, nil
 }
