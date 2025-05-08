@@ -2,6 +2,7 @@ package recordupdater
 
 import (
 	"crypto/sha256"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"strings"
@@ -11,6 +12,7 @@ import (
 	"github.com/apache/arrow-go/v18/arrow/array"
 	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/transformer/basic/client/schemaupdater"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
@@ -130,6 +132,25 @@ func (r *RecordUpdater) AddTimestampColumn(columnName string, position int) (arr
 	}
 	r.record = array.NewRecord(newSchema, newColumns, r.record.NumRows())
 	return r.record, nil
+}
+
+func (r *RecordUpdater) AutoObfuscateColumns() (arrow.Record, error) {
+	if r.record.Schema() == nil {
+		return nil, errors.New("record schema is nil")
+	}
+	s, ok := r.record.Schema().Metadata().GetValue(schema.MetadataTableSensitiveColumns)
+	if !ok {
+		return r.record, nil
+	}
+	var sensitiveColumnsArr []string
+	err := json.Unmarshal([]byte(s), &sensitiveColumnsArr)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal sensitive columns: %w", err)
+	}
+	if len(sensitiveColumnsArr) == 0 {
+		return r.record, nil
+	}
+	return r.ObfuscateColumns(sensitiveColumnsArr)
 }
 
 func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.Record, error) {
@@ -267,7 +288,7 @@ func (*RecordUpdater) obfuscateColumn(column arrow.Array) arrow.Array {
 			bld.AppendNull()
 			continue
 		}
-		bld.AppendString(fmt.Sprintf("%x", sha256.Sum256([]byte(column.ValueStr(i)))))
+		bld.AppendString(fmt.Sprintf("redacted by CloudQuery | %x", sha256.Sum256([]byte(column.ValueStr(i)))))
 	}
 	return bld.NewStringArray()
 }

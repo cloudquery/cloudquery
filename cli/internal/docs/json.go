@@ -18,6 +18,7 @@ type jsonTable struct {
 	IsPaid            bool         `json:"is_paid,omitempty"`
 	IsIncremental     bool         `json:"is_incremental,omitempty"`
 	PermissionsNeeded []string     `json:"permissions_needed,omitempty"`
+	SensitiveColumns  []string     `json:"sensitive_columns,omitempty"`
 }
 
 type jsonColumn struct {
@@ -68,6 +69,7 @@ func (g *Generator) jsonifyTables(tables schema.Tables) []jsonTable {
 			IsIncremental:     table.IsIncremental,
 			Relations:         g.jsonifyTables(table.Relations),
 			PermissionsNeeded: table.PermissionsNeeded,
+			SensitiveColumns:  table.SensitiveColumns,
 		}
 	}
 	return jsonTables
