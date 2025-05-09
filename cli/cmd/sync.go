@@ -248,6 +248,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		}
 		if isolatePluginEnvironment {
 			cfg.Environment = filterPluginEnv(osEnviron, source.Name, "source")
+			secretAwareRedactor.AddSecretEnv(cfg.Environment)
 		}
 		sourcePluginClient, err := managedplugin.NewClient(ctx, managedplugin.PluginSource, cfg, opts...)
 		if err != nil {
@@ -291,6 +292,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		}
 		if isolatePluginEnvironment {
 			cfg.Environment = filterPluginEnv(osEnviron, destination.Name, "destination")
+			secretAwareRedactor.AddSecretEnv(cfg.Environment)
 		}
 		destPluginClient, err := managedplugin.NewClient(ctx, managedplugin.PluginDestination, cfg, opts...)
 		if err != nil {
