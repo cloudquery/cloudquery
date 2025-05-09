@@ -7,7 +7,7 @@ require (
 	github.com/apache/arrow-go/v18 v18.2.0
 	github.com/cloudquery/codegen v0.3.26
 	github.com/cloudquery/filetypes/v4 v4.6.3
-	github.com/cloudquery/plugin-sdk/v4 v4.79.1
+	github.com/cloudquery/plugin-sdk/v4 v4.80.0
 	github.com/invopop/jsonschema v0.13.0
 	github.com/rs/zerolog v1.34.0
 	github.com/wk8/go-ordered-map/v2 v2.1.8
@@ -37,7 +37,7 @@ require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.13.8 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.13.9 // indirect
 	github.com/cloudquery/plugin-pb-go v1.26.10 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
