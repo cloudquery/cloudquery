@@ -62,8 +62,8 @@ github.com/buger/jsonparser v1.1.1 h1:2PnMjfWD7wBILjqQbt530v576A/cAbQvEW9gGIpYMU
 github.com/buger/jsonparser v1.1.1/go.mod h1:6RYKKt7H4d4+iWqouImQ9R2FZql3VbhNgx27UK13J/0=
 github.com/cenkalti/backoff/v4 v4.3.0 h1:MyRJ/UdXutAwSAT+s3wNd7MfTIcy71VQueUuFK343L8=
 github.com/cenkalti/backoff/v4 v4.3.0/go.mod h1:Y3VNntkOUPxTVeUxJ/G5vcM//AlwfmyYozVcomhLiZE=
-github.com/cloudquery/cloudquery-api-go v1.13.8 h1:8n5D0G2wynbUdexr1GS8ND8i0uOwm0gXKNipJsijPe0=
-github.com/cloudquery/cloudquery-api-go v1.13.8/go.mod h1:ZhEjPkDGDL2KZKlQLUnsgQ0mPz3qC7qftr37q3q+IcA=
+github.com/cloudquery/cloudquery-api-go v1.13.9 h1:XudJusEJ0+kPa2/GXoZPuphR8gTRvHZ49dq53sTrWME=
+github.com/cloudquery/cloudquery-api-go v1.13.9/go.mod h1:ZhEjPkDGDL2KZKlQLUnsgQ0mPz3qC7qftr37q3q+IcA=
 github.com/cloudquery/codegen v0.3.26 h1:cWORVpObYW5/0LnjC0KO/Ocg1+vbZivJfFd+sMpb5ZY=
 github.com/cloudquery/codegen v0.3.26/go.mod h1:bg/M1JxFvNVABMLMFb/uAQmTGAyI2L/E4zL4kho9RFs=
 github.com/cloudquery/filetypes/v4 v4.6.3 h1:9VBDXhJ/YOL3gTJgUnSuVpyNAZXIIZzKNt28ml6Cu2I=
@@ -74,8 +74,8 @@ github.com/cloudquery/plugin-pb-go v1.26.10 h1:VNRk3JMLR7+pCXGCk4729I8r3vTrn64qo
 github.com/cloudquery/plugin-pb-go v1.26.10/go.mod h1:OVk5GXAlz8u6+sNlBgYxzpP+pYU+TqyyQV6FqMBBcIM=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0/go.mod h1:pAX6ojIW99b/Vg4CkhnsGkRIzNaVEceYMR+Bdit73ug=
-github.com/cloudquery/plugin-sdk/v4 v4.79.1 h1:8hLSU6yH+aYokmxcnZYXrUw7MCh1BR3lr66lxO6al+U=
-github.com/cloudquery/plugin-sdk/v4 v4.79.1/go.mod h1:npOGqLG3FPwT3BvgD+fz5e9Dm2lGG2sxUYpo8CHkGw4=
+github.com/cloudquery/plugin-sdk/v4 v4.80.0 h1:JW1e3hZFXlKPi31J/kp5Y8N37JvUuuBNKysKR0A6laQ=
+github.com/cloudquery/plugin-sdk/v4 v4.80.0/go.mod h1:ZJKMdIL6t2p0oeoIFRTJ4UO/Hc4ksaW2Fpo1bSequ+U=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.4/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
