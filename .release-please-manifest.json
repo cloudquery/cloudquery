@@ -63,7 +63,7 @@
   "plugins/source/stripe+FILLER": "0.0.0",
   "plugins/source/hubspot": "3.1.9",
   "plugins/source/hubspot+FILLER": "0.0.0",
-  "plugins/destination/elasticsearch": "3.5.17",
+  "plugins/destination/elasticsearch": "3.5.18",
   "plugins/destination/elasticsearch+FILLER": "0.0.0",
   "plugins/destination/clickhouse": "6.2.6",
   "plugins/destination/clickhouse+FILLER": "0.0.0",
