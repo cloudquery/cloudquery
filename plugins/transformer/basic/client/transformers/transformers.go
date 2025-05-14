@@ -38,8 +38,8 @@ func NewFromSpec(sp spec.TransformationSpec) (*Transformer, error) {
 		tr.fn = ChangeTableName(sp.NewTableNameTemplate)
 	case spec.KindRenameColumn:
 		tr.fn = RenameColumn(sp.Name, sp.Value)
-	case spec.KindAutoObfuscate:
-		tr.fn = AutoObfuscateColumns(sp.Columns)
+	case spec.KindObfuscateSensitiveColumns:
+		tr.fn = ObfuscateSensitiveColumns(sp.Columns)
 	default:
 		return nil, fmt.Errorf("unknown transformation kind: %s", sp.Kind)
 	}
@@ -103,9 +103,9 @@ func AddPrimaryKeys(columnNames []string) TransformationFn {
 		return recordupdater.New(record).AddPrimaryKeys(columnNames)
 	}
 }
-func AutoObfuscateColumns(columnNames []string) TransformationFn {
+func ObfuscateSensitiveColumns(columnNames []string) TransformationFn {
 	return func(record arrow.Record) (arrow.Record, error) {
-		return recordupdater.New(record).AutoObfuscateColumns()
+		return recordupdater.New(record).ObfuscateSensitiveColumns()
 	}
 }
 func ObfuscateColumns(columnNames []string) TransformationFn {

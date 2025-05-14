@@ -33,8 +33,8 @@ func New(record arrow.Record) *RecordUpdater {
 	}
 }
 
-const RedactedByCQMessage = "redacted by CloudQuery |"
-const RedactedByCQJSONName = "redacted_by_cloudquery"
+const redactedByCQMessage = "Redacted by CloudQuery |"
+const redactedByCQJSONName = "redacted_by_cloudquery"
 
 func (r *RecordUpdater) RemoveColumns(columnNames []string) (arrow.Record, error) {
 	plainCols, jsonCols := r.splitJSONColumns(columnNames)
@@ -138,7 +138,7 @@ func (r *RecordUpdater) AddTimestampColumn(columnName string, position int) (arr
 	return r.record, nil
 }
 
-func (r *RecordUpdater) AutoObfuscateColumns() (arrow.Record, error) {
+func (r *RecordUpdater) ObfuscateSensitiveColumns() (arrow.Record, error) {
 	if r.record.Schema() == nil {
 		return nil, errors.New("record schema is nil")
 	}
@@ -296,7 +296,7 @@ func (*RecordUpdater) obfuscateColumn(column arrow.Array) arrow.Array {
 			bld.AppendNull()
 			continue
 		}
-		bld.AppendString(fmt.Sprintf("%s %x", RedactedByCQMessage, sha256.Sum256([]byte(column.ValueStr(i)))))
+		bld.AppendString(fmt.Sprintf("%s %x", redactedByCQMessage, sha256.Sum256([]byte(column.ValueStr(i)))))
 	}
 	return bld.NewStringArray()
 }
@@ -313,7 +313,7 @@ func (*RecordUpdater) obfuscateJSONColumns(column arrow.Array, jcs []jsonColumn)
 		for _, jc := range jcs {
 			val := gjson.Get(column.ValueStr(i), jc.columnPath)
 			if val.Exists() && val.Type == gjson.String {
-				if modified, err := sjson.Set(str, jc.columnPath, fmt.Sprintf("%s %x", RedactedByCQMessage, sha256.Sum256([]byte(val.Str)))); err == nil {
+				if modified, err := sjson.Set(str, jc.columnPath, fmt.Sprintf("%s %x", redactedByCQMessage, sha256.Sum256([]byte(val.Str)))); err == nil {
 					str = modified
 					continue
 				}
@@ -335,7 +335,7 @@ func (*RecordUpdater) obfuscateEntireJSONColumn(column arrow.Array) arrow.Array 
 		str := column.ValueStr(i)
 		newStr := "{}"
 
-		if modified, err := sjson.Set(newStr, RedactedByCQJSONName, fmt.Sprintf("%x", sha256.Sum256([]byte(str)))); err == nil {
+		if modified, err := sjson.Set(newStr, redactedByCQJSONName, fmt.Sprintf("%x", sha256.Sum256([]byte(str)))); err == nil {
 			str = modified
 			bld.AppendBytes([]byte(str))
 		}

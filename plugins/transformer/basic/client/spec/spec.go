@@ -7,14 +7,14 @@ import (
 )
 
 const (
-	KindRemoveColumns      = "remove_columns"
-	KindAddColumn          = "add_column"
-	KindObfuscateColumns   = "obfuscate_columns"
-	KindChangeTableNames   = "change_table_names"
-	KindAddTimestampColumn = "add_current_timestamp_column"
-	KindRenameColumn       = "rename_column"
-	KindAddPrimaryKeys     = "add_primary_keys"
-	KindAutoObfuscate      = "auto_obfuscate"
+	KindRemoveColumns             = "remove_columns"
+	KindAddColumn                 = "add_column"
+	KindObfuscateColumns          = "obfuscate_columns"
+	KindChangeTableNames          = "change_table_names"
+	KindAddTimestampColumn        = "add_current_timestamp_column"
+	KindRenameColumn              = "rename_column"
+	KindAddPrimaryKeys            = "add_primary_keys"
+	KindObfuscateSensitiveColumns = "obfuscate_sensitive_columns"
 )
 
 type TransformationSpec struct {
@@ -75,7 +75,7 @@ func (s *Spec) Validate() error {
 			if t.Name != "" || t.Value != "" || t.NewTableNameTemplate != "" {
 				err = errors.Join(err, fmt.Errorf("name/value/new_table_name_template fields must not be specified for %s transformation", t.Kind))
 			}
-		case KindAutoObfuscate:
+		case KindObfuscateSensitiveColumns:
 			if len(t.Columns) != 0 {
 				err = errors.Join(err, fmt.Errorf("'%s' field must not be specified for %s transformation", "columns", t.Kind))
 			}
