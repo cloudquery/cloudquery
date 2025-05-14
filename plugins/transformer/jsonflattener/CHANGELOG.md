@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.13](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v2.0.12...plugins-transformer-jsonflattener-v2.0.13) (2025-05-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.80.0 ([#20729](https://github.com/cloudquery/cloudquery/issues/20729)) ([35e88d7](https://github.com/cloudquery/cloudquery/commit/35e88d7eab95f4f75c8f45092bfcec0e186f71e5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.80.1 ([#20765](https://github.com/cloudquery/cloudquery/issues/20765)) ([a780ebf](https://github.com/cloudquery/cloudquery/commit/a780ebf3ab39afac488fdded773e0530c3e6f016))
+
 ## [2.0.12](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v2.0.11...plugins-transformer-jsonflattener-v2.0.12) (2025-05-08)
 
 
