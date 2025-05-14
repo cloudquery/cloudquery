@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.2.18](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.2.17...plugins-destination-bigquery-v4.2.18) (2025-05-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module cloud.google.com/go to v0.121.0 ([#20762](https://github.com/cloudquery/cloudquery/issues/20762)) ([481de43](https://github.com/cloudquery/cloudquery/commit/481de433a6654a48445d98357956ed1c30fc9db9))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.27 ([#20757](https://github.com/cloudquery/cloudquery/issues/20757)) ([281a0e4](https://github.com/cloudquery/cloudquery/commit/281a0e43702050786f8424d856dd8509da3480a4))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.28 ([#20759](https://github.com/cloudquery/cloudquery/issues/20759)) ([9aaff23](https://github.com/cloudquery/cloudquery/commit/9aaff23ba9bcaed59db0e56c71a635346eb86a71))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.80.0 ([#20729](https://github.com/cloudquery/cloudquery/issues/20729)) ([35e88d7](https://github.com/cloudquery/cloudquery/commit/35e88d7eab95f4f75c8f45092bfcec0e186f71e5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.80.1 ([#20765](https://github.com/cloudquery/cloudquery/issues/20765)) ([a780ebf](https://github.com/cloudquery/cloudquery/commit/a780ebf3ab39afac488fdded773e0530c3e6f016))
+* **deps:** Update module google.golang.org/api to v0.231.0 ([#20764](https://github.com/cloudquery/cloudquery/issues/20764)) ([8cdb1e1](https://github.com/cloudquery/cloudquery/commit/8cdb1e1bcebfea15af9e17a1743ec5ee82e88e98))
+
 ## [4.2.17](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.2.16...plugins-destination-bigquery-v4.2.17) (2025-05-08)
 
 
