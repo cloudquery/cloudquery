@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.19](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.18...plugins-source-square-v1.3.19) (2025-05-14)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.44 ([#20756](https://github.com/cloudquery/cloudquery/issues/20756)) ([da9fbf9](https://github.com/cloudquery/cloudquery/commit/da9fbf941e2ca131458898be5bab8c617862bd35))
+* **deps:** Update dependency pytest to &lt;=8.3.5 ([#20677](https://github.com/cloudquery/cloudquery/issues/20677)) ([40db2bb](https://github.com/cloudquery/cloudquery/commit/40db2bb4e656c53c9b8008f658a492b0dd0fdd4b))
+
 ## [1.3.18](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.17...plugins-source-square-v1.3.18) (2025-04-02)
 
 
