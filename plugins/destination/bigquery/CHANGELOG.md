@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.2.18...plugins-destination-bigquery-v4.3.0) (2025-05-15)
+
+
+### Features
+
+* Add ability to change client project_id ([#20767](https://github.com/cloudquery/cloudquery/issues/20767)) ([8b9eb98](https://github.com/cloudquery/cloudquery/commit/8b9eb98465baaaa41b50e0dc4cecb157ec5a13d7))
+
 ## [4.2.18](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.2.17...plugins-destination-bigquery-v4.2.18) (2025-05-14)
 
 
