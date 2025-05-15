@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.2.5...plugins-transformer-basic-v2.3.0) (2025-05-15)
+
+
+### Features
+
+* Add 'auto_obfuscate' transformation to basic transformer ([#20728](https://github.com/cloudquery/cloudquery/issues/20728)) ([66cbf0a](https://github.com/cloudquery/cloudquery/commit/66cbf0a36ed751481f6d61417777150a24f312a6))
+
 ## [2.2.5](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.2.4...plugins-transformer-basic-v2.2.5) (2025-05-14)
 
 
