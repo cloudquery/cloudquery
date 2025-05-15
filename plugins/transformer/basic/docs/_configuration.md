@@ -9,6 +9,7 @@ spec:
       - kind: obfuscate_columns
         tables: ["xkcd_comics"]
         columns: ["safe_title", "title"]
+      - kind: obfuscate_sensitive_columns
       - kind: remove_columns
         tables: ["xkcd_comics"]
         columns: ["transcript", "news"]
