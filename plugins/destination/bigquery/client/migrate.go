@@ -63,7 +63,7 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 
 func (c *Client) doesTableExist(ctx context.Context, client *bigquery.Client, table string) (bool, error) {
 	c.logger.Debug().Str("dataset", c.spec.DatasetID).Str("table", table).Msg("Checking existence")
-	tableRef := client.Dataset(c.spec.DatasetID).Table(table)
+	tableRef := client.DatasetInProject(c.spec.ProjectID, c.spec.DatasetID).Table(table)
 	md, err := tableRef.Metadata(ctx)
 	if err != nil {
 		if isAPINotFoundError(err) {
@@ -105,7 +105,7 @@ func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Clie
 		// require this check to pass 3 times in a row to mitigate getting different responses from different BQ servers
 		tries := 3
 		for j := 0; j < tries; j++ {
-			md, err := client.Dataset(c.spec.DatasetID).Table(table.Name).Metadata(ctx)
+			md, err := client.DatasetInProject(c.spec.ProjectID, c.spec.DatasetID).Table(table.Name).Metadata(ctx)
 			if err != nil {
 				return err
 			}
@@ -125,7 +125,7 @@ func (c *Client) waitForSchemaToMatch(ctx context.Context, client *bigquery.Clie
 }
 
 func (c *Client) autoMigrateTable(ctx context.Context, client *bigquery.Client, table *schema.Table) error {
-	bqTable := client.Dataset(c.spec.DatasetID).Table(table.Name)
+	bqTable := client.DatasetInProject(c.spec.ProjectID, c.spec.DatasetID).Table(table.Name)
 	md, err := bqTable.Metadata(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to get metadata for table %q with error: %w", table.Name, err)
@@ -208,7 +208,7 @@ func (c *Client) createTable(ctx context.Context, client *bigquery.Client, table
 		Schema:           bqSchema,
 		TimePartitioning: c.timePartitioning(),
 	}
-	return client.Dataset(c.spec.DatasetID).Table(table.Name).Create(ctx, &tm)
+	return client.DatasetInProject(c.spec.ProjectID, c.spec.DatasetID).Table(table.Name).Create(ctx, &tm)
 }
 
 func (c *Client) timePartitioning() *bigquery.TimePartitioning {
