@@ -59,7 +59,7 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 		return nil, err
 	}
 
-	if err := validateCreds(ctx, c.client, c.spec.DatasetID); err != nil {
+	if err := validateCreds(ctx, c.client, c.spec.DatasetID, c.spec.ProjectID); err != nil {
 		return nil, fmt.Errorf("failed to validate credentials: %w", err)
 	}
 
@@ -84,7 +84,7 @@ func bqClient(ctx context.Context, s Spec) (*bigquery.Client, error) {
 	if s.Endpoint != "" {
 		opts = append(opts, option.WithEndpoint(s.Endpoint))
 	}
-	client, err := bigquery.NewClient(ctx, s.ProjectID, opts...)
+	client, err := bigquery.NewClient(ctx, s.ClientProjectID, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -94,8 +94,8 @@ func bqClient(ctx context.Context, s Spec) (*bigquery.Client, error) {
 	return client, nil
 }
 
-func validateCreds(ctx context.Context, c *bigquery.Client, datasetID string) error {
-	datasetRef := c.Dataset(datasetID)
+func validateCreds(ctx context.Context, c *bigquery.Client, datasetID, projectID string) error {
+	datasetRef := c.DatasetInProject(projectID, datasetID)
 	_, err := datasetRef.Metadata(ctx)
 	if err != nil {
 		if isAPINotFoundError(err) {
@@ -124,7 +124,7 @@ func TestConnection(ctx context.Context, _ zerolog.Logger, specBytes []byte) err
 		return err
 	}
 
-	if err := validateCreds(ctx, c, s.DatasetID); err != nil {
+	if err := validateCreds(ctx, c, s.DatasetID, s.ProjectID); err != nil {
 		return err
 	}
 

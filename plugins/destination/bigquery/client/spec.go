@@ -72,6 +72,9 @@ type Spec struct {
 
 	// Maximum interval between batch writes.
 	BatchTimeout configtype.Duration `json:"batch_timeout"`
+
+	// Identifies the project context bq client should execute in. Defaults to the project_id. You can set it to *detect-project-id* to automatically detect project id from credentials in the environment.
+	ClientProjectID string `json:"client_project_id"`
 }
 
 //go:embed schema.json
@@ -89,6 +92,9 @@ func (s *Spec) SetDefaults() {
 	}
 	if s.BatchTimeout.Duration() <= 0 {
 		s.BatchTimeout = configtype.NewDuration(10 * time.Second)
+	}
+	if s.ClientProjectID == "" {
+		s.ClientProjectID = s.ProjectID
 	}
 }
 
