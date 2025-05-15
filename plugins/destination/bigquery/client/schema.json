@@ -58,6 +58,10 @@
           "$ref": "#/$defs/Duration",
           "description": "Maximum interval between batch writes.",
           "default": "10s"
+        },
+        "client_project_id": {
+          "type": "string",
+          "description": "Identifies the project context bq client should execute in. Defaults to the project_id. You can set it to *detect-project-id* to automatically detect project id from credentials in the environment."
         }
       },
       "additionalProperties": false,

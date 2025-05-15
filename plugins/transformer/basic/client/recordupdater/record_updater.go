@@ -2,8 +2,10 @@ package recordupdater
 
 import (
 	"crypto/sha256"
+	"encoding/json"
 	"errors"
 	"fmt"
+	"slices"
 	"strings"
 	"time"
 
@@ -11,6 +13,7 @@ import (
 	"github.com/apache/arrow-go/v18/arrow/array"
 	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/transformer/basic/client/schemaupdater"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
@@ -29,6 +32,9 @@ func New(record arrow.Record) *RecordUpdater {
 		schemaUpdater: schemaupdater.New(record.Schema()),
 	}
 }
+
+const redactedByCQMessage = "Redacted by CloudQuery |"
+const redactedByCQJSONName = "redacted_by_cloudquery"
 
 func (r *RecordUpdater) RemoveColumns(columnNames []string) (arrow.Record, error) {
 	plainCols, jsonCols := r.splitJSONColumns(columnNames)
@@ -132,6 +138,25 @@ func (r *RecordUpdater) AddTimestampColumn(columnName string, position int) (arr
 	return r.record, nil
 }
 
+func (r *RecordUpdater) ObfuscateSensitiveColumns() (arrow.Record, error) {
+	if r.record.Schema() == nil {
+		return nil, errors.New("record schema is nil")
+	}
+	s, ok := r.record.Schema().Metadata().GetValue(schema.MetadataTableSensitiveColumns)
+	if !ok {
+		return r.record, nil
+	}
+	var sensitiveColumnsArr []string
+	err := json.Unmarshal([]byte(s), &sensitiveColumnsArr)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal sensitive columns: %w", err)
+	}
+	if len(sensitiveColumnsArr) == 0 {
+		return r.record, nil
+	}
+	return r.ObfuscateColumns(sensitiveColumnsArr)
+}
+
 func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.Record, error) {
 	plainCols, jsonCols := r.splitJSONColumns(columnNames)
 
@@ -145,11 +170,15 @@ func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.Record, er
 	newColumns := make([]arrow.Array, 0, len(oldRecord))
 	for i, column := range oldRecord {
 		if _, ok := plainColIndex[i]; ok {
-			if column.DataType().ID() != arrow.STRING {
-				return nil, fmt.Errorf("column %v is not a string column", r.record.ColumnName(i))
+			if column.DataType().ID() == arrow.STRING {
+				newColumns = append(newColumns, r.obfuscateColumn(column))
+				continue
 			}
-			newColumns = append(newColumns, r.obfuscateColumn(column))
-			continue
+			if _, ok := column.DataType().(*types.JSONType); ok {
+				newColumns = append(newColumns, r.obfuscateEntireJSONColumn(column))
+				continue
+			}
+			return nil, fmt.Errorf("column %v is not a string or JSON column", r.record.ColumnName(i))
 		}
 
 		jcs, ok := jsonColIndex[i]
@@ -267,7 +296,7 @@ func (*RecordUpdater) obfuscateColumn(column arrow.Array) arrow.Array {
 			bld.AppendNull()
 			continue
 		}
-		bld.AppendString(fmt.Sprintf("%x", sha256.Sum256([]byte(column.ValueStr(i)))))
+		bld.AppendString(fmt.Sprintf("%s %x", redactedByCQMessage, sha256.Sum256([]byte(column.ValueStr(i)))))
 	}
 	return bld.NewStringArray()
 }
@@ -284,13 +313,32 @@ func (*RecordUpdater) obfuscateJSONColumns(column arrow.Array, jcs []jsonColumn)
 		for _, jc := range jcs {
 			val := gjson.Get(column.ValueStr(i), jc.columnPath)
 			if val.Exists() && val.Type == gjson.String {
-				if modified, err := sjson.Set(str, jc.columnPath, fmt.Sprintf("%x", sha256.Sum256([]byte(val.Str)))); err == nil {
+				if modified, err := sjson.Set(str, jc.columnPath, fmt.Sprintf("%s %x", redactedByCQMessage, sha256.Sum256([]byte(val.Str)))); err == nil {
 					str = modified
 					continue
 				}
 			}
 		}
 		bld.AppendBytes([]byte(str))
+	}
+	return bld.NewJSONArray()
+}
+
+func (*RecordUpdater) obfuscateEntireJSONColumn(column arrow.Array) arrow.Array {
+	bld := types.NewJSONBuilder(memory.NewGoAllocator())
+	for i := 0; i < column.Len(); i++ {
+		if !column.IsValid(i) {
+			bld.AppendNull()
+			continue
+		}
+
+		str := column.ValueStr(i)
+		newStr := "{}"
+
+		if modified, err := sjson.Set(newStr, redactedByCQJSONName, fmt.Sprintf("%x", sha256.Sum256([]byte(str)))); err == nil {
+			str = modified
+			bld.AppendBytes([]byte(str))
+		}
 	}
 	return bld.NewJSONArray()
 }
@@ -306,13 +354,20 @@ func (r *RecordUpdater) splitJSONColumns(columnNames []string) (plainCols []stri
 		}
 	}
 
-	jsonCols = make(map[string]jsonColumn)
 	for i := 0; i < int(r.record.NumCols()); i++ {
 		if _, ok := plainColMap[r.record.ColumnName(i)]; ok {
 			plainCols = append(plainCols, r.record.ColumnName(i))
 			continue
 		}
+	}
 
+	for k, jc := range jsonColMap {
+		if slices.Contains(plainCols, jc.columnName) {
+			delete(jsonColMap, k)
+		}
+	}
+	jsonCols = make(map[string]jsonColumn)
+	for i := 0; i < int(r.record.NumCols()); i++ {
 		for _, jc := range jsonColMap {
 			if jc.columnName == r.record.ColumnName(i) {
 				jsonCols[jc.columnName+"."+jc.columnPath] = jc

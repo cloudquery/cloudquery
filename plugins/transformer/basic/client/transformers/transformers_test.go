@@ -136,8 +136,8 @@ func TestTransform(t *testing.T) {
 			},
 			record: createTestRecord(),
 			validate: func(t *testing.T, record arrow.Record) {
-				require.Equal(t, "bac8d4414984861d5199b7a97699c728bee36c4084299b2ca905434cf65d8944", record.Column(1).(*array.String).Value(0), "Expected sha256 value in new_col column")
-				require.Equal(t, "dd0fff6ac351dd46cd26e2d5c61e479ce7c68ef12489e04284c0fd66648723cb", record.Column(1).(*array.String).Value(1), "Expected sha256 value in new_col column")
+				require.Equal(t, "Redacted by CloudQuery | bac8d4414984861d5199b7a97699c728bee36c4084299b2ca905434cf65d8944", record.Column(1).(*array.String).Value(0), "Expected sha256 value in new_col column")
+				require.Equal(t, "Redacted by CloudQuery | dd0fff6ac351dd46cd26e2d5c61e479ce7c68ef12489e04284c0fd66648723cb", record.Column(1).(*array.String).Value(1), "Expected sha256 value in new_col column")
 				require.Equal(t, int64(2), record.NumCols(), "Expected 2 columns")
 				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
 			},
