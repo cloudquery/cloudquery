@@ -1,5 +1,24 @@
 # Changelog
 
+## [5.4.18](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.4.17...plugins-destination-gcs-v5.4.18) (2025-05-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module cloud.google.com/go/storage to v1.53.0 ([#20763](https://github.com/cloudquery/cloudquery/issues/20763)) ([06396e5](https://github.com/cloudquery/cloudquery/commit/06396e5b9d99abd7c52521a04fc88a6fb2cb6b34))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.27 ([#20757](https://github.com/cloudquery/cloudquery/issues/20757)) ([281a0e4](https://github.com/cloudquery/cloudquery/commit/281a0e43702050786f8424d856dd8509da3480a4))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.28 ([#20759](https://github.com/cloudquery/cloudquery/issues/20759)) ([9aaff23](https://github.com/cloudquery/cloudquery/commit/9aaff23ba9bcaed59db0e56c71a635346eb86a71))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.80.0 ([#20729](https://github.com/cloudquery/cloudquery/issues/20729)) ([35e88d7](https://github.com/cloudquery/cloudquery/commit/35e88d7eab95f4f75c8f45092bfcec0e186f71e5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.80.1 ([#20765](https://github.com/cloudquery/cloudquery/issues/20765)) ([a780ebf](https://github.com/cloudquery/cloudquery/commit/a780ebf3ab39afac488fdded773e0530c3e6f016))
+
+## [5.4.17](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.4.16...plugins-destination-gcs-v5.4.17) (2025-05-08)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.79.1 ([#20692](https://github.com/cloudquery/cloudquery/issues/20692)) ([50f909e](https://github.com/cloudquery/cloudquery/commit/50f909e8f847d436b973721cf7450e505af72c67))
+* **deps:** Update module github.com/go-jose/go-jose/v4 to v4.0.5 [SECURITY] ([#20722](https://github.com/cloudquery/cloudquery/issues/20722)) ([afce47a](https://github.com/cloudquery/cloudquery/commit/afce47a0ac8e2d930305c329bab104c4dbdaa6a3))
+
 ## [5.4.16](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.4.15...plugins-destination-gcs-v5.4.16) (2025-05-05)
 
 

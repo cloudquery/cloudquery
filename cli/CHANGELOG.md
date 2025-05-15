@@ -5,6 +5,36 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.19.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.19.1...cli-v6.19.2) (2025-05-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.27 ([#20757](https://github.com/cloudquery/cloudquery/issues/20757)) ([281a0e4](https://github.com/cloudquery/cloudquery/commit/281a0e43702050786f8424d856dd8509da3480a4))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.28 ([#20759](https://github.com/cloudquery/cloudquery/issues/20759)) ([9aaff23](https://github.com/cloudquery/cloudquery/commit/9aaff23ba9bcaed59db0e56c71a635346eb86a71))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.26.11 ([#20760](https://github.com/cloudquery/cloudquery/issues/20760)) ([cecaba0](https://github.com/cloudquery/cloudquery/commit/cecaba0df7d6b47c651f850dc36aae4a971d2851))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.80.0 ([#20729](https://github.com/cloudquery/cloudquery/issues/20729)) ([35e88d7](https://github.com/cloudquery/cloudquery/commit/35e88d7eab95f4f75c8f45092bfcec0e186f71e5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.80.1 ([#20765](https://github.com/cloudquery/cloudquery/issues/20765)) ([a780ebf](https://github.com/cloudquery/cloudquery/commit/a780ebf3ab39afac488fdded773e0530c3e6f016))
+
+## [6.19.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.19.0...cli-v6.19.1) (2025-05-08)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.13.9 ([#20724](https://github.com/cloudquery/cloudquery/issues/20724)) ([f3d4dd0](https://github.com/cloudquery/cloudquery/commit/f3d4dd097c5b2db96a0701e1d43583ce662bd34e))
+
+## [6.19.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.18.2...cli-v6.19.0) (2025-05-06)
+
+
+### Features
+
+* Redact env secrets from output and logs ([#20691](https://github.com/cloudquery/cloudquery/issues/20691)) ([a913f10](https://github.com/cloudquery/cloudquery/commit/a913f10ea3978f68c76c7c349214d207b56534b6))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.79.1 ([#20692](https://github.com/cloudquery/cloudquery/issues/20692)) ([50f909e](https://github.com/cloudquery/cloudquery/commit/50f909e8f847d436b973721cf7450e505af72c67))
+
 ## [6.18.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.18.1...cli-v6.18.2) (2025-05-01)
 
 
