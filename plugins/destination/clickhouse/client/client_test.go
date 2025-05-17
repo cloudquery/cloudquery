@@ -42,7 +42,7 @@ func TestPlugin(t *testing.T) {
 		New,
 		plugin.WithJSONSchema(spec.JSONSchema),
 	)
-	s := &spec.Spec{ConnectionString: getTestConnection()}
+	s := &spec.Spec{ConnectionString: getTestConnection(), BatchSize: 1}
 	b, err := json.Marshal(s)
 	require.NoError(t, err)
 	require.NoError(t, p.Init(ctx, b, plugin.NewClientOptions{}))
