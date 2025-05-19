@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/bigquery v1.67.0
 	github.com/apache/arrow-go/v18 v18.2.0
 	github.com/cloudquery/codegen v0.3.28
-	github.com/cloudquery/plugin-sdk/v4 v4.80.3
+	github.com/cloudquery/plugin-sdk/v4 v4.81.0
 	github.com/goccy/go-json v0.10.5
 	github.com/invopop/jsonschema v0.13.0
 	github.com/rs/zerolog v1.34.0
@@ -100,8 +100,8 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/spf13/cobra v1.8.1 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/cobra v1.9.0 // indirect
+	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	golang.org/x/net v0.39.0 // indirect; indirect // indirect
 	golang.org/x/oauth2 v0.29.0 // indirect
