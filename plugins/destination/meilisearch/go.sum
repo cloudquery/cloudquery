@@ -61,8 +61,8 @@ github.com/cloudquery/plugin-pb-go v1.26.11 h1:e1M0P9HgA450OnKNhhcFcWdkfvYFihzrH
 github.com/cloudquery/plugin-pb-go v1.26.11/go.mod h1:S65IWZQejnUHxY/411F+vTt/9TMgslmNNDuSegGVfyk=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0/go.mod h1:pAX6ojIW99b/Vg4CkhnsGkRIzNaVEceYMR+Bdit73ug=
-github.com/cloudquery/plugin-sdk/v4 v4.80.2 h1:CJYsv20Q27i27mkaG4UGeZXq/J2tfSxhMYAb/jXKzh8=
-github.com/cloudquery/plugin-sdk/v4 v4.80.2/go.mod h1:fTAblbDO95NkAV724Z6hJcFKTFE+jQVlD+YnNtsyJas=
+github.com/cloudquery/plugin-sdk/v4 v4.80.3 h1:iNuIIjLgzMlFD/2xiSmNTvp1jS8EH8IDQOFFM4weiOE=
+github.com/cloudquery/plugin-sdk/v4 v4.80.3/go.mod h1:fTAblbDO95NkAV724Z6hJcFKTFE+jQVlD+YnNtsyJas=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.4/go.mod h1:tgQtvFlXSQOSOSIRvRPT7W67SCa46tRHOmNcaadrF8o=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
