@@ -41,9 +41,8 @@ func TestPlugin(t *testing.T) {
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.WriterTestSuiteTests{
-			SkipUpsert:       true,
-			SkipDeleteStale:  true,
-			SkipDeleteRecord: true,
+			SkipUpsert:      true,
+			SkipDeleteStale: true,
 			SafeMigrations: plugin.SafeMigrations{
 				AddColumn:    true,
 				RemoveColumn: true,
@@ -57,21 +56,6 @@ func TestPlugin(t *testing.T) {
 		plugin.WithTestSourceAllowNull(types.CanBeNullable),
 	)
 }
-
-// func TestPluginDeleteRecord(t *testing.T) {
-// 	p := initPlugin(t, &spec.Spec{BatchSize: 1})
-//
-// 	plugin.TestWriterSuiteRunner(t,
-// 		p,
-// 		plugin.WriterTestSuiteTests{
-// 			SkipUpsert:      true,
-// 			SkipDeleteStale: true,
-// 			SkipInsert:      true,
-// 			SkipMigrate:     true,
-// 		},
-// 		plugin.WithTestSourceAllowNull(types.CanBeNullable),
-// 	)
-// }
 
 func initPlugin(t *testing.T, s *spec.Spec) *plugin.Plugin {
 	ctx := context.Background()
