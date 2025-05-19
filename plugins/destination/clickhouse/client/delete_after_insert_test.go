@@ -2,13 +2,14 @@ package client
 
 import (
 	"context"
+	"testing"
+	
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/stretchr/testify/require"
-	"testing"
 )
 
 func TestDeleteAfterInsert(t *testing.T) {
