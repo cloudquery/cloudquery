@@ -80,7 +80,7 @@ func TestDeleteAfterInsert(t *testing.T) {
 
 	var messages []message.WriteMessage
 
-	p := initPlugin(t, &spec.Spec{})
+	p := initPlugin(t, &spec.Spec{BatchSize: 1})
 
 	table := createTestTable()
 	messages = append(messages, &message.WriteMigrateTable{Table: table})
