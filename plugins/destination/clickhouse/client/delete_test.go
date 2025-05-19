@@ -74,7 +74,11 @@ func TestDelete(t *testing.T) {
 	}
 }
 
-func countAllRows(ctx context.Context, client *Client, table *schema.Table) (int64, error) {
+type RowReader interface {
+	Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error
+}
+
+func countAllRows(ctx context.Context, client RowReader, table *schema.Table) (int64, error) {
 	var err error
 	ch := make(chan arrow.Record)
 	go func() {
