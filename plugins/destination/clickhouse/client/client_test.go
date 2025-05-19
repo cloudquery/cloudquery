@@ -36,16 +36,7 @@ func getTestConnection() string {
 }
 
 func TestPlugin(t *testing.T) {
-	ctx := context.Background()
-	p := plugin.NewPlugin("clickhouse",
-		internalPlugin.Version,
-		New,
-		plugin.WithJSONSchema(spec.JSONSchema),
-	)
-	s := &spec.Spec{ConnectionString: getTestConnection()}
-	b, err := json.Marshal(s)
-	require.NoError(t, err)
-	require.NoError(t, p.Init(ctx, b, plugin.NewClientOptions{}))
+	p := initPlugin(t, &spec.Spec{})
 
 	plugin.TestWriterSuiteRunner(t,
 		p,
@@ -65,6 +56,35 @@ func TestPlugin(t *testing.T) {
 		},
 		plugin.WithTestSourceAllowNull(types.CanBeNullable),
 	)
+}
+
+// func TestPluginDeleteRecord(t *testing.T) {
+// 	p := initPlugin(t, &spec.Spec{BatchSize: 1})
+//
+// 	plugin.TestWriterSuiteRunner(t,
+// 		p,
+// 		plugin.WriterTestSuiteTests{
+// 			SkipUpsert:      true,
+// 			SkipDeleteStale: true,
+// 			SkipInsert:      true,
+// 			SkipMigrate:     true,
+// 		},
+// 		plugin.WithTestSourceAllowNull(types.CanBeNullable),
+// 	)
+// }
+
+func initPlugin(t *testing.T, s *spec.Spec) *plugin.Plugin {
+	ctx := context.Background()
+	p := plugin.NewPlugin("clickhouse",
+		internalPlugin.Version,
+		New,
+		plugin.WithJSONSchema(spec.JSONSchema),
+	)
+	s.ConnectionString = getTestConnection()
+	b, err := json.Marshal(s)
+	require.NoError(t, err)
+	require.NoError(t, p.Init(ctx, b, plugin.NewClientOptions{}))
+	return p
 }
 
 func TestMigrateCQClientIDColumnWhenSortKeyIsAlreadySet(t *testing.T) {
