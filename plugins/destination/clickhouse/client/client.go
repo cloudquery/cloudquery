@@ -23,7 +23,6 @@ type Client struct {
 	writer *batchwriter.BatchWriter
 	plugin.UnimplementedSource
 	batchwriter.UnimplementedDeleteStale
-	batchwriter.UnimplementedDeleteRecord
 }
 
 var _ plugin.Client = (*Client)(nil)
