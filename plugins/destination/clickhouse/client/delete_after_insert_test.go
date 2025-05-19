@@ -11,7 +11,7 @@ import (
 	"testing"
 )
 
-func TestProof(t *testing.T) {
+func TestDeleteAfterInsert(t *testing.T) {
 	r := require.New(t)
 	ctx := context.Background()
 
