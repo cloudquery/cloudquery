@@ -36,6 +36,7 @@ func (c *Client) pgTables(ctx context.Context) (map[string]struct{}, error) {
 
 // InsertBatch inserts records into the destination table. It forms part of the writer.MixedBatchWriter interface.
 func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts) error {
+	c.batchCallCount++
 	pgTables, err := c.pgTables(ctx)
 	if err != nil {
 		return err

@@ -28,6 +28,7 @@ type pkConstraintDetails struct {
 }
 
 type Client struct {
+	batchCallCount      int
 	conn                *pgxpool.Pool
 	logger              zerolog.Logger
 	currentDatabaseName string

@@ -17,6 +17,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/jackc/pgx/v5/tracelog"
+	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 )
 
@@ -150,6 +151,46 @@ func TestCreateIndexesPluginNewTable(t *testing.T) {
 		require.Equal(t, fmt.Sprintf(`CREATE UNIQUE INDEX %[1]s__cq_id_key ON postgres.public.%[1]s USING btree (_cq_id ASC)`, tableName), indexes[fmt.Sprintf("%s__cq_id_key", tableName)])
 		require.Equal(t, fmt.Sprintf(`CREATE INDEX %[1]s_cqpi ON postgres.public.%[1]s USING btree (_cq_source_name ASC, _cq_sync_time ASC)`, tableName), indexes[fmt.Sprintf("%s_cqpi", tableName)])
 	}
+}
+
+func TestBatchInsert(t *testing.T) {
+	r := require.New(t)
+	ctx := context.Background()
+	var client *Client
+	p := plugin.NewPlugin("postgresql", "development", func(ctx context.Context, logger zerolog.Logger, bytes []byte, options plugin.NewClientOptions) (plugin.Client, error) {
+		c, err := New(ctx, logger, bytes, options)
+		client = c.(*Client)
+		return c, err
+	})
+	s := &spec.Spec{
+		ConnectionString: getTestConnection(),
+		PgxLogLevel:      spec.LogLevel(tracelog.LogLevelTrace),
+		BatchSize:        5,
+	}
+	b, err := json.Marshal(s)
+	require.NoError(t, err)
+	err = p.Init(ctx, b, plugin.NewClientOptions{})
+	require.NoError(t, err)
+
+	tableName := fmt.Sprintf("cq_test_batch_insert_%d", time.Now().UnixNano())
+
+	table := schema.TestTable(tableName, schema.TestSourceOptions{})
+	r.NoError(p.WriteAll(ctx, []message.WriteMessage{&message.WriteMigrateTable{
+		Table: table,
+	}}))
+
+	tg := schema.NewTestDataGenerator(0)
+	// generate 6 insert messages which should be batched into 2 batches due to BatchSize: 5
+	for range 6 {
+		normalRecord := tg.Generate(table, schema.GenTestDataOptions{
+			MaxRows: 1,
+		})
+		insert := message.WriteInsert{
+			Record: normalRecord,
+		}
+		r.NoError(p.WriteAll(ctx, []message.WriteMessage{&insert}))
+	}
+	r.Equal(2, client.batchCallCount, "batching calls does not work as expected")
 }
 
 func TestCreateIndexesPluginExistingTable(t *testing.T) {
