@@ -36,7 +36,7 @@ func getTestConnection() string {
 }
 
 func TestPlugin(t *testing.T) {
-	p := initPlugin(t, &spec.Spec{})
+	p := initPlugin(t)
 
 	plugin.TestWriterSuiteRunner(t,
 		p,
@@ -57,14 +57,16 @@ func TestPlugin(t *testing.T) {
 	)
 }
 
-func initPlugin(t *testing.T, s *spec.Spec) *plugin.Plugin {
+func initPlugin(t *testing.T) *plugin.Plugin {
 	ctx := context.Background()
 	p := plugin.NewPlugin("clickhouse",
 		internalPlugin.Version,
 		New,
 		plugin.WithJSONSchema(spec.JSONSchema),
 	)
-	s.ConnectionString = getTestConnection()
+	s := &spec.Spec{
+		ConnectionString: getTestConnection(),
+	}
 	b, err := json.Marshal(s)
 	require.NoError(t, err)
 	require.NoError(t, p.Init(ctx, b, plugin.NewClientOptions{}))
