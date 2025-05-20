@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/typeconv/ch/values"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/util"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/typeconv/ch/values"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/util"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 )
 
