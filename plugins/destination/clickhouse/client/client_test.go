@@ -36,23 +36,13 @@ func getTestConnection() string {
 }
 
 func TestPlugin(t *testing.T) {
-	ctx := context.Background()
-	p := plugin.NewPlugin("clickhouse",
-		internalPlugin.Version,
-		New,
-		plugin.WithJSONSchema(spec.JSONSchema),
-	)
-	s := &spec.Spec{ConnectionString: getTestConnection()}
-	b, err := json.Marshal(s)
-	require.NoError(t, err)
-	require.NoError(t, p.Init(ctx, b, plugin.NewClientOptions{}))
+	p := initPlugin(t)
 
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.WriterTestSuiteTests{
-			SkipUpsert:       true,
-			SkipDeleteStale:  true,
-			SkipDeleteRecord: true,
+			SkipUpsert:      true,
+			SkipDeleteStale: true,
 			SafeMigrations: plugin.SafeMigrations{
 				AddColumn:    true,
 				RemoveColumn: true,
@@ -65,6 +55,22 @@ func TestPlugin(t *testing.T) {
 		},
 		plugin.WithTestSourceAllowNull(types.CanBeNullable),
 	)
+}
+
+func initPlugin(t *testing.T) *plugin.Plugin {
+	ctx := context.Background()
+	p := plugin.NewPlugin("clickhouse",
+		internalPlugin.Version,
+		New,
+		plugin.WithJSONSchema(spec.JSONSchema),
+	)
+	s := &spec.Spec{
+		ConnectionString: getTestConnection(),
+	}
+	b, err := json.Marshal(s)
+	require.NoError(t, err)
+	require.NoError(t, p.Init(ctx, b, plugin.NewClientOptions{}))
+	return p
 }
 
 func TestMigrateCQClientIDColumnWhenSortKeyIsAlreadySet(t *testing.T) {
