@@ -4,9 +4,9 @@ import (
 	"context"
 	"log"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/client"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/client/spec"
-	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/resources/plugin"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/client"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/client/spec"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/serve"
 )

@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow-go/v18 v18.2.0
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cloudquery/codegen v0.3.28
-	github.com/cloudquery/plugin-sdk/v4 v4.80.2
+	github.com/cloudquery/plugin-sdk/v4 v4.80.3
 	github.com/google/uuid v1.6.0
 	github.com/marcboeker/go-duckdb/v2 v2.2.1
 	github.com/rs/zerolog v1.34.0
