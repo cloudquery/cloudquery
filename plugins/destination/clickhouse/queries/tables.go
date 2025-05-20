@@ -6,9 +6,9 @@ import (
 	"strings"
 
 	"github.com/apache/arrow-go/v18/arrow"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/client/spec"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/typeconv/ch/types"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/util"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/typeconv/ch/types"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/util"
 	"github.com/cloudquery/plugin-sdk/v4/glob"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
