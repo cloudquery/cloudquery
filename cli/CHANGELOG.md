@@ -5,6 +5,18 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.20.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.19.2...cli-v6.20.0) (2025-05-19)
+
+
+### Features
+
+* Add 'auto_obfuscate' transformation to basic transformer ([#20728](https://github.com/cloudquery/cloudquery/issues/20728)) ([66cbf0a](https://github.com/cloudquery/cloudquery/commit/66cbf0a36ed751481f6d61417777150a24f312a6))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.80.2 ([#20778](https://github.com/cloudquery/cloudquery/issues/20778)) ([525352c](https://github.com/cloudquery/cloudquery/commit/525352c3d5ce3dd258358b7396b2cebd6ae3ce87))
+
 ## [6.19.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.19.1...cli-v6.19.2) (2025-05-14)
 
 
