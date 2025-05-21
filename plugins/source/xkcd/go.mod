@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/xkcd
 
-go 1.24.2
+go 1.24.3
 
 require (
 	github.com/cloudquery/plugin-sdk/v4 v4.81.0
