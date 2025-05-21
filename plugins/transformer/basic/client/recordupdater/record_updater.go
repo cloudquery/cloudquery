@@ -335,7 +335,12 @@ func (*RecordUpdater) obfuscateBinaryColumn(column arrow.Array) arrow.Array {
 			bld.AppendNull()
 			continue
 		}
-		bld.Append([]byte(fmt.Sprintf("%s %x", redactedByCQMessage, sha256.Sum256([]byte(column.ValueStr(i))))))
+		bc, ok := column.(*array.Binary)
+		if !ok {
+			bld.AppendNull()
+			continue
+		}
+		bld.Append(fmt.Appendf(nil, "%s %x", redactedByCQMessage, sha256.Sum256(bc.Value(i))))
 	}
 	return bld.NewBinaryArray()
 }

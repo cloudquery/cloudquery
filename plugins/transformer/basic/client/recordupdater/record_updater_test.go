@@ -126,10 +126,10 @@ func TestAutoObfuscateColumns(t *testing.T) {
 		fmt.Sprintf(`{"foo":{"bar":["%s 18ac3e7343f016890c510e93f935261169d9e3f565436429830faf0934f4f8e4","%s 3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea","f"]}}`, redactedByCQMessage, redactedByCQMessage),
 		updatedRecord.Column(2).ValueStr(1))
 	assert.Equal(t,
-		fmt.Sprintf("%s e017a4a3db0b278a196f65c94c2af6c86820a0dd870af9cbb67f4af639085d76", redactedByCQMessage),
+		fmt.Sprintf("%s cc1d9c865e8380c2d566dc724c66369051acfaa3e9e8f36ad6c67d7d9b8461a5", redactedByCQMessage),
 		string(updatedRecord.Column(3).(*array.Binary).Value(0)))
 	assert.Equal(t,
-		fmt.Sprintf("%s aeccf98bf8926a3c2580cb2f4161e0c64379294d30dc2ea7756121b28353b863", redactedByCQMessage),
+		fmt.Sprintf("%s 44a036a895f1f40e3bf8cf930f287edc1cf0a0d0c75b36d1d25b777577f37e7e", redactedByCQMessage),
 		string(updatedRecord.Column(3).(*array.Binary).Value(1)))
 }
 
@@ -252,7 +252,7 @@ func createTestRecordWithMetadata(metadata *arrow.Metadata) arrow.Record {
 	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["a","b","c"]},"hello":"world"}`))
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["d","e","f"]}}`))
-	bld.Field(3).(*array.BinaryBuilder).AppendValues([][]byte{[]byte("val5"), []byte("val6")}, nil)
+	bld.Field(3).(*array.BinaryBuilder).AppendValues([][]byte{[]byte("val1"), []byte("val5")}, nil)
 
 	return bld.NewRecord()
 }
