@@ -41,70 +41,36 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 		return err
 	}
 
-	batch := new(pgx.Batch)
+	c.bm = &batchManager{
+		pgxBatch: new(pgx.Batch),
+	}
 
 	// Queries cache.
 	// We may consider LRU cache in the future, but even for 10K records it may be OK to just save.
-	queries := make(map[string]string, 100)
+	// queries := make(map[string]string, 100)
 
 	for _, msg := range messages {
 		r := msg.Record
-		md := r.Schema().Metadata()
-		tableName, ok := md.GetValue(schema.MetadataTableName)
-		if !ok {
-			return errors.New("table name not found in metadata")
-		}
 
-		if _, ok := pgTables[tableName]; !ok {
-			return fmt.Errorf("table %s not found", tableName)
-		}
+		table := c.normalizeTable(msg.GetTable())
 
-		sql, ok := queries[tableName]
-		if !ok {
-			// cache the query
-			table := c.normalizeTable(msg.GetTable())
-			if len(table.PrimaryKeysIndexes()) > 0 {
-				sql = c.upsert(table)
-			} else {
-				sql = c.insert(table)
-			}
-			queries[tableName] = sql
+		if _, ok := pgTables[table.Name]; !ok {
+			return fmt.Errorf("table %s not found", table.Name)
 		}
 
 		rows := c.transformValues(r)
 		for _, rowVals := range rows {
-			batch.Queue(sql, rowVals...)
-		}
-		if int64(batch.Len()) >= c.batchSize {
-			if err := c.flushBatch(ctx, batch); err != nil {
-				return err
+			err := c.addRow(ctx, table, rowVals)
+			if err != nil {
+				return fmt.Errorf("failed to add row: %w", err)
 			}
-			batch = new(pgx.Batch)
 		}
 	}
 
-	return c.flushBatch(ctx, batch)
+	return c.flushBatch(ctx)
 }
 
-func (c *Client) flushBatch(ctx context.Context, batch *pgx.Batch) error {
-	if batch.Len() == 0 {
-		return nil
-	}
-	err := c.conn.SendBatch(ctx, batch).Close()
-	if err == nil {
-		return nil
-	}
-
-	var pgErr *pgconn.PgError
-	if errors.As(err, &pgErr) {
-		return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
-	}
-
-	// not recoverable error
-	return fmt.Errorf("failed to execute batch: %w", err)
-}
-
-func (*Client) insert(table *schema.Table) string {
+func (*Client) insert(table *schema.Table, rowCount int) string {
 	var sb strings.Builder
 	tableName := table.Name
 	sb.WriteString("insert into ")
@@ -120,10 +86,18 @@ func (*Client) insert(table *schema.Table) string {
 			sb.WriteString(") values (")
 		}
 	}
-	for i := range columns {
-		sb.WriteString(fmt.Sprintf("$%d", i+1))
-		if i < columnsLen-1 {
-			sb.WriteString(",")
+	totalArgs := len(columns) * rowCount
+	for i := range totalArgs + 1 {
+		if i == 0 {
+			continue
+		}
+		sb.WriteString(fmt.Sprintf("$%d", i))
+		if i < totalArgs {
+			if len(columns) == 1 || (i > 1 && (i)%len(columns) == 0) {
+				sb.WriteString("),(")
+			} else {
+				sb.WriteString(",")
+			}
 		} else {
 			sb.WriteString(")")
 		}
@@ -131,12 +105,12 @@ func (*Client) insert(table *schema.Table) string {
 	return sb.String()
 }
 
-func (c *Client) upsert(table *schema.Table) string {
+func (c *Client) upsert(table *schema.Table, rowCount int) string {
 	if c.pgType == pgTypeCrateDB {
 		return c.upsertCrateDB(table)
 	}
 	var sb strings.Builder
-	sb.WriteString(c.insert(table))
+	sb.WriteString(c.insert(table, rowCount))
 	columns := table.Columns
 	columnsLen := len(columns)
 	constraintName := table.PkConstraintName
@@ -161,7 +135,7 @@ func (c *Client) upsert(table *schema.Table) string {
 // based upserts, and errors out if a primary key is written to during upsert.
 func (c *Client) upsertCrateDB(table *schema.Table) string {
 	var sb strings.Builder
-	sb.WriteString(c.insert(table))
+	sb.WriteString(c.insert(table, 1))
 	columns := table.Columns
 	if len(table.PrimaryKeysIndexes()) == len(table.Columns) {
 		sb.WriteString(" on conflict do nothing")
@@ -220,4 +194,72 @@ func pgErrToStr(err *pgconn.PgError) string {
 	sb.WriteString(", routine: ")
 	sb.WriteString(err.Routine)
 	return sb.String()
+}
+
+func (c *Client) addRow(ctx context.Context, table *schema.Table, row []any) error {
+	for i, entry := range c.bm.batch {
+		if entry.table != table {
+			continue
+		}
+		if len(entry.data)*entry.columnCount >= 60000 {
+			continue
+		}
+		c.bm.batch[i].data = append(c.bm.batch[i].data, row)
+		c.bm.batch[i].recordCount++
+		c.bm.recordCount++
+		if c.bm.recordCount >= int(c.batchSize) {
+			err := c.flushBatch(ctx)
+			if err != nil {
+				return fmt.Errorf("failed to flush batch: %w", err)
+			}
+			c.bm.batch = nil
+			c.bm.recordCount = 0
+			c.bm.pgxBatch = new(pgx.Batch)
+		}
+		return nil
+	}
+	c.bm.batch = append(c.bm.batch, batchEntry{
+		table:       table,
+		columnCount: len(row),
+		recordCount: 1,
+		data:        [][]any{row},
+	})
+	c.bm.recordCount++
+
+	return nil
+}
+
+func (c *Client) flushBatch(ctx context.Context) error {
+	if len(c.bm.batch) == 0 {
+		return nil
+	}
+	for _, entry := range c.bm.batch {
+		sql := ""
+		if len(entry.table.PrimaryKeysIndexes()) > 0 {
+			sql = c.upsert(entry.table, entry.recordCount)
+		} else {
+			sql = c.insert(entry.table, entry.recordCount)
+		}
+		print(sql)
+		c.bm.pgxBatch.Queue(sql, entry.getValues()...)
+	}
+	err := c.conn.SendBatch(ctx, c.bm.pgxBatch).Close()
+	if err == nil {
+		return nil
+	}
+	var pgErr *pgconn.PgError
+	if errors.As(err, &pgErr) {
+		return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
+	}
+
+	// not recoverable error
+	return fmt.Errorf("failed to execute batch: %w", err)
+}
+
+func (be batchEntry) getValues() []any {
+	values := make([]any, 0, len(be.data))
+	for _, row := range be.data {
+		values = append(values, row...)
+	}
+	return values
 }
