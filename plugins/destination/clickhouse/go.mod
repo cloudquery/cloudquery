@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6
+module github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7
 
 go 1.24.2
 
