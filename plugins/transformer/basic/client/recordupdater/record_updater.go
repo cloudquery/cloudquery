@@ -178,7 +178,11 @@ func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.Record, er
 				newColumns = append(newColumns, r.obfuscateEntireJSONColumn(column))
 				continue
 			}
-			return nil, fmt.Errorf("column %v is not a string or JSON column", r.record.ColumnName(i))
+			if column.DataType().ID() == arrow.BINARY {
+				newColumns = append(newColumns, r.obfuscateBinaryColumn(column))
+				continue
+			}
+			return nil, fmt.Errorf("column %v is not a string, binary or JSON column", r.record.ColumnName(i))
 		}
 
 		jcs, ok := jsonColIndex[i]
@@ -322,6 +326,18 @@ func (*RecordUpdater) obfuscateJSONColumns(column arrow.Array, jcs []jsonColumn)
 		bld.AppendBytes([]byte(str))
 	}
 	return bld.NewJSONArray()
+}
+
+func (*RecordUpdater) obfuscateBinaryColumn(column arrow.Array) arrow.Array {
+	bld := array.NewBinaryBuilder(memory.DefaultAllocator, &arrow.BinaryType{})
+	for i := 0; i < column.Len(); i++ {
+		if !column.IsValid(i) {
+			bld.AppendNull()
+			continue
+		}
+		bld.Append([]byte(fmt.Sprintf("%s %x", redactedByCQMessage, sha256.Sum256([]byte(column.ValueStr(i))))))
+	}
+	return bld.NewBinaryArray()
 }
 
 func (*RecordUpdater) obfuscateEntireJSONColumn(column arrow.Array) arrow.Array {
