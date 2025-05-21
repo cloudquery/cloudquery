@@ -36,14 +36,9 @@ func ConnectionTester(ctx context.Context, _ zerolog.Logger, specBytes []byte) e
 	}
 	defer c.Close()
 
-	_, err = currentDatabase(ctx, c)
+	_, _, _, err = getDBInfo(ctx, c)
 	if err != nil {
-		return processError(err, "UNKNOWN_DATABASE")
-	}
-
-	_, err = currentSchema(ctx, c)
-	if err != nil {
-		return processError(err, "UNKNOWN_SCHEMA")
+		return processError(err, "DB_INFO_FAILED")
 	}
 
 	return nil
