@@ -10,7 +10,7 @@ kind: "destination"
 spec:
   name: "test"
   path: "cloudquery/file"
-  version: "v5.4.16" # latest version of destination file plugin
+  version: "v5.4.17" # latest version of destination file plugin
   send_sync_summary: true
   sync_group_id: "sync_group_id_test"
   write_mode: append
