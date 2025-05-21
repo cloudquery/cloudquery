@@ -1,12 +1,12 @@
 module github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7
 
-go 1.24.2
+go 1.24.3
 
 require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.34.0
 	github.com/apache/arrow-go/v18 v18.2.0
 	github.com/cloudquery/codegen v0.3.28
-	github.com/cloudquery/plugin-sdk/v4 v4.80.3
+	github.com/cloudquery/plugin-sdk/v4 v4.81.0
 	github.com/goccy/go-json v0.10.5
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.34.0
@@ -76,8 +76,8 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/segmentio/asm v1.2.0 // indirect
 	github.com/shopspring/decimal v1.4.0
-	github.com/spf13/cobra v1.8.1 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/cobra v1.9.0 // indirect
+	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
