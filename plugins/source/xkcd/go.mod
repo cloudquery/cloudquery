@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/source/xkcd
 go 1.24.2
 
 require (
-	github.com/cloudquery/plugin-sdk/v4 v4.81.0
+	github.com/cloudquery/plugin-sdk/v4 v4.82.0
 	github.com/rs/zerolog v1.34.0
 	golang.org/x/sync v0.13.0
 	google.golang.org/grpc v1.72.0
