@@ -11,9 +11,9 @@ import (
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/apache/arrow-go/v18/arrow/array"
 	"github.com/apache/arrow-go/v18/arrow/memory"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/client/spec"
-	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/resources/plugin"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v6/typeconv/ch/types"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/client/spec"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/resources/plugin"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/typeconv/ch/types"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -36,23 +36,13 @@ func getTestConnection() string {
 }
 
 func TestPlugin(t *testing.T) {
-	ctx := context.Background()
-	p := plugin.NewPlugin("clickhouse",
-		internalPlugin.Version,
-		New,
-		plugin.WithJSONSchema(spec.JSONSchema),
-	)
-	s := &spec.Spec{ConnectionString: getTestConnection()}
-	b, err := json.Marshal(s)
-	require.NoError(t, err)
-	require.NoError(t, p.Init(ctx, b, plugin.NewClientOptions{}))
+	p := initPlugin(t)
 
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.WriterTestSuiteTests{
-			SkipUpsert:       true,
-			SkipDeleteStale:  true,
-			SkipDeleteRecord: true,
+			SkipUpsert:      true,
+			SkipDeleteStale: true,
 			SafeMigrations: plugin.SafeMigrations{
 				AddColumn:    true,
 				RemoveColumn: true,
@@ -65,6 +55,22 @@ func TestPlugin(t *testing.T) {
 		},
 		plugin.WithTestSourceAllowNull(types.CanBeNullable),
 	)
+}
+
+func initPlugin(t *testing.T) *plugin.Plugin {
+	ctx := context.Background()
+	p := plugin.NewPlugin("clickhouse",
+		internalPlugin.Version,
+		New,
+		plugin.WithJSONSchema(spec.JSONSchema),
+	)
+	s := &spec.Spec{
+		ConnectionString: getTestConnection(),
+	}
+	b, err := json.Marshal(s)
+	require.NoError(t, err)
+	require.NoError(t, p.Init(ctx, b, plugin.NewClientOptions{}))
+	return p
 }
 
 func TestMigrateCQClientIDColumnWhenSortKeyIsAlreadySet(t *testing.T) {

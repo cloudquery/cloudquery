@@ -13,7 +13,7 @@ This destination plugin lets you sync data from a CloudQuery source to [ClickHou
 It supports `append` write mode only.
 Write mode selection is required through [`write_mode`](/docs/reference/destination-spec#write_mode).
 
-Supported database versions: >= `22.1.2`
+Supported database versions: >= `24.8.1`
 
 ## Configuration
 

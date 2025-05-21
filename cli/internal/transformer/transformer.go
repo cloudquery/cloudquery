@@ -132,6 +132,19 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 	return arrow.NewSchema(transformedFields, &scMd)
 }
 
+func (t *RecordTransformer) replaceTimestampField(sc *arrow.Schema, record arrow.Record, nRows int) (arrow.Record, error) {
+	fieldIndex := sc.FieldIndices(cqSyncTime)[0]
+	currentFieldAsTimestamp, ok := sc.Field(fieldIndex).Type.(*arrow.TimestampType)
+	if ok {
+		syncTimeArray, err := schema.TimestampArrayFromTime(t.syncTime, currentFieldAsTimestamp.Unit, currentFieldAsTimestamp.TimeZone, nRows)
+		if err != nil {
+			return nil, err
+		}
+		return schema.ReplaceFieldInRecord(record, cqSyncTime, syncTimeArray)
+	}
+	return record, nil
+}
+
 func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 	sc := record.Schema()
 	newSchema := t.TransformSchema(sc)
@@ -139,11 +152,15 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 
 	cols := make([]arrow.Array, 0, len(sc.Fields())+t.internalColumns)
 	if t.withSyncTime && (!sc.HasField(cqSyncTime) || env.IsCloud()) {
-		syncTimeArray, _ := schema.TimestampArrayFromTime(t.syncTime, arrow.Microsecond, "UTC", nRows)
 		if !sc.HasField(cqSyncTime) {
+			syncTimeArray, _ := schema.TimestampArrayFromTime(t.syncTime, arrow.Microsecond, "UTC", nRows)
 			cols = append(cols, syncTimeArray)
 		} else {
-			record, _ = schema.ReplaceFieldInRecord(record, cqSyncTime, syncTimeArray)
+			newRecord, err := t.replaceTimestampField(sc, record, nRows)
+			if err == nil {
+				// Only replace the record if the new record is valid
+				record = newRecord
+			}
 		}
 	}
 	if t.withSourceName && (!sc.HasField(cqSourceName) || env.IsCloud()) {
@@ -151,7 +168,11 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 		if !sc.HasField(cqSourceName) {
 			cols = append(cols, sourceNameArray)
 		} else {
-			record, _ = schema.ReplaceFieldInRecord(record, cqSourceName, sourceNameArray)
+			newRecord, err := schema.ReplaceFieldInRecord(record, cqSourceName, sourceNameArray)
+			if err == nil {
+				// Only replace the record if the new record is valid
+				record = newRecord
+			}
 		}
 	}
 	if t.withSyncGroupID && (!sc.HasField(cqSyncGroupId) || env.IsCloud()) {
@@ -159,7 +180,11 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 		if !sc.HasField(cqSyncGroupId) {
 			cols = append(cols, syncGroupIdArray)
 		} else {
-			record, _ = schema.ReplaceFieldInRecord(record, cqSyncGroupId, syncGroupIdArray)
+			newRecord, err := schema.ReplaceFieldInRecord(record, cqSyncGroupId, syncGroupIdArray)
+			if err == nil {
+				// Only replace the record if the new record is valid
+				record = newRecord
+			}
 		}
 	}
 
