@@ -11,6 +11,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/writers/mixedbatchwriter"
 	pgx_zero_log "github.com/jackc/pgx-zerolog"
 	"github.com/jackc/pgx/v5"
@@ -36,12 +37,25 @@ type Client struct {
 	batchSize           int64
 	writer              *mixedbatchwriter.MixedBatchWriter
 
-	spec *spec.Spec
-
+	spec                      *spec.Spec
+	bm                        *batchManager
 	pgTablesToPKConstraints   map[string]*pkConstraintDetails
 	pgTablesToPKConstraintsMu sync.RWMutex
 
 	plugin.UnimplementedSource
+}
+
+type batchManager struct {
+	batch       []batchEntry
+	recordCount int
+	pgxBatch    *pgx.Batch
+}
+
+type batchEntry struct {
+	table       *schema.Table
+	columnCount int
+	recordCount int
+	data        [][]any
 }
 
 // Assert Client implements plugin.Client interface.
@@ -98,16 +112,12 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to postgresql: %w", err)
 	}
-
-	c.currentDatabaseName, err = currentDatabase(ctx, c.conn)
+	var pgVersion string
+	c.currentDatabaseName, c.currentSchemaName, pgVersion, err = getDBInfo(ctx, c.conn)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get current database: %w", err)
+		return nil, fmt.Errorf("failed to get database information: %w", err)
 	}
-	c.currentSchemaName, err = currentSchema(ctx, c.conn)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get current schema: %w", err)
-	}
-	c.pgType, err = c.getPgType(ctx)
+	c.pgType, err = c.getPgType(ctx, pgVersion)
 	if err != nil {
 		return nil, fmt.Errorf("failed to get database type: %w", err)
 	}
@@ -137,32 +147,13 @@ func (c *Client) Close(ctx context.Context) error {
 	return nil
 }
 
-func currentDatabase(ctx context.Context, conn *pgxpool.Pool) (string, error) {
-	var db string
-	err := conn.QueryRow(ctx, "select current_database()").Scan(&db)
-	if err != nil {
-		return "", err
-	}
-	return db, nil
+func getDBInfo(ctx context.Context, conn *pgxpool.Pool) (c_db string, c_schema string, c_version string, err error) {
+	err = conn.QueryRow(ctx, "select current_database() as cdb, current_schema() as cs,  version() ver").Scan(&c_db, &c_schema, &c_version)
+	return c_db, c_schema, c_version, err
 }
 
-func currentSchema(ctx context.Context, conn *pgxpool.Pool) (string, error) {
-	var schema string
-	err := conn.QueryRow(ctx, "select current_schema()").Scan(&schema)
-	if err != nil {
-		return "", err
-	}
-
-	return schema, nil
-}
-
-func (c *Client) getPgType(ctx context.Context) (pgType, error) {
-	var version string
+func (c *Client) getPgType(ctx context.Context, version string) (pgType, error) {
 	var typ pgType
-	err := c.conn.QueryRow(ctx, "select version()").Scan(&version)
-	if err != nil {
-		return typ, err
-	}
 	versionTokens := strings.Split(version, " ")
 	if len(versionTokens) == 0 {
 		return typ, fmt.Errorf("failed to parse version string %s", version)
