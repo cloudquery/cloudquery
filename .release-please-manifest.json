@@ -43,7 +43,7 @@
   "plugins/destination/s3+FILLER": "0.0.0",
   "plugins/destination/file": "5.4.16",
   "plugins/destination/file+FILLER": "0.0.0",
-  "plugins/destination/azblob": "4.4.20",
+  "plugins/destination/azblob": "4.4.21",
   "plugins/destination/azblob+FILLER": "0.0.0",
   "plugins/destination/neo4j": "5.4.17",
   "plugins/destination/neo4j+FILLER": "0.0.0",
