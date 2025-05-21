@@ -39,6 +39,12 @@ func TestRedaction(t *testing.T) {
 			msg:  "wrong password foobar123",
 			want: "wrong password foobar123",
 		},
+		{
+			name: "does not redact skipped env variables",
+			env:  []string{"AWS_REGION=us-west-1", "CQ_CLOUD=1"},
+			msg:  "us-west-1: sample log",
+			want: "us-west-1: sample log",
+		},
 	}
 	for _, tt := range tests {
 		redactor := NewSecretAwareRedactor()
