@@ -8,9 +8,12 @@ import (
 )
 
 var allowedEnvPrefixes = []string{
-	"HOME=",
-	"AWS_",
 	"_CQ_TEAM_NAME=",
+	"HOME=",
+
+	// injected by EKS, do not contain any sensitive information regardless
+	"AWS_STS_REGIONAL_ENDPOINTS", "AWS_DEFAULT_REGION", "AWS_REGION",
+	"AWS_WEB_IDENTITY_TOKEN_FILE", "AWS_ROLE_ARN", "AWS_ROLE_SESSION_NAME",
 }
 
 // minRedactingLength is the minimum length of an environment variable value for it to be redacted
