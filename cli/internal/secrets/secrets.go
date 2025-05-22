@@ -7,17 +7,14 @@ import (
 	"strings"
 )
 
-var skippedEnvironmentVariables = []string{
-	// injected by Kubernetes
-	"JOB_COMPLETION_INDEX",
-
-	// injected by the CloudQuery CLI
-	"CQ_CLOUD",
-
-	// injected by EKS, do not contain any sensitive information regardless
-	"AWS_STS_REGIONAL_ENDPOINTS", "AWS_DEFAULT_REGION", "AWS_REGION",
-	"AWS_WEB_IDENTITY_TOKEN_FILE", "AWS_ROLE_ARN", "AWS_ROLE_SESSION_NAME",
+var allowedEnvPrefixes = []string{
+	"HOME=",
+	"AWS_",
+	"_CQ_TEAM_NAME=",
 }
+
+// minRedactingLength is the minimum length of an environment variable value for it to be redacted
+const minRedactingLength = 4
 
 type SecretAwareRedactor struct {
 	secrets map[string]string
@@ -38,15 +35,17 @@ func (s *SecretAwareRedactor) RedactBytes(msg []byte) []byte {
 	return msg
 }
 
-func (s *SecretAwareRedactor) AddSecretEnv(env []string) {
-	for _, v := range env {
+func (s *SecretAwareRedactor) AddSecretEnv(envs []string) {
+	for _, v := range envs {
+		if slices.ContainsFunc(allowedEnvPrefixes, func(prefix string) bool { return strings.HasPrefix(v, prefix) }) {
+			continue
+		}
+
 		parts := strings.SplitN(v, "=", 2)
-		if len(parts) != 2 || len(parts[1]) == 0 {
+		if len(parts) != 2 || len(parts[1]) < minRedactingLength {
 			continue
 		}
-		if slices.Contains(skippedEnvironmentVariables, parts[0]) {
-			continue
-		}
+
 		s.secrets[parts[1]] = parts[0]
 	}
 }
