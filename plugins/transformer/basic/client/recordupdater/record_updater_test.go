@@ -96,7 +96,7 @@ func TestObfuscateColumns(t *testing.T) {
 }
 
 func TestAutoObfuscateColumns(t *testing.T) {
-	sc := []string{"col1", "col3.foo.bar.0", "col3.foo.bar.1"}
+	sc := []string{"col1", "col3.foo.bar.0", "col3.foo.bar.1", "col4"}
 	scJSON, err := json.Marshal(sc)
 	require.NoError(t, err)
 	md := arrow.NewMetadata(
@@ -108,7 +108,7 @@ func TestAutoObfuscateColumns(t *testing.T) {
 	updatedRecord, err := updater.ObfuscateSensitiveColumns()
 	require.NoError(t, err)
 
-	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(4), updatedRecord.NumCols())
 	require.Equal(t, int64(2), updatedRecord.NumRows())
 	requireAllColsLenMatchRecordsLen(t, updatedRecord)
 	require.Equal(t, "col1", updatedRecord.ColumnName(0))
@@ -125,6 +125,12 @@ func TestAutoObfuscateColumns(t *testing.T) {
 	assert.Equal(t,
 		fmt.Sprintf(`{"foo":{"bar":["%s 18ac3e7343f016890c510e93f935261169d9e3f565436429830faf0934f4f8e4","%s 3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea","f"]}}`, redactedByCQMessage, redactedByCQMessage),
 		updatedRecord.Column(2).ValueStr(1))
+	assert.Equal(t,
+		fmt.Sprintf("%s cc1d9c865e8380c2d566dc724c66369051acfaa3e9e8f36ad6c67d7d9b8461a5", redactedByCQMessage),
+		string(updatedRecord.Column(3).(*array.Binary).Value(0)))
+	assert.Equal(t,
+		fmt.Sprintf("%s 44a036a895f1f40e3bf8cf930f287edc1cf0a0d0c75b36d1d25b777577f37e7e", redactedByCQMessage),
+		string(updatedRecord.Column(3).(*array.Binary).Value(1)))
 }
 
 func TestAutoObfuscateEntireJSONColumn(t *testing.T) {
@@ -140,7 +146,7 @@ func TestAutoObfuscateEntireJSONColumn(t *testing.T) {
 	updatedRecord, err := updater.ObfuscateSensitiveColumns()
 	require.NoError(t, err)
 
-	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(4), updatedRecord.NumCols())
 	require.Equal(t, int64(2), updatedRecord.NumRows())
 	requireAllColsLenMatchRecordsLen(t, updatedRecord)
 	require.Equal(t, "col1", updatedRecord.ColumnName(0))
@@ -166,7 +172,7 @@ func TestAutoObfuscateEntireJSONColumnSkipsJsonPath(t *testing.T) {
 	updatedRecord, err := updater.ObfuscateSensitiveColumns()
 	require.NoError(t, err)
 
-	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(4), updatedRecord.NumCols())
 	require.Equal(t, int64(2), updatedRecord.NumRows())
 	requireAllColsLenMatchRecordsLen(t, updatedRecord)
 	require.Equal(t, "col1", updatedRecord.ColumnName(0))
@@ -236,6 +242,7 @@ func createTestRecordWithMetadata(metadata *arrow.Metadata) arrow.Record {
 			{Name: "col1", Type: arrow.BinaryTypes.String},
 			{Name: "col2", Type: arrow.BinaryTypes.String},
 			{Name: "col3", Type: types.NewJSONType()},
+			{Name: "col4", Type: &arrow.BinaryType{}},
 		},
 		metadata,
 	))
@@ -245,6 +252,7 @@ func createTestRecordWithMetadata(metadata *arrow.Metadata) arrow.Record {
 	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["a","b","c"]},"hello":"world"}`))
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["d","e","f"]}}`))
+	bld.Field(3).(*array.BinaryBuilder).AppendValues([][]byte{[]byte("val1"), []byte("val5")}, nil)
 
 	return bld.NewRecord()
 }
