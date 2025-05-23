@@ -1,8 +1,8 @@
 module github.com/cloudquery/cloudquery/v6
 
-go 1.24.2
+go 1.24.3
 
-require github.com/cloudquery/cloudquery/cli/v6 v6.19.2
+require github.com/cloudquery/cloudquery/cli/v6 v6.20.2
 
 require (
 	github.com/Masterminds/semver v1.5.0 // indirect
@@ -19,8 +19,8 @@ require (
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/cloudquery/cloudquery-api-go v1.13.9 // indirect
 	github.com/cloudquery/plugin-pb-go v1.26.11 // indirect
-	github.com/cloudquery/plugin-sdk/v4 v4.80.1 // indirect
-	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
+	github.com/cloudquery/plugin-sdk/v4 v4.81.0 // indirect
+	github.com/cpuguy83/go-md2man/v2 v2.0.6 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
 	github.com/docker/docker v26.1.5+incompatible // indirect
@@ -83,8 +83,8 @@ require (
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1 // indirect
 	github.com/schollz/progressbar/v3 v3.14.6 // indirect
 	github.com/segmentio/backo-go v1.1.0 // indirect
-	github.com/spf13/cobra v1.8.1 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/spf13/cobra v1.9.0 // indirect
+	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/tidwall/gjson v1.14.4 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
