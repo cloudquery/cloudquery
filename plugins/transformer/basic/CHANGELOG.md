@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.3.1...plugins-transformer-basic-v2.4.0) (2025-05-24)
+
+
+### Features
+
+* Add support for binary column obfuscation in basic transformer ([#20818](https://github.com/cloudquery/cloudquery/issues/20818)) ([6783052](https://github.com/cloudquery/cloudquery/commit/67830523ecdd5a45a098d1b6fae7f80c1e92a2cb))
+
 ## [2.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.3.0...plugins-transformer-basic-v2.3.1) (2025-05-21)
 
 
