@@ -42,8 +42,8 @@ github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1 h1:q763qf9huN11kDQavWs
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
 github.com/cloudquery/cloudquery-api-go v1.13.9 h1:XudJusEJ0+kPa2/GXoZPuphR8gTRvHZ49dq53sTrWME=
 github.com/cloudquery/cloudquery-api-go v1.13.9/go.mod h1:ZhEjPkDGDL2KZKlQLUnsgQ0mPz3qC7qftr37q3q+IcA=
-github.com/cloudquery/cloudquery/cli/v6 v6.20.3 h1:OZsn8CblXRmDbUrAWI1dU1SSg8AysoPFFq/ozFkbrEw=
-github.com/cloudquery/cloudquery/cli/v6 v6.20.3/go.mod h1:e3f0b5a0/358y8AJJelXMkg3tylUVxf+Fbb9U51NBa4=
+github.com/cloudquery/cloudquery/cli/v6 v6.20.4 h1:7Jmkr+P5FZvm76YXdxZCY7mQwLZDQ5SCMNDb0KFm6Ik=
+github.com/cloudquery/cloudquery/cli/v6 v6.20.4/go.mod h1:QYZEa9t0j4GBzKYxvP+ud0fYLq1Yaeenl2iDp+zBZTM=
 github.com/cloudquery/codegen v0.3.28 h1:ppiTQDp9WKAPjQYxqfaVSRI1cUirxxDUhrnQzRcIy5M=
 github.com/cloudquery/codegen v0.3.28/go.mod h1:YmZITt9bM1qyddD3QS2Bke1QDD/vHRtKznjdwWrdHjw=
 github.com/cloudquery/plugin-pb-go v1.26.11 h1:e1M0P9HgA450OnKNhhcFcWdkfvYFihzrHSdxDK9jOQg=
@@ -452,8 +452,8 @@ google.golang.org/genproto/googleapis/api v0.0.0-20250218202821-56aae31c358a h1:
 google.golang.org/genproto/googleapis/api v0.0.0-20250218202821-56aae31c358a/go.mod h1:3kWAYMk1I75K4vykHtKt2ycnOgpA6974V7bREqbsenU=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20250218202821-56aae31c358a h1:51aaUVRocpvUOSQKM6Q7VuoaktNIaMCLuhZB6DKksq4=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20250218202821-56aae31c358a/go.mod h1:uRxBH1mhmO8PGhU89cMcHaXKZqO+OfakD8QQO0oYwlQ=
-google.golang.org/grpc v1.72.0 h1:S7UkcVa60b5AAQTaO6ZKamFp1zMZSU0fGDK2WZLbBnM=
-google.golang.org/grpc v1.72.0/go.mod h1:wH5Aktxcg25y1I3w7H69nHfXdOG3UiadoBtjh3izSDM=
+google.golang.org/grpc v1.72.1 h1:HR03wO6eyZ7lknl75XlxABNVLLFc2PAb6mHlYh756mA=
+google.golang.org/grpc v1.72.1/go.mod h1:wH5Aktxcg25y1I3w7H69nHfXdOG3UiadoBtjh3izSDM=
 google.golang.org/protobuf v1.36.6 h1:z1NpPI8ku2WgiWnf+t9wTPsn6eP1L7ksHUlkfLvd9xY=
 google.golang.org/protobuf v1.36.6/go.mod h1:jduwjTPXsFjZGTmRluh+L6NjiWu7pchiJ2/5YcXBHnY=
 gopkg.in/alecthomas/kingpin.v2 v2.2.6/go.mod h1:FMv+mEhP44yOT+4EoQTLFTRgOQ1FBLkstjWtayDeSgw=
