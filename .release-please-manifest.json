@@ -23,7 +23,7 @@
   "plugins/destination/postgresql+FILLER": "0.0.0",
   "plugins/destination/test": "2.8.16",
   "plugins/destination/test+FILLER": "0.0.0",
-  "plugins/destination/sqlite": "2.10.18",
+  "plugins/destination/sqlite": "2.10.19",
   "plugins/destination/sqlite+FILLER": "0.0.0",
   "plugins/destination/snowflake": "4.4.19",
   "plugins/destination/snowflake+FILLER": "0.0.0",
@@ -49,7 +49,7 @@
   "plugins/destination/neo4j+FILLER": "0.0.0",
   "plugins/destination/kafka": "5.4.17",
   "plugins/destination/kafka+FILLER": "0.0.0",
-  "plugins/source/hackernews": "3.7.18",
+  "plugins/source/hackernews": "3.7.19",
   "plugins/source/hackernews+FILLER": "0.0.0",
   "scaffold": "3.4.25",
   "scaffold+FILLER": "0.0.0",
@@ -103,7 +103,7 @@
   "plugins/source/xkcd+FILLER": "0.0.0",
   "plugins/transformer/basic": "2.4.0",
   "plugins/transformer/basic+FILLER": "0.0.0",
-  "plugins/transformer/jsonflattener": "2.0.14",
+  "plugins/transformer/jsonflattener": "2.0.15",
   "plugins/transformer/jsonflattener+FILLER": "0.0.0",
   "plugins/transformer/test": "1.1.18"
 }
