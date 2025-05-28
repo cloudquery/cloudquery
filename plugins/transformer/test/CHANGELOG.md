@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.18](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-test-v1.1.17...plugins-transformer-test-v1.1.18) (2025-05-28)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.82.0 ([#20814](https://github.com/cloudquery/cloudquery/issues/20814)) ([6503ea9](https://github.com/cloudquery/cloudquery/commit/6503ea9d7945dd0bcfe5c8e4cbf407e40ea1e4de))
+
 ## [1.1.17](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-test-v1.1.16...plugins-transformer-test-v1.1.17) (2025-05-21)
 
 
