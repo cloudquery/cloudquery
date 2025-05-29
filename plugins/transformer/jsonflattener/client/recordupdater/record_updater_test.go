@@ -34,6 +34,24 @@ func TestFlattenJSONFields(t *testing.T) {
 	require.Equal(t, true, updatedRecord.Column(3).(*array.Boolean).Value(0))
 }
 
+func TestFlattenJSONFieldsWithUUID(t *testing.T) {
+	record := testRecord(
+		[]string{"col1"},
+		map[string]string{"col1": `{"key_a": "uuid"}`},
+		[]arrow.Array{buildJSONColumn([]*any{toP(`{"key_a": "123e4567-e89b-12d3-a456-426614174000"}`)})},
+	)
+	updater := New(zerolog.Nop(), record)
+
+	updatedRecord, err := updater.FlattenJSONFields()
+	require.NoError(t, err)
+
+	require.Equal(t, int64(2), updatedRecord.NumCols())
+	require.Equal(t, int64(1), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "col1__key_a", updatedRecord.ColumnName(1))
+	require.Equal(t, "123e4567-e89b-12d3-a456-426614174000", updatedRecord.Column(1).(*types.UUIDArray).Value(0).String())
+}
+
 func TestFlattenJSONFieldsWithTimestamp(t *testing.T) {
 	record := testRecord(
 		[]string{"col1"},

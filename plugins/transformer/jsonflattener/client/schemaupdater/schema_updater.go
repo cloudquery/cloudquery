@@ -16,6 +16,7 @@ const (
 	Float64Type   = "float64"
 	JSONType      = "json"
 	TimestampType = "timestamp[us, tz=UTC]"
+	UUIDType      = "uuid"
 )
 
 // SchemaUpdater takes an `arrow.Schema` and knows how to make simple subsequent changes to it.
@@ -79,6 +80,8 @@ func typeFromString(t string) (arrow.DataType, error) {
 		return arrow.PrimitiveTypes.Float64, nil
 	case JSONType:
 		return types.NewJSONType(), nil
+	case UUIDType:
+		return types.NewUUIDType(), nil
 	}
 	return nil, fmt.Errorf("unknown type: %s", t)
 }

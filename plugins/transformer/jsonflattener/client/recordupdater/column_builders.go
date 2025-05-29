@@ -37,6 +37,7 @@ func newColumnBuilders(tableName string, colName string, typeSchema map[string]s
 			NewBoolColumnsBuilder(typeSchema, originalColumn),
 			NewFloat64ColumnsBuilder(typeSchema, originalColumn),
 			NewJSONColumnsBuilder(typeSchema, originalColumn),
+			NewUUIDColumnsBuilder(typeSchema, originalColumn),
 		},
 	}
 
@@ -73,7 +74,8 @@ func (b *columnBuilders) requireNoUnknownTypes(typeSchema map[string]string) err
 			typ != schemaupdater.JSONType &&
 			typ != schemaupdater.UTF8Type &&
 			typ != schemaupdater.TimestampType &&
-			typ != schemaupdater.BoolType {
+			typ != schemaupdater.BoolType &&
+			typ != schemaupdater.UUIDType {
 			return fmt.Errorf("unsupported type for column [%s] on original column [%s.%s]: [%s]", key, b.tableName, b.colName, typ)
 		}
 	}
