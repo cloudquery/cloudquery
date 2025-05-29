@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v2.0.15...plugins-transformer-jsonflattener-v2.1.0) (2025-05-29)
+
+
+### Features
+
+* Add UUID type support ([#20866](https://github.com/cloudquery/cloudquery/issues/20866)) ([acfab4a](https://github.com/cloudquery/cloudquery/commit/acfab4ab0c914cebfc85df354923bf9f8098886a))
+
 ## [2.0.15](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v2.0.14...plugins-transformer-jsonflattener-v2.0.15) (2025-05-28)
 
 
