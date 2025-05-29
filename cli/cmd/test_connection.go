@@ -9,8 +9,6 @@ import (
 	"strings"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
-	apiAuth "github.com/cloudquery/cloudquery-api-go/auth"
-	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
@@ -34,16 +32,7 @@ cloudquery test-connection ./directory ./aws.yml ./pg.yml
 )
 
 func getSyncTestConnectionAPIClient() (*cloudquery_api.ClientWithResponses, error) {
-	authClient := apiAuth.NewTokenClient()
-	if authClient.GetTokenType() != apiAuth.SyncTestConnectionAPIKey {
-		return nil, nil
-	}
-
-	token, err := authClient.GetToken()
-	if err != nil {
-		return nil, err
-	}
-	return api.NewClient(token.Value)
+	return getPlatformAPIClient(true)
 }
 
 func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, status cloudquery_api.SyncTestConnectionStatus, tcrs ...testConnectionResult) {
