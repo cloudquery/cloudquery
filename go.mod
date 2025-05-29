@@ -2,13 +2,13 @@ module github.com/cloudquery/cloudquery/v6
 
 go 1.24.3
 
-require github.com/cloudquery/cloudquery/cli/v6 v6.20.4
+require github.com/cloudquery/cloudquery/cli/v6 v6.20.5
 
 require (
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/adrg/xdg v0.5.3 // indirect
-	github.com/apache/arrow-go/v18 v18.2.0 // indirect
+	github.com/apache/arrow-go/v18 v18.3.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/avast/retry-go/v4 v4.6.1 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
@@ -18,7 +18,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/cloudquery/cloudquery-api-go v1.13.9 // indirect
-	github.com/cloudquery/plugin-pb-go v1.26.11 // indirect
+	github.com/cloudquery/plugin-pb-go v1.26.12 // indirect
 	github.com/cloudquery/plugin-sdk/v4 v4.82.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.6 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
@@ -37,7 +37,7 @@ require (
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
-	github.com/golang/snappy v0.0.4 // indirect
+	github.com/golang/snappy v1.0.0 // indirect
 	github.com/google/flatbuffers v25.2.10+incompatible // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/mux v1.8.0 // indirect
@@ -131,7 +131,7 @@ require (
 	golang.org/x/mod v0.24.0 // indirect
 	golang.org/x/net v0.39.0 // indirect
 	golang.org/x/sync v0.13.0 // indirect
-	golang.org/x/sys v0.32.0 // indirect
+	golang.org/x/sys v0.33.0 // indirect
 	golang.org/x/term v0.31.0 // indirect
 	golang.org/x/text v0.24.0 // indirect
 	golang.org/x/tools v0.32.0 // indirect
