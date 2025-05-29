@@ -56,7 +56,10 @@ func buildUUIDColumn(values []*string) arrow.Array {
 			bld.AppendNull()
 			continue
 		}
-		bld.AppendValueFromString(*value)
+		err := bld.AppendValueFromString(*value)
+		if err != nil {
+			bld.AppendNull()
+		}
 	}
 	return bld.NewUUIDArray()
 }
