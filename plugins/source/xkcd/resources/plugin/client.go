@@ -67,7 +67,7 @@ func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.
 	return tt, nil
 }
 
-func (c *Client) Close(_ context.Context) error { return nil }
+func (*Client) Close(_ context.Context) error { return nil }
 
 func Configure(_ context.Context, logger zerolog.Logger, specBytes []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
 	if opts.NoConnection {
