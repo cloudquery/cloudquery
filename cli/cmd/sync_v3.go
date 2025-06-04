@@ -12,6 +12,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/apache/arrow-go/v18/arrow"
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -507,11 +508,34 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				}
 			case *plugin.Sync_Response_DeleteRecord:
 				for i := range destinationsPbClients {
-					// Table name might have changed due to a transformation.
-					tableName := tableNameChanger.UpdateTableName(destinationSpecs[i].Name, m.DeleteRecord.TableName)
+					destinationName := destinationSpecs[i].Name
+
+					// Create a minimal schema with the table name, similar to MigrateTable
+					originalSchema := createTableNameSchema(m.DeleteRecord.TableName)
+
+					// Apply the same transformation pipeline as MigrateTable
+					transformedSchema := destinationTransformers[i].TransformSchema(originalSchema)
+					transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
+					if err != nil {
+						return err
+					}
+
+					for _, transformerPbClient := range transformerPbClientsByDestination[destinationName] {
+						resp, err := transformerPbClient.TransformSchema(ctx, &plugin.TransformSchema_Request{Schema: transformedSchemaBytes})
+						if err != nil {
+							return err
+						}
+						transformedSchemaBytes = resp.Schema
+					}
+
+					tableName, err := getTransformedTableNameFromSchema(transformedSchemaBytes)
+					if err != nil {
+						// Fall back to tableNameChanger if extraction fails
+						log.Warn().Err(err).Str("table", m.DeleteRecord.TableName).Str("destination", destinationName).Msg("Failed to extract table name from transformed schema, falling back to tableNameChanger")
+						tableName = tableNameChanger.UpdateTableName(destinationName, m.DeleteRecord.TableName)
+					}
 
 					wr := &plugin.Write_Request{}
-					// Transformations aren't required here because DeleteRecord is only in V3
 					wr.Message = &plugin.Write_Request_DeleteRecord{
 						DeleteRecord: &plugin.Write_MessageDeleteRecord{
 							TableName:      tableName,
@@ -708,4 +732,33 @@ func deleteStale(client safeWriteClient, tables map[string]bool, sourceName stri
 	}
 
 	return nil
+}
+
+// createTableNameSchema creates a minimal Arrow schema containing only table metadata
+// This schema can be processed through the same transformation pipeline as MigrateTable
+func createTableNameSchema(tableName string) *arrow.Schema {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{tableName})
+
+	// Create a minimal schema with one dummy string field
+	return arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "_dummy", Type: arrow.BinaryTypes.String},
+		},
+		&md,
+	)
+}
+
+// getTransformedTableNameFromSchema extracts the table name from a transformed schema
+func getTransformedTableNameFromSchema(transformedSchemaBytes []byte) (string, error) {
+	finalSchema, err := plugin.NewSchemaFromBytes(transformedSchemaBytes)
+	if err != nil {
+		return "", errors.Join(errors.New("failed to create schema from bytes"), err)
+	}
+
+	tableName, ok := finalSchema.Metadata().GetValue(schema.MetadataTableName)
+	if !ok {
+		return "", errors.New("table name not found in transformed schema metadata")
+	}
+
+	return tableName, nil
 }
