@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"io"
 	"regexp"
 	"time"
@@ -122,6 +123,7 @@ func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) er
 }
 
 func (c *Client) MigrateTable(ctx context.Context, ch <-chan *message.WriteMigrateTable) error {
+	var errs error
 	for msg := range ch {
 		if !c.spec.GenerateEmptyObjects {
 			continue
@@ -132,14 +134,12 @@ func (c *Client) MigrateTable(ctx context.Context, ch <-chan *message.WriteMigra
 		c.initializedTables[table.Name] = objKey
 		s, err := c.createObject(ctx, table, objKey)
 		if err != nil {
-			return err
+			errs = errors.Join(errs, err)
+			continue
 		}
-		err = s.Finish()
-		if err != nil {
-			return err
-		}
+		errs = errors.Join(errs, s.Finish())
 	}
-	return nil
+	return errs
 }
 
 // sanitizeRecordJSONKeys replaces all invalid characters in JSON keys with underscores. This is required
