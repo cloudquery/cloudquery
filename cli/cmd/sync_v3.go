@@ -328,10 +328,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			Total: shard.total,
 		}
 	}
-	syncClient, err := sourcePbClient.Sync(ctx, syncReq)
-	if err != nil {
-		return err
-	}
 
 	bar := progressBar(noopProgressBar{})
 	if !logConsole {
@@ -349,6 +345,17 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 
 	// Read from the sync stream and write to all destinations.
 	isComplete := int64(0)
+
+	// Inactivity timeout: track last activity and add timeout goroutine
+	const inactivityTimeout = 1 * time.Minute
+	lastActivity := time.Now().Unix()
+
+	log.Info().Dur("timeout", inactivityTimeout).Msg("Inactivity timeout enabled - sync will stop if no activity detected")
+
+	// Helper function to update activity time
+	updateActivity := func() {
+		atomic.StoreInt64(&lastActivity, time.Now().Unix())
+	}
 
 	var remoteProgressReporter *godebouncer.Debouncer
 	if progressAPIClient != nil {
@@ -406,6 +413,11 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	eg, gctx := errgroup.WithContext(ctx)
 	pipelineByDestinationName := map[string]*transformerpipeline.TransformerPipeline{}
 
+	syncClient, err := sourcePbClient.Sync(gctx, syncReq)
+	if err != nil {
+		return err
+	}
+
 	// Each destination has its own transformer pipeline
 	for i := range destinationsPbClients {
 		destinationName := destinationSpecs[i].Name
@@ -420,6 +432,9 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			return fmt.Errorf("failed to create transformer pipeline: %w", err)
 		}
 		err = pipeline.OnOutput(func(recordBytes []byte) error {
+			// Update activity when sending data to destinations
+			updateActivity()
+
 			wr := &plugin.Write_Request{
 				Message: &plugin.Write_Request_Insert{
 					Insert: &plugin.Write_MessageInsert{
@@ -438,6 +453,28 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		eg.Go(pipeline.RunBlocking) // each transformer runs in its own goroutine
 		pipelineByDestinationName[destinationName] = pipeline
 	}
+
+	// Add inactivity timeout monitoring goroutine
+	eg.Go(func() error {
+		ticker := time.NewTicker(1 * time.Minute) // Check every minute
+		defer ticker.Stop()
+
+		for {
+			select {
+			case <-gctx.Done():
+				return nil
+			case <-ticker.C:
+				lastActivityTime := atomic.LoadInt64(&lastActivity)
+				if time.Since(time.Unix(lastActivityTime, 0)) > inactivityTimeout {
+					log.Warn().
+						Dur("timeout", inactivityTimeout).
+						Time("last_activity", time.Unix(lastActivityTime, 0)).
+						Msg("Sync stopped due to inactivity timeout")
+					return fmt.Errorf("sync stopped due to %v of inactivity", inactivityTimeout)
+				}
+			}
+		}
+	})
 
 	// Add a ticker to update the progress bar every 100ms
 	t := time.NewTicker(100 * time.Millisecond)
@@ -475,6 +512,10 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				}
 				return fmt.Errorf("unexpected error from sync client receive: %w", err)
 			}
+
+			// Update activity time whenever we receive a message
+			updateActivity()
+
 			syncResponseMsg := r.GetMessage()
 			switch m := syncResponseMsg.(type) {
 			case *plugin.Sync_Response_Insert:
