@@ -13,7 +13,11 @@ import (
 	"time"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
-	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/tablenamechanger"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/transformer"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/transformerpipeline"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
@@ -26,13 +30,6 @@ import (
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/timestamppb"
-
-	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
-	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
-	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
-	"github.com/cloudquery/cloudquery/cli/v6/internal/tablenamechanger"
-	"github.com/cloudquery/cloudquery/cli/v6/internal/transformer"
-	"github.com/cloudquery/cloudquery/cli/v6/internal/transformerpipeline"
 )
 
 type v3source struct {
@@ -81,19 +78,6 @@ func newSafeWriteClient(client grpc.ClientStreamingClient[plugin.Write_Request, 
 type shard struct {
 	num   int32
 	total int32
-}
-
-func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
-	authClient := auth.NewTokenClient()
-	if authClient.GetTokenType() != auth.SyncRunAPIKey {
-		return nil, nil
-	}
-
-	token, err := authClient.GetToken()
-	if err != nil {
-		return nil, err
-	}
-	return api.NewClient(token.Value)
 }
 
 type syncV3Options struct {
