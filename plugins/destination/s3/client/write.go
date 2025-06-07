@@ -137,9 +137,7 @@ func (c *Client) MigrateTable(ctx context.Context, ch <-chan *message.WriteMigra
 			errs = append(errs, err)
 			continue
 		}
-		if err := s.Finish(); err != nil {
-			errs = append(errs, err)
-		}
+		errs = append(errs, s.Finish())
 	}
 	return errors.Join(errs...)
 }
