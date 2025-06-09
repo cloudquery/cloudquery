@@ -1,5 +1,19 @@
 # Changelog
 
+## [7.8.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.8.11...plugins-destination-s3-v7.8.12) (2025-06-06)
+
+
+### Bug Fixes
+
+* S3 destination avoid hang on migrate errors ([#20872](https://github.com/cloudquery/cloudquery/issues/20872)) ([6484d1c](https://github.com/cloudquery/cloudquery/commit/6484d1c3cea2c8307c8f14d13d97e8c1a32dac2f))
+
+## [7.8.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.8.10...plugins-destination-s3-v7.8.11) (2025-05-28)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.82.0 ([#20814](https://github.com/cloudquery/cloudquery/issues/20814)) ([6503ea9](https://github.com/cloudquery/cloudquery/commit/6503ea9d7945dd0bcfe5c8e4cbf407e40ea1e4de))
+
 ## [7.8.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.8.9...plugins-destination-s3-v7.8.10) (2025-05-21)
 
 

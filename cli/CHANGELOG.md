@@ -5,6 +5,27 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.20.5](https://github.com/cloudquery/cloudquery/compare/cli-v6.20.4...cli-v6.20.5) (2025-05-29)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.26.12 ([#20857](https://github.com/cloudquery/cloudquery/issues/20857)) ([0183d30](https://github.com/cloudquery/cloudquery/commit/0183d30c6cc5861bb179382efe302dd408a20d32))
+
+## [6.20.4](https://github.com/cloudquery/cloudquery/compare/cli-v6.20.3...cli-v6.20.4) (2025-05-26)
+
+
+### Bug Fixes
+
+* **deps:** Update module google.golang.org/grpc to v1.72.1 ([#20826](https://github.com/cloudquery/cloudquery/issues/20826)) ([64b1b33](https://github.com/cloudquery/cloudquery/commit/64b1b33da621946f5d156992bc3ccd3b0e692925))
+
+## [6.20.3](https://github.com/cloudquery/cloudquery/compare/cli-v6.20.2...cli-v6.20.3) (2025-05-24)
+
+
+### Bug Fixes
+
+* Skip redacting environment variables injected by cloud providers or the CLI ([#20821](https://github.com/cloudquery/cloudquery/issues/20821)) ([3c5cd91](https://github.com/cloudquery/cloudquery/commit/3c5cd914ca58ec04e1edad17721624288f58c399))
+
 ## [6.20.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.20.1...cli-v6.20.2) (2025-05-21)
 
 
