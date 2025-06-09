@@ -35,6 +35,14 @@ func TestConnectionTester(t *testing.T) {
 			},
 		},
 		{
+			name: "error/unauthorized_with_test_write_false",
+			spec: []byte(`{"bucket": "test", "region": "test", "path": "test", "format": "csv", "test_write": false}`),
+			err:  plugin.NewTestConnError(codeUnauthorized, assert.AnError),
+			clientBuilder: func() (plugin.Client, error) {
+				return nil, errTestWriteFailed
+			},
+		},
+		{
 			name: "error/spec",
 			spec: []byte(`{null}`),
 			err:  plugin.NewTestConnError(codeInvalidSpec, assert.AnError),

@@ -31,11 +31,13 @@ func NewConnectionTester(createClientFn NewClientFn) plugin.ConnectionTester {
 				return err
 			}
 			s.SetDefaults()
-			b := true
-			s.TestWrite = &b // Force test write to be enabled for connection testing
-			specBytes, err = json.Marshal(s)
-			if err != nil {
-				return fmt.Errorf("failed to marshal s3 spec: %w", err)
+			if !*s.TestWrite {
+				b := true
+				s.TestWrite = &b // Force test write to be enabled for connection testing
+				specBytes, err = json.Marshal(s)
+				if err != nil {
+					return fmt.Errorf("failed to marshal s3 spec: %w", err)
+				}
 			}
 		}
 
