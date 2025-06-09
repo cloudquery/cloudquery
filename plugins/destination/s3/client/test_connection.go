@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
+	"github.com/google/uuid"
 	"github.com/rs/zerolog"
 )
 
@@ -17,7 +18,11 @@ const (
 
 func NewConnectionTester(createClientFn NewClientFn) plugin.ConnectionTester {
 	return func(ctx context.Context, logger zerolog.Logger, specBytes []byte) error {
-		_, err := createClientFn(ctx, logger, specBytes, plugin.NewClientOptions{})
+		invocationID, err := uuid.NewRandom()
+		if err != nil {
+			return err
+		}
+		_, err = createClientFn(ctx, logger, specBytes, plugin.NewClientOptions{InvocationID: invocationID.String()})
 		if err == nil {
 			return nil
 		}
