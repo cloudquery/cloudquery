@@ -237,6 +237,9 @@
           "type": "boolean",
           "description": "Enforce TLS Verification when configuring a username to connect to Kafka."
         },
+        "tls_details": {
+          "$ref": "#/$defs/TlsDetails"
+        },
         "batch_size": {
           "type": "integer",
           "minimum": 1,
@@ -254,6 +257,24 @@
         "format",
         "brokers"
       ]
+    },
+    "TlsDetails": {
+      "properties": {
+        "cert_file": {
+          "type": "string",
+          "description": "The optional certificate file for client authentication"
+        },
+        "key_file": {
+          "type": "string",
+          "description": "The optional key file for client authentication"
+        },
+        "ca_file": {
+          "type": "string",
+          "description": "The optional certificate authority file for TLS client authentication"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
     },
     "topicDetails": {
       "properties": {
