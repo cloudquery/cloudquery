@@ -123,7 +123,9 @@ func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) er
 }
 
 func (c *Client) MigrateTable(ctx context.Context, ch <-chan *message.WriteMigrateTable) error {
+	// nolint:prealloc
 	var errs []error
+
 	for msg := range ch {
 		if !c.spec.GenerateEmptyObjects {
 			continue
@@ -139,6 +141,7 @@ func (c *Client) MigrateTable(ctx context.Context, ch <-chan *message.WriteMigra
 		}
 		errs = append(errs, s.Finish())
 	}
+
 	return errors.Join(errs...)
 }
 
