@@ -3,8 +3,10 @@ package client
 import (
 	"context"
 	"crypto/tls"
+	"crypto/x509"
 	"encoding/json"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/IBM/sarama"
@@ -25,6 +27,29 @@ type Client struct {
 	spec   *spec.Spec
 
 	*filetypes.Client
+}
+
+func createTLSConfiguration(userSpec *spec.Spec) (*tls.Config, error) {
+	t := &tls.Config{
+		InsecureSkipVerify: !userSpec.EnforceTLSVerification,
+	}
+	if userSpec.TlsDetails != nil && *userSpec.TlsDetails.CertFile != "" && *userSpec.TlsDetails.KeyFile != "" && *userSpec.TlsDetails.CaFile != "" {
+		cert, err := tls.LoadX509KeyPair(*userSpec.TlsDetails.CertFile, *userSpec.TlsDetails.KeyFile)
+		if err != nil {
+			return nil, fmt.Errorf("failed to load X509 key pair: %w", err)
+		}
+
+		caCert, err := os.ReadFile(*userSpec.TlsDetails.CaFile)
+		if err != nil {
+			return nil, fmt.Errorf("failed to read CA file: %w", err)
+		}
+
+		caCertPool := x509.NewCertPool()
+		caCertPool.AppendCertsFromPEM(caCert)
+		t.Certificates = []tls.Certificate{cert}
+		t.RootCAs = caCertPool
+	}
+	return t, nil
 }
 
 func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClientOptions) (plugin.Client, error) {
@@ -58,11 +83,16 @@ func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClie
 	c.conf.ClientID = `cwc|1c04a227-aef8-47a9-9353-e20bbb6a9616|cq-destination-kafka|` + internalPlugin.Version
 
 	if c.spec.SASLUsername != "" {
+		tlsConfig, err := createTLSConfiguration(c.spec)
+		if err != nil {
+			return nil, fmt.Errorf("failed to create TLS configuration: %w", err)
+		}
+
 		c.conf.Net.SASL.Enable = true
 		c.conf.Net.SASL.User = c.spec.SASLUsername
 		c.conf.Net.SASL.Password = c.spec.SASLPassword
 		c.conf.Net.TLS.Enable = true
-		c.conf.Net.TLS.Config = &tls.Config{InsecureSkipVerify: !c.spec.EnforceTLSVerification}
+		c.conf.Net.TLS.Config = tlsConfig
 		c.conf.Net.SASL.Handshake = true
 	}
 

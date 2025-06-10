@@ -1,5 +1,21 @@
 # Changelog
 
+## [7.8.13](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.8.12...plugins-destination-s3-v7.8.13) (2025-06-09)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#20874](https://github.com/cloudquery/cloudquery/issues/20874)) ([91f7215](https://github.com/cloudquery/cloudquery/commit/91f72151ee102bf62ccd4d5b414609d83c9f34be))
+* Pass `invocationID` when initializing test connection ([#20883](https://github.com/cloudquery/cloudquery/issues/20883)) ([872cee6](https://github.com/cloudquery/cloudquery/commit/872cee609dd89c25350bdd720d26f72f6d39942c))
+* Proper error join ([#20878](https://github.com/cloudquery/cloudquery/issues/20878)) ([983062b](https://github.com/cloudquery/cloudquery/commit/983062b2210f6a269743afda4c56c5df9e0cdc77))
+
+## [7.8.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.8.11...plugins-destination-s3-v7.8.12) (2025-06-06)
+
+
+### Bug Fixes
+
+* S3 destination avoid hang on migrate errors ([#20872](https://github.com/cloudquery/cloudquery/issues/20872)) ([6484d1c](https://github.com/cloudquery/cloudquery/commit/6484d1c3cea2c8307c8f14d13d97e8c1a32dac2f))
+
 ## [7.8.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.8.10...plugins-destination-s3-v7.8.11) (2025-05-28)
 
 

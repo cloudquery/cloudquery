@@ -61,6 +61,10 @@ This is the (nested) plugin spec
 
   Optional parameters to set topic details.
 
+- `tls_details` ([tls_details](#tls_details)) (optional)
+
+  Optional parameters to set TLS details for the Kafka connection.
+
 
 ### format_spec
 
@@ -106,4 +110,20 @@ Reserved for future use.
 - `replication_factor` (`integer`) (optional) (default: `1`)
 
   Replication factor for the topic.
+
+
+
+### tls_details
+- `ca_file_path` (`string`) (optional) (default: empty)
+
+   Path to the certificate authority file for TLS client authentication
+
+- `cert_file_path` (`string`) (optional) (default: empty)
+
+  Path to the certificate file for client authentication
+
+- `key_file_path` (`string`) (optional) (default: empty)
+
+  Path to the key file for client authentication.
+
 

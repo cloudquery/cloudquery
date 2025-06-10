@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.21](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.20...plugins-source-xkcd-v1.5.21) (2025-06-06)
+
+
+### Bug Fixes
+
+* Use new state client constructor calls and validation ([#20868](https://github.com/cloudquery/cloudquery/issues/20868)) ([653d865](https://github.com/cloudquery/cloudquery/commit/653d8658ccf71abeb061a513e31b86f34fac8ac1))
+
 ## [1.5.20](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.19...plugins-source-xkcd-v1.5.20) (2025-05-28)
 
 

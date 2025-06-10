@@ -13,6 +13,15 @@ type topicDetails struct {
 	ReplicationFactor int `json:"replication_factor,omitempty" jsonschema:"minimum=1,default=1"`
 }
 
+type TlsDetails struct {
+	// Path to the certificate file for client authentication
+	CertFile *string `json:"cert_file,omitempty"`
+	// Path to the key file for client authentication
+	KeyFile *string `json:"key_file,omitempty"`
+	// Path to the certificate authority file for TLS client authentication
+	CaFile *string `json:"ca_file,omitempty"`
+}
+
 type Spec struct {
 	filetypes.FileSpec
 
@@ -34,6 +43,9 @@ type Spec struct {
 
 	// Enforce TLS Verification when configuring a username to connect to Kafka.
 	EnforceTLSVerification bool `json:"enforce_tls_verification,omitempty"`
+
+	// TLS details for client authentication.
+	TlsDetails *TlsDetails `json:"tls_details,omitempty"`
 
 	// Number of records to write before starting a new object.
 	BatchSize int64 `json:"batch_size" jsonschema:"minimum=1,default=1000"`
