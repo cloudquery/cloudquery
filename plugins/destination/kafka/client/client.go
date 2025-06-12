@@ -33,7 +33,7 @@ func createTLSConfiguration(userSpec *spec.Spec) (*tls.Config, error) {
 	t := &tls.Config{
 		InsecureSkipVerify: !userSpec.EnforceTLSVerification,
 	}
-	if userSpec.TlsDetails.Enabled {
+	if userSpec.TlsDetails.IsEnabled() {
 		cert, err := tls.LoadX509KeyPair(*userSpec.TlsDetails.CertFile, *userSpec.TlsDetails.KeyFile)
 		if err != nil {
 			return nil, fmt.Errorf("failed to load X509 key pair: %w", err)
@@ -83,7 +83,7 @@ func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClie
 	c.conf.ClientID = `cwc|1c04a227-aef8-47a9-9353-e20bbb6a9616|cq-destination-kafka|` + internalPlugin.Version
 	var tlsConfig *tls.Config
 	var err error
-	if c.spec.TlsDetails.Enabled {
+	if c.spec.TlsDetails.IsEnabled() {
 		tlsConfig, err = createTLSConfiguration(c.spec)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create TLS configuration: %w", err)

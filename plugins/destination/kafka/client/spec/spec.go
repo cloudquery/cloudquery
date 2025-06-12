@@ -20,8 +20,6 @@ type TlsDetails struct {
 	KeyFile *string `json:"key_file_path,omitempty"`
 	// Path to the certificate authority file for TLS client authentication
 	CaFile *string `json:"ca_file_path,omitempty"`
-
-	Enabled bool
 }
 
 type Spec struct {
@@ -68,14 +66,13 @@ func (s *Spec) SetDefaults() {
 	if s.TopicDetails.ReplicationFactor < 1 {
 		s.TopicDetails.ReplicationFactor = 1
 	}
+}
 
-	if s.TlsDetails != nil && s.TlsDetails.CertFile != nil && s.TlsDetails.KeyFile != nil && s.TlsDetails.CaFile != nil {
-		s.TlsDetails.Enabled = true
-	} else {
-		s.TlsDetails = &TlsDetails{
-			Enabled: false,
-		}
+func (tlsDetails *TlsDetails) IsEnabled() bool {
+	if tlsDetails == nil {
+		return false
 	}
+	return tlsDetails.CertFile != nil && tlsDetails.KeyFile != nil && tlsDetails.CaFile != nil
 }
 
 func (s *Spec) Validate() error {
