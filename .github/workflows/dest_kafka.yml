@@ -33,7 +33,7 @@ jobs:
         ports:
         - 22181:2181
       kafka:
-        image: confluentinc/cp-kafka:latest
+        image: confluentinc/cp-kafka:7.9.2
         ports:
         - 29092:29092
         env:
