@@ -261,15 +261,15 @@
     },
     "TlsDetails": {
       "properties": {
-        "cert_file": {
+        "cert_file_path": {
           "type": "string",
           "description": "Path to the certificate file for client authentication"
         },
-        "key_file": {
+        "key_file_path": {
           "type": "string",
           "description": "Path to the key file for client authentication"
         },
-        "ca_file": {
+        "ca_file_path": {
           "type": "string",
           "description": "Path to the certificate authority file for TLS client authentication"
         }
