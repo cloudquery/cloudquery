@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/source/test/v4
 
-go 1.24.3
+go 1.24.4
 
 require (
 	github.com/apache/arrow-go/v18 v18.2.0
