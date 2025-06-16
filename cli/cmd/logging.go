@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	"io"
 	"os"
 
@@ -51,5 +53,19 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 	mw := io.MultiWriter(writers...)
 	secretAwareWriter := secrets.NewSecretAwareWriter(mw, secretAwareRedactor)
 	log.Logger = zerolog.New(secretAwareWriter).Level(zerologLevel).With().Str("module", "cli").Str("invocation_id", invocationUUID.String()).Timestamp().Logger()
+
+	otelEndpoint := env.GetEnvOrDefault("CLOUD_PLATFORM_OTEL_LOGS_ENDPOINT", "")
+	if otelEndpoint != "" {
+		shutdown, err := setupOtel(context.Background(), log.Logger, otelEndpoint)
+		if err != nil {
+			return nil, fmt.Errorf("failed to setup OpenTelemetry: %w", err)
+		}
+		if shutdown != nil {
+			log.Logger = log.Logger.Hook(newOTELLoggerHook())
+			log.Info().Str("otel_logs_endpoint", otelEndpoint).Msg("otel logs endpoint set")
+			defer shutdown()
+		}
+	}
+
 	return logFile, nil
 }
