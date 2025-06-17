@@ -40,6 +40,10 @@ func NewFromSpec(sp spec.TransformationSpec) (*Transformer, error) {
 		tr.fn = RenameColumn(sp.Name, sp.Value)
 	case spec.KindObfuscateSensitiveColumns:
 		tr.fn = ObfuscateSensitiveColumns(sp.Columns)
+	case spec.KindUppercase:
+		tr.fn = ChangeCase(sp.Kind, sp.Columns)
+	case spec.KindLowercase:
+		tr.fn = ChangeCase(sp.Kind, sp.Columns)
 	default:
 		return nil, fmt.Errorf("unknown transformation kind: %s", sp.Kind)
 	}
@@ -123,6 +127,12 @@ func ChangeTableName(newTableNamePattern string) TransformationFn {
 func RenameColumn(oldName, newName string) TransformationFn {
 	return func(record arrow.Record) (arrow.Record, error) {
 		return recordupdater.New(record).RenameColumn(oldName, newName)
+	}
+}
+
+func ChangeCase(caseType string, columnNames []string) TransformationFn {
+	return func(record arrow.Record) (arrow.Record, error) {
+		return recordupdater.New(record).ChangeCase(caseType, columnNames)
 	}
 }
 

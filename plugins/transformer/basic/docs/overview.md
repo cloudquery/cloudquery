@@ -5,6 +5,7 @@ This CloudQuery transformer plugin provides basic transformation capabilities:
 - Adding a column with the timestamp that the record was processed by the transformer
 - Obfuscating string columns
 - Renaming tables using a name template (use `{{.OldName}}` to refer to the original name, see example below)
+- Normalizing column values to all-upper/lowercase
 
 ## Configuration
 
@@ -32,7 +33,7 @@ Then, add your transformer spec. Here's an example that transforms the XKCD sour
 
 :configuration
 
-JSON is supported for removing paths and obfuscating string values. Array indexes are supported in both cases. For example, with a JSON column named `tags`:
+JSON is supported for removing paths and obfuscating string values, as well as lower/uppercasing field values. Array indexes are supported in both cases. For example, with a JSON column named `tags`:
 ```json
 {"foo":{"bar":["a","b","c"]},"hello":"world","kubectl.kubernetes.io/last-applied-configuration":"secrets"}
 ```
