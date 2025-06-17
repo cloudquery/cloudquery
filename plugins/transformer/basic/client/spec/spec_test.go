@@ -176,6 +176,24 @@ func TestValidate(t *testing.T) {
 			},
 			wantErr: true,
 		},
+		{
+			name: "InvalidLowercaseEmptyColumns",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindLowercase, Columns: []string{}},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "ValidLowercase",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindLowercase, Columns: []string{"col1"}},
+				},
+			},
+			wantErr: false,
+		},
 	}
 
 	for _, tt := range tests {

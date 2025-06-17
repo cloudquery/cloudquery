@@ -9,6 +9,7 @@ import (
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/apache/arrow-go/v18/arrow/array"
 	"github.com/apache/arrow-go/v18/arrow/memory"
+	"github.com/cloudquery/cloudquery/plugins/transformer/basic/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/stretchr/testify/assert"
@@ -261,4 +262,100 @@ func requireAllColsLenMatchRecordsLen(t *testing.T, record arrow.Record) {
 	for i := 0; i < int(record.NumCols()); i++ {
 		require.Equal(t, int(record.NumRows()), record.Column(i).Len(), "Expected length of %d for column %d", record.NumRows(), i)
 	}
+}
+
+func TestChangeCaseStringTransformations(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+
+	updatedRecord, err := updater.ChangeCase(spec.KindUppercase, []string{"col1", "col2"})
+	require.NoError(t, err)
+
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "col1", updatedRecord.ColumnName(0))
+	require.Equal(t, "col2", updatedRecord.ColumnName(1))
+	require.Equal(t, "VAL1", updatedRecord.Column(0).(*array.String).Value(0))
+	require.Equal(t, "VAL2", updatedRecord.Column(0).(*array.String).Value(1))
+	require.Equal(t, "VAL3", updatedRecord.Column(1).(*array.String).Value(0))
+	require.Equal(t, "VAL4", updatedRecord.Column(1).(*array.String).Value(1))
+
+	updatedRecord, err = updater.ChangeCase(spec.KindLowercase, []string{"col1", "col2"})
+	require.NoError(t, err)
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "col1", updatedRecord.ColumnName(0))
+	require.Equal(t, "col2", updatedRecord.ColumnName(1))
+	require.Equal(t, "val1", updatedRecord.Column(0).(*array.String).Value(0))
+	require.Equal(t, "val2", updatedRecord.Column(0).(*array.String).Value(1))
+	require.Equal(t, "val3", updatedRecord.Column(1).(*array.String).Value(0))
+	require.Equal(t, "val4", updatedRecord.Column(1).(*array.String).Value(1))
+}
+
+func TestChangeCaseJsonPath(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+
+	updatedRecord, err := updater.ChangeCase(spec.KindUppercase, []string{"col3.foo.bar.0", "col3.foo.bar.1", "col3.hello"})
+	require.NoError(t, err)
+
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "col1", updatedRecord.ColumnName(0))
+	require.Equal(t, "col2", updatedRecord.ColumnName(1))
+	assert.Equal(t, `{"foo":{"bar":["A","B","c"]},"hello":"WORLD"}`, updatedRecord.Column(2).ValueStr(0))
+	assert.Equal(t, `{"foo":{"bar":["D","E","f"]}}`, updatedRecord.Column(2).ValueStr(1))
+	require.Equal(t, "val1", updatedRecord.Column(0).(*array.String).Value(0))
+	require.Equal(t, "val2", updatedRecord.Column(0).(*array.String).Value(1))
+	require.Equal(t, "val3", updatedRecord.Column(1).(*array.String).Value(0))
+	require.Equal(t, "val4", updatedRecord.Column(1).(*array.String).Value(1))
+
+	updatedRecord, err = updater.ChangeCase(spec.KindLowercase, []string{"col3.foo.bar.0", "col3.foo.bar.1", "col3.hello"})
+	require.NoError(t, err)
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "col1", updatedRecord.ColumnName(0))
+	require.Equal(t, "col2", updatedRecord.ColumnName(1))
+	assert.Equal(t, `{"foo":{"bar":["a","b","c"]},"hello":"world"}`, updatedRecord.Column(2).ValueStr(0))
+	assert.Equal(t, `{"foo":{"bar":["d","e","f"]}}`, updatedRecord.Column(2).ValueStr(1))
+	require.Equal(t, "val1", updatedRecord.Column(0).(*array.String).Value(0))
+	require.Equal(t, "val2", updatedRecord.Column(0).(*array.String).Value(1))
+	require.Equal(t, "val3", updatedRecord.Column(1).(*array.String).Value(0))
+	require.Equal(t, "val4", updatedRecord.Column(1).(*array.String).Value(1))
+}
+
+func TestChangeCaseEntrieJson(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+	updatedRecord, err := updater.ChangeCase(spec.KindUppercase, []string{"col3"})
+	require.NoError(t, err)
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "col1", updatedRecord.ColumnName(0))
+	require.Equal(t, "col2", updatedRecord.ColumnName(1))
+	assert.Equal(t, `{"FOO":{"BAR":["A","B","C"]},"HELLO":"WORLD"}`, updatedRecord.Column(2).ValueStr(0))
+	assert.Equal(t, `{"FOO":{"BAR":["D","E","F"]}}`, updatedRecord.Column(2).ValueStr(1))
+	require.Equal(t, "val1", updatedRecord.Column(0).(*array.String).Value(0))
+	require.Equal(t, "val2", updatedRecord.Column(0).(*array.String).Value(1))
+	require.Equal(t, "val3", updatedRecord.Column(1).(*array.String).Value(0))
+	require.Equal(t, "val4", updatedRecord.Column(1).(*array.String).Value(1))
+
+	updatedRecord, err = updater.ChangeCase(spec.KindLowercase, []string{"col3"})
+	require.NoError(t, err)
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "col1", updatedRecord.ColumnName(0))
+	require.Equal(t, "col2", updatedRecord.ColumnName(1))
+	assert.Equal(t, `{"foo":{"bar":["a","b","c"]},"hello":"world"}`, updatedRecord.Column(2).ValueStr(0))
+	assert.Equal(t, `{"foo":{"bar":["d","e","f"]}}`, updatedRecord.Column(2).ValueStr(1))
+	require.Equal(t, "val1", updatedRecord.Column(0).(*array.String).Value(0))
+	require.Equal(t, "val2", updatedRecord.Column(0).(*array.String).Value(1))
+	require.Equal(t, "val3", updatedRecord.Column(1).(*array.String).Value(0))
+	require.Equal(t, "val4", updatedRecord.Column(1).(*array.String).Value(1))
 }

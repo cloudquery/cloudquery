@@ -143,6 +143,36 @@ func TestTransform(t *testing.T) {
 			},
 		},
 		{
+			name: "UppercaseColumns",
+			spec: spec.TransformationSpec{
+				Kind:    spec.KindUppercase,
+				Columns: []string{"col1"},
+				Tables:  []string{"*"},
+			},
+			record: createTestRecord(),
+			validate: func(t *testing.T, record arrow.Record) {
+				require.Equal(t, "VAL1", record.Column(0).(*array.String).Value(0), "Expected uppercase value in col1 column")
+				require.Equal(t, "VAL2", record.Column(0).(*array.String).Value(1), "Expected uppercase value in col1 column")
+				require.Equal(t, int64(2), record.NumCols(), "Expected 2 columns")
+				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
+			},
+		},
+		{
+			name: "LowercaseColumns",
+			spec: spec.TransformationSpec{
+				Kind:    spec.KindLowercase,
+				Columns: []string{"col1"},
+				Tables:  []string{"*"},
+			},
+			record: createUppercaseTestRecord(),
+			validate: func(t *testing.T, record arrow.Record) {
+				require.Equal(t, "val1", record.Column(0).(*array.String).Value(0), "Expected lowercase value in col1 column")
+				require.Equal(t, "val2", record.Column(0).(*array.String).Value(1), "Expected lowercase value in col1 column")
+				require.Equal(t, int64(2), record.NumCols(), "Expected 2 columns")
+				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
+			},
+		},
+		{
 			name: "ChangeTableName",
 			spec: spec.TransformationSpec{
 				Kind:                 spec.KindChangeTableNames,
@@ -184,6 +214,23 @@ func createTestRecord() arrow.Record {
 	defer bld.Release()
 
 	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1", "val2"}, nil)
+	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
+
+	return bld.NewRecord()
+}
+
+func createUppercaseTestRecord() arrow.Record {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"table1"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "col1", Type: arrow.BinaryTypes.String},
+			{Name: "col2", Type: arrow.BinaryTypes.String},
+		},
+		&md,
+	))
+	defer bld.Release()
+
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"VAL1", "VAL2"}, nil)
 	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
 
 	return bld.NewRecord()
