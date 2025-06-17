@@ -3,15 +3,16 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
-	"github.com/cloudquery/cloudquery/cli/v6/internal/otel"
 	"io"
 	"os"
 
-	"github.com/cloudquery/cloudquery/cli/v6/internal/enum"
-	"github.com/cloudquery/cloudquery/cli/v6/internal/secrets"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+
+	"github.com/cloudquery/cloudquery/cli/v6/internal/enum"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/otel"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/secrets"
 )
 
 func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logConsole bool, logFileName string) (*os.File, func(), error) {
