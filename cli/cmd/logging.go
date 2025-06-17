@@ -62,7 +62,7 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 		if err != nil {
 			return nil, shutdownFn, fmt.Errorf("failed to setup OpenTelemetry: %w", err)
 		}
-		log.Logger = log.Logger.Hook(otel.NewOTELLoggerHook())
+		log.Logger = log.Logger.Hook(otel.NewOTELLoggerHook(invocationUUID.String()))
 		log.Info().Str("otel_logs_endpoint", otelEndpoint).Msg("otel logs endpoint set")
 	}
 

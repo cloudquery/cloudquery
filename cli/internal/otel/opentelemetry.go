@@ -95,7 +95,8 @@ func SetupOtel(ctx context.Context, logger zerolog.Logger, otelEndpoint string) 
 
 type otelLoggerHook struct {
 	otellog.Logger
-	ctx context.Context
+	ctx          context.Context
+	invocationId string
 }
 
 func (h *otelLoggerHook) Run(e *zerolog.Event, level zerolog.Level, message string) {
@@ -148,6 +149,10 @@ func (h *otelLoggerHook) Run(e *zerolog.Event, level zerolog.Level, message stri
 				Value: attributeValue,
 			})
 		}
+		recordAttributes = append(recordAttributes, otellog.KeyValue{
+			Key:   "invocation_id",
+			Value: otellog.StringValue(h.invocationId)},
+		)
 		record.AddAttributes(recordAttributes...)
 	}
 
@@ -175,6 +180,6 @@ func otellogSeverity(level zerolog.Level) otellog.Severity {
 	}
 }
 
-func NewOTELLoggerHook() zerolog.Hook {
-	return &otelLoggerHook{logglobal.GetLoggerProvider().Logger("cloudquery"), context.Background()}
+func NewOTELLoggerHook(invocationId string) zerolog.Hook {
+	return &otelLoggerHook{logglobal.GetLoggerProvider().Logger("cloudquery"), context.Background(), invocationId}
 }
