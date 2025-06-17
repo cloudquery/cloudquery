@@ -1,4 +1,4 @@
-package cmd
+package otel
 
 import (
 	"context"
@@ -62,10 +62,7 @@ func getLogsProcessor(ctx context.Context, opts otelConfig) (*log.BatchProcessor
 	return processor, nil
 }
 
-func setupOtel(ctx context.Context, logger zerolog.Logger, otelEndpoint string) (shutdown func(), err error) {
-	if otelEndpoint == "" {
-		return nil, nil
-	}
+func SetupOtel(ctx context.Context, logger zerolog.Logger, otelEndpoint string) (shutdown func(), err error) {
 	opts := otelConfig{
 		endpoint: otelEndpoint,
 	}
@@ -178,6 +175,6 @@ func otellogSeverity(level zerolog.Level) otellog.Severity {
 	}
 }
 
-func newOTELLoggerHook() zerolog.Hook {
+func NewOTELLoggerHook() zerolog.Hook {
 	return &otelLoggerHook{logglobal.GetLoggerProvider().Logger("cloudquery"), context.Background()}
 }

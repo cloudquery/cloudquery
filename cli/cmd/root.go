@@ -35,6 +35,7 @@ Find more information at:
 	logFile             *os.File
 	invocationUUID      uuid.UUID
 	secretAwareRedactor *secrets.SecretAwareRedactor
+	loggingShutdownFn   func()
 )
 
 func NewCmdRoot() *cobra.Command {
@@ -79,7 +80,7 @@ func NewCmdRoot() *cobra.Command {
 			cmd.SilenceUsage = true
 			var err error
 
-			if logFile, err = initLogging(noLogFile, logLevel, logFormat, logConsole, logFileName); err != nil {
+			if logFile, loggingShutdownFn, err = initLogging(noLogFile, logLevel, logFormat, logConsole, logFileName); err != nil {
 				return err
 			}
 
@@ -204,6 +205,9 @@ func NewCmdRoot() *cobra.Command {
 			oldAnalyticsClient.Close()
 		}
 		analytics.Close()
+		if loggingShutdownFn != nil {
+			loggingShutdownFn()
+		}
 	})
 
 	return cmd

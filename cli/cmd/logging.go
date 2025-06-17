@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/otel"
 	"io"
 	"os"
 
@@ -13,17 +14,18 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logConsole bool, logFileName string) (*os.File, error) {
+func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logConsole bool, logFileName string) (*os.File, func(), error) {
 	var logFile *os.File
+	shutdownFn := func() {}
 	zerologLevel, err := zerolog.ParseLevel(logLevel.String())
 	if err != nil {
-		return nil, err
+		return nil, shutdownFn, err
 	}
 	var writers []io.Writer
 	if !noLogFile {
 		logFile, err = os.OpenFile(logFileName, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
 		if err != nil {
-			return nil, err
+			return nil, shutdownFn, err
 		}
 		if logFormat.String() == "text" {
 			// for file logging we don't need color. we can add it as an option but don't think it is useful
@@ -38,7 +40,7 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 	}
 	if logConsole {
 		if err := os.Stdout.Close(); err != nil {
-			return nil, fmt.Errorf("failed to close stdout: %w", err)
+			return nil, shutdownFn, fmt.Errorf("failed to close stdout: %w", err)
 		}
 		if logFormat.String() == "text" {
 			writers = append(writers, zerolog.ConsoleWriter{
@@ -56,16 +58,13 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 
 	otelEndpoint := env.GetEnvOrDefault("CLOUD_PLATFORM_OTEL_LOGS_ENDPOINT", "")
 	if otelEndpoint != "" {
-		shutdown, err := setupOtel(context.Background(), log.Logger, otelEndpoint)
+		shutdownFn, err = otel.SetupOtel(context.Background(), log.Logger, otelEndpoint)
 		if err != nil {
-			return nil, fmt.Errorf("failed to setup OpenTelemetry: %w", err)
+			return nil, shutdownFn, fmt.Errorf("failed to setup OpenTelemetry: %w", err)
 		}
-		if shutdown != nil {
-			log.Logger = log.Logger.Hook(newOTELLoggerHook())
-			log.Info().Str("otel_logs_endpoint", otelEndpoint).Msg("otel logs endpoint set")
-			defer shutdown()
-		}
+		log.Logger = log.Logger.Hook(otel.NewOTELLoggerHook())
+		log.Info().Str("otel_logs_endpoint", otelEndpoint).Msg("otel logs endpoint set")
 	}
 
-	return logFile, nil
+	return logFile, shutdownFn, nil
 }
