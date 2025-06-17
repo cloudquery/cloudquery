@@ -13,6 +13,7 @@ import (
 	"github.com/apache/arrow-go/v18/arrow/array"
 	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/transformer/basic/client/schemaupdater"
+	"github.com/cloudquery/cloudquery/plugins/transformer/basic/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/tidwall/gjson"
@@ -230,6 +231,53 @@ func (r *RecordUpdater) RenameColumn(oldName, newName string) (arrow.Record, err
 	return r.record, nil
 }
 
+func (r *RecordUpdater) ChangeCase(caseType string, columnNames []string) (arrow.Record, error) {
+	plainCols, jsonCols := r.splitJSONColumns(columnNames)
+
+	plainColIndex, err := r.colIndicesByNames(plainCols)
+	if err != nil {
+		return nil, err
+	}
+	jsonColIndex := r.jsonColIndicesByNames(jsonCols)
+
+	caser := strings.ToLower
+	if caseType == spec.KindUppercase {
+		caser = strings.ToUpper
+	}
+
+	oldRecord := r.record.Columns()
+	newColumns := make([]arrow.Array, 0, len(oldRecord))
+	for i, column := range oldRecord {
+		if _, ok := plainColIndex[i]; ok {
+			if column.DataType().ID() == arrow.STRING {
+				newColumns = append(newColumns, r.changeColumnCase(column, caser))
+				continue
+			}
+			if _, ok := column.DataType().(*types.JSONType); ok {
+				newColumns = append(newColumns, r.changeCaseEntireJSONColumn(column, caser))
+				continue
+			}
+			return nil, fmt.Errorf("column %v is not a string or JSON column", r.record.ColumnName(i))
+		}
+
+		jcs, ok := jsonColIndex[i]
+		if !ok {
+			newColumns = append(newColumns, column)
+			continue
+		}
+
+		if _, ok := column.DataType().(*types.JSONType); !ok {
+			return nil, fmt.Errorf("column %v is not a JSON column", r.record.ColumnName(i))
+		}
+
+		newColumns = append(newColumns, r.chanceCaseJSONColumns(column, jcs, caser))
+	}
+
+	r.record = array.NewRecord(r.record.Schema(), newColumns, r.record.NumRows())
+
+	return r.record, nil
+}
+
 func (r *RecordUpdater) colIndicesByNames(columnNames []string) (map[int]struct{}, error) {
 	colNameMap := make(map[string]struct{})
 	for _, columnName := range columnNames {
@@ -397,4 +445,53 @@ func (r *RecordUpdater) splitJSONColumns(columnNames []string) (plainCols []stri
 	}
 
 	return plainCols, jsonCols
+}
+
+func (*RecordUpdater) changeColumnCase(column arrow.Array, caser func(string) string) arrow.Array {
+	bld := array.NewStringBuilder(memory.DefaultAllocator)
+	for i := 0; i < column.Len(); i++ {
+		if !column.IsValid(i) {
+			bld.AppendNull()
+			continue
+		}
+		bld.AppendString(caser(column.ValueStr(i)))
+	}
+	return bld.NewStringArray()
+}
+
+func (*RecordUpdater) chanceCaseJSONColumns(column arrow.Array, jcs []jsonColumn, caser func(string) string) arrow.Array {
+	bld := types.NewJSONBuilder(memory.NewGoAllocator())
+	for i := 0; i < column.Len(); i++ {
+		if !column.IsValid(i) {
+			bld.AppendNull()
+			continue
+		}
+
+		str := column.ValueStr(i)
+		for _, jc := range jcs {
+			val := gjson.Get(column.ValueStr(i), jc.columnPath)
+			if val.Exists() && val.Type == gjson.String {
+				if modified, err := sjson.Set(str, jc.columnPath, caser(val.Str)); err == nil {
+					str = modified
+					continue
+				}
+			}
+		}
+		bld.AppendBytes([]byte(str))
+	}
+	return bld.NewJSONArray()
+}
+
+func (*RecordUpdater) changeCaseEntireJSONColumn(column arrow.Array, caser func(string) string) arrow.Array {
+	bld := types.NewJSONBuilder(memory.NewGoAllocator())
+	for i := 0; i < column.Len(); i++ {
+		if !column.IsValid(i) {
+			bld.AppendNull()
+			continue
+		}
+
+		str := column.ValueStr(i)
+		bld.AppendBytes([]byte(caser(str)))
+	}
+	return bld.NewJSONArray()
 }
