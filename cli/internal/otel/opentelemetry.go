@@ -103,6 +103,7 @@ func (h *otelLoggerHook) Run(e *zerolog.Event, level zerolog.Level, message stri
 	record := otellog.Record{}
 	record.SetTimestamp(time.Now().UTC())
 	record.SetSeverity(otellogSeverity(level))
+	record.SetSeverityText(level.String())
 	record.SetBody(otellog.StringValue(message))
 	// See https://github.com/rs/zerolog/issues/493, this is ugly but it works
 	// At the moment there's no way to get the log fields from the event, so we use reflection to get the buffer and parse it
