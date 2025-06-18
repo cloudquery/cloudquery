@@ -57,7 +57,7 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 	secretAwareWriter := secrets.NewSecretAwareWriter(mw, secretAwareRedactor)
 	log.Logger = zerolog.New(secretAwareWriter).Level(zerologLevel).With().Str("module", "cli").Str("invocation_id", invocationUUID.String()).Timestamp().Logger()
 
-	otelEndpoint := env.GetEnvOrDefault("CLOUD_PLATFORM_OTEL_LOGS_ENDPOINT", "")
+	otelEndpoint := env.GetEnvOrDefault("CLOUD_PLATFORM_OTEL_ENDPOINT", "")
 	if otelEndpoint != "" {
 		shutdownFn, err = otel.SetupOtel(context.Background(), log.Logger, otelEndpoint)
 		if err != nil {
