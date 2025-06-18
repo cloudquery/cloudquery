@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"time"
@@ -8,6 +9,7 @@ import (
 	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/enum"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/otel"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/secrets"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/uuid"
 	guuid "github.com/google/uuid"
@@ -80,8 +82,18 @@ func NewCmdRoot() *cobra.Command {
 			cmd.SilenceUsage = true
 			var err error
 
-			if logFile, loggingShutdownFn, err = initLogging(noLogFile, logLevel, logFormat, logConsole, logFileName); err != nil {
+			if logFile, err = initLogging(noLogFile, logLevel, logFormat, logConsole, logFileName); err != nil {
 				return err
+			}
+
+			otelEndpoint := env.GetEnvOrDefault("OTEL_ENDPOINT", "")
+			if otelEndpoint != "" {
+				loggingShutdownFn, err = otel.SetupOtel(context.Background(), log.Logger, otelEndpoint)
+				if err != nil {
+					return fmt.Errorf("failed to setup OpenTelemetry: %w", err)
+				}
+				log.Logger = log.Logger.Hook(otel.NewOTELLoggerHook(invocationUUID.String()))
+				log.Info().Str("otel_logs_endpoint", otelEndpoint).Msg("otel logs endpoint set")
 			}
 
 			// log warnings now that the logger is initialized
