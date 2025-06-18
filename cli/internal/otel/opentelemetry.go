@@ -113,6 +113,11 @@ func (h *otelLoggerHook) Run(e *zerolog.Event, level zerolog.Level, message stri
 	if err == nil {
 		recordAttributes := make([]otellog.KeyValue, 0, len(logData))
 		for k, v := range logData {
+			if k == "message" {
+				record.SetBody(otellog.StringValue(fmt.Sprintf("%v", v)))
+				continue
+			}
+
 			if k == "level" {
 				continue
 			}
