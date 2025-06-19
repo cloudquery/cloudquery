@@ -9,7 +9,34 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/typeconv/ch/values"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/util"
 	"github.com/cloudquery/plugin-sdk/v4/message"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
+
+func (c *Client) DeleteStale(ctx context.Context, messages message.WriteDeleteStales) error {
+	if len(messages) == 0 {
+		return nil
+	}
+
+	for _, msg := range messages {
+		if err := c.conn.Exec(ctx, generateDeleteForDeleteStale(msg), msg.SourceName, msg.SyncTime); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func generateDeleteForDeleteStale(msg *message.WriteDeleteStale) string {
+	var sb strings.Builder
+	sb.WriteString("DELETE FROM ")
+	sb.WriteString(util.SanitizeID(msg.TableName))
+	sb.WriteString(" WHERE ")
+	sb.WriteString(util.SanitizeID(schema.CqSourceNameColumn.Name))
+	sb.WriteString(" = $1 AND ")
+	sb.WriteString(util.SanitizeID(schema.CqSyncTimeColumn.Name))
+	sb.WriteString(" < $2")
+	return sb.String()
+}
 
 func (c *Client) DeleteRecord(ctx context.Context, messages message.WriteDeleteRecords) error {
 	if len(messages) == 0 {
@@ -17,7 +44,7 @@ func (c *Client) DeleteRecord(ctx context.Context, messages message.WriteDeleteR
 	}
 
 	for _, msg := range messages {
-		sql := generateDelete(msg.DeleteRecord)
+		sql := generateDeleteForDeleteRecord(msg.DeleteRecord)
 		params, err := extractPredicateValues(msg.DeleteRecord.WhereClause)
 		if err != nil {
 			return err
@@ -62,7 +89,7 @@ func unpackArray(s any) []any {
 	return r
 }
 
-func generateDelete(msg message.DeleteRecord) string {
+func generateDeleteForDeleteRecord(msg message.DeleteRecord) string {
 	var sb strings.Builder
 
 	sb.WriteString("DELETE FROM ")
