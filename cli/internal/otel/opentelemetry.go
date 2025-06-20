@@ -38,19 +38,22 @@ func newResource() *resource.Resource {
 	return r
 }
 
-type otelConfig struct {
-	endpoint string
+type Config struct {
+	Endpoint string
+	Insecure bool
 }
 
-func getLogsProcessor(ctx context.Context, opts otelConfig) (*log.BatchProcessor, error) {
-	if opts.endpoint == "" {
+func getLogsProcessor(ctx context.Context, opts *Config) (*log.BatchProcessor, error) {
+	if opts.Endpoint == "" {
 		return nil, nil
 	}
 
 	logOptions := []otlploghttp.Option{
-		otlploghttp.WithEndpoint(opts.endpoint),
-		otlploghttp.WithInsecure(),
+		otlploghttp.WithEndpoint(opts.Endpoint),
 		otlploghttp.WithCompression(otlploghttp.GzipCompression),
+	}
+	if opts.Insecure {
+		logOptions = append(logOptions, otlploghttp.WithInsecure())
 	}
 
 	exporter, err := otlploghttp.New(ctx, logOptions...)
@@ -62,11 +65,7 @@ func getLogsProcessor(ctx context.Context, opts otelConfig) (*log.BatchProcessor
 	return processor, nil
 }
 
-func SetupOtel(ctx context.Context, logger zerolog.Logger, otelEndpoint string) (shutdown func(), err error) {
-	opts := otelConfig{
-		endpoint: otelEndpoint,
-	}
-
+func SetupOtel(ctx context.Context, logger zerolog.Logger, opts *Config) (shutdown func(), err error) {
 	logsProcessor, err := getLogsProcessor(ctx, opts)
 	if err != nil {
 		return nil, err
@@ -83,7 +82,6 @@ func SetupOtel(ctx context.Context, logger zerolog.Logger, otelEndpoint string) 
 	}))
 
 	logglobal.SetLoggerProvider(lp)
-
 	shutdown = func() {
 		if err := lp.Shutdown(context.Background()); err != nil {
 			logger.Error().Err(err).Msg("failed to shutdown OTLP logger provider")
