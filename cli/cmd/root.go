@@ -246,7 +246,7 @@ func CloseLogFile() {
 }
 
 func otelConfig() (*otel.Config, error) {
-	insecureEndpoint, err := strconv.ParseBool(env.GetEnvOrDefault("OTEL_ENDPOINT_INSECURE", "true"))
+	insecureEndpoint, err := strconv.ParseBool(env.GetEnvOrDefault("OTEL_ENDPOINT_INSECURE", "false"))
 	if err != nil {
 		return nil, err
 	}
