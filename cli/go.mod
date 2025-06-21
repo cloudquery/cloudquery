@@ -9,7 +9,7 @@ require (
 	github.com/cloudquery/cloudquery-api-go v1.13.9
 	github.com/cloudquery/codegen v0.3.28
 	github.com/cloudquery/plugin-pb-go v1.26.12
-	github.com/cloudquery/plugin-sdk/v4 v4.82.0
+	github.com/cloudquery/plugin-sdk/v4 v4.84.2
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/docker/docker v26.1.5+incompatible
@@ -51,7 +51,7 @@ require (
 	golang.org/x/net v0.40.0
 	golang.org/x/sync v0.14.0
 	golang.org/x/term v0.32.0
-	google.golang.org/grpc v1.72.1
+	google.golang.org/grpc v1.73.0
 	google.golang.org/protobuf v1.36.6
 	gopkg.in/yaml.v3 v3.0.1
 )
@@ -118,7 +118,7 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rs/cors v1.11.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/santhosh-tekuri/jsonschema/v6 v6.0.1 // indirect
+	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2 // indirect
 	github.com/segmentio/backo-go v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/tidwall/gjson v1.14.4 // indirect
