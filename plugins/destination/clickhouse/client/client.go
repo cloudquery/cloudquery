@@ -22,7 +22,6 @@ type Client struct {
 	logger zerolog.Logger
 	writer *batchwriter.BatchWriter
 	plugin.UnimplementedSource
-	batchwriter.UnimplementedDeleteStale
 }
 
 var _ plugin.Client = (*Client)(nil)
