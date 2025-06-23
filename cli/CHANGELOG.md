@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.21.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.20.5...cli-v6.21.0) (2025-06-23)
+
+
+### Features
+
+* Configures otel log collector ([#20895](https://github.com/cloudquery/cloudquery/issues/20895)) ([146a279](https://github.com/cloudquery/cloudquery/commit/146a279a3505bd25981a56dbaa4519a96e3d042e))
+* Transform table name for DeleteRecord ([#20870](https://github.com/cloudquery/cloudquery/issues/20870)) ([8ce11f6](https://github.com/cloudquery/cloudquery/commit/8ce11f690490ee7a95403c14f7203e4b89dc49a0))
+
 ## [6.20.5](https://github.com/cloudquery/cloudquery/compare/cli-v6.20.4...cli-v6.20.5) (2025-05-29)
 
 
