@@ -32,9 +32,9 @@ func generateDeleteForDeleteStale(msg *message.WriteDeleteStale) string {
 	sb.WriteString(util.SanitizeID(msg.TableName))
 	sb.WriteString(" WHERE ")
 	sb.WriteString(util.SanitizeID(schema.CqSourceNameColumn.Name))
-	sb.WriteString(" = $1 AND ")
+	sb.WriteString(" = $1 AND toTimeZone(")
 	sb.WriteString(util.SanitizeID(schema.CqSyncTimeColumn.Name))
-	sb.WriteString(" < $2")
+	sb.WriteString(", 'UTC') < $2")
 	return sb.String()
 }
 
