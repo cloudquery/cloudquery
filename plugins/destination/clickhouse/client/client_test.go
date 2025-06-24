@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+	"strconv"
 	"testing"
 	"time"
 
@@ -21,6 +22,7 @@ import (
 	"github.com/goccy/go-json"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
+	"golang.org/x/sync/errgroup"
 )
 
 func getTestConnection() string {
@@ -227,4 +229,85 @@ func TestMigrateNewArrayAndMapColumns(t *testing.T) {
 	}}); err != nil {
 		t.Fatal(fmt.Errorf("failed to insert record: %w", err))
 	}
+}
+
+func TestConcurrentSyncsSameTable(t *testing.T) {
+	const syncConcurrency = 200
+	ctx := context.Background()
+	group, _ := errgroup.WithContext(ctx)
+	randomUUIDString := uuid.New().String()
+	tableName := "k8s_core_namespaces_" + randomUUIDString
+	table := &schema.Table{
+		Name: tableName,
+		Columns: []schema.Column{
+			schema.CqIDColumn,
+			schema.CqSourceNameColumn,
+			schema.CqSyncTimeColumn,
+		},
+	}
+	// Create the table
+	p := plugin.NewPlugin("clickhouse",
+		internalPlugin.Version,
+		New,
+		plugin.WithJSONSchema(spec.JSONSchema),
+	)
+	s := &spec.Spec{ConnectionString: getTestConnection()}
+	b, err := json.Marshal(s)
+	require.NoError(t, err)
+	err = p.Init(ctx, b, plugin.NewClientOptions{})
+	require.NoError(t, err)
+	if err := p.WriteAll(ctx, []message.WriteMessage{&message.WriteMigrateTable{Table: table}}); err != nil {
+		t.Fatal(fmt.Errorf("failed to create table: %w", err))
+	}
+
+	for i := range syncConcurrency {
+		group.Go(func() error {
+			// Simulate a sync job against the same table
+			syncContext := context.Background()
+			p := plugin.NewPlugin("clickhouse",
+				internalPlugin.Version,
+				New,
+				plugin.WithJSONSchema(spec.JSONSchema),
+			)
+			s := &spec.Spec{ConnectionString: getTestConnection()}
+			b, err := json.Marshal(s)
+			require.NoError(t, err)
+			err = p.Init(syncContext, b, plugin.NewClientOptions{})
+			require.NoError(t, err)
+			if err := p.WriteAll(syncContext, []message.WriteMessage{&message.WriteMigrateTable{Table: table}}); err != nil {
+				t.Fatal(fmt.Errorf("failed to create table: %w", err))
+			}
+
+			jobIndexAsString := strconv.Itoa(i)
+			randomUUIDStringWithLastCharacterReplaced := randomUUIDString[:len(randomUUIDString)-len(jobIndexAsString)] + jobIndexAsString
+			bldr := array.NewRecordBuilder(memory.DefaultAllocator, table.ToArrowSchema())
+			bldr.Field(0).(*sdkTypes.UUIDBuilder).Append(uuid.MustParse(randomUUIDStringWithLastCharacterReplaced))
+			bldr.Field(1).(*array.StringBuilder).Append("source")
+			bldr.Field(2).(*array.TimestampBuilder).Append(arrow.Timestamp(time.Now().UnixMicro()))
+			record := bldr.NewRecord()
+
+			if err := p.WriteAll(syncContext, []message.WriteMessage{&message.WriteInsert{
+				Record: record,
+			}}); err != nil {
+				t.Fatal(fmt.Errorf("failed to insert record: %w", err))
+			}
+			return nil
+		})
+	}
+
+	require.NoError(t, group.Wait())
+
+	ch := make(chan arrow.Record)
+	go func() {
+		defer close(ch)
+		err = p.Read(ctx, table, ch)
+	}()
+
+	numRows := 0
+	for record := range ch {
+		numRows += int(record.NumRows())
+	}
+
+	require.Equal(t, syncConcurrency, numRows)
+	require.NoError(t, err)
 }
