@@ -629,6 +629,9 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	totals = sourceClient.Metrics()
 	sourceWarnings := totals.Warnings
 	sourceErrors := totals.Errors
+
+	allTables, incTables := sourceTables.TableNames(), getIncrementalTables(sourceTables).TableNames()
+
 	var metadataDataErrors error
 	for i := range destinationsClients {
 		m := destinationsClients[i].Metrics()
@@ -641,7 +644,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			SourceName:          sourceSpec.Name,
 			SourceVersion:       sourceSpec.Version,
 			SourcePath:          sourceSpec.Path,
-			SourceTables:        tableNameChanger.UpdateTableNamesSlice(destinationSpecs[i].Name, sourceTables.TableNames()),
+			SourceTables:        tableNameChanger.UpdateTableNamesSlice(destinationSpecs[i].Name, allTables),
+			IncrementalTables:   tableNameChanger.UpdateTableNamesSlice(destinationSpecs[i].Name, incTables),
 			CLIVersion:          Version,
 			DestinationErrors:   m.Errors,
 			DestinationWarnings: m.Warnings,
@@ -761,4 +765,15 @@ func getTransformedTableNameFromSchema(transformedSchemaBytes []byte) (string, e
 	}
 
 	return tableName, nil
+}
+
+func getIncrementalTables(tt schema.Tables) schema.Tables {
+	flattenedTables := tt.FlattenTables()
+	incTables := make(schema.Tables, 0, len(flattenedTables))
+	for i := range flattenedTables {
+		if flattenedTables[i].IsIncremental {
+			incTables = append(incTables, flattenedTables[i])
+		}
+	}
+	return incTables
 }

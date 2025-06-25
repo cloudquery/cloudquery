@@ -36,6 +36,7 @@ type syncSummary struct {
 	SyncGroupID         *string   `json:"sync_group_id,omitempty"`
 	ShardNum            *int      `json:"shard_num,omitempty"`
 	ShardTotal          *int      `json:"shard_total,omitempty"`
+	IncrementalTables   []string  `json:"incremental_tables,omitempty"`
 }
 
 func persistSummary(filename string, summary syncSummary) error {
