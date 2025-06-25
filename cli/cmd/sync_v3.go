@@ -146,9 +146,11 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	}
 	analytics.TrackSyncStarted(ctx, invocationUUID.UUID, syncStartedEvent)
 	var (
-		syncTimeTook   time.Duration
-		totalResources = int64(0)
-		totals         = sourceClient.Metrics()
+		syncTimeTook      time.Duration
+		totalResources    = int64(0)
+		totals            = sourceClient.Metrics()
+		resourcesPerTable = map[string]int64{}
+		errorsPerTable    = map[string]int64{}
 	)
 	defer func() {
 		analytics.TrackSyncCompleted(ctx, invocationUUID.UUID, analytics.SyncFinishedEvent{
@@ -316,6 +318,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		SkipTables:          sourceSpec.SkipTables,
 		SkipDependentTables: *sourceSpec.SkipDependentTables,
 		DeterministicCqId:   sourceSpec.DeterministicCQID,
+		WithErrorMessages:   true,
 	}
 	if sourceSpec.BackendOptions != nil {
 		syncReq.Backend = &plugin.Sync_BackendOptions{
@@ -372,6 +375,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			if atomic.LoadInt64(&isComplete) == 1 {
 				status = cloudquery_api.SyncRunStatusCompleted
 			}
+			// TODO: Update per table errors and resources after changes in cloud API
 			obj := cloudquery_api.CreateSyncRunProgressJSONRequestBody{
 				Rows:     atomic.LoadInt64(&totalResources),
 				Errors:   int64(totals.Errors),
@@ -487,6 +491,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 
 				atomic.AddInt64(&newResources, record.NumRows())
 				atomic.AddInt64(&totalResources, record.NumRows())
+				tableName, _ := record.Schema().Metadata().GetValue(schema.MetadataTableName)
+				resourcesPerTable[tableName] += record.NumRows()
 				if remoteProgressReporter != nil {
 					remoteProgressReporter.SendSignal()
 				}
@@ -598,6 +604,9 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 						return handleSendError(err, writeClients[i], "migrate")
 					}
 				}
+			case *plugin.Sync_Response_Error:
+				log.Error().Str("table", m.Error.TableName).Msg(m.Error.Error)
+				errorsPerTable[m.Error.TableName]++
 			default:
 				return fmt.Errorf("unknown message type: %T", m)
 			}
@@ -628,7 +637,13 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	}
 	totals = sourceClient.Metrics()
 	sourceWarnings := totals.Warnings
-	sourceErrors := totals.Errors
+	var sourceErrors uint64
+	for _, val := range errorsPerTable {
+		sourceErrors += uint64(val)
+	}
+	if totals.Errors > sourceErrors {
+		sourceErrors = totals.Errors
+	}
 	var metadataDataErrors error
 	for i := range destinationsClients {
 		m := destinationsClients[i].Metrics()
@@ -697,13 +712,13 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	exitReason = ExitReasonCompleted
 
 	msg := "Sync completed successfully"
-	if totals.Errors > 0 {
+	if sourceErrors > 0 {
 		msg = "Sync completed with errors, see logs for details"
 	}
-	fmt.Printf("%s. Resources: %d, Errors: %d, Warnings: %d, Time: %s\n", msg, totalResources, totals.Errors, totals.Warnings, syncTimeTook.Truncate(time.Second).String())
+	fmt.Printf("%s. Resources: %d, Errors: %d, Warnings: %d, Time: %s\n", msg, totalResources, sourceErrors, totals.Warnings, syncTimeTook.Truncate(time.Second).String())
 	log.Info().
 		Int64("resources", totalResources).
-		Uint64("errors", totals.Errors).
+		Uint64("errors", sourceErrors).
 		Uint64("warnings", totals.Warnings).
 		Str("duration", syncTimeTook.Truncate(time.Second).String()).
 		Str("result", msg).
