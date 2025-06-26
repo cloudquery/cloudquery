@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.3.2...plugins-destination-bigquery-v4.3.3) (2025-06-26)
+
+
+### Bug Fixes
+
+* **deps:** Update Google Cloud modules ([#20875](https://github.com/cloudquery/cloudquery/issues/20875)) ([04e5176](https://github.com/cloudquery/cloudquery/commit/04e5176b9686dd312878ea626cdcbcce5c7ad1c4))
+
 ## [4.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.3.1...plugins-destination-bigquery-v4.3.2) (2025-05-28)
 
 
