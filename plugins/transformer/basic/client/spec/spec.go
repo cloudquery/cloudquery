@@ -15,6 +15,8 @@ const (
 	KindRenameColumn              = "rename_column"
 	KindAddPrimaryKeys            = "add_primary_keys"
 	KindObfuscateSensitiveColumns = "obfuscate_sensitive_columns"
+	KindUppercase                 = "uppercase"
+	KindLowercase                 = "lowercase"
 )
 
 type TransformationSpec struct {
@@ -99,7 +101,16 @@ func (s *Spec) Validate() error {
 			if len(t.Columns) > 0 {
 				err = errors.Join(err, fmt.Errorf("columns field must not be specified for %s transformation", t.Kind))
 			}
-
+		case KindLowercase, KindUppercase:
+			if t.Value != "" {
+				err = errors.Join(err, fmt.Errorf("value field must be empty for %s transformation", t.Kind))
+			}
+			if len(t.Columns) == 0 {
+				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "columns", t.Kind))
+			}
+			if t.Name != "" || t.NewTableNameTemplate != "" {
+				err = errors.Join(err, fmt.Errorf("name/new_table_name_template fields must not be specified for %s transformation", t.Kind))
+			}
 		default:
 			err = errors.Join(err, fmt.Errorf("unknown transformation kind: %s", t.Kind))
 		}

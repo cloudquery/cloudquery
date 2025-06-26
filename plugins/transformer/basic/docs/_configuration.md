@@ -30,5 +30,11 @@ spec:
         tables: ["xkcd_comics"]
         name: img
         value: img_url
+      - kind: uppercase
+        tables: ["xkcd_comics"]
+        columns: ["title"]
+      - kind: lowercase
+        tables: ["xkcd_comics"]
+        columns: ["title"]
 
 ```

@@ -1,13 +1,16 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/enum"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/otel"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/secrets"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/uuid"
 	guuid "github.com/google/uuid"
@@ -35,6 +38,7 @@ Find more information at:
 	logFile             *os.File
 	invocationUUID      uuid.UUID
 	secretAwareRedactor *secrets.SecretAwareRedactor
+	loggingShutdownFn   func()
 )
 
 func NewCmdRoot() *cobra.Command {
@@ -81,6 +85,19 @@ func NewCmdRoot() *cobra.Command {
 
 			if logFile, err = initLogging(noLogFile, logLevel, logFormat, logConsole, logFileName); err != nil {
 				return err
+			}
+
+			oc, err := otelConfig()
+			if err != nil {
+				return err
+			}
+			if oc.Endpoint != "" {
+				loggingShutdownFn, err = otel.SetupOtel(context.Background(), log.Logger, oc)
+				if err != nil {
+					return fmt.Errorf("failed to setup OpenTelemetry: %w", err)
+				}
+				log.Logger = log.Logger.Hook(otel.NewOTELLoggerHook(invocationUUID.String()))
+				log.Info().Str("otel_logs_endpoint", oc.Endpoint).Msg("otel logs endpoint set")
 			}
 
 			// log warnings now that the logger is initialized
@@ -204,6 +221,9 @@ func NewCmdRoot() *cobra.Command {
 			oldAnalyticsClient.Close()
 		}
 		analytics.Close()
+		if loggingShutdownFn != nil {
+			loggingShutdownFn()
+		}
 	})
 
 	return cmd
@@ -223,4 +243,15 @@ func CloseLogFile() {
 	if logFile != nil {
 		logFile.Close()
 	}
+}
+
+func otelConfig() (*otel.Config, error) {
+	insecureEndpoint, err := strconv.ParseBool(env.GetEnvOrDefault("OTEL_ENDPOINT_INSECURE", "false"))
+	if err != nil {
+		return nil, err
+	}
+	return &otel.Config{
+		Endpoint: env.GetEnvOrDefault("OTEL_ENDPOINT", ""),
+		Insecure: insecureEndpoint,
+	}, nil
 }
