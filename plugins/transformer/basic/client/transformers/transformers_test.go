@@ -200,7 +200,6 @@ func TestTransform(t *testing.T) {
 				require.Equal(t, int64(1), record.NumRows(), "Expected 1 rows")
 				require.Equal(t, "val2", record.Column(0).(*array.String).Value(0), "Expected `val2` in col1 column row 0")
 				require.Equal(t, "val4", record.Column(1).(*array.String).Value(0), "Expected `val4` in col2 column row 0")
-
 			},
 		},
 		{
@@ -217,7 +216,6 @@ func TestTransform(t *testing.T) {
 				require.Equal(t, int64(1), record.NumRows(), "Expected 1 rows")
 				require.Equal(t, "val1", record.Column(0).(*array.String).Value(0), "Expected `val1` in col1 column row 0")
 				require.Equal(t, "val3", record.Column(1).(*array.String).Value(0), "Expected `val4` in col2 column row 0")
-
 			},
 		},
 		{
@@ -236,7 +234,6 @@ func TestTransform(t *testing.T) {
 				require.Equal(t, "val2", record.Column(0).(*array.String).Value(1), "Expected `val2` in col1 column row 1")
 				require.Equal(t, "val3", record.Column(1).(*array.String).Value(0), "Expected `val3` in col2 column row 0")
 				require.Equal(t, "val4", record.Column(1).(*array.String).Value(1), "Expected `val4` in col2 column row 0")
-
 			},
 		},
 	}
