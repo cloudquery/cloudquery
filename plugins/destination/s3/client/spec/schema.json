@@ -21,6 +21,38 @@
       "type": "object",
       "description": "CloudQuery CSV file output spec."
     },
+    "Credentials": {
+      "properties": {
+        "local_profile": {
+          "type": "string",
+          "description": "[Local profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) to use to authenticate this account with.\nPlease note this should be set to the name of the profile.\n\nFor example, with the following credentials file:\n\n  ```ini copy\n  [default]\n  aws_access_key_id=xxxx\n  aws_secret_access_key=xxxx\n\n  [user1]\n  aws_access_key_id=xxxx\n  aws_secret_access_key=xxxx\n  ```\n\n`local_profile` should be set to either `default` or `user1`.",
+          "examples": [
+            "my_aws_profile"
+          ]
+        },
+        "role_arn": {
+          "type": "string",
+          "pattern": "^(arn(:[^:\n]*){5}([:/].*)?)?$",
+          "description": "If specified will use this to assume role."
+        },
+        "role_session_name": {
+          "type": "string",
+          "description": "If specified will use this session name when assume role to `role_arn`.",
+          "examples": [
+            "my_aws_role_session_name"
+          ]
+        },
+        "external_id": {
+          "type": "string",
+          "description": "If specified will use this when assuming role to `role_arn`.",
+          "examples": [
+            "external_id"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
     "Duration": {
       "type": "string",
       "pattern": "^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$",
@@ -346,6 +378,16 @@
           "description": "[Local profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) to use to authenticate this account with.\nShould be set to the name of the profile.\n\nFor example, with the following credentials file:\n\n  ```ini copy\n  [default]\n  aws_access_key_id=xxxx\n  aws_secret_access_key=xxxx\n\n  [user1]\n  aws_access_key_id=xxxx\n  aws_secret_access_key=xxxx\n  ```\n\n`local_profile` should be set to either `default` or `user1`.",
           "examples": [
             "my_aws_profile"
+          ]
+        },
+        "credentials": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Credentials"
+            },
+            {
+              "type": "null"
+            }
           ]
         },
         "path": {
