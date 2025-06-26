@@ -101,7 +101,7 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 		cfg.ClientLogMode |= aws.LogRequestWithBody | aws.LogResponseWithBody
 	}
 
-	if c.spec.Credentials.RoleARN != "" {
+	if c.spec.Credentials != nil && c.spec.Credentials.RoleARN != "" {
 		opts := make([]func(*stscreds.AssumeRoleOptions), 0, 1)
 
 		// default is 15 minutes. All roles allow for a minimum of 1 hour, some can be configured for up to 12 hours
