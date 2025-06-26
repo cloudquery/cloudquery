@@ -50,8 +50,8 @@ github.com/cloudquery/godebouncer v0.0.0-20230626172639-4b59d27e1b8c h1:o8Xwg6fi
 github.com/cloudquery/godebouncer v0.0.0-20230626172639-4b59d27e1b8c/go.mod h1:0Rxvtp9fhnRCt+k4QrpXY0OPUyyjF0zVO7wCrnsqsCU=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66 h1:OZLPSIBYEfvkAUeOeM8CwTgVQy5zhayI99ishCrsFV0=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66/go.mod h1:0SoZ/U7yJlNOR+fWsBSeTvTbGXB6DK01tzJ7m2Xfg34=
-github.com/cloudquery/plugin-pb-go v1.26.12 h1:IXixFBeKeokGjkhp8piYR+XjsuKT5frOljPPZ0VtImQ=
-github.com/cloudquery/plugin-pb-go v1.26.12/go.mod h1:CVC4fwf4GyGDD339Gyxbr3MqWsSBAVYFeku1quhtGik=
+github.com/cloudquery/plugin-pb-go v1.26.13 h1:3AuIG7QfeN//c9cxvMWH8WO+V6vPMj/tFlW9R3c5viY=
+github.com/cloudquery/plugin-pb-go v1.26.13/go.mod h1:tB3BdV4Trwqs/E2AxrvbJ/xw7i3B1k0tKaQgjcsfAO8=
 github.com/cloudquery/plugin-sdk/v4 v4.82.0 h1:nlXmkAVjsXoT8uwLOBM9qhBqig3w/ixZHuq069tFAeo=
 github.com/cloudquery/plugin-sdk/v4 v4.82.0/go.mod h1:QKLTsI9qlloa6UaALOjzmC+QWayscGG6GANZC4mdHQc=
 github.com/containerd/log v0.1.0 h1:TCJt7ioM2cr/tfR8GPbGf9/VRAX8D2B4PjzCpfX540I=
@@ -385,8 +385,8 @@ go.opentelemetry.io/otel/sdk/log v0.12.2 h1:yNoETvTByVKi7wHvYS6HMcZrN5hFLD7I++1x
 go.opentelemetry.io/otel/sdk/log v0.12.2/go.mod h1:DcpdmUXHJgSqN/dh+XMWa7Vf89u9ap0/AAk/XGLnEzY=
 go.opentelemetry.io/otel/sdk/log/logtest v0.0.0-20250521073539-a85ae98dcedc h1:uqxdywfHqqCl6LmZzI3pUnXT1RGFYyUgxj0AkWPFxi0=
 go.opentelemetry.io/otel/sdk/log/logtest v0.0.0-20250521073539-a85ae98dcedc/go.mod h1:TY/N/FT7dmFrP/r5ym3g0yysP1DefqGpAZr4f82P0dE=
-go.opentelemetry.io/otel/sdk/metric v1.34.0 h1:5CeK9ujjbFVL5c1PhLuStg1wxA7vQv7ce1EK0Gyvahk=
-go.opentelemetry.io/otel/sdk/metric v1.34.0/go.mod h1:jQ/r8Ze28zRKoNRdkjCZxfs6YvBTG1+YIqyFVFYec5w=
+go.opentelemetry.io/otel/sdk/metric v1.35.0 h1:1RriWBmCKgkeHEhM7a2uMjMUfP7MsOF5JpUCaEqEI9o=
+go.opentelemetry.io/otel/sdk/metric v1.35.0/go.mod h1:is6XYCUMpcKi+ZsOvfluY5YstFnhW0BidkR+gL+qN+w=
 go.opentelemetry.io/otel/trace v1.36.0 h1:ahxWNuqZjpdiFAyrIoQ4GIiAIhxAunQR6MUoKrsNd4w=
 go.opentelemetry.io/otel/trace v1.36.0/go.mod h1:gQ+OnDZzrybY4k4seLzPAWNwVBBVlF2szhehOBB/tGA=
 go.opentelemetry.io/proto/otlp v1.6.0 h1:jQjP+AQyTf+Fe7OKj/MfkDrmK4MNVtw2NpXsf9fefDI=
@@ -464,8 +464,8 @@ google.golang.org/genproto/googleapis/api v0.0.0-20250519155744-55703ea1f237 h1:
 google.golang.org/genproto/googleapis/api v0.0.0-20250519155744-55703ea1f237/go.mod h1:ezi0AVyMKDWy5xAncvjLWH7UcLBB5n7y2fQ8MzjJcto=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20250519155744-55703ea1f237 h1:cJfm9zPbe1e873mHJzmQ1nwVEeRDU/T1wXDK2kUSU34=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20250519155744-55703ea1f237/go.mod h1:qQ0YXyHHx3XkvlzUtpXDkS29lDSafHMZBAZDc03LQ3A=
-google.golang.org/grpc v1.72.1 h1:HR03wO6eyZ7lknl75XlxABNVLLFc2PAb6mHlYh756mA=
-google.golang.org/grpc v1.72.1/go.mod h1:wH5Aktxcg25y1I3w7H69nHfXdOG3UiadoBtjh3izSDM=
+google.golang.org/grpc v1.73.0 h1:VIWSmpI2MegBtTuFt5/JWy2oXxtjJ/e89Z70ImfD2ok=
+google.golang.org/grpc v1.73.0/go.mod h1:50sbHOUqWoCQGI8V2HQLJM0B+LMlIUjNSZmow7EVBQc=
 google.golang.org/protobuf v1.36.6 h1:z1NpPI8ku2WgiWnf+t9wTPsn6eP1L7ksHUlkfLvd9xY=
 google.golang.org/protobuf v1.36.6/go.mod h1:jduwjTPXsFjZGTmRluh+L6NjiWu7pchiJ2/5YcXBHnY=
 gopkg.in/alecthomas/kingpin.v2 v2.2.6/go.mod h1:FMv+mEhP44yOT+4EoQTLFTRgOQ1FBLkstjWtayDeSgw=
