@@ -10,6 +10,7 @@ require (
 	github.com/goccy/go-json v0.10.5
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.34.0
+	github.com/samber/lo v1.51.0
 	github.com/stretchr/testify v1.10.0
 	golang.org/x/sync v0.15.0
 )
