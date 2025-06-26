@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.4.0...plugins-transformer-basic-v2.5.0) (2025-06-26)
+
+
+### Features
+
+* Add lower and upper case transformations to basic transformer ([#20894](https://github.com/cloudquery/cloudquery/issues/20894)) ([007bc00](https://github.com/cloudquery/cloudquery/commit/007bc00f0405f852db475e0ab28f8d8a11f4af1f))
+
 ## [2.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.3.1...plugins-transformer-basic-v2.4.0) (2025-05-26)
 
 
