@@ -88,7 +88,7 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 	}
 
 	if c.spec.Credentials.LocalProfile != "" {
-		configFns = append(configFns, config.WithSharedConfigProfile(c.spec.LocalProfile))
+		configFns = append(configFns, config.WithSharedConfigProfile(c.spec.Credentials.LocalProfile))
 	}
 
 	cfg, err := config.LoadDefaultConfig(ctx, configFns...)
