@@ -112,6 +112,12 @@ func ObfuscateSensitiveColumns(columnNames []string) TransformationFn {
 		return recordupdater.New(record).ObfuscateSensitiveColumns()
 	}
 }
+
+func DropRows(tableNames, columnNames []string, value string) TransformationFn {
+	return func(record arrow.Record) (arrow.Record, error) {
+		return recordupdater.New(record).DropRows(columnNames, columnNames, value)
+	}
+}
 func ObfuscateColumns(columnNames []string) TransformationFn {
 	return func(record arrow.Record) (arrow.Record, error) {
 		return recordupdater.New(record).ObfuscateColumns(columnNames)

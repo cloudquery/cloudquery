@@ -160,6 +160,22 @@ func TestAutoObfuscateEntireJSONColumn(t *testing.T) {
 		updatedRecord.Column(2).ValueStr(1))
 }
 
+func TestDropColumn(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+
+	updatedRecord, err := updater.DropRows([]string{"col1"}, "val1")
+	require.NoError(t, err)
+
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(1), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "col1", updatedRecord.ColumnName(0))
+	require.Equal(t, "col2", updatedRecord.ColumnName(1))
+	require.Equal(t, "val2", updatedRecord.Column(0).(*array.String).Value(0))
+	assert.Equal(t, `{"foo":{"bar":["d","e","f"]}}`, updatedRecord.Column(2).ValueStr(0))
+}
+
 func TestAutoObfuscateEntireJSONColumnSkipsJsonPath(t *testing.T) {
 	sc := []string{"col3.foo", "col3"}
 	scJSON, err := json.Marshal(sc)

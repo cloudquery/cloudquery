@@ -158,6 +158,54 @@ func (r *RecordUpdater) ObfuscateSensitiveColumns() (arrow.Record, error) {
 	return r.ObfuscateColumns(sensitiveColumnsArr)
 }
 
+func (r *RecordUpdater) DropRows(columnNames []string, value string) (arrow.Record, error) {
+	cols := r.record.Columns()
+
+	rowsToDrop := make([]int, 0, r.record.NumRows())
+	for j, column := range cols {
+		if !slices.Contains(columnNames, r.record.ColumnName(j)) {
+			continue
+		}
+		for i := range column.Len() {
+			if slices.Contains(rowsToDrop, i) {
+				continue
+			}
+			if (!column.IsValid(i) && value == "") || (column.IsValid(i) && column.ValueStr(i) == value) {
+				rowsToDrop = append(rowsToDrop, i)
+			}
+		}
+	}
+	if len(rowsToDrop) == 0 {
+		return r.record, nil
+	}
+
+	newRowCount := int(r.record.NumRows()) - len(rowsToDrop)
+	newCols := make([]arrow.Array, len(cols))
+	newRow := 0
+	for _, arr := range cols {
+		builder := array.NewBuilder(memory.DefaultAllocator, arr.DataType())
+		for j := 0; j < arr.Len(); j++ {
+			if slices.Contains(rowsToDrop, j) {
+				continue
+			}
+			if arr.IsNull(j) {
+				builder.AppendEmptyValue()
+				continue
+			}
+
+			if err := builder.AppendValueFromString(arr.ValueStr(j)); err != nil {
+				return nil, fmt.Errorf("failed to append value from string: %w", err)
+			}
+		}
+		newCols[newRow] = builder.NewArray()
+		newRow++
+	}
+	newSchema := r.record.Schema()
+	r.record = array.NewRecord(newSchema, newCols, int64(newRowCount))
+
+	return r.record, nil
+}
+
 func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.Record, error) {
 	plainCols, jsonCols := r.splitJSONColumns(columnNames)
 
