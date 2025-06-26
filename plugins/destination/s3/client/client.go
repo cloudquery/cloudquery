@@ -16,8 +16,10 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	awshttp "github.com/aws/aws-sdk-go-v2/aws/transport/http"
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/streamingbatchwriter"
@@ -27,6 +29,7 @@ import (
 )
 
 var errTestWriteFailed = errors.New("failed to write test file to S3")
+var errRetrievingCredentials = errors.New("error retrieving AWS credentials (see logs for details). Please verify your credentials and try again")
 
 type Client struct {
 	plugin.UnimplementedSource
@@ -83,7 +86,8 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 			})
 		}),
 	}
-	if c.spec.LocalProfile != "" {
+
+	if c.spec.Credentials.LocalProfile != "" {
 		configFns = append(configFns, config.WithSharedConfigProfile(c.spec.LocalProfile))
 	}
 
@@ -96,6 +100,31 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 	if c.spec.AWSDebug {
 		cfg.ClientLogMode |= aws.LogRequestWithBody | aws.LogResponseWithBody
 	}
+
+	if c.spec.Credentials.RoleARN != "" {
+		opts := make([]func(*stscreds.AssumeRoleOptions), 0, 1)
+
+		// default is 15 minutes. All roles allow for a minimum of 1 hour, some can be configured for up to 12 hours
+		opts = append(opts, func(opts *stscreds.AssumeRoleOptions) {
+			opts.Duration = 1 * time.Hour
+		})
+
+		if c.spec.Credentials.ExternalID != "" {
+			opts = append(opts, func(opts *stscreds.AssumeRoleOptions) {
+				opts.ExternalID = &c.spec.Credentials.ExternalID
+			})
+		}
+		if c.spec.Credentials.RoleSessionName != "" {
+			opts = append(opts, func(opts *stscreds.AssumeRoleOptions) {
+				opts.RoleSessionName = c.spec.Credentials.RoleSessionName
+			})
+		}
+		stsClient := sts.NewFromConfig(cfg)
+		provider := stscreds.NewAssumeRoleProvider(stsClient, c.spec.Credentials.RoleARN, opts...)
+
+		cfg.Credentials = aws.NewCredentialsCache(provider, credentialsCacheOptionsFunc)
+	}
+
 	cfg.HTTPClient = awshttp.NewBuildableClient().WithTransportOptions(func(tr *http.Transport) {
 		if tr.TLSClientConfig == nil {
 			tr.TLSClientConfig = &tls.Config{}
@@ -109,6 +138,12 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 		}
 		o.UsePathStyle = c.spec.UsePathStyle
 	})
+
+	// Test out retrieving credentials
+	if _, err := cfg.Credentials.Retrieve(ctx); err != nil {
+		logger.Error().Err(err).Msg("error retrieving credentials")
+		return nil, errRetrievingCredentials
+	}
 
 	if *c.spec.TestWrite {
 		// we want to run this test because we want it to fail early if the bucket is not accessible
@@ -146,4 +181,19 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 
 func (c *Client) Close(ctx context.Context) error {
 	return c.writer.Close(ctx)
+}
+
+func credentialsCacheOptionsFunc(options *aws.CredentialsCacheOptions) {
+	// ExpiryWindow will allow the credentials to trigger refreshing prior to
+	// the credentials actually expiring. This is beneficial so race conditions
+	// with expiring credentials do not cause requests to fail unexpectedly
+	// due to ExpiredToken exceptions.
+	//
+	// An ExpiryWindow of 5 minute would cause calls to IsExpired() to return true
+	// 5 minutes before the credentials are actually expired. This can cause an
+	// increased number of requests to refresh the credentials to occur. We balance this with jitter.
+	options.ExpiryWindow = 5 * time.Minute
+	// Jitter is added to avoid the thundering herd problem of many refresh requests
+	// happening all at once.
+	options.ExpiryWindowJitterFrac = 0.5
 }
