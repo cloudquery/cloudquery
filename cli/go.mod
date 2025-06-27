@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow-go/v18 v18.3.0
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.3.0
-	github.com/cloudquery/cloudquery-api-go v1.13.9
+	github.com/cloudquery/cloudquery-api-go v1.13.10
 	github.com/cloudquery/codegen v0.3.28
 	github.com/cloudquery/plugin-pb-go v1.26.13
 	github.com/cloudquery/plugin-sdk/v4 v4.82.0
@@ -79,7 +79,7 @@ require (
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
 	github.com/go-logr/logr v1.4.2 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
+	github.com/go-viper/mapstructure/v2 v2.3.0 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/golang/snappy v1.0.0 // indirect
