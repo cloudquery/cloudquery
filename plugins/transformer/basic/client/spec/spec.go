@@ -113,8 +113,8 @@ func (s *Spec) Validate() error {
 				err = errors.Join(err, fmt.Errorf("name/new_table_name_template fields must not be specified for %s transformation", t.Kind))
 			}
 		case KindDropRows:
-			if len(t.Columns) == 0 || (t.Value != nil && *t.Value != "") {
-				err = errors.Join(err, fmt.Errorf("'columns' and 'value' fields must be specified for %s transformation", t.Kind))
+			if len(t.Columns) == 0 {
+				err = errors.Join(err, fmt.Errorf("'columns' must be specified for %s transformation", t.Kind))
 			}
 
 		default:
