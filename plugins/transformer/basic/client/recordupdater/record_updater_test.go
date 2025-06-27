@@ -177,7 +177,7 @@ func TestDropRow(t *testing.T) {
 }
 
 func TestDropRowTimestamp(t *testing.T) {
-	record := createTestRecord()
+	record := createTestRecordWithTS()
 	updater := New(record)
 	updatedRecord, err := updater.DropRows([]string{"col4"}, &[]string{"2025-06-27 10:40:35Z"}[0])
 	require.NoError(t, err)
@@ -199,17 +199,17 @@ func TestComprehensiveDropRow(t *testing.T) {
 	updatedRecord, err := updater.DropRows([]string{"uuid"}, &[]string{"3831f26b-7a87-577a-ba61-77c84f262922"}[0])
 	require.NoError(t, err)
 	require.Equal(t, "dae677ed-5012-5bc8-8067-a8374a14edfa", updatedRecord.Column(14).(*types.UUIDArray).ValueStr(0))
+	require.Equal(t, int64(9), updatedRecord.NumRows())
 
-	// , mac, json, date64, date32
 	updatedRecord, err = updater.DropRows([]string{"mac"}, &[]string{"a6:ae:92:fb:b5:2c"}[0])
 	require.NoError(t, err)
-	require.Equal(t, "aa:f1:cb:2e:55:8f", updatedRecord.Column(16).(*types.MACArray).ValueStr(0))
 	require.Equal(t, int64(8), updatedRecord.NumRows())
+	require.Equal(t, "aa:f1:cb:2e:55:8f", updatedRecord.Column(16).(*types.MACArray).ValueStr(0))
 
-	updatedRecord, err = updater.DropRows([]string{"inet"}, &[]string{"139.0.0.0/10"}[0])
+	updatedRecord, err = updater.DropRows([]string{"inet"}, &[]string{"139.0.16.60/10"}[0])
 	require.NoError(t, err)
-	require.Equal(t, "30.233.221.0/25", updatedRecord.Column(15).(*types.InetArray).ValueStr(0))
 	require.Equal(t, int64(7), updatedRecord.NumRows())
+	require.Equal(t, "30.233.221.51/25", updatedRecord.Column(15).(*types.InetArray).ValueStr(0))
 
 	updatedRecord, err = updater.DropRows([]string{"json"}, &[]string{`{"test":["a","b",52011]}`}[0])
 	require.NoError(t, err)
@@ -288,7 +288,7 @@ func TestChangeTableName(t *testing.T) {
 	require.Equal(t, "cq_sync_testTable", newTableName)
 }
 
-func createTestRecord() arrow.Record {
+func createTestRecordWithTS() arrow.Record {
 	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
 	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
 		[]arrow.Field{
@@ -307,6 +307,26 @@ func createTestRecord() arrow.Record {
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["d","e","f"]}}`))
 	bld.Field(3).(*array.TimestampBuilder).AppendTime(time.Date(2025, 6, 27, 10, 40, 35, 914319000, time.UTC))
 	bld.Field(3).(*array.TimestampBuilder).AppendTime(time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC))
+
+	return bld.NewRecord()
+}
+
+func createTestRecord() arrow.Record {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "col1", Type: arrow.BinaryTypes.String},
+			{Name: "col2", Type: arrow.BinaryTypes.String},
+			{Name: "col3", Type: types.NewJSONType()},
+		},
+		&md,
+	))
+	defer bld.Release()
+
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1", "val2"}, nil)
+	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
+	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["a","b","c"]},"hello":"world"}`))
+	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["d","e","f"]}}`))
 
 	return bld.NewRecord()
 }

@@ -189,7 +189,9 @@ func (r *RecordUpdater) DropRows(columnNames []string, value *string) (arrow.Rec
 	currentSliceStart := -1
 	for row := range r.record.NumRows() {
 		if !rowsToDrop[int(row)] {
-			currentSliceStart = int(row)
+			if currentSliceStart == -1 {
+				currentSliceStart = int(row)
+			}
 			// This handles the edge case of checking the last row
 			if row == r.record.NumRows()-1 && currentSliceStart != -1 {
 				rowSlices = append(rowSlices, r.record.NewSlice(int64(currentSliceStart), row+1))
@@ -203,19 +205,28 @@ func (r *RecordUpdater) DropRows(columnNames []string, value *string) (arrow.Rec
 		}
 	}
 	concatenatedCols := make([]arrow.Array, int(r.record.NumCols()))
-
 	for i := range r.record.NumCols() {
 		var colChunks []arrow.Array
 		for _, slice := range rowSlices {
 			colChunks = append(colChunks, slice.Column(int(i)))
 		}
-		concat, err := array.Concatenate(colChunks, memory.DefaultAllocator)
-		if err != nil {
-			return nil, fmt.Errorf("failed to concatenate arrays: %w", err)
+
+		if len(rowSlices) > 0 {
+			concat, err := array.Concatenate(colChunks, memory.DefaultAllocator)
+			if err != nil {
+				return nil, fmt.Errorf("failed to concatenate arrays: %w", err)
+			}
+			concatenatedCols[i] = concat
+		} else {
+			builder := array.NewBuilder(memory.DefaultAllocator, r.record.Column(int(i)).DataType())
+			defer builder.Release()
+			concatenatedCols[i] = builder.NewArray()
 		}
-		concatenatedCols[i] = concat
+
 	}
-	return array.NewRecord(r.record.Schema(), concatenatedCols, int64(newRowLen)), nil
+
+	r.record = array.NewRecord(r.record.Schema(), concatenatedCols, int64(newRowLen))
+	return r.record, nil
 }
 
 func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.Record, error) {
