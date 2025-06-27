@@ -161,17 +161,18 @@ func (r *RecordUpdater) ObfuscateSensitiveColumns() (arrow.Record, error) {
 func (r *RecordUpdater) DropRows(columnNames []string, value string) (arrow.Record, error) {
 	cols := r.record.Columns()
 
-	rowsToDrop := make([]int, 0, r.record.NumRows())
+	rowsToDrop := make(map[int]bool)
 	for j, column := range cols {
 		if !slices.Contains(columnNames, r.record.ColumnName(j)) {
 			continue
 		}
 		for i := range column.Len() {
-			if slices.Contains(rowsToDrop, i) {
+			// check if i in map
+			if _, ok := rowsToDrop[i]; ok {
 				continue
 			}
 			if (!column.IsValid(i) && value == "") || (column.IsValid(i) && column.ValueStr(i) == value) {
-				rowsToDrop = append(rowsToDrop, i)
+				rowsToDrop[i] = true
 			}
 		}
 	}
@@ -185,7 +186,7 @@ func (r *RecordUpdater) DropRows(columnNames []string, value string) (arrow.Reco
 	for _, arr := range cols {
 		builder := array.NewBuilder(memory.DefaultAllocator, arr.DataType())
 		for j := 0; j < arr.Len(); j++ {
-			if slices.Contains(rowsToDrop, j) {
+			if _, ok := rowsToDrop[j]; ok {
 				continue
 			}
 			if arr.IsNull(j) {
