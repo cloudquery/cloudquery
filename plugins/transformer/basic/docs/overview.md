@@ -59,4 +59,11 @@ You can also use the `obfuscate_sensitive_columns` transformation to automatical
 
 Note: transformations are applied sequentially. If you rename tables, the table matcher configuration of subsequent transformations will need to be updated to the new names.
 Note: escape syntax is [SJSON sytax](https://github.com/tidwall/sjson?tab=readme-ov-file#path-syntax).
-Note: when using the `drop_rows` transformation, only non-list columns are supported. If you want to drop `null` values then leave the `values` field empty. 
+
+
+
+
+Edge Cases and limitations for `drop_rows` transformation:
+- The `drop_rows` transformation only supports non-list columns
+- If you are trying to drop based on a nil value in the column, you should leave the `values` field empty
+- If you are trying to drop based on a JSON value, make sure that the value is the compacted version of the JSON. For example, if you want to drop rows where a JSON column `tags` has a value of `{"foo": "bar"}`, you should specify the value as `{"foo":"bar"}` without any whitespace.
