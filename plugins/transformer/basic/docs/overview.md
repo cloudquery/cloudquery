@@ -6,6 +6,7 @@ This CloudQuery transformer plugin provides basic transformation capabilities:
 - Obfuscating string columns
 - Renaming tables using a name template (use `{{.OldName}}` to refer to the original name, see example below)
 - Normalizing column values to all-upper/lowercase
+- Dropping rows based on column values
 
 ## Configuration
 
@@ -58,3 +59,4 @@ You can also use the `obfuscate_sensitive_columns` transformation to automatical
 
 Note: transformations are applied sequentially. If you rename tables, the table matcher configuration of subsequent transformations will need to be updated to the new names.
 Note: escape syntax is [SJSON sytax](https://github.com/tidwall/sjson?tab=readme-ov-file#path-syntax).
+Note: when using the `drop_rows` transformation, only non-list columns are supported. If you want to drop `null` values then leave the `values` field empty. 
