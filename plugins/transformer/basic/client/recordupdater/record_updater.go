@@ -189,7 +189,7 @@ func (r *RecordUpdater) DropRows(columnNames []string, value string) (arrow.Reco
 				continue
 			}
 			if arr.IsNull(j) {
-				builder.AppendEmptyValue()
+				builder.AppendNull()
 				continue
 			}
 
