@@ -146,11 +146,10 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	}
 	analytics.TrackSyncStarted(ctx, invocationUUID.UUID, syncStartedEvent)
 	var (
-		syncTimeTook      time.Duration
-		totalResources    = int64(0)
-		totals            = sourceClient.Metrics()
-		resourcesPerTable = map[string]int64{}
-		errorsPerTable    = map[string]int64{}
+		syncTimeTook   time.Duration
+		totalResources = int64(0)
+		totals         = sourceClient.Metrics()
+		statsPerTable  = cloudquery_api.SyncRunTableProgress{}
 	)
 	defer func() {
 		analytics.TrackSyncCompleted(ctx, invocationUUID.UUID, analytics.SyncFinishedEvent{
@@ -354,6 +353,22 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	// Read from the sync stream and write to all destinations.
 	isComplete := int64(0)
 
+	sourceTables, err := getTables(ctx, sourcePbClient, &plugin.GetTables_Request{
+		Tables:              sourceSpec.Tables,
+		SkipTables:          sourceSpec.SkipTables,
+		SkipDependentTables: *sourceSpec.SkipDependentTables})
+
+	if err != nil {
+		return err
+	}
+	// Pre init stats per table
+	for _, table := range sourceTables {
+		statsPerTable[table.Name] = cloudquery_api.SyncRunTableProgressValue{
+			Rows:   0,
+			Errors: 0,
+		}
+	}
+
 	var remoteProgressReporter *godebouncer.Debouncer
 	if progressAPIClient != nil {
 		teamName, syncName, syncRunId := os.Getenv("_CQ_TEAM_NAME"), os.Getenv("_CQ_SYNC_NAME"), os.Getenv("_CQ_SYNC_RUN_ID")
@@ -375,12 +390,12 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			if atomic.LoadInt64(&isComplete) == 1 {
 				status = cloudquery_api.SyncRunStatusCompleted
 			}
-			// TODO: Update per table errors and resources after changes in cloud API
 			obj := cloudquery_api.CreateSyncRunProgressJSONRequestBody{
-				Rows:     atomic.LoadInt64(&totalResources),
-				Errors:   int64(totals.Errors),
-				Warnings: int64(totals.Warnings),
-				Status:   &status,
+				Rows:          atomic.LoadInt64(&totalResources),
+				Errors:        int64(totals.Errors),
+				Warnings:      int64(totals.Warnings),
+				Status:        &status,
+				TableProgress: &statsPerTable,
 			}
 			if shard != nil {
 				obj.ShardNum = &shard.num
@@ -492,7 +507,9 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				atomic.AddInt64(&newResources, record.NumRows())
 				atomic.AddInt64(&totalResources, record.NumRows())
 				tableName, _ := record.Schema().Metadata().GetValue(schema.MetadataTableName)
-				resourcesPerTable[tableName] += record.NumRows()
+				stats := statsPerTable[tableName]
+				stats.Rows += record.NumRows()
+				statsPerTable[tableName] = stats
 				if remoteProgressReporter != nil {
 					remoteProgressReporter.SendSignal()
 				}
@@ -606,7 +623,9 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				}
 			case *plugin.Sync_Response_Error:
 				log.Error().Str("table", m.Error.TableName).Msg(m.Error.Error)
-				errorsPerTable[m.Error.TableName]++
+				stats := statsPerTable[m.Error.TableName]
+				stats.Errors++
+				statsPerTable[m.Error.TableName] = stats
 			default:
 				return fmt.Errorf("unknown message type: %T", m)
 			}
@@ -617,20 +636,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		return err
 	}
 
-	syncSummaryEnabled := summaryLocation != "" || lo.SomeBy(destinationSpecs, func(d specs.Destination) bool { return d.SyncSummary })
-	var sourceTables schema.Tables
-	if syncSummaryEnabled {
-		sourceTables, err = getTables(ctx, sourcePbClient, &plugin.GetTables_Request{
-			Tables:              sourceSpec.Tables,
-			SkipTables:          sourceSpec.SkipTables,
-			SkipDependentTables: *sourceSpec.SkipDependentTables,
-		})
-
-		if err != nil {
-			return err
-		}
-	}
-
 	err = syncClient.CloseSend()
 	if err != nil {
 		return err
@@ -638,8 +643,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	totals = sourceClient.Metrics()
 	sourceWarnings := totals.Warnings
 	var sourceErrors uint64
-	for _, val := range errorsPerTable {
-		sourceErrors += uint64(val)
+	for _, val := range statsPerTable {
+		sourceErrors += uint64(val.Errors)
 	}
 	if totals.Errors > sourceErrors {
 		sourceErrors = totals.Errors
