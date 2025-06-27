@@ -189,30 +189,30 @@ func TestComprehensiveDropRow(t *testing.T) {
 	require.Equal(t, "dae677ed-5012-5bc8-8067-a8374a14edfa", updatedRecord.Column(14).(*types.UUIDArray).ValueStr(0))
 
 	// , mac, json, date64, date32
-	updatedRecord, err = updater.DropRows([]string{"mac"}, "aa:bb:cc:dd:ee:ff")
+	updatedRecord, err = updater.DropRows([]string{"mac"}, "a6:ae:92:fb:b5:2c")
 	require.NoError(t, err)
-	require.Equal(t, "a6:ae:92:fb:b5:2c", updatedRecord.Column(16).(*types.MACArray).ValueStr(0))
-	require.Equal(t, int64(9), updatedRecord.NumRows())
-
-	updatedRecord, err = updater.DropRows([]string{"inet"}, "176.32.0.0/12")
-	require.NoError(t, err)
-	require.Equal(t, "139.0.0.0/10", updatedRecord.Column(15).(*types.InetArray).ValueStr(0))
+	require.Equal(t, "aa:f1:cb:2e:55:8f", updatedRecord.Column(16).(*types.MACArray).ValueStr(0))
 	require.Equal(t, int64(8), updatedRecord.NumRows())
 
-	updatedRecord, err = updater.DropRows([]string{"json"}, `{"test":["a","b",99733]}`)
+	updatedRecord, err = updater.DropRows([]string{"inet"}, "139.0.0.0/10")
 	require.NoError(t, err)
-	require.Equal(t, `{"test":["a","b",52011]}`, updatedRecord.Column(17).(*types.JSONArray).ValueStr(0))
+	require.Equal(t, "30.233.221.0/25", updatedRecord.Column(15).(*types.InetArray).ValueStr(0))
 	require.Equal(t, int64(7), updatedRecord.NumRows())
 
-	updatedRecord, err = updater.DropRows([]string{"uint64"}, "3772493164690670080")
+	updatedRecord, err = updater.DropRows([]string{"json"}, `{"test":["a","b",52011]}`)
 	require.NoError(t, err)
-	require.Equal(t, `1492571184685610752`, updatedRecord.Column(8).(*array.Uint64).ValueStr(0))
+	require.Equal(t, `{"test":["a","b",16309]}`, updatedRecord.Column(17).(*types.JSONArray).ValueStr(0))
 	require.Equal(t, int64(6), updatedRecord.NumRows())
 
-	updatedRecord, err = updater.DropRows([]string{"date64"}, "2023-05-03")
+	updatedRecord, err = updater.DropRows([]string{"uint64"}, "1492571184685610752")
 	require.NoError(t, err)
-	require.Equal(t, `2023-06-12`, updatedRecord.Column(19).(*array.Date64).ValueStr(0))
+	require.Equal(t, `4019863684675753984`, updatedRecord.Column(8).(*array.Uint64).ValueStr(0))
 	require.Equal(t, int64(5), updatedRecord.NumRows())
+
+	updatedRecord, err = updater.DropRows([]string{"date64"}, "2023-06-12")
+	require.NoError(t, err)
+	require.Equal(t, `2023-04-25`, updatedRecord.Column(19).(*array.Date64).ValueStr(0))
+	require.Equal(t, int64(4), updatedRecord.NumRows())
 
 	updatedRecord, err = updater.DropRows([]string{"timestamp_ns"}, "2025-06-27 10:40:35.000914Z")
 	require.NoError(t, err)
