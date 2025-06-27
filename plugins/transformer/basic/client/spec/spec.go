@@ -25,7 +25,7 @@ type TransformationSpec struct {
 	Tables  []string `json:"tables"` // per-transformation table glob patterns
 	Columns []string `json:"columns"`
 	Name    string   `json:"name"`
-	Value   string   `json:"value"`
+	Value   *string  `json:"value"`
 
 	// For change_table_names transformation
 	NewTableNameTemplate string `json:"new_table_name_template"`
@@ -51,11 +51,11 @@ func (s *Spec) Validate() error {
 			if len(t.Columns) == 0 {
 				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "columns", t.Kind))
 			}
-			if t.Name != "" || t.Value != "" || t.NewTableNameTemplate != "" {
+			if t.Name != "" || (t.Value != nil && *t.Value != "") || t.NewTableNameTemplate != "" {
 				err = errors.Join(err, fmt.Errorf("name/value/new_table_name_template fields must not be specified for %s transformation", t.Kind))
 			}
 		case KindAddColumn:
-			if t.Name == "" || t.Value == "" {
+			if t.Name == "" || t.Value == nil || *t.Value == "" {
 				err = errors.Join(err, fmt.Errorf("'%s' and '%s' fields must be specified for %s transformation", "name", "value", t.Kind))
 			}
 			if t.NewTableNameTemplate != "" {
@@ -65,7 +65,7 @@ func (s *Spec) Validate() error {
 			if t.Name == "" {
 				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "name", t.Kind))
 			}
-			if t.Value != "" || len(t.Columns) > 0 || t.NewTableNameTemplate != "" {
+			if (t.Value != nil && *t.Value != "") || len(t.Columns) > 0 || t.NewTableNameTemplate != "" {
 				err = errors.Join(err, fmt.Errorf("value/columns/new_table_name_template fields must not be specified for %s transformation", t.Kind))
 			}
 			if t.NewTableNameTemplate != "" {
@@ -75,25 +75,25 @@ func (s *Spec) Validate() error {
 			if len(t.Columns) == 0 {
 				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "columns", t.Kind))
 			}
-			if t.Name != "" || t.Value != "" || t.NewTableNameTemplate != "" {
+			if t.Name != "" || (t.Value != nil && *t.Value != "") || t.NewTableNameTemplate != "" {
 				err = errors.Join(err, fmt.Errorf("name/value/new_table_name_template fields must not be specified for %s transformation", t.Kind))
 			}
 		case KindObfuscateSensitiveColumns:
 			if len(t.Columns) != 0 {
 				err = errors.Join(err, fmt.Errorf("'%s' field must not be specified for %s transformation", "columns", t.Kind))
 			}
-			if t.Name != "" || t.Value != "" || t.NewTableNameTemplate != "" {
+			if t.Name != "" || (t.Value != nil && *t.Value != "") || t.NewTableNameTemplate != "" {
 				err = errors.Join(err, fmt.Errorf("name/value/new_table_name_template fields must not be specified for %s transformation", t.Kind))
 			}
 		case KindChangeTableNames:
 			if t.NewTableNameTemplate == "" {
 				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "new_table_name_template", t.Kind))
 			}
-			if t.Name != "" || t.Value != "" || len(t.Columns) > 0 {
+			if t.Name != "" || (t.Value != nil && *t.Value != "") || len(t.Columns) > 0 {
 				err = errors.Join(err, fmt.Errorf("name/value/columns fields must not be specified for %s transformation", t.Kind))
 			}
 		case KindRenameColumn:
-			if t.Name == "" || t.Value == "" {
+			if t.Name == "" || t.Value == nil || *t.Value == "" {
 				err = errors.Join(err, fmt.Errorf("'%s' and '%s' fields must be specified for %s transformation", "name", "value", t.Kind))
 			}
 			if t.NewTableNameTemplate != "" {
@@ -103,7 +103,7 @@ func (s *Spec) Validate() error {
 				err = errors.Join(err, fmt.Errorf("columns field must not be specified for %s transformation", t.Kind))
 			}
 		case KindLowercase, KindUppercase:
-			if t.Value != "" {
+			if t.Value != nil && *t.Value != "" {
 				err = errors.Join(err, fmt.Errorf("value field must be empty for %s transformation", t.Kind))
 			}
 			if len(t.Columns) == 0 {
@@ -113,7 +113,7 @@ func (s *Spec) Validate() error {
 				err = errors.Join(err, fmt.Errorf("name/new_table_name_template fields must not be specified for %s transformation", t.Kind))
 			}
 		case KindDropRows:
-			if len(t.Columns) == 0 || t.Value == "" {
+			if len(t.Columns) == 0 || (t.Value != nil && *t.Value != "") {
 				err = errors.Join(err, fmt.Errorf("'columns' and 'value' fields must be specified for %s transformation", t.Kind))
 			}
 

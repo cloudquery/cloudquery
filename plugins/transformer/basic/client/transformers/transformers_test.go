@@ -22,7 +22,7 @@ func TestNewFromSpec(t *testing.T) {
 			spec: spec.TransformationSpec{
 				Kind:  spec.KindAddColumn,
 				Name:  "new_col",
-				Value: "default",
+				Value: &[]string{"default"}[0],
 			},
 			wantErr: false,
 		},
@@ -90,7 +90,7 @@ func TestTransform(t *testing.T) {
 			spec: spec.TransformationSpec{
 				Kind:   spec.KindAddColumn,
 				Name:   "new_col",
-				Value:  "default",
+				Value:  &[]string{"default"}[0],
 				Tables: []string{"*"},
 			},
 			record: createTestRecord(),
@@ -192,7 +192,7 @@ func TestTransform(t *testing.T) {
 				Kind:    spec.KindDropRows,
 				Tables:  []string{"*"},
 				Columns: []string{"col1"},
-				Value:   "val1",
+				Value:   &[]string{"val1"}[0],
 			},
 			record: createTestRecord(),
 			validate: func(t *testing.T, record arrow.Record) {
@@ -208,7 +208,7 @@ func TestTransform(t *testing.T) {
 				Kind:    spec.KindDropRows,
 				Tables:  []string{"*"},
 				Columns: []string{"col2"},
-				Value:   "val4",
+				Value:   &[]string{"val4"}[0],
 			},
 			record: createTestRecord(),
 			validate: func(t *testing.T, record arrow.Record) {
@@ -224,7 +224,7 @@ func TestTransform(t *testing.T) {
 				Kind:    spec.KindDropRows,
 				Tables:  []string{"*"},
 				Columns: []string{"col6"},
-				Value:   "val1",
+				Value:   &[]string{"val1"}[0],
 			},
 			record: createTestRecord(),
 			validate: func(t *testing.T, record arrow.Record) {

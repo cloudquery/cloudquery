@@ -158,7 +158,7 @@ func (r *RecordUpdater) ObfuscateSensitiveColumns() (arrow.Record, error) {
 	return r.ObfuscateColumns(sensitiveColumnsArr)
 }
 
-func (r *RecordUpdater) DropRows(columnNames []string, value string) (arrow.Record, error) {
+func (r *RecordUpdater) DropRows(columnNames []string, value *string) (arrow.Record, error) {
 	cols := r.record.Columns()
 
 	rowsToDrop := make(map[int]bool)
@@ -168,10 +168,12 @@ func (r *RecordUpdater) DropRows(columnNames []string, value string) (arrow.Reco
 		}
 		for i := range column.Len() {
 			// check if i in map
-			if _, ok := rowsToDrop[i]; ok {
+			if rowsToDrop[i] {
 				continue
 			}
-			if (!column.IsValid(i) && value == "") || (column.IsValid(i) && column.ValueStr(i) == value) {
+			if column.IsNull(i) && value == nil {
+				rowsToDrop[i] = true
+			} else if value != nil && column.IsValid(i) && column.ValueStr(i) == *value {
 				rowsToDrop[i] = true
 			}
 		}
@@ -186,7 +188,7 @@ func (r *RecordUpdater) DropRows(columnNames []string, value string) (arrow.Reco
 	for _, arr := range cols {
 		builder := array.NewBuilder(memory.DefaultAllocator, arr.DataType())
 		for j := 0; j < arr.Len(); j++ {
-			if _, ok := rowsToDrop[j]; ok {
+			if rowsToDrop[j] {
 				continue
 			}
 			if arr.IsNull(j) {
