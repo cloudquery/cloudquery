@@ -160,7 +160,7 @@ func TestAutoObfuscateEntireJSONColumn(t *testing.T) {
 		updatedRecord.Column(2).ValueStr(1))
 }
 
-func TestDropColumn(t *testing.T) {
+func TestDropRow(t *testing.T) {
 	record := createTestRecord()
 	updater := New(record)
 
@@ -174,6 +174,50 @@ func TestDropColumn(t *testing.T) {
 	require.Equal(t, "col2", updatedRecord.ColumnName(1))
 	require.Equal(t, "val2", updatedRecord.Column(0).(*array.String).Value(0))
 	assert.Equal(t, `{"foo":{"bar":["d","e","f"]}}`, updatedRecord.Column(2).ValueStr(0))
+}
+
+func TestComprehensiveDropRow(t *testing.T) {
+	table := schema.TestTable("test_drop_row", schema.TestSourceOptions{})
+	tg := schema.NewTestDataGenerator(5)
+	record := tg.Generate(table, schema.GenTestDataOptions{
+		MaxRows:    10,
+		StableTime: time.Date(2025, 6, 27, 10, 40, 35, 914319, time.UTC),
+	})
+	updater := New(record)
+	updatedRecord, err := updater.DropRows([]string{"uuid"}, "3831f26b-7a87-577a-ba61-77c84f262922")
+	require.NoError(t, err)
+	require.Equal(t, "dae677ed-5012-5bc8-8067-a8374a14edfa", updatedRecord.Column(14).(*types.UUIDArray).ValueStr(0))
+
+	// , mac, json, date64, date32
+	updatedRecord, err = updater.DropRows([]string{"mac"}, "aa:bb:cc:dd:ee:ff")
+	require.NoError(t, err)
+	require.Equal(t, "a6:ae:92:fb:b5:2c", updatedRecord.Column(16).(*types.MACArray).ValueStr(0))
+	require.Equal(t, int64(9), updatedRecord.NumRows())
+
+	updatedRecord, err = updater.DropRows([]string{"inet"}, "176.32.0.0/12")
+	require.NoError(t, err)
+	require.Equal(t, "139.0.0.0/10", updatedRecord.Column(15).(*types.InetArray).ValueStr(0))
+	require.Equal(t, int64(8), updatedRecord.NumRows())
+
+	updatedRecord, err = updater.DropRows([]string{"json"}, `{"test":["a","b",99733]}`)
+	require.NoError(t, err)
+	require.Equal(t, `{"test":["a","b",52011]}`, updatedRecord.Column(17).(*types.JSONArray).ValueStr(0))
+	require.Equal(t, int64(7), updatedRecord.NumRows())
+
+	updatedRecord, err = updater.DropRows([]string{"uint64"}, "3772493164690670080")
+	require.NoError(t, err)
+	require.Equal(t, `1492571184685610752`, updatedRecord.Column(8).(*array.Uint64).ValueStr(0))
+	require.Equal(t, int64(6), updatedRecord.NumRows())
+
+	updatedRecord, err = updater.DropRows([]string{"date64"}, "2023-05-03")
+	require.NoError(t, err)
+	require.Equal(t, `2023-06-12`, updatedRecord.Column(19).(*array.Date64).ValueStr(0))
+	require.Equal(t, int64(5), updatedRecord.NumRows())
+
+	updatedRecord, err = updater.DropRows([]string{"timestamp_ns"}, "2025-06-27 10:40:35.000914Z")
+	require.NoError(t, err)
+	require.Equal(t, int64(0), updatedRecord.NumRows())
+
 }
 
 func TestAutoObfuscateEntireJSONColumnSkipsJsonPath(t *testing.T) {
