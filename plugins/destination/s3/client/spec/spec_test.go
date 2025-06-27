@@ -36,6 +36,10 @@ func TestSpec_SetDefaults(t *testing.T) {
 			Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: true},
 			Want: Spec{Path: "test/path/{{TABLE}}.json", FileSpec: filetypes.FileSpec{Format: "json"}, TestWrite: boolPtr(true), NoRotate: true, BatchSize: int64Ptr(0), BatchSizeBytes: int64Ptr(0), BatchTimeout: &dur0, MaxRetries: intPtr(3), MaxBackoff: intPtr(30), PartSize: int64Ptr(5242880)},
 		},
+		{
+			Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}, LocalProfile: "my_aws_profile"},
+			Want: Spec{Path: "test/path/{{TABLE}}.json.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, LocalProfile: "my_aws_profile", Credentials: &Credentials{LocalProfile: "my_aws_profile"}, TestWrite: boolPtr(true), BatchSize: int64Ptr(10000), BatchSizeBytes: int64Ptr(50 * 1024 * 1024), BatchTimeout: &dur30, MaxRetries: intPtr(3), MaxBackoff: intPtr(30), PartSize: int64Ptr(5242880)},
+		},
 	}
 	for _, tc := range cases {
 		got := tc.Give
@@ -64,7 +68,11 @@ func TestSpec_Validate(t *testing.T) {
 		{Give: Spec{Path: "/test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0}, WantErr: true},                             // begins with a slash
 		{Give: Spec{Path: "//test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, NoRotate: true, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0}, WantErr: true},                            // duplicate slashes
 		{Give: Spec{Path: "test//path", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0}, WantErr: true},                                                                // duplicate slashes
-		{Give: Spec{Path: "test/path", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, ACL: "invalid"}, WantErr: true},
+		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, BatchSize: &zero, BatchSizeBytes: &zero, BatchTimeout: &dur0, ACL: "invalid"}, WantErr: true},
+		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, LocalProfile: "my_aws_profile"}, WantErr: false},                                                              // local profile is valid
+		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, LocalProfile: "my_aws_profile", Credentials: &Credentials{LocalProfile: "my_aws_profile"}}, WantErr: true},    // can't use both local_profile and credentials
+		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, LocalProfile: "my_aws_profile", Credentials: &Credentials{RoleSessionName: "my_aws_profile"}}, WantErr: true}, // can't use both local_profile and credentials
+		{Give: Spec{Path: "test/path/{{TABLE}}.{{UUID}}", FileSpec: filetypes.FileSpec{Format: "json"}, Bucket: "mybucket", Region: region, Credentials: &Credentials{LocalProfile: "my_aws_profile"}}, WantErr: false},
 	}
 	for i, tc := range cases {
 		tc := tc

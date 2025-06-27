@@ -55,6 +55,8 @@ type Spec struct {
 	// `local_profile` should be set to either `default` or `user1`.
 	LocalProfile string `json:"local_profile,omitempty" jsonschema:"example=my_aws_profile"`
 
+	Credentials *Credentials `json:"credentials,omitempty"`
+
 	//    Path to where the files will be uploaded in the above bucket, for example `path/to/files/{{TABLE}}/{{UUID}}.parquet`.
 	//    The path supports the following placeholder variables:
 	//
@@ -183,6 +185,12 @@ func (s *Spec) SetDefaults() {
 		}
 	}
 
+	if s.LocalProfile != "" {
+		s.Credentials = &Credentials{
+			LocalProfile: s.LocalProfile,
+		}
+	}
+
 	if s.MaxRetries == nil {
 		maxRetries := 3
 		s.MaxRetries = &maxRetries
@@ -220,6 +228,9 @@ func (s *Spec) Validate() error {
 		return errors.New("`write_empty_objects_for_empty_tables` can only be used with `parquet` format")
 	}
 
+	if s.LocalProfile != "" && (s.Credentials != nil && (s.Credentials.RoleARN != "" || s.Credentials.RoleSessionName != "" || s.Credentials.ExternalID != "" || s.Credentials.LocalProfile != "")) {
+		return errors.New("`local_profile` cannot be used with `credentials`")
+	}
 	if s.NoRotate {
 		if strings.Contains(s.Path, varUUID) {
 			return fmt.Errorf("`path` should not contain %s when `no_rotate` = true", varUUID)
