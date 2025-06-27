@@ -176,6 +176,18 @@ func TestDropRow(t *testing.T) {
 	assert.Equal(t, `{"foo":{"bar":["d","e","f"]}}`, updatedRecord.Column(2).ValueStr(0))
 }
 
+func TestDropRowTimestamp(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+	updatedRecord, err := updater.DropRows([]string{"col4"}, &[]string{"2025-06-27 10:40:35Z"}[0])
+	require.NoError(t, err)
+
+	require.Equal(t, int64(4), updatedRecord.NumCols())
+	require.Equal(t, int64(1), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "2026-01-01 00:00:00Z", updatedRecord.Column(3).(*array.Timestamp).ValueStr(0))
+}
+
 func TestComprehensiveDropRow(t *testing.T) {
 	table := schema.TestTable("test_drop_row", schema.TestSourceOptions{})
 	tg := schema.NewTestDataGenerator(5)
@@ -283,6 +295,7 @@ func createTestRecord() arrow.Record {
 			{Name: "col1", Type: arrow.BinaryTypes.String},
 			{Name: "col2", Type: arrow.BinaryTypes.String},
 			{Name: "col3", Type: types.NewJSONType()},
+			{Name: "col4", Type: &arrow.TimestampType{}},
 		},
 		&md,
 	))
@@ -292,6 +305,8 @@ func createTestRecord() arrow.Record {
 	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["a","b","c"]},"hello":"world"}`))
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["d","e","f"]}}`))
+	bld.Field(3).(*array.TimestampBuilder).AppendTime(time.Date(2025, 6, 27, 10, 40, 35, 914319000, time.UTC))
+	bld.Field(3).(*array.TimestampBuilder).AppendTime(time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC))
 
 	return bld.NewRecord()
 }
@@ -387,7 +402,7 @@ func TestChangeCaseJsonPath(t *testing.T) {
 	require.Equal(t, "val4", updatedRecord.Column(1).(*array.String).Value(1))
 }
 
-func TestChangeCaseEntrieJson(t *testing.T) {
+func TestChangeCaseEntireJson(t *testing.T) {
 	record := createTestRecord()
 	updater := New(record)
 	updatedRecord, err := updater.ChangeCase(spec.KindUppercase, []string{"col3"})
