@@ -219,10 +219,8 @@ func (r *RecordUpdater) DropRows(columnNames []string, value *string) (arrow.Rec
 			concatenatedCols[i] = concat
 		} else {
 			builder := array.NewBuilder(memory.DefaultAllocator, r.record.Column(int(i)).DataType())
-			defer builder.Release()
 			concatenatedCols[i] = builder.NewArray()
 		}
-
 	}
 
 	r.record = array.NewRecord(r.record.Schema(), concatenatedCols, int64(newRowLen))
