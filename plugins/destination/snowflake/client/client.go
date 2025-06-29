@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
+	"strings"
 	"sync"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
