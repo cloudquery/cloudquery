@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/url"
 	"os"
 	"strings"
 	"sync"
@@ -57,7 +58,9 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClie
 			if err != nil {
 				return nil, errors.Join(errInvalidSpec, err)
 			}
-			dsn = strings.Replace(dsn, "token=token", fmt.Sprintf("token=%s", string(token)), 1)
+			// the token contains "/" that we need to escape because we use a connection string - ideally we would want to move from connection string in the config
+			escapedToken := url.QueryEscape(string(token))
+			dsn = strings.Replace(dsn, "token=token", fmt.Sprintf("token=%s", string(escapedToken)), 1)
 		} else {
 			return nil, errors.New("token not found in Snowflake Container Service at /snowflake/session/token")
 		}
@@ -65,12 +68,12 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClie
 
 	db, err := sql.Open("snowflake", dsn+"&BINARY_INPUT_FORMAT=BASE64&BINARY_OUTPUT_FORMAT=BASE64&timezone=UTC")
 	if err != nil {
-		return nil, errors.Join(errInvalidSpec, err)
+		return nil, errors.Join(errInvalidSpec, err, fmt.Errorf("dsn is %s", dsn))
 	}
 
 	err = db.Ping()
 	if err != nil {
-		return nil, err
+		return nil, errors.Join(fmt.Errorf("ping failed"), err, fmt.Errorf("dsn is %s", dsn))
 	}
 
 	c.db = db
