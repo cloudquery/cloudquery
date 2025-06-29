@@ -46,6 +46,20 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClie
 	if err != nil {
 		return nil, errors.Join(errInvalidSpec, err)
 	}
+	if strings.Contains(dsn, "token=token") {
+		// if DSN contains token=token, it means we are running in a Snowflake Container Service
+		// https://docs.snowflake.com/en/developer-guide/snowpark-container-services/overview
+		// we need to read the token that is automatically mounted and use it (/snowflake/session/token)
+		if _, err := os.Stat("/snowflake/session/token"); err == nil {
+			token, err := os.ReadFile("/snowflake/session/token")
+			if err != nil {
+				return nil, errors.Join(errInvalidSpec, err)
+			}
+			dsn = strings.Replace(dsn, "token=token", fmt.Sprintf("token=%s", string(token)), 1)
+		} else {
+			return nil, errors.New("token not found in Snowflake Container Service at /snowflake/session/token")
+		}
+	}
 
 	db, err := sql.Open("snowflake", dsn+"&BINARY_INPUT_FORMAT=BASE64&BINARY_OUTPUT_FORMAT=BASE64&timezone=UTC")
 	if err != nil {
