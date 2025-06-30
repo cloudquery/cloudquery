@@ -117,7 +117,6 @@ func TestValidate(t *testing.T) {
 			name: "InvalidAddTimestampColumnValue",
 			input: Spec{
 				TransformationSpecs: []TransformationSpec{
-
 					{Kind: KindAddTimestampColumn, Value: &[]string{"default"}[0]},
 				},
 			},
@@ -145,7 +144,6 @@ func TestValidate(t *testing.T) {
 			name: "ValidRenameColumn",
 			input: Spec{
 				TransformationSpecs: []TransformationSpec{
-
 					{Kind: KindRenameColumn, Name: "old_col", Value: &[]string{"new_col"}[0]},
 				},
 			},
