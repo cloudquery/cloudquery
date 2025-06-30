@@ -24,7 +24,7 @@ type TransformationSpec struct {
 	Tables  []string `json:"tables"` // per-transformation table glob patterns
 	Columns []string `json:"columns"`
 	Name    string   `json:"name"`
-	Value   string   `json:"value"`
+	Value   *string  `json:"value"`
 
 	// For change_table_names transformation
 	NewTableNameTemplate string `json:"new_table_name_template"`
