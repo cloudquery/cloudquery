@@ -5,7 +5,7 @@ It was originally developed as part of a live-coding tutorial on how to write yo
 ## Links
 
  - [Video Tutorial](https://www.youtube.com/watch?v=3Ka_Ob8E6P8)
- - [CloudQuery Quickstart Guide](https://cli-docs.cloudquery.io/docs/quickstart/macOS)
+ - [CloudQuery Quickstart Guide](https://cli-docs.cloudquery.io/docs/quickstart)
 
 ## Configuration
 
