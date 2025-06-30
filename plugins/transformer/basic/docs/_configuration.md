@@ -39,6 +39,6 @@ spec:
       - kind: drop_rows
         tables: ["xkcd_comics"]
         columns: ["year"]
-        values: "2023"
+        value: "2023"
 
 ```

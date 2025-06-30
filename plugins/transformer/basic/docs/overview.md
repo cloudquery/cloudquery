@@ -64,6 +64,6 @@ Note: escape syntax is [SJSON sytax](https://github.com/tidwall/sjson?tab=readme
 
 
 Edge Cases and limitations for `drop_rows` transformation:
-- The `drop_rows` transformation only supports non-list columns
-- If you are trying to drop based on a nil value in the column, you should leave the `values` field empty
-- If you are trying to drop based on a JSON value, make sure that the value is the compacted version of the JSON. For example, if you want to drop rows where a JSON column `tags` has a value of `{"foo": "bar"}`, you should specify the value as `{"foo":"bar"}` without any whitespace.
+- Only non-list columns are supported
+- To drop rows with `nil` values, configure `value: null`, `value: ~` or drop the `value` configuration altogether
+- To drop rows based on a JSON value, use the compacted version of the JSON. For example, if you want to drop rows where a JSON column `tags` has a value of `{"foo": "bar"}`, you should specify the value as `{"foo":"bar"}` without any whitespace.
