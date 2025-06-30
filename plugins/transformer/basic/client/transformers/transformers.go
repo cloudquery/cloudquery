@@ -25,7 +25,7 @@ func NewFromSpec(sp spec.TransformationSpec) (*Transformer, error) {
 
 	switch sp.Kind {
 	case spec.KindAddColumn:
-		tr.fn = AddLiteralStringColumnAsLastColumn(sp.Name, sp.Value)
+		tr.fn = AddLiteralStringColumnAsLastColumn(sp.Name, *sp.Value)
 	case spec.KindAddTimestampColumn:
 		tr.fn = AddTimestampColumnAsLastColumn(sp.Name)
 	case spec.KindRemoveColumns:
@@ -37,7 +37,7 @@ func NewFromSpec(sp spec.TransformationSpec) (*Transformer, error) {
 	case spec.KindChangeTableNames:
 		tr.fn = ChangeTableName(sp.NewTableNameTemplate)
 	case spec.KindRenameColumn:
-		tr.fn = RenameColumn(sp.Name, sp.Value)
+		tr.fn = RenameColumn(sp.Name, *sp.Value)
 	case spec.KindObfuscateSensitiveColumns:
 		tr.fn = ObfuscateSensitiveColumns(sp.Columns)
 	case spec.KindUppercase:

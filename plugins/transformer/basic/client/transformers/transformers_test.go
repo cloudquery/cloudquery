@@ -22,7 +22,7 @@ func TestNewFromSpec(t *testing.T) {
 			spec: spec.TransformationSpec{
 				Kind:  spec.KindAddColumn,
 				Name:  "new_col",
-				Value: "default",
+				Value: &[]string{"default"}[0],
 			},
 			wantErr: false,
 		},
@@ -90,7 +90,7 @@ func TestTransform(t *testing.T) {
 			spec: spec.TransformationSpec{
 				Kind:   spec.KindAddColumn,
 				Name:   "new_col",
-				Value:  "default",
+				Value:  &[]string{"default"}[0],
 				Tables: []string{"*"},
 			},
 			record: createTestRecord(),
