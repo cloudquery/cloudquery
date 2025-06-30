@@ -81,7 +81,7 @@ func TestValidate(t *testing.T) {
 			name: "ValidAddColumn",
 			input: Spec{
 				TransformationSpecs: []TransformationSpec{
-					{Kind: KindAddColumn, Name: "new_col", Value: "default"},
+					{Kind: KindAddColumn, Name: "new_col", Value: &[]string{"default"}[0]},
 				},
 			},
 			wantErr: false,
@@ -90,7 +90,7 @@ func TestValidate(t *testing.T) {
 			name: "InvalidAddColumnNoName",
 			input: Spec{
 				TransformationSpecs: []TransformationSpec{
-					{Kind: KindAddColumn, Value: "default"},
+					{Kind: KindAddColumn, Value: &[]string{"default"}[0]},
 				},
 			},
 			wantErr: true,
@@ -117,7 +117,7 @@ func TestValidate(t *testing.T) {
 			name: "InvalidAddTimestampColumnValue",
 			input: Spec{
 				TransformationSpecs: []TransformationSpec{
-					{Kind: KindAddTimestampColumn, Value: "default"},
+					{Kind: KindAddTimestampColumn, Value: &[]string{"default"}[0]},
 				},
 			},
 			wantErr: true,
@@ -144,7 +144,7 @@ func TestValidate(t *testing.T) {
 			name: "ValidRenameColumn",
 			input: Spec{
 				TransformationSpecs: []TransformationSpec{
-					{Kind: KindRenameColumn, Name: "old_col", Value: "new_col"},
+					{Kind: KindRenameColumn, Name: "old_col", Value: &[]string{"new_col"}[0]},
 				},
 			},
 			wantErr: false,
