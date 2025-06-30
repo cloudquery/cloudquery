@@ -158,6 +158,75 @@ func (r *RecordUpdater) ObfuscateSensitiveColumns() (arrow.Record, error) {
 	return r.ObfuscateColumns(sensitiveColumnsArr)
 }
 
+func (r *RecordUpdater) DropRows(columnNames []string, value *string) (arrow.Record, error) {
+	cols := r.record.Columns()
+
+	rowsToDrop := make(map[int]bool)
+	for j, column := range cols {
+		if !slices.Contains(columnNames, r.record.ColumnName(j)) {
+			continue
+		}
+		for i := range column.Len() {
+			// check if i in map already, if so, keep going
+			if rowsToDrop[i] {
+				continue
+			}
+			// If Value specified by the user is nil, and Column is null, we drop the row.
+			if column.IsNull(i) && value == nil {
+				rowsToDrop[i] = true
+			} else if value != nil && column.IsValid(i) && column.ValueStr(i) == *value {
+				rowsToDrop[i] = true
+			}
+		}
+	}
+	if len(rowsToDrop) == 0 {
+		return r.record, nil
+	}
+	newRowLen := int(r.record.NumRows()) - len(rowsToDrop)
+	rowSlices := make([]arrow.Record, 0, newRowLen)
+
+	// This section builds slices of rows that are not to be dropped.
+	currentSliceStart := -1
+	for row := range r.record.NumRows() {
+		if !rowsToDrop[int(row)] {
+			if currentSliceStart == -1 {
+				currentSliceStart = int(row)
+			}
+			// This handles the edge case of checking the last row
+			if row == r.record.NumRows()-1 && currentSliceStart != -1 {
+				rowSlices = append(rowSlices, r.record.NewSlice(int64(currentSliceStart), row+1))
+			}
+			continue
+		}
+		// if we reach here, it means that the current row is supposed to be dropped, so we create a NewSlice and reset currentSliceStart
+		if currentSliceStart != -1 {
+			rowSlices = append(rowSlices, r.record.NewSlice(int64(currentSliceStart), row))
+			currentSliceStart = -1
+		}
+	}
+	concatenatedCols := make([]arrow.Array, int(r.record.NumCols()))
+	for i := range r.record.NumCols() {
+		var colChunks []arrow.Array
+		for _, slice := range rowSlices {
+			colChunks = append(colChunks, slice.Column(int(i)))
+		}
+
+		if len(rowSlices) > 0 {
+			concat, err := array.Concatenate(colChunks, memory.DefaultAllocator)
+			if err != nil {
+				return nil, fmt.Errorf("failed to concatenate arrays: %w", err)
+			}
+			concatenatedCols[i] = concat
+		} else {
+			builder := array.NewBuilder(memory.DefaultAllocator, r.record.Column(int(i)).DataType())
+			concatenatedCols[i] = builder.NewArray()
+		}
+	}
+
+	r.record = array.NewRecord(r.record.Schema(), concatenatedCols, int64(newRowLen))
+	return r.record, nil
+}
+
 func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.Record, error) {
 	plainCols, jsonCols := r.splitJSONColumns(columnNames)
 

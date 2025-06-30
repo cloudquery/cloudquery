@@ -44,6 +44,8 @@ func NewFromSpec(sp spec.TransformationSpec) (*Transformer, error) {
 		tr.fn = ChangeCase(sp.Kind, sp.Columns)
 	case spec.KindLowercase:
 		tr.fn = ChangeCase(sp.Kind, sp.Columns)
+	case spec.KindDropRows:
+		tr.fn = DropRows(sp.Columns, sp.Value)
 	default:
 		return nil, fmt.Errorf("unknown transformation kind: %s", sp.Kind)
 	}
@@ -110,6 +112,12 @@ func AddPrimaryKeys(columnNames []string) TransformationFn {
 func ObfuscateSensitiveColumns(columnNames []string) TransformationFn {
 	return func(record arrow.Record) (arrow.Record, error) {
 		return recordupdater.New(record).ObfuscateSensitiveColumns()
+	}
+}
+
+func DropRows(columnNames []string, value *string) TransformationFn {
+	return func(record arrow.Record) (arrow.Record, error) {
+		return recordupdater.New(record).DropRows(columnNames, value)
 	}
 }
 func ObfuscateColumns(columnNames []string) TransformationFn {

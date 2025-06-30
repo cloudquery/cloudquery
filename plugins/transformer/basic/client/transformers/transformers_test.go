@@ -186,6 +186,56 @@ func TestTransform(t *testing.T) {
 				require.Equal(t, "cq_sync_table1", newTableName)
 			},
 		},
+		{
+			name: "DropRow-DropFirstRow",
+			spec: spec.TransformationSpec{
+				Kind:    spec.KindDropRows,
+				Tables:  []string{"*"},
+				Columns: []string{"col1"},
+				Value:   &[]string{"val1"}[0],
+			},
+			record: createTestRecord(),
+			validate: func(t *testing.T, record arrow.Record) {
+				require.Equal(t, int64(2), record.NumCols(), "Expected 2 columns")
+				require.Equal(t, int64(1), record.NumRows(), "Expected 1 rows")
+				require.Equal(t, "val2", record.Column(0).(*array.String).Value(0), "Expected `val2` in col1 column row 0")
+				require.Equal(t, "val4", record.Column(1).(*array.String).Value(0), "Expected `val4` in col2 column row 0")
+			},
+		},
+		{
+			name: "DropRow-DropSecondRow",
+			spec: spec.TransformationSpec{
+				Kind:    spec.KindDropRows,
+				Tables:  []string{"*"},
+				Columns: []string{"col2"},
+				Value:   &[]string{"val4"}[0],
+			},
+			record: createTestRecord(),
+			validate: func(t *testing.T, record arrow.Record) {
+				require.Equal(t, int64(2), record.NumCols(), "Expected 2 columns")
+				require.Equal(t, int64(1), record.NumRows(), "Expected 1 rows")
+				require.Equal(t, "val1", record.Column(0).(*array.String).Value(0), "Expected `val1` in col1 column row 0")
+				require.Equal(t, "val3", record.Column(1).(*array.String).Value(0), "Expected `val4` in col2 column row 0")
+			},
+		},
+		{
+			name: "DropRow-DoNotDropAny",
+			spec: spec.TransformationSpec{
+				Kind:    spec.KindDropRows,
+				Tables:  []string{"*"},
+				Columns: []string{"col6"},
+				Value:   &[]string{"val1"}[0],
+			},
+			record: createTestRecord(),
+			validate: func(t *testing.T, record arrow.Record) {
+				require.Equal(t, int64(2), record.NumCols(), "Expected 2 columns")
+				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
+				require.Equal(t, "val1", record.Column(0).(*array.String).Value(0), "Expected `val1` in col1 column row 0")
+				require.Equal(t, "val2", record.Column(0).(*array.String).Value(1), "Expected `val2` in col1 column row 1")
+				require.Equal(t, "val3", record.Column(1).(*array.String).Value(0), "Expected `val3` in col2 column row 0")
+				require.Equal(t, "val4", record.Column(1).(*array.String).Value(1), "Expected `val4` in col2 column row 0")
+			},
+		},
 	}
 
 	for _, tt := range tests {

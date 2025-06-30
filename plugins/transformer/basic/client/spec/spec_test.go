@@ -194,6 +194,27 @@ func TestValidate(t *testing.T) {
 			},
 			wantErr: false,
 		},
+
+		{
+			name: "ValidDropRows",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindDropRows, Columns: []string{"col1"}},
+					{Kind: KindDropRows, Columns: []string{"col1"}, Value: &[]string{"value"}[0]},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "InvalidDropRows",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindDropRows},
+					{Kind: KindDropRows, Value: &[]string{"value"}[0]},
+				},
+			},
+			wantErr: true,
+		},
 	}
 
 	for _, tt := range tests {

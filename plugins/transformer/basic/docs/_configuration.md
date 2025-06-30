@@ -36,5 +36,9 @@ spec:
       - kind: lowercase
         tables: ["xkcd_comics"]
         columns: ["title"]
+      - kind: drop_rows
+        tables: ["xkcd_comics"]
+        columns: ["year"]
+        value: "2023"
 
 ```

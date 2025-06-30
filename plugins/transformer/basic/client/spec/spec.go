@@ -17,6 +17,7 @@ const (
 	KindObfuscateSensitiveColumns = "obfuscate_sensitive_columns"
 	KindUppercase                 = "uppercase"
 	KindLowercase                 = "lowercase"
+	KindDropRows                  = "drop_rows"
 )
 
 type TransformationSpec struct {
@@ -111,6 +112,11 @@ func (s *Spec) Validate() error {
 			if t.Name != "" || t.NewTableNameTemplate != "" {
 				err = errors.Join(err, fmt.Errorf("name/new_table_name_template fields must not be specified for %s transformation", t.Kind))
 			}
+		case KindDropRows:
+			if len(t.Columns) == 0 {
+				err = errors.Join(err, fmt.Errorf("'columns' must be specified for %s transformation", t.Kind))
+			}
+
 		default:
 			err = errors.Join(err, fmt.Errorf("unknown transformation kind: %s", t.Kind))
 		}
