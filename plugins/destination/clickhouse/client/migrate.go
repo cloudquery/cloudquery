@@ -22,7 +22,7 @@ type tableChanges struct {
 
 // MigrateTables relies on the CLI/client to lock before running migration.
 func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrateTables) error {
-	have, err := c.getTableDefinitions(ctx, messages)
+	have, err := retryGetTableDefinitions(ctx, c.logger, c.database, c.conn, messages)
 	if err != nil {
 		return err
 	}
@@ -147,7 +147,7 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table, partition
 		return err
 	}
 
-	if err := c.conn.Exec(ctx, query); err != nil {
+	if err := retryExec(ctx, c.logger, c.conn, query); err != nil {
 		return fmt.Errorf("failed to create table, query:\n%s\nerror: %w", query, err)
 	}
 	return nil
@@ -156,7 +156,7 @@ func (c *Client) createTable(ctx context.Context, table *schema.Table, partition
 func (c *Client) dropTable(ctx context.Context, table *schema.Table) error {
 	c.logger.Info().Str("table", table.Name).Msg("Dropping table")
 
-	return c.conn.Exec(ctx, queries.DropTable(table, c.spec.Cluster))
+	return retryExec(ctx, c.logger, c.conn, queries.DropTable(table, c.spec.Cluster))
 }
 
 func needsTableDrop(change schema.TableColumnChange) bool {
@@ -194,7 +194,7 @@ func (c *Client) autoMigrate(ctx context.Context, tableName string, changes []sc
 			return err
 		}
 
-		err = c.conn.Exec(ctx, query)
+		err = retryExec(ctx, c.logger, c.conn, query)
 		if err != nil {
 			return err
 		}

@@ -21,6 +21,7 @@ import (
 	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/goccy/go-json"
 	"github.com/google/uuid"
+	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 	"golang.org/x/sync/errgroup"
 )
@@ -232,7 +233,7 @@ func TestMigrateNewArrayAndMapColumns(t *testing.T) {
 }
 
 func TestConcurrentSyncsSameTable(t *testing.T) {
-	const syncConcurrency = 200
+	const syncConcurrency = 2000
 	ctx := context.Background()
 	group, _ := errgroup.WithContext(ctx)
 	randomUUIDString := uuid.New().String()
@@ -269,6 +270,7 @@ func TestConcurrentSyncsSameTable(t *testing.T) {
 				New,
 				plugin.WithJSONSchema(spec.JSONSchema),
 			)
+			p.SetLogger(zerolog.New(zerolog.NewTestWriter(t)).Level(zerolog.WarnLevel))
 			s := &spec.Spec{ConnectionString: getTestConnection()}
 			b, err := json.Marshal(s)
 			require.NoError(t, err)
