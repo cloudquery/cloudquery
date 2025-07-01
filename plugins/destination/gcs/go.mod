@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/storage v1.55.0
 	github.com/apache/arrow-go/v18 v18.3.1
 	github.com/cloudquery/codegen v0.3.29
-	github.com/cloudquery/filetypes/v4 v4.6.4
+	github.com/cloudquery/filetypes/v4 v4.6.5
 	github.com/cloudquery/plugin-sdk/v4 v4.86.1
 	github.com/google/go-cmp v0.7.0
 	github.com/google/uuid v1.6.0
