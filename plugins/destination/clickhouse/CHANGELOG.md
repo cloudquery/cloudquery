@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.0.2...plugins-destination-clickhouse-v7.1.0) (2025-06-24)
+
+
+### Features
+
+* Add support for overwrite-delete-stale in Clickhouse destination ([#20897](https://github.com/cloudquery/cloudquery/issues/20897)) ([9e1fc3c](https://github.com/cloudquery/cloudquery/commit/9e1fc3cb20b4a0b65b9a73382ba1dda0e46742c9))
+
 ## [7.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.0.1...plugins-destination-clickhouse-v7.0.2) (2025-05-28)
 
 
