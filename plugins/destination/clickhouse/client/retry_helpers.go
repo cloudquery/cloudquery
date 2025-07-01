@@ -26,9 +26,9 @@ func getRetryOptions(logger zerolog.Logger, query string) []retry.Option {
 	}
 
 	commonRetryOptions := []retry.Option{
-		retry.Attempts(10),
-		retry.Delay(1 * time.Second),
-		retry.MaxJitter(500 * time.Millisecond),
+		retry.Attempts(5),
+		retry.Delay(3 * time.Second),
+		retry.MaxJitter(1 * time.Second),
 		retry.LastErrorOnly(true),
 		retry.RetryIf(func(err error) bool {
 			return strings.Contains(err.Error(), "Too many simultaneous queries")
