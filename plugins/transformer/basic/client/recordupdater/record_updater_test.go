@@ -160,6 +160,77 @@ func TestAutoObfuscateEntireJSONColumn(t *testing.T) {
 		updatedRecord.Column(2).ValueStr(1))
 }
 
+func TestDropRow(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+
+	updatedRecord, err := updater.DropRows([]string{"col1"}, &[]string{"val1"}[0])
+	require.NoError(t, err)
+
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(1), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "col1", updatedRecord.ColumnName(0))
+	require.Equal(t, "col2", updatedRecord.ColumnName(1))
+	require.Equal(t, "val2", updatedRecord.Column(0).(*array.String).Value(0))
+	assert.Equal(t, `{"foo":{"bar":["d","e","f"]}}`, updatedRecord.Column(2).ValueStr(0))
+}
+
+func TestDropRowTimestamp(t *testing.T) {
+	record := createTestRecordWithTS()
+	updater := New(record)
+	updatedRecord, err := updater.DropRows([]string{"col4"}, &[]string{"2025-06-27 10:40:35Z"}[0])
+	require.NoError(t, err)
+
+	require.Equal(t, int64(4), updatedRecord.NumCols())
+	require.Equal(t, int64(1), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "2026-01-01 00:00:00Z", updatedRecord.Column(3).(*array.Timestamp).ValueStr(0))
+}
+
+func TestComprehensiveDropRow(t *testing.T) {
+	table := schema.TestTable("test_drop_row", schema.TestSourceOptions{})
+	tg := schema.NewTestDataGenerator(5)
+	record := tg.Generate(table, schema.GenTestDataOptions{
+		MaxRows:    10,
+		StableTime: time.Date(2025, 6, 27, 10, 40, 35, 914319, time.UTC),
+	})
+	updater := New(record)
+	updatedRecord, err := updater.DropRows([]string{"uuid"}, &[]string{"3831f26b-7a87-577a-ba61-77c84f262922"}[0])
+	require.NoError(t, err)
+	require.Equal(t, "dae677ed-5012-5bc8-8067-a8374a14edfa", updatedRecord.Column(14).(*types.UUIDArray).ValueStr(0))
+	require.Equal(t, int64(9), updatedRecord.NumRows())
+
+	updatedRecord, err = updater.DropRows([]string{"mac"}, &[]string{"a6:ae:92:fb:b5:2c"}[0])
+	require.NoError(t, err)
+	require.Equal(t, int64(8), updatedRecord.NumRows())
+	require.Equal(t, "aa:f1:cb:2e:55:8f", updatedRecord.Column(16).(*types.MACArray).ValueStr(0))
+
+	updatedRecord, err = updater.DropRows([]string{"inet"}, &[]string{"139.0.16.60/10"}[0])
+	require.NoError(t, err)
+	require.Equal(t, int64(7), updatedRecord.NumRows())
+	require.Equal(t, "30.233.221.51/25", updatedRecord.Column(15).(*types.InetArray).ValueStr(0))
+
+	updatedRecord, err = updater.DropRows([]string{"json"}, &[]string{`{"test":["a","b",52011]}`}[0])
+	require.NoError(t, err)
+	require.Equal(t, `{"test":["a","b",16309]}`, updatedRecord.Column(17).(*types.JSONArray).ValueStr(0))
+	require.Equal(t, int64(6), updatedRecord.NumRows())
+
+	updatedRecord, err = updater.DropRows([]string{"uint64"}, &[]string{"1492571184685610752"}[0])
+	require.NoError(t, err)
+	require.Equal(t, `4019863684675753984`, updatedRecord.Column(8).(*array.Uint64).ValueStr(0))
+	require.Equal(t, int64(5), updatedRecord.NumRows())
+
+	updatedRecord, err = updater.DropRows([]string{"date64"}, &[]string{"2023-06-12"}[0])
+	require.NoError(t, err)
+	require.Equal(t, `2023-04-25`, updatedRecord.Column(19).(*array.Date64).ValueStr(0))
+	require.Equal(t, int64(4), updatedRecord.NumRows())
+
+	updatedRecord, err = updater.DropRows([]string{"timestamp_ns"}, &[]string{"2025-06-27 10:40:35.000914Z"}[0])
+	require.NoError(t, err)
+	require.Equal(t, int64(0), updatedRecord.NumRows())
+}
+
 func TestAutoObfuscateEntireJSONColumnSkipsJsonPath(t *testing.T) {
 	sc := []string{"col3.foo", "col3"}
 	scJSON, err := json.Marshal(sc)
@@ -215,6 +286,29 @@ func TestChangeTableName(t *testing.T) {
 	newTableName, ok := updatedRecord.Schema().Metadata().GetValue(schema.MetadataTableName)
 	require.True(t, ok, "Expected table name to be present in metadata")
 	require.Equal(t, "cq_sync_testTable", newTableName)
+}
+
+func createTestRecordWithTS() arrow.Record {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "col1", Type: arrow.BinaryTypes.String},
+			{Name: "col2", Type: arrow.BinaryTypes.String},
+			{Name: "col3", Type: types.NewJSONType()},
+			{Name: "col4", Type: &arrow.TimestampType{}},
+		},
+		&md,
+	))
+	defer bld.Release()
+
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1", "val2"}, nil)
+	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
+	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["a","b","c"]},"hello":"world"}`))
+	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["d","e","f"]}}`))
+	bld.Field(3).(*array.TimestampBuilder).AppendTime(time.Date(2025, 6, 27, 10, 40, 35, 914319000, time.UTC))
+	bld.Field(3).(*array.TimestampBuilder).AppendTime(time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC))
+
+	return bld.NewRecord()
 }
 
 func createTestRecord() arrow.Record {
@@ -328,7 +422,7 @@ func TestChangeCaseJsonPath(t *testing.T) {
 	require.Equal(t, "val4", updatedRecord.Column(1).(*array.String).Value(1))
 }
 
-func TestChangeCaseEntrieJson(t *testing.T) {
+func TestChangeCaseEntireJson(t *testing.T) {
 	record := createTestRecord()
 	updater := New(record)
 	updatedRecord, err := updater.ChangeCase(spec.KindUppercase, []string{"col3"})
