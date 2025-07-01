@@ -4,7 +4,7 @@
 
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)  [![Go Report Card](https://goreportcard.com/badge/github.com/cloudquery/cloudquery)](https://goreportcard.com/report/github.com/cloudquery/cloudquery)  [![CLI Workflow](https://github.com/cloudquery/cloudquery/actions/workflows/cli.yml/badge.svg)](https://github.com/cloudquery/cloudquery/actions/workflows/cli.yml)  
 
-[CloudQuery](https://cloudquery.io) is a cloud governance platform that enables bringing data from wide variety of sources [sources](https://hub.cloudquery.io/plugins/source) to discover, monitor, secure and optimize your cloud infrastructure with SQL.
+[CloudQuery](https://cloudquery.io) is an asset inventory platform that enables bringing data from a wide variety of sources [sources](https://hub.cloudquery.io/plugins/source) to discover, monitor, secure, and optimize your cloud infrastructure with SQL.
 
 ### **Installation**
 
