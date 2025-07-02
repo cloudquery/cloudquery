@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.7.20](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.7.19...plugins-source-hackernews-v3.7.20) (2025-07-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.29 ([#20947](https://github.com/cloudquery/cloudquery/issues/20947)) ([af179be](https://github.com/cloudquery/cloudquery/commit/af179be0ef3223c81a30af9bc229149fc64c9bf1))
+
 ## [3.7.19](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.7.18...plugins-source-hackernews-v3.7.19) (2025-05-28)
 
 

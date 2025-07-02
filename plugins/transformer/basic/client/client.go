@@ -64,6 +64,10 @@ func (c *Client) Transform(ctx context.Context, recvRecords <-chan arrow.Record,
 					return err
 				}
 			}
+			if record.NumRows() == 0 {
+				// Skip empty records
+				continue
+			}
 
 			sendRecords <- record
 		case <-ctx.Done():

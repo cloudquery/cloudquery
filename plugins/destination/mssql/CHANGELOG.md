@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.21](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v5.1.20...plugins-destination-mssql-v5.1.21) (2025-07-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.29 ([#20947](https://github.com/cloudquery/cloudquery/issues/20947)) ([af179be](https://github.com/cloudquery/cloudquery/commit/af179be0ef3223c81a30af9bc229149fc64c9bf1))
+
 ## [5.1.20](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v5.1.19...plugins-destination-mssql-v5.1.20) (2025-05-28)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.0.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.0.8...plugins-destination-duckdb-v6.0.9) (2025-07-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/go-viper/mapstructure/v2 to v2.3.0 [SECURITY] ([#20919](https://github.com/cloudquery/cloudquery/issues/20919)) ([889d994](https://github.com/cloudquery/cloudquery/commit/889d9943c4b8a3e86c33bdefb2e86a64e4725cc7))
+
 ## [6.0.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.0.7...plugins-destination-duckdb-v6.0.8) (2025-06-26)
 
 
