@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v4.4.20...plugins-destination-snowflake-v4.5.0) (2025-07-02)
+
+
+### Features
+
+* Support Snowpark container service ([#20927](https://github.com/cloudquery/cloudquery/issues/20927)) ([eeddeb5](https://github.com/cloudquery/cloudquery/commit/eeddeb5c02186500dfeb4a9b3d42546260f78fbc))
+
 ## [4.4.20](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v4.4.19...plugins-destination-snowflake-v4.4.20) (2025-07-02)
 
 
