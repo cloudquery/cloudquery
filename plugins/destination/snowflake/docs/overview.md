@@ -80,7 +80,7 @@ Authentication of the connection to Snowflake can be specified using:
   -----END PRIVATE KEY-----
   ```
 
-* An oauth authentication when running in snowpark container service
+* OAuth authentication when running in Snowpark container service
 
   ```yaml
   kind: destination
