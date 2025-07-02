@@ -18,7 +18,7 @@ func (c *Client) DeleteStale(ctx context.Context, messages message.WriteDeleteSt
 	}
 
 	for _, msg := range messages {
-		if err := c.conn.Exec(ctx, generateDeleteForDeleteStale(msg), msg.SourceName, msg.SyncTime); err != nil {
+		if err := retryExec(ctx, c.logger, c.conn, generateDeleteForDeleteStale(msg), msg.SourceName, msg.SyncTime); err != nil {
 			return err
 		}
 	}
@@ -50,7 +50,7 @@ func (c *Client) DeleteRecord(ctx context.Context, messages message.WriteDeleteR
 			return err
 		}
 
-		if err = c.conn.Exec(ctx, sql, params...); err != nil {
+		if err = retryExec(ctx, c.logger, c.conn, sql, params...); err != nil {
 			return err
 		}
 	}
