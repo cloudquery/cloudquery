@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.4.23](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.22...plugins-destination-azblob-v4.4.23) (2025-07-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.29 ([#20947](https://github.com/cloudquery/cloudquery/issues/20947)) ([af179be](https://github.com/cloudquery/cloudquery/commit/af179be0ef3223c81a30af9bc229149fc64c9bf1))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.6.4 ([#20942](https://github.com/cloudquery/cloudquery/issues/20942)) ([5b8804e](https://github.com/cloudquery/cloudquery/commit/5b8804edab67f6a83917dd5fbc925687503346a2))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.6.5 ([#20963](https://github.com/cloudquery/cloudquery/issues/20963)) ([c7a3a27](https://github.com/cloudquery/cloudquery/commit/c7a3a27b5b82e3c9639ff376e8d6bc86926f680f))
+
 ## [4.4.22](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.21...plugins-destination-azblob-v4.4.22) (2025-05-28)
 
 
