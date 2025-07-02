@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.15](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.7.14...plugins-destination-firehose-v2.7.15) (2025-07-02)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#20924](https://github.com/cloudquery/cloudquery/issues/20924)) ([f26e07f](https://github.com/cloudquery/cloudquery/commit/f26e07f2ca150d67828a4669aa60311ff8e87625))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.29 ([#20947](https://github.com/cloudquery/cloudquery/issues/20947)) ([af179be](https://github.com/cloudquery/cloudquery/commit/af179be0ef3223c81a30af9bc229149fc64c9bf1))
+
 ## [2.7.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.7.13...plugins-destination-firehose-v2.7.14) (2025-06-26)
 
 
