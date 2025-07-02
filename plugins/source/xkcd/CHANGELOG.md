@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.22](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.21...plugins-source-xkcd-v1.5.22) (2025-07-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.86.1 ([#20859](https://github.com/cloudquery/cloudquery/issues/20859)) ([8c49f52](https://github.com/cloudquery/cloudquery/commit/8c49f52a165b24cef7cea28851350d73851129b4))
+
 ## [1.5.21](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.20...plugins-source-xkcd-v1.5.21) (2025-06-06)
 
 
