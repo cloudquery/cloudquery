@@ -21,31 +21,10 @@ jobs:
     name: 'plugins/destination/clickhouse'
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      DB_USER: cq
-      DB_PASSWORD: test
-      DB_NAME: cloudquery
     defaults:
       run:
         working-directory: plugins/destination/clickhouse
-    services:
-      clickhouse:
-        image: clickhouse/clickhouse-server:24.8.1
-        env:
-          CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
-          CLICKHOUSE_PASSWORD: ${{ env.DB_PASSWORD }}
-          CLICKHOUSE_USER: ${{ env.DB_USER }}
-          CLICKHOUSE_DB: ${{ env.DB_NAME }}
-        ports:
-          - 8123:8123
-          - 9000:9000
-        options: >-
-          --ulimit nofile=262144:262144
-          --health-cmd "wget --no-verbose --tries=1 --spider http://localhost:8123/ping || exit 1"
-          --health-interval 60s
-          --health-timeout 30s
-          --health-start-period 20s
-          --health-retries 5
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -70,9 +49,13 @@ jobs:
         run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
       - name: Build
         run: go build .
+
+      - uses: hoverkraft-tech/compose-action@ad8e0e414a8244c238d7071359bbf04d1e50cd79
+        with:
+          compose-file: docker-compose.yaml
+          up-flags: "--wait"
+          cwd: plugins/destination/clickhouse
       - name: Test ClickHouse
-        env:
-          CQ_DEST_CH_TEST_CONN: 'clickhouse://${{ env.DB_USER }}:${{ env.DB_PASSWORD }}@localhost:9000/${{ env.DB_NAME }}'
         run: make test
 
   deploy:

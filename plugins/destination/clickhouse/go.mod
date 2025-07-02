@@ -5,11 +5,13 @@ go 1.24.4
 require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.34.0
 	github.com/apache/arrow-go/v18 v18.3.1
+	github.com/avast/retry-go/v4 v4.6.1
 	github.com/cloudquery/codegen v0.3.29
 	github.com/cloudquery/plugin-sdk/v4 v4.86.1
 	github.com/goccy/go-json v0.10.5
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.34.0
+	github.com/samber/lo v1.51.0
 	github.com/stretchr/testify v1.10.0
 	golang.org/x/sync v0.15.0
 )

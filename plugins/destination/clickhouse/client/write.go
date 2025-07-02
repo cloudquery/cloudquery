@@ -4,8 +4,6 @@ import (
 	"context"
 
 	"github.com/apache/arrow-go/v18/arrow"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/queries"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/typeconv/ch/values"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 )
 
@@ -27,15 +25,5 @@ func (c *Client) WriteTableBatch(ctx context.Context, _ string, messages message
 		records[i] = m.Record
 	}
 
-	batch, err := c.conn.PrepareBatch(ctx, queries.Insert(table))
-	if err != nil {
-		return err
-	}
-
-	if err := values.BatchAddRecords(ctx, batch, table.ToArrowSchema(), records); err != nil {
-		_ = batch.Abort()
-		return err
-	}
-
-	return batch.Send()
+	return retryBatchSend(ctx, c.logger, c.conn, table, records)
 }

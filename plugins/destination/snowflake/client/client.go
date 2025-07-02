@@ -6,6 +6,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/url"
+	"os"
+	"strings"
 	"sync"
 
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
@@ -46,15 +49,30 @@ func New(_ context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClie
 	if err != nil {
 		return nil, errors.Join(errInvalidSpec, err)
 	}
+	if strings.Contains(dsn, "token=token") {
+		// if DSN contains token=token, it means we are running in a Snowflake Container Service
+		// https://docs.snowflake.com/en/developer-guide/snowpark-container-services/overview
+		// we need to read the token that is automatically mounted and use it (/snowflake/session/token)
+		if _, err := os.Stat("/snowflake/session/token"); err != nil {
+			return nil, errors.New("token not found in Snowflake Container Service at /snowflake/session/token")
+		}
+		token, err := os.ReadFile("/snowflake/session/token")
+		if err != nil {
+			return nil, errors.Join(errInvalidSpec, err)
+		}
+		// the token contains "/" that we need to escape because we use a connection string - ideally we would want to move from connection string in the config
+		escapedToken := url.QueryEscape(string(token))
+		dsn = strings.Replace(dsn, "token=token", fmt.Sprintf("token=%s", escapedToken), 1)
+	}
 
 	db, err := sql.Open("snowflake", dsn+"&BINARY_INPUT_FORMAT=BASE64&BINARY_OUTPUT_FORMAT=BASE64&timezone=UTC")
 	if err != nil {
-		return nil, errors.Join(errInvalidSpec, err)
+		return nil, errors.Join(errInvalidSpec, err, fmt.Errorf("dsn is %s", dsn))
 	}
 
 	err = db.Ping()
 	if err != nil {
-		return nil, err
+		return nil, errors.Join(errors.New("ping failed"), err, fmt.Errorf("dsn is %s", dsn))
 	}
 
 	c.db = db

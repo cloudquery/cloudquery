@@ -6,33 +6,15 @@ import (
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
 	"github.com/apache/arrow-go/v18/arrow"
-	"github.com/apache/arrow-go/v18/arrow/array"
-	"github.com/apache/arrow-go/v18/arrow/memory"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/queries"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/typeconv/arrow/values"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
 func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
-	rows, err := c.conn.Query(ctx, queries.Read(table))
+	record, err := retryRead(ctx, c.logger, c.conn, table)
 	if err != nil {
 		return err
 	}
-	defer rows.Close()
-
-	row := rowArr(rows.ColumnTypes())
-	builder := array.NewRecordBuilder(memory.DefaultAllocator, table.ToArrowSchema())
-	for rows.Next() {
-		if err = rows.Scan(row...); err != nil {
-			return err
-		}
-
-		if err = values.AppendToRecordBuilder(builder, row); err != nil {
-			return err
-		}
-	}
-
-	res <- builder.NewRecord()
+	res <- record
 	return nil
 }
 
