@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.4.20](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v4.4.19...plugins-destination-snowflake-v4.4.20) (2025-07-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.29 ([#20947](https://github.com/cloudquery/cloudquery/issues/20947)) ([af179be](https://github.com/cloudquery/cloudquery/commit/af179be0ef3223c81a30af9bc229149fc64c9bf1))
+
 ## [4.4.19](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v4.4.18...plugins-destination-snowflake-v4.4.19) (2025-05-28)
 
 

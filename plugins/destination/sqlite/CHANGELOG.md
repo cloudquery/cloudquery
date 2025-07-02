@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.10.20](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.10.19...plugins-destination-sqlite-v2.10.20) (2025-07-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.29 ([#20947](https://github.com/cloudquery/cloudquery/issues/20947)) ([af179be](https://github.com/cloudquery/cloudquery/commit/af179be0ef3223c81a30af9bc229149fc64c9bf1))
+
 ## [2.10.19](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.10.18...plugins-destination-sqlite-v2.10.19) (2025-05-28)
 
 
