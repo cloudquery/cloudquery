@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v2.1.0...plugins-transformer-jsonflattener-v2.1.1) (2025-07-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.3.1 ([#20921](https://github.com/cloudquery/cloudquery/issues/20921)) ([3ea3bd6](https://github.com/cloudquery/cloudquery/commit/3ea3bd6886b8465e791cfecd1282d998ea0aeef0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.86.1 ([#20859](https://github.com/cloudquery/cloudquery/issues/20859)) ([8c49f52](https://github.com/cloudquery/cloudquery/commit/8c49f52a165b24cef7cea28851350d73851129b4))
+
 ## [2.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v2.0.15...plugins-transformer-jsonflattener-v2.1.0) (2025-05-29)
 
 
