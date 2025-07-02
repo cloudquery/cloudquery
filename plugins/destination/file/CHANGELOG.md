@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.4.19](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v5.4.18...plugins-destination-file-v5.4.19) (2025-07-01)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.3.1 ([#20921](https://github.com/cloudquery/cloudquery/issues/20921)) ([3ea3bd6](https://github.com/cloudquery/cloudquery/commit/3ea3bd6886b8465e791cfecd1282d998ea0aeef0))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.6.5 ([#20963](https://github.com/cloudquery/cloudquery/issues/20963)) ([c7a3a27](https://github.com/cloudquery/cloudquery/commit/c7a3a27b5b82e3c9639ff376e8d6bc86926f680f))
+
 ## [5.4.18](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v5.4.17...plugins-destination-file-v5.4.18) (2025-05-28)
 
 
