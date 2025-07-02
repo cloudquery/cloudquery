@@ -1,5 +1,14 @@
 # Changelog
 
+## [7.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.1.0...plugins-destination-clickhouse-v7.1.1) (2025-07-02)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to b7579e2 ([#20935](https://github.com/cloudquery/cloudquery/issues/20935)) ([aac340d](https://github.com/cloudquery/cloudquery/commit/aac340d4ff8ed9f0ffa14f1d5ae26df7addcb9fc))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.29 ([#20947](https://github.com/cloudquery/cloudquery/issues/20947)) ([af179be](https://github.com/cloudquery/cloudquery/commit/af179be0ef3223c81a30af9bc229149fc64c9bf1))
+* Handle max concurrent queries errors ([#20907](https://github.com/cloudquery/cloudquery/issues/20907)) ([92c2827](https://github.com/cloudquery/cloudquery/commit/92c2827d84e6e36e41da777d533e8f593ada3dbb))
+
 ## [7.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.0.2...plugins-destination-clickhouse-v7.1.0) (2025-06-24)
 
 
