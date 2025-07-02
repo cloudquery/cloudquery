@@ -80,6 +80,17 @@ Authentication of the connection to Snowflake can be specified using:
   -----END PRIVATE KEY-----
   ```
 
+* OAuth authentication when running in Snowpark container service
+
+  ```yaml
+  kind: destination
+  spec:
+    name: snowflake
+    ...
+    spec:
+      connection_string: "user:pass@account/db/schema?warehouse=wh&authenticator=oauth&token=token"
+  ```
+
 ### Private Key Authentication Setup
 
 The Snowflake guide for [Key Pair
