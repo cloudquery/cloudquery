@@ -1,5 +1,20 @@
 # Changelog
 
+## [5.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.4.17...plugins-destination-kafka-v5.5.0) (2025-07-03)
+
+
+### Features
+
+* Support Customer TLS certificates ([#20879](https://github.com/cloudquery/cloudquery/issues/20879)) ([208ef91](https://github.com/cloudquery/cloudquery/commit/208ef9183b03784271f809751e27ed61ce0945ee))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.29 ([#20947](https://github.com/cloudquery/cloudquery/issues/20947)) ([af179be](https://github.com/cloudquery/cloudquery/commit/af179be0ef3223c81a30af9bc229149fc64c9bf1))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.6.4 ([#20942](https://github.com/cloudquery/cloudquery/issues/20942)) ([5b8804e](https://github.com/cloudquery/cloudquery/commit/5b8804edab67f6a83917dd5fbc925687503346a2))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.6.5 ([#20963](https://github.com/cloudquery/cloudquery/issues/20963)) ([c7a3a27](https://github.com/cloudquery/cloudquery/commit/c7a3a27b5b82e3c9639ff376e8d6bc86926f680f))
+* SSL Config ([#20885](https://github.com/cloudquery/cloudquery/issues/20885)) ([94a5b96](https://github.com/cloudquery/cloudquery/commit/94a5b96de5346cd5e3d37369c0e967beb8c8ea8f))
+
 ## [5.4.17](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.4.16...plugins-destination-kafka-v5.4.17) (2025-05-28)
 
 
