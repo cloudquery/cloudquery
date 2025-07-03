@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.5.0...plugins-transformer-basic-v2.6.0) (2025-07-02)
+
+
+### Features
+
+* Enable Dropping of Rows based on field values  ([#20917](https://github.com/cloudquery/cloudquery/issues/20917)) ([86181a4](https://github.com/cloudquery/cloudquery/commit/86181a48ccdd5e4986e57185a62df6feee1703cf))
+
+
+### Bug Fixes
+
+* **deps:** Update module `github.com/cloudquery/plugin-sdk/v4` to `v4.86.0` ([#20931](https://github.com/cloudquery/cloudquery/issues/20931)) ([60dbefe](https://github.com/cloudquery/cloudquery/commit/60dbefeecb9edba8314231eefc5a00ec2a960023))
+
 ## [2.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.4.0...plugins-transformer-basic-v2.5.0) (2025-06-26)
 
 
