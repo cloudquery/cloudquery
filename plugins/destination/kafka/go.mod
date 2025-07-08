@@ -6,8 +6,8 @@ require (
 	github.com/IBM/sarama v1.44.0
 	github.com/apache/arrow-go/v18 v18.3.1
 	github.com/cloudquery/codegen v0.3.29
-	github.com/cloudquery/filetypes/v4 v4.6.5
-	github.com/cloudquery/plugin-sdk/v4 v4.86.1
+	github.com/cloudquery/filetypes/v4 v4.6.6
+	github.com/cloudquery/plugin-sdk/v4 v4.86.2
 	github.com/invopop/jsonschema v0.13.0
 	github.com/rs/zerolog v1.34.0
 	github.com/wk8/go-ordered-map/v2 v2.1.8
@@ -38,8 +38,8 @@ require (
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cenkalti/backoff/v5 v5.0.2 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.13.10 // indirect
-	github.com/cloudquery/plugin-pb-go v1.26.14 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.13.11 // indirect
+	github.com/cloudquery/plugin-pb-go v1.26.15 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/eapache/go-resiliency v1.7.0 // indirect
@@ -57,7 +57,7 @@ require (
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
-	github.com/hashicorp/go-retryablehttp v0.7.7 // indirect
+	github.com/hashicorp/go-retryablehttp v0.7.8 // indirect
 	github.com/hashicorp/go-uuid v1.0.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/jcmturner/aescts/v2 v2.0.0 // indirect
