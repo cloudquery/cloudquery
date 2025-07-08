@@ -433,8 +433,8 @@ func (*RecordUpdater) obfuscateJSONColumns(column arrow.Array, jcs []jsonColumn)
 		str := column.ValueStr(i)
 		for _, jc := range jcs {
 			val := gjson.Get(column.ValueStr(i), jc.columnPath)
-			if val.Exists() && val.Type == gjson.String {
-				if modified, err := sjson.Set(str, jc.columnPath, fmt.Sprintf("%s %x", redactedByCQMessage, sha256.Sum256([]byte(val.Str)))); err == nil {
+			if val.Exists() {
+				if modified, err := sjson.Set(str, jc.columnPath, fmt.Sprintf("%s %x", redactedByCQMessage, sha256.Sum256([]byte(val.Raw)))); err == nil {
 					str = modified
 					continue
 				}
