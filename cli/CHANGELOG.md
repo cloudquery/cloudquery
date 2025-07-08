@@ -5,6 +5,27 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.22.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.21.1...cli-v6.22.0) (2025-07-03)
+
+
+### Features
+
+* Add error handling and per-table metrics ([#20909](https://github.com/cloudquery/cloudquery/issues/20909)) ([a2d9473](https://github.com/cloudquery/cloudquery/commit/a2d94730cfec43fb7baa8774d78c64326826ea99))
+
+## [6.21.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.21.0...cli-v6.21.1) (2025-07-02)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to b7579e2 ([#20935](https://github.com/cloudquery/cloudquery/issues/20935)) ([aac340d](https://github.com/cloudquery/cloudquery/commit/aac340d4ff8ed9f0ffa14f1d5ae26df7addcb9fc))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.13.10 ([#20920](https://github.com/cloudquery/cloudquery/issues/20920)) ([93fed18](https://github.com/cloudquery/cloudquery/commit/93fed18d443bee5ab334646b4fc88c2e501cd2e8))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.13.11 ([#20941](https://github.com/cloudquery/cloudquery/issues/20941)) ([a67fcc5](https://github.com/cloudquery/cloudquery/commit/a67fcc5c8538091e78a9fd40426e1e3ec0d068f5))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.29 ([#20947](https://github.com/cloudquery/cloudquery/issues/20947)) ([af179be](https://github.com/cloudquery/cloudquery/commit/af179be0ef3223c81a30af9bc229149fc64c9bf1))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.26.13 ([#20912](https://github.com/cloudquery/cloudquery/issues/20912)) ([f9ff32f](https://github.com/cloudquery/cloudquery/commit/f9ff32fd09745385c63d65344c4d3b2d35d732be))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.26.14 ([#20929](https://github.com/cloudquery/cloudquery/issues/20929)) ([41fbbd0](https://github.com/cloudquery/cloudquery/commit/41fbbd0135018d3d85c2a88987583c96a3b298ff))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.26.15 ([#20943](https://github.com/cloudquery/cloudquery/issues/20943)) ([c8abdae](https://github.com/cloudquery/cloudquery/commit/c8abdae03fd1d8d20226d0bb3da9cc3fa06cce22))
+* **deps:** Update module github.com/go-viper/mapstructure/v2 to v2.3.0 [SECURITY] ([#20919](https://github.com/cloudquery/cloudquery/issues/20919)) ([889d994](https://github.com/cloudquery/cloudquery/commit/889d9943c4b8a3e86c33bdefb2e86a64e4725cc7))
+
 ## [6.21.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.20.5...cli-v6.21.0) (2025-06-23)
 
 
