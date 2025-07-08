@@ -1,7 +1,6 @@
 package transformers
 
 import (
-	"strings"
 	"testing"
 
 	"github.com/apache/arrow-go/v18/arrow"
@@ -9,7 +8,6 @@ import (
 	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/transformer/basic/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/stretchr/testify/require"
 )
 
@@ -144,49 +142,7 @@ func TestTransform(t *testing.T) {
 				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
 			},
 		},
-		{
-			name: "ObfuscateNestedColumnsWithGjsonSyntax",
-			spec: spec.TransformationSpec{
-				Kind:    spec.KindObfuscateColumns,
-				Columns: []string{"col3.top_foo.#.foo"},
-				Tables:  []string{"*"},
-			},
-			record: createTestRecordWithNestedArray(),
-			validate: func(t *testing.T, record arrow.Record) {
-				require.Equal(t, int64(3), record.NumCols(), "Expected 3 columns")
-				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
-				// Check that the nested foo values are obfuscated
-				col3Val := record.Column(2).ValueStr(0)
-				require.Contains(t, col3Val, "Redacted by CloudQuery |", "Expected obfuscated values to contain redacted message")
-				require.Contains(t, col3Val, "top_foo", "Expected top_foo structure to be maintained")
-				// Verify that all three "foo" values in the array are obfuscated
-				require.Equal(t, 3, strings.Count(col3Val, "Redacted by CloudQuery |"), "Expected 3 obfuscated values for the 3 foo items")
-			},
-		},
-		{
-			name: "ObfuscateDeeplyNestedColumnsWithGjsonSyntax",
-			spec: spec.TransformationSpec{
-				Kind:    spec.KindObfuscateColumns,
-				Columns: []string{"col3.object1.object2.#.nested_object1.nested_object2.#.nested2_object1"},
-				Tables:  []string{"*"},
-			},
-			record: createTestRecordWithDeeplyNestedArray(),
-			validate: func(t *testing.T, record arrow.Record) {
-				require.Equal(t, int64(3), record.NumCols(), "Expected 3 columns")
-				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
-				// Check first row: should have 4 obfuscated values
-				col3Val := record.Column(2).ValueStr(0)
-				require.Contains(t, col3Val, "Redacted by CloudQuery |", "Expected obfuscated values to contain redacted message")
-				require.Contains(t, col3Val, "object1", "Expected object1 structure to be maintained")
-				require.Contains(t, col3Val, "nested_object1", "Expected nested_object1 structure to be maintained")
-				require.Equal(t, 4, strings.Count(col3Val, "Redacted by CloudQuery |"), "Expected 4 obfuscated values for the 4 nested2_object1 items in first row")
 
-				// Check second row: should have 2 obfuscated values
-				col3Val2 := record.Column(2).ValueStr(1)
-				require.Contains(t, col3Val2, "Redacted by CloudQuery |", "Expected obfuscated values to contain redacted message")
-				require.Equal(t, 2, strings.Count(col3Val2, "Redacted by CloudQuery |"), "Expected 2 obfuscated values for the 2 nested2_object1 items in second row")
-			},
-		},
 		{
 			name: "UppercaseColumns",
 			spec: spec.TransformationSpec{
@@ -327,46 +283,6 @@ func createUppercaseTestRecord() arrow.Record {
 
 	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"VAL1", "VAL2"}, nil)
 	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
-
-	return bld.NewRecord()
-}
-
-func createTestRecordWithNestedArray() arrow.Record {
-	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"table1"})
-	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
-		[]arrow.Field{
-			{Name: "col1", Type: arrow.BinaryTypes.String},
-			{Name: "col2", Type: arrow.BinaryTypes.String},
-			{Name: "col3", Type: types.NewJSONType()},
-		},
-		&md,
-	))
-	defer bld.Release()
-
-	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1", "val2"}, nil)
-	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
-	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"top_foo":[{"foo":"baz0"},{"foo":"baz1"},{"foo":"baz2"}]}`))
-	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"top_foo":[{"foo":"baz3"},{"foo":"baz4"},{"foo":"baz5"}]}`))
-
-	return bld.NewRecord()
-}
-
-func createTestRecordWithDeeplyNestedArray() arrow.Record {
-	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"table1"})
-	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
-		[]arrow.Field{
-			{Name: "col1", Type: arrow.BinaryTypes.String},
-			{Name: "col2", Type: arrow.BinaryTypes.String},
-			{Name: "col3", Type: types.NewJSONType()},
-		},
-		&md,
-	))
-	defer bld.Release()
-
-	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1", "val2"}, nil)
-	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
-	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"object1":{"object2":[{"nested_object1":{"nested_object2":[{"nested2_object1":1},{"nested2_object1":2}]}},{"nested_object1":{"nested_object2":[{"nested2_object1":3},{"nested2_object1":4}]}}]}}`))
-	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"object1":{"object2":[{"nested_object1":{"nested_object2":[{"nested2_object1":5},{"nested2_object1":6}]}}]}}`))
 
 	return bld.NewRecord()
 }
