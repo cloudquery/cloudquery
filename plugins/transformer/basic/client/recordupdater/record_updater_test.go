@@ -3,6 +3,7 @@ package recordupdater
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 	"testing"
 	"time"
 
@@ -89,10 +90,10 @@ func TestObfuscateColumns(t *testing.T) {
 		fmt.Sprintf("%s 528e5290f8ff0eb0325f0472b9c1a9ef4fac0b02ff6094b64d9382af4a10444b", redactedByCQMessage),
 		updatedRecord.Column(0).(*array.String).Value(1))
 	assert.Equal(t,
-		fmt.Sprintf(`{"foo":{"bar":["%s ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb","%s 3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d","c"]},"hello":"world"}`, redactedByCQMessage, redactedByCQMessage),
+		fmt.Sprintf(`{"foo":{"bar":["%s ac8d8342bbb2362d13f0a559a3621bb407011368895164b628a54f7fc33fc43c","%s c100f95c1913f9c72fc1f4ef0847e1e723ffe0bde0b36e5f36c13f81fe8c26ed","c"]},"hello":"world"}`, redactedByCQMessage, redactedByCQMessage),
 		updatedRecord.Column(2).ValueStr(0))
 	assert.Equal(t,
-		fmt.Sprintf(`{"foo":{"bar":["%s 18ac3e7343f016890c510e93f935261169d9e3f565436429830faf0934f4f8e4","%s 3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea","f"]}}`, redactedByCQMessage, redactedByCQMessage),
+		fmt.Sprintf(`{"foo":{"bar":["%s 3fa5834dc920d385ca9b099c9fe55dcca163a6b256a261f8f147291b0e7cf633","%s 8c8656c5d114d7f8b2a412d2d5fd03accce3ed050624a0493734591a9666b110","f"]}}`, redactedByCQMessage, redactedByCQMessage),
 		updatedRecord.Column(2).ValueStr(1))
 }
 
@@ -121,10 +122,10 @@ func TestAutoObfuscateColumns(t *testing.T) {
 		fmt.Sprintf("%s 528e5290f8ff0eb0325f0472b9c1a9ef4fac0b02ff6094b64d9382af4a10444b", redactedByCQMessage),
 		updatedRecord.Column(0).(*array.String).Value(1))
 	assert.Equal(t,
-		fmt.Sprintf(`{"foo":{"bar":["%s ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb","%s 3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d","c"]},"hello":"world"}`, redactedByCQMessage, redactedByCQMessage),
+		fmt.Sprintf(`{"foo":{"bar":["%s ac8d8342bbb2362d13f0a559a3621bb407011368895164b628a54f7fc33fc43c","%s c100f95c1913f9c72fc1f4ef0847e1e723ffe0bde0b36e5f36c13f81fe8c26ed","c"]},"hello":"world"}`, redactedByCQMessage, redactedByCQMessage),
 		updatedRecord.Column(2).ValueStr(0))
 	assert.Equal(t,
-		fmt.Sprintf(`{"foo":{"bar":["%s 18ac3e7343f016890c510e93f935261169d9e3f565436429830faf0934f4f8e4","%s 3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea","f"]}}`, redactedByCQMessage, redactedByCQMessage),
+		fmt.Sprintf(`{"foo":{"bar":["%s 3fa5834dc920d385ca9b099c9fe55dcca163a6b256a261f8f147291b0e7cf633","%s 8c8656c5d114d7f8b2a412d2d5fd03accce3ed050624a0493734591a9666b110","f"]}}`, redactedByCQMessage, redactedByCQMessage),
 		updatedRecord.Column(2).ValueStr(1))
 	assert.Equal(t,
 		fmt.Sprintf("%s cc1d9c865e8380c2d566dc724c66369051acfaa3e9e8f36ad6c67d7d9b8461a5", redactedByCQMessage),
@@ -452,4 +453,90 @@ func TestChangeCaseEntireJson(t *testing.T) {
 	require.Equal(t, "val2", updatedRecord.Column(0).(*array.String).Value(1))
 	require.Equal(t, "val3", updatedRecord.Column(1).(*array.String).Value(0))
 	require.Equal(t, "val4", updatedRecord.Column(1).(*array.String).Value(1))
+}
+
+func TestObfuscateNestedColumnsWithGjsonSyntax(t *testing.T) {
+	// Create test record with nested JSON structure
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "col1", Type: arrow.BinaryTypes.String},
+			{Name: "col2", Type: arrow.BinaryTypes.String},
+			{Name: "col3", Type: types.NewJSONType()},
+		},
+		&md,
+	))
+	defer bld.Release()
+
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1", "val2"}, nil)
+	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
+	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"top_foo":[{"foo":"baz0"},{"foo":"baz1"},{"foo":"baz2"}]}`))
+	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"top_foo":[{"foo":"baz3"},{"foo":"baz4"},{"foo":"baz5"}]}`))
+
+	record := bld.NewRecord()
+	updater := New(record)
+
+	// Test obfuscation using gjson syntax with # for array elements
+	updatedRecord, err := updater.ObfuscateColumns([]string{"col3.top_foo.#.foo"})
+	require.NoError(t, err)
+
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+
+	// Check that the nested foo values are obfuscated
+	col3Val := updatedRecord.Column(2).ValueStr(0)
+	require.Contains(t, col3Val, redactedByCQMessage, "Expected obfuscated values to contain redacted message")
+	require.Contains(t, col3Val, "top_foo", "Expected top_foo structure to be maintained")
+	// Verify that all three "foo" values in the array are obfuscated
+	require.Equal(t, 3, strings.Count(col3Val, redactedByCQMessage), "Expected 3 obfuscated values for the 3 foo items")
+
+	// Check second row as well
+	col3Val2 := updatedRecord.Column(2).ValueStr(1)
+	require.Contains(t, col3Val2, redactedByCQMessage, "Expected obfuscated values to contain redacted message")
+	require.Equal(t, 3, strings.Count(col3Val2, redactedByCQMessage), "Expected 3 obfuscated values for the 3 foo items")
+}
+
+func TestObfuscateDeeplyNestedColumnsWithGjsonSyntax(t *testing.T) {
+	// Create test record with deeply nested JSON structure
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "col1", Type: arrow.BinaryTypes.String},
+			{Name: "col2", Type: arrow.BinaryTypes.String},
+			{Name: "col3", Type: types.NewJSONType()},
+		},
+		&md,
+	))
+	defer bld.Release()
+
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1", "val2"}, nil)
+	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
+	// First row: has 2 objects in object2 array, each with 2 nested2_object1 values = 4 total
+	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"object1":{"object2":[{"nested_object1":{"nested_object2":[{"nested2_object1":1},{"nested2_object1":2}]}},{"nested_object1":{"nested_object2":[{"nested2_object1":3},{"nested2_object1":4}]}}]}}`))
+	// Second row: has 1 object in object2 array, with 2 nested2_object1 values = 2 total
+	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"object1":{"object2":[{"nested_object1":{"nested_object2":[{"nested2_object1":5},{"nested2_object1":6}]}}]}}`))
+
+	record := bld.NewRecord()
+	updater := New(record)
+
+	// Test obfuscation using gjson syntax with multiple # for nested arrays
+	updatedRecord, err := updater.ObfuscateColumns([]string{"col3.object1.object2.#.nested_object1.nested_object2.#.nested2_object1"})
+	require.NoError(t, err)
+
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+
+	// Check first row: should have 4 obfuscated values
+	col3Val := updatedRecord.Column(2).ValueStr(0)
+	require.Contains(t, col3Val, redactedByCQMessage, "Expected obfuscated values to contain redacted message")
+	require.Contains(t, col3Val, "object1", "Expected object1 structure to be maintained")
+	require.Contains(t, col3Val, "nested_object1", "Expected nested_object1 structure to be maintained")
+	require.Equal(t, 4, strings.Count(col3Val, redactedByCQMessage), "Expected 4 obfuscated values for the 4 nested2_object1 items in first row")
+
+	// Check second row: should have 2 obfuscated values
+	col3Val2 := updatedRecord.Column(2).ValueStr(1)
+	require.Contains(t, col3Val2, redactedByCQMessage, "Expected obfuscated values to contain redacted message")
+	require.Equal(t, 2, strings.Count(col3Val2, redactedByCQMessage), "Expected 2 obfuscated values for the 2 nested2_object1 items in second row")
 }
