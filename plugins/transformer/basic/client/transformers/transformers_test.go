@@ -142,7 +142,6 @@ func TestTransform(t *testing.T) {
 				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
 			},
 		},
-
 		{
 			name: "UppercaseColumns",
 			spec: spec.TransformationSpec{

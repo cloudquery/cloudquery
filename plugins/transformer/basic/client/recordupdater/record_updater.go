@@ -433,6 +433,7 @@ func (*RecordUpdater) obfuscateJSONColumns(column arrow.Array, jcs []jsonColumn)
 		str := column.ValueStr(i)
 		for _, jc := range jcs {
 			val := gjson.Get(column.ValueStr(i), jc.columnPath)
+			// todo: Currently nested types will create a single SHA hash for all matched array elements. Consider changing this to hash for each element separately.
 			if val.Exists() {
 				if modified, err := sjson.Set(str, jc.columnPath, fmt.Sprintf("%s %x", redactedByCQMessage, sha256.Sum256([]byte(val.Raw)))); err == nil {
 					str = modified
