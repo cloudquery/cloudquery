@@ -34,7 +34,7 @@ cloudquery sync spec.yml --shard 1/4
       --license string                   set offline license file
       --no-migrate                       Disable auto-migration before sync. By default, sync runs a migration before syncing resources.
       --shard string                     Allows splitting the sync process into multiple shards. This feature is in Preview. Please provide feedback to help us improve it. For a list of supported plugins visit https://docs.cloudquery.io/docs/advanced-topics/running-cloudquery-in-parallel
-      --summary-location string          Sync summary file location. This feature is in Preview. Please provide feedback to help us improve it.
+      --summary-location string          Sync summary file location.
       --tables-metrics-location string   Tables metrics file location. This feature is in Preview. Please provide feedback to help us improve it. Works with plugins released on 2024-07-10 or later.
 ```
 
