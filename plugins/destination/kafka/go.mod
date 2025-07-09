@@ -5,9 +5,9 @@ go 1.24.4
 require (
 	github.com/IBM/sarama v1.44.0
 	github.com/apache/arrow-go/v18 v18.3.1
-	github.com/cloudquery/codegen v0.3.29
+	github.com/cloudquery/codegen v0.3.30
 	github.com/cloudquery/filetypes/v4 v4.6.7
-	github.com/cloudquery/plugin-sdk/v4 v4.87.0
+	github.com/cloudquery/plugin-sdk/v4 v4.87.1
 	github.com/invopop/jsonschema v0.13.0
 	github.com/rs/zerolog v1.34.0
 	github.com/wk8/go-ordered-map/v2 v2.1.8

@@ -4,7 +4,7 @@ go 1.24.4
 
 require (
 	github.com/apache/arrow-go/v18 v18.3.1
-	github.com/cloudquery/plugin-sdk/v4 v4.86.1
+	github.com/cloudquery/plugin-sdk/v4 v4.87.1
 	github.com/rs/zerolog v1.34.0
 )
 
@@ -30,9 +30,9 @@ require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cenkalti/backoff/v5 v5.0.2 // indirect
-	github.com/cloudquery/cloudquery-api-go v1.13.10 // indirect
-	github.com/cloudquery/codegen v0.3.28 // indirect
-	github.com/cloudquery/plugin-pb-go v1.26.14 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.13.11 // indirect
+	github.com/cloudquery/codegen v0.3.30 // indirect
+	github.com/cloudquery/plugin-pb-go v1.26.15 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
@@ -44,7 +44,7 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.1 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.26.3 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
-	github.com/hashicorp/go-retryablehttp v0.7.7 // indirect
+	github.com/hashicorp/go-retryablehttp v0.7.8 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/invopop/jsonschema v0.13.0 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
