@@ -127,3 +127,14 @@ jobs:
           CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
         run: |
           cloudquery plugin publish --finalize
+
+      - name: Slack Notify
+        uses: ravsamhq/notify-slack-action@be814b201e233b2dc673608aa46e5447c8ab13f2
+        if: always()
+        with:
+          status: ${{ job.status }}
+          notify_when: 'failure'
+          notification_title: 'Failed to publish to hub ${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}@${{ needs.prepare.outputs.plugin_version }}'
+          footer: '<{repo_url}|{repo}>'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL }}
