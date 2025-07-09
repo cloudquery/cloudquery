@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.0...plugins-transformer-basic-v2.6.1) (2025-07-09)
+
+
+### Bug Fixes
+
+* Fix nested column obfuscation ([#20981](https://github.com/cloudquery/cloudquery/issues/20981)) ([96d55cd](https://github.com/cloudquery/cloudquery/commit/96d55cd27356bbb7902af2ca9d4c703ffe9d4ff5))
+
 ## [2.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.5.0...plugins-transformer-basic-v2.6.0) (2025-07-02)
 
 
