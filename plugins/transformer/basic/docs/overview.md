@@ -55,6 +55,23 @@ spec:
         tables: ["example"]
         columns: ["tags.hello", "tags.foo.bar.1", "tags.kubectl\\.kubernetes\\.io\\/last-applied-configuration"]
 ```
+To obfuscate nested JSON arrays like: column `example_column` with value: `{"top_foo":[{"foo": "baz0"},{"foo": "baz1"},{"foo": "baz2"}]}` you can use the following syntax:
+
+```yaml copy
+kind: transformer
+spec:
+  name: "basic"
+  path: "cloudquery/basic"
+  registry: "cloudquery"
+  spec:
+    transformations:
+      - kind: obfuscate_columns
+        tables: ["example"]
+        columns: ["example_column.top_foo.#.foo"]
+```
+
+Note: Obfuscating JSON arrays using `#.foo` syntax will cause all `foo` values to be replaced with the same obfuscated value `{"top_foo":[{"foo": "Redacted by CloudQuery | XXX"},{"foo": "Redacted by CloudQuery | XXX"},{"foo": "Redacted by CloudQuery | XXX"}]}`.
+
 You can also use the `obfuscate_sensitive_columns` transformation to automatically obfuscate all columns marked by the source plugin as `sensitive` and possibly containing secret information.
 
 Note: transformations are applied sequentially. If you rename tables, the table matcher configuration of subsequent transformations will need to be updated to the new names.
