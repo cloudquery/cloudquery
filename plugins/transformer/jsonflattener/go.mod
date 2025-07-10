@@ -4,7 +4,7 @@ go 1.24.4
 
 require (
 	github.com/apache/arrow-go/v18 v18.3.1
-	github.com/cloudquery/plugin-sdk/v4 v4.87.1
+	github.com/cloudquery/plugin-sdk/v4 v4.87.2
 	github.com/rs/zerolog v1.34.0
 	github.com/stretchr/testify v1.10.0
 )
@@ -13,7 +13,7 @@ require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cenkalti/backoff/v5 v5.0.2 // indirect
-	github.com/cloudquery/codegen v0.3.30 // indirect
+	github.com/cloudquery/codegen v0.3.31 // indirect
 	github.com/invopop/jsonschema v0.13.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
