@@ -1,5 +1,16 @@
 # Changelog
 
+## [7.9.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.9.0...plugins-destination-s3-v7.9.1) (2025-07-11)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.6.6 ([#20975](https://github.com/cloudquery/cloudquery/issues/20975)) ([81a0668](https://github.com/cloudquery/cloudquery/commit/81a066882925f5523f5cb30db76afcc7b3b80e77))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.6.7 ([#20983](https://github.com/cloudquery/cloudquery/issues/20983)) ([70f254a](https://github.com/cloudquery/cloudquery/commit/70f254afaf72991734eb072534783cf50239c0f0))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.6.8 ([#21007](https://github.com/cloudquery/cloudquery/issues/21007)) ([98a8f09](https://github.com/cloudquery/cloudquery/commit/98a8f09245b24762b4076900ae245d8db37cf1b8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.1 ([#20982](https://github.com/cloudquery/cloudquery/issues/20982)) ([5f23857](https://github.com/cloudquery/cloudquery/commit/5f2385702c9a50390b95104b05f5d211032d6d44))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.2 ([#21008](https://github.com/cloudquery/cloudquery/issues/21008)) ([67fc3e2](https://github.com/cloudquery/cloudquery/commit/67fc3e254eac125d19fb962551e543714a2d39dd))
+
 ## [7.9.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.8.14...plugins-destination-s3-v7.9.0) (2025-07-02)
 
 
