@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec/spec",
+  "$ref": "#/$defs/Spec",
+  "$defs": {
+    "Credentials": {
+      "properties": {
+        "local_profile": {
+          "type": "string",
+          "examples": [
+            "my_aws_profile"
+          ]
+        },
+        "role_arn": {
+          "type": "string",
+          "pattern": "^(arn(:[^:\n]*){5}([:/].*)?)?$"
+        },
+        "role_session_name": {
+          "type": "string",
+          "examples": [
+            "my_aws_role_session_name"
+          ]
+        },
+        "external_id": {
+          "type": "string",
+          "examples": [
+            "external_id"
+          ]
+        },
+        "default": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
+    "Spec": {
+      "properties": {
+        "connection_string": {
+          "type": "string",
+          "minLength": 1
+        },
+        "database": {
+          "type": "string",
+          "minLength": 1
+        },
+        "batch_size": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1000
+        },
+        "batch_size_bytes": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 4194304
+        },
+        "credentials": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Credentials"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "connection_string",
+        "database"
+      ]
+    }
+  }
+}

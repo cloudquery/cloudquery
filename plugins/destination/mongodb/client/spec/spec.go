@@ -1,4 +1,4 @@
-package client
+package spec
 
 import (
 	_ "embed"
@@ -27,6 +27,8 @@ type Spec struct {
 
 	// Maximum size of items that may be grouped together to be written in a single write.
 	BatchSizeBytes int64 `json:"batch_size_bytes,omitempty" jsonschema:"minimum=1,default=4194304"`
+
+	AWSCredentials *Credentials `json:"credentials,omitempty"`
 }
 
 //go:embed schema.json
@@ -48,5 +50,9 @@ func (s *Spec) Validate() error {
 	if s.Database == "" {
 		return errors.New("database is required")
 	}
+	if s.AWSCredentials != nil && (s.AWSCredentials.RoleARN != "" || s.AWSCredentials.RoleSessionName != "" || s.AWSCredentials.ExternalID != "" || s.AWSCredentials.LocalProfile != "") && s.AWSCredentials.Default {
+		return errors.New("`default` cannot be used with any other credential options")
+	}
+
 	return nil
 }
