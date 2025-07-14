@@ -29,7 +29,7 @@ type Spec struct {
 	BatchSizeBytes int64 `json:"batch_size_bytes,omitempty" jsonschema:"minimum=1,default=4194304"`
 
 	// Use AWS IAM credentials. If used this will override any credentials set in the connection_string
-	AWSCredentials *Credentials `json:"credentials,omitempty"`
+	AWSCredentials *Credentials `json:"aws_credentials,omitempty"`
 }
 
 //go:embed schema.json
