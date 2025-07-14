@@ -54,7 +54,7 @@
           "minimum": 1,
           "default": 4194304
         },
-        "credentials": {
+        "aws_credentials": {
           "oneOf": [
             {
               "$ref": "#/$defs/Credentials"
