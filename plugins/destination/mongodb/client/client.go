@@ -64,7 +64,7 @@ func New(ctx context.Context, logger zerolog.Logger, specByte []byte, _ plugin.N
 				return nil, fmt.Errorf("unable to load AWS SDK config: %w", err)
 			}
 
-			if c.spec.AWSCredentials != nil && c.spec.AWSCredentials.RoleARN != "" {
+			if c.spec.AWSCredentials.RoleARN != "" {
 				opts := make([]func(*stscreds.AssumeRoleOptions), 0, 1)
 				if c.spec.AWSCredentials.ExternalID != "" {
 					opts = append(opts, func(opts *stscreds.AssumeRoleOptions) {

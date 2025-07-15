@@ -1,10 +1,41 @@
 package spec
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/cloudquery/codegen/jsonschema"
+	"github.com/stretchr/testify/require"
 )
+
+func TestSpec_Validate(t *testing.T) {
+	cases := []struct {
+		Give    Spec
+		WantErr bool
+	}{
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database"}, WantErr: false},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "", Database: "database"}, WantErr: true},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: ""}, WantErr: true},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", AWSCredentials: &Credentials{Default: true}}, WantErr: false},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", AWSCredentials: &Credentials{RoleARN: "arn:aws:iam::123456789012:role/role_name"}}, WantErr: false},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", AWSCredentials: &Credentials{LocalProfile: "test_profile"}}, WantErr: false},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", AWSCredentials: &Credentials{Default: true, RoleARN: "arn:aws:iam::123456789012:role/role_name"}}, WantErr: true},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", AWSCredentials: &Credentials{Default: true, LocalProfile: "test_profile"}}, WantErr: true},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", AWSCredentials: &Credentials{Default: true, RoleSessionName: "test-session"}}, WantErr: true},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", AWSCredentials: &Credentials{}}, WantErr: true},
+	}
+	for i, tc := range cases {
+		tc := tc
+		t.Run(fmt.Sprintf("Case %d", i+1), func(t *testing.T) {
+			err := tc.Give.Validate()
+			if tc.WantErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
+		})
+	}
+}
 
 func TestJSONSchema(t *testing.T) {
 	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
@@ -61,6 +92,26 @@ func TestJSONSchema(t *testing.T) {
 			Name: "spec with unknown field",
 			Spec: `{"connection_string": "abc", "database":"foo", "unknown": "test"}`,
 			Err:  true,
+		},
+		{
+			Name: "spec with valid default aws_credentials",
+			Spec: `{"connection_string": "abc", "database":"foo", "aws_credentials": {"default": true}}`,
+			Err:  false,
+		},
+		{
+			Name: "spec with valid assume_role in aws_credentials",
+			Spec: `{"connection_string": "abc", "database":"foo", "aws_credentials": {"role_arn": "arn:aws:iam::123456789012:role/role_name"}}`,
+			Err:  false,
+		},
+		{
+			Name: "spec with valid local_profile in aws_credentials",
+			Spec: `{"connection_string": "abc", "database":"foo", "aws_credentials": {"local_profile": "test_profile"}}`,
+			Err:  false,
+		},
+		{
+			Name: "invalid spec with both valid local_profile and default in aws_credentials",
+			Spec: `{"connection_string": "abc", "database":"foo", "aws_credentials": {"default": true,"local_profile": "test_profile"}}`,
+			Err:  false,
 		},
 	})
 }

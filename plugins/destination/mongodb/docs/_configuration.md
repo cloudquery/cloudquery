@@ -16,7 +16,8 @@ spec:
     # batch_size: 10000 # 10K
     # batch_size_bytes: 4194304 # 4 MiB
     # aws_credentials: # <- Use this to specify non-default role assumption parameters
-    #   local_profile: "s3-profile" # Use a local profile instead of the default one
+    #   default: true # Use the default credentials chain
+    #   local_profile: "mongodb-profile" # Use a local profile instead of the default one
     #   role_arn: "arn:aws:iam::123456789012:role/role_name" # Specify the role to assume
     #   external_id: "external_id" # Used when assuming a role
     #   role_session_name: "session_name" # Used when assuming a role

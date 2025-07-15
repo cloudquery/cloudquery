@@ -51,8 +51,13 @@ func (s *Spec) Validate() error {
 	if s.Database == "" {
 		return errors.New("database is required")
 	}
-	if s.AWSCredentials != nil && (s.AWSCredentials.RoleARN != "" || s.AWSCredentials.RoleSessionName != "" || s.AWSCredentials.ExternalID != "" || s.AWSCredentials.LocalProfile != "") && s.AWSCredentials.Default {
-		return errors.New("`default` cannot be used with any other credential options")
+	if s.AWSCredentials != nil {
+		if (s.AWSCredentials.RoleARN != "" || s.AWSCredentials.RoleSessionName != "" || s.AWSCredentials.ExternalID != "" || s.AWSCredentials.LocalProfile != "") && s.AWSCredentials.Default {
+			return errors.New("`default` cannot be used with any other credential options")
+		}
+		if s.AWSCredentials.RoleARN == "" && s.AWSCredentials.LocalProfile == "" && !s.AWSCredentials.Default {
+			return errors.New("one of `role_arn`, `local_profile`, or `default` must be set")
+		}
 	}
 
 	return nil

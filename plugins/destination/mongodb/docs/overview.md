@@ -61,7 +61,7 @@ This is the (nested) spec used by the MongoDB destination Plugin.
 
 ### aws_credentials
 
-- `default` (`bool`)
+- `default` (`bool`) (optional)
 
   If set to `true` then AWS SDK will use the default credentials based on the AWS Credential chain
 
