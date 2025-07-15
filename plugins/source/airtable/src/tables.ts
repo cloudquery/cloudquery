@@ -252,9 +252,9 @@ const airtableToSchemaTable = (
           }
           fetchNextPage();
         },
-        (err) => {
-          if (err) {
-            reject(err);
+        (error) => {
+          if (error) {
+            reject(error);
           } else {
             resolve(undefined);
           }
