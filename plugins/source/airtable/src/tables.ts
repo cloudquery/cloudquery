@@ -242,12 +242,25 @@ const airtableToSchemaTable = (
 
   const resolver: TableResolver = async (clientMeta, parent, stream) => {
     const airtableClient = new Airtable({ apiKey, endpointUrl }).base(baseId);
-    const records = await airtableClient(table.name).select().all();
-    for (const record of records) {
-      const recordAsObject = Object.fromEntries(table.fields.map((field) => [field.name, record.get(field.name)]));
-      stream.write(recordAsObject);
-    }
-    return;
+    
+    return new Promise((resolve, reject) => {
+      airtableClient(table.name).select().eachPage(
+        (records, fetchNextPage) => {
+          for (const record of records) {
+            const recordAsObject = Object.fromEntries(table.fields.map((field) => [field.name, record.get(field.name)]));
+            stream.write(recordAsObject);
+          }
+          fetchNextPage();
+        },
+        (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(undefined);
+          }
+        }
+      );
+    });
   };
 
   return createTable({ name, columns, description: table.description, resolver });
