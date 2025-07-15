@@ -256,7 +256,7 @@ const airtableToSchemaTable = (
           if (error) {
             reject(error);
           } else {
-            resolve(undefined);
+            resolve();
           }
         }
       );
