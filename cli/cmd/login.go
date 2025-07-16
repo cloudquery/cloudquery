@@ -200,7 +200,7 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 
 	analytics.TrackLoginSuccess(ctx, invocationUUID.UUID)
 	cmd.Println("CLI successfully authenticated.")
-	cmd.Println(`Logged in. Next, initialize your sync configuration:
+	cmd.Println(`Next, initialize your sync configuration:
 	cloudquery init --source=<source> --destination=<destination>
 	
 Example:
