@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/typeconv/ch/values"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/util"
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -18,7 +19,11 @@ func (c *Client) DeleteStale(ctx context.Context, messages message.WriteDeleteSt
 	}
 
 	for _, msg := range messages {
-		if err := retryExec(ctx, c.logger, c.conn, generateDeleteForDeleteStale(msg), msg.SourceName, msg.SyncTime); err != nil {
+		namedValues := []any{
+			clickhouse.Named("source_name", msg.SourceName),
+			clickhouse.DateNamed("sync_time", msg.SyncTime, clickhouse.MicroSeconds),
+		}
+		if err := retryExec(ctx, c.logger, c.conn, generateDeleteForDeleteStale(msg), namedValues...); err != nil {
 			return err
 		}
 	}
@@ -32,9 +37,9 @@ func generateDeleteForDeleteStale(msg *message.WriteDeleteStale) string {
 	sb.WriteString(util.SanitizeID(msg.TableName))
 	sb.WriteString(" WHERE ")
 	sb.WriteString(util.SanitizeID(schema.CqSourceNameColumn.Name))
-	sb.WriteString(" = $1 AND toTimeZone(")
+	sb.WriteString(" = @source_name AND toTimeZone(")
 	sb.WriteString(util.SanitizeID(schema.CqSyncTimeColumn.Name))
-	sb.WriteString(", 'UTC') < $2")
+	sb.WriteString(", 'UTC') < @sync_time")
 	return sb.String()
 }
 
