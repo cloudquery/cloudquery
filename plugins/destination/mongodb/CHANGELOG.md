@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.22](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.6.21...plugins-destination-mongodb-v2.6.22) (2025-07-15)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/sjson digest to 737185f ([#21023](https://github.com/cloudquery/cloudquery/issues/21023)) ([60f00a1](https://github.com/cloudquery/cloudquery/commit/60f00a17ee6e5dbbec3f2160af5a2ffd4facc8e4))
+
 ## [2.6.21](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.6.20...plugins-destination-mongodb-v2.6.21) (2025-07-11)
 
 
