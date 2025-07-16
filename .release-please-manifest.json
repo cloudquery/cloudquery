@@ -17,7 +17,7 @@
   "plugins/source/okta+FILLER": "0.0.0",
   "plugins/source/terraform": "3.0.12",
   "plugins/source/terraform+FILLER": "0.0.0",
-  "plugins/source/test": "4.7.22",
+  "plugins/source/test": "4.7.23",
   "plugins/source/test+FILLER": "0.0.0",
   "plugins/destination/postgresql": "8.8.12",
   "plugins/destination/postgresql+FILLER": "0.0.0",
