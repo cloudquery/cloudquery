@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.23.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.22.1...cli-v6.23.0) (2025-07-16)
+
+
+### Features
+
+* Add post login steps in the CLI ([#21052](https://github.com/cloudquery/cloudquery/issues/21052)) ([721c4cd](https://github.com/cloudquery/cloudquery/commit/721c4cd96f64944b59da39775289fbe10c9d90be))
+
 ## [6.22.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.22.0...cli-v6.22.1) (2025-07-11)
 
 
