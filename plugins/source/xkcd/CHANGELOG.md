@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.24](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.23...plugins-source-xkcd-v1.5.24) (2025-07-15)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/sjson digest to 737185f ([#21023](https://github.com/cloudquery/cloudquery/issues/21023)) ([60f00a1](https://github.com/cloudquery/cloudquery/commit/60f00a17ee6e5dbbec3f2160af5a2ffd4facc8e4))
+
 ## [1.5.23](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.22...plugins-source-xkcd-v1.5.23) (2025-07-11)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.19](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.8.18...plugins-destination-test-v2.8.19) (2025-07-15)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/sjson digest to 737185f ([#21023](https://github.com/cloudquery/cloudquery/issues/21023)) ([60f00a1](https://github.com/cloudquery/cloudquery/commit/60f00a17ee6e5dbbec3f2160af5a2ffd4facc8e4))
+
 ## [2.8.18](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.8.17...plugins-destination-test-v2.8.18) (2025-07-11)
 
 
