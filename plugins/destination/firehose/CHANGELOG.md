@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.17](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.7.16...plugins-destination-firehose-v2.7.17) (2025-07-15)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/sjson digest to 737185f ([#21023](https://github.com/cloudquery/cloudquery/issues/21023)) ([60f00a1](https://github.com/cloudquery/cloudquery/commit/60f00a17ee6e5dbbec3f2160af5a2ffd4facc8e4))
+
 ## [2.7.16](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.7.15...plugins-destination-firehose-v2.7.16) (2025-07-11)
 
 
