@@ -1,5 +1,13 @@
 # Changelog
 
+## [7.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.1.2...plugins-destination-clickhouse-v7.1.3) (2025-07-16)
+
+
+### Bug Fixes
+
+* Delete stale sync time precision ([#21049](https://github.com/cloudquery/cloudquery/issues/21049)) ([52b48c8](https://github.com/cloudquery/cloudquery/commit/52b48c844dbc935afcb4166841fb7a65c73e263a))
+* Don't re-use scan destination between rows scan ([#21058](https://github.com/cloudquery/cloudquery/issues/21058)) ([bc909ad](https://github.com/cloudquery/cloudquery/commit/bc909ad686f39a173ab7f8d5e1f7c60c8771dcf9))
+
 ## [7.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.1.1...plugins-destination-clickhouse-v7.1.2) (2025-07-15)
 
 
