@@ -204,7 +204,7 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	cloudquery init --source=<source> --destination=<destination>
 	
 Example:
-	cloudquery init --source=aws --destination=postgresql
+	cloudquery init --source=aws --destination=sqlite
 
 Then run your first sync:
 	cloudquery sync`)
