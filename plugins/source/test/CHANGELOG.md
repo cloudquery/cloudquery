@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.7.23](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.7.22...plugins-source-test-v4.7.23) (2025-07-15)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/sjson digest to 737185f ([#21023](https://github.com/cloudquery/cloudquery/issues/21023)) ([60f00a1](https://github.com/cloudquery/cloudquery/commit/60f00a17ee6e5dbbec3f2160af5a2ffd4facc8e4))
+
 ## [4.7.22](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.7.21...plugins-source-test-v4.7.22) (2025-07-11)
 
 
