@@ -133,10 +133,7 @@ func newMetricConsumer(metricsFile *os.File, quit chan any, wg *sync.WaitGroup) 
 
 	return func(ctx context.Context, metric pluginMetric) {
 		table := metric.Attributes["sync.table.name"].(string)
-		clientId, ok := metric.Attributes["sync.table.client_id"].(string)
-		if !ok {
-			clientId = ""
-		}
+		clientId, _ := metric.Attributes["sync.table.client_id"].(string)
 
 		tableLock.Lock()
 		defer tableLock.Unlock()
