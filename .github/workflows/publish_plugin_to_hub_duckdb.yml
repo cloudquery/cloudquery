@@ -84,9 +84,6 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/gythialy/golang-cross:1.24.4
-      env:
-        CC: /usr/bin/gencc.sh
-        CXX: /usr/bin/gencpp.sh
     needs:
       - prepare
       - build-config-ui
