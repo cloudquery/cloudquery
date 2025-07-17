@@ -83,10 +83,7 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/cloudquery/golang-cross:v10.0.0
-      env:
-        CC: /usr/bin/gencc.sh
-        CXX: /usr/bin/gencpp.sh
+      image: ghcr.io/gythialy/golang-cross:1.24.4
     needs:
       - prepare
       - build-config-ui
