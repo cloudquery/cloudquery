@@ -16,18 +16,6 @@
       extractVersionTemplate: '^(?<version>.+)-pro$',
       depNameTemplate: 'goreleaser/goreleaser-pro',
       datasourceTemplate: 'github-releases',
-    },
-    {
-      customType: "regex",
-      fileMatch: [
-        ".github/workflows/.*\\.ya?ml$"
-      ],
-      matchStrings: [
-        'image:\\s*ghcr\\.io/gythialy/golang-cross:(?<currentValue>\\d+\\.\\d+\\.\\d+)'
-      ],
-      depNameTemplate: "golang-cross",
-      datasourceTemplate: "golang-version",
-      versioningTemplate: "semver"
     }
   ],
   packageRules: [

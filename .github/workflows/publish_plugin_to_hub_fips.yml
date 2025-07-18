@@ -43,8 +43,6 @@ jobs:
   publish-plugin-to-hub-fips:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/gythialy/golang-cross:1.24.4
     needs:
       - prepare
     steps:
@@ -52,9 +50,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      # https://github.com/actions/checkout/issues/2031
-      - name: Set safe directory
-        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
       - uses: actions/cache@v4
         with:
