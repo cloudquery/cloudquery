@@ -6,6 +6,7 @@ import (
 	"errors"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
@@ -89,7 +90,7 @@ func TestConnectionTester(t *testing.T) {
 				}
 			}
 			tester := NewConnectionTester(func(_ context.Context, _ zerolog.Logger, specBytes []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
-				sp := &Spec{}
+				sp := &spec.Spec{}
 				if err := json.Unmarshal(specBytes, sp); err != nil {
 					return nil, errInvalidSpec
 				}

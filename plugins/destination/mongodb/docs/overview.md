@@ -51,3 +51,47 @@ This is the (nested) spec used by the MongoDB destination Plugin.
 - `batch_size_bytes` (`integer`) (optional) (default: `4194304` (= 4 MiB))
 
   Maximum size of items that may be grouped together to be written in a single write.
+
+- `aws_credentials` ([aws_credentials](#aws_credentials)) (optional)
+
+  Optional parameters to enable usage of AWS IAM credentials
+
+
+
+
+### aws_credentials
+
+- `default` (`bool`)
+
+  If set to `true` then AWS SDK will use the default credentials based on the AWS Credential chain
+
+- `local_profile` (`string`)
+
+  [Local profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) to use to authenticate this account with.
+  Please note this should be set to the name of the profile.
+
+  For example, with the following credentials file:
+
+  ```toml copy
+  [default]
+  aws_access_key_id=xxxx
+  aws_secret_access_key=xxxx
+
+  [user1]
+  aws_access_key_id=xxxx
+  aws_secret_access_key=xxxx
+  ```
+
+  `local_profile` should be set to either `default` or `user1`.
+
+- `role_arn` (`string`)
+
+  If specified will use this to assume role.
+
+- `role_session_name` (`string`)
+
+  If specified will use this session name when assume role to `role_arn`.
+
+- `external_id` (`string`)
+
+  If specified will use this when assuming role to `role_arn`.

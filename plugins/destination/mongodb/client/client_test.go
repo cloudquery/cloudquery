@@ -7,6 +7,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
@@ -22,7 +23,7 @@ func getTestConnection() string {
 func TestPlugin(t *testing.T) {
 	ctx := context.Background()
 	p := plugin.NewPlugin("mongodb", "development", New)
-	s := &Spec{
+	s := &spec.Spec{
 		ConnectionString: getTestConnection(),
 		Database:         "destination_mongodb_test",
 	}
