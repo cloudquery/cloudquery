@@ -106,10 +106,10 @@ jobs:
       - name: Run package command
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         env:
-          GOEXPERIMENT: "boringcrypto"
+          GOFLAGS: "-tags=fipsEnabled"
         run: |
           rm -rf docs/tables.md
-          go run main.go package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
+          go run main_fips.go package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
