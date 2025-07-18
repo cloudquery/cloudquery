@@ -82,17 +82,13 @@ jobs:
 
       - name: Run package command
         env:
-          GOEXPERIMENT: "boringcrypto"
+          GOFLAGS: "-tags=fipsEnabled"
         run: |
           rm -rf docs/tables.md
-          go run main.go package -m "chore: Test FIPS" "v1.0.0" .
+          go run main_fips.go package -m "chore: Test FIPS" "v1.0.0" .
 
       - name: Unzip package artifacts
         run: |
           unzip -o dist/plugin-test-v1.0.0-linux-amd64.zip
           chmod +x plugin-test-v1.0.0-linux-amd64
-          ./plugin-test-v1.0.0-linux-amd64 --version
-
-      - name: Validate FIPS build
-        run: |
-          go tool nm plugin-test-v1.0.0-linux-amd64 | grep -E 'sig.FIPSOnly|sig.BoringCrypto'
+          ./plugin-test-v1.0.0-linux-amd64 --version 2>&1 | grep -E 'FIPS enabled: true'

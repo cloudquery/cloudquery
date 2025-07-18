@@ -1,4 +1,4 @@
-//go:build !(linux && boringcrypto)
+//go:build !fipsEnabled
 
 package plugin
 
@@ -21,6 +21,7 @@ func Plugin() *plugin.Plugin {
 		Configure,
 		plugin.WithKind(Kind),
 		plugin.WithTeam(Team),
+		plugin.WithBuildTargets(buildTargets()),
 		plugin.WithJSONSchema(client.JSONSchema),
 		plugin.WithConnectionTester(TestConnection),
 	)

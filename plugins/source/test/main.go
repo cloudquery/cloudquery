@@ -1,4 +1,4 @@
-//go:build !(linux && boringcrypto)
+//go:build !fipsEnabled
 
 package main
 
