@@ -5,7 +5,7 @@ go 1.24.4
 require (
 	github.com/apache/arrow-go/v18 v18.3.1
 	github.com/cloudquery/codegen v0.3.31
-	github.com/cloudquery/plugin-sdk/v4 v4.87.2
+	github.com/cloudquery/plugin-sdk/v4 v4.87.3
 	github.com/goccy/go-json v0.10.5
 	github.com/rs/zerolog v1.34.0
 	github.com/snowflakedb/gosnowflake v1.13.3
@@ -39,7 +39,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.3.7 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.12.17 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.17.5 // indirect
-	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.31.3 // indirect
+	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.32.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.29.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.53.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.25.5 // indirect
