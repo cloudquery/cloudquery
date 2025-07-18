@@ -43,8 +43,6 @@ jobs:
   publish-plugin-to-hub-fips:
     timeout-minutes: 60
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/gythialy/golang-cross:1.24.4
     needs:
       - prepare
     steps:
@@ -52,9 +50,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      # https://github.com/actions/checkout/issues/2031
-      - name: Set safe directory
-        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
       - uses: actions/cache@v4
         with:
@@ -111,10 +106,10 @@ jobs:
       - name: Run package command
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         env:
-          GOEXPERIMENT: "boringcrypto"
+          GOFLAGS: "-tags=fipsEnabled"
         run: |
           rm -rf docs/tables.md
-          go run main.go package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
+          go run main_fips.go package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4

@@ -1,5 +1,3 @@
-//go:build !(linux && boringcrypto)
-
 package plugin
 
 import (
@@ -21,6 +19,7 @@ func Plugin() *plugin.Plugin {
 		Configure,
 		plugin.WithKind(Kind),
 		plugin.WithTeam(Team),
+		plugin.WithBuildTargets(buildTargets()),
 		plugin.WithJSONSchema(client.JSONSchema),
 		plugin.WithConnectionTester(TestConnection),
 	)
