@@ -9,7 +9,7 @@ import (
 	"crypto/fips140"
 	"log"
 
-	"github.com/cloudquery/cloudquery/plugins/source/okta/resources/plugin"
+	"github.com/cloudquery/cloudquery/plugins/source/test/v4/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/serve"
 )
 
