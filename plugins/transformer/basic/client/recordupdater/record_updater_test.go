@@ -15,7 +15,13 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/tidwall/pretty"
 )
+
+func sortJSON(jsonStr string) string {
+	opts := pretty.Options{SortKeys: true}
+	return string(pretty.Ugly(pretty.PrettyOptions([]byte(jsonStr), &opts)))
+}
 
 func TestRemoveColumns(t *testing.T) {
 	record := createTestRecord()
@@ -539,4 +545,126 @@ func TestObfuscateDeeplyNestedColumnsWithGjsonSyntax(t *testing.T) {
 	col3Val2 := updatedRecord.Column(2).ValueStr(1)
 	require.Contains(t, col3Val2, redactedByCQMessage, "Expected obfuscated values to contain redacted message")
 	require.Equal(t, 2, strings.Count(col3Val2, redactedByCQMessage), "Expected 2 obfuscated values for the 2 nested2_object1 items in second row")
+}
+
+func TestRemoveNestedColumnsWithGjsonSyntax(t *testing.T) {
+	// Create test record with nested JSON structure
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "col1", Type: arrow.BinaryTypes.String},
+			{Name: "col2", Type: arrow.BinaryTypes.String},
+			{Name: "col3", Type: types.NewJSONType()},
+		},
+		&md,
+	))
+	defer bld.Release()
+
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1", "val2"}, nil)
+	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
+	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"top_foo":[{"foo":"baz0","keep":"value0"},{"foo":"baz1","keep":"value1"},{"foo":"baz2","keep":"value2"}],"other":"data"}`))
+	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"top_foo":[{"foo":"baz3","keep":"value3"},{"foo":"baz4","keep":"value4"},{"foo":"baz5","keep":"value5"}],"other":"data"}`))
+
+	record := bld.NewRecord()
+	updater := New(record)
+
+	// Test removal using gjson syntax with # for array elements
+	updatedRecord, err := updater.RemoveColumns([]string{"col3.top_foo.#.foo"})
+	require.NoError(t, err)
+
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+
+	// Check that the nested foo values are removed but keep values remain
+	expectedJSON1 := `{"top_foo":[{"keep":"value0"},{"keep":"value1"},{"keep":"value2"}],"other":"data"}`
+	actualJSON1 := updatedRecord.Column(2).ValueStr(0)
+	require.Equal(t, sortJSON(expectedJSON1), sortJSON(actualJSON1), "Expected foo fields to be removed from first row")
+
+	expectedJSON2 := `{"top_foo":[{"keep":"value3"},{"keep":"value4"},{"keep":"value5"}],"other":"data"}`
+	actualJSON2 := updatedRecord.Column(2).ValueStr(1)
+	require.Equal(t, sortJSON(expectedJSON2), sortJSON(actualJSON2), "Expected foo fields to be removed from second row")
+}
+
+func TestRemoveDeeplyNestedColumnsWithGjsonSyntax(t *testing.T) {
+	// Create test record with deeply nested JSON structure
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "col1", Type: arrow.BinaryTypes.String},
+			{Name: "col2", Type: arrow.BinaryTypes.String},
+			{Name: "col3", Type: types.NewJSONType()},
+		},
+		&md,
+	))
+	defer bld.Release()
+
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1", "val2"}, nil)
+	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
+	// First row: has 2 objects in object2 array, each with 2 nested2_object1 values = 4 total
+	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"object1":{"object2":[{"nested_object1":{"nested_object2":[{"nested2_object1":1,"keep":"a"},{"nested2_object1":2,"keep":"b"}]}},{"nested_object1":{"nested_object2":[{"nested2_object1":3,"keep":"c"},{"nested2_object1":4,"keep":"d"}]}}]}}`))
+	// Second row: has 1 object in object2 array, with 2 nested2_object1 values = 2 total
+	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"object1":{"object2":[{"nested_object1":{"nested_object2":[{"nested2_object1":5,"keep":"e"},{"nested2_object1":6,"keep":"f"}]}}]}}`))
+
+	record := bld.NewRecord()
+	updater := New(record)
+
+	// Test removal using gjson syntax with multiple # for nested arrays
+	updatedRecord, err := updater.RemoveColumns([]string{"col3.object1.object2.#.nested_object1.nested_object2.#.nested2_object1"})
+	require.NoError(t, err)
+
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+
+	// Check first row: nested2_object1 values should be removed but keep values should remain
+	expectedJSON1 := `{"object1":{"object2":[{"nested_object1":{"nested_object2":[{"keep":"a"},{"keep":"b"}]}},{"nested_object1":{"nested_object2":[{"keep":"c"},{"keep":"d"}]}}]}}`
+	actualJSON1 := updatedRecord.Column(2).ValueStr(0)
+	require.Equal(t, sortJSON(expectedJSON1), sortJSON(actualJSON1), "Expected nested2_object1 fields to be removed from first row")
+
+	// Check second row: nested2_object1 values should be removed but keep values should remain
+	expectedJSON2 := `{"object1":{"object2":[{"nested_object1":{"nested_object2":[{"keep":"e"},{"keep":"f"}]}}]}}`
+	actualJSON2 := updatedRecord.Column(2).ValueStr(1)
+	require.Equal(t, sortJSON(expectedJSON2), sortJSON(actualJSON2), "Expected nested2_object1 fields to be removed from second row")
+}
+
+func TestRemoveNestedArrayWithGjsonSyntax(t *testing.T) {
+	// Create test record with nested array structure like user described
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "col1", Type: arrow.BinaryTypes.String},
+			{Name: "col2", Type: arrow.BinaryTypes.String},
+			{Name: "col3", Type: types.NewJSONType()},
+		},
+		&md,
+	))
+	defer bld.Release()
+
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1", "val2"}, nil)
+	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
+	// Test structure: [{"env": [{"name": "AWS_ACCESS_KEY_ID", "value": "test"}]}]
+	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`[{"env": [{"name": "AWS_ACCESS_KEY_ID", "value": "test"}, {"name": "AWS_SECRET_KEY", "value": "secret"}]}, {"env": [{"name": "DB_PASSWORD", "value": "password"}]}]`))
+	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`[{"env": [{"name": "API_KEY", "value": "api-key-value"}]}]`))
+
+	record := bld.NewRecord()
+	updater := New(record)
+
+	// Test removal using gjson syntax: #.env.#.value (remove all "value" fields from nested env arrays)
+	updatedRecord, err := updater.RemoveColumns([]string{"col3.#.env.#.value"})
+	require.NoError(t, err)
+
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+
+	// Check first row: "value" fields should be removed but "name" fields should remain
+	expectedJSON1 := `[{"env": [{"name": "AWS_ACCESS_KEY_ID"}, {"name": "AWS_SECRET_KEY"}]}, {"env": [{"name": "DB_PASSWORD"}]}]`
+	actualJSON1 := updatedRecord.Column(2).ValueStr(0)
+	require.Equal(t, sortJSON(expectedJSON1), sortJSON(actualJSON1), "Expected value fields to be removed from first row")
+
+	// Check second row: "value" field should be removed but "name" field should remain
+	expectedJSON2 := `[{"env": [{"name": "API_KEY"}]}]`
+	actualJSON2 := updatedRecord.Column(2).ValueStr(1)
+	require.Equal(t, sortJSON(expectedJSON2), sortJSON(actualJSON2), "Expected value fields to be removed from second row")
 }

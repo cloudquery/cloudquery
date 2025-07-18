@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.6.3](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.2...plugins-transformer-basic-v2.6.3) (2025-07-15)
+
+
+### Bug Fixes
+
+* Bump sjson library to fix accessing root arrays and complex path ([#21022](https://github.com/cloudquery/cloudquery/issues/21022)) ([4f16d35](https://github.com/cloudquery/cloudquery/commit/4f16d35831097ea11612196f2d499ede79a09dc8))
+* **deps:** Update github.com/cloudquery/sjson digest to 737185f ([#21023](https://github.com/cloudquery/cloudquery/issues/21023)) ([60f00a1](https://github.com/cloudquery/cloudquery/commit/60f00a17ee6e5dbbec3f2160af5a2ffd4facc8e4))
+
+## [2.6.2](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.1...plugins-transformer-basic-v2.6.2) (2025-07-11)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.2 ([#21008](https://github.com/cloudquery/cloudquery/issues/21008)) ([67fc3e2](https://github.com/cloudquery/cloudquery/commit/67fc3e254eac125d19fb962551e543714a2d39dd))
+
 ## [2.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.0...plugins-transformer-basic-v2.6.1) (2025-07-09)
 
 

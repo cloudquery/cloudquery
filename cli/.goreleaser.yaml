@@ -115,6 +115,9 @@ brews:
       (zsh_completion/"_cloudquery").write output
       output = Utils.safe_popen_read("#{bin}/cloudquery", "completion", "fish")
       (fish_completion/"cloudquery.fish").write output
+    caveats: |
+      ✅ CloudQuery installed!
+      Next: Authenticate via `cloudquery login`
   -
     ids:
       - homebrew
@@ -133,3 +136,6 @@ brews:
       (zsh_completion/"_cloudquery").write output
       output = Utils.safe_popen_read("#{bin}/cloudquery", "completion", "fish")
       (fish_completion/"cloudquery.fish").write output
+    caveats: |
+      ✅ CloudQuery installed!
+      Next: Authenticate via `cloudquery login`
