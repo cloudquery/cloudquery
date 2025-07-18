@@ -59,16 +59,16 @@ jobs:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/cloudquery/golang-cross:v10.0.0
-      env:
-        CC: /usr/bin/gencc.sh
-        CXX: /usr/bin/gencpp.sh
+      image: ghcr.io/gythialy/golang-cross:1.24.4
     defaults:
       run:
         working-directory: ./plugins/source/test
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      # https://github.com/actions/checkout/issues/2031
+      - name: Set safe directory
+        run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
       - uses: actions/cache@v4
         with:
