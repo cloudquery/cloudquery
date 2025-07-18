@@ -6,6 +6,7 @@ package main
 
 import (
 	"context"
+	"crypto/fips140"
 	"log"
 
 	"github.com/cloudquery/cloudquery/plugins/source/test/v4/resources/plugin"

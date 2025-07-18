@@ -1,5 +1,3 @@
-//go:build !fipsEnabled
-
 package plugin
 
 import (
