@@ -83,7 +83,7 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/gythialy/golang-cross:1.24.4
+      image: ghcr.io/gythialy/golang-cross:1.24.5
     needs:
       - prepare
       - build-config-ui
@@ -154,7 +154,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.23.0
+          version: v6.24.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
