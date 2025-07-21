@@ -57,19 +57,25 @@ func (c *Client) nonAutoMigratableTables(tables schema.Tables, mysqlTables schem
 	return result, tableChanges
 }
 
+func isInternalColumnsChangedToNotNull(change schema.TableColumnChange) bool {
+	return (change.ColumnName == schema.CqSourceNameColumn.Name || change.ColumnName == schema.CqSyncTimeColumn.Name) && !change.Previous.NotNull && change.Current.NotNull
+}
+
 func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 	for _, change := range changes {
-		switch change.Type {
-		case schema.TableColumnChangeTypeAdd:
+		switch {
+		case change.Type == schema.TableColumnChangeTypeAdd:
 			if change.Current.PrimaryKey || change.Current.NotNull {
 				return false
 			}
-		case schema.TableColumnChangeTypeRemove:
+		case change.Type == schema.TableColumnChangeTypeRemove:
 			if change.Previous.PrimaryKey || change.Previous.NotNull {
 				return false
 			}
-		case schema.TableColumnChangeTypeRemoveUniqueConstraint:
+		case change.Type == schema.TableColumnChangeTypeRemoveUniqueConstraint:
 			continue
+		case isInternalColumnsChangedToNotNull(change):
+			return true
 		default:
 			return false
 		}
@@ -78,13 +84,17 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 }
 func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, changes []schema.TableColumnChange) error {
 	for _, change := range changes {
-		switch change.Type {
-		case schema.TableColumnChangeTypeAdd:
+		switch {
+		case change.Type == schema.TableColumnChangeTypeAdd:
 			if err := c.addColumn(ctx, table, table.Columns.Get(change.ColumnName)); err != nil {
 				return err
 			}
-		case schema.TableColumnChangeTypeRemoveUniqueConstraint:
+		case change.Type == schema.TableColumnChangeTypeRemoveUniqueConstraint:
 			if err := c.dropIndex(ctx, table, table.Columns.Get(change.ColumnName)); err != nil {
+				return err
+			}
+		case isInternalColumnsChangedToNotNull(change):
+			if err := c.makeColumnNotNull(ctx, table, table.Columns.Get(change.ColumnName)); err != nil {
 				return err
 			}
 		}
