@@ -10,6 +10,8 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/apache/arrow-go/v18/arrow"
+	"github.com/apache/arrow-go/v18/arrow/extensions"
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
@@ -59,6 +61,8 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	if err != nil {
 		return nil, err
 	}
+
+	arrow.UnregisterExtensionType(extensions.NewUUIDType().ExtensionName())
 
 	return c, nil
 }
