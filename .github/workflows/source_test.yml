@@ -44,7 +44,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.23.0
+          version: v6.24.0
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -70,9 +70,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.24.4-validate-plugin-fips-cache-${{ hashFiles('plugins/source/test/go.sum') }}
+          key: ${{ runner.os }}-go-1.24.5-validate-plugin-fips-cache-${{ hashFiles('plugins/source/test/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.24.4-validate-plugin-fips-cache-source-test
+            ${{ runner.os }}-go-1.24.5-validate-plugin-fips-cache-source-test
 
       - name: Set up Go 1.x
         uses: actions/setup-go@v5
