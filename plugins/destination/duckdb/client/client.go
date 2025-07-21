@@ -62,6 +62,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 		return nil, err
 	}
 
+	// Unregister the built-in UUID type to avoid conflicts with our own UUID type
 	arrow.UnregisterExtensionType(extensions.NewUUIDType().ExtensionName())
 
 	return c, nil
