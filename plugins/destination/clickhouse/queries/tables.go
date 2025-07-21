@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"slices"
 	"strings"
+	"time"
 
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/client/spec"
@@ -43,12 +44,26 @@ func IsCompoundType(col schema.Column) bool {
 	}
 }
 
-func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, partition []spec.PartitionStrategy, orderBy []spec.OrderByStrategy) (string, error) {
+type CreateTableOptions struct {
+	TTL *time.Duration
+}
+
+type CreateTableOption func(*CreateTableOptions) *CreateTableOptions
+
+func WithTTL(ttl time.Duration) CreateTableOption {
+	return func(o *CreateTableOptions) *CreateTableOptions {
+		o.TTL = &ttl
+		return o
+	}
+}
+
+func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, partition []spec.PartitionStrategy, orderBy []spec.OrderByStrategy, ttl []spec.TTLStrategy) (string, error) {
 	builder := strings.Builder{}
 	builder.WriteString("CREATE TABLE IF NOT EXISTS ")
 	builder.WriteString(tableNamePart(table.Name, cluster))
 	builder.WriteString(" (\n")
 	builder.WriteString("  ")
+	isCqSyncTimeNotNull := false
 	for i, col := range table.Columns {
 		definition, err := types.FieldDefinition(col.ToArrowField())
 		if err != nil {
@@ -57,6 +72,9 @@ func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, parti
 		builder.WriteString(definition)
 		if i < len(table.Columns)-1 {
 			builder.WriteString(",\n  ")
+		}
+		if col.Name == schema.CqSyncTimeColumn.Name && col.NotNull {
+			isCqSyncTimeNotNull = true
 		}
 	}
 	builder.WriteString("\n) ENGINE = ")
@@ -81,6 +99,15 @@ func CreateTable(table *schema.Table, cluster string, engine *spec.Engine, parti
 	} else {
 		builder.WriteString("tuple()")
 	}
+
+	resolvedTTL, err := ResolveTTL(table, ttl)
+	if err != nil {
+		return "", err
+	}
+	if len(resolvedTTL) > 0 {
+		builder.WriteString(" TTL " + GetTTLString(resolvedTTL, isCqSyncTimeNotNull))
+	}
+
 	builder.WriteString(" SETTINGS allow_nullable_key=1") // allows nullable keys
 
 	return builder.String(), nil
@@ -127,6 +154,36 @@ func ResolveOrderBy(table *schema.Table, orderBy []spec.OrderByStrategy) ([]stri
 		return util.Sanitized(SortKeys(table)...), nil
 	}
 	return resolvedOrderBy, nil
+}
+
+func ResolveTTL(table *schema.Table, ttl []spec.TTLStrategy) (string, error) {
+	hasMatchedAlready := false
+	resolvedTTL := ""
+	for _, t := range ttl {
+		if !tableMatchesAnyGlobPatterns(table.Name, t.SkipTables) && tableMatchesAnyGlobPatterns(table.Name, t.Tables) {
+			if hasMatchedAlready {
+				return "", fmt.Errorf("table %q matched multiple TTL strategies", table.Name)
+			}
+			hasMatchedAlready = true
+			resolvedTTL = t.TTL
+		}
+	}
+	if !hasMatchedAlready {
+		return "", nil
+	}
+	return resolvedTTL, nil
+}
+
+func GetTTLString(resolvedTTL string, isCqSyncTimeNotNull bool) string {
+	// At the moment, _cq_sync_time is nullable in most instances of the CloudQuery CLI,
+	// but the --cq-columns-not-null flag does allow users to control this. As ClickHouse TTLs
+	// don't allow nullable columns to be used, we stay on the safe side and use a coalesce with fallback
+	// to 1970, but for performance reasons only do this if _cq_sync_time is not guaranteed to be not null.
+	if isCqSyncTimeNotNull {
+		return "_cq_sync_time + (" + resolvedTTL + ")"
+	} else {
+		return "toDateTime(coalesce(_cq_sync_time, makeDate(1970, 1, 1))) + (" + resolvedTTL + ")"
+	}
 }
 
 func tableMatchesAnyGlobPatterns(table string, patterns []string) bool {

@@ -56,3 +56,7 @@ func tableNamePart(table, cluster string) string {
 func GetPartitionKeyAndSortingKeyQuery(database, table string) string {
 	return fmt.Sprintf(`SELECT partition_key, sorting_key FROM system.tables WHERE database = '%s' AND name = '%s'`, database, table)
 }
+
+func GetTTLQuery(database, table string) string {
+	return fmt.Sprintf(`SHOW CREATE TABLE "%s"."%s"`, database, table)
+}

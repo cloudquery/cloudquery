@@ -27,3 +27,26 @@ func (c *Client) getPartitionKeyAndSortingKey(ctx context.Context, table *schema
 	}
 	return splitPartitionKey, splitSortingKey, nil
 }
+
+func (c *Client) getTTL(ctx context.Context, table *schema.Table) (string, error) {
+	sql := queries.GetTTLQuery(c.database, table.Name)
+	var statement string
+
+	err := retryQueryRowAndScan(ctx, c.logger, c.conn, sql, []any{}, []any{&statement})
+	if err != nil {
+		return "", err
+	}
+
+	ttl := ""
+	for _, line := range strings.Split(statement, "\n") {
+		line = strings.TrimSpace(line)
+		if strings.HasPrefix(line, "TTL") {
+			// Extract the TTL statement, which is everything after "TTL"
+			ttl = strings.TrimPrefix(line, "TTL")
+			ttl = strings.TrimSpace(ttl)
+			break
+		}
+	}
+
+	return ttl, nil
+}
