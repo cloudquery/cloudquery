@@ -16,7 +16,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -54,38 +53,36 @@ type Authenticator struct {
 
 var _ driver.Authenticator = (*Authenticator)(nil)
 
-// NewAuthenticator creates a new AWS SDK authenticator. It loads the AWS
-// SDK config (honoring AWS_STS_REGIONAL_ENDPOINTS & AWS_REGION) and returns an
-// Authenticator that uses it.
+func mapToCredentials(credProps map[string]string) (spec.Credentials, error) {
+	var awsCred spec.Credentials
 
-func NewAuthenticator(cred *auth.Cred, _ *http.Client) (driver.Authenticator, error) {
-	// Load AWS SDK config from environment variables / credentials files.
+	if val, ok := credProps["LocalProfile"]; ok {
+		awsCred.LocalProfile = val
+	}
+	if val, ok := credProps["RoleARN"]; ok {
+		awsCred.RoleARN = val
+	}
+	if val, ok := credProps["RoleSessionName"]; ok {
+		awsCred.RoleSessionName = val
+	}
+	if val, ok := credProps["ExternalID"]; ok {
+		awsCred.ExternalID = val
+	}
+	if val, ok := credProps["Default"]; ok {
+		boolValue, err := strconv.ParseBool(val)
+		if err != nil {
+			return awsCred, fmt.Errorf("failed to parse Default value: %w", err)
+		}
+		awsCred.Default = boolValue
+	}
+	return awsCred, nil
+}
+
+func getAWSConfig(awsCred spec.Credentials) (*aws.Config, error) {
 	ctx := context.Background()
 	var cfg aws.Config
 	var err error
 	configFns := []func(*config.LoadOptions) error{}
-	var awsCred spec.Credentials
-
-	if val, ok := cred.Props["LocalProfile"]; ok {
-		awsCred.LocalProfile = val
-	}
-	if val, ok := cred.Props["RoleARN"]; ok {
-		awsCred.RoleARN = val
-	}
-	if val, ok := cred.Props["RoleSessionName"]; ok {
-		awsCred.RoleSessionName = val
-	}
-	if val, ok := cred.Props["ExternalID"]; ok {
-		awsCred.ExternalID = val
-	}
-	if val, ok := cred.Props["Default"]; ok {
-		boolValue, err := strconv.ParseBool(val)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		awsCred.Default = boolValue
-	}
 
 	if awsCred.Default {
 		// Use default AWS credentials
@@ -123,14 +120,26 @@ func NewAuthenticator(cred *auth.Cred, _ *http.Client) (driver.Authenticator, er
 		}
 	}
 
-	awsCfg, err := config.LoadDefaultConfig(context.Background())
+	return &cfg, nil
+}
+
+// NewAuthenticator creates a new AWS SDK authenticator. It loads the AWS
+// SDK config (honoring AWS_STS_REGIONAL_ENDPOINTS & AWS_REGION) and returns an
+// Authenticator that uses it
+func NewAuthenticator(cred *auth.Cred, _ *http.Client) (driver.Authenticator, error) {
+	// details are in the cred.Props
+	awsCred, err := mapToCredentials(cred.Props)
 	if err != nil {
-		return nil, fmt.Errorf("failed to load AWS SDK config: %w", err)
+		return nil, fmt.Errorf("failed to map credentials: %w", err)
+	}
+	cfg, err := getAWSConfig(awsCred)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get AWS config: %w", err)
 	}
 
 	return &Authenticator{
 		userCred: cred,
-		awsCfg:   awsCfg,
+		awsCfg:   *cfg,
 		signer:   awsv4.NewSigner(),
 	}, nil
 }
