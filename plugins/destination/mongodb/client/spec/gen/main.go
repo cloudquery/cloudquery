@@ -6,14 +6,14 @@ import (
 	"path"
 	"runtime"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client"
+	"github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec"
 	cqjsonschema "github.com/cloudquery/codegen/jsonschema"
 )
 
 func main() {
 	fmt.Println("Generating JSON schema for plugin spec")
-	cqjsonschema.GenerateIntoFile(new(client.Spec), path.Join(currDir(), "../..", "schema.json"),
-		cqjsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client", path.Join(currDir(), "../..")),
+	cqjsonschema.GenerateIntoFile(new(spec.Spec), path.Join(currDir(), "..", "schema.json"),
+		cqjsonschema.WithAddGoComments("github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec", path.Join(currDir(), "../..")),
 	)
 }
 
