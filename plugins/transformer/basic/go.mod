@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/transformer/basic
 
-go 1.24.4
+go 1.24.5
 
 require (
 	github.com/apache/arrow-go/v18 v18.3.1
@@ -8,6 +8,7 @@ require (
 	github.com/rs/zerolog v1.34.0
 	github.com/stretchr/testify v1.10.0
 	github.com/tidwall/gjson v1.18.0
+	github.com/tidwall/pretty v1.2.0
 	github.com/tidwall/sjson v1.2.5
 )
 
@@ -63,7 +64,6 @@ require (
 	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
-	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
@@ -98,4 +98,4 @@ require (
 // github.com/cloudquery/jsonschema @ cqmain
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66
 
-replace github.com/tidwall/sjson => github.com/cloudquery/sjson v0.0.0-20250708134708-0065b237a60e
+replace github.com/tidwall/sjson => github.com/cloudquery/sjson v0.0.0-20250715101255-737185f49eb9

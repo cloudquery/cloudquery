@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.22](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v5.4.21...plugins-destination-neo4j-v5.4.22) (2025-07-15)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/sjson digest to 737185f ([#21023](https://github.com/cloudquery/cloudquery/issues/21023)) ([60f00a1](https://github.com/cloudquery/cloudquery/commit/60f00a17ee6e5dbbec3f2160af5a2ffd4facc8e4))
+
 ## [5.4.21](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v5.4.20...plugins-destination-neo4j-v5.4.21) (2025-07-11)
 
 
