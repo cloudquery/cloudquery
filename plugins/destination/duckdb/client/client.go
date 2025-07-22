@@ -10,6 +10,8 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/apache/arrow-go/v18/arrow"
+	"github.com/apache/arrow-go/v18/arrow/extensions"
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
@@ -57,6 +59,11 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	}
 	err = c.exec(ctx, "INSTALL 'parquet'; LOAD 'parquet';")
 	if err != nil {
+		return nil, err
+	}
+
+	// Unregister the built-in UUID type to avoid conflicts with our own UUID type
+	if err := arrow.UnregisterExtensionType(extensions.NewUUIDType().ExtensionName()); err != nil {
 		return nil, err
 	}
 
