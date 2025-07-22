@@ -18,7 +18,8 @@ import (
 type tableChanges struct {
 	alreadyExists         bool
 	forcedMigrationNeeded bool
-	ttlChange             string
+	oldTTL                string
+	newTTL                string
 	changes               []schema.TableColumnChange
 }
 
@@ -101,7 +102,8 @@ func (c *Client) allTablesChanges(ctx context.Context, want schema.Tables, have 
 			result[t.Name] = tableChanges{
 				alreadyExists:         false,
 				changes:               nil,
-				ttlChange:             "",
+				oldTTL:                "",
+				newTTL:                "",
 				forcedMigrationNeeded: false,
 			}
 			continue
@@ -111,14 +113,15 @@ func (c *Client) allTablesChanges(ctx context.Context, want schema.Tables, have 
 		if err != nil {
 			return nil, err
 		}
-		ttlChange, err := c.checkTTLChanged(ctx, t)
+		oldTTL, newTTL, err := c.checkTTLChanged(ctx, t)
 		if err != nil {
 			return nil, fmt.Errorf("failed to check TTL changes for table %s: %w", t.Name, err)
 		}
 		result[t.Name] = tableChanges{
 			alreadyExists:         true,
 			changes:               changes,
-			ttlChange:             ttlChange,
+			oldTTL:                oldTTL,
+			newTTL:                newTTL,
 			forcedMigrationNeeded: forcedMigrationNeeded,
 		}
 	}
@@ -210,8 +213,8 @@ func (c *Client) autoMigrate(ctx context.Context, tableName string, tableChanges
 		}
 	}
 
-	if tableChanges.ttlChange != "" {
-		query := queries.SetTTL(tableName, c.spec.Cluster, tableChanges.ttlChange)
+	if tableChanges.oldTTL != tableChanges.newTTL {
+		query := queries.SetTTL(tableName, c.spec.Cluster, tableChanges.newTTL)
 		if err := retryExec(ctx, c.logger, c.conn, query); err != nil {
 			return err
 		}
@@ -266,10 +269,10 @@ func (c *Client) checkPartitionOrOrderByChanged(ctx context.Context, table *sche
 	return partitionKeyChange, sortingKeyChange, nil
 }
 
-func (c *Client) checkTTLChanged(ctx context.Context, table *schema.Table) (string, error) {
+func (c *Client) checkTTLChanged(ctx context.Context, table *schema.Table) (oldTTL string, newTTL string, err error) {
 	resolvedTTL, err := queries.ResolveTTL(table, c.spec.TTL)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
 	isCqSyncTimeNotNull := checkIfCqSyncTimeNotNull(table)
@@ -277,16 +280,18 @@ func (c *Client) checkTTLChanged(ctx context.Context, table *schema.Table) (stri
 
 	haveTTL, err := c.getTTL(ctx, table)
 	if err != nil {
-		return "", fmt.Errorf("failed to get TTL for table %s: %w", table.Name, err)
+		return "", "", fmt.Errorf("failed to get TTL for table %s: %w", table.Name, err)
 	}
 
-	ttlChange := ""
-	if wantTTL != haveTTL {
-		ttlChange = wantTTL
+	equalTTLs, err := c.equalTTLs(table, haveTTL, wantTTL)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to compare TTLs for table %s: %w", table.Name, err)
+	}
+	if !equalTTLs {
 		msg := fmt.Sprintf("TTL changed (was [%s] and would become [%s])", haveTTL, wantTTL)
 		c.logger.Info().Str("table", table.Name).Msg(msg)
 	}
-	return ttlChange, nil
+	return haveTTL, wantTTL, nil
 }
 
 func checkIfCqSyncTimeNotNull(table *schema.Table) bool {

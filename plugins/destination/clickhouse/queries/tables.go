@@ -185,9 +185,8 @@ func GetTTLString(resolvedTTL string, isCqSyncTimeNotNull bool) string {
 	// to 1970, but for performance reasons only do this if _cq_sync_time is not guaranteed to be not null.
 	if isCqSyncTimeNotNull {
 		return "_cq_sync_time + (" + resolvedTTL + ")"
-	} else {
-		return "toDateTime(coalesce(_cq_sync_time, makeDate(1970, 1, 1))) + (" + resolvedTTL + ")"
 	}
+	return "toDateTime(coalesce(_cq_sync_time, makeDate(1970, 1, 1))) + (" + resolvedTTL + ")"
 }
 
 func tableMatchesAnyGlobPatterns(table string, patterns []string) bool {
