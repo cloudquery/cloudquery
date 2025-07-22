@@ -16,6 +16,7 @@ import (
 )
 
 type tableChanges struct {
+	alreadyExists         bool
 	forcedMigrationNeeded bool
 	changes               []schema.TableColumnChange
 }
@@ -71,7 +72,7 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 
 			tableName := want.Name
 			tableChanges := allTablesChanges[tableName]
-			if tableChanges.changes == nil {
+			if !tableChanges.alreadyExists {
 				c.logger.Info().Str("table", tableName).Msg("Table doesn't exist, creating")
 				return c.createTable(ctx, want, c.spec.Partition, c.spec.OrderBy)
 			}
@@ -97,6 +98,7 @@ func (c *Client) allTablesChanges(ctx context.Context, want schema.Tables, have 
 		chTable := have.Get(t.Name)
 		if chTable == nil {
 			result[t.Name] = tableChanges{
+				alreadyExists:         false,
 				changes:               nil,
 				forcedMigrationNeeded: false,
 			}
@@ -108,6 +110,7 @@ func (c *Client) allTablesChanges(ctx context.Context, want schema.Tables, have 
 			return nil, err
 		}
 		result[t.Name] = tableChanges{
+			alreadyExists:         true,
 			changes:               changes,
 			forcedMigrationNeeded: forcedMigrationNeeded,
 		}
