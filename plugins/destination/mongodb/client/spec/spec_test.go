@@ -86,25 +86,5 @@ func TestJSONSchema(t *testing.T) {
 			Spec: `{"connection_string": "abc", "database":"foo", "unknown": "test"}`,
 			Err:  true,
 		},
-		{
-			Name: "spec with valid default aws_credentials",
-			Spec: `{"connection_string": "abc", "database":"foo", "aws_credentials": {"default": true}}`,
-			Err:  false,
-		},
-		{
-			Name: "spec with valid assume_role in aws_credentials",
-			Spec: `{"connection_string": "abc", "database":"foo", "aws_credentials": {"role_arn": "arn:aws:iam::123456789012:role/role_name"}}`,
-			Err:  false,
-		},
-		{
-			Name: "spec with valid local_profile in aws_credentials",
-			Spec: `{"connection_string": "abc", "database":"foo", "aws_credentials": {"local_profile": "test_profile"}}`,
-			Err:  false,
-		},
-		{
-			Name: "invalid spec with both valid local_profile and default in aws_credentials",
-			Spec: `{"connection_string": "abc", "database":"foo", "aws_credentials": {"default": true,"local_profile": "test_profile"}}`,
-			Err:  false,
-		},
 	})
 }
