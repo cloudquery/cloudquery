@@ -1,10 +1,34 @@
-package client
+package spec
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/cloudquery/codegen/jsonschema"
+	"github.com/stretchr/testify/require"
 )
+
+func TestSpec_Validate(t *testing.T) {
+	cases := []struct {
+		Give    Spec
+		WantErr bool
+	}{
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database"}, WantErr: false},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "", Database: "database"}, WantErr: true},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: ""}, WantErr: true},
+	}
+	for i, tc := range cases {
+		tc := tc
+		t.Run(fmt.Sprintf("Case %d", i+1), func(t *testing.T) {
+			err := tc.Give.Validate()
+			if tc.WantErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
+			}
+		})
+	}
+}
 
 func TestJSONSchema(t *testing.T) {
 	jsonschema.TestJSONSchema(t, JSONSchema, []jsonschema.TestCase{
