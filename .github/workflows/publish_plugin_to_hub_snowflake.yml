@@ -83,7 +83,7 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/gythialy/golang-cross:1.24.4
+      image: ghcr.io/gythialy/golang-cross:1.24.5
       env:
         GOAMD64: v1
     needs:
@@ -103,9 +103,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.24.4-publish-plugin-to-hub-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
+          key: ${{ runner.os }}-go-1.24.5-publish-plugin-to-hub-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
           restore-keys: |
-            ${{ runner.os }}-go-1.24.4-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}
+            ${{ runner.os }}-go-1.24.5-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}
 
       - name: Set up Go 1.x
         uses: actions/setup-go@v5
@@ -156,7 +156,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.23.0
+          version: v6.24.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
