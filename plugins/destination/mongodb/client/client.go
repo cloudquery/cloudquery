@@ -41,9 +41,9 @@ func New(ctx context.Context, logger zerolog.Logger, specByte []byte, _ plugin.N
 
 	mongoDBClientOptions := options.Client().ApplyURI(c.spec.ConnectionString).SetRegistry(getRegistry())
 	if c.spec.AWSCredentials != nil {
-		auth.RegisterAuthenticatorFactory("MONGODB-AWS-CQ", NewAuthenticator)
+		auth.RegisterAuthenticatorFactory(MongoDBCQAWS, NewAuthenticator)
 		assumeRoleCredential := options.Credential{
-			AuthMechanism: "MONGODB-AWS-CQ",
+			AuthMechanism: MongoDBCQAWS,
 			AuthMechanismProperties: map[string]string{
 				"LocalProfile":    c.spec.AWSCredentials.LocalProfile,
 				"RoleARN":         c.spec.AWSCredentials.RoleARN,
