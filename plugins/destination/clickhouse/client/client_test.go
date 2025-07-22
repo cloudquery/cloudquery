@@ -313,3 +313,87 @@ func TestConcurrentSyncsSameTable(t *testing.T) {
 	require.Equal(t, syncConcurrency, numRows)
 	require.NoError(t, err)
 }
+
+func TestMigrateWithTTL(t *testing.T) {
+	ctx := context.Background()
+	p := plugin.NewPlugin("clickhouse",
+		internalPlugin.Version,
+		New,
+		plugin.WithJSONSchema(spec.JSONSchema),
+	)
+	s := &spec.Spec{
+		ConnectionString: getTestConnection(),
+	}
+	b, err := json.Marshal(s)
+	require.NoError(t, err)
+	err = p.Init(ctx, b, plugin.NewClientOptions{})
+	require.NoError(t, err)
+
+	timeNow := time.Now().UnixNano()
+	tableName := fmt.Sprintf("cq_test_migrate_with_ttl_%d", timeNow)
+	table := &schema.Table{
+		Name: tableName,
+		Columns: []schema.Column{
+			schema.CqIDColumn,
+			schema.CqSourceNameColumn,
+			schema.CqSyncTimeColumn,
+			schema.CqClientIDColumn,
+			{
+				Name:       "_cq_sync_group_id",
+				Type:       arrow.BinaryTypes.String,
+				NotNull:    true,
+				PrimaryKey: true,
+			},
+		},
+	}
+	if err := p.WriteAll(ctx, []message.WriteMessage{&message.WriteMigrateTable{Table: table}}); err != nil {
+		t.Fatal(fmt.Errorf("failed to create table without TTL: %w", err))
+	}
+
+	bldr := array.NewRecordBuilder(memory.DefaultAllocator, table.ToArrowSchema())
+	bldr.Field(0).(*sdkTypes.UUIDBuilder).Append(uuid.MustParse("123e4567-e89b-12d3-a456-426614174000"))
+	bldr.Field(1).(*array.StringBuilder).Append("foo")
+	bldr.Field(2).(*array.TimestampBuilder).Append(arrow.Timestamp(time.Now().UnixMicro()))
+	bldr.Field(4).(*array.StringBuilder).Append("cq-client-id")
+	bldr.Field(3).(*array.StringBuilder).Append("cq-sync-group-id")
+	record := bldr.NewRecord()
+
+	if err := p.WriteAll(ctx, []message.WriteMessage{&message.WriteInsert{
+		Record: record,
+	}}); err != nil {
+		t.Fatal(fmt.Errorf("failed to insert record: %w", err))
+	}
+
+	ttlSpec := &spec.Spec{
+		ConnectionString: getTestConnection(),
+		TTL: []spec.TTLStrategy{
+			{
+				Tables:     []string{"cq_test_migrate_with_ttl_*"},
+				SkipTables: nil,
+				TTL:        "INTERVAL 1 DAY + INTERVAL 2 HOUR + INTERVAL 3 MINUTE",
+			},
+		},
+	}
+	ttlBytes, err := json.Marshal(ttlSpec)
+	require.NoError(t, err)
+	p = plugin.NewPlugin("clickhouse",
+		internalPlugin.Version,
+		New,
+		plugin.WithJSONSchema(spec.JSONSchema),
+	)
+	err = p.Init(ctx, ttlBytes, plugin.NewClientOptions{})
+	require.NoError(t, err)
+
+	// Add TTL to the table
+	if err := p.WriteAll(ctx, []message.WriteMessage{&message.WriteMigrateTable{Table: table}}); err != nil {
+		t.Fatal(fmt.Errorf("failed to add TTL to table: %w", err))
+	}
+
+	// remove TTL again
+	err = p.Init(ctx, b, plugin.NewClientOptions{})
+	require.NoError(t, err)
+
+	if err := p.WriteAll(ctx, []message.WriteMessage{&message.WriteMigrateTable{Table: table}}); err != nil {
+		t.Fatal(fmt.Errorf("failed to remove TTL from table: %w", err))
+	}
+}

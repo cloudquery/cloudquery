@@ -19,6 +19,12 @@ func DropColumn(table string, cluster string, col schema.Column) string {
 }
 
 func SetTTL(table, cluster, ttl string) string {
+	if ttl == "" {
+		if len(cluster) > 0 {
+			return "ALTER TABLE " + util.SanitizeID(table) + " ON CLUSTER " + util.SanitizeID(cluster) + " REMOVE TTL"
+		}
+		return "ALTER TABLE " + util.SanitizeID(table) + " REMOVE TTL"
+	}
 	if len(cluster) > 0 {
 		return "ALTER TABLE " + util.SanitizeID(table) + " ON CLUSTER " + util.SanitizeID(cluster) + " MODIFY TTL " + ttl
 	}

@@ -99,6 +99,7 @@ func (c *Client) allTablesChanges(ctx context.Context, want schema.Tables, have 
 		if chTable == nil {
 			result[t.Name] = tableChanges{
 				changes:               nil,
+				ttlChange:             "",
 				forcedMigrationNeeded: false,
 			}
 			continue
@@ -278,8 +279,9 @@ func (c *Client) checkTTLChanged(ctx context.Context, table *schema.Table) (stri
 
 	ttlChange := ""
 	if wantTTL != haveTTL {
-		ttlChange = fmt.Sprintf("TTL changed (was [%s] and would become [%s])", haveTTL, resolvedTTL)
-		c.logger.Info().Str("table", table.Name).Msg(ttlChange)
+		ttlChange = wantTTL
+		msg := fmt.Sprintf("TTL changed (was [%s] and would become [%s])", haveTTL, wantTTL)
+		c.logger.Info().Str("table", table.Name).Msg(msg)
 	}
 	return ttlChange, nil
 }

@@ -175,6 +175,10 @@ func ResolveTTL(table *schema.Table, ttl []spec.TTLStrategy) (string, error) {
 }
 
 func GetTTLString(resolvedTTL string, isCqSyncTimeNotNull bool) string {
+	if resolvedTTL == "" {
+		return ""
+	}
+
 	// At the moment, _cq_sync_time is nullable in most instances of the CloudQuery CLI,
 	// but the --cq-columns-not-null flag does allow users to control this. As ClickHouse TTLs
 	// don't allow nullable columns to be used, we stay on the safe side and use a coalesce with fallback
