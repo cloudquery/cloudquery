@@ -56,7 +56,7 @@ func New(ctx context.Context, logger zerolog.Logger, specByte []byte, _ plugin.N
 		mongoDBClientOptions = mongoDBClientOptions.SetAuth(assumeRoleCredential)
 	}
 
-	c.client, err = mongo.Connect(context.Background(), mongoDBClientOptions)
+	c.client, err = mongo.Connect(ctx, mongoDBClientOptions)
 	if err != nil {
 		return nil, errors.Join(errConnectionFailed, err)
 	}
