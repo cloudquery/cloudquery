@@ -5,10 +5,6 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
-	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
@@ -16,6 +12,7 @@ import (
 	"github.com/rs/zerolog"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/x/mongo/driver/auth"
 )
 
 type Client struct {
@@ -44,59 +41,17 @@ func New(ctx context.Context, logger zerolog.Logger, specByte []byte, _ plugin.N
 
 	mongoDBClientOptions := options.Client().ApplyURI(c.spec.ConnectionString).SetRegistry(getRegistry())
 	if c.spec.AWSCredentials != nil {
-		var cfg aws.Config
-		var err error
-		configFns := []func(*config.LoadOptions) error{}
-		if c.spec.AWSCredentials.Default {
-			// Use default AWS credentials
-			cfg, err = config.LoadDefaultConfig(ctx)
-			if err != nil {
-				return nil, err
-			}
-		} else {
-			configFns = append(configFns, config.WithDefaultRegion("us-east-1"))
-			if c.spec.AWSCredentials != nil && c.spec.AWSCredentials.LocalProfile != "" {
-				configFns = append(configFns, config.WithSharedConfigProfile(c.spec.AWSCredentials.LocalProfile))
-			}
-
-			cfg, err = config.LoadDefaultConfig(ctx, configFns...)
-			if err != nil {
-				return nil, fmt.Errorf("unable to load AWS SDK config: %w", err)
-			}
-
-			if c.spec.AWSCredentials.RoleARN != "" {
-				opts := make([]func(*stscreds.AssumeRoleOptions), 0, 1)
-				if c.spec.AWSCredentials.ExternalID != "" {
-					opts = append(opts, func(opts *stscreds.AssumeRoleOptions) {
-						opts.ExternalID = &c.spec.AWSCredentials.ExternalID
-					})
-				}
-				if c.spec.AWSCredentials.RoleSessionName != "" {
-					opts = append(opts, func(opts *stscreds.AssumeRoleOptions) {
-						opts.RoleSessionName = c.spec.AWSCredentials.RoleSessionName
-					})
-				}
-				stsClient := sts.NewFromConfig(cfg)
-				provider := stscreds.NewAssumeRoleProvider(stsClient, c.spec.AWSCredentials.RoleARN, opts...)
-
-				cfg.Credentials = aws.NewCredentialsCache(provider)
-			}
-		}
-		awsCreds, err := cfg.Credentials.Retrieve(ctx)
-		if err != nil {
-			return nil, err
-		}
+		auth.RegisterAuthenticatorFactory("MONGODB-AWS-CQ", NewAuthenticator)
 		assumeRoleCredential := options.Credential{
-			AuthMechanism: "MONGODB-AWS",
-			Username:      awsCreds.AccessKeyID,
-			Password:      awsCreds.SecretAccessKey,
+			AuthMechanism: "MONGODB-AWS-CQ",
+			AuthMechanismProperties: map[string]string{
+				"LocalProfile":    c.spec.AWSCredentials.LocalProfile,
+				"RoleARN":         c.spec.AWSCredentials.RoleARN,
+				"RoleSessionName": c.spec.AWSCredentials.RoleSessionName,
+				"ExternalID":      c.spec.AWSCredentials.ExternalID,
+				"Default":         fmt.Sprintf("%t", c.spec.AWSCredentials.Default),
+			},
 		}
-		if awsCreds.SessionToken != "" {
-			assumeRoleCredential.AuthMechanismProperties = map[string]string{
-				"AWS_SESSION_TOKEN": awsCreds.SessionToken,
-			}
-		}
-
 		// According to the docs: if ApplyURI is called before SetAuth, the Credential from SetAuth will overwrite the values from the connection string
 		mongoDBClientOptions = mongoDBClientOptions.SetAuth(assumeRoleCredential)
 	}
