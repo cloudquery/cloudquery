@@ -43,6 +43,8 @@ const (
 	maxHostLength       = 255
 )
 
+const MongoDBCQAWS = "MONGODB-CQ-AWS"
+
 // Authenticator is an authenticator that uses the AWS SDK rather than the
 // lightweight AWS package used internally by the driver.
 type Authenticator struct {
