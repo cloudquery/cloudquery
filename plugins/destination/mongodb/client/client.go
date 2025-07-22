@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/goccy/go-json"
@@ -17,7 +18,7 @@ type Client struct {
 	plugin.UnimplementedSource
 	batchwriter.UnimplementedDeleteRecord
 	logger zerolog.Logger
-	spec   *Spec
+	spec   *spec.Spec
 	client *mongo.Client
 	writer *batchwriter.BatchWriter
 }
@@ -25,18 +26,19 @@ type Client struct {
 var errInvalidSpec = errors.New("invalid spec")
 var errConnectionFailed = errors.New("failed to connect to MongoDB")
 
-func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
+func New(ctx context.Context, logger zerolog.Logger, specByte []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
 		logger: logger.With().Str("module", "mongo-dest").Logger(),
 	}
-	if err := json.Unmarshal(spec, &c.spec); err != nil {
+	if err := json.Unmarshal(specByte, &c.spec); err != nil {
 		return nil, errors.Join(errInvalidSpec, err)
 	}
 	if err := c.spec.Validate(); err != nil {
 		return nil, errors.Join(errInvalidSpec, err)
 	}
-	c.client, err = mongo.Connect(context.Background(), options.Client().ApplyURI(c.spec.ConnectionString).SetRegistry(getRegistry()))
+	mongoDBClientOptions := options.Client().ApplyURI(c.spec.ConnectionString).SetRegistry(getRegistry())
+	c.client, err = mongo.Connect(context.Background(), mongoDBClientOptions)
 	if err != nil {
 		return nil, errors.Join(errConnectionFailed, err)
 	}
