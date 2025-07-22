@@ -32,13 +32,19 @@ type pluginMetric struct {
 }
 
 type tableMetric struct {
-	Table     string     `json:"table"`
-	ClientId  string     `json:"client_id"`
+	Table string `json:"table"`
+
+	// Deprecated: ClientId is deprecated.
+	ClientId string `json:"client_id"`
+	// Deprecated: StartTime is deprecated, use Duration instead
 	StartTime *time.Time `json:"start_time"`
-	EndTime   *time.Time `json:"end_time"`
-	Resources int64      `json:"resources"`
-	Errors    int64      `json:"errors"`
-	Panics    int64      `json:"panics"`
+	// Deprecated: EndTime is deprecated, use Duration instead
+	EndTime *time.Time `json:"end_time"`
+
+	Duration  *int64 `json:"duration"`
+	Resources int64  `json:"resources"`
+	Errors    int64  `json:"errors"`
+	Panics    int64  `json:"panics"`
 }
 
 type Consumer struct {
@@ -49,7 +55,7 @@ type Consumer struct {
 	wg              *sync.WaitGroup
 }
 
-func (c *Consumer) Shutdown(ctx context.Context) {
+func (c Consumer) Shutdown(ctx context.Context) {
 	close(c.quit)
 	c.wg.Wait()
 }
@@ -69,7 +75,7 @@ func newMetricConsumer(metricsFile *os.File, quit chan any, wg *sync.WaitGroup) 
 		}
 		t := table.NewWriter()
 		t.SetOutputMirror(metricsFile)
-		t.AppendHeader(table.Row{"Table", "Client ID", "Start Time", "End Time", "Duration", "Resources", "Errors", "Panics"})
+		t.AppendHeader(table.Row{"Table", "Duration", "Resources", "Errors", "Panics"})
 		sort.SliceStable(metrics, func(i, j int) bool {
 			m1 := metrics[i]
 			m2 := metrics[j]
@@ -87,6 +93,8 @@ func newMetricConsumer(metricsFile *os.File, quit chan any, wg *sync.WaitGroup) 
 		for _, metrics := range metrics {
 			var duration time.Duration
 			switch {
+			case metrics.Duration != nil:
+				duration = time.Duration(*metrics.Duration * int64(time.Millisecond))
 			case metrics.StartTime != nil && metrics.EndTime != nil:
 				duration = metrics.EndTime.Sub(*metrics.StartTime)
 			case metrics.StartTime != nil:
@@ -94,16 +102,10 @@ func newMetricConsumer(metricsFile *os.File, quit chan any, wg *sync.WaitGroup) 
 			}
 			row := table.Row{
 				metrics.Table,
-				metrics.ClientId,
-				metrics.StartTime,
-				metrics.EndTime,
 				duration,
 				metrics.Resources,
 				metrics.Errors,
 				metrics.Panics,
-			}
-			if metrics.EndTime == nil {
-				row[3] = "N/A"
 			}
 			if duration == 0 {
 				row[4] = "N/A"
@@ -131,7 +133,7 @@ func newMetricConsumer(metricsFile *os.File, quit chan any, wg *sync.WaitGroup) 
 
 	return func(ctx context.Context, metric pluginMetric) {
 		table := metric.Attributes["sync.table.name"].(string)
-		clientId := metric.Attributes["sync.client.id"].(string)
+		clientId, _ := metric.Attributes["sync.table.client_id"].(string)
 
 		tableLock.Lock()
 		defer tableLock.Unlock()
@@ -152,6 +154,8 @@ func newMetricConsumer(metricsFile *os.File, quit chan any, wg *sync.WaitGroup) 
 		case "sync.table.end_time":
 			endTime := time.Unix(0, metric.Value)
 			metrics.EndTime = &endTime
+		case "sync.table.duration":
+			metrics.Duration = &metric.Value
 		case "sync.table.resources":
 			metrics.Resources = metric.Value
 		case "sync.table.errors":

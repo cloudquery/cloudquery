@@ -5,6 +5,21 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.24.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.23.0...cli-v6.24.0) (2025-07-18)
+
+
+### Features
+
+* Add pre login next step information to CLI ([#21053](https://github.com/cloudquery/cloudquery/issues/21053)) ([1bc8f99](https://github.com/cloudquery/cloudquery/commit/1bc8f9909e7b1dbb3989740fe4bcdd84fefe78b9))
+* Support the new OTEL metric format removing the client_id metric point granularity ([#21048](https://github.com/cloudquery/cloudquery/issues/21048)) ([6849749](https://github.com/cloudquery/cloudquery/commit/6849749ce37721cc13b5e41b4599f7de413fdc2b))
+
+## [6.23.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.22.1...cli-v6.23.0) (2025-07-16)
+
+
+### Features
+
+* Add post login steps in the CLI ([#21052](https://github.com/cloudquery/cloudquery/issues/21052)) ([721c4cd](https://github.com/cloudquery/cloudquery/commit/721c4cd96f64944b59da39775289fbe10c9d90be))
+
 ## [6.22.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.22.0...cli-v6.22.1) (2025-07-11)
 
 

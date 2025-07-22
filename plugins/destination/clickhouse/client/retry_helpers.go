@@ -110,9 +110,10 @@ func retryRead(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn,
 			}
 			defer rows.Close()
 
-			row := rowArr(rows.ColumnTypes())
+			columnsTypes := rows.ColumnTypes()
 			builder := array.NewRecordBuilder(memory.DefaultAllocator, table.ToArrowSchema())
 			for rows.Next() {
+				row := rowArr(columnsTypes)
 				if err = rows.Scan(row...); err != nil {
 					return nil, err
 				}
