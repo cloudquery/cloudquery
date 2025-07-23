@@ -17,7 +17,6 @@ import (
 
 type Client struct {
 	plugin.UnimplementedSource
-	batchwriter.UnimplementedDeleteRecord
 
 	writer *batchwriter.BatchWriter
 	db     *sql.DB
