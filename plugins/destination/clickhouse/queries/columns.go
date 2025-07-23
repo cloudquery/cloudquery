@@ -17,3 +17,16 @@ func AddColumn(table string, cluster string, col schema.Column) (string, error) 
 func DropColumn(table string, cluster string, col schema.Column) string {
 	return "ALTER TABLE " + tableNamePart(table, cluster) + " DROP COLUMN IF EXISTS " + util.SanitizeID(col.Name)
 }
+
+func SetTTL(table, cluster, ttl string) string {
+	if ttl == "" {
+		if len(cluster) > 0 {
+			return "ALTER TABLE " + util.SanitizeID(table) + " ON CLUSTER " + util.SanitizeID(cluster) + " REMOVE TTL"
+		}
+		return "ALTER TABLE " + util.SanitizeID(table) + " REMOVE TTL"
+	}
+	if len(cluster) > 0 {
+		return "ALTER TABLE " + util.SanitizeID(table) + " ON CLUSTER " + util.SanitizeID(cluster) + " MODIFY TTL " + ttl
+	}
+	return "ALTER TABLE " + util.SanitizeID(table) + " MODIFY TTL " + ttl
+}

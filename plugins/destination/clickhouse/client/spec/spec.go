@@ -50,6 +50,9 @@ type Spec struct {
 
 	// Enables setting table sort keys via the `ORDER BY` clause.
 	OrderBy []OrderByStrategy `json:"order,omitempty"`
+
+	// Enforces a TTL on tables created by the plugin.
+	TTL []TTLStrategy `json:"ttl,omitempty"`
 }
 
 type PartitionStrategy struct {
@@ -109,6 +112,34 @@ type OrderByStrategy struct {
 	//
 	// An unset order_by is not valid.
 	OrderBy []string `json:"order_by"`
+}
+
+type TTLStrategy struct {
+	// Table glob patterns that apply for this TTL clause.
+	//
+	// If unset, the TTL clause will apply to all tables.
+	//
+	// If a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.
+	//
+	// TTL strategy table patterns should be disjointed sets: if a table matches two strategies,
+	// an error will be raised at runtime.
+	Tables []string `json:"tables,omitempty"`
+
+	// Table glob patterns that should be skipped for this TTL clause.
+	//
+	// If unset, no tables will be skipped.
+	//
+	// If a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.
+	//
+	// TTL strategy table patterns should be disjointed sets: if a table matches two strategies,
+	// an error will be raised at runtime.
+	SkipTables []string `json:"skip_tables,omitempty"`
+
+	// TTL duration to use relative to _cq_sync_time, e.g. `INTERVAL 60 DAY`,
+	// the strings are passed as is after "TTL" clause, separated by commas, with no validation or quoting.
+	//
+	// An unset ttl is not valid.
+	TTL string `json:"ttl"`
 }
 
 func (s *Spec) Options() (*clickhouse.Options, error) {
@@ -179,6 +210,12 @@ func (s *Spec) Validate() error {
 	for _, o := range s.OrderBy {
 		if len(o.OrderBy) == 0 {
 			return errors.New("order_by is required")
+		}
+	}
+
+	for _, t := range s.TTL {
+		if len(t.TTL) == 0 {
+			return errors.New("ttl is required")
 		}
 	}
 
