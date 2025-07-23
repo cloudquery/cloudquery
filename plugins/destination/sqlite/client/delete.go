@@ -19,9 +19,6 @@ func (c *Client) DeleteRecord(ctx context.Context, messages message.WriteDeleteR
 			return err
 		}
 
-		fmt.Println("Delete SQL:", sql)
-		fmt.Println("Params:", params)
-
 		if _, err = c.db.ExecContext(ctx, sql, params...); err != nil {
 			return err
 		}
