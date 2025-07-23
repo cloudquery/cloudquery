@@ -74,6 +74,23 @@
           "type": "boolean",
           "description": "If true, the plugin will os.Exit(1) immediately at the table resolver level, before any resources are synced",
           "default": false
+        },
+        "delete_records": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "integer"
+              },
+              "type": "array",
+              "description": "If true, the plugin will send a request to delete the records with the given resource_id's in test_some_table (after syncing them).",
+              "default": [
+                "false"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
