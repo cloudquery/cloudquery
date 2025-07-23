@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.8.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.7.23...plugins-source-test-v4.8.0) (2025-07-23)
+
+
+### Features
+
+* Add ability to delete records in test plugin ([#21106](https://github.com/cloudquery/cloudquery/issues/21106)) ([129b6ee](https://github.com/cloudquery/cloudquery/commit/129b6ee053155af184f9b44cff081c6c33e8bb0e))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.3 ([#21010](https://github.com/cloudquery/cloudquery/issues/21010)) ([c78cff9](https://github.com/cloudquery/cloudquery/commit/c78cff97ca8819ffc58a1ecb9fea7e2a9dbc1ffa))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.4 ([#21104](https://github.com/cloudquery/cloudquery/issues/21104)) ([44f77c8](https://github.com/cloudquery/cloudquery/commit/44f77c883bee4dd9cfc1f71f0cf4675452ed49ae))
+
 ## [4.7.23](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.7.22...plugins-source-test-v4.7.23) (2025-07-15)
 
 
