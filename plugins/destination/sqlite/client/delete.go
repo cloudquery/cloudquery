@@ -40,8 +40,8 @@ func generateDelete(msg message.DeleteRecord) string {
 				continue
 			}
 			sb.WriteString("(")
-			for i, predicate := range predicateGroup.Predicates {
-				if i > 0 {
+			for j, predicate := range predicateGroup.Predicates {
+				if j > 0 {
 					sb.WriteString(" ")
 					sb.WriteString(predicateGroup.GroupingType)
 					sb.WriteString(" ")
