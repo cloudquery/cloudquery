@@ -7,6 +7,9 @@ import (
 	"os"
 	"strings"
 
+	"github.com/apache/arrow-go/v18/arrow"
+	"github.com/apache/arrow-go/v18/arrow/array"
+	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/source/test/v4/client"
 	"github.com/cloudquery/cloudquery/plugins/source/test/v4/resources/services"
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -70,7 +73,45 @@ func (c *Client) Sync(ctx context.Context, options plugin.SyncOptions, res chan<
 		schedulerOptions = append(schedulerOptions, scheduler.WithShard(options.Shard.Num, options.Shard.Total))
 	}
 
-	return c.scheduler.Sync(ctx, schedulerClient, tt, res, schedulerOptions...)
+	err = c.scheduler.Sync(ctx, schedulerClient, tt, res, schedulerOptions...)
+	if err != nil {
+		return fmt.Errorf("failed to run sync: %w", err)
+	}
+
+	if len(c.config.DeleteRecords) > 0 {
+		c.deleteRecords(res)
+	}
+	return nil
+}
+
+func (c *Client) deleteRecords(res chan<- message.SyncMessage) {
+	predicates := make([]message.Predicate, 0, len(c.config.DeleteRecords))
+	for _, deleteID := range c.config.DeleteRecords {
+		deleteRecord := array.NewRecordBuilder(memory.DefaultAllocator, (&schema.Table{
+			Name: "test_some_table",
+			Columns: schema.ColumnList{
+				schema.Column{Name: "resource_id", Type: arrow.PrimitiveTypes.Int64},
+			},
+		}).ToArrowSchema())
+		deleteRecord.Field(0).(*array.Int64Builder).Append(deleteID)
+		deleteValue := deleteRecord.NewRecord()
+		predicates = append(predicates, message.Predicate{
+			Operator: "eq",
+			Column:   "resource_id",
+			Record:   deleteValue,
+		})
+	}
+	res <- &message.SyncDeleteRecord{
+		DeleteRecord: message.DeleteRecord{
+			TableName: "test_some_table",
+			WhereClause: message.PredicateGroups{
+				{
+					GroupingType: "OR",
+					Predicates:   predicates,
+				},
+			},
+		},
+	}
 }
 
 func (c *Client) Tables(_ context.Context, options plugin.TableOptions) (schema.Tables, error) {
