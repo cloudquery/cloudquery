@@ -213,10 +213,10 @@ func TestComprehensiveDropRow(t *testing.T) {
 	require.Equal(t, int64(8), updatedRecord.NumRows())
 	require.Equal(t, "aa:f1:cb:2e:55:8f", updatedRecord.Column(16).(*types.MACArray).ValueStr(0))
 
-	updatedRecord, err = updater.DropRows([]string{"inet"}, &[]string{"139.0.0.0/10"}[0])
+	updatedRecord, err = updater.DropRows([]string{"inet"}, &[]string{"139.0.16.60/10"}[0])
 	require.NoError(t, err)
 	require.Equal(t, int64(7), updatedRecord.NumRows())
-	require.Equal(t, "30.233.221.0/25", updatedRecord.Column(15).(*types.InetArray).ValueStr(0))
+	require.Equal(t, "30.233.221.51/25", updatedRecord.Column(15).(*types.InetArray).ValueStr(0))
 
 	updatedRecord, err = updater.DropRows([]string{"json"}, &[]string{`{"test":["a","b",52011]}`}[0])
 	require.NoError(t, err)
