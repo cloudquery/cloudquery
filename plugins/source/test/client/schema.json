@@ -82,7 +82,7 @@
                 "type": "integer"
               },
               "type": "array",
-              "description": "If true, the plugin will send a request to delete the records with the given resource_id's in test_some_table (after syncing them).",
+              "description": "If set, the plugin will send a request to delete the records with the given resource_id's in test_some_table (after syncing them).",
               "default": [
                 "false"
               ]

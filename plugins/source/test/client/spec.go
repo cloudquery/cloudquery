@@ -30,7 +30,7 @@ type Spec struct {
 	// If true, the plugin will os.Exit(1) immediately at the table resolver level, before any resources are synced
 	ExitImmediately bool `json:"exit_immediately" jsonschema:"default=false"`
 
-	// If true, the plugin will send a request to delete the records with the given resource_id's in test_some_table (after syncing them).
+	// If set, the plugin will send a request to delete the records with the given resource_id's in test_some_table (after syncing them).
 	DeleteRecords []int64 `json:"delete_records" jsonschema:"default=false"`
 }
 
