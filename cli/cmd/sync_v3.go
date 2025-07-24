@@ -34,6 +34,7 @@ import (
 	"github.com/cloudquery/cloudquery/cli/v6/internal/tablenamechanger"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/transformer"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/transformerpipeline"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/utils"
 )
 
 type v3source struct {
@@ -149,7 +150,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		syncTimeTook   time.Duration
 		totalResources = int64(0)
 		totals         = sourceClient.Metrics()
-		statsPerTable  = cloudquery_api.SyncRunTableProgress{}
+		statsPerTable  = utils.NewConcurrentMap[string, cloudquery_api.SyncRunTableProgressValue]()
 	)
 	defer func() {
 		analytics.TrackSyncCompleted(ctx, invocationUUID.UUID, analytics.SyncFinishedEvent{
@@ -363,10 +364,11 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	}
 	// Pre init stats per table
 	for _, table := range sourceTables {
-		statsPerTable[table.Name] = cloudquery_api.SyncRunTableProgressValue{
+		initialStats := cloudquery_api.SyncRunTableProgressValue{
 			Rows:   0,
 			Errors: 0,
 		}
+		statsPerTable.Add(table.Name, initialStats)
 	}
 
 	var remoteProgressReporter *godebouncer.Debouncer
@@ -390,12 +392,13 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			if atomic.LoadInt64(&isComplete) == 1 {
 				status = cloudquery_api.SyncRunStatusCompleted
 			}
+			tableProgress := cloudquery_api.SyncRunTableProgress(statsPerTable.GetAll())
 			obj := cloudquery_api.CreateSyncRunProgressJSONRequestBody{
 				Rows:          atomic.LoadInt64(&totalResources),
 				Errors:        int64(totals.Errors),
 				Warnings:      int64(totals.Warnings),
 				Status:        &status,
-				TableProgress: &statsPerTable,
+				TableProgress: &tableProgress,
 			}
 			if shard != nil {
 				obj.ShardNum = &shard.num
@@ -507,9 +510,9 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				atomic.AddInt64(&newResources, record.NumRows())
 				atomic.AddInt64(&totalResources, record.NumRows())
 				tableName, _ := record.Schema().Metadata().GetValue(schema.MetadataTableName)
-				stats := statsPerTable[tableName]
+				stats, _ := statsPerTable.Get(tableName)
 				stats.Rows += record.NumRows()
-				statsPerTable[tableName] = stats
+				statsPerTable.Add(tableName, stats)
 				if remoteProgressReporter != nil {
 					remoteProgressReporter.SendSignal()
 				}
@@ -623,9 +626,9 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				}
 			case *plugin.Sync_Response_Error:
 				log.Error().Str("table", m.Error.TableName).Msg(m.Error.Error)
-				stats := statsPerTable[m.Error.TableName]
+				stats, _ := statsPerTable.Get(m.Error.TableName)
 				stats.Errors++
-				statsPerTable[m.Error.TableName] = stats
+				statsPerTable.Add(m.Error.TableName, stats)
 			default:
 				return fmt.Errorf("unknown message type: %T", m)
 			}
@@ -643,7 +646,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	totals = sourceClient.Metrics()
 	sourceWarnings := totals.Warnings
 	var sourceErrors uint64
-	for _, val := range statsPerTable {
+	for _, val := range statsPerTable.GetAll() {
 		sourceErrors += uint64(val.Errors)
 	}
 	if totals.Errors > sourceErrors {
