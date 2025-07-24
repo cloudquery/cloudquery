@@ -671,6 +671,14 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			DestinationName:     destinationSpecs[i].Name,
 			DestinationVersion:  destinationSpecs[i].Version,
 			DestinationPath:     destinationSpecs[i].Path,
+			ResourcesPerTable: lo.Reduce(lo.Keys(statsPerTable), func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
+				acc[tableName] = uint64(statsPerTable[tableName].Rows)
+				return acc
+			}, map[string]uint64{}),
+			ErrorsPerTable: lo.Reduce(lo.Keys(statsPerTable), func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
+				acc[tableName] = uint64(statsPerTable[tableName].Errors)
+				return acc
+			}, map[string]uint64{}),
 		}
 
 		if destinationSpecs[i].SyncGroupId != "" {
