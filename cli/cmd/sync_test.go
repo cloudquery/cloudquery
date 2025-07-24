@@ -215,6 +215,12 @@ func TestSync(t *testing.T) {
 						"test_testdata_table": 1,
 						"test_paid_table":     1,
 					},
+					ErrorsPerTable: map[string]uint64{
+						"test_some_table":     0,
+						"test_sub_table":      0,
+						"test_testdata_table": 0,
+						"test_paid_table":     0,
+					},
 				},
 			},
 		},
