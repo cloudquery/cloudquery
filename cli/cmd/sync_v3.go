@@ -381,7 +381,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		if err != nil {
 			return fmt.Errorf("failed to parse sync run ID: %w", err)
 		}
-		remoteProgressReporter = godebouncer.NewWithOptions(godebouncer.WithTimeDuration(10*time.Second), godebouncer.WithTriggered(func() {
+
+		triggerFunc := func() {
 			totals := sourceClient.Metrics()
 			for i := range destinationsClients {
 				m := destinationsClients[i].Metrics()
@@ -414,8 +415,13 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			if res.StatusCode() != http.StatusNoContent {
 				log.Warn().Str("status", res.Status()).Int("code", res.StatusCode()).Msg("Failed to send sync progress to API")
 			}
-		}), godebouncer.WithOptions(godebouncer.Options{Trailing: true, Leading: true}))
-		defer remoteProgressReporter.Cancel()
+		}
+		remoteProgressReporter = godebouncer.NewWithOptions(godebouncer.WithTimeDuration(10*time.Second), godebouncer.WithTriggered(triggerFunc), godebouncer.WithOptions(godebouncer.Options{Trailing: true, Leading: true}))
+
+		defer func() {
+			remoteProgressReporter.Cancel()
+			triggerFunc()
+		}()
 	}
 
 	// Transformers can change table names. We need to keep track of table name changes
@@ -742,10 +748,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		Str("result", msg).
 		Msg("Sync summary")
 
-	if remoteProgressReporter != nil {
-		remoteProgressReporter.SendSignal()
-		<-remoteProgressReporter.Done()
-	}
 	return nil
 }
 
