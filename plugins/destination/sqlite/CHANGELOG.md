@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.11.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.10.22...plugins-destination-sqlite-v2.11.0) (2025-07-24)
+
+
+### Features
+
+* Add DeleteRecord handling to SQLite destination ([#21102](https://github.com/cloudquery/cloudquery/issues/21102)) ([e1bf276](https://github.com/cloudquery/cloudquery/commit/e1bf276887f484120ce8d19dc485de36666c233a))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.3 ([#21010](https://github.com/cloudquery/cloudquery/issues/21010)) ([c78cff9](https://github.com/cloudquery/cloudquery/commit/c78cff97ca8819ffc58a1ecb9fea7e2a9dbc1ffa))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.4 ([#21104](https://github.com/cloudquery/cloudquery/issues/21104)) ([44f77c8](https://github.com/cloudquery/cloudquery/commit/44f77c883bee4dd9cfc1f71f0cf4675452ed49ae))
+
 ## [2.10.22](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.10.21...plugins-destination-sqlite-v2.10.22) (2025-07-15)
 
 
