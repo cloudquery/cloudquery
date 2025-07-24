@@ -209,6 +209,12 @@ func TestSync(t *testing.T) {
 					SyncGroupID:  lo.ToPtr("sync_group_id_test"),
 					ShardNum:     lo.ToPtr(1),
 					ShardTotal:   lo.ToPtr(2),
+					ResourcesPerTable: map[string]uint64{
+						"test_some_table":     1,
+						"test_sub_table":      10,
+						"test_testdata_table": 1,
+						"test_paid_table":     1,
+					},
 				},
 			},
 		},
@@ -260,6 +266,12 @@ func TestSync(t *testing.T) {
 					SourceName:      "test",
 					SourcePath:      "cloudquery/test",
 					SourceTables:    []string{"test_some_table"},
+					ResourcesPerTable: map[string]uint64{
+						"test_some_table": 0,
+					},
+					ErrorsPerTable: map[string]uint64{
+						"test_some_table": 0,
+					},
 				},
 			},
 		},
