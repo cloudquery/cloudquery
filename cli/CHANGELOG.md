@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.24.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.24.1...cli-v6.24.2) (2025-07-24)
+
+
+### Bug Fixes
+
+* Concurrent map access when reporting remote progress ([#21108](https://github.com/cloudquery/cloudquery/issues/21108)) ([189a8c3](https://github.com/cloudquery/cloudquery/commit/189a8c349f195c82a97289fc13c16fc50b862e5c))
+
 ## [6.24.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.24.0...cli-v6.24.1) (2025-07-24)
 
 
