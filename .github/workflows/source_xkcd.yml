@@ -44,7 +44,7 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.24.0
+          version: v6.24.1
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
@@ -74,7 +74,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.24.0
+          version: v6.24.1
       - name: Build
         run: go build .
       - name: Use Node.js LTS
