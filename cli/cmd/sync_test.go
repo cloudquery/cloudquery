@@ -210,10 +210,10 @@ func TestSync(t *testing.T) {
 					ShardNum:     lo.ToPtr(1),
 					ShardTotal:   lo.ToPtr(2),
 					ResourcesPerTable: map[string]uint64{
-						"test_some_table":     1,
+						"test_some_table":     0,
 						"test_sub_table":      10,
 						"test_testdata_table": 1,
-						"test_paid_table":     1,
+						"test_paid_table":     0,
 					},
 					ErrorsPerTable: map[string]uint64{
 						"test_some_table":     0,
