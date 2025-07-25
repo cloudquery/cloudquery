@@ -2,7 +2,6 @@ package client
 
 import (
 	"context"
-	"fmt"
 	"reflect"
 	"strings"
 
@@ -83,7 +82,6 @@ func extractPredicateValues(where message.PredicateGroups) ([]any, error) {
 
 func unpackArray(s any) []any {
 	v := reflect.ValueOf(s)
-	fmt.Println(v.Kind(), v.Len())
 	r := make([]any, v.Len())
 	for i := range v.Len() {
 		r[i] = v.Index(i).Interface()
