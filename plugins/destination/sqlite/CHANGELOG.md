@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.11.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.11.0...plugins-destination-sqlite-v2.11.1) (2025-07-25)
+
+
+### Bug Fixes
+
+* Remove fmt.Println from sqlite unpackArray ([#21122](https://github.com/cloudquery/cloudquery/issues/21122)) ([57a293e](https://github.com/cloudquery/cloudquery/commit/57a293e61921bd47bb5533aefab753ec3074bef0))
+
 ## [2.11.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.10.22...plugins-destination-sqlite-v2.11.0) (2025-07-24)
 
 
