@@ -109,7 +109,7 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	})
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, "OK")
+		fmt.Fprint(w, "OK")
 	})
 	listener, err := net.Listen("tcp", ":0")
 	if err != nil {
