@@ -11,6 +11,8 @@ import (
 
 	"github.com/jedib0t/go-pretty/v6/table"
 	"go.opentelemetry.io/collector/component"
+	"go.opentelemetry.io/collector/config/configgrpc"
+	"go.opentelemetry.io/collector/config/configoptional"
 	"go.opentelemetry.io/collector/consumer"
 	"go.opentelemetry.io/collector/pdata/plog"
 	"go.opentelemetry.io/collector/pdata/pmetric"
@@ -255,12 +257,12 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 
 	factory := otlpreceiver.NewFactory()
 	config := factory.CreateDefaultConfig().(*otlpreceiver.Config)
-	config.GRPC = nil
+	config.GRPC = configoptional.None[configgrpc.ServerConfig]()
 	port, err := getFreePort()
 	if err != nil {
 		return nil, err
 	}
-	config.HTTP.Endpoint = fmt.Sprintf("localhost:%d", port)
+	config.HTTP.Get().ServerConfig.Endpoint = fmt.Sprintf("localhost:%d", port)
 
 	settings := receiver.Settings{
 		TelemetrySettings: component.TelemetrySettings{
@@ -298,7 +300,7 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 	return &OtelReceiver{
 		consumer:   c,
 		components: components,
-		Endpoint:   config.HTTP.Endpoint,
+		Endpoint:   config.HTTP.Get().ServerConfig.Endpoint,
 	}, nil
 }
 
