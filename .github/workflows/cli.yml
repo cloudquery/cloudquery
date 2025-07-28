@@ -41,10 +41,10 @@ jobs:
           cache: true
           cache-dependency-path: cli/go.sum
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v8
         if: matrix.os == 'ubuntu-latest'
         with:
-          version: v1.64.8
+          version: v2.2.1
           working-directory: cli
       - name: Build
         run: go build .
