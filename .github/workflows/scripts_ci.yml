@@ -32,6 +32,7 @@ jobs:
         with:
           version: v2.2.1
           working-directory: scripts/table_diff
+          args: "--config ../../plugins/.golangci.yml"
       - name: Test
         run: go test ./...
   
