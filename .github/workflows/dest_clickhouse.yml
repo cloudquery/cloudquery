@@ -36,11 +36,11 @@ jobs:
           cache: true
           cache-dependency-path: plugins/destination/clickhouse/go.sum
       - name: golangci-lint
-        uses: cloudquery/golangci-lint-action@master
+        uses: golangci/golangci-lint-action@v8
         with:
-          version: v1.64.8
+          version: v2.2.1
           working-directory: plugins/destination/clickhouse
-          args: '--config ../../.golangci.yml'
+          args: "--config ../../.golangci.yml"
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
