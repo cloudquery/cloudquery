@@ -3,7 +3,6 @@ package client
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -40,9 +39,8 @@ func (*Client) normalizeColumn(col schema.Column) schema.Column {
 	})
 }
 
-func (c *Client) nonAutoMigratableTables(tables schema.Tables, mysqlTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
-	var result []string
-	var tableChanges [][]schema.TableColumnChange
+func (c *Client) nonAutoMigratableTables(tables schema.Tables, mysqlTables schema.Tables) map[string][]schema.TableColumnChange {
+	result := make(map[string][]schema.TableColumnChange)
 	for _, t := range tables {
 		mysqlTable := mysqlTables.Get(t.Name)
 		if mysqlTable == nil {
@@ -50,11 +48,10 @@ func (c *Client) nonAutoMigratableTables(tables schema.Tables, mysqlTables schem
 		}
 		changes := mysqlTable.GetChanges(t)
 		if !c.canAutoMigrate(changes) {
-			result = append(result, t.Name)
-			tableChanges = append(tableChanges, changes)
+			result[t.Name] = changes
 		}
 	}
-	return result, tableChanges
+	return result
 }
 
 func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
@@ -120,9 +117,9 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 		}
 	}
 
-	nonAutoMigrtableTables, changes := c.nonAutoMigratableTables(normalizedTablesSafeMode, mysqlTables)
-	if len(nonAutoMigrtableTables) > 0 {
-		return fmt.Errorf("tables %s with changes %v require migration. Migrate manually or consider using 'migrate_mode: forced'", strings.Join(nonAutoMigrtableTables, ","), changes)
+	nonAutoMigratableTables := c.nonAutoMigratableTables(normalizedTablesSafeMode, mysqlTables)
+	if len(nonAutoMigratableTables) > 0 {
+		return fmt.Errorf("\nCan't migrate tables automatically, migrate manually or consider using 'migrate_mode: forced'. Non auto migratable tables changes:\n\n%s", schema.GetChangesSummary(nonAutoMigratableTables))
 	}
 
 	for _, table := range normalizedTables {

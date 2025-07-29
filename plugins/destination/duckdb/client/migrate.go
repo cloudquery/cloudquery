@@ -50,9 +50,8 @@ func (*Client) normalizeColumns(tables schema.Tables) schema.Tables {
 	return normalized
 }
 
-func (c *Client) nonAutoMigratableTables(tables schema.Tables, duckdbTables schema.Tables) ([]string, [][]schema.TableColumnChange) {
-	var result []string
-	var tableChanges [][]schema.TableColumnChange
+func (c *Client) nonAutoMigratableTables(tables schema.Tables, duckdbTables schema.Tables) map[string][]schema.TableColumnChange {
+	result := make(map[string][]schema.TableColumnChange)
 	for _, t := range tables {
 		duckdbTable := duckdbTables.Get(t.Name)
 		if duckdbTable == nil {
@@ -60,11 +59,10 @@ func (c *Client) nonAutoMigratableTables(tables schema.Tables, duckdbTables sche
 		}
 		changes := t.GetChanges(duckdbTable)
 		if !c.canAutoMigrate(changes) {
-			result = append(result, t.Name)
-			tableChanges = append(tableChanges, changes)
+			result[t.Name] = changes
 		}
 	}
-	return result, tableChanges
+	return result
 }
 
 func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, changes []schema.TableColumnChange) error {
@@ -128,9 +126,9 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 		}
 	}
 
-	nonAutoMigratableTables, changes := c.nonAutoMigratableTables(normalizedTablesSafeMode, duckdbTables)
+	nonAutoMigratableTables := c.nonAutoMigratableTables(normalizedTablesSafeMode, duckdbTables)
 	if len(nonAutoMigratableTables) > 0 {
-		return fmt.Errorf("tables %s with changes %v require migration. Migrate manually or consider using 'migrate_mode: forced'", strings.Join(nonAutoMigratableTables, ","), changes)
+		return fmt.Errorf("\nCan't migrate tables automatically, migrate manually or consider using 'migrate_mode: forced'. Non auto migratable tables changes:\n\n%s", schema.GetChangesSummary(nonAutoMigratableTables))
 	}
 
 	for _, table := range normalizedTables {
