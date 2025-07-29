@@ -104,5 +104,3 @@ require (
 
 // github.com/cloudquery/jsonschema @ cqmain
 replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66
-
-replace github.com/cloudquery/cloudquery-api-go => github.com/cloudquery/cloudquery-api-go v1.13.12-0.20250729150502-81acba7e7bfa
