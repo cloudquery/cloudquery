@@ -33,9 +33,9 @@ func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMi
 		// in the same batch twice.
 		safeTables[msg.Table.Name] = !msg.MigrateForce
 	}
-	nonAutoMigrateableTables, changes := c.nonAutoMigrateableTables(tables, pgTables, safeTables)
-	if len(nonAutoMigrateableTables) > 0 {
-		return fmt.Errorf("tables %s with changes %v require migration. Migrate manually or consider using 'migrate_mode: forced'", strings.Join(nonAutoMigrateableTables, ","), changes)
+	nonAutoMigratableTables := c.nonAutoMigratableTables(tables, pgTables, safeTables)
+	if len(nonAutoMigratableTables) > 0 {
+		return fmt.Errorf("\nCan't migrate tables automatically, migrate manually or consider using 'migrate_mode: forced'. Non auto migratable tables changes:\n\n%s", schema.GetChangesSummary(nonAutoMigratableTables))
 	}
 
 	for _, table := range tables {
@@ -211,9 +211,8 @@ func (c *Client) normalizeTables(tables schema.Tables) schema.Tables {
 	return result
 }
 
-func (c *Client) nonAutoMigrateableTables(tables schema.Tables, pgTables schema.Tables, safeTables map[string]bool) ([]string, [][]schema.TableColumnChange) {
-	var result []string
-	var tableChanges [][]schema.TableColumnChange
+func (c *Client) nonAutoMigratableTables(tables schema.Tables, pgTables schema.Tables, safeTables map[string]bool) map[string][]schema.TableColumnChange {
+	result := make(map[string][]schema.TableColumnChange)
 	for _, t := range tables {
 		pgTable := pgTables.Get(t.Name)
 		if pgTable == nil {
@@ -221,11 +220,10 @@ func (c *Client) nonAutoMigrateableTables(tables schema.Tables, pgTables schema.
 		}
 		changes := t.GetChanges(pgTable)
 		if safeTables[t.Name] && !c.canAutoMigrate(changes) {
-			result = append(result, t.Name)
-			tableChanges = append(tableChanges, changes)
+			result[t.Name] = changes
 		}
 	}
-	return result, tableChanges
+	return result
 }
 
 func (c *Client) dropTable(ctx context.Context, tableName string) error {
