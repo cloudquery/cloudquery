@@ -11,6 +11,10 @@ import (
 
 	"github.com/jedib0t/go-pretty/v6/table"
 	"go.opentelemetry.io/collector/component"
+	"go.opentelemetry.io/collector/config/configgrpc"
+	"go.opentelemetry.io/collector/config/confighttp"
+	"go.opentelemetry.io/collector/config/configoptional"
+	"go.opentelemetry.io/collector/config/configtls"
 	"go.opentelemetry.io/collector/consumer"
 	"go.opentelemetry.io/collector/pdata/plog"
 	"go.opentelemetry.io/collector/pdata/pmetric"
@@ -255,14 +259,26 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 
 	factory := otlpreceiver.NewFactory()
 	config := factory.CreateDefaultConfig().(*otlpreceiver.Config)
-	config.GRPC = nil
+	config.GRPC = configoptional.None[configgrpc.ServerConfig]()
 	port, err := getFreePort()
 	if err != nil {
 		return nil, err
 	}
-	config.HTTP.Endpoint = fmt.Sprintf("localhost:%d", port)
+	// See https://github.com/open-telemetry/opentelemetry-collector/blob/b63f70d5ea20e6c664991a535c4fae43ea526491/receiver/otlpreceiver/factory.go#L51
+	// `CreateDefaultConfig` creates a default config for HTTP server config, but it's not accessible via config.HTTP.Get()
+	// Also see https://github.com/open-telemetry/opentelemetry-collector/issues/13160
+	httpConfig := confighttp.NewDefaultServerConfig()
+	httpConfig.Endpoint = fmt.Sprintf("localhost:%d", port)
+	httpConfig.TLS = configoptional.None[configtls.ServerConfig]()
+	config.HTTP = configoptional.Some(otlpreceiver.HTTPConfig{
+		ServerConfig:   httpConfig,
+		TracesURLPath:  "/v1/traces",
+		MetricsURLPath: "/v1/metrics",
+		LogsURLPath:    "/v1/logs",
+	})
 
 	settings := receiver.Settings{
+		ID: component.NewID(component.MustNewType("otlp")),
 		TelemetrySettings: component.TelemetrySettings{
 			Logger:         zap.NewNop(),
 			MeterProvider:  noopmetric.NewMeterProvider(),
@@ -298,7 +314,7 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 	return &OtelReceiver{
 		consumer:   c,
 		components: components,
-		Endpoint:   config.HTTP.Endpoint,
+		Endpoint:   httpConfig.Endpoint,
 	}, nil
 }
 
