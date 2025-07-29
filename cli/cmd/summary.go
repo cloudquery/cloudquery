@@ -18,24 +18,26 @@ import (
 )
 
 type syncSummary struct {
-	CLIVersion          string    `json:"cli_version"`
-	DestinationErrors   uint64    `json:"destination_errors"`
-	DestinationName     string    `json:"destination_name"`
-	DestinationPath     string    `json:"destination_path"`
-	DestinationVersion  string    `json:"destination_version"`
-	DestinationWarnings uint64    `json:"destination_warnings"`
-	Resources           uint64    `json:"resources"`
-	SourceErrors        uint64    `json:"source_errors"`
-	SourceName          string    `json:"source_name"`
-	SourcePath          string    `json:"source_path"`
-	SourceVersion       string    `json:"source_version"`
-	SourceWarnings      uint64    `json:"source_warnings"`
-	SourceTables        []string  `json:"source_tables"`
-	SyncID              string    `json:"sync_id"`
-	SyncTime            time.Time `json:"sync_time"`
-	SyncGroupID         *string   `json:"sync_group_id,omitempty"`
-	ShardNum            *int      `json:"shard_num,omitempty"`
-	ShardTotal          *int      `json:"shard_total,omitempty"`
+	CLIVersion          string            `json:"cli_version"`
+	DestinationErrors   uint64            `json:"destination_errors"`
+	DestinationName     string            `json:"destination_name"`
+	DestinationPath     string            `json:"destination_path"`
+	DestinationVersion  string            `json:"destination_version"`
+	DestinationWarnings uint64            `json:"destination_warnings"`
+	Resources           uint64            `json:"resources"`
+	SourceErrors        uint64            `json:"source_errors"`
+	SourceName          string            `json:"source_name"`
+	SourcePath          string            `json:"source_path"`
+	SourceVersion       string            `json:"source_version"`
+	SourceWarnings      uint64            `json:"source_warnings"`
+	SourceTables        []string          `json:"source_tables"`
+	SyncID              string            `json:"sync_id"`
+	SyncTime            time.Time         `json:"sync_time"`
+	SyncGroupID         *string           `json:"sync_group_id,omitempty"`
+	ShardNum            *int              `json:"shard_num,omitempty"`
+	ShardTotal          *int              `json:"shard_total,omitempty"`
+	ResourcesPerTable   map[string]uint64 `json:"resources_per_table,omitempty"`
+	ErrorsPerTable      map[string]uint64 `json:"errors_per_table,omitempty"`
 }
 
 func persistSummary(filename string, summary syncSummary) error {

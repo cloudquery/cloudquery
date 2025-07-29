@@ -2,7 +2,7 @@ kind: source
 spec:
   name: cloudflare
   path: cloudquery/cloudflare
-  version: "v11.1.5" # latest version of source cloudflare plugin
+  version: "v11.1.8" # latest version of source cloudflare plugin
   destinations: ["test"]
   tables: ["cloudflare_access_applications"]
 ---

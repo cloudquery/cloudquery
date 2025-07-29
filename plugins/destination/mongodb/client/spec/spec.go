@@ -1,4 +1,4 @@
-package client
+package spec
 
 import (
 	_ "embed"
@@ -48,5 +48,6 @@ func (s *Spec) Validate() error {
 	if s.Database == "" {
 		return errors.New("database is required")
 	}
+
 	return nil
 }

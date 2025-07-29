@@ -1,14 +1,14 @@
 module github.com/cloudquery/cloudquery/v6
 
-go 1.24.4
+go 1.24.5
 
-require github.com/cloudquery/cloudquery/cli/v6 v6.24.0
+require github.com/cloudquery/cloudquery/cli/v6 v6.25.1
 
 require (
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/adrg/xdg v0.5.3 // indirect
-	github.com/apache/arrow-go/v18 v18.3.1 // indirect
+	github.com/apache/arrow-go/v18 v18.4.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/avast/retry-go/v4 v4.6.1 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
@@ -20,7 +20,7 @@ require (
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/cloudquery/cloudquery-api-go v1.13.11 // indirect
 	github.com/cloudquery/plugin-pb-go v1.26.15 // indirect
-	github.com/cloudquery/plugin-sdk/v4 v4.87.2 // indirect
+	github.com/cloudquery/plugin-sdk/v4 v4.87.4 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.6 // indirect
 	github.com/distribution/reference v0.6.0 // indirect
 	github.com/docker/distribution v2.8.3+incompatible // indirect
@@ -50,7 +50,7 @@ require (
 	github.com/jedib0t/go-pretty/v6 v6.6.5 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
-	github.com/klauspost/cpuid/v2 v2.2.10 // indirect
+	github.com/klauspost/cpuid/v2 v2.2.11 // indirect
 	github.com/knadh/koanf/maps v0.1.1 // indirect
 	github.com/knadh/koanf/providers/confmap v0.1.0 // indirect
 	github.com/knadh/koanf/v2 v2.1.2 // indirect

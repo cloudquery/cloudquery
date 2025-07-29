@@ -3,14 +3,21 @@ package cmd
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"path"
 	"runtime"
 	"slices"
 	"sort"
 	"strings"
+	"sync/atomic"
 	"testing"
 
+	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
+	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/google/uuid"
@@ -44,6 +51,18 @@ func TestSync(t *testing.T) {
 					SourceName:        "test",
 					SourcePath:        "cloudquery/test",
 					SourceTables:      []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+					ResourcesPerTable: map[string]uint64{
+						"test_some_table":     1,
+						"test_sub_table":      10,
+						"test_testdata_table": 1,
+						"test_paid_table":     1,
+					},
+					ErrorsPerTable: map[string]uint64{
+						"test_some_table":     0,
+						"test_sub_table":      0,
+						"test_testdata_table": 0,
+						"test_paid_table":     0,
+					},
 				},
 				{
 					CLIVersion:        "development",
@@ -54,6 +73,18 @@ func TestSync(t *testing.T) {
 					SourceName:        "test2",
 					SourcePath:        "cloudquery/test",
 					SourceTables:      []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+					ResourcesPerTable: map[string]uint64{
+						"test_some_table":     1,
+						"test_sub_table":      10,
+						"test_testdata_table": 1,
+						"test_paid_table":     1,
+					},
+					ErrorsPerTable: map[string]uint64{
+						"test_some_table":     0,
+						"test_sub_table":      0,
+						"test_testdata_table": 0,
+						"test_paid_table":     0,
+					},
 				},
 			},
 		},
@@ -77,6 +108,18 @@ func TestSync(t *testing.T) {
 					SourceName:      "test-1",
 					SourcePath:      "cloudquery/test",
 					SourceTables:    []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+					ResourcesPerTable: map[string]uint64{
+						"test_some_table":     1,
+						"test_sub_table":      10,
+						"test_testdata_table": 1,
+						"test_paid_table":     1,
+					},
+					ErrorsPerTable: map[string]uint64{
+						"test_some_table":     0,
+						"test_sub_table":      0,
+						"test_testdata_table": 0,
+						"test_paid_table":     0,
+					},
 				},
 				{
 					CLIVersion:      "development",
@@ -86,6 +129,18 @@ func TestSync(t *testing.T) {
 					SourceName:      "test-2",
 					SourcePath:      "cloudquery/test",
 					SourceTables:    []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+					ResourcesPerTable: map[string]uint64{
+						"test_some_table":     1,
+						"test_sub_table":      10,
+						"test_testdata_table": 1,
+						"test_paid_table":     1,
+					},
+					ErrorsPerTable: map[string]uint64{
+						"test_some_table":     0,
+						"test_sub_table":      0,
+						"test_testdata_table": 0,
+						"test_paid_table":     0,
+					},
 				},
 			},
 		},
@@ -101,6 +156,18 @@ func TestSync(t *testing.T) {
 					SourceName:      "test",
 					SourcePath:      "cloudquery/test",
 					SourceTables:    []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+					ResourcesPerTable: map[string]uint64{
+						"test_some_table":     1,
+						"test_sub_table":      10,
+						"test_testdata_table": 1,
+						"test_paid_table":     1,
+					},
+					ErrorsPerTable: map[string]uint64{
+						"test_some_table":     0,
+						"test_sub_table":      0,
+						"test_testdata_table": 0,
+						"test_paid_table":     0,
+					},
 				},
 			},
 		},
@@ -117,6 +184,18 @@ func TestSync(t *testing.T) {
 					SourcePath:      "cloudquery/test",
 					SourceTables:    []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
 					SyncGroupID:     lo.ToPtr("sync_group_id_test"),
+					ResourcesPerTable: map[string]uint64{
+						"test_some_table":     1,
+						"test_sub_table":      10,
+						"test_testdata_table": 1,
+						"test_paid_table":     1,
+					},
+					ErrorsPerTable: map[string]uint64{
+						"test_some_table":     0,
+						"test_sub_table":      0,
+						"test_testdata_table": 0,
+						"test_paid_table":     0,
+					},
 				},
 			},
 		},
@@ -137,6 +216,18 @@ func TestSync(t *testing.T) {
 					SyncGroupID:  lo.ToPtr("sync_group_id_test"),
 					ShardNum:     lo.ToPtr(1),
 					ShardTotal:   lo.ToPtr(2),
+					ResourcesPerTable: map[string]uint64{
+						"test_some_table":     1,
+						"test_sub_table":      10,
+						"test_testdata_table": 0,
+						"test_paid_table":     0,
+					},
+					ErrorsPerTable: map[string]uint64{
+						"test_some_table":     0,
+						"test_sub_table":      0,
+						"test_testdata_table": 0,
+						"test_paid_table":     0,
+					},
 				},
 			},
 		},
@@ -188,6 +279,12 @@ func TestSync(t *testing.T) {
 					SourceName:      "test",
 					SourcePath:      "cloudquery/test",
 					SourceTables:    []string{"test_some_table"},
+					ResourcesPerTable: map[string]uint64{
+						"test_some_table": 0,
+					},
+					ErrorsPerTable: map[string]uint64{
+						"test_some_table": 0,
+					},
 				},
 			},
 		},
@@ -496,6 +593,79 @@ func TestSync_IsolatedPluginEnvironmentsInCloud(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestSync_RemoteProgressReporting(t *testing.T) {
+	// save the original auth token so we can rewrite requests to the Hub
+	authClient := auth.NewTokenClient()
+	originalToken, err := authClient.GetToken()
+	if err != nil {
+		t.Fatalf("failed to get auth token: %v", err)
+	}
+
+	var (
+		cqTeamName  = "cloudquery"
+		cqSyncName  = "test_sync"
+		cqSyncRunID = uuid.Must(uuid.NewUUID()).String()
+	)
+
+	progressReported := atomic.Bool{}
+
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		urlPathToMock := fmt.Sprintf("/teams/%s/syncs/%s/runs/%s/progress", cqTeamName, cqSyncName, cqSyncRunID)
+		if r.URL.Path == urlPathToMock {
+			body, err := io.ReadAll(r.Body)
+			if err != nil {
+				t.Fatalf("failed to read body: %v", err)
+			}
+			var v cloudquery_api.CreateSyncRunProgressJSONRequestBody
+			require.NoError(t, json.Unmarshal(body, &v))
+
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusNoContent)
+			_, _ = w.Write([]byte(`{}`))
+			progressReported.Store(true)
+			return
+		}
+		requestToCloud, _ := http.NewRequest(r.Method, "https://api.cloudquery.io"+r.URL.Path, r.Body)
+		requestToCloud.Header = r.Header
+		requestToCloud.Header.Set("Authorization", fmt.Sprintf("Bearer %s", originalToken.Value))
+		resp, err := http.DefaultClient.Do(requestToCloud)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			_, _ = fmt.Fprintf(w, "failed to read body: %v", err)
+			return
+		}
+		switch resp.StatusCode {
+		case http.StatusOK:
+			w.Header().Set("Content-Type", resp.Header.Get("Content-Type"))
+			w.Header().Set("Content-Encoding", resp.Header.Get("Content-Encoding"))
+			w.WriteHeader(resp.StatusCode)
+			defer resp.Body.Close()
+			_, _ = io.Copy(w, resp.Body)
+		default:
+			w.WriteHeader(http.StatusInternalServerError)
+			_, _ = fmt.Fprintf(w, "unexpected status code: %d for url %s", resp.StatusCode, r.URL.String())
+		}
+	}))
+	defer ts.Close()
+
+	_, filename, _, _ := runtime.Caller(0)
+	currentDir := path.Dir(filename)
+
+	t.Setenv("CQ_CLOUD", "1")
+	t.Setenv("_CQ_TEAM_NAME", cqTeamName)
+	t.Setenv("_CQ_SYNC_NAME", cqSyncName)
+	t.Setenv("_CQ_SYNC_RUN_ID", cqSyncRunID)
+	// The cqsr_ prefix is important so the CLI reports progress to the API
+	t.Setenv("CLOUDQUERY_API_KEY", "cqsr_test-api-key")
+	t.Setenv("CLOUDQUERY_API_URL", ts.URL)
+
+	testConfig := path.Join(currentDir, "testdata", "with-remote-progress.yml")
+	cmd := NewCmdRoot()
+	cmd.SetArgs(append([]string{"sync", testConfig}, testCommandArgs(t)...))
+	require.NoError(t, cmd.Execute())
+	require.True(t, progressReported.Load(), "expected progress to be reported")
 }
 
 func TestSync_FilterPluginEnv(t *testing.T) {

@@ -5,6 +5,35 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.25.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.25.0...cli-v6.25.1) (2025-07-24)
+
+
+### Bug Fixes
+
+* Data race when reporting progress ([#21117](https://github.com/cloudquery/cloudquery/issues/21117)) ([640b94e](https://github.com/cloudquery/cloudquery/commit/640b94ea2d00acb571b4aee47e2dc8fabf612d3f))
+
+## [6.25.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.24.2...cli-v6.25.0) (2025-07-24)
+
+
+### Features
+
+* Add per table stats to sync summaries ([#21107](https://github.com/cloudquery/cloudquery/issues/21107)) ([0cbe42f](https://github.com/cloudquery/cloudquery/commit/0cbe42fa5a210f748137beb0fcb68300c6cc0006))
+
+## [6.24.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.24.1...cli-v6.24.2) (2025-07-24)
+
+
+### Bug Fixes
+
+* Concurrent map access when reporting remote progress ([#21108](https://github.com/cloudquery/cloudquery/issues/21108)) ([189a8c3](https://github.com/cloudquery/cloudquery/commit/189a8c349f195c82a97289fc13c16fc50b862e5c))
+
+## [6.24.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.24.0...cli-v6.24.1) (2025-07-24)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.3 ([#21010](https://github.com/cloudquery/cloudquery/issues/21010)) ([c78cff9](https://github.com/cloudquery/cloudquery/commit/c78cff97ca8819ffc58a1ecb9fea7e2a9dbc1ffa))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.4 ([#21104](https://github.com/cloudquery/cloudquery/issues/21104)) ([44f77c8](https://github.com/cloudquery/cloudquery/commit/44f77c883bee4dd9cfc1f71f0cf4675452ed49ae))
+
 ## [6.24.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.23.0...cli-v6.24.0) (2025-07-18)
 
 

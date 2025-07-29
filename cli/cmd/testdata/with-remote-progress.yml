@@ -1,0 +1,13 @@
+kind: "source"
+spec:
+  name: "test"
+  path: "cloudquery/test"
+  destinations: [test]
+  version: "v4.5.1" # latest version of source test plugin
+  tables: ["test_some_table"]
+---
+kind: "destination"
+spec:
+  name: "test"
+  path: "cloudquery/test"
+  version: "v2.5.1" # latest version of destination test plugin

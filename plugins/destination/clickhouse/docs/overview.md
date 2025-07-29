@@ -110,7 +110,7 @@ spec:
 
 #### Partitioning
 
-This option allows to specify a partitioning strategy to be used for tables. It is an array of objects.
+This option allows you to specify a partitioning strategy to be used for tables. It is an array of objects.
 
 Each object has the following fields:
 
@@ -153,7 +153,7 @@ partition:
 
 #### Ordering
 
-This option allows to specify custom `ORDER BY` clauses for tables or groups of tables. It is an array of objects.
+This option allows you to specify custom `ORDER BY` clauses for tables or groups of tables. It is an array of objects.
 
 Each object has the following fields:
 
@@ -187,6 +187,41 @@ order:
   - "`region`"
   - "toYYYYMM(`_cq_sync_time`) DESC"
   - "`_cq_id`"
+```
+
+#### Table TTLs
+
+This option allows you to specify a TTL strategy to be used for tables. It is an array of objects.
+
+Each object has the following fields:
+
+- `tables` (array of strings) (optional) (default: `["*"]`)
+
+  List of glob patterns to match table names against. Follows the same rules as the top-level spec `tables` option.
+
+  If a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.
+
+  TTL strategy table patterns should be disjointed sets: if a table matches two TTL strategies, an error will be raised at runtime.
+
+- `skip_tables` (array of strings) (optional) (default: empty)
+
+  List of glob patterns to skip matching table names against. Follows the same rules as the top-level spec `skip_tables` option.
+
+  If a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.
+
+  TTL strategy table patterns should be disjointed sets: if a table matches two TTL strategies, an error will be raised at runtime.
+
+- `ttl` (string) (required)
+
+  TTL interval to use, relative to _cq_sync_time. E.g. `INTERVAL 60 DAY`, the string is passed as-is after a "TTL _cq_sync_time + " clause with no validation or quoting.
+
+Example:
+
+```yaml copy
+ttl:
+- tables: ["*"]
+  skip_tables: ["no_ttl_table"]
+  ttl: "INTERVAL 60 DAY"
 ```
 
 ### Connecting to ClickHouse Cloud

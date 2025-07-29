@@ -1,5 +1,25 @@
 # Changelog
 
+## [7.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.2.0...plugins-destination-clickhouse-v7.2.1) (2025-07-24)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.4 ([#21104](https://github.com/cloudquery/cloudquery/issues/21104)) ([44f77c8](https://github.com/cloudquery/cloudquery/commit/44f77c883bee4dd9cfc1f71f0cf4675452ed49ae))
+
+## [7.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.1.3...plugins-destination-clickhouse-v7.2.0) (2025-07-22)
+
+
+### Features
+
+* Add support for table-level TTLs in ClickHouse destination ([#21101](https://github.com/cloudquery/cloudquery/issues/21101)) ([0a62d44](https://github.com/cloudquery/cloudquery/commit/0a62d44e42c67d786356dbd888d59e6b61e7da35))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.3 ([#21010](https://github.com/cloudquery/cloudquery/issues/21010)) ([c78cff9](https://github.com/cloudquery/cloudquery/commit/c78cff97ca8819ffc58a1ecb9fea7e2a9dbc1ffa))
+* Fix bug in ClickHouse destination where tables always get recreated ([#21099](https://github.com/cloudquery/cloudquery/issues/21099)) ([66a9120](https://github.com/cloudquery/cloudquery/commit/66a91203968ba939bf1375b5fb3ab15eda8d193b))
+
 ## [7.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.1.2...plugins-destination-clickhouse-v7.1.3) (2025-07-16)
 
 

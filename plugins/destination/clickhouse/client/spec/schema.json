@@ -207,6 +207,20 @@
               "type": "null"
             }
           ]
+        },
+        "ttl": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/TTLStrategy"
+              },
+              "type": "array",
+              "description": "Enforces a TTL on tables created by the plugin."
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -215,6 +229,44 @@
         "connection_string"
       ],
       "description": "CloudQuery ClickHouse destination plugin spec."
+    },
+    "TTLStrategy": {
+      "properties": {
+        "tables": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "description": "Table glob patterns that apply for this TTL clause.\n\nIf unset, the TTL clause will apply to all tables.\n\nIf a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.\n\nTTL strategy table patterns should be disjointed sets: if a table matches two strategies,\nan error will be raised at runtime."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "skip_tables": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "description": "Table glob patterns that should be skipped for this TTL clause.\n\nIf unset, no tables will be skipped.\n\nIf a table matches both a pattern in `tables` and `skip_tables`, the table will be skipped.\n\nTTL strategy table patterns should be disjointed sets: if a table matches two strategies,\nan error will be raised at runtime."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ttl": {
+          "type": "string",
+          "description": "TTL duration to use relative to _cq_sync_time, e.g. `INTERVAL 60 DAY`,\nthe strings are passed as is after \"TTL\" clause, separated by commas, with no validation or quoting.\n\nAn unset ttl is not valid."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
     }
   }
 }

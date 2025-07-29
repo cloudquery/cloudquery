@@ -16,7 +16,10 @@ import (
 )
 
 type tableChanges struct {
+	alreadyExists         bool
 	forcedMigrationNeeded bool
+	oldTTL                string
+	newTTL                string
 	changes               []schema.TableColumnChange
 }
 
@@ -71,9 +74,9 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 
 			tableName := want.Name
 			tableChanges := allTablesChanges[tableName]
-			if tableChanges.changes == nil {
+			if !tableChanges.alreadyExists {
 				c.logger.Info().Str("table", tableName).Msg("Table doesn't exist, creating")
-				return c.createTable(ctx, want, c.spec.Partition, c.spec.OrderBy)
+				return c.createTable(ctx, want, c.spec.Partition, c.spec.OrderBy, c.spec.TTL)
 			}
 
 			if tableChanges.forcedMigrationNeeded {
@@ -81,10 +84,10 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 				if err := c.dropTable(ctx, want); err != nil {
 					return err
 				}
-				return c.createTable(ctx, want, c.spec.Partition, c.spec.OrderBy)
+				return c.createTable(ctx, want, c.spec.Partition, c.spec.OrderBy, c.spec.TTL)
 			}
 
-			return c.autoMigrate(ctx, tableName, tableChanges.changes)
+			return c.autoMigrate(ctx, tableName, tableChanges)
 		})
 	}
 
@@ -97,7 +100,10 @@ func (c *Client) allTablesChanges(ctx context.Context, want schema.Tables, have 
 		chTable := have.Get(t.Name)
 		if chTable == nil {
 			result[t.Name] = tableChanges{
+				alreadyExists:         false,
 				changes:               nil,
+				oldTTL:                "",
+				newTTL:                "",
 				forcedMigrationNeeded: false,
 			}
 			continue
@@ -107,8 +113,15 @@ func (c *Client) allTablesChanges(ctx context.Context, want schema.Tables, have 
 		if err != nil {
 			return nil, err
 		}
+		oldTTL, newTTL, err := c.checkTTLChanged(ctx, t)
+		if err != nil {
+			return nil, fmt.Errorf("failed to check TTL changes for table %s: %w", t.Name, err)
+		}
 		result[t.Name] = tableChanges{
+			alreadyExists:         true,
 			changes:               changes,
+			oldTTL:                oldTTL,
+			newTTL:                newTTL,
 			forcedMigrationNeeded: forcedMigrationNeeded,
 		}
 	}
@@ -141,8 +154,8 @@ func unsafeChanges(changes []schema.TableColumnChange) []schema.TableColumnChang
 	return slices.Clip(unsafe)
 }
 
-func (c *Client) createTable(ctx context.Context, table *schema.Table, partition []spec.PartitionStrategy, orderBy []spec.OrderByStrategy) (err error) {
-	query, err := queries.CreateTable(table, c.spec.Cluster, c.spec.Engine, partition, orderBy)
+func (c *Client) createTable(ctx context.Context, table *schema.Table, partition []spec.PartitionStrategy, orderBy []spec.OrderByStrategy, ttl []spec.TTLStrategy) (err error) {
+	query, err := queries.CreateTable(table, c.spec.Cluster, c.spec.Engine, partition, orderBy, ttl)
 	if err != nil {
 		return err
 	}
@@ -180,8 +193,8 @@ func needsTableDrop(change schema.TableColumnChange) bool {
 	return true
 }
 
-func (c *Client) autoMigrate(ctx context.Context, tableName string, changes []schema.TableColumnChange) error {
-	for _, change := range changes {
+func (c *Client) autoMigrate(ctx context.Context, tableName string, tableChanges tableChanges) error {
+	for _, change := range tableChanges.changes {
 		// we only handle new columns
 		if change.Type != schema.TableColumnChangeTypeAdd {
 			continue
@@ -196,6 +209,13 @@ func (c *Client) autoMigrate(ctx context.Context, tableName string, changes []sc
 
 		err = retryExec(ctx, c.logger, c.conn, query)
 		if err != nil {
+			return err
+		}
+	}
+
+	if tableChanges.oldTTL != tableChanges.newTTL {
+		query := queries.SetTTL(tableName, c.spec.Cluster, tableChanges.newTTL)
+		if err := retryExec(ctx, c.logger, c.conn, query); err != nil {
 			return err
 		}
 	}
@@ -247,6 +267,41 @@ func (c *Client) checkPartitionOrOrderByChanged(ctx context.Context, table *sche
 	}
 
 	return partitionKeyChange, sortingKeyChange, nil
+}
+
+func (c *Client) checkTTLChanged(ctx context.Context, table *schema.Table) (oldTTL string, newTTL string, err error) {
+	resolvedTTL, err := queries.ResolveTTL(table, c.spec.TTL)
+	if err != nil {
+		return "", "", err
+	}
+
+	isCqSyncTimeNotNull := checkIfCqSyncTimeNotNull(table)
+	wantTTL := queries.GetTTLString(resolvedTTL, isCqSyncTimeNotNull)
+
+	haveTTL, err := c.getTTL(ctx, table)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to get TTL for table %s: %w", table.Name, err)
+	}
+
+	equalTTLs, err := c.equalTTLs(table, haveTTL, wantTTL)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to compare TTLs for table %s: %w", table.Name, err)
+	}
+	if !equalTTLs {
+		msg := fmt.Sprintf("TTL changed (was [%s] and would become [%s])", haveTTL, wantTTL)
+		c.logger.Info().Str("table", table.Name).Msg(msg)
+	}
+	return haveTTL, wantTTL, nil
+}
+
+func checkIfCqSyncTimeNotNull(table *schema.Table) bool {
+	// Check if the table has a non-nullable cq_sync_time column
+	for _, column := range table.Columns {
+		if column.Name == schema.CqSyncTimeColumn.Name && column.NotNull {
+			return true
+		}
+	}
+	return false // Assume cq_sync_time is nullable by default
 }
 
 func dequote(s string) string {
