@@ -627,7 +627,7 @@ func PublishToDockerRegistry(ctx context.Context, token, distDir string, pkgJSON
 		return fmt.Errorf("failed to parse Docker image tag: %v", err)
 	}
 
-	insecureSkipVerify := false
+	var insecureSkipVerify = false
 	if strings.HasPrefix(reference.Domain(ref), "localhost") {
 		insecureSkipVerify = true
 	}

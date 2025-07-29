@@ -799,13 +799,13 @@ func TestLoadSpecWithAccountNumbers(t *testing.T) {
 		t.Fatalf("got: %d expected: %d", len(specReader.Destinations), 1)
 	}
 	if specReader.GetSourceByName("0123456789") == nil {
-		t.Fatalf("expected source with account id 0123456789")
+		t.Fatal("expected source with account id 0123456789")
 	}
 	if specReader.GetSourceByName("0123456789").Name != "0123456789" {
 		t.Fatalf("got: %s expected: %s", specReader.GetSourceByName("0123456789").Name, "0123456789")
 	}
 	if specReader.GetDestinationByName("0987654321") == nil {
-		t.Fatalf("expected destination with account id 0987654321")
+		t.Fatal("expected destination with account id 0987654321")
 	}
 	if specReader.GetDestinationByName("0987654321").Name != "0987654321" {
 		t.Fatalf("got: %s expected: %s", specReader.GetDestinationByName("0987654321").Name, "0987654321")

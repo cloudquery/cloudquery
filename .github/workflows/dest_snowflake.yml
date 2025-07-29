@@ -35,9 +35,9 @@ jobs:
           cache: true
           cache-dependency-path: plugins/destination/snowflake/go.sum
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v8
         with:
-          version: v1.64.8
+          version: v2.2.1
           working-directory: plugins/destination/snowflake
           args: "--config ../../.golangci.yml"
       - name: gen

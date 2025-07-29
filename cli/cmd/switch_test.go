@@ -21,14 +21,14 @@ func TestSwitch(t *testing.T) {
 	baseArgs := testCommandArgs(t)
 	configDir := baseArgs[1]
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		switch {
-		case r.URL.Path == "/teams":
+		switch r.URL.Path {
+		case "/teams":
 			// write json response
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
 			_, err := w.Write([]byte(`{"items": [{"name": "my-team"}]}`))
 			require.NoError(t, err)
-		case r.URL.Path == "/teams/my-team":
+		case "/teams/my-team":
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
 			_, err := w.Write([]byte(`{"name": "my-team", "internal": false}`))
