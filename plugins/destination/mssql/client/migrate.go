@@ -20,7 +20,7 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 
 	want := normalizedTables(messages)
 
-	if err := c.checkForced(have, want, messages); err != nil {
+	if err := checkForced(have, want, messages); err != nil {
 		return err
 	}
 
@@ -49,7 +49,7 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 	return nil
 }
 
-func (c *Client) checkForced(have, want schema.Tables, messages message.WriteMigrateTables) error {
+func checkForced(have, want schema.Tables, messages message.WriteMigrateTables) error {
 	nonAutoMigratableTables := make(map[string][]schema.TableColumnChange)
 	for _, m := range messages {
 		if m.MigrateForce {
