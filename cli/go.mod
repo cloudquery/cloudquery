@@ -12,7 +12,7 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.88.1
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
-	github.com/docker/docker v26.1.5+incompatible
+	github.com/docker/docker v28.3.2+incompatible
 	github.com/fatih/color v1.18.0
 	github.com/getsentry/sentry-go v0.30.0
 	github.com/ghodss/yaml v1.0.0
@@ -22,6 +22,7 @@ require (
 	github.com/jedib0t/go-pretty/v6 v6.6.5
 	github.com/manifoldco/promptui v0.9.0
 	github.com/opencontainers/go-digest v1.0.0
+	github.com/opencontainers/image-spec v1.1.1
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/rs/zerolog v1.34.0
 	github.com/rudderlabs/analytics-go/v4 v4.2.1
@@ -73,6 +74,8 @@ require (
 	github.com/cenkalti/backoff/v5 v5.0.2 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
+	github.com/containerd/errdefs v1.0.0 // indirect
+	github.com/containerd/errdefs/pkg v0.3.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.6 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
@@ -111,11 +114,11 @@ require (
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/moby/docker-image-spec v1.3.1 // indirect
+	github.com/moby/sys/atomicwriter v0.1.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/mostynb/go-grpc-compression v1.2.3 // indirect
 	github.com/oapi-codegen/runtime v1.1.1 // indirect
-	github.com/opencontainers/image-spec v1.1.1 // indirect
 	github.com/pierrec/lz4/v4 v4.1.22 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
@@ -176,3 +179,5 @@ replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0
 
 // github.com/cloudquery/godebouncer @ fix-race
 replace github.com/vnteamopen/godebouncer => github.com/cloudquery/godebouncer v0.0.0-20230626172639-4b59d27e1b8c
+
+replace google.golang.org/genproto => google.golang.org/genproto v0.0.0-20250603155806-513f23925822
