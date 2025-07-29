@@ -3,7 +3,7 @@ package client
 import (
 	"context"
 	"database/sql"
-	"errors"
+	"fmt"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/queries"
@@ -20,7 +20,7 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 
 	want := normalizedTables(messages)
 
-	if err := c.checkForced(have, want, messages); err != nil {
+	if err := checkForced(have, want, messages); err != nil {
 		return err
 	}
 
@@ -49,8 +49,8 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 	return nil
 }
 
-func (c *Client) checkForced(have, want schema.Tables, messages message.WriteMigrateTables) error {
-	forcedErr := false
+func checkForced(have, want schema.Tables, messages message.WriteMigrateTables) error {
+	nonAutoMigratableTables := make(map[string][]schema.TableColumnChange)
 	for _, m := range messages {
 		if m.MigrateForce {
 			continue
@@ -63,16 +63,12 @@ func (c *Client) checkForced(have, want schema.Tables, messages message.WriteMig
 		}
 		want := want.Get(m.Table.Name) // and it should never be nil
 		if unsafe := unsafeChanges(want.GetChanges(have)); len(unsafe) > 0 {
-			c.logger.Error().
-				Str("table", m.Table.Name).
-				Str("changes", prettifyChanges(m.Table.Name, unsafe)).
-				Msg("migrate manually or consider using 'migrate_mode: forced'")
-			forcedErr = true
+			nonAutoMigratableTables[m.Table.Name] = unsafe
 		}
 	}
 
-	if forcedErr {
-		return errors.New("migrate manually or consider using 'migrate_mode: forced'")
+	if len(nonAutoMigratableTables) > 0 {
+		return fmt.Errorf("\nCan't migrate tables automatically, migrate manually or consider using 'migrate_mode: forced'. Non auto migratable tables changes:\n\n%s", schema.GetChangesSummary(nonAutoMigratableTables))
 	}
 	return nil
 }
