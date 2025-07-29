@@ -754,13 +754,13 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		Msg("Sync summary")
 
 	if totalResources > 0 {
-		hintSelectMessage(sourceSpec.Path, destPaths)
+		hintSelectMessage(sourceSpec.Path, destPaths, statsPerTable)
 	}
 
 	return nil
 }
 
-func hintSelectMessage(sourcePath string, destinationPaths map[string]bool) {
+func hintSelectMessage(sourcePath string, destinationPaths map[string]bool, statsPerTable *utils.ConcurrentMap[string, cloudquery_api.SyncRunTableProgressValue]) {
 	if sourcePath != "cloudquery/aws" {
 		return
 	}
@@ -772,6 +772,11 @@ func hintSelectMessage(sourcePath string, destinationPaths map[string]bool) {
 	}
 
 	if auth.NewTokenClient().GetTokenType() != auth.BearerToken {
+		return
+	}
+
+	rows, ok := statsPerTable.Get("aws_ec2_instances")
+	if !ok || rows.Rows == 0 {
 		return
 	}
 
