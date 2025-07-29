@@ -54,6 +54,7 @@ github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UF
 github.com/cespare/xxhash/v2 v2.3.0/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
 github.com/cloudquery/cloudquery-api-go v1.13.11 h1:7zstvvVgTh9Nj4DmWaF2Ve3FQybIOtZf/8ZDBZw+NsE=
 github.com/cloudquery/cloudquery-api-go v1.13.11/go.mod h1:eLlKRJgGvskJIGz9RVo7TwK9BRyAM39pUg+3omCDPKA=
+github.com/cloudquery/cloudquery-api-go v1.13.12-0.20250729150502-81acba7e7bfa/go.mod h1:eLlKRJgGvskJIGz9RVo7TwK9BRyAM39pUg+3omCDPKA=
 github.com/cloudquery/codegen v0.3.31 h1:YDqokUyWSECewoaISY4D2iIpFRTDnPtWmQOFgaQ60c0=
 github.com/cloudquery/codegen v0.3.31/go.mod h1:vU4G8lqQUPHF9ooUQY0RVbbjMPOD/6uqJDgMXfSgK8M=
 github.com/cloudquery/filetypes/v4 v4.6.9 h1:SjGlFFOE1xM/0Z4t7DAF1tVHUahZ8kLusd+4OBInvAM=

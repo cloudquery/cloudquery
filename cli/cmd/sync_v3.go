@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strconv"
 	gosync "sync"
 	"sync/atomic"
 	"time"
@@ -15,6 +16,7 @@ import (
 	"github.com/apache/arrow-go/v18/arrow"
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
@@ -715,7 +717,10 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		return metadataDataErrors
 	}
 
+	destPaths := make(map[string]bool, len(destinationsClients))
 	for i := range destinationsClients {
+		destPaths[destinationSpecs[i].Path] = true
+
 		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
 			// Table names might have changed due to transformers
 			updatedTablesForDeleteStale := tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, tablesForDeleteStale)
@@ -748,7 +753,48 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		Str("result", msg).
 		Msg("Sync summary")
 
+	if totalResources > 0 {
+		hintSelectMessage(sourceSpec.Path, destPaths)
+	}
+
 	return nil
+}
+
+func hintSelectMessage(sourcePath string, destinationPaths map[string]bool) {
+	if sourcePath != "cloudquery/aws" {
+		return
+	}
+
+	val, _ := config.GetValue("first_sync_completed")
+	firstSyncCompleted, _ := strconv.ParseBool(val)
+	if firstSyncCompleted {
+		return
+	}
+
+	if auth.NewTokenClient().GetTokenType() != auth.BearerToken {
+		return
+	}
+
+	switch {
+	case destinationPaths["cloudquery/postgresql"]:
+		fmt.Println("🎉 Success!")
+		fmt.Println()
+		fmt.Println("Run the following command to get your oldest 10 EC2 instances:")
+		fmt.Println()
+		fmt.Println(`SELECT account_id, instance_id, region, launch_time FROM aws_ec2_instances ORDER BY launch_time ASC LIMIT 10`)
+	case destinationPaths["cloudquery/sqlite"]:
+		fmt.Println("🎉 Success!")
+		fmt.Println()
+		fmt.Println("Run the following command to get your oldest 10 EC2 instances:")
+		fmt.Println()
+		fmt.Println(`sqlite3 db.sql "SELECT account_id, instance_id, region, launch_time FROM aws_ec2_instances ORDER BY launch_time ASC LIMIT 10"`)
+	default:
+		return
+	}
+
+	if err := config.SetValue("first_sync_completed", "true"); err != nil {
+		log.Debug().Err(err).Msg("Failed to set first_sync_completed")
+	}
 }
 
 func deleteStale(client safeWriteClient, tables map[string]bool, sourceName string, syncTime time.Time) error {
