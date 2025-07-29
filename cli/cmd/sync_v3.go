@@ -777,12 +777,14 @@ func hintSelectMessage(sourcePath string, destinationPaths map[string]bool) {
 
 	switch {
 	case destinationPaths["cloudquery/postgresql"]:
+		fmt.Println()
 		fmt.Println("🎉 Success!")
 		fmt.Println()
 		fmt.Println("Run the following command to get your oldest 10 EC2 instances:")
 		fmt.Println()
 		fmt.Println(`SELECT account_id, instance_id, region, launch_time FROM aws_ec2_instances ORDER BY launch_time ASC LIMIT 10`)
 	case destinationPaths["cloudquery/sqlite"]:
+		fmt.Println()
 		fmt.Println("🎉 Success!")
 		fmt.Println()
 		fmt.Println("Run the following command to get your oldest 10 EC2 instances:")
