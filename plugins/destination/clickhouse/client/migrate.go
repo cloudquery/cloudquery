@@ -51,10 +51,13 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 		return allTablesChanges[table].forcedMigrationNeeded && !tablesWeCanForceMigrate[table]
 	})
 	if len(nonAutoMigratableTables) > 0 {
-		changes := lo.Map(nonAutoMigratableTables, func(table string, _ int) []schema.TableColumnChange {
-			return allTablesChanges[table].changes
-		})
-		return fmt.Errorf("tables %s with changes %v require migration. Migrate manually or consider using 'migrate_mode: forced'", strings.Join(nonAutoMigratableTables, ","), changes)
+		changes := lo.FromEntries(lo.Map(nonAutoMigratableTables, func(table string, _ int) lo.Entry[string, []schema.TableColumnChange] {
+			return lo.Entry[string, []schema.TableColumnChange]{
+				Key:   table,
+				Value: allTablesChanges[table].changes,
+			}
+		}))
+		return fmt.Errorf("\nCan't migrate tables automatically, migrate manually or consider using 'migrate_mode: forced'. Non auto migratable tables changes:\n\n%s", schema.GetChangesSummary(changes))
 	}
 
 	const maxConcurrentMigrate = 10
