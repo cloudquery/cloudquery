@@ -717,10 +717,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		return metadataDataErrors
 	}
 
-	destPaths := make(map[string]bool, len(destinationsClients))
 	for i := range destinationsClients {
-		destPaths[destinationSpecs[i].Path] = true
-
 		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
 			// Table names might have changed due to transformers
 			updatedTablesForDeleteStale := tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, tablesForDeleteStale)
@@ -754,13 +751,13 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		Msg("Sync summary")
 
 	if totalResources > 0 {
-		hintSelectMessage(sourceSpec.Path, destPaths, statsPerTable)
+		hintSelectMessage(sourceSpec.Path, destinationSpecs, statsPerTable)
 	}
 
 	return nil
 }
 
-func hintSelectMessage(sourcePath string, destinationPaths map[string]bool, statsPerTable *utils.ConcurrentMap[string, cloudquery_api.SyncRunTableProgressValue]) {
+func hintSelectMessage(sourcePath string, destinationSpecs []specs.Destination, statsPerTable *utils.ConcurrentMap[string, cloudquery_api.SyncRunTableProgressValue]) {
 	if sourcePath != "cloudquery/aws" {
 		return
 	}
@@ -780,21 +777,29 @@ func hintSelectMessage(sourcePath string, destinationPaths map[string]bool, stat
 		return
 	}
 
+	destPaths := make(map[string]int, len(destinationSpecs))
+	for i := range destinationSpecs {
+		destPaths[destinationSpecs[i].Path] = i + 1
+	}
+
 	switch {
-	case destinationPaths["cloudquery/postgresql"]:
+	case destPaths["cloudquery/postgresql"] > 0:
 		fmt.Println()
 		fmt.Println("🎉 Success!")
 		fmt.Println()
 		fmt.Println("Run the following command to get your oldest 10 EC2 instances:")
 		fmt.Println()
 		fmt.Println(`SELECT account_id, instance_id, region, launch_time FROM aws_ec2_instances ORDER BY launch_time ASC LIMIT 10`)
-	case destinationPaths["cloudquery/sqlite"]:
+	case destPaths["cloudquery/sqlite"] > 0:
+		innerSpec := destinationSpecs[destPaths["cloudquery/sqlite"]-1].Spec
+
 		fmt.Println()
 		fmt.Println("🎉 Success!")
 		fmt.Println()
 		fmt.Println("Run the following command to get your oldest 10 EC2 instances:")
 		fmt.Println()
-		fmt.Println(`sqlite3 db.sql "SELECT account_id, instance_id, region, launch_time FROM aws_ec2_instances ORDER BY launch_time ASC LIMIT 10"`)
+		fmt.Printf(`sqlite3 %s "SELECT account_id, instance_id, region, launch_time FROM aws_ec2_instances ORDER BY launch_time ASC LIMIT 10"`, innerSpec["connection_string"])
+		fmt.Println()
 	default:
 		return
 	}
