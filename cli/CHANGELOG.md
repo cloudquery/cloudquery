@@ -5,6 +5,21 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.26.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.25.2...cli-v6.26.0) (2025-07-29)
+
+
+### Features
+
+* CLI first successful sync hint message ([#21175](https://github.com/cloudquery/cloudquery/issues/21175)) ([bcf8a63](https://github.com/cloudquery/cloudquery/commit/bcf8a6364d0ff8d9dc4103ea74da6c5481d13c9d))
+* CLI onboarding message updates ([#21168](https://github.com/cloudquery/cloudquery/issues/21168)) ([ea5cf7b](https://github.com/cloudquery/cloudquery/commit/ea5cf7bed309dfebb4a56c6a6db7e7656e6c410d))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.26.16 ([#21176](https://github.com/cloudquery/cloudquery/issues/21176)) ([64068c1](https://github.com/cloudquery/cloudquery/commit/64068c19ebcca61c363caa7ff2125e08e911f546))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.88.1 ([#21164](https://github.com/cloudquery/cloudquery/issues/21164)) ([7450686](https://github.com/cloudquery/cloudquery/commit/745068650a195dcba4125b484b5f44ea6adcda75))
+* **deps:** Update opentelemetry-collector monorepo ([#21136](https://github.com/cloudquery/cloudquery/issues/21136)) ([8ca25b1](https://github.com/cloudquery/cloudquery/commit/8ca25b12d8c8ac4a4476a534eb7b25dc80ec2046))
+
 ## [6.25.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.25.1...cli-v6.25.2) (2025-07-29)
 
 
