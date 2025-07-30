@@ -50,7 +50,7 @@ func TestSync(t *testing.T) {
 					Resources:         13,
 					SourceName:        "test",
 					SourcePath:        "cloudquery/test",
-					SourceTables:      []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+					SourceTables:      []string{"test_paid_table", "test_some_table", "test_sub_table", "test_testdata_table"},
 					ResourcesPerTable: map[string]uint64{
 						"test_some_table":     1,
 						"test_sub_table":      10,
@@ -72,7 +72,7 @@ func TestSync(t *testing.T) {
 					Resources:         13,
 					SourceName:        "test2",
 					SourcePath:        "cloudquery/test",
-					SourceTables:      []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+					SourceTables:      []string{"test_paid_table", "test_some_table", "test_sub_table", "test_testdata_table"},
 					ResourcesPerTable: map[string]uint64{
 						"test_some_table":     1,
 						"test_sub_table":      10,
@@ -107,7 +107,7 @@ func TestSync(t *testing.T) {
 					Resources:       13,
 					SourceName:      "test-1",
 					SourcePath:      "cloudquery/test",
-					SourceTables:    []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+					SourceTables:    []string{"test_paid_table", "test_some_table", "test_sub_table", "test_testdata_table"},
 					ResourcesPerTable: map[string]uint64{
 						"test_some_table":     1,
 						"test_sub_table":      10,
@@ -128,7 +128,7 @@ func TestSync(t *testing.T) {
 					Resources:       13,
 					SourceName:      "test-2",
 					SourcePath:      "cloudquery/test",
-					SourceTables:    []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+					SourceTables:    []string{"test_paid_table", "test_some_table", "test_sub_table", "test_testdata_table"},
 					ResourcesPerTable: map[string]uint64{
 						"test_some_table":     1,
 						"test_sub_table":      10,
@@ -155,7 +155,7 @@ func TestSync(t *testing.T) {
 					Resources:       13,
 					SourceName:      "test",
 					SourcePath:      "cloudquery/test",
-					SourceTables:    []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+					SourceTables:    []string{"test_paid_table", "test_some_table", "test_sub_table", "test_testdata_table"},
 					ResourcesPerTable: map[string]uint64{
 						"test_some_table":     1,
 						"test_sub_table":      10,
@@ -182,7 +182,7 @@ func TestSync(t *testing.T) {
 					Resources:       13,
 					SourceName:      "test",
 					SourcePath:      "cloudquery/test",
-					SourceTables:    []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+					SourceTables:    []string{"test_paid_table", "test_some_table", "test_sub_table", "test_testdata_table"},
 					SyncGroupID:     lo.ToPtr("sync_group_id_test"),
 					ResourcesPerTable: map[string]uint64{
 						"test_some_table":     1,
@@ -212,7 +212,7 @@ func TestSync(t *testing.T) {
 					Resources:    11,
 					SourceName:   "test",
 					SourcePath:   "cloudquery/test",
-					SourceTables: []string{"test_some_table", "test_sub_table", "test_testdata_table", "test_paid_table"},
+					SourceTables: []string{"test_paid_table", "test_some_table", "test_sub_table", "test_testdata_table"},
 					SyncGroupID:  lo.ToPtr("sync_group_id_test"),
 					ShardNum:     lo.ToPtr(1),
 					ShardTotal:   lo.ToPtr(2),
