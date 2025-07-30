@@ -154,7 +154,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.26.1
+          version: v6.26.2
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
