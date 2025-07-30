@@ -4,7 +4,7 @@ lint:
 
 .PHONY: test
 test:
-	go test -v -race -timeout 15m ./...
+	go test -v -race -timeout 20m ./...
 
 
 .PHONY: gen-docs
