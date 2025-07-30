@@ -12,7 +12,7 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.88.1
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
-	github.com/docker/docker v28.3.2+incompatible
+	github.com/docker/docker v28.3.3+incompatible
 	github.com/fatih/color v1.18.0
 	github.com/getsentry/sentry-go v0.30.0
 	github.com/ghodss/yaml v1.0.0
