@@ -671,11 +671,11 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			DestinationName:     destinationSpecs[i].Name,
 			DestinationVersion:  destinationSpecs[i].Version,
 			DestinationPath:     destinationSpecs[i].Path,
-			ResourcesPerTable: lo.Reduce(lo.Keys(tableProgress), func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
+			ResourcesPerTable: lo.Reduce(sourceTables, func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
 				acc[tableName] = uint64(tableProgress[tableName].Rows)
 				return acc
 			}, map[string]uint64{}),
-			ErrorsPerTable: lo.Reduce(lo.Keys(tableProgress), func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
+			ErrorsPerTable: lo.Reduce(sourceTables, func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
 				acc[tableName] = uint64(tableProgress[tableName].Errors)
 				return acc
 			}, map[string]uint64{}),
