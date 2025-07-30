@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"slices"
 	"strconv"
 	gosync "sync"
 	"sync/atomic"
@@ -651,6 +652,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 
 	tableProgress := statsPerTable.GetAll()
 	for i := range destinationsClients {
+		sourceTables := lo.Keys(sourceTables)
+		slices.Sort(sourceTables)
 		m := destinationsClients[i].Metrics()
 		summary := syncSummary{
 			Resources:           uint64(totalResources),
@@ -661,7 +664,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			SourceName:          sourceSpec.Name,
 			SourceVersion:       sourceSpec.Version,
 			SourcePath:          sourceSpec.Path,
-			SourceTables:        tableNameChanger.UpdateTableNamesSlice(destinationSpecs[i].Name, lo.Keys(sourceTables)),
+			SourceTables:        tableNameChanger.UpdateTableNamesSlice(destinationSpecs[i].Name, sourceTables),
 			CLIVersion:          Version,
 			DestinationErrors:   m.Errors,
 			DestinationWarnings: m.Warnings,
