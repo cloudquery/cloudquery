@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.26.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.26.0...cli-v6.26.1) (2025-07-30)
+
+
+### Bug Fixes
+
+* Don't call Tables gRPC method at the beginning of the sync ([#21180](https://github.com/cloudquery/cloudquery/issues/21180)) ([9510f5e](https://github.com/cloudquery/cloudquery/commit/9510f5e70e147cf989c796696e07421cb93c216b))
+
 ## [6.26.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.25.2...cli-v6.26.0) (2025-07-29)
 
 
