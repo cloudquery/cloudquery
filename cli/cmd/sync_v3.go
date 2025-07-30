@@ -8,6 +8,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"slices"
 	"strconv"
 	gosync "sync"
 	"sync/atomic"
@@ -356,23 +357,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	// Read from the sync stream and write to all destinations.
 	isComplete := int64(0)
 
-	sourceTables, err := getTables(ctx, sourcePbClient, &plugin.GetTables_Request{
-		Tables:              sourceSpec.Tables,
-		SkipTables:          sourceSpec.SkipTables,
-		SkipDependentTables: *sourceSpec.SkipDependentTables})
-
-	if err != nil {
-		return err
-	}
-	// Pre init stats per table
-	for _, table := range sourceTables {
-		initialStats := cloudquery_api.SyncRunTableProgressValue{
-			Rows:   0,
-			Errors: 0,
-		}
-		statsPerTable.Add(table.Name, initialStats)
-	}
-
 	var remoteProgressReporter *godebouncer.Debouncer
 	if progressAPIClient != nil {
 		teamName, syncName, syncRunId := os.Getenv("_CQ_TEAM_NAME"), os.Getenv("_CQ_SYNC_NAME"), os.Getenv("_CQ_SYNC_RUN_ID")
@@ -491,6 +475,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		}
 	}()
 
+	sourceTables := map[string]bool{}
+
 	eg.Go(func() error {
 		// Close all transformation pipelines when the source is done
 		defer func() {
@@ -518,6 +504,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				atomic.AddInt64(&newResources, record.NumRows())
 				atomic.AddInt64(&totalResources, record.NumRows())
 				tableName, _ := record.Schema().Metadata().GetValue(schema.MetadataTableName)
+				sourceTables[tableName] = true
 				stats, _ := statsPerTable.Get(tableName)
 				stats.Rows += record.NumRows()
 				statsPerTable.Add(tableName, stats)
@@ -591,6 +578,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 					return err
 				}
 
+				sourceTables[table.Name] = true
 				// This works since we sync and send migrate messages for parents before children
 				if isStateBackendEnabled && (table.IsIncremental || (table.Parent != nil && skippedFromDeleteStale[table.Parent.Name])) {
 					skippedFromDeleteStale[table.Name] = true
@@ -664,6 +652,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 
 	tableProgress := statsPerTable.GetAll()
 	for i := range destinationsClients {
+		sourceTables := lo.Keys(sourceTables)
+		slices.Sort(sourceTables)
 		m := destinationsClients[i].Metrics()
 		summary := syncSummary{
 			Resources:           uint64(totalResources),
@@ -674,18 +664,18 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			SourceName:          sourceSpec.Name,
 			SourceVersion:       sourceSpec.Version,
 			SourcePath:          sourceSpec.Path,
-			SourceTables:        tableNameChanger.UpdateTableNamesSlice(destinationSpecs[i].Name, sourceTables.TableNames()),
+			SourceTables:        tableNameChanger.UpdateTableNamesSlice(destinationSpecs[i].Name, sourceTables),
 			CLIVersion:          Version,
 			DestinationErrors:   m.Errors,
 			DestinationWarnings: m.Warnings,
 			DestinationName:     destinationSpecs[i].Name,
 			DestinationVersion:  destinationSpecs[i].Version,
 			DestinationPath:     destinationSpecs[i].Path,
-			ResourcesPerTable: lo.Reduce(lo.Keys(tableProgress), func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
+			ResourcesPerTable: lo.Reduce(sourceTables, func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
 				acc[tableName] = uint64(tableProgress[tableName].Rows)
 				return acc
 			}, map[string]uint64{}),
-			ErrorsPerTable: lo.Reduce(lo.Keys(tableProgress), func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
+			ErrorsPerTable: lo.Reduce(sourceTables, func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
 				acc[tableName] = uint64(tableProgress[tableName].Errors)
 				return acc
 			}, map[string]uint64{}),
