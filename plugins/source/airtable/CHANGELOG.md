@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.2.12...plugins-source-airtable-v2.3.0) (2025-07-30)
+
+
+### Features
+
+* Airtable Pagination ([#21050](https://github.com/cloudquery/cloudquery/issues/21050)) ([a55b446](https://github.com/cloudquery/cloudquery/commit/a55b446249cd9bebf6aeeb17d0bcf2f32338b8ee))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-sdk-javascript to v0.1.26 ([#20758](https://github.com/cloudquery/cloudquery/issues/20758)) ([aa66103](https://github.com/cloudquery/cloudquery/commit/aa661030695139305f2932fc1a59515adaf20caf))
+* **deps:** Update dependency @cloudquery/plugin-sdk-javascript to v0.1.27 ([#20944](https://github.com/cloudquery/cloudquery/issues/20944)) ([a187533](https://github.com/cloudquery/cloudquery/commit/a18753312b271103d6ac54b83ab1379ffabef1da))
+* **deps:** Update dependency @cloudquery/plugin-sdk-javascript to v0.1.28 ([#21051](https://github.com/cloudquery/cloudquery/issues/21051)) ([2f6625b](https://github.com/cloudquery/cloudquery/commit/2f6625be03210d3b55545ede7660ad620abd0eef))
+* **deps:** Update dependency got to v14.4.7 ([#20669](https://github.com/cloudquery/cloudquery/issues/20669)) ([bfe4714](https://github.com/cloudquery/cloudquery/commit/bfe4714dbac5feeffe47ca8cc7ebcf3bf0d6d008))
+
 ## [2.2.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.2.11...plugins-source-airtable-v2.2.12) (2025-01-11)
 
 
