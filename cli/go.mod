@@ -8,11 +8,11 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cloudquery/cloudquery-api-go v1.14.0
 	github.com/cloudquery/codegen v0.3.31
-	github.com/cloudquery/plugin-pb-go v1.26.16
+	github.com/cloudquery/plugin-pb-go v1.26.17
 	github.com/cloudquery/plugin-sdk/v4 v4.88.1
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
-	github.com/docker/docker v26.1.5+incompatible
+	github.com/docker/docker v28.3.2+incompatible
 	github.com/fatih/color v1.18.0
 	github.com/getsentry/sentry-go v0.30.0
 	github.com/ghodss/yaml v1.0.0
@@ -73,6 +73,8 @@ require (
 	github.com/cenkalti/backoff/v5 v5.0.2 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
+	github.com/containerd/errdefs v1.0.0 // indirect
+	github.com/containerd/errdefs/pkg v0.3.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.6 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/docker/go-connections v0.5.0 // indirect
@@ -111,6 +113,7 @@ require (
 	github.com/mitchellh/copystructure v1.2.0 // indirect
 	github.com/mitchellh/reflectwalk v1.0.2 // indirect
 	github.com/moby/docker-image-spec v1.3.1 // indirect
+	github.com/moby/sys/sequential v0.6.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/mostynb/go-grpc-compression v1.2.3 // indirect
