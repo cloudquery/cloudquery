@@ -1,5 +1,18 @@
 # Changelog
 
+## [7.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.2.1...plugins-destination-clickhouse-v7.3.0) (2025-07-31)
+
+
+### Features
+
+* Better summary of schema changes ([#21166](https://github.com/cloudquery/cloudquery/issues/21166)) ([13eb460](https://github.com/cloudquery/cloudquery/commit/13eb460c309a53db8de2a688e4d54dff6f6a8968))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.88.0 ([#21132](https://github.com/cloudquery/cloudquery/issues/21132)) ([1db1daa](https://github.com/cloudquery/cloudquery/commit/1db1daa7df2b3298ed84b4cc86d85bf8c128f037))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.88.1 ([#21164](https://github.com/cloudquery/cloudquery/issues/21164)) ([7450686](https://github.com/cloudquery/cloudquery/commit/745068650a195dcba4125b484b5f44ea6adcda75))
+
 ## [7.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.2.0...plugins-destination-clickhouse-v7.2.1) (2025-07-24)
 
 
