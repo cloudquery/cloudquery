@@ -1,5 +1,5 @@
 {
-  "cli": "6.26.0",
+  "cli": "6.26.2",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "22.19.2",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -97,7 +97,7 @@
   "plugins/source/jira+FILLER": "0.0.0",
   "plugins/source/vault": "1.0.8",
   "plugins/source/vault+FILLER": "0.0.0",
-  "plugins/source/airtable": "2.2.12",
+  "plugins/source/airtable": "2.3.0",
   "plugins/source/airtable+FILLER": "0.0.0",
   "plugins/source/bitbucket": "1.3.2",
   "plugins/source/bitbucket+FILLER": "0.0.0",
