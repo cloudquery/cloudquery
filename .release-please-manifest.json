@@ -47,7 +47,7 @@
   "plugins/destination/azblob+FILLER": "0.0.0",
   "plugins/destination/neo4j": "5.4.23",
   "plugins/destination/neo4j+FILLER": "0.0.0",
-  "plugins/destination/kafka": "5.5.3",
+  "plugins/destination/kafka": "5.5.4",
   "plugins/destination/kafka+FILLER": "0.0.0",
   "plugins/source/hackernews": "3.7.23",
   "plugins/source/hackernews+FILLER": "0.0.0",
