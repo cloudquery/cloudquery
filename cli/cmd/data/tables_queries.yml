@@ -1,0 +1,14 @@
+# The order is important, the first table that matches will be used
+- aws_ec2_instances:
+    description: |
+      Run the following command to get your oldest 10 EC2 instances:
+    destinations:
+      # The order is important, the first destination and query pair that matches will be used
+      - cloudquery/postgresql:
+          query: |
+            SELECT account_id, instance_id, region, launch_time FROM aws_ec2_instances ORDER BY launch_time ASC LIMIT 10
+      - cloudquery/sqlite:
+          query: |
+            sqlite3 %q SELECT account_id, instance_id, region, launch_time FROM aws_ec2_instances ORDER BY launch_time ASC LIMIT 10
+          args:
+            - connection_string

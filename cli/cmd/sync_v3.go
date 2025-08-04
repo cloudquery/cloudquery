@@ -22,10 +22,12 @@ import (
 	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/ghodss/yaml"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
 	"github.com/samber/lo"
 	"github.com/schollz/progressbar/v3"
+	"github.com/thoas/go-funk"
 	"github.com/vnteamopen/godebouncer"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
@@ -38,7 +40,43 @@ import (
 	"github.com/cloudquery/cloudquery/cli/v6/internal/transformer"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/transformerpipeline"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/utils"
+
+	_ "embed"
 )
+
+type destinationsQueries struct {
+	Query string   `yaml:"query"`
+	Args  []string `yaml:"args"`
+}
+
+type tableQueries struct {
+	Description  string                           `yaml:"description"`
+	Destinations []map[string]destinationsQueries `yaml:"destinations"`
+}
+
+var (
+	//go:embed data/tables_queries.yml
+	tablesQueriesString []byte
+	tablesQueries       []map[string]tableQueries
+)
+
+func init() {
+	if err := yaml.Unmarshal(tablesQueriesString, &tablesQueries); err != nil {
+		panic(err)
+	}
+	for _, tableQueries := range tablesQueries {
+		if len(tableQueries) != 1 {
+			panic(fmt.Sprintf("expected 1 table query, got %d", len(tableQueries)))
+		}
+		tableQuery := lo.Values(tableQueries)[0]
+		for _, destinationQuery := range tableQuery.Destinations {
+			destinationPaths := lo.Keys(destinationQuery)
+			if len(destinationPaths) != 1 {
+				panic(fmt.Sprintf("expected 1 destination query, got %d", len(destinationPaths)))
+			}
+		}
+	}
+}
 
 type v3source struct {
 	client *managedplugin.Client
@@ -741,17 +779,13 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		Msg("Sync summary")
 
 	if totalResources > 0 {
-		hintSelectMessage(sourceSpec.Path, destinationSpecs, statsPerTable)
+		hintSelectMessage(destinationSpecs, statsPerTable)
 	}
 
 	return nil
 }
 
-func hintSelectMessage(sourcePath string, destinationSpecs []specs.Destination, statsPerTable *utils.ConcurrentMap[string, cloudquery_api.SyncRunTableProgressValue]) {
-	if sourcePath != "cloudquery/aws" {
-		return
-	}
-
+func hintSelectMessage(destinationSpecs []specs.Destination, statsPerTable *utils.ConcurrentMap[string, cloudquery_api.SyncRunTableProgressValue]) {
 	val, _ := config.GetValue("first_sync_completed")
 	firstSyncCompleted, _ := strconv.ParseBool(val)
 	if firstSyncCompleted {
@@ -762,40 +796,49 @@ func hintSelectMessage(sourcePath string, destinationSpecs []specs.Destination, 
 		return
 	}
 
-	rows, ok := statsPerTable.Get("aws_ec2_instances")
-	if !ok || rows.Rows == 0 {
-		return
-	}
+	destPaths := lo.SliceToMap(destinationSpecs, func(spec specs.Destination) (string, specs.Destination) {
+		return spec.Path, spec
+	})
 
-	destPaths := make(map[string]int, len(destinationSpecs))
-	for i := range destinationSpecs {
-		destPaths[destinationSpecs[i].Path] = i + 1
-	}
+	for _, tablePair := range tablesQueries {
+		tables := lo.Keys(tablePair)
+		if len(tables) == 0 {
+			continue
+		}
+		tableName := tables[0]
+		rows, ok := statsPerTable.Get(tableName)
+		if !ok || rows.Rows == 0 {
+			continue
+		}
+		tableQuery := tablePair[tableName]
+		for _, destinationQuery := range tableQuery.Destinations {
+			destinationPaths := lo.Keys(destinationQuery)
+			if len(destinationPaths) == 0 {
+				continue
+			}
+			destinationPath := destinationPaths[0]
+			destSpec, ok := destPaths[destinationPath]
+			if !ok {
+				continue
+			}
 
-	switch {
-	case destPaths["cloudquery/postgresql"] > 0:
-		fmt.Println()
-		fmt.Println("🎉 Success!")
-		fmt.Println()
-		fmt.Println("Run the following command to get your oldest 10 EC2 instances:")
-		fmt.Println()
-		fmt.Println(`SELECT account_id, instance_id, region, launch_time FROM aws_ec2_instances ORDER BY launch_time ASC LIMIT 10`)
-	case destPaths["cloudquery/sqlite"] > 0:
-		innerSpec := destinationSpecs[destPaths["cloudquery/sqlite"]-1].Spec
+			fmt.Println()
+			fmt.Println("🎉 Success!")
+			fmt.Println()
+			fmt.Println(tableQuery.Description)
+			fmt.Println()
 
-		fmt.Println()
-		fmt.Println("🎉 Success!")
-		fmt.Println()
-		fmt.Println("Run the following command to get your oldest 10 EC2 instances:")
-		fmt.Println()
-		fmt.Printf(`sqlite3 %s "SELECT account_id, instance_id, region, launch_time FROM aws_ec2_instances ORDER BY launch_time ASC LIMIT 10"`, innerSpec["connection_string"])
-		fmt.Println()
-	default:
-		return
-	}
+			args := lo.Map(destinationQuery[destinationPath].Args, func(arg string, _ int) any {
+				return funk.Get(destSpec.Spec, arg, funk.WithAllowZero())
+			})
 
-	if err := config.SetValue("first_sync_completed", "true"); err != nil {
-		log.Debug().Err(err).Msg("Failed to set first_sync_completed")
+			fmt.Printf(destinationQuery[destinationPath].Query+"\n", args...)
+
+			if err := config.SetValue("first_sync_completed", "true"); err != nil {
+				log.Debug().Err(err).Msg("Failed to set first_sync_completed")
+			}
+			return
+		}
 	}
 }
 
