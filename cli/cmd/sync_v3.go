@@ -779,13 +779,13 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		Msg("Sync summary")
 
 	if totalResources > 0 {
-		hintSelectMessage(sourceSpec.Path, destinationSpecs, statsPerTable)
+		hintSelectMessage(destinationSpecs, statsPerTable)
 	}
 
 	return nil
 }
 
-func hintSelectMessage(sourcePath string, destinationSpecs []specs.Destination, statsPerTable *utils.ConcurrentMap[string, cloudquery_api.SyncRunTableProgressValue]) {
+func hintSelectMessage(destinationSpecs []specs.Destination, statsPerTable *utils.ConcurrentMap[string, cloudquery_api.SyncRunTableProgressValue]) {
 	val, _ := config.GetValue("first_sync_completed")
 	firstSyncCompleted, _ := strconv.ParseBool(val)
 	if firstSyncCompleted {
