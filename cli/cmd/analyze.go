@@ -26,7 +26,10 @@ type tableData struct {
 const (
 	analyzeShort   = "Analyze CloudQuery log files to detect stalled tables and calculate execution times"
 	analyzeExample = `# Analyze a CloudQuery log file to find stalled tables
-cloudquery analyze --file path/to/cloudquery.log`
+cloudquery analyze --file path/to/cloudquery.log
+
+# Analyze data for a specific invocation ID only
+cloudquery analyze --file path/to/cloudquery.log --invocation-id abc123`
 )
 
 func NewCmdAnalyze() *cobra.Command {
@@ -38,6 +41,7 @@ func NewCmdAnalyze() *cobra.Command {
 		RunE:    analyze,
 	}
 	cmd.Flags().StringP("file", "f", "", "Path to the CloudQuery log file")
+	cmd.Flags().StringP("invocation-id", "i", "", "Only analyze data for a specific invocation ID")
 	_ = cmd.MarkFlagRequired("file")
 
 	return cmd
@@ -48,7 +52,13 @@ func analyze(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
-	return analyzeLogFile(logFile)
+
+	invocationID, err := cmd.Flags().GetString("invocation-id")
+	if err != nil {
+		return err
+	}
+
+	return analyzeLogFile(logFile, invocationID)
 }
 
 func extractInvocationID(line string) string {
@@ -59,9 +69,9 @@ func extractInvocationID(line string) string {
 	return ""
 }
 
-func analyzeLogFile(filePath string) error {
+func analyzeLogFile(filePath string, filterInvocationID string) error {
 	// Define the regular expression patterns
-	patternEnd := regexp.MustCompile(`^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z)\s+(INF|ERR|WRN)\s+(.*)\s+client=(.*)\s(.*)+errors=(\d+)?\s+module=([a-zA-Z-]+)?\s+resources=(\d+)?\s+table=(\w+)?`)
+	patternEnd := regexp.MustCompile(`^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z)\s+(INF|ERR|WRN)\s+(.*)\s+client=(.*)\s+(.*)\s+errors=(\d+)?\s+(.*)+\s+module=([a-zA-Z-]+)?\s+resources=(\d+)?\s+table=(\w+)?`)
 	patternStart := regexp.MustCompile(`^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z)\s+(INF|ERR|WRN)\s+(.*)\s+client=(.*)\s+(.*)\s+module=([a-zA-Z-]+)?\s+table=(\w+)?`)
 
 	fmt.Printf("Analyzing log file: %s\n", filePath)
@@ -79,11 +89,19 @@ func analyzeLogFile(filePath string) error {
 	for scanner.Scan() {
 		line := scanner.Text()
 
+		// Extract invocation ID for filtering
+		extractedInvocationID := extractInvocationID(line)
+
+		// Skip if we're filtering by invocation ID and this line doesn't match
+		if filterInvocationID != "" && extractedInvocationID != filterInvocationID {
+			continue
+		}
+
 		// Try to match end pattern
 		if matches := patternEnd.FindStringSubmatch(line); matches != nil {
 			allData = append(allData, logEntry{
-				invocationID: extractInvocationID(line),
-				key:          matches[4] + matches[9],
+				invocationID: extractedInvocationID,
+				key:          matches[4] + matches[10],
 				ts:           matches[1],
 				typ:          "end",
 			})
@@ -93,7 +111,7 @@ func analyzeLogFile(filePath string) error {
 		// Try to match start pattern
 		if matches := patternStart.FindStringSubmatch(line); matches != nil {
 			allData = append(allData, logEntry{
-				invocationID: extractInvocationID(line),
+				invocationID: extractedInvocationID,
 				key:          matches[4] + matches[7],
 				ts:           matches[1],
 				typ:          "start",
@@ -155,15 +173,15 @@ func analyzeLogFile(filePath string) error {
 			if len(data.times) > 1 {
 				// Calculate time difference in minutes
 				timeDiff := int(data.times[len(data.times)-1].Sub(data.times[0]).Seconds() / 60)
-				if timeDiff > 0 {
-					if _, exists := timeDiffKeyPairs[invocationID]; !exists {
-						timeDiffKeyPairs[invocationID] = []timeDiffKeyPair{}
-					}
-					timeDiffKeyPairs[invocationID] = append(timeDiffKeyPairs[invocationID], timeDiffKeyPair{
-						timeDiff: timeDiff,
-						key:      key,
-					})
+
+				if _, exists := timeDiffKeyPairs[invocationID]; !exists {
+					timeDiffKeyPairs[invocationID] = []timeDiffKeyPair{}
 				}
+				timeDiffKeyPairs[invocationID] = append(timeDiffKeyPairs[invocationID], timeDiffKeyPair{
+					timeDiff: timeDiff,
+					key:      key,
+				})
+
 			} else if len(data.types) == 1 && data.types[0] == "start" {
 				fmt.Printf("Table never completed: %s for invocation %s\n", key, invocationID)
 			}
@@ -177,6 +195,7 @@ func analyzeLogFile(filePath string) error {
 		})
 	}
 
+	// Display results for all invocation IDs
 	for invocationID := range timeDiffKeyPairs {
 		fmt.Printf("Invocation ID: %s\n", invocationID)
 		// Print time differences
