@@ -142,8 +142,8 @@ github.com/marcboeker/go-duckdb/arrowmapping v0.0.10 h1:G1W+GVnUefR8uy7jHdNO+CRM
 github.com/marcboeker/go-duckdb/arrowmapping v0.0.10/go.mod h1:jccUb8TYD0p5TsEEeN4SXuslNJHo23QaKOqKD+U6uFU=
 github.com/marcboeker/go-duckdb/mapping v0.0.11 h1:fusN1b1l7Myxafifp596I6dNLNhN5Uv/rw31qAqBwqw=
 github.com/marcboeker/go-duckdb/mapping v0.0.11/go.mod h1:aYBjFLgfKO0aJIbDtXPiaL5/avRQISveX/j9tMf9JhU=
-github.com/marcboeker/go-duckdb/v2 v2.3.3 h1:PQhWS1vLtotByrXmUg6YqmTS59WPJEqlCPhp464ZGUU=
-github.com/marcboeker/go-duckdb/v2 v2.3.3/go.mod h1:RZgwGE22rly6aWbqO8lsfYjMvNuMd3YoTroWxL37H9E=
+github.com/marcboeker/go-duckdb/v2 v2.3.4 h1:o98wrefPbH0IdJRix4pF0+jZiXoFQ+FSR8InMsCUZD0=
+github.com/marcboeker/go-duckdb/v2 v2.3.4/go.mod h1:8adNrftF4Ye29XMrpIl5NYNosTVsZu1mz3C82WdVvrk=
 github.com/mattn/go-colorable v0.1.13 h1:fFA4WZxdEF4tXPZVKMLwD8oUnCTTo08duU7wxecdEvA=
 github.com/mattn/go-colorable v0.1.13/go.mod h1:7S9/ev0klgBDR4GtXTXX8a3vIGJpMovkB8vQcUbaXHg=
 github.com/mattn/go-isatty v0.0.16/go.mod h1:kYGgaQfpe5nmfYZH+SKPsOc2e4SrIfOl2e/yFXSvRLM=
