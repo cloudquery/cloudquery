@@ -52,10 +52,6 @@ func UploadPluginUIAssets(ctx context.Context, c *cloudquery_api.ClientWithRespo
 		return fmt.Errorf("%s is a reserved name and cannot be used as an asset name", uiAssetBundleTarName)
 	}
 
-	if _, ok := urlPathVsDetails["index.html"]; !ok {
-		return errors.New("index.html is required in the UI directory")
-	}
-
 	assets = append(assets, cloudquery_api.PluginUIAssetUploadRequest{
 		Name:        uiAssetBundleTarName,
 		ContentType: lo.ToPtr("application/gzip"),
