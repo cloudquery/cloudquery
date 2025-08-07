@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.26](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.5.25...plugins-destination-elasticsearch-v3.5.26) (2025-08-07)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 645b1fa ([#21193](https://github.com/cloudquery/cloudquery/issues/21193)) ([1c8c182](https://github.com/cloudquery/cloudquery/commit/1c8c182ff79f21897c6734717275843a229f4e35))
+
 ## [3.5.25](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.5.24...plugins-destination-elasticsearch-v3.5.25) (2025-07-31)
 
 
