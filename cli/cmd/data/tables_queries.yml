@@ -12,7 +12,7 @@
             sqlite3 %q SELECT account_id, instance_id, region, launch_time FROM aws_ec2_instances ORDER BY launch_time ASC LIMIT 10
           args:
             - connection_string
-- aws_ec2_ebs_volumes
+- aws_ec2_ebs_volumes:
     description: |
       Run the following command to get your unattached EBS volumes:
     destinations:
