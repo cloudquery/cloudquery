@@ -9,7 +9,7 @@
             SELECT account_id, instance_id, region, launch_time FROM aws_ec2_instances ORDER BY launch_time ASC LIMIT 10
       - cloudquery/sqlite:
           query: |
-            sqlite3 %q SELECT account_id, instance_id, region, launch_time FROM aws_ec2_instances ORDER BY launch_time ASC LIMIT 10
+            sqlite3 %q "SELECT account_id, instance_id, region, launch_time FROM aws_ec2_instances ORDER BY launch_time ASC LIMIT 10"
           args:
             - connection_string
 - aws_ec2_ebs_volumes:
@@ -21,22 +21,26 @@
             SELECT * FROM aws_ec2_ebs_volumes WHERE jsonb_array_length(attachments) = 0
       - cloudquery/sqlite:
           query: |
-            sqlite3 %q SELECT * FROM aws_ec2_ebs_volumes WHERE json_array_length(attachments) = 0
+            sqlite3 %q "SELECT * FROM aws_ec2_ebs_volumes WHERE json_array_length(attachments) = 0"
           args:
             - connection_string
 - aws_iam_users:
+    dependencies:
+      - aws_iam_mfa_devices
     description: |
       Run the following command to get IAM users without MFA:
     destinations:
       - cloudquery/postgresql:
           query: |
-            select user_name, arn, create_date, user_id, tags from aws_iam_users AS u WHERE u.user_name NOT IN (SELECT user_name FROM aws_iam_mfa_devices)
+            SELECT user_name, arn, create_date, user_id, tags from aws_iam_users AS u WHERE u.user_name NOT IN (SELECT user_name FROM aws_iam_mfa_devices)
       - cloudquery/sqlite:
           query: |
-            sqlite3 %q select user_name, arn, create_date, user_id, tags from aws_iam_users AS u WHERE u.user_name NOT IN (SELECT user_name FROM aws_iam_mfa_devices);
+            sqlite3 %q "SELECT user_name, arn, create_date, user_id, tags from aws_iam_users AS u WHERE u.user_name NOT IN (SELECT user_name FROM aws_iam_mfa_devices)"
           args:
             - connection_string
 - aws_ec2_eips:
+    dependencies:
+      - aws_ec2_nat_gateways
     description: |
       Run the following command to get Unused Elastic IPs:
     destinations:
@@ -55,6 +59,6 @@
               )
       - cloudquery/sqlite:
           query: |
-            sqlite3 %q SELECT public_ip, instance_id FROM aws_ec2_eips WHERE instance_id IS NULL AND public_ip NOT IN (SELECT json_extract(nat_address.value, '$.PublicIp') AS public_ip FROM aws_ec2_nat_gateways, json_each(nat_gateway_addresses) AS nat_address WHERE nat_gateway_addresses IS NOT NULL AND json_extract(nat_address.value, '$.PublicIp') IS NOT NULL)
+            sqlite3 %q "SELECT public_ip, instance_id FROM aws_ec2_eips WHERE instance_id IS NULL AND public_ip NOT IN (SELECT json_extract(nat_address.value, '$.PublicIp') AS public_ip FROM aws_ec2_nat_gateways, json_each(nat_gateway_addresses) AS nat_address WHERE nat_gateway_addresses IS NOT NULL AND json_extract(nat_address.value, '$.PublicIp') IS NOT NULL)"
           args:
             - connection_string

@@ -50,6 +50,7 @@ type destinationsQueries struct {
 }
 
 type tableQueries struct {
+	Dependencies []string                         `yaml:"dependencies"`
 	Description  string                           `yaml:"description"`
 	Destinations []map[string]destinationsQueries `yaml:"destinations"`
 }
@@ -779,13 +780,13 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		Msg("Sync summary")
 
 	if totalResources > 0 {
-		hintSelectMessage(destinationSpecs, statsPerTable)
+		hintSelectMessage(destinationSpecs, statsPerTable, sourceTables)
 	}
 
 	return nil
 }
 
-func hintSelectMessage(destinationSpecs []specs.Destination, statsPerTable *utils.ConcurrentMap[string, cloudquery_api.SyncRunTableProgressValue]) {
+func hintSelectMessage(destinationSpecs []specs.Destination, statsPerTable *utils.ConcurrentMap[string, cloudquery_api.SyncRunTableProgressValue], sourceTables map[string]bool) {
 	val, _ := config.GetValue("first_sync_completed")
 	firstSyncCompleted, _ := strconv.ParseBool(val)
 	if firstSyncCompleted {
@@ -794,6 +795,16 @@ func hintSelectMessage(destinationSpecs []specs.Destination, statsPerTable *util
 
 	if auth.NewTokenClient().GetTokenType() != auth.BearerToken {
 		return
+	}
+
+	ensureDependencies := func(tableQuery tableQueries) bool {
+		for _, dependency := range tableQuery.Dependencies {
+			_, ok := sourceTables[dependency]
+			if !ok {
+				return false
+			}
+		}
+		return true
 	}
 
 	destPaths := lo.SliceToMap(destinationSpecs, func(spec specs.Destination) (string, specs.Destination) {
@@ -810,7 +821,13 @@ func hintSelectMessage(destinationSpecs []specs.Destination, statsPerTable *util
 		if !ok || rows.Rows == 0 {
 			continue
 		}
+
 		tableQuery := tablePair[tableName]
+
+		if !ensureDependencies(tableQuery) {
+			continue
+		}
+
 		for _, destinationQuery := range tableQuery.Destinations {
 			destinationPaths := lo.Keys(destinationQuery)
 			if len(destinationPaths) == 0 {
