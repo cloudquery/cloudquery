@@ -24,7 +24,7 @@
             sqlite3 %q SELECT * FROM aws_ec2_ebs_volumes WHERE json_array_length(attachments) = 0
           args:
             - connection_string
-- aws_iam_users
+- aws_iam_users:
     description: |
       Run the following command to get IAM users without MFA:
     destinations:
