@@ -12,3 +12,49 @@
             sqlite3 %q SELECT account_id, instance_id, region, launch_time FROM aws_ec2_instances ORDER BY launch_time ASC LIMIT 10
           args:
             - connection_string
+- aws_ec2_ebs_volumes
+    description: |
+      Run the following command to get your unattached EBS volumes:
+    destinations:
+      - cloudquery/postgresql:
+          query: |
+            SELECT * FROM aws_ec2_ebs_volumes WHERE jsonb_array_length(attachments) = 0
+      - cloudquery/sqlite:
+          query: |
+            sqlite3 %q SELECT * FROM aws_ec2_ebs_volumes WHERE json_array_length(attachments) = 0
+          args:
+            - connection_string
+- aws_iam_users
+    description: |
+      Run the following command to get IAM users without MFA:
+    destinations:
+      - cloudquery/postgresql:
+          query: |
+            select user_name, arn, create_date, user_id, tags from aws_iam_users AS u WHERE u.user_name NOT IN (SELECT user_name FROM aws_iam_mfa_devices)
+      - cloudquery/sqlite:
+          query: |
+            sqlite3 %q select user_name, arn, create_date, user_id, tags from aws_iam_users AS u WHERE u.user_name NOT IN (SELECT user_name FROM aws_iam_mfa_devices);
+          args:
+            - connection_string
+- aws_ec2_eips
+    description: |
+      Run the following command to get Unused Elastic IPs:
+    destinations:
+      - cloudquery/postgresql:
+          query: |
+            SELECT public_ip, instance_id 
+            FROM aws_ec2_eips 
+            WHERE instance_id IS NULL 
+              AND public_ip NOT IN (
+                SELECT nat_address->>'PublicIp' AS public_ip
+                FROM (
+                  SELECT jsonb_array_elements(nat_gateway_addresses) AS nat_address
+                  FROM aws_ec2_nat_gateways
+                  WHERE nat_gateway_addresses IS NOT NULL
+                ) subquery
+              )
+      - cloudquery/sqlite:
+          query: |
+            sqlite3 %q SELECT public_ip, instance_id FROM aws_ec2_eips WHERE instance_id IS NULL AND public_ip NOT IN (SELECT json_extract(nat_address.value, '$.PublicIp') AS public_ip FROM aws_ec2_nat_gateways, json_each(nat_gateway_addresses) AS nat_address WHERE nat_gateway_addresses IS NOT NULL AND json_extract(nat_address.value, '$.PublicIp') IS NOT NULL)
+          args:
+            - connection_string
