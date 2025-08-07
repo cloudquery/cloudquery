@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.3.0...plugins-destination-clickhouse-v7.3.1) (2025-08-07)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 645b1fa ([#21193](https://github.com/cloudquery/cloudquery/issues/21193)) ([1c8c182](https://github.com/cloudquery/cloudquery/commit/1c8c182ff79f21897c6734717275843a229f4e35))
+
 ## [7.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.2.1...plugins-destination-clickhouse-v7.3.0) (2025-07-31)
 
 
