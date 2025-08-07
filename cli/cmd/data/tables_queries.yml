@@ -36,7 +36,7 @@
             sqlite3 %q select user_name, arn, create_date, user_id, tags from aws_iam_users AS u WHERE u.user_name NOT IN (SELECT user_name FROM aws_iam_mfa_devices);
           args:
             - connection_string
-- aws_ec2_eips
+- aws_ec2_eips:
     description: |
       Run the following command to get Unused Elastic IPs:
     destinations:
