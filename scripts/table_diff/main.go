@@ -1,12 +1,13 @@
 package main
 
 import (
-	"cloudquery/tablesdiff/changes"
 	"encoding/json"
 	"log"
 	"os"
 	"regexp"
 	"strings"
+
+	"cloudquery/tablesdiff/changes"
 
 	"github.com/bluekeyes/go-gitdiff/gitdiff"
 )
@@ -55,12 +56,12 @@ func main() {
 	}
 
 	docsFiles := filterFiles(files)
-	changes, err := changes.GetChanges(docsFiles)
+	docChanges, err := changes.GetChanges(docsFiles)
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Printf("Detected %d doc changes", len(changes))
-	out, err := json.MarshalIndent(changes, "", "  ")
+	log.Printf("Detected %d doc changes", len(docChanges))
+	out, err := json.MarshalIndent(docChanges, "", "  ")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -28,10 +28,11 @@ jobs:
           cache: true
           cache-dependency-path: scripts/table_diff/go.sum
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v8
         with:
-          version: v1.64.8
+          version: v2.2.1
           working-directory: scripts/table_diff
+          args: "--config ../../plugins/.golangci.yml"
       - name: Test
         run: go test ./...
   

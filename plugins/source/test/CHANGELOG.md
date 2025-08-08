@@ -1,5 +1,20 @@
 # Changelog
 
+## [4.8.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.1...plugins-source-test-v4.8.2) (2025-08-07)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 645b1fa ([#21193](https://github.com/cloudquery/cloudquery/issues/21193)) ([1c8c182](https://github.com/cloudquery/cloudquery/commit/1c8c182ff79f21897c6734717275843a229f4e35))
+
+## [4.8.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.0...plugins-source-test-v4.8.1) (2025-07-31)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.88.0 ([#21132](https://github.com/cloudquery/cloudquery/issues/21132)) ([1db1daa](https://github.com/cloudquery/cloudquery/commit/1db1daa7df2b3298ed84b4cc86d85bf8c128f037))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.88.1 ([#21164](https://github.com/cloudquery/cloudquery/issues/21164)) ([7450686](https://github.com/cloudquery/cloudquery/commit/745068650a195dcba4125b484b5f44ea6adcda75))
+
 ## [4.8.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.7.23...plugins-source-test-v4.8.0) (2025-07-23)
 
 

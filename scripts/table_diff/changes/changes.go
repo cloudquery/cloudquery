@@ -46,9 +46,9 @@ func (c column) incremental() bool {
 	return c.columnType&columnTypeIncremental != 0
 }
 
-func backtickStrings(strings ...string) []any {
-	backticked := make([]any, len(strings))
-	for i, s := range strings {
+func backtickStrings(strs ...string) []any {
+	backticked := make([]any, len(strs))
+	for i, s := range strs {
 		backticked[i] = "`" + s + "`"
 	}
 	return backticked
@@ -90,7 +90,7 @@ func parsePKChange(line string) (names []string) {
 			names = append(names, strings.Trim(part, "*"))
 		}
 	}
-	return
+	return names
 }
 
 func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
@@ -268,6 +268,7 @@ func getFileChanges(file *gitdiff.File) (changes []change, err error) {
 	return changes, nil
 }
 
+//nolint:revive
 func GetChanges(files []*gitdiff.File) (changes []change, err error) {
 	changes = make([]change, 0)
 	for _, file := range files {

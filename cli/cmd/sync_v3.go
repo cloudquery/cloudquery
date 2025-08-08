@@ -8,6 +8,8 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"slices"
+	"strconv"
 	gosync "sync"
 	"sync/atomic"
 	"time"
@@ -15,14 +17,17 @@ import (
 	"github.com/apache/arrow-go/v18/arrow"
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/ghodss/yaml"
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
 	"github.com/samber/lo"
 	"github.com/schollz/progressbar/v3"
+	"github.com/thoas/go-funk"
 	"github.com/vnteamopen/godebouncer"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
@@ -35,7 +40,44 @@ import (
 	"github.com/cloudquery/cloudquery/cli/v6/internal/transformer"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/transformerpipeline"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/utils"
+
+	_ "embed"
 )
+
+type destinationsQueries struct {
+	Query string   `yaml:"query"`
+	Args  []string `yaml:"args"`
+}
+
+type tableQueries struct {
+	Dependencies []string                         `yaml:"dependencies"`
+	Description  string                           `yaml:"description"`
+	Destinations []map[string]destinationsQueries `yaml:"destinations"`
+}
+
+var (
+	//go:embed data/tables_queries.yml
+	tablesQueriesString []byte
+	tablesQueries       []map[string]tableQueries
+)
+
+func init() {
+	if err := yaml.Unmarshal(tablesQueriesString, &tablesQueries); err != nil {
+		panic(err)
+	}
+	for _, tableQueries := range tablesQueries {
+		if len(tableQueries) != 1 {
+			panic(fmt.Sprintf("expected 1 table query, got %d", len(tableQueries)))
+		}
+		tableQuery := lo.Values(tableQueries)[0]
+		for _, destinationQuery := range tableQuery.Destinations {
+			destinationPaths := lo.Keys(destinationQuery)
+			if len(destinationPaths) != 1 {
+				panic(fmt.Sprintf("expected 1 destination query, got %d", len(destinationPaths)))
+			}
+		}
+	}
+}
 
 type v3source struct {
 	client *managedplugin.Client
@@ -354,23 +396,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	// Read from the sync stream and write to all destinations.
 	isComplete := int64(0)
 
-	sourceTables, err := getTables(ctx, sourcePbClient, &plugin.GetTables_Request{
-		Tables:              sourceSpec.Tables,
-		SkipTables:          sourceSpec.SkipTables,
-		SkipDependentTables: *sourceSpec.SkipDependentTables})
-
-	if err != nil {
-		return err
-	}
-	// Pre init stats per table
-	for _, table := range sourceTables {
-		initialStats := cloudquery_api.SyncRunTableProgressValue{
-			Rows:   0,
-			Errors: 0,
-		}
-		statsPerTable.Add(table.Name, initialStats)
-	}
-
 	var remoteProgressReporter *godebouncer.Debouncer
 	if progressAPIClient != nil {
 		teamName, syncName, syncRunId := os.Getenv("_CQ_TEAM_NAME"), os.Getenv("_CQ_SYNC_NAME"), os.Getenv("_CQ_SYNC_RUN_ID")
@@ -489,6 +514,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		}
 	}()
 
+	sourceTables := map[string]bool{}
+
 	eg.Go(func() error {
 		// Close all transformation pipelines when the source is done
 		defer func() {
@@ -516,6 +543,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				atomic.AddInt64(&newResources, record.NumRows())
 				atomic.AddInt64(&totalResources, record.NumRows())
 				tableName, _ := record.Schema().Metadata().GetValue(schema.MetadataTableName)
+				sourceTables[tableName] = true
 				stats, _ := statsPerTable.Get(tableName)
 				stats.Rows += record.NumRows()
 				statsPerTable.Add(tableName, stats)
@@ -589,6 +617,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 					return err
 				}
 
+				sourceTables[table.Name] = true
 				// This works since we sync and send migrate messages for parents before children
 				if isStateBackendEnabled && (table.IsIncremental || (table.Parent != nil && skippedFromDeleteStale[table.Parent.Name])) {
 					skippedFromDeleteStale[table.Name] = true
@@ -662,6 +691,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 
 	tableProgress := statsPerTable.GetAll()
 	for i := range destinationsClients {
+		sourceTables := lo.Keys(sourceTables)
+		slices.Sort(sourceTables)
 		m := destinationsClients[i].Metrics()
 		summary := syncSummary{
 			Resources:           uint64(totalResources),
@@ -672,18 +703,18 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			SourceName:          sourceSpec.Name,
 			SourceVersion:       sourceSpec.Version,
 			SourcePath:          sourceSpec.Path,
-			SourceTables:        tableNameChanger.UpdateTableNamesSlice(destinationSpecs[i].Name, sourceTables.TableNames()),
+			SourceTables:        tableNameChanger.UpdateTableNamesSlice(destinationSpecs[i].Name, sourceTables),
 			CLIVersion:          Version,
 			DestinationErrors:   m.Errors,
 			DestinationWarnings: m.Warnings,
 			DestinationName:     destinationSpecs[i].Name,
 			DestinationVersion:  destinationSpecs[i].Version,
 			DestinationPath:     destinationSpecs[i].Path,
-			ResourcesPerTable: lo.Reduce(lo.Keys(tableProgress), func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
+			ResourcesPerTable: lo.Reduce(sourceTables, func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
 				acc[tableName] = uint64(tableProgress[tableName].Rows)
 				return acc
 			}, map[string]uint64{}),
-			ErrorsPerTable: lo.Reduce(lo.Keys(tableProgress), func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
+			ErrorsPerTable: lo.Reduce(sourceTables, func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
 				acc[tableName] = uint64(tableProgress[tableName].Errors)
 				return acc
 			}, map[string]uint64{}),
@@ -748,7 +779,84 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		Str("result", msg).
 		Msg("Sync summary")
 
+	if totalResources > 0 {
+		hintSelectMessage(destinationSpecs, statsPerTable, sourceTables)
+	}
+
 	return nil
+}
+
+func hintSelectMessage(destinationSpecs []specs.Destination, statsPerTable *utils.ConcurrentMap[string, cloudquery_api.SyncRunTableProgressValue], sourceTables map[string]bool) {
+	val, _ := config.GetValue("first_sync_completed")
+	firstSyncCompleted, _ := strconv.ParseBool(val)
+	if firstSyncCompleted {
+		return
+	}
+
+	if auth.NewTokenClient().GetTokenType() != auth.BearerToken {
+		return
+	}
+
+	ensureDependencies := func(tableQuery tableQueries) bool {
+		for _, dependency := range tableQuery.Dependencies {
+			_, ok := sourceTables[dependency]
+			if !ok {
+				return false
+			}
+		}
+		return true
+	}
+
+	destPaths := lo.SliceToMap(destinationSpecs, func(spec specs.Destination) (string, specs.Destination) {
+		return spec.Path, spec
+	})
+
+	for _, tablePair := range tablesQueries {
+		tables := lo.Keys(tablePair)
+		if len(tables) == 0 {
+			continue
+		}
+		tableName := tables[0]
+		rows, ok := statsPerTable.Get(tableName)
+		if !ok || rows.Rows == 0 {
+			continue
+		}
+
+		tableQuery := tablePair[tableName]
+
+		if !ensureDependencies(tableQuery) {
+			continue
+		}
+
+		for _, destinationQuery := range tableQuery.Destinations {
+			destinationPaths := lo.Keys(destinationQuery)
+			if len(destinationPaths) == 0 {
+				continue
+			}
+			destinationPath := destinationPaths[0]
+			destSpec, ok := destPaths[destinationPath]
+			if !ok {
+				continue
+			}
+
+			fmt.Println()
+			fmt.Println("🎉 Success!")
+			fmt.Println()
+			fmt.Println(tableQuery.Description)
+			fmt.Println()
+
+			args := lo.Map(destinationQuery[destinationPath].Args, func(arg string, _ int) any {
+				return funk.Get(destSpec.Spec, arg, funk.WithAllowZero())
+			})
+
+			fmt.Printf(destinationQuery[destinationPath].Query+"\n", args...)
+
+			if err := config.SetValue("first_sync_completed", "true"); err != nil {
+				log.Debug().Err(err).Msg("Failed to set first_sync_completed")
+			}
+			return
+		}
+	}
 }
 
 func deleteStale(client safeWriteClient, tables map[string]bool, sourceName string, syncTime time.Time) error {

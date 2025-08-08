@@ -20,9 +20,9 @@ jobs:
         with:
           go-version-file: go.mod
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v8
         with:
-          version: v1.55.2
+          version: v2.2.1
           args: --timeout=10m
       - name: Get dependencies
         run: go get -t -d ./...

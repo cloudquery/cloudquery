@@ -109,7 +109,7 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	})
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
-		fmt.Fprintf(w, "OK")
+		fmt.Fprint(w, "OK")
 	})
 	listener, err := net.Listen("tcp", ":0")
 	if err != nil {
@@ -199,15 +199,10 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	}
 
 	analytics.TrackLoginSuccess(ctx, invocationUUID.UUID)
-	cmd.Println("CLI successfully authenticated.")
-	cmd.Println(`Next, initialize your sync configuration:
-	cloudquery init --source=<source> --destination=<destination>
-	
-Example:
-	cloudquery init --source=aws --destination=sqlite
 
-Then run your first sync:
-	cloudquery sync`)
+	cmd.Println("✅ CLI successfully authenticated.")
+	cmd.Println("Next, initialize your sync configuration:")
+	cmd.Println(bold.Sprint("cloudquery init"))
 
 	return nil
 }
