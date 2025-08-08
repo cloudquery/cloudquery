@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.4.1...plugins-destination-mysql-v5.5.0) (2025-08-08)
+
+
+### Features
+
+* Document Arrow to MySQL type support ([#21220](https://github.com/cloudquery/cloudquery/issues/21220)) ([d47d636](https://github.com/cloudquery/cloudquery/commit/d47d6366c44637e8c94e230da94a2196571239ef))
+
 ## [5.4.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.4.0...plugins-destination-mysql-v5.4.1) (2025-08-07)
 
 
