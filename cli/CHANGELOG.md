@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.27.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.27.0...cli-v6.27.1) (2025-08-09)
+
+
+### Bug Fixes
+
+* **deps:** Update alpine Docker tag to v3.22.1 ([#21213](https://github.com/cloudquery/cloudquery/issues/21213)) ([9a52de4](https://github.com/cloudquery/cloudquery/commit/9a52de462bf611493551b8bb842d368c7b89a63a))
+* **deps:** Update module google.golang.org/grpc to v1.74.2 ([#21224](https://github.com/cloudquery/cloudquery/issues/21224)) ([3cdd36f](https://github.com/cloudquery/cloudquery/commit/3cdd36f4a587da9c42d3bb5d0a6a233f11316915))
+
 ## [6.27.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.26.3...cli-v6.27.0) (2025-08-07)
 
 
