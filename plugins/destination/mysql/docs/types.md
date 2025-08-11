@@ -1,5 +1,3 @@
-# MySQL Types
-
 The MySQL destination (MySQL 8.0 and later) supports most [Apache Arrow](https://arrow.apache.org/docs/index.html)
 types. The following table shows the supported types and how they are mapped
 to [MySQL data types](https://dev.mysql.com/doc/refman/8.0/en/data-types.html).
