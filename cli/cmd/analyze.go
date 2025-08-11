@@ -151,12 +151,21 @@ func analyzeLogFile(filePath string, filterInvocationID string) error {
 		normalizedData[data.invocationID][clientPair].types = append(normalizedData[data.invocationID][clientPair].types, data.typ)
 	}
 
-	// Sort times for each entry
+	// Sort times for each entry and find the latest timestamp in the log
+	latestTimestamp := time.Time{}
 	for invocationID := range normalizedData {
 		for _, data := range normalizedData[invocationID] {
 			sort.Slice(data.times, func(i, j int) bool {
 				return data.times[i].Before(data.times[j])
 			})
+
+			// Update latest timestamp if this entry has later timestamps
+			for _, ts := range data.times {
+				if !ts.After(latestTimestamp) {
+					continue
+				}
+				latestTimestamp = data.times[len(data.times)-1]
+			}
 		}
 	}
 
@@ -169,6 +178,11 @@ func analyzeLogFile(filePath string, filterInvocationID string) error {
 	timeDiffKeyPairs := make(map[string][]timeDiffKeyPair)
 
 	for invocationID := range normalizedData {
+		// Skip if filtering by invocation ID and this isn't the one
+		if filterInvocationID != "" && filterInvocationID != invocationID {
+			continue
+		}
+
 		for key, data := range normalizedData[invocationID] {
 			if len(data.times) > 1 {
 				// Calculate time difference in minutes
@@ -183,25 +197,36 @@ func analyzeLogFile(filePath string, filterInvocationID string) error {
 				})
 
 			} else if len(data.types) == 1 && data.types[0] == "start" {
-				fmt.Printf("Table never completed: %s\n", key)
+				// Calculate how long the table was running based on the log's latest timestamp
+				if !latestTimestamp.IsZero() {
+					runningTime := int(latestTimestamp.Sub(data.times[0]).Seconds())
+					fmt.Printf("Table never completed (running for %d seconds as of last log entry): %s for invocation %s\n",
+						runningTime, key, invocationID)
+				} else {
+					fmt.Printf("Table never completed: %s for invocation %s (cannot determine running time)\n",
+						key, invocationID)
+				}
 			}
 		}
 	}
 
-	
-
+	// Sort time differences in descending order
 	for invocationID := range timeDiffKeyPairs {
-		// Sort time differences in descending order
 		sort.Slice(timeDiffKeyPairs[invocationID], func(i, j int) bool {
 			return timeDiffKeyPairs[invocationID][i].timeDiff > timeDiffKeyPairs[invocationID][j].timeDiff
 		})
 	}
 
-	// Display results for all invocation IDs
-	for invocationID := range timeDiffKeyPairs {
+	// Display results
+	for invocationID, pairs := range timeDiffKeyPairs {
+		// Skip if filtering by invocation ID and this isn't the one
+		if filterInvocationID != "" && filterInvocationID != invocationID {
+			continue
+		}
+
 		fmt.Printf("Invocation ID: %s\n", invocationID)
 		// Print time differences
-		for _, pair := range timeDiffKeyPairs[invocationID] {
+		for _, pair := range pairs {
 			fmt.Printf("   %d Seconds - %s\n", pair.timeDiff, pair.key)
 		}
 	}
