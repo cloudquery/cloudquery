@@ -172,7 +172,7 @@ func analyzeLogFile(filePath string, filterInvocationID string) error {
 		for key, data := range normalizedData[invocationID] {
 			if len(data.times) > 1 {
 				// Calculate time difference in minutes
-				timeDiff := int(data.times[len(data.times)-1].Sub(data.times[0]).Seconds() / 60)
+				timeDiff := int(data.times[len(data.times)-1].Sub(data.times[0]).Seconds())
 
 				if _, exists := timeDiffKeyPairs[invocationID]; !exists {
 					timeDiffKeyPairs[invocationID] = []timeDiffKeyPair{}
@@ -183,10 +183,12 @@ func analyzeLogFile(filePath string, filterInvocationID string) error {
 				})
 
 			} else if len(data.types) == 1 && data.types[0] == "start" {
-				fmt.Printf("Table never completed: %s for invocation %s\n", key, invocationID)
+				fmt.Printf("Table never completed: %s\n", key)
 			}
 		}
 	}
+
+	
 
 	for invocationID := range timeDiffKeyPairs {
 		// Sort time differences in descending order
@@ -200,7 +202,7 @@ func analyzeLogFile(filePath string, filterInvocationID string) error {
 		fmt.Printf("Invocation ID: %s\n", invocationID)
 		// Print time differences
 		for _, pair := range timeDiffKeyPairs[invocationID] {
-			fmt.Printf("   %d minutes - %s\n", pair.timeDiff, pair.key)
+			fmt.Printf("   %d Seconds - %s\n", pair.timeDiff, pair.key)
 		}
 	}
 
