@@ -1,0 +1,24 @@
+services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    platform: linux/amd64
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_PID: Express
+      MSSQL_SA_PASSWORD: yourStrongP@ssword
+      DB_USER: SA
+      DB_NAME: cloudquery
+    ports:
+      - 1433:1433
+    healthcheck:
+      test: ["CMD", "/opt/mssql-tools18/bin/sqlcmd", "-C", "-U", "SA", "-P", "yourStrongP@ssword", "-Q", "SELECT 1"]
+      interval: 15s
+      timeout: 30s
+      retries: 10
+  init:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    platform: linux/amd64
+    command: /opt/mssql-tools18/bin/sqlcmd -C -S tcp:mssql,1433 -U SA -P yourStrongP@ssword -Q "CREATE DATABASE cloudquery;"
+    depends_on:
+      mssql:
+        condition: service_healthy

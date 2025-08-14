@@ -2,21 +2,10 @@ package client
 
 import (
 	"slices"
-	"strings"
 
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
-
-func prettifyChanges(name string, changes []schema.TableColumnChange) string {
-	builder := new(strings.Builder)
-	builder.WriteString(name + ":")
-	for _, change := range changes {
-		builder.WriteString("\n")
-		builder.WriteString(change.String())
-	}
-	return builder.String()
-}
 
 func unsafeChanges(changes []schema.TableColumnChange) []schema.TableColumnChange {
 	unsafe := make([]schema.TableColumnChange, 0, len(changes))

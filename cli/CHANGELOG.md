@@ -5,6 +5,89 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.27.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.26.3...cli-v6.27.0) (2025-08-07)
+
+
+### Features
+
+* Adding more example queries ([#21215](https://github.com/cloudquery/cloudquery/issues/21215)) ([907cad9](https://github.com/cloudquery/cloudquery/commit/907cad9d8cf5452bcce007a6178b985429021b1f))
+
+## [6.26.3](https://github.com/cloudquery/cloudquery/compare/cli-v6.26.2...cli-v6.26.3) (2025-08-05)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 645b1fa ([#21193](https://github.com/cloudquery/cloudquery/issues/21193)) ([1c8c182](https://github.com/cloudquery/cloudquery/commit/1c8c182ff79f21897c6734717275843a229f4e35))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.14.1 ([#21202](https://github.com/cloudquery/cloudquery/issues/21202)) ([98bbf08](https://github.com/cloudquery/cloudquery/commit/98bbf08879226365259a3c389d31c9187a81fcb2))
+* Remove requirement for index.html for plugin UI assets ([#21210](https://github.com/cloudquery/cloudquery/issues/21210)) ([fc3ce5b](https://github.com/cloudquery/cloudquery/commit/fc3ce5b981a0dfa7c9756e126a1632e7c2b98169))
+
+## [6.26.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.26.1...cli-v6.26.2) (2025-07-30)
+
+
+### Bug Fixes
+
+* **deps:** Update docker ([#21179](https://github.com/cloudquery/cloudquery/issues/21179)) ([0ff6e79](https://github.com/cloudquery/cloudquery/commit/0ff6e79ad907345cce351b0b5295cfd1ff84b246))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.26.18 ([#21187](https://github.com/cloudquery/cloudquery/issues/21187)) ([eb3af75](https://github.com/cloudquery/cloudquery/commit/eb3af7595983521f4a07aed6f3a7f0fb44286b2a))
+
+## [6.26.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.26.0...cli-v6.26.1) (2025-07-30)
+
+
+### Bug Fixes
+
+* Don't call Tables gRPC method at the beginning of the sync ([#21180](https://github.com/cloudquery/cloudquery/issues/21180)) ([9510f5e](https://github.com/cloudquery/cloudquery/commit/9510f5e70e147cf989c796696e07421cb93c216b))
+
+## [6.26.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.25.2...cli-v6.26.0) (2025-07-29)
+
+
+### Features
+
+* CLI first successful sync hint message ([#21175](https://github.com/cloudquery/cloudquery/issues/21175)) ([bcf8a63](https://github.com/cloudquery/cloudquery/commit/bcf8a6364d0ff8d9dc4103ea74da6c5481d13c9d))
+* CLI onboarding message updates ([#21168](https://github.com/cloudquery/cloudquery/issues/21168)) ([ea5cf7b](https://github.com/cloudquery/cloudquery/commit/ea5cf7bed309dfebb4a56c6a6db7e7656e6c410d))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.26.16 ([#21176](https://github.com/cloudquery/cloudquery/issues/21176)) ([64068c1](https://github.com/cloudquery/cloudquery/commit/64068c19ebcca61c363caa7ff2125e08e911f546))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.88.1 ([#21164](https://github.com/cloudquery/cloudquery/issues/21164)) ([7450686](https://github.com/cloudquery/cloudquery/commit/745068650a195dcba4125b484b5f44ea6adcda75))
+* **deps:** Update opentelemetry-collector monorepo ([#21136](https://github.com/cloudquery/cloudquery/issues/21136)) ([8ca25b1](https://github.com/cloudquery/cloudquery/commit/8ca25b12d8c8ac4a4476a534eb7b25dc80ec2046))
+
+## [6.25.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.25.1...cli-v6.25.2) (2025-07-29)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.88.0 ([#21132](https://github.com/cloudquery/cloudquery/issues/21132)) ([1db1daa](https://github.com/cloudquery/cloudquery/commit/1db1daa7df2b3298ed84b4cc86d85bf8c128f037))
+* **deps:** Update opentelemetry-go monorepo ([#21137](https://github.com/cloudquery/cloudquery/issues/21137)) ([4544cfe](https://github.com/cloudquery/cloudquery/commit/4544cfeb659b6e1e3c3227625566a15c7044542c))
+
+## [6.25.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.25.0...cli-v6.25.1) (2025-07-24)
+
+
+### Bug Fixes
+
+* Data race when reporting progress ([#21117](https://github.com/cloudquery/cloudquery/issues/21117)) ([640b94e](https://github.com/cloudquery/cloudquery/commit/640b94ea2d00acb571b4aee47e2dc8fabf612d3f))
+
+## [6.25.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.24.2...cli-v6.25.0) (2025-07-24)
+
+
+### Features
+
+* Add per table stats to sync summaries ([#21107](https://github.com/cloudquery/cloudquery/issues/21107)) ([0cbe42f](https://github.com/cloudquery/cloudquery/commit/0cbe42fa5a210f748137beb0fcb68300c6cc0006))
+
+## [6.24.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.24.1...cli-v6.24.2) (2025-07-24)
+
+
+### Bug Fixes
+
+* Concurrent map access when reporting remote progress ([#21108](https://github.com/cloudquery/cloudquery/issues/21108)) ([189a8c3](https://github.com/cloudquery/cloudquery/commit/189a8c349f195c82a97289fc13c16fc50b862e5c))
+
+## [6.24.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.24.0...cli-v6.24.1) (2025-07-24)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.3 ([#21010](https://github.com/cloudquery/cloudquery/issues/21010)) ([c78cff9](https://github.com/cloudquery/cloudquery/commit/c78cff97ca8819ffc58a1ecb9fea7e2a9dbc1ffa))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.4 ([#21104](https://github.com/cloudquery/cloudquery/issues/21104)) ([44f77c8](https://github.com/cloudquery/cloudquery/commit/44f77c883bee4dd9cfc1f71f0cf4675452ed49ae))
+
 ## [6.24.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.23.0...cli-v6.24.0) (2025-07-18)
 
 

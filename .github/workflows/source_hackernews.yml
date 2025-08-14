@@ -35,16 +35,16 @@ jobs:
           cache: true
           cache-dependency-path: plugins/source/hackernews/go.sum
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v8
         with:
-          version: v1.64.8
+          version: v2.2.1
           working-directory: plugins/source/hackernews
           args: '--config ../../.golangci.yml'
       - name: Setup CloudQuery
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.24.0
+          version: v6.27.0
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen

@@ -151,7 +151,7 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, d
 			}
 		}
 		migrateTimeTook := time.Since(migrateStart)
-		fmt.Printf("Migration completed successfully.\n")
+		fmt.Print("Migration completed successfully.\n")
 		log.Info().
 			Str("source", sourceSpec.VersionString()).
 			Strs("destinations", destinationStrings).

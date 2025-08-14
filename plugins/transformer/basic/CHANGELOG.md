@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.6.5](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.4...plugins-transformer-basic-v2.6.5) (2025-07-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.88.0 ([#21132](https://github.com/cloudquery/cloudquery/issues/21132)) ([1db1daa](https://github.com/cloudquery/cloudquery/commit/1db1daa7df2b3298ed84b4cc86d85bf8c128f037))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.88.1 ([#21164](https://github.com/cloudquery/cloudquery/issues/21164)) ([7450686](https://github.com/cloudquery/cloudquery/commit/745068650a195dcba4125b484b5f44ea6adcda75))
+
+## [2.6.4](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.3...plugins-transformer-basic-v2.6.4) (2025-07-24)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.3 ([#21064](https://github.com/cloudquery/cloudquery/issues/21064)) ([4a5a851](https://github.com/cloudquery/cloudquery/commit/4a5a85102d85c7df4015b8f070462d638b8849e1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.4 ([#21104](https://github.com/cloudquery/cloudquery/issues/21104)) ([44f77c8](https://github.com/cloudquery/cloudquery/commit/44f77c883bee4dd9cfc1f71f0cf4675452ed49ae))
+
 ## [2.6.3](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.2...plugins-transformer-basic-v2.6.3) (2025-07-15)
 
 

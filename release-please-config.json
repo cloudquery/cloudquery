@@ -28,8 +28,14 @@
     "plugins/destination/gcs": {
       "component": "plugins-destination-gcs"
     },
+    "plugins/destination/gremlin": {
+      "component": "plugins-destination-gremlin"
+    },
     "plugins/destination/kafka": {
       "component": "plugins-destination-kafka"
+    },
+    "plugins/destination/meilisearch": {
+      "component": "plugins-destination-meilisearch"
     },
     "plugins/destination/mongodb": {
       "component": "plugins-destination-mongodb"
@@ -57,6 +63,10 @@
     },
     "plugins/destination/test": {
       "component": "plugins-destination-test"
+    },
+    "plugins/source/airtable": {
+      "component": "plugins-source-airtable",
+      "release-type": "node"
     },
     "plugins/source/hackernews": {
       "component": "plugins-source-hackernews"

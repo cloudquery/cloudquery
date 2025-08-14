@@ -35,9 +35,9 @@ jobs:
           cache: true
           cache-dependency-path: scaffold/go.sum
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v6
+        uses: golangci/golangci-lint-action@v8
         with:
-          version: v1.64.8
+          version: v2.2.1
           working-directory: scaffold
       - name: Build
         run: go build .

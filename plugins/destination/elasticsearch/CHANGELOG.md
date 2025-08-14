@@ -1,5 +1,28 @@
 # Changelog
 
+## [3.5.26](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.5.25...plugins-destination-elasticsearch-v3.5.26) (2025-08-07)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 645b1fa ([#21193](https://github.com/cloudquery/cloudquery/issues/21193)) ([1c8c182](https://github.com/cloudquery/cloudquery/commit/1c8c182ff79f21897c6734717275843a229f4e35))
+
+## [3.5.25](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.5.24...plugins-destination-elasticsearch-v3.5.25) (2025-07-31)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.88.0 ([#21132](https://github.com/cloudquery/cloudquery/issues/21132)) ([1db1daa](https://github.com/cloudquery/cloudquery/commit/1db1daa7df2b3298ed84b4cc86d85bf8c128f037))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.88.1 ([#21164](https://github.com/cloudquery/cloudquery/issues/21164)) ([7450686](https://github.com/cloudquery/cloudquery/commit/745068650a195dcba4125b484b5f44ea6adcda75))
+
+## [3.5.24](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.5.23...plugins-destination-elasticsearch-v3.5.24) (2025-07-24)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.3 ([#21010](https://github.com/cloudquery/cloudquery/issues/21010)) ([c78cff9](https://github.com/cloudquery/cloudquery/commit/c78cff97ca8819ffc58a1ecb9fea7e2a9dbc1ffa))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.4 ([#21104](https://github.com/cloudquery/cloudquery/issues/21104)) ([44f77c8](https://github.com/cloudquery/cloudquery/commit/44f77c883bee4dd9cfc1f71f0cf4675452ed49ae))
+
 ## [3.5.23](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.5.22...plugins-destination-elasticsearch-v3.5.23) (2025-07-15)
 
 

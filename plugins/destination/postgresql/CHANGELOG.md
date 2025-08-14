@@ -1,5 +1,26 @@
 # Changelog
 
+## [8.9.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.8.13...plugins-destination-postgresql-v8.9.0) (2025-07-31)
+
+
+### Features
+
+* Better summary of schema changes ([#21165](https://github.com/cloudquery/cloudquery/issues/21165)) ([0e20c91](https://github.com/cloudquery/cloudquery/commit/0e20c9171e817cd6ec59958f960e6df7cc779261))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.88.0 ([#21132](https://github.com/cloudquery/cloudquery/issues/21132)) ([1db1daa](https://github.com/cloudquery/cloudquery/commit/1db1daa7df2b3298ed84b4cc86d85bf8c128f037))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.88.1 ([#21164](https://github.com/cloudquery/cloudquery/issues/21164)) ([7450686](https://github.com/cloudquery/cloudquery/commit/745068650a195dcba4125b484b5f44ea6adcda75))
+
+## [8.8.13](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.8.12...plugins-destination-postgresql-v8.8.13) (2025-07-24)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.3 ([#21010](https://github.com/cloudquery/cloudquery/issues/21010)) ([c78cff9](https://github.com/cloudquery/cloudquery/commit/c78cff97ca8819ffc58a1ecb9fea7e2a9dbc1ffa))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.4 ([#21104](https://github.com/cloudquery/cloudquery/issues/21104)) ([44f77c8](https://github.com/cloudquery/cloudquery/commit/44f77c883bee4dd9cfc1f71f0cf4675452ed49ae))
+
 ## [8.8.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.8.11...plugins-destination-postgresql-v8.8.12) (2025-07-15)
 
 

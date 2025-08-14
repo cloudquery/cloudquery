@@ -1,5 +1,33 @@
 # Changelog
 
+## [6.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.1.0...plugins-destination-duckdb-v6.1.1) (2025-08-07)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/marcboeker/go-duckdb/v2 to v2.3.4 ([#21207](https://github.com/cloudquery/cloudquery/issues/21207)) ([78a1580](https://github.com/cloudquery/cloudquery/commit/78a1580684eae1a4a3d24fc177ec2abaf8fd5dc2))
+
+## [6.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.0.11...plugins-destination-duckdb-v6.1.0) (2025-07-31)
+
+
+### Features
+
+* Better summary of schema changes ([#21167](https://github.com/cloudquery/cloudquery/issues/21167)) ([8a0dc32](https://github.com/cloudquery/cloudquery/commit/8a0dc321ba50909b991e8483748119bdbd43d0ff))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.88.0 ([#21132](https://github.com/cloudquery/cloudquery/issues/21132)) ([1db1daa](https://github.com/cloudquery/cloudquery/commit/1db1daa7df2b3298ed84b4cc86d85bf8c128f037))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.88.1 ([#21164](https://github.com/cloudquery/cloudquery/issues/21164)) ([7450686](https://github.com/cloudquery/cloudquery/commit/745068650a195dcba4125b484b5f44ea6adcda75))
+
+## [6.0.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.0.10...plugins-destination-duckdb-v6.0.11) (2025-07-24)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.3 ([#21096](https://github.com/cloudquery/cloudquery/issues/21096)) ([da83648](https://github.com/cloudquery/cloudquery/commit/da83648d7cf7b3412eeb5e2f5c5d0dc910e09e1d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.87.4 ([#21104](https://github.com/cloudquery/cloudquery/issues/21104)) ([44f77c8](https://github.com/cloudquery/cloudquery/commit/44f77c883bee4dd9cfc1f71f0cf4675452ed49ae))
+
 ## [6.0.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.0.9...plugins-destination-duckdb-v6.0.10) (2025-07-16)
 
 
