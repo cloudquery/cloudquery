@@ -94,6 +94,10 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 	}
 	// maybe expose this to the user?
 	pgxConfig.ConnConfig.RuntimeParams["timezone"] = "UTC"
+	// If the connection is dead (server outage, network split etc.) drop it from the pool
+	pgxConfig.BeforeAcquire = func(ctx context.Context, conn *pgx.Conn) bool {
+		return conn.Ping(ctx) == nil
+	}
 	c.conn, err = pgxpool.NewWithConfig(ctx, pgxConfig)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to postgresql: %w", err)
