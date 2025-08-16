@@ -3,6 +3,37 @@
   "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
+    "Credentials": {
+      "properties": {
+        "local_profile": {
+          "type": "string",
+          "examples": [
+            "my_aws_profile"
+          ]
+        },
+        "role_arn": {
+          "type": "string",
+          "pattern": "^(arn(:[^:\n]*){5}([:/].*)?)?$"
+        },
+        "role_session_name": {
+          "type": "string",
+          "examples": [
+            "my_aws_role_session_name"
+          ]
+        },
+        "external_id": {
+          "type": "string",
+          "examples": [
+            "external_id"
+          ]
+        },
+        "default": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object"
+    },
     "Spec": {
       "properties": {
         "connection_string": {
@@ -22,6 +53,16 @@
           "type": "integer",
           "minimum": 1,
           "default": 4194304
+        },
+        "aws_credentials": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Credentials"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
