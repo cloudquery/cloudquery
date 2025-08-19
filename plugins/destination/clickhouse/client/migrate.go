@@ -179,11 +179,7 @@ func (c *Client) allTablesChanges(ctx context.Context, want schema.Tables, have 
 		}
 		tableSchemaChanges = slices.Clip(tableSchemaChanges)
 
-		forcedMigrationNeeded, err := c.forceMigrationNeeded(changes, tableSchemaChanges)
-		if err != nil {
-			return nil, err
-		}
-
+		forcedMigrationNeeded := c.forceMigrationNeeded(changes, tableSchemaChanges)
 		oldTTL, newTTL, err := c.checkTTLChanged(ctx, t)
 		if err != nil {
 			return nil, fmt.Errorf("failed to check TTL changes for table %s: %w", t.Name, err)
@@ -200,16 +196,16 @@ func (c *Client) allTablesChanges(ctx context.Context, want schema.Tables, have 
 	return result, nil
 }
 
-func (*Client) forceMigrationNeeded(changes []schema.TableColumnChange, tableChanges []tableSchemaChange) (bool, error) {
+func (*Client) forceMigrationNeeded(changes []schema.TableColumnChange, tableChanges []tableSchemaChange) bool {
 	if unsafe := unsafeChanges(changes); len(unsafe) > 0 {
-		return true, nil
+		return true
 	}
 
 	if len(tableChanges) > 0 {
-		return true, nil
+		return true
 	}
 
-	return false, nil
+	return false
 }
 
 func unsafeChanges(changes []schema.TableColumnChange) []schema.TableColumnChange {
