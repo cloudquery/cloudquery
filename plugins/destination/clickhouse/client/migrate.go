@@ -200,7 +200,7 @@ func (c *Client) allTablesChanges(ctx context.Context, want schema.Tables, have 
 	return result, nil
 }
 
-func (c *Client) forceMigrationNeeded(changes []schema.TableColumnChange, tableChanges []tableSchemaChange) (bool, error) {
+func (*Client) forceMigrationNeeded(changes []schema.TableColumnChange, tableChanges []tableSchemaChange) (bool, error) {
 	if unsafe := unsafeChanges(changes); len(unsafe) > 0 {
 		return true, nil
 	}
