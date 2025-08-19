@@ -20,7 +20,20 @@ type tableChanges struct {
 	forcedMigrationNeeded bool
 	oldTTL                string
 	newTTL                string
+	tableSchemaChanges    []tableSchemaChange
 	changes               []schema.TableColumnChange
+}
+
+type tableSchemaChangeKind string
+
+const (
+	partitionKeyChange tableSchemaChangeKind = "partition_key_change"
+	sortKeyChange      tableSchemaChangeKind = "sort_key_change"
+)
+
+type tableSchemaChange struct {
+	kind   tableSchemaChangeKind
+	change string
 }
 
 // MigrateTables relies on the CLI/client to lock before running migration.
@@ -51,13 +64,13 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 		return allTablesChanges[table].forcedMigrationNeeded && !tablesWeCanForceMigrate[table]
 	})
 	if len(nonAutoMigratableTables) > 0 {
-		changes := lo.FromEntries(lo.Map(nonAutoMigratableTables, func(table string, _ int) lo.Entry[string, []schema.TableColumnChange] {
-			return lo.Entry[string, []schema.TableColumnChange]{
+		changes := lo.FromEntries(lo.Map(nonAutoMigratableTables, func(table string, _ int) lo.Entry[string, tableChanges] {
+			return lo.Entry[string, tableChanges]{
 				Key:   table,
-				Value: allTablesChanges[table].changes,
+				Value: allTablesChanges[table],
 			}
 		}))
-		return fmt.Errorf("\nCan't migrate tables automatically, migrate manually or consider using 'migrate_mode: forced'. Non auto migratable tables changes:\n\n%s", schema.GetChangesSummary(changes))
+		return fmt.Errorf("\n\nCan't migrate tables automatically, migrate manually or consider using 'migrate_mode: forced'.\n\nNon auto-migratable tables:\n\n%s", summarizeTableChanges(changes))
 	}
 
 	const maxConcurrentMigrate = 10
@@ -97,6 +110,39 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 	return eg.Wait()
 }
 
+func summarizeTableChanges(tablesChanges map[string]tableChanges) string {
+	tables := lo.Keys(tablesChanges)
+	slices.Sort(tables)
+	summary := strings.Builder{}
+	for i, table := range tables {
+		summary.WriteString(fmt.Sprintf("%s:", table))
+		changes := tablesChanges[table]
+		changesString := lo.Map(changes.changes, func(change schema.TableColumnChange, _ int) string {
+			return fmt.Sprintf("  - %s", schema.GetColumnChangeSummary(change))
+		})
+		slices.Sort(changesString)
+		if len(changesString) > 0 {
+			summary.WriteString("\n" + strings.Join(changesString, "\n"))
+		}
+
+		// write sorting and partition key changes
+		if len(changes.tableSchemaChanges) > 0 {
+			summary.WriteString("\n")
+			schemaChanges := lo.Map(changes.tableSchemaChanges, func(change tableSchemaChange, _ int) string {
+				return fmt.Sprintf("  - %s", strings.ToUpper(change.change[0:1])+change.change[1:])
+			})
+			slices.Sort(schemaChanges)
+			summary.WriteString(strings.Join(schemaChanges, "\n"))
+		}
+
+		if i < len(tables)-1 {
+			summary.WriteString("\n\n")
+		}
+	}
+
+	return summary.String()
+}
+
 func (c *Client) allTablesChanges(ctx context.Context, want schema.Tables, have schema.Tables) (map[string]tableChanges, error) {
 	result := make(map[string]tableChanges)
 	for _, t := range want {
@@ -104,18 +150,40 @@ func (c *Client) allTablesChanges(ctx context.Context, want schema.Tables, have 
 		if chTable == nil {
 			result[t.Name] = tableChanges{
 				alreadyExists:         false,
-				changes:               nil,
+				forcedMigrationNeeded: false,
 				oldTTL:                "",
 				newTTL:                "",
-				forcedMigrationNeeded: false,
+				tableSchemaChanges:    nil,
+				changes:               nil,
 			}
 			continue
 		}
 		changes := t.GetChanges(chTable)
-		forcedMigrationNeeded, err := c.forceMigrationNeeded(ctx, t, changes)
+
+		partitionChange, sortingChange, err := c.checkPartitionOrOrderByChanged(ctx, t, c.spec.Partition, c.spec.OrderBy)
+		if err != nil {
+			return nil, fmt.Errorf("failed to check partition or order by changes for table %s: %w", t.Name, err)
+		}
+		tableSchemaChanges := make([]tableSchemaChange, 0, 2)
+		if partitionChange != "" {
+			tableSchemaChanges = append(tableSchemaChanges, tableSchemaChange{
+				kind:   partitionKeyChange,
+				change: partitionChange,
+			})
+		}
+		if sortingChange != "" {
+			tableSchemaChanges = append(tableSchemaChanges, tableSchemaChange{
+				kind:   sortKeyChange,
+				change: sortingChange,
+			})
+		}
+		tableSchemaChanges = slices.Clip(tableSchemaChanges)
+
+		forcedMigrationNeeded, err := c.forceMigrationNeeded(changes, tableSchemaChanges)
 		if err != nil {
 			return nil, err
 		}
+
 		oldTTL, newTTL, err := c.checkTTLChanged(ctx, t)
 		if err != nil {
 			return nil, fmt.Errorf("failed to check TTL changes for table %s: %w", t.Name, err)
@@ -125,22 +193,19 @@ func (c *Client) allTablesChanges(ctx context.Context, want schema.Tables, have 
 			changes:               changes,
 			oldTTL:                oldTTL,
 			newTTL:                newTTL,
+			tableSchemaChanges:    tableSchemaChanges,
 			forcedMigrationNeeded: forcedMigrationNeeded,
 		}
 	}
 	return result, nil
 }
 
-func (c *Client) forceMigrationNeeded(ctx context.Context, table *schema.Table, changes []schema.TableColumnChange) (bool, error) {
+func (c *Client) forceMigrationNeeded(changes []schema.TableColumnChange, tableChanges []tableSchemaChange) (bool, error) {
 	if unsafe := unsafeChanges(changes); len(unsafe) > 0 {
 		return true, nil
 	}
 
-	partitionKeyChange, sortingKeyChange, err := c.checkPartitionOrOrderByChanged(ctx, table, c.spec.Partition, c.spec.OrderBy)
-	if err != nil {
-		return false, fmt.Errorf("failed to check partition or order by changed: %w", err)
-	}
-	if partitionKeyChange != "" || sortingKeyChange != "" {
+	if len(tableChanges) > 0 {
 		return true, nil
 	}
 
