@@ -83,7 +83,7 @@ jobs:
     timeout-minutes: 60
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/gythialy/golang-cross:1.24.5
+      image: ghcr.io/gythialy/golang-cross:1.25.0
       env:
         GOAMD64: v1
     needs:
