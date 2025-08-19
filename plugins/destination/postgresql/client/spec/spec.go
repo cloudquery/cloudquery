@@ -39,6 +39,8 @@ type Spec struct {
 
 	// Option to create specific indexes to improve deletion performance
 	CreatePerformanceIndexes bool `json:"create_performance_indexes,omitempty" jsonschema:"default=false"`
+
+	RetryOnDeadlock bool `json:"retry_on_deadlock,omitempty" jsonschema:"default=false"`
 }
 
 func (s *Spec) SetDefaults() {
