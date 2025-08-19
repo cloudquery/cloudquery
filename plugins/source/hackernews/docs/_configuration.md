@@ -14,4 +14,5 @@ spec:
   # Learn more about the configuration options at https://cql.ink/hackernews_source
   spec:
     item_concurrency: 100
+    start_time: 3 hours ago
 ```
