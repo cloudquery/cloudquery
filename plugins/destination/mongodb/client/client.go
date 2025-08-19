@@ -12,6 +12,7 @@ import (
 	"github.com/rs/zerolog"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/x/mongo/driver/auth"
 )
 
 type Client struct {
@@ -37,8 +38,25 @@ func New(ctx context.Context, logger zerolog.Logger, specByte []byte, _ plugin.N
 	if err := c.spec.Validate(); err != nil {
 		return nil, errors.Join(errInvalidSpec, err)
 	}
+
 	mongoDBClientOptions := options.Client().ApplyURI(c.spec.ConnectionString).SetRegistry(getRegistry())
-	c.client, err = mongo.Connect(context.Background(), mongoDBClientOptions)
+	if c.spec.AWSCredentials != nil {
+		auth.RegisterAuthenticatorFactory(MongoDBCQAWS, NewAuthenticator)
+		assumeRoleCredential := options.Credential{
+			AuthMechanism: MongoDBCQAWS,
+			AuthMechanismProperties: map[string]string{
+				"LocalProfile":    c.spec.AWSCredentials.LocalProfile,
+				"RoleARN":         c.spec.AWSCredentials.RoleARN,
+				"RoleSessionName": c.spec.AWSCredentials.RoleSessionName,
+				"ExternalID":      c.spec.AWSCredentials.ExternalID,
+				"Default":         fmt.Sprintf("%t", c.spec.AWSCredentials.Default),
+			},
+		}
+		// According to the docs: if ApplyURI is called before SetAuth, the Credential from SetAuth will overwrite the values from the connection string
+		mongoDBClientOptions = mongoDBClientOptions.SetAuth(assumeRoleCredential)
+	}
+
+	c.client, err = mongo.Connect(ctx, mongoDBClientOptions)
 	if err != nil {
 		return nil, errors.Join(errConnectionFailed, err)
 	}
