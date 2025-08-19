@@ -2,15 +2,16 @@ package client
 
 import (
 	_ "embed"
-	"fmt"
-	"time"
+
+	"github.com/cloudquery/plugin-sdk/v4/configtype"
 )
 
 type Spec struct {
 	// The number of items to fetch concurrently
 	ItemConcurrency int `json:"item_concurrency" jsonschema:"minimum=1,default=100"`
 	// RFC3339 formatted timestamp. Syncing will begin with posts after this date. If not specified, the plugin will fetch all items.
-	StartTime string `json:"start_time" jsonschema:"format=date-time"`
+	// Relative values like "3 days ago" are also supported.
+	StartTime configtype.Time `json:"start_time" jsonschema:"format=date-time"`
 }
 
 type Backend struct {
@@ -26,12 +27,7 @@ func (s *Spec) SetDefaults() {
 }
 
 func (s *Spec) Validate() error {
-	if s.StartTime != "" {
-		_, err := time.Parse(time.RFC3339, s.StartTime)
-		if err != nil {
-			return fmt.Errorf("could not parse start_time: %v", err)
-		}
-	}
+	// validation for configtype.Time is done on unmarshalling
 	return nil
 }
 
