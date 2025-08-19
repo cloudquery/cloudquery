@@ -13,9 +13,14 @@ func TestJSONSchema(t *testing.T) {
 			Spec: `{}`,
 		},
 		{
-			Name: "invalid start_time",
+			Name: "relative start_time",
 			Spec: `{"start_time":"now"}`,
-			Err:  true,
+			Err:  false,
+		},
+		{
+			Name: "relative start_time days ago",
+			Spec: `{"start_time":"3 days ago"}`,
+			Err:  false,
 		},
 		{
 			Name: "valid start_time",
