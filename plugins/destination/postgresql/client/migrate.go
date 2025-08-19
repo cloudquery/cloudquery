@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -17,11 +18,14 @@ import (
 
 // MigrateTableBatch migrates a table. It forms part of the writer.MixedBatchWriter interface.
 func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMigrateTables) error {
+	timeoutCtx, cancel := context.WithTimeout(ctx, 30*time.Second)
+	defer cancel()
+
 	tables, err := tablesFromMessages(messages)
 	if err != nil {
 		return err
 	}
-	pgTables, err := c.listTables(ctx)
+	pgTables, err := c.listTables(timeoutCtx)
 	if err != nil {
 		return fmt.Errorf("failed listing postgres tables: %w", err)
 	}
@@ -48,14 +52,14 @@ func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMi
 		pgTable := pgTables.Get(tableName)
 		if pgTable == nil {
 			c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
-			if err := c.createTableIfNotExist(ctx, table); err != nil {
+			if err := c.createTableIfNotExist(timeoutCtx, table); err != nil {
 				return err
 			}
 		} else {
 			changes := table.GetChanges(pgTable)
 			if c.canAutoMigrate(changes) {
 				c.logger.Info().Str("table", tableName).Msg("Table exists, auto-migrating")
-				if err := c.autoMigrateTable(ctx, table, changes); err != nil {
+				if err := c.autoMigrateTable(timeoutCtx, table, changes); err != nil {
 					return err
 				}
 			} else {
@@ -63,23 +67,23 @@ func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMi
 				if err := c.dropTable(ctx, tableName); err != nil {
 					return err
 				}
-				if err := c.createTableIfNotExist(ctx, table); err != nil {
+				if err := c.createTableIfNotExist(timeoutCtx, table); err != nil {
 					return err
 				}
 			}
 		}
 		if c.spec.CreatePerformanceIndexes {
-			if err := c.createPerformanceIndexes(ctx, table); err != nil {
+			if err := c.createPerformanceIndexes(timeoutCtx, table); err != nil {
 				return err
 			}
 		}
 	}
-	conn, err := c.conn.Acquire(ctx)
+	conn, err := c.conn.Acquire(timeoutCtx)
 	if err != nil {
 		return fmt.Errorf("failed to acquire connection: %w", err)
 	}
 	defer conn.Release()
-	if err := conn.Conn().DeallocateAll(ctx); err != nil {
+	if err := conn.Conn().DeallocateAll(timeoutCtx); err != nil {
 		return fmt.Errorf("failed to deallocate all prepared statements: %w", err)
 	}
 	return nil
