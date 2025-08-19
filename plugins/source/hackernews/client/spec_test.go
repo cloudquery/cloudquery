@@ -23,6 +23,11 @@ func TestJSONSchema(t *testing.T) {
 			Err:  false,
 		},
 		{
+			Name: "invalid relative start_time",
+			Spec: `{"start_time":"3 flumps ago"}`,
+			Err:  true,
+		},
+		{
 			Name: "valid start_time",
 			Spec: `{"start_time":"2000-01-01T00:00:01Z"}`,
 		},
