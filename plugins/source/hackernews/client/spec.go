@@ -31,7 +31,7 @@ func (s *Spec) SetDefaults() {
 	}
 }
 
-func (s *Spec) Validate() error {
+func (*Spec) Validate() error {
 	// validation for configtype.Time is done on unmarshalling
 	return nil
 }
