@@ -58,6 +58,10 @@
           "type": "boolean",
           "description": "Option to create specific indexes to improve deletion performance",
           "default": false
+        },
+        "retry_on_deadlock": {
+          "type": "boolean",
+          "default": false
         }
       },
       "additionalProperties": false,
