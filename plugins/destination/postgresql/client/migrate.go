@@ -140,7 +140,7 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 				return err
 			}
 		default:
-			return fmt.Errorf("unsupported change type %s for column %s on table %s", change.Type, change.ColumnName, tableName)
+			continue
 		}
 	}
 	return nil
