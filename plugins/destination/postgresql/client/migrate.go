@@ -139,6 +139,8 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 			if err != nil {
 				return err
 			}
+		default:
+			return fmt.Errorf("unsupported change type %s for column %s on table %s", change.Type, change.ColumnName, tableName)
 		}
 	}
 	return nil
@@ -167,6 +169,8 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 
 		case schema.TableColumnChangeTypeMoveToCQOnly:
 			cqMigration = true
+		default:
+			continue
 		}
 	}
 
