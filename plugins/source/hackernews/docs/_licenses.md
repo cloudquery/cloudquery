@@ -7,8 +7,8 @@ The following tools / packages are used in this plugin:
 | Name | License |
 |------|---------|
 | github.com/adrg/xdg | MIT |
-| github.com/apache/arrow/go/v13 | Apache-2.0 |
 | github.com/apache/arrow-go/v18 | Apache-2.0 |
+| github.com/apache/arrow/go/v13 | Apache-2.0 |
 | github.com/apapsch/go-jsonmerge/v2 | MIT |
 | github.com/aws/aws-sdk-go-v2 | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/config | Apache-2.0 |
@@ -29,8 +29,9 @@ The following tools / packages are used in this plugin:
 | github.com/aws/smithy-go/internal/sync/singleflight | BSD-3-Clause |
 | github.com/bahlo/generic-list-go | BSD-3-Clause |
 | github.com/buger/jsonparser | MIT |
-| github.com/cenkalti/backoff/v4 | MIT |
+| github.com/cenkalti/backoff/v5 | MIT |
 | github.com/cloudquery/cloudquery-api-go | MPL-2.0 |
+| github.com/cloudquery/codegen/jsonschema/docs | MPL-2.0 |
 | github.com/cloudquery/plugin-pb-go | MPL-2.0 |
 | github.com/cloudquery/plugin-sdk/v2/internal/glob | MIT |
 | github.com/cloudquery/plugin-sdk/v2/schema | MIT |
@@ -70,6 +71,7 @@ The following tools / packages are used in this plugin:
 | github.com/thoas/go-funk | MIT |
 | github.com/wk8/go-ordered-map/v2 | Apache-2.0 |
 | github.com/zeebo/xxh3 | BSD-2-Clause |
+| go.opentelemetry.io/auto/sdk | Apache-2.0 |
 | go.opentelemetry.io/otel | Apache-2.0 |
 | go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploghttp | Apache-2.0 |
 | go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp | Apache-2.0 |

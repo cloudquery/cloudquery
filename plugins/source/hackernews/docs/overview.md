@@ -25,7 +25,8 @@ For more information about managing state for incremental tables, see [Managing 
 
   A date-time string in `RFC3339` format.
   For example, `"2023-01-01T00:00:00Z"` will sync all items created on or after January 1, 2023.
-  If not specified, the plugin will fetch all items.
+  It is also possible to use relative time strings, such as `"3 hours ago"` or `"1 day ago"`.
+  If not specified, the plugin will fetch all items in the last 24 hours.
 
   Note that because this is an incremental table, a previous cursor position will take precedence over this setting, unless the given start time is after the last cursor position.
 
