@@ -7,7 +7,6 @@ import (
 
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/types"
-	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
 )
 
 var (
@@ -79,7 +78,7 @@ func SnowflakeToSchemaType(t string) arrow.DataType {
 		return arrow.BinaryTypes.Binary
 
 	case "variant", "object", "array":
-		return cqtypes.ExtensionTypes.JSON
+		return types.ExtensionTypes.JSON
 
 	default:
 		return arrow.BinaryTypes.String

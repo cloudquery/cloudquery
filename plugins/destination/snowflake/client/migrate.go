@@ -55,7 +55,7 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 			changes := getTableChangesCaseInsensitive(table, existingTable)
 			if c.canAutoMigrate(changes) {
 				c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
-				if err := c.autoMigrateTable(ctx, table, changes); err != nil {
+				if err := c.autoMigrateTable(ctx, table, existingTable, changes); err != nil {
 					return err
 				}
 			} else {
@@ -73,12 +73,17 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 	return g.Wait()
 }
 
-func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, changes []schema.TableColumnChange) error {
+func (c *Client) autoMigrateTable(ctx context.Context, table, oldTable *schema.Table, changes []schema.TableColumnChange) error {
 	tableName := table.Name
 	for _, change := range changes {
 		var err error
 
 		switch {
+		case change.Type == schema.TableColumnChangeTypeMoveToCQOnly:
+			// Drop PKs automatically (and add PK constraint to _cq_id in next step)
+			if len(oldTable.PrimaryKeys()) > 0 {
+				err = c.alterTableDropPK(ctx, tableName)
+			}
 		case change.Type == schema.TableColumnChangeTypeRemove:
 			// Not dropping columns automatically
 		case change.Type == schema.TableColumnChangeTypeAdd:
@@ -87,8 +92,6 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 			err = c.alterColumnDropNotNull(ctx, tableName, change.Current)
 		case change.Type == schema.TableColumnChangeTypeUpdate && change.Current.PrimaryKey != change.Previous.PrimaryKey && change.Current.PrimaryKey:
 			err = c.alterColumnAddPK(ctx, tableName, change.Current)
-		default:
-			fmt.Println("Skipping change:", change.Type, "on column", change.ColumnName)
 		}
 
 		if err != nil {
@@ -103,10 +106,10 @@ func (c *Client) addColumn(ctx context.Context, tableName string, column schema.
 	columnType := SchemaTypeToSnowflake(column.Type)
 	sql := "alter table identifier(?) add column " + sanitizeColumn(column.Name) + " " + columnType
 	if column.Unique {
-		sql += " UNIQUE"
+		sql += " unique"
 	}
 	if column.NotNull {
-		sql += " NOT NULL"
+		sql += " not null"
 	}
 
 	if _, err := c.db.ExecContext(ctx, sql, tableName); err != nil {
@@ -131,6 +134,15 @@ func (c *Client) alterColumnAddPK(ctx context.Context, tableName string, column 
 	sql := "alter table identifier(?) add constraint " + sanitizeColumn(pkeyName) + " primary key(" + sanitizeColumn(column.Name) + ")"
 	if _, err := c.db.ExecContext(ctx, sql, tableName); err != nil {
 		return fmt.Errorf("failed to add PRIMARY KEY for column %s on table %s: %w", column.Name, tableName, err)
+	}
+	return nil
+}
+
+func (c *Client) alterTableDropPK(ctx context.Context, tableName string) error {
+	c.logger.Info().Str("table", tableName).Msg("Dropping PRIMARY KEY from table")
+
+	if _, err := c.db.ExecContext(ctx, "alter table identifier(?) drop primary key", tableName); err != nil {
+		return fmt.Errorf("failed to drop PRIMARY KEY on table %s: %w", tableName, err)
 	}
 	return nil
 }
@@ -262,7 +274,7 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 }
 
 func sanitizeColumn(name string) string {
-	// TODO sanitize, maybe ToUpper and quote?
+	// temporary, `identifier()` would be better but it doesn't work for column names
 	return `"` + strings.ToUpper(name) + `"`
 }
 

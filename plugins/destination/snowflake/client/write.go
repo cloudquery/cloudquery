@@ -95,7 +95,7 @@ func (c *Client) copyIntoTable(ctx context.Context, table *schema.Table, f *os.F
 
 func (c *Client) mergeIntoTable(ctx context.Context, table *schema.Table, f *os.File) error {
 	// https://docs.snowflake.com/en/sql-reference/sql/merge#syntax
-	sql := fmt.Sprintf(mergeIntoTable, table.Name, c.createColumnsList(table), escapePath(filepath.Base(f.Name())), createPrimaryKeyList(table), updateColumnsList(table), insertColumnsList(table))
+	sql := fmt.Sprintf(mergeIntoTable, table.Name, createColumnsList(table), escapePath(filepath.Base(f.Name())), createPrimaryKeyList(table), updateColumnsList(table), insertColumnsList(table))
 
 	if _, err := c.db.ExecContext(ctx, sql); err != nil {
 		return fmt.Errorf("failed to merge file into table: %s: %w", sql, err)
@@ -104,7 +104,7 @@ func (c *Client) mergeIntoTable(ctx context.Context, table *schema.Table, f *os.
 	return nil
 }
 
-func (c *Client) createColumnsList(table *schema.Table) string {
+func createColumnsList(table *schema.Table) string {
 	// creates a string like:
 	// $1:COL1::TEXT as COL1, $1:COL2::NUMBER as COL2, $1:COL3::TIMESTAMP_TZ as COL3
 	columns := make([]string, 0, len(table.Columns))
