@@ -11,18 +11,42 @@ import (
 )
 
 const (
-	sqlTableList = "select table_name from information_schema.tables where table_schema=current_schema();"
-	sqlTableInfo = "select column_name, data_type, is_nullable from information_schema.columns where table_schema=current_schema() and table_name ilike ?;"
+	sqlTableInfo = "SELECT table_name, column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema=CURRENT_SCHEMA() AND UPPER(table_name) IN "
 )
 
 type columnInfo struct {
-	name    string
-	typ     string
-	notNull bool
+	name     string
+	typ      string
+	nullable snowflakeYesNo
 }
 
 type tableInfo struct {
+	name    string
 	columns []columnInfo
+}
+
+type snowflakeYesNo bool
+
+func (s *snowflakeYesNo) Scan(value any) error {
+	if value == nil {
+		*s = false
+		return nil
+	}
+
+	str, ok := value.(string)
+	if !ok {
+		return fmt.Errorf("cannot scan %T into snowflakeYesNo", value)
+	}
+
+	switch str {
+	case "YES":
+		*s = true
+	case "NO":
+		*s = false
+	default:
+		return fmt.Errorf("failed to scan yes/no string: %s", str)
+	}
+	return nil
 }
 
 func (i *tableInfo) getColumn(name string) []columnInfo {
@@ -36,7 +60,12 @@ func (i *tableInfo) getColumn(name string) []columnInfo {
 }
 
 func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
-	tableList, err := c.listTables(ctx)
+	var wantTables []string
+	for _, msg := range msgs {
+		wantTables = append(wantTables, msg.Table.Name)
+	}
+
+	tableInfos, err := c.getTableInfo(ctx, wantTables)
 	if err != nil {
 		return fmt.Errorf("failed to get list of tables: %w", err)
 	}
@@ -49,9 +78,10 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 		tableName := table.Name
 		g.Go(func() error {
 			c.logger.Debug().Str("table", tableName).Msg("Migrating table")
-			if tableExists(tableList, tableName) {
+
+			if currentTable, tableExists := tableInfos[strings.ToUpper(tableName)]; tableExists {
 				c.logger.Debug().Str("table", tableName).Msg("Table exists, auto-migrating")
-				if err := c.autoMigrateTable(gctx, table, migrateForce); err != nil {
+				if err := c.autoMigrateTable(gctx, table, currentTable, migrateForce); err != nil {
 					return err
 				}
 			} else {
@@ -66,38 +96,13 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 	return g.Wait()
 }
 
-func (c *Client) listTables(ctx context.Context) ([]string, error) {
-	var tables []string
-	rows, err := c.db.QueryContext(ctx, sqlTableList)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	for rows.Next() {
-		var t string
-		if err := rows.Scan(&t); err != nil {
-			return nil, err
-		}
-		tables = append(tables, t)
-	}
-	if err := rows.Err(); err != nil {
-		return nil, err
-	}
-	return tables, nil
-}
-
-func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, force bool) error {
-	var err error
-	var info *tableInfo
+func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, currentTable tableInfo, force bool) error {
 	tableName := table.Name
-	if info, err = c.getTableInfo(ctx, tableName); err != nil {
-		return fmt.Errorf("failed to get table %s columns types: %w", tableName, err)
-	}
 
 	for _, col := range table.Columns {
 		columnName := strings.ToUpper(col.Name)
 		columnType := c.SchemaTypeToSnowflake(col.Type)
-		snowflakeColumn := info.getColumn(columnName)
+		snowflakeColumn := currentTable.getColumn(columnName)
 
 		if len(snowflakeColumn) == 1 && !strings.EqualFold(snowflakeColumn[0].typ, columnType) {
 			if !force {
@@ -168,6 +173,8 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		if col.Name == schema.CqIDColumn.Name {
 			// _cq_id column should always have a "unique not null" constraint
 			fieldDef += " UNIQUE NOT NULL"
+		} else if col.NotNull {
+			fieldDef += " NOT NULL"
 		}
 		sb.WriteString(fieldDef)
 		if i != totalColumns-1 {
@@ -183,58 +190,40 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	return nil
 }
 
-func (c *Client) getTableInfo(ctx context.Context, tableName string) (*tableInfo, error) {
-	info := tableInfo{}
-	rows, err := c.db.QueryContext(ctx, sqlTableInfo, tableName)
+func (c *Client) getTableInfo(ctx context.Context, tableNames []string) (map[string]tableInfo, error) {
+	infos := make(map[string]tableInfo, len(tableNames))
+
+	tnAny := make([]any, len(tableNames))
+	for i := range tableNames {
+		tnAny[i] = strings.ToUpper(tableNames[i])
+	}
+	completeSQL := sqlTableInfo + "(" + strings.Repeat("?,", len(tableNames)-1) + "?)"
+
+	rows, err := c.db.QueryContext(ctx, completeSQL, tnAny...)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 	for rows.Next() {
+		var tableName string
 		colInfo := columnInfo{}
 
-		// 'information_schema.is_nullable' is a string containing 'YES' or 'NO'.
-		// We save it here as a string, and parse it later.
-		var isNullableTemp string
-
 		if err := rows.Scan(
+			&tableName,
 			&colInfo.name,
 			&colInfo.typ,
-			&isNullableTemp); err != nil {
-			return nil, err
-		}
-
-		colInfo.notNull, err = parseYesNoString(isNullableTemp)
-		if err != nil {
+			&colInfo.nullable); err != nil {
 			return nil, err
 		}
 
 		colInfo.typ = strings.ToLower(colInfo.typ)
+		info := infos[strings.ToUpper(tableName)]
+		info.name = tableName
 		info.columns = append(info.columns, colInfo)
+		infos[strings.ToUpper(tableName)] = info
 	}
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
-	return &info, nil
-}
-
-func parseYesNoString(str string) (bool, error) {
-	switch str {
-	case "YES":
-		return true, nil
-	case "NO":
-		return false, nil
-	default:
-		return false, fmt.Errorf("failed to parse yes/no string: %s", str)
-	}
-}
-
-func tableExists(list []string, table string) bool {
-	tbl := strings.ToUpper(table)
-	for _, t := range list {
-		if strings.ToUpper(t) == tbl {
-			return true
-		}
-	}
-	return false
+	return infos, nil
 }
