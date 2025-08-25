@@ -5,88 +5,65 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"golang.org/x/sync/errgroup"
 )
 
-const (
-	sqlTableInfo = "SELECT table_name, column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema=CURRENT_SCHEMA() AND UPPER(table_name) IN "
-)
-
-type columnInfo struct {
-	name     string
-	typ      string
-	nullable snowflakeYesNo
-}
-
-type tableInfo struct {
-	name    string
-	columns []columnInfo
-}
-
-type snowflakeYesNo bool
-
-func (s *snowflakeYesNo) Scan(value any) error {
-	if value == nil {
-		*s = false
-		return nil
-	}
-
-	str, ok := value.(string)
-	if !ok {
-		return fmt.Errorf("cannot scan %T into snowflakeYesNo", value)
-	}
-
-	switch str {
-	case "YES":
-		*s = true
-	case "NO":
-		*s = false
-	default:
-		return fmt.Errorf("failed to scan yes/no string: %s", str)
-	}
-	return nil
-}
-
-func (i *tableInfo) getColumn(name string) []columnInfo {
-	var cols []columnInfo
-	for idx, col := range i.columns {
-		if strings.ToUpper(col.name) == name {
-			cols = append(cols, i.columns[idx])
-		}
-	}
-	return cols
-}
-
 func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
-	var wantTables []string
+	safeTables := make(map[string]bool, len(msgs))
+	tables := make(schema.Tables, 0, len(msgs))
 	for _, msg := range msgs {
-		wantTables = append(wantTables, msg.Table.Name)
+		// Switch to effective types
+		for i, col := range msg.Table.Columns {
+			msg.Table.Columns[i].Type = SnowflakeToSchemaType(SchemaTypeToSnowflake(col.Type))
+		}
+
+		tables = append(tables, msg.Table)
+		safeTables[msg.Table.Name] = !msg.MigrateForce
 	}
 
-	tableInfos, err := c.getTableInfo(ctx, wantTables)
+	existingTables, err := c.getTableInfo(ctx, tables.TableNames())
 	if err != nil {
 		return fmt.Errorf("failed to get list of tables: %w", err)
 	}
 
-	g, gctx := errgroup.WithContext(ctx)
-	g.SetLimit(c.spec.MigrateConcurrency)
-	for _, msg := range msgs {
-		table := msg.Table
-		migrateForce := msg.MigrateForce
-		tableName := table.Name
-		g.Go(func() error {
-			c.logger.Debug().Str("table", tableName).Msg("Migrating table")
+	nonAutoMigratableTables := c.nonAutoMigratableTables(tables, existingTables, safeTables)
+	if len(nonAutoMigratableTables) > 0 {
+		return fmt.Errorf("\nCan't migrate tables automatically, migrate manually or consider using 'migrate_mode: forced'. Non auto migratable tables changes:\n\n%s", schema.GetChangesSummary(nonAutoMigratableTables))
+	}
 
-			if currentTable, tableExists := tableInfos[strings.ToUpper(tableName)]; tableExists {
-				c.logger.Debug().Str("table", tableName).Msg("Table exists, auto-migrating")
-				if err := c.autoMigrateTable(gctx, table, currentTable, migrateForce); err != nil {
+	g, ctx := errgroup.WithContext(ctx)
+	g.SetLimit(c.spec.MigrateConcurrency)
+
+	for _, table := range tables {
+		table := table
+
+		g.Go(func() error {
+			c.logger.Info().Str("table", table.Name).Msg("Migrating table")
+			if len(table.Columns) == 0 {
+				c.logger.Info().Str("table", table.Name).Msg("Table with no columns, skipping")
+				return nil
+			}
+			existingTable := existingTables.Get(strings.ToUpper(table.Name))
+			if existingTable == nil {
+				c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
+				return c.createTableIfNotExist(ctx, table)
+			}
+
+			changes := getTableChangesCaseInsensitive(table, existingTable)
+			if c.canAutoMigrate(changes) {
+				c.logger.Info().Str("table", table.Name).Msg("Table exists, auto-migrating")
+				if err := c.autoMigrateTable(ctx, table, changes); err != nil {
 					return err
 				}
 			} else {
-				c.logger.Debug().Str("table", tableName).Msg("Table doesn't exist, creating")
-				if err := c.createTableIfNotExist(gctx, table); err != nil {
+				c.logger.Info().Str("table", table.Name).Msg("Table exists, force migration required")
+				if err := c.dropTable(ctx, table.Name); err != nil {
+					return err
+				}
+				if err := c.createTableIfNotExist(ctx, table); err != nil {
 					return err
 				}
 			}
@@ -96,134 +73,271 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 	return g.Wait()
 }
 
-func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, currentTable tableInfo, force bool) error {
+func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, changes []schema.TableColumnChange) error {
 	tableName := table.Name
-
-	for _, col := range table.Columns {
-		columnName := strings.ToUpper(col.Name)
-		columnType := c.SchemaTypeToSnowflake(col.Type)
-		snowflakeColumn := currentTable.getColumn(columnName)
-
-		if len(snowflakeColumn) == 1 && !strings.EqualFold(snowflakeColumn[0].typ, columnType) {
-			if !force {
-				return fmt.Errorf("column %s on table %s has different type than schema, expected %s got %s. migrate manually or consider using 'migrate_mode: forced'", col.Name, tableName, columnType, snowflakeColumn[0].typ)
-			}
-			sfCol := snowflakeColumn[0]
-			c.logger.Debug().
-				Str("table", tableName).
-				Str("column", sfCol.name).
-				Str("current_type", sfCol.typ).
-				Str("want_type", columnType).
-				Msg("Column type mismatch, dropping to recreate")
-			sql := fmt.Sprintf("alter table %s drop column %q", tableName, sfCol.name)
-			if _, err := c.db.ExecContext(ctx, sql); err != nil {
-				return fmt.Errorf("failed to drop column %s from table %s: %w", sfCol.name, tableName, err)
-			}
-			snowflakeColumn = nil
-			// proceed to add column
-		}
+	for _, change := range changes {
+		var err error
 
 		switch {
-		case len(snowflakeColumn) == 0:
-			c.logger.Debug().Str("table", tableName).Str("column", col.Name).Msg("Column doesn't exist, creating")
-			sql := fmt.Sprintf("alter table %s add column %q %s", tableName, columnName, columnType)
-			if _, err := c.db.ExecContext(ctx, sql); err != nil {
-				return fmt.Errorf("failed to add column %s on table %s: %w", col.Name, tableName, err)
-			}
-
-		// have multiple columns, drop all but one
-		case len(snowflakeColumn) > 1 && !force:
-			return fmt.Errorf("table %s has multiple columns for %s. migrate manually or consider using 'migrate_mode: forced'", tableName, col.Name)
-
-		case len(snowflakeColumn) > 1:
-			for _, sc := range snowflakeColumn {
-				if sc.name != columnName {
-					c.logger.Debug().Str("table", tableName).Str("column", columnName).Msg("Column exists with different name, dropping")
-					sql := fmt.Sprintf("alter table %s drop column %q", tableName, sc.name)
-					if _, err := c.db.ExecContext(ctx, sql); err != nil {
-						return fmt.Errorf("failed to drop column %s on table %s: %w", sc.name, tableName, err)
-					}
-				}
-			}
-
-		case snowflakeColumn[0].name != columnName: // case sensitivity
-			c.logger.Debug().Str("table", tableName).Str("column", columnName).Str("current_name", snowflakeColumn[0].name).Msg("Column name doesn't match, migrating")
-			sql := fmt.Sprintf("alter table %s rename column %q TO %q", tableName, snowflakeColumn[0].name, columnName)
-			if _, err := c.db.ExecContext(ctx, sql); err != nil {
-				return fmt.Errorf("failed to rename column %s on table %s: %w", snowflakeColumn[0].name, tableName, err)
-			}
+		case change.Type == schema.TableColumnChangeTypeRemove:
+			// Not dropping columns automatically
+		case change.Type == schema.TableColumnChangeTypeAdd:
+			err = c.addColumn(ctx, tableName, change.Current)
+		case change.Type == schema.TableColumnChangeTypeUpdate && change.Current.NotNull != change.Previous.NotNull && !change.Current.NotNull:
+			err = c.alterColumnDropNotNull(ctx, tableName, change.Current)
+		case change.Type == schema.TableColumnChangeTypeUpdate && change.Current.PrimaryKey != change.Previous.PrimaryKey && change.Current.PrimaryKey:
+			err = c.alterColumnAddPK(ctx, tableName, change.Current)
+		default:
+			fmt.Println("Skipping change:", change.Type, "on column", change.ColumnName)
 		}
+
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (c *Client) addColumn(ctx context.Context, tableName string, column schema.Column) error {
+	c.logger.Info().Str("table", tableName).Str("column", column.Name).Msg("Column doesn't exist, creating")
+	columnType := SchemaTypeToSnowflake(column.Type)
+	sql := "alter table identifier(?) add column " + sanitizeColumn(column.Name) + " " + columnType
+	if column.Unique {
+		sql += " UNIQUE"
+	}
+	if column.NotNull {
+		sql += " NOT NULL"
+	}
+
+	if _, err := c.db.ExecContext(ctx, sql, tableName); err != nil {
+		return fmt.Errorf("failed to add column %s on table %s: %w", column.Name, tableName, err)
+	}
+	return nil
+}
+
+func (c *Client) alterColumnDropNotNull(ctx context.Context, tableName string, column schema.Column) error {
+	c.logger.Info().Str("table", tableName).Str("column", column.Name).Msg("Dropping NOT NULL from column")
+	sql := "alter table identifier(?) alter column " + sanitizeColumn(column.Name) + " drop not null"
+	if _, err := c.db.ExecContext(ctx, sql, tableName); err != nil {
+		return fmt.Errorf("failed to drop NOT NULL for column %s on table %s: %w", column.Name, tableName, err)
+	}
+	return nil
+}
+
+func (c *Client) alterColumnAddPK(ctx context.Context, tableName string, column schema.Column) error {
+	c.logger.Info().Str("table", tableName).Str("column", column.Name).Msg("Adding PRIMARY KEY to column")
+	pkeyName := column.Name + "_pk"
+
+	sql := "alter table identifier(?) add constraint " + sanitizeColumn(pkeyName) + " primary key(" + sanitizeColumn(column.Name) + ")"
+	if _, err := c.db.ExecContext(ctx, sql, tableName); err != nil {
+		return fmt.Errorf("failed to add PRIMARY KEY for column %s on table %s: %w", column.Name, tableName, err)
 	}
 	return nil
 }
 
 func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table) error {
 	var sb strings.Builder
-	// TODO sanitize tablename
-	tableName := table.Name
-	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
-	sb.WriteString(tableName)
-	sb.WriteString(" (")
+	sb.WriteString("create table if not exists identifier(?) (")
 	totalColumns := len(table.Columns)
 
+	primaryKeys := []string{}
 	for i, col := range table.Columns {
-		sqlType := c.SchemaTypeToSnowflake(col.Type)
-		// TODO: sanitize column name
-		fieldDef := `"` + strings.ToUpper(col.Name) + `" ` + sqlType
-		if col.Name == schema.CqIDColumn.Name {
-			// _cq_id column should always have a "unique not null" constraint
-			fieldDef += " UNIQUE NOT NULL"
-		} else if col.NotNull {
-			fieldDef += " NOT NULL"
+		sfType := SchemaTypeToSnowflake(col.Type)
+		fieldDef := sanitizeColumn(col.Name) + " " + sfType
+		if col.Unique {
+			fieldDef += " unique"
+		}
+		if col.NotNull {
+			fieldDef += " not null"
 		}
 		sb.WriteString(fieldDef)
 		if i != totalColumns-1 {
 			sb.WriteString(",")
 		}
+		if col.PrimaryKey {
+			primaryKeys = append(primaryKeys, col.Name)
+		}
 	}
 
+	if len(primaryKeys) > 0 {
+		// add composite PK constraint on primary key columns
+		sb.WriteString(", primary key (")
+		sb.WriteString(strings.Join(primaryKeys, ","))
+		sb.WriteString(")")
+	}
 	sb.WriteString(")")
-	_, err := c.db.ExecContext(ctx, sb.String())
+
+	_, err := c.db.ExecContext(ctx, sb.String(), table.Name)
 	if err != nil {
-		return fmt.Errorf("failed to create table with '%s': %w", sb.String(), err)
+		c.logger.Error().Err(err).Str("table", table.Name).Str("query", sb.String()).Msg("Failed to create table")
+		return fmt.Errorf("failed to create table %s: %w"+sb.String(), table.Name, err)
+	}
+
+	return nil
+}
+
+func (c *Client) dropTable(ctx context.Context, tableName string) error {
+	c.logger.Info().Str("table", tableName).Msg("Dropping table")
+	if _, err := c.db.ExecContext(ctx, "drop table identifier(?)", tableName); err != nil {
+		return fmt.Errorf("failed to drop table %s: %w", tableName, err)
 	}
 	return nil
 }
 
-func (c *Client) getTableInfo(ctx context.Context, tableNames []string) (map[string]tableInfo, error) {
-	infos := make(map[string]tableInfo, len(tableNames))
-
-	tnAny := make([]any, len(tableNames))
-	for i := range tableNames {
-		tnAny[i] = strings.ToUpper(tableNames[i])
+func (c *Client) nonAutoMigratableTables(tables schema.Tables, existingTables schema.Tables, safeTables map[string]bool) map[string][]schema.TableColumnChange {
+	result := make(map[string][]schema.TableColumnChange)
+	for _, t := range tables {
+		existingTable := existingTables.Get(strings.ToUpper(t.Name))
+		if existingTable == nil {
+			continue
+		}
+		changes := getTableChangesCaseInsensitive(t, existingTable)
+		if safeTables[t.Name] && !c.canAutoMigrate(changes) {
+			result[t.Name] = changes
+		}
 	}
-	completeSQL := sqlTableInfo + "(" + strings.Repeat("?,", len(tableNames)-1) + "?)"
+	return result
+}
 
-	rows, err := c.db.QueryContext(ctx, completeSQL, tnAny...)
-	if err != nil {
-		return nil, err
+func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
+	// The SDK can detect more granular changes than we can handle
+	// We know that when the `TableColumnChangeTypeMoveToCQOnly` is present there will be other changes that were found as well
+	// As long as the only change is to remove PK from columns and add it to _cq_id, we can skip handling the changes
+	// But we need to make sure there are no other changes
+	columnsAddingPK := []string{}
+	columnsRemovingPK := []string{}
+	cqMigration := false
+	for _, change := range changes {
+		switch change.Type {
+		case schema.TableColumnChangeTypeUpdate:
+			if change.Current.Type != change.Previous.Type {
+				continue
+			}
+			if change.Current.PrimaryKey && !change.Previous.PrimaryKey {
+				columnsAddingPK = append(columnsAddingPK, change.ColumnName)
+			}
+			if !change.Current.PrimaryKey && change.Previous.PrimaryKey {
+				columnsRemovingPK = append(columnsRemovingPK, change.ColumnName)
+			}
+
+		case schema.TableColumnChangeTypeMoveToCQOnly:
+			cqMigration = true
+		}
 	}
-	defer rows.Close()
-	for rows.Next() {
-		var tableName string
-		colInfo := columnInfo{}
 
-		if err := rows.Scan(
-			&tableName,
-			&colInfo.name,
-			&colInfo.typ,
-			&colInfo.nullable); err != nil {
-			return nil, err
+	for _, change := range changes {
+		switch change.Type {
+		case schema.TableColumnChangeTypeRemoveUniqueConstraint:
+			continue
+		case schema.TableColumnChangeTypeAdd:
+			if change.Current.PrimaryKey || change.Current.NotNull {
+				return false
+			}
+		case schema.TableColumnChangeTypeRemove:
+			if change.Previous.PrimaryKey || change.Previous.NotNull {
+				return false
+			}
+		case schema.TableColumnChangeTypeMoveToCQOnly:
+			continue
+		case schema.TableColumnChangeTypeUpdate:
+			if cqMigration && ((len(columnsAddingPK) == 1 && columnsAddingPK[0] == schema.CqIDColumn.Name) || containsFold(columnsRemovingPK, change.ColumnName)) {
+				// We don't need to handle these changes as they are a part of the CQID migration
+				continue
+			}
+			if change.Previous.NotNull != change.Current.NotNull && !change.Current.NotNull {
+				// Support removing NOT NULL constraint
+				continue
+			}
+			if change.Previous.PrimaryKey != change.Current.PrimaryKey && change.Current.PrimaryKey {
+				// Support adding PRIMARY KEY constraint. Removal is automatically not supported if it's in the change list (for another column)
+				continue
+			}
+
+			return false
+		default:
+			return false
+		}
+	}
+	return true
+}
+
+func sanitizeColumn(name string) string {
+	// TODO sanitize, maybe ToUpper and quote?
+	return `"` + strings.ToUpper(name) + `"`
+}
+
+func containsFold(list []string, s string) bool {
+	for _, item := range list {
+		if strings.EqualFold(item, s) {
+			return true
+		}
+	}
+	return false
+}
+
+// getTableChangesCaseInsensitive returns changes between two tables when `t` is the new one and `old` is the old one.
+// This is a case-insensitive version of schema.Table.GetChanges to handle Snowflake's case insensitivity/ambiguity.
+func getTableChangesCaseInsensitive(t, old *schema.Table) []schema.TableColumnChange {
+	var changes []schema.TableColumnChange
+
+	//  Special case: Moving from individual pks to singular PK on _cq_id
+	newPks := t.PrimaryKeys()
+
+	if len(newPks) == 1 && strings.EqualFold(newPks[0], schema.CqIDColumn.Name) && !containsFold(old.PrimaryKeys(), schema.CqIDColumn.Name) && len(old.PrimaryKeys()) > 0 {
+		changes = append(changes, schema.TableColumnChange{
+			Type: schema.TableColumnChangeTypeMoveToCQOnly,
+		})
+	}
+	for _, c := range t.Columns {
+		otherColumn := findColumn(old.Columns, c.Name)
+		// A column was added to the table definition
+		if otherColumn == nil {
+			changes = append(changes, schema.TableColumnChange{
+				Type:       schema.TableColumnChangeTypeAdd,
+				ColumnName: c.Name,
+				Current:    c,
+			})
+			continue
 		}
 
-		colInfo.typ = strings.ToLower(colInfo.typ)
-		info := infos[strings.ToUpper(tableName)]
-		info.name = tableName
-		info.columns = append(info.columns, colInfo)
-		infos[strings.ToUpper(tableName)] = info
+		// Column type or options (e.g. PK, Not Null) changed in the new table definition
+		if !arrow.TypeEqual(c.Type, otherColumn.Type) || c.NotNull != otherColumn.NotNull || c.PrimaryKey != otherColumn.PrimaryKey {
+			changes = append(changes, schema.TableColumnChange{
+				Type:       schema.TableColumnChangeTypeUpdate,
+				ColumnName: c.Name,
+				Current:    c,
+				Previous:   *otherColumn,
+			})
+		}
+
+		// Unique constraint was removed
+		if !c.Unique && otherColumn.Unique {
+			changes = append(changes, schema.TableColumnChange{
+				Type:       schema.TableColumnChangeTypeRemoveUniqueConstraint,
+				ColumnName: c.Name,
+				Previous:   *otherColumn,
+			})
+		}
 	}
-	if err := rows.Err(); err != nil {
-		return nil, err
+	// A column was removed from the table definition
+	for _, c := range old.Columns {
+		if findColumn(t.Columns, c.Name) == nil {
+			changes = append(changes, schema.TableColumnChange{
+				Type:       schema.TableColumnChangeTypeRemove,
+				ColumnName: c.Name,
+				Previous:   c,
+			})
+		}
 	}
-	return infos, nil
+	return changes
+}
+
+// findColumn is the case-insensitive version of schema.ColumnList.Get
+func findColumn(c schema.ColumnList, name string) *schema.Column {
+	for i := range c {
+		if strings.EqualFold(c[i].Name, name) {
+			return &c[i]
+		}
+	}
+	return nil
 }

@@ -109,7 +109,7 @@ func (c *Client) createColumnsList(table *schema.Table) string {
 	// $1:COL1::TEXT as COL1, $1:COL2::NUMBER as COL2, $1:COL3::TIMESTAMP_TZ as COL3
 	columns := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {
-		columns = append(columns, fmt.Sprintf("$1:%s::%s as %s", col.Name, c.SchemaTypeToSnowflake(col.Type), col.Name))
+		columns = append(columns, fmt.Sprintf("$1:%s::%s as %s", col.Name, SchemaTypeToSnowflake(col.Type), col.Name))
 	}
 	return strings.Join(columns, ",")
 }
