@@ -4,8 +4,10 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math/rand"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -87,21 +89,31 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 }
 
 func (c *Client) flushBatch(ctx context.Context, batch *pgx.Batch) error {
-	if batch.Len() == 0 {
-		return nil
-	}
-	err := c.conn.SendBatch(ctx, batch).Close()
-	if err == nil {
-		return nil
-	}
+	const maxRetries = 5
+	var attempt int
 
-	var pgErr *pgconn.PgError
-	if errors.As(err, &pgErr) {
-		return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
-	}
+	for {
+		if batch.Len() == 0 {
+			return nil
+		}
+		err := c.conn.SendBatch(ctx, batch).Close()
+		if err == nil {
+			return nil
+		}
 
-	// not recoverable error
-	return fmt.Errorf("failed to execute batch: %w", err)
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) {
+			if c.spec.RetryOnDeadlock && pgErr.Code == "40P01" && attempt < maxRetries {
+				attempt++
+				jitter := time.Duration(50+rand.Intn(451)) * time.Millisecond // 50-500ms
+				time.Sleep(jitter)
+				continue // retry
+			}
+			return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
+		}
+
+		return fmt.Errorf("failed to execute batch: %w", err)
+	}
 }
 
 func (*Client) insert(table *schema.Table) string {
