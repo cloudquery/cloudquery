@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/avast/retry-go/v4"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
@@ -87,21 +88,37 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 }
 
 func (c *Client) flushBatch(ctx context.Context, batch *pgx.Batch) error {
-	if batch.Len() == 0 {
+	err := retry.Do(func() error {
+		if batch.Len() == 0 {
+			return nil
+		}
+		err := c.conn.SendBatch(ctx, batch).Close()
+		if err != nil {
+			return err
+		}
+
 		return nil
-	}
-	err := c.conn.SendBatch(ctx, batch).Close()
-	if err == nil {
-		return nil
+	}, retry.RetryIf(func(err error) bool {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) {
+			return pgErr.Code == "40P01"
+		}
+
+		return false
+	}),
+		retry.Attempts(uint(c.spec.RetryOnDeadlock)+1),
+		retry.LastErrorOnly(true),
+	)
+
+	if err != nil {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) {
+			return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
+		}
+		return fmt.Errorf("failed to execute batch: %w", err)
 	}
 
-	var pgErr *pgconn.PgError
-	if errors.As(err, &pgErr) {
-		return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
-	}
-
-	// not recoverable error
-	return fmt.Errorf("failed to execute batch: %w", err)
+	return nil
 }
 
 func (*Client) insert(table *schema.Table) string {

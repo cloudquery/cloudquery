@@ -58,6 +58,11 @@
           "type": "boolean",
           "description": "Option to create specific indexes to improve deletion performance",
           "default": false
+        },
+        "retry_on_deadlock": {
+          "type": "integer",
+          "description": "Number of times to retry a transaction if a deadlock is detected by Postgres.",
+          "default": 0
         }
       },
       "additionalProperties": false,

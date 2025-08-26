@@ -27,8 +27,18 @@ type pkConstraintDetails struct {
 	columns []string
 }
 
+// DBPool is an interface that abstracts the pgxpool.Pool and pgxpool.Conn types for easier fine-grained testing.
+type DBPool interface {
+	Acquire(ctx context.Context) (*pgxpool.Conn, error)
+	Close()
+	Exec(ctx context.Context, query string, args ...any) (pgconn.CommandTag, error)
+	Query(ctx context.Context, query string, args ...any) (pgx.Rows, error)
+	QueryRow(ctx context.Context, query string, args ...any) pgx.Row
+	SendBatch(ctx context.Context, b *pgx.Batch) pgx.BatchResults
+}
+
 type Client struct {
-	conn                *pgxpool.Pool
+	conn                DBPool
 	logger              zerolog.Logger
 	currentDatabaseName string
 	currentSchemaName   string
@@ -137,7 +147,7 @@ func (c *Client) Close(ctx context.Context) error {
 	return nil
 }
 
-func currentDatabase(ctx context.Context, conn *pgxpool.Pool) (string, error) {
+func currentDatabase(ctx context.Context, conn DBPool) (string, error) {
 	var db string
 	err := conn.QueryRow(ctx, "select current_database()").Scan(&db)
 	if err != nil {
@@ -146,7 +156,7 @@ func currentDatabase(ctx context.Context, conn *pgxpool.Pool) (string, error) {
 	return db, nil
 }
 
-func currentSchema(ctx context.Context, conn *pgxpool.Pool) (string, error) {
+func currentSchema(ctx context.Context, conn DBPool) (string, error) {
 	var schema string
 	err := conn.QueryRow(ctx, "select current_schema()").Scan(&schema)
 	if err != nil {

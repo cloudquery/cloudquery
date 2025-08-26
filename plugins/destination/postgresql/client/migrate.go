@@ -139,6 +139,8 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 			if err != nil {
 				return err
 			}
+		default:
+			continue
 		}
 	}
 	return nil
@@ -167,6 +169,8 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 
 		case schema.TableColumnChangeTypeMoveToCQOnly:
 			cqMigration = true
+		default:
+			continue
 		}
 	}
 
