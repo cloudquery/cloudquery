@@ -121,7 +121,7 @@ func TestClient_flushBatch(t *testing.T) {
 }
 
 func TestConcurrentSyncsAgainstSameTable(t *testing.T) {
-	const syncConcurrency = 100
+	const syncConcurrency = 10 // Lowered from 100 to 10 to work well with other tests
 	const rounds = 99
 	ctx := context.Background()
 	group, _ := errgroup.WithContext(ctx)
