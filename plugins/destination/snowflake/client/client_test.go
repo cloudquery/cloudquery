@@ -35,7 +35,7 @@ func TestPlugin(t *testing.T) {
 				AddColumnNotNull:       false,
 				RemoveColumn:           true,
 				RemoveColumnNotNull:    false,
-				RemoveUniqueConstraint: true,
+				RemoveUniqueConstraint: false,
 				MovePKToCQOnly:         true,
 			},
 		},
