@@ -104,7 +104,8 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 			}
 			if len(pkCols) > 0 {
 				if err := c.alterTableAddPK(ctx, table.Name, pkCols); err != nil {
-					return err
+					summary := schema.GetChangesSummary(map[string][]schema.TableColumnChange{table.Name: changes})
+					return fmt.Errorf("\nCan't migrate this table automatically, migrate manually or consider using 'migrate_mode: forced'. Changes for table:\n\n%s\nError encountered while auto migrating: %v", summary, err)
 				}
 			}
 		}
@@ -188,7 +189,8 @@ func (c *Client) alterTableAddPK(ctx context.Context, tableName string, columnNa
 
 	sql := "alter table identifier(?) add constraint " + sanitizeColumn(pkeyName) + " primary key(" + strings.Join(sanCols, ",") + ")"
 	if _, err := c.db.ExecContext(ctx, sql, tableName); err != nil {
-		return fmt.Errorf("failed to add PRIMARY KEY for column %s on table %s: %w", strings.Join(columnNames, ","), tableName, err)
+		plural := map[bool]string{true: "s", false: ""}[len(columnNames) > 1]
+		return fmt.Errorf("failed to add PRIMARY KEY for column%s %s: %w", plural, strings.Join(columnNames, ","), err)
 	}
 	return nil
 }
