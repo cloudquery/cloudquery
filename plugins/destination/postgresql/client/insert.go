@@ -4,10 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"math/rand"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/avast/retry-go/v4"
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -90,8 +88,6 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 }
 
 func (c *Client) flushBatch(ctx context.Context, batch *pgx.Batch) error {
-	var attempt int64
-
 	err := retry.Do(func() error {
 		if batch.Len() == 0 {
 			return nil
@@ -105,12 +101,7 @@ func (c *Client) flushBatch(ctx context.Context, batch *pgx.Batch) error {
 	}, retry.RetryIf(func(err error) bool {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) {
-			if pgErr.Code == "40P01" && attempt < c.spec.RetryOnDeadlock {
-				attempt++
-				jitter := time.Duration(50+rand.Intn(451)) * time.Millisecond // 50-500ms
-				time.Sleep(jitter)
-				return true
-			}
+			return pgErr.Code == "40P01"
 		}
 
 		return false
