@@ -105,7 +105,10 @@ func (c *Client) flushBatch(ctx context.Context, batch *pgx.Batch) error {
 		}
 
 		return false
-	}), retry.Attempts(uint(c.spec.RetryOnDeadlock)+1))
+	}),
+		retry.Attempts(uint(c.spec.RetryOnDeadlock)+1),
+		retry.LastErrorOnly(true),
+	)
 
 	if err != nil {
 		var pgErr *pgconn.PgError
