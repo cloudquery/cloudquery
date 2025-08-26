@@ -66,6 +66,10 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 
   Creates indexes on tables that help with performance when using `write_mode: overwrite-delete-stale`.
 
+- `retry_on_deadlock` (`integer`) (optional) (default: `0`)
+  
+  Number of times to retry a transaction if a deadlock is detected by Postgres (Postgres error code `40P01`).
+
 ### Verbose logging for debug
 
 The PostgreSQL destination can be run in debug mode.

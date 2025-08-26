@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/avast/retry-go/v4"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
@@ -89,31 +90,41 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 }
 
 func (c *Client) flushBatch(ctx context.Context, batch *pgx.Batch) error {
-	const maxRetries = 5
-	var attempt int
+	var attempt int64
 
-	for {
+	err := retry.Do(func() error {
 		if batch.Len() == 0 {
 			return nil
 		}
 		err := c.conn.SendBatch(ctx, batch).Close()
-		if err == nil {
-			return nil
+		if err != nil {
+			return err
 		}
 
+		return nil
+	}, retry.RetryIf(func(err error) bool {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) {
-			if c.spec.RetryOnDeadlock && pgErr.Code == "40P01" && attempt < maxRetries {
+			if pgErr.Code == "40P01" && attempt < c.spec.RetryOnDeadlock {
 				attempt++
 				jitter := time.Duration(50+rand.Intn(451)) * time.Millisecond // 50-500ms
 				time.Sleep(jitter)
-				continue // retry
+				return true
 			}
-			return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
 		}
 
+		return false
+	}), retry.Attempts(uint(c.spec.RetryOnDeadlock)+1))
+
+	if err != nil {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) {
+			return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
+		}
 		return fmt.Errorf("failed to execute batch: %w", err)
 	}
+
+	return nil
 }
 
 func (*Client) insert(table *schema.Table) string {

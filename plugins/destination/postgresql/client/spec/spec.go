@@ -40,7 +40,8 @@ type Spec struct {
 	// Option to create specific indexes to improve deletion performance
 	CreatePerformanceIndexes bool `json:"create_performance_indexes,omitempty" jsonschema:"default=false"`
 
-	RetryOnDeadlock bool `json:"retry_on_deadlock,omitempty" jsonschema:"default=false"`
+	// Number of times to retry a transaction if a deadlock is detected by Postgres.
+	RetryOnDeadlock int64 `json:"retry_on_deadlock,omitempty" jsonschema:"default=0"`
 }
 
 func (s *Spec) SetDefaults() {

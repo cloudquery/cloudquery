@@ -72,13 +72,13 @@ func TestClient_flushBatch(t *testing.T) {
 	tests := []struct {
 		name            string
 		sendBatchErrs   []error
-		retryOnDeadlock bool
+		retryOnDeadlock int64
 		wantErr         bool
 	}{
 		{
 			name:            "happy path",
 			sendBatchErrs:   []error{nil},
-			retryOnDeadlock: true,
+			retryOnDeadlock: 5,
 			wantErr:         false,
 		},
 		{
@@ -88,7 +88,7 @@ func TestClient_flushBatch(t *testing.T) {
 				pgErr,
 				nil,
 			},
-			retryOnDeadlock: true,
+			retryOnDeadlock: 5,
 			wantErr:         false,
 		},
 		{
@@ -101,7 +101,7 @@ func TestClient_flushBatch(t *testing.T) {
 				pgErr,
 				pgErr,
 			},
-			retryOnDeadlock: true,
+			retryOnDeadlock: 5,
 			wantErr:         true,
 		},
 	}
@@ -142,7 +142,7 @@ func TestConcurrentSyncsAgainstSameTable(t *testing.T) {
 		New,
 		plugin.WithJSONSchema(spec.JSONSchema),
 	)
-	s := &spec.Spec{ConnectionString: getTestConnection(), BatchSize: 1, RetryOnDeadlock: true}
+	s := &spec.Spec{ConnectionString: getTestConnection(), BatchSize: 1, RetryOnDeadlock: 5}
 	b, err := json.Marshal(s)
 	require.NoError(t, err)
 	err = migratePlugin.Init(ctx, b, plugin.NewClientOptions{})
