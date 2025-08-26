@@ -176,16 +176,16 @@ func columnIndexes(cols []embeddingTableColumn, names []string) ([]int, error) {
 	}
 	out := make([]int, len(names))
 	for i, n := range names {
-		if pos, ok := idxByName[n]; ok {
-			out[i] = pos
-		} else {
+		pos, ok := idxByName[n]
+		if !ok {
 			return nil, fmt.Errorf("column %s not found in table", n)
 		}
+		out[i] = pos
 	}
 	return out, nil
 }
 
-func (c *Client) buildDeleteCQIDsSQL(embTable string, cqIDs []uuid.UUID) string {
+func (*Client) buildDeleteCQIDsSQL(embTable string, cqIDs []uuid.UUID) string {
 	ids := make([]string, len(cqIDs))
 	for i, id := range cqIDs {
 		ids[i] = fmt.Sprintf("'%s'", id.String())
@@ -193,7 +193,7 @@ func (c *Client) buildDeleteCQIDsSQL(embTable string, cqIDs []uuid.UUID) string 
 	return fmt.Sprintf("delete from %s where %s in (%s)", embTable, pgx.Identifier{CQIDColumn}.Sanitize(), strings.Join(ids, ","))
 }
 
-func (c *Client) buildEmbeddingsInsertSQL(embTable string, cfg *spec.PgVectorTableConfig) string {
+func (*Client) buildEmbeddingsInsertSQL(embTable string, cfg *spec.PgVectorTableConfig) string {
 	return fmt.Sprintf(
 		"insert into %s (%s) values (%s)",
 		pgx.Identifier{embTable}.Sanitize(),
@@ -202,7 +202,7 @@ func (c *Client) buildEmbeddingsInsertSQL(embTable string, cfg *spec.PgVectorTab
 	)
 }
 
-func (c *Client) buildEmbeddingsRowValues(row []any, cols []embeddingTableColumn, cfg *spec.PgVectorTableConfig, embeddingResponses []EmbeddingResponse) [][]any {
+func (*Client) buildEmbeddingsRowValues(row []any, cols []embeddingTableColumn, cfg *spec.PgVectorTableConfig, embeddingResponses []EmbeddingResponse) [][]any {
 	// Precompute values for metadata columns in the same order as metadataColumns
 	metaVals := make([]any, 0, len(cfg.MetadataColumns))
 	idxByColName := make(map[string]int, len(cols))

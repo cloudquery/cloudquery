@@ -390,11 +390,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		columns: table.PrimaryKeys(),
 	}
 
-	if err := c.createPgVectorTableIfNotExists(ctx, table); err != nil {
-		return err
-	}
-
-	return nil
+	return c.createPgVectorTableIfNotExists(ctx, table)
 }
 
 func (c *Client) createPgVectorTableIfNotExists(ctx context.Context, table *schema.Table) error {

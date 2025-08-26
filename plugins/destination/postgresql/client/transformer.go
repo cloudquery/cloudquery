@@ -209,7 +209,7 @@ func (c *Client) transformValues(r arrow.Record) [][]any {
 	return results
 }
 
-func (c *Client) getCQIDs(r arrow.Record) ([]uuid.UUID, error) {
+func (*Client) getCQIDs(r arrow.Record) ([]uuid.UUID, error) {
 	cqIDColIndex, err := getColumnIndexWithName(r, CQIDColumn)
 	if err != nil {
 		return nil, err

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -44,7 +45,7 @@ func WithEmbeddingsEndpointBase(base string) EmbeddingsRequesterOption {
 // NewEmbeddingsRequesterFromSpec constructs an EmbeddingsRequester from the full Spec.
 func NewEmbeddingsRequesterFromSpec(s *spec.Spec, opts ...EmbeddingsRequesterOption) (*EmbeddingsRequester, error) {
 	if s == nil || s.PgVectorConfig == nil {
-		return nil, fmt.Errorf("pgvector config is required")
+		return nil, errors.New("pgvector config is required")
 	}
 	return NewEmbeddingsRequester(s.PgVectorConfig, opts...)
 }
@@ -52,11 +53,11 @@ func NewEmbeddingsRequesterFromSpec(s *spec.Spec, opts ...EmbeddingsRequesterOpt
 // NewEmbeddingsRequester constructs an EmbeddingsRequester from PgVectorConfig.
 func NewEmbeddingsRequester(cfg *spec.PgVectorConfig, opts ...EmbeddingsRequesterOption) (*EmbeddingsRequester, error) {
 	if cfg == nil {
-		return nil, fmt.Errorf("pgvector config is required")
+		return nil, errors.New("pgvector config is required")
 	}
 	emb := cfg.Embedding
 	if emb.APIKey == "" || emb.ModelName == "" {
-		return nil, fmt.Errorf("invalid embedding configuration")
+		return nil, errors.New("invalid embedding configuration")
 	}
 	// Enforce allowed models and dimensions
 	dims, err := specEmbeddingDimensionsForModel(emb.ModelName)
