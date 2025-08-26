@@ -3,6 +3,7 @@ package spec
 import (
 	_ "embed"
 	"errors"
+	"slices"
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
@@ -14,6 +15,7 @@ const (
 	defaultBatchSize      = 10000
 	defaultBatchSizeBytes = 100000000
 	defaultBatchTimeout   = 60 * time.Second
+	CQIDColumn            = "_cq_id"
 )
 
 type Spec struct {
@@ -39,6 +41,13 @@ type Spec struct {
 
 	// Option to create specific indexes to improve deletion performance
 	CreatePerformanceIndexes bool `json:"create_performance_indexes,omitempty" jsonschema:"default=false"`
+
+	// Optional configuration to enable PgVector embedding support.
+	PgVectorConfig *PgVectorConfig `json:"pgvector_config,omitempty"`
+}
+
+func (s *Spec) HasPgVectorConfig() bool {
+	return s.PgVectorConfig != nil
 }
 
 func (s *Spec) SetDefaults() {
@@ -54,11 +63,82 @@ func (s *Spec) SetDefaults() {
 	if s.PgxLogLevel == 0 {
 		s.PgxLogLevel = LogLevel(tracelog.LogLevelError)
 	}
+	if s.PgVectorConfig != nil {
+		for i := range s.PgVectorConfig.Tables {
+			s.PgVectorConfig.Tables[i].MetadataColumns = ensureCQIDPresent(s.PgVectorConfig.Tables[i].MetadataColumns)
+		}
+		if s.PgVectorConfig.TextSplitter == nil {
+			s.PgVectorConfig.TextSplitter = &PgVectorTextSplitter{
+				RecursiveText: PgVectorRecursiveText{
+					ChunkSize:    1000,
+					ChunkOverlap: 500,
+				},
+			}
+		}
+	}
+}
+
+func ensureCQIDPresent(metadataColumns []string) []string {
+	if slices.Contains(metadataColumns, CQIDColumn) {
+		return metadataColumns
+	}
+	return append([]string{CQIDColumn}, metadataColumns...)
+}
+
+func embeddingDimensionsForModel(model string) (int, error) {
+	switch model {
+	case "text-embedding-3-small":
+		return 1536, nil
+	case "text-embedding-3-large":
+		return 3072, nil
+	default:
+		return 0, errors.New("`pgvector_config.embedding.model_name` must be one of: text-embedding-3-small, text-embedding-3-large")
+	}
 }
 
 func (s *Spec) Validate() error {
 	if len(s.ConnectionString) == 0 {
 		return errors.New("`connection_string` is required")
+	}
+	if s.PgVectorConfig != nil {
+		if len(s.PgVectorConfig.Tables) == 0 {
+			return errors.New("`pgvector_config.tables` must contain at least 1 table")
+		}
+		seenNames := make(map[string]struct{}, len(s.PgVectorConfig.Tables))
+		for _, tbl := range s.PgVectorConfig.Tables {
+			if len(tbl.TableName) == 0 {
+				return errors.New("`pgvector_config.tables.table_name` is required")
+			}
+			if _, ok := seenNames[tbl.TableName]; ok {
+				return errors.New("`pgvector_config.tables` contains duplicate table names: " + tbl.TableName)
+			}
+			seenNames[tbl.TableName] = struct{}{}
+			if len(tbl.EmbedColumns) == 0 {
+				return errors.New("`pgvector_config.tables.embed_columns` must contain at least 1 column")
+			}
+			if len(tbl.MetadataColumns) == 0 {
+				return errors.New("`pgvector_config.tables.metadata_columns` must contain at least 1 column")
+			}
+		}
+		emb := s.PgVectorConfig.Embedding
+		if emb.Dimensions <= 0 || len(emb.APIKey) == 0 || len(emb.ModelName) == 0 {
+			return errors.New("`pgvector_config.embedding` must have `dimensions`, `api_key`, and `model_name` set")
+		}
+		// Enforce model support and sync dimensions to the selected model
+		dims, err := embeddingDimensionsForModel(emb.ModelName)
+		if err != nil {
+			return err
+		}
+		s.PgVectorConfig.Embedding.Dimensions = dims
+		if s.PgVectorConfig.TextSplitter != nil {
+			ts := s.PgVectorConfig.TextSplitter
+			if ts.RecursiveText.ChunkSize <= 0 {
+				return errors.New("`pgvector_config.text_splitter.recursive_text.chunk_size` must be > 0")
+			}
+			if ts.RecursiveText.ChunkOverlap < 0 {
+				return errors.New("`pgvector_config.text_splitter.recursive_text.chunk_overlap` must be >= 0")
+			}
+		}
 	}
 	return nil
 }
@@ -69,3 +149,49 @@ func (Spec) JSONSchemaExtend(sc *jsonschema.Schema) {
 
 //go:embed schema.json
 var JSONSchema string
+
+// PgVectorConfig holds configuration for creating embeddings and storing them with pgvector.
+type PgVectorConfig struct {
+	// Tables to create embeddings for.
+	Tables []PgVectorTableConfig `json:"tables,omitempty" jsonschema:"required,minItems=1"`
+	// Optional text splitting configuration. If set, all sub-configurations must be set.
+	TextSplitter *PgVectorTextSplitter `json:"text_splitter,omitempty"`
+	// Embedding provider configuration. Required if PgVectorConfig is set.
+	Embedding PgVectorEmbedding `json:"embedding" jsonschema:"required"`
+}
+
+// PgVectorTableConfig defines per-source-table embedding configuration.
+type PgVectorTableConfig struct {
+	TableName       string   `json:"table_name" jsonschema:"required,minLength=1"`
+	EmbedColumns    []string `json:"embed_columns" jsonschema:"required,minItems=1"`
+	MetadataColumns []string `json:"metadata_columns" jsonschema:"required,minItems=1"`
+}
+
+// PgVectorTextSplitter defines how source text should be split into chunks for embedding.
+type PgVectorTextSplitter struct {
+	RecursiveText PgVectorRecursiveText `json:"recursive_text" jsonschema:"required"`
+}
+
+type PgVectorRecursiveText struct {
+	ChunkSize    int `json:"chunk_size" jsonschema:"required,minimum=1"`
+	ChunkOverlap int `json:"chunk_overlap" jsonschema:"required,minimum=0"`
+}
+
+// PgVectorEmbedding holds embedding provider settings.
+type PgVectorEmbedding struct {
+	Dimensions int    `json:"dimensions" jsonschema:"minimum=1"`
+	APIKey     string `json:"api_key" jsonschema:"required,minLength=1,title=OpenAI API Key"`
+	ModelName  string `json:"model_name" jsonschema:"required,minLength=1"`
+}
+
+func (s *Spec) GetPgVectorTableConfig(tableName string) *PgVectorTableConfig {
+	if s.PgVectorConfig == nil {
+		return nil
+	}
+	for _, tbl := range s.PgVectorConfig.Tables {
+		if tbl.TableName == tableName {
+			return &tbl
+		}
+	}
+	return nil
+}

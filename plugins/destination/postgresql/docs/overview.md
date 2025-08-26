@@ -66,6 +66,56 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 
   Creates indexes on tables that help with performance when using `write_mode: overwrite-delete-stale`.
 
+- `pgvector_config` (`object`) (optional)
+
+  Optional configuration to enable PgVector embedding support.
+
+  Note: source plugin must sync the `_cq_id` column on target tables if this is enabled.
+
+  - `tables` (`array`) (required)
+    
+    Tables to create embeddings for. A table with the `_embeddings` suffix will be created for each table in this list.
+
+    - `table_name` (`string`) (required)
+
+    - `embed_columns` (`array`) (required)
+
+    Columns to create embeddings for.
+
+    - `metadata_columns` (`array`) (required)
+
+    These columns will be added as-is from the source table for context. The `_cq_id` column will be added automatically and an index will be created on it.
+
+  - `text_splitter` (`object`) (optional)
+
+    Optional text splitting configuration for the embeddings. If unset, defaults are used.
+
+    - `recursive_text` (`object`) (required)
+
+      - `chunk_size` (`integer`) (required)
+
+      Chunk size for the text splitting.
+
+      - `chunk_overlap` (`integer`) (required)
+
+      Chunk overlap for the text splitting.
+
+  - `embedding` (`object`) (required)
+
+    Embedding API provider configuration. Currently only OpenAI is supported.
+
+    - `dimensions` (`integer`) (required)
+    
+    The number of dimensions to use for the embeddings. For `text-embedding-3-small`, this is 1536. For `text-embedding-3-large`, this is 3072.
+
+    - `api_key` (`string`) (required)
+
+    The OpenAI API key to use for the embedding API.
+
+    - `model_name` (`string`) (required)
+
+    The model name to use for the embedding API. Currently, `text-embedding-3-small` and `text-embedding-3-large` are supported.
+
 ### Verbose logging for debug
 
 The PostgreSQL destination can be run in debug mode.

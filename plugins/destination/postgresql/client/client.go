@@ -38,8 +38,11 @@ type Client struct {
 
 	spec *spec.Spec
 
-	pgTablesToPKConstraints   map[string]*pkConstraintDetails
-	pgTablesToPKConstraintsMu sync.RWMutex
+	embeddingsRequester *EmbeddingsRequester
+
+	pgTablesToPKConstraints    map[string]*pkConstraintDetails
+	pgTablesToPKConstraintsMu  sync.RWMutex
+	pgVectorExtensionInstalled bool
 
 	plugin.UnimplementedSource
 }
@@ -111,6 +114,14 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 	if err != nil {
 		return nil, fmt.Errorf("failed to get database type: %w", err)
 	}
+	// Initialize embeddings requester if pgvector is configured and supported
+	if c.hasPgVectorConfig() {
+		er, err := NewEmbeddingsRequesterFromSpec(c.spec)
+		if err != nil {
+			return nil, fmt.Errorf("failed to initialize embeddings requester: %w", err)
+		}
+		c.embeddingsRequester = er
+	}
 	c.writer, err = mixedbatchwriter.New(c,
 		mixedbatchwriter.WithLogger(c.logger),
 		mixedbatchwriter.WithBatchSize(s.BatchSize),
@@ -180,4 +191,8 @@ func (c *Client) getPgType(ctx context.Context) (pgType, error) {
 	}
 
 	return typ, nil
+}
+
+func (c *Client) hasPgVectorConfig() bool {
+	return c.spec != nil && c.pgType == pgTypePostgreSQL && c.spec.HasPgVectorConfig()
 }

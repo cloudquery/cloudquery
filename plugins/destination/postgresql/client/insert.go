@@ -43,6 +43,9 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 
 	batch := new(pgx.Batch)
 
+	// Accumulate embeddings per table to insert after each successful base flush
+	tableToEmbBatch := make(map[string]*embeddingBatch)
+
 	// Queries cache.
 	// We may consider LRU cache in the future, but even for 10K records it may be OK to just save.
 	queries := make(map[string]string, 100)
@@ -75,15 +78,32 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 		for _, rowVals := range rows {
 			batch.Queue(sql, rowVals...)
 		}
+
+		// If pgvector is configured and this table has a config, accumulate embeddings work
+		if c.hasPgVectorConfig() && c.embeddingsRequester != nil && c.spec.GetPgVectorTableConfig(tableName) != nil {
+			err := c.addEmbeddingRows(ctx, tableToEmbBatch, tableName, msg.GetTable(), r, rows)
+			if err != nil {
+				return err
+			}
+		}
 		if int64(batch.Len()) >= c.batchSize {
 			if err := c.flushBatch(ctx, batch); err != nil {
 				return err
 			}
+			// After base rows are flushed, insert/upsert embeddings for accumulated tables
+			if err := c.insertEmbeddingsBatch(ctx, tableToEmbBatch); err != nil {
+				return err
+			}
+			// Reset for next chunk
+			tableToEmbBatch = make(map[string]*embeddingBatch)
 			batch = new(pgx.Batch)
 		}
 	}
 
-	return c.flushBatch(ctx, batch)
+	if err := c.flushBatch(ctx, batch); err != nil {
+		return err
+	}
+	return c.insertEmbeddingsBatch(ctx, tableToEmbBatch)
 }
 
 func (c *Client) flushBatch(ctx context.Context, batch *pgx.Batch) error {

@@ -23,6 +23,146 @@
       "description": "Defines what [`pgx`](https://github.com/jackc/pgx) call events should be logged.",
       "default": "error"
     },
+    "PgVectorConfig": {
+      "properties": {
+        "tables": {
+          "oneOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/PgVectorTableConfig"
+              },
+              "type": "array",
+              "minItems": 1,
+              "description": "Tables to create embeddings for."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "text_splitter": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/PgVectorTextSplitter",
+              "description": "Optional text splitting configuration. If set, all sub-configurations must be set."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "embedding": {
+          "$ref": "#/$defs/PgVectorEmbedding",
+          "description": "Embedding provider configuration. Required if PgVectorConfig is set."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "tables",
+        "embedding"
+      ],
+      "description": "PgVectorConfig holds configuration for creating embeddings and storing them with pgvector."
+    },
+    "PgVectorEmbedding": {
+      "properties": {
+        "dimensions": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "api_key": {
+          "type": "string",
+          "minLength": 1,
+          "title": "OpenAI API Key"
+        },
+        "model_name": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "api_key",
+        "model_name"
+      ],
+      "description": "PgVectorEmbedding holds embedding provider settings."
+    },
+    "PgVectorRecursiveText": {
+      "properties": {
+        "chunk_size": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "chunk_overlap": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "chunk_size",
+        "chunk_overlap"
+      ]
+    },
+    "PgVectorTableConfig": {
+      "properties": {
+        "table_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "embed_columns": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "minItems": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "metadata_columns": {
+          "oneOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "minItems": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "table_name",
+        "embed_columns",
+        "metadata_columns"
+      ],
+      "description": "PgVectorTableConfig defines per-source-table embedding configuration."
+    },
+    "PgVectorTextSplitter": {
+      "properties": {
+        "recursive_text": {
+          "$ref": "#/$defs/PgVectorRecursiveText"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "recursive_text"
+      ],
+      "description": "PgVectorTextSplitter defines how source text should be split into chunks for embedding."
+    },
     "Spec": {
       "properties": {
         "connection_string": {
@@ -58,6 +198,17 @@
           "type": "boolean",
           "description": "Option to create specific indexes to improve deletion performance",
           "default": false
+        },
+        "pgvector_config": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/PgVectorConfig",
+              "description": "Optional configuration to enable PgVector embedding support."
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,

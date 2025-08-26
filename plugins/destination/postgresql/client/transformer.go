@@ -3,11 +3,13 @@ package client
 import (
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"strings"
 
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/apache/arrow-go/v18/arrow/array"
 	"github.com/cloudquery/plugin-sdk/v4/types"
+	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
@@ -205,4 +207,28 @@ func (c *Client) transformValues(r arrow.Record) [][]any {
 		}
 	}
 	return results
+}
+
+func (c *Client) getCQIDs(r arrow.Record) ([]uuid.UUID, error) {
+	cqIDColIndex, err := getColumnIndexWithName(r, CQIDColumn)
+	if err != nil {
+		return nil, err
+	}
+	results := make([]uuid.UUID, r.NumRows())
+	for i := range int(r.NumRows()) {
+		results[i], err = uuid.Parse(r.Column(cqIDColIndex).ValueStr(i))
+		if err != nil {
+			return nil, err
+		}
+	}
+	return results, nil
+}
+
+func getColumnIndexWithName(r arrow.Record, name string) (int, error) {
+	for i := range int(r.NumCols()) {
+		if r.Schema().Field(i).Name == name {
+			return i, nil
+		}
+	}
+	return -1, fmt.Errorf("column %s not found", name) // should never happen
 }

@@ -17,6 +17,9 @@ import (
 
 // MigrateTableBatch migrates a table. It forms part of the writer.MixedBatchWriter interface.
 func (c *Client) MigrateTableBatch(ctx context.Context, messages message.WriteMigrateTables) error {
+	if err := c.ensurePgVectorExtensionInstalled(ctx); err != nil {
+		return err
+	}
 	tables, err := tablesFromMessages(messages)
 	if err != nil {
 		return err
@@ -387,6 +390,78 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 		columns: table.PrimaryKeys(),
 	}
 
+	if err := c.createPgVectorTableIfNotExists(ctx, table); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (c *Client) createPgVectorTableIfNotExists(ctx context.Context, table *schema.Table) error {
+	if !c.hasPgVectorConfig() {
+		return nil
+	}
+
+	// Find pgvector tableConfig for this table
+	tableConfig := c.spec.GetPgVectorTableConfig(table.Name)
+	if tableConfig == nil {
+		return nil
+	}
+
+	// Ensure all metadata columns exist on base table; otherwise skip
+	baseCols := make([]schema.Column, 0, len(tableConfig.MetadataColumns))
+	for _, name := range tableConfig.MetadataColumns {
+		col := table.Columns.Get(name)
+		if col == nil {
+			return fmt.Errorf("cannot create pgvector table for %s: metadata column %s not found on base table", table.Name, name)
+		}
+		baseCols = append(baseCols, *col)
+	}
+
+	// Build column definitions using base column types and PKs
+	colDefs := make([]string, 0, len(baseCols)+1)
+	for _, col := range baseCols {
+		pgType := c.SchemaTypeToPg(col.Type)
+		colIdent := pgx.Identifier{col.Name}.Sanitize()
+		def := fmt.Sprintf("%s %s", colIdent, pgType)
+		if col.PrimaryKey {
+			def += " NOT NULL"
+		}
+		colDefs = append(colDefs, def)
+	}
+
+	// Required: Chunk column
+	colDefs = append(colDefs, "chunk text")
+	// Required: Embedding vector column
+	colDefs = append(colDefs, fmt.Sprintf("embedding vector(%d)", c.spec.PgVectorConfig.Embedding.Dimensions))
+
+	// Compose CREATE TABLE statement
+	embTableName := table.Name + "_embeddings"
+	parts := []string{
+		"CREATE TABLE IF NOT EXISTS ",
+		pgx.Identifier{embTableName}.Sanitize(),
+		" (",
+		strings.Join(colDefs, ","),
+	}
+	parts = append(parts, ")")
+	sql := strings.Join(parts, "")
+
+	if _, err := c.conn.Exec(ctx, sql); err != nil {
+		c.logger.Error().Err(err).Str("table", embTableName).Str("query", sql).Msg("Failed to create pgvector embeddings table")
+		return fmt.Errorf("failed to create pgvector table %s: %w", embTableName, err)
+	}
+
+	// Create a non-unique index on _cq_id for faster lookups; idempotent with deterministic name
+	idxName := embTableName + "_cqid_idx"
+	if len(idxName) > 63 {
+		idxName = hashTableName(embTableName) + "_cqid_idx"
+	}
+	idxSQL := "CREATE INDEX IF NOT EXISTS " + pgx.Identifier{idxName}.Sanitize() + " ON " + pgx.Identifier{embTableName}.Sanitize() + "(" + pgx.Identifier{schema.CqIDColumn.Name}.Sanitize() + ")"
+	if _, err := c.conn.Exec(ctx, idxSQL); err != nil {
+		c.logger.Error().Err(err).Str("table", embTableName).Str("query", idxSQL).Msg("Failed to create _cq_id index on embeddings table")
+		return fmt.Errorf("failed to create _cq_id index on pgvector table %s: %w", embTableName, err)
+	}
+
 	return nil
 }
 
@@ -444,6 +519,25 @@ func (c *Client) createPerformanceIndexes(ctx context.Context, table *schema.Tab
 		return fmt.Errorf("failed to create performance index on table %s: %w", table.Name, err)
 	}
 
+	return nil
+}
+
+func (c *Client) ensurePgVectorExtensionInstalled(ctx context.Context) error {
+	if c.pgVectorExtensionInstalled {
+		return nil
+	}
+	if !c.spec.HasPgVectorConfig() {
+		return nil
+	}
+	if c.pgType != pgTypePostgreSQL {
+		return nil
+	}
+
+	if _, err := c.conn.Exec(ctx, "CREATE EXTENSION IF NOT EXISTS vector"); err != nil {
+		return fmt.Errorf("failed to create pgvector extension: %w", err)
+	}
+
+	c.pgVectorExtensionInstalled = true
 	return nil
 }
 
