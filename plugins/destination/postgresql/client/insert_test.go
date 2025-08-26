@@ -14,7 +14,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	sdkTypes "github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/goccy/go-json"
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
@@ -122,7 +121,7 @@ func TestClient_flushBatch(t *testing.T) {
 }
 
 func TestConcurrentSyncsAgainstSameTable(t *testing.T) {
-	const syncConcurrency = 50 // Caution: With significantly higher numbers we see connection issues running against Postgres in Tilt.
+	const syncConcurrency = 100
 	const rounds = 99
 	ctx := context.Background()
 	group, _ := errgroup.WithContext(ctx)
@@ -132,27 +131,28 @@ func TestConcurrentSyncsAgainstSameTable(t *testing.T) {
 	table := &schema.Table{
 		Name: tableName,
 		Columns: []schema.Column{
-			schema.CqIDColumn,
-			schema.CqSourceNameColumn,
+			{Name: "id", Type: arrow.BinaryTypes.String, NotNull: true},
+			{Name: "name", Type: arrow.BinaryTypes.String, PrimaryKey: true},
 			schema.CqSyncTimeColumn,
 		},
 	}
 	// Create the table
-	p := plugin.NewPlugin("postgresql",
+	migratePlugin := plugin.NewPlugin("postgresql",
 		internalPlugin.Version,
 		New,
 		plugin.WithJSONSchema(spec.JSONSchema),
 	)
-	s := &spec.Spec{ConnectionString: getTestConnection()}
+	s := &spec.Spec{ConnectionString: getTestConnection(), BatchSize: 1, RetryOnDeadlock: true}
 	b, err := json.Marshal(s)
 	require.NoError(t, err)
-	err = p.Init(ctx, b, plugin.NewClientOptions{})
+	err = migratePlugin.Init(ctx, b, plugin.NewClientOptions{})
 	require.NoError(t, err)
-	if err := p.WriteAll(ctx, []message.WriteMessage{&message.WriteMigrateTable{Table: table}}); err != nil {
+	migrateContext := context.Background()
+	if err := migratePlugin.WriteAll(migrateContext, []message.WriteMessage{&message.WriteMigrateTable{Table: table}}); err != nil {
 		t.Fatal(fmt.Errorf("failed to create table: %w", err))
 	}
 
-	for i := range syncConcurrency {
+	for range syncConcurrency {
 		group.Go(func() error {
 			// Simulate a sync job against the same table
 			syncContext := context.Background()
@@ -167,15 +167,12 @@ func TestConcurrentSyncsAgainstSameTable(t *testing.T) {
 			require.NoError(t, err)
 			err = p.Init(syncContext, b, plugin.NewClientOptions{})
 			require.NoError(t, err)
-			if err := p.WriteAll(syncContext, []message.WriteMessage{&message.WriteMigrateTable{Table: table}}); err != nil {
-				t.Fatal(fmt.Errorf("failed to create table: %w", err))
-			}
 
-			for j := range rounds {
-				jobIndexAsString := fmt.Sprintf("%04d%02d", i, j)
+			for range rounds {
+				jobIndexAsString := fmt.Sprintf("%02d", 1)
 				randomUUIDStringWithLastCharacterReplaced := randomUUIDString[:len(randomUUIDString)-len(jobIndexAsString)] + jobIndexAsString
 				bldr := array.NewRecordBuilder(memory.DefaultAllocator, table.ToArrowSchema())
-				bldr.Field(0).(*sdkTypes.UUIDBuilder).Append(uuid.MustParse(randomUUIDStringWithLastCharacterReplaced))
+				bldr.Field(0).(*array.StringBuilder).Append(uuid.MustParse(randomUUIDStringWithLastCharacterReplaced).String())
 				bldr.Field(1).(*array.StringBuilder).Append("source")
 				bldr.Field(2).(*array.TimestampBuilder).Append(arrow.Timestamp(time.Now().UnixMicro()))
 				record := bldr.NewRecord()
@@ -196,7 +193,7 @@ func TestConcurrentSyncsAgainstSameTable(t *testing.T) {
 	ch := make(chan arrow.Record)
 	go func() {
 		defer close(ch)
-		err = p.Read(ctx, table, ch)
+		err = migratePlugin.Read(ctx, table, ch)
 	}()
 
 	numRows := 0
@@ -204,6 +201,6 @@ func TestConcurrentSyncsAgainstSameTable(t *testing.T) {
 		numRows += int(record.NumRows())
 	}
 
-	require.Equal(t, syncConcurrency*rounds, numRows)
+	require.Equal(t, 1, numRows)
 	require.NoError(t, err)
 }
