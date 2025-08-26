@@ -119,8 +119,9 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, chan
 			// No need to handle specifically, will be handled by drop PK / add PK changes
 			continue
 		case schema.TableColumnChangeTypeRemoveUniqueConstraint:
-			// Can't happen as canAutoMigrate would return false
-			continue
+			if err := c.alterColumnDropUniqueConstraint(ctx, table, change); err != nil {
+				return err
+			}
 		case schema.TableColumnChangeTypeRemove:
 			// Not dropping columns automatically: Keep them
 			continue
@@ -144,13 +145,12 @@ func (c *Client) addColumn(ctx context.Context, tableName string, column schema.
 	c.logger.Info().Str("table", tableName).Str("column", column.Name).Msg("Column doesn't exist, creating")
 	columnType := SchemaTypeToSnowflake(column.Type)
 	sql := "alter table identifier(?) add column " + sanitizeColumn(column.Name) + " " + columnType
-	if column.Unique {
-		sql += " unique"
-	}
 	if column.NotNull {
 		sql += " not null"
 	}
-
+	if column.Unique {
+		sql += " constraint " + sanitizeColumn(uniqueConstraintName(tableName, column.Name)) + " unique"
+	}
 	if _, err := c.db.ExecContext(ctx, sql, tableName); err != nil {
 		return fmt.Errorf("failed to add column %s on table %s: %w", column.Name, tableName, err)
 	}
@@ -166,9 +166,20 @@ func (c *Client) alterColumnDropNotNull(ctx context.Context, tableName string, c
 	return nil
 }
 
+func (c *Client) alterColumnDropUniqueConstraint(ctx context.Context, table *schema.Table, change schema.TableColumnChange) error {
+	// We only support the default unique constraint name
+	// If it is using a unique constraint that is not default it means CQ didn't create it so we shouldn't drop it
+	indexName := uniqueConstraintName(table.Name, change.ColumnName)
+	sql := "alter table identifier(?) drop constraint " + sanitizeColumn(indexName)
+	if _, err := c.db.ExecContext(ctx, sql, table.Name); err != nil {
+		return fmt.Errorf("failed to drop unique constraint on column %s on table %s: %w", change.ColumnName, table.Name, err)
+	}
+	return nil
+}
+
 func (c *Client) alterTableAddPK(ctx context.Context, tableName string, columnNames []string) error {
 	c.logger.Info().Str("table", tableName).Strs("columns", columnNames).Msg("Adding PRIMARY KEY to column")
-	pkeyName := tableName + "_pk"
+	pkeyName := pkName(tableName)
 
 	sanCols := make([]string, len(columnNames))
 	for i, col := range columnNames {
@@ -200,12 +211,13 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 	for i, col := range table.Columns {
 		sfType := SchemaTypeToSnowflake(col.Type)
 		fieldDef := sanitizeColumn(col.Name) + " " + sfType
-		if col.Unique {
-			fieldDef += " unique"
-		}
 		if col.NotNull {
 			fieldDef += " not null"
 		}
+		if col.Unique {
+			fieldDef += " constraint " + sanitizeColumn(uniqueConstraintName(table.Name, col.Name)) + " unique"
+		}
+
 		sb.WriteString(fieldDef)
 		if i != totalColumns-1 {
 			sb.WriteString(",")
@@ -217,7 +229,9 @@ func (c *Client) createTableIfNotExist(ctx context.Context, table *schema.Table)
 
 	if len(primaryKeys) > 0 {
 		// add composite PK constraint on primary key columns
-		sb.WriteString(", primary key (")
+		sb.WriteString(", constraint ")
+		sb.WriteString(sanitizeColumn(pkName(table.Name)))
+		sb.WriteString(" primary key (")
 		sb.WriteString(strings.Join(primaryKeys, ","))
 		sb.WriteString(")")
 	}
@@ -259,8 +273,6 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 	for _, change := range changes {
 		//exhaustive:enforce
 		switch change.Type {
-		case schema.TableColumnChangeTypeRemoveUniqueConstraint:
-			return false
 		case schema.TableColumnChangeTypeAdd:
 			if change.Current.NotNull {
 				return false
@@ -270,6 +282,8 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 				return false
 			}
 		case schema.TableColumnChangeTypeMoveToCQOnly:
+			continue
+		case schema.TableColumnChangeTypeRemoveUniqueConstraint:
 			continue
 		case schema.TableColumnChangeTypeUpdate:
 			if change.Previous.NotNull != change.Current.NotNull && !change.Current.NotNull {
@@ -292,6 +306,14 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 func sanitizeColumn(name string) string {
 	// temporary, `identifier()` would be better but it doesn't work for column names
 	return `"` + strings.ToUpper(name) + `"`
+}
+
+func uniqueConstraintName(tableName, columnName string) string {
+	return tableName + "_" + columnName + "_key"
+}
+
+func pkName(tableName string) string {
+	return tableName + "_pk"
 }
 
 // getTableChangesCaseInsensitive returns changes between two tables when `t` is the new one and `old` is the old one.
