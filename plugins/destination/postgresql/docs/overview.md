@@ -121,6 +121,10 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
     - `model_name` (`string`) (required)
 
     The model name to use for the embedding API. Currently, `text-embedding-3-small` and `text-embedding-3-large` are supported.
+  
+  - `retry_on_deadlock` (`integer`) (optional) (default: `0`)
+  
+    Number of times to retry a transaction if a deadlock is detected by Postgres (Postgres error code `40P01`).
 
 ### Verbose logging for debug
 
