@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.1.3...plugins-destination-duckdb-v6.2.0) (2025-08-27)
+
+
+### Features
+
+* Added Type Documentation ([#21279](https://github.com/cloudquery/cloudquery/issues/21279)) ([d2945a1](https://github.com/cloudquery/cloudquery/commit/d2945a1caf48505bc6c11f9a9d59723018df8601))
+
 ## [6.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.1.2...plugins-destination-duckdb-v6.1.3) (2025-08-26)
 
 
