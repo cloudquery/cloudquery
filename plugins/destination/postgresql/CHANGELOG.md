@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.11.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.10.0...plugins-destination-postgresql-v8.11.0) (2025-08-27)
+
+
+### Features
+
+* Implement support for PgVector. ([#21278](https://github.com/cloudquery/cloudquery/issues/21278)) ([c6212f3](https://github.com/cloudquery/cloudquery/commit/c6212f3571c0cff621e6fa794ed8eb3275b37b4d))
+
 ## [8.10.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.9.0...plugins-destination-postgresql-v8.10.0) (2025-08-27)
 
 
