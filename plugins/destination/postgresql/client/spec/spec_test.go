@@ -107,5 +107,16 @@ func TestSpec_JSONSchemaExtend(t *testing.T) {
 			Spec: `{"connection_string": "abc", "batch_timeout": null}`,
 			Err:  true,
 		},
+		// minimal valid with pgvector_config provided and complete
+		{
+			Name: "pgvector minimal",
+			Spec: `{
+				"connection_string":"abc",
+				"pgvector_config":{
+					"tables":[{"source_table_name":"box_file_contents","target_table_name":"box_file_contents_embeddings","embed_columns":["content"],"metadata_columns":["id"]}],
+					"openai_embedding":{"dimensions":1536,"api_key":"k","model_name":"text-embedding-3-small"}
+				}
+			}`,
+		},
 	})
 }
