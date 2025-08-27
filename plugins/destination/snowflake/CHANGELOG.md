@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.0.0...plugins-destination-snowflake-v5.0.1) (2025-08-27)
+
+
+### Bug Fixes
+
+* Use Decimal128 for NUMBER(38,0) ([#21286](https://github.com/cloudquery/cloudquery/issues/21286)) ([837b87d](https://github.com/cloudquery/cloudquery/commit/837b87d6e354eeb8050eed1e0983418349a61207))
+
 ## [5.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v4.5.5...plugins-destination-snowflake-v5.0.0) (2025-08-27)
 
 
