@@ -147,6 +147,7 @@ func parseTime(t string) (arrow.DataType, bool) {
 		return arrow.FixedWidthTypes.Time64ns, true
 	}
 }
+
 func parseNumeric(t string) (arrow.DataType, bool) {
 	matches := reNumeric.FindAllStringSubmatch(t, -1)
 	if len(matches) == 0 {
@@ -172,8 +173,6 @@ func parseNumeric(t string) (arrow.DataType, bool) {
 		return arrow.PrimitiveTypes.Int64, true
 	case precision == 20 && scale == 0:
 		return arrow.PrimitiveTypes.Uint64, true
-	case precision == 38 && scale == 0:
-		return arrow.PrimitiveTypes.Int64, true
 	case precision <= 38:
 		return &arrow.Decimal128Type{Precision: int32(precision), Scale: int32(scale)}, true
 	case precision <= 76:
