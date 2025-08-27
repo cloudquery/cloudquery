@@ -398,7 +398,7 @@ func (c *Client) createPgVectorTableIfNotExists(ctx context.Context, table *sche
 		return nil
 	}
 
-	// Find pgvector tableConfig for this table
+	// Find pgvector tableConfig for this source table
 	tableConfig := c.spec.GetPgVectorTableConfig(table.Name)
 	if tableConfig == nil {
 		return nil
@@ -429,10 +429,10 @@ func (c *Client) createPgVectorTableIfNotExists(ctx context.Context, table *sche
 	// Required: Chunk column
 	colDefs = append(colDefs, "chunk text")
 	// Required: Embedding vector column
-	colDefs = append(colDefs, fmt.Sprintf("embedding vector(%d)", c.spec.PgVectorConfig.Embedding.Dimensions))
+	colDefs = append(colDefs, fmt.Sprintf("embedding vector(%d)", c.spec.PgVectorConfig.OpenAIEmbedding.Dimensions))
 
-	// Compose CREATE TABLE statement
-	embTableName := table.Name + "_embeddings"
+	// Compose CREATE TABLE statement using configured target table name
+	embTableName := tableConfig.TargetTableName
 	parts := []string{
 		"CREATE TABLE IF NOT EXISTS ",
 		pgx.Identifier{embTableName}.Sanitize(),

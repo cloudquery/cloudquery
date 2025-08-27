@@ -16,11 +16,12 @@ func testSpec() *spec.Spec {
 		ConnectionString: "postgres://user:pass@localhost:5432/db?sslmode=disable",
 		PgVectorConfig: &spec.PgVectorConfig{
 			Tables: []spec.PgVectorTableConfig{{
-				TableName:       "t",
+				SourceTableName: "t",
+				TargetTableName: "t_embeddings",
 				EmbedColumns:    []string{"c"},
 				MetadataColumns: []string{"id"},
 			}},
-			Embedding: spec.PgVectorEmbedding{
+			OpenAIEmbedding: spec.OpenAIEmbedding{
 				Dimensions: 1536,
 				APIKey:     "k",
 				ModelName:  "text-embedding-3-small",

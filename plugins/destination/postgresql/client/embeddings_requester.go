@@ -55,7 +55,7 @@ func NewEmbeddingsRequester(cfg *spec.PgVectorConfig, opts ...EmbeddingsRequeste
 	if cfg == nil {
 		return nil, errors.New("pgvector config is required")
 	}
-	emb := cfg.Embedding
+	emb := cfg.OpenAIEmbedding
 	if emb.APIKey == "" || emb.ModelName == "" {
 		return nil, errors.New("invalid embedding configuration")
 	}

@@ -107,8 +107,8 @@ func (c *Client) insertEmbeddingsBatch(ctx context.Context, tableToBatch map[str
 			return fmt.Errorf("embeddings count mismatch: got %d want %d", len(inputToEmbeddingResponses), len(rowBatch.rows))
 		}
 
-		// Prepare insert SQL for <table>_embeddings
-		embTableName := tableName + "_embeddings"
+		// Prepare insert SQL for target embedding table
+		embTableName := tblCfg.TargetTableName
 		sql := c.buildEmbeddingsInsertSQL(embTableName, tblCfg)
 
 		// We cannot upsert in this case, because the number of rows per `_cq_id` might have changed

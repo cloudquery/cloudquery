@@ -113,8 +113,8 @@ func TestSpec_JSONSchemaExtend(t *testing.T) {
 			Spec: `{
 				"connection_string":"abc",
 				"pgvector_config":{
-					"tables":[{"table_name":"box_file_contents","embed_columns":["content"],"metadata_columns":["id"]}],
-					"embedding":{"dimensions":1536,"api_key":"k","model_name":"text-embedding-3-small"}
+					"tables":[{"source_table_name":"box_file_contents","target_table_name":"box_file_contents_embeddings","embed_columns":["content"],"metadata_columns":["id"]}],
+					"openai_embedding":{"dimensions":1536,"api_key":"k","model_name":"text-embedding-3-small"}
 				}
 			}`,
 		},

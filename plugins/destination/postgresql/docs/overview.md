@@ -74,17 +74,23 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 
   - `tables` (`array`) (required)
     
-    Tables to create embeddings for. A table with the `_embeddings` suffix will be created for each table in this list.
+    Tables to create embeddings for. For each entry, embeddings are created from a source table and stored in a configured target table.
 
-    - `table_name` (`string`) (required)
+    - `source_table_name` (`string`) (required)
+
+      Name of the source table from which text columns are read to generate embeddings.
+
+    - `target_table_name` (`string`) (required)
+
+      Name of the embeddings table to create/populate. This table will contain the `embedding` vector column, a `chunk` text column, and the configured metadata columns. The `_cq_id` column is always included and indexed.
 
     - `embed_columns` (`array`) (required)
 
-    Columns to create embeddings for.
+      Columns on the source table to concatenate and create embeddings for.
 
-    - `metadata_columns` (`array`) (required)
+    - `metadata_columns` (`array`) (optional)
 
-    These columns will be added as-is from the source table for context. The `_cq_id` column will be added automatically and an index will be created on it.
+      These columns will be added as-is from the source table for context. The `_cq_id` column will be added automatically and an index will be created on it.
 
   - `text_splitter` (`object`) (optional)
 
@@ -100,9 +106,9 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 
       Chunk overlap for the text splitting.
 
-  - `embedding` (`object`) (required)
+  - `openai_embedding` (`object`) (required)
 
-    Embedding API provider configuration. Currently only OpenAI is supported.
+    OpenAI Embedding API configuration. Currently only OpenAI is supported.
 
     - `dimensions` (`integer`) (required)
     

@@ -65,6 +65,11 @@ func (s *Spec) SetDefaults() {
 	}
 	if s.PgVectorConfig != nil {
 		for i := range s.PgVectorConfig.Tables {
+			// Ensure MetadataColumns is an empty slice when unset (not nil)
+			if s.PgVectorConfig.Tables[i].MetadataColumns == nil {
+				s.PgVectorConfig.Tables[i].MetadataColumns = []string{}
+			}
+			// Always ensure _cq_id is present in metadata columns
 			s.PgVectorConfig.Tables[i].MetadataColumns = ensureCQIDPresent(s.PgVectorConfig.Tables[i].MetadataColumns)
 		}
 		if s.PgVectorConfig.TextSplitter == nil {
@@ -92,7 +97,7 @@ func embeddingDimensionsForModel(model string) (int, error) {
 	case "text-embedding-3-large":
 		return 3072, nil
 	default:
-		return 0, errors.New("`pgvector_config.embedding.model_name` must be one of: text-embedding-3-small, text-embedding-3-large")
+		return 0, errors.New("`pgvector_config.openai_embedding.model_name` must be one of: text-embedding-3-small, text-embedding-3-large")
 	}
 }
 
@@ -104,32 +109,37 @@ func (s *Spec) Validate() error {
 		if len(s.PgVectorConfig.Tables) == 0 {
 			return errors.New("`pgvector_config.tables` must contain at least 1 table")
 		}
-		seenNames := make(map[string]struct{}, len(s.PgVectorConfig.Tables))
+		seenSourceNames := make(map[string]struct{}, len(s.PgVectorConfig.Tables))
+		seenTargetNames := make(map[string]struct{}, len(s.PgVectorConfig.Tables))
 		for _, tbl := range s.PgVectorConfig.Tables {
-			if len(tbl.TableName) == 0 {
-				return errors.New("`pgvector_config.tables.table_name` is required")
+			if len(tbl.SourceTableName) == 0 {
+				return errors.New("`pgvector_config.tables.source_table_name` is required")
 			}
-			if _, ok := seenNames[tbl.TableName]; ok {
-				return errors.New("`pgvector_config.tables` contains duplicate table names: " + tbl.TableName)
+			if len(tbl.TargetTableName) == 0 {
+				return errors.New("`pgvector_config.tables.target_table_name` is required")
 			}
-			seenNames[tbl.TableName] = struct{}{}
+			if _, ok := seenSourceNames[tbl.SourceTableName]; ok {
+				return errors.New("`pgvector_config.tables` contains duplicate source table names: " + tbl.SourceTableName)
+			}
+			if _, ok := seenTargetNames[tbl.TargetTableName]; ok {
+				return errors.New("`pgvector_config.tables` contains duplicate target table names: " + tbl.TargetTableName)
+			}
+			seenSourceNames[tbl.SourceTableName] = struct{}{}
+			seenTargetNames[tbl.TargetTableName] = struct{}{}
 			if len(tbl.EmbedColumns) == 0 {
 				return errors.New("`pgvector_config.tables.embed_columns` must contain at least 1 column")
 			}
-			if len(tbl.MetadataColumns) == 0 {
-				return errors.New("`pgvector_config.tables.metadata_columns` must contain at least 1 column")
-			}
 		}
-		emb := s.PgVectorConfig.Embedding
+		emb := s.PgVectorConfig.OpenAIEmbedding
 		if emb.Dimensions <= 0 || len(emb.APIKey) == 0 || len(emb.ModelName) == 0 {
-			return errors.New("`pgvector_config.embedding` must have `dimensions`, `api_key`, and `model_name` set")
+			return errors.New("`pgvector_config.openai_embedding` must have `dimensions`, `api_key`, and `model_name` set")
 		}
 		// Enforce model support and sync dimensions to the selected model
 		dims, err := embeddingDimensionsForModel(emb.ModelName)
 		if err != nil {
 			return err
 		}
-		s.PgVectorConfig.Embedding.Dimensions = dims
+		s.PgVectorConfig.OpenAIEmbedding.Dimensions = dims
 		if s.PgVectorConfig.TextSplitter != nil {
 			ts := s.PgVectorConfig.TextSplitter
 			if ts.RecursiveText.ChunkSize <= 0 {
@@ -156,15 +166,19 @@ type PgVectorConfig struct {
 	Tables []PgVectorTableConfig `json:"tables,omitempty" jsonschema:"required,minItems=1"`
 	// Optional text splitting configuration. If set, all sub-configurations must be set.
 	TextSplitter *PgVectorTextSplitter `json:"text_splitter,omitempty"`
-	// Embedding provider configuration. Required if PgVectorConfig is set.
-	Embedding PgVectorEmbedding `json:"embedding" jsonschema:"required"`
+	// OpenAI embedding provider configuration. Required if PgVectorConfig is set.
+	OpenAIEmbedding OpenAIEmbedding `json:"openai_embedding" jsonschema:"required"`
 }
 
 // PgVectorTableConfig defines per-source-table embedding configuration.
+// SourceTableName is the base/source table from which text columns will be embedded.
+// TargetTableName is the destination table that will be created to store embeddings
+// and metadata columns.
 type PgVectorTableConfig struct {
-	TableName       string   `json:"table_name" jsonschema:"required,minLength=1"`
+	SourceTableName string   `json:"source_table_name" jsonschema:"required,minLength=1"`
+	TargetTableName string   `json:"target_table_name" jsonschema:"required,minLength=1"`
 	EmbedColumns    []string `json:"embed_columns" jsonschema:"required,minItems=1"`
-	MetadataColumns []string `json:"metadata_columns" jsonschema:"required,minItems=1"`
+	MetadataColumns []string `json:"metadata_columns,omitempty"`
 }
 
 // PgVectorTextSplitter defines how source text should be split into chunks for embedding.
@@ -177,20 +191,21 @@ type PgVectorRecursiveText struct {
 	ChunkOverlap int `json:"chunk_overlap" jsonschema:"required,minimum=0"`
 }
 
-// PgVectorEmbedding holds embedding provider settings.
-type PgVectorEmbedding struct {
-	Dimensions int    `json:"dimensions" jsonschema:"minimum=1"`
+// OpenAIEmbedding holds embedding provider settings.
+type OpenAIEmbedding struct {
 	APIKey     string `json:"api_key" jsonschema:"required,minLength=1,title=OpenAI API Key"`
 	ModelName  string `json:"model_name" jsonschema:"required,minLength=1"`
+	Dimensions int    `json:"dimensions" jsonschema:"minimum=1"`
 }
 
+// GetPgVectorTableConfig returns the pgvector table configuration for the given source table name.
 func (s *Spec) GetPgVectorTableConfig(tableName string) *PgVectorTableConfig {
 	if s.PgVectorConfig == nil {
 		return nil
 	}
-	for _, tbl := range s.PgVectorConfig.Tables {
-		if tbl.TableName == tableName {
-			return &tbl
+	for i := range s.PgVectorConfig.Tables {
+		if s.PgVectorConfig.Tables[i].SourceTableName == tableName {
+			return &s.PgVectorConfig.Tables[i]
 		}
 	}
 	return nil
