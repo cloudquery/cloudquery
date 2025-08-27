@@ -30,9 +30,9 @@ Unsupported types are converted to text using their string representation.
 | Interval[Month]        | ✅ Yes      | `text`          |
 | JSON                   | ✅ Yes      | `jsonb`         |
 | Large Binary           | ✅ Yes      | `bytea`         |
-| Large List             | ✅ Yes      | Array           |
+| Large List             | ✅ Yes      | Array of element type |
 | Large String           | ✅ Yes      | `text`          |
-| List                   | ✅ Yes      | Array           |
+| List                   | ✅ Yes      | Array of element type |
 | MAC                    | ✅ Yes      | `text`          |
 | Map                    | ✅ Yes      | `text`          |
 | String                 | ✅ Yes      | `text`          |
