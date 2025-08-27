@@ -1,5 +1,3 @@
-# SQLite Types
-
 The SQLite destination supports most [Apache Arrow](https://arrow.apache.org/docs/index.html)
 types. The following table shows the supported types and how they are mapped
 to [SQLite data types](https://www.sqlite.org/datatype3.html).

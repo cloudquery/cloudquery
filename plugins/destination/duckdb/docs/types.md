@@ -1,5 +1,3 @@
-# DuckDB Types
-
 The DuckDB destination supports most [Apache Arrow](https://arrow.apache.org/docs/index.html)
 types. The following table shows the supported types and how they are mapped
 to [DuckDB data types](https://duckdb.org/docs/sql/data_types/overview).
