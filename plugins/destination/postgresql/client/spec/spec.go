@@ -45,7 +45,7 @@ type Spec struct {
 	// Optional configuration to enable PgVector embedding support.
 	PgVectorConfig *PgVectorConfig `json:"pgvector_config,omitempty"`
 
-  // Number of times to retry a transaction if a deadlock is detected by Postgres.
+	// Number of times to retry a transaction if a deadlock is detected by Postgres.
 	RetryOnDeadlock int64 `json:"retry_on_deadlock,omitempty" jsonschema:"default=0"`
 }
 
