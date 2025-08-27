@@ -52,5 +52,4 @@ Unsupported types are converted to strings using their string representation.
 - List types are recursively transformed and stored as BSON arrays
 - All integer types smaller than Int32 are promoted to Int32 (BSON's native integer type)
 - Float32 values are stored as Double (BSON's native floating-point type)
-
-† Uint64 values are stored as BSON Int64 using signed conversion. Values exceeding 9,223,372,036,854,775,807 (max int64) will overflow and be stored as negative numbers, potentially causing data loss.
+- Uint64 values are stored as BSON Int64 using signed conversion. Values exceeding 9,223,372,036,854,775,807 (max int64) will overflow and be stored as negative numbers, potentially causing data loss.

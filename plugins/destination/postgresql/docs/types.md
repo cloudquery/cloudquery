@@ -37,14 +37,14 @@ Unsupported types are converted to text using their string representation.
 | Map                    | ✅ Yes      | `text`          |
 | String                 | ✅ Yes      | `text`          |
 | Struct                 | ✅ Yes      | `text`          |
-| Time32                 | ✅ Yes      | `time`          |
-| Time64                 | ✅ Yes      | `time`          |
-| Timestamp              | ✅ Yes      | `timestamptz`   |
+| Time32                 | ✅ Yes      | `time without time zone` |
+| Time64                 | ✅ Yes      | `time without time zone` |
+| Timestamp              | ✅ Yes      | `timestamp without time zone`   |
 | UUID                   | ✅ Yes      | `uuid`          |
 | Uint8                  | ✅ Yes      | `smallint`      |
 | Uint16                 | ✅ Yes      | `integer`       |
 | Uint32                 | ✅ Yes      | `bigint`        |
-| Uint64                 | ✅ Yes      | `numeric` †     |
+| Uint64                 | ✅ Yes      | `numeric(20,0)` |
 | Union                  | ✅ Yes      | `text`          |
 
 ## Notes
@@ -52,8 +52,9 @@ Unsupported types are converted to text using their string representation.
 - Null characters (`\x00`) are automatically stripped from string values for PostgreSQL compatibility
 - JSON data is stored as `jsonb` with null characters stripped from string values  
 - List types are converted to PostgreSQL arrays with recursive transformation
-- Unsigned integer types are promoted to larger signed types to prevent overflow
 - Time values are stored with microsecond precision
-- Timestamps are stored as `timestamptz` (timestamp with timezone) in UTC
+- Timestamps are stored as `timestamp without time zone` in UTC
 
-† For CrateDB compatibility, Uint64 values are stored as strings instead of numeric
+:::callout{type="info"}
+For CrateDB compatibility, Uint64 values are stored as strings instead of numeric
+:::
