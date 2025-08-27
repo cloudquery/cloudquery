@@ -26,10 +26,17 @@ func TestPlugin(t *testing.T) {
 	plugin.TestWriterSuiteRunner(t,
 		p,
 		plugin.WriterTestSuiteTests{
-			SkipMigrate:      true,
 			SkipDeleteRecord: true,
 			SkipSpecificWriteTests: plugin.WriteTests{
 				DuplicatePK: true,
+			},
+			SafeMigrations: plugin.SafeMigrations{
+				AddColumn:              true,
+				AddColumnNotNull:       false,
+				RemoveColumn:           true,
+				RemoveColumnNotNull:    false,
+				RemoveUniqueConstraint: true,
+				MovePKToCQOnly:         true,
 			},
 		},
 		plugin.WithTestDataOptions(schema.TestSourceOptions{
