@@ -20,7 +20,7 @@ Unsupported types are converted to text using their string representation.
 | Float16                | ✅ Yes      | `text`          |
 | Float32                | ✅ Yes      | `real`          |
 | Float64                | ✅ Yes      | `double precision` |
-| Inet                   | ✅ Yes      | `text`          |
+| Inet                   | ✅ Yes      | `inet`          |
 | Int8                   | ✅ Yes      | `smallint`      |
 | Int16                  | ✅ Yes      | `smallint`      |
 | Int32                  | ✅ Yes      | `integer`       |
