@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.25](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.6.24...plugins-destination-mongodb-v2.6.25) (2025-08-27)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.89.0 ([#21238](https://github.com/cloudquery/cloudquery/issues/21238)) ([deb4cee](https://github.com/cloudquery/cloudquery/commit/deb4cee9012b1506d48db44de78d104b498813cf))
+
 ## [2.6.24](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.6.23...plugins-destination-mongodb-v2.6.24) (2025-07-31)
 
 

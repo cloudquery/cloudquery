@@ -1,5 +1,13 @@
 # Changelog
 
+## [7.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.3.1...plugins-destination-clickhouse-v7.3.2) (2025-08-27)
+
+
+### Bug Fixes
+
+* Add more verbose error for when partition and sorting key changes ([#21265](https://github.com/cloudquery/cloudquery/issues/21265)) ([52d3e7f](https://github.com/cloudquery/cloudquery/commit/52d3e7f4bb008be6b95717d9ddd96917a3dc4a0a))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.89.0 ([#21238](https://github.com/cloudquery/cloudquery/issues/21238)) ([deb4cee](https://github.com/cloudquery/cloudquery/commit/deb4cee9012b1506d48db44de78d104b498813cf))
+
 ## [7.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.3.0...plugins-destination-clickhouse-v7.3.1) (2025-08-07)
 
 
