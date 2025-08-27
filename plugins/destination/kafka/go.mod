@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/kafka/v5
 
-go 1.24.5
+go 1.25.0
 
 require (
 	github.com/IBM/sarama v1.44.0
