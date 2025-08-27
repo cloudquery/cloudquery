@@ -1,5 +1,17 @@
 # Changelog
 
+## [8.10.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.9.0...plugins-destination-postgresql-v8.10.0) (2025-08-27)
+
+
+### Features
+
+* Retry on Postgres deadlock ([#21268](https://github.com/cloudquery/cloudquery/issues/21268)) ([cfcffba](https://github.com/cloudquery/cloudquery/commit/cfcffbabf320e9e2610b59e1d48a04e9da8493e6))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.89.0 ([#21238](https://github.com/cloudquery/cloudquery/issues/21238)) ([deb4cee](https://github.com/cloudquery/cloudquery/commit/deb4cee9012b1506d48db44de78d104b498813cf))
+
 ## [8.9.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.8.13...plugins-destination-postgresql-v8.9.0) (2025-07-31)
 
 
