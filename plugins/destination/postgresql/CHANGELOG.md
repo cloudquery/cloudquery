@@ -1,5 +1,12 @@
 # Changelog
 
+## [8.12.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.11.0...plugins-destination-postgresql-v8.12.0) (2025-08-28)
+
+
+### Features
+
+* Added Type Documentation ([#21279](https://github.com/cloudquery/cloudquery/issues/21279)) ([d2945a1](https://github.com/cloudquery/cloudquery/commit/d2945a1caf48505bc6c11f9a9d59723018df8601))
+
 ## [8.11.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.10.0...plugins-destination-postgresql-v8.11.0) (2025-08-27)
 
 
