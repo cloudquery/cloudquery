@@ -1,3 +1,8 @@
+---
+hub-title: Configuration
+hub-order: 3
+---
+
 This is a basic configuration that will save all your sync resources to `db.sql`.
 
 ```yaml copy
