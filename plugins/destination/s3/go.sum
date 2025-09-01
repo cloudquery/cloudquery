@@ -68,8 +68,8 @@ github.com/cloudquery/cloudquery-api-go v1.14.1 h1:/dkQ3zTgf9lLpIenPqTeSVuO9BveT
 github.com/cloudquery/cloudquery-api-go v1.14.1/go.mod h1:ake4iFUcOn01T45eI9jgH42fnhLWhfJbLqw4/aJkZG0=
 github.com/cloudquery/codegen v0.3.31 h1:YDqokUyWSECewoaISY4D2iIpFRTDnPtWmQOFgaQ60c0=
 github.com/cloudquery/codegen v0.3.31/go.mod h1:vU4G8lqQUPHF9ooUQY0RVbbjMPOD/6uqJDgMXfSgK8M=
-github.com/cloudquery/filetypes/v4 v4.6.9 h1:SjGlFFOE1xM/0Z4t7DAF1tVHUahZ8kLusd+4OBInvAM=
-github.com/cloudquery/filetypes/v4 v4.6.9/go.mod h1:n8ImVrMPA225iamT7MgJk2aNde0C+mTmskFjs0Zttp4=
+github.com/cloudquery/filetypes/v4 v4.6.10 h1:gkb/KnTY8JAAUJG/9WerzLVK8DZ3n4PVoP+0J1ldRHw=
+github.com/cloudquery/filetypes/v4 v4.6.10/go.mod h1:v5kVaSTrEb5JJavG0cqDnOomMZh3T3geQcsw4xfmu28=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66 h1:OZLPSIBYEfvkAUeOeM8CwTgVQy5zhayI99ishCrsFV0=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66/go.mod h1:0SoZ/U7yJlNOR+fWsBSeTvTbGXB6DK01tzJ7m2Xfg34=
 github.com/cloudquery/plugin-pb-go v1.26.18 h1:IFr4F7e1Fk5P5eBKjchP+lLAyHJhbqxsC8nJQFzLZOI=
@@ -183,8 +183,8 @@ github.com/stretchr/testify v1.4.0/go.mod h1:j7eGeouHqKxXV5pUuKE4zz7dFj8WfuZ+81P
 github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.8.0/go.mod h1:yNjHg4UonilssWZ8iaSj1OCr/vHnekPRkoO+kdMU+MU=
 github.com/stretchr/testify v1.8.1/go.mod h1:w2LPCIKwWwSfY2zedu0+kehJoqGctiVI29o6fzry7u4=
-github.com/stretchr/testify v1.10.0 h1:Xv5erBjTwe/5IxqUQTdXv5kgmIvbHo3QQyRwhJsOfJA=
-github.com/stretchr/testify v1.10.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
+github.com/stretchr/testify v1.11.0 h1:ib4sjIrwZKxE5u/Japgo/7SJV3PvgjGiRNAvTVGqQl8=
+github.com/stretchr/testify v1.11.0/go.mod h1:wZwfW3scLgRK+23gO65QZefKpKQRnfz6sD981Nm4B6U=
 github.com/thoas/go-funk v0.9.3 h1:7+nAEx3kn5ZJcnDm2Bh23N2yOtweO14bi//dvRtgLpw=
 github.com/thoas/go-funk v0.9.3/go.mod h1:+IWnUfUmFO1+WVYQWQtIJHeRRdaIyyYglZN7xzUPe4Q=
 github.com/wk8/go-ordered-map/v2 v2.1.8 h1:5h/BUHu93oj4gIdvHHHGsScSTMijfx5PeYkE/fJgbpc=
