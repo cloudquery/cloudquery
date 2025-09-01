@@ -9,10 +9,10 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.40.0
 	github.com/aws/aws-sdk-go-v2/service/sts v1.37.0
 	github.com/cloudquery/codegen v0.3.31
-	github.com/cloudquery/plugin-sdk/v4 v4.89.0
+	github.com/cloudquery/plugin-sdk/v4 v4.89.1
 	github.com/goccy/go-json v0.10.5
 	github.com/rs/zerolog v1.34.0
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.0
 )
 
 require (
@@ -26,8 +26,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.13.3 // indirect
-	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.34.1 // indirect
-	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.31.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.35.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.32.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.28.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.33.0 // indirect
 	github.com/aws/smithy-go v1.22.5 // indirect
@@ -57,7 +57,7 @@ require (
 	github.com/oapi-codegen/runtime v1.1.2 // indirect
 	github.com/pierrec/lz4/v4 v4.1.22 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
-	github.com/samber/lo v1.49.1 // indirect
+	github.com/samber/lo v1.51.0 // indirect
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2 // indirect
 	github.com/spf13/cobra v1.9.1 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
@@ -82,7 +82,7 @@ require (
 	golang.org/x/net v0.42.0 // indirect
 	golang.org/x/sync v0.16.0 // indirect
 	golang.org/x/sys v0.34.0 // indirect
-	golang.org/x/text v0.27.0 // indirect
+	golang.org/x/text v0.28.0 // indirect
 	golang.org/x/tools v0.35.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250603155806-513f23925822 // indirect
