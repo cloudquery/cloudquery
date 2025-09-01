@@ -1,5 +1,4 @@
 ---
-hub-title: Supported Types
 hub-order: 5
 ---
 
@@ -13,7 +12,7 @@ Unsupported types are always mapped to `text`.
 
 | Arrow Column Type      | Supported? | SQLite Type |
 | ---------------------- | ---------- | ----------- |
-| Binary                 | ✅ Yes      | `blob`      |
+| Binary                 | ✅ Yes     | `blob`      |
 | Boolean                | ✅ Yes     | `boolean`   |
 | Date32                 | ✅ Yes     | `text`      |
 | Date64                 | ✅ Yes     | `text`      |

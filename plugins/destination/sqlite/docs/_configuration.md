@@ -1,5 +1,4 @@
 ---
-hub-title: Configuration
 hub-order: 3
 ---
 

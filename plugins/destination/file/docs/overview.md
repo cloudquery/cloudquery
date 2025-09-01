@@ -4,6 +4,7 @@ stage: GA
 title: File Destination Plugin
 description: CloudQuery File destination plugin for exporting to CSV, JSON and Parquet
 ---
+
 # File Destination Plugin
 
 :badge
@@ -11,6 +12,10 @@ description: CloudQuery File destination plugin for exporting to CSV, JSON and P
 This destination plugin lets you sync data from a CloudQuery source to local files in various formats. It currently supports CSV, line-delimited JSON and Parquet.
 
 This plugin is useful in local environments, but also in production environments where scalability, performance and cost are requirements. For example, this plugin can be used as part of a system that syncs sources across multiple virtual machines, uploads Parquet files to a remote storage (such as S3 or GCS), and finally loads them to data lakes such as BigQuery or Athena in batch mode. If this is your end goal, you may also want to look at more specific destination cloud storage destination plugins such as [S3](/docs/plugins/destinations/s3/overview), [GCS](/docs/plugins/destinations/gcs/overview) or [Azure Blob Storage](/docs/plugins/destinations/azblob/overview).
+
+## Authentication
+
+:authentication
 
 ## Example
 
@@ -39,7 +44,7 @@ This is the (nested) spec used by the file destination Plugin.
 
 - `format` (`string`) (**required**)
 
-  Format of the output file.  Supported values are `csv`, `json` and `parquet`.
+  Format of the output file. Supported values are `csv`, `json` and `parquet`.
 
 - `format_spec` ([format_spec](#format_spec)) (optional)
 
@@ -97,6 +102,6 @@ Reserved for future use.
 
   Some Parquet readers require a specific root repetition option to be able to read the file. For example, importing Parquet files into [Snowflake](https://www.snowflake.com/en/) requires the root repetition to be `undefined`.
 
-- `max_row_group_length` (`integer`) (optional) (default: `134217728` (= 128 * 1024 * 1024))
+- `max_row_group_length` (`integer`) (optional) (default: `134217728` (= 128 _ 1024 _ 1024))
 
   The maximum number of rows in a single row group. Use a lower number to reduce memory usage when reading the Parquet files, and a higher number to increase the efficiency of reading the Parquet files.

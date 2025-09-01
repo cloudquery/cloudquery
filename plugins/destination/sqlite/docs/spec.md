@@ -1,5 +1,4 @@
 ---
-hub-title: SQLite Spec
 hub-order: 4
 ---
 
