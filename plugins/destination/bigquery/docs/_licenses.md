@@ -13,9 +13,9 @@ The following tools / packages are used in this plugin:
 | cloud.google.com/go/compute/metadata | Apache-2.0 |
 | cloud.google.com/go/iam | Apache-2.0 |
 | github.com/adrg/xdg | MIT |
+| github.com/apache/arrow-go/v18 | Apache-2.0 |
 | github.com/apache/arrow/go/v13 | Apache-2.0 |
 | github.com/apache/arrow/go/v15 | Apache-2.0 |
-| github.com/apache/arrow-go/v18 | Apache-2.0 |
 | github.com/apapsch/go-jsonmerge/v2 | MIT |
 | github.com/aws/aws-sdk-go-v2 | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/config | Apache-2.0 |
@@ -36,8 +36,9 @@ The following tools / packages are used in this plugin:
 | github.com/aws/smithy-go/internal/sync/singleflight | BSD-3-Clause |
 | github.com/bahlo/generic-list-go | BSD-3-Clause |
 | github.com/buger/jsonparser | MIT |
-| github.com/cenkalti/backoff/v4 | MIT |
+| github.com/cenkalti/backoff/v5 | MIT |
 | github.com/cloudquery/cloudquery-api-go | MPL-2.0 |
+| github.com/cloudquery/codegen/jsonschema/docs | MPL-2.0 |
 | github.com/cloudquery/plugin-pb-go | MPL-2.0 |
 | github.com/cloudquery/plugin-sdk/v2/internal/glob | MIT |
 | github.com/cloudquery/plugin-sdk/v2/schema | MIT |
@@ -51,7 +52,6 @@ The following tools / packages are used in this plugin:
 | github.com/go-logr/logr | Apache-2.0 |
 | github.com/go-logr/stdr | Apache-2.0 |
 | github.com/goccy/go-json | MIT |
-| github.com/golang/groupcache/lru | Apache-2.0 |
 | github.com/google/flatbuffers/go | Apache-2.0 |
 | github.com/google/s2a-go | Apache-2.0 |
 | github.com/google/uuid | BSD-3-Clause |
@@ -61,7 +61,6 @@ The following tools / packages are used in this plugin:
 | github.com/grpc-ecosystem/grpc-gateway/v2 | BSD-3-Clause |
 | github.com/hashicorp/go-cleanhttp | MPL-2.0 |
 | github.com/hashicorp/go-retryablehttp | MPL-2.0 |
-| github.com/huandu/xstrings | MIT |
 | github.com/invopop/jsonschema | MIT |
 | github.com/klauspost/compress | Apache-2.0 |
 | github.com/klauspost/compress/internal/snapref | BSD-3-Clause |
@@ -73,14 +72,16 @@ The following tools / packages are used in this plugin:
 | github.com/pierrec/lz4/v4 | BSD-3-Clause |
 | github.com/pmezard/go-difflib/difflib | BSD-3-Clause |
 | github.com/rs/zerolog | MIT |
+| github.com/samber/lo | MIT |
 | github.com/santhosh-tekuri/jsonschema/v6 | Apache-2.0 |
 | github.com/spf13/cobra | Apache-2.0 |
 | github.com/spf13/pflag | BSD-3-Clause |
+| github.com/stoewer/go-strcase | MIT |
 | github.com/stretchr/testify | MIT |
 | github.com/thoas/go-funk | MIT |
 | github.com/wk8/go-ordered-map/v2 | Apache-2.0 |
 | github.com/zeebo/xxh3 | BSD-2-Clause |
-| go.opencensus.io | Apache-2.0 |
+| go.opentelemetry.io/auto/sdk | Apache-2.0 |
 | go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc | Apache-2.0 |
 | go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp | Apache-2.0 |
 | go.opentelemetry.io/otel | Apache-2.0 |
