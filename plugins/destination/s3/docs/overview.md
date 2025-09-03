@@ -5,7 +5,6 @@ title: S3 Destination Plugin
 description: CloudQuery S3 destination plugin documentation
 ---
 
-
 :badge
 
 This destination plugin lets you sync data from a CloudQuery source to remote S3 storage in various formats such as CSV, JSON and Parquet.
