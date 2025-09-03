@@ -199,7 +199,7 @@ func sync(cmd *cobra.Command, args []string) error {
 				defer otelReceiver.Shutdown(ctx)
 			}
 		} else {
-			log.Warn().Strs("sources", sourcesWithOtelEndpoint).Msg("Sync Summary requested with sources having `otel_endpoint` configured. Using the configured `otel_endpoint` for table duration info.")
+			log.Warn().Strs("sources", sourcesWithOtelEndpoint).Msg("Sync Summary requested with sources having `otel_endpoint` configured, table durations will NOT be included in summary.")
 		}
 	}
 
