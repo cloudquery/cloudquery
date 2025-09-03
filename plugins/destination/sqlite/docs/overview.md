@@ -1,8 +1,5 @@
 ---
 name: SQLite
-stage: GA
-title: SQLite Destination Plugin
-description: CloudQuery SQLite destination plugin documentation
 hub-order: 1
 ---
 
