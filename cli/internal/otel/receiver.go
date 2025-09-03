@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/jedib0t/go-pretty/v6/table"
+	tablepkg "github.com/jedib0t/go-pretty/v6/table"
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/config/configgrpc"
 	"go.opentelemetry.io/collector/config/confighttp"
@@ -71,7 +71,7 @@ func (c Consumer) Shutdown(ctx context.Context) {
 }
 
 type metricConsumer func(context.Context, pluginMetric)
-type tableDurationGetter func(table string) time.Duration
+type tableDurationGetter func(string) time.Duration
 
 func newMetricConsumer(metricsFile writeSeekCloser, quit chan any, wg *sync.WaitGroup) (metricConsumer, tableDurationGetter) {
 	tableLock := sync.RWMutex{}
@@ -87,9 +87,9 @@ func newMetricConsumer(metricsFile writeSeekCloser, quit chan any, wg *sync.Wait
 		if err != nil {
 			return
 		}
-		t := table.NewWriter()
+		t := tablepkg.NewWriter()
 		t.SetOutputMirror(metricsFile)
-		t.AppendHeader(table.Row{"Table", "Duration", "Resources", "Errors", "Panics"})
+		t.AppendHeader(tablepkg.Row{"Table", "Duration", "Resources", "Errors", "Panics"})
 		sort.SliceStable(metrics, func(i, j int) bool {
 			m1 := metrics[i]
 			m2 := metrics[j]
@@ -114,7 +114,7 @@ func newMetricConsumer(metricsFile writeSeekCloser, quit chan any, wg *sync.Wait
 			case metrics.StartTime != nil:
 				duration = time.Since(*metrics.StartTime)
 			}
-			row := table.Row{
+			row := tablepkg.Row{
 				metrics.Table,
 				duration,
 				metrics.Resources,
@@ -177,7 +177,7 @@ func newMetricConsumer(metricsFile writeSeekCloser, quit chan any, wg *sync.Wait
 				durationsMap[table] = d
 			}
 			dur := time.Duration(metric.Value * int64(time.Millisecond))
-			if d == nil || dur > *d { // Assume longest duration is the full sync duration between multiple clientIDs
+			if dur > *d { // Assume longest duration is the full sync duration between multiple clientIDs
 				d = &dur
 			}
 		case "sync.table.resources":
