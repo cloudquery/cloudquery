@@ -5,7 +5,6 @@ title: S3 Destination Plugin
 description: CloudQuery S3 destination plugin documentation
 ---
 
-# S3 Destination Plugin
 
 :badge
 
