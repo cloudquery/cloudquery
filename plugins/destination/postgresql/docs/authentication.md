@@ -1,8 +1,3 @@
----
-hub-title: Authentication
----
-
-
 In order to store information in a PostgreSQL database, cloudquery needs to be authenticated. Insert the PostgreSQL connection string in the `connection_string` field in the sync config file.
 
 Acceptable formats are:

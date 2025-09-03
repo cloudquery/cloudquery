@@ -1,5 +1,4 @@
 ---
-hub-title: Authentication
 hub-order: 1
 ---
 
