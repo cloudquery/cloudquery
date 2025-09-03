@@ -61,6 +61,12 @@ var (
 	tablesQueries       []map[string]tableQueries
 )
 
+type tableStat struct {
+	cloudquery_api.SyncRunTableProgressValue
+	StartTime, LastMessageTime time.Time
+}
+type tableStats map[string]tableStat
+
 func init() {
 	if err := yaml.Unmarshal(tablesQueriesString, &tablesQueries); err != nil {
 		panic(err)
@@ -192,7 +198,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		syncTimeTook   time.Duration
 		totalResources = int64(0)
 		totals         = sourceClient.Metrics()
-		statsPerTable  = utils.NewConcurrentMap[string, cloudquery_api.SyncRunTableProgressValue]()
+		statsPerTable  = utils.NewConcurrentMap[string, tableStat]()
 	)
 	defer func() {
 		analytics.TrackSyncCompleted(ctx, invocationUUID.UUID, analytics.SyncFinishedEvent{
@@ -418,7 +424,11 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			if atomic.LoadInt64(&isComplete) == 1 {
 				status = cloudquery_api.SyncRunStatusCompleted
 			}
-			tableProgress := cloudquery_api.SyncRunTableProgress(statsPerTable.GetAll())
+			tableProgressStats := tableStats(statsPerTable.GetAll())
+			tableProgress := make(cloudquery_api.SyncRunTableProgress, len(tableProgressStats))
+			for k, v := range tableProgressStats {
+				tableProgress[k] = v.SyncRunTableProgressValue
+			}
 			obj := cloudquery_api.CreateSyncRunProgressJSONRequestBody{
 				Rows:          atomic.LoadInt64(&totalResources),
 				Errors:        int64(totals.Errors),
@@ -546,6 +556,9 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				sourceTables[tableName] = true
 				stats, _ := statsPerTable.Get(tableName)
 				stats.Rows += record.NumRows()
+				if stats.StartTime.IsZero() {
+					stats.StartTime = time.Now()
+				}
 				statsPerTable.Add(tableName, stats)
 				if remoteProgressReporter != nil {
 					remoteProgressReporter.SendSignal()
@@ -566,6 +579,9 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 						return err
 					}
 				}
+				stats, _ = statsPerTable.Get(tableName)
+				stats.LastMessageTime = time.Now()
+				statsPerTable.Add(tableName, stats)
 			case *plugin.Sync_Response_DeleteRecord:
 				for i := range destinationsPbClients {
 					destinationName := destinationSpecs[i].Name
@@ -718,6 +734,12 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				acc[tableName] = uint64(tableProgress[tableName].Errors)
 				return acc
 			}, map[string]uint64{}),
+			DurationsPerTable: lo.Reduce(sourceTables, func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
+				if !tableProgress[tableName].StartTime.IsZero() && !tableProgress[tableName].LastMessageTime.IsZero() {
+					acc[tableName] = uint64(tableProgress[tableName].LastMessageTime.Sub(tableProgress[tableName].StartTime).Milliseconds())
+				}
+				return acc
+			}, map[string]uint64{}),
 		}
 
 		if destinationSpecs[i].SyncGroupId != "" {
@@ -786,7 +808,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	return nil
 }
 
-func hintSelectMessage(destinationSpecs []specs.Destination, statsPerTable *utils.ConcurrentMap[string, cloudquery_api.SyncRunTableProgressValue], sourceTables map[string]bool) {
+func hintSelectMessage(destinationSpecs []specs.Destination, statsPerTable *utils.ConcurrentMap[string, tableStat], sourceTables map[string]bool) {
 	val, _ := config.GetValue("first_sync_completed")
 	firstSyncCompleted, _ := strconv.ParseBool(val)
 	if firstSyncCompleted {
