@@ -3,7 +3,6 @@ name: SQLite
 hub-order: 1
 ---
 
-# SQLite Destination Plugin
 
 :badge
 
