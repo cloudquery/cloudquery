@@ -61,6 +61,7 @@ type Consumer struct {
 	quit            chan any
 	metricsFilename string
 	metricsFile     writeSeekCloser
+	durationSetter  tableDurationSetter
 	consumeMetric   func(context.Context, pluginMetric)
 	wg              *sync.WaitGroup
 }
@@ -71,12 +72,11 @@ func (c Consumer) Shutdown(ctx context.Context) {
 }
 
 type metricConsumer func(context.Context, pluginMetric)
-type tableDurationGetter func(string) time.Duration
+type tableDurationSetter func(string, time.Duration)
 
-func newMetricConsumer(metricsFile writeSeekCloser, quit chan any, wg *sync.WaitGroup) (metricConsumer, tableDurationGetter) {
+func newMetricConsumer(metricsFile writeSeekCloser, durationCallback tableDurationSetter, quit chan any, wg *sync.WaitGroup) metricConsumer {
 	tableLock := sync.RWMutex{}
 	metricsMap := make(map[string]*tableMetric)
-	durationsMap := make(map[string]*time.Duration)
 	ticker := time.NewTicker(20 * time.Second)
 
 	renderTable := func() {
@@ -145,7 +145,7 @@ func newMetricConsumer(metricsFile writeSeekCloser, quit chan any, wg *sync.Wait
 		}
 	}()
 
-	consumerFunc := func(ctx context.Context, metric pluginMetric) {
+	return func(ctx context.Context, metric pluginMetric) {
 		table := metric.Attributes["sync.table.name"].(string)
 		clientId, _ := metric.Attributes["sync.table.client_id"].(string)
 
@@ -170,16 +170,7 @@ func newMetricConsumer(metricsFile writeSeekCloser, quit chan any, wg *sync.Wait
 			metrics.EndTime = &endTime
 		case "sync.table.duration":
 			metrics.Duration = &metric.Value
-
-			d, ok := durationsMap[table]
-			if !ok {
-				d = new(time.Duration)
-				durationsMap[table] = d
-			}
-			dur := time.Duration(metric.Value * int64(time.Millisecond))
-			if dur > *d { // Assume longest duration is the full sync duration between multiple clientIDs
-				*d = dur
-			}
+			durationCallback(table, time.Duration(metric.Value*int64(time.Millisecond)))
 		case "sync.table.resources":
 			metrics.Resources = metric.Value
 		case "sync.table.errors":
@@ -187,14 +178,6 @@ func newMetricConsumer(metricsFile writeSeekCloser, quit chan any, wg *sync.Wait
 		case "sync.table.panics":
 			metrics.Panics = metric.Value
 		}
-	}
-	return consumerFunc, func(table string) time.Duration {
-		tableLock.RLock()
-		defer tableLock.RUnlock()
-		if d, ok := durationsMap[table]; ok && d != nil {
-			return *d
-		}
-		return 0
 	}
 }
 
@@ -249,8 +232,6 @@ type OtelReceiver struct {
 	consumer   Consumer
 	components []component.Component
 	Endpoint   string
-
-	TableDuration tableDurationGetter
 }
 
 func getFreePort() (int, error) {
@@ -270,10 +251,17 @@ func WithMetricsFilename(filename string) OtelReceiverOption {
 	}
 }
 
+func WithDurationCallback(fn tableDurationSetter) OtelReceiverOption {
+	return func(c *Consumer) {
+		c.durationSetter = fn
+	}
+}
+
 func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelReceiver, error) {
 	c := Consumer{
-		wg:          &sync.WaitGroup{},
-		metricsFile: &nopWriteSeekCloser{},
+		wg:             &sync.WaitGroup{},
+		metricsFile:    &nopWriteSeekCloser{},
+		durationSetter: func(string, time.Duration) {},
 	}
 	for _, opt := range opts {
 		opt(&c)
@@ -288,8 +276,7 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 	}
 
 	quit := make(chan any)
-	var td tableDurationGetter
-	c.consumeMetric, td = newMetricConsumer(c.metricsFile, quit, c.wg)
+	c.consumeMetric = newMetricConsumer(c.metricsFile, c.durationSetter, quit, c.wg)
 	c.quit = quit
 
 	factory := otlpreceiver.NewFactory()
@@ -350,8 +337,6 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 		consumer:   c,
 		components: components,
 		Endpoint:   httpConfig.Endpoint,
-
-		TableDuration: td,
 	}, nil
 }
 

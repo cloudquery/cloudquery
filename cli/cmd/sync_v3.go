@@ -150,7 +150,7 @@ type syncV3Options struct {
 	summaryLocation           string
 	shard                     *shard
 	cqColumnsNotNull          bool
-	tableDuration             func(table string) time.Duration
+	tableDurations            func() map[string]time.Duration
 }
 
 func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr error) {
@@ -706,9 +706,10 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	}, map[string]uint64{})
 
 	durationsPerTable := map[string]uint64{}
-	if syncOptions.tableDuration != nil {
+	if syncOptions.tableDurations != nil {
+		data := syncOptions.tableDurations()
 		durationsPerTable = lo.Reduce(sourceTableNames, func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
-			acc[tableName] = uint64(syncOptions.tableDuration(tableName).Milliseconds())
+			acc[tableName] = uint64(data[tableName].Milliseconds())
 			return acc
 		}, durationsPerTable)
 	}
