@@ -75,14 +75,14 @@ type metricConsumer func(context.Context, pluginMetric)
 type tableDurationSetter func(string, time.Duration)
 
 func newMetricConsumer(metricsFile writeSeekCloser, durationCallback tableDurationSetter, quit chan any, wg *sync.WaitGroup) metricConsumer {
-	tableLock := sync.RWMutex{}
+	tableLock := sync.Mutex{}
 	metricsMap := make(map[string]*tableMetric)
 	ticker := time.NewTicker(20 * time.Second)
 
 	renderTable := func() {
-		tableLock.RLock()
+		tableLock.Lock()
 		metrics := maps.Values(metricsMap)
-		tableLock.RUnlock()
+		tableLock.Unlock()
 		_, err := metricsFile.Seek(0, 0)
 		if err != nil {
 			return
