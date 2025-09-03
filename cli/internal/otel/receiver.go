@@ -178,7 +178,7 @@ func newMetricConsumer(metricsFile writeSeekCloser, quit chan any, wg *sync.Wait
 			}
 			dur := time.Duration(metric.Value * int64(time.Millisecond))
 			if dur > *d { // Assume longest duration is the full sync duration between multiple clientIDs
-				d = &dur
+				*d = dur
 			}
 		case "sync.table.resources":
 			metrics.Resources = metric.Value
