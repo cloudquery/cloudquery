@@ -94,7 +94,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 		return fmt.Errorf("failed to put item into BigQuery table %s: %w", name, err)
 	}
 
-	return nil
+	return c.embeddingsClient.WriteTableBatch(ctx, name, msgs)
 }
 
 func getValueForBigQuery(col arrow.Array, i int) any {

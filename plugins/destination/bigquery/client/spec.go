@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"slices"
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
@@ -75,6 +76,36 @@ type Spec struct {
 
 	// Identifies the project context bq client should execute in. Defaults to the project_id. You can set it to *detect-project-id* to automatically detect project id from credentials in the environment.
 	ClientProjectID string `json:"client_project_id"`
+
+	// Optional: Configuration for creating text embeddings for certain tables
+	TextEmbeddings *TextEmbeddingsSpec `json:"text_embeddings,omitempty"`
+}
+
+type TextEmbeddingsSpec struct {
+	RemoteModelName string        `json:"remote_model_name" jsonschema:"required,minLength=1"`
+	Tables          []TableConfig `json:"tables,omitempty"`
+	TextSplitter    TextSplitter  `json:"text_splitter"`
+}
+
+// TableConfig defines per-source-table embedding configuration.
+// SourceTableName is the base/source table from which text columns will be embedded.
+// TargetTableName is the destination table that will be created to store embeddings
+// and metadata columns.
+type TableConfig struct {
+	SourceTableName string   `json:"source_table_name" jsonschema:"required,minLength=1"`
+	TargetTableName string   `json:"target_table_name" jsonschema:"required,minLength=1"`
+	EmbedColumns    []string `json:"embed_columns" jsonschema:"required,minItems=1"`
+	MetadataColumns []string `json:"metadata_columns,omitempty"`
+}
+
+// TextSplitter defines how source text should be split into chunks for embedding.
+type TextSplitter struct {
+	RecursiveText RecursiveText `json:"recursive_text" jsonschema:"required"`
+}
+
+type RecursiveText struct {
+	ChunkSize    int `json:"chunk_size" jsonschema:"required,minimum=1"`
+	ChunkOverlap int `json:"chunk_overlap" jsonschema:"required,minimum=0"`
 }
 
 //go:embed schema.json
@@ -96,6 +127,9 @@ func (s *Spec) SetDefaults() {
 	if s.ClientProjectID == "" {
 		s.ClientProjectID = s.ProjectID
 	}
+	if s.TextEmbeddings != nil {
+		s.TextEmbeddings.SetDefaults()
+	}
 }
 
 func (s *Spec) Validate() error {
@@ -111,6 +145,11 @@ func (s *Spec) Validate() error {
 	if len(s.ServiceAccountKeyJSON) > 0 {
 		if err := isValidJson(s.ServiceAccountKeyJSON); err != nil {
 			return fmt.Errorf("invalid json for service_account_key_json: %w", err)
+		}
+	}
+	if s.TextEmbeddings != nil {
+		if err := s.TextEmbeddings.Validate(); err != nil {
+			return fmt.Errorf("text_embeddings: %w", err)
 		}
 	}
 	return nil
@@ -136,4 +175,60 @@ func (TimePartitioningOption) JSONSchemaExtend(sc *jsonschema.Schema) {
 	for i := range TimePartitioningOptions {
 		sc.Enum[i] = TimePartitioningOptions[i]
 	}
+}
+
+// SetDefaults sets default values for TextEmbeddingsSpec
+func (t *TextEmbeddingsSpec) SetDefaults() {
+	// Set default values for TextSplitter if not set
+	if t.TextSplitter.RecursiveText.ChunkSize == 0 {
+		t.TextSplitter.RecursiveText.ChunkSize = 1000
+	}
+	if t.TextSplitter.RecursiveText.ChunkOverlap == 0 {
+		t.TextSplitter.RecursiveText.ChunkOverlap = 100
+	}
+
+	// Ensure _cq_id is in metadata columns for each table if not already present
+	for i := range t.Tables {
+		hasCqID := slices.Contains(t.Tables[i].MetadataColumns, "_cq_id")
+		if !hasCqID {
+			t.Tables[i].MetadataColumns = append(t.Tables[i].MetadataColumns, "_cq_id")
+		}
+	}
+}
+
+// Validate validates the TextEmbeddingsSpec configuration
+func (t *TextEmbeddingsSpec) Validate() error {
+	if t.RemoteModelName == "" {
+		return errors.New("remote_model_name is required when text_embeddings is set")
+	}
+
+	if len(t.Tables) == 0 {
+		return errors.New("at least one table must be defined when text_embeddings is set")
+	}
+
+	// Validate each table configuration
+	for i, table := range t.Tables {
+		if table.SourceTableName == "" {
+			return fmt.Errorf("table[%d]: source_table_name cannot be empty", i)
+		}
+		if table.TargetTableName == "" {
+			return fmt.Errorf("table[%d]: target_table_name cannot be empty", i)
+		}
+		if len(table.EmbedColumns) == 0 {
+			return fmt.Errorf("table[%d]: at least one embed_column must be set", i)
+		}
+	}
+
+	// Validate TextSplitter if set
+	if t.TextSplitter.RecursiveText.ChunkSize <= 0 {
+		return errors.New("text_splitter.recursive_text.chunk_size must be greater than 0")
+	}
+	if t.TextSplitter.RecursiveText.ChunkOverlap < 0 {
+		return errors.New("text_splitter.recursive_text.chunk_overlap must be non-negative")
+	}
+	if t.TextSplitter.RecursiveText.ChunkOverlap >= t.TextSplitter.RecursiveText.ChunkSize {
+		return errors.New("text_splitter.recursive_text.chunk_overlap must be less than chunk_size")
+	}
+
+	return nil
 }

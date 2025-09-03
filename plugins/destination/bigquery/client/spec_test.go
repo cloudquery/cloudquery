@@ -73,3 +73,146 @@ func TestJSONSchema(t *testing.T) {
 		},
 	})
 }
+
+func TestTextEmbeddingsValidation(t *testing.T) {
+	tests := []struct {
+		name    string
+		spec    Spec
+		wantErr bool
+	}{
+		{
+			name: "valid text embeddings spec",
+			spec: Spec{
+				ProjectID:        "test-project",
+				DatasetID:        "test-dataset",
+				TimePartitioning: TimePartitioningOptionNone,
+				TextEmbeddings: &TextEmbeddingsSpec{
+					RemoteModelName: "textembedding-gecko@001",
+					Tables: []TableConfig{
+						{
+							SourceTableName: "source_table",
+							TargetTableName: "target_table",
+							EmbedColumns:    []string{"content"},
+						},
+					},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "text embeddings without remote model name",
+			spec: Spec{
+				ProjectID:        "test-project",
+				DatasetID:        "test-dataset",
+				TimePartitioning: TimePartitioningOptionNone,
+				TextEmbeddings: &TextEmbeddingsSpec{
+					Tables: []TableConfig{
+						{
+							SourceTableName: "source_table",
+							TargetTableName: "target_table",
+							EmbedColumns:    []string{"content"},
+						},
+					},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "text embeddings without tables",
+			spec: Spec{
+				ProjectID:        "test-project",
+				DatasetID:        "test-dataset",
+				TimePartitioning: TimePartitioningOptionNone,
+				TextEmbeddings: &TextEmbeddingsSpec{
+					RemoteModelName: "textembedding-gecko@001",
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "text embeddings with empty source table name",
+			spec: Spec{
+				ProjectID:        "test-project",
+				DatasetID:        "test-dataset",
+				TimePartitioning: TimePartitioningOptionNone,
+				TextEmbeddings: &TextEmbeddingsSpec{
+					RemoteModelName: "textembedding-gecko@001",
+					Tables: []TableConfig{
+						{
+							SourceTableName: "",
+							TargetTableName: "target_table",
+							EmbedColumns:    []string{"content"},
+						},
+					},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "text embeddings with empty embed columns",
+			spec: Spec{
+				ProjectID:        "test-project",
+				DatasetID:        "test-dataset",
+				TimePartitioning: TimePartitioningOptionNone,
+				TextEmbeddings: &TextEmbeddingsSpec{
+					RemoteModelName: "textembedding-gecko@001",
+					Tables: []TableConfig{
+						{
+							SourceTableName: "source_table",
+							TargetTableName: "target_table",
+							EmbedColumns:    []string{},
+						},
+					},
+				},
+			},
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Call SetDefaults first to set default values
+			tt.spec.SetDefaults()
+			err := tt.spec.Validate()
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Spec.Validate() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestTextEmbeddingsSetDefaults(t *testing.T) {
+	spec := &Spec{
+		ProjectID:        "test-project",
+		DatasetID:        "test-dataset",
+		TimePartitioning: TimePartitioningOptionNone,
+		TextEmbeddings: &TextEmbeddingsSpec{
+			RemoteModelName: "textembedding-gecko@001",
+			Tables: []TableConfig{
+				{
+					SourceTableName: "source_table",
+					TargetTableName: "target_table",
+					EmbedColumns:    []string{"content"},
+				},
+			},
+		},
+	}
+
+	spec.SetDefaults()
+
+	// Check that TextSplitter defaults are set
+	if spec.TextEmbeddings.TextSplitter.RecursiveText.ChunkSize != 1000 {
+		t.Errorf("Expected ChunkSize to be 1000, got %d", spec.TextEmbeddings.TextSplitter.RecursiveText.ChunkSize)
+	}
+	if spec.TextEmbeddings.TextSplitter.RecursiveText.ChunkOverlap != 100 {
+		t.Errorf("Expected ChunkOverlap to be 100, got %d", spec.TextEmbeddings.TextSplitter.RecursiveText.ChunkOverlap)
+	}
+
+	// Check that _cq_id is added to metadata columns
+	if len(spec.TextEmbeddings.Tables[0].MetadataColumns) != 1 {
+		t.Errorf("Expected 1 metadata column, got %d", len(spec.TextEmbeddings.Tables[0].MetadataColumns))
+	}
+	if spec.TextEmbeddings.Tables[0].MetadataColumns[0] != "_cq_id" {
+		t.Errorf("Expected _cq_id in metadata columns, got %s", spec.TextEmbeddings.Tables[0].MetadataColumns[0])
+	}
+}
