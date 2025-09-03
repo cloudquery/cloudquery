@@ -1,5 +1,5 @@
 ---
-hub-title: Advanced Authentication Configuration
+hub-title: Auth Details
 hub-order: 2
 ---
 
