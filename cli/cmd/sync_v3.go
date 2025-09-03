@@ -150,6 +150,7 @@ type syncV3Options struct {
 	summaryLocation           string
 	shard                     *shard
 	cqColumnsNotNull          bool
+	tableDuration             func(table string) time.Duration
 }
 
 func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr error) {
@@ -690,9 +691,29 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	var metadataDataErrors error
 
 	tableProgress := statsPerTable.GetAll()
+
+	sourceTableNames := lo.Keys(sourceTables)
+	slices.Sort(sourceTableNames)
+
+	resourcesPerTable := lo.Reduce(sourceTableNames, func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
+		acc[tableName] = uint64(tableProgress[tableName].Rows)
+		return acc
+	}, map[string]uint64{})
+
+	errorsPerTable := lo.Reduce(sourceTableNames, func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
+		acc[tableName] = uint64(tableProgress[tableName].Errors)
+		return acc
+	}, map[string]uint64{})
+
+	durationsPerTable := map[string]uint64{}
+	if syncOptions.tableDuration != nil {
+		durationsPerTable = lo.Reduce(sourceTableNames, func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
+			acc[tableName] = uint64(syncOptions.tableDuration(tableName).Milliseconds())
+			return acc
+		}, durationsPerTable)
+	}
+
 	for i := range destinationsClients {
-		sourceTables := lo.Keys(sourceTables)
-		slices.Sort(sourceTables)
 		m := destinationsClients[i].Metrics()
 		summary := syncSummary{
 			Resources:           uint64(totalResources),
@@ -703,21 +724,16 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			SourceName:          sourceSpec.Name,
 			SourceVersion:       sourceSpec.Version,
 			SourcePath:          sourceSpec.Path,
-			SourceTables:        tableNameChanger.UpdateTableNamesSlice(destinationSpecs[i].Name, sourceTables),
+			SourceTables:        tableNameChanger.UpdateTableNamesSlice(destinationSpecs[i].Name, sourceTableNames),
 			CLIVersion:          Version,
 			DestinationErrors:   m.Errors,
 			DestinationWarnings: m.Warnings,
 			DestinationName:     destinationSpecs[i].Name,
 			DestinationVersion:  destinationSpecs[i].Version,
 			DestinationPath:     destinationSpecs[i].Path,
-			ResourcesPerTable: lo.Reduce(sourceTables, func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
-				acc[tableName] = uint64(tableProgress[tableName].Rows)
-				return acc
-			}, map[string]uint64{}),
-			ErrorsPerTable: lo.Reduce(sourceTables, func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
-				acc[tableName] = uint64(tableProgress[tableName].Errors)
-				return acc
-			}, map[string]uint64{}),
+			ResourcesPerTable:   resourcesPerTable,
+			ErrorsPerTable:      errorsPerTable,
+			DurationsPerTable:   durationsPerTable,
 		}
 
 		if destinationSpecs[i].SyncGroupId != "" {

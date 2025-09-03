@@ -167,20 +167,39 @@ func sync(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+
+	summaryLocation, err := cmd.Flags().GetString("summary-location")
+	if err != nil {
+		return err
+	}
+
 	var otelReceiver *otel.OtelReceiver
-	if tableMetricsLocation != "" {
+
+	var destsWantSummary bool
+	for _, dest := range destinations {
+		destsWantSummary = destsWantSummary || dest.SyncSummary
+	}
+	needSummary := summaryLocation != "" || destsWantSummary
+
+	if tableMetricsLocation != "" || needSummary {
 		var sourcesWithOtelEndpoint []string
 		for _, source := range sources {
 			if source.OtelEndpoint != "" {
 				sourcesWithOtelEndpoint = append(sourcesWithOtelEndpoint, source.Name)
 			}
 		}
-		if len(sourcesWithOtelEndpoint) > 0 {
+		if tableMetricsLocation != "" && len(sourcesWithOtelEndpoint) > 0 {
 			return fmt.Errorf("the `--tables-metrics-location` flag is not supported for sources with `otel_endpoint` configured. Either remove the `--tables-metrics-location` flag or do not configure `otel_endpoint` for the following sources: %s", strings.Join(sourcesWithOtelEndpoint, ", "))
 		}
-		otelReceiver, err = otel.StartOtelReceiver(ctx, otel.WithMetricsFilename(tableMetricsLocation))
-		if err == nil {
-			defer otelReceiver.Shutdown(ctx)
+		if len(sourcesWithOtelEndpoint) == 0 {
+			otelReceiver, err = otel.StartOtelReceiver(ctx, otel.WithMetricsFilename(tableMetricsLocation))
+			if err != nil {
+				log.Warn().Err(err).Msg("Failed to start otelReceiver")
+			} else {
+				defer otelReceiver.Shutdown(ctx)
+			}
+		} else {
+			log.Warn().Strs("sources", sourcesWithOtelEndpoint).Msg("Sync Summary requested with sources having `otel_endpoint` configured. Using the configured `otel_endpoint` for table duration info.")
 		}
 	}
 
@@ -435,11 +454,6 @@ func sync(cmd *cobra.Command, args []string) error {
 				}
 			}
 
-			summaryLocation, err := cmd.Flags().GetString("summary-location")
-			if err != nil {
-				return err
-			}
-
 			syncOptions := syncV3Options{
 				source:                    src,
 				destinations:              dests,
@@ -450,6 +464,9 @@ func sync(cmd *cobra.Command, args []string) error {
 				summaryLocation:           summaryLocation,
 				shard:                     shard,
 				cqColumnsNotNull:          cqColumnsNotNull,
+			}
+			if otelReceiver != nil {
+				syncOptions.tableDuration = otelReceiver.TableDuration
 			}
 			if err := syncConnectionV3(ctx, syncOptions); err != nil {
 				return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)

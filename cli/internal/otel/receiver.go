@@ -3,6 +3,7 @@ package otel
 import (
 	"context"
 	"fmt"
+	"io"
 	"net"
 	"os"
 	"sort"
@@ -51,10 +52,15 @@ type tableMetric struct {
 	Panics    int64  `json:"panics"`
 }
 
+type writeSeekCloser interface {
+	io.WriteSeeker
+	io.Closer
+}
+
 type Consumer struct {
 	quit            chan any
 	metricsFilename string
-	metricsFile     *os.File
+	metricsFile     writeSeekCloser
 	consumeMetric   func(context.Context, pluginMetric)
 	wg              *sync.WaitGroup
 }
@@ -64,15 +70,19 @@ func (c Consumer) Shutdown(ctx context.Context) {
 	c.wg.Wait()
 }
 
-func newMetricConsumer(metricsFile *os.File, quit chan any, wg *sync.WaitGroup) func(context.Context, pluginMetric) {
-	tableLock := sync.Mutex{}
+type metricConsumer func(context.Context, pluginMetric)
+type tableDurationGetter func(table string) time.Duration
+
+func newMetricConsumer(metricsFile writeSeekCloser, quit chan any, wg *sync.WaitGroup) (metricConsumer, tableDurationGetter) {
+	tableLock := sync.RWMutex{}
 	metricsMap := make(map[string]*tableMetric)
+	durationsMap := make(map[string]*time.Duration)
 	ticker := time.NewTicker(20 * time.Second)
 
 	renderTable := func() {
-		tableLock.Lock()
+		tableLock.RLock()
 		metrics := maps.Values(metricsMap)
-		tableLock.Unlock()
+		tableLock.RUnlock()
 		_, err := metricsFile.Seek(0, 0)
 		if err != nil {
 			return
@@ -135,7 +145,7 @@ func newMetricConsumer(metricsFile *os.File, quit chan any, wg *sync.WaitGroup) 
 		}
 	}()
 
-	return func(ctx context.Context, metric pluginMetric) {
+	consumerFunc := func(ctx context.Context, metric pluginMetric) {
 		table := metric.Attributes["sync.table.name"].(string)
 		clientId, _ := metric.Attributes["sync.table.client_id"].(string)
 
@@ -160,6 +170,16 @@ func newMetricConsumer(metricsFile *os.File, quit chan any, wg *sync.WaitGroup) 
 			metrics.EndTime = &endTime
 		case "sync.table.duration":
 			metrics.Duration = &metric.Value
+
+			d, ok := durationsMap[table]
+			if !ok {
+				d = new(time.Duration)
+				durationsMap[table] = d
+			}
+			dur := time.Duration(metric.Value * int64(time.Millisecond))
+			if d == nil || dur > *d { // Assume longest duration is the full sync duration between multiple clientIDs
+				d = &dur
+			}
 		case "sync.table.resources":
 			metrics.Resources = metric.Value
 		case "sync.table.errors":
@@ -167,6 +187,14 @@ func newMetricConsumer(metricsFile *os.File, quit chan any, wg *sync.WaitGroup) 
 		case "sync.table.panics":
 			metrics.Panics = metric.Value
 		}
+	}
+	return consumerFunc, func(table string) time.Duration {
+		tableLock.RLock()
+		defer tableLock.RUnlock()
+		if d, ok := durationsMap[table]; ok && d != nil {
+			return *d
+		}
+		return 0
 	}
 }
 
@@ -221,6 +249,8 @@ type OtelReceiver struct {
 	consumer   Consumer
 	components []component.Component
 	Endpoint   string
+
+	TableDuration tableDurationGetter
 }
 
 func getFreePort() (int, error) {
@@ -242,19 +272,24 @@ func WithMetricsFilename(filename string) OtelReceiverOption {
 
 func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelReceiver, error) {
 	c := Consumer{
-		wg: &sync.WaitGroup{},
+		wg:          &sync.WaitGroup{},
+		metricsFile: &nopWriteSeekCloser{},
 	}
 	for _, opt := range opts {
 		opt(&c)
 	}
 
-	metricsFile, err := os.Create(c.metricsFilename)
-	if err != nil {
-		return nil, err
+	if c.metricsFilename != "" {
+		var err error
+		c.metricsFile, err = os.Create(c.metricsFilename)
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	quit := make(chan any)
-	c.consumeMetric = newMetricConsumer(metricsFile, quit, c.wg)
-	c.metricsFile = metricsFile
+	var td tableDurationGetter
+	c.consumeMetric, td = newMetricConsumer(c.metricsFile, quit, c.wg)
 	c.quit = quit
 
 	factory := otlpreceiver.NewFactory()
@@ -315,6 +350,8 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 		consumer:   c,
 		components: components,
 		Endpoint:   httpConfig.Endpoint,
+
+		TableDuration: td,
 	}, nil
 }
 
@@ -328,3 +365,11 @@ func (r *OtelReceiver) Shutdown(ctx context.Context) {
 		_ = c.Shutdown(ctx)
 	}
 }
+
+type nopWriteSeekCloser struct{}
+
+func (nopWriteSeekCloser) Write(p []byte) (n int, err error) { return len(p), nil }
+func (nopWriteSeekCloser) Seek(offset int64, whence int) (int64, error) {
+	return 0, nil
+}
+func (nopWriteSeekCloser) Close() error { return nil }
