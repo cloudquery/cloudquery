@@ -1,21 +1,16 @@
-The plugin needs to be authenticated with your account(s) in order to sync information from your cloud setup.
+---
+hub-title: Auth Details
+hub-order: 2
+---
+
+### Required Permissions
 
 The plugin requires only `PutObject` permissions (we will never make any changes to your cloud setup), so, following the principle of least privilege, it's recommended to grant it `PutObject` permissions.
-
-There are multiple ways to authenticate with AWS, and the plugin respects the AWS credential provider chain. This means that CloudQuery will follow the following priorities when attempting to authenticate:
-
-- The `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` environment variables.
-- The `credentials` and `config` files in `~/.aws` (the `credentials` file takes priority).
-- You can also use `aws sso` to authenticate cloudquery - [you can read more about it here](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-sso.html).
-- IAM roles for AWS compute resources (including EC2 instances, Fargate and ECS containers).
-
-You can read more about AWS authentication [here](https://aws.github.io/aws-sdk-go-v2/docs/configuring-sdk/#specifying-credentials) and [here](https://docs.aws.amazon.com/sdkref/latest/guide/creds-config-files.html).
 
 ### Environment Variables
 
 CloudQuery can use the credentials from the `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, and
 `AWS_SESSION_TOKEN` environment variables (`AWS_SESSION_TOKEN` can be optional for some accounts). For information on obtaining credentials, see the [AWS guide](https://aws.github.io/aws-sdk-go-v2/docs/getting-started/#get-your-aws-access-keys).
-
 To export the environment variables (On Linux/Mac - similar for Windows):
 
 ```bash copy
@@ -28,10 +23,8 @@ export AWS_SESSION_TOKEN='{Your AWS session token}'
 
 The plugin can use credentials from your `credentials` and `config` files in the `.aws` directory in your home folder.
 The contents of these files are practically interchangeable, but CloudQuery will prioritize credentials in the `credentials` file.
-
 For information about obtaining credentials, see the
 [AWS guide](https://aws.github.io/aws-sdk-go-v2/docs/getting-started/#get-your-aws-access-keys).
-
 Here are example contents for a `credentials` file:
 
 ```toml copy filename="~/.aws/credentials"
@@ -41,7 +34,6 @@ aws_secret_access_key = YOUR_SECRET_ACCESS_KEY
 ```
 
 You can also specify credentials for a different profile, and instruct CloudQuery to use the credentials from this profile instead of the default one.
-
 For example:
 
 ```toml copy filename="~/.aws/credentials"
@@ -56,7 +48,13 @@ Then, you can either export the `AWS_PROFILE` environment variable (On Linux/Mac
 export AWS_PROFILE=myprofile
 ```
 
-You can also use the `local_profile` field in plugin configuration (can be helpful for syncing between different accounts).
+or, configure your desired profile in the `local_profile` field:
+
+```yaml copy filename="aws.yml"
+accounts:
+  id: <account_alias>
+  local_profile: myprofile
+```
 
 ### IAM Roles for AWS Compute Resources
 
@@ -79,7 +77,3 @@ export AWS_ACCESS_KEY_ID=<YOUR_ACCESS_KEY_ID>
 export AWS_SECRET_ACCESS_KEY=<YOUR_SECRET_ACCESS_KEY>
 export AWS_SESSION_TOKEN=<YOUR_SESSION_TOKEN>
 ```
-
-### Using a Custom S3 Endpoint
-
-If you are using a custom S3 endpoint, you can specify it using the `endpoint` spec option. If you're using authentication, the `region` option in the spec determines the signing region used.

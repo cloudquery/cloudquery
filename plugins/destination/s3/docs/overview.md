@@ -4,7 +4,6 @@ stage: GA
 title: S3 Destination Plugin
 description: CloudQuery S3 destination plugin documentation
 ---
-# S3 Destination Plugin
 
 :badge
 
@@ -33,7 +32,6 @@ This is the (nested) spec used by the CSV destination Plugin.
 - `credentials` ([credentials](#credentials)) (optional)
 
   Optional parameters to enable non-default credentials, to authenticate with the S3 API
-
 
 - `path` (`string`) (required)
 
@@ -99,7 +97,7 @@ This is the (nested) spec used by the CSV destination Plugin.
   Canned ACL to apply to the object. Supported values are `private`, `public-read`, `public-read-write`, `authenticated-read`, `aws-exec-read`, `bucket-owner-read`, `bucket-owner-full-control`.
 
 - `endpoint_skip_tls_verify` (`boolean`) (optional) (default: `false`)
-  
+
   Disable TLS verification for requests to your S3 endpoint.
 
   This option is intended to be used when using a custom endpoint using the `endpoint` option.
@@ -152,7 +150,7 @@ Reserved for future use.
 
   Some Parquet readers require a specific root repetition option to be able to read the file. For example, importing Parquet files into [Snowflake](https://www.snowflake.com/en/) requires the root repetition to be `undefined`.
 
-- `max_row_group_length` (`integer`) (optional) (default: `134217728` (= 128 * 1024 * 1024))
+- `max_row_group_length` (`integer`) (optional) (default: `134217728` (= 128 _ 1024 _ 1024))
 
   The maximum number of rows in a single row group. Use a lower number to reduce memory usage when reading the Parquet files, and a higher number to increase the efficiency of reading the Parquet files.
 
@@ -165,7 +163,6 @@ Reserved for future use.
 - `server_side_encryption` (`string`) (required)
 
   The server-side encryption algorithm used when storing the object in S3. Supported values are `AES256`, `aws:kms` and `aws:kms:dsse`.
-
 
 ### credentials
 
@@ -209,8 +206,3 @@ Reserved for future use.
 - `skip_header` (`boolean`) (optional) (default: `false`)
 
   If set to `true`, the CSV file will not contain a header row as the first row.
-
-
-## Authentication
-
-:authentication

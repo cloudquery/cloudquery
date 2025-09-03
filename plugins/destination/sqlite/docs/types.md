@@ -1,3 +1,7 @@
+---
+hub-order: 5
+---
+
 The SQLite destination supports most [Apache Arrow](https://arrow.apache.org/docs/index.html)
 types. The following table shows the supported types and how they are mapped
 to [SQLite data types](https://www.sqlite.org/datatype3.html).
@@ -7,45 +11,45 @@ Unsupported types are always mapped to `text`.
 :::
 
 | Arrow Column Type      | Supported? | SQLite Type |
-|------------------------|------------|-------------|
-| Binary                 | ✅ Yes      | `blob`      |
-| Boolean                | ✅ Yes      | `boolean`   |
-| Date32                 | ✅ Yes      | `text`      |
-| Date64                 | ✅ Yes      | `text`      |
-| Decimal                | ✅ Yes      | `text`      |
-| Dense Union            | ✅ Yes      | `text`      |
-| Dictionary             | ✅ Yes      | `text`      |
-| Duration               | ✅ Yes      | `text`      |
-| Fixed Size List        | ✅ Yes      | `text`      |
-| Float16                | ✅ Yes      | `real`      |
-| Float32                | ✅ Yes      | `real`      |
-| Float64                | ✅ Yes      | `real`      |
-| Inet                   | ✅ Yes      | `text`      |
-| Int8                   | ✅ Yes      | `integer`   |
-| Int16                  | ✅ Yes      | `integer`   |
-| Int32                  | ✅ Yes      | `integer`   |
-| Int64                  | ✅ Yes      | `integer`   |
-| Interval[DayTime]      | ✅ Yes      | `text`      |
-| Interval[MonthDayNano] | ✅ Yes      | `text`      |
-| Interval[Month]        | ✅ Yes      | `text`      |
-| JSON                   | ✅ Yes      | `text`      |
-| Large Binary           | ✅ Yes      | `blob`      |
-| Large List             | ✅ Yes      | `text`      |
-| Large String           | ✅ Yes      | `text`      |
-| List                   | ✅ Yes      | `text`      |
-| MAC                    | ✅ Yes      | `text`      |
-| Map                    | ✅ Yes      | `text`      |
-| String                 | ✅ Yes      | `text`      |
-| Struct                 | ✅ Yes      | `text`      |
-| Time32                 | ✅ Yes      | `text`      |
-| Time64                 | ✅ Yes      | `text`      |
-| Timestamp              | ✅ Yes      | `timestamp` |
-| UUID                   | ✅ Yes      | `text`      |
-| Uint8                  | ✅ Yes      | `integer`   |
-| Uint16                 | ✅ Yes      | `integer`   |
-| Uint32                 | ✅ Yes      | `integer`   |
-| Uint64                 | ✅ Yes      | `integer`   |
-| Union                  | ✅ Yes      | `text`      |
+| ---------------------- | ---------- | ----------- |
+| Binary                 | ✅ Yes     | `blob`      |
+| Boolean                | ✅ Yes     | `boolean`   |
+| Date32                 | ✅ Yes     | `text`      |
+| Date64                 | ✅ Yes     | `text`      |
+| Decimal                | ✅ Yes     | `text`      |
+| Dense Union            | ✅ Yes     | `text`      |
+| Dictionary             | ✅ Yes     | `text`      |
+| Duration               | ✅ Yes     | `text`      |
+| Fixed Size List        | ✅ Yes     | `text`      |
+| Float16                | ✅ Yes     | `real`      |
+| Float32                | ✅ Yes     | `real`      |
+| Float64                | ✅ Yes     | `real`      |
+| Inet                   | ✅ Yes     | `text`      |
+| Int8                   | ✅ Yes     | `integer`   |
+| Int16                  | ✅ Yes     | `integer`   |
+| Int32                  | ✅ Yes     | `integer`   |
+| Int64                  | ✅ Yes     | `integer`   |
+| Interval[DayTime]      | ✅ Yes     | `text`      |
+| Interval[MonthDayNano] | ✅ Yes     | `text`      |
+| Interval[Month]        | ✅ Yes     | `text`      |
+| JSON                   | ✅ Yes     | `text`      |
+| Large Binary           | ✅ Yes     | `blob`      |
+| Large List             | ✅ Yes     | `text`      |
+| Large String           | ✅ Yes     | `text`      |
+| List                   | ✅ Yes     | `text`      |
+| MAC                    | ✅ Yes     | `text`      |
+| Map                    | ✅ Yes     | `text`      |
+| String                 | ✅ Yes     | `text`      |
+| Struct                 | ✅ Yes     | `text`      |
+| Time32                 | ✅ Yes     | `text`      |
+| Time64                 | ✅ Yes     | `text`      |
+| Timestamp              | ✅ Yes     | `timestamp` |
+| UUID                   | ✅ Yes     | `text`      |
+| Uint8                  | ✅ Yes     | `integer`   |
+| Uint16                 | ✅ Yes     | `integer`   |
+| Uint32                 | ✅ Yes     | `integer`   |
+| Uint64                 | ✅ Yes     | `integer`   |
+| Union                  | ✅ Yes     | `text`      |
 
 ## Notes
 
