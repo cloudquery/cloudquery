@@ -1,5 +1,14 @@
 # Changelog
 
+## [7.9.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.9.6...plugins-destination-s3-v7.9.7) (2025-09-04)
+
+
+### Bug Fixes
+
+* Auth docs cleanup for the most popular plugins ([#21304](https://github.com/cloudquery/cloudquery/issues/21304)) ([c6f9749](https://github.com/cloudquery/cloudquery/commit/c6f974907bdf3663119ef3f33cfcc59fd6c70708))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.6.10 ([#21309](https://github.com/cloudquery/cloudquery/issues/21309)) ([7033434](https://github.com/cloudquery/cloudquery/commit/7033434020c1ca612c2cbfd3b425c2d000395dc0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.89.1 ([#21315](https://github.com/cloudquery/cloudquery/issues/21315)) ([cc51f55](https://github.com/cloudquery/cloudquery/commit/cc51f55e575336297662fd0d0495e919f020e71a))
+
 ## [7.9.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.9.5...plugins-destination-s3-v7.9.6) (2025-08-27)
 
 
