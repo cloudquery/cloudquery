@@ -168,41 +168,23 @@ func (c *Client) alterColumnDropNotNull(ctx context.Context, tableName string, c
 }
 
 func (c *Client) alterColumnDropUniqueConstraint(ctx context.Context, table *schema.Table, uniques constraintMap, change schema.TableColumnChange) error {
-	fallback := func() error {
-		// Only support the default unique constraint name as fallback
-		indexName := uniqueConstraintName(table.Name, change.ColumnName)
-		sql := "alter table identifier(?) drop constraint " + sanitizeColumn(indexName)
-		if _, err := c.db.ExecContext(ctx, sql, table.Name); err != nil {
-			ignoreError := fmt.Sprintf(`constraint '%s' does not exist`, strings.ToUpper(indexName))
-			if strings.Contains(err.Error(), ignoreError) {
-				c.logger.Debug().Err(err).Str("table", table.Name).Str("column", change.ColumnName).Msg("ignoring expected constraint drop error")
-				return nil
-			}
-			return fmt.Errorf("failed to drop unique constraint on column %s on table %s: %w", change.ColumnName, table.Name, err)
-		}
-		return nil
-	}
-
-	// Find the constraint name for the column
 	cols := uniques.ByNameForTable(table.Name)
 	if len(cols) == 0 {
 		c.logger.Debug().Str("table", table.Name).Msg("failed to find unique constraints for table")
-		return fallback()
+		return nil
 	}
 	constName := cols.ConstraintNameForColumns([]string{change.ColumnName})
 	if constName == "" {
 		c.logger.Debug().Str("table", table.Name).Str("column", change.ColumnName).Msg("failed to find unique constraint on column for table")
-		return fallback()
+		return nil
 	}
 
 	newDefaultName := uniqueConstraintName(table.Name, change.ColumnName)
 	if !strings.HasPrefix(constName, "SYS_CONSTRAINT_") && !strings.EqualFold(newDefaultName, constName) {
 		// If it is using a unique constraint that is not default it means CQ didn't create it so we shouldn't drop it
-		c.logger.Warn().Str("table", table.Name).Str("column", change.ColumnName).Str("constraint", constName).Msg("Unique constraint name is not default, skipping drop")
+		c.logger.Warn().Str("table", table.Name).Str("column", change.ColumnName).Str("constraint", constName).Msg("unique constraint name not recognized, skipping drop")
 		return nil
 	}
-
-	c.logger.Debug().Str("table", table.Name).Str("column", change.ColumnName).Str("constraint", constName).Msg("found unique system constraint for table")
 
 	sql := "alter table identifier(?) drop unique (" + sanitizeColumn(change.ColumnName) + ")"
 	if _, err := c.db.ExecContext(ctx, sql, table.Name); err != nil {
