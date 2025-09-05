@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.1.1...plugins-destination-snowflake-v5.1.2) (2025-09-05)
+
+
+### Bug Fixes
+
+* Snowflake unique constraint drop ([#21340](https://github.com/cloudquery/cloudquery/issues/21340)) ([0c86707](https://github.com/cloudquery/cloudquery/commit/0c867072340dff48f875f0cea235db54d888aef4))
+
 ## [5.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.1.0...plugins-destination-snowflake-v5.1.1) (2025-09-04)
 
 
