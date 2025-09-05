@@ -235,9 +235,9 @@ func (c *Client) getConstraints(ctx context.Context, query string) (constraintMa
 	return list, nil
 }
 
-type constraintColumns map[string][]string
+type constraintColumns map[string][]string // constraint name vs. list of column names in key order
 
-// ByName returns a map of constraint name to list of column names in key order, for the given table name.
+// ByNameForTable returns a map of constraint name to list of column names in key order, for the given table name.
 func (m constraintMap) ByNameForTable(tableName string) constraintColumns {
 	data := m[strings.ToUpper(tableName)]
 	if len(data) == 0 {
