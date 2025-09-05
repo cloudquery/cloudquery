@@ -42,14 +42,14 @@ func (s *snowflakeYesNo) Scan(value any) error {
 	return nil
 }
 
-func (c *Client) getTableInfo(ctx context.Context, tableNames []string) (schema.Tables, error) {
+func (c *Client) getTableInfo(ctx context.Context, tableNames []string) (schema.Tables, constraintMap, error) {
 	g, ctx := errgroup.WithContext(ctx)
 	g.SetLimit(c.spec.MigrateConcurrency)
 
 	var (
 		existingTables schema.Tables
-		pks            map[string][]constInfo
-		uniques        map[string][]constInfo
+		pks            constraintMap
+		uniques        constraintMap
 	)
 
 	g.Go(func() error {
@@ -96,7 +96,7 @@ func (c *Client) getTableInfo(ctx context.Context, tableNames []string) (schema.
 		return nil
 	})
 	if err := g.Wait(); err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	// meld primary keys into existing tables
@@ -138,7 +138,7 @@ func (c *Client) getTableInfo(ctx context.Context, tableNames []string) (schema.
 		}
 	}
 
-	return existingTables, nil
+	return existingTables, uniques, nil
 }
 
 func (c *Client) getTableInfoBatch(ctx context.Context, tableNames []string) (schema.Tables, error) {
@@ -205,8 +205,10 @@ type constInfo struct {
 	keySeq    int
 }
 
-func (c *Client) getConstraints(ctx context.Context, query string) (map[string][]constInfo, error) {
-	list := make(map[string][]constInfo)
+type constraintMap map[string][]constInfo // uppercase table name vs. list of constraints
+
+func (c *Client) getConstraints(ctx context.Context, query string) (constraintMap, error) {
+	list := make(constraintMap)
 
 	rows, err := c.db.QueryContext(ctx, query)
 	if err != nil {
@@ -231,4 +233,56 @@ func (c *Client) getConstraints(ctx context.Context, query string) (map[string][
 		return nil, err
 	}
 	return list, nil
+}
+
+type constraintColumns map[string][]string
+
+// ByName returns a map of constraint name to list of column names in key order, for the given table name.
+func (m constraintMap) ByNameForTable(tableName string) constraintColumns {
+	data := m[strings.ToUpper(tableName)]
+	if len(data) == 0 {
+		return nil
+	}
+
+	consts := make(map[string][]constInfo, len(data))
+	for i := range data {
+		consts[data[i].constName] = append(consts[data[i].colName], data[i])
+	}
+
+	for k := range consts {
+		sort.Slice(consts[k], func(i, j int) bool {
+			return consts[k][i].keySeq < consts[k][j].keySeq
+		})
+	}
+
+	ret := make(constraintColumns, len(consts))
+	for k, v := range consts {
+		colNames := make([]string, len(v))
+		for i := range v {
+			colNames[i] = v[i].colName
+		}
+		ret[k] = colNames
+	}
+	return ret
+}
+
+// ConstraintNameForColumns returns the constraint name for the given list of columns in order, or an empty string if not found.
+func (c constraintColumns) ConstraintNameForColumns(columnsInOrder []string) string {
+	for constName, cols := range c {
+		if len(cols) != len(columnsInOrder) {
+			continue
+		}
+
+		match := true
+		for i := range cols {
+			if !strings.EqualFold(cols[i], columnsInOrder[i]) {
+				match = false
+				break
+			}
+		}
+		if match {
+			return constName
+		}
+	}
+	return ""
 }
