@@ -246,7 +246,7 @@ func (m constraintMap) ByNameForTable(tableName string) constraintColumns {
 
 	consts := make(map[string][]constInfo, len(data))
 	for i := range data {
-		consts[data[i].constName] = append(consts[data[i].colName], data[i])
+		consts[data[i].constName] = append(consts[data[i].constName], data[i])
 	}
 
 	for k := range consts {
