@@ -7,6 +7,7 @@ spec:
   path: cloudquery/sqlite-python
   registry: cloudquery
   version: "VERSION_DESTINATION_SQLITE_PYTHON"
+  send_sync_summary: true
   # Learn more about the configuration options at https://cql.ink/sqlite-python_destination
   spec:
     connection_string: ./db.sql

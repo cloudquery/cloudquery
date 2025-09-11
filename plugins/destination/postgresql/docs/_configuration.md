@@ -8,6 +8,7 @@ spec:
   registry: "cloudquery"
   version: "VERSION_DESTINATION_POSTGRESQL"
   write_mode: "overwrite-delete-stale"
+  send_sync_summary: true
   # Learn more about the configuration options at https://cql.ink/postgresql_destination
   spec:
     # set the environment variable in DSN format like "user=postgres password=pass+0-[word host=localhost port=5432 dbname=postgres sslmode=disable"

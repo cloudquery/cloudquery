@@ -7,6 +7,7 @@ spec:
   path: "cloudquery/gremlin"
   registry: "cloudquery"
   version: "VERSION_DESTINATION_GREMLIN"
+  send_sync_summary: true
   spec:
     endpoint: "ws://localhost:8182"
     # Optional parameters

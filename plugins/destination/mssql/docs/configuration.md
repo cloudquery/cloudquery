@@ -69,6 +69,7 @@ spec:
   path:     "cloudquery/mssql"
   registry:   "cloudquery"
   version:  "VERSION_DESTINATION_MSSQL"
+  send_sync_summary: true
 
   spec:
     connection_string: "${MSSQL_CONNECTION_STRING};log=255"

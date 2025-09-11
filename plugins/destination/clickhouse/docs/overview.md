@@ -98,6 +98,7 @@ spec:
   registry:   "cloudquery"
   version:    "VERSION_DESTINATION_CLICKHOUSE"
   write_mode: "append"
+  send_sync_summary: true
 
   spec:
     connection_string: "clickhouse://${CH_USER}:${CH_PASSWORD}@localhost:9000/${CH_DATABASE}"
@@ -252,6 +253,7 @@ spec:
   registry:   "cloudquery"
   version:    "VERSION_DESTINATION_CLICKHOUSE"
   write_mode: "append"
+  send_sync_summary: true
 
   spec:
     connection_string: "clickhouse://${CH_USER}:${CH_PASSWORD}@localhost:9000/${CH_DATABASE}?debug=true"

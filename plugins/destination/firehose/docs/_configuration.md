@@ -6,6 +6,7 @@ spec:
   registry: "cloudquery"
   version: "VERSION_DESTINATION_FIREHOSE"
   write_mode: "append" # this plugin only supports 'append' mode
+  send_sync_summary: true
   spec:
     # Required parameters e.g. arn:aws:firehose:us-east-1:111122223333:deliverystream/TestRedshiftStream
     stream_arn: "${FIREHOSE_STREAM_ARN}"

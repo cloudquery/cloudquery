@@ -38,6 +38,7 @@ spec:
   path: "cloudquery/mysql"
   registry: "cloudquery"
   version: "VERSION_DESTINATION_MYSQL"
+  send_sync_summary: true
 
   spec:
     connection_string: "root:password@/cloudquery"

@@ -8,6 +8,7 @@ spec:
   registry: "cloudquery"
   version: "VERSION_DESTINATION_GCS"
   write_mode: "append"
+  send_sync_summary: true
   spec:
     bucket: "bucket_name"
     path: "path/to/files/{{TABLE}}/{{UUID}}.{{FORMAT}}"
