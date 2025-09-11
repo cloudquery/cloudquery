@@ -9,6 +9,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path"
+	"reflect"
 	"runtime"
 	"slices"
 	"sort"
@@ -789,6 +790,43 @@ func TestSync_FilterPluginEnv(t *testing.T) {
 		})
 	}
 }
+
+func TestSyncSummaryPascalCase(t *testing.T) {
+	summaryTable, err := generateSummaryTable()
+	require.NoError(t, err)
+
+	cols := make(map[string]struct{}, len(summaryTable.Columns))
+	for _, col := range summaryTable.Columns {
+		cols[col.Name] = struct{}{}
+	}
+
+	summType := reflect.TypeOf(syncSummary{})
+	jsonTags := make(map[string]struct{})
+	for i := 0; i < summType.NumField(); i++ {
+		field := summType.Field(i)
+		jsonTag := field.Tag.Get("json")
+		if jsonTag == "" {
+			// If no json tag, use field name (lowercase)
+			jsonTag = strings.ToLower(field.Name)
+		} else {
+			if commaIdx := strings.Index(jsonTag, ","); commaIdx != -1 {
+				jsonTag = jsonTag[:commaIdx]
+			}
+			if jsonTag == "-" {
+				continue
+			}
+		}
+
+		jsonTags[jsonTag] = struct{}{}
+	}
+	delete(jsonTags, "sync_group_id")
+	delete(jsonTags, "sync_time")
+
+	if diff := cmp.Diff(cols, jsonTags); diff != "" {
+		t.Fatalf("syncSummary JSON tags don't match field names (-want +got):\n%s", diff)
+	}
+}
+
 func readSummaries(t *testing.T, filename string) []syncSummary {
 	p, err := os.ReadFile(filename)
 	assert.NoError(t, err)
