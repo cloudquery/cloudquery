@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.28.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.28.0...cli-v6.28.1) (2025-09-11)
+
+
+### Bug Fixes
+
+* Sync Summary: Table duration data in destinations ([#21349](https://github.com/cloudquery/cloudquery/issues/21349)) ([37eebef](https://github.com/cloudquery/cloudquery/commit/37eebef0752e6e219d3a318beaef3b2d804f1729))
+
 ## [6.28.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.27.1...cli-v6.28.0) (2025-09-04)
 
 
