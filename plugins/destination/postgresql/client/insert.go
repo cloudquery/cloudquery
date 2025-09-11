@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/avast/retry-go/v4"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
@@ -43,6 +44,9 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 
 	batch := new(pgx.Batch)
 
+	// Accumulate embeddings per table to insert after each successful base flush
+	tableToEmbBatch := make(map[string]*embeddingBatch)
+
 	// Queries cache.
 	// We may consider LRU cache in the future, but even for 10K records it may be OK to just save.
 	queries := make(map[string]string, 100)
@@ -75,33 +79,66 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 		for _, rowVals := range rows {
 			batch.Queue(sql, rowVals...)
 		}
+
+		// If pgvector is configured and this table has a config, accumulate embeddings work
+		if c.hasPgVectorConfig() && c.embeddingsRequester != nil && c.spec.GetPgVectorTableConfig(tableName) != nil {
+			err := c.addEmbeddingRows(ctx, tableToEmbBatch, tableName, msg.GetTable(), r, rows)
+			if err != nil {
+				return err
+			}
+		}
 		if int64(batch.Len()) >= c.batchSize {
 			if err := c.flushBatch(ctx, batch); err != nil {
 				return err
 			}
+			// After base rows are flushed, insert/upsert embeddings for accumulated tables
+			if err := c.insertEmbeddingsBatch(ctx, tableToEmbBatch); err != nil {
+				return err
+			}
+			// Reset for next chunk
+			tableToEmbBatch = make(map[string]*embeddingBatch)
 			batch = new(pgx.Batch)
 		}
 	}
 
-	return c.flushBatch(ctx, batch)
+	if err := c.flushBatch(ctx, batch); err != nil {
+		return err
+	}
+	return c.insertEmbeddingsBatch(ctx, tableToEmbBatch)
 }
 
 func (c *Client) flushBatch(ctx context.Context, batch *pgx.Batch) error {
-	if batch.Len() == 0 {
+	err := retry.Do(func() error {
+		if batch.Len() == 0 {
+			return nil
+		}
+		err := c.conn.SendBatch(ctx, batch).Close()
+		if err != nil {
+			return err
+		}
+
 		return nil
-	}
-	err := c.conn.SendBatch(ctx, batch).Close()
-	if err == nil {
-		return nil
+	}, retry.RetryIf(func(err error) bool {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) {
+			return pgErr.Code == "40P01"
+		}
+
+		return false
+	}),
+		retry.Attempts(uint(c.spec.RetryOnDeadlock)+1),
+		retry.LastErrorOnly(true),
+	)
+
+	if err != nil {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) {
+			return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
+		}
+		return fmt.Errorf("failed to execute batch: %w", err)
 	}
 
-	var pgErr *pgconn.PgError
-	if errors.As(err, &pgErr) {
-		return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
-	}
-
-	// not recoverable error
-	return fmt.Errorf("failed to execute batch: %w", err)
+	return nil
 }
 
 func (*Client) insert(table *schema.Table) string {

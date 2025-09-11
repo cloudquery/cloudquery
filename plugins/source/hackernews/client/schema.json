@@ -12,13 +12,18 @@
           "default": 100
         },
         "start_time": {
-          "type": "string",
-          "format": "date-time",
-          "description": "RFC3339 formatted timestamp. Syncing will begin with posts after this date. If not specified, the plugin will fetch all items."
+          "$ref": "#/$defs/Time",
+          "description": "RFC3339 formatted timestamp. Syncing will begin with posts after this date.\nRelative values like \"3 days ago\" are also supported.\nIf not specified, the plugin will default to 24 hours ago."
         }
       },
       "additionalProperties": false,
       "type": "object"
+    },
+    "Time": {
+      "type": "string",
+      "pattern": "(^now$|^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(.(\\d{1,9}))?(Z|((-|\\+)\\d{2}:\\d{2}))$|^\\d{4}-\\d{2}-\\d{2}$|^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$|^(([0-9]+\\s+(nanoseconds?|ns|microseconds?|us|µs|μs|milliseconds?|ms|seconds?|s|minutes?|m|hours?|h|days?|d|months?|M|years?|Y)|[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+))(\\s+(([0-9]+\\s+(nanoseconds?|ns|microseconds?|us|µs|μs|milliseconds?|ms|seconds?|s|minutes?|m|hours?|h|days?|d|months?|M|years?|Y)|[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+)))*\\s+(ago|from\\s+now)$)",
+      "title": "CloudQuery configtype.Time",
+      "description": "Allows for defining timestamps in both absolute(RFC3339) and relative formats. Absolute timestamp example: `2024-01-01T12:00:00+00:00`.\nRelative timestamps can take this format:\n- `now`\n- `x seconds [ago|from now]`\n- `x minutes [ago|from now]`\n- `x hours [ago|from now]`\n- `x days [ago|from now]`\n`until` field usage:\n- `until: now`\n- `until: 2 days ago`\n- `until: 10 months 3 days 4h20m from now`\n- `until: 2024-01-01T12:00:00+00:00`"
     }
   }
 }

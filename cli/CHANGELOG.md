@@ -5,6 +5,38 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.28.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.28.0...cli-v6.28.1) (2025-09-11)
+
+
+### Bug Fixes
+
+* Sync Summary: Table duration data in destinations ([#21349](https://github.com/cloudquery/cloudquery/issues/21349)) ([37eebef](https://github.com/cloudquery/cloudquery/commit/37eebef0752e6e219d3a318beaef3b2d804f1729))
+
+## [6.28.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.27.1...cli-v6.28.0) (2025-09-04)
+
+
+### Features
+
+* Add `durations_per_table_ms` to `cloudquery_sync_summaries` ([#21335](https://github.com/cloudquery/cloudquery/issues/21335)) ([bc00027](https://github.com/cloudquery/cloudquery/commit/bc00027494c2aa386de1a77973df48ca0a23f27c))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 8b4c13b ([#21294](https://github.com/cloudquery/cloudquery/issues/21294)) ([d64326e](https://github.com/cloudquery/cloudquery/commit/d64326e7d03184620e887916316322c9933b2e01))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.14.2 ([#21308](https://github.com/cloudquery/cloudquery/issues/21308)) ([b145e31](https://github.com/cloudquery/cloudquery/commit/b145e312b4a28efa6dcb229a17c53f38b03bcf01))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.89.1 ([#21315](https://github.com/cloudquery/cloudquery/issues/21315)) ([cc51f55](https://github.com/cloudquery/cloudquery/commit/cc51f55e575336297662fd0d0495e919f020e71a))
+
+## [6.27.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.27.0...cli-v6.27.1) (2025-08-27)
+
+
+### Bug Fixes
+
+* **deps:** Update alpine Docker tag to v3.22.1 ([#21213](https://github.com/cloudquery/cloudquery/issues/21213)) ([9a52de4](https://github.com/cloudquery/cloudquery/commit/9a52de462bf611493551b8bb842d368c7b89a63a))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.89.0 ([#21238](https://github.com/cloudquery/cloudquery/issues/21238)) ([deb4cee](https://github.com/cloudquery/cloudquery/commit/deb4cee9012b1506d48db44de78d104b498813cf))
+* **deps:** Update module github.com/go-viper/mapstructure/v2 to v2.4.0 [SECURITY] ([#21267](https://github.com/cloudquery/cloudquery/issues/21267)) ([630e091](https://github.com/cloudquery/cloudquery/commit/630e0917ef00e2e2d4779a5d540253bbc1aa3426))
+* **deps:** Update module google.golang.org/grpc to v1.74.2 ([#21224](https://github.com/cloudquery/cloudquery/issues/21224)) ([3cdd36f](https://github.com/cloudquery/cloudquery/commit/3cdd36f4a587da9c42d3bb5d0a6a233f11316915))
+* **deps:** Update module google.golang.org/protobuf to v1.36.7 ([#21231](https://github.com/cloudquery/cloudquery/issues/21231)) ([6b980af](https://github.com/cloudquery/cloudquery/commit/6b980afd936b3c91a99f6dad47d38a8e768d65f6))
+
 ## [6.27.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.26.3...cli-v6.27.0) (2025-08-07)
 
 

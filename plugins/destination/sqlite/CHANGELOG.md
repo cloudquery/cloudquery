@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.13.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.13.0...plugins-destination-sqlite-v2.13.1) (2025-09-04)
+
+
+### Bug Fixes
+
+* Auth docs cleanup for the most popular plugins ([#21304](https://github.com/cloudquery/cloudquery/issues/21304)) ([c6f9749](https://github.com/cloudquery/cloudquery/commit/c6f974907bdf3663119ef3f33cfcc59fd6c70708))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.89.1 ([#21315](https://github.com/cloudquery/cloudquery/issues/21315)) ([cc51f55](https://github.com/cloudquery/cloudquery/commit/cc51f55e575336297662fd0d0495e919f020e71a))
+
+## [2.13.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.12.1...plugins-destination-sqlite-v2.13.0) (2025-08-28)
+
+
+### Features
+
+* Added Type Documentation ([#21279](https://github.com/cloudquery/cloudquery/issues/21279)) ([d2945a1](https://github.com/cloudquery/cloudquery/commit/d2945a1caf48505bc6c11f9a9d59723018df8601))
+
+## [2.12.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.12.0...plugins-destination-sqlite-v2.12.1) (2025-08-27)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.89.0 ([#21238](https://github.com/cloudquery/cloudquery/issues/21238)) ([deb4cee](https://github.com/cloudquery/cloudquery/commit/deb4cee9012b1506d48db44de78d104b498813cf))
+
 ## [2.12.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.11.1...plugins-destination-sqlite-v2.12.0) (2025-07-31)
 
 

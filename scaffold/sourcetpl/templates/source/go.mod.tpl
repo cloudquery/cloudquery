@@ -1,11 +1,11 @@
 module github.com/{{.Org}}/cq-source-{{.Name}}
 
-go 1.24.5
+go 1.25.0
 
 require (
 	github.com/apache/arrow-go/v18 v18.3.1
 	github.com/cloudquery/plugin-pb-go v1.26.18
-	github.com/cloudquery/plugin-sdk/v4 v4.88.1
+	github.com/cloudquery/plugin-sdk/v4 v4.89.1
 	github.com/rs/zerolog v1.33.0
 )
 

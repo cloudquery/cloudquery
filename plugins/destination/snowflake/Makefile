@@ -2,7 +2,7 @@
 test:
 # we clean the cache to avoid scenarios when we change something in the db and we want to retest without noticing nothing run
 	go clean -testcache
-	go test -race -timeout 3m ./...
+	go test -race -timeout 10m ./...
 
 .PHONY: lint
 lint:

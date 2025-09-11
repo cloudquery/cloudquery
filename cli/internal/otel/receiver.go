@@ -3,13 +3,14 @@ package otel
 import (
 	"context"
 	"fmt"
+	"io"
 	"net"
 	"os"
 	"sort"
 	"sync"
 	"time"
 
-	"github.com/jedib0t/go-pretty/v6/table"
+	tablepkg "github.com/jedib0t/go-pretty/v6/table"
 	"go.opentelemetry.io/collector/component"
 	"go.opentelemetry.io/collector/config/configgrpc"
 	"go.opentelemetry.io/collector/config/confighttp"
@@ -51,10 +52,16 @@ type tableMetric struct {
 	Panics    int64  `json:"panics"`
 }
 
+type writeSeekCloser interface {
+	io.WriteSeeker
+	io.Closer
+}
+
 type Consumer struct {
 	quit            chan any
 	metricsFilename string
-	metricsFile     *os.File
+	metricsFile     writeSeekCloser
+	durationSetter  tableDurationSetter
 	consumeMetric   func(context.Context, pluginMetric)
 	wg              *sync.WaitGroup
 }
@@ -64,7 +71,10 @@ func (c Consumer) Shutdown(ctx context.Context) {
 	c.wg.Wait()
 }
 
-func newMetricConsumer(metricsFile *os.File, quit chan any, wg *sync.WaitGroup) func(context.Context, pluginMetric) {
+type metricConsumer func(context.Context, pluginMetric)
+type tableDurationSetter func(string, time.Duration)
+
+func newMetricConsumer(metricsFile writeSeekCloser, durationCallback tableDurationSetter, quit chan any, wg *sync.WaitGroup) metricConsumer {
 	tableLock := sync.Mutex{}
 	metricsMap := make(map[string]*tableMetric)
 	ticker := time.NewTicker(20 * time.Second)
@@ -77,9 +87,9 @@ func newMetricConsumer(metricsFile *os.File, quit chan any, wg *sync.WaitGroup) 
 		if err != nil {
 			return
 		}
-		t := table.NewWriter()
+		t := tablepkg.NewWriter()
 		t.SetOutputMirror(metricsFile)
-		t.AppendHeader(table.Row{"Table", "Duration", "Resources", "Errors", "Panics"})
+		t.AppendHeader(tablepkg.Row{"Table", "Duration", "Resources", "Errors", "Panics"})
 		sort.SliceStable(metrics, func(i, j int) bool {
 			m1 := metrics[i]
 			m2 := metrics[j]
@@ -104,7 +114,7 @@ func newMetricConsumer(metricsFile *os.File, quit chan any, wg *sync.WaitGroup) 
 			case metrics.StartTime != nil:
 				duration = time.Since(*metrics.StartTime)
 			}
-			row := table.Row{
+			row := tablepkg.Row{
 				metrics.Table,
 				duration,
 				metrics.Resources,
@@ -160,6 +170,7 @@ func newMetricConsumer(metricsFile *os.File, quit chan any, wg *sync.WaitGroup) 
 			metrics.EndTime = &endTime
 		case "sync.table.duration":
 			metrics.Duration = &metric.Value
+			durationCallback(table, time.Duration(metric.Value*int64(time.Millisecond)))
 		case "sync.table.resources":
 			metrics.Resources = metric.Value
 		case "sync.table.errors":
@@ -240,21 +251,32 @@ func WithMetricsFilename(filename string) OtelReceiverOption {
 	}
 }
 
+func WithDurationCallback(fn tableDurationSetter) OtelReceiverOption {
+	return func(c *Consumer) {
+		c.durationSetter = fn
+	}
+}
+
 func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelReceiver, error) {
 	c := Consumer{
-		wg: &sync.WaitGroup{},
+		wg:             &sync.WaitGroup{},
+		metricsFile:    &nopWriteSeekCloser{},
+		durationSetter: func(string, time.Duration) {},
 	}
 	for _, opt := range opts {
 		opt(&c)
 	}
 
-	metricsFile, err := os.Create(c.metricsFilename)
-	if err != nil {
-		return nil, err
+	if c.metricsFilename != "" {
+		var err error
+		c.metricsFile, err = os.Create(c.metricsFilename)
+		if err != nil {
+			return nil, err
+		}
 	}
+
 	quit := make(chan any)
-	c.consumeMetric = newMetricConsumer(metricsFile, quit, c.wg)
-	c.metricsFile = metricsFile
+	c.consumeMetric = newMetricConsumer(c.metricsFile, c.durationSetter, quit, c.wg)
 	c.quit = quit
 
 	factory := otlpreceiver.NewFactory()
@@ -328,3 +350,11 @@ func (r *OtelReceiver) Shutdown(ctx context.Context) {
 		_ = c.Shutdown(ctx)
 	}
 }
+
+type nopWriteSeekCloser struct{}
+
+func (nopWriteSeekCloser) Write(p []byte) (n int, err error) { return len(p), nil }
+func (nopWriteSeekCloser) Seek(offset int64, whence int) (int64, error) {
+	return 0, nil
+}
+func (nopWriteSeekCloser) Close() error { return nil }

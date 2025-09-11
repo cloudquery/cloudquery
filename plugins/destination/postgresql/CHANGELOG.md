@@ -1,5 +1,39 @@
 # Changelog
 
+## [8.12.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.12.0...plugins-destination-postgresql-v8.12.1) (2025-09-04)
+
+
+### Bug Fixes
+
+* Auth docs cleanup for the most popular plugins ([#21304](https://github.com/cloudquery/cloudquery/issues/21304)) ([c6f9749](https://github.com/cloudquery/cloudquery/commit/c6f974907bdf3663119ef3f33cfcc59fd6c70708))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.89.1 ([#21315](https://github.com/cloudquery/cloudquery/issues/21315)) ([cc51f55](https://github.com/cloudquery/cloudquery/commit/cc51f55e575336297662fd0d0495e919f020e71a))
+
+## [8.12.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.11.0...plugins-destination-postgresql-v8.12.0) (2025-08-28)
+
+
+### Features
+
+* Added Type Documentation ([#21279](https://github.com/cloudquery/cloudquery/issues/21279)) ([d2945a1](https://github.com/cloudquery/cloudquery/commit/d2945a1caf48505bc6c11f9a9d59723018df8601))
+
+## [8.11.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.10.0...plugins-destination-postgresql-v8.11.0) (2025-08-27)
+
+
+### Features
+
+* Implement support for PgVector. ([#21278](https://github.com/cloudquery/cloudquery/issues/21278)) ([c6212f3](https://github.com/cloudquery/cloudquery/commit/c6212f3571c0cff621e6fa794ed8eb3275b37b4d))
+
+## [8.10.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.9.0...plugins-destination-postgresql-v8.10.0) (2025-08-27)
+
+
+### Features
+
+* Retry on Postgres deadlock ([#21268](https://github.com/cloudquery/cloudquery/issues/21268)) ([cfcffba](https://github.com/cloudquery/cloudquery/commit/cfcffbabf320e9e2610b59e1d48a04e9da8493e6))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.89.0 ([#21238](https://github.com/cloudquery/cloudquery/issues/21238)) ([deb4cee](https://github.com/cloudquery/cloudquery/commit/deb4cee9012b1506d48db44de78d104b498813cf))
+
 ## [8.9.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.8.13...plugins-destination-postgresql-v8.9.0) (2025-07-31)
 
 

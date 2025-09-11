@@ -51,7 +51,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v8
         with:
-          version: v2.2.1
+          version: v2.4.0
           working-directory: plugins/destination/elasticsearch
           args: "--config ../../.golangci.yml"
       - name: gen

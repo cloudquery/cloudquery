@@ -66,6 +66,66 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 
   Creates indexes on tables that help with performance when using `write_mode: overwrite-delete-stale`.
 
+- `pgvector_config` (`object`) (optional)
+
+  Optional configuration to enable PgVector embedding support.
+
+  Note: source plugin must sync the `_cq_id` column on target tables if this is enabled.
+
+  - `tables` (`array`) (required)
+    
+    Tables to create embeddings for. For each entry, embeddings are created from a source table and stored in a configured target table.
+
+    - `source_table_name` (`string`) (required)
+
+      Name of the source table from which text columns are read to generate embeddings.
+
+    - `target_table_name` (`string`) (required)
+
+      Name of the embeddings table to create/populate. This table will contain the `embedding` vector column, a `chunk` text column, and the configured metadata columns. The `_cq_id` column is always included and indexed.
+
+    - `embed_columns` (`array`) (required)
+
+      Columns on the source table to concatenate and create embeddings for.
+
+    - `metadata_columns` (`array`) (optional)
+
+      These columns will be added as-is from the source table for context. The `_cq_id` column will be added automatically and an index will be created on it.
+
+  - `text_splitter` (`object`) (optional)
+
+    Optional text splitting configuration for the embeddings. If unset, defaults are used.
+
+    - `recursive_text` (`object`) (required)
+
+      - `chunk_size` (`integer`) (required)
+
+      Chunk size for the text splitting.
+
+      - `chunk_overlap` (`integer`) (required)
+
+      Chunk overlap for the text splitting.
+
+  - `openai_embedding` (`object`) (required)
+
+    OpenAI Embedding API configuration. Currently only OpenAI is supported.
+
+    - `dimensions` (`integer`) (required)
+    
+    The number of dimensions to use for the embeddings. For `text-embedding-3-small`, this is 1536. For `text-embedding-3-large`, this is 3072.
+
+    - `api_key` (`string`) (required)
+
+    The OpenAI API key to use for the embedding API.
+
+    - `model_name` (`string`) (required)
+
+    The model name to use for the embedding API. Currently, `text-embedding-3-small` and `text-embedding-3-large` are supported.
+  
+  - `retry_on_deadlock` (`integer`) (optional) (default: `0`)
+  
+    Number of times to retry a transaction if a deadlock is detected by Postgres (Postgres error code `40P01`).
+
 ### Verbose logging for debug
 
 The PostgreSQL destination can be run in debug mode.

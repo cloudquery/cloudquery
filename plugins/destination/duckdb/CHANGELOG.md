@@ -1,5 +1,35 @@
 # Changelog
 
+## [6.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.2.0...plugins-destination-duckdb-v6.2.1) (2025-09-04)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.89.1 ([#21315](https://github.com/cloudquery/cloudquery/issues/21315)) ([cc51f55](https://github.com/cloudquery/cloudquery/commit/cc51f55e575336297662fd0d0495e919f020e71a))
+
+## [6.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.1.3...plugins-destination-duckdb-v6.2.0) (2025-08-27)
+
+
+### Features
+
+* Added Type Documentation ([#21279](https://github.com/cloudquery/cloudquery/issues/21279)) ([d2945a1](https://github.com/cloudquery/cloudquery/commit/d2945a1caf48505bc6c11f9a9d59723018df8601))
+
+## [6.1.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.1.2...plugins-destination-duckdb-v6.1.3) (2025-08-26)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/go-viper/mapstructure/v2 to v2.4.0 [SECURITY] ([#21267](https://github.com/cloudquery/cloudquery/issues/21267)) ([630e091](https://github.com/cloudquery/cloudquery/commit/630e0917ef00e2e2d4779a5d540253bbc1aa3426))
+
+## [6.1.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.1.1...plugins-destination-duckdb-v6.1.2) (2025-08-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.89.0 ([#21238](https://github.com/cloudquery/cloudquery/issues/21238)) ([deb4cee](https://github.com/cloudquery/cloudquery/commit/deb4cee9012b1506d48db44de78d104b498813cf))
+* **deps:** Update module github.com/marcboeker/go-duckdb/v2 to v2.3.5 ([#21234](https://github.com/cloudquery/cloudquery/issues/21234)) ([d652d5c](https://github.com/cloudquery/cloudquery/commit/d652d5cf350ab8e45bd22d204b7bdfecb7420a91))
+* Update default DuckDB DB path ([#21263](https://github.com/cloudquery/cloudquery/issues/21263)) ([31c3939](https://github.com/cloudquery/cloudquery/commit/31c393978b2351f9b1744187af92ff986b828184))
+
 ## [6.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.1.0...plugins-destination-duckdb-v6.1.1) (2025-08-07)
 
 

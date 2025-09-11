@@ -81,6 +81,50 @@ This is the top-level spec used by the BigQuery destination plugin.
 
   Maximum interval between batch writes.
 
+- `text_embeddings` (`object`) (optional)
+
+  Configuration for creating text embeddings for certain tables using a Vertex AI model.
+
+  A remote model must be attached to the dataset before using this feature, and its name supplied in the `remote_model_name` field.
+  
+  - `remote_model_name` (`string`) (required)
+
+    The name of the remote model to use for text embeddings.
+
+  - `tables` (`array`) (required)
+
+    The tables to create text embeddings for. Each one must have its own configuration.
+
+    - `source_table_name` (`string`) (required)
+      
+      The name of the source table to create text embeddings for.
+
+    - `target_table_name` (`string`) (required)
+      
+      The name of the target table in which to store the embeddings.
+
+    - `embed_columns` (`array`) (required)
+
+      The columns to use as content for the embeddings generation function. They will be concatenated in the order they are provided.
+
+    - `metadata_columns` (`array`) (optional)
+      
+      Which columns to copy as-is from the source table to the target table. `_cq_id` is always included.
+
+  - `text_splitter` (`object`) (optional)
+
+    The text splitter configuration to use for text embeddings. Currently only `recursive_text` is supported.
+
+    - `recursive_text` (`object`) (required)
+
+      - `chunk_size` (`integer`) (required)
+
+        The size of the chunks in characters (not tokens). Defaults to `1000`.
+
+      - `chunk_overlap` (`integer`) (required)
+      
+        The overlap between chunks in characters (not tokens). Defaults to `100`.
+
 ## Underlying library
 
 We use the official [cloud.google.com/go/bigquery](https://pkg.go.dev/cloud.google.com/go/bigquery) package for database connection.

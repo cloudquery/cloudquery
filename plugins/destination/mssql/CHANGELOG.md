@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v5.2.1...plugins-destination-mssql-v5.2.2) (2025-09-04)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.89.1 ([#21315](https://github.com/cloudquery/cloudquery/issues/21315)) ([cc51f55](https://github.com/cloudquery/cloudquery/commit/cc51f55e575336297662fd0d0495e919f020e71a))
+
+## [5.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v5.2.0...plugins-destination-mssql-v5.2.1) (2025-08-27)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.89.0 ([#21238](https://github.com/cloudquery/cloudquery/issues/21238)) ([deb4cee](https://github.com/cloudquery/cloudquery/commit/deb4cee9012b1506d48db44de78d104b498813cf))
+
 ## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v5.1.24...plugins-destination-mssql-v5.2.0) (2025-07-31)
 
 

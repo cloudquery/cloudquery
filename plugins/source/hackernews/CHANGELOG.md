@@ -1,5 +1,26 @@
 # Changelog
 
+## [3.8.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.8.1...plugins-source-hackernews-v3.8.2) (2025-09-04)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.89.1 ([#21315](https://github.com/cloudquery/cloudquery/issues/21315)) ([cc51f55](https://github.com/cloudquery/cloudquery/commit/cc51f55e575336297662fd0d0495e919f020e71a))
+
+## [3.8.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.8.0...plugins-source-hackernews-v3.8.1) (2025-08-27)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.89.0 ([#21238](https://github.com/cloudquery/cloudquery/issues/21238)) ([deb4cee](https://github.com/cloudquery/cloudquery/commit/deb4cee9012b1506d48db44de78d104b498813cf))
+
+## [3.8.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.7.24...plugins-source-hackernews-v3.8.0) (2025-08-19)
+
+
+### Features
+
+* Add relative time support to HackerNews plugin ([#21236](https://github.com/cloudquery/cloudquery/issues/21236)) ([3692af8](https://github.com/cloudquery/cloudquery/commit/3692af89ac8f81df37917a214982ef68539cd591))
+
 ## [3.7.24](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.7.23...plugins-source-hackernews-v3.7.24) (2025-07-31)
 
 

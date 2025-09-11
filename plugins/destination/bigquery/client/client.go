@@ -22,6 +22,8 @@ type Client struct {
 	client *bigquery.Client
 	writer *batchwriter.BatchWriter
 
+	embeddingsClient EmbeddingsClient
+
 	batchwriter.UnimplementedDeleteStale
 	batchwriter.UnimplementedDeleteRecord
 }
@@ -62,6 +64,8 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 	if err := validateCreds(ctx, c.client, c.spec.DatasetID, c.spec.ProjectID); err != nil {
 		return nil, fmt.Errorf("failed to validate credentials: %w", err)
 	}
+
+	c.embeddingsClient = NewEmbeddingsClient(c, &c.spec)
 
 	return c, nil
 }
