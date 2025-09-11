@@ -32,6 +32,7 @@ Authentication of the connection to Snowflake can be specified using:
   kind: destination
   spec:
     name: snowflake
+    send_sync_summary: true
     ...
     spec:
       connection_string: "user:pass@account/db/schema?warehouse=wh"
@@ -43,6 +44,7 @@ Authentication of the connection to Snowflake can be specified using:
   kind: destination
   spec:
     name: snowflake
+    send_sync_summary: true
     ...
     spec:
       connection_string: "user@account/database/schema?warehouse=wh"
@@ -62,6 +64,7 @@ Authentication of the connection to Snowflake can be specified using:
   kind: destination
   spec:
     name: snowflake
+    send_sync_summary: true
     ...
     spec:
       connection_string: "user@account/database/schema?warehouse=wh"
@@ -86,6 +89,7 @@ Authentication of the connection to Snowflake can be specified using:
   kind: destination
   spec:
     name: snowflake
+    send_sync_summary: true
     ...
     spec:
       connection_string: "user:pass@account/db/schema?warehouse=wh&authenticator=oauth&token=token"

@@ -10,6 +10,7 @@ spec:
   registry: "cloudquery"
   version: "VERSION_DESTINATION_KAFKA"
   write_mode: "append"
+  send_sync_summary: true
   spec:
     # required - list of brokers to connect to
     brokers: ["<broker-host>:<broker-port>"]

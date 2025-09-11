@@ -7,6 +7,7 @@ spec:
   path: "cloudquery/mongodb"
   registry: "cloudquery"
   version: "VERSION_DESTINATION_MONGODB"
+  send_sync_summary: true
   spec:
     # required, a connection string in the format mongodb://localhost:27017
     connection_string: "${MONGODB_CONNECTION_STRING}"

@@ -8,6 +8,7 @@ spec:
   registry: cloudquery
   version: "VERSION_DESTINATION_ELASTICSEARCH"
   write_mode: "overwrite-delete-stale"
+  send_sync_summary: true
   spec:
     # Elastic Cloud configuration parameters
     cloud_id: "${ELASTICSEARCH_CLOUD_ID}"

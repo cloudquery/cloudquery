@@ -5,6 +5,7 @@ spec:
   path: "cloudquery/mssql"
   registry: "cloudquery"
   version: "VERSION_DESTINATION_MSSQL"
+  send_sync_summary: true
   spec:
     # Connection string in the format `server=localhost;user id=SA;password=yourStrongP@ssword;port=1433;database=cloudquery;`
     connection_string: "${MSSQL_CONNECTION_STRING}"

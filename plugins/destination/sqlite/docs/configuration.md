@@ -11,6 +11,7 @@ spec:
   path: cloudquery/sqlite
   registry: cloudquery
   version: "VERSION_DESTINATION_SQLITE"
+  send_sync_summary: true
   # Learn more about the configuration options at https://cql.ink/sqlite_destination
   spec:
     connection_string: ./db.sql

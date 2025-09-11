@@ -10,6 +10,7 @@ spec:
   registry: "cloudquery"
   version: "VERSION_DESTINATION_S3"
   write_mode: "append"
+  send_sync_summary: true
   # Learn more about the configuration options at https://cql.ink/s3_destination
   spec:
     bucket: "bucket_name"
