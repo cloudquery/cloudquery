@@ -22,10 +22,6 @@ var (
 )
 
 func aiCmd(ctx context.Context, client *cloudquery_api.ClientWithResponses, teamName string) error {
-
-	// Track AI session start
-	TrackAISessionStarted(ctx, invocationUUID.UUID)
-
 	fmt.Println()
 	aiSuccess.Println("🤖 CloudQuery AI Assistant")
 	fmt.Println("I'm here to help you set up CloudQuery syncs!")
@@ -98,9 +94,6 @@ func aiCmd(ctx context.Context, client *cloudquery_api.ClientWithResponses, team
 
 		fmt.Printf("\n%s %s\n\n", aiBold.Sprint("AI:"), *response.Message)
 	}
-
-	// Track AI session end
-	TrackAISessionEnded(ctx, invocationUUID.UUID)
 
 	return nil
 }

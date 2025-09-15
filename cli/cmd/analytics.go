@@ -12,7 +12,6 @@ import (
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/analytics/v0"
-	guuid "github.com/google/uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/credentials/insecure"
@@ -111,24 +110,4 @@ func (c *AnalyticsClient) Close() error {
 		return c.conn.Close()
 	}
 	return nil
-}
-
-// TrackAISessionStarted tracks when an AI session begins
-func TrackAISessionStarted(ctx context.Context, invocationUUID guuid.UUID) {
-	// This is a mock implementation - in a real implementation, you would send to analytics
-	if oldAnalyticsClient != nil {
-		// Send AI session started event
-		// For now, we'll just log it
-		fmt.Printf("[ANALYTICS] AI session started: %s\n", invocationUUID.String())
-	}
-}
-
-// TrackAISessionEnded tracks when an AI session ends
-func TrackAISessionEnded(ctx context.Context, invocationUUID guuid.UUID) {
-	// This is a mock implementation - in a real implementation, you would send to analytics
-	if oldAnalyticsClient != nil {
-		// Send AI session ended event
-		// For now, we'll just log it
-		fmt.Printf("[ANALYTICS] AI session ended: %s\n", invocationUUID.String())
-	}
 }
