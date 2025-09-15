@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -70,4 +71,87 @@ func GetPluginVersion(cl *cloudquery_api.ClientWithResponses, teamName string, k
 		return nil, fmt.Errorf("failed to get plugin version %s/%s@%s: %s", teamName, pluginName, pluginVersion, resp.Status())
 	}
 	return resp.JSON200, nil
+}
+
+type FunctionCallOutput struct {
+	// Arguments The arguments passed to the function
+	Arguments map[string]any `json:"arguments"`
+
+	// CallID The unique identifier for this function call
+	CallID string `json:"call_id"`
+
+	// Name The name of the function that was called
+	Name string `json:"name"`
+
+	// Output The output/result from the function call
+	Output string `json:"output"`
+}
+
+type ChatResponse struct {
+	Message               *string
+	FunctionCall          *string
+	FunctionCallID        string
+	FunctionCallArguments map[string]any
+}
+
+func Chat(ctx context.Context, cl *cloudquery_api.ClientWithResponses, teamName string, message *string, functionCallOutputs *[]FunctionCallOutput) (*ChatResponse, error) {
+	imsg := any(message)
+	ifcos := any(functionCallOutputs)
+	resp, err := cl.AIOnboardingChatWithResponse(ctx, teamName, cloudquery_api.AIOnboardingChatJSONRequestBody{
+		Message:             &imsg,
+		FunctionCallOutputs: &ifcos,
+	})
+	if err != nil {
+		return nil, fmt.Errorf("failed to chat: %w", err)
+	}
+	if resp.JSON200 == nil {
+		return nil, errors.New("failed to chat: no response data")
+	}
+	if resp.StatusCode() != http.StatusOK {
+		return nil, fmt.Errorf("failed to chat: %s", resp.Status())
+	}
+
+	// Extract values from the interface{} fields
+	chatResp := &ChatResponse{}
+
+	// Extract message
+	if resp.JSON200.Message != nil {
+		if msg, ok := resp.JSON200.Message.(string); ok {
+			chatResp.Message = &msg
+		}
+	}
+
+	// Extract function call
+	if resp.JSON200.FunctionCall != nil {
+		if fc, ok := (*resp.JSON200.FunctionCall).(string); ok {
+			chatResp.FunctionCall = &fc
+		}
+	}
+
+	// Extract function call ID
+	if resp.JSON200.FunctionCallID != nil {
+		if fcid, ok := (*resp.JSON200.FunctionCallID).(string); ok {
+			chatResp.FunctionCallID = fcid
+		}
+	}
+
+	// Extract function call arguments
+	if resp.JSON200.FunctionCallArguments != nil {
+		if fca, ok := (*resp.JSON200.FunctionCallArguments).(map[string]any); ok {
+			chatResp.FunctionCallArguments = fca
+		}
+	}
+
+	return chatResp, nil
+}
+
+func NewConversation(ctx context.Context, cl *cloudquery_api.ClientWithResponses, teamName string) error {
+	resp, err := cl.AIOnboardingNewConversationWithResponse(ctx, teamName, cloudquery_api.AIOnboardingNewConversationJSONRequestBody{})
+	if resp.JSON200 == nil {
+		return fmt.Errorf("failed to new conversation: %w", err)
+	}
+	if resp.StatusCode() != http.StatusOK {
+		return fmt.Errorf("failed to new conversation: %s", resp.Status())
+	}
+	return nil
 }

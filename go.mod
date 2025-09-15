@@ -2,7 +2,17 @@ module github.com/cloudquery/cloudquery/v6
 
 go 1.25.0
 
-require github.com/cloudquery/cloudquery/cli/v6 v6.27.0
+require (
+	github.com/cloudquery/cloudquery-api-go v1.14.1
+	github.com/cloudquery/cloudquery/cli/v6 v6.27.0
+	github.com/hashicorp/golang-lru/v2 v2.0.7
+	github.com/openai/openai-go v1.12.0
+	github.com/openai/openai-go/v2 v2.4.0
+	github.com/rs/zerolog v1.34.0
+	github.com/samber/lo v1.49.1
+)
+
+require github.com/tidwall/sjson v1.2.5 // indirect
 
 require (
 	github.com/Masterminds/semver v1.5.0 // indirect
@@ -18,7 +28,6 @@ require (
 	github.com/cenkalti/backoff/v5 v5.0.2 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
-	github.com/cloudquery/cloudquery-api-go v1.14.1 // indirect
 	github.com/cloudquery/plugin-pb-go v1.26.18 // indirect
 	github.com/cloudquery/plugin-sdk/v4 v4.88.1 // indirect
 	github.com/containerd/errdefs v1.0.0 // indirect
@@ -84,10 +93,8 @@ require (
 	github.com/prometheus/procfs v0.15.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rs/cors v1.11.1 // indirect
-	github.com/rs/zerolog v1.34.0 // indirect
 	github.com/rudderlabs/analytics-go/v4 v4.2.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/samber/lo v1.49.1 // indirect
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1 // indirect
 	github.com/schollz/progressbar/v3 v3.14.6 // indirect
 	github.com/segmentio/backo-go v1.1.0 // indirect
