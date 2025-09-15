@@ -105,6 +105,9 @@ func NewCmdRoot() *cobra.Command {
 				log.Warn().Msg("The CQ_NO_TELEMETRY environment variable will be deprecated, please use CQ_TELEMETRY_LEVEL=none instead.")
 			}
 
+			// log version of the CLI that is running
+			log.Info().Str("version", Version).Msg("CloudQuery CLI")
+
 			sendStats := funk.ContainsString([]string{"all", "stats"}, telemetryLevel.String())
 			_, customAnalyticsHost := os.LookupEnv("CQ_ANALYTICS_HOST")
 			if (Version != "development" || customAnalyticsHost) && sendStats {
