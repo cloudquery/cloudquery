@@ -8,6 +8,7 @@ spec:
   registry: cloudquery
   version: "VERSION_DESTINATION_DUCKDB"
   write_mode: "overwrite-delete-stale"
+  send_sync_summary: true
   # Learn more about the configuration options at https://cql.ink/duckdb_destination
   spec:
     connection_string: ./database.db

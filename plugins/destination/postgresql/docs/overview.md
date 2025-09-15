@@ -139,6 +139,7 @@ spec:
   path: cloudquery/postgresql
   registry: cloudquery
   version: "VERSION_DESTINATION_POSTGRESQL"
+  send_sync_summary: true
   spec:
     connection_string: ${PG_CONNECTION_STRING}
     pgx_log_level: debug # Available: error, warn, info, debug, trace. Default: "error"

@@ -5,6 +5,7 @@ spec:
   path: "cloudquery/azblob"
   registry: "cloudquery"
   version: "VERSION_DESTINATION_AZBLOB"
+  send_sync_summary: true
   spec:
     storage_account: "cqdestinationazblob"
     container: "test"

@@ -6,6 +6,7 @@ spec:
   registry: cloudquery
   version: "VERSION_DESTINATION_BIGQUERY"
   write_mode: "append"
+  send_sync_summary: true
   # Learn more about the configuration options at https://cql.ink/bigquery_destination
   spec:
     project_id: ${PROJECT_ID}

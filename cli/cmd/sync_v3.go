@@ -734,7 +734,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			DestinationPath:     destinationSpecs[i].Path,
 			ResourcesPerTable:   resourcesPerTable,
 			ErrorsPerTable:      errorsPerTable,
-			DurationsPerTable:   durationsPerTable,
+			DurationsPerTableMs: durationsPerTable,
 		}
 
 		if destinationSpecs[i].SyncGroupId != "" {

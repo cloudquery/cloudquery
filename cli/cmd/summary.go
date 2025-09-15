@@ -17,6 +17,8 @@ import (
 	"github.com/thoas/go-funk"
 )
 
+// syncSummary represents the summary of a sync operation.
+// JSON tags should match the column names when converted to PascalCase.
 type syncSummary struct {
 	CLIVersion          string            `json:"cli_version"`
 	DestinationErrors   uint64            `json:"destination_errors"`
@@ -38,7 +40,7 @@ type syncSummary struct {
 	ShardTotal          *int              `json:"shard_total,omitempty"`
 	ResourcesPerTable   map[string]uint64 `json:"resources_per_table,omitempty"`
 	ErrorsPerTable      map[string]uint64 `json:"errors_per_table,omitempty"`
-	DurationsPerTable   map[string]uint64 `json:"durations_per_table_ms,omitempty"`
+	DurationsPerTableMs map[string]uint64 `json:"durations_per_table_ms,omitempty"`
 }
 
 func persistSummary(filename string, summary syncSummary) error {
@@ -149,6 +151,7 @@ func sendSummary(writeClient safeWriteClient, destinationSpec specs.Destination,
 
 	resource := schema.NewResourceData(summaryTable, nil, nil)
 	for _, col := range summaryTable.Columns {
+		// Use funk.Get to get the value from the summary struct using the column name converted to PascalCase
 		err := resource.Set(col.Name, funk.Get(summary, csr.ToPascal(col.Name), funk.WithAllowZero()))
 		if err != nil {
 			return fmt.Errorf("failed to set %s: %w", col.Name, err)
