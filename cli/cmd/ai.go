@@ -11,6 +11,7 @@ import (
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
+	"github.com/samber/lo"
 
 	"github.com/fatih/color"
 )
@@ -53,7 +54,7 @@ func aiCmd(ctx context.Context, client *cloudquery_api.ClientWithResponses, team
 			break
 		}
 
-		response, err := api.Chat(ctx, client, teamName, &userInput, nil)
+		response, err := api.Chat(ctx, client, teamName, &userInput, &[]api.FunctionCallOutput{})
 		if err != nil {
 			return fmt.Errorf("failed to chat: %w", err)
 		}
@@ -64,7 +65,7 @@ func aiCmd(ctx context.Context, client *cloudquery_api.ClientWithResponses, team
 				if err != nil {
 					return fmt.Errorf("failed to create spec file: %w", err)
 				}
-				response, err = api.Chat(ctx, client, teamName, nil, &[]api.FunctionCallOutput{
+				response, err = api.Chat(ctx, client, teamName, lo.ToPtr(""), &[]api.FunctionCallOutput{
 					{
 						Name:      "create_spec_file",
 						CallID:    response.FunctionCallID,
@@ -76,7 +77,7 @@ func aiCmd(ctx context.Context, client *cloudquery_api.ClientWithResponses, team
 					return fmt.Errorf("failed to chat: %w", err)
 				}
 			case "cloudquery_test":
-				response, err = api.Chat(ctx, client, teamName, nil, &[]api.FunctionCallOutput{
+				response, err = api.Chat(ctx, client, teamName, lo.ToPtr(""), &[]api.FunctionCallOutput{
 					{
 						Name:      "cloudquery_test",
 						CallID:    response.FunctionCallID,

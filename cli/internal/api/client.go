@@ -15,6 +15,10 @@ const (
 	envAPIURL     = "CLOUDQUERY_API_URL"
 )
 
+var (
+	ErrDisabled = errors.New("AI onboarding is disabled")
+)
+
 func NewClient(token string) (*cloudquery_api.ClientWithResponses, error) {
 	c, err := cloudquery_api.NewClientWithResponses(env.GetEnvOrDefault(envAPIURL, defaultAPIURL),
 		cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
@@ -97,18 +101,21 @@ type ChatResponse struct {
 func Chat(ctx context.Context, cl *cloudquery_api.ClientWithResponses, teamName string, message *string, functionCallOutputs *[]FunctionCallOutput) (*ChatResponse, error) {
 	imsg := any(message)
 	ifcos := any(functionCallOutputs)
-	resp, err := cl.AIOnboardingChatWithResponse(ctx, teamName, cloudquery_api.AIOnboardingChatJSONRequestBody{
+
+	requestBody := cloudquery_api.AIOnboardingChatJSONRequestBody{
 		Message:             &imsg,
 		FunctionCallOutputs: &ifcos,
-	})
+	}
+
+	resp, err := cl.AIOnboardingChatWithResponse(ctx, teamName, requestBody)
 	if err != nil {
 		return nil, fmt.Errorf("failed to chat: %w", err)
 	}
-	if resp.JSON200 == nil {
-		return nil, errors.New("failed to chat: no response data")
-	}
 	if resp.StatusCode() != http.StatusOK {
-		return nil, fmt.Errorf("failed to chat: %s", resp.Status())
+		return nil, fmt.Errorf("failed to chat with code %d: %s", resp.StatusCode(), resp.Status())
+	}
+	if resp.JSON200 == nil {
+		return nil, fmt.Errorf("failed to chat with code %d: no response data", resp.StatusCode())
 	}
 
 	// Extract values from the interface{} fields
@@ -147,11 +154,14 @@ func Chat(ctx context.Context, cl *cloudquery_api.ClientWithResponses, teamName 
 
 func NewConversation(ctx context.Context, cl *cloudquery_api.ClientWithResponses, teamName string) error {
 	resp, err := cl.AIOnboardingNewConversationWithResponse(ctx, teamName, cloudquery_api.AIOnboardingNewConversationJSONRequestBody{})
-	if resp.JSON200 == nil {
-		return fmt.Errorf("failed to new conversation: %w", err)
+	if err != nil {
+		return fmt.Errorf("failed to start new conversation: %w", err)
+	}
+	if resp.StatusCode() == http.StatusNotFound {
+		return ErrDisabled
 	}
 	if resp.StatusCode() != http.StatusOK {
-		return fmt.Errorf("failed to new conversation: %s", resp.Status())
+		return fmt.Errorf("failed to start new conversation: %s", resp.Status())
 	}
 	return nil
 }

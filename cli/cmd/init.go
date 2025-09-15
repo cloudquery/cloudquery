@@ -276,16 +276,21 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 		}
 	}
 
-	// Check if user and team are set, and if so, run AI command
-	if user != nil && team != "" && !offline {
-		// User and team are set, proceed to run the AI command
-		return aiCmd(ctx, apiClient, team)
-	}
-
-	// If user/team is not set and the source and destination are both not set,
-	// end with an error saying that you should do `cloudquery login` first, or otherwise set the --offline flag
-	if (user == nil || team == "") && source == "" && destination == "" && !offline {
-		return errors.New("authentication required for interactive mode. Please run `cloudquery login` first, or supply source and destination plugins, or else use the --offline flag to run basic interactive mode")
+	// TODO: For now, this is enabled only for @cloudquery.io users
+	if strings.HasSuffix(user.Email, "@cloudquery.io") {
+		// Check if user and team are set, and if so, run AI command
+		if user != nil && team != "" && !offline {
+			err := api.NewConversation(ctx, apiClient, team)
+			if err != nil && err != api.ErrDisabled {
+				return err
+			}
+			if err != api.ErrDisabled {
+				// User and team are set, endpoint is not FF disabled, proceed to run the AI command
+				return aiCmd(ctx, apiClient, team)
+			}
+		} else if (user == nil || team == "") && source == "" && destination == "" && !offline {
+			return errors.New("authentication required for interactive mode. Please run `cloudquery login` first, or supply source and destination plugins, or else use the --offline flag to run basic interactive mode")
+		}
 	}
 
 	fmt.Println("Fetching plugins...")
