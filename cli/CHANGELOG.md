@@ -5,6 +5,21 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.29.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.28.1...cli-v6.29.0) (2025-09-16)
+
+
+### Features
+
+* Cloud-API-based AI Onboarding command. ([#21358](https://github.com/cloudquery/cloudquery/issues/21358)) ([3ce1769](https://github.com/cloudquery/cloudquery/commit/3ce17693280a26b4b8803c3a6b0fc2b9f3cea442))
+* Log CLI version ([#21361](https://github.com/cloudquery/cloudquery/issues/21361)) ([59f0018](https://github.com/cloudquery/cloudquery/commit/59f0018aea2eb97c127229ade5a3ecca210882bd))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.14.3 ([#21359](https://github.com/cloudquery/cloudquery/issues/21359)) ([728f484](https://github.com/cloudquery/cloudquery/commit/728f4849ce0d0aef2f61d446bfa5f67f1656c1ee))
+* Fix bug on cloudquery-test argument. ([#21362](https://github.com/cloudquery/cloudquery/issues/21362)) ([58ad2c6](https://github.com/cloudquery/cloudquery/commit/58ad2c6501afcf165ab262eabaca5351e82c07af))
+* Fix checking user's email while they may not be logged in. ([#21363](https://github.com/cloudquery/cloudquery/issues/21363)) ([229bcda](https://github.com/cloudquery/cloudquery/commit/229bcda68ee13de03af21dafc7a5c3a88ead6a78))
+
 ## [6.28.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.28.0...cli-v6.28.1) (2025-09-11)
 
 
