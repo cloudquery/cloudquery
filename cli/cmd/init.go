@@ -276,8 +276,14 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 		}
 	}
 
+	// TODO: Temporarily, while we have the @cloudquery.io-only command, let's make sure there's a user before we check their email.
+	userEmail := ""
+	if user != nil {
+		userEmail = user.Email
+	}
+
 	// TODO: For now, this is enabled only for @cloudquery.io users
-	if strings.HasSuffix(user.Email, "@cloudquery.io") {
+	if strings.HasSuffix(userEmail, "@cloudquery.io") {
 		// Check if user and team are set, and if so, run AI command
 		if user != nil && team != "" && !disableAI {
 			err := api.NewConversation(ctx, apiClient, team)
