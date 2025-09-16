@@ -56,6 +56,7 @@ func newCmdInit() *cobra.Command {
 	cmd.Flags().String("destination", "", "Destination plugin name or path")
 	cmd.Flags().String("spec-path", "", "Output spec file path")
 	cmd.Flags().Bool("yes", false, "Accept all defaults")
+	cmd.Flags().Bool("disable-ai", false, "Disable AI assistant")
 	return cmd
 }
 
@@ -70,7 +71,7 @@ func normalizePluginPath(pluginNameOrPath string) (string, error) {
 	return pluginNameOrPath, nil
 }
 
-func parseFlags(cmd *cobra.Command) (source, destination, specPath string, acceptDefaults bool, allErrors error) {
+func parseFlags(cmd *cobra.Command) (source, destination, specPath string, acceptDefaults, disableAI bool, allErrors error) {
 	source, err := cmd.Flags().GetString("source")
 	allErrors = errors.Join(allErrors, err)
 	if source != "" {
@@ -88,7 +89,10 @@ func parseFlags(cmd *cobra.Command) (source, destination, specPath string, accep
 
 	acceptDefaults, err = cmd.Flags().GetBool("yes")
 	allErrors = errors.Join(allErrors, err)
-	return source, destination, specPath, acceptDefaults, allErrors
+
+	disableAI, err = cmd.Flags().GetBool("disable-ai")
+	allErrors = errors.Join(allErrors, err)
+	return source, destination, specPath, acceptDefaults, disableAI, allErrors
 }
 
 func pluginFilter(pluginPath string, kind cqapi.PluginKind) func(plugin cqapi.ListPlugin) bool {
@@ -231,7 +235,7 @@ func linkForPlugin(plugin cqapi.ListPlugin) string {
 
 func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	ctx := cmd.Context()
-	source, destination, specPath, acceptDefaults, err := parseFlags(cmd)
+	source, destination, specPath, acceptDefaults, disableAI, err := parseFlags(cmd)
 	analytics.TrackInitStarted(ctx, invocationUUID.UUID, analytics.InitEvent{
 		Source:         source,
 		Destination:    destination,
@@ -259,6 +263,8 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 		user, _ = auth.GetUser(cmd.Context(), token)
 	}
 
+	team, _ := auth.GetTeamForToken(cmd.Context(), token)
+
 	apiClient, err := api.NewAnonymousClient()
 	if err != nil {
 		return err
@@ -267,6 +273,23 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 		apiClient, err = api.NewClient(token.Value)
 		if err != nil {
 			return err
+		}
+	}
+
+	// TODO: For now, this is enabled only for @cloudquery.io users
+	if strings.HasSuffix(user.Email, "@cloudquery.io") {
+		// Check if user and team are set, and if so, run AI command
+		if user != nil && team != "" && !disableAI {
+			err := api.NewConversation(ctx, apiClient, team)
+			if err != nil && err != api.ErrDisabled {
+				return err
+			}
+			if err != api.ErrDisabled {
+				// User and team are set, endpoint is not FF disabled, proceed to run the AI command
+				return aiCmd(ctx, apiClient, team)
+			}
+		} else if (user == nil || team == "") && source == "" && destination == "" && !disableAI {
+			return errors.New("authentication required for interactive mode. Please run `cloudquery login` first, or supply source and destination plugins, or else use the --offline flag to run basic interactive mode")
 		}
 	}
 

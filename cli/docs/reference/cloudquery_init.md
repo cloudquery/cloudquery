@@ -32,6 +32,7 @@ cloudquery init --yes
 
 ```
       --destination string   Destination plugin name or path
+      --disable-ai           Disable AI assistant
   -h, --help                 help for init
       --source string        Source plugin name or path
       --spec-path string     Output spec file path
