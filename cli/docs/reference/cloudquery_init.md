@@ -33,6 +33,7 @@ cloudquery init --yes
 ```
       --destination string   Destination plugin name or path
   -h, --help                 help for init
+      --offline              Run in offline mode without requiring authentication
       --source string        Source plugin name or path
       --spec-path string     Output spec file path
       --yes                  Accept all defaults
