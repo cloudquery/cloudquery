@@ -81,7 +81,7 @@ func aiCmd(ctx context.Context, client *cloudquery_api.ClientWithResponses, team
 						Name:      "cloudquery_test",
 						CallID:    response.FunctionCallID,
 						Arguments: response.FunctionCallArguments,
-						Output:    cloudqueryTest(response.FunctionCallArguments["filename"].(string)),
+						Output:    cloudqueryTest(response.FunctionCallArguments["filename_without_extension"].(string)),
 					},
 				})
 				if err != nil {
