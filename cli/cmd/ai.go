@@ -7,7 +7,9 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"os/signal"
 	"strings"
+	"syscall"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
@@ -22,6 +24,28 @@ var (
 )
 
 func aiCmd(ctx context.Context, client *cloudquery_api.ClientWithResponses, teamName string) error {
+	ctx, cancel := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
+	defer cancel()
+
+	errCh := make(chan error)
+
+	go func() {
+		errCh <- aiCmdInner(ctx, client, teamName)
+	}()
+
+	select {
+	case err := <-errCh:
+		if err == nil {
+			fmt.Println("Goodbye! 👋")
+		}
+		return err
+	case <-ctx.Done():
+		fmt.Println("\nGoodbye! 👋")
+		return nil
+	}
+}
+
+func aiCmdInner(ctx context.Context, client *cloudquery_api.ClientWithResponses, teamName string) error {
 	fmt.Println()
 	aiSuccess.Println("🤖 CloudQuery AI Assistant")
 	fmt.Println("I'm here to help you set up CloudQuery syncs!")
@@ -41,6 +65,9 @@ func aiCmd(ctx context.Context, client *cloudquery_api.ClientWithResponses, team
 		if !scanner.Scan() {
 			break
 		}
+		if err := scanner.Err(); err != nil {
+			return err
+		}
 
 		userInput := strings.TrimSpace(scanner.Text())
 		if userInput == "" {
@@ -49,7 +76,6 @@ func aiCmd(ctx context.Context, client *cloudquery_api.ClientWithResponses, team
 
 		// Check for exit commands
 		if strings.ToLower(userInput) == "exit" || strings.ToLower(userInput) == "quit" {
-			fmt.Println("Goodbye! 👋")
 			break
 		}
 
