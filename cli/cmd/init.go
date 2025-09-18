@@ -276,27 +276,18 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 		}
 	}
 
-	// TODO: Temporarily, while we have the @cloudquery.io-only command, let's make sure there's a user before we check their email.
-	userEmail := ""
-	if user != nil {
-		userEmail = user.Email
-	}
-
-	// TODO: For now, this is enabled only for @cloudquery.io users
-	if strings.HasSuffix(userEmail, "@cloudquery.io") {
-		// Check if user and team are set, and if so, run AI command
-		if user != nil && team != "" && !disableAI {
-			err := api.NewConversation(ctx, apiClient, team)
-			if err != nil && err != api.ErrDisabled {
-				return err
-			}
-			if err != api.ErrDisabled {
-				// User and team are set, endpoint is not FF disabled, proceed to run the AI command
-				return aiCmd(ctx, apiClient, team)
-			}
-		} else if (user == nil || team == "") && source == "" && destination == "" && !disableAI {
-			return errors.New("authentication required for interactive mode. Please run `cloudquery login` first, or supply source and destination plugins, or else use the --offline flag to run basic interactive mode")
+	// Check if user and team are set, and if so, run AI command
+	if user != nil && team != "" && !disableAI {
+		err := api.NewConversation(ctx, apiClient, team)
+		if err != nil && err != api.ErrDisabled {
+			return err
 		}
+		if err != api.ErrDisabled {
+			// User and team are set, endpoint is not FF disabled, proceed to run the AI command
+			return aiCmd(ctx, apiClient, team)
+		}
+	} else if (user == nil || team == "") && source == "" && destination == "" && !disableAI {
+		return errors.New("authentication required for interactive mode. Please run `cloudquery login` first, or supply source and destination plugins, or else use the --offline flag to run basic interactive mode")
 	}
 
 	fmt.Println("Fetching plugins...")
