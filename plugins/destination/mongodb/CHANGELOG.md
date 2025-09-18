@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.6.26...plugins-destination-mongodb-v2.7.0) (2025-09-18)
+
+
+### Features
+
+* Enable Using AWS Credentials with MongoDB ([#21021](https://github.com/cloudquery/cloudquery/issues/21021)) ([2c9de7c](https://github.com/cloudquery/cloudquery/commit/2c9de7c58744b86d20b06227658a9062b8fc55b4))
+
 ## [2.6.26](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.6.25...plugins-destination-mongodb-v2.6.26) (2025-09-04)
 
 
