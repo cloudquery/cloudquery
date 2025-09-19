@@ -152,8 +152,13 @@ func Chat(ctx context.Context, cl *cloudquery_api.ClientWithResponses, teamName 
 	return chatResp, nil
 }
 
-func NewConversation(ctx context.Context, cl *cloudquery_api.ClientWithResponses, teamName string) error {
-	resp, err := cl.AIOnboardingNewConversationWithResponse(ctx, teamName, cloudquery_api.AIOnboardingNewConversationJSONRequestBody{})
+func NewConversation(ctx context.Context, cl *cloudquery_api.ClientWithResponses, teamName string, resumeConversation bool) error {
+	requestBody := cloudquery_api.AIOnboardingNewConversationJSONRequestBody{}
+	if resumeConversation {
+		tryResume := any(true)
+		requestBody.TryResume = &tryResume
+	}
+	resp, err := cl.AIOnboardingNewConversationWithResponse(ctx, teamName, requestBody)
 	if err != nil {
 		return fmt.Errorf("failed to start new conversation: %w", err)
 	}
@@ -164,4 +169,9 @@ func NewConversation(ctx context.Context, cl *cloudquery_api.ClientWithResponses
 		return fmt.Errorf("failed to start new conversation: %s", resp.Status())
 	}
 	return nil
+}
+
+func EndConversation(ctx context.Context, cl *cloudquery_api.ClientWithResponses, teamName string) {
+	_, _ = cl.AIOnboardingEndConversationWithResponse(ctx, teamName)
+	// This call is best-effort, so we don't return an error
 }

@@ -31,12 +31,13 @@ cloudquery init --yes
 ### Options
 
 ```
-      --destination string   Destination plugin name or path
-      --disable-ai           Disable AI assistant
-  -h, --help                 help for init
-      --source string        Source plugin name or path
-      --spec-path string     Output spec file path
-      --yes                  Accept all defaults
+      --destination string    Destination plugin name or path
+      --disable-ai            Disable AI assistant
+  -h, --help                  help for init
+      --resume-conversation   Resume existing AI conversation instead of starting a new one
+      --source string         Source plugin name or path
+      --spec-path string      Output spec file path
+      --yes                   Accept all defaults
 ```
 
 ### Options inherited from parent commands

@@ -57,6 +57,7 @@ func newCmdInit() *cobra.Command {
 	cmd.Flags().String("spec-path", "", "Output spec file path")
 	cmd.Flags().Bool("yes", false, "Accept all defaults")
 	cmd.Flags().Bool("disable-ai", false, "Disable AI assistant")
+	cmd.Flags().Bool("resume-conversation", false, "Resume existing AI conversation instead of starting a new one")
 	return cmd
 }
 
@@ -71,7 +72,7 @@ func normalizePluginPath(pluginNameOrPath string) (string, error) {
 	return pluginNameOrPath, nil
 }
 
-func parseFlags(cmd *cobra.Command) (source, destination, specPath string, acceptDefaults, disableAI bool, allErrors error) {
+func parseFlags(cmd *cobra.Command) (source, destination, specPath string, acceptDefaults, disableAI, resumeConversation bool, allErrors error) {
 	source, err := cmd.Flags().GetString("source")
 	allErrors = errors.Join(allErrors, err)
 	if source != "" {
@@ -92,7 +93,10 @@ func parseFlags(cmd *cobra.Command) (source, destination, specPath string, accep
 
 	disableAI, err = cmd.Flags().GetBool("disable-ai")
 	allErrors = errors.Join(allErrors, err)
-	return source, destination, specPath, acceptDefaults, disableAI, allErrors
+
+	resumeConversation, err = cmd.Flags().GetBool("resume-conversation")
+	allErrors = errors.Join(allErrors, err)
+	return source, destination, specPath, acceptDefaults, disableAI, resumeConversation, allErrors
 }
 
 func pluginFilter(pluginPath string, kind cqapi.PluginKind) func(plugin cqapi.ListPlugin) bool {
@@ -235,7 +239,7 @@ func linkForPlugin(plugin cqapi.ListPlugin) string {
 
 func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	ctx := cmd.Context()
-	source, destination, specPath, acceptDefaults, disableAI, err := parseFlags(cmd)
+	source, destination, specPath, acceptDefaults, disableAI, resumeConversation, err := parseFlags(cmd)
 	analytics.TrackInitStarted(ctx, invocationUUID.UUID, analytics.InitEvent{
 		Source:         source,
 		Destination:    destination,
@@ -278,7 +282,7 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 
 	// Check if user and team are set, and if so, run AI command
 	if user != nil && team != "" && !disableAI {
-		err := api.NewConversation(ctx, apiClient, team)
+		err := api.NewConversation(ctx, apiClient, team, resumeConversation)
 		if err != nil && err != api.ErrDisabled {
 			return err
 		}
