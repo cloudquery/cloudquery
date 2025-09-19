@@ -35,13 +35,15 @@ func aiCmd(ctx context.Context, client *cloudquery_api.ClientWithResponses, team
 
 	select {
 	case err := <-errCh:
+		// Regardless of the error, the conversation ends here
+		api.EndConversation(context.Background(), client, teamName)
 		if err == nil {
 			fmt.Println("Goodbye! 👋")
 		}
 		return err
 	case <-ctx.Done():
 		// End the conversation when context is cancelled (e.g., Ctrl+C)
-		api.EndConversation(ctx, client, teamName)
+		api.EndConversation(context.Background(), client, teamName)
 		fmt.Println("\nGoodbye! 👋")
 		return nil
 	}
@@ -74,8 +76,6 @@ func aiCmdInner(ctx context.Context, client *cloudquery_api.ClientWithResponses,
 
 		// Check for exit commands
 		if strings.ToLower(userInput) == "exit" || strings.ToLower(userInput) == "quit" {
-			// End the conversation before exiting
-			api.EndConversation(ctx, client, teamName)
 			break
 		}
 
