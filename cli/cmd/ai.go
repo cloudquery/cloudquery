@@ -40,6 +40,8 @@ func aiCmd(ctx context.Context, client *cloudquery_api.ClientWithResponses, team
 		}
 		return err
 	case <-ctx.Done():
+		// End the conversation when context is cancelled (e.g., Ctrl+C)
+		api.EndConversation(ctx, client, teamName)
 		fmt.Println("\nGoodbye! 👋")
 		return nil
 	}
@@ -53,10 +55,6 @@ func aiCmdInner(ctx context.Context, client *cloudquery_api.ClientWithResponses,
 	fmt.Println()
 	fmt.Println("What are you trying to build with CloudQuery?")
 	fmt.Println()
-
-	if _, err := client.AIOnboardingNewConversationWithResponse(ctx, teamName, cloudquery_api.AIOnboardingNewConversationJSONRequestBody{}); err != nil {
-		return fmt.Errorf("failed to start new conversation: %w", err)
-	}
 
 	scanner := bufio.NewScanner(os.Stdin)
 
@@ -76,6 +74,8 @@ func aiCmdInner(ctx context.Context, client *cloudquery_api.ClientWithResponses,
 
 		// Check for exit commands
 		if strings.ToLower(userInput) == "exit" || strings.ToLower(userInput) == "quit" {
+			// End the conversation before exiting
+			api.EndConversation(ctx, client, teamName)
 			break
 		}
 
