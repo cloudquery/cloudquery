@@ -41,6 +41,7 @@ var (
 	bold              = color.New(color.Bold)
 	successful        = color.New(color.Bold, color.FgGreen)
 	link              = color.New(color.Bold, color.FgCyan)
+	errorColor        = color.New(color.Bold, color.FgRed)
 )
 
 func newCmdInit() *cobra.Command {
@@ -288,7 +289,16 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 		}
 		if err != api.ErrDisabled {
 			// User and team are set, endpoint is not FF disabled, proceed to run the AI command
-			return aiCmd(ctx, apiClient, team)
+			err := aiCmd(ctx, apiClient, team)
+
+			// This is unintuitive:
+			// - if AI works out, we're done
+			// - if AI fails, we output an obfuscated error and fallback to basic interactive mode
+			if err == nil {
+				return nil
+			}
+			errorColor.Println("There was an issue with the AI assistant. Falling back to basic interactive mode...")
+			fmt.Println()
 		}
 	} else if (user == nil || team == "") && source == "" && destination == "" && !disableAI {
 		return errors.New("authentication required for interactive mode. Please run `cloudquery login` first, or supply source and destination plugins, or else use the --offline flag to run basic interactive mode")
