@@ -5,6 +5,15 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.29.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.29.0...cli-v6.29.1) (2025-09-19)
+
+
+### Bug Fixes
+
+* AI onboarding - Handle SIGINT ([#21366](https://github.com/cloudquery/cloudquery/issues/21366)) ([a972793](https://github.com/cloudquery/cloudquery/commit/a972793762cbc7e58b3b8a129ecbca497c9b8c08))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.14.4 ([#21370](https://github.com/cloudquery/cloudquery/issues/21370)) ([0b3a0ea](https://github.com/cloudquery/cloudquery/commit/0b3a0ea944e5777bb1932c9e72612670efe9fea2))
+* Implement AI Onboarding improvements. ([#21369](https://github.com/cloudquery/cloudquery/issues/21369)) ([1e978f7](https://github.com/cloudquery/cloudquery/commit/1e978f7b5054ba5aebbf0723af81b4c7f7ec4860))
+
 ## [6.29.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.28.1...cli-v6.29.0) (2025-09-16)
 
 
