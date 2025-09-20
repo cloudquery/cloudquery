@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/cli/v6
 
-go 1.25.0
+go 1.25.1
 
 require (
 	github.com/apache/arrow-go/v18 v18.4.0
