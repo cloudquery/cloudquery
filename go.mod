@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/v6
 
-go 1.25.0
+go 1.25.1
 
 require github.com/cloudquery/cloudquery/cli/v6 v6.29.2
 

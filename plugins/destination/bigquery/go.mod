@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4
 
-go 1.25.0
+go 1.25.1
 
 require (
 	cloud.google.com/go/bigquery v1.69.0
@@ -10,6 +10,7 @@ require (
 	github.com/goccy/go-json v0.10.5
 	github.com/invopop/jsonschema v0.13.0
 	github.com/rs/zerolog v1.34.0
+	github.com/samber/lo v1.51.0
 	golang.org/x/sync v0.16.0
 	google.golang.org/api v0.246.0
 )
@@ -57,7 +58,6 @@ require (
 	github.com/oapi-codegen/runtime v1.1.2 // indirect
 	github.com/pierrec/lz4/v4 v4.1.22 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
-	github.com/samber/lo v1.51.0 // indirect
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2 // indirect
 	github.com/stoewer/go-strcase v1.3.1 // indirect
 	github.com/stretchr/testify v1.11.0 // indirect
