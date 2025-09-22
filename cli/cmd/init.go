@@ -282,7 +282,7 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 			return err
 		}
 
-		apiClientWithoutRetries, err = api.NewClient(token.Value, cqapi.WithHTTPClient(&http.Client{}))
+		apiClientWithoutRetries, err = api.NewClient(token.Value, cqapi.WithHTTPClient(http.DefaultClient))
 		if err != nil {
 			return err
 		}
