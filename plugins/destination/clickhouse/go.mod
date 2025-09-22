@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7
 
-go 1.25.0
+go 1.25.1
 
 require (
 	github.com/ClickHouse/clickhouse-go/v2 v2.34.0
