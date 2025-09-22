@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
+	"net/http"
 	"os"
 	"regexp"
 	"sort"
@@ -271,6 +272,7 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	team, _ := auth.GetTeamForToken(cmd.Context(), token)
 
 	apiClient, err := api.NewAnonymousClient()
+	var apiClientWithoutRetries *cqapi.ClientWithResponses
 	if err != nil {
 		return err
 	}
@@ -279,11 +281,16 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 		if err != nil {
 			return err
 		}
+
+		apiClientWithoutRetries, err = api.NewClient(token.Value, cqapi.WithHTTPClient(http.DefaultClient))
+		if err != nil {
+			return err
+		}
 	}
 
 	// Check if user and team are set, and if so, run AI command
 	if user != nil && team != "" && !disableAI {
-		err := api.NewConversation(ctx, apiClient, team, resumeConversation)
+		err := api.NewConversation(ctx, apiClientWithoutRetries, team, resumeConversation)
 		if err != nil && err != api.ErrDisabled {
 			return err
 		}
