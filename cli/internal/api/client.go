@@ -19,12 +19,18 @@ var (
 	ErrDisabled = errors.New("AI onboarding is disabled")
 )
 
-func NewClient(token string) (*cloudquery_api.ClientWithResponses, error) {
-	c, err := cloudquery_api.NewClientWithResponses(env.GetEnvOrDefault(envAPIURL, defaultAPIURL),
-		cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
-			req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
-			return nil
-		}))
+func NewClient(token string, opts ...cloudquery_api.ClientOption) (*cloudquery_api.ClientWithResponses, error) {
+	requestEditorOpt := cloudquery_api.WithRequestEditorFn(func(ctx context.Context, req *http.Request) error {
+		req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
+		return nil
+	})
+
+	clientOpts := append([]cloudquery_api.ClientOption{requestEditorOpt}, opts...)
+
+	c, err := cloudquery_api.NewClientWithResponses(
+		env.GetEnvOrDefault(envAPIURL, defaultAPIURL),
+		clientOpts...,
+	)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create api client: %w", err)
 	}
