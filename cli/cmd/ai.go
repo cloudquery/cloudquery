@@ -75,6 +75,9 @@ func startSpinner(ctx context.Context, messages []string) func() {
 	// Create a context for the spinner that can be cancelled
 	spinnerCtx, spinnerCancel := context.WithCancel(ctx)
 
+	// Channel to signal when cleanup is complete
+	cleanupDone := make(chan struct{})
+
 	// Start the message rotation
 	go func() {
 		ticker := time.NewTicker(4 * time.Second)
@@ -101,6 +104,7 @@ func startSpinner(ctx context.Context, messages []string) func() {
 	spinnerIndex := 0
 
 	go func() {
+		defer close(cleanupDone)
 		ticker := time.NewTicker(100 * time.Millisecond)
 		defer ticker.Stop()
 
@@ -111,8 +115,6 @@ func startSpinner(ctx context.Context, messages []string) func() {
 				stopped = true
 				mu.Unlock()
 				_ = bar.Clear()
-				// Give a moment for the clear to take effect
-				time.Sleep(50 * time.Millisecond)
 				return
 			case <-ticker.C:
 				mu.Lock()
@@ -140,8 +142,7 @@ func startSpinner(ctx context.Context, messages []string) func() {
 	// Return a stop function
 	return func() {
 		spinnerCancel()
-		// Give a moment for the cleanup to take effect
-		time.Sleep(100 * time.Millisecond)
+		<-cleanupDone
 	}
 }
 
