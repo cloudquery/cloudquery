@@ -5,6 +5,15 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.29.3](https://github.com/cloudquery/cloudquery/compare/cli-v6.29.2...cli-v6.29.3) (2025-09-23)
+
+
+### Bug Fixes
+
+* If there's an issue with AI onboarding, fallback. ([#21373](https://github.com/cloudquery/cloudquery/issues/21373)) ([4087805](https://github.com/cloudquery/cloudquery/commit/408780562008f9e5be15880bbaaa525e12f26ba9))
+* Not retry when making AI Onboarding requests. ([#21384](https://github.com/cloudquery/cloudquery/issues/21384)) ([7fbc086](https://github.com/cloudquery/cloudquery/commit/7fbc086c7663a8e112a3a5d59569b66cf4636af8))
+* Provide visual feedback of chat completion. ([#21386](https://github.com/cloudquery/cloudquery/issues/21386)) ([440bf75](https://github.com/cloudquery/cloudquery/commit/440bf752e240772b94a1544b202d7a9c864b02a0))
+
 ## [6.29.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.29.1...cli-v6.29.2) (2025-09-19)
 
 
