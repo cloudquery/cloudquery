@@ -9,6 +9,7 @@ import (
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/hub"
 )
 
 type Team = cloudquery_api.Team
@@ -61,7 +62,7 @@ func (c *Client) ListAllTeams(ctx context.Context) ([]string, error) {
 			return nil, err
 		}
 		if resp.StatusCode() != http.StatusOK || resp.JSON200 == nil {
-			return nil, fmt.Errorf("failed to list teams: %s", resp.Status())
+			return nil, fmt.Errorf("failed to list teams: %w", hub.ErrorFromHTTPResponse(resp.HTTPResponse, resp))
 		}
 		for _, team := range resp.JSON200.Items {
 			teams = append(teams, team.Name)
@@ -81,7 +82,7 @@ func (c *Client) GetTeam(ctx context.Context, team string) (*Team, error) {
 	}
 
 	if resp.StatusCode() != http.StatusOK || resp.JSON200 == nil {
-		return nil, fmt.Errorf("failed to get team %q: %s", team, resp.Status())
+		return nil, fmt.Errorf("failed to get team %q: %w", team, hub.ErrorFromHTTPResponse(resp.HTTPResponse, resp))
 	}
 
 	return resp.JSON200, nil
