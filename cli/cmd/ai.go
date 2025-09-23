@@ -68,7 +68,6 @@ func showSpinner(ctx context.Context, messages []string, done chan struct{}) {
 	bar := progressbar.NewOptions(-1,
 		progressbar.OptionSetDescription(""),
 		progressbar.OptionSetWidth(50),
-		progressbar.OptionShowCount(),
 		progressbar.OptionClearOnFinish(),
 		progressbar.OptionSetRenderBlankState(true),
 	)
