@@ -9,12 +9,15 @@ import (
 	"os/exec"
 	"os/signal"
 	"strings"
+	gosync "sync"
 	"syscall"
+	"time"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
 	"github.com/fatih/color"
 	"github.com/samber/lo"
+	"github.com/schollz/progressbar/v3"
 )
 
 var (
@@ -22,6 +25,126 @@ var (
 	aiSuccess = color.New(color.Bold, color.FgGreen)
 	aiInfo    = color.New(color.Bold, color.FgCyan)
 )
+
+// Spinner messages for different operations
+var (
+	generalMessages = []string{
+		"🤖 Thinking...",
+		"📚 Consulting plugin documentation...",
+		"🌐 Calling CloudQuery APIs...",
+		"🧠 Processing your request...",
+		"⚡ Generating response...",
+		"🔍 Analyzing your query...",
+		"💭 Crafting the perfect answer...",
+		"✨ Almost ready...",
+	}
+
+	specFileMessages = []string{
+		"📝 Creating spec file...",
+		"⚙️  Configuring CloudQuery...",
+		"🔧 Setting up sync configuration...",
+		"📋 Writing YAML configuration...",
+		"🎯 Optimizing table selection...",
+		"✨ Finalizing spec file...",
+	}
+
+	testMessages = []string{
+		"🧪 Running CloudQuery test...",
+		"🔍 Validating configuration...",
+		"⚡ Testing sync capabilities...",
+		"📊 Checking table schemas...",
+		"🔧 Verifying connections...",
+		"✅ Almost done testing...",
+	}
+)
+
+// startSpinner displays a spinner with rotating messages and returns a stop function
+func startSpinner(ctx context.Context, messages []string) func() {
+	var mu gosync.Mutex
+	var currentMessage string
+	var stopped bool
+
+	// Create a progressbar for the spinner
+	bar := progressbar.NewOptions(-1,
+		progressbar.OptionSetDescription(""),
+		progressbar.OptionSetWidth(50),
+		progressbar.OptionClearOnFinish(),
+		progressbar.OptionSetRenderBlankState(true),
+	)
+
+	// Create a context for the spinner that can be cancelled
+	spinnerCtx, spinnerCancel := context.WithCancel(ctx)
+
+	// Channel to signal when cleanup is complete
+	cleanupDone := make(chan struct{})
+
+	// Start the message rotation
+	go func() {
+		ticker := time.NewTicker(4 * time.Second)
+		defer ticker.Stop()
+
+		messageIndex := 0
+		for {
+			select {
+			case <-spinnerCtx.Done():
+				return
+			case <-ticker.C:
+				mu.Lock()
+				if !stopped {
+					currentMessage = messages[messageIndex%len(messages)]
+					messageIndex++
+				}
+				mu.Unlock()
+			}
+		}
+	}()
+
+	// Start the spinner animation
+	spinnerChars := []string{"⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"}
+	spinnerIndex := 0
+
+	go func() {
+		defer close(cleanupDone)
+		ticker := time.NewTicker(100 * time.Millisecond)
+		defer ticker.Stop()
+
+		for {
+			select {
+			case <-spinnerCtx.Done():
+				mu.Lock()
+				stopped = true
+				mu.Unlock()
+				_ = bar.Clear()
+				return
+			case <-ticker.C:
+				mu.Lock()
+				if stopped {
+					mu.Unlock()
+					continue
+				}
+				msg := currentMessage
+				mu.Unlock()
+
+				if msg == "" {
+					msg = messages[0]
+				}
+
+				spinner := spinnerChars[spinnerIndex%len(spinnerChars)]
+				spinnerIndex++
+
+				description := fmt.Sprintf("%s %s", spinner, msg)
+				bar.Describe(description)
+				_ = bar.Add(0) // Trigger redraw
+			}
+		}
+	}()
+
+	// Return a stop function
+	return func() {
+		spinnerCancel()
+		<-cleanupDone
+	}
+}
 
 func aiCmd(ctx context.Context, client *cloudquery_api.ClientWithResponses, teamName string) error {
 	ctx, cancel := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
@@ -79,7 +202,12 @@ func aiCmdInner(ctx context.Context, client *cloudquery_api.ClientWithResponses,
 			break
 		}
 
+		// Show spinner while waiting for API response
+		stop := startSpinner(ctx, generalMessages)
+
 		response, err := api.Chat(ctx, client, teamName, &userInput, &[]api.FunctionCallOutput{})
+		stop() // Stop the spinner
+
 		if err != nil {
 			return fmt.Errorf("failed to chat: %w", err)
 		}
@@ -90,6 +218,10 @@ func aiCmdInner(ctx context.Context, client *cloudquery_api.ClientWithResponses,
 				if err != nil {
 					return fmt.Errorf("failed to create spec file: %w", err)
 				}
+
+				// Show spinner while waiting for API response after creating spec file
+				stop := startSpinner(ctx, specFileMessages)
+
 				response, err = api.Chat(ctx, client, teamName, lo.ToPtr(""), &[]api.FunctionCallOutput{
 					{
 						Name:      "create_spec_file",
@@ -98,18 +230,31 @@ func aiCmdInner(ctx context.Context, client *cloudquery_api.ClientWithResponses,
 						Output:    "Spec file created",
 					},
 				})
+				stop() // Stop the spinner
+
 				if err != nil {
 					return fmt.Errorf("failed to chat: %w", err)
 				}
 			case "cloudquery_test":
+				// Show spinner while running the test
+				stop := startSpinner(ctx, testMessages)
+
+				testOutput := cloudqueryTest(response.FunctionCallArguments["filename_without_extension"].(string))
+				stop() // Stop the spinner
+
+				// Show spinner while waiting for API response after running test
+				stop = startSpinner(ctx, testMessages)
+
 				response, err = api.Chat(ctx, client, teamName, lo.ToPtr(""), &[]api.FunctionCallOutput{
 					{
 						Name:      "cloudquery_test",
 						CallID:    response.FunctionCallID,
 						Arguments: response.FunctionCallArguments,
-						Output:    cloudqueryTest(response.FunctionCallArguments["filename_without_extension"].(string)),
+						Output:    testOutput,
 					},
 				})
+				stop() // Stop the spinner
+
 				if err != nil {
 					return fmt.Errorf("failed to chat: %w", err)
 				}
