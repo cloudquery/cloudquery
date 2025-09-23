@@ -54,7 +54,7 @@ func runSwitch(cmd *cobra.Command, args []string) error {
 
 		allTeams, err := cl.ListAllTeams(cmd.Context())
 		if err != nil {
-			return fmt.Errorf("failed to list all teams: %w", err)
+			return fmt.Errorf("failed to list teams: %w", err)
 		}
 
 		if currentTeam == "" {

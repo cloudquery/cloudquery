@@ -37,7 +37,7 @@ func NewClientFromAPI(apiClient *cloudquery_api.ClientWithResponses) *Client {
 func (c *Client) ValidateTeam(ctx context.Context, name string) error {
 	teams, err := c.ListAllTeams(ctx)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to list teams: %w", err)
 	}
 	return c.ValidateTeamAgainstTeams(name, teams)
 }
@@ -62,7 +62,7 @@ func (c *Client) ListAllTeams(ctx context.Context) ([]string, error) {
 			return nil, err
 		}
 		if resp.StatusCode() != http.StatusOK || resp.JSON200 == nil {
-			return nil, fmt.Errorf("failed to list teams: %w", hub.ErrorFromHTTPResponse(resp.HTTPResponse, resp))
+			return nil, hub.ErrorFromHTTPResponse(resp.HTTPResponse, resp)
 		}
 		for _, team := range resp.JSON200.Items {
 			teams = append(teams, team.Name)
