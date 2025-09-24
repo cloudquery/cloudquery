@@ -17,10 +17,7 @@ func getAvailableUserTeams(ctx context.Context, token auth.Token) []string {
 	if err != nil {
 		return nil
 	}
-	teams, err := cl.ListAllTeams(ctx)
-	if err != nil {
-		return nil
-	}
+	teams, _ := cl.ListAllTeams(ctx)
 	return teams
 }
 
