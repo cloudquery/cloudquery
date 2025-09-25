@@ -146,14 +146,14 @@ func startSpinner(ctx context.Context, messages []string) func() {
 	}
 }
 
-func aiCmd(ctx context.Context, client *cloudquery_api.ClientWithResponses, teamName string) error {
+func aiCmd(ctx context.Context, client *cloudquery_api.ClientWithResponses, teamName string, resumeConversation bool) error {
 	ctx, cancel := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
 	defer cancel()
 
 	errCh := make(chan error)
 
 	go func() {
-		errCh <- aiCmdInner(ctx, client, teamName)
+		errCh <- aiCmdInner(ctx, client, teamName, resumeConversation)
 	}()
 
 	select {
@@ -172,13 +172,17 @@ func aiCmd(ctx context.Context, client *cloudquery_api.ClientWithResponses, team
 	}
 }
 
-func aiCmdInner(ctx context.Context, client *cloudquery_api.ClientWithResponses, teamName string) error {
+func aiCmdInner(ctx context.Context, client *cloudquery_api.ClientWithResponses, teamName string, resumeConversation bool) error {
 	fmt.Println()
 	aiSuccess.Println("🤖 CloudQuery AI Assistant")
 	fmt.Println("I'm here to help you set up CloudQuery syncs!")
 	fmt.Println("Type 'exit' or 'quit' to end the conversation.")
 	fmt.Println()
-	fmt.Println("What are you trying to build with CloudQuery?")
+	if resumeConversation {
+		fmt.Println("Your conversation has been resumed. You can now generate the config or ask questions about your sync.")
+	} else {
+		fmt.Println("What are you trying to build with CloudQuery?")
+	}
 	fmt.Println()
 
 	scanner := bufio.NewScanner(os.Stdin)
