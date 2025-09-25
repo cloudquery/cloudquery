@@ -2,7 +2,7 @@ module github.com/cloudquery/cloudquery/v6
 
 go 1.25.1
 
-require github.com/cloudquery/cloudquery/cli/v6 v6.29.3
+require github.com/cloudquery/cloudquery/cli/v6 v6.29.4
 
 require (
 	github.com/Masterminds/semver v1.5.0 // indirect
