@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.4.0...plugins-destination-bigquery-v4.5.0) (2025-09-25)
+
+
+### Features
+
+* Add `time_partitioning_expiration` spec option ([#21391](https://github.com/cloudquery/cloudquery/issues/21391)) ([fa485b2](https://github.com/cloudquery/cloudquery/commit/fa485b28769204f7f238fc841e795011e40f3537))
+* Add monthly/yearly partitioning ([#21395](https://github.com/cloudquery/cloudquery/issues/21395)) ([d5725f9](https://github.com/cloudquery/cloudquery/commit/d5725f9759f9e61279ebb87cb51b4753665d4d27))
+
 ## [4.4.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.3.9...plugins-destination-bigquery-v4.4.0) (2025-09-04)
 
 
