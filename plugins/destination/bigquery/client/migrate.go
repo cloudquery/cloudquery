@@ -215,13 +215,15 @@ func (c *Client) timePartitioning() *bigquery.TimePartitioning {
 	switch c.spec.TimePartitioning {
 	case TimePartitioningOptionHour:
 		return &bigquery.TimePartitioning{
-			Type:  "HOUR",
-			Field: "_cq_sync_time",
+			Type:       bigquery.HourPartitioningType,
+			Field:      schema.CqSyncTimeColumn.Name,
+			Expiration: c.spec.TimePartitioningExpiration.Duration(),
 		}
 	case TimePartitioningOptionDay:
 		return &bigquery.TimePartitioning{
-			Type:  "DAY",
-			Field: "_cq_sync_time",
+			Type:       bigquery.DayPartitioningType,
+			Field:      schema.CqSyncTimeColumn.Name,
+			Expiration: c.spec.TimePartitioningExpiration.Duration(),
 		}
 	default:
 		return nil
