@@ -14,18 +14,19 @@ func (c *ConcreteEmbeddingsClient) MigrateTables(ctx context.Context) error {
 		if err != nil {
 			return err
 		}
+
+		if ok, err := c.client.doesTableExist(ctx, c.client.client, tableConfig.TargetTableName); err != nil {
+			return err
+		} else if ok {
+			continue
+		}
+
 		tm := bigquery.TableMetadata{
 			Name:             tableConfig.TargetTableName,
 			Location:         "",
 			Description:      fmt.Sprintf("Embeddings for table %s", tableConfig.SourceTableName),
 			Schema:           schema,
 			TimePartitioning: c.client.timePartitioning(),
-		}
-
-		if ok, err := c.client.doesTableExist(ctx, c.client.client, tableConfig.TargetTableName); err != nil {
-			return err
-		} else if ok {
-			continue
 		}
 
 		if err := c.client.client.DatasetInProject(c.ProjectID, c.DatasetID).Table(tableConfig.TargetTableName).Create(ctx, &tm); err != nil {

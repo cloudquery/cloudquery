@@ -14,6 +14,7 @@ spec:
     # Optional parameters
     # dataset_location: ""
     # time_partitioning: none # options: "none", "hour", "day"
+    # time_partition_expiration: 0 # duration, e.g. "24h" or "30d"
     # service_account_key_json: ""
     # endpoint: ""
     # batch_size: 10000

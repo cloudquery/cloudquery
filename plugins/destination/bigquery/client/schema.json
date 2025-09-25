@@ -52,6 +52,10 @@
           "description": "The time partitioning to use when creating tables. The partition time column used will always be `_cq_sync_time` so that all rows for a sync run will be partitioned on the hour/day the sync started.",
           "default": "none"
         },
+        "time_partitioning_expiration": {
+          "$ref": "#/$defs/Duration",
+          "description": "The duration to keep the partitions. Only applicable if `time_partitioning` is set to a value other than `none`. A value of 0 means no expiration."
+        },
         "service_account_key_json": {
           "type": "string",
           "description": "GCP service account key content.\nThis allows for using different service accounts for the GCP source and BigQuery destination.\nIf using service account keys, it is best to use [environment or file variable substitution](/docs/advanced-topics/environment-variable-substitution)."

@@ -59,6 +59,11 @@ This is the top-level spec used by the BigQuery destination plugin.
 
   The time partitioning to use when creating tables. The partition time column used will always be `_cq_sync_time` so that all rows for a sync run will be partitioned on the hour/day the sync started.
 
+- `time_partitioning_expiration` (`duration`) (optional)
+
+  The time after which the partition will be automatically deleted. The duration is specified in seconds, minutes, hours or days, e.g. `3600s`, `60m`, `24h`, `30d`.
+  This option is only valid if `time_partitioning` is set a value other than `none`.
+
 - `service_account_key_json` (`string`) (optional) (default: empty).
 
   GCP service account key content.

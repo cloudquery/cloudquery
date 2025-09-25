@@ -57,6 +57,9 @@ type Spec struct {
 	// The time partitioning to use when creating tables. The partition time column used will always be `_cq_sync_time` so that all rows for a sync run will be partitioned on the hour/day the sync started.
 	TimePartitioning TimePartitioningOption `json:"time_partitioning"`
 
+	// The duration to keep the partitions. Only applicable if `time_partitioning` is set to a value other than `none`. A value of 0 means no expiration.
+	TimePartitioningExpiration configtype.Duration `json:"time_partitioning_expiration" jsonschema:"minimum=0,default=0"`
+
 	// GCP service account key content.
 	// This allows for using different service accounts for the GCP source and BigQuery destination.
 	// If using service account keys, it is best to use [environment or file variable substitution](/docs/advanced-topics/environment-variable-substitution).
@@ -141,6 +144,9 @@ func (s *Spec) Validate() error {
 	}
 	if err := s.TimePartitioning.Validate(); err != nil {
 		return fmt.Errorf("time_partitioning: %w", err)
+	}
+	if s.TimePartitioning != TimePartitioningOptionNone && s.TimePartitioningExpiration.Duration() > 0 {
+		return errors.New("time_partitioning_expiration option requires time_partitioning to be set")
 	}
 	if len(s.ServiceAccountKeyJSON) > 0 {
 		if err := isValidJson(s.ServiceAccountKeyJSON); err != nil {
