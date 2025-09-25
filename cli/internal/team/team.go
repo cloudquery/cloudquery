@@ -105,9 +105,9 @@ func (c *Client) GetTeam(ctx context.Context, team string) (*Team, error) {
 }
 
 func Names(teams []Team) []string {
-	names := make([]string, 0, len(teams))
-	for _, t := range teams {
-		names = append(names, t.Name)
+	names := make([]string, len(teams))
+	for i, t := range teams {
+		names[i] = t.Name
 	}
 	return names
 }
