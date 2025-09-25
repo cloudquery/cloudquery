@@ -13,7 +13,7 @@ spec:
     dataset_id: ${DATASET_ID}
     # Optional parameters
     # dataset_location: ""
-    # time_partitioning: none # options: "none", "hour", "day"
+    # time_partitioning: none # options: "none", "hour", "day", "month", "year"
     # time_partition_expiration: 0 # duration, e.g. "24h" or "30d"
     # service_account_key_json: ""
     # endpoint: ""
