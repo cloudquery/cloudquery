@@ -212,21 +212,22 @@ func (c *Client) createTable(ctx context.Context, client *bigquery.Client, table
 }
 
 func (c *Client) timePartitioning() *bigquery.TimePartitioning {
-	switch c.spec.TimePartitioning {
-	case TimePartitioningOptionHour:
-		return &bigquery.TimePartitioning{
-			Type:       bigquery.HourPartitioningType,
-			Field:      schema.CqSyncTimeColumn.Name,
-			Expiration: c.spec.TimePartitioningExpiration.Duration(),
-		}
-	case TimePartitioningOptionDay:
-		return &bigquery.TimePartitioning{
-			Type:       bigquery.DayPartitioningType,
-			Field:      schema.CqSyncTimeColumn.Name,
-			Expiration: c.spec.TimePartitioningExpiration.Duration(),
-		}
-	default:
+	values := map[TimePartitioningOption]bigquery.TimePartitioningType{
+		TimePartitioningOptionHour:  bigquery.HourPartitioningType,
+		TimePartitioningOptionDay:   bigquery.DayPartitioningType,
+		TimePartitioningOptionMonth: bigquery.MonthPartitioningType,
+		TimePartitioningOptionYear:  bigquery.YearPartitioningType,
+	}
+
+	v, ok := values[c.spec.TimePartitioning]
+	if !ok {
 		return nil
+	}
+
+	return &bigquery.TimePartitioning{
+		Type:       v,
+		Field:      schema.CqSyncTimeColumn.Name,
+		Expiration: c.spec.TimePartitioningExpiration.Duration(),
 	}
 }
 

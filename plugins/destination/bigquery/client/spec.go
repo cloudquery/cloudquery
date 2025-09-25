@@ -22,15 +22,19 @@ const (
 type TimePartitioningOption string
 
 const (
-	TimePartitioningOptionNone = TimePartitioningOption("none")
-	TimePartitioningOptionHour = TimePartitioningOption("hour")
-	TimePartitioningOptionDay  = TimePartitioningOption("day")
+	TimePartitioningOptionNone  = TimePartitioningOption("none")
+	TimePartitioningOptionHour  = TimePartitioningOption("hour")
+	TimePartitioningOptionDay   = TimePartitioningOption("day")
+	TimePartitioningOptionMonth = TimePartitioningOption("month")
+	TimePartitioningOptionYear  = TimePartitioningOption("year")
 )
 
 var TimePartitioningOptions = []TimePartitioningOption{
 	TimePartitioningOptionNone,
 	TimePartitioningOptionHour,
 	TimePartitioningOptionDay,
+	TimePartitioningOptionMonth,
+	TimePartitioningOptionYear,
 }
 
 func (t TimePartitioningOption) Validate() error {
@@ -54,7 +58,7 @@ type Spec struct {
 	// Pro-tip: this can solve "dataset not found" issues for newly created datasets.
 	DatasetLocation string `json:"dataset_location"`
 
-	// The time partitioning to use when creating tables. The partition time column used will always be `_cq_sync_time` so that all rows for a sync run will be partitioned on the hour/day the sync started.
+	// The time partitioning to use when creating tables. The partition time column used will always be `_cq_sync_time` so that all rows for a sync run will be partitioned on the hour/day/month/year the sync started.
 	TimePartitioning TimePartitioningOption `json:"time_partitioning"`
 
 	// The duration to keep the partitions. Only applicable if `time_partitioning` is set to a value other than `none`. A value of 0 means no expiration.

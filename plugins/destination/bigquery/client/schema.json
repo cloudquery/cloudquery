@@ -47,9 +47,11 @@
           "enum": [
             "none",
             "hour",
-            "day"
+            "day",
+            "month",
+            "year"
           ],
-          "description": "The time partitioning to use when creating tables. The partition time column used will always be `_cq_sync_time` so that all rows for a sync run will be partitioned on the hour/day the sync started.",
+          "description": "The time partitioning to use when creating tables. The partition time column used will always be `_cq_sync_time` so that all rows for a sync run will be partitioned on the hour/day/month/year the sync started.",
           "default": "none"
         },
         "time_partitioning_expiration": {
