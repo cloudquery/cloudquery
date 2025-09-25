@@ -5,6 +5,15 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.29.4](https://github.com/cloudquery/cloudquery/compare/cli-v6.29.3...cli-v6.29.4) (2025-09-25)
+
+
+### Bug Fixes
+
+* Better handling of error messages from API ([#21389](https://github.com/cloudquery/cloudquery/issues/21389)) ([6df6ac7](https://github.com/cloudquery/cloudquery/commit/6df6ac7faa0fcac328d4a872a182149a7e845f0c))
+* Send a more adequate message on resume. ([#21393](https://github.com/cloudquery/cloudquery/issues/21393)) ([846e106](https://github.com/cloudquery/cloudquery/commit/846e10646c9e21b459723a82a2db324a7e4204a9))
+* Update team internal metadata upon switch and login ([#21392](https://github.com/cloudquery/cloudquery/issues/21392)) ([64b36ac](https://github.com/cloudquery/cloudquery/commit/64b36ac82cd6cc5a67feaf210009056e43c72f22))
+
 ## [6.29.3](https://github.com/cloudquery/cloudquery/compare/cli-v6.29.2...cli-v6.29.3) (2025-09-23)
 
 
