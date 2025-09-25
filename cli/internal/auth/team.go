@@ -18,7 +18,7 @@ func getAvailableUserTeams(ctx context.Context, token auth.Token) []string {
 		return nil
 	}
 	teams, _ := cl.ListAllTeams(ctx)
-	return teams
+	return teamapi.Names(teams)
 }
 
 func configFileMissing(err error) bool {
@@ -60,9 +60,9 @@ func GetTeamForToken(ctx context.Context, token auth.Token) (string, error) {
 		case 0:
 			return "", errors.New("team api key has no assigned team")
 		case 1:
-			return teams[0], nil
+			return teams[0].Name, nil
 		default:
-			return "", fmt.Errorf("team api key has more than one team: %s", strings.Join(teams, ", "))
+			return "", fmt.Errorf("team api key has more than one team: %s", teamapi.Names(teams))
 		}
 	default:
 		return os.Getenv("_CQ_TEAM_NAME"), nil

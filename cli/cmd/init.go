@@ -296,7 +296,7 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 		}
 		if err != api.ErrDisabled {
 			// User and team are set, endpoint is not FF disabled, proceed to run the AI command
-			err := aiCmd(ctx, apiClient, team)
+			err := aiCmd(ctx, apiClient, team, resumeConversation)
 
 			// This is unintuitive:
 			// - if AI works out, we're done

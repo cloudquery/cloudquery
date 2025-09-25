@@ -222,13 +222,17 @@ func setTeamOnLogin(ctx context.Context, cmd *cobra.Command, token string) error
 	if cmd.Flags().Changed("team") {
 		// don't care about the current cached config value as the user explicitly passes the `team` flag
 		currentTeam := cmd.Flag("team").Value.String()
-		err = cl.ValidateTeamAgainstTeams(currentTeam, teams)
+		foundTeam, err := cl.FindTeam(teams, currentTeam)
 		if err != nil {
 			return fmt.Errorf("failed to validate team: %w", err)
 		}
 		err = config.SetValue("team", currentTeam)
 		if err != nil {
 			return fmt.Errorf("failed to set team: %w", err)
+		}
+		err = config.SetValue("team_internal", strconv.FormatBool(foundTeam.Internal))
+		if err != nil {
+			return fmt.Errorf("failed to set team metadata: %w", err)
 		}
 		return nil
 	}
@@ -237,10 +241,16 @@ func setTeamOnLogin(ctx context.Context, cmd *cobra.Command, token string) error
 	if err != nil && !errors.Is(err, os.ErrNotExist) {
 		return fmt.Errorf("failed to get current team: %w", err)
 	}
-
-	if len(currentTeam) > 0 && cl.ValidateTeamAgainstTeams(currentTeam, teams) == nil {
+	foundTeam, err := cl.FindTeam(teams, currentTeam)
+	if len(currentTeam) > 0 && err == nil {
 		// The selected team is available to the user, so we're just using it
-		cmd.Printf("Your current team is set to %s.\n", currentTeam)
+		cmd.Printf("Your current team is set to %s.\n", foundTeam.Name)
+
+		// Make sure we update the internal flag in case it changed
+		err = config.SetValue("team_internal", strconv.FormatBool(foundTeam.Internal))
+		if err != nil {
+			return fmt.Errorf("failed to set team metadata: %w", err)
+		}
 		return nil
 	}
 
@@ -261,19 +271,14 @@ func setTeamOnLogin(ctx context.Context, cmd *cobra.Command, token string) error
 		}
 
 	case 1:
-		currentTeam = teams[0]
+		currentTeam = teams[0].Name
 		err = config.SetValue("team", currentTeam)
 		if err != nil {
 			return fmt.Errorf("failed to set team: %w", err)
 		}
 
-		teamInfo, err := cl.GetTeam(cmd.Context(), currentTeam)
-		if err != nil {
-			return fmt.Errorf("failed to get team: %w", err)
-		}
-
 		teamInternalStr := "false"
-		if teamInfo.Internal {
+		if teams[0].Internal {
 			teamInternalStr = "true"
 		}
 
@@ -286,7 +291,7 @@ func setTeamOnLogin(ctx context.Context, cmd *cobra.Command, token string) error
 
 	default:
 		cmd.Printf("Your current team is not set.\n\n")
-		cmd.Printf("Teams available to you: %s\n\n", strings.Join(teams, ", "))
+		cmd.Printf("Teams available to you: %s\n\n", team.Names(teams))
 		cmd.Printf("To set your current team, run `cloudquery switch <team>`\n\n")
 		// we don't fail here immediately, as there are some additional commands the user can run in this state
 	}
