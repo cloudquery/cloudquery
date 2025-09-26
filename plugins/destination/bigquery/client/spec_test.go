@@ -2,8 +2,10 @@ package client
 
 import (
 	"testing"
+	"time"
 
 	"github.com/cloudquery/codegen/jsonschema"
+	"github.com/cloudquery/plugin-sdk/v4/configtype"
 )
 
 func TestJSONSchema(t *testing.T) {
@@ -214,5 +216,64 @@ func TestTextEmbeddingsSetDefaults(t *testing.T) {
 	}
 	if spec.TextEmbeddings.Tables[0].MetadataColumns[0] != "_cq_id" {
 		t.Errorf("Expected _cq_id in metadata columns, got %s", spec.TextEmbeddings.Tables[0].MetadataColumns[0])
+	}
+}
+
+func TestTimePartitioningValidation(t *testing.T) {
+	tests := []struct {
+		name    string
+		spec    Spec
+		wantErr bool
+	}{
+		{
+			name: "valid spec no partitioning",
+			spec: Spec{
+				ProjectID:                  "test-project",
+				DatasetID:                  "test-dataset",
+				TimePartitioning:           TimePartitioningOptionNone,
+				TimePartitioningExpiration: configtype.NewDuration(0),
+			},
+			wantErr: false,
+		},
+		{
+			name: "valid spec",
+			spec: Spec{
+				ProjectID:                  "test-project",
+				DatasetID:                  "test-dataset",
+				TimePartitioning:           TimePartitioningOptionMonth,
+				TimePartitioningExpiration: configtype.NewDuration(0),
+			},
+			wantErr: false,
+		},
+		{
+			name: "valid spec with partition expiration",
+			spec: Spec{
+				ProjectID:                  "test-project",
+				DatasetID:                  "test-dataset",
+				TimePartitioning:           TimePartitioningOptionMonth,
+				TimePartitioningExpiration: configtype.NewDuration(time.Hour * 30 * 24),
+			},
+			wantErr: false,
+		},
+		{
+			name: "no partitioning set but expiration set",
+			spec: Spec{
+				ProjectID:                  "test-project",
+				DatasetID:                  "test-dataset",
+				TimePartitioningExpiration: configtype.NewDuration(time.Hour * 30 * 24),
+			},
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			// Call SetDefaults first to set default values
+			tt.spec.SetDefaults()
+			err := tt.spec.Validate()
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Spec.Validate() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
 	}
 }
