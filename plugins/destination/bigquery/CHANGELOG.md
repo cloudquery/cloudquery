@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.5.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.5.0...plugins-destination-bigquery-v4.5.1) (2025-09-26)
+
+
+### Bug Fixes
+
+* Spec validation with time partitioning options ([#21398](https://github.com/cloudquery/cloudquery/issues/21398)) ([d3d41bb](https://github.com/cloudquery/cloudquery/commit/d3d41bb0ee8ae8bcb9daa8dfa23106797b6c3076))
+
 ## [4.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.4.0...plugins-destination-bigquery-v4.5.0) (2025-09-25)
 
 
