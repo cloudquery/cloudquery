@@ -149,7 +149,7 @@ func (s *Spec) Validate() error {
 	if err := s.TimePartitioning.Validate(); err != nil {
 		return fmt.Errorf("time_partitioning: %w", err)
 	}
-	if s.TimePartitioning != TimePartitioningOptionNone && s.TimePartitioningExpiration.Duration() > 0 {
+	if s.TimePartitioning == TimePartitioningOptionNone && s.TimePartitioningExpiration.Duration() > 0 {
 		return errors.New("time_partitioning_expiration option requires time_partitioning to be set")
 	}
 	if len(s.ServiceAccountKeyJSON) > 0 {
