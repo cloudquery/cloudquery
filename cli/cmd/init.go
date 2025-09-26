@@ -289,7 +289,7 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	}
 
 	// Check if user and team are set, and if so, run AI command
-	if user != nil && team != "" && !disableAI {
+	if user != nil && team != "" && !disableAI && source == "" && destination == "" {
 		err := api.NewConversation(ctx, apiClientWithoutRetries, team, resumeConversation)
 		if err != nil && err != api.ErrDisabled {
 			return err
