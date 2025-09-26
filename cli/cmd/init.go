@@ -288,6 +288,11 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 		}
 	}
 
+	disableAI = disableAI || len(source) > 0 || len(destination) > 0
+	if disableAI && resumeConversation {
+		return errors.New("cannot use --resume-conversation with --disable-ai or when source/destination are provided")
+	}
+
 	// Check if user and team are set, and if so, run AI command
 	if user != nil && team != "" && !disableAI {
 		err := api.NewConversation(ctx, apiClientWithoutRetries, team, resumeConversation)
