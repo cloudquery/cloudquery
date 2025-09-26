@@ -61,7 +61,7 @@ This is the top-level spec used by the BigQuery destination plugin.
 
 - `time_partitioning_expiration` (`duration`) (optional)
 
-  The time after which the partition will be automatically deleted. The duration is specified in seconds, minutes, hours or days, e.g. `3600s`, `60m`, `24h`, `30d`.
+  The time after which the partition will be automatically deleted. The duration is specified in seconds, minutes or hours, e.g. `3600s`, `60m`, `24h`, `720h`.
   This option is only valid if `time_partitioning` is set a value other than `none`.
 
 - `service_account_key_json` (`string`) (optional) (default: empty).
