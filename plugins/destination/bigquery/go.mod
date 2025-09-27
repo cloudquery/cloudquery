@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4
 go 1.25.1
 
 require (
-	cloud.google.com/go/bigquery v1.69.0
+	cloud.google.com/go/bigquery v1.70.0
 	github.com/apache/arrow-go/v18 v18.4.0
 	github.com/cloudquery/codegen v0.3.31
 	github.com/cloudquery/plugin-sdk/v4 v4.89.1
@@ -12,11 +12,11 @@ require (
 	github.com/rs/zerolog v1.34.0
 	github.com/samber/lo v1.51.0
 	golang.org/x/sync v0.16.0
-	google.golang.org/api v0.246.0
+	google.golang.org/api v0.247.0
 )
 
 require (
-	cloud.google.com/go/auth v0.16.3 // indirect
+	cloud.google.com/go/auth v0.16.4 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.2.8 // indirect
 	github.com/adrg/xdg v0.5.3 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
@@ -78,19 +78,19 @@ require (
 	go.opentelemetry.io/otel/sdk/metric v1.37.0 // indirect
 	go.opentelemetry.io/otel/trace v1.37.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.7.0 // indirect
-	golang.org/x/crypto v0.40.0 // indirect
+	golang.org/x/crypto v0.41.0 // indirect
 	golang.org/x/exp v0.0.0-20250718183923-645b1fa84792 // indirect
 	golang.org/x/mod v0.26.0 // indirect
 	golang.org/x/time v0.12.0 // indirect
 	golang.org/x/tools v0.35.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20250721164621-a45f3dfb1074 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250804133106-a7a43d27e69b // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20250818200422-3122310a409c // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250818200422-3122310a409c // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
 require (
-	cloud.google.com/go v0.121.6
-	cloud.google.com/go/compute/metadata v0.7.0 // indirect
+	cloud.google.com/go v0.122.0
+	cloud.google.com/go/compute/metadata v0.8.0 // indirect
 	cloud.google.com/go/iam v1.5.2 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/google/go-cmp v0.7.0
@@ -104,9 +104,9 @@ require (
 	github.com/spf13/cobra v1.9.1 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
-	golang.org/x/net v0.42.0 // indirect; indirect // indirect
+	golang.org/x/net v0.43.0 // indirect; indirect // indirect
 	golang.org/x/oauth2 v0.30.0 // indirect
-	golang.org/x/sys v0.34.0 // indirect
+	golang.org/x/sys v0.35.0 // indirect
 	golang.org/x/text v0.28.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	google.golang.org/genproto v0.0.0-20250603155806-513f23925822 // indirect
