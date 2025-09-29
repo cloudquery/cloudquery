@@ -58,8 +58,8 @@ github.com/cenkalti/backoff/v5 v5.0.2 h1:rIfFVxEf1QsI7E1ZHfp/B4DF/6QBAUhmgkxc0H7
 github.com/cenkalti/backoff/v5 v5.0.2/go.mod h1:rkhZdG3JZukswDf7f0cwqPNk4K0sa+F97BxZthm/crw=
 github.com/cloudquery/cloudquery-api-go v1.14.1 h1:/dkQ3zTgf9lLpIenPqTeSVuO9BveTokrS6k2DVktfic=
 github.com/cloudquery/cloudquery-api-go v1.14.1/go.mod h1:ake4iFUcOn01T45eI9jgH42fnhLWhfJbLqw4/aJkZG0=
-github.com/cloudquery/codegen v0.3.31 h1:YDqokUyWSECewoaISY4D2iIpFRTDnPtWmQOFgaQ60c0=
-github.com/cloudquery/codegen v0.3.31/go.mod h1:vU4G8lqQUPHF9ooUQY0RVbbjMPOD/6uqJDgMXfSgK8M=
+github.com/cloudquery/codegen v0.3.32 h1:pvl2n8HZE0CUJkEVQLb65zfYq9EbMVjUTMmOwkwAHbA=
+github.com/cloudquery/codegen v0.3.32/go.mod h1:nUpACl6nXXmk/LanBX0gNYBY4/CE1JMgnT+5sPQMkb4=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66 h1:OZLPSIBYEfvkAUeOeM8CwTgVQy5zhayI99ishCrsFV0=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66/go.mod h1:0SoZ/U7yJlNOR+fWsBSeTvTbGXB6DK01tzJ7m2Xfg34=
 github.com/cloudquery/plugin-pb-go v1.26.18 h1:IFr4F7e1Fk5P5eBKjchP+lLAyHJhbqxsC8nJQFzLZOI=
