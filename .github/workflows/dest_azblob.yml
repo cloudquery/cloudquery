@@ -16,6 +16,9 @@ on:
       - "plugins/destination/azblob/**"
       - ".github/workflows/dest_azblob.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-azblob:
     timeout-minutes: 30

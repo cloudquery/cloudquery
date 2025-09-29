@@ -16,6 +16,9 @@ on:
       - "plugins/destination/sqlite/**"
       - ".github/workflows/dest_sqlite.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-sqlite:
     timeout-minutes: 30

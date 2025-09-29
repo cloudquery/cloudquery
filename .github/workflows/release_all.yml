@@ -1,6 +1,9 @@
 name: Release All PRs
 on:
   workflow_dispatch:
+permissions:
+  contents: read
+
 jobs:
   add-automerge-labels:
     runs-on: ubuntu-latest

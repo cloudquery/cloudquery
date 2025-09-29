@@ -8,6 +8,9 @@ concurrency:
   group: release-please-main
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   release-pr:
     timeout-minutes: 30

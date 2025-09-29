@@ -4,6 +4,9 @@ on:
     types:
       - closed
 
+permissions:
+  contents: read
+
 jobs:
   delete_vercel_deployments:
     runs-on: ubuntu-latest

@@ -16,6 +16,9 @@ on:
       - "plugins/destination/mongodb/**"
       - ".github/workflows/dest_mongodb.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-mongodb:
     timeout-minutes: 30

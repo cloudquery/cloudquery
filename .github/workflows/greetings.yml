@@ -2,6 +2,9 @@ name: Greetings
 
 on: [issues]
 
+permissions:
+  contents: read
+
 jobs:
   greeting:
     timeout-minutes: 5

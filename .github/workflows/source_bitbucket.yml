@@ -16,6 +16,9 @@ on:
       - "plugins/source/bitbucket/**"
       - ".github/workflows/source_bitbucket.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-source-bitbucket:
     timeout-minutes: 30

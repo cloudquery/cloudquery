@@ -12,6 +12,9 @@ on:
       - "scripts/**"
       - ".github/workflows/scripts_ci.yml"
 
+permissions:
+  contents: read
+
 jobs:
   table-diff:
     timeout-minutes: 5

@@ -16,6 +16,9 @@ on:
     - "plugins/destination/mssql/**"
     - ".github/workflows/dest_mssql.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-mssql:
     name: "plugins/destination/mssql"

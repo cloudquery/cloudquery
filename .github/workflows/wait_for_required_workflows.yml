@@ -9,6 +9,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   prepare:
     uses: ./.github/workflows/changed_files.yml

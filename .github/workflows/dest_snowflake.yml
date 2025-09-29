@@ -16,6 +16,9 @@ on:
       - "plugins/destination/snowflake/**"
       - ".github/workflows/dest_snowflake.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-snowflake:
     timeout-minutes: 30

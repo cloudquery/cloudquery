@@ -16,6 +16,9 @@ on:
       - "plugins/destination/sqlite-python/**"
       - ".github/workflows/dest_sqlite_python.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-sqlite-python:
     timeout-minutes: 30

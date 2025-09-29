@@ -16,6 +16,9 @@ on:
       - "plugins/destination/neo4j/**"
       - ".github/workflows/dest_neo4j.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-neo4j:
     timeout-minutes: 30

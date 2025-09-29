@@ -10,6 +10,9 @@ on:
 env:
   ui_dir_name: /cloud-config-ui
 
+permissions:
+  contents: read
+
 jobs:
   changed-files:
     uses: ./.github/workflows/changed_files.yml

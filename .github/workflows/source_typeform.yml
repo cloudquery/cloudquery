@@ -16,6 +16,9 @@ on:
       - "plugins/source/typeform/**"
       - ".github/workflows/source_typeform.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-source-typeform:
     timeout-minutes: 30

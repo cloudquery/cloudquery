@@ -16,6 +16,9 @@ on:
       - "plugins/source/xkcd/**"
       - ".github/workflows/source_xkcd.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-source-xkcd:
     timeout-minutes: 30

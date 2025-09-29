@@ -16,6 +16,9 @@ on:
       - 'plugins/source/hackernews/**'
       - '.github/workflows/source_hackernews.yml'
 
+permissions:
+  contents: read
+
 jobs:
   plugins-source-hackernews:
     timeout-minutes: 30

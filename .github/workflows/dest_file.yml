@@ -18,6 +18,9 @@ on:
       - "plugins/destination/file/**"
       - ".github/workflows/dest_file.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-file:
     timeout-minutes: 30

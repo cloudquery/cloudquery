@@ -16,6 +16,9 @@ on:
       - "plugins/destination/firehose/**"
       - ".github/workflows/dest_firehose.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-firehose:
     timeout-minutes: 30

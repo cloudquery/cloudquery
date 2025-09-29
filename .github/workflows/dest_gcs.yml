@@ -16,6 +16,9 @@ on:
       - "plugins/destination/gcs/**"
       - ".github/workflows/dest_gcs.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-gcs:
     timeout-minutes: 30

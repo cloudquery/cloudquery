@@ -6,6 +6,9 @@ on:
       - "plugins/source/**"
       - ".github/workflows/release_summary.yml"
 
+permissions:
+  contents: read
+
 jobs:
   trigger-summary:
     runs-on: ubuntu-latest
