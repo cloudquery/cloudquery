@@ -12,6 +12,9 @@ on:
       - reopened
 jobs:
   doc-changes:
+    permissions:
+      contents: read
+      pull-requests: write
     defaults:
       run:
         working-directory: scripts/table_diff
