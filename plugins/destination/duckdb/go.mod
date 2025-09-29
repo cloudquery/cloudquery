@@ -3,12 +3,12 @@ module github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5
 go 1.25.1
 
 require (
-	github.com/apache/arrow-go/v18 v18.4.0
+	github.com/apache/arrow-go/v18 v18.4.1
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cloudquery/codegen v0.3.32
 	github.com/cloudquery/plugin-sdk/v4 v4.89.1
 	github.com/google/uuid v1.6.0
-	github.com/marcboeker/go-duckdb/v2 v2.3.6
+	github.com/marcboeker/go-duckdb/v2 v2.4.0
 	github.com/rs/zerolog v1.34.0
 )
 
@@ -41,12 +41,12 @@ require (
 	github.com/cloudquery/plugin-pb-go v1.26.18 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
-	github.com/duckdb/duckdb-go-bindings v0.1.17 // indirect
-	github.com/duckdb/duckdb-go-bindings/darwin-amd64 v0.1.12 // indirect
-	github.com/duckdb/duckdb-go-bindings/darwin-arm64 v0.1.12 // indirect
-	github.com/duckdb/duckdb-go-bindings/linux-amd64 v0.1.12 // indirect
-	github.com/duckdb/duckdb-go-bindings/linux-arm64 v0.1.12 // indirect
-	github.com/duckdb/duckdb-go-bindings/windows-amd64 v0.1.12 // indirect
+	github.com/duckdb/duckdb-go-bindings v0.1.19 // indirect
+	github.com/duckdb/duckdb-go-bindings/darwin-amd64 v0.1.19 // indirect
+	github.com/duckdb/duckdb-go-bindings/darwin-arm64 v0.1.19 // indirect
+	github.com/duckdb/duckdb-go-bindings/linux-amd64 v0.1.19 // indirect
+	github.com/duckdb/duckdb-go-bindings/linux-arm64 v0.1.19 // indirect
+	github.com/duckdb/duckdb-go-bindings/windows-amd64 v0.1.19 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
@@ -62,10 +62,10 @@ require (
 	github.com/invopop/jsonschema v0.13.0 // indirect
 	github.com/klauspost/asmfmt v1.3.2 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
-	github.com/klauspost/cpuid/v2 v2.2.11 // indirect
+	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
-	github.com/marcboeker/go-duckdb/arrowmapping v0.0.10 // indirect
-	github.com/marcboeker/go-duckdb/mapping v0.0.11 // indirect
+	github.com/marcboeker/go-duckdb/arrowmapping v0.0.19 // indirect
+	github.com/marcboeker/go-duckdb/mapping v0.0.19 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/minio/asm2plan9s v0.0.0-20200509001527-cdd76441f9d8 // indirect
@@ -103,10 +103,10 @@ require (
 	golang.org/x/text v0.28.0 // indirect
 	golang.org/x/tools v0.36.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20250603155806-513f23925822 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250603155806-513f23925822 // indirect
-	google.golang.org/grpc v1.74.2 // indirect
-	google.golang.org/protobuf v1.36.7 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20250707201910-8d1bb00bc6a7 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250707201910-8d1bb00bc6a7 // indirect
+	google.golang.org/grpc v1.75.0 // indirect
+	google.golang.org/protobuf v1.36.8 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
