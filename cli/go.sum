@@ -44,8 +44,8 @@ github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1 h1:q763qf9huN11kDQavWs
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
 github.com/cloudquery/cloudquery-api-go v1.14.4 h1:2uq0mNM58SGyX+vuCwqG9aeJXMbkxy5XXdnRT+YHAiA=
 github.com/cloudquery/cloudquery-api-go v1.14.4/go.mod h1:KMcMIaX4l3C2QGHzlqeV7Ac9thX7L/sWXMM5wEmcKZI=
-github.com/cloudquery/codegen v0.3.31 h1:YDqokUyWSECewoaISY4D2iIpFRTDnPtWmQOFgaQ60c0=
-github.com/cloudquery/codegen v0.3.31/go.mod h1:vU4G8lqQUPHF9ooUQY0RVbbjMPOD/6uqJDgMXfSgK8M=
+github.com/cloudquery/codegen v0.3.32 h1:pvl2n8HZE0CUJkEVQLb65zfYq9EbMVjUTMmOwkwAHbA=
+github.com/cloudquery/codegen v0.3.32/go.mod h1:nUpACl6nXXmk/LanBX0gNYBY4/CE1JMgnT+5sPQMkb4=
 github.com/cloudquery/godebouncer v0.0.0-20230626172639-4b59d27e1b8c h1:o8Xwg6fiYnqCQuQVbt3YDvpgrB6Ipc0CNoBgAjvHp6s=
 github.com/cloudquery/godebouncer v0.0.0-20230626172639-4b59d27e1b8c/go.mod h1:0Rxvtp9fhnRCt+k4QrpXY0OPUyyjF0zVO7wCrnsqsCU=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66 h1:OZLPSIBYEfvkAUeOeM8CwTgVQy5zhayI99ishCrsFV0=
