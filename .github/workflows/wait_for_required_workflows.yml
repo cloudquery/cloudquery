@@ -13,6 +13,9 @@ jobs:
   prepare:
     uses: ./.github/workflows/changed_files.yml
   wait_for_required_workflows:
+    permissions:
+      contents: read
+      checks: read
     timeout-minutes: 60
     name: wait-for-required-workflows
     runs-on: ubuntu-latest
