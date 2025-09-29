@@ -16,6 +16,9 @@ on:
       - "scaffold/**"
       - ".github/workflows/scaffold.yml"
 
+permissions:
+  contents: read
+
 jobs:
   scaffold:
     timeout-minutes: 30

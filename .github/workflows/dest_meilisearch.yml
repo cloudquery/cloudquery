@@ -16,6 +16,9 @@ on:
     - plugins/destination/meilisearch/**
     - .github/workflows/dest_meilisearch.yml
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-meilisearch:
     name: "plugins/destination/meilisearch"

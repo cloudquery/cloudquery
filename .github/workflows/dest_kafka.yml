@@ -16,6 +16,9 @@ on:
       - "plugins/destination/kafka/**"
       - ".github/workflows/dest_kafka.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-kafka:
     timeout-minutes: 30

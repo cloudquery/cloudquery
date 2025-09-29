@@ -16,6 +16,9 @@ on:
       - "plugins/destination/test/**"
       - ".github/workflows/dest_test.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-test:
     timeout-minutes: 30

@@ -7,6 +7,9 @@ on:
 env:
   ui_dir_name: cloud-config-ui
 
+permissions:
+  contents: read
+
 jobs:
   prepare:
     runs-on: ubuntu-latest

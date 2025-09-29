@@ -8,6 +8,9 @@ on:
       - "**.png"
       - "**.webp"
 
+permissions:
+  contents: read
+
 jobs:
   check-files-size:
     runs-on: ubuntu-latest

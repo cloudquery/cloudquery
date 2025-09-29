@@ -16,6 +16,9 @@ on:
       - "plugins/transformer/test/**"
       - ".github/workflows/transf_test.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-transformer-test:
     timeout-minutes: 30

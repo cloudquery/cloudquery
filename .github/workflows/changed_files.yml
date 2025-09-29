@@ -21,6 +21,9 @@ on:
         description: "All changed files"
         value: ${{ jobs.changed-files.outputs.changed_files }}
 
+permissions:
+  contents: read
+
 jobs:
   changed-files:
     runs-on: ubuntu-latest

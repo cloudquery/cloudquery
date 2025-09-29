@@ -16,6 +16,9 @@ on:
       - "plugins/source/airtable/**"
       - ".github/workflows/source_airtable.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-source-airtable:
     timeout-minutes: 30

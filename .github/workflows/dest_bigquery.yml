@@ -16,6 +16,9 @@ on:
       - 'plugins/destination/bigquery/**'
       - '.github/workflows/dest_bigquery.yml'
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-bigquery:
     timeout-minutes: 10

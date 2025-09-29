@@ -16,6 +16,9 @@ on:
       - "plugins/destination/postgresql/**"
       - ".github/workflows/dest_postgresql.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-postgresql:
     timeout-minutes: 30

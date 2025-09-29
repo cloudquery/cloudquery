@@ -16,6 +16,9 @@ on:
       - "plugins/source/test/**"
       - ".github/workflows/source_test.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-source-test:
     timeout-minutes: 30

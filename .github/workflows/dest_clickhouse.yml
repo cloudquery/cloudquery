@@ -16,6 +16,9 @@ on:
       - plugins/destination/clickhouse/**
       - .github/workflows/dest_clickhouse.yml
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-clickhouse:
     name: 'plugins/destination/clickhouse'

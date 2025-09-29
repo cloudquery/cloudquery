@@ -18,6 +18,9 @@ on:
 
 env:
   CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
+permissions:
+  contents: read
+
 jobs:
   cli:
     timeout-minutes: 30

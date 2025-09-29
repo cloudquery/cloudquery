@@ -6,6 +6,9 @@ on:
     paths:
       - '**.mod'
 
+permissions:
+  contents: read
+
 jobs:
   changed-files:
     # We auto gen code for service SDK updates (e.g. AWS SDK), but not for our own SDK, as those changes should be handled manually

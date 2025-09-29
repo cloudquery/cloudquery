@@ -16,6 +16,9 @@ on:
       - "plugins/source/square/**"
       - ".github/workflows/source_square.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-source-square:
     timeout-minutes: 30

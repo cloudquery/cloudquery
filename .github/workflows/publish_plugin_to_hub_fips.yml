@@ -3,6 +3,9 @@ on:
   push:
     tags:
       - "plugins-source-test-v*.*.*"
+permissions:
+  contents: read
+
 jobs:
   prepare:
     runs-on: ubuntu-latest

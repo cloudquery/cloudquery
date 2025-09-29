@@ -16,6 +16,9 @@ on:
       - "plugins/transformer/basic/**"
       - ".github/workflows/transf_basic.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-transformer-basic:
     timeout-minutes: 30

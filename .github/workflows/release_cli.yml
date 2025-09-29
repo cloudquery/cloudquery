@@ -6,6 +6,9 @@ on:
 env:
   CGO_ENABLED: 0
 
+permissions:
+  contents: read
+
 jobs:
   release-cli:
     timeout-minutes: 30

@@ -16,6 +16,9 @@ on:
       - "plugins/destination/mysql/**"
       - ".github/workflows/dest_mysql.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-mysql:
     timeout-minutes: 30

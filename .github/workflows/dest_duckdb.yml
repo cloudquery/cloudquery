@@ -16,6 +16,9 @@ on:
       - "plugins/destination/duckdb/**"
       - ".github/workflows/dest_duckdb.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-duckdb:
     timeout-minutes: 30

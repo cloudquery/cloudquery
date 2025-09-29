@@ -4,6 +4,9 @@ on:
   repository_dispatch:
     types: [gen-command]
 
+permissions:
+  contents: read
+
 jobs:
   ok-to-run:
     timeout-minutes: 5

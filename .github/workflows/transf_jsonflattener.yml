@@ -16,6 +16,9 @@ on:
       - "plugins/transformer/jsonflattener/**"
       - ".github/workflows/transf_jsonflattener.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-transformer-json:
     timeout-minutes: 30

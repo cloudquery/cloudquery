@@ -18,6 +18,9 @@ on:
       - "plugins/destination/s3/**"
       - ".github/workflows/dest_s3.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-s3:
     timeout-minutes: 30

@@ -16,6 +16,9 @@ on:
       - "plugins/destination/elasticsearch/**"
       - ".github/workflows/dest_elasticsearch.yml"
 
+permissions:
+  contents: read
+
 jobs:
   plugins-destination-elasticsearch:
     timeout-minutes: 10
