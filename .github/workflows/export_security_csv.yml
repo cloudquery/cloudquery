@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: read
+  actions: write
 
 jobs:
   export-security-csv:
