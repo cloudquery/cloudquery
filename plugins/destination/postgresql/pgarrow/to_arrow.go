@@ -137,7 +137,7 @@ func CrateDBToArrow(t string) arrow.DataType {
 		return arrow.PrimitiveTypes.Int16
 	case "serial", "integer", "int", "int4":
 		return arrow.PrimitiveTypes.Int32
-	case "bigserial", "serial8", "bigint", "int8", "int64":
+	case "bigserial", "serial8", "bigint", "int8":
 		return arrow.PrimitiveTypes.Int64
 	case "real", "float4":
 		return arrow.PrimitiveTypes.Float32
