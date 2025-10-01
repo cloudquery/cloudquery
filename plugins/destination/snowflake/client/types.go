@@ -70,16 +70,13 @@ func SnowflakeToSchemaType(t string) arrow.DataType {
 	case "date":
 		return arrow.FixedWidthTypes.Date32
 
-	case "char", "character", "varchar", "string", "text",
-		"geography", "geometry":
-		return arrow.BinaryTypes.String
-
 	case "binary", "varbinary":
 		return arrow.BinaryTypes.Binary
 
 	case "variant", "object", "array":
 		return types.ExtensionTypes.JSON
 
+	// case "char", "character", "varchar", "string", "text", "geography", "geometry":
 	default:
 		return arrow.BinaryTypes.String
 	}

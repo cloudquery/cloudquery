@@ -25,15 +25,13 @@ func executeRootCmdWithContext() error {
 	}()
 	var gotSignal os.Signal
 	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
+	wg.Go(func() {
 		select {
 		case gotSignal = <-c:
 			cancel()
 		case <-ctx.Done():
 		}
-	}()
+	})
 
 	err := cmd.NewCmdRoot().ExecuteContext(ctx)
 	cancel()

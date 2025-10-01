@@ -90,6 +90,8 @@ linters:
           disabled: true
         - name: enforce-switch-style
           disabled: true
+        - name: identical-switch-branches
+          disabled: true
   exclusions:
     generated: lax
     presets:
