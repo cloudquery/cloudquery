@@ -4,7 +4,7 @@ go 1.25.1
 
 require (
 	github.com/apache/arrow-go/v18 v18.4.0
-	github.com/apache/tinkerpop/gremlin-go/v3 v3.7.3
+	github.com/apache/tinkerpop/gremlin-go/v3 v3.7.4
 	github.com/aws/aws-sdk-go-v2 v1.39.0
 	github.com/aws/aws-sdk-go-v2/config v1.31.8
 	github.com/cenkalti/backoff/v4 v4.3.0
@@ -57,7 +57,7 @@ require (
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/nicksnyder/go-i18n/v2 v2.4.1 // indirect
+	github.com/nicksnyder/go-i18n/v2 v2.5.0 // indirect
 	github.com/oapi-codegen/runtime v1.1.2 // indirect
 	github.com/pierrec/lz4/v4 v4.1.22 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
