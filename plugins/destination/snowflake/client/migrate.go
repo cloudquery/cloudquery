@@ -114,18 +114,12 @@ func (c *Client) autoMigrateTable(ctx context.Context, table *schema.Table, uniq
 	for _, change := range changes {
 		//exhaustive:enforce
 		switch change.Type {
-		case schema.TableColumnChangeTypeUnknown:
-			continue
-		case schema.TableColumnChangeTypeMoveToCQOnly:
-			// No need to handle specifically, will be handled by drop PK / add PK changes
+		case schema.TableColumnChangeTypeUnknown, schema.TableColumnChangeTypeMoveToCQOnly, schema.TableColumnChangeTypeRemove:
 			continue
 		case schema.TableColumnChangeTypeRemoveUniqueConstraint:
 			if err := c.alterColumnDropUniqueConstraint(ctx, table, uniques, change); err != nil {
 				return err
 			}
-		case schema.TableColumnChangeTypeRemove:
-			// Not dropping columns automatically: Keep them
-			continue
 		case schema.TableColumnChangeTypeAdd:
 			if err := c.addColumn(ctx, table.Name, change.Current); err != nil {
 				return err
@@ -298,9 +292,7 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 			if change.Previous.NotNull {
 				return false
 			}
-		case schema.TableColumnChangeTypeMoveToCQOnly:
-			continue
-		case schema.TableColumnChangeTypeRemoveUniqueConstraint:
+		case schema.TableColumnChangeTypeMoveToCQOnly, schema.TableColumnChangeTypeRemoveUniqueConstraint:
 			continue
 		case schema.TableColumnChangeTypeUpdate:
 			if change.Previous.NotNull != change.Current.NotNull && !change.Current.NotNull {

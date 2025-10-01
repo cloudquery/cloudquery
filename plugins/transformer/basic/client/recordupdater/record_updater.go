@@ -172,9 +172,8 @@ func (r *RecordUpdater) DropRows(columnNames []string, value *string) (arrow.Rec
 				continue
 			}
 			// If Value specified by the user is nil, and Column is null, we drop the row.
-			if column.IsNull(i) && value == nil {
-				rowsToDrop[i] = true
-			} else if value != nil && column.IsValid(i) && column.ValueStr(i) == *value {
+			// Or if Value specified by the user is not nil, and Column is valid and equal to the Value, we drop the row.
+			if column.IsNull(i) && value == nil || value != nil && column.IsValid(i) && column.ValueStr(i) == *value {
 				rowsToDrop[i] = true
 			}
 		}

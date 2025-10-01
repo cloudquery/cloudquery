@@ -129,9 +129,7 @@ func newMetricConsumer(metricsFile writeSeekCloser, durationCallback tableDurati
 		t.Render()
 	}
 
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
+	wg.Go(func() {
 		for {
 			select {
 			case <-ticker.C:
@@ -143,7 +141,7 @@ func newMetricConsumer(metricsFile writeSeekCloser, durationCallback tableDurati
 				return
 			}
 		}
-	}()
+	})
 
 	return func(ctx context.Context, metric pluginMetric) {
 		table := metric.Attributes["sync.table.name"].(string)
