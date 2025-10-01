@@ -29,7 +29,7 @@ jobs:
         working-directory: ./plugins/destination/elasticsearch
     services:
       elasticsearch:
-        image: docker.elastic.co/elasticsearch/elasticsearch:8.12.2
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.19.4
         ports:
           - 9200:9200
         options: >-
