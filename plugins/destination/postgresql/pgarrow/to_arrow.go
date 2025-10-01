@@ -36,17 +36,11 @@ func Pg10ToArrow(t string) arrow.DataType {
 	switch t {
 	case "boolean":
 		return arrow.FixedWidthTypes.Boolean
-	case "smallserial":
+	case "smallserial", "smallint", "int2":
 		return arrow.PrimitiveTypes.Int16
-	case "serial":
+	case "serial", "integer", "int", "int4":
 		return arrow.PrimitiveTypes.Int32
-	case "bigserial", "serial8":
-		return arrow.PrimitiveTypes.Int64
-	case "smallint", "int2":
-		return arrow.PrimitiveTypes.Int16
-	case "integer", "int", "int4":
-		return arrow.PrimitiveTypes.Int32
-	case "bigint", "int8":
+	case "bigserial", "serial8", "bigint", "int8":
 		return arrow.PrimitiveTypes.Int64
 	case "real", "float4":
 		return arrow.PrimitiveTypes.Float32
@@ -60,12 +54,10 @@ func Pg10ToArrow(t string) arrow.DataType {
 		return arrow.FixedWidthTypes.Date32
 	case "json", "jsonb":
 		return cqtypes.ExtensionTypes.JSON
-	case "cidr":
+	case "cidr", "inet":
 		return cqtypes.ExtensionTypes.Inet
 	case "macaddr", "macaddr8":
 		return cqtypes.ExtensionTypes.MAC
-	case "inet":
-		return cqtypes.ExtensionTypes.Inet
 	default:
 		return arrow.BinaryTypes.String
 	}
@@ -92,18 +84,12 @@ func CockroachToArrow(t string) arrow.DataType {
 	switch t {
 	case "boolean":
 		return arrow.FixedWidthTypes.Boolean
-	case "serial2", "smallserial":
+	case "serial2", "smallserial", "smallint", "int2":
 		return arrow.PrimitiveTypes.Int16
-	case "serial4":
+	case "serial4", "int4":
 		return arrow.PrimitiveTypes.Int32
-	case "serial8", "bigserial", "serial":
-		return arrow.PrimitiveTypes.Int64
-	case "smallint", "int2":
-		return arrow.PrimitiveTypes.Int16
-	case "int4":
-		return arrow.PrimitiveTypes.Int32
-	case "int", "bigint", "int8", "int64", "integer":
-		// Cockroach has different aliases for ints
+	// Cockroach has different aliases for ints
+	case "serial8", "bigserial", "serial", "int", "bigint", "int8", "int64", "integer":
 		return arrow.PrimitiveTypes.Int64
 	case "real", "float4":
 		return arrow.PrimitiveTypes.Float32
@@ -117,13 +103,10 @@ func CockroachToArrow(t string) arrow.DataType {
 		return arrow.FixedWidthTypes.Date32
 	case "json", "jsonb":
 		return cqtypes.ExtensionTypes.JSON
-	case "cidr":
+	case "cidr", "inet":
 		return cqtypes.ExtensionTypes.Inet
-	case "macaddr", "macaddr8":
-		// Cockroach lacks MAC type
-		return arrow.BinaryTypes.String
-	case "inet":
-		return cqtypes.ExtensionTypes.Inet
+	// Cockroach lacks MAC type
+	// case "macaddr", "macaddr8":
 	default:
 		return arrow.BinaryTypes.String
 	}
@@ -150,38 +133,26 @@ func CrateDBToArrow(t string) arrow.DataType {
 	switch t {
 	case "boolean":
 		return arrow.FixedWidthTypes.Boolean
-	case "smallserial":
+	case "smallserial", "smallint", "int2":
 		return arrow.PrimitiveTypes.Int16
-	case "serial":
+	case "serial", "integer", "int", "int4":
 		return arrow.PrimitiveTypes.Int32
-	case "bigserial", "serial8":
-		return arrow.PrimitiveTypes.Int64
-	case "smallint", "int2":
-		return arrow.PrimitiveTypes.Int16
-	case "integer", "int", "int4":
-		return arrow.PrimitiveTypes.Int32
-	case "bigint", "int8":
+	case "bigserial", "serial8", "bigint", "int8":
 		return arrow.PrimitiveTypes.Int64
 	case "real", "float4":
 		return arrow.PrimitiveTypes.Float32
 	case "double precision", "float8":
 		return arrow.PrimitiveTypes.Float64
-	case "uuid":
-		// CrateDB does not support UUID type
-		return arrow.BinaryTypes.String
 	case "bytea":
 		return arrow.BinaryTypes.Binary
 	case "date":
 		return arrow.FixedWidthTypes.Date32
 	case "json", "jsonb", "object":
 		return cqtypes.ExtensionTypes.JSON
-	case "cidr":
+	case "cidr", "inet", "ip":
 		return cqtypes.ExtensionTypes.Inet
-	case "macaddr", "macaddr8":
-		// CrateDB does not support macaddr type
-		return arrow.BinaryTypes.String
-	case "inet", "ip":
-		return cqtypes.ExtensionTypes.Inet
+	// CrateDB does not support these types
+	// case "macaddr", "macaddr8", "uuid":
 	default:
 		return arrow.BinaryTypes.String
 	}
@@ -205,11 +176,7 @@ func parseTimestamp(t string) (arrow.DataType, bool) {
 	switch matches[0][1] {
 	case "0":
 		return arrow.FixedWidthTypes.Timestamp_s, true
-	case "1":
-		return arrow.FixedWidthTypes.Timestamp_ms, true
-	case "2":
-		return arrow.FixedWidthTypes.Timestamp_ms, true
-	case "3":
+	case "1", "2", "3":
 		return arrow.FixedWidthTypes.Timestamp_ms, true
 	default:
 		return arrow.FixedWidthTypes.Timestamp_us, true
@@ -224,11 +191,7 @@ func parseTime(t string) (arrow.DataType, bool) {
 	switch matches[0][1] {
 	case "0":
 		return arrow.FixedWidthTypes.Time32s, true
-	case "1":
-		return arrow.FixedWidthTypes.Time32ms, true
-	case "2":
-		return arrow.FixedWidthTypes.Time32ms, true
-	case "3":
+	case "1", "2", "3":
 		return arrow.FixedWidthTypes.Time32ms, true
 	default:
 		return arrow.FixedWidthTypes.Time64us, true
