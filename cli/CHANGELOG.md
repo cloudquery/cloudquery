@@ -5,6 +5,15 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.29.6](https://github.com/cloudquery/cloudquery/compare/cli-v6.29.5...cli-v6.29.6) (2025-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to df92998 ([#21436](https://github.com/cloudquery/cloudquery/issues/21436)) ([21ed4c8](https://github.com/cloudquery/cloudquery/commit/21ed4c88bbf9252c92bcfca184d01d676e6c53ec))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.32 ([#21413](https://github.com/cloudquery/cloudquery/issues/21413)) ([3d3b1cc](https://github.com/cloudquery/cloudquery/commit/3d3b1cc86d676095321e4304a6c04b5b3c4a1278))
+* **deps:** Update module github.com/jedib0t/go-pretty/v6 to v6.6.8 ([#21443](https://github.com/cloudquery/cloudquery/issues/21443)) ([751c178](https://github.com/cloudquery/cloudquery/commit/751c17858f47838053d618b35d392a8af1fda3a3))
+
 ## [6.29.5](https://github.com/cloudquery/cloudquery/compare/cli-v6.29.4...cli-v6.29.5) (2025-09-26)
 
 
