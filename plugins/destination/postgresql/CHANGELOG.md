@@ -1,5 +1,13 @@
 # Changelog
 
+## [8.12.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.12.1...plugins-destination-postgresql-v8.12.2) (2025-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.32 ([#21413](https://github.com/cloudquery/cloudquery/issues/21413)) ([3d3b1cc](https://github.com/cloudquery/cloudquery/commit/3d3b1cc86d676095321e4304a6c04b5b3c4a1278))
+* **deps:** Update module github.com/jackc/pgx/v5 to v5.7.6 ([#21442](https://github.com/cloudquery/cloudquery/issues/21442)) ([f8f643e](https://github.com/cloudquery/cloudquery/commit/f8f643e46613a2e26c6cca8b36d580547947352b))
+
 ## [8.12.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.12.0...plugins-destination-postgresql-v8.12.1) (2025-09-04)
 
 
