@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.26](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v5.4.25...plugins-destination-file-v5.4.26) (2025-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.32 ([#21413](https://github.com/cloudquery/cloudquery/issues/21413)) ([3d3b1cc](https://github.com/cloudquery/cloudquery/commit/3d3b1cc86d676095321e4304a6c04b5b3c4a1278))
+
 ## [5.4.25](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v5.4.24...plugins-destination-file-v5.4.25) (2025-09-04)
 
 
