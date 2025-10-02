@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.7.0...plugins-destination-mongodb-v2.7.1) (2025-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.32 ([#21413](https://github.com/cloudquery/cloudquery/issues/21413)) ([3d3b1cc](https://github.com/cloudquery/cloudquery/commit/3d3b1cc86d676095321e4304a6c04b5b3c4a1278))
+
 ## [2.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.6.26...plugins-destination-mongodb-v2.7.0) (2025-09-18)
 
 
