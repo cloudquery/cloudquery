@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.24](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.8.23...plugins-destination-test-v2.8.24) (2025-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.32 ([#21413](https://github.com/cloudquery/cloudquery/issues/21413)) ([3d3b1cc](https://github.com/cloudquery/cloudquery/commit/3d3b1cc86d676095321e4304a6c04b5b3c4a1278))
+
 ## [2.8.23](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.8.22...plugins-destination-test-v2.8.23) (2025-09-04)
 
 
