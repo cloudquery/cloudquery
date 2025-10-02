@@ -12,6 +12,8 @@ permissions:
 jobs:
   release-scaffold:
     timeout-minutes: 30
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       # Tag format is scaffold-<version>
