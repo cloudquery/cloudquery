@@ -14,6 +14,8 @@ jobs:
     timeout-minutes: 30
     permissions:
       contents: write
+      packages: write
+      attestations: write
     runs-on: ubuntu-latest
     steps:
       # Tag format is cli-<version>
