@@ -2,7 +2,7 @@ module github.com/cloudquery/cloudquery/v6
 
 go 1.25.1
 
-require github.com/cloudquery/cloudquery/cli/v6 v6.29.5
+require github.com/cloudquery/cloudquery/cli/v6 v6.29.7
 
 require (
 	github.com/Masterminds/semver v1.5.0 // indirect
@@ -18,7 +18,7 @@ require (
 	github.com/cenkalti/backoff/v5 v5.0.2 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
-	github.com/cloudquery/cloudquery-api-go v1.14.4 // indirect
+	github.com/cloudquery/cloudquery-api-go v1.14.5 // indirect
 	github.com/cloudquery/plugin-pb-go v1.26.18 // indirect
 	github.com/cloudquery/plugin-sdk/v4 v4.89.1 // indirect
 	github.com/containerd/errdefs v1.0.0 // indirect
@@ -53,7 +53,7 @@ require (
 	github.com/hashicorp/go-version v1.7.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/invopop/jsonschema v0.13.0 // indirect
-	github.com/jedib0t/go-pretty/v6 v6.6.5 // indirect
+	github.com/jedib0t/go-pretty/v6 v6.6.8 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.11 // indirect
@@ -145,15 +145,16 @@ require (
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
-	golang.org/x/crypto v0.41.0 // indirect
-	golang.org/x/exp v0.0.0-20250819193227-8b4c13bb791b // indirect
-	golang.org/x/mod v0.27.0 // indirect
-	golang.org/x/net v0.43.0 // indirect
-	golang.org/x/sync v0.16.0 // indirect
-	golang.org/x/sys v0.35.0 // indirect
-	golang.org/x/term v0.34.0 // indirect
-	golang.org/x/text v0.28.0 // indirect
-	golang.org/x/tools v0.36.0 // indirect
+	golang.org/x/crypto v0.42.0 // indirect
+	golang.org/x/exp v0.0.0-20250911091902-df9299821621 // indirect
+	golang.org/x/mod v0.28.0 // indirect
+	golang.org/x/net v0.44.0 // indirect
+	golang.org/x/sync v0.17.0 // indirect
+	golang.org/x/sys v0.36.0 // indirect
+	golang.org/x/telemetry v0.0.0-20250908211612-aef8a434d053 // indirect
+	golang.org/x/term v0.35.0 // indirect
+	golang.org/x/text v0.29.0 // indirect
+	golang.org/x/tools v0.37.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20250603155806-513f23925822 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250603155806-513f23925822 // indirect
