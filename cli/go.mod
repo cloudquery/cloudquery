@@ -3,16 +3,16 @@ module github.com/cloudquery/cloudquery/cli/v6
 go 1.25.1
 
 require (
-	github.com/apache/arrow-go/v18 v18.4.0
+	github.com/apache/arrow-go/v18 v18.4.1
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cloudquery/cloudquery-api-go v1.14.4
 	github.com/cloudquery/codegen v0.3.32
-	github.com/cloudquery/plugin-pb-go v1.26.18
+	github.com/cloudquery/plugin-pb-go v1.26.23
 	github.com/cloudquery/plugin-sdk/v4 v4.89.1
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
-	github.com/docker/docker v28.3.3+incompatible
+	github.com/docker/docker v28.4.0+incompatible
 	github.com/fatih/color v1.18.0
 	github.com/getsentry/sentry-go v0.30.0
 	github.com/ghodss/yaml v1.0.0
@@ -30,7 +30,7 @@ require (
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
 	github.com/schollz/progressbar/v3 v3.14.6
 	github.com/spf13/cobra v1.9.1
-	github.com/stretchr/testify v1.11.0
+	github.com/stretchr/testify v1.11.1
 	github.com/thoas/go-funk v0.9.3
 	github.com/vnteamopen/godebouncer v1.1.1-0.20230626172639-4b59d27e1b8c
 	github.com/wk8/go-ordered-map/v2 v2.1.8
@@ -56,8 +56,8 @@ require (
 	golang.org/x/net v0.44.0
 	golang.org/x/sync v0.17.0
 	golang.org/x/term v0.35.0
-	google.golang.org/grpc v1.74.2
-	google.golang.org/protobuf v1.36.7
+	google.golang.org/grpc v1.75.1
+	google.golang.org/protobuf v1.36.9
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -78,7 +78,7 @@ require (
 	github.com/containerd/errdefs/pkg v0.3.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.6 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
-	github.com/docker/go-connections v0.5.0 // indirect
+	github.com/docker/go-connections v0.6.0 // indirect
 	github.com/docker/go-metrics v0.0.1 // indirect
 	github.com/docker/go-units v0.5.0 // indirect
 	github.com/docker/libtrust v0.0.0-20160708172513-aabc10ec26b7 // indirect
@@ -102,7 +102,7 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
-	github.com/klauspost/cpuid/v2 v2.2.11 // indirect
+	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/knadh/koanf/maps v0.1.2 // indirect
 	github.com/knadh/koanf/providers/confmap v1.0.0 // indirect
 	github.com/knadh/koanf/v2 v2.2.1 // indirect
@@ -170,8 +170,8 @@ require (
 	golang.org/x/text v0.29.0 // indirect
 	golang.org/x/tools v0.37.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20250603155806-513f23925822 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20250603155806-513f23925822 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20250707201910-8d1bb00bc6a7 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20250707201910-8d1bb00bc6a7 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
