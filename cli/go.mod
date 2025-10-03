@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow-go/v18 v18.4.0
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v4 v4.3.0
-	github.com/cloudquery/cloudquery-api-go v1.14.4
+	github.com/cloudquery/cloudquery-api-go v1.14.5
 	github.com/cloudquery/codegen v0.3.32
 	github.com/cloudquery/plugin-pb-go v1.26.18
 	github.com/cloudquery/plugin-sdk/v4 v4.89.1
@@ -30,7 +30,7 @@ require (
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
 	github.com/schollz/progressbar/v3 v3.14.6
 	github.com/spf13/cobra v1.9.1
-	github.com/stretchr/testify v1.11.0
+	github.com/stretchr/testify v1.11.1
 	github.com/thoas/go-funk v0.9.3
 	github.com/vnteamopen/godebouncer v1.1.1-0.20230626172639-4b59d27e1b8c
 	github.com/wk8/go-ordered-map/v2 v2.1.8
