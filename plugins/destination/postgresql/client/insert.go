@@ -67,7 +67,7 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 		if !ok {
 			// cache the query
 			table := c.normalizeTable(msg.GetTable())
-			if len(table.PrimaryKeysIndexes()) > 0 {
+			if len(table.PrimaryKeysIndexes())+len(table.PrimaryKeyComponents()) > 0 {
 				sql = c.upsert(table)
 			} else {
 				sql = c.insert(table)
