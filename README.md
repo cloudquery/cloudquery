@@ -34,7 +34,7 @@ Check out the [quickstart guide](https://cli-docs.cloudquery.io/docs/quickstart/
 ### Links
 
 - Homepage: [https://www.cloudquery.io](https://www.cloudquery.io)
-- Documentation: [https://platform-docs.cloudquery.io/](https://cli-docs.cloudquery.io/)
+- Documentation: [https://docs.cloudquery.io/](https://docs.cloudquery.io/docs)
 - Integrations: [https://hub.cloudquery.io](https://hub.cloudquery.io)
 - Plugin SDK: [https://github.com/cloudquery/plugin-sdk](https://github.com/cloudquery/plugin-sdk)
 
