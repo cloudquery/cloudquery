@@ -29,3 +29,7 @@ gen-docs: build-docker
 	rm -rf ../../../website/pages/docs/plugins/sources/$(current_dir)/tables/*.bak
 
 gen: gen-docs
+
+coverage:
+	# TODO: add coverage
+	exit 0

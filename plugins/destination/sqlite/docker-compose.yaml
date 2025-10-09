@@ -1,0 +1,22 @@
+# SQLite is a file-based database and doesn't require external services
+# This docker-compose file provides a simple environment for testing
+# with a shared volume for SQLite database files
+
+services:
+  sqlite-test:
+    image: alpine:latest
+    command: sleep infinity
+    volumes:
+      - sqlite_data:/data
+    working_dir: /data
+    networks:
+      - sqlite
+
+volumes:
+  sqlite_data:
+    driver: local
+
+networks:
+  sqlite:
+    name: sqlite
+    driver: bridge

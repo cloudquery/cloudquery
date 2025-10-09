@@ -1,0 +1,9 @@
+| File | Function | Coverage |
+| --- | --- | --- |
+| github.com/cloudquery/cloudquery/plugins/transformer/test/client/client.go:43: | Transform | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/transformer/test/client/client.go:67: | TransformSchema | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/transformer/test/client/client.go:71: | Close | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/transformer/test/client/spec/spec.go:9: | SetDefaults | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/transformer/test/client/spec/spec.go:12: | Validate | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/transformer/test/main.go:13: | main | 0.0% |
+| total: | (statements) | 0.0% |

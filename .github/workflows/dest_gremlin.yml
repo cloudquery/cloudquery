@@ -27,11 +27,6 @@ jobs:
     defaults:
       run:
         working-directory: ./plugins/destination/gremlin
-    services:
-      gremlin-server:
-        image: tinkerpop/gremlin-server:3.7.1
-        ports:
-          - 8182:8182
     steps:
       - uses: actions/checkout@v4
         with:
@@ -58,4 +53,3 @@ jobs:
         run: go build .
       - name: Test Gremlin
         run: make test
-  

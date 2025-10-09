@@ -1,0 +1,23 @@
+services:
+  mysql:
+    image: mysql:8.0
+    platform: linux/amd64
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: cloudquery
+    ports:
+      - "3306:3306"
+    command: --innodb_log_file_size=512M --innodb_strict_mode=0
+    healthcheck:
+      test:
+        ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ptest"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mysql
+
+networks:
+  mysql:
+    name: mysql
+    driver: bridge

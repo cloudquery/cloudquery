@@ -27,31 +27,6 @@ jobs:
     defaults:
       run:
         working-directory: ./plugins/destination/kafka
-    services:
-      zookeeper:
-        image: confluentinc/cp-zookeeper:latest
-        env:
-          ZOOKEEPER_CLIENT_PORT: 2181
-          ZOOKEEPER_TICK_TIME: 2000
-        ports:
-        - 22181:2181
-      kafka:
-        image: confluentinc/cp-kafka:7.9.2
-        ports:
-        - 29092:29092
-        env:
-          KAFKA_BROKER_ID: 1
-          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
-          KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-          KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-          KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-        options: >-
-                 --health-cmd "nc -z localhost 9092 || exit 1"
-                 --health-interval 60s
-                 --health-timeout 30s
-                 --health-start-period 20s
-                 --health-retries 5
     steps:
       - uses: actions/checkout@v4
         with:
@@ -78,4 +53,3 @@ jobs:
         run: go build .
       - name: Test
         run: make test
-  

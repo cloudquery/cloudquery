@@ -1,0 +1,53 @@
+name: Generate Coverage Report
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1"
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  gen-coverage-report:
+    runs-on: ubicloud-standard-8
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GH_CQ_BOT }}
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v6
+        with:
+          go-version: "1.25"
+          cache: false
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::615713231484:role/destination-s3
+          aws-region: us-east-1
+      - name: Generate Coverage Report
+        env:
+          SNOW_TEST_DSN: ${{ secrets.SNOW_TEST_DSN }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
+        run: |
+          ./scripts/test-coverage.sh
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          # required so the PR triggers workflow runs
+          token: ${{ secrets.GH_CQ_BOT }}
+          branch: chore/update_coverage_report
+          base: main
+          title: "chore: Update coverage report"
+          commit-message: "chore: Update coverage report"
+          body: This PR was created by a scheduled workflow to update the coverage report
+          author: cq-bot <cq-bot@users.noreply.github.com>
+          labels: automerge

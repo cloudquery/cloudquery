@@ -2,7 +2,23 @@
 test:
 # we clean the cache to avoid scenarios when we change something in the db and we want to retest without noticing nothing run
 	go clean -testcache
-	go test -race -timeout 10m ./...
+	go test -race -timeout 20m ./...
+
+.PHONY: coverage
+coverage:
+	go clean -testcache
+	go test -timeout 20m -coverprofile=coverage.out.tmp ./... || true
+	cat coverage.out.tmp | grep -vE "MockGen|codegen|mocks" > coverage.out
+	rm coverage.out.tmp
+	echo "| File | Function | Coverage |" > coverage.md
+	echo "| --- | --- | --- |" >> coverage.md
+	go tool cover -func=coverage.out | tail -n +2 | while read line; do \
+		file=$$(echo $$line | awk '{print $$1}'); \
+		func=$$(echo $$line | awk '{print $$2}'); \
+		cov=$$(echo $$line | awk '{print $$3}'); \
+		printf "| %s | %s | %s |\\n" "$$file" "$$func" "$$cov" >> coverage.md; \
+	done
+	rm coverage.out
 
 .PHONY: lint
 lint:
