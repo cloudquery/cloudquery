@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.8](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.7...plugins-transformer-basic-v2.6.8) (2025-10-09)
+
+
+### Bug Fixes
+
+* Set unique=false on all columns when adding PKs. ([#21478](https://github.com/cloudquery/cloudquery/issues/21478)) ([642741a](https://github.com/cloudquery/cloudquery/commit/642741ac135ddfb76dafcef30681c8f79eab3ac8))
+
 ## [2.6.7](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.6...plugins-transformer-basic-v2.6.7) (2025-09-04)
 
 
