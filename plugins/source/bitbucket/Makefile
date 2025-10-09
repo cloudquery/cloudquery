@@ -35,3 +35,7 @@ check-env:
 		echo "GITHUB_ACTOR and GITHUB_TOKEN environment variables need to be configured"; \
 		exit 1; \
 	fi
+
+coverage:
+	# TODO: Add coverage
+	exit 0

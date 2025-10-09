@@ -36,3 +36,5 @@ venv
 __pycache__
 cli/cloudquery-sync-summary.json
 __debug_bin*
+coverage.out.tmp
+coverage.out

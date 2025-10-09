@@ -11,10 +11,24 @@ services:
     ports:
       - 1433:1433
     healthcheck:
-      test: ["CMD", "/opt/mssql-tools18/bin/sqlcmd", "-C", "-U", "SA", "-P", "yourStrongP@ssword", "-Q", "SELECT 1"]
+      test:
+        [
+          "CMD",
+          "/opt/mssql-tools18/bin/sqlcmd",
+          "-U",
+          "SA",
+          "-P",
+          "yourStrongP@ssword",
+          "-Q",
+          "SELECT 1",
+          "-b",
+          "-C",
+          "-o",
+          "/dev/null",
+        ]
       interval: 15s
       timeout: 30s
-      retries: 10
+      retries: 30
   init:
     image: mcr.microsoft.com/mssql/server:2019-latest
     platform: linux/amd64

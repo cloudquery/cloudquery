@@ -7,6 +7,21 @@ build:
 test:
 	go test -race -timeout 3m ./...
 
+.PHONY: coverage
+coverage:
+	go test -timeout 3m -coverprofile=coverage.out.tmp ./... || true
+	cat coverage.out.tmp | grep -vE "MockGen|codegen|mocks" > coverage.out
+	rm coverage.out.tmp
+	echo "| File | Function | Coverage |" > coverage.md
+	echo "| --- | --- | --- |" >> coverage.md
+	go tool cover -func=coverage.out | tail -n +2 | while read line; do \
+		file=$$(echo $$line | awk '{print $$1}'); \
+		func=$$(echo $$line | awk '{print $$2}'); \
+		cov=$$(echo $$line | awk '{print $$3}'); \
+		printf "| %s | %s | %s |\\n" "$$file" "$$func" "$$cov" >> coverage.md; \
+	done
+	rm coverage.out
+
 # Install tools
 .PHONY: install-tools
 install-tools:

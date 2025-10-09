@@ -7,14 +7,14 @@ concurrency:
 on:
   pull_request:
     paths:
-    - plugins/destination/meilisearch/**
-    - .github/workflows/dest_meilisearch.yml
+      - plugins/destination/meilisearch/**
+      - .github/workflows/dest_meilisearch.yml
   push:
     branches:
-    - main
+      - main
     paths:
-    - plugins/destination/meilisearch/**
-    - .github/workflows/dest_meilisearch.yml
+      - plugins/destination/meilisearch/**
+      - .github/workflows/dest_meilisearch.yml
 
 permissions:
   contents: read
@@ -24,54 +24,33 @@ jobs:
     name: "plugins/destination/meilisearch"
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    env:
-      MEILI_MASTER_KEY: test
     defaults:
       run:
         working-directory: plugins/destination/meilisearch
-    services:
-      meilisearch:
-        image:   getmeili/meilisearch:v1.6.2
-        env:
-          MEILI_ENV:          development
-          MEILI_MASTER_KEY:   ${{ env.MEILI_MASTER_KEY }}
-          MEILI_NO_ANALYTICS: true
-          MEILI_LOG_LEVEL:    WARN
-        ports:
-        - 7700:7700
-        options: >-
-                 --health-cmd "curl -s -f http://localhost:7700/health"
-                 --health-interval 10s
-                 --health-timeout 5s
-                 --health-retries 10
     steps:
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 2
-    - name: Set up Go 1.x
-      uses: actions/setup-go@v5
-      with:
-        go-version-file:       plugins/destination/meilisearch/go.mod
-        cache:                 true
-        cache-dependency-path: plugins/destination/meilisearch/go.sum
-    - name: golangci-lint
-      uses: golangci/golangci-lint-action@v8
-      with:
-        version: v2.5.0
-        working-directory: plugins/destination/meilisearch
-        args: "--config ../../.golangci.yml"
-    - name: gen
-      if: github.event_name == 'pull_request'
-      run: make gen
-    - name: Fail if generation updated files
-      if: github.event_name == 'pull_request'
-      run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
-    - run: go mod tidy
-    - name: Build
-      run:  go build .
-    - name: Test Meilisearch
-      env:
-        CQ_DEST_MEILI_TEST_HOST:    "http://localhost:7700"
-        CQ_DEST_MEILI_TEST_API_KEY: ${{ env.MEILI_MASTER_KEY }}
-      run:  make test
-  
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: plugins/destination/meilisearch/go.mod
+          cache: true
+          cache-dependency-path: plugins/destination/meilisearch/go.sum
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.5.0
+          working-directory: plugins/destination/meilisearch
+          args: "--config ../../.golangci.yml"
+      - name: gen
+        if: github.event_name == 'pull_request'
+        run: make gen
+      - name: Fail if generation updated files
+        if: github.event_name == 'pull_request'
+        run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
+      - run: go mod tidy
+      - name: Build
+        run: go build .
+      - name: Test Meilisearch
+        run: make test

@@ -1,0 +1,11 @@
+services:
+  gremlin:
+    image: tinkerpop/gremlin-server:3.7.1
+    ports:
+      - "8182:8182"
+    networks:
+      - gremlin
+networks:
+  gremlin:
+    name: gremlin
+    driver: bridge

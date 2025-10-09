@@ -1,0 +1,22 @@
+# DuckDB is an embedded database and doesn't require external services
+# This docker-compose file provides a simple environment for testing
+# with a shared volume for DuckDB database files
+
+services:
+  duckdb-test:
+    image: alpine:latest
+    command: sleep infinity
+    volumes:
+      - duckdb_data:/data
+    working_dir: /data
+    networks:
+      - duckdb
+
+volumes:
+  duckdb_data:
+    driver: local
+
+networks:
+  duckdb:
+    name: duckdb
+    driver: bridge
