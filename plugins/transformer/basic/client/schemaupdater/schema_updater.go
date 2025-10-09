@@ -110,5 +110,13 @@ func (s *SchemaUpdater) AddPrimaryKeys(newPks []string) (*arrow.Schema, error) {
 		}
 		newCol.PrimaryKey = true
 	}
+
+	// When adding PK components, if we retain unique columns this will result in more than one
+	// unique constraint on the destination (if such constraints are supported). We'd fail upserts
+	// if enabled. Therefore, we must set Unique = false on all columns.
+	for i := range table.Columns {
+		table.Columns[i].Unique = false
+	}
+
 	return table.ToArrowSchema(), nil
 }
