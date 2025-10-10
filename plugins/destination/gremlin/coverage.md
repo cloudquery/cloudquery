@@ -23,4 +23,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/write.go:14: | WriteTableBatch | 84.4% |
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/write.go:96: | Write | 60.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/main.go:13: | main | 0.0% |
-| total: | (statements) | 56.7% |
+| total: | (statements) | 56.4% |

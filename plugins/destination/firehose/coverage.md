@@ -1,0 +1,15 @@
+| File | Function | Coverage |
+| --- | --- | --- |
+| github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/client.go:65: | Close | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/client.go:67: | Read | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/client.go:71: | validateCredentials | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/spec/gen/main.go:13: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/spec/gen/main.go:20: | currDir | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/spec/spec.go:29: | SetDefaults | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/spec/spec.go:47: | Validate | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/test_connection.go:17: | NewConnectionTester | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/write.go:19: | Write | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/write.go:108: | sendBatch | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/client/write.go:125: | getFailedRecords | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/firehose/v2/main.go:14: | main | 0.0% |
+| total: | (statements) | 7.1% |
