@@ -32,7 +32,7 @@
 | github.com/cloudquery/cloudquery/plugins/transformer/basic/client/schemaupdater/schema_updater.go:47: | AddTimestampColumnAtPos | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/transformer/basic/client/schemaupdater/schema_updater.go:57: | RenameColumn | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/transformer/basic/client/schemaupdater/schema_updater.go:72: | ChangeTableName | 81.2% |
-| github.com/cloudquery/cloudquery/plugins/transformer/basic/client/schemaupdater/schema_updater.go:101: | AddPrimaryKeys | 77.8% |
+| github.com/cloudquery/cloudquery/plugins/transformer/basic/client/schemaupdater/schema_updater.go:101: | AddPrimaryKeys | 81.8% |
 | github.com/cloudquery/cloudquery/plugins/transformer/basic/client/spec/spec.go:38: | SetDefaults | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/transformer/basic/client/spec/spec.go:46: | Validate | 63.6% |
 | github.com/cloudquery/cloudquery/plugins/transformer/basic/client/tablematcher/table_matcher.go:23: | New | 100.0% |
@@ -54,4 +54,4 @@
 | github.com/cloudquery/cloudquery/plugins/transformer/basic/client/transformers/transformers.go:145: | transformSchema | 20.0% |
 | github.com/cloudquery/cloudquery/plugins/transformer/basic/client/transformers/transformers.go:155: | makeEmptyRecord | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/transformer/basic/main.go:13: | main | 0.0% |
-| total: | (statements) | 73.2% |
+| total: | (statements) | 73.3% |
