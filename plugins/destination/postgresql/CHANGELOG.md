@@ -1,5 +1,13 @@
 # Changelog
 
+## [8.12.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.12.2...plugins-destination-postgresql-v8.12.3) (2025-10-11)
+
+
+### Bug Fixes
+
+* Revert "fix: Table with PK components should upsert." ([#21476](https://github.com/cloudquery/cloudquery/issues/21476)) ([aca787b](https://github.com/cloudquery/cloudquery/commit/aca787bccc1d3d069a6866fc2af4423f0777f6c8))
+* Table with PK components should upsert. ([#21474](https://github.com/cloudquery/cloudquery/issues/21474)) ([7ee3801](https://github.com/cloudquery/cloudquery/commit/7ee38015a291c8352258e814b69462a00fc4cfda))
+
 ## [8.12.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.12.1...plugins-destination-postgresql-v8.12.2) (2025-10-02)
 
 
