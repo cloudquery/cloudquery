@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.5.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.5.2...plugins-destination-bigquery-v4.5.3) (2025-10-11)
+
+
+### Bug Fixes
+
+* **deps:** Update module cloud.google.com/go to v0.123.0 ([#21468](https://github.com/cloudquery/cloudquery/issues/21468)) ([ca5243e](https://github.com/cloudquery/cloudquery/commit/ca5243e3541a55b0dc8c16ec96da4f5aeb6426af))
+* **deps:** Update module cloud.google.com/go/bigquery to v1.71.0 ([#21492](https://github.com/cloudquery/cloudquery/issues/21492)) ([a8f4cf6](https://github.com/cloudquery/cloudquery/commit/a8f4cf6fa6ad22b98c3723a989b828d614fa43ef))
+
 ## [4.5.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.5.1...plugins-destination-bigquery-v4.5.2) (2025-10-02)
 
 
