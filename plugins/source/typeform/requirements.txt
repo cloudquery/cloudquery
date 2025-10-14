@@ -3,4 +3,5 @@ pyarrow>=16.1.0
 requests>=2.32.3
 pytest>=8.2.2
 pandas>=2.2.2
-setuptools>=70.0.0 # not directly required, pinned by Snyk to avoid a vulnerability
+setuptools>=78.1.1 # not directly required, pinned by Snyk to avoid a vulnerability
+protobuf>=4.25.8 # not directly required, pinned by Snyk to avoid a vulnerability
