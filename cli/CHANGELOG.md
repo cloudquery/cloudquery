@@ -5,6 +5,19 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.30.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.29.7...cli-v6.30.0) (2025-10-14)
+
+
+### Features
+
+* Add create-sql-file tool. ([#21494](https://github.com/cloudquery/cloudquery/issues/21494)) ([f5265dc](https://github.com/cloudquery/cloudquery/commit/f5265dcb49f92849b986fb2d834369501874c3c3))
+
+
+### Bug Fixes
+
+* **deps:** Update Google Golang modules ([#21467](https://github.com/cloudquery/cloudquery/issues/21467)) ([cdeefd2](https://github.com/cloudquery/cloudquery/commit/cdeefd22414ac4d4fa7d3f21592bc2d99807201e))
+* **deps:** Update module google.golang.org/protobuf to v1.36.10 ([#21491](https://github.com/cloudquery/cloudquery/issues/21491)) ([fdad0be](https://github.com/cloudquery/cloudquery/commit/fdad0beb132c7010277710cb8a1c08308f9ebe9a))
+
 ## [6.29.7](https://github.com/cloudquery/cloudquery/compare/cli-v6.29.6...cli-v6.29.7) (2025-10-03)
 
 
