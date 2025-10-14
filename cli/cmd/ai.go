@@ -239,6 +239,28 @@ func aiCmdInner(ctx context.Context, client *cloudquery_api.ClientWithResponses,
 				if err != nil {
 					return fmt.Errorf("failed to chat: %w", err)
 				}
+			case "create_sql_file":
+				err := createSQLFile(response.FunctionCallArguments["filename_without_extension"].(string), response.FunctionCallArguments["content"].(string))
+				if err != nil {
+					return fmt.Errorf("failed to create SQL file: %w", err)
+				}
+
+				// Show spinner while waiting for API response after creating SQL file
+				stop := startSpinner(ctx, specFileMessages)
+
+				response, err = api.Chat(ctx, client, teamName, lo.ToPtr(""), &[]api.FunctionCallOutput{
+					{
+						Name:      "create_sql_file",
+						CallID:    response.FunctionCallID,
+						Arguments: response.FunctionCallArguments,
+						Output:    "SQL file created",
+					},
+				})
+				stop() // Stop the spinner
+
+				if err != nil {
+					return fmt.Errorf("failed to chat: %w", err)
+				}
 			case "cloudquery_test":
 				// Show spinner while running the test
 				stop := startSpinner(ctx, testMessages)
@@ -275,6 +297,10 @@ func aiCmdInner(ctx context.Context, client *cloudquery_api.ClientWithResponses,
 
 func createSpecFile(filenameWithoutExtension, content string) error {
 	return os.WriteFile(filenameWithoutExtension+".yaml", []byte(content), 0644)
+}
+
+func createSQLFile(filenameWithoutExtension, content string) error {
+	return os.WriteFile(filenameWithoutExtension+".sql", []byte(content), 0644)
 }
 
 func cloudqueryTest(filenameWithoutExtension string) string {
