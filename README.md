@@ -2,7 +2,7 @@
 <h1 align="center"><img alt="cloudquery logo" width=75% src="https://github.com/cloudquery/cloudquery/raw/main/cli/docs/images/logo.png"/></h1>
 <!-- markdownlint-enable MD033 -->
 
-[![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)  [![Go Report Card](https://goreportcard.com/badge/github.com/cloudquery/cloudquery)](https://goreportcard.com/report/github.com/cloudquery/cloudquery)  [![CLI Workflow](https://github.com/cloudquery/cloudquery/actions/workflows/cli.yml/badge.svg)](https://github.com/cloudquery/cloudquery/actions/workflows/cli.yml)  
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![Go Report Card](https://goreportcard.com/badge/github.com/cloudquery/cloudquery)](https://goreportcard.com/report/github.com/cloudquery/cloudquery) [![CLI Workflow](https://github.com/cloudquery/cloudquery/actions/workflows/cli.yml/badge.svg)](https://github.com/cloudquery/cloudquery/actions/workflows/cli.yml)
 
 [CloudQuery](https://cloudquery.io) is a high-performance data movement framework that runs entirely on your infrastructure. Extract from any source, from cloud infrastructure to SaaS, powering AI applications with CloudQuery’s flexible, composable data movement framework.
 
@@ -49,3 +49,7 @@ Feel free to open a pull request for small fixes and changes. For bigger changes
 ## Open source
 
 The CloudQuery framework, SDK, CLI, and some integrations are open source - please [file an issue](https://github.com/cloudquery/cloudquery/issues/new/choose) before opening a PR.
+Any code that was open source and moved to closed source can be found in the `git` history of this repo, or via the following links:
+
+- [Closed source files under MPL 2.0 license (zip file)](https://mozilla-public-license-assets.cloudquery.io/MPL%202.0%20Assets/cloudquery-private-2025-10-15.zip)
+- [Closed source files under MPL 2.0 license (CSV file)](https://mozilla-public-license-assets.cloudquery.io/MPL%202.0%20Assets/cloudquery-private-2025-10-15.csv)
