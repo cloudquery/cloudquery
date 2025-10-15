@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7
 go 1.25.1
 
 require (
-	github.com/ClickHouse/clickhouse-go/v2 v2.34.0
+	github.com/ClickHouse/clickhouse-go/v2 v2.40.3
 	github.com/apache/arrow-go/v18 v18.4.0
 	github.com/avast/retry-go/v4 v4.6.1
 	github.com/cloudquery/codegen v0.3.32
@@ -12,7 +12,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.34.0
 	github.com/samber/lo v1.51.0
-	github.com/stretchr/testify v1.11.0
+	github.com/stretchr/testify v1.11.1
 	golang.org/x/sync v0.17.0
 )
 
@@ -45,11 +45,12 @@ require (
 	go.opentelemetry.io/otel/log v0.13.0 // indirect
 	go.opentelemetry.io/otel/sdk/log v0.13.0 // indirect
 	go.opentelemetry.io/otel/sdk/metric v1.37.0 // indirect
+	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/telemetry v0.0.0-20250908211612-aef8a434d053 // indirect
 )
 
 require (
-	github.com/ClickHouse/ch-go v0.65.1 // indirect
+	github.com/ClickHouse/ch-go v0.68.0 // indirect
 	github.com/andybalholm/brotli v1.2.0 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
@@ -84,12 +85,12 @@ require (
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
-	go.opentelemetry.io/otel v1.37.0 // indirect
+	go.opentelemetry.io/otel v1.38.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.37.0 // indirect
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.37.0 // indirect
-	go.opentelemetry.io/otel/metric v1.37.0 // indirect
+	go.opentelemetry.io/otel/metric v1.38.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.37.0 // indirect
-	go.opentelemetry.io/otel/trace v1.37.0 // indirect
+	go.opentelemetry.io/otel/trace v1.38.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.7.0 // indirect
 	golang.org/x/exp v0.0.0-20250911091902-df9299821621
 	golang.org/x/mod v0.28.0 // indirect
