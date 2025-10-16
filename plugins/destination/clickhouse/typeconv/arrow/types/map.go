@@ -16,7 +16,7 @@ func mapType(name string, col *column.Map) (*arrow.Field, error) {
 		return nil, fmt.Errorf("unexpected ClickHouse Map type: %s", col.Type())
 	}
 
-	keyCol, err := column.Type(strings.TrimSpace(params[0])).Column(name, time.UTC)
+	keyCol, err := column.Type(strings.TrimSpace(params[0])).Column(name, &column.ServerContext{Timezone: time.UTC})
 	if err != nil {
 		return nil, err
 	}
@@ -25,7 +25,7 @@ func mapType(name string, col *column.Map) (*arrow.Field, error) {
 		return nil, err
 	}
 
-	itemCol, err := column.Type(strings.TrimSpace(params[1])).Column(name, time.UTC)
+	itemCol, err := column.Type(strings.TrimSpace(params[1])).Column(name, &column.ServerContext{Timezone: time.UTC})
 	if err != nil {
 		return nil, err
 	}

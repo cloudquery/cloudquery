@@ -94,7 +94,7 @@ func parseTupleType(t column.Type, tz *time.Location) ([]column.Interface, error
 		if len(ct.name) == 0 {
 			return nil, fmt.Errorf("unsupported ClickHouse Tuple type (Aache Arrow requires named fields): %s", t)
 		}
-		col, err := ct.colType.Column(ct.name, tz)
+		col, err := ct.colType.Column(ct.name, &column.ServerContext{Timezone: tz})
 		if err != nil {
 			return nil, err
 		}
