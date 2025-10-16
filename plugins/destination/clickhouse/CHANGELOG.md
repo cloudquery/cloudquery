@@ -1,5 +1,12 @@
 # Changelog
 
+## [7.3.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.3.4...plugins-destination-clickhouse-v7.3.5) (2025-10-16)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/ClickHouse/clickhouse-go/v2 to v2.40.3 ([#21499](https://github.com/cloudquery/cloudquery/issues/21499)) ([c5ec7ba](https://github.com/cloudquery/cloudquery/commit/c5ec7ba8b73c4f130d606646a8668b81f9b2390a))
+
 ## [7.3.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.3.3...plugins-destination-clickhouse-v7.3.4) (2025-10-02)
 
 
