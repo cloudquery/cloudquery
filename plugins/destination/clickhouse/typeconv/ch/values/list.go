@@ -16,7 +16,7 @@ func listValue(arr array.ListLike) (any, error) {
 	}
 	// Need to create slice of the proper type.
 	// We could infer in from elements, but sometimes array is empty
-	col, err := column.Type(colType).Column("tmp", time.UTC)
+	col, err := column.Type(colType).Column("tmp", &column.ServerContext{Timezone: time.UTC})
 	if err != nil {
 		return nil, err
 	}
