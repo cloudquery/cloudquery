@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5
 
-go 1.25.1
+go 1.25.3
 
 require (
 	github.com/apache/arrow-go/v18 v18.4.0
