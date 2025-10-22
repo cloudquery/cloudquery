@@ -6,8 +6,9 @@
 | github.com/cloudquery/cloudquery/cli/v6/cmd/ai.go:62: | startSpinner | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/ai.go:149: | aiCmd | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/ai.go:175: | aiCmdInner | 0.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/ai.go:276: | createSpecFile | 0.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/ai.go:280: | cloudqueryTest | 0.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/ai.go:298: | createSpecFile | 0.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/ai.go:302: | createSQLFile | 0.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/ai.go:306: | cloudqueryTest | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/analytics.go:36: | initAnalytics | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/analytics.go:64: | SendSyncMetrics | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/analytics.go:104: | Host | 0.0% |
@@ -366,4 +367,4 @@
 | github.com/cloudquery/cloudquery/cli/v6/internal/uuid/uuid.go:19: | Type | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/main.go:18: | executeRootCmdWithContext | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/main.go:47: | main | 0.0% |
-| total: | (statements) | 47.6% |
+| total: | (statements) | 47.5% |
