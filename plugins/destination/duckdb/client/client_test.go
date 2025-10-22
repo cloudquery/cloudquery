@@ -149,22 +149,17 @@ func TestInsertDuplicateSameBatch(t *testing.T) {
 
 	require.NotContains(t, testingLog.Buf.String(), "error")
 	connector, err := duckdb.NewConnector(tempDB, nil)
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 	defer connector.Close()
 	db := sql.OpenDB(connector)
 	defer db.Close()
 
 	rows, err := db.QueryContext(ctx, "SELECT count(*) FROM test_insert_duplicate_same_batch")
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 	defer rows.Close()
 	var count int64
 	for rows.Next() {
-		err = rows.Scan(&count)
-		require.NoError(t, err)
+		require.NoError(t, rows.Scan(&count))
 	}
 	require.NoError(t, rows.Err())
 	require.Equal(t, int64(1), count)
