@@ -70,13 +70,13 @@ type testingLog struct {
 	Buf bytes.Buffer
 }
 
-func (t *testingLog) Log(args ...interface{}) {
+func (t *testingLog) Log(args ...any) {
 	if _, err := t.Buf.WriteString(fmt.Sprint(args...)); err != nil {
 		t.Error(err)
 	}
 }
 
-func (t *testingLog) Logf(format string, args ...interface{}) {
+func (t *testingLog) Logf(format string, args ...any) {
 	if _, err := t.Buf.WriteString(fmt.Sprintf(format, args...)); err != nil {
 		t.Error(err)
 	}
