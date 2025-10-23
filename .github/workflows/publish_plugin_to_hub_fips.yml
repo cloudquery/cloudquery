@@ -3,6 +3,7 @@ on:
   push:
     tags:
       - "plugins-source-test-v*.*.*"
+      - "plugins-destination-bigquery-v*.*.*"
 permissions:
   contents: read
 
