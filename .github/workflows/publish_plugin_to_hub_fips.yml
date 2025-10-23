@@ -4,6 +4,7 @@ on:
     tags:
       - "plugins-source-test-v*.*.*"
       - "plugins-destination-bigquery-v*.*.*"
+      - "plugins-destination-kafka-v*.*.*"
 permissions:
   contents: read
 
