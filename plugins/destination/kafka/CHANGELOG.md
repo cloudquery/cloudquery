@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.5.7...plugins-destination-kafka-v5.6.0) (2025-10-23)
+
+
+### Features
+
+* Publish FIPS versions ([#21516](https://github.com/cloudquery/cloudquery/issues/21516)) ([e7e8b98](https://github.com/cloudquery/cloudquery/commit/e7e8b98980db1fafe1b4736d7f4da45e75064fc9))
+
 ## [5.5.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.5.6...plugins-destination-kafka-v5.5.7) (2025-10-02)
 
 
