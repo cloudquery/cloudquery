@@ -62,7 +62,12 @@ module.exports = async ({github, context}) => {
         }
     }
 
-    const pluginsWithFipsVersion = ["plugins/source/test"]
+    const pluginsWithFipsVersion = [
+        "plugins/source/test",
+        "plugins/destination/bigquery",
+        "plugins/destination/kafka",
+        "plugins/destination/postgresql"
+    ]
     for (const action of actions) {
         if (pluginsWithFipsVersion.includes(action)) {
             console.log(`Adding validate-fips to the list of required workflows for plugin ${action}`)
