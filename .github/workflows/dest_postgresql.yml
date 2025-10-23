@@ -58,7 +58,7 @@ jobs:
 
   validate-fips:
     timeout-minutes: 30
-    runs-on: large-ubuntu-monorepo
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./plugins/destination/postgresql
