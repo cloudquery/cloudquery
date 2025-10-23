@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.8.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.5...plugins-source-test-v4.8.6) (2025-10-23)
+
+
+### Bug Fixes
+
+* Change fips mode to on, prevent panic from crypto. ([#21472](https://github.com/cloudquery/cloudquery/issues/21472)) ([847b627](https://github.com/cloudquery/cloudquery/commit/847b6276c8ff1525bece0ff9fa3bc520214be293))
+
 ## [4.8.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.4...plugins-source-test-v4.8.5) (2025-10-02)
 
 
