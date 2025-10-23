@@ -5,6 +5,7 @@ on:
       - "plugins-source-test-v*.*.*"
       - "plugins-destination-bigquery-v*.*.*"
       - "plugins-destination-kafka-v*.*.*"
+      - "plugins-destination-postgresql-v*.*.*"
 permissions:
   contents: read
 

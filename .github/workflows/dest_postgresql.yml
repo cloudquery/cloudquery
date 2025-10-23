@@ -55,3 +55,41 @@ jobs:
         run: make test
       - name: Test CockroachDB
         run: make test-cockroachdb
+
+  validate-fips:
+    timeout-minutes: 30
+    runs-on: large-ubuntu-monorepo
+    defaults:
+      run:
+        working-directory: ./plugins/destination/postgresql
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.25.3-validate-plugin-fips-cache-${{ hashFiles('plugins/destination/postgresql/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.25.3-validate-plugin-fips-cache-destination-postgresql
+
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: plugins/destination/postgresql/go.mod
+          cache: false
+
+      - name: Run package command
+        env:
+          GOFLAGS: "-tags=fipsEnabled"
+        run: |
+          rm -rf docs/tables.md
+          go run main_fips.go package -m "chore: Test FIPS" "v1.0.0" .
+
+      - name: Unzip package artifacts
+        run: |
+          unzip -o dist/plugin-postgresql-v1.0.0-linux-amd64.zip
+          chmod +x plugin-postgresql-v1.0.0-linux-amd64
+          ./plugin-postgresql-v1.0.0-linux-amd64 --version 2>&1 | grep -E 'FIPS enabled: true'
