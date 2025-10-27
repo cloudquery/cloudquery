@@ -140,7 +140,7 @@ func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTab
 		duckdb := duckdbTables.Get(table.Name)
 		if duckdb == nil {
 			c.logger.Debug().Str("table", table.Name).Msg("Table doesn't exist, creating")
-			if err := c.createTableIfNotExist(ctx, table.Name, table); err != nil {
+			if err := c.createTableIfNotExist(ctx, table.Name, table, false); err != nil {
 				return err
 			}
 			continue
@@ -168,7 +168,7 @@ func (c *Client) recreateTable(ctx context.Context, table *schema.Table) error {
 	if err := c.exec(ctx, sql); err != nil {
 		return err
 	}
-	return c.createTableIfNotExist(ctx, table.Name, table)
+	return c.createTableIfNotExist(ctx, table.Name, table, false)
 }
 
 func (c *Client) addColumn(ctx context.Context, tableName string, columnName string, columnType string) error {
@@ -176,7 +176,7 @@ func (c *Client) addColumn(ctx context.Context, tableName string, columnName str
 	return c.exec(ctx, sql)
 }
 
-func (c *Client) createTableIfNotExist(ctx context.Context, tableName string, table *schema.Table) error {
+func (c *Client) createTableIfNotExist(ctx context.Context, tableName string, table *schema.Table, skipConstraints bool) error {
 	var sb strings.Builder
 	sb.WriteString("CREATE TABLE IF NOT EXISTS ")
 	sb.WriteString(sanitizeID(tableName))
@@ -187,13 +187,13 @@ func (c *Client) createTableIfNotExist(ctx context.Context, tableName string, ta
 	for i, col := range table.Columns {
 		sqlType := arrowToDuckDB(col.Type)
 		fieldDef := sanitizeID(col.Name) + ` ` + sqlType
-		if col.PrimaryKey {
+		if col.PrimaryKey && !skipConstraints {
 			pks = append(pks, col.Name)
 		}
-		if col.Unique {
+		if col.Unique && !skipConstraints {
 			fieldDef += " UNIQUE"
 		}
-		if col.NotNull {
+		if col.NotNull && !skipConstraints {
 			fieldDef += " NOT NULL"
 		}
 		sb.WriteString(fieldDef)

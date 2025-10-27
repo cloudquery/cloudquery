@@ -85,7 +85,7 @@ func fieldFromColumn(col column.Interface) (*arrow.Field, error) {
 }
 
 func Field(name, typ string) (*arrow.Field, error) {
-	col, err := column.Type(typ).Column(name, time.UTC)
+	col, err := column.Type(typ).Column(name, &column.ServerContext{Timezone: time.UTC})
 	if err != nil {
 		return nil, err
 	}
