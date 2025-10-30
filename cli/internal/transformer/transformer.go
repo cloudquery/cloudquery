@@ -132,7 +132,7 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 	return arrow.NewSchema(transformedFields, &scMd)
 }
 
-func (t *RecordTransformer) replaceTimestampField(sc *arrow.Schema, record arrow.Record, nRows int) (arrow.Record, error) {
+func (t *RecordTransformer) replaceTimestampField(sc *arrow.Schema, record arrow.RecordBatch, nRows int) (arrow.RecordBatch, error) {
 	fieldIndex := sc.FieldIndices(cqSyncTime)[0]
 	currentFieldAsTimestamp, ok := sc.Field(fieldIndex).Type.(*arrow.TimestampType)
 	if ok {
@@ -145,7 +145,7 @@ func (t *RecordTransformer) replaceTimestampField(sc *arrow.Schema, record arrow
 	return record, nil
 }
 
-func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
+func (t *RecordTransformer) Transform(record arrow.RecordBatch) arrow.RecordBatch {
 	sc := record.Schema()
 	newSchema := t.TransformSchema(sc)
 	nRows := int(record.NumRows())
@@ -190,5 +190,5 @@ func (t *RecordTransformer) Transform(record arrow.Record) arrow.Record {
 
 	cols = append(cols, record.Columns()...)
 
-	return array.NewRecord(newSchema, cols, int64(nRows))
+	return array.NewRecordBatch(newSchema, cols, int64(nRows))
 }
