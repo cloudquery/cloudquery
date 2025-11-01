@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8
 go 1.25.3
 
 require (
-	github.com/apache/arrow-go/v18 v18.4.0
+	github.com/apache/arrow-go/v18 v18.4.1
 	github.com/avast/retry-go/v4 v4.6.1
 	github.com/cloudquery/codegen v0.3.32
 	github.com/cloudquery/plugin-sdk/v4 v4.91.0
@@ -69,7 +69,7 @@ require (
 	github.com/jcmturner/gokrb5/v8 v8.4.3 // indirect
 	github.com/jcmturner/rpc/v2 v2.0.3 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
-	github.com/klauspost/cpuid/v2 v2.2.11 // indirect
+	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
