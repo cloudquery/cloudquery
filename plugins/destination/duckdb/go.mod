@@ -4,12 +4,13 @@ go 1.25.3
 
 require (
 	github.com/apache/arrow-go/v18 v18.4.0
-	github.com/cenkalti/backoff/v4 v4.3.0
+	github.com/cenkalti/backoff/v5 v5.0.3
 	github.com/cloudquery/codegen v0.3.32
 	github.com/cloudquery/plugin-sdk/v4 v4.89.1
 	github.com/google/uuid v1.6.0
 	github.com/marcboeker/go-duckdb/v2 v2.3.6
 	github.com/rs/zerolog v1.34.0
+	github.com/stretchr/testify v1.11.0
 )
 
 require (
@@ -35,7 +36,6 @@ require (
 	github.com/aws/smithy-go v1.22.5 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
-	github.com/cenkalti/backoff/v5 v5.0.2 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.14.1 // indirect
 	github.com/cloudquery/plugin-pb-go v1.26.18 // indirect
@@ -78,7 +78,6 @@ require (
 	github.com/spf13/cobra v1.9.1 // indirect
 	github.com/spf13/pflag v1.0.6 // indirect
 	github.com/stoewer/go-strcase v1.3.1 // indirect
-	github.com/stretchr/testify v1.11.0 // indirect
 	github.com/thoas/go-funk v0.9.3 // indirect
 	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
