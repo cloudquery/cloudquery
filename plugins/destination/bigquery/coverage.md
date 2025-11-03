@@ -53,5 +53,5 @@
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/write.go:40: | serializeBatchForError | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/write.go:57: | WriteTableBatch | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/write.go:100: | getValueForBigQuery | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/main.go:13: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/main.go:15: | main | 0.0% |
 | total: | (statements) | 13.8% |

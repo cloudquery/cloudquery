@@ -90,7 +90,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/transformer.go:227: | getColumnIndexWithName | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/types.go:8: | SchemaTypeToPg | 50.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/types.go:19: | PgToSchemaType | 50.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/main.go:14: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/main.go:16: | main | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_arrow.go:18: | Pg10ToArrow | 90.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_arrow.go:66: | CockroachToArrow | 85.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_arrow.go:115: | CrateDBToArrow | 0.0% |
