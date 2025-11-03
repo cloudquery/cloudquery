@@ -4,7 +4,7 @@ go 1.25.3
 
 require (
 	github.com/apache/arrow-go/v18 v18.4.0
-	github.com/cloudquery/codegen v0.3.32
+	github.com/cloudquery/codegen v0.3.33
 	github.com/cloudquery/plugin-sdk/v4 v4.91.0
 	github.com/rs/zerolog v1.34.0
 	golang.org/x/exp v0.0.0-20251023183803-a4bb9ffd2546

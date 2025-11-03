@@ -4,7 +4,7 @@ go 1.25.3
 
 require (
 	github.com/apache/arrow-go/v18 v18.4.0
-	github.com/cloudquery/codegen v0.3.32
+	github.com/cloudquery/codegen v0.3.33
 	github.com/cloudquery/plugin-sdk/v4 v4.91.0
 	github.com/go-sql-driver/mysql v1.8.1
 	github.com/google/uuid v1.6.0
