@@ -4,7 +4,9 @@
 
 [![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0) [![Go Report Card](https://goreportcard.com/badge/github.com/cloudquery/cloudquery)](https://goreportcard.com/report/github.com/cloudquery/cloudquery) [![CLI Workflow](https://github.com/cloudquery/cloudquery/actions/workflows/cli.yml/badge.svg)](https://github.com/cloudquery/cloudquery/actions/workflows/cli.yml)
 
-[CloudQuery](https://cloudquery.io) is a high-performance data movement framework that runs entirely on your infrastructure. Extract from any source, from cloud infrastructure to SaaS, powering AI applications with CloudQuery’s flexible, composable data movement framework.
+<p align="center"><strong>The fastest way to understand your cloud</strong></p>
+
+[CloudQuery](https://cloudquery.io) is a high-performance data pipeline framework for cloud config and security data. Build cloud asset inventory, CSPM, FinOps, and vulnerability management solutions. Extract from AWS, Azure, GCP, and 70+ cloud and SaaS sources.
 
 ## Installation
 
@@ -16,11 +18,11 @@ Check out the [quickstart guide](https://cli-docs.cloudquery.io/docs/quickstart/
 
 ## **Why CloudQuery?**
 
-- **Composable and flexible** - Use the languages, destinations, and orchestrators you want. CloudQuery is built to fit into your stack, not the other way around.
-- **Runs on your infrastructure** - Your cloud data never touches CloudQuery's servers. Full privacy, built for regulated, secure, and performance-critical environments.
-- **Built for developers** - Code-first, extensible plugins, multi-language, open plugin system, no lock-in. Write it, extend it, ship it. No black boxes, no unexplained failures.
-- **Fast, powerful data movement** - Move large volumes of data with high performance and fine-grained control, powered by Apache Arrow. Perfect for feeding AI models, LLM pipelines, or large-scale data stores.
 - **Specialized plugin coverage** - Support for complex, unique data sources such as cloud infrastructure, security, and FinOps data.
+- **Fast, powerful data movement** - Move large volumes of data with high performance and fine-grained control, powered by Apache Arrow.
+- **Runs on your infrastructure** - Your cloud data never touches CloudQuery's servers. Full privacy, built for regulated, secure, and performance-critical environments.
+- **Composable and flexible** - Use the languages, destinations, and orchestrators you want. CloudQuery is built to fit into your stack, not the other way around.
+- **Built for developers** - Code-first, extensible plugins, multi-language, open plugin system, no lock-in. Write it, extend it, ship it.
 
 ## **Use Cases**
 
