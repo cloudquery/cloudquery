@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.6.0...plugins-destination-kafka-v5.6.1) (2025-11-06)
+
+
+### Bug Fixes
+
+* **deps:** Update confluentinc/cp-kafka Docker tag to v7.9.4 ([#21550](https://github.com/cloudquery/cloudquery/issues/21550)) ([936de35](https://github.com/cloudquery/cloudquery/commit/936de35e327f89c3f04221c9142593cc23956056))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.33 ([#21571](https://github.com/cloudquery/cloudquery/issues/21571)) ([4abf18d](https://github.com/cloudquery/cloudquery/commit/4abf18d1060aeb7cad06110bf600268a7da74366))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.91.0 ([#21537](https://github.com/cloudquery/cloudquery/issues/21537)) ([db6f9a0](https://github.com/cloudquery/cloudquery/commit/db6f9a083ab8dddb21f15142b058dadb2a54d49e))
+
 ## [5.6.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.5.7...plugins-destination-kafka-v5.6.0) (2025-10-23)
 
 
