@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4
 go 1.25.3
 
 require (
-	cloud.google.com/go/bigquery v1.71.0
+	cloud.google.com/go/bigquery v1.72.0
 	github.com/apache/arrow-go/v18 v18.4.0
 	github.com/cloudquery/codegen v0.3.33
 	github.com/cloudquery/plugin-sdk/v4 v4.92.0
