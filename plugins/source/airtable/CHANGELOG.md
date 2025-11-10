@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.2...plugins-source-airtable-v2.3.3) (2025-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @types/yargs to v17.0.34 ([#21551](https://github.com/cloudquery/cloudquery/issues/21551)) ([eddf037](https://github.com/cloudquery/cloudquery/commit/eddf037b0a84c83c9e6c0471d187bde1f2ce3b29))
+
 ## [2.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.1...plugins-source-airtable-v2.3.2) (2025-10-20)
 
 
