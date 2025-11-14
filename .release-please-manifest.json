@@ -23,7 +23,7 @@
   "plugins/destination/postgresql+FILLER": "0.0.0",
   "plugins/destination/test": "2.8.25",
   "plugins/destination/test+FILLER": "0.0.0",
-  "plugins/destination/sqlite": "2.13.3",
+  "plugins/destination/sqlite": "2.13.4",
   "plugins/destination/sqlite+FILLER": "0.0.0",
   "plugins/destination/snowflake": "5.1.5",
   "plugins/destination/snowflake+FILLER": "0.0.0",
@@ -109,5 +109,5 @@
   "plugins/transformer/basic+FILLER": "0.0.0",
   "plugins/transformer/jsonflattener": "2.1.8",
   "plugins/transformer/jsonflattener+FILLER": "0.0.0",
-  "plugins/transformer/test": "1.1.26"
+  "plugins/transformer/test": "1.1.27"
 }
