@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.4.33](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.32...plugins-destination-azblob-v4.4.33) (2025-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.92.0 ([#21579](https://github.com/cloudquery/cloudquery/issues/21579)) ([496d29a](https://github.com/cloudquery/cloudquery/commit/496d29af60229bcf5b62f4641467bc6b9eda8e9c))
+
 ## [4.4.32](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.31...plugins-destination-azblob-v4.4.32) (2025-11-06)
 
 
