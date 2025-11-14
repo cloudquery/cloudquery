@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.21](https://github.com/cloudquery/cloudquery/compare/plugins-destination-meilisearch-v2.5.20...plugins-destination-meilisearch-v2.5.21) (2025-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.92.0 ([#21579](https://github.com/cloudquery/cloudquery/issues/21579)) ([496d29a](https://github.com/cloudquery/cloudquery/commit/496d29af60229bcf5b62f4641467bc6b9eda8e9c))
+
 ## [2.5.20](https://github.com/cloudquery/cloudquery/compare/plugins-destination-meilisearch-v2.5.19...plugins-destination-meilisearch-v2.5.20) (2025-11-06)
 
 
