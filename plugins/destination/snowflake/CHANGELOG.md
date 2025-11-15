@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.1.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.1.5...plugins-destination-snowflake-v5.1.6) (2025-11-15)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/dvsekhvalnov/jose2go to v1.7.0 [SECURITY] ([#21620](https://github.com/cloudquery/cloudquery/issues/21620)) ([00e8f5c](https://github.com/cloudquery/cloudquery/commit/00e8f5c19af494304c9dcd048e5792174e5edc11))
+
 ## [5.1.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.1.4...plugins-destination-snowflake-v5.1.5) (2025-11-13)
 
 
