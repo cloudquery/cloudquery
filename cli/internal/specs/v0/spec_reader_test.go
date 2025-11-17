@@ -969,7 +969,7 @@ spec:
 	}
 }
 
-func TestshouldEscapeFileContent(t *testing.T) {
+func TestShouldEscapeFileContent(t *testing.T) {
 	tests := []struct {
 		name     string
 		content  []byte
