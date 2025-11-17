@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/file/v5
 
-go 1.25.3
+go 1.25.4
 
 require (
 	github.com/apache/arrow-go/v18 v18.4.0
