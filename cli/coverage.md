@@ -99,11 +99,11 @@
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:115: | CloseAndRecv | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:121: | newSafeWriteClient | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:130: | getProgressAPIClient | 85.7% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:156: | syncConnectionV3 | 80.3% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:806: | hintSelectMessage | 11.4% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:879: | deleteStale | 75.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:899: | createTableNameSchema | 0.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:912: | getTransformedTableNameFromSchema | 0.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:156: | syncConnectionV3 | 80.6% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:805: | hintSelectMessage | 11.4% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:878: | deleteStale | 75.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:898: | createTableNameSchema | 0.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:911: | getTransformedTableNameFromSchema | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/tables.go:28: | NewCmdTables | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/tables.go:43: | tables | 74.2% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/tables_v2.go:11: | tablesV2 | 0.0% |
