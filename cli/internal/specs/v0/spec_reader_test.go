@@ -969,7 +969,7 @@ spec:
 	}
 }
 
-func TestEscapeContent(t *testing.T) {
+func TestshouldEscapeFileContent(t *testing.T) {
 	tests := []struct {
 		name     string
 		content  []byte
@@ -1031,9 +1031,9 @@ func TestEscapeContent(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			result := escapeContent(tc.content)
+			result := shouldEscapeFileContent(tc.content)
 			if result != tc.expected {
-				t.Errorf("escapeContent() = %v, expected %v", result, tc.expected)
+				t.Errorf("shouldEscapeFileContent() = %v, expected %v", result, tc.expected)
 			}
 		})
 	}
