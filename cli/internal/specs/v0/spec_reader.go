@@ -47,7 +47,7 @@ func expandFileConfig(cfg []byte) ([]byte, error) {
 			expandErr = err
 			return nil
 		}
-		if escapeContent(content) {
+		if shouldEscapeFileContent(content) {
 			// Values that should be treated as strings in YAML have leading and trailing quotes already
 			// so we remove the one added by strconv.Quote
 			quoted := strconv.Quote(string(content))
@@ -386,7 +386,7 @@ func stripYamlComments(b []byte) ([]byte, error) {
 	return b, nil
 }
 
-func escapeContent(content []byte) bool {
+func shouldEscapeFileContent(content []byte) bool {
 	if !bytes.ContainsAny(content, "\n\r") {
 		return false
 	}
