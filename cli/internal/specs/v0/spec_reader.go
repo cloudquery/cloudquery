@@ -3,6 +3,7 @@ package specs
 import (
 	"bytes"
 	"encoding/json"
+	"encoding/pem"
 	"errors"
 	"fmt"
 	"math/rand"
@@ -46,7 +47,7 @@ func expandFileConfig(cfg []byte) ([]byte, error) {
 			expandErr = err
 			return nil
 		}
-		if bytes.ContainsAny(content, "\n\r") && json.Valid(content) {
+		if escapeContent(content) {
 			// Values that should be treated as strings in YAML have leading and trailing quotes already
 			// so we remove the one added by strconv.Quote
 			quoted := strconv.Quote(string(content))
@@ -383,4 +384,18 @@ func stripYamlComments(b []byte) ([]byte, error) {
 		b = bytes.ReplaceAll(b, []byte(k), []byte(fmt.Sprintf("${%s}", v)))
 	}
 	return b, nil
+}
+
+func escapeContent(content []byte) bool {
+	if !bytes.ContainsAny(content, "\n\r") {
+		return false
+	}
+	if json.Valid(content) {
+		return true
+	}
+	block, _ := pem.Decode([]byte(content))
+
+	// if block is nil then content is a valid PEM block and should return true
+	// If block is not nil then content is not a valid PEM block and should return false
+	return block != nil
 }
