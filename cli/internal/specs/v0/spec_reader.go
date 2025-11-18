@@ -395,7 +395,7 @@ func shouldEscapeFileContent(content []byte) bool {
 	}
 	block, _ := pem.Decode(content)
 
-	// if block is nil then content is a valid PEM block and should return true
-	// If block is not nil then content is not a valid PEM block and should return false
+	// if block == nil then content is a valid PEM block and should return true
+	// if block != nil then content is not a valid PEM block and should return false
 	return block != nil
 }
