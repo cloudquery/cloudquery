@@ -1,0 +1,7 @@
+kind: "source"
+spec:
+  name: "test"
+  path: "cloudquery/test"
+  destinations: []
+  version: "v4.5.1" # latest version of source test plugin
+  tables: ["*"]
