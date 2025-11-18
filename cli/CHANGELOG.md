@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.30.4](https://github.com/cloudquery/cloudquery/compare/cli-v6.30.3...cli-v6.30.4) (2025-11-18)
+
+
+### Bug Fixes
+
+* Allow empty destinations in spec during test connection ([#21635](https://github.com/cloudquery/cloudquery/issues/21635)) ([4507bf6](https://github.com/cloudquery/cloudquery/commit/4507bf6fa3ea7b019c1fd19f498d2312c234a521))
+
 ## [6.30.3](https://github.com/cloudquery/cloudquery/compare/cli-v6.30.2...cli-v6.30.3) (2025-11-14)
 
 
