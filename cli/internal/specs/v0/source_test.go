@@ -192,7 +192,7 @@ func TestSourceUnmarshalSpecValidate(t *testing.T) {
 			}
 			source := spec.Spec.(*Source)
 			source.SetDefaults()
-			err = source.Validate()
+			err = source.Validate(false)
 			if err != nil {
 				if err.Error() != tc.err {
 					t.Fatalf("expected:%s got:%s", tc.err, err.Error())
