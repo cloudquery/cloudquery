@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.4.33](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.4.32...plugins-destination-gcs-v5.4.33) (2025-11-22)
+
+
+### Bug Fixes
+
+* **deps:** Update module cloud.google.com/go/storage to v1.57.2 ([#21659](https://github.com/cloudquery/cloudquery/issues/21659)) ([4623904](https://github.com/cloudquery/cloudquery/commit/46239046e617bcbc6486bf29bdeeefe62f047b98))
+* **deps:** Update module golang.org/x/crypto to v0.45.0 [SECURITY] ([#21647](https://github.com/cloudquery/cloudquery/issues/21647)) ([d3f1ff8](https://github.com/cloudquery/cloudquery/commit/d3f1ff8759f26cf5762e51cbd661c70ec9ca2eb4))
+
 ## [5.4.32](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.4.31...plugins-destination-gcs-v5.4.32) (2025-11-14)
 
 
