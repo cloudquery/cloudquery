@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.6.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.6.2...plugins-destination-bigquery-v4.6.3) (2025-11-22)
+
+
+### Bug Fixes
+
+* **deps:** Update module golang.org/x/crypto to v0.45.0 [SECURITY] ([#21647](https://github.com/cloudquery/cloudquery/issues/21647)) ([d3f1ff8](https://github.com/cloudquery/cloudquery/commit/d3f1ff8759f26cf5762e51cbd661c70ec9ca2eb4))
+
 ## [4.6.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.6.1...plugins-destination-bigquery-v4.6.2) (2025-11-14)
 
 
