@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.7.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.7.4...plugins-destination-mongodb-v2.7.5) (2025-11-22)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21628](https://github.com/cloudquery/cloudquery/issues/21628)) ([ea18029](https://github.com/cloudquery/cloudquery/commit/ea180298ce7b071bf931d9d024d0b6b1bcea7ffb))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21657](https://github.com/cloudquery/cloudquery/issues/21657)) ([903f32a](https://github.com/cloudquery/cloudquery/commit/903f32a50ac5cebecd10882a8d9b287a1314048c))
+* **deps:** Update module golang.org/x/crypto to v0.45.0 [SECURITY] ([#21647](https://github.com/cloudquery/cloudquery/issues/21647)) ([d3f1ff8](https://github.com/cloudquery/cloudquery/commit/d3f1ff8759f26cf5762e51cbd661c70ec9ca2eb4))
+
 ## [2.7.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.7.3...plugins-destination-mongodb-v2.7.4) (2025-11-14)
 
 
