@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	pbSpecs "github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/rs/zerolog/log"
-	"github.com/santhosh-tekuri/jsonschema/v5"
+	"github.com/santhosh-tekuri/jsonschema/v6"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
