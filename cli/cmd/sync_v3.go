@@ -661,7 +661,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 					}
 				}
 			case *plugin.Sync_Response_Error:
-				log.Error().Str("table", m.Error.TableName).Msg(m.Error.Error)
 				stats, _ := statsPerTable.Get(m.Error.TableName)
 				stats.Errors++
 				statsPerTable.Add(m.Error.TableName, stats)

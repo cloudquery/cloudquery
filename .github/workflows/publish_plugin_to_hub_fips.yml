@@ -3,6 +3,9 @@ on:
   push:
     tags:
       - "plugins-source-test-v*.*.*"
+      - "plugins-destination-bigquery-v*.*.*"
+      - "plugins-destination-kafka-v*.*.*"
+      - "plugins-destination-postgresql-v*.*.*"
 permissions:
   contents: read
 
@@ -59,9 +62,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.25.1-publish-plugin-to-hub-fips-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
+          key: ${{ runner.os }}-go-1.25.4-publish-plugin-to-hub-fips-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
           restore-keys: |
-            ${{ runner.os }}-go-1.25.1-publish-plugin-to-hub-fips-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}
+            ${{ runner.os }}-go-1.25.4-publish-plugin-to-hub-fips-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}
 
       - name: Set up Go 1.x
         uses: actions/setup-go@v5
@@ -117,7 +120,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.30.0
+          version: v6.30.5
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}

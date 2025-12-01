@@ -149,7 +149,8 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 	}
 
 	tmpTableName := name + strings.ReplaceAll(uuid.New().String(), "-", "_")
-	if err := c.createTableIfNotExist(ctx, tmpTableName, table); err != nil {
+	// we skip constraints here, as copy doesn't allow us to handle conflicts, we handle those during upsert
+	if err := c.createTableIfNotExist(ctx, tmpTableName, table, true); err != nil {
 		return fmt.Errorf("failed to create table %s: %w", tmpTableName, err)
 	}
 	defer func() {

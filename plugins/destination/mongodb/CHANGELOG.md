@@ -1,5 +1,31 @@
 # Changelog
 
+## [2.7.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.7.3...plugins-destination-mongodb-v2.7.4) (2025-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21610](https://github.com/cloudquery/cloudquery/issues/21610)) ([30eae84](https://github.com/cloudquery/cloudquery/commit/30eae84b9ae672e25b95e6554ffd7e647d0f7ad6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.92.0 ([#21579](https://github.com/cloudquery/cloudquery/issues/21579)) ([496d29a](https://github.com/cloudquery/cloudquery/commit/496d29af60229bcf5b62f4641467bc6b9eda8e9c))
+
+## [2.7.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.7.2...plugins-destination-mongodb-v2.7.3) (2025-11-06)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21525](https://github.com/cloudquery/cloudquery/issues/21525)) ([7229459](https://github.com/cloudquery/cloudquery/commit/7229459b3bbb8adf1966fa0f1d72db30ebb84e35))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21548](https://github.com/cloudquery/cloudquery/issues/21548)) ([94337b5](https://github.com/cloudquery/cloudquery/commit/94337b5fbd397a8c3ae853d642c1d7083218d06b))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.33 ([#21571](https://github.com/cloudquery/cloudquery/issues/21571)) ([4abf18d](https://github.com/cloudquery/cloudquery/commit/4abf18d1060aeb7cad06110bf600268a7da74366))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.91.0 ([#21537](https://github.com/cloudquery/cloudquery/issues/21537)) ([db6f9a0](https://github.com/cloudquery/cloudquery/commit/db6f9a083ab8dddb21f15142b058dadb2a54d49e))
+
+## [2.7.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.7.1...plugins-destination-mongodb-v2.7.2) (2025-10-23)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21463](https://github.com/cloudquery/cloudquery/issues/21463)) ([0d74eaf](https://github.com/cloudquery/cloudquery/commit/0d74eaf4e425275bdcffedd6bc458307ff0bbcdb))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21486](https://github.com/cloudquery/cloudquery/issues/21486)) ([b794181](https://github.com/cloudquery/cloudquery/commit/b7941818ebf7575a8f80989764c6d799d012092c))
+
 ## [2.7.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.7.0...plugins-destination-mongodb-v2.7.1) (2025-10-02)
 
 

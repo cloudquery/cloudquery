@@ -1,5 +1,27 @@
 # Changelog
 
+## [6.2.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.2.5...plugins-destination-duckdb-v6.2.6) (2025-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.92.0 ([#21579](https://github.com/cloudquery/cloudquery/issues/21579)) ([496d29a](https://github.com/cloudquery/cloudquery/commit/496d29af60229bcf5b62f4641467bc6b9eda8e9c))
+
+## [6.2.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.2.4...plugins-destination-duckdb-v6.2.5) (2025-11-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.33 ([#21571](https://github.com/cloudquery/cloudquery/issues/21571)) ([4abf18d](https://github.com/cloudquery/cloudquery/commit/4abf18d1060aeb7cad06110bf600268a7da74366))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.91.0 ([#21537](https://github.com/cloudquery/cloudquery/issues/21537)) ([db6f9a0](https://github.com/cloudquery/cloudquery/commit/db6f9a083ab8dddb21f15142b058dadb2a54d49e))
+
+## [6.2.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.2.3...plugins-destination-duckdb-v6.2.4) (2025-10-21)
+
+
+### Bug Fixes
+
+* Add MotherDuck connection information to the plugin documentation ([#21512](https://github.com/cloudquery/cloudquery/issues/21512)) ([d95f543](https://github.com/cloudquery/cloudquery/commit/d95f543b4dd17516aa48fd5ac3e1016e2911ad30))
+
 ## [6.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.2.2...plugins-destination-duckdb-v6.2.3) (2025-10-02)
 
 

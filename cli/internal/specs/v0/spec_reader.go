@@ -20,6 +20,8 @@ import (
 )
 
 type SpecReader struct {
+	relaxed bool
+
 	sourcesMap      map[string]*Source
 	destinationsMap map[string]*Destination
 	transformersMap map[string]*Transformer
@@ -133,7 +135,7 @@ func (r *SpecReader) loadSpecsFromFile(path string) error {
 			}
 			r.sourceWarningsMap[source.Name] = source.GetWarnings()
 			source.SetDefaults()
-			if err := source.Validate(); err != nil {
+			if err := source.Validate(r.relaxed); err != nil {
 				return fmt.Errorf("failed to validate source %s: %w", source.Name, err)
 			}
 			if source.Registry == RegistryGitHub {
@@ -289,8 +291,8 @@ func (r *SpecReader) GetDestinationNamesForSource(name string) []string {
 }
 
 func NewSpecReader(paths []string) (*SpecReader, error) {
-	reader, err := newSpecReader(paths)
-	if err != nil {
+	reader := newSpecReader()
+	if err := reader.initialize(paths); err != nil {
 		return nil, err
 	}
 
@@ -302,11 +304,11 @@ func NewSpecReader(paths []string) (*SpecReader, error) {
 }
 
 func NewRelaxedSpecReader(paths []string) (*SpecReader, error) {
-	reader, err := newSpecReader(paths)
-	if err != nil {
+	reader := newSpecReader()
+	reader.relaxed = true
+	if err := reader.initialize(paths); err != nil {
 		return nil, err
 	}
-
 	if err := reader.relaxedValidate(); err != nil {
 		return nil, err
 	}
@@ -314,8 +316,8 @@ func NewRelaxedSpecReader(paths []string) (*SpecReader, error) {
 	return reader, nil
 }
 
-func newSpecReader(paths []string) (*SpecReader, error) {
-	reader := &SpecReader{
+func newSpecReader() *SpecReader {
+	return &SpecReader{
 		sourcesMap:             make(map[string]*Source),
 		destinationsMap:        make(map[string]*Destination),
 		transformersMap:        make(map[string]*Transformer),
@@ -326,29 +328,32 @@ func newSpecReader(paths []string) (*SpecReader, error) {
 		destinationWarningsMap: make(map[string]Warnings),
 		transformerWarningsMap: make(map[string]Warnings),
 	}
+}
+
+func (r *SpecReader) initialize(paths []string) error {
 	for _, path := range paths {
 		file, err := os.Open(path)
 		if err != nil {
-			return nil, err
+			return err
 		}
 		fileInfo, err := file.Stat()
 		if err != nil {
 			file.Close()
-			return nil, err
+			return err
 		}
 		file.Close()
 		if fileInfo.IsDir() {
-			if err := reader.loadSpecsFromDir(path); err != nil {
-				return nil, err
+			if err := r.loadSpecsFromDir(path); err != nil {
+				return err
 			}
 		} else {
-			if err := reader.loadSpecsFromFile(path); err != nil {
-				return nil, err
+			if err := r.loadSpecsFromFile(path); err != nil {
+				return err
 			}
 		}
 	}
 
-	return reader, nil
+	return nil
 }
 
 // strip yaml comments from the given yaml document by converting to JSON and back :)

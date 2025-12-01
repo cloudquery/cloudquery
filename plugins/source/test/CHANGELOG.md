@@ -1,5 +1,28 @@
 # Changelog
 
+## [4.8.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.7...plugins-source-test-v4.8.8) (2025-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.92.0 ([#21579](https://github.com/cloudquery/cloudquery/issues/21579)) ([496d29a](https://github.com/cloudquery/cloudquery/commit/496d29af60229bcf5b62f4641467bc6b9eda8e9c))
+
+## [4.8.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.6...plugins-source-test-v4.8.7) (2025-11-06)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to a4bb9ff ([#21539](https://github.com/cloudquery/cloudquery/issues/21539)) ([ed2988d](https://github.com/cloudquery/cloudquery/commit/ed2988d827acf546583f9cd392bbb3bffbf55206))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.33 ([#21571](https://github.com/cloudquery/cloudquery/issues/21571)) ([4abf18d](https://github.com/cloudquery/cloudquery/commit/4abf18d1060aeb7cad06110bf600268a7da74366))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.91.0 ([#21537](https://github.com/cloudquery/cloudquery/issues/21537)) ([db6f9a0](https://github.com/cloudquery/cloudquery/commit/db6f9a083ab8dddb21f15142b058dadb2a54d49e))
+
+## [4.8.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.5...plugins-source-test-v4.8.6) (2025-10-23)
+
+
+### Bug Fixes
+
+* Change fips mode to on, prevent panic from crypto. ([#21472](https://github.com/cloudquery/cloudquery/issues/21472)) ([847b627](https://github.com/cloudquery/cloudquery/commit/847b6276c8ff1525bece0ff9fa3bc520214be293))
+
 ## [4.8.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.4...plugins-source-test-v4.8.5) (2025-10-02)
 
 

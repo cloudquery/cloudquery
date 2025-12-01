@@ -144,7 +144,7 @@ func TestRecord(t *testing.T) {
 			if err := bldr.UnmarshalJSON(tc.originalJSONRecord); err != nil {
 				t.Fatal(err)
 			}
-			record := bldr.NewRecord()
+			record := bldr.NewRecordBatch()
 			transformedRecord := tc.transformer().Transform(record)
 			if transformedRecord.Schema().String() != tc.expectedSchema.String() {
 				t.Fatalf("expected schema\n%v, got\n%v", tc.expectedSchema, transformedRecord.Schema())
@@ -153,7 +153,7 @@ func TestRecord(t *testing.T) {
 			if err := bldr.UnmarshalJSON(tc.expectedJSONRecord); err != nil {
 				t.Fatal(err)
 			}
-			expectedRecord := bldr.NewRecord()
+			expectedRecord := bldr.NewRecordBatch()
 			if !array.RecordEqual(expectedRecord, transformedRecord) {
 				b, err := json.Marshal(transformedRecord)
 				if err != nil {
