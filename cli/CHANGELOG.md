@@ -5,6 +5,19 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.31.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.30.5...cli-v6.31.0) (2025-12-01)
+
+
+### Features
+
+* Add optional tenant ID field to logger ([#21675](https://github.com/cloudquery/cloudquery/issues/21675)) ([1c79d05](https://github.com/cloudquery/cloudquery/commit/1c79d05968973937178446cb7224fa0f5da30e9f))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.0 ([#21676](https://github.com/cloudquery/cloudquery/issues/21676)) ([7b917cc](https://github.com/cloudquery/cloudquery/commit/7b917ccfd9a03ccc11882dff4c72258348d27ed5))
+* **deps:** Update module golang.org/x/crypto to v0.45.0 [SECURITY] ([#21647](https://github.com/cloudquery/cloudquery/issues/21647)) ([d3f1ff8](https://github.com/cloudquery/cloudquery/commit/d3f1ff8759f26cf5762e51cbd661c70ec9ca2eb4))
+
 ## [6.30.5](https://github.com/cloudquery/cloudquery/compare/cli-v6.30.4...cli-v6.30.5) (2025-11-18)
 
 
