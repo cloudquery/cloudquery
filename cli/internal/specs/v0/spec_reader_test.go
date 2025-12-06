@@ -23,6 +23,40 @@ func getExpectedApplicationDefaultCredentials() string {
 	return expectedApplicationDefaultCredentials
 }
 
+func getexpectedCertificate() string {
+	cert := `-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAupzbCx3FoPinoH2ULfQLLk47vkKkjY7na97xFbtAvY+/Aomc
+YLpxEl3GkNGRMlMeaDP2qxhpBeH85xtR350CorBgN4lnRmhPCgIZ0wxiMbwzQ7HO
+vVa+Ha9RrN89vx3/SlW73WJyPd0WXw3WQCnjThVtRicOAIRUnkwPvLtHVmteo6LI
+IW0LpKxZWi0pJrET3ka1gQDNRh5/b1NGfP2Ecv2jqtT3YG4YkPx3ll21ZhW4BurF
+1drQXSwrowAk4tiLH0g+IYakTNEWmobtvXq+DdNFQzHPYa2Nm9K1ExjI2N12U4Jf
+JRfPSGqfQIOTiaZPOQl/H0mFZRElN+2eBxbMDwIDAQABAoIBADdqW/ulmCnwnSqi
+EA5DYcya68/Yj3AAB0X3uuTmqdeA58pzne31f51iHpSjvvfQSf/MqovtYEagcM8a
+REpgoEc6lB/53CLC1/HTZOLQ0xoM1rZcB1Yfe65qARmSY44s9MIYyoR39w/a5wlM
+HRsJtVfbMgt6joRlx5EIakXz4T/OeWkEvefHRn93ykiNPT3SSvyrFZ4B2OIGla/G
+LxA9mRsGNy0HSymhW671aXZDDZ97zFzrLYvf2hOhKa5xWLJKs13xWycI6ofpnwQ9
+WXPtbBclqVz0IIrYipq5XzJ8smEoGu0ZOu1dO8DoypPNITvlZYUjX9xmoE9CAiAp
+IL+ryAkCgYEA68nF1VZx+hH66oEbb5APhde/0Qpdrbnaq6s/hhsVBseTI10vi5V7
+dyCliNhnCU3JAIVi0v+kTXPJhs3wLmDhSrFLWxkPt1HzHw+m1eRP1rQH+M7CSrVF
+yQV5KYrs3mtIO4AYoFo+bO0tmn2DVKg6FO6leiy+nLAuPk1uMWvAfZcCgYEAypv1
+IHUU4vv7XoufrKTWTji/piGTgQxft8Tk+IaFTBphY6gpFCXB4jm97kriUVL0htN7
+JLkpzGrdhP9ufKwAWH/5Jlna6OQpNAVIhziYoQjBKBoL/LtjCHdHqbj881QrVLyk
+ITeecgO6x36zpf09/Dw8+k1VOVs62IXq5tF8ZEkCgYAFpC43jHntocB/G9esM6Yr
+bZ4JQlY7cdbphI9ghgVaxCuhDPm2PT1W/FD5lTPh5RqKCKb0pWko8TxBHWxBr8+0
+GcnTxCW8HRnUBGvZcjz2xhfqvAeqAexJgvgDJm/EYoy337i3HXGg6YvNxnL984hw
+N8V9xtRIq25vzypzxEA2wQKBgQC+4HrpHySUS2yfv86oaYr0moYDT3KVi0DJ8pb8
+hE8kSV4i8xPwRToJlPiYfLgGga6ZLre++yqjyLH1UGeY0LpqpfXl6ZVQ/1LKDYgs
+zGcOnx7KVu+gJDHCkg1TmlHENDG2XRoLqUh+hYD73SQGZzR0Y5PXA/AcXxRrVI7e
+8dDM8QKBgQCbH5XBA5R8FhLxY3di8AjqgnfYlrTemouRcDratVDb47pWq453OkZQ
+5JSK6iUOQP+ZA4HXitBmErQ3D1ALCenE6Yk3BXBi7PaZHpYA4h4xnE+3qitGC5fY
+mq67p1yluTqgCsU8qshVPBpynF9CANc5AOGoh/MAff6U2y2KXUbuUw==
+-----END RSA PRIVATE KEY-----`
+	if runtime.GOOS == "windows" {
+		return strings.ReplaceAll(cert, "\n", "\r\n")
+	}
+	return cert
+}
+
 type specLoaderTestCase struct {
 	name         string
 	path         []string
@@ -752,6 +786,39 @@ var specLoaderTestCases = []specLoaderTestCase{
 			},
 		},
 	},
+	{
+		name: "success importing PEM file",
+		path: []string{getPath("pem_file.yml")},
+		err: func() string {
+			return ""
+		},
+		sources: []*Source{
+			{
+				Metadata: Metadata{
+					Name:             "test-source",
+					Path:             "cloudquery/test",
+					Version:          "v1.0.0",
+					Registry:         RegistryCloudQuery,
+					registryInferred: true,
+				},
+				Destinations: []string{"test-destination"},
+				Tables:       []string{"*"},
+				Spec:         map[string]any{"certificate": getexpectedCertificate()},
+			},
+		},
+		destinations: []*Destination{
+			{
+				Metadata: Metadata{
+					Name:             "test-destination",
+					Path:             "cloudquery/postgresql",
+					Version:          "v1.0.0",
+					Registry:         RegistryCloudQuery,
+					registryInferred: true,
+				},
+				Spec: map[string]any{"connection_string": "postgresql://localhost:5432/test"},
+			},
+		},
+	},
 }
 
 func TestLoadSpecs(t *testing.T) {
@@ -899,5 +966,75 @@ spec:
 	_, err = expandEnv(badCfg)
 	if err == nil {
 		t.Fatal("expected error, got nil")
+	}
+}
+
+func TestShouldEscapeFileContent(t *testing.T) {
+	tests := []struct {
+		name     string
+		content  []byte
+		expected bool
+	}{
+		{
+			name:     "single line content should not be escaped",
+			content:  []byte("single line"),
+			expected: false,
+		},
+		{
+			name:     "valid JSON should be escaped",
+			content:  []byte(`{"key": "value"}`),
+			expected: false,
+		},
+		{
+			name:     "multiline JSON should be escaped",
+			content:  []byte("{\n  \"key\": \"value\"\n}"),
+			expected: true,
+		},
+		{
+			name: "valid PEM certificate should NOT be escaped",
+			content: []byte(`-----BEGIN CERTIFICATE-----
+		MIIDXTCCAkWgAwIBAgIJAKJ5cIv5zJ5OMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNV
+		BAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBX
+		aWRnaXRzIFB0eSBMdGQwHhcNMTkwNjEyMDAwMDAwWhcNMjkwNjA5MDAwMDAwWjBF
+		MQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50
+		ZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+		CgKCAQEAw8rL0rFt1pFvL1pKvL0qL6pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL
+		1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFv
+		L1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pF
+		vL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1p
+		FvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1
+		pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL
+		1wIDAQABo1AwTjAdBgNVHQ4EFgQUj1pFvL1pFvL1pFvL1pFvL1pFvL0wHwYDVR0j
+		BBgwFoAUj1pFvL1pFvL1pFvL1pFvL1pFvL0wDAYDVR0TBAUwAwEB/zANBgkqhkiG
+		9w0BAQsFAAOCAQEAq1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1p
+		FvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1
+		pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL
+		1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFv
+		L1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pF
+		vL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1p
+		FvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFg==
+		-----END CERTIFICATE-----
+		`),
+			expected: false,
+		},
+		{
+			name:     "valid PEM private key should be escaped",
+			content:  []byte(`-----BEGIN CERTIFICATE-----\nMIIDXTCCAkWgAwIBAgIJAKJ5cIv5zJ5OMA0GCSqGSIb3DQEBCwUAMEUxCzAJBgNV\nBAYTAkFVMRMwEQYDVQQIDApTb21lLVN0YXRlMSEwHwYDVQQKDBhJbnRlcm5ldCBX\naWRnaXRzIFB0eSBMdGQwHhcNMTkwNjEyMDAwMDAwWhcNMjkwNjA5MDAwMDAwWjBF\nMQswCQYDVQQGEwJBVTETMBEGA1UECAwKU29tZS1TdGF0ZTEhMB8GA1UECgwYSW50\nZXJuZXQgV2lkZ2l0cyBQdHkgTHRkMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB\nCgKCAQEAw8rL0rFt1pFvL1pKvL0qL6pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL\n1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFv\nL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pF\nvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1p\nFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1\npFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL\n1wIDAQABo1AwTjAdBgNVHQ4EFgQUj1pFvL1pFvL1pFvL1pFvL1pFvL0wHwYDVR0j\nBBgwFoAUj1pFvL1pFvL1pFvL1pFvL1pFvL0wDAYDVR0TBAUwAwEB/zANBgkqhkiG\n9w0BAQsFAAOCAQEAq1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1p\nFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1\npFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL\n1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFv\nL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pF\nvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1p\nFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFvL1pFg==\n-----END CERTIFICATE-----\n`),
+			expected: false,
+		},
+		{
+			name:     "multiline non-JSON non-PEM should be escaped",
+			content:  []byte("line1\nline2\nline3"),
+			expected: false,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			result := shouldEscapeFileContent(tc.content)
+			if result != tc.expected {
+				t.Errorf("shouldEscapeFileContent() = %v, expected %v", result, tc.expected)
+			}
+		})
 	}
 }
