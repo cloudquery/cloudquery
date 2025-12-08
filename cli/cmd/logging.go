@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 
+	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 
@@ -52,6 +53,8 @@ func initLogging(noLogFile bool, logLevel *enum.Enum, logFormat *enum.Enum, logC
 	mw := io.MultiWriter(writers...)
 	secretAwareWriter := secrets.NewSecretAwareWriter(mw, secretAwareRedactor)
 	log.Logger = zerolog.New(secretAwareWriter).Level(zerologLevel).With().Str("module", "cli").Str("invocation_id", invocationUUID.String()).Timestamp().Logger()
-
+	if env.TenantID() != "" {
+		log.Logger = log.Logger.With().Str("tenant_id", env.TenantID()).Logger()
+	}
 	return logFile, nil
 }
