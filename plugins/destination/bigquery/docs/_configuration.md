@@ -12,6 +12,8 @@ spec:
     project_id: ${PROJECT_ID}
     dataset_id: ${DATASET_ID}
     # Optional parameters
+    # service_account_key_json: |-
+    #   ${SERVICE_ACCOUNT_KEY_JSON} # GCP service account key, expressed as JSON, can be placed in the SERVICE_ACCOUNT_KEY_JSON env var and referenced with this syntax.
     # dataset_location: ""
     # time_partitioning: none # options: "none", "hour", "day", "month", "year"
     # time_partitioning_expiration: 0 # duration, e.g. "24h" or "720h" (30 days)
