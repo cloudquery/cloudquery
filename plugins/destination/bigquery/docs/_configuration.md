@@ -29,7 +29,6 @@ This example above expects the following environment variables to be set:
 
   * `PROJECT_ID` - The Google Cloud Project ID
   * `DATASET_ID` - The Google Cloud BigQuery Dataset ID
-  * `SERVICE_ACCOUNT_KEY_JSON` - The GCP service account key in JSON format
 
 `client_project_id` variable can be used to run BigQuery queries in a project different from where the destination table is located. 
 If you set client_project_id to `*detect-project-id*`, it will automatically detect the project ID from the environment variable or application default credentials.
