@@ -106,12 +106,12 @@ type ChatResponse struct {
 
 func Chat(ctx context.Context, cl *cloudquery_platform_api.ClientWithResponses, teamName string, message *string, functionCallOutputs *[]FunctionCallOutput) (*ChatResponse, error) {
 	// Platform API does not have equivalent AI onboarding chat endpoint
-	return nil, fmt.Errorf("AI onboarding chat is not available in platform API")
+	return nil, errors.New("AI onboarding chat is not available in platform API")
 }
 
 func NewConversation(ctx context.Context, cl *cloudquery_platform_api.ClientWithResponses, teamName string, resumeConversation bool) error {
 	// Platform API does not have equivalent AI onboarding conversation endpoint
-	return fmt.Errorf("AI onboarding conversation is not available in platform API")
+	return errors.New("AI onboarding conversation is not available in platform API")
 }
 
 func EndConversation(ctx context.Context, cl *cloudquery_platform_api.ClientWithResponses, teamName string) {

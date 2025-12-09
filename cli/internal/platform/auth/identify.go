@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 
@@ -25,7 +26,7 @@ func GetUser(ctx context.Context, token auth.Token) (*cqapi.User, error) {
 	}
 
 	if resp.JSON200 == nil {
-		return nil, fmt.Errorf("failed to get current user: no response data")
+		return nil, errors.New("failed to get current user: no response data")
 	}
 
 	// Convert the response to User type
