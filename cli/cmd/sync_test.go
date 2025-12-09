@@ -17,8 +17,8 @@ import (
 	"sync/atomic"
 	"testing"
 
-	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
-	"github.com/cloudquery/cloudquery-api-go/auth"
+	cloudquery_platform_api "github.com/cloudquery/cloudquery-platform-api-go"
+	"github.com/cloudquery/cloudquery-platform-api-go/auth"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	"github.com/google/uuid"
@@ -664,7 +664,7 @@ func TestSync_RemoteProgressReporting(t *testing.T) {
 			if err != nil {
 				t.Fatalf("failed to read body: %v", err)
 			}
-			var v cloudquery_api.CreateSyncRunProgressJSONRequestBody
+			var v cloudquery_platform_api.CreateSyncRunProgressJSONRequestBody
 			require.NoError(t, json.Unmarshal(body, &v))
 
 			w.Header().Set("Content-Type", "application/json")

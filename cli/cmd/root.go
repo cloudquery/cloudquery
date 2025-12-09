@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/cloud/analytics"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/enum"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/otel"

@@ -15,9 +15,9 @@ import (
 	"time"
 
 	"github.com/apache/arrow-go/v18/arrow"
-	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
-	"github.com/cloudquery/cloudquery-api-go/auth"
-	"github.com/cloudquery/cloudquery-api-go/config"
+	cloudquery_platform_api "github.com/cloudquery/cloudquery-platform-api-go"
+	"github.com/cloudquery/cloudquery-platform-api-go/auth"
+	"github.com/cloudquery/cloudquery-platform-api-go/config"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
@@ -33,8 +33,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
-	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/platform/analytics"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/platform/api"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/tablenamechanger"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/transformer"
@@ -43,6 +43,12 @@ import (
 
 	_ "embed"
 )
+
+// SyncRunTableProgressValue matches the platform API structure for table progress values
+type SyncRunTableProgressValue = struct {
+	Errors int64 `json:"errors"`
+	Rows   int64 `json:"rows"`
+}
 
 type destinationsQueries struct {
 	Query string   `yaml:"query"`
@@ -127,7 +133,7 @@ type shard struct {
 	total int32
 }
 
-func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
+func getProgressAPIClient() (*cloudquery_platform_api.ClientWithResponses, error) {
 	authClient := auth.NewTokenClient()
 	if authClient.GetTokenType() != auth.SyncRunAPIKey {
 		return nil, nil
@@ -193,7 +199,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		syncTimeTook   time.Duration
 		totalResources = int64(0)
 		totals         = sourceClient.Metrics()
-		statsPerTable  = utils.NewConcurrentMap[string, cloudquery_api.SyncRunTableProgressValue]()
+		statsPerTable  = utils.NewConcurrentMap[string, SyncRunTableProgressValue]()
 	)
 	defer func() {
 		analytics.TrackSyncCompleted(ctx, invocationUUID.UUID, analytics.SyncFinishedEvent{
@@ -415,17 +421,27 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				totals.Warnings += m.Warnings
 				totals.Errors += m.Errors
 			}
-			status := cloudquery_api.SyncRunStatusStarted
+			status := cloudquery_platform_api.SyncRunStatusStarted
 			if atomic.LoadInt64(&isComplete) == 1 {
-				status = cloudquery_api.SyncRunStatusCompleted
+				status = cloudquery_platform_api.SyncRunStatusCompleted
 			}
-			tableProgress := cloudquery_api.SyncRunTableProgress(statsPerTable.GetAll())
-			obj := cloudquery_api.CreateSyncRunProgressJSONRequestBody{
+			// Convert map[string]SyncRunTableProgressValue to SyncRunTableProgress
+			tableProgressMap := make(cloudquery_platform_api.SyncRunTableProgress)
+			for k, v := range statsPerTable.GetAll() {
+				tableProgressMap[k] = struct {
+					Errors int64 `json:"errors"`
+					Rows   int64 `json:"rows"`
+				}{
+					Errors: v.Errors,
+					Rows:   v.Rows,
+				}
+			}
+			obj := cloudquery_platform_api.CreateSyncRunProgressJSONRequestBody{
 				Rows:          atomic.LoadInt64(&totalResources),
 				Errors:        int64(totals.Errors),
 				Warnings:      int64(totals.Warnings),
 				Status:        &status,
-				TableProgress: &tableProgress,
+				TableProgress: &tableProgressMap,
 			}
 			if shard != nil {
 				obj.ShardNum = &shard.num
@@ -802,7 +818,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	return nil
 }
 
-func hintSelectMessage(destinationSpecs []specs.Destination, statsPerTable *utils.ConcurrentMap[string, cloudquery_api.SyncRunTableProgressValue], sourceTables map[string]bool) {
+func hintSelectMessage(destinationSpecs []specs.Destination, statsPerTable *utils.ConcurrentMap[string, SyncRunTableProgressValue], sourceTables map[string]bool) {
 	val, _ := config.GetValue("first_sync_completed")
 	firstSyncCompleted, _ := strconv.ParseBool(val)
 	if firstSyncCompleted {

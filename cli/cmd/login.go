@@ -18,7 +18,7 @@ import (
 	"github.com/cenkalti/backoff/v4"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery-api-go/config"
-	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/cloud/analytics"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/team"
 	"github.com/pkg/browser"

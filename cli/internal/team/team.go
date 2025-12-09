@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
-	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/cloud/api"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/hub"
 )
 

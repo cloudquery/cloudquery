@@ -8,11 +8,11 @@ import (
 	"os"
 	"strings"
 
-	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
-	apiAuth "github.com/cloudquery/cloudquery-api-go/auth"
-	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
-	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
+	cloudquery_platform_api "github.com/cloudquery/cloudquery-platform-api-go"
+	apiAuth "github.com/cloudquery/cloudquery-platform-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/platform/api"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/platform/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
@@ -33,7 +33,7 @@ cloudquery test-connection ./directory ./aws.yml ./pg.yml
 `
 )
 
-func getSyncTestConnectionAPIClient() (*cloudquery_api.ClientWithResponses, error) {
+func getSyncTestConnectionAPIClient() (*cloudquery_platform_api.ClientWithResponses, error) {
 	authClient := apiAuth.NewTokenClient()
 	if authClient.GetTokenType() != apiAuth.SyncTestConnectionAPIKey {
 		return nil, nil
@@ -46,7 +46,7 @@ func getSyncTestConnectionAPIClient() (*cloudquery_api.ClientWithResponses, erro
 	return api.NewClient(token.Value)
 }
 
-func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, status cloudquery_api.SyncTestConnectionStatus, tcrs ...testConnectionResult) {
+func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, status cloudquery_platform_api.SyncTestConnectionStatus, tcrs ...testConnectionResult) {
 	apiClient, err := getSyncTestConnectionAPIClient()
 	if err != nil {
 		logger.Warn().Err(err).Msg("Failed to get sync test connection API client")
@@ -77,7 +77,7 @@ func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, 
 	var statusCode int
 	switch kind := os.Getenv("_CQ_SYNC_TEST_CONNECTION_KIND"); kind {
 	case "source":
-		requestBody := cloudquery_api.UpdateSyncTestConnectionForSyncSourceJSONRequestBody{
+		requestBody := cloudquery_platform_api.UpdateSyncTestConnectionForSyncSourceJSONRequestBody{
 			Status: status,
 		}
 		if failedTestResult != nil {
@@ -91,7 +91,7 @@ func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, 
 		}
 		statusCode = res.StatusCode()
 	case "destination":
-		requestBody := cloudquery_api.UpdateSyncTestConnectionForSyncDestinationJSONRequestBody{
+		requestBody := cloudquery_platform_api.UpdateSyncTestConnectionForSyncDestinationJSONRequestBody{
 			Status: status,
 		}
 		if failedTestResult != nil {
@@ -134,7 +134,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	}
 
 	ctx := cmd.Context()
-	updateSyncTestConnectionStatus(cmd.Context(), log.Logger, cloudquery_api.SyncTestConnectionStatusStarted)
+	updateSyncTestConnectionStatus(cmd.Context(), log.Logger, cloudquery_platform_api.SyncTestConnectionStatusStarted)
 
 	// in the cloud sync environment, we pass only the relevant environment variables to the plugin
 	isolatePluginEnvironment := env.IsCloud()
@@ -216,7 +216,7 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		if len(attempted) > numSuccess {
 			ref = attempted[numSuccess].Path // Next one to be tried after the last successful one
 		}
-		updateSyncTestConnectionStatus(context.Background(), log.Logger, cloudquery_api.SyncTestConnectionStatusFailed, testConnectionResult{
+		updateSyncTestConnectionStatus(context.Background(), log.Logger, cloudquery_platform_api.SyncTestConnectionStatusFailed, testConnectionResult{
 			PluginKind:         kind,
 			PluginRef:          ref,
 			Success:            false,
@@ -273,9 +273,9 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		testConnectionResults = append(testConnectionResults, *testResult)
 	}
 
-	status := cloudquery_api.SyncTestConnectionStatusCompleted
+	status := cloudquery_platform_api.SyncTestConnectionStatusCompleted
 	if allErrors != nil {
-		status = cloudquery_api.SyncTestConnectionStatusFailed
+		status = cloudquery_platform_api.SyncTestConnectionStatusFailed
 	}
 	updateSyncTestConnectionStatus(context.Background(), log.Logger, status, testConnectionResults...)
 

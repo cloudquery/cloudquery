@@ -6,7 +6,7 @@ import (
 
 	cqapi "github.com/cloudquery/cloudquery-api-go"
 	cqauth "github.com/cloudquery/cloudquery-api-go/auth"
-	internalAuth "github.com/cloudquery/cloudquery/cli/v6/internal/auth"
+	internalAuth "github.com/cloudquery/cloudquery/cli/v6/internal/cloud/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/google/uuid"

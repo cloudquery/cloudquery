@@ -8,9 +8,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/otel"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/platform/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
