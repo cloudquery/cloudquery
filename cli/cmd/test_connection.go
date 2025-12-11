@@ -7,9 +7,6 @@ import (
 	"os"
 	"strings"
 
-	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
-	apiAuth "github.com/cloudquery/cloudquery-api-go/auth"
-	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
@@ -29,19 +26,6 @@ cloudquery test-connection ./directory
 cloudquery test-connection ./directory ./aws.yml ./pg.yml
 `
 )
-
-func getSyncTestConnectionAPIClient() (*cloudquery_api.ClientWithResponses, error) {
-	authClient := apiAuth.NewTokenClient()
-	if authClient.GetTokenType() != apiAuth.SyncTestConnectionAPIKey {
-		return nil, nil
-	}
-
-	token, err := authClient.GetToken()
-	if err != nil {
-		return nil, err
-	}
-	return api.NewClient(token.Value)
-}
 
 func newCmdTestConnection() *cobra.Command {
 	cmd := &cobra.Command{
@@ -272,26 +256,4 @@ func testPluginConnection(ctx context.Context, client plugin.PluginClient, spec 
 		FailureCode:        resp.FailureCode,
 		FailureDescription: secretAwareRedactor.RedactStr(resp.FailureDescription),
 	}, nil
-}
-
-// filterFailedTestResults fetch the failed test results.
-//
-// The function returns any failed test results, or nil if all tests passed.
-func filterFailedTestResults(results []testConnectionResult) (*testConnectionResult, error) {
-	var failedResults []testConnectionResult
-
-	for _, result := range results {
-		if !result.Success {
-			failedResults = append(failedResults, result)
-		}
-	}
-
-	switch len(failedResults) {
-	case 0:
-		return nil, nil
-	case 1:
-		return &failedResults[0], nil
-	default:
-		return nil, errors.New("multiple test connection failures are not supported")
-	}
 }
