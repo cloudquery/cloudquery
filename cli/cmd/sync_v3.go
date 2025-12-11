@@ -6,8 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"net/http"
-	"os"
 	"slices"
 	"strconv"
 	gosync "sync"
@@ -15,7 +13,6 @@ import (
 	"time"
 
 	"github.com/apache/arrow-go/v18/arrow"
-	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -23,18 +20,15 @@ import (
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/ghodss/yaml"
-	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
 	"github.com/samber/lo"
 	"github.com/schollz/progressbar/v3"
 	"github.com/thoas/go-funk"
-	"github.com/vnteamopen/godebouncer"
 	"golang.org/x/sync/errgroup"
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
-	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/tablenamechanger"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/transformer"
@@ -127,19 +121,6 @@ type shard struct {
 	total int32
 }
 
-func getProgressAPIClient() (*cloudquery_api.ClientWithResponses, error) {
-	authClient := auth.NewTokenClient()
-	if authClient.GetTokenType() != auth.SyncRunAPIKey {
-		return nil, nil
-	}
-
-	token, err := authClient.GetToken()
-	if err != nil {
-		return nil, err
-	}
-	return api.NewClient(token.Value)
-}
-
 type syncV3Options struct {
 	source                    v3source
 	destinations              []v3destination
@@ -193,7 +174,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		syncTimeTook   time.Duration
 		totalResources = int64(0)
 		totals         = sourceClient.Metrics()
-		statsPerTable  = utils.NewConcurrentMap[string, cloudquery_api.SyncRunTableProgressValue]()
+		statsPerTable  = utils.NewConcurrentMap[string, SyncRunTableProgressValue]()
 	)
 	defer func() {
 		analytics.TrackSyncCompleted(ctx, invocationUUID.UUID, analytics.SyncFinishedEvent{
@@ -205,11 +186,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			AbortedDueToError: syncErr,
 		})
 	}()
-
-	progressAPIClient, err := getProgressAPIClient()
-	if err != nil {
-		return fmt.Errorf("failed to get API client: %w", err)
-	}
 
 	defer func() {
 		if oldAnalyticsClient != nil {
@@ -397,59 +373,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	// Read from the sync stream and write to all destinations.
 	isComplete := int64(0)
 
-	var remoteProgressReporter *godebouncer.Debouncer
-	if progressAPIClient != nil {
-		teamName, syncName, syncRunId := os.Getenv("_CQ_TEAM_NAME"), os.Getenv("_CQ_SYNC_NAME"), os.Getenv("_CQ_SYNC_RUN_ID")
-		if teamName == "" || syncName == "" || syncRunId == "" {
-			return fmt.Errorf("failed to get team, sync or sync run from environment variables. got team: %s, sync name: %s, sync run ID: %s", teamName, syncName, syncRunId)
-		}
-		syncRunUUID, err := uuid.Parse(syncRunId)
-		if err != nil {
-			return fmt.Errorf("failed to parse sync run ID: %w", err)
-		}
-
-		triggerFunc := func() {
-			totals := sourceClient.Metrics()
-			for i := range destinationsClients {
-				m := destinationsClients[i].Metrics()
-				totals.Warnings += m.Warnings
-				totals.Errors += m.Errors
-			}
-			status := cloudquery_api.SyncRunStatusStarted
-			if atomic.LoadInt64(&isComplete) == 1 {
-				status = cloudquery_api.SyncRunStatusCompleted
-			}
-			tableProgress := cloudquery_api.SyncRunTableProgress(statsPerTable.GetAll())
-			obj := cloudquery_api.CreateSyncRunProgressJSONRequestBody{
-				Rows:          atomic.LoadInt64(&totalResources),
-				Errors:        int64(totals.Errors),
-				Warnings:      int64(totals.Warnings),
-				Status:        &status,
-				TableProgress: &tableProgress,
-			}
-			if shard != nil {
-				obj.ShardNum = &shard.num
-				obj.ShardTotal = &shard.total
-			}
-
-			log.Debug().Interface("body", obj).Msg("Sending sync progress to API")
-			res, err := progressAPIClient.CreateSyncRunProgressWithResponse(ctx, teamName, syncName, syncRunUUID, obj)
-			if err != nil {
-				log.Warn().Err(err).Msg("Failed to send sync progress to API")
-				return
-			}
-			if res.StatusCode() != http.StatusNoContent {
-				log.Warn().Str("status", res.Status()).Int("code", res.StatusCode()).Msg("Failed to send sync progress to API")
-			}
-		}
-		remoteProgressReporter = godebouncer.NewWithOptions(godebouncer.WithTimeDuration(10*time.Second), godebouncer.WithTriggered(triggerFunc), godebouncer.WithOptions(godebouncer.Options{Trailing: true, Leading: true}))
-
-		defer func() {
-			remoteProgressReporter.Cancel()
-			triggerFunc()
-		}()
-	}
-
 	// Transformers can change table names. We need to keep track of table name changes
 	// in case we do things that depend on table names.
 	//
@@ -548,9 +471,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				stats, _ := statsPerTable.Get(tableName)
 				stats.Rows += record.NumRows()
 				statsPerTable.Add(tableName, stats)
-				if remoteProgressReporter != nil {
-					remoteProgressReporter.SendSignal()
-				}
 				for i := range destinationsPbClients {
 					destinationName := destinationSpecs[i].Name
 					transformedRecord := destinationTransformers[i].Transform(record)
@@ -802,7 +722,12 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	return nil
 }
 
-func hintSelectMessage(destinationSpecs []specs.Destination, statsPerTable *utils.ConcurrentMap[string, cloudquery_api.SyncRunTableProgressValue], sourceTables map[string]bool) {
+type SyncRunTableProgressValue struct {
+	Errors int64 `json:"errors"`
+	Rows   int64 `json:"rows"`
+}
+
+func hintSelectMessage(destinationSpecs []specs.Destination, statsPerTable *utils.ConcurrentMap[string, SyncRunTableProgressValue], sourceTables map[string]bool) {
 	val, _ := config.GetValue("first_sync_completed")
 	firstSyncCompleted, _ := strconv.ParseBool(val)
 	if firstSyncCompleted {
