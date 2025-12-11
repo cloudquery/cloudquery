@@ -4,20 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
 	"os"
 	"strings"
 
-	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
-	apiAuth "github.com/cloudquery/cloudquery-api-go/auth"
-	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
-	"github.com/google/uuid"
-	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc/codes"
@@ -32,88 +26,6 @@ cloudquery test-connection ./directory
 cloudquery test-connection ./directory ./aws.yml ./pg.yml
 `
 )
-
-func getSyncTestConnectionAPIClient() (*cloudquery_api.ClientWithResponses, error) {
-	authClient := apiAuth.NewTokenClient()
-	if authClient.GetTokenType() != apiAuth.SyncTestConnectionAPIKey {
-		return nil, nil
-	}
-
-	token, err := authClient.GetToken()
-	if err != nil {
-		return nil, err
-	}
-	return api.NewClient(token.Value)
-}
-
-func updateSyncTestConnectionStatus(ctx context.Context, logger zerolog.Logger, status cloudquery_api.SyncTestConnectionStatus, tcrs ...testConnectionResult) {
-	apiClient, err := getSyncTestConnectionAPIClient()
-	if err != nil {
-		logger.Warn().Err(err).Msg("Failed to get sync test connection API client")
-		return
-	}
-	if apiClient == nil {
-		return
-	}
-	teamName, syncTestConnectionId := os.Getenv("_CQ_TEAM_NAME"), os.Getenv("_CQ_SYNC_TEST_CONNECTION_ID")
-	if teamName == "" || syncTestConnectionId == "" {
-		log.Warn().Msg("Skipping sync test connection status update as environment variables are not set")
-		return
-	}
-	syncTestConnectionUUID, err := uuid.Parse(syncTestConnectionId)
-	if err != nil {
-		log.Warn().Err(err).Msg("Failed to parse sync test connection UUID")
-		return
-	}
-
-	failedTestResult, err := filterFailedTestResults(tcrs)
-	if err != nil {
-		log.Warn().Err(err).Msg("Failed to fetch failed test results")
-		return
-	}
-
-	log.Info().Str("status", string(status)).Msg("Sending sync test connection to API")
-
-	var statusCode int
-	switch kind := os.Getenv("_CQ_SYNC_TEST_CONNECTION_KIND"); kind {
-	case "source":
-		requestBody := cloudquery_api.UpdateSyncTestConnectionForSyncSourceJSONRequestBody{
-			Status: status,
-		}
-		if failedTestResult != nil {
-			requestBody.FailureCode = &failedTestResult.FailureCode
-			requestBody.FailureReason = &failedTestResult.FailureDescription
-		}
-		res, err := apiClient.UpdateSyncTestConnectionForSyncSourceWithResponse(ctx, teamName, syncTestConnectionUUID, requestBody)
-		if err != nil {
-			log.Warn().Err(err).Msg("Failed to send sync test connection result to API")
-			return
-		}
-		statusCode = res.StatusCode()
-	case "destination":
-		requestBody := cloudquery_api.UpdateSyncTestConnectionForSyncDestinationJSONRequestBody{
-			Status: status,
-		}
-		if failedTestResult != nil {
-			requestBody.FailureCode = &failedTestResult.FailureCode
-			requestBody.FailureReason = &failedTestResult.FailureDescription
-		}
-		res, err := apiClient.UpdateSyncTestConnectionForSyncDestinationWithResponse(ctx, teamName, syncTestConnectionUUID, requestBody)
-		if err != nil {
-			log.Warn().Err(err).Msg("Failed to send sync test connection result to API")
-			return
-		}
-		statusCode = res.StatusCode()
-	default:
-		log.Debug().Str("kind", kind).Msg("Unhandled plugin kind for test connection result API call")
-		return
-	}
-	if statusCode != http.StatusOK {
-		log.Warn().Str("status", string(status)).Int("code", statusCode).Msg("Failed to send test connection result to API")
-	} else {
-		log.Info().Str("status", string(status)).Msg("Sent sync test connection result to API")
-	}
-}
 
 func newCmdTestConnection() *cobra.Command {
 	cmd := &cobra.Command{
@@ -134,7 +46,6 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	}
 
 	ctx := cmd.Context()
-	updateSyncTestConnectionStatus(cmd.Context(), log.Logger, cloudquery_api.SyncTestConnectionStatusStarted)
 
 	// in the cloud sync environment, we pass only the relevant environment variables to the plugin
 	isolatePluginEnvironment := env.IsCloud()
@@ -209,25 +120,8 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		destinationRegInferred[i] = destination.RegistryInferred()
 	}
 
-	reportTestConnError := func(kind string, attempted []managedplugin.Config, succeeded managedplugin.Clients, err error) {
-		var ref string
-
-		numSuccess := len(succeeded)
-		if len(attempted) > numSuccess {
-			ref = attempted[numSuccess].Path // Next one to be tried after the last successful one
-		}
-		updateSyncTestConnectionStatus(context.Background(), log.Logger, cloudquery_api.SyncTestConnectionStatusFailed, testConnectionResult{
-			PluginKind:         kind,
-			PluginRef:          ref,
-			Success:            false,
-			FailureCode:        "OTHER",
-			FailureDescription: secretAwareRedactor.RedactStr(err.Error()),
-		})
-	}
-
 	sourceClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, sourcePluginConfigs, opts...)
 	if err != nil {
-		reportTestConnError("source", sourcePluginConfigs, sourceClients, err)
 		return enrichClientError(sourceClients, sourceRegInferred, err)
 	}
 	defer func() {
@@ -237,7 +131,6 @@ func testConnection(cmd *cobra.Command, args []string) error {
 	}()
 	destinationClients, err := managedplugin.NewClients(ctx, managedplugin.PluginDestination, destinationPluginConfigs, opts...)
 	if err != nil {
-		reportTestConnError("destination", destinationPluginConfigs, destinationClients, err)
 		return enrichClientError(destinationClients, destinationRegInferred, err)
 	}
 	defer func() {
@@ -272,12 +165,6 @@ func testConnection(cmd *cobra.Command, args []string) error {
 		testResult.PluginKind = "destination"
 		testConnectionResults = append(testConnectionResults, *testResult)
 	}
-
-	status := cloudquery_api.SyncTestConnectionStatusCompleted
-	if allErrors != nil {
-		status = cloudquery_api.SyncTestConnectionStatusFailed
-	}
-	updateSyncTestConnectionStatus(context.Background(), log.Logger, status, testConnectionResults...)
 
 	log.Info().Any("testresults", testConnectionResults).Msg("Test connection completed")
 
@@ -369,26 +256,4 @@ func testPluginConnection(ctx context.Context, client plugin.PluginClient, spec 
 		FailureCode:        resp.FailureCode,
 		FailureDescription: secretAwareRedactor.RedactStr(resp.FailureDescription),
 	}, nil
-}
-
-// filterFailedTestResults fetch the failed test results.
-//
-// The function returns any failed test results, or nil if all tests passed.
-func filterFailedTestResults(results []testConnectionResult) (*testConnectionResult, error) {
-	var failedResults []testConnectionResult
-
-	for _, result := range results {
-		if !result.Success {
-			failedResults = append(failedResults, result)
-		}
-	}
-
-	switch len(failedResults) {
-	case 0:
-		return nil, nil
-	case 1:
-		return &failedResults[0], nil
-	default:
-		return nil, errors.New("multiple test connection failures are not supported")
-	}
 }
