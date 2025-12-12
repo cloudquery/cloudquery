@@ -688,7 +688,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			metadataDataErrors = errors.Join(metadataDataErrors, err)
 		}
 	}
-
 	if metadataDataErrors != nil {
 		return metadataDataErrors
 	}
