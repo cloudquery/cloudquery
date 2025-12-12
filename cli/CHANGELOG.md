@@ -5,6 +5,18 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.32.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.31.0...cli-v6.32.0) (2025-12-12)
+
+
+### Features
+
+* Update OTEL to latest version ([#21709](https://github.com/cloudquery/cloudquery/issues/21709)) ([3f7a271](https://github.com/cloudquery/cloudquery/commit/3f7a271e3e4ca1284fd09c5e870d30531dad2744))
+
+
+### Bug Fixes
+
+* Properly handle escaping newlines in private keys ([#21633](https://github.com/cloudquery/cloudquery/issues/21633)) ([8ed7614](https://github.com/cloudquery/cloudquery/commit/8ed7614a53b18a4dde9f430213f069200f0f5201))
+
 ## [6.31.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.30.5...cli-v6.31.0) (2025-12-01)
 
 
