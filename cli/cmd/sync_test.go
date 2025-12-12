@@ -373,12 +373,13 @@ func TestSync(t *testing.T) {
 			if len(tc.summary) > 0 {
 				summaries := readSummaries(t, summaryPath)
 				// Ignore random fields or fields that are updated over time
-				diff := cmp.Diff(tc.summary, summaries, cmpopts.IgnoreFields(syncSummary{}, "SyncID", "DestinationVersion", "SourceVersion", "SyncTime"))
+				diff := cmp.Diff(tc.summary, summaries, cmpopts.IgnoreFields(syncSummary{}, "SyncID", "DestinationVersion", "SourceVersion", "SyncTime", "SyncDurationMs"))
 				for _, s := range summaries {
 					assert.NotEmpty(t, s.SyncID)
 					assert.NotEmpty(t, s.SyncTime)
 					assert.NotEmpty(t, s.DestinationVersion)
 					assert.NotEmpty(t, s.SourceVersion)
+					assert.Greater(t, s.SyncDurationMs, uint64(0))
 				}
 				require.Empty(t, diff, "unexpected summaries: %v", diff)
 			}
