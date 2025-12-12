@@ -66,6 +66,13 @@ type Consumer struct {
 	wg              *sync.WaitGroup
 }
 
+type componentHost struct {
+}
+
+func (componentHost) GetExtensions() map[component.ID]component.Component {
+	return nil
+}
+
 func (c Consumer) Shutdown(ctx context.Context) {
 	close(c.quit)
 	c.wg.Wait()
@@ -326,7 +333,12 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 	components = append(components, logs)
 
 	for _, c := range components {
-		if err := c.Start(ctx, nil); err != nil {
+		// To avoid a panic in
+		// https://github.com/open-telemetry/opentelemetry-collector/blob/97fcd3d13b4a1f99c5d9b6f6ee93a2398f2ce207/receiver/otlpreceiver/otlp.go#L96
+		// https://github.com/open-telemetry/opentelemetry-collector/blob/97fcd3d13b4a1f99c5d9b6f6ee93a2398f2ce207/receiver/otlpreceiver/otlp.go#L170
+		// we pass a dummy host
+		host := componentHost{}
+		if err := c.Start(ctx, host); err != nil {
 			return nil, err
 		}
 	}
