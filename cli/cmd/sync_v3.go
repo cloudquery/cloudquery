@@ -689,16 +689,17 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		}
 	}
 
-	for _, dstClient := range destinationsClients {
+	if metadataDataErrors != nil {
+		return metadataDataErrors
+	}
+
+	for i := range destinationsClients {
 		if _, err := writeClients[i].CloseAndRecv(); err != nil {
 			return err
 		}
 		if _, err := destinationsPbClients[i].Close(ctx, &plugin.Close_Request{}); err != nil {
 			return err
 		}
-
-	if metadataDataErrors != nil {
-		return metadataDataErrors
 	}
 
 	atomic.StoreInt64(&isComplete, 1)
