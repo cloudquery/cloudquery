@@ -641,14 +641,9 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				return err
 			}
 		}
-		if _, err := writeClients[i].CloseAndRecv(); err != nil {
-			return err
-		}
-		if _, err := destinationsPbClients[i].Close(ctx, &plugin.Close_Request{}); err != nil {
-			return err
-		}
 	}
 
+	syncDurationMs := time.Since(syncTime)
 	for i := range destinationsClients {
 		m := destinationsClients[i].Metrics()
 		summary := syncSummary{
@@ -657,6 +652,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			SourceWarnings:      sourceWarnings,
 			SyncID:              uid,
 			SyncTime:            syncTime,
+			SyncDurationMs:      uint64(syncDurationMs.Milliseconds()),
 			SourceName:          sourceSpec.Name,
 			SourceVersion:       sourceSpec.Version,
 			SourcePath:          sourceSpec.Path,
@@ -694,6 +690,15 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			metadataDataErrors = errors.Join(metadataDataErrors, err)
 		}
 	}
+
+	for _, dstClient := range destinationsClients {
+		if _, err := writeClients[i].CloseAndRecv(); err != nil {
+			return err
+		}
+		if _, err := destinationsPbClients[i].Close(ctx, &plugin.Close_Request{}); err != nil {
+			return err
+		}
+
 	if metadataDataErrors != nil {
 		return metadataDataErrors
 	}
