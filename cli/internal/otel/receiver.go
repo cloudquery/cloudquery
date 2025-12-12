@@ -69,7 +69,7 @@ type Consumer struct {
 type componentHost struct {
 }
 
-func (c componentHost) GetExtensions() map[component.ID]component.Component {
+func (componentHost) GetExtensions() map[component.ID]component.Component {
 	return nil
 }
 
