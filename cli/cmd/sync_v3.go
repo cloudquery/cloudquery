@@ -643,7 +643,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		}
 	}
 
-	syncDurationMs := time.Since(syncTime)
 	for i := range destinationsClients {
 		m := destinationsClients[i].Metrics()
 		summary := syncSummary{
@@ -652,7 +651,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			SourceWarnings:      sourceWarnings,
 			SyncID:              uid,
 			SyncTime:            syncTime,
-			SyncDurationMs:      uint64(syncDurationMs.Milliseconds()),
 			SourceName:          sourceSpec.Name,
 			SourceVersion:       sourceSpec.Version,
 			SourcePath:          sourceSpec.Path,
