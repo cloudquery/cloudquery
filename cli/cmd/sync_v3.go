@@ -632,7 +632,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			return acc
 		}, durationsPerTable)
 	}
-
+	syncTimeTook = time.Since(syncTime)
 	for i := range destinationsClients {
 		m := destinationsClients[i].Metrics()
 		summary := syncSummary{
@@ -642,6 +642,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			SyncID:              uid,
 			SyncTime:            syncTime,
 			SourceName:          sourceSpec.Name,
+			SyncDurationMs:      uint64(syncTimeTook.Milliseconds()),
 			SourceVersion:       sourceSpec.Version,
 			SourcePath:          sourceSpec.Path,
 			SourceTables:        tableNameChanger.UpdateTableNamesSlice(destinationSpecs[i].Name, sourceTableNames),
@@ -699,7 +700,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	}
 
 	atomic.StoreInt64(&isComplete, 1)
-	syncTimeTook = time.Since(syncTime)
+
 	exitReason = ExitReasonCompleted
 
 	msg := "Sync completed successfully"
