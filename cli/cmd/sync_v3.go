@@ -634,6 +634,22 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	}
 
 	for i := range destinationsClients {
+		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
+			// Table names might have changed due to transformers
+			updatedTablesForDeleteStale := tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, tablesForDeleteStale)
+			if err := deleteStale(writeClients[i], updatedTablesForDeleteStale, sourceName, syncTime); err != nil {
+				return err
+			}
+		}
+		if _, err := writeClients[i].CloseAndRecv(); err != nil {
+			return err
+		}
+		if _, err := destinationsPbClients[i].Close(ctx, &plugin.Close_Request{}); err != nil {
+			return err
+		}
+	}
+
+	for i := range destinationsClients {
 		m := destinationsClients[i].Metrics()
 		summary := syncSummary{
 			Resources:           uint64(totalResources),
@@ -680,22 +696,6 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	}
 	if metadataDataErrors != nil {
 		return metadataDataErrors
-	}
-
-	for i := range destinationsClients {
-		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
-			// Table names might have changed due to transformers
-			updatedTablesForDeleteStale := tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, tablesForDeleteStale)
-			if err := deleteStale(writeClients[i], updatedTablesForDeleteStale, sourceName, syncTime); err != nil {
-				return err
-			}
-		}
-		if _, err := writeClients[i].CloseAndRecv(); err != nil {
-			return err
-		}
-		if _, err := destinationsPbClients[i].Close(ctx, &plugin.Close_Request{}); err != nil {
-			return err
-		}
 	}
 
 	atomic.StoreInt64(&isComplete, 1)
