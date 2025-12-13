@@ -84,9 +84,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.25.4-validate-plugin-fips-cache-${{ hashFiles('plugins/destination/bigquery/go.sum') }}
+          key: ${{ runner.os }}-go-1.25.5-validate-plugin-fips-cache-${{ hashFiles('plugins/destination/bigquery/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.25.4-validate-plugin-fips-cache-destination-bigquery
+            ${{ runner.os }}-go-1.25.5-validate-plugin-fips-cache-destination-bigquery
 
       - name: Set up Go 1.x
         uses: actions/setup-go@v5

@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4
 
-go 1.25.4
+go 1.25.5
 
 require (
 	cloud.google.com/go/bigquery v1.72.0

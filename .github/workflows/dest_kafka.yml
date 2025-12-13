@@ -69,9 +69,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.25.4-validate-plugin-fips-cache-${{ hashFiles('plugins/destination/kafka/go.sum') }}
+          key: ${{ runner.os }}-go-1.25.5-validate-plugin-fips-cache-${{ hashFiles('plugins/destination/kafka/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.25.4-validate-plugin-fips-cache-destination-kafka
+            ${{ runner.os }}-go-1.25.5-validate-plugin-fips-cache-destination-kafka
 
       - name: Set up Go 1.x
         uses: actions/setup-go@v5
