@@ -5,6 +5,18 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.33.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.32.0...cli-v6.33.0) (2025-12-13)
+
+
+### Features
+
+* Add sync duration ms to sync summary ([#21712](https://github.com/cloudquery/cloudquery/issues/21712)) ([80e01b3](https://github.com/cloudquery/cloudquery/commit/80e01b367c19b34de0986c6f083424ed6b87f504))
+
+
+### Bug Fixes
+
+* Send DeleteStale messages before the sync summary ([#21711](https://github.com/cloudquery/cloudquery/issues/21711)) ([f91e8bc](https://github.com/cloudquery/cloudquery/commit/f91e8bc34480745700f6ba9d8fc6c6f1e8f4bb71))
+
 ## [6.32.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.31.0...cli-v6.32.0) (2025-12-12)
 
 
