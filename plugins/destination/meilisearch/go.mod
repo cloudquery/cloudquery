@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2
 
-go 1.25.4
+go 1.25.5
 
 require (
 	github.com/apache/arrow-go/v18 v18.4.0
