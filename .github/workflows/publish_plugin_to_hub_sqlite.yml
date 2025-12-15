@@ -88,7 +88,7 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/gythialy/golang-cross:1.25.4
+      image: ghcr.io/gythialy/golang-cross:1.25.5
     needs:
       - prepare
       - build-config-ui
