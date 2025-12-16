@@ -11,7 +11,7 @@ import (
 	mssql "github.com/microsoft/go-mssqldb"
 )
 
-func (c *Client) bulkInsert(ctx context.Context, tx *sql.Tx, table *schema.Table, records []arrow.Record) error {
+func (c *Client) bulkInsert(ctx context.Context, tx *sql.Tx, table *schema.Table, records []arrow.RecordBatch) error {
 	stmt, err := tx.PrepareContext(ctx,
 		mssql.CopyIn(queries.SanitizedTableName(c.spec.Schema, table),
 			mssql.BulkOptions{

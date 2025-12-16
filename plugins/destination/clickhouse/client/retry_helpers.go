@@ -58,7 +58,7 @@ func retryExec(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn,
 	return err
 }
 
-func retryBatchSend(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn, table *schema.Table, records []arrow.Record) error {
+func retryBatchSend(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn, table *schema.Table, records []arrow.RecordBatch) error {
 	err := retry.Do(
 		func() error {
 			batch, err := conn.PrepareBatch(ctx, queries.Insert(table))
@@ -101,9 +101,9 @@ func retryGetTableDefinitions(ctx context.Context, logger zerolog.Logger, databa
 	return schemas, err
 }
 
-func retryRead(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn, table *schema.Table) (arrow.Record, error) {
+func retryRead(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn, table *schema.Table) (arrow.RecordBatch, error) {
 	record, err := retry.DoWithData(
-		func() (arrow.Record, error) {
+		func() (arrow.RecordBatch, error) {
 			rows, err := conn.Query(ctx, queries.Read(table))
 			if err != nil {
 				return nil, err
@@ -123,7 +123,7 @@ func retryRead(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn,
 				}
 			}
 
-			return builder.NewRecord(), nil
+			return builder.NewRecordBatch(), nil
 		},
 		getRetryOptions(logger, "read")...,
 	)

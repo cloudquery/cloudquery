@@ -82,8 +82,8 @@ func TestTransform(t *testing.T) {
 	tests := []struct {
 		name     string
 		spec     spec.TransformationSpec
-		record   arrow.Record
-		validate func(t *testing.T, record arrow.Record)
+		record   arrow.RecordBatch
+		validate func(t *testing.T, record arrow.RecordBatch)
 	}{
 		{
 			name: "AddLiteralStringColumn",
@@ -94,7 +94,7 @@ func TestTransform(t *testing.T) {
 				Tables: []string{"*"},
 			},
 			record: createTestRecord(),
-			validate: func(t *testing.T, record arrow.Record) {
+			validate: func(t *testing.T, record arrow.RecordBatch) {
 				require.Equal(t, int64(3), record.NumCols(), "Expected 3 columns")
 				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
 				require.Equal(t, "default", record.Column(2).(*array.String).Value(0), "Expected 'default' value in new_col column")
@@ -109,7 +109,7 @@ func TestTransform(t *testing.T) {
 				Tables: []string{"*"},
 			},
 			record: createTestRecord(),
-			validate: func(t *testing.T, record arrow.Record) {
+			validate: func(t *testing.T, record arrow.RecordBatch) {
 				require.Equal(t, int64(3), record.NumCols(), "Expected 3 columns")
 				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
 			},
@@ -122,7 +122,7 @@ func TestTransform(t *testing.T) {
 				Tables:  []string{"*"},
 			},
 			record: createTestRecord(),
-			validate: func(t *testing.T, record arrow.Record) {
+			validate: func(t *testing.T, record arrow.RecordBatch) {
 				require.Equal(t, int64(1), record.NumCols(), "Expected 1 column")
 				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
 			},
@@ -135,7 +135,7 @@ func TestTransform(t *testing.T) {
 				Tables:  []string{"*"},
 			},
 			record: createTestRecord(),
-			validate: func(t *testing.T, record arrow.Record) {
+			validate: func(t *testing.T, record arrow.RecordBatch) {
 				require.Equal(t, "Redacted by CloudQuery | bac8d4414984861d5199b7a97699c728bee36c4084299b2ca905434cf65d8944", record.Column(1).(*array.String).Value(0), "Expected sha256 value in new_col column")
 				require.Equal(t, "Redacted by CloudQuery | dd0fff6ac351dd46cd26e2d5c61e479ce7c68ef12489e04284c0fd66648723cb", record.Column(1).(*array.String).Value(1), "Expected sha256 value in new_col column")
 				require.Equal(t, int64(2), record.NumCols(), "Expected 2 columns")
@@ -150,7 +150,7 @@ func TestTransform(t *testing.T) {
 				Tables:  []string{"*"},
 			},
 			record: createTestRecord(),
-			validate: func(t *testing.T, record arrow.Record) {
+			validate: func(t *testing.T, record arrow.RecordBatch) {
 				require.Equal(t, "VAL1", record.Column(0).(*array.String).Value(0), "Expected uppercase value in col1 column")
 				require.Equal(t, "VAL2", record.Column(0).(*array.String).Value(1), "Expected uppercase value in col1 column")
 				require.Equal(t, int64(2), record.NumCols(), "Expected 2 columns")
@@ -165,7 +165,7 @@ func TestTransform(t *testing.T) {
 				Tables:  []string{"*"},
 			},
 			record: createUppercaseTestRecord(),
-			validate: func(t *testing.T, record arrow.Record) {
+			validate: func(t *testing.T, record arrow.RecordBatch) {
 				require.Equal(t, "val1", record.Column(0).(*array.String).Value(0), "Expected lowercase value in col1 column")
 				require.Equal(t, "val2", record.Column(0).(*array.String).Value(1), "Expected lowercase value in col1 column")
 				require.Equal(t, int64(2), record.NumCols(), "Expected 2 columns")
@@ -180,7 +180,7 @@ func TestTransform(t *testing.T) {
 				Tables:               []string{"*"},
 			},
 			record: createTestRecord(),
-			validate: func(t *testing.T, record arrow.Record) {
+			validate: func(t *testing.T, record arrow.RecordBatch) {
 				newTableName, ok := record.Schema().Metadata().GetValue(schema.MetadataTableName)
 				require.True(t, ok, "Expected table name to be present in metadata")
 				require.Equal(t, "cq_sync_table1", newTableName)
@@ -195,7 +195,7 @@ func TestTransform(t *testing.T) {
 				Value:   &[]string{"val1"}[0],
 			},
 			record: createTestRecord(),
-			validate: func(t *testing.T, record arrow.Record) {
+			validate: func(t *testing.T, record arrow.RecordBatch) {
 				require.Equal(t, int64(2), record.NumCols(), "Expected 2 columns")
 				require.Equal(t, int64(1), record.NumRows(), "Expected 1 rows")
 				require.Equal(t, "val2", record.Column(0).(*array.String).Value(0), "Expected `val2` in col1 column row 0")
@@ -211,7 +211,7 @@ func TestTransform(t *testing.T) {
 				Value:   &[]string{"val4"}[0],
 			},
 			record: createTestRecord(),
-			validate: func(t *testing.T, record arrow.Record) {
+			validate: func(t *testing.T, record arrow.RecordBatch) {
 				require.Equal(t, int64(2), record.NumCols(), "Expected 2 columns")
 				require.Equal(t, int64(1), record.NumRows(), "Expected 1 rows")
 				require.Equal(t, "val1", record.Column(0).(*array.String).Value(0), "Expected `val1` in col1 column row 0")
@@ -227,7 +227,7 @@ func TestTransform(t *testing.T) {
 				Value:   &[]string{"val1"}[0],
 			},
 			record: createTestRecord(),
-			validate: func(t *testing.T, record arrow.Record) {
+			validate: func(t *testing.T, record arrow.RecordBatch) {
 				require.Equal(t, int64(2), record.NumCols(), "Expected 2 columns")
 				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
 				require.Equal(t, "val1", record.Column(0).(*array.String).Value(0), "Expected `val1` in col1 column row 0")
@@ -252,7 +252,7 @@ func TestTransform(t *testing.T) {
 	}
 }
 
-func createTestRecord() arrow.Record {
+func createTestRecord() arrow.RecordBatch {
 	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"table1"})
 	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
 		[]arrow.Field{
@@ -266,10 +266,10 @@ func createTestRecord() arrow.Record {
 	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1", "val2"}, nil)
 	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
 
-	return bld.NewRecord()
+	return bld.NewRecordBatch()
 }
 
-func createUppercaseTestRecord() arrow.Record {
+func createUppercaseTestRecord() arrow.RecordBatch {
 	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"table1"})
 	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
 		[]arrow.Field{
@@ -283,10 +283,10 @@ func createUppercaseTestRecord() arrow.Record {
 	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"VAL1", "VAL2"}, nil)
 	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
 
-	return bld.NewRecord()
+	return bld.NewRecordBatch()
 }
 
-func requireAllColsLenMatchRecordsLen(t *testing.T, record arrow.Record) {
+func requireAllColsLenMatchRecordsLen(t *testing.T, record arrow.RecordBatch) {
 	for i := 0; i < int(record.NumCols()); i++ {
 		require.Equal(t, int(record.NumRows()), record.Column(i).Len(), "Expected length of %d for column %d", record.NumRows(), i)
 	}

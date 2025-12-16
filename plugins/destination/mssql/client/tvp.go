@@ -44,7 +44,7 @@ func (c *Client) ensureTVP(ctx context.Context, table *schema.Table) (err error)
 	return nil
 }
 
-func (c *Client) insertTVP(ctx context.Context, table *schema.Table, records []arrow.Record) error {
+func (c *Client) insertTVP(ctx context.Context, table *schema.Table, records []arrow.RecordBatch) error {
 	query, params, err := queries.TVPQuery(c.spec.Schema, table, records)
 	if err != nil {
 		return err

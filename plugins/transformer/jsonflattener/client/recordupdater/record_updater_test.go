@@ -153,20 +153,20 @@ func TestDifferentCasingWorksEvenWhenFirstRowIsNull(t *testing.T) {
 	require.Equal(t, "value", updatedRecord.Column(1).(*array.String).Value(3))
 }
 
-func requireAllColsLenMatchRecordsLen(t *testing.T, record arrow.Record) {
+func requireAllColsLenMatchRecordsLen(t *testing.T, record arrow.RecordBatch) {
 	for i := 0; i < int(record.NumCols()); i++ {
 		require.Equal(t, int(record.NumRows()), record.Column(i).Len(), "Expected length of %d for column %d", record.NumRows(), i)
 	}
 }
 
-func testRecord(fieldNames []string, metadataTypeSchema map[string]string, rows []arrow.Array) arrow.Record {
+func testRecord(fieldNames []string, metadataTypeSchema map[string]string, rows []arrow.Array) arrow.RecordBatch {
 	tableMD := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
 	fields := make([]arrow.Field, len(fieldNames))
 	for i, name := range fieldNames {
 		fieldMD := map[string]string{schema.MetadataTypeSchema: metadataTypeSchema[name]}
 		fields[i] = arrow.Field{Name: name, Type: rows[i].DataType(), Nullable: true, Metadata: arrow.MetadataFrom(fieldMD)}
 	}
-	return array.NewRecord(arrow.NewSchema(fields, &tableMD), rows, int64(rows[0].Len()))
+	return array.NewRecordBatch(arrow.NewSchema(fields, &tableMD), rows, int64(rows[0].Len()))
 }
 
 func toP(s string) *any {

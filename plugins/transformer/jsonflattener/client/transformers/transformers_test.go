@@ -19,8 +19,8 @@ func TestTransform(t *testing.T) {
 	tests := []struct {
 		name     string
 		spec     spec.Spec
-		record   arrow.Record
-		validate func(t *testing.T, record arrow.Record)
+		record   arrow.RecordBatch
+		validate func(t *testing.T, record arrow.RecordBatch)
 	}{
 		{
 			name: "FlattenJSONFields",
@@ -28,7 +28,7 @@ func TestTransform(t *testing.T) {
 				Tables: []string{"*"},
 			},
 			record: createTestRecord(t),
-			validate: func(t *testing.T, record arrow.Record) {
+			validate: func(t *testing.T, record arrow.RecordBatch) {
 				require.Equal(t, int64(4), record.NumCols())
 				require.Equal(t, int64(1), record.NumRows())
 				requireAllColsLenMatchRecordsLen(t, record)
@@ -58,11 +58,11 @@ func TestTransform(t *testing.T) {
 
 const sampleRowContent = `{"key_a": "value", "key_b": 2, "key_c": true}`
 
-func createTestRecord(t *testing.T) arrow.Record {
-	return array.NewRecord(createTestSchema(t), []arrow.Array{createArray(t, []byte(sampleRowContent))}, 1)
+func createTestRecord(t *testing.T) arrow.RecordBatch {
+	return array.NewRecordBatch(createTestSchema(t), []arrow.Array{createArray(t, []byte(sampleRowContent))}, 1)
 }
 
-func requireAllColsLenMatchRecordsLen(t *testing.T, record arrow.Record) {
+func requireAllColsLenMatchRecordsLen(t *testing.T, record arrow.RecordBatch) {
 	for i := 0; i < int(record.NumCols()); i++ {
 		require.Equal(t, int(record.NumRows()), record.Column(i).Len(), "Expected length of %d for column %d", record.NumRows(), i)
 	}

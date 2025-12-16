@@ -13,16 +13,16 @@ import (
 	"github.com/rs/zerolog"
 )
 
-// RecordUpdater takes an `arrow.Record` and knows how to make simple subsequent changes to it.
+// RecordUpdater takes an `arrow.RecordBatch` and knows how to make simple subsequent changes to it.
 // It doesn't know which table it belongs to or if the changes make sense.
 type RecordUpdater struct {
 	logger        zerolog.Logger
-	record        arrow.Record
+	record        arrow.RecordBatch
 	schemaUpdater *schemaupdater.SchemaUpdater
 	tableName     string
 }
 
-func New(logger zerolog.Logger, record arrow.Record) *RecordUpdater {
+func New(logger zerolog.Logger, record arrow.RecordBatch) *RecordUpdater {
 	tableName, _ := record.Schema().Metadata().GetValue(schema.MetadataTableName)
 
 	return &RecordUpdater{
@@ -33,7 +33,7 @@ func New(logger zerolog.Logger, record arrow.Record) *RecordUpdater {
 	}
 }
 
-func (r *RecordUpdater) FlattenJSONFields() (arrow.Record, error) {
+func (r *RecordUpdater) FlattenJSONFields() (arrow.RecordBatch, error) {
 	fieldTypeSchemas := map[string]map[string]string{}
 
 	for _, field := range r.record.Schema().Fields() {
@@ -73,7 +73,7 @@ func (r *RecordUpdater) FlattenJSONFields() (arrow.Record, error) {
 	if err != nil {
 		return nil, err
 	}
-	r.record = array.NewRecord(newSchema, newColumns, r.record.NumRows())
+	r.record = array.NewRecordBatch(newSchema, newColumns, r.record.NumRows())
 	return r.record, nil
 }
 

@@ -20,14 +20,14 @@ import (
 	"github.com/tidwall/sjson"
 )
 
-// RecordUpdater takes an `arrow.Record` and knows how to make simple subsequent changes to it.
+// RecordUpdater takes an `arrow.RecordBatch` and knows how to make simple subsequent changes to it.
 // It doesn't know which table it belongs to or if the changes make sense.
 type RecordUpdater struct {
-	record        arrow.Record
+	record        arrow.RecordBatch
 	schemaUpdater *schemaupdater.SchemaUpdater
 }
 
-func New(record arrow.Record) *RecordUpdater {
+func New(record arrow.RecordBatch) *RecordUpdater {
 	return &RecordUpdater{
 		record:        record,
 		schemaUpdater: schemaupdater.New(record.Schema()),
@@ -37,7 +37,7 @@ func New(record arrow.Record) *RecordUpdater {
 const redactedByCQMessage = "Redacted by CloudQuery |"
 const redactedByCQJSONName = "redacted_by_cloudquery"
 
-func (r *RecordUpdater) RemoveColumns(columnNames []string) (arrow.Record, error) {
+func (r *RecordUpdater) RemoveColumns(columnNames []string) (arrow.RecordBatch, error) {
 	plainCols, jsonCols := r.splitJSONColumns(columnNames)
 
 	if len(plainCols) > 0 {
@@ -58,7 +58,7 @@ func (r *RecordUpdater) RemoveColumns(columnNames []string) (arrow.Record, error
 			newColumns = append(newColumns, column)
 		}
 
-		r.record = array.NewRecord(r.schemaUpdater.RemoveColumnIndices(colIndices), newColumns, r.record.NumRows())
+		r.record = array.NewRecordBatch(r.schemaUpdater.RemoveColumnIndices(colIndices), newColumns, r.record.NumRows())
 	}
 
 	if len(jsonCols) > 0 {
@@ -86,7 +86,7 @@ func (r *RecordUpdater) RemoveColumns(columnNames []string) (arrow.Record, error
 	return r.record, nil
 }
 
-func (r *RecordUpdater) AddLiteralStringColumn(columnName, columnValue string, position int) (arrow.Record, error) {
+func (r *RecordUpdater) AddLiteralStringColumn(columnName, columnValue string, position int) (arrow.RecordBatch, error) {
 	if position == -1 {
 		position = int(r.record.NumCols())
 	}
@@ -108,11 +108,11 @@ func (r *RecordUpdater) AddLiteralStringColumn(columnName, columnValue string, p
 	if err != nil {
 		return nil, err
 	}
-	r.record = array.NewRecord(newSchema, newColumns, r.record.NumRows())
+	r.record = array.NewRecordBatch(newSchema, newColumns, r.record.NumRows())
 	return r.record, nil
 }
 
-func (r *RecordUpdater) AddTimestampColumn(columnName string, position int) (arrow.Record, error) {
+func (r *RecordUpdater) AddTimestampColumn(columnName string, position int) (arrow.RecordBatch, error) {
 	if position == -1 {
 		position = int(r.record.NumCols())
 	}
@@ -135,11 +135,11 @@ func (r *RecordUpdater) AddTimestampColumn(columnName string, position int) (arr
 	if err != nil {
 		return nil, err
 	}
-	r.record = array.NewRecord(newSchema, newColumns, r.record.NumRows())
+	r.record = array.NewRecordBatch(newSchema, newColumns, r.record.NumRows())
 	return r.record, nil
 }
 
-func (r *RecordUpdater) ObfuscateSensitiveColumns() (arrow.Record, error) {
+func (r *RecordUpdater) ObfuscateSensitiveColumns() (arrow.RecordBatch, error) {
 	if r.record.Schema() == nil {
 		return nil, errors.New("record schema is nil")
 	}
@@ -158,7 +158,7 @@ func (r *RecordUpdater) ObfuscateSensitiveColumns() (arrow.Record, error) {
 	return r.ObfuscateColumns(sensitiveColumnsArr)
 }
 
-func (r *RecordUpdater) DropRows(columnNames []string, value *string) (arrow.Record, error) {
+func (r *RecordUpdater) DropRows(columnNames []string, value *string) (arrow.RecordBatch, error) {
 	cols := r.record.Columns()
 
 	rowsToDrop := make(map[int]bool)
@@ -182,7 +182,7 @@ func (r *RecordUpdater) DropRows(columnNames []string, value *string) (arrow.Rec
 		return r.record, nil
 	}
 	newRowLen := int(r.record.NumRows()) - len(rowsToDrop)
-	rowSlices := make([]arrow.Record, 0, newRowLen)
+	rowSlices := make([]arrow.RecordBatch, 0, newRowLen)
 
 	// This section builds slices of rows that are not to be dropped.
 	currentSliceStart := -1
@@ -222,11 +222,11 @@ func (r *RecordUpdater) DropRows(columnNames []string, value *string) (arrow.Rec
 		}
 	}
 
-	r.record = array.NewRecord(r.record.Schema(), concatenatedCols, int64(newRowLen))
+	r.record = array.NewRecordBatch(r.record.Schema(), concatenatedCols, int64(newRowLen))
 	return r.record, nil
 }
 
-func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.Record, error) {
+func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.RecordBatch, error) {
 	plainCols, jsonCols := r.splitJSONColumns(columnNames)
 
 	plainColIndex, err := r.colIndicesByNames(plainCols)
@@ -267,39 +267,39 @@ func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.Record, er
 		newColumns = append(newColumns, r.obfuscateJSONColumns(column, jcs))
 	}
 
-	r.record = array.NewRecord(r.record.Schema(), newColumns, r.record.NumRows())
+	r.record = array.NewRecordBatch(r.record.Schema(), newColumns, r.record.NumRows())
 
 	return r.record, nil
 }
 
-func (r *RecordUpdater) AddPrimaryKeys(columnNames []string) (arrow.Record, error) {
+func (r *RecordUpdater) AddPrimaryKeys(columnNames []string) (arrow.RecordBatch, error) {
 	newSchema, err := r.schemaUpdater.AddPrimaryKeys(columnNames)
 	if err != nil {
 		return nil, err
 	}
-	r.record = array.NewRecord(newSchema, r.record.Columns(), r.record.NumRows())
+	r.record = array.NewRecordBatch(newSchema, r.record.Columns(), r.record.NumRows())
 	return r.record, nil
 }
 
-func (r *RecordUpdater) ChangeTableName(newTableNamePattern string) (arrow.Record, error) {
+func (r *RecordUpdater) ChangeTableName(newTableNamePattern string) (arrow.RecordBatch, error) {
 	newSchema, err := r.schemaUpdater.ChangeTableName(newTableNamePattern)
 	if err != nil {
 		return nil, err
 	}
-	r.record = array.NewRecord(newSchema, r.record.Columns(), r.record.NumRows())
+	r.record = array.NewRecordBatch(newSchema, r.record.Columns(), r.record.NumRows())
 	return r.record, nil
 }
 
-func (r *RecordUpdater) RenameColumn(oldName, newName string) (arrow.Record, error) {
+func (r *RecordUpdater) RenameColumn(oldName, newName string) (arrow.RecordBatch, error) {
 	newSchema, err := r.schemaUpdater.RenameColumn(oldName, newName)
 	if err != nil {
 		return nil, err
 	}
-	r.record = array.NewRecord(newSchema, r.record.Columns(), r.record.NumRows())
+	r.record = array.NewRecordBatch(newSchema, r.record.Columns(), r.record.NumRows())
 	return r.record, nil
 }
 
-func (r *RecordUpdater) ChangeCase(caseType string, columnNames []string) (arrow.Record, error) {
+func (r *RecordUpdater) ChangeCase(caseType string, columnNames []string) (arrow.RecordBatch, error) {
 	plainCols, jsonCols := r.splitJSONColumns(columnNames)
 
 	plainColIndex, err := r.colIndicesByNames(plainCols)
@@ -341,7 +341,7 @@ func (r *RecordUpdater) ChangeCase(caseType string, columnNames []string) (arrow
 		newColumns = append(newColumns, r.chanceCaseJSONColumns(column, jcs, caser))
 	}
 
-	r.record = array.NewRecord(r.record.Schema(), newColumns, r.record.NumRows())
+	r.record = array.NewRecordBatch(r.record.Schema(), newColumns, r.record.NumRows())
 
 	return r.record, nil
 }

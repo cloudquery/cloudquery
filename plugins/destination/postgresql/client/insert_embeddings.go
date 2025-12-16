@@ -44,7 +44,7 @@ func toEmbeddingTableColumns(cols []schema.Column) []embeddingTableColumn {
 }
 
 // addEmbeddingRows records a set of transformed rows for a given table into the provided map.
-func (c *Client) addEmbeddingRows(ctx context.Context, tableToBatch map[string]*embeddingBatch, tableName string, tbl *schema.Table, r arrow.Record, rows [][]any) error {
+func (c *Client) addEmbeddingRows(ctx context.Context, tableToBatch map[string]*embeddingBatch, tableName string, tbl *schema.Table, r arrow.RecordBatch, rows [][]any) error {
 	if err := c.ensureConfigColumnsMatchBatchSchema(tbl); err != nil {
 		return err
 	}

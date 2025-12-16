@@ -46,7 +46,7 @@ func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClie
 	return c, nil
 }
 
-func (c *Client) Transform(ctx context.Context, recvRecords <-chan arrow.Record, sendRecords chan<- arrow.Record) error {
+func (c *Client) Transform(ctx context.Context, recvRecords <-chan arrow.RecordBatch, sendRecords chan<- arrow.RecordBatch) error {
 	for {
 		select {
 		case record, ok := <-recvRecords:

@@ -46,7 +46,7 @@ func getValue(arr arrow.Array, i int) any {
 	}
 }
 
-func transformRecord(record arrow.Record) [][]any {
+func transformRecord(record arrow.RecordBatch) [][]any {
 	var res [][]any
 	for i := int64(0); i < record.NumRows(); i++ {
 		var row []any

@@ -40,7 +40,7 @@ func (c *Client) WriteTable(_ context.Context, msgs <-chan *message.WriteInsert)
 			}
 		}
 
-		if err := h.WriteContent([]arrow.Record{msg.Record}); err != nil {
+		if err := h.WriteContent([]arrow.RecordBatch{msg.Record}); err != nil {
 			return err
 		}
 		if syncAfterWrite {

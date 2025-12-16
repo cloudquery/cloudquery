@@ -175,7 +175,7 @@ func TestConcurrentSyncsAgainstSameTable(t *testing.T) {
 				bldr.Field(0).(*array.StringBuilder).Append(uuid.MustParse(randomUUIDStringWithLastCharacterReplaced).String())
 				bldr.Field(1).(*array.StringBuilder).Append("source")
 				bldr.Field(2).(*array.TimestampBuilder).Append(arrow.Timestamp(time.Now().UnixMicro()))
-				record := bldr.NewRecord()
+				record := bldr.NewRecordBatch()
 
 				if err := p.WriteAll(syncContext, []message.WriteMessage{&message.WriteInsert{
 					Record: record,
@@ -190,7 +190,7 @@ func TestConcurrentSyncsAgainstSameTable(t *testing.T) {
 
 	require.NoError(t, group.Wait())
 
-	ch := make(chan arrow.Record)
+	ch := make(chan arrow.RecordBatch)
 	go func() {
 		defer close(ch)
 		err = migratePlugin.Read(ctx, table, ch)

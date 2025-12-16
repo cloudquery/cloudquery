@@ -137,7 +137,7 @@ func TestInsertDuplicateSameBatch(t *testing.T) {
 	bldr.Field(1).(*array.StringBuilder).Append("foo")
 	bldr.Field(2).(*array.Int64Builder).Append(20)
 
-	record := bldr.NewRecord()
+	record := bldr.NewRecordBatch()
 
 	res <- &message.WriteInsert{
 		Record: record,

@@ -94,7 +94,7 @@ func (c *Client) deleteRecords(res chan<- message.SyncMessage) {
 			},
 		}).ToArrowSchema())
 		deleteRecord.Field(0).(*array.Int64Builder).Append(deleteID)
-		deleteValue := deleteRecord.NewRecord()
+		deleteValue := deleteRecord.NewRecordBatch()
 		predicates = append(predicates, message.Predicate{
 			Operator: "eq",
 			Column:   "resource_id",

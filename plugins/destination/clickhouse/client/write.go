@@ -20,7 +20,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, _ string, messages message
 	}
 
 	table := messages[0].GetTable()
-	records := make([]arrow.Record, len(messages))
+	records := make([]arrow.RecordBatch, len(messages))
 	for i, m := range messages {
 		records[i] = m.Record
 	}

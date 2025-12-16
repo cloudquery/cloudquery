@@ -60,7 +60,7 @@ func (c *Client) transformArr(arr arrow.Array, isCQTime bool) []any {
 	return dbArr
 }
 
-func (c *Client) transformValues(r arrow.Record, cqTimeIndex int) []map[string]any {
+func (c *Client) transformValues(r arrow.RecordBatch, cqTimeIndex int) []map[string]any {
 	results := make([]map[string]any, r.NumRows())
 
 	for i := range results {
@@ -155,7 +155,7 @@ func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
 	return nil
 }
 
-func reverseTransformer(sc *arrow.Schema, data map[any]any) (arrow.Record, error) {
+func reverseTransformer(sc *arrow.Schema, data map[any]any) (arrow.RecordBatch, error) {
 	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
 
 	for i, f := range sc.Fields() {
@@ -173,6 +173,6 @@ func reverseTransformer(sc *arrow.Schema, data map[any]any) (arrow.Record, error
 			return nil, err
 		}
 	}
-	rec := bldr.NewRecord()
+	rec := bldr.NewRecordBatch()
 	return rec, nil
 }

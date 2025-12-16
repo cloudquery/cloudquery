@@ -16,7 +16,7 @@ import (
 	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.RecordBatch) error {
 	index := c.getIndexNamePattern(table)
 
 	// refresh index before read, to ensure all written data is available
@@ -67,7 +67,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 				return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 			}
 		}
-		res <- rb.NewRecord()
+		res <- rb.NewRecordBatch()
 	}
 	return nil
 }

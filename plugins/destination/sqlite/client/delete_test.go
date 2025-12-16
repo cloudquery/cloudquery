@@ -75,7 +75,7 @@ func TestDelete(t *testing.T) {
 
 func countAllRows(ctx context.Context, client *Client, table *schema.Table) (int64, error) {
 	var err error
-	ch := make(chan arrow.Record)
+	ch := make(chan arrow.RecordBatch)
 	go func() {
 		defer close(ch)
 		err = client.Read(ctx, table, ch)
@@ -96,7 +96,7 @@ func withPluginClient(ctx context.Context, r *require.Assertions) *Client {
 	return c.(*Client)
 }
 
-func valueToArrowRecord(tableName string, value string) arrow.Record {
+func valueToArrowRecord(tableName string, value string) arrow.RecordBatch {
 	bldrDeleteMatch := array.NewRecordBuilder(memory.DefaultAllocator, (&schema.Table{
 		Name: tableName,
 		Columns: schema.ColumnList{
@@ -104,7 +104,7 @@ func valueToArrowRecord(tableName string, value string) arrow.Record {
 		},
 	}).ToArrowSchema())
 	bldrDeleteMatch.Field(0).(*array.StringBuilder).Append(value)
-	deleteValue := bldrDeleteMatch.NewRecord()
+	deleteValue := bldrDeleteMatch.NewRecordBatch()
 	return deleteValue
 }
 
@@ -150,7 +150,7 @@ func createInsertMessages(values []string, table *schema.Table) message.WriteIns
 		bldr.Field(0).(*array.StringBuilder).Append(insertValue)
 		bldr.Field(1).(*array.StringBuilder).Append(sourceName)
 		bldr.Field(2).(*array.TimestampBuilder).AppendTime(time.Now())
-		record := bldr.NewRecord()
+		record := bldr.NewRecordBatch()
 		writeInserts = append(writeInserts, &message.WriteInsert{Record: record})
 	}
 	return writeInserts

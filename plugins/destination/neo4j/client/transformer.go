@@ -61,7 +61,7 @@ func transformArr(arr arrow.Array) []any {
 	return pgArr
 }
 
-func transformValues(r arrow.Record) []map[string]any {
+func transformValues(r arrow.RecordBatch) []map[string]any {
 	results := make([]map[string]any, r.NumRows())
 
 	for i := range results {

@@ -12,7 +12,7 @@ import (
 	mssql "github.com/microsoft/go-mssqldb"
 )
 
-func Record(sc *arrow.Schema, data []any) (arrow.Record, error) {
+func Record(sc *arrow.Schema, data []any) (arrow.RecordBatch, error) {
 	builder := array.NewRecordBuilder(memory.DefaultAllocator, sc)
 
 	for i, elem := range data {
@@ -21,7 +21,7 @@ func Record(sc *arrow.Schema, data []any) (arrow.Record, error) {
 		}
 	}
 
-	return builder.NewRecord(), nil
+	return builder.NewRecordBatch(), nil
 }
 
 func buildValue(builder array.Builder, elem any) error {

@@ -76,7 +76,7 @@ func (*Client) createResultsArray(table *arrow.Schema) []any {
 	return results
 }
 
-func reverseTransform(table *arrow.Schema, values []any) (arrow.Record, error) {
+func reverseTransform(table *arrow.Schema, values []any) (arrow.RecordBatch, error) {
 	recordBuilder := array.NewRecordBuilder(memory.DefaultAllocator, table)
 	for i, val := range values {
 		switch fType := table.Field(i).Type.(type) {
@@ -219,11 +219,11 @@ func reverseTransform(table *arrow.Schema, values []any) (arrow.Record, error) {
 			}
 		}
 	}
-	rec := recordBuilder.NewRecord()
+	rec := recordBuilder.NewRecordBatch()
 	return rec, nil
 }
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.RecordBatch) error {
 	colNames := make([]string, len(table.Columns))
 	for i, col := range table.Columns {
 		colNames[i] = identifier(col.Name)

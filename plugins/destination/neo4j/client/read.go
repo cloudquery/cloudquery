@@ -85,7 +85,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	return nil
 }
 
-func (c *Client) reverseTransformer(table *schema.Table, node *neo4j.Node) (arrow.Record, error) {
+func (c *Client) reverseTransformer(table *schema.Table, node *neo4j.Node) (arrow.RecordBatch, error) {
 	sc := table.ToArrowSchema()
 	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
 	for i, f := range sc.Fields() {
@@ -93,11 +93,11 @@ func (c *Client) reverseTransformer(table *schema.Table, node *neo4j.Node) (arro
 			return nil, err
 		}
 	}
-	rec := bldr.NewRecord()
+	rec := bldr.NewRecordBatch()
 	return rec, nil
 }
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.RecordBatch) error {
 	stmt := fmt.Sprintf(readCypher, table.Name)
 
 	session := c.Session(ctx, neo4j.SessionConfig{AccessMode: neo4j.AccessModeRead})

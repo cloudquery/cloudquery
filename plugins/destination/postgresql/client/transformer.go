@@ -192,7 +192,7 @@ func (c *Client) transformArr(arr arrow.Array) []any {
 	return pgArr
 }
 
-func (c *Client) transformValues(r arrow.Record) [][]any {
+func (c *Client) transformValues(r arrow.RecordBatch) [][]any {
 	results := make([][]any, r.NumRows())
 
 	for i := range results {
@@ -209,7 +209,7 @@ func (c *Client) transformValues(r arrow.Record) [][]any {
 	return results
 }
 
-func (*Client) getCQIDs(r arrow.Record) ([]uuid.UUID, error) {
+func (*Client) getCQIDs(r arrow.RecordBatch) ([]uuid.UUID, error) {
 	cqIDColIndex, err := getColumnIndexWithName(r, CQIDColumn)
 	if err != nil {
 		return nil, err
@@ -224,7 +224,7 @@ func (*Client) getCQIDs(r arrow.Record) ([]uuid.UUID, error) {
 	return results, nil
 }
 
-func getColumnIndexWithName(r arrow.Record, name string) (int, error) {
+func getColumnIndexWithName(r arrow.RecordBatch, name string) (int, error) {
 	for i := range int(r.NumCols()) {
 		if r.Schema().Field(i).Name == name {
 			return i, nil
