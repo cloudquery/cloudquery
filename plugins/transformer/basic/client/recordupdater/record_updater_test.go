@@ -300,7 +300,7 @@ func TestChangeTableName(t *testing.T) {
 
 func createTestRecordWithTS() arrow.RecordBatch {
 	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
-	schema := arrow.NewSchema(
+	s := arrow.NewSchema(
 		[]arrow.Field{
 			{Name: "col1", Type: arrow.BinaryTypes.String},
 			{Name: "col2", Type: arrow.BinaryTypes.String},
@@ -331,7 +331,7 @@ func createTestRecordWithTS() arrow.RecordBatch {
 		col4Builder.NewArray(),
 	}
 
-	return array.NewRecordBatch(schema, values, int64(2))
+	return array.NewRecordBatch(s, values, int64(2))
 }
 
 func createTestRecord() arrow.RecordBatch {
