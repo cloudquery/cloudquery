@@ -65,7 +65,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 	}
 
 	for rr.Next() {
-		for _, r := range slice(reverseTransformRecord(sc, rr.Record())) {
+		for _, r := range slice(reverseTransformRecord(sc, rr.RecordBatch())) {
 			res <- r
 		}
 	}

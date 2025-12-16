@@ -11,6 +11,7 @@ import (
 	"github.com/apache/arrow-go/v18/arrow/array"
 	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/transformer/basic/client/spec"
+	"github.com/cloudquery/plugin-sdk/v4/scalar"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/stretchr/testify/assert"
@@ -192,7 +193,9 @@ func TestDropRowTimestamp(t *testing.T) {
 	require.Equal(t, int64(4), updatedRecord.NumCols())
 	require.Equal(t, int64(1), updatedRecord.NumRows())
 	requireAllColsLenMatchRecordsLen(t, updatedRecord)
-	require.Equal(t, "2026-01-01 00:00:00Z", updatedRecord.Column(3).(*array.Timestamp).ValueStr(0))
+
+	expectedTimestamp := record.Column(3).(*array.Timestamp).Value(1)
+	require.Equal(t, expectedTimestamp, updatedRecord.Column(3).(*array.Timestamp).Value(0))
 }
 
 func TestComprehensiveDropRow(t *testing.T) {
@@ -233,7 +236,7 @@ func TestComprehensiveDropRow(t *testing.T) {
 	require.Equal(t, `2023-04-25`, updatedRecord.Column(19).(*array.Date64).ValueStr(0))
 	require.Equal(t, int64(4), updatedRecord.NumRows())
 
-	updatedRecord, err = updater.DropRows([]string{"timestamp_ns"}, &[]string{"2025-06-27 10:40:35.000914Z"}[0])
+	updatedRecord, err = updater.DropRows([]string{"timestamp_ns"}, &[]string{"2025-06-27T10:40:35.000914Z"}[0])
 	require.NoError(t, err)
 	require.Equal(t, int64(0), updatedRecord.NumRows())
 }
@@ -297,7 +300,7 @@ func TestChangeTableName(t *testing.T) {
 
 func createTestRecordWithTS() arrow.RecordBatch {
 	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
-	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+	schema := arrow.NewSchema(
 		[]arrow.Field{
 			{Name: "col1", Type: arrow.BinaryTypes.String},
 			{Name: "col2", Type: arrow.BinaryTypes.String},
@@ -305,17 +308,30 @@ func createTestRecordWithTS() arrow.RecordBatch {
 			{Name: "col4", Type: &arrow.TimestampType{}},
 		},
 		&md,
-	))
-	defer bld.Release()
+	)
 
-	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1", "val2"}, nil)
-	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
-	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["a","b","c"]},"hello":"world"}`))
-	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["d","e","f"]}}`))
-	bld.Field(3).(*array.TimestampBuilder).AppendTime(time.Date(2025, 6, 27, 10, 40, 35, 914319000, time.UTC))
-	bld.Field(3).(*array.TimestampBuilder).AppendTime(time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC))
+	col1Builder := array.NewStringBuilder(memory.DefaultAllocator)
+	col1Builder.AppendValues([]string{"val1", "val2"}, nil)
 
-	return bld.NewRecordBatch()
+	col2Builder := array.NewStringBuilder(memory.DefaultAllocator)
+	col2Builder.AppendValues([]string{"val3", "val4"}, nil)
+
+	col3Builder := types.NewJSONBuilder(memory.DefaultAllocator)
+	col3Builder.AppendBytes([]byte(`{"foo":{"bar":["a","b","c"]},"hello":"world"}`))
+	col3Builder.AppendBytes([]byte(`{"foo":{"bar":["d","e","f"]}}`))
+
+	col4Builder := array.NewTimestampBuilderWithValueStrLayout(memory.DefaultAllocator, &arrow.TimestampType{}, scalar.TimestampStringLayout)
+	col4Builder.AppendTime(time.Date(2025, 6, 27, 10, 40, 35, 914319000, time.UTC))
+	col4Builder.AppendTime(time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC))
+
+	values := []arrow.Array{
+		col1Builder.NewArray(),
+		col2Builder.NewArray(),
+		col3Builder.NewArray(),
+		col4Builder.NewArray(),
+	}
+
+	return array.NewRecordBatch(schema, values, int64(2))
 }
 
 func createTestRecord() arrow.RecordBatch {
