@@ -9,7 +9,7 @@ require (
 	github.com/cloudquery/cloudquery-api-go v1.14.7
 	github.com/cloudquery/codegen v0.3.33
 	github.com/cloudquery/plugin-pb-go v1.27.2
-	github.com/cloudquery/plugin-sdk/v4 v4.93.0
+	github.com/cloudquery/plugin-sdk/v4 v4.93.1
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/docker/docker v28.5.2+incompatible
@@ -29,7 +29,7 @@ require (
 	github.com/samber/lo v1.52.0
 	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
 	github.com/schollz/progressbar/v3 v3.14.6
-	github.com/spf13/cobra v1.10.1
+	github.com/spf13/cobra v1.10.2
 	github.com/stretchr/testify v1.11.1
 	github.com/thoas/go-funk v0.9.3
 	github.com/wk8/go-ordered-map/v2 v2.1.8

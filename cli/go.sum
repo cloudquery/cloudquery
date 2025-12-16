@@ -50,8 +50,8 @@ github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66 h1:OZLPSIBYE
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66/go.mod h1:0SoZ/U7yJlNOR+fWsBSeTvTbGXB6DK01tzJ7m2Xfg34=
 github.com/cloudquery/plugin-pb-go v1.27.2 h1:sgnpF5ZaOnwaQQAZzD3PwxCTDs0ynGp7/PW2UbboYtM=
 github.com/cloudquery/plugin-pb-go v1.27.2/go.mod h1:3y8Gb2BDKF71hbn9wl7v+JwPl99O4Xq1ghWloUe5/xU=
-github.com/cloudquery/plugin-sdk/v4 v4.93.0 h1:JJSH8q8d0bMdm7aU2zBM4t2lBim5kyAs2Nr1c0ZRN7I=
-github.com/cloudquery/plugin-sdk/v4 v4.93.0/go.mod h1:aTEk8USXw57jW8dnsEwIZgF0T2e3SsifAqjUK1dIZZQ=
+github.com/cloudquery/plugin-sdk/v4 v4.93.1 h1:doZ1CA6LYgatqsJvfcOE7PNOaIbvktsWi4vEGyNnqQw=
+github.com/cloudquery/plugin-sdk/v4 v4.93.1/go.mod h1:1gs7aC8I7QAHu5FPffFUSHC/TjFv6V8w1gRLvd/U93g=
 github.com/containerd/errdefs v1.0.0 h1:tg5yIfIlQIrxYtu9ajqY42W3lpS19XqdxRQeEwYG8PI=
 github.com/containerd/errdefs v1.0.0/go.mod h1:+YBYIdtsnF4Iw6nWZhJcqGSg/dwvV7tyJ/kCkyJ2k+M=
 github.com/containerd/errdefs/pkg v0.3.0 h1:9IKJ06FvyNlexW690DXuQNx2KA2cUJXx151Xdx3ZPPE=
@@ -284,8 +284,8 @@ github.com/segmentio/backo-go v1.1.0/go.mod h1:ckenwdf+v/qbyhVdNPWHnqh2YdJBED1O9
 github.com/sirupsen/logrus v1.2.0/go.mod h1:LxeOpSwHxABJmUn/MG1IvRgCAasNZTLOkJPxbbu5VWo=
 github.com/sirupsen/logrus v1.9.0 h1:trlNQbNUG3OdDrDil03MCb1H2o9nJ1x4/5LYw7byDE0=
 github.com/sirupsen/logrus v1.9.0/go.mod h1:naHLuLoDiP4jHNo9R0sCBMtWGeIprob74mVsIT4qYEQ=
-github.com/spf13/cobra v1.10.1 h1:lJeBwCfmrnXthfAupyUTzJ/J4Nc1RsHC/mSRU2dll/s=
-github.com/spf13/cobra v1.10.1/go.mod h1:7SmJGaTHFVBY0jW4NXGluQoLvhqFQM+6XSKD+P4XaB0=
+github.com/spf13/cobra v1.10.2 h1:DMTTonx5m65Ic0GOoRY2c16WCbHxOOw6xxezuLaBpcU=
+github.com/spf13/cobra v1.10.2/go.mod h1:7C1pvHqHw5A4vrJfjNwvOdzYu0Gml16OCs2GRiTUUS4=
 github.com/spf13/pflag v1.0.9 h1:9exaQaMOCwffKiiiYk6/BndUBv+iRViNW+4lEMi0PvY=
 github.com/spf13/pflag v1.0.9/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An2Bg=
 github.com/spkg/bom v0.0.0-20160624110644-59b7046e48ad/go.mod h1:qLr4V1qq6nMqFKkMo8ZTx3f+BZEkzsRUY10Xsm2mwU0=
