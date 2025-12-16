@@ -64,7 +64,7 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.
 
 func (*Client) Close(context.Context) error { return nil }
 
-func (*Client) Read(context.Context, *schema.Table, chan<- arrow.Record) error {
+func (*Client) Read(context.Context, *schema.Table, chan<- arrow.RecordBatch) error {
 	return plugin.ErrNotImplemented
 }
 

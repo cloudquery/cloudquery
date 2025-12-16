@@ -9,7 +9,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-func (c *Client) Read(_ context.Context, table *schema.Table, res chan<- arrow.Record) error {
+func (c *Client) Read(_ context.Context, table *schema.Table, res chan<- arrow.RecordBatch) error {
 	session, closer, err := c.newSession()
 	if err != nil {
 		return err

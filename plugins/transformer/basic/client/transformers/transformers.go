@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/transformer/basic/client/tablematcher"
 )
 
-type TransformationFn = func(arrow.Record) (arrow.Record, error)
+type TransformationFn = func(arrow.RecordBatch) (arrow.RecordBatch, error)
 type SchemaTransformationFn = func(*arrow.Schema) (*arrow.Schema, error)
 
 type Transformer struct {
@@ -53,7 +53,7 @@ func NewFromSpec(sp spec.TransformationSpec) (*Transformer, error) {
 	return tr, nil
 }
 
-func (tr *Transformer) Transform(record arrow.Record) (arrow.Record, error) {
+func (tr *Transformer) Transform(record arrow.RecordBatch) (arrow.RecordBatch, error) {
 	// Passthrough if the record's table is not a match to any of the spec's
 	// tablepatterns, but error if the record doesn't have table metadata.
 	isMatch, err := tr.matcher.IsSchemasTableMatch(record.Schema())
@@ -85,59 +85,59 @@ func (tr *Transformer) TransformSchema(schema *arrow.Schema) (*arrow.Schema, err
 }
 
 func AddLiteralStringColumnAsLastColumn(name, value string) TransformationFn {
-	return func(record arrow.Record) (arrow.Record, error) {
+	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
 		return recordupdater.New(record).AddLiteralStringColumn(name, value, -1)
 	}
 }
 
 func AddTimestampColumnAsLastColumn(name string) TransformationFn {
-	return func(record arrow.Record) (arrow.Record, error) {
+	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
 		return recordupdater.New(record).AddTimestampColumn(name, -1)
 	}
 }
 
 func RemoveColumns(columnNames []string) TransformationFn {
-	return func(record arrow.Record) (arrow.Record, error) {
+	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
 		return recordupdater.New(record).RemoveColumns(columnNames)
 	}
 }
 
 func AddPrimaryKeys(columnNames []string) TransformationFn {
-	return func(record arrow.Record) (arrow.Record, error) {
+	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
 		return recordupdater.New(record).AddPrimaryKeys(columnNames)
 	}
 }
 func ObfuscateSensitiveColumns(columnNames []string) TransformationFn {
-	return func(record arrow.Record) (arrow.Record, error) {
+	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
 		return recordupdater.New(record).ObfuscateSensitiveColumns()
 	}
 }
 
 func DropRows(columnNames []string, value *string) TransformationFn {
-	return func(record arrow.Record) (arrow.Record, error) {
+	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
 		return recordupdater.New(record).DropRows(columnNames, value)
 	}
 }
 func ObfuscateColumns(columnNames []string) TransformationFn {
-	return func(record arrow.Record) (arrow.Record, error) {
+	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
 		return recordupdater.New(record).ObfuscateColumns(columnNames)
 	}
 }
 
 func ChangeTableName(newTableNamePattern string) TransformationFn {
-	return func(record arrow.Record) (arrow.Record, error) {
+	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
 		return recordupdater.New(record).ChangeTableName(newTableNamePattern)
 	}
 }
 
 func RenameColumn(oldName, newName string) TransformationFn {
-	return func(record arrow.Record) (arrow.Record, error) {
+	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
 		return recordupdater.New(record).RenameColumn(oldName, newName)
 	}
 }
 
 func ChangeCase(caseType string, columnNames []string) TransformationFn {
-	return func(record arrow.Record) (arrow.Record, error) {
+	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
 		return recordupdater.New(record).ChangeCase(caseType, columnNames)
 	}
 }
@@ -152,11 +152,11 @@ func transformSchema(tf TransformationFn) SchemaTransformationFn {
 	}
 }
 
-func makeEmptyRecord(s *arrow.Schema) arrow.Record {
+func makeEmptyRecord(s *arrow.Schema) arrow.RecordBatch {
 	cols := []arrow.Array{}
 	for _, field := range s.Fields() {
 		cols = append(cols, array.NewBuilder(memory.DefaultAllocator, field.Type).NewArray())
 	}
 	md := s.Metadata()
-	return array.NewRecord(arrow.NewSchema(s.Fields(), &md), cols, 0)
+	return array.NewRecordBatch(arrow.NewSchema(s.Fields(), &md), cols, 0)
 }

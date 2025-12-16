@@ -80,7 +80,7 @@ func transformArr(arr arrow.Array) []any {
 	return dbArr
 }
 
-func (*Client) transformRecord(table *schema.Table, record arrow.Record) []any {
+func (*Client) transformRecord(table *schema.Table, record arrow.RecordBatch) []any {
 	nc := int(record.NumCols())
 	nr := int(record.NumRows())
 	documents := make([]any, nr)
@@ -98,7 +98,7 @@ func (*Client) transformRecord(table *schema.Table, record arrow.Record) []any {
 	return documents
 }
 
-func (c *Client) transformRecords(table *schema.Table, records []arrow.Record) []any {
+func (c *Client) transformRecords(table *schema.Table, records []arrow.RecordBatch) []any {
 	documents := make([]any, 0, len(records))
 	for _, r := range records {
 		docs := c.transformRecord(table, r)
@@ -149,7 +149,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs mes
 	if err != nil {
 		return err
 	}
-	records := make([]arrow.Record, len(msgs))
+	records := make([]arrow.RecordBatch, len(msgs))
 	for i, msg := range msgs {
 		records[i] = msg.Record
 	}

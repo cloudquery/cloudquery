@@ -72,7 +72,7 @@ func TestIsSchemasTableMatch_NoMetadata(t *testing.T) {
 	require.EqualError(t, err, "table name not found in record's metadata", "Expected error message 'table name not found in record's metadata'")
 }
 
-func createTestRecordWithMetadata(tableName string) arrow.Record {
+func createTestRecordWithMetadata(tableName string) arrow.RecordBatch {
 	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{tableName})
 
 	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(

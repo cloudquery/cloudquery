@@ -119,7 +119,7 @@ func TestMigrateCQClientIDColumnWhenSortKeyIsAlreadySet(t *testing.T) {
 	bldr.Field(1).(*array.StringBuilder).Append("foo")
 	bldr.Field(2).(*array.TimestampBuilder).Append(arrow.Timestamp(time.Now().UnixMicro()))
 	bldr.Field(3).(*array.StringBuilder).Append("cq-sync-group-id")
-	record := bldr.NewRecord()
+	record := bldr.NewRecordBatch()
 
 	if err := p.WriteAll(ctx, []message.WriteMessage{&message.WriteInsert{
 		Record: record,
@@ -142,7 +142,7 @@ func TestMigrateCQClientIDColumnWhenSortKeyIsAlreadySet(t *testing.T) {
 	bldr.Field(2).(*array.TimestampBuilder).Append(arrow.Timestamp(time.Now().UnixMicro()))
 	bldr.Field(3).(*array.StringBuilder).Append("cq-sync-group-id")
 	bldr.Field(4).(*array.StringBuilder).Append("cq-client-id")
-	record = bldr.NewRecord()
+	record = bldr.NewRecordBatch()
 
 	if err := p.WriteAll(ctx, []message.WriteMessage{&message.WriteInsert{
 		Record: record,
@@ -190,7 +190,7 @@ func TestMigrateNewArrayAndMapColumns(t *testing.T) {
 	bldr.Field(2).(*array.TimestampBuilder).Append(arrow.Timestamp(time.Now().UnixMicro()))
 	bldr.Field(4).(*array.StringBuilder).Append("cq-client-id")
 	bldr.Field(3).(*array.StringBuilder).Append("cq-sync-group-id")
-	record := bldr.NewRecord()
+	record := bldr.NewRecordBatch()
 
 	if err := p.WriteAll(ctx, []message.WriteMessage{&message.WriteInsert{
 		Record: record,
@@ -226,7 +226,7 @@ func TestMigrateNewArrayAndMapColumns(t *testing.T) {
 	bldr.Field(5).(*array.ListBuilder).Append(true)
 	bldr.Field(5).(*array.ListBuilder).ValueBuilder().(*array.StringBuilder).Append("foo")
 	bldr.Field(6).(*array.MapBuilder).Append(true)
-	record = bldr.NewRecord()
+	record = bldr.NewRecordBatch()
 
 	if err := p.WriteAll(ctx, []message.WriteMessage{&message.WriteInsert{
 		Record: record,
@@ -289,7 +289,7 @@ func TestConcurrentSyncsSameTable(t *testing.T) {
 			bldr.Field(0).(*sdkTypes.UUIDBuilder).Append(uuid.MustParse(randomUUIDStringWithLastCharacterReplaced))
 			bldr.Field(1).(*array.StringBuilder).Append("source")
 			bldr.Field(2).(*array.TimestampBuilder).Append(arrow.Timestamp(time.Now().UnixMicro()))
-			record := bldr.NewRecord()
+			record := bldr.NewRecordBatch()
 
 			if err := p.WriteAll(syncContext, []message.WriteMessage{&message.WriteInsert{
 				Record: record,
@@ -302,7 +302,7 @@ func TestConcurrentSyncsSameTable(t *testing.T) {
 
 	require.NoError(t, group.Wait())
 
-	ch := make(chan arrow.Record)
+	ch := make(chan arrow.RecordBatch)
 	go func() {
 		defer close(ch)
 		err = p.Read(ctx, table, ch)
@@ -370,7 +370,7 @@ func TestMigrateWithTTL(t *testing.T) {
 	bldr.Field(2).(*array.TimestampBuilder).Append(arrow.Timestamp(time.Now().UnixMicro()))
 	bldr.Field(4).(*array.StringBuilder).Append("cq-client-id")
 	bldr.Field(3).(*array.StringBuilder).Append("cq-sync-group-id")
-	record := bldr.NewRecord()
+	record := bldr.NewRecordBatch()
 
 	if err := p.WriteAll(ctx, []message.WriteMessage{&message.WriteInsert{
 		Record: record,

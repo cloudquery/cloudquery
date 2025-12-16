@@ -29,7 +29,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, messages mess
 
 	transformer := transform(table)
 
-	records := make([]arrow.Record, 0, len(messages))
+	records := make([]arrow.RecordBatch, 0, len(messages))
 	for _, msg := range messages {
 		records = append(records, msg.Record)
 	}
@@ -55,11 +55,11 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, messages mess
 	return nil
 }
 
-type rowTransformer func(record arrow.Record) ([]map[string]any, error)
+type rowTransformer func(record arrow.RecordBatch) ([]map[string]any, error)
 
 func toMap(table *schema.Table) rowTransformer {
 	columns := table.Columns.Names()
-	return func(record arrow.Record) ([]map[string]any, error) {
+	return func(record arrow.RecordBatch) ([]map[string]any, error) {
 		byColumn := make(map[string][]any, len(columns))
 		for i, col := range record.Columns() {
 			byColumn[columns[i]] = getValues(col)
@@ -72,7 +72,7 @@ func transform(table *schema.Table) rowTransformer {
 	m := toMap(table)
 	h := hashUUID(table)
 	// we always use the hashUUID func
-	return func(record arrow.Record) ([]map[string]any, error) {
+	return func(record arrow.RecordBatch) ([]map[string]any, error) {
 		rows, err := m(record)
 		if err != nil {
 			return nil, err

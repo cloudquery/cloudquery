@@ -9,7 +9,7 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-func BatchAddRecords(ctx context.Context, batch driver.Batch, sc *arrow.Schema, records []arrow.Record) error {
+func BatchAddRecords(ctx context.Context, batch driver.Batch, sc *arrow.Schema, records []arrow.RecordBatch) error {
 	table := array.NewTableFromRecords(sc, records)
 	eg, _ := errgroup.WithContext(ctx)
 	for n := 0; n < int(table.NumCols()); n++ {

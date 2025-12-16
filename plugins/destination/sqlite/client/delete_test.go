@@ -75,7 +75,7 @@ func TestDelete(t *testing.T) {
 
 func countAllRows(ctx context.Context, client *Client, table *schema.Table) (int64, error) {
 	var err error
-	ch := make(chan arrow.Record)
+	ch := make(chan arrow.RecordBatch)
 	go func() {
 		defer close(ch)
 		err = client.Read(ctx, table, ch)
@@ -96,7 +96,7 @@ func withPluginClient(ctx context.Context, r *require.Assertions) *Client {
 	return c.(*Client)
 }
 
-func valueToArrowRecord(tableName string, value string) arrow.Record {
+func valueToArrowRecord(tableName string, value string) arrow.RecordBatch {
 	bldrDeleteMatch := array.NewRecordBuilder(memory.DefaultAllocator, (&schema.Table{
 		Name: tableName,
 		Columns: schema.ColumnList{

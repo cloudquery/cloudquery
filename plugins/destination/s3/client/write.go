@@ -109,7 +109,7 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 			}
 		}
 
-		if err := s.Write([]arrow.Record{msg.Record}); err != nil {
+		if err := s.Write([]arrow.RecordBatch{msg.Record}); err != nil {
 			_ = s.FinishWithError(err)
 			return err
 		}
@@ -147,7 +147,7 @@ func (c *Client) MigrateTable(ctx context.Context, ch <-chan *message.WriteMigra
 
 // sanitizeRecordJSONKeys replaces all invalid characters in JSON keys with underscores. This is required
 // for compatibility with Athena.
-func sanitizeRecordJSONKeys(record arrow.Record) (arrow.Record, error) {
+func sanitizeRecordJSONKeys(record arrow.RecordBatch) (arrow.RecordBatch, error) {
 	cols := make([]arrow.Array, record.NumCols())
 	for i, col := range record.Columns() {
 		if arrow.TypeEqual(col.DataType(), types.NewJSONType()) {
@@ -168,7 +168,7 @@ func sanitizeRecordJSONKeys(record arrow.Record) (arrow.Record, error) {
 		}
 		cols[i] = col
 	}
-	return array.NewRecord(record.Schema(), cols, record.NumRows()), nil
+	return array.NewRecordBatch(record.Schema(), cols, record.NumRows()), nil
 }
 
 func sanitizeJSONRawMessage(rawMessage json.RawMessage) (any, error) {

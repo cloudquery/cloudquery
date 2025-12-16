@@ -68,7 +68,7 @@ func TVPAddType(schemaName string, table *schema.Table) string {
 	return execTemplate("tvp_add_type.sql.tpl", data)
 }
 
-func TVPQuery(schemaName string, table *schema.Table, records []arrow.Record) (query string, params []any, err error) {
+func TVPQuery(schemaName string, table *schema.Table, records []arrow.RecordBatch) (query string, params []any, err error) {
 	rows, err := GetRows(array.NewTableFromRecords(table.ToArrowSchema(), records))
 	if err != nil {
 		return "", nil, err

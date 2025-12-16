@@ -224,15 +224,15 @@ func testPluginCustom(t *testing.T, s *spec.Spec) {
 	assert.Equalf(t, int64(2), totalItems, "expected 2 items, got %d", totalItems)
 }
 
-func readAll(ctx context.Context, client plugin.Client, table *schema.Table) ([]arrow.Record, error) {
+func readAll(ctx context.Context, client plugin.Client, table *schema.Table) ([]arrow.RecordBatch, error) {
 	var err error
-	ch := make(chan arrow.Record)
+	ch := make(chan arrow.RecordBatch)
 	go func() {
 		defer close(ch)
 		err = client.Read(ctx, table, ch)
 	}()
 	// nolint:prealloc
-	var records []arrow.Record
+	var records []arrow.RecordBatch
 	for record := range ch {
 		records = append(records, record)
 	}

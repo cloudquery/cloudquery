@@ -190,7 +190,7 @@ func TestConcurrentSyncsAgainstSameTable(t *testing.T) {
 
 	require.NoError(t, group.Wait())
 
-	ch := make(chan arrow.Record)
+	ch := make(chan arrow.RecordBatch)
 	go func() {
 		defer close(ch)
 		err = migratePlugin.Read(ctx, table, ch)

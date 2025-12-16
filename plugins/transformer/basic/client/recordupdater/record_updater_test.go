@@ -295,7 +295,7 @@ func TestChangeTableName(t *testing.T) {
 	require.Equal(t, "cq_sync_testTable", newTableName)
 }
 
-func createTestRecordWithTS() arrow.Record {
+func createTestRecordWithTS() arrow.RecordBatch {
 	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
 	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
 		[]arrow.Field{
@@ -318,7 +318,7 @@ func createTestRecordWithTS() arrow.Record {
 	return bld.NewRecord()
 }
 
-func createTestRecord() arrow.Record {
+func createTestRecord() arrow.RecordBatch {
 	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
 	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
 		[]arrow.Field{
@@ -338,7 +338,7 @@ func createTestRecord() arrow.Record {
 	return bld.NewRecord()
 }
 
-func createTestRecordWithMetadata(metadata *arrow.Metadata) arrow.Record {
+func createTestRecordWithMetadata(metadata *arrow.Metadata) arrow.RecordBatch {
 	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
 		[]arrow.Field{
 			{Name: "col1", Type: arrow.BinaryTypes.String},
@@ -359,7 +359,7 @@ func createTestRecordWithMetadata(metadata *arrow.Metadata) arrow.Record {
 	return bld.NewRecord()
 }
 
-func requireAllColsLenMatchRecordsLen(t *testing.T, record arrow.Record) {
+func requireAllColsLenMatchRecordsLen(t *testing.T, record arrow.RecordBatch) {
 	for i := 0; i < int(record.NumCols()); i++ {
 		require.Equal(t, int(record.NumRows()), record.Column(i).Len(), "Expected length of %d for column %d", record.NumRows(), i)
 	}

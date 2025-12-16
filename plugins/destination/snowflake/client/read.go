@@ -165,7 +165,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	return nil
 }
 
-func (c *Client) reverseTransformer(table *schema.Table, values []any) (arrow.Record, error) {
+func (c *Client) reverseTransformer(table *schema.Table, values []any) (arrow.RecordBatch, error) {
 	sc := table.ToArrowSchema()
 	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
 	for i, f := range sc.Fields() {
@@ -178,7 +178,7 @@ func (c *Client) reverseTransformer(table *schema.Table, values []any) (arrow.Re
 	return rec, nil
 }
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.RecordBatch) error {
 	tableName := table.Name
 	colNames := make([]string, 0, len(table.Columns))
 	for _, col := range table.Columns {

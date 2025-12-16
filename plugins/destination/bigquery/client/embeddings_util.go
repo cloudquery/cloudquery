@@ -26,7 +26,7 @@ func extractCqIDs(msgs message.WriteInserts) ([]string, error) {
 	return cqIDs, nil
 }
 
-func getCQIDs(r arrow.Record) ([]string, error) {
+func getCQIDs(r arrow.RecordBatch) ([]string, error) {
 	cqIDColIndex, err := getColumnIndexWithName(r, CQIDColumn)
 	if err != nil {
 		return nil, err
@@ -38,7 +38,7 @@ func getCQIDs(r arrow.Record) ([]string, error) {
 	return results, nil
 }
 
-func getColumnIndexWithName(r arrow.Record, name string) (int, error) {
+func getColumnIndexWithName(r arrow.RecordBatch, name string) (int, error) {
 	for i := range int(r.NumCols()) {
 		if r.Schema().Field(i).Name == name {
 			return i, nil

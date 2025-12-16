@@ -31,7 +31,7 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 			}
 		}
 
-		if err := h.WriteContent([]arrow.Record{msg.Record}); err != nil {
+		if err := h.WriteContent([]arrow.RecordBatch{msg.Record}); err != nil {
 			return err
 		}
 	}
