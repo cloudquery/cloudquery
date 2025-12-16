@@ -315,7 +315,7 @@ func createTestRecordWithTS() arrow.RecordBatch {
 	bld.Field(3).(*array.TimestampBuilder).AppendTime(time.Date(2025, 6, 27, 10, 40, 35, 914319000, time.UTC))
 	bld.Field(3).(*array.TimestampBuilder).AppendTime(time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC))
 
-	return bld.NewRecord()
+	return bld.NewRecordBatch()
 }
 
 func createTestRecord() arrow.RecordBatch {
@@ -335,7 +335,7 @@ func createTestRecord() arrow.RecordBatch {
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["a","b","c"]},"hello":"world"}`))
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["d","e","f"]}}`))
 
-	return bld.NewRecord()
+	return bld.NewRecordBatch()
 }
 
 func createTestRecordWithMetadata(metadata *arrow.Metadata) arrow.RecordBatch {
@@ -356,7 +356,7 @@ func createTestRecordWithMetadata(metadata *arrow.Metadata) arrow.RecordBatch {
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["d","e","f"]}}`))
 	bld.Field(3).(*array.BinaryBuilder).AppendValues([][]byte{[]byte("val1"), []byte("val5")}, nil)
 
-	return bld.NewRecord()
+	return bld.NewRecordBatch()
 }
 
 func requireAllColsLenMatchRecordsLen(t *testing.T, record arrow.RecordBatch) {
@@ -479,7 +479,7 @@ func TestObfuscateNestedColumnsWithGjsonSyntax(t *testing.T) {
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"top_foo":[{"foo":"baz0"},{"foo":"baz1"},{"foo":"baz2"}]}`))
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"top_foo":[{"foo":"baz3"},{"foo":"baz4"},{"foo":"baz5"}]}`))
 
-	record := bld.NewRecord()
+	record := bld.NewRecordBatch()
 	updater := New(record)
 
 	// Test obfuscation using gjson syntax with # for array elements
@@ -523,7 +523,7 @@ func TestObfuscateDeeplyNestedColumnsWithGjsonSyntax(t *testing.T) {
 	// Second row: has 1 object in object2 array, with 2 nested2_object1 values = 2 total
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"object1":{"object2":[{"nested_object1":{"nested_object2":[{"nested2_object1":5},{"nested2_object1":6}]}}]}}`))
 
-	record := bld.NewRecord()
+	record := bld.NewRecordBatch()
 	updater := New(record)
 
 	// Test obfuscation using gjson syntax with multiple # for nested arrays
@@ -565,7 +565,7 @@ func TestRemoveNestedColumnsWithGjsonSyntax(t *testing.T) {
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"top_foo":[{"foo":"baz0","keep":"value0"},{"foo":"baz1","keep":"value1"},{"foo":"baz2","keep":"value2"}],"other":"data"}`))
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"top_foo":[{"foo":"baz3","keep":"value3"},{"foo":"baz4","keep":"value4"},{"foo":"baz5","keep":"value5"}],"other":"data"}`))
 
-	record := bld.NewRecord()
+	record := bld.NewRecordBatch()
 	updater := New(record)
 
 	// Test removal using gjson syntax with # for array elements
@@ -606,7 +606,7 @@ func TestRemoveDeeplyNestedColumnsWithGjsonSyntax(t *testing.T) {
 	// Second row: has 1 object in object2 array, with 2 nested2_object1 values = 2 total
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"object1":{"object2":[{"nested_object1":{"nested_object2":[{"nested2_object1":5,"keep":"e"},{"nested2_object1":6,"keep":"f"}]}}]}}`))
 
-	record := bld.NewRecord()
+	record := bld.NewRecordBatch()
 	updater := New(record)
 
 	// Test removal using gjson syntax with multiple # for nested arrays
@@ -647,7 +647,7 @@ func TestRemoveNestedArrayWithGjsonSyntax(t *testing.T) {
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`[{"env": [{"name": "AWS_ACCESS_KEY_ID", "value": "test"}, {"name": "AWS_SECRET_KEY", "value": "secret"}]}, {"env": [{"name": "DB_PASSWORD", "value": "password"}]}]`))
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`[{"env": [{"name": "API_KEY", "value": "api-key-value"}]}]`))
 
-	record := bld.NewRecord()
+	record := bld.NewRecordBatch()
 	updater := New(record)
 
 	// Test removal using gjson syntax: #.env.#.value (remove all "value" fields from nested env arrays)

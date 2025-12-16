@@ -59,5 +59,5 @@ func docToRecord(sc *arrow.Schema, doc map[string]any) (arrow.RecordBatch, error
 		}
 	}
 
-	return builder.NewRecord(), nil
+	return builder.NewRecordBatch(), nil
 }

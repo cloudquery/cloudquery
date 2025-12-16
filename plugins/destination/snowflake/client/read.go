@@ -173,7 +173,7 @@ func (c *Client) reverseTransformer(table *schema.Table, values []any) (arrow.Re
 			return nil, fmt.Errorf("failed to transform field %s: %w", f.Name, err)
 		}
 	}
-	rec := bldr.NewRecord()
+	rec := bldr.NewRecordBatch()
 	bldr.Release()
 	return rec, nil
 }

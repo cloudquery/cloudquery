@@ -21,7 +21,7 @@ func Record(sc *arrow.Schema, data []any) (arrow.RecordBatch, error) {
 		}
 	}
 
-	return builder.NewRecord(), nil
+	return builder.NewRecordBatch(), nil
 }
 
 func buildValue(builder array.Builder, elem any) error {

@@ -266,7 +266,7 @@ func createTestRecord() arrow.RecordBatch {
 	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1", "val2"}, nil)
 	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
 
-	return bld.NewRecord()
+	return bld.NewRecordBatch()
 }
 
 func createUppercaseTestRecord() arrow.RecordBatch {
@@ -283,7 +283,7 @@ func createUppercaseTestRecord() arrow.RecordBatch {
 	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"VAL1", "VAL2"}, nil)
 	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
 
-	return bld.NewRecord()
+	return bld.NewRecordBatch()
 }
 
 func requireAllColsLenMatchRecordsLen(t *testing.T, record arrow.RecordBatch) {

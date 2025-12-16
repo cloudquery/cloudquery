@@ -65,7 +65,7 @@ func TestIsSchemasTableMatch_NoMetadata(t *testing.T) {
 	defer bld.Release()
 
 	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1"}, nil)
-	record := bld.NewRecord()
+	record := bld.NewRecordBatch()
 
 	_, err := matcher.IsSchemasTableMatch(record.Schema())
 	require.Error(t, err, "Expected error")
@@ -85,5 +85,5 @@ func createTestRecordWithMetadata(tableName string) arrow.RecordBatch {
 
 	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1"}, nil)
 
-	return bld.NewRecord()
+	return bld.NewRecordBatch()
 }

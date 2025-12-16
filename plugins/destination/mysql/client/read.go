@@ -219,7 +219,7 @@ func reverseTransform(table *arrow.Schema, values []any) (arrow.RecordBatch, err
 			}
 		}
 	}
-	rec := recordBuilder.NewRecord()
+	rec := recordBuilder.NewRecordBatch()
 	return rec, nil
 }
 

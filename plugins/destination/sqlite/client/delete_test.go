@@ -104,7 +104,7 @@ func valueToArrowRecord(tableName string, value string) arrow.RecordBatch {
 		},
 	}).ToArrowSchema())
 	bldrDeleteMatch.Field(0).(*array.StringBuilder).Append(value)
-	deleteValue := bldrDeleteMatch.NewRecord()
+	deleteValue := bldrDeleteMatch.NewRecordBatch()
 	return deleteValue
 }
 
@@ -150,7 +150,7 @@ func createInsertMessages(values []string, table *schema.Table) message.WriteIns
 		bldr.Field(0).(*array.StringBuilder).Append(insertValue)
 		bldr.Field(1).(*array.StringBuilder).Append(sourceName)
 		bldr.Field(2).(*array.TimestampBuilder).AppendTime(time.Now())
-		record := bldr.NewRecord()
+		record := bldr.NewRecordBatch()
 		writeInserts = append(writeInserts, &message.WriteInsert{Record: record})
 	}
 	return writeInserts

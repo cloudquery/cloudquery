@@ -102,7 +102,7 @@ func (c *Client) reverseTransformer(table *schema.Table, values primitive.M) (ar
 			return nil, err
 		}
 	}
-	rec := bldr.NewRecord()
+	rec := bldr.NewRecordBatch()
 	return rec, nil
 }
 

@@ -144,7 +144,7 @@ func reverseTransform(sc *arrow.Schema, values []any) (arrow.RecordBatch, error)
 			}
 		}
 	}
-	rec := bldr.NewRecord()
+	rec := bldr.NewRecordBatch()
 	return rec, nil
 }
 

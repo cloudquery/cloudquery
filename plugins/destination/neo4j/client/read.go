@@ -93,7 +93,7 @@ func (c *Client) reverseTransformer(table *schema.Table, node *neo4j.Node) (arro
 			return nil, err
 		}
 	}
-	rec := bldr.NewRecord()
+	rec := bldr.NewRecordBatch()
 	return rec, nil
 }
 

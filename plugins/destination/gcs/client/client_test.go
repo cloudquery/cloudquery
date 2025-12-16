@@ -122,7 +122,7 @@ func testPluginCustom(t *testing.T, s *spec.Spec, readErrorString string) {
 
 	bldr := array.NewRecordBuilder(memory.DefaultAllocator, table.ToArrowSchema())
 	bldr.Field(0).(*array.StringBuilder).Append("foo")
-	record := bldr.NewRecord()
+	record := bldr.NewRecordBatch()
 
 	if err := p.WriteAll(ctx, []message.WriteMessage{
 		&message.WriteInsert{

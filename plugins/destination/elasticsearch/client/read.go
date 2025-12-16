@@ -67,7 +67,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 				return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 			}
 		}
-		res <- rb.NewRecord()
+		res <- rb.NewRecordBatch()
 	}
 	return nil
 }

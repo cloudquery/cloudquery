@@ -123,7 +123,7 @@ func retryRead(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn,
 				}
 			}
 
-			return builder.NewRecord(), nil
+			return builder.NewRecordBatch(), nil
 		},
 		getRetryOptions(logger, "read")...,
 	)

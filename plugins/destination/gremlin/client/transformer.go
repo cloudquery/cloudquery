@@ -173,6 +173,6 @@ func reverseTransformer(sc *arrow.Schema, data map[any]any) (arrow.RecordBatch, 
 			return nil, err
 		}
 	}
-	rec := bldr.NewRecord()
+	rec := bldr.NewRecordBatch()
 	return rec, nil
 }

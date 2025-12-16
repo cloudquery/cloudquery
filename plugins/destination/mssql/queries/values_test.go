@@ -61,5 +61,5 @@ func genRecord(mem memory.Allocator, schema *arrow.Schema, rows int) arrow.Recor
 	for _, fBuilder := range builder.Fields() {
 		fBuilder.AppendEmptyValues(rows)
 	}
-	return builder.NewRecord()
+	return builder.NewRecordBatch()
 }

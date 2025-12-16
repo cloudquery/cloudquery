@@ -57,7 +57,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 			}
 			scalar.AppendToBuilder(rb.Field(i), s)
 		}
-		res <- rb.NewRecord()
+		res <- rb.NewRecordBatch()
 	}
 	rows.Close()
 	return nil
