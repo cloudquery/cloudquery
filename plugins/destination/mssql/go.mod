@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/mssql/v5
 go 1.25.5
 
 require (
-	github.com/apache/arrow-go/v18 v18.4.0
+	github.com/apache/arrow-go/v18 v18.4.1
 	github.com/cloudquery/codegen v0.3.33
 	github.com/cloudquery/plugin-sdk/v4 v4.93.0
 	github.com/goccy/go-json v0.10.5
@@ -59,7 +59,7 @@ require (
 	github.com/hashicorp/go-retryablehttp v0.7.8 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
-	github.com/klauspost/cpuid/v2 v2.2.11 // indirect
+	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/kylelemons/godebug v1.1.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
