@@ -5,6 +5,22 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.33.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.32.0...cli-v6.33.0) (2025-12-17)
+
+
+### Features
+
+* Add sync duration ms to sync summary ([#21712](https://github.com/cloudquery/cloudquery/issues/21712)) ([80e01b3](https://github.com/cloudquery/cloudquery/commit/80e01b367c19b34de0986c6f083424ed6b87f504))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.14.7 ([#21722](https://github.com/cloudquery/cloudquery/issues/21722)) ([f84c4ff](https://github.com/cloudquery/cloudquery/commit/f84c4ff30e846e681b7953844c4d20c55bcfc1e2))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.1 ([#21723](https://github.com/cloudquery/cloudquery/issues/21723)) ([d1f3f26](https://github.com/cloudquery/cloudquery/commit/d1f3f26d969441e2d2b9c62a8e78863ccdb216f6))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.2 ([#21724](https://github.com/cloudquery/cloudquery/issues/21724)) ([68d34df](https://github.com/cloudquery/cloudquery/commit/68d34dffa3231beb980946610b38f2eff508880f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.93.1 ([#21725](https://github.com/cloudquery/cloudquery/issues/21725)) ([aa46079](https://github.com/cloudquery/cloudquery/commit/aa460797637559c010152c639d2d4363caf3491d))
+* Send DeleteStale messages before the sync summary ([#21711](https://github.com/cloudquery/cloudquery/issues/21711)) ([f91e8bc](https://github.com/cloudquery/cloudquery/commit/f91e8bc34480745700f6ba9d8fc6c6f1e8f4bb71))
+
 ## [6.32.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.31.0...cli-v6.32.0) (2025-12-12)
 
 
