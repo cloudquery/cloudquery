@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.7.27](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.7.26...plugins-destination-firehose-v2.7.27) (2025-12-19)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21624](https://github.com/cloudquery/cloudquery/issues/21624)) ([d57bd50](https://github.com/cloudquery/cloudquery/commit/d57bd50b46390cf9a5a8348f2f03d0225121e9a9))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21656](https://github.com/cloudquery/cloudquery/issues/21656)) ([aa8b50a](https://github.com/cloudquery/cloudquery/commit/aa8b50a79bd5462ee10a067c811496e70f099316))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21663](https://github.com/cloudquery/cloudquery/issues/21663)) ([0186341](https://github.com/cloudquery/cloudquery/commit/018634133978251cce08be976db38b2bf61b2651))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21683](https://github.com/cloudquery/cloudquery/issues/21683)) ([b5429a0](https://github.com/cloudquery/cloudquery/commit/b5429a0cf66ee60e19635a69d0a97a9fbf5c4632))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/firehose to v1.42.6 ([#21719](https://github.com/cloudquery/cloudquery/issues/21719)) ([b0b8439](https://github.com/cloudquery/cloudquery/commit/b0b843938936d1c4f7d1d944e9c189ed1c5253c8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.92.1 ([#21682](https://github.com/cloudquery/cloudquery/issues/21682)) ([8a7596b](https://github.com/cloudquery/cloudquery/commit/8a7596bd5a15e4b79bdb26f385be9eaeafdae108))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.93.0 ([#21710](https://github.com/cloudquery/cloudquery/issues/21710)) ([f0f2c5b](https://github.com/cloudquery/cloudquery/commit/f0f2c5b5de8f3d3a5cb6a049f0035f17e9d7bbb6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.93.1 ([#21725](https://github.com/cloudquery/cloudquery/issues/21725)) ([aa46079](https://github.com/cloudquery/cloudquery/commit/aa460797637559c010152c639d2d4363caf3491d))
+
 ## [2.7.26](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.7.25...plugins-destination-firehose-v2.7.26) (2025-11-14)
 
 
