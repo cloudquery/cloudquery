@@ -23,7 +23,7 @@
   "plugins/destination/postgresql+FILLER": "0.0.0",
   "plugins/destination/test": "2.8.27",
   "plugins/destination/test+FILLER": "0.0.0",
-  "plugins/destination/sqlite": "2.13.4",
+  "plugins/destination/sqlite": "2.13.5",
   "plugins/destination/sqlite+FILLER": "0.0.0",
   "plugins/destination/snowflake": "5.1.5",
   "plugins/destination/snowflake+FILLER": "0.0.0",
