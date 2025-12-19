@@ -16,11 +16,13 @@ import (
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	awstypes "github.com/aws/aws-sdk-go-v2/service/s3/types"
+	"github.com/aws/smithy-go/transport/http"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/google/uuid"
+	"github.com/hashicorp/go-retryablehttp"
 )
 
 var reInvalidJSONKey = regexp.MustCompile(`\W`)
@@ -70,9 +72,73 @@ func (c *Client) createObject(ctx context.Context, table *schema.Table, objKey s
 			params.ServerSideEncryption = sseConfiguration.ServerSideEncryption
 		}
 
-		_, err = manager.NewUploader(c.s3Client, func(uploader *manager.Uploader) {
+		uploader := manager.NewUploader(c.s3Client, func(uploader *manager.Uploader) {
 			uploader.PartSize = *c.spec.PartSize
-		}).Upload(ctx, params)
+		})
+
+		// Retry configuration: 3 retries (4 attempts total) with exponential backoff
+		const maxAttempts = 4
+		const minBackoff = 100 * time.Millisecond
+		const maxBackoff = 3 * time.Second
+
+		// If the reader supports seeking, we can safely retry failed uploads by seeking back to the
+		// start before each attempt (so the uploader can re-read the full content).
+		// If it doesn't (NoRotate mode), fall back to a single attempt since the data can't be re-read.
+		if rs, ok := adjustedReader.(io.ReadSeeker); ok {
+			var lastErr error
+			for attempt := 0; attempt < maxAttempts; attempt++ {
+				// Respect context cancellation before attempting
+				if ctx.Err() != nil {
+					return ctx.Err()
+				}
+
+				// Seek back to the beginning for each attempt
+				if _, seekErr := rs.Seek(0, io.SeekStart); seekErr != nil {
+					return seekErr
+				}
+
+				_, upErr := uploader.Upload(ctx, params)
+				if upErr == nil {
+					return nil
+				}
+				lastErr = upErr
+
+				// If context canceled, return immediately
+				if ctx.Err() != nil {
+					return ctx.Err()
+				}
+
+				// Only retry on 5xx HTTP response errors
+				var respErr *http.ResponseError
+				if errors.As(upErr, &respErr) {
+					status := respErr.HTTPStatusCode()
+					if status >= 500 && status < 600 {
+						if attempt == maxAttempts-1 {
+							return upErr
+						}
+						sleep := retryablehttp.DefaultBackoff(minBackoff, maxBackoff, attempt, nil)
+						select {
+						case <-ctx.Done():
+							return ctx.Err()
+						case <-time.After(sleep):
+						}
+						continue
+					}
+				}
+
+				// Non-retryable error
+				return upErr
+			}
+
+			// Exhausted attempts
+			if lastErr != nil {
+				return lastErr
+			}
+			return errors.New("upload attempts exhausted")
+		}
+
+		// Reader is not seekable: do a single attempt (preserves previous NoRotate behavior)
+		_, err = uploader.Upload(ctx, params)
 		return err
 	})
 	return s, err
