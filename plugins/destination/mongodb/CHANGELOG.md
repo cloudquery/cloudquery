@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.7.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.7.4...plugins-destination-mongodb-v2.7.5) (2025-12-19)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21628](https://github.com/cloudquery/cloudquery/issues/21628)) ([ea18029](https://github.com/cloudquery/cloudquery/commit/ea180298ce7b071bf931d9d024d0b6b1bcea7ffb))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21657](https://github.com/cloudquery/cloudquery/issues/21657)) ([903f32a](https://github.com/cloudquery/cloudquery/commit/903f32a50ac5cebecd10882a8d9b287a1314048c))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21665](https://github.com/cloudquery/cloudquery/issues/21665)) ([659b689](https://github.com/cloudquery/cloudquery/commit/659b6897a3c09ef8a74cca89d4faf6612932d346))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21684](https://github.com/cloudquery/cloudquery/issues/21684)) ([532174b](https://github.com/cloudquery/cloudquery/commit/532174bbe56be42dd5748ecb089ca705cf67f760))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.92.1 ([#21682](https://github.com/cloudquery/cloudquery/issues/21682)) ([8a7596b](https://github.com/cloudquery/cloudquery/commit/8a7596bd5a15e4b79bdb26f385be9eaeafdae108))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.93.0 ([#21710](https://github.com/cloudquery/cloudquery/issues/21710)) ([f0f2c5b](https://github.com/cloudquery/cloudquery/commit/f0f2c5b5de8f3d3a5cb6a049f0035f17e9d7bbb6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.93.1 ([#21725](https://github.com/cloudquery/cloudquery/issues/21725)) ([aa46079](https://github.com/cloudquery/cloudquery/commit/aa460797637559c010152c639d2d4363caf3491d))
+* **deps:** Update module golang.org/x/crypto to v0.45.0 [SECURITY] ([#21647](https://github.com/cloudquery/cloudquery/issues/21647)) ([d3f1ff8](https://github.com/cloudquery/cloudquery/commit/d3f1ff8759f26cf5762e51cbd661c70ec9ca2eb4))
+
 ## [2.7.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.7.3...plugins-destination-mongodb-v2.7.4) (2025-11-14)
 
 
