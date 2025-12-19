@@ -1,5 +1,16 @@
 # Changelog
 
+## [6.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.2.6...plugins-destination-duckdb-v6.2.7) (2025-12-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.92.1 ([#21682](https://github.com/cloudquery/cloudquery/issues/21682)) ([8a7596b](https://github.com/cloudquery/cloudquery/commit/8a7596bd5a15e4b79bdb26f385be9eaeafdae108))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.93.0 ([#21710](https://github.com/cloudquery/cloudquery/issues/21710)) ([f0f2c5b](https://github.com/cloudquery/cloudquery/commit/f0f2c5b5de8f3d3a5cb6a049f0035f17e9d7bbb6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.93.1 ([#21725](https://github.com/cloudquery/cloudquery/issues/21725)) ([aa46079](https://github.com/cloudquery/cloudquery/commit/aa460797637559c010152c639d2d4363caf3491d))
+* **deps:** Update module github.com/marcboeker/go-duckdb/v2 to v2.4.3 ([#21385](https://github.com/cloudquery/cloudquery/issues/21385)) ([7f83002](https://github.com/cloudquery/cloudquery/commit/7f8300286154f11b19602a17e331d59b10a2e49b))
+* **deps:** Use official DuckDB package ([#21727](https://github.com/cloudquery/cloudquery/issues/21727)) ([4920cb4](https://github.com/cloudquery/cloudquery/commit/4920cb47e4dfc92a86ce2989d68af75bf5070332))
+
 ## [6.2.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.2.5...plugins-destination-duckdb-v6.2.6) (2025-11-14)
 
 
