@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.4.33](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.4.32...plugins-destination-gcs-v5.4.33) (2025-12-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module cloud.google.com/go/storage to v1.57.2 ([#21659](https://github.com/cloudquery/cloudquery/issues/21659)) ([4623904](https://github.com/cloudquery/cloudquery/commit/46239046e617bcbc6486bf29bdeeefe62f047b98))
+* **deps:** Update module cloud.google.com/go/storage to v1.58.0 ([#21720](https://github.com/cloudquery/cloudquery/issues/21720)) ([53175d7](https://github.com/cloudquery/cloudquery/commit/53175d7310d8e38d2f643959fb2fbf24f838ed32))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.6.11 ([#21726](https://github.com/cloudquery/cloudquery/issues/21726)) ([105c189](https://github.com/cloudquery/cloudquery/commit/105c189790607a8d6885b9af8adb017067196e60))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.92.1 ([#21682](https://github.com/cloudquery/cloudquery/issues/21682)) ([8a7596b](https://github.com/cloudquery/cloudquery/commit/8a7596bd5a15e4b79bdb26f385be9eaeafdae108))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.93.0 ([#21710](https://github.com/cloudquery/cloudquery/issues/21710)) ([f0f2c5b](https://github.com/cloudquery/cloudquery/commit/f0f2c5b5de8f3d3a5cb6a049f0035f17e9d7bbb6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.93.1 ([#21725](https://github.com/cloudquery/cloudquery/issues/21725)) ([aa46079](https://github.com/cloudquery/cloudquery/commit/aa460797637559c010152c639d2d4363caf3491d))
+* **deps:** Update module golang.org/x/crypto to v0.45.0 [SECURITY] ([#21647](https://github.com/cloudquery/cloudquery/issues/21647)) ([d3f1ff8](https://github.com/cloudquery/cloudquery/commit/d3f1ff8759f26cf5762e51cbd661c70ec9ca2eb4))
+* **deps:** Update module google.golang.org/api to v0.256.0 ([#21668](https://github.com/cloudquery/cloudquery/issues/21668)) ([35f53ce](https://github.com/cloudquery/cloudquery/commit/35f53ce06ebedbf6b18cc07cffa4e4042db1816a))
+
 ## [5.4.32](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.4.31...plugins-destination-gcs-v5.4.32) (2025-11-14)
 
 
