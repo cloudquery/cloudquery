@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/aws/ratelimit"
 	"github.com/aws/aws-sdk-go-v2/aws/retry"
 	awshttp "github.com/aws/aws-sdk-go-v2/aws/transport/http"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -82,7 +81,6 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 			return retry.NewStandard(func(so *retry.StandardOptions) {
 				so.MaxAttempts = *c.spec.MaxRetries
 				so.MaxBackoff = time.Duration(*c.spec.MaxBackoff) * time.Second
-				so.RateLimiter = ratelimit.None
 			})
 		}),
 	}
