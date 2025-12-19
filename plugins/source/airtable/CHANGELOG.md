@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.3.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.3...plugins-source-airtable-v2.3.4) (2025-12-19)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @tsconfig/node20 to v20.1.8 ([#21669](https://github.com/cloudquery/cloudquery/issues/21669)) ([3a9f106](https://github.com/cloudquery/cloudquery/commit/3a9f106f56f132e498b2cccaea53777cddd935fd))
+* **deps:** Update dependency @types/yargs to v17.0.35 ([#21670](https://github.com/cloudquery/cloudquery/issues/21670)) ([aef4e32](https://github.com/cloudquery/cloudquery/commit/aef4e32074b3428a0456ce8c9b988fefd44dfc42))
+* **deps:** Update dependency dayjs to v1.11.19 ([#21671](https://github.com/cloudquery/cloudquery/issues/21671)) ([1d541dd](https://github.com/cloudquery/cloudquery/commit/1d541dd571ea580f90f8da2d0286305d0a573961))
+* **deps:** Update dependency p-map to v7.0.4 ([#21674](https://github.com/cloudquery/cloudquery/issues/21674)) ([62c37b5](https://github.com/cloudquery/cloudquery/commit/62c37b533624d3930e1ddd2df196b57e485d50d7))
+
 ## [2.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.2...plugins-source-airtable-v2.3.3) (2025-11-10)
 
 
