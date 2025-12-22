@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.38](https://github.com/cloudquery/cloudquery/compare/scaffold-v3.4.37...scaffold-v3.4.38) (2025-12-22)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.5.0 ([#21744](https://github.com/cloudquery/cloudquery/issues/21744)) ([9a9d322](https://github.com/cloudquery/cloudquery/commit/9a9d32233044f3a79d33b91103b89a24cc6348f1))
+
 ## [3.4.37](https://github.com/cloudquery/cloudquery/compare/scaffold-v3.4.36...scaffold-v3.4.37) (2025-12-19)
 
 
