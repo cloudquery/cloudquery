@@ -5,7 +5,7 @@ go 1.25.5
 require (
 	github.com/apache/arrow-go/v18 v18.5.0
 	github.com/aws/aws-sdk-go-v2 v1.41.0
-	github.com/aws/aws-sdk-go-v2/config v1.32.5
+	github.com/aws/aws-sdk-go-v2/config v1.32.6
 	github.com/aws/aws-sdk-go-v2/service/firehose v1.42.8
 	github.com/aws/aws-sdk-go-v2/service/sts v1.41.5
 	github.com/cloudquery/codegen v0.3.33
@@ -19,7 +19,7 @@ require (
 	github.com/adrg/xdg v0.5.3 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.19.5 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.19.6 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.18.16 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.4.16 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.7.16 // indirect
@@ -29,7 +29,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.37.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.35.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/signin v1.0.4 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.30.7 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.30.8 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.35.12 // indirect
 	github.com/aws/smithy-go v1.24.0 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
