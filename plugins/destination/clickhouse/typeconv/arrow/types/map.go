@@ -34,5 +34,5 @@ func mapType(name string, col *column.Map) (*arrow.Field, error) {
 		return nil, err
 	}
 
-	return &arrow.Field{Name: name, Type: arrow.MapOf(keyType.Type, itemType.Type)}, nil
+	return &arrow.Field{Name: name, Type: arrow.MapOfFields(*keyType, *itemType)}, nil
 }
