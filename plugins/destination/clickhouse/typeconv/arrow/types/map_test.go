@@ -8,7 +8,14 @@ import (
 )
 
 func Test_mapType(t *testing.T) {
+	mapWithNonNullableItem := arrow.MapOf(new(arrow.StringType), new(arrow.BooleanType))
+	mapWithNonNullableItem.SetItemNullable(false)
+
 	for _, tc := range []testCase{
+		{
+			columnType: "Map(String, Bool)",
+			expected:   mapWithNonNullableItem,
+		},
 		{
 			columnType: "Map(String, Nullable(Bool))",
 			expected:   arrow.MapOf(new(arrow.StringType), new(arrow.BooleanType)),
