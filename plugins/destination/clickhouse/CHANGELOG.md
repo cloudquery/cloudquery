@@ -1,5 +1,16 @@
 # Changelog
 
+## [8.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.3.8...plugins-destination-clickhouse-v8.0.0) (2025-12-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* Correct nullability for map items ([#21760](https://github.com/cloudquery/cloudquery/issues/21760))
+
+### Bug Fixes
+
+* Correct nullability for map items ([#21760](https://github.com/cloudquery/cloudquery/issues/21760)) ([62c5085](https://github.com/cloudquery/cloudquery/commit/62c508505233727bab568f730800c404855d841e))
+
 ## [7.3.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.3.7...plugins-destination-clickhouse-v7.3.8) (2025-12-19)
 
 

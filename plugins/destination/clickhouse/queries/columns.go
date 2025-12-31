@@ -1,8 +1,8 @@
 package queries
 
 import (
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/typeconv/ch/types"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/util"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/types"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/util"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
