@@ -7,7 +7,7 @@ require (
 	github.com/cloudquery/codegen v0.3.33
 	github.com/cloudquery/plugin-sdk/v4 v4.93.1
 	github.com/rs/zerolog v1.34.0
-	golang.org/x/exp v0.0.0-20251209150349-8475f28825e9
+	golang.org/x/exp v0.0.0-20251219203646-944ab1f22d93
 )
 
 require (
