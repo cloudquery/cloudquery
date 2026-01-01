@@ -36,7 +36,7 @@ jobs:
         with:
           fetch-depth: 2
       - name: Set up Cloud SDK
-        uses: 'google-github-actions/setup-gcloud@v2.1.2'
+        uses: 'google-github-actions/setup-gcloud@v2.2.1'
       - name: Set up Go 1.x
         uses: actions/setup-go@v5
         with:
