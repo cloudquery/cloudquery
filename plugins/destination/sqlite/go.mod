@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow-go/v18 v18.5.0
 	github.com/cloudquery/codegen v0.3.33
 	github.com/cloudquery/plugin-sdk/v4 v4.93.1
-	github.com/mattn/go-sqlite3 v1.14.24
+	github.com/mattn/go-sqlite3 v1.14.32
 	github.com/rs/zerolog v1.34.0
 	github.com/stretchr/testify v1.11.1
 )
