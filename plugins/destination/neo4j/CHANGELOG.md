@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.4.31](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v5.4.30...plugins-destination-neo4j-v5.4.31) (2026-01-03)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.34 ([#21776](https://github.com/cloudquery/cloudquery/issues/21776)) ([44fad18](https://github.com/cloudquery/cloudquery/commit/44fad18d228cb61dc9a9311143abdb71d34f2c79))
+
 ## [5.4.30](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v5.4.29...plugins-destination-neo4j-v5.4.30) (2025-12-19)
 
 
