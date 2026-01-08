@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.8.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.9...plugins-source-test-v4.8.10) (2026-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 944ab1f ([#21762](https://github.com/cloudquery/cloudquery/issues/21762)) ([fbf4f80](https://github.com/cloudquery/cloudquery/commit/fbf4f808127cb8f7b0a48a05ba750d036585b914))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.34 ([#21776](https://github.com/cloudquery/cloudquery/issues/21776)) ([44fad18](https://github.com/cloudquery/cloudquery/commit/44fad18d228cb61dc9a9311143abdb71d34f2c79))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.35 ([#21798](https://github.com/cloudquery/cloudquery/issues/21798)) ([451444f](https://github.com/cloudquery/cloudquery/commit/451444fee39e1ac7991e3be8cce41dac34754571))
+
 ## [4.8.9](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.8...plugins-source-test-v4.8.9) (2025-12-19)
 
 
