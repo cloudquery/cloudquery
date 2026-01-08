@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.24](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.23...plugins-source-square-v1.3.24) (2026-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery-plugin-sdk to v0.1.51 ([#21794](https://github.com/cloudquery/cloudquery/issues/21794)) ([74dce82](https://github.com/cloudquery/cloudquery/commit/74dce82eaa6877221dc6f5f4cd11a82fa9c0f041))
+
 ## [1.3.23](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.22...plugins-source-square-v1.3.23) (2025-10-02)
 
 
