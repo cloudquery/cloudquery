@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.12](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.11...plugins-transformer-basic-v2.6.12) (2026-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/tidwall/pretty to v1.2.1 ([#21768](https://github.com/cloudquery/cloudquery/issues/21768)) ([796fcc3](https://github.com/cloudquery/cloudquery/commit/796fcc343c7e9b30522640b92ad9f8fbb6360a6f))
+
 ## [2.6.11](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.10...plugins-transformer-basic-v2.6.11) (2025-12-19)
 
 
