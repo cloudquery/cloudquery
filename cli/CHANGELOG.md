@@ -5,6 +5,22 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.33.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.33.0...cli-v6.33.1) (2026-01-08)
+
+
+### Bug Fixes
+
+* Add AI-assisted setup data collection notice ([#21757](https://github.com/cloudquery/cloudquery/issues/21757)) ([96a6341](https://github.com/cloudquery/cloudquery/commit/96a63415a4c3c296babbdce621ae3d7ae657dae9))
+* **deps:** Update golang.org/x/exp digest to 944ab1f ([#21762](https://github.com/cloudquery/cloudquery/issues/21762)) ([fbf4f80](https://github.com/cloudquery/cloudquery/commit/fbf4f808127cb8f7b0a48a05ba750d036585b914))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.14.8 ([#21775](https://github.com/cloudquery/cloudquery/issues/21775)) ([a3ba8e2](https://github.com/cloudquery/cloudquery/commit/a3ba8e295813cd40435f392d35dfdcdf3fec5ffb))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.34 ([#21776](https://github.com/cloudquery/cloudquery/issues/21776)) ([44fad18](https://github.com/cloudquery/cloudquery/commit/44fad18d228cb61dc9a9311143abdb71d34f2c79))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.35 ([#21798](https://github.com/cloudquery/cloudquery/issues/21798)) ([451444f](https://github.com/cloudquery/cloudquery/commit/451444fee39e1ac7991e3be8cce41dac34754571))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.3 ([#21791](https://github.com/cloudquery/cloudquery/issues/21791)) ([d28a593](https://github.com/cloudquery/cloudquery/commit/d28a5939360b1223ee5f95015d499d2728e3d612))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.4 ([#21795](https://github.com/cloudquery/cloudquery/issues/21795)) ([86b4c7f](https://github.com/cloudquery/cloudquery/commit/86b4c7fab6c74ff7d910b5f0cd314498603f07dc))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.5 ([#21803](https://github.com/cloudquery/cloudquery/issues/21803)) ([326edbe](https://github.com/cloudquery/cloudquery/commit/326edbef6036e00855f583464b62f31217ffe7af))
+* **deps:** Update module github.com/rudderlabs/analytics-go/v4 to v4.2.2 ([#21767](https://github.com/cloudquery/cloudquery/issues/21767)) ([cd4c298](https://github.com/cloudquery/cloudquery/commit/cd4c2989349eacfcd7d66918286cb1d9ec56c710))
+* **deps:** Update module google.golang.org/grpc to v1.78.0 ([#21800](https://github.com/cloudquery/cloudquery/issues/21800)) ([a47f6ef](https://github.com/cloudquery/cloudquery/commit/a47f6ef74434501fb4610899def6671974b4b72d))
+
 ## [6.33.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.32.0...cli-v6.33.0) (2025-12-17)
 
 
