@@ -11,6 +11,10 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/serve"
 )
 
+const (
+	sentryDSN = "https://1e33dfd084aa43f2aa8e686f15a64e45@o1396617.ingest.sentry.io/4504407264526336"
+)
+
 func main() {
 	p := plugin.NewPlugin(
 		internalPlugin.Name,
@@ -20,7 +24,8 @@ func main() {
 		plugin.WithTeam(internalPlugin.Team),
 		plugin.WithJSONSchema(spec.JSONSchema),
 	)
-	if err := serve.Plugin(p, serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
+	if err := serve.Plugin(p, serve.WithPluginSentryDSN(sentryDSN),
+		serve.WithDestinationV0V1Server()).Serve(context.Background()); err != nil {
 		log.Fatalf("failed to serve plugin: %v", err)
 	}
 }
