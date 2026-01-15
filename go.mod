@@ -2,7 +2,7 @@ module github.com/cloudquery/cloudquery/v6
 
 go 1.25.5
 
-require github.com/cloudquery/cloudquery/cli/v6 v6.33.1
+require github.com/cloudquery/cloudquery/cli/v6 v6.34.0
 
 require (
 	github.com/Masterminds/semver v1.5.0 // indirect
@@ -20,7 +20,7 @@ require (
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/cloudquery/cloudquery-api-go v1.14.8 // indirect
 	github.com/cloudquery/plugin-pb-go v1.27.5 // indirect
-	github.com/cloudquery/plugin-sdk/v4 v4.93.1 // indirect
+	github.com/cloudquery/plugin-sdk/v4 v4.94.0 // indirect
 	github.com/containerd/errdefs v1.0.0 // indirect
 	github.com/containerd/errdefs/pkg v0.3.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.6 // indirect
@@ -34,7 +34,7 @@ require (
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/foxboron/go-tpm-keyfiles v0.0.0-20250903184740-5d135037bd4d // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
-	github.com/getsentry/sentry-go v0.30.0 // indirect
+	github.com/getsentry/sentry-go v0.40.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
