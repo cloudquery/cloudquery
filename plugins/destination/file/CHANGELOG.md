@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v5.4.30...plugins-destination-file-v5.5.0) (2026-01-15)
+
+
+### Features
+
+* Bring back Sentry DSNs for existing projects ([#21808](https://github.com/cloudquery/cloudquery/issues/21808)) ([a3b5aeb](https://github.com/cloudquery/cloudquery/commit/a3b5aebc5c7fb8f1253f196d3a8f4fb23b237aae))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.0 ([#21811](https://github.com/cloudquery/cloudquery/issues/21811)) ([c22bc0a](https://github.com/cloudquery/cloudquery/commit/c22bc0a15bd69428eaed263a4de467a0d601b749))
+
 ## [5.4.30](https://github.com/cloudquery/cloudquery/compare/plugins-destination-file-v5.4.29...plugins-destination-file-v5.4.30) (2026-01-08)
 
 
