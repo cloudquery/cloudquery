@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.1.7...plugins-destination-snowflake-v5.2.0) (2026-01-15)
+
+
+### Features
+
+* Bring back Sentry DSNs for existing projects ([#21808](https://github.com/cloudquery/cloudquery/issues/21808)) ([a3b5aeb](https://github.com/cloudquery/cloudquery/commit/a3b5aebc5c7fb8f1253f196d3a8f4fb23b237aae))
+
 ## [5.1.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.1.6...plugins-destination-snowflake-v5.1.7) (2026-01-13)
 
 
