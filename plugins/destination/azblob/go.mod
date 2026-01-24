@@ -4,7 +4,7 @@ go 1.25.5
 
 require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.13.1
-	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.6.3
+	github.com/Azure/azure-sdk-for-go/sdk/storage/azblob v1.6.4
 	github.com/apache/arrow-go/v18 v18.5.0
 	github.com/cloudquery/codegen v0.3.35
 	github.com/cloudquery/filetypes/v4 v4.6.12
