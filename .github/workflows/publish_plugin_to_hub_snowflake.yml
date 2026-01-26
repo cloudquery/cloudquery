@@ -88,7 +88,7 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/gythialy/golang-cross:1.25.5
+      image: ghcr.io/gythialy/golang-cross:1.25.6
       env:
         GOAMD64: v1
     needs:
