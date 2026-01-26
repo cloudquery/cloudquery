@@ -3,7 +3,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/client.go:82: | Close | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/deletestale.go:11: | DeleteStale | 92.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/escape.go:6: | escapePath | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/list.go:9: | snowflakeStrToArray | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/list.go:9: | snowflakeStrToArray | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/migrate.go:14: | MigrateTables | 81.6% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/migrate.go:76: | autoMigrateTable | 74.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/migrate.go:139: | addColumn | 70.0% |
@@ -24,8 +24,8 @@
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/read.go:168: | reverseTransformer | 87.5% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/read.go:181: | Read | 86.4% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/spec.go:48: | SetDefaults | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/spec.go:61: | DSN | 33.3% |
-| github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/spec.go:84: | formatPrivateKey | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/spec.go:61: | DSN | 91.7% |
+| github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/spec.go:84: | formatPrivateKey | 80.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/spec/gen/main.go:13: | main | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/spec/gen/main.go:20: | currDir | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/table_info.go:23: | Scan | 63.6% |
@@ -34,7 +34,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/table_info.go:210: | getConstraints | 76.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/table_info.go:241: | ByNameForTable | 87.5% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/table_info.go:270: | ConstraintNameForColumns | 63.6% |
-| github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/test_connection.go:21: | NewConnectionTester | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/test_connection.go:21: | NewConnectionTester | 92.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/types.go:18: | SchemaTypeToSnowflake | 90.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/types.go:42: | SnowflakeToSchemaType | 80.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/types.go:85: | parseTimestamp | 29.4% |
@@ -49,5 +49,5 @@
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/write.go:127: | updateColumnsList | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/write.go:137: | insertColumnsList | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/write.go:149: | setupWrite | 62.5% |
-| github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/main.go:13: | main | 0.0% |
-| total: | (statements) | 62.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/main.go:17: | main | 0.0% |
+| total: | (statements) | 68.8% |

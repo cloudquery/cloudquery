@@ -23,5 +23,5 @@
 | github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/write.go:150: | sanitizeRecordJSONKeys | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/write.go:174: | sanitizeJSONRawMessage | 80.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/write.go:184: | sanitizeJSONKeysForObject | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/s3/v7/main.go:14: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/s3/v7/main.go:18: | main | 0.0% |
 | total: | (statements) | 48.6% |

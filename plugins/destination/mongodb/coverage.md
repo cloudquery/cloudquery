@@ -33,5 +33,5 @@
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/write.go:118: | overwriteTableBatch | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/write.go:144: | WriteTableBatch | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/write.go:163: | Write | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/main.go:14: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/main.go:18: | main | 0.0% |
 | total: | (statements) | 9.7% |

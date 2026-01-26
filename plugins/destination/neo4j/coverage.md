@@ -25,5 +25,5 @@
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/transformer.go:64: | transformValues | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/write.go:13: | WriteTableBatch | 87.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/write.go:63: | Write | 60.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/main.go:13: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/main.go:17: | main | 0.0% |
 | total: | (statements) | 79.1% |
