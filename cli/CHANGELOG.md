@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.34.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.34.0...cli-v6.34.1) (2026-01-26)
+
+
+### Bug Fixes
+
+* **deps:** Update alpine Docker tag to v3.23.2 ([#21843](https://github.com/cloudquery/cloudquery/issues/21843)) ([3845510](https://github.com/cloudquery/cloudquery/commit/38455100dd75db2151ea2e6e813388eba7b8f9c3))
+
 ## [6.34.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.33.1...cli-v6.34.0) (2026-01-15)
 
 
