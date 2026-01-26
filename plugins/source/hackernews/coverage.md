@@ -13,7 +13,7 @@
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/spec/gen/main.go:14: | main | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/spec/gen/main.go:21: | currDir | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/testing.go:25: | MockTestHelper | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/main.go:11: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/main.go:15: | main | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/plugin/client.go:27: | Logger | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/plugin/client.go:31: | Sync | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/plugin/client.go:60: | Tables | 0.0% |

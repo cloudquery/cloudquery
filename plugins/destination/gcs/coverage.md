@@ -13,5 +13,5 @@
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/spec/spec.go:144: | ReplacePathVariables | 81.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/write.go:14: | WriteTable | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/client/write.go:45: | Write | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/main.go:14: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/gcs/v5/main.go:18: | main | 0.0% |
 | total: | (statements) | 15.1% |
