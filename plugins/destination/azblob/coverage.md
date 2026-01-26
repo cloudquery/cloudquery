@@ -10,5 +10,5 @@
 | github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/spec/spec.go:94: | int64ptr | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/write.go:14: | WriteTable | 76.5% |
 | github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/write.go:45: | Write | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/main.go:14: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/main.go:18: | main | 0.0% |
 | total: | (statements) | 59.5% |

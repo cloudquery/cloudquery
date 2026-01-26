@@ -44,7 +44,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/test_connection.go:25: | NewConnectionTester | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/write.go:10: | Write | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/write.go:17: | WriteTableBatch | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/main.go:14: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/main.go:18: | main | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/queries/columns.go:9: | AddColumn | 75.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/queries/columns.go:17: | DropColumn | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/queries/columns.go:21: | SetTTL | 0.0% |

@@ -35,7 +35,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/write.go:58: | insertMessage | 90.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/write.go:76: | insert | 95.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/write.go:106: | upsert | 95.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/main.go:13: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/main.go:17: | main | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/typeconv/primitive.go:12: | primitiveValue | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/typeconv/special.go:8: | valueStrData | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/typeconv/special.go:18: | float16Value | 0.0% |

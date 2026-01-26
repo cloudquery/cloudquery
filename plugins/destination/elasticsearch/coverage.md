@@ -25,5 +25,5 @@
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v3/client/write.go:110: | getValueForElasticsearch | 91.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v3/client/write.go:172: | resourceID | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v3/client/write.go:181: | padRightWithZero | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v3/main.go:13: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v3/main.go:17: | main | 0.0% |
 | total: | (statements) | 77.7% |
