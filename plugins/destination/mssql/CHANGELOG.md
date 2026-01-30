@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v5.3.0...plugins-destination-mssql-v5.3.1) (2026-01-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/microsoft/go-mssqldb to v1.9.6 ([#21868](https://github.com/cloudquery/cloudquery/issues/21868)) ([54be167](https://github.com/cloudquery/cloudquery/commit/54be1672781276403997b2868ea2d77bf1a8ed00))
+
 ## [5.3.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v5.2.7...plugins-destination-mssql-v5.3.0) (2026-01-15)
 
 
