@@ -55,7 +55,7 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, newClientOpts plu
 
 	opts := []option.ClientOption{}
 	if len(c.spec.ServiceAccountKeyJSON) != 0 {
-		opts = append(opts, option.WithCredentialsJSON([]byte(c.spec.ServiceAccountKeyJSON)))
+		opts = append(opts, option.WithAuthCredentialsJSON(option.ServiceAccount, []byte(c.spec.ServiceAccountKeyJSON)))
 	}
 	c.gcsClient, err = storage.NewClient(ctx, opts...)
 	if err != nil {
