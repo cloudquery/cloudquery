@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.8.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.8.0...plugins-destination-mongodb-v2.8.1) (2026-01-30)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21849](https://github.com/cloudquery/cloudquery/issues/21849)) ([d27d2fd](https://github.com/cloudquery/cloudquery/commit/d27d2fd254991c959c6a163bc00e731aea758145))
+
 ## [2.8.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.7.7...plugins-destination-mongodb-v2.8.0) (2026-01-15)
 
 
