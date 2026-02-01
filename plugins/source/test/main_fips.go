@@ -1,6 +1,6 @@
 //go:build fipsEnabled
 
-//go:debug fips140=only
+//go:debug fips140=on
 
 package main
 

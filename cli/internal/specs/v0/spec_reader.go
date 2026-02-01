@@ -3,6 +3,7 @@ package specs
 import (
 	"bytes"
 	"encoding/json"
+	"encoding/pem"
 	"errors"
 	"fmt"
 	"math/rand"
@@ -20,6 +21,8 @@ import (
 )
 
 type SpecReader struct {
+	relaxed bool
+
 	sourcesMap      map[string]*Source
 	destinationsMap map[string]*Destination
 	transformersMap map[string]*Transformer
@@ -46,7 +49,7 @@ func expandFileConfig(cfg []byte) ([]byte, error) {
 			expandErr = err
 			return nil
 		}
-		if bytes.ContainsAny(content, "\n\r") && json.Valid(content) {
+		if shouldEscapeFileContent(content) {
 			// Values that should be treated as strings in YAML have leading and trailing quotes already
 			// so we remove the one added by strconv.Quote
 			quoted := strconv.Quote(string(content))
@@ -133,7 +136,7 @@ func (r *SpecReader) loadSpecsFromFile(path string) error {
 			}
 			r.sourceWarningsMap[source.Name] = source.GetWarnings()
 			source.SetDefaults()
-			if err := source.Validate(); err != nil {
+			if err := source.Validate(r.relaxed); err != nil {
 				return fmt.Errorf("failed to validate source %s: %w", source.Name, err)
 			}
 			if source.Registry == RegistryGitHub {
@@ -289,8 +292,8 @@ func (r *SpecReader) GetDestinationNamesForSource(name string) []string {
 }
 
 func NewSpecReader(paths []string) (*SpecReader, error) {
-	reader, err := newSpecReader(paths)
-	if err != nil {
+	reader := newSpecReader()
+	if err := reader.initialize(paths); err != nil {
 		return nil, err
 	}
 
@@ -302,11 +305,11 @@ func NewSpecReader(paths []string) (*SpecReader, error) {
 }
 
 func NewRelaxedSpecReader(paths []string) (*SpecReader, error) {
-	reader, err := newSpecReader(paths)
-	if err != nil {
+	reader := newSpecReader()
+	reader.relaxed = true
+	if err := reader.initialize(paths); err != nil {
 		return nil, err
 	}
-
 	if err := reader.relaxedValidate(); err != nil {
 		return nil, err
 	}
@@ -314,8 +317,8 @@ func NewRelaxedSpecReader(paths []string) (*SpecReader, error) {
 	return reader, nil
 }
 
-func newSpecReader(paths []string) (*SpecReader, error) {
-	reader := &SpecReader{
+func newSpecReader() *SpecReader {
+	return &SpecReader{
 		sourcesMap:             make(map[string]*Source),
 		destinationsMap:        make(map[string]*Destination),
 		transformersMap:        make(map[string]*Transformer),
@@ -326,29 +329,32 @@ func newSpecReader(paths []string) (*SpecReader, error) {
 		destinationWarningsMap: make(map[string]Warnings),
 		transformerWarningsMap: make(map[string]Warnings),
 	}
+}
+
+func (r *SpecReader) initialize(paths []string) error {
 	for _, path := range paths {
 		file, err := os.Open(path)
 		if err != nil {
-			return nil, err
+			return err
 		}
 		fileInfo, err := file.Stat()
 		if err != nil {
 			file.Close()
-			return nil, err
+			return err
 		}
 		file.Close()
 		if fileInfo.IsDir() {
-			if err := reader.loadSpecsFromDir(path); err != nil {
-				return nil, err
+			if err := r.loadSpecsFromDir(path); err != nil {
+				return err
 			}
 		} else {
-			if err := reader.loadSpecsFromFile(path); err != nil {
-				return nil, err
+			if err := r.loadSpecsFromFile(path); err != nil {
+				return err
 			}
 		}
 	}
 
-	return reader, nil
+	return nil
 }
 
 // strip yaml comments from the given yaml document by converting to JSON and back :)
@@ -383,4 +389,18 @@ func stripYamlComments(b []byte) ([]byte, error) {
 		b = bytes.ReplaceAll(b, []byte(k), []byte(fmt.Sprintf("${%s}", v)))
 	}
 	return b, nil
+}
+
+func shouldEscapeFileContent(content []byte) bool {
+	if !bytes.ContainsAny(content, "\n\r") {
+		return false
+	}
+	if json.Valid(content) {
+		return true
+	}
+	block, _ := pem.Decode(content)
+
+	// if block == nil then content is a valid PEM block and should return true
+	// if block != nil then content is not a valid PEM block and should return false
+	return block != nil
 }

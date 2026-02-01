@@ -25,7 +25,7 @@ func TestGetRows(t *testing.T) {
 	builder := array.NewRecordBuilder(mem, schema)
 	defer builder.Release()
 
-	records := make([]arrow.Record, 7)
+	records := make([]arrow.RecordBatch, 7)
 	defer func() {
 		for _, rec := range records {
 			rec.Release()
@@ -55,11 +55,11 @@ func TestGetRows(t *testing.T) {
 	}
 }
 
-func genRecord(mem memory.Allocator, schema *arrow.Schema, rows int) arrow.Record {
+func genRecord(mem memory.Allocator, schema *arrow.Schema, rows int) arrow.RecordBatch {
 	builder := array.NewRecordBuilder(mem, schema)
 	defer builder.Release()
 	for _, fBuilder := range builder.Fields() {
 		fBuilder.AppendEmptyValues(rows)
 	}
-	return builder.NewRecord()
+	return builder.NewRecordBatch()
 }

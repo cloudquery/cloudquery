@@ -1,22 +1,23 @@
 services:
   meilisearch:
     container_name: meilisearch
-    image:          getmeili/meilisearch:v1.12.1
+    image: getmeili/meilisearch:v1.6.2
     environment:
-    - MEILI_ENV=development
-    - MEILI_MASTER_KEY=${MEILI_MASTER_KEY:-test}
-    - MEILI_NO_ANALYTICS=true
-    - MEILI_LOG_LEVEL=WARN
-
+      - MEILI_ENV=development
+      - MEILI_MASTER_KEY=${MEILI_MASTER_KEY:-test}
+      - MEILI_NO_ANALYTICS=true
+      - MEILI_LOG_LEVEL=WARN
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7700/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     ports:
-    - target:    7700
-      published: 7700
+      - 7700:7700
     networks:
-    - meilisearch
-    volumes:
-    - ./data.ms:/data.ms
+      - meilisearch
 
 networks:
   meilisearch:
-    name:   meilisearch
+    name: meilisearch
     driver: bridge

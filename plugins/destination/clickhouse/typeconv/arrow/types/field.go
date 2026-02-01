@@ -6,7 +6,7 @@ import (
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/column"
 	"github.com/apache/arrow-go/v18/arrow"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/util"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/util"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
@@ -85,7 +85,7 @@ func fieldFromColumn(col column.Interface) (*arrow.Field, error) {
 }
 
 func Field(name, typ string) (*arrow.Field, error) {
-	col, err := column.Type(typ).Column(name, time.UTC)
+	col, err := column.Type(typ).Column(name, &column.ServerContext{Timezone: time.UTC})
 	if err != nil {
 		return nil, err
 	}

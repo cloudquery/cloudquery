@@ -10,9 +10,9 @@ import (
 	"github.com/apache/arrow-go/v18/arrow/array"
 	"github.com/apache/arrow-go/v18/arrow/memory"
 	retry "github.com/avast/retry-go/v4"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/queries"
-	arrowvalues "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/typeconv/arrow/values"
-	chvalues "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/typeconv/ch/values"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/queries"
+	arrowvalues "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/values"
+	chvalues "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
@@ -58,7 +58,7 @@ func retryExec(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn,
 	return err
 }
 
-func retryBatchSend(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn, table *schema.Table, records []arrow.Record) error {
+func retryBatchSend(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn, table *schema.Table, records []arrow.RecordBatch) error {
 	err := retry.Do(
 		func() error {
 			batch, err := conn.PrepareBatch(ctx, queries.Insert(table))
@@ -101,9 +101,9 @@ func retryGetTableDefinitions(ctx context.Context, logger zerolog.Logger, databa
 	return schemas, err
 }
 
-func retryRead(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn, table *schema.Table) (arrow.Record, error) {
+func retryRead(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn, table *schema.Table) (arrow.RecordBatch, error) {
 	record, err := retry.DoWithData(
-		func() (arrow.Record, error) {
+		func() (arrow.RecordBatch, error) {
 			rows, err := conn.Query(ctx, queries.Read(table))
 			if err != nil {
 				return nil, err
@@ -123,7 +123,7 @@ func retryRead(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn,
 				}
 			}
 
-			return builder.NewRecord(), nil
+			return builder.NewRecordBatch(), nil
 		},
 		getRetryOptions(logger, "read")...,
 	)

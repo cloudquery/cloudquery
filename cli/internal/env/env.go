@@ -13,3 +13,7 @@ func IsCloud() bool {
 	_, ok := os.LookupEnv("CQ_CLOUD")
 	return ok
 }
+
+func TenantID() string {
+	return os.Getenv("_CQ_TENANT_ID")
+}

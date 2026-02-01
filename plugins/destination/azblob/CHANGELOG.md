@@ -1,5 +1,75 @@
 # Changelog
 
+## [4.5.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.5.0...plugins-destination-azblob-v4.5.1) (2026-01-30)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/storage/azblob to v1.6.4 ([#21865](https://github.com/cloudquery/cloudquery/issues/21865)) ([a814bc6](https://github.com/cloudquery/cloudquery/commit/a814bc6be71239aacdfbf05e15930b8c6cd8e120))
+
+## [4.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.35...plugins-destination-azblob-v4.5.0) (2026-01-15)
+
+
+### Features
+
+* Bring back Sentry DSNs for existing projects ([#21808](https://github.com/cloudquery/cloudquery/issues/21808)) ([a3b5aeb](https://github.com/cloudquery/cloudquery/commit/a3b5aebc5c7fb8f1253f196d3a8f4fb23b237aae))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.0 ([#21811](https://github.com/cloudquery/cloudquery/issues/21811)) ([c22bc0a](https://github.com/cloudquery/cloudquery/commit/c22bc0a15bd69428eaed263a4de467a0d601b749))
+
+## [4.4.35](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.34...plugins-destination-azblob-v4.4.35) (2026-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.34 ([#21776](https://github.com/cloudquery/cloudquery/issues/21776)) ([44fad18](https://github.com/cloudquery/cloudquery/commit/44fad18d228cb61dc9a9311143abdb71d34f2c79))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.35 ([#21798](https://github.com/cloudquery/cloudquery/issues/21798)) ([451444f](https://github.com/cloudquery/cloudquery/commit/451444fee39e1ac7991e3be8cce41dac34754571))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.6.12 ([#21790](https://github.com/cloudquery/cloudquery/issues/21790)) ([63bc5af](https://github.com/cloudquery/cloudquery/commit/63bc5af4d6f88bf187764098d4d03ed01acddce2))
+
+## [4.4.34](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.33...plugins-destination-azblob-v4.4.34) (2025-12-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/azidentity to v1.13.1 ([#21661](https://github.com/cloudquery/cloudquery/issues/21661)) ([63cd129](https://github.com/cloudquery/cloudquery/commit/63cd129ca5b63609bb1be2d7515884e48ba3a4f6))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.6.11 ([#21726](https://github.com/cloudquery/cloudquery/issues/21726)) ([105c189](https://github.com/cloudquery/cloudquery/commit/105c189790607a8d6885b9af8adb017067196e60))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.92.1 ([#21682](https://github.com/cloudquery/cloudquery/issues/21682)) ([8a7596b](https://github.com/cloudquery/cloudquery/commit/8a7596bd5a15e4b79bdb26f385be9eaeafdae108))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.93.0 ([#21710](https://github.com/cloudquery/cloudquery/issues/21710)) ([f0f2c5b](https://github.com/cloudquery/cloudquery/commit/f0f2c5b5de8f3d3a5cb6a049f0035f17e9d7bbb6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.93.1 ([#21725](https://github.com/cloudquery/cloudquery/issues/21725)) ([aa46079](https://github.com/cloudquery/cloudquery/commit/aa460797637559c010152c639d2d4363caf3491d))
+* **deps:** Update module golang.org/x/crypto to v0.45.0 [SECURITY] ([#21647](https://github.com/cloudquery/cloudquery/issues/21647)) ([d3f1ff8](https://github.com/cloudquery/cloudquery/commit/d3f1ff8759f26cf5762e51cbd661c70ec9ca2eb4))
+
+## [4.4.33](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.32...plugins-destination-azblob-v4.4.33) (2025-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.92.0 ([#21579](https://github.com/cloudquery/cloudquery/issues/21579)) ([496d29a](https://github.com/cloudquery/cloudquery/commit/496d29af60229bcf5b62f4641467bc6b9eda8e9c))
+
+## [4.4.32](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.31...plugins-destination-azblob-v4.4.32) (2025-11-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/storage/azblob to v1.6.3 ([#21529](https://github.com/cloudquery/cloudquery/issues/21529)) ([f0e95d5](https://github.com/cloudquery/cloudquery/commit/f0e95d529249593648af19b6404d0fc76d993f49))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.33 ([#21571](https://github.com/cloudquery/cloudquery/issues/21571)) ([4abf18d](https://github.com/cloudquery/cloudquery/commit/4abf18d1060aeb7cad06110bf600268a7da74366))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.91.0 ([#21537](https://github.com/cloudquery/cloudquery/issues/21537)) ([db6f9a0](https://github.com/cloudquery/cloudquery/commit/db6f9a083ab8dddb21f15142b058dadb2a54d49e))
+
+## [4.4.31](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.30...plugins-destination-azblob-v4.4.31) (2025-10-23)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/azidentity to v1.13.0 ([#21507](https://github.com/cloudquery/cloudquery/issues/21507)) ([b0b9252](https://github.com/cloudquery/cloudquery/commit/b0b9252b787a0679f480b7decc1dce465d07e27b))
+
+## [4.4.30](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.29...plugins-destination-azblob-v4.4.30) (2025-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.32 ([#21413](https://github.com/cloudquery/cloudquery/issues/21413)) ([3d3b1cc](https://github.com/cloudquery/cloudquery/commit/3d3b1cc86d676095321e4304a6c04b5b3c4a1278))
+
 ## [4.4.29](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.4.28...plugins-destination-azblob-v4.4.29) (2025-09-04)
 
 

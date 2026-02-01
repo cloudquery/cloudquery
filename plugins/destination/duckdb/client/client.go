@@ -15,7 +15,7 @@ import (
 	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
-	"github.com/marcboeker/go-duckdb/v2"
+	"github.com/duckdb/duckdb-go/v2"
 	"github.com/rs/zerolog"
 )
 
@@ -63,8 +63,10 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	}
 
 	// Unregister the built-in UUID type to avoid conflicts with our own UUID type
-	if err := arrow.UnregisterExtensionType(extensions.NewUUIDType().ExtensionName()); err != nil {
-		return nil, err
+	if _, ok := arrow.GetExtensionType(extensions.NewUUIDType().ExtensionName()).(*extensions.UUIDType); ok {
+		if err := arrow.UnregisterExtensionType(extensions.NewUUIDType().ExtensionName()); err != nil {
+			return nil, err
+		}
 	}
 
 	return c, nil

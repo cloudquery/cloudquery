@@ -16,7 +16,7 @@ func mapType(mapType *arrow.MapType) (string, error) {
 
 	// Ensure CH can handle this as map
 	// String, Integer, LowCardinality, FixedString, UUID, Date, DateTime, Date32, Enum.
-	colType, err := column.Type(keyType).Column("key", time.UTC)
+	colType, err := column.Type(keyType).Column("key", &column.ServerContext{Timezone: time.UTC})
 	if err != nil {
 		return "", err
 	}

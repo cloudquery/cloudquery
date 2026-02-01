@@ -33,7 +33,7 @@ func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) err
 			table := m.GetTable()
 			var b bytes.Buffer
 			w := bufio.NewWriter(&b)
-			if err := c.Client.WriteTableBatchFile(w, table, []arrow.Record{m.Record}); err != nil {
+			if err := c.Client.WriteTableBatchFile(w, table, []arrow.RecordBatch{m.Record}); err != nil {
 				return err
 			}
 			if err := w.Flush(); err != nil {

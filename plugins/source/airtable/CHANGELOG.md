@@ -1,5 +1,38 @@
 # Changelog
 
+## [2.3.5](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.4...plugins-source-airtable-v2.3.5) (2026-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-sdk-javascript to v0.1.31 ([#21793](https://github.com/cloudquery/cloudquery/issues/21793)) ([198840d](https://github.com/cloudquery/cloudquery/commit/198840d2c8ea8437d862eac5707e2518d5e6df16))
+
+## [2.3.4](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.3...plugins-source-airtable-v2.3.4) (2025-12-19)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @tsconfig/node20 to v20.1.8 ([#21669](https://github.com/cloudquery/cloudquery/issues/21669)) ([3a9f106](https://github.com/cloudquery/cloudquery/commit/3a9f106f56f132e498b2cccaea53777cddd935fd))
+* **deps:** Update dependency @types/yargs to v17.0.35 ([#21670](https://github.com/cloudquery/cloudquery/issues/21670)) ([aef4e32](https://github.com/cloudquery/cloudquery/commit/aef4e32074b3428a0456ce8c9b988fefd44dfc42))
+* **deps:** Update dependency dayjs to v1.11.19 ([#21671](https://github.com/cloudquery/cloudquery/issues/21671)) ([1d541dd](https://github.com/cloudquery/cloudquery/commit/1d541dd571ea580f90f8da2d0286305d0a573961))
+* **deps:** Update dependency p-map to v7.0.4 ([#21674](https://github.com/cloudquery/cloudquery/issues/21674)) ([62c37b5](https://github.com/cloudquery/cloudquery/commit/62c37b533624d3930e1ddd2df196b57e485d50d7))
+
+## [2.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.2...plugins-source-airtable-v2.3.3) (2025-11-10)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @types/yargs to v17.0.34 ([#21551](https://github.com/cloudquery/cloudquery/issues/21551)) ([eddf037](https://github.com/cloudquery/cloudquery/commit/eddf037b0a84c83c9e6c0471d187bde1f2ce3b29))
+
+## [2.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.1...plugins-source-airtable-v2.3.2) (2025-10-20)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @cloudquery/plugin-sdk-javascript to v0.1.30 ([#21449](https://github.com/cloudquery/cloudquery/issues/21449)) ([c55b6fa](https://github.com/cloudquery/cloudquery/commit/c55b6faff5df6b42b23096821963c9a0b9067e27))
+* **deps:** Update dependency dayjs to v1.11.18 ([#21437](https://github.com/cloudquery/cloudquery/issues/21437)) ([2c183b6](https://github.com/cloudquery/cloudquery/commit/2c183b608be7f8e19d310b9512175aec5bb755ff))
+* **deps:** Update dependency got to v14.4.9 ([#21438](https://github.com/cloudquery/cloudquery/issues/21438)) ([36e7b4f](https://github.com/cloudquery/cloudquery/commit/36e7b4faaa3b52fb751d21c97513da71b8171261))
+
 ## [2.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.0...plugins-source-airtable-v2.3.1) (2025-09-04)
 
 

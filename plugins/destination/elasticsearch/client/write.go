@@ -49,7 +49,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, _ string, msgs message.Wri
 	return c.writeData(ctx, table, data)
 }
 
-func (c *Client) appendToWriteBuffer(table *schema.Table, record arrow.Record, buf *bytes.Buffer) error {
+func (c *Client) appendToWriteBuffer(table *schema.Table, record arrow.RecordBatch, buf *bytes.Buffer) error {
 	pks := table.PrimaryKeysIndexes() // do some work up front to avoid doing it for every resource
 	for r := 0; r < int(record.NumRows()); r++ {
 		doc := map[string]any{}
@@ -169,7 +169,7 @@ func (c *Client) getValueForElasticsearch(col arrow.Array, i int) any {
 }
 
 // elasticsearch IDs are limited to 512 bytes, so we hash the resource PK to make sure it's within the limit
-func resourceID(record arrow.Record, i int, pkIndexes []int) uint64 {
+func resourceID(record arrow.RecordBatch, i int, pkIndexes []int) uint64 {
 	parts := make([]string, 0, len(pkIndexes))
 	for _, pkIndex := range pkIndexes {
 		parts = append(parts, record.Column(pkIndex).ValueStr(i))

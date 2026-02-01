@@ -1,32 +1,19 @@
 services:
   elasticsearch:
-    image: elasticsearch:8.17.0
+    image: elasticsearch:8.12.2
     environment:
       - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
       - xpack.security.enabled=false
-    volumes:
-      - es_data:/usr/share/elasticsearch/data
     ports:
-      - target: 9200
-        published: 9200
+      - 9200:9200
     networks:
       - elastic
-
-  kibana:
-    image: kibana:8.17.0
-    ports:
-      - target: 5601
-        published: 5601
-    depends_on:
-      - elasticsearch
-    networks:
-      - elastic    
-
-volumes:
-  es_data:
-    driver: local
-
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/_cluster/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 networks:
   elastic:
     name: elastic

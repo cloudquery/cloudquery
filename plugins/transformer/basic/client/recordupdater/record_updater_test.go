@@ -11,6 +11,7 @@ import (
 	"github.com/apache/arrow-go/v18/arrow/array"
 	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/cloudquery/cloudquery/plugins/transformer/basic/client/spec"
+	"github.com/cloudquery/plugin-sdk/v4/scalar"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/stretchr/testify/assert"
@@ -192,7 +193,9 @@ func TestDropRowTimestamp(t *testing.T) {
 	require.Equal(t, int64(4), updatedRecord.NumCols())
 	require.Equal(t, int64(1), updatedRecord.NumRows())
 	requireAllColsLenMatchRecordsLen(t, updatedRecord)
-	require.Equal(t, "2026-01-01 00:00:00Z", updatedRecord.Column(3).(*array.Timestamp).ValueStr(0))
+
+	expectedTimestamp := record.Column(3).(*array.Timestamp).Value(1)
+	require.Equal(t, expectedTimestamp, updatedRecord.Column(3).(*array.Timestamp).Value(0))
 }
 
 func TestComprehensiveDropRow(t *testing.T) {
@@ -233,7 +236,7 @@ func TestComprehensiveDropRow(t *testing.T) {
 	require.Equal(t, `2023-04-25`, updatedRecord.Column(19).(*array.Date64).ValueStr(0))
 	require.Equal(t, int64(4), updatedRecord.NumRows())
 
-	updatedRecord, err = updater.DropRows([]string{"timestamp_ns"}, &[]string{"2025-06-27 10:40:35.000914Z"}[0])
+	updatedRecord, err = updater.DropRows([]string{"timestamp_ns"}, &[]string{"2025-06-27T10:40:35.000914Z"}[0])
 	require.NoError(t, err)
 	require.Equal(t, int64(0), updatedRecord.NumRows())
 }
@@ -295,9 +298,9 @@ func TestChangeTableName(t *testing.T) {
 	require.Equal(t, "cq_sync_testTable", newTableName)
 }
 
-func createTestRecordWithTS() arrow.Record {
+func createTestRecordWithTS() arrow.RecordBatch {
 	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
-	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+	s := arrow.NewSchema(
 		[]arrow.Field{
 			{Name: "col1", Type: arrow.BinaryTypes.String},
 			{Name: "col2", Type: arrow.BinaryTypes.String},
@@ -305,20 +308,33 @@ func createTestRecordWithTS() arrow.Record {
 			{Name: "col4", Type: &arrow.TimestampType{}},
 		},
 		&md,
-	))
-	defer bld.Release()
+	)
 
-	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1", "val2"}, nil)
-	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
-	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["a","b","c"]},"hello":"world"}`))
-	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["d","e","f"]}}`))
-	bld.Field(3).(*array.TimestampBuilder).AppendTime(time.Date(2025, 6, 27, 10, 40, 35, 914319000, time.UTC))
-	bld.Field(3).(*array.TimestampBuilder).AppendTime(time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC))
+	col1Builder := array.NewStringBuilder(memory.DefaultAllocator)
+	col1Builder.AppendValues([]string{"val1", "val2"}, nil)
 
-	return bld.NewRecord()
+	col2Builder := array.NewStringBuilder(memory.DefaultAllocator)
+	col2Builder.AppendValues([]string{"val3", "val4"}, nil)
+
+	col3Builder := types.NewJSONBuilder(memory.DefaultAllocator)
+	col3Builder.AppendBytes([]byte(`{"foo":{"bar":["a","b","c"]},"hello":"world"}`))
+	col3Builder.AppendBytes([]byte(`{"foo":{"bar":["d","e","f"]}}`))
+
+	col4Builder := array.NewTimestampBuilderWithValueStrLayout(memory.DefaultAllocator, &arrow.TimestampType{}, scalar.TimestampStringLayout)
+	col4Builder.AppendTime(time.Date(2025, 6, 27, 10, 40, 35, 914319000, time.UTC))
+	col4Builder.AppendTime(time.Date(2026, 1, 1, 0, 0, 0, 0, time.UTC))
+
+	values := []arrow.Array{
+		col1Builder.NewArray(),
+		col2Builder.NewArray(),
+		col3Builder.NewArray(),
+		col4Builder.NewArray(),
+	}
+
+	return array.NewRecordBatch(s, values, int64(2))
 }
 
-func createTestRecord() arrow.Record {
+func createTestRecord() arrow.RecordBatch {
 	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
 	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
 		[]arrow.Field{
@@ -335,10 +351,10 @@ func createTestRecord() arrow.Record {
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["a","b","c"]},"hello":"world"}`))
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["d","e","f"]}}`))
 
-	return bld.NewRecord()
+	return bld.NewRecordBatch()
 }
 
-func createTestRecordWithMetadata(metadata *arrow.Metadata) arrow.Record {
+func createTestRecordWithMetadata(metadata *arrow.Metadata) arrow.RecordBatch {
 	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
 		[]arrow.Field{
 			{Name: "col1", Type: arrow.BinaryTypes.String},
@@ -356,10 +372,10 @@ func createTestRecordWithMetadata(metadata *arrow.Metadata) arrow.Record {
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["d","e","f"]}}`))
 	bld.Field(3).(*array.BinaryBuilder).AppendValues([][]byte{[]byte("val1"), []byte("val5")}, nil)
 
-	return bld.NewRecord()
+	return bld.NewRecordBatch()
 }
 
-func requireAllColsLenMatchRecordsLen(t *testing.T, record arrow.Record) {
+func requireAllColsLenMatchRecordsLen(t *testing.T, record arrow.RecordBatch) {
 	for i := 0; i < int(record.NumCols()); i++ {
 		require.Equal(t, int(record.NumRows()), record.Column(i).Len(), "Expected length of %d for column %d", record.NumRows(), i)
 	}
@@ -479,7 +495,7 @@ func TestObfuscateNestedColumnsWithGjsonSyntax(t *testing.T) {
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"top_foo":[{"foo":"baz0"},{"foo":"baz1"},{"foo":"baz2"}]}`))
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"top_foo":[{"foo":"baz3"},{"foo":"baz4"},{"foo":"baz5"}]}`))
 
-	record := bld.NewRecord()
+	record := bld.NewRecordBatch()
 	updater := New(record)
 
 	// Test obfuscation using gjson syntax with # for array elements
@@ -523,7 +539,7 @@ func TestObfuscateDeeplyNestedColumnsWithGjsonSyntax(t *testing.T) {
 	// Second row: has 1 object in object2 array, with 2 nested2_object1 values = 2 total
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"object1":{"object2":[{"nested_object1":{"nested_object2":[{"nested2_object1":5},{"nested2_object1":6}]}}]}}`))
 
-	record := bld.NewRecord()
+	record := bld.NewRecordBatch()
 	updater := New(record)
 
 	// Test obfuscation using gjson syntax with multiple # for nested arrays
@@ -565,7 +581,7 @@ func TestRemoveNestedColumnsWithGjsonSyntax(t *testing.T) {
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"top_foo":[{"foo":"baz0","keep":"value0"},{"foo":"baz1","keep":"value1"},{"foo":"baz2","keep":"value2"}],"other":"data"}`))
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"top_foo":[{"foo":"baz3","keep":"value3"},{"foo":"baz4","keep":"value4"},{"foo":"baz5","keep":"value5"}],"other":"data"}`))
 
-	record := bld.NewRecord()
+	record := bld.NewRecordBatch()
 	updater := New(record)
 
 	// Test removal using gjson syntax with # for array elements
@@ -606,7 +622,7 @@ func TestRemoveDeeplyNestedColumnsWithGjsonSyntax(t *testing.T) {
 	// Second row: has 1 object in object2 array, with 2 nested2_object1 values = 2 total
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"object1":{"object2":[{"nested_object1":{"nested_object2":[{"nested2_object1":5,"keep":"e"},{"nested2_object1":6,"keep":"f"}]}}]}}`))
 
-	record := bld.NewRecord()
+	record := bld.NewRecordBatch()
 	updater := New(record)
 
 	// Test removal using gjson syntax with multiple # for nested arrays
@@ -647,7 +663,7 @@ func TestRemoveNestedArrayWithGjsonSyntax(t *testing.T) {
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`[{"env": [{"name": "AWS_ACCESS_KEY_ID", "value": "test"}, {"name": "AWS_SECRET_KEY", "value": "secret"}]}, {"env": [{"name": "DB_PASSWORD", "value": "password"}]}]`))
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`[{"env": [{"name": "API_KEY", "value": "api-key-value"}]}]`))
 
-	record := bld.NewRecord()
+	record := bld.NewRecordBatch()
 	updater := New(record)
 
 	// Test removal using gjson syntax: #.env.#.value (remove all "value" fields from nested env arrays)

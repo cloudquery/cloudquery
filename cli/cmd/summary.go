@@ -35,6 +35,7 @@ type syncSummary struct {
 	SourceTables        []string          `json:"source_tables"`
 	SyncID              string            `json:"sync_id"`
 	SyncTime            time.Time         `json:"sync_time"`
+	SyncDurationMs      uint64            `json:"sync_duration_ms"`
 	SyncGroupID         *string           `json:"sync_group_id,omitempty"`
 	ShardNum            *int              `json:"shard_num,omitempty"`
 	ShardTotal          *int              `json:"shard_total,omitempty"`

@@ -1,5 +1,84 @@
 # Changelog
 
+## [8.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v8.0.2...plugins-destination-clickhouse-v8.1.0) (2026-01-15)
+
+
+### Features
+
+* Bring back Sentry DSNs for existing projects ([#21808](https://github.com/cloudquery/cloudquery/issues/21808)) ([a3b5aeb](https://github.com/cloudquery/cloudquery/commit/a3b5aebc5c7fb8f1253f196d3a8f4fb23b237aae))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.0 ([#21811](https://github.com/cloudquery/cloudquery/issues/21811)) ([c22bc0a](https://github.com/cloudquery/cloudquery/commit/c22bc0a15bd69428eaed263a4de467a0d601b749))
+
+## [8.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v8.0.1...plugins-destination-clickhouse-v8.0.2) (2026-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.34 ([#21776](https://github.com/cloudquery/cloudquery/issues/21776)) ([44fad18](https://github.com/cloudquery/cloudquery/commit/44fad18d228cb61dc9a9311143abdb71d34f2c79))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.35 ([#21798](https://github.com/cloudquery/cloudquery/issues/21798)) ([451444f](https://github.com/cloudquery/cloudquery/commit/451444fee39e1ac7991e3be8cce41dac34754571))
+
+## [8.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v8.0.0...plugins-destination-clickhouse-v8.0.1) (2026-01-02)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 944ab1f ([#21762](https://github.com/cloudquery/cloudquery/issues/21762)) ([fbf4f80](https://github.com/cloudquery/cloudquery/commit/fbf4f808127cb8f7b0a48a05ba750d036585b914))
+* **deps:** Update module github.com/ClickHouse/clickhouse-go/v2 to v2.42.0 ([#21770](https://github.com/cloudquery/cloudquery/issues/21770)) ([959ed1c](https://github.com/cloudquery/cloudquery/commit/959ed1c664c6473f06d43dc85395111d40fd8322))
+
+## [8.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.3.8...plugins-destination-clickhouse-v8.0.0) (2025-12-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* Correct nullability for map items ([#21760](https://github.com/cloudquery/cloudquery/issues/21760))
+
+### Bug Fixes
+
+* Correct nullability for map items ([#21760](https://github.com/cloudquery/cloudquery/issues/21760)) ([62c5085](https://github.com/cloudquery/cloudquery/commit/62c508505233727bab568f730800c404855d841e))
+
+## [7.3.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.3.7...plugins-destination-clickhouse-v7.3.8) (2025-12-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.92.1 ([#21682](https://github.com/cloudquery/cloudquery/issues/21682)) ([8a7596b](https://github.com/cloudquery/cloudquery/commit/8a7596bd5a15e4b79bdb26f385be9eaeafdae108))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.93.0 ([#21710](https://github.com/cloudquery/cloudquery/issues/21710)) ([f0f2c5b](https://github.com/cloudquery/cloudquery/commit/f0f2c5b5de8f3d3a5cb6a049f0035f17e9d7bbb6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.93.1 ([#21725](https://github.com/cloudquery/cloudquery/issues/21725)) ([aa46079](https://github.com/cloudquery/cloudquery/commit/aa460797637559c010152c639d2d4363caf3491d))
+
+## [7.3.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.3.6...plugins-destination-clickhouse-v7.3.7) (2025-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.92.0 ([#21579](https://github.com/cloudquery/cloudquery/issues/21579)) ([496d29a](https://github.com/cloudquery/cloudquery/commit/496d29af60229bcf5b62f4641467bc6b9eda8e9c))
+
+## [7.3.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.3.5...plugins-destination-clickhouse-v7.3.6) (2025-11-06)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to a4bb9ff ([#21539](https://github.com/cloudquery/cloudquery/issues/21539)) ([ed2988d](https://github.com/cloudquery/cloudquery/commit/ed2988d827acf546583f9cd392bbb3bffbf55206))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.33 ([#21571](https://github.com/cloudquery/cloudquery/issues/21571)) ([4abf18d](https://github.com/cloudquery/cloudquery/commit/4abf18d1060aeb7cad06110bf600268a7da74366))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.91.0 ([#21537](https://github.com/cloudquery/cloudquery/issues/21537)) ([db6f9a0](https://github.com/cloudquery/cloudquery/commit/db6f9a083ab8dddb21f15142b058dadb2a54d49e))
+
+## [7.3.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.3.4...plugins-destination-clickhouse-v7.3.5) (2025-10-16)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/ClickHouse/clickhouse-go/v2 to v2.40.3 ([#21499](https://github.com/cloudquery/cloudquery/issues/21499)) ([c5ec7ba](https://github.com/cloudquery/cloudquery/commit/c5ec7ba8b73c4f130d606646a8668b81f9b2390a))
+
+## [7.3.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.3.3...plugins-destination-clickhouse-v7.3.4) (2025-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to df92998 ([#21436](https://github.com/cloudquery/cloudquery/issues/21436)) ([21ed4c8](https://github.com/cloudquery/cloudquery/commit/21ed4c88bbf9252c92bcfca184d01d676e6c53ec))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.32 ([#21413](https://github.com/cloudquery/cloudquery/issues/21413)) ([3d3b1cc](https://github.com/cloudquery/cloudquery/commit/3d3b1cc86d676095321e4304a6c04b5b3c4a1278))
+
 ## [7.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v7.3.2...plugins-destination-clickhouse-v7.3.3) (2025-09-04)
 
 

@@ -5,8 +5,8 @@ import (
 	"strings"
 
 	"github.com/ClickHouse/clickhouse-go/v2/lib/driver"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/typeconv/arrow/types"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/util"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/types"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/util"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )

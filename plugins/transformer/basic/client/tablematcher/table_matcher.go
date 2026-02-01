@@ -8,7 +8,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
 
-// TableMatcher takes a slice of glob patterns and answers whether an `arrow.Record`
+// TableMatcher takes a slice of glob patterns and answers whether an `arrow.RecordBatch`
 // belongs to a table matching any of the patterns (via Schema().Metadata()).
 //
 // It is used to allowlist records for transformations, based on spec.

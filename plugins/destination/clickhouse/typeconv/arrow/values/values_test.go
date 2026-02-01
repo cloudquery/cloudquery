@@ -28,7 +28,7 @@ func ensureRecord(t *testing.T, tc testCase) {
 		table := &schema.Table{Columns: schema.ColumnList{{Name: "field", Type: tc.dataType}}}
 		builder := array.NewRecordBuilder(memory.DefaultAllocator, table.ToArrowSchema())
 		require.NoError(t, AppendToRecordBuilder(builder, []any{tc.value}))
-		record := builder.NewRecord()
+		record := builder.NewRecordBatch()
 		require.Equal(t, int64(1), record.NumRows())
 		require.Equal(t, int64(1), record.NumCols())
 

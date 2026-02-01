@@ -110,7 +110,7 @@ func testPluginCustom(t *testing.T, s *spec.Spec) {
 
 	bldr := array.NewRecordBuilder(memory.DefaultAllocator, table.ToArrowSchema())
 	bldr.Field(0).(*array.StringBuilder).Append("foo")
-	record := bldr.NewRecord()
+	record := bldr.NewRecordBatch()
 
 	if err := p.WriteAll(ctx, []message.WriteMessage{
 		&message.WriteInsert{
@@ -136,15 +136,15 @@ func testPluginCustom(t *testing.T, s *spec.Spec) {
 	}, 2*time.Second, 100*time.Millisecond)
 }
 
-func readAll(ctx context.Context, client plugin.Client, table *schema.Table) ([]arrow.Record, error) {
+func readAll(ctx context.Context, client plugin.Client, table *schema.Table) ([]arrow.RecordBatch, error) {
 	var err error
-	ch := make(chan arrow.Record)
+	ch := make(chan arrow.RecordBatch)
 	go func() {
 		defer close(ch)
 		err = client.Read(ctx, table, ch)
 	}()
 	// nolint:prealloc
-	var records []arrow.Record
+	var records []arrow.RecordBatch
 	for record := range ch {
 		records = append(records, record)
 	}

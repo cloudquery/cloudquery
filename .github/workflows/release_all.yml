@@ -3,6 +3,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   add-automerge-labels:

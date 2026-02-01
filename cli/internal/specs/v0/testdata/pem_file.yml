@@ -1,0 +1,17 @@
+kind: source
+spec:
+  name: test-source
+  path: cloudquery/test
+  version: v1.0.0
+  destinations: [test-destination]
+  tables: ["*"]
+  spec:
+    certificate: "${file:./testdata/test_certificate.pem}"
+---
+kind: destination
+spec:
+  name: test-destination
+  path: cloudquery/postgresql
+  version: v1.0.0
+  spec:
+    connection_string: "postgresql://localhost:5432/test"

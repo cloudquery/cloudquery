@@ -1,5 +1,71 @@
 # Changelog
 
+## [8.14.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.13.4...plugins-destination-postgresql-v8.14.0) (2026-01-15)
+
+
+### Features
+
+* Bring back Sentry DSNs for existing projects ([#21808](https://github.com/cloudquery/cloudquery/issues/21808)) ([a3b5aeb](https://github.com/cloudquery/cloudquery/commit/a3b5aebc5c7fb8f1253f196d3a8f4fb23b237aae))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.0 ([#21811](https://github.com/cloudquery/cloudquery/issues/21811)) ([c22bc0a](https://github.com/cloudquery/cloudquery/commit/c22bc0a15bd69428eaed263a4de467a0d601b749))
+
+## [8.13.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.13.3...plugins-destination-postgresql-v8.13.4) (2026-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.34 ([#21776](https://github.com/cloudquery/cloudquery/issues/21776)) ([44fad18](https://github.com/cloudquery/cloudquery/commit/44fad18d228cb61dc9a9311143abdb71d34f2c79))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.35 ([#21798](https://github.com/cloudquery/cloudquery/issues/21798)) ([451444f](https://github.com/cloudquery/cloudquery/commit/451444fee39e1ac7991e3be8cce41dac34754571))
+
+## [8.13.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.13.2...plugins-destination-postgresql-v8.13.3) (2025-12-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.92.1 ([#21682](https://github.com/cloudquery/cloudquery/issues/21682)) ([8a7596b](https://github.com/cloudquery/cloudquery/commit/8a7596bd5a15e4b79bdb26f385be9eaeafdae108))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.93.0 ([#21710](https://github.com/cloudquery/cloudquery/issues/21710)) ([f0f2c5b](https://github.com/cloudquery/cloudquery/commit/f0f2c5b5de8f3d3a5cb6a049f0035f17e9d7bbb6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.93.1 ([#21725](https://github.com/cloudquery/cloudquery/issues/21725)) ([aa46079](https://github.com/cloudquery/cloudquery/commit/aa460797637559c010152c639d2d4363caf3491d))
+* **deps:** Update module golang.org/x/crypto to v0.45.0 [SECURITY] ([#21647](https://github.com/cloudquery/cloudquery/issues/21647)) ([d3f1ff8](https://github.com/cloudquery/cloudquery/commit/d3f1ff8759f26cf5762e51cbd661c70ec9ca2eb4))
+
+## [8.13.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.13.1...plugins-destination-postgresql-v8.13.2) (2025-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.92.0 ([#21579](https://github.com/cloudquery/cloudquery/issues/21579)) ([496d29a](https://github.com/cloudquery/cloudquery/commit/496d29af60229bcf5b62f4641467bc6b9eda8e9c))
+
+## [8.13.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.13.0...plugins-destination-postgresql-v8.13.1) (2025-11-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.33 ([#21571](https://github.com/cloudquery/cloudquery/issues/21571)) ([4abf18d](https://github.com/cloudquery/cloudquery/commit/4abf18d1060aeb7cad06110bf600268a7da74366))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.91.0 ([#21537](https://github.com/cloudquery/cloudquery/issues/21537)) ([db6f9a0](https://github.com/cloudquery/cloudquery/commit/db6f9a083ab8dddb21f15142b058dadb2a54d49e))
+
+## [8.13.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.12.2...plugins-destination-postgresql-v8.13.0) (2025-10-23)
+
+
+### Features
+
+* Publish FIPS versions ([#21516](https://github.com/cloudquery/cloudquery/issues/21516)) ([e7e8b98](https://github.com/cloudquery/cloudquery/commit/e7e8b98980db1fafe1b4736d7f4da45e75064fc9))
+
+
+### Bug Fixes
+
+* Revert "fix: Table with PK components should upsert." ([#21476](https://github.com/cloudquery/cloudquery/issues/21476)) ([aca787b](https://github.com/cloudquery/cloudquery/commit/aca787bccc1d3d069a6866fc2af4423f0777f6c8))
+* Table with PK components should upsert. ([#21474](https://github.com/cloudquery/cloudquery/issues/21474)) ([7ee3801](https://github.com/cloudquery/cloudquery/commit/7ee38015a291c8352258e814b69462a00fc4cfda))
+
+## [8.12.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.12.1...plugins-destination-postgresql-v8.12.2) (2025-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.32 ([#21413](https://github.com/cloudquery/cloudquery/issues/21413)) ([3d3b1cc](https://github.com/cloudquery/cloudquery/commit/3d3b1cc86d676095321e4304a6c04b5b3c4a1278))
+* **deps:** Update module github.com/jackc/pgx/v5 to v5.7.6 ([#21442](https://github.com/cloudquery/cloudquery/issues/21442)) ([f8f643e](https://github.com/cloudquery/cloudquery/commit/f8f643e46613a2e26c6cca8b36d580547947352b))
+
 ## [8.12.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.12.0...plugins-destination-postgresql-v8.12.1) (2025-09-04)
 
 

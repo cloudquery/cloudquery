@@ -16,7 +16,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.RecordBatch) error {
 	f, err := os.CreateTemp("", fmt.Sprintf("%s-*.parquet", table.Name))
 	if err != nil {
 		return err
@@ -65,7 +65,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 	}
 
 	for rr.Next() {
-		for _, r := range slice(reverseTransformRecord(sc, rr.Record())) {
+		for _, r := range slice(reverseTransformRecord(sc, rr.RecordBatch())) {
 			res <- r
 		}
 	}
@@ -76,22 +76,22 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 	return nil
 }
 
-func slice(r arrow.Record) []arrow.Record {
-	res := make([]arrow.Record, r.NumRows())
+func slice(r arrow.RecordBatch) []arrow.RecordBatch {
+	res := make([]arrow.RecordBatch, r.NumRows())
 	for i := int64(0); i < r.NumRows(); i++ {
 		res[i] = r.NewSlice(i, i+1)
 	}
 	return res
 }
 
-func reverseTransformRecord(sc *arrow.Schema, rec arrow.Record) arrow.Record {
+func reverseTransformRecord(sc *arrow.Schema, rec arrow.RecordBatch) arrow.RecordBatch {
 	cols := make([]arrow.Array, rec.NumCols())
 
 	for i := 0; i < int(rec.NumCols()); i++ {
 		cols[i] = reverseTransformArray(sc.Field(i).Type, rec.Column(i))
 	}
 
-	return array.NewRecord(sc, cols, rec.NumRows())
+	return array.NewRecordBatch(sc, cols, rec.NumRows())
 }
 
 func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {

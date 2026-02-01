@@ -11,3 +11,7 @@ fmt-check:
 
 build-docker:
 	docker build -t sqlite-python:latest .
+
+coverage:
+	# TODO: add coverage
+	exit 0

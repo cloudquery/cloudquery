@@ -25,7 +25,7 @@ const (
 	readSQL = "SELECT %s FROM `%s.%s.%s`"
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.RecordBatch) error {
 	colSQL := "`" + strings.Join(table.Columns.Names(), "`, `") + "`"
 	stmt := fmt.Sprintf(readSQL, colSQL, c.spec.ProjectID, c.spec.DatasetID, table.Name)
 	q := c.client.Query(stmt)
@@ -53,7 +53,7 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 				return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 			}
 		}
-		res <- rb.NewRecord()
+		res <- rb.NewRecordBatch()
 	}
 	return nil
 }

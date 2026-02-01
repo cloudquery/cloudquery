@@ -6,9 +6,9 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/client/spec"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/queries"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/typeconv"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/spec"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/queries"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/samber/lo"

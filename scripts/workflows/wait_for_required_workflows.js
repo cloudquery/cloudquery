@@ -30,7 +30,15 @@ module.exports = async ({github, context}) => {
         const plugins = configUIDirectories.map(directory => `plugins/${directory.replace(cloudConfigUIDir, "")}`)
         console.log(`Found the following plugins with config UI: ${plugins.join(", ")}`)
         return plugins
-    } 
+    }
+
+    const getPluginsWithFipsVersion = () => {
+        const mainFipsGoFile = "/main_fips.go"
+        const mainFipsGoFiles = fs.readdirSync("plugins", {recursive: true}).filter(file => file.endsWith(mainFipsGoFile))
+        const plugins = mainFipsGoFiles.map(file => `plugins/${file.replace(mainFipsGoFile, "")}`)
+        console.log(`Found the following plugins with fips version: ${plugins.join(", ")}`)
+        return plugins
+    }
 
     const sources = fs.readdirSync("plugins/source", {withFileTypes: true}).filter(dirent => dirent.isDirectory()).map(dirent => `plugins/source/${dirent.name}`)
     const destinations = fs.readdirSync("plugins/destination", {withFileTypes: true}).filter(dirent => dirent.isDirectory()).map(dirent => `plugins/destination/${dirent.name}`)
@@ -62,7 +70,7 @@ module.exports = async ({github, context}) => {
         }
     }
 
-    const pluginsWithFipsVersion = ["plugins/source/test"]
+    const pluginsWithFipsVersion = getPluginsWithFipsVersion()
     for (const action of actions) {
         if (pluginsWithFipsVersion.includes(action)) {
             console.log(`Adding validate-fips to the list of required workflows for plugin ${action}`)

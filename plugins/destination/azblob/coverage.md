@@ -1,0 +1,14 @@
+| File | Function | Coverage |
+| --- | --- | --- |
+| github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/client.go:80: | Close | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/read.go:13: | Read | 75.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/spec/gen/main.go:14: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/spec/gen/main.go:24: | currDir | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/spec/schema.go:10: | JSONSchemaExtend | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/spec/spec.go:43: | SetDefaults | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/spec/spec.go:69: | Validate | 76.9% |
+| github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/spec/spec.go:94: | int64ptr | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/write.go:14: | WriteTable | 76.5% |
+| github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/client/write.go:45: | Write | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/azblob/v4/main.go:18: | main | 0.0% |
+| total: | (statements) | 59.5% |

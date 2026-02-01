@@ -26,6 +26,10 @@ func TestTestConnection(t *testing.T) {
 			config: "test-connection-bad-connection.yml",
 			errors: []string{"cloudflare (cloudquery/cloudflare@v", "postgresql (cloudquery/postgresql@v"},
 		},
+		{
+			name:   "source with no destination should pass validation",
+			config: "source-no-destination.yml",
+		},
 	}
 	_, filename, _, _ := runtime.Caller(0)
 	currentDir := path.Dir(filename)

@@ -7,12 +7,12 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
-func transformRecord(sc *arrow.Schema, rec arrow.Record) arrow.Record {
+func transformRecord(sc *arrow.Schema, rec arrow.RecordBatch) arrow.RecordBatch {
 	cols := make([]arrow.Array, rec.NumCols())
 	for i := 0; i < int(rec.NumCols()); i++ {
 		cols[i] = transformArray(rec.Column(i))
 	}
-	return array.NewRecord(sc, cols, rec.NumRows())
+	return array.NewRecordBatch(sc, cols, rec.NumRows())
 }
 
 func transformArray(arr arrow.Array) arrow.Array {

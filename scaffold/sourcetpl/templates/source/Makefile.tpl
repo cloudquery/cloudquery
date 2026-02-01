@@ -1,6 +1,6 @@
 .PHONY: test
 test:
-	go test -timeout 10m ./...
+	go test -race -timeout 10m ./...
 
 .PHONY: lint
 lint:

@@ -110,7 +110,7 @@ func (Source) JSONSchemaExtend(sc *jsonschema.Schema) {
 	Metadata{}.JSONSchemaExtend(sc) // have to call manually
 }
 
-func (s *Source) Validate() error {
+func (s *Source) Validate(relaxed bool) error {
 	if err := s.Metadata.Validate(); err != nil {
 		return err
 	}
@@ -119,7 +119,7 @@ func (s *Source) Validate() error {
 		return errors.New("tables configuration is required. Hint: set the tables you want to sync by adding `tables: [...]` or use `cloudquery tables` to list available tables")
 	}
 
-	if len(s.Destinations) == 0 {
+	if !relaxed && len(s.Destinations) == 0 {
 		return errors.New("at least one destination is required")
 	}
 

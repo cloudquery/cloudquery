@@ -27,22 +27,6 @@ jobs:
     defaults:
       run:
         working-directory: ./plugins/destination/postgresql
-    services:
-      # Label used to access the service container
-      postgres:
-        image: postgres:10
-        env:
-          POSTGRES_PASSWORD: pass
-          POSTGRES_USER: postgres
-          POSTGRES_DB: postgres
-        ports:
-          - 5432:5432
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - uses: actions/checkout@v4
         with:
@@ -56,7 +40,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v8
         with:
-          version: v2.4.0
+          version: v2.5.0
           working-directory: plugins/destination/postgresql
           args: "--config ../../.golangci.yml"
       - name: gen
@@ -69,12 +53,43 @@ jobs:
         run: go build .
       - name: Test PG
         run: make test
-      # cockroachdb doesn't support services right now
-      # https://stackoverflow.com/questions/73648218/github-action-setup-secure-cockroachdb
-      - name: Spin up CockroachDB
-        run: |
-          docker run -d -p 26257:26257 cockroachdb/cockroach:v22.1.8 start-single-node --insecure
-          sudo apt update && sudo apt install wait-for-it -y
-          wait-for-it -h localhost -p 26257
       - name: Test CockroachDB
-        run: CQ_DEST_PG_TEST_CONN="postgresql://root@localhost:26257/postgres?sslmode=disable" make test
+        run: make test-cockroachdb
+
+  validate-fips:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./plugins/destination/postgresql
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-1.25.6-validate-plugin-fips-cache-${{ hashFiles('plugins/destination/postgresql/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-1.25.6-validate-plugin-fips-cache-destination-postgresql
+
+      - name: Set up Go 1.x
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: plugins/destination/postgresql/go.mod
+          cache: false
+
+      - name: Run package command
+        env:
+          GOFLAGS: "-tags=fipsEnabled"
+        run: |
+          rm -rf docs/tables.md
+          go run main_fips.go package -m "chore: Test FIPS" "v1.0.0" .
+
+      - name: Unzip package artifacts
+        run: |
+          unzip -o dist/plugin-postgresql-v1.0.0-linux-amd64.zip
+          chmod +x plugin-postgresql-v1.0.0-linux-amd64
+          ./plugin-postgresql-v1.0.0-linux-amd64 --version 2>&1 | grep -E 'FIPS enabled: true'

@@ -122,7 +122,7 @@ jobs:
         if: needs.prepare.outputs.ui_dir_arg != ''
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.29.4
+          version: v6.34.0
 
       - name: Build
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -247,7 +247,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.29.4
+          version: v6.34.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -261,9 +261,9 @@ jobs:
         if: always()
         with:
           status: ${{ job.status }}
-          notify_when: 'failure'
-          notification_title: 'Failed to publish to hub ${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}@${{ needs.prepare.outputs.plugin_version }}'
-          footer: '<{repo_url}|{repo}>'
+          notify_when: "failure"
+          notification_title: "Failed to publish to hub ${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}@${{ needs.prepare.outputs.plugin_version }}"
+          footer: "<{repo_url}|{repo}>"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL }}
 
@@ -348,7 +348,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.29.4
+          version: v6.34.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -362,9 +362,9 @@ jobs:
         if: always()
         with:
           status: ${{ job.status }}
-          notify_when: 'failure'
-          notification_title: 'Failed to publish to hub ${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}@${{ needs.prepare.outputs.plugin_version }}'
-          footer: '<{repo_url}|{repo}>'
+          notify_when: "failure"
+          notification_title: "Failed to publish to hub ${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}@${{ needs.prepare.outputs.plugin_version }}"
+          footer: "<{repo_url}|{repo}>"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL }}
 
@@ -443,7 +443,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.29.4
+          version: v6.34.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -457,14 +457,16 @@ jobs:
         if: always()
         with:
           status: ${{ job.status }}
-          notify_when: 'failure'
-          notification_title: 'Failed to publish to hub ${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}@${{ needs.prepare.outputs.plugin_version }}'
-          footer: '<{repo_url}|{repo}>'
+          notify_when: "failure"
+          notification_title: "Failed to publish to hub ${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}@${{ needs.prepare.outputs.plugin_version }}"
+          footer: "<{repo_url}|{repo}>"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL }}
 
   publish-plugin-to-hub-go:
     timeout-minutes: 60
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     needs:
       - prepare
@@ -488,9 +490,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.25.1-publish-plugin-to-hub-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
+          key: ${{ runner.os }}-go-1.25.6-publish-plugin-to-hub-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
           restore-keys: |
-            ${{ runner.os }}-go-1.25.1-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}
+            ${{ runner.os }}-go-1.25.6-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}
 
       - name: Set up Go 1.x
         uses: actions/setup-go@v5
@@ -544,7 +546,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.29.4
+          version: v6.34.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -563,8 +565,8 @@ jobs:
         if: always()
         with:
           status: ${{ job.status }}
-          notify_when: 'failure'
-          notification_title: 'Failed to publish to hub ${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}@${{ needs.prepare.outputs.plugin_version }}'
-          footer: '<{repo_url}|{repo}>'
+          notify_when: "failure"
+          notification_title: "Failed to publish to hub ${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}@${{ needs.prepare.outputs.plugin_version }}"
+          footer: "<{repo_url}|{repo}>"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL }}

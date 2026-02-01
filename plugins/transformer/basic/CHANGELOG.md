@@ -1,5 +1,49 @@
 # Changelog
 
+## [2.6.13](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.12...plugins-transformer-basic-v2.6.13) (2026-01-15)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.0 ([#21811](https://github.com/cloudquery/cloudquery/issues/21811)) ([c22bc0a](https://github.com/cloudquery/cloudquery/commit/c22bc0a15bd69428eaed263a4de467a0d601b749))
+
+## [2.6.12](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.11...plugins-transformer-basic-v2.6.12) (2026-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/tidwall/pretty to v1.2.1 ([#21768](https://github.com/cloudquery/cloudquery/issues/21768)) ([796fcc3](https://github.com/cloudquery/cloudquery/commit/796fcc343c7e9b30522640b92ad9f8fbb6360a6f))
+
+## [2.6.11](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.10...plugins-transformer-basic-v2.6.11) (2025-12-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.92.1 ([#21682](https://github.com/cloudquery/cloudquery/issues/21682)) ([8a7596b](https://github.com/cloudquery/cloudquery/commit/8a7596bd5a15e4b79bdb26f385be9eaeafdae108))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.93.0 ([#21710](https://github.com/cloudquery/cloudquery/issues/21710)) ([f0f2c5b](https://github.com/cloudquery/cloudquery/commit/f0f2c5b5de8f3d3a5cb6a049f0035f17e9d7bbb6))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.93.1 ([#21725](https://github.com/cloudquery/cloudquery/issues/21725)) ([aa46079](https://github.com/cloudquery/cloudquery/commit/aa460797637559c010152c639d2d4363caf3491d))
+
+## [2.6.10](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.9...plugins-transformer-basic-v2.6.10) (2025-11-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.92.0 ([#21579](https://github.com/cloudquery/cloudquery/issues/21579)) ([496d29a](https://github.com/cloudquery/cloudquery/commit/496d29af60229bcf5b62f4641467bc6b9eda8e9c))
+
+## [2.6.9](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.8...plugins-transformer-basic-v2.6.9) (2025-11-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.91.0 ([#21537](https://github.com/cloudquery/cloudquery/issues/21537)) ([db6f9a0](https://github.com/cloudquery/cloudquery/commit/db6f9a083ab8dddb21f15142b058dadb2a54d49e))
+
+## [2.6.8](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.7...plugins-transformer-basic-v2.6.8) (2025-10-09)
+
+
+### Bug Fixes
+
+* Set unique=false on all columns when adding PKs. ([#21478](https://github.com/cloudquery/cloudquery/issues/21478)) ([642741a](https://github.com/cloudquery/cloudquery/commit/642741ac135ddfb76dafcef30681c8f79eab3ac8))
+
 ## [2.6.7](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.6...plugins-transformer-basic-v2.6.7) (2025-09-04)
 
 

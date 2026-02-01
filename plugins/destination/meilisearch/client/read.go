@@ -11,7 +11,7 @@ import (
 	"github.com/meilisearch/meilisearch-go"
 )
 
-func (c *Client) Read(_ context.Context, table *schema.Table, res chan<- arrow.Record) error {
+func (c *Client) Read(_ context.Context, table *schema.Table, res chan<- arrow.RecordBatch) error {
 	sc := table.ToArrowSchema()
 	index, err := c.Meilisearch.GetIndex(table.Name)
 	if err != nil {
@@ -50,7 +50,7 @@ func (c *Client) Read(_ context.Context, table *schema.Table, res chan<- arrow.R
 	return nil
 }
 
-func docToRecord(sc *arrow.Schema, doc map[string]any) (arrow.Record, error) {
+func docToRecord(sc *arrow.Schema, doc map[string]any) (arrow.RecordBatch, error) {
 	builder := array.NewRecordBuilder(memory.DefaultAllocator, sc)
 
 	for i, builder := range builder.Fields() {
@@ -59,5 +59,5 @@ func docToRecord(sc *arrow.Schema, doc map[string]any) (arrow.Record, error) {
 		}
 	}
 
-	return builder.NewRecord(), nil
+	return builder.NewRecordBatch(), nil
 }

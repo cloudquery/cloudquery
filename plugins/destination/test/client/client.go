@@ -82,7 +82,7 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.Ne
 	return c, nil
 }
 
-func (*Client) Read(context.Context, *schema.Table, chan<- arrow.Record) error {
+func (*Client) Read(context.Context, *schema.Table, chan<- arrow.RecordBatch) error {
 	return nil
 }
 

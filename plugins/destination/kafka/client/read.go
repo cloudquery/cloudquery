@@ -14,7 +14,7 @@ const (
 	maxWaitTime = 3 * time.Second
 )
 
-func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.Record) error {
+func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow.RecordBatch) error {
 	consumer, err := sarama.NewConsumer(c.spec.Brokers, c.conf)
 	if err != nil {
 		return err

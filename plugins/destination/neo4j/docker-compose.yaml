@@ -1,0 +1,28 @@
+services:
+  neo4j:
+    image: neo4j:4.4
+    environment:
+      NEO4J_dbms_security_procedures_unrestricted: apoc.*
+      NEO4J_dbms_connector_bolt_enabled: "true"
+      NEO4J_apoc_import_file_enabled: "true"
+      NEO4J_apoc_export_file_enabled: "true"
+      NEO4J_apoc_import_file_use__neo4j__config: "true"
+      NEO4J_ACCEPT_LICENSE_AGREEMENT: "yes"
+      NEO4J_dbms_security_auth__enabled: "false"
+      NEO4J_dbms_connector_bolt_advertised__address: localhost:7687
+    ports:
+      - "7687:7687"
+      - "7474:7474"
+    healthcheck:
+      test: ["CMD", "cypher-shell", "match (n) return count(n)"]
+      interval: 10s
+      timeout: 10s
+      retries: 20
+      start_period: 30s
+    networks:
+      - neo4j
+
+networks:
+  neo4j:
+    name: neo4j
+    driver: bridge

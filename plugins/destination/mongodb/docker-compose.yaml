@@ -1,0 +1,17 @@
+services:
+  mongodb:
+    image: mongo:3.6
+    ports:
+      - "27017:27017"
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - mongodb
+
+networks:
+  mongodb:
+    name: mongodb
+    driver: bridge

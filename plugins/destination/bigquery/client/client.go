@@ -83,7 +83,7 @@ func bqClient(ctx context.Context, s Spec) (*bigquery.Client, error) {
 		option.WithUserAgent(fmt.Sprintf("CloudQuery_BigQuery_Destination/%s (GPN:%s)", internalPlugin.Version, cloudQueryGPN)),
 	}
 	if len(s.ServiceAccountKeyJSON) != 0 {
-		opts = append(opts, option.WithCredentialsJSON([]byte(s.ServiceAccountKeyJSON)))
+		opts = append(opts, option.WithAuthCredentialsJSON(option.ServiceAccount, []byte(s.ServiceAccountKeyJSON)))
 	}
 	if s.Endpoint != "" {
 		opts = append(opts, option.WithEndpoint(s.Endpoint))
