@@ -32,7 +32,7 @@ jobs:
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: plugins/destination/kafka/go.mod
           cache: true
@@ -74,7 +74,7 @@ jobs:
             ${{ runner.os }}-go-1.25.6-validate-plugin-fips-cache-destination-kafka
 
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: plugins/destination/kafka/go.mod
           cache: false

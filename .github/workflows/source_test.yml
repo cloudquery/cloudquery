@@ -32,7 +32,7 @@ jobs:
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: plugins/source/test/go.mod
           cache: true
@@ -78,7 +78,7 @@ jobs:
             ${{ runner.os }}-go-1.25.6-validate-plugin-fips-cache-source-test
 
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: plugins/source/test/go.mod
           cache: false

@@ -43,7 +43,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-1.25.6-release-cache-cli
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: cli/go.mod
           cache: false
