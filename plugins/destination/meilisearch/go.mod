@@ -11,7 +11,7 @@ require (
 	github.com/invopop/jsonschema v0.13.0
 	github.com/meilisearch/meilisearch-go v0.24.0
 	github.com/rs/zerolog v1.34.0
-	github.com/valyala/fasthttp v1.58.0
+	github.com/valyala/fasthttp v1.69.0
 )
 
 require (
