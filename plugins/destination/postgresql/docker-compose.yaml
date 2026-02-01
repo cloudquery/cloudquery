@@ -13,7 +13,7 @@ services:
       timeout: 5s
       retries: 5
   cockroachdb:
-    image: cockroachdb/cockroach:v22.1.8
+    image: cockroachdb/cockroach:v22.2.19
     command: start-single-node --insecure
     platform: linux/amd64
     ports:
