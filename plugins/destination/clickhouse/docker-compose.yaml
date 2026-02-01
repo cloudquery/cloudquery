@@ -1,6 +1,6 @@
 services:
   clickhouse:
-    image: clickhouse/clickhouse-server:24.8.1
+    image: clickhouse/clickhouse-server:25.12.4
     ulimits:
       nofile:
         soft: 262144
