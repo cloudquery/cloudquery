@@ -18,7 +18,7 @@ jobs:
     continue-on-error: true
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/labeler@v4
+      - uses: actions/labeler@v6
         continue-on-error: true
         with:
           repo-token: ${{ secrets.GH_CQ_BOT }}
