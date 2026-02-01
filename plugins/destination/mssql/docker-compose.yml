@@ -1,6 +1,6 @@
 services:
   mssql:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/mssql/server:2025-latest
     platform: linux/amd64
     environment:
       ACCEPT_EULA: Y
@@ -30,7 +30,7 @@ services:
       timeout: 30s
       retries: 30
   init:
-    image: mcr.microsoft.com/mssql/server:2019-latest
+    image: mcr.microsoft.com/mssql/server:2025-latest
     platform: linux/amd64
     command: /opt/mssql-tools18/bin/sqlcmd -C -S tcp:mssql,1433 -U SA -P yourStrongP@ssword -Q "CREATE DATABASE cloudquery;"
     depends_on:
