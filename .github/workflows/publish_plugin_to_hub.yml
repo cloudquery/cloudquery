@@ -62,7 +62,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v8
         id: set-result
         env:
           PLUGIN_DIR: ${{steps.split.outputs.plugin_dir}}
@@ -86,7 +86,7 @@ jobs:
             return 'unsupported';
           result-encoding: string
 
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v8
         id: check-ui-directory
         env:
           PLUGIN_DIR: ${{steps.split.outputs.plugin_dir}}
@@ -199,7 +199,7 @@ jobs:
 
       - name: Get Release Notes
         id: release-notes
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
         with:
@@ -310,7 +310,7 @@ jobs:
 
       - name: Get Release Notes
         id: release-notes
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
         with:
@@ -405,7 +405,7 @@ jobs:
 
       - name: Get Release Notes
         id: release-notes
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
         with:
@@ -512,7 +512,7 @@ jobs:
 
       - name: Get Release Notes
         id: release-notes
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
         with:
