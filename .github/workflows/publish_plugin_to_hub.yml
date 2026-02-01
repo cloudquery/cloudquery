@@ -155,7 +155,7 @@ jobs:
 
       - name: Upload build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
@@ -175,7 +175,7 @@ jobs:
 
       - name: Download build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
@@ -282,7 +282,7 @@ jobs:
 
       - name: Download build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
@@ -383,7 +383,7 @@ jobs:
 
       - name: Download build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
@@ -480,7 +480,7 @@ jobs:
 
       - name: Download build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
