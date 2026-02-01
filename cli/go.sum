@@ -269,8 +269,8 @@ github.com/rs/cors v1.11.1/go.mod h1:XyqrcTp5zjWr1wsJ8PIRZssZ8b/WMcMf71DJnit4EMU
 github.com/rs/xid v1.6.0/go.mod h1:7XoLgs4eV+QndskICGsho+ADou8ySMSjJKDIan90Nz0=
 github.com/rs/zerolog v1.34.0 h1:k43nTLIwcTVQAncfCw4KZ2VY6ukYoZaBPNOE8txlOeY=
 github.com/rs/zerolog v1.34.0/go.mod h1:bJsvje4Z08ROH4Nhs5iH600c3IkWhwp44iRc54W6wYQ=
-github.com/rudderlabs/analytics-go/v4 v4.2.2 h1:Wwmu5fQjtF0MLOhBIcGAcCTaheHAmuMcsHKEQRSu4HU=
-github.com/rudderlabs/analytics-go/v4 v4.2.2/go.mod h1:84tpNtjazdbgJ9hIx3A0JXP5ld0czi90yrsVTBh2RzM=
+github.com/rudderlabs/analytics-go/v4 v4.2.3 h1:klZCka0yVuLkQ+tnb3/OEwC2B9XuFaW+yf0RmQLSr4I=
+github.com/rudderlabs/analytics-go/v4 v4.2.3/go.mod h1:84tpNtjazdbgJ9hIx3A0JXP5ld0czi90yrsVTBh2RzM=
 github.com/russross/blackfriday/v2 v2.1.0 h1:JIOH55/0cWyOuilr9/qlrm0BSXldqnqwMsf35Ld67mk=
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/samber/lo v1.52.0 h1:Rvi+3BFHES3A8meP33VPAxiBZX/Aws5RxrschYGjomw=
