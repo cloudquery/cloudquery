@@ -9,8 +9,8 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/elastic/go-elasticsearch/v8/typedapi/core/deletebyquery"
-	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
+	"github.com/elastic/go-elasticsearch/v9/typedapi/core/deletebyquery"
+	"github.com/elastic/go-elasticsearch/v9/typedapi/types"
 	"golang.org/x/sync/errgroup"
 )
 

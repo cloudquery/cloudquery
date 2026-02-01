@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	cqtypes "github.com/cloudquery/plugin-sdk/v4/types"
-	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
+	"github.com/elastic/go-elasticsearch/v9/typedapi/types"
 	"golang.org/x/exp/maps"
 )
 
