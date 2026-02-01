@@ -180,7 +180,7 @@ jobs:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: "temurin"
           java-version: "20"
