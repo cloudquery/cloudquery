@@ -131,7 +131,7 @@ jobs:
 
       - name: Use Node.js LTS
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "lts/*"
           cache: "npm"
@@ -189,7 +189,7 @@ jobs:
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "lts/*"
 
@@ -300,7 +300,7 @@ jobs:
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "lts/*"
 
@@ -389,7 +389,7 @@ jobs:
           path: ${{ needs.prepare.outputs.ui_build_dir }}
 
       - name: Use Node.js LTS
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "lts/*"
           cache: "npm"
@@ -502,7 +502,7 @@ jobs:
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "lts/*"
 
