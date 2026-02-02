@@ -9,7 +9,7 @@ import (
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/apache/arrow-go/v18/arrow/array"
 	"github.com/apache/arrow-go/v18/arrow/memory"
-	retry "github.com/avast/retry-go/v4"
+	retry "github.com/avast/retry-go/v5"
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/queries"
 	arrowvalues "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/values"
 	chvalues "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values"
