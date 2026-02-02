@@ -288,7 +288,7 @@ func sanitizeIdentifiers(idents []string) []string {
 }
 
 func makeSlice[T any](slices ...[]T) []T {
-	out := make([]T, 0)
+	out := make([]T, 0, len(slices))
 	for _, slice := range slices {
 		out = append(out, slice...)
 	}

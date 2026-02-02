@@ -70,7 +70,6 @@ func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) err
 }
 
 func (c *Client) createTopics(_ context.Context, tables schema.Tables) error {
-	c.conf.Version = sarama.V2_0_0_0
 	admin, err := sarama.NewClusterAdmin(c.spec.Brokers, c.conf)
 	if err != nil {
 		return err

@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/avast/retry-go/v4"
+	"github.com/avast/retry-go/v5"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/jackc/pgx/v5"
@@ -108,7 +108,20 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 }
 
 func (c *Client) flushBatch(ctx context.Context, batch *pgx.Batch) error {
-	err := retry.Do(func() error {
+	retrier := retry.New(
+		retry.RetryIf(func(err error) bool {
+			var pgErr *pgconn.PgError
+			if errors.As(err, &pgErr) {
+				return pgErr.Code == "40P01"
+			}
+
+			return false
+		}),
+		retry.Attempts(uint(c.spec.RetryOnDeadlock)+1),
+		retry.LastErrorOnly(true),
+	)
+
+	err := retrier.Do(func() error {
 		if batch.Len() == 0 {
 			return nil
 		}
@@ -118,17 +131,7 @@ func (c *Client) flushBatch(ctx context.Context, batch *pgx.Batch) error {
 		}
 
 		return nil
-	}, retry.RetryIf(func(err error) bool {
-		var pgErr *pgconn.PgError
-		if errors.As(err, &pgErr) {
-			return pgErr.Code == "40P01"
-		}
-
-		return false
-	}),
-		retry.Attempts(uint(c.spec.RetryOnDeadlock)+1),
-		retry.LastErrorOnly(true),
-	)
+	})
 
 	if err != nil {
 		var pgErr *pgconn.PgError

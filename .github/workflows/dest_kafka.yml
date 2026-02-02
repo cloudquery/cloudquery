@@ -28,19 +28,19 @@ jobs:
       run:
         working-directory: ./plugins/destination/kafka
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: plugins/destination/kafka/go.mod
           cache: true
           cache-dependency-path: plugins/destination/kafka/go.sum
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v8
+        uses: golangci/golangci-lint-action@v9
         with:
-          version: v2.5.0
+          version: v2.8.0
           working-directory: plugins/destination/kafka
           args: "--config ../../.golangci.yml"
       - name: gen
@@ -62,7 +62,7 @@ jobs:
         working-directory: ./plugins/destination/kafka
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - uses: actions/cache@v4
         with:
@@ -74,7 +74,7 @@ jobs:
             ${{ runner.os }}-go-1.25.6-validate-plugin-fips-cache-destination-kafka
 
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: plugins/destination/kafka/go.mod
           cache: false
