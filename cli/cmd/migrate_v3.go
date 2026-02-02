@@ -38,7 +38,7 @@ func migrateConnectionV3(ctx context.Context, migrateOptions migrateV3Options) e
 	for i := range destinationSpecs {
 		destinationStrings[i] = destinationSpecs[i].VersionString()
 	}
-	transformerStrings := []string{}
+	transformerStrings := make([]string, 0, len(transformerSpecsByName))
 	for _, transformerSpec := range transformerSpecsByName {
 		transformerStrings = append(transformerStrings, transformerSpec.VersionString())
 	}

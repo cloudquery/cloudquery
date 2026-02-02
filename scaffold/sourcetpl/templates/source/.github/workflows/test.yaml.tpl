@@ -22,7 +22,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v8
         with:
-          version: v2.5.0
+          version: v2.8.0
           args: --timeout=10m
       - name: Get dependencies
         run: go get -t -d ./...
