@@ -8,8 +8,8 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
-    id "io.freefair.lombok" version "8.2.2"
-    id "com.diffplug.spotless" version "6.20.0"
+    id "io.freefair.lombok" version "8.14.4"
+    id "com.diffplug.spotless" version "6.25.0"
 }
 
 repositories {
@@ -26,7 +26,7 @@ repositories {
 
 dependencies {
     // Use JUnit Jupiter for testing.
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.14.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.0.2'
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
@@ -34,7 +34,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.21.0'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.21'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.0'
-    implementation 'com.google.guava:guava:31.1-jre'
+    implementation 'com.google.guava:guava:33.5.0-jre'
     implementation 'com.konghq:unirest-java:3.14.5'
 
     // gRPC

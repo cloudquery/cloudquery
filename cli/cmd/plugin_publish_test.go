@@ -312,6 +312,7 @@ func TestPluginPublishWithUI(t *testing.T) {
 
 	cmd := NewCmdRoot()
 	t.Setenv(envAPIURL, ts.URL)
+	//nolint:prealloc
 	allArgs := []string{"plugin", "publish", "--dist-dir", "testdata/dist-v1-with-team-package-json", "--ui-dir", "testdata/ui-build"}
 	allArgs = append(allArgs, testCommandArgs(t)...)
 	cmd.SetArgs(allArgs)
