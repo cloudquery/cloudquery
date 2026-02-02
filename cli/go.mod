@@ -5,7 +5,7 @@ go 1.25.6
 require (
 	github.com/apache/arrow-go/v18 v18.5.1
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
-	github.com/cenkalti/backoff/v4 v4.3.0
+	github.com/cenkalti/backoff/v5 v5.0.3
 	github.com/cloudquery/cloudquery-api-go v1.14.8
 	github.com/cloudquery/codegen v0.3.35
 	github.com/cloudquery/plugin-pb-go v1.27.5
@@ -70,7 +70,6 @@ require (
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
-	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/containerd/errdefs v1.0.0 // indirect
