@@ -27,7 +27,7 @@ require (
 	github.com/rs/zerolog v1.34.0
 	github.com/rudderlabs/analytics-go/v4 v4.2.3
 	github.com/samber/lo v1.52.0
-	github.com/santhosh-tekuri/jsonschema/v5 v5.3.1
+	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2
 	github.com/schollz/progressbar/v3 v3.14.6
 	github.com/spf13/cobra v1.10.2
 	github.com/stretchr/testify v1.11.1
@@ -128,7 +128,6 @@ require (
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rs/cors v1.11.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2 // indirect
 	github.com/segmentio/backo-go v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.9 // indirect
 	github.com/zeebo/xxh3 v1.0.2 // indirect
