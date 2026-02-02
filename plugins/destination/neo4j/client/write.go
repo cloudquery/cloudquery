@@ -7,7 +7,7 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
+	"github.com/neo4j/neo4j-go-driver/v6/neo4j"
 )
 
 func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs message.WriteInserts) error {

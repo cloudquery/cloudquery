@@ -7,7 +7,7 @@ import (
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
-	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
+	"github.com/neo4j/neo4j-go-driver/v6/neo4j"
 )
 
 // MigrateTables tries to create indexes for the tables.
@@ -31,7 +31,7 @@ func (c *Client) MigrateTables(ctx context.Context, messages message.WriteMigrat
 	return nil
 }
 
-func (c *Client) tryCreateIndex(ctx context.Context, sess neo4j.SessionWithContext, migrate *message.WriteMigrateTable) error {
+func (c *Client) tryCreateIndex(ctx context.Context, sess neo4j.Session, migrate *message.WriteMigrateTable) error {
 	createQuery := createIndexQuery(migrate.Table)
 	if len(createQuery) == 0 {
 		c.logger.Debug().Str("table", migrate.Table.Name).Msg("table has no primary keys, skipping")

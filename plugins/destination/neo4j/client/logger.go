@@ -1,7 +1,7 @@
 package client
 
 import (
-	neo4jlog "github.com/neo4j/neo4j-go-driver/v5/neo4j/log"
+	neo4jlog "github.com/neo4j/neo4j-go-driver/v6/neo4j/log"
 	"github.com/rs/zerolog"
 )
 
