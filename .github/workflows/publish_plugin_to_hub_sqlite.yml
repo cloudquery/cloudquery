@@ -39,8 +39,8 @@ jobs:
         with:
           input_string: ${{steps.split.outputs.plugin_version}}
       - name: Checkout
-        uses: actions/checkout@v4
-      - uses: actions/github-script@v7
+        uses: actions/checkout@v6
+      - uses: actions/github-script@v8
         id: check-ui-directory
         env:
           PLUGIN_DIR: ${{steps.split.outputs.plugin_dir}}
@@ -62,10 +62,10 @@ jobs:
     steps:
       - name: Checkout
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Use Node.js LTS
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "lts/*"
           cache: "npm"
@@ -94,7 +94,7 @@ jobs:
       - build-config-ui
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       # https://github.com/actions/checkout/issues/2031
@@ -111,13 +111,13 @@ jobs:
             ${{ runner.os }}-go-1.25.6-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}
 
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
           cache: false
 
       - name: Use Node.js LTS
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "lts/*"
 
@@ -127,7 +127,7 @@ jobs:
 
       - name: Get Release Notes
         id: release-notes
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
         with:

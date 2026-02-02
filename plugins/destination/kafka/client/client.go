@@ -78,7 +78,7 @@ func New(_ context.Context, logger zerolog.Logger, s []byte, opts plugin.NewClie
 	c.conf.Producer.RequiredAcks = sarama.WaitForAll
 	c.conf.Producer.Return.Successes = true
 	c.conf.Metadata.Full = true
-	c.conf.Version = sarama.V1_0_0_0
+	c.conf.Version = sarama.V2_0_0_0
 	c.conf.Metadata.Full = true
 	c.conf.ClientID = `cwc|1c04a227-aef8-47a9-9353-e20bbb6a9616|cq-destination-kafka|` + internalPlugin.Version
 	var tlsConfig *tls.Config
