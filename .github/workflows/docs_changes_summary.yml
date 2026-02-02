@@ -40,7 +40,7 @@ jobs:
       - name: Generate docs changes file
         run: |
           go run main.go pr.diff changes.json
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v8
         name: Get doc changes string
         id: get-changes
         with:
@@ -82,7 +82,7 @@ jobs:
           edit-mode: replace
       # Inspired by https://github.com/peter-evans/create-or-update-comment/issues/110#issuecomment-1086997843
       - if: steps.get-changes.outputs.result == '' && steps.find-comment.outputs.comment-id != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         name: Delete existing comment if there are no changes
         with:
           github-token: ${{ secrets.GH_CQ_BOT }}
@@ -108,7 +108,7 @@ jobs:
       - name: Install commit message parser
         if: steps.enforce.outputs.status == 'true'
         run: npm install @conventional-commits/parser
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v8
         if: steps.enforce.outputs.status == 'true'
         with:
           script: |

@@ -25,7 +25,7 @@ jobs:
     needs: prepare
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v8
         env:
           FILES: ${{ needs.prepare.outputs.changed_files }}
         with:
