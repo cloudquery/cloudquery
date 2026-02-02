@@ -47,7 +47,7 @@
   "devDependencies": {
     "@ava/typescript": "^6.0.0",
     "@tsconfig/node20": "^20.1.2",
-    "@types/uuid": "^10.0.0",
+    "@types/uuid": "^11.0.0",
     "@types/yargs": "^17.0.24",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
