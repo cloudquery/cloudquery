@@ -49,7 +49,7 @@ type testSpec struct {
 
 func testSpecsWithoutFormat() []testSpec {
 	var (
-		ret  []testSpec
+		ret  = make([]testSpec, 0, 2)
 		zero int64
 	)
 
