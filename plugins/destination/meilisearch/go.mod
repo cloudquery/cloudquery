@@ -9,7 +9,7 @@ require (
 	github.com/goccy/go-json v0.10.5
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.13.0
-	github.com/meilisearch/meilisearch-go v0.24.0
+	github.com/meilisearch/meilisearch-go v0.35.1
 	github.com/rs/zerolog v1.34.0
 	github.com/valyala/fasthttp v1.69.0
 )
@@ -54,7 +54,6 @@ require (
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-retryablehttp v0.7.8 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/josharian/intern v1.0.0 // indirect
 	github.com/klauspost/compress v1.18.2 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
