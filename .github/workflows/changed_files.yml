@@ -33,7 +33,7 @@ jobs:
       any_changed: ${{ fromJson(steps.changed-files.outputs.result).any_changed }}
       changed_files: ${{ fromJson(steps.changed-files.outputs.result).changed_files }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Install micromatch
         run: npm i -D micromatch@4.0.8
       - uses: actions/github-script@v8

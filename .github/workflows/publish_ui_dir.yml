@@ -27,7 +27,7 @@ jobs:
     outputs:
       matrix: ${{ steps.matrix.outputs.result }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Generate plugins matrix
         id: matrix
         uses: actions/github-script@v8
@@ -68,7 +68,7 @@ jobs:
       matrix: ${{ fromJson(needs.prepare.outputs.matrix).matrix-go }}
       fail-fast: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Go 1.x
         uses: actions/setup-go@v6
         with:

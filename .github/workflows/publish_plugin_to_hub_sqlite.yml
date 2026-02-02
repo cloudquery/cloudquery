@@ -39,7 +39,7 @@ jobs:
         with:
           input_string: ${{steps.split.outputs.plugin_version}}
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - uses: actions/github-script@v8
         id: check-ui-directory
         env:
@@ -62,7 +62,7 @@ jobs:
     steps:
       - name: Checkout
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Use Node.js LTS
         if: needs.prepare.outputs.ui_dir_arg != ''
         uses: actions/setup-node@v6
@@ -94,7 +94,7 @@ jobs:
       - build-config-ui
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       # https://github.com/actions/checkout/issues/2031

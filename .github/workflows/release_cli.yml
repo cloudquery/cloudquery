@@ -31,7 +31,7 @@ jobs:
         with:
           input_string: ${{steps.split.outputs.version}}
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 2
       - uses: actions/cache@v4
@@ -98,7 +98,7 @@ jobs:
           git tag cli/${{ steps.split.outputs.version }} && git push origin cli/${{ steps.split.outputs.version }}
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.GH_CQ_BOT }}
           repository: cloudquery/frontend

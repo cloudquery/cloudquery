@@ -27,7 +27,7 @@ jobs:
       breaking: ${{ steps.breaking.outputs.status }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Get PR diff
         run: |
           curl -L ${{ github.event.pull_request.diff_url }} > pr.diff
