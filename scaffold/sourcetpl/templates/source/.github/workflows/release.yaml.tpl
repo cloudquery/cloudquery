@@ -22,7 +22,7 @@ jobs:
           version_extractor_regex: '^v(.*)$'
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 

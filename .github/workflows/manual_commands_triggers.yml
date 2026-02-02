@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.client_payload.slash_command.args.named.sha }}
           repository: ${{ github.event.client_payload.pull_request.head.repo.full_name }}
@@ -48,7 +48,7 @@ jobs:
         run: make gen
         working-directory: ${{ github.event.client_payload.slash_command.args.named.dir }}
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "chore: Update code and docs"
           branch: ${{ github.event.client_payload.pull_request.head.ref }}

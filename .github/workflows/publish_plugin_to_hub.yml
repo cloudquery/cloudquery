@@ -60,7 +60,7 @@ jobs:
         with:
           input_string: ${{steps.split.outputs.plugin_version}}
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - uses: actions/github-script@v8
         id: set-result
@@ -108,7 +108,7 @@ jobs:
     steps:
       - name: Checkout
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Go 1.x
         if: needs.prepare.outputs.ui_dir_arg != ''
@@ -155,7 +155,7 @@ jobs:
 
       - name: Upload build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
@@ -169,13 +169,13 @@ jobs:
     if: needs.prepare.outputs.plugin_releaser == 'java'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Download build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
@@ -276,13 +276,13 @@ jobs:
     if: needs.prepare.outputs.plugin_releaser == 'python'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Download build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
@@ -377,13 +377,13 @@ jobs:
     if: needs.prepare.outputs.plugin_releaser == 'node'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Download build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
@@ -474,13 +474,13 @@ jobs:
     if: needs.prepare.outputs.plugin_releaser == 'go'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Download build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
