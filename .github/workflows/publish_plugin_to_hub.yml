@@ -122,7 +122,7 @@ jobs:
         if: needs.prepare.outputs.ui_dir_arg != ''
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.34.0
+          version: v6.34.1
 
       - name: Build
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -218,7 +218,7 @@ jobs:
             return shellescape([data.body]);
 
       - name: Find and Replace
-        uses: jacobtomlinson/gha-find-replace@f1069b438f125e5395d84d1c6fd3b559a7880cb5
+        uses: jacobtomlinson/gha-find-replace@dfbfef71bc27c27c39d89534540a8960e0eee6b0
         with:
           find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name_undashed }}"
           replace: ${{ needs.prepare.outputs.plugin_version }}
@@ -247,7 +247,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.34.0
+          version: v6.34.1
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -257,7 +257,7 @@ jobs:
           cloudquery plugin publish --finalize ${{ needs.prepare.outputs.ui_dir_arg }}
 
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@be814b201e233b2dc673608aa46e5447c8ab13f2
+        uses: ravsamhq/notify-slack-action@f6eea643ddcd831f1a3c4d518aefd6098ef680e6
         if: always()
         with:
           status: ${{ job.status }}
@@ -290,7 +290,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.14"
 
       - name: Install dependencies
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -329,7 +329,7 @@ jobs:
             return shellescape([data.body]);
 
       - name: Find and Replace
-        uses: jacobtomlinson/gha-find-replace@f1069b438f125e5395d84d1c6fd3b559a7880cb5
+        uses: jacobtomlinson/gha-find-replace@dfbfef71bc27c27c39d89534540a8960e0eee6b0
         with:
           find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name_undashed }}"
           replace: ${{ needs.prepare.outputs.plugin_version }}
@@ -348,7 +348,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.34.0
+          version: v6.34.1
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -358,7 +358,7 @@ jobs:
           cloudquery plugin publish --finalize ${{ needs.prepare.outputs.ui_dir_arg }}
 
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@be814b201e233b2dc673608aa46e5447c8ab13f2
+        uses: ravsamhq/notify-slack-action@f6eea643ddcd831f1a3c4d518aefd6098ef680e6
         if: always()
         with:
           status: ${{ job.status }}
@@ -424,7 +424,7 @@ jobs:
             return shellescape([data.body]);
 
       - name: Find and Replace
-        uses: jacobtomlinson/gha-find-replace@f1069b438f125e5395d84d1c6fd3b559a7880cb5
+        uses: jacobtomlinson/gha-find-replace@dfbfef71bc27c27c39d89534540a8960e0eee6b0
         with:
           find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name_undashed }}"
           replace: ${{ needs.prepare.outputs.plugin_version }}
@@ -443,7 +443,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.34.0
+          version: v6.34.1
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -453,7 +453,7 @@ jobs:
           cloudquery plugin publish --finalize ${{ needs.prepare.outputs.ui_dir_arg }}
 
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@be814b201e233b2dc673608aa46e5447c8ab13f2
+        uses: ravsamhq/notify-slack-action@f6eea643ddcd831f1a3c4d518aefd6098ef680e6
         if: always()
         with:
           status: ${{ job.status }}
@@ -531,7 +531,7 @@ jobs:
             return shellescape([data.body]);
 
       - name: Find and Replace
-        uses: jacobtomlinson/gha-find-replace@f1069b438f125e5395d84d1c6fd3b559a7880cb5
+        uses: jacobtomlinson/gha-find-replace@dfbfef71bc27c27c39d89534540a8960e0eee6b0
         with:
           find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name_undashed }}"
           replace: ${{ needs.prepare.outputs.plugin_version }}
@@ -546,7 +546,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.34.0
+          version: v6.34.1
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -561,7 +561,7 @@ jobs:
           git tag ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }} && git push origin ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }}
 
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@be814b201e233b2dc673608aa46e5447c8ab13f2
+        uses: ravsamhq/notify-slack-action@f6eea643ddcd831f1a3c4d518aefd6098ef680e6
         if: always()
         with:
           status: ${{ job.status }}
