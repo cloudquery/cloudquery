@@ -29,7 +29,7 @@ jobs:
         with:
           input_string: ${{steps.split.outputs.version}}
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 2
       - uses: actions/cache@v4
@@ -41,7 +41,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-1.25.6-release-cache-scaffold
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: scaffold/go.mod
           cache: false
@@ -83,7 +83,7 @@ jobs:
           git tag scaffold/${{ steps.split.outputs.version }} && git push origin scaffold/${{ steps.split.outputs.version }}
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{ secrets.GH_CQ_BOT }}
           repository: cloudquery/frontend
@@ -109,7 +109,7 @@ jobs:
           labels: automerge
           author: cq-bot <cq-bot@users.noreply.github.com>
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@be814b201e233b2dc673608aa46e5447c8ab13f2
+        uses: ravsamhq/notify-slack-action@f6eea643ddcd831f1a3c4d518aefd6098ef680e6
         if: always()
         with:
           status: ${{ job.status }}
