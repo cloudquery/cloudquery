@@ -440,8 +440,8 @@ func (c *Client) createPgVectorTableIfNotExists(ctx context.Context, table *sche
 		pgx.Identifier{embTableName}.Sanitize(),
 		" (",
 		strings.Join(colDefs, ","),
+		")",
 	}
-	parts = append(parts, ")")
 	sql := strings.Join(parts, "")
 
 	if _, err := c.conn.Exec(ctx, sql); err != nil {
