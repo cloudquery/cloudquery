@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/mysql/v5
 go 1.25.6
 
 require (
-	github.com/apache/arrow-go/v18 v18.5.0
+	github.com/apache/arrow-go/v18 v18.5.1
 	github.com/cloudquery/codegen v0.3.35
 	github.com/cloudquery/plugin-sdk/v4 v4.94.0
 	github.com/go-sql-driver/mysql v1.9.3
@@ -47,7 +47,7 @@ require (
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/goccy/go-json v0.10.5 // indirect
-	github.com/google/flatbuffers v25.9.23+incompatible // indirect
+	github.com/google/flatbuffers v25.12.19+incompatible // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.3.3 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
@@ -60,7 +60,7 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/oapi-codegen/runtime v1.1.2 // indirect
-	github.com/pierrec/lz4/v4 v4.1.22 // indirect
+	github.com/pierrec/lz4/v4 v4.1.23 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/samber/lo v1.52.0 // indirect
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2 // indirect
