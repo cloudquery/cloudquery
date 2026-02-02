@@ -151,7 +151,12 @@ func parseJSONSchema(jsonSchema string) (*jsonschema.Schema, error) {
 	c.DefaultDraft(jsonschema.Draft2020)
 	c.AssertFormat()
 
-	if err := c.AddResource("schema.json", strings.NewReader(jsonSchema)); err != nil {
+	s, err := jsonschema.UnmarshalJSON(strings.NewReader(jsonSchema))
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.AddResource("schema.json", s); err != nil {
 		return nil, err
 	}
 

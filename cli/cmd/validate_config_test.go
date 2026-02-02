@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -38,19 +37,20 @@ func TestValidateConfig(t *testing.T) {
 			args := append([]string{"validate-config", testConfig}, baseArgs...)
 			cmd.SetArgs(args)
 			err := cmd.Execute()
-			if tc.errors != nil {
-				for _, e := range tc.errors {
-					assert.Contains(t, err.Error(), e)
-				}
-			} else {
-				assert.NoError(t, err)
-			}
-
 			// check that log was written and contains some lines from the plugin
 			b, logFileError := os.ReadFile(baseArgs[3])
 			logContent := string(b)
 			require.NoError(t, logFileError, "failed to read cloudquery.log")
 			require.NotEmpty(t, logContent, "cloudquery.log empty; expected some logs")
+			require.NotContains(t, logContent, "skipping validation")
+
+			if tc.errors != nil {
+				for _, e := range tc.errors {
+					require.Contains(t, err.Error(), e)
+				}
+			} else {
+				require.NoError(t, err)
+			}
 		})
 	}
 }
