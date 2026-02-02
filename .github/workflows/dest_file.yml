@@ -30,11 +30,11 @@ jobs:
       run:
         working-directory: ./plugins/destination/file
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: plugins/destination/file/go.mod
           cache: true
@@ -42,7 +42,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
         with:
-          version: v2.5.0
+          version: v2.8.0
           working-directory: plugins/destination/file
           args: "--config ../../.golangci.yml"
       - name: gen

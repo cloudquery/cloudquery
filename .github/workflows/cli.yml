@@ -34,11 +34,11 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: cli/go.mod
           cache: true
@@ -47,7 +47,7 @@ jobs:
         uses: golangci/golangci-lint-action@v9
         if: matrix.os == 'ubuntu-latest'
         with:
-          version: v2.5.0
+          version: v2.8.0
           working-directory: cli
       - name: Build
         run: go build .
@@ -67,7 +67,7 @@ jobs:
     steps:
       - name: Checkout
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - uses: actions/cache@v4
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         with:
@@ -79,7 +79,7 @@ jobs:
             ubuntu-go-1.25.6-release-cache-cli
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: cli/go.mod
           cache: false
