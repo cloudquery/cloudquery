@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
-	"github.com/neo4j/neo4j-go-driver/v5/neo4j"
+	"github.com/neo4j/neo4j-go-driver/v6/neo4j"
 )
 
 const deleteCypher = "MATCH (n:%s) WHERE n._cq_source_name = $cq_source_name AND n._cq_sync_time < $cq_sync_time DETACH DELETE n"
