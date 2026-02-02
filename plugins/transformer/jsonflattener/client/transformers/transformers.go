@@ -80,7 +80,7 @@ func transformSchema(tf TransformationFn) SchemaTransformationFn {
 }
 
 func makeEmptyRecord(s *arrow.Schema) arrow.RecordBatch {
-	cols := []arrow.Array{}
+	cols := make([]arrow.Array, 0, len(s.Fields()))
 	for _, field := range s.Fields() {
 		cols = append(cols, array.NewBuilder(memory.DefaultAllocator, field.Type).NewArray())
 	}
