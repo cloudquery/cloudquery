@@ -26,7 +26,7 @@ repositories {
 
 dependencies {
     // Use JUnit Jupiter for testing.
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.14.2'
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
@@ -46,8 +46,8 @@ dependencies {
     implementation 'org.apache.logging.log4j:log4j-api:2.24.3'
     implementation 'org.apache.logging.log4j:log4j-core:2.24.3'
 
-    implementation 'io.cloudquery:plugin-pb-java:0.0.40'
-    implementation 'io.cloudquery:plugin-sdk-java:0.0.47'
+    implementation 'io.cloudquery:plugin-pb-java:0.0.41'
+    implementation 'io.cloudquery:plugin-sdk-java:0.0.48'
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
