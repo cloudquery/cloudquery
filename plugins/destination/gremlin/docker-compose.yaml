@@ -1,6 +1,6 @@
 services:
   gremlin:
-    image: tinkerpop/gremlin-server:3.7.1
+    image: tinkerpop/gremlin-server:3.8.0
     ports:
       - "8182:8182"
     networks:
