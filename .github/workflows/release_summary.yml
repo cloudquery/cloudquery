@@ -19,7 +19,7 @@ jobs:
     outputs:
       result: ${{ steps.pr-commits.outputs.result }}
     steps:
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v8
         name: Check number of commits
         id: pr-commits
         with:
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           # required so the commit triggers workflow runs
@@ -65,7 +65,7 @@ jobs:
         run: |
           git diff ${{ steps.tag.outputs.latest }}..HEAD -- plugins/source/${{ steps.plugin.outputs.name }}/docs/tables > scripts/table_diff/diff.txt
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: scripts/table_diff/go.mod
           cache: true
@@ -74,7 +74,7 @@ jobs:
         working-directory: scripts/table_diff
         run: |
           go run main.go diff.txt changes.json
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v8
         name: Get doc changes string
         id: get-changes
         with:
@@ -94,7 +94,7 @@ jobs:
               return `- ${text}`
             }).join('\n')
             return changesList
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v8
         name: Update changelog
         if: ${{ steps.get-changes.outputs.result != '' }}
         env:
@@ -113,7 +113,7 @@ jobs:
             const changelogParts = currentChangelog.split('###')
             const newChangelog = [...changelogParts.slice(0, sliceIndex), ` ${title}\n${changes}\n\n`, ...changelogParts.slice(sliceIndex)].join('###')
             fs.writeFileSync(changelogPath, newChangelog)
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v8
         name: Update PR description
         if: ${{ steps.get-changes.outputs.result != '' }}
         env:
@@ -136,7 +136,7 @@ jobs:
               body: newDescription
             })
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@v7
         if: ${{ steps.get-changes.outputs.result != '' }}
         with:
           commit_message: "chore: Add tables changes to changelog"
