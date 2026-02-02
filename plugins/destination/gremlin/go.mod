@@ -4,7 +4,7 @@ go 1.25.6
 
 require (
 	github.com/apache/arrow-go/v18 v18.5.1
-	github.com/apache/tinkerpop/gremlin-go/v3 v3.7.4
+	github.com/apache/tinkerpop/gremlin-go/v3 v3.8.0
 	github.com/aws/aws-sdk-go-v2 v1.41.1
 	github.com/aws/aws-sdk-go-v2/config v1.32.7
 	github.com/cenkalti/backoff/v4 v4.3.0
