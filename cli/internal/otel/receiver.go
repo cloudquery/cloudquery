@@ -295,7 +295,7 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 	// `CreateDefaultConfig` creates a default config for HTTP server config, but it's not accessible via config.HTTP.Get()
 	// Also see https://github.com/open-telemetry/opentelemetry-collector/issues/13160
 	httpConfig := confighttp.NewDefaultServerConfig()
-	httpConfig.Endpoint = fmt.Sprintf("localhost:%d", port)
+	httpConfig.NetAddr.Endpoint = fmt.Sprintf("localhost:%d", port)
 	httpConfig.TLS = configoptional.None[configtls.ServerConfig]()
 	config.HTTP = configoptional.Some(otlpreceiver.HTTPConfig{
 		ServerConfig:   httpConfig,
@@ -346,7 +346,7 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 	return &OtelReceiver{
 		consumer:   c,
 		components: components,
-		Endpoint:   httpConfig.Endpoint,
+		Endpoint:   httpConfig.NetAddr.Endpoint,
 	}, nil
 }
 
