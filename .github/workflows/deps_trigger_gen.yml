@@ -25,7 +25,7 @@ jobs:
     needs: changed-files
     if: needs.changed-files.outputs.any_changed == 'true'
     steps:
-      - uses: actions/github-script@v7
+      - uses: actions/github-script@v8
         env:
           SHA: ${{ github.event.pull_request.head.sha }}
           GO_MOD_FILES: ${{ needs.changed-files.outputs.changed_files }}
