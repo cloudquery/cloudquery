@@ -38,7 +38,7 @@ jobs:
           version: v6.34.1
 
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version-file: ${{ github.event.client_payload.slash_command.args.named.dir }}/go.mod
           cache: true
