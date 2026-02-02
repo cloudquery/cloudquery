@@ -31,7 +31,7 @@ jobs:
       id-token: 'write' # This required for OIDC
       contents: 'read' # This is required for actions/checkout@v3
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
