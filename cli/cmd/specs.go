@@ -11,7 +11,7 @@ import (
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	pbSpecs "github.com/cloudquery/plugin-pb-go/specs"
 	"github.com/rs/zerolog/log"
-	"github.com/santhosh-tekuri/jsonschema/v5"
+	"github.com/santhosh-tekuri/jsonschema/v6"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -148,16 +148,21 @@ func validatePluginSpec(ctx context.Context, client plugin.PluginClient, spec an
 
 func parseJSONSchema(jsonSchema string) (*jsonschema.Schema, error) {
 	c := jsonschema.NewCompiler()
-	c.Draft = jsonschema.Draft2020
-	c.AssertFormat = true
+	c.DefaultDraft(jsonschema.Draft2020)
+	c.AssertFormat()
 
-	if err := c.AddResource("schema.json", strings.NewReader(jsonSchema)); err != nil {
+	s, err := jsonschema.UnmarshalJSON(strings.NewReader(jsonSchema))
+	if err != nil {
+		return nil, err
+	}
+
+	if err := c.AddResource("schema.json", s); err != nil {
 		return nil, err
 	}
 
 	sc, err := c.Compile("schema.json")
 	if err != nil {
-		var se *jsonschema.SchemaError
+		var se *jsonschema.SchemaValidationError
 		if errors.As(err, &se); se != nil && se.Err != nil {
 			// We add resource as `file`, but there's none, actually.
 			// So, we need to prettify message a bit.
