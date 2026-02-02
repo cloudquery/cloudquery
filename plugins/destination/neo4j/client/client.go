@@ -17,7 +17,7 @@ type Client struct {
 	batchwriter.UnimplementedDeleteRecord
 	logger zerolog.Logger
 	spec   *Spec
-	client neo4j.DriverWithContext
+	client neo4j.Driver
 	writer *batchwriter.BatchWriter
 }
 
@@ -34,7 +34,7 @@ func New(ctx context.Context, logger zerolog.Logger, spec []byte, _ plugin.NewCl
 	c.spec.SetDefaults()
 
 	var err error
-	c.client, err = neo4j.NewDriverWithContext(c.spec.ConnectionString, neo4j.BasicAuth(c.spec.Username, c.spec.Password, ""), func(c *config.Config) {
+	c.client, err = neo4j.NewDriver(c.spec.ConnectionString, neo4j.BasicAuth(c.spec.Username, c.spec.Password, ""), func(c *config.Config) {
 		c.Log = &Logger{Base: logger}
 	})
 	if err != nil {
@@ -64,7 +64,7 @@ func (c *Client) Close(ctx context.Context) error {
 	return c.client.Close(ctx)
 }
 
-func (c *Client) Session(ctx context.Context, cf neo4j.SessionConfig) neo4j.SessionWithContext {
+func (c *Client) Session(ctx context.Context, cf neo4j.SessionConfig) neo4j.Session {
 	if c.logger.GetLevel() <= zerolog.DebugLevel {
 		cf.BoltLogger = &Logger{Base: c.logger}
 	}
