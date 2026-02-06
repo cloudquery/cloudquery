@@ -4,7 +4,7 @@ go 1.25.6
 
 require (
 	github.com/apache/arrow-go/v18 v18.5.1
-	github.com/cloudquery/plugin-sdk/v4 v4.94.1
+	github.com/cloudquery/plugin-sdk/v4 v4.94.2
 	github.com/rs/zerolog v1.34.0
 	github.com/stretchr/testify v1.11.1
 )
@@ -15,7 +15,7 @@ require (
 	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/cloudquery/codegen v0.3.35 // indirect
+	github.com/cloudquery/codegen v0.3.36 // indirect
 	github.com/getsentry/sentry-go v0.41.0 // indirect
 	github.com/invopop/jsonschema v0.13.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
