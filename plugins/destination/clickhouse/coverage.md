@@ -24,10 +24,10 @@
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/read.go:21: | rowArr | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/retry_helpers.go:21: | getRetryOptions | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/retry_helpers.go:40: | retryQueryRowAndScan | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/retry_helpers.go:51: | retryExec | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/retry_helpers.go:61: | retryBatchSend | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/retry_helpers.go:81: | retryGetTableDefinitions | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/retry_helpers.go:104: | retryRead | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/retry_helpers.go:52: | retryExec | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/retry_helpers.go:63: | retryBatchSend | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/retry_helpers.go:83: | retryGetTableDefinitions | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/retry_helpers.go:107: | retryRead | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/spec/engine.go:25: | String | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/spec/engine.go:29: | params | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/spec/engine.go:62: | Validate | 50.0% |
@@ -139,4 +139,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/util/sanitize.go:7: | UnquoteID | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/util/sanitize.go:11: | SanitizeID | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/util/sanitize.go:15: | Sanitized | 0.0% |
-| total: | (statements) | 48.6% |
+| total: | (statements) | 48.4% |
