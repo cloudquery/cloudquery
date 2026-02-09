@@ -73,8 +73,8 @@
 | github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:86: | CLIDestinationSpecToPbSpec | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:100: | initPlugin | 80.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:117: | validatePluginSpec | 38.9% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:149: | parseJSONSchema | 58.3% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:173: | marshalSpec | 100.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:149: | parseJSONSchema | 60.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:178: | marshalSpec | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:47: | persistSummary | 76.9% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:68: | appendToFile | 57.1% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:80: | checkFilePath | 100.0% |
