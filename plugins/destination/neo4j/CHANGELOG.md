@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.5.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v5.5.0...plugins-destination-neo4j-v5.5.1) (2026-02-12)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.5.1 ([#21993](https://github.com/cloudquery/cloudquery/issues/21993)) ([33229b7](https://github.com/cloudquery/cloudquery/commit/33229b7ba1989ba9781aed5b350d3f7f7763628a))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.36 ([#22012](https://github.com/cloudquery/cloudquery/issues/22012)) ([d69d54f](https://github.com/cloudquery/cloudquery/commit/d69d54f29082a637b190f1368f4c910e9530f030))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.1 ([#22011](https://github.com/cloudquery/cloudquery/issues/22011)) ([eae949e](https://github.com/cloudquery/cloudquery/commit/eae949e5351053bbcb4f09e8f1dccd58d4a9016b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.2 ([#22016](https://github.com/cloudquery/cloudquery/issues/22016)) ([1b5c4b1](https://github.com/cloudquery/cloudquery/commit/1b5c4b1385b3bc693c88f9700ecf49c66fa18ca8))
+* **deps:** Update module github.com/neo4j/neo4j-go-driver/v5 to v5.28.4 ([#21919](https://github.com/cloudquery/cloudquery/issues/21919)) ([e3319ea](https://github.com/cloudquery/cloudquery/commit/e3319ea8947a6c1805c196e4d54fd732963a0d49))
+* **deps:** Update module github.com/neo4j/neo4j-go-driver/v5 to v6 ([#21988](https://github.com/cloudquery/cloudquery/issues/21988)) ([190c8e1](https://github.com/cloudquery/cloudquery/commit/190c8e1561cf053866820380d8664350bb972cec))
+
 ## [5.5.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v5.4.31...plugins-destination-neo4j-v5.5.0) (2026-01-15)
 
 
