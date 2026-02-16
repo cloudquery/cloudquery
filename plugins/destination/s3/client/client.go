@@ -42,8 +42,8 @@ type Client struct {
 	*filetypes.Client
 	writer *streamingbatchwriter.StreamingBatchWriter
 
-	s3Client          *s3.Client
-	transferManager   *transfermanager.Client
+	s3Client        *s3.Client
+	transferManager *transfermanager.Client
 
 	initializedTablesLock sync.Mutex
 	initializedTables     map[string]string
