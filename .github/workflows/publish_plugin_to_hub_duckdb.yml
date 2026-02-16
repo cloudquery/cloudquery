@@ -88,7 +88,7 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/gythialy/golang-cross:1.25.6
+      image: ghcr.io/gythialy/golang-cross:1.25.7
     needs:
       - prepare
       - build-config-ui
@@ -106,9 +106,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.25.6-publish-plugin-to-hub-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
+          key: ${{ runner.os }}-go-1.25.7-publish-plugin-to-hub-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
           restore-keys: |
-            ${{ runner.os }}-go-1.25.6-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}
+            ${{ runner.os }}-go-1.25.7-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}
 
       - name: Set up Go 1.x
         uses: actions/setup-go@v6
