@@ -12,7 +12,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	awshttp "github.com/aws/aws-sdk-go-v2/aws/transport/http"
 	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/aws/aws-sdk-go-v2/feature/s3/transfermanager"
 	"github.com/aws/smithy-go"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/google/uuid"
@@ -30,11 +30,11 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 
 	name := c.spec.ReplacePathVariables(table.Name, uuid.NewString(), time.Time{}, c.syncID)
 	writerAtBuffer := manager.NewWriteAtBuffer(make([]byte, 0, maxFileSize))
-	_, err := manager.NewDownloader(c.s3Client).Download(ctx,
-		writerAtBuffer,
-		&s3.GetObjectInput{
-			Bucket: aws.String(c.spec.Bucket),
-			Key:    aws.String(name),
+	_, err := c.transferManager.DownloadObject(ctx,
+		&transfermanager.DownloadObjectInput{
+			Bucket:   aws.String(c.spec.Bucket),
+			Key:      aws.String(name),
+			WriterAt: writerAtBuffer,
 		})
 
 	if err != nil {

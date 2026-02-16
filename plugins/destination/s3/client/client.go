@@ -17,7 +17,8 @@ import (
 	awshttp "github.com/aws/aws-sdk-go-v2/aws/transport/http"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
-	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
+	"github.com/aws/aws-sdk-go-v2/feature/s3/transfermanager"
+	tmtypes "github.com/aws/aws-sdk-go-v2/feature/s3/transfermanager/types"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/cloudquery/cloudquery/plugins/destination/s3/v7/client/spec"
@@ -41,7 +42,8 @@ type Client struct {
 	*filetypes.Client
 	writer *streamingbatchwriter.StreamingBatchWriter
 
-	s3Client *s3.Client
+	s3Client        *s3.Client
+	transferManager *transfermanager.Client
 
 	initializedTablesLock sync.Mutex
 	initializedTables     map[string]string
@@ -145,11 +147,16 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 		return nil, errRetrievingCredentials
 	}
 
+	// Initialize the transfer manager
+	c.transferManager = transfermanager.New(c.s3Client, func(o *transfermanager.Options) {
+		o.PartSizeBytes = *c.spec.PartSize
+	})
+
 	if *c.spec.TestWrite {
 		// we want to run this test because we want it to fail early if the bucket is not accessible
 		timeNow := time.Now().UTC()
 
-		params := &s3.PutObjectInput{
+		params := &transfermanager.UploadObjectInput{
 			Bucket: aws.String(c.spec.Bucket),
 			Key:    aws.String(c.spec.ReplacePathVariables("TEST_TABLE", "TEST_UUID", timeNow, c.syncID)),
 			Body:   bytes.NewReader([]byte("")),
@@ -157,11 +164,11 @@ func New(ctx context.Context, logger zerolog.Logger, s []byte, opts plugin.NewCl
 
 		sseConfiguration := c.spec.ServerSideEncryptionConfiguration
 		if sseConfiguration != nil {
-			params.SSEKMSKeyId = &sseConfiguration.SSEKMSKeyId
-			params.ServerSideEncryption = sseConfiguration.ServerSideEncryption
+			params.SSEKMSKeyID = &sseConfiguration.SSEKMSKeyId
+			params.ServerSideEncryption = tmtypes.ServerSideEncryption(sseConfiguration.ServerSideEncryption)
 		}
 
-		if _, err := manager.NewUploader(c.s3Client).Upload(ctx, params); err != nil {
+		if _, err := c.transferManager.UploadObject(ctx, params); err != nil {
 			return nil, errors.Join(errTestWriteFailed, err)
 		}
 	}
