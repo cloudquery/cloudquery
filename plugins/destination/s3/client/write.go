@@ -13,9 +13,8 @@ import (
 	"github.com/apache/arrow-go/v18/arrow/array"
 	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/feature/s3/manager"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
-	awstypes "github.com/aws/aws-sdk-go-v2/service/s3/types"
+	"github.com/aws/aws-sdk-go-v2/feature/s3/transfermanager"
+	tmtypes "github.com/aws/aws-sdk-go-v2/feature/s3/transfermanager/types"
 	"github.com/cloudquery/filetypes/v4"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -53,7 +52,7 @@ func (c *Client) createObject(ctx context.Context, table *schema.Table, objKey s
 		if err != nil {
 			return err
 		}
-		params := &s3.PutObjectInput{
+		params := &transfermanager.UploadObjectInput{
 			Bucket:      aws.String(c.spec.Bucket),
 			Key:         aws.String(objKey),
 			Body:        adjustedReader,
@@ -61,18 +60,16 @@ func (c *Client) createObject(ctx context.Context, table *schema.Table, objKey s
 		}
 
 		if c.spec.ACL != "" {
-			params.ACL = awstypes.ObjectCannedACL(c.spec.ACL)
+			params.ACL = tmtypes.ObjectCannedACL(c.spec.ACL)
 		}
 
 		sseConfiguration := c.spec.ServerSideEncryptionConfiguration
 		if sseConfiguration != nil {
-			params.SSEKMSKeyId = &sseConfiguration.SSEKMSKeyId
-			params.ServerSideEncryption = sseConfiguration.ServerSideEncryption
+			params.SSEKMSKeyID = &sseConfiguration.SSEKMSKeyId
+			params.ServerSideEncryption = tmtypes.ServerSideEncryption(sseConfiguration.ServerSideEncryption)
 		}
 
-		_, err = manager.NewUploader(c.s3Client, func(uploader *manager.Uploader) {
-			uploader.PartSize = *c.spec.PartSize
-		}).Upload(ctx, params)
+		_, err = c.transferManager.UploadObject(ctx, params)
 		return err
 	})
 	return s, err
