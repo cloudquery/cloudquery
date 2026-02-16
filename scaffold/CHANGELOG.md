@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.4.41](https://github.com/cloudquery/cloudquery/compare/scaffold-v3.4.40...scaffold-v3.4.41) (2026-02-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.5.1 ([#21993](https://github.com/cloudquery/cloudquery/issues/21993)) ([33229b7](https://github.com/cloudquery/cloudquery/commit/33229b7ba1989ba9781aed5b350d3f7f7763628a))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.6 ([#22009](https://github.com/cloudquery/cloudquery/issues/22009)) ([1b096c3](https://github.com/cloudquery/cloudquery/commit/1b096c3ddc395200efa91cb29fbd11e6f33268bc))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.1 ([#22011](https://github.com/cloudquery/cloudquery/issues/22011)) ([eae949e](https://github.com/cloudquery/cloudquery/commit/eae949e5351053bbcb4f09e8f1dccd58d4a9016b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.2 ([#22016](https://github.com/cloudquery/cloudquery/issues/22016)) ([1b5c4b1](https://github.com/cloudquery/cloudquery/commit/1b5c4b1385b3bc693c88f9700ecf49c66fa18ca8))
+* **deps:** Update module github.com/rs/zerolog to v1.34.0 ([#21920](https://github.com/cloudquery/cloudquery/issues/21920)) ([fdd4809](https://github.com/cloudquery/cloudquery/commit/fdd48096dd47afd27f6568677df0aef8dbb5f29a))
+* **deps:** Update module github.com/spf13/cobra to v1.10.2 ([#21923](https://github.com/cloudquery/cloudquery/issues/21923)) ([cfcaffa](https://github.com/cloudquery/cloudquery/commit/cfcaffa87c741d38aa5a15267cbd53deac995e88))
+
 ## [3.4.40](https://github.com/cloudquery/cloudquery/compare/scaffold-v3.4.39...scaffold-v3.4.40) (2026-01-15)
 
 
