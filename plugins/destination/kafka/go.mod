@@ -5,7 +5,7 @@ go 1.25.7
 require (
 	github.com/IBM/sarama v1.46.3
 	github.com/apache/arrow-go/v18 v18.5.1
-	github.com/cloudquery/codegen v0.3.36
+	github.com/cloudquery/codegen v0.3.37
 	github.com/cloudquery/filetypes/v4 v4.6.13
 	github.com/cloudquery/plugin-sdk/v4 v4.94.2
 	github.com/invopop/jsonschema v0.13.0
