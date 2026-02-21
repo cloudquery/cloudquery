@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.6.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.6.1...plugins-destination-mysql-v5.6.2) (2026-02-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module filippo.io/edwards25519 to v1.1.1 [SECURITY] ([#22063](https://github.com/cloudquery/cloudquery/issues/22063)) ([5a8dec7](https://github.com/cloudquery/cloudquery/commit/5a8dec7c70d951aa183bcb07e377581b5d81ca93))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.37 ([#22036](https://github.com/cloudquery/cloudquery/issues/22036)) ([060bf34](https://github.com/cloudquery/cloudquery/commit/060bf34cb8f15f277d306eea012d5a4d938fb350))
+
 ## [5.6.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.6.0...plugins-destination-mysql-v5.6.1) (2026-02-12)
 
 
