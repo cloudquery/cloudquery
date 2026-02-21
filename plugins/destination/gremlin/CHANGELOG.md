@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.7.2...plugins-destination-gremlin-v2.7.3) (2026-02-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.37 ([#22036](https://github.com/cloudquery/cloudquery/issues/22036)) ([060bf34](https://github.com/cloudquery/cloudquery/commit/060bf34cb8f15f277d306eea012d5a4d938fb350))
+
 ## [2.7.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.7.1...plugins-destination-gremlin-v2.7.2) (2026-02-12)
 
 
