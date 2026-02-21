@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/transformer/basic
 
-go 1.25.7
+go 1.26.0
 
 require (
 	github.com/apache/arrow-go/v18 v18.5.1
