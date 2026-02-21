@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.3.1...plugins-destination-duckdb-v6.3.2) (2026-02-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.37 ([#22036](https://github.com/cloudquery/cloudquery/issues/22036)) ([060bf34](https://github.com/cloudquery/cloudquery/commit/060bf34cb8f15f277d306eea012d5a4d938fb350))
+
 ## [6.3.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.3.0...plugins-destination-duckdb-v6.3.1) (2026-02-12)
 
 
