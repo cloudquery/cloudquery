@@ -66,12 +66,12 @@ github.com/cloudquery/codegen v0.3.37 h1:OZbMPT3LVMPsDOPOD2b5Q7njii7PrnxNa47vfPu
 github.com/cloudquery/codegen v0.3.37/go.mod h1:HUb5XjUyyNrcXYBq/seBjnOkO3/TidTRxiL7B8xYW2M=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66 h1:OZLPSIBYEfvkAUeOeM8CwTgVQy5zhayI99ishCrsFV0=
 github.com/cloudquery/jsonschema v0.0.0-20240220124159-92878faa2a66/go.mod h1:0SoZ/U7yJlNOR+fWsBSeTvTbGXB6DK01tzJ7m2Xfg34=
-github.com/cloudquery/plugin-pb-go v1.27.6 h1:EAhBhv6LG7zaGc59rG3oDH9YvCNk2/zpSK7DYh212ec=
-github.com/cloudquery/plugin-pb-go v1.27.6/go.mod h1:OEzzuG5Otg+Dfmn65EOk3Zw+EnFjJ/5OBekn8N6JBPs=
+github.com/cloudquery/plugin-pb-go v1.27.7 h1:j1+HtVxHdNuw1eEyLw8s+0vhOc5y8IeO3Br8V79+mCo=
+github.com/cloudquery/plugin-pb-go v1.27.7/go.mod h1:t5KNZ/12OVtrUt81Wi1hzvJbC44EYwrYQvWh4kCJbV0=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0/go.mod h1:pAX6ojIW99b/Vg4CkhnsGkRIzNaVEceYMR+Bdit73ug=
-github.com/cloudquery/plugin-sdk/v4 v4.94.2 h1:gMwJubqQMKq08U6ZkOEP+RNviGgffWfxMO1zG0fOg3Y=
-github.com/cloudquery/plugin-sdk/v4 v4.94.2/go.mod h1:9a0F5hljbJ5YpDhT8w6Wh8sSaCeoOdXd321mF9iV99E=
+github.com/cloudquery/plugin-sdk/v4 v4.94.3 h1:stIAjOS7nB57kW81+S8hDa2ur82JseQ7ICnBNxGeZDs=
+github.com/cloudquery/plugin-sdk/v4 v4.94.3/go.mod h1:OzWCW+aNJgK0dUAAGBX4tXG0I0DFUhs9FjDtvea1+Sk=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.6/go.mod h1:oOW0eioCTA6cOiMLiUPZOpcVxMig6NIQQ7OS05n1F4g=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -319,8 +319,8 @@ google.golang.org/genproto/googleapis/api v0.0.0-20251202230838-ff82c1b0f217 h1:
 google.golang.org/genproto/googleapis/api v0.0.0-20251202230838-ff82c1b0f217/go.mod h1:+rXWjjaukWZun3mLfjmVnQi18E1AsFbDN9QdJ5YXLto=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20251202230838-ff82c1b0f217 h1:gRkg/vSppuSQoDjxyiGfN4Upv/h/DQmIR10ZU8dh4Ww=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20251202230838-ff82c1b0f217/go.mod h1:7i2o+ce6H/6BluujYR+kqX3GKH+dChPTQU19wjRPiGk=
-google.golang.org/grpc v1.78.0 h1:K1XZG/yGDJnzMdd/uZHAkVqJE+xIDOcmdSFZkBUicNc=
-google.golang.org/grpc v1.78.0/go.mod h1:I47qjTo4OKbMkjA/aOOwxDIiPSBofUtQUI5EfpWvW7U=
+google.golang.org/grpc v1.79.1 h1:zGhSi45ODB9/p3VAawt9a+O/MULLl9dpizzNNpq7flY=
+google.golang.org/grpc v1.79.1/go.mod h1:KmT0Kjez+0dde/v2j9vzwoAScgEPx/Bw1CYChhHLrHQ=
 google.golang.org/protobuf v1.26.0-rc.1/go.mod h1:jlhhOSvTdKEhbULTjvd4ARK9grFBp09yW+WbY/TyQbw=
 google.golang.org/protobuf v1.27.1/go.mod h1:9q0QmTI4eRPtz6boOQmLYwt+qCgq0jsYwAQnmE0givc=
 google.golang.org/protobuf v1.36.11 h1:fV6ZwhNocDyBLK0dj+fg8ektcVegBBuEolpbTQyBNVE=
