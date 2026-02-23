@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/bigquery v1.73.1
 	github.com/apache/arrow-go/v18 v18.5.1
 	github.com/cloudquery/codegen v0.3.37
-	github.com/cloudquery/plugin-sdk/v4 v4.94.2
+	github.com/cloudquery/plugin-sdk/v4 v4.94.3
 	github.com/goccy/go-json v0.10.5
 	github.com/invopop/jsonschema v0.13.0
 	github.com/rs/zerolog v1.34.0
@@ -43,7 +43,7 @@ require (
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.14.8 // indirect
-	github.com/cloudquery/plugin-pb-go v1.27.6 // indirect
+	github.com/cloudquery/plugin-pb-go v1.27.7 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
@@ -114,7 +114,7 @@ require (
 	golang.org/x/text v0.33.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	google.golang.org/genproto v0.0.0-20260128011058-8636f8732409 // indirect
-	google.golang.org/grpc v1.78.0 // indirect
+	google.golang.org/grpc v1.79.1 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
