@@ -33,7 +33,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
         with:
-          version: v2.8.0
+          version: v2.10.1
           working-directory: scripts/table_diff
           args: "--config ../../plugins/.golangci.yml"
       - name: Test

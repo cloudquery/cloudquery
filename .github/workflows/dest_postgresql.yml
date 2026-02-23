@@ -40,7 +40,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
         with:
-          version: v2.8.0
+          version: v2.10.1
           working-directory: plugins/destination/postgresql
           args: "--config ../../.golangci.yml"
       - name: gen
@@ -71,9 +71,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.25.7-validate-plugin-fips-cache-${{ hashFiles('plugins/destination/postgresql/go.sum') }}
+          key: ${{ runner.os }}-go-1.26.0-validate-plugin-fips-cache-${{ hashFiles('plugins/destination/postgresql/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.25.7-validate-plugin-fips-cache-destination-postgresql
+            ${{ runner.os }}-go-1.26.0-validate-plugin-fips-cache-destination-postgresql
 
       - name: Set up Go 1.x
         uses: actions/setup-go@v6
