@@ -32,11 +32,19 @@ jobs:
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
+        id: setup-go
         uses: actions/setup-go@v6
         with:
           go-version-file: plugins/destination/postgresql/go.mod
-          cache: true
-          cache-dependency-path: plugins/destination/postgresql/go.sum
+          cache: false
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-destination-postgresql-${{ hashFiles('plugins/destination/postgresql/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-destination-postgresql-
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
         with:
@@ -66,20 +74,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Set up Go 1.x
+        id: setup-go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: plugins/destination/postgresql/go.mod
+          cache: false
+
       - uses: actions/cache@v4
         with:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.26.0-validate-plugin-fips-cache-${{ hashFiles('plugins/destination/postgresql/go.sum') }}
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-validate-plugin-fips-cache-destination-postgresql-${{ hashFiles('plugins/destination/postgresql/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.26.0-validate-plugin-fips-cache-destination-postgresql
-
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v6
-        with:
-          go-version-file: plugins/destination/postgresql/go.mod
-          cache: false
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-validate-plugin-fips-cache-destination-postgresql-
 
       - name: Run package command
         env:

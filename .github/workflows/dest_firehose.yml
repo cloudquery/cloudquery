@@ -36,11 +36,19 @@ jobs:
           fetch-depth: 2
      
       - name: Set up Go 1.x
+        id: setup-go
         uses: actions/setup-go@v6
         with:
           go-version-file: plugins/destination/firehose/go.mod
-          cache: true
-          cache-dependency-path: plugins/destination/firehose/go.sum
+          cache: false
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-destination-firehose-${{ hashFiles('plugins/destination/firehose/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-destination-firehose-
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
         with:
