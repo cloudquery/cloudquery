@@ -25,11 +25,19 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Set up Go 1.x
+        id: setup-go
         uses: actions/setup-go@v6
         with:
           go-version-file: scripts/table_diff/go.mod
-          cache: true
-          cache-dependency-path: scripts/table_diff/go.sum
+          cache: false
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-scripts-table-diff-${{ hashFiles('scripts/table_diff/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-scripts-table-diff-
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
         with:

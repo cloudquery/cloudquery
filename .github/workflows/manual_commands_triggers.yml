@@ -38,11 +38,19 @@ jobs:
           version: v6.34.2
 
       - name: Set up Go 1.x
+        id: setup-go
         uses: actions/setup-go@v6
         with:
           go-version-file: ${{ github.event.client_payload.slash_command.args.named.dir }}/go.mod
-          cache: true
-          cache-dependency-path: ${{ github.event.client_payload.slash_command.args.named.dir }}/go.sum
+          cache: false
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-gen-${{ github.event.client_payload.slash_command.args.named.dir }}-${{ hashFiles(format('{0}/go.sum', github.event.client_payload.slash_command.args.named.dir)) }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-gen-${{ github.event.client_payload.slash_command.args.named.dir }}-
 
       - name: Generate code
         run: make gen

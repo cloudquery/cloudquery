@@ -38,11 +38,19 @@ jobs:
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
+        id: setup-go
         uses: actions/setup-go@v6
         with:
           go-version-file: cli/go.mod
-          cache: true
-          cache-dependency-path: cli/go.sum
+          cache: false
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-cli-${{ hashFiles('cli/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-cli-
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
         if: matrix.os == 'ubuntu-latest'
@@ -74,9 +82,9 @@ jobs:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ubuntu-go-1.26.0-release-cache-${{ hashFiles('cli/go.sum') }}
+          key: ubuntu-go-1.26.0-release-cache-cli-${{ hashFiles('cli/go.sum') }}
           restore-keys: |
-            ubuntu-go-1.26.0-release-cache-cli
+            ubuntu-go-1.26.0-release-cache-cli-
       - name: Set up Go
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/setup-go@v6

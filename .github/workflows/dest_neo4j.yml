@@ -32,11 +32,19 @@ jobs:
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
+        id: setup-go
         uses: actions/setup-go@v6
         with:
           go-version-file: plugins/destination/neo4j/go.mod
-          cache: true
-          cache-dependency-path: plugins/destination/neo4j/go.sum
+          cache: false
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-destination-neo4j-${{ hashFiles('plugins/destination/neo4j/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-destination-neo4j-
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
         with:
