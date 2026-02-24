@@ -101,20 +101,21 @@ jobs:
       - name: Set safe directory
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
+      - name: Set up Go 1.x
+        id: setup-go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
+          cache: false
+
       - uses: actions/cache@v4
         with:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.26.0-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
           restore-keys: |
-            ${{ runner.os }}-go-1.26.0-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}-
-
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v6
-        with:
-          go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
-          cache: false
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}-
 
       - name: Use Node.js LTS
         uses: actions/setup-node@v6

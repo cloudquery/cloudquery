@@ -32,19 +32,20 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 2
+      - name: Set up Go 1.x
+        id: setup-go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: scaffold/go.mod
+          cache: false
       - uses: actions/cache@v4
         with:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.26.0-release-cache-scaffold-${{ hashFiles('scaffold/go.sum') }}
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-release-cache-scaffold-${{ hashFiles('scaffold/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.26.0-release-cache-scaffold-
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v6
-        with:
-          go-version-file: scaffold/go.mod
-          cache: false
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-release-cache-scaffold-
       - name: Install GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:
