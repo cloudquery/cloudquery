@@ -45,11 +45,9 @@ Check each item below and report any that are not following the best practice:
       path: |
         ~/.cache/go-build
         ~/go/pkg/mod
-      key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-<job-purpose>-${{ hashFiles('plugins/destination/<plugin>/go.sum') }}
+      key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-<job-purpose>-destination-<plugin>-${{ hashFiles('plugins/destination/<plugin>/go.sum') }}
       restore-keys: |
-        ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-<job-purpose>-destination-<plugin>
-  ```
-  Where `<job-purpose>` is a short label (e.g. `test-cache`, `validate-plugin-fips-cache`). For source plugins use `source-<plugin>` in restore-keys.
+        ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-<job-purpose>-destination-<plugin>-
 - **Why**: The explicit cache step uses a descriptive, stable key derived from the resolved Go version, improving cache hit rates and preventing different jobs from overwriting each other's cache entries. Never use `erezrokah/setup-go` or any other non-standard setup-go action.
 
 ### 3. FIPS Job Runner Right-Sizing
