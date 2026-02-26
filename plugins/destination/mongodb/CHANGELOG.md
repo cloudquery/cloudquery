@@ -1,5 +1,51 @@
 # Changelog
 
+## [2.8.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.8.1...plugins-destination-mongodb-v2.8.2) (2026-02-12)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.5.1 ([#21993](https://github.com/cloudquery/cloudquery/issues/21993)) ([33229b7](https://github.com/cloudquery/cloudquery/commit/33229b7ba1989ba9781aed5b350d3f7f7763628a))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.36 ([#22012](https://github.com/cloudquery/cloudquery/issues/22012)) ([d69d54f](https://github.com/cloudquery/cloudquery/commit/d69d54f29082a637b190f1368f4c910e9530f030))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.1 ([#22011](https://github.com/cloudquery/cloudquery/issues/22011)) ([eae949e](https://github.com/cloudquery/cloudquery/commit/eae949e5351053bbcb4f09e8f1dccd58d4a9016b))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.2 ([#22016](https://github.com/cloudquery/cloudquery/issues/22016)) ([1b5c4b1](https://github.com/cloudquery/cloudquery/commit/1b5c4b1385b3bc693c88f9700ecf49c66fa18ca8))
+* **deps:** Update module go.mongodb.org/mongo-driver to v1.17.7 ([#21890](https://github.com/cloudquery/cloudquery/issues/21890)) ([875c8d6](https://github.com/cloudquery/cloudquery/commit/875c8d64a42e6f04fd815d33c6ef722a13cd0485))
+
+## [2.8.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.8.0...plugins-destination-mongodb-v2.8.1) (2026-01-30)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21849](https://github.com/cloudquery/cloudquery/issues/21849)) ([d27d2fd](https://github.com/cloudquery/cloudquery/commit/d27d2fd254991c959c6a163bc00e731aea758145))
+
+## [2.8.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.7.7...plugins-destination-mongodb-v2.8.0) (2026-01-15)
+
+
+### Features
+
+* Bring back Sentry DSNs for existing projects ([#21808](https://github.com/cloudquery/cloudquery/issues/21808)) ([a3b5aeb](https://github.com/cloudquery/cloudquery/commit/a3b5aebc5c7fb8f1253f196d3a8f4fb23b237aae))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.0 ([#21811](https://github.com/cloudquery/cloudquery/issues/21811)) ([c22bc0a](https://github.com/cloudquery/cloudquery/commit/c22bc0a15bd69428eaed263a4de467a0d601b749))
+
+## [2.7.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.7.6...plugins-destination-mongodb-v2.7.7) (2026-01-08)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21747](https://github.com/cloudquery/cloudquery/issues/21747)) ([4f9b548](https://github.com/cloudquery/cloudquery/commit/4f9b548fd7ab8d85b7b7d608524c47f407203155))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.34 ([#21776](https://github.com/cloudquery/cloudquery/issues/21776)) ([44fad18](https://github.com/cloudquery/cloudquery/commit/44fad18d228cb61dc9a9311143abdb71d34f2c79))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.35 ([#21798](https://github.com/cloudquery/cloudquery/issues/21798)) ([451444f](https://github.com/cloudquery/cloudquery/commit/451444fee39e1ac7991e3be8cce41dac34754571))
+
+## [2.7.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.7.5...plugins-destination-mongodb-v2.7.6) (2025-12-25)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#21738](https://github.com/cloudquery/cloudquery/issues/21738)) ([546f7ef](https://github.com/cloudquery/cloudquery/commit/546f7efde480197dbabfaffc67f775fcc2b0af1f))
+
 ## [2.7.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.7.4...plugins-destination-mongodb-v2.7.5) (2025-12-19)
 
 

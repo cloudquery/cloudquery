@@ -49,5 +49,5 @@
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/write.go:127: | updateColumnsList | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/write.go:137: | insertColumnsList | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/write.go:149: | setupWrite | 62.5% |
-| github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/main.go:13: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/main.go:17: | main | 0.0% |
 | total: | (statements) | 68.8% |

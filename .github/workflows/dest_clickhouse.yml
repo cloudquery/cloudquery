@@ -29,19 +29,27 @@ jobs:
         working-directory: plugins/destination/clickhouse
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        id: setup-go
+        uses: actions/setup-go@v6
         with:
           go-version-file: plugins/destination/clickhouse/go.mod
-          cache: true
-          cache-dependency-path: plugins/destination/clickhouse/go.sum
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v8
+          cache: false
+      - uses: actions/cache@v4
         with:
-          version: v2.5.0
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-destination-clickhouse-${{ hashFiles('plugins/destination/clickhouse/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-destination-clickhouse-
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.10.1
           working-directory: plugins/destination/clickhouse
           args: "--config ../../.golangci.yml"
       - name: gen
@@ -53,7 +61,7 @@ jobs:
       - name: Build
         run: go build .
 
-      - uses: hoverkraft-tech/compose-action@ad8e0e414a8244c238d7071359bbf04d1e50cd79
+      - uses: hoverkraft-tech/compose-action@bb5664383c049fdd7cda33425c2364acdccd8c02
         with:
           compose-file: docker-compose.yaml
           up-flags: "--wait"

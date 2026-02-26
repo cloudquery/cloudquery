@@ -13,6 +13,7 @@ The following tools / packages are used in this plugin:
 | github.com/apache/arrow-go/v18 | Apache-2.0 |
 | github.com/apache/arrow/go/v13 | Apache-2.0 |
 | github.com/apapsch/go-jsonmerge/v2 | MIT |
+| github.com/avast/retry-go/v4 | MIT |
 | github.com/aws/aws-sdk-go-v2 | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/config | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/credentials | Apache-2.0 |
@@ -25,6 +26,7 @@ The following tools / packages are used in this plugin:
 | github.com/aws/aws-sdk-go-v2/service/internal/presigned-url | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/service/licensemanager | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/service/marketplacemetering | Apache-2.0 |
+| github.com/aws/aws-sdk-go-v2/service/signin | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/service/sso | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/service/ssooidc | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/service/sts | Apache-2.0 |
@@ -32,8 +34,10 @@ The following tools / packages are used in this plugin:
 | github.com/aws/smithy-go/internal/sync/singleflight | BSD-3-Clause |
 | github.com/bahlo/generic-list-go | BSD-3-Clause |
 | github.com/buger/jsonparser | MIT |
-| github.com/cenkalti/backoff/v4 | MIT |
+| github.com/cenkalti/backoff/v5 | MIT |
+| github.com/cespare/xxhash/v2 | MIT |
 | github.com/cloudquery/cloudquery-api-go | MPL-2.0 |
+| github.com/cloudquery/codegen/jsonschema/docs | MPL-2.0 |
 | github.com/cloudquery/plugin-pb-go | MPL-2.0 |
 | github.com/cloudquery/plugin-sdk/v2/internal/glob | MIT |
 | github.com/cloudquery/plugin-sdk/v2/schema | MIT |
@@ -64,9 +68,9 @@ The following tools / packages are used in this plugin:
 | github.com/oapi-codegen/runtime | Apache-2.0 |
 | github.com/paulmach/orb | MIT |
 | github.com/pierrec/lz4/v4 | BSD-3-Clause |
-| github.com/pkg/errors | BSD-2-Clause |
 | github.com/pmezard/go-difflib/difflib | BSD-3-Clause |
 | github.com/rs/zerolog | MIT |
+| github.com/samber/lo | MIT |
 | github.com/santhosh-tekuri/jsonschema/v6 | Apache-2.0 |
 | github.com/segmentio/asm | MIT |
 | github.com/shopspring/decimal | MIT |
@@ -90,6 +94,7 @@ The following tools / packages are used in this plugin:
 | go.opentelemetry.io/otel/sdk/metric | Apache-2.0 |
 | go.opentelemetry.io/otel/trace | Apache-2.0 |
 | go.opentelemetry.io/proto/otlp | Apache-2.0 |
+| go.yaml.in/yaml/v3 | MIT |
 | golang.org/x/exp | BSD-3-Clause |
 | golang.org/x/net | BSD-3-Clause |
 | golang.org/x/sync/errgroup | BSD-3-Clause |

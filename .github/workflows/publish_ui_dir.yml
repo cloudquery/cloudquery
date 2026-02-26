@@ -27,10 +27,10 @@ jobs:
     outputs:
       matrix: ${{ steps.matrix.outputs.result }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Generate plugins matrix
         id: matrix
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           ALL_CHANGED_FILES: ${{ needs.changed-files.outputs.changed_files }}
         with:
@@ -68,20 +68,28 @@ jobs:
       matrix: ${{ fromJson(needs.prepare.outputs.matrix).matrix-go }}
       fail-fast: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        id: setup-go
+        uses: actions/setup-go@v6
         with:
           go-version-file: ${{ matrix.plugin.dir }}/go.mod
-          cache: true
-          cache-dependency-path: ${{ matrix.plugin.dir }}/go.sum
+          cache: false
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-build-${{ matrix.plugin.dir }}-${{ hashFiles(format('{0}/go.sum', matrix.plugin.dir)) }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-build-${{ matrix.plugin.dir }}-
 
       - name: Build
         run: go build .
         working-directory: ${{ matrix.plugin.dir }}
 
       - name: Use Node.js LTS
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: lts/*
           cache: npm
@@ -94,7 +102,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.33.0
+          version: v6.34.2
 
       - name: Build UI for ${{ matrix.plugin.dir }}
         working-directory: ${{ matrix.plugin.ui }}

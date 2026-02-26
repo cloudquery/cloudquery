@@ -134,14 +134,14 @@ const getColumnResolver = (field: APIField): ColumnResolver => {
 
         const dateFormat = normalizeDateFormat(field.options.result.options.dateFormat.format);
         if (field.options.result.type === 'date') {
-          const formatted = dayjs(data, dateFormat).toDate();
+          const formatted = dayjs(data as string, dateFormat).toDate();
           return Promise.resolve(resource.setColumData(column.name, formatted));
         }
 
         const timeFormat = field.options.result.options.timeFormat.format;
         const format = `${dateFormat} ${timeFormat}`;
         const timezone = normalizeTimeZone(field.options.result.options.timeZone);
-        const formatted = dayjs.tz(data, format, timezone).toDate();
+        const formatted = dayjs.tz(data as string, format, timezone).toDate();
         return Promise.resolve(resource.setColumData(column.name, formatted));
       };
       return resolver;
@@ -154,7 +154,7 @@ const getColumnResolver = (field: APIField): ColumnResolver => {
         }
 
         const dateFormat = normalizeDateFormat(field.options.dateFormat.format);
-        const formatted = dayjs(data, dateFormat).toDate();
+        const formatted = dayjs(data as string, dateFormat).toDate();
         return Promise.resolve(resource.setColumData(column.name, formatted));
       };
       return resolver;
@@ -170,7 +170,7 @@ const getColumnResolver = (field: APIField): ColumnResolver => {
         const timeFormat = field.options.timeFormat.format;
         const format = `${dateFormat} ${timeFormat}`;
         const timeZone = normalizeTimeZone(field.options.timeZone);
-        const formatted = dayjs.tz(data, format, timeZone).toDate();
+        const formatted = dayjs.tz(data as string, format, timeZone).toDate();
         return Promise.resolve(resource.setColumData(column.name, formatted));
       };
       return resolver;

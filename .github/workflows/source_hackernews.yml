@@ -28,26 +28,34 @@ jobs:
       run:
         working-directory: ./plugins/source/hackernews
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        id: setup-go
+        uses: actions/setup-go@v6
         with:
           go-version-file: plugins/source/hackernews/go.mod
-          cache: true
-          cache-dependency-path: plugins/source/hackernews/go.sum
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v8
+          cache: false
+      - uses: actions/cache@v4
         with:
-          version: v2.5.0
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-source-hackernews-${{ hashFiles('plugins/source/hackernews/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-source-hackernews-
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.10.1
           working-directory: plugins/source/hackernews
           args: '--config ../../.golangci.yml'
       - name: Setup CloudQuery
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.33.0
+          version: v6.34.2
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen

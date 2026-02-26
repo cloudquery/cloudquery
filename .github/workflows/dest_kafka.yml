@@ -28,19 +28,27 @@ jobs:
       run:
         working-directory: ./plugins/destination/kafka
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        id: setup-go
+        uses: actions/setup-go@v6
         with:
           go-version-file: plugins/destination/kafka/go.mod
-          cache: true
-          cache-dependency-path: plugins/destination/kafka/go.sum
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v8
+          cache: false
+      - uses: actions/cache@v4
         with:
-          version: v2.5.0
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-destination-kafka-${{ hashFiles('plugins/destination/kafka/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-destination-kafka-
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.10.1
           working-directory: plugins/destination/kafka
           args: "--config ../../.golangci.yml"
       - name: gen
@@ -62,22 +70,23 @@ jobs:
         working-directory: ./plugins/destination/kafka
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
+      - name: Set up Go 1.x
+        id: setup-go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: plugins/destination/kafka/go.mod
+          cache: false
 
       - uses: actions/cache@v4
         with:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.25.5-validate-plugin-fips-cache-${{ hashFiles('plugins/destination/kafka/go.sum') }}
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-validate-plugin-fips-cache-destination-kafka-${{ hashFiles('plugins/destination/kafka/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.25.5-validate-plugin-fips-cache-destination-kafka
-
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v5
-        with:
-          go-version-file: plugins/destination/kafka/go.mod
-          cache: false
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-validate-plugin-fips-cache-destination-kafka-
 
       - name: Run package command
         env:

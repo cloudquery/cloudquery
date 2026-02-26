@@ -31,5 +31,5 @@
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/write.go:19: | WriteTableBatch | 77.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/write.go:60: | toMap | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/write.go:71: | transform | 88.9% |
-| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/main.go:13: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/main.go:17: | main | 0.0% |
 | total: | (statements) | 69.9% |

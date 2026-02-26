@@ -13,5 +13,5 @@
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/spec/spec.go:152: | ptr | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/write.go:18: | WriteTable | 76.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/file/v5/client/write.go:57: | Write | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/file/v5/main.go:14: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/file/v5/main.go:18: | main | 0.0% |
 | total: | (statements) | 43.9% |

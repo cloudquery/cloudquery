@@ -14,6 +14,6 @@
 | github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/spec/spec.go:71: | IsEnabled | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/spec/spec.go:78: | Validate | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/write.go:16: | Write | 67.9% |
-| github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/write.go:72: | createTopics | 50.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/main.go:16: | main | 0.0% |
-| total: | (statements) | 41.8% |
+| github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/client/write.go:72: | createTopics | 45.5% |
+| github.com/cloudquery/cloudquery/plugins/destination/kafka/v5/main.go:20: | main | 0.0% |
+| total: | (statements) | 41.4% |

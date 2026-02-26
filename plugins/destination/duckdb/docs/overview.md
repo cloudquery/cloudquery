@@ -9,7 +9,7 @@ description: CloudQuery DuckDB destination plugin documentation
 
 :badge
 
-This destination plugin lets you sync data from a CloudQuery source to a [DuckDB](https://duckdb.org/) database, either self-hosted, or in a cloud data warehouse such as [MotherDuck](https://motherduck.com/).
+This destination plugin lets you sync data from a CloudQuery source to a [DuckDB](https://duckdb.org/) database, either self-hosted, or in a compatible cloud data warehouse such as [MotherDuck](https://motherduck.com/).
 
 ## Example Config
 

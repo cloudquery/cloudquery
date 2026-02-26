@@ -9,10 +9,10 @@ import (
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/apache/arrow-go/v18/arrow/array"
 	"github.com/apache/arrow-go/v18/arrow/memory"
-	retry "github.com/avast/retry-go/v4"
-	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/queries"
-	arrowvalues "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/typeconv/arrow/values"
-	chvalues "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v7/typeconv/ch/values"
+	retry "github.com/avast/retry-go/v5"
+	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/queries"
+	arrowvalues "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/values"
+	chvalues "github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/ch/values"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog"
@@ -38,28 +38,31 @@ func getRetryOptions(logger zerolog.Logger, query string) []retry.Option {
 }
 
 func retryQueryRowAndScan(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn, query string, args []any, dest []any) error {
-	err := retry.Do(
+	retrier := retry.New(getRetryOptions(logger, query)...)
+
+	err := retrier.Do(
 		func() error {
 			return conn.QueryRow(ctx, query, args...).Scan(dest...)
 		},
-		getRetryOptions(logger, query)...,
 	)
 
 	return err
 }
 
 func retryExec(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn, query string, args ...any) error {
-	err := retry.Do(
+	retrier := retry.New(getRetryOptions(logger, query)...)
+
+	err := retrier.Do(
 		func() error {
 			return conn.Exec(ctx, query, args...)
 		},
-		getRetryOptions(logger, query)...,
 	)
 	return err
 }
 
 func retryBatchSend(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn, table *schema.Table, records []arrow.RecordBatch) error {
-	err := retry.Do(
+	retrier := retry.New(getRetryOptions(logger, "batch.Send()")...)
+	err := retrier.Do(
 		func() error {
 			batch, err := conn.PrepareBatch(ctx, queries.Insert(table))
 			if err != nil {
@@ -73,13 +76,14 @@ func retryBatchSend(ctx context.Context, logger zerolog.Logger, conn clickhouse.
 
 			return batch.Send()
 		},
-		getRetryOptions(logger, "batch.Send()")...,
 	)
 	return err
 }
 
 func retryGetTableDefinitions(ctx context.Context, logger zerolog.Logger, database string, conn clickhouse.Conn, messages message.WriteMigrateTables) (schema.Tables, error) {
-	schemas, err := retry.DoWithData(
+	retrier := retry.NewWithData[schema.Tables](getRetryOptions(logger, "getTableDefinitions")...)
+
+	schemas, err := retrier.Do(
 		func() (schema.Tables, error) {
 			const flattenNested0 = "SET flatten_nested = 0"
 			if err := conn.Exec(ctx, flattenNested0); err != nil {
@@ -95,14 +99,15 @@ func retryGetTableDefinitions(ctx context.Context, logger zerolog.Logger, databa
 
 			return queries.ScanTableSchemas(rows, messages)
 		},
-		getRetryOptions(logger, "getTableDefinitions")...,
 	)
 
 	return schemas, err
 }
 
 func retryRead(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn, table *schema.Table) (arrow.RecordBatch, error) {
-	record, err := retry.DoWithData(
+	retrier := retry.NewWithData[arrow.RecordBatch](getRetryOptions(logger, "read")...)
+
+	record, err := retrier.Do(
 		func() (arrow.RecordBatch, error) {
 			rows, err := conn.Query(ctx, queries.Read(table))
 			if err != nil {
@@ -125,7 +130,6 @@ func retryRead(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn,
 
 			return builder.NewRecordBatch(), nil
 		},
-		getRetryOptions(logger, "read")...,
 	)
 	return record, err
 }

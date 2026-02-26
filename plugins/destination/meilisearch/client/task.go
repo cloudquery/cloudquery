@@ -15,5 +15,5 @@ func (c *Client) waitTask(ctx context.Context, info *meilisearch.TaskInfo) error
 	if task.Status == meilisearch.TaskStatusSucceeded {
 		return nil
 	}
-	return fmt.Errorf("wait for task %q finished with status %q", info.TaskUID, task.Status)
+	return fmt.Errorf("wait for task %d finished with status %q", info.TaskUID, task.Status)
 }

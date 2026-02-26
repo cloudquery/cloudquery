@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.client_payload.slash_command.args.named.sha }}
           repository: ${{ github.event.client_payload.pull_request.head.repo.full_name }}
@@ -35,20 +35,28 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.33.0
+          version: v6.34.2
 
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        id: setup-go
+        uses: actions/setup-go@v6
         with:
           go-version-file: ${{ github.event.client_payload.slash_command.args.named.dir }}/go.mod
-          cache: true
-          cache-dependency-path: ${{ github.event.client_payload.slash_command.args.named.dir }}/go.sum
+          cache: false
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-gen-${{ github.event.client_payload.slash_command.args.named.dir }}-${{ hashFiles(format('{0}/go.sum', github.event.client_payload.slash_command.args.named.dir)) }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-gen-${{ github.event.client_payload.slash_command.args.named.dir }}-
 
       - name: Generate code
         run: make gen
         working-directory: ${{ github.event.client_payload.slash_command.args.named.dir }}
 
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "chore: Update code and docs"
           branch: ${{ github.event.client_payload.pull_request.head.ref }}

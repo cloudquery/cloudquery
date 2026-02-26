@@ -32,21 +32,29 @@ jobs:
       id-token: 'write' # This required for OIDC
       contents: 'read' # This is required for actions/checkout@v3
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 2
       - name: Set up Cloud SDK
-        uses: 'google-github-actions/setup-gcloud@v2.1.2'
+        uses: 'google-github-actions/setup-gcloud@v3.0.1'
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        id: setup-go
+        uses: actions/setup-go@v6
         with:
           go-version-file: plugins/destination/bigquery/go.mod
-          cache: true
-          cache-dependency-path: plugins/destination/bigquery/go.sum
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v8
+          cache: false
+      - uses: actions/cache@v4
         with:
-          version: v2.5.0
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-destination-bigquery-${{ hashFiles('plugins/destination/bigquery/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-destination-bigquery-
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.10.1
           working-directory: plugins/destination/bigquery
           args: '--config ../../.golangci.yml'
       - name: gen
@@ -56,7 +64,7 @@ jobs:
         if: github.event_name == 'pull_request'
         run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
       - name: Authenticate to Google Cloud
-        uses: 'google-github-actions/auth@v2'
+        uses: 'google-github-actions/auth@v3'
         with:
           workload_identity_provider: 'projects/151868820337/locations/global/workloadIdentityPools/integration-test-pool/providers/integration-test-provider'
           service_account: 'integration-service-account@cq-integration-tests.iam.gserviceaccount.com'
@@ -77,22 +85,23 @@ jobs:
         working-directory: ./plugins/destination/bigquery
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
+      - name: Set up Go 1.x
+        id: setup-go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: plugins/destination/bigquery/go.mod
+          cache: false
 
       - uses: actions/cache@v4
         with:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.25.5-validate-plugin-fips-cache-${{ hashFiles('plugins/destination/bigquery/go.sum') }}
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-validate-plugin-fips-cache-destination-bigquery-${{ hashFiles('plugins/destination/bigquery/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-go-1.25.5-validate-plugin-fips-cache-destination-bigquery
-
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v5
-        with:
-          go-version-file: plugins/destination/bigquery/go.mod
-          cache: false
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-validate-plugin-fips-cache-destination-bigquery-
 
       - name: Run package command
         env:

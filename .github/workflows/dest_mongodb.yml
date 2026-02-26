@@ -28,19 +28,27 @@ jobs:
       run:
         working-directory: ./plugins/destination/mongodb
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
-        uses: actions/setup-go@v5
+        id: setup-go
+        uses: actions/setup-go@v6
         with:
           go-version-file: plugins/destination/mongodb/go.mod
-          cache: true
-          cache-dependency-path: plugins/destination/mongodb/go.sum
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v8
+          cache: false
+      - uses: actions/cache@v4
         with:
-          version: v2.5.0
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-destination-mongodb-${{ hashFiles('plugins/destination/mongodb/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-destination-mongodb-
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.10.1
           working-directory: plugins/destination/mongodb
           args: "--config ../../.golangci.yml"
       - name: gen

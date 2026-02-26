@@ -24,6 +24,7 @@ var (
 	aiBold    = color.New(color.Bold)
 	aiSuccess = color.New(color.Bold, color.FgGreen)
 	aiInfo    = color.New(color.Bold, color.FgCyan)
+	aiMuted   = color.New(color.Faint, color.FgWhite)
 )
 
 // Spinner messages for different operations
@@ -173,6 +174,7 @@ func aiCmd(ctx context.Context, client *cloudquery_api.ClientWithResponses, team
 }
 
 func aiCmdInner(ctx context.Context, client *cloudquery_api.ClientWithResponses, teamName string, resumeConversation bool) error {
+	aiMuted.Println(`Your conversation with the AI may be recorded for quality assurance purposes. If you prefer not to use AI-assisted setup, run cloudquery init --disable-ai.`)
 	fmt.Println()
 	aiSuccess.Println("🤖 CloudQuery AI Assistant")
 	fmt.Println("I'm here to help you set up CloudQuery syncs!")

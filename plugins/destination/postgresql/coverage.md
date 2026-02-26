@@ -24,11 +24,11 @@
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/embeddings_requester.go:193: | specEmbeddingDimensionsForModel | 50.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert.go:17: | pgTables | 91.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert.go:39: | InsertBatch | 65.8% |
-| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert.go:110: | flushBatch | 82.4% |
-| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert.go:144: | insert | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert.go:171: | upsert | 94.4% |
-| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert.go:199: | upsertCrateDB | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert.go:223: | pgErrToStr | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert.go:110: | flushBatch | 83.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert.go:147: | insert | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert.go:174: | upsert | 94.4% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert.go:202: | upsertCrateDB | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert.go:226: | pgErrToStr | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert_embeddings.go:38: | toEmbeddingTableColumns | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert_embeddings.go:47: | addEmbeddingRows | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/insert_embeddings.go:76: | insertEmbeddingsBatch | 5.7% |
@@ -55,7 +55,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/migrate.go:243: | migrateToCQID | 53.8% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/migrate.go:334: | addColumn | 85.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/migrate.go:345: | createTableIfNotExist | 91.4% |
-| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/migrate.go:398: | createPgVectorTableIfNotExists | 5.6% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/migrate.go:398: | createPgVectorTableIfNotExists | 5.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/migrate.go:466: | removeUniqueConstraint | 75.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/migrate.go:481: | getPKName | 80.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/migrate.go:494: | createPerformanceIndexes | 68.8% |
@@ -90,7 +90,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/transformer.go:227: | getColumnIndexWithName | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/types.go:8: | SchemaTypeToPg | 50.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/types.go:19: | PgToSchemaType | 50.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/main.go:16: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/main.go:20: | main | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_arrow.go:18: | Pg10ToArrow | 90.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_arrow.go:66: | CockroachToArrow | 85.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_arrow.go:115: | CrateDBToArrow | 0.0% |
@@ -101,4 +101,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_pg.go:10: | ArrowToPg10 | 60.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_pg.go:72: | ArrowToCockroach | 57.1% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_pg.go:131: | ArrowToCrateDB | 0.0% |
-| total: | (statements) | 64.4% |
+| total: | (statements) | 64.5% |

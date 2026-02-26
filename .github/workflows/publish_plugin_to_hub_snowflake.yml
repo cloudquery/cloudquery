@@ -39,8 +39,8 @@ jobs:
         with:
           input_string: ${{steps.split.outputs.plugin_version}}
       - name: Checkout
-        uses: actions/checkout@v4
-      - uses: actions/github-script@v7
+        uses: actions/checkout@v6
+      - uses: actions/github-script@v8
         id: check-ui-directory
         env:
           PLUGIN_DIR: ${{steps.split.outputs.plugin_dir}}
@@ -62,10 +62,10 @@ jobs:
     steps:
       - name: Checkout
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Use Node.js LTS
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "lts/*"
           cache: "npm"
@@ -88,7 +88,7 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/gythialy/golang-cross:1.25.5
+      image: ghcr.io/gythialy/golang-cross:1.26.0
       env:
         GOAMD64: v1
     needs:
@@ -96,30 +96,31 @@ jobs:
       - build-config-ui
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       # https://github.com/actions/checkout/issues/2031
       - name: Set safe directory
         run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
+      - name: Set up Go 1.x
+        id: setup-go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
+          cache: false
+
       - uses: actions/cache@v4
         with:
           path: |
             ~/.cache/go-build
             ~/go/pkg/mod
-          key: ${{ runner.os }}-go-1.25.5-publish-plugin-to-hub-cache-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}-${{ hashFiles(format('{0}/{1}', needs.prepare.outputs.plugin_dir, 'go.sum')) }}
           restore-keys: |
-            ${{ runner.os }}-go-1.25.5-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}
-
-      - name: Set up Go 1.x
-        uses: actions/setup-go@v5
-        with:
-          go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
-          cache: false
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}-
 
       - name: Use Node.js LTS
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "lts/*"
 
@@ -129,7 +130,7 @@ jobs:
 
       - name: Get Release Notes
         id: release-notes
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
         with:
@@ -148,7 +149,7 @@ jobs:
             return shellescape([data.body]);
 
       - name: Find and Replace
-        uses: jacobtomlinson/gha-find-replace@f1069b438f125e5395d84d1c6fd3b559a7880cb5
+        uses: jacobtomlinson/gha-find-replace@dfbfef71bc27c27c39d89534540a8960e0eee6b0
         with:
           find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name }}"
           replace: ${{ needs.prepare.outputs.plugin_version }}
@@ -161,7 +162,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.33.0
+          version: v6.34.2
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -176,7 +177,7 @@ jobs:
           git tag ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }} && git push origin ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }}
 
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@be814b201e233b2dc673608aa46e5447c8ab13f2
+        uses: ravsamhq/notify-slack-action@f6eea643ddcd831f1a3c4d518aefd6098ef680e6
         if: always()
         with:
           status: ${{ job.status }}

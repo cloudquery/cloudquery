@@ -44,5 +44,5 @@
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/write.go:121: | overwriteTableBatch | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/write.go:125: | Write | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/write.go:135: | WriteTableBatch | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/main.go:13: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/main.go:17: | main | 0.0% |
 | total: | (statements) | 8.4% |

@@ -20,7 +20,7 @@ import (
 	"github.com/thoas/go-funk"
 )
 
-const sentryDsnDefault = "https://3d2f1b94bdb64884ab1a52f56ce56652@o1396617.ingest.sentry.io/6720193"
+const sentryDsnDefault = "https://3d2f1b94bdb64884ab1a52f56ce56652@o1396617.ingest.us.sentry.io/6720193"
 
 var (
 	Version   = "development"
