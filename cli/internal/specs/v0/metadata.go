@@ -83,6 +83,8 @@ func (m *Metadata) Validate() error {
 		if !strings.HasPrefix(m.Version, "v") {
 			return errors.New("version must start with v")
 		}
+	} else {
+		m.Version = "" // ignore version if registry doesn't need it, to avoid confusion
 	}
 
 	return nil
