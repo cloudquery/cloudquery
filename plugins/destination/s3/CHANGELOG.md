@@ -1,5 +1,14 @@
 # Changelog
 
+## [7.10.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.10.2...plugins-destination-s3-v7.10.3) (2026-02-27)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/feature/s3/manager to v1.22.0 ([#22029](https://github.com/cloudquery/cloudquery/issues/22029)) ([e21a693](https://github.com/cloudquery/cloudquery/commit/e21a6939e8e6955e0bdf228e7bde34a586768c6a))
+* **deps:** Update module github.com/cloudquery/codegen to v0.3.37 ([#22036](https://github.com/cloudquery/cloudquery/issues/22036)) ([060bf34](https://github.com/cloudquery/cloudquery/commit/060bf34cb8f15f277d306eea012d5a4d938fb350))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.3 ([#22073](https://github.com/cloudquery/cloudquery/issues/22073)) ([5e82838](https://github.com/cloudquery/cloudquery/commit/5e82838e24b7eb17d437d14c56b2c7b34a1d8d2f))
+
 ## [7.10.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.10.1...plugins-destination-s3-v7.10.2) (2026-02-12)
 
 
