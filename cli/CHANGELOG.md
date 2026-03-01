@@ -5,6 +5,16 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.34.4](https://github.com/cloudquery/cloudquery/compare/cli-v6.34.3...cli-v6.34.4) (2026-03-01)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 3dfff04 ([#22125](https://github.com/cloudquery/cloudquery/issues/22125)) ([409e35a](https://github.com/cloudquery/cloudquery/commit/409e35a99ca7876169307d6296021da0368727f5))
+* **deps:** Update module github.com/getsentry/sentry-go to v0.42.0 ([#22144](https://github.com/cloudquery/cloudquery/issues/22144)) ([37b5493](https://github.com/cloudquery/cloudquery/commit/37b5493cd2bff4f0990222c4037a18a7707d9935))
+* **deps:** Update opentelemetry-collector monorepo ([#22150](https://github.com/cloudquery/cloudquery/issues/22150)) ([8de6fdd](https://github.com/cloudquery/cloudquery/commit/8de6fdd3888f3c70fa0045016db6de9940d55861))
+* **deps:** Update opentelemetry-go monorepo to v0.16.0 ([#22151](https://github.com/cloudquery/cloudquery/issues/22151)) ([12b69c7](https://github.com/cloudquery/cloudquery/commit/12b69c7756c281bf8f8205ad5afecdccbfb73c5c))
+
 ## [6.34.3](https://github.com/cloudquery/cloudquery/compare/cli-v6.34.2...cli-v6.34.3) (2026-02-28)
 
 
