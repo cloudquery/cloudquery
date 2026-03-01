@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.8.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.8.3...plugins-destination-firehose-v2.8.4) (2026-03-01)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.32.9 ([#22088](https://github.com/cloudquery/cloudquery/issues/22088)) ([dab4857](https://github.com/cloudquery/cloudquery/commit/dab48579f3b7e6953b1ba24c475e4b9e6a6494eb))
+* **deps:** Update module go.opentelemetry.io/otel/sdk to v1.40.0 [SECURITY] ([#22099](https://github.com/cloudquery/cloudquery/issues/22099)) ([605e22f](https://github.com/cloudquery/cloudquery/commit/605e22ffbdda5a416899e307a3fb348864d2538f))
+
 ## [2.8.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.8.2...plugins-destination-firehose-v2.8.3) (2026-02-27)
 
 
