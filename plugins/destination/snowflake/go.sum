@@ -212,8 +212,8 @@ github.com/santhosh-tekuri/jsonschema/v6 v6.0.2 h1:KRzFb2m7YtdldCEkzs6KqmJw4nqEV
 github.com/santhosh-tekuri/jsonschema/v6 v6.0.2/go.mod h1:JXeL+ps8p7/KNMjDQk3TCwPpBy0wYklyWTfbkIzdIFU=
 github.com/sirupsen/logrus v1.9.3 h1:dueUQJ1C2q9oE3F7wvmSGAaVtTmUizReu6fjN8uqzbQ=
 github.com/sirupsen/logrus v1.9.3/go.mod h1:naHLuLoDiP4jHNo9R0sCBMtWGeIprob74mVsIT4qYEQ=
-github.com/snowflakedb/gosnowflake v1.18.1 h1:Nb4AWSnSBWe1UKpKTwCZxjYhYo1JH7GgKhO3wW1kR10=
-github.com/snowflakedb/gosnowflake v1.18.1/go.mod h1:7D4+cLepOWrerVsH+tevW3zdMJ5/WrEN7ZceAC6xBv0=
+github.com/snowflakedb/gosnowflake v1.19.0 h1:Oy/w5/hXiSJV09kgG9zpFZFjNRNvF5Cet7r6vzd87OQ=
+github.com/snowflakedb/gosnowflake v1.19.0/go.mod h1:7D4+cLepOWrerVsH+tevW3zdMJ5/WrEN7ZceAC6xBv0=
 github.com/spf13/cobra v1.10.2 h1:DMTTonx5m65Ic0GOoRY2c16WCbHxOOw6xxezuLaBpcU=
 github.com/spf13/cobra v1.10.2/go.mod h1:7C1pvHqHw5A4vrJfjNwvOdzYu0Gml16OCs2GRiTUUS4=
 github.com/spf13/pflag v1.0.9 h1:9exaQaMOCwffKiiiYk6/BndUBv+iRViNW+4lEMi0PvY=
