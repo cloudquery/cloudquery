@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.8.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.8.3...plugins-destination-mongodb-v2.8.4) (2026-03-01)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22086](https://github.com/cloudquery/cloudquery/issues/22086)) ([3148a51](https://github.com/cloudquery/cloudquery/commit/3148a5154be39099863efd5947326872b31da3ff))
+* **deps:** Update module go.mongodb.org/mongo-driver to v1.17.9 ([#22134](https://github.com/cloudquery/cloudquery/issues/22134)) ([78e3543](https://github.com/cloudquery/cloudquery/commit/78e3543f1aa9b001091ce9056f14452c2df838cf))
+* **deps:** Update module go.opentelemetry.io/otel/sdk to v1.40.0 [SECURITY] ([#22099](https://github.com/cloudquery/cloudquery/issues/22099)) ([605e22f](https://github.com/cloudquery/cloudquery/commit/605e22ffbdda5a416899e307a3fb348864d2538f))
+
 ## [2.8.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.8.2...plugins-destination-mongodb-v2.8.3) (2026-02-27)
 
 
