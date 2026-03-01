@@ -47,7 +47,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-release-cache-scaffold-
       - name: Install GoReleaser
-        uses: goreleaser/goreleaser-action@v6
+        uses: goreleaser/goreleaser-action@v7
         with:
           distribution: goreleaser-pro
           version: latest
