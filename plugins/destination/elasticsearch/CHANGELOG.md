@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.6.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.6.2...plugins-destination-elasticsearch-v3.6.3) (2026-03-01)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 3dfff04 ([#22125](https://github.com/cloudquery/cloudquery/issues/22125)) ([409e35a](https://github.com/cloudquery/cloudquery/commit/409e35a99ca7876169307d6296021da0368727f5))
+* **deps:** Update module go.opentelemetry.io/otel/sdk to v1.40.0 [SECURITY] ([#22099](https://github.com/cloudquery/cloudquery/issues/22099)) ([605e22f](https://github.com/cloudquery/cloudquery/commit/605e22ffbdda5a416899e307a3fb348864d2538f))
+
 ## [3.6.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.6.1...plugins-destination-elasticsearch-v3.6.2) (2026-02-27)
 
 
