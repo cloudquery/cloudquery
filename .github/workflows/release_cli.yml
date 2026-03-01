@@ -130,7 +130,7 @@ jobs:
           labels: automerge
           author: cq-bot <cq-bot@users.noreply.github.com>
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@f6eea643ddcd831f1a3c4d518aefd6098ef680e6
+        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
         if: always()
         with:
           status: ${{ job.status }}
