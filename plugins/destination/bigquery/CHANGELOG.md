@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.7.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.7.3...plugins-destination-bigquery-v4.7.4) (2026-03-01)
+
+
+### Bug Fixes
+
+* **deps:** Update module go.opentelemetry.io/otel/sdk to v1.40.0 [SECURITY] ([#22099](https://github.com/cloudquery/cloudquery/issues/22099)) ([605e22f](https://github.com/cloudquery/cloudquery/commit/605e22ffbdda5a416899e307a3fb348864d2538f))
+* **deps:** Update module google.golang.org/api to v0.267.0 ([#22091](https://github.com/cloudquery/cloudquery/issues/22091)) ([dd132f4](https://github.com/cloudquery/cloudquery/commit/dd132f44eec43ca9ff6915775056369114fae331))
+
 ## [4.7.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.7.2...plugins-destination-bigquery-v4.7.3) (2026-02-27)
 
 
