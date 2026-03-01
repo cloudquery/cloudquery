@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.35](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.34...plugins-source-xkcd-v1.5.35) (2026-03-01)
+
+
+### Bug Fixes
+
+* **deps:** Update module go.opentelemetry.io/otel/sdk to v1.40.0 [SECURITY] ([#22099](https://github.com/cloudquery/cloudquery/issues/22099)) ([605e22f](https://github.com/cloudquery/cloudquery/commit/605e22ffbdda5a416899e307a3fb348864d2538f))
+
 ## [1.5.34](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.33...plugins-source-xkcd-v1.5.34) (2026-02-27)
 
 
