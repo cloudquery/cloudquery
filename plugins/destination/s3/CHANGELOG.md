@@ -1,5 +1,14 @@
 # Changelog
 
+## [7.10.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.10.3...plugins-destination-s3-v7.10.4) (2026-03-01)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22087](https://github.com/cloudquery/cloudquery/issues/22087)) ([fe64fbb](https://github.com/cloudquery/cloudquery/commit/fe64fbb564cf7f38202b60418c763c41d4fc10c2))
+* **deps:** Update module github.com/aws/smithy-go to v1.24.1 ([#22090](https://github.com/cloudquery/cloudquery/issues/22090)) ([d8feb9a](https://github.com/cloudquery/cloudquery/commit/d8feb9aa095da7f4aaa2a44540fde31ee02e8fb0))
+* **deps:** Update module go.opentelemetry.io/otel/sdk to v1.40.0 [SECURITY] ([#22099](https://github.com/cloudquery/cloudquery/issues/22099)) ([605e22f](https://github.com/cloudquery/cloudquery/commit/605e22ffbdda5a416899e307a3fb348864d2538f))
+
 ## [7.10.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.10.2...plugins-destination-s3-v7.10.3) (2026-02-27)
 
 
