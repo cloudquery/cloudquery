@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.16](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.15...plugins-transformer-basic-v2.6.16) (2026-03-01)
+
+
+### Bug Fixes
+
+* **deps:** Update module go.opentelemetry.io/otel/sdk to v1.40.0 [SECURITY] ([#22099](https://github.com/cloudquery/cloudquery/issues/22099)) ([605e22f](https://github.com/cloudquery/cloudquery/commit/605e22ffbdda5a416899e307a3fb348864d2538f))
+
 ## [2.6.15](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.14...plugins-transformer-basic-v2.6.15) (2026-02-27)
 
 
