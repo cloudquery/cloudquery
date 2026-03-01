@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.7.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.7.3...plugins-destination-gremlin-v2.7.4) (2026-03-01)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.32.9 ([#22089](https://github.com/cloudquery/cloudquery/issues/22089)) ([366214a](https://github.com/cloudquery/cloudquery/commit/366214af33638eb2d357a7c799593c2b9c55407b))
+* **deps:** Update module go.opentelemetry.io/otel/sdk to v1.40.0 [SECURITY] ([#22099](https://github.com/cloudquery/cloudquery/issues/22099)) ([605e22f](https://github.com/cloudquery/cloudquery/commit/605e22ffbdda5a416899e307a3fb348864d2538f))
+
 ## [2.7.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.7.2...plugins-destination-gremlin-v2.7.3) (2026-02-27)
 
 
