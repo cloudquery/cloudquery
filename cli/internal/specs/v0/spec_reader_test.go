@@ -84,7 +84,6 @@ var specLoaderTestCases = []specLoaderTestCase{
 				Metadata: Metadata{
 					Name:     "gcp",
 					Path:     "cloudquery/gcp",
-					Version:  "v1.0.0",
 					Registry: RegistryLocal,
 				},
 				Destinations: []string{"postgresqlv2"},
@@ -94,7 +93,6 @@ var specLoaderTestCases = []specLoaderTestCase{
 				Metadata: Metadata{
 					Name:     "aws",
 					Path:     "cloudquery/aws",
-					Version:  "v1.0.0",
 					Registry: RegistryLocal,
 				},
 				Destinations: []string{"postgresql"},
@@ -106,7 +104,6 @@ var specLoaderTestCases = []specLoaderTestCase{
 				Metadata: Metadata{
 					Name:     "postgresqlv2",
 					Path:     "cloudquery/postgresql",
-					Version:  "v1.0.0",
 					Registry: RegistryGRPC,
 				},
 				WriteMode: WriteModeOverwrite,
@@ -116,7 +113,6 @@ var specLoaderTestCases = []specLoaderTestCase{
 				Metadata: Metadata{
 					Name:     "postgresql",
 					Path:     "cloudquery/postgresql",
-					Version:  "v1.0.0",
 					Registry: RegistryGRPC,
 				},
 				WriteMode: WriteModeOverwrite,
@@ -134,7 +130,6 @@ var specLoaderTestCases = []specLoaderTestCase{
 				Metadata: Metadata{
 					Name:     "gcp",
 					Path:     "cloudquery/gcp",
-					Version:  "v1.0.0",
 					Registry: RegistryLocal,
 				},
 				Destinations: []string{"postgresqlv2"},
@@ -144,7 +139,6 @@ var specLoaderTestCases = []specLoaderTestCase{
 				Metadata: Metadata{
 					Name:     "aws",
 					Path:     "cloudquery/aws",
-					Version:  "v1.0.0",
 					Registry: RegistryLocal,
 				},
 				Destinations: []string{"postgresql"},
@@ -156,7 +150,6 @@ var specLoaderTestCases = []specLoaderTestCase{
 				Metadata: Metadata{
 					Name:     "postgresqlv2",
 					Path:     "cloudquery/postgresql",
-					Version:  "v1.0.0",
 					Registry: RegistryGRPC,
 				},
 				WriteMode: WriteModeOverwrite,
@@ -166,7 +159,6 @@ var specLoaderTestCases = []specLoaderTestCase{
 				Metadata: Metadata{
 					Name:     "postgresql",
 					Path:     "cloudquery/postgresql",
-					Version:  "v1.0.0",
 					Registry: RegistryGRPC,
 				},
 				WriteMode: WriteModeOverwrite,
@@ -215,7 +207,6 @@ var specLoaderTestCases = []specLoaderTestCase{
 				Metadata: Metadata{
 					Name:     "gcp",
 					Path:     "cloudquery/gcp",
-					Version:  "v1.0.0",
 					Registry: RegistryLocal,
 				},
 				Destinations: []string{"postgresql"},
@@ -259,7 +250,6 @@ var specLoaderTestCases = []specLoaderTestCase{
 				Metadata: Metadata{
 					Name:     "gcp",
 					Path:     "cloudquery/gcp",
-					Version:  "v1.0.0",
 					Registry: RegistryLocal,
 				},
 				Destinations: []string{"postgresql"},

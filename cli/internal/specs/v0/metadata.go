@@ -42,6 +42,8 @@ func (m Metadata) VersionString() string {
 		return fmt.Sprintf("%s (%s@%s)", m.Name, m.Path, m.Version)
 	case RegistryLocal, RegistryGRPC:
 		return fmt.Sprintf("%s (%s@%s)", m.Name, m.Registry, m.Path)
+	case RegistryDocker:
+		return fmt.Sprintf("%s@%s (%s)", m.Name, m.Registry, m.Path)
 	default:
 		return fmt.Sprintf("%s@%s (%s@%s)", m.Name, m.Registry, m.Path, m.Version)
 	}
@@ -83,6 +85,8 @@ func (m *Metadata) Validate() error {
 		if !strings.HasPrefix(m.Version, "v") {
 			return errors.New("version must start with v")
 		}
+	} else {
+		m.Version = "" // ignore version if registry doesn't need it, to avoid confusion
 	}
 
 	return nil
