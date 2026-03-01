@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.14.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.14.2...plugins-destination-sqlite-v2.14.3) (2026-03-01)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/mattn/go-sqlite3 to v1.14.34 ([#22133](https://github.com/cloudquery/cloudquery/issues/22133)) ([1d6440d](https://github.com/cloudquery/cloudquery/commit/1d6440dc88feabaec57a390f6b64f20d3a254f5c))
+* **deps:** Update module go.opentelemetry.io/otel/sdk to v1.40.0 [SECURITY] ([#22099](https://github.com/cloudquery/cloudquery/issues/22099)) ([605e22f](https://github.com/cloudquery/cloudquery/commit/605e22ffbdda5a416899e307a3fb348864d2538f))
+
 ## [2.14.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.14.1...plugins-destination-sqlite-v2.14.2) (2026-02-27)
 
 
