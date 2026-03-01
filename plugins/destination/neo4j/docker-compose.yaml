@@ -1,6 +1,6 @@
 services:
   neo4j:
-    image: neo4j:4.4
+    image: neo4j:2025.12
     environment:
       NEO4J_dbms_security_procedures_unrestricted: apoc.*
       NEO4J_dbms_connector_bolt_enabled: "true"
