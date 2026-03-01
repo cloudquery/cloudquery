@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8
 go 1.26.0
 
 require (
-	github.com/ClickHouse/clickhouse-go/v2 v2.42.0
+	github.com/ClickHouse/clickhouse-go/v2 v2.43.0
 	github.com/apache/arrow-go/v18 v18.5.1
 	github.com/avast/retry-go/v5 v5.0.0
 	github.com/cloudquery/codegen v0.3.37
@@ -53,7 +53,7 @@ require (
 )
 
 require (
-	github.com/ClickHouse/ch-go v0.69.0 // indirect
+	github.com/ClickHouse/ch-go v0.71.0 // indirect
 	github.com/andybalholm/brotli v1.2.0 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
@@ -73,13 +73,13 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.3 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/invopop/jsonschema v0.13.0
-	github.com/klauspost/compress v1.18.2 // indirect
+	github.com/klauspost/compress v1.18.3 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/paulmach/orb v0.12.0 // indirect
-	github.com/pierrec/lz4/v4 v4.1.23 // indirect
+	github.com/pierrec/lz4/v4 v4.1.25 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/segmentio/asm v1.2.1 // indirect
 	github.com/shopspring/decimal v1.4.0
