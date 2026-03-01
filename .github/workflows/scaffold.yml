@@ -37,7 +37,7 @@ jobs:
         with:
           go-version-file: scaffold/go.mod
           cache: false
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: |
             ~/.cache/go-build
@@ -70,7 +70,7 @@ jobs:
         with:
           go-version-file: scaffold/go.mod
           cache: false
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         with:
           path: |
