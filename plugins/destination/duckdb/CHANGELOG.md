@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.3.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.3.2...plugins-destination-duckdb-v6.3.3) (2026-03-01)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/duckdb/duckdb-go/v2 to v2.5.5 ([#22132](https://github.com/cloudquery/cloudquery/issues/22132)) ([8544d3a](https://github.com/cloudquery/cloudquery/commit/8544d3a66540563d4c7438f31b9b3ffa659889a7))
+* **deps:** Update module go.opentelemetry.io/otel/sdk to v1.40.0 [SECURITY] ([#22099](https://github.com/cloudquery/cloudquery/issues/22099)) ([605e22f](https://github.com/cloudquery/cloudquery/commit/605e22ffbdda5a416899e307a3fb348864d2538f))
+
 ## [6.3.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.3.1...plugins-destination-duckdb-v6.3.2) (2026-02-27)
 
 
