@@ -62,6 +62,10 @@
       enabled: false,
     },
     {
+      matchPackageNames: ['getmeili/meilisearch'],
+      allowedVersions: '1.1.0',
+    },
+    {
       matchPackageNames: ['clickhouse/clickhouse-server'],
       allowedVersions: '24.8.1',
     },
@@ -87,6 +91,10 @@
       rangeStrategy: "bump",
       addLabels: ["no automerge"],
       schedule: ["before 3am on Saturday"],
+    },
+    {
+      matchPackageNames: ['elasticsearch'],
+      allowedVersions: '8.6.0',
     },
   ],
   ignorePaths: [
