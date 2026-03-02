@@ -54,7 +54,7 @@
       enabled: false,
     },
     {
-      matchPackageNames: ['meilisearch'],
+      matchPackageNames: ['getmeili/meilisearch'],
       allowedVersions: '1.1.0',
     },
     {
