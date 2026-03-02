@@ -71,7 +71,7 @@
     },
     {
       matchPackageNames: ['cockroachdb/cockroach'],
-      allowedVersions: '22',
+      allowedVersions: '22.1.8',
     },
     {
       matchPackageNames: [
