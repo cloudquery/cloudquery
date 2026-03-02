@@ -12,6 +12,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/rs/zerolog v1.34.0
 	github.com/samber/lo v1.52.0
+	github.com/samber/slog-zerolog v1.0.0
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/sync v0.19.0
 )
