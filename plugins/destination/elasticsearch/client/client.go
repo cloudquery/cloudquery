@@ -87,7 +87,7 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.
 		}
 		return nil, errors.Join(errUnreachable, err)
 	}
-	c.logger.Debug().Str("cluster_name", info.ClusterName).Msg("Elasticsearch cluster info")
+	c.logger.Debug().Interface("cluster_info", info).Msg("Elasticsearch cluster info")
 	c.typedClient = es
 	c.client, err = elasticsearch.NewClient(cfg)
 	if err != nil {
