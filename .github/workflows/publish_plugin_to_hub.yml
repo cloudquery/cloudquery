@@ -117,7 +117,7 @@ jobs:
         with:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
           cache: false
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         if: needs.prepare.outputs.ui_dir_arg != ''
         with:
           path: |
@@ -501,7 +501,7 @@ jobs:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
           cache: false
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: |
             ~/.cache/go-build
