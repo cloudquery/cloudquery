@@ -76,6 +76,10 @@
       addLabels: ["no automerge"],
       schedule: ["before 3am on Saturday"],
     },
+    {
+      matchPackageNames: ['elasticsearch'],
+      allowedVersions: '8.6.0',
+    },
   ],
   ignorePaths: [
     'plugins/source/aws/**',
