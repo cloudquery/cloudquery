@@ -54,6 +54,10 @@
       enabled: false,
     },
     {
+      matchPackageNames: ['clickhouse/clickhouse-server'],
+      allowedVersions: '24.8.1',
+    },
+    {
       matchPackageNames: [
         'github.com/marcboeker/go-duckdb',
       ],
