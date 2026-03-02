@@ -107,8 +107,8 @@ func (c *Client) configureIndex(ctx context.Context, s *indexSchema) error {
 		}
 	}
 
-	// Convert []string to []interface{} for UpdateFilterableAttributes
-	attrInterfaces := make([]interface{}, len(attributes))
+	// Convert []string to []any for UpdateFilterableAttributes
+	attrInterfaces := make([]any, len(attributes))
 	for i, attr := range attributes {
 		attrInterfaces[i] = attr
 	}
