@@ -22,6 +22,11 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 	// refresh index before read, to ensure all written data is available
 	_, err := c.typedClient.Indices.Refresh().Index(index).Do(ctx)
 	if err != nil {
+		var esErr *types.ElasticsearchError
+		if errors.As(err, &esErr) && esErr.Status == 404 {
+			// index doesn't exist yet, so there are no records to read
+			return nil
+		}
 		return fmt.Errorf("failed to refresh index before read: %w", err)
 	}
 
