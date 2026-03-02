@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
 	"time"
 
 	"github.com/cenkalti/backoff/v4"
@@ -13,6 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/elastic/go-elasticsearch/v8"
+	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
 	"github.com/rs/zerolog"
 )
 
@@ -81,21 +81,13 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.
 	}
 	info, err := es.Info().Do(ctx)
 	if err != nil {
+		var esErr *types.ElasticsearchError
+		if errors.As(err, &esErr) && esErr.Status == 401 {
+			return nil, errors.Join(errUnauthorized, err)
+		}
 		return nil, errors.Join(errUnreachable, err)
 	}
-	if info.StatusCode != 200 {
-		if info.StatusCode == 401 {
-			return nil, errors.Join(errUnauthorized, errors.New("status code is 401"))
-		}
-		return nil, fmt.Errorf("failed to ping Elasticsearch: status code is %d", info.StatusCode)
-	}
-
-	defer info.Body.Close()
-	b, err := io.ReadAll(info.Body)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read Elasticsearch cluster info response: %w", err)
-	}
-	c.logger.Debug().Str("cluster_info", string(b)).Msg("Elasticsearch cluster info")
+	c.logger.Debug().Str("cluster_name", info.ClusterName).Msg("Elasticsearch cluster info")
 	c.typedClient = es
 	c.client, err = elasticsearch.NewClient(cfg)
 	if err != nil {

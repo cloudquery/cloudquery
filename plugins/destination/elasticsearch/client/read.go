@@ -3,8 +3,8 @@ package client
 import (
 	"bytes"
 	"context"
+	"errors"
 	"fmt"
-	"io"
 
 	"github.com/goccy/go-json"
 
@@ -20,49 +20,35 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 	index := c.getIndexNamePattern(table)
 
 	// refresh index before read, to ensure all written data is available
-	resp, err := c.typedClient.Indices.Refresh().Index(index).Do(ctx)
+	_, err := c.typedClient.Indices.Refresh().Index(index).Do(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to refresh index before read: %w", err)
 	}
-	_, _ = io.Copy(io.Discard, resp.Body)
-	_ = resp.Body.Close()
 
 	size := 100
-	resp, err = c.typedClient.Search().Index(index).Request(&search.Request{
+	searchResp, err := c.typedClient.Search().Index(index).Request(&search.Request{
 		Query: &types.Query{
 			MatchAll: &types.MatchAllQuery{},
 		},
 		Size: &size,
 	}).Do(ctx)
 	if err != nil {
+		var esErr *types.ElasticsearchError
+		if errors.As(err, &esErr) && esErr.Status == 404 {
+			return nil
+		}
 		return fmt.Errorf("failed to read: %w", err)
 	}
 
-	defer resp.Body.Close()
-	if resp.StatusCode > 299 {
-		if resp.StatusCode == 404 {
-			return nil
-		}
-		data, _ := io.ReadAll(resp.Body)
-		return fmt.Errorf("failed to read: %s: %s", resp.Status, string(data))
-	}
-
-	var result struct {
-		Hits struct {
-			Hits []struct {
-				Source map[string]any `json:"_source"`
-			} `json:"hits"`
-		} `json:"hits"`
-	}
-	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		return fmt.Errorf("failed to decode response body: %w", err)
-	}
-
 	sm := table.ToArrowSchema()
-	for _, hit := range result.Hits.Hits {
+	for _, hit := range searchResp.Hits.Hits {
+		var source map[string]any
+		if err := json.Unmarshal(hit.Source_, &source); err != nil {
+			return fmt.Errorf("failed to decode hit source: %w", err)
+		}
 		rb := array.NewRecordBuilder(memory.DefaultAllocator, sm)
 		for i, field := range rb.Fields() {
-			err := appendValue(field, hit.Source[sm.Field(i).Name])
+			err := appendValue(field, source[sm.Field(i).Name])
 			if err != nil {
 				return fmt.Errorf("failed to read from table %s: %w", table.Name, err)
 			}
