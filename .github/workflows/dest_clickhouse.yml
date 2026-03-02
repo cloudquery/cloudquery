@@ -61,7 +61,7 @@ jobs:
       - name: Build
         run: go build .
 
-      - uses: hoverkraft-tech/compose-action@bb5664383c049fdd7cda33425c2364acdccd8c02
+      - uses: hoverkraft-tech/compose-action@265e4765128786260e20f2ad54c8e351d7ab8c74
         with:
           compose-file: docker-compose.yaml
           up-flags: "--wait"

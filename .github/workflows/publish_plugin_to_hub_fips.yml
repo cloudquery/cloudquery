@@ -104,7 +104,7 @@ jobs:
             return shellescape([data.body]);
 
       - name: Find and Replace
-        uses: jacobtomlinson/gha-find-replace@dfbfef71bc27c27c39d89534540a8960e0eee6b0
+        uses: jacobtomlinson/gha-find-replace@b19bfcb2a015af55fd6e160d1d1987e887f8c163
         with:
           find: "(?i)version_${{ needs.prepare.outputs.plugin_kind }}_${{ needs.prepare.outputs.plugin_name }}"
           replace: ${{ needs.prepare.outputs.plugin_version }}
@@ -131,7 +131,7 @@ jobs:
           cloudquery plugin publish --finalize
 
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@f6eea643ddcd831f1a3c4d518aefd6098ef680e6
+        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
         if: always()
         with:
           status: ${{ job.status }}
