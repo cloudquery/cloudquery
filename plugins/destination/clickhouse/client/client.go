@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log/slog"
 
 	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/ClickHouse/clickhouse-go/v2/lib/proto"
@@ -57,7 +58,7 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.Ne
 		Str("database", options.Auth.Database).
 		Str("cluster", s.Cluster).
 		Logger()
-	options.Debugf = l.Printf
+	options.Logger = slog.New(&zerologSlogHandler{logger: l})
 
 	conn, err := clickhouse.Open(options)
 	if err != nil {
