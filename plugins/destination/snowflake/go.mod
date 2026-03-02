@@ -8,7 +8,7 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.94.3
 	github.com/goccy/go-json v0.10.5
 	github.com/rs/zerolog v1.34.0
-	github.com/snowflakedb/gosnowflake v1.18.1
+	github.com/snowflakedb/gosnowflake v1.19.0
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/sync v0.19.0
 )
