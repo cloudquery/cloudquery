@@ -5,3 +5,4 @@
 .release-please-manifest.json
 **/CHANGELOG.md
 **/go.mod.tpl
+plugins/source/airtable/package-lock.json
