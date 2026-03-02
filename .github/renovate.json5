@@ -38,6 +38,10 @@
       groupName: 'Website',
     },
     {
+      matchPackageNames: ['mongo'],
+      allowedVersions: '3.6',
+    },
+    {
       matchPackageNames: [
         'github.com/jackc/pgx/v4',
       ],
@@ -52,6 +56,10 @@
         'plugins/**',
       ],
       enabled: false,
+    },
+    {
+      matchPackageNames: ['clickhouse/clickhouse-server'],
+      allowedVersions: '24.8.1',
     },
     {
       matchPackageNames: [
