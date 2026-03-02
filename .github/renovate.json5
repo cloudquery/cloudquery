@@ -54,8 +54,8 @@
       enabled: false,
     },
     {
-      matchPackageNames: ['elasticsearch'],
-      allowedVersions: '8.6.0',
+      matchPackageNames: ['meilisearch'],
+      allowedVersions: '1.1.0',
     },
     {
       matchPackageNames: [
