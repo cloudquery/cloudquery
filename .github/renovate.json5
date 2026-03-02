@@ -48,6 +48,10 @@
       allowedVersions: '<5',
     },
     {
+      matchPackageNames: ['mysql'],
+      allowedVersions: '8.0',
+    },
+    {
       matchPackageNames: [
         'github.com/cloudquery/plugin-pb-go',
         'github.com/cloudquery/cloudquery-api-go',
@@ -83,6 +87,10 @@
       rangeStrategy: "bump",
       addLabels: ["no automerge"],
       schedule: ["before 3am on Saturday"],
+    },
+    {
+      matchPackageNames: ['elasticsearch'],
+      allowedVersions: '8.6.0',
     },
   ],
   ignorePaths: [
