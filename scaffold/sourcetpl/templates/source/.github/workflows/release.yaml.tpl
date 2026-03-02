@@ -62,7 +62,7 @@ jobs:
             return shellescape([data.body]);
 
       - name: Find and Replace
-        uses: jacobtomlinson/gha-find-replace@dfbfef71bc27c27c39d89534540a8960e0eee6b0
+        uses: jacobtomlinson/gha-find-replace@b19bfcb2a015af55fd6e160d1d1987e887f8c163
         with:
           find: "(?i)version_source_{{.Name}}"
           replace: ${{"{{"}} steps.semver_parser.outputs.fullversion {{"}}"}}
