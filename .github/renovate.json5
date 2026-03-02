@@ -38,6 +38,10 @@
       groupName: 'Website',
     },
     {
+      matchPackageNames: ['mongo'],
+      allowedVersions: '3.6',
+    },
+    {
       matchPackageNames: [
         'github.com/jackc/pgx/v4',
       ],
