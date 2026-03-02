@@ -61,6 +61,10 @@
       ],
       enabled: false,
     },
+     {
+      matchPackageNames: ['postgres'],
+      allowedVersions: '10',
+    },
     {
       matchPackageNames: ['getmeili/meilisearch'],
       allowedVersions: '1.1.0',
