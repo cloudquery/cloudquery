@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 
 	"github.com/apache/arrow-go/v18/arrow"
@@ -13,10 +14,7 @@ import (
 
 func (c *Client) Read(_ context.Context, table *schema.Table, res chan<- arrow.RecordBatch) error {
 	sc := table.ToArrowSchema()
-	index, err := c.Meilisearch.GetIndex(table.Name)
-	if err != nil {
-		return err
-	}
+	index := c.Meilisearch.Index(table.Name)
 
 	req := &meilisearch.SearchRequest{
 		HitsPerPage: 100, // default = 1, we want more
@@ -30,9 +28,13 @@ func (c *Client) Read(_ context.Context, table *schema.Table, res chan<- arrow.R
 		}
 
 		for _, hit := range resp.Hits {
-			m, ok := hit.(map[string]any)
-			if !ok {
-				return fmt.Errorf("unsupported format for doc: %T", hit)
+			m := make(map[string]any)
+			for k, v := range hit {
+				var val any
+				if err := json.Unmarshal(v, &val); err != nil {
+					return fmt.Errorf("failed to unmarshal hit value for key %q: %w", k, err)
+				}
+				m[k] = val
 			}
 			row, err := docToRecord(sc, m)
 			if err != nil {

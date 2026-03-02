@@ -17,17 +17,9 @@ type indexSchema struct {
 	Index      int
 }
 
-func (i *indexSchema) init(index *meilisearch.Index) (*indexSchema, error) {
+func (i *indexSchema) init(index *meilisearch.IndexResult) (*indexSchema, error) {
 	i.UID = index.UID
 	i.PrimaryKey = index.PrimaryKey
-
-	attrs, err := index.GetFilterableAttributes()
-	if err != nil {
-		return nil, err
-	}
-	if attrs != nil {
-		i.Attributes = *attrs
-	}
 
 	return i, nil
 }
@@ -60,13 +52,13 @@ func (c *Client) indexes() (map[string]*indexSchema, error) {
 	result := make(map[string]*indexSchema)
 
 	for {
-		resp, err := c.Meilisearch.GetIndexes(req)
+		resp, err := c.Meilisearch.ListIndexes(req)
 		if err != nil {
 			return nil, err
 		}
 
 		for _, index := range resp.Results {
-			entry, err := new(indexSchema).init(&index)
+			entry, err := new(indexSchema).init(index)
 			if err != nil {
 				return nil, err
 			}
@@ -85,10 +77,7 @@ func (c *Client) indexes() (map[string]*indexSchema, error) {
 func (c *Client) configureIndex(ctx context.Context, s *indexSchema) error {
 	c.logger.Debug().Str("index", s.UID).Msg("configuring index")
 
-	index, err := c.Meilisearch.GetIndex(s.UID)
-	if err != nil {
-		return err
-	}
+	index := c.Meilisearch.Index(s.UID)
 
 	attributes := slices.Clone(s.Attributes)
 
@@ -99,7 +88,12 @@ func (c *Client) configureIndex(ctx context.Context, s *indexSchema) error {
 
 	var current []string
 	if attrs != nil {
-		current = *attrs
+		// Convert []interface{} to []string
+		for _, attr := range *attrs {
+			if str, ok := attr.(string); ok {
+				current = append(current, str)
+			}
+		}
 	}
 
 	if len(current) > 0 {
@@ -108,18 +102,24 @@ func (c *Client) configureIndex(ctx context.Context, s *indexSchema) error {
 		attributes = slices.Compact(attributes)
 		if len(attributes) == len(s.Attributes) {
 			// already the same filtered attributes, skip
-			c.logger.Info().Str("index", index.UID).Msg("index is already properly configured, skip")
+			c.logger.Info().Str("index", s.UID).Msg("index is already properly configured, skip")
 			return nil
 		}
 	}
 
-	taskInfo, err := index.UpdateFilterableAttributes(&attributes)
+	// Convert []string to []interface{} for UpdateFilterableAttributes
+	attrInterfaces := make([]interface{}, len(attributes))
+	for i, attr := range attributes {
+		attrInterfaces[i] = attr
+	}
+
+	taskInfo, err := index.UpdateFilterableAttributes(&attrInterfaces)
 	if err != nil {
 		return err
 	}
 
 	if err := c.waitTask(ctx, taskInfo); err != nil {
-		return fmt.Errorf("failed to update filterable attributes for index %q: %w", index.UID, err)
+		return fmt.Errorf("failed to update filterable attributes for index %q: %w", s.UID, err)
 	}
 
 	taskInfo, err = index.UpdateSortableAttributes(&attributes)
@@ -128,7 +128,7 @@ func (c *Client) configureIndex(ctx context.Context, s *indexSchema) error {
 	}
 
 	if err := c.waitTask(ctx, taskInfo); err != nil {
-		return fmt.Errorf("failed to update sortable attributes for index %q: %w", index.UID, err)
+		return fmt.Errorf("failed to update sortable attributes for index %q: %w", s.UID, err)
 	}
 
 	return nil

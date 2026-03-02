@@ -16,7 +16,7 @@ import (
 )
 
 type Client struct {
-	Meilisearch *meilisearch.Client
+	Meilisearch meilisearch.ServiceManager
 
 	logger zerolog.Logger
 	spec   Spec
@@ -33,7 +33,7 @@ func (c *Client) Close(ctx context.Context) error {
 	if err := c.writer.Close(ctx); err != nil {
 		return fmt.Errorf("failed to close writer: %w", err)
 	}
-	c.Meilisearch = nil
+	c.Meilisearch.Close()
 	return nil
 }
 
