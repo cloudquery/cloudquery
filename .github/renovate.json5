@@ -44,6 +44,10 @@
       allowedVersions: '<5',
     },
     {
+      matchPackageNames: ['mysql'],
+      allowedVersions: '8.0',
+    },
+    {
       matchPackageNames: [
         'github.com/cloudquery/plugin-pb-go',
         'github.com/cloudquery/cloudquery-api-go',
