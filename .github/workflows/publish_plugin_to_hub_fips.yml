@@ -64,7 +64,7 @@ jobs:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
           cache: false
 
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: |
             ~/.cache/go-build
@@ -121,7 +121,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@v4
         with:
-          version: v6.34.2
+          version: v6.34.3
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
