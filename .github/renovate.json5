@@ -74,6 +74,10 @@
       allowedVersions: '24.8.1',
     },
     {
+      matchPackageNames: ['cockroachdb/cockroach'],
+      allowedVersions: '22.1.8',
+    },
+    {
       matchPackageNames: [
         'github.com/marcboeker/go-duckdb',
       ],
