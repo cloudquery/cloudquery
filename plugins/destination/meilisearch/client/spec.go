@@ -10,7 +10,6 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
 	"github.com/invopop/jsonschema"
 	"github.com/meilisearch/meilisearch-go"
-	"github.com/valyala/fasthttp"
 )
 
 type Spec struct {
@@ -79,14 +78,11 @@ func (s *Spec) setDefaults() {
 	}
 }
 
-func (s *Spec) getClient() (*meilisearch.Client, error) {
-	config := meilisearch.ClientConfig{
-		Host:    s.Host,
-		APIKey:  s.APIKey,
-		Timeout: s.Timeout.Duration(),
-	}
+func (s *Spec) getClient() (meilisearch.ServiceManager, error) {
 	if len(s.CACert) == 0 {
-		return meilisearch.NewClient(config), nil
+		return meilisearch.New(s.Host,
+			meilisearch.WithAPIKey(s.APIKey),
+		), nil
 	}
 
 	// read file
@@ -99,15 +95,12 @@ func (s *Spec) getClient() (*meilisearch.Client, error) {
 		return nil, errors.New("failed to append \"ca_cert\" value")
 	}
 
-	httpClient := &fasthttp.Client{
-		Name: "meilisearch-client-with-custom-tls",
-		// Reuse the most recently-used idle connection.
-		ConnPoolStrategy: fasthttp.LIFO,
-		// Add tls config
-		TLSConfig: &tls.Config{RootCAs: certPool},
-	}
+	tlsConfig := &tls.Config{RootCAs: certPool}
 
-	return meilisearch.NewFastHTTPCustomClient(config, httpClient), nil
+	return meilisearch.New(s.Host,
+		meilisearch.WithAPIKey(s.APIKey),
+		meilisearch.WithCustomClientWithTLS(tlsConfig),
+	), nil
 }
 
 //go:embed schema.json

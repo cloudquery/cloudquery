@@ -7,6 +7,7 @@ import (
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/meilisearch/meilisearch-go"
 )
 
 func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) error {
@@ -22,10 +23,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, messages mess
 	}
 	table := messages[0].GetTable()
 
-	index, err := c.Meilisearch.GetIndex(name)
-	if err != nil {
-		return err
-	}
+	index := c.Meilisearch.Index(name)
 
 	transformer := transform(table)
 
@@ -43,13 +41,21 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, messages mess
 		docs = append(docs, rows...)
 	}
 
-	taskInfo, err := index.AddDocuments(&docs, index.PrimaryKey)
+	// Get the index info to find the primary key
+	indexInfo, err := c.Meilisearch.GetIndex(name)
+	if err != nil {
+		return err
+	}
+
+	taskInfo, err := index.AddDocuments(&docs, &meilisearch.DocumentOptions{
+		PrimaryKey: &indexInfo.PrimaryKey,
+	})
 	if err != nil {
 		return err
 	}
 
 	if err := c.waitTask(ctx, taskInfo); err != nil {
-		return fmt.Errorf("failed to write %d items to index %q: %w", len(docs), index.UID, err)
+		return fmt.Errorf("failed to write %d items to index %q: %w", len(docs), indexInfo.UID, err)
 	}
 
 	return nil
