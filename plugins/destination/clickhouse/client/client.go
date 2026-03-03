@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log/slog"
 
 	"github.com/ClickHouse/clickhouse-go/v2"
 	"github.com/ClickHouse/clickhouse-go/v2/lib/proto"
@@ -12,6 +13,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/goccy/go-json"
 	"github.com/rs/zerolog"
+	slogzerolog "github.com/samber/slog-zerolog"
 )
 
 type Client struct {
@@ -57,7 +59,7 @@ func New(_ context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.Ne
 		Str("database", options.Auth.Database).
 		Str("cluster", s.Cluster).
 		Logger()
-	options.Debugf = l.Printf
+	options.Logger = slog.New(slogzerolog.Option{Logger: &l}.NewZerologHandler())
 
 	conn, err := clickhouse.Open(options)
 	if err != nil {
