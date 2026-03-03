@@ -44,8 +44,10 @@ func (m Metadata) VersionString() string {
 		return fmt.Sprintf("%s (%s@%s)", m.Name, m.Registry, m.Path)
 	case RegistryDocker:
 		return fmt.Sprintf("%s@%s (%s)", m.Name, m.Registry, m.Path)
-	default:
+	case RegistryGitHub:
 		return fmt.Sprintf("%s@%s (%s@%s)", m.Name, m.Registry, m.Path, m.Version)
+	default:
+		return fmt.Sprintf("%s@%s (%s)", m.Name, m.Registry, m.Path)
 	}
 }
 
