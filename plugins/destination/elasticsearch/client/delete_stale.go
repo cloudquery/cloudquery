@@ -2,9 +2,8 @@ package client
 
 import (
 	"context"
-	"encoding/json"
+	"errors"
 	"fmt"
-	"io"
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -13,16 +12,6 @@ import (
 	"github.com/elastic/go-elasticsearch/v8/typedapi/types"
 	"golang.org/x/sync/errgroup"
 )
-
-type deleteByQueryErrorResponse struct {
-	Status int `json:"status"`
-	Error  struct {
-		RootCause []struct {
-			Type   string `json:"type"`
-			Reason string `json:"reason"`
-		} `json:"root_cause"`
-	} `json:"error"`
-}
 
 const maxConcurrentDeletes = 10
 
@@ -53,24 +42,13 @@ func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales
 }
 
 func (c *Client) deleteStaleIndex(ctx context.Context, index string, req *deletebyquery.Request) error {
-	resp, err := c.typedClient.DeleteByQuery(index).Request(req).WaitForCompletion(true).Do(ctx)
+	_, err := c.typedClient.DeleteByQuery(index).Request(req).WaitForCompletion(true).Do(ctx)
 	if err != nil {
-		return fmt.Errorf("failed to delete stale entries: %w", err)
-	}
-	defer resp.Body.Close()
-	var qResp deleteByQueryErrorResponse
-	b, _ := io.ReadAll(resp.Body)
-	if err := json.Unmarshal(b, &qResp); err != nil {
-		return fmt.Errorf("failed to unmarshal: %w", err)
-	}
-	if qResp.Status != 0 {
-		if len(qResp.Error.RootCause) > 0 {
-			if qResp.Error.RootCause[0].Type == "index_not_found_exception" {
-				return nil
-			}
-			return fmt.Errorf("failed to delete stale entries: %s", qResp.Error.RootCause[0].Reason)
+		var esErr *types.ElasticsearchError
+		if errors.As(err, &esErr) && esErr.ErrorCause.Type == "index_not_found_exception" {
+			return nil
 		}
-		return fmt.Errorf("failed to delete stale entries: status %d", qResp.Status)
+		return fmt.Errorf("failed to delete stale entries: %w", err)
 	}
 	return nil
 }

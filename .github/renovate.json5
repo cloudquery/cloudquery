@@ -67,7 +67,7 @@
     },
     {
       matchPackageNames: ['getmeili/meilisearch'],
-      allowedVersions: '1.1.0',
+      allowedVersions: '1.6.2',
     },
     {
       matchPackageNames: ['clickhouse/clickhouse-server'],
