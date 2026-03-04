@@ -12,8 +12,7 @@ import (
 	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
@@ -49,24 +48,25 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *array.LargeStringBuilder:
 		b.Append(val.(string))
 	case *array.BinaryBuilder:
-		b.Append(val.(primitive.Binary).Data)
+		b.Append(val.(bson.Binary).Data)
 	case *array.TimestampBuilder:
 		switch b.Type().(*arrow.TimestampType).Unit {
 		case arrow.Second:
-			b.Append(arrow.Timestamp((val).(primitive.DateTime).Time().UTC().Unix()))
+			b.Append(arrow.Timestamp((val).(bson.DateTime).Time().UTC().Unix()))
 		case arrow.Millisecond:
-			b.Append(arrow.Timestamp((val).(primitive.DateTime).Time().UTC().UnixMilli()))
+			b.Append(arrow.Timestamp((val).(bson.DateTime).Time().UTC().UnixMilli()))
 		case arrow.Microsecond:
-			b.Append(arrow.Timestamp((val).(primitive.DateTime).Time().UTC().UnixMicro()))
+			b.Append(arrow.Timestamp((val).(bson.DateTime).Time().UTC().UnixMicro()))
 		case arrow.Nanosecond:
-			b.Append(arrow.Timestamp((val).(primitive.DateTime).Time().UTC().UnixNano()))
+			b.Append(arrow.Timestamp((val).(bson.DateTime).Time().UTC().UnixNano()))
 		default:
 			return fmt.Errorf("unsupported timestamp unit %s", f.Type.(*arrow.TimestampType).Unit)
 		}
 	case *types.JSONBuilder:
 		b.Append(val)
 	case *array.StructBuilder:
-		v, err := json.Marshal(val.(primitive.M))
+		m := bsonDocToMap(val)
+		v, err := json.Marshal(m)
 		if err != nil {
 			return err
 		}
@@ -77,7 +77,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case array.ListLikeBuilder:
 		b.Append(true)
 		valBuilder := b.ValueBuilder()
-		for _, v := range val.(primitive.A) {
+		for _, v := range val.(bson.A) {
 			if err := c.reverseTransform(f, valBuilder, v); err != nil {
 				return err
 			}
@@ -94,7 +94,24 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	return nil
 }
 
-func (c *Client) reverseTransformer(table *schema.Table, values primitive.M) (arrow.RecordBatch, error) {
+// bsonDocToMap converts a bson.D or bson.M value to map[string]any for JSON marshaling.
+// In MongoDB Go driver v2, nested documents decode as bson.D instead of bson.M.
+func bsonDocToMap(val any) map[string]any {
+	switch v := val.(type) {
+	case bson.M:
+		return v
+	case bson.D:
+		m := make(map[string]any, len(v))
+		for _, e := range v {
+			m[e.Key] = e.Value
+		}
+		return m
+	default:
+		return nil
+	}
+}
+
+func (c *Client) reverseTransformer(table *schema.Table, values bson.M) (arrow.RecordBatch, error) {
 	sc := table.ToArrowSchema()
 	bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
 	for i, f := range sc.Fields() {

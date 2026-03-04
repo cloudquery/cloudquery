@@ -10,9 +10,9 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/goccy/go-json"
 	"github.com/rs/zerolog"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/x/mongo/driver/auth"
+	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
+	"go.mongodb.org/mongo-driver/v2/x/mongo/driver/auth"
 )
 
 type Client struct {
@@ -56,7 +56,7 @@ func New(ctx context.Context, logger zerolog.Logger, specByte []byte, _ plugin.N
 		mongoDBClientOptions = mongoDBClientOptions.SetAuth(assumeRoleCredential)
 	}
 
-	c.client, err = mongo.Connect(ctx, mongoDBClientOptions)
+	c.client, err = mongo.Connect(mongoDBClientOptions)
 	if err != nil {
 		return nil, errors.Join(errConnectionFailed, err)
 	}

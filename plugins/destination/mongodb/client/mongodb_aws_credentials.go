@@ -27,11 +27,10 @@ import (
 	"github.com/aws/aws-sdk-go-v2/credentials/stscreds"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 	"github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/x/bsonx/bsoncore"
-	"go.mongodb.org/mongo-driver/x/mongo/driver"
-	"go.mongodb.org/mongo-driver/x/mongo/driver/auth"
+	"go.mongodb.org/mongo-driver/v2/bson"
+	"go.mongodb.org/mongo-driver/v2/x/bsonx/bsoncore"
+	"go.mongodb.org/mongo-driver/v2/x/mongo/driver"
+	"go.mongodb.org/mongo-driver/v2/x/mongo/driver/auth"
 )
 
 const (
@@ -237,8 +236,8 @@ func (client *awsSdkSaslClient) Next(ctx context.Context, challenge []byte) ([]b
 
 	// Unmarhal the server's BSON: { s: <server nonce>, h: "<sts host>"}
 	var sm struct {
-		Nonce primitive.Binary `bson:"s"`
-		Host  string           `bson:"h"`
+		Nonce bson.Binary `bson:"s"`
+		Host  string      `bson:"h"`
 	}
 
 	if err := bson.Unmarshal(challenge, &sm); err != nil {
