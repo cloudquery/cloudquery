@@ -68,13 +68,19 @@ func persistSummary(filename string, summary syncSummary) error {
 func appendToFile(fileName string, data []byte) error {
 	f, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		return err
+		// Some filesystems (e.g. FUSE-mounted cloud storage) reject O_APPEND
+		// at open time. Fall back to read + rewrite.
+		return appendToFileFallback(fileName, data)
 	}
-	_, writeErr := f.Write(data)
+	n, writeErr := f.Write(data)
 	closeErr := f.Close()
 	if writeErr != nil {
-		// If append-mode write failed (e.g. on FUSE-based or object-storage-backed
-		// filesystems that don't support O_APPEND), fall back to read + rewrite.
+		if n > 0 {
+			// Partial write: some bytes were already persisted, so falling back
+			// to read + rewrite would duplicate them. Treat as non-recoverable.
+			return fmt.Errorf("partial write to %s (%d/%d bytes): %w", fileName, n, len(data), writeErr)
+		}
+		// Zero bytes written — safe to retry via read + rewrite.
 		return appendToFileFallback(fileName, data)
 	}
 	return closeErr
