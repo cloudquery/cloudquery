@@ -70,11 +70,26 @@ func appendToFile(fileName string, data []byte) error {
 	if err != nil {
 		return err
 	}
-	if _, err := f.Write(data); err != nil {
-		f.Close()
-		return err
+	_, writeErr := f.Write(data)
+	closeErr := f.Close()
+	if writeErr != nil {
+		// If append-mode write failed (e.g. on FUSE-based or object-storage-backed
+		// filesystems that don't support O_APPEND), fall back to read + rewrite.
+		return appendToFileFallback(fileName, data)
 	}
-	return f.Close()
+	return closeErr
+}
+
+// appendToFileFallback appends data by reading the existing file, then rewriting
+// with the new data added. This is used as a fallback when O_APPEND is not
+// supported by the underlying filesystem (e.g. FUSE-mounted cloud storage).
+func appendToFileFallback(fileName string, data []byte) error {
+	existing, err := os.ReadFile(fileName)
+	if err != nil && !os.IsNotExist(err) {
+		return fmt.Errorf("failed to read existing summary file: %w", err)
+	}
+	combined := append(existing, data...)
+	return os.WriteFile(fileName, combined, 0644)
 }
 
 func checkFilePath(filename string) error {
