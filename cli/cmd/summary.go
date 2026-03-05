@@ -88,8 +88,8 @@ func appendToFileFallback(fileName string, data []byte) error {
 	if err != nil && !os.IsNotExist(err) {
 		return fmt.Errorf("failed to read existing summary file: %w", err)
 	}
-	combined := append(existing, data...)
-	return os.WriteFile(fileName, combined, 0644)
+	existing = append(existing, data...)
+	return os.WriteFile(fileName, existing, 0644)
 }
 
 func checkFilePath(filename string) error {
