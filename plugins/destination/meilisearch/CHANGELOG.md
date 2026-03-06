@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-meilisearch-v2.6.2...plugins-destination-meilisearch-v3.0.0) (2026-03-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* Update module github.com/meilisearch/meilisearch-go to v0.36.1. Update supported version to `1.6.2`
+
+### Bug Fixes
+
+* **deps:** Update module go.opentelemetry.io/otel/sdk to v1.40.0 [SECURITY] ([#22099](https://github.com/cloudquery/cloudquery/issues/22099)) ([605e22f](https://github.com/cloudquery/cloudquery/commit/605e22ffbdda5a416899e307a3fb348864d2538f))
+* Update module github.com/meilisearch/meilisearch-go to v0.36.1. Update supported version to `1.6.2` ([17efb8d](https://github.com/cloudquery/cloudquery/commit/17efb8d601db8455c929ecedcf6ca92fc33a73d5))
+
 ## [2.6.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-meilisearch-v2.6.1...plugins-destination-meilisearch-v2.6.2) (2026-02-27)
 
 
