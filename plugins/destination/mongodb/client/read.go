@@ -95,19 +95,43 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 }
 
 // bsonDocToMap converts a bson.D or bson.M value to map[string]any for JSON marshaling.
-// In MongoDB Go driver v2, nested documents decode as bson.D instead of bson.M.
+// In MongoDB Go driver v2, nested documents decode as bson.D instead of bson.M,
+// so we recursively convert all nested bson.D values to maps.
 func bsonDocToMap(val any) map[string]any {
 	switch v := val.(type) {
 	case bson.M:
+		for key, elem := range v {
+			v[key] = convertBSONValue(elem)
+		}
 		return v
 	case bson.D:
 		m := make(map[string]any, len(v))
 		for _, e := range v {
-			m[e.Key] = e.Value
+			m[e.Key] = convertBSONValue(e.Value)
 		}
 		return m
 	default:
 		return nil
+	}
+}
+
+// convertBSONValue recursively converts bson.D and bson.A values to Go maps and slices.
+func convertBSONValue(val any) any {
+	switch v := val.(type) {
+	case bson.D:
+		m := make(map[string]any, len(v))
+		for _, e := range v {
+			m[e.Key] = convertBSONValue(e.Value)
+		}
+		return m
+	case bson.A:
+		result := make([]any, len(v))
+		for i, elem := range v {
+			result[i] = convertBSONValue(elem)
+		}
+		return result
+	default:
+		return val
 	}
 }
 
