@@ -12,7 +12,7 @@ This destination plugin lets you sync data from any CloudQuery source to a Mongo
 
 Supported database versions:
 
-- MongoDB >= 3.6 (The same minimum version supported by the official [Go driver](https://github.com/mongodb/mongo-go-driver))
+- MongoDB >= 4.4 (The same minimum version supported by the official [Go driver v2](https://github.com/mongodb/mongo-go-driver))
 
 ## Configuration
 
