@@ -47,6 +47,7 @@ func NewCmdRoot() *cobra.Command {
 	telemetryLevel := enum.NewEnum([]string{"none", "errors", "stats", "all"}, "all")
 	noLogFile := false
 	logFileName := "cloudquery.log"
+	logFileOverwrite := false
 	sentryDsn := sentryDsnDefault
 	var err error
 	if invocationUUID.UUID, err = guuid.NewRandom(); err != nil {
@@ -83,7 +84,7 @@ func NewCmdRoot() *cobra.Command {
 			cmd.SilenceUsage = true
 			var err error
 
-			if logFile, err = initLogging(noLogFile, logLevel, logFormat, logConsole, logFileName); err != nil {
+			if logFile, err = initLogging(noLogFile, logLevel, logFormat, logConsole, logFileName, logFileOverwrite); err != nil {
 				return err
 			}
 
@@ -154,6 +155,7 @@ func NewCmdRoot() *cobra.Command {
 	cmd.PersistentFlags().Var(logLevel, "log-level", "Logging level (trace, debug, info, warn, error)")
 	cmd.PersistentFlags().BoolVar(&noLogFile, "no-log-file", false, "Disable logging to file")
 	cmd.PersistentFlags().StringVar(&logFileName, "log-file-name", "cloudquery.log", "Log filename")
+	cmd.PersistentFlags().BoolVar(&logFileOverwrite, "log-file-overwrite", false, "Overwrite log file on each run instead of appending. Use this if your filesystem does not support append mode (e.g. FUSE-mounted cloud storage).")
 
 	// Telemetry (analytics) flags
 	f := cmd.PersistentFlags().VarPF(telemetryLevel, "telemetry-level", "", "Telemetry level (none, errors, stats, all)")

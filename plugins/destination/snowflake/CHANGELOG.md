@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.2...plugins-destination-snowflake-v5.2.3) (2026-03-06)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/snowflakedb/gosnowflake to v1.19.0 ([#22146](https://github.com/cloudquery/cloudquery/issues/22146)) ([dab7e17](https://github.com/cloudquery/cloudquery/commit/dab7e17a5382c11b58be6cf505f09bed266ed5ef))
+* **deps:** Update module go.opentelemetry.io/otel/sdk to v1.40.0 [SECURITY] ([#22099](https://github.com/cloudquery/cloudquery/issues/22099)) ([605e22f](https://github.com/cloudquery/cloudquery/commit/605e22ffbdda5a416899e307a3fb348864d2538f))
+
 ## [5.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.1...plugins-destination-snowflake-v5.2.2) (2026-02-26)
 
 
