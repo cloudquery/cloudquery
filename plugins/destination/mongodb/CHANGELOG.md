@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.8.4...plugins-destination-mongodb-v3.0.0) (2026-03-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* Upgrade MongoDB Go driver to v2.5.0 ([#22173](https://github.com/cloudquery/cloudquery/issues/22173))
+
+### Features
+
+* Upgrade MongoDB Go driver to v2.5.0 ([#22173](https://github.com/cloudquery/cloudquery/issues/22173)) ([5ecc340](https://github.com/cloudquery/cloudquery/commit/5ecc3403501902c5e8b598d7f44fc9dde212b1e1))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22184](https://github.com/cloudquery/cloudquery/issues/22184)) ([84ddd3f](https://github.com/cloudquery/cloudquery/commit/84ddd3f8b15c5e46f4102a4c6df27e7055084109))
+
 ## [2.8.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v2.8.3...plugins-destination-mongodb-v2.8.4) (2026-03-06)
 
 
