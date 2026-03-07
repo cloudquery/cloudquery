@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4
 go 1.26.0
 
 require (
-	cloud.google.com/go/bigquery v1.73.1
+	cloud.google.com/go/bigquery v1.74.0
 	github.com/apache/arrow-go/v18 v18.5.1
 	github.com/cloudquery/codegen v0.3.37
 	github.com/cloudquery/plugin-sdk/v4 v4.94.3
@@ -87,7 +87,7 @@ require (
 	golang.org/x/telemetry v0.0.0-20260109210033-bd525da824e2 // indirect
 	golang.org/x/time v0.14.0 // indirect
 	golang.org/x/tools v0.41.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20260128011058-8636f8732409 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20260203192932-546029d2fa20 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260203192932-546029d2fa20 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
