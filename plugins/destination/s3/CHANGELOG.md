@@ -1,5 +1,13 @@
 # Changelog
 
+## [7.10.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.10.4...plugins-destination-s3-v7.10.5) (2026-03-07)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22185](https://github.com/cloudquery/cloudquery/issues/22185)) ([22aec1a](https://github.com/cloudquery/cloudquery/commit/22aec1a0b8162d99a203b725a9a97a1739795a68))
+* **deps:** Update module github.com/aws/smithy-go to v1.24.2 ([#22186](https://github.com/cloudquery/cloudquery/issues/22186)) ([391539c](https://github.com/cloudquery/cloudquery/commit/391539c89898b6549567afbf9922c9a88db5ecd4))
+
 ## [7.10.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.10.3...plugins-destination-s3-v7.10.4) (2026-03-06)
 
 
