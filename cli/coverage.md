@@ -35,7 +35,7 @@
 | github.com/cloudquery/cloudquery/cli/v6/cmd/install.go:24: | newCmdPluginInstall | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/install.go:39: | installPlugin | 81.6% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/install.go:137: | enrichClientError | 33.3% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/logging.go:16: | initLogging | 62.5% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/logging.go:16: | initLogging | 71.4% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/login.go:47: | newCmdLogin | 30.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/login.go:73: | waitForServer | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/login.go:96: | runLogin | 0.0% |
@@ -60,10 +60,10 @@
 | github.com/cloudquery/cloudquery/cli/v6/cmd/progress.go:17: | Add | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/progress.go:20: | Finish | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/registry.go:10: | SpecRegistryToPlugin | 57.1% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/root.go:44: | NewCmdRoot | 74.4% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/root.go:236: | formatTimestampUtcRfc3339 | 75.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/root.go:245: | CloseLogFile | 100.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/root.go:251: | otelConfig | 75.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/root.go:44: | NewCmdRoot | 75.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/root.go:238: | formatTimestampUtcRfc3339 | 75.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/root.go:247: | CloseLogFile | 100.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/root.go:253: | otelConfig | 75.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sentry.go:5: | initSentry | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:19: | CLIRegistryToPbRegistry | 50.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:36: | CLISourceSpecToPbSpec | 100.0% |
@@ -76,11 +76,12 @@
 | github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:149: | parseJSONSchema | 60.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:178: | marshalSpec | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:47: | persistSummary | 76.9% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:68: | appendToFile | 57.1% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:80: | checkFilePath | 100.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:85: | generateSummaryTable | 80.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:101: | migrateSummaryTable | 80.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:129: | sendSummary | 82.8% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:68: | appendToFile | 60.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:92: | appendToFileFallback | 80.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:101: | checkFilePath | 100.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:106: | generateSummaryTable | 80.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:122: | migrateSummaryTable | 80.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:150: | sendSummary | 82.8% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/switch.go:24: | newCmdSwitch | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/switch.go:36: | runSwitch | 76.9% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync.go:33: | NewCmdSync | 100.0% |
@@ -367,4 +368,4 @@
 | github.com/cloudquery/cloudquery/cli/v6/internal/uuid/uuid.go:19: | Type | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/main.go:18: | executeRootCmdWithContext | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/main.go:47: | main | 0.0% |
-| total: | (statements) | 47.7% |
+| total: | (statements) | 47.9% |

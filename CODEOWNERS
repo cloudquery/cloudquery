@@ -6,3 +6,4 @@
 **/CHANGELOG.md
 **/go.mod.tpl
 plugins/source/airtable/package-lock.json
+**/coverage.md
