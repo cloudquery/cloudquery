@@ -70,21 +70,19 @@ jobs:
   validate-release:
     timeout-minutes: 30
     runs-on: ubicloud-standard-2
+    if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
     env:
       CGO_ENABLED: 0
     steps:
       - name: Checkout
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: actions/checkout@v6
       - name: Set up Go
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         id: setup-go
         uses: actions/setup-go@v6
         with:
           go-version-file: cli/go.mod
           cache: false
       - uses: actions/cache@v5
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         with:
           path: |
             ~/.cache/go-build
@@ -97,14 +95,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Install GoReleaser
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         uses: goreleaser/goreleaser-action@v7
         with:
           distribution: goreleaser-pro
           version: latest
           install-only: true
       - name: Run GoReleaser Dry-Run
-        if: startsWith(github.head_ref, 'release-please--branches--main--components') || github.event_name == 'push'
         run: goreleaser release --snapshot --clean --skip=validate,publish,sign -f ./cli/.goreleaser.yaml
         env:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
