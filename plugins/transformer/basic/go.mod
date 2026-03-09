@@ -4,7 +4,7 @@ go 1.26.0
 
 require (
 	github.com/apache/arrow-go/v18 v18.5.2
-	github.com/cloudquery/plugin-sdk/v4 v4.94.4
+	github.com/cloudquery/plugin-sdk/v4 v4.94.5
 	github.com/rs/zerolog v1.34.0
 	github.com/stretchr/testify v1.11.1
 	github.com/tidwall/gjson v1.18.0
@@ -38,7 +38,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.14.8 // indirect
 	github.com/cloudquery/codegen v0.3.37 // indirect
-	github.com/cloudquery/plugin-pb-go v1.27.7 // indirect
+	github.com/cloudquery/plugin-pb-go v1.27.8 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/getsentry/sentry-go v0.42.0 // indirect
@@ -83,7 +83,7 @@ require (
 	go.opentelemetry.io/otel/sdk/metric v1.40.0 // indirect
 	go.opentelemetry.io/otel/trace v1.40.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.9.0 // indirect
-	golang.org/x/exp v0.0.0-20260112195511-716be5621a96 // indirect
+	golang.org/x/exp v0.0.0-20260218203240-3dfff04db8fa // indirect
 	golang.org/x/mod v0.33.0 // indirect
 	golang.org/x/net v0.50.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
