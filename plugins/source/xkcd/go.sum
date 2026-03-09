@@ -58,12 +58,12 @@ github.com/cloudquery/cloudquery-api-go v1.14.8 h1:iwXOQoVINrDQ69gtqBjWPSIdg7Kcy
 github.com/cloudquery/cloudquery-api-go v1.14.8/go.mod h1:d+I8E+z3vmvTvCNXZ5YNhxV9InY/i1siXa0vCYq+ABk=
 github.com/cloudquery/codegen v0.3.37 h1:OZbMPT3LVMPsDOPOD2b5Q7njii7PrnxNa47vfPuRK2A=
 github.com/cloudquery/codegen v0.3.37/go.mod h1:HUb5XjUyyNrcXYBq/seBjnOkO3/TidTRxiL7B8xYW2M=
-github.com/cloudquery/plugin-pb-go v1.27.7 h1:j1+HtVxHdNuw1eEyLw8s+0vhOc5y8IeO3Br8V79+mCo=
-github.com/cloudquery/plugin-pb-go v1.27.7/go.mod h1:t5KNZ/12OVtrUt81Wi1hzvJbC44EYwrYQvWh4kCJbV0=
+github.com/cloudquery/plugin-pb-go v1.27.8 h1:J56QeiQ2dZLu5DK1IGu//TPelWcrwtXppIkuh3OYqpA=
+github.com/cloudquery/plugin-pb-go v1.27.8/go.mod h1:00eLiMzgmrrD/qkVJxGWQbbUI0el3ZLs+27dSl/YOEY=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0 h1:hRXsdEiaOxJtsn/wZMFQC9/jPfU1MeMK3KF+gPGqm7U=
 github.com/cloudquery/plugin-sdk/v2 v2.7.0/go.mod h1:pAX6ojIW99b/Vg4CkhnsGkRIzNaVEceYMR+Bdit73ug=
-github.com/cloudquery/plugin-sdk/v4 v4.94.4 h1:OEwJBYghTn22dBLmD9tqXVMF3KJLcokCIcNdHSe28MM=
-github.com/cloudquery/plugin-sdk/v4 v4.94.4/go.mod h1:MShlKXh7qIzM+jcScEtBGVaTvD0yexjDC50rr5QtRNU=
+github.com/cloudquery/plugin-sdk/v4 v4.94.5 h1:AOHgA+UDSOImvt1Szsfa85Zz+ixNdTUWEUMzSEO6zKM=
+github.com/cloudquery/plugin-sdk/v4 v4.94.5/go.mod h1:DXFtT+UCEr5n/f3WSce68d6mcPTa7iRRHTcjQ/OnRXQ=
 github.com/coreos/go-systemd/v22 v22.5.0/go.mod h1:Y58oyj3AT4RCenI/lSvhwexgC+NSVTIJ3seZv2GcEnc=
 github.com/cpuguy83/go-md2man/v2 v2.0.6/go.mod h1:oOW0eioCTA6cOiMLiUPZOpcVxMig6NIQQ7OS05n1F4g=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
@@ -209,8 +209,8 @@ go.opentelemetry.io/proto/otlp v1.9.0/go.mod h1:xE+Cx5E/eEHw+ISFkwPLwCZefwVjY+pq
 go.uber.org/goleak v1.3.0 h1:2K3zAYmnTNqV73imy9J1T3WC+gmCePx2hEGkimedGto=
 go.uber.org/goleak v1.3.0/go.mod h1:CoHD4mav9JJNrW/WLlf7HGZPjdw8EucARQHekz1X6bE=
 go.yaml.in/yaml/v3 v3.0.4/go.mod h1:DhzuOOF2ATzADvBadXxruRBLzYTpT36CKvDb3+aBEFg=
-golang.org/x/exp v0.0.0-20260112195511-716be5621a96 h1:Z/6YuSHTLOHfNFdb8zVZomZr7cqNgTJvA8+Qz75D8gU=
-golang.org/x/exp v0.0.0-20260112195511-716be5621a96/go.mod h1:nzimsREAkjBCIEFtHiYkrJyT+2uy9YZJB7H1k68CXZU=
+golang.org/x/exp v0.0.0-20260218203240-3dfff04db8fa h1:Zt3DZoOFFYkKhDT3v7Lm9FDMEV06GpzjG2jrqW+QTE0=
+golang.org/x/exp v0.0.0-20260218203240-3dfff04db8fa/go.mod h1:K79w1Vqn7PoiZn+TkNpx3BUWUQksGO3JcVX6qIjytmA=
 golang.org/x/mod v0.33.0 h1:tHFzIWbBifEmbwtGz65eaWyGiGZatSrT9prnU8DbVL8=
 golang.org/x/mod v0.33.0/go.mod h1:swjeQEj+6r7fODbD2cqrnje9PnziFuw4bmLbBZFrQ5w=
 golang.org/x/net v0.50.0 h1:ucWh9eiCGyDR3vtzso0WMQinm2Dnt8cFMuQa9K33J60=
