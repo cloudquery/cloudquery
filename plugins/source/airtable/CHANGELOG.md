@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.3.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.7...plugins-source-airtable-v2.3.8) (2026-03-09)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @tsconfig/node20 to v20.1.9 ([#22126](https://github.com/cloudquery/cloudquery/issues/22126)) ([c590040](https://github.com/cloudquery/cloudquery/commit/c590040cf5f9770dd1be3a892b3418f1aeea3967))
+* **deps:** Update dependency eslint-plugin-unused-imports to v4.4.1 ([#22136](https://github.com/cloudquery/cloudquery/issues/22136)) ([4d0bb01](https://github.com/cloudquery/cloudquery/commit/4d0bb01952e6b48ec2118e72685cbd37a45e14b7))
+* **deps:** Update dependency tempy to v3.2.0 ([#22137](https://github.com/cloudquery/cloudquery/issues/22137)) ([1b9662f](https://github.com/cloudquery/cloudquery/commit/1b9662fc965d216025c020978cb05f59c82fd794))
+* **deps:** Update typescript-eslint monorepo to v8.56.0 ([#22152](https://github.com/cloudquery/cloudquery/issues/22152)) ([31bf800](https://github.com/cloudquery/cloudquery/commit/31bf80038300687654dfea67e1a0edba2f59e5a6))
+
 ## [2.3.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.6...plugins-source-airtable-v2.3.7) (2026-03-01)
 
 
