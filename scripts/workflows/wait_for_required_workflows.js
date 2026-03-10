@@ -59,7 +59,7 @@ module.exports = async ({github, context}) => {
     if (actions.includes("cli")) {
         actions = [...actions, 'validate-release']
         actions = actions.filter(action => action !== "cli")
-        actions = ["cli (ubuntu-latest)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
+        actions = ["cli (ubicloud-standard-2)", "cli (windows-latest)", "cli (macos-latest)", ...actions]
     }
 
     const pluginsWithConfigUI = getPluginsWithConfigUI()
