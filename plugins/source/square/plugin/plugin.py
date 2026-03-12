@@ -7,7 +7,6 @@ import structlog
 from plugin.client import Client, Spec
 from plugin import tables
 
-
 PLUGIN_NAME = "square"
 PLUGIN_VERSION = "0.0.1"
 
