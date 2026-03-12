@@ -9,7 +9,6 @@ from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
 from square.api.payouts_api import PayoutsApi
 from square.http.api_response import ApiResponse
 
-
 payouts_columns = oapi_definition_to_columns(
     OAPILoader.get_definition("Payout"),
     override_columns=[Column(name="id", type=pa.string(), primary_key=True)],
