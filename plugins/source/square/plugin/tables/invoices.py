@@ -9,7 +9,6 @@ from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
 from square.api.invoices_api import InvoicesApi
 from square.http.api_response import ApiResponse
 
-
 invoices_columns = oapi_definition_to_columns(
     OAPILoader.get_definition("Invoice"),
     override_columns=[Column(name="id", type=pa.string(), primary_key=True)],
