@@ -7,3 +7,7 @@
 **/go.mod.tpl
 plugins/source/airtable/package-lock.json
 **/coverage.md
+**/requirements.txt‎
+plugins/source/*/docs/tables/*.md
+plugins/source/**/mocks/*.go
+plugins/source/**/spec/schema.json
