@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.7.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.7.3...plugins-destination-kafka-v5.7.4) (2026-03-14)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.5.2 ([#22195](https://github.com/cloudquery/cloudquery/issues/22195)) ([6a70686](https://github.com/cloudquery/cloudquery/commit/6a70686dff5903bc0f37b8695ddc6c9f7e3339d0))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.6.14 ([#22221](https://github.com/cloudquery/cloudquery/issues/22221)) ([1b99915](https://github.com/cloudquery/cloudquery/commit/1b99915898af8fb94814ba081e2c40376bd4add0))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.4 ([#22219](https://github.com/cloudquery/cloudquery/issues/22219)) ([f3899b3](https://github.com/cloudquery/cloudquery/commit/f3899b3c4e525fc6302db9a995e25979b219cc29))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.5 ([#22222](https://github.com/cloudquery/cloudquery/issues/22222)) ([96f95cd](https://github.com/cloudquery/cloudquery/commit/96f95cdede05015fb1ed266034f02be1409395f3))
+
 ## [5.7.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.7.2...plugins-destination-kafka-v5.7.3) (2026-03-06)
 
 
