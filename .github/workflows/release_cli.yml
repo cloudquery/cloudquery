@@ -113,7 +113,7 @@ jobs:
       - name: Update docs
         if: steps.semver_parser.outputs.prerelease == ''
         run: |
-          cp -r ./cli/docs/reference/*.md ./frontend/apps/docs/pages/docs/cli-reference/
+          cp -r ./cli/docs/reference/*.md ./frontend/apps/docs/content/docs/cli-reference/
 
       - name: Create Pull Request
         if: steps.semver_parser.outputs.prerelease == ''
