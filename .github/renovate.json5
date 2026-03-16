@@ -38,10 +38,18 @@
       groupName: 'Website',
     },
     {
+      matchPackageNames: ['mongo'],
+      allowedVersions: '3.6',
+    },
+    {
       matchPackageNames: [
         'github.com/jackc/pgx/v4',
       ],
       allowedVersions: '<5',
+    },
+    {
+      matchPackageNames: ['mysql'],
+      allowedVersions: '8.0',
     },
     {
       matchPackageNames: [
@@ -52,6 +60,22 @@
         'plugins/**',
       ],
       enabled: false,
+    },
+     {
+      matchPackageNames: ['postgres'],
+      allowedVersions: '10',
+    },
+    {
+      matchPackageNames: ['getmeili/meilisearch'],
+      allowedVersions: '1.6.2',
+    },
+    {
+      matchPackageNames: ['clickhouse/clickhouse-server'],
+      allowedVersions: '24.8.1',
+    },
+    {
+      matchPackageNames: ['cockroachdb/cockroach'],
+      allowedVersions: '22.1.8',
     },
     {
       matchPackageNames: [
@@ -75,6 +99,10 @@
       rangeStrategy: "bump",
       addLabels: ["no automerge"],
       schedule: ["before 3am on Saturday"],
+    },
+    {
+      matchPackageNames: ['elasticsearch'],
+      allowedVersions: '8.6.0',
     },
   ],
   ignorePaths: [

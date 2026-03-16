@@ -68,13 +68,34 @@ func persistSummary(filename string, summary syncSummary) error {
 func appendToFile(fileName string, data []byte) error {
 	f, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		return err
+		// Some filesystems (e.g. FUSE-mounted cloud storage) reject O_APPEND
+		// at open time. Fall back to read + rewrite.
+		return appendToFileFallback(fileName, data)
 	}
-	if _, err := f.Write(data); err != nil {
-		f.Close()
-		return err
+	n, writeErr := f.Write(data)
+	closeErr := f.Close()
+	if writeErr != nil {
+		if n > 0 {
+			// Partial write: some bytes were already persisted, so falling back
+			// to read + rewrite would duplicate them. Treat as non-recoverable.
+			return fmt.Errorf("partial write to %s (%d/%d bytes): %w", fileName, n, len(data), writeErr)
+		}
+		// Zero bytes written — safe to retry via read + rewrite.
+		return appendToFileFallback(fileName, data)
 	}
-	return f.Close()
+	return closeErr
+}
+
+// appendToFileFallback appends data by reading the existing file, then rewriting
+// with the new data added. This is used as a fallback when O_APPEND is not
+// supported by the underlying filesystem (e.g. FUSE-mounted cloud storage).
+func appendToFileFallback(fileName string, data []byte) error {
+	existing, err := os.ReadFile(fileName)
+	if err != nil && !os.IsNotExist(err) {
+		return fmt.Errorf("failed to read existing summary file: %w", err)
+	}
+	existing = append(existing, data...)
+	return os.WriteFile(fileName, existing, 0644)
 }
 
 func checkFilePath(filename string) error {

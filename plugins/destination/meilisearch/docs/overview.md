@@ -78,6 +78,6 @@ This is the spec used by the Meilisearch destination plugin.
 ## Underlying library
 
 We use the official [meilisearch-go](https://github.com/meilisearch/meilisearch-go) package.
-It is tested against Meilisearch v1.1.0.
+It is tested against Meilisearch v1.6.2.
 Please [open an issue](https://github.com/cloudquery/cloudquery/issues/new/choose)
 if you encounter any problems with this (or another) version.

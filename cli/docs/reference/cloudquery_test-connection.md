@@ -36,6 +36,7 @@ cloudquery test-connection ./directory ./aws.yml ./pg.yml
       --invocation-id uuid       useful for when using Open Telemetry integration for tracing and logging to be able to correlate logs and traces through many services (default <NEW-RANDOM-UUID>)
       --log-console              enable console logging
       --log-file-name string     Log filename (default "cloudquery.log")
+      --log-file-overwrite       Overwrite log file on each run instead of appending. Use this if your filesystem does not support append mode (e.g. FUSE-mounted cloud storage).
       --log-format string        Logging format (json, text) (default "text")
       --log-level string         Logging level (trace, debug, info, warn, error) (default "info")
       --no-log-file              Disable logging to file

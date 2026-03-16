@@ -9,7 +9,6 @@ from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
 from square.api.bookings_api import BookingsApi
 from square.http.api_response import ApiResponse
 
-
 bookings_columns = oapi_definition_to_columns(
     OAPILoader.get_definition("Booking"),
     override_columns=[Column(name="id", type=pa.string(), primary_key=True)],

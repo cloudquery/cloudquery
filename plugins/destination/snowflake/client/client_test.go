@@ -11,6 +11,7 @@ import (
 )
 
 func TestPlugin(t *testing.T) {
+	t.Skip("Skipping snowflake test due to high costs")
 	ctx := context.Background()
 	p := plugin.NewPlugin("snowflake", "development", New)
 	spec := &Spec{

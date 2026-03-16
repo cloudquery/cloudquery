@@ -1,6 +1,6 @@
 | File | Function | Coverage |
 | --- | --- | --- |
-| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/client.go:40: | New | 50.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/client.go:42: | New | 50.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/delete.go:16: | DeleteStale | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/delete.go:34: | generateDeleteForDeleteStale | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/client/delete.go:46: | DeleteRecord | 0.0% |
