@@ -9,7 +9,6 @@ from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
 from square.api.disputes_api import DisputesApi
 from square.http.api_response import ApiResponse
 
-
 disputes_columns = oapi_definition_to_columns(
     OAPILoader.get_definition("Dispute"),
     override_columns=[Column(name="id", type=pa.string(), primary_key=True)],
