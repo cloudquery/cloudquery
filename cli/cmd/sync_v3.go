@@ -149,8 +149,8 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
-	skippedFromDeleteStale := make(map[string]bool, 0)
-	tablesForDeleteStale := make(map[string]bool, 0)
+	skippedFromDeleteStale := make(map[string]bool)
+	tablesForDeleteStale := make(map[string]bool)
 
 	sourceSpec := source.spec
 	sourceClient := source.client
