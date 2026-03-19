@@ -4,7 +4,7 @@ go 1.26.0
 
 require (
 	github.com/apache/arrow-go/v18 v18.5.2
-	github.com/cloudquery/plugin-pb-go v1.27.8
+	github.com/cloudquery/plugin-pb-go v1.27.9
 	github.com/cloudquery/plugin-sdk/v4 v4.94.5
 	github.com/rs/zerolog v1.34.0
 )
