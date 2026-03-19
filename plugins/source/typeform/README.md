@@ -4,4 +4,4 @@ This plugin fetches data from [Typeform](https://www.typeform.com/) using the [T
 
 ## Links
 
-- [User Guide](https://docs.cloudquery.io/docs/plugins/sources/typeform/overview)
+- [User Guide](https://www.cloudquery.io/docs/plugins/sources/typeform/overview)

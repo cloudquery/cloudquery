@@ -2,7 +2,7 @@
 This plugin is now deprecated and will be removed from CloudQuery Hub soon.
 :::
 
-The CloudQuery Typeform plugin pulls data from [Typeform](https://www.typeform.com/) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](https://hub.cloudquery.io/plugins/destination)).
+The CloudQuery Typeform plugin pulls data from [Typeform](https://www.typeform.com/) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](https://www.cloudquery.io/hub/plugins/destination)).
 
 See [tables](/docs/plugins/sources/typeform/tables) for a list of resources supported.
 
@@ -38,4 +38,4 @@ This is the (nested) spec used by the Typeform source plugin:
 
 ## Running in a Containerized Environment
 
-To run the Typeform plugin in a containerized environment, see the [Using CloudQuery Docker Registry Plugins Inside a Containerized Environment](https://docs.cloudquery.io/docs/advanced-topics/using-cloud-query-docker-registry-plugins-inside-a-containerized-environment) guide.
+To run the Typeform plugin in a containerized environment, see the [Using CloudQuery Docker Registry Plugins Inside a Containerized Environment](https://www.cloudquery.io/docs/advanced-topics/using-cloud-query-docker-registry-plugins-inside-a-containerized-environment) guide.
