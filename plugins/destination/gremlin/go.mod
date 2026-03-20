@@ -4,7 +4,7 @@ go 1.26.0
 
 require (
 	github.com/apache/arrow-go/v18 v18.5.2
-	github.com/apache/tinkerpop/gremlin-go/v3 v3.7.4
+	github.com/apache/tinkerpop/gremlin-go/v3 v3.8.0
 	github.com/aws/aws-sdk-go-v2 v1.41.3
 	github.com/aws/aws-sdk-go-v2/config v1.32.11
 	github.com/cenkalti/backoff/v4 v4.3.0
