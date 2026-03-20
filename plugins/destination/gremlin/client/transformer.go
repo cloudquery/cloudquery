@@ -40,7 +40,8 @@ func (c *Client) transformArr(arr arrow.Array, isCQTime bool) []any {
 			dbArr[i] = stripNulls(a.Value(i))
 		case *array.Timestamp:
 			if isCQTime {
-				dbArr[i] = a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit).UTC()
+				// Truncate to millisecond precision to match Gremlin's Java Date storage
+				dbArr[i] = a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit).UTC().Truncate(time.Millisecond)
 				continue
 			}
 			dbArr[i] = a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit).UTC().Format("2006-01-02 15:04:05.999999999")
