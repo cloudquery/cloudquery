@@ -59,7 +59,7 @@ require (
 	github.com/apache/arrow/go/v13 v13.0.0 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
-	github.com/buger/jsonparser v1.1.1 // indirect
+	github.com/buger/jsonparser v1.1.2 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.14.8 // indirect
 	github.com/cloudquery/plugin-pb-go v1.27.10 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
