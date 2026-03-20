@@ -21,14 +21,14 @@ const mockClusterInfoResponse = `{
 	"name": "test-node",
 	"tagline": "You Know, for Search",
 	"version": {
-		"number": "8.19.3",
+		"number": "9.0.0",
 		"build_flavor": "default",
 		"build_hash": "abc123def456",
 		"build_snapshot": false,
 		"build_type": "docker",
-		"lucene_version": "9.12.0",
-		"minimum_wire_compatibility_version": "7.17.0",
-		"minimum_index_compatibility_version": "7.0.0",
+		"lucene_version": "10.1.0",
+		"minimum_wire_compatibility_version": "8.18.0",
+		"minimum_index_compatibility_version": "8.0.0",
 		"build_date": "2026-01-01T00:00:00.000Z"
 	}
 }`
@@ -59,12 +59,12 @@ func TestNew_LogsAllClusterInfoFields(t *testing.T) {
 	assert.Contains(t, logOutput, "test-uuid-1234", "cluster_uuid should be logged")
 	assert.Contains(t, logOutput, "test-node", "node name should be logged")
 	assert.Contains(t, logOutput, "You Know, for Search", "tagline should be logged")
-	assert.Contains(t, logOutput, "8.19.3", "version number should be logged")
+	assert.Contains(t, logOutput, "9.0.0", "version number should be logged")
 	assert.Contains(t, logOutput, "abc123def456", "build hash should be logged")
 	assert.Contains(t, logOutput, "default", "build flavor should be logged")
 	assert.Contains(t, logOutput, "docker", "build type should be logged")
-	assert.Contains(t, logOutput, "9.12.0", "lucene version should be logged")
-	assert.Contains(t, logOutput, "7.17.0", "minimum wire compatibility version should be logged")
-	assert.Contains(t, logOutput, "7.0.0", "minimum index compatibility version should be logged")
+	assert.Contains(t, logOutput, "10.1.0", "lucene version should be logged")
+	assert.Contains(t, logOutput, "8.18.0", "minimum wire compatibility version should be logged")
+	assert.Contains(t, logOutput, "8.0.0", "minimum index compatibility version should be logged")
 	assert.Contains(t, logOutput, "Elasticsearch cluster info", "log message should be present")
 }

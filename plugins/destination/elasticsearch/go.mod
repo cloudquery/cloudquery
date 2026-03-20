@@ -1,4 +1,4 @@
-module github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v3
+module github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4
 
 go 1.26.0
 
@@ -7,7 +7,7 @@ require (
 	github.com/cenkalti/backoff/v4 v4.3.0
 	github.com/cloudquery/codegen v0.3.37
 	github.com/cloudquery/plugin-sdk/v4 v4.94.6
-	github.com/elastic/go-elasticsearch/v8 v8.19.3
+	github.com/elastic/go-elasticsearch/v9 v9.3.1
 	github.com/goccy/go-json v0.10.5
 	github.com/invopop/jsonschema v0.13.0
 	github.com/rs/zerolog v1.34.0
@@ -39,7 +39,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.41.8 // indirect
 	github.com/aws/smithy-go v1.24.2 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
-	github.com/buger/jsonparser v1.1.1 // indirect
+	github.com/buger/jsonparser v1.1.2 // indirect
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.14.8 // indirect

@@ -4,8 +4,8 @@ import (
 	"context"
 	"log"
 
-	"github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v3/client"
-	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v3/resources/plugin"
+	"github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client"
+	internalPlugin "github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/resources/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/serve"
 )

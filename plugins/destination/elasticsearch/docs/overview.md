@@ -83,8 +83,8 @@ Index templates will also be created such that they match the index names genera
 
 ## Querying From Kibana
 
-To query data from Kibana, you will need to create [data views](https://www.elastic.co/guide/en/kibana/8.6/data-views.html) (previously also known as "index patterns"). To query a specific table, the data view's index pattern should be in the format `<table_name>-*`. For example, if you have a table named `aws_ec2_instances`, you should create a data view with index pattern named `aws_ec2_instances-*`. One useful feature of Elasticsearch and Kibana, however, is the ability to query across all data. To do this for the `aws` source plugin, for example, you may use an index pattern named `aws_*`. This will then allow queries across all tables synced by the `aws` source plugin.
+To query data from Kibana, you will need to create [data views](https://www.elastic.co/guide/en/kibana/9.0/data-views.html) (previously also known as "index patterns"). To query a specific table, the data view's index pattern should be in the format `<table_name>-*`. For example, if you have a table named `aws_ec2_instances`, you should create a data view with index pattern named `aws_ec2_instances-*`. One useful feature of Elasticsearch and Kibana, however, is the ability to query across all data. To do this for the `aws` source plugin, for example, you may use an index pattern named `aws_*`. This will then allow queries across all tables synced by the `aws` source plugin.
 
 ## Underlying library
 
-We use the official [go-elasticsearch](https://github.com/elastic/go-elasticsearch) package. It is tested against Elasticsearch 8.6.0. Please [open an issue](https://github.com/cloudquery/cloudquery/issues/new?title=Elasticsearch+destination+plugin) if you encounter any problems with this (or another) version.
+We use the official [go-elasticsearch](https://github.com/elastic/go-elasticsearch) package. It is tested against Elasticsearch 9.0 and above. Please [open an issue](https://github.com/cloudquery/cloudquery/issues/new?title=Elasticsearch+destination+plugin) if you encounter any problems with this (or another) version.
