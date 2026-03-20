@@ -54,4 +54,4 @@ This is the (nested) spec used by the Airtable source plugin:
 
 ## Running in a Containerized Environment
 
-To run the Airtable plugin in a containerized environment, see the [Using CloudQuery Docker Registry Plugins Inside a Containerized Environment](https://www.cloudquery.io/docs/advanced-topics/using-cloud-query-docker-registry-plugins-inside-a-containerized-environment) guide.
+To run the Airtable plugin in a containerized environment, see the [Using CloudQuery Docker Registry Integrations Inside a Containerized Environment](https://www.cloudquery.io/docs/advanced-topics/using-cloud-query-docker-registry-integrations-inside-a-containerized-environment) guide.
