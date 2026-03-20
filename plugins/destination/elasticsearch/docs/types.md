@@ -1,6 +1,6 @@
 # Elasticsearch Types
 
-The Elasticsearch destination (`v2.0.0` and later) supports most [Apache Arrow](https://arrow.apache.org/docs/index.html) types. The following table shows the supported types and how they are mapped to [Elasticsearch field data types](https://www.elastic.co/guide/en/elasticsearch/reference/8.6/mapping-types.html).
+The Elasticsearch destination (`v2.0.0` and later) supports most [Apache Arrow](https://arrow.apache.org/docs/index.html) types. The following table shows the supported types and how they are mapped to [Elasticsearch field data types](https://www.elastic.co/guide/en/elasticsearch/reference/9.0/mapping-types.html).
 
 | Arrow Column Type      | Supported? | Elasticsearch Type                                       |
 |------------------------|------------|----------------------------------------------------------|

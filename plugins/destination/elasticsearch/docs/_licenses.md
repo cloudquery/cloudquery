@@ -40,10 +40,10 @@ The following tools / packages are used in this plugin:
 | github.com/cloudquery/plugin-sdk/v4/scalar | MIT |
 | github.com/davecgh/go-spew/spew | ISC |
 | github.com/elastic/elastic-transport-go/v8/elastictransport | Apache-2.0 |
-| github.com/elastic/go-elasticsearch/v8 | Apache-2.0 |
-| github.com/elastic/go-elasticsearch/v8/typedapi/types | Apache-2.0 |
-| github.com/elastic/go-elasticsearch/v8/typedapi/types/enums/licensestatus | Apache-2.0 |
-| github.com/elastic/go-elasticsearch/v8/typedapi/types/enums/licensetype | Apache-2.0 |
+| github.com/elastic/go-elasticsearch/v9 | Apache-2.0 |
+| github.com/elastic/go-elasticsearch/v9/typedapi/types | Apache-2.0 |
+| github.com/elastic/go-elasticsearch/v9/typedapi/types/enums/licensestatus | Apache-2.0 |
+| github.com/elastic/go-elasticsearch/v9/typedapi/types/enums/licensetype | Apache-2.0 |
 | github.com/ghodss/yaml | MIT |
 | github.com/go-logr/logr | Apache-2.0 |
 | github.com/go-logr/stdr | Apache-2.0 |
