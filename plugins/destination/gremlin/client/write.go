@@ -55,7 +55,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs mes
 		}
 	}
 
-	g := gremlingo.Traversal_().WithRemote(session).V().HasLabel(tableName)
+	g := gremlingo.Traversal_().With(session).V().HasLabel(tableName)
 	for i := range rows {
 		g = g.V().HasLabel(tableName)
 		for _, colName := range pks {

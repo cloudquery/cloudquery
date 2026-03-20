@@ -16,7 +16,7 @@ func (c *Client) Read(_ context.Context, table *schema.Table, res chan<- arrow.R
 	}
 	defer closer()
 
-	g := gremlingo.Traversal_().WithRemote(session).
+	g := gremlingo.Traversal_().With(session).
 		V().
 		HasLabel(table.Name).
 		Group().By(gremlingo.T.Id).
