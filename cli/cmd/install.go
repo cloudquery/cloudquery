@@ -157,5 +157,5 @@ func enrichClientError(clientsList managedplugin.Clients, inferredList []bool, e
 		return err
 	}
 
-	return fmt.Errorf("%w. Hint: make sure to use the latest plugin version from hub.cloudquery.io or to keep using an outdated version add `registry: github` to your configuration", err)
+	return fmt.Errorf("%w. Hint: make sure to use the latest plugin version from www.cloudquery.io/hub or to keep using an outdated version add `registry: github` to your configuration", err)
 }
