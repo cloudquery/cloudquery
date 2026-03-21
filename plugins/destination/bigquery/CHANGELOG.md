@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.7.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.7.5...plugins-destination-bigquery-v4.7.6) (2026-03-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/buger/jsonparser to v1.1.2 [SECURITY] ([#22325](https://github.com/cloudquery/cloudquery/issues/22325)) ([816b4a0](https://github.com/cloudquery/cloudquery/commit/816b4a0b3b5ddc39e7f21f34f66059863906d9d9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.6 ([#22318](https://github.com/cloudquery/cloudquery/issues/22318)) ([ddde2f0](https://github.com/cloudquery/cloudquery/commit/ddde2f052123ca5561f0e67ea77c14d5bff53cef))
+* **deps:** Update module google.golang.org/api to v0.271.0 ([#22333](https://github.com/cloudquery/cloudquery/issues/22333)) ([07d7e45](https://github.com/cloudquery/cloudquery/commit/07d7e452bea1e4d8ea63aca5fe260a2180ad995e))
+* **deps:** Update module google.golang.org/grpc to v1.79.3 [SECURITY] ([#22252](https://github.com/cloudquery/cloudquery/issues/22252)) ([d790f92](https://github.com/cloudquery/cloudquery/commit/d790f92bb9c0c1762624681739c4932cb2e1decc))
+
 ## [4.7.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.7.4...plugins-destination-bigquery-v4.7.5) (2026-03-16)
 
 
