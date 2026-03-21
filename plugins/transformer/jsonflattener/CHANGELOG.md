@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.1.16](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v2.1.15...plugins-transformer-jsonflattener-v2.1.16) (2026-03-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/buger/jsonparser to v1.1.2 [SECURITY] ([#22325](https://github.com/cloudquery/cloudquery/issues/22325)) ([816b4a0](https://github.com/cloudquery/cloudquery/commit/816b4a0b3b5ddc39e7f21f34f66059863906d9d9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.6 ([#22318](https://github.com/cloudquery/cloudquery/issues/22318)) ([ddde2f0](https://github.com/cloudquery/cloudquery/commit/ddde2f052123ca5561f0e67ea77c14d5bff53cef))
+* **deps:** Update module google.golang.org/grpc to v1.79.3 [SECURITY] ([#22274](https://github.com/cloudquery/cloudquery/issues/22274)) ([3590445](https://github.com/cloudquery/cloudquery/commit/3590445ac3ee6513d4a42c1f6cf7bd94ef9f812b))
+
 ## [2.1.15](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v2.1.14...plugins-transformer-jsonflattener-v2.1.15) (2026-03-16)
 
 
