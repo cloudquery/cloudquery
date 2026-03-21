@@ -1,5 +1,14 @@
 # Changelog
 
+## [8.14.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.14.4...plugins-destination-postgresql-v8.14.5) (2026-03-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/buger/jsonparser to v1.1.2 [SECURITY] ([#22325](https://github.com/cloudquery/cloudquery/issues/22325)) ([816b4a0](https://github.com/cloudquery/cloudquery/commit/816b4a0b3b5ddc39e7f21f34f66059863906d9d9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.6 ([#22318](https://github.com/cloudquery/cloudquery/issues/22318)) ([ddde2f0](https://github.com/cloudquery/cloudquery/commit/ddde2f052123ca5561f0e67ea77c14d5bff53cef))
+* **deps:** Update module google.golang.org/grpc to v1.79.3 [SECURITY] ([#22266](https://github.com/cloudquery/cloudquery/issues/22266)) ([76b83a5](https://github.com/cloudquery/cloudquery/commit/76b83a5e0a4a9cac192095db663c515b5b909256))
+
 ## [8.14.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.14.3...plugins-destination-postgresql-v8.14.4) (2026-03-16)
 
 
