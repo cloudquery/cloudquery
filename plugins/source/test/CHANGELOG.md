@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.8.16](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.15...plugins-source-test-v4.8.16) (2026-03-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/buger/jsonparser to v1.1.2 [SECURITY] ([#22325](https://github.com/cloudquery/cloudquery/issues/22325)) ([816b4a0](https://github.com/cloudquery/cloudquery/commit/816b4a0b3b5ddc39e7f21f34f66059863906d9d9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.6 ([#22318](https://github.com/cloudquery/cloudquery/issues/22318)) ([ddde2f0](https://github.com/cloudquery/cloudquery/commit/ddde2f052123ca5561f0e67ea77c14d5bff53cef))
+* **deps:** Update module google.golang.org/grpc to v1.79.3 [SECURITY] ([#22270](https://github.com/cloudquery/cloudquery/issues/22270)) ([57a9fa1](https://github.com/cloudquery/cloudquery/commit/57a9fa1d70e9f0f51d0edd0ce4038de16ef22739))
+
 ## [4.8.15](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.14...plugins-source-test-v4.8.15) (2026-03-16)
 
 
