@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.5.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.5.5...plugins-destination-gcs-v5.5.6) (2026-03-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module cloud.google.com/go/storage to v1.61.3 ([#22332](https://github.com/cloudquery/cloudquery/issues/22332)) ([9d03b07](https://github.com/cloudquery/cloudquery/commit/9d03b0776f66ebb48ea2a624d9388f508afff231))
+* **deps:** Update module github.com/buger/jsonparser to v1.1.2 [SECURITY] ([#22325](https://github.com/cloudquery/cloudquery/issues/22325)) ([816b4a0](https://github.com/cloudquery/cloudquery/commit/816b4a0b3b5ddc39e7f21f34f66059863906d9d9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.6 ([#22318](https://github.com/cloudquery/cloudquery/issues/22318)) ([ddde2f0](https://github.com/cloudquery/cloudquery/commit/ddde2f052123ca5561f0e67ea77c14d5bff53cef))
+* **deps:** Update module google.golang.org/grpc to v1.79.3 [SECURITY] ([#22258](https://github.com/cloudquery/cloudquery/issues/22258)) ([74f490f](https://github.com/cloudquery/cloudquery/commit/74f490f2164de90effe9cb51a0d8b260e0004014))
+
 ## [5.5.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.5.4...plugins-destination-gcs-v5.5.5) (2026-03-16)
 
 
