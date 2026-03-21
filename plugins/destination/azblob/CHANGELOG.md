@@ -1,5 +1,14 @@
 # Changelog
 
+## [4.5.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.5.5...plugins-destination-azblob-v4.5.6) (2026-03-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/buger/jsonparser to v1.1.2 [SECURITY] ([#22325](https://github.com/cloudquery/cloudquery/issues/22325)) ([816b4a0](https://github.com/cloudquery/cloudquery/commit/816b4a0b3b5ddc39e7f21f34f66059863906d9d9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.6 ([#22318](https://github.com/cloudquery/cloudquery/issues/22318)) ([ddde2f0](https://github.com/cloudquery/cloudquery/commit/ddde2f052123ca5561f0e67ea77c14d5bff53cef))
+* **deps:** Update module google.golang.org/grpc to v1.79.3 [SECURITY] ([#22251](https://github.com/cloudquery/cloudquery/issues/22251)) ([08dc74b](https://github.com/cloudquery/cloudquery/commit/08dc74ba6a8ad46ba4df176e65f3e8c0ee637813))
+
 ## [4.5.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.5.4...plugins-destination-azblob-v4.5.5) (2026-03-16)
 
 
