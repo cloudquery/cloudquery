@@ -5,6 +5,17 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.35.3](https://github.com/cloudquery/cloudquery/compare/cli-v6.35.2...cli-v6.35.3) (2026-03-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/buger/jsonparser to v1.1.2 [SECURITY] ([#22325](https://github.com/cloudquery/cloudquery/issues/22325)) ([816b4a0](https://github.com/cloudquery/cloudquery/commit/816b4a0b3b5ddc39e7f21f34f66059863906d9d9))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.10 ([#22317](https://github.com/cloudquery/cloudquery/issues/22317)) ([3302565](https://github.com/cloudquery/cloudquery/commit/3302565456362aeb1178ad6079c498906f51a03c))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.9 ([#22315](https://github.com/cloudquery/cloudquery/issues/22315)) ([683717b](https://github.com/cloudquery/cloudquery/commit/683717b495a21914efa0a494c736ace89affdb69))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.6 ([#22318](https://github.com/cloudquery/cloudquery/issues/22318)) ([ddde2f0](https://github.com/cloudquery/cloudquery/commit/ddde2f052123ca5561f0e67ea77c14d5bff53cef))
+* **deps:** Update module google.golang.org/grpc to v1.79.3 [SECURITY] ([#22249](https://github.com/cloudquery/cloudquery/issues/22249)) ([6f13828](https://github.com/cloudquery/cloudquery/commit/6f13828e80128d44985b410b58c3e0477877cbad))
+
 ## [6.35.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.35.1...cli-v6.35.2) (2026-03-16)
 
 
