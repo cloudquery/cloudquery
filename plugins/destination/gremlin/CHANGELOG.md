@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.8.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.7.5...plugins-destination-gremlin-v2.8.0) (2026-03-21)
+
+
+### Features
+
+* Upgrade gremlin-go to latest minor ([#22326](https://github.com/cloudquery/cloudquery/issues/22326)) ([a4c0a1f](https://github.com/cloudquery/cloudquery/commit/a4c0a1fff61d164a9274825b102f05274614d33a))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22329](https://github.com/cloudquery/cloudquery/issues/22329)) ([46da247](https://github.com/cloudquery/cloudquery/commit/46da2478121f805ab363b4e39371fcccce6262a6))
+* **deps:** Update module github.com/buger/jsonparser to v1.1.2 [SECURITY] ([#22325](https://github.com/cloudquery/cloudquery/issues/22325)) ([816b4a0](https://github.com/cloudquery/cloudquery/commit/816b4a0b3b5ddc39e7f21f34f66059863906d9d9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.6 ([#22318](https://github.com/cloudquery/cloudquery/issues/22318)) ([ddde2f0](https://github.com/cloudquery/cloudquery/commit/ddde2f052123ca5561f0e67ea77c14d5bff53cef))
+* **deps:** Update module google.golang.org/grpc to v1.79.3 [SECURITY] ([#22259](https://github.com/cloudquery/cloudquery/issues/22259)) ([bb329c7](https://github.com/cloudquery/cloudquery/commit/bb329c7da4ea71a67b41c9792f169b253c55c9ff))
+
 ## [2.7.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.7.4...plugins-destination-gremlin-v2.7.5) (2026-03-16)
 
 
