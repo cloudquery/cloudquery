@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.5.37](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.36...plugins-source-xkcd-v1.5.37) (2026-03-21)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/buger/jsonparser to v1.1.2 [SECURITY] ([#22325](https://github.com/cloudquery/cloudquery/issues/22325)) ([816b4a0](https://github.com/cloudquery/cloudquery/commit/816b4a0b3b5ddc39e7f21f34f66059863906d9d9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.6 ([#22318](https://github.com/cloudquery/cloudquery/issues/22318)) ([ddde2f0](https://github.com/cloudquery/cloudquery/commit/ddde2f052123ca5561f0e67ea77c14d5bff53cef))
+* **deps:** Update module google.golang.org/grpc to v1.79.3 [SECURITY] ([#22272](https://github.com/cloudquery/cloudquery/issues/22272)) ([d20679b](https://github.com/cloudquery/cloudquery/commit/d20679b5d8d7f6eb81fd13a66299a00ba1e517c5))
+
 ## [1.5.36](https://github.com/cloudquery/cloudquery/compare/plugins-source-xkcd-v1.5.35...plugins-source-xkcd-v1.5.36) (2026-03-16)
 
 
