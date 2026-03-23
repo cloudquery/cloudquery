@@ -14,7 +14,7 @@
 brew install cloudquery/tap/cloudquery
 ```
 
-Check out the [quickstart guide](https://cli-docs.cloudquery.io/docs/quickstart/) for install guides for Linux and Windows and for step-by-step instructions on completing your first sync with CloudQuery.
+Check out the [quickstart guide](https://www.cloudquery.io/docs/quickstart/) for install guides for Linux and Windows and for step-by-step instructions on completing your first sync with CloudQuery.
 
 ## **Why CloudQuery?**
 
@@ -29,15 +29,15 @@ Check out the [quickstart guide](https://cli-docs.cloudquery.io/docs/quickstart/
 
 ## **Use Cases**
 
-- [**Cloud Asset Inventory**](https://www.cloudquery.io/blog/what-is-a-cloud-asset-inventory): First-class support for [all major cloud infrastructure providers](https://hub.cloudquery.io/plugins/source?categories=cloud-infrastructure) such as [AWS](https://www.cloudquery.io/blog/building-cloud-asset-inventory-with-aws), [GCP](https://www.cloudquery.io/blog/building-cloud-asset-inventory-with-gcp), and [Azure](https://www.cloudquery.io/blog/how-to-build-a-cloud-asset-inventory-for-azure) allows you to [collect and unify your cloud configuration data](https://www.cloudquery.io/blog/how-to-build-a-multi-cloud-asset-inventory).
-- [**Cloud Security Posture Management (CSPM)**](https://www.cloudquery.io/blog/how-to-build-a-cspm-with-grafana-and-cloudquery): Use as a [CSPM](https://www.cloudquery.io/blog/how-to-build-a-cspm-with-grafana-and-cloudquery) solution to monitor and enforce security policies across your cloud infrastructure for [AWS](https://hub.cloudquery.io/plugins/source/cloudquery/aws/latest/docs), [GCP](https://hub.cloudquery.io/plugins/source/cloudquery/gcp/latest/docs), [Azure](https://hub.cloudquery.io/plugins/source/cloudquery/azure/latest/docs) and many more.
+- [**Cloud Asset Inventory**](https://www.cloudquery.io/blog/what-is-a-cloud-asset-inventory): First-class support for [all major cloud infrastructure providers](https://www.cloudquery.io/hub/plugins/source?categories=cloud-infrastructure) such as [AWS](https://www.cloudquery.io/blog/building-cloud-asset-inventory-with-aws), [GCP](https://www.cloudquery.io/blog/building-cloud-asset-inventory-with-gcp), and [Azure](https://www.cloudquery.io/blog/how-to-build-a-cloud-asset-inventory-for-azure) allows you to [collect and unify your cloud configuration data](https://www.cloudquery.io/blog/how-to-build-a-multi-cloud-asset-inventory).
+- [**Cloud Security Posture Management (CSPM)**](https://www.cloudquery.io/blog/how-to-build-a-cspm-with-grafana-and-cloudquery): Use as a [CSPM](https://www.cloudquery.io/blog/how-to-build-a-cspm-with-grafana-and-cloudquery) solution to monitor and enforce security policies across your cloud infrastructure for [AWS](https://www.cloudquery.io/hub/plugins/source/cloudquery/aws/latest/docs), [GCP](https://www.cloudquery.io/hub/plugins/source/cloudquery/gcp/latest/docs), [Azure](https://www.cloudquery.io/hub/plugins/source/cloudquery/azure/latest/docs) and many more.
 - **Cloud FinOps**: Collect and unify billing data from cloud providers to save money on your cloud expenses.
 
 ### Links
 
 - Homepage: [https://www.cloudquery.io](https://www.cloudquery.io)
-- Documentation: [https://docs.cloudquery.io/](https://docs.cloudquery.io/docs)
-- Integrations: [https://hub.cloudquery.io](https://hub.cloudquery.io)
+- Documentation: [https://www.cloudquery.io/docs/](https://www.cloudquery.io/docs)
+- Integrations: [https://www.cloudquery.io/hub](https://www.cloudquery.io/hub)
 - Plugin SDK: [https://github.com/cloudquery/plugin-sdk](https://github.com/cloudquery/plugin-sdk)
 
 ## License
