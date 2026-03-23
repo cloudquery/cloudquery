@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"time"
 
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -16,11 +17,11 @@ func (c *Client) DeleteStale(_ context.Context, msgs message.WriteDeleteStales) 
 	defer closer()
 
 	for _, msg := range msgs {
-		g := gremlingo.Traversal_().WithRemote(session).
+		g := gremlingo.Traversal_().With(session).
 			V().
 			HasLabel(msg.GetTable().Name).
 			Has(schema.CqSourceNameColumn.Name, msg.SourceName).
-			Has(schema.CqSyncTimeColumn.Name, gremlingo.P.Lt(msg.SyncTime)).
+			Has(schema.CqSyncTimeColumn.Name, gremlingo.P.Lt(msg.SyncTime.Truncate(time.Millisecond))).
 			SideEffect(AnonT.Drop())
 		if err := <-g.Iterate(); err != nil {
 			return err
