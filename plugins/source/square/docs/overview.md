@@ -1,4 +1,4 @@
-The CloudQuery Square plugin pulls data from [Square](https://www.squareup.com/) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](https://hub.cloudquery.io/plugins/destination)).
+The CloudQuery Square plugin pulls data from [Square](https://www.squareup.com/) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](https://www.cloudquery.io/hub/plugins/destination)).
 
 See [tables](/docs/plugins/sources/square/tables) for a list of resources supported.
 
@@ -34,4 +34,4 @@ This is the (nested) spec used by the Square source plugin:
 
 ## Running in a Containerized Environment
 
-To run the Square integration in a containerized environment, see the [Using CloudQuery Docker Registry Integrations Inside a Containerized Environment](https://docs.cloudquery.io/docs/advanced-topics/using-cloud-query-docker-registry-integrations-inside-a-containerized-environment) guide.
+To run the Square integration in a containerized environment, see the [Using CloudQuery Docker Registry Integrations Inside a Containerized Environment](https://www.cloudquery.io/docs/advanced-topics/using-cloud-query-docker-registry-integrations-inside-a-containerized-environment) guide.

@@ -236,7 +236,7 @@ func selectDestination(allPlugins []cqapi.ListPlugin, acceptDefaults bool) (stri
 }
 
 func linkForPlugin(plugin cqapi.ListPlugin) string {
-	return link.Sprintf("https://hub.cloudquery.io/plugins/%s/%s/%s", plugin.Kind, plugin.TeamName, plugin.Name)
+	return link.Sprintf("https://www.cloudquery.io/hub/plugins/%s/%s/%s", plugin.Kind, plugin.TeamName, plugin.Name)
 }
 
 func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
