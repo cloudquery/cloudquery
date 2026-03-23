@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/gcs/v5
 go 1.26.0
 
 require (
-	cloud.google.com/go/storage v1.60.0
+	cloud.google.com/go/storage v1.61.3
 	github.com/apache/arrow-go/v18 v18.5.2
 	github.com/cloudquery/codegen v0.3.37
 	github.com/cloudquery/filetypes/v4 v4.6.14
@@ -119,7 +119,7 @@ require (
 	golang.org/x/net v0.51.0 // indirect
 	golang.org/x/oauth2 v0.36.0 // indirect
 	golang.org/x/sync v0.20.0 // indirect
-	golang.org/x/sys v0.41.0 // indirect
+	golang.org/x/sys v0.42.0 // indirect
 	golang.org/x/telemetry v0.0.0-20260209163413-e7419c687ee4 // indirect
 	golang.org/x/text v0.34.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
