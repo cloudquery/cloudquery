@@ -1,5 +1,16 @@
 # Changelog
 
+## [7.10.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.10.5...plugins-destination-s3-v7.10.6) (2026-03-23)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22331](https://github.com/cloudquery/cloudquery/issues/22331)) ([7e92117](https://github.com/cloudquery/cloudquery/commit/7e921171d083e180ae2673baef4f80611a545b6a))
+* **deps:** Update module github.com/buger/jsonparser to v1.1.2 [SECURITY] ([#22325](https://github.com/cloudquery/cloudquery/issues/22325)) ([816b4a0](https://github.com/cloudquery/cloudquery/commit/816b4a0b3b5ddc39e7f21f34f66059863906d9d9))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.6 ([#22318](https://github.com/cloudquery/cloudquery/issues/22318)) ([ddde2f0](https://github.com/cloudquery/cloudquery/commit/ddde2f052123ca5561f0e67ea77c14d5bff53cef))
+* **deps:** Update module google.golang.org/grpc to v1.79.3 [SECURITY] ([#22267](https://github.com/cloudquery/cloudquery/issues/22267)) ([6c87389](https://github.com/cloudquery/cloudquery/commit/6c87389db5c196eb534bd9e00cf918fdff45f046))
+* Update SDK and filetypes modules ([#22337](https://github.com/cloudquery/cloudquery/issues/22337)) ([6b55f9d](https://github.com/cloudquery/cloudquery/commit/6b55f9d6326e71aad2989d1c03eef4fd93925849))
+
 ## [7.10.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.10.4...plugins-destination-s3-v7.10.5) (2026-03-16)
 
 
