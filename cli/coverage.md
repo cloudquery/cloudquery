@@ -261,11 +261,11 @@
 | github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0/kind.go:38: | UnmarshalJSON | 83.3% |
 | github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0/kind.go:49: | JSONSchemaExtend | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0/kind.go:57: | KindFromString | 100.0% |
-| github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0/metadata.go:39: | VersionString | 75.0% |
-| github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0/metadata.go:50: | Validate | 92.9% |
-| github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0/metadata.go:92: | JSONSchemaExtend | 100.0% |
-| github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0/metadata.go:116: | SetDefaults | 100.0% |
-| github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0/metadata.go:123: | RegistryInferred | 0.0% |
+| github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0/metadata.go:39: | VersionString | 50.0% |
+| github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0/metadata.go:54: | Validate | 93.3% |
+| github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0/metadata.go:98: | JSONSchemaExtend | 100.0% |
+| github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0/metadata.go:122: | SetDefaults | 100.0% |
+| github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0/metadata.go:129: | RegistryInferred | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0/migrate_mode.go:25: | String | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0/migrate_mode.go:29: | MarshalJSON | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0/migrate_mode.go:36: | UnmarshalJSON | 0.0% |
