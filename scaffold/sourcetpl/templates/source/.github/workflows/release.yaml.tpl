@@ -79,7 +79,7 @@ jobs:
           version: v5.0.1
 
       - name: Publish plugin to hub
-        # See https://docs.cloudquery.io/docs/deployment/generate-api-key for instructions how to generate this key.
+        # See https://www.cloudquery.io/docs/deployment/generate-api-key for instructions how to generate this key.
         env:
           CLOUDQUERY_API_KEY: ${{"{{"}} secrets.CLOUDQUERY_API_KEY {{"}}"}}
         run: |
