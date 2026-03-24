@@ -1,10 +1,10 @@
 module github.com/cloudquery/cloudquery/plugins/destination/mssql/v5
 
-go 1.26.0
+go 1.26.1
 
 require (
 	github.com/apache/arrow-go/v18 v18.5.2
-	github.com/cloudquery/codegen v0.3.37
+	github.com/cloudquery/codegen v0.4.0
 	github.com/cloudquery/plugin-sdk/v4 v4.94.7
 	github.com/goccy/go-json v0.10.6
 	github.com/google/uuid v1.6.0
@@ -15,9 +15,9 @@ require (
 )
 
 require (
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.18.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.21.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.10.1 // indirect
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.1 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.11.2 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v1.4.2 // indirect
 	github.com/adrg/xdg v0.5.3 // indirect
 	github.com/apache/arrow/go/v13 v13.0.0 // indirect
