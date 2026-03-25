@@ -19,7 +19,7 @@ jobs:
     outputs:
       result: ${{ steps.pr-commits.outputs.result }}
     steps:
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         name: Check number of commits
         id: pr-commits
         with:
@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
           # required so the commit triggers workflow runs
@@ -66,11 +66,11 @@ jobs:
           git diff ${{ steps.tag.outputs.latest }}..HEAD -- plugins/source/${{ steps.plugin.outputs.name }}/docs/tables > scripts/table_diff/diff.txt
       - name: Set up Go 1.x
         id: setup-go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6
         with:
           go-version-file: scripts/table_diff/go.mod
           cache: false
-      - uses: actions/cache@v5
+      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
         with:
           path: |
             ~/.cache/go-build
@@ -82,7 +82,7 @@ jobs:
         working-directory: scripts/table_diff
         run: |
           go run main.go diff.txt changes.json
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         name: Get doc changes string
         id: get-changes
         with:
@@ -102,7 +102,7 @@ jobs:
               return `- ${text}`
             }).join('\n')
             return changesList
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         name: Update changelog
         if: ${{ steps.get-changes.outputs.result != '' }}
         env:
@@ -121,7 +121,7 @@ jobs:
             const changelogParts = currentChangelog.split('###')
             const newChangelog = [...changelogParts.slice(0, sliceIndex), ` ${title}\n${changes}\n\n`, ...changelogParts.slice(sliceIndex)].join('###')
             fs.writeFileSync(changelogPath, newChangelog)
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         name: Update PR description
         if: ${{ steps.get-changes.outputs.result != '' }}
         env:
@@ -144,7 +144,7 @@ jobs:
               body: newDescription
             })
 
-      - uses: stefanzweifel/git-auto-commit-action@v7
+      - uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7
         if: ${{ steps.get-changes.outputs.result != '' }}
         with:
           commit_message: "chore: Add tables changes to changelog"

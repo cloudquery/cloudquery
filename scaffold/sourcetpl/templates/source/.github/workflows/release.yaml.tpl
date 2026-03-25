@@ -22,18 +22,18 @@ jobs:
           version_extractor_regex: '^v(.*)$'
 
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
 
       - name: Set up Go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6
         with:
           go-version-file: go.mod
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
           node-version: 'lts/*'
 
@@ -43,7 +43,7 @@ jobs:
 
       - name: Get Release Notes
         id: release-notes
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           PRERELEASE: ${{"{{"}} steps.semver_parser.outputs.prerelease {{"}}"}}
         with:
@@ -74,7 +74,7 @@ jobs:
           go run main.go package -m ${{"{{"}} steps.release-notes.outputs.result {{"}}"}} ${{"{{"}} steps.semver_parser.outputs.fullversion {{"}}"}} .
 
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@v4
+        uses: cloudquery/setup-cloudquery@4a3af61f7d8c362d8d152a4a17053ed2aaa7180d # v4
         with:
           version: v5.0.1
 

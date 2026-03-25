@@ -13,9 +13,9 @@ jobs:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Setup node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
           node-version: "lts/*"
       - name: Install tools
@@ -27,7 +27,7 @@ jobs:
           jsonsort release-please-config.json
           yaml-sort -i .github/pr_labeler.yml
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8
         with:
           # required so the PR triggers workflow runs
           token: ${{ secrets.GH_CQ_BOT }}
