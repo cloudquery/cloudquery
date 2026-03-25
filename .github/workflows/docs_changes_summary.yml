@@ -27,17 +27,17 @@ jobs:
       breaking: ${{ steps.breaking.outputs.status }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Get PR diff
         run: |
           curl -L ${{ github.event.pull_request.diff_url }} > pr.diff
       - name: Set up Go 1.x
         id: setup-go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6
         with:
           go-version-file: scripts/table_diff/go.mod
           cache: false
-      - uses: actions/cache@v5
+      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
         with:
           path: |
             ~/.cache/go-build
@@ -48,7 +48,7 @@ jobs:
       - name: Generate docs changes file
         run: |
           go run main.go pr.diff changes.json
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         name: Get doc changes string
         id: get-changes
         with:
@@ -90,7 +90,7 @@ jobs:
           edit-mode: replace
       # Inspired by https://github.com/peter-evans/create-or-update-comment/issues/110#issuecomment-1086997843
       - if: steps.get-changes.outputs.result == '' && steps.find-comment.outputs.comment-id != ''
-        uses: actions/github-script@v8
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         name: Delete existing comment if there are no changes
         with:
           github-token: ${{ secrets.GH_CQ_BOT }}
@@ -116,7 +116,7 @@ jobs:
       - name: Install commit message parser
         if: steps.enforce.outputs.status == 'true'
         run: npm install @conventional-commits/parser
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         if: steps.enforce.outputs.status == 'true'
         with:
           script: |
