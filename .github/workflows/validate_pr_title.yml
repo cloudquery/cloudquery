@@ -1,7 +1,7 @@
 name: Validate PR title
 
 on:
-  pull_request_target:
+  pull_request:
     types:
       - opened
       - edited
@@ -21,7 +21,7 @@ jobs:
       # https://github.com/amannn/action-semantic-pull-request/releases
       - uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_CQ_BOT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           # Configure which types are allowed.
           # Default: https://github.com/commitizen/conventional-commit-types
