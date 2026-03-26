@@ -25,12 +25,19 @@ jobs:
     if: github.event_name == 'repository_dispatch' && github.event.action == 'gen-command' && needs.ok-to-run.outputs.status == 'true'
     runs-on: ubuntu-latest
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3
+        with:
+          app-id: ${{ secrets.CQ_APP_ID }}
+          private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
+          permission-contents: write
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           ref: ${{ github.event.client_payload.slash_command.args.named.sha }}
           repository: ${{ github.event.client_payload.pull_request.head.repo.full_name }}
-          token: ${{ secrets.GH_CQ_BOT }}
+          token: ${{ steps.app-token.outputs.token }}
 
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@4a3af61f7d8c362d8d152a4a17053ed2aaa7180d # v4

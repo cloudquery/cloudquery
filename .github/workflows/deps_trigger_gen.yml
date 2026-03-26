@@ -12,7 +12,7 @@ permissions:
 jobs:
   changed-files:
     # We auto gen code for service SDK updates (e.g. AWS SDK), but not for our own SDK, as those changes should be handled manually
-    if: github.event.pull_request.user.login == 'cq-bot' && startsWith(github.event.pull_request.title, 'fix(deps)') && startsWith(github.head_ref, 'renovate/') && !contains(github.head_ref, 'cloudquery-plugin-sdk')
+    if: github.event.pull_request.user.login == 'cloudquery-ci[bot]' && startsWith(github.event.pull_request.title, 'fix(deps)') && startsWith(github.head_ref, 'renovate/') && !contains(github.head_ref, 'cloudquery-plugin-sdk')
     uses: ./.github/workflows/changed_files.yml
     with:
       files: |
@@ -25,12 +25,19 @@ jobs:
     needs: changed-files
     if: needs.changed-files.outputs.any_changed == 'true'
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3
+        with:
+          app-id: ${{ secrets.CQ_APP_ID }}
+          private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
+          permission-pull-requests: write
       - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         env:
           SHA: ${{ github.event.pull_request.head.sha }}
           GO_MOD_FILES: ${{ needs.changed-files.outputs.changed_files }}
         with:
-          github-token: ${{ secrets.GH_CQ_BOT }}
+          github-token: ${{ steps.app-token.outputs.token }}
           script: |
             const path = require('path');
             const { issue: { number: issue_number }, repo: { owner, repo } } = context;

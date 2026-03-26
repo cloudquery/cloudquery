@@ -26,6 +26,13 @@ jobs:
     outputs:
       breaking: ${{ steps.breaking.outputs.status }}
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3
+        with:
+          app-id: ${{ secrets.CQ_APP_ID }}
+          private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
+          permission-pull-requests: write
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Get PR diff
@@ -72,15 +79,15 @@ jobs:
         uses: peter-evans/find-comment@5bed3ff3b347db473a92357bb8a37455be2dd767
         id: find-comment
         with:
-          token: ${{ secrets.GH_CQ_BOT }}
+          token: ${{ steps.app-token.outputs.token }}
           issue-number: ${{ github.event.pull_request.number }}
-          comment-author: "cq-bot"
+          comment-author: "cloudquery-ci[bot]"
           body-includes: "### This PR has the following changes to source plugin(s) tables:"
       - name: Create or update comment
         uses: peter-evans/create-or-update-comment@e2426b4b1346fd5e8c731c0bbe368063ea0286ac
         if: steps.get-changes.outputs.result != ''
         with:
-          token: ${{ secrets.GH_CQ_BOT }}
+          token: ${{ steps.app-token.outputs.token }}
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
@@ -93,7 +100,7 @@ jobs:
         uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
         name: Delete existing comment if there are no changes
         with:
-          github-token: ${{ secrets.GH_CQ_BOT }}
+          github-token: ${{ steps.app-token.outputs.token }}
           script: |
             github.rest.issues.deleteComment({
               owner: context.repo.owner,
@@ -111,7 +118,7 @@ jobs:
       - name: Should enforce check
         id: enforce
         # Only enforce this check for renovate PRs that update dependencies
-        if: needs.doc-changes.outputs.breaking == 'true' && github.event.pull_request.user.login == 'cq-bot' && startsWith(github.event.pull_request.title, 'fix(deps)') && startsWith(github.head_ref, 'renovate/')
+        if: needs.doc-changes.outputs.breaking == 'true' && github.event.pull_request.user.login == 'cloudquery-ci[bot]' && startsWith(github.event.pull_request.title, 'fix(deps)') && startsWith(github.head_ref, 'renovate/')
         run: echo "status=true" >> $GITHUB_OUTPUT
       - name: Install commit message parser
         if: steps.enforce.outputs.status == 'true'
