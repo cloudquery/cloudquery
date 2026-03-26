@@ -1,10 +1,10 @@
 module github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener
 
-go 1.26.0
+go 1.26.1
 
 require (
 	github.com/apache/arrow-go/v18 v18.5.2
-	github.com/cloudquery/plugin-sdk/v4 v4.94.7
+	github.com/cloudquery/plugin-sdk/v4 v4.95.0
 	github.com/rs/zerolog v1.34.0
 	github.com/stretchr/testify v1.11.1
 )
@@ -15,7 +15,7 @@ require (
 	github.com/buger/jsonparser v1.1.2 // indirect
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/cloudquery/codegen v0.3.37 // indirect
+	github.com/cloudquery/codegen v0.4.0 // indirect
 	github.com/getsentry/sentry-go v0.42.0 // indirect
 	github.com/invopop/jsonschema v0.13.0 // indirect
 	github.com/mailru/easyjson v0.9.2 // indirect
@@ -45,7 +45,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.41.9 // indirect
 	github.com/aws/smithy-go v1.24.2 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.14.8 // indirect
-	github.com/cloudquery/plugin-pb-go v1.27.10 // indirect
+	github.com/cloudquery/plugin-pb-go v1.27.11 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect

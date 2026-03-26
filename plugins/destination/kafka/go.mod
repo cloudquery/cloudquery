@@ -7,7 +7,7 @@ require (
 	github.com/apache/arrow-go/v18 v18.5.2
 	github.com/cloudquery/codegen v0.4.0
 	github.com/cloudquery/filetypes/v4 v4.7.0
-	github.com/cloudquery/plugin-sdk/v4 v4.94.7
+	github.com/cloudquery/plugin-sdk/v4 v4.95.0
 	github.com/invopop/jsonschema v0.13.0
 	github.com/rs/zerolog v1.34.0
 	github.com/wk8/go-ordered-map/v2 v2.1.8
@@ -40,7 +40,7 @@ require (
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.14.8 // indirect
-	github.com/cloudquery/plugin-pb-go v1.27.10 // indirect
+	github.com/cloudquery/plugin-pb-go v1.27.11 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/eapache/go-resiliency v1.7.0 // indirect
