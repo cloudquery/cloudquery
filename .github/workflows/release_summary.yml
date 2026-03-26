@@ -31,19 +31,27 @@ jobs:
               pull_number: context.issue.number,
             })
             // only run if there is one commit to avoid a recursive workflow run
-            const cqBotCommits = commits.filter(commit => commit.author.login === 'cq-bot')
+            const cqBotCommits = commits.filter(commit => commit.author.login === 'cloudquery-ci[bot]')
             return cqBotCommits.length === 1 ? 'true' : 'false'
   release-summary:
     needs: trigger-summary
     if:  needs.trigger-summary.outputs.result == 'true'
     runs-on: ubuntu-latest
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3
+        with:
+          app-id: ${{ secrets.CQ_APP_ID }}
+          private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
       - name: Checkout Repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
           # required so the commit triggers workflow runs
-          token: ${{ secrets.GH_CQ_BOT }}
+          token: ${{ steps.app-token.outputs.token }}
       - name: Get plugin name
         id: plugin
         run: |
@@ -149,4 +157,3 @@ jobs:
         with:
           commit_message: "chore: Add tables changes to changelog"
           file_pattern: "plugins/source/${{ steps.plugin.outputs.name }}/CHANGELOG.md"
-          author: cq-bot <cq-bot@users.noreply.github.com>

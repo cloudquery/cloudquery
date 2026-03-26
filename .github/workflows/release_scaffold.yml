@@ -16,6 +16,16 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
+      - name: Generate GitHub App token for release
+        id: app-token
+        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3
+        with:
+          app-id: ${{ secrets.CQ_APP_ID }}
+          private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
+          repositories: |
+            cloudquery
+            homebrew-tap
+          permission-contents: write
       # Tag format is scaffold-<version>
       - name: Split tag
         id: split
@@ -66,7 +76,7 @@ jobs:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
           # A custom token is required for publishing to Homebrew
-          GITHUB_TOKEN: ${{ secrets.GH_CQ_BOT }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
 
       # Publish only to GitHub
       - name: Run GoReleaser PreRelease
@@ -76,17 +86,27 @@ jobs:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
           # A custom token is required for publishing to Homebrew
-          GITHUB_TOKEN: ${{ secrets.GH_CQ_BOT }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
 
       - name: Push Tag prefixed with `scaffold/`
         if: steps.semver_parser.outputs.prerelease == ''
         run: |
           git tag scaffold/${{ steps.split.outputs.version }} && git push origin scaffold/${{ steps.split.outputs.version }}
 
+      - name: Generate GitHub App token for frontend
+        id: frontend-app-token
+        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3
+        with:
+          app-id: ${{ secrets.CQ_APP_ID }}
+          private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
+          repositories: |
+            frontend
+          permission-contents: write
+          permission-pull-requests: write
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
-          token: ${{ secrets.GH_CQ_BOT }}
+          token: ${{ steps.frontend-app-token.outputs.token }}
           repository: cloudquery/frontend
           ref: main
           path: ./frontend
@@ -100,7 +120,7 @@ jobs:
         uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8
         with:
           # required so the PR triggers workflow runs
-          token: ${{ secrets.GH_CQ_BOT }}
+          token: ${{ steps.frontend-app-token.outputs.token }}
           path: frontend
           branch: chore/update-scaffold-version
           base: main
@@ -108,7 +128,6 @@ jobs:
           commit-message: "chore: Update Scaffold version to ${{steps.split.outputs.version}}"
           body: Updates Scaffold latest version to ${{steps.split.outputs.version}}
           labels: automerge
-          author: cq-bot <cq-bot@users.noreply.github.com>
       - name: Slack Notify
         uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
         if: always()
