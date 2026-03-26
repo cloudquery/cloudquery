@@ -24,7 +24,10 @@ jobs:
         with:
           app-id: ${{ secrets.CQ_APP_ID }}
           private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
-          repositories: cloudquery,frontend,homebrew-tap
+          repositories: |
+            cloudquery
+            frontend
+            homebrew-tap
           permission-contents: write
           permission-pull-requests: write
       # Tag format is cli-<version>
