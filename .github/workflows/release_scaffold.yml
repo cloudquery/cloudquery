@@ -22,6 +22,7 @@ jobs:
         with:
           app-id: ${{ secrets.CQ_APP_ID }}
           private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
+          repositories: cloudquery,frontend,homebrew-tap
           permission-contents: write
           permission-pull-requests: write
       # Tag format is scaffold-<version>
@@ -74,7 +75,7 @@ jobs:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
           # A custom token is required for publishing to Homebrew
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
 
       # Publish only to GitHub
       - name: Run GoReleaser PreRelease
@@ -84,7 +85,7 @@ jobs:
           GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
           GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
           # A custom token is required for publishing to Homebrew
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
 
       - name: Push Tag prefixed with `scaffold/`
         if: steps.semver_parser.outputs.prerelease == ''
