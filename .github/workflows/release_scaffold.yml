@@ -16,7 +16,7 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     steps:
-      - name: Generate GitHub App token
+      - name: Generate GitHub App token for release
         id: app-token
         uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3
         with:
@@ -24,10 +24,8 @@ jobs:
           private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
           repositories: |
             cloudquery
-            frontend
             homebrew-tap
           permission-contents: write
-          permission-pull-requests: write
       # Tag format is scaffold-<version>
       - name: Split tag
         id: split
@@ -95,10 +93,20 @@ jobs:
         run: |
           git tag scaffold/${{ steps.split.outputs.version }} && git push origin scaffold/${{ steps.split.outputs.version }}
 
+      - name: Generate GitHub App token for frontend
+        id: frontend-app-token
+        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3
+        with:
+          app-id: ${{ secrets.CQ_APP_ID }}
+          private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
+          repositories: |
+            frontend
+          permission-contents: write
+          permission-pull-requests: write
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
-          token: ${{ steps.app-token.outputs.token }}
+          token: ${{ steps.frontend-app-token.outputs.token }}
           repository: cloudquery/frontend
           ref: main
           path: ./frontend
@@ -112,7 +120,7 @@ jobs:
         uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8
         with:
           # required so the PR triggers workflow runs
-          token: ${{ steps.app-token.outputs.token }}
+          token: ${{ steps.frontend-app-token.outputs.token }}
           path: frontend
           branch: chore/update-scaffold-version
           base: main
