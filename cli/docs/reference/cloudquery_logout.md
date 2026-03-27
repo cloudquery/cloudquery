@@ -5,6 +5,10 @@ title: "logout"
 
 Log out of CloudQuery Hub.
 
+### Synopsis
+
+Log out of CloudQuery Hub.
+
 ```
 cloudquery logout [flags]
 ```

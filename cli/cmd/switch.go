@@ -23,7 +23,7 @@ cloudquery switch my-team
 
 func newCmdSwitch() *cobra.Command {
 	switchCmd := &cobra.Command{
-		Use:     "switch",
+		Use:     "switch [team]",
 		Short:   switchShort,
 		Long:    switchLong,
 		Example: switchExample,

@@ -10,7 +10,7 @@ Switches between teams.
 Switches between teams.
 
 ```
-cloudquery switch [flags]
+cloudquery switch [team] [flags]
 ```
 
 ### Examples
