@@ -1,5 +1,13 @@
 # Changelog
 
+## [7.10.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.10.7...plugins-destination-s3-v7.10.8) (2026-03-27)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/codegen to v0.4.0 ([#22347](https://github.com/cloudquery/cloudquery/issues/22347)) ([782290d](https://github.com/cloudquery/cloudquery/commit/782290dbfc1f9a24f6a5ef805d770db5124e00a1))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.0 ([#22354](https://github.com/cloudquery/cloudquery/issues/22354)) ([35ed376](https://github.com/cloudquery/cloudquery/commit/35ed3768dfc3691f22b21ab863ecd7f1f96665b5))
+
 ## [7.10.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.10.6...plugins-destination-s3-v7.10.7) (2026-03-23)
 
 
