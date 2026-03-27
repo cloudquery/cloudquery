@@ -49,5 +49,5 @@ cloudquery plugin publish
 
 ### SEE ALSO
 
-* [cloudquery plugin](/docs/reference/cli/cloudquery_plugin)	 - Plugin commands
+* [cloudquery plugin](/cli/cli-reference/cloudquery_plugin)	 - Plugin commands
 

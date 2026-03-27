@@ -27,7 +27,7 @@ Addon commands
 
 ### SEE ALSO
 
-* [cloudquery](/docs/reference/cli/cloudquery)	 - CloudQuery CLI
-* [cloudquery addon download](/docs/reference/cli/cloudquery_addon_download)	 - Download addon from CloudQuery Hub.
-* [cloudquery addon publish](/docs/reference/cli/cloudquery_addon_publish)	 - Publish to CloudQuery Hub.
+* [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
+* [cloudquery addon download](/cli/cli-reference/cloudquery_addon_download)	 - Download addon from CloudQuery Hub.
+* [cloudquery addon publish](/cli/cli-reference/cloudquery_addon_publish)	 - Publish to CloudQuery Hub.
 

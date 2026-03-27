@@ -30,7 +30,7 @@ func newCmdDoc() *cobra.Command {
 func linkHandler(s string) string {
 	if strings.HasSuffix(s, ".md") {
 		fileName := strings.TrimSuffix(s, ".md")
-		fullPath := "/docs/reference/cli/" + fileName
+		fullPath := "/cli/cli-reference/" + fileName
 
 		return fullPath
 	}

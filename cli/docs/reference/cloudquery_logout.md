@@ -5,6 +5,10 @@ title: "logout"
 
 Log out of CloudQuery Hub.
 
+### Synopsis
+
+Log out of CloudQuery Hub.
+
 ```
 cloudquery logout [flags]
 ```
@@ -31,5 +35,5 @@ cloudquery logout [flags]
 
 ### SEE ALSO
 
-* [cloudquery](/docs/reference/cli/cloudquery)	 - CloudQuery CLI
+* [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 
