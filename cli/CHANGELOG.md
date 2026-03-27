@@ -5,6 +5,24 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.35.3](https://github.com/cloudquery/cloudquery/compare/cli-v6.35.2...cli-v6.35.3) (2026-03-27)
+
+
+### Bug Fixes
+
+* Correct --offline flag reference to --disable-ai in init error message ([#22357](https://github.com/cloudquery/cloudquery/issues/22357)) ([cdf9799](https://github.com/cloudquery/cloudquery/commit/cdf97999bc14415a5daac67858ad2a4631b92b0e))
+* **deps:** Update module github.com/buger/jsonparser to v1.1.2 [SECURITY] ([#22325](https://github.com/cloudquery/cloudquery/issues/22325)) ([816b4a0](https://github.com/cloudquery/cloudquery/commit/816b4a0b3b5ddc39e7f21f34f66059863906d9d9))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.14.9 ([#22352](https://github.com/cloudquery/cloudquery/issues/22352)) ([a98a303](https://github.com/cloudquery/cloudquery/commit/a98a30377be1e30381c56071683783a3464cc01c))
+* **deps:** Update module github.com/cloudquery/codegen to v0.4.0 ([#22347](https://github.com/cloudquery/cloudquery/issues/22347)) ([782290d](https://github.com/cloudquery/cloudquery/commit/782290dbfc1f9a24f6a5ef805d770db5124e00a1))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.10 ([#22317](https://github.com/cloudquery/cloudquery/issues/22317)) ([3302565](https://github.com/cloudquery/cloudquery/commit/3302565456362aeb1178ad6079c498906f51a03c))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.11 ([#22343](https://github.com/cloudquery/cloudquery/issues/22343)) ([f435d9d](https://github.com/cloudquery/cloudquery/commit/f435d9dd35c42ee1e8ab98fc0fafab79ea0aa7c9))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.9 ([#22315](https://github.com/cloudquery/cloudquery/issues/22315)) ([683717b](https://github.com/cloudquery/cloudquery/commit/683717b495a21914efa0a494c736ace89affdb69))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.6 ([#22318](https://github.com/cloudquery/cloudquery/issues/22318)) ([ddde2f0](https://github.com/cloudquery/cloudquery/commit/ddde2f052123ca5561f0e67ea77c14d5bff53cef))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.94.7 ([#22338](https://github.com/cloudquery/cloudquery/issues/22338)) ([5d71062](https://github.com/cloudquery/cloudquery/commit/5d71062b1d6c2b7cbce4539beedbbbc6c5361819))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.0 ([#22354](https://github.com/cloudquery/cloudquery/issues/22354)) ([35ed376](https://github.com/cloudquery/cloudquery/commit/35ed3768dfc3691f22b21ab863ecd7f1f96665b5))
+* **deps:** Update module google.golang.org/grpc to v1.79.3 [SECURITY] ([#22249](https://github.com/cloudquery/cloudquery/issues/22249)) ([6f13828](https://github.com/cloudquery/cloudquery/commit/6f13828e80128d44985b410b58c3e0477877cbad))
+* Update old subdomain URLs to new path-based domains ([#22319](https://github.com/cloudquery/cloudquery/issues/22319)) ([a7cec25](https://github.com/cloudquery/cloudquery/commit/a7cec25bfcedc0a6f8b147ec6ee7b84bf02ed65c))
+
 ## [6.35.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.35.1...cli-v6.35.2) (2026-03-16)
 
 
