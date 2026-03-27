@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.27](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.26...plugins-source-square-v1.3.27) (2026-03-27)
+
+
+### Bug Fixes
+
+* Update old subdomain URLs to new path-based domains ([#22319](https://github.com/cloudquery/cloudquery/issues/22319)) ([a7cec25](https://github.com/cloudquery/cloudquery/commit/a7cec25bfcedc0a6f8b147ec6ee7b84bf02ed65c))
+
 ## [1.3.26](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.25...plugins-source-square-v1.3.26) (2026-03-16)
 
 
