@@ -47,5 +47,5 @@ cloudquery addon publish /path/to/manifest.json v1.0.0
 
 ### SEE ALSO
 
-* [cloudquery addon](/docs/reference/cli/cloudquery_addon)	 - Addon commands
+* [cloudquery addon](/cli/cli-reference/cloudquery_addon)	 - Addon commands
 

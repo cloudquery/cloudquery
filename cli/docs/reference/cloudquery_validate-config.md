@@ -45,5 +45,5 @@ cloudquery validate-config ./directory ./aws.yml ./pg.yml
 
 ### SEE ALSO
 
-* [cloudquery](/docs/reference/cli/cloudquery)	 - CloudQuery CLI
+* [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 

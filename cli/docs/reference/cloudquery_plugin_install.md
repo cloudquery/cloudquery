@@ -45,5 +45,5 @@ cloudquery plugin install ./directory ./aws.yml ./pg.yml
 
 ### SEE ALSO
 
-* [cloudquery plugin](/docs/reference/cli/cloudquery_plugin)	 - Plugin commands
+* [cloudquery plugin](/cli/cli-reference/cloudquery_plugin)	 - Plugin commands
 

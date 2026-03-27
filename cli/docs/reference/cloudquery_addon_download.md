@@ -50,5 +50,5 @@ cloudquery addon download cloudquery/transformation/aws-compliance-premium@v1.9.
 
 ### SEE ALSO
 
-* [cloudquery addon](/docs/reference/cli/cloudquery_addon)	 - Addon commands
+* [cloudquery addon](/cli/cli-reference/cloudquery_addon)	 - Addon commands
 

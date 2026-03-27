@@ -31,5 +31,5 @@ cloudquery logout [flags]
 
 ### SEE ALSO
 
-* [cloudquery](/docs/reference/cli/cloudquery)	 - CloudQuery CLI
+* [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 

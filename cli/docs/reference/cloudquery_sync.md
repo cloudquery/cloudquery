@@ -54,5 +54,5 @@ cloudquery sync spec.yml --shard 1/4
 
 ### SEE ALSO
 
-* [cloudquery](/docs/reference/cli/cloudquery)	 - CloudQuery CLI
+* [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 
