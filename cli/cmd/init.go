@@ -308,7 +308,7 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 			fmt.Println()
 		}
 	} else if (user == nil || team == "") && source == "" && destination == "" && !disableAI {
-		return errors.New("authentication required for interactive mode. Please run `cloudquery login` first, or supply source and destination plugins, or else use the --offline flag to run basic interactive mode")
+		return errors.New("authentication required for interactive mode. Please run `cloudquery login` first, or supply source and destination plugins, or else use the --disable-ai flag to run basic interactive mode")
 	}
 
 	fmt.Println("Fetching plugins...")
