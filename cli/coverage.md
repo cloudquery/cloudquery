@@ -41,7 +41,7 @@
 | github.com/cloudquery/cloudquery/cli/v6/cmd/login.go:96: | runLogin | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/login.go:210: | setTeamOnLogin | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/logout.go:20: | newCmdLogout | 22.2% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/logout.go:43: | runLogout | 0.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/logout.go:44: | runLogout | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/migrate.go:25: | NewCmdMigrate | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/migrate.go:40: | migrate | 74.5% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/migrate_v1.go:17: | migrateConnectionV1 | 0.0% |
