@@ -1,6 +1,6 @@
 module cloudquery/tablesdiff
 
-go 1.26.0
+go 1.26.1
 
 require (
 	github.com/bluekeyes/go-gitdiff v0.8.1
