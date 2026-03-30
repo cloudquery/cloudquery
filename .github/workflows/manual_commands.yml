@@ -21,6 +21,7 @@ jobs:
           app-id: ${{ secrets.CQ_APP_ID }}
           private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
           permission-contents: write
+          permission-pull-requests: write
       - name: Trigger Source Plugin Generation Command
         uses: peter-evans/slash-command-dispatch@9bdcd7914ec1b75590b790b844aa3b8eee7c683a # v5
         with:
