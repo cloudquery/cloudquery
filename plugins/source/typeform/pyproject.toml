@@ -1,0 +1,18 @@
+[project]
+name = "cloudquery-typeform"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "cloudquery-plugin-sdk>=0.1.54",
+    "pyarrow>=16.1.0",
+    "requests>=2.32.3",
+    "pandas>=2.2.2",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.2.2",
+]
+
+[tool.uv]
+exclude-newer = "1 week"
