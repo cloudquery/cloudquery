@@ -29,14 +29,14 @@ jobs:
         working-directory: ./plugins/source/square
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
       - name: Set up Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
         with:
           python-version: '3.11'
       - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
+        run: uv sync
       - name: Check formatting
         run: make fmt-check
 
