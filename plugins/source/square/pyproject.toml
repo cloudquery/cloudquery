@@ -5,7 +5,7 @@ requires-python = ">=3.11"
 dependencies = [
     "cloudquery-plugin-sdk>=0.1.54",
     "pyarrow>=15.0.2",
-    "squareup>=29.0.0.20230720",
+    "squareup==29.0.0.20230720",
 ]
 
 [dependency-groups]
