@@ -11,7 +11,7 @@ import (
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/apache/arrow-go/v18/parquet"
 	"github.com/apache/arrow-go/v18/parquet/pqarrow"
-	"github.com/cenkalti/backoff/v4"
+	"github.com/cenkalti/backoff/v5"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/google/uuid"
@@ -86,12 +86,10 @@ func (c *Client) upsert(ctx context.Context, tmpTableName string, table *schema.
 	// return c.exec(ctx, query)
 	// per https://duckdb.org/docs/sql/indexes#over-eager-unique-constraint-checking we might need some retries
 	// as the upsert for tables with PKs is transformed into delete + insert internally
-	return backoff.Retry(
-		func() error {
-			return c.exec(ctx, query)
-		},
-		backoff.WithContext(backoff.WithMaxRetries(backoff.NewConstantBackOff(50*time.Millisecond), 3), ctx),
-	)
+	_, err := backoff.Retry(ctx, func() (any, error) {
+		return nil, c.exec(ctx, query)
+	}, backoff.WithBackOff(backoff.NewConstantBackOff(50*time.Millisecond)), backoff.WithMaxTries(3))
+	return err
 }
 
 func (c *Client) deleteByPK(ctx context.Context, tmpTableName string, table *schema.Table) error {
@@ -229,10 +227,8 @@ func (c *Client) deleteInsert(ctx context.Context, tmpTableName string, table *s
 	query := sb.String()
 
 	// per https://duckdb.org/docs/sql/indexes#over-eager-unique-constraint-checking we might need to retry
-	return backoff.Retry(
-		func() error {
-			return c.exec(ctx, query)
-		},
-		backoff.WithContext(backoff.WithMaxRetries(backoff.NewConstantBackOff(50*time.Millisecond), 3), ctx),
-	)
+	_, err := backoff.Retry(ctx, func() (any, error) {
+		return nil, c.exec(ctx, query)
+	}, backoff.WithBackOff(backoff.NewConstantBackOff(50*time.Millisecond)), backoff.WithMaxTries(3))
+	return err
 }

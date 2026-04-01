@@ -104,6 +104,10 @@
       matchPackageNames: ['elasticsearch'],
       allowedVersions: '8.6.0',
     },
+    {
+      matchPackageNames: ['neo4j'],
+      allowedVersions: '4.4',
+    },
   ],
   ignorePaths: [
     'plugins/source/aws/**',
