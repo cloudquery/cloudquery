@@ -419,7 +419,7 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 
 	f.err = func() error {
 		refKeys := maps.Keys(refList)
-		slices.SortFunc(refKeys, func(a, b listKey) int {
+		slices.SortFunc(refKeys, func(a, b refKeyType) int {
 			if c := cmp.Compare(a.dest, b.dest); c != 0 {
 				return c
 			}
