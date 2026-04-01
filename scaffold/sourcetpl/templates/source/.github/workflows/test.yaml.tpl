@@ -22,7 +22,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9
         with:
-          version: v2.10.1
+          version: v2.11.4
           args: --timeout=10m
       - name: Get dependencies
         run: go get -t -d ./...

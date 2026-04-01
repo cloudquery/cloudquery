@@ -69,7 +69,7 @@ func (*Client) getIndexTemplates(table *schema.Table) []indexTemplate {
 
 	pks := table.PrimaryKeys()
 	if len(pks) > 0 {
-		indexCols := bson.D{}
+		indexCols := make(bson.D, 0, len(pks))
 		for _, name := range pks {
 			indexCols = append(indexCols, bson.E{Key: name, Value: 1})
 		}
