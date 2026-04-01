@@ -25,7 +25,7 @@ func getRetryOptions(logger zerolog.Logger, query string) []retry.Option {
 		}
 	}
 
-	commonRetryOptions := []retry.Option{
+	return []retry.Option{
 		retry.Attempts(5),
 		retry.Delay(3 * time.Second),
 		retry.MaxJitter(1 * time.Second),
@@ -33,8 +33,8 @@ func getRetryOptions(logger zerolog.Logger, query string) []retry.Option {
 		retry.RetryIf(func(err error) bool {
 			return strings.Contains(err.Error(), "Too many simultaneous queries")
 		}),
+		retry.OnRetry(onRetryFunc(logger, query)),
 	}
-	return append(commonRetryOptions, retry.OnRetry(onRetryFunc(logger, query)))
 }
 
 func retryQueryRowAndScan(ctx context.Context, logger zerolog.Logger, conn clickhouse.Conn, query string, args []any, dest []any) error {
