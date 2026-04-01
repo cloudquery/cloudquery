@@ -7,8 +7,9 @@ import (
 	"html/template"
 	"net/http"
 	"os"
+	"cmp"
 	"regexp"
-	"sort"
+	"slices"
 	"strings"
 
 	cqapi "github.com/cloudquery/cloudquery-api-go"
@@ -117,20 +118,20 @@ func officialReleasedPluginsByKind(kind cqapi.PluginKind) func(plugin cqapi.List
 	}
 }
 
-func pluginsSorter(plugins []cqapi.ListPlugin, prioritySlice []string) func(a, b int) bool {
-	return func(a, b int) bool {
-		indexOfA := lo.IndexOf(prioritySlice, plugins[a].Name)
-		indexOfB := lo.IndexOf(prioritySlice, plugins[b].Name)
+func pluginsSorter(prioritySlice []string) func(a, b cqapi.ListPlugin) int {
+	return func(a, b cqapi.ListPlugin) int {
+		indexOfA := lo.IndexOf(prioritySlice, a.Name)
+		indexOfB := lo.IndexOf(prioritySlice, b.Name)
 		if indexOfA == -1 && indexOfB != -1 {
-			return false
+			return 1
 		}
 		if indexOfA != -1 && indexOfB == -1 {
-			return true
+			return -1
 		}
 		if indexOfA == -1 && indexOfB == -1 {
-			return plugins[a].Name < plugins[b].Name
+			return cmp.Compare(a.Name, b.Name)
 		}
-		return indexOfA < indexOfB
+		return cmp.Compare(indexOfA, indexOfB)
 	}
 }
 
@@ -185,7 +186,7 @@ func configForDestinationPlugin(destination cqapi.ListPlugin, version *cqapi.Plu
 
 func selectSource(allPlugins []cqapi.ListPlugin, acceptDefaults bool) (string, error) {
 	officialSources := lo.Filter(allPlugins, officialReleasedPluginsByKind(cqapi.PluginKindSource))
-	sort.SliceStable(officialSources, pluginsSorter(officialSources, sourcesOrder))
+	slices.SortStableFunc(officialSources, pluginsSorter(sourcesOrder))
 	if acceptDefaults {
 		return officialSources[0].Name, nil
 	}
@@ -211,7 +212,7 @@ func selectSource(allPlugins []cqapi.ListPlugin, acceptDefaults bool) (string, e
 
 func selectDestination(allPlugins []cqapi.ListPlugin, acceptDefaults bool) (string, error) {
 	officialDestinations := lo.Filter(allPlugins, officialReleasedPluginsByKind(cqapi.PluginKindDestination))
-	sort.SliceStable(officialDestinations, pluginsSorter(officialDestinations, destinationsOrder))
+	slices.SortStableFunc(officialDestinations, pluginsSorter(destinationsOrder))
 	if acceptDefaults {
 		return officialDestinations[0].Name, nil
 	}

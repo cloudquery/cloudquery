@@ -15,7 +15,7 @@ func TestLogLevel_JSONSchema(t *testing.T) {
 	data, err := json.Marshal(sc)
 	require.NoError(t, err)
 
-	cases := make([]jsonschema.TestCase, len(sc.Enum))
+	cases := make([]jsonschema.TestCase, len(sc.Enum), len(sc.Enum)+3)
 	for i, e := range sc.Enum {
 		val := strconv.Quote(e.(string))
 		cases[i] = jsonschema.TestCase{Name: val, Spec: val}
