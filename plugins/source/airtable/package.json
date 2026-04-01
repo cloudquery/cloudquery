@@ -68,7 +68,7 @@
     "prettier": "^3.0.1",
     "tempy": "^3.1.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.3.3",
+    "typescript": "^6.0.0",
     "winston": "^3.10.0"
   },
   "engines": {
