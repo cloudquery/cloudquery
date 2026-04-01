@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"os"
-	"sort"
+	"slices"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -42,7 +42,7 @@ func TestDoc(t *testing.T) {
 	for i := range files {
 		fnames[i] = files[i].Name()
 	}
-	sort.Strings(fnames)
-	sort.Strings(docFiles)
+	slices.Sort(fnames)
+	slices.Sort(docFiles)
 	require.Equal(t, docFiles, fnames)
 }

@@ -1,9 +1,10 @@
 package client
 
 import (
+	"cmp"
 	"context"
 	"fmt"
-	"sort"
+	"slices"
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/v4/schema"
@@ -55,7 +56,7 @@ func (c *Client) getTableInfo(ctx context.Context, tableNames []string) (schema.
 	g.Go(func() error {
 		const limit = 200
 
-		sort.Strings(tableNames)
+		slices.Sort(tableNames)
 
 		var err error
 		if len(tableNames) <= limit {
@@ -250,8 +251,8 @@ func (m constraintMap) ByNameForTable(tableName string) constraintColumns {
 	}
 
 	for k := range consts {
-		sort.Slice(consts[k], func(i, j int) bool {
-			return consts[k][i].keySeq < consts[k][j].keySeq
+		slices.SortFunc(consts[k], func(a, b constInfo) int {
+			return cmp.Compare(a.keySeq, b.keySeq)
 		})
 	}
 
