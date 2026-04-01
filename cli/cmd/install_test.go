@@ -4,7 +4,7 @@ import (
 	"os"
 	"path"
 	"runtime"
-	"sort"
+	"slices"
 	"strings"
 	"testing"
 
@@ -109,6 +109,6 @@ func readFiles(t *testing.T, basedir, prefix string) []string {
 
 		justFiles = append(justFiles, readFiles(t, path.Join(basedir, files[i].Name()), path.Join(prefix, name))...)
 	}
-	sort.Strings(justFiles)
+	slices.Sort(justFiles)
 	return justFiles
 }

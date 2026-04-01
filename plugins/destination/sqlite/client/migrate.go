@@ -130,7 +130,7 @@ func (*Client) canAutoMigrate(changes []schema.TableColumnChange) bool {
 
 // This is the responsibility of the CLI of the client to lock before running migration
 func (c *Client) MigrateTables(ctx context.Context, msgs message.WriteMigrateTables) error {
-	allTables := schema.Tables{}
+	allTables := make(schema.Tables, 0, len(msgs))
 	safeTables := make(map[string]bool)
 	for _, msg := range msgs {
 		allTables = append(allTables, msg.Table)

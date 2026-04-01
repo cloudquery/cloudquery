@@ -1,10 +1,11 @@
 package images
 
 import (
+	"cmp"
 	"io"
 	"os"
 	"path/filepath"
-	"sort"
+	"slices"
 	"strings"
 	"testing"
 
@@ -299,8 +300,8 @@ text
 			}
 
 			for k := range out {
-				sort.Slice(out[k], func(i, j int) bool {
-					return out[k][i].startPos < out[k][j].startPos
+				slices.SortFunc(out[k], func(a, b reference) int {
+					return cmp.Compare(a.startPos, b.startPos)
 				})
 			}
 
