@@ -44,6 +44,8 @@ func NewFromSpec(sp spec.TransformationSpec) (*Transformer, error) {
 		tr.fn = ChangeCase(sp.Kind, sp.Columns)
 	case spec.KindDropRows:
 		tr.fn = DropRows(sp.Columns, sp.Value)
+	case spec.KindYAMLToJSON:
+		tr.fn = YAMLToJSON(sp.Columns)
 	default:
 		return nil, fmt.Errorf("unknown transformation kind: %s", sp.Kind)
 	}
@@ -139,6 +141,12 @@ func RenameColumn(oldName, newName string) TransformationFn {
 func ChangeCase(caseType string, columnNames []string) TransformationFn {
 	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
 		return recordupdater.New(record).ChangeCase(caseType, columnNames)
+	}
+}
+
+func YAMLToJSON(columnNames []string) TransformationFn {
+	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
+		return recordupdater.New(record).YAMLToJSON(columnNames)
 	}
 }
 

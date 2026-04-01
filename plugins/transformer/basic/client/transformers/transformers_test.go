@@ -66,6 +66,14 @@ func TestNewFromSpec(t *testing.T) {
 			},
 			wantErr: true,
 		},
+		{
+			name: "YAMLToJSON",
+			spec: spec.TransformationSpec{
+				Kind:    spec.KindYAMLToJSON,
+				Columns: []string{"col1"},
+			},
+			wantErr: false,
+		},
 	}
 
 	for _, tt := range tests {
@@ -236,6 +244,24 @@ func TestTransform(t *testing.T) {
 				require.Equal(t, "val4", record.Column(1).(*array.String).Value(1), "Expected `val4` in col2 column row 0")
 			},
 		},
+		{
+			name: "YAMLToJSON",
+			spec: spec.TransformationSpec{
+				Kind:    spec.KindYAMLToJSON,
+				Columns: []string{"col1"},
+				Tables:  []string{"*"},
+			},
+			record: createYAMLTestRecord(),
+			validate: func(t *testing.T, record arrow.RecordBatch) {
+				require.Equal(t, int64(2), record.NumCols(), "Expected 2 columns")
+				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
+				require.Equal(t, `{"key":"value","list":["a","b"]}`, record.Column(0).ValueStr(0))
+				require.Equal(t, `{"count":42,"name":"test"}`, record.Column(0).ValueStr(1))
+				// col2 should remain unchanged
+				require.Equal(t, "val3", record.Column(1).(*array.String).Value(0))
+				require.Equal(t, "val4", record.Column(1).(*array.String).Value(1))
+			},
+		},
 	}
 
 	for _, tt := range tests {
@@ -290,4 +316,24 @@ func requireAllColsLenMatchRecordsLen(t *testing.T, record arrow.RecordBatch) {
 	for i := 0; i < int(record.NumCols()); i++ {
 		require.Equal(t, int(record.NumRows()), record.Column(i).Len(), "Expected length of %d for column %d", record.NumRows(), i)
 	}
+}
+
+func createYAMLTestRecord() arrow.RecordBatch {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"table1"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "col1", Type: arrow.BinaryTypes.String},
+			{Name: "col2", Type: arrow.BinaryTypes.String},
+		},
+		&md,
+	))
+	defer bld.Release()
+
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{
+		"key: value\nlist:\n  - a\n  - b\n",
+		"name: test\ncount: 42\n",
+	}, nil)
+	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
+
+	return bld.NewRecordBatch()
 }

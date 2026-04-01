@@ -98,6 +98,25 @@ func (s *SchemaUpdater) ChangeTableName(newTableNamePattern string) (*arrow.Sche
 	return arrow.NewSchema(s.schema.Fields(), &newMetadata), nil
 }
 
+func (s *SchemaUpdater) ChangeColumnTypes(columnNames []string, newType arrow.DataType) *arrow.Schema {
+	oldFields := s.schema.Fields()
+	colNameSet := make(map[string]struct{}, len(columnNames))
+	for _, name := range columnNames {
+		colNameSet[name] = struct{}{}
+	}
+
+	newFields := make([]arrow.Field, len(oldFields))
+	for i, f := range oldFields {
+		if _, ok := colNameSet[f.Name]; ok {
+			f.Type = newType
+		}
+		newFields[i] = f
+	}
+	metadata := s.schema.Metadata()
+	s.schema = arrow.NewSchema(newFields, &metadata)
+	return s.schema
+}
+
 func (s *SchemaUpdater) AddPrimaryKeys(newPks []string) (*arrow.Schema, error) {
 	table, err := schema.NewTableFromArrowSchema(s.schema)
 	if err != nil {

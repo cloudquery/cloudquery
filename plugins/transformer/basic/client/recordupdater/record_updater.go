@@ -16,6 +16,7 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/transformer/basic/client/spec"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
+	"github.com/ghodss/yaml"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -343,6 +344,48 @@ func (r *RecordUpdater) ChangeCase(caseType string, columnNames []string) (arrow
 
 	r.record = array.NewRecordBatch(r.record.Schema(), newColumns, r.record.NumRows())
 
+	return r.record, nil
+}
+
+func (r *RecordUpdater) YAMLToJSON(columnNames []string) (arrow.RecordBatch, error) {
+	colIndex, err := r.colIndicesByNames(columnNames)
+	if err != nil {
+		return nil, err
+	}
+
+	oldRecord := r.record.Columns()
+	newColumns := make([]arrow.Array, 0, len(oldRecord))
+	matchedCols := make([]string, 0, len(colIndex))
+	for i, column := range oldRecord {
+		if _, ok := colIndex[i]; !ok {
+			newColumns = append(newColumns, column)
+			continue
+		}
+		if column.DataType().ID() != arrow.STRING {
+			return nil, fmt.Errorf("column %v is not a string column", r.record.ColumnName(i))
+		}
+		matchedCols = append(matchedCols, r.record.ColumnName(i))
+		bld := types.NewJSONBuilder(memory.NewGoAllocator())
+		for j := 0; j < column.Len(); j++ {
+			if !column.IsValid(j) {
+				bld.AppendNull()
+				continue
+			}
+			yamlStr := column.ValueStr(j)
+			jsonBytes, err := yaml.YAMLToJSON([]byte(yamlStr))
+			if err != nil {
+				return nil, fmt.Errorf("failed to convert YAML to JSON in column %v, row %d: %w", r.record.ColumnName(i), j, err)
+			}
+			if !json.Valid(jsonBytes) {
+				return nil, fmt.Errorf("invalid JSON produced from YAML in column %v, row %d", r.record.ColumnName(i), j)
+			}
+			bld.AppendBytes(jsonBytes)
+		}
+		newColumns = append(newColumns, bld.NewJSONArray())
+	}
+
+	newSchema := r.schemaUpdater.ChangeColumnTypes(matchedCols, types.NewJSONType())
+	r.record = array.NewRecordBatch(newSchema, newColumns, r.record.NumRows())
 	return r.record, nil
 }
 
