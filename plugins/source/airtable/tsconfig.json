@@ -3,6 +3,7 @@
   "compilerOptions": {
     "allowJs": true,
     "declaration": true,
+    "rootDir": "src",
     "outDir": "dist",
     "sourceMap": true
   }
