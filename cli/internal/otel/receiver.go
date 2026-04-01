@@ -98,7 +98,7 @@ func newMetricConsumer(metricsFile writeSeekCloser, durationCallback tableDurati
 		t := tablepkg.NewWriter()
 		t.SetOutputMirror(metricsFile)
 		t.AppendHeader(tablepkg.Row{"Table", "Duration", "Resources", "Errors", "Panics"})
-		slices.SortStableFunc(metrics, func(a, b tableMetric) int {
+		slices.SortStableFunc(metrics, func(a, b *tableMetric) int {
 			if a.EndTime == nil && b.EndTime != nil {
 				return -1
 			}
