@@ -2,7 +2,7 @@ FROM node:24-slim as builder
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY package*.json .npmrc ./
 
 RUN npm ci
 
@@ -16,7 +16,7 @@ WORKDIR /app
 
 COPY --from=builder ./app/dist ./dist
 
-COPY package*.json ./
+COPY package*.json .npmrc ./
 
 RUN npm ci --omit=dev
 
