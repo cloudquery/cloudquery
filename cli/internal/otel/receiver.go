@@ -1,12 +1,13 @@
 package otel
 
 import (
+	"cmp"
 	"context"
 	"fmt"
 	"io"
 	"net"
 	"os"
-	"sort"
+	"slices"
 	"sync"
 	"time"
 
@@ -97,19 +98,16 @@ func newMetricConsumer(metricsFile writeSeekCloser, durationCallback tableDurati
 		t := tablepkg.NewWriter()
 		t.SetOutputMirror(metricsFile)
 		t.AppendHeader(tablepkg.Row{"Table", "Duration", "Resources", "Errors", "Panics"})
-		sort.SliceStable(metrics, func(i, j int) bool {
-			m1 := metrics[i]
-			m2 := metrics[j]
-
-			if m1.EndTime == nil && m2.EndTime != nil {
-				return true
+		slices.SortStableFunc(metrics, func(a, b *tableMetric) int {
+			if a.EndTime == nil && b.EndTime != nil {
+				return -1
 			}
 
-			if m1.EndTime != nil && m2.EndTime == nil {
-				return false
+			if a.EndTime != nil && b.EndTime == nil {
+				return 1
 			}
 
-			return m1.Table+m1.ClientId < m2.Table+m2.ClientId
+			return cmp.Compare(a.Table+a.ClientId, b.Table+b.ClientId)
 		})
 		for _, metrics := range metrics {
 			var duration time.Duration
