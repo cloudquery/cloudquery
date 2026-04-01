@@ -8,7 +8,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
-    id "io.freefair.lombok" version "8.14.4"
+    id "io.freefair.lombok" version "9.2.0"
     id "com.diffplug.spotless" version "8.4.0"
 }
 
@@ -31,22 +31,22 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     // This dependency is used by the application.
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.21.0'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.21.2'
     implementation 'com.fasterxml.jackson.core:jackson-annotations:2.21'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.2'
     implementation 'com.google.guava:guava:33.5.0-jre'
     implementation 'com.konghq:unirest-java:3.14.5'
 
     // gRPC
-    implementation 'io.grpc:grpc-protobuf:1.79.0'
-    implementation 'io.grpc:grpc-stub:1.79.0'
-    implementation 'io.grpc:grpc-services:1.79.0'
-    testImplementation 'io.grpc:grpc-testing:1.79.0'
+    implementation 'io.grpc:grpc-protobuf:1.80.0'
+    implementation 'io.grpc:grpc-stub:1.80.0'
+    implementation 'io.grpc:grpc-services:1.80.0'
+    testImplementation 'io.grpc:grpc-testing:1.80.0'
 
     implementation 'org.apache.logging.log4j:log4j-api:2.25.3'
     implementation 'org.apache.logging.log4j:log4j-core:2.25.3'
 
-    implementation 'io.cloudquery:plugin-pb-java:0.0.42'
+    implementation 'io.cloudquery:plugin-pb-java:0.0.43'
     implementation 'io.cloudquery:plugin-sdk-java:0.0.49'
 }
 

@@ -71,6 +71,8 @@ linters:
           disabled: true
         - name: var-naming
           disabled: true
+        - name: package-naming
+          disabled: true
         - name: deep-exit
           disabled: true
         - name: exported
