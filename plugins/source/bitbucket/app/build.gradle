@@ -8,7 +8,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
-    id "io.freefair.lombok" version "8.14.4"
+    id "io.freefair.lombok" version "9.2.0"
     id "com.diffplug.spotless" version "6.25.0"
 }
 
