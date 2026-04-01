@@ -1,7 +1,7 @@
 package util
 
 import (
-	"sort"
+	"slices"
 )
 
 func SortedKeys[T any](m map[string]T) []string {
@@ -9,6 +9,6 @@ func SortedKeys[T any](m map[string]T) []string {
 	for key := range m {
 		keys = append(keys, key)
 	}
-	sort.Strings(keys)
+	slices.Sort(keys)
 	return keys
 }
