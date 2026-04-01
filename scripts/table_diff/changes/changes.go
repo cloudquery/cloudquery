@@ -1,10 +1,11 @@
 package changes
 
 import (
+	stdcmp "cmp"
 	"fmt"
 	"path/filepath"
 	"regexp"
-	"sort"
+	"slices"
 	"strings"
 
 	"github.com/bluekeyes/go-gitdiff/gitdiff"
@@ -212,16 +213,14 @@ func getColumnChanges(file *gitdiff.File, table string) (changes []change) {
 		})
 	}
 
-	sort.SliceStable(changes, func(i, j int) bool {
-		chI := changes[i]
-		chJ := changes[j]
+	slices.SortStableFunc(changes, func(a, b change) int {
 		switch {
-		case chI.Breaking && !chJ.Breaking:
-			return true
-		case !chI.Breaking && chJ.Breaking:
-			return false
+		case a.Breaking && !b.Breaking:
+			return -1
+		case !a.Breaking && b.Breaking:
+			return 1
 		default:
-			return chI.Text < chJ.Text
+			return stdcmp.Compare(a.Text, b.Text)
 		}
 	})
 

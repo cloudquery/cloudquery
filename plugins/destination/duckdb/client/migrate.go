@@ -29,7 +29,7 @@ type tableInfo struct {
 }
 
 func (*Client) normalizeColumns(tables schema.Tables) schema.Tables {
-	var normalized schema.Tables
+	normalized := make(schema.Tables, 0, len(tables))
 	for _, table := range tables {
 		normalizedTable := *table
 		normalizedTable.Columns = make(schema.ColumnList, len(table.Columns))

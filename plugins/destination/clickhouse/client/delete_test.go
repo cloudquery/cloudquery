@@ -145,7 +145,7 @@ func createDeleteMessages(deleteAll bool, table *schema.Table, deleteValues []st
 
 func createInsertMessages(values []string, table *schema.Table) message.WriteInserts {
 	const sourceName = "source-test"
-	writeInserts := message.WriteInserts{}
+	writeInserts := make(message.WriteInserts, 0, len(values))
 	for _, insertValue := range values {
 		bldr := array.NewRecordBuilder(memory.DefaultAllocator, table.ToArrowSchema())
 		bldr.Field(0).(*array.StringBuilder).Append(insertValue)
