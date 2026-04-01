@@ -13,7 +13,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/goccy/go-json"
 	"github.com/rs/zerolog"
-	slogzerolog "github.com/samber/slog-zerolog"
+	slogzerolog "github.com/samber/slog-zerolog/v2"
 )
 
 type Client struct {
