@@ -1,11 +1,11 @@
 package otel
 
 import (
+	"cmp"
 	"context"
 	"fmt"
 	"io"
 	"net"
-	"cmp"
 	"os"
 	"slices"
 	"sync"

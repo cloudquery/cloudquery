@@ -2,12 +2,12 @@ package cmd
 
 import (
 	"bytes"
+	"cmp"
 	"errors"
 	"fmt"
 	"html/template"
 	"net/http"
 	"os"
-	"cmp"
 	"regexp"
 	"slices"
 	"strings"

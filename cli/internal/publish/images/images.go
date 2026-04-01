@@ -2,6 +2,7 @@ package images
 
 import (
 	"bytes"
+	"cmp"
 	"context"
 	"crypto/sha1"
 	"encoding/hex"
@@ -11,7 +12,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"cmp"
 	"path/filepath"
 	"slices"
 	"strings"

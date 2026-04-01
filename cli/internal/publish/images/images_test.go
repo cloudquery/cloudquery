@@ -1,9 +1,9 @@
 package images
 
 import (
+	"cmp"
 	"io"
 	"os"
-	"cmp"
 	"path/filepath"
 	"slices"
 	"strings"
