@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.3.9](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.8...plugins-source-airtable-v2.3.9) (2026-04-01)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency dayjs to v1.11.20 ([#22410](https://github.com/cloudquery/cloudquery/issues/22410)) ([ebe082f](https://github.com/cloudquery/cloudquery/commit/ebe082f981e3e3bd82a40cdae1b1f4912e6d3aba))
+* **deps:** Update typescript-eslint monorepo to v8.57.2 ([#22428](https://github.com/cloudquery/cloudquery/issues/22428)) ([82455ef](https://github.com/cloudquery/cloudquery/commit/82455efad94c730161be5fa8856c96134b752465))
+* Update old subdomain URLs to new path-based domains ([#22319](https://github.com/cloudquery/cloudquery/issues/22319)) ([a7cec25](https://github.com/cloudquery/cloudquery/commit/a7cec25bfcedc0a6f8b147ec6ee7b84bf02ed65c))
+
 ## [2.3.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.7...plugins-source-airtable-v2.3.8) (2026-03-09)
 
 
