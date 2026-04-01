@@ -46,7 +46,7 @@
   "homepage": "https://github.com/cloudquery/cloudquery#readme",
   "devDependencies": {
     "@ava/typescript": "^6.0.0",
-    "@tsconfig/node20": "^20.1.2",
+    "@tsconfig/node22": "^22.0.0",
     "@types/uuid": "^11.0.0",
     "@types/yargs": "^17.0.24",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
