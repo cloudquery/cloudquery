@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/kafka/v5
 go 1.26.1
 
 require (
-	github.com/IBM/sarama v1.46.3
+	github.com/IBM/sarama v1.47.0
 	github.com/apache/arrow-go/v18 v18.5.2
 	github.com/cloudquery/codegen v0.4.0
 	github.com/cloudquery/filetypes/v4 v4.7.0
@@ -44,7 +44,6 @@ require (
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/eapache/go-resiliency v1.7.0 // indirect
-	github.com/eapache/go-xerial-snappy v0.0.0-20230731223053-c322873962e3 // indirect
 	github.com/eapache/queue v1.1.0 // indirect
 	github.com/getsentry/sentry-go v0.42.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
