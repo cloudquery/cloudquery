@@ -232,7 +232,7 @@ func (c *Client) timePartitioning() *bigquery.TimePartitioning {
 }
 
 func (c *Client) bigQuerySchemaForTable(table *schema.Table) bigquery.Schema {
-	s := bigquery.Schema{}
+	s := make(bigquery.Schema, 0, len(table.Columns))
 	for _, col := range table.Columns {
 		s = append(s, c.ColumnToBigQuerySchema(col))
 	}
