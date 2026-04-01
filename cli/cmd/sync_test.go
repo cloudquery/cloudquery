@@ -8,7 +8,6 @@ import (
 	"reflect"
 	"runtime"
 	"slices"
-	"sort"
 	"strings"
 	"testing"
 
@@ -705,8 +704,8 @@ func TestSync_FilterPluginEnv(t *testing.T) {
 	for _, tc := range cases {
 		t.Run(tc.Name, func(t *testing.T) {
 			filteredEnv := filterPluginEnv(tc.TotalEnv, "test", "source")
-			sort.Strings(filteredEnv)
-			sort.Strings(tc.FilteredEnv)
+			slices.Sort(filteredEnv)
+			slices.Sort(tc.FilteredEnv)
 			require.Equal(t, tc.FilteredEnv, filteredEnv)
 		})
 	}
