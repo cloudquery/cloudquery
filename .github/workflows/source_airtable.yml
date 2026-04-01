@@ -29,22 +29,25 @@ jobs:
         working-directory: ./plugins/source/airtable
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5
+        with:
+          package_json_file: './plugins/source/airtable/package.json'
       - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
         with:
           node-version: '24'
-          cache: 'npm'
-          cache-dependency-path: './plugins/source/airtable/package-lock.json'
+          cache: 'pnpm'
+          cache-dependency-path: './plugins/source/airtable/pnpm-lock.yaml'
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
         run: |
-          npm run lint
+          pnpm run lint
 
       - name: Build
         run: |
-          npm run build
+          pnpm run build
 
       -
         # Required for the package command tests to work
@@ -53,4 +56,4 @@ jobs:
 
       - name: Test
         run: |
-          npm run test
+          pnpm run test
