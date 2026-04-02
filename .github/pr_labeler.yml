@@ -1,140 +1,140 @@
 area/ci:
   - changed-files:
-    - any-glob-to-any-file:
-      - .github/workflows/**/*
+      - any-glob-to-any-file:
+          - .github/workflows/**/*
 area/cli:
   - changed-files:
-    - any-glob-to-any-file:
-      - cli/**/*
+      - any-glob-to-any-file:
+          - cli/**/*
 area/plugin/destination/azblob:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/azblob/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/azblob/**/*
 area/plugin/destination/bigquery:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/bigquery/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/bigquery/**/*
 area/plugin/destination/clickhouse:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/clickhouse/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/clickhouse/**/*
 area/plugin/destination/duckdb:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/duckdb/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/duckdb/**/*
 area/plugin/destination/elasticsearch:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/elasticsearch/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/elasticsearch/**/*
 area/plugin/destination/file:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/file/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/file/**/*
 area/plugin/destination/firehose:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/firehose/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/firehose/**/*
 area/plugin/destination/gcs:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/gcs/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/gcs/**/*
 area/plugin/destination/gremlin:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/gremlin/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/gremlin/**/*
 area/plugin/destination/kafka:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/kafka/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/kafka/**/*
 area/plugin/destination/meilisearch:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/meilisearch/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/meilisearch/**/*
 area/plugin/destination/mongodb:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/mongodb/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/mongodb/**/*
 area/plugin/destination/mssql:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/mssql/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/mssql/**/*
 area/plugin/destination/mysql:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/mysql/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/mysql/**/*
 area/plugin/destination/neo4j:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/neo4j/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/neo4j/**/*
 area/plugin/destination/postgresql:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/postgresql/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/postgresql/**/*
 area/plugin/destination/s3:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/s3/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/s3/**/*
 area/plugin/destination/snowflake:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/snowflake/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/snowflake/**/*
 area/plugin/destination/sqlite:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/sqlite/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/sqlite/**/*
 area/plugin/destination/sqlite-python:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/sqlite/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/sqlite/**/*
 area/plugin/destination/test:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/destination/test/**/*
+      - any-glob-to-any-file:
+          - plugins/destination/test/**/*
 area/plugin/source/airtable:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/source/airtable/**/*
+      - any-glob-to-any-file:
+          - plugins/source/airtable/**/*
 area/plugin/source/bitbucket:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/source/bitbucket/**/*
+      - any-glob-to-any-file:
+          - plugins/source/bitbucket/**/*
 area/plugin/source/hackernews:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/source/hackernews/**/*
+      - any-glob-to-any-file:
+          - plugins/source/hackernews/**/*
 area/plugin/source/square:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/source/square/**/*
+      - any-glob-to-any-file:
+          - plugins/source/square/**/*
 area/plugin/source/test:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/source/test/**/*
+      - any-glob-to-any-file:
+          - plugins/source/test/**/*
 area/plugin/source/typeform:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/source/typeform/**/*
+      - any-glob-to-any-file:
+          - plugins/source/typeform/**/*
 area/plugin/source/xkcd:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/source/xkcd/**/*
+      - any-glob-to-any-file:
+          - plugins/source/xkcd/**/*
 area/plugin/transform/basic:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/transform/basic/**/*
+      - any-glob-to-any-file:
+          - plugins/transform/basic/**/*
 area/plugin/transform/jsonflattener:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/transform/jsonflattener/**/*
+      - any-glob-to-any-file:
+          - plugins/transform/jsonflattener/**/*
 area/plugin/transform/test:
   - changed-files:
-    - any-glob-to-any-file:
-      - plugins/transform/test/**/*
+      - any-glob-to-any-file:
+          - plugins/transform/test/**/*
 area/scaffold:
   - changed-files:
-    - any-glob-to-any-file:
-      - scaffold/**/*
+      - any-glob-to-any-file:
+          - scaffold/**/*
 area/website:
   - changed-files:
-    - any-glob-to-any-file:
-      - website/**/*
+      - any-glob-to-any-file:
+          - website/**/*
