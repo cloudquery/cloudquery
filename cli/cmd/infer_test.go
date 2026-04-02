@@ -57,7 +57,7 @@ spec:
   path: localhost:7777
   registry: grpc
 `,
-			wantErrContains:    "version v99.999.0 does not exist, consider using the latest version at https://hub.cloudquery.io/plugins/source/cloudquery/gcp/v",
+			wantErrContains:    "version v99.999.0 does not exist, consider using the latest version at https://www.cloudquery.io/hub/plugins/source/cloudquery/gcp/v",
 			wantErrNotContains: "",
 		},
 		{
