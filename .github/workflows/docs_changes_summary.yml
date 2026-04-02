@@ -40,7 +40,7 @@ jobs:
           curl -L ${{ github.event.pull_request.diff_url }} > pr.diff
       - name: Set up Go 1.x
         id: setup-go
-        uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
         with:
           go-version-file: scripts/table_diff/go.mod
           cache: false
@@ -76,7 +76,7 @@ jobs:
             }).join('\n')
             return changesList
       - name: Find Comment
-        uses: peter-evans/find-comment@5bed3ff3b347db473a92357bb8a37455be2dd767
+        uses: peter-evans/find-comment@1a5d78cf05602d9070d859ad658461737f7b45c1
         id: find-comment
         with:
           token: ${{ steps.app-token.outputs.token }}
@@ -84,7 +84,7 @@ jobs:
           comment-author: "cloudquery-ci[bot]"
           body-includes: "### This PR has the following changes to source plugin(s) tables:"
       - name: Create or update comment
-        uses: peter-evans/create-or-update-comment@e2426b4b1346fd5e8c731c0bbe368063ea0286ac
+        uses: peter-evans/create-or-update-comment@57232238742e38b2ccc27136ce596ccae7ca28b4
         if: steps.get-changes.outputs.result != ''
         with:
           token: ${{ steps.app-token.outputs.token }}
