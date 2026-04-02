@@ -38,7 +38,7 @@ jobs:
           cache: "gradle"
           cache-dependency-path: "plugins/source/bitbucket/**/build.gradle"
       - name: Validate Gradle wrapper
-        uses: gradle/actions/wrapper-validation@0723195856401067f7a2779048b490ace7a47d7c # v5
+        uses: gradle/actions/wrapper-validation@39e147cb9de83bb9910b8ef8bd7fff0ee20fcd6f # v6
       - name: Build package
         run: ./gradlew build
         env:
