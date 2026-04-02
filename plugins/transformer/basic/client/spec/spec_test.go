@@ -215,6 +215,33 @@ func TestValidate(t *testing.T) {
 			},
 			wantErr: true,
 		},
+		{
+			name: "ValidYAMLToJSON",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindYAMLToJSON, Columns: []string{"col1"}},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "InvalidYAMLToJSONNoColumns",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindYAMLToJSON},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "InvalidYAMLToJSONExtraFields",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindYAMLToJSON, Columns: []string{"col1"}, Name: "extra"},
+				},
+			},
+			wantErr: true,
+		},
 	}
 
 	for _, tt := range tests {

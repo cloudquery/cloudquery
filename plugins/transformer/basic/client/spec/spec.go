@@ -18,6 +18,7 @@ const (
 	KindUppercase                 = "uppercase"
 	KindLowercase                 = "lowercase"
 	KindDropRows                  = "drop_rows"
+	KindYAMLToJSON                = "yaml_to_json"
 )
 
 type TransformationSpec struct {
@@ -109,7 +110,13 @@ func (s *Spec) Validate() error {
 			if len(t.Columns) == 0 {
 				err = errors.Join(err, fmt.Errorf("'columns' must be specified for %s transformation", t.Kind))
 			}
-
+		case KindYAMLToJSON:
+			if len(t.Columns) == 0 {
+				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "columns", t.Kind))
+			}
+			if t.Name != "" || (t.Value != nil && *t.Value != "") || t.NewTableNameTemplate != "" {
+				err = errors.Join(err, fmt.Errorf("name/value/new_table_name_template fields must not be specified for %s transformation", t.Kind))
+			}
 		default:
 			err = errors.Join(err, fmt.Errorf("unknown transformation kind: %s", t.Kind))
 		}
