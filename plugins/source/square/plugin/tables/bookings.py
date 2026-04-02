@@ -6,8 +6,7 @@ from cloudquery.sdk.scheduler import TableResolver
 from plugin.client import Client
 from plugin.oapi import OAPILoader
 from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
-from square.api.bookings_api import BookingsApi
-from square.http.api_response import ApiResponse
+from square.core.api_error import ApiError
 
 bookings_columns = oapi_definition_to_columns(
     OAPILoader.get_definition("Booking"),
@@ -33,21 +32,16 @@ class BookingsResolver(TableResolver):
         super().__init__(table=table)
 
     def resolve(self, client: Client, parent_resource) -> Generator[Any, None, None]:
-        bookings: BookingsApi = client.client.bookings
-        cursor = None
-        while True:
-            response: ApiResponse = bookings.list_bookings(cursor=cursor)
-            if response.is_error():
-                for error in response.errors:
-                    if (
-                        error["category"] == "AUTHENTICATION_ERROR"
-                        and error["code"] == "UNAUTHORIZED"
-                        and error["detail"] == "Merchant not onboarded to Appointments"
-                    ):
-                        # TODO log
-                        return
-                raise Exception(response)
-            for booking in response.body.get("bookings", []):
-                yield booking
-            if response.cursor is None:
-                break
+        try:
+            for booking in client.client.bookings.list():
+                yield booking.model_dump(mode="json")
+        except ApiError as e:
+            for error in e.errors:
+                if (
+                    error.category == "AUTHENTICATION_ERROR"
+                    and error.code == "UNAUTHORIZED"
+                    and error.detail == "Merchant not onboarded to Appointments"
+                ):
+                    # TODO log
+                    return
+            raise

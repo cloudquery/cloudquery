@@ -4,8 +4,6 @@ from typing import Any, Generator
 from cloudquery.sdk.schema import Column, Table
 from cloudquery.sdk.scheduler import TableResolver
 from plugin.client import Client
-from square.api.locations_api import LocationsApi
-from square.http.api_response import ApiResponse
 from plugin.oapi import OAPILoader
 from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
 
@@ -42,9 +40,6 @@ class LocationsResolver(TableResolver):
         super().__init__(table=table, child_resolvers=child_resolvers)
 
     def resolve(self, client: Client, parent_resource) -> Generator[Any, None, None]:
-        locations: LocationsApi = client.client.locations
-        response: ApiResponse = locations.list_locations()
-        if response.is_error():
-            raise Exception(response)
-        for location in response.body.get("locations", []):
-            yield location
+        response = client.client.locations.list()
+        for location in response.locations or []:
+            yield location.model_dump(mode="json")

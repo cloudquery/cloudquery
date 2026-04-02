@@ -6,8 +6,6 @@ from cloudquery.sdk.scheduler import TableResolver
 from plugin.client import Client
 from plugin.oapi import OAPILoader
 from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
-from square.api.payouts_api import PayoutsApi
-from square.http.api_response import ApiResponse
 
 payouts_columns = oapi_definition_to_columns(
     OAPILoader.get_definition("Payout"),
@@ -33,13 +31,5 @@ class PayoutsResolver(TableResolver):
         super().__init__(table=table)
 
     def resolve(self, client: Client, parent_resource) -> Generator[Any, None, None]:
-        payouts: PayoutsApi = client.client.payouts
-        cursor = None
-        while True:
-            response: ApiResponse = payouts.list_payouts(cursor=cursor)
-            if response.is_error():
-                raise Exception(response)
-            for payout in response.body.get("payouts", []):
-                yield payout
-            if response.cursor is None:
-                break
+        for payout in client.client.payouts.list():
+            yield payout.model_dump(mode="json")
