@@ -5,7 +5,7 @@ go 1.26.1
 require (
 	github.com/apache/arrow-go/v18 v18.5.2
 	github.com/avast/retry-go/v5 v5.0.0
-	github.com/cloudquery/codegen v0.4.0
+	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-sdk/v4 v4.95.0
 	github.com/goccy/go-json v0.10.6
 	github.com/google/go-cmp v0.7.0

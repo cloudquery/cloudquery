@@ -1,4 +1,5 @@
 dist-dir
 node_modules
 npm-debug.log
+.pnpm-debug.log
 .env
