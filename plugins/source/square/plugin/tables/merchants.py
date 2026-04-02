@@ -4,8 +4,6 @@ from typing import Any, Generator
 from cloudquery.sdk.schema import Column, Table
 from cloudquery.sdk.scheduler import TableResolver
 from plugin.client import Client
-from square.api.merchants_api import MerchantsApi
-from square.http.api_response import ApiResponse
 from plugin.oapi import OAPILoader
 from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
 
@@ -33,13 +31,5 @@ class MerchantsResolver(TableResolver):
         super().__init__(table=table)
 
     def resolve(self, client: Client, parent_resource) -> Generator[Any, None, None]:
-        merchants: MerchantsApi = client.client.merchants
-        cursor = None
-        while True:
-            response: ApiResponse = merchants.list_merchants(cursor=cursor)
-            if response.is_error():
-                raise Exception(response)
-            for merchant in response.body.get("merchant", []):
-                yield merchant
-            if response.cursor is None:
-                break
+        for merchant in client.client.merchants.list():
+            yield merchant.model_dump(mode="json")

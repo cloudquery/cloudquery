@@ -6,8 +6,6 @@ from cloudquery.sdk.scheduler import TableResolver
 from plugin.client import Client
 from plugin.oapi import OAPILoader
 from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
-from square.api.payments_api import PaymentsApi
-from square.http.api_response import ApiResponse
 
 payments_columns = oapi_definition_to_columns(
     OAPILoader.get_definition("Payment"),
@@ -33,13 +31,5 @@ class PaymentsResolver(TableResolver):
         super().__init__(table=table)
 
     def resolve(self, client: Client, parent_resource) -> Generator[Any, None, None]:
-        payments: PaymentsApi = client.client.payments
-        cursor = None
-        while True:
-            response: ApiResponse = payments.list_payments(cursor=cursor)
-            if response.is_error():
-                raise Exception(response)
-            for payment in response.body.get("payments", []):
-                yield payment
-            if response.cursor is None:
-                break
+        for payment in client.client.payments.list():
+            yield payment.model_dump(mode="json")

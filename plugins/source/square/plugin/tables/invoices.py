@@ -6,8 +6,6 @@ from cloudquery.sdk.scheduler import TableResolver
 from plugin.client import Client
 from plugin.oapi import OAPILoader
 from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
-from square.api.invoices_api import InvoicesApi
-from square.http.api_response import ApiResponse
 
 invoices_columns = oapi_definition_to_columns(
     OAPILoader.get_definition("Invoice"),
@@ -36,15 +34,5 @@ class InvoicesResolver(TableResolver):
         self, client: Client, parent_resource: Resource
     ) -> Generator[Any, None, None]:
         loc_id = parent_resource.item["id"]
-        invoices: InvoicesApi = client.client.invoices
-        cursor = None
-        while True:
-            response: ApiResponse = invoices.list_invoices(
-                location_id=loc_id, cursor=cursor
-            )
-            if response.is_error():
-                raise Exception(response)
-            for invoice in response.body.get("invoices", []):
-                yield invoice
-            if response.cursor is None:
-                break
+        for invoice in client.client.invoices.list(location_id=loc_id):
+            yield invoice.model_dump(mode="json")
