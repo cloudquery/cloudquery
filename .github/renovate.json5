@@ -104,6 +104,14 @@
       matchPackageNames: ['elasticsearch'],
       allowedVersions: '8.6.0',
     },
+    {
+      matchPackageNames: ['neo4j'],
+      allowedVersions: '4.4',
+    },
+    {
+      matchPackageNames: ['mcr.microsoft.com/mssql/server'],
+      allowedVersions: '2019',
+    },
   ],
   ignorePaths: [
     'plugins/source/aws/**',

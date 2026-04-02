@@ -2,6 +2,7 @@ package images
 
 import (
 	"bytes"
+	"cmp"
 	"context"
 	"crypto/sha1"
 	"encoding/hex"
@@ -12,7 +13,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
-	"sort"
+	"slices"
 	"strings"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
@@ -177,11 +178,17 @@ func convertMarkdownReferences(ims map[listKey][]reference) ([]reference, error)
 		}
 	}
 
-	sort.Slice(posList, func(i, j int) bool {
-		if posList[i].at == posList[j].at {
-			return !posList[i].end
+	slices.SortFunc(posList, func(a, b pos) int {
+		if a.at == b.at {
+			if !a.end && b.end {
+				return -1
+			}
+			if a.end && !b.end {
+				return 1
+			}
+			return 0
 		}
-		return posList[i].at < posList[j].at
+		return cmp.Compare(a.at, b.at)
 	})
 
 	// check for overlaps
@@ -211,8 +218,8 @@ func replaceMarkdownImages(contents string, ims map[listKey][]reference) (string
 	}
 
 	// sort by start position, descending
-	sort.Slice(reps, func(i, j int) bool {
-		return reps[i].startPos > reps[j].startPos
+	slices.SortFunc(reps, func(a, b reference) int {
+		return cmp.Compare(b.startPos, a.startPos)
 	})
 
 	// replace in reverse order
@@ -412,14 +419,11 @@ func (f *imageFinder) Transform(node *ast.Document, reader text.Reader, pc parse
 
 	f.err = func() error {
 		refKeys := maps.Keys(refList)
-		sort.Slice(refKeys, func(i, j int) bool {
-			if refKeys[i].title == refKeys[j].title {
-				return refKeys[i].dest < refKeys[j].dest
+		slices.SortFunc(refKeys, func(a, b refKeyType) int {
+			if c := cmp.Compare(a.dest, b.dest); c != 0 {
+				return c
 			}
-			if refKeys[i].dest == refKeys[j].dest {
-				return refKeys[i].title < refKeys[j].title
-			}
-			return refKeys[i].dest < refKeys[j].dest && refKeys[i].title < refKeys[j].title
+			return cmp.Compare(a.title, b.title)
 		})
 
 		for _, refKey := range refKeys {
