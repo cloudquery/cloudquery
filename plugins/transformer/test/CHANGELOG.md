@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.35](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-test-v1.1.34...plugins-transformer-test-v1.1.35) (2026-04-03)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 8dfb902 ([#22368](https://github.com/cloudquery/cloudquery/issues/22368)) ([10faff2](https://github.com/cloudquery/cloudquery/commit/10faff23b1972ef5d1bdf32063db2aeecdca23f8))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.1 ([#22461](https://github.com/cloudquery/cloudquery/issues/22461)) ([86d7bb6](https://github.com/cloudquery/cloudquery/commit/86d7bb6510172cd6d7c6ce78a1a468339465c307))
+
 ## [1.1.34](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-test-v1.1.33...plugins-transformer-test-v1.1.34) (2026-03-27)
 
 
