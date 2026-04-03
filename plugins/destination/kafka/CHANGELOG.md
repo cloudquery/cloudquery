@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.7.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.7.5...plugins-destination-kafka-v5.7.6) (2026-04-03)
+
+
+### Bug Fixes
+
+* **deps:** Update confluentinc/cp-kafka Docker tag to v7.9.6 ([#22409](https://github.com/cloudquery/cloudquery/issues/22409)) ([fc7b4ce](https://github.com/cloudquery/cloudquery/commit/fc7b4ce9e5fbd3582abc70a0f545a87b061cc794))
+* **deps:** Update confluentinc/cp-kafka Docker tag to v8 ([#22444](https://github.com/cloudquery/cloudquery/issues/22444)) ([84b51bb](https://github.com/cloudquery/cloudquery/commit/84b51bb44521b0355a5caf018086581ba8353e2b))
+* **deps:** Update github.com/cloudquery/jsonschema digest to 8dfb902 ([#22368](https://github.com/cloudquery/cloudquery/issues/22368)) ([10faff2](https://github.com/cloudquery/cloudquery/commit/10faff23b1972ef5d1bdf32063db2aeecdca23f8))
+* **deps:** Update module github.com/cloudquery/codegen to v0.4.1 ([#22402](https://github.com/cloudquery/cloudquery/issues/22402)) ([c2c84bf](https://github.com/cloudquery/cloudquery/commit/c2c84bf779932b4ff556303a2378ddbbdd3bc4f3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.1 ([#22461](https://github.com/cloudquery/cloudquery/issues/22461)) ([86d7bb6](https://github.com/cloudquery/cloudquery/commit/86d7bb6510172cd6d7c6ce78a1a468339465c307))
+* **deps:** Update module github.com/IBM/sarama to v1.47.0 ([#22422](https://github.com/cloudquery/cloudquery/issues/22422)) ([d16ce6a](https://github.com/cloudquery/cloudquery/commit/d16ce6ac4694b03a6ce62b471f11f4a1791095bd))
+
 ## [5.7.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.7.4...plugins-destination-kafka-v5.7.5) (2026-03-27)
 
 
