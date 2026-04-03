@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.3.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v5.3.6...plugins-destination-mssql-v5.3.7) (2026-04-03)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 8dfb902 ([#22368](https://github.com/cloudquery/cloudquery/issues/22368)) ([10faff2](https://github.com/cloudquery/cloudquery/commit/10faff23b1972ef5d1bdf32063db2aeecdca23f8))
+* **deps:** Update module github.com/cloudquery/codegen to v0.4.1 ([#22402](https://github.com/cloudquery/cloudquery/issues/22402)) ([c2c84bf](https://github.com/cloudquery/cloudquery/commit/c2c84bf779932b4ff556303a2378ddbbdd3bc4f3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.1 ([#22461](https://github.com/cloudquery/cloudquery/issues/22461)) ([86d7bb6](https://github.com/cloudquery/cloudquery/commit/86d7bb6510172cd6d7c6ce78a1a468339465c307))
+* **deps:** Update module github.com/microsoft/go-mssqldb to v1.9.8 ([#22414](https://github.com/cloudquery/cloudquery/issues/22414)) ([79d41e0](https://github.com/cloudquery/cloudquery/commit/79d41e033ceb3de1d36f42d3ab94de7c8277e98b))
+
 ## [5.3.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v5.3.5...plugins-destination-mssql-v5.3.6) (2026-03-27)
 
 
