@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.6.19](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.18...plugins-transformer-basic-v2.6.19) (2026-04-03)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 8dfb902 ([#22368](https://github.com/cloudquery/cloudquery/issues/22368)) ([10faff2](https://github.com/cloudquery/cloudquery/commit/10faff23b1972ef5d1bdf32063db2aeecdca23f8))
+* **deps:** Update github.com/cloudquery/sjson digest to 1994cc3 ([#22369](https://github.com/cloudquery/cloudquery/issues/22369)) ([8a0fd1a](https://github.com/cloudquery/cloudquery/commit/8a0fd1a96d92dae91932dc6c54e7d4a0759c89c5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.1 ([#22461](https://github.com/cloudquery/cloudquery/issues/22461)) ([86d7bb6](https://github.com/cloudquery/cloudquery/commit/86d7bb6510172cd6d7c6ce78a1a468339465c307))
+
 ## [2.6.18](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.17...plugins-transformer-basic-v2.6.18) (2026-03-27)
 
 
