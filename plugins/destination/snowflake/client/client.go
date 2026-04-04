@@ -15,7 +15,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
 	"github.com/rs/zerolog"
 
-	_ "github.com/snowflakedb/gosnowflake" // "snowflake" database/sql driver.
+	_ "github.com/snowflakedb/gosnowflake/v2" // "snowflake" database/sql driver.
 )
 
 var errInvalidSpec = errors.New("invalid spec")
