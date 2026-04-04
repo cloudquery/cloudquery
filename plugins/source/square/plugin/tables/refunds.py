@@ -6,8 +6,6 @@ from cloudquery.sdk.scheduler import TableResolver
 from plugin.client import Client
 from plugin.oapi import OAPILoader
 from cloudquery.sdk.transformers.openapi import oapi_definition_to_columns
-from square.api.refunds_api import RefundsApi
-from square.http.api_response import ApiResponse
 
 refunds_columns = oapi_definition_to_columns(
     OAPILoader.get_definition("Refund"),
@@ -33,13 +31,5 @@ class RefundsResolver(TableResolver):
         super().__init__(table=table)
 
     def resolve(self, client: Client, parent_resource) -> Generator[Any, None, None]:
-        refunds: RefundsApi = client.client.refunds
-        cursor = None
-        while True:
-            response: ApiResponse = refunds.list_payment_refunds(cursor=cursor)
-            if response.is_error():
-                raise Exception(response)
-            for refund in response.body.get("refunds", []):
-                yield refund
-            if response.cursor is None:
-                break
+        for refund in client.client.refunds.list():
+            yield refund.model_dump(mode="json")
