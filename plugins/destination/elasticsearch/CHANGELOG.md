@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.0.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v4.0.0...plugins-destination-elasticsearch-v4.0.1) (2026-04-04)
+
+
+### Bug Fixes
+
+* **deps:** Update docker.elastic.co/elasticsearch/elasticsearch Docker tag to v9.3.2 ([#22416](https://github.com/cloudquery/cloudquery/issues/22416)) ([dad963f](https://github.com/cloudquery/cloudquery/commit/dad963f3fcb519bf46fde99e8b3f6b455183d30d))
+* **deps:** Update github.com/cloudquery/jsonschema digest to 8dfb902 ([#22368](https://github.com/cloudquery/cloudquery/issues/22368)) ([10faff2](https://github.com/cloudquery/cloudquery/commit/10faff23b1972ef5d1bdf32063db2aeecdca23f8))
+* **deps:** Update module github.com/cenkalti/backoff/v4 to v5 ([#22448](https://github.com/cloudquery/cloudquery/issues/22448)) ([f753c1f](https://github.com/cloudquery/cloudquery/commit/f753c1f5ed53ff8a575d051b892ec520f3ae7110))
+* **deps:** Update module github.com/cloudquery/codegen to v0.4.1 ([#22402](https://github.com/cloudquery/cloudquery/issues/22402)) ([c2c84bf](https://github.com/cloudquery/cloudquery/commit/c2c84bf779932b4ff556303a2378ddbbdd3bc4f3))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.1 ([#22461](https://github.com/cloudquery/cloudquery/issues/22461)) ([86d7bb6](https://github.com/cloudquery/cloudquery/commit/86d7bb6510172cd6d7c6ce78a1a468339465c307))
+
 ## [4.0.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v3.6.4...plugins-destination-elasticsearch-v4.0.0) (2026-03-27)
 
 
