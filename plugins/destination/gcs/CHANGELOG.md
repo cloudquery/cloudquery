@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.5.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.5.7...plugins-destination-gcs-v5.5.8) (2026-04-04)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/go-jose/go-jose/v4 to v4.1.4 [SECURITY] ([#22467](https://github.com/cloudquery/cloudquery/issues/22467)) ([5ea6f26](https://github.com/cloudquery/cloudquery/commit/5ea6f265d1d6de393e04bf44b29dd80bf2bbd7ed))
+* **deps:** Update module google.golang.org/api to v0.273.0 ([#22477](https://github.com/cloudquery/cloudquery/issues/22477)) ([8fd4bea](https://github.com/cloudquery/cloudquery/commit/8fd4bea8af4f8ab1dd6aa978f456483c4722987a))
+
 ## [5.5.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.5.6...plugins-destination-gcs-v5.5.7) (2026-04-03)
 
 
