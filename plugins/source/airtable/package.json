@@ -1,6 +1,6 @@
 {
   "name": "@cloudquery/cq-source-airtable",
-  "version": "2.3.9",
+  "version": "2.3.10",
   "description": "A CloudQuery source plugin to sync data from Airtable",
   "keywords": [
     "nodejs",
@@ -49,7 +49,7 @@
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^10.0.1",
     "@tsconfig/node22": "^22.0.0",
-"@types/yargs": "^17.0.24",
+    "@types/yargs": "^17.0.24",
     "ava": "^7.0.0",
     "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.0.0",
