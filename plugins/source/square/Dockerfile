@@ -1,21 +1,18 @@
-# Start from a base image
 FROM python:3.11-slim
 
-# (Optional) Set a working directory
+COPY --from=ghcr.io/astral-sh/uv:0.11.2 /uv /uvx /bin/
+
 WORKDIR /app
 
-# Copy requirements.txt and install the Python dependencies
-COPY requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-dev --no-install-project
 
-# Copy the rest of the code
 COPY plugin plugin
 COPY main.py .
+RUN uv sync --frozen --no-dev
 
-# (Optional) Expose any ports your app uses
 EXPOSE 7777
 
-ENTRYPOINT ["python3", "main.py"]
+ENTRYPOINT ["uv", "run", "python3", "main.py"]
 
-# Specify the command to run when the container starts
 CMD ["serve", "--address", "[::]:7777"]

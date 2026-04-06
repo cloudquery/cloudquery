@@ -21,12 +21,10 @@ import type { Logger } from 'winston';
 import type { APIField, APITable, APIBase, APIFieldFormula } from './airtable.js';
 import { APIFieldType } from './airtable.js';
 
-/* eslint-disable import/no-named-as-default-member */
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(customParseFormat);
 dayjs.extend(localizedFormat);
-/* eslint-enable import/no-named-as-default-member */
 
 const timeout = {
   request: 10_000,

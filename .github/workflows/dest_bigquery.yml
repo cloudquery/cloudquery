@@ -39,7 +39,7 @@ jobs:
         uses: 'google-github-actions/setup-gcloud@aa5489c8933f4cc7a4f7d45035b3b1440c9c10db' # v3.0.1
       - name: Set up Go 1.x
         id: setup-go
-        uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
         with:
           go-version-file: plugins/destination/bigquery/go.mod
           cache: false
@@ -54,7 +54,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@1e7e51e771db61008b38414a730f564565cf7c20 # v9
         with:
-          version: v2.10.1
+          version: v2.11.4
           working-directory: plugins/destination/bigquery
           args: '--config ../../.golangci.yml'
       - name: gen
@@ -89,7 +89,7 @@ jobs:
 
       - name: Set up Go 1.x
         id: setup-go
-        uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
         with:
           go-version-file: plugins/destination/bigquery/go.mod
           cache: false

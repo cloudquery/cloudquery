@@ -1,16 +1,16 @@
 current_dir=$(shell basename $(CURDIR))
 
 test:
-	pytest .
+	uv run pytest .
 
 build-docker:
 	docker build -t square:latest .
 
 fmt:
-	black . --exclude=cloudquery
+	uv run black . --extend-exclude=cloudquery
 
 fmt-check:
-	black --check . --exclude=cloudquery
+	uv run black --check . --extend-exclude=cloudquery
 
 gen-docs: build-docker
 	@command -v cloudquery >/dev/null 2>&1 || { \
