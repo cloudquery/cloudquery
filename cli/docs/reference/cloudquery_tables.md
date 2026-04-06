@@ -54,3 +54,8 @@ cloudquery tables ./directory --filter spec
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 
+
+## See Also
+
+- [Source Integrations](/cli/integrations/sources) - Configure which tables to sync
+- [Integration Concepts](/cli/core-concepts/integrations) - How source integrations define tables

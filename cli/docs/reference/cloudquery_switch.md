@@ -46,3 +46,8 @@ cloudquery switch my-team
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 
+
+## See Also
+
+- [Managing Versions](/cli/advanced/managing-versions) - Understand integration versioning
+- [Source Integrations](/cli/integrations/sources) - Configure source integration versions

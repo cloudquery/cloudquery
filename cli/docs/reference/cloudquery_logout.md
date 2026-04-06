@@ -37,3 +37,8 @@ cloudquery logout [flags]
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 
+
+## See Also
+
+- [Generate API Key](/cli/managing-cloudquery/deployments/generate-api-key) - Manage API keys for authentication
+- [Security](/cli/managing-cloudquery/security) - CloudQuery security best practices

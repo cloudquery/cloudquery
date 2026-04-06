@@ -55,3 +55,8 @@ cloudquery login --team my-team
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 
+
+## See Also
+
+- [Generate API Key](/cli/managing-cloudquery/deployments/generate-api-key) - Create API keys for headless authentication
+- [Getting Started](/cli/getting-started) - Install and run your first sync

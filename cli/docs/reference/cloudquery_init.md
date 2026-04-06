@@ -9,6 +9,26 @@ Generate a configuration file for a sync
 
 Generate a configuration file for a sync
 
+### Modes
+
+The `init` command operates in one of three modes depending on your authentication state and flags:
+
+**AI-assisted mode** (default when logged in)
+
+Activates when you are logged in to a team (`cloudquery login`) and don't specify `--source` or `--destination`. Launches an interactive AI chat session that walks you through the setup process — selecting integrations, generating YAML configuration files, testing connections, and giving you some example queries.
+
+Type `exit` or `quit` to end the conversation. Use `--resume-conversation` to continue a previous session instead of starting a new one.
+
+**Basic interactive mode**
+
+Activates when you pass `--disable-ai`, or as a fallback if the AI assistant is unavailable. Presents a searchable picker to select source and destination integrations, then generates a configuration file from their default templates.
+
+**Non-interactive mode**
+
+Activates when both `--source` and `--destination` are specified. Generates the configuration file directly without prompts.
+
+Authentication via `cloudquery login` is required for AI-assisted and basic interactive modes.
+
 ```
 cloudquery init [flags]
 ```
@@ -58,3 +78,8 @@ cloudquery init --yes
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 
+
+## See Also
+
+- [Getting Started](/cli/getting-started) - Full quickstart guide using the init command
+- [Configuration Guide](/cli/core-concepts/configuration) - Understand the generated configuration files

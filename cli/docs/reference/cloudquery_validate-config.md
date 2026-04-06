@@ -47,3 +47,8 @@ cloudquery validate-config ./directory ./aws.yml ./pg.yml
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 
+
+## See Also
+
+- [Configuration Guide](/cli/core-concepts/configuration) - Configuration format and options
+- [Environment Variables](/cli/managing-cloudquery/environment-variables) - Variable substitution in configuration files

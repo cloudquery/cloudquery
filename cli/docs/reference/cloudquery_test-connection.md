@@ -47,3 +47,9 @@ cloudquery test-connection ./directory ./aws.yml ./pg.yml
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 
+
+## See Also
+
+- [Source Integrations](/cli/integrations/sources) - Configure source connections
+- [Destination Integrations](/cli/integrations/destinations) - Configure destination connections
+- [Troubleshooting](/cli/getting-support/troubleshooting) - Debug connection issues
