@@ -21,6 +21,6 @@
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/transformer.go:85: | reverseTransform | 51.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/transformer.go:159: | reverseTransformer | 76.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/write.go:14: | WriteTableBatch | 84.4% |
-| github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/write.go:96: | Write | 60.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/write.go:93: | Write | 60.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/main.go:17: | main | 0.0% |
 | total: | (statements) | 56.4% |
