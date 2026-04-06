@@ -1,24 +1,28 @@
-FROM node:24-slim as builder
+FROM node:24-slim AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
+RUN corepack enable
 
-RUN npm ci
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+
+RUN pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN npm run build
+RUN pnpm run build
 
 FROM node:24-slim AS final
 
 WORKDIR /app
 
+RUN corepack enable
+
 COPY --from=builder ./app/dist ./dist
 
-COPY package*.json ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 
-RUN npm ci --omit=dev
+RUN pnpm install --frozen-lockfile --prod
 
 EXPOSE 7777
 

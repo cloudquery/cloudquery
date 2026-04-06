@@ -5,9 +5,9 @@
 .release-please-manifest.json
 **/CHANGELOG.md
 **/go.mod.tpl
-plugins/source/airtable/package-lock.json
+**/pnpm-lock.yaml
 **/coverage.md
-**/requirements.txt‎
+**/uv.lock
 plugins/source/*/docs/tables/*.md
 plugins/source/**/mocks/*.go
 plugins/source/**/spec/schema.json

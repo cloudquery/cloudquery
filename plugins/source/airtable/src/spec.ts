@@ -1,4 +1,4 @@
-import { default as Ajv } from 'ajv';
+import Ajv from 'ajv';
 import camelcaseKeys from 'camelcase-keys';
 
 const spec = {

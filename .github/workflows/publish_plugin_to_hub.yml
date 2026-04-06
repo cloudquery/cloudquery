@@ -113,7 +113,7 @@ jobs:
       - name: Set up Go 1.x
         if: needs.prepare.outputs.ui_dir_arg != ''
         id: setup-go
-        uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
         with:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
           cache: false
@@ -131,7 +131,7 @@ jobs:
         if: needs.prepare.outputs.ui_dir_arg != ''
         uses: cloudquery/setup-cloudquery@4a3af61f7d8c362d8d152a4a17053ed2aaa7180d # v4
         with:
-          version: v6.35.4
+          version: v6.35.5
 
       - name: Build
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -164,7 +164,7 @@ jobs:
 
       - name: Upload build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
@@ -184,7 +184,7 @@ jobs:
 
       - name: Download build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
@@ -235,7 +235,7 @@ jobs:
 
       - # Required for the package command to work
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4
 
       - name: Build package
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -256,7 +256,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@4a3af61f7d8c362d8d152a4a17053ed2aaa7180d # v4
         with:
-          version: v6.35.4
+          version: v6.35.5
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -266,7 +266,7 @@ jobs:
           cloudquery plugin publish --finalize ${{ needs.prepare.outputs.ui_dir_arg }}
 
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
+        uses: ravsamhq/notify-slack-action@d0190712a54cd89d2e57a5847f06a78de127711a
         if: always()
         with:
           status: ${{ job.status }}
@@ -291,7 +291,7 @@ jobs:
 
       - name: Download build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
@@ -346,7 +346,7 @@ jobs:
 
       - # Required for the package command to work
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4
 
       - name: Run package command
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -357,7 +357,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@4a3af61f7d8c362d8d152a4a17053ed2aaa7180d # v4
         with:
-          version: v6.35.4
+          version: v6.35.5
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -367,7 +367,7 @@ jobs:
           cloudquery plugin publish --finalize ${{ needs.prepare.outputs.ui_dir_arg }}
 
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
+        uses: ravsamhq/notify-slack-action@d0190712a54cd89d2e57a5847f06a78de127711a
         if: always()
         with:
           status: ${{ job.status }}
@@ -392,7 +392,7 @@ jobs:
 
       - name: Download build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
@@ -441,7 +441,7 @@ jobs:
 
       - # Required for the package command to work
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4
 
       - name: Run package command
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -452,7 +452,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@4a3af61f7d8c362d8d152a4a17053ed2aaa7180d # v4
         with:
-          version: v6.35.4
+          version: v6.35.5
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -462,7 +462,7 @@ jobs:
           cloudquery plugin publish --finalize ${{ needs.prepare.outputs.ui_dir_arg }}
 
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
+        uses: ravsamhq/notify-slack-action@d0190712a54cd89d2e57a5847f06a78de127711a
         if: always()
         with:
           status: ${{ job.status }}
@@ -489,14 +489,14 @@ jobs:
 
       - name: Download build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
 
       - name: Set up Go 1.x
         id: setup-go
-        uses: actions/setup-go@4b73464bb391d4059bd26b0524d20df3927bd417 # v6
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
         with:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
           cache: false
@@ -556,7 +556,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@4a3af61f7d8c362d8d152a4a17053ed2aaa7180d # v4
         with:
-          version: v6.35.4
+          version: v6.35.5
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -571,7 +571,7 @@ jobs:
           git tag ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }} && git push origin ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }}
 
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@02b169fd81108a34dbb029df4a41dd27ad680290
+        uses: ravsamhq/notify-slack-action@d0190712a54cd89d2e57a5847f06a78de127711a
         if: always()
         with:
           status: ${{ job.status }}

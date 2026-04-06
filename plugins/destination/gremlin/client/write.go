@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
-	"github.com/cenkalti/backoff/v4"
+	"github.com/cenkalti/backoff/v5"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )
@@ -77,20 +77,17 @@ func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs mes
 		}
 	}
 
-	bo := backoff.WithContext(
-		backoff.WithMaxRetries(backoff.NewExponentialBackOff(), uint64(c.spec.MaxRetries)),
-		ctx,
-	)
-	return backoff.Retry(func() error {
+	_, retryErr := backoff.Retry(ctx, func() (any, error) {
 		err = <-g.Iterate()
 		if err == nil {
-			return nil
+			return nil, nil
 		}
 		if !strings.Contains(err.Error(), "ConcurrentModificationException") {
-			return backoff.Permanent(fmt.Errorf("Iterate: %w", err))
+			return nil, backoff.Permanent(fmt.Errorf("Iterate: %w", err))
 		}
-		return err
-	}, bo)
+		return nil, err
+	}, backoff.WithBackOff(backoff.NewExponentialBackOff()), backoff.WithMaxTries(uint(c.spec.MaxRetries)))
+	return retryErr
 }
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {

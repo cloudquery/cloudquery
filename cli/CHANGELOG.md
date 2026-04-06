@@ -5,6 +5,25 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.35.5](https://github.com/cloudquery/cloudquery/compare/cli-v6.35.4...cli-v6.35.5) (2026-04-03)
+
+
+### Bug Fixes
+
+* block positions ([aca5cd8](https://github.com/cloudquery/cloudquery/commit/aca5cd8b6ea9983ea31fa6a4920bc02d8389f6cf))
+* **deps:** Update github.com/cloudquery/godebouncer digest to 46b2aff ([#22367](https://github.com/cloudquery/cloudquery/issues/22367)) ([dc6ce1f](https://github.com/cloudquery/cloudquery/commit/dc6ce1f3fdb69ea4c019a01dd643f0c468bcfa1b))
+* **deps:** Update github.com/cloudquery/jsonschema digest to 8dfb902 ([#22368](https://github.com/cloudquery/cloudquery/issues/22368)) ([10faff2](https://github.com/cloudquery/cloudquery/commit/10faff23b1972ef5d1bdf32063db2aeecdca23f8))
+* **deps:** Update module github.com/cenkalti/backoff/v4 to v5 ([#22448](https://github.com/cloudquery/cloudquery/issues/22448)) ([f753c1f](https://github.com/cloudquery/cloudquery/commit/f753c1f5ed53ff8a575d051b892ec520f3ae7110))
+* **deps:** Update module github.com/cloudquery/codegen to v0.4.1 ([#22402](https://github.com/cloudquery/cloudquery/issues/22402)) ([c2c84bf](https://github.com/cloudquery/cloudquery/commit/c2c84bf779932b4ff556303a2378ddbbdd3bc4f3))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.14 ([#22460](https://github.com/cloudquery/cloudquery/issues/22460)) ([b91e5f1](https://github.com/cloudquery/cloudquery/commit/b91e5f176e9ac4d981b790a9fc53b7b9278eaa09))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.1 ([#22461](https://github.com/cloudquery/cloudquery/issues/22461)) ([86d7bb6](https://github.com/cloudquery/cloudquery/commit/86d7bb6510172cd6d7c6ce78a1a468339465c307))
+* **deps:** Update module github.com/fatih/color to v1.19.0 ([#22420](https://github.com/cloudquery/cloudquery/issues/22420)) ([463c72b](https://github.com/cloudquery/cloudquery/commit/463c72be34447a1063295effba5df1e435eb6035))
+* **deps:** Update module github.com/getsentry/sentry-go to v0.44.1 ([#22421](https://github.com/cloudquery/cloudquery/issues/22421)) ([07f96df](https://github.com/cloudquery/cloudquery/commit/07f96dffc257cf9dee2d200d36a41b3240c9b38b))
+* **deps:** Update module github.com/yuin/goldmark to v1.8.1 ([#22424](https://github.com/cloudquery/cloudquery/issues/22424)) ([aca5cd8](https://github.com/cloudquery/cloudquery/commit/aca5cd8b6ea9983ea31fa6a4920bc02d8389f6cf))
+* **deps:** Update opentelemetry-collector monorepo ([#22425](https://github.com/cloudquery/cloudquery/issues/22425)) ([66ee4b8](https://github.com/cloudquery/cloudquery/commit/66ee4b8e45f880e7bc6a488178a43f033c0e8fec))
+* **deps:** Update opentelemetry-go monorepo to v0.18.0 ([#22426](https://github.com/cloudquery/cloudquery/issues/22426)) ([7e29047](https://github.com/cloudquery/cloudquery/commit/7e290477da7888d6be946b99882032aa22742eae))
+* **deps:** Update ubuntu Docker tag to v24 ([#22441](https://github.com/cloudquery/cloudquery/issues/22441)) ([846c48c](https://github.com/cloudquery/cloudquery/commit/846c48c3fdcad4488df31cb16b6a3da86478b296))
+
 ## [6.35.4](https://github.com/cloudquery/cloudquery/compare/cli-v6.35.3...cli-v6.35.4) (2026-03-27)
 
 

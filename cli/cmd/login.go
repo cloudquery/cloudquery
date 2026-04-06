@@ -15,7 +15,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/cenkalti/backoff/v4"
+	"github.com/cenkalti/backoff/v5"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
@@ -79,18 +79,19 @@ func waitForServer(ctx context.Context, url string) error {
 		return err
 	}
 
-	return backoff.Retry(func() error {
+	_, retryErr := backoff.Retry(ctx, func() (any, error) {
 		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		defer resp.Body.Close()
 		_, _ = io.Copy(io.Discard, resp.Body)
 		if resp.StatusCode == http.StatusOK {
-			return nil
+			return nil, nil
 		}
-		return fmt.Errorf("failed to connect to local server. error code: %d", resp.StatusCode)
-	}, backoff.WithContext(backoff.NewConstantBackOff(100*time.Millisecond), ctx))
+		return nil, fmt.Errorf("failed to connect to local server. error code: %d", resp.StatusCode)
+	}, backoff.WithBackOff(backoff.NewConstantBackOff(100*time.Millisecond)))
+	return retryErr
 }
 
 func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
