@@ -43,3 +43,8 @@ Find more information at:
 * [cloudquery test-connection](/cli/cli-reference/cloudquery_test-connection)	 - Test plugin connections to sources and/or destinations
 * [cloudquery validate-config](/cli/cli-reference/cloudquery_validate-config)	 - Validate config
 
+
+## See Also
+
+- [Getting Started](/cli/getting-started) - Install and run your first sync
+- [Configuration Guide](/cli/core-concepts/configuration) - Configure source and destination integrations

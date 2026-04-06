@@ -9,6 +9,61 @@ Sync resources from configured source plugins to destinations
 
 Sync resources from configured source plugins to destinations
 
+### Flag Details
+
+#### --summary-location
+
+When set, a JSON summary of each sync is appended to the specified file after the sync completes. The file uses JSONL format (one JSON object per line). When syncing to multiple destinations, a separate entry is written for each destination.
+
+Example usage:
+
+```bash
+cloudquery sync config.yml --summary-location summary.jsonl
+```
+
+The summary contains the following fields:
+
+| Field                    | Type     | Description                                                       |
+| ------------------------ | -------- | ----------------------------------------------------------------- |
+| `cli_version`            | string   | CloudQuery CLI version                                            |
+| `sync_id`                | string   | Unique sync identifier (from `--invocation-id` or auto-generated) |
+| `sync_time`              | string   | Sync start time (RFC 3339)                                        |
+| `sync_duration_ms`       | number   | Sync duration in milliseconds                                     |
+| `resources`              | number   | Total resources synced                                            |
+| `source_name`            | string   | Source integration name                                           |
+| `source_path`            | string   | Source integration path                                           |
+| `source_version`         | string   | Source integration version                                        |
+| `source_errors`          | number   | Errors from the source integration                                |
+| `source_warnings`        | number   | Warnings from the source integration                              |
+| `source_tables`          | string[] | Tables synced from source                                         |
+| `destination_name`       | string   | Destination integration name                                      |
+| `destination_path`       | string   | Destination integration path                                      |
+| `destination_version`    | string   | Destination integration version                                   |
+| `destination_errors`     | number   | Errors from the destination integration                           |
+| `destination_warnings`   | number   | Warnings from the destination integration                         |
+| `sync_group_id`          | string   | Rendered sync group ID (if configured)                            |
+| `shard_num`              | number   | Shard number (if using `--shard`)                                 |
+| `shard_total`            | number   | Total shards (if using `--shard`)                                 |
+| `resources_per_table`    | object   | Resource count per table                                          |
+| `errors_per_table`       | object   | Error count per table                                             |
+| `durations_per_table_ms` | object   | Duration per table in milliseconds                                |
+
+#### --invocation-id
+
+A UUID that uniquely identifies a sync invocation. If not provided, a random UUID is automatically generated.
+
+This flag serves three purposes:
+
+1. **OpenTelemetry correlation**: The UUID is attached to all logs and traces, allowing you to correlate CLI activity with integration activity in your [monitoring setup](/cli/managing-cloudquery/monitoring/overview).
+2. **Sync summary**: The UUID is stored as the `sync_id` field in the [sync summary](#--summary-location).
+3. **`sync_group_id` template**: When a destination's [`sync_group_id`](/cli/integrations/destinations#sync_group_id) uses the `{{SYNC_ID}}` placeholder, it is replaced with this UUID at runtime.
+
+Example: using a fixed invocation ID for repeatable tracing:
+
+```bash
+cloudquery sync config.yml --invocation-id 550e8400-e29b-41d4-a716-446655440000
+```
+
 ```
 cloudquery sync [files or directories] [flags]
 ```
@@ -56,3 +111,9 @@ cloudquery sync spec.yml --shard 1/4
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 
+
+## See Also
+
+- [Syncs](/cli/core-concepts/syncs) - Understand full and incremental sync modes
+- [Configuration Guide](/cli/core-concepts/configuration) - Set up sync configurations
+- [Performance Tuning](/cli/advanced/performance-tuning) - Optimize sync performance

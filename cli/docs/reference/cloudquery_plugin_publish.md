@@ -51,3 +51,8 @@ cloudquery plugin publish
 
 * [cloudquery plugin](/cli/cli-reference/cloudquery_plugin)	 - Plugin commands
 
+
+## See Also
+
+- [Publishing an Integration](/cli/integrations/creating-new-integration/publishing) - Full publishing guide
+- [Creating a New Integration](/cli/integrations/creating-new-integration) - Build an integration first

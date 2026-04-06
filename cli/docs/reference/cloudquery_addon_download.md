@@ -52,3 +52,8 @@ cloudquery addon download cloudquery/transformation/aws-compliance-premium@v1.9.
 
 * [cloudquery addon](/cli/cli-reference/cloudquery_addon)	 - Addon commands
 
+
+## See Also
+
+- [Transformations](/cli/core-concepts/transformations) - Available transformations and policies
+- [Dashboards & Visualizations](/cli/core-concepts/dashboards) - Grafana dashboards from the hub
