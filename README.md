@@ -14,7 +14,7 @@
 brew install cloudquery/tap/cloudquery
 ```
 
-Check out the [quickstart guide](https://www.cloudquery.io/docs/quickstart/) for install guides for Linux and Windows and for step-by-step instructions on completing your first sync with CloudQuery.
+Check out the [quickstart guide](https://www.cloudquery.io/docs/cli/getting-started) for install guides for Linux and Windows and for step-by-step instructions on completing your first sync with CloudQuery.
 
 ## **Why CloudQuery?**
 
@@ -37,7 +37,7 @@ Check out the [quickstart guide](https://www.cloudquery.io/docs/quickstart/) for
 
 - Homepage: [https://www.cloudquery.io](https://www.cloudquery.io)
 - Documentation: [https://www.cloudquery.io/docs/](https://www.cloudquery.io/docs)
-- Integrations: [https://www.cloudquery.io/hub](https://www.cloudquery.io/hub)
+- Integrations: [https://www.cloudquery.io/hub/plugins/source](https://www.cloudquery.io/hub/plugins/source)
 - Plugin SDK: [https://github.com/cloudquery/plugin-sdk](https://github.com/cloudquery/plugin-sdk)
 
 ## License
