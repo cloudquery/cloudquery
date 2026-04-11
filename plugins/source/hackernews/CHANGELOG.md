@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.9.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.9.6...plugins-source-hackernews-v3.9.7) (2026-04-11)
+
+
+### Bug Fixes
+
+* **deps:** Update module go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploghttp to v0.19.0 [SECURITY] ([#22495](https://github.com/cloudquery/cloudquery/issues/22495)) ([c0a38fd](https://github.com/cloudquery/cloudquery/commit/c0a38fdaddfedba15ff33805985321273f5c7a48))
+* **deps:** Update module go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp to v1.43.0 [SECURITY] ([#22496](https://github.com/cloudquery/cloudquery/issues/22496)) ([1cf6439](https://github.com/cloudquery/cloudquery/commit/1cf6439317babce658328a996e995a7fc4e6644b))
+* **deps:** Update module go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp to v1.43.0 [SECURITY] ([#22497](https://github.com/cloudquery/cloudquery/issues/22497)) ([122ba44](https://github.com/cloudquery/cloudquery/commit/122ba442592fbb0437217eeee9203284ce0a8017))
+
 ## [3.9.6](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.9.5...plugins-source-hackernews-v3.9.6) (2026-04-02)
 
 
