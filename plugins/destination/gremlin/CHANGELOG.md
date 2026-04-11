@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.8.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.8.1...plugins-destination-gremlin-v2.8.2) (2026-04-11)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22473](https://github.com/cloudquery/cloudquery/issues/22473)) ([8d1340d](https://github.com/cloudquery/cloudquery/commit/8d1340d5b47e6d5703735fe83db2a4f64e237ccd))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.32.14 ([#22521](https://github.com/cloudquery/cloudquery/issues/22521)) ([21cb00b](https://github.com/cloudquery/cloudquery/commit/21cb00bfa5217ff876c6af45c2ee3149e5ba1dbe))
+* **deps:** Update module go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploghttp to v0.19.0 [SECURITY] ([#22495](https://github.com/cloudquery/cloudquery/issues/22495)) ([c0a38fd](https://github.com/cloudquery/cloudquery/commit/c0a38fdaddfedba15ff33805985321273f5c7a48))
+* **deps:** Update module go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp to v1.43.0 [SECURITY] ([#22496](https://github.com/cloudquery/cloudquery/issues/22496)) ([1cf6439](https://github.com/cloudquery/cloudquery/commit/1cf6439317babce658328a996e995a7fc4e6644b))
+* **deps:** Update module go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp to v1.43.0 [SECURITY] ([#22497](https://github.com/cloudquery/cloudquery/issues/22497)) ([122ba44](https://github.com/cloudquery/cloudquery/commit/122ba442592fbb0437217eeee9203284ce0a8017))
+
 ## [2.8.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.8.0...plugins-destination-gremlin-v2.8.1) (2026-04-03)
 
 
