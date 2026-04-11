@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.5.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.5.7...plugins-destination-gcs-v5.5.8) (2026-04-11)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/go-jose/go-jose/v4 to v4.1.4 [SECURITY] ([#22467](https://github.com/cloudquery/cloudquery/issues/22467)) ([5ea6f26](https://github.com/cloudquery/cloudquery/commit/5ea6f265d1d6de393e04bf44b29dd80bf2bbd7ed))
+* **deps:** Update module go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploghttp to v0.19.0 [SECURITY] ([#22495](https://github.com/cloudquery/cloudquery/issues/22495)) ([c0a38fd](https://github.com/cloudquery/cloudquery/commit/c0a38fdaddfedba15ff33805985321273f5c7a48))
+* **deps:** Update module go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp to v1.43.0 [SECURITY] ([#22496](https://github.com/cloudquery/cloudquery/issues/22496)) ([1cf6439](https://github.com/cloudquery/cloudquery/commit/1cf6439317babce658328a996e995a7fc4e6644b))
+* **deps:** Update module go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp to v1.43.0 [SECURITY] ([#22497](https://github.com/cloudquery/cloudquery/issues/22497)) ([122ba44](https://github.com/cloudquery/cloudquery/commit/122ba442592fbb0437217eeee9203284ce0a8017))
+* **deps:** Update module google.golang.org/api to v0.273.0 ([#22477](https://github.com/cloudquery/cloudquery/issues/22477)) ([8fd4bea](https://github.com/cloudquery/cloudquery/commit/8fd4bea8af4f8ab1dd6aa978f456483c4722987a))
+* **deps:** Update module google.golang.org/api to v0.274.0 ([#22525](https://github.com/cloudquery/cloudquery/issues/22525)) ([b6d8afa](https://github.com/cloudquery/cloudquery/commit/b6d8afa0b89c3a7a1fb5edf1db7fe7e093fe919d))
+
 ## [5.5.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.5.6...plugins-destination-gcs-v5.5.7) (2026-04-03)
 
 
