@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.6...plugins-destination-snowflake-v5.2.7) (2026-04-11)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream to v1.7.8 [SECURITY] ([#22493](https://github.com/cloudquery/cloudquery/issues/22493)) ([bfc0e61](https://github.com/cloudquery/cloudquery/commit/bfc0e610bcff5857b609495ba24c6674ffbba34f))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/service/s3 to v1.97.3 [SECURITY] ([#22494](https://github.com/cloudquery/cloudquery/issues/22494)) ([605bf84](https://github.com/cloudquery/cloudquery/commit/605bf84dff9bf7fbcc5d19a93a9aca7426c86e2b))
+* **deps:** Update module github.com/snowflakedb/gosnowflake to v2 ([#22439](https://github.com/cloudquery/cloudquery/issues/22439)) ([5417c8e](https://github.com/cloudquery/cloudquery/commit/5417c8e00bfbc188c795075775e89e818ecb7c88))
+* **deps:** Update module go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploghttp to v0.19.0 [SECURITY] ([#22495](https://github.com/cloudquery/cloudquery/issues/22495)) ([c0a38fd](https://github.com/cloudquery/cloudquery/commit/c0a38fdaddfedba15ff33805985321273f5c7a48))
+* **deps:** Update module go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp to v1.43.0 [SECURITY] ([#22496](https://github.com/cloudquery/cloudquery/issues/22496)) ([1cf6439](https://github.com/cloudquery/cloudquery/commit/1cf6439317babce658328a996e995a7fc4e6644b))
+* **deps:** Update module go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp to v1.43.0 [SECURITY] ([#22497](https://github.com/cloudquery/cloudquery/issues/22497)) ([122ba44](https://github.com/cloudquery/cloudquery/commit/122ba442592fbb0437217eeee9203284ce0a8017))
+
 ## [5.2.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.5...plugins-destination-snowflake-v5.2.6) (2026-04-03)
 
 
