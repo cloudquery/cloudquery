@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.3.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.9...plugins-source-airtable-v2.3.10) (2026-04-11)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency ava to v7 ([#22434](https://github.com/cloudquery/cloudquery/issues/22434)) ([e218ad6](https://github.com/cloudquery/cloudquery/commit/e218ad62b4e1e4d7d0adbda7f0653423d14c5a3e))
+* **deps:** Update dependency eslint to v10 ([#22445](https://github.com/cloudquery/cloudquery/issues/22445)) ([39a1bdb](https://github.com/cloudquery/cloudquery/commit/39a1bdbdad23e38b1c47172fb76bf850bda3245f))
+* **deps:** Update dependency typescript to v6 ([#22435](https://github.com/cloudquery/cloudquery/issues/22435)) ([0e9b831](https://github.com/cloudquery/cloudquery/commit/0e9b831e0eb270bc5fa225b1458d5b2c7c17166d))
+* **deps:** Update eslint packages (major) ([#22437](https://github.com/cloudquery/cloudquery/issues/22437)) ([adbfa44](https://github.com/cloudquery/cloudquery/commit/adbfa44bf045436a321041e5d46051865d0c5851))
+
 ## [2.3.9](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.8...plugins-source-airtable-v2.3.9) (2026-04-01)
 
 
