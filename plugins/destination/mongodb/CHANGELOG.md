@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v3.0.2...plugins-destination-mongodb-v3.0.3) (2026-04-11)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22474](https://github.com/cloudquery/cloudquery/issues/22474)) ([edab21c](https://github.com/cloudquery/cloudquery/commit/edab21c694ab603b530765cac016b5ca01ba6d34))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22518](https://github.com/cloudquery/cloudquery/issues/22518)) ([4c835e4](https://github.com/cloudquery/cloudquery/commit/4c835e44eef3d0850a642670390b20fa149b5f99))
+* **deps:** Update module go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploghttp to v0.19.0 [SECURITY] ([#22495](https://github.com/cloudquery/cloudquery/issues/22495)) ([c0a38fd](https://github.com/cloudquery/cloudquery/commit/c0a38fdaddfedba15ff33805985321273f5c7a48))
+* **deps:** Update module go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp to v1.43.0 [SECURITY] ([#22496](https://github.com/cloudquery/cloudquery/issues/22496)) ([1cf6439](https://github.com/cloudquery/cloudquery/commit/1cf6439317babce658328a996e995a7fc4e6644b))
+* **deps:** Update module go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp to v1.43.0 [SECURITY] ([#22497](https://github.com/cloudquery/cloudquery/issues/22497)) ([122ba44](https://github.com/cloudquery/cloudquery/commit/122ba442592fbb0437217eeee9203284ce0a8017))
+
 ## [3.0.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v3.0.1...plugins-destination-mongodb-v3.0.2) (2026-04-03)
 
 
