@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.35.6](https://github.com/cloudquery/cloudquery/compare/cli-v6.35.5...cli-v6.35.6) (2026-04-15)
+
+
+### Bug Fixes
+
+* **deps:** Update module go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploghttp to v0.19.0 [SECURITY] ([#22490](https://github.com/cloudquery/cloudquery/issues/22490)) ([3bcdbde](https://github.com/cloudquery/cloudquery/commit/3bcdbde5d6720d2affb44618f63d2815d3fc3c89))
+* Preserve custom doc sections across generated reference updates ([#22486](https://github.com/cloudquery/cloudquery/issues/22486)) ([046f37e](https://github.com/cloudquery/cloudquery/commit/046f37ed30cda3d3058fc45a51fbdcade1670036))
+
 ## [6.35.5](https://github.com/cloudquery/cloudquery/compare/cli-v6.35.4...cli-v6.35.5) (2026-04-03)
 
 
