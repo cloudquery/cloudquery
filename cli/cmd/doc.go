@@ -11,19 +11,21 @@ import (
 	"github.com/spf13/cobra/doc"
 )
 
-// headingReplacer demotes cobra/doc's H2 command headings and H3 sub-headings
-// to H1 and H2 respectively, so each page has a proper H1.
+// headingReplacer demotes cobra/doc's heading levels by one so each page has
+// a proper H1. cobra/doc generates:
 //
-// cobra/doc generates:
+//	## <command>          (should be H1 — the page title)
+//	### Synopsis          (should be H2)
+//	### Options           (should be H2)
+//	### SEE ALSO          (should be H2)
+//	#### <flag-detail>    (should be H3)
 //
-//	## <command>   (should be H1 — the page title)
-//	### Synopsis   (should be H2)
-//	### Options    (should be H2)
-//	### SEE ALSO   (should be H2)
-//
-// We apply ### → ## first (a simple string replace), then promote the first
-// remaining ## to # so that only the command-name heading becomes H1.
-var headingReplacer = strings.NewReplacer("\n### ", "\n## ")
+// We demote deeper levels first (#### → ###, then ### → ##), then promote the
+// first remaining ## to # so that only the command-name heading becomes H1.
+var headingReplacer = strings.NewReplacer(
+	"\n#### ", "\n### ",
+	"\n### ", "\n## ",
+)
 
 const (
 	docShort = "Generate CLI documentation markdown files"
