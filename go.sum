@@ -42,8 +42,8 @@ github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1 h1:q763qf9huN11kDQavWs
 github.com/chzyer/test v0.0.0-20180213035817-a1ea475d72b1/go.mod h1:Q3SI9o4m/ZMnBNeIyt5eFwwo7qiLfzFZmjNmxjkiQlU=
 github.com/cloudquery/cloudquery-api-go v1.14.9 h1:Za6Kr5LhIRx0iQExH4hAZnPEuFTUe3MOjip/gMQqCjI=
 github.com/cloudquery/cloudquery-api-go v1.14.9/go.mod h1:vcEX3PUxr492xuvg0vwV7wGFxBuRUOV6IeDhyyPtA4E=
-github.com/cloudquery/cloudquery/cli/v6 v6.35.5 h1:hDpZtjgSKGs6wLJrN2HA6Vkp4QR8BfbW3bGIckMfWs4=
-github.com/cloudquery/cloudquery/cli/v6 v6.35.5/go.mod h1:K1qLB76us4tVe+x2K+PKuaK5XH4jkQhu26vQyS37RbI=
+github.com/cloudquery/cloudquery/cli/v6 v6.35.6 h1:yAKz4kKJhF8448ic2dCxZsTUYR2sSapwcUhA7/00hok=
+github.com/cloudquery/cloudquery/cli/v6 v6.35.6/go.mod h1:t0Xhm30+0BHhR1dVwE8XYxyxbAiLkrZOdqvBvUz1gzE=
 github.com/cloudquery/codegen v0.4.1 h1:c9D18N925tUvnDeGHIl3JWKj37TyII9daHufkf8hU+Y=
 github.com/cloudquery/codegen v0.4.1/go.mod h1:QWIOD6R1aCa+YM+th+9Qt9lZw+ztdJR9JDEMLWyazwM=
 github.com/cloudquery/plugin-pb-go v1.27.14 h1:GoF7eE1DF52yrYF/CDM5brgpHKZK9srkg4Y7sAOY+Vg=
