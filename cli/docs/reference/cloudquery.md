@@ -29,7 +29,7 @@ Find more information at:
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-## SEE ALSO
+## See Also
 
 * [cloudquery addon](/cli/cli-reference/cloudquery_addon)	 - Addon commands
 * [cloudquery init](/cli/cli-reference/cloudquery_init)	 - Generate a configuration file for a sync
@@ -42,9 +42,6 @@ Find more information at:
 * [cloudquery tables](/cli/cli-reference/cloudquery_tables)	 - Generate documentation for all supported tables of source plugins specified in the spec(s)
 * [cloudquery test-connection](/cli/cli-reference/cloudquery_test-connection)	 - Test plugin connections to sources and/or destinations
 * [cloudquery validate-config](/cli/cli-reference/cloudquery_validate-config)	 - Validate config
-
-
-## See Also
 
 - [Getting Started](/cli/getting-started) - Install and run your first sync
 - [Configuration Guide](/cli/core-concepts/configuration) - Configure source and destination integrations

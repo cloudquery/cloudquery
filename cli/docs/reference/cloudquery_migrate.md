@@ -44,12 +44,9 @@ cloudquery migrate ./directory ./aws.yml ./pg.yml
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-## SEE ALSO
+## See Also
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
-
-
-## See Also
 
 - [Schema Migrations](/cli/managing-cloudquery/migrations) - How CloudQuery handles schema changes
 - [Destination Integrations](/cli/integrations/destinations) - Configure migration modes

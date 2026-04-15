@@ -45,12 +45,9 @@ cloudquery addon publish /path/to/manifest.json v1.0.0
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-## SEE ALSO
+## See Also
 
 * [cloudquery addon](/cli/cli-reference/cloudquery_addon)	 - Addon commands
-
-
-## See Also
 
 - [Publishing an Addon](/cli/advanced/publishing-an-addon-to-the-hub) - Full addon publishing guide
 - [Transformations](/cli/core-concepts/transformations) - Official transformations and policies

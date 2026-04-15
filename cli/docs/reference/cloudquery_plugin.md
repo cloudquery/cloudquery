@@ -25,14 +25,11 @@ Plugin commands
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-## SEE ALSO
+## See Also
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 * [cloudquery plugin install](/cli/cli-reference/cloudquery_plugin_install)	 - Install required plugin images from your configuration
 * [cloudquery plugin publish](/cli/cli-reference/cloudquery_plugin_publish)	 - Publish to CloudQuery Hub.
-
-
-## See Also
 
 - [Integration Concepts](/cli/core-concepts/integrations) - How integrations work
 - [Managing Versions](/cli/advanced/managing-versions) - Integration versioning

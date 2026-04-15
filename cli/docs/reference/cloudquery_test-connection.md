@@ -43,12 +43,9 @@ cloudquery test-connection ./directory ./aws.yml ./pg.yml
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-## SEE ALSO
+## See Also
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
-
-
-## See Also
 
 - [Source Integrations](/cli/integrations/sources) - Configure source connections
 - [Destination Integrations](/cli/integrations/destinations) - Configure destination connections

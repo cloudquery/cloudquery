@@ -50,12 +50,9 @@ cloudquery tables ./directory --filter spec
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-## SEE ALSO
+## See Also
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
-
-
-## See Also
 
 - [Source Integrations](/cli/integrations/sources) - Configure which tables to sync
 - [Integration Concepts](/cli/core-concepts/integrations) - How source integrations define tables

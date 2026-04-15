@@ -107,12 +107,9 @@ cloudquery sync spec.yml --shard 1/4
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-## SEE ALSO
+## See Also
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
-
-
-## See Also
 
 - [Syncs](/cli/core-concepts/syncs) - Understand full and incremental sync modes
 - [Configuration Guide](/cli/core-concepts/configuration) - Set up sync configurations

@@ -43,12 +43,9 @@ cloudquery validate-config ./directory ./aws.yml ./pg.yml
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-## SEE ALSO
+## See Also
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
-
-
-## See Also
 
 - [Configuration Guide](/cli/core-concepts/configuration) - Configuration format and options
 - [Environment Variables](/cli/managing-cloudquery/environment-variables) - Variable substitution in configuration files

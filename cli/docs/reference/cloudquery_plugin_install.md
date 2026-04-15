@@ -43,12 +43,9 @@ cloudquery plugin install ./directory ./aws.yml ./pg.yml
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-## SEE ALSO
+## See Also
 
 * [cloudquery plugin](/cli/cli-reference/cloudquery_plugin)	 - Plugin commands
-
-
-## See Also
 
 - [Managing Versions](/cli/advanced/managing-versions) - Understand version management
 - [Source Integrations](/cli/integrations/sources) - Available source integrations

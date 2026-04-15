@@ -74,12 +74,9 @@ cloudquery init --yes
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-## SEE ALSO
+## See Also
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
-
-
-## See Also
 
 - [Getting Started](/cli/getting-started) - Full quickstart guide using the init command
 - [Configuration Guide](/cli/core-concepts/configuration) - Understand the generated configuration files
