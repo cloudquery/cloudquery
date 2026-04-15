@@ -11,6 +11,20 @@ import (
 	"github.com/spf13/cobra/doc"
 )
 
+// headingReplacer demotes cobra/doc's H2 command headings and H3 sub-headings
+// to H1 and H2 respectively, so each page has a proper H1.
+//
+// cobra/doc generates:
+//
+//	## <command>   (should be H1 — the page title)
+//	### Synopsis   (should be H2)
+//	### Options    (should be H2)
+//	### SEE ALSO   (should be H2)
+//
+// We apply ### → ## first (a simple string replace), then promote the first
+// remaining ## to # so that only the command-name heading becomes H1.
+var headingReplacer = strings.NewReplacer("\n### ", "\n## ")
+
 const (
 	docShort = "Generate CLI documentation markdown files"
 )
@@ -111,10 +125,40 @@ func newCmdDoc() *cobra.Command {
 			if err := doc.GenMarkdownTreeCustom(cmd.Parent(), args[0], filePrepender, linkHandler); err != nil {
 				return err
 			}
+			if err := fixHeadingLevels(args[0]); err != nil {
+				return err
+			}
 			return appendSeeAlsoSections(args[0])
 		},
 	}
 	return cmd
+}
+
+// fixHeadingLevels corrects the heading hierarchy in all generated markdown files.
+// cobra/doc emits ## for the command name and ### for sub-sections; this promotes
+// them to # and ## so every page has a proper H1.
+func fixHeadingLevels(dir string) error {
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return fmt.Errorf("reading dir %s: %w", dir, err)
+	}
+	for _, e := range entries {
+		if e.IsDir() || !strings.HasSuffix(e.Name(), ".md") {
+			continue
+		}
+		fpath := filepath.Join(dir, e.Name())
+		data, err := os.ReadFile(fpath)
+		if err != nil {
+			return fmt.Errorf("reading %s: %w", fpath, err)
+		}
+		// Demote ### → ## first, then promote the first ## → # (the command heading).
+		fixed := headingReplacer.Replace(string(data))
+		fixed = strings.Replace(fixed, "\n## ", "\n# ", 1)
+		if err := os.WriteFile(fpath, []byte(fixed), 0644); err != nil {
+			return fmt.Errorf("writing %s: %w", fpath, err)
+		}
+	}
+	return nil
 }
 
 // appendSeeAlsoSections appends the "## See Also" section to each generated file that has one defined.
