@@ -1,11 +1,11 @@
 ---
 title: "tables"
 ---
-## cloudquery tables
+# cloudquery tables
 
 Generate documentation for all supported tables of source plugins specified in the spec(s)
 
-### Synopsis
+## Synopsis
 
 Generate documentation for all supported tables of source plugins specified in the spec(s)
 
@@ -13,7 +13,7 @@ Generate documentation for all supported tables of source plugins specified in t
 cloudquery tables [files or directories] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 # Generate documentation for all supported tables of source plugins specified in the spec(s) 
@@ -27,7 +27,7 @@ cloudquery tables ./directory --filter spec
 
 ```
 
-### Options
+## Options
 
 ```
       --filter string       Filter tables. One of: all, spec (default "all")
@@ -36,7 +36,7 @@ cloudquery tables ./directory --filter spec
       --output-dir string   Base output directory for generated files (default "cq-docs")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
@@ -50,7 +50,7 @@ cloudquery tables ./directory --filter spec
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 

@@ -1,11 +1,11 @@
 ---
 title: "cloudquery"
 ---
-## cloudquery
+# cloudquery
 
 CloudQuery CLI
 
-### Synopsis
+## Synopsis
 
 CloudQuery CLI
 
@@ -14,7 +14,7 @@ High performance data integration at scale.
 Find more information at:
 	https://www.cloudquery.io
 
-### Options
+## Options
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
@@ -29,7 +29,7 @@ Find more information at:
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 * [cloudquery addon](/cli/cli-reference/cloudquery_addon)	 - Addon commands
 * [cloudquery init](/cli/cli-reference/cloudquery_init)	 - Generate a configuration file for a sync

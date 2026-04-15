@@ -1,11 +1,11 @@
 ---
 title: "validate-config"
 ---
-## cloudquery validate-config
+# cloudquery validate-config
 
 Validate config
 
-### Synopsis
+## Synopsis
 
 Validate configuration without requiring any credentials or connections. This will not validate the tables specified in the tables list. This validation is stricter than the validation done during `sync`, but if it passes this validation it will pass the sync validation.
 
@@ -13,7 +13,7 @@ Validate configuration without requiring any credentials or connections. This wi
 cloudquery validate-config [files or directories] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 # Validate configs
@@ -23,13 +23,13 @@ cloudquery validate-config ./directory ./aws.yml ./pg.yml
 
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for validate-config
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
@@ -43,7 +43,7 @@ cloudquery validate-config ./directory ./aws.yml ./pg.yml
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 

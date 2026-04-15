@@ -1,11 +1,11 @@
 ---
 title: "logout"
 ---
-## cloudquery logout
+# cloudquery logout
 
 Log out of CloudQuery Hub.
 
-### Synopsis
+## Synopsis
 
 Log out of CloudQuery Hub.
 
@@ -13,13 +13,13 @@ Log out of CloudQuery Hub.
 cloudquery logout [flags]
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for logout
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
@@ -33,7 +33,7 @@ cloudquery logout [flags]
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 

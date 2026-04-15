@@ -1,11 +1,11 @@
 ---
 title: "addon_publish"
 ---
-## cloudquery addon publish
+# cloudquery addon publish
 
 Publish to CloudQuery Hub.
 
-### Synopsis
+## Synopsis
 
 Publish to CloudQuery Hub.
 
@@ -16,7 +16,7 @@ This publishes an addon version to CloudQuery Hub from a manifest file.
 cloudquery addon publish manifest.json v1.0.0 [--finalize] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 
@@ -24,14 +24,14 @@ cloudquery addon publish manifest.json v1.0.0 [--finalize] [flags]
 cloudquery addon publish /path/to/manifest.json v1.0.0
 ```
 
-### Options
+## Options
 
 ```
   -f, --finalize   Finalize the addon version after publishing. If false, the addon version will be marked as draft.
   -h, --help       help for publish
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
@@ -45,7 +45,7 @@ cloudquery addon publish /path/to/manifest.json v1.0.0
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 * [cloudquery addon](/cli/cli-reference/cloudquery_addon)	 - Addon commands
 

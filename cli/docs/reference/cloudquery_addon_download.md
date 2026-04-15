@@ -1,11 +1,11 @@
 ---
 title: "addon_download"
 ---
-## cloudquery addon download
+# cloudquery addon download
 
 Download addon from CloudQuery Hub.
 
-### Synopsis
+## Synopsis
 
 Download addon from CloudQuery Hub.
 
@@ -16,7 +16,7 @@ This downloads an addon from CloudQuery Hub to local disk.
 cloudquery addon download addon-team/addon-type/addon-name@v1.0.0 [-t directory] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 
@@ -27,14 +27,14 @@ cloudquery addon download <publisher>/<addon-type>/<addon-name>@v1.0.0
 cloudquery addon download cloudquery/transformation/aws-compliance-premium@v1.9.0
 ```
 
-### Options
+## Options
 
 ```
   -h, --help            help for download
   -t, --target string   Download to specified directory. Use - for stdout (default ".")
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
@@ -48,7 +48,7 @@ cloudquery addon download cloudquery/transformation/aws-compliance-premium@v1.9.
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 * [cloudquery addon](/cli/cli-reference/cloudquery_addon)	 - Addon commands
 

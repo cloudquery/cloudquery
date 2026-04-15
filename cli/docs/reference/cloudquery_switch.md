@@ -1,11 +1,11 @@
 ---
 title: "switch"
 ---
-## cloudquery switch
+# cloudquery switch
 
 Switches between teams.
 
-### Synopsis
+## Synopsis
 
 Switches between teams.
 
@@ -13,7 +13,7 @@ Switches between teams.
 cloudquery switch [team] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 
@@ -22,13 +22,13 @@ cloudquery switch my-team
 
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for switch
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
@@ -42,7 +42,7 @@ cloudquery switch my-team
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-### SEE ALSO
+## SEE ALSO
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 
