@@ -203,6 +203,14 @@ func NewCmdRoot() *cobra.Command {
 		newCmdAddonPublish(),
 	)
 
+	platformCmd := &cobra.Command{
+		Use:   "platform",
+		Short: "Manage CloudQuery Platform",
+	}
+	platformCmd.AddCommand(
+		newCmdPlatformOnboard(),
+	)
+
 	cmd.AddCommand(
 		NewCmdSync(),
 		NewCmdMigrate(),
@@ -216,6 +224,7 @@ func NewCmdRoot() *cobra.Command {
 		newCmdPluginInstall(true), // legacy
 		pluginCmd,
 		addonCmd,
+		platformCmd,
 		newCmdInit(),
 	)
 
