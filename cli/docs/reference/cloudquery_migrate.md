@@ -1,11 +1,11 @@
 ---
 title: "migrate"
 ---
-## cloudquery migrate
+# cloudquery migrate
 
 Update schema of your destinations based on the latest changes in sources from your configuration
 
-### Synopsis
+## Synopsis
 
 Update schema of your destinations based on the latest changes in sources from your configuration
 
@@ -13,7 +13,7 @@ Update schema of your destinations based on the latest changes in sources from y
 cloudquery migrate [files or directories] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 # Run migration for plugins specified in directory
@@ -23,14 +23,14 @@ cloudquery migrate ./directory ./aws.yml ./pg.yml
 
 ```
 
-### Options
+## Options
 
 ```
   -h, --help             help for migrate
       --license string   set offline license file
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
@@ -44,12 +44,9 @@ cloudquery migrate ./directory ./aws.yml ./pg.yml
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-### SEE ALSO
+## See Also
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
-
-
-## See Also
 
 - [Schema Migrations](/cli/managing-cloudquery/migrations) - How CloudQuery handles schema changes
 - [Destination Integrations](/cli/integrations/destinations) - Configure migration modes

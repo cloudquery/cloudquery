@@ -1,11 +1,11 @@
 ---
 title: "test-connection"
 ---
-## cloudquery test-connection
+# cloudquery test-connection
 
 Test plugin connections to sources and/or destinations
 
-### Synopsis
+## Synopsis
 
 Test plugin connections to sources and/or destinations
 
@@ -13,7 +13,7 @@ Test plugin connections to sources and/or destinations
 cloudquery test-connection [files or directories] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 # Test plugin connections to sources and/or destinations
@@ -23,13 +23,13 @@ cloudquery test-connection ./directory ./aws.yml ./pg.yml
 
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for test-connection
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
@@ -43,12 +43,9 @@ cloudquery test-connection ./directory ./aws.yml ./pg.yml
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-### SEE ALSO
+## See Also
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
-
-
-## See Also
 
 - [Source Integrations](/cli/integrations/sources) - Configure source connections
 - [Destination Integrations](/cli/integrations/destinations) - Configure destination connections

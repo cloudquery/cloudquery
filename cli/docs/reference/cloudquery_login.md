@@ -1,11 +1,11 @@
 ---
 title: "login"
 ---
-## cloudquery login
+# cloudquery login
 
 Login to CloudQuery Hub.
 
-### Synopsis
+## Synopsis
 
 Login to CloudQuery Hub.
 
@@ -18,7 +18,7 @@ Local plugins and different registries don't need login.
 cloudquery login [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 
@@ -30,14 +30,14 @@ cloudquery login --team my-team
 
 ```
 
-### Options
+## Options
 
 ```
   -h, --help          help for login
   -t, --team string   Team to login to. Specify the team name, e.g. 'my-team' (not the display name)
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
@@ -51,12 +51,9 @@ cloudquery login --team my-team
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-### SEE ALSO
+## See Also
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
-
-
-## See Also
 
 - [Generate API Key](/cli/managing-cloudquery/deployments/generate-api-key) - Create API keys for headless authentication
 - [Getting Started](/cli/getting-started) - Install and run your first sync

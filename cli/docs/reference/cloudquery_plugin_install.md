@@ -1,11 +1,11 @@
 ---
 title: "plugin_install"
 ---
-## cloudquery plugin install
+# cloudquery plugin install
 
 Install required plugin images from your configuration
 
-### Synopsis
+## Synopsis
 
 Install required plugin images from your configuration
 
@@ -13,7 +13,7 @@ Install required plugin images from your configuration
 cloudquery plugin install [files or directories] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 # Install required plugins specified in directory
@@ -23,13 +23,13 @@ cloudquery plugin install ./directory ./aws.yml ./pg.yml
 
 ```
 
-### Options
+## Options
 
 ```
   -h, --help   help for install
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
@@ -43,12 +43,9 @@ cloudquery plugin install ./directory ./aws.yml ./pg.yml
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-### SEE ALSO
+## See Also
 
 * [cloudquery plugin](/cli/cli-reference/cloudquery_plugin)	 - Plugin commands
-
-
-## See Also
 
 - [Managing Versions](/cli/advanced/managing-versions) - Understand version management
 - [Source Integrations](/cli/integrations/sources) - Available source integrations

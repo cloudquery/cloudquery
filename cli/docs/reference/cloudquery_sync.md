@@ -1,17 +1,17 @@
 ---
 title: "sync"
 ---
-## cloudquery sync
+# cloudquery sync
 
 Sync resources from configured source plugins to destinations
 
-### Synopsis
+## Synopsis
 
 Sync resources from configured source plugins to destinations
 
-### Flag Details
+## Flag Details
 
-#### --summary-location
+### --summary-location
 
 When set, a JSON summary of each sync is appended to the specified file after the sync completes. The file uses JSONL format (one JSON object per line). When syncing to multiple destinations, a separate entry is written for each destination.
 
@@ -48,7 +48,7 @@ The summary contains the following fields:
 | `errors_per_table`       | object   | Error count per table                                             |
 | `durations_per_table_ms` | object   | Duration per table in milliseconds                                |
 
-#### --invocation-id
+### --invocation-id
 
 A UUID that uniquely identifies a sync invocation. If not provided, a random UUID is automatically generated.
 
@@ -68,7 +68,7 @@ cloudquery sync config.yml --invocation-id 550e8400-e29b-41d4-a716-446655440000
 cloudquery sync [files or directories] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 # Sync resources from configuration in a directory
@@ -82,7 +82,7 @@ cloudquery sync spec.yml --shard 1/4
 
 ```
 
-### Options
+## Options
 
 ```
   -h, --help                             help for sync
@@ -93,7 +93,7 @@ cloudquery sync spec.yml --shard 1/4
       --tables-metrics-location string   Tables metrics file location. This feature is in Preview. Please provide feedback to help us improve it. Works with plugins released on 2024-07-10 or later.
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
@@ -107,12 +107,9 @@ cloudquery sync spec.yml --shard 1/4
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-### SEE ALSO
+## See Also
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
-
-
-## See Also
 
 - [Syncs](/cli/core-concepts/syncs) - Understand full and incremental sync modes
 - [Configuration Guide](/cli/core-concepts/configuration) - Set up sync configurations
