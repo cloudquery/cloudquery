@@ -1,17 +1,17 @@
 ---
 title: "addon"
 ---
-## cloudquery addon
+# cloudquery addon
 
 Addon commands
 
-### Options
+## Options
 
 ```
   -h, --help   help for addon
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
@@ -25,14 +25,11 @@ Addon commands
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-### SEE ALSO
+## See Also
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 * [cloudquery addon download](/cli/cli-reference/cloudquery_addon_download)	 - Download addon from CloudQuery Hub.
 * [cloudquery addon publish](/cli/cli-reference/cloudquery_addon_publish)	 - Publish to CloudQuery Hub.
-
-
-## See Also
 
 - [Transformations](/cli/core-concepts/transformations) - Official dbt and SQL transformations
 - [Dashboards & Visualizations](/cli/core-concepts/dashboards) - Grafana dashboards from the hub

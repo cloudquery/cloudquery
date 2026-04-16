@@ -1,15 +1,15 @@
 ---
 title: "init"
 ---
-## cloudquery init
+# cloudquery init
 
 Generate a configuration file for a sync
 
-### Synopsis
+## Synopsis
 
 Generate a configuration file for a sync
 
-### Modes
+## Modes
 
 The `init` command operates in one of three modes depending on your authentication state and flags:
 
@@ -33,7 +33,7 @@ Authentication via `cloudquery login` is required for AI-assisted and basic inte
 cloudquery init [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 # Display prompts to select source and destination plugins and generate a configuration file from them
@@ -48,7 +48,7 @@ cloudquery init --source aws
 cloudquery init --yes
 ```
 
-### Options
+## Options
 
 ```
       --destination string    Destination plugin name or path
@@ -60,7 +60,7 @@ cloudquery init --yes
       --yes                   Accept all defaults
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
@@ -74,12 +74,9 @@ cloudquery init --yes
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-### SEE ALSO
+## See Also
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
-
-
-## See Also
 
 - [Getting Started](/cli/getting-started) - Full quickstart guide using the init command
 - [Configuration Guide](/cli/core-concepts/configuration) - Understand the generated configuration files

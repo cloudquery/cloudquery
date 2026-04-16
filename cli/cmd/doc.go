@@ -11,6 +11,22 @@ import (
 	"github.com/spf13/cobra/doc"
 )
 
+// headingReplacer promotes cobra/doc's heading levels so each page has a
+// proper H1. cobra/doc generates:
+//
+//	## <command>          (should be H1 — the page title)
+//	### Synopsis          (should be H2)
+//	### Options           (should be H2)
+//	### SEE ALSO          (should be H2)
+//	#### <flag-detail>    (should be H3)
+//
+// We promote deeper levels first (#### → ###, then ### → ##), then promote the
+// first remaining ## to # so that only the command-name heading becomes H1.
+var headingReplacer = strings.NewReplacer(
+	"\n#### ", "\n### ",
+	"\n### ", "\n## ",
+)
+
 const (
 	docShort = "Generate CLI documentation markdown files"
 )
@@ -111,13 +127,51 @@ func newCmdDoc() *cobra.Command {
 			if err := doc.GenMarkdownTreeCustom(cmd.Parent(), args[0], filePrepender, linkHandler); err != nil {
 				return err
 			}
+			if err := fixHeadingLevels(args[0]); err != nil {
+				return err
+			}
 			return appendSeeAlsoSections(args[0])
 		},
 	}
 	return cmd
 }
 
-// appendSeeAlsoSections appends the "## See Also" section to each generated file that has one defined.
+// fixHeadingLevels corrects the heading hierarchy in all generated markdown files.
+// cobra/doc emits ## for the command name and ### for sub-sections; this promotes
+// them to # and ## so every page has a proper H1.
+func fixHeadingLevels(dir string) error {
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		return fmt.Errorf("reading dir %s: %w", dir, err)
+	}
+	for _, e := range entries {
+		if e.IsDir() || !strings.HasSuffix(e.Name(), ".md") {
+			continue
+		}
+		fpath := filepath.Join(dir, e.Name())
+		data, err := os.ReadFile(fpath)
+		if err != nil {
+			return fmt.Errorf("reading %s: %w", fpath, err)
+		}
+		// Promote #### → ### and ### → ## (via headingReplacer), then promote
+		// the first ## → # so the command name becomes the page's H1.
+		// Also normalize cobra's all-caps ## SEE ALSO to ## See Also for
+		// consistency with the custom links appended by appendSeeAlsoSections.
+		fixed := headingReplacer.Replace(string(data))
+		fixed = strings.Replace(fixed, "\n## ", "\n# ", 1)
+		fixed = strings.ReplaceAll(fixed, "\n## SEE ALSO\n", "\n## See Also\n")
+		if err := os.WriteFile(fpath, []byte(fixed), 0644); err != nil {
+			return fmt.Errorf("writing %s: %w", fpath, err)
+		}
+	}
+	return nil
+}
+
+// appendSeeAlsoSections appends custom links into the "## See Also" section of
+// each generated file that has entries defined. The cobra-generated markdown
+// already contains a "## See Also" heading (normalized by fixHeadingLevels), so
+// only the link lines are appended — not a new heading — to avoid a duplicate
+// H2 section on every page.
 func appendSeeAlsoSections(dir string) error {
 	for filename, content := range seeAlsoSections {
 		fpath := filepath.Join(dir, filename)
@@ -128,7 +182,11 @@ func appendSeeAlsoSections(dir string) error {
 			}
 			return fmt.Errorf("opening %s: %w", fpath, err)
 		}
-		_, writeErr := fmt.Fprintf(f, "\n%s", content)
+		// Strip the "## See Also\n\n" heading from the content: cobra/doc has
+		// already emitted a "## See Also" section (normalized by fixHeadingLevels)
+		// and we only want to append the link lines underneath it.
+		links := strings.TrimPrefix(content, "## See Also\n\n")
+		_, writeErr := fmt.Fprintf(f, "%s", links)
 		closeErr := f.Close()
 		if writeErr != nil {
 			return fmt.Errorf("writing to %s: %w", fpath, writeErr)

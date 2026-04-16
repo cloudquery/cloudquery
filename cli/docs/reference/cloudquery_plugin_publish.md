@@ -1,11 +1,11 @@
 ---
 title: "plugin_publish"
 ---
-## cloudquery plugin publish
+# cloudquery plugin publish
 
 Publish to CloudQuery Hub.
 
-### Synopsis
+## Synopsis
 
 Publish to CloudQuery Hub.
 
@@ -16,7 +16,7 @@ This publishes a plugin version to CloudQuery Hub from a local dist directory.
 cloudquery plugin publish [-D dist] [flags]
 ```
 
-### Examples
+## Examples
 
 ```
 
@@ -24,7 +24,7 @@ cloudquery plugin publish [-D dist] [flags]
 cloudquery plugin publish
 ```
 
-### Options
+## Options
 
 ```
   -D, --dist-dir string   Path to the dist directory (default "dist")
@@ -33,7 +33,7 @@ cloudquery plugin publish
   -U, --ui-dir string     Path to the built plugin UI directory
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
@@ -47,12 +47,9 @@ cloudquery plugin publish
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-### SEE ALSO
+## See Also
 
 * [cloudquery plugin](/cli/cli-reference/cloudquery_plugin)	 - Plugin commands
-
-
-## See Also
 
 - [Publishing an Integration](/cli/integrations/creating-new-integration/publishing) - Full publishing guide
 - [Creating a New Integration](/cli/integrations/creating-new-integration) - Build an integration first

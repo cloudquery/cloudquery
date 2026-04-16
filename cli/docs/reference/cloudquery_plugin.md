@@ -1,17 +1,17 @@
 ---
 title: "plugin"
 ---
-## cloudquery plugin
+# cloudquery plugin
 
 Plugin commands
 
-### Options
+## Options
 
 ```
   -h, --help   help for plugin
 ```
 
-### Options inherited from parent commands
+## Options inherited from parent commands
 
 ```
       --cq-dir string            directory to store cloudquery files, such as downloaded plugins (default ".cq")
@@ -25,14 +25,11 @@ Plugin commands
       --telemetry-level string   Telemetry level (none, errors, stats, all) (default "all")
 ```
 
-### SEE ALSO
+## See Also
 
 * [cloudquery](/cli/cli-reference/cloudquery)	 - CloudQuery CLI
 * [cloudquery plugin install](/cli/cli-reference/cloudquery_plugin_install)	 - Install required plugin images from your configuration
 * [cloudquery plugin publish](/cli/cli-reference/cloudquery_plugin_publish)	 - Publish to CloudQuery Hub.
-
-
-## See Also
 
 - [Integration Concepts](/cli/core-concepts/integrations) - How integrations work
 - [Managing Versions](/cli/advanced/managing-versions) - Integration versioning
