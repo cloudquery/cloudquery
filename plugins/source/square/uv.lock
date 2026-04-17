@@ -11,7 +11,7 @@ resolution-markers = [
 ]
 
 [options]
-exclude-newer = "2026-04-10T05:04:19.124664573Z"
+exclude-newer = "2026-04-10T06:42:24.706602333Z"
 exclude-newer-span = "P1W"
 
 [[package]]
