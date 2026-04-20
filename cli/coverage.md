@@ -13,10 +13,11 @@
 | github.com/cloudquery/cloudquery/cli/v6/cmd/analytics.go:64: | SendSyncMetrics | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/analytics.go:104: | Host | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/analytics.go:108: | Close | 0.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/doc.go:104: | newCmdDoc | 80.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/doc.go:121: | appendSeeAlsoSections | 64.3% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/doc.go:143: | linkHandler | 80.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/doc.go:154: | filePrepender | 100.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/doc.go:120: | newCmdDoc | 71.4% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/doc.go:142: | fixHeadingLevels | 75.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/doc.go:175: | appendSeeAlsoSections | 66.7% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/doc.go:201: | linkHandler | 80.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/doc.go:212: | filePrepender | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/errors.go:10: | handleSendError | 66.7% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/init.go:70: | newCmdInit | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/init.go:88: | normalizePluginPath | 83.3% |
@@ -369,4 +370,4 @@
 | github.com/cloudquery/cloudquery/cli/v6/internal/uuid/uuid.go:19: | Type | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/main.go:18: | executeRootCmdWithContext | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/main.go:47: | main | 0.0% |
-| total: | (statements) | 48.0% |
+| total: | (statements) | 48.1% |
