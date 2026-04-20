@@ -2,6 +2,7 @@ package xkcd
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 )
@@ -14,7 +15,6 @@ type Comic struct {
 	Link       string `json:"link"`
 	Year       string `json:"year"`
 	News       string `json:"news"`
-	SafeTitle  string `json:"safe_title"`
 	Transcript string `json:"transcript"`
 	Alt        string `json:"alt"`
 	Img        string `json:"img"`
@@ -35,13 +35,13 @@ func WithBaseURL(uri string) Option {
 	}
 }
 
-func WithHTTPClient(client *http.Client) Option {
+func WithHTTPClient(httpClient *http.Client) Option {
 	return func(c *Client) {
-		c.client = client
+		c.client = httpClient
 	}
 }
 
-func NewClient(opts ...Option) (*Client, error) {
+func New(opts ...Option) (*Client, error) {
 	c := &Client{
 		baseURL: defaultURL,
 		client:  http.DefaultClient,
@@ -58,22 +58,30 @@ func (c *Client) GetComic(num int) (*Comic, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	comic := &Comic{}
-	if err := json.NewDecoder(resp.Body).Decode(comic); err != nil {
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("unexpected status code %d for comic %d", resp.StatusCode, num)
+	}
+	var comic Comic
+	err = json.NewDecoder(resp.Body).Decode(&comic)
+	if err != nil {
 		return nil, err
 	}
-	return comic, nil
+	return &comic, nil
 }
 
-func (c *Client) GetLatestComic(num int) (*Comic, error) {
+func (c *Client) GetLatest() (*Comic, error) {
 	resp, err := c.client.Get(c.baseURL + "/info.0.json")
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	comic := &Comic{}
-	if err := json.NewDecoder(resp.Body).Decode(comic); err != nil {
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("unexpected status code %d for latest comic", resp.StatusCode)
+	}
+	var comic Comic
+	err = json.NewDecoder(resp.Body).Decode(&comic)
+	if err != nil {
 		return nil, err
 	}
-	return comic, nil
+	return &comic, nil
 }
