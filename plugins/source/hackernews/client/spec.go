@@ -38,3 +38,6 @@ func (s *Spec) Validate() error {
 	}
 	return nil
 }
+
+//go:embed schema.json
+var JSONSchema string
