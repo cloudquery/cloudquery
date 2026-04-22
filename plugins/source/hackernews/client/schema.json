@@ -8,6 +8,7 @@
         "item_concurrency": {
           "type": "integer",
           "minimum": 1,
+          "maximum": 1000,
           "description": "The number of items to fetch concurrently",
           "default": 100
         },
