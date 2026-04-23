@@ -2,13 +2,14 @@ package client
 
 import (
 	_ "embed"
+	"fmt"
 
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
 )
 
 type Spec struct {
 	// The number of items to fetch concurrently
-	ItemConcurrency int `json:"item_concurrency" jsonschema:"minimum=1,default=100"`
+	ItemConcurrency int `json:"item_concurrency" jsonschema:"minimum=1,maximum=1000,default=100"`
 	// RFC3339 formatted timestamp. Syncing will begin with posts after this date.
 	// Relative values like "3 days ago" are also supported.
 	// If not specified, the plugin will default to 24 hours ago.
@@ -31,8 +32,10 @@ func (s *Spec) SetDefaults() {
 	}
 }
 
-func (*Spec) Validate() error {
-	// validation for configtype.Time is done on unmarshalling
+func (s *Spec) Validate() error {
+	if s.ItemConcurrency > 1000 {
+		return fmt.Errorf("item_concurrency must be at most 1000, got %d", s.ItemConcurrency)
+	}
 	return nil
 }
 
