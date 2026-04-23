@@ -7,8 +7,8 @@
       "properties": {
         "item_concurrency": {
           "type": "integer",
-          "minimum": 1,
           "maximum": 1000,
+          "minimum": 1,
           "description": "The number of items to fetch concurrently",
           "default": 100
         },
