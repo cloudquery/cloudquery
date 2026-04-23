@@ -1,5 +1,13 @@
 # Changelog
 
+## [8.14.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.14.7...plugins-destination-postgresql-v8.14.8) (2026-04-23)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/jackc/pgx/v5 to v5.9.2 [SECURITY] ([#22684](https://github.com/cloudquery/cloudquery/issues/22684)) ([41577df](https://github.com/cloudquery/cloudquery/commit/41577df63749bad7e158ddd4be1f153310e53600))
+* **deps:** Update module google.golang.org/api to v0.275.0 ([#22590](https://github.com/cloudquery/cloudquery/issues/22590)) ([0e4cedc](https://github.com/cloudquery/cloudquery/commit/0e4cedc995e977a7dded30b2abeaf916c95abb90))
+
 ## [8.14.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.14.6...plugins-destination-postgresql-v8.14.7) (2026-04-15)
 
 
