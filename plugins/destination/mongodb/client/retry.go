@@ -7,27 +7,32 @@ import (
 	"time"
 
 	"github.com/cenkalti/backoff/v5"
+	"github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec"
 	"github.com/rs/zerolog"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
-const (
-	retryMaxTries       = 5
-	retryInitialBackoff = 500 * time.Millisecond
-	retryMaxBackoff     = 10 * time.Second
-	retryMaxElapsedTime = 30 * time.Second
-)
+// retryWrite runs op with exponential backoff on transient MongoDB errors. The
+// MongoDB Go driver retries retryable writes once; this adds an extra layer to
+// absorb longer bursts of connection instability (e.g. TCP broken pipe against
+// MongoDB Atlas private-link endpoints). See ENG-3281.
+//
+// collection is used purely for log context so operators can tell which table
+// is experiencing retries.
+func retryWrite(ctx context.Context, logger zerolog.Logger, cfg *spec.WriteRetryConfig, collection string, op func() error) error {
+	maxAttempts := cfg.GetMaxAttempts()
+	if maxAttempts <= 1 {
+		return op()
+	}
 
-// retryWrite runs op with exponential backoff on transient MongoDB network
-// errors. The MongoDB Go driver retries retryable writes once; this adds an
-// extra layer to absorb longer bursts of connection instability (e.g. TCP
-// broken pipe against MongoDB Atlas private-link endpoints).
-func retryWrite(ctx context.Context, logger zerolog.Logger, op func() error) error {
 	b := backoff.NewExponentialBackOff()
-	b.InitialInterval = retryInitialBackoff
-	b.MaxInterval = retryMaxBackoff
+	b.InitialInterval = cfg.GetInitialBackoff()
+	b.MaxInterval = cfg.GetMaxBackoff()
 
+	start := time.Now()
+	var attempts int
 	_, err := backoff.Retry(ctx, func() (struct{}, error) {
+		attempts++
 		if err := op(); err != nil {
 			if isRetryableWriteError(err) {
 				return struct{}{}, err
@@ -37,13 +42,36 @@ func retryWrite(ctx context.Context, logger zerolog.Logger, op func() error) err
 		return struct{}{}, nil
 	},
 		backoff.WithBackOff(b),
-		backoff.WithMaxTries(retryMaxTries),
-		backoff.WithMaxElapsedTime(retryMaxElapsedTime),
+		backoff.WithMaxTries(uint(maxAttempts)),
+		backoff.WithMaxElapsedTime(cfg.GetMaxElapsed()),
 		backoff.WithNotify(func(err error, next time.Duration) {
-			logger.Warn().Err(err).Dur("retry_after", next).Msg("retrying MongoDB write after transient error")
+			logger.Warn().
+				Err(err).
+				Str("collection", collection).
+				Int("attempt", attempts).
+				Int("max_attempts", maxAttempts).
+				Dur("retry_after", next).
+				Msg("retrying MongoDB write after transient error")
 		}),
 	)
-	return err
+
+	if err != nil {
+		logger.Error().
+			Err(err).
+			Str("collection", collection).
+			Int("attempts", attempts).
+			Dur("elapsed", time.Since(start)).
+			Msg("giving up on MongoDB write after retries")
+		return err
+	}
+	if attempts > 1 {
+		logger.Info().
+			Str("collection", collection).
+			Int("attempts", attempts).
+			Dur("elapsed", time.Since(start)).
+			Msg("MongoDB write succeeded after retries")
+	}
+	return nil
 }
 
 func isRetryableWriteError(err error) bool {

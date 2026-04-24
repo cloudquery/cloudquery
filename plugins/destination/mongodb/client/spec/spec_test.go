@@ -3,12 +3,19 @@ package spec
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/cloudquery/codegen/jsonschema"
+	"github.com/cloudquery/plugin-sdk/v4/configtype"
 	"github.com/stretchr/testify/require"
 )
 
 func TestSpec_Validate(t *testing.T) {
+	validRetry := &WriteRetryConfig{MaxAttempts: 3}
+	negativeMaxAttempts := &WriteRetryConfig{MaxAttempts: -1}
+	negativeInitial := configtype.NewDuration(-1 * time.Millisecond)
+	negativeBackoff := &WriteRetryConfig{InitialBackoff: &negativeInitial}
+
 	cases := []struct {
 		Give    Spec
 		WantErr bool
@@ -23,6 +30,9 @@ func TestSpec_Validate(t *testing.T) {
 		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", AWSCredentials: &Credentials{Default: true, LocalProfile: "test_profile"}}, WantErr: true},
 		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", AWSCredentials: &Credentials{Default: true, RoleSessionName: "test-session"}}, WantErr: true},
 		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", AWSCredentials: &Credentials{}}, WantErr: true},
+		{Give: Spec{ConnectionString: "test-connection-string", Database: "database", WriteRetry: validRetry}, WantErr: false},
+		{Give: Spec{ConnectionString: "test-connection-string", Database: "database", WriteRetry: negativeMaxAttempts}, WantErr: true},
+		{Give: Spec{ConnectionString: "test-connection-string", Database: "database", WriteRetry: negativeBackoff}, WantErr: true},
 	}
 	for i, tc := range cases {
 		tc := tc
@@ -112,6 +122,26 @@ func TestJSONSchema(t *testing.T) {
 			Name: "invalid spec with both valid local_profile and default in aws_credentials",
 			Spec: `{"connection_string": "abc", "database":"foo", "aws_credentials": {"default": true,"local_profile": "test_profile"}}`,
 			Err:  false,
+		},
+		{
+			Name: "spec with write_retry",
+			Spec: `{"connection_string": "abc", "database":"foo", "write_retry": {"max_attempts": 3, "initial_backoff": "1s", "max_backoff": "20s", "max_elapsed": "1m"}}`,
+			Err:  false,
+		},
+		{
+			Name: "spec with partial write_retry (defaults fill in)",
+			Spec: `{"connection_string": "abc", "database":"foo", "write_retry": {"max_attempts": 10}}`,
+			Err:  false,
+		},
+		{
+			Name: "spec with write_retry zero attempts",
+			Spec: `{"connection_string": "abc", "database":"foo", "write_retry": {"max_attempts": 0}}`,
+			Err:  true,
+		},
+		{
+			Name: "spec with write_retry unknown field",
+			Spec: `{"connection_string": "abc", "database":"foo", "write_retry": {"max_attempts": 3, "unknown": true}}`,
+			Err:  true,
 		},
 	})
 }
