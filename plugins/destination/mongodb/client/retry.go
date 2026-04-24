@@ -18,16 +18,16 @@ import (
 // MongoDB Atlas private-link endpoints). See ENG-3281.
 //
 // collection is used purely for log context so operators can tell which table
-// is experiencing retries.
+// is experiencing retries. cfg must already have defaults applied via
+// spec.Spec.SetDefaults().
 func retryWrite(ctx context.Context, logger zerolog.Logger, cfg *spec.WriteRetryConfig, collection string, op func() error) error {
-	maxAttempts := cfg.GetMaxAttempts()
-	if maxAttempts <= 1 {
+	if cfg.MaxAttempts <= 1 {
 		return op()
 	}
 
 	// retry-go does not support a MaxElapsedTime option directly, so bound the
 	// total retry budget by wrapping the context.
-	retryCtx, cancel := context.WithTimeout(ctx, cfg.GetMaxElapsed())
+	retryCtx, cancel := context.WithTimeout(ctx, cfg.MaxElapsed.Duration())
 	defer cancel()
 
 	start := time.Now()
@@ -35,9 +35,9 @@ func retryWrite(ctx context.Context, logger zerolog.Logger, cfg *spec.WriteRetry
 
 	err := retry.New(
 		retry.Context(retryCtx),
-		retry.Attempts(uint(maxAttempts)),
-		retry.Delay(cfg.GetInitialBackoff()),
-		retry.MaxDelay(cfg.GetMaxBackoff()),
+		retry.Attempts(uint(cfg.MaxAttempts)),
+		retry.Delay(cfg.InitialBackoff.Duration()),
+		retry.MaxDelay(cfg.MaxBackoff.Duration()),
 		retry.DelayType(retry.BackOffDelay),
 		retry.LastErrorOnly(true),
 		retry.RetryIf(isRetryableWriteError),
@@ -46,7 +46,7 @@ func retryWrite(ctx context.Context, logger zerolog.Logger, cfg *spec.WriteRetry
 				Err(err).
 				Str("collection", collection).
 				Uint("attempt", n+1).
-				Int("max_attempts", maxAttempts).
+				Int("max_attempts", cfg.MaxAttempts).
 				Msg("retrying MongoDB write after transient error")
 		}),
 	).Do(func() error {

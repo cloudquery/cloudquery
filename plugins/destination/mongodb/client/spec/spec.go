@@ -61,34 +61,6 @@ type WriteRetryConfig struct {
 	MaxElapsed *configtype.Duration `json:"max_elapsed,omitempty" jsonschema:"default=30s"`
 }
 
-func (r *WriteRetryConfig) GetMaxAttempts() int {
-	if r == nil || r.MaxAttempts <= 0 {
-		return defaultWriteRetryMaxAttempts
-	}
-	return r.MaxAttempts
-}
-
-func (r *WriteRetryConfig) GetInitialBackoff() time.Duration {
-	if r == nil || r.InitialBackoff == nil || r.InitialBackoff.Duration() <= 0 {
-		return defaultWriteRetryInitialBackoff
-	}
-	return r.InitialBackoff.Duration()
-}
-
-func (r *WriteRetryConfig) GetMaxBackoff() time.Duration {
-	if r == nil || r.MaxBackoff == nil || r.MaxBackoff.Duration() <= 0 {
-		return defaultWriteRetryMaxBackoff
-	}
-	return r.MaxBackoff.Duration()
-}
-
-func (r *WriteRetryConfig) GetMaxElapsed() time.Duration {
-	if r == nil || r.MaxElapsed == nil || r.MaxElapsed.Duration() <= 0 {
-		return defaultWriteRetryMaxElapsed
-	}
-	return r.MaxElapsed.Duration()
-}
-
 //go:embed schema.json
 var JSONSchema string
 
@@ -98,6 +70,28 @@ func (s *Spec) SetDefaults() {
 	}
 	if s.BatchSizeBytes == 0 {
 		s.BatchSizeBytes = defaultBatchSizeBytes
+	}
+	if s.WriteRetry == nil {
+		s.WriteRetry = &WriteRetryConfig{}
+	}
+	s.WriteRetry.SetDefaults()
+}
+
+func (r *WriteRetryConfig) SetDefaults() {
+	if r.MaxAttempts == 0 {
+		r.MaxAttempts = defaultWriteRetryMaxAttempts
+	}
+	if r.InitialBackoff == nil {
+		d := configtype.NewDuration(defaultWriteRetryInitialBackoff)
+		r.InitialBackoff = &d
+	}
+	if r.MaxBackoff == nil {
+		d := configtype.NewDuration(defaultWriteRetryMaxBackoff)
+		r.MaxBackoff = &d
+	}
+	if r.MaxElapsed == nil {
+		d := configtype.NewDuration(defaultWriteRetryMaxElapsed)
+		r.MaxElapsed = &d
 	}
 }
 
