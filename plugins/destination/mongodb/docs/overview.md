@@ -56,6 +56,30 @@ This is the (nested) spec used by the MongoDB destination Plugin.
 
   Optional parameters to enable usage of AWS IAM credentials
 
+- `write_retry` ([write_retry](#write_retry)) (optional)
+
+  Tunes the exponential-backoff retry applied around each write batch to absorb transient network errors (e.g. `write tcp ...: broken pipe`) that are not covered by the driver's single built-in retry. Omit to use the defaults.
+
+
+
+
+### write_retry
+
+- `max_attempts` (`integer`) (optional) (default: `5`)
+
+  Maximum number of write attempts per batch, including the initial attempt. Set to `1` to disable retries.
+
+- `initial_backoff` (`duration`) (optional) (default: `"500ms"`)
+
+  Initial backoff between retry attempts. Grows exponentially up to `max_backoff`.
+
+- `max_backoff` (`duration`) (optional) (default: `"10s"`)
+
+  Maximum backoff between retry attempts.
+
+- `max_elapsed` (`duration`) (optional) (default: `"30s"`)
+
+  Maximum total time to spend retrying a single write batch before giving up.
 
 
 
