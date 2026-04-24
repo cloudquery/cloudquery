@@ -108,15 +108,14 @@ func (c *Client) transformRecords(table *schema.Table, records []arrow.RecordBat
 }
 
 func (c *Client) appendTableBatch(ctx context.Context, table *schema.Table, documents []any) error {
-	tableName := table.Name
-	if _, err := c.client.Database(c.spec.Database).Collection(tableName).InsertMany(ctx, documents); err != nil {
+	collection := c.client.Database(c.spec.Database).Collection(table.Name)
+	return retryWrite(ctx, c.logger, func() error {
+		_, err := collection.InsertMany(ctx, documents)
 		return err
-	}
-	return nil
+	})
 }
 
 func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, documents []any) error {
-	tableName := table.Name
 	operations := make([]mongo.WriteModel, len(documents))
 	pks := table.PrimaryKeys()
 	for i, document := range documents {
@@ -134,11 +133,11 @@ func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, d
 		operation.SetUpdate(bson.M{"$set": update})
 		operations[i] = operation
 	}
-	if _, err := c.client.Database(c.spec.Database).Collection(tableName).BulkWrite(ctx, operations); err != nil {
+	collection := c.client.Database(c.spec.Database).Collection(table.Name)
+	return retryWrite(ctx, c.logger, func() error {
+		_, err := collection.BulkWrite(ctx, operations)
 		return err
-	}
-
-	return nil
+	})
 }
 
 func (c *Client) WriteTableBatch(ctx context.Context, tableName string, msgs message.WriteInserts) error {
