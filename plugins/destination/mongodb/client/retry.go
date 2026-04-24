@@ -20,6 +20,14 @@ import (
 // collection is used purely for log context so operators can tell which table
 // is experiencing retries. cfg must already have defaults applied via
 // spec.Spec.SetDefaults().
+//
+// Duplicate-write caveat: for tables without a primary key (InsertMany path),
+// a retry triggered by an ambiguous failure -- server processed the write but
+// response was lost -- can produce duplicate documents. The driver's built-in
+// single retry avoids this via a session txnNumber that the server dedupes on,
+// but that tuple is not exposed in the public API, so our app-level retries
+// cannot participate in it. Upsert-keyed tables (with primary keys, BulkWrite
+// path) are naturally idempotent and unaffected.
 func retryWrite(ctx context.Context, logger zerolog.Logger, cfg *spec.WriteRetryConfig, collection string, op func() error) error {
 	if cfg.MaxAttempts <= 1 {
 		return op()

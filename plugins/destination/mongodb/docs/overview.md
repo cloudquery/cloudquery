@@ -73,6 +73,10 @@ This is the (nested) spec used by the MongoDB destination Plugin.
 
   Maximum backoff between retry attempts. Initial backoff and jitter use the underlying retry library's defaults.
 
+:::callout{type="warning"}
+For tables with primary keys, writes are performed as upserts keyed on the primary key, so retries are idempotent. For tables **without** primary keys, writes use `InsertMany` and a retry triggered by an ambiguous failure (e.g. the server processed the write but the response was lost) can produce duplicate documents, since `_id` is server-generated and the retry has no way to dedupe against the previous attempt. If duplicates are unacceptable for your use case, either set `write_retry.max_attempts` to `1` or ensure all destination tables have primary keys.
+:::
+
 
 
 ### aws_credentials
