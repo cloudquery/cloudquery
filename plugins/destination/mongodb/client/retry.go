@@ -6,7 +6,7 @@ import (
 	"io"
 	"time"
 
-	"github.com/cenkalti/backoff/v5"
+	"github.com/avast/retry-go/v5"
 	"github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec"
 	"github.com/rs/zerolog"
 	"go.mongodb.org/mongo-driver/v2/mongo"
@@ -25,41 +25,40 @@ func retryWrite(ctx context.Context, logger zerolog.Logger, cfg *spec.WriteRetry
 		return op()
 	}
 
-	b := backoff.NewExponentialBackOff()
-	b.InitialInterval = cfg.GetInitialBackoff()
-	b.MaxInterval = cfg.GetMaxBackoff()
+	// retry-go does not support a MaxElapsedTime option directly, so bound the
+	// total retry budget by wrapping the context.
+	retryCtx, cancel := context.WithTimeout(ctx, cfg.GetMaxElapsed())
+	defer cancel()
 
 	start := time.Now()
-	var attempts int
-	_, err := backoff.Retry(ctx, func() (struct{}, error) {
-		attempts++
-		if err := op(); err != nil {
-			if isRetryableWriteError(err) {
-				return struct{}{}, err
-			}
-			return struct{}{}, backoff.Permanent(err)
-		}
-		return struct{}{}, nil
-	},
-		backoff.WithBackOff(b),
-		backoff.WithMaxTries(uint(maxAttempts)),
-		backoff.WithMaxElapsedTime(cfg.GetMaxElapsed()),
-		backoff.WithNotify(func(err error, next time.Duration) {
+	var attempts uint
+
+	err := retry.New(
+		retry.Context(retryCtx),
+		retry.Attempts(uint(maxAttempts)),
+		retry.Delay(cfg.GetInitialBackoff()),
+		retry.MaxDelay(cfg.GetMaxBackoff()),
+		retry.DelayType(retry.BackOffDelay),
+		retry.LastErrorOnly(true),
+		retry.RetryIf(isRetryableWriteError),
+		retry.OnRetry(func(n uint, err error) {
 			logger.Warn().
 				Err(err).
 				Str("collection", collection).
-				Int("attempt", attempts).
+				Uint("attempt", n+1).
 				Int("max_attempts", maxAttempts).
-				Dur("retry_after", next).
 				Msg("retrying MongoDB write after transient error")
 		}),
-	)
+	).Do(func() error {
+		attempts++
+		return op()
+	})
 
 	if err != nil {
 		logger.Error().
 			Err(err).
 			Str("collection", collection).
-			Int("attempts", attempts).
+			Uint("attempts", attempts).
 			Dur("elapsed", time.Since(start)).
 			Msg("giving up on MongoDB write after retries")
 		return err
@@ -67,7 +66,7 @@ func retryWrite(ctx context.Context, logger zerolog.Logger, cfg *spec.WriteRetry
 	if attempts > 1 {
 		logger.Info().
 			Str("collection", collection).
-			Int("attempts", attempts).
+			Uint("attempts", attempts).
 			Dur("elapsed", time.Since(start)).
 			Msg("MongoDB write succeeded after retries")
 	}
