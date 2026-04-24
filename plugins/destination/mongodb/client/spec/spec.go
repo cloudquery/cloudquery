@@ -12,10 +12,8 @@ const (
 	defaultBatchSize      = 1000
 	defaultBatchSizeBytes = 1024 * 1024 * 4
 
-	defaultWriteRetryMaxAttempts    = 5
-	defaultWriteRetryInitialBackoff = 500 * time.Millisecond
-	defaultWriteRetryMaxBackoff     = 10 * time.Second
-	defaultWriteRetryMaxElapsed     = 30 * time.Second
+	defaultWriteRetryMaxAttempts = 5
+	defaultWriteRetryMaxBackoff  = 10 * time.Second
 )
 
 type Spec struct {
@@ -42,8 +40,7 @@ type Spec struct {
 	// Configures exponential-backoff retries around each write batch to absorb
 	// transient MongoDB network errors (e.g. `write tcp ...: broken pipe`) that
 	// are not covered by the driver's single built-in retry. Omit to use the
-	// defaults (5 attempts, 500ms initial backoff, 10s max backoff, 30s max
-	// total elapsed time).
+	// defaults (5 attempts, 10s max backoff).
 	WriteRetry *WriteRetryConfig `json:"write_retry,omitempty"`
 }
 
@@ -51,14 +48,8 @@ type WriteRetryConfig struct {
 	// Maximum number of write attempts per batch, including the initial attempt. Set to 1 to disable retries.
 	MaxAttempts int `json:"max_attempts,omitempty" jsonschema:"minimum=1,default=5"`
 
-	// Initial backoff between retry attempts. Grows exponentially up to `max_backoff`.
-	InitialBackoff *configtype.Duration `json:"initial_backoff,omitempty" jsonschema:"default=500ms"`
-
 	// Maximum backoff between retry attempts.
 	MaxBackoff *configtype.Duration `json:"max_backoff,omitempty" jsonschema:"default=10s"`
-
-	// Maximum total time to spend retrying a single write batch before giving up.
-	MaxElapsed *configtype.Duration `json:"max_elapsed,omitempty" jsonschema:"default=30s"`
 }
 
 //go:embed schema.json
@@ -81,17 +72,9 @@ func (r *WriteRetryConfig) SetDefaults() {
 	if r.MaxAttempts == 0 {
 		r.MaxAttempts = defaultWriteRetryMaxAttempts
 	}
-	if r.InitialBackoff == nil {
-		d := configtype.NewDuration(defaultWriteRetryInitialBackoff)
-		r.InitialBackoff = &d
-	}
 	if r.MaxBackoff == nil {
 		d := configtype.NewDuration(defaultWriteRetryMaxBackoff)
 		r.MaxBackoff = &d
-	}
-	if r.MaxElapsed == nil {
-		d := configtype.NewDuration(defaultWriteRetryMaxElapsed)
-		r.MaxElapsed = &d
 	}
 }
 
@@ -115,14 +98,8 @@ func (s *Spec) Validate() error {
 		if s.WriteRetry.MaxAttempts < 0 {
 			return errors.New("`write_retry.max_attempts` must be >= 1")
 		}
-		if s.WriteRetry.InitialBackoff != nil && s.WriteRetry.InitialBackoff.Duration() < 0 {
-			return errors.New("`write_retry.initial_backoff` must be >= 0")
-		}
 		if s.WriteRetry.MaxBackoff != nil && s.WriteRetry.MaxBackoff.Duration() < 0 {
 			return errors.New("`write_retry.max_backoff` must be >= 0")
-		}
-		if s.WriteRetry.MaxElapsed != nil && s.WriteRetry.MaxElapsed.Duration() < 0 {
-			return errors.New("`write_retry.max_elapsed` must be >= 0")
 		}
 	}
 

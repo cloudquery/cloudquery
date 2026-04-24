@@ -69,17 +69,9 @@ This is the (nested) spec used by the MongoDB destination Plugin.
 
   Maximum number of write attempts per batch, including the initial attempt. Set to `1` to disable retries.
 
-- `initial_backoff` (`duration`) (optional) (default: `"500ms"`)
-
-  Initial backoff between retry attempts. Grows exponentially up to `max_backoff`.
-
 - `max_backoff` (`duration`) (optional) (default: `"10s"`)
 
-  Maximum backoff between retry attempts.
-
-- `max_elapsed` (`duration`) (optional) (default: `"30s"`)
-
-  Maximum total time to spend retrying a single write batch before giving up.
+  Maximum backoff between retry attempts. Initial backoff and jitter use the underlying retry library's defaults.
 
 
 

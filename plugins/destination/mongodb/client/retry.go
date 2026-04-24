@@ -25,20 +25,13 @@ func retryWrite(ctx context.Context, logger zerolog.Logger, cfg *spec.WriteRetry
 		return op()
 	}
 
-	// retry-go does not support a MaxElapsedTime option directly, so bound the
-	// total retry budget by wrapping the context.
-	retryCtx, cancel := context.WithTimeout(ctx, cfg.MaxElapsed.Duration())
-	defer cancel()
-
 	start := time.Now()
 	var attempts uint
 
 	err := retry.New(
-		retry.Context(retryCtx),
+		retry.Context(ctx),
 		retry.Attempts(uint(cfg.MaxAttempts)),
-		retry.Delay(cfg.InitialBackoff.Duration()),
 		retry.MaxDelay(cfg.MaxBackoff.Duration()),
-		retry.DelayType(retry.BackOffDelay),
 		retry.LastErrorOnly(true),
 		retry.RetryIf(isRetryableWriteError),
 		retry.OnRetry(func(n uint, err error) {
@@ -83,10 +76,12 @@ func isRetryableWriteError(err error) bool {
 	if errors.Is(err, io.EOF) || errors.Is(err, io.ErrUnexpectedEOF) {
 		return true
 	}
-	// The MongoDB server and driver attach the "RetryableWriteError" label to
-	// write errors that are safe to retry (e.g. InterruptedAtShutdown,
-	// NotWritablePrimary, PrimarySteppedDown). See
-	// https://www.mongodb.com/docs/manual/core/retryable-writes/ for the spec.
+	// The server/driver tag errors that are safe to retry with the
+	// "RetryableWriteError" label (e.g. InterruptedAtShutdown,
+	// NotWritablePrimary, PrimarySteppedDown, Atlas primary failovers). The
+	// driver itself retries at most once on these; if one reaches us it means
+	// the driver's single retry also failed and we should keep going. See
+	// https://www.mongodb.com/docs/manual/core/retryable-writes/.
 	var labeled mongo.LabeledError
 	if errors.As(err, &labeled) && labeled.HasErrorLabel("RetryableWriteError") {
 		return true

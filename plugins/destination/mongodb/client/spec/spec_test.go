@@ -13,8 +13,8 @@ import (
 func TestSpec_Validate(t *testing.T) {
 	validRetry := &WriteRetryConfig{MaxAttempts: 3}
 	negativeMaxAttempts := &WriteRetryConfig{MaxAttempts: -1}
-	negativeInitial := configtype.NewDuration(-1 * time.Millisecond)
-	negativeBackoff := &WriteRetryConfig{InitialBackoff: &negativeInitial}
+	negativeMaxBackoff := configtype.NewDuration(-1 * time.Millisecond)
+	negativeBackoff := &WriteRetryConfig{MaxBackoff: &negativeMaxBackoff}
 
 	cases := []struct {
 		Give    Spec
@@ -125,7 +125,7 @@ func TestJSONSchema(t *testing.T) {
 		},
 		{
 			Name: "spec with write_retry",
-			Spec: `{"connection_string": "abc", "database":"foo", "write_retry": {"max_attempts": 3, "initial_backoff": "1s", "max_backoff": "20s", "max_elapsed": "1m"}}`,
+			Spec: `{"connection_string": "abc", "database":"foo", "write_retry": {"max_attempts": 3, "max_backoff": "20s"}}`,
 			Err:  false,
 		},
 		{

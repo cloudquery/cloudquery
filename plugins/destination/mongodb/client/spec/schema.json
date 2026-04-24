@@ -94,27 +94,7 @@
           "minimum": 1,
           "default": 5
         },
-        "initial_backoff": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/Duration"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
         "max_backoff": {
-          "oneOf": [
-            {
-              "$ref": "#/$defs/Duration"
-            },
-            {
-              "type": "null"
-            }
-          ]
-        },
-        "max_elapsed": {
           "oneOf": [
             {
               "$ref": "#/$defs/Duration"
