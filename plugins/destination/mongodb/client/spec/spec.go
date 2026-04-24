@@ -95,7 +95,7 @@ func (s *Spec) Validate() error {
 	}
 
 	if s.WriteRetry != nil {
-		if s.WriteRetry.MaxAttempts < 0 {
+		if s.WriteRetry.MaxAttempts < 1 {
 			return errors.New("`write_retry.max_attempts` must be >= 1")
 		}
 		if s.WriteRetry.MaxBackoff != nil && s.WriteRetry.MaxBackoff.Duration() < 0 {

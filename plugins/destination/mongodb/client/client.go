@@ -35,10 +35,10 @@ func New(ctx context.Context, logger zerolog.Logger, specByte []byte, _ plugin.N
 	if err := json.Unmarshal(specByte, &c.spec); err != nil {
 		return nil, errors.Join(errInvalidSpec, err)
 	}
+	c.spec.SetDefaults()
 	if err := c.spec.Validate(); err != nil {
 		return nil, errors.Join(errInvalidSpec, err)
 	}
-	c.spec.SetDefaults()
 
 	mongoDBClientOptions := options.Client().ApplyURI(c.spec.ConnectionString).SetRegistry(getRegistry())
 	if c.spec.AWSCredentials != nil {
