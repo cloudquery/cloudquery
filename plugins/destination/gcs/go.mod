@@ -14,7 +14,7 @@ require (
 	github.com/rs/zerolog v1.34.0
 	github.com/stretchr/testify v1.11.1
 	github.com/wk8/go-ordered-map/v2 v2.1.8
-	google.golang.org/api v0.275.0
+	google.golang.org/api v0.276.0
 )
 
 require (
