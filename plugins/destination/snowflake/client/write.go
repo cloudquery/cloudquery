@@ -32,6 +32,12 @@ func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) er
 }
 
 func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.WriteInserts) error {
+	// if there are no messages, we can skip the write. Ideally this should be handled in the BatchWriter, but this is a good safeguard until the fix can be implemented
+	// upstream
+	if len(msgs) == 0 {
+		return nil
+	}
+
 	if err := c.setupWrite(ctx); err != nil {
 		return err
 	}
