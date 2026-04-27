@@ -16,6 +16,9 @@ spec:
     # Optional parameters:
     # batch_size: 10000 # 10K
     # batch_size_bytes: 4194304 # 4 MiB
+    # write_retry: # <- Use this to tune retries on transient network errors
+    #   max_attempts: 5 # Total attempts per batch, including the first
+    #   max_backoff: "10s"
     # aws_credentials: # <- Use this to specify non-default role assumption parameters
     #   default: true # Use the default credentials chain
     #   local_profile: "mongodb-profile" # Use a local profile instead of the default one

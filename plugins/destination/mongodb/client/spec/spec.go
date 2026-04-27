@@ -3,11 +3,17 @@ package spec
 import (
 	_ "embed"
 	"errors"
+	"time"
+
+	"github.com/cloudquery/plugin-sdk/v4/configtype"
 )
 
 const (
 	defaultBatchSize      = 1000
 	defaultBatchSizeBytes = 1024 * 1024 * 4
+
+	defaultWriteRetryMaxAttempts = 5
+	defaultWriteRetryMaxBackoff  = 10 * time.Second
 )
 
 type Spec struct {
@@ -30,6 +36,20 @@ type Spec struct {
 
 	// Use AWS IAM credentials. If used this will override any credentials set in the connection_string
 	AWSCredentials *Credentials `json:"aws_credentials,omitempty"`
+
+	// Configures exponential-backoff retries around each write batch to absorb
+	// transient MongoDB network errors (e.g. `write tcp ...: broken pipe`) that
+	// are not covered by the driver's single built-in retry. Omit to use the
+	// defaults (5 attempts, 10s max backoff).
+	WriteRetry *WriteRetryConfig `json:"write_retry,omitempty"`
+}
+
+type WriteRetryConfig struct {
+	// Maximum number of write attempts per batch, including the initial attempt. Set to 1 to disable retries.
+	MaxAttempts int `json:"max_attempts,omitempty" jsonschema:"minimum=1,default=5"`
+
+	// Maximum backoff between retry attempts.
+	MaxBackoff *configtype.Duration `json:"max_backoff,omitempty" jsonschema:"default=10s"`
 }
 
 //go:embed schema.json
@@ -41,6 +61,20 @@ func (s *Spec) SetDefaults() {
 	}
 	if s.BatchSizeBytes == 0 {
 		s.BatchSizeBytes = defaultBatchSizeBytes
+	}
+	if s.WriteRetry == nil {
+		s.WriteRetry = &WriteRetryConfig{}
+	}
+	s.WriteRetry.SetDefaults()
+}
+
+func (r *WriteRetryConfig) SetDefaults() {
+	if r.MaxAttempts == 0 {
+		r.MaxAttempts = defaultWriteRetryMaxAttempts
+	}
+	if r.MaxBackoff == nil {
+		d := configtype.NewDuration(defaultWriteRetryMaxBackoff)
+		r.MaxBackoff = &d
 	}
 }
 
@@ -57,6 +91,15 @@ func (s *Spec) Validate() error {
 		}
 		if s.AWSCredentials.RoleARN == "" && s.AWSCredentials.LocalProfile == "" && !s.AWSCredentials.Default {
 			return errors.New("one of `role_arn`, `local_profile`, or `default` must be set")
+		}
+	}
+
+	if s.WriteRetry != nil {
+		if s.WriteRetry.MaxAttempts < 1 {
+			return errors.New("`write_retry.max_attempts` must be >= 1")
+		}
+		if s.WriteRetry.MaxBackoff != nil && s.WriteRetry.MaxBackoff.Duration() < 0 {
+			return errors.New("`write_retry.max_backoff` must be >= 0")
 		}
 	}
 
