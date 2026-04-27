@@ -94,5 +94,14 @@ func isRetryableWriteError(err error) bool {
 	if errors.As(err, &labeled) && labeled.HasErrorLabel("RetryableWriteError") {
 		return true
 	}
+	// PoolClearedError (and other driver.RetryablePoolError implementations)
+	// surface here when the pool tears itself down after a sibling connection
+	// fails. They wrap a network error but don't carry the NetworkError label,
+	// so match the driver's own classification by checking the Retryable()
+	// signal directly.
+	var retryable interface{ Retryable() bool }
+	if errors.As(err, &retryable) && retryable.Retryable() {
+		return true
+	}
 	return false
 }

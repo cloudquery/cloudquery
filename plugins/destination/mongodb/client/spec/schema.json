@@ -92,7 +92,7 @@
         "max_attempts": {
           "type": "integer",
           "minimum": 1,
-          "default": 5
+          "default": 1
         },
         "max_backoff": {
           "oneOf": [

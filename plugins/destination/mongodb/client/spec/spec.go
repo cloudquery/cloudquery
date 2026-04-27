@@ -12,7 +12,10 @@ const (
 	defaultBatchSize      = 1000
 	defaultBatchSizeBytes = 1024 * 1024 * 4
 
-	defaultWriteRetryMaxAttempts = 5
+	// Retries are opt-in. Default is a single attempt so behavior matches the
+	// pre-write_retry plugin and we don't risk duplicate documents on
+	// write_mode: append tables (see docs/overview.md callout).
+	defaultWriteRetryMaxAttempts = 1
 	defaultWriteRetryMaxBackoff  = 10 * time.Second
 )
 
@@ -39,14 +42,16 @@ type Spec struct {
 
 	// Configures exponential-backoff retries around each write batch to absorb
 	// transient MongoDB network errors (e.g. `write tcp ...: broken pipe`) that
-	// are not covered by the driver's single built-in retry. Omit to use the
-	// defaults (5 attempts, 10s max backoff).
+	// are not covered by the driver's single built-in retry. Retries are
+	// disabled by default (single attempt). Set `write_retry.max_attempts` >= 2
+	// to enable. Read the duplicate-write caveat in the destination docs
+	// before enabling for `write_mode: append` tables.
 	WriteRetry *WriteRetryConfig `json:"write_retry,omitempty"`
 }
 
 type WriteRetryConfig struct {
-	// Maximum number of write attempts per batch, including the initial attempt. Set to 1 to disable retries.
-	MaxAttempts int `json:"max_attempts,omitempty" jsonschema:"minimum=1,default=5"`
+	// Maximum number of write attempts per batch, including the initial attempt. Default is 1 (no retries).
+	MaxAttempts int `json:"max_attempts,omitempty" jsonschema:"minimum=1,default=1"`
 
 	// Maximum backoff between retry attempts.
 	MaxBackoff *configtype.Duration `json:"max_backoff,omitempty" jsonschema:"default=10s"`

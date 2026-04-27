@@ -58,23 +58,25 @@ This is the (nested) spec used by the MongoDB destination Plugin.
 
 - `write_retry` ([write_retry](#write_retry)) (optional)
 
-  Tunes the exponential-backoff retry applied around each write batch to absorb transient network errors (e.g. `write tcp ...: broken pipe`) that are not covered by the driver's single built-in retry. Omit to use the defaults.
+  Opt-in exponential-backoff retry around each write batch to absorb transient network errors (e.g. `write tcp ...: broken pipe`) that the driver's single built-in retry can't recover from. Disabled by default.
 
 
 
 
 ### write_retry
 
-- `max_attempts` (`integer`) (optional) (default: `5`)
+Retries are **disabled by default**. Set `max_attempts` >= 2 to enable application-level retries.
 
-  Maximum number of write attempts per batch, including the initial attempt. Set to `1` to disable retries.
+- `max_attempts` (`integer`) (optional) (default: `1`)
+
+  Maximum number of write attempts per batch, including the initial attempt. The default of `1` means no application-level retries — the MongoDB driver's own single retry still applies.
 
 - `max_backoff` (`duration`) (optional) (default: `"10s"`)
 
   Maximum backoff between retry attempts. Initial backoff and jitter use the underlying retry library's defaults.
 
 :::callout{type="warning"}
-When the source uses `write_mode: append`, a retry triggered by an ambiguous failure (e.g. the server processed the write but the response was lost) can produce duplicate documents, since `_id` is server-generated and the retry has no way to dedupe against the previous attempt. If duplicates are unacceptable for your use case, set `write_retry.max_attempts` to `1` to disable retries. Overwrite mode is unaffected — writes are performed as upserts keyed on the primary key and are naturally idempotent.
+Only enable retries (`max_attempts` >= 2) when the source uses `write_mode: overwrite`. With `write_mode: append`, a retry triggered by an ambiguous failure (e.g. the server processed the write but the response was lost) can produce duplicate documents, since `_id` is server-generated and the retry has no way to dedupe against the previous attempt. Overwrite mode is unaffected — writes are performed as upserts keyed on the primary key and are naturally idempotent.
 :::
 
 
