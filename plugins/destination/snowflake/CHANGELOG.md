@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.2.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.7...plugins-destination-snowflake-v5.2.8) (2026-04-27)
+
+
+### Bug Fixes
+
+* Avoid panic during an empty write ([#22750](https://github.com/cloudquery/cloudquery/issues/22750)) ([0a69663](https://github.com/cloudquery/cloudquery/commit/0a69663925dea35e45178a34dbd69e00ff657e52))
+* **deps:** Update module google.golang.org/api to v0.275.0 ([#22590](https://github.com/cloudquery/cloudquery/issues/22590)) ([0e4cedc](https://github.com/cloudquery/cloudquery/commit/0e4cedc995e977a7dded30b2abeaf916c95abb90))
+
 ## [5.2.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.6...plugins-destination-snowflake-v5.2.7) (2026-04-15)
 
 
