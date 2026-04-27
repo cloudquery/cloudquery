@@ -8,8 +8,8 @@
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/errors.go:16: | RetryOnError | 90.9% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/errors.go:35: | isRetryable | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/resolvers.go:12: | UnixTimeResolver | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/spec.go:23: | SetDefaults | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/spec.go:34: | Validate | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/spec.go:24: | SetDefaults | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/spec.go:35: | Validate | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/spec/gen/main.go:14: | main | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/spec/gen/main.go:21: | currDir | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/testing.go:25: | MockTestHelper | 0.0% |
@@ -28,4 +28,4 @@
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/services/items/items_fetch.go:109: | fetchBatch | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/services/items/items_fetch.go:125: | fetchItem | 50.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/services/items/items_fetch.go:140: | findFirstPostAfter | 80.0% |
-| total: | (statements) | 44.3% |
+| total: | (statements) | 43.8% |
