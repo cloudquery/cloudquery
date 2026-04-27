@@ -16,13 +16,10 @@ import (
 )
 
 // TestConcurrentWrites stresses the MongoDB destination write path from many
-// goroutines in parallel. It exercises both the append (no primary key) and
-// upsert (with primary key) code paths, which is the lever we use to reproduce
-// the `write tcp ...: broken pipe` failure reported in ENG-3281 -- while this
-// test is running, `docker restart` the local mongo container (or temporarily
-// drop its network) to surface transient connection errors. Without the retry
-// wrapper in retry.go these errors bubble up and fail the sync; with it the
-// test should pass.
+// goroutines in parallel against a healthy local mongo. It catches concurrency
+// regressions in the write/transform code; it does *not* exercise the retry
+// path -- see TestRetryAbsorbsConnectionDrop in retry_integration_test.go for
+// a deterministic regression test for ENG-3281.
 func TestConcurrentWrites(t *testing.T) {
 	const (
 		workers    = 32
@@ -70,7 +67,6 @@ func TestConcurrentWrites(t *testing.T) {
 	}
 
 	t.Logf("running %d workers x %d iterations x %d docs/batch against %s", workers, iterations, batchSize, s.ConnectionString)
-	t.Log("tip: `docker restart` the mongo container while this test is running to reproduce the ENG-3281 broken-pipe error")
 
 	g, gctx := errgroup.WithContext(ctx)
 	for w := 0; w < workers; w++ {
