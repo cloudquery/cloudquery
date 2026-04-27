@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.8...plugins-destination-snowflake-v5.2.9) (2026-04-27)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/snowflakedb/gosnowflake/v2 to v2.0.1 ([#22753](https://github.com/cloudquery/cloudquery/issues/22753)) ([a85e567](https://github.com/cloudquery/cloudquery/commit/a85e5679347fd4654f784c0f54e620d1d7aef83e))
+
 ## [5.2.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.7...plugins-destination-snowflake-v5.2.8) (2026-04-27)
 
 
