@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"io"
 	"net"
 	"net/url"
@@ -218,26 +217,29 @@ var retryReproTable = &schema.Table{
 // the only direct signal that maps to retry-go invocations (drop counts get
 // inflated by the driver's internal server-selection retry loop).
 func TestRetryAbsorbsConnectionDrop(t *testing.T) {
-	maxBackoff := configtype.NewDuration(50 * time.Millisecond)
+	const drops = 2
+	// Empirically each drop produces two failed op() invocations against
+	// driver v2.5.0: the first dials a fresh connection (hits the proxy
+	// drop), and the second sees the now-broken pool entry and fails fast
+	// without dialing. Then the pool dials a fresh conn that the proxy lets
+	// through, and op() succeeds. If a future driver upgrade changes pool
+	// dial-on-checkout behavior this constant may need updating.
+	const expectedRetries = drops * 2
+
+	maxBackoff := configtype.NewDuration(20 * time.Millisecond)
 	c, proxy, retries := newRetryReproClient(t, &spec.WriteRetryConfig{
-		MaxAttempts: 50, // generous; we expect the proxy budget to exhaust well before this
+		MaxAttempts: expectedRetries + 5, // headroom so retry-go isn't the bottleneck
 		MaxBackoff:  &maxBackoff,
 	})
 
-	// Drop a handful of connections then pass through. Each failing op()
-	// invocation tends to consume 1-2 drops (driver server-selection loop is
-	// bounded by serverSelectionTimeoutMS=200), so this guarantees the
-	// budget is exhausted within a few op() calls and the next one succeeds.
-	proxy.dropNext(8)
+	proxy.dropNext(drops)
 
 	require.NoError(t, c.overwriteTableBatch(
 		context.Background(), retryReproTable,
 		[]any{bson.M{"id": int64(1), "val": "a"}},
 	))
-	require.Greater(t, retries.Count(), 0,
-		"retry-go OnRetry should have fired at least once -- if this is 0, the driver's server-selection retry absorbed all failures within a single op() call and our retry layer never ran")
-	require.Equal(t, 8, proxy.dropsCount(),
-		"proxy should have consumed its drop budget")
+	require.Equal(t, drops, proxy.dropsCount(), "proxy should have consumed its drop budget")
+	require.Equal(t, expectedRetries, retries.Count(), "retry-go OnRetry should fire exactly twice per drop")
 }
 
 // TestFailureInjectionReachesWritePath is the negative control for
@@ -252,7 +254,7 @@ func TestFailureInjectionReachesWritePath(t *testing.T) {
 	proxy.dropNext(100) // far more than the single attempt should hit
 	err := c.overwriteTableBatch(context.Background(), retryReproTable, []any{bson.M{"id": int64(1)}})
 	require.Error(t, err, "expected failure without retry, but write succeeded")
-	require.Greater(t, proxy.dropsCount(), 0, "proxy should have dropped at least one connection")
+	require.True(t, isRetryableWriteError(err), "expected a retryable network error, got: %v", err)
 	require.Equal(t, 0, retries.Count(), "OnRetry must not fire when MaxAttempts=1")
 }
 
@@ -269,13 +271,9 @@ func TestRetryGivesUpWhenAllAttemptsFail(t *testing.T) {
 
 	err := c.overwriteTableBatch(context.Background(), retryReproTable, []any{bson.M{"id": int64(1)}})
 	require.Error(t, err)
-	require.True(t,
-		isRetryableWriteError(err) || errors.Is(err, context.DeadlineExceeded),
-		"expected network/timeout error, got: %v", err,
-	)
+	require.True(t, isRetryableWriteError(err), "expected a retryable network error, got: %v", err)
 	// retry-go's OnRetry fires once per failing attempt -- including the
 	// final attempt, even though no retry follows it (see retry-go v5
 	// retry.go: r.onRetry(n, err) is called before the last-attempt check).
-	require.Equal(t, maxAttempts, retries.Count(),
-		"OnRetry should fire once per failing attempt")
+	require.Equal(t, maxAttempts, retries.Count(), "OnRetry should fire once per failing attempt")
 }
