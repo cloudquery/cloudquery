@@ -12,12 +12,19 @@ func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales
 	for _, msg := range msgs {
 		tableName := msg.TableName
 		// delete all records that are not in the source and are older than syncTime
-		if _, err := c.client.Database(c.spec.Database).Collection(tableName).DeleteMany(ctx, bson.M{
-			schema.CqSourceNameColumn.Name: msg.SourceName,
-			schema.CqSyncTimeColumn.Name:   bson.M{"$lt": msg.SyncTime},
-		}); err != nil {
+		err := retryWrite(ctx, c.logger, c.spec.WriteRetry, tableName, func() error {
+			return c.runWrite(ctx, func(ctx context.Context) error {
+				_, err := c.client.Database(c.spec.Database).Collection(tableName).DeleteMany(ctx, bson.M{
+					schema.CqSourceNameColumn.Name: msg.SourceName,
+					schema.CqSyncTimeColumn.Name:   bson.M{"$lt": msg.SyncTime},
+				})
+				return err
+			})
+		})
+		if err != nil {
 			return err
 		}
+
 	}
 	return nil
 }
