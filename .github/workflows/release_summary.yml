@@ -19,7 +19,7 @@ jobs:
     outputs:
       result: ${{ steps.pr-commits.outputs.result }}
     steps:
-      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         name: Check number of commits
         id: pr-commits
         with:
@@ -90,7 +90,7 @@ jobs:
         working-directory: scripts/table_diff
         run: |
           go run main.go diff.txt changes.json
-      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         name: Get doc changes string
         id: get-changes
         with:
@@ -110,7 +110,7 @@ jobs:
               return `- ${text}`
             }).join('\n')
             return changesList
-      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         name: Update changelog
         if: ${{ steps.get-changes.outputs.result != '' }}
         env:
@@ -129,7 +129,7 @@ jobs:
             const changelogParts = currentChangelog.split('###')
             const newChangelog = [...changelogParts.slice(0, sliceIndex), ` ${title}\n${changes}\n\n`, ...changelogParts.slice(sliceIndex)].join('###')
             fs.writeFileSync(changelogPath, newChangelog)
-      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         name: Update PR description
         if: ${{ steps.get-changes.outputs.result != '' }}
         env:
