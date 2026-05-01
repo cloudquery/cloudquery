@@ -4,14 +4,14 @@ go 1.26.1
 
 require (
 	github.com/apache/arrow-go/v18 v18.5.2
-	github.com/apache/tinkerpop/gremlin-go/v3 v3.8.0
+	github.com/apache/tinkerpop/gremlin-go/v3 v3.8.1
 	github.com/aws/aws-sdk-go-v2 v1.41.6
 	github.com/aws/aws-sdk-go-v2/config v1.32.16
 	github.com/cenkalti/backoff/v5 v5.0.3
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-sdk/v4 v4.95.1
-	github.com/invopop/jsonschema v0.13.0
-	github.com/rs/zerolog v1.34.0
+	github.com/invopop/jsonschema v0.14.0
+	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.11.1
 	github.com/wk8/go-ordered-map/v2 v2.1.8
 )
