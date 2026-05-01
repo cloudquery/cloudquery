@@ -11,8 +11,8 @@ github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882 h1:mFDZW1FQk9
 github.com/apache/arrow/go/v13 v13.0.0-20230731205701-112f94971882/go.mod h1:W69eByFNO0ZR30q1/7Sr9d83zcVZmF2MiP3fFYAWJOc=
 github.com/apache/thrift v0.22.0 h1:r7mTJdj51TMDe6RtcmNdQxgn9XcyfGDOzegMDRg47uc=
 github.com/apache/thrift v0.22.0/go.mod h1:1e7J/O1Ae6ZQMTYdy9xa3w9k+XHWPfRvdPyJeynQ+/g=
-github.com/apache/tinkerpop/gremlin-go/v3 v3.8.0 h1:uJc4o8uNme+NNMqyikEQd5w+uxPgEVYv7GRD0Mzemk4=
-github.com/apache/tinkerpop/gremlin-go/v3 v3.8.0/go.mod h1:aijnmD7bFPIqwllmJaJDY0zKJ/bvg+rcgiX7rFqurqI=
+github.com/apache/tinkerpop/gremlin-go/v3 v3.8.1 h1:2lxKX314Q46NmW2yLcDnoaa/qURP7/xffL0Oc9qihxw=
+github.com/apache/tinkerpop/gremlin-go/v3 v3.8.1/go.mod h1:HkUXCwiMMjv3oBUqwrbqRLSkbHh9csEC3aW7Ntw/uFc=
 github.com/apapsch/go-jsonmerge/v2 v2.0.0 h1:axGnT1gRIfimI7gJifB699GoE/oq+F2MU7Dml6nw9rQ=
 github.com/apapsch/go-jsonmerge/v2 v2.0.0/go.mod h1:lvDnEdqiQrp0O42VQGgmlKpxL1AP2+08jFMw88y4klk=
 github.com/aws/aws-sdk-go-v2 v1.41.6 h1:1AX0AthnBQzMx1vbmir3Y4WsnJgiydmnJjiLu+LvXOg=
