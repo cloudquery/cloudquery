@@ -8,7 +8,7 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.95.1
 	github.com/golang/mock v1.6.0
 	github.com/hermanschaaf/hackernews v1.0.1
-	github.com/rs/zerolog v1.34.0
+	github.com/rs/zerolog v1.35.1
 	github.com/thoas/go-funk v0.9.3
 	golang.org/x/sync v0.20.0
 )
