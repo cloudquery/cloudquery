@@ -45,7 +45,7 @@
   },
   "homepage": "https://github.com/cloudquery/cloudquery#readme",
   "devDependencies": {
-    "@ava/typescript": "^6.0.0",
+    "@ava/typescript": "^7.0.0",
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^10.0.1",
     "@tsconfig/node22": "^22.0.0",
@@ -64,14 +64,14 @@
     "prettier": "^3.0.1",
     "tempy": "^3.1.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.3.3",
+    "typescript": "^6.0.0",
     "typescript-eslint": "^8.57.0",
     "winston": "^3.10.0"
   },
   "engines": {
     "node": ">=20.0.0"
   },
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@10.33.2",
   "dependencies": {
     "@cloudquery/plugin-sdk-javascript": "^0.1.6",
     "airtable": "^0.12.1",
