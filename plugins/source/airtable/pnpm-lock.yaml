@@ -40,8 +40,8 @@ importers:
         version: 12.0.0
     devDependencies:
       '@ava/typescript':
-        specifier: ^6.0.0
-        version: 6.0.0
+        specifier: ^7.0.0
+        version: 7.0.0
       '@eslint/eslintrc':
         specifier: ^3.3.5
         version: 3.3.5
@@ -56,7 +56,7 @@ importers:
         version: 17.0.35
       ava:
         specifier: ^7.0.0
-        version: 7.0.0(@ava/typescript@6.0.0)
+        version: 7.0.0(@ava/typescript@7.0.0)
       eslint:
         specifier: ^10.0.0
         version: 10.2.1
@@ -112,9 +112,9 @@ packages:
     resolution: {integrity: sha512-ZMlUJKmoout0U6PvHFMqYhXD5V7UAOdxUyf3cZQQwAJisz9HL2t449J6POjo+Na1M4HhHXtuHWuOakYi7n4SlQ==}
     hasBin: true
 
-  '@ava/typescript@6.0.0':
-    resolution: {integrity: sha512-+8oDYc4J5cCaWZh1VUbyc+cegGplJO9FqHpqR4LVAVx8fRLVRaYlC4yyA6cqHJ1vWP23Ff/ECS5U68Zz6OLZlg==}
-    engines: {node: ^20.8 || ^22 || >=24}
+  '@ava/typescript@7.0.0':
+    resolution: {integrity: sha512-0ktzq4/9ya2QoAuVWzl3McpLV9W//Tj+oMonQ4ucgm5l6tQ46aaju/rJL9kzeY5MkG6wzXvFt/MmaLqf9uNC9w==}
+    engines: {node: ^22.20 || ^24.12 || >=25}
 
   '@babel/code-frame@7.29.0':
     resolution: {integrity: sha512-9NhCeYjq9+3uxgdtp20LSiJXJvN0FeCtNGpJxuMFZ1Kv3cWUNb6DOhJwUvcVCzKGR66cw4njwM6hrJLqgOwbcw==}
@@ -2138,7 +2138,7 @@ snapshots:
     transitivePeerDependencies:
       - '@75lb/nature'
 
-  '@ava/typescript@6.0.0':
+  '@ava/typescript@7.0.0':
     dependencies:
       escape-string-regexp: 5.0.0
       execa: 9.6.1
@@ -2700,7 +2700,7 @@ snapshots:
 
   async@3.2.6: {}
 
-  ava@7.0.0(@ava/typescript@6.0.0):
+  ava@7.0.0(@ava/typescript@7.0.0):
     dependencies:
       '@vercel/nft': 1.5.0
       acorn: 8.16.0
@@ -2742,7 +2742,7 @@ snapshots:
       write-file-atomic: 7.0.1
       yargs: 18.0.0
     optionalDependencies:
-      '@ava/typescript': 6.0.0
+      '@ava/typescript': 7.0.0
     transitivePeerDependencies:
       - encoding
       - rollup
