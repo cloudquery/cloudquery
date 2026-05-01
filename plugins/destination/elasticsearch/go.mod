@@ -7,7 +7,7 @@ require (
 	github.com/cenkalti/backoff/v5 v5.0.3
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-sdk/v4 v4.95.1
-	github.com/elastic/go-elasticsearch/v9 v9.3.1
+	github.com/elastic/go-elasticsearch/v9 v9.3.2
 	github.com/goccy/go-json v0.10.6
 	github.com/invopop/jsonschema v0.13.0
 	github.com/rs/zerolog v1.34.0
@@ -45,7 +45,7 @@ require (
 	github.com/cloudquery/plugin-pb-go v1.27.14 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
-	github.com/elastic/elastic-transport-go/v8 v8.8.0 // indirect
+	github.com/elastic/elastic-transport-go/v8 v8.9.0 // indirect
 	github.com/getsentry/sentry-go v0.44.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
