@@ -24,7 +24,7 @@ require (
 	github.com/opencontainers/go-digest v1.0.0
 	github.com/opencontainers/image-spec v1.1.1
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
-	github.com/rs/zerolog v1.34.0
+	github.com/rs/zerolog v1.35.1
 	github.com/rudderlabs/analytics-go/v4 v4.2.3
 	github.com/samber/lo v1.53.0
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2
