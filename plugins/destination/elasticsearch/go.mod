@@ -10,7 +10,7 @@ require (
 	github.com/elastic/go-elasticsearch/v9 v9.3.2
 	github.com/goccy/go-json v0.10.6
 	github.com/invopop/jsonschema v0.14.0
-	github.com/rs/zerolog v1.34.0
+	github.com/rs/zerolog v1.35.1
 	github.com/segmentio/fasthash v1.0.3
 	github.com/stretchr/testify v1.11.1
 	github.com/wk8/go-ordered-map/v2 v2.1.8

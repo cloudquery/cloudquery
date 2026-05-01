@@ -38,7 +38,7 @@ jobs:
         with:
           go-version-file: plugins/destination/clickhouse/go.mod
           cache: false
-      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
+      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
           path: |
             ~/.cache/go-build
@@ -61,7 +61,7 @@ jobs:
       - name: Build
         run: go build .
 
-      - uses: hoverkraft-tech/compose-action@3c795f9eb1db588146398cd8e4ab0fe98e0f92db
+      - uses: hoverkraft-tech/compose-action@077eccb7f2d44fc6806e4dcad31d4158381b9d18
         with:
           compose-file: docker-compose.yaml
           up-flags: "--wait"
