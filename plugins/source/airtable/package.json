@@ -45,10 +45,10 @@
   },
   "homepage": "https://github.com/cloudquery/cloudquery#readme",
   "devDependencies": {
-    "@ava/typescript": "^6.0.0",
+    "@ava/typescript": "^7.0.0",
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^10.0.1",
-    "@tsconfig/node22": "^22.0.0",
+    "@tsconfig/node24": "^24.0.0",
 "@types/yargs": "^17.0.24",
     "ava": "^7.0.0",
     "eslint": "^10.0.0",
@@ -57,21 +57,21 @@
     "eslint-plugin-ava": "^16.0.0",
     "eslint-plugin-import-x": "^4.16.2",
     "eslint-plugin-promise": "^7.0.0",
-    "eslint-plugin-unicorn": "^63.0.0",
+    "eslint-plugin-unicorn": "^64.0.0",
     "eslint-plugin-unused-imports": "^4.0.0",
     "eslint-plugin-you-dont-need-lodash-underscore": "^6.12.0",
     "path-exists": "^5.0.0",
     "prettier": "^3.0.1",
     "tempy": "^3.1.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.3.3",
+    "typescript": "^6.0.0",
     "typescript-eslint": "^8.57.0",
     "winston": "^3.10.0"
   },
   "engines": {
     "node": ">=20.0.0"
   },
-  "packageManager": "pnpm@10.33.0",
+  "packageManager": "pnpm@10.33.2",
   "dependencies": {
     "@cloudquery/plugin-sdk-javascript": "^0.1.6",
     "airtable": "^0.12.1",
@@ -80,7 +80,7 @@
     "change-case": "^5.3.0",
     "dayjs": "^1.11.9",
     "dot-prop": "^10.0.0",
-    "got": "^14.0.0",
+    "got": "^15.0.0",
     "p-map": "^7.0.0",
     "read-package-up": "^12.0.0"
   },
