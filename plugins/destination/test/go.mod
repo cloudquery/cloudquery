@@ -6,8 +6,8 @@ require (
 	github.com/apache/arrow-go/v18 v18.5.2
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-sdk/v4 v4.95.1
-	github.com/invopop/jsonschema v0.13.0
-	github.com/rs/zerolog v1.34.0
+	github.com/invopop/jsonschema v0.14.0
+	github.com/rs/zerolog v1.35.1
 )
 
 require (
