@@ -17,8 +17,8 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.95.1
 	github.com/google/go-cmp v0.7.0
 	github.com/google/uuid v1.6.0
-	github.com/invopop/jsonschema v0.13.0
-	github.com/rs/zerolog v1.34.0
+	github.com/invopop/jsonschema v0.14.0
+	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.11.1
 	github.com/wk8/go-ordered-map/v2 v2.1.8
 )

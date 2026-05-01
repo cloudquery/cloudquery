@@ -37,7 +37,7 @@ jobs:
         with:
           fetch-depth: 2
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@8df5847569e6427dd6c4fb1cf565c83acfa8afa7 # v6
+        uses: aws-actions/configure-aws-credentials@ec61189d14ec14c8efccab744f656cffd0e33f37 # v6
         with:
           role-to-assume: arn:aws:iam::615713231484:role/destination-s3
           aws-region: us-east-1
@@ -47,7 +47,7 @@ jobs:
         with:
           go-version-file: plugins/destination/s3/go.mod
           cache: false
-      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
+      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
           path: |
             ~/.cache/go-build
