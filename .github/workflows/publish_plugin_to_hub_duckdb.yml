@@ -65,7 +65,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Use Node.js LTS
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: "lts/*"
           cache: "npm"
@@ -108,7 +108,7 @@ jobs:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
           cache: false
 
-      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
+      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
           path: |
             ~/.cache/go-build
@@ -118,7 +118,7 @@ jobs:
             ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-publish-plugin-to-hub-cache-plugins-${{ needs.prepare.outputs.plugin_kind }}-${{ needs.prepare.outputs.plugin_name }}-
 
       - name: Use Node.js LTS
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: "lts/*"
 
@@ -175,7 +175,7 @@ jobs:
           git tag ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }} && git push origin ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }}
 
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@d0190712a54cd89d2e57a5847f06a78de127711a
+        uses: ravsamhq/notify-slack-action@0670a0482d2a919531ba3b219e0c535fe4fcc791
         if: always()
         with:
           status: ${{ job.status }}
