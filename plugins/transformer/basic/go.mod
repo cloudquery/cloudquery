@@ -5,7 +5,7 @@ go 1.26.1
 require (
 	github.com/apache/arrow-go/v18 v18.5.2
 	github.com/cloudquery/plugin-sdk/v4 v4.95.1
-	github.com/rs/zerolog v1.34.0
+	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.11.1
 	github.com/tidwall/gjson v1.18.0
 	github.com/tidwall/pretty v1.2.1
