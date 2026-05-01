@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: Generate GitHub App token for release
         id: app-token
-        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3
+        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3
         with:
           app-id: ${{ secrets.CQ_APP_ID }}
           private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
@@ -48,7 +48,7 @@ jobs:
         with:
           go-version-file: scaffold/go.mod
           cache: false
-      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
+      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
           path: |
             ~/.cache/go-build
@@ -57,7 +57,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-release-cache-scaffold-
       - name: Install GoReleaser
-        uses: goreleaser/goreleaser-action@ec59f474b9834571250b370d4735c50f8e2d1e29 # v7
+        uses: goreleaser/goreleaser-action@1a80836c5c9d9e5755a25cb59ec6f45a3b5f41a8 # v7
         with:
           distribution: goreleaser-pro
           version: "v2.14.3"
@@ -95,7 +95,7 @@ jobs:
 
       - name: Generate GitHub App token for frontend
         id: frontend-app-token
-        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3
+        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3
         with:
           app-id: ${{ secrets.CQ_APP_ID }}
           private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
@@ -117,7 +117,7 @@ jobs:
 
       - name: Create Pull Request
         if: steps.semver_parser.outputs.prerelease == ''
-        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
         with:
           # required so the PR triggers workflow runs
           token: ${{ steps.frontend-app-token.outputs.token }}
@@ -129,7 +129,7 @@ jobs:
           body: Updates Scaffold latest version to ${{steps.split.outputs.version}}
           labels: automerge
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@d0190712a54cd89d2e57a5847f06a78de127711a
+        uses: ravsamhq/notify-slack-action@0670a0482d2a919531ba3b219e0c535fe4fcc791
         if: always()
         with:
           status: ${{ job.status }}

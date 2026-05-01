@@ -4,7 +4,7 @@ go 1.26.1
 
 require (
 	github.com/cloudquery/plugin-sdk/v4 v4.95.1
-	github.com/rs/zerolog v1.34.0
+	github.com/rs/zerolog v1.35.1
 	golang.org/x/sync v0.20.0
 )
 
