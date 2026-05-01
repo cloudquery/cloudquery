@@ -9,7 +9,7 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.95.1
 	github.com/duckdb/duckdb-go/v2 v2.10502.0
 	github.com/google/uuid v1.6.0
-	github.com/rs/zerolog v1.34.0
+	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.11.1
 )
 

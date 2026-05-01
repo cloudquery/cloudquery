@@ -33,7 +33,7 @@ jobs:
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: 'lts/*'
 
@@ -43,7 +43,7 @@ jobs:
 
       - name: Get Release Notes
         id: release-notes
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         env:
           PRERELEASE: ${{"{{"}} steps.semver_parser.outputs.prerelease {{"}}"}}
         with:
