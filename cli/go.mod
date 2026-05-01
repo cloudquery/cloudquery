@@ -33,7 +33,7 @@ require (
 	github.com/stretchr/testify v1.11.1
 	github.com/thoas/go-funk v0.9.3
 	github.com/wk8/go-ordered-map/v2 v2.1.8
-	github.com/yuin/goldmark v1.8.1
+	github.com/yuin/goldmark v1.8.2
 	go.opentelemetry.io/collector/component v1.54.0
 	go.opentelemetry.io/collector/config/configgrpc v0.148.0
 	go.opentelemetry.io/collector/config/confighttp v0.148.0
