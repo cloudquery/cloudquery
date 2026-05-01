@@ -19,7 +19,7 @@ jobs:
     outputs:
       result: ${{ steps.pr-commits.outputs.result }}
     steps:
-      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         name: Check number of commits
         id: pr-commits
         with:
@@ -40,7 +40,7 @@ jobs:
     steps:
       - name: Generate GitHub App token
         id: app-token
-        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3
+        uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3 # v3
         with:
           app-id: ${{ secrets.CQ_APP_ID }}
           private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
@@ -78,7 +78,7 @@ jobs:
         with:
           go-version-file: scripts/table_diff/go.mod
           cache: false
-      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
+      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
           path: |
             ~/.cache/go-build
@@ -90,7 +90,7 @@ jobs:
         working-directory: scripts/table_diff
         run: |
           go run main.go diff.txt changes.json
-      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         name: Get doc changes string
         id: get-changes
         with:
@@ -110,7 +110,7 @@ jobs:
               return `- ${text}`
             }).join('\n')
             return changesList
-      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         name: Update changelog
         if: ${{ steps.get-changes.outputs.result != '' }}
         env:
@@ -129,7 +129,7 @@ jobs:
             const changelogParts = currentChangelog.split('###')
             const newChangelog = [...changelogParts.slice(0, sliceIndex), ` ${title}\n${changes}\n\n`, ...changelogParts.slice(sliceIndex)].join('###')
             fs.writeFileSync(changelogPath, newChangelog)
-      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         name: Update PR description
         if: ${{ steps.get-changes.outputs.result != '' }}
         env:
