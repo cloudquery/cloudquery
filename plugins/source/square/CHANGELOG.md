@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.29](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.28...plugins-source-square-v1.3.29) (2026-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#22802](https://github.com/cloudquery/cloudquery/issues/22802)) ([8e30cbe](https://github.com/cloudquery/cloudquery/commit/8e30cbe902e660a8ef192c48cfff3f32c394c6f0))
+
 ## [1.3.28](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.27...plugins-source-square-v1.3.28) (2026-05-01)
 
 
