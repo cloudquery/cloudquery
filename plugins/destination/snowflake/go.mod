@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4
 
-go 1.26.1
+go 1.26.2
 
 require (
 	github.com/apache/arrow-go/v18 v18.5.2
