@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.5.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.5.8...plugins-destination-gcs-v5.5.9) (2026-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module cloud.google.com/go/storage to v1.62.0 ([#22589](https://github.com/cloudquery/cloudquery/issues/22589)) ([c63fbe8](https://github.com/cloudquery/cloudquery/commit/c63fbe846495a81ae55d67f15f3db38871c92807))
+* **deps:** Update module cloud.google.com/go/storage to v1.62.1 ([#22714](https://github.com/cloudquery/cloudquery/issues/22714)) ([c011d9f](https://github.com/cloudquery/cloudquery/commit/c011d9fc2d6b306f8fa647ccdc16b7650aaca173))
+* **deps:** Update module github.com/invopop/jsonschema to v0.14.0 ([#22783](https://github.com/cloudquery/cloudquery/issues/22783)) ([94db95e](https://github.com/cloudquery/cloudquery/commit/94db95e486029b1521d087450fb918423fbedc04))
+* **deps:** Update module github.com/rs/zerolog to v1.35.1 ([#22784](https://github.com/cloudquery/cloudquery/issues/22784)) ([7aa1d85](https://github.com/cloudquery/cloudquery/commit/7aa1d854e61a499efb5b6f181524719b60309905))
+* **deps:** Update module golang.org/x/term to v0.42.0 ([#22786](https://github.com/cloudquery/cloudquery/issues/22786)) ([b4a7483](https://github.com/cloudquery/cloudquery/commit/b4a7483737409bc227704cbe49f9cfe515e89a5d))
+* **deps:** Update module google.golang.org/api to v0.275.0 ([#22590](https://github.com/cloudquery/cloudquery/issues/22590)) ([0e4cedc](https://github.com/cloudquery/cloudquery/commit/0e4cedc995e977a7dded30b2abeaf916c95abb90))
+* **deps:** Update module google.golang.org/api to v0.275.0 ([#22591](https://github.com/cloudquery/cloudquery/issues/22591)) ([9abfab7](https://github.com/cloudquery/cloudquery/commit/9abfab7bf77dce0b3382ec0f1e2010c8f38b9471))
+* **deps:** Update module google.golang.org/api to v0.276.0 ([#22717](https://github.com/cloudquery/cloudquery/issues/22717)) ([db57d64](https://github.com/cloudquery/cloudquery/commit/db57d64abca2725d38210351fd192770e4dd4539))
+
 ## [5.5.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.5.7...plugins-destination-gcs-v5.5.8) (2026-04-15)
 
 
