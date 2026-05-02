@@ -56,6 +56,28 @@ This is the (nested) spec used by the MongoDB destination Plugin.
 
   Optional parameters to enable usage of AWS IAM credentials
 
+- `write_retry` ([write_retry](#write_retry)) (optional)
+
+  Opt-in exponential-backoff retry around each write batch to absorb transient network errors (e.g. `write tcp ...: broken pipe`) that the driver's single built-in retry can't recover from. Disabled by default.
+
+
+
+
+### write_retry
+
+Retries are **disabled by default**. Set `max_attempts` >= 2 to enable application-level retries.
+
+- `max_attempts` (`integer`) (optional) (default: `1`)
+
+  Maximum number of write attempts per batch, including the initial attempt. The default of `1` means no application-level retries — the MongoDB driver's own single retry still applies.
+
+- `max_backoff` (`duration`) (optional) (default: `"10s"`)
+
+  Maximum backoff between retry attempts. Initial backoff and jitter use the underlying retry library's defaults.
+
+:::callout{type="warning"}
+Only enable retries (`max_attempts` >= 2) when the source uses `write_mode: overwrite`. With `write_mode: append`, a retry triggered by an ambiguous failure (e.g. the server processed the write but the response was lost) can produce duplicate documents, since `_id` is server-generated and the retry has no way to dedupe against the previous attempt. Overwrite mode is unaffected — writes are performed as upserts keyed on the primary key and are naturally idempotent.
+:::
 
 
 
