@@ -1,5 +1,16 @@
 # Changelog
 
+## [5.7.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.7.7...plugins-destination-kafka-v5.7.8) (2026-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/IBM/sarama to v1.48.0 ([#22782](https://github.com/cloudquery/cloudquery/issues/22782)) ([2c69466](https://github.com/cloudquery/cloudquery/commit/2c694660d3f422e520802d3ca02adbc1e0c2fa23))
+* **deps:** Update module github.com/invopop/jsonschema to v0.14.0 ([#22783](https://github.com/cloudquery/cloudquery/issues/22783)) ([94db95e](https://github.com/cloudquery/cloudquery/commit/94db95e486029b1521d087450fb918423fbedc04))
+* **deps:** Update module github.com/rs/zerolog to v1.35.1 ([#22784](https://github.com/cloudquery/cloudquery/issues/22784)) ([7aa1d85](https://github.com/cloudquery/cloudquery/commit/7aa1d854e61a499efb5b6f181524719b60309905))
+* **deps:** Update module golang.org/x/term to v0.42.0 ([#22786](https://github.com/cloudquery/cloudquery/issues/22786)) ([b4a7483](https://github.com/cloudquery/cloudquery/commit/b4a7483737409bc227704cbe49f9cfe515e89a5d))
+* **deps:** Update module google.golang.org/api to v0.275.0 ([#22590](https://github.com/cloudquery/cloudquery/issues/22590)) ([0e4cedc](https://github.com/cloudquery/cloudquery/commit/0e4cedc995e977a7dded30b2abeaf916c95abb90))
+
 ## [5.7.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.7.6...plugins-destination-kafka-v5.7.7) (2026-04-15)
 
 
