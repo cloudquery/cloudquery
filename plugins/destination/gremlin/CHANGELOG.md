@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.8.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.8.2...plugins-destination-gremlin-v2.8.3) (2026-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22711](https://github.com/cloudquery/cloudquery/issues/22711)) ([f87cdd4](https://github.com/cloudquery/cloudquery/commit/f87cdd420552ed7a5eaf9df916b26a9b2f1c5b03))
+* **deps:** Update module github.com/apache/tinkerpop/gremlin-go/v3 to v3.8.1 ([#22768](https://github.com/cloudquery/cloudquery/issues/22768)) ([5309365](https://github.com/cloudquery/cloudquery/commit/530936520790a4395de5159fa609fe41915dc679))
+* **deps:** Update module github.com/invopop/jsonschema to v0.14.0 ([#22783](https://github.com/cloudquery/cloudquery/issues/22783)) ([94db95e](https://github.com/cloudquery/cloudquery/commit/94db95e486029b1521d087450fb918423fbedc04))
+* **deps:** Update module github.com/rs/zerolog to v1.35.1 ([#22784](https://github.com/cloudquery/cloudquery/issues/22784)) ([7aa1d85](https://github.com/cloudquery/cloudquery/commit/7aa1d854e61a499efb5b6f181524719b60309905))
+* **deps:** Update module golang.org/x/term to v0.42.0 ([#22786](https://github.com/cloudquery/cloudquery/issues/22786)) ([b4a7483](https://github.com/cloudquery/cloudquery/commit/b4a7483737409bc227704cbe49f9cfe515e89a5d))
+* **deps:** Update module google.golang.org/api to v0.275.0 ([#22590](https://github.com/cloudquery/cloudquery/issues/22590)) ([0e4cedc](https://github.com/cloudquery/cloudquery/commit/0e4cedc995e977a7dded30b2abeaf916c95abb90))
+
 ## [2.8.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.8.1...plugins-destination-gremlin-v2.8.2) (2026-04-15)
 
 
