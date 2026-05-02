@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.2.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.9...plugins-destination-snowflake-v5.2.10) (2026-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/rs/zerolog to v1.35.1 ([#22784](https://github.com/cloudquery/cloudquery/issues/22784)) ([7aa1d85](https://github.com/cloudquery/cloudquery/commit/7aa1d854e61a499efb5b6f181524719b60309905))
+* **deps:** Update module golang.org/x/term to v0.42.0 ([#22786](https://github.com/cloudquery/cloudquery/issues/22786)) ([b4a7483](https://github.com/cloudquery/cloudquery/commit/b4a7483737409bc227704cbe49f9cfe515e89a5d))
+
 ## [5.2.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.8...plugins-destination-snowflake-v5.2.9) (2026-04-27)
 
 
