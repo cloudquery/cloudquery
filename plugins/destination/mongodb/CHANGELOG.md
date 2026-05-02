@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v3.0.3...plugins-destination-mongodb-v3.0.4) (2026-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22712](https://github.com/cloudquery/cloudquery/issues/22712)) ([58105cb](https://github.com/cloudquery/cloudquery/commit/58105cbb9ba6ea18972bc5dcf3539305d9bc32aa))
+* **deps:** Update module github.com/rs/zerolog to v1.35.1 ([#22784](https://github.com/cloudquery/cloudquery/issues/22784)) ([7aa1d85](https://github.com/cloudquery/cloudquery/commit/7aa1d854e61a499efb5b6f181524719b60309905))
+* **deps:** Update module go.mongodb.org/mongo-driver/v2 to v2.5.1 ([#22774](https://github.com/cloudquery/cloudquery/issues/22774)) ([06e26a3](https://github.com/cloudquery/cloudquery/commit/06e26a35adf51702ad88518d87a76130aeba2ba3))
+* **deps:** Update module golang.org/x/term to v0.42.0 ([#22786](https://github.com/cloudquery/cloudquery/issues/22786)) ([b4a7483](https://github.com/cloudquery/cloudquery/commit/b4a7483737409bc227704cbe49f9cfe515e89a5d))
+* **deps:** Update module google.golang.org/api to v0.275.0 ([#22590](https://github.com/cloudquery/cloudquery/issues/22590)) ([0e4cedc](https://github.com/cloudquery/cloudquery/commit/0e4cedc995e977a7dded30b2abeaf916c95abb90))
+
 ## [3.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v3.0.2...plugins-destination-mongodb-v3.0.3) (2026-04-15)
 
 
