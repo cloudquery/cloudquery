@@ -5,6 +5,24 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.35.8](https://github.com/cloudquery/cloudquery/compare/cli-v6.35.7...cli-v6.35.8) (2026-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update alpine Docker tag to v3.23.4 ([#22760](https://github.com/cloudquery/cloudquery/issues/22760)) ([ed25041](https://github.com/cloudquery/cloudquery/commit/ed25041c7bfaea72d1308499a8569bd08656a045))
+* **deps:** Update golang.org/x/exp digest to 746e56f ([#22759](https://github.com/cloudquery/cloudquery/issues/22759)) ([fc9dfd9](https://github.com/cloudquery/cloudquery/commit/fc9dfd9105df64c4a15daa6d6fa3655aa12180e3))
+* **deps:** Update module github.com/getsentry/sentry-go to v0.46.0 ([#22781](https://github.com/cloudquery/cloudquery/issues/22781)) ([0397a0a](https://github.com/cloudquery/cloudquery/commit/0397a0a87b019bcc7b0f1cb512896c4b1a31cd55))
+* **deps:** Update module github.com/invopop/jsonschema to v0.14.0 ([#22783](https://github.com/cloudquery/cloudquery/issues/22783)) ([94db95e](https://github.com/cloudquery/cloudquery/commit/94db95e486029b1521d087450fb918423fbedc04))
+* **deps:** Update module github.com/jedib0t/go-pretty/v6 to v6.7.10 ([#22770](https://github.com/cloudquery/cloudquery/issues/22770)) ([dfbf730](https://github.com/cloudquery/cloudquery/commit/dfbf730b45628f5acdb8a66e8ca7c2ff3fdec710))
+* **deps:** Update module github.com/rs/zerolog to v1.35.1 ([#22784](https://github.com/cloudquery/cloudquery/issues/22784)) ([7aa1d85](https://github.com/cloudquery/cloudquery/commit/7aa1d854e61a499efb5b6f181524719b60309905))
+* **deps:** Update module github.com/yuin/goldmark to v1.8.2 ([#22773](https://github.com/cloudquery/cloudquery/issues/22773)) ([adb49b6](https://github.com/cloudquery/cloudquery/commit/adb49b69e833b1bdb8845a017db604eeaa733091))
+* **deps:** Update module golang.org/x/net to v0.53.0 ([#22785](https://github.com/cloudquery/cloudquery/issues/22785)) ([ec3680b](https://github.com/cloudquery/cloudquery/commit/ec3680b4d1c94c7a928d21b5bb9ff70c0d994509))
+* **deps:** Update module golang.org/x/term to v0.42.0 ([#22786](https://github.com/cloudquery/cloudquery/issues/22786)) ([b4a7483](https://github.com/cloudquery/cloudquery/commit/b4a7483737409bc227704cbe49f9cfe515e89a5d))
+* **deps:** Update module google.golang.org/api to v0.275.0 ([#22590](https://github.com/cloudquery/cloudquery/issues/22590)) ([0e4cedc](https://github.com/cloudquery/cloudquery/commit/0e4cedc995e977a7dded30b2abeaf916c95abb90))
+* **deps:** Update opentelemetry-collector monorepo ([#22787](https://github.com/cloudquery/cloudquery/issues/22787)) ([d8f0dac](https://github.com/cloudquery/cloudquery/commit/d8f0dac00fc570ab3ff34139dbac48b48d6821d4))
+* setext headings positions ([adb49b6](https://github.com/cloudquery/cloudquery/commit/adb49b69e833b1bdb8845a017db604eeaa733091))
+
 ## [6.35.7](https://github.com/cloudquery/cloudquery/compare/cli-v6.35.6...cli-v6.35.7) (2026-04-16)
 
 
