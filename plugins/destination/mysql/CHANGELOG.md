@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.6.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.6.7...plugins-destination-mysql-v5.6.8) (2026-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to 746e56f ([#22759](https://github.com/cloudquery/cloudquery/issues/22759)) ([fc9dfd9](https://github.com/cloudquery/cloudquery/commit/fc9dfd9105df64c4a15daa6d6fa3655aa12180e3))
+* **deps:** Update module github.com/rs/zerolog to v1.35.1 ([#22784](https://github.com/cloudquery/cloudquery/issues/22784)) ([7aa1d85](https://github.com/cloudquery/cloudquery/commit/7aa1d854e61a499efb5b6f181524719b60309905))
+* **deps:** Update module golang.org/x/term to v0.42.0 ([#22786](https://github.com/cloudquery/cloudquery/issues/22786)) ([b4a7483](https://github.com/cloudquery/cloudquery/commit/b4a7483737409bc227704cbe49f9cfe515e89a5d))
+* **deps:** Update module google.golang.org/api to v0.275.0 ([#22590](https://github.com/cloudquery/cloudquery/issues/22590)) ([0e4cedc](https://github.com/cloudquery/cloudquery/commit/0e4cedc995e977a7dded30b2abeaf916c95abb90))
+
 ## [5.6.7](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.6.6...plugins-destination-mysql-v5.6.7) (2026-04-15)
 
 
