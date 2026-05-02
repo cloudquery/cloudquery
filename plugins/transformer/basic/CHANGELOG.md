@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.6.21](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.20...plugins-transformer-basic-v2.6.21) (2026-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/rs/zerolog to v1.35.1 ([#22784](https://github.com/cloudquery/cloudquery/issues/22784)) ([7aa1d85](https://github.com/cloudquery/cloudquery/commit/7aa1d854e61a499efb5b6f181524719b60309905))
+* **deps:** Update module golang.org/x/term to v0.42.0 ([#22786](https://github.com/cloudquery/cloudquery/issues/22786)) ([b4a7483](https://github.com/cloudquery/cloudquery/commit/b4a7483737409bc227704cbe49f9cfe515e89a5d))
+* **deps:** Update module google.golang.org/api to v0.275.0 ([#22590](https://github.com/cloudquery/cloudquery/issues/22590)) ([0e4cedc](https://github.com/cloudquery/cloudquery/commit/0e4cedc995e977a7dded30b2abeaf916c95abb90))
+
 ## [2.6.20](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.19...plugins-transformer-basic-v2.6.20) (2026-04-15)
 
 
