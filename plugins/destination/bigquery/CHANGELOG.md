@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.7.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.7.8...plugins-destination-bigquery-v4.7.9) (2026-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module cloud.google.com/go/bigquery to v1.76.0 ([#22588](https://github.com/cloudquery/cloudquery/issues/22588)) ([dfadbea](https://github.com/cloudquery/cloudquery/commit/dfadbea0a0f373656090feb5ffb89975a462bebd))
+* **deps:** Update module github.com/invopop/jsonschema to v0.14.0 ([#22783](https://github.com/cloudquery/cloudquery/issues/22783)) ([94db95e](https://github.com/cloudquery/cloudquery/commit/94db95e486029b1521d087450fb918423fbedc04))
+* **deps:** Update module github.com/rs/zerolog to v1.35.1 ([#22784](https://github.com/cloudquery/cloudquery/issues/22784)) ([7aa1d85](https://github.com/cloudquery/cloudquery/commit/7aa1d854e61a499efb5b6f181524719b60309905))
+* **deps:** Update module golang.org/x/term to v0.42.0 ([#22786](https://github.com/cloudquery/cloudquery/issues/22786)) ([b4a7483](https://github.com/cloudquery/cloudquery/commit/b4a7483737409bc227704cbe49f9cfe515e89a5d))
+* **deps:** Update module google.golang.org/api to v0.275.0 ([#22590](https://github.com/cloudquery/cloudquery/issues/22590)) ([0e4cedc](https://github.com/cloudquery/cloudquery/commit/0e4cedc995e977a7dded30b2abeaf916c95abb90))
+* **deps:** Update module google.golang.org/api to v0.276.0 ([#22716](https://github.com/cloudquery/cloudquery/issues/22716)) ([1bede53](https://github.com/cloudquery/cloudquery/commit/1bede53bb70211571530da9b29085e9486d8ec41))
+
 ## [4.7.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-bigquery-v4.7.7...plugins-destination-bigquery-v4.7.8) (2026-04-15)
 
 
