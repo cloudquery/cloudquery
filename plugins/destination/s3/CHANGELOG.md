@@ -1,5 +1,19 @@
 # Changelog
 
+## [7.10.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.10.10...plugins-destination-s3-v7.10.11) (2026-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22587](https://github.com/cloudquery/cloudquery/issues/22587)) ([6a9e05f](https://github.com/cloudquery/cloudquery/commit/6a9e05fe07881e56b40a5f5efa1894fcb3242170))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22713](https://github.com/cloudquery/cloudquery/issues/22713)) ([180aa7a](https://github.com/cloudquery/cloudquery/commit/180aa7a9832630a270ce2ce04719584e694431be))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22804](https://github.com/cloudquery/cloudquery/issues/22804)) ([6f9dc88](https://github.com/cloudquery/cloudquery/commit/6f9dc88672b4ac2d03548eaa2a0542d105e81db2))
+* **deps:** Update module github.com/aws/smithy-go to v1.25.1 ([#22715](https://github.com/cloudquery/cloudquery/issues/22715)) ([b6003f2](https://github.com/cloudquery/cloudquery/commit/b6003f2eef230340ddca215ba6d33b631bdcdcaa))
+* **deps:** Update module github.com/invopop/jsonschema to v0.14.0 ([#22783](https://github.com/cloudquery/cloudquery/issues/22783)) ([94db95e](https://github.com/cloudquery/cloudquery/commit/94db95e486029b1521d087450fb918423fbedc04))
+* **deps:** Update module github.com/rs/zerolog to v1.35.1 ([#22784](https://github.com/cloudquery/cloudquery/issues/22784)) ([7aa1d85](https://github.com/cloudquery/cloudquery/commit/7aa1d854e61a499efb5b6f181524719b60309905))
+* **deps:** Update module golang.org/x/term to v0.42.0 ([#22786](https://github.com/cloudquery/cloudquery/issues/22786)) ([b4a7483](https://github.com/cloudquery/cloudquery/commit/b4a7483737409bc227704cbe49f9cfe515e89a5d))
+* **deps:** Update module google.golang.org/api to v0.275.0 ([#22590](https://github.com/cloudquery/cloudquery/issues/22590)) ([0e4cedc](https://github.com/cloudquery/cloudquery/commit/0e4cedc995e977a7dded30b2abeaf916c95abb90))
+
 ## [7.10.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.10.9...plugins-destination-s3-v7.10.10) (2026-04-15)
 
 
