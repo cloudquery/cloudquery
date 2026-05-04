@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/mysql/v5
 go 1.26.2
 
 require (
-	github.com/apache/arrow-go/v18 v18.5.2
+	github.com/apache/arrow-go/v18 v18.6.0
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-sdk/v4 v4.95.1
 	github.com/go-sql-driver/mysql v1.9.3
