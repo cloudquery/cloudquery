@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.3.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.9...plugins-source-airtable-v2.3.10) (2026-05-02)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency @ava/typescript to v7 ([#22792](https://github.com/cloudquery/cloudquery/issues/22792)) ([f8dc9b2](https://github.com/cloudquery/cloudquery/commit/f8dc9b2ce09cc222cd7722554b69d822fd9258d6))
+* **deps:** Update dependency ava to v7 ([#22434](https://github.com/cloudquery/cloudquery/issues/22434)) ([e218ad6](https://github.com/cloudquery/cloudquery/commit/e218ad62b4e1e4d7d0adbda7f0653423d14c5a3e))
+* **deps:** Update dependency eslint to v10 ([#22445](https://github.com/cloudquery/cloudquery/issues/22445)) ([39a1bdb](https://github.com/cloudquery/cloudquery/commit/39a1bdbdad23e38b1c47172fb76bf850bda3245f))
+* **deps:** Update dependency eslint to v10.2.1 ([#22777](https://github.com/cloudquery/cloudquery/issues/22777)) ([7935be2](https://github.com/cloudquery/cloudquery/commit/7935be2b02db570f764e6e5d26b6e558c866850e))
+* **deps:** Update dependency eslint-plugin-ava to v16.0.1 ([#22761](https://github.com/cloudquery/cloudquery/issues/22761)) ([cc26b00](https://github.com/cloudquery/cloudquery/commit/cc26b009de4c45e34286bac2486a951ab0e5f7ad))
+* **deps:** Update dependency eslint-plugin-unicorn to v64 ([#22793](https://github.com/cloudquery/cloudquery/issues/22793)) ([5b6a0db](https://github.com/cloudquery/cloudquery/commit/5b6a0dbc46112e19492dad01b56c47309447505a))
+* **deps:** Update dependency prettier to v3.8.3 ([#22764](https://github.com/cloudquery/cloudquery/issues/22764)) ([2393149](https://github.com/cloudquery/cloudquery/commit/2393149d5f0af9a8acba39e2be6f90d8bdefaad8))
+* **deps:** Update dependency typescript to v6 ([#22435](https://github.com/cloudquery/cloudquery/issues/22435)) ([0e9b831](https://github.com/cloudquery/cloudquery/commit/0e9b831e0eb270bc5fa225b1458d5b2c7c17166d))
+* **deps:** Update dependency typescript to v6 ([#22795](https://github.com/cloudquery/cloudquery/issues/22795)) ([7f1b964](https://github.com/cloudquery/cloudquery/commit/7f1b96478dea241957a59e3777ab557638b9d452))
+* **deps:** Update dependency typescript-eslint to v8.59.0 ([#22778](https://github.com/cloudquery/cloudquery/issues/22778)) ([1618296](https://github.com/cloudquery/cloudquery/commit/161829653082bed98d2d1cd30c914165bbdefbcf))
+* **deps:** Update eslint packages (major) ([#22437](https://github.com/cloudquery/cloudquery/issues/22437)) ([adbfa44](https://github.com/cloudquery/cloudquery/commit/adbfa44bf045436a321041e5d46051865d0c5851))
+* **deps:** Update module golang.org/x/term to v0.42.0 ([#22786](https://github.com/cloudquery/cloudquery/issues/22786)) ([b4a7483](https://github.com/cloudquery/cloudquery/commit/b4a7483737409bc227704cbe49f9cfe515e89a5d))
+* **deps:** Update module google.golang.org/api to v0.275.0 ([#22590](https://github.com/cloudquery/cloudquery/issues/22590)) ([0e4cedc](https://github.com/cloudquery/cloudquery/commit/0e4cedc995e977a7dded30b2abeaf916c95abb90))
+* **deps:** Update pnpm to v10.33.2 ([#22775](https://github.com/cloudquery/cloudquery/issues/22775)) ([b089213](https://github.com/cloudquery/cloudquery/commit/b089213c582047d10000832a00e8a003e8c91ec1))
+
 ## [2.3.9](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.8...plugins-source-airtable-v2.3.9) (2026-04-01)
 
 
