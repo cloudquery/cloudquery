@@ -306,7 +306,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
-        run: uv sync
+        run: uv sync --frozen
 
       # Needed for shell escape
       - name: Use Node.js LTS
