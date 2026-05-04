@@ -451,7 +451,7 @@ jobs:
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: |
           rm -rf docs/tables.md
-          pnpm dev package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
+          pnpm run dev -- package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@b7f7ea62cfec9774ad44a0d9307d0f6c5573bcb6 # v5.0.2
