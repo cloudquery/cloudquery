@@ -296,6 +296,9 @@ jobs:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+
       - name: Set up Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
         with:
@@ -303,9 +306,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
+        run: uv sync --frozen
 
       # Needed for shell escape
       - name: Use Node.js LTS
@@ -352,7 +353,7 @@ jobs:
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: |
           rm -rf docs/tables.md
-          python main.py package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
+          uv run python main.py package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@b7f7ea62cfec9774ad44a0d9307d0f6c5573bcb6 # v5.0.2
