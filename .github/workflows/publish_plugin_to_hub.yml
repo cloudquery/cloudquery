@@ -397,15 +397,19 @@ jobs:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
 
+      - uses: pnpm/action-setup@903f9c1a6ebcba6cf41d87230be49611ac97822e # v6
+        with:
+          package_json_file: ${{ needs.prepare.outputs.plugin_dir }}/package.json
+
       - name: Use Node.js LTS
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: "lts/*"
-          cache: "npm"
-          cache-dependency-path: "${{needs.prepare.outputs.plugin_dir}}/package-lock.json"
+          cache: "pnpm"
+          cache-dependency-path: "${{needs.prepare.outputs.plugin_dir}}/pnpm-lock.yaml"
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
         working-directory: ${{needs.prepare.outputs.plugin_dir}}
 
       - name: Install shell escape
@@ -447,7 +451,7 @@ jobs:
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: |
           rm -rf docs/tables.md
-          npm run dev -- package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
+          pnpm dev package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@b7f7ea62cfec9774ad44a0d9307d0f6c5573bcb6 # v5.0.2
