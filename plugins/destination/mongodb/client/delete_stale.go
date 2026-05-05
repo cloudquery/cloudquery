@@ -24,7 +24,6 @@ func (c *Client) DeleteStale(ctx context.Context, msgs message.WriteDeleteStales
 		if err != nil {
 			return err
 		}
-
 	}
 	return nil
 }
