@@ -55,6 +55,8 @@ type WriteRetryConfig struct {
 
 	// Maximum backoff between retry attempts.
 	MaxBackoff *configtype.Duration `json:"max_backoff,omitempty" jsonschema:"default=10s"`
+
+	UseTransactions bool `json:"use_transactions,omitempty"`
 }
 
 //go:embed schema.json

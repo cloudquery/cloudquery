@@ -15,7 +15,7 @@ import (
 func getTestConnection() string {
 	testConn := os.Getenv("CQ_DEST_MONGODB_TEST_CONN")
 	if testConn == "" {
-		return "mongodb://localhost:27017"
+		return "mongodb://127.0.0.1:27017"
 	}
 	return testConn
 }
