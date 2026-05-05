@@ -10,24 +10,8 @@ services:
       retries: 5
     networks:
       - mongodb
-  mongodb-transactions:
-    image: mongo:4.4
-    container_name: mongodb-transactions
-    ports:
-      - "27018:27018"
-    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "28018"]
-    healthcheck:
-      # test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
-      test: |
-        mongosh --port 28018 --quiet --eval "try { rs.initiate({_id:'rs0',members:[{_id:0,host:'localhost:28018'}]}).ok } catch (e) { rs.status().ok }"
-      interval: 5s
-      timeout: 30s
-      start_period: 0s
-      start_interval: 1s
-      retries: 30
 
-    networks:
-      - mongodb
 networks:
   mongodb:
+    name: mongodb
     driver: bridge
