@@ -20,9 +20,9 @@ permissions:
   contents: read
 
 jobs:
-  plugins-destination-mongodb:
-    timeout-minutes: 30
-    name: "plugins/destination/mongodb"
+  prepare:
+    timeout-minutes: 15
+    name: "plugins/destination/mongodb/prepare"
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -59,9 +59,40 @@ jobs:
         run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
       - name: Build
         run: go build .
+
+  test:
+    needs: prepare
+    timeout-minutes: 20
+    name: "plugins/destination/mongodb/${{ matrix.topology }}"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        topology: [standalone, replicaset]
+    defaults:
+      run:
+        working-directory: ./plugins/destination/mongodb
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        with:
+          fetch-depth: 2
+      - name: Set up Go 1.x
+        id: setup-go
+        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+        with:
+          go-version-file: plugins/destination/mongodb/go.mod
+          cache: false
+      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-destination-mongodb-${{ hashFiles('plugins/destination/mongodb/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ steps.setup-go.outputs.go-version }}-test-destination-mongodb-
       - name: Spin up MongoDB
-        run: |
-          docker run -d -p 27017:27017 mongo:4.4
+        run: docker compose -f docker-compose.${{ matrix.topology }}.yaml up -d --wait
       - name: Test
+        env:
+          CQ_DEST_MONGODB_TEST_CONN: ${{ matrix.topology == 'replicaset' && 'mongodb://localhost:27017/?replicaSet=cloudquery' || 'mongodb://localhost:27017' }}
         run: make test
-  
