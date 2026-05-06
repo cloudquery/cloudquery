@@ -4,6 +4,7 @@ go 1.26.4
 
 require (
 	github.com/apache/arrow-go/v18 v18.6.0
+	github.com/avast/retry-go/v5 v5.0.0
 	github.com/aws/aws-sdk-go-v2 v1.42.0
 	github.com/aws/aws-sdk-go-v2/config v1.32.25
 	github.com/aws/aws-sdk-go-v2/credentials v1.19.24
