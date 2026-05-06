@@ -56,6 +56,18 @@ type WriteRetryConfig struct {
 	// Maximum backoff between retry attempts.
 	MaxBackoff *configtype.Duration `json:"max_backoff,omitempty" jsonschema:"default=10s"`
 
+	// When `true`, each retried write batch runs inside a MongoDB
+	// [transaction](https://www.mongodb.com/docs/manual/core/transactions/) so a
+	// retry that follows a partially-applied write rolls back the partial state
+	// before re-attempting. This eliminates the duplicate-document risk on
+	// `write_mode: append` tables (where `_id` is server-generated and the
+	// driver has no txnNumber to dedupe on).
+	//
+	// Requires a replica set, sharded cluster, or load-balanced deployment —
+	// transactions are not supported on standalone MongoDB, and enabling this
+	// against a standalone server will surface a driver error at write time.
+	//
+	// Has no effect when `max_attempts` is 1 (retries disabled).
 	UseTransactions bool `json:"use_transactions,omitempty"`
 }
 
