@@ -14,7 +14,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat.js';
 import timezone from 'dayjs/plugin/timezone.js';
 import utc from 'dayjs/plugin/utc.js';
 import { getProperty } from 'dot-prop';
-import { got } from 'got';
+import got from 'got';
 import pMap from 'p-map';
 import type { Logger } from 'winston';
 

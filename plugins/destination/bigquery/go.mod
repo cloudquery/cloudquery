@@ -1,15 +1,15 @@
 module github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4
 
-go 1.26.1
+go 1.26.2
 
 require (
 	cloud.google.com/go/bigquery v1.76.0
-	github.com/apache/arrow-go/v18 v18.5.2
+	github.com/apache/arrow-go/v18 v18.6.0
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-sdk/v4 v4.95.1
 	github.com/goccy/go-json v0.10.6
-	github.com/invopop/jsonschema v0.13.0
-	github.com/rs/zerolog v1.34.0
+	github.com/invopop/jsonschema v0.14.0
+	github.com/rs/zerolog v1.35.1
 	github.com/samber/lo v1.53.0
 	golang.org/x/sync v0.20.0
 	google.golang.org/api v0.276.0
@@ -110,7 +110,7 @@ require (
 	github.com/thoas/go-funk v0.9.3 // indirect
 	golang.org/x/net v0.52.0 // indirect; indirect // indirect
 	golang.org/x/oauth2 v0.36.0 // indirect
-	golang.org/x/sys v0.42.0 // indirect
+	golang.org/x/sys v0.43.0 // indirect
 	golang.org/x/text v0.35.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect
 	google.golang.org/genproto v0.0.0-20260319201613-d00831a3d3e7 // indirect

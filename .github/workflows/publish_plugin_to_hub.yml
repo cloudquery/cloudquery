@@ -62,7 +62,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         id: set-result
         env:
           PLUGIN_DIR: ${{steps.split.outputs.plugin_dir}}
@@ -86,7 +86,7 @@ jobs:
             return 'unsupported';
           result-encoding: string
 
-      - uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+      - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         id: check-ui-directory
         env:
           PLUGIN_DIR: ${{steps.split.outputs.plugin_dir}}
@@ -117,7 +117,7 @@ jobs:
         with:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
           cache: false
-      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
+      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         if: needs.prepare.outputs.ui_dir_arg != ''
         with:
           path: |
@@ -129,7 +129,7 @@ jobs:
 
       - name: Setup CloudQuery
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: cloudquery/setup-cloudquery@4a3af61f7d8c362d8d152a4a17053ed2aaa7180d # v4
+        uses: cloudquery/setup-cloudquery@b7f7ea62cfec9774ad44a0d9307d0f6c5573bcb6 # v5.0.2
         with:
           version: v6.35.7
 
@@ -140,7 +140,7 @@ jobs:
 
       - name: Use Node.js LTS
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: "lts/*"
           cache: "npm"
@@ -164,7 +164,7 @@ jobs:
 
       - name: Upload build artifacts
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
@@ -198,7 +198,7 @@ jobs:
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: "lts/*"
 
@@ -208,7 +208,7 @@ jobs:
 
       - name: Get Release Notes
         id: release-notes
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         env:
           PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
         with:
@@ -254,7 +254,7 @@ jobs:
           java -jar app/build/libs/app.jar package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@4a3af61f7d8c362d8d152a4a17053ed2aaa7180d # v4
+        uses: cloudquery/setup-cloudquery@b7f7ea62cfec9774ad44a0d9307d0f6c5573bcb6 # v5.0.2
         with:
           version: v6.35.7
 
@@ -266,7 +266,7 @@ jobs:
           cloudquery plugin publish --finalize ${{ needs.prepare.outputs.ui_dir_arg }}
 
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@d0190712a54cd89d2e57a5847f06a78de127711a
+        uses: ravsamhq/notify-slack-action@0670a0482d2a919531ba3b219e0c535fe4fcc791
         if: always()
         with:
           status: ${{ job.status }}
@@ -296,6 +296,9 @@ jobs:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+
       - name: Set up Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
         with:
@@ -303,13 +306,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
-        run: |
-          pip install --upgrade pip
-          pip install -r requirements.txt
+        run: uv sync --frozen
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: "lts/*"
 
@@ -319,7 +320,7 @@ jobs:
 
       - name: Get Release Notes
         id: release-notes
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         env:
           PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
         with:
@@ -352,10 +353,10 @@ jobs:
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: |
           rm -rf docs/tables.md
-          python main.py package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
+          uv run python main.py package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@4a3af61f7d8c362d8d152a4a17053ed2aaa7180d # v4
+        uses: cloudquery/setup-cloudquery@b7f7ea62cfec9774ad44a0d9307d0f6c5573bcb6 # v5.0.2
         with:
           version: v6.35.7
 
@@ -367,7 +368,7 @@ jobs:
           cloudquery plugin publish --finalize ${{ needs.prepare.outputs.ui_dir_arg }}
 
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@d0190712a54cd89d2e57a5847f06a78de127711a
+        uses: ravsamhq/notify-slack-action@0670a0482d2a919531ba3b219e0c535fe4fcc791
         if: always()
         with:
           status: ${{ job.status }}
@@ -397,15 +398,19 @@ jobs:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
 
+      - uses: pnpm/action-setup@903f9c1a6ebcba6cf41d87230be49611ac97822e # v6
+        with:
+          package_json_file: ${{ needs.prepare.outputs.plugin_dir }}/package.json
+
       - name: Use Node.js LTS
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: "lts/*"
-          cache: "npm"
-          cache-dependency-path: "${{needs.prepare.outputs.plugin_dir}}/package-lock.json"
+          cache: "pnpm"
+          cache-dependency-path: "${{needs.prepare.outputs.plugin_dir}}/pnpm-lock.yaml"
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
         working-directory: ${{needs.prepare.outputs.plugin_dir}}
 
       - name: Install shell escape
@@ -414,7 +419,7 @@ jobs:
 
       - name: Get Release Notes
         id: release-notes
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         env:
           PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
         with:
@@ -447,10 +452,10 @@ jobs:
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
         run: |
           rm -rf docs/tables.md
-          npm run dev -- package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
+          pnpm run dev -- package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@4a3af61f7d8c362d8d152a4a17053ed2aaa7180d # v4
+        uses: cloudquery/setup-cloudquery@b7f7ea62cfec9774ad44a0d9307d0f6c5573bcb6 # v5.0.2
         with:
           version: v6.35.7
 
@@ -462,7 +467,7 @@ jobs:
           cloudquery plugin publish --finalize ${{ needs.prepare.outputs.ui_dir_arg }}
 
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@d0190712a54cd89d2e57a5847f06a78de127711a
+        uses: ravsamhq/notify-slack-action@0670a0482d2a919531ba3b219e0c535fe4fcc791
         if: always()
         with:
           status: ${{ job.status }}
@@ -501,7 +506,7 @@ jobs:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
           cache: false
 
-      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
+      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
         with:
           path: |
             ~/.cache/go-build
@@ -512,7 +517,7 @@ jobs:
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
           node-version: "lts/*"
 
@@ -522,7 +527,7 @@ jobs:
 
       - name: Get Release Notes
         id: release-notes
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         env:
           PRERELEASE: ${{ needs.prepare.outputs.prerelease }}
         with:
@@ -554,7 +559,7 @@ jobs:
           go run main.go package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@4a3af61f7d8c362d8d152a4a17053ed2aaa7180d # v4
+        uses: cloudquery/setup-cloudquery@b7f7ea62cfec9774ad44a0d9307d0f6c5573bcb6 # v5.0.2
         with:
           version: v6.35.7
 
@@ -571,7 +576,7 @@ jobs:
           git tag ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }} && git push origin ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }}
 
       - name: Slack Notify
-        uses: ravsamhq/notify-slack-action@d0190712a54cd89d2e57a5847f06a78de127711a
+        uses: ravsamhq/notify-slack-action@0670a0482d2a919531ba3b219e0c535fe4fcc791
         if: always()
         with:
           status: ${{ job.status }}
