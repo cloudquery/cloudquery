@@ -115,24 +115,33 @@ func initPlugin(ctx context.Context, client plugin.PluginClient, spec map[string
 //  3. If the schema isn't empty but not valid, print the error message & skip the validation.
 //  4. Finally, return the validation result.
 func validatePluginSpec(ctx context.Context, client plugin.PluginClient, spec any) error {
+	jsonSchema, err := getSpecSchemaFromPlugin(ctx, client)
+	if err != nil {
+		return err
+	}
+	return validateSpecAgainstSchema(jsonSchema, spec)
+}
+
+func getSpecSchemaFromPlugin(ctx context.Context, client plugin.PluginClient) (string, error) {
 	schema, err := client.GetSpecSchema(ctx, &plugin.GetSpecSchema_Request{})
 	if err != nil {
 		st, ok := status.FromError(err)
 		if !ok {
 			// not a gRPC-compatible error
 			log.Err(err).Msg("failed to get spec schema")
-			return err
+			return "", err
 		}
 		if st.Code() != codes.Unimplemented {
 			// unimplemented is OK, treat as empty schema
 			log.Err(err).Msg("failed to get spec schema")
-			return err
+			return "", err
 		}
 	}
+	return schema.GetJsonSchema(), nil
+}
 
-	jsonSchema := schema.GetJsonSchema()
+func validateSpecAgainstSchema(jsonSchema string, spec any) error {
 	if len(jsonSchema) == 0 {
-		// This will also be true for Unimplemented response (schema = nil => schema.GetJsonSchema() = "")
 		log.Info().Msg("empty JSON schema for plugin spec, skipping validation")
 		return nil
 	}

@@ -190,6 +190,7 @@ func NewCmdRoot() *cobra.Command {
 	pluginCmd.AddCommand(
 		newCmdPluginInstall(false),
 		newCmdPluginPublish(),
+		newCmdPluginSpecSchema(),
 		pluginDocCmd,
 		pluginUIAssetsCmd,
 	)

@@ -1,0 +1,13 @@
+kind: source
+spec:
+  name: src
+  path: ./nonexistent-src-binary
+  registry: local
+  destinations: [dst]
+  tables: ["*"]
+---
+kind: destination
+spec:
+  name: dst
+  path: ./nonexistent-dst-binary
+  registry: local

@@ -54,3 +54,51 @@ func TestValidateConfig(t *testing.T) {
 		})
 	}
 }
+
+func TestValidateConfigSchemasDir(t *testing.T) {
+	_, filename, _, _ := runtime.Caller(0)
+	currentDir := path.Dir(filename)
+	schemasDir := path.Join(currentDir, "testdata", "schemas-dir")
+
+	t.Run("good spec validates offline without plugin spawn", func(t *testing.T) {
+		cmd := NewCmdRoot()
+		testConfig := path.Join(currentDir, "testdata", "validate-config-schemas-dir.yml")
+		baseArgs := testCommandArgs(t)
+
+		args := append([]string{"validate-config", testConfig, "--schemas-dir", schemasDir}, baseArgs...)
+		cmd.SetArgs(args)
+		err := cmd.Execute()
+		require.NoError(t, err)
+
+		b, logFileError := os.ReadFile(baseArgs[3])
+		require.NoError(t, logFileError, "failed to read cloudquery.log")
+		logContent := string(b)
+		require.Contains(t, logContent, "Validating source against local schema")
+		require.Contains(t, logContent, "Validating destination against local schema")
+		// No plugin spawn happened, so no "Initializing source/destination" lines.
+		require.NotContains(t, logContent, "Initializing source")
+		require.NotContains(t, logContent, "Initializing destination")
+	})
+
+	t.Run("spec violating schema fails offline", func(t *testing.T) {
+		cmd := NewCmdRoot()
+		testConfig := path.Join(currentDir, "testdata", "validate-config-schemas-dir-bad.yml")
+		baseArgs := testCommandArgs(t)
+
+		args := append([]string{"validate-config", testConfig, "--schemas-dir", schemasDir}, baseArgs...)
+		cmd.SetArgs(args)
+		err := cmd.Execute()
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "failed to validate source config src")
+	})
+}
+
+func TestLookupSchemaFile(t *testing.T) {
+	dir := t.TempDir()
+	target := path.Join(dir, "aws.json")
+	require.NoError(t, os.WriteFile(target, []byte("{}"), 0o644))
+
+	require.Equal(t, target, lookupSchemaFile(dir, "aws"))
+	require.Equal(t, "", lookupSchemaFile(dir, "gcp"))
+	require.Equal(t, "", lookupSchemaFile("", "aws"))
+}
