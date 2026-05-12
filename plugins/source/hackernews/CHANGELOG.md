@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.9.8](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.9.7...plugins-source-hackernews-v3.9.8) (2026-05-12)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency go to v1.26.2 ([#22805](https://github.com/cloudquery/cloudquery/issues/22805)) ([59aeaf3](https://github.com/cloudquery/cloudquery/commit/59aeaf3355ed1b82e8675944d6ea3d48d5f80a39))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.6.0 ([#22806](https://github.com/cloudquery/cloudquery/issues/22806)) ([2a7e7d2](https://github.com/cloudquery/cloudquery/commit/2a7e7d21a005267915db763397c1e415e37405da))
+* **deps:** Update module github.com/rs/zerolog to v1.35.1 ([#22784](https://github.com/cloudquery/cloudquery/issues/22784)) ([7aa1d85](https://github.com/cloudquery/cloudquery/commit/7aa1d854e61a499efb5b6f181524719b60309905))
+* **deps:** Update module golang.org/x/term to v0.42.0 ([#22786](https://github.com/cloudquery/cloudquery/issues/22786)) ([b4a7483](https://github.com/cloudquery/cloudquery/commit/b4a7483737409bc227704cbe49f9cfe515e89a5d))
+* **deps:** Update module google.golang.org/api to v0.275.0 ([#22590](https://github.com/cloudquery/cloudquery/issues/22590)) ([0e4cedc](https://github.com/cloudquery/cloudquery/commit/0e4cedc995e977a7dded30b2abeaf916c95abb90))
+* Validate item_concurrency upper bound in Spec ([#22656](https://github.com/cloudquery/cloudquery/issues/22656)) ([ec11047](https://github.com/cloudquery/cloudquery/commit/ec110472692670d197dc0a5bcab7a501ed3436ea))
+
 ## [3.9.7](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.9.6...plugins-source-hackernews-v3.9.7) (2026-04-15)
 
 
