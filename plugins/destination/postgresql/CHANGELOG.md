@@ -1,5 +1,16 @@
 # Changelog
 
+## [8.14.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.14.8...plugins-destination-postgresql-v8.14.9) (2026-05-12)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency go to v1.26.2 ([#22805](https://github.com/cloudquery/cloudquery/issues/22805)) ([59aeaf3](https://github.com/cloudquery/cloudquery/commit/59aeaf3355ed1b82e8675944d6ea3d48d5f80a39))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.6.0 ([#22806](https://github.com/cloudquery/cloudquery/issues/22806)) ([2a7e7d2](https://github.com/cloudquery/cloudquery/commit/2a7e7d21a005267915db763397c1e415e37405da))
+* **deps:** Update module github.com/invopop/jsonschema to v0.14.0 ([#22783](https://github.com/cloudquery/cloudquery/issues/22783)) ([94db95e](https://github.com/cloudquery/cloudquery/commit/94db95e486029b1521d087450fb918423fbedc04))
+* **deps:** Update module github.com/rs/zerolog to v1.35.1 ([#22784](https://github.com/cloudquery/cloudquery/issues/22784)) ([7aa1d85](https://github.com/cloudquery/cloudquery/commit/7aa1d854e61a499efb5b6f181524719b60309905))
+* **deps:** Update module golang.org/x/term to v0.42.0 ([#22786](https://github.com/cloudquery/cloudquery/issues/22786)) ([b4a7483](https://github.com/cloudquery/cloudquery/commit/b4a7483737409bc227704cbe49f9cfe515e89a5d))
+
 ## [8.14.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.14.7...plugins-destination-postgresql-v8.14.8) (2026-04-23)
 
 
