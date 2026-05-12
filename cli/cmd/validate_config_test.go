@@ -95,10 +95,19 @@ func TestValidateConfigSchemasDir(t *testing.T) {
 
 func TestLookupSchemaFile(t *testing.T) {
 	dir := t.TempDir()
-	target := path.Join(dir, "aws.json")
-	require.NoError(t, os.WriteFile(target, []byte("{}"), 0o644))
+	unversioned := path.Join(dir, "aws.json")
+	versioned := path.Join(dir, "aws@v33.0.0.json")
+	require.NoError(t, os.WriteFile(unversioned, []byte("{}"), 0o644))
+	require.NoError(t, os.WriteFile(versioned, []byte("{}"), 0o644))
 
-	require.Equal(t, target, lookupSchemaFile(dir, "aws"))
-	require.Equal(t, "", lookupSchemaFile(dir, "gcp"))
-	require.Equal(t, "", lookupSchemaFile("", "aws"))
+	// Versioned file takes precedence when both exist.
+	require.Equal(t, versioned, lookupSchemaFile(dir, "aws", "v33.0.0"))
+	// Falls back to unversioned when version-specific file is missing.
+	require.Equal(t, unversioned, lookupSchemaFile(dir, "aws", "v99.0.0"))
+	// Empty version uses unversioned name (e.g. registry: local without a version).
+	require.Equal(t, unversioned, lookupSchemaFile(dir, "aws", ""))
+	// Unknown plugin returns empty.
+	require.Equal(t, "", lookupSchemaFile(dir, "gcp", "v1.0.0"))
+	// Empty dir returns empty.
+	require.Equal(t, "", lookupSchemaFile("", "aws", "v33.0.0"))
 }

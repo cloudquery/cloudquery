@@ -7,9 +7,13 @@ Export a plugin's spec JSON schema.
 
 ## Synopsis
 
-Export a plugin's spec JSON schema to a local file.
-The exported file can later be passed to `cloudquery validate-config --schemas-dir` to validate
-configurations fully offline, without spawning the plugin binary or contacting the CloudQuery registry.
+Export a plugin's spec JSON schema.
+
+Without --schemas-dir the schema is printed to stdout. With --schemas-dir the
+schema is written to <dir>/<plugin-name>@<version>.json, which is the
+filename format expected by `cloudquery validate-config --schemas-dir`.
+Including the version in the filename ensures validation always runs against
+the schema matching the plugin version in the config.
 
 ```
 cloudquery plugin spec-schema <team_name>/<plugin_kind>/<plugin_name>@<version> [flags]
@@ -22,10 +26,7 @@ cloudquery plugin spec-schema <team_name>/<plugin_kind>/<plugin_name>@<version> 
 # Print schema to stdout
 cloudquery plugin spec-schema cloudquery/source/aws@v33.0.0
 
-# Write schema to a specific file
-cloudquery plugin spec-schema cloudquery/source/aws@v33.0.0 -o aws.json
-
-# Write schema to <dir>/<name>.json (suitable for --schemas-dir consumption)
+# Write to ./schemas/aws@v33.0.0.json
 cloudquery plugin spec-schema cloudquery/source/aws@v33.0.0 -D ./schemas
 ```
 
@@ -33,8 +34,7 @@ cloudquery plugin spec-schema cloudquery/source/aws@v33.0.0 -D ./schemas
 
 ```
   -h, --help                 help for spec-schema
-  -o, --output string        Write schema to this file. Mutually exclusive with --schemas-dir.
-  -D, --schemas-dir string   Write schema to <dir>/<plugin-name>.json. Mutually exclusive with --output.
+  -D, --schemas-dir string   Write schema to <dir>/<plugin-name>@<version>.json. If omitted, the schema is printed to stdout.
 ```
 
 ## Options inherited from parent commands

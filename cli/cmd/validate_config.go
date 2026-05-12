@@ -68,10 +68,10 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 	destinationSchemaFiles := make([]string, len(destinations))
 	if schemasDir != "" {
 		for i, source := range sources {
-			sourceSchemaFiles[i] = lookupSchemaFile(schemasDir, source.Name)
+			sourceSchemaFiles[i] = lookupSchemaFile(schemasDir, source.Name, source.Version)
 		}
 		for i, destination := range destinations {
-			destinationSchemaFiles[i] = lookupSchemaFile(schemasDir, destination.Name)
+			destinationSchemaFiles[i] = lookupSchemaFile(schemasDir, destination.Name, destination.Version)
 		}
 	}
 
@@ -222,14 +222,23 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 	return errors.Join(initErrors...)
 }
 
-// lookupSchemaFile returns the path to <dir>/<name>.json if it exists, otherwise "".
-func lookupSchemaFile(dir, name string) string {
+// lookupSchemaFile resolves a plugin's pre-fetched schema file under dir.
+// Prefers <name>@<version>.json so validation can pin to the configured plugin version,
+// falling back to <name>.json when version is empty (e.g. for registry: local) or when
+// only the unversioned file exists.
+func lookupSchemaFile(dir, name, version string) string {
 	if dir == "" {
 		return ""
 	}
-	p := filepath.Join(dir, name+".json")
-	if _, err := os.Stat(p); err != nil {
-		return ""
+	if version != "" {
+		p := filepath.Join(dir, name+"@"+version+".json")
+		if _, err := os.Stat(p); err == nil {
+			return p
+		}
 	}
-	return p
+	p := filepath.Join(dir, name+".json")
+	if _, err := os.Stat(p); err == nil {
+		return p
+	}
+	return ""
 }

@@ -17,17 +17,18 @@ import (
 
 const (
 	pluginSpecSchemaShort = "Export a plugin's spec JSON schema."
-	pluginSpecSchemaLong  = `Export a plugin's spec JSON schema to a local file.
-The exported file can later be passed to ` + "`cloudquery validate-config --schemas-dir`" + ` to validate
-configurations fully offline, without spawning the plugin binary or contacting the CloudQuery registry.`
+	pluginSpecSchemaLong  = `Export a plugin's spec JSON schema.
+
+Without --schemas-dir the schema is printed to stdout. With --schemas-dir the
+schema is written to <dir>/<plugin-name>@<version>.json, which is the
+filename format expected by ` + "`cloudquery validate-config --schemas-dir`" + `.
+Including the version in the filename ensures validation always runs against
+the schema matching the plugin version in the config.`
 	pluginSpecSchemaExample = `
 # Print schema to stdout
 cloudquery plugin spec-schema cloudquery/source/aws@v33.0.0
 
-# Write schema to a specific file
-cloudquery plugin spec-schema cloudquery/source/aws@v33.0.0 -o aws.json
-
-# Write schema to <dir>/<name>.json (suitable for --schemas-dir consumption)
+# Write to ./schemas/aws@v33.0.0.json
 cloudquery plugin spec-schema cloudquery/source/aws@v33.0.0 -D ./schemas`
 )
 
@@ -40,22 +41,14 @@ func newCmdPluginSpecSchema() *cobra.Command {
 		Args:    cobra.ExactArgs(1),
 		RunE:    runPluginSpecSchema,
 	}
-	cmd.Flags().StringP("output", "o", "", "Write schema to this file. Mutually exclusive with --schemas-dir.")
-	cmd.Flags().StringP("schemas-dir", "D", "", "Write schema to <dir>/<plugin-name>.json. Mutually exclusive with --output.")
+	cmd.Flags().StringP("schemas-dir", "D", "", "Write schema to <dir>/<plugin-name>@<version>.json. If omitted, the schema is printed to stdout.")
 	return cmd
 }
 
 func runPluginSpecSchema(cmd *cobra.Command, args []string) error {
-	output, err := cmd.Flags().GetString("output")
-	if err != nil {
-		return err
-	}
 	schemasDir, err := cmd.Flags().GetString("schemas-dir")
 	if err != nil {
 		return err
-	}
-	if output != "" && schemasDir != "" {
-		return errors.New("--output and --schemas-dir are mutually exclusive")
 	}
 	cqDir, err := cmd.Flags().GetString("cq-dir")
 	if err != nil {
@@ -129,7 +122,7 @@ func runPluginSpecSchema(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("plugin %s did not return a spec schema", ref.String())
 	}
 
-	return writeSchemaOutput(jsonSchema, ref.Name, output, schemasDir)
+	return writeSchemaOutput(jsonSchema, ref.Name, ref.Version, schemasDir)
 }
 
 func pluginTypeFromKind(kind string) (managedplugin.PluginType, error) {
@@ -143,18 +136,22 @@ func pluginTypeFromKind(kind string) (managedplugin.PluginType, error) {
 	}
 }
 
-func writeSchemaOutput(jsonSchema, pluginName, output, schemasDir string) error {
-	switch {
-	case output != "":
-		return os.WriteFile(output, []byte(jsonSchema), 0o644)
-	case schemasDir != "":
-		if err := os.MkdirAll(schemasDir, 0o755); err != nil {
-			return err
-		}
-		path := filepath.Join(schemasDir, pluginName+".json")
-		return os.WriteFile(path, []byte(jsonSchema), 0o644)
-	default:
+func writeSchemaOutput(jsonSchema, pluginName, pluginVersion, schemasDir string) error {
+	if schemasDir == "" {
 		_, err := fmt.Print(jsonSchema)
 		return err
 	}
+	if err := os.MkdirAll(schemasDir, 0o755); err != nil {
+		return err
+	}
+	return os.WriteFile(filepath.Join(schemasDir, schemaFileName(pluginName, pluginVersion)), []byte(jsonSchema), 0o644)
+}
+
+// schemaFileName returns the canonical filename for a plugin's schema under --schemas-dir.
+// Version is included whenever non-empty so consumers can pin validation to the right plugin version.
+func schemaFileName(pluginName, pluginVersion string) string {
+	if pluginVersion == "" {
+		return pluginName + ".json"
+	}
+	return pluginName + "@" + pluginVersion + ".json"
 }
