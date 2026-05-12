@@ -19,8 +19,8 @@ import (
 )
 
 const (
-	validateConfigShort   = "Validate config"
-	validateConfigLong    = `Validate configuration without running a sync.
+	validateConfigShort = "Validate config"
+	validateConfigLong  = `Validate configuration without running a sync.
 
 For ` + "`registry: cloudquery`" + ` plugins, the spec JSON schema is fetched from
 the CloudQuery Hub API (https://api.cloudquery.io). This avoids downloading
