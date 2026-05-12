@@ -20,7 +20,7 @@ This destination plugin lets you sync data from a CloudQuery source to Amazon Ki
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/cli/integrations/destinations#complete-destination-spec-reference).
 
-The Amazon Kinesis Firehose destination utilizes batching, and supports [`batch_size`](/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](/docs/cli/integrations/destinations#batch_size_bytes). 
+The Amazon Kinesis Firehose destination utilizes batching, and supports [`batch_size`](/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](/docs/cli/integrations/destinations#batch_size_bytes).
 
 It is important to note that Amazon Kinesis Firehose has the following limitations that cannot be changed:
   - The maximum size of a record sent to Kinesis Data Firehose, before base64-encoding, is 1,000 KiB.
