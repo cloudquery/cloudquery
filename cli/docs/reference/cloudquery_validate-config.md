@@ -20,13 +20,16 @@ cloudquery validate-config [files or directories] [flags]
 cloudquery validate-config ./directory
 # Validate configs from directories and files
 cloudquery validate-config ./directory ./aws.yml ./pg.yml
+# Validate fully offline using locally-stored plugin JSON schemas
+cloudquery validate-config --schemas-dir ./schemas ./aws.yml
 
 ```
 
 ## Options
 
 ```
-  -h, --help   help for validate-config
+  -h, --help                                        help for validate-config
+      --schemas-dir cloudquery plugin spec-schema   Directory of pre-fetched <plugin-name>.json schema files. Plugins with a matching file are validated offline (no plugin spawn, no auth). Use cloudquery plugin spec-schema to generate these files.
 ```
 
 ## Options inherited from parent commands
