@@ -4,7 +4,7 @@ The plugin discover all workspaces and repositories in your account and syncs th
 
 ## Example Configuration
 
-This example syncs from Bitbucket to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
+This example syncs from Bitbucket to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/cli/integrations/sources#complete-source-spec-reference).
 
 :configuration
 

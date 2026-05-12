@@ -8,7 +8,7 @@ See [tables](/docs/plugins/sources/typeform/tables) for a list of resources supp
 
 ## Example Configuration
 
-This example syncs from Typeform to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
+This example syncs from Typeform to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/cli/integrations/sources#complete-source-spec-reference).
 
 :configuration
 

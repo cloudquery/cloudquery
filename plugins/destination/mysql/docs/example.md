@@ -28,7 +28,7 @@ Once you've completed the steps from previous sections you should be able to con
 root:password@/cloudquery
 ```
 
-The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
+The (top level) spec section is described in the [Destination Spec Reference](/docs/cli/integrations/destinations#complete-destination-spec-reference).
 The full configuration for the MySQL destination plugin should look like this:
 
 ```yaml copy

@@ -6,7 +6,7 @@ It can be used for real applications, but is mainly intended to serve as an exam
 
 The following configuration syncs from Hacker News to a Postgres destination, using a special table (`cq_hackernews_state`) to store the state of the last sync. It is also possible to any other CloudQuery destination as a state backend. For more on this, see [Managing Incremental Tables](/docs/advanced-topics/managing-incremental-tables).
 
-The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/quickstart) if you need help setting up the destination.
+The (top level) source spec section is described in the [Source Spec Reference](/docs/cli/integrations/sources#complete-source-spec-reference). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/cli/getting-started) if you need help setting up the destination.
 
 :configuration
 

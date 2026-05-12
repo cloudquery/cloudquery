@@ -5,12 +5,12 @@ It was originally developed as part of a live-coding tutorial on how to write yo
 ## Links
 
  - [Video Tutorial](https://www.youtube.com/watch?v=3Ka_Ob8E6P8)
- - [CloudQuery Quickstart Guide](https://www.cloudquery.io/docs/quickstart)
+ - [CloudQuery Quickstart Guide](https://www.cloudquery.io/docs/cli/getting-started)
 
 ## Configuration
 
 The following configuration syncs from the XKCD API to a Postgres destination.
 
-The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/quickstart) if you need help setting up the destination.
+The (top level) source spec section is described in the [Source Spec Reference](/docs/cli/integrations/sources#complete-source-spec-reference). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/cli/getting-started) if you need help setting up the destination.
 
 :configuration

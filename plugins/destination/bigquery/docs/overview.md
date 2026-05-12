@@ -26,7 +26,7 @@ Streaming is not available for the [Google Cloud free tier](https://cloud.google
 
 :configuration
 
-The BigQuery destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
+The BigQuery destination utilizes batching, and supports [`batch_size`](/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](/docs/cli/integrations/destinations#batch_size_bytes).
 
 Note that the BigQuery plugin only supports the `append` write mode. 
 

@@ -7,12 +7,12 @@ It was originally developed as part of a live-coding tutorial on how to write yo
 ## Links
 
 - [Video Tutorial](https://www.youtube.com/watch?v=3Ka_Ob8E6P8)
-- [CloudQuery Quickstart Guide](https://www.cloudquery.io/docs/quickstart)
+- [CloudQuery Quickstart Guide](https://www.cloudquery.io/docs/cli/getting-started)
 - [Supported Tables](docs/tables/README.md)
 
 ## Configuration
 
-The following source configuration file will sync all comics to a local SQLite database. See [the CloudQuery Quickstart](https://www.cloudquery.io/docs/quickstart) for more information on how to configure the source and destination.
+The following source configuration file will sync all comics to a local SQLite database. See [the CloudQuery Quickstart](https://www.cloudquery.io/docs/cli/getting-started) for more information on how to configure the source and destination.
 
 ```yaml
 kind: source

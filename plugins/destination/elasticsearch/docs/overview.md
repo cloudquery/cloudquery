@@ -13,7 +13,7 @@ The Elasticsearch plugin syncs data from any CloudQuery source plugin(s) to an E
 
 :configuration
 
-The Elasticsearch destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
+The Elasticsearch destination utilizes batching, and supports [`batch_size`](/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](/docs/cli/integrations/destinations#batch_size_bytes).
 
 It supports `append`, `overwrite` and `overwrite-delete-stale` write modes. The default write mode is `overwrite-delete-stale`.
 

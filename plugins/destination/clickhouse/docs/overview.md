@@ -11,7 +11,7 @@ description: CloudQuery ClickHouse destination plugin documentation
 This destination plugin lets you sync data from a CloudQuery source to [ClickHouse](https://clickhouse.com/) database.
 
 It supports `append` write mode only.
-Write mode selection is required through [`write_mode`](/docs/reference/destination-spec#write_mode).
+Write mode selection is required through [`write_mode`](/docs/cli/integrations/destinations#write_mode).
 
 Supported database versions: >= `24.8.1`
 
