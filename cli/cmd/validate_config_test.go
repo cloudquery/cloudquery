@@ -145,6 +145,25 @@ func TestValidateConfig_HubAPI(t *testing.T) {
 		require.Contains(t, err.Error(), "failed to validate source config aws")
 	})
 
+	t.Run("--license bypasses Hub schema-fetch path and forces plugin spawn", func(t *testing.T) {
+		licensePath := path.Join(t.TempDir(), "fake.license")
+		require.NoError(t, os.WriteFile(licensePath, []byte("not-a-real-license"), 0o600))
+
+		cmd := NewCmdRoot()
+		testConfig := path.Join(currentDir, "testdata", "validate-config-hub-good.yml")
+		baseArgs := testCommandArgs(t)
+		args := append([]string{"validate-config", testConfig, "--license", licensePath}, baseArgs...)
+		cmd.SetArgs(args)
+		// The spawn path will fail in this hermetic environment — we only care
+		// that the Hub schema-fetch helper is not entered. Its identifying log
+		// line "Fetching spec schema from Hub API" must therefore be absent.
+		_ = cmd.Execute()
+		logContent, readErr := os.ReadFile(baseArgs[3])
+		require.NoError(t, readErr)
+		require.NotContains(t, string(logContent), "Fetching spec schema from Hub API",
+			"--license must skip the Hub schema-fetch code path")
+	})
+
 	t.Run("missing plugin version surfaces Hub 404", func(t *testing.T) {
 		cmd := NewCmdRoot()
 		testConfig := path.Join(currentDir, "testdata", "validate-config-hub-404.yml")

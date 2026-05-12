@@ -50,12 +50,17 @@ func newCmdValidateConfig() *cobra.Command {
 		RunE:    validateConfig,
 		Hidden:  false,
 	}
+	cmd.Flags().String("license", "", "Set offline license file. When provided, the Hub API is bypassed and plugins are spawned locally (mirrors `cloudquery sync --license`).")
 
 	return cmd
 }
 
 func validateConfig(cmd *cobra.Command, args []string) error {
 	cqDir, err := cmd.Flags().GetString("cq-dir")
+	if err != nil {
+		return err
+	}
+	licenseFile, err := cmd.Flags().GetString("license")
 	if err != nil {
 		return err
 	}
@@ -92,8 +97,9 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 
 	var initErrors []error
 
+	useHubAPI := licenseFile == ""
 	for i, source := range sources {
-		if source.Registry == specs.RegistryCloudQuery {
+		if useHubAPI && source.Registry == specs.RegistryCloudQuery {
 			if err := validateViaHubAPI(ctx, apiClient, source.Path, cloudquery_api.PluginKindSource, source.Version, source.Spec); err != nil {
 				initErrors = append(initErrors, fmt.Errorf("failed to validate source config %v: %w", source.VersionString(), err))
 			} else {
@@ -113,7 +119,7 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 	}
 
 	for i, destination := range destinations {
-		if destination.Registry == specs.RegistryCloudQuery {
+		if useHubAPI && destination.Registry == specs.RegistryCloudQuery {
 			if err := validateViaHubAPI(ctx, apiClient, destination.Path, cloudquery_api.PluginKindDestination, destination.Version, destination.Spec); err != nil {
 				initErrors = append(initErrors, fmt.Errorf("failed to validate destination config %v: %w", destination.VersionString(), err))
 			} else {
@@ -154,6 +160,9 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 	}
 	if disableSentry {
 		opts = append(opts, managedplugin.WithNoSentry())
+	}
+	if licenseFile != "" {
+		opts = append(opts, managedplugin.WithLicenseFile(licenseFile))
 	}
 
 	sourceClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, sourcePluginConfigs, opts...)
