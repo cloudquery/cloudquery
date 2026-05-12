@@ -19,6 +19,12 @@ const (
 	pluginSpecSchemaShort = "Export a plugin's spec JSON schema."
 	pluginSpecSchemaLong  = `Export a plugin's spec JSON schema.
 
+Only plugins published to the CloudQuery hub are supported. registry: local,
+registry: grpc, and registry: docker plugins are not exportable because they
+have no stable (path, version) identity to anchor the generated filename.
+For those registries the plugin binary is already accessible locally, so
+'cloudquery validate-config' can validate them in-place without --schemas-dir.
+
 Without --schemas-dir the schema is printed to stdout. With --schemas-dir the
 schema is written to <dir>/<plugin-name>@<version>.json, which is the
 filename format expected by ` + "`cloudquery validate-config --schemas-dir`" + `.
@@ -67,6 +73,11 @@ func runPluginSpecSchema(cmd *cobra.Command, args []string) error {
 
 	ctx := cmd.Context()
 
+	// Only registry: cloudquery is supported. The hub-ref input format already
+	// constrains us to this registry, but the hardcoded value below is the
+	// single source of truth — do not add a flag that lets callers select
+	// local / grpc / docker without first defining how the exported filename
+	// (which is keyed on a stable name+version) should be derived for those.
 	pluginCfg := managedplugin.Config{
 		Name:     ref.Name,
 		Version:  ref.Version,

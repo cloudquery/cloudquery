@@ -9,6 +9,12 @@ Export a plugin's spec JSON schema.
 
 Export a plugin's spec JSON schema.
 
+Only plugins published to the CloudQuery hub are supported. registry: local,
+registry: grpc, and registry: docker plugins are not exportable because they
+have no stable (path, version) identity to anchor the generated filename.
+For those registries the plugin binary is already accessible locally, so
+'cloudquery validate-config' can validate them in-place without --schemas-dir.
+
 Without --schemas-dir the schema is printed to stdout. With --schemas-dir the
 schema is written to <dir>/<plugin-name>@<version>.json, which is the
 filename format expected by `cloudquery validate-config --schemas-dir`.
