@@ -1,5 +1,5 @@
 {
-  "cli": "6.35.7",
+  "cli": "6.36.0",
   "cli+FILLER": "0.0.0",
   "plugins/source/aws": "22.19.2",
   "plugins/source/aws+FILLER": "0.0.0",
@@ -103,11 +103,11 @@
   "plugins/source/bitbucket+FILLER": "0.0.0",
   "plugins/source/notion": "1.1.8",
   "plugins/source/notion+FILLER": "0.0.0",
-  "plugins/source/xkcd": "1.5.39",
+  "plugins/source/xkcd": "1.5.40",
   "plugins/source/xkcd+FILLER": "0.0.0",
-  "plugins/transformer/basic": "2.6.20",
+  "plugins/transformer/basic": "2.6.21",
   "plugins/transformer/basic+FILLER": "0.0.0",
   "plugins/transformer/jsonflattener": "2.1.18",
   "plugins/transformer/jsonflattener+FILLER": "0.0.0",
-  "plugins/transformer/test": "1.1.36"
+  "plugins/transformer/test": "1.1.37"
 }
