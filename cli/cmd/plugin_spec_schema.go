@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -15,8 +16,8 @@ import (
 )
 
 const (
-	pluginSpecSchemaShort   = "Export a plugin's spec JSON schema."
-	pluginSpecSchemaLong    = `Export a plugin's spec JSON schema to a local file.
+	pluginSpecSchemaShort = "Export a plugin's spec JSON schema."
+	pluginSpecSchemaLong  = `Export a plugin's spec JSON schema to a local file.
 The exported file can later be passed to ` + "`cloudquery validate-config --schemas-dir`" + ` to validate
 configurations fully offline, without spawning the plugin binary or contacting the CloudQuery registry.`
 	pluginSpecSchemaExample = `
@@ -54,7 +55,7 @@ func runPluginSpecSchema(cmd *cobra.Command, args []string) error {
 		return err
 	}
 	if output != "" && schemasDir != "" {
-		return fmt.Errorf("--output and --schemas-dir are mutually exclusive")
+		return errors.New("--output and --schemas-dir are mutually exclusive")
 	}
 	cqDir, err := cmd.Flags().GetString("cq-dir")
 	if err != nil {
@@ -116,7 +117,7 @@ func runPluginSpecSchema(cmd *cobra.Command, args []string) error {
 		}
 	}()
 	if len(clients) == 0 {
-		return fmt.Errorf("plugin client not initialized")
+		return errors.New("plugin client not initialized")
 	}
 
 	pluginClient := plugin.NewPluginClient(clients[0].Conn)
