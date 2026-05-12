@@ -140,6 +140,11 @@ func getSpecSchemaFromPlugin(ctx context.Context, client plugin.PluginClient) (s
 	return schema.GetJsonSchema(), nil
 }
 
+// validateSpecAgainstSchema validates spec against a plugin-supplied JSON schema.
+// Intended for schemas obtained from a running plugin over gRPC: a malformed or empty
+// schema is treated as "skip validation" so a buggy plugin can't block sync/validate-config.
+// For user-supplied schema files use validateSpecAgainstSchemaStrict instead, which fails
+// loudly on a malformed schema rather than silently passing.
 func validateSpecAgainstSchema(jsonSchema string, spec any) error {
 	if len(jsonSchema) == 0 {
 		// This will also be true for Unimplemented response (schema = nil => schema.GetJsonSchema() = "")
@@ -151,6 +156,22 @@ func validateSpecAgainstSchema(jsonSchema string, spec any) error {
 	if err != nil {
 		log.Err(err).Msg("failed to parse spec schema, skipping validation")
 		return nil
+	}
+
+	return sc.Validate(spec)
+}
+
+// validateSpecAgainstSchemaStrict validates spec against a JSON schema and treats parse
+// failures as errors. Use this when the schema is authoritative (e.g. a local file
+// passed via --schemas-dir) so a corrupt or empty schema cannot produce a false pass.
+func validateSpecAgainstSchemaStrict(jsonSchema string, spec any) error {
+	if len(jsonSchema) == 0 {
+		return errors.New("schema is empty")
+	}
+
+	sc, err := parseJSONSchema(jsonSchema)
+	if err != nil {
+		return fmt.Errorf("failed to parse JSON schema: %w", err)
 	}
 
 	return sc.Validate(spec)

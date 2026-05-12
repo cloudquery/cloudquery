@@ -100,14 +100,30 @@ func TestLookupSchemaFile(t *testing.T) {
 	require.NoError(t, os.WriteFile(unversioned, []byte("{}"), 0o644))
 	require.NoError(t, os.WriteFile(versioned, []byte("{}"), 0o644))
 
+	check := func(t *testing.T, wantPath string, gotPath string, err error) {
+		t.Helper()
+		require.NoError(t, err)
+		require.Equal(t, wantPath, gotPath)
+	}
+
 	// Versioned file takes precedence when both exist.
-	require.Equal(t, versioned, lookupSchemaFile(dir, "aws", "v33.0.0"))
+	got, err := lookupSchemaFile(dir, "aws", "v33.0.0")
+	check(t, versioned, got, err)
 	// Falls back to unversioned when version-specific file is missing.
-	require.Equal(t, unversioned, lookupSchemaFile(dir, "aws", "v99.0.0"))
+	got, err = lookupSchemaFile(dir, "aws", "v99.0.0")
+	check(t, unversioned, got, err)
 	// Empty version uses unversioned name (e.g. registry: local without a version).
-	require.Equal(t, unversioned, lookupSchemaFile(dir, "aws", ""))
+	got, err = lookupSchemaFile(dir, "aws", "")
+	check(t, unversioned, got, err)
 	// Unknown plugin returns empty.
-	require.Equal(t, "", lookupSchemaFile(dir, "gcp", "v1.0.0"))
+	got, err = lookupSchemaFile(dir, "gcp", "v1.0.0")
+	check(t, "", got, err)
 	// Empty dir returns empty.
-	require.Equal(t, "", lookupSchemaFile("", "aws", "v33.0.0"))
+	got, err = lookupSchemaFile("", "aws", "v33.0.0")
+	check(t, "", got, err)
+	// Path-traversal-shaped names are rejected as not-found.
+	got, err = lookupSchemaFile(dir, "../aws", "v33.0.0")
+	check(t, "", got, err)
+	got, err = lookupSchemaFile(dir, "..", "")
+	check(t, "", got, err)
 }

@@ -3,6 +3,7 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -68,10 +69,16 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 	destinationSchemaFiles := make([]string, len(destinations))
 	if schemasDir != "" {
 		for i, source := range sources {
-			sourceSchemaFiles[i] = lookupSchemaFile(schemasDir, source.Name, source.Version)
+			sourceSchemaFiles[i], err = lookupSchemaFile(schemasDir, source.Name, source.Version)
+			if err != nil {
+				return err
+			}
 		}
 		for i, destination := range destinations {
-			destinationSchemaFiles[i] = lookupSchemaFile(schemasDir, destination.Name, destination.Version)
+			destinationSchemaFiles[i], err = lookupSchemaFile(schemasDir, destination.Name, destination.Version)
+			if err != nil {
+				return err
+			}
 		}
 	}
 
@@ -172,7 +179,7 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 			initErrors = append(initErrors, fmt.Errorf("failed to read schema file for source %v: %w", source.VersionString(), err))
 			continue
 		}
-		if err := validateSpecAgainstSchema(string(schemaBytes), source.Spec); err != nil {
+		if err := validateSpecAgainstSchemaStrict(string(schemaBytes), source.Spec); err != nil {
 			initErrors = append(initErrors, fmt.Errorf("failed to validate source config %v: %w", source.VersionString(), err))
 		} else {
 			log.Info().Str("source", source.VersionString()).Msg("validated successfully")
@@ -188,7 +195,7 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 			initErrors = append(initErrors, fmt.Errorf("failed to read schema file for destination %v: %w", destination.VersionString(), err))
 			continue
 		}
-		if err := validateSpecAgainstSchema(string(schemaBytes), destination.Spec); err != nil {
+		if err := validateSpecAgainstSchemaStrict(string(schemaBytes), destination.Spec); err != nil {
 			initErrors = append(initErrors, fmt.Errorf("failed to validate destination config %v: %w", destination.VersionString(), err))
 		} else {
 			log.Info().Str("destination", destination.VersionString()).Msg("validated successfully")
@@ -225,20 +232,34 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 // lookupSchemaFile resolves a plugin's pre-fetched schema file under dir.
 // Prefers <name>@<version>.json so validation can pin to the configured plugin version,
 // falling back to <name>.json when version is empty (e.g. for registry: local) or when
-// only the unversioned file exists.
-func lookupSchemaFile(dir, name, version string) string {
+// only the unversioned file exists. Returns "" with no error when neither file exists;
+// surfaces all other os.Stat errors (e.g. permission denied) so the caller cannot
+// silently fall back to the online path on an unreadable file.
+func lookupSchemaFile(dir, name, version string) (string, error) {
 	if dir == "" {
-		return ""
+		return "", nil
 	}
+	// Reject spec names that could escape dir via path traversal. Plugin spec
+	// names are simple identifiers in practice, so anything containing a
+	// separator or '..' is treated as not-found rather than silently rebased.
+	if name == "" || name == ".." || strings.ContainsAny(name, `/\`) {
+		return "", nil
+	}
+
+	candidates := make([]string, 0, 2)
 	if version != "" {
-		p := filepath.Join(dir, name+"@"+version+".json")
-		if _, err := os.Stat(p); err == nil {
-			return p
+		candidates = append(candidates, filepath.Join(dir, name+"@"+version+".json"))
+	}
+	candidates = append(candidates, filepath.Join(dir, name+".json"))
+
+	for _, p := range candidates {
+		_, err := os.Stat(p)
+		if err == nil {
+			return p, nil
+		}
+		if !errors.Is(err, fs.ErrNotExist) {
+			return "", fmt.Errorf("failed to stat schema file %s: %w", p, err)
 		}
 	}
-	p := filepath.Join(dir, name+".json")
-	if _, err := os.Stat(p); err == nil {
-		return p
-	}
-	return ""
+	return "", nil
 }
