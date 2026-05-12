@@ -31,6 +31,7 @@ var docFiles = []string{
 	"cloudquery_plugin.md",
 	"cloudquery_plugin_install.md",
 	"cloudquery_plugin_publish.md",
+	"cloudquery_plugin_spec-schema.md",
 	"cloudquery_switch.md",
 }
 
