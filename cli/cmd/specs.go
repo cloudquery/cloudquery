@@ -142,6 +142,7 @@ func getSpecSchemaFromPlugin(ctx context.Context, client plugin.PluginClient) (s
 
 func validateSpecAgainstSchema(jsonSchema string, spec any) error {
 	if len(jsonSchema) == 0 {
+		// This will also be true for Unimplemented response (schema = nil => schema.GetJsonSchema() = "")
 		log.Info().Msg("empty JSON schema for plugin spec, skipping validation")
 		return nil
 	}
