@@ -28,8 +28,8 @@ cloudquery validate-config --schemas-dir ./schemas ./aws.yml
 ## Options
 
 ```
-  -h, --help                                        help for validate-config
-      --schemas-dir cloudquery plugin spec-schema   Directory of pre-fetched <plugin-name>.json schema files. Plugins with a matching file are validated offline (no plugin spawn, no auth). Use cloudquery plugin spec-schema to generate these files.
+  -h, --help                 help for validate-config
+      --schemas-dir string   Directory of pre-fetched <plugin-name>.json schema files. Plugins with a matching file are validated offline (no plugin spawn, no auth). Use 'cloudquery plugin spec-schema' to generate these files.
 ```
 
 ## Options inherited from parent commands

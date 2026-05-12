@@ -37,7 +37,7 @@ func newCmdValidateConfig() *cobra.Command {
 		RunE:    validateConfig,
 		Hidden:  false,
 	}
-	cmd.Flags().String("schemas-dir", "", "Directory of pre-fetched <plugin-name>.json schema files. Plugins with a matching file are validated offline (no plugin spawn, no auth). Use `cloudquery plugin spec-schema` to generate these files.")
+	cmd.Flags().String("schemas-dir", "", "Directory of pre-fetched <plugin-name>.json schema files. Plugins with a matching file are validated offline (no plugin spawn, no auth). Use 'cloudquery plugin spec-schema' to generate these files.")
 
 	return cmd
 }
