@@ -1,11 +1,15 @@
 package cmd
 
 import (
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"path"
 	"runtime"
 	"testing"
 
+	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/stretchr/testify/require"
 )
 
@@ -54,3 +58,103 @@ func TestValidateConfig(t *testing.T) {
 		})
 	}
 }
+
+func TestSplitHubPath(t *testing.T) {
+	team, name, err := splitHubPath("cloudquery/aws")
+	require.NoError(t, err)
+	require.Equal(t, "cloudquery", team)
+	require.Equal(t, "aws", name)
+
+	team, name, err = splitHubPath("myteam/my-plugin")
+	require.NoError(t, err)
+	require.Equal(t, "myteam", team)
+	require.Equal(t, "my-plugin", name)
+
+	_, _, err = splitHubPath("no-slash")
+	require.Error(t, err)
+
+	_, _, err = splitHubPath("/missing-team")
+	require.Error(t, err)
+
+	_, _, err = splitHubPath("missing-name/")
+	require.Error(t, err)
+
+	_, _, err = splitHubPath("")
+	require.Error(t, err)
+}
+
+func TestValidateConfig_HubAPI(t *testing.T) {
+	_, filename, _, _ := runtime.Caller(0)
+	currentDir := path.Dir(filename)
+
+	// fakeHub serves canned responses for GetPluginVersion.
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case "/plugins/cloudquery/source/aws/versions/v1.0.0":
+			body, _ := json.Marshal(cloudquery_api.PluginVersionDetails{
+				Name: "v1.0.0",
+				SpecJsonSchema: strPtr(`{
+					"$schema": "https://json-schema.org/draft/2020-12/schema",
+					"type": ["object","null"],
+					"properties": {"use_paid_apis": {"type": "boolean"}},
+					"additionalProperties": false
+				}`),
+			})
+			w.Header().Set("Content-Type", "application/json")
+			_, _ = w.Write(body)
+		case "/plugins/cloudquery/destination/pg/versions/v1.0.0":
+			body, _ := json.Marshal(cloudquery_api.PluginVersionDetails{
+				Name:           "v1.0.0",
+				SpecJsonSchema: strPtr(`{"$schema":"https://json-schema.org/draft/2020-12/schema","type":["object","null"]}`),
+			})
+			w.Header().Set("Content-Type", "application/json")
+			_, _ = w.Write(body)
+		case "/plugins/cloudquery/source/missing/versions/v9.9.9":
+			w.WriteHeader(http.StatusNotFound)
+			_, _ = w.Write([]byte(`{"message":"not found"}`))
+		default:
+			http.NotFound(w, r)
+		}
+	}))
+	t.Cleanup(srv.Close)
+	t.Setenv("CLOUDQUERY_API_URL", srv.URL)
+
+	t.Run("good spec validates against Hub-returned schema (no plugin spawn)", func(t *testing.T) {
+		cmd := NewCmdRoot()
+		testConfig := path.Join(currentDir, "testdata", "validate-config-hub-good.yml")
+		baseArgs := testCommandArgs(t)
+		args := append([]string{"validate-config", testConfig}, baseArgs...)
+		cmd.SetArgs(args)
+		err := cmd.Execute()
+		require.NoError(t, err)
+
+		logContent, readErr := os.ReadFile(baseArgs[3])
+		require.NoError(t, readErr)
+		require.Contains(t, string(logContent), "Fetching spec schema from Hub API")
+		require.NotContains(t, string(logContent), "Initializing source")
+	})
+
+	t.Run("schema-violating spec fails validation", func(t *testing.T) {
+		cmd := NewCmdRoot()
+		testConfig := path.Join(currentDir, "testdata", "validate-config-hub-bad.yml")
+		baseArgs := testCommandArgs(t)
+		args := append([]string{"validate-config", testConfig}, baseArgs...)
+		cmd.SetArgs(args)
+		err := cmd.Execute()
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "failed to validate source config aws")
+	})
+
+	t.Run("missing plugin version surfaces Hub 404", func(t *testing.T) {
+		cmd := NewCmdRoot()
+		testConfig := path.Join(currentDir, "testdata", "validate-config-hub-404.yml")
+		baseArgs := testCommandArgs(t)
+		args := append([]string{"validate-config", testConfig}, baseArgs...)
+		cmd.SetArgs(args)
+		err := cmd.Execute()
+		require.Error(t, err)
+		require.Contains(t, err.Error(), "404")
+	})
+}
+
+func strPtr(s string) *string { return &s }

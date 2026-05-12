@@ -107,7 +107,9 @@ func initPlugin(ctx context.Context, client plugin.PluginClient, spec map[string
 	return err
 }
 
-// validatePluginSpec encompasses spec validation only:
+// validatePluginSpec encompasses spec validation against a plugin obtained
+// over gRPC. Schema acquisition and validation are kept lenient so that a
+// buggy or out-of-date plugin cannot block validation entirely:
 //  1. Get spec schema from the plugin.
 //     If the call isn't implemented, just skip the validation.
 //  2. Validate that the provided JSON schema is valid & can be used for spec validation.
@@ -129,8 +131,15 @@ func validatePluginSpec(ctx context.Context, client plugin.PluginClient, spec an
 			return err
 		}
 	}
+	return validateSpecAgainstSchema(schema.GetJsonSchema(), spec)
+}
 
-	jsonSchema := schema.GetJsonSchema()
+// validateSpecAgainstSchema validates spec against a JSON schema string.
+// Mirrors the lenient gRPC-side semantics: an empty or unparseable schema
+// is logged and treated as "skip validation". Used both by validatePluginSpec
+// (after a successful gRPC GetSpecSchema) and by the Hub-API path in
+// validateConfig.
+func validateSpecAgainstSchema(jsonSchema string, spec any) error {
 	if len(jsonSchema) == 0 {
 		// This will also be true for Unimplemented response (schema = nil => schema.GetJsonSchema() = "")
 		log.Info().Msg("empty JSON schema for plugin spec, skipping validation")

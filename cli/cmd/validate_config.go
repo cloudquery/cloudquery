@@ -1,11 +1,16 @@
 package cmd
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"strings"
 
+	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/hub"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
@@ -15,7 +20,19 @@ import (
 
 const (
 	validateConfigShort   = "Validate config"
-	validateConfigLong    = "Validate configuration without requiring any credentials or connections. This will not validate the tables specified in the tables list. This validation is stricter than the validation done during `sync`, but if it passes this validation it will pass the sync validation."
+	validateConfigLong    = `Validate configuration without running a sync.
+
+For ` + "`registry: cloudquery`" + ` plugins, the spec JSON schema is fetched from
+the CloudQuery Hub API (https://api.cloudquery.io). This avoids downloading
+the plugin binary and works for public plugins without authentication; if a
+CloudQuery API token is available (via login or CLOUDQUERY_API_KEY) it is
+propagated so private plugins resolve too.
+
+For other registries (` + "`local`, `grpc`, `docker`" + `) the plugin is still spawned
+locally to obtain its schema, identical to the previous behaviour. The tables
+list is not validated against the source — this validation is stricter than
+the validation done during ` + "`sync`" + `, so a config passing here will also pass
+sync's validation.`
 	validateConfigExample = `# Validate configs
 cloudquery validate-config ./directory
 # Validate configs from directories and files
@@ -58,6 +75,68 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
+
+	apiClient, err := api.NewClient(authToken.Value)
+	if err != nil {
+		return fmt.Errorf("failed to create Hub API client: %w", err)
+	}
+
+	// Partition entries: CloudQuery-registry plugins fetch their schema from the
+	// Hub API; all other registries fall through to the original plugin-spawn path.
+	sourcePluginConfigs := make([]managedplugin.Config, 0, len(sources))
+	sourceRegInferred := make([]bool, 0, len(sources))
+	sourceSpawnIdx := make([]int, 0, len(sources))
+	destinationPluginConfigs := make([]managedplugin.Config, 0, len(destinations))
+	destinationRegInferred := make([]bool, 0, len(destinations))
+	destinationSpawnIdx := make([]int, 0, len(destinations))
+
+	var initErrors []error
+
+	for i, source := range sources {
+		if source.Registry == specs.RegistryCloudQuery {
+			if err := validateViaHubAPI(ctx, apiClient, source.Path, cloudquery_api.PluginKindSource, source.Version, source.Spec); err != nil {
+				initErrors = append(initErrors, fmt.Errorf("failed to validate source config %v: %w", source.VersionString(), err))
+			} else {
+				log.Info().Str("source", source.VersionString()).Msg("validated successfully")
+			}
+			continue
+		}
+		sourcePluginConfigs = append(sourcePluginConfigs, managedplugin.Config{
+			Name:       source.Name,
+			Version:    source.Version,
+			Path:       source.Path,
+			Registry:   SpecRegistryToPlugin(source.Registry),
+			DockerAuth: source.DockerRegistryAuthToken,
+		})
+		sourceRegInferred = append(sourceRegInferred, source.RegistryInferred())
+		sourceSpawnIdx = append(sourceSpawnIdx, i)
+	}
+
+	for i, destination := range destinations {
+		if destination.Registry == specs.RegistryCloudQuery {
+			if err := validateViaHubAPI(ctx, apiClient, destination.Path, cloudquery_api.PluginKindDestination, destination.Version, destination.Spec); err != nil {
+				initErrors = append(initErrors, fmt.Errorf("failed to validate destination config %v: %w", destination.VersionString(), err))
+			} else {
+				log.Info().Str("destination", destination.VersionString()).Msg("validated successfully")
+			}
+			continue
+		}
+		destinationPluginConfigs = append(destinationPluginConfigs, managedplugin.Config{
+			Name:       destination.Name,
+			Version:    destination.Version,
+			Path:       destination.Path,
+			Registry:   SpecRegistryToPlugin(destination.Registry),
+			DockerAuth: destination.DockerRegistryAuthToken,
+		})
+		destinationRegInferred = append(destinationRegInferred, destination.RegistryInferred())
+		destinationSpawnIdx = append(destinationSpawnIdx, i)
+	}
+
+	if len(sourcePluginConfigs) == 0 && len(destinationPluginConfigs) == 0 {
+		return errors.Join(initErrors...)
+	}
+
+	// Plugin spawn is still required for non-Hub registries (local/grpc/docker).
 	teamName, err := auth.GetTeamForToken(ctx, authToken)
 	if err != nil {
 		return fmt.Errorf("failed to get team name: %w", err)
@@ -75,31 +154,6 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 	}
 	if disableSentry {
 		opts = append(opts, managedplugin.WithNoSentry())
-	}
-
-	sourcePluginConfigs := make([]managedplugin.Config, len(sources))
-	sourceRegInferred := make([]bool, len(sources))
-	for i, source := range sources {
-		sourcePluginConfigs[i] = managedplugin.Config{
-			Name:       source.Name,
-			Version:    source.Version,
-			Path:       source.Path,
-			Registry:   SpecRegistryToPlugin(source.Registry),
-			DockerAuth: source.DockerRegistryAuthToken,
-		}
-		sourceRegInferred[i] = source.RegistryInferred()
-	}
-	destinationPluginConfigs := make([]managedplugin.Config, len(destinations))
-	destinationRegInferred := make([]bool, len(destinations))
-	for i, destination := range destinations {
-		destinationPluginConfigs[i] = managedplugin.Config{
-			Name:       destination.Name,
-			Version:    destination.Version,
-			Path:       destination.Path,
-			Registry:   SpecRegistryToPlugin(destination.Registry),
-			DockerAuth: destination.DockerRegistryAuthToken,
-		}
-		destinationRegInferred[i] = destination.RegistryInferred()
 	}
 
 	sourceClients, err := managedplugin.NewClients(ctx, managedplugin.PluginSource, sourcePluginConfigs, opts...)
@@ -121,8 +175,8 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 		}
 	}()
 
-	var initErrors []error
-	for i, client := range sourceClients {
+	for ci, client := range sourceClients {
+		i := sourceSpawnIdx[ci]
 		pluginClient := plugin.NewPluginClient(client.Conn)
 		log.Info().Str("source", sources[i].VersionString()).Msg("Initializing source")
 		err := validatePluginSpec(ctx, pluginClient, sources[i].Spec)
@@ -132,7 +186,8 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 			log.Info().Str("source", sources[i].VersionString()).Msg("validated successfully")
 		}
 	}
-	for i, client := range destinationClients {
+	for ci, client := range destinationClients {
+		i := destinationSpawnIdx[ci]
 		pluginClient := plugin.NewPluginClient(client.Conn)
 		log.Info().Str("destination", destinations[i].VersionString()).Msg("Initializing destination")
 		err = validatePluginSpec(ctx, pluginClient, destinations[i].Spec)
@@ -144,4 +199,36 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 	}
 
 	return errors.Join(initErrors...)
+}
+
+// validateViaHubAPI fetches the JSON schema for a CloudQuery-registry plugin from
+// the Hub API and validates spec against it. The plugin path is the canonical
+// "team/name" hub identifier from the source/destination's `path:` field.
+func validateViaHubAPI(ctx context.Context, c *cloudquery_api.ClientWithResponses, pluginPath string, kind cloudquery_api.PluginKind, version string, spec map[string]any) error {
+	team, name, err := splitHubPath(pluginPath)
+	if err != nil {
+		return err
+	}
+	log.Info().Str("team", team).Str("name", name).Str("version", version).Str("kind", string(kind)).Msg("Fetching spec schema from Hub API")
+	resp, err := c.GetPluginVersionWithResponse(ctx, team, kind, name, version)
+	if err != nil {
+		return fmt.Errorf("failed to fetch spec schema from Hub API: %w", err)
+	}
+	if resp.StatusCode() != http.StatusOK || resp.JSON200 == nil {
+		return hub.ErrorFromHTTPResponse(resp.HTTPResponse, resp)
+	}
+	if resp.JSON200.SpecJsonSchema == nil || *resp.JSON200.SpecJsonSchema == "" {
+		log.Info().Str("name", name).Msg("Hub did not return a spec schema, skipping validation")
+		return nil
+	}
+	return validateSpecAgainstSchema(*resp.JSON200.SpecJsonSchema, spec)
+}
+
+// splitHubPath parses a CloudQuery-registry path field ("team/name") into its parts.
+func splitHubPath(p string) (team, name string, err error) {
+	parts := strings.SplitN(p, "/", 2)
+	if len(parts) != 2 || parts[0] == "" || parts[1] == "" {
+		return "", "", fmt.Errorf("invalid cloudquery-registry path %q (expected team/name)", p)
+	}
+	return parts[0], parts[1], nil
 }

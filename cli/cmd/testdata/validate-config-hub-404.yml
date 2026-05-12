@@ -1,0 +1,15 @@
+kind: source
+spec:
+  name: missing
+  path: cloudquery/missing
+  registry: cloudquery
+  version: "v9.9.9"
+  tables: ["*"]
+  destinations: ["pg"]
+---
+kind: destination
+spec:
+  name: "pg"
+  path: "cloudquery/pg"
+  registry: "cloudquery"
+  version: "v1.0.0"
