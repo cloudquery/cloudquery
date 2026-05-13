@@ -83,19 +83,7 @@ func GetPluginVersion(cl *cloudquery_api.ClientWithResponses, teamName string, k
 	return resp.JSON200, nil
 }
 
-type FunctionCallOutput struct {
-	// Arguments The arguments passed to the function
-	Arguments map[string]any `json:"arguments"`
-
-	// CallID The unique identifier for this function call
-	CallID string `json:"call_id"`
-
-	// Name The name of the function that was called
-	Name string `json:"name"`
-
-	// Output The output/result from the function call
-	Output string `json:"output"`
-}
+type FunctionCallOutput = cloudquery_api.FunctionCallOutput
 
 type ChatResponse struct {
 	Message               *string
@@ -105,15 +93,10 @@ type ChatResponse struct {
 }
 
 func Chat(ctx context.Context, cl *cloudquery_api.ClientWithResponses, teamName string, message *string, functionCallOutputs *[]FunctionCallOutput) (*ChatResponse, error) {
-	imsg := any(message)
-	ifcos := any(functionCallOutputs)
-
-	requestBody := cloudquery_api.AIOnboardingChatJSONRequestBody{
-		Message:             &imsg,
-		FunctionCallOutputs: &ifcos,
-	}
-
-	resp, err := cl.AIOnboardingChatWithResponse(ctx, teamName, requestBody)
+	resp, err := cl.AIOnboardingChatWithResponse(ctx, teamName, cloudquery_api.AIOnboardingChatJSONRequestBody{
+		Message:             message,
+		FunctionCallOutputs: functionCallOutputs,
+	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to chat: %w", err)
 	}
@@ -124,44 +107,28 @@ func Chat(ctx context.Context, cl *cloudquery_api.ClientWithResponses, teamName 
 		return nil, fmt.Errorf("failed to chat with code %d: no response data", resp.StatusCode())
 	}
 
-	// Extract values from the interface{} fields
 	chatResp := &ChatResponse{}
-
-	// Extract message
-	if resp.JSON200.Message != nil {
-		if msg, ok := resp.JSON200.Message.(string); ok {
-			chatResp.Message = &msg
-		}
+	if resp.JSON200.Message != "" {
+		m := resp.JSON200.Message
+		chatResp.Message = &m
 	}
-
-	// Extract function call
 	if resp.JSON200.FunctionCall != nil {
-		if fc, ok := (*resp.JSON200.FunctionCall).(string); ok {
-			chatResp.FunctionCall = &fc
-		}
+		fc := *resp.JSON200.FunctionCall
+		chatResp.FunctionCall = &fc
 	}
-
-	// Extract function call ID
 	if resp.JSON200.FunctionCallID != nil {
-		if fcid, ok := (*resp.JSON200.FunctionCallID).(string); ok {
-			chatResp.FunctionCallID = fcid
-		}
+		chatResp.FunctionCallID = *resp.JSON200.FunctionCallID
 	}
-
-	// Extract function call arguments
 	if resp.JSON200.FunctionCallArguments != nil {
-		if fca, ok := (*resp.JSON200.FunctionCallArguments).(map[string]any); ok {
-			chatResp.FunctionCallArguments = fca
-		}
+		chatResp.FunctionCallArguments = *resp.JSON200.FunctionCallArguments
 	}
-
 	return chatResp, nil
 }
 
 func NewConversation(ctx context.Context, cl *cloudquery_api.ClientWithResponses, teamName string, resumeConversation bool) error {
 	requestBody := cloudquery_api.AIOnboardingNewConversationJSONRequestBody{}
 	if resumeConversation {
-		tryResume := any(true)
+		tryResume := true
 		requestBody.TryResume = &tryResume
 	}
 	resp, err := cl.AIOnboardingNewConversationWithResponse(ctx, teamName, requestBody)

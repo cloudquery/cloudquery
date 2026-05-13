@@ -18,6 +18,7 @@ require (
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.7.0
 	github.com/google/uuid v1.6.0
+	github.com/hashicorp/go-retryablehttp v0.7.8
 	github.com/invopop/jsonschema v0.14.0
 	github.com/jedib0t/go-pretty/v6 v6.7.10
 	github.com/manifoldco/promptui v0.9.0
@@ -96,7 +97,6 @@ require (
 	github.com/grafana/jsonparser v0.0.0-20250908162026-5c2524e07b4c // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.28.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
-	github.com/hashicorp/go-retryablehttp v0.7.8 // indirect
 	github.com/hashicorp/go-version v1.9.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
@@ -173,3 +173,8 @@ replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0
 
 // github.com/cloudquery/godebouncer @ fix-race
 replace github.com/vnteamopen/godebouncer => github.com/cloudquery/godebouncer v0.0.0-20260327151220-46b2aff37a9f
+
+// Local checkout that adds the OnboardPlatformDestination + GetPlatformDestinationStatus
+// endpoints regenerated from cloud's spec.json. Will be released as the next
+// cloudquery-api-go version once the cloud platform-destination branch lands.
+replace github.com/cloudquery/cloudquery-api-go => ../../cloudquery-api-go
