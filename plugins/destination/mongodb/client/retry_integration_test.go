@@ -181,7 +181,7 @@ func newRetryReproClient(t *testing.T, retry *spec.WriteRetryConfig) (*Client, *
 		// serverSelectionTimeoutMS=200 makes each failing op() return quickly
 		// (the driver's internal server-selection loop will time out fast and
 		// surface the error to retry-go rather than masking it).
-		ConnectionString: "mongodb://" + proxy.addr() + "/?retryWrites=false&maxPoolSize=1&serverSelectionTimeoutMS=200",
+		ConnectionString: "mongodb://" + proxy.addr() + "/?retryWrites=false&maxPoolSize=1&serverSelectionTimeoutMS=200&directConnection=true",
 		Database:         "destination_mongodb_retry_repro_test",
 		WriteRetry:       retry,
 	}

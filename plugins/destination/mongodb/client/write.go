@@ -110,8 +110,10 @@ func (c *Client) transformRecords(table *schema.Table, records []arrow.RecordBat
 func (c *Client) appendTableBatch(ctx context.Context, table *schema.Table, documents []any) error {
 	collection := c.client.Database(c.spec.Database).Collection(table.Name)
 	return retryWrite(ctx, c.logger, c.spec.WriteRetry, table.Name, func() error {
-		_, err := collection.InsertMany(ctx, documents)
-		return err
+		return c.runWrite(ctx, func(ctx context.Context) error {
+			_, err := collection.InsertMany(ctx, documents)
+			return err
+		})
 	})
 }
 
@@ -135,8 +137,10 @@ func (c *Client) overwriteTableBatch(ctx context.Context, table *schema.Table, d
 	}
 	collection := c.client.Database(c.spec.Database).Collection(table.Name)
 	return retryWrite(ctx, c.logger, c.spec.WriteRetry, table.Name, func() error {
-		_, err := collection.BulkWrite(ctx, operations)
-		return err
+		return c.runWrite(ctx, func(ctx context.Context) error {
+			_, err := collection.BulkWrite(ctx, operations)
+			return err
+		})
 	})
 }
 

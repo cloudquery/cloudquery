@@ -75,8 +75,14 @@ Retries are **disabled by default**. Set `max_attempts` >= 2 to enable applicati
 
   Maximum backoff between retry attempts. Initial backoff and jitter use the underlying retry library's defaults.
 
+- `use_transactions` (`bool`) (optional) (default: `false`)
+
+  When `true`, each retried write batch runs inside a MongoDB [transaction](https://www.mongodb.com/docs/manual/core/transactions/) so a retry that follows a partially-applied write rolls back the partial state before re-attempting. This is what makes retries safe on `write_mode: append` tables: without a transaction, an ambiguous failure (server processed the write but the response was lost) can produce duplicate documents, because `_id` is server-generated and the retry has no way to dedupe against the previous attempt.
+
+  Requires a replica set, sharded cluster, or load-balanced deployment — transactions are not supported on standalone MongoDB, and enabling this against a standalone server will surface a driver error at write time. Has no effect when `max_attempts` is `1`.
+
 :::callout{type="warning"}
-Only enable retries (`max_attempts` >= 2) when the source uses `write_mode: overwrite`. With `write_mode: append`, a retry triggered by an ambiguous failure (e.g. the server processed the write but the response was lost) can produce duplicate documents, since `_id` is server-generated and the retry has no way to dedupe against the previous attempt. Overwrite mode is unaffected — writes are performed as upserts keyed on the primary key and are naturally idempotent.
+Only enable retries (`max_attempts` >= 2) when the source uses `write_mode: overwrite`, **or** set `use_transactions: true` on a replica-set/sharded deployment. With `write_mode: append` and no transaction, a retry triggered by an ambiguous failure (e.g. the server processed the write but the response was lost) can produce duplicate documents, since `_id` is server-generated and the retry has no way to dedupe against the previous attempt. Overwrite mode is unaffected — writes are performed as upserts keyed on the primary key and are naturally idempotent.
 :::
 
 

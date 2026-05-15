@@ -64,6 +64,7 @@ func New(ctx context.Context, logger zerolog.Logger, specByte []byte, _ plugin.N
 	if err := c.client.Ping(ctx, nil); err != nil {
 		return nil, err
 	}
+
 	c.writer, err = batchwriter.New(c, batchwriter.WithBatchSize(c.spec.BatchSize), batchwriter.WithBatchSizeBytes(c.spec.BatchSizeBytes), batchwriter.WithLogger(c.logger))
 	if err != nil {
 		return nil, err

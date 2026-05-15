@@ -103,6 +103,9 @@
               "type": "null"
             }
           ]
+        },
+        "use_transactions": {
+          "type": "boolean"
         }
       },
       "additionalProperties": false,
