@@ -7,7 +7,19 @@ Validate config
 
 ## Synopsis
 
-Validate configuration without requiring any credentials or connections. This will not validate the tables specified in the tables list. This validation is stricter than the validation done during `sync`, but if it passes this validation it will pass the sync validation.
+Validate configuration without running a sync.
+
+For `registry: cloudquery` plugins, the spec JSON schema is fetched from
+the CloudQuery Hub API (https://api.cloudquery.io). This avoids downloading
+the plugin binary and works for public plugins without authentication; if a
+CloudQuery API token is available (via login or CLOUDQUERY_API_KEY) it is
+propagated so private plugins resolve too.
+
+For other registries (`local`, `grpc`, `docker`) the plugin is still spawned
+locally to obtain its schema, identical to the previous behaviour. The tables
+list is not validated against the source — this validation is stricter than
+the validation done during `sync`, so a config passing here will also pass
+sync's validation.
 
 ```
 cloudquery validate-config [files or directories] [flags]
@@ -26,7 +38,8 @@ cloudquery validate-config ./directory ./aws.yml ./pg.yml
 ## Options
 
 ```
-  -h, --help   help for validate-config
+  -h, --help                                help for validate-config
+      --license cloudquery sync --license   Set offline license file. When provided, the Hub API is bypassed and plugins are spawned locally (mirrors cloudquery sync --license).
 ```
 
 ## Options inherited from parent commands

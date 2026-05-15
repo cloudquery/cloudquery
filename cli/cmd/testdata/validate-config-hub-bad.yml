@@ -1,0 +1,17 @@
+kind: source
+spec:
+  name: aws
+  path: cloudquery/aws
+  registry: cloudquery
+  version: "v1.0.0"
+  tables: ["*"]
+  destinations: ["pg"]
+  spec:
+    use_paid_apis: "not-a-bool"
+---
+kind: destination
+spec:
+  name: "pg"
+  path: "cloudquery/pg"
+  registry: "cloudquery"
+  version: "v1.0.0"
