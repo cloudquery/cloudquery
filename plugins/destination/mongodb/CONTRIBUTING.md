@@ -10,16 +10,27 @@ go run main.go serve
 
 ## Testing
 
-To run a MongoDB instance in a Docker container, run:
+The plugin can be tested against either a standalone instance or a single-node replica set. CI runs both topologies.
+
+### Standalone
 
 ```bash
-docker run -d -p 27017:27017 mongo
-```
-
-```bash
+docker compose -f docker-compose.standalone.yaml up -d --wait
 export CQ_DEST_MONGODB_TEST_CONN="mongodb://localhost:27017"
 make test
 ```
+
+### Single-node replica set
+
+The replica set compose file initiates `cloudquery` automatically via an idempotent healthcheck.
+
+```bash
+docker compose -f docker-compose.replicaset.yaml up -d --wait
+export CQ_DEST_MONGODB_TEST_CONN="mongodb://localhost:27017/?replicaSet=cloudquery"
+make test
+```
+
+To tear down: `docker compose -f <file> down -v`.
 
 ## Lint
 

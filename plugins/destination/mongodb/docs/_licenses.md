@@ -10,6 +10,7 @@ The following tools / packages are used in this plugin:
 | github.com/apache/arrow-go/v18 | Apache-2.0 |
 | github.com/apache/arrow/go/v13 | Apache-2.0 |
 | github.com/apapsch/go-jsonmerge/v2 | MIT |
+| github.com/avast/retry-go/v5 | MIT |
 | github.com/aws/aws-sdk-go-v2 | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/config | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/credentials | Apache-2.0 |
