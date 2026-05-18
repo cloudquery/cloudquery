@@ -74,9 +74,10 @@
 | github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:75: | CLIPkModeToPbPKMode | 50.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:86: | CLIDestinationSpecToPbSpec | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:100: | initPlugin | 80.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:117: | validatePluginSpec | 38.9% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:149: | parseJSONSchema | 60.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:178: | marshalSpec | 100.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:119: | validatePluginSpec | 0.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:142: | validateSpecAgainstSchema | 50.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:158: | parseJSONSchema | 60.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:187: | marshalSpec | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:47: | persistSummary | 76.9% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:68: | appendToFile | 60.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/summary.go:92: | appendToFileFallback | 80.0% |
@@ -115,8 +116,10 @@
 | github.com/cloudquery/cloudquery/cli/v6/cmd/test_connection.go:42: | testConnection | 86.5% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/test_connection.go:203: | Error | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/test_connection.go:216: | testPluginConnection | 37.5% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/validate_config.go:26: | newCmdValidateConfig | 100.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/validate_config.go:40: | validateConfig | 85.5% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/validate_config.go:43: | newCmdValidateConfig | 100.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/validate_config.go:58: | validateConfig | 51.7% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/validate_config.go:216: | validateViaHubAPI | 69.2% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/validate_config.go:237: | splitHubPath | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/internal/analytics/client.go:30: | Logf | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/internal/analytics/client.go:31: | Errorf | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/internal/analytics/client.go:33: | InitClient | 0.0% |
@@ -370,4 +373,4 @@
 | github.com/cloudquery/cloudquery/cli/v6/internal/uuid/uuid.go:19: | Type | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/main.go:18: | executeRootCmdWithContext | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/main.go:47: | main | 0.0% |
-| total: | (statements) | 48.1% |
+| total: | (statements) | 47.7% |
