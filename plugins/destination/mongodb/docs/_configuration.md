@@ -1,4 +1,4 @@
-This example configures a MongoDB destination, located at `localhost:27017`. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
+This example configures a MongoDB destination, located at `localhost:27017`. The (top level) spec section is described in the [Destination Spec Reference](/docs/cli/integrations/destinations#complete-destination-spec-reference).
 
 ```yaml copy
 kind: destination
