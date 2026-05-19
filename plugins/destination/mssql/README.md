@@ -4,4 +4,4 @@ This destination plugin lets you sync data from any CloudQuery source to a Micro
 
 ## Links
 
-- [User Guide](https://cloudquery.io/docs/plugins/destinations/mssql/overview)
+- [User Guide](https://www.cloudquery.io/hub/plugins/destination/cloudquery/mssql)

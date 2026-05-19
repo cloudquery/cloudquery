@@ -19,7 +19,7 @@ There are two ways to sync data to Snowflake:
 
 :configuration
 
-The Snowflake destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
+The Snowflake destination utilizes batching, and supports [`batch_size`](/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](/docs/cli/integrations/destinations#batch_size_bytes).
 
 
 ## Authentication

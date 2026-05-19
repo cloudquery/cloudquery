@@ -66,7 +66,7 @@ type Spec struct {
 
 	// GCP service account key content.
 	// This allows for using different service accounts for the GCP source and GCS destination.
-	// If using service account keys, it is best to use [environment or file variable substitution](/docs/advanced-topics/environment-variable-substitution).
+	// If using service account keys, it is best to use [environment or file variable substitution](/docs/cli/managing-cloudquery/environment-variables).
 	ServiceAccountKeyJSON string `json:"service_account_key_json"`
 }
 

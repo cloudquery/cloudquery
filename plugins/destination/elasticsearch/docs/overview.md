@@ -13,7 +13,7 @@ The Elasticsearch plugin syncs data from any CloudQuery source plugin(s) to an E
 
 :configuration
 
-The Elasticsearch destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
+The Elasticsearch destination utilizes batching, and supports [`batch_size`](/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](/docs/cli/integrations/destinations#batch_size_bytes).
 
 It supports `append`, `overwrite` and `overwrite-delete-stale` write modes. The default write mode is `overwrite-delete-stale`.
 
@@ -53,7 +53,7 @@ This is the spec used by the Elasticsearch destination plugin.
 
 - `ca_cert` (`string`) (optional)
 
-   PEM-encoded certificate authorities. When set, an empty certificate pool will be created, and the certificates will be appended to it. See [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example) for how to read this value from a file.
+   PEM-encoded certificate authorities. When set, an empty certificate pool will be created, and the certificates will be appended to it. See [file variable substitution](/docs/cli/managing-cloudquery/environment-variables#file-variable-substitution-example) for how to read this value from a file.
 
 - `concurrency` (`string`) (optional) (default: number of CPUs)
 

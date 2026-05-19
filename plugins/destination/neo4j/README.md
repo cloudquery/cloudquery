@@ -4,4 +4,4 @@ This destination plugin lets you sync data from any CloudQuery source to a Neo4j
 
 ## Links
 
-- [User Guide](https://cloudquery.io/docs/plugins/destinations/neo4j/overview)
+- [User Guide](https://www.cloudquery.io/hub/plugins/destination/cloudquery/neo4j)

@@ -1,6 +1,6 @@
 This example uses the parquet format, to create parquet files in `s3://bucket_name/path/to/files`, with each table placed in its own directory.
 
-The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
+The (top level) spec section is described in the [Destination Spec Reference](/docs/cli/integrations/destinations#complete-destination-spec-reference).
 
 ```yaml copy
 kind: destination
@@ -57,4 +57,4 @@ path: "path/to/files/{{TABLE}}/dt={{YEAR}}-{{MONTH}}-{{DAY}}/{{UUID}}.parquet"
 
 Other supported formats are `json` and `csv`.
 
-Note that the S3 plugin only supports `append` `write_mode`. The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
+Note that the S3 plugin only supports `append` `write_mode`. The (top level) spec section is described in the [Destination Spec Reference](/docs/cli/integrations/destinations#complete-destination-spec-reference).

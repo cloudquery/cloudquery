@@ -4,4 +4,4 @@ This destination plugin lets you sync data from a CloudQuery source to a MySQL d
 
 ## Links
 
-- [User Guide](https://cloudquery.io/docs/plugins/destinations/mysql/overview)
+- [User Guide](https://www.cloudquery.io/hub/plugins/destination/cloudquery/mysql)

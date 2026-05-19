@@ -4,4 +4,4 @@ This destination plugin let's you sync data from a CloudQuery source to an SQLit
 
 ## Links
 
-- [User Guide](https://cloudquery.io/docs/plugins/destinations/sqlite/overview)
+- [User Guide](https://www.cloudquery.io/hub/plugins/destination/cloudquery/sqlite)

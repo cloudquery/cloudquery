@@ -4,4 +4,4 @@ This destination plugin lets you sync data from a CloudQuery source to local fil
 
 ## Links
 
-- [User Guide](https://cloudquery.io/docs/plugins/destinations/file/overview)
+- [User Guide](https://www.cloudquery.io/hub/plugins/destination/cloudquery/file)

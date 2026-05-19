@@ -22,13 +22,13 @@ Supported database versions:
 
 :configuration
 
-The (top level) spec section is described in the [Destination Spec Reference](/docs/reference/destination-spec).
+The (top level) spec section is described in the [Destination Spec Reference](/docs/cli/integrations/destinations#complete-destination-spec-reference).
 
 :::callout{type="info"}
 Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
 :::
 
-The PostgreSQL destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size) and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
+The PostgreSQL destination utilizes batching, and supports [`batch_size`](/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](/docs/cli/integrations/destinations#batch_size_bytes).
 
 ### PostgreSQL Spec
 
