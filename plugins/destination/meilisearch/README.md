@@ -5,4 +5,4 @@ to a [Meilisearch](https://www.meilisearch.com) instance.
 
 ## Links
 
-- [User Guide](https://cloudquery.io/docs/plugins/destinations/meilisearch/overview)
+- [User Guide](https://www.cloudquery.io/hub/plugins/destination/cloudquery/meilisearch)

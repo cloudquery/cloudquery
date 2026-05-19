@@ -4,4 +4,4 @@ This destination plugin lets you sync data from a CloudQuery source to remote GC
 
 ## Links
 
-- [User Guide](https://cloudquery.io/docs/plugins/destinations/gcs/overview)
+- [User Guide](https://www.cloudquery.io/hub/plugins/destination/cloudquery/gcs)

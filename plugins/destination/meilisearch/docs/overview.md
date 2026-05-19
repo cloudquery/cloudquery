@@ -14,11 +14,11 @@ to a [Meilisearch](https://www.meilisearch.com) instance.
 
 :configuration
 
-The Meilisearch destination utilizes batching, and supports [`batch_size`](/docs/reference/destination-spec#batch_size)
-and [`batch_size_bytes`](/docs/reference/destination-spec#batch_size_bytes).
+The Meilisearch destination utilizes batching, and supports [`batch_size`](/docs/cli/integrations/destinations#batch_size)
+and [`batch_size_bytes`](/docs/cli/integrations/destinations#batch_size_bytes).
 
 It supports `append` and `overwrite` write modes. Write mode selection is required through
-[`write_mode`](/docs/reference/destination-spec#write_mode).
+[`write_mode`](/docs/cli/integrations/destinations#write_mode).
 
 ## Meilisearch Spec
 
@@ -61,7 +61,7 @@ This is the spec used by the Meilisearch destination plugin.
 
   PEM-encoded certificate authorities.
   When set, a certificate pool will be created by appending the certificates to the system pool.
-  See [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example) for how to read this value from a file.
+  See [file variable substitution](/docs/cli/managing-cloudquery/environment-variables#file-variable-substitution-example) for how to read this value from a file.
 
 - `batch_size` (`integer`) (optional) (default: `1000`)
 

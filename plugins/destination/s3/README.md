@@ -4,4 +4,4 @@ This destination plugin lets you sync data from a CloudQuery source to remote S3
 
 ## Links
 
-- [User Guide](https://cloudquery.io/docs/plugins/destinations/s3/overview)
+- [User Guide](https://www.cloudquery.io/hub/plugins/destination/cloudquery/s3)

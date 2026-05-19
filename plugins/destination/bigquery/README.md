@@ -4,4 +4,4 @@ This destination plugin lets you sync data from any CloudQuery source to a BigQu
 
 ## Links
 
-- [User Guide](https://cloudquery.io/docs/plugins/destinations/bigquery/overview)
+- [User Guide](https://www.cloudquery.io/hub/plugins/destination/cloudquery/bigquery)
