@@ -4,4 +4,4 @@ This plugin fetches data from [Square](https://www.squareup.com/) using the [Squ
 
 ## Links
 
-- [User Guide](https://www.cloudquery.io/docs/plugins/sources/square/overview)
+- [User Guide](https://www.cloudquery.io/hub/plugins/source/cloudquery/square)

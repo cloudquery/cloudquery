@@ -4,7 +4,7 @@ See [tables](/docs/plugins/sources/square/tables) for a list of resources suppor
 
 ## Example Configuration
 
-This example syncs from Square to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/reference/source-spec).
+This example syncs from Square to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/cli/integrations/sources#complete-source-spec-reference).
 
 :configuration
 
@@ -34,4 +34,4 @@ This is the (nested) spec used by the Square source plugin:
 
 ## Running in a Containerized Environment
 
-To run the Square integration in a containerized environment, see the [Using CloudQuery Docker Registry Integrations Inside a Containerized Environment](https://www.cloudquery.io/docs/advanced-topics/using-cloud-query-docker-registry-integrations-inside-a-containerized-environment) guide.
+To run the Square integration in a containerized environment, see the [Using CloudQuery Docker Registry Integrations Inside a Containerized Environment](https://www.cloudquery.io/docs/cli/advanced/using-cloud-query-docker-registry-integrations-inside-a-containerized-environment) guide.

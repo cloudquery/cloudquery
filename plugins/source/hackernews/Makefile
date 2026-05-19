@@ -45,7 +45,7 @@ gen-mocks: install-tools
 gen-docs: build
 	@command -v cloudquery >/dev/null 2>&1 || { \
 		echo "Error: 'cloudquery' command not found. Please install it before running gen-docs."; \
-		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/quickstart"; \
+		echo "You can install it by following the instructions at: https://www.cloudquery.io/docs/cli/getting-started"; \
 		exit 1; \
 	}
 	rm -rf docs/tables
