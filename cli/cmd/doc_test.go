@@ -115,3 +115,19 @@ func TestDocHeadingStructure(t *testing.T) {
 		})
 	}
 }
+
+// TestDocDescriptions verifies that every file with a description in the
+// descriptions map has the correct description: field in its frontmatter.
+func TestDocDescriptions(t *testing.T) {
+	tmpDir := generateDocs(t)
+
+	for filename, wantDesc := range descriptions {
+		data, err := os.ReadFile(filepath.Join(tmpDir, filename))
+		require.NoError(t, err)
+
+		t.Run(filename, func(t *testing.T) {
+			require.Contains(t, string(data), "description: "+wantDesc,
+				"frontmatter missing expected description field")
+		})
+	}
+}

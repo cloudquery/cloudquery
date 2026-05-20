@@ -31,6 +31,26 @@ const (
 	docShort = "Generate CLI documentation markdown files"
 )
 
+// descriptions maps generated filenames to their SEO meta description.
+var descriptions = map[string]string{
+	"cloudquery.md":                 "High-performance cloud data integration with CloudQuery CLI. Sync cloud resources from 200+ sources to databases, data warehouses, and storage.",
+	"cloudquery_addon.md":           "Manage CloudQuery addon packages from the Hub — browse, download, and publish addons for your CloudQuery CLI installations and sync workflows.",
+	"cloudquery_addon_download.md":  "Download a CloudQuery addon package from the Hub to use with your self-hosted CloudQuery CLI installation and sync workflows.",
+	"cloudquery_addon_publish.md":   "Publish a CloudQuery addon package to the Hub to share extensions and enhancements with the CloudQuery user community.",
+	"cloudquery_init.md":            "Initialize a new CloudQuery project with source and destination configuration files. Generates a starter config for your sync setup.",
+	"cloudquery_login.md":           "Log in to CloudQuery Hub to access premium integrations, manage licenses, and authenticate your CLI for Hub-connected features.",
+	"cloudquery_logout.md":          "Log out of CloudQuery Hub and remove stored authentication credentials from your local CloudQuery CLI environment.",
+	"cloudquery_migrate.md":         "Migrate CloudQuery destination schemas to the latest version, handling breaking changes and schema updates between CloudQuery CLI releases.",
+	"cloudquery_plugin.md":          "Manage CloudQuery plugins from the CLI — install, configure, and publish source and destination plugins for your sync pipelines.",
+	"cloudquery_plugin_install.md":  "Install CloudQuery plugin images from the Hub for use as sources or destinations in your sync configuration files.",
+	"cloudquery_plugin_publish.md":  "Publish a CloudQuery plugin to the Hub to share source or destination integrations with the CloudQuery user community.",
+	"cloudquery_switch.md":          "Switch between CloudQuery teams and environments to manage multiple CloudQuery deployments from a single CLI installation.",
+	"cloudquery_sync.md":            "Sync cloud resources from configured source plugins to destination plugins with CloudQuery. Supports full and incremental sync modes.",
+	"cloudquery_tables.md":          "Generate documentation for all tables available in a CloudQuery source plugin, including column names, types, and schema definitions.",
+	"cloudquery_test-connection.md": "Test connectivity to CloudQuery source and destination plugins without running a full sync. Validates credentials and configuration.",
+	"cloudquery_validate-config.md": "Validate a CloudQuery configuration file for syntax errors, missing required fields, and plugin compatibility before running a sync.",
+}
+
 // seeAlsoSections maps generated filename to the "## See Also" content to append.
 var seeAlsoSections = map[string]string{
 	"cloudquery.md": `## See Also
@@ -210,12 +230,11 @@ func linkHandler(s string) string {
 }
 
 func filePrepender(filename string) string {
-	const fmTemplate = `---
-title: "%s"
----
-`
 	name := filepath.Base(filename)
 	base := strings.TrimSuffix(name, path.Ext(name))
 	id := strings.TrimPrefix(base, "cloudquery_")
-	return fmt.Sprintf(fmTemplate, id)
+	if desc, ok := descriptions[name]; ok {
+		return fmt.Sprintf("---\ntitle: %q\ndescription: %s\n---\n", id, desc)
+	}
+	return fmt.Sprintf("---\ntitle: %q\n---\n", id)
 }
