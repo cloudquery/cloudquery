@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4
 
-go 1.26.2
+go 1.26.3
 
 require (
 	github.com/apache/arrow-go/v18 v18.6.0
