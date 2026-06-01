@@ -74,7 +74,7 @@ importers:
         version: 4.16.2(@typescript-eslint/utils@8.59.4(eslint@10.2.1)(typescript@6.0.3))(eslint@10.2.1)
       eslint-plugin-promise:
         specifier: ^7.0.0
-        version: 7.2.1(eslint@10.2.1)
+        version: 7.3.0(eslint@10.2.1)
       eslint-plugin-unicorn:
         specifier: ^64.0.0
         version: 64.0.0(eslint@10.2.1)
@@ -1007,11 +1007,11 @@ packages:
       eslint-import-resolver-node:
         optional: true
 
-  eslint-plugin-promise@7.2.1:
-    resolution: {integrity: sha512-SWKjd+EuvWkYaS+uN2csvj0KoP43YTu7+phKQ5v+xw6+A0gutVX2yqCeCkC3uLCJFiPfR2dD8Es5L7yUsmvEaA==}
+  eslint-plugin-promise@7.3.0:
+    resolution: {integrity: sha512-6uGiOR0INuujr6PEQmeSSP7GbIMJ/ebEXXiEzb/nOj68LknH5Pxzb/AbZivmr6VE6TkTE8rTjRK9zhKpK6HsRA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
     peerDependencies:
-      eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
+      eslint: ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
 
   eslint-plugin-unicorn@64.0.0:
     resolution: {integrity: sha512-rNZwalHh8i0UfPlhNwg5BTUO1CMdKNmjqe+TgzOTZnpKoi8VBgsW7u9qCHIdpxEzZ1uwrJrPF0uRb7l//K38gA==}
@@ -3062,7 +3062,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-promise@7.2.1(eslint@10.2.1):
+  eslint-plugin-promise@7.3.0(eslint@10.2.1):
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(eslint@10.2.1)
       eslint: 10.2.1
