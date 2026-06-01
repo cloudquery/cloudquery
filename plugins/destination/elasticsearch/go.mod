@@ -7,7 +7,7 @@ require (
 	github.com/cenkalti/backoff/v5 v5.0.3
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-sdk/v4 v4.95.2
-	github.com/elastic/go-elasticsearch/v9 v9.3.2
+	github.com/elastic/go-elasticsearch/v9 v9.4.1
 	github.com/goccy/go-json v0.10.6
 	github.com/invopop/jsonschema v0.14.0
 	github.com/rs/zerolog v1.35.1
