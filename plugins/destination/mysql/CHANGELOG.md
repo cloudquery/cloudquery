@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.6.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.6.8...plugins-destination-mysql-v5.6.9) (2026-06-02)
+
+
+### Bug Fixes
+
+* **deps:** Update go module directive to v1.26.3 ([#22869](https://github.com/cloudquery/cloudquery/issues/22869)) ([ce8d270](https://github.com/cloudquery/cloudquery/commit/ce8d270429e6503b849910035b761effcdbe62ab))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.2 ([#22836](https://github.com/cloudquery/cloudquery/issues/22836)) ([86c88b9](https://github.com/cloudquery/cloudquery/commit/86c88b9ce6a26cc85e4503c7507c24c5b22581e3))
+* **deps:** Update module github.com/go-sql-driver/mysql to v1.10.0 ([#22899](https://github.com/cloudquery/cloudquery/issues/22899)) ([19b3486](https://github.com/cloudquery/cloudquery/commit/19b3486c270c2ad2c649e7665f79fa9a5d32b200))
+
 ## [5.6.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mysql-v5.6.7...plugins-destination-mysql-v5.6.8) (2026-05-12)
 
 
