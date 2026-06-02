@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.8.38](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.8.37...plugins-destination-test-v2.8.38) (2026-06-02)
+
+
+### Bug Fixes
+
+* **deps:** Update go module directive to v1.26.3 ([#22869](https://github.com/cloudquery/cloudquery/issues/22869)) ([ce8d270](https://github.com/cloudquery/cloudquery/commit/ce8d270429e6503b849910035b761effcdbe62ab))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.2 ([#22836](https://github.com/cloudquery/cloudquery/issues/22836)) ([86c88b9](https://github.com/cloudquery/cloudquery/commit/86c88b9ce6a26cc85e4503c7507c24c5b22581e3))
+
 ## [2.8.37](https://github.com/cloudquery/cloudquery/compare/plugins-destination-test-v2.8.36...plugins-destination-test-v2.8.37) (2026-05-12)
 
 
