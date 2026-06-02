@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.3.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.10...plugins-source-airtable-v2.3.11) (2026-06-02)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency ajv to v8.20.0 ([#22887](https://github.com/cloudquery/cloudquery/issues/22887)) ([363dd56](https://github.com/cloudquery/cloudquery/commit/363dd56afb5b1414ca13d8a04008a559ee7aeb09))
+* **deps:** Update dependency eslint to v10.4.0 ([#22888](https://github.com/cloudquery/cloudquery/issues/22888)) ([f6a6a82](https://github.com/cloudquery/cloudquery/commit/f6a6a8268c4a46400e1ea59832bd5667c703dda7))
+* **deps:** Update dependency eslint-plugin-promise to v7.3.0 ([#22889](https://github.com/cloudquery/cloudquery/issues/22889)) ([8bb091c](https://github.com/cloudquery/cloudquery/commit/8bb091c9470cbaa5b9719259b41f85edb847e17e))
+* **deps:** Update dependency got to v15.0.5 ([#22877](https://github.com/cloudquery/cloudquery/issues/22877)) ([270c0dc](https://github.com/cloudquery/cloudquery/commit/270c0dc7c665c2876b93c7433ba81011bd2fee4c))
+* **deps:** Update dependency typescript-eslint to v8.59.4 ([#22878](https://github.com/cloudquery/cloudquery/issues/22878)) ([b9b9a33](https://github.com/cloudquery/cloudquery/commit/b9b9a334525360b2be05e57a572eb9002f030818))
+* **deps:** Update pnpm to v10.33.4 ([#22885](https://github.com/cloudquery/cloudquery/issues/22885)) ([347768a](https://github.com/cloudquery/cloudquery/commit/347768a6bed9838bf8fb061e15e21eb263d69d17))
+
 ## [2.3.10](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.9...plugins-source-airtable-v2.3.10) (2026-05-02)
 
 
