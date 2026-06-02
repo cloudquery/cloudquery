@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.30](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.29...plugins-source-square-v1.3.30) (2026-06-02)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#22916](https://github.com/cloudquery/cloudquery/issues/22916)) ([b3a36f8](https://github.com/cloudquery/cloudquery/commit/b3a36f8c058284e3ea9c4b605b00d0225f86d597))
+* **deps:** Update ghcr.io/astral-sh/uv Docker tag to v0.11.18 ([#22880](https://github.com/cloudquery/cloudquery/issues/22880)) ([cd6aafb](https://github.com/cloudquery/cloudquery/commit/cd6aafb4eb27fff8ea8b2472c7342f98e35a7302))
+
 ## [1.3.29](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.28...plugins-source-square-v1.3.29) (2026-06-01)
 
 
