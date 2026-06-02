@@ -11,6 +11,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/writers/batchwriter"
+	"github.com/elastic/elastic-transport-go/v8/elastictransport"
 	"github.com/elastic/go-elasticsearch/v9"
 	"github.com/elastic/go-elasticsearch/v9/typedapi/types"
 	"github.com/rs/zerolog"
@@ -54,28 +55,23 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.
 	if len(c.spec.CACert) > 0 {
 		caCert = []byte(c.spec.CACert)
 	}
-	cfg := elasticsearch.Config{
-		Addresses:              c.spec.Addresses,
-		Username:               c.spec.Username,
-		Password:               c.spec.Password,
-		CloudID:                c.spec.CloudID,
-		APIKey:                 c.spec.APIKey,
-		ServiceToken:           c.spec.ServiceToken,
-		CertificateFingerprint: c.spec.CertificateFingerprint,
-		CACert:                 caCert,
-		// Retry on 429 TooManyRequests statuses
-		RetryOnStatus: []int{502, 503, 504, 429},
-		// Configure the backoff function
-		RetryBackoff: func(i int) time.Duration {
+	opts := []elasticsearch.Option{
+		elasticsearch.WithAddresses(c.spec.Addresses...),
+		elasticsearch.WithBasicAuth(c.spec.Username, c.spec.Password),
+		elasticsearch.WithCloudID(c.spec.CloudID),
+		elasticsearch.WithAPIKey(c.spec.APIKey),
+		elasticsearch.WithServiceToken(c.spec.ServiceToken),
+		elasticsearch.WithCertificateFingerprint(c.spec.CertificateFingerprint),
+		elasticsearch.WithCACert(caCert),
+		elasticsearch.WithRetry(5, 502, 503, 504, 429),
+		elasticsearch.WithTransportOptions(elastictransport.WithRetryBackoff(func(i int) time.Duration {
 			if i == 1 {
 				retryBackoff.Reset()
 			}
 			return retryBackoff.NextBackOff()
-		},
-		// Retry up to 5 attempts
-		MaxRetries: 5,
+		})),
 	}
-	es, err := elasticsearch.NewTypedClient(cfg)
+	es, err := elasticsearch.NewTyped(opts...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Elasticsearch client: %w", err)
 	}
@@ -89,7 +85,7 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, _ plugin.
 	}
 	c.logger.Debug().Interface("cluster_info", info).Msg("Elasticsearch cluster info")
 	c.typedClient = es
-	c.client, err = elasticsearch.NewClient(cfg)
+	c.client, err = elasticsearch.New(opts...)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create untyped Elasticsearch client: %w", err)
 	}
