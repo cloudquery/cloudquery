@@ -5,6 +5,19 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.36.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.36.0...cli-v6.36.1) (2026-06-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.2 ([#22836](https://github.com/cloudquery/cloudquery/issues/22836)) ([86c88b9](https://github.com/cloudquery/cloudquery/commit/86c88b9ce6a26cc85e4503c7507c24c5b22581e3))
+* **deps:** Update module github.com/getsentry/sentry-go to v0.46.2 ([#22882](https://github.com/cloudquery/cloudquery/issues/22882)) ([33e7ebf](https://github.com/cloudquery/cloudquery/commit/33e7ebf9f9f5e099f77eb422e90edd103ba32e6e))
+* **deps:** Update module go.uber.org/zap to v1.28.0 ([#22905](https://github.com/cloudquery/cloudquery/issues/22905)) ([5af60e9](https://github.com/cloudquery/cloudquery/commit/5af60e934d4e46e859d9558aeaddf7a490ffc627))
+* **deps:** Update module golang.org/x/net to v0.55.0 ([#22906](https://github.com/cloudquery/cloudquery/issues/22906)) ([0ef0f72](https://github.com/cloudquery/cloudquery/commit/0ef0f7210a3aea3bfe5bca75a85940833eb563ec))
+* **deps:** Update module google.golang.org/grpc to v1.81.0 ([#22829](https://github.com/cloudquery/cloudquery/issues/22829)) ([1363710](https://github.com/cloudquery/cloudquery/commit/1363710a62215a763d10af152799946af48aee94))
+* **deps:** Update module google.golang.org/grpc to v1.81.1 ([#22863](https://github.com/cloudquery/cloudquery/issues/22863)) ([b372000](https://github.com/cloudquery/cloudquery/commit/b3720001208a03b7c0439cf5a673414c393000e1))
+* **deps:** Update opentelemetry-collector monorepo ([#22908](https://github.com/cloudquery/cloudquery/issues/22908)) ([343d078](https://github.com/cloudquery/cloudquery/commit/343d078b61b0638ede8058226d0defea73aa8b22))
+
 ## [6.36.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.35.7...cli-v6.36.0) (2026-05-12)
 
 
