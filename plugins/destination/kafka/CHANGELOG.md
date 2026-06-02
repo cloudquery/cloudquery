@@ -1,5 +1,15 @@
 # Changelog
 
+## [5.7.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.7.8...plugins-destination-kafka-v5.7.9) (2026-06-02)
+
+
+### Bug Fixes
+
+* **deps:** Update confluentinc/cp-kafka Docker tag to v8.2.1 ([#22876](https://github.com/cloudquery/cloudquery/issues/22876)) ([6438ebc](https://github.com/cloudquery/cloudquery/commit/6438ebc1465a8677b0f4586c7610882f1ba9abc3))
+* **deps:** Update go module directive to v1.26.3 ([#22869](https://github.com/cloudquery/cloudquery/issues/22869)) ([ce8d270](https://github.com/cloudquery/cloudquery/commit/ce8d270429e6503b849910035b761effcdbe62ab))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.2 ([#22836](https://github.com/cloudquery/cloudquery/issues/22836)) ([86c88b9](https://github.com/cloudquery/cloudquery/commit/86c88b9ce6a26cc85e4503c7507c24c5b22581e3))
+* **deps:** Update module github.com/IBM/sarama to v1.49.0 ([#22900](https://github.com/cloudquery/cloudquery/issues/22900)) ([05b8698](https://github.com/cloudquery/cloudquery/commit/05b869846668a72b012793119fece5e66d9b206c))
+
 ## [5.7.8](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.7.7...plugins-destination-kafka-v5.7.8) (2026-05-12)
 
 
