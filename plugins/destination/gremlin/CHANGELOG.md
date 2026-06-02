@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.8.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.8.3...plugins-destination-gremlin-v2.8.4) (2026-06-02)
+
+
+### Bug Fixes
+
+* **deps:** Update go module directive to v1.26.3 ([#22869](https://github.com/cloudquery/cloudquery/issues/22869)) ([ce8d270](https://github.com/cloudquery/cloudquery/commit/ce8d270429e6503b849910035b761effcdbe62ab))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.32.18 ([#22872](https://github.com/cloudquery/cloudquery/issues/22872)) ([43360ac](https://github.com/cloudquery/cloudquery/commit/43360ac868db61e29829a53b53bdb1a366a4e07f))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.2 ([#22836](https://github.com/cloudquery/cloudquery/issues/22836)) ([86c88b9](https://github.com/cloudquery/cloudquery/commit/86c88b9ce6a26cc85e4503c7507c24c5b22581e3))
+
 ## [2.8.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.8.2...plugins-destination-gremlin-v2.8.3) (2026-05-12)
 
 
