@@ -1,5 +1,14 @@
 # Changelog
 
+## [8.2.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v8.2.2...plugins-destination-clickhouse-v8.2.3) (2026-06-02)
+
+
+### Bug Fixes
+
+* **deps:** Update go module directive to v1.26.3 ([#22869](https://github.com/cloudquery/cloudquery/issues/22869)) ([ce8d270](https://github.com/cloudquery/cloudquery/commit/ce8d270429e6503b849910035b761effcdbe62ab))
+* **deps:** Update module github.com/ClickHouse/clickhouse-go/v2 to v2.46.0 ([#22895](https://github.com/cloudquery/cloudquery/issues/22895)) ([34d15b7](https://github.com/cloudquery/cloudquery/commit/34d15b70f8154e493ad7fb728367a951ce891659))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.2 ([#22836](https://github.com/cloudquery/cloudquery/issues/22836)) ([86c88b9](https://github.com/cloudquery/cloudquery/commit/86c88b9ce6a26cc85e4503c7507c24c5b22581e3))
+
 ## [8.2.2](https://github.com/cloudquery/cloudquery/compare/plugins-destination-clickhouse-v8.2.1...plugins-destination-clickhouse-v8.2.2) (2026-05-12)
 
 
