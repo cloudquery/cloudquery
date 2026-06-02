@@ -1,6 +1,6 @@
 services:
   kafka:
-    image: confluentinc/cp-kafka:8.2.0
+    image: confluentinc/cp-kafka:8.2.1
     ports:
       - 29092:29092
     environment:
