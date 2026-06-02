@@ -70,7 +70,7 @@ func fetchSubTableData(ctx context.Context, meta schema.ClientMeta, parent *sche
 			"sub_resource_id": i,
 			"data_column":     fmt.Sprintf("sub_data_%d", i%3),
 		}
-		maps.Copy[map[string]any, map[string]any](data, colMap)
+		maps.Copy(data, colMap) //nolint:govet // inline analyzer doesn't support generic type inference
 		res <- data
 	}
 	return nil
