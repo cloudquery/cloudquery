@@ -18,7 +18,7 @@ jobs:
     continue-on-error: true
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/labeler@634933edcd8ababfe52f92936142cc22ac488b1b # v6
+      - uses: actions/labeler@f27b608878404679385c85cfa523b85ccb86e213 # v6
         continue-on-error: true
         with:
           sync-labels: true

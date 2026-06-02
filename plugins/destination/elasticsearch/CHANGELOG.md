@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.0.4](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v4.0.3...plugins-destination-elasticsearch-v4.0.4) (2026-06-02)
+
+
+### Bug Fixes
+
+* **deps:** Update docker.elastic.co/elasticsearch/elasticsearch Docker tag to v9.4.2 ([#22891](https://github.com/cloudquery/cloudquery/issues/22891)) ([b1be413](https://github.com/cloudquery/cloudquery/commit/b1be413cac2adeaf41273a0c42ce9bebbb3d1cdd))
+* **deps:** Update go module directive to v1.26.3 ([#22869](https://github.com/cloudquery/cloudquery/issues/22869)) ([ce8d270](https://github.com/cloudquery/cloudquery/commit/ce8d270429e6503b849910035b761effcdbe62ab))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.2 ([#22836](https://github.com/cloudquery/cloudquery/issues/22836)) ([86c88b9](https://github.com/cloudquery/cloudquery/commit/86c88b9ce6a26cc85e4503c7507c24c5b22581e3))
+* **deps:** Update module github.com/elastic/go-elasticsearch/v9 to v9.4.1 ([#22898](https://github.com/cloudquery/cloudquery/issues/22898)) ([66bae52](https://github.com/cloudquery/cloudquery/commit/66bae52f9c3e25ba640726879e09abd8f63df497))
+
 ## [4.0.3](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v4.0.2...plugins-destination-elasticsearch-v4.0.3) (2026-05-16)
 
 
