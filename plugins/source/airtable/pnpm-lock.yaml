@@ -67,8 +67,8 @@ importers:
         specifier: ^4.4.4
         version: 4.4.4(eslint-plugin-import-x@4.16.2(@typescript-eslint/utils@8.59.4(eslint@10.4.0)(typescript@6.0.3))(eslint@10.4.0))(eslint@10.4.0)
       eslint-plugin-ava:
-        specifier: ^16.0.0
-        version: 16.0.1(eslint@10.4.0)
+        specifier: ^17.0.0
+        version: 17.0.0(eslint@10.4.0)
       eslint-plugin-import-x:
         specifier: ^4.16.2
         version: 4.16.2(@typescript-eslint/utils@8.59.4(eslint@10.4.0)(typescript@6.0.3))(eslint@10.4.0)
@@ -932,10 +932,6 @@ packages:
   enabled@2.0.0:
     resolution: {integrity: sha512-AKrN98kuwOzMIdAizXGI86UFBoo26CL21UM763y1h/GMSJ4/OHU9k2YlsmBpyScFo/wbLzWQJBMCW4+IO3/+OQ==}
 
-  enhance-visitors@1.0.0:
-    resolution: {integrity: sha512-+29eJLiUixTEDRaZ35Vu8jP3gPLNcQQkQkOQjLp2X+6cZGGPDD/uasbFzvLsJKnGZnvmyZ0srxudwOtskHeIDA==}
-    engines: {node: '>=4.0.0'}
-
   error-class-utils@4.0.1:
     resolution: {integrity: sha512-0IWumkSpGaaQAyViomL6Dew8F+GqS/kz+rny9krYHxki/irnYIZUZlPvI68HwDzBdZVGHFQA/1OTLl02F9WwuQ==}
     engines: {node: '>=18.18.0'}
@@ -996,9 +992,9 @@ packages:
       eslint-plugin-import-x:
         optional: true
 
-  eslint-plugin-ava@16.0.1:
-    resolution: {integrity: sha512-1QsYwUulr9m9o6EFndkI0J10wZyVimmrQ1epB8zEowulW0o8fW/ahIHrPwTMT53AWbObD+8S78Uz9aKM3zS9+A==}
-    engines: {node: '>=20.19'}
+  eslint-plugin-ava@17.0.0:
+    resolution: {integrity: sha512-aGDUiSA2cCLiIQzWTxsOaGLoNmjhjyjRbDZauVFhPAcVr8dX4eUUppC5yX/Ecrrmcc8SEr0xojzQ/c7t7DJpmA==}
+    engines: {node: '>=22'}
     peerDependencies:
       eslint: '>=10'
 
@@ -1432,9 +1428,6 @@ packages:
 
   lodash@4.17.23:
     resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
-
-  lodash@4.18.1:
-    resolution: {integrity: sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==}
 
   logform@2.7.0:
     resolution: {integrity: sha512-TFYA4jnP7PVbmlBIfhlSe+WKxs9dklXMTEGcBCIvLhE/Tn3H6Gk1norupVW7m5Cnd4bLcr08AytbyV/xj7f/kQ==}
@@ -2990,10 +2983,6 @@ snapshots:
 
   enabled@2.0.0: {}
 
-  enhance-visitors@1.0.0:
-    dependencies:
-      lodash: 4.18.1
-
   error-class-utils@4.0.1: {}
 
   error-custom-class@10.0.1:
@@ -3044,11 +3033,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-ava@16.0.1(eslint@10.4.0):
+  eslint-plugin-ava@17.0.0(eslint@10.4.0):
     dependencies:
       '@eslint-community/eslint-utils': 4.9.1(eslint@10.4.0)
       '@eslint/json': 1.2.0
-      enhance-visitors: 1.0.0
       eslint: 10.4.0
       espree: 11.2.0
       espurify: 3.2.0
@@ -3464,8 +3452,6 @@ snapshots:
   lodash.camelcase@4.3.0: {}
 
   lodash@4.17.23: {}
-
-  lodash@4.18.1: {}
 
   logform@2.7.0:
     dependencies:
