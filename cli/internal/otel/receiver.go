@@ -284,7 +284,7 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 
 	factory := otlpreceiver.NewFactory()
 	config := factory.CreateDefaultConfig().(*otlpreceiver.Config)
-	config.GRPC = configoptional.None[configgrpc.ServerConfig]()
+	config.Protocols.GRPC = configoptional.None[configgrpc.ServerConfig]()
 	port, err := getFreePort()
 	if err != nil {
 		return nil, err
@@ -295,7 +295,7 @@ func StartOtelReceiver(ctx context.Context, opts ...OtelReceiverOption) (*OtelRe
 	httpConfig := confighttp.NewDefaultServerConfig()
 	httpConfig.NetAddr.Endpoint = fmt.Sprintf("localhost:%d", port)
 	httpConfig.TLS = configoptional.None[configtls.ServerConfig]()
-	config.HTTP = configoptional.Some(otlpreceiver.HTTPConfig{
+	config.Protocols.HTTP = configoptional.Some(otlpreceiver.HTTPConfig{
 		ServerConfig:   httpConfig,
 		TracesURLPath:  "/v1/traces",
 		MetricsURLPath: "/v1/metrics",

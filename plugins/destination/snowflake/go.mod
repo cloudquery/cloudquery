@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4
 
-go 1.26.2
+go 1.26.3
 
 require (
 	github.com/apache/arrow-go/v18 v18.6.0
@@ -8,7 +8,7 @@ require (
 	github.com/cloudquery/plugin-sdk/v4 v4.95.2
 	github.com/goccy/go-json v0.10.6
 	github.com/rs/zerolog v1.35.1
-	github.com/snowflakedb/gosnowflake/v2 v2.0.1
+	github.com/snowflakedb/gosnowflake/v2 v2.0.2
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/sync v0.20.0
 )
