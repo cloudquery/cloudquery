@@ -54,7 +54,7 @@
     "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.0.0",
     "eslint-import-resolver-typescript": "^4.4.4",
-    "eslint-plugin-ava": "^16.0.0",
+    "eslint-plugin-ava": "^17.0.0",
     "eslint-plugin-import-x": "^4.16.2",
     "eslint-plugin-promise": "^7.0.0",
     "eslint-plugin-unicorn": "^64.0.0",
