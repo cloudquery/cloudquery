@@ -12,5 +12,6 @@ func Plugin() *plugin.Plugin {
 		Configure,
 		plugin.WithKind(internalPlugin.Kind),
 		plugin.WithTeam(internalPlugin.Team),
+		plugin.WithConnectionTester(connectionTester(defaultClientFn)),
 	)
 }
