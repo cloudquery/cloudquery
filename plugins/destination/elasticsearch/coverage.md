@@ -1,8 +1,8 @@
 | File | Function | Coverage |
 | --- | --- | --- |
-| github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/client.go:99: | Close | 66.7% |
-| github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/client.go:106: | getIndexNamePattern | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/client.go:114: | getIndexName | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/client.go:95: | Close | 66.7% |
+| github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/client.go:102: | getIndexNamePattern | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/client.go:110: | getIndexName | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/delete_stale.go:19: | DeleteStale | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/delete_stale.go:44: | deleteStaleIndex | 42.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/migrate.go:19: | MigrateTables | 77.4% |
