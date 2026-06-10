@@ -34,7 +34,7 @@ type Spec struct {
 
 	//  PEM-encoded certificate authorities.
 	//  When set, a certificate pool will be created by appending the certificates to the system pool.
-	//  See [file variable substitution](/docs/cli/managing-cloudquery/environment-variables#file-variable-substitution-example) for how to read this value from a file.
+	//  See [file variable substitution](https://www.cloudquery.io/docs/cli/managing-cloudquery/environment-variables#file-variable-substitution-example) for how to read this value from a file.
 	CACert string `json:"ca_cert,omitempty"`
 
 	// Maximum amount of items that may be grouped together to be written in a single write.

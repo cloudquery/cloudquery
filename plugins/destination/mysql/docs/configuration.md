@@ -10,7 +10,7 @@
 Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
 :::
 
-The MySQL destination utilizes batching, and supports [`batch_size`](/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](/docs/cli/integrations/destinations#batch_size_bytes).
+The MySQL destination utilizes batching, and supports [`batch_size`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size_bytes).
 
 ## MySQL spec
 

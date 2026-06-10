@@ -1,12 +1,12 @@
-The Hacker News Source plugin for CloudQuery extracts configuration from the [Hacker News API](https://github.com/HackerNews/API) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](/docs/plugins/destinations/overview)).
+The Hacker News Source plugin for CloudQuery extracts configuration from the [Hacker News API](https://github.com/HackerNews/API) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](https://www.cloudquery.io/hub/plugins/destination)).
 
 It can be used for real applications, but is mainly intended to serve as an example of CloudQuery Source plugin with an incremental table.
 
 ## Configuration
 
-The following configuration syncs from Hacker News to a Postgres destination, using a special table (`cq_hackernews_state`) to store the state of the last sync. It is also possible to any other CloudQuery destination as a state backend. For more on this, see [Managing Incremental Tables](/docs/cli/advanced/managing-incremental-tables).
+The following configuration syncs from Hacker News to a Postgres destination, using a special table (`cq_hackernews_state`) to store the state of the last sync. It is also possible to use any other CloudQuery destination as a state backend. For more on this, see [Managing Incremental Tables](https://www.cloudquery.io/docs/cli/advanced/managing-incremental-tables).
 
-The (top level) source spec section is described in the [Source Spec Reference](/docs/cli/integrations/sources#complete-source-spec-reference). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/cli/getting-started) if you need help setting up the destination.
+The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/cli/integrations/sources#complete-source-spec-reference). The config for the `postgresql` destination is not shown here. See our [Quickstart](https://www.cloudquery.io/docs/cli/getting-started) if you need help setting up the destination.
 
 :configuration
 
@@ -14,7 +14,7 @@ The (top level) source spec section is described in the [Source Spec Reference](
 Note that if `backend_options` is omitted, by default no backend will be used.
 This will result in all items being fetched on every sync.
 
-For more information about managing state for incremental tables, see [Managing Incremental Tables](/docs/cli/advanced/managing-incremental-tables).
+For more information about managing state for incremental tables, see [Managing Incremental Tables](https://www.cloudquery.io/docs/cli/advanced/managing-incremental-tables).
 :::
 
 - `item_concurrency` (`integer`) (optional):

@@ -11,6 +11,6 @@ It was originally developed as part of a live-coding tutorial on how to write yo
 
 The following configuration syncs from the XKCD API to a Postgres destination.
 
-The (top level) source spec section is described in the [Source Spec Reference](/docs/cli/integrations/sources#complete-source-spec-reference). The config for the `postgresql` destination is not shown here. See our [Quickstart](/docs/cli/getting-started) if you need help setting up the destination.
+The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/cli/integrations/sources#complete-source-spec-reference). The config for the `postgresql` destination is not shown here. See our [Quickstart](https://www.cloudquery.io/docs/cli/getting-started) if you need help setting up the destination.
 
 :configuration

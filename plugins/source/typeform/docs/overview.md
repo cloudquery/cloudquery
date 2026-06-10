@@ -4,11 +4,11 @@ This plugin is now deprecated and will be removed from CloudQuery Hub soon.
 
 The CloudQuery Typeform plugin pulls data from [Typeform](https://www.typeform.com/) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](https://www.cloudquery.io/hub/plugins/destination)).
 
-See [tables](/docs/plugins/sources/typeform/tables) for a list of resources supported.
+See [tables](https://www.cloudquery.io/hub/plugins/source/cloudquery/typeform/latest/tables) for a list of resources supported.
 
 ## Example Configuration
 
-This example syncs from Typeform to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/cli/integrations/sources#complete-source-spec-reference).
+This example syncs from Typeform to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/cli/integrations/sources#complete-source-spec-reference).
 
 :configuration
 
