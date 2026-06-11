@@ -1,0 +1,226 @@
+package platform
+
+import (
+	"context"
+	"encoding/json"
+	"net/http"
+	"net/http/httptest"
+	"sync/atomic"
+	"testing"
+
+	specs "github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
+	"github.com/rs/zerolog"
+	"github.com/stretchr/testify/require"
+)
+
+func testSources() []*specs.Source {
+	return []*specs.Source{{
+		Metadata:     specs.Metadata{Name: "aws", Path: "cloudquery/aws", Version: "v1.0.0", Registry: specs.RegistryCloudQuery},
+		Destinations: []string{"pg"},
+	}}
+}
+
+func testDestinations() []*specs.Destination {
+	return []*specs.Destination{{
+		Metadata: specs.Metadata{Name: "pg", Path: "cloudquery/postgresql", Version: "v1.0.0", Registry: specs.RegistryCloudQuery},
+	}}
+}
+
+// fakeCloud serves the two endpoints the injection flow calls. Pass nil
+// handlers to use defaults (one active tenant, successful mint).
+func fakeCloud(t *testing.T, tenants func(w http.ResponseWriter, r *http.Request), session func(w http.ResponseWriter, r *http.Request)) *httptest.Server {
+	t.Helper()
+	if tenants == nil {
+		tenants = func(w http.ResponseWriter, _ *http.Request) {
+			_ = json.NewEncoder(w).Encode(tenantListResponse{Items: []tenantSummary{
+				{TenantID: "11111111-1111-1111-1111-111111111111", Status: statusActive, TeamName: "team-x"},
+			}})
+		}
+	}
+	if session == nil {
+		session = func(w http.ResponseWriter, _ *http.Request) {
+			w.WriteHeader(http.StatusCreated)
+			_ = json.NewEncoder(w).Encode(sessionResponse{
+				Token:            "cqpd_payload.sig",
+				ExpiresInSeconds: 604800,
+				APIURL:           "https://x.us.platform.cloudquery.io",
+			})
+		}
+	}
+	mux := http.NewServeMux()
+	mux.HandleFunc("/user/platform/tenants", tenants)
+	mux.HandleFunc("/platform-destination/session", session)
+	srv := httptest.NewServer(mux)
+	t.Cleanup(srv.Close)
+	return srv
+}
+
+func TestInject_Active_AppendsDestinationAndWiresSources(t *testing.T) {
+	srv := fakeCloud(t, func(w http.ResponseWriter, r *http.Request) {
+		require.Equal(t, "Bearer tok", r.Header.Get("Authorization"))
+		_ = json.NewEncoder(w).Encode(tenantListResponse{Items: []tenantSummary{
+			{TenantID: "11111111-1111-1111-1111-111111111111", Status: statusActive, TeamName: "team-x"},
+		}})
+	}, func(w http.ResponseWriter, r *http.Request) {
+		require.Equal(t, "Bearer tok", r.Header.Get("Authorization"))
+		var body struct {
+			TenantID string `json:"tenant_id"`
+		}
+		require.NoError(t, json.NewDecoder(r.Body).Decode(&body))
+		require.Equal(t, "11111111-1111-1111-1111-111111111111", body.TenantID)
+		w.WriteHeader(http.StatusCreated)
+		_ = json.NewEncoder(w).Encode(sessionResponse{
+			Token:            "cqpd_payload.sig",
+			ExpiresInSeconds: 604800,
+			APIURL:           "https://x.us.platform.cloudquery.io",
+		})
+	})
+	t.Setenv(envAPIURL, srv.URL)
+
+	sources := testSources()
+	destinations := testDestinations()
+	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", sources, destinations)
+
+	require.Len(t, got, 2)
+	require.Equal(t, destinationName, got[1].Name)
+	require.Equal(t, "https://x.us.platform.cloudquery.io", got[1].Spec["api_url"])
+	require.Equal(t, "cqpd_payload.sig", got[1].Spec["token"], "destination must get the minted cqpd_ token, not the cloud credential")
+	require.Equal(t, defaultPlugin.Version, got[1].Version)
+	require.Equal(t, defaultPlugin.Path, got[1].Path)
+	require.Equal(t, specs.RegistryCloudQuery, got[1].Registry)
+	require.True(t, got[1].SyncSummary, "send_sync_summary must be set so the destination receives finalize signals")
+	require.Contains(t, sources[0].Destinations, destinationName)
+}
+
+func TestInject_ExistingPlatformBlockOverwrittenNotDuplicated(t *testing.T) {
+	srv := fakeCloud(t, nil, nil)
+	t.Setenv(envAPIURL, srv.URL)
+
+	destinations := append(testDestinations(), &specs.Destination{
+		Metadata: specs.Metadata{Name: destinationName, Path: "user/stale", Version: "v0.0.1", Registry: specs.RegistryLocal},
+		Spec:     map[string]any{"api_url": "https://stale", "token": "stale", "keep": "me"},
+	})
+	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), destinations)
+
+	require.Len(t, got, 2)
+	platformDest := got[1]
+	require.Equal(t, destinationName, platformDest.Name)
+	require.Equal(t, defaultPlugin.Path, platformDest.Path)
+	require.Equal(t, specs.RegistryCloudQuery, platformDest.Registry)
+	require.Equal(t, "https://x.us.platform.cloudquery.io", platformDest.Spec["api_url"])
+	require.Equal(t, "cqpd_payload.sig", platformDest.Spec["token"])
+	require.Equal(t, "me", platformDest.Spec["keep"], "unrelated spec keys must survive")
+}
+
+func TestInject_NoTenantForTeam_NoOp(t *testing.T) {
+	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
+		_ = json.NewEncoder(w).Encode(tenantListResponse{Items: []tenantSummary{
+			{TenantID: "22222222-2222-2222-2222-222222222222", Status: statusActive, TeamName: "other-team"},
+			{TenantID: "33333333-3333-3333-3333-333333333333", Status: "pending", TeamName: "team-x"},
+		}})
+	}, nil)
+	t.Setenv(envAPIURL, srv.URL)
+
+	destinations := testDestinations()
+	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), destinations)
+	require.Len(t, got, 1)
+}
+
+func TestInject_TenantListError_NoOp(t *testing.T) {
+	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
+		http.Error(w, "boom", http.StatusInternalServerError)
+	}, nil)
+	t.Setenv(envAPIURL, srv.URL)
+
+	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+	require.Len(t, got, 1)
+}
+
+func TestInject_SessionMintError_NoOp(t *testing.T) {
+	srv := fakeCloud(t, nil, func(w http.ResponseWriter, _ *http.Request) {
+		http.Error(w, "not a member", http.StatusNotFound)
+	})
+	t.Setenv(envAPIURL, srv.URL)
+
+	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+	require.Len(t, got, 1)
+}
+
+func TestInject_MultipleTenants_RequiresEnvSelection(t *testing.T) {
+	tenants := func(w http.ResponseWriter, _ *http.Request) {
+		_ = json.NewEncoder(w).Encode(tenantListResponse{Items: []tenantSummary{
+			{TenantID: "11111111-1111-1111-1111-111111111111", Status: statusActive, TeamName: "team-x"},
+			{TenantID: "22222222-2222-2222-2222-222222222222", Status: statusActive, TeamName: "team-x"},
+		}})
+	}
+
+	t.Run("unset skips", func(t *testing.T) {
+		srv := fakeCloud(t, tenants, nil)
+		t.Setenv(envAPIURL, srv.URL)
+		got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+		require.Len(t, got, 1)
+	})
+
+	t.Run("env picks", func(t *testing.T) {
+		srv := fakeCloud(t, tenants, func(w http.ResponseWriter, r *http.Request) {
+			var body struct {
+				TenantID string `json:"tenant_id"`
+			}
+			require.NoError(t, json.NewDecoder(r.Body).Decode(&body))
+			require.Equal(t, "22222222-2222-2222-2222-222222222222", body.TenantID)
+			w.WriteHeader(http.StatusCreated)
+			_ = json.NewEncoder(w).Encode(sessionResponse{Token: "cqpd_x.y", APIURL: "https://x"})
+		})
+		t.Setenv(envAPIURL, srv.URL)
+		t.Setenv(envTenantID, "22222222-2222-2222-2222-222222222222")
+		got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+		require.Len(t, got, 2)
+	})
+
+	t.Run("env mismatch skips", func(t *testing.T) {
+		srv := fakeCloud(t, tenants, nil)
+		t.Setenv(envAPIURL, srv.URL)
+		t.Setenv(envTenantID, "99999999-9999-9999-9999-999999999999")
+		got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+		require.Len(t, got, 1)
+	})
+}
+
+func TestInject_DisableEnv_SkipsBeforeAnyCall(t *testing.T) {
+	var calls atomic.Int32
+	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
+		calls.Add(1)
+		_ = json.NewEncoder(w).Encode(tenantListResponse{})
+	}, nil)
+	t.Setenv(envAPIURL, srv.URL)
+	t.Setenv(envDisable, "1")
+
+	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+	require.Len(t, got, 1)
+	require.Zero(t, calls.Load())
+}
+
+func TestInject_EmptyTokenOrTeam_NoOp(t *testing.T) {
+	var calls atomic.Int32
+	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
+		calls.Add(1)
+		_ = json.NewEncoder(w).Encode(tenantListResponse{})
+	}, nil)
+	t.Setenv(envAPIURL, srv.URL)
+
+	require.Len(t, MaybeInjectDestination(context.Background(), zerolog.Nop(), "", "team-x", testSources(), testDestinations()), 1)
+	require.Len(t, MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "", testSources(), testDestinations()), 1)
+	require.Zero(t, calls.Load())
+}
+
+func TestAllocateSyncGroupID_TimeShaped(t *testing.T) {
+	srv := fakeCloud(t, nil, nil)
+	t.Setenv(envAPIURL, srv.URL)
+
+	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+	require.Len(t, got, 2)
+	sgid := got[1].SyncGroupId
+	require.Len(t, sgid, 17, "YYYYMMDDhhmmssfff")
+	_, err := json.Number(sgid).Int64()
+	require.NoError(t, err)
+}
