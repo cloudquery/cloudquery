@@ -4,7 +4,7 @@ The plugin discover all bases and tables in your account and syncs them to the d
 
 ## Example Configuration
 
-This example syncs from Airtable to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/cli/integrations/sources#complete-source-spec-reference).
+This example syncs from Airtable to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/cli/integrations/sources#complete-source-spec-reference).
 
 :configuration
 
