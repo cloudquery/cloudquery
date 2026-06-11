@@ -32,7 +32,16 @@ func configureLakebase(pgxConfig *pgxpool.Config, lb *spec.LakebaseSpec) error {
 		return fmt.Errorf("failed to create databricks workspace client: %w", err)
 	}
 
+	// Preserve any previously configured BeforeConnect hook and run it first, so
+	// Lakebase auth composes with other hooks instead of discarding them. The
+	// Lakebase token is set last as it must be the connection password.
+	prevBeforeConnect := pgxConfig.BeforeConnect
 	pgxConfig.BeforeConnect = func(ctx context.Context, connConfig *pgx.ConnConfig) error {
+		if prevBeforeConnect != nil {
+			if err := prevBeforeConnect(ctx, connConfig); err != nil {
+				return err
+			}
+		}
 		cred, err := w.Postgres.GenerateDatabaseCredential(ctx, postgres.GenerateDatabaseCredentialRequest{
 			Endpoint: lb.Endpoint,
 		})
