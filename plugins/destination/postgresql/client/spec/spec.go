@@ -57,8 +57,8 @@ type Spec struct {
 // OLTP database. When set, the plugin uses the Databricks SDK to generate a
 // short-lived OAuth database credential before each new connection and uses it as
 // the connection password. The `connection_string` still supplies the host, port,
-// database name and user (the service principal client ID), and should use
-// `sslmode=require`.
+// database name and user (the service principal client ID), and must use
+// `sslmode=require` (or `verify-ca`/`verify-full`); TLS is required and enforced.
 type LakebaseSpec struct {
 	// The Lakebase database endpoint resource name, in the format
 	// `projects/{project_id}/branches/{branch_id}/endpoints/{endpoint_id}`.

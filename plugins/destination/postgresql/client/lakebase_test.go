@@ -60,6 +60,51 @@ func TestConfigureLakebase(t *testing.T) {
 	}
 }
 
+func TestConfigureLakebase_RequiresTLS(t *testing.T) {
+	cases := []struct {
+		name       string
+		connString string
+		wantErr    bool
+	}{
+		{name: "require ok", connString: "postgres://u@localhost:5432/db?sslmode=require"},
+		{name: "verify-ca ok", connString: "postgres://u@localhost:5432/db?sslmode=verify-ca"},
+		{name: "verify-full ok", connString: "postgres://u@localhost:5432/db?sslmode=verify-full"},
+		{name: "disable rejected", connString: "postgres://u@localhost:5432/db?sslmode=disable", wantErr: true},
+		// allow connects in plaintext first, then falls back to TLS.
+		{name: "allow rejected", connString: "postgres://u@localhost:5432/db?sslmode=allow", wantErr: true},
+		// prefer (the default when sslmode is unset) can fall back to plaintext.
+		{name: "prefer rejected", connString: "postgres://u@localhost:5432/db?sslmode=prefer", wantErr: true},
+		{name: "default (unset) rejected", connString: "postgres://u@localhost:5432/db", wantErr: true},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			cfg, err := pgxpool.ParseConfig(tc.connString)
+			if err != nil {
+				t.Fatalf("failed to parse connection string: %v", err)
+			}
+			err = configureLakebase(cfg, &spec.LakebaseSpec{
+				Endpoint:     "projects/p/branches/b/endpoints/e",
+				Host:         "https://example.cloud.databricks.com",
+				ClientID:     "dummy-id",
+				ClientSecret: "dummy-secret",
+			})
+			if tc.wantErr {
+				if err == nil {
+					t.Error("expected an error for a non-TLS connection string, got nil")
+				}
+				if cfg.BeforeConnect != nil {
+					t.Error("expected BeforeConnect to remain unset when TLS validation fails")
+				}
+				return
+			}
+			if err != nil {
+				t.Errorf("unexpected error: %v", err)
+			}
+		})
+	}
+}
+
 func TestConfigureLakebase_ChainsExistingBeforeConnect(t *testing.T) {
 	cfg, err := pgxpool.ParseConfig("postgres://u@localhost:5432/db?sslmode=require")
 	if err != nil {

@@ -68,7 +68,7 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 
 - `lakebase` (`object`) (optional)
 
-  Configuration to connect to [Databricks Lakebase](https://docs.databricks.com/aws/en/oltp), a PostgreSQL-compatible managed database. When set, the plugin uses the Databricks SDK to generate a short-lived OAuth database credential before each new connection and uses it as the connection password. The `connection_string` still supplies the host, port, database name and user (the service principal client ID), and should use `sslmode=require`. See the [Databricks Lakebase example](#databricks-lakebase) below.
+  Configuration to connect to [Databricks Lakebase](https://docs.databricks.com/aws/en/oltp), a PostgreSQL-compatible managed database. When set, the plugin uses the Databricks SDK to generate a short-lived OAuth database credential before each new connection and uses it as the connection password. The `connection_string` still supplies the host, port, database name and user (the service principal client ID), and must use `sslmode=require` (or `verify-ca`/`verify-full`); TLS is required and enforced. See the [Databricks Lakebase example](#databricks-lakebase) below.
 
   - `endpoint` (`string`) (required)
 
