@@ -1,6 +1,6 @@
 The CloudQuery Bitbucket plugin pulls data from [Bitbucket](https://bitbucket.org/) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](https://www.cloudquery.io/hub/plugins/destination)).
 
-The plugin discover all workspaces and repositories in your account and syncs them to the destination.
+The plugin discovers all workspaces and repositories in your account and syncs them to the destination.
 
 ## Example Configuration
 
