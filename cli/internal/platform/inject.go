@@ -29,6 +29,10 @@ const (
 	envDisable  = "CQ_DISABLE_PLATFORM_DESTINATION"
 	envTenantID = "CQ_PLATFORM_TENANT_ID"
 
+	envPluginRegistry = "CQ_PLATFORM_PLUGIN_REGISTRY"
+	envPluginPath     = "CQ_PLATFORM_PLUGIN_PATH"
+	envPluginVersion  = "CQ_PLATFORM_PLUGIN_VERSION"
+
 	destinationName = "platform"
 	statusActive    = "active"
 )
@@ -43,6 +47,23 @@ var defaultPlugin = pluginCoordinates{
 	Registry: "cloudquery",
 	Path:     "cloudquery/platform",
 	Version:  "v1.0.0",
+}
+
+// pluginCoords returns the plugin coordinates to inject, with env overrides
+// for local development and e2e (e.g. registry=local + an absolute binary
+// path, instead of downloading from the hub).
+func pluginCoords() pluginCoordinates {
+	p := defaultPlugin
+	if v := os.Getenv(envPluginRegistry); v != "" {
+		p.Registry = v
+	}
+	if v := os.Getenv(envPluginPath); v != "" {
+		p.Path = v
+	}
+	if v := os.Getenv(envPluginVersion); v != "" {
+		p.Version = v
+	}
+	return p
 }
 
 type tenantSummary struct {
@@ -90,9 +111,10 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		return destinations
 	}
 
-	parsedRegistry, err := specs.RegistryFromString(defaultPlugin.Registry)
+	plugin := pluginCoords()
+	parsedRegistry, err := specs.RegistryFromString(plugin.Registry)
 	if err != nil {
-		logger.Warn().Err(err).Str("registry", defaultPlugin.Registry).Msg("platform destination: unknown plugin registry; skipping auto-injection")
+		logger.Warn().Err(err).Str("registry", plugin.Registry).Msg("platform destination: unknown plugin registry; skipping auto-injection")
 		return destinations
 	}
 
@@ -107,9 +129,9 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		existing = &specs.Destination{Metadata: specs.Metadata{Name: destinationName}}
 		destinations = append(destinations, existing)
 	}
-	existing.Path = defaultPlugin.Path
+	existing.Path = plugin.Path
 	existing.Registry = parsedRegistry
-	existing.Version = defaultPlugin.Version
+	existing.Version = plugin.Version
 	existing.SyncSummary = true
 	// Unique sgid per invocation: assetview finalize keys on
 	// (tenant, source, sync_group_id); concurrent runs would otherwise wipe
@@ -130,9 +152,9 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 	logger.Info().
 		Str("platform_url", session.APIURL).
 		Str("tenant_id", tenant.TenantID).
-		Str("registry", defaultPlugin.Registry).
-		Str("path", defaultPlugin.Path).
-		Str("version", defaultPlugin.Version).
+		Str("registry", plugin.Registry).
+		Str("path", plugin.Path).
+		Str("version", plugin.Version).
 		Msg("auto-injected platform destination")
 	return destinations
 }

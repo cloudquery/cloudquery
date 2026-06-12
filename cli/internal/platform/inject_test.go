@@ -184,6 +184,20 @@ func TestInject_MultipleTenants_RequiresEnvSelection(t *testing.T) {
 	})
 }
 
+func TestInject_PluginCoordsEnvOverride(t *testing.T) {
+	srv := fakeCloud(t, nil, nil)
+	t.Setenv(envAPIURL, srv.URL)
+	t.Setenv(envPluginRegistry, "local")
+	t.Setenv(envPluginPath, "/abs/path/bin/platform")
+	t.Setenv(envPluginVersion, "v0.0.0-dev")
+
+	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+	require.Len(t, got, 2)
+	require.Equal(t, specs.RegistryLocal, got[1].Registry)
+	require.Equal(t, "/abs/path/bin/platform", got[1].Path)
+	require.Equal(t, "v0.0.0-dev", got[1].Version)
+}
+
 func TestInject_DisableEnv_SkipsBeforeAnyCall(t *testing.T) {
 	var calls atomic.Int32
 	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
