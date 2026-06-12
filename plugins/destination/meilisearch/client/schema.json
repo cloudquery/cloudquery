@@ -34,7 +34,7 @@
         },
         "ca_cert": {
           "type": "string",
-          "description": "PEM-encoded certificate authorities.\n When set, a certificate pool will be created by appending the certificates to the system pool.\n See [file variable substitution](/docs/cli/managing-cloudquery/environment-variables#file-variable-substitution-example) for how to read this value from a file."
+          "description": "PEM-encoded certificate authorities.\n When set, a certificate pool will be created by appending the certificates to the system pool.\n See [file variable substitution](https://www.cloudquery.io/docs/cli/managing-cloudquery/environment-variables#file-variable-substitution-example) for how to read this value from a file."
         },
         "batch_size": {
           "type": "integer",

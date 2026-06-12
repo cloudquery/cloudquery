@@ -24,4 +24,4 @@ spec:
 
 This example configures a ClickHouse instance, located at `localhost:9000`.
 It expects `CH_USER`, `CH_PASSWORD` and `CH_DATABASE` environment variables to be set.
-The (top level) spec section is described in the [Destination Spec Reference](/docs/cli/integrations/destinations#complete-destination-spec-reference).
+The (top level) spec section is described in the [Destination Spec Reference](https://www.cloudquery.io/docs/cli/integrations/destinations#complete-destination-spec-reference).

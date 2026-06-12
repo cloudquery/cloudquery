@@ -1,10 +1,10 @@
 The CloudQuery Square plugin pulls data from [Square](https://www.squareup.com/) and loads it into any supported CloudQuery destination (e.g. PostgreSQL, BigQuery, Snowflake, and [more](https://www.cloudquery.io/hub/plugins/destination)).
 
-See [tables](/docs/plugins/sources/square/tables) for a list of resources supported.
+See [tables](https://www.cloudquery.io/hub/plugins/source/cloudquery/square/latest/tables) for a list of resources supported.
 
 ## Example Configuration
 
-This example syncs from Square to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](/docs/cli/integrations/sources#complete-source-spec-reference).
+This example syncs from Square to a Postgres destination. The (top level) source spec section is described in the [Source Spec Reference](https://www.cloudquery.io/docs/cli/integrations/sources#complete-source-spec-reference).
 
 :configuration
 

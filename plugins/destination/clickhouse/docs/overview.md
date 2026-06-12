@@ -11,7 +11,7 @@ description: CloudQuery ClickHouse destination plugin documentation
 This destination plugin lets you sync data from a CloudQuery source to [ClickHouse](https://clickhouse.com/) database.
 
 It supports `append` write mode only.
-Write mode selection is required through [`write_mode`](/docs/cli/integrations/destinations#write_mode).
+Write mode selection is required through [`write_mode`](https://www.cloudquery.io/docs/cli/integrations/destinations#write_mode).
 
 Supported database versions: >= `24.8.1`
 
@@ -48,7 +48,7 @@ This is the (nested) spec used by the ClickHouse destination plugin.
   PEM-encoded certificate authorities.
   When set, a certificate pool will be created by appending the certificates to the system pool.
 
-  See [file variable substitution](/docs/cli/managing-cloudquery/environment-variables#file-variable-substitution-example)
+  See [file variable substitution](https://www.cloudquery.io/docs/cli/managing-cloudquery/environment-variables#file-variable-substitution-example)
   for how to read this value from a file.
 
 - `engine` (optional, [table engine settings](#clickhouse-table-engine). Default: `MergeTree` engine)

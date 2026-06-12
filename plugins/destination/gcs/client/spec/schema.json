@@ -351,7 +351,7 @@
         },
         "service_account_key_json": {
           "type": "string",
-          "description": "GCP service account key content.\nThis allows for using different service accounts for the GCP source and GCS destination.\nIf using service account keys, it is best to use [environment or file variable substitution](/docs/cli/managing-cloudquery/environment-variables)."
+          "description": "GCP service account key content.\nThis allows for using different service accounts for the GCP source and GCS destination.\nIf using service account keys, it is best to use [environment or file variable substitution](https://www.cloudquery.io/docs/cli/managing-cloudquery/environment-variables)."
         }
       },
       "additionalProperties": false,

@@ -29,4 +29,4 @@ spec:
     # batch_timeout: 30s
 ```
 
-Note that the file plugin only supports `append` `write_mode`. The (top level) spec section is described in the [Destination Spec Reference](/docs/cli/integrations/destinations#complete-destination-spec-reference).
+Note that the file plugin only supports `append` `write_mode`. The (top level) spec section is described in the [Destination Spec Reference](https://www.cloudquery.io/docs/cli/integrations/destinations#complete-destination-spec-reference).
