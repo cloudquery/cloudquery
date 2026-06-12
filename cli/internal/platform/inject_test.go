@@ -26,8 +26,6 @@ func testDestinations() []*specs.Destination {
 	}}
 }
 
-// fakeCloud serves the two endpoints the injection flow calls. Pass nil
-// handlers to use defaults (one active tenant, successful mint).
 func fakeCloud(t *testing.T, tenants func(w http.ResponseWriter, r *http.Request), session func(w http.ResponseWriter, r *http.Request)) *httptest.Server {
 	t.Helper()
 	if tenants == nil {

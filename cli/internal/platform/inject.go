@@ -1,7 +1,5 @@
-// Package platform wires the CLI to the CloudQuery Platform's external-syncs
-// flow. If the team has an active platform tenant, every sync the user runs
-// gets a platform destination appended automatically, authenticated by a
-// short-lived cqpd_ token minted from the caller's cloud credential.
+// Package platform auto-injects a platform destination into syncs for teams
+// with an active platform tenant.
 package platform
 
 import (
@@ -34,9 +32,6 @@ const (
 	statusActive    = "active"
 )
 
-// pluginCoordinates pins the platform destination plugin the CLI injects.
-// Currently hardcoded; kept as a struct so server-driven pinning can be wired
-// back in without touching the injection logic.
 type pluginCoordinates struct {
 	Registry string
 	Path     string
@@ -66,15 +61,10 @@ type sessionResponse struct {
 }
 
 // MaybeInjectDestination ensures a `platform` destination exists in the spec
-// when the team has an active platform tenant. It discovers the tenant via
-// cloud's GET /user/platform/tenants, mints a tenant-scoped cqpd_ token via
-// POST /platform-destination/session, and stamps the returned token + api_url
-// into the destination spec — the cloud credential itself never reaches the
-// plugin. If a destination named `platform` already exists, its metadata and
-// connection spec are overwritten so users can keep a placeholder block in
-// their config; otherwise a fresh entry is appended and every source is wired
-// to it. Failures fall through silently so a cloud API outage does not break
-// local syncs.
+// when the team has an active platform tenant, carrying a freshly minted
+// cqpd_ token — the cloud credential itself never reaches the plugin.
+// Failures fall through silently so a cloud API outage does not break local
+// syncs.
 func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, teamName string, sources []*specs.Source, destinations []*specs.Destination) []*specs.Destination {
 	if os.Getenv(envDisable) == "1" {
 		return destinations
@@ -120,11 +110,9 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 	existing.Registry = parsedRegistry
 	existing.Version = defaultPlugin.Version
 	existing.SyncSummary = true
-	// Stamp a time-based numeric sync_group_id (YYYYMMDDhhmmssfff) so the CLI's
-	// record transformer adds `_cq_sync_group_id` to every row. Assetview's
-	// staging→main finalize keys on `(tenant, source, sync_group_id)`; without
-	// a unique sgid per invocation, concurrent CLI runs from the same team
-	// collide in finalize and wipe each other's rows.
+	// Unique sgid per invocation: assetview finalize keys on
+	// (tenant, source, sync_group_id); concurrent runs would otherwise wipe
+	// each other's rows.
 	existing.SyncGroupId = strconv.FormatUint(allocateSyncGroupID(time.Now()), 10)
 	if existing.Spec == nil {
 		existing.Spec = map[string]any{}
@@ -148,9 +136,6 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 	return destinations
 }
 
-// selectTenant picks the tenant to mint for. Zero tenants → not onboarded,
-// skip quietly. Multiple → require CQ_PLATFORM_TENANT_ID to disambiguate;
-// never guess, and never fail the sync.
 func selectTenant(logger zerolog.Logger, tenants []tenantSummary) (tenantSummary, bool) {
 	switch len(tenants) {
 	case 0:
@@ -172,9 +157,9 @@ func selectTenant(logger zerolog.Logger, tenants []tenantSummary) (tenantSummary
 	return tenantSummary{}, false
 }
 
-// allocateSyncGroupID returns a time-based uint64 (YYYYMMDDhhmmssfff). Same
-// shape platform/syncs-transformer uses for managed syncs, so external-sync
-// rows share the keyspace.
+// allocateSyncGroupID returns a time-based uint64 (YYYYMMDDhhmmssfff) — the
+// same shape platform/syncs-transformer uses, so external-sync rows share the
+// keyspace.
 func allocateSyncGroupID(now time.Time) uint64 {
 	t := now.UTC()
 	base := t.Format("20060102150405") + fmt.Sprintf("%03d", t.Nanosecond()/1e6)
