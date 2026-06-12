@@ -237,9 +237,8 @@ func sync(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get team name from token: %w", err)
 	}
 
-	// Inject before the summary/otel decisions below: the injected destination
-	// sets SyncSummary, which must count toward needSummary so the otel
-	// receiver starts and table durations reach the summary.
+	// Must run before the needSummary/otel decisions below: the injected
+	// destination sets SyncSummary.
 	destinations = cqplatform.MaybeInjectDestination(ctx, log.Logger, authToken.Value, teamName, sources, destinations)
 
 	var destsWantSummary bool

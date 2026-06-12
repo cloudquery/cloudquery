@@ -49,9 +49,6 @@ var defaultPlugin = pluginCoordinates{
 	Version:  "v1.0.0",
 }
 
-// pluginCoords returns the plugin coordinates to inject, with env overrides
-// for local development and e2e (e.g. registry=local + an absolute binary
-// path, instead of downloading from the hub).
 func pluginCoords() pluginCoordinates {
 	p := defaultPlugin
 	if v := os.Getenv(envPluginRegistry); v != "" {
@@ -84,16 +81,13 @@ type sessionResponse struct {
 
 // MaybeInjectDestination ensures a `platform` destination exists in the spec
 // when the team has an active platform tenant, carrying a freshly minted
-// cqpd_ token — the cloud credential itself never reaches the plugin.
-// Failures fall through silently so a cloud API outage does not break local
-// syncs.
+// cqpd_ token — the cloud credential itself never reaches the plugin, and
+// failures never break the sync.
 func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, teamName string, sources []*specs.Source, destinations []*specs.Destination) []*specs.Destination {
 	if os.Getenv(envDisable) == "1" {
 		return destinations
 	}
-	// Cloud-run syncs compose their spec server-side and authenticate with a
-	// sync-run token; injecting client-side would at best be a wasted call and
-	// at worst duplicate the cloud-side composition.
+	// Cloud-run syncs compose their spec server-side.
 	if env.IsCloud() {
 		return destinations
 	}
@@ -139,9 +133,8 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 	existing.Registry = parsedRegistry
 	existing.Version = plugin.Version
 	existing.SyncSummary = true
-	// Unique sgid per invocation: assetview finalize keys on
-	// (tenant, source, sync_group_id); concurrent runs would otherwise wipe
-	// each other's rows.
+	// Unique per invocation: assetview finalize keys on (tenant, source,
+	// sync_group_id); concurrent runs would otherwise wipe each other's rows.
 	existing.SyncGroupId = strconv.FormatUint(allocateSyncGroupID(time.Now()), 10)
 	if existing.Spec == nil {
 		existing.Spec = map[string]any{}
@@ -186,9 +179,8 @@ func selectTenant(logger zerolog.Logger, tenants []tenantSummary) (tenantSummary
 	return tenantSummary{}, false
 }
 
-// allocateSyncGroupID returns a time-based uint64 (YYYYMMDDhhmmssfff) — the
-// same shape platform/syncs-transformer uses, so external-sync rows share the
-// keyspace.
+// YYYYMMDDhhmmssfff — same shape platform/syncs-transformer uses, so
+// external-sync rows share the keyspace.
 func allocateSyncGroupID(now time.Time) uint64 {
 	t := now.UTC()
 	base := t.Format("20060102150405") + fmt.Sprintf("%03d", t.Nanosecond()/1e6)
