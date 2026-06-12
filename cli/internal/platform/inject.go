@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -227,7 +228,7 @@ func mintSession(ctx context.Context, token, tenantID string) (*sessionResponse,
 		return nil, fmt.Errorf("decode /platform-destination/session response: %w", err)
 	}
 	if out.Token == "" || out.APIURL == "" {
-		return nil, fmt.Errorf("/platform-destination/session response missing token or api_url")
+		return nil, errors.New("/platform-destination/session response missing token or api_url")
 	}
 	return &out, nil
 }
