@@ -212,6 +212,20 @@ func TestInject_DisableEnv_SkipsBeforeAnyCall(t *testing.T) {
 	require.Zero(t, calls.Load())
 }
 
+func TestInject_CloudRun_SkipsBeforeAnyCall(t *testing.T) {
+	var calls atomic.Int32
+	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
+		calls.Add(1)
+		_ = json.NewEncoder(w).Encode(tenantListResponse{})
+	}, nil)
+	t.Setenv(envAPIURL, srv.URL)
+	t.Setenv("CQ_CLOUD", "1")
+
+	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+	require.Len(t, got, 1)
+	require.Zero(t, calls.Load())
+}
+
 func TestInject_EmptyTokenOrTeam_NoOp(t *testing.T) {
 	var calls atomic.Int32
 	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {

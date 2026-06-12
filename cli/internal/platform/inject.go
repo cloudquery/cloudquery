@@ -91,6 +91,12 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 	if os.Getenv(envDisable) == "1" {
 		return destinations
 	}
+	// Cloud-run syncs compose their spec server-side and authenticate with a
+	// sync-run token; injecting client-side would at best be a wasted call and
+	// at worst duplicate the cloud-side composition.
+	if env.IsCloud() {
+		return destinations
+	}
 	if token == "" || teamName == "" {
 		return destinations
 	}

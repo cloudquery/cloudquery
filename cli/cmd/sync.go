@@ -228,6 +228,20 @@ func sync(cmd *cobra.Command, args []string) error {
 
 	var otelReceiver *otel.OtelReceiver
 
+	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, transformers)
+	if err != nil {
+		return fmt.Errorf("failed to get auth token: %w", err)
+	}
+	teamName, err := auth.GetTeamForToken(ctx, authToken)
+	if err != nil {
+		return fmt.Errorf("failed to get team name from token: %w", err)
+	}
+
+	// Inject before the summary/otel decisions below: the injected destination
+	// sets SyncSummary, which must count toward needSummary so the otel
+	// receiver starts and table durations reach the summary.
+	destinations = cqplatform.MaybeInjectDestination(ctx, log.Logger, authToken.Value, teamName, sources, destinations)
+
 	var destsWantSummary bool
 	for _, dest := range destinations {
 		destsWantSummary = destsWantSummary || dest.SyncSummary
@@ -263,17 +277,6 @@ func sync(cmd *cobra.Command, args []string) error {
 			fmt.Println(err)
 		}
 	}()
-	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, transformers)
-	if err != nil {
-		return fmt.Errorf("failed to get auth token: %w", err)
-	}
-	teamName, err := auth.GetTeamForToken(ctx, authToken)
-	if err != nil {
-		return fmt.Errorf("failed to get team name from token: %w", err)
-	}
-
-	destinations = cqplatform.MaybeInjectDestination(ctx, log.Logger, authToken.Value, teamName, sources, destinations)
-
 	pluginVersionWarner, _ := managedplugin.NewPluginVersionWarner(log.Logger, authToken.Value)
 	specs.WarnOnOutdatedVersions(ctx, pluginVersionWarner, sources, destinations, transformers)
 
