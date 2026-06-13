@@ -3,7 +3,7 @@ module github.com/cloudquery/cloudquery/plugins/destination/gcs/v5
 go 1.26.3
 
 require (
-	cloud.google.com/go/storage v1.62.2
+	cloud.google.com/go/storage v1.62.3
 	github.com/apache/arrow-go/v18 v18.6.0
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/filetypes/v4 v4.7.0
@@ -14,7 +14,7 @@ require (
 	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.11.1
 	github.com/wk8/go-ordered-map/v2 v2.1.8
-	google.golang.org/api v0.282.0
+	google.golang.org/api v0.283.0
 )
 
 require (
