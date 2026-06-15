@@ -20,6 +20,8 @@
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/plugin/client.go:68: | Close | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/plugin/client.go:72: | getTables | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/plugin/client.go:87: | Configure | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/plugin/connection_tester.go:20: | connectionTester | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/plugin/connection_tester.go:38: | defaultClientFn | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/plugin/plugin.go:15: | Plugin | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/services/items/items.go:13: | Items | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/services/items/items.go:37: | typeTransformer | 100.0% |
@@ -28,4 +30,4 @@
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/services/items/items_fetch.go:109: | fetchBatch | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/services/items/items_fetch.go:125: | fetchItem | 50.0% |
 | github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/resources/services/items/items_fetch.go:140: | findFirstPostAfter | 80.0% |
-| total: | (statements) | 43.8% |
+| total: | (statements) | 46.5% |
