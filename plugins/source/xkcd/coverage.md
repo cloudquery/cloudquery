@@ -17,7 +17,9 @@
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/resources/plugin/client.go:72: | Configure | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/resources/plugin/client.go:109: | getTables | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/resources/plugin/client.go:125: | titleTransformer | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/source/xkcd/resources/plugin/connection_tester.go:19: | connectionTester | 84.6% |
+| github.com/cloudquery/cloudquery/plugins/source/xkcd/resources/plugin/connection_tester.go:42: | defaultClientFn | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/resources/plugin/plugin.go:8: | Plugin | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/resources/services/comic.go:13: | ComicsTable | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/source/xkcd/resources/services/comic.go:21: | fetchComics | 78.9% |
-| total: | (statements) | 13.3% |
+| total: | (statements) | 20.1% |
