@@ -32,7 +32,11 @@ func nonPkIndices(sc *schema.Table) []int {
 // but this is unavoidable until support is added to duckdb itself.
 // See https://github.com/duckdb/duckdb/blob/c5d9afb97bbf0be12216f3b89ae3131afbbc3156/src/storage/table/list_column_data.cpp#L243-L251
 func containsList(sc *schema.Table) bool {
-	return slices.ContainsFunc(sc.Columns, func(c schema.Column) bool { return dtContainsList(c.Type) })
+	return slices.ContainsFunc(sc.Columns, func(c schema.Column) bool {
+		// Key list columns are stored as their string representation, not as a
+		// LIST, so they don't need the delete+insert workaround.
+		return !keyListColumn(c) && dtContainsList(c.Type)
+	})
 }
 
 func dtContainsList(dt arrow.DataType) bool {
@@ -46,6 +50,31 @@ func dtContainsList(dt arrow.DataType) bool {
 	default:
 		return false
 	}
+}
+
+// duckDBListColumn reports whether the column maps to a duckdb LIST type (e.g.
+// VARCHAR[]). DuckDB can't build a PRIMARY KEY / UNIQUE index on a LIST column
+// ("Invalid type for index key").
+func duckDBListColumn(c schema.Column) bool {
+	_, ok := c.Type.(arrow.ListLikeType)
+	return ok
+}
+
+// keyListColumn reports whether the column is part of a key (primary key or
+// unique constraint) and maps to a duckdb LIST type. DuckDB can't index a LIST
+// column, so such columns are stored as their string representation instead,
+// which keeps the key enforceable and avoids duplicates without losing data.
+func keyListColumn(c schema.Column) bool {
+	return (c.PrimaryKey || c.Unique) && duckDBListColumn(c)
+}
+
+// duckDBType returns the duckdb column type for a column, storing key list
+// columns as varchar so they can participate in an index.
+func duckDBType(c schema.Column) string {
+	if keyListColumn(c) {
+		return "varchar"
+	}
+	return arrowToDuckDB(c.Type)
 }
 
 func (c *Client) upsert(ctx context.Context, tmpTableName string, table *schema.Table) error {
@@ -175,7 +204,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 }
 
 func writeTMPFile(table *schema.Table, msgs []*message.WriteInsert) (fileName string, err error) {
-	sc := transformSchemaForWriting(table.ToArrowSchema())
+	sc := transformSchemaForWriting(table)
 
 	// create temp file
 	f, err := os.CreateTemp("", fmt.Sprintf("%s-*.parquet", table.Name))

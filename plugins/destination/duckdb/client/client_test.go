@@ -164,3 +164,96 @@ func TestInsertDuplicateSameBatch(t *testing.T) {
 	require.NoError(t, rows.Err())
 	require.Equal(t, int64(1), count)
 }
+
+func TestListPrimaryKey(t *testing.T) {
+	ctx := context.Background()
+	p := plugin.NewPlugin("duckdb", "development", New)
+	tempDB := path.Join(t.TempDir(), "test_list_primary_key.duckdb") + "?threads=1"
+
+	spec := Spec{
+		ConnectionString: tempDB,
+		Debug:            true,
+	}
+	specBytes, err := json.Marshal(spec)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	testingLog := &testingLog{TB: t, Buf: bytes.Buffer{}}
+	testWriter := zerolog.TestWriter{T: testingLog}
+	p.SetLogger(zerolog.New(testWriter).Level(zerolog.DebugLevel))
+
+	if err := p.Init(ctx, specBytes, plugin.NewClientOptions{}); err != nil {
+		t.Fatal(err)
+	}
+
+	t.Cleanup(func() {
+		if err := p.Close(ctx); err != nil {
+			t.Logf("failed to close plugin: %v", err)
+		}
+	})
+
+	table := &schema.Table{
+		Name: "test_list_primary_key",
+		Columns: []schema.Column{
+			{Name: "name", Type: arrow.BinaryTypes.String, PrimaryKey: true},
+			{Name: "locations", Type: arrow.ListOf(arrow.BinaryTypes.String), PrimaryKey: true},
+		},
+	}
+	res := make(chan message.WriteMessage, 10)
+	var writeErr error
+	wg := sync.WaitGroup{}
+	wg.Go(func() {
+		writeErr = p.Write(ctx, res)
+	})
+
+	res <- &message.WriteMigrateTable{
+		Table: table,
+	}
+
+	bldr := array.NewRecordBuilder(memory.DefaultAllocator, table.ToArrowSchema())
+	appendRow := func(name, location string) {
+		bldr.Field(0).(*array.StringBuilder).Append(name)
+		lb := bldr.Field(1).(*array.ListBuilder)
+		lb.Append(true)
+		lb.ValueBuilder().(*array.StringBuilder).Append(location)
+	}
+	// distinct list values must be kept as separate rows...
+	appendRow("standard", "eastus")
+	appendRow("standard", "westus")
+	// ...while an exact duplicate must be deduplicated by the primary key.
+	appendRow("standard", "eastus")
+
+	record := bldr.NewRecordBatch()
+
+	res <- &message.WriteInsert{
+		Record: record,
+	}
+	close(res)
+
+	wg.Wait()
+	require.NoError(t, writeErr)
+
+	require.NotContains(t, testingLog.Buf.String(), "Invalid type for index key")
+	connector, err := duckdb.NewConnector(tempDB, nil)
+	require.NoError(t, err)
+	defer connector.Close()
+	db := sql.OpenDB(connector)
+	defer db.Close()
+
+	var colType string
+	require.NoError(t, db.QueryRowContext(ctx,
+		"SELECT data_type FROM information_schema.columns WHERE table_name = 'test_list_primary_key' AND column_name = 'locations'").
+		Scan(&colType))
+	require.Equal(t, "VARCHAR", colType)
+
+	rows, err := db.QueryContext(ctx, "SELECT count(*) FROM test_list_primary_key")
+	require.NoError(t, err)
+	defer rows.Close()
+	var count int64
+	for rows.Next() {
+		require.NoError(t, rows.Scan(&count))
+	}
+	require.NoError(t, rows.Err())
+	require.Equal(t, int64(2), count)
+}

@@ -34,9 +34,14 @@ func (*Client) normalizeColumns(tables schema.Tables) schema.Tables {
 		normalizedTable := *table
 		normalizedTable.Columns = make(schema.ColumnList, len(table.Columns))
 		for i := range table.Columns {
+			normalizedColumn := table.Columns[i]
+			// DuckDB can't index a LIST column, so key list columns are stored as
+			// varchar. Reflect that here so schema diffing matches the created table.
+			if keyListColumn(normalizedColumn) {
+				normalizedColumn.Type = duckDBToArrow("varchar")
+			}
 			// In DuckDB, a PK column must be NOT NULL, so we need to make sure that the schema we're comparing to has the same
 			// constraint.
-			normalizedColumn := table.Columns[i]
 			if normalizedColumn.PrimaryKey {
 				normalizedColumn.NotNull = true
 			}
@@ -185,7 +190,7 @@ func (c *Client) createTableIfNotExist(ctx context.Context, tableName string, ta
 
 	var pks []string
 	for i, col := range table.Columns {
-		sqlType := arrowToDuckDB(col.Type)
+		sqlType := duckDBType(col)
 		fieldDef := sanitizeID(col.Name) + ` ` + sqlType
 		if col.PrimaryKey && !skipConstraints {
 			pks = append(pks, col.Name)
