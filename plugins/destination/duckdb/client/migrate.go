@@ -35,8 +35,6 @@ func (*Client) normalizeColumns(tables schema.Tables) schema.Tables {
 		normalizedTable.Columns = make(schema.ColumnList, len(table.Columns))
 		for i := range table.Columns {
 			normalizedColumn := table.Columns[i]
-			// DuckDB can't index a LIST column, so key list columns are stored as
-			// varchar. Reflect that here so schema diffing matches the created table.
 			if keyListColumn(normalizedColumn) {
 				normalizedColumn.Type = duckDBToArrow("varchar")
 			}

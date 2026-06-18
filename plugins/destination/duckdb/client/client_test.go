@@ -218,10 +218,8 @@ func TestListPrimaryKey(t *testing.T) {
 		lb.Append(true)
 		lb.ValueBuilder().(*array.StringBuilder).Append(location)
 	}
-	// distinct list values must be kept as separate rows...
 	appendRow("standard", "eastus")
 	appendRow("standard", "westus")
-	// ...while an exact duplicate must be deduplicated by the primary key.
 	appendRow("standard", "eastus")
 
 	record := bldr.NewRecordBatch()

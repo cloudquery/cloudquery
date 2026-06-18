@@ -14,8 +14,6 @@ func transformSchemaForWriting(table *schema.Table) *arrow.Schema {
 	md := arrow.MetadataFrom(sc.Metadata().ToMap())
 	fields := transformFieldsForWriting(sc.Fields())
 	for i := range table.Columns {
-		// Key list columns are stored as varchar, so write them as their string
-		// representation to match the table column type.
 		if keyListColumn(table.Columns[i]) {
 			fields[i].Type = arrow.BinaryTypes.String
 		}

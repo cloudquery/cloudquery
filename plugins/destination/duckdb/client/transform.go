@@ -11,8 +11,6 @@ func transformRecord(sc *arrow.Schema, rec arrow.RecordBatch) arrow.RecordBatch 
 	cols := make([]arrow.Array, rec.NumCols())
 	for i := 0; i < int(rec.NumCols()); i++ {
 		col := rec.Column(i)
-		// Key list columns are stored as varchar (the target schema field is a
-		// string), so serialize the list to its string representation.
 		if _, isList := col.DataType().(arrow.ListLikeType); isList && sc.Field(i).Type.ID() == arrow.STRING {
 			cols[i] = transformToStringArray(col)
 			continue
