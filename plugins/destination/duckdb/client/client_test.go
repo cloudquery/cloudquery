@@ -255,3 +255,23 @@ func TestListPrimaryKey(t *testing.T) {
 	require.NoError(t, rows.Err())
 	require.Equal(t, int64(2), count)
 }
+
+func TestListColumnStringRoundTrip(t *testing.T) {
+	listType := arrow.ListOf(arrow.BinaryTypes.String)
+	lb := array.NewListBuilder(memory.DefaultAllocator, arrow.BinaryTypes.String)
+	defer lb.Release()
+	lb.Append(true)
+	lb.ValueBuilder().(*array.StringBuilder).Append("eastus")
+	lb.ValueBuilder().(*array.StringBuilder).Append("westus")
+	listArr := lb.NewArray()
+	defer listArr.Release()
+
+	strArr, ok := transformToStringArray(listArr).(*array.String)
+	require.True(t, ok)
+
+	back, ok := reverseTransformFromString(listType, strArr).(*array.List)
+	require.True(t, ok)
+	vals := back.ListValues().(*array.String)
+	require.Equal(t, "eastus", vals.Value(0))
+	require.Equal(t, "westus", vals.Value(1))
+}

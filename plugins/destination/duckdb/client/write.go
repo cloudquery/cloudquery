@@ -33,21 +33,8 @@ func nonPkIndices(sc *schema.Table) []int {
 // See https://github.com/duckdb/duckdb/blob/c5d9afb97bbf0be12216f3b89ae3131afbbc3156/src/storage/table/list_column_data.cpp#L243-L251
 func containsList(sc *schema.Table) bool {
 	return slices.ContainsFunc(sc.Columns, func(c schema.Column) bool {
-		return !keyListColumn(c) && dtContainsList(c.Type)
+		return duckDBListColumn(c) && !keyListColumn(c)
 	})
-}
-
-func dtContainsList(dt arrow.DataType) bool {
-	switch dt := dt.(type) {
-	case *arrow.StructType:
-		return slices.ContainsFunc(dt.Fields(), func(f arrow.Field) bool { return dtContainsList(f.Type) })
-	case *arrow.MapType:
-		return dtContainsList(dt.KeyType()) || dtContainsList(dt.ItemType())
-	case arrow.ListLikeType:
-		return true
-	default:
-		return false
-	}
 }
 
 func duckDBListColumn(c schema.Column) bool {
