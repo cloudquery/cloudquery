@@ -1,6 +1,6 @@
 This example configures connects to a Kafka destination using SASL plain authentication and pushes messages in JSON format.
 
-The (top level) spec section is described in the [Destination Spec Reference](/docs/cli/integrations/destinations#complete-destination-spec-reference).
+The (top level) spec section is described in the [Destination Spec Reference](https://www.cloudquery.io/docs/cli/integrations/destinations#complete-destination-spec-reference).
 
 ```yaml copy
 kind: destination
@@ -36,4 +36,4 @@ spec:
       # replication_factor: 1
 ```
 
-Note that the Kafka plugin only supports `append` `write_mode`. The (top level) spec section is described in the [Destination Spec Reference](/docs/cli/integrations/destinations#complete-destination-spec-reference).
+Note that the Kafka plugin only supports `append` `write_mode`. The (top level) spec section is described in the [Destination Spec Reference](https://www.cloudquery.io/docs/cli/integrations/destinations#complete-destination-spec-reference).

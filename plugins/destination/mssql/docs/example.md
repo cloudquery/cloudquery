@@ -54,7 +54,7 @@ via the following connection string:
 server=localhost;user id=SA;password=yourStrongP@ssword;port=1433;database=cloudquery;
 ```
 
-The (top level) spec section is described in the [Destination Spec Reference](/docs/cli/integrations/destinations#complete-destination-spec-reference).
+The (top level) spec section is described in the [Destination Spec Reference](https://www.cloudquery.io/docs/cli/integrations/destinations#complete-destination-spec-reference).
 The full configuration for Microsoft SQL Server destination plugin will look like this:
 
 ```yaml copy

@@ -22,13 +22,13 @@ As a side note graph databases can be quite useful for various networking use-ca
 
 :configuration
 
-The (top level) spec section is described in the [Destination Spec Reference](/docs/cli/integrations/destinations#complete-destination-spec-reference).
+The (top level) spec section is described in the [Destination Spec Reference](https://www.cloudquery.io/docs/cli/integrations/destinations#complete-destination-spec-reference).
 
 :::callout{type="info"}
 Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
 :::
 
-The Gremlin destination utilizes batching, and supports [`batch_size`](/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](/docs/cli/integrations/destinations#batch_size_bytes).
+The Gremlin destination utilizes batching, and supports [`batch_size`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size_bytes).
 
 ### Connecting to AWS Neptune
 
