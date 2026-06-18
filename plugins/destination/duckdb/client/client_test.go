@@ -256,6 +256,22 @@ func TestListPrimaryKey(t *testing.T) {
 	require.Equal(t, int64(2), count)
 }
 
+func TestKeyListColumnDetection(t *testing.T) {
+	listType := arrow.ListOf(arrow.BinaryTypes.String)
+	mapType := arrow.MapOf(arrow.BinaryTypes.String, arrow.BinaryTypes.String)
+
+	require.True(t, duckDBListColumn(schema.Column{Type: listType}))
+	require.False(t, duckDBListColumn(schema.Column{Type: mapType}))
+
+	require.True(t, keyListColumn(schema.Column{Type: listType, PrimaryKey: true}))
+	require.False(t, keyListColumn(schema.Column{Type: mapType, PrimaryKey: true}))
+	require.False(t, keyListColumn(schema.Column{Type: listType}))
+
+	require.Equal(t, "varchar", duckDBType(schema.Column{Type: listType, PrimaryKey: true}))
+	require.Equal(t, "json", duckDBType(schema.Column{Type: mapType, PrimaryKey: true}))
+	require.Equal(t, "varchar[]", duckDBType(schema.Column{Type: listType}))
+}
+
 func TestListColumnStringRoundTrip(t *testing.T) {
 	listType := arrow.ListOf(arrow.BinaryTypes.String)
 	lb := array.NewListBuilder(memory.DefaultAllocator, arrow.BinaryTypes.String)

@@ -38,6 +38,10 @@ func containsList(sc *schema.Table) bool {
 }
 
 func duckDBListColumn(c schema.Column) bool {
+	// Maps also implement arrow.ListLikeType but map to DuckDB json, not a LIST.
+	if _, isMap := c.Type.(*arrow.MapType); isMap {
+		return false
+	}
 	_, ok := c.Type.(arrow.ListLikeType)
 	return ok
 }
