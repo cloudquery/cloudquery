@@ -207,9 +207,8 @@ func sync(cmd *cobra.Command, args []string) error {
 	ctx := cmd.Context()
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
 	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
-	// Validation is deferred until after the platform destination has had a
-	// chance to be auto-injected below, so a source-only spec is not rejected
-	// before injection can satisfy the "at least one destination" requirement.
+	// Validate after injection so a source-only spec isn't rejected before the
+	// platform destination is added.
 	specReader, err := specs.NewSpecReaderWithoutValidation(args)
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
@@ -242,7 +241,10 @@ func sync(cmd *cobra.Command, args []string) error {
 
 	// Must run before the needSummary/otel decisions below: the injected
 	// destination sets SyncSummary.
-	destinations = cqplatform.MaybeInjectDestination(ctx, log.Logger, authToken.Value, teamName, sources, destinations)
+	destinations, err = cqplatform.MaybeInjectDestination(ctx, log.Logger, authToken.Value, teamName, sources, destinations)
+	if err != nil {
+		return err
+	}
 
 	if err := specReader.SetDestinationsAndValidate(destinations); err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)

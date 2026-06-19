@@ -52,9 +52,8 @@ var defaultPlugin = pluginCoordinates{
 	Version:  "v1.0.0",
 }
 
-// platformAPIURL is the base URL the destination plugin uses for
-// /external-syncs/*. Those endpoints are served under /api, which is appended
-// to the minted session's api_url unless already present.
+// platformAPIURL appends /api (where /external-syncs/* is served) to the
+// session api_url unless already present.
 func platformAPIURL(sessionURL string) string {
 	url := strings.TrimRight(sessionURL, "/")
 	if !strings.HasSuffix(url, "/api") {
@@ -77,89 +76,87 @@ func pluginCoords() pluginCoordinates {
 	return p
 }
 
-// MaybeInjectDestination ensures a `platform` destination exists in the spec
-// when the team has an active platform tenant, carrying a freshly minted
-// cqpd_ token — the cloud credential itself never reaches the plugin, and
-// failures never break the sync.
-func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, teamName string, sources []*specs.Source, destinations []*specs.Destination) []*specs.Destination {
+// MaybeInjectDestination appends a `platform` destination carrying a freshly
+// minted cqpd_ token when the team has an active platform tenant. Tenant/network
+// failures skip injection silently; a pre-existing `platform` destination is a
+// hard error rather than a silent overwrite.
+func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, teamName string, sources []*specs.Source, destinations []*specs.Destination) ([]*specs.Destination, error) {
 	if os.Getenv(envDisable) == "1" {
-		return destinations
+		return destinations, nil
 	}
-	// Cloud-run syncs compose their spec server-side.
 	if env.IsCloud() {
-		return destinations
+		return destinations, nil
 	}
-	// The caller only fetches a token when the spec pulls a cloudquery-registry
-	// plugin. A source-only (or fully non-cloudquery) spec relies on injection,
-	// so resolve credentials directly here; any failure just skips injection.
+	// The caller only fetches a token for cloudquery-registry specs; resolve
+	// directly so source-only specs can still inject. Failure just skips.
 	if token == "" {
 		var err error
 		if token, teamName, err = resolveCredentials(ctx); err != nil {
 			logger.Debug().Err(err).Msg("platform destination: credentials unavailable, skipping auto-injection")
-			return destinations
+			return destinations, nil
 		}
 	}
 	if token == "" || teamName == "" {
-		return destinations
+		return destinations, nil
 	}
 
 	cl, err := api.NewClient(token)
 	if err != nil {
 		logger.Debug().Err(err).Msg("platform destination: api client init failed, skipping auto-injection")
-		return destinations
+		return destinations, nil
 	}
 
 	tenants, err := activeTenants(ctx, cl, teamName)
 	if err != nil {
 		logger.Debug().Err(err).Msg("platform destination: tenant discovery failed, skipping auto-injection")
-		return destinations
+		return destinations, nil
 	}
 	tenant, ok := selectTenant(logger, tenants)
 	if !ok {
-		return destinations
+		return destinations, nil
+	}
+
+	// Injecting: a pre-existing `platform` destination collides with the
+	// reserved name — fail rather than overwrite.
+	for _, d := range destinations {
+		if d.Name == destinationName {
+			return destinations, fmt.Errorf("a destination named %q already exists, but this name is reserved for the auto-injected CloudQuery Platform destination; remove it from your spec", destinationName)
+		}
 	}
 
 	session, err := mintSession(ctx, cl, tenant)
 	if err != nil {
 		logger.Warn().Err(err).Str("tenant_id", tenant.TenantId.String()).Msg("platform destination: session mint failed, skipping auto-injection")
-		return destinations
+		return destinations, nil
 	}
 
 	plugin := pluginCoords()
 	parsedRegistry, err := specs.RegistryFromString(plugin.Registry)
 	if err != nil {
 		logger.Warn().Err(err).Str("registry", plugin.Registry).Msg("platform destination: unknown plugin registry; skipping auto-injection")
-		return destinations
+		return destinations, nil
 	}
 
-	var existing *specs.Destination
-	for _, d := range destinations {
-		if d.Name == destinationName {
-			existing = d
-			break
-		}
-	}
-	if existing == nil {
-		existing = &specs.Destination{Metadata: specs.Metadata{Name: destinationName}}
-		destinations = append(destinations, existing)
-	}
-	existing.Path = plugin.Path
-	existing.Registry = parsedRegistry
-	existing.Version = plugin.Version
-	existing.SyncSummary = true
-	// sync_group_id is incompatible with the default overwrite-delete-stale
-	// write mode; append accumulates each sync group's external-sync rows.
-	existing.WriteMode = specs.WriteModeAppend
-	// Unique per invocation: assetview finalize keys on (tenant, source,
-	// sync_group_id); concurrent runs would otherwise wipe each other's rows.
-	existing.SyncGroupId = strconv.FormatUint(allocateSyncGroupID(time.Now()), 10)
-	if existing.Spec == nil {
-		existing.Spec = map[string]any{}
-	}
 	apiURL := platformAPIURL(session.ApiUrl)
-	existing.Spec["api_url"] = apiURL
-	existing.Spec["token"] = session.Token
-	existing.SetDefaults()
+	dest := &specs.Destination{
+		Metadata: specs.Metadata{
+			Name:     destinationName,
+			Path:     plugin.Path,
+			Registry: parsedRegistry,
+			Version:  plugin.Version,
+		},
+		SyncSummary: true,
+		// sync_group_id is rejected with the default overwrite-delete-stale mode.
+		WriteMode: specs.WriteModeAppend,
+		// Unique per invocation so concurrent runs don't wipe each other's rows.
+		SyncGroupId: strconv.FormatUint(allocateSyncGroupID(time.Now()), 10),
+		Spec: map[string]any{
+			"api_url": apiURL,
+			"token":   session.Token,
+		},
+	}
+	dest.SetDefaults()
+	destinations = append(destinations, dest)
 
 	for _, s := range sources {
 		if !slices.Contains(s.Destinations, destinationName) {
@@ -173,12 +170,11 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		Str("path", plugin.Path).
 		Str("version", plugin.Version).
 		Msg("auto-injected platform destination")
-	return destinations
+	return destinations, nil
 }
 
-// resolveCredentials fetches a cloud token and its team for best-effort
-// injection when the sync command did not need to authenticate. Overridable in
-// tests; a returned error is non-fatal and simply skips injection.
+// resolveCredentials fetches a token and team for best-effort injection when
+// the sync command didn't authenticate. Overridable in tests.
 var resolveCredentials = func(ctx context.Context) (token, team string, err error) {
 	tok, err := cqapiauth.NewTokenClient().GetToken()
 	if err != nil {

@@ -30,6 +30,14 @@ func testDestinations() []*specs.Destination {
 	}}
 }
 
+// mustInject runs injection and fails the test on a (hard) error.
+func mustInject(t *testing.T, token, team string, sources []*specs.Source, destinations []*specs.Destination) []*specs.Destination {
+	t.Helper()
+	got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), token, team, sources, destinations)
+	require.NoError(t, err)
+	return got
+}
+
 func tenantItem(id, status, team string) map[string]any {
 	return map[string]any{"tenant_id": id, "status": status, "team_name": team}
 }
@@ -85,8 +93,7 @@ func TestInject_Active_AppendsDestinationAndWiresSources(t *testing.T) {
 	t.Setenv(envAPIURL, srv.URL)
 
 	sources := testSources()
-	destinations := testDestinations()
-	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", sources, destinations)
+	got := mustInject(t, "tok", "team-x", sources, testDestinations())
 
 	require.Len(t, got, 2)
 	require.Equal(t, destinationName, got[1].Name)
@@ -107,29 +114,25 @@ func TestInject_CreatedTenant_Injects(t *testing.T) {
 	}, nil)
 	t.Setenv(envAPIURL, srv.URL)
 
-	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+	got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
 	require.Len(t, got, 2)
 	require.Equal(t, destinationName, got[1].Name)
 }
 
-func TestInject_ExistingPlatformBlockOverwrittenNotDuplicated(t *testing.T) {
+func TestInject_ExistingPlatformDestination_Fails(t *testing.T) {
 	srv := fakeCloud(t, nil, nil)
 	t.Setenv(envAPIURL, srv.URL)
 
+	sources := testSources()
 	destinations := append(testDestinations(), &specs.Destination{
-		Metadata: specs.Metadata{Name: destinationName, Path: "user/stale", Version: "v0.0.1", Registry: specs.RegistryLocal},
-		Spec:     map[string]any{"api_url": "https://stale", "token": "stale", "keep": "me"},
+		Metadata: specs.Metadata{Name: destinationName},
 	})
-	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), destinations)
+	got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", sources, destinations)
 
-	require.Len(t, got, 2)
-	platformDest := got[1]
-	require.Equal(t, destinationName, platformDest.Name)
-	require.Equal(t, defaultPlugin.Path, platformDest.Path)
-	require.Equal(t, specs.RegistryCloudQuery, platformDest.Registry)
-	require.Equal(t, "https://x.us.platform.cloudquery.io/api", platformDest.Spec["api_url"])
-	require.Equal(t, "cqpd_payload.sig", platformDest.Spec["token"])
-	require.Equal(t, "me", platformDest.Spec["keep"], "unrelated spec keys must survive")
+	require.Error(t, err, "a user-defined platform destination must not be silently overwritten")
+	require.Contains(t, err.Error(), destinationName)
+	require.Len(t, got, 2, "spec returned unchanged; nothing injected")
+	require.NotContains(t, sources[0].Destinations, destinationName, "source must not be wired on failure")
 }
 
 func TestInject_NoTenantForTeam_NoOp(t *testing.T) {
@@ -141,8 +144,7 @@ func TestInject_NoTenantForTeam_NoOp(t *testing.T) {
 	}, nil)
 	t.Setenv(envAPIURL, srv.URL)
 
-	destinations := testDestinations()
-	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), destinations)
+	got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
 	require.Len(t, got, 1)
 }
 
@@ -152,7 +154,7 @@ func TestInject_TenantListError_NoOp(t *testing.T) {
 	}, nil)
 	t.Setenv(envAPIURL, srv.URL)
 
-	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+	got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
 	require.Len(t, got, 1)
 }
 
@@ -162,7 +164,7 @@ func TestInject_SessionMintError_NoOp(t *testing.T) {
 	})
 	t.Setenv(envAPIURL, srv.URL)
 
-	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+	got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
 	require.Len(t, got, 1)
 }
 
@@ -177,7 +179,7 @@ func TestInject_MultipleTenants_RequiresEnvSelection(t *testing.T) {
 	t.Run("unset skips", func(t *testing.T) {
 		srv := fakeCloud(t, tenants, nil)
 		t.Setenv(envAPIURL, srv.URL)
-		got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+		got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
 		require.Len(t, got, 1)
 	})
 
@@ -192,7 +194,7 @@ func TestInject_MultipleTenants_RequiresEnvSelection(t *testing.T) {
 		})
 		t.Setenv(envAPIURL, srv.URL)
 		t.Setenv(envTenantID, "22222222-2222-2222-2222-222222222222")
-		got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+		got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
 		require.Len(t, got, 2)
 	})
 
@@ -200,7 +202,7 @@ func TestInject_MultipleTenants_RequiresEnvSelection(t *testing.T) {
 		srv := fakeCloud(t, tenants, nil)
 		t.Setenv(envAPIURL, srv.URL)
 		t.Setenv(envTenantID, "99999999-9999-9999-9999-999999999999")
-		got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+		got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
 		require.Len(t, got, 1)
 	})
 }
@@ -212,7 +214,7 @@ func TestInject_PluginCoordsEnvOverride(t *testing.T) {
 	t.Setenv(envPluginPath, "/abs/path/bin/platform")
 	t.Setenv(envPluginVersion, "v0.0.0-dev")
 
-	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+	got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
 	require.Len(t, got, 2)
 	require.Equal(t, specs.RegistryLocal, got[1].Registry)
 	require.Equal(t, "/abs/path/bin/platform", got[1].Path)
@@ -238,7 +240,7 @@ func TestInject_DisableEnv_SkipsBeforeAnyCall(t *testing.T) {
 	t.Setenv(envAPIURL, srv.URL)
 	t.Setenv(envDisable, "1")
 
-	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+	got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
 	require.Len(t, got, 1)
 	require.Zero(t, calls.Load())
 }
@@ -252,7 +254,7 @@ func TestInject_CloudRun_SkipsBeforeAnyCall(t *testing.T) {
 	t.Setenv(envAPIURL, srv.URL)
 	t.Setenv("CQ_CLOUD", "1")
 
-	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+	got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
 	require.Len(t, got, 1)
 	require.Zero(t, calls.Load())
 }
@@ -273,22 +275,21 @@ func TestInject_EmptyTokenOrTeam_NoOp(t *testing.T) {
 		writeTenants(w)
 	}, nil)
 	t.Setenv(envAPIURL, srv.URL)
-	// No token from the caller and none resolvable best-effort: stay a no-op.
+	// No token and none resolvable: no-op.
 	setResolveCredentials(t, "", "", errors.New("not logged in"))
 
-	require.Len(t, MaybeInjectDestination(context.Background(), zerolog.Nop(), "", "team-x", testSources(), testDestinations()), 1)
-	require.Len(t, MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "", testSources(), testDestinations()), 1)
+	require.Len(t, mustInject(t, "", "team-x", testSources(), testDestinations()), 1)
+	require.Len(t, mustInject(t, "tok", "", testSources(), testDestinations()), 1)
 	require.Zero(t, calls.Load())
 }
 
 func TestInject_BestEffortCredentials_Injects(t *testing.T) {
 	srv := fakeCloud(t, nil, nil)
 	t.Setenv(envAPIURL, srv.URL)
-	// Caller passed no token (spec pulls no cloudquery-registry plugin); the
-	// best-effort resolver supplies one so injection still happens.
+	// No caller token; best-effort resolver supplies one.
 	setResolveCredentials(t, "tok", "team-x", nil)
 
-	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "", "", testSources(), testDestinations())
+	got := mustInject(t, "", "", testSources(), testDestinations())
 	require.Len(t, got, 2)
 	require.Equal(t, destinationName, got[1].Name)
 	require.Equal(t, "cqpd_payload.sig", got[1].Spec["token"])
@@ -298,7 +299,7 @@ func TestAllocateSyncGroupID_TimeShaped(t *testing.T) {
 	srv := fakeCloud(t, nil, nil)
 	t.Setenv(envAPIURL, srv.URL)
 
-	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+	got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
 	require.Len(t, got, 2)
 	sgid := got[1].SyncGroupId
 	require.Len(t, sgid, 17, "YYYYMMDDhhmmssfff")
