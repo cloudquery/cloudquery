@@ -234,7 +234,7 @@ func activeTenants(ctx context.Context, cl *cloudquery_api.ClientWithResponses, 
 	}
 	active := make([]cloudquery_api.PlatformTenantSummary, 0, len(resp.JSON200.Items))
 	for _, t := range resp.JSON200.Items {
-		if string(t.TeamName) == teamName && slices.Contains(injectableStatuses, t.Status) {
+		if t.TeamName == teamName && slices.Contains(injectableStatuses, t.Status) {
 			active = append(active, t)
 		}
 	}
