@@ -30,6 +30,12 @@ func ConnectionTester(ctx context.Context, _ zerolog.Logger, specBytes []byte) e
 		return processError(err, "INVALID_CONFIG")
 	}
 
+	if s.HasLakebaseConfig() {
+		if err := configureLakebase(pgxConfig, s.Lakebase); err != nil {
+			return plugin.NewTestConnError("CONN_FAILED", err)
+		}
+	}
+
 	c, err := pgxpool.NewWithConfig(ctx, pgxConfig)
 	if err != nil {
 		return processError(err, "CONN_FAILED")
