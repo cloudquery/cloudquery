@@ -32,20 +32,31 @@ func nonPkIndices(sc *schema.Table) []int {
 // but this is unavoidable until support is added to duckdb itself.
 // See https://github.com/duckdb/duckdb/blob/c5d9afb97bbf0be12216f3b89ae3131afbbc3156/src/storage/table/list_column_data.cpp#L243-L251
 func containsList(sc *schema.Table) bool {
-	return slices.ContainsFunc(sc.Columns, func(c schema.Column) bool { return dtContainsList(c.Type) })
+	return slices.ContainsFunc(sc.Columns, func(c schema.Column) bool {
+		return duckDBListColumn(c) && !keyListColumn(c)
+	})
 }
 
-func dtContainsList(dt arrow.DataType) bool {
-	switch dt := dt.(type) {
-	case *arrow.StructType:
-		return slices.ContainsFunc(dt.Fields(), func(f arrow.Field) bool { return dtContainsList(f.Type) })
-	case *arrow.MapType:
-		return dtContainsList(dt.KeyType()) || dtContainsList(dt.ItemType())
-	case arrow.ListLikeType:
-		return true
-	default:
+func duckDBListColumn(c schema.Column) bool {
+	// Maps also implement arrow.ListLikeType but map to DuckDB json, not a LIST.
+	if _, isMap := c.Type.(*arrow.MapType); isMap {
 		return false
 	}
+	_, ok := c.Type.(arrow.ListLikeType)
+	return ok
+}
+
+// keyListColumn reports whether a column is part of a key (primary key or unique
+// constraint) and maps to a duckdb LIST type, which can't be indexed.
+func keyListColumn(c schema.Column) bool {
+	return (c.PrimaryKey || c.Unique) && duckDBListColumn(c)
+}
+
+func duckDBType(c schema.Column) string {
+	if keyListColumn(c) {
+		return "varchar"
+	}
+	return arrowToDuckDB(c.Type)
 }
 
 func (c *Client) upsert(ctx context.Context, tmpTableName string, table *schema.Table) error {
@@ -175,7 +186,7 @@ func (c *Client) WriteTableBatch(ctx context.Context, name string, msgs message.
 }
 
 func writeTMPFile(table *schema.Table, msgs []*message.WriteInsert) (fileName string, err error) {
-	sc := transformSchemaForWriting(table.ToArrowSchema())
+	sc := transformSchemaForWriting(table)
 
 	// create temp file
 	f, err := os.CreateTemp("", fmt.Sprintf("%s-*.parquet", table.Name))
