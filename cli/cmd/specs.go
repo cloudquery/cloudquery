@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
@@ -94,6 +95,13 @@ func CLIDestinationSpecToPbSpec(spec specs.Destination) pbSpecs.Destination {
 		PKMode:      CLIPkModeToPbPKMode(spec.PKMode),
 		Spec:        spec.Spec,
 	}
+}
+
+func withPluginTimeout(ctx context.Context, timeout time.Duration) (context.Context, context.CancelFunc) {
+	if timeout <= 0 {
+		return ctx, func() {}
+	}
+	return context.WithTimeout(ctx, timeout)
 }
 
 // initPlugin is a simple wrapper that will try to validate the spec before actually passing it to Init.

@@ -98,6 +98,7 @@ func NewCmdSync() *cobra.Command {
 	cmd.Flags().String("shard", "", "Allows splitting the sync process into multiple shards. This feature is in Preview. Please provide feedback to help us improve it. For a list of supported plugins visit https://www.cloudquery.io/docs/cli/managing-cloudquery/running-in-parallel")
 	cmd.Flags().Bool("cq-columns-not-null", false, "Force CloudQuery internal columns to be NOT NULL. This feature is in Preview. Please provide feedback to help us improve it.")
 	_ = cmd.Flags().MarkHidden("cq-columns-not-null")
+	cmd.Flags().Duration("plugin-timeout", 0, "Timeout for individual plugin lifecycle operations (init, close). 0 means no timeout.")
 
 	return cmd
 }
@@ -507,6 +508,7 @@ func sync(cmd *cobra.Command, args []string) error {
 				}
 			}
 
+			pluginTimeout, _ := cmd.Flags().GetDuration("plugin-timeout")
 			syncOptions := syncV3Options{
 				source:                    src,
 				destinations:              dests,
@@ -518,6 +520,7 @@ func sync(cmd *cobra.Command, args []string) error {
 				shard:                     shard,
 				cqColumnsNotNull:          cqColumnsNotNull,
 				tableDurations:            tableDurations.GetAll,
+				pluginTimeout:             pluginTimeout,
 			}
 			if err := syncConnectionV3(ctx, syncOptions); err != nil {
 				return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
@@ -535,7 +538,8 @@ func sync(cmd *cobra.Command, args []string) error {
 				}
 				destinationsVersions = append(destinationsVersions, versions)
 			}
-			if err := syncConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, invocationUUID.String(), noMigrate, destinationsVersions); err != nil {
+			pluginTimeout, _ := cmd.Flags().GetDuration("plugin-timeout")
+			if err := syncConnectionV2(ctx, cl, destinationClientsForSource, *source, destinationForSourceSpec, invocationUUID.String(), noMigrate, destinationsVersions, pluginTimeout); err != nil {
 				return fmt.Errorf("failed to sync v2 source %s: %w", cl.Name(), err)
 			}
 		case 1:

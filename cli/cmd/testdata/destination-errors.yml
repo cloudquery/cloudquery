@@ -1,9 +1,9 @@
 kind: "source"
 spec:
   name: "test"
-  registry: "cloudquery"
+  registry: "github"
   path: "cloudquery/test"
-  version: "v4.7.0" # latest version of source test plugin
+  version: "v2.0.3" # latest version of source test plugin
   destinations: [test]
   tables: ["test_some_table"]
   spec:
@@ -12,8 +12,8 @@ spec:
 kind: "destination"
 spec:
   name: "test"
-  registry: "cloudquery"
+  registry: "github"
   path: "cloudquery/test"
-  version: "v2.7.0" # latest version of destination test plugin
+  version: "v2.1.2" # latest version of destination test plugin
   spec:
     error_on_write: true

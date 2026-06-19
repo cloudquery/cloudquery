@@ -132,6 +132,7 @@ type syncV3Options struct {
 	shard                     *shard
 	cqColumnsNotNull          bool
 	tableDurations            func() map[string]time.Duration
+	pluginTimeout             time.Duration
 }
 
 func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr error) {
@@ -272,19 +273,22 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	}
 
 	// initialize destinations first, so that their connections may be used as backends by the source
+	initCtx, initCancel := withPluginTimeout(ctx, syncOptions.pluginTimeout)
+	defer initCancel()
+
 	for i, destinationSpec := range destinationSpecs {
-		if err := initPlugin(ctx, destinationsPbClients[i], destinationSpec.Spec, false, uid); err != nil {
+		if err := initPlugin(initCtx, destinationsPbClients[i], destinationSpec.Spec, false, uid); err != nil {
 			return fmt.Errorf("failed to init destination %v: %w", destinationSpec.Name, err)
 		}
 	}
 	if backend != nil {
-		if err := initPlugin(ctx, backendPbClient, backend.spec.Spec, false, uid); err != nil {
+		if err := initPlugin(initCtx, backendPbClient, backend.spec.Spec, false, uid); err != nil {
 			return fmt.Errorf("failed to init backend %v: %w", backend.spec.Name, err)
 		}
 	}
 	for name, transformers := range transformersByDestination {
 		for i, tf := range transformers {
-			if err := initPlugin(ctx, transformerPbClientsByDestination[name][i], tf.spec.Spec, false, uid); err != nil {
+			if err := initPlugin(initCtx, transformerPbClientsByDestination[name][i], tf.spec.Spec, false, uid); err != nil {
 				return fmt.Errorf("failed to init transformer %v: %w", tf.spec.Name, err)
 			}
 		}
@@ -304,7 +308,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		return fmt.Errorf("failed to unmarshal source spec JSON after variable replacement: %w", err)
 	}
 
-	if err = initPlugin(ctx, sourcePbClient, sourceSpec.Spec, false, uid); err != nil {
+	if err = initPlugin(initCtx, sourcePbClient, sourceSpec.Spec, false, uid); err != nil {
 		return fmt.Errorf("failed to init source %v: %w", sourceSpec.Name, err)
 	}
 
@@ -633,14 +637,18 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		}, durationsPerTable)
 	}
 	syncTimeTook = time.Since(syncTime)
+	var deleteStaleErrors error
 	for i := range destinationsClients {
 		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
 			// Table names might have changed due to transformers
 			updatedTablesForDeleteStale := tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, tablesForDeleteStale)
 			if err := deleteStale(writeClients[i], updatedTablesForDeleteStale, sourceName, syncTime); err != nil {
-				return err
+				deleteStaleErrors = errors.Join(deleteStaleErrors, fmt.Errorf("failed to delete stale records for destination %s: %w", destinationSpecs[i].Name, err))
 			}
 		}
+	}
+	if deleteStaleErrors != nil {
+		return deleteStaleErrors
 	}
 
 	for i := range destinationsClients {
@@ -693,13 +701,36 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		return metadataDataErrors
 	}
 
+	var shutdownErrors error
+	var shutdownMu gosync.Mutex
+
+	var shutdownWg gosync.WaitGroup
 	for i := range destinationsClients {
-		if _, err := writeClients[i].CloseAndRecv(); err != nil {
-			return err
-		}
-		if _, err := destinationsPbClients[i].Close(ctx, &plugin.Close_Request{}); err != nil {
-			return err
-		}
+		shutdownWg.Add(1)
+		go func(idx int) {
+			defer shutdownWg.Done()
+			var destErr error
+			
+			closeCtx, closeCancel := withPluginTimeout(ctx, syncOptions.pluginTimeout)
+			defer closeCancel()
+
+			if _, err := writeClients[idx].CloseAndRecv(); err != nil {
+				destErr = errors.Join(destErr, fmt.Errorf("failed to close write client for destination %s: %w", destinationSpecs[idx].Name, err))
+			}
+			if _, err := destinationsPbClients[idx].Close(closeCtx, &plugin.Close_Request{}); err != nil {
+				destErr = errors.Join(destErr, fmt.Errorf("failed to close destination %s: %w", destinationSpecs[idx].Name, err))
+			}
+			if destErr != nil {
+				shutdownMu.Lock()
+				shutdownErrors = errors.Join(shutdownErrors, destErr)
+				shutdownMu.Unlock()
+			}
+		}(i)
+	}
+	shutdownWg.Wait()
+
+	if shutdownErrors != nil {
+		return shutdownErrors
 	}
 
 	atomic.StoreInt64(&isComplete, 1)

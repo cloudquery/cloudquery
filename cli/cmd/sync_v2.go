@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"slices"
+	gosync "sync"
 	"time"
 
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
@@ -79,7 +80,7 @@ func transformSourceV2DestV3Resource(originalResourceBytes []byte, recordTransfo
 }
 
 // nolint:dupl
-func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, uid string, noMigrate bool, destinationsVersions [][]int) error {
+func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, destinationsClients managedplugin.Clients, sourceSpec specs.Source, destinationSpecs []specs.Destination, uid string, noMigrate bool, destinationsVersions [][]int, pluginTimeout time.Duration) error {
 	var mt metrics.Metrics
 	var exitReason = ExitReasonStopped
 	defer func() {
@@ -110,12 +111,16 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, d
 	if err != nil {
 		return err
 	}
-	if _, err := sourcePbClient.Init(ctx, &source.Init_Request{
+	
+	initCtx, initCancel := withPluginTimeout(ctx, pluginTimeout)
+	defer initCancel()
+
+	if _, err := sourcePbClient.Init(initCtx, &source.Init_Request{
 		Spec: specBytes,
 	}); err != nil {
 		return err
 	}
-	tablesRes, err := sourcePbClient.GetDynamicTables(ctx, &source.GetDynamicTables_Request{})
+	tablesRes, err := sourcePbClient.GetDynamicTables(initCtx, &source.GetDynamicTables_Request{})
 	if err != nil {
 		return err
 	}
@@ -124,7 +129,7 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, d
 		if err != nil {
 			return err
 		}
-		if _, err := destinationsPbClients[i].Configure(ctx, &destination.Configure_Request{
+		if _, err := destinationsPbClients[i].Configure(initCtx, &destination.Configure_Request{
 			Config: destSpecBytes,
 		}); err != nil {
 			return err
@@ -231,6 +236,7 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, d
 			}
 		}
 	}
+	var deleteStaleErrors error
 	for i := range destinationsClients {
 		if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
 			_, err := destinationsPbClients[i].DeleteStale(ctx, &destination.DeleteStale_Request{
@@ -239,16 +245,44 @@ func syncConnectionV2(ctx context.Context, sourceClient *managedplugin.Client, d
 				Timestamp: timestamppb.New(syncTime),
 			})
 			if err != nil {
-				return err
+				deleteStaleErrors = errors.Join(deleteStaleErrors, fmt.Errorf("failed to delete stale records for destination %s: %w", destinationSpecs[i].Name, err))
 			}
 		}
+	}
+	if deleteStaleErrors != nil {
+		return deleteStaleErrors
+	}
 
-		if _, err := writeClients[i].CloseAndRecv(); err != nil {
-			return err
-		}
-		if _, err := destinationsPbClients[i].Close(ctx, &destination.Close_Request{}); err != nil {
-			return err
-		}
+	var shutdownErrors error
+	var shutdownMu gosync.Mutex
+
+	var shutdownWg gosync.WaitGroup
+	for i := range destinationsClients {
+		shutdownWg.Add(1)
+		go func(idx int) {
+			defer shutdownWg.Done()
+			var destErr error
+			
+			closeCtx, closeCancel := withPluginTimeout(ctx, pluginTimeout)
+			defer closeCancel()
+
+			if _, err := writeClients[idx].CloseAndRecv(); err != nil {
+				destErr = errors.Join(destErr, fmt.Errorf("failed to close write client for destination %s: %w", destinationSpecs[idx].Name, err))
+			}
+			if _, err := destinationsPbClients[idx].Close(closeCtx, &destination.Close_Request{}); err != nil {
+				destErr = errors.Join(destErr, fmt.Errorf("failed to close destination %s: %w", destinationSpecs[idx].Name, err))
+			}
+			if destErr != nil {
+				shutdownMu.Lock()
+				shutdownErrors = errors.Join(shutdownErrors, destErr)
+				shutdownMu.Unlock()
+			}
+		}(i)
+	}
+	shutdownWg.Wait()
+
+	if shutdownErrors != nil {
+		return shutdownErrors
 	}
 
 	getMetricsRes, err := sourcePbClient.GetMetrics(ctx, &source.GetMetrics_Request{})

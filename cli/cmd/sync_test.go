@@ -333,8 +333,10 @@ func TestSync(t *testing.T) {
 			// this is a mitigation for flakiness that we want to fix later, so that we can have
 			// E2E tests right away.
 			err: []string{
-				"failed to sync v3 source test: write client returned error (insert)",
-				"failed to sync v3 source test: failed to send insert: EOF",
+				"failed to close write client for destination test: write client returned error (insert)",
+				"failed to close write client for destination test: failed to send insert: EOF",
+				"write client returned error (insert)",
+				"failed to send insert: EOF",
 			},
 		},
 	}
