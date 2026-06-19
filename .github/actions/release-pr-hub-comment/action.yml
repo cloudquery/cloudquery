@@ -1,0 +1,72 @@
+name: Release PR Hub comment
+description: |
+  After a plugin is published to the CloudQuery Hub, comments once on the
+  release-please PR that shipped the version. The published tag points at the
+  release-please squash commit, whose subject carries the PR number
+  (`chore(main): Release <component> vX.Y.Z (#NNNN)`). A hidden marker makes
+  re-runs idempotent.
+
+  The calling job needs `pull-requests: write`.
+
+inputs:
+  plugin_kind:
+    description: Plugin kind (source/destination)
+    required: true
+  plugin_name:
+    description: Plugin name
+    required: true
+  plugin_version:
+    description: Plugin version (vX.Y.Z)
+    required: true
+  gh_token:
+    description: GitHub token (PR read + comment write)
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Comment on release PR
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
+      env:
+        PLUGIN_KIND: ${{ inputs.plugin_kind }}
+        PLUGIN_NAME: ${{ inputs.plugin_name }}
+        PLUGIN_VERSION: ${{ inputs.plugin_version }}
+      with:
+        github-token: ${{ inputs.gh_token }}
+        script: |
+          const { PLUGIN_KIND, PLUGIN_NAME, PLUGIN_VERSION } = process.env;
+          const { owner, repo } = context.repo;
+
+          let subject;
+          try {
+            const { data } = await github.rest.repos.getCommit({ owner, repo, ref: context.sha });
+            subject = (data.commit.message || '').split('\n')[0].trim();
+          } catch (e) {
+            core.warning(`cannot read commit ${context.sha}: ${e.message}`);
+            return;
+          }
+          if (!/^chore(?:\([^)]+\))?:\s*Release\b/i.test(subject)) {
+            core.info(`"${subject}" is not a release commit; skipping`);
+            return;
+          }
+          const match = subject.match(/\(#(\d+)\)\s*$/);
+          if (!match) {
+            core.info(`no (#PR) in subject "${subject}"; skipping`);
+            return;
+          }
+          const issue_number = Number(match[1]);
+
+          const marker = `<!-- plugin-hub-publish:${PLUGIN_KIND}:${PLUGIN_NAME}:${PLUGIN_VERSION} -->`;
+          const existing = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number });
+          if (existing.some((c) => c.body && c.body.includes(marker))) {
+            core.info(`comment already present on #${issue_number}; skipping`);
+            return;
+          }
+
+          const hubUrl = `https://www.cloudquery.io/hub/plugins/${PLUGIN_KIND}/cloudquery/${PLUGIN_NAME}/${PLUGIN_VERSION}`;
+          await github.rest.issues.createComment({
+            owner,
+            repo,
+            issue_number,
+            body: `🚀 Published \`${PLUGIN_KIND}/${PLUGIN_NAME}\` \`${PLUGIN_VERSION}\` to the [CloudQuery Hub](${hubUrl}).\n${marker}`,
+          });

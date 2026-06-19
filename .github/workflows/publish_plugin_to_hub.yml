@@ -12,7 +12,6 @@ env:
 
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
   prepare:
@@ -589,6 +588,9 @@ jobs:
 
   comment-on-release-pr:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     needs:
       - prepare
       - publish-plugin-to-hub-java
@@ -603,29 +605,13 @@ jobs:
        needs.publish-plugin-to-hub-node.result == 'success' ||
        needs.publish-plugin-to-hub-go.result == 'success')
     steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - name: Comment on release PR
-        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
-        env:
-          PLUGIN_KIND: ${{ needs.prepare.outputs.plugin_kind }}
-          PLUGIN_NAME: ${{ needs.prepare.outputs.plugin_name }}
-          PLUGIN_VERSION: ${{ needs.prepare.outputs.plugin_version }}
+        continue-on-error: true
+        uses: ./.github/actions/release-pr-hub-comment
         with:
-          script: |
-            const { PLUGIN_KIND, PLUGIN_NAME, PLUGIN_VERSION } = process.env;
-            const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              commit_sha: context.sha,
-            });
-            const pr = prs.find((p) => p.merged_at) || prs[0];
-            if (!pr) {
-              core.info(`No PR associated with commit ${context.sha}, skipping comment`);
-              return;
-            }
-            const hubUrl = `https://www.cloudquery.io/hub/plugins/${PLUGIN_KIND}/cloudquery/${PLUGIN_NAME}/${PLUGIN_VERSION}`;
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: pr.number,
-              body: `🚀 Published \`${PLUGIN_KIND}/${PLUGIN_NAME}\` \`${PLUGIN_VERSION}\` to the [CloudQuery Hub](${hubUrl}).`,
-            });
+          plugin_kind: ${{ needs.prepare.outputs.plugin_kind }}
+          plugin_name: ${{ needs.prepare.outputs.plugin_name }}
+          plugin_version: ${{ needs.prepare.outputs.plugin_version }}
+          gh_token: ${{ secrets.GITHUB_TOKEN }}
