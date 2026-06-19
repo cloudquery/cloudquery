@@ -86,6 +86,7 @@ jobs:
     timeout-minutes: 60
     permissions:
       contents: write
+      pull-requests: write
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/gythialy/golang-cross:1.26.4
@@ -175,6 +176,34 @@ jobs:
         if: needs.prepare.outputs.prerelease == ''
         run: |
           git tag ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }} && git push origin ${{ needs.prepare.outputs.plugin_dir }}/${{ needs.prepare.outputs.plugin_version }}
+
+      - name: Comment on release PR
+        if: needs.prepare.outputs.prerelease == ''
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
+        env:
+          PLUGIN_KIND: ${{ needs.prepare.outputs.plugin_kind }}
+          PLUGIN_NAME: ${{ needs.prepare.outputs.plugin_name }}
+          PLUGIN_VERSION: ${{ needs.prepare.outputs.plugin_version }}
+        with:
+          script: |
+            const { PLUGIN_KIND, PLUGIN_NAME, PLUGIN_VERSION } = process.env;
+            const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: context.sha,
+            });
+            const pr = prs.find((p) => p.merged_at) || prs[0];
+            if (!pr) {
+              core.info(`No PR associated with commit ${context.sha}, skipping comment`);
+              return;
+            }
+            const hubUrl = `https://www.cloudquery.io/hub/plugins/${PLUGIN_KIND}/cloudquery/${PLUGIN_NAME}/${PLUGIN_VERSION}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              body: `🚀 Published \`${PLUGIN_KIND}/${PLUGIN_NAME}\` \`${PLUGIN_VERSION}\` to the [CloudQuery Hub](${hubUrl}).`,
+            });
 
       - name: Slack Notify
         uses: ravsamhq/notify-slack-action@0670a0482d2a919531ba3b219e0c535fe4fcc791

@@ -12,6 +12,7 @@ env:
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   prepare:
@@ -585,3 +586,46 @@ jobs:
           footer: "<{repo_url}|{repo}>"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL }}
+
+  comment-on-release-pr:
+    runs-on: ubuntu-latest
+    needs:
+      - prepare
+      - publish-plugin-to-hub-java
+      - publish-plugin-to-hub-python
+      - publish-plugin-to-hub-node
+      - publish-plugin-to-hub-go
+    if: |
+      always() &&
+      needs.prepare.outputs.prerelease == '' &&
+      (needs.publish-plugin-to-hub-java.result == 'success' ||
+       needs.publish-plugin-to-hub-python.result == 'success' ||
+       needs.publish-plugin-to-hub-node.result == 'success' ||
+       needs.publish-plugin-to-hub-go.result == 'success')
+    steps:
+      - name: Comment on release PR
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
+        env:
+          PLUGIN_KIND: ${{ needs.prepare.outputs.plugin_kind }}
+          PLUGIN_NAME: ${{ needs.prepare.outputs.plugin_name }}
+          PLUGIN_VERSION: ${{ needs.prepare.outputs.plugin_version }}
+        with:
+          script: |
+            const { PLUGIN_KIND, PLUGIN_NAME, PLUGIN_VERSION } = process.env;
+            const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: context.sha,
+            });
+            const pr = prs.find((p) => p.merged_at) || prs[0];
+            if (!pr) {
+              core.info(`No PR associated with commit ${context.sha}, skipping comment`);
+              return;
+            }
+            const hubUrl = `https://www.cloudquery.io/hub/plugins/${PLUGIN_KIND}/cloudquery/${PLUGIN_NAME}/${PLUGIN_VERSION}`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              body: `🚀 Published \`${PLUGIN_KIND}/${PLUGIN_NAME}\` \`${PLUGIN_VERSION}\` to the [CloudQuery Hub](${hubUrl}).`,
+            });
