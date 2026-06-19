@@ -96,6 +96,8 @@ func TestInject_Active_AppendsDestinationAndWiresSources(t *testing.T) {
 	require.Equal(t, defaultPlugin.Path, got[1].Path)
 	require.Equal(t, specs.RegistryCloudQuery, got[1].Registry)
 	require.True(t, got[1].SyncSummary, "send_sync_summary must be set so the destination receives finalize signals")
+	require.Equal(t, specs.WriteModeAppend, got[1].WriteMode, "sync_group_id requires a write mode other than overwrite-delete-stale")
+	require.NotEmpty(t, got[1].SyncGroupId)
 	require.Contains(t, sources[0].Destinations, destinationName)
 }
 

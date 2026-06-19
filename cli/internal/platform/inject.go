@@ -136,6 +136,9 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 	existing.Registry = parsedRegistry
 	existing.Version = plugin.Version
 	existing.SyncSummary = true
+	// sync_group_id is incompatible with the default overwrite-delete-stale
+	// write mode; append accumulates each sync group's external-sync rows.
+	existing.WriteMode = specs.WriteModeAppend
 	// Unique per invocation: assetview finalize keys on (tenant, source,
 	// sync_group_id); concurrent runs would otherwise wipe each other's rows.
 	existing.SyncGroupId = strconv.FormatUint(allocateSyncGroupID(time.Now()), 10)

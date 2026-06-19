@@ -1065,8 +1065,9 @@ func TestSpecReaderWithoutValidation_SourceOnly(t *testing.T) {
 	require.ErrorContains(t, r.SetDestinationsAndValidate(nil), "at least one destination is required")
 
 	// Simulate platform auto-injection: wire a destination into the source and
-	// register it with the reader. Validation must now pass.
-	dest := &Destination{Metadata: Metadata{Name: "platform"}}
+	// register it with the reader. The injected destination carries a
+	// sync_group_id, so it must use a write mode the validator accepts.
+	dest := &Destination{Metadata: Metadata{Name: "platform"}, SyncGroupId: "123", WriteMode: WriteModeAppend}
 	dest.SetDefaults()
 	r.Sources[0].Destinations = append(r.Sources[0].Destinations, dest.Name)
 
