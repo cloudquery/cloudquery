@@ -52,6 +52,17 @@ var defaultPlugin = pluginCoordinates{
 	Version:  "v1.0.0",
 }
 
+// platformAPIURL is the base URL the destination plugin uses for
+// /external-syncs/*. Those endpoints are served under /api, which is appended
+// to the minted session's api_url unless already present.
+func platformAPIURL(sessionURL string) string {
+	url := strings.TrimRight(sessionURL, "/")
+	if !strings.HasSuffix(url, "/api") {
+		url += "/api"
+	}
+	return url
+}
+
 func pluginCoords() pluginCoordinates {
 	p := defaultPlugin
 	if v := os.Getenv(envPluginRegistry); v != "" {
@@ -145,7 +156,8 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 	if existing.Spec == nil {
 		existing.Spec = map[string]any{}
 	}
-	existing.Spec["api_url"] = session.ApiUrl
+	apiURL := platformAPIURL(session.ApiUrl)
+	existing.Spec["api_url"] = apiURL
 	existing.Spec["token"] = session.Token
 	existing.SetDefaults()
 
@@ -155,7 +167,7 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		}
 	}
 	logger.Info().
-		Str("platform_url", session.ApiUrl).
+		Str("platform_url", apiURL).
 		Str("tenant_id", tenant.TenantId.String()).
 		Str("registry", plugin.Registry).
 		Str("path", plugin.Path).

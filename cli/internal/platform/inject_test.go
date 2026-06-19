@@ -90,7 +90,7 @@ func TestInject_Active_AppendsDestinationAndWiresSources(t *testing.T) {
 
 	require.Len(t, got, 2)
 	require.Equal(t, destinationName, got[1].Name)
-	require.Equal(t, "https://x.us.platform.cloudquery.io", got[1].Spec["api_url"])
+	require.Equal(t, "https://x.us.platform.cloudquery.io/api", got[1].Spec["api_url"], "external-syncs endpoints are served under /api")
 	require.Equal(t, "cqpd_payload.sig", got[1].Spec["token"], "destination must get the minted cqpd_ token, not the cloud credential")
 	require.Equal(t, defaultPlugin.Version, got[1].Version)
 	require.Equal(t, defaultPlugin.Path, got[1].Path)
@@ -127,7 +127,7 @@ func TestInject_ExistingPlatformBlockOverwrittenNotDuplicated(t *testing.T) {
 	require.Equal(t, destinationName, platformDest.Name)
 	require.Equal(t, defaultPlugin.Path, platformDest.Path)
 	require.Equal(t, specs.RegistryCloudQuery, platformDest.Registry)
-	require.Equal(t, "https://x.us.platform.cloudquery.io", platformDest.Spec["api_url"])
+	require.Equal(t, "https://x.us.platform.cloudquery.io/api", platformDest.Spec["api_url"])
 	require.Equal(t, "cqpd_payload.sig", platformDest.Spec["token"])
 	require.Equal(t, "me", platformDest.Spec["keep"], "unrelated spec keys must survive")
 }
@@ -217,6 +217,16 @@ func TestInject_PluginCoordsEnvOverride(t *testing.T) {
 	require.Equal(t, specs.RegistryLocal, got[1].Registry)
 	require.Equal(t, "/abs/path/bin/platform", got[1].Path)
 	require.Equal(t, "v0.0.0-dev", got[1].Version)
+}
+
+func TestPlatformAPIURL(t *testing.T) {
+	for _, tc := range []struct{ in, want string }{
+		{in: "https://x.us.platform.cloudquery.io", want: "https://x.us.platform.cloudquery.io/api"},
+		{in: "https://x.us.platform.cloudquery.io/", want: "https://x.us.platform.cloudquery.io/api"},
+		{in: "https://x.us.platform.cloudquery.io/api", want: "https://x.us.platform.cloudquery.io/api"},
+	} {
+		require.Equal(t, tc.want, platformAPIURL(tc.in))
+	}
 }
 
 func TestInject_DisableEnv_SkipsBeforeAnyCall(t *testing.T) {
