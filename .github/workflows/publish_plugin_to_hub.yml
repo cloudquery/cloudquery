@@ -585,3 +585,33 @@ jobs:
           footer: "<{repo_url}|{repo}>"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ALERTS_INTEGRATIONS_SLACK_WEBHOOK_URL }}
+
+  comment-on-release-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    needs:
+      - prepare
+      - publish-plugin-to-hub-java
+      - publish-plugin-to-hub-python
+      - publish-plugin-to-hub-node
+      - publish-plugin-to-hub-go
+    if: |
+      always() &&
+      needs.prepare.outputs.prerelease == '' &&
+      (needs.publish-plugin-to-hub-java.result == 'success' ||
+       needs.publish-plugin-to-hub-python.result == 'success' ||
+       needs.publish-plugin-to-hub-node.result == 'success' ||
+       needs.publish-plugin-to-hub-go.result == 'success')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - name: Comment on release PR
+        continue-on-error: true
+        uses: ./.github/actions/release-pr-hub-comment
+        with:
+          plugin_kind: ${{ needs.prepare.outputs.plugin_kind }}
+          plugin_name: ${{ needs.prepare.outputs.plugin_name }}
+          plugin_version: ${{ needs.prepare.outputs.plugin_version }}
+          gh_token: ${{ secrets.GITHUB_TOKEN }}
