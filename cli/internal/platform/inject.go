@@ -3,29 +3,25 @@
 package platform
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
-	"io"
-	"net/http"
 	"os"
 	"slices"
 	"strconv"
 	"strings"
 	"time"
 
+	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
+	cqapiauth "github.com/cloudquery/cloudquery-api-go/auth"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
+	cqauth "github.com/cloudquery/cloudquery/cli/v6/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	specs "github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
-	"github.com/hashicorp/go-retryablehttp"
 	"github.com/rs/zerolog"
 )
 
 const (
-	defaultAPIURL = "https://api.cloudquery.io"
-	envAPIURL     = "CLOUDQUERY_API_URL"
-
 	envDisable  = "CQ_DISABLE_PLATFORM_DESTINATION"
 	envTenantID = "CQ_PLATFORM_TENANT_ID"
 
@@ -34,8 +30,15 @@ const (
 	envPluginVersion  = "CQ_PLATFORM_PLUGIN_VERSION"
 
 	destinationName = "platform"
-	statusActive    = "active"
+
+	requestTimeout = 10 * time.Second
 )
+
+// Tenant statuses that are eligible for platform destination injection.
+var injectableStatuses = []cloudquery_api.PlatformTenantStatus{
+	cloudquery_api.PlatformTenantStatusActive,
+	cloudquery_api.PlatformTenantStatusCreated,
+}
 
 type pluginCoordinates struct {
 	Registry string
@@ -63,22 +66,6 @@ func pluginCoords() pluginCoordinates {
 	return p
 }
 
-type tenantSummary struct {
-	TenantID string `json:"tenant_id"`
-	Status   string `json:"status"`
-	TeamName string `json:"team_name"`
-}
-
-type tenantListResponse struct {
-	Items []tenantSummary `json:"items"`
-}
-
-type sessionResponse struct {
-	Token            string `json:"token"`
-	ExpiresInSeconds int    `json:"expires_in_seconds"`
-	APIURL           string `json:"api_url"`
-}
-
 // MaybeInjectDestination ensures a `platform` destination exists in the spec
 // when the team has an active platform tenant, carrying a freshly minted
 // cqpd_ token — the cloud credential itself never reaches the plugin, and
@@ -91,11 +78,27 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 	if env.IsCloud() {
 		return destinations
 	}
+	// The caller only fetches a token when the spec pulls a cloudquery-registry
+	// plugin. A source-only (or fully non-cloudquery) spec relies on injection,
+	// so resolve credentials directly here; any failure just skips injection.
+	if token == "" {
+		var err error
+		if token, teamName, err = resolveCredentials(ctx); err != nil {
+			logger.Debug().Err(err).Msg("platform destination: credentials unavailable, skipping auto-injection")
+			return destinations
+		}
+	}
 	if token == "" || teamName == "" {
 		return destinations
 	}
 
-	tenants, err := activeTenants(ctx, token, teamName)
+	cl, err := api.NewClient(token)
+	if err != nil {
+		logger.Debug().Err(err).Msg("platform destination: api client init failed, skipping auto-injection")
+		return destinations
+	}
+
+	tenants, err := activeTenants(ctx, cl, teamName)
 	if err != nil {
 		logger.Debug().Err(err).Msg("platform destination: tenant discovery failed, skipping auto-injection")
 		return destinations
@@ -105,9 +108,9 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		return destinations
 	}
 
-	session, err := mintSession(ctx, token, tenant.TenantID)
+	session, err := mintSession(ctx, cl, tenant)
 	if err != nil {
-		logger.Warn().Err(err).Str("tenant_id", tenant.TenantID).Msg("platform destination: session mint failed, skipping auto-injection")
+		logger.Warn().Err(err).Str("tenant_id", tenant.TenantId.String()).Msg("platform destination: session mint failed, skipping auto-injection")
 		return destinations
 	}
 
@@ -139,7 +142,7 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 	if existing.Spec == nil {
 		existing.Spec = map[string]any{}
 	}
-	existing.Spec["api_url"] = session.APIURL
+	existing.Spec["api_url"] = session.ApiUrl
 	existing.Spec["token"] = session.Token
 	existing.SetDefaults()
 
@@ -149,8 +152,8 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		}
 	}
 	logger.Info().
-		Str("platform_url", session.APIURL).
-		Str("tenant_id", tenant.TenantID).
+		Str("platform_url", session.ApiUrl).
+		Str("tenant_id", tenant.TenantId.String()).
 		Str("registry", plugin.Registry).
 		Str("path", plugin.Path).
 		Str("version", plugin.Version).
@@ -158,25 +161,40 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 	return destinations
 }
 
-func selectTenant(logger zerolog.Logger, tenants []tenantSummary) (tenantSummary, bool) {
+// resolveCredentials fetches a cloud token and its team for best-effort
+// injection when the sync command did not need to authenticate. Overridable in
+// tests; a returned error is non-fatal and simply skips injection.
+var resolveCredentials = func(ctx context.Context) (token, team string, err error) {
+	tok, err := cqapiauth.NewTokenClient().GetToken()
+	if err != nil {
+		return "", "", err
+	}
+	team, err = cqauth.GetTeamForToken(ctx, tok)
+	if err != nil {
+		return "", "", err
+	}
+	return tok.Value, team, nil
+}
+
+func selectTenant(logger zerolog.Logger, tenants []cloudquery_api.PlatformTenantSummary) (cloudquery_api.PlatformTenantSummary, bool) {
 	switch len(tenants) {
 	case 0:
-		return tenantSummary{}, false
+		return cloudquery_api.PlatformTenantSummary{}, false
 	case 1:
 		return tenants[0], true
 	}
 	want := os.Getenv(envTenantID)
 	if want == "" {
 		logger.Warn().Int("tenants", len(tenants)).Msgf("platform destination: team has multiple active tenants; set %s to choose one, skipping auto-injection", envTenantID)
-		return tenantSummary{}, false
+		return cloudquery_api.PlatformTenantSummary{}, false
 	}
 	for _, t := range tenants {
-		if t.TenantID == want {
+		if t.TenantId.String() == want {
 			return t, true
 		}
 	}
 	logger.Warn().Str("tenant_id", want).Msgf("platform destination: %s does not match any active tenant, skipping auto-injection", envTenantID)
-	return tenantSummary{}, false
+	return cloudquery_api.PlatformTenantSummary{}, false
 }
 
 // YYYYMMDDhhmmssfff — same shape platform/syncs-transformer uses, so
@@ -188,77 +206,39 @@ func allocateSyncGroupID(now time.Time) uint64 {
 	return u
 }
 
-func activeTenants(ctx context.Context, token, teamName string) ([]tenantSummary, error) {
-	base := env.GetEnvOrDefault(envAPIURL, defaultAPIURL)
-	req, err := retryablehttp.NewRequestWithContext(ctx, http.MethodGet, base+"/user/platform/tenants", nil)
+func activeTenants(ctx context.Context, cl *cloudquery_api.ClientWithResponses, teamName string) ([]cloudquery_api.PlatformTenantSummary, error) {
+	ctx, cancel := context.WithTimeout(ctx, requestTimeout)
+	defer cancel()
+
+	resp, err := cl.ListUserPlatformTenantsWithResponse(ctx)
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Authorization", "Bearer "+token)
-	req.Header.Set("Accept", "application/json")
-
-	resp, err := newHTTPClient().Do(req)
-	if err != nil {
-		return nil, err
+	if resp.JSON200 == nil {
+		return nil, fmt.Errorf("unexpected status %d listing platform tenants: %s", resp.StatusCode(), strings.TrimSpace(string(resp.Body)))
 	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("unexpected status %d from /user/platform/tenants", resp.StatusCode)
-	}
-	var out tenantListResponse
-	if err := json.NewDecoder(resp.Body).Decode(&out); err != nil {
-		return nil, fmt.Errorf("decode /user/platform/tenants response: %w", err)
-	}
-	active := make([]tenantSummary, 0, len(out.Items))
-	for _, t := range out.Items {
-		if t.TeamName == teamName && t.Status == statusActive {
+	active := make([]cloudquery_api.PlatformTenantSummary, 0, len(resp.JSON200.Items))
+	for _, t := range resp.JSON200.Items {
+		if string(t.TeamName) == teamName && slices.Contains(injectableStatuses, t.Status) {
 			active = append(active, t)
 		}
 	}
 	return active, nil
 }
 
-func mintSession(ctx context.Context, token, tenantID string) (*sessionResponse, error) {
-	base := env.GetEnvOrDefault(envAPIURL, defaultAPIURL)
-	body, err := json.Marshal(map[string]string{"tenant_id": tenantID})
+func mintSession(ctx context.Context, cl *cloudquery_api.ClientWithResponses, tenant cloudquery_api.PlatformTenantSummary) (*cloudquery_api.CreatePlatformDestinationSession201Response, error) {
+	ctx, cancel := context.WithTimeout(ctx, requestTimeout)
+	defer cancel()
+
+	resp, err := cl.CreatePlatformDestinationSessionWithResponse(ctx, cloudquery_api.CreatePlatformDestinationSessionRequest{TenantId: tenant.TenantId})
 	if err != nil {
 		return nil, err
 	}
-	req, err := retryablehttp.NewRequestWithContext(ctx, http.MethodPost, base+"/platform-destination/session", bytes.NewReader(body))
-	if err != nil {
-		return nil, err
+	if resp.JSON201 == nil {
+		return nil, fmt.Errorf("unexpected status %d minting platform destination session: %s", resp.StatusCode(), strings.TrimSpace(string(resp.Body)))
 	}
-	req.Header.Set("Authorization", "Bearer "+token)
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
-
-	resp, err := newHTTPClient().Do(req)
-	if err != nil {
-		return nil, err
+	if resp.JSON201.Token == "" || resp.JSON201.ApiUrl == "" {
+		return nil, errors.New("platform destination session response missing token or api_url")
 	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusCreated {
-		snippet, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
-		return nil, fmt.Errorf("unexpected status %d from /platform-destination/session: %s", resp.StatusCode, strings.TrimSpace(string(snippet)))
-	}
-	var out sessionResponse
-	if err := json.NewDecoder(resp.Body).Decode(&out); err != nil {
-		return nil, fmt.Errorf("decode /platform-destination/session response: %w", err)
-	}
-	if out.Token == "" || out.APIURL == "" {
-		return nil, errors.New("/platform-destination/session response missing token or api_url")
-	}
-	return &out, nil
-}
-
-func newHTTPClient() *retryablehttp.Client {
-	cl := retryablehttp.NewClient()
-	cl.Logger = nil
-	cl.HTTPClient.Timeout = 5 * time.Second
-	cl.RetryMax = 2
-	cl.RetryWaitMin = 200 * time.Millisecond
-	cl.RetryWaitMax = 2 * time.Second
-	return cl
+	return resp.JSON201, nil
 }

@@ -1028,3 +1028,48 @@ func TestShouldEscapeFileContent(t *testing.T) {
 		})
 	}
 }
+
+func writeTempSpec(t *testing.T, content string) string {
+	t.Helper()
+	dir := t.TempDir()
+	p := path.Join(dir, "spec.yaml")
+	if err := os.WriteFile(p, []byte(content), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	return p
+}
+
+const sourceOnlySpec = `
+kind: source
+spec:
+  name: endoflife
+  path: cloudquery/endoflife
+  version: v1.0.0
+  tables: ["*"]
+`
+
+func TestSpecReaderWithoutValidation_SourceOnly(t *testing.T) {
+	p := writeTempSpec(t, sourceOnlySpec)
+
+	// Strict reader rejects a source with no destination up front.
+	_, err := NewSpecReader([]string{p})
+	require.ErrorContains(t, err, "at least one destination is required")
+
+	// Deferred reader accepts it so a destination can be injected afterwards.
+	r, err := NewSpecReaderWithoutValidation([]string{p})
+	require.NoError(t, err)
+	require.Len(t, r.Sources, 1)
+	require.Empty(t, r.Destinations)
+
+	// Without a destination, deferred validation still reports the problem.
+	require.ErrorContains(t, r.SetDestinationsAndValidate(nil), "at least one destination is required")
+
+	// Simulate platform auto-injection: wire a destination into the source and
+	// register it with the reader. Validation must now pass.
+	dest := &Destination{Metadata: Metadata{Name: "platform"}}
+	dest.SetDefaults()
+	r.Sources[0].Destinations = append(r.Sources[0].Destinations, dest.Name)
+
+	require.NoError(t, r.SetDestinationsAndValidate([]*Destination{dest}))
+	require.Equal(t, dest, r.GetDestinationByName("platform"))
+}

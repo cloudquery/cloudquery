@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow-go/v18 v18.6.0
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v5 v5.0.3
-	github.com/cloudquery/cloudquery-api-go v1.14.10
+	github.com/cloudquery/cloudquery-api-go v1.14.11-0.20260616074206-c9fbe79d8954
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-pb-go v1.27.15
 	github.com/cloudquery/plugin-sdk/v4 v4.95.2
@@ -18,7 +18,6 @@ require (
 	github.com/ghodss/yaml v1.0.0
 	github.com/google/go-cmp v0.7.0
 	github.com/google/uuid v1.6.0
-	github.com/hashicorp/go-retryablehttp v0.7.8
 	github.com/invopop/jsonschema v0.14.0
 	github.com/jedib0t/go-pretty/v6 v6.7.10
 	github.com/manifoldco/promptui v0.9.0
@@ -97,6 +96,7 @@ require (
 	github.com/grafana/jsonparser v0.0.0-20250908162026-5c2524e07b4c // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.28.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
+	github.com/hashicorp/go-retryablehttp v0.7.8 // indirect
 	github.com/hashicorp/go-version v1.9.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect

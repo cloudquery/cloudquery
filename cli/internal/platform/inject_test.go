@@ -3,6 +3,7 @@ package platform
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"sync/atomic"
@@ -12,6 +13,9 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
 )
+
+// Base URL env consumed by internal/api.NewClient.
+const envAPIURL = "CLOUDQUERY_API_URL"
 
 func testSources() []*specs.Source {
 	return []*specs.Source{{
@@ -26,23 +30,35 @@ func testDestinations() []*specs.Destination {
 	}}
 }
 
+func tenantItem(id, status, team string) map[string]any {
+	return map[string]any{"tenant_id": id, "status": status, "team_name": team}
+}
+
+func writeTenants(w http.ResponseWriter, items ...map[string]any) {
+	w.Header().Set("Content-Type", "application/json")
+	_ = json.NewEncoder(w).Encode(map[string]any{"items": items})
+}
+
+func writeSession(w http.ResponseWriter, token, apiURL string) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	_ = json.NewEncoder(w).Encode(map[string]any{
+		"token":              token,
+		"api_url":            apiURL,
+		"expires_in_seconds": 604800,
+	})
+}
+
 func fakeCloud(t *testing.T, tenants func(w http.ResponseWriter, r *http.Request), session func(w http.ResponseWriter, r *http.Request)) *httptest.Server {
 	t.Helper()
 	if tenants == nil {
 		tenants = func(w http.ResponseWriter, _ *http.Request) {
-			_ = json.NewEncoder(w).Encode(tenantListResponse{Items: []tenantSummary{
-				{TenantID: "11111111-1111-1111-1111-111111111111", Status: statusActive, TeamName: "team-x"},
-			}})
+			writeTenants(w, tenantItem("11111111-1111-1111-1111-111111111111", "active", "team-x"))
 		}
 	}
 	if session == nil {
 		session = func(w http.ResponseWriter, _ *http.Request) {
-			w.WriteHeader(http.StatusCreated)
-			_ = json.NewEncoder(w).Encode(sessionResponse{
-				Token:            "cqpd_payload.sig",
-				ExpiresInSeconds: 604800,
-				APIURL:           "https://x.us.platform.cloudquery.io",
-			})
+			writeSession(w, "cqpd_payload.sig", "https://x.us.platform.cloudquery.io")
 		}
 	}
 	mux := http.NewServeMux()
@@ -56,9 +72,7 @@ func fakeCloud(t *testing.T, tenants func(w http.ResponseWriter, r *http.Request
 func TestInject_Active_AppendsDestinationAndWiresSources(t *testing.T) {
 	srv := fakeCloud(t, func(w http.ResponseWriter, r *http.Request) {
 		require.Equal(t, "Bearer tok", r.Header.Get("Authorization"))
-		_ = json.NewEncoder(w).Encode(tenantListResponse{Items: []tenantSummary{
-			{TenantID: "11111111-1111-1111-1111-111111111111", Status: statusActive, TeamName: "team-x"},
-		}})
+		writeTenants(w, tenantItem("11111111-1111-1111-1111-111111111111", "active", "team-x"))
 	}, func(w http.ResponseWriter, r *http.Request) {
 		require.Equal(t, "Bearer tok", r.Header.Get("Authorization"))
 		var body struct {
@@ -66,12 +80,7 @@ func TestInject_Active_AppendsDestinationAndWiresSources(t *testing.T) {
 		}
 		require.NoError(t, json.NewDecoder(r.Body).Decode(&body))
 		require.Equal(t, "11111111-1111-1111-1111-111111111111", body.TenantID)
-		w.WriteHeader(http.StatusCreated)
-		_ = json.NewEncoder(w).Encode(sessionResponse{
-			Token:            "cqpd_payload.sig",
-			ExpiresInSeconds: 604800,
-			APIURL:           "https://x.us.platform.cloudquery.io",
-		})
+		writeSession(w, "cqpd_payload.sig", "https://x.us.platform.cloudquery.io")
 	})
 	t.Setenv(envAPIURL, srv.URL)
 
@@ -88,6 +97,17 @@ func TestInject_Active_AppendsDestinationAndWiresSources(t *testing.T) {
 	require.Equal(t, specs.RegistryCloudQuery, got[1].Registry)
 	require.True(t, got[1].SyncSummary, "send_sync_summary must be set so the destination receives finalize signals")
 	require.Contains(t, sources[0].Destinations, destinationName)
+}
+
+func TestInject_CreatedTenant_Injects(t *testing.T) {
+	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
+		writeTenants(w, tenantItem("11111111-1111-1111-1111-111111111111", "created", "team-x"))
+	}, nil)
+	t.Setenv(envAPIURL, srv.URL)
+
+	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+	require.Len(t, got, 2)
+	require.Equal(t, destinationName, got[1].Name)
 }
 
 func TestInject_ExistingPlatformBlockOverwrittenNotDuplicated(t *testing.T) {
@@ -112,10 +132,10 @@ func TestInject_ExistingPlatformBlockOverwrittenNotDuplicated(t *testing.T) {
 
 func TestInject_NoTenantForTeam_NoOp(t *testing.T) {
 	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
-		_ = json.NewEncoder(w).Encode(tenantListResponse{Items: []tenantSummary{
-			{TenantID: "22222222-2222-2222-2222-222222222222", Status: statusActive, TeamName: "other-team"},
-			{TenantID: "33333333-3333-3333-3333-333333333333", Status: "pending", TeamName: "team-x"},
-		}})
+		writeTenants(w,
+			tenantItem("22222222-2222-2222-2222-222222222222", "active", "other-team"),
+			tenantItem("33333333-3333-3333-3333-333333333333", "pending", "team-x"),
+		)
 	}, nil)
 	t.Setenv(envAPIURL, srv.URL)
 
@@ -146,10 +166,10 @@ func TestInject_SessionMintError_NoOp(t *testing.T) {
 
 func TestInject_MultipleTenants_RequiresEnvSelection(t *testing.T) {
 	tenants := func(w http.ResponseWriter, _ *http.Request) {
-		_ = json.NewEncoder(w).Encode(tenantListResponse{Items: []tenantSummary{
-			{TenantID: "11111111-1111-1111-1111-111111111111", Status: statusActive, TeamName: "team-x"},
-			{TenantID: "22222222-2222-2222-2222-222222222222", Status: statusActive, TeamName: "team-x"},
-		}})
+		writeTenants(w,
+			tenantItem("11111111-1111-1111-1111-111111111111", "active", "team-x"),
+			tenantItem("22222222-2222-2222-2222-222222222222", "active", "team-x"),
+		)
 	}
 
 	t.Run("unset skips", func(t *testing.T) {
@@ -166,8 +186,7 @@ func TestInject_MultipleTenants_RequiresEnvSelection(t *testing.T) {
 			}
 			require.NoError(t, json.NewDecoder(r.Body).Decode(&body))
 			require.Equal(t, "22222222-2222-2222-2222-222222222222", body.TenantID)
-			w.WriteHeader(http.StatusCreated)
-			_ = json.NewEncoder(w).Encode(sessionResponse{Token: "cqpd_x.y", APIURL: "https://x"})
+			writeSession(w, "cqpd_x.y", "https://x")
 		})
 		t.Setenv(envAPIURL, srv.URL)
 		t.Setenv(envTenantID, "22222222-2222-2222-2222-222222222222")
@@ -202,7 +221,7 @@ func TestInject_DisableEnv_SkipsBeforeAnyCall(t *testing.T) {
 	var calls atomic.Int32
 	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
 		calls.Add(1)
-		_ = json.NewEncoder(w).Encode(tenantListResponse{})
+		writeTenants(w)
 	}, nil)
 	t.Setenv(envAPIURL, srv.URL)
 	t.Setenv(envDisable, "1")
@@ -216,7 +235,7 @@ func TestInject_CloudRun_SkipsBeforeAnyCall(t *testing.T) {
 	var calls atomic.Int32
 	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
 		calls.Add(1)
-		_ = json.NewEncoder(w).Encode(tenantListResponse{})
+		writeTenants(w)
 	}, nil)
 	t.Setenv(envAPIURL, srv.URL)
 	t.Setenv("CQ_CLOUD", "1")
@@ -226,17 +245,41 @@ func TestInject_CloudRun_SkipsBeforeAnyCall(t *testing.T) {
 	require.Zero(t, calls.Load())
 }
 
+func setResolveCredentials(t *testing.T, token, team string, err error) {
+	t.Helper()
+	prev := resolveCredentials
+	resolveCredentials = func(context.Context) (string, string, error) {
+		return token, team, err
+	}
+	t.Cleanup(func() { resolveCredentials = prev })
+}
+
 func TestInject_EmptyTokenOrTeam_NoOp(t *testing.T) {
 	var calls atomic.Int32
 	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
 		calls.Add(1)
-		_ = json.NewEncoder(w).Encode(tenantListResponse{})
+		writeTenants(w)
 	}, nil)
 	t.Setenv(envAPIURL, srv.URL)
+	// No token from the caller and none resolvable best-effort: stay a no-op.
+	setResolveCredentials(t, "", "", errors.New("not logged in"))
 
 	require.Len(t, MaybeInjectDestination(context.Background(), zerolog.Nop(), "", "team-x", testSources(), testDestinations()), 1)
 	require.Len(t, MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "", testSources(), testDestinations()), 1)
 	require.Zero(t, calls.Load())
+}
+
+func TestInject_BestEffortCredentials_Injects(t *testing.T) {
+	srv := fakeCloud(t, nil, nil)
+	t.Setenv(envAPIURL, srv.URL)
+	// Caller passed no token (spec pulls no cloudquery-registry plugin); the
+	// best-effort resolver supplies one so injection still happens.
+	setResolveCredentials(t, "tok", "team-x", nil)
+
+	got := MaybeInjectDestination(context.Background(), zerolog.Nop(), "", "", testSources(), testDestinations())
+	require.Len(t, got, 2)
+	require.Equal(t, destinationName, got[1].Name)
+	require.Equal(t, "cqpd_payload.sig", got[1].Spec["token"])
 }
 
 func TestAllocateSyncGroupID_TimeShaped(t *testing.T) {
