@@ -2,9 +2,10 @@ name: Release PR Hub comment
 description: |
   After a plugin is published to the CloudQuery Hub, comments once on the
   release-please PR that shipped the version. The published tag points at the
-  release-please squash commit, whose subject carries the PR number
-  (`chore(main): Release <component> vX.Y.Z (#NNNN)`). A hidden marker makes
-  re-runs idempotent.
+  release-please squash commit; the PR is resolved via
+  `listPullRequestsAssociatedWithCommit`, falling back to parsing the PR number
+  from the commit subject (`chore(main): Release <component> vX.Y.Z (#NNNN)`).
+  A hidden marker makes re-runs idempotent.
 
   The calling job needs `pull-requests: write`.
 
@@ -37,24 +38,38 @@ runs:
           const { PLUGIN_KIND, PLUGIN_NAME, PLUGIN_VERSION } = process.env;
           const { owner, repo } = context.repo;
 
-          let subject;
+          // The tag commit is the release-please squash merge commit; prefer the
+          // API and fall back to parsing the PR number from the commit subject.
+          let issue_number;
           try {
-            const { data } = await github.rest.repos.getCommit({ owner, repo, ref: context.sha });
-            subject = (data.commit.message || '').split('\n')[0].trim();
+            const { data: prs } = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+              owner,
+              repo,
+              commit_sha: context.sha,
+            });
+            const pr = prs.find((p) => p.merged_at) || prs[0];
+            if (pr) {
+              issue_number = pr.number;
+            }
           } catch (e) {
-            core.warning(`cannot read commit ${context.sha}: ${e.message}`);
-            return;
+            core.warning(`listPullRequestsAssociatedWithCommit failed: ${e.message}`);
           }
-          if (!/^chore(?:\([^)]+\))?:\s*Release\b/i.test(subject)) {
-            core.info(`"${subject}" is not a release commit; skipping`);
-            return;
+          if (!issue_number) {
+            let subject;
+            try {
+              const { data } = await github.rest.repos.getCommit({ owner, repo, ref: context.sha });
+              subject = (data.commit.message || '').split('\n')[0].trim();
+            } catch (e) {
+              core.warning(`cannot read commit ${context.sha}: ${e.message}`);
+              return;
+            }
+            const match = subject.match(/\(#(\d+)\)\s*$/);
+            if (!match) {
+              core.info(`no PR associated with ${context.sha} and no (#PR) in "${subject}"; skipping`);
+              return;
+            }
+            issue_number = Number(match[1]);
           }
-          const match = subject.match(/\(#(\d+)\)\s*$/);
-          if (!match) {
-            core.info(`no (#PR) in subject "${subject}"; skipping`);
-            return;
-          }
-          const issue_number = Number(match[1]);
 
           const marker = `<!-- plugin-hub-publish:${PLUGIN_KIND}:${PLUGIN_NAME}:${PLUGIN_VERSION} -->`;
           const existing = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number });
