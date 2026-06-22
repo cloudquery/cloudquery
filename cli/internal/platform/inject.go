@@ -76,6 +76,15 @@ func pluginCoords() pluginCoordinates {
 	return p
 }
 
+// sourceVersion is one entry of the platform destination's `source_versions`
+// spec field — the source plugin path+version the platform gates on. JSON tags
+// match the platform's CreateExternalSync `sources` items.
+type sourceVersion struct {
+	Name    string `json:"name"`
+	Path    string `json:"path"`
+	Version string `json:"version"`
+}
+
 // MaybeInjectDestination appends a `platform` destination carrying a freshly
 // minted cqpd_ token when the team has an active platform tenant. Tenant/network
 // failures skip injection silently; a pre-existing `platform` destination is a
@@ -140,13 +149,9 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 	apiURL := platformAPIURL(session.ApiUrl)
 	// Report each source's plugin path+version so the platform can reject (before
 	// any upload) sources whose version the asset view can't process.
-	sourceVersions := make([]map[string]string, 0, len(sources))
+	sourceVersions := make([]sourceVersion, 0, len(sources))
 	for _, s := range sources {
-		sourceVersions = append(sourceVersions, map[string]string{
-			"name":    s.Name,
-			"path":    s.Path,
-			"version": s.Version,
-		})
+		sourceVersions = append(sourceVersions, sourceVersion{Name: s.Name, Path: s.Path, Version: s.Version})
 	}
 	dest := &specs.Destination{
 		Metadata: specs.Metadata{

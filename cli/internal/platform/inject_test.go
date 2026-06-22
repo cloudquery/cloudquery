@@ -99,9 +99,10 @@ func TestInject_Active_AppendsDestinationAndWiresSources(t *testing.T) {
 	require.Equal(t, destinationName, got[1].Name)
 	require.Equal(t, "https://x.us.platform.cloudquery.io/api", got[1].Spec["api_url"], "external-syncs endpoints are served under /api")
 	require.Equal(t, "cqpd_payload.sig", got[1].Spec["token"], "destination must get the minted cqpd_ token, not the cloud credential")
-	require.Equal(t, []map[string]string{
-		{"name": "aws", "path": "cloudquery/aws", "version": "v1.0.0"},
-	}, got[1].Spec["source_versions"], "each source's path+version must be reported for the platform gate")
+	srcVersionsJSON, err := json.Marshal(got[1].Spec["source_versions"])
+	require.NoError(t, err)
+	require.JSONEq(t, `[{"name":"aws","path":"cloudquery/aws","version":"v1.0.0"}]`, string(srcVersionsJSON),
+		"each source's path+version must be reported for the platform gate")
 	require.Equal(t, defaultPlugin.Version, got[1].Version)
 	require.Equal(t, defaultPlugin.Path, got[1].Path)
 	require.Equal(t, specs.RegistryCloudQuery, got[1].Registry)
@@ -109,6 +110,16 @@ func TestInject_Active_AppendsDestinationAndWiresSources(t *testing.T) {
 	require.Equal(t, specs.WriteModeAppend, got[1].WriteMode, "sync_group_id requires a write mode other than overwrite-delete-stale")
 	require.NotEmpty(t, got[1].SyncGroupId)
 	require.Contains(t, sources[0].Destinations, destinationName)
+
+	// Multiple sources are reported in order, none dropped.
+	twoGot := mustInject(t, "tok", "team-x", []*specs.Source{
+		{Metadata: specs.Metadata{Name: "aws", Path: "cloudquery/aws", Version: "v1.0.0", Registry: specs.RegistryCloudQuery}},
+		{Metadata: specs.Metadata{Name: "gcp", Path: "cloudquery/gcp", Version: "v2.3.4", Registry: specs.RegistryCloudQuery}},
+	}, testDestinations())
+	twoJSON, err := json.Marshal(twoGot[1].Spec["source_versions"])
+	require.NoError(t, err)
+	require.JSONEq(t, `[{"name":"aws","path":"cloudquery/aws","version":"v1.0.0"},{"name":"gcp","path":"cloudquery/gcp","version":"v2.3.4"}]`,
+		string(twoJSON), "sources reported in order, none dropped")
 }
 
 func TestInject_CreatedTenant_Injects(t *testing.T) {
