@@ -99,6 +99,9 @@ func TestInject_Active_AppendsDestinationAndWiresSources(t *testing.T) {
 	require.Equal(t, destinationName, got[1].Name)
 	require.Equal(t, "https://x.us.platform.cloudquery.io/api", got[1].Spec["api_url"], "external-syncs endpoints are served under /api")
 	require.Equal(t, "cqpd_payload.sig", got[1].Spec["token"], "destination must get the minted cqpd_ token, not the cloud credential")
+	require.Equal(t, []map[string]string{
+		{"name": "aws", "path": "cloudquery/aws", "version": "v1.0.0"},
+	}, got[1].Spec["source_versions"], "each source's path+version must be reported for the platform gate")
 	require.Equal(t, defaultPlugin.Version, got[1].Version)
 	require.Equal(t, defaultPlugin.Path, got[1].Path)
 	require.Equal(t, specs.RegistryCloudQuery, got[1].Registry)
