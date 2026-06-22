@@ -23,6 +23,13 @@ func TestSpec_Validate(t *testing.T) {
 		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", AWSCredentials: &Credentials{Default: true, LocalProfile: "test_profile"}}, WantErr: true},
 		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", AWSCredentials: &Credentials{Default: true, RoleSessionName: "test-session"}}, WantErr: true},
 		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", AWSCredentials: &Credentials{}}, WantErr: true},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", OIDC: &OIDC{Environment: "gcp", TokenResource: "aud"}}, WantErr: false},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", OIDC: &OIDC{Environment: "azure", TokenResource: "aud"}}, WantErr: false},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", OIDC: &OIDC{Environment: "k8s"}}, WantErr: false},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", OIDC: &OIDC{Environment: "gcp"}}, WantErr: true},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", OIDC: &OIDC{Environment: "invalid", TokenResource: "aud"}}, WantErr: true},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", OIDC: &OIDC{TokenResource: "aud"}}, WantErr: true},
+		{Give: Spec{BatchSize: int64(0), BatchSizeBytes: int64(0), ConnectionString: "test-connection-string", Database: "database", AWSCredentials: &Credentials{Default: true}, OIDC: &OIDC{Environment: "gcp", TokenResource: "aud"}}, WantErr: true},
 	}
 	for i, tc := range cases {
 		tc := tc
@@ -112,6 +119,31 @@ func TestJSONSchema(t *testing.T) {
 			Name: "invalid spec with both valid local_profile and default in aws_credentials",
 			Spec: `{"connection_string": "abc", "database":"foo", "aws_credentials": {"default": true,"local_profile": "test_profile"}}`,
 			Err:  false,
+		},
+		{
+			Name: "spec with valid gcp oidc",
+			Spec: `{"connection_string": "abc", "database":"foo", "oidc": {"environment": "gcp", "token_resource": "aud"}}`,
+			Err:  false,
+		},
+		{
+			Name: "spec with valid k8s oidc",
+			Spec: `{"connection_string": "abc", "database":"foo", "oidc": {"environment": "k8s"}}`,
+			Err:  false,
+		},
+		{
+			Name: "spec with invalid oidc environment",
+			Spec: `{"connection_string": "abc", "database":"foo", "oidc": {"environment": "nope", "token_resource": "aud"}}`,
+			Err:  true,
+		},
+		{
+			Name: "spec with oidc missing environment",
+			Spec: `{"connection_string": "abc", "database":"foo", "oidc": {"token_resource": "aud"}}`,
+			Err:  true,
+		},
+		{
+			Name: "spec with unknown field in oidc",
+			Spec: `{"connection_string": "abc", "database":"foo", "oidc": {"environment": "gcp", "token_resource": "aud", "unknown": "x"}}`,
+			Err:  true,
 		},
 	})
 }

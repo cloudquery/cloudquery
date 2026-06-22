@@ -34,6 +34,26 @@
       "additionalProperties": false,
       "type": "object"
     },
+    "OIDC": {
+      "properties": {
+        "environment": {
+          "type": "string",
+          "enum": [
+            "gcp",
+            "azure",
+            "k8s"
+          ]
+        },
+        "token_resource": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "environment"
+      ]
+    },
     "Spec": {
       "properties": {
         "connection_string": {
@@ -58,6 +78,16 @@
           "oneOf": [
             {
               "$ref": "#/$defs/Credentials"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "oidc": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/OIDC"
             },
             {
               "type": "null"

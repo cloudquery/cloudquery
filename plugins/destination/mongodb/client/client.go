@@ -54,6 +54,16 @@ func New(ctx context.Context, logger zerolog.Logger, specByte []byte, _ plugin.N
 		}
 		// According to the docs: if ApplyURI is called before SetAuth, the Credential from SetAuth will overwrite the values from the connection string
 		mongoDBClientOptions = mongoDBClientOptions.SetAuth(assumeRoleCredential)
+	} else if c.spec.OIDC != nil {
+		props := map[string]string{"ENVIRONMENT": c.spec.OIDC.Environment}
+		if c.spec.OIDC.TokenResource != "" {
+			props["TOKEN_RESOURCE"] = c.spec.OIDC.TokenResource
+		}
+		// If ApplyURI is called before SetAuth, the Credential from SetAuth will overwrite the values from the connection string
+		mongoDBClientOptions = mongoDBClientOptions.SetAuth(options.Credential{
+			AuthMechanism:           "MONGODB-OIDC",
+			AuthMechanismProperties: props,
+		})
 	}
 
 	c.client, err = mongo.Connect(mongoDBClientOptions)
