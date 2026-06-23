@@ -12,6 +12,8 @@ import (
 	specs "github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 // Base URL env consumed by internal/api.NewClient.
@@ -319,4 +321,22 @@ func TestAllocateSyncGroupID_TimeShaped(t *testing.T) {
 	require.Len(t, sgid, 17, "YYYYMMDDhhmmssfff")
 	_, err := json.Number(sgid).Int64()
 	require.NoError(t, err)
+}
+
+func TestIsInjectedDestination(t *testing.T) {
+	require.True(t, IsInjectedDestination(destinationName))
+	require.False(t, IsInjectedDestination("postgresql"))
+}
+
+func TestCleanInitError(t *testing.T) {
+	// gRPC-wrapped plugin-init chain → strip the rpc + plugin-sdk prefixes,
+	// leaving the destination's own message.
+	wrapped := status.Error(codes.Internal,
+		"failed to init plugin: failed to initialize client: failed to start sync with CloudQuery Platform: unsupported source plugin version(s): aws (supported version: v33.28.0) (HTTP 422)")
+	require.Equal(t,
+		"failed to start sync with CloudQuery Platform: unsupported source plugin version(s): aws (supported version: v33.28.0) (HTTP 422)",
+		CleanInitError(wrapped))
+
+	// A plain (non-gRPC) error passes through unchanged.
+	require.Equal(t, "boom", CleanInitError(errors.New("boom")))
 }

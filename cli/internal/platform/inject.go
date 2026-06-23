@@ -19,6 +19,7 @@ import (
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	specs "github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/rs/zerolog"
+	"google.golang.org/grpc/status"
 )
 
 const (
@@ -268,4 +269,24 @@ func mintSession(ctx context.Context, cl *cloudquery_api.ClientWithResponses, te
 		return nil, errors.New("platform destination session response missing token or api_url")
 	}
 	return resp.JSON201, nil
+}
+
+// IsInjectedDestination reports whether a destination spec name is the
+// auto-injected platform destination (a reserved name).
+func IsInjectedDestination(name string) bool {
+	return name == destinationName
+}
+
+// CleanInitError turns the gRPC-wrapped plugin-init error from the platform
+// destination into a human-readable message: it unwraps the gRPC status (drops
+// the "rpc error: code = ... desc =" prefix) and strips the plugin-sdk wrapper
+// prefixes, leaving the destination's own message (e.g. the platform's 422 text).
+// Scope this to the platform destination (see IsInjectedDestination) — the
+// stripped prefixes are specific to that plugin's init path.
+func CleanInitError(err error) string {
+	msg := status.Convert(err).Message()
+	for _, prefix := range []string{"failed to init plugin: ", "failed to initialize client: "} {
+		msg = strings.TrimPrefix(msg, prefix)
+	}
+	return msg
 }
