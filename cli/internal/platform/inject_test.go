@@ -40,8 +40,8 @@ func mustInject(t *testing.T, token, team string, sources []*specs.Source, desti
 	return got
 }
 
-func tenantItem(id, status, team string) map[string]any {
-	return map[string]any{"tenant_id": id, "status": status, "team_name": team}
+func tenantItem(id, tenantStatus, team string) map[string]any {
+	return map[string]any{"tenant_id": id, "status": tenantStatus, "team_name": team}
 }
 
 func writeTenants(w http.ResponseWriter, items ...map[string]any) {
