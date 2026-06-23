@@ -340,3 +340,34 @@ func TestCleanInitError(t *testing.T) {
 	// A plain (non-gRPC) error passes through unchanged.
 	require.Equal(t, "boom", CleanInitError(errors.New("boom")))
 }
+
+func sessionWithPluginVersion(version string) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusCreated)
+		_ = json.NewEncoder(w).Encode(map[string]any{
+			"token":              "cqpd_payload.sig",
+			"api_url":            "https://x.us.platform.cloudquery.io",
+			"expires_in_seconds": 604800,
+			"plugin_version":     version,
+		})
+	}
+}
+
+func TestInject_PlatformPinnedVersion(t *testing.T) {
+	srv := fakeCloud(t, nil, sessionWithPluginVersion("v2.5.0"))
+	t.Setenv(envAPIURL, srv.URL)
+
+	got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
+	require.Len(t, got, 2)
+	require.Equal(t, "v2.5.0", got[1].Version, "platform-pinned destination version overrides the CLI default")
+}
+
+func TestInject_EnvVersionBeatsPlatformPin(t *testing.T) {
+	t.Setenv(envPluginVersion, "v9.9.9")
+	srv := fakeCloud(t, nil, sessionWithPluginVersion("v2.5.0"))
+	t.Setenv(envAPIURL, srv.URL)
+
+	got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
+	require.Equal(t, "v9.9.9", got[1].Version, "env override wins over the platform pin")
+}

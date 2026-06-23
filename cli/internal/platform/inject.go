@@ -4,6 +4,7 @@ package platform
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -134,13 +135,19 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		}
 	}
 
-	session, err := mintSession(ctx, cl, tenant)
+	session, platformPluginVersion, err := mintSession(ctx, cl, tenant)
 	if err != nil {
 		logger.Warn().Err(err).Str("tenant_id", tenant.TenantId.String()).Msg("platform destination: session mint failed, skipping auto-injection")
 		return destinations, nil
 	}
 
 	plugin := pluginCoords()
+	// Version precedence: env override > platform-pinned > CLI default.
+	// pluginCoords() already applied the env override (or the default), so only
+	// let the platform's pin win when the env override isn't set.
+	if os.Getenv(envPluginVersion) == "" && platformPluginVersion != "" {
+		plugin.Version = platformPluginVersion
+	}
 	parsedRegistry, err := specs.RegistryFromString(plugin.Registry)
 	if err != nil {
 		logger.Warn().Err(err).Str("registry", plugin.Registry).Msg("platform destination: unknown plugin registry; skipping auto-injection")
@@ -254,21 +261,28 @@ func activeTenants(ctx context.Context, cl *cloudquery_api.ClientWithResponses, 
 	return active, nil
 }
 
-func mintSession(ctx context.Context, cl *cloudquery_api.ClientWithResponses, tenant cloudquery_api.PlatformTenantSummary) (*cloudquery_api.CreatePlatformDestinationSession201Response, error) {
+func mintSession(ctx context.Context, cl *cloudquery_api.ClientWithResponses, tenant cloudquery_api.PlatformTenantSummary) (session *cloudquery_api.CreatePlatformDestinationSession201Response, pluginVersion string, err error) {
 	ctx, cancel := context.WithTimeout(ctx, requestTimeout)
 	defer cancel()
 
 	resp, err := cl.CreatePlatformDestinationSessionWithResponse(ctx, cloudquery_api.CreatePlatformDestinationSessionRequest{TenantId: tenant.TenantId})
 	if err != nil {
-		return nil, err
+		return nil, "", err
 	}
 	if resp.JSON201 == nil {
-		return nil, fmt.Errorf("unexpected status %d minting platform destination session: %s", resp.StatusCode(), strings.TrimSpace(string(resp.Body)))
+		return nil, "", fmt.Errorf("unexpected status %d minting platform destination session: %s", resp.StatusCode(), strings.TrimSpace(string(resp.Body)))
 	}
 	if resp.JSON201.Token == "" || resp.JSON201.ApiUrl == "" {
-		return nil, errors.New("platform destination session response missing token or api_url")
+		return nil, "", errors.New("platform destination session response missing token or api_url")
 	}
-	return resp.JSON201, nil
+	// plugin_version lets the platform pin the destination plugin version without
+	// a CLI release. It's an optional, forward-compatible field not yet in the
+	// generated response type, so read it from the raw body; empty → CLI default.
+	var extra struct {
+		PluginVersion string `json:"plugin_version"`
+	}
+	_ = json.Unmarshal(resp.Body, &extra)
+	return resp.JSON201, extra.PluginVersion, nil
 }
 
 // IsInjectedDestination reports whether a destination spec name is the
