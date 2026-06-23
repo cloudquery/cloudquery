@@ -278,7 +278,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			if platform.IsInjectedDestination(destinationSpec.Name) {
 				// Surface the platform's own message (e.g. an unsupported-version
 				// 422) instead of the gRPC/plugin-sdk wrapper chain.
-				return fmt.Errorf("failed to init destination %v: %s", destinationSpec.Name, platform.CleanInitError(err))
+				return errors.New(platform.CleanInitError(err))
 			}
 			return fmt.Errorf("failed to init destination %v: %w", destinationSpec.Name, err)
 		}

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
@@ -83,7 +84,7 @@ func migrateConnectionV3(ctx context.Context, migrateOptions migrateV3Options) e
 	for i, destinationSpec := range destinationSpecs {
 		if err := initPlugin(ctx, destinationsPbClients[i], destinationSpec.Spec, false, invocationUUID.String()); err != nil {
 			if platform.IsInjectedDestination(destinationSpec.Name) {
-				return fmt.Errorf("failed to init destination %v: %s", destinationSpec.Name, platform.CleanInitError(err))
+				return errors.New(platform.CleanInitError(err))
 			}
 			return fmt.Errorf("failed to init destination %v: %w", destinationSpec.Name, err)
 		}
