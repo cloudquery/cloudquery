@@ -53,16 +53,6 @@ var defaultPlugin = pluginCoordinates{
 	Version:  "v1.0.0",
 }
 
-// platformAPIURL appends /api (where /external-syncs/* is served) to the
-// session api_url unless already present.
-func platformAPIURL(sessionURL string) string {
-	url := strings.TrimRight(sessionURL, "/")
-	if !strings.HasSuffix(url, "/api") {
-		url += "/api"
-	}
-	return url
-}
-
 func pluginCoords() pluginCoordinates {
 	p := defaultPlugin
 	if v := os.Getenv(envPluginRegistry); v != "" {
@@ -153,7 +143,6 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		return destinations, nil
 	}
 
-	apiURL := platformAPIURL(session.ApiUrl)
 	// Report each source's plugin path+version so the platform can reject (before
 	// any upload) sources whose version the asset view can't process.
 	sourceVersions := make([]sourceVersion, 0, len(sources))
@@ -173,7 +162,8 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		// Unique per invocation so concurrent runs don't wipe each other's rows.
 		SyncGroupId: strconv.FormatUint(allocateSyncGroupID(time.Now()), 10),
 		Spec: map[string]any{
-			"api_url":         apiURL,
+			// api_url is omitted: the cqpd_ token carries the tenant's API URL,
+			// and the platform destination derives it from the token.
 			"token":           session.Token,
 			"source_versions": sourceVersions,
 		},
@@ -187,7 +177,7 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		}
 	}
 	logger.Info().
-		Str("platform_url", apiURL).
+		Str("platform_url", session.ApiUrl).
 		Str("tenant_id", tenant.TenantId.String()).
 		Str("registry", plugin.Registry).
 		Str("path", plugin.Path).
