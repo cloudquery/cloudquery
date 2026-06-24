@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow-go/v18 v18.6.0
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v5 v5.0.3
-	github.com/cloudquery/cloudquery-api-go v1.14.11-0.20260616074206-c9fbe79d8954
+	github.com/cloudquery/cloudquery-api-go v1.14.12
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-pb-go v1.27.15
 	github.com/cloudquery/plugin-sdk/v4 v4.95.2

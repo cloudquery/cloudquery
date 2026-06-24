@@ -4,7 +4,6 @@ package platform
 
 import (
 	"context"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -276,13 +275,11 @@ func mintSession(ctx context.Context, cl *cloudquery_api.ClientWithResponses, te
 		return nil, "", errors.New("platform destination session response missing token or api_url")
 	}
 	// plugin_version lets the platform pin the destination plugin version without
-	// a CLI release. It's an optional, forward-compatible field not yet in the
-	// generated response type, so read it from the raw body; empty → CLI default.
-	var extra struct {
-		PluginVersion string `json:"plugin_version"`
+	// a CLI release. Optional: nil/empty → caller falls back to the CLI default.
+	if resp.JSON201.PluginVersion != nil {
+		pluginVersion = *resp.JSON201.PluginVersion
 	}
-	_ = json.Unmarshal(resp.Body, &extra)
-	return resp.JSON201, extra.PluginVersion, nil
+	return resp.JSON201, pluginVersion, nil
 }
 
 // IsInjectedDestination reports whether a destination spec name is the
