@@ -96,7 +96,8 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 	// destination without cloud login, tenant discovery or a session mint — the
 	// token already identifies the tenant and carries its API URL.
 	if directToken := os.Getenv(envPlatformToken); directToken != "" {
-		return injectPlatformDestination(logger, destinations, sources, directToken, "")
+		// No tenant id: the direct path doesn't parse the token's claims.
+		return injectPlatformDestination(logger, destinations, sources, directToken, "", "")
 	}
 
 	// The caller only fetches a token for cloudquery-registry specs; resolve
@@ -128,13 +129,30 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		return destinations, nil
 	}
 
+	// Fail fast on a reserved-name collision before minting a token we'd discard.
+	if err := reservedDestinationConflict(destinations); err != nil {
+		return destinations, err
+	}
+
 	session, platformPluginVersion, err := mintSession(ctx, cl, tenant)
 	if err != nil {
 		logger.Warn().Err(err).Str("tenant_id", tenant.TenantId.String()).Msg("platform destination: session mint failed, skipping auto-injection")
 		return destinations, nil
 	}
 
-	return injectPlatformDestination(logger, destinations, sources, session.Token, platformPluginVersion)
+	return injectPlatformDestination(logger, destinations, sources, session.Token, platformPluginVersion, tenant.TenantId.String())
+}
+
+// reservedDestinationConflict errors when the spec already declares a `platform`
+// destination — the name is reserved for the auto-injected one, so colliding is
+// a hard error rather than a silent overwrite.
+func reservedDestinationConflict(destinations []*specs.Destination) error {
+	for _, d := range destinations {
+		if d.Name == destinationName {
+			return fmt.Errorf("a destination named %q already exists, but this name is reserved for the auto-injected CloudQuery Platform destination; remove it from your spec", destinationName)
+		}
+	}
+	return nil
 }
 
 // injectPlatformDestination appends the reserved `platform` destination carrying
@@ -142,11 +160,9 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 // not overridden by the env, pins the plugin version. A pre-existing `platform`
 // destination collides with the reserved name and is a hard error rather than a
 // silent overwrite; other problems (unknown registry) skip injection silently.
-func injectPlatformDestination(logger zerolog.Logger, destinations []*specs.Destination, sources []*specs.Source, token, recommendedVersion string) ([]*specs.Destination, error) {
-	for _, d := range destinations {
-		if d.Name == destinationName {
-			return destinations, fmt.Errorf("a destination named %q already exists, but this name is reserved for the auto-injected CloudQuery Platform destination; remove it from your spec", destinationName)
-		}
+func injectPlatformDestination(logger zerolog.Logger, destinations []*specs.Destination, sources []*specs.Source, token, recommendedVersion, tenantID string) ([]*specs.Destination, error) {
+	if err := reservedDestinationConflict(destinations); err != nil {
+		return destinations, err
 	}
 
 	plugin := pluginCoords()
@@ -195,11 +211,14 @@ func injectPlatformDestination(logger zerolog.Logger, destinations []*specs.Dest
 			s.Destinations = append(s.Destinations, destinationName)
 		}
 	}
-	logger.Info().
+	evt := logger.Info().
 		Str("registry", plugin.Registry).
 		Str("path", plugin.Path).
-		Str("version", plugin.Version).
-		Msg("auto-injected platform destination")
+		Str("version", plugin.Version)
+	if tenantID != "" {
+		evt = evt.Str("tenant_id", tenantID)
+	}
+	evt.Msg("auto-injected platform destination")
 	return destinations, nil
 }
 
