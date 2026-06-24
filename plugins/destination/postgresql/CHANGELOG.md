@@ -1,5 +1,17 @@
 # Changelog
 
+## [8.15.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.14.10...plugins-destination-postgresql-v8.15.0) (2026-06-19)
+
+
+### Features
+
+* Support Databricks Lakebase as a destination ([#22944](https://github.com/cloudquery/cloudquery/issues/22944)) ([016717c](https://github.com/cloudquery/cloudquery/commit/016717c4599e8d6fe6ba1342e60d19ea9c1bf766))
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.3 ([#22946](https://github.com/cloudquery/cloudquery/issues/22946)) ([b9aac1f](https://github.com/cloudquery/cloudquery/commit/b9aac1f3ab9eb846bb165aa2978be314ee6b8eaf))
+
 ## [8.14.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.14.9...plugins-destination-postgresql-v8.14.10) (2026-06-02)
 
 

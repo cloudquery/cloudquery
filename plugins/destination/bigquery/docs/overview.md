@@ -26,7 +26,7 @@ Streaming is not available for the [Google Cloud free tier](https://cloud.google
 
 :configuration
 
-The BigQuery destination utilizes batching, and supports [`batch_size`](/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](/docs/cli/integrations/destinations#batch_size_bytes).
+The BigQuery destination utilizes batching, and supports [`batch_size`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size_bytes).
 
 Note that the BigQuery plugin only supports the `append` write mode. 
 
@@ -68,7 +68,7 @@ This is the top-level spec used by the BigQuery destination plugin.
 
   GCP service account key content.
   This allows for using different service accounts for the GCP source and BigQuery destination.
-  If using service account keys, it is best to use [environment or file variable substitution](/docs/cli/managing-cloudquery/environment-variables).
+  If using service account keys, it is best to use [environment or file variable substitution](https://www.cloudquery.io/docs/cli/managing-cloudquery/environment-variables).
 
 - `endpoint` (`string`) (optional)
 

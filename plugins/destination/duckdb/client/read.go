@@ -137,6 +137,10 @@ func reverseTransformArray(dt arrow.DataType, arr arrow.Array) arrow.Array {
 			0, // we use 0 as offset for struct arrays, as the child arrays would already be sliced properly
 		))
 	case arrow.ListLikeType: // also handles maps
+		// Key list columns are stored as varchar, so they come back as strings.
+		if sarr, ok := arr.(*array.String); ok {
+			return reverseTransformFromString(dt, sarr)
+		}
 		if mapdt, ok := dt.(*arrow.MapType); ok {
 			if sarr, ok := arr.(*array.Binary); ok {
 				return reverseTransformMap(mapdt, sarr)

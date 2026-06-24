@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.3.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.3.9...plugins-destination-duckdb-v6.3.10) (2026-06-19)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.3 ([#22946](https://github.com/cloudquery/cloudquery/issues/22946)) ([b9aac1f](https://github.com/cloudquery/cloudquery/commit/b9aac1f3ab9eb846bb165aa2978be314ee6b8eaf))
+* Store list-typed key columns as varchar in DuckDB ([#22976](https://github.com/cloudquery/cloudquery/issues/22976)) ([c642ebc](https://github.com/cloudquery/cloudquery/commit/c642ebcb1ce0c58066ac3e3a3dc217caa4f3cef3))
+
 ## [6.3.9](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.3.8...plugins-destination-duckdb-v6.3.9) (2026-06-02)
 
 

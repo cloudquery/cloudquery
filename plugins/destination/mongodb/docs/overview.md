@@ -21,10 +21,10 @@ Supported database versions:
 :configuration
 
 :::callout{type="info"}
-Make sure to use [environment variable substitution](/docs/cli/managing-cloudquery/environment-variables) in production instead of committing the credentials to the configuration file directly.
+Make sure to use [environment variable substitution](https://www.cloudquery.io/docs/cli/managing-cloudquery/environment-variables) in production instead of committing the credentials to the configuration file directly.
 :::
 
-The MongoDB destination utilizes batching, and supports [`batch_size`](/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](/docs/cli/integrations/destinations#batch_size_bytes). 
+The MongoDB destination utilizes batching, and supports [`batch_size`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size_bytes). 
 
 ### MongoDB Spec
 

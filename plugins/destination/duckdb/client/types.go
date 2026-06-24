@@ -5,12 +5,20 @@ import (
 	"strings"
 
 	"github.com/apache/arrow-go/v18/arrow"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
 )
 
-func transformSchemaForWriting(sc *arrow.Schema) *arrow.Schema {
+func transformSchemaForWriting(table *schema.Table) *arrow.Schema {
+	sc := table.ToArrowSchema()
 	md := arrow.MetadataFrom(sc.Metadata().ToMap())
-	return arrow.NewSchema(transformFieldsForWriting(sc.Fields()), &md)
+	fields := transformFieldsForWriting(sc.Fields())
+	for i := range table.Columns {
+		if keyListColumn(table.Columns[i]) {
+			fields[i].Type = arrow.BinaryTypes.String
+		}
+	}
+	return arrow.NewSchema(fields, &md)
 }
 
 func transformFieldsForWriting(fields []arrow.Field) []arrow.Field {

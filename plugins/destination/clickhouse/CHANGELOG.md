@@ -1214,7 +1214,7 @@
 
 ### ⚠ BREAKING CHANGES
 
-* **clickhouse:** Stop reading `ca_cert` value as file path. See [file variable substitution](/docs/advanced-topics/environment-variable-substitution#file-variable-substitution-example) for how to read this value from a file.
+* **clickhouse:** Stop reading `ca_cert` value as file path. See [file variable substitution](https://www.cloudquery.io/docs/cli/managing-cloudquery/environment-variables#file-variable-substitution-example) for how to read this value from a file.
 
 ### Features
 

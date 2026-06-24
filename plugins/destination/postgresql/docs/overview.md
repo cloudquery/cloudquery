@@ -22,13 +22,13 @@ Supported database versions:
 
 :configuration
 
-The (top level) spec section is described in the [Destination Spec Reference](/docs/cli/integrations/destinations#complete-destination-spec-reference).
+The (top level) spec section is described in the [Destination Spec Reference](https://www.cloudquery.io/docs/cli/integrations/destinations#complete-destination-spec-reference).
 
 :::callout{type="info"}
 Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
 :::
 
-The PostgreSQL destination utilizes batching, and supports [`batch_size`](/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](/docs/cli/integrations/destinations#batch_size_bytes).
+The PostgreSQL destination utilizes batching, and supports [`batch_size`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size_bytes).
 
 ### PostgreSQL Spec
 
@@ -65,6 +65,26 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 - `create_performance_indexes` (`boolean`) (optional) (default: `false`)
 
   Creates indexes on tables that help with performance when using `write_mode: overwrite-delete-stale`.
+
+- `lakebase` (`object`) (optional)
+
+  Configuration to connect to [Databricks Lakebase](https://docs.databricks.com/aws/en/oltp), a PostgreSQL-compatible managed database. When set, the plugin uses the Databricks SDK to generate a short-lived OAuth database credential before each new connection and uses it as the connection password. The `connection_string` still supplies the host, port, database name and user (the service principal client ID), and must use `sslmode=require` (or `verify-ca`/`verify-full`); TLS is required and enforced. See the [Databricks Lakebase example](#databricks-lakebase) below.
+
+  - `endpoint` (`string`) (required)
+
+    The Lakebase database endpoint resource name, in the format `projects/{project_id}/branches/{branch_id}/endpoints/{endpoint_id}`.
+
+  - `host` (`string`) (optional)
+
+    Databricks workspace host, for example `https://your-workspace.cloud.databricks.com`. If empty, the Databricks SDK resolves it from the `DATABRICKS_HOST` environment variable (or other default Databricks configuration sources).
+
+  - `client_id` (`string`) (optional)
+
+    Databricks service principal OAuth client ID. If empty, the Databricks SDK resolves it from the `DATABRICKS_CLIENT_ID` environment variable (or other default Databricks configuration sources).
+
+  - `client_secret` (`string`) (optional)
+
+    Databricks service principal OAuth client secret. If empty, the Databricks SDK resolves it from the `DATABRICKS_CLIENT_SECRET` environment variable (or other default Databricks configuration sources).
 
 - `pgvector_config` (`object`) (optional)
 
@@ -125,6 +145,32 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
   - `retry_on_deadlock` (`integer`) (optional) (default: `0`)
   
     Number of times to retry a transaction if a deadlock is detected by Postgres (Postgres error code `40P01`).
+
+### Databricks Lakebase
+
+[Databricks Lakebase](https://docs.databricks.com/aws/en/oltp) is a PostgreSQL-compatible managed database. To sync into it, set the `lakebase` block. The plugin authenticates with a Databricks service principal (OAuth M2M) and mints a fresh short-lived database credential for every new connection, so you do not put a password in the `connection_string`. The connection string supplies the Lakebase host, port, database, user (the service principal client ID) and must use `sslmode=require`.
+
+```yaml copy
+kind: destination
+spec:
+  name: postgresql
+  path: cloudquery/postgresql
+  registry: cloudquery
+  version: "VERSION_DESTINATION_POSTGRESQL"
+  write_mode: "overwrite-delete-stale"
+  send_sync_summary: true
+  spec:
+    # No password in the connection string - it is generated per-connection from the Databricks credentials below.
+    connection_string: "host=${PGHOST} port=5432 dbname=databricks_postgres user=${DATABRICKS_CLIENT_ID} sslmode=require"
+    lakebase:
+      # projects/{project_id}/branches/{branch_id}/endpoints/{endpoint_id}
+      endpoint: "${LAKEBASE_ENDPOINT_NAME}"
+      host: "${DATABRICKS_HOST}"
+      client_id: "${DATABRICKS_CLIENT_ID}"
+      client_secret: "${DATABRICKS_CLIENT_SECRET}"
+```
+
+`host`, `client_id` and `client_secret` are optional. If omitted, the Databricks SDK resolves them from the standard `DATABRICKS_HOST`, `DATABRICKS_CLIENT_ID` and `DATABRICKS_CLIENT_SECRET` environment variables (or other [default Databricks configuration sources](https://docs.databricks.com/aws/en/dev-tools/auth)).
 
 ### Verbose logging for debug
 

@@ -10,7 +10,12 @@ import (
 func transformRecord(sc *arrow.Schema, rec arrow.RecordBatch) arrow.RecordBatch {
 	cols := make([]arrow.Array, rec.NumCols())
 	for i := 0; i < int(rec.NumCols()); i++ {
-		cols[i] = transformArray(rec.Column(i))
+		col := rec.Column(i)
+		if _, isList := col.DataType().(arrow.ListLikeType); isList && sc.Field(i).Type.ID() == arrow.STRING {
+			cols[i] = transformToStringArray(col)
+			continue
+		}
+		cols[i] = transformArray(col)
 	}
 	return array.NewRecordBatch(sc, cols, rec.NumRows())
 }

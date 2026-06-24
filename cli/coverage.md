@@ -45,9 +45,9 @@
 | github.com/cloudquery/cloudquery/cli/v6/cmd/logout.go:20: | newCmdLogout | 22.2% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/logout.go:44: | runLogout | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/migrate.go:25: | NewCmdMigrate | 100.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/migrate.go:40: | migrate | 69.1% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/migrate.go:40: | migrate | 74.5% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/migrate_v1.go:17: | migrateConnectionV1 | 0.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/migrate_v2.go:16: | migrateConnectionV2 | 0.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/migrate_v2.go:16: | migrateConnectionV2 | 81.6% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/migrate_v3.go:26: | migrateConnectionV3 | 68.4% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/plugin_docs_download.go:32: | newCmdPluginDocsDownload | 30.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/plugin_docs_download.go:59: | runPluginDocsDownload | 0.0% |
@@ -67,7 +67,7 @@
 | github.com/cloudquery/cloudquery/cli/v6/cmd/root.go:247: | CloseLogFile | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/root.go:253: | otelConfig | 75.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sentry.go:5: | initSentry | 0.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:19: | CLIRegistryToPbRegistry | 33.3% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:19: | CLIRegistryToPbRegistry | 50.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:36: | CLISourceSpecToPbSpec | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:51: | CLIWriteModeToPbWriteMode | 40.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/specs.go:64: | CLIMigrateModeToPbMigrateMode | 50.0% |
@@ -90,13 +90,13 @@
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync.go:85: | NewCmdSync | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync.go:111: | findMaxCommonVersion | 94.4% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync.go:142: | parseShard | 68.4% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/sync.go:177: | sync | 82.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/sync.go:177: | sync | 81.6% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync.go:559: | filterPluginEnv | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync.go:595: | getEnvKey | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v1.go:25: | syncConnectionV1 | 0.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v2.go:24: | getSourceV2DestV3DestinationsTransformers | 42.9% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v2.go:45: | transformSourceV2DestV3Schemas | 15.4% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v2.go:65: | transformSourceV2DestV3Resource | 20.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v2.go:24: | getSourceV2DestV3DestinationsTransformers | 71.4% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v2.go:45: | transformSourceV2DestV3Schemas | 84.6% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v2.go:65: | transformSourceV2DestV3Resource | 80.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v2.go:82: | syncConnectionV2 | 76.7% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:58: | init | 70.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:102: | Send | 100.0% |
@@ -373,4 +373,4 @@
 | github.com/cloudquery/cloudquery/cli/v6/internal/uuid/uuid.go:19: | Type | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/main.go:18: | executeRootCmdWithContext | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/main.go:47: | main | 0.0% |
-| total: | (statements) | 46.6% |
+| total: | (statements) | 47.7% |
