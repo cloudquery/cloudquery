@@ -124,6 +124,35 @@ func TestInject_Active_AppendsDestinationAndWiresSources(t *testing.T) {
 		string(twoJSON), "sources reported in order, none dropped")
 }
 
+func TestInject_DirectToken_InjectsWithoutCloud(t *testing.T) {
+	// A pre-minted cqpd_ token via env injects the destination with no cloud
+	// login, tenant discovery or session mint. No fake cloud is wired, so any
+	// such call would fail the test.
+	t.Setenv(envPlatformToken, "cqpd_payload.sig")
+
+	sources := testSources()
+	got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "", "", sources, testDestinations())
+	require.NoError(t, err)
+
+	require.Len(t, got, 2)
+	require.Equal(t, destinationName, got[1].Name)
+	require.Equal(t, "cqpd_payload.sig", got[1].Spec["token"], "the supplied cqpd_ token is used directly")
+	require.NotContains(t, got[1].Spec, "api_url", "api_url is derived from the token, not injected")
+	require.NotEmpty(t, got[1].Spec["source_versions"], "sources are still reported for the gate")
+	require.Equal(t, defaultPlugin.Version, got[1].Version)
+	require.Contains(t, sources[0].Destinations, destinationName)
+}
+
+func TestInject_DirectToken_ExistingPlatformDestination_Fails(t *testing.T) {
+	t.Setenv(envPlatformToken, "cqpd_payload.sig")
+
+	destinations := append(testDestinations(), &specs.Destination{Metadata: specs.Metadata{Name: destinationName}})
+	got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "", "", testSources(), destinations)
+	require.Error(t, err, "a user-defined platform destination must not be silently overwritten")
+	require.Contains(t, err.Error(), destinationName)
+	require.Len(t, got, 2, "nothing injected")
+}
+
 func TestInject_CreatedTenant_Injects(t *testing.T) {
 	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
 		writeTenants(w, tenantItem("11111111-1111-1111-1111-111111111111", "created", "team-x"))

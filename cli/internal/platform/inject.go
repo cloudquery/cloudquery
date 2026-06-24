@@ -25,6 +25,10 @@ import (
 const (
 	envDisable  = "CQ_DISABLE_PLATFORM_DESTINATION"
 	envTenantID = "CQ_PLATFORM_TENANT_ID"
+	// envPlatformToken lets a user inject the platform destination from a
+	// pre-minted cqpd_ token directly — no cloud login or session mint. The
+	// token carries the tenant API URL, so it's all the destination needs.
+	envPlatformToken = "CQ_PLATFORM_TOKEN"
 
 	envPluginRegistry = "CQ_PLATFORM_PLUGIN_REGISTRY"
 	envPluginPath     = "CQ_PLATFORM_PLUGIN_PATH"
@@ -87,6 +91,14 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 	if env.IsCloud() {
 		return destinations, nil
 	}
+
+	// Direct token: a pre-minted cqpd_ token supplied via env injects the
+	// destination without cloud login, tenant discovery or a session mint — the
+	// token already identifies the tenant and carries its API URL.
+	if directToken := os.Getenv(envPlatformToken); directToken != "" {
+		return injectPlatformDestination(logger, destinations, sources, directToken, "")
+	}
+
 	// The caller only fetches a token for cloudquery-registry specs; resolve
 	// directly so source-only specs can still inject. Failure just skips.
 	if token == "" {
@@ -116,26 +128,33 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		return destinations, nil
 	}
 
-	// Injecting: a pre-existing `platform` destination collides with the
-	// reserved name — fail rather than overwrite.
-	for _, d := range destinations {
-		if d.Name == destinationName {
-			return destinations, fmt.Errorf("a destination named %q already exists, but this name is reserved for the auto-injected CloudQuery Platform destination; remove it from your spec", destinationName)
-		}
-	}
-
 	session, platformPluginVersion, err := mintSession(ctx, cl, tenant)
 	if err != nil {
 		logger.Warn().Err(err).Str("tenant_id", tenant.TenantId.String()).Msg("platform destination: session mint failed, skipping auto-injection")
 		return destinations, nil
 	}
 
+	return injectPlatformDestination(logger, destinations, sources, session.Token, platformPluginVersion)
+}
+
+// injectPlatformDestination appends the reserved `platform` destination carrying
+// the cqpd_ token and wires every source to it. recommendedVersion, when set and
+// not overridden by the env, pins the plugin version. A pre-existing `platform`
+// destination collides with the reserved name and is a hard error rather than a
+// silent overwrite; other problems (unknown registry) skip injection silently.
+func injectPlatformDestination(logger zerolog.Logger, destinations []*specs.Destination, sources []*specs.Source, token, recommendedVersion string) ([]*specs.Destination, error) {
+	for _, d := range destinations {
+		if d.Name == destinationName {
+			return destinations, fmt.Errorf("a destination named %q already exists, but this name is reserved for the auto-injected CloudQuery Platform destination; remove it from your spec", destinationName)
+		}
+	}
+
 	plugin := pluginCoords()
 	// Version precedence: env override > platform-pinned > CLI default.
 	// pluginCoords() already applied the env override (or the default), so only
 	// let the platform's pin win when the env override isn't set.
-	if os.Getenv(envPluginVersion) == "" && platformPluginVersion != "" {
-		plugin.Version = platformPluginVersion
+	if os.Getenv(envPluginVersion) == "" && recommendedVersion != "" {
+		plugin.Version = recommendedVersion
 	}
 	parsedRegistry, err := specs.RegistryFromString(plugin.Registry)
 	if err != nil {
@@ -164,7 +183,7 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		Spec: map[string]any{
 			// api_url is omitted: the cqpd_ token carries the tenant's API URL,
 			// and the platform destination derives it from the token.
-			"token":           session.Token,
+			"token":           token,
 			"source_versions": sourceVersions,
 		},
 	}
@@ -177,8 +196,6 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		}
 	}
 	logger.Info().
-		Str("platform_url", session.ApiUrl).
-		Str("tenant_id", tenant.TenantId.String()).
 		Str("registry", plugin.Registry).
 		Str("path", plugin.Path).
 		Str("version", plugin.Version).
