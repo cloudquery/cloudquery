@@ -53,6 +53,7 @@ cloudquery init --yes
 ```
       --destination string    Destination plugin name or path
       --disable-ai            Disable AI assistant
+      --disable-platform      Skip CloudQuery Platform sync scaffolding
   -h, --help                  help for init
       --resume-conversation   Resume existing AI conversation instead of starting a new one
       --source string         Source plugin name or path

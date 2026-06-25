@@ -11,6 +11,7 @@ import (
 	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/otel"
+	cqplatform "github.com/cloudquery/cloudquery/cli/v6/internal/platform"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
@@ -206,7 +207,9 @@ func sync(cmd *cobra.Command, args []string) error {
 	ctx := cmd.Context()
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
 	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
-	specReader, err := specs.NewSpecReader(args)
+	// Validate after injection so a source-only spec isn't rejected before the
+	// platform destination is added.
+	specReader, err := specs.NewSpecReaderWithoutValidation(args)
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
@@ -226,6 +229,26 @@ func sync(cmd *cobra.Command, args []string) error {
 	}
 
 	var otelReceiver *otel.OtelReceiver
+
+	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, transformers)
+	if err != nil {
+		return fmt.Errorf("failed to get auth token: %w", err)
+	}
+	teamName, err := auth.GetTeamForToken(ctx, authToken)
+	if err != nil {
+		return fmt.Errorf("failed to get team name from token: %w", err)
+	}
+
+	// Must run before the needSummary/otel decisions below: the injected
+	// destination sets SyncSummary.
+	destinations, err = cqplatform.MaybeInjectDestination(ctx, log.Logger, authToken.Value, teamName, sources, destinations)
+	if err != nil {
+		return err
+	}
+
+	if err := specReader.SetDestinationsAndValidate(destinations); err != nil {
+		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
+	}
 
 	var destsWantSummary bool
 	for _, dest := range destinations {
@@ -262,15 +285,6 @@ func sync(cmd *cobra.Command, args []string) error {
 			fmt.Println(err)
 		}
 	}()
-	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, transformers)
-	if err != nil {
-		return fmt.Errorf("failed to get auth token: %w", err)
-	}
-	teamName, err := auth.GetTeamForToken(ctx, authToken)
-	if err != nil {
-		return fmt.Errorf("failed to get team name from token: %w", err)
-	}
-
 	pluginVersionWarner, _ := managedplugin.NewPluginVersionWarner(log.Logger, authToken.Value)
 	specs.WarnOnOutdatedVersions(ctx, pluginVersionWarner, sources, destinations, transformers)
 

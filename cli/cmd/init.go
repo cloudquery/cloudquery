@@ -17,6 +17,7 @@ import (
 	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/platform"
 	"github.com/fatih/color"
 	"github.com/manifoldco/promptui"
 	"github.com/samber/lo"
@@ -81,6 +82,7 @@ func newCmdInit() *cobra.Command {
 	cmd.Flags().String("spec-path", "", "Output spec file path")
 	cmd.Flags().Bool("yes", false, "Accept all defaults")
 	cmd.Flags().Bool("disable-ai", false, "Disable AI assistant")
+	cmd.Flags().Bool("disable-platform", false, "Skip CloudQuery Platform sync scaffolding")
 	cmd.Flags().Bool("resume-conversation", false, "Resume existing AI conversation instead of starting a new one")
 	return cmd
 }
@@ -96,7 +98,7 @@ func normalizePluginPath(pluginNameOrPath string) (string, error) {
 	return pluginNameOrPath, nil
 }
 
-func parseFlags(cmd *cobra.Command) (source, destination, specPath string, acceptDefaults, disableAI, resumeConversation bool, allErrors error) {
+func parseFlags(cmd *cobra.Command) (source, destination, specPath string, acceptDefaults, disableAI, resumeConversation, disablePlatform bool, allErrors error) {
 	source, err := cmd.Flags().GetString("source")
 	allErrors = errors.Join(allErrors, err)
 	if source != "" {
@@ -120,7 +122,10 @@ func parseFlags(cmd *cobra.Command) (source, destination, specPath string, accep
 
 	resumeConversation, err = cmd.Flags().GetBool("resume-conversation")
 	allErrors = errors.Join(allErrors, err)
-	return source, destination, specPath, acceptDefaults, disableAI, resumeConversation, allErrors
+
+	disablePlatform, err = cmd.Flags().GetBool("disable-platform")
+	allErrors = errors.Join(allErrors, err)
+	return source, destination, specPath, acceptDefaults, disableAI, resumeConversation, disablePlatform, allErrors
 }
 
 func pluginFilter(pluginPath string, kind cqapi.PluginKind) func(plugin cqapi.ListPlugin) bool {
@@ -261,9 +266,44 @@ func linkForPlugin(plugin cqapi.ListPlugin) string {
 	return link.Sprintf("https://www.cloudquery.io/hub/plugins/%s/%s/%s", plugin.Kind, plugin.TeamName, plugin.Name)
 }
 
+// writePlatformSourceOnlySpec scaffolds a source-only spec for a user with a
+// CloudQuery Platform tenant: no destination block, since the CLI auto-injects
+// the `platform` destination at sync time. It wires the source to that reserved
+// destination name and tells the user where the data will land.
+func writePlatformSourceOnlySpec(apiClient *cqapi.ClientWithResponses, sourcePlugin cqapi.ListPlugin, specPath, platformURL string) error {
+	fmt.Printf("Getting configuration for source plugin %s...\n", bold.Sprintf("%s/%s@%s", sourcePlugin.TeamName, sourcePlugin.Name, *sourcePlugin.LatestVersion))
+	sourceVersion, err := api.GetPluginVersion(apiClient, sourcePlugin.TeamName, sourcePlugin.Kind, sourcePlugin.Name, *sourcePlugin.LatestVersion)
+	if err != nil {
+		return fmt.Errorf("failed to get source plugin %s/%s@%s version %w", sourcePlugin.TeamName, sourcePlugin.Name, *sourcePlugin.LatestVersion, err)
+	}
+
+	if specPath == "" {
+		specPath = sourcePlugin.Name + "_to_platform.yaml"
+	}
+	fmt.Printf("Writing spec to %s...\n", bold.Sprint(specPath))
+	// Wire the source to the reserved `platform` destination name; the CLI adds
+	// the destination itself at sync time, so no destination block is written.
+	sourceConfig := configForSourcePlugin(sourcePlugin, sourceVersion)
+	yamlSpec := strings.ReplaceAll(sourceConfig, "DESTINATION_NAME", "platform")
+	if err := os.WriteFile(specPath, []byte(yamlSpec), 0644); err != nil {
+		return fmt.Errorf("failed to write spec file %w", err)
+	}
+
+	successful.Println("Sync spec file generated successfully!")
+	fmt.Println()
+	fmt.Printf("This sync will write to your CloudQuery Platform at %s\n", bold.Sprint(platformURL))
+	fmt.Println()
+	fmt.Println("Next steps:")
+	fmt.Printf("1. Review %s and fill in the source's authentication details:\n", bold.Sprint(specPath))
+	fmt.Printf("   %s: %s\n", bold.Sprint(sourcePlugin.DisplayName), linkForPlugin(sourcePlugin))
+	fmt.Println("2. Run the sync:")
+	bold.Printf("cloudquery sync %s\n", specPath)
+	return nil
+}
+
 func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	ctx := cmd.Context()
-	source, destination, specPath, acceptDefaults, disableAI, resumeConversation, err := parseFlags(cmd)
+	source, destination, specPath, acceptDefaults, disableAI, resumeConversation, disablePlatform, err := parseFlags(cmd)
 	analytics.TrackInitStarted(ctx, invocationUUID.UUID, analytics.InitEvent{
 		Source:         source,
 		Destination:    destination,
@@ -293,6 +333,16 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 
 	team, _ := auth.GetTeamForToken(cmd.Context(), token)
 
+	// If the user has a CloudQuery Platform tenant (cloud login, or a
+	// CQ_PLATFORM_TOKEN), scaffold a source-only spec that targets the platform
+	// destination (auto-injected at sync time), skipping the destination prompt
+	// and AI. --disable-platform opts out (normal source+destination spec); an
+	// explicit --destination also takes the normal path.
+	platformURL, platformTenant := "", false
+	if !disablePlatform {
+		platformURL, platformTenant = platform.DetectTenant(ctx, token.Value, team)
+	}
+
 	apiClient, err := api.NewAnonymousClient()
 	var apiClientWithoutRetries *cqapi.ClientWithResponses
 	if err != nil {
@@ -310,8 +360,10 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 		}
 	}
 
-	// Check if user and team are set, and if so, run AI command
-	if user != nil && team != "" && !disableAI && source == "" && destination == "" {
+	// Check if user and team are set, and if so, run AI command. Platform-tenant
+	// users skip AI: their spec is source-only (the platform destination is
+	// auto-injected), which the AI flow doesn't produce.
+	if user != nil && team != "" && !disableAI && source == "" && destination == "" && !platformTenant {
 		err := api.NewConversation(ctx, apiClientWithoutRetries, team, resumeConversation)
 		if err != nil && err != api.ErrDisabled {
 			return err
@@ -329,7 +381,7 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 			errorColor.Println("There was an issue with the AI assistant. Falling back to basic interactive mode...")
 			fmt.Println()
 		}
-	} else if (user == nil || team == "") && source == "" && destination == "" && !disableAI {
+	} else if (user == nil || team == "") && source == "" && destination == "" && !disableAI && !platformTenant {
 		return errors.New("authentication required for interactive mode. Please run `cloudquery login` first, or supply source and destination plugins, or else use the --disable-ai flag to run basic interactive mode")
 	}
 
@@ -367,6 +419,12 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 		source, _ = normalizePluginPath(source)
 	}
 	_, sourceIndex, _ := lo.FindIndexOf(allPlugins, pluginFilter(source, cqapi.PluginKindSource))
+
+	// Platform tenant + no explicit destination → scaffold a source-only spec;
+	// the CLI auto-injects the platform destination at sync time.
+	if platformTenant && destination == "" {
+		return writePlatformSourceOnlySpec(apiClient, allPlugins[sourceIndex], specPath, platformURL)
+	}
 
 	if destination == "" {
 		destination, err = selectDestination(allPlugins, acceptDefaults)

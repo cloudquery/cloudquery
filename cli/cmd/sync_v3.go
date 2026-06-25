@@ -15,6 +15,7 @@ import (
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery-api-go/config"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/platform"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/metrics"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
@@ -274,6 +275,11 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 	// initialize destinations first, so that their connections may be used as backends by the source
 	for i, destinationSpec := range destinationSpecs {
 		if err := initPlugin(ctx, destinationsPbClients[i], destinationSpec.Spec, false, uid); err != nil {
+			if platform.IsInjectedDestination(destinationSpec.Name) {
+				// Surface the platform's own message (e.g. an unsupported-version
+				// 422) instead of the gRPC/plugin-sdk wrapper chain.
+				return errors.New(platform.CleanInitError(err))
+			}
 			return fmt.Errorf("failed to init destination %v: %w", destinationSpec.Name, err)
 		}
 	}

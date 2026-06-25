@@ -2,9 +2,11 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
+	"github.com/cloudquery/cloudquery/cli/v6/internal/platform"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/transformer"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -81,6 +83,9 @@ func migrateConnectionV3(ctx context.Context, migrateOptions migrateV3Options) e
 	// initialize destinations first, so that their connections may be used as backends by the source
 	for i, destinationSpec := range destinationSpecs {
 		if err := initPlugin(ctx, destinationsPbClients[i], destinationSpec.Spec, false, invocationUUID.String()); err != nil {
+			if platform.IsInjectedDestination(destinationSpec.Name) {
+				return errors.New(platform.CleanInitError(err))
+			}
 			return fmt.Errorf("failed to init destination %v: %w", destinationSpec.Name, err)
 		}
 	}
