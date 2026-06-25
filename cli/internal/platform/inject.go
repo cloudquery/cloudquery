@@ -107,15 +107,13 @@ func DetectTenant(ctx context.Context, token, teamName string) (apiURL string, o
 	if err != nil || len(tenants) == 0 {
 		return "", false
 	}
-	// Match selectTenant: honor CQ_PLATFORM_TENANT_ID, else take the first.
-	tenant := tenants[0]
-	if want := os.Getenv(envTenantID); want != "" {
-		for _, c := range tenants {
-			if c.TenantId.String() == want {
-				tenant = c
-				break
-			}
-		}
+	// Use the same selection as auto-injection (resolveTenant): the only active
+	// tenant, or the CQ_PLATFORM_TENANT_ID match. None or ambiguous (several
+	// active, no override) → report nothing; init is informational, so it never
+	// errors here, and it won't point at a tenant a real sync would skip.
+	tenant, err := resolveTenant(tenants)
+	if err != nil {
+		return "", false
 	}
 	return "https://" + tenant.Host, true
 }
@@ -202,9 +200,15 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		logger.Debug().Err(err).Msg("platform destination: tenant discovery failed, skipping auto-injection")
 		return destinations, nil
 	}
-	tenant, ok := selectTenant(logger, tenants)
-	if !ok {
+	tenant, err := resolveTenant(tenants)
+	switch {
+	case errors.Is(err, errNoActiveTenant):
+		// No platform tenant for this team — nothing to inject; skip silently.
 		return destinations, nil
+	case err != nil:
+		// Several active tenants and no usable CQ_PLATFORM_TENANT_ID. A source
+		// opted into `platform`, so don't silently drop it — fail with the Hint.
+		return destinations, err
 	}
 
 	session, platformPluginVersion, err := mintSession(ctx, cl, tenant)
@@ -312,25 +316,39 @@ var resolveCredentials = func(ctx context.Context) (token, team string, err erro
 	return tok.Value, team, nil
 }
 
-func selectTenant(logger zerolog.Logger, tenants []cloudquery_api.PlatformTenantSummary) (cloudquery_api.PlatformTenantSummary, bool) {
+var (
+	// errNoActiveTenant: the team has no active platform tenant to inject into.
+	// A no-op for auto-injection (skip silently) — not a user error.
+	errNoActiveTenant = errors.New("no active platform tenant")
+	// errAmbiguousTenant: several active tenants and CQ_PLATFORM_TENANT_ID isn't
+	// set to one of them. Surfaced to the user as a Hint (it's env-fixable) so an
+	// explicit `platform` opt-in isn't silently dropped. Callers match it with
+	// errors.Is to tell "ambiguous" apart from "none".
+	errAmbiguousTenant = errors.New("multiple active CloudQuery Platform tenants for this team")
+)
+
+// resolveTenant picks the single tenant to act on: the only active one, or the
+// CQ_PLATFORM_TENANT_ID match when several are active. Returns errNoActiveTenant
+// when there are none, and an errAmbiguousTenant-wrapped error (carrying an
+// actionable Hint) when several are active without a matching override. Pure (no
+// logging) so every call site shares one decision.
+func resolveTenant(tenants []cloudquery_api.PlatformTenantSummary) (cloudquery_api.PlatformTenantSummary, error) {
 	switch len(tenants) {
 	case 0:
-		return cloudquery_api.PlatformTenantSummary{}, false
+		return cloudquery_api.PlatformTenantSummary{}, errNoActiveTenant
 	case 1:
-		return tenants[0], true
+		return tenants[0], nil
 	}
 	want := os.Getenv(envTenantID)
 	if want == "" {
-		logger.Warn().Int("tenants", len(tenants)).Msgf("platform destination: team has multiple active tenants; set %s to choose one, skipping auto-injection", envTenantID)
-		return cloudquery_api.PlatformTenantSummary{}, false
+		return cloudquery_api.PlatformTenantSummary{}, fmt.Errorf("%w. Hint: set %s to the tenant id you want to sync to", errAmbiguousTenant, envTenantID)
 	}
 	for _, t := range tenants {
 		if t.TenantId.String() == want {
-			return t, true
+			return t, nil
 		}
 	}
-	logger.Warn().Str("tenant_id", want).Msgf("platform destination: %s does not match any active tenant, skipping auto-injection", envTenantID)
-	return cloudquery_api.PlatformTenantSummary{}, false
+	return cloudquery_api.PlatformTenantSummary{}, fmt.Errorf("%w: %s=%s matches none of them. Hint: set it to one of the team's active tenant ids", errAmbiguousTenant, envTenantID, want)
 }
 
 // YYYYMMDDhhmmssfff — same shape platform/syncs-transformer uses, so
