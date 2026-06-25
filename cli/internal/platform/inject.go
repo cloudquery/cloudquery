@@ -145,10 +145,11 @@ func apiURLFromToken(token string) string {
 	return claims.APIURL
 }
 
-// MaybeInjectDestination appends a `platform` destination carrying a freshly
-// minted cqpd_ token when the team has an active platform tenant. Tenant/network
-// failures skip injection silently; a pre-existing `platform` destination is a
-// hard error rather than a silent overwrite.
+// MaybeInjectDestination injects a `platform` destination carrying a freshly
+// minted cqpd_ token — but only when the spec opts in by listing `platform` in
+// a source's `destinations`. If the user already declares a `platform`
+// destination themselves (e.g. for debugging), theirs is used as-is. With no
+// opt-in, or on any credential/tenant failure, the spec is returned unchanged.
 func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, teamName string, sources []*specs.Source, destinations []*specs.Destination) ([]*specs.Destination, error) {
 	if os.Getenv(envDisable) == "1" {
 		return destinations, nil
@@ -157,12 +158,24 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		return destinations, nil
 	}
 
+	// Opt-in only: inject solely when a source targets the platform destination.
+	// No source references it → nothing to do (no cloud calls, no surprise
+	// dual-write).
+	if !anySourceTargetsPlatform(sources) {
+		return destinations, nil
+	}
+	// The user defined the `platform` destination themselves (debugging/override)
+	// — respect it, don't inject over it.
+	if hasPlatformDestination(destinations) {
+		return destinations, nil
+	}
+
 	// Direct token: a pre-minted cqpd_ token supplied via env injects the
 	// destination without cloud login, tenant discovery or a session mint — the
 	// token already identifies the tenant and carries its API URL.
 	if directToken := os.Getenv(envPlatformToken); directToken != "" {
 		// No tenant id: the direct path doesn't parse the token's claims.
-		return injectPlatformDestination(logger, destinations, sources, directToken, "", "")
+		return injectPlatformDestination(logger, destinations, sources, directToken, "", ""), nil
 	}
 
 	// The caller only fetches a token for cloudquery-registry specs; resolve
@@ -170,7 +183,7 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 	if token == "" {
 		var err error
 		if token, teamName, err = resolveCredentials(ctx); err != nil {
-			logger.Debug().Err(err).Msg("platform destination: credentials unavailable, skipping auto-injection")
+			logger.Warn().Err(err).Msg("platform destination: a source targets `platform` but no credentials are available; run `cloudquery login` or set CQ_PLATFORM_TOKEN")
 			return destinations, nil
 		}
 	}
@@ -180,13 +193,13 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 
 	cl, err := api.NewClient(token)
 	if err != nil {
-		logger.Debug().Err(err).Msg("platform destination: api client init failed, skipping auto-injection")
+		logger.Warn().Err(err).Msg("platform destination: api client init failed; skipping injection")
 		return destinations, nil
 	}
 
 	tenants, err := activeTenants(ctx, cl, teamName)
 	if err != nil {
-		logger.Debug().Err(err).Msg("platform destination: tenant discovery failed, skipping auto-injection")
+		logger.Warn().Err(err).Msg("platform destination: tenant discovery failed; skipping injection")
 		return destinations, nil
 	}
 	tenant, ok := selectTenant(logger, tenants)
@@ -194,42 +207,43 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		return destinations, nil
 	}
 
-	// Fail fast on a reserved-name collision before minting a token we'd discard.
-	if err := reservedDestinationConflict(destinations); err != nil {
-		return destinations, err
-	}
-
 	session, platformPluginVersion, err := mintSession(ctx, cl, tenant)
 	if err != nil {
-		logger.Warn().Err(err).Str("tenant_id", tenant.TenantId.String()).Msg("platform destination: session mint failed, skipping auto-injection")
+		logger.Warn().Err(err).Str("tenant_id", tenant.TenantId.String()).Msg("platform destination: session mint failed; skipping injection")
 		return destinations, nil
 	}
 
-	return injectPlatformDestination(logger, destinations, sources, session.Token, platformPluginVersion, tenant.TenantId.String())
+	return injectPlatformDestination(logger, destinations, sources, session.Token, platformPluginVersion, tenant.TenantId.String()), nil
 }
 
-// reservedDestinationConflict errors when the spec already declares a `platform`
-// destination — the name is reserved for the auto-injected one, so colliding is
-// a hard error rather than a silent overwrite.
-func reservedDestinationConflict(destinations []*specs.Destination) error {
-	for _, d := range destinations {
-		if d.Name == destinationName {
-			return fmt.Errorf("a destination named %q already exists, but this name is reserved for the auto-injected CloudQuery Platform destination; remove it from your spec", destinationName)
+// anySourceTargetsPlatform reports whether any source opts into the platform
+// destination by listing its reserved name in `destinations`.
+func anySourceTargetsPlatform(sources []*specs.Source) bool {
+	for _, s := range sources {
+		if slices.Contains(s.Destinations, destinationName) {
+			return true
 		}
 	}
-	return nil
+	return false
+}
+
+// hasPlatformDestination reports whether the spec already declares a `platform`
+// destination (a user-provided one the CLI must not overwrite).
+func hasPlatformDestination(destinations []*specs.Destination) bool {
+	for _, d := range destinations {
+		if d.Name == destinationName {
+			return true
+		}
+	}
+	return false
 }
 
 // injectPlatformDestination appends the reserved `platform` destination carrying
-// the cqpd_ token and wires every source to it. recommendedVersion, when set and
-// not overridden by the env, pins the plugin version. A pre-existing `platform`
-// destination collides with the reserved name and is a hard error rather than a
-// silent overwrite; other problems (unknown registry) skip injection silently.
-func injectPlatformDestination(logger zerolog.Logger, destinations []*specs.Destination, sources []*specs.Source, token, recommendedVersion, tenantID string) ([]*specs.Destination, error) {
-	if err := reservedDestinationConflict(destinations); err != nil {
-		return destinations, err
-	}
-
+// the cqpd_ token. The caller guarantees a source already targets it (the opt-in)
+// and that no user-defined `platform` destination exists. recommendedVersion,
+// when set and not overridden by the env, pins the plugin version; an unknown
+// registry skips injection (returns the spec unchanged).
+func injectPlatformDestination(logger zerolog.Logger, destinations []*specs.Destination, sources []*specs.Source, token, recommendedVersion, tenantID string) []*specs.Destination {
 	plugin := pluginCoords()
 	// Version precedence: env override > platform-pinned > CLI default.
 	// pluginCoords() already applied the env override (or the default), so only
@@ -239,15 +253,17 @@ func injectPlatformDestination(logger zerolog.Logger, destinations []*specs.Dest
 	}
 	parsedRegistry, err := specs.RegistryFromString(plugin.Registry)
 	if err != nil {
-		logger.Warn().Err(err).Str("registry", plugin.Registry).Msg("platform destination: unknown plugin registry; skipping auto-injection")
-		return destinations, nil
+		logger.Warn().Err(err).Str("registry", plugin.Registry).Msg("platform destination: unknown plugin registry; skipping injection")
+		return destinations
 	}
 
-	// Report each source's plugin path+version so the platform can reject (before
-	// any upload) sources whose version the asset view can't process.
+	// Report the path+version of the sources that target platform so it can
+	// reject (before any upload) versions the asset view can't process.
 	sourceVersions := make([]sourceVersion, 0, len(sources))
 	for _, s := range sources {
-		sourceVersions = append(sourceVersions, sourceVersion{Name: s.Name, Path: s.Path, Version: s.Version})
+		if slices.Contains(s.Destinations, destinationName) {
+			sourceVersions = append(sourceVersions, sourceVersion{Name: s.Name, Path: s.Path, Version: s.Version})
+		}
 	}
 	dest := &specs.Destination{
 		Metadata: specs.Metadata{
@@ -271,11 +287,6 @@ func injectPlatformDestination(logger zerolog.Logger, destinations []*specs.Dest
 	dest.SetDefaults()
 	destinations = append(destinations, dest)
 
-	for _, s := range sources {
-		if !slices.Contains(s.Destinations, destinationName) {
-			s.Destinations = append(s.Destinations, destinationName)
-		}
-	}
 	evt := logger.Info().
 		Str("registry", plugin.Registry).
 		Str("path", plugin.Path).
@@ -284,7 +295,7 @@ func injectPlatformDestination(logger zerolog.Logger, destinations []*specs.Dest
 		evt = evt.Str("tenant_id", tenantID)
 	}
 	evt.Msg("auto-injected platform destination")
-	return destinations, nil
+	return destinations
 }
 
 // resolveCredentials fetches a token and team for best-effort injection when

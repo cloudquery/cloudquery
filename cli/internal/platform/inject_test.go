@@ -20,10 +20,12 @@ import (
 // Base URL env consumed by internal/api.NewClient.
 const envAPIURL = "CLOUDQUERY_API_URL"
 
+// testSources opts into the platform destination (lists it in `destinations`),
+// the trigger for injection.
 func testSources() []*specs.Source {
 	return []*specs.Source{{
 		Metadata:     specs.Metadata{Name: "aws", Path: "cloudquery/aws", Version: "v1.0.0", Registry: specs.RegistryCloudQuery},
-		Destinations: []string{"pg"},
+		Destinations: []string{"pg", "platform"},
 	}}
 }
 
@@ -80,7 +82,7 @@ func fakeCloud(t *testing.T, tenants func(w http.ResponseWriter, r *http.Request
 	return srv
 }
 
-func TestInject_Active_AppendsDestinationAndWiresSources(t *testing.T) {
+func TestInject_OptIn_AppendsDestination(t *testing.T) {
 	srv := fakeCloud(t, func(w http.ResponseWriter, r *http.Request) {
 		require.Equal(t, "Bearer tok", r.Header.Get("Authorization"))
 		writeTenants(w, tenantItem("11111111-1111-1111-1111-111111111111", "active", "team-x"))
@@ -112,12 +114,12 @@ func TestInject_Active_AppendsDestinationAndWiresSources(t *testing.T) {
 	require.True(t, got[1].SyncSummary, "send_sync_summary must be set so the destination receives finalize signals")
 	require.Equal(t, specs.WriteModeAppend, got[1].WriteMode, "sync_group_id requires a write mode other than overwrite-delete-stale")
 	require.NotEmpty(t, got[1].SyncGroupId)
-	require.Contains(t, sources[0].Destinations, destinationName)
+	require.Contains(t, sources[0].Destinations, destinationName, "the opted-in source still targets platform")
 
-	// Multiple sources are reported in order, none dropped.
+	// Multiple platform-targeting sources are reported in order, none dropped.
 	twoGot := mustInject(t, "tok", "team-x", []*specs.Source{
-		{Metadata: specs.Metadata{Name: "aws", Path: "cloudquery/aws", Version: "v1.0.0", Registry: specs.RegistryCloudQuery}},
-		{Metadata: specs.Metadata{Name: "gcp", Path: "cloudquery/gcp", Version: "v2.3.4", Registry: specs.RegistryCloudQuery}},
+		{Metadata: specs.Metadata{Name: "aws", Path: "cloudquery/aws", Version: "v1.0.0", Registry: specs.RegistryCloudQuery}, Destinations: []string{"platform"}},
+		{Metadata: specs.Metadata{Name: "gcp", Path: "cloudquery/gcp", Version: "v2.3.4", Registry: specs.RegistryCloudQuery}, Destinations: []string{"platform"}},
 	}, testDestinations())
 	twoJSON, err := json.Marshal(twoGot[1].Spec["source_versions"])
 	require.NoError(t, err)
@@ -184,14 +186,29 @@ func TestInject_DirectToken_InjectsWithoutCloud(t *testing.T) {
 	require.Contains(t, sources[0].Destinations, destinationName)
 }
 
-func TestInject_DirectToken_ExistingPlatformDestination_Fails(t *testing.T) {
+func TestInject_NoPlatformTarget_NoOp(t *testing.T) {
+	// Even with a token available, no injection happens unless a source opts in
+	// by listing `platform` in its destinations.
 	t.Setenv(envPlatformToken, "cqpd_payload.sig")
 
-	destinations := append(testDestinations(), &specs.Destination{Metadata: specs.Metadata{Name: destinationName}})
+	sources := []*specs.Source{{
+		Metadata:     specs.Metadata{Name: "aws", Path: "cloudquery/aws", Version: "v1.0.0", Registry: specs.RegistryCloudQuery},
+		Destinations: []string{"pg"},
+	}}
+	got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "", "", sources, testDestinations())
+	require.NoError(t, err)
+	require.Len(t, got, 1, "no source targets platform → nothing injected")
+}
+
+func TestInject_DirectToken_ExistingPlatformDestination_UsesTheirs(t *testing.T) {
+	t.Setenv(envPlatformToken, "cqpd_payload.sig")
+
+	userDest := &specs.Destination{Metadata: specs.Metadata{Name: destinationName, Path: "user/custom"}}
+	destinations := append(testDestinations(), userDest)
 	got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "", "", testSources(), destinations)
-	require.Error(t, err, "a user-defined platform destination must not be silently overwritten")
-	require.Contains(t, err.Error(), destinationName)
-	require.Len(t, got, 2, "nothing injected")
+	require.NoError(t, err, "a user-defined platform destination is used, not an error")
+	require.Len(t, got, 2, "nothing injected on top of the user's platform destination")
+	require.Equal(t, "user/custom", got[1].Path, "the user's platform destination is left untouched")
 }
 
 func TestInject_CreatedTenant_Injects(t *testing.T) {
@@ -205,20 +222,18 @@ func TestInject_CreatedTenant_Injects(t *testing.T) {
 	require.Equal(t, destinationName, got[1].Name)
 }
 
-func TestInject_ExistingPlatformDestination_Fails(t *testing.T) {
-	srv := fakeCloud(t, nil, nil)
-	t.Setenv(envAPIURL, srv.URL)
+func TestInject_ExistingPlatformDestination_UsesTheirs(t *testing.T) {
+	// A user-defined platform destination (e.g. for debugging) is respected; the
+	// CLI doesn't mint or inject over it — so no cloud call is even attempted.
+	t.Setenv(envAPIURL, "http://127.0.0.1:0") // any cloud call would fail
 
-	sources := testSources()
-	destinations := append(testDestinations(), &specs.Destination{
-		Metadata: specs.Metadata{Name: destinationName},
-	})
-	got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", sources, destinations)
+	userDest := &specs.Destination{Metadata: specs.Metadata{Name: destinationName, Path: "user/custom", Version: "v9.9.9"}}
+	destinations := append(testDestinations(), userDest)
+	got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), destinations)
 
-	require.Error(t, err, "a user-defined platform destination must not be silently overwritten")
-	require.Contains(t, err.Error(), destinationName)
+	require.NoError(t, err)
 	require.Len(t, got, 2, "spec returned unchanged; nothing injected")
-	require.NotContains(t, sources[0].Destinations, destinationName, "source must not be wired on failure")
+	require.Equal(t, "user/custom", got[1].Path, "the user's platform destination is left untouched")
 }
 
 func TestInject_NoTenantForTeam_NoOp(t *testing.T) {

@@ -82,6 +82,7 @@ func newCmdInit() *cobra.Command {
 	cmd.Flags().String("spec-path", "", "Output spec file path")
 	cmd.Flags().Bool("yes", false, "Accept all defaults")
 	cmd.Flags().Bool("disable-ai", false, "Disable AI assistant")
+	cmd.Flags().Bool("disable-platform", false, "Don't scaffold a CloudQuery Platform sync even if your team has a platform tenant")
 	cmd.Flags().Bool("resume-conversation", false, "Resume existing AI conversation instead of starting a new one")
 	return cmd
 }
@@ -97,7 +98,7 @@ func normalizePluginPath(pluginNameOrPath string) (string, error) {
 	return pluginNameOrPath, nil
 }
 
-func parseFlags(cmd *cobra.Command) (source, destination, specPath string, acceptDefaults, disableAI, resumeConversation bool, allErrors error) {
+func parseFlags(cmd *cobra.Command) (source, destination, specPath string, acceptDefaults, disableAI, resumeConversation, disablePlatform bool, allErrors error) {
 	source, err := cmd.Flags().GetString("source")
 	allErrors = errors.Join(allErrors, err)
 	if source != "" {
@@ -121,7 +122,10 @@ func parseFlags(cmd *cobra.Command) (source, destination, specPath string, accep
 
 	resumeConversation, err = cmd.Flags().GetBool("resume-conversation")
 	allErrors = errors.Join(allErrors, err)
-	return source, destination, specPath, acceptDefaults, disableAI, resumeConversation, allErrors
+
+	disablePlatform, err = cmd.Flags().GetBool("disable-platform")
+	allErrors = errors.Join(allErrors, err)
+	return source, destination, specPath, acceptDefaults, disableAI, resumeConversation, disablePlatform, allErrors
 }
 
 func pluginFilter(pluginPath string, kind cqapi.PluginKind) func(plugin cqapi.ListPlugin) bool {
@@ -299,7 +303,7 @@ func writePlatformSourceOnlySpec(apiClient *cqapi.ClientWithResponses, sourcePlu
 
 func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	ctx := cmd.Context()
-	source, destination, specPath, acceptDefaults, disableAI, resumeConversation, err := parseFlags(cmd)
+	source, destination, specPath, acceptDefaults, disableAI, resumeConversation, disablePlatform, err := parseFlags(cmd)
 	analytics.TrackInitStarted(ctx, invocationUUID.UUID, analytics.InitEvent{
 		Source:         source,
 		Destination:    destination,
@@ -330,10 +334,14 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	team, _ := auth.GetTeamForToken(cmd.Context(), token)
 
 	// If the user has a CloudQuery Platform tenant (cloud login, or a
-	// CQ_PLATFORM_TOKEN), the CLI auto-injects the platform destination at sync
-	// time — so init scaffolds a source-only spec and skips the destination
-	// (and AI, which would generate one). An explicit --destination overrides.
-	platformURL, platformTenant := platform.DetectTenant(ctx, token.Value, team)
+	// CQ_PLATFORM_TOKEN), scaffold a source-only spec that targets the platform
+	// destination (auto-injected at sync time), skipping the destination prompt
+	// and AI. --disable-platform opts out (normal source+destination spec); an
+	// explicit --destination also takes the normal path.
+	platformURL, platformTenant := "", false
+	if !disablePlatform {
+		platformURL, platformTenant = platform.DetectTenant(ctx, token.Value, team)
+	}
 
 	apiClient, err := api.NewAnonymousClient()
 	var apiClientWithoutRetries *cqapi.ClientWithResponses
