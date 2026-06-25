@@ -107,12 +107,12 @@ func DetectTenant(ctx context.Context, token, teamName string) (apiURL string, o
 	if err != nil || len(tenants) == 0 {
 		return "", false
 	}
-	// Use the same selection as auto-injection (chooseTenant): the only active
-	// tenant, or the CQ_PLATFORM_TENANT_ID match. An ambiguous team (several
-	// active, no override) reports nothing rather than a tenant a real sync
-	// would skip.
-	tenant, ok := chooseTenant(tenants)
-	if !ok {
+	// Use the same selection as auto-injection (resolveTenant): the only active
+	// tenant, or the CQ_PLATFORM_TENANT_ID match. None or ambiguous (several
+	// active, no override) → report nothing; init is informational, so it never
+	// errors here, and it won't point at a tenant a real sync would skip.
+	tenant, err := resolveTenant(tenants)
+	if err != nil {
 		return "", false
 	}
 	return "https://" + tenant.Host, true
@@ -200,9 +200,15 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		logger.Debug().Err(err).Msg("platform destination: tenant discovery failed, skipping auto-injection")
 		return destinations, nil
 	}
-	tenant, ok := selectTenant(logger, tenants)
-	if !ok {
+	tenant, err := resolveTenant(tenants)
+	switch {
+	case errors.Is(err, errNoActiveTenant):
+		// No platform tenant for this team — nothing to inject; skip silently.
 		return destinations, nil
+	case err != nil:
+		// Several active tenants and no usable CQ_PLATFORM_TENANT_ID. A source
+		// opted into `platform`, so don't silently drop it — fail with the Hint.
+		return destinations, err
 	}
 
 	session, platformPluginVersion, err := mintSession(ctx, cl, tenant)
@@ -310,43 +316,39 @@ var resolveCredentials = func(ctx context.Context) (token, team string, err erro
 	return tok.Value, team, nil
 }
 
-// chooseTenant picks the single tenant to act on: the only active one, or the
-// CQ_PLATFORM_TENANT_ID match when several are active. ok is false when there
-// are none, or several with no (matching) override — the ambiguous case both
-// auto-injection and DetectTenant refuse rather than guess. Pure (no logging)
-// so both call sites share one decision.
-func chooseTenant(tenants []cloudquery_api.PlatformTenantSummary) (cloudquery_api.PlatformTenantSummary, bool) {
+var (
+	// errNoActiveTenant: the team has no active platform tenant to inject into.
+	// A no-op for auto-injection (skip silently) — not a user error.
+	errNoActiveTenant = errors.New("no active platform tenant")
+	// errAmbiguousTenant: several active tenants and CQ_PLATFORM_TENANT_ID isn't
+	// set to one of them. Surfaced to the user as a Hint (it's env-fixable) so an
+	// explicit `platform` opt-in isn't silently dropped. Callers match it with
+	// errors.Is to tell "ambiguous" apart from "none".
+	errAmbiguousTenant = errors.New("multiple active CloudQuery Platform tenants for this team")
+)
+
+// resolveTenant picks the single tenant to act on: the only active one, or the
+// CQ_PLATFORM_TENANT_ID match when several are active. Returns errNoActiveTenant
+// when there are none, and an errAmbiguousTenant-wrapped error (carrying an
+// actionable Hint) when several are active without a matching override. Pure (no
+// logging) so every call site shares one decision.
+func resolveTenant(tenants []cloudquery_api.PlatformTenantSummary) (cloudquery_api.PlatformTenantSummary, error) {
 	switch len(tenants) {
 	case 0:
-		return cloudquery_api.PlatformTenantSummary{}, false
+		return cloudquery_api.PlatformTenantSummary{}, errNoActiveTenant
 	case 1:
-		return tenants[0], true
+		return tenants[0], nil
 	}
 	want := os.Getenv(envTenantID)
 	if want == "" {
-		return cloudquery_api.PlatformTenantSummary{}, false
+		return cloudquery_api.PlatformTenantSummary{}, fmt.Errorf("%w. Hint: set %s to the tenant id you want to sync to", errAmbiguousTenant, envTenantID)
 	}
 	for _, t := range tenants {
 		if t.TenantId.String() == want {
-			return t, true
+			return t, nil
 		}
 	}
-	return cloudquery_api.PlatformTenantSummary{}, false
-}
-
-// selectTenant is chooseTenant plus the operator-facing warnings that explain
-// why an ambiguous multi-tenant team was skipped during auto-injection.
-func selectTenant(logger zerolog.Logger, tenants []cloudquery_api.PlatformTenantSummary) (cloudquery_api.PlatformTenantSummary, bool) {
-	tenant, ok := chooseTenant(tenants)
-	if ok || len(tenants) <= 1 {
-		return tenant, ok // resolved, or empty/none (no warning needed)
-	}
-	if want := os.Getenv(envTenantID); want == "" {
-		logger.Warn().Int("tenants", len(tenants)).Msgf("platform destination: team has multiple active tenants; set %s to choose one, skipping auto-injection", envTenantID)
-	} else {
-		logger.Warn().Str("tenant_id", want).Msgf("platform destination: %s does not match any active tenant, skipping auto-injection", envTenantID)
-	}
-	return cloudquery_api.PlatformTenantSummary{}, false
+	return cloudquery_api.PlatformTenantSummary{}, fmt.Errorf("%w: %s=%s matches none of them. Hint: set it to one of the team's active tenant ids", errAmbiguousTenant, envTenantID, want)
 }
 
 // YYYYMMDDhhmmssfff — same shape platform/syncs-transformer uses, so

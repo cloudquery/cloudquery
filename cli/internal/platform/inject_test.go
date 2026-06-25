@@ -307,11 +307,16 @@ func TestInject_MultipleTenants_RequiresEnvSelection(t *testing.T) {
 		)
 	}
 
-	t.Run("unset skips", func(t *testing.T) {
+	t.Run("unset errors with a hint", func(t *testing.T) {
 		srv := fakeCloud(t, tenants, nil)
 		t.Setenv(envAPIURL, srv.URL)
-		got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
-		require.Len(t, got, 1)
+		// A source opted into `platform` but the tenant is ambiguous → fail with
+		// an actionable hint rather than silently dropping the opt-in.
+		got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+		require.ErrorIs(t, err, errAmbiguousTenant)
+		require.ErrorContains(t, err, "Hint:")
+		require.ErrorContains(t, err, envTenantID)
+		require.Len(t, got, 1, "destinations unchanged when injection errors")
 	})
 
 	t.Run("env picks", func(t *testing.T) {
@@ -329,12 +334,14 @@ func TestInject_MultipleTenants_RequiresEnvSelection(t *testing.T) {
 		require.Len(t, got, 2)
 	})
 
-	t.Run("env mismatch skips", func(t *testing.T) {
+	t.Run("env mismatch errors with a hint", func(t *testing.T) {
 		srv := fakeCloud(t, tenants, nil)
 		t.Setenv(envAPIURL, srv.URL)
 		t.Setenv(envTenantID, "99999999-9999-9999-9999-999999999999")
-		got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
-		require.Len(t, got, 1)
+		got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+		require.ErrorIs(t, err, errAmbiguousTenant)
+		require.ErrorContains(t, err, "Hint:")
+		require.Len(t, got, 1, "destinations unchanged when injection errors")
 	})
 }
 
