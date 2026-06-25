@@ -3,10 +3,12 @@ package cmd
 import (
 	"errors"
 	"fmt"
+	"os"
 	"slices"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
+	cqplatform "github.com/cloudquery/cloudquery/cli/v6/internal/platform"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/rs/zerolog/log"
@@ -69,21 +71,31 @@ func migrate(cmd *cobra.Command, args []string) error {
 		transformerSpecsByName[transformer.Name] = *transformer
 	}
 
-	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, transformers)
-	if err != nil {
-		return fmt.Errorf("failed to get auth token: %w", err)
-	}
-	teamName, err := auth.GetTeamForToken(ctx, authToken)
-	if err != nil {
-		return fmt.Errorf("failed to get team name: %w", err)
+	// dlToken/teamName authenticate plugin download against cloud. A headless
+	// cqpd_ token (CQ_PLATFORM_TOKEN) stands in for `cloudquery login`; it carries
+	// the owning team (`tm`) the team-scoped download and premium usage need.
+	var dlToken, teamName string
+	if cqpd := os.Getenv(cqplatform.EnvPlatformToken); cqpd != "" {
+		dlToken = cqpd
+		teamName = cqplatform.TeamFromToken(cqpd)
+	} else {
+		authToken, tokErr := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, transformers)
+		if tokErr != nil {
+			return fmt.Errorf("failed to get auth token: %w", tokErr)
+		}
+		tn, teamErr := auth.GetTeamForToken(ctx, authToken)
+		if teamErr != nil {
+			return fmt.Errorf("failed to get team name: %w", teamErr)
+		}
+		dlToken, teamName = authToken.Value, tn
 	}
 
-	pluginVersionWarner, _ := managedplugin.NewPluginVersionWarner(log.Logger, authToken.Value)
+	pluginVersionWarner, _ := managedplugin.NewPluginVersionWarner(log.Logger, dlToken)
 	specs.WarnOnOutdatedVersions(ctx, pluginVersionWarner, sources, destinations, transformers)
 
 	opts := []managedplugin.Option{
 		managedplugin.WithLogger(log.Logger),
-		managedplugin.WithAuthToken(authToken.Value),
+		managedplugin.WithAuthToken(dlToken),
 		managedplugin.WithTeamName(teamName),
 		managedplugin.WithLicenseFile(licenseFile),
 	}

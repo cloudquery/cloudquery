@@ -27,10 +27,10 @@ import (
 const (
 	envDisable  = "CQ_DISABLE_PLATFORM_DESTINATION"
 	envTenantID = "CQ_PLATFORM_TENANT_ID"
-	// envPlatformToken lets a user inject the platform destination from a
+	// EnvPlatformToken lets a user inject the platform destination from a
 	// pre-minted cqpd_ token directly — no cloud login or session mint. The
 	// token carries the tenant API URL, so it's all the destination needs.
-	envPlatformToken = "CQ_PLATFORM_TOKEN"
+	EnvPlatformToken = "CQ_PLATFORM_TOKEN"
 
 	envPluginRegistry = "CQ_PLATFORM_PLUGIN_REGISTRY"
 	envPluginPath     = "CQ_PLATFORM_PLUGIN_PATH"
@@ -93,7 +93,7 @@ func DetectTenant(ctx context.Context, token, teamName string) (apiURL string, o
 		return "", false
 	}
 	// A directly supplied token already identifies the tenant; read its URL.
-	if directToken := os.Getenv(envPlatformToken); directToken != "" {
+	if directToken := os.Getenv(EnvPlatformToken); directToken != "" {
 		return apiURLFromToken(directToken), true
 	}
 	if token == "" || teamName == "" {
@@ -122,25 +122,47 @@ func DetectTenant(ctx context.Context, token, teamName string) (apiURL string, o
 // without verifying the signature. Returns "" for a malformed token or one that
 // carries no url. Mirrors the destination plugin's decoder (separate repos).
 func apiURLFromToken(token string) string {
+	apiURL, _, _ := decodeCQPDClaims(token)
+	return apiURL
+}
+
+// TeamFromToken returns the cloud team (`tm` claim) embedded in a cqpd_ token,
+// or "" if absent/malformed. The CLI uses it to target the team-scoped
+// plugin-download / usage endpoints (and premium entitlement) from the token
+// alone — no `cloudquery login`. Read without verifying the signature; cloud
+// still authenticates the token.
+func TeamFromToken(token string) string {
+	_, team, _ := decodeCQPDClaims(token)
+	return team
+}
+
+// decodeCQPDClaims reads the unverified claims payload of a cqpd_ token. The CLI
+// only needs routing/identity hints (api_url, team) to decide where and as whom
+// to call; the platform still authenticates the token. Wire format is
+// "cqpd_" + base64url(claimsJSON) + "." + base64url(sig). ok is false for a
+// malformed or non-cqpd_ token. Mirrors the destination plugin's decoder
+// (separate repos — keep the claim keys in sync).
+func decodeCQPDClaims(token string) (apiURL, team string, ok bool) {
 	rest, ok := strings.CutPrefix(token, "cqpd_")
 	if !ok {
-		return ""
+		return "", "", false
 	}
 	enc, _, ok := strings.Cut(rest, ".")
 	if !ok {
-		return ""
+		return "", "", false
 	}
 	payload, err := base64.RawURLEncoding.DecodeString(enc)
 	if err != nil {
-		return ""
+		return "", "", false
 	}
 	var claims struct {
 		APIURL string `json:"u"`
+		Team   string `json:"tm"`
 	}
 	if err := json.Unmarshal(payload, &claims); err != nil {
-		return ""
+		return "", "", false
 	}
-	return claims.APIURL
+	return claims.APIURL, claims.Team, true
 }
 
 // MaybeInjectDestination injects a `platform` destination carrying a freshly
@@ -171,7 +193,7 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 	// Direct token: a pre-minted cqpd_ token supplied via env injects the
 	// destination without cloud login, tenant discovery or a session mint — the
 	// token already identifies the tenant and carries its API URL.
-	if directToken := os.Getenv(envPlatformToken); directToken != "" {
+	if directToken := os.Getenv(EnvPlatformToken); directToken != "" {
 		// No tenant id: the direct path doesn't parse the token's claims.
 		return injectPlatformDestination(logger, destinations, sources, directToken, "", ""), nil
 	}

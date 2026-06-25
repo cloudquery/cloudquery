@@ -134,8 +134,24 @@ func cqpdTokenWithURL(t *testing.T, apiURL string) string {
 	return "cqpd_" + base64.RawURLEncoding.EncodeToString(payload) + ".sig"
 }
 
+func cqpdTokenWithClaims(t *testing.T, claims map[string]any) string {
+	t.Helper()
+	payload, err := json.Marshal(claims)
+	require.NoError(t, err)
+	return "cqpd_" + base64.RawURLEncoding.EncodeToString(payload) + ".sig"
+}
+
+func TestTeamFromToken(t *testing.T) {
+	t.Parallel()
+	require.Equal(t, "acme", TeamFromToken(cqpdTokenWithClaims(t, map[string]any{"tm": "acme", "u": "https://x"})),
+		"reads the tm claim so the CLI can target team-scoped endpoints from the token alone")
+	require.Empty(t, TeamFromToken(cqpdTokenWithClaims(t, map[string]any{"u": "https://x"})), "no tm claim -> empty")
+	require.Empty(t, TeamFromToken("not-a-cqpd-token"), "non-cqpd_ token -> empty")
+	require.Empty(t, TeamFromToken("cqpd_@@@.sig"), "malformed payload -> empty")
+}
+
 func TestDetectTenant_DirectToken(t *testing.T) {
-	t.Setenv(envPlatformToken, cqpdTokenWithURL(t, "https://acme.us.platform.cloudquery.io"))
+	t.Setenv(EnvPlatformToken, cqpdTokenWithURL(t, "https://acme.us.platform.cloudquery.io"))
 	url, ok := DetectTenant(context.Background(), "", "")
 	require.True(t, ok, "a CQ_PLATFORM_TOKEN means a tenant is present")
 	require.Equal(t, "https://acme.us.platform.cloudquery.io", url, "url comes from the token's u claim")
@@ -143,7 +159,7 @@ func TestDetectTenant_DirectToken(t *testing.T) {
 
 func TestDetectTenant_Disabled(t *testing.T) {
 	t.Setenv(envDisable, "1")
-	t.Setenv(envPlatformToken, cqpdTokenWithURL(t, "https://x.example.com"))
+	t.Setenv(EnvPlatformToken, cqpdTokenWithURL(t, "https://x.example.com"))
 	_, ok := DetectTenant(context.Background(), "", "")
 	require.False(t, ok, "disable env suppresses detection")
 }
@@ -201,7 +217,7 @@ func TestInject_DirectToken_InjectsWithoutCloud(t *testing.T) {
 	// A pre-minted cqpd_ token via env injects the destination with no cloud
 	// login, tenant discovery or session mint. No fake cloud is wired, so any
 	// such call would fail the test.
-	t.Setenv(envPlatformToken, "cqpd_payload.sig")
+	t.Setenv(EnvPlatformToken, "cqpd_payload.sig")
 
 	sources := testSources()
 	got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "", "", sources, testDestinations())
@@ -219,7 +235,7 @@ func TestInject_DirectToken_InjectsWithoutCloud(t *testing.T) {
 func TestInject_NoPlatformTarget_NoOp(t *testing.T) {
 	// Even with a token available, no injection happens unless a source opts in
 	// by listing `platform` in its destinations.
-	t.Setenv(envPlatformToken, "cqpd_payload.sig")
+	t.Setenv(EnvPlatformToken, "cqpd_payload.sig")
 
 	sources := []*specs.Source{{
 		Metadata:     specs.Metadata{Name: "aws", Path: "cloudquery/aws", Version: "v1.0.0", Registry: specs.RegistryCloudQuery},
@@ -231,7 +247,7 @@ func TestInject_NoPlatformTarget_NoOp(t *testing.T) {
 }
 
 func TestInject_DirectToken_ExistingPlatformDestination_UsesTheirs(t *testing.T) {
-	t.Setenv(envPlatformToken, "cqpd_payload.sig")
+	t.Setenv(EnvPlatformToken, "cqpd_payload.sig")
 
 	userDest := &specs.Destination{Metadata: specs.Metadata{Name: destinationName, Path: "user/custom"}}
 	destinations := append(testDestinations(), userDest)

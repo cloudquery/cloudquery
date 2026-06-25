@@ -230,18 +230,30 @@ func sync(cmd *cobra.Command, args []string) error {
 
 	var otelReceiver *otel.OtelReceiver
 
-	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, transformers)
-	if err != nil {
-		return fmt.Errorf("failed to get auth token: %w", err)
-	}
-	teamName, err := auth.GetTeamForToken(ctx, authToken)
-	if err != nil {
-		return fmt.Errorf("failed to get team name from token: %w", err)
+	// dlToken/teamName authenticate plugin download + usage against cloud.
+	var dlToken, teamName string
+	if cqpd := os.Getenv(cqplatform.EnvPlatformToken); cqpd != "" {
+		// Headless platform-destination flow: a pre-minted cqpd_ token stands in
+		// for `cloudquery login`. It carries the owning team (`tm`), which the
+		// team-scoped plugin download and premium usage need; cloud resolves and
+		// records against that team.
+		dlToken = cqpd
+		teamName = cqplatform.TeamFromToken(cqpd)
+	} else {
+		authToken, tokErr := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, transformers)
+		if tokErr != nil {
+			return fmt.Errorf("failed to get auth token: %w", tokErr)
+		}
+		tn, teamErr := auth.GetTeamForToken(ctx, authToken)
+		if teamErr != nil {
+			return fmt.Errorf("failed to get team name from token: %w", teamErr)
+		}
+		dlToken, teamName = authToken.Value, tn
 	}
 
 	// Must run before the needSummary/otel decisions below: the injected
 	// destination sets SyncSummary.
-	destinations, err = cqplatform.MaybeInjectDestination(ctx, log.Logger, authToken.Value, teamName, sources, destinations)
+	destinations, err = cqplatform.MaybeInjectDestination(ctx, log.Logger, dlToken, teamName, sources, destinations)
 	if err != nil {
 		return err
 	}
@@ -285,7 +297,7 @@ func sync(cmd *cobra.Command, args []string) error {
 			fmt.Println(err)
 		}
 	}()
-	pluginVersionWarner, _ := managedplugin.NewPluginVersionWarner(log.Logger, authToken.Value)
+	pluginVersionWarner, _ := managedplugin.NewPluginVersionWarner(log.Logger, dlToken)
 	specs.WarnOnOutdatedVersions(ctx, pluginVersionWarner, sources, destinations, transformers)
 
 	// in a cloud sync environment, we pass only the relevant environment variables to the plugin
@@ -303,7 +315,7 @@ func sync(cmd *cobra.Command, args []string) error {
 		opts := []managedplugin.Option{
 			managedplugin.WithLogger(log.Logger),
 			managedplugin.WithOtelEndpoint(source.OtelEndpoint),
-			managedplugin.WithAuthToken(authToken.Value),
+			managedplugin.WithAuthToken(dlToken),
 			managedplugin.WithTeamName(teamName),
 			managedplugin.WithLicenseFile(licenseFile),
 		}
@@ -352,7 +364,7 @@ func sync(cmd *cobra.Command, args []string) error {
 	for _, destination := range destinations {
 		opts := []managedplugin.Option{
 			managedplugin.WithLogger(log.Logger),
-			managedplugin.WithAuthToken(authToken.Value),
+			managedplugin.WithAuthToken(dlToken),
 			managedplugin.WithTeamName(teamName),
 			managedplugin.WithLicenseFile(licenseFile),
 		}
@@ -396,7 +408,7 @@ func sync(cmd *cobra.Command, args []string) error {
 	for _, transformer := range transformers {
 		opts := []managedplugin.Option{
 			managedplugin.WithLogger(log.Logger),
-			managedplugin.WithAuthToken(authToken.Value),
+			managedplugin.WithAuthToken(dlToken),
 			managedplugin.WithTeamName(teamName),
 			managedplugin.WithLicenseFile(licenseFile),
 		}
