@@ -3,11 +3,9 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"os"
 	"slices"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
 	cqplatform "github.com/cloudquery/cloudquery/cli/v6/internal/platform"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
@@ -71,23 +69,11 @@ func migrate(cmd *cobra.Command, args []string) error {
 		transformerSpecsByName[transformer.Name] = *transformer
 	}
 
-	// dlToken/teamName authenticate plugin download against cloud. A headless
-	// cqpd_ token (CQ_PLATFORM_TOKEN) stands in for `cloudquery login`; it carries
-	// the owning team (`tm`) the team-scoped download and premium usage need.
-	var dlToken, teamName string
-	if cqpd := os.Getenv(cqplatform.EnvPlatformToken); cqpd != "" {
-		dlToken = cqpd
-		teamName = cqplatform.TeamFromToken(cqpd)
-	} else {
-		authToken, tokErr := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, transformers)
-		if tokErr != nil {
-			return fmt.Errorf("failed to get auth token: %w", tokErr)
-		}
-		tn, teamErr := auth.GetTeamForToken(ctx, authToken)
-		if teamErr != nil {
-			return fmt.Errorf("failed to get team name: %w", teamErr)
-		}
-		dlToken, teamName = authToken.Value, tn
+	// dlToken/teamName authenticate plugin download against cloud (headless
+	// cqpd_ token, else cloud login). See cqplatform.DownloadAuth.
+	dlToken, teamName, err := cqplatform.DownloadAuth(ctx, log.Logger, sources, destinations, transformers)
+	if err != nil {
+		return err
 	}
 
 	pluginVersionWarner, _ := managedplugin.NewPluginVersionWarner(log.Logger, dlToken)

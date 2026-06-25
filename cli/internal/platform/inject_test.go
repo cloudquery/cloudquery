@@ -150,6 +150,17 @@ func TestTeamFromToken(t *testing.T) {
 	require.Empty(t, TeamFromToken("cqpd_@@@.sig"), "malformed payload -> empty")
 }
 
+func TestDownloadAuth_HeadlessCQPDToken(t *testing.T) {
+	tok := cqpdTokenWithClaims(t, map[string]any{"tm": "acme", "u": "https://x"})
+	t.Setenv(EnvPlatformToken, tok)
+	// The cqpd_ branch resolves from the token alone — no cloud is wired, so any
+	// cloud call would fail the test.
+	gotTok, team, err := DownloadAuth(context.Background(), zerolog.Nop(), nil, nil, nil)
+	require.NoError(t, err)
+	require.Equal(t, tok, gotTok, "headless flow uses the cqpd_ token as the download credential")
+	require.Equal(t, "acme", team, "team comes from the token's tm claim")
+}
+
 func TestDetectTenant_DirectToken(t *testing.T) {
 	t.Setenv(EnvPlatformToken, cqpdTokenWithURL(t, "https://acme.us.platform.cloudquery.io"))
 	url, ok := DetectTenant(context.Background(), "", "")

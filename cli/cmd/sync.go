@@ -8,7 +8,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/otel"
 	cqplatform "github.com/cloudquery/cloudquery/cli/v6/internal/platform"
@@ -230,25 +229,11 @@ func sync(cmd *cobra.Command, args []string) error {
 
 	var otelReceiver *otel.OtelReceiver
 
-	// dlToken/teamName authenticate plugin download + usage against cloud.
-	var dlToken, teamName string
-	if cqpd := os.Getenv(cqplatform.EnvPlatformToken); cqpd != "" {
-		// Headless platform-destination flow: a pre-minted cqpd_ token stands in
-		// for `cloudquery login`. It carries the owning team (`tm`), which the
-		// team-scoped plugin download and premium usage need; cloud resolves and
-		// records against that team.
-		dlToken = cqpd
-		teamName = cqplatform.TeamFromToken(cqpd)
-	} else {
-		authToken, tokErr := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, transformers)
-		if tokErr != nil {
-			return fmt.Errorf("failed to get auth token: %w", tokErr)
-		}
-		tn, teamErr := auth.GetTeamForToken(ctx, authToken)
-		if teamErr != nil {
-			return fmt.Errorf("failed to get team name from token: %w", teamErr)
-		}
-		dlToken, teamName = authToken.Value, tn
+	// dlToken/teamName authenticate plugin download + usage against cloud
+	// (headless cqpd_ token, else cloud login). See cqplatform.DownloadAuth.
+	dlToken, teamName, err := cqplatform.DownloadAuth(ctx, log.Logger, sources, destinations, transformers)
+	if err != nil {
+		return err
 	}
 
 	// Must run before the needSummary/otel decisions below: the injected

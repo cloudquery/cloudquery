@@ -126,6 +126,28 @@ func apiURLFromToken(token string) string {
 	return apiURL
 }
 
+// DownloadAuth resolves the credential and team used to download (and meter)
+// plugins. In the headless platform-destination flow — CQ_PLATFORM_TOKEN set —
+// it returns the pre-minted cqpd_ token and the team from its `tm` claim, so a
+// sync needs no `cloudquery login`; managedplugin then uses the team-scoped
+// download endpoint and the team is recorded server-side. Otherwise it falls
+// back to the cloud login / team-API-key token and its team. Centralizing the
+// env read keeps sync and migrate from drifting.
+func DownloadAuth(ctx context.Context, logger zerolog.Logger, sources []*specs.Source, destinations []*specs.Destination, transformers []*specs.Transformer) (token, team string, err error) {
+	if cqpd := os.Getenv(EnvPlatformToken); cqpd != "" {
+		return cqpd, TeamFromToken(cqpd), nil
+	}
+	authToken, err := cqauth.GetAuthTokenIfNeeded(logger, sources, destinations, transformers)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to get auth token: %w", err)
+	}
+	teamName, err := cqauth.GetTeamForToken(ctx, authToken)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to get team name from token: %w", err)
+	}
+	return authToken.Value, teamName, nil
+}
+
 // TeamFromToken returns the cloud team (`tm` claim) embedded in a cqpd_ token,
 // or "" if absent/malformed. The CLI uses it to target the team-scoped
 // plugin-download / usage endpoints (and premium entitlement) from the token
