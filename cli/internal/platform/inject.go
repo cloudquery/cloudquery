@@ -4,6 +4,8 @@ package platform
 
 import (
 	"context"
+	"encoding/base64"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"os"
@@ -78,6 +80,69 @@ type sourceVersion struct {
 	Name    string `json:"name"`
 	Path    string `json:"path"`
 	Version string `json:"version"`
+}
+
+// DetectTenant reports the CloudQuery Platform tenant a sync would auto-inject
+// into — for commands (e.g. init) that want to skip the destination and tell
+// the user where data lands. ok is true when a tenant is found; apiURL is its
+// base URL (host only, no /api), which may be empty if a directly supplied
+// CQ_PLATFORM_TOKEN predates url-carrying tokens. Best-effort: any lookup
+// failure returns ("", false) so callers fall back to normal behavior.
+func DetectTenant(ctx context.Context, token, teamName string) (apiURL string, ok bool) {
+	if os.Getenv(envDisable) == "1" {
+		return "", false
+	}
+	// A directly supplied token already identifies the tenant; read its URL.
+	if directToken := os.Getenv(envPlatformToken); directToken != "" {
+		return apiURLFromToken(directToken), true
+	}
+	if token == "" || teamName == "" {
+		return "", false
+	}
+	cl, err := api.NewClient(token)
+	if err != nil {
+		return "", false
+	}
+	tenants, err := activeTenants(ctx, cl, teamName)
+	if err != nil || len(tenants) == 0 {
+		return "", false
+	}
+	// Match selectTenant: honor CQ_PLATFORM_TENANT_ID, else take the first.
+	tenant := tenants[0]
+	if want := os.Getenv(envTenantID); want != "" {
+		for _, c := range tenants {
+			if c.TenantId.String() == want {
+				tenant = c
+				break
+			}
+		}
+	}
+	return "https://" + tenant.Host, true
+}
+
+// apiURLFromToken reads the api_url (`u`) claim from a cqpd_ token's payload
+// without verifying the signature. Returns "" for a malformed token or one that
+// carries no url. Mirrors the destination plugin's decoder (separate repos).
+func apiURLFromToken(token string) string {
+	rest, ok := strings.CutPrefix(token, "cqpd_")
+	if !ok {
+		return ""
+	}
+	enc, _, ok := strings.Cut(rest, ".")
+	if !ok {
+		return ""
+	}
+	payload, err := base64.RawURLEncoding.DecodeString(enc)
+	if err != nil {
+		return ""
+	}
+	var claims struct {
+		APIURL string `json:"u"`
+	}
+	if err := json.Unmarshal(payload, &claims); err != nil {
+		return ""
+	}
+	return claims.APIURL
 }
 
 // MaybeInjectDestination appends a `platform` destination carrying a freshly

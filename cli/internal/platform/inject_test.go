@@ -2,6 +2,7 @@ package platform
 
 import (
 	"context"
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -122,6 +123,46 @@ func TestInject_Active_AppendsDestinationAndWiresSources(t *testing.T) {
 	require.NoError(t, err)
 	require.JSONEq(t, `[{"name":"aws","path":"cloudquery/aws","version":"v1.0.0"},{"name":"gcp","path":"cloudquery/gcp","version":"v2.3.4"}]`,
 		string(twoJSON), "sources reported in order, none dropped")
+}
+
+func cqpdTokenWithURL(t *testing.T, apiURL string) string {
+	t.Helper()
+	payload, err := json.Marshal(map[string]any{"u": apiURL})
+	require.NoError(t, err)
+	return "cqpd_" + base64.RawURLEncoding.EncodeToString(payload) + ".sig"
+}
+
+func TestDetectTenant_DirectToken(t *testing.T) {
+	t.Setenv(envPlatformToken, cqpdTokenWithURL(t, "https://acme.us.platform.cloudquery.io"))
+	url, ok := DetectTenant(context.Background(), "", "")
+	require.True(t, ok, "a CQ_PLATFORM_TOKEN means a tenant is present")
+	require.Equal(t, "https://acme.us.platform.cloudquery.io", url, "url comes from the token's u claim")
+}
+
+func TestDetectTenant_Disabled(t *testing.T) {
+	t.Setenv(envDisable, "1")
+	t.Setenv(envPlatformToken, cqpdTokenWithURL(t, "https://x.example.com"))
+	_, ok := DetectTenant(context.Background(), "", "")
+	require.False(t, ok, "disable env suppresses detection")
+}
+
+func TestDetectTenant_NoCredentials(t *testing.T) {
+	_, ok := DetectTenant(context.Background(), "", "")
+	require.False(t, ok, "no token and no cloud creds → not detected")
+}
+
+func TestDetectTenant_CloudPath(t *testing.T) {
+	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]any{"items": []map[string]any{
+			{"tenant_id": "11111111-1111-1111-1111-111111111111", "status": "active", "team_name": "team-x", "host": "acme.us.platform.cloudquery.io", "subdomain": "acme"},
+		}})
+	}, nil)
+	t.Setenv(envAPIURL, srv.URL)
+
+	url, ok := DetectTenant(context.Background(), "tok", "team-x")
+	require.True(t, ok)
+	require.Equal(t, "https://acme.us.platform.cloudquery.io", url, "url is built from the active tenant's host")
 }
 
 func TestInject_DirectToken_InjectsWithoutCloud(t *testing.T) {
