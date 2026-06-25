@@ -82,7 +82,7 @@ func newCmdInit() *cobra.Command {
 	cmd.Flags().String("spec-path", "", "Output spec file path")
 	cmd.Flags().Bool("yes", false, "Accept all defaults")
 	cmd.Flags().Bool("disable-ai", false, "Disable AI assistant")
-	cmd.Flags().Bool("disable-platform", false, "Don't scaffold a CloudQuery Platform sync even if your team has a platform tenant")
+	cmd.Flags().Bool("disable-platform", false, "Skip CloudQuery Platform sync scaffolding")
 	cmd.Flags().Bool("resume-conversation", false, "Resume existing AI conversation instead of starting a new one")
 	return cmd
 }
