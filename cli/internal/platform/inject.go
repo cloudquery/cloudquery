@@ -183,7 +183,7 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 	if token == "" {
 		var err error
 		if token, teamName, err = resolveCredentials(ctx); err != nil {
-			logger.Warn().Err(err).Msg("platform destination: a source targets `platform` but no credentials are available; run `cloudquery login` or set CQ_PLATFORM_TOKEN")
+			logger.Debug().Err(err).Msg("platform destination: credentials unavailable, skipping auto-injection")
 			return destinations, nil
 		}
 	}
@@ -193,13 +193,13 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 
 	cl, err := api.NewClient(token)
 	if err != nil {
-		logger.Warn().Err(err).Msg("platform destination: api client init failed; skipping injection")
+		logger.Debug().Err(err).Msg("platform destination: api client init failed, skipping auto-injection")
 		return destinations, nil
 	}
 
 	tenants, err := activeTenants(ctx, cl, teamName)
 	if err != nil {
-		logger.Warn().Err(err).Msg("platform destination: tenant discovery failed; skipping injection")
+		logger.Debug().Err(err).Msg("platform destination: tenant discovery failed, skipping auto-injection")
 		return destinations, nil
 	}
 	tenant, ok := selectTenant(logger, tenants)
@@ -209,7 +209,7 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 
 	session, platformPluginVersion, err := mintSession(ctx, cl, tenant)
 	if err != nil {
-		logger.Warn().Err(err).Str("tenant_id", tenant.TenantId.String()).Msg("platform destination: session mint failed; skipping injection")
+		logger.Warn().Err(err).Str("tenant_id", tenant.TenantId.String()).Msg("platform destination: session mint failed, skipping auto-injection")
 		return destinations, nil
 	}
 
@@ -253,7 +253,7 @@ func injectPlatformDestination(logger zerolog.Logger, destinations []*specs.Dest
 	}
 	parsedRegistry, err := specs.RegistryFromString(plugin.Registry)
 	if err != nil {
-		logger.Warn().Err(err).Str("registry", plugin.Registry).Msg("platform destination: unknown plugin registry; skipping injection")
+		logger.Warn().Err(err).Str("registry", plugin.Registry).Msg("platform destination: unknown plugin registry; skipping auto-injection")
 		return destinations
 	}
 
