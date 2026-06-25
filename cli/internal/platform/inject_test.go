@@ -167,6 +167,36 @@ func TestDetectTenant_CloudPath(t *testing.T) {
 	require.Equal(t, "https://acme.us.platform.cloudquery.io", url, "url is built from the active tenant's host")
 }
 
+// DetectTenant must make the SAME multi-tenant decision auto-injection does:
+// skip (report nothing) when a team has several active tenants and no
+// CQ_PLATFORM_TENANT_ID override — otherwise `init` would point the user at a
+// tenant a real sync would refuse to inject into.
+func TestDetectTenant_MultipleActiveTenants(t *testing.T) {
+	twoActive := func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]any{"items": []map[string]any{
+			{"tenant_id": "11111111-1111-1111-1111-111111111111", "status": "active", "team_name": "team-x", "host": "acme.us.platform.cloudquery.io", "subdomain": "acme"},
+			{"tenant_id": "22222222-2222-2222-2222-222222222222", "status": "active", "team_name": "team-x", "host": "beta.us.platform.cloudquery.io", "subdomain": "beta"},
+		}})
+	}
+
+	t.Run("ambiguous without override reports nothing", func(t *testing.T) {
+		srv := fakeCloud(t, twoActive, nil)
+		t.Setenv(envAPIURL, srv.URL)
+		_, ok := DetectTenant(context.Background(), "tok", "team-x")
+		require.False(t, ok, "several active tenants + no override is ambiguous; a sync would skip, so DetectTenant must too")
+	})
+
+	t.Run("override picks the matching tenant", func(t *testing.T) {
+		srv := fakeCloud(t, twoActive, nil)
+		t.Setenv(envAPIURL, srv.URL)
+		t.Setenv(envTenantID, "22222222-2222-2222-2222-222222222222")
+		url, ok := DetectTenant(context.Background(), "tok", "team-x")
+		require.True(t, ok)
+		require.Equal(t, "https://beta.us.platform.cloudquery.io", url)
+	})
+}
+
 func TestInject_DirectToken_InjectsWithoutCloud(t *testing.T) {
 	// A pre-minted cqpd_ token via env injects the destination with no cloud
 	// login, tenant discovery or session mint. No fake cloud is wired, so any
