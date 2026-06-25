@@ -287,12 +287,7 @@ func writePlatformSourceOnlySpec(apiClient *cqapi.ClientWithResponses, sourcePlu
 
 	successful.Println("Sync spec file generated successfully!")
 	fmt.Println()
-	if platformURL != "" {
-		fmt.Printf("This sync will write to your CloudQuery Platform tenant: %s\n", bold.Sprint(platformURL))
-	} else {
-		fmt.Println("This sync will write to your CloudQuery Platform tenant.")
-	}
-	fmt.Println("No destination needed — the CloudQuery CLI adds the platform destination automatically.")
+	fmt.Printf("This sync will write to your CloudQuery Platform at %s\n", bold.Sprint(platformURL))
 	fmt.Println()
 	fmt.Println("Next steps:")
 	fmt.Printf("1. Review %s and fill in the source's authentication details:\n", bold.Sprint(specPath))
