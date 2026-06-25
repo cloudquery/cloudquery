@@ -122,7 +122,7 @@ func DetectTenant(ctx context.Context, token, teamName string) (apiURL string, o
 // without verifying the signature. Returns "" for a malformed token or one that
 // carries no url. Mirrors the destination plugin's decoder (separate repos).
 func apiURLFromToken(token string) string {
-	apiURL, _, _ := decodeCQPDClaims(token)
+	apiURL, _ := decodeCQPDClaims(token)
 	return apiURL
 }
 
@@ -132,37 +132,37 @@ func apiURLFromToken(token string) string {
 // alone — no `cloudquery login`. Read without verifying the signature; cloud
 // still authenticates the token.
 func TeamFromToken(token string) string {
-	_, team, _ := decodeCQPDClaims(token)
+	_, team := decodeCQPDClaims(token)
 	return team
 }
 
 // decodeCQPDClaims reads the unverified claims payload of a cqpd_ token. The CLI
 // only needs routing/identity hints (api_url, team) to decide where and as whom
 // to call; the platform still authenticates the token. Wire format is
-// "cqpd_" + base64url(claimsJSON) + "." + base64url(sig). ok is false for a
-// malformed or non-cqpd_ token. Mirrors the destination plugin's decoder
+// "cqpd_" + base64url(claimsJSON) + "." + base64url(sig). Returns empty strings
+// for a malformed or non-cqpd_ token. Mirrors the destination plugin's decoder
 // (separate repos — keep the claim keys in sync).
-func decodeCQPDClaims(token string) (apiURL, team string, ok bool) {
+func decodeCQPDClaims(token string) (apiURL, team string) {
 	rest, ok := strings.CutPrefix(token, "cqpd_")
 	if !ok {
-		return "", "", false
+		return "", ""
 	}
 	enc, _, ok := strings.Cut(rest, ".")
 	if !ok {
-		return "", "", false
+		return "", ""
 	}
 	payload, err := base64.RawURLEncoding.DecodeString(enc)
 	if err != nil {
-		return "", "", false
+		return "", ""
 	}
 	var claims struct {
 		APIURL string `json:"u"`
 		Team   string `json:"tm"`
 	}
 	if err := json.Unmarshal(payload, &claims); err != nil {
-		return "", "", false
+		return "", ""
 	}
-	return claims.APIURL, claims.Team, true
+	return claims.APIURL, claims.Team
 }
 
 // MaybeInjectDestination injects a `platform` destination carrying a freshly
