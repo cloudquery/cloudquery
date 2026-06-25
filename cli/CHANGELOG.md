@@ -5,6 +5,23 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.37.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.36.1...cli-v6.37.0) (2026-06-25)
+
+
+### Features
+
+* Sync directly to CloudQuery Platform from the CLI ([#22945](https://github.com/cloudquery/cloudquery/issues/22945)) ([c3cefb4](https://github.com/cloudquery/cloudquery/commit/c3cefb45355abe091f329afb51c3276593208b37))
+
+
+### Bug Fixes
+
+* Consistent multi-tenant platform-destination resolution (+ hint on ambiguity) ([#22991](https://github.com/cloudquery/cloudquery/issues/22991)) ([9157b03](https://github.com/cloudquery/cloudquery/commit/9157b034f352a5c6bbb5e09ee0daa9be3b5ef246))
+* **deps:** Update go module directive to v1.26.3 ([#22869](https://github.com/cloudquery/cloudquery/issues/22869)) ([ce8d270](https://github.com/cloudquery/cloudquery/commit/ce8d270429e6503b849910035b761effcdbe62ab))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.14.10 ([#22942](https://github.com/cloudquery/cloudquery/issues/22942)) ([24ebdf1](https://github.com/cloudquery/cloudquery/commit/24ebdf1a151787da2e2851ee6a6b9ae98d319b52))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.14.11 ([#22989](https://github.com/cloudquery/cloudquery/issues/22989)) ([251a571](https://github.com/cloudquery/cloudquery/commit/251a5710829323aeb9edd952be2c37f471a25b80))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.14.12 ([#22990](https://github.com/cloudquery/cloudquery/issues/22990)) ([a0e78dd](https://github.com/cloudquery/cloudquery/commit/a0e78dddce9982565d4f38e0eb221ea7822c5edd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.3 ([#22946](https://github.com/cloudquery/cloudquery/issues/22946)) ([b9aac1f](https://github.com/cloudquery/cloudquery/commit/b9aac1f3ab9eb846bb165aa2978be314ee6b8eaf))
+
 ## [6.36.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.36.0...cli-v6.36.1) (2026-06-02)
 
 
