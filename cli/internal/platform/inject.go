@@ -153,34 +153,46 @@ func platformToken() string {
 func recommendedVersionFromWhoami(ctx context.Context, logger zerolog.Logger, cqpdToken string) string {
 	apiURL := apiURLFromToken(cqpdToken)
 	if apiURL == "" {
+		logger.Debug().Msg("platform destination: token carries no api_url; skipping whoami version lookup, using default")
 		return ""
 	}
 	base := strings.TrimRight(apiURL, "/")
 	if !strings.HasSuffix(base, "/api") { // /external-syncs/* is served under /api
 		base += "/api"
 	}
+	url := base + "/external-syncs/whoami"
+	logger.Debug().Str("url", url).Msg("platform destination: looking up recommended plugin version via whoami")
+
 	ctx, cancel := context.WithTimeout(ctx, requestTimeout)
 	defer cancel()
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, base+"/external-syncs/whoami", nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
+		logger.Debug().Err(err).Str("url", url).Msg("platform destination: failed to build whoami request; using default")
 		return ""
 	}
 	req.Header.Set("Authorization", "Bearer "+cqpdToken)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		logger.Debug().Err(err).Msg("platform destination: whoami lookup for recommended plugin version failed; using default")
+		logger.Debug().Err(err).Str("url", url).Msg("platform destination: whoami lookup for recommended plugin version failed; using default")
 		return ""
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
+		logger.Debug().Int("status", resp.StatusCode).Str("url", url).Msg("platform destination: whoami returned non-200 for version lookup; using default")
 		return ""
 	}
 	var body struct {
 		PluginVersion *string `json:"plugin_version"`
 	}
-	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil || body.PluginVersion == nil {
+	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
+		logger.Debug().Err(err).Msg("platform destination: failed to decode whoami response; using default")
 		return ""
 	}
+	if body.PluginVersion == nil {
+		logger.Debug().Msg("platform destination: whoami returned no plugin_version; using default")
+		return ""
+	}
+	logger.Debug().Str("plugin_version", *body.PluginVersion).Msg("platform destination: pinning recommended plugin version from whoami")
 	return *body.PluginVersion
 }
 
