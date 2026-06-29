@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/transformer/jsonflattener
 
-go 1.26.3
+go 1.26.4
 
 require (
 	github.com/apache/arrow-go/v18 v18.6.0
