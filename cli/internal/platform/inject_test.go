@@ -161,6 +161,19 @@ func TestDownloadAuth_HeadlessCQPDToken(t *testing.T) {
 	require.Equal(t, "acme", team, "team comes from the token's tm claim")
 }
 
+func TestDownloadAuth_CQPDViaAPIKeyEnv(t *testing.T) {
+	tok := cqpdTokenWithClaims(t, map[string]any{"tm": "acme", "u": "https://x"})
+	t.Setenv("CLOUDQUERY_API_KEY", tok)
+	// A cloudquery-registry source makes GetAuthTokenIfNeeded resolve the token
+	// from CLOUDQUERY_API_KEY. Its cqpd_ prefix must route to the tm claim, not
+	// to GetTeamForToken (which would call cloud and fail for a syncs-scoped key).
+	src := []*specs.Source{{Metadata: specs.Metadata{Name: "aws", Path: "cloudquery/aws", Version: "v1.0.0", Registry: specs.RegistryCloudQuery}}}
+	gotTok, team, err := DownloadAuth(context.Background(), zerolog.Nop(), src, nil, nil)
+	require.NoError(t, err)
+	require.Equal(t, tok, gotTok, "a cqpd_ in CLOUDQUERY_API_KEY is used as the download credential")
+	require.Equal(t, "acme", team, "team resolved locally from tm, no cloud call")
+}
+
 func TestDetectTenant_DirectToken(t *testing.T) {
 	t.Setenv(EnvPlatformToken, cqpdTokenWithURL(t, "https://acme.us.platform.cloudquery.io"))
 	url, ok := DetectTenant(context.Background(), "", "")

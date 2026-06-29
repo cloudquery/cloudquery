@@ -38,6 +38,9 @@ const (
 
 	destinationName = "platform"
 
+	// cqpdPrefix marks a platform-destination token on the wire.
+	cqpdPrefix = "cqpd_"
+
 	requestTimeout = 10 * time.Second
 )
 
@@ -141,6 +144,13 @@ func DownloadAuth(ctx context.Context, logger zerolog.Logger, sources []*specs.S
 	if err != nil {
 		return "", "", fmt.Errorf("failed to get auth token: %w", err)
 	}
+	// A cqpd_ token can also arrive via the standard CLOUDQUERY_API_KEY env. It
+	// carries its own team in the `tm` claim and (being syncs-scoped) can't
+	// enumerate teams server-side, so resolve the team locally rather than via
+	// GetTeamForToken, which would call cloud and fail.
+	if strings.HasPrefix(authToken.Value, cqpdPrefix) {
+		return authToken.Value, TeamFromToken(authToken.Value), nil
+	}
 	teamName, err := cqauth.GetTeamForToken(ctx, authToken)
 	if err != nil {
 		return "", "", fmt.Errorf("failed to get team name from token: %w", err)
@@ -165,7 +175,7 @@ func TeamFromToken(token string) string {
 // for a malformed or non-cqpd_ token. Mirrors the destination plugin's decoder
 // (separate repos — keep the claim keys in sync).
 func decodeCQPDClaims(token string) (apiURL, team string) {
-	rest, ok := strings.CutPrefix(token, "cqpd_")
+	rest, ok := strings.CutPrefix(token, cqpdPrefix)
 	if !ok {
 		return "", ""
 	}
