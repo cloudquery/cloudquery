@@ -60,7 +60,7 @@ type pluginCoordinates struct {
 var defaultPlugin = pluginCoordinates{
 	Registry: "cloudquery",
 	Path:     "cloudquery/platform",
-	Version:  "v1.0.0",
+	Version:  "v1.0.1",
 }
 
 func pluginCoords() pluginCoordinates {
