@@ -145,6 +145,19 @@ func platformToken() string {
 	return ""
 }
 
+// PropagatePluginCredential makes a headless cqpd_ token available to spawned
+// source/destination plugins as CLOUDQUERY_API_KEY. Plugins validate premium
+// tables and report usage against cloud using that env var (read from their own
+// process env, which in local runs they inherit from us); a cqpd_ supplied only
+// via CQ_PLATFORM_TOKEN would otherwise be invisible to them. No-op for a
+// non-cqpd_ token, and it never overwrites an existing CLOUDQUERY_API_KEY — a
+// user who set their own (e.g. a team key) keeps it for plugin auth.
+func PropagatePluginCredential(token string) {
+	if strings.HasPrefix(token, cqpdPrefix) && os.Getenv("CLOUDQUERY_API_KEY") == "" {
+		_ = os.Setenv("CLOUDQUERY_API_KEY", token)
+	}
+}
+
 // recommendedVersionFromWhoami asks the tenant's platform — whoami, reached via
 // the token's api_url (`u`) and authed with the token — for the recommended
 // destination plugin version. It lets the headless flow pin the right plugin

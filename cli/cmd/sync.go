@@ -235,6 +235,10 @@ func sync(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	// Headless cqpd_: let source/destination plugins authenticate premium-table
+	// validation + usage against cloud (they read CLOUDQUERY_API_KEY from their
+	// inherited env).
+	cqplatform.PropagatePluginCredential(dlToken)
 
 	// Must run before the needSummary/otel decisions below: the injected
 	// destination sets SyncSummary.

@@ -7,6 +7,7 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"sync/atomic"
 	"testing"
 
@@ -159,6 +160,24 @@ func TestDownloadAuth_HeadlessCQPDToken(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, tok, gotTok, "headless flow uses the cqpd_ token as the download credential")
 	require.Equal(t, "acme", team, "team comes from the token's tm claim")
+}
+
+func TestPropagatePluginCredential(t *testing.T) {
+	t.Run("cqpd_ with no api key exports it for plugins", func(t *testing.T) {
+		t.Setenv("CLOUDQUERY_API_KEY", "")
+		PropagatePluginCredential("cqpd_x.y")
+		require.Equal(t, "cqpd_x.y", os.Getenv("CLOUDQUERY_API_KEY"))
+	})
+	t.Run("never overwrites an existing api key", func(t *testing.T) {
+		t.Setenv("CLOUDQUERY_API_KEY", "cq_existing")
+		PropagatePluginCredential("cqpd_x.y")
+		require.Equal(t, "cq_existing", os.Getenv("CLOUDQUERY_API_KEY"), "a user-set key (e.g. a team key) wins")
+	})
+	t.Run("non-cqpd token is a no-op", func(t *testing.T) {
+		t.Setenv("CLOUDQUERY_API_KEY", "")
+		PropagatePluginCredential("not-a-cqpd-token")
+		require.Empty(t, os.Getenv("CLOUDQUERY_API_KEY"))
+	})
 }
 
 func TestDownloadAuth_CQPDViaAPIKeyEnv(t *testing.T) {

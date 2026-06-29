@@ -75,6 +75,9 @@ func migrate(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return err
 	}
+	// Headless cqpd_: let plugins authenticate premium-table validation + usage
+	// against cloud (they read CLOUDQUERY_API_KEY from their inherited env).
+	cqplatform.PropagatePluginCredential(dlToken)
 
 	pluginVersionWarner, _ := managedplugin.NewPluginVersionWarner(log.Logger, dlToken)
 	specs.WarnOnOutdatedVersions(ctx, pluginVersionWarner, sources, destinations, transformers)
