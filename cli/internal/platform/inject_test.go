@@ -256,6 +256,19 @@ func TestInject_DirectToken_InjectsWithoutCloud(t *testing.T) {
 	require.Contains(t, sources[0].Destinations, destinationName)
 }
 
+func TestInject_DirectToken_ViaAPIKeyEnv(t *testing.T) {
+	// A cqpd_ in the standard CLOUDQUERY_API_KEY env injects just like
+	// CQ_PLATFORM_TOKEN — same headless path, no cloud calls.
+	t.Setenv("CLOUDQUERY_API_KEY", "cqpd_payload.sig")
+
+	sources := testSources()
+	got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "", "", sources, testDestinations())
+	require.NoError(t, err)
+	require.Len(t, got, 2)
+	require.Equal(t, "cqpd_payload.sig", got[1].Spec["token"], "the cqpd_ from CLOUDQUERY_API_KEY is used directly")
+	require.NotContains(t, got[1].Spec, "api_url")
+}
+
 func TestInject_NoPlatformTarget_NoOp(t *testing.T) {
 	// Even with a token available, no injection happens unless a source opts in
 	// by listing `platform` in its destinations.

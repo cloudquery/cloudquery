@@ -95,9 +95,9 @@ func DetectTenant(ctx context.Context, token, teamName string) (apiURL string, o
 	if os.Getenv(envDisable) == "1" {
 		return "", false
 	}
-	// A directly supplied token already identifies the tenant; read its URL.
-	if directToken := os.Getenv(EnvPlatformToken); directToken != "" {
-		return apiURLFromToken(directToken), true
+	// A directly supplied cqpd_ token already identifies the tenant; read its URL.
+	if t := platformToken(); t != "" {
+		return apiURLFromToken(t), true
 	}
 	if token == "" || teamName == "" {
 		return "", false
@@ -129,27 +129,37 @@ func apiURLFromToken(token string) string {
 	return apiURL
 }
 
+// platformToken returns the platform-destination cqpd_ token from its explicit
+// CQ_PLATFORM_TOKEN env, or from CLOUDQUERY_API_KEY when that holds a cqpd_ (the
+// standard credential env doubling as the platform token). "" when neither
+// applies — i.e. no headless platform-destination token is configured. One
+// helper so download, injection, and tenant detection treat both envs alike.
+func platformToken() string {
+	if t := os.Getenv(EnvPlatformToken); t != "" {
+		return t
+	}
+	if k := os.Getenv("CLOUDQUERY_API_KEY"); strings.HasPrefix(k, cqpdPrefix) {
+		return k
+	}
+	return ""
+}
+
 // DownloadAuth resolves the credential and team used to download (and meter)
-// plugins. In the headless platform-destination flow — CQ_PLATFORM_TOKEN set —
-// it returns the pre-minted cqpd_ token and the team from its `tm` claim, so a
-// sync needs no `cloudquery login`; managedplugin then uses the team-scoped
-// download endpoint and the team is recorded server-side. Otherwise it falls
+// plugins. In the headless platform-destination flow — a cqpd_ token in
+// CQ_PLATFORM_TOKEN or CLOUDQUERY_API_KEY (see platformToken) — it returns that
+// token and the team from its `tm` claim, so a sync needs no `cloudquery login`;
+// managedplugin then uses the team-scoped download endpoint and the team is
+// recorded server-side. The cqpd_ is syncs-scoped and can't enumerate teams, so
+// the team must come from the claim, not GetTeamForToken. Otherwise it falls
 // back to the cloud login / team-API-key token and its team. Centralizing the
 // env read keeps sync and migrate from drifting.
 func DownloadAuth(ctx context.Context, logger zerolog.Logger, sources []*specs.Source, destinations []*specs.Destination, transformers []*specs.Transformer) (token, team string, err error) {
-	if cqpd := os.Getenv(EnvPlatformToken); cqpd != "" {
-		return cqpd, TeamFromToken(cqpd), nil
+	if t := platformToken(); t != "" {
+		return t, TeamFromToken(t), nil
 	}
 	authToken, err := cqauth.GetAuthTokenIfNeeded(logger, sources, destinations, transformers)
 	if err != nil {
 		return "", "", fmt.Errorf("failed to get auth token: %w", err)
-	}
-	// A cqpd_ token can also arrive via the standard CLOUDQUERY_API_KEY env. It
-	// carries its own team in the `tm` claim and (being syncs-scoped) can't
-	// enumerate teams server-side, so resolve the team locally rather than via
-	// GetTeamForToken, which would call cloud and fail.
-	if strings.HasPrefix(authToken.Value, cqpdPrefix) {
-		return authToken.Value, TeamFromToken(authToken.Value), nil
 	}
 	teamName, err := cqauth.GetTeamForToken(ctx, authToken)
 	if err != nil {
@@ -222,12 +232,13 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		return destinations, nil
 	}
 
-	// Direct token: a pre-minted cqpd_ token supplied via env injects the
-	// destination without cloud login, tenant discovery or a session mint — the
-	// token already identifies the tenant and carries its API URL.
-	if directToken := os.Getenv(EnvPlatformToken); directToken != "" {
+	// Direct token: a pre-minted cqpd_ token supplied via env (CQ_PLATFORM_TOKEN
+	// or a cqpd_ in CLOUDQUERY_API_KEY) injects the destination without cloud
+	// login, tenant discovery or a session mint — the token already identifies
+	// the tenant and carries its API URL.
+	if t := platformToken(); t != "" {
 		// No tenant id: the direct path doesn't parse the token's claims.
-		return injectPlatformDestination(logger, destinations, sources, directToken, "", ""), nil
+		return injectPlatformDestination(logger, destinations, sources, t, "", ""), nil
 	}
 
 	// The caller only fetches a token for cloudquery-registry specs; resolve
