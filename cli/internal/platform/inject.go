@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"os"
 	"slices"
 	"strconv"
@@ -144,6 +145,45 @@ func platformToken() string {
 	return ""
 }
 
+// recommendedVersionFromWhoami asks the tenant's platform — whoami, reached via
+// the token's api_url (`u`) and authed with the token — for the recommended
+// destination plugin version. It lets the headless flow pin the right plugin
+// without a session mint (which is where the non-headless flow gets it).
+// Best-effort: "" on any failure, so the caller falls back to the CLI default.
+func recommendedVersionFromWhoami(ctx context.Context, logger zerolog.Logger, cqpdToken string) string {
+	apiURL := apiURLFromToken(cqpdToken)
+	if apiURL == "" {
+		return ""
+	}
+	base := strings.TrimRight(apiURL, "/")
+	if !strings.HasSuffix(base, "/api") { // /external-syncs/* is served under /api
+		base += "/api"
+	}
+	ctx, cancel := context.WithTimeout(ctx, requestTimeout)
+	defer cancel()
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, base+"/external-syncs/whoami", nil)
+	if err != nil {
+		return ""
+	}
+	req.Header.Set("Authorization", "Bearer "+cqpdToken)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		logger.Debug().Err(err).Msg("platform destination: whoami lookup for recommended plugin version failed; using default")
+		return ""
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return ""
+	}
+	var body struct {
+		PluginVersion *string `json:"plugin_version"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil || body.PluginVersion == nil {
+		return ""
+	}
+	return *body.PluginVersion
+}
+
 // DownloadAuth resolves the credential and team used to download (and meter)
 // plugins. In the headless platform-destination flow — a cqpd_ token in
 // CQ_PLATFORM_TOKEN or CLOUDQUERY_API_KEY (see platformToken) — it returns that
@@ -237,8 +277,15 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 	// login, tenant discovery or a session mint — the token already identifies
 	// the tenant and carries its API URL.
 	if t := platformToken(); t != "" {
+		// Recommended plugin version: the env override wins (so skip the lookup),
+		// otherwise ask the platform's whoami so the headless flow pins the right
+		// version — the non-headless path gets this from the session mint instead.
+		recommendedVersion := ""
+		if os.Getenv(envPluginVersion) == "" {
+			recommendedVersion = recommendedVersionFromWhoami(ctx, logger, t)
+		}
 		// No tenant id: the direct path doesn't parse the token's claims.
-		return injectPlatformDestination(logger, destinations, sources, t, "", ""), nil
+		return injectPlatformDestination(logger, destinations, sources, t, recommendedVersion, ""), nil
 	}
 
 	// The caller only fetches a token for cloudquery-registry specs; resolve

@@ -256,6 +256,24 @@ func TestInject_DirectToken_InjectsWithoutCloud(t *testing.T) {
 	require.Contains(t, sources[0].Destinations, destinationName)
 }
 
+func TestInject_DirectToken_PinsVersionFromWhoami(t *testing.T) {
+	var tok string // captured by the handler; assigned after the server URL is known
+	whoami := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		require.Equal(t, "/api/external-syncs/whoami", r.URL.Path)
+		require.Equal(t, "Bearer "+tok, r.Header.Get("Authorization"))
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]any{"tenant_id": "11111111-1111-1111-1111-111111111111", "plugin_version": "v9.9.9"})
+	}))
+	defer whoami.Close()
+	tok = cqpdTokenWithClaims(t, map[string]any{"u": whoami.URL, "tm": "acme"}) // u → whoami server
+	t.Setenv(EnvPlatformToken, tok)
+
+	got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "", "", testSources(), testDestinations())
+	require.NoError(t, err)
+	require.Len(t, got, 2)
+	require.Equal(t, "v9.9.9", got[1].Version, "headless flow pins the version whoami recommends")
+}
+
 func TestInject_DirectToken_ViaAPIKeyEnv(t *testing.T) {
 	// A cqpd_ in the standard CLOUDQUERY_API_KEY env injects just like
 	// CQ_PLATFORM_TOKEN — same headless path, no cloud calls.
