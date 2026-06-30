@@ -7,6 +7,7 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"sync/atomic"
 	"testing"
 
@@ -134,8 +135,66 @@ func cqpdTokenWithURL(t *testing.T, apiURL string) string {
 	return "cqpd_" + base64.RawURLEncoding.EncodeToString(payload) + ".sig"
 }
 
+func cqpdTokenWithClaims(t *testing.T, claims map[string]any) string {
+	t.Helper()
+	payload, err := json.Marshal(claims)
+	require.NoError(t, err)
+	return "cqpd_" + base64.RawURLEncoding.EncodeToString(payload) + ".sig"
+}
+
+func TestTeamFromToken(t *testing.T) {
+	t.Parallel()
+	require.Equal(t, "acme", TeamFromToken(cqpdTokenWithClaims(t, map[string]any{"tm": "acme", "u": "https://x"})),
+		"reads the tm claim so the CLI can target team-scoped endpoints from the token alone")
+	require.Empty(t, TeamFromToken(cqpdTokenWithClaims(t, map[string]any{"u": "https://x"})), "no tm claim -> empty")
+	require.Empty(t, TeamFromToken("not-a-cqpd-token"), "non-cqpd_ token -> empty")
+	require.Empty(t, TeamFromToken("cqpd_@@@.sig"), "malformed payload -> empty")
+}
+
+func TestDownloadAuth_HeadlessCQPDToken(t *testing.T) {
+	tok := cqpdTokenWithClaims(t, map[string]any{"tm": "acme", "u": "https://x"})
+	t.Setenv(EnvPlatformToken, tok)
+	// The cqpd_ branch resolves from the token alone — no cloud is wired, so any
+	// cloud call would fail the test.
+	gotTok, team, err := DownloadAuth(context.Background(), zerolog.Nop(), nil, nil, nil)
+	require.NoError(t, err)
+	require.Equal(t, tok, gotTok, "headless flow uses the cqpd_ token as the download credential")
+	require.Equal(t, "acme", team, "team comes from the token's tm claim")
+}
+
+func TestPropagatePluginCredential(t *testing.T) {
+	t.Run("cqpd_ with no api key exports it for plugins", func(t *testing.T) {
+		t.Setenv("CLOUDQUERY_API_KEY", "")
+		PropagatePluginCredential("cqpd_x.y")
+		require.Equal(t, "cqpd_x.y", os.Getenv("CLOUDQUERY_API_KEY"))
+	})
+	t.Run("never overwrites an existing api key", func(t *testing.T) {
+		t.Setenv("CLOUDQUERY_API_KEY", "cq_existing")
+		PropagatePluginCredential("cqpd_x.y")
+		require.Equal(t, "cq_existing", os.Getenv("CLOUDQUERY_API_KEY"), "a user-set key (e.g. a team key) wins")
+	})
+	t.Run("non-cqpd token is a no-op", func(t *testing.T) {
+		t.Setenv("CLOUDQUERY_API_KEY", "")
+		PropagatePluginCredential("not-a-cqpd-token")
+		require.Empty(t, os.Getenv("CLOUDQUERY_API_KEY"))
+	})
+}
+
+func TestDownloadAuth_CQPDViaAPIKeyEnv(t *testing.T) {
+	tok := cqpdTokenWithClaims(t, map[string]any{"tm": "acme", "u": "https://x"})
+	t.Setenv("CLOUDQUERY_API_KEY", tok)
+	// A cloudquery-registry source makes GetAuthTokenIfNeeded resolve the token
+	// from CLOUDQUERY_API_KEY. Its cqpd_ prefix must route to the tm claim, not
+	// to GetTeamForToken (which would call cloud and fail for a syncs-scoped key).
+	src := []*specs.Source{{Metadata: specs.Metadata{Name: "aws", Path: "cloudquery/aws", Version: "v1.0.0", Registry: specs.RegistryCloudQuery}}}
+	gotTok, team, err := DownloadAuth(context.Background(), zerolog.Nop(), src, nil, nil)
+	require.NoError(t, err)
+	require.Equal(t, tok, gotTok, "a cqpd_ in CLOUDQUERY_API_KEY is used as the download credential")
+	require.Equal(t, "acme", team, "team resolved locally from tm, no cloud call")
+}
+
 func TestDetectTenant_DirectToken(t *testing.T) {
-	t.Setenv(envPlatformToken, cqpdTokenWithURL(t, "https://acme.us.platform.cloudquery.io"))
+	t.Setenv(EnvPlatformToken, cqpdTokenWithURL(t, "https://acme.us.platform.cloudquery.io"))
 	url, ok := DetectTenant(context.Background(), "", "")
 	require.True(t, ok, "a CQ_PLATFORM_TOKEN means a tenant is present")
 	require.Equal(t, "https://acme.us.platform.cloudquery.io", url, "url comes from the token's u claim")
@@ -143,7 +202,7 @@ func TestDetectTenant_DirectToken(t *testing.T) {
 
 func TestDetectTenant_Disabled(t *testing.T) {
 	t.Setenv(envDisable, "1")
-	t.Setenv(envPlatformToken, cqpdTokenWithURL(t, "https://x.example.com"))
+	t.Setenv(EnvPlatformToken, cqpdTokenWithURL(t, "https://x.example.com"))
 	_, ok := DetectTenant(context.Background(), "", "")
 	require.False(t, ok, "disable env suppresses detection")
 }
@@ -201,7 +260,7 @@ func TestInject_DirectToken_InjectsWithoutCloud(t *testing.T) {
 	// A pre-minted cqpd_ token via env injects the destination with no cloud
 	// login, tenant discovery or session mint. No fake cloud is wired, so any
 	// such call would fail the test.
-	t.Setenv(envPlatformToken, "cqpd_payload.sig")
+	t.Setenv(EnvPlatformToken, "cqpd_payload.sig")
 
 	sources := testSources()
 	got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "", "", sources, testDestinations())
@@ -216,10 +275,41 @@ func TestInject_DirectToken_InjectsWithoutCloud(t *testing.T) {
 	require.Contains(t, sources[0].Destinations, destinationName)
 }
 
+func TestInject_DirectToken_PinsVersionFromWhoami(t *testing.T) {
+	var tok string // captured by the handler; assigned after the server URL is known
+	whoami := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		require.Equal(t, "/api/external-syncs/whoami", r.URL.Path)
+		require.Equal(t, "Bearer "+tok, r.Header.Get("Authorization"))
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]any{"tenant_id": "11111111-1111-1111-1111-111111111111", "plugin_version": "v9.9.9"})
+	}))
+	defer whoami.Close()
+	tok = cqpdTokenWithClaims(t, map[string]any{"u": whoami.URL, "tm": "acme"}) // u → whoami server
+	t.Setenv(EnvPlatformToken, tok)
+
+	got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "", "", testSources(), testDestinations())
+	require.NoError(t, err)
+	require.Len(t, got, 2)
+	require.Equal(t, "v9.9.9", got[1].Version, "headless flow pins the version whoami recommends")
+}
+
+func TestInject_DirectToken_ViaAPIKeyEnv(t *testing.T) {
+	// A cqpd_ in the standard CLOUDQUERY_API_KEY env injects just like
+	// CQ_PLATFORM_TOKEN — same headless path, no cloud calls.
+	t.Setenv("CLOUDQUERY_API_KEY", "cqpd_payload.sig")
+
+	sources := testSources()
+	got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "", "", sources, testDestinations())
+	require.NoError(t, err)
+	require.Len(t, got, 2)
+	require.Equal(t, "cqpd_payload.sig", got[1].Spec["token"], "the cqpd_ from CLOUDQUERY_API_KEY is used directly")
+	require.NotContains(t, got[1].Spec, "api_url")
+}
+
 func TestInject_NoPlatformTarget_NoOp(t *testing.T) {
 	// Even with a token available, no injection happens unless a source opts in
 	// by listing `platform` in its destinations.
-	t.Setenv(envPlatformToken, "cqpd_payload.sig")
+	t.Setenv(EnvPlatformToken, "cqpd_payload.sig")
 
 	sources := []*specs.Source{{
 		Metadata:     specs.Metadata{Name: "aws", Path: "cloudquery/aws", Version: "v1.0.0", Registry: specs.RegistryCloudQuery},
@@ -231,7 +321,7 @@ func TestInject_NoPlatformTarget_NoOp(t *testing.T) {
 }
 
 func TestInject_DirectToken_ExistingPlatformDestination_UsesTheirs(t *testing.T) {
-	t.Setenv(envPlatformToken, "cqpd_payload.sig")
+	t.Setenv(EnvPlatformToken, "cqpd_payload.sig")
 
 	userDest := &specs.Destination{Metadata: specs.Metadata{Name: destinationName, Path: "user/custom"}}
 	destinations := append(testDestinations(), userDest)

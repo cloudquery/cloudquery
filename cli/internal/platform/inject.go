@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
 	"os"
 	"slices"
 	"strconv"
@@ -27,16 +28,19 @@ import (
 const (
 	envDisable  = "CQ_DISABLE_PLATFORM_DESTINATION"
 	envTenantID = "CQ_PLATFORM_TENANT_ID"
-	// envPlatformToken lets a user inject the platform destination from a
+	// EnvPlatformToken lets a user inject the platform destination from a
 	// pre-minted cqpd_ token directly — no cloud login or session mint. The
 	// token carries the tenant API URL, so it's all the destination needs.
-	envPlatformToken = "CQ_PLATFORM_TOKEN"
+	EnvPlatformToken = "CQ_PLATFORM_TOKEN"
 
 	envPluginRegistry = "CQ_PLATFORM_PLUGIN_REGISTRY"
 	envPluginPath     = "CQ_PLATFORM_PLUGIN_PATH"
 	envPluginVersion  = "CQ_PLATFORM_PLUGIN_VERSION"
 
 	destinationName = "platform"
+
+	// cqpdPrefix marks a platform-destination token on the wire.
+	cqpdPrefix = "cqpd_"
 
 	requestTimeout = 10 * time.Second
 )
@@ -56,7 +60,7 @@ type pluginCoordinates struct {
 var defaultPlugin = pluginCoordinates{
 	Registry: "cloudquery",
 	Path:     "cloudquery/platform",
-	Version:  "v1.0.0",
+	Version:  "v1.0.1",
 }
 
 func pluginCoords() pluginCoordinates {
@@ -92,9 +96,9 @@ func DetectTenant(ctx context.Context, token, teamName string) (apiURL string, o
 	if os.Getenv(envDisable) == "1" {
 		return "", false
 	}
-	// A directly supplied token already identifies the tenant; read its URL.
-	if directToken := os.Getenv(envPlatformToken); directToken != "" {
-		return apiURLFromToken(directToken), true
+	// A directly supplied cqpd_ token already identifies the tenant; read its URL.
+	if t := platformToken(); t != "" {
+		return apiURLFromToken(t), true
 	}
 	if token == "" || teamName == "" {
 		return "", false
@@ -122,25 +126,150 @@ func DetectTenant(ctx context.Context, token, teamName string) (apiURL string, o
 // without verifying the signature. Returns "" for a malformed token or one that
 // carries no url. Mirrors the destination plugin's decoder (separate repos).
 func apiURLFromToken(token string) string {
-	rest, ok := strings.CutPrefix(token, "cqpd_")
-	if !ok {
+	apiURL, _ := decodeCQPDClaims(token)
+	return apiURL
+}
+
+// platformToken returns the platform-destination cqpd_ token from its explicit
+// CQ_PLATFORM_TOKEN env, or from CLOUDQUERY_API_KEY when that holds a cqpd_ (the
+// standard credential env doubling as the platform token). "" when neither
+// applies — i.e. no headless platform-destination token is configured. One
+// helper so download, injection, and tenant detection treat both envs alike.
+func platformToken() string {
+	if t := os.Getenv(EnvPlatformToken); t != "" {
+		return t
+	}
+	if k := os.Getenv("CLOUDQUERY_API_KEY"); strings.HasPrefix(k, cqpdPrefix) {
+		return k
+	}
+	return ""
+}
+
+// PropagatePluginCredential makes a headless cqpd_ token available to spawned
+// source/destination plugins as CLOUDQUERY_API_KEY. Plugins validate premium
+// tables and report usage against cloud using that env var (read from their own
+// process env, which in local runs they inherit from us); a cqpd_ supplied only
+// via CQ_PLATFORM_TOKEN would otherwise be invisible to them. No-op for a
+// non-cqpd_ token, and it never overwrites an existing CLOUDQUERY_API_KEY — a
+// user who set their own (e.g. a team key) keeps it for plugin auth.
+func PropagatePluginCredential(token string) {
+	if strings.HasPrefix(token, cqpdPrefix) && os.Getenv("CLOUDQUERY_API_KEY") == "" {
+		_ = os.Setenv("CLOUDQUERY_API_KEY", token)
+	}
+}
+
+// recommendedVersionFromWhoami asks the tenant's platform — whoami, reached via
+// the token's api_url (`u`) and authed with the token — for the recommended
+// destination plugin version. It lets the headless flow pin the right plugin
+// without a session mint (which is where the non-headless flow gets it).
+// Best-effort: "" on any failure, so the caller falls back to the CLI default.
+func recommendedVersionFromWhoami(ctx context.Context, logger zerolog.Logger, cqpdToken string) string {
+	apiURL := apiURLFromToken(cqpdToken)
+	if apiURL == "" {
+		logger.Debug().Msg("platform destination: token carries no api_url; skipping whoami version lookup, using default")
 		return ""
+	}
+	base := strings.TrimRight(apiURL, "/")
+	if !strings.HasSuffix(base, "/api") { // /external-syncs/* is served under /api
+		base += "/api"
+	}
+	url := base + "/external-syncs/whoami"
+	logger.Debug().Str("url", url).Msg("platform destination: looking up recommended plugin version via whoami")
+
+	ctx, cancel := context.WithTimeout(ctx, requestTimeout)
+	defer cancel()
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	if err != nil {
+		logger.Debug().Err(err).Str("url", url).Msg("platform destination: failed to build whoami request; using default")
+		return ""
+	}
+	req.Header.Set("Authorization", "Bearer "+cqpdToken)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		logger.Debug().Err(err).Str("url", url).Msg("platform destination: whoami lookup for recommended plugin version failed; using default")
+		return ""
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		logger.Debug().Int("status", resp.StatusCode).Str("url", url).Msg("platform destination: whoami returned non-200 for version lookup; using default")
+		return ""
+	}
+	var body struct {
+		PluginVersion *string `json:"plugin_version"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
+		logger.Debug().Err(err).Msg("platform destination: failed to decode whoami response; using default")
+		return ""
+	}
+	if body.PluginVersion == nil {
+		logger.Debug().Msg("platform destination: whoami returned no plugin_version; using default")
+		return ""
+	}
+	logger.Debug().Str("plugin_version", *body.PluginVersion).Msg("platform destination: pinning recommended plugin version from whoami")
+	return *body.PluginVersion
+}
+
+// DownloadAuth resolves the credential and team used to download (and meter)
+// plugins. In the headless platform-destination flow — a cqpd_ token in
+// CQ_PLATFORM_TOKEN or CLOUDQUERY_API_KEY (see platformToken) — it returns that
+// token and the team from its `tm` claim, so a sync needs no `cloudquery login`;
+// managedplugin then uses the team-scoped download endpoint and the team is
+// recorded server-side. The cqpd_ is syncs-scoped and can't enumerate teams, so
+// the team must come from the claim, not GetTeamForToken. Otherwise it falls
+// back to the cloud login / team-API-key token and its team. Centralizing the
+// env read keeps sync and migrate from drifting.
+func DownloadAuth(ctx context.Context, logger zerolog.Logger, sources []*specs.Source, destinations []*specs.Destination, transformers []*specs.Transformer) (token, team string, err error) {
+	if t := platformToken(); t != "" {
+		return t, TeamFromToken(t), nil
+	}
+	authToken, err := cqauth.GetAuthTokenIfNeeded(logger, sources, destinations, transformers)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to get auth token: %w", err)
+	}
+	teamName, err := cqauth.GetTeamForToken(ctx, authToken)
+	if err != nil {
+		return "", "", fmt.Errorf("failed to get team name from token: %w", err)
+	}
+	return authToken.Value, teamName, nil
+}
+
+// TeamFromToken returns the cloud team (`tm` claim) embedded in a cqpd_ token,
+// or "" if absent/malformed. The CLI uses it to target the team-scoped
+// plugin-download / usage endpoints (and premium entitlement) from the token
+// alone — no `cloudquery login`. Read without verifying the signature; cloud
+// still authenticates the token.
+func TeamFromToken(token string) string {
+	_, team := decodeCQPDClaims(token)
+	return team
+}
+
+// decodeCQPDClaims reads the unverified claims payload of a cqpd_ token. The CLI
+// only needs routing/identity hints (api_url, team) to decide where and as whom
+// to call; the platform still authenticates the token. Wire format is
+// "cqpd_" + base64url(claimsJSON) + "." + base64url(sig). Returns empty strings
+// for a malformed or non-cqpd_ token. Mirrors the destination plugin's decoder
+// (separate repos — keep the claim keys in sync).
+func decodeCQPDClaims(token string) (apiURL, team string) {
+	rest, ok := strings.CutPrefix(token, cqpdPrefix)
+	if !ok {
+		return "", ""
 	}
 	enc, _, ok := strings.Cut(rest, ".")
 	if !ok {
-		return ""
+		return "", ""
 	}
 	payload, err := base64.RawURLEncoding.DecodeString(enc)
 	if err != nil {
-		return ""
+		return "", ""
 	}
 	var claims struct {
 		APIURL string `json:"u"`
+		Team   string `json:"tm"`
 	}
 	if err := json.Unmarshal(payload, &claims); err != nil {
-		return ""
+		return "", ""
 	}
-	return claims.APIURL
+	return claims.APIURL, claims.Team
 }
 
 // MaybeInjectDestination injects a `platform` destination carrying a freshly
@@ -168,12 +297,20 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		return destinations, nil
 	}
 
-	// Direct token: a pre-minted cqpd_ token supplied via env injects the
-	// destination without cloud login, tenant discovery or a session mint — the
-	// token already identifies the tenant and carries its API URL.
-	if directToken := os.Getenv(envPlatformToken); directToken != "" {
+	// Direct token: a pre-minted cqpd_ token supplied via env (CQ_PLATFORM_TOKEN
+	// or a cqpd_ in CLOUDQUERY_API_KEY) injects the destination without cloud
+	// login, tenant discovery or a session mint — the token already identifies
+	// the tenant and carries its API URL.
+	if t := platformToken(); t != "" {
+		// Recommended plugin version: the env override wins (so skip the lookup),
+		// otherwise ask the platform's whoami so the headless flow pins the right
+		// version — the non-headless path gets this from the session mint instead.
+		recommendedVersion := ""
+		if os.Getenv(envPluginVersion) == "" {
+			recommendedVersion = recommendedVersionFromWhoami(ctx, logger, t)
+		}
 		// No tenant id: the direct path doesn't parse the token's claims.
-		return injectPlatformDestination(logger, destinations, sources, directToken, "", ""), nil
+		return injectPlatformDestination(logger, destinations, sources, t, recommendedVersion, ""), nil
 	}
 
 	// The caller only fetches a token for cloudquery-registry specs; resolve
