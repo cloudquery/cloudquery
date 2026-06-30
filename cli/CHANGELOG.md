@@ -5,6 +5,18 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.38.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.37.0...cli-v6.38.0) (2026-06-30)
+
+
+### Features
+
+* Headless platform-destination sync via cqpd_ token (no cloudquery login) ([#22992](https://github.com/cloudquery/cloudquery/issues/22992)) ([4f55c23](https://github.com/cloudquery/cloudquery/commit/4f55c23366145cb8add79f40567025035516036d))
+
+
+### Bug Fixes
+
+* **deps:** Update go module directive to v1.26.4 ([#22996](https://github.com/cloudquery/cloudquery/issues/22996)) ([4c6a6b1](https://github.com/cloudquery/cloudquery/commit/4c6a6b19b9c85ea3f69276a77b9213d76bf744c5))
+
 ## [6.37.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.36.1...cli-v6.37.0) (2026-06-25)
 
 
