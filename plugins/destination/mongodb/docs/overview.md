@@ -56,6 +56,10 @@ This is the (nested) spec used by the MongoDB destination Plugin.
 
   Optional parameters to enable usage of AWS IAM credentials
 
+- `oidc` ([oidc](#oidc)) (optional)
+
+  Optional parameters to enable MONGODB-OIDC Workload Identity Federation. If used this will override any credentials set in the connection_string. Mutually exclusive with `aws_credentials`.
+
 
 
 
@@ -95,3 +99,17 @@ This is the (nested) spec used by the MongoDB destination Plugin.
 - `external_id` (`string`)
 
   If specified will use this when assuming role to `role_arn`.
+
+
+
+### oidc
+
+Authenticates using the `MONGODB-OIDC` mechanism with one of the driver's built-in providers. Requires [Workload Identity Federation](https://www.mongodb.com/docs/atlas/workload-oidc/) to be configured on the Atlas side (OIDC identity provider, matching audience, and a database user mapped to the federated identity), and the workload to run with a service account the chosen provider can read (for example, a GCP service account on Cloud Run, GCE or GKE).
+
+- `environment` (`string`) (required)
+
+  OIDC built-in provider environment. One of `gcp`, `azure` or `k8s`.
+
+- `token_resource` (`string`)
+
+  Token resource (audience) configured on your Atlas deployment. Required for the `gcp` and `azure` environments.

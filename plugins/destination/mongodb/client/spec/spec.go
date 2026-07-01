@@ -30,6 +30,9 @@ type Spec struct {
 
 	// Use AWS IAM credentials. If used this will override any credentials set in the connection_string
 	AWSCredentials *Credentials `json:"aws_credentials,omitempty"`
+
+	// Use MONGODB-OIDC Workload Identity Federation. If used this will override any credentials set in the connection_string
+	OIDC *OIDC `json:"oidc,omitempty"`
 }
 
 //go:embed schema.json
@@ -51,12 +54,27 @@ func (s *Spec) Validate() error {
 	if s.Database == "" {
 		return errors.New("database is required")
 	}
+	if s.AWSCredentials != nil && s.OIDC != nil {
+		return errors.New("`aws_credentials` and `oidc` are mutually exclusive")
+	}
 	if s.AWSCredentials != nil {
 		if (s.AWSCredentials.RoleARN != "" || s.AWSCredentials.RoleSessionName != "" || s.AWSCredentials.ExternalID != "" || s.AWSCredentials.LocalProfile != "") && s.AWSCredentials.Default {
 			return errors.New("`default` cannot be used with any other credential options")
 		}
 		if s.AWSCredentials.RoleARN == "" && s.AWSCredentials.LocalProfile == "" && !s.AWSCredentials.Default {
 			return errors.New("one of `role_arn`, `local_profile`, or `default` must be set")
+		}
+	}
+	if s.OIDC != nil {
+		switch s.OIDC.Environment {
+		case "gcp", "azure":
+			if s.OIDC.TokenResource == "" {
+				return errors.New("`oidc.token_resource` is required for the `" + s.OIDC.Environment + "` environment")
+			}
+		case "k8s":
+			// token_resource is not used for the k8s environment
+		default:
+			return errors.New("`oidc.environment` must be one of `gcp`, `azure` or `k8s`")
 		}
 	}
 
