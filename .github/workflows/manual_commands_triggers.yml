@@ -33,7 +33,7 @@ jobs:
           private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
           permission-contents: write
       - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           ref: ${{ github.event.client_payload.slash_command.args.named.sha }}
           repository: ${{ github.event.client_payload.pull_request.head.repo.full_name }}
@@ -46,11 +46,11 @@ jobs:
 
       - name: Set up Go 1.x
         id: setup-go
-        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+        uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
         with:
           go-version-file: ${{ github.event.client_payload.slash_command.args.named.dir }}/go.mod
           cache: false
-      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: |
             ~/.cache/go-build
@@ -63,7 +63,7 @@ jobs:
         run: make gen
         working-directory: ${{ github.event.client_payload.slash_command.args.named.dir }}
 
-      - uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7
+      - uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7
         with:
           commit_message: "chore: Update code and docs"
           branch: ${{ github.event.client_payload.pull_request.head.ref }}
