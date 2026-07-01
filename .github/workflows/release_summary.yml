@@ -47,7 +47,7 @@ jobs:
           permission-contents: write
           permission-pull-requests: write
       - name: Checkout Repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           fetch-depth: 0
           # required so the commit triggers workflow runs
@@ -74,11 +74,11 @@ jobs:
           git diff ${{ steps.tag.outputs.latest }}..HEAD -- plugins/source/${{ steps.plugin.outputs.name }}/docs/tables > scripts/table_diff/diff.txt
       - name: Set up Go 1.x
         id: setup-go
-        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+        uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
         with:
           go-version-file: scripts/table_diff/go.mod
           cache: false
-      - uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: |
             ~/.cache/go-build
@@ -152,7 +152,7 @@ jobs:
               body: newDescription
             })
 
-      - uses: stefanzweifel/git-auto-commit-action@04702edda442b2e678b25b537cec683a1493fcb9 # v7
+      - uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7
         if: ${{ steps.get-changes.outputs.result != '' }}
         with:
           commit_message: "chore: Add tables changes to changelog"
