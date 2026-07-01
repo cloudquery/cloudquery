@@ -7,7 +7,7 @@ require (
 	github.com/avast/retry-go/v5 v5.0.0
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-sdk/v4 v4.95.3
-	github.com/databricks/databricks-sdk-go v0.144.0
+	github.com/databricks/databricks-sdk-go v0.149.0
 	github.com/goccy/go-json v0.10.6
 	github.com/google/go-cmp v0.7.0
 	github.com/google/uuid v1.6.0
