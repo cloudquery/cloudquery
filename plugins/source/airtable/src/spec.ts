@@ -65,8 +65,8 @@ export type Spec = {
 
 export const parseSpec = (spec: string): Spec => {
   const parsed = JSON.parse(spec) as Partial<JSONSpec>;
-  const valid = validate(parsed);
-  if (!valid) {
+  const isValid = validate(parsed);
+  if (!isValid) {
     throw new Error(`Invalid spec: ${JSON.stringify(validate.errors)}`);
   }
   const { concurrency = 10_000, accessToken = '', endpointUrl = 'https://api.airtable.com' } = camelcaseKeys(parsed);
