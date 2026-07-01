@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.1.21](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v2.1.20...plugins-transformer-jsonflattener-v2.1.21) (2026-07-01)
+
+
+### Bug Fixes
+
+* **deps:** Update go module directive to v1.26.4 ([#22996](https://github.com/cloudquery/cloudquery/issues/22996)) ([4c6a6b1](https://github.com/cloudquery/cloudquery/commit/4c6a6b19b9c85ea3f69276a77b9213d76bf744c5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.3 ([#22946](https://github.com/cloudquery/cloudquery/issues/22946)) ([b9aac1f](https://github.com/cloudquery/cloudquery/commit/b9aac1f3ab9eb846bb165aa2978be314ee6b8eaf))
+* **deps:** Update module golang.org/x/net to v0.56.0 ([#23033](https://github.com/cloudquery/cloudquery/issues/23033)) ([43c367a](https://github.com/cloudquery/cloudquery/commit/43c367a645b5e26781b06039a0780cffb40bb2cd))
+
 ## [2.1.20](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-jsonflattener-v2.1.19...plugins-transformer-jsonflattener-v2.1.20) (2026-06-02)
 
 
