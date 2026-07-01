@@ -7,13 +7,13 @@ require (
 	github.com/avast/retry-go/v5 v5.0.0
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-sdk/v4 v4.95.3
-	github.com/databricks/databricks-sdk-go v0.144.0
+	github.com/databricks/databricks-sdk-go v0.149.0
 	github.com/goccy/go-json v0.10.6
 	github.com/google/go-cmp v0.7.0
 	github.com/google/uuid v1.6.0
 	github.com/invopop/jsonschema v0.14.0
 	github.com/jackc/pgx-zerolog v0.0.0-20230315001418-f978528409eb
-	github.com/jackc/pgx/v5 v5.9.2
+	github.com/jackc/pgx/v5 v5.10.0
 	github.com/otan/gopgkrb5 v1.0.6
 	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.11.1
