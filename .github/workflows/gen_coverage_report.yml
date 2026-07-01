@@ -25,16 +25,16 @@ jobs:
           private-key: ${{ secrets.CQ_APP_PRIVATE_KEY }}
           permission-contents: write
           permission-pull-requests: write
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           token: ${{ steps.app-token.outputs.token }}
       - name: Set up Go 1.x
-        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+        uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
         with:
           go-version-file: go.mod
           cache: false
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@e7f100cf4c008499ea8adda475de1042d6975c7b # v6
+        uses: aws-actions/configure-aws-credentials@254c19bd240aabef8777f48595e9d2d7b972184b # v6
         with:
           role-to-assume: arn:aws:iam::615713231484:role/destination-s3
           aws-region: us-east-1
