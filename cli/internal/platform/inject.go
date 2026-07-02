@@ -90,37 +90,42 @@ type sourceVersion struct {
 // DetectTenantWithPinnedVersions reports the CloudQuery Platform tenant a sync
 // would auto-inject into — so `init` can skip the destination, tell the user
 // where data lands, and scaffold the versions that tenant pins. ok is true when a
-// tenant is found; apiURL is its base URL (host only, no /api), which may be
-// empty if a directly supplied CQ_PLATFORM_TOKEN predates url-carrying tokens.
-// pinnedVersions is best-effort and may be nil even when ok (e.g. the mint or the
-// lookup failed) — init then falls back to the hub's latest. Resolving the tenant
-// and minting happen once here, rather than once per helper.
-func DetectTenantWithPinnedVersions(ctx context.Context, logger zerolog.Logger, cloudToken, teamName string) (apiURL string, pinnedVersions map[string]string, ok bool) {
+// platform-init scenario applies; apiURL is the tenant base URL (host only, no
+// /api), which may be empty if a directly supplied CQ_PLATFORM_TOKEN predates
+// url-carrying tokens. Resolving the tenant and minting happen once here, rather
+// than once per helper.
+//
+// A non-nil err means a tenant was detected but its platform destination session
+// couldn't be minted — the platform sync can't run, so init should fail now
+// rather than scaffold a source-only spec that would break at sync time. A team
+// with no/ambiguous tenant is not an error (ok=false): init just uses its normal
+// source + destination flow. pinnedVersions is best-effort and may be nil even on
+// success (the versions lookup failed) — init then falls back to the hub's latest.
+func DetectTenantWithPinnedVersions(ctx context.Context, logger zerolog.Logger, cloudToken, teamName string) (apiURL string, pinnedVersions map[string]string, ok bool, err error) {
 	if os.Getenv(envDisable) == "1" {
-		return "", nil, false
+		return "", nil, false, nil
 	}
 	// A directly supplied cqpd_ token already identifies the tenant and carries
 	// its URL; the pins are fetched with that same token.
 	if t := platformToken(); t != "" {
 		u := apiURLFromToken(t)
 		if u == "" {
-			return "", nil, true // tenant present, but no url to fetch pins from
+			return "", nil, true, nil // tenant present, but no url to fetch pins from
 		}
-		return u, fetchSupportedSourceVersions(ctx, logger, t, u), true
+		return u, fetchSupportedSourceVersions(ctx, logger, t, u), true, nil
 	}
 	cl, tenant, resolved := resolveCloudTenant(ctx, logger, cloudToken, teamName)
 	if !resolved {
-		return "", nil, false
+		return "", nil, false, nil
 	}
-	apiURL = "https://" + tenant.Host
-	// Mint once to reach /external-syncs/*; failure still leaves the tenant
-	// detected (scaffold source-only), just without pins.
+	// Mint once to reach /external-syncs/*. A detected tenant that can't mint a
+	// session can't run a platform sync either, so surface it rather than emit a
+	// spec that fails later.
 	session, _, err := mintSession(ctx, cl, tenant)
 	if err != nil {
-		logger.Debug().Err(err).Msg("platform: session mint failed; scaffolding without pinned versions")
-		return apiURL, nil, true
+		return "", nil, false, fmt.Errorf("mint platform destination session for tenant %s: %w", tenant.TenantId, err)
 	}
-	return apiURL, fetchSupportedSourceVersions(ctx, logger, session.Token, session.ApiUrl), true
+	return "https://" + tenant.Host, fetchSupportedSourceVersions(ctx, logger, session.Token, session.ApiUrl), true, nil
 }
 
 // resolveCloudTenant resolves the single active tenant for the team (the

@@ -350,8 +350,13 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	if !disablePlatform {
 		// One tenant lookup yields both the URL to report and the pinned source
 		// versions to scaffold. Pins are best-effort — unavailable → fall back to
-		// the hub's latest.
-		platformURL, platformSourceVersions, platformTenant = platform.DetectTenantWithPinnedVersions(ctx, log.Logger, token.Value, team)
+		// the hub's latest. A detected tenant whose session can't be minted can't
+		// sync, so fail rather than scaffold a spec that would break later.
+		var err error
+		platformURL, platformSourceVersions, platformTenant, err = platform.DetectTenantWithPinnedVersions(ctx, log.Logger, token.Value, team)
+		if err != nil {
+			return fmt.Errorf("failed to set up CloudQuery Platform sync (use --disable-platform to scaffold a regular source + destination config): %w", err)
+		}
 	}
 
 	apiClient, err := api.NewAnonymousClient()

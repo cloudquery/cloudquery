@@ -198,7 +198,8 @@ func TestDetectTenantWithPinnedVersions_DirectToken(t *testing.T) {
 	es := supportedSourceVersionsServer(t, "", pinned)
 	t.Setenv(EnvPlatformToken, cqpdTokenWithClaims(t, map[string]any{"u": es.URL}))
 
-	url, gotPinned, ok := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "", "")
+	url, gotPinned, ok, err := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "", "")
+	require.NoError(t, err)
 	require.True(t, ok, "a CQ_PLATFORM_TOKEN means a tenant is present")
 	require.Equal(t, es.URL, url, "url comes from the token's u claim")
 	require.Equal(t, pinned, gotPinned, "pins fetched with the direct token")
@@ -208,7 +209,8 @@ func TestDetectTenantWithPinnedVersions_DirectToken_NoURL(t *testing.T) {
 	// A legacy token with no url claim still identifies a tenant, but there's
 	// nowhere to fetch pins from.
 	t.Setenv(EnvPlatformToken, cqpdTokenWithClaims(t, map[string]any{"tm": "acme"}))
-	url, pinned, ok := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "", "")
+	url, pinned, ok, err := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "", "")
+	require.NoError(t, err)
 	require.True(t, ok)
 	require.Empty(t, url)
 	require.Nil(t, pinned)
@@ -217,12 +219,14 @@ func TestDetectTenantWithPinnedVersions_DirectToken_NoURL(t *testing.T) {
 func TestDetectTenantWithPinnedVersions_Disabled(t *testing.T) {
 	t.Setenv(envDisable, "1")
 	t.Setenv(EnvPlatformToken, cqpdTokenWithURL(t, "https://x.example.com"))
-	_, _, ok := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "", "")
+	_, _, ok, err := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "", "")
+	require.NoError(t, err)
 	require.False(t, ok, "disable env suppresses detection")
 }
 
 func TestDetectTenantWithPinnedVersions_NoCredentials(t *testing.T) {
-	_, _, ok := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "", "")
+	_, _, ok, err := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "", "")
+	require.NoError(t, err)
 	require.False(t, ok, "no token and no cloud creds → not detected")
 }
 
@@ -239,15 +243,16 @@ func TestDetectTenantWithPinnedVersions_CloudPath(t *testing.T) {
 	})
 	t.Setenv(envAPIURL, srv.URL)
 
-	url, gotPinned, ok := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "tok", "team-x")
+	url, gotPinned, ok, err := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "tok", "team-x")
+	require.NoError(t, err)
 	require.True(t, ok)
 	require.Equal(t, "https://acme.us.platform.cloudquery.io", url, "url is built from the active tenant's host")
 	require.Equal(t, pinned, gotPinned, "pins fetched via the minted session")
 }
 
-func TestDetectTenantWithPinnedVersions_MintFails_TenantStillDetected(t *testing.T) {
-	// The tenant is detected (init scaffolds source-only) even when minting — and
-	// thus the pins lookup — fails.
+func TestDetectTenantWithPinnedVersions_MintFails_Errors(t *testing.T) {
+	// A detected tenant whose session can't be minted can't run a platform sync,
+	// so init must fail rather than scaffold a source-only spec that would break.
 	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{"items": []map[string]any{
@@ -258,10 +263,33 @@ func TestDetectTenantWithPinnedVersions_MintFails_TenantStillDetected(t *testing
 	})
 	t.Setenv(envAPIURL, srv.URL)
 
-	url, pinned, ok := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "tok", "team-x")
-	require.True(t, ok, "tenant is still detected so init scaffolds source-only")
-	require.Equal(t, "https://acme.us.platform.cloudquery.io", url, "url from the tenant host")
-	require.Nil(t, pinned, "no pins when the mint fails")
+	_, _, ok, err := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "tok", "team-x")
+	require.Error(t, err, "mint failure is surfaced")
+	require.False(t, ok)
+}
+
+func TestDetectTenantWithPinnedVersions_MintOK_PinsUnavailable_NoError(t *testing.T) {
+	// Mint succeeds but the versions lookup fails → best-effort: no error, nil
+	// pins, tenant detected. init scaffolds with the hub's latest.
+	es := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		http.Error(w, "boom", http.StatusInternalServerError)
+	}))
+	defer es.Close()
+	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]any{"items": []map[string]any{
+			{"tenant_id": "11111111-1111-1111-1111-111111111111", "status": "active", "team_name": "team-x", "host": "acme.us.platform.cloudquery.io", "subdomain": "acme"},
+		}})
+	}, func(w http.ResponseWriter, _ *http.Request) {
+		writeSession(w, "cqpd_minted.sig", es.URL)
+	})
+	t.Setenv(envAPIURL, srv.URL)
+
+	url, pinned, ok, err := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "tok", "team-x")
+	require.NoError(t, err)
+	require.True(t, ok)
+	require.Equal(t, "https://acme.us.platform.cloudquery.io", url)
+	require.Nil(t, pinned, "pins unavailable → nil, init falls back to hub latest")
 }
 
 // DetectTenantWithPinnedVersions must make the SAME multi-tenant decision
@@ -280,7 +308,8 @@ func TestDetectTenantWithPinnedVersions_MultipleActiveTenants(t *testing.T) {
 	t.Run("ambiguous without override reports nothing", func(t *testing.T) {
 		srv := fakeCloud(t, twoActive, nil)
 		t.Setenv(envAPIURL, srv.URL)
-		_, _, ok := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "tok", "team-x")
+		_, _, ok, err := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "tok", "team-x")
+		require.NoError(t, err, "ambiguous tenant is not an error; init falls back to its normal flow")
 		require.False(t, ok, "several active tenants + no override is ambiguous; a sync would skip, so detection must too")
 	})
 
@@ -292,7 +321,8 @@ func TestDetectTenantWithPinnedVersions_MultipleActiveTenants(t *testing.T) {
 		})
 		t.Setenv(envAPIURL, srv.URL)
 		t.Setenv(envTenantID, "22222222-2222-2222-2222-222222222222")
-		url, gotPinned, ok := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "tok", "team-x")
+		url, gotPinned, ok, err := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "tok", "team-x")
+		require.NoError(t, err)
 		require.True(t, ok)
 		require.Equal(t, "https://beta.us.platform.cloudquery.io", url)
 		require.Equal(t, pinned, gotPinned)
