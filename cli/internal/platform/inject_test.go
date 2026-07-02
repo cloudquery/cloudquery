@@ -452,14 +452,42 @@ func TestInject_TenantListError_NoOp(t *testing.T) {
 	require.Len(t, got, 1)
 }
 
-func TestInject_SessionMintError_NoOp(t *testing.T) {
+func TestInject_SessionMintError_Fails(t *testing.T) {
+	// A source opted into `platform` and its tenant was found, but the mint fails
+	// → hard error rather than silently dropping the opt-in (mirrors the
+	// ambiguous-tenant case). Destinations are left unchanged.
 	srv := fakeCloud(t, nil, func(w http.ResponseWriter, _ *http.Request) {
 		http.Error(w, "not a member", http.StatusNotFound)
 	})
 	t.Setenv(envAPIURL, srv.URL)
 
-	got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
-	require.Len(t, got, 1)
+	got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", testSources(), testDestinations())
+	require.Error(t, err, "mint failure on an opted-in sync fails rather than skipping")
+	require.Len(t, got, 1, "destinations unchanged when injection errors")
+}
+
+func TestInject_NonPlatformSync_MintErrorIrrelevant(t *testing.T) {
+	// The safety guarantee: a sync that does NOT opt into `platform` returns
+	// before any tenant/mint call, so a broken session server can't affect it —
+	// no injection, no error. Any cloud call would surface via the error.
+	var calls atomic.Int32
+	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
+		calls.Add(1)
+		writeTenants(w, tenantItem("11111111-1111-1111-1111-111111111111", "active", "team-x"))
+	}, func(w http.ResponseWriter, _ *http.Request) {
+		calls.Add(1)
+		http.Error(w, "boom", http.StatusInternalServerError)
+	})
+	t.Setenv(envAPIURL, srv.URL)
+
+	sources := []*specs.Source{{
+		Metadata:     specs.Metadata{Name: "aws", Path: "cloudquery/aws", Version: "v1.0.0", Registry: specs.RegistryCloudQuery},
+		Destinations: []string{"pg"}, // no platform opt-in
+	}}
+	got, err := MaybeInjectDestination(context.Background(), zerolog.Nop(), "tok", "team-x", sources, testDestinations())
+	require.NoError(t, err, "a non-platform sync is never affected by platform-destination setup")
+	require.Len(t, got, 1, "nothing injected")
+	require.Zero(t, calls.Load(), "no cloud/mint call is even attempted without an opt-in")
 }
 
 func TestInject_MultipleTenants_RequiresEnvSelection(t *testing.T) {

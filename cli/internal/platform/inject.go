@@ -533,8 +533,13 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 
 	session, platformPluginVersion, err := mintSession(ctx, cl, tenant)
 	if err != nil {
-		logger.Warn().Err(err).Str("tenant_id", tenant.TenantId.String()).Msg("platform destination: session mint failed, skipping auto-injection")
-		return destinations, nil
+		// A source opted into `platform` and we found its tenant, but the session
+		// mint failed — the sync can't write to Platform. Fail with the reason
+		// rather than silently dropping the opt-in and running a sync whose source
+		// targets a destination that was never injected. (Same stance as the
+		// ambiguous-tenant case above.) Reachable only past the opt-in guard, so a
+		// non-platform sync never gets here.
+		return destinations, fmt.Errorf("failed to set up CloudQuery Platform destination for tenant %s: %w", tenant.TenantId, err)
 	}
 
 	return injectPlatformDestination(logger, destinations, sources, session.Token, platformPluginVersion, tenant.TenantId.String()), nil
