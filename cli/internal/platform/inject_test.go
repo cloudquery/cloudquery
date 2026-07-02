@@ -556,6 +556,127 @@ func sessionWithPluginVersion(version string) func(http.ResponseWriter, *http.Re
 	}
 }
 
+func supportedSourceVersionsServer(t *testing.T, wantToken string, versions map[string]string) *httptest.Server {
+	t.Helper()
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		require.Equal(t, "/api/external-syncs/supported-source-versions", r.URL.Path)
+		if wantToken != "" {
+			require.Equal(t, "Bearer "+wantToken, r.Header.Get("Authorization"))
+		}
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(versions)
+	}))
+	t.Cleanup(srv.Close)
+	return srv
+}
+
+func TestPinnedSourceVersions_DirectToken(t *testing.T) {
+	pinned := map[string]string{"cloudquery/aws": "v33.0.0"}
+	var tok string
+	es := supportedSourceVersionsServer(t, "", pinned) // token asserted below via closure capture
+	tok = cqpdTokenWithClaims(t, map[string]any{"u": es.URL})
+	t.Setenv(EnvPlatformToken, tok)
+
+	got, ok := PinnedSourceVersions(context.Background(), zerolog.Nop(), "", "")
+	require.True(t, ok, "a direct cqpd_ token resolves pinned versions without cloud")
+	require.Equal(t, pinned, got)
+}
+
+func TestPinnedSourceVersions_LoginMintsAndFetches(t *testing.T) {
+	pinned := map[string]string{"cloudquery/aws": "v33.0.0", "cloudquery/gcp": "v18.2.1"}
+	es := supportedSourceVersionsServer(t, "cqpd_minted.sig", pinned)
+	srv := fakeCloud(t, nil, func(w http.ResponseWriter, _ *http.Request) {
+		// The minted session's api_url points at the external-syncs server.
+		writeSession(w, "cqpd_minted.sig", es.URL)
+	})
+	t.Setenv(envAPIURL, srv.URL)
+
+	got, ok := PinnedSourceVersions(context.Background(), zerolog.Nop(), "tok", "team-x")
+	require.True(t, ok, "logged-in flow mints a session then fetches pinned versions")
+	require.Equal(t, pinned, got)
+}
+
+func TestPinnedSourceVersions_NoTenant_NotOK(t *testing.T) {
+	got, ok := PinnedSourceVersions(context.Background(), zerolog.Nop(), "", "")
+	require.False(t, ok, "no token and no cloud creds → nothing to resolve")
+	require.Nil(t, got)
+}
+
+func TestSourceVersionSupported(t *testing.T) {
+	t.Parallel()
+	pinned := map[string]string{"cloudquery/aws": "v33.28.0"}
+	// Mirrors api/externalsyncs.sourceSupported: same major, not newer than pinned.
+	require.True(t, sourceVersionSupported("cloudquery/aws", "v33.28.0", pinned), "exact pin is supported")
+	require.True(t, sourceVersionSupported("cloudquery/aws", "v33.0.0", pinned), "older same-major is supported")
+	require.False(t, sourceVersionSupported("cloudquery/aws", "v33.29.0", pinned), "newer than pin rejected")
+	require.False(t, sourceVersionSupported("cloudquery/aws", "v32.0.0", pinned), "older major rejected")
+	require.False(t, sourceVersionSupported("cloudquery/aws", "v34.0.0", pinned), "newer major rejected")
+	require.False(t, sourceVersionSupported("cloudquery/gcp", "v1.0.0", pinned), "unpinned path rejected")
+	require.False(t, sourceVersionSupported("cloudquery/aws", "not-semver", pinned), "unparseable version rejected")
+}
+
+func TestAnySourceTargetsPlatform(t *testing.T) {
+	t.Parallel()
+	require.True(t, AnySourceTargetsPlatform(testSources()))
+	require.False(t, AnySourceTargetsPlatform([]*specs.Source{{
+		Metadata:     specs.Metadata{Name: "aws", Path: "cloudquery/aws"},
+		Destinations: []string{"pg"},
+	}}))
+}
+
+func TestGateSources_NoPlatformTarget_NoNetwork(t *testing.T) {
+	// A source that doesn't target platform must not trigger any cloud/tenant
+	// call — no server is wired, so one would fail the test.
+	t.Setenv(envAPIURL, "http://127.0.0.1:0")
+	sources := []*specs.Source{{
+		Metadata:     specs.Metadata{Name: "aws", Path: "cloudquery/aws", Version: "v99.0.0"},
+		Destinations: []string{"pg"},
+	}}
+	require.NoError(t, GateSources(context.Background(), zerolog.Nop(), "tok", "team-x", sources))
+}
+
+func TestGateSources_UnsupportedVersion_Errors(t *testing.T) {
+	pinned := map[string]string{"cloudquery/aws": "v33.0.0"}
+	es := supportedSourceVersionsServer(t, "", pinned)
+	t.Setenv(EnvPlatformToken, cqpdTokenWithClaims(t, map[string]any{"u": es.URL}))
+
+	sources := []*specs.Source{
+		{Metadata: specs.Metadata{Name: "aws", Path: "cloudquery/aws", Version: "v34.0.0"}, Destinations: []string{"platform"}},
+		{Metadata: specs.Metadata{Name: "custom", Path: "cloudquery/unknown", Version: "v1.0.0"}, Destinations: []string{"platform"}},
+	}
+	err := GateSources(context.Background(), zerolog.Nop(), "", "", sources)
+	require.Error(t, err)
+	require.ErrorContains(t, err, "unsupported source plugin version(s)")
+	require.ErrorContains(t, err, "aws (supported version: v33.0.0)", "names the accepted version")
+	require.ErrorContains(t, err, "custom (not a supported source)", "flags an unrecognized source path")
+}
+
+func TestGateSources_SupportedVersion_OK(t *testing.T) {
+	pinned := map[string]string{"cloudquery/aws": "v33.0.0"}
+	es := supportedSourceVersionsServer(t, "", pinned)
+	t.Setenv(EnvPlatformToken, cqpdTokenWithClaims(t, map[string]any{"u": es.URL}))
+
+	sources := []*specs.Source{
+		{Metadata: specs.Metadata{Name: "aws", Path: "cloudquery/aws", Version: "v33.0.0"}, Destinations: []string{"platform"}},
+	}
+	require.NoError(t, GateSources(context.Background(), zerolog.Nop(), "", "", sources))
+}
+
+func TestGateSources_VersionsUnavailable_FailOpen(t *testing.T) {
+	// A platform-targeted source, but the pinned-versions lookup fails (500) →
+	// gate opens (nil), mirroring the server's fail-open when versions are down.
+	es := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		http.Error(w, "boom", http.StatusInternalServerError)
+	}))
+	defer es.Close()
+	t.Setenv(EnvPlatformToken, cqpdTokenWithClaims(t, map[string]any{"u": es.URL}))
+
+	sources := []*specs.Source{
+		{Metadata: specs.Metadata{Name: "aws", Path: "cloudquery/aws", Version: "v99.0.0"}, Destinations: []string{"platform"}},
+	}
+	require.NoError(t, GateSources(context.Background(), zerolog.Nop(), "", "", sources))
+}
+
 func TestInject_PlatformPinnedVersion(t *testing.T) {
 	srv := fakeCloud(t, nil, sessionWithPluginVersion("v2.5.0"))
 	t.Setenv(envAPIURL, srv.URL)

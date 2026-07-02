@@ -20,6 +20,7 @@ import (
 	"github.com/cloudquery/cloudquery/cli/v6/internal/platform"
 	"github.com/fatih/color"
 	"github.com/manifoldco/promptui"
+	"github.com/rs/zerolog/log"
 	"github.com/samber/lo"
 	"github.com/spf13/cobra"
 )
@@ -270,7 +271,13 @@ func linkForPlugin(plugin cqapi.ListPlugin) string {
 // CloudQuery Platform tenant: no destination block, since the CLI auto-injects
 // the `platform` destination at sync time. It wires the source to that reserved
 // destination name and tells the user where the data will land.
-func writePlatformSourceOnlySpec(apiClient *cqapi.ClientWithResponses, sourcePlugin cqapi.ListPlugin, specPath, platformURL string) error {
+func writePlatformSourceOnlySpec(apiClient *cqapi.ClientWithResponses, sourcePlugin cqapi.ListPlugin, specPath, platformURL string, pinnedVersions map[string]string) error {
+	// Prefer the platform-pinned source version over the hub's latest, so the
+	// scaffolded spec targets a version the tenant will accept (the same version
+	// the sync-time gate enforces). Unpinned sources keep LatestVersion.
+	if pinned := pinnedVersions[sourcePlugin.TeamName+"/"+sourcePlugin.Name]; pinned != "" {
+		sourcePlugin.LatestVersion = &pinned
+	}
 	fmt.Printf("Getting configuration for source plugin %s...\n", bold.Sprintf("%s/%s@%s", sourcePlugin.TeamName, sourcePlugin.Name, *sourcePlugin.LatestVersion))
 	sourceVersion, err := api.GetPluginVersion(apiClient, sourcePlugin.TeamName, sourcePlugin.Kind, sourcePlugin.Name, *sourcePlugin.LatestVersion)
 	if err != nil {
@@ -339,8 +346,14 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	// and AI. --disable-platform opts out (normal source+destination spec); an
 	// explicit --destination also takes the normal path.
 	platformURL, platformTenant := "", false
+	var platformSourceVersions map[string]string
 	if !disablePlatform {
 		platformURL, platformTenant = platform.DetectTenant(ctx, token.Value, team)
+		if platformTenant {
+			// Pinned source versions so the scaffolded spec matches what the tenant
+			// accepts. Best-effort: unavailable → fall back to the hub's latest.
+			platformSourceVersions, _ = platform.PinnedSourceVersions(ctx, log.Logger, token.Value, team)
+		}
 	}
 
 	apiClient, err := api.NewAnonymousClient()
@@ -423,7 +436,7 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	// Platform tenant + no explicit destination → scaffold a source-only spec;
 	// the CLI auto-injects the platform destination at sync time.
 	if platformTenant && destination == "" {
-		return writePlatformSourceOnlySpec(apiClient, allPlugins[sourceIndex], specPath, platformURL)
+		return writePlatformSourceOnlySpec(apiClient, allPlugins[sourceIndex], specPath, platformURL, platformSourceVersions)
 	}
 
 	if destination == "" {

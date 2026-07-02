@@ -11,6 +11,7 @@ import (
 	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/hub"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/platform"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
@@ -79,6 +80,17 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, nil)
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
+	}
+
+	// For a CloudQuery Platform tenant, reject source versions the tenant can't
+	// ingest up front — the same window the sync-time CreateExternalSync gate
+	// enforces — so users catch it here instead of mid-sync. Only sources opting
+	// into the platform destination are gated; best-effort otherwise.
+	if platform.AnySourceTargetsPlatform(sources) {
+		platformTeam, _ := auth.GetTeamForToken(ctx, authToken)
+		if err := platform.GateSources(ctx, log.Logger, authToken.Value, platformTeam, sources); err != nil {
+			return err
+		}
 	}
 
 	apiClient, err := api.NewClient(authToken.Value)

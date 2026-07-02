@@ -3,6 +3,7 @@ module github.com/cloudquery/cloudquery/cli/v6
 go 1.26.4
 
 require (
+	github.com/Masterminds/semver v1.5.0
 	github.com/apache/arrow-go/v18 v18.6.0
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v5 v5.0.3
@@ -62,7 +63,6 @@ require (
 
 require (
 	github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 // indirect
-	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/adrg/xdg v0.5.3 // indirect
 	github.com/apapsch/go-jsonmerge/v2 v2.0.0 // indirect

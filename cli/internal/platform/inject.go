@@ -15,6 +15,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/Masterminds/semver"
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	cqapiauth "github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
@@ -169,11 +170,7 @@ func recommendedVersionFromWhoami(ctx context.Context, logger zerolog.Logger, cq
 		logger.Debug().Msg("platform destination: token carries no api_url; skipping whoami version lookup, using default")
 		return ""
 	}
-	base := strings.TrimRight(apiURL, "/")
-	if !strings.HasSuffix(base, "/api") { // /external-syncs/* is served under /api
-		base += "/api"
-	}
-	url := base + "/external-syncs/whoami"
+	url := externalSyncsURL(apiURL, "/external-syncs/whoami")
 	logger.Debug().Str("url", url).Msg("platform destination: looking up recommended plugin version via whoami")
 
 	ctx, cancel := context.WithTimeout(ctx, requestTimeout)
@@ -207,6 +204,165 @@ func recommendedVersionFromWhoami(ctx context.Context, logger zerolog.Logger, cq
 	}
 	logger.Debug().Str("plugin_version", *body.PluginVersion).Msg("platform destination: pinning recommended plugin version from whoami")
 	return *body.PluginVersion
+}
+
+// externalSyncsURL builds the URL for an /external-syncs/* endpoint from a
+// tenant's API base, which may or may not already carry the /api suffix (a
+// minted session returns the bare host; the /external-syncs/* routes live under
+// /api).
+func externalSyncsURL(apiURL, path string) string {
+	base := strings.TrimRight(apiURL, "/")
+	if !strings.HasSuffix(base, "/api") {
+		base += "/api"
+	}
+	return base + path
+}
+
+// resolvePlatformSession returns a cqpd_ token and the tenant's API base URL for
+// reaching the /external-syncs/* endpoints (which require an already-minted
+// token). Headless: a direct CQ_PLATFORM_TOKEN / cqpd_ CLOUDQUERY_API_KEY, using
+// its `u` claim. Logged in: mint a session for the team's resolved tenant. Returns
+// ok=false when there's no platform tenant or resolution fails, so callers fall
+// back to their normal behavior.
+func resolvePlatformSession(ctx context.Context, logger zerolog.Logger, cloudToken, teamName string) (cqpdToken, apiURL string, ok bool) {
+	if os.Getenv(envDisable) == "1" {
+		return "", "", false
+	}
+	if t := platformToken(); t != "" {
+		u := apiURLFromToken(t)
+		if u == "" {
+			logger.Debug().Msg("platform: direct token carries no api_url; cannot reach external-syncs endpoints")
+			return "", "", false
+		}
+		return t, u, true
+	}
+	if cloudToken == "" || teamName == "" {
+		return "", "", false
+	}
+	cl, err := api.NewClient(cloudToken)
+	if err != nil {
+		logger.Debug().Err(err).Msg("platform: api client init failed")
+		return "", "", false
+	}
+	tenants, err := activeTenants(ctx, cl, teamName)
+	if err != nil || len(tenants) == 0 {
+		return "", "", false
+	}
+	tenant, err := resolveTenant(tenants)
+	if err != nil {
+		return "", "", false
+	}
+	session, _, err := mintSession(ctx, cl, tenant)
+	if err != nil {
+		logger.Debug().Err(err).Msg("platform: session mint failed; cannot fetch pinned versions")
+		return "", "", false
+	}
+	return session.Token, session.ApiUrl, true
+}
+
+// PinnedSourceVersions returns the platform-pinned source plugin versions
+// (plugin path -> semver) the caller's tenant will accept, from
+// GET /external-syncs/supported-source-versions. `init` scaffolds these so the
+// generated spec matches what the tenant accepts, and `validate-config` gates
+// against them — the same window CreateExternalSync enforces at sync time.
+// Best-effort: (nil, false) when there's no platform tenant or the lookup fails.
+func PinnedSourceVersions(ctx context.Context, logger zerolog.Logger, cloudToken, teamName string) (map[string]string, bool) {
+	token, apiURL, ok := resolvePlatformSession(ctx, logger, cloudToken, teamName)
+	if !ok {
+		return nil, false
+	}
+	url := externalSyncsURL(apiURL, "/external-syncs/supported-source-versions")
+
+	ctx, cancel := context.WithTimeout(ctx, requestTimeout)
+	defer cancel()
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	if err != nil {
+		logger.Debug().Err(err).Str("url", url).Msg("platform: failed to build supported-source-versions request")
+		return nil, false
+	}
+	req.Header.Set("Authorization", "Bearer "+token)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		logger.Debug().Err(err).Str("url", url).Msg("platform: supported-source-versions lookup failed")
+		return nil, false
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		logger.Debug().Int("status", resp.StatusCode).Str("url", url).Msg("platform: supported-source-versions returned non-200")
+		return nil, false
+	}
+	var versions map[string]string
+	if err := json.NewDecoder(resp.Body).Decode(&versions); err != nil {
+		logger.Debug().Err(err).Msg("platform: failed to decode supported-source-versions")
+		return nil, false
+	}
+	return versions, true
+}
+
+// AnySourceTargetsPlatform reports whether any source opts into the platform
+// destination (lists its reserved name in `destinations`). Exported so
+// validate-config gates only the platform-bound sources — the same set a real
+// sync would upload.
+func AnySourceTargetsPlatform(sources []*specs.Source) bool {
+	return anySourceTargetsPlatform(sources)
+}
+
+// sourceVersionSupported mirrors the server-side gate
+// (api/externalsyncs.sourceSupported): a source version is accepted iff its
+// plugin path is pinned and the version is the same major and not newer than the
+// pin (a schema subset the corpus already knows).
+func sourceVersionSupported(path, version string, pinned map[string]string) bool {
+	pinnedVersion := pinned[path]
+	if pinnedVersion == "" {
+		return false
+	}
+	v, err := semver.NewVersion(version)
+	if err != nil {
+		return false
+	}
+	p, err := semver.NewVersion(pinnedVersion)
+	if err != nil {
+		return false
+	}
+	return v.Major() == p.Major() && !v.GreaterThan(p)
+}
+
+// GateSources returns an error naming any platform-targeted source whose version
+// the tenant can't ingest — the same window CreateExternalSync enforces — so
+// validate-config fails before a sync would. Fail-open (nil) when no source
+// targets platform, or the pinned versions can't be resolved (mirrors the server,
+// which opens the sync when versions are unavailable). The message matches the
+// server gate's so users see the same text at validate and sync time.
+func GateSources(ctx context.Context, logger zerolog.Logger, cloudToken, teamName string, sources []*specs.Source) error {
+	targeted := make([]*specs.Source, 0, len(sources))
+	for _, s := range sources {
+		if slices.Contains(s.Destinations, destinationName) {
+			targeted = append(targeted, s)
+		}
+	}
+	if len(targeted) == 0 {
+		return nil
+	}
+	pinned, ok := PinnedSourceVersions(ctx, logger, cloudToken, teamName)
+	if !ok || len(pinned) == 0 {
+		logger.Debug().Msg("platform: pinned source versions unavailable; skipping version gate")
+		return nil
+	}
+	unsupported := make([]string, 0, len(targeted))
+	for _, s := range targeted {
+		if sourceVersionSupported(s.Path, s.Version, pinned) {
+			continue
+		}
+		if pv := pinned[s.Path]; pv != "" {
+			unsupported = append(unsupported, fmt.Sprintf("%s (supported version: %s)", s.Name, pv))
+		} else {
+			unsupported = append(unsupported, fmt.Sprintf("%s (not a supported source)", s.Name))
+		}
+	}
+	if len(unsupported) == 0 {
+		return nil
+	}
+	return fmt.Errorf("unsupported source plugin version(s): %s", strings.Join(unsupported, ", "))
 }
 
 // DownloadAuth resolves the credential and team used to download (and meter)
