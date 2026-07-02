@@ -87,40 +87,65 @@ type sourceVersion struct {
 	Version string `json:"version"`
 }
 
-// DetectTenant reports the CloudQuery Platform tenant a sync would auto-inject
-// into — for commands (e.g. init) that want to skip the destination and tell
-// the user where data lands. ok is true when a tenant is found; apiURL is its
-// base URL (host only, no /api), which may be empty if a directly supplied
-// CQ_PLATFORM_TOKEN predates url-carrying tokens. Best-effort: any lookup
-// failure returns ("", false) so callers fall back to normal behavior.
-func DetectTenant(ctx context.Context, token, teamName string) (apiURL string, ok bool) {
+// DetectTenantWithPinnedVersions reports the CloudQuery Platform tenant a sync
+// would auto-inject into — so `init` can skip the destination, tell the user
+// where data lands, and scaffold the versions that tenant pins. ok is true when a
+// tenant is found; apiURL is its base URL (host only, no /api), which may be
+// empty if a directly supplied CQ_PLATFORM_TOKEN predates url-carrying tokens.
+// pinnedVersions is best-effort and may be nil even when ok (e.g. the mint or the
+// lookup failed) — init then falls back to the hub's latest. Resolving the tenant
+// and minting happen once here, rather than once per helper.
+func DetectTenantWithPinnedVersions(ctx context.Context, logger zerolog.Logger, cloudToken, teamName string) (apiURL string, pinnedVersions map[string]string, ok bool) {
 	if os.Getenv(envDisable) == "1" {
-		return "", false
+		return "", nil, false
 	}
-	// A directly supplied cqpd_ token already identifies the tenant; read its URL.
+	// A directly supplied cqpd_ token already identifies the tenant and carries
+	// its URL; the pins are fetched with that same token.
 	if t := platformToken(); t != "" {
-		return apiURLFromToken(t), true
+		u := apiURLFromToken(t)
+		if u == "" {
+			return "", nil, true // tenant present, but no url to fetch pins from
+		}
+		return u, fetchSupportedSourceVersions(ctx, logger, t, u), true
 	}
-	if token == "" || teamName == "" {
-		return "", false
+	cl, tenant, resolved := resolveCloudTenant(ctx, logger, cloudToken, teamName)
+	if !resolved {
+		return "", nil, false
 	}
-	cl, err := api.NewClient(token)
+	apiURL = "https://" + tenant.Host
+	// Mint once to reach /external-syncs/*; failure still leaves the tenant
+	// detected (scaffold source-only), just without pins.
+	session, _, err := mintSession(ctx, cl, tenant)
 	if err != nil {
-		return "", false
+		logger.Debug().Err(err).Msg("platform: session mint failed; scaffolding without pinned versions")
+		return apiURL, nil, true
+	}
+	return apiURL, fetchSupportedSourceVersions(ctx, logger, session.Token, session.ApiUrl), true
+}
+
+// resolveCloudTenant resolves the single active tenant for the team (the
+// logged-in path) plus an API client to act on it, in one enumeration. Uses the
+// same selection as auto-injection (resolveTenant): the only active tenant, or
+// the CQ_PLATFORM_TENANT_ID match. Best-effort: ok=false when there are no creds,
+// no active tenant, or an ambiguous set with no override.
+func resolveCloudTenant(ctx context.Context, logger zerolog.Logger, cloudToken, teamName string) (cl *cloudquery_api.ClientWithResponses, tenant cloudquery_api.PlatformTenantSummary, ok bool) {
+	if cloudToken == "" || teamName == "" {
+		return nil, cloudquery_api.PlatformTenantSummary{}, false
+	}
+	cl, err := api.NewClient(cloudToken)
+	if err != nil {
+		logger.Debug().Err(err).Msg("platform: api client init failed")
+		return nil, cloudquery_api.PlatformTenantSummary{}, false
 	}
 	tenants, err := activeTenants(ctx, cl, teamName)
 	if err != nil || len(tenants) == 0 {
-		return "", false
+		return nil, cloudquery_api.PlatformTenantSummary{}, false
 	}
-	// Use the same selection as auto-injection (resolveTenant): the only active
-	// tenant, or the CQ_PLATFORM_TENANT_ID match. None or ambiguous (several
-	// active, no override) → report nothing; init is informational, so it never
-	// errors here, and it won't point at a tenant a real sync would skip.
-	tenant, err := resolveTenant(tenants)
+	tenant, err = resolveTenant(tenants)
 	if err != nil {
-		return "", false
+		return nil, cloudquery_api.PlatformTenantSummary{}, false
 	}
-	return "https://" + tenant.Host, true
+	return cl, tenant, true
 }
 
 // apiURLFromToken reads the api_url (`u`) claim from a cqpd_ token's payload
@@ -236,20 +261,8 @@ func resolvePlatformSession(ctx context.Context, logger zerolog.Logger, cloudTok
 		}
 		return t, u, true
 	}
-	if cloudToken == "" || teamName == "" {
-		return "", "", false
-	}
-	cl, err := api.NewClient(cloudToken)
-	if err != nil {
-		logger.Debug().Err(err).Msg("platform: api client init failed")
-		return "", "", false
-	}
-	tenants, err := activeTenants(ctx, cl, teamName)
-	if err != nil || len(tenants) == 0 {
-		return "", "", false
-	}
-	tenant, err := resolveTenant(tenants)
-	if err != nil {
+	cl, tenant, ok := resolveCloudTenant(ctx, logger, cloudToken, teamName)
+	if !ok {
 		return "", "", false
 	}
 	session, _, err := mintSession(ctx, cl, tenant)
@@ -271,6 +284,15 @@ func PinnedSourceVersions(ctx context.Context, logger zerolog.Logger, cloudToken
 	if !ok {
 		return nil, false
 	}
+	versions := fetchSupportedSourceVersions(ctx, logger, token, apiURL)
+	return versions, versions != nil
+}
+
+// fetchSupportedSourceVersions GETs /external-syncs/supported-source-versions
+// with an already-minted cqpd_ token and returns the pinned path->version map, or
+// nil on any failure (best-effort). Shared by PinnedSourceVersions and the init
+// tenant-detection path, which resolve the token/apiURL differently.
+func fetchSupportedSourceVersions(ctx context.Context, logger zerolog.Logger, cqpdToken, apiURL string) map[string]string {
 	url := externalSyncsURL(apiURL, "/external-syncs/supported-source-versions")
 
 	ctx, cancel := context.WithTimeout(ctx, requestTimeout)
@@ -278,25 +300,25 @@ func PinnedSourceVersions(ctx context.Context, logger zerolog.Logger, cloudToken
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		logger.Debug().Err(err).Str("url", url).Msg("platform: failed to build supported-source-versions request")
-		return nil, false
+		return nil
 	}
-	req.Header.Set("Authorization", "Bearer "+token)
+	req.Header.Set("Authorization", "Bearer "+cqpdToken)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		logger.Debug().Err(err).Str("url", url).Msg("platform: supported-source-versions lookup failed")
-		return nil, false
+		return nil
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
 		logger.Debug().Int("status", resp.StatusCode).Str("url", url).Msg("platform: supported-source-versions returned non-200")
-		return nil, false
+		return nil
 	}
 	var versions map[string]string
 	if err := json.NewDecoder(resp.Body).Decode(&versions); err != nil {
 		logger.Debug().Err(err).Msg("platform: failed to decode supported-source-versions")
-		return nil, false
+		return nil
 	}
-	return versions, true
+	return versions
 }
 
 // AnySourceTargetsPlatform reports whether any source opts into the platform

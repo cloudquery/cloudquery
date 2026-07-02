@@ -193,44 +193,82 @@ func TestDownloadAuth_CQPDViaAPIKeyEnv(t *testing.T) {
 	require.Equal(t, "acme", team, "team resolved locally from tm, no cloud call")
 }
 
-func TestDetectTenant_DirectToken(t *testing.T) {
-	t.Setenv(EnvPlatformToken, cqpdTokenWithURL(t, "https://acme.us.platform.cloudquery.io"))
-	url, ok := DetectTenant(context.Background(), "", "")
+func TestDetectTenantWithPinnedVersions_DirectToken(t *testing.T) {
+	pinned := map[string]string{"cloudquery/aws": "v33.0.0"}
+	es := supportedSourceVersionsServer(t, "", pinned)
+	t.Setenv(EnvPlatformToken, cqpdTokenWithClaims(t, map[string]any{"u": es.URL}))
+
+	url, gotPinned, ok := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "", "")
 	require.True(t, ok, "a CQ_PLATFORM_TOKEN means a tenant is present")
-	require.Equal(t, "https://acme.us.platform.cloudquery.io", url, "url comes from the token's u claim")
+	require.Equal(t, es.URL, url, "url comes from the token's u claim")
+	require.Equal(t, pinned, gotPinned, "pins fetched with the direct token")
 }
 
-func TestDetectTenant_Disabled(t *testing.T) {
+func TestDetectTenantWithPinnedVersions_DirectToken_NoURL(t *testing.T) {
+	// A legacy token with no url claim still identifies a tenant, but there's
+	// nowhere to fetch pins from.
+	t.Setenv(EnvPlatformToken, cqpdTokenWithClaims(t, map[string]any{"tm": "acme"}))
+	url, pinned, ok := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "", "")
+	require.True(t, ok)
+	require.Empty(t, url)
+	require.Nil(t, pinned)
+}
+
+func TestDetectTenantWithPinnedVersions_Disabled(t *testing.T) {
 	t.Setenv(envDisable, "1")
 	t.Setenv(EnvPlatformToken, cqpdTokenWithURL(t, "https://x.example.com"))
-	_, ok := DetectTenant(context.Background(), "", "")
+	_, _, ok := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "", "")
 	require.False(t, ok, "disable env suppresses detection")
 }
 
-func TestDetectTenant_NoCredentials(t *testing.T) {
-	_, ok := DetectTenant(context.Background(), "", "")
+func TestDetectTenantWithPinnedVersions_NoCredentials(t *testing.T) {
+	_, _, ok := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "", "")
 	require.False(t, ok, "no token and no cloud creds → not detected")
 }
 
-func TestDetectTenant_CloudPath(t *testing.T) {
+func TestDetectTenantWithPinnedVersions_CloudPath(t *testing.T) {
+	pinned := map[string]string{"cloudquery/aws": "v33.0.0"}
+	es := supportedSourceVersionsServer(t, "cqpd_minted.sig", pinned)
 	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{"items": []map[string]any{
 			{"tenant_id": "11111111-1111-1111-1111-111111111111", "status": "active", "team_name": "team-x", "host": "acme.us.platform.cloudquery.io", "subdomain": "acme"},
 		}})
-	}, nil)
+	}, func(w http.ResponseWriter, _ *http.Request) {
+		writeSession(w, "cqpd_minted.sig", es.URL)
+	})
 	t.Setenv(envAPIURL, srv.URL)
 
-	url, ok := DetectTenant(context.Background(), "tok", "team-x")
+	url, gotPinned, ok := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "tok", "team-x")
 	require.True(t, ok)
 	require.Equal(t, "https://acme.us.platform.cloudquery.io", url, "url is built from the active tenant's host")
+	require.Equal(t, pinned, gotPinned, "pins fetched via the minted session")
 }
 
-// DetectTenant must make the SAME multi-tenant decision auto-injection does:
-// skip (report nothing) when a team has several active tenants and no
-// CQ_PLATFORM_TENANT_ID override — otherwise `init` would point the user at a
-// tenant a real sync would refuse to inject into.
-func TestDetectTenant_MultipleActiveTenants(t *testing.T) {
+func TestDetectTenantWithPinnedVersions_MintFails_TenantStillDetected(t *testing.T) {
+	// The tenant is detected (init scaffolds source-only) even when minting — and
+	// thus the pins lookup — fails.
+	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]any{"items": []map[string]any{
+			{"tenant_id": "11111111-1111-1111-1111-111111111111", "status": "active", "team_name": "team-x", "host": "acme.us.platform.cloudquery.io", "subdomain": "acme"},
+		}})
+	}, func(w http.ResponseWriter, _ *http.Request) {
+		http.Error(w, "boom", http.StatusInternalServerError)
+	})
+	t.Setenv(envAPIURL, srv.URL)
+
+	url, pinned, ok := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "tok", "team-x")
+	require.True(t, ok, "tenant is still detected so init scaffolds source-only")
+	require.Equal(t, "https://acme.us.platform.cloudquery.io", url, "url from the tenant host")
+	require.Nil(t, pinned, "no pins when the mint fails")
+}
+
+// DetectTenantWithPinnedVersions must make the SAME multi-tenant decision
+// auto-injection does: skip (report nothing) when a team has several active
+// tenants and no CQ_PLATFORM_TENANT_ID override — otherwise `init` would point
+// the user at a tenant a real sync would refuse to inject into.
+func TestDetectTenantWithPinnedVersions_MultipleActiveTenants(t *testing.T) {
 	twoActive := func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{"items": []map[string]any{
@@ -242,17 +280,22 @@ func TestDetectTenant_MultipleActiveTenants(t *testing.T) {
 	t.Run("ambiguous without override reports nothing", func(t *testing.T) {
 		srv := fakeCloud(t, twoActive, nil)
 		t.Setenv(envAPIURL, srv.URL)
-		_, ok := DetectTenant(context.Background(), "tok", "team-x")
-		require.False(t, ok, "several active tenants + no override is ambiguous; a sync would skip, so DetectTenant must too")
+		_, _, ok := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "tok", "team-x")
+		require.False(t, ok, "several active tenants + no override is ambiguous; a sync would skip, so detection must too")
 	})
 
 	t.Run("override picks the matching tenant", func(t *testing.T) {
-		srv := fakeCloud(t, twoActive, nil)
+		pinned := map[string]string{"cloudquery/gcp": "v18.0.0"}
+		es := supportedSourceVersionsServer(t, "", pinned)
+		srv := fakeCloud(t, twoActive, func(w http.ResponseWriter, _ *http.Request) {
+			writeSession(w, "cqpd_minted.sig", es.URL)
+		})
 		t.Setenv(envAPIURL, srv.URL)
 		t.Setenv(envTenantID, "22222222-2222-2222-2222-222222222222")
-		url, ok := DetectTenant(context.Background(), "tok", "team-x")
+		url, gotPinned, ok := DetectTenantWithPinnedVersions(context.Background(), zerolog.Nop(), "tok", "team-x")
 		require.True(t, ok)
 		require.Equal(t, "https://beta.us.platform.cloudquery.io", url)
+		require.Equal(t, pinned, gotPinned)
 	})
 }
 

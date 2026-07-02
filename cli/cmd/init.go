@@ -348,12 +348,10 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	platformURL, platformTenant := "", false
 	var platformSourceVersions map[string]string
 	if !disablePlatform {
-		platformURL, platformTenant = platform.DetectTenant(ctx, token.Value, team)
-		if platformTenant {
-			// Pinned source versions so the scaffolded spec matches what the tenant
-			// accepts. Best-effort: unavailable → fall back to the hub's latest.
-			platformSourceVersions, _ = platform.PinnedSourceVersions(ctx, log.Logger, token.Value, team)
-		}
+		// One tenant lookup yields both the URL to report and the pinned source
+		// versions to scaffold. Pins are best-effort — unavailable → fall back to
+		// the hub's latest.
+		platformURL, platformSourceVersions, platformTenant = platform.DetectTenantWithPinnedVersions(ctx, log.Logger, token.Value, team)
 	}
 
 	apiClient, err := api.NewAnonymousClient()
