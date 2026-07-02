@@ -70,28 +70,45 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
 	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
-	specReader, err := specs.NewSpecReader(args)
+	// Read without enforcing a destination: a source-only platform spec (as `init`
+	// scaffolds) has none until the platform destination is auto-injected below.
+	// Full validation runs via SetDestinationsAndValidate once destinations are
+	// finalized, so non-platform specs are validated identically to before.
+	specReader, err := specs.NewSpecReaderWithoutValidation(args)
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
 	sources := specReader.Sources
 	destinations := specReader.Destinations
+	transformers := specReader.Transformers
 
-	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, nil)
+	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, transformers)
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
 
-	// For a CloudQuery Platform tenant, reject source versions the tenant can't
-	// ingest up front — the same window the sync-time CreateExternalSync gate
-	// enforces — so users catch it here instead of mid-sync. Only sources opting
-	// into the platform destination are gated; best-effort otherwise.
+	// Platform opt-in: mirror `sync`. Resolve the platform credential, reject
+	// source versions the tenant can't ingest (the same window the sync-time
+	// CreateExternalSync gate enforces), then auto-inject the `platform`
+	// destination — so a source-only platform spec validates exactly as sync would
+	// run it. Non-platform specs skip this entirely and are unaffected.
 	if platform.AnySourceTargetsPlatform(sources) {
-		platformTeam, _ := auth.GetTeamForToken(ctx, authToken)
-		if err := platform.GateSources(ctx, log.Logger, authToken.Value, platformTeam, sources); err != nil {
+		dlToken, teamName, err := platform.DownloadAuth(ctx, log.Logger, sources, destinations, transformers)
+		if err != nil {
+			return err
+		}
+		if err := platform.GateSources(ctx, log.Logger, dlToken, teamName, sources); err != nil {
+			return err
+		}
+		if destinations, err = platform.MaybeInjectDestination(ctx, log.Logger, dlToken, teamName, sources, destinations); err != nil {
 			return err
 		}
 	}
+
+	if err := specReader.SetDestinationsAndValidate(destinations); err != nil {
+		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
+	}
+	destinations = specReader.Destinations
 
 	apiClient, err := api.NewClient(authToken.Value)
 	if err != nil {
@@ -131,6 +148,12 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 	}
 
 	for i, destination := range destinations {
+		// The auto-injected `platform` destination is CLI-generated (a token-based
+		// spec with api_url derived from the token), not user config — sync doesn't
+		// schema-validate it either. The source's version was already gated above.
+		if platform.IsInjectedDestination(destination.Name) {
+			continue
+		}
 		if useHubAPI && destination.Registry == specs.RegistryCloudQuery {
 			if err := validateViaHubAPI(ctx, apiClient, destination.Path, cloudquery_api.PluginKindDestination, destination.Version, destination.Spec); err != nil {
 				initErrors = append(initErrors, fmt.Errorf("failed to validate destination config %v: %w", destination.VersionString(), err))
