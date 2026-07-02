@@ -178,13 +178,18 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 	}
 
 	// Plugin spawn is still required for non-Hub registries (local/grpc/docker).
-	teamName, err := auth.GetTeamForToken(ctx, authToken)
+	// Resolve the download credential + team the same way sync does (DownloadAuth)
+	// so a headless cqpd_ token works here too, and propagate it so spawned plugins
+	// can authenticate premium-table validation / usage against cloud — exactly as
+	// they would under sync (see sync.go).
+	dlToken, teamName, err := platform.DownloadAuth(ctx, log.Logger, sources, destinations, transformers)
 	if err != nil {
-		return fmt.Errorf("failed to get team name: %w", err)
+		return fmt.Errorf("failed to resolve plugin download auth: %w", err)
 	}
+	platform.PropagatePluginCredential(dlToken)
 	opts := []managedplugin.Option{
 		managedplugin.WithLogger(log.Logger),
-		managedplugin.WithAuthToken(authToken.Value),
+		managedplugin.WithAuthToken(dlToken),
 		managedplugin.WithTeamName(teamName),
 	}
 	if logConsole {
