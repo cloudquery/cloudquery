@@ -19,10 +19,10 @@ require (
 	github.com/cloudquery/codegen v0.4.1 // indirect
 	github.com/getsentry/sentry-go v0.46.2 // indirect
 	github.com/invopop/jsonschema v0.14.0 // indirect
-	github.com/mailru/easyjson v0.9.2 // indirect
+	github.com/pb33f/ordered-map/v2 v2.3.1 // indirect
 	github.com/samber/lo v1.53.0 // indirect
-	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
+	go.yaml.in/yaml/v4 v4.0.0-rc.2 // indirect
 	golang.org/x/telemetry v0.0.0-20260409153401-be6f6cb8b1fa // indirect
 )
 
@@ -100,4 +100,4 @@ require (
 )
 
 // github.com/cloudquery/jsonschema @ cqmain
-replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20260327151118-8dfb902740f6
+replace github.com/invopop/jsonschema => github.com/cloudquery/jsonschema v0.0.0-20260703174721-45e7e20e0ed8
