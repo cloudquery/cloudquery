@@ -6,11 +6,11 @@ require (
 	github.com/IBM/sarama v1.50.3
 	github.com/apache/arrow-go/v18 v18.6.0
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/filetypes/v4 v4.7.0
+	github.com/cloudquery/filetypes/v4 v4.7.1
 	github.com/cloudquery/plugin-sdk/v4 v4.95.3
 	github.com/invopop/jsonschema v0.14.0
+	github.com/pb33f/ordered-map/v2 v2.3.1
 	github.com/rs/zerolog v1.35.1
-	github.com/wk8/go-ordered-map/v2 v2.1.8
 )
 
 require (
@@ -64,11 +64,9 @@ require (
 	github.com/jcmturner/rpc/v2 v2.0.3 // indirect
 	github.com/klauspost/compress v1.18.6 // indirect
 	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
-	github.com/mailru/easyjson v0.9.2 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/oapi-codegen/runtime v1.3.0 // indirect
-	github.com/pb33f/ordered-map/v2 v2.3.1 // indirect
 	github.com/pierrec/lz4/v4 v4.1.27 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/rcrowley/go-metrics v0.0.0-20250401214520-65e299d6c5c9 // indirect

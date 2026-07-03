@@ -15,6 +15,7 @@ The following tools / packages are used in this plugin:
 | github.com/beorn7/perks/quantile | MIT |
 | github.com/buger/jsonparser | MIT |
 | github.com/cenkalti/backoff/v5 | MIT |
+| github.com/cenkalti/backoff/v6 | MIT |
 | github.com/cespare/xxhash/v2 | MIT |
 | github.com/chzyer/readline | MIT |
 | github.com/clipperhouse/uax29/v2/graphemes | MIT |
@@ -62,7 +63,6 @@ The following tools / packages are used in this plugin:
 | github.com/knadh/koanf/maps | MIT |
 | github.com/knadh/koanf/providers/confmap | MIT |
 | github.com/knadh/koanf/v2 | MIT |
-| github.com/mailru/easyjson | MIT |
 | github.com/manifoldco/promptui | BSD-3-Clause |
 | github.com/mattn/go-colorable | MIT |
 | github.com/mattn/go-isatty | MIT |
@@ -73,10 +73,10 @@ The following tools / packages are used in this plugin:
 | github.com/moby/docker-image-spec/specs-go/v1 | Apache-2.0 |
 | github.com/modern-go/concurrent | Apache-2.0 |
 | github.com/modern-go/reflect2 | Apache-2.0 |
-| github.com/mostynb/go-grpc-compression | Apache-2.0 |
 | github.com/oapi-codegen/runtime | Apache-2.0 |
 | github.com/opencontainers/go-digest | Apache-2.0 |
 | github.com/opencontainers/image-spec/specs-go | Apache-2.0 |
+| github.com/pb33f/ordered-map/v2 | Apache-2.0 |
 | github.com/pierrec/lz4/v4 | BSD-3-Clause |
 | github.com/pkg/browser | BSD-2-Clause |
 | github.com/pkg/errors | BSD-2-Clause |
@@ -97,7 +97,6 @@ The following tools / packages are used in this plugin:
 | github.com/spf13/cobra | Apache-2.0 |
 | github.com/spf13/pflag | BSD-3-Clause |
 | github.com/thoas/go-funk | MIT |
-| github.com/wk8/go-ordered-map/v2 | Apache-2.0 |
 | github.com/yuin/goldmark | MIT |
 | github.com/zeebo/xxh3 | BSD-2-Clause |
 | go.opentelemetry.io/auto/sdk | Apache-2.0 |
@@ -121,9 +120,9 @@ The following tools / packages are used in this plugin:
 | go.opentelemetry.io/collector/extension/extensionauth | Apache-2.0 |
 | go.opentelemetry.io/collector/extension/extensionmiddleware | Apache-2.0 |
 | go.opentelemetry.io/collector/featuregate | Apache-2.0 |
+| go.opentelemetry.io/collector/internal | Apache-2.0 |
 | go.opentelemetry.io/collector/internal/componentalias | Apache-2.0 |
 | go.opentelemetry.io/collector/internal/sharedcomponent | Apache-2.0 |
-| go.opentelemetry.io/collector/internal/statusutil | Apache-2.0 |
 | go.opentelemetry.io/collector/internal/telemetry | Apache-2.0 |
 | go.opentelemetry.io/collector/pdata | Apache-2.0 |
 | go.opentelemetry.io/collector/pdata/pprofile | Apache-2.0 |
@@ -146,6 +145,7 @@ The following tools / packages are used in this plugin:
 | go.uber.org/multierr | MIT |
 | go.uber.org/zap | MIT |
 | go.yaml.in/yaml/v3 | MIT |
+| go.yaml.in/yaml/v4 | MIT |
 | golang.org/x/crypto | BSD-3-Clause |
 | golang.org/x/exp | BSD-3-Clause |
 | golang.org/x/net | BSD-3-Clause |
@@ -158,4 +158,3 @@ The following tools / packages are used in this plugin:
 | google.golang.org/grpc | Apache-2.0 |
 | google.golang.org/protobuf | BSD-3-Clause |
 | gopkg.in/yaml.v2 | Apache-2.0 |
-| gopkg.in/yaml.v3 | MIT |
