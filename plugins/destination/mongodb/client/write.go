@@ -3,6 +3,8 @@ package client
 import (
 	"context"
 	"fmt"
+	"strings"
+	"time"
 
 	"github.com/goccy/go-json"
 
@@ -80,6 +82,57 @@ func transformArr(arr arrow.Array) []any {
 	return dbArr
 }
 
+func parseTypeSchema(typeSchema string) any {
+	if typeSchema == "" {
+		return nil
+	}
+	var sch any
+	if err := json.Unmarshal([]byte(typeSchema), &sch); err != nil {
+		return nil
+	}
+	return sch
+}
+
+func convertTimestamps(value, sch any) any {
+	switch s := sch.(type) {
+	case map[string]any:
+		obj, ok := value.(map[string]any)
+		if !ok {
+			return value
+		}
+		for field, sub := range s {
+			if v, present := obj[field]; present {
+				obj[field] = convertTimestamps(v, sub)
+			}
+		}
+		return obj
+	case []any:
+		arr, ok := value.([]any)
+		if !ok || len(s) == 0 {
+			return value
+		}
+		for i, v := range arr {
+			arr[i] = convertTimestamps(v, s[0])
+		}
+		return arr
+	case string:
+		if str, ok := value.(string); ok && strings.HasPrefix(s, "timestamp") {
+			if ts, err := parseTimestamp(str); err == nil {
+				return ts
+			}
+		}
+		return value
+	}
+	return value
+}
+
+func parseTimestamp(s string) (time.Time, error) {
+	if ts, err := time.Parse(time.RFC3339Nano, s); err == nil {
+		return ts, nil
+	}
+	return time.Parse(time.RFC3339, s)
+}
+
 func (*Client) transformRecord(table *schema.Table, record arrow.RecordBatch) []any {
 	nc := int(record.NumCols())
 	nr := int(record.NumRows())
@@ -91,6 +144,11 @@ func (*Client) transformRecord(table *schema.Table, record arrow.RecordBatch) []
 	for i := 0; i < nc; i++ {
 		col := record.Column(i)
 		transformed := transformArr(col)
+		if sch := parseTypeSchema(table.Columns[i].TypeSchema); sch != nil {
+			for l := 0; l < nr; l++ {
+				transformed[l] = convertTimestamps(transformed[l], sch)
+			}
+		}
 		for l := 0; l < nr; l++ {
 			documents[l].(bson.M)[table.Columns[i].Name] = transformed[l]
 		}
