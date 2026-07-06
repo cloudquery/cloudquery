@@ -3,6 +3,7 @@ package cmd
 import (
 	"bytes"
 	"cmp"
+	"context"
 	"errors"
 	"fmt"
 	"html/template"
@@ -189,6 +190,27 @@ spec:
 	return &sb
 }
 
+// wildcardTablesRe matches a wildcard table selection — `tables: ['*']` /
+// `tables: ["*"]` / `tables: [*]` — capturing the line's indentation so the
+// replacement block keeps it. Only the all-tables wildcard is replaced; an
+// example config that already lists specific tables is left untouched.
+var wildcardTablesRe = regexp.MustCompile(`(?m)^([ \t]*)tables:[ \t]*\[[ \t]*['"]?\*['"]?[ \t]*\][ \t]*$`)
+
+// withRecommendedTables swaps a wildcard `tables:` selection for a block list of
+// the given tables, preserving indentation. Returns the spec unchanged when it
+// has no wildcard tables line (e.g. an example config with a curated list).
+func withRecommendedTables(yamlSpec string, tables []string) string {
+	return wildcardTablesRe.ReplaceAllStringFunc(yamlSpec, func(match string) string {
+		indent := wildcardTablesRe.FindStringSubmatch(match)[1]
+		var b strings.Builder
+		b.WriteString(indent + "tables:")
+		for _, t := range tables {
+			b.WriteString("\n" + indent + "  - " + t)
+		}
+		return b.String()
+	})
+}
+
 func configForSourcePlugin(source cqapi.ListPlugin, version *cqapi.PluginVersionDetails) string {
 	exampleConfig := extractYamlFromMarkdownCodeBlock(version.ExampleConfig)
 	if exampleConfig != "" {
@@ -271,11 +293,12 @@ func linkForPlugin(plugin cqapi.ListPlugin) string {
 // CloudQuery Platform tenant: no destination block, since the CLI auto-injects
 // the `platform` destination at sync time. It wires the source to that reserved
 // destination name and tells the user where the data will land.
-func writePlatformSourceOnlySpec(apiClient *cqapi.ClientWithResponses, sourcePlugin cqapi.ListPlugin, specPath, platformURL string, pinnedVersions map[string]string) error {
+func writePlatformSourceOnlySpec(ctx context.Context, apiClient *cqapi.ClientWithResponses, sourcePlugin cqapi.ListPlugin, specPath, platformURL string, tenantInit *platform.TenantInit) error {
+	sourcePath := sourcePlugin.TeamName + "/" + sourcePlugin.Name
 	// Prefer the platform-pinned source version over the hub's latest, so the
 	// scaffolded spec targets a version the tenant will accept (the same version
 	// the sync-time gate enforces). Unpinned sources keep LatestVersion.
-	if pinned := pinnedVersions[sourcePlugin.TeamName+"/"+sourcePlugin.Name]; pinned != "" {
+	if pinned := tenantInit.PinnedSourceVersions[sourcePath]; pinned != "" {
 		sourcePlugin.LatestVersion = &pinned
 	}
 	fmt.Printf("Getting configuration for source plugin %s...\n", bold.Sprintf("%s/%s@%s", sourcePlugin.TeamName, sourcePlugin.Name, *sourcePlugin.LatestVersion))
@@ -292,6 +315,12 @@ func writePlatformSourceOnlySpec(apiClient *cqapi.ClientWithResponses, sourcePlu
 	// the destination itself at sync time, so no destination block is written.
 	sourceConfig := configForSourcePlugin(sourcePlugin, sourceVersion)
 	yamlSpec := strings.ReplaceAll(sourceConfig, "DESTINATION_NAME", "platform")
+	// Replace the wildcard table selection with the tables the platform recommends
+	// for this source, so the sync populates the tables the platform ingests. No
+	// recommendation (or a non-wildcard example config) → leave the tables as-is.
+	if recommended := tenantInit.RecommendedTables(ctx, log.Logger, sourcePath); len(recommended) > 0 {
+		yamlSpec = withRecommendedTables(yamlSpec, recommended)
+	}
 	if err := os.WriteFile(specPath, []byte(yamlSpec), 0644); err != nil {
 		return fmt.Errorf("failed to write spec file %w", err)
 	}
@@ -346,16 +375,20 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	// and AI. --disable-platform opts out (normal source+destination spec); an
 	// explicit --destination also takes the normal path.
 	platformURL, platformTenant := "", false
-	var platformSourceVersions map[string]string
+	var tenantInit *platform.TenantInit
 	if !disablePlatform {
-		// One tenant lookup yields both the URL to report and the pinned source
-		// versions to scaffold. Pins are best-effort — unavailable → fall back to
-		// the hub's latest. A detected tenant whose session can't be minted can't
-		// sync, so fail rather than scaffold a spec that would break later.
+		// One tenant lookup + mint yields the URL to report, the pinned source
+		// versions to scaffold, and a session reused for the recommended-tables
+		// lookup below. A detected tenant whose session can't be minted can't sync,
+		// so fail rather than scaffold a spec that would break later.
 		var err error
-		platformURL, platformSourceVersions, platformTenant, err = platform.DetectTenantWithPinnedVersions(ctx, log.Logger, token.Value, team)
+		tenantInit, err = platform.DetectTenantForInit(ctx, log.Logger, token.Value, team)
 		if err != nil {
 			return fmt.Errorf("failed to set up CloudQuery Platform sync (use --disable-platform to scaffold a regular source + destination config): %w", err)
+		}
+		if tenantInit != nil {
+			platformTenant = true
+			platformURL = tenantInit.APIURL
 		}
 	}
 
@@ -439,7 +472,7 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	// Platform tenant + no explicit destination → scaffold a source-only spec;
 	// the CLI auto-injects the platform destination at sync time.
 	if platformTenant && destination == "" {
-		return writePlatformSourceOnlySpec(apiClient, allPlugins[sourceIndex], specPath, platformURL, platformSourceVersions)
+		return writePlatformSourceOnlySpec(ctx, apiClient, allPlugins[sourceIndex], specPath, platformURL, tenantInit)
 	}
 
 	if destination == "" {

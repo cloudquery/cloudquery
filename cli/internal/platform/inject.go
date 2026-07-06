@@ -9,6 +9,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	neturl "net/url"
 	"os"
 	"slices"
 	"strconv"
@@ -87,45 +88,106 @@ type sourceVersion struct {
 	Version string `json:"version"`
 }
 
-// DetectTenantWithPinnedVersions reports the CloudQuery Platform tenant a sync
-// would auto-inject into — so `init` can skip the destination, tell the user
-// where data lands, and scaffold the versions that tenant pins. ok is true when a
-// platform-init scenario applies; apiURL is the tenant base URL (host only, no
-// /api), which may be empty if a directly supplied CQ_PLATFORM_TOKEN predates
-// url-carrying tokens. Resolving the tenant and minting happen once here, rather
-// than once per helper.
-//
-// A non-nil err means a tenant was detected but its platform destination session
-// couldn't be minted — the platform sync can't run, so init should fail now
-// rather than scaffold a source-only spec that would break at sync time. A team
-// with no/ambiguous tenant is not an error (ok=false): init just uses its normal
-// source + destination flow. pinnedVersions is best-effort and may be nil even on
-// success (the versions lookup failed) — init then falls back to the hub's latest.
-func DetectTenantWithPinnedVersions(ctx context.Context, logger zerolog.Logger, cloudToken, teamName string) (apiURL string, pinnedVersions map[string]string, ok bool, err error) {
+// TenantInit carries what `init` needs about the CloudQuery Platform tenant a
+// sync would auto-inject into, resolved in a single tenant lookup + mint: the URL
+// to report, the pinned source versions to scaffold, and a session for further
+// /external-syncs/* lookups (RecommendedTables). A nil *TenantInit from
+// DetectTenantForInit means no platform-init scenario applies and init should use
+// its normal source + destination flow.
+type TenantInit struct {
+	// APIURL is the tenant base URL to show the user (host only, no /api). May be
+	// empty if a directly supplied CQ_PLATFORM_TOKEN predates url-carrying tokens.
+	APIURL string
+	// PinnedSourceVersions maps source plugin path -> pinned version. Best-effort:
+	// nil when the lookup failed, so init falls back to the hub's latest.
+	PinnedSourceVersions map[string]string
+
+	// token + endpointBase reach /external-syncs/* for later per-plugin lookups,
+	// reusing the same session so init mints at most once.
+	token        string
+	endpointBase string
+}
+
+// DetectTenantForInit resolves the platform tenant for `init` in one pass. Returns
+// nil (no error) when no tenant applies — a team with no/ambiguous tenant, or the
+// disable env — so init just uses its normal flow. A non-nil error means a tenant
+// was detected but its session couldn't be minted: the platform sync can't run,
+// so init should fail now rather than scaffold a spec that breaks at sync time.
+func DetectTenantForInit(ctx context.Context, logger zerolog.Logger, cloudToken, teamName string) (*TenantInit, error) {
 	if os.Getenv(envDisable) == "1" {
-		return "", nil, false, nil
+		return nil, nil
 	}
-	// A directly supplied cqpd_ token already identifies the tenant and carries
-	// its URL; the pins are fetched with that same token.
+	// A directly supplied cqpd_ token already identifies the tenant and carries its
+	// URL; pins + recommended tables are fetched with that same token.
 	if t := platformToken(); t != "" {
 		u := apiURLFromToken(t)
 		if u == "" {
-			return "", nil, true, nil // tenant present, but no url to fetch pins from
+			return &TenantInit{}, nil // tenant present, but no url to reach endpoints
 		}
-		return u, fetchSupportedSourceVersions(ctx, logger, t, u), true, nil
+		return &TenantInit{
+			APIURL:               u,
+			PinnedSourceVersions: fetchSupportedSourceVersions(ctx, logger, t, u),
+			token:                t,
+			endpointBase:         u,
+		}, nil
 	}
 	cl, tenant, resolved := resolveCloudTenant(ctx, logger, cloudToken, teamName)
 	if !resolved {
-		return "", nil, false, nil
+		return nil, nil
 	}
 	// Mint once to reach /external-syncs/*. A detected tenant that can't mint a
 	// session can't run a platform sync either, so surface it rather than emit a
 	// spec that fails later.
 	session, _, err := mintSession(ctx, cl, tenant)
 	if err != nil {
-		return "", nil, false, fmt.Errorf("mint platform destination session for tenant %s: %w", tenant.TenantId, err)
+		return nil, fmt.Errorf("mint platform destination session for tenant %s: %w", tenant.TenantId, err)
 	}
-	return "https://" + tenant.Host, fetchSupportedSourceVersions(ctx, logger, session.Token, session.ApiUrl), true, nil
+	return &TenantInit{
+		APIURL:               "https://" + tenant.Host,
+		PinnedSourceVersions: fetchSupportedSourceVersions(ctx, logger, session.Token, session.ApiUrl),
+		token:                session.Token,
+		endpointBase:         session.ApiUrl,
+	}, nil
+}
+
+// RecommendedTables returns the tables the platform recommends syncing for the
+// given source plugin path, from GET /external-syncs/recommended-tables, reusing
+// the session resolved by DetectTenantForInit (no extra mint). Best-effort: nil
+// when there's no session or the lookup fails / returns nothing, so init falls
+// back to `tables: ['*']`.
+func (ti *TenantInit) RecommendedTables(ctx context.Context, logger zerolog.Logger, sourcePath string) []string {
+	if ti == nil || ti.token == "" || sourcePath == "" {
+		return nil
+	}
+	base := externalSyncsURL(ti.endpointBase, "/external-syncs/recommended-tables")
+	url := base + "?path=" + neturl.QueryEscape(sourcePath)
+
+	ctx, cancel := context.WithTimeout(ctx, requestTimeout)
+	defer cancel()
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	if err != nil {
+		logger.Debug().Err(err).Str("url", url).Msg("platform: failed to build recommended-tables request")
+		return nil
+	}
+	req.Header.Set("Authorization", "Bearer "+ti.token)
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		logger.Debug().Err(err).Str("url", url).Msg("platform: recommended-tables lookup failed")
+		return nil
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		logger.Debug().Int("status", resp.StatusCode).Str("url", url).Msg("platform: recommended-tables returned non-200")
+		return nil
+	}
+	var body struct {
+		Tables []string `json:"tables"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
+		logger.Debug().Err(err).Msg("platform: failed to decode recommended-tables")
+		return nil
+	}
+	return body.Tables
 }
 
 // resolveCloudTenant resolves the single active tenant for the team (the

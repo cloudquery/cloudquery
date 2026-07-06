@@ -314,3 +314,35 @@ func Test_configForDestinationPlugin(t *testing.T) {
 		})
 	}
 }
+
+func Test_withRecommendedTables(t *testing.T) {
+	base := "kind: source\nspec:\n  name: aws\n  path: cloudquery/aws\n  version: v1.0.0\n"
+	rec := []string{"aws_ec2_instances", "aws_s3_buckets"}
+
+	t.Run("replaces single-quoted wildcard with a block list", func(t *testing.T) {
+		got := withRecommendedTables(base+"  tables: ['*']\n  destinations: [platform]\n", rec)
+		require.Contains(t, got, "  tables:\n    - aws_ec2_instances\n    - aws_s3_buckets\n")
+		require.NotContains(t, got, "'*'")
+		require.Contains(t, got, "destinations: [platform]", "other lines untouched")
+	})
+
+	t.Run("replaces double-quoted wildcard", func(t *testing.T) {
+		got := withRecommendedTables(base+`  tables: ["*"]`+"\n", rec)
+		require.Contains(t, got, "  tables:\n    - aws_ec2_instances\n    - aws_s3_buckets")
+	})
+
+	t.Run("leaves a curated (non-wildcard) tables list untouched", func(t *testing.T) {
+		curated := base + "  tables: [aws_iam_users]\n"
+		require.Equal(t, curated, withRecommendedTables(curated, rec))
+	})
+
+	t.Run("produces a parseable spec with exactly the recommended tables", func(t *testing.T) {
+		got := withRecommendedTables(base+"  tables: ['*']\n  destinations: [platform]\n", rec)
+		specPath := path.Join(t.TempDir(), "spec.yaml")
+		require.NoError(t, os.WriteFile(specPath, []byte(got), 0644))
+		sr, err := specs.NewRelaxedSpecReader([]string{specPath})
+		require.NoError(t, err)
+		require.Len(t, sr.Sources, 1)
+		require.Equal(t, rec, sr.Sources[0].Tables)
+	})
+}
