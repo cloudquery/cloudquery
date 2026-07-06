@@ -16,8 +16,8 @@ The following tools / packages are used in this plugin:
 | github.com/aws/aws-sdk-go-v2/feature/ec2/imds | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/internal/configsources | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 | Apache-2.0 |
-| github.com/aws/aws-sdk-go-v2/internal/ini | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/internal/sync/singleflight | BSD-3-Clause |
+| github.com/aws/aws-sdk-go-v2/internal/v4a | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/service/internal/presigned-url | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/service/licensemanager | Apache-2.0 |
@@ -30,8 +30,8 @@ The following tools / packages are used in this plugin:
 | github.com/aws/smithy-go/internal/sync/singleflight | BSD-3-Clause |
 | github.com/bahlo/generic-list-go | BSD-3-Clause |
 | github.com/buger/jsonparser | MIT |
-| github.com/cenkalti/backoff/v4 | MIT |
 | github.com/cenkalti/backoff/v5 | MIT |
+| github.com/cenkalti/backoff/v6 | MIT |
 | github.com/cespare/xxhash/v2 | MIT |
 | github.com/cloudquery/cloudquery-api-go | MPL-2.0 |
 | github.com/cloudquery/codegen/jsonschema/docs | MPL-2.0 |
@@ -63,10 +63,10 @@ The following tools / packages are used in this plugin:
 | github.com/klauspost/compress | Apache-2.0 |
 | github.com/klauspost/compress/internal/snapref | BSD-3-Clause |
 | github.com/klauspost/compress/zstd/internal/xxhash | MIT |
-| github.com/mailru/easyjson | MIT |
 | github.com/mattn/go-colorable | MIT |
 | github.com/mattn/go-isatty | MIT |
 | github.com/oapi-codegen/runtime | Apache-2.0 |
+| github.com/pb33f/ordered-map/v2 | Apache-2.0 |
 | github.com/pierrec/lz4/v4 | BSD-3-Clause |
 | github.com/pmezard/go-difflib/difflib | BSD-3-Clause |
 | github.com/rs/zerolog | MIT |
@@ -78,7 +78,6 @@ The following tools / packages are used in this plugin:
 | github.com/stoewer/go-strcase | MIT |
 | github.com/stretchr/testify | MIT |
 | github.com/thoas/go-funk | MIT |
-| github.com/wk8/go-ordered-map/v2 | Apache-2.0 |
 | github.com/zeebo/xxh3 | BSD-2-Clause |
 | go.opentelemetry.io/auto/sdk | Apache-2.0 |
 | go.opentelemetry.io/otel | Apache-2.0 |
@@ -93,6 +92,7 @@ The following tools / packages are used in this plugin:
 | go.opentelemetry.io/otel/sdk/metric | Apache-2.0 |
 | go.opentelemetry.io/otel/trace | Apache-2.0 |
 | go.opentelemetry.io/proto/otlp | Apache-2.0 |
+| go.yaml.in/yaml/v4 | MIT |
 | golang.org/x/exp | BSD-3-Clause |
 | golang.org/x/net | BSD-3-Clause |
 | golang.org/x/sync/errgroup | BSD-3-Clause |
