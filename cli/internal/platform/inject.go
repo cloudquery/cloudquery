@@ -127,9 +127,17 @@ func DetectTenantForInit(ctx context.Context, logger zerolog.Logger, cloudToken,
 		if u == "" {
 			return &TenantInit{}, nil // tenant present, but no url to reach endpoints
 		}
+		// This same call validates the token: an explicit env token that the tenant
+		// rejects (expired/revoked/wrong tenant) means the platform sync can't run,
+		// so fail now rather than scaffold a spec that 401s at sync time. Other
+		// failures stay best-effort (nil pins → hub latest).
+		pins, err := fetchSupportedSourceVersions(ctx, logger, t, u)
+		if errors.Is(err, errPlatformUnauthorized) {
+			return nil, fmt.Errorf("the platform token in your environment (%s, or a %s CLOUDQUERY_API_KEY) is invalid or expired — mint a fresh token, unset it, or pass --disable-platform", EnvPlatformToken, cqpdPrefix)
+		}
 		return &TenantInit{
 			APIURL:               u,
-			PinnedSourceVersions: fetchSupportedSourceVersions(ctx, logger, t, u),
+			PinnedSourceVersions: pins,
 			token:                t,
 			endpointBase:         u,
 		}, nil
@@ -145,9 +153,12 @@ func DetectTenantForInit(ctx context.Context, logger zerolog.Logger, cloudToken,
 	if err != nil {
 		return nil, fmt.Errorf("mint platform destination session for tenant %s: %w", tenant.TenantId.String(), err)
 	}
+	// The session was just minted, so a 401 here would be a server anomaly, not
+	// user-fixable — keep pins best-effort rather than failing init.
+	pins, _ := fetchSupportedSourceVersions(ctx, logger, session.Token, session.ApiUrl)
 	return &TenantInit{
 		APIURL:               "https://" + tenant.Host,
-		PinnedSourceVersions: fetchSupportedSourceVersions(ctx, logger, session.Token, session.ApiUrl),
+		PinnedSourceVersions: pins,
 		token:                session.Token,
 		endpointBase:         session.ApiUrl,
 	}, nil
@@ -371,15 +382,25 @@ func PinnedSourceVersions(ctx context.Context, logger zerolog.Logger, cloudToken
 	if !ok {
 		return nil, false
 	}
-	versions := fetchSupportedSourceVersions(ctx, logger, token, apiURL)
+	// Best-effort (fail-open) even on an auth rejection: the version gate is a UX
+	// check, not a security boundary.
+	versions, _ := fetchSupportedSourceVersions(ctx, logger, token, apiURL)
 	return versions, versions != nil
 }
 
+// errPlatformUnauthorized means the platform rejected the token (401/403) —
+// expired, revoked, secret-rotated, or scoped to a dead tenant. Distinguished
+// from other failures so an explicit CQ_PLATFORM_TOKEN can fail init early rather
+// than silently degrade; every other failure stays best-effort (nil, nil).
+var errPlatformUnauthorized = errors.New("platform rejected the token")
+
 // fetchSupportedSourceVersions GETs /external-syncs/supported-source-versions
-// with an already-minted cqpd_ token and returns the pinned path->version map, or
-// nil on any failure (best-effort). Shared by PinnedSourceVersions and the init
-// tenant-detection path, which resolve the token/apiURL differently.
-func fetchSupportedSourceVersions(ctx context.Context, logger zerolog.Logger, cqpdToken, apiURL string) map[string]string {
+// with an already-minted cqpd_ token and returns the pinned path->version map.
+// Returns errPlatformUnauthorized on a 401/403; (nil, nil) on any other failure
+// (best-effort). Shared by PinnedSourceVersions and the init tenant-detection
+// path, which resolve the token/apiURL differently and treat the auth error
+// differently.
+func fetchSupportedSourceVersions(ctx context.Context, logger zerolog.Logger, cqpdToken, apiURL string) (map[string]string, error) {
 	url := externalSyncsURL(apiURL, "/external-syncs/supported-source-versions")
 
 	ctx, cancel := context.WithTimeout(ctx, requestTimeout)
@@ -387,25 +408,29 @@ func fetchSupportedSourceVersions(ctx context.Context, logger zerolog.Logger, cq
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
 		logger.Debug().Err(err).Str("url", url).Msg("platform: failed to build supported-source-versions request")
-		return nil
+		return nil, nil
 	}
 	req.Header.Set("Authorization", "Bearer "+cqpdToken)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		logger.Debug().Err(err).Str("url", url).Msg("platform: supported-source-versions lookup failed")
-		return nil
+		return nil, nil
 	}
 	defer resp.Body.Close()
+	if resp.StatusCode == http.StatusUnauthorized || resp.StatusCode == http.StatusForbidden {
+		logger.Debug().Int("status", resp.StatusCode).Str("url", url).Msg("platform: supported-source-versions rejected the token")
+		return nil, errPlatformUnauthorized
+	}
 	if resp.StatusCode != http.StatusOK {
 		logger.Debug().Int("status", resp.StatusCode).Str("url", url).Msg("platform: supported-source-versions returned non-200")
-		return nil
+		return nil, nil
 	}
 	var versions map[string]string
 	if err := json.NewDecoder(resp.Body).Decode(&versions); err != nil {
 		logger.Debug().Err(err).Msg("platform: failed to decode supported-source-versions")
-		return nil
+		return nil, nil
 	}
-	return versions
+	return versions, nil
 }
 
 // AnySourceTargetsPlatform reports whether any source opts into the platform

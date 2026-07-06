@@ -323,6 +323,59 @@ func TestDetectTenantForInit_MintOK_PinsUnavailable_NoError(t *testing.T) {
 	require.Nil(t, ti.PinnedSourceVersions, "pins unavailable → nil, init falls back to hub latest")
 }
 
+func TestDetectTenantForInit_DirectToken_Unauthorized_Errors(t *testing.T) {
+	// An expired/rejected env CQ_PLATFORM_TOKEN must fail init early rather than
+	// silently scaffold a spec that 401s at sync time.
+	es := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
+	}))
+	defer es.Close()
+	t.Setenv(EnvPlatformToken, cqpdTokenWithClaims(t, map[string]any{"u": es.URL}))
+
+	ti, err := DetectTenantForInit(context.Background(), zerolog.Nop(), "", "")
+	require.Error(t, err, "a rejected env token fails init early")
+	require.ErrorContains(t, err, "invalid or expired")
+	require.Nil(t, ti)
+}
+
+func TestDetectTenantForInit_DirectToken_ServerError_BestEffort(t *testing.T) {
+	// A non-auth failure (500) stays best-effort — init proceeds without pins.
+	es := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		http.Error(w, "boom", http.StatusInternalServerError)
+	}))
+	defer es.Close()
+	t.Setenv(EnvPlatformToken, cqpdTokenWithClaims(t, map[string]any{"u": es.URL}))
+
+	ti, err := DetectTenantForInit(context.Background(), zerolog.Nop(), "", "")
+	require.NoError(t, err, "a non-auth failure doesn't fail init")
+	require.NotNil(t, ti)
+	require.Nil(t, ti.PinnedSourceVersions)
+}
+
+func TestDetectTenantForInit_MintOK_PinsUnauthorized_BestEffort(t *testing.T) {
+	// The session was just minted, so a 401 from the pins lookup is a server
+	// anomaly, not user-fixable — init still proceeds (unlike the direct-token
+	// path, which the user can fix by refreshing/unsetting the env token).
+	es := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
+	}))
+	defer es.Close()
+	srv := fakeCloud(t, func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]any{"items": []map[string]any{
+			{"tenant_id": "11111111-1111-1111-1111-111111111111", "status": "active", "team_name": "team-x", "host": "acme.us.platform.cloudquery.io", "subdomain": "acme"},
+		}})
+	}, func(w http.ResponseWriter, _ *http.Request) {
+		writeSession(w, "cqpd_minted.sig", es.URL)
+	})
+	t.Setenv(envAPIURL, srv.URL)
+
+	ti, err := DetectTenantForInit(context.Background(), zerolog.Nop(), "tok", "team-x")
+	require.NoError(t, err, "a fresh-minted session's 401 doesn't fail init")
+	require.NotNil(t, ti)
+	require.Nil(t, ti.PinnedSourceVersions)
+}
+
 // DetectTenantForInit must make the SAME multi-tenant decision auto-injection
 // does: skip (report nothing) when a team has several active tenants and no
 // CQ_PLATFORM_TENANT_ID override — otherwise `init` would point the user at a
