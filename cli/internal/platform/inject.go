@@ -14,6 +14,7 @@ import (
 	"slices"
 	"strconv"
 	"strings"
+	gosync "sync"
 	"time"
 
 	"github.com/Masterminds/semver"
@@ -25,6 +26,7 @@ import (
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
 	specs "github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/rs/zerolog"
+	zlog "github.com/rs/zerolog/log"
 	"google.golang.org/grpc/status"
 )
 
@@ -231,12 +233,29 @@ func apiURLFromToken(token string) string {
 // helper so download, injection, and tenant detection treat both envs alike.
 func platformToken() string {
 	if t := os.Getenv(EnvPlatformToken); t != "" {
+		warnTeamMismatchOnce(t)
 		return t
 	}
 	if k := os.Getenv("CLOUDQUERY_API_KEY"); strings.HasPrefix(k, cqpdPrefix) {
+		warnTeamMismatchOnce(k)
 		return k
 	}
 	return ""
+}
+
+// warnTeamMismatchOnce surfaces the team mismatch at the platformToken()
+// chokepoint so every consumer (init, validate-config, sync, migrate) warns
+// without each entry point remembering to — and only once per run, since
+// several of them read the token during a single command.
+var teamMismatchOnce gosync.Once
+
+func warnTeamMismatchOnce(token string) {
+	teamMismatchOnce.Do(func() {
+		if msg := teamMismatchWarning(TeamFromToken(token)); msg != "" {
+			zlog.Warn().Msg(msg)
+			fmt.Fprintln(os.Stderr, msg)
+		}
+	})
 }
 
 // PropagatePluginCredential makes a headless cqpd_ token available to spawned
@@ -466,12 +485,7 @@ func GateSources(ctx context.Context, logger zerolog.Logger, cloudToken, teamNam
 // env read keeps sync and migrate from drifting.
 func DownloadAuth(ctx context.Context, logger zerolog.Logger, sources []*specs.Source, destinations []*specs.Destination, transformers []*specs.Transformer) (token, team string, err error) {
 	if t := platformToken(); t != "" {
-		tokenTeam := TeamFromToken(t)
-		if msg := teamMismatchWarning(tokenTeam); msg != "" {
-			logger.Warn().Msg(msg)
-			fmt.Fprintln(os.Stderr, msg)
-		}
-		return t, tokenTeam, nil
+		return t, TeamFromToken(t), nil
 	}
 	authToken, err := cqauth.GetAuthTokenIfNeeded(logger, sources, destinations, transformers)
 	if err != nil {
