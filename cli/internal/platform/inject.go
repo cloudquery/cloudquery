@@ -140,7 +140,7 @@ func DetectTenantForInit(ctx context.Context, logger zerolog.Logger, cloudToken,
 	// spec that fails later.
 	session, _, err := mintSession(ctx, cl, tenant)
 	if err != nil {
-		return nil, fmt.Errorf("mint platform destination session for tenant %s: %w", tenant.TenantId, err)
+		return nil, fmt.Errorf("mint platform destination session for tenant %s: %w", tenant.TenantId.String(), err)
 	}
 	return &TenantInit{
 		APIURL:               "https://" + tenant.Host,
@@ -601,7 +601,7 @@ func MaybeInjectDestination(ctx context.Context, logger zerolog.Logger, token, t
 		// targets a destination that was never injected. (Same stance as the
 		// ambiguous-tenant case above.) Reachable only past the opt-in guard, so a
 		// non-platform sync never gets here.
-		return destinations, fmt.Errorf("failed to set up CloudQuery Platform destination for tenant %s: %w", tenant.TenantId, err)
+		return destinations, fmt.Errorf("failed to set up CloudQuery Platform destination for tenant %s: %w", tenant.TenantId.String(), err)
 	}
 
 	return injectPlatformDestination(logger, destinations, sources, session.Token, platformPluginVersion, tenant.TenantId.String()), nil

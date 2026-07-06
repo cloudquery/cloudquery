@@ -330,7 +330,13 @@ func writePlatformSourceOnlySpec(ctx context.Context, apiClient *cqapi.ClientWit
 
 	successful.Println("Sync spec file generated successfully!")
 	fmt.Println()
-	fmt.Printf("This sync will write to your CloudQuery Platform at %s\n", bold.Sprint(platformURL))
+	// platformURL is empty for a legacy CQ_PLATFORM_TOKEN with no url claim; omit
+	// the "at <url>" tail rather than printing a blank one.
+	if platformURL != "" {
+		fmt.Printf("This sync will write to your CloudQuery Platform at %s\n", bold.Sprint(platformURL))
+	} else {
+		fmt.Println("This sync will write to your CloudQuery Platform.")
+	}
 	fmt.Println()
 	fmt.Println("Next steps:")
 	fmt.Printf("1. Review %s and fill in the source's authentication details:\n", bold.Sprint(specPath))
