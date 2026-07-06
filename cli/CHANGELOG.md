@@ -5,6 +5,26 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.39.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.38.0...cli-v6.39.0) (2026-07-06)
+
+
+### Features
+
+* Pin platform plugin versions in init and validate-config ([#23045](https://github.com/cloudquery/cloudquery/issues/23045)) ([acd54da](https://github.com/cloudquery/cloudquery/commit/acd54da704834313e8ca75e3d18a59a6b1c489e0))
+
+
+### Bug Fixes
+
+* **deps:** Update alpine Docker tag to v3.24.1 ([#23017](https://github.com/cloudquery/cloudquery/issues/23017)) ([c36126e](https://github.com/cloudquery/cloudquery/commit/c36126ec4b5efeb60acd0784f78e9d2cfe9fe2eb))
+* **deps:** Update github.com/cloudquery/jsonschema digest to 45e7e20 ([#23047](https://github.com/cloudquery/cloudquery/issues/23047)) ([0eebce9](https://github.com/cloudquery/cloudquery/commit/0eebce9592d70f52dbb8daaf73ba4c4d71a02906))
+* **deps:** Update golang.org/x/exp digest to c48552f ([#23008](https://github.com/cloudquery/cloudquery/issues/23008)) ([a236ecf](https://github.com/cloudquery/cloudquery/commit/a236ecfc64f5d8e448aebb0ff7ec15810b533207))
+* **deps:** Update module github.com/cenkalti/backoff/v5 to v6 ([#23043](https://github.com/cloudquery/cloudquery/issues/23043)) ([14fcaf7](https://github.com/cloudquery/cloudquery/commit/14fcaf7cd46a2d84b1af218262f304f20540eeb4))
+* **deps:** Update module github.com/getsentry/sentry-go to v0.47.0 ([#23027](https://github.com/cloudquery/cloudquery/issues/23027)) ([855fb4e](https://github.com/cloudquery/cloudquery/commit/855fb4e56f5fb9ab7f69ccffa40a02fb89bfc2f1))
+* **deps:** Update module github.com/jedib0t/go-pretty/v6 to v6.8.1 ([#23030](https://github.com/cloudquery/cloudquery/issues/23030)) ([c7ca3ae](https://github.com/cloudquery/cloudquery/commit/c7ca3ae991edfc6a83be0e8c4ad40266b8de75de))
+* **deps:** Update module golang.org/x/net to v0.56.0 ([#23033](https://github.com/cloudquery/cloudquery/issues/23033)) ([43c367a](https://github.com/cloudquery/cloudquery/commit/43c367a645b5e26781b06039a0780cffb40bb2cd))
+* **deps:** Update opentelemetry-collector monorepo ([#23036](https://github.com/cloudquery/cloudquery/issues/23036)) ([b200865](https://github.com/cloudquery/cloudquery/commit/b200865dac908af13861ba4e6992b0428b3573ad))
+* **deps:** Update opentelemetry-go monorepo ([#23037](https://github.com/cloudquery/cloudquery/issues/23037)) ([046dcd6](https://github.com/cloudquery/cloudquery/commit/046dcd67c7ff188d7fac19f87be2869a0bf9f689))
+
 ## [6.38.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.37.0...cli-v6.38.0) (2026-06-30)
 
 
