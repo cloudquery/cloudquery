@@ -156,7 +156,7 @@ func DetectTenantForInit(ctx context.Context, logger zerolog.Logger, cloudToken,
 // when there's no session or the lookup fails / returns nothing, so init falls
 // back to `tables: ['*']`.
 func (ti *TenantInit) RecommendedTables(ctx context.Context, logger zerolog.Logger, sourcePath string) []string {
-	if ti == nil || ti.token == "" || sourcePath == "" {
+	if ti == nil || ti.token == "" || ti.endpointBase == "" || sourcePath == "" {
 		return nil
 	}
 	base := externalSyncsURL(ti.endpointBase, "/external-syncs/recommended-tables")

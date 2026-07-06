@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"slices"
 	"strings"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
@@ -87,14 +88,38 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
 
+	// Resolve the plugin download credential + team at most once (mirrors sync's
+	// DownloadAuth), shared by the platform opt-in block and the plugin-spawn path
+	// below. Lazy: only invoked when actually needed, so pure-Hub-API validation of
+	// public plugins never requires auth.
+	var dlToken, teamName string
+	downloadAuthResolved := false
+	resolveDownloadAuth := func() error {
+		if downloadAuthResolved {
+			return nil
+		}
+		var err error
+		if dlToken, teamName, err = platform.DownloadAuth(ctx, log.Logger, sources, destinations, transformers); err != nil {
+			return err
+		}
+		downloadAuthResolved = true
+		return nil
+	}
+
+	// A user-declared `platform` destination (debugging/override) is validated
+	// normally below; only the CLI-injected one is skipped. Capture it before
+	// injection, which may add one.
+	userPlatformDest := slices.ContainsFunc(destinations, func(d *specs.Destination) bool {
+		return platform.IsInjectedDestination(d.Name)
+	})
+
 	// Platform opt-in: mirror `sync`. Resolve the platform credential, reject
 	// source versions the tenant can't ingest (the same window the sync-time
 	// CreateExternalSync gate enforces), then auto-inject the `platform`
 	// destination — so a source-only platform spec validates exactly as sync would
 	// run it. Non-platform specs skip this entirely and are unaffected.
 	if platform.AnySourceTargetsPlatform(sources) {
-		dlToken, teamName, err := platform.DownloadAuth(ctx, log.Logger, sources, destinations, transformers)
-		if err != nil {
+		if err := resolveDownloadAuth(); err != nil {
 			return err
 		}
 		if err := platform.GateSources(ctx, log.Logger, dlToken, teamName, sources); err != nil {
@@ -148,10 +173,12 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 	}
 
 	for i, destination := range destinations {
-		// The auto-injected `platform` destination is CLI-generated (a token-based
-		// spec with api_url derived from the token), not user config — sync doesn't
-		// schema-validate it either. The source's version was already gated above.
-		if platform.IsInjectedDestination(destination.Name) {
+		// Skip the auto-injected `platform` destination — CLI-generated (a
+		// token-based spec with api_url derived from the token), not user config;
+		// sync doesn't schema-validate it either, and the source's version was
+		// already gated above. A user-declared `platform` override is NOT skipped:
+		// it's validated through the normal path below.
+		if platform.IsInjectedDestination(destination.Name) && !userPlatformDest {
 			continue
 		}
 		if useHubAPI && destination.Registry == specs.RegistryCloudQuery {
@@ -178,12 +205,10 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 	}
 
 	// Plugin spawn is still required for non-Hub registries (local/grpc/docker).
-	// Resolve the download credential + team the same way sync does (DownloadAuth)
-	// so a headless cqpd_ token works here too, and propagate it so spawned plugins
-	// can authenticate premium-table validation / usage against cloud — exactly as
-	// they would under sync (see sync.go).
-	dlToken, teamName, err := platform.DownloadAuth(ctx, log.Logger, sources, destinations, transformers)
-	if err != nil {
+	// Reuse the download credential + team resolved above (or resolve now if this
+	// is a non-platform spec) — same as sync — and propagate it so spawned plugins
+	// authenticate premium-table validation / usage against cloud (see sync.go).
+	if err := resolveDownloadAuth(); err != nil {
 		return fmt.Errorf("failed to resolve plugin download auth: %w", err)
 	}
 	platform.PropagatePluginCredential(dlToken)

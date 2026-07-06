@@ -200,6 +200,9 @@ var wildcardTablesRe = regexp.MustCompile(`(?m)^([ \t]*)tables:[ \t]*\[[ \t]*['"
 // the given tables, preserving indentation. Returns the spec unchanged when it
 // has no wildcard tables line (e.g. an example config with a curated list).
 func withRecommendedTables(yamlSpec string, tables []string) string {
+	if len(tables) == 0 {
+		return yamlSpec // never blank out the wildcard with an empty list
+	}
 	return wildcardTablesRe.ReplaceAllStringFunc(yamlSpec, func(match string) string {
 		indent := wildcardTablesRe.FindStringSubmatch(match)[1]
 		var b strings.Builder
