@@ -334,7 +334,7 @@ func TestDetectTenantForInit_DirectToken_Unauthorized_Errors(t *testing.T) {
 
 	ti, err := DetectTenantForInit(context.Background(), zerolog.Nop(), "", "")
 	require.Error(t, err, "a rejected env token fails init early")
-	require.ErrorContains(t, err, "invalid or expired")
+	require.ErrorContains(t, err, "expired")
 	require.Nil(t, ti)
 }
 
@@ -794,9 +794,9 @@ func TestPinnedSourceVersions_DirectToken(t *testing.T) {
 	tok = cqpdTokenWithClaims(t, map[string]any{"u": es.URL})
 	t.Setenv(EnvPlatformToken, tok)
 
-	got, ok := PinnedSourceVersions(context.Background(), zerolog.Nop(), "", "")
-	require.True(t, ok, "a direct cqpd_ token resolves pinned versions without cloud")
-	require.Equal(t, pinned, got)
+	got, err := PinnedSourceVersions(context.Background(), zerolog.Nop(), "", "")
+	require.NoError(t, err)
+	require.Equal(t, pinned, got, "a direct cqpd_ token resolves pinned versions without cloud")
 }
 
 func TestPinnedSourceVersions_LoginMintsAndFetches(t *testing.T) {
@@ -808,14 +808,28 @@ func TestPinnedSourceVersions_LoginMintsAndFetches(t *testing.T) {
 	})
 	t.Setenv(envAPIURL, srv.URL)
 
-	got, ok := PinnedSourceVersions(context.Background(), zerolog.Nop(), "tok", "team-x")
-	require.True(t, ok, "logged-in flow mints a session then fetches pinned versions")
-	require.Equal(t, pinned, got)
+	got, err := PinnedSourceVersions(context.Background(), zerolog.Nop(), "tok", "team-x")
+	require.NoError(t, err)
+	require.Equal(t, pinned, got, "logged-in flow mints a session then fetches pinned versions")
 }
 
-func TestPinnedSourceVersions_NoTenant_NotOK(t *testing.T) {
-	got, ok := PinnedSourceVersions(context.Background(), zerolog.Nop(), "", "")
-	require.False(t, ok, "no token and no cloud creds → nothing to resolve")
+func TestPinnedSourceVersions_NoTenant_Nil(t *testing.T) {
+	got, err := PinnedSourceVersions(context.Background(), zerolog.Nop(), "", "")
+	require.NoError(t, err, "no token and no cloud creds → nothing to resolve, no error")
+	require.Nil(t, got)
+}
+
+func TestPinnedSourceVersions_DirectToken_Unauthorized(t *testing.T) {
+	// A rejected direct env token propagates errPlatformUnauthorized so the gate
+	// (validate-config) fails instead of silently passing.
+	es := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
+	}))
+	defer es.Close()
+	t.Setenv(EnvPlatformToken, cqpdTokenWithClaims(t, map[string]any{"u": es.URL}))
+
+	got, err := PinnedSourceVersions(context.Background(), zerolog.Nop(), "", "")
+	require.ErrorIs(t, err, errPlatformUnauthorized)
 	require.Nil(t, got)
 }
 
@@ -892,6 +906,23 @@ func TestGateSources_VersionsUnavailable_FailOpen(t *testing.T) {
 		{Metadata: specs.Metadata{Name: "aws", Path: "cloudquery/aws", Version: "v99.0.0"}, Destinations: []string{"platform"}},
 	}
 	require.NoError(t, GateSources(context.Background(), zerolog.Nop(), "", "", sources))
+}
+
+func TestGateSources_RejectedToken_Errors(t *testing.T) {
+	// A rejected direct env token would 401 the sync too, so the gate must fail
+	// (not pass clean) — validate-config's "catch what sync would hit" contract.
+	es := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		http.Error(w, "unauthorized", http.StatusUnauthorized)
+	}))
+	defer es.Close()
+	t.Setenv(EnvPlatformToken, cqpdTokenWithClaims(t, map[string]any{"u": es.URL}))
+
+	sources := []*specs.Source{
+		{Metadata: specs.Metadata{Name: "aws", Path: "cloudquery/aws", Version: "v1.0.0"}, Destinations: []string{"platform"}},
+	}
+	err := GateSources(context.Background(), zerolog.Nop(), "", "", sources)
+	require.Error(t, err)
+	require.ErrorContains(t, err, "expired")
 }
 
 func TestInject_PlatformPinnedVersion(t *testing.T) {
