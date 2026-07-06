@@ -102,7 +102,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@b7f7ea62cfec9774ad44a0d9307d0f6c5573bcb6 # v5.0.2
         with:
-          version: v6.38.0
+          version: v6.39.0
 
       - name: Build UI for ${{ matrix.plugin.dir }}
         working-directory: ${{ matrix.plugin.ui }}
