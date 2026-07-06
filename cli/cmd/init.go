@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
+	"io"
 	"net/http"
 	"os"
 	"regexp"
@@ -24,6 +25,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/samber/lo"
 	"github.com/spf13/cobra"
+	"gopkg.in/yaml.v3"
 )
 
 const (
@@ -190,28 +192,105 @@ spec:
 	return &sb
 }
 
-// wildcardTablesRe matches a wildcard table selection — `tables: ['*']` /
-// `tables: ["*"]` / `tables: [*]` — capturing the line's indentation so the
-// replacement block keeps it. Only the all-tables wildcard is replaced; an
-// example config that already lists specific tables is left untouched.
-var wildcardTablesRe = regexp.MustCompile(`(?m)^([ \t]*)tables:[ \t]*\[[ \t]*['"]?\*['"]?[ \t]*\][ \t]*$`)
-
-// withRecommendedTables swaps a wildcard `tables:` selection for a block list of
-// the given tables, preserving indentation. Returns the spec unchanged when it
-// has no wildcard tables line (e.g. an example config with a curated list).
+// withRecommendedTables sets the source spec's `tables` selection to the
+// platform's recommended tables, overriding whatever form the example config used
+// — wildcard `['*']`, an inline list like `["aws_s3_buckets"]`, or a block list —
+// and adding a `tables:` key if the example omitted one. It edits the parsed YAML
+// node tree in place and re-marshals, so the rest of the scaffold (comments, key
+// order, auth-field stubs) is preserved. Returns the spec unchanged when the
+// recommended set is empty, the input isn't parseable, or it has no source
+// `spec:` mapping to write into.
 func withRecommendedTables(yamlSpec string, tables []string) string {
 	if len(tables) == 0 {
-		return yamlSpec // never blank out the wildcard with an empty list
+		return yamlSpec
 	}
-	return wildcardTablesRe.ReplaceAllStringFunc(yamlSpec, func(match string) string {
-		indent := wildcardTablesRe.FindStringSubmatch(match)[1]
-		var b strings.Builder
-		b.WriteString(indent + "tables:")
-		for _, t := range tables {
-			b.WriteString("\n" + indent + "  - " + t)
+	// Decode every document — an example config's ```yaml block may ship more than
+	// one (e.g. a companion destination doc). Editing only the first and dropping
+	// the rest would truncate the spec, so round-trip them all.
+	dec := yaml.NewDecoder(strings.NewReader(yamlSpec))
+	var docs []*yaml.Node
+	for {
+		var doc yaml.Node
+		err := dec.Decode(&doc)
+		if errors.Is(err, io.EOF) {
+			break
 		}
-		return b.String()
-	})
+		if err != nil {
+			return yamlSpec
+		}
+		docs = append(docs, &doc)
+	}
+	changed := false
+	for _, doc := range docs {
+		if setSpecTables(doc, tables) {
+			changed = true
+		}
+	}
+	if !changed {
+		return yamlSpec
+	}
+	var buf bytes.Buffer
+	enc := yaml.NewEncoder(&buf)
+	enc.SetIndent(2) // match the example configs' 2-space convention
+	for _, doc := range docs {
+		if err := enc.Encode(doc); err != nil {
+			return yamlSpec
+		}
+	}
+	if err := enc.Close(); err != nil {
+		return yamlSpec // don't return a half-flushed buffer
+	}
+	return buf.String()
+}
+
+// setSpecTables sets the source spec's `tables` to a block sequence of the given
+// table names — replacing the existing value node in place, or adding a `tables:`
+// key when the spec has none. Only touches a `kind: source` document (so a
+// companion destination doc in a multi-doc example isn't given a bogus `tables:`).
+// Returns false when the doc isn't a source or has no `spec:` mapping.
+func setSpecTables(doc *yaml.Node, tables []string) bool {
+	if doc.Kind != yaml.DocumentNode || len(doc.Content) == 0 {
+		return false
+	}
+	root := doc.Content[0]
+	if kind := mappingValue(root, "kind"); kind == nil || kind.Value != "source" {
+		return false
+	}
+	spec := mappingValue(root, "spec")
+	if spec == nil || spec.Kind != yaml.MappingNode {
+		return false
+	}
+	items := make([]*yaml.Node, 0, len(tables))
+	for _, t := range tables {
+		items = append(items, &yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: t})
+	}
+	if tablesNode := mappingValue(spec, "tables"); tablesNode != nil {
+		tablesNode.Kind = yaml.SequenceNode
+		tablesNode.Tag = "!!seq"
+		tablesNode.Style = 0 // block, not flow
+		tablesNode.Value = ""
+		tablesNode.Content = items
+		return true
+	}
+	// No `tables` key in the example — add one.
+	spec.Content = append(spec.Content,
+		&yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: "tables"},
+		&yaml.Node{Kind: yaml.SequenceNode, Tag: "!!seq", Content: items},
+	)
+	return true
+}
+
+// mappingValue returns the value node for key in a mapping node, or nil.
+func mappingValue(n *yaml.Node, key string) *yaml.Node {
+	if n == nil || n.Kind != yaml.MappingNode {
+		return nil
+	}
+	for i := 0; i+1 < len(n.Content); i += 2 {
+		if n.Content[i].Value == key {
+			return n.Content[i+1]
+		}
+	}
+	return nil
 }
 
 func configForSourcePlugin(source cqapi.ListPlugin, version *cqapi.PluginVersionDetails) string {
@@ -318,9 +397,9 @@ func writePlatformSourceOnlySpec(ctx context.Context, apiClient *cqapi.ClientWit
 	// the destination itself at sync time, so no destination block is written.
 	sourceConfig := configForSourcePlugin(sourcePlugin, sourceVersion)
 	yamlSpec := strings.ReplaceAll(sourceConfig, "DESTINATION_NAME", "platform")
-	// Replace the wildcard table selection with the tables the platform recommends
-	// for this source, so the sync populates the tables the platform ingests. No
-	// recommendation (or a non-wildcard example config) → leave the tables as-is.
+	// Set the source's tables to what the platform recommends, so the sync
+	// populates the tables the platform ingests. No recommendation → leave the
+	// example config's tables as-is.
 	if recommended := tenantInit.RecommendedTables(ctx, log.Logger, sourcePath); len(recommended) > 0 {
 		yamlSpec = withRecommendedTables(yamlSpec, recommended)
 	}
