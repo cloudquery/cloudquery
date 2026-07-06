@@ -5,6 +5,18 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.40.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.39.0...cli-v6.40.0) (2026-07-06)
+
+
+### Features
+
+* Guard env-credential overrides — warn on mismatch, fail init on a rejected platform token ([#23058](https://github.com/cloudquery/cloudquery/issues/23058)) ([199b992](https://github.com/cloudquery/cloudquery/commit/199b9922c8314e0dd470a278e60f7d62ffa20b44))
+
+
+### Bug Fixes
+
+* Use platform recommended tables in init-generated configs ([#23056](https://github.com/cloudquery/cloudquery/issues/23056)) ([35f399f](https://github.com/cloudquery/cloudquery/commit/35f399f3a58095800fad98a70692629e9577ec8d))
+
 ## [6.39.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.38.0...cli-v6.39.0) (2026-07-06)
 
 
