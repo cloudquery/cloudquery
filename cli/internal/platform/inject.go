@@ -246,7 +246,7 @@ func platformToken() string {
 		warnTeamMismatchOnce(t)
 		return t
 	}
-	if k := os.Getenv("CLOUDQUERY_API_KEY"); strings.HasPrefix(k, cqpdPrefix) {
+	if k := os.Getenv(cqapiauth.EnvVarCloudQueryAPIKey); strings.HasPrefix(k, cqpdPrefix) {
 		warnTeamMismatchOnce(k)
 		return k
 	}
@@ -342,18 +342,14 @@ func externalSyncsURL(apiURL, path string) string {
 	return base + path
 }
 
-// resolvePlatformSession returns a cqpd_ token and the tenant's API base URL for
-// reaching the /external-syncs/* endpoints (which require an already-minted
-// token). Headless: a direct CQ_PLATFORM_TOKEN / cqpd_ CLOUDQUERY_API_KEY, using
-// its `u` claim. Logged in: mint a session for the team's resolved tenant. Returns
-// ok=false when there's no platform tenant or resolution fails, so callers fall
-// back to their normal behavior.
-// resolvePlatformSession returns a cqpd_ token + api URL to reach
-// /external-syncs/*, and whether it's a direct env token (CQ_PLATFORM_TOKEN /
-// cqpd_ CLOUDQUERY_API_KEY) vs a freshly-minted session. `direct` matters for auth
-// failures: a rejected env token is user-fixable and the same token a sync reuses,
-// whereas a rejected fresh-minted token is a transient server anomaly (a sync
-// mints its own).
+// resolvePlatformSession returns a cqpd_ token + tenant API base URL for reaching
+// the /external-syncs/* endpoints, and whether it's a direct env token
+// (CQ_PLATFORM_TOKEN / cqpd_ CLOUDQUERY_API_KEY, using its `u` claim) vs a
+// freshly-minted session for the logged-in team's tenant. ok=false when there's no
+// platform tenant or resolution fails, so callers fall back. `direct` matters for
+// auth failures: a rejected env token is user-fixable and is the same token a sync
+// reuses, whereas a rejected fresh-minted token is a transient server anomaly (a
+// sync mints its own).
 func resolvePlatformSession(ctx context.Context, logger zerolog.Logger, cloudToken, teamName string) (cqpdToken, apiURL string, direct, ok bool) {
 	if os.Getenv(envDisable) == "1" {
 		return "", "", false, false
