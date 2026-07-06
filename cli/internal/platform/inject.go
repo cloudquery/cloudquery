@@ -406,7 +406,7 @@ var errPlatformUnauthorized = errors.New("platform rejected the token")
 // token, shared by init (DetectTenantForInit) and validate-config (GateSources)
 // so both report the same actionable fix.
 func unauthorizedTokenError() error {
-	return fmt.Errorf("the platform token in your environment (%s, or a %s CLOUDQUERY_API_KEY) was rejected — it is likely expired; mint a fresh token or unset it", EnvPlatformToken, cqpdPrefix)
+	return fmt.Errorf("the platform token in your environment (%s, or a %s %s) was rejected — it is likely expired; mint a fresh token or unset it", EnvPlatformToken, cqpdPrefix, cqapiauth.EnvVarCloudQueryAPIKey)
 }
 
 // fetchSupportedSourceVersions GETs /external-syncs/supported-source-versions
@@ -556,8 +556,8 @@ func teamMismatchWarning(tokenTeam string) string {
 	if err != nil || configTeam == "" || configTeam == tokenTeam {
 		return ""
 	}
-	return fmt.Sprintf("Warning: the platform token in the environment (%s or a %s CLOUDQUERY_API_KEY) belongs to team %q; plugin downloads and usage will be attributed to that team, not your currently selected team %q",
-		EnvPlatformToken, cqpdPrefix, tokenTeam, configTeam)
+	return fmt.Sprintf("Warning: the platform token in the environment (%s or a %s %s) belongs to team %q; plugin downloads and usage will be attributed to that team, not your currently selected team %q",
+		EnvPlatformToken, cqpdPrefix, cqapiauth.EnvVarCloudQueryAPIKey, tokenTeam, configTeam)
 }
 
 // TeamFromToken returns the cloud team (`tm` claim) embedded in a cqpd_ token,
