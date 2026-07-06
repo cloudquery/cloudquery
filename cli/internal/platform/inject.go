@@ -19,6 +19,7 @@ import (
 	"github.com/Masterminds/semver"
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	cqapiauth "github.com/cloudquery/cloudquery-api-go/auth"
+	cqconfig "github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
 	cqauth "github.com/cloudquery/cloudquery/cli/v6/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
@@ -465,7 +466,12 @@ func GateSources(ctx context.Context, logger zerolog.Logger, cloudToken, teamNam
 // env read keeps sync and migrate from drifting.
 func DownloadAuth(ctx context.Context, logger zerolog.Logger, sources []*specs.Source, destinations []*specs.Destination, transformers []*specs.Transformer) (token, team string, err error) {
 	if t := platformToken(); t != "" {
-		return t, TeamFromToken(t), nil
+		tokenTeam := TeamFromToken(t)
+		if msg := teamMismatchWarning(tokenTeam); msg != "" {
+			logger.Warn().Msg(msg)
+			fmt.Fprintln(os.Stderr, msg)
+		}
+		return t, tokenTeam, nil
 	}
 	authToken, err := cqauth.GetAuthTokenIfNeeded(logger, sources, destinations, transformers)
 	if err != nil {
@@ -476,6 +482,23 @@ func DownloadAuth(ctx context.Context, logger zerolog.Logger, sources []*specs.S
 		return "", "", fmt.Errorf("failed to get team name from token: %w", err)
 	}
 	return authToken.Value, teamName, nil
+}
+
+// teamMismatchWarning reports when a headless platform token routes plugin
+// downloads and usage to a different team than the one the user is switched
+// to (`cloudquery switch`) — the token's tm claim wins silently otherwise.
+// Returns "" when there is nothing to warn about: no tm claim, no configured
+// team, or the two match.
+func teamMismatchWarning(tokenTeam string) string {
+	if tokenTeam == "" {
+		return ""
+	}
+	configTeam, err := cqconfig.GetValue("team")
+	if err != nil || configTeam == "" || configTeam == tokenTeam {
+		return ""
+	}
+	return fmt.Sprintf("Warning: the platform token in the environment (%s or a %s CLOUDQUERY_API_KEY) belongs to team %q; plugin downloads and usage will be attributed to that team, not your currently selected team %q",
+		EnvPlatformToken, cqpdPrefix, tokenTeam, configTeam)
 }
 
 // TeamFromToken returns the cloud team (`tm` claim) embedded in a cqpd_ token,

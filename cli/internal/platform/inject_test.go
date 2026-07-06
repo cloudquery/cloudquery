@@ -11,6 +11,7 @@ import (
 	"sync/atomic"
 	"testing"
 
+	cqconfig "github.com/cloudquery/cloudquery-api-go/config"
 	specs "github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
@@ -177,6 +178,35 @@ func TestPropagatePluginCredential(t *testing.T) {
 		t.Setenv("CLOUDQUERY_API_KEY", "")
 		PropagatePluginCredential("not-a-cqpd-token")
 		require.Empty(t, os.Getenv("CLOUDQUERY_API_KEY"))
+	})
+}
+
+func TestTeamMismatchWarning(t *testing.T) {
+	setConfigTeam := func(t *testing.T, team string) {
+		t.Helper()
+		require.NoError(t, cqconfig.SetConfigHome(t.TempDir()))
+		t.Cleanup(func() { _ = cqconfig.UnsetConfigHome() })
+		if team != "" {
+			require.NoError(t, cqconfig.SetValue("team", team))
+		}
+	}
+	t.Run("configured team differs from tm claim -> warns with both teams", func(t *testing.T) {
+		setConfigTeam(t, "team-a")
+		msg := teamMismatchWarning("acme")
+		require.Contains(t, msg, `"acme"`)
+		require.Contains(t, msg, `"team-a"`)
+	})
+	t.Run("configured team matches -> no warning", func(t *testing.T) {
+		setConfigTeam(t, "acme")
+		require.Empty(t, teamMismatchWarning("acme"))
+	})
+	t.Run("no configured team -> no warning", func(t *testing.T) {
+		setConfigTeam(t, "")
+		require.Empty(t, teamMismatchWarning("acme"))
+	})
+	t.Run("no tm claim -> no warning", func(t *testing.T) {
+		setConfigTeam(t, "team-a")
+		require.Empty(t, teamMismatchWarning(""))
 	})
 }
 
