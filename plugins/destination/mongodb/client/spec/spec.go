@@ -12,9 +12,6 @@ const (
 	defaultBatchSize      = 1000
 	defaultBatchSizeBytes = 1024 * 1024 * 4
 
-	// Retries are opt-in. Default is a single attempt so behavior matches the
-	// pre-write_retry plugin and we don't risk duplicate documents on
-	// write_mode: append tables (see docs/overview.md callout).
 	defaultWriteRetryMaxAttempts = 1
 	defaultWriteRetryMaxBackoff  = 10 * time.Second
 )
@@ -40,34 +37,14 @@ type Spec struct {
 	// Use AWS IAM credentials. If used this will override any credentials set in the connection_string
 	AWSCredentials *Credentials `json:"aws_credentials,omitempty"`
 
-	// Configures exponential-backoff retries around each write batch to absorb
-	// transient MongoDB network errors (e.g. `write tcp ...: broken pipe`) that
-	// are not covered by the driver's single built-in retry. Retries are
-	// disabled by default (single attempt). Set `write_retry.max_attempts` >= 2
-	// to enable. Read the duplicate-write caveat in the destination docs
-	// before enabling for `write_mode: append` tables.
 	WriteRetry *WriteRetryConfig `json:"write_retry,omitempty"`
 }
 
 type WriteRetryConfig struct {
-	// Maximum number of write attempts per batch, including the initial attempt. Default is 1 (no retries).
 	MaxAttempts int `json:"max_attempts,omitempty" jsonschema:"minimum=1,default=1"`
 
-	// Maximum backoff between retry attempts.
 	MaxBackoff *configtype.Duration `json:"max_backoff,omitempty" jsonschema:"default=10s"`
 
-	// When `true`, each retried write batch runs inside a MongoDB
-	// [transaction](https://www.mongodb.com/docs/manual/core/transactions/) so a
-	// retry that follows a partially-applied write rolls back the partial state
-	// before re-attempting. This eliminates the duplicate-document risk on
-	// `write_mode: append` tables (where `_id` is server-generated and the
-	// driver has no txnNumber to dedupe on).
-	//
-	// Requires a replica set, sharded cluster, or load-balanced deployment —
-	// transactions are not supported on standalone MongoDB, and enabling this
-	// against a standalone server will surface a driver error at write time.
-	//
-	// Has no effect when `max_attempts` is 1 (retries disabled).
 	UseTransactions bool `json:"use_transactions,omitempty"`
 }
 

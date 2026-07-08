@@ -12,22 +12,6 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
-// retryWrite runs op with exponential backoff on transient MongoDB errors. The
-// MongoDB Go driver retries retryable writes once; this adds an extra layer to
-// absorb longer bursts of connection instability (e.g. TCP broken pipe against
-// MongoDB Atlas private-link endpoints). See ENG-3281.
-//
-// collection is used purely for log context so operators can tell which table
-// is experiencing retries. cfg must already have defaults applied via
-// spec.Spec.SetDefaults().
-//
-// Duplicate-write caveat: for tables without a primary key (InsertMany path),
-// a retry triggered by an ambiguous failure -- server processed the write but
-// response was lost -- can produce duplicate documents. The driver's built-in
-// single retry avoids this via a session txnNumber that the server dedupes on,
-// but that tuple is not exposed in the public API, so our app-level retries
-// cannot participate in it. Upsert-keyed tables (with primary keys, BulkWrite
-// path) are naturally idempotent and unaffected.
 func retryWrite(ctx context.Context, logger zerolog.Logger, cfg *spec.WriteRetryConfig, collection string, op func() error) error {
 	if cfg == nil || cfg.MaxAttempts <= 1 || cfg.MaxBackoff == nil {
 		return op()
@@ -84,21 +68,10 @@ func isRetryableWriteError(err error) bool {
 	if errors.Is(err, io.EOF) || errors.Is(err, io.ErrUnexpectedEOF) {
 		return true
 	}
-	// The server/driver tag errors that are safe to retry with the
-	// "RetryableWriteError" label (e.g. InterruptedAtShutdown,
-	// NotWritablePrimary, PrimarySteppedDown, Atlas primary failovers). The
-	// driver itself retries at most once on these; if one reaches us it means
-	// the driver's single retry also failed and we should keep going. See
-	// https://www.mongodb.com/docs/manual/core/retryable-writes/.
 	var labeled mongo.LabeledError
 	if errors.As(err, &labeled) && labeled.HasErrorLabel("RetryableWriteError") {
 		return true
 	}
-	// PoolClearedError (and other driver.RetryablePoolError implementations)
-	// surface here when the pool tears itself down after a sibling connection
-	// fails. They wrap a network error but don't carry the NetworkError label,
-	// so match the driver's own classification by checking the Retryable()
-	// signal directly.
 	var retryable interface{ Retryable() bool }
 	if errors.As(err, &retryable) && retryable.Retryable() {
 		return true

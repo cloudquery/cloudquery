@@ -23,13 +23,6 @@ import (
 	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
-// flakyProxy is a TCP proxy that forwards traffic to upstream and can be told
-// to drop a specific number of inbound connections (closing them immediately
-// before any bytes flow). While failures are armed, the MongoDB driver
-// observes the same NetworkError-labeled "broken pipe" / EOF errors that
-// surface in production (ENG-3281). Once the failure budget is consumed, the
-// proxy forwards normally so retries can succeed. Tests assert the exact
-// number of drops to prove the retry layer actually fired.
 type flakyProxy struct {
 	upstream string
 	listener net.Listener
@@ -53,9 +46,6 @@ func newFlakyProxy(t *testing.T, upstream string) *flakyProxy {
 
 func (p *flakyProxy) addr() string { return p.listener.Addr().String() }
 
-// dropNext arms the proxy to drop the next n inbound connections. Existing
-// connections are also severed so the driver must dial fresh ones (which then
-// consume the drop budget).
 func (p *flakyProxy) dropNext(n int) {
 	p.mu.Lock()
 	p.failuresLeft = n
@@ -68,8 +58,6 @@ func (p *flakyProxy) dropNext(n int) {
 	}
 }
 
-// drops returns how many inbound connections have been dropped since the last
-// dropNext call.
 func (p *flakyProxy) dropsCount() int {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -149,9 +137,6 @@ func upstreamHostPort(t *testing.T, connectionString string) string {
 	return host
 }
 
-// retryLogCounter counts log lines emitted by the retryWrite OnRetry callback
-// so tests can assert how many times the app-level retry actually fired
-// (independent of how many connection attempts the driver made internally).
 type retryLogCounter struct {
 	inner io.Writer
 	n     atomic.Int32
@@ -176,11 +161,6 @@ func newRetryReproClient(t *testing.T, retry *spec.WriteRetryConfig) (*Client, *
 
 	ctx := context.Background()
 	s := &spec.Spec{
-		// retryWrites=false disables the driver's own single retry so the
-		// retry-go layer is the only place writes get a second chance.
-		// serverSelectionTimeoutMS=200 makes each failing op() return quickly
-		// (the driver's internal server-selection loop will time out fast and
-		// surface the error to retry-go rather than masking it).
 		ConnectionString: "mongodb://" + proxy.addr() + "/?retryWrites=false&maxPoolSize=1&serverSelectionTimeoutMS=200&directConnection=true",
 		Database:         "destination_mongodb_retry_repro_test",
 		WriteRetry:       retry,
@@ -210,7 +190,6 @@ var retryReproTable = &schema.Table{
 
 func TestRetryAbsorbsConnectionDrop(t *testing.T) {
 	const drops = 2
-	// Each drop produces two failed op() invocations
 	const expectedRetries = drops * 2
 
 	maxBackoff := configtype.NewDuration(20 * time.Millisecond)

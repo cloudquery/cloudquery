@@ -73,16 +73,16 @@ jobs:
       run:
         working-directory: ./plugins/destination/mongodb
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           fetch-depth: 2
       - name: Set up Go 1.x
         id: setup-go
-        uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6
+        uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
         with:
           go-version-file: plugins/destination/mongodb/go.mod
           cache: false
-      - uses: actions/cache@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5
+      - uses: actions/cache@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6
         with:
           path: |
             ~/.cache/go-build
@@ -96,3 +96,14 @@ jobs:
         env:
           CQ_DEST_MONGODB_TEST_CONN: ${{ matrix.topology == 'replicaset' && 'mongodb://localhost:27017/?replicaSet=cloudquery' || 'mongodb://localhost:27017' }}
         run: make test
+
+  plugins-destination-mongodb:
+    if: always()
+    needs: [prepare, test]
+    name: "plugins/destination/mongodb"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if any required job did not succeed
+        run: |
+          test "${{ needs.prepare.result }}" = "success" || exit 1
+          test "${{ needs.test.result }}" = "success" || exit 1
