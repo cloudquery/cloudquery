@@ -61,7 +61,6 @@ jobs:
         run: go build .
 
   test:
-    needs: prepare
     timeout-minutes: 20
     name: "plugins/destination/mongodb/${{ matrix.topology }}"
     runs-on: ubuntu-latest
