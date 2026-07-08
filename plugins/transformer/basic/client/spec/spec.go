@@ -74,7 +74,7 @@ func (s *Spec) Validate() error {
 	var err error
 	for _, t := range s.TransformationSpecs {
 		switch t.Kind {
-		case KindRemoveColumns, KindAddPrimaryKeys, KindObfuscateColumns:
+		case KindRemoveColumns, KindAddPrimaryKeys, KindObfuscateColumns, KindRemoveColumnsExcept:
 			if len(t.Columns) == 0 {
 				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "columns", t.Kind))
 			}
@@ -100,13 +100,6 @@ func (s *Spec) Validate() error {
 			}
 		case KindObfuscateColumnsExcept:
 			// Unlike obfuscate_columns, the keep-list may be empty (empty = obfuscate every obfuscatable column).
-			if t.Name != "" || (t.Value != nil && *t.Value != "") || t.NewTableNameTemplate != "" {
-				err = errors.Join(err, fmt.Errorf("name/value/new_table_name_template fields must not be specified for %s transformation", t.Kind))
-			}
-		case KindRemoveColumnsExcept:
-			if len(t.Columns) == 0 {
-				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "columns", t.Kind))
-			}
 			if t.Name != "" || (t.Value != nil && *t.Value != "") || t.NewTableNameTemplate != "" {
 				err = errors.Join(err, fmt.Errorf("name/value/new_table_name_template fields must not be specified for %s transformation", t.Kind))
 			}
