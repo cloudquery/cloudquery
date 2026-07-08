@@ -156,6 +156,9 @@ func (w *retryLogCounter) Count() int { return int(w.n.Load()) }
 
 func newRetryReproClient(t *testing.T, retry *spec.WriteRetryConfig) (*Client, *flakyProxy, *retryLogCounter) {
 	t.Helper()
+	if strings.Contains(getTestConnection(), "replicaSet") {
+		t.Skip("retry-repro drop accounting assumes a single directConnection topology")
+	}
 	upstream := upstreamHostPort(t, getTestConnection())
 	proxy := newFlakyProxy(t, upstream)
 
