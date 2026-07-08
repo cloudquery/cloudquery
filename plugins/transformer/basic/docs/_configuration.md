@@ -10,9 +10,26 @@ spec:
         tables: ["xkcd_comics"]
         columns: ["safe_title", "title"]
       - kind: obfuscate_sensitive_columns
+      - kind: obfuscate_columns_except
+        tables: ["xkcd_comics"]
+        columns: ["num", "day"]
+      - kind: obfuscate_columns
+        tables: ["xkcd_comics"]
+        columns: ["alt"]
+        redaction:
+          plaintext:
+            message: "REDACTED"
+            include_hash: false
+          json:
+            key: "redacted_by_cloudquery"
+            message: "REDACTED"
+            include_hash: false
       - kind: remove_columns
         tables: ["xkcd_comics"]
         columns: ["transcript", "news"]
+      - kind: remove_columns_except
+        tables: ["xkcd_comics"]
+        columns: ["num", "title", "img"]
       - kind: add_column
         tables: ["xkcd_comics"]
         name: "source"

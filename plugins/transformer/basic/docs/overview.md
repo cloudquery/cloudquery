@@ -1,9 +1,12 @@
 This CloudQuery transformer plugin provides basic transformation capabilities:
 
 - Removing columns
+- Removing all columns except an allowlist (`remove_columns_except`)
 - Adding literal string columns
 - Adding a column with the timestamp that the record was processed by the transformer
 - Obfuscating string columns
+- Obfuscating all obfuscatable columns except an allowlist (`obfuscate_columns_except`)
+- Customizing the redacted value via the optional `redaction` block
 - Renaming tables using a name template (use `{{.OldName}}` to refer to the original name, see example below)
 - Normalizing column values to all-upper/lowercase
 - Dropping rows based on column values
@@ -73,6 +76,48 @@ spec:
 Note: Obfuscating JSON arrays using `#.foo` syntax will cause all `foo` values to be replaced with the same obfuscated value `{"top_foo":[{"foo": "Redacted by CloudQuery | XXX"},{"foo": "Redacted by CloudQuery | XXX"},{"foo": "Redacted by CloudQuery | XXX"}]}`.
 
 You can also use the `obfuscate_sensitive_columns` transformation to automatically obfuscate all columns marked by the source plugin as `sensitive` and possibly containing secret information.
+
+## Allowlist transformations
+
+`obfuscate_columns_except` is the inverse of `obfuscate_columns`: `columns` is a keep-list, and every _other_ obfuscatable column (Arrow `STRING`, `BINARY` or JSON) is obfuscated as a whole column. Columns that are not obfuscatable (integers, booleans, timestamps, etc.) and columns named in the keep-list are left untouched. An empty `columns` list obfuscates every obfuscatable column. Unlike `obfuscate_columns`, this kind does not support JSON-path (`col.a.b`) partial obfuscation — keep-list entries are plain column names, and JSON columns are obfuscated whole.
+
+```yaml copy
+- kind: obfuscate_columns_except
+  tables: ["example"]
+  columns: ["id", "created_at"] # every other obfuscatable column is obfuscated
+```
+
+`remove_columns_except` is the inverse of `remove_columns`: `columns` is a keep-list and every _other_ column is removed (columns of any type). CloudQuery system columns (any column whose name starts with `_cq`, such as `_cq_id`, `_cq_source_name`, `_cq_sync_time` and `_cq_parent_id`) are always preserved, whether or not they are listed in `columns`.
+
+```yaml copy
+- kind: remove_columns_except
+  tables: ["example"]
+  columns: ["id", "name"] # keeps id, name and all _cq* columns; removes everything else
+```
+
+## Customizing the redacted value
+
+The obfuscate transformations (`obfuscate_columns`, `obfuscate_columns_except` and `obfuscate_sensitive_columns`) accept an optional `redaction` block to control the redacted value. When omitted, the output is unchanged: plaintext columns become `Redacted by CloudQuery | <sha256>` and whole JSON columns become `{"redacted_by_cloudquery":"<sha256>"}`.
+
+The `redaction` block requires both a `plaintext` and a `json` sub-block:
+
+```yaml copy
+- kind: obfuscate_columns
+  tables: ["example"]
+  columns: ["secret"]
+  redaction:
+    plaintext:
+      message: "REDACTED"   # prefix used for STRING/BINARY columns and JSON-path values
+      include_hash: true    # when true, append " <sha256>"; when false, emit the message only
+    json:
+      key: "redacted_by_cloudquery" # object key for whole-JSON columns
+      message: "REDACTED"           # value used when include_hash is false
+      include_hash: true            # when true, the value is the sha256; when false, the message
+```
+
+- `plaintext` applies to `STRING` and `BINARY` columns and to JSON-path (`col.a.b`) values. With `include_hash: true` the value is `<message> <sha256>`; with `include_hash: false` it is `<message>` verbatim.
+- `json` applies to whole JSON columns. The value stored under `key` is the `<sha256>` when `include_hash: true`, or `<message>` when `include_hash: false`.
+- Setting `plaintext: {message: "Redacted by CloudQuery |", include_hash: true}` reproduces the default plaintext output exactly.
 
 Note: transformations are applied sequentially. If you rename tables, the table matcher configuration of subsequent transformations will need to be updated to the new names.
 Note: escape syntax is [SJSON sytax](https://github.com/tidwall/sjson?tab=readme-ov-file#path-syntax).

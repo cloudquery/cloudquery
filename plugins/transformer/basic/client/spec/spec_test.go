@@ -141,6 +141,101 @@ func TestValidate(t *testing.T) {
 			wantErr: true,
 		},
 		{
+			name: "ValidObfuscateColumnsExceptEmptyColumns",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindObfuscateColumnsExcept},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "InvalidObfuscateColumnsExceptWithName",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindObfuscateColumnsExcept, Name: "foo"},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "ValidRemoveColumnsExcept",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindRemoveColumnsExcept, Columns: []string{"col1"}},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "InvalidRemoveColumnsExceptNoColumns",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindRemoveColumnsExcept},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "ValidObfuscateColumnsWithRedaction",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindObfuscateColumns, Columns: []string{"col1"}, Redaction: &Redaction{
+						Plaintext: &PlaintextRedaction{Message: "msg", IncludeHash: true},
+						JSON:      &JSONRedaction{Key: "redacted", Message: "msg", IncludeHash: false},
+					}},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "InvalidRedactionOnlyPlaintext",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindObfuscateColumns, Columns: []string{"col1"}, Redaction: &Redaction{
+						Plaintext: &PlaintextRedaction{Message: "msg", IncludeHash: true},
+					}},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "InvalidRedactionEmptyMessage",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindObfuscateColumns, Columns: []string{"col1"}, Redaction: &Redaction{
+						Plaintext: &PlaintextRedaction{Message: "", IncludeHash: true},
+						JSON:      &JSONRedaction{Key: "redacted", Message: "msg", IncludeHash: false},
+					}},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "InvalidRedactionEmptyJSONKey",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindObfuscateColumns, Columns: []string{"col1"}, Redaction: &Redaction{
+						Plaintext: &PlaintextRedaction{Message: "msg", IncludeHash: true},
+						JSON:      &JSONRedaction{Key: "", Message: "msg", IncludeHash: false},
+					}},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "InvalidRedactionOnNonObfuscateKind",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindRemoveColumns, Columns: []string{"col1"}, Redaction: &Redaction{
+						Plaintext: &PlaintextRedaction{Message: "msg", IncludeHash: true},
+						JSON:      &JSONRedaction{Key: "redacted", Message: "msg", IncludeHash: false},
+					}},
+				},
+			},
+			wantErr: true,
+		},
+		{
 			name: "ValidRenameColumn",
 			input: Spec{
 				TransformationSpecs: []TransformationSpec{

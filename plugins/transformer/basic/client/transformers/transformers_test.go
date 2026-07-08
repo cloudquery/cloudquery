@@ -43,6 +43,22 @@ func TestNewFromSpec(t *testing.T) {
 			wantErr: false,
 		},
 		{
+			name: "ObfuscateColumnsExcept",
+			spec: spec.TransformationSpec{
+				Kind:    spec.KindObfuscateColumnsExcept,
+				Columns: []string{"col1"},
+			},
+			wantErr: false,
+		},
+		{
+			name: "RemoveColumnsExcept",
+			spec: spec.TransformationSpec{
+				Kind:    spec.KindRemoveColumnsExcept,
+				Columns: []string{"col1"},
+			},
+			wantErr: false,
+		},
+		{
 			name: "ChangeTableNames",
 			spec: spec.TransformationSpec{
 				Kind:                 spec.KindChangeTableNames,
@@ -140,6 +156,54 @@ func TestTransform(t *testing.T) {
 				require.Equal(t, "Redacted by CloudQuery | dd0fff6ac351dd46cd26e2d5c61e479ce7c68ef12489e04284c0fd66648723cb", record.Column(1).(*array.String).Value(1), "Expected sha256 value in new_col column")
 				require.Equal(t, int64(2), record.NumCols(), "Expected 2 columns")
 				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
+			},
+		},
+		{
+			name: "ObfuscateColumnsExcept",
+			spec: spec.TransformationSpec{
+				Kind:    spec.KindObfuscateColumnsExcept,
+				Columns: []string{"col1"},
+				Tables:  []string{"*"},
+			},
+			record: createTestRecord(),
+			validate: func(t *testing.T, record arrow.RecordBatch) {
+				require.Equal(t, int64(2), record.NumCols(), "Expected 2 columns")
+				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
+				// col1 kept clear
+				require.Equal(t, "val1", record.Column(0).(*array.String).Value(0))
+				// col2 obfuscated with default message
+				require.Equal(t, "Redacted by CloudQuery | bac8d4414984861d5199b7a97699c728bee36c4084299b2ca905434cf65d8944", record.Column(1).(*array.String).Value(0))
+			},
+		},
+		{
+			name: "ObfuscateColumnsWithRedaction",
+			spec: spec.TransformationSpec{
+				Kind:    spec.KindObfuscateColumns,
+				Columns: []string{"col2"},
+				Tables:  []string{"*"},
+				Redaction: &spec.Redaction{
+					Plaintext: &spec.PlaintextRedaction{Message: "HIDDEN", IncludeHash: false},
+					JSON:      &spec.JSONRedaction{Key: "redacted", Message: "HIDDEN", IncludeHash: false},
+				},
+			},
+			record: createTestRecord(),
+			validate: func(t *testing.T, record arrow.RecordBatch) {
+				require.Equal(t, "HIDDEN", record.Column(1).(*array.String).Value(0))
+				require.Equal(t, "HIDDEN", record.Column(1).(*array.String).Value(1))
+			},
+		},
+		{
+			name: "RemoveColumnsExcept",
+			spec: spec.TransformationSpec{
+				Kind:    spec.KindRemoveColumnsExcept,
+				Columns: []string{"col1"},
+				Tables:  []string{"*"},
+			},
+			record: createTestRecord(),
+			validate: func(t *testing.T, record arrow.RecordBatch) {
+				require.Equal(t, int64(1), record.NumCols(), "Expected 1 column")
+				require.Equal(t, int64(2), record.NumRows(), "Expected 2 rows")
+				require.Equal(t, "col1", record.ColumnName(0))
 			},
 		},
 		{

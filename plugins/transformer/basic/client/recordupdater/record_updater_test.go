@@ -104,6 +104,192 @@ func TestObfuscateColumns(t *testing.T) {
 		updatedRecord.Column(2).ValueStr(1))
 }
 
+func TestObfuscateColumnsExcept(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+
+	// Keep col2 clear; obfuscate every other obfuscatable column (col1 string, col3 JSON).
+	updatedRecord, err := updater.ObfuscateColumnsExcept([]string{"col2"})
+	require.NoError(t, err)
+
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+
+	// col1 (string) obfuscated
+	require.Equal(t,
+		fmt.Sprintf("%s cc1d9c865e8380c2d566dc724c66369051acfaa3e9e8f36ad6c67d7d9b8461a5", redactedByCQMessage),
+		updatedRecord.Column(0).(*array.String).Value(0))
+	require.Equal(t,
+		fmt.Sprintf("%s 528e5290f8ff0eb0325f0472b9c1a9ef4fac0b02ff6094b64d9382af4a10444b", redactedByCQMessage),
+		updatedRecord.Column(0).(*array.String).Value(1))
+	// col2 (string) kept clear
+	require.Equal(t, "val3", updatedRecord.Column(1).(*array.String).Value(0))
+	require.Equal(t, "val4", updatedRecord.Column(1).(*array.String).Value(1))
+	// col3 (JSON) obfuscated as an entire column
+	assert.Equal(t,
+		fmt.Sprintf(`{"%s":"81f2a9ddc7ae49a6b585358c6ff54bbd26613c4a46a988b614e42bc5729eda36"}`, redactedByCQJSONName),
+		updatedRecord.Column(2).ValueStr(0))
+	assert.Equal(t,
+		fmt.Sprintf(`{"%s":"b56ea9a87c46567fc64564f68461e8f1068ffa515eee20c3387b97bc17f24cda"}`, redactedByCQJSONName),
+		updatedRecord.Column(2).ValueStr(1))
+}
+
+func TestObfuscateColumnsExceptEmptyKeepList(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+
+	// Empty keep-list obfuscates every obfuscatable column.
+	updatedRecord, err := updater.ObfuscateColumnsExcept([]string{})
+	require.NoError(t, err)
+
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+
+	require.Equal(t,
+		fmt.Sprintf("%s cc1d9c865e8380c2d566dc724c66369051acfaa3e9e8f36ad6c67d7d9b8461a5", redactedByCQMessage),
+		updatedRecord.Column(0).(*array.String).Value(0))
+	require.Equal(t,
+		fmt.Sprintf("%s bac8d4414984861d5199b7a97699c728bee36c4084299b2ca905434cf65d8944", redactedByCQMessage),
+		updatedRecord.Column(1).(*array.String).Value(0))
+	assert.Equal(t,
+		fmt.Sprintf(`{"%s":"81f2a9ddc7ae49a6b585358c6ff54bbd26613c4a46a988b614e42bc5729eda36"}`, redactedByCQJSONName),
+		updatedRecord.Column(2).ValueStr(0))
+}
+
+func TestObfuscateColumnsExceptLeavesNonObfuscatableUntouched(t *testing.T) {
+	record := createTestRecordWithInt()
+	updater := New(record)
+
+	// Empty keep-list: string column obfuscated, int column left untouched (not an error, not dropped).
+	updatedRecord, err := updater.ObfuscateColumnsExcept(nil)
+	require.NoError(t, err)
+
+	require.Equal(t, int64(2), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+
+	require.Equal(t,
+		fmt.Sprintf("%s cc1d9c865e8380c2d566dc724c66369051acfaa3e9e8f36ad6c67d7d9b8461a5", redactedByCQMessage),
+		updatedRecord.Column(0).(*array.String).Value(0))
+	// int column untouched
+	require.Equal(t, int64(1), updatedRecord.Column(1).(*array.Int64).Value(0))
+	require.Equal(t, int64(2), updatedRecord.Column(1).(*array.Int64).Value(1))
+}
+
+func TestObfuscateColumnsDefaultIsByteIdentical(t *testing.T) {
+	// Regression: with no new options set, output must match the historical
+	// "Redacted by CloudQuery | <hex>" format exactly.
+	record := createTestRecord()
+	updater := New(record)
+
+	updatedRecord, err := updater.ObfuscateColumns([]string{"col1"})
+	require.NoError(t, err)
+
+	require.Equal(t,
+		"Redacted by CloudQuery | cc1d9c865e8380c2d566dc724c66369051acfaa3e9e8f36ad6c67d7d9b8461a5",
+		updatedRecord.Column(0).(*array.String).Value(0))
+}
+
+func newRedaction(plaintextMsg string, plaintextHash bool, jsonKey, jsonMsg string, jsonHash bool) *spec.Redaction {
+	return &spec.Redaction{
+		Plaintext: &spec.PlaintextRedaction{Message: plaintextMsg, IncludeHash: plaintextHash},
+		JSON:      &spec.JSONRedaction{Key: jsonKey, Message: jsonMsg, IncludeHash: jsonHash},
+	}
+}
+
+func TestObfuscateColumnsRedactionPlaintextWithHash(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record, WithRedaction(newRedaction("SECRET |", true, "k", "m", true)))
+
+	updatedRecord, err := updater.ObfuscateColumns([]string{"col1"})
+	require.NoError(t, err)
+
+	require.Equal(t,
+		"SECRET | cc1d9c865e8380c2d566dc724c66369051acfaa3e9e8f36ad6c67d7d9b8461a5",
+		updatedRecord.Column(0).(*array.String).Value(0))
+}
+
+func TestObfuscateColumnsRedactionPlaintextNoHash(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record, WithRedaction(newRedaction("REDACTED", false, "k", "m", true)))
+
+	updatedRecord, err := updater.ObfuscateColumns([]string{"col1"})
+	require.NoError(t, err)
+
+	// No hash: the message is emitted verbatim.
+	require.Equal(t, "REDACTED", updatedRecord.Column(0).(*array.String).Value(0))
+	require.Equal(t, "REDACTED", updatedRecord.Column(0).(*array.String).Value(1))
+}
+
+func TestObfuscateColumnsRedactionReproducesDefaultPlaintext(t *testing.T) {
+	// Explicitly setting the default message + include_hash reproduces the byte-identical default.
+	record := createTestRecord()
+	updater := New(record, WithRedaction(newRedaction("Redacted by CloudQuery |", true, "k", "m", true)))
+
+	updatedRecord, err := updater.ObfuscateColumns([]string{"col1"})
+	require.NoError(t, err)
+
+	require.Equal(t,
+		"Redacted by CloudQuery | cc1d9c865e8380c2d566dc724c66369051acfaa3e9e8f36ad6c67d7d9b8461a5",
+		updatedRecord.Column(0).(*array.String).Value(0))
+}
+
+func TestObfuscateEntireJSONColumnRedactionWithHash(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record, WithRedaction(newRedaction("m", true, "my_key", "gone", true)))
+
+	// Whole JSON column: custom key, hash retained as value.
+	updatedRecord, err := updater.ObfuscateColumnsExcept([]string{"col1", "col2"})
+	require.NoError(t, err)
+
+	assert.Equal(t,
+		`{"my_key":"81f2a9ddc7ae49a6b585358c6ff54bbd26613c4a46a988b614e42bc5729eda36"}`,
+		updatedRecord.Column(2).ValueStr(0))
+}
+
+func TestObfuscateEntireJSONColumnRedactionNoHash(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record, WithRedaction(newRedaction("m", true, "my_key", "gone", false)))
+
+	// Whole JSON column: custom key, message as value (no hash).
+	updatedRecord, err := updater.ObfuscateColumnsExcept([]string{"col1", "col2"})
+	require.NoError(t, err)
+
+	assert.Equal(t,
+		`{"my_key":"gone"}`,
+		updatedRecord.Column(2).ValueStr(0))
+}
+
+func TestRemoveColumnsExcept(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+
+	// Keep col1 only; col2 and col3 are removed.
+	updatedRecord, err := updater.RemoveColumnsExcept([]string{"col1"})
+	require.NoError(t, err)
+
+	require.Equal(t, int64(1), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+	require.Equal(t, "col1", updatedRecord.ColumnName(0))
+	require.Equal(t, "val1", updatedRecord.Column(0).(*array.String).Value(0))
+}
+
+func TestRemoveColumnsExceptPreservesCQColumns(t *testing.T) {
+	record := createTestRecordWithCQColumn()
+	updater := New(record)
+
+	// Keep col1; _cq_id must survive even though it is not in the keep-list.
+	updatedRecord, err := updater.RemoveColumnsExcept([]string{"col1"})
+	require.NoError(t, err)
+
+	require.Equal(t, int64(2), updatedRecord.NumCols())
+	require.Equal(t, "col1", updatedRecord.ColumnName(0))
+	require.Equal(t, "_cq_id", updatedRecord.ColumnName(1))
+}
+
 func TestAutoObfuscateColumns(t *testing.T) {
 	sc := []string{"col1", "col3.foo.bar.0", "col3.foo.bar.1", "col4"}
 	scJSON, err := json.Marshal(sc)
@@ -350,6 +536,42 @@ func createTestRecord() arrow.RecordBatch {
 	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["a","b","c"]},"hello":"world"}`))
 	bld.Field(2).(*types.JSONBuilder).AppendBytes([]byte(`{"foo":{"bar":["d","e","f"]}}`))
+
+	return bld.NewRecordBatch()
+}
+
+func createTestRecordWithInt() arrow.RecordBatch {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "col1", Type: arrow.BinaryTypes.String},
+			{Name: "col2", Type: arrow.PrimitiveTypes.Int64},
+		},
+		&md,
+	))
+	defer bld.Release()
+
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1", "val2"}, nil)
+	bld.Field(1).(*array.Int64Builder).AppendValues([]int64{1, 2}, nil)
+
+	return bld.NewRecordBatch()
+}
+
+func createTestRecordWithCQColumn() arrow.RecordBatch {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "col1", Type: arrow.BinaryTypes.String},
+			{Name: "col2", Type: arrow.BinaryTypes.String},
+			{Name: "_cq_id", Type: arrow.BinaryTypes.String},
+		},
+		&md,
+	))
+	defer bld.Release()
+
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"val1", "val2"}, nil)
+	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"val3", "val4"}, nil)
+	bld.Field(2).(*array.StringBuilder).AppendValues([]string{"id1", "id2"}, nil)
 
 	return bld.NewRecordBatch()
 }

@@ -30,16 +30,20 @@ func NewFromSpec(sp spec.TransformationSpec) (*Transformer, error) {
 		tr.fn = AddTimestampColumnAsLastColumn(sp.Name)
 	case spec.KindRemoveColumns:
 		tr.fn = RemoveColumns(sp.Columns)
+	case spec.KindRemoveColumnsExcept:
+		tr.fn = RemoveColumnsExcept(sp.Columns)
 	case spec.KindAddPrimaryKeys:
 		tr.fn = AddPrimaryKeys(sp.Columns)
 	case spec.KindObfuscateColumns:
-		tr.fn = ObfuscateColumns(sp.Columns)
+		tr.fn = ObfuscateColumns(sp.Columns, obfuscationOptions(sp)...)
+	case spec.KindObfuscateColumnsExcept:
+		tr.fn = ObfuscateColumnsExcept(sp.Columns, obfuscationOptions(sp)...)
 	case spec.KindChangeTableNames:
 		tr.fn = ChangeTableName(sp.NewTableNameTemplate)
 	case spec.KindRenameColumn:
 		tr.fn = RenameColumn(sp.Name, *sp.Value)
 	case spec.KindObfuscateSensitiveColumns:
-		tr.fn = ObfuscateSensitiveColumns(sp.Columns)
+		tr.fn = ObfuscateSensitiveColumns(sp.Columns, obfuscationOptions(sp)...)
 	case spec.KindUppercase, spec.KindLowercase:
 		tr.fn = ChangeCase(sp.Kind, sp.Columns)
 	case spec.KindDropRows:
@@ -102,15 +106,30 @@ func RemoveColumns(columnNames []string) TransformationFn {
 	}
 }
 
+func RemoveColumnsExcept(keepColumns []string) TransformationFn {
+	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
+		return recordupdater.New(record).RemoveColumnsExcept(keepColumns)
+	}
+}
+
 func AddPrimaryKeys(columnNames []string) TransformationFn {
 	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
 		return recordupdater.New(record).AddPrimaryKeys(columnNames)
 	}
 }
-func ObfuscateSensitiveColumns(columnNames []string) TransformationFn {
+func ObfuscateSensitiveColumns(_ []string, opts ...recordupdater.Option) TransformationFn {
 	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
-		return recordupdater.New(record).ObfuscateSensitiveColumns()
+		return recordupdater.New(record, opts...).ObfuscateSensitiveColumns()
 	}
+}
+
+// obfuscationOptions maps the optional redaction spec to recordupdater options.
+func obfuscationOptions(sp spec.TransformationSpec) []recordupdater.Option {
+	var opts []recordupdater.Option
+	if sp.Redaction != nil {
+		opts = append(opts, recordupdater.WithRedaction(sp.Redaction))
+	}
+	return opts
 }
 
 func DropRows(columnNames []string, value *string) TransformationFn {
@@ -118,9 +137,15 @@ func DropRows(columnNames []string, value *string) TransformationFn {
 		return recordupdater.New(record).DropRows(columnNames, value)
 	}
 }
-func ObfuscateColumns(columnNames []string) TransformationFn {
+func ObfuscateColumns(columnNames []string, opts ...recordupdater.Option) TransformationFn {
 	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
-		return recordupdater.New(record).ObfuscateColumns(columnNames)
+		return recordupdater.New(record, opts...).ObfuscateColumns(columnNames)
+	}
+}
+
+func ObfuscateColumnsExcept(keepColumns []string, opts ...recordupdater.Option) TransformationFn {
+	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
+		return recordupdater.New(record, opts...).ObfuscateColumnsExcept(keepColumns)
 	}
 }
 
