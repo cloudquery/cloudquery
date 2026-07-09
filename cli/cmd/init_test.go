@@ -389,3 +389,30 @@ func Test_withRecommendedTables(t *testing.T) {
 		require.Equal(t, rec, sr.Sources[0].Tables)
 	})
 }
+
+func Test_selectSource_PlatformFilter(t *testing.T) {
+	src := func(name string) cqapi.ListPlugin {
+		return cqapi.ListPlugin{Name: name, TeamName: "cloudquery", Kind: cqapi.PluginKindSource, Official: true, LatestVersion: lo.ToPtr("v1.0.0")}
+	}
+	plugins := []cqapi.ListPlugin{src("aws"), src("gcp"), src("postgresql")}
+
+	t.Run("platform tenant restricts to supported sources", func(t *testing.T) {
+		// postgresql (a DB source the platform doesn't support) must not be offered.
+		supported := map[string]string{"cloudquery/gcp": "v1.0.0"}
+		got, err := selectSource(plugins, true, supported)
+		require.NoError(t, err)
+		require.Equal(t, "gcp", got, "only the platform-supported source is selectable")
+	})
+
+	t.Run("no supported set is unfiltered", func(t *testing.T) {
+		got, err := selectSource(plugins, true, nil)
+		require.NoError(t, err)
+		require.Equal(t, "aws", got, "sourcesOrder puts aws first")
+	})
+
+	t.Run("errors when nothing supported matches the official list", func(t *testing.T) {
+		_, err := selectSource(plugins, true, map[string]string{"cloudquery/unlisted": "v1.0.0"})
+		require.Error(t, err)
+		require.ErrorContains(t, err, "no source plugins available")
+	})
+}
