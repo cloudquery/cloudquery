@@ -329,6 +329,11 @@ func selectSource(allPlugins []cqapi.ListPlugin, acceptDefaults bool, supportedP
 		})
 	}
 	if len(officialSources) == 0 {
+		if len(supportedPaths) > 0 {
+			// Platform tenant, but none of its supported sources are official
+			// released plugins (near-impossible) — give the same escape hatch.
+			return "", errors.New("none of the source plugins your CloudQuery Platform supports are available — please try again, or pass --disable-platform to scaffold a regular source + destination config")
+		}
 		return "", errors.New("no source plugins available to select")
 	}
 	slices.SortStableFunc(officialSources, pluginsSorter(sourcesOrder))

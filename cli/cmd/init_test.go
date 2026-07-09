@@ -410,9 +410,9 @@ func Test_selectSource_PlatformFilter(t *testing.T) {
 		require.Equal(t, "aws", got, "sourcesOrder puts aws first")
 	})
 
-	t.Run("errors when nothing supported matches the official list", func(t *testing.T) {
+	t.Run("errors actionably when nothing supported matches the official list", func(t *testing.T) {
 		_, err := selectSource(plugins, true, map[string]string{"cloudquery/unlisted": "v1.0.0"})
 		require.Error(t, err)
-		require.ErrorContains(t, err, "no source plugins available")
+		require.ErrorContains(t, err, "--disable-platform", "platform-filtered empty list keeps the actionable hint")
 	})
 }
