@@ -1,5 +1,17 @@
 # Changelog
 
+## [6.3.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.3.10...plugins-destination-duckdb-v6.3.11) (2026-07-09)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 45e7e20 ([#23047](https://github.com/cloudquery/cloudquery/issues/23047)) ([0eebce9](https://github.com/cloudquery/cloudquery/commit/0eebce9592d70f52dbb8daaf73ba4c4d71a02906))
+* **deps:** Update go module directive to v1.26.4 ([#22996](https://github.com/cloudquery/cloudquery/issues/22996)) ([4c6a6b1](https://github.com/cloudquery/cloudquery/commit/4c6a6b19b9c85ea3f69276a77b9213d76bf744c5))
+* **deps:** Update module github.com/cenkalti/backoff/v5 to v6 ([#23043](https://github.com/cloudquery/cloudquery/issues/23043)) ([14fcaf7](https://github.com/cloudquery/cloudquery/commit/14fcaf7cd46a2d84b1af218262f304f20540eeb4))
+* **deps:** Update module github.com/duckdb/duckdb-go/v2 to v2.10504.0 ([#23025](https://github.com/cloudquery/cloudquery/issues/23025)) ([dab0471](https://github.com/cloudquery/cloudquery/commit/dab0471e191981c951f7743343b9dd2ca71dee5a))
+* **deps:** Update module golang.org/x/net to v0.55.0 [SECURITY] ([#23049](https://github.com/cloudquery/cloudquery/issues/23049)) ([74bb68e](https://github.com/cloudquery/cloudquery/commit/74bb68ef06456b56a22dfb96744a72319a6ce8b7))
+* **deps:** Update module golang.org/x/net to v0.56.0 ([#23033](https://github.com/cloudquery/cloudquery/issues/23033)) ([43c367a](https://github.com/cloudquery/cloudquery/commit/43c367a645b5e26781b06039a0780cffb40bb2cd))
+
 ## [6.3.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-duckdb-v6.3.9...plugins-destination-duckdb-v6.3.10) (2026-06-19)
 
 
