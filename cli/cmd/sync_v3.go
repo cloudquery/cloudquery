@@ -178,6 +178,12 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		statsPerTable  = utils.NewConcurrentMap[string, SyncRunTableProgressValue]()
 	)
 	defer func() {
+		// Platform-only syncs are external syncs: the platform emits the canonical
+		// sync_run_completed once ingestion settles, so sending it here too would
+		// double-count. See platform.OnlyPlatformDestinations.
+		if platform.OnlyPlatformDestinations(destinationSpecs) {
+			return
+		}
 		analytics.TrackSyncCompleted(ctx, invocationUUID.UUID, analytics.SyncFinishedEvent{
 			SyncStartedEvent:  syncStartedEvent,
 			Errors:            totals.Errors,

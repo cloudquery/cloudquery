@@ -713,6 +713,24 @@ func hasPlatformDestination(destinations []*specs.Destination) bool {
 	return false
 }
 
+// OnlyPlatformDestinations reports whether every destination of a sync is the
+// reserved `platform` destination. Such syncs are external syncs: the platform
+// emits its own canonical sync_run_completed event when the run's ingestion
+// settles, so the CLI suppresses its sync_run_completed to avoid double-counting.
+// sync_run_started is still sent — the platform emits no started event for
+// external syncs, and the CLI event carries the real user attribution.
+func OnlyPlatformDestinations(destinations []specs.Destination) bool {
+	if len(destinations) == 0 {
+		return false
+	}
+	for _, d := range destinations {
+		if d.Name != destinationName {
+			return false
+		}
+	}
+	return true
+}
+
 // injectPlatformDestination appends the reserved `platform` destination carrying
 // the cqpd_ token. The caller guarantees a source already targets it (the opt-in)
 // and that no user-defined `platform` destination exists. recommendedVersion,
