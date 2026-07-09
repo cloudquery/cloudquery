@@ -316,11 +316,10 @@ func configForDestinationPlugin(destination cqapi.ListPlugin, version *cqapi.Plu
 }
 
 // selectSource prompts for a source plugin. When supportedPaths is non-empty
-// (a CloudQuery Platform tenant), the list is restricted to the sources the
-// platform supports (its `team/name` keys) — otherwise the picker would offer
-// plugins, e.g. database sources, a platform sync can't use. An empty/nil
-// supportedPaths means "unfiltered" (no platform, or the support list was
-// unavailable — don't over-filter on a best-effort lookup).
+// (a CloudQuery Platform tenant — the caller requires a non-empty set there), the
+// list is restricted to the sources the platform supports (its `team/name` keys),
+// so the picker never offers plugins, e.g. database sources, a platform sync can't
+// use. nil supportedPaths (no platform tenant) leaves the list unfiltered.
 func selectSource(allPlugins []cqapi.ListPlugin, acceptDefaults bool, supportedPaths map[string]string) (string, error) {
 	officialSources := lo.Filter(allPlugins, officialReleasedPluginsByKind(cqapi.PluginKindSource))
 	if len(supportedPaths) > 0 {
@@ -544,10 +543,15 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	}
 
 	// On a platform tenant, restrict sources to what the platform supports (its
-	// supported-source-versions). Empty/nil when there's no tenant or the lookup
-	// was unavailable — then it's unfiltered (best-effort).
+	// supported-source-versions). This is required, not best-effort: offering a
+	// source the platform can't ingest scaffolds a config that only fails later at
+	// the sync-time gate, so if the support list is unavailable, stop with an
+	// actionable error rather than silently listing everything.
 	var supportedSourcePaths map[string]string
 	if platformTenant {
+		if len(tenantInit.PinnedSourceVersions) == 0 {
+			return errors.New("couldn't determine which source plugins your CloudQuery Platform supports — please try again, or pass --disable-platform to scaffold a regular source + destination config")
+		}
 		supportedSourcePaths = tenantInit.PinnedSourceVersions
 	}
 
