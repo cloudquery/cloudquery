@@ -316,8 +316,8 @@ func configForDestinationPlugin(destination cqapi.ListPlugin, version *cqapi.Plu
 }
 
 // unsupportedPlatformSourceError returns an error when a platform tenant doesn't
-// support the given source path (team/name), else nil. nil supported set (no
-// platform tenant) never rejects.
+// support the given source path (team/name), else nil. An empty or nil supported
+// set (no platform tenant) never rejects.
 func unsupportedPlatformSourceError(source string, supported map[string]string) error {
 	if len(supported) == 0 {
 		return nil
@@ -332,7 +332,7 @@ func unsupportedPlatformSourceError(source string, supported map[string]string) 
 // (a CloudQuery Platform tenant — the caller requires a non-empty set there), the
 // list is restricted to the sources the platform supports (its `team/name` keys),
 // so the picker never offers plugins, e.g. database sources, a platform sync can't
-// use. nil supportedPaths (no platform tenant) leaves the list unfiltered.
+// use. An empty or nil supportedPaths (no platform tenant) leaves it unfiltered.
 func selectSource(allPlugins []cqapi.ListPlugin, acceptDefaults bool, supportedPaths map[string]string) (string, error) {
 	officialSources := lo.Filter(allPlugins, officialReleasedPluginsByKind(cqapi.PluginKindSource))
 	if len(supportedPaths) > 0 {
