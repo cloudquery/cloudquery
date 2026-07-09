@@ -567,13 +567,8 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	// actionable error rather than silently listing everything.
 	var supportedSourcePaths map[string]string
 	if platformTenant {
-		switch {
-		case tenantInit.PinnedSourceVersions == nil:
-			// Lookup failed (nil, not an empty result) — likely transient.
+		if len(tenantInit.PinnedSourceVersions) == 0 {
 			return errors.New("couldn't determine which source plugins your CloudQuery Platform supports — please try again, or pass --disable-platform to scaffold a regular source + destination config")
-		case len(tenantInit.PinnedSourceVersions) == 0:
-			// Lookup succeeded but the platform reported no supported sources.
-			return errors.New("your CloudQuery Platform reports no supported source plugins — pass --disable-platform to scaffold a regular source + destination config")
 		}
 		supportedSourcePaths = tenantInit.PinnedSourceVersions
 	}

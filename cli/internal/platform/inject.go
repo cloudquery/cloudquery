@@ -103,8 +103,7 @@ type TenantInit struct {
 	// PinnedSourceVersions maps source plugin path -> pinned version — the
 	// platform's supported-source-versions. init both scaffolds these versions and
 	// gates which sources it offers, so it treats this as required (failing when
-	// it's nil/empty on a platform tenant) rather than falling back. nil
-	// distinguishes a failed lookup from an empty (but successful) result.
+	// it's nil/empty on a platform tenant) rather than falling back.
 	PinnedSourceVersions map[string]string
 
 	// token + endpointBase reach /external-syncs/* for later per-plugin lookups,
