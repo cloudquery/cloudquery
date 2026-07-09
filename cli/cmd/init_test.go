@@ -416,3 +416,15 @@ func Test_selectSource_PlatformFilter(t *testing.T) {
 		require.ErrorContains(t, err, "--disable-platform", "platform-filtered empty list keeps the actionable hint")
 	})
 }
+
+func Test_unsupportedPlatformSourceError(t *testing.T) {
+	supported := map[string]string{"cloudquery/aws": "v1.0.0"}
+
+	require.NoError(t, unsupportedPlatformSourceError("cloudquery/aws", supported), "a supported source is accepted")
+	require.NoError(t, unsupportedPlatformSourceError("cloudquery/postgresql", nil), "no platform tenant (nil set) never rejects")
+	require.NoError(t, unsupportedPlatformSourceError("cloudquery/postgresql", map[string]string{}), "empty set never rejects")
+
+	err := unsupportedPlatformSourceError("cloudquery/postgresql", supported)
+	require.Error(t, err)
+	require.ErrorContains(t, err, `"cloudquery/postgresql" is not supported by your CloudQuery Platform`)
+}

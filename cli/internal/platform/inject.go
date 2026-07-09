@@ -100,8 +100,11 @@ type TenantInit struct {
 	// APIURL is the tenant base URL to show the user (host only, no /api). May be
 	// empty if a directly supplied CQ_PLATFORM_TOKEN predates url-carrying tokens.
 	APIURL string
-	// PinnedSourceVersions maps source plugin path -> pinned version. Best-effort:
-	// nil when the lookup failed, so init falls back to the hub's latest.
+	// PinnedSourceVersions maps source plugin path -> pinned version — the
+	// platform's supported-source-versions. init both scaffolds these versions and
+	// gates which sources it offers, so it treats this as required (failing when
+	// it's nil/empty on a platform tenant) rather than falling back. nil
+	// distinguishes a failed lookup from an empty (but successful) result.
 	PinnedSourceVersions map[string]string
 
 	// token + endpointBase reach /external-syncs/* for later per-plugin lookups,

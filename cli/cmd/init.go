@@ -315,6 +315,19 @@ func configForDestinationPlugin(destination cqapi.ListPlugin, version *cqapi.Plu
 	return defaultConfig.String()
 }
 
+// unsupportedPlatformSourceError returns an error when a platform tenant doesn't
+// support the given source path (team/name), else nil. nil supported set (no
+// platform tenant) never rejects.
+func unsupportedPlatformSourceError(source string, supported map[string]string) error {
+	if len(supported) == 0 {
+		return nil
+	}
+	if _, ok := supported[source]; ok {
+		return nil
+	}
+	return fmt.Errorf("source plugin %q is not supported by your CloudQuery Platform", source)
+}
+
 // selectSource prompts for a source plugin. When supportedPaths is non-empty
 // (a CloudQuery Platform tenant — the caller requires a non-empty set there), the
 // list is restricted to the sources the platform supports (its `team/name` keys),
@@ -554,8 +567,13 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	// actionable error rather than silently listing everything.
 	var supportedSourcePaths map[string]string
 	if platformTenant {
-		if len(tenantInit.PinnedSourceVersions) == 0 {
+		switch {
+		case tenantInit.PinnedSourceVersions == nil:
+			// Lookup failed (nil, not an empty result) — likely transient.
 			return errors.New("couldn't determine which source plugins your CloudQuery Platform supports — please try again, or pass --disable-platform to scaffold a regular source + destination config")
+		case len(tenantInit.PinnedSourceVersions) == 0:
+			// Lookup succeeded but the platform reported no supported sources.
+			return errors.New("your CloudQuery Platform reports no supported source plugins — pass --disable-platform to scaffold a regular source + destination config")
 		}
 		supportedSourcePaths = tenantInit.PinnedSourceVersions
 	}
@@ -563,13 +581,10 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	var notFoundPluginsErrors error
 	if source != "" {
 		sourcePluginFilter := pluginFilter(source, cqapi.PluginKindSource)
-		sourceFound := lo.SomeBy(allPlugins, sourcePluginFilter)
-		if !sourceFound {
+		if !lo.SomeBy(allPlugins, sourcePluginFilter) {
 			notFoundPluginsErrors = errors.Join(notFoundPluginsErrors, fmt.Errorf("source plugin %q not found", source))
-		} else if len(supportedSourcePaths) > 0 {
-			if _, ok := supportedSourcePaths[source]; !ok {
-				notFoundPluginsErrors = errors.Join(notFoundPluginsErrors, fmt.Errorf("source plugin %q is not supported by your CloudQuery Platform", source))
-			}
+		} else if err := unsupportedPlatformSourceError(source, supportedSourcePaths); err != nil {
+			notFoundPluginsErrors = errors.Join(notFoundPluginsErrors, err)
 		}
 	}
 	if destination != "" {
