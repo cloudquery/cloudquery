@@ -1,5 +1,22 @@
 # Changelog
 
+## [3.10.0](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.9.9...plugins-source-hackernews-v3.10.0) (2026-07-10)
+
+
+### Features
+
+* Implement connection test support ([#22923](https://github.com/cloudquery/cloudquery/issues/22923)) ([2b3a489](https://github.com/cloudquery/cloudquery/commit/2b3a489df90c47f6c9e8f9fa5fdd3684b7f457cc))
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 45e7e20 ([#23047](https://github.com/cloudquery/cloudquery/issues/23047)) ([0eebce9](https://github.com/cloudquery/cloudquery/commit/0eebce9592d70f52dbb8daaf73ba4c4d71a02906))
+* **deps:** Update go module directive to v1.26.4 ([#22996](https://github.com/cloudquery/cloudquery/issues/22996)) ([4c6a6b1](https://github.com/cloudquery/cloudquery/commit/4c6a6b19b9c85ea3f69276a77b9213d76bf744c5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.3 ([#22946](https://github.com/cloudquery/cloudquery/issues/22946)) ([b9aac1f](https://github.com/cloudquery/cloudquery/commit/b9aac1f3ab9eb846bb165aa2978be314ee6b8eaf))
+* **deps:** Update module golang.org/x/net to v0.55.0 [SECURITY] ([#23049](https://github.com/cloudquery/cloudquery/issues/23049)) ([74bb68e](https://github.com/cloudquery/cloudquery/commit/74bb68ef06456b56a22dfb96744a72319a6ce8b7))
+* **deps:** Update module golang.org/x/net to v0.56.0 ([#23033](https://github.com/cloudquery/cloudquery/issues/23033)) ([43c367a](https://github.com/cloudquery/cloudquery/commit/43c367a645b5e26781b06039a0780cffb40bb2cd))
+* **deps:** Update module golang.org/x/sync to v0.21.0 ([#23034](https://github.com/cloudquery/cloudquery/issues/23034)) ([ca16ef2](https://github.com/cloudquery/cloudquery/commit/ca16ef207a03115899e564320fed0ebcacb19398))
+
 ## [3.9.9](https://github.com/cloudquery/cloudquery/compare/plugins-source-hackernews-v3.9.8...plugins-source-hackernews-v3.9.9) (2026-06-02)
 
 
