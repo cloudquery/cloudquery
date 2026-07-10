@@ -244,7 +244,8 @@ func TestDetectTenantForInit_DirectToken_NoURL(t *testing.T) {
 	require.NotNil(t, ti)
 	require.Empty(t, ti.APIURL)
 	require.Nil(t, ti.PinnedSourceVersions)
-	require.Empty(t, ti.RecommendedSourceConfig(context.Background(), zerolog.Nop(), "cloudquery/aws"), "no session → no config")
+	_, cfgErr := ti.RecommendedSourceConfig(context.Background(), "cloudquery/aws")
+	require.Error(t, cfgErr, "no session → no config")
 }
 
 func TestDetectTenantForInit_Disabled(t *testing.T) {
@@ -428,23 +429,41 @@ func TestTenantInit_RecommendedSourceConfig(t *testing.T) {
 	defer es.Close()
 
 	ti := &TenantInit{token: "cqpd_direct.sig", endpointBase: es.URL}
-	got := ti.RecommendedSourceConfig(context.Background(), zerolog.Nop(), "cloudquery/aws")
+	got, err := ti.RecommendedSourceConfig(context.Background(), "cloudquery/aws")
+	require.NoError(t, err)
 	require.Equal(t, config, got, "the platform's config is returned verbatim")
 	require.Equal(t, "cloudquery/aws", gotPath, "the source path is passed through")
 
-	// No session or empty path yield "" (best-effort → init scaffolds on its own).
-	require.Empty(t, (&TenantInit{}).RecommendedSourceConfig(context.Background(), zerolog.Nop(), "cloudquery/aws"))
-	require.Empty(t, ti.RecommendedSourceConfig(context.Background(), zerolog.Nop(), ""))
+	// No session and empty path are errors — a platform scaffold is required.
+	_, err = (&TenantInit{}).RecommendedSourceConfig(context.Background(), "cloudquery/aws")
+	require.Error(t, err)
+	_, err = ti.RecommendedSourceConfig(context.Background(), "")
+	require.Error(t, err)
 }
 
-func TestTenantInit_RecommendedSourceConfig_Non200_Empty(t *testing.T) {
-	// Covers both server errors and older platforms without the endpoint (404).
-	es := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		http.Error(w, "not found", http.StatusNotFound)
-	}))
-	defer es.Close()
-	ti := &TenantInit{token: "cqpd_direct.sig", endpointBase: es.URL}
-	require.Empty(t, ti.RecommendedSourceConfig(context.Background(), zerolog.Nop(), "cloudquery/aws"))
+func TestTenantInit_RecommendedSourceConfig_Errors(t *testing.T) {
+	newTI := func(handler http.HandlerFunc) *TenantInit {
+		es := httptest.NewServer(handler)
+		t.Cleanup(es.Close)
+		return &TenantInit{token: "cqpd_direct.sig", endpointBase: es.URL}
+	}
+
+	t.Run("non-200", func(t *testing.T) {
+		ti := newTI(func(w http.ResponseWriter, _ *http.Request) {
+			http.Error(w, "boom", http.StatusInternalServerError)
+		})
+		_, err := ti.RecommendedSourceConfig(context.Background(), "cloudquery/aws")
+		require.ErrorContains(t, err, "status 500")
+	})
+
+	t.Run("empty config is an error, not a fallback", func(t *testing.T) {
+		ti := newTI(func(w http.ResponseWriter, _ *http.Request) {
+			w.Header().Set("Content-Type", "application/json")
+			_, _ = w.Write([]byte(`{"config": ""}`))
+		})
+		_, err := ti.RecommendedSourceConfig(context.Background(), "cloudquery/aws")
+		require.ErrorContains(t, err, "no recommended source config for cloudquery/aws")
+	})
 }
 
 func TestInject_DirectToken_InjectsWithoutCloud(t *testing.T) {

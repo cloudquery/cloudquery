@@ -304,7 +304,7 @@ func linkForPlugin(plugin cqapi.ListPlugin) string {
 // CloudQuery Platform tenant: no destination block, since the CLI auto-injects
 // the `platform` destination at sync time. It wires the source to that reserved
 // destination name and tells the user where the data will land.
-func writePlatformSourceOnlySpec(ctx context.Context, apiClient *cqapi.ClientWithResponses, sourcePlugin cqapi.ListPlugin, specPath, platformURL string, tenantInit *platform.TenantInit) error {
+func writePlatformSourceOnlySpec(ctx context.Context, sourcePlugin cqapi.ListPlugin, specPath, platformURL string, tenantInit *platform.TenantInit) error {
 	sourcePath := sourcePlugin.TeamName + "/" + sourcePlugin.Name
 	// Prefer the platform-pinned source version over the hub's latest, so the
 	// scaffolded spec targets a version the tenant will accept (the same version
@@ -313,21 +313,13 @@ func writePlatformSourceOnlySpec(ctx context.Context, apiClient *cqapi.ClientWit
 		sourcePlugin.LatestVersion = &pinned
 	}
 	fmt.Printf("Getting configuration for source plugin %s...\n", bold.Sprintf("%s/%s@%s", sourcePlugin.TeamName, sourcePlugin.Name, *sourcePlugin.LatestVersion))
-	// The platform serves a ready-to-write spec: the example config at the pinned
-	// version, sanitized (placeholder auth-scope values removed, recommended
-	// tables baked in, wired to the injected `platform` destination). Written
-	// verbatim when present.
-	yamlSpec := tenantInit.RecommendedSourceConfig(ctx, log.Logger, sourcePath)
-	if yamlSpec == "" {
-		// Older platforms without the endpoint (or no scaffold for this plugin):
-		// scaffold from the hub example config, wiring the source to the reserved
-		// `platform` destination name. No destination block either way — the CLI
-		// adds the destination itself at sync time.
-		sourceVersion, err := api.GetPluginVersion(apiClient, sourcePlugin.TeamName, sourcePlugin.Kind, sourcePlugin.Name, *sourcePlugin.LatestVersion)
-		if err != nil {
-			return fmt.Errorf("failed to get source plugin %s/%s@%s version %w", sourcePlugin.TeamName, sourcePlugin.Name, *sourcePlugin.LatestVersion, err)
-		}
-		yamlSpec = strings.ReplaceAll(configForSourcePlugin(sourcePlugin, sourceVersion), "DESTINATION_NAME", "platform")
+	// The platform serves the ready-to-write spec: the example config at the
+	// pinned version, sanitized (placeholder auth-scope values removed,
+	// recommended tables baked in, wired to the injected `platform` destination).
+	// Written verbatim — no local scaffolding.
+	yamlSpec, err := tenantInit.RecommendedSourceConfig(ctx, sourcePath)
+	if err != nil {
+		return fmt.Errorf("failed to get the recommended config for %s from your CloudQuery Platform: %w", sourcePath, err)
 	}
 
 	if specPath == "" {
@@ -505,7 +497,7 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	// Platform tenant + no explicit destination → scaffold a source-only spec;
 	// the CLI auto-injects the platform destination at sync time.
 	if platformTenant && destination == "" {
-		return writePlatformSourceOnlySpec(ctx, apiClient, allPlugins[sourceIndex], specPath, platformURL, tenantInit)
+		return writePlatformSourceOnlySpec(ctx, allPlugins[sourceIndex], specPath, platformURL, tenantInit)
 	}
 
 	if destination == "" {

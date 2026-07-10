@@ -171,12 +171,14 @@ func DetectTenantForInit(ctx context.Context, logger zerolog.Logger, cloudToken,
 // the platform-pinned version, sanitized server-side (placeholder auth-scope
 // values removed, wired to the injected `platform` destination, recommended
 // tables baked in). Reuses the session resolved by DetectTenantForInit (no
-// extra mint). Best-effort: "" when there's no session or the lookup fails /
-// returns nothing (e.g. an older platform without the endpoint), so init falls
-// back to scaffolding from the hub example config.
-func (ti *TenantInit) RecommendedSourceConfig(ctx context.Context, logger zerolog.Logger, sourcePath string) string {
-	if ti == nil || ti.token == "" || ti.endpointBase == "" || sourcePath == "" {
-		return ""
+// extra mint). A platform scaffold is required for platform init — any failure,
+// including the platform returning an empty config, is an error.
+func (ti *TenantInit) RecommendedSourceConfig(ctx context.Context, sourcePath string) (string, error) {
+	if ti == nil || ti.token == "" || ti.endpointBase == "" {
+		return "", errors.New("no platform session to fetch the recommended source config with")
+	}
+	if sourcePath == "" {
+		return "", errors.New("source path is required")
 	}
 	base := externalSyncsURL(ti.endpointBase, "/external-syncs/recommended-source-config")
 	url := base + "?path=" + neturl.QueryEscape(sourcePath)
@@ -185,28 +187,27 @@ func (ti *TenantInit) RecommendedSourceConfig(ctx context.Context, logger zerolo
 	defer cancel()
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
-		logger.Debug().Err(err).Str("url", url).Msg("platform: failed to build recommended-source-config request")
-		return ""
+		return "", fmt.Errorf("build recommended source config request: %w", err)
 	}
 	req.Header.Set("Authorization", "Bearer "+ti.token)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		logger.Debug().Err(err).Str("url", url).Msg("platform: recommended-source-config lookup failed")
-		return ""
+		return "", fmt.Errorf("recommended source config lookup: %w", err)
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		logger.Debug().Int("status", resp.StatusCode).Str("url", url).Msg("platform: recommended-source-config returned non-200")
-		return ""
+		return "", fmt.Errorf("recommended source config lookup returned status %d", resp.StatusCode)
 	}
 	var body struct {
 		Config string `json:"config"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
-		logger.Debug().Err(err).Msg("platform: failed to decode recommended-source-config")
-		return ""
+		return "", fmt.Errorf("decode recommended source config: %w", err)
 	}
-	return body.Config
+	if body.Config == "" {
+		return "", fmt.Errorf("platform has no recommended source config for %s", sourcePath)
+	}
+	return body.Config, nil
 }
 
 // resolveCloudTenant resolves the single active tenant for the team (the
