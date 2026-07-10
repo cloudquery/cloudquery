@@ -5,6 +5,18 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.41.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.40.1...cli-v6.41.0) (2026-07-10)
+
+
+### Features
+
+* Scaffold platform sync specs from the platform's recommended source config ([#23101](https://github.com/cloudquery/cloudquery/issues/23101)) ([5372f29](https://github.com/cloudquery/cloudquery/commit/5372f29a08052ba4fe96bdfa502611e91dc35958))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23069](https://github.com/cloudquery/cloudquery/issues/23069)) ([4f3b70b](https://github.com/cloudquery/cloudquery/commit/4f3b70b3324698820baf74f4f7060762699e8fa3))
+
 ## [6.40.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.40.0...cli-v6.40.1) (2026-07-10)
 
 
