@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.14.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.14.10...plugins-destination-sqlite-v2.14.11) (2026-07-10)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 45e7e20 ([#23047](https://github.com/cloudquery/cloudquery/issues/23047)) ([0eebce9](https://github.com/cloudquery/cloudquery/commit/0eebce9592d70f52dbb8daaf73ba4c4d71a02906))
+* **deps:** Update go module directive to v1.26.4 ([#22996](https://github.com/cloudquery/cloudquery/issues/22996)) ([4c6a6b1](https://github.com/cloudquery/cloudquery/commit/4c6a6b19b9c85ea3f69276a77b9213d76bf744c5))
+* **deps:** Update module github.com/mattn/go-sqlite3 to v1.14.47 ([#23016](https://github.com/cloudquery/cloudquery/issues/23016)) ([2bb8a49](https://github.com/cloudquery/cloudquery/commit/2bb8a498c80d5b40958ba6ee1bca9ccefc82e079))
+* **deps:** Update module golang.org/x/net to v0.55.0 [SECURITY] ([#23049](https://github.com/cloudquery/cloudquery/issues/23049)) ([74bb68e](https://github.com/cloudquery/cloudquery/commit/74bb68ef06456b56a22dfb96744a72319a6ce8b7))
+* **deps:** Update module golang.org/x/net to v0.56.0 ([#23033](https://github.com/cloudquery/cloudquery/issues/23033)) ([43c367a](https://github.com/cloudquery/cloudquery/commit/43c367a645b5e26781b06039a0780cffb40bb2cd))
+
 ## [2.14.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-sqlite-v2.14.9...plugins-destination-sqlite-v2.14.10) (2026-06-19)
 
 
