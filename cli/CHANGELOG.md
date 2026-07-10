@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.40.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.40.0...cli-v6.40.1) (2026-07-10)
+
+
+### Bug Fixes
+
+* Restrict init source picker to platform-supported sources ([#23064](https://github.com/cloudquery/cloudquery/issues/23064)) ([62d6d18](https://github.com/cloudquery/cloudquery/commit/62d6d18c6b49eef0bb62632af665cba63f3dacf4))
+* Skip sync_run_completed analytics event for platform-only syncs ([#23066](https://github.com/cloudquery/cloudquery/issues/23066)) ([5828ef7](https://github.com/cloudquery/cloudquery/commit/5828ef7d0dad7f06e108a1aedff6ff4b30c46a3e))
+
 ## [6.40.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.39.0...cli-v6.40.0) (2026-07-06)
 
 
