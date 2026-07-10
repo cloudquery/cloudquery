@@ -1,5 +1,22 @@
 # Changelog
 
+## [7.10.13](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.10.12...plugins-destination-s3-v7.10.13) (2026-07-10)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22927](https://github.com/cloudquery/cloudquery/issues/22927)) ([98d415b](https://github.com/cloudquery/cloudquery/commit/98d415bb76fd40e56b660b1d405190eba129ffb3))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22952](https://github.com/cloudquery/cloudquery/issues/22952)) ([dae162f](https://github.com/cloudquery/cloudquery/commit/dae162f23a687a0a3400296a6d6b2d46f3e0e502))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22983](https://github.com/cloudquery/cloudquery/issues/22983)) ([5083c40](https://github.com/cloudquery/cloudquery/commit/5083c40dd8b15e656fc8a405a68c217c1eeb36f7))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22995](https://github.com/cloudquery/cloudquery/issues/22995)) ([5894c38](https://github.com/cloudquery/cloudquery/commit/5894c38234829b409b7be0f567a4af5c5ddcdcb1))
+* **deps:** Update github.com/cloudquery/jsonschema digest to 45e7e20 ([#23047](https://github.com/cloudquery/cloudquery/issues/23047)) ([0eebce9](https://github.com/cloudquery/cloudquery/commit/0eebce9592d70f52dbb8daaf73ba4c4d71a02906))
+* **deps:** Update go module directive to v1.26.4 ([#22996](https://github.com/cloudquery/cloudquery/issues/22996)) ([4c6a6b1](https://github.com/cloudquery/cloudquery/commit/4c6a6b19b9c85ea3f69276a77b9213d76bf744c5))
+* **deps:** Update module github.com/aws/smithy-go to v1.27.2 ([#22928](https://github.com/cloudquery/cloudquery/issues/22928)) ([c8880e9](https://github.com/cloudquery/cloudquery/commit/c8880e958311363b1ae137c323e275069f654dca))
+* **deps:** Update module github.com/aws/smithy-go to v1.27.3 ([#23050](https://github.com/cloudquery/cloudquery/issues/23050)) ([36ec401](https://github.com/cloudquery/cloudquery/commit/36ec40138aa8e614521a5e0ef85d24ac4427eb90))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.3 ([#22946](https://github.com/cloudquery/cloudquery/issues/22946)) ([b9aac1f](https://github.com/cloudquery/cloudquery/commit/b9aac1f3ab9eb846bb165aa2978be314ee6b8eaf))
+* **deps:** Update module golang.org/x/net to v0.55.0 [SECURITY] ([#23049](https://github.com/cloudquery/cloudquery/issues/23049)) ([74bb68e](https://github.com/cloudquery/cloudquery/commit/74bb68ef06456b56a22dfb96744a72319a6ce8b7))
+* **deps:** Update module golang.org/x/net to v0.56.0 ([#23033](https://github.com/cloudquery/cloudquery/issues/23033)) ([43c367a](https://github.com/cloudquery/cloudquery/commit/43c367a645b5e26781b06039a0780cffb40bb2cd))
+
 ## [7.10.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.10.11...plugins-destination-s3-v7.10.12) (2026-06-02)
 
 
