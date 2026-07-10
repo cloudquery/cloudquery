@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.3.31](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.30...plugins-source-square-v1.3.31) (2026-07-10)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#22920](https://github.com/cloudquery/cloudquery/issues/22920)) ([99f86fb](https://github.com/cloudquery/cloudquery/commit/99f86fb218ace3cce3b9846547ba9807c238c2d4))
+* **deps:** Update ghcr.io/astral-sh/uv Docker tag to v0.11.26 ([#23014](https://github.com/cloudquery/cloudquery/issues/23014)) ([8342ebe](https://github.com/cloudquery/cloudquery/commit/8342ebe345ff55b471e245782d315d8e822f4955))
+* **deps:** Update module golang.org/x/net to v0.56.0 ([#23033](https://github.com/cloudquery/cloudquery/issues/23033)) ([43c367a](https://github.com/cloudquery/cloudquery/commit/43c367a645b5e26781b06039a0780cffb40bb2cd))
+
 ## [1.3.30](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.29...plugins-source-square-v1.3.30) (2026-06-02)
 
 
