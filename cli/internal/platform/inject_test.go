@@ -942,3 +942,13 @@ func TestInject_EnvVersionBeatsPlatformPin(t *testing.T) {
 	got := mustInject(t, "tok", "team-x", testSources(), testDestinations())
 	require.Equal(t, "v9.9.9", got[1].Version, "env override wins over the platform pin")
 }
+
+func TestOnlyPlatformDestinations(t *testing.T) {
+	platformDest := specs.Destination{Metadata: specs.Metadata{Name: destinationName, Path: "cloudquery/platform", Registry: specs.RegistryCloudQuery}}
+	pgDest := specs.Destination{Metadata: specs.Metadata{Name: "pg", Path: "cloudquery/postgresql", Registry: specs.RegistryCloudQuery}}
+
+	require.False(t, OnlyPlatformDestinations(nil), "no destinations is not a platform-only sync")
+	require.False(t, OnlyPlatformDestinations([]specs.Destination{pgDest}))
+	require.False(t, OnlyPlatformDestinations([]specs.Destination{platformDest, pgDest}), "mixed destinations keep the CLI event")
+	require.True(t, OnlyPlatformDestinations([]specs.Destination{platformDest}))
+}
