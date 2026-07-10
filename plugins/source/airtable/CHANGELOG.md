@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.3.12](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.11...plugins-source-airtable-v2.3.12) (2026-07-10)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency ava to v8 ([#22911](https://github.com/cloudquery/cloudquery/issues/22911)) ([4854d9e](https://github.com/cloudquery/cloudquery/commit/4854d9e38a5ad18f086151d245306ca1175a0830))
+* **deps:** Update dependency dayjs to v1.11.21 ([#23009](https://github.com/cloudquery/cloudquery/issues/23009)) ([76980af](https://github.com/cloudquery/cloudquery/commit/76980afa77a2a3c7582dbfcd8f10ec9781ab9f2a))
+* **deps:** Update dependency eslint to v10.5.0 ([#23019](https://github.com/cloudquery/cloudquery/issues/23019)) ([3db3e09](https://github.com/cloudquery/cloudquery/commit/3db3e093a509cc41239c51d7d23e77a865059f31))
+* **deps:** Update dependency eslint-plugin-ava to v17 ([#22912](https://github.com/cloudquery/cloudquery/issues/22912)) ([cf4f1be](https://github.com/cloudquery/cloudquery/commit/cf4f1be72eae1646be5fd4f8ab6b095bdd72a21f))
+* **deps:** Update dependency eslint-plugin-unicorn to v68 ([#23042](https://github.com/cloudquery/cloudquery/issues/23042)) ([c29fed6](https://github.com/cloudquery/cloudquery/commit/c29fed609ea1146f43738f534f17951cfec4a938))
+* **deps:** Update dependency got to v15.0.6 ([#23010](https://github.com/cloudquery/cloudquery/issues/23010)) ([06431ae](https://github.com/cloudquery/cloudquery/commit/06431ae4ab5e3ea3fe1995408adae9433242dd21))
+* **deps:** Update dependency prettier to v3.8.4 ([#23011](https://github.com/cloudquery/cloudquery/issues/23011)) ([4e10b65](https://github.com/cloudquery/cloudquery/commit/4e10b65b81411dd082616c53a77077bb1fd35c55))
+* **deps:** Update dependency typescript-eslint to v8.62.0 ([#23020](https://github.com/cloudquery/cloudquery/issues/23020)) ([1b41ff5](https://github.com/cloudquery/cloudquery/commit/1b41ff501d878c0f228bc4cff133d1ad97f8d62b))
+* **deps:** Update eslint packages ([#23013](https://github.com/cloudquery/cloudquery/issues/23013)) ([86d8477](https://github.com/cloudquery/cloudquery/commit/86d84770cd07575da432d7f46659a1a842cb0ffc))
+* **deps:** Update module golang.org/x/net to v0.56.0 ([#23033](https://github.com/cloudquery/cloudquery/issues/23033)) ([43c367a](https://github.com/cloudquery/cloudquery/commit/43c367a645b5e26781b06039a0780cffb40bb2cd))
+* **deps:** Update pnpm to v10.34.4 ([#23039](https://github.com/cloudquery/cloudquery/issues/23039)) ([e68b290](https://github.com/cloudquery/cloudquery/commit/e68b2907195ff2f8aca6e0f31b4085a084dadc53))
+
 ## [2.3.11](https://github.com/cloudquery/cloudquery/compare/plugins-source-airtable-v2.3.10...plugins-source-airtable-v2.3.11) (2026-06-02)
 
 
