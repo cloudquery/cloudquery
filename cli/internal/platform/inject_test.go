@@ -237,14 +237,14 @@ func TestDetectTenantForInit_DirectToken(t *testing.T) {
 
 func TestDetectTenantForInit_DirectToken_NoURL(t *testing.T) {
 	// A legacy token with no url claim still identifies a tenant, but there's
-	// nowhere to fetch pins/tables from.
+	// nowhere to fetch pins/configs from.
 	t.Setenv(EnvPlatformToken, cqpdTokenWithClaims(t, map[string]any{"tm": "acme"}))
 	ti, err := DetectTenantForInit(context.Background(), zerolog.Nop(), "", "")
 	require.NoError(t, err)
 	require.NotNil(t, ti)
 	require.Empty(t, ti.APIURL)
 	require.Nil(t, ti.PinnedSourceVersions)
-	require.Nil(t, ti.RecommendedTables(context.Background(), zerolog.Nop(), "cloudquery/aws"), "no session → no tables")
+	require.Empty(t, ti.RecommendedSourceConfig(context.Background(), zerolog.Nop(), "cloudquery/aws"), "no session → no config")
 }
 
 func TestDetectTenantForInit_Disabled(t *testing.T) {
@@ -413,36 +413,38 @@ func TestDetectTenantForInit_MultipleActiveTenants(t *testing.T) {
 	})
 }
 
-func TestTenantInit_RecommendedTables(t *testing.T) {
-	// The recommended-tables lookup reuses the session (token + endpoint) from
-	// DetectTenantForInit — no extra mint.
+func TestTenantInit_RecommendedSourceConfig(t *testing.T) {
+	// The recommended-source-config lookup reuses the session (token + endpoint)
+	// from DetectTenantForInit — no extra mint.
+	const config = "kind: source\nspec:\n  name: aws\n  destinations: [\"platform\"]\n"
 	var gotPath string
 	es := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		require.Equal(t, "/api/external-syncs/recommended-tables", r.URL.Path)
+		require.Equal(t, "/api/external-syncs/recommended-source-config", r.URL.Path)
 		require.Equal(t, "Bearer cqpd_direct.sig", r.Header.Get("Authorization"))
 		gotPath = r.URL.Query().Get("path")
 		w.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(w).Encode(map[string]any{"tables": []string{"aws_ec2_instances", "aws_s3_buckets"}})
+		_ = json.NewEncoder(w).Encode(map[string]any{"config": config, "version": "v33.0.0", "tables": []string{"aws_s3_buckets"}})
 	}))
 	defer es.Close()
 
 	ti := &TenantInit{token: "cqpd_direct.sig", endpointBase: es.URL}
-	got := ti.RecommendedTables(context.Background(), zerolog.Nop(), "cloudquery/aws")
-	require.Equal(t, []string{"aws_ec2_instances", "aws_s3_buckets"}, got)
+	got := ti.RecommendedSourceConfig(context.Background(), zerolog.Nop(), "cloudquery/aws")
+	require.Equal(t, config, got, "the platform's config is returned verbatim")
 	require.Equal(t, "cloudquery/aws", gotPath, "the source path is passed through")
 
-	// No session, empty path, or a non-200 all yield nil (best-effort → init uses `*`).
-	require.Nil(t, (&TenantInit{}).RecommendedTables(context.Background(), zerolog.Nop(), "cloudquery/aws"))
-	require.Nil(t, ti.RecommendedTables(context.Background(), zerolog.Nop(), ""))
+	// No session or empty path yield "" (best-effort → init scaffolds on its own).
+	require.Empty(t, (&TenantInit{}).RecommendedSourceConfig(context.Background(), zerolog.Nop(), "cloudquery/aws"))
+	require.Empty(t, ti.RecommendedSourceConfig(context.Background(), zerolog.Nop(), ""))
 }
 
-func TestTenantInit_RecommendedTables_Non200_Nil(t *testing.T) {
+func TestTenantInit_RecommendedSourceConfig_Non200_Empty(t *testing.T) {
+	// Covers both server errors and older platforms without the endpoint (404).
 	es := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		http.Error(w, "boom", http.StatusInternalServerError)
+		http.Error(w, "not found", http.StatusNotFound)
 	}))
 	defer es.Close()
 	ti := &TenantInit{token: "cqpd_direct.sig", endpointBase: es.URL}
-	require.Nil(t, ti.RecommendedTables(context.Background(), zerolog.Nop(), "cloudquery/aws"))
+	require.Empty(t, ti.RecommendedSourceConfig(context.Background(), zerolog.Nop(), "cloudquery/aws"))
 }
 
 func TestInject_DirectToken_InjectsWithoutCloud(t *testing.T) {

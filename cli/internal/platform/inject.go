@@ -93,7 +93,7 @@ type sourceVersion struct {
 // TenantInit carries what `init` needs about the CloudQuery Platform tenant a
 // sync would auto-inject into, resolved in a single tenant lookup + mint: the URL
 // to report, the pinned source versions to scaffold, and a session for further
-// /external-syncs/* lookups (RecommendedTables). A nil *TenantInit from
+// /external-syncs/* lookups (RecommendedSourceConfig). A nil *TenantInit from
 // DetectTenantForInit means no platform-init scenario applies and init should use
 // its normal source + destination flow.
 type TenantInit struct {
@@ -122,7 +122,7 @@ func DetectTenantForInit(ctx context.Context, logger zerolog.Logger, cloudToken,
 		return nil, nil
 	}
 	// A directly supplied cqpd_ token already identifies the tenant and carries its
-	// URL; pins + recommended tables are fetched with that same token.
+	// URL; pins + the recommended source config are fetched with that same token.
 	if t := platformToken(); t != "" {
 		u := apiURLFromToken(t)
 		if u == "" {
@@ -165,44 +165,48 @@ func DetectTenantForInit(ctx context.Context, logger zerolog.Logger, cloudToken,
 	}, nil
 }
 
-// RecommendedTables returns the tables the platform recommends syncing for the
-// given source plugin path, from GET /external-syncs/recommended-tables, reusing
-// the session resolved by DetectTenantForInit (no extra mint). Best-effort: nil
-// when there's no session or the lookup fails / returns nothing, so init falls
-// back to `tables: ['*']`.
-func (ti *TenantInit) RecommendedTables(ctx context.Context, logger zerolog.Logger, sourcePath string) []string {
+// RecommendedSourceConfig returns the ready-to-write source spec the platform
+// recommends for the given source plugin path, from
+// GET /external-syncs/recommended-source-config: the plugin's example config at
+// the platform-pinned version, sanitized server-side (placeholder auth-scope
+// values removed, wired to the injected `platform` destination, recommended
+// tables baked in). Reuses the session resolved by DetectTenantForInit (no
+// extra mint). Best-effort: "" when there's no session or the lookup fails /
+// returns nothing (e.g. an older platform without the endpoint), so init falls
+// back to scaffolding from the hub example config.
+func (ti *TenantInit) RecommendedSourceConfig(ctx context.Context, logger zerolog.Logger, sourcePath string) string {
 	if ti == nil || ti.token == "" || ti.endpointBase == "" || sourcePath == "" {
-		return nil
+		return ""
 	}
-	base := externalSyncsURL(ti.endpointBase, "/external-syncs/recommended-tables")
+	base := externalSyncsURL(ti.endpointBase, "/external-syncs/recommended-source-config")
 	url := base + "?path=" + neturl.QueryEscape(sourcePath)
 
 	ctx, cancel := context.WithTimeout(ctx, requestTimeout)
 	defer cancel()
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
 	if err != nil {
-		logger.Debug().Err(err).Str("url", url).Msg("platform: failed to build recommended-tables request")
-		return nil
+		logger.Debug().Err(err).Str("url", url).Msg("platform: failed to build recommended-source-config request")
+		return ""
 	}
 	req.Header.Set("Authorization", "Bearer "+ti.token)
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
-		logger.Debug().Err(err).Str("url", url).Msg("platform: recommended-tables lookup failed")
-		return nil
+		logger.Debug().Err(err).Str("url", url).Msg("platform: recommended-source-config lookup failed")
+		return ""
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		logger.Debug().Int("status", resp.StatusCode).Str("url", url).Msg("platform: recommended-tables returned non-200")
-		return nil
+		logger.Debug().Int("status", resp.StatusCode).Str("url", url).Msg("platform: recommended-source-config returned non-200")
+		return ""
 	}
 	var body struct {
-		Tables []string `json:"tables"`
+		Config string `json:"config"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
-		logger.Debug().Err(err).Msg("platform: failed to decode recommended-tables")
-		return nil
+		logger.Debug().Err(err).Msg("platform: failed to decode recommended-source-config")
+		return ""
 	}
-	return body.Tables
+	return body.Config
 }
 
 // resolveCloudTenant resolves the single active tenant for the team (the

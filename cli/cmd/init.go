@@ -7,7 +7,6 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
-	"io"
 	"net/http"
 	"os"
 	"regexp"
@@ -25,7 +24,6 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/samber/lo"
 	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v3"
 )
 
 const (
@@ -192,107 +190,6 @@ spec:
 	return &sb
 }
 
-// withRecommendedTables sets the source spec's `tables` selection to the
-// platform's recommended tables, overriding whatever form the example config used
-// — wildcard `['*']`, an inline list like `["aws_s3_buckets"]`, or a block list —
-// and adding a `tables:` key if the example omitted one. It edits the parsed YAML
-// node tree in place and re-marshals, so the rest of the scaffold (comments, key
-// order, auth-field stubs) is preserved. Returns the spec unchanged when the
-// recommended set is empty, the input isn't parseable, or it has no source
-// `spec:` mapping to write into.
-func withRecommendedTables(yamlSpec string, tables []string) string {
-	if len(tables) == 0 {
-		return yamlSpec
-	}
-	// Decode every document — an example config's ```yaml block may ship more than
-	// one (e.g. a companion destination doc). Editing only the first and dropping
-	// the rest would truncate the spec, so round-trip them all.
-	dec := yaml.NewDecoder(strings.NewReader(yamlSpec))
-	var docs []*yaml.Node
-	for {
-		var doc yaml.Node
-		err := dec.Decode(&doc)
-		if errors.Is(err, io.EOF) {
-			break
-		}
-		if err != nil {
-			return yamlSpec
-		}
-		docs = append(docs, &doc)
-	}
-	changed := false
-	for _, doc := range docs {
-		if setSpecTables(doc, tables) {
-			changed = true
-		}
-	}
-	if !changed {
-		return yamlSpec
-	}
-	var buf bytes.Buffer
-	enc := yaml.NewEncoder(&buf)
-	enc.SetIndent(2) // match the example configs' 2-space convention
-	for _, doc := range docs {
-		if err := enc.Encode(doc); err != nil {
-			return yamlSpec
-		}
-	}
-	if err := enc.Close(); err != nil {
-		return yamlSpec // don't return a half-flushed buffer
-	}
-	return buf.String()
-}
-
-// setSpecTables sets the source spec's `tables` to a block sequence of the given
-// table names — replacing the existing value node in place, or adding a `tables:`
-// key when the spec has none. Only touches a `kind: source` document (so a
-// companion destination doc in a multi-doc example isn't given a bogus `tables:`).
-// Returns false when the doc isn't a source or has no `spec:` mapping.
-func setSpecTables(doc *yaml.Node, tables []string) bool {
-	if doc.Kind != yaml.DocumentNode || len(doc.Content) == 0 {
-		return false
-	}
-	root := doc.Content[0]
-	if kind := mappingValue(root, "kind"); kind == nil || kind.Value != "source" {
-		return false
-	}
-	spec := mappingValue(root, "spec")
-	if spec == nil || spec.Kind != yaml.MappingNode {
-		return false
-	}
-	items := make([]*yaml.Node, 0, len(tables))
-	for _, t := range tables {
-		items = append(items, &yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: t})
-	}
-	if tablesNode := mappingValue(spec, "tables"); tablesNode != nil {
-		tablesNode.Kind = yaml.SequenceNode
-		tablesNode.Tag = "!!seq"
-		tablesNode.Style = 0 // block, not flow
-		tablesNode.Value = ""
-		tablesNode.Content = items
-		return true
-	}
-	// No `tables` key in the example — add one.
-	spec.Content = append(spec.Content,
-		&yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: "tables"},
-		&yaml.Node{Kind: yaml.SequenceNode, Tag: "!!seq", Content: items},
-	)
-	return true
-}
-
-// mappingValue returns the value node for key in a mapping node, or nil.
-func mappingValue(n *yaml.Node, key string) *yaml.Node {
-	if n == nil || n.Kind != yaml.MappingNode {
-		return nil
-	}
-	for i := 0; i+1 < len(n.Content); i += 2 {
-		if n.Content[i].Value == key {
-			return n.Content[i+1]
-		}
-	}
-	return nil
-}
-
 func configForSourcePlugin(source cqapi.ListPlugin, version *cqapi.PluginVersionDetails) string {
 	exampleConfig := extractYamlFromMarkdownCodeBlock(version.ExampleConfig)
 	if exampleConfig != "" {
@@ -416,25 +313,27 @@ func writePlatformSourceOnlySpec(ctx context.Context, apiClient *cqapi.ClientWit
 		sourcePlugin.LatestVersion = &pinned
 	}
 	fmt.Printf("Getting configuration for source plugin %s...\n", bold.Sprintf("%s/%s@%s", sourcePlugin.TeamName, sourcePlugin.Name, *sourcePlugin.LatestVersion))
-	sourceVersion, err := api.GetPluginVersion(apiClient, sourcePlugin.TeamName, sourcePlugin.Kind, sourcePlugin.Name, *sourcePlugin.LatestVersion)
-	if err != nil {
-		return fmt.Errorf("failed to get source plugin %s/%s@%s version %w", sourcePlugin.TeamName, sourcePlugin.Name, *sourcePlugin.LatestVersion, err)
+	// The platform serves a ready-to-write spec: the example config at the pinned
+	// version, sanitized (placeholder auth-scope values removed, recommended
+	// tables baked in, wired to the injected `platform` destination). Written
+	// verbatim when present.
+	yamlSpec := tenantInit.RecommendedSourceConfig(ctx, log.Logger, sourcePath)
+	if yamlSpec == "" {
+		// Older platforms without the endpoint (or no scaffold for this plugin):
+		// scaffold from the hub example config, wiring the source to the reserved
+		// `platform` destination name. No destination block either way — the CLI
+		// adds the destination itself at sync time.
+		sourceVersion, err := api.GetPluginVersion(apiClient, sourcePlugin.TeamName, sourcePlugin.Kind, sourcePlugin.Name, *sourcePlugin.LatestVersion)
+		if err != nil {
+			return fmt.Errorf("failed to get source plugin %s/%s@%s version %w", sourcePlugin.TeamName, sourcePlugin.Name, *sourcePlugin.LatestVersion, err)
+		}
+		yamlSpec = strings.ReplaceAll(configForSourcePlugin(sourcePlugin, sourceVersion), "DESTINATION_NAME", "platform")
 	}
 
 	if specPath == "" {
 		specPath = sourcePlugin.Name + "_to_platform.yaml"
 	}
 	fmt.Printf("Writing spec to %s...\n", bold.Sprint(specPath))
-	// Wire the source to the reserved `platform` destination name; the CLI adds
-	// the destination itself at sync time, so no destination block is written.
-	sourceConfig := configForSourcePlugin(sourcePlugin, sourceVersion)
-	yamlSpec := strings.ReplaceAll(sourceConfig, "DESTINATION_NAME", "platform")
-	// Set the source's tables to what the platform recommends, so the sync
-	// populates the tables the platform ingests. No recommendation → leave the
-	// example config's tables as-is.
-	if recommended := tenantInit.RecommendedTables(ctx, log.Logger, sourcePath); len(recommended) > 0 {
-		yamlSpec = withRecommendedTables(yamlSpec, recommended)
-	}
 	if err := os.WriteFile(specPath, []byte(yamlSpec), 0644); err != nil {
 		return fmt.Errorf("failed to write spec file %w", err)
 	}
