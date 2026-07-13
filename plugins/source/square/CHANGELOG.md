@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.32](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.31...plugins-source-square-v1.3.32) (2026-07-13)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pyarrow to v23.0.1 [SECURITY] ([#23068](https://github.com/cloudquery/cloudquery/issues/23068)) ([84b5873](https://github.com/cloudquery/cloudquery/commit/84b5873d7670c71a6dc828759837010e9ce304fa))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23069](https://github.com/cloudquery/cloudquery/issues/23069)) ([4f3b70b](https://github.com/cloudquery/cloudquery/commit/4f3b70b3324698820baf74f4f7060762699e8fa3))
+
 ## [1.3.31](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.30...plugins-source-square-v1.3.31) (2026-07-10)
 
 
