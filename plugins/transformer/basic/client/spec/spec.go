@@ -37,8 +37,6 @@ type TransformationSpec struct {
 	NewTableNameTemplate string `json:"new_table_name_template"`
 }
 
-// ShouldIncludeSHA reports whether obfuscation should append the SHA hash. Defaults to
-// true when unset.
 func (t TransformationSpec) ShouldIncludeSHA() bool {
 	return t.IncludeSHA == nil || *t.IncludeSHA
 }

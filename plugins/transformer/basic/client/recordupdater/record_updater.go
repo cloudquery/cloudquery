@@ -40,8 +40,6 @@ const redactedByCQMessage = "Redacted by CloudQuery |"
 const redactedByCQMessageNoSHA = "Redacted by CloudQuery"
 const redactedByCQJSONName = "redacted_by_cloudquery"
 
-// internalColumnPrefix identifies CloudQuery-managed columns (e.g. _cq_id, _cq_source_name)
-// that must always pass through redaction untouched.
 const internalColumnPrefix = "_cq_"
 
 func isInternalColumn(name string) bool {
@@ -53,9 +51,6 @@ func isPrimaryKeyField(f arrow.Field) bool {
 	return idx >= 0 && f.Metadata.Values()[idx] == schema.MetadataTrue
 }
 
-// redactValue returns the redaction marker for a raw value. When includeSHA is true the
-// SHA-256 hash of the value is appended so distinct values remain distinguishable; when
-// false a bare marker is returned.
 func redactValue(raw []byte, includeSHA bool) string {
 	if includeSHA {
 		return fmt.Sprintf("%s %x", redactedByCQMessage, sha256.Sum256(raw))
@@ -298,16 +293,6 @@ func (r *RecordUpdater) ObfuscateColumns(columnNames []string, includeSHA bool) 
 	return r.record, nil
 }
 
-// ObfuscateColumnsExcept redacts every column EXCEPT those on the keepColumns allowlist.
-// It is the opt-in inverse of ObfuscateColumns:
-//   - CloudQuery internal columns (_cq_*) always pass through untouched.
-//   - A bare column name on the allowlist keeps that column verbatim.
-//   - A dotted allowlist entry (e.g. "spec_containers.#.image") keeps that JSON sub-path
-//     and redacts every other leaf within that JSON column in place.
-//   - A non-allowlisted column is obfuscated when it is a string/JSON/binary column, and
-//     dropped when its type cannot be hashed into itself (numbers, timestamps, lists, ...).
-//
-// Allowlist paths use gjson syntax; "#" matches any array index.
 func (r *RecordUpdater) ObfuscateColumnsExcept(keepColumns []string, includeSHA bool) (arrow.RecordBatch, error) {
 	keepWhole := make(map[string]struct{})
 	keepSub := make(map[string][][]string)
@@ -323,14 +308,9 @@ func (r *RecordUpdater) ObfuscateColumnsExcept(keepColumns []string, includeSHA 
 	oldColumns := r.record.Columns()
 	fields := r.record.Schema().Fields()
 
-	// Fail closed on misconfiguration: an allowlist entry that names a column not present
-	// in the table silently over-redacts the column the user meant to keep. Surface it.
 	if err := r.validateKeepColumnsExist(keepWhole, keepSub); err != nil {
 		return nil, err
 	}
-	// Guard row identity: a non-allowlisted primary-key column would be redacted, which
-	// breaks upserts at the destination — collapsing to one key with include_sha=false, or
-	// vanishing entirely if its type can't be hashed.
 	if err := r.validatePrimaryKeysSurvive(keepWhole, keepSub, includeSHA); err != nil {
 		return nil, err
 	}
@@ -345,15 +325,12 @@ func (r *RecordUpdater) ObfuscateColumnsExcept(keepColumns []string, includeSHA 
 
 		switch {
 		case isInternalColumn(name):
-			// CloudQuery internal columns always pass through.
 			newFields = append(newFields, fields[i])
 			newColumns = append(newColumns, column)
 		case keptWhole:
-			// Fully allowlisted column: keep verbatim.
 			newFields = append(newFields, fields[i])
 			newColumns = append(newColumns, column)
 		case len(keepSub[name]) > 0:
-			// JSON column with allowlisted sub-paths: keep them, redact the rest.
 			if !isJSON {
 				return nil, fmt.Errorf("column %q is referenced with a nested path in the allowlist but is not a JSON column", name)
 			}
@@ -368,8 +345,6 @@ func (r *RecordUpdater) ObfuscateColumnsExcept(keepColumns []string, includeSHA 
 		case column.DataType().ID() == arrow.BINARY:
 			newFields = append(newFields, fields[i])
 			newColumns = append(newColumns, r.obfuscateBinaryColumn(column, includeSHA))
-		default:
-			// Un-hashable type (number, timestamp, list, struct, ...): drop it.
 		}
 	}
 
@@ -383,8 +358,6 @@ func (r *RecordUpdater) ObfuscateColumnsExcept(keepColumns []string, includeSHA 
 	return r.record, nil
 }
 
-// validateKeepColumnsExist errors if any allowlist entry names a top-level column that is
-// not present in the record, which would otherwise silently over-redact.
 func (r *RecordUpdater) validateKeepColumnsExist(keepWhole map[string]struct{}, keepSub map[string][][]string) error {
 	present := make(map[string]struct{}, r.record.NumCols())
 	for i := 0; i < int(r.record.NumCols()); i++ {
@@ -408,9 +381,6 @@ func (r *RecordUpdater) validateKeepColumnsExist(keepWhole map[string]struct{}, 
 	return nil
 }
 
-// validatePrimaryKeysSurvive errors if a non-allowlisted primary-key column would lose its
-// row-identifying value (dropped for un-hashable types, or collapsed to one value under
-// include_sha=false), which would corrupt upserts at the destination.
 func (r *RecordUpdater) validatePrimaryKeysSurvive(keepWhole map[string]struct{}, keepSub map[string][][]string, includeSHA bool) error {
 	fields := r.record.Schema().Fields()
 	for i := 0; i < int(r.record.NumCols()); i++ {
@@ -437,8 +407,6 @@ func (r *RecordUpdater) validatePrimaryKeysSurvive(keepWhole map[string]struct{}
 	return nil
 }
 
-// redactJSONColumnExcept redacts every leaf of each JSON value except those covered by the
-// keep patterns.
 func (*RecordUpdater) redactJSONColumnExcept(column arrow.Array, patterns [][]string, includeSHA bool) arrow.Array {
 	bld := types.NewJSONBuilder(memory.NewGoAllocator())
 	for i := 0; i < column.Len(); i++ {
@@ -449,7 +417,6 @@ func (*RecordUpdater) redactJSONColumnExcept(column arrow.Array, patterns [][]st
 		s := column.ValueStr(i)
 		out, err := redactJSONExcept(s, patterns, includeSHA)
 		if err != nil {
-			// Not parseable as JSON: fall back to redacting the whole value so nothing leaks.
 			fallback, ok := entireJSONRedaction([]byte(s), includeSHA)
 			if !ok {
 				bld.AppendNull()
@@ -462,9 +429,6 @@ func (*RecordUpdater) redactJSONColumnExcept(column arrow.Array, patterns [][]st
 	return bld.NewJSONArray()
 }
 
-// redactJSONExcept parses jsonStr, redacts every leaf not covered by a keep pattern, and
-// returns the re-serialized JSON. Number fidelity is preserved via json.Number; HTML
-// escaping is disabled so values are not mangled.
 func redactJSONExcept(jsonStr string, patterns [][]string, includeSHA bool) (string, error) {
 	dec := json.NewDecoder(strings.NewReader(jsonStr))
 	dec.UseNumber()
@@ -497,7 +461,6 @@ func walkRedactExcept(node any, path []string, patterns [][]string, includeSHA b
 		}
 		return n
 	case nil:
-		// Preserve nulls: they carry no value to redact.
 		return nil
 	default:
 		if pathKept(path, patterns) {
@@ -508,7 +471,6 @@ func walkRedactExcept(node any, path []string, patterns [][]string, includeSHA b
 	}
 }
 
-// appendPath returns a fresh slice so recursive siblings never alias the same backing array.
 func appendPath(path []string, seg string) []string {
 	out := make([]string, len(path)+1)
 	copy(out, path)
@@ -516,7 +478,6 @@ func appendPath(path []string, seg string) []string {
 	return out
 }
 
-// pathKept reports whether the concrete leaf path is at or under any keep pattern.
 func pathKept(path []string, patterns [][]string) bool {
 	for _, pat := range patterns {
 		if patternIsPrefix(pat, path) {
@@ -526,8 +487,6 @@ func pathKept(path []string, patterns [][]string) bool {
 	return false
 }
 
-// patternIsPrefix reports whether pat matches a prefix of path. A "#" segment in pat matches
-// any array index (a numeric segment); every other segment must match exactly.
 func patternIsPrefix(pat, path []string) bool {
 	if len(pat) > len(path) {
 		return false
@@ -558,7 +517,6 @@ func isArrayIndex(seg string) bool {
 	return true
 }
 
-// splitJSONPath splits a gjson-style path on unescaped dots, unescaping "\." into a literal dot.
 func splitJSONPath(p string) []string {
 	var segs []string
 	var cur strings.Builder
@@ -769,9 +727,6 @@ func (*RecordUpdater) obfuscateBinaryColumn(column arrow.Array, includeSHA bool)
 	return bld.NewBinaryArray()
 }
 
-// entireJSONRedaction returns the {"redacted_by_cloudquery": <marker>} document used when a
-// whole JSON value is redacted. The marker is the SHA-256 of the value, or a static string
-// when include_sha is false. The bool reports whether serialization succeeded.
 func entireJSONRedaction(raw []byte, includeSHA bool) ([]byte, bool) {
 	marker := redactedByCQMessageNoSHA
 	if includeSHA {
