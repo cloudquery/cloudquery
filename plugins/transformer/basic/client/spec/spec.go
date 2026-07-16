@@ -15,6 +15,7 @@ const (
 	KindRenameColumn              = "rename_column"
 	KindAddPrimaryKeys            = "add_primary_keys"
 	KindObfuscateSensitiveColumns = "obfuscate_sensitive_columns"
+	KindObfuscateColumnsExcept    = "obfuscate_columns_except"
 	KindUppercase                 = "uppercase"
 	KindLowercase                 = "lowercase"
 	KindDropRows                  = "drop_rows"
@@ -27,8 +28,19 @@ type TransformationSpec struct {
 	Name    string   `json:"name"`
 	Value   *string  `json:"value"`
 
+	// IncludeSHA controls whether obfuscation transformations append the SHA-256 hash
+	// of the redacted value to the redaction marker. Defaults to true. Only meaningful
+	// for the obfuscate_* transformation kinds.
+	IncludeSHA *bool `json:"include_sha"`
+
 	// For change_table_names transformation
 	NewTableNameTemplate string `json:"new_table_name_template"`
+}
+
+// ShouldIncludeSHA reports whether obfuscation should append the SHA hash. Defaults to
+// true when unset.
+func (t TransformationSpec) ShouldIncludeSHA() bool {
+	return t.IncludeSHA == nil || *t.IncludeSHA
 }
 
 type Spec struct {
@@ -40,6 +52,10 @@ func (s *Spec) SetDefaults() {
 		if len(s.TransformationSpecs[i].Tables) == 0 {
 			s.TransformationSpecs[i].Tables = append(s.TransformationSpecs[i].Tables, "*")
 		}
+		if s.TransformationSpecs[i].IncludeSHA == nil {
+			t := true
+			s.TransformationSpecs[i].IncludeSHA = &t
+		}
 	}
 }
 
@@ -47,7 +63,7 @@ func (s *Spec) Validate() error {
 	var err error
 	for _, t := range s.TransformationSpecs {
 		switch t.Kind {
-		case KindRemoveColumns, KindAddPrimaryKeys, KindObfuscateColumns:
+		case KindRemoveColumns, KindAddPrimaryKeys, KindObfuscateColumns, KindObfuscateColumnsExcept:
 			if len(t.Columns) == 0 {
 				err = errors.Join(err, fmt.Errorf("'%s' field must be specified for %s transformation", "columns", t.Kind))
 			}

@@ -4,6 +4,7 @@ This CloudQuery transformer plugin provides basic transformation capabilities:
 - Adding literal string columns
 - Adding a column with the timestamp that the record was processed by the transformer
 - Obfuscating string columns
+- Obfuscating every column except an allowlist (opt-in redaction)
 - Renaming tables using a name template (use `{{.OldName}}` to refer to the original name, see example below)
 - Normalizing column values to all-upper/lowercase
 - Dropping rows based on column values
@@ -73,6 +74,49 @@ spec:
 Note: Obfuscating JSON arrays using `#.foo` syntax will cause all `foo` values to be replaced with the same obfuscated value `{"top_foo":[{"foo": "Redacted by CloudQuery | XXX"},{"foo": "Redacted by CloudQuery | XXX"},{"foo": "Redacted by CloudQuery | XXX"}]}`.
 
 You can also use the `obfuscate_sensitive_columns` transformation to automatically obfuscate all columns marked by the source plugin as `sensitive` and possibly containing secret information.
+
+## Opt-in redaction with `obfuscate_columns_except`
+
+`obfuscate_columns_except` is the inverse of `obfuscate_columns`: instead of listing the columns to redact, you list the columns (and JSON sub-paths) to **keep**, and everything else is redacted. This is useful for compliance-sensitive syncs where only an explicitly approved set of fields may leave unredacted.
+
+For each matched table, `columns` is the allowlist. Every other field is handled as follows:
+
+- CloudQuery internal columns (those prefixed with `_cq_`) always pass through untouched.
+- A bare column name (e.g. `status_phase`) keeps that whole column.
+- A dotted entry (e.g. `spec_containers.#.image`) keeps that JSON sub-path and redacts every other leaf inside that JSON column, preserving its structure. Array leaves are hashed individually.
+- A non-allowlisted column is obfuscated when it is a string, JSON, or binary column, and **dropped** when its type cannot be redacted into itself (numbers, timestamps, lists, structs, ...).
+
+```yaml copy
+kind: transformer
+spec:
+  name: "basic"
+  path: "cloudquery/basic"
+  registry: "cloudquery"
+  spec:
+    transformations:
+      - kind: obfuscate_columns_except
+        tables: ["k8s_core_pods"]
+        columns:
+          - status_phase
+          - context
+          - namespace
+          - "spec_containers.#.image"
+          - "spec_init_containers.#.image"
+          - "status_container_statuses.#.state.terminated.finishedAt"
+```
+
+> Note: `obfuscate_columns_except` only redacts fields within the tables it is pointed at; it does not disable other tables. Restrict which tables are synced with the source plugin's `tables` / `skip_tables` options so that no unapproved table is ever written unredacted.
+
+### Hiding the SHA hash
+
+By default all obfuscation transformations append the SHA-256 hash of the redacted value (`Redacted by CloudQuery | <sha>`) so that distinct values remain distinguishable. Set `include_sha: false` on any obfuscation transformation to omit the hash and emit a bare `Redacted by CloudQuery` marker instead. This applies to `obfuscate_columns`, `obfuscate_sensitive_columns`, and `obfuscate_columns_except`.
+
+```yaml copy
+      - kind: obfuscate_columns_except
+        tables: ["k8s_core_pods"]
+        include_sha: false
+        columns: ["status_phase", "context", "namespace"]
+```
 
 Note: transformations are applied sequentially. If you rename tables, the table matcher configuration of subsequent transformations will need to be updated to the new names.
 Note: escape syntax is [SJSON sytax](https://github.com/tidwall/sjson?tab=readme-ov-file#path-syntax).
