@@ -10,6 +10,10 @@ spec:
         tables: ["xkcd_comics"]
         columns: ["safe_title", "title"]
       - kind: obfuscate_sensitive_columns
+      - kind: obfuscate_columns_except
+        tables: ["xkcd_comics"]
+        include_sha: false
+        columns: ["num", "img"]
       - kind: remove_columns
         tables: ["xkcd_comics"]
         columns: ["transcript", "news"]
