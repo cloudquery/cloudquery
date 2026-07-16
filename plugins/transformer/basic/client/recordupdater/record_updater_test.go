@@ -707,6 +707,84 @@ func createTestRecordWithCQ() arrow.RecordBatch {
 	return bld.NewRecordBatch()
 }
 
+func createTestRecordWithPK() arrow.RecordBatch {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	pkMeta := arrow.NewMetadata([]string{schema.MetadataPrimaryKey}, []string{schema.MetadataTrue})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "_cq_id", Type: arrow.BinaryTypes.String},
+			{Name: "uid", Type: arrow.BinaryTypes.String, Metadata: pkMeta},
+			{Name: "name", Type: arrow.BinaryTypes.String},
+			{Name: "secret", Type: arrow.BinaryTypes.String},
+		},
+		&md,
+	))
+	defer bld.Release()
+
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"cq1", "cq2"}, nil)
+	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"uid-1", "uid-2"}, nil)
+	bld.Field(2).(*array.StringBuilder).AppendValues([]string{"pod-a", "pod-b"}, nil)
+	bld.Field(3).(*array.StringBuilder).AppendValues([]string{"s1", "s2"}, nil)
+
+	return bld.NewRecordBatch()
+}
+
+func TestObfuscateColumnsExcept_UnknownKeepColumnErrors(t *testing.T) {
+	record := createTestRecord()
+	_, err := New(record).ObfuscateColumnsExcept([]string{"col1", "does_not_exist"}, true)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "does_not_exist")
+}
+
+func TestObfuscateColumnsExcept_NestedPathOnNonJSONErrors(t *testing.T) {
+	record := createTestRecord() // col1 is a string column
+	_, err := New(record).ObfuscateColumnsExcept([]string{"col1.foo"}, true)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "col1")
+}
+
+func TestObfuscateColumnsExcept_PKNotAllowlistedIncludeSHAFalseErrors(t *testing.T) {
+	record := createTestRecordWithPK()
+	_, err := New(record).ObfuscateColumnsExcept([]string{"name"}, false) // uid (PK) not kept
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "uid")
+	require.Contains(t, err.Error(), "include_sha")
+}
+
+func TestObfuscateColumnsExcept_PKNotAllowlistedIncludeSHATrueKeepsDistinct(t *testing.T) {
+	record := createTestRecordWithPK()
+	updated, err := New(record).ObfuscateColumnsExcept([]string{"name"}, true)
+	require.NoError(t, err)
+	// uid is column index 1; redacted but must stay distinct per row so upserts still work.
+	uid0 := updated.Column(1).(*array.String).Value(0)
+	uid1 := updated.Column(1).(*array.String).Value(1)
+	require.True(t, strings.HasPrefix(uid0, redactedByCQMessage))
+	require.NotEqual(t, uid0, uid1, "redacted PK must remain distinct with include_sha=true")
+}
+
+func TestObfuscateColumnsExcept_PKAllowlistedIncludeSHAFalseOK(t *testing.T) {
+	record := createTestRecordWithPK()
+	updated, err := New(record).ObfuscateColumnsExcept([]string{"uid"}, false) // PK kept
+	require.NoError(t, err)
+	require.Equal(t, "uid-1", updated.Column(1).(*array.String).Value(0))
+	require.Equal(t, redactedByCQMessageNoSHA, updated.Column(2).(*array.String).Value(0)) // name redacted
+}
+
+func TestObfuscateColumnsExcept_DropEveryColumnErrors(t *testing.T) {
+	// Single un-hashable column, nothing allowlisted, no _cq_* columns -> everything drops.
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{{Name: "count", Type: arrow.PrimitiveTypes.Int64}}, &md,
+	))
+	defer bld.Release()
+	bld.Field(0).(*array.Int64Builder).AppendValues([]int64{1, 2}, nil)
+	record := bld.NewRecordBatch()
+
+	_, err := New(record).ObfuscateColumnsExcept([]string{}, true)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "drop every column")
+}
+
 func TestObfuscateColumnsExcept_TopLevelKeepRedact(t *testing.T) {
 	record := createTestRecord()
 	updater := New(record)

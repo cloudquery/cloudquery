@@ -48,6 +48,11 @@ func isInternalColumn(name string) bool {
 	return strings.HasPrefix(name, internalColumnPrefix)
 }
 
+func isPrimaryKeyField(f arrow.Field) bool {
+	idx := f.Metadata.FindKey(schema.MetadataPrimaryKey)
+	return idx >= 0 && f.Metadata.Values()[idx] == schema.MetadataTrue
+}
+
 // redactValue returns the redaction marker for a raw value. When includeSHA is true the
 // SHA-256 hash of the value is appended so distinct values remain distinguishable; when
 // false a bare marker is returned.
@@ -317,19 +322,33 @@ func (r *RecordUpdater) ObfuscateColumnsExcept(keepColumns []string, includeSHA 
 
 	oldColumns := r.record.Columns()
 	fields := r.record.Schema().Fields()
+
+	// Fail closed on misconfiguration: an allowlist entry that names a column not present
+	// in the table silently over-redacts the column the user meant to keep. Surface it.
+	if err := r.validateKeepColumnsExist(keepWhole, keepSub); err != nil {
+		return nil, err
+	}
+	// Guard row identity: a non-allowlisted primary-key column would be redacted, which
+	// breaks upserts at the destination — collapsing to one key with include_sha=false, or
+	// vanishing entirely if its type can't be hashed.
+	if err := r.validatePrimaryKeysSurvive(keepWhole, keepSub, includeSHA); err != nil {
+		return nil, err
+	}
+
 	newFields := make([]arrow.Field, 0, len(oldColumns))
 	newColumns := make([]arrow.Array, 0, len(oldColumns))
 
 	for i, column := range oldColumns {
 		name := r.record.ColumnName(i)
 		_, isJSON := column.DataType().(*types.JSONType)
+		_, keptWhole := keepWhole[name]
 
 		switch {
 		case isInternalColumn(name):
 			// CloudQuery internal columns always pass through.
 			newFields = append(newFields, fields[i])
 			newColumns = append(newColumns, column)
-		case keepMatchesWholeColumn(keepWhole, name):
+		case keptWhole:
 			// Fully allowlisted column: keep verbatim.
 			newFields = append(newFields, fields[i])
 			newColumns = append(newColumns, column)
@@ -364,9 +383,58 @@ func (r *RecordUpdater) ObfuscateColumnsExcept(keepColumns []string, includeSHA 
 	return r.record, nil
 }
 
-func keepMatchesWholeColumn(keepWhole map[string]struct{}, name string) bool {
-	_, ok := keepWhole[name]
-	return ok
+// validateKeepColumnsExist errors if any allowlist entry names a top-level column that is
+// not present in the record, which would otherwise silently over-redact.
+func (r *RecordUpdater) validateKeepColumnsExist(keepWhole map[string]struct{}, keepSub map[string][][]string) error {
+	present := make(map[string]struct{}, r.record.NumCols())
+	for i := 0; i < int(r.record.NumCols()); i++ {
+		present[r.record.ColumnName(i)] = struct{}{}
+	}
+	var missing []string
+	for name := range keepWhole {
+		if _, ok := present[name]; !ok {
+			missing = append(missing, name)
+		}
+	}
+	for name := range keepSub {
+		if _, ok := present[name]; !ok {
+			missing = append(missing, name)
+		}
+	}
+	if len(missing) > 0 {
+		slices.Sort(missing)
+		return fmt.Errorf("obfuscate_columns_except allowlist references unknown column(s): %s", strings.Join(missing, ", "))
+	}
+	return nil
+}
+
+// validatePrimaryKeysSurvive errors if a non-allowlisted primary-key column would lose its
+// row-identifying value (dropped for un-hashable types, or collapsed to one value under
+// include_sha=false), which would corrupt upserts at the destination.
+func (r *RecordUpdater) validatePrimaryKeysSurvive(keepWhole map[string]struct{}, keepSub map[string][][]string, includeSHA bool) error {
+	fields := r.record.Schema().Fields()
+	for i := 0; i < int(r.record.NumCols()); i++ {
+		name := r.record.ColumnName(i)
+		if isInternalColumn(name) || !isPrimaryKeyField(fields[i]) {
+			continue
+		}
+		if _, ok := keepWhole[name]; ok {
+			continue
+		}
+		col := r.record.Column(i)
+		_, isJSON := col.DataType().(*types.JSONType)
+		if _, ok := keepSub[name]; ok && isJSON {
+			continue
+		}
+		redactable := col.DataType().ID() == arrow.STRING || col.DataType().ID() == arrow.BINARY || isJSON
+		switch {
+		case !redactable:
+			return fmt.Errorf("primary-key column %q has type %s that cannot be redacted in place, so it would be dropped and break row identity at the destination; add %q to the allowlist", name, col.DataType(), name)
+		case !includeSHA:
+			return fmt.Errorf("primary-key column %q is not on the allowlist; with include_sha=false its redacted value is identical for every row and would break upserts at the destination; add %q to the allowlist or use include_sha=true", name, name)
+		}
+	}
+	return nil
 }
 
 // redactJSONColumnExcept redacts every leaf of each JSON value except those covered by the
@@ -382,11 +450,12 @@ func (*RecordUpdater) redactJSONColumnExcept(column arrow.Array, patterns [][]st
 		out, err := redactJSONExcept(s, patterns, includeSHA)
 		if err != nil {
 			// Not parseable as JSON: fall back to redacting the whole value so nothing leaks.
-			marker := redactedByCQMessageNoSHA
-			if includeSHA {
-				marker = fmt.Sprintf("%x", sha256.Sum256([]byte(s)))
+			fallback, ok := entireJSONRedaction([]byte(s), includeSHA)
+			if !ok {
+				bld.AppendNull()
+				continue
 			}
-			out, _ = sjson.Set("{}", redactedByCQJSONName, marker)
+			out = string(fallback)
 		}
 		bld.AppendBytes([]byte(out))
 	}
@@ -700,6 +769,21 @@ func (*RecordUpdater) obfuscateBinaryColumn(column arrow.Array, includeSHA bool)
 	return bld.NewBinaryArray()
 }
 
+// entireJSONRedaction returns the {"redacted_by_cloudquery": <marker>} document used when a
+// whole JSON value is redacted. The marker is the SHA-256 of the value, or a static string
+// when include_sha is false. The bool reports whether serialization succeeded.
+func entireJSONRedaction(raw []byte, includeSHA bool) ([]byte, bool) {
+	marker := redactedByCQMessageNoSHA
+	if includeSHA {
+		marker = fmt.Sprintf("%x", sha256.Sum256(raw))
+	}
+	out, err := sjson.Set("{}", redactedByCQJSONName, marker)
+	if err != nil {
+		return nil, false
+	}
+	return []byte(out), true
+}
+
 func (*RecordUpdater) obfuscateEntireJSONColumn(column arrow.Array, includeSHA bool) arrow.Array {
 	bld := types.NewJSONBuilder(memory.NewGoAllocator())
 	for i := 0; i < column.Len(); i++ {
@@ -707,15 +791,10 @@ func (*RecordUpdater) obfuscateEntireJSONColumn(column arrow.Array, includeSHA b
 			bld.AppendNull()
 			continue
 		}
-
-		str := column.ValueStr(i)
-		marker := redactedByCQMessageNoSHA
-		if includeSHA {
-			marker = fmt.Sprintf("%x", sha256.Sum256([]byte(str)))
-		}
-
-		if modified, err := sjson.Set("{}", redactedByCQJSONName, marker); err == nil {
-			bld.AppendBytes([]byte(modified))
+		if out, ok := entireJSONRedaction([]byte(column.ValueStr(i)), includeSHA); ok {
+			bld.AppendBytes(out)
+		} else {
+			bld.AppendNull()
 		}
 	}
 	return bld.NewJSONArray()
