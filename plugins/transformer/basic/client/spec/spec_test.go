@@ -58,6 +58,7 @@ func TestSetDefaultsIncludeSHA(t *testing.T) {
 		TransformationSpecs: []TransformationSpec{
 			{Kind: KindObfuscateColumns, Columns: []string{"col1"}},                                      // unset -> defaults true
 			{Kind: KindObfuscateColumnsExcept, Columns: []string{"col1"}, IncludeSHA: &[]bool{false}[0]}, // explicit false preserved
+			{Kind: KindRemoveColumns, Columns: []string{"col1"}},                                         // non-obfuscate -> not defaulted
 		},
 	}
 	s.SetDefaults()
@@ -67,6 +68,9 @@ func TestSetDefaultsIncludeSHA(t *testing.T) {
 	}
 	if got := s.TransformationSpecs[1].IncludeSHA; got == nil || *got {
 		t.Errorf("expected explicit IncludeSHA=false to be preserved, got %v", got)
+	}
+	if got := s.TransformationSpecs[2].IncludeSHA; got != nil {
+		t.Errorf("expected IncludeSHA to stay nil for non-obfuscate kind, got %v", got)
 	}
 	if !s.TransformationSpecs[0].ShouldIncludeSHA() {
 		t.Error("ShouldIncludeSHA() should be true when unset")
@@ -195,6 +199,15 @@ func TestValidate(t *testing.T) {
 			input: Spec{
 				TransformationSpecs: []TransformationSpec{
 					{Kind: KindObfuscateColumnsExcept, Columns: []string{"col1"}, Name: "x"},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "InvalidIncludeSHAOnNonObfuscateKind",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindRemoveColumns, Columns: []string{"col1"}, IncludeSHA: &[]bool{true}[0]},
 				},
 			},
 			wantErr: true,

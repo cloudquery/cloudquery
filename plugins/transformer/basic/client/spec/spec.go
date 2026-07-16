@@ -43,6 +43,15 @@ func (t TransformationSpec) ShouldIncludeSHA() bool {
 	return t.IncludeSHA == nil || *t.IncludeSHA
 }
 
+func isObfuscateKind(kind string) bool {
+	switch kind {
+	case KindObfuscateColumns, KindObfuscateSensitiveColumns, KindObfuscateColumnsExcept:
+		return true
+	default:
+		return false
+	}
+}
+
 type Spec struct {
 	TransformationSpecs []TransformationSpec `json:"transformations"`
 }
@@ -52,7 +61,7 @@ func (s *Spec) SetDefaults() {
 		if len(s.TransformationSpecs[i].Tables) == 0 {
 			s.TransformationSpecs[i].Tables = append(s.TransformationSpecs[i].Tables, "*")
 		}
-		if s.TransformationSpecs[i].IncludeSHA == nil {
+		if isObfuscateKind(s.TransformationSpecs[i].Kind) && s.TransformationSpecs[i].IncludeSHA == nil {
 			t := true
 			s.TransformationSpecs[i].IncludeSHA = &t
 		}
@@ -128,6 +137,10 @@ func (s *Spec) Validate() error {
 
 		default:
 			err = errors.Join(err, fmt.Errorf("unknown transformation kind: %s", t.Kind))
+		}
+
+		if t.IncludeSHA != nil && !isObfuscateKind(t.Kind) {
+			err = errors.Join(err, fmt.Errorf("include_sha field must not be specified for %s transformation", t.Kind))
 		}
 
 		// Non-trivial validations

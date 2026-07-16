@@ -105,18 +105,27 @@ spec:
           - "status_container_statuses.#.state.terminated.finishedAt"
 ```
 
+**Path syntax:** allowlist paths use the same gjson syntax as `obfuscate_columns`. If a path segment traverses a JSON **array**, you must write `#` for that segment. For example, to keep the image of every container, the path is `spec_containers.#.image` (not `spec_containers.image`). A path that doesn't match — a missing `#`, a typo in a nested segment — does **not** error; it simply causes that field to be redacted instead of kept, so double-check nested paths against your data.
+
 > Note: `obfuscate_columns_except` only redacts fields within the tables it is pointed at; it does not disable other tables. Restrict which tables are synced with the source plugin's `tables` / `skip_tables` options so that no unapproved table is ever written unredacted.
+
+Two more things to keep in mind:
+
+- **Primary keys.** A primary-key column that is not on the allowlist is still redacted. With the default `include_sha: true` each value hashes to a distinct, stable marker, so upserts keep working. With `include_sha: false` all redacted values become identical, which would collapse rows that share a primary key — so the transformer **refuses to run** if a non-allowlisted primary-key column would be redacted with `include_sha: false`. Either allowlist the primary-key column or keep `include_sha: true`. A primary-key column whose type cannot be redacted in place (e.g. an integer) would be dropped, which also breaks row identity, so that is refused too — allowlist such columns.
+- **Structure is preserved.** Redaction replaces leaf *values* only; JSON object keys and array shape remain visible. Non-allowlisted values inside a kept JSON column are redacted, but the surrounding structure (key names) is not.
 
 ### Hiding the SHA hash
 
 By default all obfuscation transformations append the SHA-256 hash of the redacted value (`Redacted by CloudQuery | <sha>`) so that distinct values remain distinguishable. Set `include_sha: false` on any obfuscation transformation to omit the hash and emit a bare `Redacted by CloudQuery` marker instead. This applies to `obfuscate_columns`, `obfuscate_sensitive_columns`, and `obfuscate_columns_except`.
 
 ```yaml copy
-      - kind: obfuscate_columns_except
+      - kind: obfuscate_columns
         tables: ["k8s_core_pods"]
         include_sha: false
-        columns: ["status_phase", "context", "namespace"]
+        columns: ["annotations"]
 ```
+
+Because `include_sha: false` makes every redacted value identical, avoid it on a column that is (or is part of) a primary key — `obfuscate_columns_except` will refuse to run rather than silently collapse rows (see the primary-keys note above).
 
 Note: transformations are applied sequentially. If you rename tables, the table matcher configuration of subsequent transformations will need to be updated to the new names.
 Note: escape syntax is [SJSON sytax](https://github.com/tidwall/sjson?tab=readme-ov-file#path-syntax).
