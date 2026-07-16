@@ -56,9 +56,9 @@ func TestSetDefaults(t *testing.T) {
 func TestSetDefaultsIncludeSHA(t *testing.T) {
 	s := Spec{
 		TransformationSpecs: []TransformationSpec{
-			{Kind: KindObfuscateColumns, Columns: []string{"col1"}},                                      // unset -> defaults true
-			{Kind: KindObfuscateColumnsExcept, Columns: []string{"col1"}, IncludeSHA: &[]bool{false}[0]}, // explicit false preserved
-			{Kind: KindRemoveColumns, Columns: []string{"col1"}},                                         // non-obfuscate -> not defaulted
+			{Kind: KindObfuscateColumns, Columns: []string{"col1"}},
+			{Kind: KindObfuscateColumnsExcept, Columns: []string{"col1"}, IncludeSHA: &[]bool{false}[0]},
+			{Kind: KindRemoveColumns, Columns: []string{"col1"}},
 		},
 	}
 	s.SetDefaults()
