@@ -35,7 +35,7 @@ func NewFromSpec(sp spec.TransformationSpec) (*Transformer, error) {
 	case spec.KindObfuscateColumns:
 		tr.fn = ObfuscateColumns(sp.Columns, sp.ShouldIncludeSHA())
 	case spec.KindObfuscateColumnsExcept:
-		tr.fn = ObfuscateColumnsExcept(sp.Columns, sp.ShouldIncludeSHA())
+		tr.fn = ObfuscateColumnsExcept(sp.Columns, sp.ShouldIncludeSHA(), sp.UnmatchedMode())
 	case spec.KindChangeTableNames:
 		tr.fn = ChangeTableName(sp.NewTableNameTemplate)
 	case spec.KindRenameColumn:
@@ -126,9 +126,9 @@ func ObfuscateColumns(columnNames []string, includeSHA bool) TransformationFn {
 	}
 }
 
-func ObfuscateColumnsExcept(columnNames []string, includeSHA bool) TransformationFn {
+func ObfuscateColumnsExcept(columnNames []string, includeSHA bool, unmatched string) TransformationFn {
 	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
-		return recordupdater.New(record).ObfuscateColumnsExcept(columnNames, includeSHA)
+		return recordupdater.New(record).ObfuscateColumnsExcept(columnNames, includeSHA, unmatched)
 	}
 }
 

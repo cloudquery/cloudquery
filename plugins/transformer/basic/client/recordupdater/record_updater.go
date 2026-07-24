@@ -293,7 +293,7 @@ func (r *RecordUpdater) ObfuscateColumns(columnNames []string, includeSHA bool) 
 	return r.record, nil
 }
 
-func (r *RecordUpdater) ObfuscateColumnsExcept(keepColumns []string, includeSHA bool) (arrow.RecordBatch, error) {
+func (r *RecordUpdater) ObfuscateColumnsExcept(keepColumns []string, includeSHA bool, unmatched string) (arrow.RecordBatch, error) {
 	keepWhole := make(map[string]struct{})
 	keepSub := make(map[string][][]string)
 	for _, c := range keepColumns {
@@ -311,7 +311,7 @@ func (r *RecordUpdater) ObfuscateColumnsExcept(keepColumns []string, includeSHA 
 	if err := r.validateKeepColumnsExist(keepWhole, keepSub); err != nil {
 		return nil, err
 	}
-	if err := r.validatePrimaryKeysSurvive(keepWhole, keepSub, includeSHA); err != nil {
+	if err := r.validatePrimaryKeysSurvive(keepWhole, keepSub, includeSHA, unmatched); err != nil {
 		return nil, err
 	}
 
@@ -335,7 +335,8 @@ func (r *RecordUpdater) ObfuscateColumnsExcept(keepColumns []string, includeSHA 
 				return nil, fmt.Errorf("column %q is referenced with a nested path in the allowlist but is not a JSON column", name)
 			}
 			newFields = append(newFields, fields[i])
-			newColumns = append(newColumns, r.redactJSONColumnExcept(column, keepSub[name], includeSHA))
+			newColumns = append(newColumns, r.redactJSONColumnExcept(column, keepSub[name], includeSHA, unmatched))
+		case unmatched == spec.UnmatchedDrop:
 		case column.DataType().ID() == arrow.STRING:
 			newFields = append(newFields, fields[i])
 			newColumns = append(newColumns, r.obfuscateColumn(column, includeSHA))
@@ -349,7 +350,7 @@ func (r *RecordUpdater) ObfuscateColumnsExcept(keepColumns []string, includeSHA 
 	}
 
 	if len(newColumns) == 0 {
-		return nil, errors.New("obfuscate_columns_except would drop every column; allowlist at least one string/JSON/binary column")
+		return nil, errors.New("obfuscate_columns_except would drop every column; allowlist at least one column")
 	}
 
 	md := r.record.Schema().Metadata()
@@ -381,7 +382,7 @@ func (r *RecordUpdater) validateKeepColumnsExist(keepWhole map[string]struct{}, 
 	return nil
 }
 
-func (r *RecordUpdater) validatePrimaryKeysSurvive(keepWhole map[string]struct{}, keepSub map[string][][]string, includeSHA bool) error {
+func (r *RecordUpdater) validatePrimaryKeysSurvive(keepWhole map[string]struct{}, keepSub map[string][][]string, includeSHA bool, unmatched string) error {
 	fields := r.record.Schema().Fields()
 	for i := 0; i < int(r.record.NumCols()); i++ {
 		name := r.record.ColumnName(i)
@@ -398,6 +399,8 @@ func (r *RecordUpdater) validatePrimaryKeysSurvive(keepWhole map[string]struct{}
 		}
 		redactable := col.DataType().ID() == arrow.STRING || col.DataType().ID() == arrow.BINARY || isJSON
 		switch {
+		case unmatched == spec.UnmatchedDrop:
+			return fmt.Errorf("primary-key column %q is not on the allowlist; with unmatched=drop it would be removed and break row identity at the destination; add %q to the allowlist", name, name)
 		case !redactable:
 			return fmt.Errorf("primary-key column %q has type %s that cannot be redacted in place, so it would be dropped and break row identity at the destination; add %q to the allowlist", name, col.DataType(), name)
 		case !includeSHA:
@@ -407,7 +410,7 @@ func (r *RecordUpdater) validatePrimaryKeysSurvive(keepWhole map[string]struct{}
 	return nil
 }
 
-func (*RecordUpdater) redactJSONColumnExcept(column arrow.Array, patterns [][]string, includeSHA bool) arrow.Array {
+func (*RecordUpdater) redactJSONColumnExcept(column arrow.Array, patterns [][]string, includeSHA bool, unmatched string) arrow.Array {
 	bld := types.NewJSONBuilder(memory.NewGoAllocator())
 	for i := 0; i < column.Len(); i++ {
 		if !column.IsValid(i) {
@@ -415,7 +418,7 @@ func (*RecordUpdater) redactJSONColumnExcept(column arrow.Array, patterns [][]st
 			continue
 		}
 		s := column.ValueStr(i)
-		out, err := redactJSONExcept(s, patterns, includeSHA)
+		out, err := redactJSONExcept(s, patterns, includeSHA, unmatched)
 		if err != nil {
 			fallback, ok := entireJSONRedaction([]byte(s), includeSHA)
 			if !ok {
@@ -429,7 +432,7 @@ func (*RecordUpdater) redactJSONColumnExcept(column arrow.Array, patterns [][]st
 	return bld.NewJSONArray()
 }
 
-func redactJSONExcept(jsonStr string, patterns [][]string, includeSHA bool) (string, error) {
+func redactJSONExcept(jsonStr string, patterns [][]string, includeSHA bool, unmatched string) (string, error) {
 	dec := json.NewDecoder(strings.NewReader(jsonStr))
 	dec.UseNumber()
 	var v any
@@ -437,7 +440,10 @@ func redactJSONExcept(jsonStr string, patterns [][]string, includeSHA bool) (str
 		return "", err
 	}
 
-	v = walkRedactExcept(v, nil, patterns, includeSHA)
+	v, keep := walkRedactExcept(v, nil, patterns, includeSHA, unmatched)
+	if !keep {
+		return "null", nil
+	}
 
 	buf := &bytes.Buffer{}
 	enc := json.NewEncoder(buf)
@@ -448,27 +454,99 @@ func redactJSONExcept(jsonStr string, patterns [][]string, includeSHA bool) (str
 	return strings.TrimRight(buf.String(), "\n"), nil
 }
 
-func walkRedactExcept(node any, path []string, patterns [][]string, includeSHA bool) any {
+func walkRedactExcept(node any, path []string, patterns [][]string, includeSHA bool, unmatched string) (any, bool) {
+	if pathKept(path, patterns) {
+		return node, true
+	}
+	switch n := node.(type) {
+	case map[string]any:
+		if !pathLeadsToKeep(path, patterns) {
+			return deadNode(node, includeSHA, unmatched)
+		}
+		for k, val := range n {
+			child, keep := walkRedactExcept(val, appendPath(path, k), patterns, includeSHA, unmatched)
+			if keep {
+				n[k] = child
+			} else {
+				delete(n, k)
+			}
+		}
+		return n, true
+	case []any:
+		if !pathLeadsToKeep(path, patterns) {
+			return deadNode(node, includeSHA, unmatched)
+		}
+		out := n[:0]
+		for i, val := range n {
+			child, keep := walkRedactExcept(val, appendPath(path, strconv.Itoa(i)), patterns, includeSHA, unmatched)
+			if keep {
+				out = append(out, child)
+			}
+		}
+		return out, true
+	case nil:
+		return nil, unmatched != spec.UnmatchedDrop
+	default:
+		return deadNode(node, includeSHA, unmatched)
+	}
+}
+
+func deadNode(node any, includeSHA bool, unmatched string) (any, bool) {
+	switch unmatched {
+	case spec.UnmatchedDrop:
+		return nil, false
+	case spec.UnmatchedCollapse:
+		raw, _ := json.Marshal(node)
+		return redactValue(raw, includeSHA), true
+	default:
+		return redactAllLeaves(node, includeSHA), true
+	}
+}
+
+func redactAllLeaves(node any, includeSHA bool) any {
 	switch n := node.(type) {
 	case map[string]any:
 		for k, val := range n {
-			n[k] = walkRedactExcept(val, appendPath(path, k), patterns, includeSHA)
+			n[k] = redactAllLeaves(val, includeSHA)
 		}
 		return n
 	case []any:
 		for i, val := range n {
-			n[i] = walkRedactExcept(val, appendPath(path, strconv.Itoa(i)), patterns, includeSHA)
+			n[i] = redactAllLeaves(val, includeSHA)
 		}
 		return n
 	case nil:
 		return nil
 	default:
-		if pathKept(path, patterns) {
-			return node
-		}
 		raw, _ := json.Marshal(node)
 		return redactValue(raw, includeSHA)
 	}
+}
+
+func pathLeadsToKeep(path []string, patterns [][]string) bool {
+	for _, pat := range patterns {
+		if len(pat) <= len(path) {
+			continue
+		}
+		match := true
+		for i := range path {
+			if pat[i] == "#" {
+				if !isArrayIndex(path[i]) {
+					match = false
+					break
+				}
+				continue
+			}
+			if pat[i] != path[i] {
+				match = false
+				break
+			}
+		}
+		if match {
+			return true
+		}
+	}
+	return false
 }
 
 func appendPath(path []string, seg string) []string {

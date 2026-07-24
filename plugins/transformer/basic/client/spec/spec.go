@@ -21,6 +21,12 @@ const (
 	KindDropRows                  = "drop_rows"
 )
 
+const (
+	UnmatchedDrop     = "drop"
+	UnmatchedCollapse = "collapse"
+	UnmatchedRedact   = "redact"
+)
+
 type TransformationSpec struct {
 	Kind    string   `json:"kind"`
 	Tables  []string `json:"tables"` // per-transformation table glob patterns
@@ -33,12 +39,25 @@ type TransformationSpec struct {
 	// for the obfuscate_* transformation kinds.
 	IncludeSHA *bool `json:"include_sha"`
 
+	// Unmatched controls how obfuscate_columns_except handles fields that are not on the
+	// allowlist: "drop" removes them (default), "collapse" replaces each non-allowlisted
+	// object/array with a single redaction marker, and "redact" replaces every individual
+	// leaf value with a marker. Only meaningful for the obfuscate_columns_except kind.
+	Unmatched string `json:"unmatched"`
+
 	// For change_table_names transformation
 	NewTableNameTemplate string `json:"new_table_name_template"`
 }
 
 func (t TransformationSpec) ShouldIncludeSHA() bool {
 	return t.IncludeSHA == nil || *t.IncludeSHA
+}
+
+func (t TransformationSpec) UnmatchedMode() string {
+	if t.Unmatched == "" {
+		return UnmatchedDrop
+	}
+	return t.Unmatched
 }
 
 func isObfuscateKind(kind string) bool {
@@ -139,6 +158,14 @@ func (s *Spec) Validate() error {
 
 		if t.IncludeSHA != nil && !isObfuscateKind(t.Kind) {
 			err = errors.Join(err, fmt.Errorf("include_sha field must not be specified for %s transformation", t.Kind))
+		}
+
+		if t.Unmatched != "" {
+			if t.Kind != KindObfuscateColumnsExcept {
+				err = errors.Join(err, fmt.Errorf("unmatched field must not be specified for %s transformation", t.Kind))
+			} else if t.Unmatched != UnmatchedDrop && t.Unmatched != UnmatchedCollapse && t.Unmatched != UnmatchedRedact {
+				err = errors.Join(err, fmt.Errorf("unmatched must be one of %q, %q, %q for %s transformation", UnmatchedDrop, UnmatchedCollapse, UnmatchedRedact, t.Kind))
+			}
 		}
 
 		// Non-trivial validations
