@@ -213,6 +213,33 @@ func TestValidate(t *testing.T) {
 			wantErr: true,
 		},
 		{
+			name: "ValidUnmatchedOnObfuscateColumnsExcept",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindObfuscateColumnsExcept, Columns: []string{"col1"}, Unmatched: UnmatchedCollapse},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "InvalidUnmatchedValue",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindObfuscateColumnsExcept, Columns: []string{"col1"}, Unmatched: "nonsense"},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "InvalidUnmatchedOnOtherKind",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindObfuscateColumns, Columns: []string{"col1"}, Unmatched: UnmatchedDrop},
+				},
+			},
+			wantErr: true,
+		},
+		{
 			name: "ValidRenameColumn",
 			input: Spec{
 				TransformationSpecs: []TransformationSpec{

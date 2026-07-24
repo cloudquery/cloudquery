@@ -79,12 +79,15 @@ You can also use the `obfuscate_sensitive_columns` transformation to automatical
 
 `obfuscate_columns_except` is the inverse of `obfuscate_columns`: instead of listing the columns to redact, you list the columns (and JSON sub-paths) to **keep**, and everything else is redacted. This is useful for compliance-sensitive syncs where only an explicitly approved set of fields may leave unredacted.
 
-For each matched table, `columns` is the allowlist. Every other field is handled as follows:
+For each matched table, `columns` is the allowlist. In every mode, CloudQuery internal columns (those prefixed with `_cq_`) pass through untouched, a bare column name (e.g. `status_phase`) keeps that whole column, and a dotted entry (e.g. `spec_containers.#.image`) keeps that JSON sub-path.
 
-- CloudQuery internal columns (those prefixed with `_cq_`) always pass through untouched.
-- A bare column name (e.g. `status_phase`) keeps that whole column.
-- A dotted entry (e.g. `spec_containers.#.image`) keeps that JSON sub-path and redacts every other leaf inside that JSON column, preserving its structure. Array leaves are hashed individually.
-- A non-allowlisted column is obfuscated when it is a string, JSON, or binary column, and **dropped** when its type cannot be redacted into itself (numbers, timestamps, lists, structs, ...).
+How every *other* field is handled is controlled by `unmatched`:
+
+- `drop` (default) — non-allowlisted fields are removed entirely: non-allowlisted top-level columns are dropped from the schema, and non-allowlisted leaves inside a kept JSON column are removed. Smallest output.
+- `collapse` — each non-allowlisted object or array is replaced by a single redaction marker; top-level non-allowlisted columns are obfuscated to one marker. Keeps the shape without a marker per leaf.
+- `redact` — every non-allowlisted leaf value is replaced by its own marker, preserving the full JSON structure (array leaves hashed individually). Most verbose; a top-level column whose type cannot be redacted (numbers, timestamps, lists, structs) is dropped.
+
+The default `drop` is recommended for allowlist/compliance syncs — non-approved data is simply absent. On a real Kubernetes pods table, `drop` cut the redacted `spec_containers` column from ~900 KB to ~10 KB and the table from 59 columns to 11 (`collapse` was the middle ground at ~200 KB).
 
 ```yaml copy
 kind: transformer
@@ -111,8 +114,8 @@ spec:
 
 Two more things to keep in mind:
 
-- **Primary keys.** A primary-key column that is not on the allowlist is still redacted. With the default `include_sha: true` each value hashes to a distinct, stable marker, so upserts keep working. With `include_sha: false` all redacted values become identical, which would collapse rows that share a primary key — so the transformer **refuses to run** if a non-allowlisted primary-key column would be redacted with `include_sha: false`. Either allowlist the primary-key column or keep `include_sha: true`. A primary-key column whose type cannot be redacted in place (e.g. an integer) would be dropped, which also breaks row identity, so that is refused too — allowlist such columns.
-- **Structure is preserved.** Redaction replaces leaf *values* only; JSON object keys and array shape remain visible. Non-allowlisted values inside a kept JSON column are redacted, but the surrounding structure (key names) is not.
+- **Primary keys.** A non-allowlisted primary-key column would lose the value that identifies each row and break upserts at the destination, so the transformer **refuses to run** in that case. This happens under `unmatched: drop` (the column is removed), under `redact`/`collapse` with `include_sha: false` (every row collapses to an identical marker), and for any primary-key type that cannot be redacted in place. Allowlist your primary-key column(s) — for the Kubernetes tables that is `uid`. Under `redact`/`collapse` with the default `include_sha: true`, a non-allowlisted primary key is redacted to a distinct, stable hash and upserts still work.
+- **Structure & keys.** Under `redact` and `collapse`, JSON object keys and array shape remain visible (only leaf values are redacted). Under `drop`, non-allowlisted keys and columns are removed entirely.
 
 ### Hiding the SHA hash
 
