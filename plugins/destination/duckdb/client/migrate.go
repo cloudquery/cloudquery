@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	sqlTableInfo      = "PRAGMA table_info('%s');"
+	sqlTableInfo      = "SELECT * FROM pragma_table_info($1)"
 	isColumnUniqueSQL = "select count(*) from duckdb_constraints where table_name = $1 and constraint_type = 'UNIQUE' and constraint_column_names=[$2]"
 )
 

@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/queries"
@@ -51,7 +52,7 @@ func (c *Client) getTTL(ctx context.Context, table *schema.Table) (string, error
 	return ttl, nil
 }
 
-func (c *Client) equalTTLs(table *schema.Table, ttl1, ttl2 string) (bool, error) {
+func (c *Client) equalTTLs(ctx context.Context, table *schema.Table, ttl1, ttl2 string) (bool, error) {
 	// ClickHouse allows different syntaxes for the same TTL expression,
 	// and a user query like "TTL col + INTERVAL 1 DAY" gets converted to SHOW CREATE TABLE as "TTL col + toIntervalDay(1)".
 	// Therefore this function runs a query to compare two given TTLs and returns true if they are equivalent according
@@ -68,9 +69,12 @@ func (c *Client) equalTTLs(table *schema.Table, ttl1, ttl2 string) (bool, error)
 	// If they are different, we need to compare them using a query.
 	sql := queries.EqualTTLsQuery(table, ttl1, ttl2)
 	var result *uint8
-	err := retryQueryRowAndScan(context.Background(), c.logger, c.conn, sql, []any{}, []any{&result})
+	err := retryQueryRowAndScan(ctx, c.logger, c.conn, sql, []any{}, []any{&result})
 	if err != nil {
 		return false, err
+	}
+	if result == nil {
+		return false, fmt.Errorf("unexpected NULL result from TTL comparison query")
 	}
 	return *result == 1, nil
 }

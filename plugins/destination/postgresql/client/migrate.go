@@ -233,7 +233,7 @@ func (c *Client) nonAutoMigratableTables(tables schema.Tables, pgTables schema.T
 
 func (c *Client) dropTable(ctx context.Context, tableName string) error {
 	c.logger.Info().Str("table", tableName).Msg("Dropping table")
-	sql := "drop table " + tableName
+	sql := "drop table " + pgx.Identifier{tableName}.Sanitize()
 	if _, err := c.conn.Exec(ctx, sql); err != nil {
 		return fmt.Errorf("failed to drop table %s: %w", tableName, err)
 	}
@@ -264,6 +264,9 @@ func (c *Client) migrateToCQID(ctx context.Context, table *schema.Table, _ schem
 	}
 
 	defer func() {
+		if tx == nil {
+			return
+		}
 		if err == nil {
 			err = tx.Commit(ctx)
 			if err != nil {
@@ -335,7 +338,7 @@ func (c *Client) addColumn(ctx context.Context, tableName string, column schema.
 	c.logger.Info().Str("table", tableName).Str("column", column.Name).Msg("Column doesn't exist, creating")
 	columnName := pgx.Identifier{column.Name}.Sanitize()
 	columnType := c.SchemaTypeToPg(column.Type)
-	sql := "alter table " + tableName + " add column " + columnName + " " + columnType
+	sql := "alter table " + pgx.Identifier{tableName}.Sanitize() + " add column " + columnName + " " + columnType
 	if _, err := c.conn.Exec(ctx, sql); err != nil {
 		return fmt.Errorf("failed to add column %s on table %s: %w", column.Name, tableName, err)
 	}

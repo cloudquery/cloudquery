@@ -347,7 +347,7 @@ func (c *Client) checkTTLChanged(ctx context.Context, table *schema.Table) (oldT
 		return "", "", fmt.Errorf("failed to get TTL for table %s: %w", table.Name, err)
 	}
 
-	equalTTLs, err := c.equalTTLs(table, haveTTL, wantTTL)
+	equalTTLs, err := c.equalTTLs(ctx, table, haveTTL, wantTTL)
 	if err != nil {
 		return "", "", fmt.Errorf("failed to compare TTLs for table %s: %w", table.Name, err)
 	}

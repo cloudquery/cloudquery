@@ -27,16 +27,23 @@ func (c *Client) WriteTable(ctx context.Context, msgs <-chan *message.WriteInser
 			var err error
 			h, err = c.Client.WriteHeader(w, table)
 			if err != nil {
+				w.Close()
 				return err
 			}
 		}
 
 		if err := h.WriteContent([]arrow.RecordBatch{msg.Record}); err != nil {
+			w.Close()
 			return err
 		}
 	}
 
+	if w == nil {
+		return nil
+	}
+
 	if err := h.WriteFooter(); err != nil {
+		w.Close()
 		return err
 	}
 	return w.Close()
