@@ -39,7 +39,7 @@
         },
         "skip_write_setup": {
           "type": "boolean",
-          "description": "By default, every sync runs `create or replace file format cq_plugin_json_format`\nand `create or replace stage cq_plugin_stage` before writing. Replacing the stage\nremoves every file currently in it, so concurrent syncs writing into the same\nSnowflake schema delete each other's staged files, which fails the subsequent\n`copy into`/`merge` with a missing file error.\nSet this to true to skip those statements. The `cq_plugin_json_format` file format\nand the `cq_plugin_stage` stage must already exist in the target schema, otherwise\nthe sync fails when the first file is uploaded.",
+          "description": "Each sync runs `create or replace` on the `cq_plugin_json_format` file format and the\n`cq_plugin_stage` stage before writing, which empties the stage and so drops files staged\nby concurrent syncs into the same schema. Set this to true to skip that setup; both objects\nmust already exist.",
           "default": false
         }
       },
