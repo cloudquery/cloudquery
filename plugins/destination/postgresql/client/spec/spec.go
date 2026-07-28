@@ -47,10 +47,45 @@ type Spec struct {
 
 	// Number of times to retry a transaction if a deadlock is detected by Postgres.
 	RetryOnDeadlock int64 `json:"retry_on_deadlock,omitempty" jsonschema:"default=0"`
+
+	// Optional configuration to connect to [Databricks Lakebase](https://docs.databricks.com/aws/en/oltp),
+	// a PostgreSQL-compatible managed database.
+	Lakebase *LakebaseSpec `json:"lakebase,omitempty"`
+}
+
+// LakebaseSpec enables connecting to Databricks Lakebase, a PostgreSQL-compatible
+// OLTP database. When set, the plugin uses the Databricks SDK to generate a
+// short-lived OAuth database credential before each new connection and uses it as
+// the connection password. The `connection_string` still supplies the host, port,
+// database name and user (the service principal client ID), and must use
+// `sslmode=require` (or `verify-ca`/`verify-full`); TLS is required and enforced.
+type LakebaseSpec struct {
+	// The Lakebase database endpoint resource name, in the format
+	// `projects/{project_id}/branches/{branch_id}/endpoints/{endpoint_id}`.
+	Endpoint string `json:"endpoint" jsonschema:"required,minLength=1"`
+
+	// Databricks workspace host, for example `https://your-workspace.cloud.databricks.com`.
+	// If empty, the Databricks SDK resolves it from the `DATABRICKS_HOST` environment
+	// variable (or other default Databricks configuration sources).
+	Host string `json:"host,omitempty"`
+
+	// Databricks service principal OAuth client ID.
+	// If empty, the Databricks SDK resolves it from the `DATABRICKS_CLIENT_ID`
+	// environment variable (or other default Databricks configuration sources).
+	ClientID string `json:"client_id,omitempty"`
+
+	// Databricks service principal OAuth client secret.
+	// If empty, the Databricks SDK resolves it from the `DATABRICKS_CLIENT_SECRET`
+	// environment variable (or other default Databricks configuration sources).
+	ClientSecret string `json:"client_secret,omitempty"`
 }
 
 func (s *Spec) HasPgVectorConfig() bool {
 	return s.PgVectorConfig != nil
+}
+
+func (s *Spec) HasLakebaseConfig() bool {
+	return s.Lakebase != nil
 }
 
 func (s *Spec) SetDefaults() {
@@ -107,6 +142,9 @@ func embeddingDimensionsForModel(model string) (int, error) {
 func (s *Spec) Validate() error {
 	if len(s.ConnectionString) == 0 {
 		return errors.New("`connection_string` is required")
+	}
+	if s.Lakebase != nil && len(s.Lakebase.Endpoint) == 0 {
+		return errors.New("`lakebase.endpoint` is required when `lakebase` is set")
 	}
 	if s.PgVectorConfig != nil {
 		if len(s.PgVectorConfig.Tables) == 0 {

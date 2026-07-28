@@ -118,5 +118,28 @@ func TestSpec_JSONSchemaExtend(t *testing.T) {
 				}
 			}`,
 		},
+		{
+			Name: "lakebase minimal",
+			Spec: `{"connection_string":"abc","lakebase":{"endpoint":"projects/p/branches/b/endpoints/e"}}`,
+		},
+		{
+			Name: "lakebase full",
+			Spec: `{"connection_string":"abc","lakebase":{"endpoint":"projects/p/branches/b/endpoints/e","host":"https://example.cloud.databricks.com","client_id":"id","client_secret":"secret"}}`,
+		},
+		{
+			Name: "lakebase missing endpoint",
+			Spec: `{"connection_string":"abc","lakebase":{"host":"https://example.cloud.databricks.com"}}`,
+			Err:  true,
+		},
+		{
+			Name: "lakebase empty endpoint",
+			Spec: `{"connection_string":"abc","lakebase":{"endpoint":""}}`,
+			Err:  true,
+		},
+		{
+			Name: "lakebase unknown field",
+			Spec: `{"connection_string":"abc","lakebase":{"endpoint":"projects/p/branches/b/endpoints/e","unknown":"x"}}`,
+			Err:  true,
+		},
 	})
 }

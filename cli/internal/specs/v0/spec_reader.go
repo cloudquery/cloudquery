@@ -304,6 +304,37 @@ func NewSpecReader(paths []string) (*SpecReader, error) {
 	return reader, nil
 }
 
+// NewSpecReaderWithoutValidation reads and parses specs without enforcing that
+// every source has a destination (or that any destination exists at all). The
+// caller is responsible for calling Validate once destinations are finalized —
+// e.g. after the platform destination has had a chance to be auto-injected.
+func NewSpecReaderWithoutValidation(paths []string) (*SpecReader, error) {
+	reader := newSpecReader()
+	reader.relaxed = true
+	if err := reader.initialize(paths); err != nil {
+		return nil, err
+	}
+	return reader, nil
+}
+
+// SetDestinationsAndValidate replaces the reader's destinations and runs the
+// full (non-relaxed) validation, including the per-source requirement that at
+// least one destination is configured. Setting and validating are coupled so
+// destinations cannot be swapped in after reading without being validated.
+func (r *SpecReader) SetDestinationsAndValidate(destinations []*Destination) error {
+	r.Destinations = destinations
+	r.destinationsMap = make(map[string]*Destination, len(destinations))
+	for _, d := range destinations {
+		r.destinationsMap[d.Name] = d
+	}
+	for _, source := range r.Sources {
+		if err := source.Validate(false); err != nil {
+			return fmt.Errorf("failed to validate source %s: %w", source.Name, err)
+		}
+	}
+	return r.validate()
+}
+
 func NewRelaxedSpecReader(paths []string) (*SpecReader, error) {
 	reader := newSpecReader()
 	reader.relaxed = true

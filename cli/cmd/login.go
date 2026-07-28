@@ -15,7 +15,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/cenkalti/backoff/v5"
+	"github.com/cenkalti/backoff/v6"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
@@ -202,6 +202,7 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	analytics.TrackLoginSuccess(ctx, invocationUUID.UUID)
 
 	cmd.Println("✅ CLI successfully authenticated.")
+	warnEnvCredentialsOverrideLogin(cmd)
 	cmd.Println("Next, initialize your sync configuration:")
 	cmd.Println(bold.Sprint("cloudquery init"))
 

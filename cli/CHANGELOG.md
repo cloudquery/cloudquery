@@ -5,6 +5,87 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.41.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.40.1...cli-v6.41.0) (2026-07-10)
+
+
+### Features
+
+* Scaffold platform sync specs from the platform's recommended source config ([#23101](https://github.com/cloudquery/cloudquery/issues/23101)) ([5372f29](https://github.com/cloudquery/cloudquery/commit/5372f29a08052ba4fe96bdfa502611e91dc35958))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23069](https://github.com/cloudquery/cloudquery/issues/23069)) ([4f3b70b](https://github.com/cloudquery/cloudquery/commit/4f3b70b3324698820baf74f4f7060762699e8fa3))
+
+## [6.40.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.40.0...cli-v6.40.1) (2026-07-10)
+
+
+### Bug Fixes
+
+* Restrict init source picker to platform-supported sources ([#23064](https://github.com/cloudquery/cloudquery/issues/23064)) ([62d6d18](https://github.com/cloudquery/cloudquery/commit/62d6d18c6b49eef0bb62632af665cba63f3dacf4))
+* Skip sync_run_completed analytics event for platform-only syncs ([#23066](https://github.com/cloudquery/cloudquery/issues/23066)) ([5828ef7](https://github.com/cloudquery/cloudquery/commit/5828ef7d0dad7f06e108a1aedff6ff4b30c46a3e))
+
+## [6.40.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.39.0...cli-v6.40.0) (2026-07-06)
+
+
+### Features
+
+* Guard env-credential overrides — warn on mismatch, fail init on a rejected platform token ([#23058](https://github.com/cloudquery/cloudquery/issues/23058)) ([199b992](https://github.com/cloudquery/cloudquery/commit/199b9922c8314e0dd470a278e60f7d62ffa20b44))
+
+
+### Bug Fixes
+
+* Use platform recommended tables in init-generated configs ([#23056](https://github.com/cloudquery/cloudquery/issues/23056)) ([35f399f](https://github.com/cloudquery/cloudquery/commit/35f399f3a58095800fad98a70692629e9577ec8d))
+
+## [6.39.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.38.0...cli-v6.39.0) (2026-07-06)
+
+
+### Features
+
+* Pin platform plugin versions in init and validate-config ([#23045](https://github.com/cloudquery/cloudquery/issues/23045)) ([acd54da](https://github.com/cloudquery/cloudquery/commit/acd54da704834313e8ca75e3d18a59a6b1c489e0))
+
+
+### Bug Fixes
+
+* **deps:** Update alpine Docker tag to v3.24.1 ([#23017](https://github.com/cloudquery/cloudquery/issues/23017)) ([c36126e](https://github.com/cloudquery/cloudquery/commit/c36126ec4b5efeb60acd0784f78e9d2cfe9fe2eb))
+* **deps:** Update github.com/cloudquery/jsonschema digest to 45e7e20 ([#23047](https://github.com/cloudquery/cloudquery/issues/23047)) ([0eebce9](https://github.com/cloudquery/cloudquery/commit/0eebce9592d70f52dbb8daaf73ba4c4d71a02906))
+* **deps:** Update golang.org/x/exp digest to c48552f ([#23008](https://github.com/cloudquery/cloudquery/issues/23008)) ([a236ecf](https://github.com/cloudquery/cloudquery/commit/a236ecfc64f5d8e448aebb0ff7ec15810b533207))
+* **deps:** Update module github.com/cenkalti/backoff/v5 to v6 ([#23043](https://github.com/cloudquery/cloudquery/issues/23043)) ([14fcaf7](https://github.com/cloudquery/cloudquery/commit/14fcaf7cd46a2d84b1af218262f304f20540eeb4))
+* **deps:** Update module github.com/getsentry/sentry-go to v0.47.0 ([#23027](https://github.com/cloudquery/cloudquery/issues/23027)) ([855fb4e](https://github.com/cloudquery/cloudquery/commit/855fb4e56f5fb9ab7f69ccffa40a02fb89bfc2f1))
+* **deps:** Update module github.com/jedib0t/go-pretty/v6 to v6.8.1 ([#23030](https://github.com/cloudquery/cloudquery/issues/23030)) ([c7ca3ae](https://github.com/cloudquery/cloudquery/commit/c7ca3ae991edfc6a83be0e8c4ad40266b8de75de))
+* **deps:** Update module golang.org/x/net to v0.56.0 ([#23033](https://github.com/cloudquery/cloudquery/issues/23033)) ([43c367a](https://github.com/cloudquery/cloudquery/commit/43c367a645b5e26781b06039a0780cffb40bb2cd))
+* **deps:** Update opentelemetry-collector monorepo ([#23036](https://github.com/cloudquery/cloudquery/issues/23036)) ([b200865](https://github.com/cloudquery/cloudquery/commit/b200865dac908af13861ba4e6992b0428b3573ad))
+* **deps:** Update opentelemetry-go monorepo ([#23037](https://github.com/cloudquery/cloudquery/issues/23037)) ([046dcd6](https://github.com/cloudquery/cloudquery/commit/046dcd67c7ff188d7fac19f87be2869a0bf9f689))
+
+## [6.38.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.37.0...cli-v6.38.0) (2026-06-30)
+
+
+### Features
+
+* Headless platform-destination sync via cqpd_ token (no cloudquery login) ([#22992](https://github.com/cloudquery/cloudquery/issues/22992)) ([4f55c23](https://github.com/cloudquery/cloudquery/commit/4f55c23366145cb8add79f40567025035516036d))
+
+
+### Bug Fixes
+
+* **deps:** Update go module directive to v1.26.4 ([#22996](https://github.com/cloudquery/cloudquery/issues/22996)) ([4c6a6b1](https://github.com/cloudquery/cloudquery/commit/4c6a6b19b9c85ea3f69276a77b9213d76bf744c5))
+
+## [6.37.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.36.1...cli-v6.37.0) (2026-06-25)
+
+
+### Features
+
+* Sync directly to CloudQuery Platform from the CLI ([#22945](https://github.com/cloudquery/cloudquery/issues/22945)) ([c3cefb4](https://github.com/cloudquery/cloudquery/commit/c3cefb45355abe091f329afb51c3276593208b37))
+
+
+### Bug Fixes
+
+* Consistent multi-tenant platform-destination resolution (+ hint on ambiguity) ([#22991](https://github.com/cloudquery/cloudquery/issues/22991)) ([9157b03](https://github.com/cloudquery/cloudquery/commit/9157b034f352a5c6bbb5e09ee0daa9be3b5ef246))
+* **deps:** Update go module directive to v1.26.3 ([#22869](https://github.com/cloudquery/cloudquery/issues/22869)) ([ce8d270](https://github.com/cloudquery/cloudquery/commit/ce8d270429e6503b849910035b761effcdbe62ab))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.14.10 ([#22942](https://github.com/cloudquery/cloudquery/issues/22942)) ([24ebdf1](https://github.com/cloudquery/cloudquery/commit/24ebdf1a151787da2e2851ee6a6b9ae98d319b52))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.14.11 ([#22989](https://github.com/cloudquery/cloudquery/issues/22989)) ([251a571](https://github.com/cloudquery/cloudquery/commit/251a5710829323aeb9edd952be2c37f471a25b80))
+* **deps:** Update module github.com/cloudquery/cloudquery-api-go to v1.14.12 ([#22990](https://github.com/cloudquery/cloudquery/issues/22990)) ([a0e78dd](https://github.com/cloudquery/cloudquery/commit/a0e78dddce9982565d4f38e0eb221ea7822c5edd))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.3 ([#22946](https://github.com/cloudquery/cloudquery/issues/22946)) ([b9aac1f](https://github.com/cloudquery/cloudquery/commit/b9aac1f3ab9eb846bb165aa2978be314ee6b8eaf))
+
 ## [6.36.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.36.0...cli-v6.36.1) (2026-06-02)
 
 

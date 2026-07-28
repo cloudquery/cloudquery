@@ -1,5 +1,33 @@
 # Changelog
 
+## [3.1.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v3.1.0...plugins-destination-mongodb-v3.1.1) (2026-07-08)
+
+
+### Bug Fixes
+
+* **deps:** Update github.com/cloudquery/jsonschema digest to 45e7e20 ([#23047](https://github.com/cloudquery/cloudquery/issues/23047)) ([0eebce9](https://github.com/cloudquery/cloudquery/commit/0eebce9592d70f52dbb8daaf73ba4c4d71a02906))
+* **deps:** Update module golang.org/x/crypto to v0.52.0 [SECURITY] ([#23062](https://github.com/cloudquery/cloudquery/issues/23062)) ([f8455ff](https://github.com/cloudquery/cloudquery/commit/f8455ff1a826bc7ab3f2bb641eb5244bf2a1fa59))
+* **deps:** Update module golang.org/x/net to v0.55.0 [SECURITY] ([#23049](https://github.com/cloudquery/cloudquery/issues/23049)) ([74bb68e](https://github.com/cloudquery/cloudquery/commit/74bb68ef06456b56a22dfb96744a72319a6ce8b7))
+* MongoDB destination opt-in write retries for transient network errors ([#22705](https://github.com/cloudquery/cloudquery/issues/22705)) ([3c97345](https://github.com/cloudquery/cloudquery/commit/3c9734595697bb75594f31b6132f2a57fca5648b))
+
+## [3.1.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v3.0.5...plugins-destination-mongodb-v3.1.0) (2026-07-03)
+
+
+### Features
+
+* Store nested JSON timestamps as BSON dates ([#23046](https://github.com/cloudquery/cloudquery/issues/23046)) ([09930ca](https://github.com/cloudquery/cloudquery/commit/09930ca6ca2f025ed71c53f0e762a7fe2464d63c))
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22926](https://github.com/cloudquery/cloudquery/issues/22926)) ([7f3b315](https://github.com/cloudquery/cloudquery/commit/7f3b315f119ba4455b248fe7cb89eb8ff649d294))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22951](https://github.com/cloudquery/cloudquery/issues/22951)) ([22b3361](https://github.com/cloudquery/cloudquery/commit/22b3361d525b14e0212c86c8d96185d28c6d4007))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#22982](https://github.com/cloudquery/cloudquery/issues/22982)) ([dde0cd9](https://github.com/cloudquery/cloudquery/commit/dde0cd957667a10aed0897cba7bfa7a6304b689f))
+* **deps:** Update go module directive to v1.26.4 ([#22996](https://github.com/cloudquery/cloudquery/issues/22996)) ([4c6a6b1](https://github.com/cloudquery/cloudquery/commit/4c6a6b19b9c85ea3f69276a77b9213d76bf744c5))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.95.3 ([#22946](https://github.com/cloudquery/cloudquery/issues/22946)) ([b9aac1f](https://github.com/cloudquery/cloudquery/commit/b9aac1f3ab9eb846bb165aa2978be314ee6b8eaf))
+* **deps:** Update module go.mongodb.org/mongo-driver/v2 to v2.7.0 ([#23032](https://github.com/cloudquery/cloudquery/issues/23032)) ([e8e15d4](https://github.com/cloudquery/cloudquery/commit/e8e15d4310f33a6d38f55090d71a55dce338fbef))
+* **deps:** Update module golang.org/x/net to v0.56.0 ([#23033](https://github.com/cloudquery/cloudquery/issues/23033)) ([43c367a](https://github.com/cloudquery/cloudquery/commit/43c367a645b5e26781b06039a0780cffb40bb2cd))
+
 ## [3.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v3.0.4...plugins-destination-mongodb-v3.0.5) (2026-06-02)
 
 

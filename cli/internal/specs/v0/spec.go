@@ -7,7 +7,7 @@ import (
 
 	"github.com/ghodss/yaml"
 	"github.com/invopop/jsonschema"
-	orderedmap "github.com/wk8/go-ordered-map/v2"
+	orderedmap "github.com/pb33f/ordered-map/v2"
 )
 
 // Warnings is a map of field name to string, used mainly for deprecation notices.

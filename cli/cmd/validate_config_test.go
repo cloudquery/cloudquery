@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
@@ -177,3 +178,59 @@ func TestValidateConfig_HubAPI(t *testing.T) {
 }
 
 func strPtr(s string) *string { return &s }
+
+// A source-only spec that targets the platform destination (as `init` scaffolds)
+// has no destination block. validate-config must mirror sync — auto-inject the
+// platform destination and validate — rather than reject it for having none.
+func TestValidateConfig_PlatformSourceOnly(t *testing.T) {
+	_, filename, _, _ := runtime.Caller(0)
+	currentDir := path.Dir(filename)
+
+	// Hub API: return the source's schema so the aws source validates.
+	hub := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/plugins/cloudquery/source/aws/versions/v1.0.0" {
+			body, _ := json.Marshal(cloudquery_api.PluginVersionDetails{
+				Name:           "v1.0.0",
+				SpecJsonSchema: strPtr(`{"$schema":"https://json-schema.org/draft/2020-12/schema","type":["object","null"]}`),
+			})
+			w.Header().Set("Content-Type", "application/json")
+			_, _ = w.Write(body)
+			return
+		}
+		http.NotFound(w, r)
+	}))
+	t.Cleanup(hub.Close)
+
+	// Platform tenant API: the source-version gate and the injected destination's
+	// whoami version lookup. A request to neither path fails the test.
+	es := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		switch r.URL.Path {
+		case "/api/external-syncs/supported-source-versions":
+			_ = json.NewEncoder(w).Encode(map[string]string{"cloudquery/aws": "v1.0.0"})
+		case "/api/external-syncs/whoami":
+			_ = json.NewEncoder(w).Encode(map[string]any{"tenant_id": "11111111-1111-1111-1111-111111111111", "plugin_version": "v1.0.1"})
+		default:
+			http.Error(w, "unexpected "+r.URL.Path, http.StatusNotFound)
+		}
+	}))
+	t.Cleanup(es.Close)
+
+	// A cqpd_ token in the standard key env drives the headless platform path: it
+	// carries the tenant API URL (u claim) and doubles as the Hub credential.
+	payload, _ := json.Marshal(map[string]any{"u": es.URL, "tm": "team-x"})
+	token := "cqpd_" + base64.RawURLEncoding.EncodeToString(payload) + ".sig"
+	t.Setenv("CLOUDQUERY_API_KEY", token)
+	t.Setenv("CLOUDQUERY_API_URL", hub.URL)
+
+	cmd := NewCmdRoot()
+	testConfig := path.Join(currentDir, "testdata", "validate-config-platform-source-only.yml")
+	baseArgs := testCommandArgs(t)
+	args := append([]string{"validate-config", testConfig}, baseArgs...)
+	cmd.SetArgs(args)
+	require.NoError(t, cmd.Execute(), "a source-only platform spec validates without a destination block")
+
+	logContent, readErr := os.ReadFile(baseArgs[3])
+	require.NoError(t, readErr)
+	require.NotContains(t, string(logContent), "expecting at least one destination")
+}

@@ -3,6 +3,7 @@ package cmd
 import (
 	"bytes"
 	"cmp"
+	"context"
 	"errors"
 	"fmt"
 	"html/template"
@@ -17,8 +18,10 @@ import (
 	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/platform"
 	"github.com/fatih/color"
 	"github.com/manifoldco/promptui"
+	"github.com/rs/zerolog/log"
 	"github.com/samber/lo"
 	"github.com/spf13/cobra"
 )
@@ -81,6 +84,7 @@ func newCmdInit() *cobra.Command {
 	cmd.Flags().String("spec-path", "", "Output spec file path")
 	cmd.Flags().Bool("yes", false, "Accept all defaults")
 	cmd.Flags().Bool("disable-ai", false, "Disable AI assistant")
+	cmd.Flags().Bool("disable-platform", false, "Skip CloudQuery Platform sync scaffolding")
 	cmd.Flags().Bool("resume-conversation", false, "Resume existing AI conversation instead of starting a new one")
 	return cmd
 }
@@ -96,7 +100,7 @@ func normalizePluginPath(pluginNameOrPath string) (string, error) {
 	return pluginNameOrPath, nil
 }
 
-func parseFlags(cmd *cobra.Command) (source, destination, specPath string, acceptDefaults, disableAI, resumeConversation bool, allErrors error) {
+func parseFlags(cmd *cobra.Command) (source, destination, specPath string, acceptDefaults, disableAI, resumeConversation, disablePlatform bool, allErrors error) {
 	source, err := cmd.Flags().GetString("source")
 	allErrors = errors.Join(allErrors, err)
 	if source != "" {
@@ -120,7 +124,10 @@ func parseFlags(cmd *cobra.Command) (source, destination, specPath string, accep
 
 	resumeConversation, err = cmd.Flags().GetBool("resume-conversation")
 	allErrors = errors.Join(allErrors, err)
-	return source, destination, specPath, acceptDefaults, disableAI, resumeConversation, allErrors
+
+	disablePlatform, err = cmd.Flags().GetBool("disable-platform")
+	allErrors = errors.Join(allErrors, err)
+	return source, destination, specPath, acceptDefaults, disableAI, resumeConversation, disablePlatform, allErrors
 }
 
 func pluginFilter(pluginPath string, kind cqapi.PluginKind) func(plugin cqapi.ListPlugin) bool {
@@ -205,8 +212,40 @@ func configForDestinationPlugin(destination cqapi.ListPlugin, version *cqapi.Plu
 	return defaultConfig.String()
 }
 
-func selectSource(allPlugins []cqapi.ListPlugin, acceptDefaults bool) (string, error) {
+// unsupportedPlatformSourceError returns an error when a platform tenant doesn't
+// support the given source path (team/name), else nil. An empty or nil supported
+// set (no platform tenant) never rejects.
+func unsupportedPlatformSourceError(source string, supported map[string]string) error {
+	if len(supported) == 0 {
+		return nil
+	}
+	if _, ok := supported[source]; ok {
+		return nil
+	}
+	return fmt.Errorf("source plugin %q is not supported by your CloudQuery Platform", source)
+}
+
+// selectSource prompts for a source plugin. When supportedPaths is non-empty
+// (a CloudQuery Platform tenant — the caller requires a non-empty set there), the
+// list is restricted to the sources the platform supports (its `team/name` keys),
+// so the picker never offers plugins, e.g. database sources, a platform sync can't
+// use. An empty or nil supportedPaths (no platform tenant) leaves it unfiltered.
+func selectSource(allPlugins []cqapi.ListPlugin, acceptDefaults bool, supportedPaths map[string]string) (string, error) {
 	officialSources := lo.Filter(allPlugins, officialReleasedPluginsByKind(cqapi.PluginKindSource))
+	if len(supportedPaths) > 0 {
+		officialSources = lo.Filter(officialSources, func(p cqapi.ListPlugin, _ int) bool {
+			_, ok := supportedPaths[p.TeamName+"/"+p.Name]
+			return ok
+		})
+	}
+	if len(officialSources) == 0 {
+		if len(supportedPaths) > 0 {
+			// Platform tenant, but none of its supported sources are official
+			// released plugins (near-impossible) — give the same escape hatch.
+			return "", errors.New("none of the source plugins your CloudQuery Platform supports are available — please try again, or pass --disable-platform to scaffold a regular source + destination config")
+		}
+		return "", errors.New("no source plugins available to select")
+	}
 	slices.SortStableFunc(officialSources, pluginsSorter(sourcesOrder))
 	if acceptDefaults {
 		return officialSources[0].Name, nil
@@ -261,9 +300,50 @@ func linkForPlugin(plugin cqapi.ListPlugin) string {
 	return link.Sprintf("https://www.cloudquery.io/hub/plugins/%s/%s/%s", plugin.Kind, plugin.TeamName, plugin.Name)
 }
 
+// writePlatformSourceOnlySpec scaffolds a source-only spec for a user with a
+// CloudQuery Platform tenant: no destination block, since the CLI auto-injects
+// the `platform` destination at sync time. It wires the source to that reserved
+// destination name and tells the user where the data will land.
+func writePlatformSourceOnlySpec(ctx context.Context, sourcePlugin cqapi.ListPlugin, specPath, platformURL string, tenantInit *platform.TenantInit) error {
+	sourcePath := sourcePlugin.TeamName + "/" + sourcePlugin.Name
+	fmt.Printf("Getting configuration for source plugin %s...\n", bold.Sprint(sourcePath))
+	// The platform serves the ready-to-write spec — pinned version, recommended
+	// tables, sanitized auth options, wired to the injected `platform`
+	// destination. Written verbatim, no local scaffolding.
+	yamlSpec, err := tenantInit.RecommendedSourceConfig(ctx, sourcePath)
+	if err != nil {
+		return fmt.Errorf("failed to get the recommended config for %s from your CloudQuery Platform: %w", sourcePath, err)
+	}
+
+	if specPath == "" {
+		specPath = sourcePlugin.Name + "_to_platform.yaml"
+	}
+	fmt.Printf("Writing spec to %s...\n", bold.Sprint(specPath))
+	if err := os.WriteFile(specPath, []byte(yamlSpec), 0644); err != nil {
+		return fmt.Errorf("failed to write spec file %w", err)
+	}
+
+	successful.Println("Sync spec file generated successfully!")
+	fmt.Println()
+	// platformURL is empty for a legacy CQ_PLATFORM_TOKEN with no url claim; omit
+	// the "at <url>" tail rather than printing a blank one.
+	if platformURL != "" {
+		fmt.Printf("This sync will write to your CloudQuery Platform at %s\n", bold.Sprint(platformURL))
+	} else {
+		fmt.Println("This sync will write to your CloudQuery Platform.")
+	}
+	fmt.Println()
+	fmt.Println("Next steps:")
+	fmt.Printf("1. Review %s and fill in the source's authentication details:\n", bold.Sprint(specPath))
+	fmt.Printf("   %s: %s\n", bold.Sprint(sourcePlugin.DisplayName), linkForPlugin(sourcePlugin))
+	fmt.Println("2. Run the sync:")
+	bold.Printf("cloudquery sync %s\n", specPath)
+	return nil
+}
+
 func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	ctx := cmd.Context()
-	source, destination, specPath, acceptDefaults, disableAI, resumeConversation, err := parseFlags(cmd)
+	source, destination, specPath, acceptDefaults, disableAI, resumeConversation, disablePlatform, err := parseFlags(cmd)
 	analytics.TrackInitStarted(ctx, invocationUUID.UUID, analytics.InitEvent{
 		Source:         source,
 		Destination:    destination,
@@ -293,6 +373,29 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 
 	team, _ := auth.GetTeamForToken(cmd.Context(), token)
 
+	// If the user has a CloudQuery Platform tenant (cloud login, or a
+	// CQ_PLATFORM_TOKEN), scaffold a source-only spec that targets the platform
+	// destination (auto-injected at sync time), skipping the destination prompt
+	// and AI. --disable-platform opts out (normal source+destination spec); an
+	// explicit --destination also takes the normal path.
+	platformURL, platformTenant := "", false
+	var tenantInit *platform.TenantInit
+	if !disablePlatform {
+		// One tenant lookup + mint yields the URL to report, the pinned source
+		// versions to scaffold, and a session reused for the recommended-tables
+		// lookup below. A detected tenant whose session can't be minted can't sync,
+		// so fail rather than scaffold a spec that would break later.
+		var err error
+		tenantInit, err = platform.DetectTenantForInit(ctx, log.Logger, token.Value, team)
+		if err != nil {
+			return fmt.Errorf("failed to set up CloudQuery Platform sync (use --disable-platform to scaffold a regular source + destination config): %w", err)
+		}
+		if tenantInit != nil {
+			platformTenant = true
+			platformURL = tenantInit.APIURL
+		}
+	}
+
 	apiClient, err := api.NewAnonymousClient()
 	var apiClientWithoutRetries *cqapi.ClientWithResponses
 	if err != nil {
@@ -310,8 +413,10 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 		}
 	}
 
-	// Check if user and team are set, and if so, run AI command
-	if user != nil && team != "" && !disableAI && source == "" && destination == "" {
+	// Check if user and team are set, and if so, run AI command. Platform-tenant
+	// users skip AI: their spec is source-only (the platform destination is
+	// auto-injected), which the AI flow doesn't produce.
+	if user != nil && team != "" && !disableAI && source == "" && destination == "" && !platformTenant {
 		err := api.NewConversation(ctx, apiClientWithoutRetries, team, resumeConversation)
 		if err != nil && err != api.ErrDisabled {
 			return err
@@ -329,7 +434,7 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 			errorColor.Println("There was an issue with the AI assistant. Falling back to basic interactive mode...")
 			fmt.Println()
 		}
-	} else if (user == nil || team == "") && source == "" && destination == "" && !disableAI {
+	} else if (user == nil || team == "") && source == "" && destination == "" && !disableAI && !platformTenant {
 		return errors.New("authentication required for interactive mode. Please run `cloudquery login` first, or supply source and destination plugins, or else use the --disable-ai flag to run basic interactive mode")
 	}
 
@@ -339,12 +444,26 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 		return err
 	}
 
+	// On a platform tenant, restrict sources to what the platform supports (its
+	// supported-source-versions). This is required, not best-effort: offering a
+	// source the platform can't ingest scaffolds a config that only fails later at
+	// the sync-time gate, so if the support list is unavailable, stop with an
+	// actionable error rather than silently listing everything.
+	var supportedSourcePaths map[string]string
+	if platformTenant {
+		if len(tenantInit.PinnedSourceVersions) == 0 {
+			return errors.New("couldn't determine which source plugins your CloudQuery Platform supports — please try again, or pass --disable-platform to scaffold a regular source + destination config")
+		}
+		supportedSourcePaths = tenantInit.PinnedSourceVersions
+	}
+
 	var notFoundPluginsErrors error
 	if source != "" {
 		sourcePluginFilter := pluginFilter(source, cqapi.PluginKindSource)
-		sourceFound := lo.SomeBy(allPlugins, sourcePluginFilter)
-		if !sourceFound {
+		if !lo.SomeBy(allPlugins, sourcePluginFilter) {
 			notFoundPluginsErrors = errors.Join(notFoundPluginsErrors, fmt.Errorf("source plugin %q not found", source))
+		} else if err := unsupportedPlatformSourceError(source, supportedSourcePaths); err != nil {
+			notFoundPluginsErrors = errors.Join(notFoundPluginsErrors, err)
 		}
 	}
 	if destination != "" {
@@ -360,13 +479,19 @@ func initCmd(cmd *cobra.Command, args []string) (initCommandError error) {
 	}
 
 	if source == "" {
-		source, err = selectSource(allPlugins, acceptDefaults)
+		source, err = selectSource(allPlugins, acceptDefaults, supportedSourcePaths)
 		if err != nil {
 			return err
 		}
 		source, _ = normalizePluginPath(source)
 	}
 	_, sourceIndex, _ := lo.FindIndexOf(allPlugins, pluginFilter(source, cqapi.PluginKindSource))
+
+	// Platform tenant + no explicit destination → scaffold a source-only spec;
+	// the CLI auto-injects the platform destination at sync time.
+	if platformTenant && destination == "" {
+		return writePlatformSourceOnlySpec(ctx, allPlugins[sourceIndex], specPath, platformURL, tenantInit)
+	}
 
 	if destination == "" {
 		destination, err = selectDestination(allPlugins, acceptDefaults)

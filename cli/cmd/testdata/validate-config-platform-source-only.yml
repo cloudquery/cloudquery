@@ -1,0 +1,8 @@
+kind: source
+spec:
+  name: aws
+  path: cloudquery/aws
+  registry: cloudquery
+  version: v1.0.0
+  tables: ["*"]
+  destinations: [platform]

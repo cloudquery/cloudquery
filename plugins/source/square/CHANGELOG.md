@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.3.33](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.32...plugins-source-square-v1.3.33) (2026-07-13)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pyarrow to v23.0.1 [SECURITY] ([#23113](https://github.com/cloudquery/cloudquery/issues/23113)) ([7fc091d](https://github.com/cloudquery/cloudquery/commit/7fc091dc248e1637f5db0a3f51cbb4027ee00b3f))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23114](https://github.com/cloudquery/cloudquery/issues/23114)) ([75a37bb](https://github.com/cloudquery/cloudquery/commit/75a37bb413b200f39e8f58a638b84996ecc57092))
+
+## [1.3.32](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.31...plugins-source-square-v1.3.32) (2026-07-13)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pyarrow to v23.0.1 [SECURITY] ([#23068](https://github.com/cloudquery/cloudquery/issues/23068)) ([84b5873](https://github.com/cloudquery/cloudquery/commit/84b5873d7670c71a6dc828759837010e9ce304fa))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23069](https://github.com/cloudquery/cloudquery/issues/23069)) ([4f3b70b](https://github.com/cloudquery/cloudquery/commit/4f3b70b3324698820baf74f4f7060762699e8fa3))
+
+## [1.3.31](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.30...plugins-source-square-v1.3.31) (2026-07-10)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#22920](https://github.com/cloudquery/cloudquery/issues/22920)) ([99f86fb](https://github.com/cloudquery/cloudquery/commit/99f86fb218ace3cce3b9846547ba9807c238c2d4))
+* **deps:** Update ghcr.io/astral-sh/uv Docker tag to v0.11.26 ([#23014](https://github.com/cloudquery/cloudquery/issues/23014)) ([8342ebe](https://github.com/cloudquery/cloudquery/commit/8342ebe345ff55b471e245782d315d8e822f4955))
+* **deps:** Update module golang.org/x/net to v0.56.0 ([#23033](https://github.com/cloudquery/cloudquery/issues/23033)) ([43c367a](https://github.com/cloudquery/cloudquery/commit/43c367a645b5e26781b06039a0780cffb40bb2cd))
+
 ## [1.3.30](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.29...plugins-source-square-v1.3.30) (2026-06-02)
 
 

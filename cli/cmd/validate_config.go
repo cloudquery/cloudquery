@@ -5,12 +5,14 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"slices"
 	"strings"
 
 	cloudquery_api "github.com/cloudquery/cloudquery-api-go"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/api"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/hub"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/platform"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/plugin-pb-go/managedplugin"
 	"github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
@@ -69,17 +71,69 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 
 	log.Info().Strs("args", args).Msg("Loading spec(s)")
 	fmt.Printf("Loading spec(s) from %s\n", strings.Join(args, ", "))
-	specReader, err := specs.NewSpecReader(args)
+	// Read without enforcing a destination: a source-only platform spec (as `init`
+	// scaffolds) has none until the platform destination is auto-injected below.
+	// Full validation runs via SetDestinationsAndValidate once destinations are
+	// finalized, so non-platform specs are validated identically to before.
+	specReader, err := specs.NewSpecReaderWithoutValidation(args)
 	if err != nil {
 		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
 	}
 	sources := specReader.Sources
 	destinations := specReader.Destinations
+	transformers := specReader.Transformers
 
-	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, nil)
+	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, sources, destinations, transformers)
 	if err != nil {
 		return fmt.Errorf("failed to get auth token: %w", err)
 	}
+
+	// Resolve the plugin download credential + team at most once (mirrors sync's
+	// DownloadAuth), shared by the platform opt-in block and the plugin-spawn path
+	// below. Lazy: only invoked when actually needed, so pure-Hub-API validation of
+	// public plugins never requires auth.
+	var dlToken, teamName string
+	downloadAuthResolved := false
+	resolveDownloadAuth := func() error {
+		if downloadAuthResolved {
+			return nil
+		}
+		var err error
+		if dlToken, teamName, err = platform.DownloadAuth(ctx, log.Logger, sources, destinations, transformers); err != nil {
+			return err
+		}
+		downloadAuthResolved = true
+		return nil
+	}
+
+	// A user-declared `platform` destination (debugging/override) is validated
+	// normally below; only the CLI-injected one is skipped. Capture it before
+	// injection, which may add one.
+	userPlatformDest := slices.ContainsFunc(destinations, func(d *specs.Destination) bool {
+		return platform.IsInjectedDestination(d.Name)
+	})
+
+	// Platform opt-in: mirror `sync`. Resolve the platform credential, reject
+	// source versions the tenant can't ingest (the same window the sync-time
+	// CreateExternalSync gate enforces), then auto-inject the `platform`
+	// destination — so a source-only platform spec validates exactly as sync would
+	// run it. Non-platform specs skip this entirely and are unaffected.
+	if platform.AnySourceTargetsPlatform(sources) {
+		if err := resolveDownloadAuth(); err != nil {
+			return err
+		}
+		if err := platform.GateSources(ctx, log.Logger, dlToken, teamName, sources); err != nil {
+			return err
+		}
+		if destinations, err = platform.MaybeInjectDestination(ctx, log.Logger, dlToken, teamName, sources, destinations); err != nil {
+			return err
+		}
+	}
+
+	if err := specReader.SetDestinationsAndValidate(destinations); err != nil {
+		return fmt.Errorf("failed to load spec(s) from %s. Error: %w", strings.Join(args, ", "), err)
+	}
+	destinations = specReader.Destinations
 
 	apiClient, err := api.NewClient(authToken.Value)
 	if err != nil {
@@ -119,6 +173,14 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 	}
 
 	for i, destination := range destinations {
+		// Skip the auto-injected `platform` destination — CLI-generated (a
+		// token-based spec with api_url derived from the token), not user config;
+		// sync doesn't schema-validate it either, and the source's version was
+		// already gated above. A user-declared `platform` override is NOT skipped:
+		// it's validated through the normal path below.
+		if platform.IsInjectedDestination(destination.Name) && !userPlatformDest {
+			continue
+		}
 		if useHubAPI && destination.Registry == specs.RegistryCloudQuery {
 			if err := validateViaHubAPI(ctx, apiClient, destination.Path, cloudquery_api.PluginKindDestination, destination.Version, destination.Spec); err != nil {
 				initErrors = append(initErrors, fmt.Errorf("failed to validate destination config %v: %w", destination.VersionString(), err))
@@ -143,13 +205,16 @@ func validateConfig(cmd *cobra.Command, args []string) error {
 	}
 
 	// Plugin spawn is still required for non-Hub registries (local/grpc/docker).
-	teamName, err := auth.GetTeamForToken(ctx, authToken)
-	if err != nil {
-		return fmt.Errorf("failed to get team name: %w", err)
+	// Reuse the download credential + team resolved above (or resolve now if this
+	// is a non-platform spec) — same as sync — and propagate it so spawned plugins
+	// authenticate premium-table validation / usage against cloud (see sync.go).
+	if err := resolveDownloadAuth(); err != nil {
+		return fmt.Errorf("failed to resolve plugin download auth: %w", err)
 	}
+	platform.PropagatePluginCredential(dlToken)
 	opts := []managedplugin.Option{
 		managedplugin.WithLogger(log.Logger),
-		managedplugin.WithAuthToken(authToken.Value),
+		managedplugin.WithAuthToken(dlToken),
 		managedplugin.WithTeamName(teamName),
 	}
 	if logConsole {

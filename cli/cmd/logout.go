@@ -48,6 +48,7 @@ func runLogout(_ context.Context, cmd *cobra.Command) error {
 	}
 
 	cmd.Println("CLI successfully logged out.")
+	warnEnvCredentialsSurviveLogout(cmd)
 
 	return nil
 }

@@ -1,0 +1,25 @@
+services:
+  mongodb:
+    image: mongo:4.4
+    container_name: mongodb-rs
+    ports:
+      - "27017:27017"
+    command: ["--replSet", "cloudquery", "--bind_ip_all"]
+    healthcheck:
+      test:
+        - "CMD"
+        - "mongo"
+        - "--quiet"
+        - "--eval"
+        - "var s=rs.status(); if(s.ok==1 && s.myState==1){quit(0);} try{rs.initiate({_id:'cloudquery',members:[{_id:0,host:'localhost:27017'}]});}catch(e){} quit(1);"
+      interval: 5s
+      timeout: 10s
+      retries: 30
+      start_period: 5s
+    networks:
+      - mongodb
+
+networks:
+  mongodb:
+    name: mongodb
+    driver: bridge

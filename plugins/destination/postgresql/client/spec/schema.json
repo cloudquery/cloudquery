@@ -8,6 +8,33 @@
       "pattern": "^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$",
       "title": "CloudQuery configtype.Duration"
     },
+    "LakebaseSpec": {
+      "properties": {
+        "endpoint": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The Lakebase database endpoint resource name, in the format\n`projects/{project_id}/branches/{branch_id}/endpoints/{endpoint_id}`."
+        },
+        "host": {
+          "type": "string",
+          "description": "Databricks workspace host, for example `https://your-workspace.cloud.databricks.com`.\nIf empty, the Databricks SDK resolves it from the `DATABRICKS_HOST` environment\nvariable (or other default Databricks configuration sources)."
+        },
+        "client_id": {
+          "type": "string",
+          "description": "Databricks service principal OAuth client ID.\nIf empty, the Databricks SDK resolves it from the `DATABRICKS_CLIENT_ID`\nenvironment variable (or other default Databricks configuration sources)."
+        },
+        "client_secret": {
+          "type": "string",
+          "description": "Databricks service principal OAuth client secret.\nIf empty, the Databricks SDK resolves it from the `DATABRICKS_CLIENT_SECRET`\nenvironment variable (or other default Databricks configuration sources)."
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "endpoint"
+      ],
+      "description": "LakebaseSpec enables connecting to Databricks Lakebase, a PostgreSQL-compatible OLTP database."
+    },
     "LogLevel": {
       "type": "string",
       "enum": [
@@ -217,6 +244,17 @@
           "type": "integer",
           "description": "Number of times to retry a transaction if a deadlock is detected by Postgres.",
           "default": 0
+        },
+        "lakebase": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/LakebaseSpec",
+              "description": "Optional configuration to connect to [Databricks Lakebase](https://docs.databricks.com/aws/en/oltp),\na PostgreSQL-compatible managed database."
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,

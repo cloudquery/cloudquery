@@ -314,3 +314,42 @@ func Test_configForDestinationPlugin(t *testing.T) {
 		})
 	}
 }
+
+func Test_selectSource_PlatformFilter(t *testing.T) {
+	src := func(name string) cqapi.ListPlugin {
+		return cqapi.ListPlugin{Name: name, TeamName: "cloudquery", Kind: cqapi.PluginKindSource, Official: true, LatestVersion: lo.ToPtr("v1.0.0")}
+	}
+	plugins := []cqapi.ListPlugin{src("aws"), src("gcp"), src("postgresql")}
+
+	t.Run("platform tenant restricts to supported sources", func(t *testing.T) {
+		// postgresql (a DB source the platform doesn't support) must not be offered.
+		supported := map[string]string{"cloudquery/gcp": "v1.0.0"}
+		got, err := selectSource(plugins, true, supported)
+		require.NoError(t, err)
+		require.Equal(t, "gcp", got, "only the platform-supported source is selectable")
+	})
+
+	t.Run("no supported set is unfiltered", func(t *testing.T) {
+		got, err := selectSource(plugins, true, nil)
+		require.NoError(t, err)
+		require.Equal(t, "aws", got, "sourcesOrder puts aws first")
+	})
+
+	t.Run("errors actionably when nothing supported matches the official list", func(t *testing.T) {
+		_, err := selectSource(plugins, true, map[string]string{"cloudquery/unlisted": "v1.0.0"})
+		require.Error(t, err)
+		require.ErrorContains(t, err, "--disable-platform", "platform-filtered empty list keeps the actionable hint")
+	})
+}
+
+func Test_unsupportedPlatformSourceError(t *testing.T) {
+	supported := map[string]string{"cloudquery/aws": "v1.0.0"}
+
+	require.NoError(t, unsupportedPlatformSourceError("cloudquery/aws", supported), "a supported source is accepted")
+	require.NoError(t, unsupportedPlatformSourceError("cloudquery/postgresql", nil), "no platform tenant (nil set) never rejects")
+	require.NoError(t, unsupportedPlatformSourceError("cloudquery/postgresql", map[string]string{}), "empty set never rejects")
+
+	err := unsupportedPlatformSourceError("cloudquery/postgresql", supported)
+	require.Error(t, err)
+	require.ErrorContains(t, err, `"cloudquery/postgresql" is not supported by your CloudQuery Platform`)
+}

@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	gremlingo "github.com/apache/tinkerpop/gremlin-go/v3/driver"
-	"github.com/cenkalti/backoff/v5"
+	"github.com/cenkalti/backoff/v6"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 )

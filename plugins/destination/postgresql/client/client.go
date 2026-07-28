@@ -107,6 +107,11 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 	}
 	// maybe expose this to the user?
 	pgxConfig.ConnConfig.RuntimeParams["timezone"] = "UTC"
+	if s.HasLakebaseConfig() {
+		if err := configureLakebase(pgxConfig, s.Lakebase); err != nil {
+			return nil, fmt.Errorf("failed to configure lakebase: %w", err)
+		}
+	}
 	c.conn, err = pgxpool.NewWithConfig(ctx, pgxConfig)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to postgresql: %w", err)
