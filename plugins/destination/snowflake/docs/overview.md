@@ -161,6 +161,17 @@ This is the top level spec used by the Snowflake destination plugin.
      
   If set to true, intermediary files used to load data to the Snowflake stage are left in the temp directory. This can be useful for debugging purposes.
 
+- `skip_write_setup` (boolean) (optional) (default: false)
+
+  By default, every sync runs `create or replace file format cq_plugin_json_format` and `create or replace stage cq_plugin_stage` before writing. Replacing the stage removes every file currently in it, so concurrent syncs writing into the same Snowflake schema delete each other's staged files, which fails the subsequent `copy into`/`merge` with a missing file error.
+
+  Set this to `true` to skip those statements when running multiple syncs against the same schema. The `cq_plugin_json_format` file format and the `cq_plugin_stage` stage must already exist in the target schema, otherwise the sync fails when the first file is uploaded. Create them once with:
+
+  ```sql
+  create file format if not exists cq_plugin_json_format type = 'JSON';
+  create stage if not exists cq_plugin_stage file_format = cq_plugin_json_format;
+  ```
+
 ## Underlying library
 
 We use the official [github.com/snowflakedb/gosnowflake](https://github.com/snowflakedb/gosnowflake) package for database connection.

@@ -40,6 +40,16 @@ type Spec struct {
 
 	// If set to true, intermediary files used to load data to the Snowflake stage are left in the temp directory. This can be useful for debugging purposes.
 	LeaveStageFiles bool `json:"leave_stage_files,omitempty" jsonschema:"default=false"`
+
+	// By default, every sync runs `create or replace file format cq_plugin_json_format`
+	// and `create or replace stage cq_plugin_stage` before writing. Replacing the stage
+	// removes every file currently in it, so concurrent syncs writing into the same
+	// Snowflake schema delete each other's staged files, which fails the subsequent
+	// `copy into`/`merge` with a missing file error.
+	// Set this to true to skip those statements. The `cq_plugin_json_format` file format
+	// and the `cq_plugin_stage` stage must already exist in the target schema, otherwise
+	// the sync fails when the first file is uploaded.
+	SkipWriteSetup bool `json:"skip_write_setup,omitempty" jsonschema:"default=false"`
 }
 
 //go:embed schema.json
