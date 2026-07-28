@@ -156,9 +156,7 @@ func (c *Client) setupWrite(ctx context.Context) error {
 	var setupErr error
 	c.setupWriteOnce.Do(func() {
 		if c.spec.SkipWriteSetup {
-			// `create or replace stage` empties the stage, which would delete files staged
-			// by other syncs writing into the same schema.
-			c.logger.Info().Msg("skip_write_setup is set, expecting file format cq_plugin_json_format and stage cq_plugin_stage to already exist")
+			c.logger.Info().Msg("skip_write_setup is set, expecting cq_plugin_json_format and cq_plugin_stage to already exist")
 			return
 		}
 		if _, err := c.db.ExecContext(ctx, createOrReplaceFileFormat); err != nil {
