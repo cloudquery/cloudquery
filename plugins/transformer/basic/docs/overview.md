@@ -71,13 +71,13 @@ spec:
         columns: ["example_column.top_foo.#.foo"]
 ```
 
-Note: Obfuscating JSON arrays using `#.foo` syntax will cause all `foo` values to be replaced with the same obfuscated value `{"top_foo":[{"foo": "Redacted by CloudQuery | XXX"},{"foo": "Redacted by CloudQuery | XXX"},{"foo": "Redacted by CloudQuery | XXX"}]}`.
+Note: Obfuscating JSON arrays using `#.foo` syntax will cause all `foo` values to be replaced with the same obfuscated value `{"top_foo":[{"foo": "Redacted by CloudQuery | XXX"},{"foo": "Redacted by CloudQuery | XXX"},{"foo": "Redacted by CloudQuery | XXX"}]}`. (`obfuscate_columns_except`, described below, hashes each array element separately instead.)
 
 You can also use the `obfuscate_sensitive_columns` transformation to automatically obfuscate all columns marked by the source plugin as `sensitive` and possibly containing secret information.
 
 ## Opt-in redaction with `obfuscate_columns_except`
 
-`obfuscate_columns_except` is the inverse of `obfuscate_columns`: instead of listing the columns to redact, you list the columns (and JSON sub-paths) to **keep**, and everything else is redacted. This is useful for compliance-sensitive syncs where only an explicitly approved set of fields may leave unredacted.
+`obfuscate_columns_except` is the inverse of `obfuscate_columns`: instead of listing the columns to redact, you list the columns (and JSON sub-paths) to **keep**, and everything else is dropped or redacted according to `unmatched`. This is useful for compliance-sensitive syncs where only an explicitly approved set of fields may leave unredacted.
 
 For each matched table, `columns` is the allowlist. In every mode, CloudQuery internal columns (those prefixed with `_cq_`) pass through untouched, a bare column name (e.g. `status_phase`) keeps that whole column, and a dotted entry (e.g. `spec_containers.#.image`) keeps that JSON sub-path.
 
@@ -99,7 +99,9 @@ spec:
     transformations:
       - kind: obfuscate_columns_except
         tables: ["k8s_core_pods"]
+        unmatched: drop
         columns:
+          - uid
           - status_phase
           - context
           - namespace
@@ -108,11 +110,13 @@ spec:
           - "status_container_statuses.#.state.terminated.finishedAt"
 ```
 
-**Path syntax:** allowlist paths use the same gjson syntax as `obfuscate_columns`. If a path segment traverses a JSON **array**, you must write `#` for that segment. For example, to keep the image of every container, the path is `spec_containers.#.image` (not `spec_containers.image`). A path that doesn't match — a missing `#`, a typo in a nested segment — does **not** error; it simply causes that field to be redacted instead of kept, so double-check nested paths against your data.
+`uid` is the primary key of `k8s_core_pods`, so it has to be on the allowlist — see the primary-key note below.
+
+**Path syntax:** allowlist paths use the same gjson syntax as `obfuscate_columns`. If a path segment traverses a JSON **array**, you must write `#` for that segment. For example, to keep the image of every container, the path is `spec_containers.#.image` (not `spec_containers.image`). A path that doesn't match — a missing `#`, a typo in a nested segment — does **not** error; it simply causes that field to be treated as non-allowlisted (dropped, collapsed, or redacted per `unmatched`) instead of kept, so double-check nested paths against your data.
 
 > Note: `obfuscate_columns_except` only redacts fields within the tables it is pointed at; it does not disable other tables. Restrict which tables are synced with the source plugin's `tables` / `skip_tables` options so that no unapproved table is ever written unredacted.
 
-Two more things to keep in mind:
+Three more things to keep in mind:
 
 - **Primary keys.** A non-allowlisted primary-key column would lose the value that identifies each row and break upserts at the destination, so the transformer **refuses to run** in that case. This happens under `unmatched: drop` (the column is removed), under `redact`/`collapse` with `include_sha: false` (every row collapses to an identical marker), and for any primary-key type that cannot be redacted in place. Allowlist your primary-key column(s) — for the Kubernetes tables that is `uid`. Under `redact`/`collapse` with the default `include_sha: true`, a non-allowlisted primary key is redacted to a distinct, stable hash and upserts still work.
 - **Structure & keys.** Under `redact` and `collapse`, JSON object keys and array shape remain visible (only leaf values are redacted). Under `drop`, non-allowlisted keys and columns are removed entirely.
@@ -120,7 +124,7 @@ Two more things to keep in mind:
 
 ### Hiding the SHA hash
 
-By default all obfuscation transformations append the SHA-256 hash of the redacted value (`Redacted by CloudQuery | <sha>`) so that distinct values remain distinguishable. Set `include_sha: false` on any obfuscation transformation to omit the hash and emit a bare `Redacted by CloudQuery` marker instead. This applies to `obfuscate_columns`, `obfuscate_sensitive_columns`, and `obfuscate_columns_except`.
+By default all obfuscation transformations append the SHA-256 hash of the redacted value (`Redacted by CloudQuery | <sha>`) so that distinct values remain distinguishable. Set `include_sha: false` on any obfuscation transformation to omit the hash and emit a bare `Redacted by CloudQuery` marker instead. This applies to `obfuscate_columns`, `obfuscate_sensitive_columns`, and `obfuscate_columns_except` — though for `obfuscate_columns_except` it has no effect under the default `unmatched: drop`, since nothing is replaced by a marker in that mode.
 
 ```yaml copy
       - kind: obfuscate_columns
