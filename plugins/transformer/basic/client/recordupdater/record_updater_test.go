@@ -954,6 +954,41 @@ func TestObfuscateColumnsExcept_CollapseMode(t *testing.T) {
 	require.Equal(t, 1, strings.Count(got, redactedByCQMessage), "one marker for the whole collapsed subtree")
 }
 
+func TestObfuscateColumnsExcept_TypedColumnsNeverStringified(t *testing.T) {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "keep_me", Type: arrow.BinaryTypes.String},
+			{Name: "a_bool", Type: arrow.FixedWidthTypes.Boolean},
+			{Name: "a_ts", Type: arrow.FixedWidthTypes.Timestamp_us},
+			{Name: "an_int", Type: arrow.PrimitiveTypes.Int64},
+		},
+		&md,
+	))
+	defer bld.Release()
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"v1"}, nil)
+	bld.Field(1).(*array.BooleanBuilder).AppendValues([]bool{true}, nil)
+	bld.Field(2).(*array.TimestampBuilder).AppendValues([]arrow.Timestamp{1}, nil)
+	bld.Field(3).(*array.Int64Builder).AppendValues([]int64{7}, nil)
+	record := bld.NewRecordBatch()
+
+	for _, mode := range []string{spec.UnmatchedRedact, spec.UnmatchedCollapse, spec.UnmatchedDrop} {
+		t.Run(mode, func(t *testing.T) {
+			updated, err := New(record).ObfuscateColumnsExcept([]string{"keep_me"}, true, mode)
+			require.NoError(t, err)
+
+			names := make([]string, 0, updated.NumCols())
+			for i := 0; i < int(updated.NumCols()); i++ {
+				names = append(names, updated.ColumnName(i))
+				require.Equal(t, record.Schema().Field(record.Schema().FieldIndices(updated.ColumnName(i))[0]).Type,
+					updated.Schema().Field(i).Type, "surviving column must keep its original Arrow type")
+			}
+			require.Equal(t, []string{"keep_me"}, names,
+				"non-allowlisted bool/timestamp/int columns must be dropped, never redacted into a string")
+		})
+	}
+}
+
 func TestObfuscateColumnsExcept_DropModePKErrors(t *testing.T) {
 	record := createTestRecordWithPK()
 	_, err := New(record).ObfuscateColumnsExcept([]string{"name"}, true, spec.UnmatchedDrop)
