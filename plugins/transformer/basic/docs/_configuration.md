@@ -9,10 +9,11 @@ spec:
       - kind: obfuscate_columns
         tables: ["xkcd_comics"]
         columns: ["safe_title", "title"]
+        include_sha: false
       - kind: obfuscate_sensitive_columns
       - kind: obfuscate_columns_except
         tables: ["xkcd_comics"]
-        include_sha: false
+        unmatched: drop
         columns: ["num", "img"]
       - kind: remove_columns
         tables: ["xkcd_comics"]
