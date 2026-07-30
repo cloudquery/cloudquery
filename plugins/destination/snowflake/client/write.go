@@ -14,11 +14,12 @@ import (
 )
 
 const (
-	createOrReplaceFileFormat = `create or replace file format cq_plugin_json_format type = 'JSON'`
-	createOrReplaceStage      = `create or replace stage cq_plugin_stage file_format = cq_plugin_json_format;`
-	putFileIntoStage          = `put 'file://%v' @cq_plugin_stage auto_compress=true`
-	copyIntoTable             = `copy into %s from '@cq_plugin_stage' files=('%s.gz') on_error = ABORT_STATEMENT file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
-	mergeIntoTable            = `MERGE INTO %s AS dest USING (SELECT %s FROM @cq_plugin_stage/%s.gz t) AS source ON %s WHEN MATCHED THEN %s WHEN NOT MATCHED THEN %s`
+	createFileFormatIfNotExists = `create file format if not exists cq_plugin_json_format type = 'JSON'`
+	createStageIfNotExists      = `create stage if not exists cq_plugin_stage file_format = cq_plugin_json_format;`
+	putFileIntoStage            = `put 'file://%v' @cq_plugin_stage auto_compress=true`
+	copyIntoTable               = `copy into %s from '@cq_plugin_stage' files=('%s.gz') on_error = ABORT_STATEMENT file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
+	mergeIntoTable              = `MERGE INTO %s AS dest USING (SELECT %s FROM @cq_plugin_stage/%s.gz t) AS source ON %s WHEN MATCHED THEN %s WHEN NOT MATCHED THEN %s`
+	removeStageFile             = `remove @cq_plugin_stage/%s.gz`
 )
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
@@ -96,7 +97,7 @@ func (c *Client) copyIntoTable(ctx context.Context, table *schema.Table, f *os.F
 		return fmt.Errorf("failed to copy file into table with last resource %s: %w", sql, err)
 	}
 
-	return nil
+	return c.removeStageFile(ctx, f)
 }
 
 func (c *Client) mergeIntoTable(ctx context.Context, table *schema.Table, f *os.File) error {
@@ -107,6 +108,18 @@ func (c *Client) mergeIntoTable(ctx context.Context, table *schema.Table, f *os.
 		return fmt.Errorf("failed to merge file into table: %s: %w", sql, err)
 	}
 
+	return c.removeStageFile(ctx, f)
+}
+
+// removeStageFile names the exact staged file (never a wildcard) so it can't wipe files staged by concurrent syncs.
+func (c *Client) removeStageFile(ctx context.Context, f *os.File) error {
+	if c.spec.LeaveStageFiles {
+		return nil
+	}
+	sql := fmt.Sprintf(removeStageFile, escapePath(filepath.Base(f.Name())))
+	if _, err := c.db.ExecContext(ctx, sql); err != nil {
+		return fmt.Errorf("failed to remove staged file with last resource %s: %w", sql, err)
+	}
 	return nil
 }
 
@@ -154,13 +167,14 @@ func insertColumnsList(table *schema.Table) string {
 
 func (c *Client) setupWrite(ctx context.Context) error {
 	var setupErr error
+	// Use `if not exists` rather than `create or replace`, which would wipe the staged files of concurrent syncs sharing the stage.
 	c.setupWriteOnce.Do(func() {
-		if _, err := c.db.ExecContext(ctx, createOrReplaceFileFormat); err != nil {
-			setupErr = fmt.Errorf("failed to create file format %s: %w", createOrReplaceFileFormat, err)
+		if _, err := c.db.ExecContext(ctx, createFileFormatIfNotExists); err != nil {
+			setupErr = fmt.Errorf("failed to create file format %s: %w", createFileFormatIfNotExists, err)
 			return
 		}
-		if _, err := c.db.ExecContext(ctx, createOrReplaceStage); err != nil {
-			setupErr = fmt.Errorf("failed to create stage %s: %w", createOrReplaceStage, err)
+		if _, err := c.db.ExecContext(ctx, createStageIfNotExists); err != nil {
+			setupErr = fmt.Errorf("failed to create stage %s: %w", createStageIfNotExists, err)
 		}
 	})
 	return setupErr
