@@ -4,7 +4,7 @@ go 1.26.4
 
 require (
 	github.com/apache/arrow-go/v18 v18.6.0
-	github.com/cenkalti/backoff/v6 v6.0.1
+	github.com/cenkalti/backoff/v7 v7.0.0
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-sdk/v4 v4.95.3
 	github.com/duckdb/duckdb-go/v2 v2.10504.0
