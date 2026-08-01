@@ -14,7 +14,7 @@ require (
 	github.com/samber/lo v1.53.0
 	github.com/samber/slog-zerolog/v2 v2.9.2
 	github.com/stretchr/testify v1.11.1
-	golang.org/x/sync v0.21.0
+	golang.org/x/sync v0.22.0
 )
 
 require (
