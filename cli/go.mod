@@ -4,7 +4,7 @@ go 1.26.5
 
 require (
 	github.com/Masterminds/semver v1.5.0
-	github.com/apache/arrow-go/v18 v18.6.0
+	github.com/apache/arrow-go/v18 v18.7.0
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
 	github.com/cenkalti/backoff/v7 v7.0.0
 	github.com/cloudquery/cloudquery-api-go v1.14.12
@@ -102,7 +102,7 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.19.0 // indirect
-	github.com/klauspost/cpuid/v2 v2.3.0 // indirect
+	github.com/klauspost/cpuid/v2 v2.4.0 // indirect
 	github.com/knadh/koanf/maps v0.1.2 // indirect
 	github.com/knadh/koanf/providers/confmap v1.0.0 // indirect
 	github.com/knadh/koanf/v2 v2.3.5 // indirect
