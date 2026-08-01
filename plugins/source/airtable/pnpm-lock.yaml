@@ -28,7 +28,7 @@ importers:
         version: 1.11.21
       dot-prop:
         specifier: ^10.0.0
-        version: 10.1.0
+        version: 10.2.0
       got:
         specifier: ^15.0.0
         version: 15.0.6
@@ -926,8 +926,8 @@ packages:
     resolution: {integrity: sha512-X07nttJQkwkfKfvTPG/KSnE2OMdcUCao6+eXF3wmnIQRn2aPAHH3VxDbDOdegkd6JbPsXqShpvEOHfAT+nCNwQ==}
     engines: {node: '>=0.3.1'}
 
-  dot-prop@10.1.0:
-    resolution: {integrity: sha512-MVUtAugQMOff5RnBy2d9N31iG0lNwg1qAoAOn7pOK5wf94WIaE3My2p3uwTQuvS2AcqchkcR3bHByjaM0mmi7Q==}
+  dot-prop@10.2.0:
+    resolution: {integrity: sha512-BTJ9aZYL3vCfZlZOBLy9v8TUqWGQ0pzFnygKwFZt5udj6viBoFIBviKPUoZLDCPn1FoXffv6McQFDenrm5Krfw==}
     engines: {node: '>=20'}
 
   electron-to-chromium@1.5.378:
@@ -1438,9 +1438,6 @@ packages:
 
   lodash@4.17.23:
     resolution: {integrity: sha512-LgVTMpQtIopCi79SJeDiP0TfWi5CNEc/L/aRdTh3yIvmZXTnheWpKjSZhnvMl8iXbC1tFg9gdHHDMLoV7CnG+w==}
-
-  lodash@4.18.1:
-    resolution: {integrity: sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==}
 
   logform@2.7.0:
     resolution: {integrity: sha512-TFYA4jnP7PVbmlBIfhlSe+WKxs9dklXMTEGcBCIvLhE/Tn3H6Gk1norupVW7m5Cnd4bLcr08AytbyV/xj7f/kQ==}
@@ -1979,6 +1976,10 @@ packages:
     resolution: {integrity: sha512-1URUxUqfHFM1c+zfSPsa3gnkO7Aq21qyH75SIduNYz4SzY964rn1X2vCMQaHSHhktiw+0kPa2iyb6PUpXqB6Vg==}
     engines: {node: '>=20'}
 
+  type-fest@5.8.0:
+    resolution: {integrity: sha512-YGYEVz3Fm5iy/AybuA0oyNFq7H4CgQNfRp/qfe8nurE1kuCeNm3/vfm9X4Mtl+qLyaKJUh5xrFZwogr41SMjYA==}
+    engines: {node: '>=20'}
+
   typescript-eslint@8.62.0:
     resolution: {integrity: sha512-8QxXi+ZACKX0kaqO4gY8kn0RSD9gFfaHDWwjqtEN48aWCBkX4MJaufWN+c3BzlrXLOxfywDL8CaoqUwcRq4j4Q==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
@@ -2174,7 +2175,7 @@ snapshots:
       '@types/luxon': 3.7.1
       ajv: 8.20.0
       boolean: 3.2.0
-      dot-prop: 10.1.0
+      dot-prop: 10.2.0
       execa: 9.6.1
       luxon: 3.7.2
       matcher: 6.0.0
@@ -2975,9 +2976,9 @@ snapshots:
 
   diff@4.0.4: {}
 
-  dot-prop@10.1.0:
+  dot-prop@10.2.0:
     dependencies:
-      type-fest: 5.5.0
+      type-fest: 5.8.0
 
   electron-to-chromium@1.5.378: {}
 
@@ -3455,8 +3456,6 @@ snapshots:
   lodash.camelcase@4.3.0: {}
 
   lodash@4.17.23: {}
-
-  lodash@4.18.1: {}
 
   logform@2.7.0:
     dependencies:
@@ -3941,6 +3940,10 @@ snapshots:
       tagged-tag: 1.0.0
 
   type-fest@5.7.0:
+    dependencies:
+      tagged-tag: 1.0.0
+
+  type-fest@5.8.0:
     dependencies:
       tagged-tag: 1.0.0
 
