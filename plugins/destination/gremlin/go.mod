@@ -7,7 +7,7 @@ require (
 	github.com/apache/tinkerpop/gremlin-go/v3 v3.8.1
 	github.com/aws/aws-sdk-go-v2 v1.43.0
 	github.com/aws/aws-sdk-go-v2/config v1.32.31
-	github.com/cenkalti/backoff/v6 v6.0.1
+	github.com/cenkalti/backoff/v7 v7.0.0
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-sdk/v4 v4.95.3
 	github.com/invopop/jsonschema v0.14.0
