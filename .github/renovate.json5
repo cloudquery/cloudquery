@@ -119,6 +119,12 @@
       matchPackageNames: ['mcr.microsoft.com/mssql/server'],
       allowedVersions: '2019',
     },
+    {
+      // typescript-eslint cannot support TS 7 until TS 7 exposes a public API; its peer
+      // range is still <6.1.0. Tracked upstream in typescript-eslint/typescript-eslint#10940.
+      matchPackageNames: ['typescript'],
+      allowedVersions: '<7',
+    },
   ],
   ignorePaths: [
     'plugins/source/aws/**',
