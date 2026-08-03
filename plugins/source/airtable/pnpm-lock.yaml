@@ -31,7 +31,7 @@ importers:
         version: 10.2.0
       got:
         specifier: ^15.0.0
-        version: 15.0.6
+        version: 15.1.0
       p-map:
         specifier: ^7.0.0
         version: 7.0.6
@@ -1249,8 +1249,8 @@ packages:
   google-protobuf@4.0.2:
     resolution: {integrity: sha512-yD2fqbNgvJPuQwdKJiPdbUcXveNRxgqy070gzsBsCyFJA8Qdj9oxa9xtkddb/JEhcDk0RD5SfGUWg+nhINfMxA==}
 
-  got@15.0.6:
-    resolution: {integrity: sha512-6DEiZOte0BMR/QUFlk7CTBtcLpnJx/gAGnmApWtnHvM2i+LssgCaC3Kl3x+SZ/laTbYlmcaabylkwS0t97Y4BA==}
+  got@15.1.0:
+    resolution: {integrity: sha512-DG+DAAkRtno+oDr/GBsliAkhN9+zczOPM5qXk3efDZY3qvyRnZU+NwQlb/IOY6cSnxxTR9z3aHCcShJyjb0hJA==}
     engines: {node: '>=22'}
 
   graceful-fs@4.2.11:
@@ -1976,10 +1976,6 @@ packages:
 
   type-fest@5.5.0:
     resolution: {integrity: sha512-PlBfpQwiUvGViBNX84Yxwjsdhd1TUlXr6zjX7eoirtCPIr08NAmxwa+fcYBTeRQxHo9YC9wwF3m9i700sHma8g==}
-    engines: {node: '>=20'}
-
-  type-fest@5.7.0:
-    resolution: {integrity: sha512-1URUxUqfHFM1c+zfSPsa3gnkO7Aq21qyH75SIduNYz4SzY964rn1X2vCMQaHSHhktiw+0kPa2iyb6PUpXqB6Vg==}
     engines: {node: '>=20'}
 
   type-fest@5.8.0:
@@ -3310,7 +3306,7 @@ snapshots:
 
   google-protobuf@4.0.2: {}
 
-  got@15.0.6:
+  got@15.1.0:
     dependencies:
       '@sindresorhus/is': 8.1.0
       byte-counter: 0.1.0
@@ -3322,7 +3318,7 @@ snapshots:
       keyv: 5.6.0
       lowercase-keys: 4.0.1
       responselike: 4.0.2
-      type-fest: 5.7.0
+      type-fest: 5.8.0
       uint8array-extras: 1.5.0
 
   graceful-fs@4.2.11: {}
@@ -3943,10 +3939,6 @@ snapshots:
   type-fest@4.41.0: {}
 
   type-fest@5.5.0:
-    dependencies:
-      tagged-tag: 1.0.0
-
-  type-fest@5.7.0:
     dependencies:
       tagged-tag: 1.0.0
 
