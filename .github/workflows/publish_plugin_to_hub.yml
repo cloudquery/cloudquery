@@ -113,7 +113,7 @@ jobs:
       - name: Set up Go 1.x
         if: needs.prepare.outputs.ui_dir_arg != ''
         id: setup-go
-        uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
         with:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
           cache: false
@@ -140,7 +140,7 @@ jobs:
 
       - name: Use Node.js LTS
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: "lts/*"
           cache: "npm"
@@ -198,7 +198,7 @@ jobs:
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: "lts/*"
 
@@ -310,7 +310,7 @@ jobs:
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: "lts/*"
 
@@ -403,7 +403,7 @@ jobs:
           package_json_file: ${{ needs.prepare.outputs.plugin_dir }}/package.json
 
       - name: Use Node.js LTS
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: "lts/*"
           cache: "pnpm"
@@ -501,7 +501,7 @@ jobs:
 
       - name: Set up Go 1.x
         id: setup-go
-        uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
         with:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
           cache: false
@@ -517,7 +517,7 @@ jobs:
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: "lts/*"
 
