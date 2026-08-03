@@ -6,7 +6,7 @@ require (
 	github.com/Masterminds/semver v1.5.0
 	github.com/apache/arrow-go/v18 v18.6.0
 	github.com/bradleyjkemp/cupaloy/v2 v2.8.0
-	github.com/cenkalti/backoff/v6 v6.0.1
+	github.com/cenkalti/backoff/v7 v7.0.0
 	github.com/cloudquery/cloudquery-api-go v1.14.12
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-pb-go v1.27.15

@@ -15,7 +15,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/cenkalti/backoff/v6"
+	"github.com/cenkalti/backoff/v7"
 	"github.com/cloudquery/cloudquery-api-go/auth"
 	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
