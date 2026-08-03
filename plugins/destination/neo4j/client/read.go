@@ -78,7 +78,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		if !ok {
 			return fmt.Errorf("unsupported type %T with builder %T", val, bldr)
 		}
-		if err := bldr.AppendValueFromString(v); err != nil {
+		if err := appendFromString(bldr, v); err != nil {
 			return err
 		}
 	}

@@ -79,7 +79,7 @@ func reverseTransform(builder array.Builder, val any) error {
 	case *array.Float64Builder:
 		builder.Append(val.(float64))
 	case *array.BinaryBuilder:
-		return builder.AppendValueFromString(val.(string))
+		return appendFromString(builder, val.(string))
 	case *array.StringBuilder:
 		builder.Append(val.(string))
 	case *array.LargeStringBuilder:

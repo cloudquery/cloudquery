@@ -107,5 +107,5 @@ func appendValue(builder array.Builder, value any) error {
 	case *array.Uint8Builder, *array.Uint16Builder, *array.Uint32Builder, *array.Uint64Builder:
 		return bldr.AppendValueFromString(fmt.Sprintf("%d", uint64(value.(float64))))
 	}
-	return builder.AppendValueFromString(fmt.Sprintf("%v", value))
+	return appendFromString(builder, fmt.Sprintf("%v", value))
 }
