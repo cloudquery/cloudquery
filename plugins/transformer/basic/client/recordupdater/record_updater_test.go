@@ -226,9 +226,9 @@ func TestComprehensiveDropRow(t *testing.T) {
 	require.Equal(t, `{"test":["a","b",16309]}`, updatedRecord.Column(17).(*types.JSONArray).ValueStr(0))
 	require.Equal(t, int64(6), updatedRecord.NumRows())
 
-	updatedRecord, err = updater.DropRows([]string{"uint64"}, &[]string{"1492571184685610752"}[0])
+	updatedRecord, err = updater.DropRows([]string{"uint64"}, &[]string{"1492571184685610638"}[0])
 	require.NoError(t, err)
-	require.Equal(t, `4019863684675753984`, updatedRecord.Column(8).(*array.Uint64).ValueStr(0))
+	require.Equal(t, `4019863684675753932`, updatedRecord.Column(8).(*array.Uint64).ValueStr(0))
 	require.Equal(t, int64(5), updatedRecord.NumRows())
 
 	updatedRecord, err = updater.DropRows([]string{"date64"}, &[]string{"2023-06-12"}[0])
