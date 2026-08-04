@@ -101,6 +101,7 @@ func appendValue(builder array.Builder, value any) error {
 			return err
 		}
 		dec := json.NewDecoder(bytes.NewReader(b))
+		dec.UseNumber()
 		return bldr.UnmarshalOne(dec)
 	case *array.Int8Builder, *array.Int16Builder, *array.Int32Builder, *array.Int64Builder:
 		return bldr.AppendValueFromString(fmt.Sprintf("%d", int64(value.(float64))))

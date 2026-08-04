@@ -102,6 +102,7 @@ func reverseTransform(builder array.Builder, val any) error {
 		}
 
 		dec := json.NewDecoder(bytes.NewReader(data))
+		dec.UseNumber()
 		if err := builder.UnmarshalOne(dec); err != nil {
 			return err
 		}

@@ -168,6 +168,7 @@ func appendValue(builder array.Builder, value any) error {
 		}
 		r := strings.NewReader(string(b))
 		d := json.NewDecoder(r)
+		d.UseNumber()
 		err = bldr.UnmarshalOne(d)
 		if err != nil {
 			return fmt.Errorf("failed to unmarshal value of type %v: %w. Value was %v", bldr.Type(), err, string(b))

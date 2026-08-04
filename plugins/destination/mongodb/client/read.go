@@ -71,6 +71,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 			return err
 		}
 		dec := json.NewDecoder(bytes.NewReader(v))
+		dec.UseNumber()
 		if err := b.UnmarshalOne(dec); err != nil {
 			return err
 		}
