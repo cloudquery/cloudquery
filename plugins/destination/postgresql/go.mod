@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow-go/v18 v18.7.0
 	github.com/avast/retry-go/v5 v5.0.0
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/plugin-sdk/v4 v4.96.0
+	github.com/cloudquery/plugin-sdk/v4 v4.96.1
 	github.com/databricks/databricks-sdk-go v0.163.0
 	github.com/goccy/go-json v0.10.6
 	github.com/google/go-cmp v0.7.0

@@ -5,7 +5,7 @@ go 1.26.5
 require (
 	github.com/apache/arrow-go/v18 v18.7.0
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/plugin-sdk/v4 v4.96.0
+	github.com/cloudquery/plugin-sdk/v4 v4.96.1
 	github.com/goccy/go-json v0.10.6
 	github.com/rs/zerolog v1.35.1
 	github.com/snowflakedb/gosnowflake/v2 v2.1.0

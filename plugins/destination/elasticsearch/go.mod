@@ -6,7 +6,7 @@ require (
 	github.com/apache/arrow-go/v18 v18.7.0
 	github.com/cenkalti/backoff/v7 v7.0.0
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/plugin-sdk/v4 v4.96.0
+	github.com/cloudquery/plugin-sdk/v4 v4.96.1
 	github.com/elastic/elastic-transport-go/v8 v8.11.0
 	github.com/elastic/go-elasticsearch/v9 v9.4.2
 	github.com/goccy/go-json v0.10.6
