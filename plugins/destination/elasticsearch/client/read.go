@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strconv"
 
 	"github.com/goccy/go-json"
 
@@ -48,7 +49,9 @@ func (c *Client) Read(ctx context.Context, table *schema.Table, res chan<- arrow
 	sm := table.ToArrowSchema()
 	for _, hit := range searchResp.Hits.Hits {
 		var source map[string]any
-		if err := json.Unmarshal(hit.Source_, &source); err != nil {
+		dec := json.NewDecoder(bytes.NewReader(hit.Source_))
+		dec.UseNumber()
+		if err := dec.Decode(&source); err != nil {
 			return fmt.Errorf("failed to decode hit source: %w", err)
 		}
 		rb := array.NewRecordBuilder(memory.DefaultAllocator, sm)
@@ -104,9 +107,20 @@ func appendValue(builder array.Builder, value any) error {
 		dec.UseNumber()
 		return bldr.UnmarshalOne(dec)
 	case *array.Int8Builder, *array.Int16Builder, *array.Int32Builder, *array.Int64Builder:
-		return bldr.AppendValueFromString(fmt.Sprintf("%d", int64(value.(float64))))
+		v, err := toInt64(value)
+		if err != nil {
+			return err
+		}
+		return bldr.AppendValueFromString(strconv.FormatInt(v, 10))
 	case *array.Uint8Builder, *array.Uint16Builder, *array.Uint32Builder, *array.Uint64Builder:
-		return bldr.AppendValueFromString(fmt.Sprintf("%d", uint64(value.(float64))))
+		v, err := toUint64(value)
+		if err != nil {
+			return err
+		}
+		return bldr.AppendValueFromString(strconv.FormatUint(v, 10))
+	}
+	if n, ok := value.(json.Number); ok {
+		return appendFromString(builder, n.String())
 	}
 	return appendFromString(builder, fmt.Sprintf("%v", value))
 }
