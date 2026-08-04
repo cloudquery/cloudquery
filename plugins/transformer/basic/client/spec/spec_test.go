@@ -53,6 +53,33 @@ func TestSetDefaults(t *testing.T) {
 	}
 }
 
+func TestSetDefaultsIncludeSHA(t *testing.T) {
+	s := Spec{
+		TransformationSpecs: []TransformationSpec{
+			{Kind: KindObfuscateColumns, Columns: []string{"col1"}},
+			{Kind: KindObfuscateColumnsExcept, Columns: []string{"col1"}, IncludeSHA: &[]bool{false}[0]},
+			{Kind: KindRemoveColumns, Columns: []string{"col1"}},
+		},
+	}
+	s.SetDefaults()
+
+	if got := s.TransformationSpecs[0].IncludeSHA; got == nil || !*got {
+		t.Errorf("expected IncludeSHA to default to true, got %v", got)
+	}
+	if got := s.TransformationSpecs[1].IncludeSHA; got == nil || *got {
+		t.Errorf("expected explicit IncludeSHA=false to be preserved, got %v", got)
+	}
+	if got := s.TransformationSpecs[2].IncludeSHA; got != nil {
+		t.Errorf("expected IncludeSHA to stay nil for non-obfuscate kind, got %v", got)
+	}
+	if !s.TransformationSpecs[0].ShouldIncludeSHA() {
+		t.Error("ShouldIncludeSHA() should be true when unset")
+	}
+	if s.TransformationSpecs[1].ShouldIncludeSHA() {
+		t.Error("ShouldIncludeSHA() should be false when explicitly false")
+	}
+}
+
 func TestValidate(t *testing.T) {
 	tests := []struct {
 		name    string
@@ -136,6 +163,78 @@ func TestValidate(t *testing.T) {
 			input: Spec{
 				TransformationSpecs: []TransformationSpec{
 					{Kind: KindObfuscateColumns},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "ValidObfuscateColumnsExcept",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindObfuscateColumnsExcept, Columns: []string{"col1", "col3.foo.bar.0"}},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "ValidObfuscateColumnsExceptWithIncludeSHA",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindObfuscateColumnsExcept, Columns: []string{"col1"}, IncludeSHA: &[]bool{false}[0]},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "InvalidObfuscateColumnsExceptNoColumns",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindObfuscateColumnsExcept},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "InvalidObfuscateColumnsExceptWithName",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindObfuscateColumnsExcept, Columns: []string{"col1"}, Name: "x"},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "InvalidIncludeSHAOnNonObfuscateKind",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindRemoveColumns, Columns: []string{"col1"}, IncludeSHA: &[]bool{true}[0]},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "ValidUnmatchedOnObfuscateColumnsExcept",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindObfuscateColumnsExcept, Columns: []string{"col1"}, Unmatched: UnmatchedCollapse},
+				},
+			},
+			wantErr: false,
+		},
+		{
+			name: "InvalidUnmatchedValue",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindObfuscateColumnsExcept, Columns: []string{"col1"}, Unmatched: "nonsense"},
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "InvalidUnmatchedOnOtherKind",
+			input: Spec{
+				TransformationSpecs: []TransformationSpec{
+					{Kind: KindObfuscateColumns, Columns: []string{"col1"}, Unmatched: UnmatchedDrop},
 				},
 			},
 			wantErr: true,

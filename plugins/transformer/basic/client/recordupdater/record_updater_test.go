@@ -16,6 +16,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/types"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+	"github.com/tidwall/gjson"
 	"github.com/tidwall/pretty"
 )
 
@@ -82,7 +83,7 @@ func TestObfuscateColumns(t *testing.T) {
 	record := createTestRecord()
 	updater := New(record)
 
-	updatedRecord, err := updater.ObfuscateColumns([]string{"col1", "col3.foo.bar.0", "col3.foo.bar.1"})
+	updatedRecord, err := updater.ObfuscateColumns([]string{"col1", "col3.foo.bar.0", "col3.foo.bar.1"}, true)
 	require.NoError(t, err)
 
 	require.Equal(t, int64(3), updatedRecord.NumCols())
@@ -114,7 +115,7 @@ func TestAutoObfuscateColumns(t *testing.T) {
 	record := createTestRecordWithMetadata(&md)
 	updater := New(record)
 
-	updatedRecord, err := updater.ObfuscateSensitiveColumns()
+	updatedRecord, err := updater.ObfuscateSensitiveColumns(true)
 	require.NoError(t, err)
 
 	require.Equal(t, int64(4), updatedRecord.NumCols())
@@ -152,7 +153,7 @@ func TestAutoObfuscateEntireJSONColumn(t *testing.T) {
 	record := createTestRecordWithMetadata(&md)
 	updater := New(record)
 
-	updatedRecord, err := updater.ObfuscateSensitiveColumns()
+	updatedRecord, err := updater.ObfuscateSensitiveColumns(true)
 	require.NoError(t, err)
 
 	require.Equal(t, int64(4), updatedRecord.NumCols())
@@ -251,7 +252,7 @@ func TestAutoObfuscateEntireJSONColumnSkipsJsonPath(t *testing.T) {
 	record := createTestRecordWithMetadata(&md)
 	updater := New(record)
 
-	updatedRecord, err := updater.ObfuscateSensitiveColumns()
+	updatedRecord, err := updater.ObfuscateSensitiveColumns(true)
 	require.NoError(t, err)
 
 	require.Equal(t, int64(4), updatedRecord.NumCols())
@@ -499,7 +500,7 @@ func TestObfuscateNestedColumnsWithGjsonSyntax(t *testing.T) {
 	updater := New(record)
 
 	// Test obfuscation using gjson syntax with # for array elements
-	updatedRecord, err := updater.ObfuscateColumns([]string{"col3.top_foo.#.foo"})
+	updatedRecord, err := updater.ObfuscateColumns([]string{"col3.top_foo.#.foo"}, true)
 	require.NoError(t, err)
 
 	require.Equal(t, int64(3), updatedRecord.NumCols())
@@ -543,7 +544,7 @@ func TestObfuscateDeeplyNestedColumnsWithGjsonSyntax(t *testing.T) {
 	updater := New(record)
 
 	// Test obfuscation using gjson syntax with multiple # for nested arrays
-	updatedRecord, err := updater.ObfuscateColumns([]string{"col3.object1.object2.#.nested_object1.nested_object2.#.nested2_object1"})
+	updatedRecord, err := updater.ObfuscateColumns([]string{"col3.object1.object2.#.nested_object1.nested_object2.#.nested2_object1"}, true)
 	require.NoError(t, err)
 
 	require.Equal(t, int64(3), updatedRecord.NumCols())
@@ -683,4 +684,326 @@ func TestRemoveNestedArrayWithGjsonSyntax(t *testing.T) {
 	expectedJSON2 := `[{"env": [{"name": "API_KEY"}]}]`
 	actualJSON2 := updatedRecord.Column(2).ValueStr(1)
 	require.Equal(t, sortJSON(expectedJSON2), sortJSON(actualJSON2), "Expected value fields to be removed from second row")
+}
+
+func createTestRecordWithCQ() arrow.RecordBatch {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "_cq_id", Type: arrow.BinaryTypes.String},
+			{Name: "_cq_sync_time", Type: arrow.BinaryTypes.String},
+			{Name: "name", Type: arrow.BinaryTypes.String},
+			{Name: "secret", Type: arrow.BinaryTypes.String},
+		},
+		&md,
+	))
+	defer bld.Release()
+
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"id1", "id2"}, nil)
+	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"t1", "t2"}, nil)
+	bld.Field(2).(*array.StringBuilder).AppendValues([]string{"n1", "n2"}, nil)
+	bld.Field(3).(*array.StringBuilder).AppendValues([]string{"s1", "s2"}, nil)
+
+	return bld.NewRecordBatch()
+}
+
+func createTestRecordWithPK() arrow.RecordBatch {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	pkMeta := arrow.NewMetadata([]string{schema.MetadataPrimaryKey}, []string{schema.MetadataTrue})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "_cq_id", Type: arrow.BinaryTypes.String},
+			{Name: "uid", Type: arrow.BinaryTypes.String, Metadata: pkMeta},
+			{Name: "name", Type: arrow.BinaryTypes.String},
+			{Name: "secret", Type: arrow.BinaryTypes.String},
+		},
+		&md,
+	))
+	defer bld.Release()
+
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"cq1", "cq2"}, nil)
+	bld.Field(1).(*array.StringBuilder).AppendValues([]string{"uid-1", "uid-2"}, nil)
+	bld.Field(2).(*array.StringBuilder).AppendValues([]string{"pod-a", "pod-b"}, nil)
+	bld.Field(3).(*array.StringBuilder).AppendValues([]string{"s1", "s2"}, nil)
+
+	return bld.NewRecordBatch()
+}
+
+func TestObfuscateColumnsExcept_UnknownKeepColumnErrors(t *testing.T) {
+	record := createTestRecord()
+	_, err := New(record).ObfuscateColumnsExcept([]string{"col1", "does_not_exist"}, true, "redact")
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "does_not_exist")
+}
+
+func TestObfuscateColumnsExcept_NestedPathOnNonJSONErrors(t *testing.T) {
+	record := createTestRecord()
+	_, err := New(record).ObfuscateColumnsExcept([]string{"col1.foo"}, true, "redact")
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "col1")
+}
+
+func TestObfuscateColumnsExcept_PKNotAllowlistedIncludeSHAFalseErrors(t *testing.T) {
+	record := createTestRecordWithPK()
+	_, err := New(record).ObfuscateColumnsExcept([]string{"name"}, false, "redact")
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "uid")
+	require.Contains(t, err.Error(), "include_sha")
+}
+
+func TestObfuscateColumnsExcept_PKNotAllowlistedIncludeSHATrueKeepsDistinct(t *testing.T) {
+	record := createTestRecordWithPK()
+	updated, err := New(record).ObfuscateColumnsExcept([]string{"name"}, true, "redact")
+	require.NoError(t, err)
+	uid0 := updated.Column(1).(*array.String).Value(0)
+	uid1 := updated.Column(1).(*array.String).Value(1)
+	require.True(t, strings.HasPrefix(uid0, redactedByCQMessage))
+	require.NotEqual(t, uid0, uid1, "redacted PK must remain distinct with include_sha=true")
+}
+
+func TestObfuscateColumnsExcept_PKAllowlistedIncludeSHAFalseOK(t *testing.T) {
+	record := createTestRecordWithPK()
+	updated, err := New(record).ObfuscateColumnsExcept([]string{"uid"}, false, "redact")
+	require.NoError(t, err)
+	require.Equal(t, "uid-1", updated.Column(1).(*array.String).Value(0))
+	require.Equal(t, redactedByCQMessageNoSHA, updated.Column(2).(*array.String).Value(0))
+}
+
+func TestObfuscateColumnsExcept_DropEveryColumnErrors(t *testing.T) {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{{Name: "count", Type: arrow.PrimitiveTypes.Int64}}, &md,
+	))
+	defer bld.Release()
+	bld.Field(0).(*array.Int64Builder).AppendValues([]int64{1, 2}, nil)
+	record := bld.NewRecordBatch()
+
+	_, err := New(record).ObfuscateColumnsExcept([]string{}, true, "redact")
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "drop every column")
+}
+
+func TestObfuscateColumnsExcept_TopLevelKeepRedact(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+
+	updatedRecord, err := updater.ObfuscateColumnsExcept([]string{"col1"}, true, "redact")
+	require.NoError(t, err)
+
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	require.Equal(t, int64(2), updatedRecord.NumRows())
+	requireAllColsLenMatchRecordsLen(t, updatedRecord)
+
+	require.Equal(t, "val1", updatedRecord.Column(0).(*array.String).Value(0))
+	require.Equal(t, "val2", updatedRecord.Column(0).(*array.String).Value(1))
+	require.Equal(t, redactValue([]byte("val3"), true), updatedRecord.Column(1).(*array.String).Value(0))
+	require.Equal(t, redactValue([]byte("val4"), true), updatedRecord.Column(1).(*array.String).Value(1))
+	require.Equal(t,
+		fmt.Sprintf(`{"%s":"81f2a9ddc7ae49a6b585358c6ff54bbd26613c4a46a988b614e42bc5729eda36"}`, redactedByCQJSONName),
+		updatedRecord.Column(2).ValueStr(0))
+}
+
+func TestObfuscateColumnsExcept_KeepJSONSubpath(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+
+	updatedRecord, err := updater.ObfuscateColumnsExcept([]string{"col1", "col2", "col3.foo.bar.0"}, true, "redact")
+	require.NoError(t, err)
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+
+	got := updatedRecord.Column(2).ValueStr(0)
+	require.Equal(t, "a", gjson.Get(got, "foo.bar.0").String(), "kept leaf must be preserved")
+	require.True(t, strings.HasPrefix(gjson.Get(got, "foo.bar.1").String(), redactedByCQMessage), "sibling array leaf must be redacted")
+	require.True(t, strings.HasPrefix(gjson.Get(got, "foo.bar.2").String(), redactedByCQMessage), "sibling array leaf must be redacted")
+	require.True(t, strings.HasPrefix(gjson.Get(got, "hello").String(), redactedByCQMessage), "sibling object leaf must be redacted")
+}
+
+func TestObfuscateColumnsExcept_PerElementDistinctHashes(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+
+	updatedRecord, err := updater.ObfuscateColumnsExcept([]string{"col3.hello"}, true, "redact")
+	require.NoError(t, err)
+
+	got := updatedRecord.Column(2).ValueStr(0)
+	b0 := gjson.Get(got, "foo.bar.0").String()
+	b1 := gjson.Get(got, "foo.bar.1").String()
+	b2 := gjson.Get(got, "foo.bar.2").String()
+	require.True(t, strings.HasPrefix(b0, redactedByCQMessage))
+	require.NotEqual(t, b0, b1, "each array element must hash to a distinct value")
+	require.NotEqual(t, b1, b2, "each array element must hash to a distinct value")
+	require.Equal(t, "world", gjson.Get(got, "hello").String(), "kept leaf must be preserved")
+}
+
+func TestObfuscateColumnsExcept_DropUnhashable(t *testing.T) {
+	record := createTestRecordWithTS()
+	updater := New(record)
+
+	updatedRecord, err := updater.ObfuscateColumnsExcept([]string{"col1"}, true, "redact")
+	require.NoError(t, err)
+
+	require.Equal(t, int64(3), updatedRecord.NumCols())
+	names := make([]string, 0, updatedRecord.NumCols())
+	for i := 0; i < int(updatedRecord.NumCols()); i++ {
+		names = append(names, updatedRecord.ColumnName(i))
+	}
+	require.Equal(t, []string{"col1", "col2", "col3"}, names)
+	require.Equal(t, "val1", updatedRecord.Column(0).(*array.String).Value(0))
+}
+
+func TestObfuscateColumnsExcept_CQColumnsPassthrough(t *testing.T) {
+	record := createTestRecordWithCQ()
+	updater := New(record)
+
+	updatedRecord, err := updater.ObfuscateColumnsExcept([]string{"name"}, true, "redact")
+	require.NoError(t, err)
+
+	require.Equal(t, int64(4), updatedRecord.NumCols())
+	require.Equal(t, "id1", updatedRecord.Column(0).(*array.String).Value(0), "_cq_id must pass through")
+	require.Equal(t, "t1", updatedRecord.Column(1).(*array.String).Value(0), "_cq_sync_time must pass through")
+	require.Equal(t, "n1", updatedRecord.Column(2).(*array.String).Value(0), "allowlisted column must be kept")
+	require.Equal(t, redactValue([]byte("s1"), true), updatedRecord.Column(3).(*array.String).Value(0), "non-allowlisted column must be redacted")
+}
+
+func TestObfuscateColumnsExcept_IncludeSHAFalse(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+
+	updatedRecord, err := updater.ObfuscateColumnsExcept([]string{"col1"}, false, "redact")
+	require.NoError(t, err)
+
+	require.Equal(t, redactedByCQMessageNoSHA, updatedRecord.Column(1).(*array.String).Value(0), "no SHA appended when include_sha=false")
+	require.Equal(t,
+		fmt.Sprintf(`{"%s":"%s"}`, redactedByCQJSONName, redactedByCQMessageNoSHA),
+		updatedRecord.Column(2).ValueStr(0))
+}
+
+func TestObfuscateColumnsExcept_TopLevelArrayKeepImage(t *testing.T) {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "_cq_id", Type: arrow.BinaryTypes.String},
+			{Name: "spec_containers", Type: types.NewJSONType()},
+		},
+		&md,
+	))
+	defer bld.Release()
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"id1"}, nil)
+	bld.Field(1).(*types.JSONBuilder).AppendBytes([]byte(`[{"image":"nginx","env":[{"name":"A","value":"1"}]},{"image":"redis","env":[{"name":"B","value":"2"}]}]`))
+	record := bld.NewRecordBatch()
+	updater := New(record)
+
+	updatedRecord, err := updater.ObfuscateColumnsExcept([]string{"spec_containers.#.image"}, true, "redact")
+	require.NoError(t, err)
+
+	got := updatedRecord.Column(1).ValueStr(0)
+	require.Equal(t, "nginx", gjson.Get(got, "0.image").String(), "image kept for element 0")
+	require.Equal(t, "redis", gjson.Get(got, "1.image").String(), "image kept for element 1 via # wildcard")
+	require.True(t, strings.HasPrefix(gjson.Get(got, "0.env.0.value").String(), redactedByCQMessage), "env value must be redacted")
+	require.True(t, strings.HasPrefix(gjson.Get(got, "0.env.0.name").String(), redactedByCQMessage), "non-allowlisted env name must be redacted")
+}
+
+func TestObfuscateColumnsExcept_DropMode(t *testing.T) {
+	record := createTestRecord()
+	updated, err := New(record).ObfuscateColumnsExcept([]string{"col1", "col3.hello"}, true, spec.UnmatchedDrop)
+	require.NoError(t, err)
+
+	names := make([]string, 0, updated.NumCols())
+	for i := 0; i < int(updated.NumCols()); i++ {
+		names = append(names, updated.ColumnName(i))
+	}
+	require.Equal(t, []string{"col1", "col3"}, names, "non-allowlisted col2 dropped entirely")
+	require.Equal(t, "val1", updated.Column(0).(*array.String).Value(0))
+	require.Equal(t, `{"hello":"world"}`, updated.Column(1).ValueStr(0), "non-kept foo subtree dropped")
+	require.Zero(t, strings.Count(updated.Column(1).ValueStr(0), redactedByCQMessage), "no markers in drop mode")
+}
+
+func TestObfuscateColumnsExcept_DropModeArray(t *testing.T) {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "_cq_id", Type: arrow.BinaryTypes.String},
+			{Name: "spec_containers", Type: types.NewJSONType()},
+		},
+		&md,
+	))
+	defer bld.Release()
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"id1"}, nil)
+	bld.Field(1).(*types.JSONBuilder).AppendBytes([]byte(`[{"image":"nginx","env":[{"name":"A","value":"1"}]},{"image":"redis"}]`))
+	record := bld.NewRecordBatch()
+
+	updated, err := New(record).ObfuscateColumnsExcept([]string{"spec_containers.#.image"}, true, spec.UnmatchedDrop)
+	require.NoError(t, err)
+
+	got := updated.Column(1).ValueStr(0)
+	require.Equal(t, "nginx", gjson.Get(got, "0.image").String())
+	require.Equal(t, "redis", gjson.Get(got, "1.image").String())
+	require.False(t, gjson.Get(got, "0.env").Exists(), "non-allowlisted env dropped in drop mode")
+	require.Zero(t, strings.Count(got, redactedByCQMessage), "no markers in drop mode")
+}
+
+func TestObfuscateColumnsExcept_CollapseMode(t *testing.T) {
+	record := createTestRecord()
+	updated, err := New(record).ObfuscateColumnsExcept([]string{"col3.hello"}, true, spec.UnmatchedCollapse)
+	require.NoError(t, err)
+
+	got := updated.Column(2).ValueStr(0)
+	require.Equal(t, "world", gjson.Get(got, "hello").String(), "kept leaf preserved")
+	require.Equal(t, gjson.String, gjson.Get(got, "foo").Type, "non-kept subtree collapsed to a single marker")
+	require.True(t, strings.HasPrefix(gjson.Get(got, "foo").String(), redactedByCQMessage))
+	require.Equal(t, 1, strings.Count(got, redactedByCQMessage), "one marker for the whole collapsed subtree")
+}
+
+func TestObfuscateColumnsExcept_TypedColumnsNeverStringified(t *testing.T) {
+	md := arrow.NewMetadata([]string{schema.MetadataTableName}, []string{"testTable"})
+	bld := array.NewRecordBuilder(memory.DefaultAllocator, arrow.NewSchema(
+		[]arrow.Field{
+			{Name: "keep_me", Type: arrow.BinaryTypes.String},
+			{Name: "a_bool", Type: arrow.FixedWidthTypes.Boolean},
+			{Name: "a_ts", Type: arrow.FixedWidthTypes.Timestamp_us},
+			{Name: "an_int", Type: arrow.PrimitiveTypes.Int64},
+		},
+		&md,
+	))
+	defer bld.Release()
+	bld.Field(0).(*array.StringBuilder).AppendValues([]string{"v1"}, nil)
+	bld.Field(1).(*array.BooleanBuilder).AppendValues([]bool{true}, nil)
+	bld.Field(2).(*array.TimestampBuilder).AppendValues([]arrow.Timestamp{1}, nil)
+	bld.Field(3).(*array.Int64Builder).AppendValues([]int64{7}, nil)
+	record := bld.NewRecordBatch()
+
+	for _, mode := range []string{spec.UnmatchedRedact, spec.UnmatchedCollapse, spec.UnmatchedDrop} {
+		t.Run(mode, func(t *testing.T) {
+			updated, err := New(record).ObfuscateColumnsExcept([]string{"keep_me"}, true, mode)
+			require.NoError(t, err)
+
+			names := make([]string, 0, updated.NumCols())
+			for i := 0; i < int(updated.NumCols()); i++ {
+				names = append(names, updated.ColumnName(i))
+				require.Equal(t, record.Schema().Field(record.Schema().FieldIndices(updated.ColumnName(i))[0]).Type,
+					updated.Schema().Field(i).Type, "surviving column must keep its original Arrow type")
+			}
+			require.Equal(t, []string{"keep_me"}, names,
+				"non-allowlisted bool/timestamp/int columns must be dropped, never redacted into a string")
+		})
+	}
+}
+
+func TestObfuscateColumnsExcept_DropModePKErrors(t *testing.T) {
+	record := createTestRecordWithPK()
+	_, err := New(record).ObfuscateColumnsExcept([]string{"name"}, true, spec.UnmatchedDrop)
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "uid")
+	require.Contains(t, err.Error(), "drop")
+}
+
+func TestObfuscateColumns_IncludeSHAFalse(t *testing.T) {
+	record := createTestRecord()
+	updater := New(record)
+
+	updatedRecord, err := updater.ObfuscateColumns([]string{"col1"}, false)
+	require.NoError(t, err)
+
+	require.Equal(t, redactedByCQMessageNoSHA, updatedRecord.Column(0).(*array.String).Value(0))
+	require.Equal(t, redactedByCQMessageNoSHA, updatedRecord.Column(0).(*array.String).Value(1))
 }

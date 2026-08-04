@@ -33,13 +33,15 @@ func NewFromSpec(sp spec.TransformationSpec) (*Transformer, error) {
 	case spec.KindAddPrimaryKeys:
 		tr.fn = AddPrimaryKeys(sp.Columns)
 	case spec.KindObfuscateColumns:
-		tr.fn = ObfuscateColumns(sp.Columns)
+		tr.fn = ObfuscateColumns(sp.Columns, sp.ShouldIncludeSHA())
+	case spec.KindObfuscateColumnsExcept:
+		tr.fn = ObfuscateColumnsExcept(sp.Columns, sp.ShouldIncludeSHA(), sp.UnmatchedMode())
 	case spec.KindChangeTableNames:
 		tr.fn = ChangeTableName(sp.NewTableNameTemplate)
 	case spec.KindRenameColumn:
 		tr.fn = RenameColumn(sp.Name, *sp.Value)
 	case spec.KindObfuscateSensitiveColumns:
-		tr.fn = ObfuscateSensitiveColumns(sp.Columns)
+		tr.fn = ObfuscateSensitiveColumns(sp.ShouldIncludeSHA())
 	case spec.KindUppercase, spec.KindLowercase:
 		tr.fn = ChangeCase(sp.Kind, sp.Columns)
 	case spec.KindDropRows:
@@ -107,9 +109,9 @@ func AddPrimaryKeys(columnNames []string) TransformationFn {
 		return recordupdater.New(record).AddPrimaryKeys(columnNames)
 	}
 }
-func ObfuscateSensitiveColumns(columnNames []string) TransformationFn {
+func ObfuscateSensitiveColumns(includeSHA bool) TransformationFn {
 	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
-		return recordupdater.New(record).ObfuscateSensitiveColumns()
+		return recordupdater.New(record).ObfuscateSensitiveColumns(includeSHA)
 	}
 }
 
@@ -118,9 +120,15 @@ func DropRows(columnNames []string, value *string) TransformationFn {
 		return recordupdater.New(record).DropRows(columnNames, value)
 	}
 }
-func ObfuscateColumns(columnNames []string) TransformationFn {
+func ObfuscateColumns(columnNames []string, includeSHA bool) TransformationFn {
 	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
-		return recordupdater.New(record).ObfuscateColumns(columnNames)
+		return recordupdater.New(record).ObfuscateColumns(columnNames, includeSHA)
+	}
+}
+
+func ObfuscateColumnsExcept(columnNames []string, includeSHA bool, unmatched string) TransformationFn {
+	return func(record arrow.RecordBatch) (arrow.RecordBatch, error) {
+		return recordupdater.New(record).ObfuscateColumnsExcept(columnNames, includeSHA, unmatched)
 	}
 }
 
