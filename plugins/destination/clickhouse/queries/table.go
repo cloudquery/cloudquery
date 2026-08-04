@@ -55,11 +55,11 @@ func tableNamePart(table, cluster string) string {
 }
 
 func GetPartitionKeyAndSortingKeyQuery(database, table string) string {
-	return fmt.Sprintf(`SELECT partition_key, sorting_key FROM system.tables WHERE database = '%s' AND name = '%s'`, database, table)
+	return fmt.Sprintf(`SELECT partition_key, sorting_key FROM system.tables WHERE database = %s AND name = %s`, util.SanitizeID(database), util.SanitizeID(table))
 }
 
 func GetTTLQuery(database, table string) string {
-	return fmt.Sprintf(`SHOW CREATE TABLE "%s"."%s"`, database, table)
+	return fmt.Sprintf("SHOW CREATE TABLE %s.%s", util.SanitizeID(database), util.SanitizeID(table))
 }
 
 func EqualTTLsQuery(table *schema.Table, ttl1, ttl2 string) string {

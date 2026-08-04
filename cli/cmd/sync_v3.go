@@ -623,6 +623,17 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 
 	tableProgress := statsPerTable.GetAll()
 
+	tableClients := make(map[string]map[string]*metrics.TableClientMetrics, len(tableProgress))
+	for tableName, progress := range tableProgress {
+		tableClients[tableName] = map[string]*metrics.TableClientMetrics{
+			sourceSpec.Name: {
+				Resources: uint64(progress.Rows),
+				Errors:    uint64(progress.Errors),
+			},
+		}
+	}
+	mt = metrics.Metrics{TableClient: tableClients}
+
 	sourceTableNames := lo.Keys(sourceTables)
 	slices.Sort(sourceTableNames)
 

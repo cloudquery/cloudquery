@@ -79,7 +79,7 @@ func (lp *TransformerPipeline) Send(data []byte) error {
 		return ErrPipelineClosed
 	}
 
-	sendCh := make(chan error)
+	sendCh := make(chan error, 1)
 
 	// Send can block forever (e.g. if grpc buffer is full), so we run it asynchronously
 	// and check if pipeline is closed every second.
@@ -135,19 +135,22 @@ func (s *clientWrapper) startBlocking() error {
 		return errors.New("nextSendFn is nil")
 	}
 
-	recvCh := make(chan *plugin.Transform_Request)
-	errCh := make(chan error)
+	recvCh := make(chan *plugin.Transform_Request, 1)
+	errCh := make(chan error, 1)
 
 	// Recv can block forever (e.g. if transformer decides to), so
 	// we run it asynchronously and check if pipeline is closed every second.
 	go func() {
 		for {
+			if s.isClosed.Load() {
+				return
+			}
 			data, err := s.client.Recv()
 			if err != nil {
 				errCh <- err
-			} else {
-				recvCh <- &plugin.Transform_Request{Record: data.Record}
+				return
 			}
+			recvCh <- &plugin.Transform_Request{Record: data.Record}
 		}
 	}()
 

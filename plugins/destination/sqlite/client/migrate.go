@@ -14,6 +14,10 @@ const (
 	sqlTableInfo = "PRAGMA table_info('%s');"
 )
 
+func sanitizeSQLiteIdentifier(name string) string {
+	return strings.ReplaceAll(name, "'", "''")
+}
+
 type columnInfo struct {
 	index        int
 	name         string
@@ -242,7 +246,7 @@ func (c *Client) createTableIfNotExist(table *schema.Table) error {
 
 func (c *Client) getTableInfo(tableName string) (*tableInfo, error) {
 	info := tableInfo{}
-	rows, err := c.db.Query(fmt.Sprintf(sqlTableInfo, tableName))
+	rows, err := c.db.Query(fmt.Sprintf(sqlTableInfo, sanitizeSQLiteIdentifier(tableName)))
 	if err != nil {
 		return nil, err
 	}
