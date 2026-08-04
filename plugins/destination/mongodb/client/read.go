@@ -65,7 +65,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *types.JSONBuilder:
 		b.Append(val)
 	case *array.StructBuilder:
-		m := bsonDocToMap(val)
+		m := reinterpretUnsigned(b.Type(), bsonDocToMap(val))
 		v, err := json.Marshal(m)
 		if err != nil {
 			return err
