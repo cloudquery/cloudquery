@@ -158,7 +158,7 @@ func appendValue(builder array.Builder, value any) error {
 		bldr.Append(dec)
 		return nil
 	case *types.JSONBuilder:
-		return bldr.AppendValueFromString(value.(string))
+		return appendFromString(bldr, value.(string))
 	default:
 		// catch-all case to keep the code simple; this is only for testing
 		// so the performance of JSON marshaling is not a big concern here
@@ -168,6 +168,7 @@ func appendValue(builder array.Builder, value any) error {
 		}
 		r := strings.NewReader(string(b))
 		d := json.NewDecoder(r)
+		d.UseNumber()
 		err = bldr.UnmarshalOne(d)
 		if err != nil {
 			return fmt.Errorf("failed to unmarshal value of type %v: %w. Value was %v", bldr.Type(), err, string(b))

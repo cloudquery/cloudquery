@@ -200,7 +200,7 @@ func reverseTransformFromString(dt arrow.DataType, arr *array.String) arrow.Arra
 			builder.AppendNull()
 			continue
 		}
-		if err := builder.AppendValueFromString(arr.Value(i)); err != nil {
+		if err := appendFromString(builder, arr.Value(i)); err != nil {
 			panic(fmt.Errorf("failed to append from string value %q: %w", arr.Value(i), err))
 		}
 	}
@@ -216,7 +216,7 @@ func reverseTransformStruct(dt *arrow.StructType, arr *array.Binary) arrow.Array
 			bldr.AppendNull()
 			continue
 		}
-		if err := bldr.AppendValueFromString(arr.ValueString(i)); err != nil {
+		if err := appendFromString(bldr, arr.ValueString(i)); err != nil {
 			panic(err)
 		}
 	}
@@ -231,7 +231,7 @@ func reverseTransformMap(dt *arrow.MapType, arr *array.Binary) arrow.Array {
 			bldr.AppendNull()
 			continue
 		}
-		if err := bldr.AppendValueFromString(arr.ValueString(i)); err != nil {
+		if err := appendFromString(bldr, arr.ValueString(i)); err != nil {
 			panic(err)
 		}
 	}

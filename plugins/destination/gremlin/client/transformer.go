@@ -88,7 +88,7 @@ func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
 		return nil
 	}
 	if str, ok := val.(string); ok {
-		return bldr.AppendValueFromString(str)
+		return appendFromString(bldr, str)
 	}
 
 	switch b := bldr.(type) {
@@ -149,7 +149,7 @@ func reverseTransform(f arrow.Field, bldr array.Builder, val any) error {
 		if !ok {
 			return fmt.Errorf("unsupported type %T with builder %T", val, bldr)
 		}
-		if err := bldr.AppendValueFromString(v); err != nil {
+		if err := appendFromString(bldr, v); err != nil {
 			return err
 		}
 	}

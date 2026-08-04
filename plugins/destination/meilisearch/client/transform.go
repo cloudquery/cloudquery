@@ -59,27 +59,67 @@ func reverseTransform(builder array.Builder, val any) error {
 	case *array.BooleanBuilder:
 		builder.Append(val.(bool))
 	case *array.Int8Builder:
-		builder.Append(int8(val.(float64)))
+		v, err := toInt64(val)
+		if err != nil {
+			return err
+		}
+		builder.Append(int8(v))
 	case *array.Int16Builder:
-		builder.Append(int16(val.(float64)))
+		v, err := toInt64(val)
+		if err != nil {
+			return err
+		}
+		builder.Append(int16(v))
 	case *array.Int32Builder:
-		builder.Append(int32(val.(float64)))
+		v, err := toInt64(val)
+		if err != nil {
+			return err
+		}
+		builder.Append(int32(v))
 	case *array.Int64Builder:
-		builder.Append(int64(val.(float64)))
+		v, err := toInt64(val)
+		if err != nil {
+			return err
+		}
+		builder.Append(v)
 	case *array.Uint8Builder:
-		builder.Append(uint8(val.(float64)))
+		v, err := toUint64(val)
+		if err != nil {
+			return err
+		}
+		builder.Append(uint8(v))
 	case *array.Uint16Builder:
-		builder.Append(uint16(val.(float64)))
+		v, err := toUint64(val)
+		if err != nil {
+			return err
+		}
+		builder.Append(uint16(v))
 	case *array.Uint32Builder:
-		builder.Append(uint32(val.(float64)))
+		v, err := toUint64(val)
+		if err != nil {
+			return err
+		}
+		builder.Append(uint32(v))
 	case *array.Uint64Builder:
-		builder.Append(uint64(val.(float64)))
+		v, err := toUint64(val)
+		if err != nil {
+			return err
+		}
+		builder.Append(v)
 	case *array.Float32Builder:
-		builder.Append(float32(val.(float64)))
+		v, err := toFloat64(val)
+		if err != nil {
+			return err
+		}
+		builder.Append(float32(v))
 	case *array.Float64Builder:
-		builder.Append(val.(float64))
+		v, err := toFloat64(val)
+		if err != nil {
+			return err
+		}
+		builder.Append(v)
 	case *array.BinaryBuilder:
-		return builder.AppendValueFromString(val.(string))
+		return appendFromString(builder, val.(string))
 	case *array.StringBuilder:
 		builder.Append(val.(string))
 	case *array.LargeStringBuilder:
@@ -102,6 +142,7 @@ func reverseTransform(builder array.Builder, val any) error {
 		}
 
 		dec := json.NewDecoder(bytes.NewReader(data))
+		dec.UseNumber()
 		if err := builder.UnmarshalOne(dec); err != nil {
 			return err
 		}

@@ -65,12 +65,13 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 	case *types.JSONBuilder:
 		b.Append(val)
 	case *array.StructBuilder:
-		m := bsonDocToMap(val)
+		m := reinterpretUnsigned(b.Type(), bsonDocToMap(val))
 		v, err := json.Marshal(m)
 		if err != nil {
 			return err
 		}
 		dec := json.NewDecoder(bytes.NewReader(v))
+		dec.UseNumber()
 		if err := b.UnmarshalOne(dec); err != nil {
 			return err
 		}
@@ -87,7 +88,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		if !ok {
 			return fmt.Errorf("unsupported type %T with builder %T", val, bldr)
 		}
-		if err := bldr.AppendValueFromString(v); err != nil {
+		if err := appendFromString(bldr, v); err != nil {
 			return err
 		}
 	}

@@ -1,6 +1,7 @@
 package client
 
 import (
+	"bytes"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -22,8 +23,10 @@ func stripNulls(s string) string {
 // In some far-fetched case a JSON like this may happen, but we ignore this for now: `{"key\u0000": "v1", "key\u0000\u0000": "v2"}`
 func stripNullsFromMarshalledJson(inputJsonMarshaled []byte) []byte {
 	var m any
-	err := json.Unmarshal(inputJsonMarshaled, &m)
-	if err != nil {
+	// UseNumber keeps int64/uint64 values that exceed float64 precision intact
+	dec := json.NewDecoder(bytes.NewReader(inputJsonMarshaled))
+	dec.UseNumber()
+	if err := dec.Decode(&m); err != nil {
 		return inputJsonMarshaled
 	}
 
