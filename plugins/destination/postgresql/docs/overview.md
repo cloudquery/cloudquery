@@ -86,9 +86,13 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 
     Databricks service principal OAuth client secret. If empty, the Databricks SDK resolves it from the `DATABRICKS_CLIENT_SECRET` environment variable (or other default Databricks configuration sources).
 
-- `rds_iam_auth` (`object`) (optional)
+- `aws_iam_auth` (`object`) (optional)
 
-  Configuration to connect to Amazon RDS (or Aurora) PostgreSQL with [IAM database authentication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html). When set, the plugin signs a short-lived IAM authentication token with the resolved AWS credentials before each new connection and uses it as the connection password. The `connection_string` still supplies the host, port, database name and user (the database user that has been granted the `rds_iam` role), and must use `sslmode=require` (or `verify-ca`/`verify-full`); TLS is required and enforced. Mutually exclusive with `lakebase`. See the [Amazon RDS IAM authentication example](#amazon-rds-iam-authentication) below.
+  Configuration to connect to an AWS-managed, PostgreSQL-compatible database with [IAM database authentication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html). When set, the plugin signs a short-lived IAM authentication token with the resolved AWS credentials before each new connection and uses it as the connection password. The `connection_string` still supplies the host, port, database name and user (the database user that has been granted IAM authentication), and must use TLS, which is enforced. Mutually exclusive with `lakebase`. See the [Amazon RDS IAM authentication example](#amazon-rds-iam-authentication) below.
+
+  - `service` (`string`) (optional) (default: `rds`)
+
+    The AWS database service to authenticate to. Available: `rds` (Amazon RDS and Aurora PostgreSQL).
 
   - `region` (`string`) (optional)
 
@@ -96,7 +100,7 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 
   - `endpoint` (`string`) (optional)
 
-    The endpoint the token is signed for, in `host:port` format. If empty, the host and port from `connection_string` are used. Set this when the plugin connects through a different address than the RDS endpoint itself, such as an SSH tunnel or a CNAME.
+    The endpoint the token is signed for, as `host` or `host:port`. If empty, the host and port from `connection_string` are used; if only a host is given, the port from `connection_string` is used. Set this when the plugin connects through a different address than the database endpoint itself, such as an SSH tunnel or a CNAME.
 
   - `local_profile` (`string`) (optional)
 
@@ -202,7 +206,7 @@ spec:
 
 ### Amazon RDS IAM authentication
 
-[IAM database authentication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html) lets the plugin connect to Amazon RDS or Aurora PostgreSQL with an IAM identity instead of a password. Set the `rds_iam_auth` block and the plugin signs a fresh short-lived token for every new connection, so you do not put a password in the `connection_string`.
+[IAM database authentication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html) lets the plugin connect to Amazon RDS or Aurora PostgreSQL with an IAM identity instead of a password. Set the `aws_iam_auth` block and the plugin signs a fresh short-lived token for every new connection, so you do not put a password in the `connection_string`.
 
 Before syncing, IAM authentication must be enabled on the database instance and the database user must be granted the `rds_iam` role:
 
@@ -238,11 +242,12 @@ spec:
   spec:
     # No password in the connection string - a token is generated per-connection from the AWS credentials below.
     connection_string: "host=${PGHOST} port=5432 dbname=postgres user=cloudquery sslmode=require"
-    rds_iam_auth:
+    aws_iam_auth:
+      service: "rds"
       region: "us-east-1"
 ```
 
-Every field is optional. AWS credentials are resolved from the [standard AWS sources](https://docs.aws.amazon.com/sdk-for-go/v2/developer-guide/configure-gosdk.html) (environment variables, the shared credentials file, an EC2 instance profile, an EKS service account, ...), and the region is resolved from `AWS_REGION` when `region` is not set. Set `local_profile` to pick a specific shared config profile, or `role_arn` (optionally with `role_session_name` and `external_id`) to assume a role before signing the token.
+Every field is optional; `service` defaults to `rds`. AWS credentials are resolved from the [standard AWS sources](https://docs.aws.amazon.com/sdk-for-go/v2/developer-guide/configure-gosdk.html) (environment variables, the shared credentials file, an EC2 instance profile, an EKS service account, ...), and the region is resolved from `AWS_REGION` when `region` is not set. Set `local_profile` to pick a specific shared config profile, or `role_arn` (optionally with `role_session_name` and `external_id`) to assume a role before signing the token.
 
 ### Verbose logging for debug
 

@@ -4,6 +4,7 @@ import (
 	_ "embed"
 	"errors"
 	"slices"
+	"strings"
 	"time"
 
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
@@ -52,9 +53,9 @@ type Spec struct {
 	// a PostgreSQL-compatible managed database.
 	Lakebase *LakebaseSpec `json:"lakebase,omitempty"`
 
-	// Optional configuration to connect to Amazon RDS (or Aurora) PostgreSQL with
-	// [IAM database authentication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html).
-	RDSIAMAuth *RDSIAMAuthSpec `json:"rds_iam_auth,omitempty"`
+	// Optional configuration to connect to an AWS-managed, PostgreSQL-compatible
+	// database with [IAM database authentication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html).
+	AWSIAMAuth *AWSIAMAuthSpec `json:"aws_iam_auth,omitempty"`
 }
 
 // LakebaseSpec enables connecting to Databricks Lakebase, a PostgreSQL-compatible
@@ -84,23 +85,48 @@ type LakebaseSpec struct {
 	ClientSecret string `json:"client_secret,omitempty"`
 }
 
-// RDSIAMAuthSpec enables IAM database authentication for Amazon RDS and Aurora
-// PostgreSQL. When set, the plugin signs a short-lived IAM authentication token
-// with the resolved AWS credentials before each new connection and uses it as the
-// connection password. The `connection_string` still supplies the host, port,
-// database name and user (the database user that has been granted the
-// `rds_iam` role), and must use `sslmode=require` (or `verify-ca`/`verify-full`);
-// TLS is required and enforced.
-type RDSIAMAuthSpec struct {
+// AWSIAMAuthService is the AWS database service to authenticate to.
+type AWSIAMAuthService string
+
+const (
+	// AWSIAMAuthServiceRDS is Amazon RDS and Aurora PostgreSQL.
+	AWSIAMAuthServiceRDS AWSIAMAuthService = "rds"
+)
+
+// awsIAMAuthServices lists every supported `aws_iam_auth.service`. Keep the
+// `service` field's jsonschema enum in sync when adding to it.
+var awsIAMAuthServices = []AWSIAMAuthService{AWSIAMAuthServiceRDS}
+
+// supportedAWSIAMAuthServices renders the supported services for error messages.
+func supportedAWSIAMAuthServices() string {
+	names := make([]string, len(awsIAMAuthServices))
+	for i, service := range awsIAMAuthServices {
+		names[i] = string(service)
+	}
+	return strings.Join(names, ", ")
+}
+
+// AWSIAMAuthSpec enables IAM database authentication for AWS-managed,
+// PostgreSQL-compatible databases. When set, the plugin signs a short-lived IAM
+// authentication token with the resolved AWS credentials before each new
+// connection and uses it as the connection password. The `connection_string` still
+// supplies the host, port, database name and user (the database user that has been
+// granted IAM authentication, for Amazon RDS via the `rds_iam` role), and must use
+// TLS, which is enforced.
+type AWSIAMAuthSpec struct {
+	// The AWS database service to authenticate to.
+	Service AWSIAMAuthService `json:"service,omitempty" jsonschema:"enum=rds,default=rds"`
+
 	// AWS region the database is in, for example `us-east-1`. If empty, the region
 	// is resolved from the standard AWS configuration sources (the `AWS_REGION`
 	// environment variable, the shared config file, ...).
 	Region string `json:"region,omitempty" jsonschema:"example=us-east-1"`
 
-	// The endpoint the token is signed for, in `host:port` format. If empty, the
-	// host and port from `connection_string` are used. Set this when the plugin
-	// connects through a different address than the RDS endpoint itself, such as an
-	// SSH tunnel or a CNAME.
+	// The endpoint the token is signed for, as `host` or `host:port`. If empty, the
+	// host and port from `connection_string` are used; if only a host is given, the
+	// port from `connection_string` is used. Set this when the plugin connects
+	// through a different address than the database endpoint itself, such as an SSH
+	// tunnel or a CNAME.
 	Endpoint string `json:"endpoint,omitempty" jsonschema:"example=mydb.123456789012.us-east-1.rds.amazonaws.com:5432"`
 
 	// [Local profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)
@@ -126,8 +152,17 @@ func (s *Spec) HasLakebaseConfig() bool {
 	return s.Lakebase != nil
 }
 
-func (s *Spec) HasRDSIAMAuthConfig() bool {
-	return s.RDSIAMAuth != nil
+func (s *Spec) HasAWSIAMAuthConfig() bool {
+	return s.AWSIAMAuth != nil
+}
+
+// ServiceOrDefault returns the service to authenticate to, defaulting to Amazon
+// RDS when `service` is not set.
+func (s *AWSIAMAuthSpec) ServiceOrDefault() AWSIAMAuthService {
+	if s.Service == "" {
+		return AWSIAMAuthServiceRDS
+	}
+	return s.Service
 }
 
 func (s *Spec) SetDefaults() {
@@ -189,8 +224,11 @@ func (s *Spec) Validate() error {
 		return errors.New("`lakebase.endpoint` is required when `lakebase` is set")
 	}
 	// Both set the connection password, so only one of them can be used at a time.
-	if s.Lakebase != nil && s.RDSIAMAuth != nil {
-		return errors.New("`lakebase` and `rds_iam_auth` are mutually exclusive")
+	if s.Lakebase != nil && s.AWSIAMAuth != nil {
+		return errors.New("`lakebase` and `aws_iam_auth` are mutually exclusive")
+	}
+	if s.AWSIAMAuth != nil && !slices.Contains(awsIAMAuthServices, s.AWSIAMAuth.ServiceOrDefault()) {
+		return errors.New("`aws_iam_auth.service` must be one of: " + supportedAWSIAMAuthServices())
 	}
 	if s.PgVectorConfig != nil {
 		if len(s.PgVectorConfig.Tables) == 0 {

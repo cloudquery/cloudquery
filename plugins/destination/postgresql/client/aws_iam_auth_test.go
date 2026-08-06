@@ -28,7 +28,7 @@ func setStaticAWSCredentials(t *testing.T) {
 	t.Setenv("AWS_REGION", "")
 }
 
-func TestConfigureRDSIAMAuth_SignsToken(t *testing.T) {
+func TestConfigureAWSIAMAuth_SignsRDSToken(t *testing.T) {
 	setStaticAWSCredentials(t)
 
 	cases := []struct {
@@ -51,10 +51,17 @@ func TestConfigureRDSIAMAuth_SignsToken(t *testing.T) {
 			wantUser:     "cq_user",
 		},
 		{
-			name:         "spec endpoint overrides the connection string",
+			name:         "endpoint override replaces host and port",
 			connString:   "postgres://cq_user@localhost:15432/db?sslmode=require",
 			specEndpoint: "mydb.123456789012.us-east-1.rds.amazonaws.com:5432",
 			wantHostPort: "mydb.123456789012.us-east-1.rds.amazonaws.com:5432",
+			wantUser:     "cq_user",
+		},
+		{
+			name:         "endpoint override without a port keeps the connection string port",
+			connString:   "postgres://cq_user@localhost:5433/db?sslmode=require",
+			specEndpoint: "mydb.123456789012.us-east-1.rds.amazonaws.com",
+			wantHostPort: "mydb.123456789012.us-east-1.rds.amazonaws.com:5433",
 			wantUser:     "cq_user",
 		},
 	}
@@ -66,12 +73,12 @@ func TestConfigureRDSIAMAuth_SignsToken(t *testing.T) {
 				t.Fatalf("failed to parse connection string: %v", err)
 			}
 
-			err = configureRDSIAMAuth(context.Background(), cfg, &spec.RDSIAMAuthSpec{
+			err = configureAWSIAMAuth(context.Background(), cfg, &spec.AWSIAMAuthSpec{
 				Region:   "us-east-1",
 				Endpoint: tc.specEndpoint,
 			})
 			if err != nil {
-				t.Fatalf("configureRDSIAMAuth returned error: %v", err)
+				t.Fatalf("configureAWSIAMAuth returned error: %v", err)
 			}
 			if cfg.BeforeConnect == nil {
 				t.Fatal("expected BeforeConnect callback to be set")
@@ -82,7 +89,7 @@ func TestConfigureRDSIAMAuth_SignsToken(t *testing.T) {
 				t.Fatalf("BeforeConnect returned error: %v", err)
 			}
 
-			// The token is the presigned URL with the scheme stripped, e.g.
+			// The RDS token is the presigned URL with the scheme stripped, e.g.
 			// `host:port/?Action=connect&DBUser=...&X-Amz-Signature=...`.
 			token := connConfig.Password
 			hostPort, rawQuery, found := strings.Cut(token, "?")
@@ -112,15 +119,15 @@ func TestConfigureRDSIAMAuth_SignsToken(t *testing.T) {
 	}
 }
 
-func TestConfigureRDSIAMAuth_SignsFreshTokenPerConnection(t *testing.T) {
+func TestConfigureAWSIAMAuth_SignsFreshTokenPerConnection(t *testing.T) {
 	setStaticAWSCredentials(t)
 
 	cfg, err := pgxpool.ParseConfig("postgres://cq_user@mydb.123456789012.us-east-1.rds.amazonaws.com:5432/db?sslmode=require")
 	if err != nil {
 		t.Fatalf("failed to parse connection string: %v", err)
 	}
-	if err := configureRDSIAMAuth(context.Background(), cfg, &spec.RDSIAMAuthSpec{Region: "us-east-1"}); err != nil {
-		t.Fatalf("configureRDSIAMAuth returned error: %v", err)
+	if err := configureAWSIAMAuth(context.Background(), cfg, &spec.AWSIAMAuthSpec{Region: "us-east-1"}); err != nil {
+		t.Fatalf("configureAWSIAMAuth returned error: %v", err)
 	}
 
 	// Every connection must be authenticated with its own token: the callback must
@@ -143,9 +150,9 @@ func TestConfigureRDSIAMAuth_SignsFreshTokenPerConnection(t *testing.T) {
 }
 
 // The pool must not be pinned to the connection lifetime that Lakebase needs: an
-// RDS IAM token only authenticates the connection, and the session stays valid
-// after the token expires.
-func TestConfigureRDSIAMAuth_KeepsConnectionLifetime(t *testing.T) {
+// IAM token only authenticates the connection, and the session stays valid after
+// the token expires.
+func TestConfigureAWSIAMAuth_KeepsConnectionLifetime(t *testing.T) {
 	setStaticAWSCredentials(t)
 
 	cfg, err := pgxpool.ParseConfig("postgres://cq_user@mydb.123456789012.us-east-1.rds.amazonaws.com:5432/db?sslmode=require")
@@ -154,15 +161,15 @@ func TestConfigureRDSIAMAuth_KeepsConnectionLifetime(t *testing.T) {
 	}
 	want := cfg.MaxConnLifetime
 
-	if err := configureRDSIAMAuth(context.Background(), cfg, &spec.RDSIAMAuthSpec{Region: "us-east-1"}); err != nil {
-		t.Fatalf("configureRDSIAMAuth returned error: %v", err)
+	if err := configureAWSIAMAuth(context.Background(), cfg, &spec.AWSIAMAuthSpec{Region: "us-east-1"}); err != nil {
+		t.Fatalf("configureAWSIAMAuth returned error: %v", err)
 	}
 	if cfg.MaxConnLifetime != want {
 		t.Errorf("MaxConnLifetime = %v, want %v", cfg.MaxConnLifetime, want)
 	}
 }
 
-func TestConfigureRDSIAMAuth_RequiresTLS(t *testing.T) {
+func TestConfigureAWSIAMAuth_RequiresTLS(t *testing.T) {
 	setStaticAWSCredentials(t)
 
 	cases := []struct {
@@ -187,7 +194,7 @@ func TestConfigureRDSIAMAuth_RequiresTLS(t *testing.T) {
 			if err != nil {
 				t.Fatalf("failed to parse connection string: %v", err)
 			}
-			err = configureRDSIAMAuth(context.Background(), cfg, &spec.RDSIAMAuthSpec{Region: "us-east-1"})
+			err = configureAWSIAMAuth(context.Background(), cfg, &spec.AWSIAMAuthSpec{Region: "us-east-1"})
 			if tc.wantErr {
 				if err == nil {
 					t.Error("expected an error for a non-TLS connection string, got nil")
@@ -204,7 +211,7 @@ func TestConfigureRDSIAMAuth_RequiresTLS(t *testing.T) {
 	}
 }
 
-func TestConfigureRDSIAMAuth_UnresolvedRegion(t *testing.T) {
+func TestConfigureAWSIAMAuth_UnsupportedService(t *testing.T) {
 	setStaticAWSCredentials(t)
 
 	cfg, err := pgxpool.ParseConfig("postgres://u@localhost:5432/db?sslmode=require")
@@ -212,7 +219,50 @@ func TestConfigureRDSIAMAuth_UnresolvedRegion(t *testing.T) {
 		t.Fatalf("failed to parse connection string: %v", err)
 	}
 
-	err = configureRDSIAMAuth(context.Background(), cfg, &spec.RDSIAMAuthSpec{})
+	err = configureAWSIAMAuth(context.Background(), cfg, &spec.AWSIAMAuthSpec{Service: "dsql", Region: "us-east-1"})
+	if err == nil {
+		t.Fatal("expected an error for an unsupported service, got nil")
+	}
+	if !strings.Contains(err.Error(), "dsql") {
+		t.Errorf("error should name the unsupported service, got: %v", err)
+	}
+}
+
+func TestConfigureAWSIAMAuth_InvalidEndpoint(t *testing.T) {
+	setStaticAWSCredentials(t)
+
+	cases := []string{
+		"mydb.123456789012.us-east-1.rds.amazonaws.com:not-a-port",
+		"mydb.123456789012.us-east-1.rds.amazonaws.com:5432:5432",
+		"mydb.123456789012.us-east-1.rds.amazonaws.com:99999",
+	}
+
+	for _, endpoint := range cases {
+		t.Run(endpoint, func(t *testing.T) {
+			cfg, err := pgxpool.ParseConfig("postgres://u@localhost:5432/db?sslmode=require")
+			if err != nil {
+				t.Fatalf("failed to parse connection string: %v", err)
+			}
+			err = configureAWSIAMAuth(context.Background(), cfg, &spec.AWSIAMAuthSpec{
+				Region:   "us-east-1",
+				Endpoint: endpoint,
+			})
+			if err == nil {
+				t.Error("expected an error for a malformed endpoint, got nil")
+			}
+		})
+	}
+}
+
+func TestConfigureAWSIAMAuth_UnresolvedRegion(t *testing.T) {
+	setStaticAWSCredentials(t)
+
+	cfg, err := pgxpool.ParseConfig("postgres://u@localhost:5432/db?sslmode=require")
+	if err != nil {
+		t.Fatalf("failed to parse connection string: %v", err)
+	}
+
+	err = configureAWSIAMAuth(context.Background(), cfg, &spec.AWSIAMAuthSpec{})
 	if err == nil {
 		t.Fatal("expected an error when the aws region cannot be resolved, got nil")
 	}
@@ -221,7 +271,7 @@ func TestConfigureRDSIAMAuth_UnresolvedRegion(t *testing.T) {
 	}
 }
 
-func TestConfigureRDSIAMAuth_ChainsExistingBeforeConnect(t *testing.T) {
+func TestConfigureAWSIAMAuth_ChainsExistingBeforeConnect(t *testing.T) {
 	setStaticAWSCredentials(t)
 
 	cfg, err := pgxpool.ParseConfig("postgres://cq_user@mydb.123456789012.us-east-1.rds.amazonaws.com:5432/db?sslmode=require")
@@ -230,7 +280,7 @@ func TestConfigureRDSIAMAuth_ChainsExistingBeforeConnect(t *testing.T) {
 	}
 
 	// A pre-existing BeforeConnect hook (e.g. set by other configuration). It must
-	// still be invoked after RDS IAM auth is wired up.
+	// still be invoked after IAM auth is wired up.
 	existingCalled := false
 	cfg.BeforeConnect = func(_ context.Context, connConfig *pgx.ConnConfig) error {
 		existingCalled = true
@@ -238,8 +288,8 @@ func TestConfigureRDSIAMAuth_ChainsExistingBeforeConnect(t *testing.T) {
 		return nil
 	}
 
-	if err := configureRDSIAMAuth(context.Background(), cfg, &spec.RDSIAMAuthSpec{Region: "us-east-1"}); err != nil {
-		t.Fatalf("configureRDSIAMAuth returned error: %v", err)
+	if err := configureAWSIAMAuth(context.Background(), cfg, &spec.AWSIAMAuthSpec{Region: "us-east-1"}); err != nil {
+		t.Fatalf("configureAWSIAMAuth returned error: %v", err)
 	}
 
 	connConfig := cfg.ConnConfig.Copy()
@@ -255,5 +305,45 @@ func TestConfigureRDSIAMAuth_ChainsExistingBeforeConnect(t *testing.T) {
 	}
 	if connConfig.Password == "" {
 		t.Error("expected the token to be set as the connection password")
+	}
+}
+
+func TestParseAWSIAMAuthEndpoint(t *testing.T) {
+	cases := []struct {
+		endpoint string
+		wantHost string
+		wantPort uint16
+		wantErr  bool
+	}{
+		{endpoint: "", wantHost: "", wantPort: 0},
+		{endpoint: "mydb.us-east-1.rds.amazonaws.com", wantHost: "mydb.us-east-1.rds.amazonaws.com"},
+		{endpoint: "mydb.us-east-1.rds.amazonaws.com:5432", wantHost: "mydb.us-east-1.rds.amazonaws.com", wantPort: 5432},
+		{endpoint: "abc.dsql.us-east-1.on.aws", wantHost: "abc.dsql.us-east-1.on.aws"},
+		{endpoint: "[::1]:5432", wantHost: "::1", wantPort: 5432},
+		{endpoint: "mydb:0", wantErr: true},
+		{endpoint: "mydb:-1", wantErr: true},
+		{endpoint: "mydb:65536", wantErr: true},
+		{endpoint: "mydb:5432:5432", wantErr: true},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.endpoint, func(t *testing.T) {
+			host, port, err := parseAWSIAMAuthEndpoint(tc.endpoint)
+			if tc.wantErr {
+				if err == nil {
+					t.Fatalf("expected an error for %q, got host %q port %d", tc.endpoint, host, port)
+				}
+				return
+			}
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+			if host != tc.wantHost {
+				t.Errorf("host = %q, want %q", host, tc.wantHost)
+			}
+			if port != tc.wantPort {
+				t.Errorf("port = %d, want %d", port, tc.wantPort)
+			}
+		})
 	}
 }
