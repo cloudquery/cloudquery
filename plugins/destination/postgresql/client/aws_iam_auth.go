@@ -116,6 +116,7 @@ func signRDSAuthToken(ctx context.Context, target awsIAMAuthTarget, creds aws.Cr
 	return withTokenPathSeparator(token), nil
 }
 
+// remove when https://github.com/aws/aws-sdk-go-v2/issues/3365 is resolved
 // withTokenPathSeparator inserts the `/` between the endpoint and the query string.
 // `rdsauth.BuildAuthToken` signs a URL whose path is empty, so `net/url` renders the
 // token as `host:port?Action=connect&...`. RDS only accepts the `host:port/?Action=...`
