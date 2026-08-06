@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	rdsauth "github.com/aws/aws-sdk-go-v2/feature/rds/auth"
 	"github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/spec"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -370,5 +371,35 @@ func TestWithTokenPathSeparator(t *testing.T) {
 				t.Errorf("withTokenPathSeparator() = %q, want %q", got, tc.want)
 			}
 		})
+	}
+}
+
+// withTokenPathSeparator only exists because `rdsauth.BuildAuthToken` signs a URL with
+// an empty path and so omits the `/` that RDS requires. This pins that upstream
+// behaviour: it fails when a dependency bump makes the SDK emit the separator itself,
+// which is the signal to delete withTokenPathSeparator (and this test) rather than keep
+// patching a token that no longer needs it.
+func TestRDSAuthTokenStillOmitsPathSeparator(t *testing.T) {
+	setStaticAWSCredentials(t)
+
+	awsCfg, err := loadAWSIAMAuthConfig(context.Background(), &spec.AWSIAMAuthSpec{Region: "us-east-1"})
+	if err != nil {
+		t.Fatalf("failed to load aws config: %v", err)
+	}
+
+	const endpoint = "mydb.123456789012.us-east-1.rds.amazonaws.com:5432"
+	token, err := rdsauth.BuildAuthToken(context.Background(), endpoint, "us-east-1", "cq_user", awsCfg.Credentials)
+	if err != nil {
+		t.Fatalf("BuildAuthToken returned error: %v", err)
+	}
+
+	switch {
+	case strings.HasPrefix(token, endpoint+"/?"):
+		t.Fatalf("aws-sdk-go-v2 feature/rds/auth now emits the `/` path separator itself: "+
+			"delete withTokenPathSeparator, stop calling it from signRDSAuthToken, and delete this test "+
+			"along with TestWithTokenPathSeparator (token = %q)", token)
+	case !strings.HasPrefix(token, endpoint+"?"):
+		t.Fatalf("BuildAuthToken returned an unrecognised token shape %q: withTokenPathSeparator "+
+			"assumes `%s[/]?<query>` and needs to be revisited", token, endpoint)
 	}
 }
