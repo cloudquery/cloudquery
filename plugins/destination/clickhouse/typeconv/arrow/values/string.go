@@ -21,5 +21,5 @@ func buildFromStringWithZero(builder array.Builder, value any, zero string) erro
 		return nil
 	}
 
-	return builder.AppendValueFromString(v)
+	return appendFromString(builder, v)
 }

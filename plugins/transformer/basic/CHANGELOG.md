@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.7.0](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.23...plugins-transformer-basic-v2.7.0) (2026-08-04)
+
+
+### Features
+
+* Add obfuscate_columns_except transformer ([#23119](https://github.com/cloudquery/cloudquery/issues/23119)) ([4a680ad](https://github.com/cloudquery/cloudquery/commit/4a680ad8d1ce3d4647d9e4f2dead9cfd1cacd277))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23069](https://github.com/cloudquery/cloudquery/issues/23069)) ([4f3b70b](https://github.com/cloudquery/cloudquery/commit/4f3b70b3324698820baf74f4f7060762699e8fa3))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23114](https://github.com/cloudquery/cloudquery/issues/23114)) ([75a37bb](https://github.com/cloudquery/cloudquery/commit/75a37bb413b200f39e8f58a638b84996ecc57092))
+* **deps:** Update go module directive to v1.26.5 ([#23182](https://github.com/cloudquery/cloudquery/issues/23182)) ([e8bc921](https://github.com/cloudquery/cloudquery/commit/e8bc9211beeec85bf5e76ab673968377a74f0cab))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.7.0 ([#23163](https://github.com/cloudquery/cloudquery/issues/23163)) ([7df4831](https://github.com/cloudquery/cloudquery/commit/7df4831f6f83607541b187dd2bb40ad366465897))
+* **deps:** Update module google.golang.org/grpc to v1.82.1 [SECURITY] ([#23160](https://github.com/cloudquery/cloudquery/issues/23160)) ([71647ec](https://github.com/cloudquery/cloudquery/commit/71647ec8b26c2347f2e57cf5f7c1b1228b6142d5))
+
 ## [2.6.23](https://github.com/cloudquery/cloudquery/compare/plugins-transformer-basic-v2.6.22...plugins-transformer-basic-v2.6.23) (2026-07-10)
 
 

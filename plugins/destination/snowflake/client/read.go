@@ -36,7 +36,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 			b.Append(boolVal)
 			return nil
 		}
-		return b.AppendValueFromString(val.(string))
+		return appendFromString(b, val.(string))
 	case *array.Int8Builder:
 		u, err := strconv.ParseInt(val.(string), 10, 8)
 		if err != nil {
@@ -158,7 +158,7 @@ func (c *Client) reverseTransform(f arrow.Field, bldr array.Builder, val any) er
 		if !ok {
 			return fmt.Errorf("unsupported type %T with builder %T", val, bldr)
 		}
-		if err := bldr.AppendValueFromString(v); err != nil {
+		if err := appendFromString(bldr, v); err != nil {
 			return fmt.Errorf("failed to AppendValueFromString %s: %w", v, err)
 		}
 	}

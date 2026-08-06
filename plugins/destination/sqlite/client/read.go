@@ -138,7 +138,7 @@ func reverseTransform(sc *arrow.Schema, values []any) (arrow.RecordBatch, error)
 			if !v.Valid {
 				bldr.Field(i).AppendNull()
 			} else {
-				if err := bldr.Field(i).AppendValueFromString(val.(*sql.NullString).String); err != nil {
+				if err := appendFromString(bldr.Field(i), val.(*sql.NullString).String); err != nil {
 					return nil, fmt.Errorf("failed to AppendValueFromString %s. field: %v. name: %s err: %w", *val.(*string), bldr.Field(i).Type(), sc.Fields()[i].Name, err)
 				}
 			}
