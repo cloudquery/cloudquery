@@ -93,8 +93,10 @@ func TestConfigureAWSIAMAuth_SignsRDSToken(t *testing.T) {
 			if !found {
 				t.Fatalf("token is not a signed request: %q", token)
 			}
-			if hostPort = strings.TrimSuffix(hostPort, "/"); hostPort != tc.wantHostPort {
-				t.Errorf("token signed for %q, want %q", hostPort, tc.wantHostPort)
+			// The `/` is not cosmetic: RDS rejects the `host:port?Action=...` form
+			// `rdsauth.BuildAuthToken` returns with `PAM authentication failed`.
+			if hostPort != tc.wantHostPort+"/" {
+				t.Errorf("token signed for %q, want %q", hostPort, tc.wantHostPort+"/")
 			}
 			query, err := url.ParseQuery(rawQuery)
 			if err != nil {
@@ -334,6 +336,38 @@ func TestParseAWSIAMAuthEndpoint(t *testing.T) {
 			}
 			if port != tc.wantPort {
 				t.Errorf("port = %d, want %d", port, tc.wantPort)
+			}
+		})
+	}
+}
+
+func TestWithTokenPathSeparator(t *testing.T) {
+	cases := []struct {
+		name  string
+		token string
+		want  string
+	}{
+		{
+			name:  "inserts the separator BuildAuthToken omits",
+			token: "mydb.us-east-1.rds.amazonaws.com:5432?Action=connect&DBUser=cq_user",
+			want:  "mydb.us-east-1.rds.amazonaws.com:5432/?Action=connect&DBUser=cq_user",
+		},
+		{
+			name:  "leaves an existing separator alone",
+			token: "mydb.us-east-1.rds.amazonaws.com:5432/?Action=connect&DBUser=cq_user",
+			want:  "mydb.us-east-1.rds.amazonaws.com:5432/?Action=connect&DBUser=cq_user",
+		},
+		{
+			name:  "leaves a token without a query alone",
+			token: "mydb.us-east-1.rds.amazonaws.com:5432",
+			want:  "mydb.us-east-1.rds.amazonaws.com:5432",
+		},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			if got := withTokenPathSeparator(tc.token); got != tc.want {
+				t.Errorf("withTokenPathSeparator() = %q, want %q", got, tc.want)
 			}
 		})
 	}

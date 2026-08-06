@@ -109,7 +109,25 @@ func configureAWSIAMAuth(ctx context.Context, pgxConfig *pgxpool.Config, authSpe
 
 func signRDSAuthToken(ctx context.Context, target awsIAMAuthTarget, creds aws.CredentialsProvider) (string, error) {
 	endpoint := net.JoinHostPort(target.Host, strconv.Itoa(int(target.Port)))
-	return rdsauth.BuildAuthToken(ctx, endpoint, target.Region, target.User, creds)
+	token, err := rdsauth.BuildAuthToken(ctx, endpoint, target.Region, target.User, creds)
+	if err != nil {
+		return "", err
+	}
+	return withTokenPathSeparator(token), nil
+}
+
+// withTokenPathSeparator inserts the `/` between the endpoint and the query string.
+// `rdsauth.BuildAuthToken` signs a URL whose path is empty, so `net/url` renders the
+// token as `host:port?Action=connect&...`. RDS only accepts the `host:port/?Action=...`
+// form the AWS CLI emits and rejects the other with `PAM authentication failed`, even
+// though both carry the same signature. Passing an endpoint with a trailing slash is
+// not an option: BuildAuthToken parses the port off the end of the string.
+func withTokenPathSeparator(token string) string {
+	endpoint, query, found := strings.Cut(token, "?")
+	if !found || strings.HasSuffix(endpoint, "/") {
+		return token
+	}
+	return endpoint + "/?" + query
 }
 
 // parseAWSIAMAuthEndpoint splits an `aws_iam_auth.endpoint` override. A zero port
