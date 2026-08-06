@@ -112,6 +112,11 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 			return nil, fmt.Errorf("failed to configure lakebase: %w", err)
 		}
 	}
+	if s.HasRDSIAMAuthConfig() {
+		if err := configureRDSIAMAuth(ctx, pgxConfig, s.RDSIAMAuth); err != nil {
+			return nil, fmt.Errorf("failed to configure rds iam auth: %w", err)
+		}
+	}
 	c.conn, err = pgxpool.NewWithConfig(ctx, pgxConfig)
 	if err != nil {
 		return nil, fmt.Errorf("failed to connect to postgresql: %w", err)

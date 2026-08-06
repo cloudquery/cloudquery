@@ -141,5 +141,23 @@ func TestSpec_JSONSchemaExtend(t *testing.T) {
 			Spec: `{"connection_string":"abc","lakebase":{"endpoint":"projects/p/branches/b/endpoints/e","unknown":"x"}}`,
 			Err:  true,
 		},
+		{
+			Name: "rds_iam_auth minimal",
+			Spec: `{"connection_string":"abc","rds_iam_auth":{}}`,
+		},
+		{
+			Name: "rds_iam_auth full",
+			Spec: `{"connection_string":"abc","rds_iam_auth":{"region":"us-east-1","endpoint":"mydb.123456789012.us-east-1.rds.amazonaws.com:5432","local_profile":"my_profile","role_arn":"arn:aws:iam::123456789012:role/my-role","role_session_name":"cloudquery","external_id":"external-id"}}`,
+		},
+		{
+			Name: "rds_iam_auth invalid role_arn",
+			Spec: `{"connection_string":"abc","rds_iam_auth":{"role_arn":"not-an-arn"}}`,
+			Err:  true,
+		},
+		{
+			Name: "rds_iam_auth unknown field",
+			Spec: `{"connection_string":"abc","rds_iam_auth":{"unknown":"x"}}`,
+			Err:  true,
+		},
 	})
 }
