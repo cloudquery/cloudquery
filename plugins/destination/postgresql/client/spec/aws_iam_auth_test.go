@@ -13,8 +13,6 @@ func TestAWSIAMAuth_Omitted_OK(t *testing.T) {
 }
 
 func TestAWSIAMAuth_Empty_OK(t *testing.T) {
-	// Every field is optional: the service defaults to Amazon RDS, and the AWS SDK
-	// resolves the region and credentials from the standard AWS sources.
 	s := baseSpec()
 	s.AWSIAMAuth = &AWSIAMAuthSpec{}
 	require.NoError(t, s.Validate())

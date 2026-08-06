@@ -13,8 +13,7 @@ func TestCheckTLS(t *testing.T) {
 		wantVerified  bool
 	}{
 		{connString: "postgres://u@localhost:5432/db?sslmode=verify-full", wantEncrypted: true, wantVerified: true},
-		// verify-ca checks the certificate chain but deliberately skips hostname
-		// verification, so it does not satisfy tlsVerified.
+		// verify-ca skips hostname verification.
 		{connString: "postgres://u@localhost:5432/db?sslmode=verify-ca", wantEncrypted: true},
 		{connString: "postgres://u@localhost:5432/db?sslmode=require", wantEncrypted: true},
 		{connString: "postgres://u@localhost:5432/db?sslmode=prefer"},

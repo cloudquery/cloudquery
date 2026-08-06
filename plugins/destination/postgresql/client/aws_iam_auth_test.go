@@ -12,10 +12,8 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-// setStaticAWSCredentials makes token signing hermetic: it pins static
-// credentials in the environment and points the shared config and credentials
-// files at paths that do not exist, so neither ambient environment variables nor
-// a developer's `~/.aws` files influence the test.
+// Signing is local, so pinning credentials and pointing the AWS config files at a
+// missing path keeps these tests hermetic.
 func setStaticAWSCredentials(t *testing.T) {
 	t.Helper()
 	missing := filepath.Join(t.TempDir(), "does-not-exist")
@@ -89,8 +87,7 @@ func TestConfigureAWSIAMAuth_SignsRDSToken(t *testing.T) {
 				t.Fatalf("BeforeConnect returned error: %v", err)
 			}
 
-			// The RDS token is the presigned URL with the scheme stripped, e.g.
-			// `host:port/?Action=connect&DBUser=...&X-Amz-Signature=...`.
+			// `host:port/?Action=connect&DBUser=...&X-Amz-Signature=...`
 			token := connConfig.Password
 			hostPort, rawQuery, found := strings.Cut(token, "?")
 			if !found {
@@ -130,8 +127,6 @@ func TestConfigureAWSIAMAuth_SignsFreshTokenPerConnection(t *testing.T) {
 		t.Fatalf("configureAWSIAMAuth returned error: %v", err)
 	}
 
-	// Every connection must be authenticated with its own token: the callback must
-	// not reuse the password of a previous connection.
 	first := cfg.ConnConfig.Copy()
 	if err := cfg.BeforeConnect(context.Background(), first); err != nil {
 		t.Fatalf("BeforeConnect returned error: %v", err)
@@ -149,9 +144,7 @@ func TestConfigureAWSIAMAuth_SignsFreshTokenPerConnection(t *testing.T) {
 	}
 }
 
-// The pool must not be pinned to the connection lifetime that Lakebase needs: an
-// IAM token only authenticates the connection, and the session stays valid after
-// the token expires.
+// Sessions outlive their token, so the pool must not get Lakebase's lifetime cap.
 func TestConfigureAWSIAMAuth_KeepsConnectionLifetime(t *testing.T) {
 	setStaticAWSCredentials(t)
 
@@ -279,8 +272,6 @@ func TestConfigureAWSIAMAuth_ChainsExistingBeforeConnect(t *testing.T) {
 		t.Fatalf("failed to parse connection string: %v", err)
 	}
 
-	// A pre-existing BeforeConnect hook (e.g. set by other configuration). It must
-	// still be invoked after IAM auth is wired up.
 	existingCalled := false
 	cfg.BeforeConnect = func(_ context.Context, connConfig *pgx.ConnConfig) error {
 		existingCalled = true

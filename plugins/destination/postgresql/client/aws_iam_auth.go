@@ -19,15 +19,11 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-// assumeRoleDuration is how long credentials obtained by assuming
-// `aws_iam_auth.role_arn` stay valid before they are refreshed. Every role allows
-// for at least one hour.
+// Every role allows for at least one hour.
 const assumeRoleDuration = time.Hour
 
-// awsIAMAuthTarget is the connection an authentication token is signed for. AWS
-// services differ in what they sign: Amazon RDS binds the token to the host, port
-// and database user, while Aurora DSQL binds it to the host and picks the token
-// type from the user.
+// awsIAMAuthTarget is what a token is signed for. RDS binds the token to the host,
+// port and user; DSQL binds it to the host and picks the token type from the user.
 type awsIAMAuthTarget struct {
 	Host   string
 	Port   uint16
@@ -35,21 +31,14 @@ type awsIAMAuthTarget struct {
 	Region string
 }
 
-// awsIAMAuthProvider describes how to authenticate to one AWS-managed,
-// PostgreSQL-compatible service with IAM credentials.
 type awsIAMAuthProvider struct {
-	// minTLS is the weakest TLS configuration the service accepts.
-	minTLS tlsRequirement
-	// signToken mints a short-lived authentication token for a single connection.
-	// Signing is a local SigV4 operation, so it adds no network round trip.
+	minTLS    tlsRequirement
 	signToken func(ctx context.Context, target awsIAMAuthTarget, creds aws.CredentialsProvider) (string, error)
 }
 
-// awsIAMAuthProviders holds one entry per supported `aws_iam_auth.service`. Only
-// token signing and the TLS requirement are service-specific; region resolution,
-// credential resolution and the connection plumbing are shared. Supporting Aurora
-// DSQL, for example, means adding its `spec.AWSIAMAuthService` value plus an entry
-// here that signs with `feature/dsql/auth` and requires tlsVerified.
+// Signing and the TLS requirement are the only service-specific parts; region and
+// credential resolution are shared. Aurora DSQL would sign with `feature/dsql/auth`
+// and require tlsVerified.
 var awsIAMAuthProviders = map[spec.AWSIAMAuthService]awsIAMAuthProvider{
 	spec.AWSIAMAuthServiceRDS: {
 		minTLS:    tlsEncrypted,
@@ -57,10 +46,8 @@ var awsIAMAuthProviders = map[spec.AWSIAMAuthService]awsIAMAuthProvider{
 	},
 }
 
-// configureAWSIAMAuth wires up AWS IAM database authentication on the given pool
-// config. It resolves the AWS credentials once and installs a BeforeConnect
-// callback that signs a fresh short-lived authentication token and uses it as the
-// connection password for every new connection.
+// configureAWSIAMAuth installs a BeforeConnect callback that signs a fresh
+// short-lived IAM authentication token and uses it as the connection password.
 func configureAWSIAMAuth(ctx context.Context, pgxConfig *pgxpool.Config, authSpec *spec.AWSIAMAuthSpec) error {
 	service := authSpec.ServiceOrDefault()
 	provider, ok := awsIAMAuthProviders[service]
@@ -68,16 +55,13 @@ func configureAWSIAMAuth(ctx context.Context, pgxConfig *pgxpool.Config, authSpe
 		return fmt.Errorf("unsupported `aws_iam_auth.service` %q", service)
 	}
 
-	// IAM database authentication requires TLS, and the token is a signed
-	// credential, so reject any connection string that could connect without it.
-	// Fail fast with a clear error rather than leaking the token over plaintext or
-	// failing later in a less obvious way.
+	// The token is a signed credential, so fail fast rather than leak it over a
+	// connection that could be plaintext.
 	if !checkTLS(pgxConfig.ConnConfig, provider.minTLS) {
 		return fmt.Errorf("aws_iam_auth with `service: %s` requires a TLS connection: set %s in `connection_string`", service, provider.minTLS.hint())
 	}
 
-	// Parse the endpoint override once, so that a malformed value fails here
-	// instead of on every connection attempt.
+	// Parse once so a malformed override fails here, not on every connection.
 	endpointHost, endpointPort, err := parseAWSIAMAuthEndpoint(authSpec.Endpoint)
 	if err != nil {
 		return err
@@ -88,9 +72,7 @@ func configureAWSIAMAuth(ctx context.Context, pgxConfig *pgxpool.Config, authSpe
 		return err
 	}
 
-	// Preserve any previously configured BeforeConnect hook and run it first, so
-	// IAM auth composes with other hooks instead of discarding them. The token is
-	// set last as it must be the connection password.
+	// Run any existing hook first; the token is set last as it must be the password.
 	prevBeforeConnect := pgxConfig.BeforeConnect
 	pgxConfig.BeforeConnect = func(ctx context.Context, connConfig *pgx.ConnConfig) error {
 		if prevBeforeConnect != nil {
@@ -98,9 +80,8 @@ func configureAWSIAMAuth(ctx context.Context, pgxConfig *pgxpool.Config, authSpe
 				return err
 			}
 		}
-		// Sign for the connection actually being made - pgx may be connecting via a
-		// fallback - because the service rejects a token that was signed for a
-		// different endpoint or user.
+		// Sign for the connection actually being made (pgx may be using a fallback):
+		// the service rejects a token signed for a different endpoint or user.
 		target := awsIAMAuthTarget{
 			Host:   connConfig.Host,
 			Port:   connConfig.Port,
@@ -121,23 +102,18 @@ func configureAWSIAMAuth(ctx context.Context, pgxConfig *pgxpool.Config, authSpe
 		return nil
 	}
 
-	// Note that, unlike an OAuth credential, an IAM authentication token is only
-	// used to authenticate: a session stays valid once established, even after the
-	// token's lifetime has passed, so pooled connections need not be recycled early.
+	// Unlike a Lakebase OAuth credential, the token only authenticates: the session
+	// outlives it, so pooled connections need not be recycled early.
 	return nil
 }
 
-// signRDSAuthToken signs a token for Amazon RDS and Aurora PostgreSQL. RDS
-// validates the token against the endpoint being dialed and the user in the
-// startup message, so both are part of the signature.
 func signRDSAuthToken(ctx context.Context, target awsIAMAuthTarget, creds aws.CredentialsProvider) (string, error) {
 	endpoint := net.JoinHostPort(target.Host, strconv.Itoa(int(target.Port)))
 	return rdsauth.BuildAuthToken(ctx, endpoint, target.Region, target.User, creds)
 }
 
-// parseAWSIAMAuthEndpoint splits an `aws_iam_auth.endpoint` override into its host
-// and port. The port is optional and reported as 0 when absent, in which case the
-// port from `connection_string` is used.
+// parseAWSIAMAuthEndpoint splits an `aws_iam_auth.endpoint` override. A zero port
+// means the port from `connection_string` is used.
 func parseAWSIAMAuthEndpoint(endpoint string) (host string, port uint16, err error) {
 	if endpoint == "" {
 		return "", 0, nil
@@ -145,16 +121,14 @@ func parseAWSIAMAuthEndpoint(endpoint string) (host string, port uint16, err err
 
 	host, portStr, splitErr := net.SplitHostPort(endpoint)
 	if splitErr != nil {
-		// Both RDS and DSQL endpoints are hostnames, so a value without a port is
-		// the host itself. Anything else containing a colon is malformed.
+		// RDS and DSQL endpoints are hostnames, so a value without a port is the host.
 		if strings.Contains(endpoint, ":") {
 			return "", 0, fmt.Errorf("invalid `aws_iam_auth.endpoint` %q: %w", endpoint, splitErr)
 		}
 		return endpoint, 0, nil
 	}
 
-	// Port 0 is not a valid destination port, and reporting it would be
-	// indistinguishable from an endpoint without a port.
+	// Reject 0, which would be indistinguishable from an absent port.
 	parsedPort, err := strconv.ParseUint(portStr, 10, 16)
 	if err != nil || parsedPort == 0 {
 		return "", 0, fmt.Errorf("invalid port %q in `aws_iam_auth.endpoint` %q", portStr, endpoint)
@@ -162,9 +136,6 @@ func parseAWSIAMAuthEndpoint(endpoint string) (host string, port uint16, err err
 	return host, uint16(parsedPort), nil
 }
 
-// loadAWSIAMAuthConfig resolves the AWS config used to sign authentication tokens.
-// Credentials come from the standard AWS sources, optionally narrowed to a shared
-// config profile or exchanged for assumed-role credentials.
 func loadAWSIAMAuthConfig(ctx context.Context, authSpec *spec.AWSIAMAuthSpec) (aws.Config, error) {
 	loadOpts := make([]func(*config.LoadOptions) error, 0, 2)
 	if authSpec.Region != "" {
@@ -178,8 +149,7 @@ func loadAWSIAMAuthConfig(ctx context.Context, authSpec *spec.AWSIAMAuthSpec) (a
 	if err != nil {
 		return aws.Config{}, fmt.Errorf("failed to load aws config: %w", err)
 	}
-	// The token is signed for a region, so an unresolved one would only surface as
-	// an opaque authentication failure from the database.
+	// An unresolved region would only surface as an opaque authentication failure.
 	if awsCfg.Region == "" {
 		return aws.Config{}, errors.New("failed to resolve the aws region: set `aws_iam_auth.region` or the `AWS_REGION` environment variable")
 	}
@@ -199,8 +169,7 @@ func loadAWSIAMAuthConfig(ctx context.Context, authSpec *spec.AWSIAMAuthSpec) (a
 			})
 		}
 		provider := stscreds.NewAssumeRoleProvider(sts.NewFromConfig(awsCfg), authSpec.RoleARN, assumeRoleOpts...)
-		// Cache the assumed-role credentials so that they are reused across
-		// connections instead of calling STS for every token.
+		// Reuse the credentials across connections instead of calling STS per token.
 		awsCfg.Credentials = aws.NewCredentialsCache(provider)
 	}
 

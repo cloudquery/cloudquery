@@ -93,11 +93,9 @@ const (
 	AWSIAMAuthServiceRDS AWSIAMAuthService = "rds"
 )
 
-// awsIAMAuthServices lists every supported `aws_iam_auth.service`. Keep the
-// `service` field's jsonschema enum in sync when adding to it.
+// Keep the `service` field's jsonschema enum in sync when adding to this.
 var awsIAMAuthServices = []AWSIAMAuthService{AWSIAMAuthServiceRDS}
 
-// supportedAWSIAMAuthServices renders the supported services for error messages.
 func supportedAWSIAMAuthServices() string {
 	names := make([]string, len(awsIAMAuthServices))
 	for i, service := range awsIAMAuthServices {
@@ -107,12 +105,9 @@ func supportedAWSIAMAuthServices() string {
 }
 
 // AWSIAMAuthSpec enables IAM database authentication for AWS-managed,
-// PostgreSQL-compatible databases. When set, the plugin signs a short-lived IAM
-// authentication token with the resolved AWS credentials before each new
-// connection and uses it as the connection password. The `connection_string` still
-// supplies the host, port, database name and user (the database user that has been
-// granted IAM authentication, for Amazon RDS via the `rds_iam` role), and must use
-// TLS, which is enforced.
+// PostgreSQL-compatible databases. The plugin signs a short-lived token before each
+// new connection and uses it as the password; `connection_string` still supplies
+// the host, port, database name and user, and must use TLS, which is enforced.
 type AWSIAMAuthSpec struct {
 	// The AWS database service to authenticate to.
 	Service AWSIAMAuthService `json:"service,omitempty" jsonschema:"enum=rds,default=rds"`
@@ -156,8 +151,6 @@ func (s *Spec) HasAWSIAMAuthConfig() bool {
 	return s.AWSIAMAuth != nil
 }
 
-// ServiceOrDefault returns the service to authenticate to, defaulting to Amazon
-// RDS when `service` is not set.
 func (s *AWSIAMAuthSpec) ServiceOrDefault() AWSIAMAuthService {
 	if s.Service == "" {
 		return AWSIAMAuthServiceRDS
