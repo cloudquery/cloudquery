@@ -1,5 +1,23 @@
 # Changelog
 
+## [5.5.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.5.11...plugins-destination-gcs-v5.5.12) (2026-08-08)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23069](https://github.com/cloudquery/cloudquery/issues/23069)) ([4f3b70b](https://github.com/cloudquery/cloudquery/commit/4f3b70b3324698820baf74f4f7060762699e8fa3))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23114](https://github.com/cloudquery/cloudquery/issues/23114)) ([75a37bb](https://github.com/cloudquery/cloudquery/commit/75a37bb413b200f39e8f58a638b84996ecc57092))
+* **deps:** Update go module directive to v1.26.5 ([#23182](https://github.com/cloudquery/cloudquery/issues/23182)) ([e8bc921](https://github.com/cloudquery/cloudquery/commit/e8bc9211beeec85bf5e76ab673968377a74f0cab))
+* **deps:** Update module cloud.google.com/go/storage to v1.63.1 ([#23130](https://github.com/cloudquery/cloudquery/issues/23130)) ([58ef2c1](https://github.com/cloudquery/cloudquery/commit/58ef2c14379f1c13ed38810e9b6774316142672c))
+* **deps:** Update module cloud.google.com/go/storage to v1.64.0 ([#23201](https://github.com/cloudquery/cloudquery/issues/23201)) ([c0ee5de](https://github.com/cloudquery/cloudquery/commit/c0ee5de2955f8a1bd0b6e72460a1359ab121475f))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.7.0 ([#23163](https://github.com/cloudquery/cloudquery/issues/23163)) ([7df4831](https://github.com/cloudquery/cloudquery/commit/7df4831f6f83607541b187dd2bb40ad366465897))
+* **deps:** Update module google.golang.org/api to v0.287.0 ([#23109](https://github.com/cloudquery/cloudquery/issues/23109)) ([40b3146](https://github.com/cloudquery/cloudquery/commit/40b3146c6a22183136114f3406187d0e537a63a7))
+* **deps:** Update module google.golang.org/api to v0.288.0 ([#23126](https://github.com/cloudquery/cloudquery/issues/23126)) ([21649e9](https://github.com/cloudquery/cloudquery/commit/21649e96f8069e7aa8d842c4ed85db6eae349116))
+* **deps:** Update module google.golang.org/api to v0.289.0 ([#23136](https://github.com/cloudquery/cloudquery/issues/23136)) ([07b8ee4](https://github.com/cloudquery/cloudquery/commit/07b8ee413201c3bf58e950aa95640be7748b1c08))
+* **deps:** Update module google.golang.org/api to v0.290.0 ([#23215](https://github.com/cloudquery/cloudquery/issues/23215)) ([aea8fdd](https://github.com/cloudquery/cloudquery/commit/aea8fddb092d87cce7cf5b68c6ea22842ecb0e8a))
+* **deps:** Update module google.golang.org/api to v0.291.0 ([#23233](https://github.com/cloudquery/cloudquery/issues/23233)) ([d7b23c2](https://github.com/cloudquery/cloudquery/commit/d7b23c2e7d06a073f85207835514f65185711fc6))
+* **deps:** Update module google.golang.org/grpc to v1.82.1 [SECURITY] ([#23138](https://github.com/cloudquery/cloudquery/issues/23138)) ([fd928ea](https://github.com/cloudquery/cloudquery/commit/fd928ea36b27190df920950f1d541e93ab9f6710))
+
 ## [5.5.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gcs-v5.5.10...plugins-destination-gcs-v5.5.11) (2026-07-10)
 
 
