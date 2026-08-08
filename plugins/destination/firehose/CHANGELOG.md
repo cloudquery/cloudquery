@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.8.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.8.11...plugins-destination-firehose-v2.8.12) (2026-08-08)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23104](https://github.com/cloudquery/cloudquery/issues/23104)) ([9e015c7](https://github.com/cloudquery/cloudquery/commit/9e015c76e5b4425cbd6005311641490d507a617b))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23120](https://github.com/cloudquery/cloudquery/issues/23120)) ([c8efd60](https://github.com/cloudquery/cloudquery/commit/c8efd602652db6cc50a2a06a0bdfe8fa79e04eee))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23127](https://github.com/cloudquery/cloudquery/issues/23127)) ([b8386e5](https://github.com/cloudquery/cloudquery/commit/b8386e59d21f1daa3de1e0d7ddd699136b8d7c5c))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23190](https://github.com/cloudquery/cloudquery/issues/23190)) ([b0ae449](https://github.com/cloudquery/cloudquery/commit/b0ae4492a67631445eda1623526ecf7381cb176c))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23238](https://github.com/cloudquery/cloudquery/issues/23238)) ([0ff398a](https://github.com/cloudquery/cloudquery/commit/0ff398ae9e90fd5fe1e045f274b945d05b6fab3f))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23069](https://github.com/cloudquery/cloudquery/issues/23069)) ([4f3b70b](https://github.com/cloudquery/cloudquery/commit/4f3b70b3324698820baf74f4f7060762699e8fa3))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23114](https://github.com/cloudquery/cloudquery/issues/23114)) ([75a37bb](https://github.com/cloudquery/cloudquery/commit/75a37bb413b200f39e8f58a638b84996ecc57092))
+* **deps:** Update go module directive to v1.26.5 ([#23182](https://github.com/cloudquery/cloudquery/issues/23182)) ([e8bc921](https://github.com/cloudquery/cloudquery/commit/e8bc9211beeec85bf5e76ab673968377a74f0cab))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.7.0 ([#23163](https://github.com/cloudquery/cloudquery/issues/23163)) ([7df4831](https://github.com/cloudquery/cloudquery/commit/7df4831f6f83607541b187dd2bb40ad366465897))
+* **deps:** Update module google.golang.org/grpc to v1.82.1 [SECURITY] ([#23145](https://github.com/cloudquery/cloudquery/issues/23145)) ([7eeccae](https://github.com/cloudquery/cloudquery/commit/7eeccae638d73d7605e5b0d1d0b3ad3932a25606))
+
 ## [2.8.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.8.10...plugins-destination-firehose-v2.8.11) (2026-07-10)
 
 
