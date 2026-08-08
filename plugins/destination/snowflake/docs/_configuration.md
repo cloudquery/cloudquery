@@ -16,4 +16,5 @@ spec:
     # migrate_concurrency: 1
     # batch_size: 1000 # 1K entries
     # batch_size_bytes: 4194304 # 4 MiB
+    # skip_write_setup: false # set to true when several syncs write to the same schema concurrently
 ```

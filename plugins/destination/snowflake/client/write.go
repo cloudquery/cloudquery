@@ -155,6 +155,10 @@ func insertColumnsList(table *schema.Table) string {
 func (c *Client) setupWrite(ctx context.Context) error {
 	var setupErr error
 	c.setupWriteOnce.Do(func() {
+		if c.spec.SkipWriteSetup {
+			c.logger.Info().Msg("skip_write_setup is set, expecting cq_plugin_json_format and cq_plugin_stage to already exist")
+			return
+		}
 		if _, err := c.db.ExecContext(ctx, createOrReplaceFileFormat); err != nil {
 			setupErr = fmt.Errorf("failed to create file format %s: %w", createOrReplaceFileFormat, err)
 			return

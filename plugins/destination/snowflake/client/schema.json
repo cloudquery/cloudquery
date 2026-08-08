@@ -36,6 +36,11 @@
           "type": "boolean",
           "description": "If set to true, intermediary files used to load data to the Snowflake stage are left in the temp directory. This can be useful for debugging purposes.",
           "default": false
+        },
+        "skip_write_setup": {
+          "type": "boolean",
+          "description": "Each sync runs `create or replace` on the `cq_plugin_json_format` file format and the\n`cq_plugin_stage` stage before writing, which empties the stage and so drops files staged\nby concurrent syncs into the same schema. Set this to true to skip that setup; both objects\nmust already exist.",
+          "default": false
         }
       },
       "additionalProperties": false,

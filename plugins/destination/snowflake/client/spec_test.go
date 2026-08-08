@@ -124,6 +124,15 @@ func TestJSONSchema(t *testing.T) {
 			Err:  true,
 		},
 		{
+			Name: "spec with skip_write_setup",
+			Spec: `{"connection_string": "abc", "skip_write_setup": true}`,
+		},
+		{
+			Name: "spec with string skip_write_setup",
+			Spec: `{"connection_string": "abc", "skip_write_setup": "true"}`,
+			Err:  true,
+		},
+		{
 			Name: "spec with unknown field",
 			Spec: `{"connection_string": "abc", "unknown": "test"}`,
 			Err:  true,
