@@ -28,8 +28,8 @@ func configureLakebase(pgxConfig *pgxpool.Config, lb *spec.LakebaseSpec) error {
 	// reject any connection string that could connect without it. Fail fast with a
 	// clear error rather than leaking the token over plaintext or failing later in
 	// a less obvious way.
-	if !requiresTLS(pgxConfig.ConnConfig) {
-		return errors.New("lakebase requires a TLS connection: set `sslmode=require` (or `verify-ca`/`verify-full`) in `connection_string`")
+	if !checkTLS(pgxConfig.ConnConfig, tlsEncrypted) {
+		return errors.New("lakebase requires a TLS connection: set " + tlsEncrypted.hint() + " in `connection_string`")
 	}
 
 	w, err := databricks.NewWorkspaceClient(&databricks.Config{
@@ -68,21 +68,4 @@ func configureLakebase(pgxConfig *pgxpool.Config, lb *spec.LakebaseSpec) error {
 	}
 
 	return nil
-}
-
-// requiresTLS reports whether every connection path in the pgx config uses TLS.
-// pgx represents sslmode=prefer (the default) and sslmode=allow via Fallbacks
-// that can silently downgrade to a plaintext connection, so every path (the
-// primary config plus all fallbacks) must have a non-nil TLSConfig. Only
-// sslmode=require, verify-ca, and verify-full satisfy this.
-func requiresTLS(connConfig *pgx.ConnConfig) bool {
-	if connConfig.TLSConfig == nil {
-		return false
-	}
-	for _, fb := range connConfig.Fallbacks {
-		if fb.TLSConfig == nil {
-			return false
-		}
-	}
-	return true
 }
