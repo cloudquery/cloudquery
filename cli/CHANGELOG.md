@@ -5,6 +5,13 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.41.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.41.1...cli-v6.41.2) (2026-08-08)
+
+
+### Bug Fixes
+
+* **deps:** Update module google.golang.org/grpc to v1.83.0 ([#23234](https://github.com/cloudquery/cloudquery/issues/23234)) ([50bd4c7](https://github.com/cloudquery/cloudquery/commit/50bd4c7644ac5676044018420c21fbbe240c8094))
+
 ## [6.41.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.41.0...cli-v6.41.1) (2026-08-06)
 
 
