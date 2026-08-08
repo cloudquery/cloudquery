@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.8.22](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.21...plugins-source-test-v4.8.22) (2026-08-08)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23069](https://github.com/cloudquery/cloudquery/issues/23069)) ([4f3b70b](https://github.com/cloudquery/cloudquery/commit/4f3b70b3324698820baf74f4f7060762699e8fa3))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23114](https://github.com/cloudquery/cloudquery/issues/23114)) ([75a37bb](https://github.com/cloudquery/cloudquery/commit/75a37bb413b200f39e8f58a638b84996ecc57092))
+* **deps:** Update go module directive to v1.26.5 ([#23182](https://github.com/cloudquery/cloudquery/issues/23182)) ([e8bc921](https://github.com/cloudquery/cloudquery/commit/e8bc9211beeec85bf5e76ab673968377a74f0cab))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.7.0 ([#23163](https://github.com/cloudquery/cloudquery/issues/23163)) ([7df4831](https://github.com/cloudquery/cloudquery/commit/7df4831f6f83607541b187dd2bb40ad366465897))
+* **deps:** Update module google.golang.org/grpc to v1.82.1 [SECURITY] ([#23157](https://github.com/cloudquery/cloudquery/issues/23157)) ([936fe10](https://github.com/cloudquery/cloudquery/commit/936fe104d550ce42de9a027ed3c3784bf3a277d0))
+
 ## [4.8.21](https://github.com/cloudquery/cloudquery/compare/plugins-source-test-v4.8.20...plugins-source-test-v4.8.21) (2026-07-10)
 
 
