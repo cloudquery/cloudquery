@@ -62,5 +62,12 @@ jobs:
       - name: Test
         run: make test
         env: # Or as an environment variable
-          SNOW_TEST_DSN: ${{ secrets.SNOW_TEST_DSN }}
+          CQ_SNOWFLAKE_TEST: ${{ vars.CQ_SNOWFLAKE_TEST }}
+          SNOW_ACCOUNT: ${{ secrets.SNOW_ACCOUNT }}
+          SNOW_USER: ${{ secrets.SNOW_USER }}
+          SNOW_PRIVATE_KEY: ${{ secrets.SNOW_PRIVATE_KEY }}
+          SNOW_DATABASE: ${{ secrets.SNOW_DATABASE }}
+          SNOW_SCHEMA: ${{ secrets.SNOW_SCHEMA }}
+          SNOW_WAREHOUSE: ${{ secrets.SNOW_WAREHOUSE }}
+          SNOW_REGION: ${{ secrets.SNOW_REGION }}
   
