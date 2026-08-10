@@ -1,5 +1,6 @@
 | File | Function | Coverage |
 | --- | --- | --- |
+| github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/client.go:35: | New | 60.6% |
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/client.go:95: | Close | 66.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/client.go:102: | getIndexNamePattern | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/client.go:110: | getIndexName | 100.0% |
@@ -10,8 +11,10 @@
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/migrate.go:103: | deleteIndices | 77.8% |
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/migrate.go:122: | arrowTypeToElasticsearchProperty | 92.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/migrate.go:240: | typeOneOf | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/read.go:19: | Read | 73.1% |
-| github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/read.go:66: | appendValue | 83.9% |
+| github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/numbers.go:13: | toInt64 | 50.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/numbers.go:24: | toUint64 | 50.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/read.go:20: | Read | 75.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/read.go:69: | appendValue | 82.5% |
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/spec.go:57: | SetDefaults | 87.5% |
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/spec.go:72: | Validate | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/spec.go:76: | JSONSchemaExtend | 0.0% |
@@ -26,4 +29,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/write.go:172: | resourceID | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/client/write.go:181: | padRightWithZero | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/elasticsearch/v4/main.go:17: | main | 0.0% |
-| total: | (statements) | 78.2% |
+| total: | (statements) | 77.2% |

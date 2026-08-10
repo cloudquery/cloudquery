@@ -79,6 +79,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/types/map.go:12: | mapType | 68.8% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/types/nullable.go:8: | nullableType | 75.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/types/struct.go:10: | structType | 80.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/values/append_from_string.go:14: | appendFromString | 80.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/values/date.go:9: | buildDate32Values | 50.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/values/date.go:25: | buildDate64Values | 50.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/typeconv/arrow/values/decimal.go:10: | buildDecimal128 | 60.0% |
@@ -139,4 +140,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/util/sanitize.go:7: | UnquoteID | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/util/sanitize.go:11: | SanitizeID | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/clickhouse/v8/util/sanitize.go:15: | Sanitized | 0.0% |
-| total: | (statements) | 48.4% |
+| total: | (statements) | 48.5% |

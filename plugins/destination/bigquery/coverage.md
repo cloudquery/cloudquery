@@ -1,5 +1,6 @@
 | File | Function | Coverage |
 | --- | --- | --- |
+| github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/client.go:31: | New | 36.8% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/client.go:73: | Close | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/client.go:80: | bqClient | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/client.go:101: | validateCreds | 0.0% |
@@ -33,7 +34,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/read.go:28: | Read | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/read.go:61: | parseRat | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/read.go:70: | appendValue | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/read.go:179: | stringForTime | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/read.go:180: | stringForTime | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/spec.go:40: | Validate | 75.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/spec.go:121: | SetDefaults | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/spec.go:142: | Validate | 73.3% |
@@ -54,4 +55,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/write.go:57: | WriteTableBatch | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/client/write.go:100: | getValueForBigQuery | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/bigquery/v4/main.go:19: | main | 0.0% |
-| total: | (statements) | 13.8% |
+| total: | (statements) | 13.7% |

@@ -1,5 +1,6 @@
 | File | Function | Coverage |
 | --- | --- | --- |
+| github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/client.go:34: | New | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/client.go:82: | Close | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/deletestale.go:11: | DeleteStale | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/escape.go:6: | escapePath | 0.0% |
@@ -50,4 +51,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/write.go:143: | insertColumnsList | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/client/write.go:155: | setupWrite | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/snowflake/v4/main.go:17: | main | 0.0% |
-| total: | (statements) | 7.1% |
+| total: | (statements) | 7.0% |

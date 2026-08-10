@@ -1,7 +1,10 @@
 | File | Function | Coverage |
 | --- | --- | --- |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/client.go:30: | New | 52.4% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/client.go:76: | Close | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/delete_stale.go:11: | DeleteStale | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/json_numbers.go:13: | unmarshalNestedJSON | 83.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/json_numbers.go:25: | convertJSONNumbers | 50.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/migrate.go:14: | MigrateTables | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/migrate.go:23: | migrateTable | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/migrate.go:45: | migrateTableOnConflict | 0.0% |
@@ -17,11 +20,11 @@
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/mongodb_aws_credentials.go:202: | getRegion | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/mongodb_aws_credentials.go:231: | Next | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/mongodb_aws_credentials.go:315: | Completed | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/read.go:18: | reverseTransform | 34.9% |
-| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/read.go:100: | bsonDocToMap | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/read.go:119: | convertBSONValue | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/read.go:138: | reverseTransformer | 85.7% |
-| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/read.go:150: | Read | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/read.go:18: | reverseTransform | 34.1% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/read.go:101: | bsonDocToMap | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/read.go:120: | convertBSONValue | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/read.go:139: | reverseTransformer | 85.7% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/read.go:151: | Read | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/retry.go:15: | retryWrite | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/retry.go:61: | isRetryableWriteError | 69.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec/gen/main.go:13: | main | 0.0% |
@@ -32,6 +35,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/test_connection.go:20: | NewConnectionTester | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/transaction.go:8: | runWrite | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/uint64.go:13: | getRegistry | 85.7% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/unsigned.go:10: | reinterpretUnsigned | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/write.go:20: | transformArr | 22.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/write.go:85: | parseTypeSchema | 83.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/write.go:96: | convertTimestamps | 89.5% |
@@ -43,4 +47,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/write.go:205: | WriteTableBatch | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/write.go:224: | Write | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/main.go:18: | main | 0.0% |
-| total: | (statements) | 33.1% |
+| total: | (statements) | 32.5% |

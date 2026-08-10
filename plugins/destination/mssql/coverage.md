@@ -38,6 +38,7 @@
 | github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/write.go:11: | Write | 66.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/client/write.go:18: | WriteTableBatch | 90.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/main.go:17: | main | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/queries/append_from_string.go:14: | appendFromString | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/queries/columns.go:15: | AddColumn | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/queries/columns.go:23: | UpdateColumnType | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/queries/columns.go:31: | GetValueColumns | 100.0% |
@@ -70,4 +71,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/queries/values.go:29: | prealloc | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/queries/values.go:37: | getColValue | 26.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/mssql/v5/queries/values.go:97: | ptr | 100.0% |
-| total: | (statements) | 59.2% |
+| total: | (statements) | 58.7% |

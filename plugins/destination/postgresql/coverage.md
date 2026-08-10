@@ -84,13 +84,13 @@
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/spec/spec.go:142: | Validate | 88.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/spec/spec.go:197: | JSONSchemaExtend | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/spec/spec.go:243: | GetPgVectorTableConfig | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/transformer.go:16: | stripNulls | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/transformer.go:23: | stripNullsFromMarshalledJson | 77.8% |
-| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/transformer.go:39: | stripNullsFromJsonValue | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/transformer.go:58: | transformArr | 88.9% |
-| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/transformer.go:195: | transformValues | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/transformer.go:212: | getCQIDs | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/transformer.go:227: | getColumnIndexWithName | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/transformer.go:17: | stripNulls | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/transformer.go:24: | stripNullsFromMarshalledJson | 80.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/transformer.go:42: | stripNullsFromJsonValue | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/transformer.go:61: | transformArr | 88.9% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/transformer.go:198: | transformValues | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/transformer.go:215: | getCQIDs | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/transformer.go:230: | getColumnIndexWithName | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/types.go:8: | SchemaTypeToPg | 50.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/types.go:19: | PgToSchemaType | 50.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/main.go:20: | main | 0.0% |
@@ -104,4 +104,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_pg.go:10: | ArrowToPg10 | 60.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_pg.go:72: | ArrowToCockroach | 57.1% |
 | github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/pgarrow/to_pg.go:131: | ArrowToCrateDB | 0.0% |
-| total: | (statements) | 64.7% |
+| total: | (statements) | 64.8% |
