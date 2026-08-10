@@ -1,5 +1,6 @@
 | File | Function | Coverage |
 | --- | --- | --- |
+| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/client.go:32: | Close | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/client.go:40: | DeleteStale | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/client.go:44: | verifyVersion | 68.8% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/client.go:77: | New | 71.4% |
@@ -14,8 +15,11 @@
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/index.go:155: | recreateIndex | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/index.go:162: | deleteIndex | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/migrate.go:11: | MigrateTables | 63.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/read.go:15: | Read | 81.8% |
-| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/read.go:55: | docToRecord | 80.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/numbers.go:13: | toInt64 | 50.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/numbers.go:24: | toUint64 | 50.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/numbers.go:35: | toFloat64 | 50.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/read.go:16: | Read | 83.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/read.go:58: | docToRecord | 80.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/spec.go:50: | validate | 50.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/spec.go:61: | setDefaults | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/spec.go:81: | getClient | 22.2% |
@@ -26,10 +30,10 @@
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/transform.go:12: | timestampValues | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/transform.go:23: | getValues | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/transform.go:37: | transpose | 100.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/transform.go:52: | reverseTransform | 90.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/transform.go:52: | reverseTransform | 79.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/write.go:13: | Write | 66.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/write.go:20: | WriteTableBatch | 78.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/write.go:66: | toMap | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/client/write.go:77: | transform | 88.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/meilisearch/v2/main.go:17: | main | 0.0% |
-| total: | (statements) | 70.1% |
+| total: | (statements) | 69.0% |
