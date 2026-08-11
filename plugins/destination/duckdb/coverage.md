@@ -1,5 +1,6 @@
 | File | Function | Coverage |
 | --- | --- | --- |
+| github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/client.go:36: | New | 72.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/client.go:75: | Close | 75.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/client.go:90: | TestConnection | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/client.go:113: | exec | 87.5% |
@@ -62,4 +63,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/write.go:188: | writeTMPFile | 78.6% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/client/write.go:224: | deleteInsert | 93.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/duckdb/v5/main.go:17: | main | 0.0% |
-| total: | (statements) | 79.8% |
+| total: | (statements) | 79.9% |

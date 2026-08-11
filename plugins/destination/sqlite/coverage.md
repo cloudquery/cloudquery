@@ -1,5 +1,6 @@
 | File | Function | Coverage |
 | --- | --- | --- |
+| github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/client.go:27: | New | 76.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/client.go:50: | Close | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/delete.go:12: | DeleteRecord | 75.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/client/delete.go:28: | generateDelete | 76.2% |
@@ -41,4 +42,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/typeconv/special.go:18: | float16Value | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/typeconv/special.go:28: | byteArrValue | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/sqlite/v2/typeconv/values.go:8: | FromArray | 11.1% |
-| total: | (statements) | 80.0% |
+| total: | (statements) | 80.2% |

@@ -1,5 +1,6 @@
 | File | Function | Coverage |
 | --- | --- | --- |
+| github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/client.go:41: | New | 69.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/client.go:89: | validateConnection | 27.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/client.go:107: | getVersion | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/client.go:127: | setMaxIndexLength | 0.0% |
@@ -45,4 +46,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/write.go:125: | Write | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/client/write.go:135: | WriteTableBatch | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mysql/v5/main.go:17: | main | 0.0% |
-| total: | (statements) | 8.4% |
+| total: | (statements) | 8.3% |

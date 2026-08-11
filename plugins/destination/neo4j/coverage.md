@@ -1,5 +1,6 @@
 | File | Function | Coverage |
 | --- | --- | --- |
+| github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/client.go:24: | New | 63.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/client.go:59: | Close | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/client.go:67: | Session | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/connection.go:26: | NewConnectionTester | 100.0% |
@@ -26,4 +27,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/write.go:13: | WriteTableBatch | 87.9% |
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/client/write.go:63: | Write | 60.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/neo4j/v5/main.go:17: | main | 0.0% |
-| total: | (statements) | 79.1% |
+| total: | (statements) | 79.5% |

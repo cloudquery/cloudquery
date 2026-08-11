@@ -1,5 +1,6 @@
 | File | Function | Coverage |
 | --- | --- | --- |
+| github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/client.go:35: | New | 72.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/client.go:80: | Close | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/client.go:88: | getAuthInfo | 6.7% |
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/client.go:142: | newSession | 88.9% |
@@ -23,4 +24,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/write.go:14: | WriteTableBatch | 84.4% |
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/client/write.go:93: | Write | 60.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/gremlin/v2/main.go:17: | main | 0.0% |
-| total: | (statements) | 56.4% |
+| total: | (statements) | 57.0% |
