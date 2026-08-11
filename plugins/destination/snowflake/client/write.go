@@ -19,7 +19,6 @@ const (
 	putFileIntoStage            = `put 'file://%v' @cq_plugin_stage auto_compress=true`
 	copyIntoTable               = `copy into %s from '@cq_plugin_stage' files=('%s.gz') on_error = ABORT_STATEMENT file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
 	mergeIntoTable              = `MERGE INTO %s AS dest USING (SELECT %s FROM @cq_plugin_stage/%s.gz t) AS source ON %s WHEN MATCHED THEN %s WHEN NOT MATCHED THEN %s`
-	removeStageFile             = `remove @cq_plugin_stage/%s.gz`
 )
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
@@ -97,7 +96,7 @@ func (c *Client) copyIntoTable(ctx context.Context, table *schema.Table, f *os.F
 		return fmt.Errorf("failed to copy file into table with last resource %s: %w", sql, err)
 	}
 
-	return c.removeStageFile(ctx, f)
+	return nil
 }
 
 func (c *Client) mergeIntoTable(ctx context.Context, table *schema.Table, f *os.File) error {
@@ -108,18 +107,6 @@ func (c *Client) mergeIntoTable(ctx context.Context, table *schema.Table, f *os.
 		return fmt.Errorf("failed to merge file into table: %s: %w", sql, err)
 	}
 
-	return c.removeStageFile(ctx, f)
-}
-
-// removeStageFile names the exact staged file (never a wildcard) so it can't wipe files staged by concurrent syncs.
-func (c *Client) removeStageFile(ctx context.Context, f *os.File) error {
-	if c.spec.LeaveStageFiles {
-		return nil
-	}
-	sql := fmt.Sprintf(removeStageFile, escapePath(filepath.Base(f.Name())))
-	if _, err := c.db.ExecContext(ctx, sql); err != nil {
-		return fmt.Errorf("failed to remove staged file with last resource %s: %w", sql, err)
-	}
 	return nil
 }
 
