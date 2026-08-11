@@ -1,5 +1,23 @@
 # Changelog
 
+## [8.16.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.15.1...plugins-destination-postgresql-v8.16.0) (2026-08-11)
+
+
+### Features
+
+* AWS Iam auth for databases ([#23231](https://github.com/cloudquery/cloudquery/issues/23231)) ([6c5f503](https://github.com/cloudquery/cloudquery/commit/6c5f5033be1c034ce88d473415372d161408e217))
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23069](https://github.com/cloudquery/cloudquery/issues/23069)) ([4f3b70b](https://github.com/cloudquery/cloudquery/commit/4f3b70b3324698820baf74f4f7060762699e8fa3))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23114](https://github.com/cloudquery/cloudquery/issues/23114)) ([75a37bb](https://github.com/cloudquery/cloudquery/commit/75a37bb413b200f39e8f58a638b84996ecc57092))
+* **deps:** Update go module directive to v1.26.5 ([#23182](https://github.com/cloudquery/cloudquery/issues/23182)) ([e8bc921](https://github.com/cloudquery/cloudquery/commit/e8bc9211beeec85bf5e76ab673968377a74f0cab))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.7.0 ([#23163](https://github.com/cloudquery/cloudquery/issues/23163)) ([7df4831](https://github.com/cloudquery/cloudquery/commit/7df4831f6f83607541b187dd2bb40ad366465897))
+* **deps:** Update module github.com/databricks/databricks-sdk-go to v0.163.0 ([#23204](https://github.com/cloudquery/cloudquery/issues/23204)) ([e44e03c](https://github.com/cloudquery/cloudquery/commit/e44e03c31821892b08e76446a8f4963c9c19ece7))
+* **deps:** Update module golang.org/x/sync to v0.22.0 ([#23212](https://github.com/cloudquery/cloudquery/issues/23212)) ([6b4ba50](https://github.com/cloudquery/cloudquery/commit/6b4ba50bd7fb487f8915f7bd29daf4acbe4d4d1c))
+* **deps:** Update module google.golang.org/grpc to v1.82.1 [SECURITY] ([#23153](https://github.com/cloudquery/cloudquery/issues/23153)) ([afa41c7](https://github.com/cloudquery/cloudquery/commit/afa41c7bb68c1bda85c7ff229af68a45ffd8892c))
+
 ## [8.15.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-postgresql-v8.15.0...plugins-destination-postgresql-v8.15.1) (2026-07-10)
 
 
