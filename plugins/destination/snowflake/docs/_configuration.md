@@ -14,6 +14,7 @@ spec:
     connection_string: "${SNOWFLAKE_CONNECTION_STRING}"
     # Optional parameters
     # migrate_concurrency: 1
-    # batch_size: 1000 # 1K entries
-    # batch_size_bytes: 4194304 # 4 MiB
+    # batch_size: 5000 # 5K entries
+    # batch_size_bytes: 20971520 # 20 MiB
+    # leave_stage_files: false
 ```
