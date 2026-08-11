@@ -3,6 +3,61 @@
   "$id": "https://github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8/client/spec/spec",
   "$ref": "#/$defs/Spec",
   "$defs": {
+    "AWSIAMAuthSpec": {
+      "properties": {
+        "service": {
+          "type": "string",
+          "enum": [
+            "rds"
+          ],
+          "description": "The AWS database service to authenticate to.",
+          "default": "rds"
+        },
+        "region": {
+          "type": "string",
+          "description": "AWS region the database is in, for example `us-east-1`. If empty, the region\nis resolved from the standard AWS configuration sources (the `AWS_REGION`\nenvironment variable, the shared config file, ...).",
+          "examples": [
+            "us-east-1"
+          ]
+        },
+        "endpoint": {
+          "type": "string",
+          "description": "The endpoint the token is signed for, as `host` or `host:port`. If empty, the\nhost and port from `connection_string` are used; if only a host is given, the\nport from `connection_string` is used. Set this when the plugin connects\nthrough a different address than the database endpoint itself, such as an SSH\ntunnel or a CNAME.",
+          "examples": [
+            "mydb.123456789012.us-east-1.rds.amazonaws.com:5432"
+          ]
+        },
+        "local_profile": {
+          "type": "string",
+          "description": "[Local profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html)\nto use to authenticate with. This should be set to the name of the profile.",
+          "examples": [
+            "my_aws_profile"
+          ]
+        },
+        "role_arn": {
+          "type": "string",
+          "pattern": "^(arn(:[^:\n]*){5}([:/].*)?)?$",
+          "description": "If specified, this role is assumed and its credentials are used to sign the\nauthentication token."
+        },
+        "role_session_name": {
+          "type": "string",
+          "description": "If specified, this session name is used when assuming `role_arn`.",
+          "examples": [
+            "my_aws_role_session_name"
+          ]
+        },
+        "external_id": {
+          "type": "string",
+          "description": "If specified, this external ID is used when assuming `role_arn`.",
+          "examples": [
+            "external_id"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "description": "AWSIAMAuthSpec enables IAM database authentication for AWS-managed, PostgreSQL-compatible databases."
+    },
     "Duration": {
       "type": "string",
       "pattern": "^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$",
@@ -250,6 +305,17 @@
             {
               "$ref": "#/$defs/LakebaseSpec",
               "description": "Optional configuration to connect to [Databricks Lakebase](https://docs.databricks.com/aws/en/oltp),\na PostgreSQL-compatible managed database."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "aws_iam_auth": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/AWSIAMAuthSpec",
+              "description": "Optional configuration to connect to an AWS-managed, PostgreSQL-compatible\ndatabase with [IAM database authentication](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.html)."
             },
             {
               "type": "null"
