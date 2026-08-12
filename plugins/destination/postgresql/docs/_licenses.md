@@ -18,6 +18,7 @@ The following tools / packages are used in this plugin:
 | github.com/aws/aws-sdk-go-v2/config | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/credentials | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/feature/ec2/imds | Apache-2.0 |
+| github.com/aws/aws-sdk-go-v2/feature/rds/auth | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/internal/configsources | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 | Apache-2.0 |
 | github.com/aws/aws-sdk-go-v2/internal/sync/singleflight | BSD-3-Clause |
@@ -80,11 +81,11 @@ The following tools / packages are used in this plugin:
 | github.com/klauspost/compress | Apache-2.0 |
 | github.com/klauspost/compress/internal/snapref | BSD-3-Clause |
 | github.com/klauspost/compress/zstd/internal/xxhash | MIT |
-| github.com/mailru/easyjson | MIT |
 | github.com/mattn/go-colorable | MIT |
 | github.com/mattn/go-isatty | MIT |
 | github.com/oapi-codegen/runtime | Apache-2.0 |
 | github.com/otan/gopgkrb5 | MIT |
+| github.com/pb33f/ordered-map/v2 | Apache-2.0 |
 | github.com/pierrec/lz4/v4 | BSD-3-Clause |
 | github.com/pkg/browser | BSD-2-Clause |
 | github.com/pkoukk/tiktoken-go | MIT |
@@ -98,7 +99,6 @@ The following tools / packages are used in this plugin:
 | github.com/stretchr/testify | MIT |
 | github.com/thoas/go-funk | MIT |
 | github.com/tmc/langchaingo | MIT |
-| github.com/wk8/go-ordered-map/v2 | Apache-2.0 |
 | github.com/zeebo/xxh3 | BSD-2-Clause |
 | gitlab.com/golang-commonmark/html | BSD-2-Clause |
 | gitlab.com/golang-commonmark/linkify | BSD-2-Clause |
@@ -119,6 +119,7 @@ The following tools / packages are used in this plugin:
 | go.opentelemetry.io/otel/sdk/metric | Apache-2.0 |
 | go.opentelemetry.io/otel/trace | Apache-2.0 |
 | go.opentelemetry.io/proto/otlp | Apache-2.0 |
+| go.yaml.in/yaml/v4 | MIT |
 | golang.org/x/crypto | BSD-3-Clause |
 | golang.org/x/exp | BSD-3-Clause |
 | golang.org/x/mod/semver | BSD-3-Clause |

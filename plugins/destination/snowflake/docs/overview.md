@@ -7,20 +7,88 @@ description: CloudQuery Snowflake destination plugin documentation
 
 :badge
 
-The snowflake plugin helps you sync data to your Snowflake data warehouse.
+The snowflake plugin helps you sync data to your Snowflake data warehouse. Authenticating to Snowflake is the only setup required; the plugin creates and migrates tables itself, and loads data through a Snowflake stage that it manages.
 
-There are two ways to sync data to Snowflake:
+## How Data is Loaded
 
-1. Direct (easy but not recommended for production or large data sets): This is the default mode of operation where CQ plugin will stream the results directly to the Snowflake database. There is no additional setup needed apart from authentication to Snowflake.
+The plugin does not issue row-by-row `INSERT` statements. All data is bulk-loaded via a stage. For each batch of records, the plugin:
 
-2. Loading via CSV/JSON from a remote storage: This is the standard way of loading data into Snowflake, it is recommended for production and large data sets. This mode requires a remote storage (e.g. S3, GCS, Azure Blob Storage) and a Snowflake stage to be created. The CQ plugin will stream the results to the remote storage. You can then load those files via a cronjob or via SnowPipe. This method is still in the works and will be updated soon with a guide.
+1. Writes the batch as newline-delimited JSON to a file in the local temp directory.
+2. Uploads that file to an internal Snowflake named stage, `cq_plugin_stage`, using `PUT ... auto_compress=true`.
+3. Loads the staged file into the target table:
+   - Tables **without** a primary key are loaded with `COPY INTO`, which appends the rows.
+   - Tables **with** a primary key are loaded with `MERGE INTO`, so matching rows are updated in place instead of duplicated.
+
+The stage and its file format (`cq_plugin_json_format`) are created with `CREATE OR REPLACE` the first time a sync writes data. Any files still present in `cq_plugin_stage` are therefore discarded when the next sync begins — the stage is scratch space, not durable storage, and should not be read by anything other than the plugin.
 
 ## Example Config
 
 :configuration
 
-The Snowflake destination utilizes batching, and supports [`batch_size`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size_bytes).
+The Snowflake destination utilizes batching, and supports [`batch_size`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size_bytes). Each batch becomes one staged file, so larger batches produce fewer and larger files.
 
+## Continuous Loading with Snowpipe
+
+The Snowflake destination does not create pipes and does not write to external stages. Because `cq_plugin_stage` is recreated on every sync (see [How Data is Loaded](#how-data-is-loaded)), you should not point a Snowpipe at it — files can be removed before the pipe has ingested them.
+
+To load CloudQuery data with Snowpipe, write to object storage and load from an external stage instead of using this destination:
+
+1. Sync to object storage with the [S3](https://www.cloudquery.io/hub/plugins/destination/cloudquery/s3/latest/docs), [GCS](https://www.cloudquery.io/hub/plugins/destination/cloudquery/gcs/latest/docs) or [Azure Blob Storage](https://www.cloudquery.io/hub/plugins/destination/cloudquery/azblob/latest/docs) destination. Give each table its own prefix so a pipe can target it:
+
+   ```yaml copy
+   kind: destination
+   spec:
+     name: "s3"
+     path: "cloudquery/s3"
+     registry: "cloudquery"
+     version: "VERSION_DESTINATION_S3"
+     write_mode: "append"
+     spec:
+       bucket: "bucket_name"
+       region: "us-east-1"
+       path: "cloudquery/{{TABLE}}/{{UUID}}.{{FORMAT}}"
+       format: "parquet"
+       # Snowflake recommends files of roughly 100-250 MB compressed
+       batch_size_bytes: 209715200 # 200 MiB
+   ```
+
+2. Create the destination tables in Snowflake yourself. Snowpipe loads into existing tables only; it will not create or migrate schemas the way this destination does.
+
+3. Create a storage integration and an external stage over that prefix:
+
+   ```sql
+   create file format cq_parquet_format type = parquet;
+
+   create storage integration cq_s3_integration
+     type = external_stage
+     storage_provider = 's3'
+     storage_aws_role_arn = 'arn:aws:iam::123456789012:role/snowflake-cloudquery'
+     enabled = true
+     storage_allowed_locations = ('s3://bucket_name/cloudquery/');
+
+   create stage cq_external_stage
+     url = 's3://bucket_name/cloudquery/'
+     storage_integration = cq_s3_integration
+     file_format = cq_parquet_format;
+   ```
+
+4. Create one pipe per table and wire up event notifications. Snowflake's [Automating Snowpipe for Amazon S3](https://docs.snowflake.com/en/user-guide/data-load-snowpipe-auto-s3) guide covers getting the notification channel (`show pipes`) and configuring the bucket to publish to it:
+
+   ```sql
+   create pipe cq_aws_ec2_instances_pipe
+     auto_ingest = true
+   as
+     copy into aws_ec2_instances
+     from @cq_external_stage/aws_ec2_instances/
+     match_by_column_name = case_insensitive;
+   ```
+
+Things to be aware of with this approach:
+
+- **Loads are append-only.** Snowpipe has no equivalent of the `MERGE INTO` this destination performs for tables with primary keys, and the object storage destinations write with `append` `write_mode`. Every sync adds a new set of rows, so deduplicate downstream — for example with a view that keeps the latest `_cq_sync_time` per `_cq_id`, or a scheduled task.
+- **Latency is not guaranteed.** Snowflake [does not commit to a Snowpipe load latency](https://docs.snowflake.com/en/user-guide/data-load-snowpipe-intro) and recommends measuring it against your own workload.
+- **File size matters.** Snowflake recommends files of roughly [100-250 MB compressed](https://docs.snowflake.com/en/user-guide/data-load-considerations-prepare); tune the storage destination's `batch_size_bytes` accordingly rather than leaving it at its default.
+- **`auto_ingest` on internal stages is restricted.** It is only available for Snowflake accounts hosted on AWS, which is another reason to use an external stage. Alternatives are the Snowpipe REST API or a scheduled `alter pipe ... refresh`.
 
 ## Authentication
 
@@ -147,19 +215,19 @@ This is the top level spec used by the Snowflake destination plugin.
   This option allows you to migrate multiple tables concurrently.
   This can be useful if you have a lot of tables to migrate and want to speed up the process.
 
-  Setting this to a negative number means no limit.
+  Must be `1` or greater.
 
-- `batch_size` (`integer`) (optional) (default: `1000`)
+- `batch_size` (`integer`) (optional) (default: `5000`)
 
-  Number of records to batch together before sending to the database.
+  Number of records to batch together before sending to the database. Each batch is written to a single staged file.
 
-- `batch_size_bytes` (`integer`) (optional) (default: `4194304` (= 4 MiB))
+- `batch_size_bytes` (`integer`) (optional) (default: `20971520` (= 20 MiB))
 
   Number of bytes (as Arrow buffer size) to batch together before sending to the database.
 
-- `leave_stage_files` (boolean) (optional) (default: false)
-     
-  If set to true, intermediary files used to load data to the Snowflake stage are left in the temp directory. This can be useful for debugging purposes.
+- `leave_stage_files` (`boolean`) (optional) (default: `false`)
+
+  If set to `true`, the intermediary files used to load data into the Snowflake stage are left in the local temp directory instead of being deleted after upload. This can be useful for debugging purposes.
 
 ## Underlying library
 

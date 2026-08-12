@@ -81,7 +81,7 @@ func buildValue(builder array.Builder, elem any) error {
 		builder.Append(uuid.UUID(val))
 
 	default:
-		return builder.AppendValueFromString(elem.(string))
+		return appendFromString(builder, elem.(string))
 	}
 	return nil
 }

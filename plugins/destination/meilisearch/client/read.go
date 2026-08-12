@@ -1,6 +1,7 @@
 package client
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -31,7 +32,9 @@ func (c *Client) Read(_ context.Context, table *schema.Table, res chan<- arrow.R
 			m := make(map[string]any)
 			for k, v := range hit {
 				var val any
-				if err := json.Unmarshal(v, &val); err != nil {
+				dec := json.NewDecoder(bytes.NewReader(v))
+				dec.UseNumber()
+				if err := dec.Decode(&val); err != nil {
 					return fmt.Errorf("failed to unmarshal hit value for key %q: %w", k, err)
 				}
 				m[k] = val

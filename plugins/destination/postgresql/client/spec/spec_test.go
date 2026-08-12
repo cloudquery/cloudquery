@@ -141,5 +141,28 @@ func TestSpec_JSONSchemaExtend(t *testing.T) {
 			Spec: `{"connection_string":"abc","lakebase":{"endpoint":"projects/p/branches/b/endpoints/e","unknown":"x"}}`,
 			Err:  true,
 		},
+		{
+			Name: "aws_iam_auth minimal",
+			Spec: `{"connection_string":"abc","aws_iam_auth":{}}`,
+		},
+		{
+			Name: "aws_iam_auth full",
+			Spec: `{"connection_string":"abc","aws_iam_auth":{"service":"rds","region":"us-east-1","endpoint":"mydb.123456789012.us-east-1.rds.amazonaws.com:5432","local_profile":"my_profile","role_arn":"arn:aws:iam::123456789012:role/my-role","role_session_name":"cloudquery","external_id":"external-id"}}`,
+		},
+		{
+			Name: "aws_iam_auth unsupported service",
+			Spec: `{"connection_string":"abc","aws_iam_auth":{"service":"dsql"}}`,
+			Err:  true,
+		},
+		{
+			Name: "aws_iam_auth invalid role_arn",
+			Spec: `{"connection_string":"abc","aws_iam_auth":{"role_arn":"not-an-arn"}}`,
+			Err:  true,
+		},
+		{
+			Name: "aws_iam_auth unknown field",
+			Spec: `{"connection_string":"abc","aws_iam_auth":{"unknown":"x"}}`,
+			Err:  true,
+		},
 	})
 }

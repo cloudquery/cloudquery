@@ -60,7 +60,7 @@ jobs:
         with:
           input_string: ${{steps.split.outputs.plugin_version}}
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         id: set-result
@@ -108,16 +108,16 @@ jobs:
     steps:
       - name: Checkout
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Set up Go 1.x
         if: needs.prepare.outputs.ui_dir_arg != ''
         id: setup-go
-        uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
         with:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
           cache: false
-      - uses: actions/cache@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         if: needs.prepare.outputs.ui_dir_arg != ''
         with:
           path: |
@@ -129,9 +129,9 @@ jobs:
 
       - name: Setup CloudQuery
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: cloudquery/setup-cloudquery@b7f7ea62cfec9774ad44a0d9307d0f6c5573bcb6 # v5.0.2
+        uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.41.0
+          version: v6.41.1
 
       - name: Build
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -140,7 +140,7 @@ jobs:
 
       - name: Use Node.js LTS
         if: needs.prepare.outputs.ui_dir_arg != ''
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: "lts/*"
           cache: "npm"
@@ -178,7 +178,7 @@ jobs:
     if: needs.prepare.outputs.plugin_releaser == 'java'
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
@@ -189,7 +189,7 @@ jobs:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
 
-      - uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5
+      - uses: actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961 # v5
         with:
           distribution: "temurin"
           java-version: "20"
@@ -198,7 +198,7 @@ jobs:
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: "lts/*"
 
@@ -235,7 +235,7 @@ jobs:
 
       - # Required for the package command to work
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4
 
       - name: Build package
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -254,9 +254,9 @@ jobs:
           java -jar app/build/libs/app.jar package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@b7f7ea62cfec9774ad44a0d9307d0f6c5573bcb6 # v5.0.2
+        uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.41.0
+          version: v6.41.1
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -285,7 +285,7 @@ jobs:
     if: needs.prepare.outputs.plugin_releaser == 'python'
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
@@ -297,10 +297,10 @@ jobs:
           path: ${{ needs.prepare.outputs.ui_build_dir }}
 
       - name: Install uv
-        uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
 
       - name: Set up Python
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
         with:
           python-version: "3.14"
 
@@ -310,7 +310,7 @@ jobs:
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: "lts/*"
 
@@ -347,7 +347,7 @@ jobs:
 
       - # Required for the package command to work
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4
 
       - name: Run package command
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -356,9 +356,9 @@ jobs:
           uv run python main.py package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@b7f7ea62cfec9774ad44a0d9307d0f6c5573bcb6 # v5.0.2
+        uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.41.0
+          version: v6.41.1
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -387,7 +387,7 @@ jobs:
     if: needs.prepare.outputs.plugin_releaser == 'node'
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
@@ -403,7 +403,7 @@ jobs:
           package_json_file: ${{ needs.prepare.outputs.plugin_dir }}/package.json
 
       - name: Use Node.js LTS
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: "lts/*"
           cache: "pnpm"
@@ -446,7 +446,7 @@ jobs:
 
       - # Required for the package command to work
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@d7f5e7f509e45cec5c76c4d5afdd7de93d0b3df5 # v4
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4
 
       - name: Run package command
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -455,9 +455,9 @@ jobs:
           pnpm run dev package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@b7f7ea62cfec9774ad44a0d9307d0f6c5573bcb6 # v5.0.2
+        uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.41.0
+          version: v6.41.1
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -488,7 +488,7 @@ jobs:
     if: needs.prepare.outputs.plugin_releaser == 'go'
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
 
@@ -501,12 +501,12 @@ jobs:
 
       - name: Set up Go 1.x
         id: setup-go
-        uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
         with:
           go-version-file: ${{ needs.prepare.outputs.plugin_dir }}/go.mod
           cache: false
 
-      - uses: actions/cache@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: |
             ~/.cache/go-build
@@ -517,7 +517,7 @@ jobs:
 
       # Needed for shell escape
       - name: Use Node.js LTS
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: "lts/*"
 
@@ -559,9 +559,9 @@ jobs:
           go run main.go package -m ${{ steps.release-notes.outputs.result }} ${{ needs.prepare.outputs.plugin_version }} .
 
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@b7f7ea62cfec9774ad44a0d9307d0f6c5573bcb6 # v5.0.2
+        uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.41.0
+          version: v6.41.1
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -606,7 +606,7 @@ jobs:
        needs.publish-plugin-to-hub-go.result == 'success')
     steps:
       - name: Checkout
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Comment on release PR
         continue-on-error: true
         uses: ./.github/actions/release-pr-hub-comment

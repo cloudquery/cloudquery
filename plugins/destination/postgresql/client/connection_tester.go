@@ -36,6 +36,12 @@ func ConnectionTester(ctx context.Context, _ zerolog.Logger, specBytes []byte) e
 		}
 	}
 
+	if s.HasAWSIAMAuthConfig() {
+		if err := configureAWSIAMAuth(ctx, pgxConfig, s.AWSIAMAuth); err != nil {
+			return plugin.NewTestConnError("CONN_FAILED", err)
+		}
+	}
+
 	c, err := pgxpool.NewWithConfig(ctx, pgxConfig)
 	if err != nil {
 		return processError(err, "CONN_FAILED")

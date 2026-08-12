@@ -1,11 +1,13 @@
 package recordupdater
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"slices"
+	"strconv"
 	"strings"
 	"time"
 
@@ -35,7 +37,26 @@ func New(record arrow.RecordBatch) *RecordUpdater {
 }
 
 const redactedByCQMessage = "Redacted by CloudQuery |"
+const redactedByCQMessageNoSHA = "Redacted by CloudQuery"
 const redactedByCQJSONName = "redacted_by_cloudquery"
+
+const internalColumnPrefix = "_cq_"
+
+func isInternalColumn(name string) bool {
+	return strings.HasPrefix(name, internalColumnPrefix)
+}
+
+func isPrimaryKeyField(f arrow.Field) bool {
+	idx := f.Metadata.FindKey(schema.MetadataPrimaryKey)
+	return idx >= 0 && f.Metadata.Values()[idx] == schema.MetadataTrue
+}
+
+func redactValue(raw []byte, includeSHA bool) string {
+	if includeSHA {
+		return fmt.Sprintf("%s %x", redactedByCQMessage, sha256.Sum256(raw))
+	}
+	return redactedByCQMessageNoSHA
+}
 
 func (r *RecordUpdater) RemoveColumns(columnNames []string) (arrow.RecordBatch, error) {
 	plainCols, jsonCols := r.splitJSONColumns(columnNames)
@@ -139,7 +160,7 @@ func (r *RecordUpdater) AddTimestampColumn(columnName string, position int) (arr
 	return r.record, nil
 }
 
-func (r *RecordUpdater) ObfuscateSensitiveColumns() (arrow.RecordBatch, error) {
+func (r *RecordUpdater) ObfuscateSensitiveColumns(includeSHA bool) (arrow.RecordBatch, error) {
 	if r.record.Schema() == nil {
 		return nil, errors.New("record schema is nil")
 	}
@@ -155,7 +176,7 @@ func (r *RecordUpdater) ObfuscateSensitiveColumns() (arrow.RecordBatch, error) {
 	if len(sensitiveColumnsArr) == 0 {
 		return r.record, nil
 	}
-	return r.ObfuscateColumns(sensitiveColumnsArr)
+	return r.ObfuscateColumns(sensitiveColumnsArr, includeSHA)
 }
 
 func (r *RecordUpdater) DropRows(columnNames []string, value *string) (arrow.RecordBatch, error) {
@@ -226,7 +247,7 @@ func (r *RecordUpdater) DropRows(columnNames []string, value *string) (arrow.Rec
 	return r.record, nil
 }
 
-func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.RecordBatch, error) {
+func (r *RecordUpdater) ObfuscateColumns(columnNames []string, includeSHA bool) (arrow.RecordBatch, error) {
 	plainCols, jsonCols := r.splitJSONColumns(columnNames)
 
 	plainColIndex, err := r.colIndicesByNames(plainCols)
@@ -240,15 +261,15 @@ func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.RecordBatc
 	for i, column := range oldRecord {
 		if _, ok := plainColIndex[i]; ok {
 			if column.DataType().ID() == arrow.STRING {
-				newColumns = append(newColumns, r.obfuscateColumn(column))
+				newColumns = append(newColumns, r.obfuscateColumn(column, includeSHA))
 				continue
 			}
 			if _, ok := column.DataType().(*types.JSONType); ok {
-				newColumns = append(newColumns, r.obfuscateEntireJSONColumn(column))
+				newColumns = append(newColumns, r.obfuscateEntireJSONColumn(column, includeSHA))
 				continue
 			}
 			if column.DataType().ID() == arrow.BINARY {
-				newColumns = append(newColumns, r.obfuscateBinaryColumn(column))
+				newColumns = append(newColumns, r.obfuscateBinaryColumn(column, includeSHA))
 				continue
 			}
 			return nil, fmt.Errorf("column %v is not a string, binary or JSON column", r.record.ColumnName(i))
@@ -264,12 +285,334 @@ func (r *RecordUpdater) ObfuscateColumns(columnNames []string) (arrow.RecordBatc
 			return nil, fmt.Errorf("column %v is not a JSON column", r.record.ColumnName(i))
 		}
 
-		newColumns = append(newColumns, r.obfuscateJSONColumns(column, jcs))
+		newColumns = append(newColumns, r.obfuscateJSONColumns(column, jcs, includeSHA))
 	}
 
 	r.record = array.NewRecordBatch(r.record.Schema(), newColumns, r.record.NumRows())
 
 	return r.record, nil
+}
+
+func (r *RecordUpdater) ObfuscateColumnsExcept(keepColumns []string, includeSHA bool, unmatched string) (arrow.RecordBatch, error) {
+	keepWhole := make(map[string]struct{})
+	keepSub := make(map[string][][]string)
+	for _, c := range keepColumns {
+		if idx := strings.Index(c, "."); idx > -1 {
+			col := c[:idx]
+			keepSub[col] = append(keepSub[col], splitJSONPath(c[idx+1:]))
+			continue
+		}
+		keepWhole[c] = struct{}{}
+	}
+
+	oldColumns := r.record.Columns()
+	fields := r.record.Schema().Fields()
+
+	if err := r.validateKeepColumnsExist(keepWhole, keepSub); err != nil {
+		return nil, err
+	}
+	if err := r.validatePrimaryKeysSurvive(keepWhole, keepSub, includeSHA, unmatched); err != nil {
+		return nil, err
+	}
+
+	newFields := make([]arrow.Field, 0, len(oldColumns))
+	newColumns := make([]arrow.Array, 0, len(oldColumns))
+
+	for i, column := range oldColumns {
+		name := r.record.ColumnName(i)
+		_, isJSON := column.DataType().(*types.JSONType)
+		_, keptWhole := keepWhole[name]
+
+		switch {
+		case isInternalColumn(name):
+			newFields = append(newFields, fields[i])
+			newColumns = append(newColumns, column)
+		case keptWhole:
+			newFields = append(newFields, fields[i])
+			newColumns = append(newColumns, column)
+		case len(keepSub[name]) > 0:
+			if !isJSON {
+				return nil, fmt.Errorf("column %q is referenced with a nested path in the allowlist but is not a JSON column", name)
+			}
+			newFields = append(newFields, fields[i])
+			newColumns = append(newColumns, r.redactJSONColumnExcept(column, keepSub[name], includeSHA, unmatched))
+		case unmatched == spec.UnmatchedDrop:
+		case column.DataType().ID() == arrow.STRING:
+			newFields = append(newFields, fields[i])
+			newColumns = append(newColumns, r.obfuscateColumn(column, includeSHA))
+		case isJSON:
+			newFields = append(newFields, fields[i])
+			newColumns = append(newColumns, r.obfuscateEntireJSONColumn(column, includeSHA))
+		case column.DataType().ID() == arrow.BINARY:
+			newFields = append(newFields, fields[i])
+			newColumns = append(newColumns, r.obfuscateBinaryColumn(column, includeSHA))
+		}
+	}
+
+	if len(newColumns) == 0 {
+		return nil, errors.New("obfuscate_columns_except would drop every column; allowlist at least one column")
+	}
+
+	md := r.record.Schema().Metadata()
+	newSchema := arrow.NewSchema(newFields, &md)
+	r.record = array.NewRecordBatch(newSchema, newColumns, r.record.NumRows())
+	return r.record, nil
+}
+
+func (r *RecordUpdater) validateKeepColumnsExist(keepWhole map[string]struct{}, keepSub map[string][][]string) error {
+	present := make(map[string]struct{}, r.record.NumCols())
+	for i := 0; i < int(r.record.NumCols()); i++ {
+		present[r.record.ColumnName(i)] = struct{}{}
+	}
+	var missing []string
+	for name := range keepWhole {
+		if _, ok := present[name]; !ok {
+			missing = append(missing, name)
+		}
+	}
+	for name := range keepSub {
+		if _, ok := present[name]; !ok {
+			missing = append(missing, name)
+		}
+	}
+	if len(missing) > 0 {
+		slices.Sort(missing)
+		return fmt.Errorf("obfuscate_columns_except allowlist references unknown column(s): %s", strings.Join(missing, ", "))
+	}
+	return nil
+}
+
+func (r *RecordUpdater) validatePrimaryKeysSurvive(keepWhole map[string]struct{}, keepSub map[string][][]string, includeSHA bool, unmatched string) error {
+	fields := r.record.Schema().Fields()
+	for i := 0; i < int(r.record.NumCols()); i++ {
+		name := r.record.ColumnName(i)
+		if isInternalColumn(name) || !isPrimaryKeyField(fields[i]) {
+			continue
+		}
+		if _, ok := keepWhole[name]; ok {
+			continue
+		}
+		col := r.record.Column(i)
+		_, isJSON := col.DataType().(*types.JSONType)
+		if _, ok := keepSub[name]; ok && isJSON {
+			continue
+		}
+		redactable := col.DataType().ID() == arrow.STRING || col.DataType().ID() == arrow.BINARY || isJSON
+		switch {
+		case unmatched == spec.UnmatchedDrop:
+			return fmt.Errorf("primary-key column %q is not on the allowlist; with unmatched=drop it would be removed and break row identity at the destination; add %q to the allowlist", name, name)
+		case !redactable:
+			return fmt.Errorf("primary-key column %q has type %s that cannot be redacted in place, so it would be dropped and break row identity at the destination; add %q to the allowlist", name, col.DataType(), name)
+		case !includeSHA:
+			return fmt.Errorf("primary-key column %q is not on the allowlist; with include_sha=false its redacted value is identical for every row and would break upserts at the destination; add %q to the allowlist or use include_sha=true", name, name)
+		}
+	}
+	return nil
+}
+
+func (*RecordUpdater) redactJSONColumnExcept(column arrow.Array, patterns [][]string, includeSHA bool, unmatched string) arrow.Array {
+	bld := types.NewJSONBuilder(memory.NewGoAllocator())
+	for i := 0; i < column.Len(); i++ {
+		if !column.IsValid(i) {
+			bld.AppendNull()
+			continue
+		}
+		s := column.ValueStr(i)
+		out, err := redactJSONExcept(s, patterns, includeSHA, unmatched)
+		if err != nil {
+			fallback, ok := entireJSONRedaction([]byte(s), includeSHA)
+			if !ok {
+				bld.AppendNull()
+				continue
+			}
+			out = string(fallback)
+		}
+		bld.AppendBytes([]byte(out))
+	}
+	return bld.NewJSONArray()
+}
+
+func redactJSONExcept(jsonStr string, patterns [][]string, includeSHA bool, unmatched string) (string, error) {
+	dec := json.NewDecoder(strings.NewReader(jsonStr))
+	dec.UseNumber()
+	var v any
+	if err := dec.Decode(&v); err != nil {
+		return "", err
+	}
+
+	v, keep := walkRedactExcept(v, nil, patterns, includeSHA, unmatched)
+	if !keep {
+		return "null", nil
+	}
+
+	buf := &bytes.Buffer{}
+	enc := json.NewEncoder(buf)
+	enc.SetEscapeHTML(false)
+	if err := enc.Encode(v); err != nil {
+		return "", err
+	}
+	return strings.TrimRight(buf.String(), "\n"), nil
+}
+
+func walkRedactExcept(node any, path []string, patterns [][]string, includeSHA bool, unmatched string) (any, bool) {
+	if pathKept(path, patterns) {
+		return node, true
+	}
+	switch n := node.(type) {
+	case map[string]any:
+		if !pathLeadsToKeep(path, patterns) {
+			return deadNode(node, includeSHA, unmatched)
+		}
+		for k, val := range n {
+			child, keep := walkRedactExcept(val, appendPath(path, k), patterns, includeSHA, unmatched)
+			if keep {
+				n[k] = child
+			} else {
+				delete(n, k)
+			}
+		}
+		return n, true
+	case []any:
+		if !pathLeadsToKeep(path, patterns) {
+			return deadNode(node, includeSHA, unmatched)
+		}
+		out := n[:0]
+		for i, val := range n {
+			child, keep := walkRedactExcept(val, appendPath(path, strconv.Itoa(i)), patterns, includeSHA, unmatched)
+			if keep {
+				out = append(out, child)
+			}
+		}
+		return out, true
+	case nil:
+		return nil, unmatched != spec.UnmatchedDrop
+	default:
+		return deadNode(node, includeSHA, unmatched)
+	}
+}
+
+func deadNode(node any, includeSHA bool, unmatched string) (any, bool) {
+	switch unmatched {
+	case spec.UnmatchedDrop:
+		return nil, false
+	case spec.UnmatchedCollapse:
+		raw, _ := json.Marshal(node)
+		return redactValue(raw, includeSHA), true
+	default:
+		return redactAllLeaves(node, includeSHA), true
+	}
+}
+
+func redactAllLeaves(node any, includeSHA bool) any {
+	switch n := node.(type) {
+	case map[string]any:
+		for k, val := range n {
+			n[k] = redactAllLeaves(val, includeSHA)
+		}
+		return n
+	case []any:
+		for i, val := range n {
+			n[i] = redactAllLeaves(val, includeSHA)
+		}
+		return n
+	case nil:
+		return nil
+	default:
+		raw, _ := json.Marshal(node)
+		return redactValue(raw, includeSHA)
+	}
+}
+
+func pathLeadsToKeep(path []string, patterns [][]string) bool {
+	for _, pat := range patterns {
+		if len(pat) <= len(path) {
+			continue
+		}
+		match := true
+		for i := range path {
+			if pat[i] == "#" {
+				if !isArrayIndex(path[i]) {
+					match = false
+					break
+				}
+				continue
+			}
+			if pat[i] != path[i] {
+				match = false
+				break
+			}
+		}
+		if match {
+			return true
+		}
+	}
+	return false
+}
+
+func appendPath(path []string, seg string) []string {
+	out := make([]string, len(path)+1)
+	copy(out, path)
+	out[len(path)] = seg
+	return out
+}
+
+func pathKept(path []string, patterns [][]string) bool {
+	for _, pat := range patterns {
+		if patternIsPrefix(pat, path) {
+			return true
+		}
+	}
+	return false
+}
+
+func patternIsPrefix(pat, path []string) bool {
+	if len(pat) > len(path) {
+		return false
+	}
+	for i := range pat {
+		if pat[i] == "#" {
+			if !isArrayIndex(path[i]) {
+				return false
+			}
+			continue
+		}
+		if pat[i] != path[i] {
+			return false
+		}
+	}
+	return true
+}
+
+func isArrayIndex(seg string) bool {
+	if seg == "" {
+		return false
+	}
+	for _, r := range seg {
+		if r < '0' || r > '9' {
+			return false
+		}
+	}
+	return true
+}
+
+func splitJSONPath(p string) []string {
+	var segs []string
+	var cur strings.Builder
+	for i := 0; i < len(p); i++ {
+		if p[i] == '\\' && i+1 < len(p) && p[i+1] == '.' {
+			cur.WriteByte('.')
+			i++
+			continue
+		}
+		if p[i] == '.' {
+			segs = append(segs, cur.String())
+			cur.Reset()
+			continue
+		}
+		cur.WriteByte(p[i])
+	}
+	segs = append(segs, cur.String())
+	return segs
 }
 
 func (r *RecordUpdater) AddPrimaryKeys(columnNames []string) (arrow.RecordBatch, error) {
@@ -409,19 +752,19 @@ func (*RecordUpdater) buildCurrentTimestampColumn(t time.Time, numRows int) arro
 	return syncTimeBldr.NewArray()
 }
 
-func (*RecordUpdater) obfuscateColumn(column arrow.Array) arrow.Array {
+func (*RecordUpdater) obfuscateColumn(column arrow.Array, includeSHA bool) arrow.Array {
 	bld := array.NewStringBuilder(memory.DefaultAllocator)
 	for i := 0; i < column.Len(); i++ {
 		if !column.IsValid(i) {
 			bld.AppendNull()
 			continue
 		}
-		bld.AppendString(fmt.Sprintf("%s %x", redactedByCQMessage, sha256.Sum256([]byte(column.ValueStr(i)))))
+		bld.AppendString(redactValue([]byte(column.ValueStr(i)), includeSHA))
 	}
 	return bld.NewStringArray()
 }
 
-func (*RecordUpdater) obfuscateJSONColumns(column arrow.Array, jcs []jsonColumn) arrow.Array {
+func (*RecordUpdater) obfuscateJSONColumns(column arrow.Array, jcs []jsonColumn, includeSHA bool) arrow.Array {
 	bld := types.NewJSONBuilder(memory.NewGoAllocator())
 	for i := 0; i < column.Len(); i++ {
 		if !column.IsValid(i) {
@@ -434,7 +777,7 @@ func (*RecordUpdater) obfuscateJSONColumns(column arrow.Array, jcs []jsonColumn)
 			val := gjson.Get(column.ValueStr(i), jc.columnPath)
 			// todo: Currently nested types will create a single SHA hash for all matched array elements. Consider changing this to hash for each element separately.
 			if val.Exists() {
-				if modified, err := sjson.Set(str, jc.columnPath, fmt.Sprintf("%s %x", redactedByCQMessage, sha256.Sum256([]byte(val.Raw)))); err == nil {
+				if modified, err := sjson.Set(str, jc.columnPath, redactValue([]byte(val.Raw), includeSHA)); err == nil {
 					str = modified
 					continue
 				}
@@ -445,7 +788,7 @@ func (*RecordUpdater) obfuscateJSONColumns(column arrow.Array, jcs []jsonColumn)
 	return bld.NewJSONArray()
 }
 
-func (*RecordUpdater) obfuscateBinaryColumn(column arrow.Array) arrow.Array {
+func (*RecordUpdater) obfuscateBinaryColumn(column arrow.Array, includeSHA bool) arrow.Array {
 	bld := array.NewBinaryBuilder(memory.DefaultAllocator, &arrow.BinaryType{})
 	for i := 0; i < column.Len(); i++ {
 		if !column.IsValid(i) {
@@ -457,25 +800,34 @@ func (*RecordUpdater) obfuscateBinaryColumn(column arrow.Array) arrow.Array {
 			bld.AppendNull()
 			continue
 		}
-		bld.Append(fmt.Appendf(nil, "%s %x", redactedByCQMessage, sha256.Sum256(bc.Value(i))))
+		bld.Append([]byte(redactValue(bc.Value(i), includeSHA)))
 	}
 	return bld.NewBinaryArray()
 }
 
-func (*RecordUpdater) obfuscateEntireJSONColumn(column arrow.Array) arrow.Array {
+func entireJSONRedaction(raw []byte, includeSHA bool) ([]byte, bool) {
+	marker := redactedByCQMessageNoSHA
+	if includeSHA {
+		marker = fmt.Sprintf("%x", sha256.Sum256(raw))
+	}
+	out, err := sjson.Set("{}", redactedByCQJSONName, marker)
+	if err != nil {
+		return nil, false
+	}
+	return []byte(out), true
+}
+
+func (*RecordUpdater) obfuscateEntireJSONColumn(column arrow.Array, includeSHA bool) arrow.Array {
 	bld := types.NewJSONBuilder(memory.NewGoAllocator())
 	for i := 0; i < column.Len(); i++ {
 		if !column.IsValid(i) {
 			bld.AppendNull()
 			continue
 		}
-
-		str := column.ValueStr(i)
-		newStr := "{}"
-
-		if modified, err := sjson.Set(newStr, redactedByCQJSONName, fmt.Sprintf("%x", sha256.Sum256([]byte(str)))); err == nil {
-			str = modified
-			bld.AppendBytes([]byte(str))
+		if out, ok := entireJSONRedaction([]byte(column.ValueStr(i)), includeSHA); ok {
+			bld.AppendBytes(out)
+		} else {
+			bld.AppendNull()
 		}
 	}
 	return bld.NewJSONArray()

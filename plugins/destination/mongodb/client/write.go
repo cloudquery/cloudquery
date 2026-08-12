@@ -59,14 +59,14 @@ func transformArr(arr arrow.Array) []any {
 		case *array.Timestamp:
 			dbArr[i] = a.Value(i).ToTime(a.DataType().(*arrow.TimestampType).Unit)
 		case *types.JSONArray:
-			var val any
-			if err := json.Unmarshal([]byte(a.ValueStr(i)), &val); err != nil {
+			val, err := unmarshalNestedJSON([]byte(a.ValueStr(i)))
+			if err != nil {
 				panic(err)
 			}
 			dbArr[i] = val
 		case *array.Struct:
-			var val any
-			if err := json.Unmarshal([]byte(a.ValueStr(i)), &val); err != nil {
+			val, err := unmarshalNestedJSON([]byte(a.ValueStr(i)))
+			if err != nil {
 				panic(err)
 			}
 			dbArr[i] = val

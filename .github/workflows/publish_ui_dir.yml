@@ -27,7 +27,7 @@ jobs:
     outputs:
       matrix: ${{ steps.matrix.outputs.result }}
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Generate plugins matrix
         id: matrix
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
@@ -68,14 +68,14 @@ jobs:
       matrix: ${{ fromJson(needs.prepare.outputs.matrix).matrix-go }}
       fail-fast: false
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - name: Set up Go 1.x
         id: setup-go
-        uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
         with:
           go-version-file: ${{ matrix.plugin.dir }}/go.mod
           cache: false
-      - uses: actions/cache@2c8a9bd7457de244a408f35966fab2fb45fda9c8 # v6
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
         with:
           path: |
             ~/.cache/go-build
@@ -89,7 +89,7 @@ jobs:
         working-directory: ${{ matrix.plugin.dir }}
 
       - name: Use Node.js LTS
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: lts/*
           cache: npm
@@ -100,9 +100,9 @@ jobs:
         working-directory: ${{ matrix.plugin.ui }}
 
       - name: Setup CloudQuery
-        uses: cloudquery/setup-cloudquery@b7f7ea62cfec9774ad44a0d9307d0f6c5573bcb6 # v5.0.2
+        uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.41.0
+          version: v6.41.1
 
       - name: Build UI for ${{ matrix.plugin.dir }}
         working-directory: ${{ matrix.plugin.ui }}
