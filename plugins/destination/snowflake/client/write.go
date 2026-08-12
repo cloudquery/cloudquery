@@ -14,11 +14,11 @@ import (
 )
 
 const (
-	createOrReplaceFileFormat = `create or replace file format cq_plugin_json_format type = 'JSON'`
-	createOrReplaceStage      = `create or replace stage cq_plugin_stage file_format = cq_plugin_json_format;`
-	putFileIntoStage          = `put 'file://%v' @cq_plugin_stage auto_compress=true`
-	copyIntoTable             = `copy into %s from '@cq_plugin_stage' files=('%s.gz') on_error = ABORT_STATEMENT file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
-	mergeIntoTable            = `MERGE INTO %s AS dest USING (SELECT %s FROM @cq_plugin_stage/%s.gz t) AS source ON %s WHEN MATCHED THEN %s WHEN NOT MATCHED THEN %s`
+	createFileFormatIfNotExists = `create file format if not exists cq_plugin_json_format type = 'JSON'`
+	createStageIfNotExists      = `create stage if not exists cq_plugin_stage file_format = cq_plugin_json_format;`
+	putFileIntoStage            = `put 'file://%v' @cq_plugin_stage auto_compress=true`
+	copyIntoTable               = `copy into %s from '@cq_plugin_stage' files=('%s.gz') on_error = ABORT_STATEMENT file_format = (format_name = cq_plugin_json_format) match_by_column_name = case_insensitive`
+	mergeIntoTable              = `MERGE INTO %s AS dest USING (SELECT %s FROM @cq_plugin_stage/%s.gz t) AS source ON %s WHEN MATCHED THEN %s WHEN NOT MATCHED THEN %s`
 )
 
 func (c *Client) Write(ctx context.Context, msgs <-chan message.WriteMessage) error {
@@ -154,13 +154,14 @@ func insertColumnsList(table *schema.Table) string {
 
 func (c *Client) setupWrite(ctx context.Context) error {
 	var setupErr error
+	// Use `if not exists` rather than `create or replace`, which would wipe the staged files of concurrent syncs sharing the stage.
 	c.setupWriteOnce.Do(func() {
-		if _, err := c.db.ExecContext(ctx, createOrReplaceFileFormat); err != nil {
-			setupErr = fmt.Errorf("failed to create file format %s: %w", createOrReplaceFileFormat, err)
+		if _, err := c.db.ExecContext(ctx, createFileFormatIfNotExists); err != nil {
+			setupErr = fmt.Errorf("failed to create file format %s: %w", createFileFormatIfNotExists, err)
 			return
 		}
-		if _, err := c.db.ExecContext(ctx, createOrReplaceStage); err != nil {
-			setupErr = fmt.Errorf("failed to create stage %s: %w", createOrReplaceStage, err)
+		if _, err := c.db.ExecContext(ctx, createStageIfNotExists); err != nil {
+			setupErr = fmt.Errorf("failed to create stage %s: %w", createStageIfNotExists, err)
 		}
 	})
 	return setupErr
