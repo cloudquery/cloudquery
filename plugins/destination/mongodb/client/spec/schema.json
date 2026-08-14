@@ -39,6 +39,38 @@
       "pattern": "^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$",
       "title": "CloudQuery configtype.Duration"
     },
+    "OIDCCredentials": {
+      "properties": {
+        "environment": {
+          "type": "string",
+          "enum": [
+            "k8s",
+            "azure",
+            "gcp"
+          ],
+          "examples": [
+            "k8s"
+          ]
+        },
+        "token_resource": {
+          "type": "string",
+          "examples": [
+            "api://my-audience"
+          ]
+        },
+        "username": {
+          "type": "string",
+          "examples": [
+            "00000000-0000-0000-0000-000000000000"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "environment"
+      ]
+    },
     "Spec": {
       "properties": {
         "connection_string": {
@@ -73,6 +105,16 @@
           "oneOf": [
             {
               "$ref": "#/$defs/WriteRetryConfig"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "oidc": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/OIDCCredentials"
             },
             {
               "type": "null"

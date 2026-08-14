@@ -33,6 +33,16 @@ func TestSpec_Validate(t *testing.T) {
 		{Give: Spec{ConnectionString: "test-connection-string", Database: "database", WriteRetry: validRetry}, WantErr: false},
 		{Give: Spec{ConnectionString: "test-connection-string", Database: "database", WriteRetry: negativeMaxAttempts}, WantErr: true},
 		{Give: Spec{ConnectionString: "test-connection-string", Database: "database", WriteRetry: negativeBackoff}, WantErr: true},
+		// OIDC (Workload Identity Federation)
+		{Give: Spec{ConnectionString: "conn", Database: "database", OIDC: &OIDCCredentials{Environment: "k8s"}}, WantErr: false},
+		{Give: Spec{ConnectionString: "conn", Database: "database", OIDC: &OIDCCredentials{Environment: "azure", TokenResource: "aud", Username: "client-id"}}, WantErr: false},
+		{Give: Spec{ConnectionString: "conn", Database: "database", OIDC: &OIDCCredentials{Environment: "gcp", TokenResource: "aud"}}, WantErr: false},
+		{Give: Spec{ConnectionString: "conn", Database: "database", OIDC: &OIDCCredentials{Environment: "azure"}}, WantErr: true},                                    // azure missing token_resource
+		{Give: Spec{ConnectionString: "conn", Database: "database", OIDC: &OIDCCredentials{Environment: "gcp"}}, WantErr: true},                                      // gcp missing token_resource
+		{Give: Spec{ConnectionString: "conn", Database: "database", OIDC: &OIDCCredentials{Environment: "k8s", TokenResource: "aud"}}, WantErr: true},                // k8s must not set token_resource
+		{Give: Spec{ConnectionString: "conn", Database: "database", OIDC: &OIDCCredentials{Environment: "gcp", TokenResource: "aud", Username: "u"}}, WantErr: true}, // username only for azure
+		{Give: Spec{ConnectionString: "conn", Database: "database", OIDC: &OIDCCredentials{Environment: "unknown"}}, WantErr: true},
+		{Give: Spec{ConnectionString: "conn", Database: "database", OIDC: &OIDCCredentials{Environment: "k8s"}, AWSCredentials: &Credentials{Default: true}}, WantErr: true}, // mutually exclusive
 	}
 	for i, tc := range cases {
 		tc := tc
@@ -141,6 +151,31 @@ func TestJSONSchema(t *testing.T) {
 		{
 			Name: "spec with write_retry unknown field",
 			Spec: `{"connection_string": "abc", "database":"foo", "write_retry": {"max_attempts": 3, "unknown": true}}`,
+			Err:  true,
+		},
+		{
+			Name: "spec with valid k8s oidc",
+			Spec: `{"connection_string": "abc", "database":"foo", "oidc": {"environment": "k8s"}}`,
+			Err:  false,
+		},
+		{
+			Name: "spec with valid azure oidc",
+			Spec: `{"connection_string": "abc", "database":"foo", "oidc": {"environment": "azure", "token_resource": "aud", "username": "client-id"}}`,
+			Err:  false,
+		},
+		{
+			Name: "spec with valid gcp oidc",
+			Spec: `{"connection_string": "abc", "database":"foo", "oidc": {"environment": "gcp", "token_resource": "aud"}}`,
+			Err:  false,
+		},
+		{
+			Name: "spec with invalid oidc environment",
+			Spec: `{"connection_string": "abc", "database":"foo", "oidc": {"environment": "invalid"}}`,
+			Err:  true,
+		},
+		{
+			Name: "spec with unknown field in oidc",
+			Spec: `{"connection_string": "abc", "database":"foo", "oidc": {"environment": "k8s", "unknown": "x"}}`,
 			Err:  true,
 		},
 	})

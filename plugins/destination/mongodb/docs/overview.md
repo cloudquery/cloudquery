@@ -60,7 +60,9 @@ This is the (nested) spec used by the MongoDB destination Plugin.
 
   Opt-in exponential-backoff retry around each write batch to absorb transient network errors (e.g. `write tcp ...: broken pipe`) that the driver's single built-in retry can't recover from. Disabled by default.
 
+- `oidc` ([oidc](#oidc)) (optional)
 
+  Optional parameters to enable MongoDB Atlas [Workload Identity Federation](https://www.mongodb.com/docs/atlas/workload-oidc/) (`MONGODB-OIDC`). Mutually exclusive with `aws_credentials`.
 
 
 ### write_retry
@@ -123,3 +125,20 @@ Only enable retries (`max_attempts` >= 2) when the source uses `write_mode: over
 - `external_id` (`string`)
 
   If specified will use this when assuming role to `role_arn`.
+
+
+### oidc
+
+Enables MongoDB Atlas [Workload Identity Federation](https://www.mongodb.com/docs/atlas/workload-oidc/) using the built-in `MONGODB-OIDC` machine (workload) flows of the MongoDB driver. Requires an Atlas M10+ dedicated cluster running MongoDB 7.0.11 or later with Workload Identity Federation configured. Mutually exclusive with `aws_credentials`.
+
+- `environment` (`string`) (required)
+
+  The workload environment the driver obtains an OIDC token from. One of `k8s` (Kubernetes / EKS service account), `azure` (Azure managed identity) or `gcp` (Google service account).
+
+- `token_resource` (`string`)
+
+  The audience configured on the MongoDB deployment. Required when `environment` is `azure` or `gcp`; must not be set for `k8s`.
+
+- `username` (`string`)
+
+  The Azure managed-identity client ID (or application ID). Only valid when `environment` is `azure`; may be omitted if the VM has a single managed identity.

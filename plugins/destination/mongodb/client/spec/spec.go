@@ -38,6 +38,10 @@ type Spec struct {
 	AWSCredentials *Credentials `json:"aws_credentials,omitempty"`
 
 	WriteRetry *WriteRetryConfig `json:"write_retry,omitempty"`
+
+	// Use MongoDB Atlas Workload Identity Federation (`MONGODB-OIDC`). Mutually exclusive with `aws_credentials`.
+	// If used this will override any credentials set in the connection_string.
+	OIDC *OIDCCredentials `json:"oidc,omitempty"`
 }
 
 type WriteRetryConfig struct {
@@ -96,6 +100,34 @@ func (s *Spec) Validate() error {
 		}
 		if s.WriteRetry.MaxBackoff != nil && s.WriteRetry.MaxBackoff.Duration() < 0 {
 			return errors.New("`write_retry.max_backoff` must be >= 0")
+		}
+	}
+
+	if s.OIDC != nil {
+		if s.AWSCredentials != nil {
+			return errors.New("`oidc` and `aws_credentials` are mutually exclusive")
+		}
+		switch s.OIDC.Environment {
+		case OIDCEnvironmentK8s:
+			if s.OIDC.TokenResource != "" {
+				return errors.New("`oidc.token_resource` must not be set when `oidc.environment` is `k8s`")
+			}
+			if s.OIDC.Username != "" {
+				return errors.New("`oidc.username` is only valid when `oidc.environment` is `azure`")
+			}
+		case OIDCEnvironmentAzure:
+			if s.OIDC.TokenResource == "" {
+				return errors.New("`oidc.token_resource` is required when `oidc.environment` is `azure`")
+			}
+		case OIDCEnvironmentGCP:
+			if s.OIDC.TokenResource == "" {
+				return errors.New("`oidc.token_resource` is required when `oidc.environment` is `gcp`")
+			}
+			if s.OIDC.Username != "" {
+				return errors.New("`oidc.username` is only valid when `oidc.environment` is `azure`")
+			}
+		default:
+			return errors.New("`oidc.environment` must be one of `k8s`, `azure`, or `gcp`")
 		}
 	}
 
