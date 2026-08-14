@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.2.13](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.12...plugins-destination-snowflake-v5.2.13) (2026-08-12)
+
+
+### Bug Fixes
+
+* Create Snowflake stage and file format if not exists to avoid concurrent write data loss ([#23175](https://github.com/cloudquery/cloudquery/issues/23175)) ([eeb957a](https://github.com/cloudquery/cloudquery/commit/eeb957a1e73e09171c4b822d274a840040e1e061))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23069](https://github.com/cloudquery/cloudquery/issues/23069)) ([4f3b70b](https://github.com/cloudquery/cloudquery/commit/4f3b70b3324698820baf74f4f7060762699e8fa3))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23114](https://github.com/cloudquery/cloudquery/issues/23114)) ([75a37bb](https://github.com/cloudquery/cloudquery/commit/75a37bb413b200f39e8f58a638b84996ecc57092))
+* **deps:** Update go module directive to v1.26.5 ([#23182](https://github.com/cloudquery/cloudquery/issues/23182)) ([e8bc921](https://github.com/cloudquery/cloudquery/commit/e8bc9211beeec85bf5e76ab673968377a74f0cab))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.7.0 ([#23163](https://github.com/cloudquery/cloudquery/issues/23163)) ([7df4831](https://github.com/cloudquery/cloudquery/commit/7df4831f6f83607541b187dd2bb40ad366465897))
+* **deps:** Update module golang.org/x/sync to v0.22.0 ([#23212](https://github.com/cloudquery/cloudquery/issues/23212)) ([6b4ba50](https://github.com/cloudquery/cloudquery/commit/6b4ba50bd7fb487f8915f7bd29daf4acbe4d4d1c))
+* **deps:** Update module google.golang.org/grpc to v1.82.1 [SECURITY] ([#23155](https://github.com/cloudquery/cloudquery/issues/23155)) ([f80a2cc](https://github.com/cloudquery/cloudquery/commit/f80a2cc4032aefb90c49ea5f1de081b50df93f22))
+* Document staged loading and Snowpipe ([#23244](https://github.com/cloudquery/cloudquery/issues/23244)) ([b49e221](https://github.com/cloudquery/cloudquery/commit/b49e2217b38069bcfbc3a040a4b029838a4b8616))
+
 ## [5.2.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.11...plugins-destination-snowflake-v5.2.12) (2026-07-10)
 
 
