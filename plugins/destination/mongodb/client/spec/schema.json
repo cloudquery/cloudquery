@@ -78,6 +78,16 @@
               "type": "null"
             }
           ]
+        },
+        "workload_identity_federation": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/WorkloadIdentityFederation"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -85,6 +95,38 @@
       "required": [
         "connection_string",
         "database"
+      ]
+    },
+    "WorkloadIdentityFederation": {
+      "properties": {
+        "environment": {
+          "type": "string",
+          "enum": [
+            "k8s",
+            "azure",
+            "gcp"
+          ],
+          "examples": [
+            "k8s"
+          ]
+        },
+        "token_resource": {
+          "type": "string",
+          "examples": [
+            "api://my-audience"
+          ]
+        },
+        "username": {
+          "type": "string",
+          "examples": [
+            "00000000-0000-0000-0000-000000000000"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "environment"
       ]
     },
     "WriteRetryConfig": {

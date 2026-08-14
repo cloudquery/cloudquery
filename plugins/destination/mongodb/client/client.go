@@ -27,6 +27,19 @@ type Client struct {
 var errInvalidSpec = errors.New("invalid spec")
 var errConnectionFailed = errors.New("failed to connect to MongoDB")
 
+func oidcCredential(o *spec.WorkloadIdentityFederation) options.Credential {
+	props := map[string]string{auth.EnvironmentProp: o.Environment}
+	if o.TokenResource != "" {
+		props[auth.ResourceProp] = o.TokenResource
+	}
+	return options.Credential{
+		AuthMechanism:           auth.MongoDBOIDC,
+		AuthMechanismProperties: props,
+		// Only used by the azure flow, where it is the managed-identity client ID.
+		Username: o.Username,
+	}
+}
+
 func New(ctx context.Context, logger zerolog.Logger, specByte []byte, _ plugin.NewClientOptions) (plugin.Client, error) {
 	var err error
 	c := &Client{
@@ -55,6 +68,8 @@ func New(ctx context.Context, logger zerolog.Logger, specByte []byte, _ plugin.N
 		}
 		// According to the docs: if ApplyURI is called before SetAuth, the Credential from SetAuth will overwrite the values from the connection string
 		mongoDBClientOptions = mongoDBClientOptions.SetAuth(assumeRoleCredential)
+	} else if c.spec.WorkloadIdentityFederation != nil {
+		mongoDBClientOptions = mongoDBClientOptions.SetAuth(oidcCredential(c.spec.WorkloadIdentityFederation))
 	}
 
 	c.client, err = mongo.Connect(mongoDBClientOptions)
