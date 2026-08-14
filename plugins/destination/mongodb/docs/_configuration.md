@@ -26,5 +26,9 @@ spec:
     #   role_arn: "arn:aws:iam::123456789012:role/role_name" # Specify the role to assume
     #   external_id: "external_id" # Used when assuming a role
     #   role_session_name: "session_name" # Used when assuming a role
+    # workload_identity_federation: # <- Use MongoDB Atlas Workload Identity Federation (MONGODB-OIDC). Mutually exclusive with aws_credentials.
+    #   environment: "k8s" # One of k8s, azure or gcp
+    #   token_resource: "api://my-audience" # The audience configured on the MongoDB deployment. Required for azure and gcp, must not be set for k8s.
+    #   username: "00000000-0000-0000-0000-000000000000" # Azure managed-identity client ID. Only valid for azure.
 
 ```
