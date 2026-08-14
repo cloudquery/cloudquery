@@ -17,24 +17,24 @@ import (
 func TestOIDCCredential(t *testing.T) {
 	cases := []struct {
 		name      string
-		give      *spec.OIDCCredentials
+		give      *spec.WorkloadIdentityFederation
 		wantProps map[string]string
 		wantUser  string
 	}{
 		{
 			name:      "k8s",
-			give:      &spec.OIDCCredentials{Environment: "k8s"},
+			give:      &spec.WorkloadIdentityFederation{Environment: "k8s"},
 			wantProps: map[string]string{"ENVIRONMENT": "k8s"},
 		},
 		{
 			name:      "azure",
-			give:      &spec.OIDCCredentials{Environment: "azure", TokenResource: "aud", Username: "client-id"},
+			give:      &spec.WorkloadIdentityFederation{Environment: "azure", TokenResource: "aud", Username: "client-id"},
 			wantProps: map[string]string{"ENVIRONMENT": "azure", "TOKEN_RESOURCE": "aud"},
 			wantUser:  "client-id",
 		},
 		{
 			name:      "gcp",
-			give:      &spec.OIDCCredentials{Environment: "gcp", TokenResource: "aud"},
+			give:      &spec.WorkloadIdentityFederation{Environment: "gcp", TokenResource: "aud"},
 			wantProps: map[string]string{"ENVIRONMENT": "gcp", "TOKEN_RESOURCE": "aud"},
 		},
 	}

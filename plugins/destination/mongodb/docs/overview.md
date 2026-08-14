@@ -60,7 +60,7 @@ This is the (nested) spec used by the MongoDB destination Plugin.
 
   Opt-in exponential-backoff retry around each write batch to absorb transient network errors (e.g. `write tcp ...: broken pipe`) that the driver's single built-in retry can't recover from. Disabled by default.
 
-- `oidc` ([oidc](#oidc)) (optional)
+- `workload_identity_federation` ([workload_identity_federation](#workload_identity_federation)) (optional)
 
   Optional parameters to enable MongoDB Atlas [Workload Identity Federation](https://www.mongodb.com/docs/atlas/workload-oidc/) (`MONGODB-OIDC`). Mutually exclusive with `aws_credentials`.
 
@@ -127,7 +127,7 @@ Only enable retries (`max_attempts` >= 2) when the source uses `write_mode: over
   If specified will use this when assuming role to `role_arn`.
 
 
-### oidc
+### workload_identity_federation
 
 Enables MongoDB Atlas [Workload Identity Federation](https://www.mongodb.com/docs/atlas/workload-oidc/) using the built-in `MONGODB-OIDC` machine (workload) flows of the MongoDB driver. Requires an Atlas M10+ dedicated cluster running MongoDB 7.0.11 or later with Workload Identity Federation configured. Mutually exclusive with `aws_credentials`.
 

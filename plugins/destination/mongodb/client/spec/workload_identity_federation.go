@@ -1,11 +1,11 @@
 package spec
 
-// OIDCCredentials configures MongoDB Atlas [Workload Identity Federation](https://www.mongodb.com/docs/atlas/workload-oidc/)
+// WorkloadIdentityFederation configures MongoDB Atlas [Workload Identity Federation](https://www.mongodb.com/docs/atlas/workload-oidc/)
 // authentication using the built-in `MONGODB-OIDC` machine (workload) flows of the MongoDB driver.
 //
 // Requires an Atlas M10+ dedicated cluster running MongoDB 7.0.11 or later with Workload
 // Identity Federation configured for the matching identity provider.
-type OIDCCredentials struct {
+type WorkloadIdentityFederation struct {
 	// The workload environment the driver obtains an OIDC token from.
 	// One of `k8s` (Kubernetes / EKS service account), `azure` (Azure managed identity)
 	// or `gcp` (Google service account).

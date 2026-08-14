@@ -41,7 +41,7 @@ type Spec struct {
 
 	// Use MongoDB Atlas Workload Identity Federation (`MONGODB-OIDC`). Mutually exclusive with `aws_credentials`.
 	// If used this will override any credentials set in the connection_string.
-	OIDC *OIDCCredentials `json:"oidc,omitempty"`
+	WorkloadIdentityFederation *WorkloadIdentityFederation `json:"workload_identity_federation,omitempty"`
 }
 
 type WriteRetryConfig struct {
@@ -103,31 +103,31 @@ func (s *Spec) Validate() error {
 		}
 	}
 
-	if s.OIDC != nil {
+	if s.WorkloadIdentityFederation != nil {
 		if s.AWSCredentials != nil {
-			return errors.New("`oidc` and `aws_credentials` are mutually exclusive")
+			return errors.New("`workload_identity_federation` and `aws_credentials` are mutually exclusive")
 		}
-		switch s.OIDC.Environment {
+		switch s.WorkloadIdentityFederation.Environment {
 		case OIDCEnvironmentK8s:
-			if s.OIDC.TokenResource != "" {
-				return errors.New("`oidc.token_resource` must not be set when `oidc.environment` is `k8s`")
+			if s.WorkloadIdentityFederation.TokenResource != "" {
+				return errors.New("`workload_identity_federation.token_resource` must not be set when `workload_identity_federation.environment` is `k8s`")
 			}
-			if s.OIDC.Username != "" {
-				return errors.New("`oidc.username` is only valid when `oidc.environment` is `azure`")
+			if s.WorkloadIdentityFederation.Username != "" {
+				return errors.New("`workload_identity_federation.username` is only valid when `workload_identity_federation.environment` is `azure`")
 			}
 		case OIDCEnvironmentAzure:
-			if s.OIDC.TokenResource == "" {
-				return errors.New("`oidc.token_resource` is required when `oidc.environment` is `azure`")
+			if s.WorkloadIdentityFederation.TokenResource == "" {
+				return errors.New("`workload_identity_federation.token_resource` is required when `workload_identity_federation.environment` is `azure`")
 			}
 		case OIDCEnvironmentGCP:
-			if s.OIDC.TokenResource == "" {
-				return errors.New("`oidc.token_resource` is required when `oidc.environment` is `gcp`")
+			if s.WorkloadIdentityFederation.TokenResource == "" {
+				return errors.New("`workload_identity_federation.token_resource` is required when `workload_identity_federation.environment` is `gcp`")
 			}
-			if s.OIDC.Username != "" {
-				return errors.New("`oidc.username` is only valid when `oidc.environment` is `azure`")
+			if s.WorkloadIdentityFederation.Username != "" {
+				return errors.New("`workload_identity_federation.username` is only valid when `workload_identity_federation.environment` is `azure`")
 			}
 		default:
-			return errors.New("`oidc.environment` must be one of `k8s`, `azure`, or `gcp`")
+			return errors.New("`workload_identity_federation.environment` must be one of `k8s`, `azure`, or `gcp`")
 		}
 	}
 
