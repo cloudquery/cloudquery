@@ -1,7 +1,8 @@
 | File | Function | Coverage |
 | --- | --- | --- |
-| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/client.go:30: | New | 52.4% |
-| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/client.go:76: | Close | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/client.go:30: | oidcCredential | 100.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/client.go:43: | New | 52.2% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/client.go:91: | Close | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/delete_stale.go:11: | DeleteStale | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/json_numbers.go:13: | unmarshalNestedJSON | 83.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/json_numbers.go:25: | convertJSONNumbers | 50.0% |
@@ -29,9 +30,9 @@
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/retry.go:61: | isRetryableWriteError | 69.2% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec/gen/main.go:13: | main | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec/gen/main.go:20: | currDir | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec/spec.go:54: | SetDefaults | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec/spec.go:67: | SetDefaults | 0.0% |
-| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec/spec.go:77: | Validate | 93.3% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec/spec.go:58: | SetDefaults | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec/spec.go:71: | SetDefaults | 0.0% |
+| github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/spec/spec.go:81: | Validate | 93.3% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/test_connection.go:20: | NewConnectionTester | 100.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/transaction.go:8: | runWrite | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/uint64.go:13: | getRegistry | 85.7% |
@@ -47,4 +48,4 @@
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/write.go:205: | WriteTableBatch | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/client/write.go:224: | Write | 0.0% |
 | github.com/cloudquery/cloudquery/plugins/destination/mongodb/v2/main.go:18: | main | 0.0% |
-| total: | (statements) | 32.5% |
+| total: | (statements) | 34.7% |
