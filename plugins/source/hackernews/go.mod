@@ -6,11 +6,11 @@ require (
 	github.com/apache/arrow-go/v18 v18.7.0
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-sdk/v4 v4.96.1
-	github.com/golang/mock v1.6.0
 	github.com/hermanschaaf/hackernews v1.0.1
 	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.11.1
 	github.com/thoas/go-funk v0.9.3
+	go.uber.org/mock v0.6.0
 	golang.org/x/sync v0.22.0
 )
 
