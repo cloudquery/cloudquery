@@ -216,3 +216,57 @@ func TestConcurrentSyncsSameSchema(t *testing.T) {
 	require.NoError(t, readErr)
 	require.Equal(t, syncConcurrency*rowsPerSync, numRows)
 }
+
+// TestMigrateMultipleTablesAddColumn covers a batch of tables all needing the same schema change:
+// when getTableInfo saw only the first of them, the rest were treated as new and never altered.
+func TestMigrateMultipleTablesAddColumn(t *testing.T) {
+	dsn := snowflakeTestDSN(t)
+	ctx := context.Background()
+
+	specBytes, err := json.Marshal(&Spec{ConnectionString: dsn})
+	require.NoError(t, err)
+	pc, err := New(ctx, zerolog.New(zerolog.NewTestWriter(t)).Level(zerolog.WarnLevel), specBytes, plugin.NewClientOptions{})
+	require.NoError(t, err)
+	c := pc.(*Client)
+	t.Cleanup(func() { require.NoError(t, c.Close(ctx)) })
+
+	suffix := strings.ReplaceAll(uuid.NewString(), "-", "")
+	tableNames := []string{
+		"cq_test_migrate_a_" + suffix,
+		"cq_test_migrate_b_" + suffix,
+		"cq_test_migrate_c_" + suffix,
+	}
+	t.Cleanup(func() {
+		for _, name := range tableNames {
+			require.NoError(t, c.dropTable(context.Background(), name))
+		}
+	})
+
+	const addedColumn = "added_after_create"
+	buildTables := func(withAddedColumn bool) message.WriteMigrateTables {
+		msgs := make(message.WriteMigrateTables, 0, len(tableNames))
+		for _, name := range tableNames {
+			table := &schema.Table{
+				Name:    name,
+				Columns: []schema.Column{schema.CqIDColumn, schema.CqSourceNameColumn},
+			}
+			if withAddedColumn {
+				table.Columns = append(table.Columns, schema.Column{Name: addedColumn, Type: arrow.BinaryTypes.String})
+			}
+			msgs = append(msgs, &message.WriteMigrateTable{Table: table})
+		}
+		return msgs
+	}
+
+	require.NoError(t, c.MigrateTables(ctx, buildTables(false)))
+	require.NoError(t, c.MigrateTables(ctx, buildTables(true)))
+
+	existing, _, err := c.getTableInfo(ctx, tableNames)
+	require.NoError(t, err)
+	require.Len(t, existing, len(tableNames))
+	for _, name := range tableNames {
+		table := existing.Get(strings.ToUpper(name))
+		require.NotNil(t, table, "table %s missing from information_schema", name)
+		require.NotNil(t, table.Column(strings.ToUpper(addedColumn)), "table %s was never migrated to add %s", name, addedColumn)
+	}
+}
