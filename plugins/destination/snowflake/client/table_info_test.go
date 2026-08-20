@@ -51,9 +51,9 @@ func TestGetTableInfoBatches(t *testing.T) {
 	require.NoError(t, err)
 	require.Len(t, got, numTables)
 
-	var sizes []int
-	for _, batch := range fake.matched() {
-		sizes = append(sizes, len(batch))
+	sizes := make([]int, len(fake.matched()))
+	for i, batch := range fake.matched() {
+		sizes[i] = len(batch)
 	}
 	require.Equal(t, []int{200, 200, 50}, sizes)
 }
