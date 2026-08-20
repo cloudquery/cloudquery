@@ -8,9 +8,9 @@ import (
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/mocks"
 	"github.com/cloudquery/cloudquery/plugins/source/hackernews/v3/client/services"
 	"github.com/cloudquery/plugin-sdk/v4/plugin"
-	"github.com/golang/mock/gomock"
 	"github.com/rs/zerolog"
 	"github.com/stretchr/testify/require"
+	"go.uber.org/mock/gomock"
 )
 
 func TestConnectionTester(t *testing.T) {
