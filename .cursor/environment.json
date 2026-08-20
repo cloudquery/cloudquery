@@ -1,4 +1,4 @@
 {
   "name": "CloudQuery",
-  "install": "bash .cursor/install.sh"
+  "install": "bash /agent/repos/cloudquery/.cursor/install.sh"
 }
