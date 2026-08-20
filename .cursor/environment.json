@@ -1,0 +1,4 @@
+{
+  "name": "CloudQuery",
+  "install": "bash .cursor/install.sh"
+}
