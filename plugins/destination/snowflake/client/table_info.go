@@ -143,13 +143,20 @@ func (c *Client) getTableInfo(ctx context.Context, tableNames []string) (schema.
 }
 
 func (c *Client) getTableInfoBatch(ctx context.Context, tableNames []string) (schema.Tables, error) {
+	if len(tableNames) == 0 {
+		return schema.Tables{}, nil
+	}
+
 	infos := make(map[string]*schema.Table, len(tableNames))
 
 	tnAny := make([]any, len(tableNames))
 	for i := range tableNames {
 		tnAny[i] = strings.ToUpper(tableNames[i])
 	}
-	completeSQL := sqlTableInfoStart + "(" + strings.Repeat("?,", len(tableNames)-1) + "?)" + sqlTableInfoEnd
+	// One single-column row per name, `(?),(?)`: as a single wide row `(?,?)` the SELECT COLUMN1
+	// in sqlTableInfoStart would only ever see the first name.
+	values := strings.TrimSuffix(strings.Repeat("(?),", len(tableNames)), ",")
+	completeSQL := sqlTableInfoStart + values + sqlTableInfoEnd
 
 	rows, err := c.db.QueryContext(ctx, completeSQL, tnAny...)
 	if err != nil {
