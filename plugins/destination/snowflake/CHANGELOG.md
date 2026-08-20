@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.2.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.13...plugins-destination-snowflake-v5.2.14) (2026-08-20)
+
+
+### Bug Fixes
+
+* Snowflake migrating only first table in batch ([#23261](https://github.com/cloudquery/cloudquery/issues/23261)) ([006f165](https://github.com/cloudquery/cloudquery/commit/006f165a39582fcaf25ba61747f47d7730a35624))
+
 ## [5.2.13](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.12...plugins-destination-snowflake-v5.2.13) (2026-08-12)
 
 
