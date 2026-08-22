@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.5.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v5.5.10...plugins-destination-neo4j-v5.5.11) (2026-08-22)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23069](https://github.com/cloudquery/cloudquery/issues/23069)) ([4f3b70b](https://github.com/cloudquery/cloudquery/commit/4f3b70b3324698820baf74f4f7060762699e8fa3))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23114](https://github.com/cloudquery/cloudquery/issues/23114)) ([75a37bb](https://github.com/cloudquery/cloudquery/commit/75a37bb413b200f39e8f58a638b84996ecc57092))
+* **deps:** Update go module directive to v1.26.5 ([#23182](https://github.com/cloudquery/cloudquery/issues/23182)) ([e8bc921](https://github.com/cloudquery/cloudquery/commit/e8bc9211beeec85bf5e76ab673968377a74f0cab))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.7.0 ([#23163](https://github.com/cloudquery/cloudquery/issues/23163)) ([7df4831](https://github.com/cloudquery/cloudquery/commit/7df4831f6f83607541b187dd2bb40ad366465897))
+* **deps:** Update module github.com/neo4j/neo4j-go-driver/v6 to v6.2.0 ([#23208](https://github.com/cloudquery/cloudquery/issues/23208)) ([f675ad6](https://github.com/cloudquery/cloudquery/commit/f675ad67ab4d0cc7d40ed4092aa406d6b1cbecae))
+* **deps:** Update module google.golang.org/grpc to v1.82.1 [SECURITY] ([#23152](https://github.com/cloudquery/cloudquery/issues/23152)) ([aaa6858](https://github.com/cloudquery/cloudquery/commit/aaa68584f08a0238a7cf59410e3856422e881d23))
+
 ## [5.5.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-neo4j-v5.5.9...plugins-destination-neo4j-v5.5.10) (2026-07-10)
 
 
