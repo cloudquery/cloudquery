@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.34](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.33...plugins-source-square-v1.3.34) (2026-08-22)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pyarrow to v23.0.1 [SECURITY] ([#23116](https://github.com/cloudquery/cloudquery/issues/23116)) ([aff6c13](https://github.com/cloudquery/cloudquery/commit/aff6c1315d4b391bf87af80fde096d9b854f438e))
+* **deps:** Update ghcr.io/astral-sh/uv Docker tag to v0.12.1 ([#23199](https://github.com/cloudquery/cloudquery/issues/23199)) ([d6c3547](https://github.com/cloudquery/cloudquery/commit/d6c35475abac21407e8c1677f08402e86c825956))
+
 ## [1.3.33](https://github.com/cloudquery/cloudquery/compare/plugins-source-square-v1.3.32...plugins-source-square-v1.3.33) (2026-07-13)
 
 
