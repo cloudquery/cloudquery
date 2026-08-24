@@ -7,6 +7,7 @@ import (
 	"io"
 	"net"
 	"net/http"
+	neturl "net/url"
 	"os"
 	"os/signal"
 	"strconv"
@@ -20,6 +21,7 @@ import (
 	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/env"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/platform"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/team"
 	"github.com/pkg/browser"
 	"github.com/spf13/cobra"
@@ -41,6 +43,9 @@ cloudquery login
 
 # Log in to a specific team
 cloudquery login --team my-team
+
+# Log in directly to a CloudQuery Platform tenant
+cloudquery login --host my-tenant.mycloudquery.com
 `
 )
 
@@ -67,6 +72,7 @@ func newCmdLogin() *cobra.Command {
 		},
 	}
 	loginCmd.Flags().StringP("team", "t", "", "Team to login to. Specify the team name, e.g. 'my-team' (not the display name)")
+	loginCmd.Flags().String("host", "", "CloudQuery Platform tenant host to log in to directly, e.g. 'acme.mycloudquery.com', skipping the email-based routing")
 	return loginCmd
 }
 
@@ -135,8 +141,11 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	}
 
 	url := accountsURL + "?returnTo=" + localServerURL + "/callback"
+	if host, _ := cmd.Flags().GetString("host"); host != "" {
+		url = tenantLoginURL(host, localServerURL+"/callback")
+	}
 	if err := browser.OpenURL(url); err != nil {
-		fmt.Printf("Failed to open browser. Please open %s manually and paste the token below:\n", accountsURL)
+		fmt.Printf("Failed to open browser. Please open %s manually and paste the token below:\n", url)
 
 		stdinFd := int(os.Stdin.Fd())
 		if !term.IsTerminal(stdinFd) {
@@ -173,19 +182,36 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 
 	fmt.Println("Authenticating...")
 
-	err = auth.SaveRefreshToken(refreshToken)
-	if err != nil {
-		return fmt.Errorf("failed to save refresh token: %w", err)
-	}
+	if platform.IsPlatformToken(refreshToken) {
+		// A platform tenant completed the browser login: store the cqpd_ token
+		// in its own file and take the team from its claims — this identity has
+		// no Firebase refresh token to exchange and no Hub teams to list.
+		if err := platform.SavePlatformToken(refreshToken); err != nil {
+			return fmt.Errorf("failed to save platform token: %w", err)
+		}
+		_ = auth.RemoveRefreshToken()
+		if err := setTeamOnPlatformLogin(cmd, refreshToken); err != nil {
+			return err
+		}
+	} else {
+		if err := platform.RemovePlatformToken(); err != nil {
+			return fmt.Errorf("failed to remove previous platform token: %w", err)
+		}
 
-	tc := auth.NewTokenClient()
-	token, err := tc.GetToken()
-	if err != nil {
-		return fmt.Errorf("failed to get auth token: %w", err)
-	}
+		err = auth.SaveRefreshToken(refreshToken)
+		if err != nil {
+			return fmt.Errorf("failed to save refresh token: %w", err)
+		}
 
-	if err = setTeamOnLogin(ctx, cmd, token.Value); err != nil {
-		return fmt.Errorf("failed to set current team on login: %w", err)
+		tc := auth.NewTokenClient()
+		token, err := tc.GetToken()
+		if err != nil {
+			return fmt.Errorf("failed to get auth token: %w", err)
+		}
+
+		if err = setTeamOnLogin(ctx, cmd, token.Value); err != nil {
+			return fmt.Errorf("failed to set current team on login: %w", err)
+		}
 	}
 
 	// Create a context for the shutdown with a 15-second timeout.
@@ -205,6 +231,45 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	warnEnvCredentialsOverrideLogin(cmd)
 	cmd.Println("Next, initialize your sync configuration:")
 	cmd.Println(bold.Sprint("cloudquery init"))
+
+	return nil
+}
+
+// tenantLoginURL points the browser straight at a platform tenant's login page,
+// carrying the CLI callback the same way the accounts app forwards it.
+func tenantLoginURL(host, callbackURL string) string {
+	tenantURL := host
+	if !strings.Contains(tenantURL, "://") {
+		tenantURL = "https://" + tenantURL
+	}
+	return tenantURL + "/auth/login?cliReturnTo=" + neturl.QueryEscape(callbackURL)
+}
+
+// setTeamOnPlatformLogin sets the current team from the cqpd_ token's `tm`
+// claim. Platform identities have no Hub teams to list, so the claim is the
+// only source; a conflicting --team flag is an error rather than a silent
+// mismatch.
+func setTeamOnPlatformLogin(cmd *cobra.Command, token string) error {
+	tokenTeam := platform.TeamFromToken(token)
+
+	if cmd.Flags().Changed("team") {
+		flagTeam := cmd.Flag("team").Value.String()
+		if flagTeam != tokenTeam {
+			return fmt.Errorf("the platform token belongs to team %q, not %q", tokenTeam, flagTeam)
+		}
+	}
+
+	if tokenTeam == "" {
+		return nil
+	}
+
+	if err := config.SetValue("team", tokenTeam); err != nil {
+		return fmt.Errorf("failed to set team: %w", err)
+	}
+	if err := config.SetValue("team_internal", "false"); err != nil {
+		return fmt.Errorf("failed to set team metadata: %w", err)
+	}
+	cmd.Printf("Your current team is set to %s.\n", tokenTeam)
 
 	return nil
 }
