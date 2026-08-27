@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	storageAccount = "cqdestinationazblob"
+	storageAccount = "cqazblobtests"
 	container      = "test"
 )
 
