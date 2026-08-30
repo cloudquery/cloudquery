@@ -284,6 +284,11 @@
           "description": "Option to create specific indexes to improve deletion performance",
           "default": false
         },
+        "use_copy_from": {
+          "type": "boolean",
+          "description": "Write rows with the PostgreSQL `COPY` protocol instead of `INSERT` statements.\n\n`COPY` sends a batch as a single statement rather than one statement per row,\nwhich is substantially faster against a remote database. Tables with a\nprimary key are copied into a temporary staging table and merged into the\ntarget, since `COPY` has no `ON CONFLICT` of its own.\n\nRows repeating a primary key within one batch are collapsed before the merge,\nkeeping the last one, so a database-side trigger fires once rather than once\nper row.\n\nIt has no effect on CockroachDB or CrateDB, which always use `INSERT`.",
+          "default": false
+        },
         "pgvector_config": {
           "oneOf": [
             {

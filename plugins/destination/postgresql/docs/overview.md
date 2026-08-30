@@ -28,7 +28,7 @@ The (top level) spec section is described in the [Destination Spec Reference](ht
 Make sure you use environment variable expansion in production instead of committing the credentials to the configuration file directly.
 :::
 
-The PostgreSQL destination utilizes batching, and supports [`batch_size`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size_bytes).
+The PostgreSQL destination utilizes batching, and supports [`batch_size`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size) and [`batch_size_bytes`](https://www.cloudquery.io/docs/cli/integrations/destinations#batch_size_bytes). Batches are written with `INSERT` statements; see [`use_copy_from`](#postgresql-spec) for the faster `COPY` protocol.
 
 ### PostgreSQL Spec
 
@@ -65,6 +65,19 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 - `create_performance_indexes` (`boolean`) (optional) (default: `false`)
 
   Creates indexes on tables that help with performance when using `write_mode: overwrite-delete-stale`.
+
+- `use_copy_from` (`boolean`) (optional) (default: `false`)
+
+  Writes rows with the PostgreSQL [`COPY`](https://www.postgresql.org/docs/current/sql-copy.html) protocol instead of `INSERT` statements.
+
+  `COPY` sends a batch as a single statement rather than one statement per row, which is substantially faster against a remote database. Tables with a primary key cannot use `COPY` directly, since it has no `ON CONFLICT` clause, so the plugin copies the batch into a temporary staging table and merges it into the target in one transaction. Tables without a primary key are copied straight in.
+
+  Two things to know before enabling it:
+
+  - Rows that repeat a primary key within one batch are collapsed before the merge, keeping the last one. This matches what the `INSERT` path leaves behind, but the losing rows are never written, so any database-side trigger or rule fires once instead of once per row.
+  - Batches smaller than 100 rows use `INSERT` regardless, because `COPY` setup and the staging table cost more than they save at that size.
+
+  It has no effect on CockroachDB or CrateDB, which always use `INSERT`: CrateDB does not implement `COPY` over the wire protocol, and CockroachDB only supports temporary tables behind an experimental session setting.
 
 - `lakebase` (`object`) (optional)
 
