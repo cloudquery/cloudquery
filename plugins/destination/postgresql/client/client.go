@@ -46,6 +46,7 @@ type Client struct {
 	pgType              pgType
 	batchSize           int64
 	writer              *mixedbatchwriter.MixedBatchWriter
+	concurrentWriter    *concurrentWriter
 
 	spec *spec.Spec
 
@@ -152,10 +153,17 @@ func New(ctx context.Context, logger zerolog.Logger, specBytes []byte, opts plug
 	if err != nil {
 		return nil, err
 	}
+	if s.WriteConcurrency > 1 {
+		c.concurrentWriter = newConcurrentWriter(c, c.logger, s.BatchSize, s.BatchSizeBytes, s.WriteConcurrency, s.BatchTimeout.Duration())
+		c.logger.Info().Int64("write_concurrency", s.WriteConcurrency).Msg("writing insert batches concurrently")
+	}
 	return c, nil
 }
 
 func (c *Client) Write(ctx context.Context, res <-chan message.WriteMessage) error {
+	if c.concurrentWriter != nil {
+		return c.concurrentWriter.Write(ctx, res)
+	}
 	return c.writer.Write(ctx, res)
 }
 

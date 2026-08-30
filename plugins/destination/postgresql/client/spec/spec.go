@@ -13,10 +13,11 @@ import (
 )
 
 const (
-	defaultBatchSize      = 10000
-	defaultBatchSizeBytes = 100000000
-	defaultBatchTimeout   = 60 * time.Second
-	CQIDColumn            = "_cq_id"
+	defaultBatchSize        = 10000
+	defaultBatchSizeBytes   = 100000000
+	defaultBatchTimeout     = 60 * time.Second
+	defaultWriteConcurrency = 1
+	CQIDColumn              = "_cq_id"
 )
 
 type Spec struct {
@@ -39,6 +40,20 @@ type Spec struct {
 
 	// Maximum interval between batch writes.
 	BatchTimeout configtype.Duration `json:"batch_timeout,omitempty"`
+
+	// Number of insert batches to apply concurrently, each on its own connection.
+	//
+	// The default of 1 writes one batch at a time, which is what the plugin has
+	// always done. Raising it lets a database with spare capacity apply several
+	// batches at once; `connection_string` should carry a `pool_max_conns` at
+	// least this large, and `retry_on_deadlock` should be non-zero, because
+	// concurrent upserts over overlapping keys deadlock far more often.
+	//
+	// Batches in flight together may be applied in any order, so a primary key
+	// repeated across batches is no longer guaranteed to resolve to the last one
+	// written. Leave this at 1 for sources that emit updates to a row within a
+	// single sync.
+	WriteConcurrency int64 `json:"write_concurrency,omitempty" jsonschema:"minimum=1,default=1"`
 
 	// Option to create specific indexes to improve deletion performance
 	CreatePerformanceIndexes bool `json:"create_performance_indexes,omitempty" jsonschema:"default=false"`
@@ -178,6 +193,9 @@ func (s *Spec) SetDefaults() {
 	}
 	if s.BatchSizeBytes <= 0 {
 		s.BatchSizeBytes = defaultBatchSizeBytes
+	}
+	if s.WriteConcurrency <= 0 {
+		s.WriteConcurrency = defaultWriteConcurrency
 	}
 	if s.BatchTimeout.Duration() <= 0 {
 		s.BatchTimeout = configtype.NewDuration(defaultBatchTimeout)
