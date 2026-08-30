@@ -218,6 +218,28 @@ func TestCopyFrom_SmallBatchFallsBackToInsert(t *testing.T) {
 	require.Equal(t, "only", got[id])
 }
 
+func TestUseCopyFrom(t *testing.T) {
+	pgVector := &spec.PgVectorConfig{Tables: []spec.PgVectorTableConfig{{SourceTableName: "s", TargetTableName: "t"}}}
+
+	for _, tt := range []struct {
+		name   string
+		spec   spec.Spec
+		pgType pgType
+		want   bool
+	}{
+		{name: "off unless asked for", spec: spec.Spec{}, pgType: pgTypePostgreSQL, want: false},
+		{name: "opt in", spec: spec.Spec{UseCopyFrom: true}, pgType: pgTypePostgreSQL, want: true},
+		{name: "cockroachdb", spec: spec.Spec{UseCopyFrom: true}, pgType: pgTypeCockroachDB, want: false},
+		{name: "cratedb", spec: spec.Spec{UseCopyFrom: true}, pgType: pgTypeCrateDB, want: false},
+		{name: "pgvector", spec: spec.Spec{UseCopyFrom: true, PgVectorConfig: pgVector}, pgType: pgTypePostgreSQL, want: false},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &Client{spec: &tt.spec, pgType: tt.pgType}
+			require.Equal(t, tt.want, c.useCopyFrom())
+		})
+	}
+}
+
 func TestCopyGroupEligible(t *testing.T) {
 	withPK := &schema.Table{
 		Name:             "t",
