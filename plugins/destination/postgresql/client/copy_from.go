@@ -12,9 +12,8 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-// COPY prepares a statement to learn the column types, and upserts additionally
-// create and drop a staging table; below this both cost more than they save.
-// A var so tests can reach the COPY path with the small batches they build.
+// Below this, preparing the COPY statement and staging an upsert cost more than
+// they save. A var so tests can reach the COPY path with small batches.
 var minCopyRows int64 = 100
 
 // CrateDB has no COPY over the wire protocol and CockroachDB gates temporary
@@ -34,8 +33,8 @@ func (g *copyGroup) eligible() bool {
 	if g.rows < minCopyRows {
 		return false
 	}
-	// PkConstraintName is only populated once migrations have read it back from
-	// the database; without it there is nothing to conflict on.
+	// PkConstraintName is only set once migrations read it back from the
+	// database; without it there is nothing to conflict on.
 	return len(g.table.PrimaryKeysIndexes()) == 0 || g.table.PkConstraintName != ""
 }
 

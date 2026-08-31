@@ -33,6 +33,7 @@ The following tools / packages are used in this plugin:
 | github.com/aws/aws-sdk-go-v2/service/sts | Apache-2.0 |
 | github.com/aws/smithy-go | Apache-2.0 |
 | github.com/aws/smithy-go/internal/sync/singleflight | BSD-3-Clause |
+| github.com/aws/smithy-go/transport/http/protocol/internal/json/internal/stdlib | BSD-3-Clause |
 | github.com/bahlo/generic-list-go | BSD-3-Clause |
 | github.com/buger/jsonparser | MIT |
 | github.com/cenkalti/backoff/v5 | MIT |

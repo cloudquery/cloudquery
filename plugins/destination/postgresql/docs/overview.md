@@ -62,6 +62,14 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 
   Maximum interval between batch writes.
 
+- `write_concurrency` (`integer`) (optional) (default: `1`)
+
+  Number of insert batches to apply concurrently, each on its own connection.
+
+  The default of `1` writes one batch at a time. Raising it lets a database with spare capacity apply several batches at once; `connection_string` should carry a `pool_max_conns` at least this large, and `retry_on_deadlock` should be non-zero, because concurrent upserts over overlapping keys deadlock far more often.
+
+  Batches in flight together may be applied in any order, so a primary key repeated across batches is no longer guaranteed to resolve to the last one written. Leave this at `1` for sources that emit updates to a row within a single sync.
+
 - `create_performance_indexes` (`boolean`) (optional) (default: `false`)
 
   Creates indexes on tables that help with performance when using `write_mode: overwrite-delete-stale`.

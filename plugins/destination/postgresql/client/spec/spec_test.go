@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/cloudquery/codegen/jsonschema"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSpec_JSONSchemaExtend(t *testing.T) {
@@ -164,5 +165,61 @@ func TestSpec_JSONSchemaExtend(t *testing.T) {
 			Spec: `{"connection_string":"abc","aws_iam_auth":{"unknown":"x"}}`,
 			Err:  true,
 		},
+		{
+			Name: "proper write_concurrency",
+			Spec: `{"connection_string": "abc", "write_concurrency": 8}`,
+		},
+		{
+			Name: "zero write_concurrency",
+			Spec: `{"connection_string": "abc", "write_concurrency": 0}`,
+			Err:  true,
+		},
+		{
+			Name: "negative write_concurrency",
+			Spec: `{"connection_string": "abc", "write_concurrency": -1}`,
+			Err:  true,
+		},
+		{
+			Name: "float write_concurrency",
+			Spec: `{"connection_string": "abc", "write_concurrency": 1.5}`,
+			Err:  true,
+		},
+		{
+			Name: "null write_concurrency",
+			Spec: `{"connection_string": "abc", "write_concurrency": null}`,
+			Err:  true,
+		},
+		{
+			Name: "string write_concurrency",
+			Spec: `{"connection_string": "abc", "write_concurrency": "8"}`,
+			Err:  true,
+		},
+		{
+			Name: "proper use_copy_from",
+			Spec: `{"connection_string": "abc", "use_copy_from": true}`,
+		},
+		{
+			Name: "string use_copy_from",
+			Spec: `{"connection_string": "abc", "use_copy_from": "true"}`,
+			Err:  true,
+		},
 	})
+}
+
+func TestSpec_WriteConcurrencyDefaults(t *testing.T) {
+	for _, tt := range []struct {
+		name string
+		spec Spec
+		want int64
+	}{
+		{name: "unset", spec: Spec{}, want: defaultWriteConcurrency},
+		{name: "zero", spec: Spec{WriteConcurrency: 0}, want: defaultWriteConcurrency},
+		{name: "negative", spec: Spec{WriteConcurrency: -4}, want: defaultWriteConcurrency},
+		{name: "set", spec: Spec{WriteConcurrency: 16}, want: 16},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			tt.spec.SetDefaults()
+			require.Equal(t, tt.want, tt.spec.WriteConcurrency)
+		})
+	}
 }

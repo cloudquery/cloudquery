@@ -116,13 +116,27 @@ func (c *Client) insertBatchExec(ctx context.Context, messages message.WriteInse
 	return c.insertEmbeddingsBatch(ctx, tableToEmbBatch)
 }
 
+const (
+	pgErrDeadlockDetected        = "40P01"
+	pgErrInvalidSQLStatementName = "26000"
+)
+
+// A failed batch commits nothing, since pgx sends one as a single implicit
+// transaction, so both codes are safe to send again. 26000 follows a deadlock:
+// the statements the failed batch prepared died with its transaction while the
+// connection kept them cached, and pgx re-prepares on the attempt after.
+func isRetryablePgError(err error) bool {
+	var pgErr *pgconn.PgError
+	if !errors.As(err, &pgErr) {
+		return false
+	}
+	return pgErr.Code == pgErrDeadlockDetected || pgErr.Code == pgErrInvalidSQLStatementName
+}
+
 // fn must be safe to re-run: anything it consumes has to be rewound first.
 func (c *Client) retryOnDeadlock(fn func() error, msg string) error {
 	retrier := retry.New(
-		retry.RetryIf(func(err error) bool {
-			var pgErr *pgconn.PgError
-			return errors.As(err, &pgErr) && pgErr.Code == "40P01"
-		}),
+		retry.RetryIf(isRetryablePgError),
 		retry.Attempts(uint(c.spec.RetryOnDeadlock)+1),
 		retry.LastErrorOnly(true),
 	)

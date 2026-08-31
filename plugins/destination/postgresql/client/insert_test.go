@@ -2,6 +2,7 @@ package client
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"testing"
 	"time"
@@ -93,6 +94,24 @@ func TestClient_flushBatch(t *testing.T) {
 			},
 			retryOnDeadlock: 5,
 			wantErr:         false,
+		},
+		{
+			// A deadlock takes the statements the batch prepared down with it, so
+			// the retry can find them missing before it succeeds.
+			name: "stale prepared statement after a deadlock",
+			sendBatchErrs: []error{
+				pgErr,
+				&pgconn.PgError{Code: "26000", Message: `prepared statement "stmtcache_1" does not exist`},
+				nil,
+			},
+			retryOnDeadlock: 5,
+			wantErr:         false,
+		},
+		{
+			name:            "not retryable",
+			sendBatchErrs:   []error{&pgconn.PgError{Code: "23505", Message: "duplicate key value"}, nil},
+			retryOnDeadlock: 5,
+			wantErr:         true,
 		},
 		{
 			name: "six retries, always deadlock, fail",
@@ -206,4 +225,28 @@ func TestConcurrentSyncsAgainstSameTable(t *testing.T) {
 
 	require.Equal(t, 1, numRows)
 	require.NoError(t, err)
+}
+
+func TestIsRetryablePgError(t *testing.T) {
+	for _, tt := range []struct {
+		name string
+		err  error
+		want bool
+	}{
+		{name: "nil", err: nil, want: false},
+		{name: "not a pg error", err: errors.New("connection reset"), want: false},
+		{name: "deadlock", err: &pgconn.PgError{Code: "40P01"}, want: true},
+		{name: "stale prepared statement", err: &pgconn.PgError{Code: "26000"}, want: true},
+		{name: "unique violation", err: &pgconn.PgError{Code: "23505"}, want: false},
+		{name: "undefined table", err: &pgconn.PgError{Code: "42P01"}, want: false},
+		{
+			name: "wrapped deadlock",
+			err:  fmt.Errorf("failed to execute batch: %w", &pgconn.PgError{Code: "40P01"}),
+			want: true,
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+			require.Equal(t, tt.want, isRetryablePgError(tt.err))
+		})
+	}
 }

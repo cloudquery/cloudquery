@@ -20,6 +20,7 @@ spec:
     # batch_size_bytes: 100000000 # 100 MB
     # batch_timeout: 60s
     # use_copy_from: false # write with the COPY protocol instead of INSERT statements
+    # write_concurrency: 1 # number of insert batches to apply at once, each on its own connection
 
     # create_performance_indexes: false #create indexes that help with performance when using `write_mode: overwrite-delete-stale`
 ```

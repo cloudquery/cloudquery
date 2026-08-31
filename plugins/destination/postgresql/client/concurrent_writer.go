@@ -9,29 +9,21 @@ import (
 	"github.com/apache/arrow-go/v18/arrow"
 	"github.com/cloudquery/plugin-sdk/v4/message"
 	"github.com/cloudquery/plugin-sdk/v4/writers"
+	"github.com/cloudquery/plugin-sdk/v4/writers/mixedbatchwriter"
 	"github.com/rs/zerolog"
 	"golang.org/x/sync/semaphore"
 )
 
-// concurrentWriter is a drop-in replacement for the SDK's MixedBatchWriter that
-// applies insert batches on several connections at once.
+// concurrentWriter replaces the SDK's MixedBatchWriter with one that batches
+// identically but hands each full insert batch to a bounded pool of goroutines.
+// Other message types stay synchronous, and a change of message type drains the
+// pool, preserving the SDK's migrate -> insert -> delete ordering.
 //
-// The SDK writer accumulates a batch and calls InsertBatch synchronously, so a
-// destination writes one batch at a time on one connection no matter how much
-// capacity the database has. This writer keeps the same batching, but hands each
-// full insert batch to a bounded pool of goroutines. Blocking on a full pool is
-// what propagates backpressure back up the message channel.
-//
-// Message types other than inserts (migrations, delete-stale, delete-record) are
-// rare and order-sensitive, so they stay synchronous, and every change of message
-// type drains the pool first. That keeps the migrate -> insert -> delete-stale
-// ordering the SDK writer guarantees.
-//
-// Ordering caveat: two insert batches in flight at once can be applied in either
-// order, so a primary key repeated across batches no longer resolves to the last
-// one written. Concurrency is therefore opt-in per spec, and defaults to 1.
+// Batches in flight together may be applied in either order, so a primary key
+// repeated across batches no longer resolves to the last one written. Hence
+// opt-in, defaulting to 1.
 type concurrentWriter struct {
-	client         *Client
+	client         mixedbatchwriter.Client
 	logger         zerolog.Logger
 	batchSize      int64
 	batchSizeBytes int64
@@ -39,7 +31,13 @@ type concurrentWriter struct {
 	concurrency    int64
 }
 
-func newConcurrentWriter(c *Client, logger zerolog.Logger, batchSize, batchSizeBytes, concurrency int64, batchTimeout time.Duration) *concurrentWriter {
+var _ writers.Writer = (*concurrentWriter)(nil)
+
+func newConcurrentWriter(c mixedbatchwriter.Client, logger zerolog.Logger, batchSize, batchSizeBytes, concurrency int64, batchTimeout time.Duration) *concurrentWriter {
+	// A pool sized at zero blocks forever on its first acquire.
+	if concurrency < 1 {
+		concurrency = 1
+	}
 	return &concurrentWriter{
 		client:         c,
 		logger:         logger,
@@ -50,8 +48,8 @@ func newConcurrentWriter(c *Client, logger zerolog.Logger, batchSize, batchSizeB
 	}
 }
 
-// asyncFlusher runs up to `concurrency` flushes at a time and remembers the first
-// error, which is returned by the next submit or by drain.
+// asyncFlusher runs up to `concurrency` flushes at a time and keeps the first
+// error, returned by the next submit or by drain.
 type asyncFlusher struct {
 	sem *semaphore.Weighted
 	wg  sync.WaitGroup
@@ -68,7 +66,7 @@ func (a *asyncFlusher) submit(ctx context.Context, fn func() error) error {
 	if err := a.load(); err != nil {
 		return err
 	}
-	// Blocks once the pool is full, which is what pushes backpressure upstream.
+	// Blocking on a full pool is what carries backpressure upstream.
 	if err := a.sem.Acquire(ctx, 1); err != nil {
 		return err
 	}
@@ -83,8 +81,7 @@ func (a *asyncFlusher) submit(ctx context.Context, fn func() error) error {
 	return nil
 }
 
-// drain waits for every in-flight flush. It is the barrier that keeps message
-// types from interleaving.
+// drain waits for every in-flight flush.
 func (a *asyncFlusher) drain() error {
 	a.wg.Wait()
 	return a.load()
@@ -106,13 +103,14 @@ func (a *asyncFlusher) store(err error) {
 
 func (w *concurrentWriter) Write(ctx context.Context, msgChan <-chan message.WriteMessage) error {
 	flusher := newAsyncFlusher(w.concurrency)
+	// No flush outlives Write, including on the error paths below.
+	defer func() { _ = flusher.drain() }()
 
 	inserts := make(message.WriteInserts, 0, w.batchSize)
 	var insertRows, insertBytes int64
 
-	// flushInserts hands the accumulated batch to the pool. The batch slice is
-	// cloned because the loop below keeps appending into the same backing array,
-	// which a worker would otherwise read while it is being overwritten.
+	// The batch is cloned because the loop below keeps appending into the same
+	// backing array, which a worker would otherwise read as it is overwritten.
 	flushInserts := func() error {
 		if len(inserts) == 0 {
 			return nil
@@ -132,8 +130,6 @@ func (w *concurrentWriter) Write(ctx context.Context, msgChan <-chan message.Wri
 		})
 	}
 
-	// The remaining message types are low volume and order-sensitive, so they are
-	// applied inline, after the insert pool has drained.
 	var migrates message.WriteMigrateTables
 	var deleteStales message.WriteDeleteStales
 	var deleteRecords message.WriteDeleteRecords
@@ -186,8 +182,7 @@ loop:
 				if err := flush(prevMsgType); err != nil {
 					return err
 				}
-				// Barrier: nothing of the next type starts until every in-flight
-				// insert has landed.
+				// Barrier: the next type waits for every in-flight insert.
 				if err := flusher.drain(); err != nil {
 					return err
 				}
@@ -228,8 +223,8 @@ loop:
 	return flusher.drain()
 }
 
-// recordSize approximates a record's in-memory size from its buffers, standing in
-// for the SDK's batch accounting, which lives in an internal package.
+// recordSize approximates a record's in-memory size, standing in for the SDK's
+// batch accounting, which lives in an internal package.
 func recordSize(r arrow.RecordBatch) int64 {
 	var total int64
 	for _, col := range r.Columns() {

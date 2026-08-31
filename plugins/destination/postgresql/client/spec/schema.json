@@ -279,6 +279,12 @@
           "description": "Maximum interval between batch writes.",
           "default": "60s"
         },
+        "write_concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of insert batches to apply concurrently, each on its own connection.\n\nThe default of 1 writes one batch at a time, which is what the plugin has\nalways done. Raising it lets a database with spare capacity apply several\nbatches at once; `connection_string` should carry a `pool_max_conns` at\nleast this large, and `retry_on_deadlock` should be non-zero, because\nconcurrent upserts over overlapping keys deadlock far more often.\n\nBatches in flight together may be applied in any order, so a primary key\nrepeated across batches is no longer guaranteed to resolve to the last one\nwritten. Leave this at 1 for sources that emit updates to a row within a\nsingle sync.",
+          "default": 1
+        },
         "create_performance_indexes": {
           "type": "boolean",
           "description": "Option to create specific indexes to improve deletion performance",
