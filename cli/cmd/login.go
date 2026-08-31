@@ -90,9 +90,6 @@ func callbackHandler(accountsURL string, onToken func(string)) http.HandlerFunc 
 				http.Redirect(w, r, target, http.StatusSeeOther)
 				return
 			}
-			// An origin this CLI will not redirect to is either version skew (a
-			// tenant older than the origin param) or a forged callback; only the
-			// latter is worth surfacing on the terminal.
 			if origin != "" {
 				fmt.Fprintf(os.Stderr, "warning: ignoring untrusted success page origin %q from the login callback\n", origin)
 			}
@@ -105,7 +102,6 @@ func callbackHandler(accountsURL string, onToken func(string)) http.HandlerFunc 
 	}
 }
 
-// The origin is attacker-influenced: it arrives on a loopback URL anyone can open.
 func tenantSuccessURL(origin string) string {
 	u, err := neturl.Parse(origin)
 	if err != nil || u.Host == "" || u.Path != "" || u.RawQuery != "" || u.Fragment != "" {
