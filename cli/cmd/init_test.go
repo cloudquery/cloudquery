@@ -9,6 +9,7 @@ import (
 	"testing"
 
 	cqapi "github.com/cloudquery/cloudquery-api-go"
+	"github.com/cloudquery/cloudquery-api-go/config"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
@@ -27,6 +28,11 @@ var awsExample string
 var postgresqlExample string
 
 func TestInit(t *testing.T) {
+	// A cqpd_ token from a real login on this machine would otherwise put init
+	// on the platform-tenant path.
+	require.NoError(t, config.SetConfigHome(t.TempDir()))
+	require.NoError(t, config.SetDataHome(t.TempDir()))
+
 	configs := []struct {
 		name         string
 		source       string
