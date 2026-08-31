@@ -2,6 +2,9 @@ package cmd
 
 import (
 	"encoding/base64"
+	"net/http"
+	"net/http/httptest"
+	neturl "net/url"
 	"testing"
 
 	"github.com/cloudquery/cloudquery-api-go/config"
@@ -67,4 +70,55 @@ func TestSetTeamOnPlatformLoginWithoutTeamClaimIsNoop(t *testing.T) {
 
 	_, err := config.GetValue("team")
 	require.Error(t, err)
+}
+
+func TestCallbackHandler(t *testing.T) {
+	platformToken := mintPlatformTestToken(t, "acme")
+
+	call := func(query string) *httptest.ResponseRecorder {
+		var got string
+		h := callbackHandler("https://accounts.cloudquery.io", func(token string) { got = token })
+		w := httptest.NewRecorder()
+		h(w, httptest.NewRequest(http.MethodGet, "/callback?"+query, nil))
+		require.NotNil(t, got)
+
+		return w
+	}
+
+	t.Run("platform token returns to the tenant success page", func(t *testing.T) {
+		w := call("token=" + platformToken + "&origin=" + neturl.QueryEscape("https://acme.cloudquery.io"))
+
+		require.Equal(t, http.StatusSeeOther, w.Code)
+		require.Equal(t, "https://acme.cloudquery.io/success-close", w.Header().Get("Location"))
+	})
+
+	t.Run("loopback origin is allowed for local development", func(t *testing.T) {
+		w := call("token=" + platformToken + "&origin=" + neturl.QueryEscape("http://localhost:4040"))
+
+		require.Equal(t, http.StatusSeeOther, w.Code)
+		require.Equal(t, "http://localhost:4040/success-close", w.Header().Get("Location"))
+	})
+
+	t.Run("untrusted origins fall back to plain text, never a redirect", func(t *testing.T) {
+		for _, origin := range []string{
+			"",
+			"http://evil.example.com",
+			"https://acme.cloudquery.io/path",
+			"javascript:alert(1)",
+			"//evil.example.com",
+		} {
+			w := call("token=" + platformToken + "&origin=" + neturl.QueryEscape(origin))
+
+			require.Equal(t, http.StatusOK, w.Code, "origin %q", origin)
+			require.Empty(t, w.Header().Get("Location"), "origin %q", origin)
+			require.Contains(t, w.Body.String(), "You are signed in")
+		}
+	})
+
+	t.Run("cloud token still redirects to accounts", func(t *testing.T) {
+		w := call("token=firebase-refresh-token&origin=" + neturl.QueryEscape("https://acme.cloudquery.io"))
+
+		require.Equal(t, http.StatusSeeOther, w.Code)
+		require.Equal(t, "https://accounts.cloudquery.io/success-close", w.Header().Get("Location"))
+	})
 }

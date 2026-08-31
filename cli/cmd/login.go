@@ -76,6 +76,57 @@ func newCmdLogin() *cobra.Command {
 	return loginCmd
 }
 
+// callbackHandler sends the browser to the success page of the app that
+// authenticated it: cloud accounts, or the tenant origin passed with a platform
+// token. Cloud's page is behind a cloud session a platform-only user lacks.
+func callbackHandler(accountsURL string, onToken func(string)) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		token := r.URL.Query().Get("token")
+		onToken(token)
+
+		if platform.IsPlatformToken(token) {
+			if origin := tenantSuccessURL(r.URL.Query().Get("origin")); origin != "" {
+				http.Redirect(w, r, origin, http.StatusSeeOther)
+				return
+			}
+			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+			_, _ = io.WriteString(w, "You are signed in. You can close this window.\n")
+			return
+		}
+
+		http.Redirect(w, r, accountsURL+"/success-close", http.StatusSeeOther)
+	}
+}
+
+// tenantSuccessURL validates the origin, which is attacker-influenced: it
+// arrives on a loopback URL anyone can open. Returns "" when untrusted.
+func tenantSuccessURL(origin string) string {
+	if origin == "" {
+		return ""
+	}
+	u, err := neturl.Parse(origin)
+	if err != nil || u.Host == "" || u.Path != "" || u.RawQuery != "" || u.Fragment != "" {
+		return ""
+	}
+	switch {
+	case u.Scheme == "https":
+	case u.Scheme == "http" && isLoopbackHost(u.Hostname()):
+	default:
+		return ""
+	}
+
+	return u.String() + "/success-close"
+}
+
+func isLoopbackHost(host string) bool {
+	if host == "localhost" {
+		return true
+	}
+	ip := net.ParseIP(host)
+
+	return ip != nil && ip.IsLoopback()
+}
+
 func waitForServer(ctx context.Context, url string) error {
 	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
 	defer cancel()
@@ -107,13 +158,12 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	refreshToken := ""
 	gotToken := make(chan struct{})
 	var once gosync.Once
-	mux.HandleFunc("/callback", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/callback", callbackHandler(accountsURL, func(token string) {
 		once.Do(func() {
-			refreshToken = r.URL.Query().Get("token")
+			refreshToken = token
 			close(gotToken)
 		})
-		http.Redirect(w, r, accountsURL+"/success-close", http.StatusSeeOther)
-	})
+	}))
 	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprint(w, "OK")
