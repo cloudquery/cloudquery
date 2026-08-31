@@ -257,9 +257,6 @@ func platformToken() string {
 		warnTeamMismatchOnce(k)
 		return k
 	}
-	// Fall back to the token saved by a platform browser login (`cloudquery
-	// login` routed to a tenant). Env vars keep precedence so explicit
-	// credentials win.
 	if t := ReadPlatformToken(); t != "" {
 		warnTeamMismatchOnce(t)
 		return t

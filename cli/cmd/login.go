@@ -76,55 +76,50 @@ func newCmdLogin() *cobra.Command {
 	return loginCmd
 }
 
-// callbackHandler sends the browser to the success page of the app that
-// authenticated it: cloud accounts, or the tenant origin passed with a platform
-// token. Cloud's page is behind a cloud session a platform-only user lacks.
+const successClosePath = "/success-close"
+
 func callbackHandler(accountsURL string, onToken func(string)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		token := r.URL.Query().Get("token")
+		query := r.URL.Query()
+		token := query.Get("token")
 		onToken(token)
 
 		if platform.IsPlatformToken(token) {
-			if origin := tenantSuccessURL(r.URL.Query().Get("origin")); origin != "" {
-				http.Redirect(w, r, origin, http.StatusSeeOther)
+			origin := query.Get("origin")
+			if target := tenantSuccessURL(origin); target != "" {
+				http.Redirect(w, r, target, http.StatusSeeOther)
 				return
+			}
+			// An origin this CLI will not redirect to is either version skew (a
+			// tenant older than the origin param) or a forged callback; only the
+			// latter is worth surfacing on the terminal.
+			if origin != "" {
+				fmt.Fprintf(os.Stderr, "warning: ignoring untrusted success page origin %q from the login callback\n", origin)
 			}
 			w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 			_, _ = io.WriteString(w, "You are signed in. You can close this window.\n")
 			return
 		}
 
-		http.Redirect(w, r, accountsURL+"/success-close", http.StatusSeeOther)
+		http.Redirect(w, r, accountsURL+successClosePath, http.StatusSeeOther)
 	}
 }
 
-// tenantSuccessURL validates the origin, which is attacker-influenced: it
-// arrives on a loopback URL anyone can open. Returns "" when untrusted.
+// The origin is attacker-influenced: it arrives on a loopback URL anyone can open.
 func tenantSuccessURL(origin string) string {
-	if origin == "" {
-		return ""
-	}
 	u, err := neturl.Parse(origin)
 	if err != nil || u.Host == "" || u.Path != "" || u.RawQuery != "" || u.Fragment != "" {
 		return ""
 	}
-	switch {
-	case u.Scheme == "https":
-	case u.Scheme == "http" && isLoopbackHost(u.Hostname()):
-	default:
+	if u.Scheme != "https" && !(u.Scheme == "http" && isLoopbackHost(u.Hostname())) {
 		return ""
 	}
 
-	return u.String() + "/success-close"
+	return u.String() + successClosePath
 }
 
 func isLoopbackHost(host string) bool {
-	if host == "localhost" {
-		return true
-	}
-	ip := net.ParseIP(host)
-
-	return ip != nil && ip.IsLoopback()
+	return host == "localhost" || net.ParseIP(host).IsLoopback()
 }
 
 func waitForServer(ctx context.Context, url string) error {
@@ -233,9 +228,6 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	fmt.Println("Authenticating...")
 
 	if platform.IsPlatformToken(refreshToken) {
-		// A platform tenant completed the browser login: store the cqpd_ token
-		// in its own file and take the team from its claims — this identity has
-		// no Firebase refresh token to exchange and no Hub teams to list.
 		if err := platform.SavePlatformToken(refreshToken); err != nil {
 			return fmt.Errorf("failed to save platform token: %w", err)
 		}
@@ -285,8 +277,6 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	return nil
 }
 
-// tenantLoginURL points the browser straight at a platform tenant's login page,
-// carrying the CLI callback the same way the accounts app forwards it.
 func tenantLoginURL(host, callbackURL string) string {
 	tenantURL := host
 	if !strings.Contains(tenantURL, "://") {
@@ -295,10 +285,6 @@ func tenantLoginURL(host, callbackURL string) string {
 	return tenantURL + "/auth/login?cliReturnTo=" + neturl.QueryEscape(callbackURL)
 }
 
-// setTeamOnPlatformLogin sets the current team from the cqpd_ token's `tm`
-// claim. Platform identities have no Hub teams to list, so the claim is the
-// only source; a conflicting --team flag is an error rather than a silent
-// mismatch.
 func setTeamOnPlatformLogin(cmd *cobra.Command, token string) error {
 	tokenTeam := platform.TeamFromToken(token)
 

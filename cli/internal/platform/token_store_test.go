@@ -35,7 +35,6 @@ func TestPlatformTokenStoreRoundtrip(t *testing.T) {
 
 	require.NoError(t, RemovePlatformToken())
 	require.Empty(t, ReadPlatformToken())
-	// removing again is not an error
 	require.NoError(t, RemovePlatformToken())
 }
 

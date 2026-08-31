@@ -28,8 +28,6 @@ var awsExample string
 var postgresqlExample string
 
 func TestInit(t *testing.T) {
-	// A cqpd_ token from a real login on this machine would otherwise put init
-	// on the platform-tenant path.
 	require.NoError(t, config.SetConfigHome(t.TempDir()))
 	require.NoError(t, config.SetDataHome(t.TempDir()))
 
