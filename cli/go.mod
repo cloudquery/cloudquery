@@ -9,8 +9,8 @@ require (
 	github.com/cenkalti/backoff/v7 v7.0.0
 	github.com/cloudquery/cloudquery-api-go v1.14.12
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/plugin-pb-go v1.27.16
-	github.com/cloudquery/plugin-sdk/v4 v4.96.1
+	github.com/cloudquery/plugin-pb-go v1.27.17
+	github.com/cloudquery/plugin-sdk/v4 v4.96.2
 	github.com/distribution/reference v0.6.0
 	github.com/docker/distribution v2.8.3+incompatible
 	github.com/docker/docker v28.5.2+incompatible
@@ -56,8 +56,8 @@ require (
 	golang.org/x/net v0.57.0
 	golang.org/x/sync v0.22.0
 	golang.org/x/term v0.45.0
-	google.golang.org/grpc v1.83.0
-	google.golang.org/protobuf v1.36.11
+	google.golang.org/grpc v1.83.1
+	google.golang.org/protobuf v1.36.12
 	gopkg.in/yaml.v3 v3.0.1
 )
 
