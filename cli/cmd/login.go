@@ -224,11 +224,15 @@ func runLogin(ctx context.Context, cmd *cobra.Command) (err error) {
 	fmt.Println("Authenticating...")
 
 	if platform.IsPlatformToken(refreshToken) {
+		tokenTeam, err := platformLoginTeam(cmd, refreshToken)
+		if err != nil {
+			return err
+		}
 		if err := platform.SavePlatformToken(refreshToken); err != nil {
 			return fmt.Errorf("failed to save platform token: %w", err)
 		}
 		_ = auth.RemoveRefreshToken()
-		if err := setTeamOnPlatformLogin(cmd, refreshToken); err != nil {
+		if err := setTeamOnPlatformLogin(cmd, tokenTeam); err != nil {
 			return err
 		}
 	} else {
@@ -281,25 +285,28 @@ func tenantLoginURL(host, callbackURL string) string {
 	return tenantURL + "/auth/login?cliReturnTo=" + neturl.QueryEscape(callbackURL)
 }
 
-func setTeamOnPlatformLogin(cmd *cobra.Command, token string) error {
+func platformLoginTeam(cmd *cobra.Command, token string) (string, error) {
 	tokenTeam := platform.TeamFromToken(token)
 
 	if cmd.Flags().Changed("team") {
 		flagTeam := cmd.Flag("team").Value.String()
 		if flagTeam != tokenTeam {
-			return fmt.Errorf("the platform token belongs to team %q, not %q", tokenTeam, flagTeam)
+			return "", fmt.Errorf("the platform token belongs to team %q, not %q", tokenTeam, flagTeam)
 		}
 	}
 
-	if tokenTeam == "" {
-		return nil
-	}
+	return tokenTeam, nil
+}
 
+func setTeamOnPlatformLogin(cmd *cobra.Command, tokenTeam string) error {
 	if err := config.SetValue("team", tokenTeam); err != nil {
 		return fmt.Errorf("failed to set team: %w", err)
 	}
 	if err := config.SetValue("team_internal", "false"); err != nil {
 		return fmt.Errorf("failed to set team metadata: %w", err)
+	}
+	if tokenTeam == "" {
+		return nil
 	}
 	cmd.Printf("Your current team is set to %s.\n", tokenTeam)
 

@@ -44,7 +44,9 @@ func TestTenantLoginURL(t *testing.T) {
 func TestSetTeamOnPlatformLoginSetsTeamFromClaims(t *testing.T) {
 	cmd := newLoginTestCmd(t)
 
-	require.NoError(t, setTeamOnPlatformLogin(cmd, mintPlatformTestToken(t, "team-x")))
+	tokenTeam, err := platformLoginTeam(cmd, mintPlatformTestToken(t, "team-x"))
+	require.NoError(t, err)
+	require.NoError(t, setTeamOnPlatformLogin(cmd, tokenTeam))
 
 	team, err := config.GetValue("team")
 	require.NoError(t, err)
@@ -55,21 +57,28 @@ func TestSetTeamOnPlatformLoginSetsTeamFromClaims(t *testing.T) {
 	require.Equal(t, "false", teamInternal)
 }
 
-func TestSetTeamOnPlatformLoginRejectsMismatchedTeamFlag(t *testing.T) {
+func TestPlatformLoginTeamRejectsMismatchedTeamFlagBeforePersisting(t *testing.T) {
 	cmd := newLoginTestCmd(t)
 	require.NoError(t, cmd.Flags().Set("team", "other-team"))
 
-	err := setTeamOnPlatformLogin(cmd, mintPlatformTestToken(t, "team-x"))
+	_, err := platformLoginTeam(cmd, mintPlatformTestToken(t, "team-x"))
 	require.ErrorContains(t, err, `belongs to team "team-x"`)
+
+	_, err = config.GetValue("team")
+	require.Error(t, err)
 }
 
-func TestSetTeamOnPlatformLoginWithoutTeamClaimIsNoop(t *testing.T) {
+func TestSetTeamOnPlatformLoginWithoutTeamClaimClearsStaleTeam(t *testing.T) {
 	cmd := newLoginTestCmd(t)
+	require.NoError(t, config.SetValue("team", "team-from-a-previous-cloud-login"))
 
-	require.NoError(t, setTeamOnPlatformLogin(cmd, mintPlatformTestToken(t, "")))
+	tokenTeam, err := platformLoginTeam(cmd, mintPlatformTestToken(t, ""))
+	require.NoError(t, err)
+	require.NoError(t, setTeamOnPlatformLogin(cmd, tokenTeam))
 
-	_, err := config.GetValue("team")
-	require.Error(t, err)
+	team, err := config.GetValue("team")
+	require.NoError(t, err)
+	require.Empty(t, team)
 }
 
 func TestCallbackHandler(t *testing.T) {
