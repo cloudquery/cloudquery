@@ -48,14 +48,14 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9
         with:
-          version: v2.12.2
+          version: v2.13.1
           working-directory: plugins/source/hackernews
           args: '--config ../../.golangci.yml'
       - name: Setup CloudQuery
         if: github.event_name == 'pull_request'
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.41.1
+          version: v6.41.2
       - name: gen
         if: github.event_name == 'pull_request'
         run: make gen
