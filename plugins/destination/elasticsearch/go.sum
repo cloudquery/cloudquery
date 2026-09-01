@@ -77,8 +77,8 @@ github.com/dlclark/regexp2 v1.11.0 h1:G/nrcoOa7ZXlpoa/91N3X7mM3r8eIlMBBJZvsz/mxK
 github.com/dlclark/regexp2 v1.11.0/go.mod h1:DHkYz0B9wPfa6wondMfaivmHpzrQ3v9q8cnmRbL6yW8=
 github.com/elastic/elastic-transport-go/v8 v8.11.0 h1:taYmqC2M6+fZt/+W+ENYh/W5L9+KrlJGOSbEJs8egWc=
 github.com/elastic/elastic-transport-go/v8 v8.11.0/go.mod h1:DZQ0szCNywc9F+C9l/Kkd4n69SvJVj0I3yK1Of7s3l8=
-github.com/elastic/go-elasticsearch/v9 v9.4.2 h1:94oIfcF5R+OBlhdJFMeF2mcLwDSDKPZOwX3YZebr3X4=
-github.com/elastic/go-elasticsearch/v9 v9.4.2/go.mod h1:IKW8WkW++PW8If95XqfMffGjoFrzHCpsKmWgYk5j3fQ=
+github.com/elastic/go-elasticsearch/v9 v9.5.0 h1:ye9pnajcrSE2Fra0Q++nJsi09p2dJTaN6YXKz7LL7WU=
+github.com/elastic/go-elasticsearch/v9 v9.5.0/go.mod h1:EbZnYlTlbhNqRt98YW+QSM2SEKplN5o8J+G6d9STOVo=
 github.com/fatih/color v1.16.0 h1:zmkK9Ngbjj+K0yRhTVONQh1p/HknKYSlNT+vZCzyokM=
 github.com/fatih/color v1.16.0/go.mod h1:fL2Sau1YI5c0pdGEVCbKQbLXB6edEj1ZgiY4NijnWvE=
 github.com/getsentry/sentry-go v0.48.0 h1:FRZNr7Uk1C86ev1bSJmYlUkL9oyivQA6YOcdYfaaMmY=
