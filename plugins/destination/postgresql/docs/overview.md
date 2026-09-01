@@ -77,7 +77,7 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
   - Rows that repeat a primary key within one batch are collapsed before the merge, keeping the last one. This matches what the `INSERT` path leaves behind, but the losing rows are never written, so any database-side trigger or rule fires once instead of once per row.
   - Batches smaller than 100 rows use `INSERT` regardless, because `COPY` setup and the staging table cost more than they save at that size.
 
-  It has no effect on CockroachDB or CrateDB, which always use `INSERT`: CrateDB does not implement `COPY` over the wire protocol, and CockroachDB only supports temporary tables behind an experimental session setting.
+  It has no effect on CockroachDB or CrateDB, which always use `INSERT`: CrateDB does not implement `COPY` over the wire protocol, and CockroachDB only supports temporary tables behind an experimental session setting. It is also ignored when `pgvector_config` is set, since embeddings are inserted after each flush.
 
 - `lakebase` (`object`) (optional)
 

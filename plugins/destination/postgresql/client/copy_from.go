@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -14,7 +15,7 @@ import (
 
 // COPY prepares a statement to learn the column types, and upserts additionally
 // create and drop a staging table; below this both cost more than they save.
-// A var so tests can reach the COPY path with the small batches they build.
+// A var so tests can force the COPY path.
 var minCopyRows int64 = 100
 
 // CrateDB has no COPY over the wire protocol and CockroachDB gates temporary
@@ -25,18 +26,35 @@ func (c *Client) useCopyFrom() bool {
 }
 
 type copyGroup struct {
-	table *schema.Table
-	msgs  message.WriteInserts
-	rows  int64
+	table     *schema.Table
+	pkColumns []string // the database's, which are not always the source schema's
+	msgs      message.WriteInserts
+	rows      int64
 }
 
 func (g *copyGroup) eligible() bool {
 	if g.rows < minCopyRows {
 		return false
 	}
-	// PkConstraintName is only populated once migrations have read it back from
-	// the database; without it there is nothing to conflict on.
-	return len(g.table.PrimaryKeysIndexes()) == 0 || g.table.PkConstraintName != ""
+	if len(g.table.PrimaryKeysIndexes()) == 0 {
+		return true
+	}
+	// The merge needs both halves of the database's constraint, and neither is
+	// known until migrations have read it back.
+	return g.table.PkConstraintName != "" && len(g.pkColumns) > 0
+}
+
+// The database's primary key columns, which are what the merge dedupes on: it
+// conflicts on the database's constraint, so deduping on the source schema's
+// primary keys instead lets two rows with the same constraint key through once
+// the two have drifted apart, as --no-migrate leaves them.
+func (c *Client) pkConstraintColumns(tableName string) []string {
+	c.pgTablesToPKConstraintsMu.RLock()
+	defer c.pgTablesToPKConstraintsMu.RUnlock()
+	if entry := c.pgTablesToPKConstraints[tableName]; entry != nil {
+		return slices.Clone(entry.columns)
+	}
+	return nil
 }
 
 func (c *Client) insertBatchCopy(ctx context.Context, messages message.WriteInserts, pgTables map[string]struct{}) error {
@@ -55,7 +73,10 @@ func (c *Client) insertBatchCopy(ctx context.Context, messages message.WriteInse
 		}
 		g := byTable[tableName]
 		if g == nil {
-			g = &copyGroup{table: c.normalizeTable(msg.GetTable())}
+			g = &copyGroup{
+				table:     c.normalizeTable(msg.GetTable()),
+				pkColumns: c.pkConstraintColumns(tableName),
+			}
 			byTable[tableName] = g
 			groups = append(groups, g)
 		}
@@ -63,14 +84,12 @@ func (c *Client) insertBatchCopy(ctx context.Context, messages message.WriteInse
 		g.rows += msg.Record.NumRows()
 	}
 
-	// Ineligible groups go into a single pipelined batch: one SendBatch for all
-	// of them together, rather than one per table. A table is either wholly
-	// eligible or wholly ineligible, so no table's rows are split across the two
-	// paths and per-table arrival order still holds.
+	// Ineligible groups share one pipelined batch rather than one SendBatch each.
+	// Eligibility is per table, so no table's rows are split across the paths.
 	var execMsgs message.WriteInserts
 	for _, g := range groups {
 		if g.eligible() {
-			if err := c.copyTable(ctx, g.table, g.msgs); err != nil {
+			if err := c.copyTable(ctx, g); err != nil {
 				return err
 			}
 			continue
@@ -83,12 +102,13 @@ func (c *Client) insertBatchCopy(ctx context.Context, messages message.WriteInse
 	return c.insertBatchExec(ctx, execMsgs, pgTables)
 }
 
-func (c *Client) copyTable(ctx context.Context, table *schema.Table, msgs message.WriteInserts) error {
+func (c *Client) copyTable(ctx context.Context, g *copyGroup) error {
+	table := g.table
 	columns := make([]string, len(table.Columns))
 	for i, col := range table.Columns {
 		columns[i] = col.Name
 	}
-	src := &copyFromRecords{client: c, msgs: msgs}
+	src := &copyFromRecords{client: c, msgs: g.msgs}
 
 	if len(table.PrimaryKeysIndexes()) == 0 {
 		return c.retryOnDeadlock(func() error {
@@ -100,14 +120,14 @@ func (c *Client) copyTable(ctx context.Context, table *schema.Table, msgs messag
 
 	return c.retryOnDeadlock(func() error {
 		src.reset()
-		return c.upsertViaStagingTable(ctx, table, columns, src)
+		return c.upsertViaStagingTable(ctx, table, columns, g.pkColumns, src)
 	}, "failed to upsert into "+table.Name)
 }
 
 // COPY has no ON CONFLICT, so an upsert stages the rows and merges them. The
 // transaction both scopes the temporary table to this connection and drops it on
 // either outcome.
-func (c *Client) upsertViaStagingTable(ctx context.Context, table *schema.Table, columns []string, src pgx.CopyFromSource) error {
+func (c *Client) upsertViaStagingTable(ctx context.Context, table *schema.Table, columns, pkColumns []string, src pgx.CopyFromSource) error {
 	conn, err := c.conn.Acquire(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to acquire connection: %w", err)
@@ -133,7 +153,7 @@ func (c *Client) upsertViaStagingTable(ctx context.Context, table *schema.Table,
 		return fmt.Errorf("failed to copy into staging table: %w", err)
 	}
 
-	if _, err := tx.Exec(ctx, mergeFromStaging(table, staging)); err != nil {
+	if _, err := tx.Exec(ctx, mergeFromStaging(table, staging, pkColumns)); err != nil {
 		return fmt.Errorf("failed to merge staging table: %w", err)
 	}
 
@@ -143,18 +163,17 @@ func (c *Client) upsertViaStagingTable(ctx context.Context, table *schema.Table,
 // distinct on is load-bearing: on conflict do update rejects a statement whose
 // source repeats a conflict key ("cannot affect row a second time"). ctid desc
 // keeps the last row copied, matching insertBatchExec.
-func mergeFromStaging(table *schema.Table, staging string) string {
+func mergeFromStaging(table *schema.Table, staging string, pkColumns []string) string {
 	quotedColumns := make([]string, len(table.Columns))
 	for i, col := range table.Columns {
 		quotedColumns[i] = pgx.Identifier{col.Name}.Sanitize()
 	}
-	primaryKeys := table.PrimaryKeys()
-	quotedPrimaryKeys := make([]string, len(primaryKeys))
-	for i, pk := range primaryKeys {
-		quotedPrimaryKeys[i] = pgx.Identifier{pk}.Sanitize()
+	quotedPKColumns := make([]string, len(pkColumns))
+	for i, pk := range pkColumns {
+		quotedPKColumns[i] = pgx.Identifier{pk}.Sanitize()
 	}
 	columnList := strings.Join(quotedColumns, ",")
-	primaryKeyList := strings.Join(quotedPrimaryKeys, ",")
+	pkColumnList := strings.Join(quotedPKColumns, ",")
 
 	var sb strings.Builder
 	sb.WriteString("insert into ")
@@ -162,13 +181,13 @@ func mergeFromStaging(table *schema.Table, staging string) string {
 	sb.WriteString(" (")
 	sb.WriteString(columnList)
 	sb.WriteString(") select distinct on (")
-	sb.WriteString(primaryKeyList)
+	sb.WriteString(pkColumnList)
 	sb.WriteString(") ")
 	sb.WriteString(columnList)
 	sb.WriteString(" from ")
 	sb.WriteString(pgx.Identifier{staging}.Sanitize())
 	sb.WriteString(" order by ")
-	sb.WriteString(primaryKeyList)
+	sb.WriteString(pkColumnList)
 	sb.WriteString(", ctid desc on conflict on constraint ")
 	sb.WriteString(pgx.Identifier{table.PkConstraintName}.Sanitize())
 	sb.WriteString(" do update set ")

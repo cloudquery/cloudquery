@@ -54,7 +54,8 @@ type Spec struct {
 	// keeping the last one, so a database-side trigger fires once rather than once
 	// per row.
 	//
-	// It has no effect on CockroachDB or CrateDB, which always use `INSERT`.
+	// It has no effect on CockroachDB, CrateDB, or when `pgvector_config` is set;
+	// those always use `INSERT`.
 	UseCopyFrom bool `json:"use_copy_from,omitempty" jsonschema:"default=false"`
 
 	// Optional configuration to enable PgVector embedding support.

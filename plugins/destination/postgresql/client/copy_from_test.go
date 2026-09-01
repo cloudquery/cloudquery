@@ -3,6 +3,7 @@ package client
 import (
 	"context"
 	"fmt"
+	"slices"
 	"testing"
 	"time"
 
@@ -252,15 +253,17 @@ func TestCopyGroupEligible(t *testing.T) {
 		Columns: []schema.Column{{Name: "id", PrimaryKey: true}},
 	}
 
-	eligible := func(table *schema.Table, rows int64) bool {
-		return (&copyGroup{table: table, rows: rows}).eligible()
+	eligible := func(table *schema.Table, pkColumns []string, rows int64) bool {
+		return (&copyGroup{table: table, pkColumns: pkColumns, rows: rows}).eligible()
 	}
 
-	require.True(t, eligible(withPK, minCopyRows))
-	require.False(t, eligible(withPK, minCopyRows-1), "small batches use the row-by-row path")
-	require.True(t, eligible(noPK, minCopyRows))
-	require.False(t, eligible(noConstraint, minCopyRows),
+	require.True(t, eligible(withPK, []string{"id"}, minCopyRows))
+	require.False(t, eligible(withPK, []string{"id"}, minCopyRows-1), "small batches use the row-by-row path")
+	require.True(t, eligible(noPK, nil, minCopyRows))
+	require.False(t, eligible(noConstraint, []string{"id"}, minCopyRows),
 		"a primary key with no known constraint name cannot be merged from staging")
+	require.False(t, eligible(withPK, nil, minCopyRows),
+		"a constraint whose columns are unknown cannot be deduped on")
 }
 
 func TestMergeFromStaging(t *testing.T) {
@@ -278,5 +281,39 @@ func TestMergeFromStaging(t *testing.T) {
 			`order by "_cq_id", ctid desc `+
 			`on conflict on constraint "aws_instances_cqpk" `+
 			`do update set "_cq_id"=excluded."_cq_id","name"=excluded."name"`,
-		mergeFromStaging(table, "cq_staging_1"))
+		mergeFromStaging(table, "cq_staging_1", []string{"_cq_id"}))
+
+	// The dedupe key follows the constraint, not table.PrimaryKeys().
+	require.Contains(t,
+		mergeFromStaging(table, "cq_staging_1", []string{"name"}),
+		`select distinct on ("name")`)
+}
+
+// Deduping on the source schema's primary keys once they have drifted from the
+// database's aborts the merge with "cannot affect row a second time".
+func TestCopyFrom_PrimaryKeyDriftFromDatabase(t *testing.T) {
+	forceCopyFrom(t)
+
+	ctx := context.Background()
+	table := copyTestTable(t, true)
+	p := newCopyPlugin(t)
+	t.Cleanup(func() { _ = p.Close(ctx) })
+
+	require.NoError(t, p.WriteAll(ctx, []message.WriteMessage{&message.WriteMigrateTable{Table: table}}))
+
+	// No migrate message: the source moves its primary key while the database
+	// keeps its constraint on id.
+	drifted := &schema.Table{Name: table.Name, Columns: slices.Clone(table.Columns)}
+	drifted.Columns[0].PrimaryKey = false
+	drifted.Columns[1].PrimaryKey = true
+
+	// The same id under two source primary keys: only deduping on id leaves the
+	// merge one row per constraint key.
+	require.NoError(t, p.WriteAll(ctx, []message.WriteMessage{
+		&message.WriteInsert{Record: copyRecord(drifted, "same-id", "first")},
+		&message.WriteInsert{Record: copyRecord(drifted, "same-id", "second")},
+	}))
+
+	require.Equal(t, map[string]string{"same-id": "second"}, readAll(ctx, t, p, table),
+		"the last row written must win, as it does on the insert path")
 }
