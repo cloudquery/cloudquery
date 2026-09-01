@@ -63,18 +63,24 @@ func (c *Client) insertBatchCopy(ctx context.Context, messages message.WriteInse
 		g.rows += msg.Record.NumRows()
 	}
 
+	// Ineligible groups go into a single pipelined batch: one SendBatch for all
+	// of them together, rather than one per table. A table is either wholly
+	// eligible or wholly ineligible, so no table's rows are split across the two
+	// paths and per-table arrival order still holds.
+	var execMsgs message.WriteInserts
 	for _, g := range groups {
-		var err error
 		if g.eligible() {
-			err = c.copyTable(ctx, g.table, g.msgs)
-		} else {
-			err = c.insertBatchExec(ctx, g.msgs, pgTables)
+			if err := c.copyTable(ctx, g.table, g.msgs); err != nil {
+				return err
+			}
+			continue
 		}
-		if err != nil {
-			return err
-		}
+		execMsgs = append(execMsgs, g.msgs...)
 	}
-	return nil
+	if len(execMsgs) == 0 {
+		return nil
+	}
+	return c.insertBatchExec(ctx, execMsgs, pgTables)
 }
 
 func (c *Client) copyTable(ctx context.Context, table *schema.Table, msgs message.WriteInserts) error {
