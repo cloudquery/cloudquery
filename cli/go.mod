@@ -29,7 +29,7 @@ require (
 	github.com/rs/zerolog v1.35.1
 	github.com/rudderlabs/analytics-go/v4 v4.2.3
 	github.com/samber/lo v1.53.0
-	github.com/santhosh-tekuri/jsonschema/v6 v6.0.2
+	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3
 	github.com/schollz/progressbar/v3 v3.14.6
 	github.com/spf13/cobra v1.10.2
 	github.com/stretchr/testify v1.11.1
