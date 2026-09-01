@@ -131,7 +131,7 @@ jobs:
         if: needs.prepare.outputs.ui_dir_arg != ''
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.41.1
+          version: v6.41.2
 
       - name: Build
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -235,7 +235,7 @@ jobs:
 
       - # Required for the package command to work
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4
 
       - name: Build package
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -256,7 +256,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.41.1
+          version: v6.41.2
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -347,7 +347,7 @@ jobs:
 
       - # Required for the package command to work
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4
 
       - name: Run package command
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -358,7 +358,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.41.1
+          version: v6.41.2
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -398,7 +398,7 @@ jobs:
           name: build_dir
           path: ${{ needs.prepare.outputs.ui_build_dir }}
 
-      - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
         with:
           package_json_file: ${{ needs.prepare.outputs.plugin_dir }}/package.json
 
@@ -446,7 +446,7 @@ jobs:
 
       - # Required for the package command to work
         name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4
+        uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4
 
       - name: Run package command
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -457,7 +457,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.41.1
+          version: v6.41.2
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -561,7 +561,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.41.1
+          version: v6.41.2
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
