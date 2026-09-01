@@ -34,7 +34,7 @@ require (
 	github.com/spf13/cobra v1.10.2
 	github.com/stretchr/testify v1.11.1
 	github.com/thoas/go-funk v0.9.3
-	github.com/yuin/goldmark v1.8.4
+	github.com/yuin/goldmark v1.8.5
 	go.opentelemetry.io/collector/component v1.65.0
 	go.opentelemetry.io/collector/config/configgrpc v1.65.0
 	go.opentelemetry.io/collector/config/confighttp v0.159.0
