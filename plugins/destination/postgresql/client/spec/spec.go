@@ -54,6 +54,11 @@ type Spec struct {
 	// keeping the last one, so a database-side trigger fires once rather than once
 	// per row.
 	//
+	// Tables with a primary key are still written to by an `INSERT`, so row-level
+	// security and rewrite rules behave as before. Tables without one are copied
+	// straight in: rewrite rules are not applied, and row-level security makes the
+	// write fail, since PostgreSQL rejects `COPY FROM` on such a table.
+	//
 	// It has no effect on CockroachDB, CrateDB, or when `pgvector_config` is set;
 	// those always use `INSERT`.
 	UseCopyFrom bool `json:"use_copy_from,omitempty" jsonschema:"default=false"`

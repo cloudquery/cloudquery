@@ -13,14 +13,8 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-// COPY prepares a statement to learn the column types, and upserts additionally
-// create and drop a staging table; below this both cost more than they save.
-// A var so tests can force the COPY path.
 var minCopyRows int64 = 100
 
-// CrateDB has no COPY over the wire protocol and CockroachDB gates temporary
-// tables behind an experimental setting. pgvector inserts embeddings after each
-// flush, which COPY has no equivalent of.
 func (c *Client) useCopyFrom() bool {
 	return c.spec.UseCopyFrom && c.pgType == pgTypePostgreSQL && !c.hasPgVectorConfig()
 }
@@ -39,15 +33,11 @@ func (g *copyGroup) eligible() bool {
 	if len(g.table.PrimaryKeysIndexes()) == 0 {
 		return true
 	}
-	// The merge needs both halves of the database's constraint, and neither is
-	// known until migrations have read it back.
 	return g.table.PkConstraintName != "" && len(g.pkColumns) > 0
 }
 
-// The database's primary key columns, which are what the merge dedupes on: it
-// conflicts on the database's constraint, so deduping on the source schema's
-// primary keys instead lets two rows with the same constraint key through once
-// the two have drifted apart, as --no-migrate leaves them.
+// The database's primary key columns, which the merge dedupes on: deduping on the
+// source schema's instead lets two rows share a constraint key once they drift.
 func (c *Client) pkConstraintColumns(tableName string) []string {
 	c.pgTablesToPKConstraintsMu.RLock()
 	defer c.pgTablesToPKConstraintsMu.RUnlock()
@@ -58,8 +48,6 @@ func (c *Client) pkConstraintColumns(tableName string) []string {
 }
 
 func (c *Client) insertBatchCopy(ctx context.Context, messages message.WriteInserts, pgTables map[string]struct{}) error {
-	// Grouping preserves arrival order both across and within tables, which is
-	// what makes the last row win when a primary key repeats.
 	var groups []*copyGroup
 	byTable := make(map[string]*copyGroup)
 
@@ -84,8 +72,6 @@ func (c *Client) insertBatchCopy(ctx context.Context, messages message.WriteInse
 		g.rows += msg.Record.NumRows()
 	}
 
-	// Ineligible groups share one pipelined batch rather than one SendBatch each.
-	// Eligibility is per table, so no table's rows are split across the paths.
 	var execMsgs message.WriteInserts
 	for _, g := range groups {
 		if g.eligible() {
@@ -110,6 +96,8 @@ func (c *Client) copyTable(ctx context.Context, g *copyGroup) error {
 	}
 	src := &copyFromRecords{client: c, msgs: g.msgs}
 
+	// Postgres rejects COPY FROM outright on a table with row-level security
+	// enabled, so this branch fails where insertBatchExec would have worked.
 	if len(table.PrimaryKeysIndexes()) == 0 {
 		return c.retryOnDeadlock(func() error {
 			src.reset()
@@ -124,9 +112,6 @@ func (c *Client) copyTable(ctx context.Context, g *copyGroup) error {
 	}, "failed to upsert into "+table.Name)
 }
 
-// COPY has no ON CONFLICT, so an upsert stages the rows and merges them. The
-// transaction both scopes the temporary table to this connection and drops it on
-// either outcome.
 func (c *Client) upsertViaStagingTable(ctx context.Context, table *schema.Table, columns, pkColumns []string, src pgx.CopyFromSource) error {
 	conn, err := c.conn.Acquire(ctx)
 	if err != nil {
@@ -141,8 +126,7 @@ func (c *Client) upsertViaStagingTable(ctx context.Context, table *schema.Table,
 	defer func() { _ = tx.Rollback(ctx) }()
 
 	staging := stagingTableName()
-	// LIKE without INCLUDING carries no constraints, so repeated primary keys
-	// land here for the merge to resolve rather than being rejected on the way in.
+	// The staging table has no policies of its own; the merge enforces the target's.
 	createSQL := fmt.Sprintf("create temp table %s (like %s) on commit drop",
 		pgx.Identifier{staging}.Sanitize(), pgx.Identifier{table.Name}.Sanitize())
 	if _, err := tx.Exec(ctx, createSQL); err != nil {
@@ -206,8 +190,6 @@ func stagingTableName() string {
 	return "cq_staging_" + strings.ReplaceAll(uuid.NewString(), "-", "")
 }
 
-// copyFromRecords transforms one record at a time so a batch is never fully
-// materialized as Go values.
 type copyFromRecords struct {
 	client *Client
 	msgs   message.WriteInserts
@@ -223,7 +205,7 @@ func (s *copyFromRecords) reset() {
 }
 
 func (s *copyFromRecords) Next() bool {
-	for s.rowIdx >= len(s.rows) { // loops to skip records with no rows
+	for s.rowIdx >= len(s.rows) {
 		if s.msgIdx >= len(s.msgs) {
 			return false
 		}
