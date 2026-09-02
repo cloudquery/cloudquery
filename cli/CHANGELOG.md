@@ -5,6 +5,37 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.42.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.41.2...cli-v6.42.0) (2026-09-02)
+
+
+### Features
+
+* Accept a platform token from the CLI browser login ([#23259](https://github.com/cloudquery/cloudquery/issues/23259)) ([74a1f0d](https://github.com/cloudquery/cloudquery/commit/74a1f0d13288cd12b00eaf541066161b45d15add))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to e88cd73 ([#23298](https://github.com/cloudquery/cloudquery/issues/23298)) ([939a30f](https://github.com/cloudquery/cloudquery/commit/939a30f3c59426abe9686e5ab82da50d13d30c48))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.18 ([#23329](https://github.com/cloudquery/cloudquery/issues/23329)) ([7c15359](https://github.com/cloudquery/cloudquery/commit/7c15359c74cecef3a26e1ba415f2467adc2304ee))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.3 ([#23330](https://github.com/cloudquery/cloudquery/issues/23330)) ([2502476](https://github.com/cloudquery/cloudquery/commit/2502476eb0933484ce7acb933b3b3c31b2ad4dea))
+* **deps:** Update module github.com/santhosh-tekuri/jsonschema/v6 to v6.0.3 ([#23309](https://github.com/cloudquery/cloudquery/issues/23309)) ([f61696a](https://github.com/cloudquery/cloudquery/commit/f61696af8bc7fc06d411670fd5bee8311a882c16))
+* **deps:** Update module github.com/yuin/goldmark to v1.8.5 ([#23310](https://github.com/cloudquery/cloudquery/issues/23310)) ([5ebf80a](https://github.com/cloudquery/cloudquery/commit/5ebf80a9354dccb8358c5686af20633ed0ac2219))
+* **deps:** Update module golang.org/x/net to v0.58.0 ([#23323](https://github.com/cloudquery/cloudquery/issues/23323)) ([08779a8](https://github.com/cloudquery/cloudquery/commit/08779a8720a1b16490bfa023cd5cb36fe56ee886))
+
+## [6.41.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.41.1...cli-v6.41.2) (2026-08-31)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.16 ([#23245](https://github.com/cloudquery/cloudquery/issues/23245)) ([5624401](https://github.com/cloudquery/cloudquery/commit/562440186ab60874b0d0a4471ceeea66e3a9b1f2))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.17 ([#23275](https://github.com/cloudquery/cloudquery/issues/23275)) ([1591dd6](https://github.com/cloudquery/cloudquery/commit/1591dd6f58527db5f578fbb60b2fe55b91fd8feb))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.2 ([#23277](https://github.com/cloudquery/cloudquery/issues/23277)) ([d15a83d](https://github.com/cloudquery/cloudquery/commit/d15a83ddc3c2e8af081afa2745f1a54a9cec62ab))
+* **deps:** Update module google.golang.org/grpc to v1.83.0 ([#23234](https://github.com/cloudquery/cloudquery/issues/23234)) ([50bd4c7](https://github.com/cloudquery/cloudquery/commit/50bd4c7644ac5676044018420c21fbbe240c8094))
+* **deps:** Update module google.golang.org/grpc to v1.83.1 ([#23288](https://github.com/cloudquery/cloudquery/issues/23288)) ([d0ada1d](https://github.com/cloudquery/cloudquery/commit/d0ada1df1ebc5b4af8f528cde0623b2686df776b))
+* **deps:** Update module google.golang.org/protobuf to v1.36.12 ([#23270](https://github.com/cloudquery/cloudquery/issues/23270)) ([269a558](https://github.com/cloudquery/cloudquery/commit/269a558248e34fbf29743bab2e3a3340b14e7f06))
+* **deps:** Update opentelemetry-collector monorepo ([#23292](https://github.com/cloudquery/cloudquery/issues/23292)) ([49677fd](https://github.com/cloudquery/cloudquery/commit/49677fd9a5b765bd34f80f74a0028c171fb772a6))
+* **deps:** Update opentelemetry-go monorepo ([#23293](https://github.com/cloudquery/cloudquery/issues/23293)) ([9beb3ea](https://github.com/cloudquery/cloudquery/commit/9beb3ea1303890b577aa6338b6f253e25372a7d6))
+
 ## [6.41.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.41.0...cli-v6.41.1) (2026-08-06)
 
 
