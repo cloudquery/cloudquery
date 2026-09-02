@@ -131,7 +131,7 @@ jobs:
         if: needs.prepare.outputs.ui_dir_arg != ''
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.41.2
+          version: v6.42.0
 
       - name: Build
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -256,7 +256,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.41.2
+          version: v6.42.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -358,7 +358,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.41.2
+          version: v6.42.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -457,7 +457,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.41.2
+          version: v6.42.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
@@ -561,7 +561,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v6.41.2
+          version: v6.42.0
 
       - name: Publish plugin to hub
         working-directory: ${{ needs.prepare.outputs.plugin_dir }}
