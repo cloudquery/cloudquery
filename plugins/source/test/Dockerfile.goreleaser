@@ -1,3 +1,0 @@
-FROM scratch
-ENTRYPOINT ["/test"]
-COPY ./plugins/source/test /test
