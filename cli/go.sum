@@ -50,8 +50,8 @@ github.com/cloudquery/codegen v0.4.1 h1:c9D18N925tUvnDeGHIl3JWKj37TyII9daHufkf8h
 github.com/cloudquery/codegen v0.4.1/go.mod h1:QWIOD6R1aCa+YM+th+9Qt9lZw+ztdJR9JDEMLWyazwM=
 github.com/cloudquery/jsonschema v0.0.0-20260703174721-45e7e20e0ed8 h1:s7B+c57yTtVL8Zhcebae5poFInJwTftuMakj625CRbw=
 github.com/cloudquery/jsonschema v0.0.0-20260703174721-45e7e20e0ed8/go.mod h1:KMcD1TlufeD5r5DmbYvYWs+cyULzIVuKkd7jpoKWVjk=
-github.com/cloudquery/plugin-pb-go v1.27.18 h1:uinrvPrCqqE8Yn3fNyEPtgx7pfFs3ZkFCYu/XFip29w=
-github.com/cloudquery/plugin-pb-go v1.27.18/go.mod h1:6Y/tpaOTihi2HcDZe5dC3WO49PX7EYLvhJaQXKvy9sc=
+github.com/cloudquery/plugin-pb-go v1.27.19 h1:0Gmv0dqkmkDqNsUzDtP8RDGZl2VuSHWDXbVZAxtOxUY=
+github.com/cloudquery/plugin-pb-go v1.27.19/go.mod h1:6Y/tpaOTihi2HcDZe5dC3WO49PX7EYLvhJaQXKvy9sc=
 github.com/cloudquery/plugin-sdk/v4 v4.96.3 h1:qHsNcE0U1DpwV2Q1gRgPUdv2QcI+twCNJckIHNzpMms=
 github.com/cloudquery/plugin-sdk/v4 v4.96.3/go.mod h1:3gagTh++dY+rzb8pwjdUvm4/TjzBNiEC9kCeDi6+Vj4=
 github.com/containerd/errdefs v1.0.0 h1:tg5yIfIlQIrxYtu9ajqY42W3lpS19XqdxRQeEwYG8PI=
