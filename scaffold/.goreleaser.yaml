@@ -1,15 +1,52 @@
 version: 2
 project_name: scaffold
 
-monorepo:
-  tag_prefix: scaffold-
-  dir: scaffold
+before:
+  hooks:
+    - go -C ./scaffold mod download
 
-includes:
-  - from_file:
-      # Relative to the directory Go Releaser is run from (which is the root of the repository)
-      # Include everything from pre-release (build & publish to GitHub), plus publish to docker and Homebrew
-      path: ./scaffold/.goreleaser.prerelease.yaml
+builds:
+  - dir: ./scaffold
+    main: ./main.go
+    binary: cq-scaffold
+    flags:
+      - -buildmode=exe
+    env:
+      - GOGC=off
+      - CGO_ENABLED=0
+      - GO111MODULE=on
+    ldflags:
+      - -s -w -X github.com/cloudquery/cloudquery/scaffold/v3/cmd.Version={{.Version}}
+    goos:
+      - windows
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
+
+archives:
+  - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
+    formats:
+      - binary
+  - id: homebrew
+    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
+    formats:
+      - zip
+
+checksum:
+  name_template: "checksums.txt"
+
+# release-please owns the GitHub release and its notes; the workflow uploads the
+# artifacts GoReleaser builds here to that release.
+changelog:
+  disable: true
+
+release:
+  disable: true
 
 brews:
   -
@@ -19,7 +56,7 @@ brews:
     repository:
       owner: cloudquery
       name: homebrew-tap
-    url_template: "https://github.com/cloudquery/cloudquery/releases/download/{{ .PrefixedTag }}/{{ .ArtifactName }}"
+    url_template: "https://github.com/cloudquery/cloudquery/releases/download/scaffold-v{{ .Version }}/{{ .ArtifactName }}"
     homepage: "https://cloudquery.io"
     description: "Scaffold CloudQuery source and destination plugins"
   -
@@ -29,6 +66,6 @@ brews:
     repository:
       owner: cloudquery
       name: homebrew-tap
-    url_template: "https://github.com/cloudquery/cloudquery/releases/download/{{ .PrefixedTag }}/{{ .ArtifactName }}"
+    url_template: "https://github.com/cloudquery/cloudquery/releases/download/scaffold-v{{ .Version }}/{{ .ArtifactName }}"
     homepage: "https://cloudquery.io"
     description: "Scaffold CloudQuery source and destination plugins"

@@ -1,20 +1,58 @@
+version: 2
 project_name: cli
 
-monorepo:
-  tag_prefix: cli-
-  dir: cli
+before:
+  hooks:
+    - go -C ./cli mod download
 
-includes:
-  - from_file:
-      # Relative to the directory Go Releaser is run from (which is the root of the repository)
-      # Include everything from pre-release (build & publish to GitHub), plus publish to docker and Homebrew
-      path: ./cli/.goreleaser.prerelease.yaml
+builds:
+  - dir: ./cli
+    main: ./main.go
+    binary: cloudquery
+    flags:
+      - -buildmode=exe
+    env:
+      - GOGC=off
+      - CGO_ENABLED=0
+      - GO111MODULE=on
+    ldflags:
+      - -s -w -X github.com/cloudquery/cloudquery/cli/v6/cmd.Version={{.Version}}
+    goos:
+      - windows
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      - goos: windows
+        goarch: arm64
+
+archives:
+  - name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
+    formats:
+      - binary
+  - id: homebrew
+    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
+    formats:
+      - zip
+
+checksum:
+  name_template: "checksums.txt"
+
+# release-please owns the GitHub release and its notes; the workflow uploads the
+# artifacts GoReleaser builds here to that release.
+changelog:
+  disable: true
+
+release:
+  disable: true
 
 dockers:
   -
     goos: linux
     goarch: amd64
-    dockerfile: Dockerfile.goreleaser
+    dockerfile: cli/Dockerfile.goreleaser
     image_templates:
       - "ghcr.io/cloudquery/cloudquery:latest-linux-amd64"
       - "ghcr.io/cloudquery/cloudquery:{{.Version}}-linux-amd64"
@@ -27,7 +65,7 @@ dockers:
   -
     goos: linux
     goarch: arm64
-    dockerfile: Dockerfile.goreleaser
+    dockerfile: cli/Dockerfile.goreleaser
     image_templates:
       - "ghcr.io/cloudquery/cloudquery:latest-linux-arm64"
       - "ghcr.io/cloudquery/cloudquery:{{.Version}}-linux-arm64"
@@ -40,7 +78,7 @@ dockers:
   -
     goos: linux
     goarch: amd64
-    dockerfile: Dockerfile.ubuntu.goreleaser
+    dockerfile: cli/Dockerfile.ubuntu.goreleaser
     image_templates:
       - "ghcr.io/cloudquery/cloudquery:latest-ubuntu-amd64"
       - "ghcr.io/cloudquery/cloudquery:{{.Version}}-ubuntu-amd64"
@@ -53,7 +91,7 @@ dockers:
   -
     goos: linux
     goarch: arm64
-    dockerfile: Dockerfile.ubuntu.goreleaser
+    dockerfile: cli/Dockerfile.ubuntu.goreleaser
     image_templates:
       - "ghcr.io/cloudquery/cloudquery:latest-ubuntu-arm64"
       - "ghcr.io/cloudquery/cloudquery:{{.Version}}-ubuntu-arm64"
@@ -95,7 +133,6 @@ docker_manifests:
   - "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}-ubuntu-amd64"
   - "ghcr.io/cloudquery/cloudquery:{{ .Major }}.{{ .Minor }}-ubuntu-arm64"
 
-
 brews:
   -
     ids:
@@ -104,7 +141,7 @@ brews:
     repository:
       owner: cloudquery
       name: homebrew-tap
-    url_template: "https://github.com/cloudquery/cloudquery/releases/download/{{ .PrefixedTag }}/{{ .ArtifactName }}"
+    url_template: "https://github.com/cloudquery/cloudquery/releases/download/cli-v{{ .Version }}/{{ .ArtifactName }}"
     homepage: "https://cloudquery.io"
     description: "Easily monitor and ask questions about your infrastructure."
     install: |-
@@ -125,7 +162,7 @@ brews:
     repository:
       owner: cloudquery
       name: homebrew-tap
-    url_template: "https://github.com/cloudquery/cloudquery/releases/download/{{ .PrefixedTag }}/{{ .ArtifactName }}"
+    url_template: "https://github.com/cloudquery/cloudquery/releases/download/cli-v{{ .Version }}/{{ .ArtifactName }}"
     homepage: "https://cloudquery.io"
     description: "Easily monitor and ask questions about your infrastructure."
     install: |-

@@ -68,39 +68,43 @@ jobs:
       - name: Install GoReleaser
         uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7
         with:
-          distribution: goreleaser-pro
+          distribution: goreleaser
           version: "v2.14.3"
           install-only: true
       - name: Run GoReleaser Dry-Run
         run: goreleaser release --clean --skip=validate,publish -f ./cli/.goreleaser.yaml
         env:
-          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
-          GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
+          GORELEASER_CURRENT_TAG: v${{ steps.split.outputs.version }}
 
       - name: Login to Docker Registry
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | \
           docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
 
-      # Publish to GitHub and Homebrew
+      # Publish Docker images and Homebrew formulae
       - name: Run GoReleaser Release
         if: steps.semver_parser.outputs.prerelease == ''
         run: goreleaser release --clean -f ./cli/.goreleaser.yaml
         env:
-          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
-          GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
+          GORELEASER_CURRENT_TAG: v${{ steps.split.outputs.version }}
           # A custom token is required for publishing to Homebrew
           GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
 
-      # Publish only to GitHub
+      # Prereleases ship artifacts only, without Docker images or Homebrew formulae
       - name: Run GoReleaser PreRelease
         if: steps.semver_parser.outputs.prerelease != ''
-        run: goreleaser release --clean -f ./cli/.goreleaser.prerelease.yaml
+        run: goreleaser release --clean --skip=docker,homebrew -f ./cli/.goreleaser.yaml
         env:
-          GORELEASER_KEY: ${{ secrets.GORELEASER_KEY }}
-          GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
-          # A custom token is required for publishing to Homebrew
-          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+          GORELEASER_CURRENT_TAG: v${{ steps.split.outputs.version }}
+
+      - name: Upload release artifacts
+        run: |
+          mkdir -p upload
+          jq -r '.[] | select(.type == "Checksum" or ((.type == "Binary" or .type == "Archive") and (.extra.ID == "default" or .extra.ID == "homebrew"))) | "\(.path)\t\(.name)"' dist/artifacts.json |
+            while IFS=$'\t' read -r path name; do cp "$path" "upload/$name"; done
+          gh release upload "${{ github.ref_name }}" upload/* --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push Tag Without `cli-` component and tag prefixed with `cli/`
         if: steps.semver_parser.outputs.prerelease == ''
