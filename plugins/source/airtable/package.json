@@ -49,6 +49,7 @@
     "@eslint/eslintrc": "^3.3.5",
     "@eslint/js": "^10.0.1",
     "@tsconfig/node24": "^24.0.0",
+    "@types/node": "^24.0.0",
     "@types/yargs": "^17.0.24",
     "ava": "^8.0.0",
     "eslint": "^10.0.0",

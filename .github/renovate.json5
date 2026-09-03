@@ -6,18 +6,6 @@
   ],
   customManagers: [
     {
-      customType: 'regex',
-      fileMatch: [
-        'Dockerfile$',
-      ],
-      matchStrings: [
-        'GORELEASER_VERSION=(?<currentValue>.*)-pro$',
-      ],
-      extractVersionTemplate: '^(?<version>.+)-pro$',
-      depNameTemplate: 'goreleaser/goreleaser-pro',
-      datasourceTemplate: 'github-releases',
-    },
-    {
       customType: "regex",
       fileMatch: [
         ".github/workflows/.*\\.ya?ml$"

@@ -78,14 +78,27 @@ This is the (nested) spec used by the PostgreSQL destination Plugin.
 
   Writes rows with the PostgreSQL [`COPY`](https://www.postgresql.org/docs/current/sql-copy.html) protocol instead of `INSERT` statements.
 
-  `COPY` sends a batch as a single statement rather than one statement per row, which is substantially faster against a remote database. Tables with a primary key cannot use `COPY` directly, since it has no `ON CONFLICT` clause, so the plugin copies the batch into a temporary staging table and merges it into the target in one transaction. Tables without a primary key are copied straight in.
+  `COPY` sends a batch as a single statement rather than one statement per row, which is substantially faster against a remote database. Tables with a primary key cannot use `COPY` directly, since it has no `ON CONFLICT` clause, so the plugin copies the batch into a temporary staging table and merges it into the target with a single `INSERT ... ON CONFLICT`. Tables without a primary key are copied straight into the target. Batches under 100 rows use `INSERT` either way, because `COPY` setup and the staging table cost more than they save at that size.
 
-  Two things to know before enabling it:
+  That split is what most of the differences below turn on: a table **with** a primary key is still written to by an `INSERT`, so it keeps `INSERT` semantics, while a table **without** one is written by `COPY` itself.
 
-  - Rows that repeat a primary key within one batch are collapsed before the merge, keeping the last one. This matches what the `INSERT` path leaves behind, but the losing rows are never written, so any database-side trigger or rule fires once instead of once per row.
-  - Batches smaller than 100 rows use `INSERT` regardless, because `COPY` setup and the staging table cost more than they save at that size.
+  | Behavior | `INSERT` | `use_copy_from` |
+  |---|---|---|
+  | Type and format validation | enforced | enforced |
+  | `NOT NULL`, `CHECK`, domain constraints | enforced | enforced |
+  | `PRIMARY KEY`, `UNIQUE`, `FOREIGN KEY` | enforced | enforced |
+  | Column `DEFAULT` for omitted columns | applied | applied |
+  | Value encoding | text or binary, negotiated per type | always binary |
+  | `BEFORE`/`AFTER ROW` triggers | once per row sent | once per row written. Rows repeating a primary key within one batch are collapsed first, keeping the last, so the losing rows never fire |
+  | Statement-level triggers | once per row, since each row is queued as its own statement | once per table per batch |
+  | [Rewrite rules](https://www.postgresql.org/docs/current/rules.html) | applied | **not applied** on tables without a primary key. Tables with one are unaffected, because PostgreSQL already rejects the `ON CONFLICT` both paths use on a table carrying `INSERT` or `UPDATE` rules |
+  | [Row-level security](https://www.postgresql.org/docs/current/ddl-rowsecurity.html) | enforced | enforced on tables with a primary key, since the merge is an ordinary `INSERT` and the staging table holds no policies of its own. Tables without one **cannot be written at all**: PostgreSQL answers `COPY FROM not supported with row-level security` |
+  | Transaction boundary | one implicit transaction per `batch_size` statements | one per table, so a batch spanning several tables no longer commits as a unit |
+  | Failure granularity | all-or-nothing within a transaction | the same, and one bad row aborts that table's whole `COPY` |
 
-  It has no effect on CockroachDB or CrateDB, which always use `INSERT`: CrateDB does not implement `COPY` over the wire protocol, and CockroachDB only supports temporary tables behind an experimental session setting.
+  Roles that bypass row-level security regardless, such as superusers and table owners without `FORCE ROW LEVEL SECURITY`, see no difference in that row. Leave `use_copy_from` off if the destination has tables that rely on rewrite rules or row-level security and have no primary key.
+
+  It has no effect on CockroachDB or CrateDB, which always use `INSERT`: CrateDB does not implement `COPY` over the wire protocol, and CockroachDB only supports temporary tables behind an experimental session setting. It is also ignored when `pgvector_config` is set, since embeddings are inserted after each flush.
 
 - `lakebase` (`object`) (optional)
 
