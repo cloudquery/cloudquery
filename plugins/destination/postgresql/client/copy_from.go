@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"slices"
 	"strings"
 
 	"github.com/cloudquery/plugin-sdk/v4/message"
@@ -34,9 +35,21 @@ func (g *copyGroup) eligible() bool {
 	if g.rows < minCopyRows {
 		return false
 	}
-	// PkConstraintName is only set once migrations read it back from the
-	// database; without it there is nothing to conflict on.
-	return len(g.table.PrimaryKeysIndexes()) == 0 || g.table.PkConstraintName != ""
+	if len(g.table.PrimaryKeysIndexes()) == 0 {
+		return true
+	}
+	return g.table.PkConstraintName != "" && len(g.pkColumns) > 0
+}
+
+// The database's primary key columns, which the merge dedupes on: deduping on the
+// source schema's instead lets two rows share a constraint key once they drift.
+func (c *Client) pkConstraintColumns(tableName string) []string {
+	c.pgTablesToPKConstraintsMu.RLock()
+	defer c.pgTablesToPKConstraintsMu.RUnlock()
+	if entry := c.pgTablesToPKConstraints[tableName]; entry != nil {
+		return slices.Clone(entry.columns)
+	}
+	return nil
 }
 
 func (c *Client) insertBatchCopy(ctx context.Context, messages message.WriteInserts, pgTables map[string]struct{}) error {
