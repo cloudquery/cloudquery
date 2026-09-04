@@ -5,6 +5,37 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.42.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.42.1...cli-v6.42.2) (2026-09-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.20 ([#23337](https://github.com/cloudquery/cloudquery/issues/23337)) ([c5f8420](https://github.com/cloudquery/cloudquery/commit/c5f842012726fa30f1aeb70fa22e5c52b8e336eb))
+
+## [6.42.1](https://github.com/cloudquery/cloudquery/compare/cli-v6.42.0...cli-v6.42.1) (2026-09-02)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.19 ([#23333](https://github.com/cloudquery/cloudquery/issues/23333)) ([5df8b4e](https://github.com/cloudquery/cloudquery/commit/5df8b4edbc99a8d652283fe6323a4d0a82b47771))
+
+## [6.42.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.41.2...cli-v6.42.0) (2026-09-02)
+
+
+### Features
+
+* Accept a platform token from the CLI browser login ([#23259](https://github.com/cloudquery/cloudquery/issues/23259)) ([74a1f0d](https://github.com/cloudquery/cloudquery/commit/74a1f0d13288cd12b00eaf541066161b45d15add))
+
+
+### Bug Fixes
+
+* **deps:** Update golang.org/x/exp digest to e88cd73 ([#23298](https://github.com/cloudquery/cloudquery/issues/23298)) ([939a30f](https://github.com/cloudquery/cloudquery/commit/939a30f3c59426abe9686e5ab82da50d13d30c48))
+* **deps:** Update module github.com/cloudquery/plugin-pb-go to v1.27.18 ([#23329](https://github.com/cloudquery/cloudquery/issues/23329)) ([7c15359](https://github.com/cloudquery/cloudquery/commit/7c15359c74cecef3a26e1ba415f2467adc2304ee))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.3 ([#23330](https://github.com/cloudquery/cloudquery/issues/23330)) ([2502476](https://github.com/cloudquery/cloudquery/commit/2502476eb0933484ce7acb933b3b3c31b2ad4dea))
+* **deps:** Update module github.com/santhosh-tekuri/jsonschema/v6 to v6.0.3 ([#23309](https://github.com/cloudquery/cloudquery/issues/23309)) ([f61696a](https://github.com/cloudquery/cloudquery/commit/f61696af8bc7fc06d411670fd5bee8311a882c16))
+* **deps:** Update module github.com/yuin/goldmark to v1.8.5 ([#23310](https://github.com/cloudquery/cloudquery/issues/23310)) ([5ebf80a](https://github.com/cloudquery/cloudquery/commit/5ebf80a9354dccb8358c5686af20633ed0ac2219))
+* **deps:** Update module golang.org/x/net to v0.58.0 ([#23323](https://github.com/cloudquery/cloudquery/issues/23323)) ([08779a8](https://github.com/cloudquery/cloudquery/commit/08779a8720a1b16490bfa023cd5cb36fe56ee886))
+
 ## [6.41.2](https://github.com/cloudquery/cloudquery/compare/cli-v6.41.1...cli-v6.41.2) (2026-08-31)
 
 
