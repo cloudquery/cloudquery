@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.3.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v5.3.11...plugins-destination-mssql-v5.3.12) (2026-09-05)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23069](https://github.com/cloudquery/cloudquery/issues/23069)) ([4f3b70b](https://github.com/cloudquery/cloudquery/commit/4f3b70b3324698820baf74f4f7060762699e8fa3))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23114](https://github.com/cloudquery/cloudquery/issues/23114)) ([75a37bb](https://github.com/cloudquery/cloudquery/commit/75a37bb413b200f39e8f58a638b84996ecc57092))
+* **deps:** Update go module directive to v1.26.5 ([#23182](https://github.com/cloudquery/cloudquery/issues/23182)) ([e8bc921](https://github.com/cloudquery/cloudquery/commit/e8bc9211beeec85bf5e76ab673968377a74f0cab))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.7.0 ([#23163](https://github.com/cloudquery/cloudquery/issues/23163)) ([7df4831](https://github.com/cloudquery/cloudquery/commit/7df4831f6f83607541b187dd2bb40ad366465897))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.2 ([#23277](https://github.com/cloudquery/cloudquery/issues/23277)) ([d15a83d](https://github.com/cloudquery/cloudquery/commit/d15a83ddc3c2e8af081afa2745f1a54a9cec62ab))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.3 ([#23330](https://github.com/cloudquery/cloudquery/issues/23330)) ([2502476](https://github.com/cloudquery/cloudquery/commit/2502476eb0933484ce7acb933b3b3c31b2ad4dea))
+* **deps:** Update module github.com/microsoft/go-mssqldb to v1.11.0 ([#23321](https://github.com/cloudquery/cloudquery/issues/23321)) ([e4e7722](https://github.com/cloudquery/cloudquery/commit/e4e7722ae80138ed4add6aaab8f8503b60067f48))
+* **deps:** Update module google.golang.org/grpc to v1.82.1 [SECURITY] ([#23150](https://github.com/cloudquery/cloudquery/issues/23150)) ([fb8a940](https://github.com/cloudquery/cloudquery/commit/fb8a9407a887c7a43bcffdf8388294d3e78a76db))
+
 ## [5.3.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mssql-v5.3.10...plugins-destination-mssql-v5.3.11) (2026-07-10)
 
 
