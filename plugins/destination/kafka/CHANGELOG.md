@@ -1,5 +1,21 @@
 # Changelog
 
+## [5.7.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.7.10...plugins-destination-kafka-v5.7.11) (2026-09-05)
+
+
+### Bug Fixes
+
+* **deps:** Update confluentinc/cp-kafka Docker tag to v8.3.1 ([#23299](https://github.com/cloudquery/cloudquery/issues/23299)) ([457bab4](https://github.com/cloudquery/cloudquery/commit/457bab417f474a327dfc41a59a53448499126743))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23069](https://github.com/cloudquery/cloudquery/issues/23069)) ([4f3b70b](https://github.com/cloudquery/cloudquery/commit/4f3b70b3324698820baf74f4f7060762699e8fa3))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23114](https://github.com/cloudquery/cloudquery/issues/23114)) ([75a37bb](https://github.com/cloudquery/cloudquery/commit/75a37bb413b200f39e8f58a638b84996ecc57092))
+* **deps:** Update go module directive to v1.26.5 ([#23182](https://github.com/cloudquery/cloudquery/issues/23182)) ([e8bc921](https://github.com/cloudquery/cloudquery/commit/e8bc9211beeec85bf5e76ab673968377a74f0cab))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.7.0 ([#23163](https://github.com/cloudquery/cloudquery/issues/23163)) ([7df4831](https://github.com/cloudquery/cloudquery/commit/7df4831f6f83607541b187dd2bb40ad366465897))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.2 ([#23277](https://github.com/cloudquery/cloudquery/issues/23277)) ([d15a83d](https://github.com/cloudquery/cloudquery/commit/d15a83ddc3c2e8af081afa2745f1a54a9cec62ab))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.3 ([#23330](https://github.com/cloudquery/cloudquery/issues/23330)) ([2502476](https://github.com/cloudquery/cloudquery/commit/2502476eb0933484ce7acb933b3b3c31b2ad4dea))
+* **deps:** Update module github.com/IBM/sarama to v1.60.0 ([#23207](https://github.com/cloudquery/cloudquery/issues/23207)) ([bac99e7](https://github.com/cloudquery/cloudquery/commit/bac99e734af57c8cd86d65edfc2a9c5eda5f32fe))
+* **deps:** Update module github.com/IBM/sarama to v1.60.2 ([#23307](https://github.com/cloudquery/cloudquery/issues/23307)) ([3addf47](https://github.com/cloudquery/cloudquery/commit/3addf4716f37e8661bbe00575403940963605645))
+* **deps:** Update module google.golang.org/grpc to v1.82.1 [SECURITY] ([#23147](https://github.com/cloudquery/cloudquery/issues/23147)) ([44daaab](https://github.com/cloudquery/cloudquery/commit/44daaabe657ab4fab83413dfd73cbed09cd3c19b))
+
 ## [5.7.10](https://github.com/cloudquery/cloudquery/compare/plugins-destination-kafka-v5.7.9...plugins-destination-kafka-v5.7.10) (2026-07-10)
 
 
