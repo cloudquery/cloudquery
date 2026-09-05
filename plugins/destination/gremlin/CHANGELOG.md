@@ -1,5 +1,29 @@
 # Changelog
 
+## [2.8.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.8.5...plugins-destination-gremlin-v2.8.6) (2026-09-05)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23105](https://github.com/cloudquery/cloudquery/issues/23105)) ([40cdf78](https://github.com/cloudquery/cloudquery/commit/40cdf785337eed19d338d48f1c8a1f0971903193))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23191](https://github.com/cloudquery/cloudquery/issues/23191)) ([53ce922](https://github.com/cloudquery/cloudquery/commit/53ce92249040e4308748bf0bd5d953fbedcb452a))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23239](https://github.com/cloudquery/cloudquery/issues/23239)) ([33a97e0](https://github.com/cloudquery/cloudquery/commit/33a97e070661218cde5ab2b74f229155f1bfea67))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23249](https://github.com/cloudquery/cloudquery/issues/23249)) ([c097165](https://github.com/cloudquery/cloudquery/commit/c09716557108db27b6a90231e4d7082a3a0f6022))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23265](https://github.com/cloudquery/cloudquery/issues/23265)) ([542f218](https://github.com/cloudquery/cloudquery/commit/542f218c968543d876d6987c3582388e5a92bfea))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23284](https://github.com/cloudquery/cloudquery/issues/23284)) ([aefe178](https://github.com/cloudquery/cloudquery/commit/aefe178e6cabb109bb80f971c4104533b38dfa6d))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23348](https://github.com/cloudquery/cloudquery/issues/23348)) ([1ef193d](https://github.com/cloudquery/cloudquery/commit/1ef193d9bea6c61fb357291a248711d527bfe7d1))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23069](https://github.com/cloudquery/cloudquery/issues/23069)) ([4f3b70b](https://github.com/cloudquery/cloudquery/commit/4f3b70b3324698820baf74f4f7060762699e8fa3))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23114](https://github.com/cloudquery/cloudquery/issues/23114)) ([75a37bb](https://github.com/cloudquery/cloudquery/commit/75a37bb413b200f39e8f58a638b84996ecc57092))
+* **deps:** Update go module directive to v1.26.5 ([#23182](https://github.com/cloudquery/cloudquery/issues/23182)) ([e8bc921](https://github.com/cloudquery/cloudquery/commit/e8bc9211beeec85bf5e76ab673968377a74f0cab))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.7.0 ([#23163](https://github.com/cloudquery/cloudquery/issues/23163)) ([7df4831](https://github.com/cloudquery/cloudquery/commit/7df4831f6f83607541b187dd2bb40ad366465897))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.32.29 ([#23123](https://github.com/cloudquery/cloudquery/issues/23123)) ([edb4f7f](https://github.com/cloudquery/cloudquery/commit/edb4f7f9697140bbd407a917d33b8f89e3b51709))
+* **deps:** Update module github.com/aws/aws-sdk-go-v2/config to v1.32.30 ([#23131](https://github.com/cloudquery/cloudquery/issues/23131)) ([4a1ead8](https://github.com/cloudquery/cloudquery/commit/4a1ead8f484cd8e21172a249a6760fe8b6bbbd8a))
+* **deps:** Update module github.com/cenkalti/backoff/v6 to v7 ([#23226](https://github.com/cloudquery/cloudquery/issues/23226)) ([86b2c2f](https://github.com/cloudquery/cloudquery/commit/86b2c2fb1b37ed9f7a53cd8a3879a7ec1708e23a))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.2 ([#23277](https://github.com/cloudquery/cloudquery/issues/23277)) ([d15a83d](https://github.com/cloudquery/cloudquery/commit/d15a83ddc3c2e8af081afa2745f1a54a9cec62ab))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.3 ([#23330](https://github.com/cloudquery/cloudquery/issues/23330)) ([2502476](https://github.com/cloudquery/cloudquery/commit/2502476eb0933484ce7acb933b3b3c31b2ad4dea))
+* **deps:** Update module github.com/stretchr/testify to v1.12.1 ([#23322](https://github.com/cloudquery/cloudquery/issues/23322)) ([58653f2](https://github.com/cloudquery/cloudquery/commit/58653f29c681bb584bcd2cfda92691fcba3d9005))
+* **deps:** Update module google.golang.org/grpc to v1.82.1 [SECURITY] ([#23146](https://github.com/cloudquery/cloudquery/issues/23146)) ([56f9533](https://github.com/cloudquery/cloudquery/commit/56f9533e6822a25a2e2073230bfe0f495cde4963))
+
 ## [2.8.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-gremlin-v2.8.4...plugins-destination-gremlin-v2.8.5) (2026-07-10)
 
 
