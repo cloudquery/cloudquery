@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.2.15](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.14...plugins-destination-snowflake-v5.2.15) (2026-09-05)
+
+
+### Bug Fixes
+
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.2 ([#23277](https://github.com/cloudquery/cloudquery/issues/23277)) ([d15a83d](https://github.com/cloudquery/cloudquery/commit/d15a83ddc3c2e8af081afa2745f1a54a9cec62ab))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.3 ([#23330](https://github.com/cloudquery/cloudquery/issues/23330)) ([2502476](https://github.com/cloudquery/cloudquery/commit/2502476eb0933484ce7acb933b3b3c31b2ad4dea))
+* **deps:** Update module github.com/stretchr/testify to v1.12.1 ([#23322](https://github.com/cloudquery/cloudquery/issues/23322)) ([58653f2](https://github.com/cloudquery/cloudquery/commit/58653f29c681bb584bcd2cfda92691fcba3d9005))
+
 ## [5.2.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.13...plugins-destination-snowflake-v5.2.14) (2026-08-20)
 
 
