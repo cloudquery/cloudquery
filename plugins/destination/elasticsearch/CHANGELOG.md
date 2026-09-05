@@ -1,5 +1,25 @@
 # Changelog
 
+## [4.0.6](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v4.0.5...plugins-destination-elasticsearch-v4.0.6) (2026-09-05)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23069](https://github.com/cloudquery/cloudquery/issues/23069)) ([4f3b70b](https://github.com/cloudquery/cloudquery/commit/4f3b70b3324698820baf74f4f7060762699e8fa3))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23114](https://github.com/cloudquery/cloudquery/issues/23114)) ([75a37bb](https://github.com/cloudquery/cloudquery/commit/75a37bb413b200f39e8f58a638b84996ecc57092))
+* **deps:** Update docker.elastic.co/elasticsearch/elasticsearch Docker tag to v9.4.4 ([#23180](https://github.com/cloudquery/cloudquery/issues/23180)) ([102048a](https://github.com/cloudquery/cloudquery/commit/102048a367e0cec5147e47d2db0302ca72f3297f))
+* **deps:** Update docker.elastic.co/elasticsearch/elasticsearch Docker tag to v9.5.2 ([#23316](https://github.com/cloudquery/cloudquery/issues/23316)) ([d03bdca](https://github.com/cloudquery/cloudquery/commit/d03bdca1a72e26e823714d44fb26163737e4eb3a))
+* **deps:** Update go module directive to v1.26.5 ([#23182](https://github.com/cloudquery/cloudquery/issues/23182)) ([e8bc921](https://github.com/cloudquery/cloudquery/commit/e8bc9211beeec85bf5e76ab673968377a74f0cab))
+* **deps:** Update golang.org/x/exp digest to e88cd73 ([#23298](https://github.com/cloudquery/cloudquery/issues/23298)) ([939a30f](https://github.com/cloudquery/cloudquery/commit/939a30f3c59426abe9686e5ab82da50d13d30c48))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.7.0 ([#23163](https://github.com/cloudquery/cloudquery/issues/23163)) ([7df4831](https://github.com/cloudquery/cloudquery/commit/7df4831f6f83607541b187dd2bb40ad366465897))
+* **deps:** Update module github.com/cenkalti/backoff/v6 to v7 ([#23226](https://github.com/cloudquery/cloudquery/issues/23226)) ([86b2c2f](https://github.com/cloudquery/cloudquery/commit/86b2c2fb1b37ed9f7a53cd8a3879a7ec1708e23a))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.2 ([#23277](https://github.com/cloudquery/cloudquery/issues/23277)) ([d15a83d](https://github.com/cloudquery/cloudquery/commit/d15a83ddc3c2e8af081afa2745f1a54a9cec62ab))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.3 ([#23330](https://github.com/cloudquery/cloudquery/issues/23330)) ([2502476](https://github.com/cloudquery/cloudquery/commit/2502476eb0933484ce7acb933b3b3c31b2ad4dea))
+* **deps:** Update module github.com/elastic/go-elasticsearch/v9 to v9.5.0 ([#23320](https://github.com/cloudquery/cloudquery/issues/23320)) ([0f4d8f9](https://github.com/cloudquery/cloudquery/commit/0f4d8f948bafd48fe6873f9d04ed504158decf2a))
+* **deps:** Update module github.com/stretchr/testify to v1.12.1 ([#23322](https://github.com/cloudquery/cloudquery/issues/23322)) ([58653f2](https://github.com/cloudquery/cloudquery/commit/58653f29c681bb584bcd2cfda92691fcba3d9005))
+* **deps:** Update module golang.org/x/sync to v0.22.0 ([#23212](https://github.com/cloudquery/cloudquery/issues/23212)) ([6b4ba50](https://github.com/cloudquery/cloudquery/commit/6b4ba50bd7fb487f8915f7bd29daf4acbe4d4d1c))
+* **deps:** Update module google.golang.org/grpc to v1.82.1 [SECURITY] ([#23143](https://github.com/cloudquery/cloudquery/issues/23143)) ([dafc675](https://github.com/cloudquery/cloudquery/commit/dafc6753cd088a70ce692ce102eee20cdf5e2bd1))
+
 ## [4.0.5](https://github.com/cloudquery/cloudquery/compare/plugins-destination-elasticsearch-v4.0.4...plugins-destination-elasticsearch-v4.0.5) (2026-07-10)
 
 
