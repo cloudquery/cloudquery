@@ -1,5 +1,31 @@
 # Changelog
 
+## [7.10.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.10.13...plugins-destination-s3-v7.10.14) (2026-09-05)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23107](https://github.com/cloudquery/cloudquery/issues/23107)) ([fd01351](https://github.com/cloudquery/cloudquery/commit/fd01351b239ab53de1cc51c75bf1a175b615bf18))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23122](https://github.com/cloudquery/cloudquery/issues/23122)) ([3087482](https://github.com/cloudquery/cloudquery/commit/3087482379605920e3ad416773615077b146702e))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23129](https://github.com/cloudquery/cloudquery/issues/23129)) ([455fcfa](https://github.com/cloudquery/cloudquery/commit/455fcfa84b1b602e81bb06d906fb4ed259a587af))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23193](https://github.com/cloudquery/cloudquery/issues/23193)) ([2ac2f45](https://github.com/cloudquery/cloudquery/commit/2ac2f458aabe181bb33694366edc8902c3529883))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23241](https://github.com/cloudquery/cloudquery/issues/23241)) ([6c2a649](https://github.com/cloudquery/cloudquery/commit/6c2a6495eff39c6f48a8ad173e3e3c1c1520260f))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23252](https://github.com/cloudquery/cloudquery/issues/23252)) ([44a0364](https://github.com/cloudquery/cloudquery/commit/44a0364f20a27d68f68dae197e1d0db2093de93d))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23268](https://github.com/cloudquery/cloudquery/issues/23268)) ([751e920](https://github.com/cloudquery/cloudquery/commit/751e920c4b466768087b68a12a2e6052afb28075))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23287](https://github.com/cloudquery/cloudquery/issues/23287)) ([bf27bb0](https://github.com/cloudquery/cloudquery/commit/bf27bb03f2e1a22c348158fd82d426b0fb5dfd93))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23351](https://github.com/cloudquery/cloudquery/issues/23351)) ([6c1351b](https://github.com/cloudquery/cloudquery/commit/6c1351be712aa154a91c7ed85f1c447c09383335))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23069](https://github.com/cloudquery/cloudquery/issues/23069)) ([4f3b70b](https://github.com/cloudquery/cloudquery/commit/4f3b70b3324698820baf74f4f7060762699e8fa3))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23114](https://github.com/cloudquery/cloudquery/issues/23114)) ([75a37bb](https://github.com/cloudquery/cloudquery/commit/75a37bb413b200f39e8f58a638b84996ecc57092))
+* **deps:** Update go module directive to v1.26.5 ([#23182](https://github.com/cloudquery/cloudquery/issues/23182)) ([e8bc921](https://github.com/cloudquery/cloudquery/commit/e8bc9211beeec85bf5e76ab673968377a74f0cab))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.7.0 ([#23163](https://github.com/cloudquery/cloudquery/issues/23163)) ([7df4831](https://github.com/cloudquery/cloudquery/commit/7df4831f6f83607541b187dd2bb40ad366465897))
+* **deps:** Update module github.com/aws/smithy-go to v1.27.4 ([#23132](https://github.com/cloudquery/cloudquery/issues/23132)) ([76391f8](https://github.com/cloudquery/cloudquery/commit/76391f8412ccb6ac406e5ec4169206b46a186bb0))
+* **deps:** Update module github.com/aws/smithy-go to v1.27.7 ([#23242](https://github.com/cloudquery/cloudquery/issues/23242)) ([13030d4](https://github.com/cloudquery/cloudquery/commit/13030d4c0e31523b45bd7a66927fddaf72b5812b))
+* **deps:** Update module github.com/aws/smithy-go to v1.28.1 ([#23269](https://github.com/cloudquery/cloudquery/issues/23269)) ([7305d12](https://github.com/cloudquery/cloudquery/commit/7305d12e216ff7122ad776dcf49069755c711d9c))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.2 ([#23277](https://github.com/cloudquery/cloudquery/issues/23277)) ([d15a83d](https://github.com/cloudquery/cloudquery/commit/d15a83ddc3c2e8af081afa2745f1a54a9cec62ab))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.3 ([#23330](https://github.com/cloudquery/cloudquery/issues/23330)) ([2502476](https://github.com/cloudquery/cloudquery/commit/2502476eb0933484ce7acb933b3b3c31b2ad4dea))
+* **deps:** Update module github.com/stretchr/testify to v1.12.1 ([#23322](https://github.com/cloudquery/cloudquery/issues/23322)) ([58653f2](https://github.com/cloudquery/cloudquery/commit/58653f29c681bb584bcd2cfda92691fcba3d9005))
+* **deps:** Update module google.golang.org/grpc to v1.82.1 [SECURITY] ([#23154](https://github.com/cloudquery/cloudquery/issues/23154)) ([6f3c4e8](https://github.com/cloudquery/cloudquery/commit/6f3c4e84a5a3fd456ee1d4e60f335940f7b40d52))
+
 ## [7.10.13](https://github.com/cloudquery/cloudquery/compare/plugins-destination-s3-v7.10.12...plugins-destination-s3-v7.10.13) (2026-07-10)
 
 
