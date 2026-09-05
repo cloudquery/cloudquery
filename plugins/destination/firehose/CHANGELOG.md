@@ -1,5 +1,28 @@
 # Changelog
 
+## [2.8.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.8.11...plugins-destination-firehose-v2.8.12) (2026-09-05)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23104](https://github.com/cloudquery/cloudquery/issues/23104)) ([9e015c7](https://github.com/cloudquery/cloudquery/commit/9e015c76e5b4425cbd6005311641490d507a617b))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23120](https://github.com/cloudquery/cloudquery/issues/23120)) ([c8efd60](https://github.com/cloudquery/cloudquery/commit/c8efd602652db6cc50a2a06a0bdfe8fa79e04eee))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23127](https://github.com/cloudquery/cloudquery/issues/23127)) ([b8386e5](https://github.com/cloudquery/cloudquery/commit/b8386e59d21f1daa3de1e0d7ddd699136b8d7c5c))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23190](https://github.com/cloudquery/cloudquery/issues/23190)) ([b0ae449](https://github.com/cloudquery/cloudquery/commit/b0ae4492a67631445eda1623526ecf7381cb176c))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23238](https://github.com/cloudquery/cloudquery/issues/23238)) ([0ff398a](https://github.com/cloudquery/cloudquery/commit/0ff398ae9e90fd5fe1e045f274b945d05b6fab3f))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23248](https://github.com/cloudquery/cloudquery/issues/23248)) ([d815c0f](https://github.com/cloudquery/cloudquery/commit/d815c0f08be36825d2b86231fc408334de2cb2c8))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23264](https://github.com/cloudquery/cloudquery/issues/23264)) ([8a5c63f](https://github.com/cloudquery/cloudquery/commit/8a5c63fb3872785c466e0083a2f3d2f855e8672e))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23283](https://github.com/cloudquery/cloudquery/issues/23283)) ([cb845b7](https://github.com/cloudquery/cloudquery/commit/cb845b7143a45243c6de98141469fe4a02a02f96))
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23347](https://github.com/cloudquery/cloudquery/issues/23347)) ([c29d4b6](https://github.com/cloudquery/cloudquery/commit/c29d4b64d094a8ded7d16425cf565d199676ffbc))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23069](https://github.com/cloudquery/cloudquery/issues/23069)) ([4f3b70b](https://github.com/cloudquery/cloudquery/commit/4f3b70b3324698820baf74f4f7060762699e8fa3))
+* **deps:** Update dependency pytest to v9.0.3 [SECURITY] ([#23114](https://github.com/cloudquery/cloudquery/issues/23114)) ([75a37bb](https://github.com/cloudquery/cloudquery/commit/75a37bb413b200f39e8f58a638b84996ecc57092))
+* **deps:** Update go module directive to v1.26.5 ([#23182](https://github.com/cloudquery/cloudquery/issues/23182)) ([e8bc921](https://github.com/cloudquery/cloudquery/commit/e8bc9211beeec85bf5e76ab673968377a74f0cab))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.7.0 ([#23163](https://github.com/cloudquery/cloudquery/issues/23163)) ([7df4831](https://github.com/cloudquery/cloudquery/commit/7df4831f6f83607541b187dd2bb40ad366465897))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.2 ([#23277](https://github.com/cloudquery/cloudquery/issues/23277)) ([d15a83d](https://github.com/cloudquery/cloudquery/commit/d15a83ddc3c2e8af081afa2745f1a54a9cec62ab))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.3 ([#23330](https://github.com/cloudquery/cloudquery/issues/23330)) ([2502476](https://github.com/cloudquery/cloudquery/commit/2502476eb0933484ce7acb933b3b3c31b2ad4dea))
+* **deps:** Update module github.com/stretchr/testify to v1.12.1 ([#23322](https://github.com/cloudquery/cloudquery/issues/23322)) ([58653f2](https://github.com/cloudquery/cloudquery/commit/58653f29c681bb584bcd2cfda92691fcba3d9005))
+* **deps:** Update module google.golang.org/grpc to v1.82.1 [SECURITY] ([#23145](https://github.com/cloudquery/cloudquery/issues/23145)) ([7eeccae](https://github.com/cloudquery/cloudquery/commit/7eeccae638d73d7605e5b0d1d0b3ad3932a25606))
+
 ## [2.8.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-firehose-v2.8.10...plugins-destination-firehose-v2.8.11) (2026-07-10)
 
 
