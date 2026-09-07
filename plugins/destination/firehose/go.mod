@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/plugins/destination/firehose/v2
 
-go 1.26.5
+go 1.26.6
 
 require (
 	github.com/apache/arrow-go/v18 v18.7.0

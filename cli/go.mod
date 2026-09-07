@@ -1,6 +1,6 @@
 module github.com/cloudquery/cloudquery/cli/v6
 
-go 1.26.5
+go 1.26.6
 
 require (
 	github.com/Masterminds/semver v1.5.0
