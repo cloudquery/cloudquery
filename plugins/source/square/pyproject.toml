@@ -1,6 +1,6 @@
 [project]
 name = "cloudquery-square"
-version = "1.3.33"
+version = "1.3.34"
 requires-python = ">=3.11"
 dependencies = [
     "cloudquery-plugin-sdk>=0.1.54",
