@@ -76,7 +76,7 @@ jobs:
       - name: Setup CloudQuery
         uses: cloudquery/setup-cloudquery@757b19eb8496cf9e89a78de54f2c677253f54f6b # v5.0.3
         with:
-          version: v5.0.1
+          version: v6.42.2
 
       - name: Publish plugin to hub
         # See https://www.cloudquery.io/docs/deployment/generate-api-key for instructions how to generate this key.
