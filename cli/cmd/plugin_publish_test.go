@@ -524,11 +524,35 @@ func readFile(name string) string {
 }
 
 func TestPluginPublishMissingPluginName(t *testing.T) {
-	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
+	type testCase struct {
+		name    string
+		distDir string
+	}
 
-	cmd := NewCmdRoot()
-	args := append([]string{"plugin", "publish", "--dist-dir", "testdata/dist-v1-empty-name-package-json"}, testCommandArgs(t)...)
-	cmd.SetArgs(args)
-	err := cmd.Execute()
-	require.ErrorIs(t, err, errInvalidPluginName)
+	var testCases = []testCase{
+		{
+			name:    "package json with empty team and name",
+			distDir: "testdata/dist-v1-empty-team-and-name-package-json",
+		},
+		{
+			name:    "package json with empty team",
+			distDir: "testdata/dist-v1-no-team-package-json",
+		},
+		{
+			name:    "package json with empty name",
+			distDir: "testdata/dist-v1-no-name-package-json",
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Setenv("CLOUDQUERY_API_KEY", "testkey")
+
+			cmd := NewCmdRoot()
+			args := append([]string{"plugin", "publish", "--dist-dir", tc.distDir}, testCommandArgs(t)...)
+			cmd.SetArgs(args)
+			err := cmd.Execute()
+			require.ErrorIs(t, err, errInvalidPluginName)
+		})
+	}
 }

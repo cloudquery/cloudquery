@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "name": "",
+  "team": "cloudquery",
+  "version": "v1.2.3",
+  "kind": "source",
+  "protocols": [
+    3
+  ],
+  "supported_targets": [],
+  "package_type": "native"
+}
