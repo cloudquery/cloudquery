@@ -112,7 +112,7 @@
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:103: | Send | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:110: | CloseAndRecv | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:116: | newSafeWriteClient | 100.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:138: | syncConnectionV3 | 80.1% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:138: | syncConnectionV3 | 80.4% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:746: | hintSelectMessage | 11.4% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:819: | deleteStale | 75.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:839: | createTableNameSchema | 0.0% |
