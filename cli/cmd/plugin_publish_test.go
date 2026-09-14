@@ -522,3 +522,13 @@ func readFile(name string) string {
 	}
 	return hub.NormalizeContent(string(b))
 }
+
+func TestPluginPublishMissingPluginName(t *testing.T) {
+	t.Setenv("CLOUDQUERY_API_KEY", "testkey")
+
+	cmd := NewCmdRoot()
+	args := append([]string{"plugin", "publish", "--dist-dir", "testdata/dist-v1-empty-name-package-json"}, testCommandArgs(t)...)
+	cmd.SetArgs(args)
+	err := cmd.Execute()
+	require.ErrorIs(t, err, errInvalidPluginName)
+}
