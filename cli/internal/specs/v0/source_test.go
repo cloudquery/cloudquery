@@ -2,6 +2,7 @@ package specs
 
 import (
 	"testing"
+	"time"
 
 	"github.com/cloudquery/codegen/jsonschema"
 	"github.com/stretchr/testify/require"
@@ -153,6 +154,7 @@ spec:
 			Tables:              []string{"test"},
 			Spec:                map[string]any{},
 			SkipDependentTables: &boolTrue,
+			SyncMode:            SyncModeFull,
 		},
 	},
 	{
@@ -178,6 +180,7 @@ spec:
 			Tables:              []string{"test"},
 			Spec:                map[string]any{},
 			SkipDependentTables: &boolTrue,
+			SyncMode:            SyncModeFull,
 		},
 	}}
 
@@ -546,6 +549,72 @@ func TestSource_JSONSchemaExtend(t *testing.T) {
 }`,
 		},
 		{
+			Name: "bad sync_mode",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"sync_mode":"streaming"
+}`,
+		},
+		{
+			Name: "sync_mode:full",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"sync_mode":"full"
+}`,
+		},
+		{
+			Name: "sync_mode:events",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"sync_mode":"events"
+}`,
+		},
+		{
+			Name: "null events",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"events":null
+}`,
+		},
+		{
+			Name: "empty events",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"events":{}
+}`,
+		},
+		{
+			Name: "unknown events option",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"events":{"followw":true}
+}`,
+		},
+		{
+			Name: "bad events.full_sync",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"events":{"full_sync":"sometimes"}
+}`,
+		},
+		{
+			Name: "bad events.batch_max_wait",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"events":{"batch_max_wait":5}
+}`,
+		},
+		{
+			Name: "events.batch_max_changes below minimum",
+			Err:  true,
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"events":{"batch_max_changes":0}
+}`,
+		},
+		{
+			Name: "proper events",
+			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
+"sync_mode":"events",
+"events":{"follow":true,"full_sync":"always","max_checkpoint_age":"20h","batch_max_changes":10,"batch_max_wait":"1s","summary_interval":"30s"}
+}`,
+		},
+		{
 			Name: "empty spec",
 			Spec: `{"name":"a","path":"b","registry":"local","tables":["*"],"destinations":["a"],
 "spec":{}
@@ -682,4 +751,187 @@ func TestBackendOptionsPluginName(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestSourceSyncModeValidate(t *testing.T) {
+	const header = `kind: source
+spec:
+  name: test
+  path: cloudquery/test
+  version: v1.1.0
+  destinations: ["test"]
+  tables: ["test"]
+`
+	cases := []struct {
+		name string
+		spec string
+		err  string
+	}{
+		{
+			name: "full is the default",
+			spec: header,
+		},
+		{
+			name: "events requires backend_options",
+			spec: header + `  sync_mode: events
+`,
+			err: "`sync_mode: events` requires `backend_options` with a `table_name`. Hint: point `backend_options.connection` at one of your destinations",
+		},
+		{
+			name: "events requires a backend table_name",
+			spec: header + `  sync_mode: events
+  backend_options:
+    connection: "@@plugins.test.connection"
+`,
+			err: "`sync_mode: events` requires `backend_options` with a `table_name`. Hint: point `backend_options.connection` at one of your destinations",
+		},
+		{
+			name: "events options without events sync mode",
+			spec: header + `  events:
+    follow: true
+`,
+			err: "`events` options require `sync_mode: events`",
+		},
+		{
+			name: "events options with an explicit full sync mode",
+			spec: header + `  sync_mode: full
+  events:
+    follow: true
+`,
+			err: "`events` options require `sync_mode: events`",
+		},
+		{
+			name: "unknown sync mode",
+			spec: header + `  sync_mode: streaming
+`,
+			err: `invalid sync_mode "streaming", must be one of [full events]`,
+		},
+		{
+			name: "unknown full_sync policy",
+			spec: header + `  sync_mode: events
+  backend_options:
+    table_name: cq_state
+    connection: "@@plugins.test.connection"
+  events:
+    full_sync: sometimes
+`,
+			err: `invalid events.full_sync "sometimes", must be one of [always on_first_run never]`,
+		},
+		{
+			name: "non-positive batch_max_changes",
+			spec: header + `  sync_mode: events
+  backend_options:
+    table_name: cq_state
+    connection: "@@plugins.test.connection"
+  events:
+    batch_max_changes: -1
+`,
+			err: "events.batch_max_changes must be greater than 0",
+		},
+		{
+			name: "non-positive batch_max_wait",
+			spec: header + `  sync_mode: events
+  backend_options:
+    table_name: cq_state
+    connection: "@@plugins.test.connection"
+  events:
+    batch_max_wait: 0s
+`,
+			err: "events.batch_max_wait must be greater than 0",
+		},
+		{
+			name: "non-positive summary_interval",
+			spec: header + `  sync_mode: events
+  backend_options:
+    table_name: cq_state
+    connection: "@@plugins.test.connection"
+  events:
+    summary_interval: -1m
+`,
+			err: "events.summary_interval must be greater than 0",
+		},
+		{
+			name: "non-positive max_checkpoint_age",
+			spec: header + `  sync_mode: events
+  backend_options:
+    table_name: cq_state
+    connection: "@@plugins.test.connection"
+  events:
+    max_checkpoint_age: 0h
+`,
+			err: "events.max_checkpoint_age must be greater than 0",
+		},
+		{
+			name: "valid events source",
+			spec: header + `  sync_mode: events
+  backend_options:
+    table_name: cq_state
+    connection: "@@plugins.test.connection"
+  events:
+    follow: true
+    full_sync: always
+    max_checkpoint_age: 20h
+    batch_max_changes: 10
+    batch_max_wait: 1s
+    summary_interval: 30s
+`,
+		},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			var spec Spec
+			require.NoError(t, SpecUnmarshalYamlStrict([]byte(tc.spec), &spec))
+			source := spec.Spec.(*Source)
+			source.SetDefaults()
+			err := source.Validate(false)
+			if tc.err == "" {
+				require.NoError(t, err)
+				return
+			}
+			require.EqualError(t, err, tc.err)
+		})
+	}
+}
+
+func TestSourceEventsSetDefaults(t *testing.T) {
+	t.Run("full mode leaves events unset", func(t *testing.T) {
+		s := &Source{}
+		s.SetDefaults()
+		require.Equal(t, SyncModeFull, s.SyncMode)
+		require.Nil(t, s.Events)
+	})
+
+	t.Run("events mode fills every default", func(t *testing.T) {
+		s := &Source{SyncMode: SyncModeEvents}
+		s.SetDefaults()
+		require.NotNil(t, s.Events)
+		require.False(t, s.Events.Follow)
+		require.Equal(t, FullSyncOnFirstRun, s.Events.FullSync)
+		require.Nil(t, s.Events.MaxCheckpointAge)
+		require.Equal(t, 500, s.Events.BatchMaxChanges)
+		require.Equal(t, 5*time.Second, s.Events.BatchMaxWait.Duration())
+		require.Equal(t, 5*time.Minute, s.Events.SummaryInterval.Duration())
+	})
+
+	t.Run("events mode keeps what the user set", func(t *testing.T) {
+		s := &Source{
+			SyncMode: SyncModeEvents,
+			Events: &EventsOptions{
+				Follow:           true,
+				FullSync:         FullSyncNever,
+				MaxCheckpointAge: ptrDuration(20 * time.Hour),
+				BatchMaxChanges:  7,
+				BatchMaxWait:     ptrDuration(time.Second),
+				SummaryInterval:  ptrDuration(time.Minute),
+			},
+		}
+		s.SetDefaults()
+		require.True(t, s.Events.Follow)
+		require.Equal(t, FullSyncNever, s.Events.FullSync)
+		require.Equal(t, 20*time.Hour, s.Events.MaxCheckpointAge.Duration())
+		require.Equal(t, 7, s.Events.BatchMaxChanges)
+		require.Equal(t, time.Second, s.Events.BatchMaxWait.Duration())
+		require.Equal(t, time.Minute, s.Events.SummaryInterval.Duration())
+	})
 }

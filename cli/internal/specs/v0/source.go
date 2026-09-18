@@ -4,9 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"slices"
 	"strings"
+	"time"
 
+	"github.com/cloudquery/plugin-sdk/v4/configtype"
 	"github.com/invopop/jsonschema"
 )
 
@@ -31,6 +34,97 @@ func (b *BackendOptions) PluginName() string {
 	return strings.Split(b.Connection, ".")[1]
 }
 
+// Sync modes supported by the `sync_mode` option.
+const (
+	// SyncModeFull syncs every selected table on every run.
+	SyncModeFull = "full"
+	// SyncModeEvents syncs change events from the source, optionally after a full sync.
+	SyncModeEvents = "events"
+)
+
+// AllSyncModes lists the accepted values of `sync_mode`.
+var AllSyncModes = []string{SyncModeFull, SyncModeEvents}
+
+// Policies supported by the `events.full_sync` option.
+const (
+	// FullSyncAlways runs a full sync at the start of every events run.
+	FullSyncAlways = "always"
+	// FullSyncOnFirstRun runs a full sync only when the source has no checkpoint yet.
+	FullSyncOnFirstRun = "on_first_run"
+	// FullSyncNever never runs a full sync, even on the first run.
+	FullSyncNever = "never"
+)
+
+// AllFullSyncPolicies lists the accepted values of `events.full_sync`.
+var AllFullSyncPolicies = []string{FullSyncAlways, FullSyncOnFirstRun, FullSyncNever}
+
+// Defaults applied by EventsOptions.SetDefaults.
+const (
+	defaultBatchMaxChanges = 500
+	defaultBatchMaxWait    = 5 * time.Second
+	defaultSummaryInterval = 5 * time.Minute
+)
+
+// EventsOptions tunes `sync_mode: events`. It is only valid with that sync mode.
+type EventsOptions struct {
+	// Follow keeps the sync running and streaming changes until it is stopped. When `false` the sync exits once the source is caught up.
+	Follow bool `json:"follow,omitempty" jsonschema:"default=false"`
+
+	// FullSync decides when a full sync runs before the CLI starts following the change stream.
+	FullSync string `json:"full_sync,omitempty" jsonschema:"enum=always,enum=on_first_run,enum=never,default=on_first_run"`
+
+	// MaxCheckpointAge forces a full sync when the source's checkpoint is older than this duration. Unset means the checkpoint never expires.
+	MaxCheckpointAge *configtype.Duration `json:"max_checkpoint_age,omitempty"`
+
+	// BatchMaxChanges is the number of changes that closes a refresh batch.
+	BatchMaxChanges int `json:"batch_max_changes,omitempty" jsonschema:"default=500,minimum=1"`
+
+	// BatchMaxWait is how long a refresh batch waits for more changes after the first change of the batch arrived.
+	BatchMaxWait *configtype.Duration `json:"batch_max_wait,omitempty" jsonschema:"default=5s"`
+
+	// SummaryInterval is how often a sync summary is written while following the change stream.
+	SummaryInterval *configtype.Duration `json:"summary_interval,omitempty" jsonschema:"default=5m"`
+}
+
+func (e *EventsOptions) SetDefaults() {
+	if e.FullSync == "" {
+		e.FullSync = FullSyncOnFirstRun
+	}
+	if e.BatchMaxChanges == 0 {
+		e.BatchMaxChanges = defaultBatchMaxChanges
+	}
+	if e.BatchMaxWait == nil {
+		e.BatchMaxWait = ptrDuration(defaultBatchMaxWait)
+	}
+	if e.SummaryInterval == nil {
+		e.SummaryInterval = ptrDuration(defaultSummaryInterval)
+	}
+}
+
+func (e *EventsOptions) Validate() error {
+	if !slices.Contains(AllFullSyncPolicies, e.FullSync) {
+		return fmt.Errorf("invalid events.full_sync %q, must be one of %v", e.FullSync, AllFullSyncPolicies)
+	}
+	if e.BatchMaxChanges <= 0 {
+		return errors.New("events.batch_max_changes must be greater than 0")
+	}
+	if e.BatchMaxWait != nil && e.BatchMaxWait.Duration() <= 0 {
+		return errors.New("events.batch_max_wait must be greater than 0")
+	}
+	if e.SummaryInterval != nil && e.SummaryInterval.Duration() <= 0 {
+		return errors.New("events.summary_interval must be greater than 0")
+	}
+	if e.MaxCheckpointAge != nil && e.MaxCheckpointAge.Duration() <= 0 {
+		return errors.New("events.max_checkpoint_age must be greater than 0")
+	}
+	return nil
+}
+
+func ptrDuration(d time.Duration) *configtype.Duration {
+	v := configtype.NewDuration(d)
+	return &v
+}
+
 // Source plugin spec
 type Source struct {
 	Metadata
@@ -47,6 +141,12 @@ type Source struct {
 
 	// Optional Backend options for sync operation
 	BackendOptions *BackendOptions `json:"backend_options,omitempty"`
+
+	// SyncMode selects how the source is synced: `full` syncs every selected table, `events` follows the source's change events and refreshes only the resources that changed.
+	SyncMode string `json:"sync_mode,omitempty" jsonschema:"enum=full,enum=events,default=full"`
+
+	// Events tunes `sync_mode: events`. It is only valid with that sync mode.
+	Events *EventsOptions `json:"events,omitempty"`
 
 	// Source plugin own (nested) spec
 	Spec map[string]any `json:"spec,omitempty"`
@@ -86,6 +186,15 @@ func (s *Source) SetDefaults() {
 		b := true
 		s.SkipDependentTables = &b
 	}
+	if s.SyncMode == "" {
+		s.SyncMode = SyncModeFull
+	}
+	if s.SyncMode == SyncModeEvents {
+		if s.Events == nil {
+			s.Events = &EventsOptions{}
+		}
+		s.Events.SetDefaults()
+	}
 }
 
 // UnmarshalSpec unmarshals the internal spec into the given interface
@@ -123,5 +232,25 @@ func (s *Source) Validate(relaxed bool) error {
 		return errors.New("at least one destination is required")
 	}
 
-	return nil
+	return s.validateSyncMode()
+}
+
+func (s *Source) validateSyncMode() error {
+	switch s.SyncMode {
+	case "", SyncModeFull:
+		if s.Events != nil {
+			return errors.New("`events` options require `sync_mode: events`")
+		}
+		return nil
+	case SyncModeEvents:
+		if s.BackendOptions == nil || s.BackendOptions.TableName == "" {
+			return errors.New("`sync_mode: events` requires `backend_options` with a `table_name`. Hint: point `backend_options.connection` at one of your destinations")
+		}
+		if s.Events == nil {
+			return nil
+		}
+		return s.Events.Validate()
+	default:
+		return fmt.Errorf("invalid sync_mode %q, must be one of %v", s.SyncMode, AllSyncModes)
+	}
 }

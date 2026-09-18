@@ -149,6 +149,72 @@
       ],
       "description": "Destination plugin spec"
     },
+    "Duration": {
+      "type": "string",
+      "pattern": "^[-+]?([0-9]*(\\.[0-9]*)?[a-z]+)+$",
+      "title": "CloudQuery configtype.Duration"
+    },
+    "EventsOptions": {
+      "properties": {
+        "follow": {
+          "type": "boolean",
+          "description": "Follow keeps the sync running and streaming changes until it is stopped. When `false` the sync exits once the source is caught up.",
+          "default": false
+        },
+        "full_sync": {
+          "type": "string",
+          "enum": [
+            "always",
+            "on_first_run",
+            "never"
+          ],
+          "description": "FullSync decides when a full sync runs before the CLI starts following the change stream.",
+          "default": "on_first_run"
+        },
+        "max_checkpoint_age": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Duration",
+              "description": "MaxCheckpointAge forces a full sync when the source's checkpoint is older than this duration. Unset means the checkpoint never expires."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "batch_max_changes": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "BatchMaxChanges is the number of changes that closes a refresh batch.",
+          "default": 500
+        },
+        "batch_max_wait": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Duration",
+              "description": "BatchMaxWait is how long a refresh batch waits for more changes after the first change of the batch arrived."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "summary_interval": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Duration",
+              "description": "SummaryInterval is how often a sync summary is written while following the change stream."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "description": "EventsOptions tunes `sync_mode: events`."
+    },
     "Source": {
       "if": {
         "properties": {
@@ -256,6 +322,26 @@
             {
               "$ref": "#/$defs/BackendOptions",
               "description": "Optional Backend options for sync operation"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sync_mode": {
+          "type": "string",
+          "enum": [
+            "full",
+            "events"
+          ],
+          "description": "SyncMode selects how the source is synced: `full` syncs every selected table, `events` follows the source's change events and refreshes only the resources that changed.",
+          "default": "full"
+        },
+        "events": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/EventsOptions",
+              "description": "Events tunes `sync_mode: events`. It is only valid with that sync mode."
             },
             {
               "type": "null"
