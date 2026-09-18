@@ -867,9 +867,6 @@ func getTransformedTableNameFromSchema(transformedSchemaBytes []byte) (string, e
 	return tableName, nil
 }
 
-// newIDCollector returns a collector for the temporary pricing research
-// described in ATH-754, or nil when the source has no account column, telemetry
-// is off, or the flag is off for this user.
 func newIDCollector(ctx context.Context, sourcePath string) *analytics.IDCollector {
 	collector := analytics.NewIDCollector(sourcePath)
 	if collector == nil {

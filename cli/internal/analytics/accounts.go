@@ -11,18 +11,10 @@ import (
 )
 
 const (
-	// AccountDimension counts the cloud accounts a sync reaches: an AWS account,
-	// a GCP project, an Azure subscription, a Kubernetes cluster, a GitHub org.
-	AccountDimension = "account"
-	// RepositoryDimension counts GitHub repositories, which are not accounts but
-	// are the unit pricing research asks about for that source.
+	AccountDimension    = "account"
 	RepositoryDimension = "repository"
 
-	// maxHashesPerDimension bounds the hash list in a single event. RudderStack
-	// drops events over 32KB without reporting it, and Enqueue errors are
-	// discarded, so an unbounded list would silently lose whole sync runs.
-	maxHashesPerDimension = 500
-	// maxTrackedPerDimension bounds the in-memory set during a sync.
+	maxHashesPerDimension  = 500
 	maxTrackedPerDimension = 5000
 
 	hashPepper = "cq-cli-account-analytics-v1"
@@ -31,13 +23,10 @@ const (
 
 type columnSpec struct {
 	dimension string
-	// table is empty when the column appears on every table of the source.
-	table  string
-	column string
+	table     string
+	column    string
 }
 
-// idColumnsBySource maps a source plugin to the columns holding its account
-// identifier. Keyed by the name part of the source path (`cloudquery/aws`).
 var idColumnsBySource = map[string][]columnSpec{
 	"aws":        {{dimension: AccountDimension, column: "account_id"}},
 	"gcp":        {{dimension: AccountDimension, column: "project_id"}},
@@ -50,27 +39,20 @@ var idColumnsBySource = map[string][]columnSpec{
 	},
 }
 
-// IDSummary is one dimension's contribution to a sync event.
 type IDSummary struct {
 	Hashes    []string
 	Count     int
 	Truncated bool
 }
 
-// IDCollector gathers distinct identifier values seen during a sync and hashes
-// them once the sync ends. A nil collector accepts every call and collects
-// nothing, so callers need no branches.
 type IDCollector struct {
 	specs []columnSpec
 
-	mu     sync.Mutex
-	values map[string]map[string]struct{}
-	// dropped records that the tracked set hit its cap, so the count is a floor.
+	mu      sync.Mutex
+	values  map[string]map[string]struct{}
 	dropped map[string]bool
 }
 
-// NewIDCollector returns a collector for sourcePath, or nil when the source has
-// no known account column.
 func NewIDCollector(sourcePath string) *IDCollector {
 	specs, ok := idColumnsBySource[sourceName(sourcePath)]
 	if !ok {
@@ -91,7 +73,6 @@ func sourceName(sourcePath string) string {
 	return name
 }
 
-// Observe records the identifier values carried by one record batch.
 func (c *IDCollector) Observe(tableName string, record arrow.RecordBatch) {
 	if c == nil || record == nil || record.NumRows() == 0 {
 		return
@@ -138,7 +119,6 @@ func (c *IDCollector) observeColumn(dimension string, column arrow.Array) {
 	}
 }
 
-// Summaries hashes what was collected, one entry per dimension that saw a value.
 func (c *IDCollector) Summaries() map[string]IDSummary {
 	if c == nil {
 		return nil
@@ -175,10 +155,6 @@ func (c *IDCollector) Summaries() map[string]IDSummary {
 	return summaries
 }
 
-// hashID pseudonymizes an identifier. The pepper ships in a public binary, so
-// small identifier spaces (12-digit AWS account ids) stay reversible by anyone
-// holding the CLI — this makes values unreadable in transit and at rest, it
-// does not anonymize them.
 func hashID(value string) string {
 	sum := sha256.Sum256([]byte(hashPepper + value))
 	return hex.EncodeToString(sum[:])[:hashLength]

@@ -97,7 +97,6 @@ func TestIDCollectorGitHubRepositories(t *testing.T) {
 	defer repos.Release()
 	collector.Observe("github_repositories", repos)
 
-	// The same `id` column on another table must not count as a repository.
 	other := recordWithColumn(t, "id", []*string{strPtr("99")})
 	defer other.Release()
 	collector.Observe("github_issues", other)

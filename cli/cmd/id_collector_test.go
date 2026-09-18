@@ -25,8 +25,6 @@ func TestNewIDCollectorSkipsUnmappedSource(t *testing.T) {
 }
 
 func TestNewIDCollectorRequiresTelemetry(t *testing.T) {
-	// Analytics is not initialized in tests, so there is no identity to target
-	// and no event to attach the hashes to.
 	if collector := newIDCollector(context.Background(), "cloudquery/aws"); collector != nil {
 		t.Error("got a collector with telemetry off, want nil")
 	}
