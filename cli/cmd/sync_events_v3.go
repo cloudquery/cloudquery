@@ -28,20 +28,19 @@ import (
 // eventCounters counts what one summary interval did. Follow mode resets it
 // after every summary; catch-up mode reports it once for the whole run.
 type eventCounters struct {
-	received      uint64
-	refreshed     uint64
-	deleted       uint64
+	// received is the number of changes read off the Watch stream.
+	received uint64
+	// coalesced is how many of those changes a later change in the same batch
+	// superseded, so that they never became a resource in a refresh request.
+	coalesced uint64
+	// refreshed is the number of upsert resources sent in refresh requests.
+	refreshed uint64
+	// deleted is the number of DeleteRecords relayed to each destination.
+	deleted uint64
+	// refreshErrors is the number of Error messages received during a refresh.
 	refreshErrors uint64
-	resources     uint64
-}
-
-// coalesced is the number of received changes that did not turn into a refresh,
-// either because a later change superseded them or because they were deletes.
-func (c eventCounters) coalesced() uint64 {
-	if c.received < c.refreshed {
-		return 0
-	}
-	return c.received - c.refreshed
+	// resources is the number of rows written to each destination.
+	resources uint64
 }
 
 // watchMessage is one message off the Watch stream, or the error that ended it.
@@ -245,8 +244,9 @@ func syncEventsV3(ctx context.Context, syncOptions syncV3Options) (syncErr error
 	stopIsGraceful.Store(true)
 
 	var (
-		counters      eventCounters
-		intervalStart = runStart
+		counters         eventCounters
+		intervalStart    = runStart
+		previousInterval intervalSnapshot
 	)
 	if needFull {
 		counters.resources = uint64(atomic.LoadInt64(&totalResources))
@@ -255,7 +255,7 @@ func syncEventsV3(ctx context.Context, syncOptions syncV3Options) (syncErr error
 	defer summaryTicker.Stop()
 
 	flushSummary := func(end time.Time) {
-		sess.writeSummaries(summaryWrite{
+		previousInterval = sess.writeSummaries(summaryWrite{
 			summaryLocation: summaryLocation,
 			uid:             uid,
 			runStart:        runStart,
@@ -266,6 +266,7 @@ func syncEventsV3(ctx context.Context, syncOptions syncV3Options) (syncErr error
 			shard:           shard,
 			counters:        counters,
 			tableDurations:  syncOptions.tableDurations,
+			previous:        previousInterval,
 		})
 		counters = eventCounters{}
 		intervalStart = end
@@ -285,6 +286,7 @@ func syncEventsV3(ctx context.Context, syncOptions syncV3Options) (syncErr error
 			if err != nil {
 				return err
 			}
+			counters.coalesced += batchCounts.coalesced
 			counters.refreshed += batchCounts.refreshed
 			counters.deleted += batchCounts.deleted
 			counters.refreshErrors += batchCounts.refreshErrors
@@ -534,6 +536,7 @@ func coalesceChanges(changes []*plugin.Watch_Change) ([]*plugin.Sync_Resource, e
 
 // batchCounts is what one refresh batch moved to the destinations.
 type batchCounts struct {
+	coalesced     uint64
 	refreshed     uint64
 	deleted       uint64
 	refreshErrors uint64
@@ -549,6 +552,9 @@ func (s *v3Sync) refreshBatch(ctx context.Context, sourceSpec specs.Source, shar
 	if err != nil {
 		return counts, err
 	}
+	// Every change that did not survive coalescing was superseded by a later one
+	// for the same resource, whichever operation either of them carried.
+	counts.coalesced = uint64(len(changes) - len(resources))
 	for _, resource := range resources {
 		if resource.GetOp() == plugin.Op_OP_UPSERT {
 			counts.refreshed++
@@ -642,47 +648,100 @@ type summaryWrite struct {
 	shard           *shard
 	counters        eventCounters
 	tableDurations  func() map[string]time.Duration
+	// previous is the cumulative state at the start of this interval. Every count
+	// in the row is the difference against it.
+	previous intervalSnapshot
+}
+
+// intervalSnapshot is the cumulative per-table and per-plugin state at one
+// moment. A follow run reports each summary interval on its own, so a row
+// carries the difference between the snapshot taken at its end and the one the
+// previous row left behind. A catch-up run writes a single row, whose baseline
+// is the zero snapshot, so it reports the whole run.
+type intervalSnapshot struct {
+	rows           map[string]int64
+	errors         map[string]int64
+	durationsMs    map[string]int64
+	sourceErrors   uint64
+	sourceWarnings uint64
+}
+
+// snapshot captures the cumulative counters the summary reports on.
+func (s *v3Sync) snapshot(tableDurations func() map[string]time.Duration) intervalSnapshot {
+	snap := intervalSnapshot{
+		rows:        map[string]int64{},
+		errors:      map[string]int64{},
+		durationsMs: map[string]int64{},
+	}
+	var tableErrors uint64
+	for table, stats := range s.statsPerTable.GetAll() {
+		snap.rows[table] = stats.Rows
+		snap.errors[table] = stats.Errors
+		tableErrors += uint64(stats.Errors)
+	}
+	if tableDurations != nil {
+		for table, d := range tableDurations() {
+			snap.durationsMs[table] = d.Milliseconds()
+		}
+	}
+	sourceMetrics := s.sourceClient.Metrics()
+	snap.sourceErrors = max(tableErrors, sourceMetrics.Errors)
+	snap.sourceWarnings = sourceMetrics.Warnings
+	return snap
+}
+
+// since returns what happened between prev and s.
+func (s intervalSnapshot) since(prev intervalSnapshot) intervalSnapshot {
+	delta := intervalSnapshot{
+		rows:           diffCounts(s.rows, prev.rows),
+		errors:         diffCounts(s.errors, prev.errors),
+		durationsMs:    diffCounts(s.durationsMs, prev.durationsMs),
+		sourceErrors:   s.sourceErrors - min(s.sourceErrors, prev.sourceErrors),
+		sourceWarnings: s.sourceWarnings - min(s.sourceWarnings, prev.sourceWarnings),
+	}
+	return delta
+}
+
+// diffCounts subtracts prev from cur key by key, never going below zero.
+func diffCounts(cur, prev map[string]int64) map[string]int64 {
+	out := make(map[string]int64, len(cur))
+	for k, v := range cur {
+		out[k] = max(v-prev[k], 0)
+	}
+	return out
 }
 
 // writeSummaries persists and sends one summary row per destination. Summary
 // failures are logged and never fail the run, because a follow run writes a
 // summary on every interval.
-func (s *v3Sync) writeSummaries(w summaryWrite) {
-	tableProgress := s.statsPerTable.GetAll()
+func (s *v3Sync) writeSummaries(w summaryWrite) intervalSnapshot {
+	current := s.snapshot(w.tableDurations)
+	interval := current.since(w.previous)
+
 	sourceTableNames := lo.Keys(s.sourceTables)
 	slices.Sort(sourceTableNames)
 
 	resourcesPerTable := lo.Reduce(sourceTableNames, func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
-		acc[tableName] = uint64(tableProgress[tableName].Rows)
+		acc[tableName] = uint64(interval.rows[tableName])
 		return acc
 	}, map[string]uint64{})
 	errorsPerTable := lo.Reduce(sourceTableNames, func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
-		acc[tableName] = uint64(tableProgress[tableName].Errors)
+		acc[tableName] = uint64(interval.errors[tableName])
 		return acc
 	}, map[string]uint64{})
 	durationsPerTable := map[string]uint64{}
 	if w.tableDurations != nil {
-		data := w.tableDurations()
 		durationsPerTable = lo.Reduce(sourceTableNames, func(acc map[string]uint64, tableName string, _ int) map[string]uint64 {
-			acc[tableName] = uint64(data[tableName].Milliseconds())
+			acc[tableName] = uint64(interval.durationsMs[tableName])
 			return acc
 		}, durationsPerTable)
-	}
-
-	var sourceErrors uint64
-	for _, val := range tableProgress {
-		sourceErrors += uint64(val.Errors)
-	}
-	sourceMetrics := s.sourceClient.Metrics()
-	if sourceMetrics.Errors > sourceErrors {
-		sourceErrors = sourceMetrics.Errors
 	}
 
 	for i := range s.destinationsPbClients {
 		summary := syncSummary{
 			Resources:           w.counters.resources,
-			SourceErrors:        sourceErrors,
-			SourceWarnings:      sourceMetrics.Warnings,
+			SourceErrors:        interval.sourceErrors,
+			SourceWarnings:      interval.sourceWarnings,
 			SyncID:              w.uid,
 			SyncTime:            w.runStart,
 			SourceName:          s.sourceSpec.Name,
@@ -700,7 +759,7 @@ func (s *v3Sync) writeSummaries(w summaryWrite) {
 			IntervalStart:       lo.ToPtr(w.intervalStart),
 			IntervalEnd:         lo.ToPtr(w.intervalEnd),
 			EventsReceived:      w.counters.received,
-			EventsCoalesced:     w.counters.coalesced(),
+			EventsCoalesced:     w.counters.coalesced,
 			EventsRefreshed:     w.counters.refreshed,
 			EventsDeleted:       w.counters.deleted,
 			RefreshErrors:       w.counters.refreshErrors,
@@ -727,4 +786,5 @@ func (s *v3Sync) writeSummaries(w summaryWrite) {
 			log.Warn().Err(err).Str("destination", s.destinationSpecs[i].Name).Msg("Failed to send sync summary")
 		}
 	}
+	return current
 }

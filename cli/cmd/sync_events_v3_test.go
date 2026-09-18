@@ -291,41 +291,54 @@ func TestCollectBatch(t *testing.T) {
 	})
 }
 
-func TestEventCountersCoalesced(t *testing.T) {
-	require.Equal(t, uint64(7), eventCounters{received: 10, refreshed: 3}.coalesced())
-	require.Equal(t, uint64(0), eventCounters{received: 0, refreshed: 0}.coalesced())
-	// Refreshing more resources than were received cannot happen, but must not underflow.
-	require.Equal(t, uint64(0), eventCounters{received: 1, refreshed: 2}.coalesced())
-}
-
-func TestCollectBatchSummaryTick(t *testing.T) {
-	change := func(id string) watchMessage {
-		return watchMessage{change: &plugin.Watch_Change{EventId: id}}
+func TestBatchCoalescedCount(t *testing.T) {
+	// Coalescing counts the changes a later change superseded, whatever operation
+	// either of them carried: a delete that survives coalescing is a resource sent
+	// in the refresh request, not a coalesced change.
+	cases := []struct {
+		name      string
+		changes   []*plugin.Watch_Change
+		resources int
+		coalesced uint64
+	}{
+		{
+			name: "upserts and deletes over two resources",
+			changes: []*plugin.Watch_Change{
+				testChange(t, "test_table", "a", plugin.Op_OP_UPSERT, "1"),
+				testChange(t, "test_table", "a", plugin.Op_OP_UPSERT, "2"),
+				testChange(t, "test_table", "b", plugin.Op_OP_UPSERT, "3"),
+				testChange(t, "test_table", "a", plugin.Op_OP_DELETE, "4"),
+			},
+			resources: 2,
+			coalesced: 2,
+		},
+		{
+			name: "a batch of deletes over distinct resources coalesces nothing",
+			changes: []*plugin.Watch_Change{
+				testChange(t, "test_table", "a", plugin.Op_OP_DELETE, "1"),
+				testChange(t, "test_table", "b", plugin.Op_OP_DELETE, "2"),
+			},
+			resources: 2,
+			coalesced: 0,
+		},
+		{
+			name: "one resource changed many times",
+			changes: []*plugin.Watch_Change{
+				testChange(t, "test_table", "a", plugin.Op_OP_UPSERT, "1"),
+				testChange(t, "test_table", "a", plugin.Op_OP_DELETE, "2"),
+				testChange(t, "test_table", "a", plugin.Op_OP_UPSERT, "3"),
+			},
+			resources: 1,
+			coalesced: 2,
+		},
 	}
 
-	t.Run("a tick with nothing collected asks for a summary right away", func(t *testing.T) {
-		tick := make(chan time.Time, 1)
-		tick <- time.Now()
-		result, err := collectBatch(context.Background(), make(chan watchMessage), tick, 100, time.Hour)
-		require.NoError(t, err)
-		require.Equal(t, batchReady, result.end)
-		require.Empty(t, result.changes)
-		require.True(t, result.summaryDue)
-	})
-
-	t.Run("a tick never cuts a batch short", func(t *testing.T) {
-		in := make(chan watchMessage, 2)
-		in <- change("1")
-		tick := make(chan time.Time, 1)
-		go func() {
-			time.Sleep(5 * time.Millisecond)
-			tick <- time.Now()
-			in <- change("2")
-		}()
-		result, err := collectBatch(context.Background(), in, tick, 2, time.Hour)
-		require.NoError(t, err)
-		require.Equal(t, batchReady, result.end)
-		require.Len(t, result.changes, 2)
-		require.True(t, result.summaryDue)
-	})
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			resources, err := coalesceChanges(tc.changes)
+			require.NoError(t, err)
+			require.Len(t, resources, tc.resources)
+			require.Equal(t, tc.coalesced, uint64(len(tc.changes)-len(resources)))
+		})
+	}
 }

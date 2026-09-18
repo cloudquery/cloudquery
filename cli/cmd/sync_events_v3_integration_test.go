@@ -230,7 +230,7 @@ func TestSyncEventsV3_CoalescesChangesAndAcksTheLastEvent(t *testing.T) {
 	require.Len(t, summaries, 1)
 	require.Equal(t, uint64(4), summaries[0].EventsReceived)
 	require.Equal(t, uint64(1), summaries[0].EventsRefreshed)
-	require.Equal(t, uint64(3), summaries[0].EventsCoalesced)
+	require.Equal(t, uint64(2), summaries[0].EventsCoalesced)
 	require.Equal(t, uint64(1), summaries[0].EventsDeleted)
 	require.NotNil(t, summaries[0].IntervalStart)
 	require.NotNil(t, summaries[0].IntervalEnd)
@@ -312,8 +312,9 @@ func TestSyncEventsV3_FollowWritesASummaryPerInterval(t *testing.T) {
 		changes = append(changes, testChangeFor(t, id, plugin.Op_OP_UPSERT, string(rune('1'+i))))
 	}
 	src := &testSourcePlugin{
-		ready:   &plugin.Watch_Ready{HasCheckpoint: true, CheckpointTime: timestamppb.Now()},
-		changes: changes,
+		ready:             &plugin.Watch_Ready{HasCheckpoint: true, CheckpointTime: timestamppb.Now()},
+		changes:           changes,
+		refreshErrorTable: testTable.Name,
 	}
 	events := &specs.EventsOptions{
 		FullSync:        specs.FullSyncNever,
@@ -336,9 +337,13 @@ func TestSyncEventsV3_FollowWritesASummaryPerInterval(t *testing.T) {
 
 	// Every change is accounted for exactly once across the intervals, and the
 	// intervals are contiguous.
-	var received uint64
+	var received, resources, rowsPerTable, errorsPerTable, sourceErrors uint64
 	for i, s := range summaries {
 		received += s.EventsReceived
+		resources += s.Resources
+		rowsPerTable += s.ResourcesPerTable[testTable.Name]
+		errorsPerTable += s.ErrorsPerTable[testTable.Name]
+		sourceErrors += s.SourceErrors
 		require.NotNil(t, s.IntervalStart)
 		require.NotNil(t, s.IntervalEnd)
 		if i > 0 {
@@ -346,6 +351,32 @@ func TestSyncEventsV3_FollowWritesASummaryPerInterval(t *testing.T) {
 		}
 	}
 	require.Equal(t, uint64(len(changes)), received)
+
+	// Every count on a row covers that row's interval only, so the rows add up to
+	// the run instead of each repeating everything that came before it.
+	require.Equal(t, uint64(len(changes)), resources)
+	require.Equal(t, uint64(len(changes)), rowsPerTable)
+	require.Equal(t, uint64(len(changes)), errorsPerTable)
+	require.Equal(t, uint64(len(changes)), sourceErrors)
+
+	// Concretely: once an interval has reported a table's rows, a later interval
+	// with no changes of its own reports none.
+	firstWithRows := -1
+	for i, s := range summaries {
+		if s.ResourcesPerTable[testTable.Name] > 0 {
+			firstWithRows = i
+			break
+		}
+	}
+	require.NotEqual(t, -1, firstWithRows, "expected an interval carrying the refreshed rows")
+	require.Less(t, firstWithRows, len(summaries)-1, "expected at least one interval after the rows landed")
+	for _, s := range summaries[firstWithRows+1:] {
+		if s.EventsReceived == 0 {
+			require.Zero(t, s.ResourcesPerTable[testTable.Name], "an interval with no changes must not repeat an earlier interval's rows")
+			require.Zero(t, s.ErrorsPerTable[testTable.Name])
+			require.Zero(t, s.SourceErrors)
+		}
+	}
 }
 
 func TestSyncEventsV3_PluginWithoutWatchIsRejected(t *testing.T) {
