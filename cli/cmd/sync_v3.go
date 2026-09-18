@@ -1031,11 +1031,40 @@ func (s *v3Sync) writesSettled() bool {
 	return true
 }
 
+// destinationWriteTimeout bounds waitForWrites. It is deliberately not a spec
+// field: exceeding it means the barrier's assumption is broken, not that the
+// destination is slow in a way the user should tune around.
+const destinationWriteTimeout = 60 * time.Second
+
+// errWritesNotSettled is returned when the destination write barrier does not
+// clear. Its wording matches destinationWriteTimeout.
+var errWritesNotSettled = errors.New("destination writes did not settle within 60s; a transformer that drops or merges records is not supported in sync_mode: events")
+
 // waitForWrites blocks until every record relayed so far has been written to
 // every destination. A transformer pipeline hands records on asynchronously, so
 // the events loop needs this barrier before it deletes stale rows or
 // acknowledges a batch of changes.
-func (s *v3Sync) waitForWrites(ctx context.Context) error {
+//
+// The barrier counts records into each pipeline and out of it, so it assumes a
+// transformer emits exactly one record for every record it is given. A
+// transformer that drops, merges or splits records never lets the two counts
+// meet, which is what destinationWriteTimeout bounds.
+//
+// runCtx is the context the user's interrupt cancels and streamCtx is the one
+// the plugin streams hang off; either ending aborts the wait. A run that is
+// already stopping is not treated as an interruption: its final batch still has
+// to settle before it can be acknowledged, and the timeout bounds that.
+func (s *v3Sync) waitForWrites(runCtx, streamCtx context.Context) error {
+	return s.waitForWritesWithin(runCtx, streamCtx, destinationWriteTimeout)
+}
+
+func (s *v3Sync) waitForWritesWithin(runCtx, streamCtx context.Context, timeout time.Duration) error {
+	interrupted := runCtx.Done()
+	if runCtx.Err() != nil {
+		interrupted = nil
+	}
+	deadline := time.NewTimer(timeout)
+	defer deadline.Stop()
 	t := time.NewTicker(2 * time.Millisecond)
 	defer t.Stop()
 	for !s.writesSettled() {
@@ -1048,8 +1077,12 @@ func (s *v3Sync) waitForWrites(ctx context.Context) error {
 				return err
 			}
 			return errors.New("destination pipeline stopped before every record was written")
-		case <-ctx.Done():
-			return ctx.Err()
+		case <-interrupted:
+			return fmt.Errorf("%w: %w", errWritesNotSettled, runCtx.Err())
+		case <-streamCtx.Done():
+			return fmt.Errorf("%w: %w", errWritesNotSettled, streamCtx.Err())
+		case <-deadline.C:
+			return errWritesNotSettled
 		case <-t.C:
 		}
 	}

@@ -12,6 +12,7 @@ import (
 	"github.com/cloudquery/plugin-sdk/v4/configtype"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/stretchr/testify/require"
+	"golang.org/x/sync/errgroup"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -341,4 +342,94 @@ func TestBatchCoalescedCount(t *testing.T) {
 			require.Equal(t, tc.coalesced, uint64(len(tc.changes)-len(resources)))
 		})
 	}
+}
+
+func TestWaitForWrites(t *testing.T) {
+	// A session whose pipelines were handed a record that never came back out,
+	// which is what a transformer that drops records looks like to the barrier.
+	stuck := func(t *testing.T) *v3Sync {
+		t.Helper()
+		eg, gctx := errgroup.WithContext(context.Background())
+		return &v3Sync{
+			eg:                   eg,
+			gctx:                 gctx,
+			sentToPipeline:       []int64{1},
+			writtenToDestination: []int64{0},
+		}
+	}
+
+	t.Run("settled writes return immediately", func(t *testing.T) {
+		s := &v3Sync{sentToPipeline: []int64{3}, writtenToDestination: []int64{3}}
+		require.NoError(t, s.waitForWritesWithin(context.Background(), context.Background(), time.Millisecond))
+	})
+
+	t.Run("writes that never settle time out", func(t *testing.T) {
+		err := stuck(t).waitForWritesWithin(context.Background(), context.Background(), 20*time.Millisecond)
+		require.ErrorIs(t, err, errWritesNotSettled)
+		require.ErrorContains(t, err, "a transformer that drops or merges records is not supported in sync_mode: events")
+	})
+
+	t.Run("an interrupt during the wait breaks it", func(t *testing.T) {
+		ctx, cancel := context.WithCancel(context.Background())
+		go func() {
+			time.Sleep(10 * time.Millisecond)
+			cancel()
+		}()
+		err := stuck(t).waitForWritesWithin(ctx, context.Background(), time.Minute)
+		require.ErrorIs(t, err, errWritesNotSettled)
+		require.ErrorIs(t, err, context.Canceled)
+	})
+
+	t.Run("a cancelled stream breaks the wait", func(t *testing.T) {
+		streamCtx, cancel := context.WithCancel(context.Background())
+		cancel()
+		err := stuck(t).waitForWritesWithin(context.Background(), streamCtx, time.Minute)
+		require.ErrorIs(t, err, errWritesNotSettled)
+		require.ErrorIs(t, err, context.Canceled)
+	})
+
+	t.Run("a run that is already stopping still gets its timeout", func(t *testing.T) {
+		// The final batch of a follow run has to settle before it can be
+		// acknowledged, so a context that was already cancelled is not treated as
+		// an interruption.
+		stopped, cancel := context.WithCancel(context.Background())
+		cancel()
+		start := time.Now()
+		err := stuck(t).waitForWritesWithin(stopped, context.Background(), 30*time.Millisecond)
+		require.ErrorIs(t, err, errWritesNotSettled)
+		require.NotErrorIs(t, err, context.Canceled)
+		require.GreaterOrEqual(t, time.Since(start), 30*time.Millisecond)
+	})
+}
+
+func TestCollectBatchSummaryTick(t *testing.T) {
+	change := func(id string) watchMessage {
+		return watchMessage{change: &plugin.Watch_Change{EventId: id}}
+	}
+
+	t.Run("a tick with nothing collected asks for a summary right away", func(t *testing.T) {
+		tick := make(chan time.Time, 1)
+		tick <- time.Now()
+		result, err := collectBatch(context.Background(), make(chan watchMessage), tick, 100, time.Hour)
+		require.NoError(t, err)
+		require.Equal(t, batchReady, result.end)
+		require.Empty(t, result.changes)
+		require.True(t, result.summaryDue)
+	})
+
+	t.Run("a tick never cuts a batch short", func(t *testing.T) {
+		in := make(chan watchMessage, 2)
+		in <- change("1")
+		tick := make(chan time.Time, 1)
+		go func() {
+			time.Sleep(5 * time.Millisecond)
+			tick <- time.Now()
+			in <- change("2")
+		}()
+		result, err := collectBatch(context.Background(), in, tick, 2, time.Hour)
+		require.NoError(t, err)
+		require.Equal(t, batchReady, result.end)
+		require.Len(t, result.changes, 2)
+		require.True(t, result.summaryDue)
+	})
 }

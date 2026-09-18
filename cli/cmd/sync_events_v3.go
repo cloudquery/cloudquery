@@ -219,7 +219,7 @@ func syncEventsV3(ctx context.Context, syncOptions syncV3Options) (syncErr error
 		// Every record of the full sync has to be on its way to the destinations
 		// before stale rows are deleted, and DeleteStale runs here and nowhere
 		// else in an events run.
-		if err := sess.waitForWrites(streamCtx); err != nil {
+		if err := sess.waitForWrites(ctx, streamCtx); err != nil {
 			return err
 		}
 		for i := range destinationsClients {
@@ -294,7 +294,7 @@ func syncEventsV3(ctx context.Context, syncOptions syncV3Options) (syncErr error
 
 			// Acknowledge only once every destination has written the batch, so
 			// that a crash before that replays the changes instead of losing them.
-			if err := sess.waitForWrites(streamCtx); err != nil {
+			if err := sess.waitForWrites(ctx, streamCtx); err != nil {
 				return err
 			}
 			lastEventID := changes[len(changes)-1].GetEventId()
