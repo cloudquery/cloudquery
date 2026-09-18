@@ -177,7 +177,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		totalResources = int64(0)
 		totals         = sourceClient.Metrics()
 		statsPerTable  = utils.NewConcurrentMap[string, SyncRunTableProgressValue]()
-		idCollector    = newIDCollector(ctx, sourceSpec.Path)
+		idCollector    = newIDCollector(ctx, sourceSpec.Path, destinationSpecs)
 	)
 	defer func() {
 		// Platform-only syncs are external syncs: the platform emits the canonical
@@ -867,7 +867,11 @@ func getTransformedTableNameFromSchema(transformedSchemaBytes []byte) (string, e
 	return tableName, nil
 }
 
-func newIDCollector(ctx context.Context, sourcePath string) *analytics.IDCollector {
+func newIDCollector(ctx context.Context, sourcePath string, destinationSpecs []specs.Destination) *analytics.IDCollector {
+	if platform.OnlyPlatformDestinations(destinationSpecs) {
+		return nil
+	}
+
 	collector := analytics.NewIDCollector(sourcePath)
 	if collector == nil {
 		return nil

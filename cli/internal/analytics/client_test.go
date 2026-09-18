@@ -61,7 +61,7 @@ func TestTrackSyncCompletedWithIDSummaries(t *testing.T) {
 		ResourceCount: 10,
 		IDSummaries: map[string]IDSummary{
 			AccountDimension:    {Hashes: []string{"aaaa", "bbbb"}, Count: 2},
-			RepositoryDimension: {Hashes: []string{"cccc"}, Count: 7, Truncated: true},
+			RepositoryDimension: {Hashes: []string{"cccc"}, Count: 7, Truncated: true, CountIsFloor: true},
 		},
 	})
 
@@ -78,6 +78,12 @@ func TestTrackSyncCompletedWithIDSummaries(t *testing.T) {
 	if truncated, ok := props["repository_ids_truncated"].(bool); !ok || !truncated {
 		t.Errorf("got repository_ids_truncated %v, want true", props["repository_ids_truncated"])
 	}
+	if floor, ok := props["repository_id_count_is_floor"].(bool); !ok || !floor {
+		t.Errorf("got repository_id_count_is_floor %v, want true", props["repository_id_count_is_floor"])
+	}
+	if floor, ok := props["account_id_count_is_floor"].(bool); !ok || floor {
+		t.Errorf("got account_id_count_is_floor %v, want false", props["account_id_count_is_floor"])
+	}
 	hashes, ok := props["account_id_hashes"].([]string)
 	if !ok || len(hashes) != 2 {
 		t.Errorf("got account_id_hashes %v, want two hashes", props["account_id_hashes"])
@@ -90,7 +96,7 @@ func TestTrackSyncCompletedWithoutIDSummaries(t *testing.T) {
 	TrackSyncCompleted(context.Background(), uuid.New(), SyncFinishedEvent{ResourceCount: 10})
 
 	props := trackedProperties(t, fake)
-	for _, key := range []string{"account_id_hashes", "account_id_count", "account_ids_truncated", "repository_id_hashes"} {
+	for _, key := range []string{"account_id_hashes", "account_id_count", "account_ids_truncated", "account_id_count_is_floor", "repository_id_hashes"} {
 		if _, ok := props[key]; ok {
 			t.Errorf("got property %q, want it absent", key)
 		}

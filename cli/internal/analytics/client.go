@@ -214,7 +214,8 @@ func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event Syn
 	for dimension, summary := range event.IDSummaries {
 		props = props.Set(dimension+"_id_hashes", summary.Hashes).
 			Set(dimension+"_id_count", summary.Count).
-			Set(dimension+"_ids_truncated", summary.Truncated)
+			Set(dimension+"_ids_truncated", summary.Truncated).
+			Set(dimension+"_id_count_is_floor", summary.CountIsFloor)
 	}
 
 	_ = client.Enqueue(rudderstack.Track{

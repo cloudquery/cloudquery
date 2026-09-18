@@ -38,7 +38,7 @@ func TestNewIDCollectorSourceSupport(t *testing.T) {
 			t.Errorf("expected a collector for %q", sourcePath)
 		}
 	}
-	for _, sourcePath := range []string{"cloudquery/test", "cloudquery/postgresql", "acme/aws-internal", ""} {
+	for _, sourcePath := range []string{"cloudquery/test", "cloudquery/postgresql", "acme/aws", "acme/github", "aws", ""} {
 		if NewIDCollector(sourcePath) != nil {
 			t.Errorf("expected no collector for %q", sourcePath)
 		}
@@ -122,8 +122,8 @@ func TestIDCollectorDeduplicatesAcrossRecords(t *testing.T) {
 	if summary.Count != 2 {
 		t.Fatalf("got count %d, want 2", summary.Count)
 	}
-	if summary.Truncated {
-		t.Error("got truncated, want false")
+	if summary.Truncated || summary.CountIsFloor {
+		t.Error("got a clipped summary, want an exact one")
 	}
 }
 
@@ -159,6 +159,9 @@ func TestIDCollectorCapsHashesAndReportsCount(t *testing.T) {
 	if !summary.Truncated {
 		t.Error("got truncated false, want true")
 	}
+	if summary.CountIsFloor {
+		t.Error("got count_is_floor true, want false: the count is exact below the tracking cap")
+	}
 }
 
 func TestIDCollectorStopsTrackingAtCap(t *testing.T) {
@@ -175,8 +178,8 @@ func TestIDCollectorStopsTrackingAtCap(t *testing.T) {
 	if summary.Count != maxTrackedPerDimension {
 		t.Errorf("got count %d, want %d", summary.Count, maxTrackedPerDimension)
 	}
-	if !summary.Truncated {
-		t.Error("got truncated false, want true")
+	if !summary.CountIsFloor {
+		t.Error("got count_is_floor false, want true once tracking stops")
 	}
 }
 
