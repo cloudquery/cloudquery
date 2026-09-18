@@ -1,9 +1,3 @@
-// Package featureflags evaluates LaunchDarkly flags from the CLI.
-//
-// The CLI is a public binary, so it cannot carry a LaunchDarkly server SDK key
-// and LaunchDarkly ships no Go client-side SDK. Instead this package calls the
-// client-side evaluation endpoint with the environment's client-side ID, the
-// same public identifier the web apps ship.
 package featureflags
 
 import (
@@ -19,8 +13,6 @@ import (
 )
 
 const (
-	// AccountIDAnalytics gates attaching hashed cloud account identifiers to
-	// sync_run_completed. Temporary: it exists for a pricing research window.
 	AccountIDAnalytics = "cq-cli-account-id-analytics"
 
 	defaultClientSideID = "657068acb95b56102349695e"
@@ -28,8 +20,6 @@ const (
 	requestTimeout      = 2 * time.Second
 )
 
-// Context is the evaluation context flag targeting rules see. It mirrors the
-// user context the web apps build, so a rule written once matches both.
 type Context struct {
 	UserID      string
 	Team        string
@@ -46,9 +36,6 @@ var (
 	cached    map[string]evaluation
 )
 
-// BoolFlag returns the boolean variation of key, or defaultValue when the flag
-// is missing or LaunchDarkly cannot be reached. Flags are fetched once per
-// process; every failure mode resolves to defaultValue.
 func BoolFlag(ctx context.Context, key string, defaultValue bool, evalCtx Context) bool {
 	if evalCtx.UserID == "" {
 		return defaultValue
