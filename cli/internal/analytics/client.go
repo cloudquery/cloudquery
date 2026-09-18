@@ -217,6 +217,21 @@ func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event Syn
 	})
 }
 
+// Identity returns the user and team the sync events are attributed to, for
+// callers that must target the same population, such as feature flag
+// evaluation. Reports false when telemetry is off or the user is unresolved.
+func Identity(ctx context.Context) (userID, team, environment string, ok bool) {
+	if client == nil {
+		return "", "", "", false
+	}
+	details := getSyncEventDetails(ctx)
+	if details == nil || details.isCurrentTeamInternal {
+		return "", "", "", false
+	}
+	userID, _ = getUserIDEmail(details.user, details.currentTeam)
+	return userID, details.currentTeam, details.environment, true
+}
+
 type InitEvent struct {
 	Source         string
 	Destination    string
