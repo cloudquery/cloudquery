@@ -3,8 +3,8 @@ package analytics
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"maps"
 	"slices"
-	"strings"
 	"sync"
 
 	"github.com/apache/arrow-go/v18/arrow"
@@ -15,7 +15,7 @@ const (
 	RepositoryDimension = "repository"
 
 	maxHashesPerDimension  = 500
-	maxTrackedPerDimension = 5000
+	maxTrackedPerDimension = 50000
 
 	hashPepper = "cq-cli-account-analytics-v1"
 	hashLength = 16
@@ -28,49 +28,42 @@ type columnSpec struct {
 }
 
 var idColumnsBySource = map[string][]columnSpec{
-	"aws":        {{dimension: AccountDimension, column: "account_id"}},
-	"gcp":        {{dimension: AccountDimension, column: "project_id"}},
-	"azure":      {{dimension: AccountDimension, column: "subscription_id"}},
-	"k8s":        {{dimension: AccountDimension, column: "cloud_cluster_id"}},
-	"cloudflare": {{dimension: AccountDimension, column: "account_id"}},
-	"github": {
+	"cloudquery/aws":        {{dimension: AccountDimension, column: "account_id"}},
+	"cloudquery/gcp":        {{dimension: AccountDimension, column: "project_id"}},
+	"cloudquery/azure":      {{dimension: AccountDimension, column: "subscription_id"}},
+	"cloudquery/k8s":        {{dimension: AccountDimension, column: "cloud_cluster_id"}},
+	"cloudquery/cloudflare": {{dimension: AccountDimension, column: "account_id"}},
+	"cloudquery/github": {
 		{dimension: AccountDimension, column: "org"},
 		{dimension: RepositoryDimension, table: "github_repositories", column: "id"},
 	},
 }
 
 type IDSummary struct {
-	Hashes    []string
-	Count     int
-	Truncated bool
+	Hashes       []string
+	Count        int
+	Truncated    bool
+	CountIsFloor bool
 }
 
 type IDCollector struct {
 	specs []columnSpec
 
 	mu      sync.Mutex
-	values  map[string]map[string]struct{}
+	hashes  map[string]map[string]struct{}
 	dropped map[string]bool
 }
 
 func NewIDCollector(sourcePath string) *IDCollector {
-	specs, ok := idColumnsBySource[sourceName(sourcePath)]
+	specs, ok := idColumnsBySource[sourcePath]
 	if !ok {
 		return nil
 	}
 	return &IDCollector{
 		specs:   specs,
-		values:  make(map[string]map[string]struct{}),
+		hashes:  make(map[string]map[string]struct{}),
 		dropped: make(map[string]bool),
 	}
-}
-
-func sourceName(sourcePath string) string {
-	_, name, found := strings.Cut(sourcePath, "/")
-	if !found {
-		return sourcePath
-	}
-	return name
 }
 
 func (c *IDCollector) Observe(tableName string, record arrow.RecordBatch) {
@@ -94,10 +87,10 @@ func (c *IDCollector) observeColumn(dimension string, column arrow.Array) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
-	values, ok := c.values[dimension]
+	hashes, ok := c.hashes[dimension]
 	if !ok {
-		values = make(map[string]struct{})
-		c.values[dimension] = values
+		hashes = make(map[string]struct{})
+		c.hashes[dimension] = hashes
 	}
 
 	for i := range column.Len() {
@@ -108,14 +101,15 @@ func (c *IDCollector) observeColumn(dimension string, column arrow.Array) {
 		if value == "" {
 			continue
 		}
-		if _, seen := values[value]; seen {
+		hash := hashID(value)
+		if _, seen := hashes[hash]; seen {
 			continue
 		}
-		if len(values) >= maxTrackedPerDimension {
+		if len(hashes) >= maxTrackedPerDimension {
 			c.dropped[dimension] = true
 			return
 		}
-		values[value] = struct{}{}
+		hashes[hash] = struct{}{}
 	}
 }
 
@@ -127,26 +121,23 @@ func (c *IDCollector) Summaries() map[string]IDSummary {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
-	summaries := make(map[string]IDSummary, len(c.values))
-	for dimension, values := range c.values {
-		if len(values) == 0 {
+	summaries := make(map[string]IDSummary, len(c.hashes))
+	for dimension, seen := range c.hashes {
+		if len(seen) == 0 {
 			continue
 		}
-		hashes := make([]string, 0, len(values))
-		for value := range values {
-			hashes = append(hashes, hashID(value))
-		}
-		slices.Sort(hashes)
+		hashes := slices.Sorted(maps.Keys(seen))
 
-		truncated := c.dropped[dimension]
+		truncated := false
 		if len(hashes) > maxHashesPerDimension {
 			hashes = hashes[:maxHashesPerDimension]
 			truncated = true
 		}
 		summaries[dimension] = IDSummary{
-			Hashes:    hashes,
-			Count:     len(values),
-			Truncated: truncated,
+			Hashes:       hashes,
+			Count:        len(seen),
+			Truncated:    truncated,
+			CountIsFloor: c.dropped[dimension],
 		}
 	}
 	if len(summaries) == 0 {
