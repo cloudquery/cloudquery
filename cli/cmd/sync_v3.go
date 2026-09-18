@@ -30,6 +30,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/featureflags"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/tablenamechanger"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/transformer"
@@ -176,6 +177,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 		totalResources = int64(0)
 		totals         = sourceClient.Metrics()
 		statsPerTable  = utils.NewConcurrentMap[string, SyncRunTableProgressValue]()
+		idCollector    = newIDCollector(ctx, sourceSpec.Path, destinationSpecs)
 	)
 	defer func() {
 		// Platform-only syncs are external syncs: the platform emits the canonical
@@ -191,6 +193,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 			Duration:          syncTimeTook,
 			ResourceCount:     totalResources,
 			AbortedDueToError: syncErr,
+			IDSummaries:       idCollector.Summaries(),
 		})
 	}()
 
@@ -483,6 +486,7 @@ func syncConnectionV3(ctx context.Context, syncOptions syncV3Options) (syncErr e
 				stats, _ := statsPerTable.Get(tableName)
 				stats.Rows += record.NumRows()
 				statsPerTable.Add(tableName, stats)
+				idCollector.Observe(tableName, record)
 				for i := range destinationsPbClients {
 					destinationName := destinationSpecs[i].Name
 					transformedRecord := destinationTransformers[i].Transform(record)
@@ -861,4 +865,31 @@ func getTransformedTableNameFromSchema(transformedSchemaBytes []byte) (string, e
 	}
 
 	return tableName, nil
+}
+
+func newIDCollector(ctx context.Context, sourcePath string, destinationSpecs []specs.Destination) *analytics.IDCollector {
+	if platform.OnlyPlatformDestinations(destinationSpecs) {
+		return nil
+	}
+
+	collector := analytics.NewIDCollector(sourcePath)
+	if collector == nil {
+		return nil
+	}
+
+	userID, team, environment, ok := analytics.Identity(ctx)
+	if !ok {
+		return nil
+	}
+
+	enabled := featureflags.BoolFlag(ctx, featureflags.AccountIDAnalytics, false, featureflags.Context{
+		UserID:      userID,
+		Team:        team,
+		Environment: environment,
+		CLIVersion:  Version,
+	})
+	if !enabled {
+		return nil
+	}
+	return collector
 }
