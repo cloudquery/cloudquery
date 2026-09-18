@@ -132,11 +132,11 @@ func (t *RecordTransformer) TransformSchema(sc *arrow.Schema) *arrow.Schema {
 	return arrow.NewSchema(transformedFields, &scMd)
 }
 
-func (t *RecordTransformer) replaceTimestampField(sc *arrow.Schema, record arrow.RecordBatch, nRows int) (arrow.RecordBatch, error) {
+func replaceTimestampField(sc *arrow.Schema, record arrow.RecordBatch, nRows int, syncTime time.Time) (arrow.RecordBatch, error) {
 	fieldIndex := sc.FieldIndices(cqSyncTime)[0]
 	currentFieldAsTimestamp, ok := sc.Field(fieldIndex).Type.(*arrow.TimestampType)
 	if ok {
-		syncTimeArray, err := schema.TimestampArrayFromTime(t.syncTime, currentFieldAsTimestamp.Unit, currentFieldAsTimestamp.TimeZone, nRows)
+		syncTimeArray, err := schema.TimestampArrayFromTime(syncTime, currentFieldAsTimestamp.Unit, currentFieldAsTimestamp.TimeZone, nRows)
 		if err != nil {
 			return nil, err
 		}
@@ -145,7 +145,15 @@ func (t *RecordTransformer) replaceTimestampField(sc *arrow.Schema, record arrow
 	return record, nil
 }
 
+// Transform stamps the record with the sync time the transformer was built with.
 func (t *RecordTransformer) Transform(record arrow.RecordBatch) arrow.RecordBatch {
+	return t.TransformWithSyncTime(record, t.syncTime)
+}
+
+// TransformWithSyncTime is Transform with the `_cq_sync_time` value supplied per
+// call, so that an events refresh batch can stamp its own batch time instead of
+// the time the run started.
+func (t *RecordTransformer) TransformWithSyncTime(record arrow.RecordBatch, syncTime time.Time) arrow.RecordBatch {
 	sc := record.Schema()
 	newSchema := t.TransformSchema(sc)
 	nRows := int(record.NumRows())
@@ -153,10 +161,10 @@ func (t *RecordTransformer) Transform(record arrow.RecordBatch) arrow.RecordBatc
 	cols := make([]arrow.Array, 0, len(sc.Fields())+t.internalColumns)
 	if t.withSyncTime && (!sc.HasField(cqSyncTime) || env.IsCloud()) {
 		if !sc.HasField(cqSyncTime) {
-			syncTimeArray, _ := schema.TimestampArrayFromTime(t.syncTime, arrow.Microsecond, "UTC", nRows)
+			syncTimeArray, _ := schema.TimestampArrayFromTime(syncTime, arrow.Microsecond, "UTC", nRows)
 			cols = append(cols, syncTimeArray)
 		} else {
-			newRecord, err := t.replaceTimestampField(sc, record, nRows)
+			newRecord, err := replaceTimestampField(sc, record, nRows, syncTime)
 			if err == nil {
 				// Only replace the record if the new record is valid
 				record = newRecord

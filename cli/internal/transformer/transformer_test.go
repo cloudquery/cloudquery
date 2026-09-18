@@ -165,3 +165,55 @@ func TestRecord(t *testing.T) {
 		})
 	}
 }
+
+func TestTransformWithSyncTime(t *testing.T) {
+	runTime := time.Date(2023, 6, 21, 17, 54, 44, 488177000, time.UTC)
+	batchTime := time.Date(2024, 1, 2, 3, 4, 5, 6000, time.UTC)
+
+	newRecord := func(sc *arrow.Schema, jsonRecord string) arrow.RecordBatch {
+		bldr := array.NewRecordBuilder(memory.DefaultAllocator, sc)
+		if err := bldr.UnmarshalJSON([]byte(jsonRecord)); err != nil {
+			t.Fatal(err)
+		}
+		return bldr.NewRecordBatch()
+	}
+
+	syncTimeOf := func(record arrow.RecordBatch) time.Time {
+		idx := record.Schema().FieldIndices(cqSyncTime)
+		if len(idx) != 1 {
+			t.Fatalf("expected exactly one %s column, got %d", cqSyncTime, len(idx))
+		}
+		ts, ok := record.Column(idx[0]).(*array.Timestamp)
+		if !ok {
+			t.Fatalf("expected %s to be a timestamp column, got %T", cqSyncTime, record.Column(idx[0]))
+		}
+		return ts.Value(0).ToTime(arrow.Microsecond).UTC()
+	}
+
+	t.Run("added column uses the per-call sync time", func(t *testing.T) {
+		sc := arrow.NewSchema([]arrow.Field{{Name: "id", Type: arrow.PrimitiveTypes.Int64}}, nil)
+		tr := NewRecordTransformer(WithSyncTimeColumn(runTime))
+
+		if got := syncTimeOf(tr.TransformWithSyncTime(newRecord(sc, `{"id": 1}`), batchTime)); !got.Equal(batchTime) {
+			t.Fatalf("expected %v, got %v", batchTime, got)
+		}
+		// Transform keeps stamping the run-wide sync time.
+		if got := syncTimeOf(tr.Transform(newRecord(sc, `{"id": 1}`))); !got.Equal(runTime) {
+			t.Fatalf("expected %v, got %v", runTime, got)
+		}
+	})
+
+	t.Run("existing column is replaced with the per-call sync time", func(t *testing.T) {
+		t.Setenv("CQ_CLOUD", "1")
+		sc := arrow.NewSchema([]arrow.Field{
+			{Name: cqSyncTime, Type: arrow.FixedWidthTypes.Timestamp_us, Nullable: true},
+			{Name: "id", Type: arrow.PrimitiveTypes.Int64},
+		}, nil)
+		tr := NewRecordTransformer(WithSyncTimeColumn(runTime))
+
+		record := newRecord(sc, `{"_cq_sync_time": "2020-01-01 00:00:00.000000", "id": 1}`)
+		if got := syncTimeOf(tr.TransformWithSyncTime(record, batchTime)); !got.Equal(batchTime) {
+			t.Fatalf("expected %v, got %v", batchTime, got)
+		}
+	})
+}
