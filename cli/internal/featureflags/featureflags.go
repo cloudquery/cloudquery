@@ -78,7 +78,7 @@ func fetch(ctx context.Context, evalCtx Context) map[string]evaluation {
 		log.Debug().Err(err).Msg("feature flags: failed to encode evaluation context")
 		return nil
 	}
-	url := baseURL + "/sdk/evalx/" + clientSideID + "/context/" + encodedContext
+	url := baseURL + "/sdk/evalx/" + clientSideID + "/contexts/" + encodedContext
 
 	ctx, cancel := context.WithTimeout(ctx, requestTimeout)
 	defer cancel()

@@ -132,7 +132,7 @@ func TestEvaluationContextIsSentInThePath(t *testing.T) {
 
 	BoolFlag(context.Background(), testFlag, false, testContext())
 
-	prefix := "/sdk/evalx/test-client-id/context/"
+	prefix := "/sdk/evalx/test-client-id/contexts/"
 	if !strings.HasPrefix(path, prefix) {
 		t.Fatalf("got path %q, want prefix %q", path, prefix)
 	}
