@@ -69,14 +69,14 @@ func TestTrackSyncCompletedWithIDSummaries(t *testing.T) {
 	if got := props["account_id_count"]; got != 2 {
 		t.Errorf("got account_id_count %v, want 2", got)
 	}
-	if got := props["account_ids_truncated"]; got != false {
-		t.Errorf("got account_ids_truncated %v, want false", got)
+	if truncated, ok := props["account_ids_truncated"].(bool); !ok || truncated {
+		t.Errorf("got account_ids_truncated %v, want false", props["account_ids_truncated"])
 	}
 	if got := props["repository_id_count"]; got != 7 {
 		t.Errorf("got repository_id_count %v, want 7", got)
 	}
-	if got := props["repository_ids_truncated"]; got != true {
-		t.Errorf("got repository_ids_truncated %v, want true", got)
+	if truncated, ok := props["repository_ids_truncated"].(bool); !ok || !truncated {
+		t.Errorf("got repository_ids_truncated %v, want true", props["repository_ids_truncated"])
 	}
 	hashes, ok := props["account_id_hashes"].([]string)
 	if !ok || len(hashes) != 2 {
