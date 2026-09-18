@@ -573,11 +573,12 @@ type v3SyncConfig struct {
 // differ only in how they drive the source.
 type v3Sync struct {
 	// sourceSpec is the spec after `@@plugins.*.connection` variable replacement.
-	sourceSpec       specs.Source
-	sourceName       string
-	destinationSpecs []specs.Destination
-	syncTime         time.Time
-	noMigrate        bool
+	sourceSpec          specs.Source
+	sourceName          string
+	destinationSpecs    []specs.Destination
+	destinationsClients []*managedplugin.Client
+	syncTime            time.Time
+	noMigrate           bool
 
 	sourcePbClient                    plugin.PluginClient
 	destinationsPbClients             []plugin.PluginClient
@@ -598,6 +599,13 @@ type v3Sync struct {
 
 	totalResources *int64
 	newResources   int64
+
+	// sentToPipeline and writtenToDestination count the records handed to each
+	// destination's transformer pipeline and the records that came out of it and
+	// were written. The events loop waits for the two to match before it
+	// acknowledges a batch, because a pipeline hands records on asynchronously.
+	sentToPipeline       []int64
+	writtenToDestination []int64
 
 	bar                       progressBar
 	eg                        *errgroup.Group
@@ -622,6 +630,7 @@ func newV3Sync(ctx context.Context, cfg v3SyncConfig) (*v3Sync, error) {
 	s := &v3Sync{
 		sourceName:                        cfg.sourceName,
 		destinationSpecs:                  destinationSpecs,
+		destinationsClients:               make([]*managedplugin.Client, len(destinations)),
 		syncTime:                          cfg.syncTime,
 		noMigrate:                         cfg.syncOptions.noMigrate,
 		destinationsPbClients:             make([]plugin.PluginClient, len(destinations)),
@@ -635,6 +644,11 @@ func newV3Sync(ctx context.Context, cfg v3SyncConfig) (*v3Sync, error) {
 		skippedFromDeleteStale:            cfg.skippedFromDeleteStale,
 		tablesForDeleteStale:              cfg.tablesForDeleteStale,
 		totalResources:                    cfg.totalResources,
+		sentToPipeline:                    make([]int64, len(destinations)),
+		writtenToDestination:              make([]int64, len(destinations)),
+	}
+	for i := range destinations {
+		s.destinationsClients[i] = destinations[i].client
 	}
 
 	variables := specs.Variables{
@@ -787,6 +801,7 @@ func (s *v3Sync) startPipelines(ctx context.Context) error {
 			return fmt.Errorf("failed to create transformer pipeline: %w", err)
 		}
 		writeClient := s.writeClients[i]
+		written := &s.writtenToDestination[i]
 		err = pipeline.OnOutput(func(recordBytes []byte) error {
 			wr := &plugin.Write_Request{
 				Message: &plugin.Write_Request_Insert{
@@ -798,6 +813,7 @@ func (s *v3Sync) startPipelines(ctx context.Context) error {
 			if err := writeClient.Send(wr); err != nil {
 				return handleSendError(err, writeClient, "insert")
 			}
+			atomic.AddInt64(written, 1)
 			return nil
 		})
 		if err != nil {
@@ -887,7 +903,9 @@ func (s *v3Sync) relay(ctx context.Context, syncClient plugin.Plugin_SyncClient,
 				if err != nil {
 					return totals, fmt.Errorf("failed to transform record bytes: %w", err)
 				}
+				atomic.AddInt64(&s.sentToPipeline[i], 1)
 				if err := s.pipelineByDestinationName[destinationName].Send(transformedRecordBytes); err != nil {
+					atomic.AddInt64(&s.sentToPipeline[i], -1)
 					if errors.Is(err, transformerpipeline.ErrPipelineClosed) {
 						// If the pipeline is closed, we should stop processing records. The error that cause the pipeline to close
 						// Will be returned by the pipeline itself.
@@ -1000,4 +1018,40 @@ func (s *v3Sync) relay(ctx context.Context, syncClient plugin.Plugin_SyncClient,
 		}
 	}
 	return totals, nil
+}
+
+// writesSettled reports whether every record handed to a transformer pipeline
+// has come out of it and been written to its destination.
+func (s *v3Sync) writesSettled() bool {
+	for i := range s.sentToPipeline {
+		if atomic.LoadInt64(&s.writtenToDestination[i]) < atomic.LoadInt64(&s.sentToPipeline[i]) {
+			return false
+		}
+	}
+	return true
+}
+
+// waitForWrites blocks until every record relayed so far has been written to
+// every destination. A transformer pipeline hands records on asynchronously, so
+// the events loop needs this barrier before it deletes stale rows or
+// acknowledges a batch of changes.
+func (s *v3Sync) waitForWrites(ctx context.Context) error {
+	t := time.NewTicker(2 * time.Millisecond)
+	defer t.Stop()
+	for !s.writesSettled() {
+		select {
+		case <-s.gctx.Done():
+			// A transformer pipeline or a destination write failed. Close the
+			// pipelines so that the errorgroup reports the error that caused it.
+			s.closePipelines()
+			if err := s.eg.Wait(); err != nil {
+				return err
+			}
+			return errors.New("destination pipeline stopped before every record was written")
+		case <-ctx.Done():
+			return ctx.Err()
+		case <-t.C:
+		}
+	}
+	return nil
 }

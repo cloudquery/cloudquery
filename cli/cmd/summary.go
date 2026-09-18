@@ -42,6 +42,18 @@ type syncSummary struct {
 	ResourcesPerTable   map[string]uint64 `json:"resources_per_table,omitempty"`
 	ErrorsPerTable      map[string]uint64 `json:"errors_per_table,omitempty"`
 	DurationsPerTableMs map[string]uint64 `json:"durations_per_table_ms,omitempty"`
+
+	// The fields below are only set by `sync_mode: events`. A catch-up run
+	// reports one row for the whole run; a follow run reports one row per
+	// `events.summary_interval`, each covering that interval only.
+	IntervalStart   *time.Time `json:"interval_start,omitempty"`
+	IntervalEnd     *time.Time `json:"interval_end,omitempty"`
+	EventsReceived  uint64     `json:"events_received,omitempty"`
+	EventsCoalesced uint64     `json:"events_coalesced,omitempty"`
+	EventsRefreshed uint64     `json:"events_refreshed,omitempty"`
+	EventsDeleted   uint64     `json:"events_deleted,omitempty"`
+	RefreshErrors   uint64     `json:"refresh_errors,omitempty"`
+	CheckpointTime  *time.Time `json:"checkpoint_time,omitempty"`
 }
 
 func persistSummary(filename string, summary syncSummary) error {

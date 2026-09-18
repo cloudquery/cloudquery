@@ -9,6 +9,33 @@ Sync resources from configured source plugins to destinations
 
 Sync resources from configured source plugins to destinations
 
+## sync_mode: events
+
+A source can be set to `sync_mode: events` instead of the default `sync_mode: full`. In events mode the CLI opens a change stream on the source, runs a full sync only when it has to, and then refreshes just the resources the source reports as changed, in batches. It acknowledges a batch only after every destination has written it, so an interrupted run replays the batch instead of losing it. Stale rows are deleted only after a full sync. `backend_options` is required, because the source keeps its change-stream checkpoint there.
+
+Tune it under `events`: `follow` (keep running instead of exiting once caught up), `full_sync` (`always`, `on_first_run`, `never`), `max_checkpoint_age` (force a full sync when the checkpoint is older than this), `batch_max_changes`, `batch_max_wait` and `summary_interval`. Sources that do not implement the change stream fail with an error.
+
+```yaml
+kind: source
+spec:
+  name: aws
+  path: cloudquery/aws
+  registry: cloudquery
+  version: "v28.0.0"
+  tables: ["aws_ec2_instances"]
+  destinations: [postgresql]
+  sync_mode: events
+  backend_options:
+    table_name: cq_state_aws
+    connection: "@@plugins.postgresql.connection"
+  events:
+    follow: true
+    full_sync: on_first_run
+    batch_max_changes: 500
+    batch_max_wait: 5s
+    summary_interval: 5m
+```
+
 ## Flag Details
 
 ### --summary-location

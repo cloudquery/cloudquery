@@ -21,6 +21,14 @@ const (
 	syncShort = "Sync resources from configured source plugins to destinations"
 	syncLong  = `Sync resources from configured source plugins to destinations
 
+### sync_mode: events
+
+A source can be set to ` + "`sync_mode: events`" + ` instead of the default ` + "`sync_mode: full`" + `. In events mode the CLI opens a change stream on the source, runs a full sync only when it has to, and then refreshes just the resources the source reports as changed, in batches. It acknowledges a batch only after every destination has written it, so an interrupted run replays the batch instead of losing it. Stale rows are deleted only after a full sync. ` + "`backend_options`" + ` is required, because the source keeps its change-stream checkpoint there.
+
+Tune it under ` + "`events`" + `: ` + "`follow`" + ` (keep running instead of exiting once caught up), ` + "`full_sync`" + ` (` + "`always`" + `, ` + "`on_first_run`" + `, ` + "`never`" + `), ` + "`max_checkpoint_age`" + ` (force a full sync when the checkpoint is older than this), ` + "`batch_max_changes`" + `, ` + "`batch_max_wait`" + ` and ` + "`summary_interval`" + `. Sources that do not implement the change stream fail with an error.
+
+` + "```yaml\nkind: source\nspec:\n  name: aws\n  path: cloudquery/aws\n  registry: cloudquery\n  version: \"v28.0.0\"\n  tables: [\"aws_ec2_instances\"]\n  destinations: [postgresql]\n  sync_mode: events\n  backend_options:\n    table_name: cq_state_aws\n    connection: \"@@plugins.postgresql.connection\"\n  events:\n    follow: true\n    full_sync: on_first_run\n    batch_max_changes: 500\n    batch_max_wait: 5s\n    summary_interval: 5m\n```" + `
+
 ### Flag Details
 
 #### --summary-location
@@ -534,7 +542,11 @@ func sync(cmd *cobra.Command, args []string) error {
 				cqColumnsNotNull:          cqColumnsNotNull,
 				tableDurations:            tableDurations.GetAll,
 			}
-			if err := syncConnectionV3(ctx, syncOptions); err != nil {
+			syncV3 := syncConnectionV3
+			if source.SyncMode == specs.SyncModeEvents {
+				syncV3 = syncEventsV3
+			}
+			if err := syncV3(ctx, syncOptions); err != nil {
 				return fmt.Errorf("failed to sync v3 source %s: %w", cl.Name(), err)
 			}
 
