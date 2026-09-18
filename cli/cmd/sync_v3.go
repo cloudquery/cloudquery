@@ -575,9 +575,9 @@ type v3Sync struct {
 	// sourceSpec is the spec after `@@plugins.*.connection` variable replacement.
 	sourceSpec          specs.Source
 	sourceName          string
+	sourceClient        *managedplugin.Client
 	destinationSpecs    []specs.Destination
 	destinationsClients []*managedplugin.Client
-	syncTime            time.Time
 	noMigrate           bool
 
 	sourcePbClient                    plugin.PluginClient
@@ -629,9 +629,9 @@ func newV3Sync(ctx context.Context, cfg v3SyncConfig) (*v3Sync, error) {
 
 	s := &v3Sync{
 		sourceName:                        cfg.sourceName,
+		sourceClient:                      source.client,
 		destinationSpecs:                  destinationSpecs,
 		destinationsClients:               make([]*managedplugin.Client, len(destinations)),
-		syncTime:                          cfg.syncTime,
 		noMigrate:                         cfg.syncOptions.noMigrate,
 		destinationsPbClients:             make([]plugin.PluginClient, len(destinations)),
 		transformerPbClientsByDestination: map[string][]plugin.PluginClient{},

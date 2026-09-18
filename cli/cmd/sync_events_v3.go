@@ -227,7 +227,7 @@ func syncEventsV3(ctx context.Context, syncOptions syncV3Options) (syncErr error
 			if destinationSpecs[i].WriteMode == specs.WriteModeOverwriteDeleteStale {
 				// Table names might have changed due to transformers
 				updatedTablesForDeleteStale := sess.tableNameChanger.UpdateTableNames(destinationSpecs[i].Name, sess.tablesForDeleteStale)
-				if err := deleteStale(sess.writeClients[i], updatedTablesForDeleteStale, sourceName, runStart); err != nil {
+				if err := deleteStale(sess.writeClients[i], updatedTablesForDeleteStale, sess.sourceName, runStart); err != nil {
 					return err
 				}
 			}
@@ -673,11 +673,16 @@ func (s *v3Sync) writeSummaries(w summaryWrite) {
 	for _, val := range tableProgress {
 		sourceErrors += uint64(val.Errors)
 	}
+	sourceMetrics := s.sourceClient.Metrics()
+	if sourceMetrics.Errors > sourceErrors {
+		sourceErrors = sourceMetrics.Errors
+	}
 
 	for i := range s.destinationsPbClients {
 		summary := syncSummary{
 			Resources:           w.counters.resources,
 			SourceErrors:        sourceErrors,
+			SourceWarnings:      sourceMetrics.Warnings,
 			SyncID:              w.uid,
 			SyncTime:            w.runStart,
 			SourceName:          s.sourceSpec.Name,
