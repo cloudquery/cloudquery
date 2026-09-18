@@ -272,10 +272,11 @@ func syncEventsV3(ctx context.Context, syncOptions syncV3Options) (syncErr error
 	}
 
 	for {
-		changes, end, err := collectBatch(ctx, incoming, eventsSpec.BatchMaxChanges, eventsSpec.BatchMaxWait.Duration())
+		batch, err := collectBatch(ctx, incoming, summaryTicker.C, eventsSpec.BatchMaxChanges, eventsSpec.BatchMaxWait.Duration())
 		if err != nil {
 			return watchError(sourceSpec.Name, err)
 		}
+		changes := batch.changes
 		counters.received += uint64(len(changes))
 
 		if len(changes) > 0 {
@@ -303,30 +304,35 @@ func syncEventsV3(ctx context.Context, syncOptions syncV3Options) (syncErr error
 			log.Debug().Int("changes", len(changes)).Uint64("refreshed", batchCounts.refreshed).Str("event_id", lastEventID).Msg("Acknowledged events batch")
 		}
 
-		switch end {
+		switch batch.end {
 		case batchDrained, batchStopped:
 			syncTimeTook = time.Since(runStart)
 			totals = sourceClient.Metrics()
+			var sourceErrors uint64
+			for _, stats := range statsPerTable.GetAll() {
+				sourceErrors += uint64(stats.Errors)
+			}
+			if totals.Errors > sourceErrors {
+				sourceErrors = totals.Errors
+			}
 			flushSummary(time.Now().UTC())
 			if err := sess.closeDestinations(streamCtx); err != nil {
 				return err
 			}
 			exitReason = ExitReasonCompleted
 			reason := "caught up"
-			if end == batchStopped {
+			if batch.end == batchStopped {
 				reason = "stopped"
 			}
-			fmt.Printf("Events sync %s. Resources: %d, Errors: %d, Warnings: %d, Time: %s\n", reason, atomic.LoadInt64(&totalResources), totals.Errors, totals.Warnings, syncTimeTook.Truncate(time.Second).String())
+			fmt.Printf("Events sync %s. Resources: %d, Errors: %d, Warnings: %d, Time: %s\n", reason, atomic.LoadInt64(&totalResources), sourceErrors, totals.Warnings, syncTimeTook.Truncate(time.Second).String())
 			return nil
 		case batchFailed:
 			return watchError(sourceSpec.Name, errors.New("watch stream ended unexpectedly"))
 		case batchReady:
 		}
 
-		select {
-		case <-summaryTicker.C:
+		if batch.summaryDue {
 			flushSummary(time.Now().UTC())
-		default:
 		}
 	}
 }
@@ -439,12 +445,22 @@ func receiveWatch(ctx context.Context, watchClient plugin.Plugin_WatchClient, ou
 	}
 }
 
+// batchResult is one pass of collectBatch: the changes it gathered, why it
+// stopped, and whether a summary interval elapsed while it was waiting.
+type batchResult struct {
+	changes    []*plugin.Watch_Change
+	end        batchEnd
+	summaryDue bool
+}
+
 // collectBatch reads changes until the batch is full, until maxWait has passed
 // since the batch's first change, or until the stream drains or fails or the run
 // is asked to stop. It always returns the changes it collected, in receive order,
-// so the caller can flush and acknowledge them.
-func collectBatch(ctx context.Context, in <-chan watchMessage, maxChanges int, maxWait time.Duration) ([]*plugin.Watch_Change, batchEnd, error) {
-	batch := make([]*plugin.Watch_Change, 0, maxChanges)
+// so the caller can flush and acknowledge them. A summary tick never cuts a batch
+// short: it is reported back and the caller writes the summary once the batch has
+// been dealt with.
+func collectBatch(ctx context.Context, in <-chan watchMessage, summaryTick <-chan time.Time, maxChanges int, maxWait time.Duration) (batchResult, error) {
+	result := batchResult{changes: make([]*plugin.Watch_Change, 0, maxChanges)}
 	var (
 		timer    *time.Timer
 		deadline <-chan time.Time
@@ -459,24 +475,36 @@ func collectBatch(ctx context.Context, in <-chan watchMessage, maxChanges int, m
 		case msg, ok := <-in:
 			switch {
 			case !ok:
-				return batch, batchFailed, nil
+				result.end = batchFailed
+				return result, nil
 			case msg.err != nil:
-				return batch, batchFailed, msg.err
+				result.end = batchFailed
+				return result, msg.err
 			case msg.drained:
-				return batch, batchDrained, nil
+				result.end = batchDrained
+				return result, nil
 			}
-			batch = append(batch, msg.change)
-			if len(batch) >= maxChanges {
-				return batch, batchReady, nil
+			result.changes = append(result.changes, msg.change)
+			if len(result.changes) >= maxChanges {
+				result.end = batchReady
+				return result, nil
 			}
 			if timer == nil {
 				timer = time.NewTimer(maxWait)
 				deadline = timer.C
 			}
+		case <-summaryTick:
+			result.summaryDue = true
+			if len(result.changes) == 0 {
+				result.end = batchReady
+				return result, nil
+			}
 		case <-deadline:
-			return batch, batchReady, nil
+			result.end = batchReady
+			return result, nil
 		case <-ctx.Done():
-			return batch, batchStopped, nil
+			result.end = batchStopped
+			return result, nil
 		}
 	}
 }

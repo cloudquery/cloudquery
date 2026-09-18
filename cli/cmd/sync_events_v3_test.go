@@ -204,6 +204,12 @@ func TestCoalesceChanges(t *testing.T) {
 	})
 }
 
+// collectBatchFor runs collectBatch with a summary interval that never elapses.
+func collectBatchFor(ctx context.Context, in <-chan watchMessage, maxChanges int, maxWait time.Duration) ([]*plugin.Watch_Change, batchEnd, error) {
+	result, err := collectBatch(ctx, in, nil, maxChanges, maxWait)
+	return result.changes, result.end, err
+}
+
 func TestCollectBatch(t *testing.T) {
 	change := func(id string) watchMessage {
 		return watchMessage{change: &plugin.Watch_Change{EventId: id}}
@@ -214,7 +220,7 @@ func TestCollectBatch(t *testing.T) {
 		in <- change("1")
 		in <- change("2")
 		in <- change("3")
-		batch, end, err := collectBatch(context.Background(), in, 2, time.Hour)
+		batch, end, err := collectBatchFor(context.Background(), in, 2, time.Hour)
 		require.NoError(t, err)
 		require.Equal(t, batchReady, end)
 		require.Len(t, batch, 2)
@@ -226,7 +232,7 @@ func TestCollectBatch(t *testing.T) {
 		in := make(chan watchMessage, 1)
 		in <- change("1")
 		start := time.Now()
-		batch, end, err := collectBatch(context.Background(), in, 100, 20*time.Millisecond)
+		batch, end, err := collectBatchFor(context.Background(), in, 100, 20*time.Millisecond)
 		require.NoError(t, err)
 		require.Equal(t, batchReady, end)
 		require.Len(t, batch, 1)
@@ -237,7 +243,7 @@ func TestCollectBatch(t *testing.T) {
 		in := make(chan watchMessage, 2)
 		in <- change("1")
 		in <- watchMessage{drained: true}
-		batch, end, err := collectBatch(context.Background(), in, 100, time.Hour)
+		batch, end, err := collectBatchFor(context.Background(), in, 100, time.Hour)
 		require.NoError(t, err)
 		require.Equal(t, batchDrained, end)
 		require.Len(t, batch, 1)
@@ -246,7 +252,7 @@ func TestCollectBatch(t *testing.T) {
 	t.Run("a stream error ends the run", func(t *testing.T) {
 		in := make(chan watchMessage, 1)
 		in <- watchMessage{err: context.DeadlineExceeded}
-		batch, end, err := collectBatch(context.Background(), in, 100, time.Hour)
+		batch, end, err := collectBatchFor(context.Background(), in, 100, time.Hour)
 		require.ErrorIs(t, err, context.DeadlineExceeded)
 		require.Equal(t, batchFailed, end)
 		require.Empty(t, batch)
@@ -255,7 +261,7 @@ func TestCollectBatch(t *testing.T) {
 	t.Run("a closed stream ends the run", func(t *testing.T) {
 		in := make(chan watchMessage)
 		close(in)
-		_, end, err := collectBatch(context.Background(), in, 100, time.Hour)
+		_, end, err := collectBatchFor(context.Background(), in, 100, time.Hour)
 		require.NoError(t, err)
 		require.Equal(t, batchFailed, end)
 	})
@@ -268,7 +274,7 @@ func TestCollectBatch(t *testing.T) {
 			time.Sleep(10 * time.Millisecond)
 			cancel()
 		}()
-		batch, end, err := collectBatch(ctx, in, 100, time.Hour)
+		batch, end, err := collectBatchFor(ctx, in, 100, time.Hour)
 		require.NoError(t, err)
 		require.Equal(t, batchStopped, end)
 		require.Len(t, batch, 1)
@@ -278,7 +284,7 @@ func TestCollectBatch(t *testing.T) {
 		in := make(chan watchMessage)
 		ctx, cancel := context.WithTimeout(context.Background(), 30*time.Millisecond)
 		defer cancel()
-		batch, end, err := collectBatch(ctx, in, 100, time.Millisecond)
+		batch, end, err := collectBatchFor(ctx, in, 100, time.Millisecond)
 		require.NoError(t, err)
 		require.Equal(t, batchStopped, end)
 		require.Empty(t, batch)
@@ -290,4 +296,36 @@ func TestEventCountersCoalesced(t *testing.T) {
 	require.Equal(t, uint64(0), eventCounters{received: 0, refreshed: 0}.coalesced())
 	// Refreshing more resources than were received cannot happen, but must not underflow.
 	require.Equal(t, uint64(0), eventCounters{received: 1, refreshed: 2}.coalesced())
+}
+
+func TestCollectBatchSummaryTick(t *testing.T) {
+	change := func(id string) watchMessage {
+		return watchMessage{change: &plugin.Watch_Change{EventId: id}}
+	}
+
+	t.Run("a tick with nothing collected asks for a summary right away", func(t *testing.T) {
+		tick := make(chan time.Time, 1)
+		tick <- time.Now()
+		result, err := collectBatch(context.Background(), make(chan watchMessage), tick, 100, time.Hour)
+		require.NoError(t, err)
+		require.Equal(t, batchReady, result.end)
+		require.Empty(t, result.changes)
+		require.True(t, result.summaryDue)
+	})
+
+	t.Run("a tick never cuts a batch short", func(t *testing.T) {
+		in := make(chan watchMessage, 2)
+		in <- change("1")
+		tick := make(chan time.Time, 1)
+		go func() {
+			time.Sleep(5 * time.Millisecond)
+			tick <- time.Now()
+			in <- change("2")
+		}()
+		result, err := collectBatch(context.Background(), in, tick, 2, time.Hour)
+		require.NoError(t, err)
+		require.Equal(t, batchReady, result.end)
+		require.Len(t, result.changes, 2)
+		require.True(t, result.summaryDue)
+	})
 }
