@@ -63,9 +63,9 @@
 | github.com/cloudquery/cloudquery/cli/v6/cmd/plugin_docs_download.go:59: | runPluginDocsDownload | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/plugin_docs_upload.go:28: | newCmdPluginDocsUpload | 36.4% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/plugin_docs_upload.go:56: | runPluginDocsUpload | 0.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/plugin_publish.go:33: | newCmdPluginPublish | 100.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/plugin_publish.go:62: | runPluginPublish | 79.4% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/plugin_publish.go:177: | publishPluginAssets | 66.7% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/plugin_publish.go:35: | newCmdPluginPublish | 100.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/plugin_publish.go:64: | runPluginPublish | 80.0% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/plugin_publish.go:182: | publishPluginAssets | 66.7% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/plugin_uiassets_upload.go:28: | newCmdPluginUIAssetsUpload | 30.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/plugin_uiassets_upload.go:55: | runPluginUIAssetsUpload | 0.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/progress.go:14: | Write | 0.0% |
@@ -112,7 +112,7 @@
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:103: | Send | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:110: | CloseAndRecv | 100.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:116: | newSafeWriteClient | 100.0% |
-| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:138: | syncConnectionV3 | 80.4% |
+| github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:138: | syncConnectionV3 | 80.1% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:746: | hintSelectMessage | 11.4% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:819: | deleteStale | 75.0% |
 | github.com/cloudquery/cloudquery/cli/v6/cmd/sync_v3.go:839: | createTableNameSchema | 0.0% |
