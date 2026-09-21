@@ -1,6 +1,7 @@
 package analytics
 
 import (
+	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
 	"maps"
@@ -17,7 +18,6 @@ const (
 	maxHashesPerDimension  = 500
 	maxTrackedPerDimension = 50000
 
-	hashPepper = "cq-cli-account-analytics-v1"
 	hashLength = 16
 )
 
@@ -48,19 +48,26 @@ type IDSummary struct {
 
 type IDCollector struct {
 	specs []columnSpec
+	salt  string
 
 	mu      sync.Mutex
 	hashes  map[string]map[string]struct{}
 	dropped map[string]bool
 }
 
-func NewIDCollector(sourcePath string) *IDCollector {
+func SupportedIDSource(sourcePath string) bool {
+	_, ok := idColumnsBySource[sourcePath]
+	return ok
+}
+
+func NewIDCollector(sourcePath, salt string) *IDCollector {
 	specs, ok := idColumnsBySource[sourcePath]
-	if !ok {
+	if !ok || salt == "" {
 		return nil
 	}
 	return &IDCollector{
 		specs:   specs,
+		salt:    salt,
 		hashes:  make(map[string]map[string]struct{}),
 		dropped: make(map[string]bool),
 	}
@@ -101,7 +108,7 @@ func (c *IDCollector) observeColumn(dimension string, column arrow.Array) {
 		if value == "" {
 			continue
 		}
-		hash := hashID(value)
+		hash := c.hashID(value)
 		if _, seen := hashes[hash]; seen {
 			continue
 		}
@@ -146,7 +153,8 @@ func (c *IDCollector) Summaries() map[string]IDSummary {
 	return summaries
 }
 
-func hashID(value string) string {
-	sum := sha256.Sum256([]byte(hashPepper + value))
-	return hex.EncodeToString(sum[:])[:hashLength]
+func (c *IDCollector) hashID(value string) string {
+	mac := hmac.New(sha256.New, []byte(c.salt))
+	mac.Write([]byte(value))
+	return hex.EncodeToString(mac.Sum(nil))[:hashLength]
 }

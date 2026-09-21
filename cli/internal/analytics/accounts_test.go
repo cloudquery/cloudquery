@@ -32,14 +32,16 @@ func recordWithColumn(t *testing.T, column string, values []*string) arrow.Recor
 
 func strPtr(s string) *string { return &s }
 
+const testSalt = "6f1f0d2e-6b0a-4a1e-9a66-6a4a2f0d1c33"
+
 func TestNewIDCollectorSourceSupport(t *testing.T) {
 	for _, sourcePath := range []string{"cloudquery/aws", "cloudquery/gcp", "cloudquery/azure", "cloudquery/k8s", "cloudquery/github", "cloudquery/cloudflare"} {
-		if NewIDCollector(sourcePath) == nil {
+		if NewIDCollector(sourcePath, testSalt) == nil {
 			t.Errorf("expected a collector for %q", sourcePath)
 		}
 	}
 	for _, sourcePath := range []string{"cloudquery/test", "cloudquery/postgresql", "acme/aws", "acme/github", "aws", ""} {
-		if NewIDCollector(sourcePath) != nil {
+		if NewIDCollector(sourcePath, testSalt) != nil {
 			t.Errorf("expected no collector for %q", sourcePath)
 		}
 	}
@@ -59,7 +61,7 @@ func TestIDCollectorColumnPerSource(t *testing.T) {
 		{"cloudquery/github", "github_issues", "org"},
 	} {
 		t.Run(tc.sourcePath, func(t *testing.T) {
-			collector := NewIDCollector(tc.sourcePath)
+			collector := NewIDCollector(tc.sourcePath, testSalt)
 			record := recordWithColumn(t, tc.column, []*string{strPtr("one"), strPtr("two")})
 			defer record.Release()
 			collector.Observe(tc.table, record)
@@ -76,7 +78,7 @@ func TestIDCollectorColumnPerSource(t *testing.T) {
 }
 
 func TestIDCollectorIgnoresUnrelatedColumn(t *testing.T) {
-	collector := NewIDCollector("cloudquery/aws")
+	collector := NewIDCollector("cloudquery/aws", testSalt)
 	record := recordWithColumn(t, "project_id", []*string{strPtr("one")})
 	defer record.Release()
 	collector.Observe("aws_lambda_functions", record)
@@ -87,7 +89,7 @@ func TestIDCollectorIgnoresUnrelatedColumn(t *testing.T) {
 }
 
 func TestIDCollectorGitHubRepositories(t *testing.T) {
-	collector := NewIDCollector("cloudquery/github")
+	collector := NewIDCollector("cloudquery/github", testSalt)
 
 	orgs := recordWithColumn(t, "org", []*string{strPtr("cloudquery"), strPtr("cloudquery")})
 	defer orgs.Release()
@@ -111,7 +113,7 @@ func TestIDCollectorGitHubRepositories(t *testing.T) {
 }
 
 func TestIDCollectorDeduplicatesAcrossRecords(t *testing.T) {
-	collector := NewIDCollector("cloudquery/aws")
+	collector := NewIDCollector("cloudquery/aws", testSalt)
 	for range 3 {
 		record := recordWithColumn(t, "account_id", []*string{strPtr("111111111111"), strPtr("222222222222")})
 		collector.Observe("aws_lambda_functions", record)
@@ -128,7 +130,7 @@ func TestIDCollectorDeduplicatesAcrossRecords(t *testing.T) {
 }
 
 func TestIDCollectorSkipsNullAndEmpty(t *testing.T) {
-	collector := NewIDCollector("cloudquery/aws")
+	collector := NewIDCollector("cloudquery/aws", testSalt)
 	record := recordWithColumn(t, "account_id", []*string{nil, strPtr(""), strPtr("111111111111")})
 	defer record.Release()
 	collector.Observe("aws_lambda_functions", record)
@@ -140,7 +142,7 @@ func TestIDCollectorSkipsNullAndEmpty(t *testing.T) {
 }
 
 func TestIDCollectorCapsHashesAndReportsCount(t *testing.T) {
-	collector := NewIDCollector("cloudquery/aws")
+	collector := NewIDCollector("cloudquery/aws", testSalt)
 	values := make([]*string, 0, maxHashesPerDimension+10)
 	for i := range maxHashesPerDimension + 10 {
 		values = append(values, strPtr(fmt.Sprintf("account-%d", i)))
@@ -165,7 +167,7 @@ func TestIDCollectorCapsHashesAndReportsCount(t *testing.T) {
 }
 
 func TestIDCollectorStopsTrackingAtCap(t *testing.T) {
-	collector := NewIDCollector("cloudquery/aws")
+	collector := NewIDCollector("cloudquery/aws", testSalt)
 	values := make([]*string, 0, maxTrackedPerDimension+5)
 	for i := range maxTrackedPerDimension + 5 {
 		values = append(values, strPtr(fmt.Sprintf("account-%d", i)))
@@ -196,9 +198,10 @@ func TestNilIDCollectorIsUsable(t *testing.T) {
 
 func TestHashIDIsStableAndOpaque(t *testing.T) {
 	const accountID = "111111111111"
-	hash := hashID(accountID)
+	collector := NewIDCollector("cloudquery/aws", testSalt)
+	hash := collector.hashID(accountID)
 
-	if hash != hashID(accountID) {
+	if hash != collector.hashID(accountID) {
 		t.Error("hash is not stable across calls")
 	}
 	if len(hash) != hashLength {
@@ -207,7 +210,22 @@ func TestHashIDIsStableAndOpaque(t *testing.T) {
 	if hash == accountID {
 		t.Error("hash returned the raw value")
 	}
-	if hash == hashID("222222222222") {
+	if hash == collector.hashID("222222222222") {
 		t.Error("distinct values produced the same hash")
+	}
+}
+
+func TestHashIDDependsOnTheSalt(t *testing.T) {
+	const accountID = "111111111111"
+	other := NewIDCollector("cloudquery/aws", "0000c0de-0000-4000-8000-00000000beef")
+
+	if NewIDCollector("cloudquery/aws", testSalt).hashID(accountID) == other.hashID(accountID) {
+		t.Error("the same identifier hashed the same under two salts")
+	}
+}
+
+func TestNewIDCollectorWithoutSalt(t *testing.T) {
+	if NewIDCollector("cloudquery/aws", "") != nil {
+		t.Error("got a collector without a salt, want nil")
 	}
 }

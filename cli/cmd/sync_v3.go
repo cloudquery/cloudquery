@@ -872,8 +872,7 @@ func newIDCollector(ctx context.Context, sourcePath string, destinationSpecs []s
 		return nil
 	}
 
-	collector := analytics.NewIDCollector(sourcePath)
-	if collector == nil {
+	if !analytics.SupportedIDSource(sourcePath) {
 		return nil
 	}
 
@@ -891,5 +890,6 @@ func newIDCollector(ctx context.Context, sourcePath string, destinationSpecs []s
 	if !enabled {
 		return nil
 	}
-	return collector
+
+	return analytics.NewIDCollector(sourcePath, analytics.TeamAnalyticsSalt(ctx, team))
 }
