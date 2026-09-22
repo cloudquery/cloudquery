@@ -5,6 +5,14 @@ All notable changes to CloudQuery will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.43.0](https://github.com/cloudquery/cloudquery/compare/cli-v6.42.3...cli-v6.43.0) (2026-09-22)
+
+
+### Features
+
+* Attach hashed cloud account ids to sync_run_completed ([#23361](https://github.com/cloudquery/cloudquery/issues/23361)) ([1568ed7](https://github.com/cloudquery/cloudquery/commit/1568ed7ef3c32b6b9361912da3714cc4845e2fff))
+* Evaluate LaunchDarkly flags from the CLI ([#23360](https://github.com/cloudquery/cloudquery/issues/23360)) ([c4b64a8](https://github.com/cloudquery/cloudquery/commit/c4b64a8424124cecab367de66e1974e9f39b69e3))
+
 ## [6.42.3](https://github.com/cloudquery/cloudquery/compare/cli-v6.42.2...cli-v6.42.3) (2026-09-15)
 
 
