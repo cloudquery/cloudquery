@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/cloudquery/cloudquery/cli/v6/internal/analytics"
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 )
 
@@ -20,8 +21,8 @@ func TestNewIDCollectorSkipsUnmappedSource(t *testing.T) {
 	defer server.Close()
 	t.Setenv("CQ_LD_BASE_URL", server.URL)
 
-	if collector := newIDCollector(context.Background(), "cloudquery/test", fileDestination); collector != nil {
-		t.Error("got a collector for an unmapped source, want nil")
+	if _, ok := newIDCollector(context.Background(), "cloudquery/test", fileDestination).(analytics.NoopIDCollector); !ok {
+		t.Error("got a collecting collector for an unmapped source, want the no-op one")
 	}
 	if requests != 0 {
 		t.Errorf("got %d flag requests, want 0 for an unmapped source", requests)
@@ -29,8 +30,8 @@ func TestNewIDCollectorSkipsUnmappedSource(t *testing.T) {
 }
 
 func TestNewIDCollectorRequiresTelemetry(t *testing.T) {
-	if collector := newIDCollector(context.Background(), "cloudquery/aws", fileDestination); collector != nil {
-		t.Error("got a collector with telemetry off, want nil")
+	if _, ok := newIDCollector(context.Background(), "cloudquery/aws", fileDestination).(analytics.NoopIDCollector); !ok {
+		t.Error("got a collecting collector with telemetry off, want the no-op one")
 	}
 }
 
@@ -44,8 +45,8 @@ func TestNewIDCollectorSkipsPlatformOnlySyncs(t *testing.T) {
 	t.Setenv("CQ_LD_BASE_URL", server.URL)
 
 	platformOnly := []specs.Destination{{Metadata: specs.Metadata{Name: "platform"}}}
-	if collector := newIDCollector(context.Background(), "cloudquery/aws", platformOnly); collector != nil {
-		t.Error("got a collector for a platform-only sync, want nil")
+	if _, ok := newIDCollector(context.Background(), "cloudquery/aws", platformOnly).(analytics.NoopIDCollector); !ok {
+		t.Error("got a collecting collector for a platform-only sync, want the no-op one")
 	}
 	if requests != 0 {
 		t.Errorf("got %d flag requests, want 0 for a platform-only sync", requests)

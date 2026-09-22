@@ -36,13 +36,13 @@ const testSalt = "6f1f0d2e-6b0a-4a1e-9a66-6a4a2f0d1c33"
 
 func TestNewIDCollectorSourceSupport(t *testing.T) {
 	for _, sourcePath := range []string{"cloudquery/aws", "cloudquery/gcp", "cloudquery/azure", "cloudquery/k8s", "cloudquery/github", "cloudquery/cloudflare"} {
-		if NewIDCollector(sourcePath, testSalt) == nil {
+		if _, ok := NewIDCollector(sourcePath, testSalt).(*idCollector); !ok {
 			t.Errorf("expected a collector for %q", sourcePath)
 		}
 	}
 	for _, sourcePath := range []string{"cloudquery/test", "cloudquery/postgresql", "acme/aws", "acme/github", "aws", ""} {
-		if NewIDCollector(sourcePath, testSalt) != nil {
-			t.Errorf("expected no collector for %q", sourcePath)
+		if _, ok := NewIDCollector(sourcePath, testSalt).(NoopIDCollector); !ok {
+			t.Errorf("expected no collection for %q", sourcePath)
 		}
 	}
 }
@@ -185,8 +185,8 @@ func TestIDCollectorStopsTrackingAtCap(t *testing.T) {
 	}
 }
 
-func TestNilIDCollectorIsUsable(t *testing.T) {
-	var collector *IDCollector
+func TestNoopIDCollector(t *testing.T) {
+	var collector IDCollector = NoopIDCollector{}
 	record := recordWithColumn(t, "account_id", []*string{strPtr("one")})
 	defer record.Release()
 
@@ -198,7 +198,7 @@ func TestNilIDCollectorIsUsable(t *testing.T) {
 
 func TestHashIDIsStableAndOpaque(t *testing.T) {
 	const accountID = "111111111111"
-	collector := NewIDCollector("cloudquery/aws", testSalt)
+	collector := NewIDCollector("cloudquery/aws", testSalt).(*idCollector)
 	hash := collector.hashID(accountID)
 
 	if hash != collector.hashID(accountID) {
@@ -217,15 +217,15 @@ func TestHashIDIsStableAndOpaque(t *testing.T) {
 
 func TestHashIDDependsOnTheSalt(t *testing.T) {
 	const accountID = "111111111111"
-	other := NewIDCollector("cloudquery/aws", "0000c0de-0000-4000-8000-00000000beef")
+	other := NewIDCollector("cloudquery/aws", "0000c0de-0000-4000-8000-00000000beef").(*idCollector)
 
-	if NewIDCollector("cloudquery/aws", testSalt).hashID(accountID) == other.hashID(accountID) {
+	if NewIDCollector("cloudquery/aws", testSalt).(*idCollector).hashID(accountID) == other.hashID(accountID) {
 		t.Error("the same identifier hashed the same under two salts")
 	}
 }
 
 func TestNewIDCollectorWithoutSalt(t *testing.T) {
-	if NewIDCollector("cloudquery/aws", "") != nil {
-		t.Error("got a collector without a salt, want nil")
+	if _, ok := NewIDCollector("cloudquery/aws", "").(NoopIDCollector); !ok {
+		t.Error("got a collecting collector without a salt, want the no-op one")
 	}
 }

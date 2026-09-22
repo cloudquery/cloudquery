@@ -46,7 +46,18 @@ type IDSummary struct {
 	CountIsFloor bool
 }
 
-type IDCollector struct {
+type IDCollector interface {
+	Observe(tableName string, record arrow.RecordBatch)
+	Summaries() map[string]IDSummary
+}
+
+type NoopIDCollector struct{}
+
+func (NoopIDCollector) Observe(string, arrow.RecordBatch) {}
+
+func (NoopIDCollector) Summaries() map[string]IDSummary { return nil }
+
+type idCollector struct {
 	specs []columnSpec
 	salt  string
 
@@ -60,12 +71,12 @@ func SupportedIDSource(sourcePath string) bool {
 	return ok
 }
 
-func NewIDCollector(sourcePath, salt string) *IDCollector {
+func NewIDCollector(sourcePath, salt string) IDCollector {
 	specs, ok := idColumnsBySource[sourcePath]
 	if !ok || salt == "" {
-		return nil
+		return NoopIDCollector{}
 	}
-	return &IDCollector{
+	return &idCollector{
 		specs:   specs,
 		salt:    salt,
 		hashes:  make(map[string]map[string]struct{}),
@@ -73,8 +84,8 @@ func NewIDCollector(sourcePath, salt string) *IDCollector {
 	}
 }
 
-func (c *IDCollector) Observe(tableName string, record arrow.RecordBatch) {
-	if c == nil || record == nil || record.NumRows() == 0 {
+func (c *idCollector) Observe(tableName string, record arrow.RecordBatch) {
+	if record == nil || record.NumRows() == 0 {
 		return
 	}
 
@@ -90,7 +101,7 @@ func (c *IDCollector) Observe(tableName string, record arrow.RecordBatch) {
 	}
 }
 
-func (c *IDCollector) observeColumn(dimension string, column arrow.Array) {
+func (c *idCollector) observeColumn(dimension string, column arrow.Array) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -120,11 +131,7 @@ func (c *IDCollector) observeColumn(dimension string, column arrow.Array) {
 	}
 }
 
-func (c *IDCollector) Summaries() map[string]IDSummary {
-	if c == nil {
-		return nil
-	}
-
+func (c *idCollector) Summaries() map[string]IDSummary {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -153,7 +160,7 @@ func (c *IDCollector) Summaries() map[string]IDSummary {
 	return summaries
 }
 
-func (c *IDCollector) hashID(value string) string {
+func (c *idCollector) hashID(value string) string {
 	mac := hmac.New(sha256.New, []byte(c.salt))
 	mac.Write([]byte(value))
 	return hex.EncodeToString(mac.Sum(nil))[:hashLength]

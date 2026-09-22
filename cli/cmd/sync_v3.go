@@ -867,18 +867,18 @@ func getTransformedTableNameFromSchema(transformedSchemaBytes []byte) (string, e
 	return tableName, nil
 }
 
-func newIDCollector(ctx context.Context, sourcePath string, destinationSpecs []specs.Destination) *analytics.IDCollector {
+func newIDCollector(ctx context.Context, sourcePath string, destinationSpecs []specs.Destination) analytics.IDCollector {
 	if platform.OnlyPlatformDestinations(destinationSpecs) {
-		return nil
+		return analytics.NoopIDCollector{}
 	}
 
 	if !analytics.SupportedIDSource(sourcePath) {
-		return nil
+		return analytics.NoopIDCollector{}
 	}
 
 	userID, team, environment, ok := analytics.Identity(ctx)
 	if !ok {
-		return nil
+		return analytics.NoopIDCollector{}
 	}
 
 	enabled := featureflags.BoolFlag(ctx, featureflags.AccountIDAnalytics, false, featureflags.Context{
@@ -888,7 +888,7 @@ func newIDCollector(ctx context.Context, sourcePath string, destinationSpecs []s
 		CLIVersion:  Version,
 	})
 	if !enabled {
-		return nil
+		return analytics.NoopIDCollector{}
 	}
 
 	return analytics.NewIDCollector(sourcePath, analytics.TeamAnalyticsSalt(ctx, team))
