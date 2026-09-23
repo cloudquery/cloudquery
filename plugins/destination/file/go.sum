@@ -58,8 +58,8 @@ github.com/cloudquery/cloudquery-api-go v1.14.12 h1:iSJGYJGYnWlDPSky5lESuaghngWw
 github.com/cloudquery/cloudquery-api-go v1.14.12/go.mod h1:lXGJ0XbzQUUFN/xLUOosw/+yvlwNeeLD/GxlstUBc6w=
 github.com/cloudquery/codegen v0.4.1 h1:c9D18N925tUvnDeGHIl3JWKj37TyII9daHufkf8hU+Y=
 github.com/cloudquery/codegen v0.4.1/go.mod h1:QWIOD6R1aCa+YM+th+9Qt9lZw+ztdJR9JDEMLWyazwM=
-github.com/cloudquery/filetypes/v4 v4.7.3 h1:rUG1VTptJn5q+EGQPcpEq+Ll8ckQtPdYp6DG8LzptgM=
-github.com/cloudquery/filetypes/v4 v4.7.3/go.mod h1:vwRcjGjiZUQGEYIkMyOtm9WKB/gBF0mWEbeJkG5JIU8=
+github.com/cloudquery/filetypes/v4 v4.7.4 h1:9xaOMfIr9sWYjMSEG6GaRcVkkQ8MdiMlx7QBlk7zTVg=
+github.com/cloudquery/filetypes/v4 v4.7.4/go.mod h1:wuV5W27SBWQqLmohKydNzYDGHvVoYA+ZtYgj3wUlKoQ=
 github.com/cloudquery/jsonschema v0.0.0-20260703174721-45e7e20e0ed8 h1:s7B+c57yTtVL8Zhcebae5poFInJwTftuMakj625CRbw=
 github.com/cloudquery/jsonschema v0.0.0-20260703174721-45e7e20e0ed8/go.mod h1:KMcD1TlufeD5r5DmbYvYWs+cyULzIVuKkd7jpoKWVjk=
 github.com/cloudquery/plugin-pb-go v1.27.18 h1:uinrvPrCqqE8Yn3fNyEPtgx7pfFs3ZkFCYu/XFip29w=
@@ -238,8 +238,8 @@ google.golang.org/genproto/googleapis/api v0.0.0-20260803160001-6ac0973c030d h1:
 google.golang.org/genproto/googleapis/api v0.0.0-20260803160001-6ac0973c030d/go.mod h1:K/+WGbmBY7aNW1HDw1fJnKYo10i0DkAX6pows00dLig=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20260803160001-6ac0973c030d h1:IL4hdHzcUv2l/gcg98/Rj3FbtE6axwqslOW8SW0C+S0=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20260803160001-6ac0973c030d/go.mod h1:4Hqkh8ycfw05ld/3BWL7rJOSfebL2Q+DVDeRgYgxUU8=
-google.golang.org/grpc v1.83.1 h1:HIO0+BEtBP6soyqvqC8sNUjZ7bTs+0hFQuFF+RAy++Y=
-google.golang.org/grpc v1.83.1/go.mod h1:kDyl6SKsiHKt0uylY5gtn5cEjkrIOhQOGDgIc4JGwzQ=
+google.golang.org/grpc v1.83.2 h1:EManeRomTObA0BU7I8vXgg/78uE5MJ9M8B39EX2WscU=
+google.golang.org/grpc v1.83.2/go.mod h1:YPI1hK3kDked6iHvgX3tR0y+nX/qpMFKhPgFsokw1S8=
 google.golang.org/protobuf v1.36.12 h1:pJOKDDOyeXErUroCihFAd5LQuwXBSpVnKGrj5o/fwxc=
 google.golang.org/protobuf v1.36.12/go.mod h1:HTf+CrKn2C3g5S8VImy6tdcUvCska2kB7j23XfzDpco=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
