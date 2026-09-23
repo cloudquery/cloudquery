@@ -2,7 +2,7 @@ module github.com/cloudquery/cloudquery/v6
 
 go 1.26.6
 
-require github.com/cloudquery/cloudquery/cli/v6 v6.42.2
+require github.com/cloudquery/cloudquery/cli/v6 v6.43.0
 
 require (
 	github.com/Masterminds/semver v1.5.0 // indirect
@@ -20,7 +20,7 @@ require (
 	github.com/chzyer/readline v0.0.0-20180603132655-2972be24d48e // indirect
 	github.com/clipperhouse/uax29/v2 v2.7.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.14.12 // indirect
-	github.com/cloudquery/plugin-pb-go v1.27.20 // indirect
+	github.com/cloudquery/plugin-pb-go v1.27.21 // indirect
 	github.com/cloudquery/plugin-sdk/v4 v4.96.3 // indirect
 	github.com/containerd/errdefs v1.0.0 // indirect
 	github.com/containerd/errdefs/pkg v0.3.0 // indirect
@@ -150,7 +150,7 @@ require (
 	golang.org/x/text v0.41.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260803160001-6ac0973c030d // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260803160001-6ac0973c030d // indirect
-	google.golang.org/grpc v1.83.1 // indirect
+	google.golang.org/grpc v1.83.2 // indirect
 	google.golang.org/protobuf v1.36.12 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
