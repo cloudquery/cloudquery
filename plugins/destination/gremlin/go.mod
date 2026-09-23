@@ -9,7 +9,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.33.1
 	github.com/cenkalti/backoff/v7 v7.0.0
 	github.com/cloudquery/codegen v0.4.1
-	github.com/cloudquery/plugin-sdk/v4 v4.96.3
+	github.com/cloudquery/plugin-sdk/v4 v4.96.4
 	github.com/goccy/go-json v0.10.6
 	github.com/invopop/jsonschema v0.14.0
 	github.com/pb33f/ordered-map/v2 v2.3.1
@@ -28,8 +28,8 @@ require (
 	github.com/aws/aws-sdk-go-v2/internal/v4a v1.5.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.13.19 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.14.1 // indirect
-	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.41.7 // indirect
-	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.40.2 // indirect
+	github.com/aws/aws-sdk-go-v2/service/licensemanager v1.44.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/marketplacemetering v1.42.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/signin v1.7.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.35.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.40.1 // indirect
@@ -40,7 +40,7 @@ require (
 	github.com/cenkalti/backoff/v5 v5.0.3 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/cloudquery/cloudquery-api-go v1.14.12 // indirect
-	github.com/cloudquery/plugin-pb-go v1.27.18 // indirect
+	github.com/cloudquery/plugin-pb-go v1.27.21 // indirect
 	github.com/cloudquery/plugin-sdk/v2 v2.7.0 // indirect
 	github.com/getsentry/sentry-go v0.48.0 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
