@@ -24,6 +24,9 @@ jobs:
     timeout-minutes: 30
     name: "plugins/destination/azblob"
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
     defaults:
       run:
         working-directory: ./plugins/destination/azblob
@@ -48,7 +51,7 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9
         with:
-          version: v2.12.2
+          version: v2.13.1
           working-directory: plugins/destination/azblob
           args: "--config ../../.golangci.yml"
       - name: gen
@@ -59,10 +62,12 @@ jobs:
         run: test "$(git status -s | wc -l)" -eq 0 || (git status -s; exit 1)
       - name: Build
         run: go build .
+      - name: Azure login
+        uses: azure/login@7ddb5af1ef8758cf1353cf3b42f940aee27ba21c # v3
+        with:
+          client-id: ${{ secrets.AZURE_INTEGRATION_TESTS_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_INTEGRATION_TESTS_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_INTEGRATION_TESTS_SUBSCRIPTION_ID }}
       - name: Test azblob plugin
         run: make test
-        env:
-          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
   

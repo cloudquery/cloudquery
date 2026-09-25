@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	"github.com/cloudquery/cloudquery/cli/v6/internal/auth"
+	"github.com/cloudquery/cloudquery/cli/v6/internal/platform"
 
 	"github.com/spf13/cobra"
 )
@@ -45,6 +46,10 @@ func runLogout(_ context.Context, cmd *cobra.Command) error {
 	err := auth.Logout()
 	if err != nil {
 		return fmt.Errorf("failed to logout: %w", err)
+	}
+
+	if err := platform.RemovePlatformToken(); err != nil {
+		return fmt.Errorf("failed to remove platform token: %w", err)
 	}
 
 	cmd.Println("CLI successfully logged out.")

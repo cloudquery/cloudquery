@@ -31,6 +31,7 @@ type pkConstraintDetails struct {
 type DBPool interface {
 	Acquire(ctx context.Context) (*pgxpool.Conn, error)
 	Close()
+	CopyFrom(ctx context.Context, tableName pgx.Identifier, columnNames []string, rowSrc pgx.CopyFromSource) (int64, error)
 	Exec(ctx context.Context, query string, args ...any) (pgconn.CommandTag, error)
 	Query(ctx context.Context, query string, args ...any) (pgx.Rows, error)
 	QueryRow(ctx context.Context, query string, args ...any) pgx.Row

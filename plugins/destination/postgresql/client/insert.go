@@ -42,6 +42,15 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 		return err
 	}
 
+	if c.useCopyFrom() {
+		return c.insertBatchCopy(ctx, messages, pgTables)
+	}
+	return c.insertBatchExec(ctx, messages, pgTables)
+}
+
+// The fallback for anything useCopyFrom excludes, and the only path that
+// supports pgvector.
+func (c *Client) insertBatchExec(ctx context.Context, messages message.WriteInserts, pgTables map[string]struct{}) error {
 	batch := new(pgx.Batch)
 
 	// Accumulate embeddings per table to insert after each successful base flush
@@ -107,41 +116,35 @@ func (c *Client) InsertBatch(ctx context.Context, messages message.WriteInserts)
 	return c.insertEmbeddingsBatch(ctx, tableToEmbBatch)
 }
 
-func (c *Client) flushBatch(ctx context.Context, batch *pgx.Batch) error {
+// fn must be safe to re-run: anything it consumes has to be rewound first.
+func (c *Client) retryOnDeadlock(fn func() error, msg string) error {
 	retrier := retry.New(
 		retry.RetryIf(func(err error) bool {
 			var pgErr *pgconn.PgError
-			if errors.As(err, &pgErr) {
-				return pgErr.Code == "40P01"
-			}
-
-			return false
+			return errors.As(err, &pgErr) && pgErr.Code == "40P01"
 		}),
 		retry.Attempts(uint(c.spec.RetryOnDeadlock)+1),
 		retry.LastErrorOnly(true),
 	)
 
-	err := retrier.Do(func() error {
-		if batch.Len() == 0 {
-			return nil
-		}
-		err := c.conn.SendBatch(ctx, batch).Close()
-		if err != nil {
-			return err
-		}
-
+	err := retrier.Do(fn)
+	if err == nil {
 		return nil
-	})
-
-	if err != nil {
-		var pgErr *pgconn.PgError
-		if errors.As(err, &pgErr) {
-			return fmt.Errorf("failed to execute batch with pgerror: %s: %w", pgErrToStr(pgErr), err)
-		}
-		return fmt.Errorf("failed to execute batch: %w", err)
 	}
+	var pgErr *pgconn.PgError
+	if errors.As(err, &pgErr) {
+		return fmt.Errorf("%s with pgerror: %s: %w", msg, pgErrToStr(pgErr), err)
+	}
+	return fmt.Errorf("%s: %w", msg, err)
+}
 
-	return nil
+func (c *Client) flushBatch(ctx context.Context, batch *pgx.Batch) error {
+	if batch.Len() == 0 {
+		return nil
+	}
+	return c.retryOnDeadlock(func() error {
+		return c.conn.SendBatch(ctx, batch).Close()
+	}, "failed to execute batch")
 }
 
 func (*Client) insert(table *schema.Table) string {

@@ -56,8 +56,8 @@ func WarnOnOutdatedVersions(ctx context.Context, p *managedplugin.PluginVersionW
 
 func pluginPathToOrgName(pluginPath string) (org string, name string, err error) {
 	parts := strings.Split(pluginPath, "/")
-	if len(parts) < 2 {
-		return "", "", fmt.Errorf("invalid plugin path: %s", pluginPath)
+	if len(parts) != 2 || parts[0] == "" || parts[1] == "" {
+		return "", "", fmt.Errorf("invalid plugin path: %s. format should be org/name", pluginPath)
 	}
 	return parts[0], parts[1], nil
 }

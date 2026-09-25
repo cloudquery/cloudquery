@@ -16,7 +16,7 @@ This destination plugin lets you sync data from a CloudQuery source to remote Az
 
 ## Example
 
-This example configures an Azure blob storage destination, to create CSV files in `https://cqdestinationazblob.blob.core.windows.net/test/path/to/files`.
+This example configures an Azure blob storage destination, to create CSV files in `https://cqazblobtests.blob.core.windows.net/test/path/to/files`.
 
 The (top level) spec section is described in the [Destination Spec Reference](/docs/cli/integrations/destinations#complete-destination-spec-reference).
 

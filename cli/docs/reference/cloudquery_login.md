@@ -28,12 +28,16 @@ cloudquery login
 # Log in to a specific team
 cloudquery login --team my-team
 
+# Log in directly to a CloudQuery Platform tenant
+cloudquery login --host my-tenant.mycloudquery.com
+
 ```
 
 ## Options
 
 ```
   -h, --help          help for login
+      --host string   CloudQuery Platform tenant host to log in to directly, e.g. 'acme.mycloudquery.com', skipping the email-based routing
   -t, --team string   Team to login to. Specify the team name, e.g. 'my-team' (not the display name)
 ```
 

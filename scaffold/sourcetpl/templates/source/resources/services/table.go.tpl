@@ -24,5 +24,5 @@ func SampleTable() *schema.Table {
 
 func fetchSampleTable(ctx context.Context, meta schema.ClientMeta, parent *schema.Resource, res chan <- any) error {
   cl := meta.(*client.Client)
-  return fmt.Errorf("not implemented. client id: " + cl.ID())
+  return fmt.Errorf("not implemented. client id: %s", cl.ID())
 }

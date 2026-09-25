@@ -7,7 +7,7 @@ spec:
   version: "VERSION_DESTINATION_AZBLOB"
   send_sync_summary: true
   spec:
-    storage_account: "cqdestinationazblob"
+    storage_account: "cqazblobtests"
     container: "test"
     path: "path/to/files"
 

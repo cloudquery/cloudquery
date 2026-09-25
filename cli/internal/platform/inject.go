@@ -257,6 +257,10 @@ func platformToken() string {
 		warnTeamMismatchOnce(k)
 		return k
 	}
+	if t := ReadPlatformToken(); t != "" {
+		warnTeamMismatchOnce(t)
+		return t
+	}
 	return ""
 }
 

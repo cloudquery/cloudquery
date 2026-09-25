@@ -34,16 +34,19 @@ jobs:
           go-version-file: go.mod
           cache: false
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@e6de054238d6b7531b4efff3b6587d9aade6a06c # v6
+        uses: aws-actions/configure-aws-credentials@cbe3b392738ccf3f987d68400dafcf4b0624a56c # v6
         with:
           role-to-assume: arn:aws:iam::615713231484:role/destination-s3
           aws-region: us-east-1
+      - name: Azure login
+        uses: azure/login@7ddb5af1ef8758cf1353cf3b42f940aee27ba21c # v3
+        with:
+          client-id: ${{ secrets.AZURE_INTEGRATION_TESTS_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_INTEGRATION_TESTS_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_INTEGRATION_TESTS_SUBSCRIPTION_ID }}
       - name: Generate Coverage Report
         env:
           SNOW_TEST_DSN: ${{ secrets.SNOW_TEST_DSN }}
-          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
-          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
-          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           CLOUDQUERY_API_KEY: ${{ secrets.CLOUDQUERY_API_KEY }}
         run: |
           ./scripts/test-coverage.sh

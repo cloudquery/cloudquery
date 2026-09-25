@@ -46,6 +46,9 @@ type MockDBPool struct {
 func (*MockDBPool) Acquire(ctx context.Context) (*pgxpool.Conn, error) { return nil, nil }
 
 func (*MockDBPool) Close() {}
+func (*MockDBPool) CopyFrom(ctx context.Context, tableName pgx.Identifier, columnNames []string, rowSrc pgx.CopyFromSource) (int64, error) {
+	return 0, nil
+}
 func (*MockDBPool) Exec(ctx context.Context, sql string, args ...any) (pgconn.CommandTag, error) {
 	return pgconn.CommandTag{}, nil
 }

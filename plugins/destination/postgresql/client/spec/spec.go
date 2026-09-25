@@ -43,6 +43,26 @@ type Spec struct {
 	// Option to create specific indexes to improve deletion performance
 	CreatePerformanceIndexes bool `json:"create_performance_indexes,omitempty" jsonschema:"default=false"`
 
+	// Write rows with the PostgreSQL `COPY` protocol instead of `INSERT` statements.
+	//
+	// `COPY` sends a batch as a single statement rather than one statement per row,
+	// which is substantially faster against a remote database. Tables with a
+	// primary key are copied into a temporary staging table and merged into the
+	// target, since `COPY` has no `ON CONFLICT` of its own.
+	//
+	// Rows repeating a primary key within one batch are collapsed before the merge,
+	// keeping the last one, so a database-side trigger fires once rather than once
+	// per row.
+	//
+	// Tables with a primary key are still written to by an `INSERT`, so row-level
+	// security and rewrite rules behave as before. Tables without one are copied
+	// straight in: rewrite rules are not applied, and row-level security makes the
+	// write fail, since PostgreSQL rejects `COPY FROM` on such a table.
+	//
+	// It has no effect on CockroachDB, CrateDB, or when `pgvector_config` is set;
+	// those always use `INSERT`.
+	UseCopyFrom bool `json:"use_copy_from,omitempty" jsonschema:"default=false"`
+
 	// Optional configuration to enable PgVector embedding support.
 	PgVectorConfig *PgVectorConfig `json:"pgvector_config,omitempty"`
 
