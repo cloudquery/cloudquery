@@ -79,10 +79,12 @@ func (lp *TransformerPipeline) Send(data []byte) error {
 		return ErrPipelineClosed
 	}
 
-	sendCh := make(chan error)
+	sendCh := make(chan error, 1)
 
 	// Send can block forever (e.g. if grpc buffer is full), so we run it asynchronously
-	// and check if pipeline is closed every second.
+	// and check if pipeline is closed every second. The channel is buffered so the
+	// goroutine can always deliver its result and exit, even if we return early
+	// because the pipeline was closed in the meantime.
 	go func() {
 		err := lp.clientWrappers[0].client.Send(&plugin.Transform_Request{Record: data})
 		sendCh <- err
@@ -119,7 +121,12 @@ func (lp *TransformerPipeline) OnOutput(fn func([]byte) error) error {
 func (lp *TransformerPipeline) Close() {
 	// Close() can happen in any goroutine, and closing is not thread safe.
 	// Instead of closing, we set a flag that we check on send/recv.
-	lp.clientWrappers[0].isClosed.Store(true)
+	// The first caller also half-closes the head of the transform chain:
+	// without that the Recv goroutine of the first wrapper stays parked in
+	// client.Recv() forever, because nothing else ever closes its stream.
+	if lp.clientWrappers[0].isClosed.CompareAndSwap(false, true) {
+		_ = lp.clientWrappers[0].client.CloseSend()
+	}
 }
 
 type clientWrapper struct {
@@ -135,8 +142,12 @@ func (s *clientWrapper) startBlocking() error {
 		return errors.New("nextSendFn is nil")
 	}
 
-	recvCh := make(chan *plugin.Transform_Request)
-	errCh := make(chan error)
+	recvCh := make(chan *plugin.Transform_Request, 1)
+	errCh := make(chan error, 1)
+	// Closed when startBlocking returns, so the Recv goroutine below can exit
+	// instead of leaking on a channel send nobody will ever receive.
+	doneCh := make(chan struct{})
+	defer close(doneCh)
 
 	// Recv can block forever (e.g. if transformer decides to), so
 	// we run it asynchronously and check if pipeline is closed every second.
@@ -144,14 +155,35 @@ func (s *clientWrapper) startBlocking() error {
 		for {
 			data, err := s.client.Recv()
 			if err != nil {
-				errCh <- err
+				select {
+				case errCh <- err:
+				case <-doneCh:
+					return
+				}
 			} else {
-				recvCh <- &plugin.Transform_Request{Record: data.Record}
+				select {
+				case recvCh <- &plugin.Transform_Request{Record: data.Record}:
+				case <-doneCh:
+					return
+				}
 			}
 		}
 	}()
 
 	for {
+		// Always drain a buffered record before making a close decision: the
+		// Recv goroutine can run one record ahead of us, and neither the tick
+		// nor an EOF on errCh may win the select while a record still waits
+		// to be forwarded, otherwise the record would be silently dropped.
+		select {
+		case req := <-recvCh:
+			if err := s.nextSendFn(req); err != nil {
+				return err
+			}
+			continue
+		default:
+		}
+
 		select {
 		case <-time.After(1 * time.Second): // Check if pipeline is closed every second
 			if s.isClosed.Load() {
