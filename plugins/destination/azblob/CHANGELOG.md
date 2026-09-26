@@ -1,5 +1,20 @@
 # Changelog
 
+## [4.5.12](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.5.11...plugins-destination-azblob-v4.5.12) (2026-09-26)
+
+
+### Bug Fixes
+
+* **deps:** Update go module directive to v1.26.6 ([#23344](https://github.com/cloudquery/cloudquery/issues/23344)) ([bfc2d40](https://github.com/cloudquery/cloudquery/commit/bfc2d406c5a6806479ca5b2313977324bdcd7c70))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/azidentity to v1.14.1 ([#23345](https://github.com/cloudquery/cloudquery/issues/23345)) ([0d476b4](https://github.com/cloudquery/cloudquery/commit/0d476b44024a4d371d8e4dfe3d2cae79b777e517))
+* **deps:** Update module github.com/Azure/azure-sdk-for-go/sdk/storage/azblob to v1.8.1 ([#23396](https://github.com/cloudquery/cloudquery/issues/23396)) ([7a31e0c](https://github.com/cloudquery/cloudquery/commit/7a31e0c2da152b10cd237cab27dd79f9171b0be6))
+* **deps:** Update module github.com/cloudquery/filetypes/v4 to v4.7.4 ([#23388](https://github.com/cloudquery/cloudquery/issues/23388)) ([ac63b2e](https://github.com/cloudquery/cloudquery/commit/ac63b2ecfd57865025ca99b6ef713b346708bb29))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.2 ([#23277](https://github.com/cloudquery/cloudquery/issues/23277)) ([d15a83d](https://github.com/cloudquery/cloudquery/commit/d15a83ddc3c2e8af081afa2745f1a54a9cec62ab))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.3 ([#23330](https://github.com/cloudquery/cloudquery/issues/23330)) ([2502476](https://github.com/cloudquery/cloudquery/commit/2502476eb0933484ce7acb933b3b3c31b2ad4dea))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.4 ([#23389](https://github.com/cloudquery/cloudquery/issues/23389)) ([c7dc863](https://github.com/cloudquery/cloudquery/commit/c7dc86388bdc63e5eb663fdd36d70e8f99226d0d))
+* **deps:** Update module github.com/stretchr/testify to v1.12.1 ([#23322](https://github.com/cloudquery/cloudquery/issues/23322)) ([58653f2](https://github.com/cloudquery/cloudquery/commit/58653f29c681bb584bcd2cfda92691fcba3d9005))
+* **deps:** Update module google.golang.org/grpc to v1.83.2 [SECURITY] ([#23365](https://github.com/cloudquery/cloudquery/issues/23365)) ([99ba461](https://github.com/cloudquery/cloudquery/commit/99ba461b1b88b99d27284b02364ca77bed9c8043))
+
 ## [4.5.11](https://github.com/cloudquery/cloudquery/compare/plugins-destination-azblob-v4.5.10...plugins-destination-azblob-v4.5.11) (2026-08-22)
 
 
