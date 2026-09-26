@@ -279,9 +279,6 @@ func GetSpecJsonScheme(distDir string) (*string, error) {
 		}
 		return nil, fmt.Errorf("failed to read spec_json_schema.json: %w", err)
 	}
-	if _, err := os.ReadFile(specJsonSchemaPath); os.IsNotExist(err) {
-		return nil, nil
-	}
 	contentStr := string(content)
 	return &contentStr, nil
 }
@@ -461,13 +458,13 @@ func getDockerToken(ctx context.Context, ref reference.Named, version, team, use
 
 	url := fmt.Sprintf("%[1]s?account=cli&service=%[2]s&scope=%[3]s", realm, service, scope)
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	if err != nil {
+		return "", fmt.Errorf("client: could not create request: %s", err)
+	}
 	basicAuth := base64.StdEncoding.EncodeToString([]byte(username + ":" + password))
 	req.Header.Add("X-Meta-Plugin-Version", version)
 	req.Header.Add("X-Meta-User-Team-Name", team)
 	req.Header.Add("Authorization", "Basic "+basicAuth)
-	if err != nil {
-		return "", fmt.Errorf("client: could not create request: %s", err)
-	}
 
 	res, err := httpClient.Do(req)
 	if err != nil {
