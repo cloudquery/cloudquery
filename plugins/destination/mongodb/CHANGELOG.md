@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v3.2.0...plugins-destination-mongodb-v3.2.1) (2026-09-26)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23399](https://github.com/cloudquery/cloudquery/issues/23399)) ([b6985b7](https://github.com/cloudquery/cloudquery/commit/b6985b719fbd9098c0b8be29e5e59cea6046ae68))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.4 ([#23389](https://github.com/cloudquery/cloudquery/issues/23389)) ([c7dc863](https://github.com/cloudquery/cloudquery/commit/c7dc86388bdc63e5eb663fdd36d70e8f99226d0d))
+* **deps:** Update module google.golang.org/grpc to v1.83.2 [SECURITY] ([#23374](https://github.com/cloudquery/cloudquery/issues/23374)) ([f78abf8](https://github.com/cloudquery/cloudquery/commit/f78abf8196926fde2e348a3db964d483a6977f3b))
+
 ## [3.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v3.1.1...plugins-destination-mongodb-v3.2.0) (2026-09-15)
 
 
