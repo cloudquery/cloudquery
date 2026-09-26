@@ -1,5 +1,17 @@
 # Changelog
 
+## [5.2.15](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.14...plugins-destination-snowflake-v5.2.15) (2026-09-26)
+
+
+### Bug Fixes
+
+* **deps:** Update go module directive to v1.26.6 ([#23344](https://github.com/cloudquery/cloudquery/issues/23344)) ([bfc2d40](https://github.com/cloudquery/cloudquery/commit/bfc2d406c5a6806479ca5b2313977324bdcd7c70))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.2 ([#23277](https://github.com/cloudquery/cloudquery/issues/23277)) ([d15a83d](https://github.com/cloudquery/cloudquery/commit/d15a83ddc3c2e8af081afa2745f1a54a9cec62ab))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.3 ([#23330](https://github.com/cloudquery/cloudquery/issues/23330)) ([2502476](https://github.com/cloudquery/cloudquery/commit/2502476eb0933484ce7acb933b3b3c31b2ad4dea))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.4 ([#23389](https://github.com/cloudquery/cloudquery/issues/23389)) ([c7dc863](https://github.com/cloudquery/cloudquery/commit/c7dc86388bdc63e5eb663fdd36d70e8f99226d0d))
+* **deps:** Update module github.com/stretchr/testify to v1.12.1 ([#23322](https://github.com/cloudquery/cloudquery/issues/23322)) ([58653f2](https://github.com/cloudquery/cloudquery/commit/58653f29c681bb584bcd2cfda92691fcba3d9005))
+* **deps:** Update module google.golang.org/grpc to v1.83.2 [SECURITY] ([#23380](https://github.com/cloudquery/cloudquery/issues/23380)) ([007120e](https://github.com/cloudquery/cloudquery/commit/007120e198fdaa3e6ac9f4d010d46282cccd1281))
+
 ## [5.2.14](https://github.com/cloudquery/cloudquery/compare/plugins-destination-snowflake-v5.2.13...plugins-destination-snowflake-v5.2.14) (2026-08-20)
 
 
