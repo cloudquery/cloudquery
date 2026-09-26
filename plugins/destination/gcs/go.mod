@@ -14,7 +14,7 @@ require (
 	github.com/pb33f/ordered-map/v2 v2.3.1
 	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.12.1
-	google.golang.org/api v0.295.0
+	google.golang.org/api v0.298.0
 )
 
 require (
