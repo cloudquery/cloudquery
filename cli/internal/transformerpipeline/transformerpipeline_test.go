@@ -168,14 +168,16 @@ func TestPipelineCloseDoesNotLeakGoroutines(t *testing.T) {
 		pipeline, _, err := New(context.Background(), transformers)
 		require.NoError(t, err)
 		require.NoError(t, pipeline.OnOutput(func([]byte) error { return nil }))
-		done := make(chan struct{})
+		sendErr := make(chan error, 1)
 		go func() {
-			defer close(done)
-			require.NoError(t, pipeline.Send([]byte("ping")))
-			pipeline.Close()
+			// Close the pipeline even when Send fails, otherwise RunBlocking
+			// below never returns and the test hangs instead of reporting
+			// the send failure.
+			defer pipeline.Close()
+			sendErr <- pipeline.Send([]byte("ping"))
 		}()
 		require.NoError(t, pipeline.RunBlocking())
-		<-done
+		require.NoError(t, <-sendErr)
 	}
 	runCycle()
 
@@ -224,6 +226,40 @@ func TestSendUnblocksWhenPipelineClosesMidSend(t *testing.T) {
 	// result and exit even though Send itself already returned.
 	close(blocking.sendRelease)
 	waitForGoroutines(t, before)
+}
+
+func TestCloseDuringIdentitySendDoesNotPanic(t *testing.T) {
+	// A destination with no configured transformer gets an identity
+	// transformer whose Send parks on an unbuffered channel. Closing the
+	// pipeline while that Send is parked must unblock it with an error,
+	// not panic on a send to a closed channel.
+	pipeline, _, err := New(context.Background(), nil)
+	require.NoError(t, err)
+	require.NoError(t, pipeline.OnOutput(func([]byte) error { return nil }))
+
+	sendDone := make(chan error, 1)
+	go func() { sendDone <- pipeline.Send([]byte("stuck")) }()
+
+	// RunBlocking is not running yet, so nothing receives from the identity
+	// transformer and the Send is guaranteed to be parked inside it.
+	time.Sleep(100 * time.Millisecond)
+	pipeline.Close()
+
+	select {
+	case err := <-sendDone:
+		require.ErrorIs(t, err, ErrPipelineClosed)
+	case <-time.After(10 * time.Second):
+		t.Fatal("Send did not return after pipeline close")
+	}
+
+	runDone := make(chan error, 1)
+	go func() { runDone <- pipeline.RunBlocking() }()
+	select {
+	case err := <-runDone:
+		require.NoError(t, err)
+	case <-time.After(10 * time.Second):
+		t.Fatal("RunBlocking did not return after pipeline close")
+	}
 }
 
 // blockingTransformer parks in Send until the test releases it, and in Recv

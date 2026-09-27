@@ -170,6 +170,21 @@ func (s *clientWrapper) startBlocking() error {
 		}
 	}()
 
+	// Forward any record the Recv goroutine already buffered, then close the
+	// chain. The goroutine always buffers its last record before delivering
+	// EOF, so without this drain the select below can choose EOF over the
+	// buffered record and the final transformed record is silently dropped.
+	drainAndClose := func() error {
+		select {
+		case req := <-recvCh:
+			if err := s.nextSendFn(req); err != nil {
+				return err
+			}
+		default:
+		}
+		return s.nextClose()
+	}
+
 	for {
 		// Always drain a buffered record before making a close decision: the
 		// Recv goroutine can run one record ahead of us, and neither the tick
@@ -187,7 +202,7 @@ func (s *clientWrapper) startBlocking() error {
 		select {
 		case <-time.After(1 * time.Second): // Check if pipeline is closed every second
 			if s.isClosed.Load() {
-				return s.nextClose()
+				return drainAndClose()
 			}
 		case req := <-recvCh: // Propagate records to next transformer
 			if err := s.nextSendFn(req); err != nil {
@@ -195,7 +210,7 @@ func (s *clientWrapper) startBlocking() error {
 			}
 		case err := <-errCh:
 			if err == io.EOF {
-				return s.nextClose()
+				return drainAndClose()
 			}
 			return err
 		}
