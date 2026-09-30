@@ -65,7 +65,7 @@ var transformTestCases = []struct {
 			{Name: "_cq_sync_time", Type: arrow.FixedWidthTypes.Timestamp_us, Nullable: true},
 			{Name: "id", Type: arrow.PrimitiveTypes.Int64},
 		}, nil),
-		expectedJSONRecord: []byte(`{"_cq_sync_time": "2023-06-21 17:54:44.488177","id": 1}`),
+		expectedJSONRecord: []byte(`{"_cq_sync_time": "2023-06-21 17:54:44.488177Z","id": 1}`),
 	},
 	{
 		name: "add_source_and_sync_time",
@@ -85,7 +85,7 @@ var transformTestCases = []struct {
 			{Name: "_cq_source_name", Type: arrow.BinaryTypes.String, Nullable: true},
 			{Name: "id", Type: arrow.PrimitiveTypes.Int64},
 		}, nil),
-		expectedJSONRecord: []byte(`{"_cq_sync_time": "2023-06-21 17:54:44.488177","_cq_source_name": "test","id": 1}`),
+		expectedJSONRecord: []byte(`{"_cq_sync_time": "2023-06-21 17:54:44.488177Z","_cq_source_name": "test","id": 1}`),
 	},
 	{
 		name: "use_cq_id_primary_key_with_remove_pks",
