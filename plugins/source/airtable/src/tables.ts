@@ -86,20 +86,14 @@ const airtableFieldToArrowField = (field: APIField): DataType => {
       return new Uint64();
     }
     case APIFieldType.number: {
-      if (field.options.precision === 0) {
-        return new Int64();
-      }
-      return new Float64();
+      return field.options.precision === 0 ? new Int64() : new Float64();
     }
     case APIFieldType.percent: {
       return new Float64();
     }
     case APIFieldType.formula: {
       const formulaField = field as APIFieldFormula;
-      if (formulaField.options.result !== null) {
-        return airtableFieldToArrowField(formulaField.options.result);
-      }
-      return new Utf8();
+      return formulaField.options.result === null ? new Utf8() : airtableFieldToArrowField(formulaField.options.result);
     }
     default: {
       return new Utf8();
@@ -108,10 +102,7 @@ const airtableFieldToArrowField = (field: APIField): DataType => {
 };
 
 const normalizeDateFormat = (format: string) => {
-  if (format === 'l' || format === 'LL') {
-    return 'YYYY-MM-DD';
-  }
-  return format;
+  return format === 'l' || format === 'LL' ? 'YYYY-MM-DD' : format;
 };
 
 const normalizeTimeZone = (timeZone: string) => {
@@ -207,10 +198,9 @@ const getColumnResolver = (field: APIField): ColumnResolver => {
     }
     case APIFieldType.formula: {
       const formulaField = field as APIFieldFormula;
-      if (formulaField.options.result !== null) {
-        return getColumnResolver({ ...field, ...formulaField.options.result });
-      }
-      return pathResolver(field.name);
+      return formulaField.options.result === null
+        ? pathResolver(field.name)
+        : getColumnResolver({ ...field, ...formulaField.options.result });
     }
     default: {
       return pathResolver(field.name);
@@ -242,24 +232,28 @@ const airtableToSchemaTable = (
 
   const resolver: TableResolver = async (clientMeta, parent, stream) => {
     const airtableClient = new Airtable({ apiKey, endpointUrl }).base(baseId);
-    
+
     return new Promise((resolve, reject) => {
-      airtableClient(table.name).select().eachPage(
-        (records, fetchNextPage) => {
-          for (const record of records) {
-            const recordAsObject = Object.fromEntries(table.fields.map((field) => [field.name, record.get(field.name)]));
-            stream.write(recordAsObject);
-          }
-          fetchNextPage();
-        },
-        (error) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve();
-          }
-        }
-      );
+      airtableClient(table.name)
+        .select()
+        .eachPage(
+          (records, fetchNextPage) => {
+            for (const record of records) {
+              const recordAsObject = Object.fromEntries(
+                table.fields.map((field) => [field.name, record.get(field.name)]),
+              );
+              stream.write(recordAsObject);
+            }
+            fetchNextPage();
+          },
+          (error) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve();
+            }
+          },
+        );
     });
   };
 
