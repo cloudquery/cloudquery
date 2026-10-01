@@ -27,7 +27,7 @@ require (
 	github.com/pb33f/ordered-map/v2 v2.3.1
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/rs/zerolog v1.35.1
-	github.com/rudderlabs/analytics-go/v4 v4.2.3
+	github.com/rudderlabs/analytics-go/v4 v4.3.1
 	github.com/samber/lo v1.53.0
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3
 	github.com/schollz/progressbar/v3 v3.14.6
