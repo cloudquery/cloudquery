@@ -7,7 +7,7 @@ require (
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-sdk/v4 v4.96.6
 	github.com/goccy/go-json v0.10.6
-	github.com/neo4j/neo4j-go-driver/v6 v6.2.0
+	github.com/neo4j/neo4j-go-driver/v6 v6.3.0
 	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.12.1
 )
