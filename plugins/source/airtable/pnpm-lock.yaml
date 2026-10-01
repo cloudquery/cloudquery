@@ -34,7 +34,7 @@ importers:
         version: 15.1.0
       p-map:
         specifier: ^7.0.0
-        version: 7.0.6
+        version: 7.0.8
       read-package-up:
         specifier: ^12.0.0
         version: 12.0.0
@@ -1647,8 +1647,8 @@ packages:
     resolution: {integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==}
     engines: {node: '>=10'}
 
-  p-map@7.0.6:
-    resolution: {integrity: sha512-I4Prw6ivkd6p8PiYR1tXASOAOBzIJwu0TB7fqaX0c/8c3QAehNYmX57EijyGGGBt3c/BIowGwV03RVBtXvHEVg==}
+  p-map@7.0.8:
+    resolution: {integrity: sha512-MitaVsCuCFIvOLLPIU7NnfrZvS9H9h7kwMUkDo+T2pEISaJD48IV9S8iIdXB7PsvvdxyYcsSTTrr90XKsbulNw==}
     engines: {node: '>=18'}
 
   p-queue@9.1.0:
@@ -2258,7 +2258,7 @@ snapshots:
       matcher: 6.0.0
       modern-errors: 7.1.4
       modern-errors-bugs: 5.0.1(modern-errors@7.1.4)
-      p-map: 7.0.6
+      p-map: 7.0.8
       p-queue: 9.1.0
       p-timeout: 7.0.1
       path-exists: 5.0.0
@@ -2832,7 +2832,7 @@ snapshots:
       matcher: 6.0.0
       memoize: 11.0.0
       ms: 2.1.3
-      p-map: 7.0.6
+      p-map: 7.0.8
       package-config: 5.0.0
       picomatch: 4.0.4
       plur: 6.0.0
@@ -3726,7 +3726,7 @@ snapshots:
     dependencies:
       p-limit: 3.1.0
 
-  p-map@7.0.6: {}
+  p-map@7.0.8: {}
 
   p-queue@9.1.0:
     dependencies:
