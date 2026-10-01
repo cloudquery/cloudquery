@@ -7,7 +7,7 @@ require (
 	github.com/cloudquery/codegen v0.4.1
 	github.com/cloudquery/plugin-sdk/v4 v4.96.6
 	github.com/goccy/go-json v0.10.6
-	github.com/mattn/go-sqlite3 v1.14.50
+	github.com/mattn/go-sqlite3 v1.14.52
 	github.com/rs/zerolog v1.35.1
 	github.com/stretchr/testify v1.12.1
 )
