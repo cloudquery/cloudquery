@@ -61,23 +61,11 @@ func migrateConnectionV3(ctx context.Context, migrateOptions migrateV3Options) e
 	destinationRecordTransformers := make([]*transformer.RecordTransformer, len(destinationsClients))
 	for i := range destinationsClients {
 		destinationsPbClients[i] = plugin.NewPluginClient(destinationsClients[i].Conn)
-		opts := []transformer.RecordTransformerOption{
-			transformer.WithSourceNameColumn(sourceSpec.Name),
-			transformer.WithSyncTimeColumn(migrateStart),
-		}
-		if cqColumnsNotNull {
-			opts = append(opts, transformer.WithCQColumnsNotNull())
-		}
+		syncGroupId := ""
 		if destinationSpecs[i].SyncGroupId != "" {
-			opts = append(opts, transformer.WithSyncGroupIdColumn(destinationSpecs[i].RenderedSyncGroupId(migrateStart, invocationUUID.String())))
+			syncGroupId = destinationSpecs[i].RenderedSyncGroupId(migrateStart, invocationUUID.String())
 		}
-		if destinationSpecs[i].WriteMode == specs.WriteModeAppend {
-			opts = append(opts, transformer.WithRemovePKs(), transformer.WithRemoveUniqueConstraints())
-		} else if destinationSpecs[i].PKMode == specs.PKModeCQID {
-			opts = append(opts, transformer.WithRemovePKs())
-			opts = append(opts, transformer.WithCQIDPrimaryKey())
-		}
-		destinationRecordTransformers[i] = transformer.NewRecordTransformer(opts...)
+		destinationRecordTransformers[i] = newDestinationRecordTransformer(destinationSpecs[i], sourceSpec.Name, migrateStart, syncGroupId, cqColumnsNotNull)
 	}
 
 	// initialize destinations first, so that their connections may be used as backends by the source
@@ -131,18 +119,9 @@ func migrateConnectionV3(ctx context.Context, migrateOptions migrateV3Options) e
 
 	for i := range destinationsClients {
 		for _, sc := range schemas {
-			transformedSchema := destinationRecordTransformers[i].TransformSchema(sc)
-			transformedSchemaBytes, err := plugin.SchemaToBytes(transformedSchema)
+			transformedSchemaBytes, err := transformSchemaForDestination(ctx, destinationRecordTransformers[i], transformerPbClientsByDestination[destinationSpecs[i].Name], sc)
 			if err != nil {
 				return err
-			}
-			// Sequentially apply schema transformations from transformers
-			for _, transformerPbClient := range transformerPbClientsByDestination[destinationSpecs[i].Name] {
-				resp, err := transformerPbClient.TransformSchema(ctx, &plugin.TransformSchema_Request{Schema: transformedSchemaBytes})
-				if err != nil {
-					return err
-				}
-				transformedSchemaBytes = resp.Schema
 			}
 
 			wr := &plugin.Write_Request{}
