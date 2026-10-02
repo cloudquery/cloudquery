@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.2.1](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v3.2.0...plugins-destination-mongodb-v3.2.1) (2026-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update aws-sdk-go-v2 monorepo ([#23399](https://github.com/cloudquery/cloudquery/issues/23399)) ([b6985b7](https://github.com/cloudquery/cloudquery/commit/b6985b719fbd9098c0b8be29e5e59cea6046ae68))
+* **deps:** Update go module directive to v1.27.1 ([#23402](https://github.com/cloudquery/cloudquery/issues/23402)) ([9e24c06](https://github.com/cloudquery/cloudquery/commit/9e24c066c451a1e3ae0576a45c9447e938909e19))
+* **deps:** Update module github.com/apache/arrow-go/v18 to v18.8.0 ([#23409](https://github.com/cloudquery/cloudquery/issues/23409)) ([825ffd6](https://github.com/cloudquery/cloudquery/commit/825ffd66b700680e65d8119853b2b70072187ee7))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.4 ([#23389](https://github.com/cloudquery/cloudquery/issues/23389)) ([c7dc863](https://github.com/cloudquery/cloudquery/commit/c7dc86388bdc63e5eb663fdd36d70e8f99226d0d))
+* **deps:** Update module github.com/cloudquery/plugin-sdk/v4 to v4.96.6 ([#23414](https://github.com/cloudquery/cloudquery/issues/23414)) ([21c5ffe](https://github.com/cloudquery/cloudquery/commit/21c5ffe0dc57ed3bb7edd97026622b3068a151b5))
+* **deps:** Update module google.golang.org/grpc to v1.83.2 [SECURITY] ([#23374](https://github.com/cloudquery/cloudquery/issues/23374)) ([f78abf8](https://github.com/cloudquery/cloudquery/commit/f78abf8196926fde2e348a3db964d483a6977f3b))
+
 ## [3.2.0](https://github.com/cloudquery/cloudquery/compare/plugins-destination-mongodb-v3.1.1...plugins-destination-mongodb-v3.2.0) (2026-09-15)
 
 
