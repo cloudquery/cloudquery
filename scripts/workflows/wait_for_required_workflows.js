@@ -100,7 +100,7 @@ module.exports = async ({github, context}) => {
         }
         console.log(`Matching runs: ${matchingRuns.map(({name}) => name).join(", ")}`)
         console.log(`Actions: ${actions.join(", ")}`)
-        if (matchingRuns.length === actions.length) {
+        if (new Set(matchingRuns.map(({name}) => name)).size === actions.length) {
             console.log("All required workflows have passed")
             return
         }
