@@ -1,0 +1,49 @@
+datadog v5.19.10 → v6.0.0 | postgresql (local@<postgresql>)
+write_mode: overwrite-delete-stale | pk_mode: default
+REVIEW REQUIRED — 6 tables / 7 columns
+
+datadog_downtimes.monitor_tags
+  Source:      list<item: utf8, nullable> → json
+  postgresql:  text[] → jsonb
+  Safe mode:   rejects the changes
+  Forced mode: drops and recreates the table, deleting existing rows
+
+datadog_global_variables.tags
+  Source:      list<item: utf8, nullable> → json
+  postgresql:  text[] → jsonb
+  Safe mode:   rejects the changes
+  Forced mode: drops and recreates the table, deleting existing rows
+
+datadog_monitor_downtimes.monitor_tags
+  Source:      list<item: utf8, nullable> → json
+  postgresql:  text[] → jsonb
+  Safe mode:   rejects the changes
+  Forced mode: drops and recreates the table, deleting existing rows
+
+datadog_monitors.tags
+  Source:      list<item: utf8, nullable> → json
+  postgresql:  text[] → jsonb
+  Safe mode:   rejects the changes
+  Forced mode: drops and recreates the table, deleting existing rows
+
+datadog_slos.monitor_tags
+  Source:      list<item: utf8, nullable> → json
+  postgresql:  text[] → jsonb
+  Safe mode:   rejects the changes
+  Forced mode: drops and recreates the table, deleting existing rows
+
+datadog_slos.tags
+  Source:      list<item: utf8, nullable> → json
+  postgresql:  text[] → jsonb
+  Safe mode:   rejects the changes
+  Forced mode: drops and recreates the table, deleting existing rows
+
+datadog_synthetics.tags
+  Source:      list<item: utf8, nullable> → json
+  postgresql:  text[] → jsonb
+  Safe mode:   rejects the changes
+  Forced mode: drops and recreates the table, deleting existing rows
+
+Action: plan a manual migration or rebuild.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+
