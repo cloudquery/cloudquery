@@ -1,0 +1,242 @@
+package cmd
+
+import (
+	"cmp"
+	"fmt"
+	"io"
+	"slices"
+	"strings"
+
+	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
+	pluginPb "github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
+	"github.com/cloudquery/plugin-sdk/v4/schema"
+)
+
+type upgradeReport struct {
+	SourceName    string
+	FromVersion   string
+	ToVersion     string
+	SourceUnknown bool
+	SourceGaps    []string
+	RemovedTables []string
+	Destination   *specs.Destination
+	Tables        map[string]upgradeTablePair
+	Findings      []*pluginPb.AssessTables_TableFinding
+}
+
+type upgradeCategoryText struct {
+	verdict string
+	action  string
+}
+
+var upgradeCategoriesBySeverity = []pluginPb.AssessTables_Category{
+	pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED,
+	pluginPb.AssessTables_CATEGORY_TABLE_REMOVED,
+	pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED,
+	pluginPb.AssessTables_CATEGORY_UNKNOWN,
+	pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE,
+}
+
+var upgradeCategoryTexts = map[pluginPb.AssessTables_Category]upgradeCategoryText{
+	pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED: {"REVIEW REQUIRED", "plan a manual migration or rebuild."},
+	pluginPb.AssessTables_CATEGORY_TABLE_REMOVED:             {"SELECTED TABLES REMOVED", "remove explicit selections and update dependent consumers."},
+	pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED:       {"FILE SCHEMA CHANGED", "review readers that combine old and new files."},
+	pluginPb.AssessTables_CATEGORY_UNKNOWN:                   {"UNKNOWN", "review the source changelog for what this check could not assess."},
+	pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE:  {"AUTOMATICALLY MIGRATABLE", "use safe migration."},
+}
+
+func renderUpgradeReport(w io.Writer, r upgradeReport) error {
+	var b strings.Builder
+	header := fmt.Sprintf("%s %s → %s", r.SourceName, r.FromVersion, r.ToVersion)
+	if r.Destination != nil {
+		header += " | " + r.Destination.VersionString()
+	}
+	b.WriteString(header + "\n")
+	if r.Destination != nil {
+		fmt.Fprintf(&b, "write_mode: %s | pk_mode: %s\n", r.Destination.WriteMode, r.Destination.PKMode)
+	}
+
+	findings := slices.Clone(r.Findings)
+	slices.SortFunc(findings, func(a, b *pluginPb.AssessTables_TableFinding) int {
+		return strings.Compare(a.TableName, b.TableName)
+	})
+	findingsByCategory := make(map[pluginPb.AssessTables_Category][]*pluginPb.AssessTables_TableFinding)
+	gaps := slices.Clone(r.SourceGaps)
+	for _, finding := range findings {
+		findingsByCategory[finding.Category] = append(findingsByCategory[finding.Category], finding)
+		if finding.CoverageIncomplete {
+			gaps = append(gaps, fmt.Sprintf("%s: %s", finding.TableName, cmp.Or(finding.CoverageIncompleteReason, "coverage incomplete")))
+		}
+	}
+
+	var categories []pluginPb.AssessTables_Category
+	for _, category := range upgradeCategoriesBySeverity {
+		removed := category == pluginPb.AssessTables_CATEGORY_TABLE_REMOVED && len(r.RemovedTables) > 0
+		unknownSource := category == pluginPb.AssessTables_CATEGORY_UNKNOWN && r.SourceUnknown
+		if removed || unknownSource || len(findingsByCategory[category]) > 0 {
+			categories = append(categories, category)
+		}
+	}
+
+	if len(categories) == 0 {
+		b.WriteString("No schema changes affect your selected tables.\n")
+		writeUpgradeCoverageGaps(&b, gaps)
+		b.WriteString("\n")
+		_, err := io.WriteString(w, b.String())
+		return err
+	}
+
+	for i, category := range categories {
+		if i > 0 {
+			b.WriteString("\n")
+		}
+		categoryFindings := findingsByCategory[category]
+		if category == pluginPb.AssessTables_CATEGORY_TABLE_REMOVED {
+			writeUpgradeHeading(&b, category, r.RemovedTables, 0)
+			b.WriteString("\n" + strings.Join(r.RemovedTables, "\n") + "\n")
+			b.WriteString("The new source version no longer provides these tables.\n")
+			continue
+		}
+		tableNames := make([]string, len(categoryFindings))
+		changedColumns := 0
+		for i, finding := range categoryFindings {
+			tableNames[i] = finding.TableName
+			changedColumns += len(changedColumnFindings(finding))
+		}
+		writeUpgradeHeading(&b, category, tableNames, changedColumns)
+		if category == pluginPb.AssessTables_CATEGORY_UNKNOWN {
+			continue
+		}
+		for _, finding := range categoryFindings {
+			writeUpgradeTableFinding(&b, r.Destination.Name, finding, r.Tables[finding.TableName])
+		}
+	}
+	writeUpgradeCoverageGaps(&b, gaps)
+
+	b.WriteString("\n")
+	for _, category := range categories {
+		fmt.Fprintf(&b, "Action: %s\n", upgradeCategoryTexts[category].action)
+	}
+	b.WriteString("This check only previews the changes. It does not migrate, write, delete or upload anything.\n\n")
+	_, err := io.WriteString(w, b.String())
+	return err
+}
+
+func writeUpgradeHeading(b *strings.Builder, category pluginPb.AssessTables_Category, tableNames []string, changedColumns int) {
+	heading := upgradeCategoryTexts[category].verdict
+	switch {
+	case len(tableNames) == 1:
+		heading += " — " + tableNames[0]
+	case len(tableNames) > 1 && changedColumns > 0:
+		heading += fmt.Sprintf(" — %d tables / %d columns", len(tableNames), changedColumns)
+	case len(tableNames) > 1:
+		heading += fmt.Sprintf(" — %d tables", len(tableNames))
+	}
+	b.WriteString(heading + "\n")
+}
+
+func writeUpgradeTableFinding(b *strings.Builder, destinationName string, finding *pluginPb.AssessTables_TableFinding, table upgradeTablePair) {
+	columns := changedColumnFindings(finding)
+	for _, column := range columns {
+		fmt.Fprintf(b, "\n%s.%s\n", finding.TableName, column.ColumnName)
+		writeUpgradeLine(b, "Source", upgradeTypeChange(sourceColumnType(table.From, column.ColumnName), sourceColumnType(table.To, column.ColumnName)))
+		writeUpgradeLine(b, destinationName, upgradeTypeChange(column.OldType, column.NewType))
+		writeUpgradeBehavior(b, column.SafeModeBehavior, column.ForcedModeBehavior, column.Evidence)
+	}
+	safeMode, forcedMode := finding.SafeModeBehavior, finding.ForcedModeBehavior
+	columnsShowTableBehavior := len(columns) > 0 && !slices.ContainsFunc(columns, func(column *pluginPb.AssessTables_ColumnFinding) bool {
+		return column.SafeModeBehavior != safeMode || column.ForcedModeBehavior != forcedMode
+	})
+	if columnsShowTableBehavior {
+		safeMode, forcedMode = "", ""
+	}
+	if len(columns) > 0 && safeMode == "" && forcedMode == "" && len(finding.Evidence) == 0 {
+		return
+	}
+	fmt.Fprintf(b, "\n%s\n", finding.TableName)
+	writeUpgradeBehavior(b, safeMode, forcedMode, finding.Evidence)
+}
+
+func writeUpgradeBehavior(b *strings.Builder, safeMode, forcedMode string, evidence []*pluginPb.AssessTables_Evidence) {
+	writeUpgradeLine(b, "Safe mode", safeMode)
+	writeUpgradeLine(b, "Forced mode", forcedMode)
+	for _, e := range evidence {
+		writeUpgradeLine(b, "Synthetic value", e.SyntheticValue)
+		writeUpgradeLine(b, "Before", e.Before)
+		writeUpgradeLine(b, "After", e.After)
+	}
+}
+
+func writeUpgradeLine(b *strings.Builder, label, value string) {
+	if value != "" {
+		fmt.Fprintf(b, "  %-12s %s\n", label+":", value)
+	}
+}
+
+func writeUpgradeCoverageGaps(b *strings.Builder, gaps []string) {
+	if len(gaps) == 0 {
+		return
+	}
+	b.WriteString("\nCoverage gaps:\n")
+	for _, gap := range gaps {
+		b.WriteString("  " + gap + "\n")
+	}
+}
+
+func changedColumnFindings(finding *pluginPb.AssessTables_TableFinding) []*pluginPb.AssessTables_ColumnFinding {
+	return slices.DeleteFunc(slices.Clone(finding.Columns), func(column *pluginPb.AssessTables_ColumnFinding) bool {
+		return column.Category == pluginPb.AssessTables_CATEGORY_NO_CHANGE
+	})
+}
+
+func upgradeTypeChange(oldType, newType string) string {
+	if oldType == "" && newType == "" {
+		return ""
+	}
+	return fmt.Sprintf("%s → %s", cmp.Or(oldType, "none"), cmp.Or(newType, "none"))
+}
+
+func sourceColumnType(table *schema.Table, columnName string) string {
+	if table == nil {
+		return ""
+	}
+	column := table.Columns.Get(columnName)
+	if column == nil {
+		return ""
+	}
+	return column.Type.String()
+}
+
+func upgradeTablesByName(tables []upgradeTableSchemas) (map[string]upgradeTablePair, error) {
+	byName := make(map[string]upgradeTablePair, len(tables))
+	for _, table := range tables {
+		from, err := upgradeTableFromBytes(table.From)
+		if err != nil {
+			return nil, fmt.Errorf("failed to decode table %s: %w", table.Name, err)
+		}
+		to, err := upgradeTableFromBytes(table.To)
+		if err != nil {
+			return nil, fmt.Errorf("failed to decode table %s: %w", table.Name, err)
+		}
+		pair := upgradeTablePair{Name: table.Name, From: from, To: to}
+		switch {
+		case to != nil:
+			pair.Name = to.Name
+		case from != nil:
+			pair.Name = from.Name
+		}
+		byName[pair.Name] = pair
+	}
+	return byName, nil
+}
+
+func upgradeTableFromBytes(b []byte) (*schema.Table, error) {
+	if len(b) == 0 {
+		return nil, nil
+	}
+	sc, err := pluginPb.NewSchemaFromBytes(b)
+	if err != nil {
+		return nil, err
+	}
+	return schema.NewTableFromArrowSchema(sc)
+}
