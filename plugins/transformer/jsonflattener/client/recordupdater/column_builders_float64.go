@@ -14,7 +14,7 @@ type Float64ColumnsBuilder struct {
 	typeSchema map[string]string
 }
 
-func NewFloat64ColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) columnBuilder {
+func NewFloat64ColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) ColumnBuilder {
 	b := &Float64ColumnsBuilder{i: -1, values: make(map[string][]*float64), typeSchema: typeSchema}
 	for key, typ := range typeSchema {
 		if typ != schemaupdater.Float64Type {

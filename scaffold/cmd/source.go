@@ -54,13 +54,13 @@ func runScaffoldSource(org string, name string, outputDir string) error {
 	n := len(data.Name)
 	fmt.Println("------------------------------------------------")
 	fmt.Printf("Successfully created new plugin under %s 🎉\n\n", outputDir)
-	fmt.Printf("Next steps:\n")
+	fmt.Println("Next steps:")
 	fmt.Printf("1. cd %s\n", outputDir)
 	fmt.Printf("2. go mod tidy             %s# fetch dependencies\n", strings.Repeat(" ", n))
 	fmt.Printf("3. go build .              %s# build the plugin\n", strings.Repeat(" ", n))
 	fmt.Printf("4. ./cq-source-%s serve      # run the plugin as a gRPC server\n\n", data.Name)
-	fmt.Printf("------------------------------------------------\n\n")
-	fmt.Printf("For more information, see the README.md in the plugin directory.\n\n")
+	fmt.Print("------------------------------------------------\n\n")
+	fmt.Print("For more information, see the README.md in the plugin directory.\n\n")
 	fmt.Println("Developer guide: https://cql.ink/go-source-plugin-developer-guide")
 
 	return nil
