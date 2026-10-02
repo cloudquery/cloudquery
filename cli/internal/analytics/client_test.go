@@ -2,6 +2,7 @@ package analytics
 
 import (
 	"context"
+	"sync"
 	"testing"
 
 	cqapi "github.com/cloudquery/cloudquery-api-go"
@@ -138,4 +139,35 @@ func TestIdentityForInternalTeam(t *testing.T) {
 	if _, _, _, ok := Identity(context.Background()); ok {
 		t.Error("got ok true, want false for an internal team")
 	}
+}
+
+func TestInitClientConcurrentWithTracking(t *testing.T) {
+	// InitClient writes the package-level client while Track/Identity/Close
+	// read it from other goroutines (sync progress reporting is async).
+	// The race detector flags the unsynchronized access without the locks.
+	previousClient, previousDetails := client, cachedSyncEventDetails
+	t.Cleanup(func() {
+		client, cachedSyncEventDetails = previousClient, previousDetails
+	})
+
+	var wg sync.WaitGroup
+	for i := 0; i < 4; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			InitClient()
+		}()
+	}
+	for i := 0; i < 4; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			TrackSyncStarted(context.Background(), uuid.New(), SyncStartedEvent{})
+			TrackSyncCompleted(context.Background(), uuid.New(), SyncFinishedEvent{})
+			TrackInitStarted(context.Background(), uuid.New(), InitEvent{})
+			Identity(context.Background())
+		}()
+	}
+	wg.Wait()
+	Close()
 }

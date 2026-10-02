@@ -2,6 +2,7 @@ package analytics
 
 import (
 	"context"
+	"sync"
 	"time"
 
 	cqapi "github.com/cloudquery/cloudquery-api-go"
@@ -14,7 +15,14 @@ import (
 )
 
 var (
-	client                 rudderstack.Client
+	// client is written by InitClient and read from whichever goroutine is
+	// reporting an event at the time (sync progress reporting runs off the
+	// main goroutine), so all access goes through clientMu.
+	clientMu sync.RWMutex
+	client   rudderstack.Client
+
+	// detailsMu guards cachedSyncEventDetails for the same reason.
+	detailsMu              sync.RWMutex
 	cachedSyncEventDetails *eventDetails
 )
 
@@ -37,11 +45,21 @@ func InitClient() {
 		DataPlaneUrl: dataPlaneURL,
 		Logger:       noOpLogger{},
 	}
-	var err error
-	client, err = rudderstack.NewWithConfig(writeKey, config)
+	c, err := rudderstack.NewWithConfig(writeKey, config)
 	if err != nil {
-		client = nil
+		c = nil
 	}
+	clientMu.Lock()
+	client = c
+	clientMu.Unlock()
+}
+
+// getClient returns the analytics client, or nil if InitClient has not
+// succeeded yet. Safe to call from any goroutine.
+func getClient() rudderstack.Client {
+	clientMu.RLock()
+	defer clientMu.RUnlock()
+	return client
 }
 
 func getEnvironment() string {
@@ -53,10 +71,13 @@ func getEnvironment() string {
 
 // getSyncEventDetails returns the cached event details if available, otherwise it fetches the details from the API
 func getSyncEventDetails(ctx context.Context) *eventDetails {
-	if cachedSyncEventDetails == nil {
-		refreshSyncEventDetails(ctx)
+	detailsMu.RLock()
+	cached := cachedSyncEventDetails
+	detailsMu.RUnlock()
+	if cached == nil {
+		return refreshSyncEventDetails(ctx)
 	}
-	return cachedSyncEventDetails
+	return cached
 }
 
 func refreshSyncEventDetails(ctx context.Context) *eventDetails {
@@ -81,13 +102,16 @@ func refreshSyncEventDetails(ctx context.Context) *eventDetails {
 	}
 
 	// Cache event details for future use
+	detailsMu.Lock()
 	cachedSyncEventDetails = eventDetails
+	detailsMu.Unlock()
 
 	return eventDetails
 }
 
 func TrackLoginSuccess(ctx context.Context, invocationUUID uuid.UUID) {
-	if client == nil {
+	c := getClient()
+	if c == nil {
 		return
 	}
 
@@ -100,7 +124,7 @@ func TrackLoginSuccess(ctx context.Context, invocationUUID uuid.UUID) {
 		return
 	}
 
-	_ = client.Enqueue(rudderstack.Track{
+	_ = c.Enqueue(rudderstack.Track{
 		UserId: details.user.ID.String(),
 		Event:  "login_success",
 		Properties: rudderstack.Properties{
@@ -154,7 +178,8 @@ func getSyncCommonProps(invocationUUID uuid.UUID, event SyncStartedEvent, detail
 }
 
 func TrackSyncStarted(ctx context.Context, invocationUUID uuid.UUID, event SyncStartedEvent) {
-	if client == nil {
+	c := getClient()
+	if c == nil {
 		return
 	}
 
@@ -167,7 +192,7 @@ func TrackSyncStarted(ctx context.Context, invocationUUID uuid.UUID, event SyncS
 		return
 	}
 
-	_ = client.Enqueue(rudderstack.Track{
+	_ = c.Enqueue(rudderstack.Track{
 		UserId:     details.user.ID.String(),
 		Event:      "sync_run_started",
 		Properties: getSyncCommonProps(invocationUUID, event, details),
@@ -185,7 +210,8 @@ type SyncFinishedEvent struct {
 }
 
 func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event SyncFinishedEvent) {
-	if client == nil {
+	c := getClient()
+	if c == nil {
 		return
 	}
 
@@ -218,7 +244,7 @@ func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event Syn
 			Set(dimension+"_id_count_is_floor", summary.CountIsFloor)
 	}
 
-	_ = client.Enqueue(rudderstack.Track{
+	_ = c.Enqueue(rudderstack.Track{
 		UserId:     details.user.ID.String(),
 		Event:      "sync_run_completed",
 		Properties: props,
@@ -226,7 +252,7 @@ func TrackSyncCompleted(ctx context.Context, invocationUUID uuid.UUID, event Syn
 }
 
 func Identity(ctx context.Context) (userID, team, environment string, ok bool) {
-	if client == nil {
+	if getClient() == nil {
 		return "", "", "", false
 	}
 	details := getSyncEventDetails(ctx)
@@ -288,7 +314,8 @@ func getInitCommonProps(invocationUUID uuid.UUID, event InitEvent, details *even
 }
 
 func TrackInitStarted(ctx context.Context, invocationUUID uuid.UUID, event InitEvent) {
-	if client == nil {
+	c := getClient()
+	if c == nil {
 		return
 	}
 
@@ -299,7 +326,7 @@ func TrackInitStarted(ctx context.Context, invocationUUID uuid.UUID, event InitE
 
 	props := getInitCommonProps(invocationUUID, event, details)
 	if details != nil {
-		_ = client.Enqueue(rudderstack.Track{
+		_ = c.Enqueue(rudderstack.Track{
 			UserId:     details.user.ID.String(),
 			Event:      "init_started",
 			Properties: props,
@@ -307,7 +334,7 @@ func TrackInitStarted(ctx context.Context, invocationUUID uuid.UUID, event InitE
 		return
 	}
 
-	_ = client.Enqueue(rudderstack.Track{
+	_ = c.Enqueue(rudderstack.Track{
 		AnonymousId: invocationUUID.String(),
 		Event:       "init_started",
 		Properties:  props,
@@ -315,7 +342,8 @@ func TrackInitStarted(ctx context.Context, invocationUUID uuid.UUID, event InitE
 }
 
 func TrackInitCompleted(ctx context.Context, invocationUUID uuid.UUID, event InitEvent) {
-	if client == nil {
+	c := getClient()
+	if c == nil {
 		return
 	}
 
@@ -333,7 +361,7 @@ func TrackInitCompleted(ctx context.Context, invocationUUID uuid.UUID, event Ini
 		Set("status", status)
 
 	if details != nil {
-		_ = client.Enqueue(rudderstack.Track{
+		_ = c.Enqueue(rudderstack.Track{
 			UserId:     details.user.ID.String(),
 			Event:      "init_completed",
 			Properties: props,
@@ -341,7 +369,7 @@ func TrackInitCompleted(ctx context.Context, invocationUUID uuid.UUID, event Ini
 		return
 	}
 
-	_ = client.Enqueue(rudderstack.Track{
+	_ = c.Enqueue(rudderstack.Track{
 		AnonymousId: invocationUUID.String(),
 		Event:       "init_completed",
 		Properties:  props,
@@ -349,8 +377,9 @@ func TrackInitCompleted(ctx context.Context, invocationUUID uuid.UUID, event Ini
 }
 
 func Close() {
-	if client == nil {
+	c := getClient()
+	if c == nil {
 		return
 	}
-	client.Close()
+	c.Close()
 }
