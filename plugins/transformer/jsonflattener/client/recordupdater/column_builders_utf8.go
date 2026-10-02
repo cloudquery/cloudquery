@@ -14,7 +14,7 @@ type UTF8ColumnsBuilder struct {
 	typeSchema map[string]string
 }
 
-func NewUTF8ColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) columnBuilder {
+func NewUTF8ColumnsBuilder(typeSchema map[string]string, originalColumn *types.JSONArray) ColumnBuilder {
 	b := &UTF8ColumnsBuilder{i: -1, values: make(map[string][]*string), typeSchema: typeSchema}
 	for key, typ := range typeSchema {
 		if typ != schemaupdater.UTF8Type {
