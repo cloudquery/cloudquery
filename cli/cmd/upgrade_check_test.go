@@ -12,6 +12,7 @@ import (
 	pluginPb "github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/rs/zerolog/log"
+	"github.com/samber/lo"
 	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc"
 )
@@ -154,4 +155,99 @@ func tableNames(tables schema.Tables) []string {
 		names[i] = table.Name
 	}
 	return names
+}
+
+func TestSelectUpgradeTables(t *testing.T) {
+	parent := testTable("test_parent")
+	child := testTable("test_parent_child")
+	child.Parent = parent
+	parent.Relations = schema.Tables{child}
+	from := schema.Tables{testTable("test_removed"), testTable("test_kept"), parent, testTable("test_skipped")}.FlattenTables()
+	to := schema.Tables{testTable("test_kept"), testTable("test_added"), testTable("test_skipped")}
+
+	selection, err := selectUpgradeTables(specs.Source{
+		Metadata:            specs.Metadata{Name: "test", Version: "v1.0.0"},
+		Tables:              []string{"test_removed", "test_kept", "test_added", "test_parent"},
+		SkipTables:          []string{"test_skipped"},
+		SkipDependentTables: lo.ToPtr(false),
+	}, from, to)
+	require.NoError(t, err)
+
+	require.Equal(t, []string{"test_removed", "test_parent", "test_parent_child"}, selection.RemovedTables)
+	require.Len(t, selection.Pairs, 2)
+	require.Equal(t, "test_kept", selection.Pairs[0].Name)
+	require.Equal(t, "test_kept", selection.Pairs[0].From.Name)
+	require.Equal(t, "test_kept", selection.Pairs[0].To.Name)
+	require.Equal(t, "test_added", selection.Pairs[1].Name)
+	require.Nil(t, selection.Pairs[1].From)
+	require.Equal(t, "test_added", selection.Pairs[1].To.Name)
+}
+
+func TestTransformUpgradeTables(t *testing.T) {
+	fromTable := &schema.Table{Name: "okta_policy_rules", Columns: schema.ColumnList{
+		schema.CqIDColumn,
+		{Name: "id", Type: arrow.BinaryTypes.String, PrimaryKey: true},
+	}}
+	toTable := &schema.Table{Name: "okta_policy_rules", Columns: schema.ColumnList{
+		schema.CqIDColumn,
+		{Name: "id", Type: arrow.BinaryTypes.String, PrimaryKey: true},
+		{Name: "policy_id", Type: arrow.BinaryTypes.String, PrimaryKey: true},
+	}}
+	pairs := []upgradeTablePair{
+		{Name: "okta_policy_rules", From: fromTable, To: toTable},
+		{Name: "okta_added", To: testTable("okta_added")},
+	}
+
+	cases := []struct {
+		name            string
+		destinationSpec specs.Destination
+		transformers    []pluginPb.PluginClient
+		wantTableName   string
+		wantFromPKs     []string
+		wantToPKs       []string
+	}{
+		{
+			name:            "overwrite-delete-stale keeps source primary keys",
+			destinationSpec: specs.Destination{WriteMode: specs.WriteModeOverwriteDeleteStale, PKMode: specs.PKModeDefaultKeys},
+			wantTableName:   "okta_policy_rules",
+			wantFromPKs:     []string{"id"},
+			wantToPKs:       []string{"id", "policy_id"},
+		},
+		{
+			name:            "append removes primary keys",
+			destinationSpec: specs.Destination{WriteMode: specs.WriteModeAppend, PKMode: specs.PKModeDefaultKeys},
+			wantTableName:   "okta_policy_rules",
+		},
+		{
+			name:            "transformer plugins are applied",
+			destinationSpec: specs.Destination{WriteMode: specs.WriteModeOverwriteDeleteStale, PKMode: specs.PKModeDefaultKeys},
+			transformers:    []pluginPb.PluginClient{renamingTransformerClient{}},
+			wantTableName:   "renamed_okta_policy_rules",
+			wantFromPKs:     []string{"id"},
+			wantToPKs:       []string{"id", "policy_id"},
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			tc.destinationSpec.Name = "postgresql"
+			sourceSpec := specs.Source{Metadata: specs.Metadata{Name: "okta", Version: "v6.8.2"}}
+
+			got, err := transformUpgradeTables(context.Background(), sourceSpec, tc.destinationSpec, tc.transformers, false, pairs)
+			require.NoError(t, err)
+			require.Len(t, got, 2)
+			require.Equal(t, "okta_policy_rules", got[0].Name)
+			require.Equal(t, "okta_added", got[1].Name)
+			require.Nil(t, got[1].From)
+			require.NotNil(t, got[1].To)
+
+			from := tableFromSchemaBytes(t, got[0].From)
+			to := tableFromSchemaBytes(t, got[0].To)
+			require.Equal(t, tc.wantTableName, from.Name)
+			require.Equal(t, tc.wantTableName, to.Name)
+			require.Equal(t, tc.wantFromPKs, emptyToNil(from.PrimaryKeys()))
+			require.Equal(t, tc.wantToPKs, emptyToNil(to.PrimaryKeys()))
+			require.NotNil(t, to.Columns.Get(schema.CqSourceNameColumn.Name))
+			require.NotNil(t, to.Columns.Get(schema.CqSyncTimeColumn.Name))
+		})
+	}
 }
