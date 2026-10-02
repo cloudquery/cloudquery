@@ -1,0 +1,197 @@
+{
+  "reports": [
+    {
+      "source": {
+        "name": "okta",
+        "from_version": "v6.8.2",
+        "to_version": "v7.0.0"
+      },
+      "destination": {
+        "name": "postgresql",
+        "registry": "local",
+        "path": "<postgresql>",
+        "write_mode": "append",
+        "pk_mode": "default",
+        "migrate_mode": "safe"
+      },
+      "verdicts": [
+        {
+          "category": "automatically_migratable",
+          "tables": [
+            "okta_policy_mappings",
+            "okta_policy_rules"
+          ],
+          "changed_columns": 3,
+          "action": "use safe migration."
+        }
+      ],
+      "tables": [
+        {
+          "name": "okta_apitoken_tokens",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "okta_application_group_assignments",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "okta_application_users",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "okta_applications",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "okta_authenticators",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "okta_behavior_rules",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "okta_group_roles",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "okta_group_rules",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "okta_group_users",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "okta_groups",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "okta_identity_providers",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "okta_policies",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "okta_policy_mappings",
+          "category": "automatically_migratable",
+          "safe_mode_behavior": "creates the table",
+          "forced_mode_behavior": "creates the table",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "okta_policy_rules",
+          "category": "automatically_migratable",
+          "safe_mode_behavior": "applies the changes to the existing table",
+          "forced_mode_behavior": "applies the changes to the existing table",
+          "columns": [
+            {
+              "name": "policy_id",
+              "category": "automatically_migratable",
+              "source_type": {
+                "new": "utf8"
+              },
+              "destination_type": {
+                "new": "text"
+              },
+              "safe_mode_behavior": "adds the column",
+              "forced_mode_behavior": "adds the column"
+            },
+            {
+              "name": "actions",
+              "category": "automatically_migratable",
+              "source_type": {
+                "new": "json"
+              },
+              "destination_type": {
+                "new": "jsonb"
+              },
+              "safe_mode_behavior": "adds the column",
+              "forced_mode_behavior": "adds the column"
+            },
+            {
+              "name": "conditions",
+              "category": "automatically_migratable",
+              "source_type": {
+                "new": "json"
+              },
+              "destination_type": {
+                "new": "jsonb"
+              },
+              "safe_mode_behavior": "adds the column",
+              "forced_mode_behavior": "adds the column"
+            }
+          ],
+          "coverage_incomplete": false
+        },
+        {
+          "name": "okta_system_log_events",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "okta_user_factors",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "okta_user_roles",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "okta_users",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        }
+      ],
+      "coverage_gaps": []
+    }
+  ]
+}

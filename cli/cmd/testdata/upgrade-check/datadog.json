@@ -1,0 +1,343 @@
+{
+  "reports": [
+    {
+      "source": {
+        "name": "datadog",
+        "from_version": "v5.19.10",
+        "to_version": "v6.0.0"
+      },
+      "destination": {
+        "name": "postgresql",
+        "registry": "local",
+        "path": "<postgresql>",
+        "write_mode": "overwrite-delete-stale",
+        "pk_mode": "default",
+        "migrate_mode": "safe"
+      },
+      "verdicts": [
+        {
+          "category": "manual_migration_required",
+          "tables": [
+            "datadog_downtimes",
+            "datadog_global_variables",
+            "datadog_monitor_downtimes",
+            "datadog_monitors",
+            "datadog_slos",
+            "datadog_synthetics"
+          ],
+          "changed_columns": 7,
+          "action": "plan a manual migration or rebuild."
+        }
+      ],
+      "tables": [
+        {
+          "name": "datadog_containers",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_dashboard_lists",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_dashboards",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_downtimes",
+          "category": "manual_migration_required",
+          "safe_mode_behavior": "rejects the changes",
+          "forced_mode_behavior": "drops and recreates the table, deleting existing rows",
+          "columns": [
+            {
+              "name": "monitor_tags",
+              "category": "manual_migration_required",
+              "source_type": {
+                "old": "list<item: utf8, nullable>",
+                "new": "json"
+              },
+              "destination_type": {
+                "old": "text[]",
+                "new": "jsonb"
+              },
+              "safe_mode_behavior": "rejects the changes",
+              "forced_mode_behavior": "drops and recreates the table, deleting existing rows"
+            }
+          ],
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_events",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_global_variables",
+          "category": "manual_migration_required",
+          "safe_mode_behavior": "rejects the changes",
+          "forced_mode_behavior": "drops and recreates the table, deleting existing rows",
+          "columns": [
+            {
+              "name": "tags",
+              "category": "manual_migration_required",
+              "source_type": {
+                "old": "list<item: utf8, nullable>",
+                "new": "json"
+              },
+              "destination_type": {
+                "old": "text[]",
+                "new": "jsonb"
+              },
+              "safe_mode_behavior": "rejects the changes",
+              "forced_mode_behavior": "drops and recreates the table, deleting existing rows"
+            }
+          ],
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_hosts",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_incident_attachments",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_incidents",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_monitor_downtimes",
+          "category": "manual_migration_required",
+          "safe_mode_behavior": "rejects the changes",
+          "forced_mode_behavior": "drops and recreates the table, deleting existing rows",
+          "columns": [
+            {
+              "name": "monitor_tags",
+              "category": "manual_migration_required",
+              "source_type": {
+                "old": "list<item: utf8, nullable>",
+                "new": "json"
+              },
+              "destination_type": {
+                "old": "text[]",
+                "new": "jsonb"
+              },
+              "safe_mode_behavior": "rejects the changes",
+              "forced_mode_behavior": "drops and recreates the table, deleting existing rows"
+            }
+          ],
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_monitor_notification_rules",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_monitors",
+          "category": "manual_migration_required",
+          "safe_mode_behavior": "rejects the changes",
+          "forced_mode_behavior": "drops and recreates the table, deleting existing rows",
+          "columns": [
+            {
+              "name": "tags",
+              "category": "manual_migration_required",
+              "source_type": {
+                "old": "list<item: utf8, nullable>",
+                "new": "json"
+              },
+              "destination_type": {
+                "old": "text[]",
+                "new": "jsonb"
+              },
+              "safe_mode_behavior": "rejects the changes",
+              "forced_mode_behavior": "drops and recreates the table, deleting existing rows"
+            }
+          ],
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_notebooks",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_permissions",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_role_permissions",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_role_users",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_roles",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_rum_events",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_slo_corrections",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_slos",
+          "category": "manual_migration_required",
+          "safe_mode_behavior": "rejects the changes",
+          "forced_mode_behavior": "drops and recreates the table, deleting existing rows",
+          "columns": [
+            {
+              "name": "monitor_tags",
+              "category": "manual_migration_required",
+              "source_type": {
+                "old": "list<item: utf8, nullable>",
+                "new": "json"
+              },
+              "destination_type": {
+                "old": "text[]",
+                "new": "jsonb"
+              },
+              "safe_mode_behavior": "rejects the changes",
+              "forced_mode_behavior": "drops and recreates the table, deleting existing rows"
+            },
+            {
+              "name": "tags",
+              "category": "manual_migration_required",
+              "source_type": {
+                "old": "list<item: utf8, nullable>",
+                "new": "json"
+              },
+              "destination_type": {
+                "old": "text[]",
+                "new": "jsonb"
+              },
+              "safe_mode_behavior": "rejects the changes",
+              "forced_mode_behavior": "drops and recreates the table, deleting existing rows"
+            }
+          ],
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_synthetics",
+          "category": "manual_migration_required",
+          "safe_mode_behavior": "rejects the changes",
+          "forced_mode_behavior": "drops and recreates the table, deleting existing rows",
+          "columns": [
+            {
+              "name": "tags",
+              "category": "manual_migration_required",
+              "source_type": {
+                "old": "list<item: utf8, nullable>",
+                "new": "json"
+              },
+              "destination_type": {
+                "old": "text[]",
+                "new": "jsonb"
+              },
+              "safe_mode_behavior": "rejects the changes",
+              "forced_mode_behavior": "drops and recreates the table, deleting existing rows"
+            }
+          ],
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_usage_active_billing_dimensions",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_usage_cost_by_org",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_usage_hourly",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_usage_monthly",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_usage_projected_cost",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_user_permissions",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        },
+        {
+          "name": "datadog_users",
+          "category": "no_change",
+          "safe_mode_behavior": "makes no changes",
+          "forced_mode_behavior": "makes no changes",
+          "coverage_incomplete": false
+        }
+      ],
+      "coverage_gaps": []
+    }
+  ]
+}

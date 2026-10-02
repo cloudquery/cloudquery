@@ -64,29 +64,9 @@ func renderUpgradeReport(w io.Writer, r upgradeReport) error {
 		fmt.Fprintf(&b, "write_mode: %s | pk_mode: %s\n", r.Destination.WriteMode, r.Destination.PKMode)
 	}
 
-	findings := slices.Clone(r.Findings)
-	slices.SortFunc(findings, func(a, b *pluginPb.AssessTables_TableFinding) int {
-		return strings.Compare(a.TableName, b.TableName)
-	})
-	findingsByCategory := make(map[pluginPb.AssessTables_Category][]*pluginPb.AssessTables_TableFinding)
-	gaps := slices.Clone(r.SourceGaps)
-	for _, finding := range findings {
-		findingsByCategory[finding.Category] = append(findingsByCategory[finding.Category], finding)
-		if finding.CoverageIncomplete {
-			gaps = append(gaps, fmt.Sprintf("%s: %s", finding.TableName, cmp.Or(finding.CoverageIncompleteReason, "coverage incomplete")))
-		}
-	}
-
-	var categories []pluginPb.AssessTables_Category
-	for _, category := range upgradeCategoriesBySeverity {
-		removed := category == pluginPb.AssessTables_CATEGORY_TABLE_REMOVED && len(r.RemovedTables) > 0
-		unknownSource := category == pluginPb.AssessTables_CATEGORY_UNKNOWN && r.SourceUnknown
-		if removed || unknownSource || len(findingsByCategory[category]) > 0 {
-			categories = append(categories, category)
-		}
-	}
-
-	if len(categories) == 0 {
+	verdicts := r.verdicts()
+	gaps := r.coverageGaps()
+	if len(verdicts) == 0 {
 		b.WriteString(upgradeGreen.Sprint("No schema changes affect your selected tables.") + "\n")
 		writeUpgradeCoverageGaps(&b, gaps)
 		b.WriteString("\n")
@@ -94,43 +74,88 @@ func renderUpgradeReport(w io.Writer, r upgradeReport) error {
 		return err
 	}
 
-	for i, category := range categories {
+	for i, verdict := range verdicts {
 		if i > 0 {
 			b.WriteString("\n")
 		}
-		categoryFindings := findingsByCategory[category]
-		if category == pluginPb.AssessTables_CATEGORY_TABLE_REMOVED {
-			writeUpgradeHeading(&b, category, r.RemovedTables, 0)
+		writeUpgradeHeading(&b, verdict.Category, verdict.Tables, verdict.ChangedColumns)
+		switch verdict.Category {
+		case pluginPb.AssessTables_CATEGORY_TABLE_REMOVED:
 			b.WriteString("\n")
-			for _, table := range r.RemovedTables {
+			for _, table := range verdict.Tables {
 				b.WriteString(bold.Sprint(table) + "\n")
 			}
 			b.WriteString("The new source version no longer provides these tables.\n")
-			continue
-		}
-		tableNames := make([]string, len(categoryFindings))
-		changedColumns := 0
-		for i, finding := range categoryFindings {
-			tableNames[i] = finding.TableName
-			changedColumns += len(changedColumnFindings(finding))
-		}
-		writeUpgradeHeading(&b, category, tableNames, changedColumns)
-		if category == pluginPb.AssessTables_CATEGORY_UNKNOWN {
-			continue
-		}
-		for _, finding := range categoryFindings {
-			writeUpgradeTableFinding(&b, r.Destination.Name, finding, r.Tables[finding.TableName])
+		case pluginPb.AssessTables_CATEGORY_UNKNOWN:
+		default:
+			for _, finding := range verdict.Findings {
+				writeUpgradeTableFinding(&b, r.Destination.Name, finding, r.Tables[finding.TableName])
+			}
 		}
 	}
 	writeUpgradeCoverageGaps(&b, gaps)
 
 	b.WriteString("\n")
-	for _, category := range categories {
-		fmt.Fprintf(&b, "Action: %s\n", upgradeCategoryTexts[category].action)
+	for _, verdict := range verdicts {
+		fmt.Fprintf(&b, "Action: %s\n", upgradeCategoryTexts[verdict.Category].action)
 	}
 	b.WriteString("This check only previews the changes. It does not migrate, write, delete or upload anything.\n\n")
 	_, err := io.WriteString(w, b.String())
 	return err
+}
+
+type upgradeVerdict struct {
+	Category       pluginPb.AssessTables_Category
+	Tables         []string
+	ChangedColumns int
+	Findings       []*pluginPb.AssessTables_TableFinding
+}
+
+func (r upgradeReport) sortedFindings() []*pluginPb.AssessTables_TableFinding {
+	findings := slices.Clone(r.Findings)
+	slices.SortFunc(findings, func(a, b *pluginPb.AssessTables_TableFinding) int {
+		return strings.Compare(a.TableName, b.TableName)
+	})
+	return findings
+}
+
+func (r upgradeReport) verdicts() []upgradeVerdict {
+	findingsByCategory := make(map[pluginPb.AssessTables_Category][]*pluginPb.AssessTables_TableFinding)
+	for _, finding := range r.sortedFindings() {
+		findingsByCategory[finding.Category] = append(findingsByCategory[finding.Category], finding)
+	}
+
+	var verdicts []upgradeVerdict
+	for _, category := range upgradeCategoriesBySeverity {
+		if category == pluginPb.AssessTables_CATEGORY_TABLE_REMOVED {
+			if len(r.RemovedTables) > 0 {
+				verdicts = append(verdicts, upgradeVerdict{Category: category, Tables: r.RemovedTables})
+			}
+			continue
+		}
+		findings := findingsByCategory[category]
+		unknownSource := category == pluginPb.AssessTables_CATEGORY_UNKNOWN && r.SourceUnknown
+		if len(findings) == 0 && !unknownSource {
+			continue
+		}
+		verdict := upgradeVerdict{Category: category, Findings: findings}
+		for _, finding := range findings {
+			verdict.Tables = append(verdict.Tables, finding.TableName)
+			verdict.ChangedColumns += len(changedColumnFindings(finding))
+		}
+		verdicts = append(verdicts, verdict)
+	}
+	return verdicts
+}
+
+func (r upgradeReport) coverageGaps() []string {
+	gaps := slices.Clone(r.SourceGaps)
+	for _, finding := range r.sortedFindings() {
+		if finding.CoverageIncomplete {
+			gaps = append(gaps, fmt.Sprintf("%s: %s", finding.TableName, cmp.Or(finding.CoverageIncompleteReason, "coverage incomplete")))
+		}
+	}
+	return gaps
 }
 
 func writeUpgradeHeading(b *strings.Builder, category pluginPb.AssessTables_Category, tableNames []string, changedColumns int) {

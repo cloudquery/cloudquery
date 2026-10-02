@@ -1,0 +1,32 @@
+{
+  "reports": [
+    {
+      "source": {
+        "name": "gcp",
+        "from_version": "v22.1.2",
+        "to_version": "v23.0.0"
+      },
+      "destination": {
+        "name": "postgresql",
+        "registry": "local",
+        "path": "<postgresql>",
+        "write_mode": "overwrite-delete-stale",
+        "pk_mode": "default",
+        "migrate_mode": "safe"
+      },
+      "verdicts": [
+        {
+          "category": "table_removed",
+          "tables": [
+            "gcp_aiplatform_specialistpool_locations",
+            "gcp_aiplatform_specialist_pools"
+          ],
+          "changed_columns": 0,
+          "action": "remove explicit selections and update dependent consumers."
+        }
+      ],
+      "tables": [],
+      "coverage_gaps": []
+    }
+  ]
+}
