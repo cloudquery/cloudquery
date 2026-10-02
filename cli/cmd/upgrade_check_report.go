@@ -10,6 +10,13 @@ import (
 	"github.com/cloudquery/cloudquery/cli/v6/internal/specs/v0"
 	pluginPb "github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
+	"github.com/fatih/color"
+)
+
+var (
+	upgradeRed    = color.New(color.FgRed)
+	upgradeYellow = color.New(color.FgYellow)
+	upgradeGreen  = color.New(color.FgGreen)
 )
 
 type upgradeReport struct {
@@ -27,6 +34,7 @@ type upgradeReport struct {
 type upgradeCategoryText struct {
 	verdict string
 	action  string
+	color   *color.Color
 }
 
 var upgradeCategoriesBySeverity = []pluginPb.AssessTables_Category{
@@ -38,11 +46,11 @@ var upgradeCategoriesBySeverity = []pluginPb.AssessTables_Category{
 }
 
 var upgradeCategoryTexts = map[pluginPb.AssessTables_Category]upgradeCategoryText{
-	pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED: {"REVIEW REQUIRED", "plan a manual migration or rebuild."},
-	pluginPb.AssessTables_CATEGORY_TABLE_REMOVED:             {"SELECTED TABLES REMOVED", "remove explicit selections and update dependent consumers."},
-	pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED:       {"FILE SCHEMA CHANGED", "review readers that combine old and new files."},
-	pluginPb.AssessTables_CATEGORY_UNKNOWN:                   {"UNKNOWN", "review the source changelog for what this check could not assess."},
-	pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE:  {"AUTOMATICALLY MIGRATABLE", "use safe migration."},
+	pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED: {"REVIEW REQUIRED", "plan a manual migration or rebuild.", upgradeRed},
+	pluginPb.AssessTables_CATEGORY_TABLE_REMOVED:             {"SELECTED TABLES REMOVED", "remove explicit selections and update dependent consumers.", upgradeYellow},
+	pluginPb.AssessTables_CATEGORY_FILE_SCHEMA_CHANGED:       {"FILE SCHEMA CHANGED", "review readers that combine old and new files.", upgradeYellow},
+	pluginPb.AssessTables_CATEGORY_UNKNOWN:                   {"UNKNOWN", "review the source changelog for what this check could not assess.", upgradeYellow},
+	pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE:  {"AUTOMATICALLY MIGRATABLE", "use safe migration.", upgradeYellow},
 }
 
 func renderUpgradeReport(w io.Writer, r upgradeReport) error {
@@ -79,7 +87,7 @@ func renderUpgradeReport(w io.Writer, r upgradeReport) error {
 	}
 
 	if len(categories) == 0 {
-		b.WriteString("No schema changes affect your selected tables.\n")
+		b.WriteString(upgradeGreen.Sprint("No schema changes affect your selected tables.") + "\n")
 		writeUpgradeCoverageGaps(&b, gaps)
 		b.WriteString("\n")
 		_, err := io.WriteString(w, b.String())
@@ -93,7 +101,10 @@ func renderUpgradeReport(w io.Writer, r upgradeReport) error {
 		categoryFindings := findingsByCategory[category]
 		if category == pluginPb.AssessTables_CATEGORY_TABLE_REMOVED {
 			writeUpgradeHeading(&b, category, r.RemovedTables, 0)
-			b.WriteString("\n" + strings.Join(r.RemovedTables, "\n") + "\n")
+			b.WriteString("\n")
+			for _, table := range r.RemovedTables {
+				b.WriteString(bold.Sprint(table) + "\n")
+			}
 			b.WriteString("The new source version no longer provides these tables.\n")
 			continue
 		}
@@ -123,7 +134,8 @@ func renderUpgradeReport(w io.Writer, r upgradeReport) error {
 }
 
 func writeUpgradeHeading(b *strings.Builder, category pluginPb.AssessTables_Category, tableNames []string, changedColumns int) {
-	heading := upgradeCategoryTexts[category].verdict
+	text := upgradeCategoryTexts[category]
+	heading := text.verdict
 	switch {
 	case len(tableNames) == 1:
 		heading += " — " + tableNames[0]
@@ -132,13 +144,13 @@ func writeUpgradeHeading(b *strings.Builder, category pluginPb.AssessTables_Cate
 	case len(tableNames) > 1:
 		heading += fmt.Sprintf(" — %d tables", len(tableNames))
 	}
-	b.WriteString(heading + "\n")
+	b.WriteString(text.color.Sprint(heading) + "\n")
 }
 
 func writeUpgradeTableFinding(b *strings.Builder, destinationName string, finding *pluginPb.AssessTables_TableFinding, table upgradeTablePair) {
 	columns := changedColumnFindings(finding)
 	for _, column := range columns {
-		fmt.Fprintf(b, "\n%s.%s\n", finding.TableName, column.ColumnName)
+		fmt.Fprintf(b, "\n%s\n", bold.Sprintf("%s.%s", finding.TableName, column.ColumnName))
 		writeUpgradeLine(b, "Source", upgradeTypeChange(sourceColumnType(table.From, column.ColumnName), sourceColumnType(table.To, column.ColumnName)))
 		writeUpgradeLine(b, destinationName, upgradeTypeChange(column.OldType, column.NewType))
 		writeUpgradeBehavior(b, column.SafeModeBehavior, column.ForcedModeBehavior, column.Evidence)
@@ -153,7 +165,7 @@ func writeUpgradeTableFinding(b *strings.Builder, destinationName string, findin
 	if len(columns) > 0 && safeMode == "" && forcedMode == "" && len(finding.Evidence) == 0 {
 		return
 	}
-	fmt.Fprintf(b, "\n%s\n", finding.TableName)
+	fmt.Fprintf(b, "\n%s\n", bold.Sprint(finding.TableName))
 	writeUpgradeBehavior(b, safeMode, forcedMode, finding.Evidence)
 }
 
@@ -193,7 +205,7 @@ func upgradeTypeChange(oldType, newType string) string {
 	if oldType == "" && newType == "" {
 		return ""
 	}
-	return fmt.Sprintf("%s → %s", cmp.Or(oldType, "none"), cmp.Or(newType, "none"))
+	return fmt.Sprintf("%s → %s", upgradeRed.Sprint(cmp.Or(oldType, "none")), upgradeGreen.Sprint(cmp.Or(newType, "none")))
 }
 
 func sourceColumnType(table *schema.Table, columnName string) string {
