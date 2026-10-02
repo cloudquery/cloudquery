@@ -9,8 +9,15 @@ import (
 	pluginPb "github.com/cloudquery/plugin-pb-go/pb/plugin/v3"
 	"github.com/cloudquery/plugin-sdk/v4/schema"
 	"github.com/cloudquery/plugin-sdk/v4/types"
+	"github.com/fatih/color"
 	"github.com/stretchr/testify/require"
 )
+
+func setColorOutput(t *testing.T, enabled bool) {
+	noColor := color.NoColor
+	color.NoColor = !enabled
+	t.Cleanup(func() { color.NoColor = noColor })
+}
 
 func postgresqlDestinationSpec(writeMode specs.WriteMode) *specs.Destination {
 	return &specs.Destination{
@@ -193,11 +200,76 @@ This check only previews the changes. It does not migrate, write, delete or uplo
 `,
 		},
 	}
+	setColorOutput(t, false)
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
 			var out bytes.Buffer
 			require.NoError(t, renderUpgradeReport(&out, tc.report))
 			require.Equal(t, tc.want, out.String())
+		})
+	}
+}
+
+func TestRenderUpgradeReportWithColor(t *testing.T) {
+	setColorOutput(t, true)
+	destination := postgresqlDestinationSpec(specs.WriteModeOverwriteDeleteStale)
+	cases := []struct {
+		name     string
+		report   upgradeReport
+		contains []string
+	}{
+		{
+			name: "manual migration",
+			report: upgradeReport{
+				SourceName: "datadog", FromVersion: "v5.19.10", ToVersion: "v6.0.0", Destination: destination,
+				RemovedTables: []string{"datadog_removed"},
+				Findings: []*pluginPb.AssessTables_TableFinding{{
+					TableName: "datadog_monitors",
+					Category:  pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED,
+					Columns: []*pluginPb.AssessTables_ColumnFinding{
+						{ColumnName: "tags", Category: pluginPb.AssessTables_CATEGORY_MANUAL_MIGRATION_REQUIRED, OldType: "text[]", NewType: "jsonb"},
+					},
+				}},
+			},
+			contains: []string{
+				"\x1b[31mREVIEW REQUIRED — datadog_monitors\x1b[0m\n",
+				"\x1b[33mSELECTED TABLES REMOVED — datadog_removed\x1b[0m\n",
+				"\n\x1b[1mdatadog_removed\x1b[22m\n",
+				"\n\x1b[1mdatadog_monitors.tags\x1b[22m\n",
+				"  postgresql:  \x1b[31mtext[]\x1b[0m → \x1b[32mjsonb\x1b[0m\n",
+			},
+		},
+		{
+			name: "automatically migratable and unknown",
+			report: upgradeReport{
+				SourceName: "okta", FromVersion: "v6.8.2", ToVersion: "v7.0.0", Destination: destination,
+				Findings: []*pluginPb.AssessTables_TableFinding{
+					{TableName: "okta_policy_rules", Category: pluginPb.AssessTables_CATEGORY_AUTOMATICALLY_MIGRATABLE},
+					{TableName: "okta_users", Category: pluginPb.AssessTables_CATEGORY_UNKNOWN},
+				},
+			},
+			contains: []string{
+				"\x1b[33mUNKNOWN — okta_users\x1b[0m\n",
+				"\x1b[33mAUTOMATICALLY MIGRATABLE — okta_policy_rules\x1b[0m\n",
+				"\n\x1b[1mokta_policy_rules\x1b[22m\n",
+			},
+		},
+		{
+			name: "no changes",
+			report: upgradeReport{
+				SourceName: "datadog", FromVersion: "v5.19.10", ToVersion: "v6.0.0", Destination: destination,
+				Findings: []*pluginPb.AssessTables_TableFinding{{TableName: "datadog_users", Category: pluginPb.AssessTables_CATEGORY_NO_CHANGE}},
+			},
+			contains: []string{"\x1b[32mNo schema changes affect your selected tables.\x1b[0m\n"},
+		},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			var out bytes.Buffer
+			require.NoError(t, renderUpgradeReport(&out, tc.report))
+			for _, want := range tc.contains {
+				require.Contains(t, out.String(), want)
+			}
 		})
 	}
 }
