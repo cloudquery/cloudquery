@@ -4,6 +4,7 @@
 
 - `<case>.yml`: the configuration for each case.
 - `<case>.txt`: the expected report.
+- `<case>.json`: the expected report with `--output json`. These are also the reference for the JSON shape.
 - `tables/<source>-<version>.json`: the selected tables of each source version, as returned by `GetTables`, keyed by table name (base64 Arrow schemas).
 - `postgresql.mod` and `postgresql.sum`: the `go.mod` and `go.sum` of a module that pins the PostgreSQL destination. The test copies them to a temporary directory, builds the destination there and runs it with `registry: local`, so the CLI module does not depend on the destination module. They are not named `go.mod` and `go.sum` because tools that walk the CLI directory for modules, like `make gen-licenses`, would pick them up.
 

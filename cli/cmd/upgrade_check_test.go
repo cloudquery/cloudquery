@@ -403,19 +403,28 @@ func TestUpgradeCheckRFCCases(t *testing.T) {
 			from := readUpgradeCheckSourceTables(t, sourceSpec.Name, sourceSpec.Version)
 			to := readUpgradeCheckSourceTables(t, sourceSpec.Name, tc.toVersion)
 
-			var out bytes.Buffer
-			err = runUpgradeCheck(t.Context(), &out, sourceSpec, specReader.Destinations, nil, false, from, to,
+			reports, err := upgradeReports(t.Context(), sourceSpec, specReader.Destinations, nil, false, from, to,
 				managedplugin.WithLogger(log.Logger),
 				managedplugin.WithDirectory(t.TempDir()),
 				managedplugin.WithNoSentry(),
 			)
 			require.NoError(t, err)
 
-			report := strings.ReplaceAll(out.String(), postgresqlPath, "<postgresql>")
-			require.Contains(t, report, "\n"+tc.wantVerdict+"\n")
-			requireUpgradeCheckGolden(t, tc.name+".txt", report)
+			text := renderUpgradeCheckFixture(t, upgradeOutputText, reports, postgresqlPath)
+			require.Contains(t, text, "\n"+tc.wantVerdict+"\n")
+			requireUpgradeCheckGolden(t, tc.name+".txt", text)
+			requireUpgradeCheckGolden(t, tc.name+".json", renderUpgradeCheckFixture(t, upgradeOutputJSON, reports, postgresqlPath))
 		})
 	}
+}
+
+func renderUpgradeCheckFixture(t *testing.T, output string, reports []upgradeReport, postgresqlPath string) string {
+	t.Helper()
+	var out bytes.Buffer
+	require.NoError(t, renderUpgradeReports(&out, output, reports))
+	escapedPath, err := json.Marshal(postgresqlPath)
+	require.NoError(t, err)
+	return strings.NewReplacer(postgresqlPath, "<postgresql>", strings.Trim(string(escapedPath), `"`), "<postgresql>").Replace(out.String())
 }
 
 func buildUpgradeCheckPostgreSQL(t *testing.T) string {
