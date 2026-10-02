@@ -41,6 +41,7 @@ Find more information at:
 * [cloudquery sync](/cli/cli-reference/cloudquery_sync)	 - Sync resources from configured source plugins to destinations
 * [cloudquery tables](/cli/cli-reference/cloudquery_tables)	 - Generate documentation for all supported tables of source plugins specified in the spec(s)
 * [cloudquery test-connection](/cli/cli-reference/cloudquery_test-connection)	 - Test plugin connections to sources and/or destinations
+* [cloudquery upgrade](/cli/cli-reference/cloudquery_upgrade)	 - Plugin upgrade commands
 * [cloudquery validate-config](/cli/cli-reference/cloudquery_validate-config)	 - Validate config
 
 - [Getting Started](/cli/getting-started) - Install and run your first sync
