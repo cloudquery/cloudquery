@@ -1,0 +1,32 @@
+okta v6.8.2 → v7.0.0 | postgresql (local@<postgresql>)
+write_mode: overwrite-delete-stale | pk_mode: default
+REVIEW REQUIRED — okta_policy_rules
+
+okta_policy_rules.policy_id
+  Source:      none → utf8
+  postgresql:  none → text
+  Safe mode:   rejects the changes
+  Forced mode: drops and recreates the table, deleting existing rows
+
+okta_policy_rules.actions
+  Source:      none → json
+  postgresql:  none → jsonb
+  Safe mode:   rejects the changes
+  Forced mode: drops and recreates the table, deleting existing rows
+
+okta_policy_rules.conditions
+  Source:      none → json
+  postgresql:  none → jsonb
+  Safe mode:   rejects the changes
+  Forced mode: drops and recreates the table, deleting existing rows
+
+AUTOMATICALLY MIGRATABLE — okta_policy_mappings
+
+okta_policy_mappings
+  Safe mode:   creates the table
+  Forced mode: creates the table
+
+Action: plan a manual migration or rebuild.
+Action: use safe migration.
+This check only previews the changes. It does not migrate, write, delete or upload anything.
+

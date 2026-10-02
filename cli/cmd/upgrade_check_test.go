@@ -3,9 +3,17 @@ package cmd
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"errors"
+	"flag"
+	"maps"
+	"os"
+	"os/exec"
 	"path"
+	"path/filepath"
 	"runtime"
+	"slices"
+	"strings"
 	"testing"
 
 	"github.com/apache/arrow-go/v18/arrow"
@@ -363,4 +371,129 @@ func TestUpgradeCheck(t *testing.T) {
 	report := out.String()
 	require.Contains(t, report, "test v4.5.1 → v4.7.0 | test (cloudquery/test@v2.5.1)\nwrite_mode: overwrite-delete-stale | pk_mode: default\nUNKNOWN — ")
 	require.Contains(t, report, "test_some_table: "+destinationNoAssessmentReason)
+}
+
+var updateUpgradeCheckFixtures = flag.Bool("update-upgrade-check-fixtures", false, "record source tables from the real plugins and rewrite the expected reports (requires cloudquery login)")
+
+const upgradeCheckFixturesDir = "testdata/upgrade-check"
+
+func TestUpgradeCheckRFCCases(t *testing.T) {
+	setColorOutput(t, false)
+	postgresqlPath := buildUpgradeCheckPostgreSQL(t)
+	t.Setenv("UPGRADE_CHECK_POSTGRESQL_PATH", postgresqlPath)
+
+	cases := []struct {
+		name        string
+		toVersion   string
+		wantVerdict string
+	}{
+		{name: "datadog", toVersion: "v6.0.0", wantVerdict: "REVIEW REQUIRED — 6 tables / 7 columns"},
+		{name: "okta-overwrite-delete-stale", toVersion: "v7.0.0", wantVerdict: "REVIEW REQUIRED — okta_policy_rules"},
+		{name: "okta-append", toVersion: "v7.0.0", wantVerdict: "AUTOMATICALLY MIGRATABLE — 2 tables / 3 columns"},
+		{name: "gcp-selected-tables", toVersion: "v23.0.0", wantVerdict: "SELECTED TABLES REMOVED — 2 tables"},
+	}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			specReader, err := specs.NewSpecReader([]string{filepath.Join(upgradeCheckFixturesDir, tc.name+".yml")})
+			require.NoError(t, err)
+			sourceSpec := *specReader.Sources[0]
+			if *updateUpgradeCheckFixtures {
+				recordUpgradeCheckSourceTables(t, sourceSpec, tc.toVersion)
+			}
+			from := readUpgradeCheckSourceTables(t, sourceSpec.Name, sourceSpec.Version)
+			to := readUpgradeCheckSourceTables(t, sourceSpec.Name, tc.toVersion)
+
+			var out bytes.Buffer
+			err = runUpgradeCheck(t.Context(), &out, sourceSpec, specReader.Destinations, nil, false, from, to,
+				managedplugin.WithLogger(log.Logger),
+				managedplugin.WithDirectory(t.TempDir()),
+				managedplugin.WithNoSentry(),
+			)
+			require.NoError(t, err)
+
+			report := strings.ReplaceAll(out.String(), postgresqlPath, "<postgresql>")
+			require.Contains(t, report, "\n"+tc.wantVerdict+"\n")
+			requireUpgradeCheckGolden(t, tc.name+".txt", report)
+		})
+	}
+}
+
+func buildUpgradeCheckPostgreSQL(t *testing.T) string {
+	t.Helper()
+	binary := filepath.Join(t.TempDir(), "postgresql")
+	if runtime.GOOS == "windows" {
+		binary += ".exe"
+	}
+	build := exec.Command("go", "build", "-o", binary, "github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8")
+	build.Dir = filepath.Join(upgradeCheckFixturesDir, "postgresql")
+	build.Env = append(os.Environ(), "GOWORK=off")
+	out, err := build.CombinedOutput()
+	require.NoError(t, err, string(out))
+	return binary
+}
+
+func recordUpgradeCheckSourceTables(t *testing.T, sourceSpec specs.Source, toVersion string) {
+	t.Helper()
+	ctx := t.Context()
+	authToken, err := auth.GetAuthTokenIfNeeded(log.Logger, []*specs.Source{&sourceSpec}, nil, nil)
+	require.NoError(t, err)
+	teamName, err := auth.GetTeamForToken(ctx, authToken)
+	require.NoError(t, err)
+
+	from, to, err := loadUpgradeSourceTables(ctx, sourceSpec, toVersion,
+		managedplugin.WithLogger(log.Logger),
+		managedplugin.WithAuthToken(authToken.Value),
+		managedplugin.WithTeamName(teamName),
+		managedplugin.WithDirectory(t.TempDir()),
+	)
+	require.NoError(t, err)
+	for _, version := range []upgradeSourceTables{from, to} {
+		require.Empty(t, version.UnknownReason)
+		require.False(t, version.Connected)
+		selected, err := selectSourceTables(sourceSpec, version.Tables)
+		require.NoError(t, err)
+		schemas, err := pluginPb.SchemasToBytes(selected.ToArrowSchemas())
+		require.NoError(t, err)
+		byName := make(map[string][]byte, len(selected))
+		for i, table := range selected {
+			byName[table.Name] = schemas[i]
+		}
+		b, err := json.MarshalIndent(byName, "", "  ")
+		require.NoError(t, err)
+		require.NoError(t, os.WriteFile(upgradeCheckSourceTablesPath(sourceSpec.Name, version.Version), append(b, '\n'), 0o644))
+	}
+}
+
+func readUpgradeCheckSourceTables(t *testing.T, sourceName, version string) upgradeSourceTables {
+	t.Helper()
+	require.NoError(t, registerOnce())
+	b, err := os.ReadFile(upgradeCheckSourceTablesPath(sourceName, version))
+	require.NoError(t, err)
+	var byName map[string][]byte
+	require.NoError(t, json.Unmarshal(b, &byName))
+	names := slices.Sorted(maps.Keys(byName))
+	schemas := make([][]byte, len(names))
+	for i, name := range names {
+		schemas[i] = byName[name]
+	}
+	arrowSchemas, err := pluginPb.NewSchemasFromBytes(schemas)
+	require.NoError(t, err)
+	tables, err := schema.NewTablesFromArrowSchemas(arrowSchemas)
+	require.NoError(t, err)
+	return upgradeSourceTables{Version: version, Tables: tables}
+}
+
+func upgradeCheckSourceTablesPath(sourceName, version string) string {
+	return filepath.Join(upgradeCheckFixturesDir, "tables", sourceName+"-"+version+".json")
+}
+
+func requireUpgradeCheckGolden(t *testing.T, name, got string) {
+	t.Helper()
+	goldenPath := filepath.Join(upgradeCheckFixturesDir, name)
+	if *updateUpgradeCheckFixtures {
+		require.NoError(t, os.WriteFile(goldenPath, []byte(got), 0o644))
+	}
+	want, err := os.ReadFile(goldenPath)
+	require.NoError(t, err)
+	require.Equal(t, string(want), got)
 }
