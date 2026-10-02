@@ -86,25 +86,27 @@ module.exports = async ({github, context}) => {
             owner: 'cloudquery',
             repo: context.repo.repo,
             ref: context.payload.pull_request.head.sha,
-            status: 'completed',
             per_page: 100
         })
-        const runsWithPossibleDuplicates = checkRuns.map(({id, name, conclusion}) => ({id, name, conclusion}))
+        const runsWithPossibleDuplicates = checkRuns.map(({id, name, status, conclusion}) => ({id, name, status, conclusion}))
         const runs = runsWithPossibleDuplicates.filter((run, index, self) => self.findIndex(({id}) => id === run.id) === index)
         console.log(`Got the following check runs: ${JSON.stringify(runs)}`)
         const matchingRuns = runs.filter(({name}) => actions.includes(name))
         const allowedConclusions = ['success', 'skipped']
-        const failedRuns = matchingRuns.filter(({conclusion}) => !allowedConclusions.includes(conclusion))
+        const failedRuns = matchingRuns.filter(({status, conclusion}) => status === 'completed' && !allowedConclusions.includes(conclusion))
         if (failedRuns.length > 0) {
             throw new Error(`The following required workflows failed: ${failedRuns.map(({name}) => name).join(", ")}`)
         }
-        console.log(`Matching runs: ${matchingRuns.map(({name}) => name).join(", ")}`)
+        console.log(`Matching runs: ${matchingRuns.map(({name, status}) => `${name} (${status})`).join(", ")}`)
         console.log(`Actions: ${actions.join(", ")}`)
-        if (matchingRuns.length === actions.length) {
+        pendingActions = actions.filter(action => {
+            const runsForAction = matchingRuns.filter(({name}) => name === action)
+            return runsForAction.length === 0 || runsForAction.some(({status}) => status !== 'completed')
+        })
+        if (pendingActions.length === 0) {
             console.log("All required workflows have passed")
             return
         }
-        pendingActions = actions.filter(action => !runs.some(({name}) => name === action))
         console.log(`Waiting for ${pendingActions.join(", ")}`)
         await new Promise(r => setTimeout(r, 60000));
         now = new Date().getTime()
