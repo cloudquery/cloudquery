@@ -420,12 +420,18 @@ func TestUpgradeCheckRFCCases(t *testing.T) {
 
 func buildUpgradeCheckPostgreSQL(t *testing.T) string {
 	t.Helper()
+	moduleDir := t.TempDir()
+	for from, to := range map[string]string{"postgresql.mod": "go.mod", "postgresql.sum": "go.sum"} {
+		b, err := os.ReadFile(filepath.Join(upgradeCheckFixturesDir, from))
+		require.NoError(t, err)
+		require.NoError(t, os.WriteFile(filepath.Join(moduleDir, to), b, 0o644))
+	}
 	binary := filepath.Join(t.TempDir(), "postgresql")
 	if runtime.GOOS == "windows" {
 		binary += ".exe"
 	}
-	build := exec.Command("go", "build", "-o", binary, "github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8")
-	build.Dir = filepath.Join(upgradeCheckFixturesDir, "postgresql")
+	build := exec.Command("go", "build", "-mod=readonly", "-o", binary, "github.com/cloudquery/cloudquery/plugins/destination/postgresql/v8")
+	build.Dir = moduleDir
 	build.Env = append(os.Environ(), "GOWORK=off")
 	out, err := build.CombinedOutput()
 	require.NoError(t, err, string(out))
